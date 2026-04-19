@@ -13,6 +13,8 @@
 
 pub mod laplacian;
 pub mod matrix;
+pub mod power;
 
 pub use laplacian::laplacian;
 pub use matrix::Matrix;
+pub use power::power_iteration;
