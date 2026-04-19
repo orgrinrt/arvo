@@ -17,6 +17,8 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
+pub mod rank;
 pub mod topo;
 
+pub use rank::{downward_rank, upward_rank};
 pub use topo::{renumber, topo_sort};
