@@ -48,10 +48,10 @@ State the problem and how to fix:
 
 ```rust
 // Bad
-Error: entry not found
+Error: width out of range
 
 // Good
-Error: catalogue entry {name:?} not found. Is it listed in polka.toml [catalogue]?
+Error: UFixed<{I}, {F}> with S = Hot requires I + F <= 64 (Hot container is u64 max). Use S = Warm or Precise for wider logical width.
 ```
 
 ## Quick rules
