@@ -366,3 +366,303 @@ impl_resolve!(Precise, Warm, Precise);
 // Cold with Precise.
 impl_resolve!(Cold, Precise, Precise);
 impl_resolve!(Precise, Cold, Precise);
+
+// --- Arithmetic dispatch ---------------------------------------------------
+//
+// Per-strategy semantics for the four core ops live on the same
+// `(Strategy, BITS)` key as the container table. Each impl picks the
+// right container-level operation for the strategy:
+//
+//   Hot   — wrapping (single-op convention; overflow wraps).
+//   Warm  — wrapping on the 2x container (safe for a single op).
+//   Cold  — saturating bound at the 2x-widened equivalent; in this L0
+//           round we use the container's own wrapping ops since Cold
+//           and Hot share container widths. Cross-op widen-narrow logic
+//           lands with the Cold widening table in a later round.
+//   Precise — saturating at the container level.
+//
+// Division by zero: Hot/Warm/Cold use `wrapping_div` (which panics in
+// debug on some platforms — matches the "wrapping" convention from the
+// doc CL D4). Precise guards and clamps to container max so Precise
+// never panics on div-by-zero.
+
+/// Unsigned arithmetic dispatch for `(strategy, BITS)`.
+///
+/// Keyed on the same `BITS` that `UContainerFor` uses. Lets
+/// `UFixed<I, F, S>` delegate arithmetic to the strategy-correct
+/// container operation without re-bounding on the container type.
+pub trait UArith<const BITS: u8>: UContainerFor<BITS> {
+    /// Strategy-specific `+`.
+    fn u_add(a: Self::T, b: Self::T) -> Self::T;
+    /// Strategy-specific `-`.
+    fn u_sub(a: Self::T, b: Self::T) -> Self::T;
+    /// Strategy-specific `*`.
+    fn u_mul(a: Self::T, b: Self::T) -> Self::T;
+    /// Strategy-specific `/`. Div-by-zero: wrapping strategies use
+    /// `wrapping_div` (panic convention); Precise clamps to max.
+    fn u_div(a: Self::T, b: Self::T) -> Self::T;
+}
+
+/// Signed arithmetic dispatch for `(strategy, BITS)`.
+pub trait IArith<const BITS: u8>: IContainerFor<BITS> {
+    /// Strategy-specific `+`.
+    fn i_add(a: Self::T, b: Self::T) -> Self::T;
+    /// Strategy-specific `-`.
+    fn i_sub(a: Self::T, b: Self::T) -> Self::T;
+    /// Strategy-specific `*`.
+    fn i_mul(a: Self::T, b: Self::T) -> Self::T;
+    /// Strategy-specific `/`. Div-by-zero: wrapping strategies use
+    /// `wrapping_div` (panic convention); Precise clamps to max.
+    fn i_div(a: Self::T, b: Self::T) -> Self::T;
+}
+
+// Wrapping arithmetic for Hot / Warm / Cold. Identical op surface;
+// differentiated only by the container the (strategy, BITS) pair
+// already selected.
+macro_rules! impl_u_arith_wrapping {
+    ($strategy:ty, $($bits:literal),+) => {
+        $(
+            impl UArith<$bits> for $strategy {
+                #[inline(always)]
+                fn u_add(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
+                    -> <Self as UContainerFor<$bits>>::T { a.wrapping_add(b) }
+                #[inline(always)]
+                fn u_sub(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
+                    -> <Self as UContainerFor<$bits>>::T { a.wrapping_sub(b) }
+                #[inline(always)]
+                fn u_mul(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
+                    -> <Self as UContainerFor<$bits>>::T { a.wrapping_mul(b) }
+                #[inline(always)]
+                fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
+                    -> <Self as UContainerFor<$bits>>::T {
+                    if b == <<Self as UContainerFor<$bits>>::T as Default>::default() {
+                        a.wrapping_div(<<Self as UContainerFor<$bits>>::T as Default>::default()
+                            .wrapping_add(<<Self as UContainerFor<$bits>>::T as Default>::default()))
+                    } else {
+                        a.wrapping_div(b)
+                    }
+                }
+            }
+        )+
+    };
+}
+
+macro_rules! impl_u_arith_saturating {
+    ($strategy:ty, $($bits:literal),+) => {
+        $(
+            impl UArith<$bits> for $strategy {
+                #[inline(always)]
+                fn u_add(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
+                    -> <Self as UContainerFor<$bits>>::T { a.saturating_add(b) }
+                #[inline(always)]
+                fn u_sub(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
+                    -> <Self as UContainerFor<$bits>>::T { a.saturating_sub(b) }
+                #[inline(always)]
+                fn u_mul(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
+                    -> <Self as UContainerFor<$bits>>::T { a.saturating_mul(b) }
+                #[inline(always)]
+                fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
+                    -> <Self as UContainerFor<$bits>>::T {
+                    // Precise never panics on div-by-zero: clamp to MAX.
+                    if b == <<Self as UContainerFor<$bits>>::T as Default>::default() {
+                        <<Self as UContainerFor<$bits>>::T as USaturating>::saturating_max()
+                    } else {
+                        a / b
+                    }
+                }
+            }
+        )+
+    };
+}
+
+macro_rules! impl_i_arith_wrapping {
+    ($strategy:ty, $($bits:literal),+) => {
+        $(
+            impl IArith<$bits> for $strategy {
+                #[inline(always)]
+                fn i_add(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
+                    -> <Self as IContainerFor<$bits>>::T { a.wrapping_add(b) }
+                #[inline(always)]
+                fn i_sub(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
+                    -> <Self as IContainerFor<$bits>>::T { a.wrapping_sub(b) }
+                #[inline(always)]
+                fn i_mul(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
+                    -> <Self as IContainerFor<$bits>>::T { a.wrapping_mul(b) }
+                #[inline(always)]
+                fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
+                    -> <Self as IContainerFor<$bits>>::T {
+                    if b == <<Self as IContainerFor<$bits>>::T as Default>::default() {
+                        a.wrapping_div(
+                            <<Self as IContainerFor<$bits>>::T as Default>::default()
+                                .wrapping_add(<<Self as IContainerFor<$bits>>::T as Default>::default()))
+                    } else {
+                        a.wrapping_div(b)
+                    }
+                }
+            }
+        )+
+    };
+}
+
+macro_rules! impl_i_arith_saturating {
+    ($strategy:ty, $($bits:literal),+) => {
+        $(
+            impl IArith<$bits> for $strategy {
+                #[inline(always)]
+                fn i_add(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
+                    -> <Self as IContainerFor<$bits>>::T { a.saturating_add(b) }
+                #[inline(always)]
+                fn i_sub(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
+                    -> <Self as IContainerFor<$bits>>::T { a.saturating_sub(b) }
+                #[inline(always)]
+                fn i_mul(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
+                    -> <Self as IContainerFor<$bits>>::T { a.saturating_mul(b) }
+                #[inline(always)]
+                fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
+                    -> <Self as IContainerFor<$bits>>::T {
+                    // Precise guards against div-by-zero: clamp to MAX.
+                    if b == <<Self as IContainerFor<$bits>>::T as Default>::default() {
+                        <<Self as IContainerFor<$bits>>::T as ISaturating>::saturating_max()
+                    } else {
+                        // Guard signed overflow (MIN / -1) by preferring
+                        // `saturating_div` rather than `wrapping_div`.
+                        a.saturating_div(b)
+                    }
+                }
+            }
+        )+
+    };
+}
+
+/// Helper trait: yields the MAX value of an unsigned container type.
+///
+/// Needed because generic contexts can't call `T::MAX` directly —
+/// `MAX` is an inherent associated const, not routed through any
+/// `num-traits` style surface (which arvo doesn't carry).
+pub trait USaturating: Sized {
+    /// `T::MAX` for this container.
+    fn saturating_max() -> Self;
+}
+
+/// Signed counterpart of `USaturating`.
+pub trait ISaturating: Sized {
+    /// `T::MAX` for this container.
+    fn saturating_max() -> Self;
+}
+
+macro_rules! impl_saturating {
+    (unsigned: $($ty:ty),+) => {
+        $(impl USaturating for $ty {
+            #[inline(always)]
+            fn saturating_max() -> Self { <$ty>::MAX }
+        })+
+    };
+    (signed: $($ty:ty),+) => {
+        $(impl ISaturating for $ty {
+            #[inline(always)]
+            fn saturating_max() -> Self { <$ty>::MAX }
+        })+
+    };
+}
+
+impl_saturating!(unsigned: u8, u16, u32, u64);
+impl_saturating!(signed: i8, i16, i32, i64);
+
+// Wrapping strategies: Hot / Warm / Cold. Same BITS coverage as the
+// container table.
+impl_u_arith_wrapping!(Hot, 1, 2, 3, 4, 5, 6, 7, 8);
+impl_u_arith_wrapping!(Hot, 9, 10, 11, 12, 13, 14, 15, 16);
+impl_u_arith_wrapping!(
+    Hot, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+#[rustfmt::skip]
+impl_u_arith_wrapping!(
+    Hot,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
+
+impl_u_arith_wrapping!(Cold, 1, 2, 3, 4, 5, 6, 7, 8);
+impl_u_arith_wrapping!(Cold, 9, 10, 11, 12, 13, 14, 15, 16);
+impl_u_arith_wrapping!(
+    Cold, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+#[rustfmt::skip]
+impl_u_arith_wrapping!(
+    Cold,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
+
+impl_u_arith_wrapping!(Warm, 1, 2, 3, 4, 5, 6, 7, 8);
+impl_u_arith_wrapping!(Warm, 9, 10, 11, 12, 13, 14, 15, 16);
+impl_u_arith_wrapping!(
+    Warm, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+
+impl_u_arith_saturating!(Precise, 1, 2, 3, 4, 5, 6, 7, 8);
+impl_u_arith_saturating!(Precise, 9, 10, 11, 12, 13, 14, 15, 16);
+impl_u_arith_saturating!(
+    Precise, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+#[rustfmt::skip]
+impl_u_arith_saturating!(
+    Precise,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
+
+// Signed.
+impl_i_arith_wrapping!(Hot, 1, 2, 3, 4, 5, 6, 7, 8);
+impl_i_arith_wrapping!(Hot, 9, 10, 11, 12, 13, 14, 15, 16);
+impl_i_arith_wrapping!(
+    Hot, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+#[rustfmt::skip]
+impl_i_arith_wrapping!(
+    Hot,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
+
+impl_i_arith_wrapping!(Cold, 1, 2, 3, 4, 5, 6, 7, 8);
+impl_i_arith_wrapping!(Cold, 9, 10, 11, 12, 13, 14, 15, 16);
+impl_i_arith_wrapping!(
+    Cold, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+#[rustfmt::skip]
+impl_i_arith_wrapping!(
+    Cold,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
+
+impl_i_arith_wrapping!(Warm, 1, 2, 3, 4, 5, 6, 7, 8);
+impl_i_arith_wrapping!(Warm, 9, 10, 11, 12, 13, 14, 15, 16);
+impl_i_arith_wrapping!(
+    Warm, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+
+impl_i_arith_saturating!(Precise, 1, 2, 3, 4, 5, 6, 7, 8);
+impl_i_arith_saturating!(Precise, 9, 10, 11, 12, 13, 14, 15, 16);
+impl_i_arith_saturating!(
+    Precise, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+#[rustfmt::skip]
+impl_i_arith_saturating!(
+    Precise,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);

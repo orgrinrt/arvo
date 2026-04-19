@@ -13,10 +13,11 @@
 //! `Warm` is a compile error for `1 + I + F > 32` per doc CL D2.
 
 use core::marker::PhantomData;
+use core::ops::{Add, Div, Mul, Sub};
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use crate::newtype::{FBits, IBits, USize};
-use crate::strategy::{IContainerFor, Strategy, ifixed_bits, is_fractional};
+use crate::strategy::{IArith, IContainerFor, Strategy, ifixed_bits, is_fractional};
 
 /// Signed fixed-point value.
 ///
@@ -115,4 +116,69 @@ where
     S: IContainerFor<{ ifixed_bits(I, F) }>,
     [(); 1 / is_fractional(F)]:,
 {
+}
+
+// --- Same-strategy arithmetic ---------------------------------------------
+//
+// Signed counterpart of the UFixed arithmetic block. Same scope and
+// same deferral notes: cross-width / cross-strategy remain out of
+// this round pending const-expr machinery.
+//
+// TODO: cross-width arithmetic blocked on generic_const_exprs max() support — next round.
+// TODO: cross-strategy arithmetic blocked on const-expr support for associated-type const projection — next round.
+
+impl<const I: IBits, const F: FBits, S: Strategy> Add for IFixed<I, F, S>
+where
+    S: IArith<{ ifixed_bits(I, F) }>,
+{
+    type Output = Self;
+    #[inline(always)]
+    fn add(self, rhs: Self) -> Self {
+        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_add(
+            self.to_raw(),
+            rhs.to_raw(),
+        ))
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> Sub for IFixed<I, F, S>
+where
+    S: IArith<{ ifixed_bits(I, F) }>,
+{
+    type Output = Self;
+    #[inline(always)]
+    fn sub(self, rhs: Self) -> Self {
+        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_sub(
+            self.to_raw(),
+            rhs.to_raw(),
+        ))
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> Mul for IFixed<I, F, S>
+where
+    S: IArith<{ ifixed_bits(I, F) }>,
+{
+    type Output = Self;
+    #[inline(always)]
+    fn mul(self, rhs: Self) -> Self {
+        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_mul(
+            self.to_raw(),
+            rhs.to_raw(),
+        ))
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> Div for IFixed<I, F, S>
+where
+    S: IArith<{ ifixed_bits(I, F) }>,
+{
+    type Output = Self;
+    #[inline(always)]
+    fn div(self, rhs: Self) -> Self {
+        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_div(
+            self.to_raw(),
+            rhs.to_raw(),
+        ))
+    }
 }
