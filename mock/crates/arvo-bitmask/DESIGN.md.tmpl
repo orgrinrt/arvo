@@ -80,10 +80,14 @@ on x86.
 
 ## Bit-matrix
 
-`BitMatrix<const N: Cap>` — adjacency matrix for up to N nodes.
-Stored as `[Mask64; N]` (N <= 64) or `[Mask256; N]` (N <= 256).
-Row `i` has bit `j` set if edge i->j exists. `Cap` is arvo's
-const-generic capacity newtype.
+`BitMatrix64<const N: Cap>` — adjacency matrix for up to N nodes
+with N ≤ 64, stored as `[Mask64; cap_size(N)]`.
+`BitMatrix256<const N: Cap>` — the 256-wide variant, stored as
+`[Mask256; cap_size(N)]`. Row `i` has bit `j` set if edge `i -> j`
+exists. `Cap` is arvo's const-generic capacity newtype;
+`cap_size(c: Cap) -> usize` is a local `const fn` that unwraps the
+newtype for array sizing (inline `.0.0` is rejected by nightly
+`generic_const_exprs`).
 
 ```rust
 fn edge(i: NodeId, j: NodeId) -> Bool     // BitAccess::bit, one instruction
@@ -93,10 +97,17 @@ fn predecessors(j: NodeId) -> Mask        // scan column j across all rows
 fn transitive_closure(&mut self)          // Warshall's algorithm on bitmasks
 ```
 
+Two concrete types rather than one generic `BitMatrix<W, N>` — the
+`Mask64` and `Mask256` backings differ enough at the storage layer
+that abstracting over them via a trait fights `generic_const_exprs`
+on current nightly (same trade-off as arvo-sparse's `_64` / `_256`
+algorithm pair).
+
 ## Dirty propagation
 
 ```rust
-fn propagate_dirty(dag: &BitMatrix, dirty: &mut Mask)
+fn propagate_dirty_64<const N: Cap>(dag: &BitMatrix64<N>, dirty: &mut Mask64)
+fn propagate_dirty_256<const N: Cap>(dag: &BitMatrix256<N>, dirty: &mut Mask256)
 ```
 
 OR sequence through DAG adjacency. For each set bit in `dirty`, OR
@@ -120,7 +131,8 @@ tracking.
 ## Sources
 
 - 202603241400_topic.arvo-crate-dependency-revision.md (dependency revision)
-- 202604191900_changelist.doc.md (this round)
+- 202604191900_changelist.doc.md (original round)
+- 202604260000_changelist.doc.md (Cap/USize cleanup round)
 - T5 L1022-1041 (bitmask access sets — polka-dots)
 - T5 L1079-1087 (bit-matrix DAG adjacency — polka-dots)
 - T5 L1173-1179 (dirty propagation — polka-dots)
