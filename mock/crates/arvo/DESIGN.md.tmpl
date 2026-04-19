@@ -1,0 +1,497 @@
+# arvo — Design
+
+Cross-project numeric primitive library. Used by hilavitkutin, polka,
+saalis, loimu. `#![no_std]`, no alloc, const-generic sizing, same
+LLVM optimisation discipline as the execution engine.
+
+Name: arvo (Finnish: "value/worth/estimate").
+
+## Primitive newtypes
+
+arvo wraps Rust primitives used in public APIs. All are
+`repr(transparent)` — zero overhead after compilation.
+
+### Const generic bit counts
+
+```rust
+#[derive(ConstParamTy, PartialEq, Eq)]
+pub struct IBits(pub u8);  // integer bit count
+
+#[derive(ConstParamTy, PartialEq, Eq)]
+pub struct FBits(pub u8);  // fractional bit count
+```
+
+Requires `adt_const_params` (nightly). Prevents accidentally
+swapping integer and fractional bit counts at type definition sites.
+Consumer code uses semantic aliases (Angle, Count, etc.) and never
+sees IBits/FBits directly.
+
+### USize
+
+```rust
+#[derive(ConstParamTy, PartialEq, Eq)]
+#[repr(transparent)]
+pub struct USize(usize);
+
+impl Deref for USize {
+    type Target = usize;
+    fn deref(&self) -> &usize { &self.0 }
+}
+```
+
+Index and count newtype. Wraps `usize` for the arvo-types-only lint.
+Implements `Deref<Target = usize>` for ergonomic array access:
+`array[*idx]`. Also derives `ConstParamTy` so it can be used inside
+other const-generic newtypes (see `Cap` below). See
+DEEPDIVE_newtype-deref for Deref rationale.
+
+### Cap
+
+```rust
+#[derive(ConstParamTy, PartialEq, Eq)]
+pub struct Cap(pub USize);
+```
+
+Const-generic capacity for fixed-size structures. Used wherever a
+const generic sizes an array: `BitMatrix<const N: Cap>`,
+`Csr<const ROWS: Cap, const NNZ: Cap>`, power iteration matrices.
+The const parameter name carries the semantic distinction (N, ROWS,
+NNZ); the type prevents mixing capacities with other integers.
+
+### Bool
+
+```rust
+#[repr(transparent)]
+pub struct Bool(bool);
+
+impl Deref for Bool {
+    type Target = bool;
+    fn deref(&self) -> &bool { &self.0 }
+}
+
+impl Try for Bool {
+    type Output = bool;
+    type Residual = Infallible;
+
+    fn branch(self) -> ControlFlow<Infallible, bool> {
+        ControlFlow::Continue(self.0)
+    }
+    fn from_output(output: bool) -> Self { Bool(output) }
+}
+
+pub trait AsBool {
+    fn as_bool(&self) -> bool;
+}
+impl AsBool for Bool {
+    fn as_bool(&self) -> bool { self.0 }
+}
+```
+
+Control flow boolean. Returned by predicates (`is_zero`, `bit`).
+NOT a fixed-point type — `Bool` is for branching, `Bit` (defined
+in arvo-bits) is for 1-bit data storage.
+
+Three paths to extract the inner `bool`:
+
+| Path | Syntax | Where it works |
+|---|---|---|
+| `?` (Try) | `if val.is_zero()? { ... }` | Functions returning Outcome/Just/Maybe/Result |
+| `*` (Deref) | `if *val.is_zero() { ... }` | Everywhere |
+| `.as_bool()` | `if val.is_zero().as_bool() { ... }` | Everywhere, explicit compatibility bridge |
+
+In WU code: use `?` (comes free via `Outcome` return type).
+In general code: use `*`. For library boundary compatibility:
+`.as_bool()`. See DEEPDIVE_newtype-deref for full rationale on the
+Deref choice.
+
+## Type family marker traits
+
+Five marker traits classify arvo's type families. Used by arvo-bits
+for blanket impls and by consumers for generic constraints.
+
+```rust
+pub trait IntegerLike: Copy {}
+pub trait FractionLike: Copy {}
+pub trait BitPresentation: Copy {
+    const LOGICAL_WIDTH: USize;
+}
+pub trait FloatLike: Copy {}
+pub trait BoolLike: Copy {
+    fn pack(self) -> Bit;
+}
+```
+
+| Marker | Types | Semantic domain |
+|---|---|---|
+| `IntegerLike` | UFixed with F=0, IFixed with F=0 | whole numbers |
+| `FractionLike` | UFixed with F>0, IFixed with F>0 | fractional values |
+| `BitPresentation` | all UFixed, all IFixed | raw bits accessible |
+| `FloatLike` | FastFloat, StrictFloat | IEEE float wrappers |
+| `BoolLike` | Bool | truth values, packable to Bit |
+
+Blanket impls:
+
+```rust
+impl<const I: IBits, S: Strategy> IntegerLike
+    for UFixed<I, {FBits(0)}, S> {}
+
+impl<const I: IBits, S: Strategy> IntegerLike
+    for IFixed<I, {FBits(0)}, S> {}
+
+impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation
+    for UFixed<I, F, S>
+{
+    const LOGICAL_WIDTH: USize = USize(I.0 as usize + F.0 as usize);
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation
+    for IFixed<I, F, S>
+{
+    const LOGICAL_WIDTH: USize = USize(1 + I.0 as usize + F.0 as usize);
+}
+
+// FractionLike: UFixed/IFixed where F > FBits(0)
+// FloatLike: FastFloat, StrictFloat
+// BoolLike: Bool
+```
+
+`BoolLike::pack()` converts a truth value to a 1-bit data value
+(`Bit` from arvo-bits). The reverse direction is `Bit::unpack() ->
+Bool`. This formalises the boundary between control flow (Bool) and
+data storage (Bit) as a trait contract.
+
+`FractionLike` blanket impl requires a `where F > FBits(0)` const
+generic constraint. Exact mechanism depends on `generic_const_exprs`
+stability; design intent is clear, src CL resolves the mechanism.
+
+## Fixed-point types
+
+```rust
+pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = Warm> {
+    bits: S::Container<I, F>,
+}
+
+pub struct IFixed<const I: IBits, const F: FBits, S: Strategy = Warm> {
+    bits: S::SignedContainer<I, F>,
+}
+```
+
+`I` = integer bits, `F` = fractional bits. `S` = strategy marker
+(default: `Warm`). `I.0 + F.0` is the logical bit width. The actual
+storage width depends on the strategy.
+
+Both `repr(transparent)` over the strategy-determined container type.
+No runtime representation overhead. After compilation, every arvo
+type resolves to the optimal integer instruction for the target.
+
+## Strategy markers
+
+The strategy is a type parameter that controls container width,
+arithmetic semantics, bitpacking, cross-width operation rules, and
+SIMD density. Four strategies:
+
+### Hot
+
+Optimised for L1 density and operation throughput.
+
+**Container:** minimum byte-aligned standard width that fits `I + F`
+bits. A 5-bit value stores in u8. A 12-bit value stores in u16.
+No bitpacking — byte-aligned always.
+
+**Arithmetic:** wrapping. Single instruction per op. May overflow
+silently. LLVM vectorises freely.
+
+**Cross-width ops:** shift-narrow the wider value to match the
+narrower type's layout. Right-shift preserves integer bits, loses
+fractional precision. Operate at the narrower width.
+
+**SIMD:** most lanes per register. u8 in 128-bit NEON = 16 lanes.
+
+**Use case:** inner morsel loops where range is known safe. Counters,
+indices, flags, enum-like values.
+
+### Warm (default)
+
+Store big, operate fast. The development-friendly default.
+
+**Container:** 2x the logical bit width, rounded to next standard
+width. A 16-bit logical value stores in u32.
+
+**Arithmetic:** wrapping. Single instruction. But the 2x container
+means a single add/sub/mul of two values within their logical range
+cannot overflow the container. Chains of operations (accumulating
+many values) can eventually overflow.
+
+**Cross-width ops:** widen both operands to 2x the wider operand's
+container width. Operate at that width. Single ops safe, chains may
+overflow.
+
+**Bitpacking:** no. Byte-aligned, rounded up.
+
+**SIMD:** fewer lanes than Hot (wider containers), but still wrapping
+ops so LLVM vectorises freely.
+
+**Use case:** the default for most columns. Correctness on single
+ops without saturating overhead. Morsel loop friendly.
+
+### Cold
+
+Store small, operate carefully. Optimised for storage density.
+
+**Container:** minimum container that fits `I + F` bits. Same as
+Hot for byte-multiples. For sub-byte values: bitpacked (5-bit value
+stores as 5 bits, not u8).
+
+**Arithmetic:** widen to 2x before operating, narrow back after.
+Every operation has load-widen-op-narrow-store overhead.
+
+**Cross-width ops:** widen both to the wider operand's container
+width. Operate at that width. Narrow back on store.
+
+**Bitpacking:** yes. Stores exactly the logical bits. Pays
+shift/mask cost on every access. Acceptable because Cold values
+ride L2/L3, not L1.
+
+**SIMD:** narrow storage but ops widen, so effective lane count
+matches the widened width.
+
+**Use case:** columns stored in bulk but processed rarely. Archival
+data, audit trails, metadata columns, lookup tables.
+
+### Precise
+
+Store exactly, operate exactly. Correctness above all.
+
+**Container:** 2x the logical width (same as Warm).
+
+**Arithmetic:** saturating. Overflow clamps to max/min rather than
+wrapping. Saturating add/sub have SIMD intrinsics on most platforms.
+Multiply uses the widened container so the intermediate result is
+exact, then saturate on store if the result exceeds the logical range.
+
+**Cross-width ops:** widen both to 2x the wider operand's container.
+Operate. Saturate on store. No precision loss at any point.
+
+**Bitpacking:** yes. Stores exactly the logical bits. The
+representation IS the precision.
+
+**SIMD:** fewest lanes (widest containers + saturating ops). But
+saturating add/sub are SIMD-supported.
+
+**Use case:** financial calculations, audit-critical values, values
+that flow into user-visible reports where silent data loss is
+unacceptable.
+
+## Container width table
+
+| I + F | Hot | Warm | Cold | Precise |
+|---|---|---|---|---|
+| 1-8 | u8 | u16 | bitpacked | u16 |
+| 9-16 | u16 | u32 | bitpacked | u32 |
+| 17-32 | u32 | u64 | bitpacked | u64 |
+| 33-64 | u64 | u64 (degrades) | bitpacked | u64 (saturating) |
+
+No u128 containers. I + F <= 64 for UFixed, 1 + I + F <= 64 for
+IFixed. Warm degrades to Hot's container width at I + F > 32 (no 2x
+headroom available without u128). At I + F > 32, Warm and Hot have
+the same container; the only difference is the default intent.
+
+IFixed follows the same widening rules with signed containers (i8,
+i16, i32, i64). Signed saturation clamps to the logical range
+(i_MIN..i_MAX), not the container range.
+
+## Strategy comparison
+
+| Aspect | Hot | Warm (default) | Cold | Precise |
+|---|---|---|---|---|
+| Container | min aligned | 2x logical | min (bitpacked) | 2x logical |
+| Bitpacking | no | no | yes | yes |
+| Add/Sub | wrapping | wrapping (safe 1-op) | widen-op-narrow | saturating |
+| Multiply | wrapping | wrapping (safe 1-op) | widen-op-narrow | widening + saturate |
+| Chain safety | overflows | overflows on long chains | overflows on long chains | clamps always |
+| Cross-width | shift-narrow wider | widen to 2x wider | widen to wider | widen to 2x wider |
+| SIMD lanes | most | moderate | most (stored) / moderate (ops) | fewest |
+| L1 density | best | 2x worse | best | 2x worse |
+| Access cost | byte load | byte load | shift/mask | shift/mask |
+| Precision loss | yes (wrapping + narrow) | no (single ops) | no (single ops) | never |
+
+## Column layout derivation
+
+The column layout mode (ByteAligned / BitPacked) is derived from
+the strategy, not set independently:
+
+| Strategy | Layout mode |
+|---|---|
+| Hot | ByteAligned (minimum aligned container) |
+| Warm | ByteAligned (2x container, no packing) |
+| Cold | BitPacked (exact logical bits) |
+| Precise | BitPacked (exact logical bits) |
+
+The strategy marker IS the layout decision.
+
+## Cross-width operation detail
+
+When `UFixed<I1, F1, S1>` operates with `UFixed<I2, F2, S2>`:
+
+1. **Strategy resolution:** if S1 != S2, the result strategy is the
+   more conservative: Precise > Cold > Warm > Hot. The less
+   conservative operand is converted before the operation.
+
+2. **Width alignment:** fractional bits are aligned by shifting the
+   value with fewer F bits left. Integer bits are aligned by widening.
+
+3. **Result type:** `I = max(I1, I2)`, `F = max(F1, F2)`. Strategy
+   is the resolved strategy from step 1.
+
+## Conversion between strategies
+
+Converting between strategies for the same `<I, F>`:
+
+- **Hot -> Warm**: zero-extend into wider container. Free.
+- **Warm -> Hot**: truncate to minimum container. Wraps if value
+  exceeds container.
+- **Hot/Warm -> Cold/Precise**: bitpack from byte-aligned to exact
+  bits. Shift/mask cost.
+- **Cold/Precise -> Hot/Warm**: unpack from bitpacked to byte-aligned.
+  Shift/mask cost.
+
+Converting between different `<I, F>` configurations is a computation:
+shift fractional bits, clamp or wrap integer bits. The strategy
+determines the clamping/wrapping semantics.
+
+## Float wrappers
+
+`FastFloat` — wraps f32/f64 with LLVM fast-math intrinsics enabled.
+Trades IEEE 754 compliance for speed (reassociation, reciprocal
+approximation, no NaN propagation). MathPeephole LLVM pass fires on
+FastFloat operations via hilavitkutin-build.
+
+`StrictFloat` — wraps f32/f64 with strict IEEE 754 semantics. No
+fast-math. For validation, comparison, and contexts where bit-exact
+reproducibility matters.
+
+`Float` — type alias. Resolves to `FastFloat` when `cfg(arvo_fast_math)`
+is active (the FastMath pragma from hilavitkutin-build), `StrictFloat`
+otherwise.
+
+Float types are actual f32/f64 wrappers. They are NOT fixed-point.
+They do not have strategy markers. Completely separate type family.
+LLVM fast-math flags apply to float operations only; fixed-point uses
+integer arithmetic.
+
+## Composable traits
+
+No monolithic `Numeric` trait. Small single-method traits composed
+via bounds:
+
+- `TotalOrd` — total ordering (NaN-aware for floats)
+- `Sqrt` — square root (hardware or approximation via cfg)
+- `Recip` — reciprocal (hardware or Newton-Raphson via cfg)
+- `Abs` — absolute value
+- `FromConstant` — compile-time literal conversion
+
+Consumer writes `T: Add + Mul + Sqrt` not `T: Numeric`. Only the
+needed operations appear in bounds. The mathematical sub-crates
+(arvo-graph, arvo-sparse, arvo-spectral, arvo-comb) are generic
+over these trait bounds, not concrete arvo types.
+
+## Semantic aliases
+
+Strategy-generic type aliases. Fix the `<I, F>` configuration
+(semantic meaning) but are generic over strategy with a sensible
+default:
+
+```rust
+pub type Ratio<S: Strategy = Warm>     = UFixed<{IBits(0)},  {FBits(8)},  S>;
+pub type Factor<S: Strategy = Warm>    = UFixed<{IBits(2)},  {FBits(8)},  S>;
+pub type Norm<S: Strategy = Warm>      = IFixed<{IBits(1)},  {FBits(14)}, S>;
+pub type Coord<S: Strategy = Warm>     = IFixed<{IBits(16)}, {FBits(16)}, S>;
+pub type Angle<S: Strategy = Warm>     = UFixed<{IBits(9)},  {FBits(7)},  S>;
+pub type Count<S: Strategy = Warm>     = UFixed<{IBits(32)}, {FBits(0)},  S>;
+pub type Average<S: Strategy = Warm>   = UFixed<{IBits(16)}, {FBits(16)}, S>;
+pub type Deviation<S: Strategy = Warm> = UFixed<{IBits(8)},  {FBits(24)}, S>;
+```
+
+`Bool` is NOT in this list — it is a `Bool(bool)` newtype, not a
+UFixed alias. `Bit` (the 1-bit data type for column storage) is
+defined in arvo-bits.
+
+Usage:
+```rust
+Column<Angle>           // Warm by default
+Column<Angle<Hot>>      // Hot for morsel-loop-heavy column
+Column<Angle<Precise>>  // Precise for audit-critical output
+```
+
+Generic code over strategy:
+```rust
+fn process<S: Strategy>(angle: Angle<S>, ratio: Ratio<S>) -> Angle<S> {
+    // both use S's semantics
+}
+```
+
+The strategy propagates through the type system. Cross-strategy
+conversion rules apply at boundaries.
+
+## Hardware-aware backend selection
+
+arvo detects hardware capabilities in its own build.rs via
+`CARGO_CFG_TARGET_FEATURE` (the standard cargo env var, not custom
+flags from hilavitkutin-build). If `target_feature` includes `sqrt`,
+arvo uses the hardware sqrt intrinsic; otherwise software
+approximation.
+
+The only cfg arvo receives from hilavitkutin-build is `arvo_fast_math`
+(when the FastMath pragma is active), which gates fast-math float
+semantics in arvo's float wrappers.
+
+The consumer never sees any of this. The API is identical regardless
+of backend.
+
+## arvo-types-only lint
+
+The `arvo-types-only` lint (T4 §Q8) requires arvo types in data-facing
+struct fields across all arvo sub-crates and hilavitkutin. Raw `u32`,
+`f64`, etc. are rejected in favour of semantic arvo types. After
+compilation, arvo types are `repr(transparent)` — zero overhead.
+
+## Bench requirement
+
+Exhaustive comparison of arvo types vs raw f32/f64/u32/u64 on all
+operation types (add, sub, mul, div, sqrt, recip) and chain lengths
+(1, 4, 16, 64 ops). Per-strategy comparison. The benchmark must prove
+that arvo types introduce no overhead beyond the strategy's intended
+cost (e.g. Precise's saturation, Cold's widen-narrow). Any unexpected
+overhead is a bug to be fixed, not accepted.
+
+## Relationship to hilavitkutin
+
+hilavitkutin uses arvo for all internal numerics. Column data types
+come from arvo; hilavitkutin does not care what is in the columns,
+only the read/write dependency structure. Boolean columns use `Bit`
+(from arvo-bits, = `UFixed<{IBits(1)}, {FBits(0)}, Hot>`) with 8x
+density in BitPacked layout. Mixed types per morsel (e.g. `Count`
+-> `UFixed<{IBits(32)}, {FBits(0)}>`, `Average` -> `FastFloat`).
+
+Concrete arvo type instantiations happen in hilavitkutin (the
+application), not in the arvo sub-crates (libraries). The sub-crates
+are generic over trait bounds; hilavitkutin specialises with concrete
+types.
+
+## BIT_WIDTH interaction (R4)
+
+`ColumnValue::BIT_WIDTH` reports the logical bit width (`I.0 + F.0`).
+The storage engine uses both BIT_WIDTH and the strategy to determine
+physical layout:
+- BitPacked strategies (Cold, Precise): physical width = BIT_WIDTH
+- ByteAligned strategies (Hot, Warm): physical width = container
+  size in bits
+
+## Sources
+
+- 202603241200_topic.arvo-strategy-markers.md (strategy definitions)
+- 202603241300_topic.arvo-strategy-aliases-and-open-questions.md (alias pattern, Q1-Q4)
+- 202603241400_topic.arvo-crate-dependency-revision.md (generic contracts)
+- T4 L1856-1924 §Q5a (full design)
+- T5 L964-971 §Q11 (intrinsics)
+- T4 L2370-2395 §Q8 (lint)

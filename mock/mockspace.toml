@@ -1,0 +1,49 @@
+project_name = "arvo"
+crate_prefix = "arvo"
+abi_version = 1
+
+proc_macro_crates = []
+module_crates = []
+
+# Which macro to track per-crate in domain items
+primary_domain_macro = "strategy"
+primary_domain_label = "Strategies"
+
+# Layer labels by depth index (L0 → L3)
+layers = ["L0 primitives", "L1 contracts", "L2 substrate", "L2 substrate", "L2 substrate", "L2 substrate", "L3 spectral"]
+
+# Domain kind labels for STRUCTURE.md domain items table
+[domain_kinds]
+strategy = "🎛️ strategy marker"
+
+# Known macros for DESIGN.md table (description | usage)
+[known_macros]
+
+# Crate header colors for dependency graph (bg_color | fg_color)
+[crate_colors]
+arvo = "#E8EEF7 | #3A6EA5"
+arvo-bits = "#E8EEF7 | #3A6EA5"
+arvo-bitmask = "#E6F2E6 | #2D6A2D"
+arvo-sparse = "#E6F2E6 | #2D6A2D"
+arvo-graph = "#E6F2E6 | #2D6A2D"
+arvo-comb = "#E6F2E6 | #2D6A2D"
+arvo-spectral = "#EDE6F3 | #5C2D82"
+
+# ---------------------------------------------------------------------------
+# Lint configuration
+# ---------------------------------------------------------------------------
+
+[lints.no-empty-crate]
+commit = "off"
+build = "warn"
+push = "warn"
+
+[lints.no-todo]
+commit = "off"
+build = "warn"
+push = "error"
+
+[lints.no-fixme]
+commit = "off"
+build = "warn"
+push = "error"

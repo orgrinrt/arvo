@@ -1,0 +1,91 @@
+# arvo-comb — Design
+
+Combinatorial optimisation algorithms on const-generic fixed-size
+structures. `#![no_std]`, no alloc. Constraint representations use
+arvo-bitmask.
+
+Generic over numeric trait bounds for cost and weight types. Does not
+import UFixed or IFixed directly. Consumer instantiates with concrete
+arvo types; this crate is library code.
+
+## Cost type contract
+
+```rust
+fn matrix_chain_dp<W>(costs: impl Fn(usize, usize) -> W) -> W
+where
+    W: Add<Output = W> + TotalOrd + Copy + FromConstant
+```
+
+Same bounds as arvo-graph rank computation. Addition, ordering, copy,
+zero. The consumer's cost function returns a type satisfying these
+bounds; the DP accumulates and compares via trait bounds.
+
+## Greedy interval grouping
+
+Fully generic. No numeric traits needed — the feasibility predicate
+and merge function are closures:
+
+```rust
+fn greedy_group<A, T>(
+    items: &[T],
+    feasible: impl Fn(&A, &T) -> bool,
+    merge: impl Fn(A, &T) -> A,
+    init: A,
+) -> Vec<(usize, usize)>  // ranges
+```
+
+Sequential grouping under a feasibility predicate. Walk items in
+order; accumulate into current group while feasible; break when
+infeasible and start new group.
+
+hilavitkutin specialises for fiber formation (domain 14 step 3,
+domain 15 step 9): walk WUs in RCM-reordered topo order, accumulate
+column sets, break when the holistic feasibility check fails or
+fan-in occurs. Default algorithm for <=10 ops or as fallback.
+
+## Matrix chain ordering DP
+
+Optimal grouping of sequential items into intervals, minimizing total
+cost under feasibility constraints. Generic over:
+- Cost function: `cost(i, j) -> W` where W satisfies trait bounds
+- Feasibility predicate: `feasible(i, j) -> bool`
+
+DP recurrence: `dp[i][j] = min over valid split points k: dp[i][k] + dp[k+1][j]`
+
+hilavitkutin specialises for fiber grouping (domain 15 step 8):
+- Cost: `record_count x sum of size_of::<T_k>()` for union columns of
+  ops i..j (representing memory bandwidth consumed by one data walk
+  through the fiber's arena)
+- Feasibility: the holistic check from domain 14 (register file +
+  L1 write budget + L1+L2 total + no fan-in + no pipeline breaker)
+
+Used when >10 ops (T3 decision #70). Explores full solution space
+vs greedy's left-to-right sequential join.
+
+## Bin-packing
+
+Two-level greedy bin-packing. Pack items into fixed-capacity bins,
+minimizing bin count.
+
+Generic over:
+- Item type with a weight/affinity metric (trait-bounded)
+- Bin capacity (const generic)
+- Affinity function: `affinity(item_a, item_b) -> W`
+
+hilavitkutin specialises for virtual flag bit assignment (domain 10):
+co-firing virtuals packed into the same byte/word for hierarchical
+skip (u64 == 0 -> skip 64 bits). Affinity-ordered: items with high
+co-fire frequency placed adjacent.
+
+## Deferred: Morton/Hilbert dispatch ordering
+
+Morton or Hilbert space-filling curve ordering for dispatch
+interleaving (T3 decisions #71-74). Same constraint representation
+as greedy grouping. Not day-one.
+
+## Sources
+
+- 202603241400_topic.arvo-crate-dependency-revision.md (generic contracts)
+- T3 L1837-1937 (matrix chain ordering DP)
+- T3 decisions #70 (DP when >10 ops)
+- T5 L233-247 (affinity-ordered bit assignment)
