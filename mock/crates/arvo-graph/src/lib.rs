@@ -18,9 +18,11 @@
 #![allow(incomplete_features)]
 
 pub mod components;
+pub mod path;
 pub mod rank;
 pub mod topo;
 
 pub use components::components;
+pub use path::longest_path;
 pub use rank::{downward_rank, upward_rank};
 pub use topo::{renumber, topo_sort};
