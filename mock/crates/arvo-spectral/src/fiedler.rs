@@ -1,17 +1,28 @@
-//! Fiedler vector via deflated power iteration on the Laplacian.
+//! Fiedler vector via shifted, deflated power iteration.
 //!
-//! Build the graph Laplacian `L = D - W`, then run power iteration
-//! with each iterate orthogonalised against the all-ones vector. The
-//! all-ones vector is the zero-eigenvalue eigenvector of any
-//! Laplacian; projecting it out at every step keeps the iterate in the
-//! orthogonal complement.
+//! The Fiedler vector is the eigenvector of the second-smallest
+//! eigenvalue of the graph Laplacian `L = D - W`. To compute it with
+//! plain power iteration (which converges to the largest-magnitude
+//! eigenvector), the Laplacian is shifted: `M = sigma * I - L` where
+//! `sigma >= lambda_max(L)`. Power iteration on `M` with orthogonal
+//! deflation against the all-ones vector (the zero-eigenvalue
+//! eigenvector of `L`) converges to the eigenvector of `M`'s second-
+//! largest eigenvalue — which is `L`'s second-smallest — the Fiedler
+//! vector.
+//!
+//! Shift budget. `lambda_max(L)` is bounded above by `2 * max_i
+//! (L[i][i])` (Gershgorin circle theorem applied to the Laplacian's
+//! non-positive off-diagonal structure). We pick `sigma` as exactly
+//! that bound; any tighter value would risk the shifted matrix
+//! retaining a negative-sign mode that outruns Fiedler.
 //!
 //! Deflation step: `v = v - (sum(v) / N) * [1, 1, ..., 1]`. This is
-//! Gram-Schmidt against the normalised all-ones direction.
+//! Gram-Schmidt against the normalised all-ones direction (eigenvector
+//! of `M`'s largest eigenvalue `sigma`).
 //!
-//! Sign of the resulting vector partitions the graph. Magnitude is not
-//! meaningful after normalisation; only the sign pattern matters for
-//! `spectral_bisection`.
+//! Only the sign pattern of the result is meaningful for
+//! `spectral_bisection`; magnitude is L2-normalised after the final
+//! step.
 
 use core::ops::{Add, Mul, Sub};
 
@@ -70,9 +81,23 @@ where
     let n_f = F::from_constant(n_as_u8);
     let n_inv = n_f.recip();
 
+    // Gershgorin upper bound on lambda_max(L): max over i of 2 * L[i][i]
+    // (the diagonal value equals the off-diagonal absolute sum by
+    // Laplacian construction). Shift via sigma >= lambda_max.
+    let two = F::from_constant(2);
+    let mut sigma = zero;
+    let mut i = 0usize;
+    while i < n {
+        let candidate = two * lap.get(USize(i), USize(i));
+        if sigma.total_cmp(&candidate) == core::cmp::Ordering::Less {
+            sigma = candidate;
+        }
+        i += 1;
+    }
+
     let mut step = 0usize;
     while step < iterations.0 {
-        // v_new = lap * v.
+        // v_new = (sigma * I - L) * v = sigma * v - L * v.
         let mut next: [F; cap_size(N)] = [zero; cap_size(N)];
         let mut i = 0usize;
         while i < n {
@@ -82,7 +107,8 @@ where
                 acc = acc + lap.get(USize(i), USize(j)) * v[j];
                 j += 1;
             }
-            next[i] = acc;
+            // Shifted product: sigma * v[i] - (L * v)[i].
+            next[i] = sigma * v[i] - acc;
             i += 1;
         }
 
