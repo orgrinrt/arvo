@@ -13,10 +13,10 @@
 //! so consumers can call them directly from either matrix type
 //! without importing a trait.
 
-use arvo::newtype::USize;
+use arvo::newtype::{Cap, USize};
 
 use crate::mask::{Mask256, Mask64};
-use crate::matrix::{BitMatrix256, BitMatrix64};
+use crate::matrix::{BitMatrix256, BitMatrix64, cap_size};
 use crate::node::NodeId;
 
 /// Propagate dirty bits through a 64-wide adjacency matrix.
@@ -24,12 +24,15 @@ use crate::node::NodeId;
 /// For each set bit `i` in `dirty`, union in `matrix.successors(i)`.
 /// Repeat until no change.
 #[inline]
-pub fn propagate_dirty_64<const N: usize>(matrix: &BitMatrix64<N>, dirty: &mut Mask64) {
+pub fn propagate_dirty_64<const N: Cap>(matrix: &BitMatrix64<N>, dirty: &mut Mask64)
+where
+    [(); cap_size(N)]:,
+{
     loop {
         let before = *dirty;
         let snapshot = before;
         for i in snapshot.iter_set_bits() {
-            let row = if i.0 < N {
+            let row = if i.0 < cap_size(N) {
                 matrix.successors(NodeId(USize(i.0)))
             } else {
                 Mask64::empty()
@@ -47,12 +50,15 @@ pub fn propagate_dirty_64<const N: usize>(matrix: &BitMatrix64<N>, dirty: &mut M
 /// Same algorithm as `propagate_dirty_64`, iterating across the four
 /// 64-bit words of `Mask256`.
 #[inline]
-pub fn propagate_dirty_256<const N: usize>(matrix: &BitMatrix256<N>, dirty: &mut Mask256) {
+pub fn propagate_dirty_256<const N: Cap>(matrix: &BitMatrix256<N>, dirty: &mut Mask256)
+where
+    [(); cap_size(N)]:,
+{
     loop {
         let before = *dirty;
         let snapshot = before;
         for i in snapshot.iter_set_bits() {
-            let row = if i.0 < N {
+            let row = if i.0 < cap_size(N) {
                 matrix.successors(NodeId(USize(i.0)))
             } else {
                 Mask256::empty()

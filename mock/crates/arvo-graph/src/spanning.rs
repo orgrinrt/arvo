@@ -13,9 +13,9 @@
 
 use core::cmp::Ordering;
 
-use arvo::newtype::USize;
+use arvo::newtype::{Cap, USize};
 use arvo::traits::TotalOrd;
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId};
+use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Flat spanning-tree decomposition.
 ///
@@ -27,24 +27,30 @@ use arvo_bitmask::{BitMatrix64, Mask64, NodeId};
 ///   (non-trunk successor of a fan-out point, or a secondary root).
 /// - `bridges`: bit set at every node with two or more predecessors.
 #[derive(Copy, Clone)]
-pub struct SpanningTree<const N: usize> {
+pub struct SpanningTree<const N: Cap>
+where
+    [(); cap_size(N)]:,
+{
     /// Nodes that sit on a trunk (main or branch).
     pub on_trunk: Mask64,
     /// Successor of each on-trunk node. Undefined off the trunk.
-    pub trunk_next: [NodeId; N],
+    pub trunk_next: [NodeId; cap_size(N)],
     /// Starting nodes of branches.
     pub branch_roots: Mask64,
     /// Fan-in nodes (predecessor count >= 2).
     pub bridges: Mask64,
 }
 
-impl<const N: usize> SpanningTree<N> {
+impl<const N: Cap> SpanningTree<N>
+where
+    [(); cap_size(N)]:,
+{
     /// Empty decomposition.
     #[inline]
     pub fn empty() -> Self {
         Self {
             on_trunk: Mask64::empty(),
-            trunk_next: [NodeId::new(USize(0)); N],
+            trunk_next: [NodeId::new(USize(0)); cap_size(N)],
             branch_roots: Mask64::empty(),
             bridges: Mask64::empty(),
         }
@@ -64,18 +70,19 @@ impl<const N: usize> SpanningTree<N> {
 /// or a branch root. Unreached sources are skipped — a cyclic input
 /// silently yields an empty decomposition for the cyclic remainder.
 #[inline]
-pub fn spanning_tree<const N: usize, W>(
+pub fn spanning_tree<const N: Cap, W>(
     dag: &BitMatrix64<N>,
-    ranks: &[W; N],
+    ranks: &[W; cap_size(N)],
 ) -> SpanningTree<N>
 where
     W: TotalOrd + Copy,
+    [(); cap_size(N)]:,
 {
     let mut out: SpanningTree<N> = SpanningTree::empty();
 
     // Every node with predecessor count >= 2 is a bridge.
     let mut i = 0usize;
-    while i < N {
+    while i < cap_size(N) {
         let preds_count = dag.predecessors(NodeId::new(USize(i))).count();
         if preds_count.0 >= 2 {
             out.bridges.insert(USize(i));
@@ -87,7 +94,7 @@ where
     let mut sources: Mask64 = Mask64::empty();
     let mut src_any = false;
     let mut j = 0usize;
-    while j < N {
+    while j < cap_size(N) {
         if dag.predecessors(NodeId::new(USize(j))).count().0 == 0 {
             sources.insert(USize(j));
             src_any = true;
@@ -104,7 +111,7 @@ where
     let mut have_head = false;
     for s_pos in sources.iter_set_bits() {
         let s = s_pos.0;
-        if s >= N {
+        if s >= cap_size(N) {
             continue;
         }
         if !have_head {
@@ -120,7 +127,7 @@ where
 
     // BFS-like queue of trunk seeds. Each entry is the start of a
     // trunk (main trunk or a branch trunk).
-    let mut queue: [NodeId; N] = [NodeId::new(USize(0)); N];
+    let mut queue: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut q_head = 0usize;
     let mut q_tail = 0usize;
     queue[q_tail] = NodeId::new(USize(head_idx));
@@ -131,9 +138,9 @@ where
     // disconnected components past the main trunk would be missed.
     for s_pos in sources.iter_set_bits() {
         let s = s_pos.0;
-        if s < N && s != head_idx {
+        if s < cap_size(N) && s != head_idx {
             out.branch_roots.insert(USize(s));
-            if q_tail < N {
+            if q_tail < cap_size(N) {
                 queue[q_tail] = NodeId::new(USize(s));
                 q_tail += 1;
             }
@@ -146,7 +153,7 @@ where
         let start = queue[q_head];
         q_head += 1;
         let start_i = (start.0).0;
-        if start_i >= N || *visited.contains(USize(start_i)) {
+        if start_i >= cap_size(N) || *visited.contains(USize(start_i)) {
             continue;
         }
 
@@ -169,7 +176,7 @@ where
             let mut have_top = false;
             for s_pos in succ.iter_set_bits() {
                 let s = s_pos.0;
-                if s >= N {
+                if s >= cap_size(N) {
                     continue;
                 }
                 if !have_top {
@@ -188,11 +195,11 @@ where
             // Seed branches for the remaining (non-top) successors.
             for s_pos in succ.iter_set_bits() {
                 let s = s_pos.0;
-                if s >= N || s == top_i {
+                if s >= cap_size(N) || s == top_i {
                     continue;
                 }
                 out.branch_roots.insert(USize(s));
-                if !*visited.contains(USize(s)) && q_tail < N {
+                if !*visited.contains(USize(s)) && q_tail < cap_size(N) {
                     queue[q_tail] = NodeId::new(USize(s));
                     q_tail += 1;
                 }

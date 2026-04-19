@@ -15,8 +15,8 @@
 //! The three masks partition the `N` node indices exactly: every
 //! node `i` in `0..N` appears in exactly one mask.
 
-use arvo::newtype::USize;
-use arvo_bitmask::{BitMatrix64, Mask64};
+use arvo::newtype::{Cap, USize};
+use arvo_bitmask::{BitMatrix64, Mask64, cap_size};
 
 use arvo_bitmask::NodeId;
 
@@ -25,7 +25,10 @@ use arvo_bitmask::NodeId;
 /// `horizontal`, `vertical`, `square` are pairwise disjoint and
 /// together cover the node indices `0..N`.
 #[derive(Copy, Clone, Default)]
-pub struct DulmageMendelsohn<const N: usize> {
+pub struct DulmageMendelsohn<const N: Cap>
+where
+    [(); cap_size(N)]:,
+{
     /// Nodes with incoming edges but no outgoing edges.
     pub horizontal: Mask64,
     /// Nodes with no incoming edges (sources and isolates).
@@ -36,9 +39,12 @@ pub struct DulmageMendelsohn<const N: usize> {
 
 /// Classify each node in the adjacency into one of the three masks.
 #[inline]
-pub fn dulmage_mendelsohn<const N: usize>(
+pub fn dulmage_mendelsohn<const N: Cap>(
     adjacency: &BitMatrix64<N>,
-) -> DulmageMendelsohn<N> {
+) -> DulmageMendelsohn<N>
+where
+    [(); cap_size(N)]:,
+{
     let mut out: DulmageMendelsohn<N> = DulmageMendelsohn {
         horizontal: Mask64::empty(),
         vertical: Mask64::empty(),
@@ -46,7 +52,7 @@ pub fn dulmage_mendelsohn<const N: usize>(
     };
 
     let mut i = 0usize;
-    while i < N {
+    while i < cap_size(N) {
         let node = NodeId::new(USize(i));
         let has_succ = !*adjacency.successors(node).is_empty();
         let has_pred = !*adjacency.predecessors(node).is_empty();

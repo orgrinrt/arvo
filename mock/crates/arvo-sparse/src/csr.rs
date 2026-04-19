@@ -21,8 +21,8 @@
 //! Algorithms that do (SpMV in a later round) will tighten the bound
 //! at their own impl sites.
 
-use arvo::newtype::USize;
-use arvo_bitmask::NodeId;
+use arvo::newtype::{Cap, USize};
+use arvo_bitmask::{NodeId, cap_size};
 
 /// Compressed sparse row matrix.
 ///
@@ -31,17 +31,25 @@ use arvo_bitmask::NodeId;
 /// with corresponding entries in `values`. `row_end(r)` is
 /// `row_ptr[r + 1]` for `r < ROWS - 1` and `NNZ` for the last row.
 #[derive(Copy, Clone)]
-pub struct Csr<const ROWS: usize, const NNZ: usize, W: Copy> {
+pub struct Csr<const ROWS: Cap, const NNZ: Cap, W: Copy>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
     /// Row start offsets. `row_ptr[r]` is the index of row `r`'s
     /// first non-zero within `col_idx` / `values`.
-    pub row_ptr: [USize; ROWS],
+    pub row_ptr: [USize; cap_size(ROWS)],
     /// Column index of each non-zero, flattened row-major.
-    pub col_idx: [NodeId; NNZ],
+    pub col_idx: [NodeId; cap_size(NNZ)],
     /// Value of each non-zero, flattened row-major.
-    pub values: [W; NNZ],
+    pub values: [W; cap_size(NNZ)],
 }
 
-impl<const ROWS: usize, const NNZ: usize, W: Copy + Default> Csr<ROWS, NNZ, W> {
+impl<const ROWS: Cap, const NNZ: Cap, W: Copy + Default> Csr<ROWS, NNZ, W>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
     /// Empty matrix: all offsets zero, all columns `NodeId(USize(0))`,
     /// all values `W::default()`.
     ///
@@ -50,24 +58,28 @@ impl<const ROWS: usize, const NNZ: usize, W: Copy + Default> Csr<ROWS, NNZ, W> {
     #[inline]
     pub fn new() -> Self {
         Self {
-            row_ptr: [USize(0); ROWS],
-            col_idx: [NodeId::new(USize(0)); NNZ],
-            values: [W::default(); NNZ],
+            row_ptr: [USize(0); cap_size(ROWS)],
+            col_idx: [NodeId::new(USize(0)); cap_size(NNZ)],
+            values: [W::default(); cap_size(NNZ)],
         }
     }
 }
 
-impl<const ROWS: usize, const NNZ: usize, W: Copy> Csr<ROWS, NNZ, W> {
+impl<const ROWS: Cap, const NNZ: Cap, W: Copy> Csr<ROWS, NNZ, W>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
     /// End offset of row `r`.
     ///
     /// Returns `row_ptr[r + 1]` for non-last rows and `NNZ` for the
     /// last row. `r >= ROWS` yields `USize(0)` (empty range).
     #[inline(always)]
     fn row_end(&self, r: usize) -> USize {
-        if r + 1 < ROWS {
+        if r + 1 < cap_size(ROWS) {
             self.row_ptr[r + 1]
-        } else if r < ROWS {
-            USize(NNZ)
+        } else if r < cap_size(ROWS) {
+            USize(cap_size(NNZ))
         } else {
             USize(0)
         }
@@ -80,12 +92,12 @@ impl<const ROWS: usize, const NNZ: usize, W: Copy> Csr<ROWS, NNZ, W> {
     #[inline]
     pub fn get(&self, row: USize, col: NodeId) -> Option<W> {
         let r = row.0;
-        if r >= ROWS {
+        if r >= cap_size(ROWS) {
             return None;
         }
         let start = self.row_ptr[r].0;
         let end = self.row_end(r).0;
-        if start > end || end > NNZ {
+        if start > end || end > cap_size(NNZ) {
             return None;
         }
         let mut k = start;
@@ -105,12 +117,12 @@ impl<const ROWS: usize, const NNZ: usize, W: Copy> Csr<ROWS, NNZ, W> {
     #[inline]
     pub fn row_values(&self, row: USize) -> &[W] {
         let r = row.0;
-        if r >= ROWS {
+        if r >= cap_size(ROWS) {
             return &[];
         }
         let start = self.row_ptr[r].0;
         let end = self.row_end(r).0;
-        if start > end || end > NNZ {
+        if start > end || end > cap_size(NNZ) {
             return &[];
         }
         &self.values[start..end]
@@ -123,12 +135,12 @@ impl<const ROWS: usize, const NNZ: usize, W: Copy> Csr<ROWS, NNZ, W> {
     #[inline]
     pub fn row_col_indices(&self, row: USize) -> &[NodeId] {
         let r = row.0;
-        if r >= ROWS {
+        if r >= cap_size(ROWS) {
             return &[];
         }
         let start = self.row_ptr[r].0;
         let end = self.row_end(r).0;
-        if start > end || end > NNZ {
+        if start > end || end > cap_size(NNZ) {
             return &[];
         }
         &self.col_idx[start..end]
@@ -141,19 +153,23 @@ impl<const ROWS: usize, const NNZ: usize, W: Copy> Csr<ROWS, NNZ, W> {
     #[inline]
     pub fn nnz(&self, row: USize) -> USize {
         let r = row.0;
-        if r >= ROWS {
+        if r >= cap_size(ROWS) {
             return USize(0);
         }
         let start = self.row_ptr[r].0;
         let end = self.row_end(r).0;
-        if start > end || end > NNZ {
+        if start > end || end > cap_size(NNZ) {
             return USize(0);
         }
         USize(end - start)
     }
 }
 
-impl<const ROWS: usize, const NNZ: usize, W: Copy + Default> Default for Csr<ROWS, NNZ, W> {
+impl<const ROWS: Cap, const NNZ: Cap, W: Copy + Default> Default for Csr<ROWS, NNZ, W>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
     #[inline(always)]
     fn default() -> Self {
         Self::new()

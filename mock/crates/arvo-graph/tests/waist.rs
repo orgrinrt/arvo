@@ -1,11 +1,20 @@
 //! Waist detection on known-shape DAGs.
 
+#![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::USize;
+use arvo::newtype::{Cap, USize};
 use arvo_bitmask::{BitMatrix64, NodeId};
 use arvo_graph::{topo_sort, waist_detect};
+
+const fn cap(n: usize) -> Cap {
+    Cap(USize(n))
+}
+
+const C4: Cap = cap(4);
+const C5: Cap = cap(5);
+const C6: Cap = cap(6);
 
 fn nid(i: usize) -> NodeId {
     NodeId(USize(i))
@@ -15,7 +24,7 @@ fn nid(i: usize) -> NodeId {
 fn linear_chain_has_no_waist() {
     // 0 -> 1 -> 2 -> 3. Each level has width 1. No strict local
     // minimum.
-    let mut dag: BitMatrix64<4> = BitMatrix64::empty();
+    let mut dag: BitMatrix64<C4> = BitMatrix64::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(3));
@@ -30,7 +39,7 @@ fn hourglass_waist_detected() {
     // Level 1: {2}     width 1   (waist).
     // Level 2: {3, 4}  width 2.
     // Edges: 0->2, 1->2, 2->3, 2->4.
-    let mut dag: BitMatrix64<5> = BitMatrix64::empty();
+    let mut dag: BitMatrix64<C5> = BitMatrix64::empty();
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(3));
@@ -50,7 +59,7 @@ fn no_waist_when_width_monotone() {
     // Level 1: {1, 2}      width 2.
     // Level 2: {3, 4, 5}   width 3.
     // Edges: 0 -> 1, 0 -> 2, 1 -> 3, 1 -> 4, 2 -> 5.
-    let mut dag: BitMatrix64<6> = BitMatrix64::empty();
+    let mut dag: BitMatrix64<C6> = BitMatrix64::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(3));

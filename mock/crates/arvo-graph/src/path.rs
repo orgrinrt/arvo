@@ -10,9 +10,9 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::USize;
+use arvo::newtype::{Cap, USize};
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId};
+use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Longest path in a DAG as a DP over forward topo order.
 ///
@@ -25,27 +25,28 @@ use arvo_bitmask::{BitMatrix64, Mask64, NodeId};
 /// - `pred_of[i]` is the chosen predecessor of node `i` when
 ///   `has_predecessor` bit `i` is set; otherwise undefined.
 #[inline]
-pub fn longest_path<const N: usize, W>(
+pub fn longest_path<const N: Cap, W>(
     dag: &BitMatrix64<N>,
-    weights: &[W; N],
-    topo_order: &[NodeId; N],
-) -> (W, Mask64, [NodeId; N])
+    weights: &[W; cap_size(N)],
+    topo_order: &[NodeId; cap_size(N)],
+) -> (W, Mask64, [NodeId; cap_size(N)])
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
+    [(); cap_size(N)]:,
 {
     let zero = <W as FromConstant>::from_constant(0);
-    let mut best: [W; N] = [zero; N];
-    let mut pred_of: [NodeId; N] = [NodeId::new(USize(0)); N];
+    let mut best: [W; cap_size(N)] = [zero; cap_size(N)];
+    let mut pred_of: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut has_pred: Mask64 = Mask64::empty();
 
     let mut overall = zero;
     let mut any_node = false;
 
     let mut idx = 0usize;
-    while idx < N {
+    while idx < cap_size(N) {
         let node = topo_order[idx];
         let node_i = (node.0).0;
-        if node_i >= N {
+        if node_i >= cap_size(N) {
             idx += 1;
             continue;
         }
@@ -59,7 +60,7 @@ where
         let mut any_pred = false;
         for p_pos in preds.iter_set_bits() {
             let p_idx = p_pos.0;
-            if p_idx >= N {
+            if p_idx >= cap_size(N) {
                 continue;
             }
             let candidate = best[p_idx];
