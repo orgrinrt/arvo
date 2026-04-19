@@ -18,3 +18,7 @@
 #![allow(incomplete_features)]
 
 pub mod newtype;
+pub mod strategy;
+
+pub use newtype::{AsBool, Bool, Cap, FBits, IBits, USize};
+pub use strategy::{Cold, Hot, Precise, Strategy, Warm};
