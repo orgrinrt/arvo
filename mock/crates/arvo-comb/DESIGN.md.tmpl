@@ -8,6 +8,12 @@ Generic over numeric trait bounds for cost and weight types. Does not
 import UFixed or IFixed directly. Consumer instantiates with concrete
 arvo types; this crate is library code.
 
+`const N: Cap` / `const M: Cap` / `const B: Cap` carry arvo's
+capacity newtype on every public signature. Array storage unwraps
+via `cap_size(c: Cap) -> usize`, imported from arvo-bitmask.
+Array types `[T; N]` shown in signatures below compile to `[T;
+cap_size(N)]` with the implied `where [(); cap_size(N)]:` bound.
+
 ## Range
 
 ```rust
@@ -24,7 +30,7 @@ used (two fields); `Copy + Eq + Default + Debug` derived.
 ## Cost type contract
 
 ```rust
-fn matrix_chain_dp<const N: usize, W>(
+fn matrix_chain_dp<const N: Cap, W>(
     cost: impl Fn(USize, USize) -> W,
     feasible: impl Fn(USize, USize) -> bool,
 ) -> (W, [USize; N])
@@ -43,7 +49,7 @@ Fully generic. No numeric traits needed — the feasibility predicate
 and merge function are closures:
 
 ```rust
-fn greedy_group<const N: usize, const M: usize, A, T>(
+fn greedy_group<const N: Cap, const M: Cap, A, T>(
     items: &[T; N],
     feasible: impl Fn(&A, &T) -> bool,
     merge: impl Fn(A, &T) -> A,
@@ -95,7 +101,7 @@ Two-level greedy bin-packing. Pack items into fixed-capacity bins,
 minimizing bin count.
 
 ```rust
-fn bin_pack<const N: usize, const B: usize, T, W>(
+fn bin_pack<const N: Cap, const B: Cap, T, W>(
     items: &[T; N],
     capacity: W,
     weight_of: impl Fn(&T) -> W,
