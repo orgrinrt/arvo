@@ -11,10 +11,11 @@
 //! is a compile error by design (doc CL D2).
 
 use core::marker::PhantomData;
+use core::ops::{Add, Div, Mul, Sub};
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use crate::newtype::{FBits, IBits, USize};
-use crate::strategy::{Strategy, UContainerFor, is_fractional, ufixed_bits};
+use crate::strategy::{Strategy, UArith, UContainerFor, is_fractional, ufixed_bits};
 
 /// Unsigned fixed-point value.
 ///
@@ -128,4 +129,77 @@ where
     S: UContainerFor<{ ufixed_bits(I, F) }>,
     [(); 1 / is_fractional(F)]:,
 {
+}
+
+// --- Same-strategy arithmetic ---------------------------------------------
+//
+// Delegates to the strategy's `UArith` bridge. `UArith` is a
+// supertrait of `UContainerFor`, so one bound pulls both in.
+//
+// Cross-width and cross-strategy arithmetic: DEFERRED. Computing
+// `max(I1, I2)` / `max(F1, F2)` / `<S1 as Resolve<S2>>::Out` inside
+// anonymous const-generic arguments runs into the same const-expr
+// limits that drove the UArith bridge pattern. A blanket impl there
+// requires either `feature(associated_const_equality)` stabilisation
+// or a full pairwise-macro expansion (I2 * I2 * S2 * S2 matrix).
+// Left for a follow-up round once the const-expr surface lands the
+// necessary machinery.
+//
+// TODO: cross-width arithmetic blocked on generic_const_exprs max() support — next round.
+// TODO: cross-strategy arithmetic blocked on const-expr support for associated-type const projection — next round.
+
+impl<const I: IBits, const F: FBits, S: Strategy> Add for UFixed<I, F, S>
+where
+    S: UArith<{ ufixed_bits(I, F) }>,
+{
+    type Output = Self;
+    #[inline(always)]
+    fn add(self, rhs: Self) -> Self {
+        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_add(
+            self.to_raw(),
+            rhs.to_raw(),
+        ))
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> Sub for UFixed<I, F, S>
+where
+    S: UArith<{ ufixed_bits(I, F) }>,
+{
+    type Output = Self;
+    #[inline(always)]
+    fn sub(self, rhs: Self) -> Self {
+        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_sub(
+            self.to_raw(),
+            rhs.to_raw(),
+        ))
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> Mul for UFixed<I, F, S>
+where
+    S: UArith<{ ufixed_bits(I, F) }>,
+{
+    type Output = Self;
+    #[inline(always)]
+    fn mul(self, rhs: Self) -> Self {
+        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_mul(
+            self.to_raw(),
+            rhs.to_raw(),
+        ))
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> Div for UFixed<I, F, S>
+where
+    S: UArith<{ ufixed_bits(I, F) }>,
+{
+    type Output = Self;
+    #[inline(always)]
+    fn div(self, rhs: Self) -> Self {
+        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_div(
+            self.to_raw(),
+            rhs.to_raw(),
+        ))
+    }
 }
