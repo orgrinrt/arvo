@@ -12,7 +12,11 @@ __INPUT=$(cat)
 
 {{HOOK_HELPERS}}
 
-TARGET=$(_extract file_path)
+FILE_PATH=$(_extract file_path)
+COMMAND=""
+_scope_or_allow
+
+TARGET="$FILE_PATH"
 CONTENT=$(_extract new_string)
 if [[ -z "$CONTENT" ]]; then
     CONTENT=$(_extract content)
