@@ -146,7 +146,7 @@ checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 [[package]]
 name = "mockspace"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#3af3261cbad4630ff762232393ec9010b7d19f42"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#26fcd91cd2daa23048de1ea92c9229062dd0ea2a"
 dependencies = [
  "libloading",
  "mockspace-lint-rules",
@@ -159,7 +159,7 @@ dependencies = [
 [[package]]
 name = "mockspace-lint-rules"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#3af3261cbad4630ff762232393ec9010b7d19f42"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#26fcd91cd2daa23048de1ea92c9229062dd0ea2a"
 dependencies = [
  "tree-sitter",
  "tree-sitter-rust",

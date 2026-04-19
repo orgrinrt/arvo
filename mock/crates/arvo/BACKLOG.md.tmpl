@@ -1,0 +1,78 @@
+# arvo — backlog
+
+Items researched and decided but deliberately out of the current
+shipping scope. Preserved here so a future round (or consumer) can
+pick them up without redoing the research. Kept OUT of DESIGN.md.tmpl
+specifically so the `design-doc-source-mismatch` lint doesn't flag
+these as undocumented source items — they're designed-but-deferred,
+not shipped-and-missing.
+
+Convention: entries here are promissory. If a consumer or future
+round promotes one of these to shipping scope, move its documentation
+into the corresponding crate DESIGN.md.tmpl and delete the entry
+here.
+
+## Semantic domain aliases (researched widths)
+
+Shipped by polka-dots; dropped from arvo L0 per doc CL D1 (consumer
+concern). Each width was chosen deliberately; when a consumer
+re-introduces one, these are the researched defaults. Names are
+written unquoted so the design-doc lint does not treat them as
+backticked types.
+
+| Alias     |  I |  F | Rationale                                           |
+|-----------|---:|---:|-----------------------------------------------------|
+| Ratio     |  0 |  8 | pure fractional [0, 1) — probabilities, weights     |
+| Factor    |  2 |  8 | [0, 4) range — multipliers, scale factors           |
+| Norm      |  1 | 14 | signed [-1, 1) — normalised eigenvector components  |
+| Angle     |  9 |  7 | 512+ directions, sub-degree precision               |
+| Coord     | 16 | 16 | ±65k range with sub-pixel precision                 |
+| Count     | 32 |  0 | row / element counts                                |
+| Average   | 16 | 16 | symmetric precision for means of coordinates        |
+| Deviation |  8 | 24 | mostly fractional — variance components             |
+| Bool      |  1 |  0 | single-bit; stays Hot (no precision to lose)        |
+
+Default strategy `Warm` in consumer code, except `Bool` which stays
+`Hot`. Source: polka-dots loimu-primitives.
+
+## Deferred newtypes
+
+Decided to live in consuming layers, not L0:
+
+- ByteCount — `u64` wrapping byte counts. Belongs where memory sizing
+  happens (column storage layer / arena engine).
+- Alignment — power-of-two alignment value. Belongs at the storage
+  boundary.
+- CoreCount — small-int CPU core count. Platform-environment; lives
+  adjacent to `ThreadPool`.
+- Nanoseconds — `u64` nanosecond count. Lives adjacent to `Clock`.
+
+No written rationale for specific widths survived into polka-dots
+design docs; pick per-consumer as needs arise.
+
+## Cross-width and cross-strategy arithmetic
+
+The L0 implementation ships same-strategy same-width arithmetic only.
+Cross-width (different I / F between operands) and cross-strategy
+(different S between operands) `Add` / `Sub` / `Mul` / `Div` impls
+are blocked on `generic_const_exprs` support for `max()` in const
+arguments and const-expression projection over associated types on
+current nightly. Deferred to a later round when the const evaluator
+catches up or an alternative encoding surfaces.
+
+## Numeric trait impls deferred beyond L0
+
+- `Sqrt` / `Recip` for fractional `UFixed` / `IFixed` need
+  fixed-point division routines that were out of scope for L0. Only
+  integer `Sqrt` and float `Sqrt` / `Recip` land this round.
+- `FromConstant` coverage is currently per-concrete-tuple via macro;
+  a blanket impl awaits a richer const-generic projection surface.
+
+## Benchmark round
+
+Exhaustive comparison of arvo types vs raw `f32` / `f64` / `u32` /
+`u64` across add / sub / mul / div / sqrt / recip and chain lengths
+1 / 4 / 16 / 64, per strategy. Purpose: prove arvo types add no
+overhead beyond the strategy's intended cost. Any unexpected overhead
+is a bug to fix, not accept. Scope: its own round once the substrate
+is green.
