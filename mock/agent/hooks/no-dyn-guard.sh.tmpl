@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# @matchers: Write, Edit
+# @timeout: 5
+# Agent hook: block runtime-dispatch tokens in arvo source.
+#
+# arvo forbids `dyn Trait`, `TypeId`, `std::any`, `core::any`.
+# Monomorphisation IS the dispatch. The `no-dynamic-dispatch` lint
+# is the backstop; this hook prevents the write from landing.
+
+set -uo pipefail
+
+__INPUT=$(cat)
+
+{{HOOK_HELPERS}}
+
+TARGET=$(_extract file_path)
+CONTENT=$(_extract new_string)
+if [[ -z "$CONTENT" ]]; then
+    CONTENT=$(_extract content)
+fi
+
+if ! echo "$TARGET" | grep -qE "mock/crates/arvo[^/]*/src/"; then
+    allow
+fi
+
+if echo "$CONTENT" | grep -qE "(^|[^a-zA-Z0-9_])dyn[[:space:]]"; then
+    deny "arvo forbids \`dyn Trait\`; monomorphisation IS the dispatch. Make the function generic over the trait bound."
+fi
+
+if echo "$CONTENT" | grep -q "TypeId"; then
+    deny "arvo forbids \`TypeId\`; the monomorphised function IS the type identity."
+fi
+
+if echo "$CONTENT" | grep -qE "(std|core)::any"; then
+    deny "arvo forbids \`std::any\` / \`core::any\`; no runtime type erasure. Use a typed dispatch via generics."
+fi
+
+allow

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# @matchers: Write, Edit
+# @timeout: 5
+# Agent hook: block platform-facing std modules in arvo crates.
+#
+# arvo is pure compute. No syscalls, threads, clocks, filesystems,
+# or networking. Those concerns belong in consumer crates (notably
+# hilavitkutin). The `no-std-enforcer` lint also rejects any
+# `use std::`, but this hook gives a more targeted message for the
+# common "I just need `std::time` for a timer" mistake.
+
+set -uo pipefail
+
+__INPUT=$(cat)
+
+{{HOOK_HELPERS}}
+
+TARGET=$(_extract file_path)
+CONTENT=$(_extract new_string)
+if [[ -z "$CONTENT" ]]; then
+    CONTENT=$(_extract content)
+fi
+
+if ! echo "$TARGET" | grep -qE "mock/crates/arvo[^/]*/src/"; then
+    allow
+fi
+
+# Platform modules under std:: — catch both `use std::thread` and
+# fully-qualified inline paths like `std::thread::spawn`.
+for MOD in thread time fs net process io env sync; do
+    if echo "$CONTENT" | grep -qE "std::${MOD}(::|[^a-zA-Z0-9_]|$)"; then
+        deny "arvo has zero platform dependency; \`std::${MOD}\` is forbidden. Move platform concerns to the consumer (e.g. hilavitkutin)."
+    fi
+done
+
+allow

@@ -1,0 +1,22 @@
+# After every action — verify
+
+Before considering an edit complete, check:
+
+- Does every new `pub struct` / `pub type` in a numeric crate carry
+  `S: Strategy`? (`strategy-marker-required` lint)
+- Does the crate compile with `cargo check` inside `mock/`?
+- Does `cargo mock --lint-only` pass at `--commit` severity?
+- Are new types named in the matching `DESIGN.md.tmpl`?
+  (`undocumented-type` lint)
+- Is there an open `*_changelist.src.md` in `design_rounds/` covering
+  this source change? (`changelist-required` lint)
+- Did you touch anything under `.claude/`, `.github/hooks/`,
+  `.github/instructions/`, `.github/skills/`, or
+  `.github/copilot-instructions.md`? Revert: edit `mock/agent/`
+  templates instead, re-run `cargo mock`.
+- Does the commit follow `type: lowercase imperative message` with
+  no parentheses, no period, under 72 chars?
+- Byline policy: non-autonomous mode rejects any `Co-Authored-By`
+  unless `config.toml` configures a pattern. Autonomous mode
+  requires one matching the configured pattern. Check
+  `${ARVO_AGENT_MODE:-assistant}`.
