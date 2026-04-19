@@ -17,8 +17,9 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
+use arvo::newtype::Cap;
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo_bitmask::BitMatrix64;
+use arvo_bitmask::{BitMatrix64, cap_size};
 
 use crate::topo::topo_sort;
 
@@ -28,15 +29,19 @@ use crate::topo::topo_sort;
 /// every successor's rank is already computed when a node is
 /// visited. Leaves ground at their own weight.
 #[inline]
-pub fn upward_rank<const N: usize, W>(dag: &BitMatrix64<N>, weights: &[W; N]) -> [W; N]
+pub fn upward_rank<const N: Cap, W>(
+    dag: &BitMatrix64<N>,
+    weights: &[W; cap_size(N)],
+) -> [W; cap_size(N)]
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
+    [(); cap_size(N)]:,
 {
     let (valid, order) = topo_sort(dag);
 
     // Initialise ranks to zero; overwritten as we walk reverse topo.
     let zero = <W as FromConstant>::from_constant(0);
-    let mut rank: [W; N] = [zero; N];
+    let mut rank: [W; cap_size(N)] = [zero; cap_size(N)];
 
     // Walk the valid prefix in reverse.
     let valid_n = valid.0;
@@ -45,7 +50,7 @@ where
         idx -= 1;
         let node = order[idx];
         let node_i = (node.0).0;
-        if node_i >= N {
+        if node_i >= cap_size(N) {
             continue;
         }
 
@@ -59,7 +64,7 @@ where
         let mut any = false;
         for s_pos in succ.iter_set_bits() {
             let s_idx = s_pos.0;
-            if s_idx >= N {
+            if s_idx >= cap_size(N) {
                 continue;
             }
             let r = rank[s_idx];
@@ -82,21 +87,25 @@ where
 /// Walks the valid topo prefix forward so every predecessor is
 /// computed when a node is reached. Roots ground at their own weight.
 #[inline]
-pub fn downward_rank<const N: usize, W>(dag: &BitMatrix64<N>, weights: &[W; N]) -> [W; N]
+pub fn downward_rank<const N: Cap, W>(
+    dag: &BitMatrix64<N>,
+    weights: &[W; cap_size(N)],
+) -> [W; cap_size(N)]
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
+    [(); cap_size(N)]:,
 {
     let (valid, order) = topo_sort(dag);
 
     let zero = <W as FromConstant>::from_constant(0);
-    let mut rank: [W; N] = [zero; N];
+    let mut rank: [W; cap_size(N)] = [zero; cap_size(N)];
 
     let valid_n = valid.0;
     let mut idx = 0usize;
     while idx < valid_n {
         let node = order[idx];
         let node_i = (node.0).0;
-        if node_i >= N {
+        if node_i >= cap_size(N) {
             idx += 1;
             continue;
         }
@@ -108,7 +117,7 @@ where
         let mut any = false;
         for p_pos in pred.iter_set_bits() {
             let p_idx = p_pos.0;
-            if p_idx >= N {
+            if p_idx >= cap_size(N) {
                 continue;
             }
             let r = rank[p_idx];

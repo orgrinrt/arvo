@@ -22,6 +22,6 @@ pub mod ops;
 
 pub use dirty::{propagate_dirty_256, propagate_dirty_64};
 pub use mask::{Mask, Mask256, Mask64};
-pub use matrix::{BitMatrix256, BitMatrix64};
+pub use matrix::{BitMatrix256, BitMatrix64, cap_size};
 pub use node::NodeId;
 pub use ops::{SetBitsIter256, SetBitsIter64};

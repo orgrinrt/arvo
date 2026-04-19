@@ -5,14 +5,14 @@
 //! identifier. The result permits permuting rows and columns into
 //! block-diagonal form: each block is an independent sub-problem.
 //!
-//! DFS is iterative on a fixed-size `[NodeId; N]` stack with a
-//! `Mask64` visited set. The implementation mirrors
+//! DFS is iterative on a fixed-size `[NodeId; cap_size(N)]` stack
+//! with a `Mask64` visited set. The implementation mirrors
 //! `arvo-graph::components` but lives here to avoid a dependency edge
 //! from `arvo-sparse` onto `arvo-graph` (the forbidden-imports lint
 //! prohibits `arvo_graph::*` from `arvo-sparse`).
 
-use arvo::newtype::{Bool, USize};
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId};
+use arvo::newtype::{Bool, Cap, USize};
+use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Assign a component (block) ID to every node.
 ///
@@ -21,15 +21,18 @@ use arvo_bitmask::{BitMatrix64, Mask64, NodeId};
 /// block ID of node `i`; IDs start at `USize(0)` and increase by one
 /// per distinct component.
 #[inline]
-pub fn block_diagonal<const N: usize>(
+pub fn block_diagonal<const N: Cap>(
     adjacency: &BitMatrix64<N>,
-) -> (USize, [USize; N]) {
-    let mut block_id: [USize; N] = [USize(0); N];
+) -> (USize, [USize; cap_size(N)])
+where
+    [(); cap_size(N)]:,
+{
+    let mut block_id: [USize; cap_size(N)] = [USize(0); cap_size(N)];
     let mut visited: Mask64 = Mask64::empty();
     let mut next_id: usize = 0;
 
     let mut seed = 0usize;
-    while seed < N {
+    while seed < cap_size(N) {
         if *visited.contains(USize(seed)) {
             seed += 1;
             continue;
@@ -40,7 +43,7 @@ pub fn block_diagonal<const N: usize>(
 
         // Iterative DFS. Stack capacity = N is a safe bound: each
         // node enters the stack at most once.
-        let mut stack: [NodeId; N] = [NodeId::new(USize(0)); N];
+        let mut stack: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
         let mut sp = 0usize;
         stack[sp] = NodeId::new(USize(seed));
         sp += 1;
@@ -58,7 +61,7 @@ pub fn block_diagonal<const N: usize>(
 
             for n_pos in neigh.iter_set_bits() {
                 let n_idx = n_pos.0;
-                if n_idx >= N {
+                if n_idx >= cap_size(N) {
                     continue;
                 }
                 if let Bool(false) = visited.contains(USize(n_idx)) {

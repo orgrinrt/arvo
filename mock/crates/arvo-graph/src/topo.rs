@@ -16,8 +16,8 @@
 //! function is a pure index-shuffle; it does not rewrite the adjacency
 //! matrix.
 
-use arvo::newtype::USize;
-use arvo_bitmask::{BitMatrix64, NodeId};
+use arvo::newtype::{Cap, USize};
+use arvo_bitmask::{BitMatrix64, NodeId, cap_size};
 
 /// Topologically sort a DAG via Kahn's algorithm.
 ///
@@ -27,28 +27,33 @@ use arvo_bitmask::{BitMatrix64, NodeId};
 /// `valid_count` entries of `topo_order` are meaningful; the rest are
 /// defaulted to `NodeId::new(USize(0))`.
 ///
-/// All working storage is stack-allocated: a `[USize; N]` in-degree
-/// table and a `[NodeId; N]` frontier queue.
+/// All working storage is stack-allocated: a `[USize; cap_size(N)]`
+/// in-degree table and a `[NodeId; cap_size(N)]` frontier queue.
 #[inline]
-pub fn topo_sort<const N: usize>(dag: &BitMatrix64<N>) -> (USize, [NodeId; N]) {
+pub fn topo_sort<const N: Cap>(
+    dag: &BitMatrix64<N>,
+) -> (USize, [NodeId; cap_size(N)])
+where
+    [(); cap_size(N)]:,
+{
     // In-degree per node. Computed by counting bits set in each
     // node's predecessor mask.
-    let mut in_deg: [USize; N] = [USize(0); N];
+    let mut in_deg: [USize; cap_size(N)] = [USize(0); cap_size(N)];
     let mut i = 0usize;
-    while i < N {
+    while i < cap_size(N) {
         in_deg[i] = dag.predecessors(NodeId::new(USize(i))).count();
         i += 1;
     }
 
     // Frontier queue holds in-degree-zero nodes. Fixed array with
     // head / tail indices; no heap grow.
-    let mut queue: [NodeId; N] = [NodeId::new(USize(0)); N];
+    let mut queue: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut q_head = 0usize;
     let mut q_tail = 0usize;
 
     // Seed the frontier with every node whose in-degree is zero.
     let mut j = 0usize;
-    while j < N {
+    while j < cap_size(N) {
         if in_deg[j].0 == 0 {
             queue[q_tail] = NodeId::new(USize(j));
             q_tail += 1;
@@ -57,7 +62,7 @@ pub fn topo_sort<const N: usize>(dag: &BitMatrix64<N>) -> (USize, [NodeId; N]) {
     }
 
     // Output order and how many nodes have been sorted so far.
-    let mut order: [NodeId; N] = [NodeId::new(USize(0)); N];
+    let mut order: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut sorted = 0usize;
 
     while q_head < q_tail {
@@ -71,7 +76,7 @@ pub fn topo_sort<const N: usize>(dag: &BitMatrix64<N>) -> (USize, [NodeId; N]) {
         let succ = dag.successors(node);
         for s_pos in succ.iter_set_bits() {
             let s_idx = s_pos.0;
-            if s_idx < N {
+            if s_idx < cap_size(N) {
                 let cur = in_deg[s_idx].0;
                 if cur > 0 {
                     in_deg[s_idx] = USize(cur - 1);
@@ -95,10 +100,15 @@ pub fn topo_sort<const N: usize>(dag: &BitMatrix64<N>) -> (USize, [NodeId; N]) {
 /// weights sequentially in topo order, the pattern is:
 /// `new_weights[k] = old_weights[new_to_old[k].0.0]`.
 #[inline]
-pub fn renumber<const N: usize>(topo_order: &[NodeId; N]) -> [NodeId; N] {
-    let mut new_to_old: [NodeId; N] = [NodeId::new(USize(0)); N];
+pub fn renumber<const N: Cap>(
+    topo_order: &[NodeId; cap_size(N)],
+) -> [NodeId; cap_size(N)]
+where
+    [(); cap_size(N)]:,
+{
+    let mut new_to_old: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut k = 0usize;
-    while k < N {
+    while k < cap_size(N) {
         new_to_old[k] = topo_order[k];
         k += 1;
     }

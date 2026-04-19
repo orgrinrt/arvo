@@ -18,22 +18,25 @@
 //! Returns `[NodeId; N]` mapping new position to old node id:
 //! `result[new_pos] = old_NodeId`.
 
-use arvo::newtype::{Bool, USize};
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId};
+use arvo::newtype::{Bool, Cap, USize};
+use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Reverse Cuthill-McKee permutation.
 ///
 /// `result[new_pos] = old_NodeId`. Min-degree start, ascending-degree
 /// BFS ordering, final reverse.
 #[inline]
-pub fn rcm_reorder<const N: usize>(adjacency: &BitMatrix64<N>) -> [NodeId; N] {
-    let mut order: [NodeId; N] = [NodeId::new(USize(0)); N];
+pub fn rcm_reorder<const N: Cap>(adjacency: &BitMatrix64<N>) -> [NodeId; cap_size(N)]
+where
+    [(); cap_size(N)]:,
+{
+    let mut order: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut visited: Mask64 = Mask64::empty();
     let mut head: usize = 0;
 
     // Main loop: keep seeding BFS from the remaining min-degree node
     // until every node is visited. Handles disconnected graphs.
-    while head < N {
+    while head < cap_size(N) {
         // Pick the unvisited node with the smallest combined degree.
         // Tie-break by lowest index.
         let start = match min_degree_unvisited(adjacency, &visited) {
@@ -60,11 +63,11 @@ pub fn rcm_reorder<const N: usize>(adjacency: &BitMatrix64<N>) -> [NodeId; N] {
 
             // Sort neighbours by ascending degree, tie-break by index.
             // Collect into a fixed-size scratch buffer.
-            let mut scratch: [NodeId; N] = [NodeId::new(USize(0)); N];
+            let mut scratch: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
             let mut scratch_len = 0usize;
             for pos in neigh.iter_set_bits() {
                 let p = pos.0;
-                if p >= N {
+                if p >= cap_size(N) {
                     continue;
                 }
                 scratch[scratch_len] = NodeId::new(USize(p));
@@ -124,20 +127,26 @@ pub fn rcm_reorder<const N: usize>(adjacency: &BitMatrix64<N>) -> [NodeId; N] {
 
 /// Degree of `n` in the undirected view (successors + predecessors).
 #[inline(always)]
-fn degree<const N: usize>(adj: &BitMatrix64<N>, n: NodeId) -> usize {
+fn degree<const N: Cap>(adj: &BitMatrix64<N>, n: NodeId) -> usize
+where
+    [(); cap_size(N)]:,
+{
     adj.successors(n).union(adj.predecessors(n)).count().0
 }
 
 /// Lowest-index unvisited node with minimum combined degree, or
 /// `None` if every node in `0..N` is already visited.
 #[inline]
-fn min_degree_unvisited<const N: usize>(
+fn min_degree_unvisited<const N: Cap>(
     adj: &BitMatrix64<N>,
     visited: &Mask64,
-) -> Option<usize> {
+) -> Option<usize>
+where
+    [(); cap_size(N)]:,
+{
     let mut best: Option<(usize, usize)> = None;
     let mut i = 0usize;
-    while i < N {
+    while i < cap_size(N) {
         if let Bool(false) = visited.contains(USize(i)) {
             let d = degree(adj, NodeId::new(USize(i)));
             match best {
@@ -150,4 +159,3 @@ fn min_degree_unvisited<const N: usize>(
     }
     best.map(|(i, _)| i)
 }
-

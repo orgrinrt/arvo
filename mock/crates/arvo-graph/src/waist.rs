@@ -11,8 +11,8 @@
 //! whose depth is a local minimum — so consumers can re-map the
 //! waist mask back through the same `topo_order` they passed in.
 
-use arvo::newtype::USize;
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId};
+use arvo::newtype::{Cap, USize};
+use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Detect waist levels in a DAG.
 ///
@@ -22,16 +22,22 @@ use arvo_bitmask::{BitMatrix64, Mask64, NodeId};
 /// Nodes outside the valid prefix (e.g. when a cycle clipped the
 /// topo sort) contribute nothing.
 #[inline]
-pub fn waist_detect<const N: usize>(dag: &BitMatrix64<N>, topo_order: &[NodeId; N]) -> Mask64 {
+pub fn waist_detect<const N: Cap>(
+    dag: &BitMatrix64<N>,
+    topo_order: &[NodeId; cap_size(N)],
+) -> Mask64
+where
+    [(); cap_size(N)]:,
+{
     // Depth per node (index = original NodeId).
-    let mut depth: [USize; N] = [USize(0); N];
+    let mut depth: [USize; cap_size(N)] = [USize(0); cap_size(N)];
 
     // Single forward pass in the given topo order computes depths.
     let mut idx = 0usize;
-    while idx < N {
+    while idx < cap_size(N) {
         let node = topo_order[idx];
         let node_i = (node.0).0;
-        if node_i >= N {
+        if node_i >= cap_size(N) {
             idx += 1;
             continue;
         }
@@ -41,7 +47,7 @@ pub fn waist_detect<const N: usize>(dag: &BitMatrix64<N>, topo_order: &[NodeId; 
         let mut any = false;
         for p_pos in preds.iter_set_bits() {
             let p_idx = p_pos.0;
-            if p_idx >= N {
+            if p_idx >= cap_size(N) {
                 continue;
             }
             let d = depth[p_idx].0;
@@ -56,12 +62,12 @@ pub fn waist_detect<const N: usize>(dag: &BitMatrix64<N>, topo_order: &[NodeId; 
     }
 
     // Level widths. Max possible depth is N-1 (a straight chain).
-    let mut width: [USize; N] = [USize(0); N];
+    let mut width: [USize; cap_size(N)] = [USize(0); cap_size(N)];
     let mut max_depth_seen: usize = 0;
     let mut j = 0usize;
-    while j < N {
+    while j < cap_size(N) {
         let d = depth[j].0;
-        if d < N {
+        if d < cap_size(N) {
             width[d] = USize(width[d].0 + 1);
             if d > max_depth_seen {
                 max_depth_seen = d;
@@ -71,10 +77,10 @@ pub fn waist_detect<const N: usize>(dag: &BitMatrix64<N>, topo_order: &[NodeId; 
     }
 
     // Collect the occupied depths in order. Occupied means width > 0.
-    let mut occupied: [USize; N] = [USize(0); N];
+    let mut occupied: [USize; cap_size(N)] = [USize(0); cap_size(N)];
     let mut occ_n: usize = 0;
     let mut d = 0usize;
-    while d <= max_depth_seen && d < N {
+    while d <= max_depth_seen && d < cap_size(N) {
         if width[d].0 > 0 {
             occupied[occ_n] = USize(d);
             occ_n += 1;
@@ -85,7 +91,7 @@ pub fn waist_detect<const N: usize>(dag: &BitMatrix64<N>, topo_order: &[NodeId; 
     // Depths that are strict local minima among the occupied depths.
     // A length-one or length-two occupied list has no interior;
     // no minima are emitted.
-    let mut is_waist: [bool; N] = [false; N];
+    let mut is_waist: [bool; cap_size(N)] = [false; cap_size(N)];
     if occ_n >= 3 {
         let mut k = 1usize;
         while k + 1 < occ_n {
@@ -103,12 +109,12 @@ pub fn waist_detect<const N: usize>(dag: &BitMatrix64<N>, topo_order: &[NodeId; 
     // waist depth.
     let mut out = Mask64::empty();
     let mut k = 0usize;
-    while k < N {
+    while k < cap_size(N) {
         let node = topo_order[k];
         let node_i = (node.0).0;
-        if node_i < N {
+        if node_i < cap_size(N) {
             let d = depth[node_i].0;
-            if d < N && is_waist[d] {
+            if d < cap_size(N) && is_waist[d] {
                 out.insert(USize(k));
             }
         }
