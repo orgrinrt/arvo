@@ -67,23 +67,19 @@ For more than 2 groups: recursive bisection. Apply spectral bisection
 to get 2 groups, then recursively bisect each group. Produces
 balanced k-way partition minimizing total inter-group edge weight.
 
-Used by hilavitkutin when >5 fibers need grouping into trunks
-(domain 15 step 7, T3 decision #69). At <=5 fibers, single trunk
-(spectral is overkill).
+Used when the consumer needs minimum-cut grouping of a weighted
+graph at a scale where greedy bisection is insufficient.
 
 ## Consumers
 
-hilavitkutin domain 15 step 7: build weighted graph where nodes =
-fibers, edge weight = shared data volume between fibers. Fiedler
-bisection -> trunk formation. Trunks share NO write columns; the
-spectral cut ensures shared read volume between trunks is minimal.
-
-The consumer provides concrete arvo types: weight as arvo fixed-point,
-eigenvector as `Float` (the cfg-selected FastFloat/StrictFloat alias).
+Typical usage: build a weighted graph where nodes are groupable
+units and edge weights represent shared work / data volume between
+them. Fiedler bisection cuts along the boundary with minimum total
+shared work. Consumer supplies concrete numeric types: weights as
+arvo fixed-point, eigenvectors as the `Float` alias (FastFloat /
+StrictFloat via cfg).
 
 ## Sources
 
 - 202603241400_topic.arvo-crate-dependency-revision.md (generic contracts)
-- T3 L1752-1835 (spectral graph partitioning)
-- T3 decision #69 (spectral when >5 fibers)
-- T6 L944-957 (power iteration implementation details)
+- 202604191900_changelist.doc.md (this round)

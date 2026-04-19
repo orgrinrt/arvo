@@ -99,9 +99,8 @@ is a fixed `[NodeId; N]` array. Returns component ID (as USize) per
 node. Two nodes are in the same component if their access masks
 intersect (directly or transitively).
 
-Used by hilavitkutin domain 15 step 6 (block diagonal detection
-feeds phase identification) and domain 14 (identifying independent
-sub-DAGs within a phase).
+Common application: feeding phase identification by pairing
+component membership with block-diagonal detection results.
 
 ## Longest/shortest weighted path
 
@@ -124,12 +123,11 @@ read `predecessors[i]` when the Mask bit is set.
 
 The critical path is the longest weighted path from any root to any
 leaf. Computed via upward rank — the path following the highest-ranked
-successor at each step. This identifies the trunk (serial bottleneck)
-within a phase.
+successor at each step. Identifies the serial bottleneck in a DAG.
 
-Weight per node: `sum of size_of::<T_i>()` for all accessed columns,
-expressed via a generic weight type. This approximates per-element
-compute cost.
+The weight type is consumer-chosen; a common pattern is summing
+`size_of` of the data each node touches, which approximates
+per-element compute cost in a pipeline setting.
 
 ## Waist detection
 
@@ -150,8 +148,8 @@ independent sub-problems. Waist detection finds narrow bottleneck
 points WITHIN a connected DAG where all paths converge through a few
 nodes before fanning out again.
 
-Used by hilavitkutin domain 11 (phase decomposition) and domain 15
-step 4.
+Common application: phase decomposition — the waist points become
+natural phase boundaries in a staged pipeline.
 
 ## Spanning tree decomposition
 
@@ -179,13 +177,10 @@ branches (side paths joining at fan-in points).
 3. At fan-in: record bridge (node reading from multiple trunks)
 4. Recurse: each branch is a sub-DAG
 
-Natural barriers (fan-in points) are mandatory fiber break points.
-Used by hilavitkutin domain 14 (fiber formation).
+Natural barriers (fan-in points) are mandatory grouping-break points
+for any consumer that batches along trunks.
 
 ## Sources
 
 - 202603241400_topic.arvo-crate-dependency-revision.md (generic contracts)
-- T5 L1044-1094 (renumbering, step ranges)
-- T6 L2490-2501 (spanning tree algorithm)
-- T6 L2710-2712 (waist detection)
-- T3 L1694-1750 (connected components for partitioning)
+- 202604191900_changelist.doc.md (this round)
