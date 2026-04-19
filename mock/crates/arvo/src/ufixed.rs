@@ -15,7 +15,10 @@ use core::ops::{Add, Div, Mul, Sub};
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use crate::newtype::{FBits, IBits, USize};
-use crate::strategy::{Strategy, UArith, UContainerFor, is_fractional, ufixed_bits};
+use crate::strategy::{
+    Hot, Precise, Strategy, UArith, UContainerFor, UNarrowFrom, UWidenFrom, Warm, is_fractional,
+    ufixed_bits,
+};
 
 /// Unsigned fixed-point value.
 ///
@@ -201,5 +204,74 @@ where
             self.to_raw(),
             rhs.to_raw(),
         ))
+    }
+}
+
+// --- Strategy conversions -------------------------------------------------
+//
+// Same `<I, F>`, different strategy. `From` for widen-free edges
+// (Hot -> Warm, Hot -> Precise, Warm -> Precise). `TryFrom` for
+// narrowing edges (Warm -> Hot, Precise -> Hot). Conversions use the
+// `UWidenFrom` / `UNarrowFrom` bridges on the destination strategy,
+// keyed on the shared `BITS = I + F`.
+
+impl<const I: IBits, const F: FBits> From<UFixed<I, F, Hot>> for UFixed<I, F, Warm>
+where
+    Hot: UContainerFor<{ ufixed_bits(I, F) }>,
+    Warm: UWidenFrom<Hot, { ufixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn from(src: UFixed<I, F, Hot>) -> Self {
+        Self::from_raw(<Warm as UWidenFrom<Hot, { ufixed_bits(I, F) }>>::u_widen(
+            src.to_raw(),
+        ))
+    }
+}
+
+impl<const I: IBits, const F: FBits> From<UFixed<I, F, Hot>> for UFixed<I, F, Precise>
+where
+    Hot: UContainerFor<{ ufixed_bits(I, F) }>,
+    Precise: UWidenFrom<Hot, { ufixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn from(src: UFixed<I, F, Hot>) -> Self {
+        Self::from_raw(<Precise as UWidenFrom<Hot, { ufixed_bits(I, F) }>>::u_widen(src.to_raw()))
+    }
+}
+
+impl<const I: IBits, const F: FBits> From<UFixed<I, F, Warm>> for UFixed<I, F, Precise>
+where
+    Warm: UContainerFor<{ ufixed_bits(I, F) }>,
+    Precise: UWidenFrom<Warm, { ufixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn from(src: UFixed<I, F, Warm>) -> Self {
+        Self::from_raw(<Precise as UWidenFrom<Warm, { ufixed_bits(I, F) }>>::u_widen(src.to_raw()))
+    }
+}
+
+impl<const I: IBits, const F: FBits> TryFrom<UFixed<I, F, Warm>> for UFixed<I, F, Hot>
+where
+    Warm: UContainerFor<{ ufixed_bits(I, F) }>,
+    Hot: UNarrowFrom<Warm, { ufixed_bits(I, F) }>,
+{
+    type Error = ();
+    #[inline(always)]
+    fn try_from(src: UFixed<I, F, Warm>) -> Result<Self, Self::Error> {
+        <Hot as UNarrowFrom<Warm, { ufixed_bits(I, F) }>>::u_try_narrow(src.to_raw())
+            .map(Self::from_raw)
+    }
+}
+
+impl<const I: IBits, const F: FBits> TryFrom<UFixed<I, F, Precise>> for UFixed<I, F, Hot>
+where
+    Precise: UContainerFor<{ ufixed_bits(I, F) }>,
+    Hot: UNarrowFrom<Precise, { ufixed_bits(I, F) }>,
+{
+    type Error = ();
+    #[inline(always)]
+    fn try_from(src: UFixed<I, F, Precise>) -> Result<Self, Self::Error> {
+        <Hot as UNarrowFrom<Precise, { ufixed_bits(I, F) }>>::u_try_narrow(src.to_raw())
+            .map(Self::from_raw)
     }
 }

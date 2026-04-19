@@ -17,7 +17,10 @@ use core::ops::{Add, Div, Mul, Sub};
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use crate::newtype::{FBits, IBits, USize};
-use crate::strategy::{IArith, IContainerFor, Strategy, ifixed_bits, is_fractional};
+use crate::strategy::{
+    Hot, IArith, IContainerFor, INarrowFrom, IWidenFrom, Precise, Strategy, Warm, ifixed_bits,
+    is_fractional,
+};
 
 /// Signed fixed-point value.
 ///
@@ -180,5 +183,66 @@ where
             self.to_raw(),
             rhs.to_raw(),
         ))
+    }
+}
+
+// --- Strategy conversions -------------------------------------------------
+
+impl<const I: IBits, const F: FBits> From<IFixed<I, F, Hot>> for IFixed<I, F, Warm>
+where
+    Hot: IContainerFor<{ ifixed_bits(I, F) }>,
+    Warm: IWidenFrom<Hot, { ifixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn from(src: IFixed<I, F, Hot>) -> Self {
+        Self::from_raw(<Warm as IWidenFrom<Hot, { ifixed_bits(I, F) }>>::i_widen(src.to_raw()))
+    }
+}
+
+impl<const I: IBits, const F: FBits> From<IFixed<I, F, Hot>> for IFixed<I, F, Precise>
+where
+    Hot: IContainerFor<{ ifixed_bits(I, F) }>,
+    Precise: IWidenFrom<Hot, { ifixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn from(src: IFixed<I, F, Hot>) -> Self {
+        Self::from_raw(<Precise as IWidenFrom<Hot, { ifixed_bits(I, F) }>>::i_widen(src.to_raw()))
+    }
+}
+
+impl<const I: IBits, const F: FBits> From<IFixed<I, F, Warm>> for IFixed<I, F, Precise>
+where
+    Warm: IContainerFor<{ ifixed_bits(I, F) }>,
+    Precise: IWidenFrom<Warm, { ifixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn from(src: IFixed<I, F, Warm>) -> Self {
+        Self::from_raw(<Precise as IWidenFrom<Warm, { ifixed_bits(I, F) }>>::i_widen(src.to_raw()))
+    }
+}
+
+impl<const I: IBits, const F: FBits> TryFrom<IFixed<I, F, Warm>> for IFixed<I, F, Hot>
+where
+    Warm: IContainerFor<{ ifixed_bits(I, F) }>,
+    Hot: INarrowFrom<Warm, { ifixed_bits(I, F) }>,
+{
+    type Error = ();
+    #[inline(always)]
+    fn try_from(src: IFixed<I, F, Warm>) -> Result<Self, Self::Error> {
+        <Hot as INarrowFrom<Warm, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw())
+            .map(Self::from_raw)
+    }
+}
+
+impl<const I: IBits, const F: FBits> TryFrom<IFixed<I, F, Precise>> for IFixed<I, F, Hot>
+where
+    Precise: IContainerFor<{ ifixed_bits(I, F) }>,
+    Hot: INarrowFrom<Precise, { ifixed_bits(I, F) }>,
+{
+    type Error = ();
+    #[inline(always)]
+    fn try_from(src: IFixed<I, F, Precise>) -> Result<Self, Self::Error> {
+        <Hot as INarrowFrom<Precise, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw())
+            .map(Self::from_raw)
     }
 }
