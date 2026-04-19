@@ -13,8 +13,9 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::USize;
+use arvo::newtype::{Cap, USize};
 use arvo::traits::{FromConstant, TotalOrd};
+use arvo_bitmask::cap_size;
 
 /// Minimise the total cost of splitting `[0..N]` into intervals.
 ///
@@ -32,36 +33,39 @@ use arvo::traits::{FromConstant, TotalOrd};
 /// back on composing feasible children; if even that fails, the
 /// returned cost reflects the best feasible split discovered, and
 /// `splits` contains `USize(0)` for unreachable entries.
-pub fn matrix_chain_dp<const N: usize, W>(
+pub fn matrix_chain_dp<const N: Cap, W>(
     cost: impl Fn(USize, USize) -> W,
     feasible: impl Fn(USize, USize) -> bool,
-) -> (W, [USize; N])
+) -> (W, [USize; cap_size(N)])
 where
+    [(); cap_size(N)]:,
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
 {
     let zero = <W as FromConstant>::from_constant(0);
-    let mut splits: [USize; N] = [USize(0); N];
+    let mut splits: [USize; cap_size(N)] = [USize(0); cap_size(N)];
 
-    if N == 0 {
+    if cap_size(N) == 0 {
         return (zero, splits);
     }
 
     let root_cost = cost(USize(0), USize(0));
-    if N == 1 {
+    if cap_size(N) == 1 {
         return (root_cost, splits);
     }
 
     // dp[i][j] = best cost for interval [i..j] (inclusive, j >= i).
     // reachable[i][j] = true when dp[i][j] holds a meaningful value.
     // split[i][j] = chosen split point k in [i, j) when composed.
-    let mut dp: [[W; N]; N] = [[zero; N]; N];
-    let mut reachable: [[bool; N]; N] = [[false; N]; N];
-    let mut split: [[USize; N]; N] = [[USize(0); N]; N];
+    let mut dp: [[W; cap_size(N)]; cap_size(N)] = [[zero; cap_size(N)]; cap_size(N)];
+    let mut reachable: [[bool; cap_size(N)]; cap_size(N)] =
+        [[false; cap_size(N)]; cap_size(N)];
+    let mut split: [[USize; cap_size(N)]; cap_size(N)] =
+        [[USize(0); cap_size(N)]; cap_size(N)];
 
     // Base case: single-element intervals. Reachable only when feasible
     // as leaves; leaf cost is `cost(i, i)`.
     let mut i: usize = 0;
-    while i < N {
+    while i < cap_size(N) {
         if feasible(USize(i), USize(i)) {
             dp[i][i] = cost(USize(i), USize(i));
             reachable[i][i] = true;
@@ -72,9 +76,9 @@ where
     // Fill intervals of increasing length. `len` is inclusive width
     // minus one, so `len = 1` is pairs, up to `N - 1` for the root.
     let mut len: usize = 1;
-    while len < N {
+    while len < cap_size(N) {
         let mut lo: usize = 0;
-        while lo + len < N {
+        while lo + len < cap_size(N) {
             let hi = lo + len;
 
             // Option A: take the whole interval as a feasible leaf.
@@ -119,10 +123,17 @@ where
     // `splits[i]` is populated from a preorder traversal in visit
     // order; unreachable intervals leave `USize(0)` sentinels.
     let mut out_idx: usize = 0;
-    fill_splits::<N>(&split, &reachable, 0, N - 1, &mut splits, &mut out_idx);
+    fill_splits::<N>(
+        &split,
+        &reachable,
+        0,
+        cap_size(N) - 1,
+        &mut splits,
+        &mut out_idx,
+    );
 
-    let final_cost = if reachable[0][N - 1] {
-        dp[0][N - 1]
+    let final_cost = if reachable[0][cap_size(N) - 1] {
+        dp[0][cap_size(N) - 1]
     } else {
         zero
     };
@@ -133,15 +144,17 @@ where
 /// Preorder-walk the `[[split; N]; N]` decomposition table, writing
 /// each visited split into the output array. Leaf intervals (whose
 /// recorded split equals their right endpoint) are skipped.
-fn fill_splits<const N: usize>(
-    split: &[[USize; N]; N],
-    reachable: &[[bool; N]; N],
+fn fill_splits<const N: Cap>(
+    split: &[[USize; cap_size(N)]; cap_size(N)],
+    reachable: &[[bool; cap_size(N)]; cap_size(N)],
     lo: usize,
     hi: usize,
-    out: &mut [USize; N],
+    out: &mut [USize; cap_size(N)],
     out_idx: &mut usize,
-) {
-    if lo >= hi || *out_idx >= N || !reachable[lo][hi] {
+) where
+    [(); cap_size(N)]:,
+{
+    if lo >= hi || *out_idx >= cap_size(N) || !reachable[lo][hi] {
         return;
     }
     let k = split[lo][hi].0;

@@ -1,13 +1,22 @@
 //! matrix_chain_dp: optimal split on known-shape cost functions.
 
+#![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{FBits, IBits};
+use arvo::newtype::{Cap, FBits, IBits, USize};
 use arvo::strategy::Hot;
 use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
 use arvo_comb::matrix_chain_dp;
+
+const fn cap(n: usize) -> Cap {
+    Cap(USize(n))
+}
+
+const C1: Cap = cap(1);
+const C3: Cap = cap(3);
+const C4: Cap = cap(4);
 
 type W = UFixed<{ IBits(16) }, { FBits::ZERO }, Hot>;
 
@@ -18,7 +27,7 @@ fn w(n: u8) -> W {
 #[test]
 fn singleton_returns_leaf_cost() {
     // N=1, cost(0,0) = 7.
-    let (cost, _splits) = matrix_chain_dp::<1, W>(|_, _| w(7), |_, _| true);
+    let (cost, _splits) = matrix_chain_dp::<C1, W>(|_, _| w(7), |_, _| true);
     assert_eq!(cost.to_raw(), 7);
 }
 
@@ -27,7 +36,7 @@ fn all_leaves_cheap_root_expensive_prefers_split() {
     // Intervals of length 1 cost 1; any wider interval taken as a
     // leaf costs 100. DP must split to achieve cost N.
     // N=4 -> optimal cost 4 (four singletons summed).
-    let (cost, _splits) = matrix_chain_dp::<4, W>(
+    let (cost, _splits) = matrix_chain_dp::<C4, W>(
         |i, j| {
             if i.0 == j.0 {
                 w(1)
@@ -44,7 +53,7 @@ fn all_leaves_cheap_root_expensive_prefers_split() {
 fn single_leaf_cheaper_than_splitting() {
     // cost(0..N-1) = 1 as a whole leaf; cost(i,i) = 10 per singleton.
     // DP should take the whole interval, cost = 1.
-    let (cost, _splits) = matrix_chain_dp::<4, W>(
+    let (cost, _splits) = matrix_chain_dp::<C4, W>(
         |i, j| {
             if i.0 == 0 && j.0 == 3 {
                 w(1)
@@ -64,7 +73,7 @@ fn infeasible_leaves_forces_split() {
     // Singletons feasible cost 1. Any multi-element interval is
     // infeasible as a leaf, so the DP must compose singletons.
     // N=3 -> optimal cost 3.
-    let (cost, _splits) = matrix_chain_dp::<3, W>(
+    let (cost, _splits) = matrix_chain_dp::<C3, W>(
         |i, j| {
             if i.0 == j.0 {
                 w(1)

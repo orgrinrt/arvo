@@ -1,13 +1,23 @@
 //! bin_pack: packing counts and affinity ordering.
 
+#![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{FBits, IBits, USize};
+use arvo::newtype::{Cap, FBits, IBits, USize};
 use arvo::strategy::Hot;
 use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
 use arvo_comb::bin_pack;
+
+const fn cap(n: usize) -> Cap {
+    Cap(USize(n))
+}
+
+const C0: Cap = cap(0);
+const C2: Cap = cap(2);
+const C3: Cap = cap(3);
+const C4: Cap = cap(4);
 
 type W = UFixed<{ IBits(16) }, { FBits::ZERO }, Hot>;
 
@@ -19,7 +29,7 @@ fn w(n: u8) -> W {
 fn empty_input_no_bins() {
     let items: [u8; 0] = [];
     let (count, _assign) =
-        bin_pack::<0, 4, u8, W>(&items, w(10), |_| w(1), |_, _| w(0));
+        bin_pack::<C0, C4, u8, W>(&items, w(10), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(0));
 }
 
@@ -30,7 +40,7 @@ fn unit_weights_pack_to_ceil_n_over_capacity() {
     // First-fit: items 0,1,2 -> bin 0; item 3 -> bin 1.
     let items: [u8; 4] = [10, 20, 30, 40];
     let (count, assign) =
-        bin_pack::<4, 4, u8, W>(&items, w(3), |_| w(1), |_, _| w(0));
+        bin_pack::<C4, C4, u8, W>(&items, w(3), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(2));
     // All items must land in either bin 0 or 1.
     for i in 0..4 {
@@ -44,7 +54,7 @@ fn single_heavy_item_uses_its_own_bin() {
     // Two items, one fills a bin on its own.
     let items: [u8; 2] = [0, 1];
     let (count, _assign) =
-        bin_pack::<2, 4, u8, W>(&items, w(5), |x| if *x == 0 { w(5) } else { w(1) }, |_, _| w(0));
+        bin_pack::<C2, C4, u8, W>(&items, w(5), |x| if *x == 0 { w(5) } else { w(1) }, |_, _| w(0));
     assert_eq!(count, USize(2));
 }
 
@@ -53,7 +63,7 @@ fn everything_fits_one_bin() {
     // Weights 1+1+1 = 3 <= cap 5.
     let items: [u8; 3] = [1, 2, 3];
     let (count, assign) =
-        bin_pack::<3, 4, u8, W>(&items, w(5), |_| w(1), |_, _| w(0));
+        bin_pack::<C3, C4, u8, W>(&items, w(5), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(1));
     for i in 0..3 {
         assert_eq!(assign[i], USize(0));
@@ -67,7 +77,7 @@ fn affinity_ordering_places_high_affinity_first() {
     // weights 1. High-affinity items go first -> the cluster
     // {0,2,3} is placed across two bins before item 1.
     let items: [u8; 4] = [0, 1, 2, 3];
-    let (count, _assign) = bin_pack::<4, 4, u8, W>(
+    let (count, _assign) = bin_pack::<C4, C4, u8, W>(
         &items,
         w(2),
         |_| w(1),
