@@ -114,8 +114,8 @@ rules = [
     { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo + arvo-bitmask only" },
     { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo + arvo-bitmask only" },
 
-    # L3 — arvo-spectral depends on arvo + arvo-sparse.
-    { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-sparse only" },
+    # L3 — arvo-spectral depends on arvo + arvo-bitmask (Mask64 partition outputs this round).
+    { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-bitmask (Mask64 for partition outputs); arvo-sparse is a future-round dep per BACKLOG" },
 
     # Universal — no ad-hoc threading, clocks, filesystem anywhere.
     { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
