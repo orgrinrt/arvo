@@ -1,8 +1,7 @@
 # arvo — Design
 
-Cross-project numeric primitive library. Used by hilavitkutin, polka,
-saalis, loimu. `#![no_std]`, no alloc, const-generic sizing, same
-LLVM optimisation discipline as the execution engine.
+Numeric primitive substrate. `#![no_std]`, no alloc, const-generic
+sizing. Same LLVM optimisation discipline whatever runs on top.
 
 Name: arvo (Finnish: "value/worth/estimate").
 
@@ -23,8 +22,8 @@ pub struct FBits(pub u8);  // fractional bit count
 
 Requires `adt_const_params` (nightly). Prevents accidentally
 swapping integer and fractional bit counts at type definition sites.
-Consumer code uses semantic aliases (Angle, Count, etc.) and never
-sees IBits/FBits directly.
+Consumer code defines its own semantic aliases over `UFixed` /
+`IFixed` and rarely touches `IBits` / `FBits` directly.
 
 ### USize
 
@@ -214,13 +213,22 @@ indices, flags, enum-like values.
 
 Store big, operate fast. The development-friendly default.
 
-**Container:** 2x the logical bit width, rounded to next standard
-width. A 16-bit logical value stores in u32.
+**Bound:** `I + F ≤ 32`. Warm's value proposition is the 2x container
+safety guarantee on single ops; no u128 is available (Q3), so widths
+beyond 32 logical bits cannot be serviced without losing that
+guarantee. Warm is a compile-time error at `I + F > 32` — pick Hot
+(wrapping, accepts overflow risk) or Precise (saturating, carries
+correctness) instead. This surfaces the trade-off at the type level
+rather than hiding it.
 
-**Arithmetic:** wrapping. Single instruction. But the 2x container
-means a single add/sub/mul of two values within their logical range
-cannot overflow the container. Chains of operations (accumulating
-many values) can eventually overflow.
+**Container:** 2x the logical bit width, rounded to next standard
+width. A 16-bit logical value stores in u32; a 32-bit logical value
+stores in u64.
+
+**Arithmetic:** wrapping. Single instruction. The 2x container means
+a single add/sub/mul of two values within their logical range cannot
+overflow the container. Chains of operations (accumulating many
+values) can eventually overflow.
 
 **Cross-width ops:** widen both operands to 2x the wider operand's
 container width. Operate at that width. Single ops safe, chains may
@@ -231,8 +239,8 @@ overflow.
 **SIMD:** fewer lanes than Hot (wider containers), but still wrapping
 ops so LLVM vectorises freely.
 
-**Use case:** the default for most columns. Correctness on single
-ops without saturating overhead. Morsel loop friendly.
+**Use case:** the default for most values up to 32 logical bits.
+Correctness on single ops without saturating overhead.
 
 ### Cold
 
@@ -289,12 +297,12 @@ unacceptable.
 | 1-8 | u8 | u16 | bitpacked | u16 |
 | 9-16 | u16 | u32 | bitpacked | u32 |
 | 17-32 | u32 | u64 | bitpacked | u64 |
-| 33-64 | u64 | u64 (degrades) | bitpacked | u64 (saturating) |
+| 33-64 | u64 | *unavailable* | bitpacked | u64 (saturating) |
 
 No u128 containers. I + F <= 64 for UFixed, 1 + I + F <= 64 for
-IFixed. Warm degrades to Hot's container width at I + F > 32 (no 2x
-headroom available without u128). At I + F > 32, Warm and Hot have
-the same container; the only difference is the default intent.
+IFixed. Warm is a compile-time error at I + F > 32 (no u128 container
+means Warm cannot offer its 2x safety; rather than degrade silently,
+Warm is forbidden at those widths — pick Hot or Precise).
 
 IFixed follows the same widening rules with signed containers (i8,
 i16, i32, i64). Signed saturation clamps to the logical range
@@ -395,43 +403,49 @@ needed operations appear in bounds. The mathematical sub-crates
 (arvo-graph, arvo-sparse, arvo-spectral, arvo-comb) are generic
 over these trait bounds, not concrete arvo types.
 
-## Semantic aliases
+## L0 non-members
 
-Strategy-generic type aliases. Fix the `<I, F>` configuration
-(semantic meaning) but are generic over strategy with a sensible
-default:
+arvo ships raw `UFixed<I, F, S>` / `IFixed<I, F, S>` and the four
+strategy markers. It ships no semantic type aliases and no
+platform/layout newtypes.
 
+**No semantic domain aliases.** `Ratio`, `Factor`, `Norm`, `Coord`,
+`Angle`, `Count`, `Average`, `Deviation`, and similar are consumer
+concerns, not substrate. Each downstream crate chooses the `<I, F>`
+configuration that fits its domain and defines the alias it wants.
+
+Example (downstream, not here):
 ```rust
-pub type Ratio<S: Strategy = Warm>     = UFixed<{IBits(0)},  {FBits(8)},  S>;
-pub type Factor<S: Strategy = Warm>    = UFixed<{IBits(2)},  {FBits(8)},  S>;
-pub type Norm<S: Strategy = Warm>      = IFixed<{IBits(1)},  {FBits(14)}, S>;
-pub type Coord<S: Strategy = Warm>     = IFixed<{IBits(16)}, {FBits(16)}, S>;
-pub type Angle<S: Strategy = Warm>     = UFixed<{IBits(9)},  {FBits(7)},  S>;
-pub type Count<S: Strategy = Warm>     = UFixed<{IBits(32)}, {FBits(0)},  S>;
-pub type Average<S: Strategy = Warm>   = UFixed<{IBits(16)}, {FBits(16)}, S>;
-pub type Deviation<S: Strategy = Warm> = UFixed<{IBits(8)},  {FBits(24)}, S>;
+// in some consumer crate
+pub type Angle<S = Warm> = arvo::UFixed<{IBits(9)}, {FBits(7)}, S>;
+pub type Coord<S = Warm> = arvo::IFixed<{IBits(16)}, {FBits(16)}, S>;
 ```
 
-`Bool` is NOT in this list — it is a `Bool(bool)` newtype, not a
-UFixed alias. `Bit` (the 1-bit data type for column storage) is
-defined in arvo-bits.
-
-Usage:
+Strategy propagates through the type system: cross-strategy
+conversion rules apply at boundaries. Generic code over strategy
+remains idiomatic:
 ```rust
-Column<Angle>           // Warm by default
-Column<Angle<Hot>>      // Hot for morsel-loop-heavy column
-Column<Angle<Precise>>  // Precise for audit-critical output
+fn process<S: Strategy>(
+    a: UFixed<{IBits(8)}, {FBits(0)}, S>,
+    b: UFixed<{IBits(0)}, {FBits(8)}, S>,
+) -> UFixed<{IBits(8)}, {FBits(8)}, S> { ... }
 ```
 
-Generic code over strategy:
-```rust
-fn process<S: Strategy>(angle: Angle<S>, ratio: Ratio<S>) -> Angle<S> {
-    // both use S's semantics
-}
-```
+**Deferred (not in arvo L0):**
+- `ByteCount`, `Alignment` — layout / physical-storage concerns. These
+  belong at the storage boundary (ColumnValue layer in the engine
+  that consumes arvo), not in L0 substrate.
+- `CoreCount`, `Nanoseconds` — platform-environment concerns. arvo
+  has zero platform dep. These belong adjacent to `ThreadPool` /
+  `Clock` trait definitions in the consuming layer.
 
-The strategy propagates through the type system. Cross-strategy
-conversion rules apply at boundaries.
+The decision is about layer fit, not necessity. The types remain
+designed; they land when the consuming layer first needs them.
+
+**`Bool` stays in arvo.** `Bool` is a control-flow newtype over
+`bool`, not a fixed-point alias — it has no strategy marker and is
+used by predicate methods (`is_zero`, `bit`). The 1-bit data type
+`Bit` for column storage lives in arvo-bits.
 
 ## Hardware-aware backend selection
 
@@ -450,48 +464,30 @@ of backend.
 
 ## arvo-types-only lint
 
-The `arvo-types-only` lint (T4 §Q8) requires arvo types in data-facing
-struct fields across all arvo sub-crates and hilavitkutin. Raw `u32`,
+The `arvo-types-only` lint (within this repo) requires arvo types in
+data-facing struct fields across all arvo sub-crates. Raw `u32`,
 `f64`, etc. are rejected in favour of semantic arvo types. After
 compilation, arvo types are `repr(transparent)` — zero overhead.
 
-## Bench requirement
+## Concrete vs generic
 
-Exhaustive comparison of arvo types vs raw f32/f64/u32/u64 on all
-operation types (add, sub, mul, div, sqrt, recip) and chain lengths
-(1, 4, 16, 64 ops). Per-strategy comparison. The benchmark must prove
-that arvo types introduce no overhead beyond the strategy's intended
-cost (e.g. Precise's saturation, Cold's widen-narrow). Any unexpected
-overhead is a bug to be fixed, not accepted.
+The algorithm sub-crates (arvo-graph, arvo-sparse, arvo-comb,
+arvo-spectral) are generic over composable numeric trait bounds and
+do not import `UFixed` / `IFixed` directly. Concrete type choice is
+the consuming application's responsibility — not arvo's.
 
-## Relationship to hilavitkutin
+## Bit-width reporting
 
-hilavitkutin uses arvo for all internal numerics. Column data types
-come from arvo; hilavitkutin does not care what is in the columns,
-only the read/write dependency structure. Boolean columns use `Bit`
-(from arvo-bits, = `UFixed<{IBits(1)}, {FBits(0)}, Hot>`) with 8x
-density in BitPacked layout. Mixed types per morsel (e.g. `Count`
--> `UFixed<{IBits(32)}, {FBits(0)}>`, `Average` -> `FastFloat`).
-
-Concrete arvo type instantiations happen in hilavitkutin (the
-application), not in the arvo sub-crates (libraries). The sub-crates
-are generic over trait bounds; hilavitkutin specialises with concrete
-types.
-
-## BIT_WIDTH interaction (R4)
-
-`ColumnValue::BIT_WIDTH` reports the logical bit width (`I.0 + F.0`).
-The storage engine uses both BIT_WIDTH and the strategy to determine
-physical layout:
-- BitPacked strategies (Cold, Precise): physical width = BIT_WIDTH
-- ByteAligned strategies (Hot, Warm): physical width = container
-  size in bits
+Any `ColumnValue`-style consumer layer that needs to know the logical
+bit width reads `LOGICAL_WIDTH` via the `BitPresentation` marker
+(`I.0 + F.0` for UFixed; `1 + I.0 + F.0` for IFixed). Physical
+storage width depends on the strategy:
+- BitPacked strategies (Cold, Precise): physical = LOGICAL_WIDTH
+- ByteAligned strategies (Hot, Warm): physical = container size in bits
 
 ## Sources
 
 - 202603241200_topic.arvo-strategy-markers.md (strategy definitions)
 - 202603241300_topic.arvo-strategy-aliases-and-open-questions.md (alias pattern, Q1-Q4)
 - 202603241400_topic.arvo-crate-dependency-revision.md (generic contracts)
-- T4 L1856-1924 §Q5a (full design)
-- T5 L964-971 §Q11 (intrinsics)
-- T4 L2370-2395 §Q8 (lint)
+- 202604191900_changelist.doc.md (D1-D4 resolutions for this round)

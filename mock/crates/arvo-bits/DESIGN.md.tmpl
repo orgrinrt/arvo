@@ -38,8 +38,9 @@ pub struct FBits(pub u8);  // fractional bit count
 
 Requires `adt_const_params` (nightly). These ensure you cannot
 accidentally swap integer and fractional bit counts at type
-definition sites. Consumer code uses semantic aliases (Angle, Count,
-etc.) and never sees IBits/FBits directly.
+definition sites. Consumer code typically defines its own semantic
+aliases over `UFixed` / `IFixed` and rarely touches `IBits` / `FBits`
+directly.
 
 ## Traits
 
@@ -216,17 +217,15 @@ I+F <= 64 constraint. SIMD register width is a strategy concern
 - Numeric operations (Add, Mul, Sqrt) — arvo
 - Set operations (union, intersection) — arvo-bitmask
 - Float types — arvo, completely separate from bit-level
-- Outcome/Just/Maybe/Result types — hilavitkutin-api
+- Fallible-return types (Outcome / Just / Maybe) — consumer concern
 
 ## Consumers
 
 - **arvo-bitmask**: builds Mask types on BitSequence/BitAccess
   contracts. Mask64's `count()` delegates to `BitSequence::count_ones`.
-  Bit scanning uses `trailing_zeros`/`leading_zeros`.
-- **hilavitkutin**: indirect via arvo-bitmask. Does not depend on
-  arvo-bits directly.
-- **arvo sub-crates** (graph, sparse, spectral, comb): indirect via
-  arvo-bitmask. Do not depend on arvo-bits directly.
+  Bit scanning uses `trailing_zeros` / `leading_zeros`.
+- Other arvo algorithm crates (graph, sparse, comb, spectral) depend
+  on arvo-bitmask, not arvo-bits, for adjacency and set work.
 
 ## Sources
 
