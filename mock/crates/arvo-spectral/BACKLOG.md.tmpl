@@ -1,5 +1,15 @@
 # arvo-spectral — backlog
 
+## Matrix-in-arvo-sparse promotion
+
+The `Matrix<W, const N: Cap>` dense-matrix wrapper currently lives in
+arvo-spectral. If other consumers (hilavitkutin, clause, or future
+arvo algorithm crates) need a dense-matrix surface, promote it into
+arvo-sparse (the "matrix representations" crate) as part of a
+cleanup round. The Csr<ROWS, NNZ, W> sparse format already lives
+there; a dense sibling is the natural neighbor.
+
+
 ## Mask256 partition outputs
 
 `spectral_bisection` / `k_way_partition` ship with `Mask64` and
