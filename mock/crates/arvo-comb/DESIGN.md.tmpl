@@ -58,8 +58,9 @@ Typical pipeline-grouping application:
 - Feasibility: a holistic resource check (register file, L1 write
   budget, L1+L2 total, no fan-in, no pipeline breaker).
 
-Used when problem size is large enough that greedy's left-to-right
-sequential join is insufficient; DP explores the full solution space.
+Researched threshold: use DP when problem size exceeds 10 units;
+fall back to greedy's left-to-right sequential join below that
+(polka-dots T3 decision #70).
 
 ## Bin-packing
 
@@ -85,3 +86,7 @@ constraint representation as greedy grouping. Not day-one.
 
 - 202603241400_topic.arvo-crate-dependency-revision.md (generic contracts)
 - 202604191900_changelist.doc.md (this round)
+- T3 L1837-1937 (matrix chain ordering DP — polka-dots)
+- T3 decision #70 (DP when problem size >10 — polka-dots)
+- T5 L233-247 (affinity-ordered bit assignment — polka-dots)
+- T3 decisions #71-74 (deferred Morton / Hilbert dispatch ordering — polka-dots)
