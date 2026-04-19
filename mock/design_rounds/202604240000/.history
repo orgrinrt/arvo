@@ -1,0 +1,50 @@
+6ded2e6 chore: lock arvo-comb src CL 202604240100
+28ef629 chore: regen mockspace docs after arvo-comb impl
+7f4c374 test: add greedy dp binpack correctness tests
+13c9d1f feat: add affinity-ordered first-fit bin packing
+896358b feat: add matrix chain interval dp
+831f115 feat: add greedy sequential interval grouping
+060cd16 feat: add range half-open interval type
+1b4ff1f docs: draft arvo-comb src CL 202604240100
+243ab1c chore: lock arvo-comb doc CL 202604240000
+97f36b8 docs: no-std-fit arvo-comb DESIGN signatures
+07c4a2e docs: open arvo-comb impl round doc CL
+b398d85 chore: close arvo-sparse design round 202604230000
+11a0435 chore: lock arvo-sparse src CL 202604230100
+25afd56 chore: regen mockspace docs after arvo-sparse impl
+0d63630 test: add csr rcm block dm unit tests
+5294753 feat: wire arvo-sparse lib exports
+be7f3d7 feat: add dulmage-mendelsohn decomposition
+9b81e8d feat: add block diagonal connected-component detection
+699ef8f feat: add rcm reverse cuthill-mckee reordering
+783379e feat: add csr storage for arvo-sparse
+67f98e3 docs: draft arvo-sparse src CL 202604230100
+ae9ab62 chore: lock arvo-sparse doc CL 202604230000
+bac78c1 docs: concretize arvo-sparse DESIGN to BitMatrix64 plus BACKLOG
+a1fd36f docs: open arvo-sparse impl round doc CL
+3c81734 chore: close arvo-graph design round 202604220000
+ff2acc0 chore: lock arvo-graph src CL 202604220100
+f01644f docs: regenerate after arvo-graph impl
+20abaa4 test: add arvo-graph integration tests
+be6e1d9 fix: enqueue non-head sources as spanning-tree branch seeds
+3ebc111 feat: add arvo-graph spanning tree decomposition
+0695595 feat: add arvo-graph waist detection
+ef3d417 feat: add arvo-graph longest path dp
+be84e94 feat: add arvo-graph connected components via dfs
+a5dab91 feat: add arvo-graph upward and downward rank
+7463679 feat: add arvo-graph topo sort and renumber
+3f6096c docs: draft arvo-graph src CL 202604220100
+bdea688 chore: lock arvo-graph doc CL 202604220000
+0d2d1ad docs: concretize arvo-graph DESIGN to BitMatrix64 plus BACKLOG note
+58d54f4 docs: open arvo-graph impl round doc CL
+ce2d49f chore: close arvo-bitmask design round 202604210000
+d1b1340 chore: lock arvo-bitmask src CL 202604210100
+231d747 chore: regenerate arvo-bitmask docs and graph artifacts
+0aa63f4 test: add arvo-bitmask integration tests
+5bd33a7 feat: add arvo-bitmask propagate dirty free functions
+21e050f feat: add arvo-bitmask bitmatrix types
+0c7b5f1 feat: add arvo-bitmask set ops and bit scanning
+617845f feat: add arvo-bitmask mask types mask64 and mask256
+b32b3d7 feat: add arvo-bitmask NodeId newtype
+27a55ca docs: draft arvo-bitmask src CL 202604210100
+cc75009 chore: lock arvo-bitmask doc CL 202604210000
