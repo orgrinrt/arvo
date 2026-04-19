@@ -14,11 +14,13 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
+pub mod dirty;
 pub mod mask;
 pub mod matrix;
 pub mod node;
 pub mod ops;
 
+pub use dirty::{propagate_dirty_256, propagate_dirty_64};
 pub use mask::{Mask, Mask256, Mask64};
 pub use matrix::{BitMatrix256, BitMatrix64};
 pub use node::NodeId;
