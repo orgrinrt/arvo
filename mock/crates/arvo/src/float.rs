@@ -93,6 +93,48 @@ impl<F: Ieee> StrictFloat<F> {
 impl<F: Ieee> FloatLike for FastFloat<F> {}
 impl<F: Ieee> FloatLike for StrictFloat<F> {}
 
+// --- core::ops arithmetic -------------------------------------------------
+//
+// Delegating impls for the five arith ops on both wrappers. The `F: Ieee`
+// bound plus the per-op `<Output = F>` bound is sufficient; f32 and f64
+// satisfy all of these in `core::ops`, so the Ieee seal is preserved.
+
+macro_rules! float_binop_impl {
+    ($wrapper:ident, $op:ident, $method:ident) => {
+        impl<F: Ieee + core::ops::$op<Output = F>> core::ops::$op for $wrapper<F> {
+            type Output = Self;
+            #[inline(always)]
+            fn $method(self, other: Self) -> Self {
+                Self(core::ops::$op::$method(self.0, other.0))
+            }
+        }
+    };
+}
+
+macro_rules! float_neg_impl {
+    ($wrapper:ident) => {
+        impl<F: Ieee + core::ops::Neg<Output = F>> core::ops::Neg for $wrapper<F> {
+            type Output = Self;
+            #[inline(always)]
+            fn neg(self) -> Self {
+                Self(core::ops::Neg::neg(self.0))
+            }
+        }
+    };
+}
+
+float_binop_impl!(FastFloat, Add, add);
+float_binop_impl!(FastFloat, Sub, sub);
+float_binop_impl!(FastFloat, Mul, mul);
+float_binop_impl!(FastFloat, Div, div);
+float_neg_impl!(FastFloat);
+
+float_binop_impl!(StrictFloat, Add, add);
+float_binop_impl!(StrictFloat, Sub, sub);
+float_binop_impl!(StrictFloat, Mul, mul);
+float_binop_impl!(StrictFloat, Div, div);
+float_neg_impl!(StrictFloat);
+
 /// Resolved `Float` alias.
 ///
 /// `FastFloat<F>` when the `arvo_fast_math` cfg is active;
