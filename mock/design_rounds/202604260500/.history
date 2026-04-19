@@ -1,0 +1,50 @@
+1708c7c chore: lock src CL 202604260600 for L0 float ops
+19c2a6b feat: wire core::ops Add/Sub/Mul/Div/Neg on float wrappers
+d3b7741 docs: add src CL for L0 float ops
+938b2f8 chore: lock doc CL 202604260500 for L0 float ops
+f651665 docs: start L0 float arithmetic ops round
+237d693 chore: close arvo-comb cleanup round 202604260300
+15ce955 chore: lock src CL 202604260400 for arvo-comb cleanup
+089a463 refactor: cascade const N: Cap through arvo-comb
+f951a1d docs: add src CL for arvo-comb Cap/USize cleanup
+da8ca70 chore: lock doc CL 202604260300 for arvo-comb cleanup
+3f0de40 docs: arvo-comb Cap/USize DESIGN + BACKLOG for cleanup round
+ffa5271 docs: start arvo-comb Cap/USize cleanup round
+617c808 chore: close arvo L2 cleanup round 202604260000
+63156e5 chore: lock src CL 202604260200 for arvo L2 cascade
+72a8d0b refactor: cascade const N: Cap + cap_size across arvo L2 crates
+59d1e10 docs: expand src CL comparison section to satisfy lint
+08511f3 docs: add src CL for arvo L2 Cap/USize cascade
+81e906e chore: lock expanded arvo cleanup doc CL
+0b9f32c docs: expand arvo cleanup round to arvo-graph + arvo-sparse
+f498298 chore: unlock doc CL to expand arvo cleanup scope
+113c14c docs: add src CL for arvo-bitmask Cap/USize cleanup
+07b02dc chore: lock doc CL 202604260000 for arvo-bitmask cleanup
+21c766a docs: arvo-bitmask Cap/USize DESIGN + BACKLOG cleanup
+e8ba899 docs: start arvo-bitmask Cap/USize cleanup round
+bc82817 chore: close arvo-spectral design round 202604250000
+2f3c778 chore: lock arvo-spectral src CL 202604250100
+ee66f0b chore: update cargo lockfile for arvo-spectral deps
+6330979 test: add arvo-spectral integration tests
+58711a1 fix: shift fiedler power iteration to converge toward lambda_2
+4869e6c chore: swap arvo-sparse for arvo-bitmask dep in arvo-spectral
+0df9f26 feat: add spectral bisection and k-way partition
+e994e0a feat: add fiedler vector via deflated power iteration
+43cd013 feat: add power iteration for dominant eigenvector
+7613b75 feat: add graph laplacian construction
+f1c6caa feat: add Matrix dense N x N wrapper in arvo-spectral
+2c1698a chore: allow arvo_bitmask import in arvo-spectral scope
+dabb3a0 docs: draft arvo-spectral src CL 202604250100
+22b9ad7 chore: re-lock arvo-spectral doc CL 202604250000
+98ca488 docs: revise arvo-spectral DESIGN for Matrix wrapper and Cap surface
+dad8617 chore: unlock arvo-spectral doc CL to restore newtype surface
+7adae35 chore: lock arvo-spectral doc CL 202604250000
+5611e7d docs: concretize arvo-spectral DESIGN for dense no-std + BACKLOG
+da93c00 docs: open arvo-spectral impl round doc CL
+ca34e8a chore: close arvo-comb design round 202604240000
+6ded2e6 chore: lock arvo-comb src CL 202604240100
+28ef629 chore: regen mockspace docs after arvo-comb impl
+7f4c374 test: add greedy dp binpack correctness tests
+13c9d1f feat: add affinity-ordered first-fit bin packing
+896358b feat: add matrix chain interval dp
+831f115 feat: add greedy sequential interval grouping
