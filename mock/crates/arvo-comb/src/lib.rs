@@ -17,10 +17,12 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
+pub mod binpack;
 pub mod dp;
 pub mod greedy;
 pub mod range;
 
+pub use binpack::bin_pack;
 pub use dp::matrix_chain_dp;
 pub use greedy::greedy_group;
 pub use range::Range;
