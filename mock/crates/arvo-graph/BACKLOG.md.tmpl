@@ -1,0 +1,24 @@
+# arvo-graph — backlog
+
+Deferred from the impl round that shipped the `BitMatrix64`-backed
+algorithms. No design change needed to promote; only mechanical
+duplication over the wider bitmask backing.
+
+## BitMatrix256 variants
+
+Every algorithm in arvo-graph (topo sort, renumber, upward/downward
+rank, connected components, longest path, waist detection, spanning
+tree) has a `BitMatrix64` form shipping now. The `BitMatrix256`
+sibling, covering up to 256 nodes, shares the algorithmic shape —
+only the `Mask64` → `Mask256` backing changes. Promote when a
+consumer surfaces a concrete need for >64-node adjacency. Common
+pipeline workloads per polka-dots research stay well under 64, so
+this is a non-urgent widening.
+
+Implementation note: the nested loops and the `[NodeId; N]` storage
+stay the same; the `successors` / `predecessors` return type flips
+from `Mask64` to `Mask256`, and the visited-set type follows. A
+trait abstraction over the two matrix flavours could replace
+duplication, but introducing one has its own const-expr cost on
+current nightly — keep the two copies if promotion happens before
+an ergonomic abstraction surfaces.
