@@ -1,0 +1,25 @@
+# arvo-comb — backlog
+
+## Morton / Hilbert dispatch ordering
+
+Space-filling curve ordering for dispatch interleaving. Same
+constraint representation as greedy grouping. Deferred per
+polka-dots T3 decisions #71-74 — not day-one.
+
+## Mask256-backed bin_pack variant
+
+`bin_pack` ships with a `Cap` up to 64-ish items per bin (bounded
+by internal Mask64 helpers where consumers pair it with
+hierarchical co-firing flags). A `Mask256`-backed sibling would
+support >64 flags per group. Common pipeline workloads per
+polka-dots T5 research stay well under 64 flags, so this is a
+non-urgent widening.
+
+## cap_size helper promotion to arvo L0
+
+arvo-comb imports `cap_size` from arvo-bitmask. Same situation as
+arvo-graph and arvo-sparse. When the fourth L2 / L3 consumer
+surfaces (or when refactor fatigue makes the cross-crate import
+annoying), promote the helper into arvo (L0) as a public
+`const fn`. Purely additive; removes the cross-crate dependency on
+a trivially small helper.
