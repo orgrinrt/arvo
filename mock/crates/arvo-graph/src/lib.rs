@@ -17,8 +17,10 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
+pub mod components;
 pub mod rank;
 pub mod topo;
 
+pub use components::components;
 pub use rank::{downward_rank, upward_rank};
 pub use topo::{renumber, topo_sort};
