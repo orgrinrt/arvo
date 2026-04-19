@@ -1,3 +1,20 @@
-//! arvo — nuked.
+//! arvo — numeric primitive substrate.
 //!
-//! Nuked by `cargo mock --nuke`. Rewrite from design docs (mechanical, no reinterpretation).
+//! `#![no_std]`, no alloc, no platform dependency. Every size is
+//! const at type level. Every numeric type that has a precision /
+//! throughput tradeoff carries a `Strategy` marker.
+//!
+//! L0 of the arvo stack. Consumers compose concrete types from the
+//! primitives here; semantic domain aliases (angle, coord, ratio…)
+//! are defined by downstream crates that know the `<I, F>` split
+//! they want.
+//!
+//! See `DESIGN.md` for the full substrate layout.
+
+#![no_std]
+#![feature(adt_const_params)]
+#![feature(generic_const_exprs)]
+#![feature(try_trait_v2)]
+#![allow(incomplete_features)]
+
+pub mod newtype;
