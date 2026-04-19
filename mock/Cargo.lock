@@ -23,6 +23,7 @@ dependencies = [
 name = "arvo-bitmask"
 version = "0.1.0"
 dependencies = [
+ "arvo",
  "arvo-bits",
  "mockspace",
 ]
