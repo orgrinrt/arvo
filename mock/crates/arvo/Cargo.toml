@@ -6,6 +6,9 @@ license.workspace = true
 
 [dependencies]
 
+[dev-dependencies]
+trybuild = "1"
+
 [build-dependencies]
 mockspace.workspace = true
 
