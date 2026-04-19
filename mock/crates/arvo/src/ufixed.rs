@@ -1,0 +1,131 @@
+//! Unsigned fixed-point type.
+//!
+//! `UFixed<I, F, S>` stores a non-negative fixed-point value with
+//! `I` integer bits, `F` fractional bits, and strategy `S`. The
+//! backing container is selected by the strategy via the sealed
+//! `UContainerFor` table in `strategy.rs`. `repr(transparent)` over
+//! the container — zero overhead after compilation.
+//!
+//! The `Warm` strategy has no `UContainerFor` impl for logical
+//! widths above 32 bits; using `UFixed<_, _, Warm>` with `I + F > 32`
+//! is a compile error by design (doc CL D2).
+
+use core::marker::PhantomData;
+
+use crate::markers::{BitPresentation, FractionLike, IntegerLike};
+use crate::newtype::{FBits, IBits, USize};
+use crate::strategy::{Strategy, UContainerFor, is_fractional, ufixed_bits};
+
+/// Unsigned fixed-point value.
+///
+/// `I` = integer bits, `F` = fractional bits, `S` = strategy
+/// (default `Warm`). Logical width is `I + F`; physical storage
+/// width is determined by `S`.
+#[repr(transparent)]
+pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+{
+    bits: <S as UContainerFor<{ ufixed_bits(I, F) }>>::T,
+    _s: PhantomData<fn() -> S>,
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+{
+    /// Construct from the raw container value.
+    ///
+    /// The value is interpreted as `I.F` fixed-point bits. No range
+    /// check is performed; the caller is responsible for keeping the
+    /// value inside the logical range.
+    #[inline(always)]
+    pub const fn from_raw(bits: <S as UContainerFor<{ ufixed_bits(I, F) }>>::T) -> Self {
+        Self { bits, _s: PhantomData }
+    }
+
+    /// Extract the raw container value.
+    #[inline(always)]
+    pub const fn to_raw(self) -> <S as UContainerFor<{ ufixed_bits(I, F) }>>::T {
+        self.bits
+    }
+
+    /// Logical bit width (`I + F`).
+    #[inline(always)]
+    pub const fn logical_width() -> USize {
+        USize(ufixed_bits(I, F) as usize)
+    }
+}
+
+// The `UContainerFor::T` type is always `Copy` in our dispatch table
+// (u8/u16/u32/u64). Hand-written Copy / Clone / PartialEq / Eq / Default
+// impls delegate to whatever the container supports without adding
+// bounds that retrigger const-expr evaluation cycles.
+
+impl<const I: IBits, const F: FBits, S: Strategy> Copy for UFixed<I, F, S> where
+    S: UContainerFor<{ ufixed_bits(I, F) }>
+{
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> Clone for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> PartialEq for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn eq(&self, other: &Self) -> bool {
+        // Container types are all fixed-width unsigned ints; byte-wise
+        // equality equals value equality.
+        self.bits == other.bits
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> Eq for UFixed<I, F, S> where
+    S: UContainerFor<{ ufixed_bits(I, F) }>
+{
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> Default for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn default() -> Self {
+        Self::from_raw(<<S as UContainerFor<{ ufixed_bits(I, F) }>>::T as Default>::default())
+    }
+}
+
+// --- Marker trait impls ----------------------------------------------------
+
+impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+{
+    const LOGICAL_WIDTH: USize = USize(I.0 as usize + F.0 as usize);
+}
+
+// IntegerLike: only when F == 0. Using the named `FBits::ZERO`
+// constant because struct construction is not allowed inside an
+// anonymous const-generic argument on current nightly.
+impl<const I: IBits, S: Strategy> IntegerLike for UFixed<I, { FBits::ZERO }, S> where
+    S: UContainerFor<{ ufixed_bits(I, FBits::ZERO) }>
+{
+}
+
+// FractionLike: F > 0. Encoded via a const-expression that fails to
+// evaluate when `F == FBits::ZERO` (division by zero at const time).
+impl<const I: IBits, const F: FBits, S: Strategy> FractionLike for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    [(); 1 / is_fractional(F)]:,
+{
+}
