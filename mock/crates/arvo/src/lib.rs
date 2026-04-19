@@ -17,12 +17,14 @@
 #![feature(try_trait_v2)]
 #![allow(incomplete_features)]
 
+pub mod float;
 pub mod ifixed;
 pub mod markers;
 pub mod newtype;
 pub mod strategy;
 pub mod ufixed;
 
+pub use float::{FastFloat, Float, Ieee, StrictFloat};
 pub use ifixed::IFixed;
 pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLike};
 pub use newtype::{AsBool, Bool, Cap, FBits, IBits, USize};
