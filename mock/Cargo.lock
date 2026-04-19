@@ -68,7 +68,7 @@ name = "arvo-spectral"
 version = "0.1.0"
 dependencies = [
  "arvo",
- "arvo-sparse",
+ "arvo-bitmask",
  "mockspace",
 ]
 
