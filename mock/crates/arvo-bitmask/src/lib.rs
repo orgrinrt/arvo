@@ -14,6 +14,8 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
+pub mod mask;
 pub mod node;
 
+pub use mask::{Mask, Mask256, Mask64};
 pub use node::NodeId;
