@@ -1,0 +1,15 @@
+[package]
+name = "arvo-spectral"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+arvo.workspace = true
+arvo-sparse.workspace = true
+
+[build-dependencies]
+mockspace.workspace = true
+
+[features]
+default = []
