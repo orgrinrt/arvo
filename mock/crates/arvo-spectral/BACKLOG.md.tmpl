@@ -1,0 +1,30 @@
+# arvo-spectral — backlog
+
+## Mask256 partition outputs
+
+`spectral_bisection` / `k_way_partition` ship with `Mask64` and
+`[USize; N]` outputs respectively — supports N ≤ 64. `Mask256`-backed
+siblings would support N ≤ 256. Spectral methods are typically small-N
+(per polka-dots research N ≤ 32 is common), so this is a widening for
+atypical workloads, not a default need.
+
+## Non-dense matrix formats
+
+Current signatures take `&[[W; N]; N]` dense. If a consumer has a
+sparse weighted graph via `arvo-sparse::Csr`, they densify at the
+boundary. A direct sparse path would save memory on very sparse
+matrices but adds an API variant; promote when a consumer's cache
+profile actually benefits.
+
+## Other decompositions
+
+SVD, QR, LU, Cholesky are all plausible additions if a consumer
+surfaces a concrete need. Keep spectral partitioning (Laplacian →
+Fiedler → bisection) as the sole shipping surface this round.
+
+## Non-symmetric matrices
+
+Current `fiedler_vector` assumes the weighted adjacency is symmetric
+(Laplacian derivation requires it). For directed graph spectral
+analysis we would need a different construction (Markov / normalized
+Laplacian on the underlying undirected graph). Not shipping.

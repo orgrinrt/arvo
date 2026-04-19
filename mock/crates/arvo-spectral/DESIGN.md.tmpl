@@ -1,8 +1,9 @@
 # arvo-spectral — Design
 
 Spectral graph methods on const-generic fixed-size structures.
-`#![no_std]`, no alloc. Depends on arvo-sparse for matrix
-representations.
+`#![no_std]`, no alloc. Operates on dense weighted matrices
+(`[[W; N]; N]`); does NOT depend on arvo-sparse at runtime —
+small-N spectral methods fit in stack-allocated dense arrays.
 
 Generic over numeric traits for weights and eigenvectors. Weight
 matrices use trait-bounded types; eigenvectors use float-like types.
@@ -10,19 +11,38 @@ Weight-to-float conversion happens at the API boundary via `Into<F>`.
 Consumer instantiates with concrete arvo types; this crate is library
 code.
 
+## Capacity
+
+Ships with `Mask64`-backed partition outputs (supports N ≤ 64). For
+larger problems, a `Mask256`-backed sibling set of functions lives in
+`BACKLOG.md.tmpl`. Spectral methods are typically used at small N
+(30-ish iterations, N ≤ 32 per polka-dots research), so `N ≤ 64` is
+not a practical limit for the common case.
+
 ## Numeric type contracts
 
 ```rust
-fn fiedler_vector<W, F>(weights: &[[W; N]; N]) -> [F; N]
+fn fiedler_vector<const N: usize, W, F>(
+    weights: &[[W; N]; N],
+    iterations: USize,
+) -> [F; N]
 where
-    W: Into<F>,
-    F: Add<Output = F> + Mul<Output = F> + Sqrt + Recip + Copy + FromConstant
+    W: Into<F> + Copy,
+    F: Add<Output = F>
+     + Sub<Output = F>
+     + Mul<Output = F>
+     + Sqrt
+     + Recip
+     + TotalOrd
+     + Copy
+     + FromConstant
 ```
 
 The Laplacian is built from integer weights (arvo fixed-point). The
 eigenvector computation uses float (FastFloat or StrictFloat). The
 `Into<F>` bound handles the conversion at the API boundary. All
-internal computation uses the float type F.
+internal computation uses the float type F. `iterations` is the
+power-iteration count (typically ~30 per polka-dots research).
 
 ## Laplacian construction
 
@@ -54,8 +74,17 @@ weight — the total edge weight crossing the partition boundary.
 
 ## Spectral bisection
 
-Partition nodes into two groups by the sign of the Fiedler vector.
-The cut weight (sum of edge weights between groups) is minimized.
+```rust
+fn spectral_bisection<const N: usize, F>(fiedler: &[F; N]) -> (Mask64, Mask64)
+where
+    F: TotalOrd + Copy + FromConstant
+```
+
+Partition nodes into two groups by the sign of the Fiedler vector:
+positive entries go into the first returned mask, non-positive into
+the second. The cut weight (sum of edge weights between groups) is
+minimized by construction of the Fiedler vector. Requires N ≤ 64 this
+round (Mask64 output).
 
 Why spectral beats greedy: spectral considers the entire graph
 structure globally. Greedy partitioning finds locally optimal
@@ -63,9 +92,27 @@ solutions that can miss the global minimum cut.
 
 ## k-way partitioning
 
+```rust
+fn k_way_partition<const N: usize, const K: usize, W, F>(
+    weights: &[[W; N]; N],
+    iterations: USize,
+) -> (USize, [USize; N])
+where
+    W: Into<F> + Copy,
+    F: Add<Output = F>
+     + Sub<Output = F>
+     + Mul<Output = F>
+     + Sqrt
+     + Recip
+     + TotalOrd
+     + Copy
+     + FromConstant
+```
+
 For more than 2 groups: recursive bisection. Apply spectral bisection
-to get 2 groups, then recursively bisect each group. Produces
-balanced k-way partition minimizing total inter-group edge weight.
+to get 2 groups, then recursively bisect each group until K groups or
+a group cannot be usefully split. Returns `(actual_partition_count,
+partition_id_per_node)`; `actual_partition_count` may be less than K.
 
 Used when the consumer needs minimum-cut grouping of a weighted
 graph at a scale where greedy bisection is insufficient. Researched
