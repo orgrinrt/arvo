@@ -1,0 +1,17 @@
+# arvo-sparse — backlog
+
+## BitMatrix256 / Mask256 variants
+
+`rcm_reorder`, `block_diagonal`, `dulmage_mendelsohn` all have
+`Mask256`-backed siblings that share the algorithmic shape with the
+`Mask64` impls shipped this round. Promote when a concrete consumer
+surfaces >64-node adjacency. Same abstraction-vs-duplication trade-off
+note as arvo-graph: on current nightly, keep two copies rather than
+force a trait abstraction that fights `generic_const_exprs`.
+
+## SpMV
+
+Sparse matrix-vector multiply patterns. Deferred per the original
+design (polka-dots T3 decisions #71-74). Same representation and API
+surface as the above algorithms; add when a concrete consumer need
+surfaces.
