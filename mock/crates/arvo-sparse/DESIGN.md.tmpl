@@ -9,9 +9,16 @@ arvo-bitmask types for small matrices and CSR for larger ones.
 Ships against `BitMatrix64` / `Mask64` (up to 64 rows or columns of
 adjacency). `BitMatrix256` / `Mask256` sibling algorithms are tracked
 in `BACKLOG.md.tmpl`; the algorithmic shape is identical, only the
-bitmask backing changes. `Csr<ROWS, NNZ, W>` is keyed on `usize`
+bitmask backing changes. `Csr<ROWS, NNZ, W>` is keyed on arvo `Cap`
 const generics and has no arvo-bitmask dependency, so it scales to
 any ROWS/NNZ the caller picks.
+
+`const N: Cap` / `const ROWS: Cap` / `const NNZ: Cap` carry arvo's
+capacity newtype on every public signature. Array storage unwraps
+via `cap_size(c: Cap) -> usize`, re-exported from arvo-bitmask.
+Array return types in signatures below are shown as `[X; N]` for
+readability; the compiled form is `[X; cap_size(N)]` with the
+implied `where [(); cap_size(N)]:` bound.
 
 Generic over numeric trait bounds for matrix values. Does not import
 UFixed or IFixed directly. CSR is generic over the value type.
@@ -24,7 +31,7 @@ rows/columns, not data records or data-storage columns.
 ## CSR
 
 ```rust
-pub struct Csr<const ROWS: usize, const NNZ: usize, W: Copy> {
+pub struct Csr<const ROWS: Cap, const NNZ: Cap, W: Copy> {
     row_ptr: [USize; ROWS],
     col_idx: [NodeId; NNZ],
     values: [W; NNZ],
@@ -32,7 +39,7 @@ pub struct Csr<const ROWS: usize, const NNZ: usize, W: Copy> {
 ```
 
 Compressed sparse row. Const-generic fixed-size arrays — no heap.
-`ROWS` and `NNZ` are `Cap` (arvo's const-generic capacity newtype).
+`ROWS` and `NNZ` are arvo's `Cap` const-generic capacity newtype.
 Row pointers and column indices use `NodeId` from arvo-bitmask.
 
 Generic over the value type `W`. No numeric trait needed on W for
@@ -58,7 +65,7 @@ allocation regardless of representation.
 Reverse Cuthill-McKee bandwidth minimization. O(n + nnz).
 
 ```rust
-fn rcm_reorder<const N: usize>(
+fn rcm_reorder<const N: Cap>(
     adjacency: &BitMatrix64<N>,
 ) -> [NodeId; N]  // permutation: new position -> old NodeId
 ```
@@ -81,7 +88,7 @@ Sub-microsecond at typical pipeline scale.
 ## Block diagonal detection
 
 ```rust
-fn block_diagonal<const N: usize>(
+fn block_diagonal<const N: Cap>(
     adjacency: &BitMatrix64<N>,
 ) -> (USize, [USize; N])  // (block_count, block_id_per_node)
 ```
@@ -103,13 +110,13 @@ diagonal always").
 ## Dulmage-Mendelsohn decomposition
 
 ```rust
-pub struct DulmageMendelsohn<const N: usize> {
+pub struct DulmageMendelsohn<const N: Cap> {
     pub horizontal: Mask64,  // dead-end rows (output never read)
     pub vertical: Mask64,    // read-only columns (never written)
     pub square: Mask64,      // core matched row-column pairs
 }
 
-fn dulmage_mendelsohn<const N: usize>(
+fn dulmage_mendelsohn<const N: Cap>(
     adjacency: &BitMatrix64<N>,
 ) -> DulmageMendelsohn<N>
 ```
