@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# @matchers: Write, Edit
+# @timeout: 5
+# Agent hook: block `use std::` in arvo crate source.
+#
+# arvo is `#![no_std]`. Any `use std::`, `extern crate std`, or
+# `pub use std::` import is rejected before the write lands. The
+# build-time `no-std-enforcer` lint catches anything that slips past.
+
+set -uo pipefail
+
+__INPUT=$(cat)
+
+{{HOOK_HELPERS}}
+
+TARGET=$(_extract file_path)
+CONTENT=$(_extract new_string)
+if [[ -z "$CONTENT" ]]; then
+    CONTENT=$(_extract content)
+fi
+
+# Only fire on arvo crate sources.
+if ! echo "$TARGET" | grep -qE "mock/crates/arvo[^/]*/src/"; then
+    allow
+fi
+
+if echo "$CONTENT" | grep -qE "^[[:space:]]*(pub[[:space:]]+)?use[[:space:]]+(::)?std::"; then
+    deny "arvo is #![no_std]; \`use std::\` is forbidden. Use core:: equivalents or keep the functionality in a consumer crate."
+fi
+
+if echo "$CONTENT" | grep -qE "^[[:space:]]*extern[[:space:]]+crate[[:space:]]+std"; then
+    deny "arvo is #![no_std]; \`extern crate std\` is forbidden."
+fi
+
+allow

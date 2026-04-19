@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# @matchers: Write, Edit
+# @timeout: 5
+# Agent hook: block `use alloc::`, `Vec`, `String`, `Box` in arvo crates.
+#
+# arvo does not allocate. Use `[T; N]` or a consumer-owned buffer.
+# The build-time `no-alloc-enforcer` lint backstops this hook.
+
+set -uo pipefail
+
+__INPUT=$(cat)
+
+{{HOOK_HELPERS}}
+
+TARGET=$(_extract file_path)
+CONTENT=$(_extract new_string)
+if [[ -z "$CONTENT" ]]; then
+    CONTENT=$(_extract content)
+fi
+
+if ! echo "$TARGET" | grep -qE "mock/crates/arvo[^/]*/src/"; then
+    allow
+fi
+
+if echo "$CONTENT" | grep -qE "^[[:space:]]*(pub[[:space:]]+)?use[[:space:]]+alloc::"; then
+    deny "arvo is no-alloc; \`use alloc::\` is forbidden. Use const-generic arrays \`[T; N]\` or take a consumer-owned buffer by reference."
+fi
+
+if echo "$CONTENT" | grep -qE "^[[:space:]]*extern[[:space:]]+crate[[:space:]]+alloc"; then
+    deny "arvo is no-alloc; \`extern crate alloc\` is forbidden."
+fi
+
+if echo "$CONTENT" | grep -qE "(^|[^a-zA-Z0-9_])Vec<"; then
+    deny "arvo is no-alloc; \`Vec<T>\` is forbidden. Use \`[T; N]\` with a const-generic capacity, or \`&mut [T]\` passed in by the consumer."
+fi
+
+if echo "$CONTENT" | grep -qE "(^|[^a-zA-Z0-9_])String([^a-zA-Z0-9_]|$)"; then
+    deny "arvo is no-alloc; \`String\` is forbidden. Use \`&str\` or a const-generic \`[u8; N]\` buffer."
+fi
+
+if echo "$CONTENT" | grep -qE "(^|[^a-zA-Z0-9_])Box<"; then
+    deny "arvo is no-alloc; \`Box<T>\` is forbidden. Store by value or hand the consumer a reference."
+fi
+
+allow

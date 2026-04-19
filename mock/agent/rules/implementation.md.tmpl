@@ -6,38 +6,102 @@ apply_to: ["crates/**/*.rs", "src/**/*.rs"]
 
 ### Mock-first workflow
 
-Design changes start in the mock workspace. Implement in mock first (trait signatures,
-struct definitions), validate with `cargo check`, then port to real implementation.
+Design changes start in the mock workspace. Types and trait
+signatures land in `mock/crates/<name>/src/` first, validated by
+`cargo check` in `mock/`, then by `cargo mock` (which also
+regenerates `docs/`).
 
-### Architecture rules
+### Strategy markers are load-bearing
 
-- Dependencies flow downward only. Extensions → SDK only. Core → SDK. CLI → Core.
-- SDK exports only traits, `repr(C)` types, and proc macros. No concrete implementations.
-- Plugins register via `#[register]` on trait impl blocks. `inventory` handles discovery.
-- No `toml::Value` outside of `polka-data` — use `DataValue` trait from SDK
-- No `&Ui` below the CLI layer — return structured results
-- All commands go through `polka-project::load()`
-- Platform is an extensible trait, not a closed enum
+Every numeric type that has a precision/throughput tradeoff carries
+`S: Strategy`. Default is `Warm`. The strategy drives storage
+container width, operation semantics (wrapping vs saturating), and
+SIMD lane count.
 
-### Type taxonomy
+```rust
+pub struct UFixed<const I: u8, const F: u8, S: Strategy = Warm> {
+    bits: S::Container<I, F>,
+}
 
-- **Trait** — varying behavior, shared contract, extensible
-- **Newtype** — fixed representation, validation at construction
-- **`repr(C)` enum** — closed set, crosses ABI boundary
-- **Primitive** — no semantic meaning beyond raw value
+pub type Ratio   = UFixed<0, 8, Warm>;
+pub type Angle   = UFixed<9, 7, Warm>;
+pub type Bool    = UFixed<1, 0, Hot>;   // explicit override
+```
 
-If it might need plugin extensions → trait, not enum.
+Strategies (summary — see
+`design_rounds/202603241200_topic.arvo-strategy-markers.md` for the
+full table):
 
-### Plugin registration
+| Strategy | Container | Arithmetic | Use case |
+|---|---|---|---|
+| `Hot` | minimum byte-aligned | wrapping | inner loops, known-safe range |
+| `Warm` (default) | 2x logical, byte-aligned | wrapping (safe on single ops) | default |
+| `Cold` | bitpacked minimum | widen-op-narrow | storage density |
+| `Precise` | 2x logical, bitpacked | saturating | correctness-critical |
 
-- `#[register]` on impl blocks generates `repr(C)` descriptors + `inventory::submit!`
-- `Named` + `Registrable` base traits with blanket impl
-- `Descriptor` trait for common metadata (name, SDK version)
-- `Registry` trait for typed discovery with built-in validation
+If you add a new numeric type and the type admits a precision
+tradeoff, it MUST carry `S: Strategy` or justify the omission in
+a code comment. The `strategy-marker-required` lint warns when a
+new `pub struct`/`pub type` in a numeric crate lacks the parameter.
+
+### Monomorphisation is the dispatch
+
+- No `dyn Trait` anywhere.
+- No `TypeId`, no `std::any::*`.
+- Sub-crates are generic over trait bounds
+  (`BitSequence`, `BitAccess`, `TotalOrd`, `Add`, `Sqrt`, `Recip`,
+  `FromConstant`).
+- Consumers pick concrete instantiations at the use site. The
+  monomorphised function IS the type identity.
+
+### Contracts before concretes
+
+- `arvo` declares numeric primitives, strategy markers, and
+  composable numeric traits.
+- `arvo-bits` declares bit-level contracts (`BitWidth`, `BitAccess`,
+  `BitSequence`). **Traits only.** A `pub struct` with fields in
+  `arvo-bits/src/**` is a layering violation.
+- `arvo-bitmask` picks `Mask64`, `Mask256`, `BitMatrix` concretes on
+  top of `arvo-bits` contracts.
+- `arvo-graph` / `arvo-sparse` / `arvo-comb` / `arvo-spectral` are
+  generic over numeric trait bounds. They do not import `UFixed` or
+  `IFixed` directly.
+
+### Sizes are const
+
+Every size lives at type level: `Mask64`, `Mask256`, `Seq<T, N>`,
+`[W; N]`. No runtime resize. No runtime grow. If you reach for
+`.push(`, `.resize(`, `.extend(`, `Vec::with_capacity`, you are
+solving the wrong problem — either make the size const-generic or
+the consumer owns the buffer.
+
+### Zero platform dep
+
+arvo does not call into the OS. No `std::thread`, `std::time`,
+`std::fs`, `std::net`, no syscalls, no clocks. Everything is pure
+compute on const-sized containers. Platform concerns belong in
+consumer crates (notably `hilavitkutin`).
+
+### no_std boilerplate
+
+Every crate root (`src/lib.rs`) starts with:
+
+```rust
+#![no_std]
+#![forbid(unsafe_op_in_unsafe_fn)]
+```
+
+`#![forbid(unsafe_op_in_unsafe_fn)]` makes unsafe blocks explicit
+inside unsafe fns. `unsafe` itself is permitted where strictly
+required for hardware intrinsics (e.g. `cttz`, `popcnt`) but must be
+minimal and documented.
 
 ### Code conventions
 
-- `anyhow` for errors, `?` propagation, no `unwrap()` in non-test code
-- Target < 300 LOC per file
-- Tests alongside source in `#[cfg(test)] mod tests`
-- Commit format: `type: lowercase imperative message`
+- Target &lt; 300 LOC per file. Hard cap 500 (the `file-size` lint
+  enforces this).
+- Tests live alongside source in `#[cfg(test)] mod tests`.
+- No `panic!` / `unwrap` / `expect` in library code. Return
+  `Option` / `Result`, or saturate (in `Precise`) / wrap (in `Warm`).
+- Commit format: `type: lowercase imperative message`.
+  See `skills/commit-style/SKILL.md`.
