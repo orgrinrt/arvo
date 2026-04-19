@@ -118,16 +118,6 @@ where
         return out;
     }
 
-    // Mark every non-head source as a branch root so the follow-up
-    // descent sees them. The descent below also seeds branch roots
-    // from fan-out points.
-    for s_pos in sources.iter_set_bits() {
-        let s = s_pos.0;
-        if s < N && s != head_idx {
-            out.branch_roots.insert(USize(s));
-        }
-    }
-
     // BFS-like queue of trunk seeds. Each entry is the start of a
     // trunk (main trunk or a branch trunk).
     let mut queue: [NodeId; N] = [NodeId::new(USize(0)); N];
@@ -135,6 +125,20 @@ where
     let mut q_tail = 0usize;
     queue[q_tail] = NodeId::new(USize(head_idx));
     q_tail += 1;
+
+    // Non-head sources become branch roots. Enqueue them so the
+    // descent below walks their sub-trunks. Without this step,
+    // disconnected components past the main trunk would be missed.
+    for s_pos in sources.iter_set_bits() {
+        let s = s_pos.0;
+        if s < N && s != head_idx {
+            out.branch_roots.insert(USize(s));
+            if q_tail < N {
+                queue[q_tail] = NodeId::new(USize(s));
+                q_tail += 1;
+            }
+        }
+    }
 
     let mut visited: Mask64 = Mask64::empty();
 
