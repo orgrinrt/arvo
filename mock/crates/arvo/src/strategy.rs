@@ -638,10 +638,10 @@ macro_rules! impl_u_narrow {
                 #[inline(always)]
                 fn u_try_narrow(v: $src_ty) -> Result<$dst_ty, ()> {
                     // Logical max for this BITS is (1 << BITS) - 1.
-                    // Compare as the wider type ($src_ty) to avoid a
-                    // narrowing cast before the check.
-                    let max: $src_ty = ((1u128 << $bits) - 1) as $src_ty;
-                    if v > max { Err(()) } else { Ok(v as $dst_ty) }
+                    // Compute via u128 so BITS up to 128 don't overflow
+                    // the source type before the comparison.
+                    let max_u128: u128 = (1u128 << $bits) - 1;
+                    if (v as u128) > max_u128 { Err(()) } else { Ok(v as $dst_ty) }
                 }
             }
         )+
@@ -655,10 +655,12 @@ macro_rules! impl_i_narrow {
                 #[inline(always)]
                 fn i_try_narrow(v: $src_ty) -> Result<$dst_ty, ()> {
                     // Signed logical range for BITS: [-(1 << (BITS-1)), (1 << (BITS-1)) - 1].
-                    let half: $src_ty = (1i128 << ($bits - 1)) as $src_ty;
-                    let min: $src_ty = -half;
-                    let max: $src_ty = half - 1;
-                    if v < min || v > max { Err(()) } else { Ok(v as $dst_ty) }
+                    // Compute via i128 so BITS up to 127 don't overflow
+                    // the source type during bound computation.
+                    let min_i128: i128 = -(1i128 << ($bits - 1));
+                    let max_i128: i128 = (1i128 << ($bits - 1)) - 1;
+                    let v_i128: i128 = v as i128;
+                    if v_i128 < min_i128 || v_i128 > max_i128 { Err(()) } else { Ok(v as $dst_ty) }
                 }
             }
         )+
