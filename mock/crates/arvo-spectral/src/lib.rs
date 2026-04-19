@@ -11,6 +11,8 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
+pub mod laplacian;
 pub mod matrix;
 
+pub use laplacian::laplacian;
 pub use matrix::Matrix;
