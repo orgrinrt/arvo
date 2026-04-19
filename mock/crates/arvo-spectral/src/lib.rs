@@ -11,10 +11,12 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
+pub mod fiedler;
 pub mod laplacian;
 pub mod matrix;
 pub mod power;
 
+pub use fiedler::fiedler_vector;
 pub use laplacian::laplacian;
 pub use matrix::Matrix;
 pub use power::power_iteration;
