@@ -16,6 +16,8 @@
 
 pub mod mask;
 pub mod node;
+pub mod ops;
 
 pub use mask::{Mask, Mask256, Mask64};
 pub use node::NodeId;
+pub use ops::{SetBitsIter256, SetBitsIter64};
