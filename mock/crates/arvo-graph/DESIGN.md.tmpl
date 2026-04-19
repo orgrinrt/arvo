@@ -13,6 +13,13 @@ variants (256 nodes) share the algorithmic shape; only the bitmask
 backing changes. They are tracked in `BACKLOG.md.tmpl` and can be
 added by a follow-up round without a design change.
 
+`const N: Cap` carries arvo's capacity newtype on every public
+signature. Array storage inside bodies unwraps via `cap_size(c: Cap)
+-> usize` (re-exported from arvo-bitmask). Array return types in
+signatures below are shown as `[X; N]` for readability; the compiled
+form is `[X; cap_size(N)]` with the implied `where [(); cap_size(N)]:`
+bound.
+
 Generic over numeric trait bounds for weight types. Does not import
 UFixed or IFixed directly. Consumer instantiates with concrete arvo
 types; this crate is library code.
@@ -20,7 +27,7 @@ types; this crate is library code.
 ## Weight type contract
 
 ```rust
-fn upward_rank<const N: usize, W>(
+fn upward_rank<const N: Cap, W>(
     dag: &BitMatrix64<N>,
     weights: &[W; N],
 ) -> [W; N]
@@ -42,7 +49,7 @@ choosing W.
 Kahn's algorithm on BitMatrix adjacency:
 
 ```rust
-fn topo_sort<const N: usize>(
+fn topo_sort<const N: Cap>(
     dag: &BitMatrix64<N>,
 ) -> (USize, [NodeId; N])  // (valid_count, topo_order)
 ```
@@ -56,7 +63,7 @@ sorted before the cycle was hit.
 ## Node renumbering
 
 ```rust
-fn renumber<const N: usize>(
+fn renumber<const N: Cap>(
     topo_order: &[NodeId; N],
 ) -> [NodeId; N]
 ```
@@ -70,14 +77,14 @@ sequential for the prefetcher.
 ## Rank computation
 
 ```rust
-fn upward_rank<const N: usize, W>(
+fn upward_rank<const N: Cap, W>(
     dag: &BitMatrix64<N>,
     weights: &[W; N],
 ) -> [W; N]
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant
 
-fn downward_rank<const N: usize, W>(
+fn downward_rank<const N: Cap, W>(
     dag: &BitMatrix64<N>,
     weights: &[W; N],
 ) -> [W; N]
@@ -97,7 +104,7 @@ Both computed in one pass each over the topo-ordered nodes.
 ## Connected components
 
 ```rust
-fn components<const N: usize>(
+fn components<const N: Cap>(
     dag: &BitMatrix64<N>,
 ) -> [USize; N]
 ```
@@ -113,7 +120,7 @@ component membership with block-diagonal detection results.
 ## Longest/shortest weighted path
 
 ```rust
-fn longest_path<const N: usize, W>(
+fn longest_path<const N: Cap, W>(
     dag: &BitMatrix64<N>,
     weights: &[W; N],
     topo_order: &[NodeId; N],
@@ -140,7 +147,7 @@ per-element compute cost in a pipeline setting.
 ## Waist detection
 
 ```rust
-fn waist_detect<const N: usize>(
+fn waist_detect<const N: Cap>(
     dag: &BitMatrix64<N>,
     topo_order: &[NodeId; N],
 ) -> Mask
@@ -162,14 +169,14 @@ natural phase boundaries in a staged pipeline.
 ## Spanning tree decomposition
 
 ```rust
-pub struct SpanningTree<const N: usize> {
+pub struct SpanningTree<const N: Cap> {
     pub on_trunk: Mask,               // which nodes are on the trunk
     pub trunk_next: [NodeId; N],      // next node on trunk (valid where on_trunk is set)
     pub branch_roots: Mask,           // nodes that start branches
     pub bridges: Mask,                // fan-in nodes (mandatory fiber breaks)
 }
 
-fn spanning_tree<const N: usize, W>(
+fn spanning_tree<const N: Cap, W>(
     dag: &BitMatrix64<N>,
     ranks: &[W; N],
 ) -> SpanningTree<N>
