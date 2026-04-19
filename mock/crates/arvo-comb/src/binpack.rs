@@ -15,8 +15,9 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::USize;
+use arvo::newtype::{Cap, USize};
 use arvo::traits::{FromConstant, TotalOrd};
+use arvo_bitmask::cap_size;
 
 /// First-fit bin packing with affinity-based pre-ordering.
 ///
@@ -29,29 +30,31 @@ use arvo::traits::{FromConstant, TotalOrd};
 /// bin index for `items[i]`, keyed by original order. `bin_count` is
 /// the number of bins that received at least one item (never greater
 /// than `B`).
-pub fn bin_pack<const N: usize, const B: usize, T, W>(
-    items: &[T; N],
+pub fn bin_pack<const N: Cap, const B: Cap, T, W>(
+    items: &[T; cap_size(N)],
     capacity: W,
     weight_of: impl Fn(&T) -> W,
     affinity: impl Fn(&T, &T) -> W,
-) -> (USize, [USize; N])
+) -> (USize, [USize; cap_size(N)])
 where
+    [(); cap_size(N)]:,
+    [(); cap_size(B)]:,
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
 {
     let zero = <W as FromConstant>::from_constant(0);
-    let mut bins_of_items: [USize; N] = [USize(0); N];
+    let mut bins_of_items: [USize; cap_size(N)] = [USize(0); cap_size(N)];
 
-    if N == 0 || B == 0 {
+    if cap_size(N) == 0 || cap_size(B) == 0 {
         return (USize(0), bins_of_items);
     }
 
     // Total-affinity score per item: sum over all other items.
-    let mut score: [W; N] = [zero; N];
+    let mut score: [W; cap_size(N)] = [zero; cap_size(N)];
     let mut a: usize = 0;
-    while a < N {
+    while a < cap_size(N) {
         let mut s = zero;
         let mut b: usize = 0;
-        while b < N {
+        while b < cap_size(N) {
             if a != b {
                 s = s + affinity(&items[a], &items[b]);
             }
@@ -63,14 +66,14 @@ where
 
     // Index array sorted by `score` descending via insertion sort.
     // Bounded N, O(N^2) in the const size, no alloc.
-    let mut order: [USize; N] = [USize(0); N];
+    let mut order: [USize; cap_size(N)] = [USize(0); cap_size(N)];
     let mut i: usize = 0;
-    while i < N {
+    while i < cap_size(N) {
         order[i] = USize(i);
         i += 1;
     }
     let mut j: usize = 1;
-    while j < N {
+    while j < cap_size(N) {
         let cur = order[j];
         let cur_score = score[cur.0];
         let mut k: usize = j;
@@ -93,12 +96,12 @@ where
     // Bin used-weight vector. All start at zero. A fit check compares
     // `used[b] + w` against `capacity` using `TotalOrd::total_cmp`,
     // which avoids requiring `Sub` on `W`.
-    let mut used: [W; B] = [zero; B];
+    let mut used: [W; cap_size(B)] = [zero; cap_size(B)];
     let mut opened: usize = 0;
 
     // Walk items in affinity-descending order and place first-fit.
     let mut p: usize = 0;
-    while p < N {
+    while p < cap_size(N) {
         let idx = order[p].0;
         let w = weight_of(&items[idx]);
 
@@ -118,7 +121,7 @@ where
         }
 
         // Open a new bin if capacity allows and we are under `B`.
-        if !placed && opened < B {
+        if !placed && opened < cap_size(B) {
             if !matches!(w.total_cmp(&capacity), Ordering::Greater) {
                 used[opened] = w;
                 bins_of_items[idx] = USize(opened);

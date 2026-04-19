@@ -10,7 +10,8 @@
 //! the default for pipeline grouping where the DP's quadratic table is
 //! oversized.
 
-use arvo::newtype::USize;
+use arvo::newtype::{Cap, USize};
+use arvo_bitmask::cap_size;
 
 use crate::range::Range;
 
@@ -30,17 +31,21 @@ use crate::range::Range;
 /// If a just-reset accumulator still reports an item as infeasible,
 /// that item is skipped to avoid an infinite loop. A well-formed
 /// predicate should always accept the first item of a fresh group.
-pub fn greedy_group<const N: usize, const M: usize, A, T>(
-    items: &[T; N],
+pub fn greedy_group<const N: Cap, const M: Cap, A, T>(
+    items: &[T; cap_size(N)],
     feasible: impl Fn(&A, &T) -> bool,
     merge: impl Fn(A, &T) -> A,
     init: impl Fn() -> A,
-) -> (USize, [Range; M]) {
-    let mut groups: [Range; M] = [Range::default(); M];
+) -> (USize, [Range; cap_size(M)])
+where
+    [(); cap_size(N)]:,
+    [(); cap_size(M)]:,
+{
+    let mut groups: [Range; cap_size(M)] = [Range::default(); cap_size(M)];
     let mut count: usize = 0;
 
     // Empty input: no groups.
-    if N == 0 || M == 0 {
+    if cap_size(N) == 0 || cap_size(M) == 0 {
         return (USize(count), groups);
     }
 
@@ -50,7 +55,7 @@ pub fn greedy_group<const N: usize, const M: usize, A, T>(
     let mut open = false;
     let mut i: usize = 0;
 
-    while i < N {
+    while i < cap_size(N) {
         let item = &items[i];
 
         if !open {
@@ -80,7 +85,7 @@ pub fn greedy_group<const N: usize, const M: usize, A, T>(
             end: USize(i),
         };
         count += 1;
-        if count == M {
+        if count == cap_size(M) {
             return (USize(count), groups);
         }
 
@@ -91,10 +96,10 @@ pub fn greedy_group<const N: usize, const M: usize, A, T>(
     }
 
     // Close the trailing open group.
-    if open && count < M {
+    if open && count < cap_size(M) {
         groups[count] = Range {
             start: USize(range_start),
-            end: USize(N),
+            end: USize(cap_size(N)),
         };
         count += 1;
     }
