@@ -99,16 +99,39 @@ impl Strategy for Precise {
 /// uses `<S as UContainerFor<{I.0 + F.0}>>::T` as its storage.
 /// Absence of an impl is how Warm at `BITS > 32` becomes a compile
 /// error.
+///
+/// The associated-type bound is the minimum surface every concrete
+/// container satisfies (u8/u16/u32/u64). Keeping it broad here lets
+/// `UFixed` delegate Copy/Eq/Ord/Default without re-bounding on the
+/// const expression in every impl block.
 pub trait UContainerFor<const BITS: u8>: Strategy {
     /// Concrete storage integer for this (strategy, bit-width) pair.
-    type T: Copy + Clone + Default + core::fmt::Debug + 'static;
+    type T: Copy
+        + Clone
+        + PartialEq
+        + Eq
+        + PartialOrd
+        + Ord
+        + Default
+        + core::hash::Hash
+        + core::fmt::Debug
+        + 'static;
 }
 
 /// Signed container dispatch. Same shape as `UContainerFor` with
 /// signed integers. `BITS` is the total `1 + I + F` for `IFixed`.
 pub trait IContainerFor<const BITS: u8>: Strategy {
     /// Concrete signed storage integer for this (strategy, bit-width) pair.
-    type T: Copy + Clone + Default + core::fmt::Debug + 'static;
+    type T: Copy
+        + Clone
+        + PartialEq
+        + Eq
+        + PartialOrd
+        + Ord
+        + Default
+        + core::hash::Hash
+        + core::fmt::Debug
+        + 'static;
 }
 
 // --- Container impl table --------------------------------------------------
@@ -267,6 +290,33 @@ pub const fn ufixed_bits(i: IBits, f: FBits) -> u8 {
 #[inline(always)]
 pub const fn ifixed_bits(i: IBits, f: FBits) -> u8 {
     1 + i.0 + f.0
+}
+
+/// Extract the inner `u8` of an `IBits`.
+///
+/// Wrapping this in a const fn lets it appear inside anonymous
+/// const-generic expressions — direct field access (`I.0`) is not
+/// permitted there on current nightly.
+#[inline(always)]
+pub const fn ibits_u8(i: IBits) -> u8 {
+    i.0
+}
+
+/// Extract the inner `u8` of an `FBits`.
+///
+/// See `ibits_u8` for why this exists as a free function.
+#[inline(always)]
+pub const fn fbits_u8(f: FBits) -> u8 {
+    f.0
+}
+
+/// Indicator const: `1` when `f > 0`, `0` when `f == 0`.
+///
+/// Used to express "F has a fractional component" in const-generic
+/// where-clauses without field access or struct construction.
+#[inline(always)]
+pub const fn is_fractional(f: FBits) -> usize {
+    if f.0 == 0 { 0 } else { 1 }
 }
 
 // --- Strategy resolution for cross-strategy ops ----------------------------

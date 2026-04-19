@@ -36,6 +36,24 @@ pub struct IBits(pub u8);
 #[repr(transparent)]
 pub struct FBits(pub u8);
 
+// `generic_const_exprs` on current nightly forbids struct construction
+// and field access inside anonymous `{ ... }` const arguments. Any site
+// that wants `IBits(0)` / `FBits(0)` etc. as a const-generic arg must
+// reference one of these named constants.
+impl IBits {
+    /// Zero integer bits.
+    pub const ZERO: IBits = IBits(0);
+    /// One integer bit (used by the `Bit` alias in arvo-bits).
+    pub const ONE: IBits = IBits(1);
+}
+
+impl FBits {
+    /// Zero fractional bits (pure integer).
+    pub const ZERO: FBits = FBits(0);
+    /// One fractional bit.
+    pub const ONE: FBits = FBits(1);
+}
+
 /// Index / count newtype wrapping `usize`.
 ///
 /// Wraps `usize` for the arvo-types-only lint. `Deref<Target = usize>`
