@@ -1,0 +1,120 @@
+# arvo — backlog
+
+Items researched and decided but deliberately out of the current
+shipping scope. Preserved here so a future round (or consumer) can
+pick them up without redoing the research. Kept OUT of DESIGN.md.tmpl
+specifically so the `design-doc-source-mismatch` lint doesn't flag
+these as undocumented source items — they're designed-but-deferred,
+not shipped-and-missing.
+
+Convention: entries here are promissory. If a consumer or future
+round promotes one of these to shipping scope, move its documentation
+into the corresponding crate DESIGN.md.tmpl and delete the entry
+here.
+
+## Semantic domain aliases (researched widths)
+
+Shipped by polka-dots; dropped from arvo L0 per doc CL D1 (consumer
+concern). Each width was chosen deliberately; when a consumer
+re-introduces one, these are the researched defaults. Names are
+written unquoted so the design-doc lint does not treat them as
+backticked types.
+
+| Alias     |  I |  F | Rationale                                           |
+|-----------|---:|---:|-----------------------------------------------------|
+| Ratio     |  0 |  8 | pure fractional [0, 1) — probabilities, weights     |
+| Factor    |  2 |  8 | [0, 4) range — multipliers, scale factors           |
+| Norm      |  1 | 14 | signed [-1, 1) — normalised eigenvector components  |
+| Angle     |  9 |  7 | 512+ directions, sub-degree precision               |
+| Coord     | 16 | 16 | ±65k range with sub-pixel precision                 |
+| Count     | 32 |  0 | row / element counts                                |
+| Average   | 16 | 16 | symmetric precision for means of coordinates        |
+| Deviation |  8 | 24 | mostly fractional — variance components             |
+| Bool      |  1 |  0 | single-bit; stays Hot (no precision to lose)        |
+
+Default strategy `Warm` in consumer code, except `Bool` which stays
+`Hot`. Source: polka-dots loimu-primitives.
+
+## Deferred newtypes
+
+Decided to live in consuming layers, not L0:
+
+- ByteCount — `u64` wrapping byte counts. Belongs where memory sizing
+  happens (column storage layer / arena engine).
+- Alignment — power-of-two alignment value. Belongs at the storage
+  boundary.
+- CoreCount — small-int CPU core count. Platform-environment; lives
+  adjacent to `ThreadPool`.
+- Nanoseconds — `u64` nanosecond count. Lives adjacent to `Clock`.
+
+No written rationale for specific widths survived into polka-dots
+design docs; pick per-consumer as needs arise.
+
+## Cross-width and cross-strategy arithmetic
+
+The L0 implementation ships same-strategy same-width arithmetic only.
+Cross-width (different I / F between operands) and cross-strategy
+(different S between operands) `Add` / `Sub` / `Mul` / `Div` impls
+are blocked on `generic_const_exprs` support for `max()` in const
+arguments and const-expression projection over associated types on
+current nightly. Deferred to a later round when the const evaluator
+catches up or an alternative encoding surfaces.
+
+## Numeric trait impls deferred beyond L0
+
+- `Sqrt` / `Recip` for fractional `UFixed` / `IFixed` need
+  fixed-point division routines that were out of scope for L0. Only
+  integer `Sqrt` and float `Sqrt` / `Recip` land this round.
+- `FromConstant` coverage is currently per-concrete-tuple via macro;
+  a blanket impl awaits a richer const-generic projection surface.
+
+## Benchmark round
+
+Exhaustive comparison of arvo types vs raw `f32` / `f64` / `u32` /
+`u64` across add / sub / mul / div / sqrt / recip and chain lengths
+1 / 4 / 16 / 64, per strategy. Purpose: prove arvo types add no
+overhead beyond the strategy's intended cost. Any unexpected overhead
+is a bug to fix, not accept. Scope: its own round once the substrate
+is green.
+
+## Post-review notes
+
+Items surfaced during a post-shipping review of the substrate; kept
+here for future rounds to pick up.
+
+- Cap upper-bound enforcement. Cap(pub USize) lacks any cap on the
+  inner USize; constructing Cap(USize(usize::MAX)) is silently legal
+  even though array-sized-at-N would fail to compile or exhaust the
+  stack. A future round should consider non-pub inner fields with a
+  constructor that enforces a pragmatic ceiling (roughly 2^24 as a
+  stack-array ceiling under modern OS stack sizes). Ties into
+  ConstParamTy newtype hygiene.
+- cap_size duplication. The cap_size helper is defined separately in
+  arvo-bitmask/src/matrix.rs and arvo-spectral/src/matrix.rs. Resolve
+  to a single definition when Matrix promotes into arvo-sparse (the
+  Matrix-in-arvo-sparse item in arvo-spectral's BACKLOG). Both copies
+  are identical today; the duplication is a promotion artefact.
+- StrictFloat::sqrt no_std correctness. The 7-ULP Newton-Raphson
+  approximation used by sqrt_f32 / sqrt_f64 violates the bit-exact
+  IEEE 754 contract StrictFloat promises. The approximation is
+  acceptable for current consumer surfaces (spectral partitioning
+  Fiedler-vector sign inspection, no bit-exact dependence). Integrate
+  libm or musl-math when a consumer actually depends on
+  correctly-rounded sqrt in no_std. An std-gated path is rejected —
+  arvo's no_std discipline is absolute.
+- Wrapping div-by-zero semantic. Hot / Warm / Cold wrapping div
+  returns the numerator unchanged when the divisor is zero. Wrapping
+  has no identity for zero; silent garbage is strictly preferable to
+  a panic under the Hot / Warm single-instruction discipline. If a
+  consumer surfaces a need for a different sentinel (e.g. zero), add
+  a checked_div variant rather than change the existing contract.
+- Const-generic bit accessors. The three free const fns in
+  strategy.rs (ibits_u8, fbits_u8, is_fractional) return raw u8 /
+  usize so IBits / FBits values can appear inside anonymous
+  const-generic expressions where direct field access is disallowed
+  on the current nightly. Tracked via allow-bare-numeric annotations
+  pointing at Task #71. Collapse into a single Bits newtype method
+  (e.g. const fn Bits::as_u8(self) -> u8) once nightly loosens
+  struct-construction rules in const args. No timeline — gated on
+  upstream rustc.
+

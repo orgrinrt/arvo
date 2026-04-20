@@ -8,17 +8,40 @@ Generic over numeric trait bounds for cost and weight types. Does not
 import UFixed or IFixed directly. Consumer instantiates with concrete
 arvo types; this crate is library code.
 
+`const N: Cap` / `const M: Cap` / `const B: Cap` carry arvo's
+capacity newtype on every public signature. Array storage unwraps
+via `cap_size(c: Cap) -> usize`, imported from arvo-bitmask.
+Array types `[T; N]` shown in signatures below compile to `[T;
+cap_size(N)]` with the implied `where [(); cap_size(N)]:` bound.
+
+## Range
+
+```rust
+pub struct Range {
+    pub start: USize,
+    pub end: USize,
+}
+```
+
+A half-open interval `[start, end)` over indices. Used by
+`greedy_group` as the output element. `#[repr(transparent)]` is not
+used (two fields); `Copy + Eq + Default + Debug` derived.
+
 ## Cost type contract
 
 ```rust
-fn matrix_chain_dp<W>(costs: impl Fn(usize, usize) -> W) -> W
+fn matrix_chain_dp<const N: Cap, W>(
+    cost: impl Fn(USize, USize) -> W,
+    feasible: impl Fn(USize, USize) -> bool,
+) -> (W, [USize; N])
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant
 ```
 
 Same bounds as arvo-graph rank computation. Addition, ordering, copy,
 zero. The consumer's cost function returns a type satisfying these
-bounds; the DP accumulates and compares via trait bounds.
+bounds; the DP accumulates and compares via trait bounds. Internal DP
+table is stack-allocated `[[W; N]; N]`.
 
 ## Greedy interval grouping
 
@@ -26,66 +49,88 @@ Fully generic. No numeric traits needed — the feasibility predicate
 and merge function are closures:
 
 ```rust
-fn greedy_group<A, T>(
-    items: &[T],
+fn greedy_group<const N: Cap, const M: Cap, A, T>(
+    items: &[T; N],
     feasible: impl Fn(&A, &T) -> bool,
     merge: impl Fn(A, &T) -> A,
-    init: A,
-) -> Vec<(usize, usize)>  // ranges
+    init: impl Fn() -> A,
+) -> (USize, [Range; M])
 ```
 
 Sequential grouping under a feasibility predicate. Walk items in
 order; accumulate into current group while feasible; break when
-infeasible and start new group.
+infeasible and start new group. Returns `(group_count, groups)` —
+only the first `group_count` entries of `groups` are meaningful.
 
-hilavitkutin specialises for fiber formation (domain 14 step 3,
-domain 15 step 9): walk WUs in RCM-reordered topo order, accumulate
-column sets, break when the holistic feasibility check fails or
-fan-in occurs. Default algorithm for <=10 ops or as fallback.
+`M` is the caller-supplied upper bound on the number of groups. It
+must be ≥ ceil(N / min_group_size); the algorithm asserts this at
+compile time by bounding `M >= 1` and at runtime by returning early
+if the group array fills.
+
+Typical application: walk nodes in an RCM-reordered topo order,
+accumulate access sets, break when a feasibility predicate fails or
+a mandatory boundary (fan-in) occurs. Default algorithm for small
+problem sizes or as a fallback for DP-based variants.
 
 ## Matrix chain ordering DP
 
 Optimal grouping of sequential items into intervals, minimizing total
 cost under feasibility constraints. Generic over:
+
 - Cost function: `cost(i, j) -> W` where W satisfies trait bounds
 - Feasibility predicate: `feasible(i, j) -> bool`
 
 DP recurrence: `dp[i][j] = min over valid split points k: dp[i][k] + dp[k+1][j]`
 
-hilavitkutin specialises for fiber grouping (domain 15 step 8):
-- Cost: `record_count x sum of size_of::<T_k>()` for union columns of
-  ops i..j (representing memory bandwidth consumed by one data walk
-  through the fiber's arena)
-- Feasibility: the holistic check from domain 14 (register file +
-  L1 write budget + L1+L2 total + no fan-in + no pipeline breaker)
+Returns `(optimal_cost, split_points)` where `split_points` is the
+recorded split for each interval length. Stack table `[[W; N]; N]`.
 
-Used when >10 ops (T3 decision #70). Explores full solution space
-vs greedy's left-to-right sequential join.
+Typical pipeline-grouping application:
+- Cost: `element_count × sum of size_of::<T_k>()` for union data
+  of ops `i..j` (memory bandwidth of one walk over the group's arena).
+- Feasibility: a holistic resource check (register file, L1 write
+  budget, L1+L2 total, no fan-in, no pipeline breaker).
+
+Researched threshold: use DP when problem size exceeds 10 units;
+fall back to greedy's left-to-right sequential join below that
+(polka-dots T3 decision #70).
 
 ## Bin-packing
 
 Two-level greedy bin-packing. Pack items into fixed-capacity bins,
 minimizing bin count.
 
-Generic over:
-- Item type with a weight/affinity metric (trait-bounded)
-- Bin capacity (const generic)
-- Affinity function: `affinity(item_a, item_b) -> W`
+```rust
+fn bin_pack<const N: Cap, const B: Cap, T, W>(
+    items: &[T; N],
+    capacity: W,
+    weight_of: impl Fn(&T) -> W,
+    affinity: impl Fn(&T, &T) -> W,
+) -> (USize, [USize; N])
+where
+    W: Add<Output = W> + TotalOrd + Copy + FromConstant
+```
 
-hilavitkutin specialises for virtual flag bit assignment (domain 10):
-co-firing virtuals packed into the same byte/word for hierarchical
-skip (u64 == 0 -> skip 64 bits). Affinity-ordered: items with high
-co-fire frequency placed adjacent.
+Returns `(bin_count, bin_id_per_item)`. `B` is the upper bound on the
+number of bins (used for internal stack-allocated per-bin accumulator
+arrays). `W` is the weight/affinity numeric type, must be addable,
+ordered, copyable, and have a zero via `FromConstant`.
 
-## Deferred: Morton/Hilbert dispatch ordering
+Common application: bit assignment for co-firing flags — items that
+co-fire packed into the same byte/word enable hierarchical skip
+(u64 == 0 → skip 64 bits). Affinity-ordered: high-co-fire pairs
+placed adjacent.
 
-Morton or Hilbert space-filling curve ordering for dispatch
-interleaving (T3 decisions #71-74). Same constraint representation
-as greedy grouping. Not day-one.
+## Deferred: Morton / Hilbert dispatch ordering
+
+Space-filling curve ordering for dispatch interleaving. Same
+constraint representation as greedy grouping. Not day-one.
 
 ## Sources
 
 - 202603241400_topic.arvo-crate-dependency-revision.md (generic contracts)
-- T3 L1837-1937 (matrix chain ordering DP)
-- T3 decisions #70 (DP when >10 ops)
-- T5 L233-247 (affinity-ordered bit assignment)
+- 202604191900_changelist.doc.md (this round)
+- T3 L1837-1937 (matrix chain ordering DP — polka-dots)
+- T3 decision #70 (DP when problem size >10 — polka-dots)
+- T5 L233-247 (affinity-ordered bit assignment — polka-dots)
+- T3 decisions #71-74 (deferred Morton / Hilbert dispatch ordering — polka-dots)

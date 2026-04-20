@@ -1,0 +1,50 @@
+a585286 chore: lock arvo-bits src CL 202604200200
+b09322c docs: regenerate after arvo-bits impl
+40af398 test: cover arvo-bits traits primitives and aliases
+91b888a feat: wire arvo-bits module tree and public re-exports
+32081b0 feat: add Bit Nibble Byte Word DWord QWord semantic aliases
+32c85c1 feat: impl bit contracts on IFixed via IBitContainer bridge
+9046b94 feat: impl bit contracts on UFixed via UBitContainer bridge
+6909bc4 feat: add BitWidth BitAccess BitSequence contracts
+182101f feat: add sealed BitPrim and IBitPrim primitive bit bridges
+d8c75cb docs: draft arvo-bits src CL 202604200200
+1feee7e chore: lock arvo-bits doc CL 202604200100
+4c19953 docs: update arvo-bits DESIGN for concrete-impl strategy
+b116bb1 docs: open arvo-bits impl round with topic and doc CL
+c326fa3 chore: close arvo L0 design round 202604191900
+f4f52ef chore: lock arvo L0 src CL 202604192300
+ddd9db4 docs: fix src CL comparison subheaders + float-width backtick coverage
+3d7c8a6 docs: draft arvo L0 src CL 202604192300 with full comparison
+4a156ce chore: lock doc CL 202604191900 after backlog split + comparison
+ee33750 docs: split backlog to BACKLOG.md.tmpl, add doc-CL comparison section
+63e5c54 chore: unlock arvo round to restructure DESIGN + add BACKLOG
+a35eda9 chore: regenerate docs from cargo mock
+f2d21ab test: add strategy semantics warm-bound ops and conversion tests
+b79a6ff fix: widen narrow bound computation to avoid overflow at bits=64
+cd525c2 feat: add strategy conversions for ufixed and ifixed
+9c90e67 feat: add same-strategy add sub mul div for ufixed and ifixed
+afb8ea8 feat: add numeric traits totalord sqrt recip abs fromconstant
+1354392 chore: regen docs against mockspace 54a40c6
+5a0f890 chore: regen arvo hooks with repo-scoped _scope_or_allow helper
+4d9cc22 feat: add float wrappers and Ieee trait
+2f652af feat: add IFixed type
+e0bc4bf feat: add markers and UFixed type
+acf1ccb feat: add strategy markers and container dispatch
+ae10737 feat: add arvo newtype primitives
+7ce46d4 chore: pin mock workspace to nightly toolchain
+65c2383 docs: reopen arvo L0 src CL (202604192200) for impl phase
+41a41a6 chore: relock arvo doc CL before src CL rewrite
+6beecb0 chore: unlock arvo round for impl phase
+dc8bdeb chore: lock arvo L0 src CL 202604192100
+69f5cde docs: draft arvo L0 src CL 202604192100 with Ieee-generic floats
+acaf7d8 chore: re-lock arvo doc CL 202604191900 after citation restore
+c31453f docs: restore polka-dots research citations and add L0 backlog
+8117783 chore: unlock arvo doc CL to restore research citations
+d9bd27c docs: draft arvo L0 src changelist 202604192000
+1e63820 chore: lock doc changelist 202604191900
+4c38eb5 docs: apply arvo L0-L3 design edits per doc CL 202604191900
+ea9811b docs: open arvo L0-L3 doc changelist
+570226e chore: deprecate doc changelist 202603241500
+887de2b refactor: compress PREAMBLE and POSTAMBLE to <=25 words each
+ab0e919 chore: gitignore generated agent artifacts; commit docs, lock, cargo alias
+5fc1737 refactor: rewrite mock/agent for arvo domain; add lints, hooks, config

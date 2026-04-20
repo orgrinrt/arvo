@@ -4,29 +4,83 @@ apply_to: ["**/Cargo.toml"]
 
 ## Cargo workspace rules
 
-### Mock workspace
+### Mock workspace inheritance
 
-- All polka crates use `version.workspace = true`, `edition.workspace = true`
-- Sibling dependencies use `.workspace = true` syntax
-- External dependencies declared in `[workspace.dependencies]`
-- Edition 2024 for all crates
+- Every `arvo*` crate uses `version.workspace = true`,
+  `edition.workspace = true`, `license.workspace = true`.
+- Sibling arvo deps use `<name>.workspace = true` (declared once in
+  `[workspace.dependencies]` as path deps).
+- External deps (if ever needed) are declared in
+  `[workspace.dependencies]`, not per-crate.
+- Edition 2024 for all crates.
 
-### Dependency direction
+### Layer rules (dependency direction)
 
-- **SDK** (primitives, derive, sdk): no polka crate deps (primitives), or only lower SDK crates
-- **Core: Data** (data, catalogue, project): depends on polka-sdk
-- **Core: Execution** (pipeline, scheduler, audit): depends on polka-sdk + relevant core:data crates
-- **CLI** (cli): depends on core crates + polka-sdk
-- **Extensions** (lang-polka, source-brew, etc.): depends on polka-sdk ONLY
+arvo is a four-layer stack. Cross-layer imports flow one way only.
 
-### Proc-macro crates
+| Layer | Crate | Allowed deps |
+|---|---|---|
+| L0 | `arvo` | (none within arvo family) |
+| L1 | `arvo-bits` | `arvo` |
+| L2 | `arvo-bitmask` | `arvo-bits` |
+| L2 | `arvo-graph` | `arvo`, `arvo-bitmask` |
+| L2 | `arvo-sparse` | `arvo`, `arvo-bitmask` |
+| L2 | `arvo-comb` | `arvo`, `arvo-bitmask` |
+| L3 | `arvo-spectral` | `arvo`, `arvo-sparse` |
 
-- `polka-derive` is `[lib] proc-macro = true`
-- Only exports procedural macros
-- Depends on polka-primitives for type references
+Notes:
 
-### Extension crates (cdylib)
+- `arvo-graph` / `arvo-sparse` / `arvo-comb` depend on `arvo-bitmask`
+  (not `arvo-bits` directly). They reach bit contracts transitively.
+- `arvo-spectral` uses `arvo-sparse` for the matrix layout. Spectral
+  math doesn't need bitmask adjacency.
+- The lint `forbidden-imports` in `mockspace.toml` encodes this
+  table. Violations are rejected at build time.
 
-- Extension crates use `[lib] crate-type = ["cdylib"]`
-- Depend on polka-sdk only — no core crate dependencies
-- Compiled as dynamic libraries for plugin loading
+### No external runtime deps (except notko foundation)
+
+- No `std`, no `alloc`. `#![no_std]` crate attribute is mandatory.
+- No platform crates: no `libc`, `windows-sys`, `nix`, `mio`,
+  `tokio`, `async-std`, `rayon`, `crossbeam`, `parking_lot`.
+- No allocator crates: no `bumpalo`, `typed-arena`, `smallvec`.
+  Consumers own allocation; arvo never calls out.
+- No numeric helper crates (`num`, `num-traits`, `fixed`): arvo
+  declares its own numeric traits.
+
+`notko` is the single permitted workspace-foundation dep. It is
+the clause-dev primitive-vocabulary crate (`Just<T>` / `Maybe<T>` /
+`Outcome<T, E>` / `Boundable` / `NonZeroable`), ships from
+`github.com/orgrinrt/notko`, is `#![no_std]` with zero runtime
+deps, and is consumed by every clause-dev repo (arvo, hilavitkutin,
+clause). `notko-macros` and `notko-build` are pulled only when a
+crate genuinely needs `#[optimize_for]` or build-time optimiser
+distribution.
+
+If any other optional crate is genuinely needed (e.g. cpu-feature
+detection for a SIMD fallback), it must be behind a default-off
+feature gate and listed explicitly in a design round before landing.
+
+### No proc-macro crates
+
+arvo does not ship a proc-macro crate. `proc_macro_crates = []` in
+`mockspace.toml`. If a `_derive` crate becomes necessary, its
+addition is a design-round topic, not a routine edit.
+
+### build.rs pattern
+
+Every arvo crate has a one-line `build.rs`:
+
+```rust
+fn main() { mockspace::bootstrap_from_buildscript(); }
+```
+
+and:
+
+```toml
+[build-dependencies]
+mockspace = { workspace = true }
+```
+
+Mockspace's bootstrap writes `.cargo/config.toml` (`cargo mock`
+alias) and installs hooks under `mock/target/hooks/` on first build.
+Do not hand-author those files.

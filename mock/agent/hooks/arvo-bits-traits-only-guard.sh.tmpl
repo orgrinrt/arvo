@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# @matchers: Write, Edit
+# @timeout: 5
+# Agent hook: block fielded `pub struct` in `arvo-bits/src/**`.
+#
+# arvo-bits is contracts only — traits with default methods and
+# blanket impls. Concrete storage (`Mask64`, `Mask256`, `BitMatrix`)
+# lives in arvo-bitmask. Marker structs (`pub struct Foo;`) are
+# allowed. The `arvo-bits-traits-only` lint is the build-time backstop.
+
+set -uo pipefail
+
+__INPUT=$(cat)
+
+{{HOOK_HELPERS}}
+
+FILE_PATH=$(_extract file_path)
+COMMAND=""
+_scope_or_allow
+
+TARGET="$FILE_PATH"
+CONTENT=$(_extract new_string)
+if [[ -z "$CONTENT" ]]; then
+    CONTENT=$(_extract content)
+fi
+
+# Only fire on arvo-bits sources.
+if ! echo "$TARGET" | grep -q "mock/crates/arvo-bits/src/"; then
+    allow
+fi
+
+# Scan for `pub struct Name {` or `pub struct Name(` — a body or a
+# tuple struct. Bare `pub struct Name;` is fine (marker).
+if echo "$CONTENT" | grep -qE "^[[:space:]]*pub[[:space:]]+struct[[:space:]]+[A-Za-z_][A-Za-z0-9_]*(<[^>]*>)?[[:space:]]*[\{(]"; then
+    deny "arvo-bits is contracts only; fielded \`pub struct\` is forbidden here. Declare a trait + blanket impls instead, or move the concrete type to arvo-bitmask."
+fi
+
+allow
