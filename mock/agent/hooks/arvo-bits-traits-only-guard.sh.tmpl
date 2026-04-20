@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 # @matchers: Write, Edit
 # @timeout: 5
-# Agent hook: block fielded `pub struct` in `arvo-bits/src/**`.
+# Agent hook: block arithmetic fielded `pub struct` in arvo-bits.
 #
-# arvo-bits is contracts only — traits with default methods and
-# blanket impls. Concrete storage (`Mask64`, `Mask256`, `BitMatrix`)
-# lives in arvo-bitmask. Marker structs (`pub struct Foo;`) are
-# allowed. The `arvo-bits-traits-only` lint is the build-time backstop.
+# arvo-bits hosts bit-level contracts and a small set of opaque-bit
+# concrete containers. Arithmetic fielded types (UFixed, IFixed)
+# belong in L0 arvo; mask concretes (Mask64, Mask256, BitMatrix)
+# belong in arvo-bitmask. Marker structs (`pub struct Foo;`) are
+# always allowed. Opaque-bit concretes on the allowlist below are
+# permitted; others are denied. The `arvo-bits-traits-only` lint
+# is the build-time backstop.
 
 set -uo pipefail
 
@@ -29,10 +32,24 @@ if ! echo "$TARGET" | grep -q "mock/crates/arvo-bits/src/"; then
     allow
 fi
 
-# Scan for `pub struct Name {` or `pub struct Name(` — a body or a
-# tuple struct. Bare `pub struct Name;` is fine (marker).
-if echo "$CONTENT" | grep -qE "^[[:space:]]*pub[[:space:]]+struct[[:space:]]+[A-Za-z_][A-Za-z0-9_]*(<[^>]*>)?[[:space:]]*[\{(]"; then
-    deny "arvo-bits is contracts only; fielded \`pub struct\` is forbidden here. Declare a trait + blanket impls instead, or move the concrete type to arvo-bitmask."
-fi
+# Allowlist of opaque-bit concrete container names permitted in
+# arvo-bits. Keep this in sync with `ALLOWED_OPAQUE_BITS` in
+# mock/lints/arvo_bits_traits_only.rs.
+ALLOWED_OPAQUE_BITS_PATTERN='Bits'
+
+# Scan for fielded `pub struct Name(` or `pub struct Name {`. Bare
+# marker `pub struct Name;` is fine. If the name is on the
+# allowlist, also fine.
+FIELDED_STRUCT_RE="^[[:space:]]*pub[[:space:]]+struct[[:space:]]+([A-Za-z_][A-Za-z0-9_]*)(<[^>]*>)?[[:space:]]*[\{(]"
+
+while IFS= read -r line; do
+    if [[ "$line" =~ $FIELDED_STRUCT_RE ]]; then
+        struct_name="${BASH_REMATCH[1]}"
+        if echo "$struct_name" | grep -qxE "$ALLOWED_OPAQUE_BITS_PATTERN"; then
+            continue
+        fi
+        deny "arvo-bits hosts bit contracts + opaque-bit concretes only. Arithmetic fielded types belong in L0 arvo; masks in arvo-bitmask. '${struct_name}' is not on the opaque-bit allowlist (see mock/lints/arvo_bits_traits_only.rs ALLOWED_OPAQUE_BITS). Declare a trait + blanket impls, move the concrete to arvo-bitmask, or extend the allowlist in a design round."
+    fi
+done <<< "$CONTENT"
 
 allow

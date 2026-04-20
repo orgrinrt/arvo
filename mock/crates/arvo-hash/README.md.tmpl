@@ -1,0 +1,8 @@
+# arvo-hash
+
+L2 hash-domain types and algorithm contracts. ContentHash aliases
+arvo-bits Bits<28> for call-site domain naming. Generic streaming
+Hasher<const N: u8> trait with blanket HasherExt<const N: u8> for
+oneshot ergonomics lets downstream code parameterise over algorithm
+choice; concrete algorithms (FNV, xxHash, CRC32) ship in follow-up
+rounds as trait implementors. `#![no_std]`, no alloc.
