@@ -7,6 +7,7 @@ members = [
     "crates/arvo-bits",
     # L2 — built on contracts
     "crates/arvo-bitmask",
+    "crates/arvo-hash",
     "crates/arvo-sparse",
     "crates/arvo-graph",
     "crates/arvo-comb",
@@ -25,6 +26,7 @@ notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", defau
 arvo = { path = "crates/arvo" }
 arvo-bits = { path = "crates/arvo-bits" }
 arvo-bitmask = { path = "crates/arvo-bitmask" }
+arvo-hash = { path = "crates/arvo-hash" }
 arvo-graph = { path = "crates/arvo-graph" }
 arvo-sparse = { path = "crates/arvo-sparse" }
 arvo-spectral = { path = "crates/arvo-spectral" }
