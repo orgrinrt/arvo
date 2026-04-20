@@ -1,0 +1,174 @@
+# arvo-tensor — Design
+
+Fixed-shape, type-level-capacity tensor wrappers. Every container binds
+a `Cap` const generic to a homogeneous value type; every slot is
+materialised at compile time; no heap. `#![no_std]`, no alloc,
+stack-only.
+
+Depends on arvo (L0) only. No dependency on arvo-bits, arvo-bitmask, or
+any other L2 crate — tensor is value-generic, not bit-generic.
+
+## Position in the stack
+
+arvo-tensor sits at L2 as a peer of arvo-bitmask. The division is by
+element domain:
+
+- **arvo-bitmask** — fixed-shape bit containers (Mask64, Mask256, BitMatrix
+  over bits). Every slot is a bit, ops are bitwise.
+- **arvo-tensor** — fixed-shape value containers (Array<T, N>, Matrix<W, N>
+  over arbitrary T). Every slot is a T, ops are trait-generic over T.
+
+Every algorithm crate (arvo-graph / arvo-sparse / arvo-comb / arvo-spectral)
+depends on whichever of the two its input shape matches. When an algorithm
+mixes both (e.g. graph adjacency as bitmask + node weights as tensor), it
+depends on both.
+
+## cap_size — canonical Cap → usize bridge
+
+```rust
+#[inline(always)]
+pub const fn cap_size(c: Cap) -> usize { /* c.0.0 */ }
+```
+
+Nightly `generic_const_exprs` requires a raw `usize` in const-generic
+array-length position (language grammar constraint). `cap_size(c)` is the
+canonical projection from `arvo::Cap` to that `usize`. arvo-bitmask and
+arvo-spectral previously shipped local duplicates; both now re-export from
+arvo-tensor. Tracked under #121 for revisit when rustc const-eval over
+newtypes stabilises.
+
+## Array<T, const N: Cap>
+
+Rank-1 tensor. `#[repr(transparent)]` over `[T; cap_size(N)]`.
+
+```rust
+#[repr(transparent)]
+pub struct Array<T, const N: Cap>
+where
+    [(); cap_size(N)]:,
+{
+    data: [T; cap_size(N)],
+}
+
+impl<T, const N: Cap> Array<T, N>
+where
+    [(); cap_size(N)]:,
+{
+    pub const fn new(data: [T; cap_size(N)]) -> Self;
+    pub fn from_fn<F: FnMut(USize) -> T>(f: F) -> Self;
+    pub fn get(&self, i: USize) -> &T;
+    pub fn set(&mut self, i: USize, v: T);
+    pub const fn len() -> USize;
+}
+```
+
+`get` / `set` take `USize`. The `.0` unwrap used for internal array
+indexing lives inside the method body — not at the call site.
+
+`Array<T, N>` implements `IntoIterator for &Array<T, N>` yielding `&T`
+(so `for t in &arr { ... }` works with standard Rust idioms) and
+`IntoIterator for &mut Array<T, N>` yielding `&mut T` for mutation.
+
+## Matrix<W, const N: Cap>
+
+Rank-2 N×N tensor. Promoted verbatim from `arvo-spectral/src/matrix.rs`
+(round 202604270100 retired the local home). `#[repr(transparent)]`
+over `[[W; cap_size(N)]; cap_size(N)]`.
+
+```rust
+#[repr(transparent)]
+pub struct Matrix<W: Copy, const N: Cap>
+where
+    [(); cap_size(N)]:,
+{
+    data: [[W; cap_size(N)]; cap_size(N)],
+}
+
+impl<W: Copy, const N: Cap> Matrix<W, N>
+where
+    [(); cap_size(N)]:,
+{
+    pub const fn new(data: [[W; cap_size(N)]; cap_size(N)]) -> Self;
+    pub fn from_fn<F: FnMut(USize, USize) -> W>(f: F) -> Self;
+    pub fn get(&self, i: USize, j: USize) -> W;
+    pub fn set(&mut self, i: USize, j: USize, v: W);
+    pub fn diagonal(&self) -> Array<W, N>;
+}
+```
+
+arvo-spectral re-exports via `pub use arvo_tensor::Matrix;` so existing
+import paths keep working while consumers migrate.
+
+## Enumerator — USize-typed enumeration
+
+`core::iter::Iterator::enumerate()` yields `(usize, T)` — raw usize
+leaks. arvo-tensor ships a parallel trait with a blanket impl:
+
+```rust
+pub trait Enumerator {
+    type Item;
+    fn enumerated(self) -> impl Iterator<Item = (USize, Self::Item)>;
+}
+
+impl<T: IntoIterator> Enumerator for T {
+    type Item = T::Item;
+    fn enumerated(self) -> impl Iterator<Item = (USize, Self::Item)> {
+        self.into_iter()
+            .enumerate()
+            .map(|(i, item)| (USize(i), item))
+    }
+}
+```
+
+Consumers that want typed indices call `.enumerated()`:
+
+```rust
+for (i, t) in arr.enumerated() {
+    // i: USize, t: &T
+}
+```
+
+Consumers that want raw iteration use the standard IntoIterator impl:
+
+```rust
+for t in &arr {
+    // t: &T
+}
+```
+
+The trait is blanket — any `IntoIterator` gets `enumerated()` including
+types outside arvo-tensor.
+
+## What this crate does NOT contain
+
+- Arithmetic operations on tensors (Add, Mul, Sqrt) — consumer concern.
+  arvo algorithm crates supply trait bounds (Add + TotalOrd + FromConstant
+  + Copy) and compose with arvo-tensor types freely.
+- Sparse shapes — arvo-sparse's domain.
+- Bit-shaped tensors — arvo-bitmask's domain.
+- ML-style broadcasting, reshaping, transpose chains — not aligned with
+  arvo's substrate role. Consumers that need those build them on top
+  of Array + Matrix primitives.
+- Heap-backed growable shapes — no. Sizes are const.
+
+## Consumers
+
+- **arvo-comb** — passes `&Array<T, N>` inputs, uses `Matrix<W, N>` /
+  `Matrix<Bool, N>` / `Matrix<USize, N>` for internal DP tables.
+- **arvo-graph** (future round) — bit-matrix adjacency via arvo-bitmask;
+  per-node value tables via arvo-tensor.
+- **arvo-sparse** (future round) — sparse-matrix value storage backed by
+  `Array<W, N>` where the sparse-structure layer permits.
+- **arvo-spectral** (future round) — dense-matrix workloads already use
+  Matrix; migration is the re-import change.
+
+Downstream consumers (hilavitkutin, clause) will also use arvo-tensor
+directly where they currently pass raw arrays through arvo algorithm
+crates.
+
+## Sources
+
+- 202604270000_topic.arvo-bitmask-sweep.md (round 1; established the BitLogic-contract-in-arvo-bits pattern mirrored here)
+- 202604280000_topic.arvo-comb-sweep.md (this round — scope expansion justification + Q1/Q1a/Q1b/Q2/Q3/Q4 decisions)
+- 202604280000_changelist.doc.md (this round — doc CL)
+- arvo-spectral/src/matrix.rs (source of the Matrix pattern, relocating here)
