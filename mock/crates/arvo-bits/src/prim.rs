@@ -57,6 +57,17 @@ pub trait BitPrim: sealed::Bit + Copy + 'static {
     fn with_bit_cleared(self, idx: u32) -> Self;
     /// Toggle bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
     fn with_bit_toggled(self, idx: u32) -> Self;
+
+    /// Whole-word OR.
+    fn bitor(self, other: Self) -> Self;
+    /// Whole-word AND.
+    fn bitand(self, other: Self) -> Self;
+    /// Whole-word NOT.
+    fn bitnot(self) -> Self;
+    /// Whole-word XOR.
+    fn bitxor(self, other: Self) -> Self;
+    /// Clear the lowest set bit. `self & (self.wrapping_sub(1))`.
+    fn clear_lowest_set_bit(self) -> Self;
 }
 
 /// Signed primitive bit bridge.
@@ -145,6 +156,31 @@ macro_rules! impl_bit_prim_u {
                     return self;
                 }
                 self ^ (1 as $ty) << idx
+            }
+
+            #[inline(always)]
+            fn bitor(self, other: Self) -> Self {
+                self | other
+            }
+
+            #[inline(always)]
+            fn bitand(self, other: Self) -> Self {
+                self & other
+            }
+
+            #[inline(always)]
+            fn bitnot(self) -> Self {
+                !self
+            }
+
+            #[inline(always)]
+            fn bitxor(self, other: Self) -> Self {
+                self ^ other
+            }
+
+            #[inline(always)]
+            fn clear_lowest_set_bit(self) -> Self {
+                self & self.wrapping_sub(1)
             }
         }
     };
