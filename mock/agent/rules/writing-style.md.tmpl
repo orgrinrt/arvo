@@ -17,7 +17,15 @@ Low-ego, nonchalant, factual. Expert-to-expert. No marketing speak, no cheerlead
 
 ## Structure
 
-**Prose before enumeration.** The first three or four sections or paragraphs of any public-facing document are reserved for prose that frames the piece. Lists, tables, bulleted enumeration, and other structural content come after the reader has the framing. A document that opens with a bulleted list reads as a TLDR dump rather than a considered piece. Exception: the mockspace round-artifact metadata block (`**Date:** / **Phase:** / **Scope:** / **Source topics:**`) carries bullets by convention, and that convention overrides inside `mock/design_rounds/` files only.
+**Prose before enumeration.** The first three or four sections or paragraphs of any public-facing document are reserved for prose that frames the piece. Lists, bulleted enumeration, feature dumps, and similar structural content come after the reader has the framing. A document that opens with a flat bulleted list reads as a TLDR dump rather than a considered piece.
+
+Exceptions to the top-of-document rule:
+
+Round-artifact metadata blocks (`**Date:** / **Phase:** / **Scope:** / **Source topics:**`) carry bullets by convention inside `mock/design_rounds/` files. That convention overrides.
+
+Tables are allowed at the top when they carry real reference content: at least two columns wide and at least three rows of data. Parallel-column information belongs in parallel-column form, and a status or comparison table often frames a document better than a paragraph would. Tiny tables (single-column, or two rows) are not reference material, just prose wearing a table costume; rewrite them as prose.
+
+Table of Contents (`## Table of contents` or equivalent) is the one list form that belongs at the top. If a TOC exists in a document, it must be the first or second section, never buried lower. A TOC halfway down a doc is worse than no TOC.
 
 **Short sentences, simple words.** Prefer plain English. Avoid multi-clause constructions. When you reach for a subordinate clause, it is usually a signal to split the sentence in two.
 
