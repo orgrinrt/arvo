@@ -56,6 +56,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-hash"
+version = "0.1.0"
+dependencies = [
+ "arvo-bits",
+ "mockspace",
+]
+
+[[package]]
 name = "arvo-sparse"
 version = "0.1.0"
 dependencies = [
