@@ -7,8 +7,10 @@
 //!
 //! `N: Cap` carries arvo's const-generic capacity newtype on the
 //! public surface; `cap_size(c: Cap) -> usize` unwraps for array
-//! sizing. Inline `.0.0` is rejected by nightly
-//! `generic_const_exprs`; the helper fn is required.
+//! sizing. Canonical `cap_size` lives in `arvo-tensor` as of round
+//! 202604280000; this module re-exports it so existing
+//! `arvo_bitmask::cap_size` / `crate::matrix::cap_size` import paths
+//! keep working.
 //!
 //! `transitive_closure` runs Warshall's algorithm over the bitmask
 //! rows: for each pivot `k`, every row containing `k` unions in row
@@ -16,16 +18,10 @@
 //! is cheap.
 
 use arvo::newtype::{Bool, Cap, USize};
+pub use arvo_tensor::cap_size;
 
 use crate::mask::{Mask, Mask256, Mask64};
 use crate::node::NodeId;
-
-/// Unwrap `Cap` to `usize` for array sizing in
-/// `generic_const_exprs` contexts.
-pub const fn cap_size(c: Cap) -> usize { // lint:allow(arvo-types-only) lint:allow(no-bare-numeric) reason: nightly generic_const_exprs requires raw usize in const-generic array-length position (language grammar constraint); tracked: #121
-    c.0.0
-}
-
 // --- BitMatrix64 ----------------------------------------------------------
 
 /// Adjacency matrix over up to 64 nodes.
@@ -103,12 +99,10 @@ where
     #[inline]
     pub fn predecessors(&self, j: NodeId) -> Mask64 {
         let mut out = Mask64::empty();
-        let mut i = 0usize;
-        while i < cap_size(N) {
+        for i in 0..cap_size(N) {
             if *self.rows[i].contains(j.0) {
                 out.insert(USize(i));
             }
-            i += 1;
         }
         out
     }
@@ -119,17 +113,13 @@ where
     /// row `k`. Runs in place.
     #[inline]
     pub fn transitive_closure(&mut self) {
-        let mut k = 0usize;
-        while k < cap_size(N) {
+        for k in 0..cap_size(N) {
             let row_k = self.rows[k];
-            let mut i = 0usize;
-            while i < cap_size(N) {
+            for i in 0..cap_size(N) {
                 if *self.rows[i].contains(USize(k)) {
                     self.rows[i] = self.rows[i].union(row_k);
                 }
-                i += 1;
             }
-            k += 1;
         }
     }
 }
@@ -216,12 +206,10 @@ where
     #[inline]
     pub fn predecessors(&self, j: NodeId) -> Mask256 {
         let mut out = Mask256::empty();
-        let mut i = 0usize;
-        while i < cap_size(N) {
+        for i in 0..cap_size(N) {
             if *self.rows[i].contains(j.0) {
                 out.insert(USize(i));
             }
-            i += 1;
         }
         out
     }
@@ -229,17 +217,13 @@ where
     /// Transitive closure via Warshall's algorithm.
     #[inline]
     pub fn transitive_closure(&mut self) {
-        let mut k = 0usize;
-        while k < cap_size(N) {
+        for k in 0..cap_size(N) {
             let row_k = self.rows[k];
-            let mut i = 0usize;
-            while i < cap_size(N) {
+            for i in 0..cap_size(N) {
                 if *self.rows[i].contains(USize(k)) {
                     self.rows[i] = self.rows[i].union(row_k);
                 }
-                i += 1;
             }
-            k += 1;
         }
     }
 }
