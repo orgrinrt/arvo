@@ -1,0 +1,29 @@
+# arvo-bitmask — backlog
+
+## cap_size helper promotion to arvo
+
+The cap_size(c: Cap) -> usize const-fn helper currently lives local
+to each L2 / L3 crate that uses `const N: Cap` in signatures
+(arvo-spectral, and this crate after the 202604260000 cleanup). When
+a third consumer lands (arvo-graph, arvo-sparse, or arvo-comb after
+their own Cap/USize cleanup rounds), promote the helper into arvo
+(L0) as a public const-fn. The promotion is purely additive — no
+breaking changes — and eliminates the 3-line duplication.
+
+## Mask256-wide BitMatrix trait abstraction
+
+BitMatrix64 and BitMatrix256 duplicate their set / get / row ops
+today. A trait-backed single generic BitMatrix<W, N> would collapse
+the duplication but fights `generic_const_exprs` on current nightly
+(the same trade-off arvo-sparse records for its `_64` / `_256`
+algorithm pair). Revisit when the const-generics feature stabilises
+or when a third width (Mask128?) surfaces and makes the duplication
+painful.
+
+## BitMatrix iter / arvo-bits BitMatrix contract
+
+A BitMatrix contract in arvo-bits (paralleling BitSequence for flat
+bitmasks) would let row-access algorithms live in arvo-bits and be
+reused across BitMatrix64 / 256 / any future backing. Not needed by
+current consumers (arvo-graph will use BitMatrix64 directly); add
+when a second consumer shape surfaces.

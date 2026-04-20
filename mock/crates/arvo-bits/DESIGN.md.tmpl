@@ -38,8 +38,9 @@ pub struct FBits(pub u8);  // fractional bit count
 
 Requires `adt_const_params` (nightly). These ensure you cannot
 accidentally swap integer and fractional bit counts at type
-definition sites. Consumer code uses semantic aliases (Angle, Count,
-etc.) and never sees IBits/FBits directly.
+definition sites. Consumer code typically defines its own semantic
+aliases over `UFixed` / `IFixed` and rarely touches `IBits` / `FBits`
+directly.
 
 ## Traits
 
@@ -163,29 +164,42 @@ codebase uses `?`; `AsBool` exists for boundary compatibility.
 ## Type family marker traits
 
 arvo defines marker traits for its type families. arvo-bits uses
-these as bounds in blanket impls:
+these as reference points (for documentation of what types are
+covered), not as blanket-impl bounds:
 
 - `IntegerLike` — F=0, pure integer semantics
 - `FractionLike` — F>0, has fractional part
 - `BitPresentation` — raw bits are accessible (all UFixed/IFixed)
 - `FloatLike` — FastFloat/StrictFloat
 
-These are defined and blanket-impl'd in arvo. arvo-bits consumes
-them:
+## Implementation strategy
 
-```rust
-impl<T: BitPresentation> BitAccess for T { ... }
-impl<T: BitPresentation> BitSequence for T { ... }
-impl<T: BitPresentation> BitWidth for T {
-    const WIDTH: USize = T::LOGICAL_WIDTH;
-}
-```
+`BitWidth` / `BitAccess` / `BitSequence` are implemented as **concrete
+impls on `UFixed<I, F, S>` and `IFixed<I, F, S>`**, not as blanket
+impls over a `T: BitPresentation` bound. Reason: the L0
+`BitPresentation` marker exposes only `LOGICAL_WIDTH` — there is no
+method for arvo-bits to reach the underlying container. Keeping the
+blanket-impl language would require extending L0 (closed round).
+Concrete impls over UFixed/IFixed from arvo-bits stay within the
+orphan-rule boundary (trait is local to arvo-bits, types are
+foreign — local-trait-foreign-type impls are permitted) and
+delegate bit-level ops through `UFixed::to_raw()` / `from_raw()` and
+the equivalents on `IFixed`.
 
-`BitPresentation` provides `LOGICAL_WIDTH` (the I+F or 1+I+F bit
-count). `BitWidth::WIDTH` delegates to it. Both `IntegerLike` (F=0)
-and `FractionLike` (F>0) types get bit access — the F>0 case
-enables using any UFixed as a packed flag field (`UFixed<{IBits(0)},
-{FBits(8)}, Hot>` treated as 8 individual flag bits).
+A sealed `BitPrim` trait (internal to arvo-bits) is implemented for
+`u8` / `u16` / `u32` / `u64`, carrying the bit-manipulation surface:
+`count_ones`, `trailing_zeros`, `leading_zeros`, `bit`,
+`with_bit_set`, `with_bit_cleared`, `with_bit_toggled`. An
+`IBitPrim` sibling covers `i8` / `i16` / `i32` / `i64`. The concrete
+`impl BitAccess for UFixed<I, F, S>` delegates via
+`UFixed::to_raw()` to the primitive's `BitPrim` method, then
+`UFixed::from_raw(...)` wraps the result.
+
+`BitWidth::WIDTH` for UFixed = `I.0 + F.0`, for IFixed = `1 + I.0 +
+F.0`. Both IntegerLike (F=0) and FractionLike (F>0) types get bit
+access by this route — the F>0 case enables using any UFixed as a
+packed flag field (`UFixed<{IBits::ZERO}, {FBits(8)}, Hot>` treated
+as 8 individual flag bits).
 
 ## Semantic aliases
 
@@ -216,20 +230,19 @@ I+F <= 64 constraint. SIMD register width is a strategy concern
 - Numeric operations (Add, Mul, Sqrt) — arvo
 - Set operations (union, intersection) — arvo-bitmask
 - Float types — arvo, completely separate from bit-level
-- Outcome/Just/Maybe/Result types — hilavitkutin-api
+- Fallible-return types (Outcome / Just / Maybe) — consumer concern
 
 ## Consumers
 
 - **arvo-bitmask**: builds Mask types on BitSequence/BitAccess
   contracts. Mask64's `count()` delegates to `BitSequence::count_ones`.
-  Bit scanning uses `trailing_zeros`/`leading_zeros`.
-- **hilavitkutin**: indirect via arvo-bitmask. Does not depend on
-  arvo-bits directly.
-- **arvo sub-crates** (graph, sparse, spectral, comb): indirect via
-  arvo-bitmask. Do not depend on arvo-bits directly.
+  Bit scanning uses `trailing_zeros` / `leading_zeros`.
+- Other arvo algorithm crates (graph, sparse, comb, spectral) depend
+  on arvo-bitmask, not arvo-bits, for adjacency and set work.
 
 ## Sources
 
 - 202603241400_topic.arvo-crate-dependency-revision.md (arvo-bits design)
 - 202603241200_topic.arvo-strategy-markers.md (strategy definitions)
 - 202603241300_topic.arvo-strategy-aliases-and-open-questions.md (alias pattern)
+- 202604191900_changelist.doc.md (this round)

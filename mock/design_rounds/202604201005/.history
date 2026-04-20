@@ -1,0 +1,50 @@
+ddb6a3d chore: lock src changelist 202604201010 (#101)
+1cfec40 plan: src CL placeholder for doc-only round (#101)
+6142a73 chore: lock doc changelist 202604201005 (#101)
+2067c94 docs: em-dash sweep + writing-style rewrite (#101)
+475c595 chore: unlock doc changelist 202604201005 for em-dash sweep (#101)
+4f275e8 chore: lock doc changelist 202604201005 (#101)
+2a199af docs: port arvo fixed-point-first identity from originals (#101)
+ed17176 chore: close design round 202604200935 (#71)
+f041a68 chore: lock src changelist 202604200940 (#71)
+cf2d088 feat!: flip arvo narrow traits + sparse get to Outcome/Maybe (#71)
+029dafb plan: arvo sweep src CL (#71)
+eb48bb1 chore: lock doc changelist 202604200935 (#71)
+83c638f docs: arvo sweep primitive vocabulary (doc phase, #71)
+975bd5f chore: remove stray BACKLOG.md.tmpl.new artifacts
+8cf05dd feat: add type-surface-review skill (#91)
+050c6c6 feat: extend pre-tool guard with bare Option / Result detection (#77)
+8c209e9 docs: add type-surface + cookbook agent rules (#89, #90)
+da7403f docs: add no-heap agent rule (#97)
+afb8305 docs: port shared cross-ecosystem principles fragment
+2a1667d chore: close design round 202604200354
+bdb0802 chore: lock src CL 202604200400 for arvo post-review polish
+2271d39 fix: arvo post-review — div-by-zero numerator, partition stack guard, fiedler N bound, matrix bounds, sqrt doc
+c9db769 docs: add src CL for arvo post-review polish
+6b48aca chore: lock doc changelist for 202604200354_changelist.doc.lock.md
+50a2c29 docs: expand arvo BACKLOG + DESIGN for post-review polish
+8209f8d docs: start arvo post-review polish round
+5e9f5a3 chore: close L0 float ops round 202604260500
+1708c7c chore: lock src CL 202604260600 for L0 float ops
+19c2a6b feat: wire core::ops Add/Sub/Mul/Div/Neg on float wrappers
+d3b7741 docs: add src CL for L0 float ops
+938b2f8 chore: lock doc CL 202604260500 for L0 float ops
+f651665 docs: start L0 float arithmetic ops round
+237d693 chore: close arvo-comb cleanup round 202604260300
+15ce955 chore: lock src CL 202604260400 for arvo-comb cleanup
+089a463 refactor: cascade const N: Cap through arvo-comb
+f951a1d docs: add src CL for arvo-comb Cap/USize cleanup
+da8ca70 chore: lock doc CL 202604260300 for arvo-comb cleanup
+3f0de40 docs: arvo-comb Cap/USize DESIGN + BACKLOG for cleanup round
+ffa5271 docs: start arvo-comb Cap/USize cleanup round
+617c808 chore: close arvo L2 cleanup round 202604260000
+63156e5 chore: lock src CL 202604260200 for arvo L2 cascade
+72a8d0b refactor: cascade const N: Cap + cap_size across arvo L2 crates
+59d1e10 docs: expand src CL comparison section to satisfy lint
+08511f3 docs: add src CL for arvo L2 Cap/USize cascade
+81e906e chore: lock expanded arvo cleanup doc CL
+0b9f32c docs: expand arvo cleanup round to arvo-graph + arvo-sparse
+f498298 chore: unlock doc CL to expand arvo cleanup scope
+113c14c docs: add src CL for arvo-bitmask Cap/USize cleanup
+07b02dc chore: lock doc CL 202604260000 for arvo-bitmask cleanup
+21c766a docs: arvo-bitmask Cap/USize DESIGN + BACKLOG cleanup

@@ -32,6 +32,13 @@ arvo-spectral = "#EDE6F3 | #5C2D82"
 # ---------------------------------------------------------------------------
 # Lint configuration
 # ---------------------------------------------------------------------------
+#
+# Per-gate severity: commit (pre-commit hook), build (standalone
+# `cargo mock`), push (pre-push hook). Levels: off / info / warn / error.
+# Violations at `error` fail the gate. Presets are documented in
+# mock/agent/skills/lint-rules/SKILL.md.
+
+# --- Universal quality lints (mockspace built-ins) -------------------------
 
 [lints.no-empty-crate]
 commit = "off"
@@ -43,7 +50,86 @@ commit = "off"
 build = "warn"
 push = "error"
 
-[lints.no-fixme]
-commit = "off"
+[lints.file-size]
+commit = "warn"
+build = "error"
+push = "error"
+max_lines = "500"
+
+# --- arvo custom lints (mock/lints/*.rs) -----------------------------------
+
+[lints.no-std-enforcer]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-alloc-enforcer]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-dynamic-dispatch]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.strategy-marker-required]
+commit = "warn"
 build = "warn"
 push = "error"
+
+[lints.arvo-bits-traits-only]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-runtime-grow]
+commit = "warn"
+build = "warn"
+push = "warn"
+
+# --- Layer enforcement via forbidden-imports -------------------------------
+#
+# The L0 → L1 → L2 → L3 dependency table from mock/DESIGN.md.tmpl,
+# encoded as import rules. A crate violates the rule if it imports
+# any path listed under `forbidden` for its scope. {prefix} expands
+# to crate_prefix ("arvo").
+
+[lints.forbidden-imports]
+commit = "warn"
+build = "error"
+push = "error"
+rules = [
+    # L0 — arvo has no intra-arvo deps, and no std/alloc.
+    { scope = "arvo", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L0 is the root of the arvo stack — no deps and no alloc/std" },
+
+    # L1 — arvo-bits depends on arvo only. No concrete storage.
+    { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L1 contracts depend only on L0 (arvo); concrete storage lives in arvo-bitmask" },
+
+    # L2 — arvo-bitmask depends on arvo-bits only.
+    { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 storage on arvo-bits contracts; must not depend on other L2/L3 crates" },
+
+    # L2 algorithm crates — depend on arvo + arvo-bitmask (not bits directly).
+    { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo + arvo-bitmask only" },
+    { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo + arvo-bitmask only" },
+    { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo + arvo-bitmask only" },
+
+    # L3 — arvo-spectral depends on arvo + arvo-bitmask (Mask64 partition outputs this round).
+    { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-bitmask (Mask64 for partition outputs); arvo-sparse is a future-round dep per BACKLOG" },
+
+    # Universal — no ad-hoc threading, clocks, filesystem anywhere.
+    { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
+]
+
+# ---------------------------------------------------------------------------
+# External lint packs (mockspace #94 feature)
+# ---------------------------------------------------------------------------
+#
+# Shared stack-wide lint rules. Lives as a standalone crate so arvo,
+# hilavitkutin, and clause stay in sync on vocabulary discipline.
+#
+# Git-based dep spec only — committed config must be portable across
+# machines. For local iteration use `[patch]` in `.cargo/config.toml`.
+
+[lint-crates]
+mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "main" }
