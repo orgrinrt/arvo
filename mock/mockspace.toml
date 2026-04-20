@@ -24,6 +24,7 @@ strategy = "🎛️ strategy marker"
 arvo = "#E8EEF7 | #3A6EA5"
 arvo-bits = "#E8EEF7 | #3A6EA5"
 arvo-bitmask = "#E6F2E6 | #2D6A2D"
+arvo-hash = "#E6F2E6 | #2D6A2D"
 arvo-sparse = "#E6F2E6 | #2D6A2D"
 arvo-graph = "#E6F2E6 | #2D6A2D"
 arvo-comb = "#E6F2E6 | #2D6A2D"
@@ -107,15 +108,18 @@ rules = [
     { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L1 contracts depend only on L0 (arvo); concrete storage lives in arvo-bitmask" },
 
     # L2 — arvo-bitmask depends on arvo-bits only.
-    { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 storage on arvo-bits contracts; must not depend on other L2/L3 crates" },
+    { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 storage on arvo-bits contracts; must not depend on other L2/L3 crates" },
+
+    # L2 — arvo-hash depends on arvo-bits only. Hash-domain types + algo contracts.
+    { scope = "arvo-hash", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-hash is L2 hash-domain surface on arvo-bits contracts; must not depend on other L2/L3 crates" },
 
     # L2 algorithm crates — depend on arvo + arvo-bitmask (not bits directly).
-    { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo + arvo-bitmask only" },
-    { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo + arvo-bitmask only" },
-    { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo + arvo-bitmask only" },
+    { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo + arvo-bitmask only" },
+    { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo + arvo-bitmask only" },
+    { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo + arvo-bitmask only" },
 
     # L3 — arvo-spectral depends on arvo + arvo-bitmask (Mask64 partition outputs this round).
-    { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-bitmask (Mask64 for partition outputs); arvo-sparse is a future-round dep per BACKLOG" },
+    { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-bitmask (Mask64 for partition outputs); arvo-sparse is a future-round dep per BACKLOG" },
 
     # Universal — no ad-hoc threading, clocks, filesystem anywhere.
     { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
