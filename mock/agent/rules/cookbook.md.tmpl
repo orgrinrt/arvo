@@ -1,0 +1,105 @@
+---
+apply_to: ["crates/**/*.rs", "src/**/*.rs"]
+---
+
+# Cookbook — intent → trait / type
+
+A pattern book for "I need to X" questions. Pick the matching intent,
+use the suggested trait / type. When none fits, the correct answer is
+usually "add a trait to the ecosystem", not "use a std primitive".
+
+## "I need to return an optional value"
+
+Return `Maybe<T>` (from `notko`). Construct with `Maybe::Is(v)` /
+`Maybe::Isnt`. Destructure with pattern match or `?` (needs
+`try_trait_v2` feature, nightly).
+
+## "I need a fallible operation"
+
+Return `Outcome<T, E>` (from `notko`). `E` should be a `repr(C)` enum of
+well-known failure kinds, not a free-form error type. `?` works via
+`try_trait_v2`.
+
+## "I need an infallible value (hot path)"
+
+Return `T` directly, or `Just<T>` when the signature needs explicit
+"never fails" framing. `Just<T>` is `#[repr(transparent)]` + `Try` with
+`Residual = Infallible` — zero cost.
+
+## "I need arithmetic that works for Hot / Warm / Cold / Precise"
+
+Take a trait bound: `<T: UArith<BITS>>` for unsigned,
+`<T: IArith<BITS>>` for signed. Caller picks concrete strategy;
+monomorphisation generates the right code per call site.
+
+## "I need a bit pattern"
+
+`Mask64` for ≤ 64 bits, `Mask256` for ≤ 256, `BitMatrix<N>` for square
+grids. All from `arvo-bitmask`.
+
+## "I need bit-level operations"
+
+Take a trait bound from `arvo-bits`: `T: BitSequence + BitAccess`.
+Works across `Mask64` / `Mask256` / custom storage.
+
+## "I need a sparse matrix"
+
+`arvo_sparse::CsrMatrix<T>`. Iterate via provided accessor; never raw
+index into backing storage.
+
+## "I need a bounded integer"
+
+`UFixed<I, F, S>` / `IFixed<I, F, S>` from arvo, parameterised by
+integer width `I`, fractional width `F`, and strategy marker `S`.
+Semantic aliases (`Mass<S>`, `Angle<S>`, etc.) shadow the raw form.
+
+## "I need to measure size / capacity"
+
+`USize` (not raw `usize`). `Cap` when used as a const-generic capacity.
+
+## "I need a float"
+
+`FastFloat` (Hot: no NaN/Inf guards) or `StrictFloat` (Cold: IEEE
+compliant). Never bare `f32` / `f64` in a pub API.
+
+## "I need a predicate-returning function"
+
+Return `Bool` (from `arvo-bits`). `Bool` implements `Try` with
+`Residual = Infallible` so `?` extracts the inner `bool` at zero cost.
+For `if` expressions use `*val.is_zero()` (Deref) or
+`val.is_zero()?`. See
+`arvo/docs/ARVO_NEWTYPE-DEREF.md` for the full rationale.
+
+## "I need to iterate a bounded source"
+
+Accept `impl IntoIterator<Item = T>` (lazy) or `&[T]` (concrete slice).
+Prefer slice when the caller will always have a slice; iterator when
+lazy is an option.
+
+## "I need to emit items from an algorithm (no return-by-value)"
+
+Take `&mut impl Collector<T>` as a parameter. The sink trait lives in
+`hilavitkutin-api` once #83 lands; until then, author a local trait for
+the use case.
+
+## "I genuinely need std"
+
+Arvo is `#![no_std]`, no alloc, no platform — by design. If you think
+you need std, the API shape is wrong. File a design round describing
+why, then reshape until the std dep disappears.
+
+## Repo-specific additions
+
+| Intent | Type / trait |
+|--------|--------------|
+| Declare a new numeric semantic alias | `pub type Mass<S: Strategy = Warm> = UFixed<…, …, S>` |
+| Declare a new bit-level trait | Add to `arvo-bits` (traits only; no concrete storage) |
+| Graph analysis | `arvo-graph` — `topo_sort`, `rank_levels`, `waist`, `spanning_tree` |
+| Partition a matrix | `arvo-spectral::Laplacian` → `fiedler_partition` → `Mask64` |
+| Combinatorial opt | `arvo-comb` — DP, greedy grouping, bin packing |
+
+## See also
+
+- `.claude/rules/type-surface.md` — the decision test, DO/DON'T table
+- `.claude/rules/no-heap.md` — dedicated no-heap rule
+- `PRINCIPLES.md` — first principles
