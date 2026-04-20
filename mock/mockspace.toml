@@ -177,38 +177,47 @@ severity = "warn"
 severity = "warn"
 
 # ---------------------------------------------------------------------------
-# Primitive-introductions — per-crate per-primitive lint exemption
+# Primitive-introductions — per-crate substrate categories introduced
 # ---------------------------------------------------------------------------
 #
-# Maps crate directory name to the list of primitive tokens the crate
-# legitimately introduces in its own source because it is the producer of
-# the wrapped equivalent. Bare-primitive lints (no-bare-numeric,
-# arvo-types-only, no-public-raw-field, etc.) skip these specific tokens
-# on these specific crates. Everything not listed remains subject to the
-# lint.
+# Maps crate directory name to the list of substrate CATEGORIES the crate
+# introduces. When a bare-primitive lint's enforced category appears in a
+# crate's list, the lint self-exempts for that crate entirely — the crate
+# is the one bringing the substrate to the table, so whatever it does
+# internally to define it is legitimate.
 #
-# Layer hierarchy:
-# - `arvo` (L0) — defines the full numeric / bool substrate; introduces
-#   every std primitive that gets wrapped by `UFixed`, `IFixed`,
-#   `FastFloat`, `StrictFloat`, `USize`, `Cap`, `Bool`, and the
-#   `#[repr(u8)]` strategy markers.
-# - `arvo-bits` (L1) — bit-level contracts; introduces `u8` for the
-#   `const N: u8` width parameter on `Bits<N>` and `u64` for its storage.
-# - Every L2/L3 algorithm crate (`arvo-bitmask`, `arvo-hash`, `arvo-graph`,
-#   `arvo-sparse`, `arvo-comb`, `arvo-spectral`) is a consumer of the
-#   substrate and introduces nothing, so it stays fully strict.
+# Scales without maintenance: adding a new arvo type (new strategy marker,
+# new Bits variant, new hash width) doesn't require any lint pack change
+# or config change. Adding a genuinely new SUBSTRATE DOMAIN (rare; e.g.
+# "temporal") would call for a new category tag.
 #
-# This explicit map is the belt-and-suspenders path. See mockspace's
-# `Config.primitive_introductions` docs for the future auto-detection
-# direction (parse DESIGN.md.tmpl or pre-scan `src/**/*.rs` to derive the
-# set automatically).
+# Known categories (defined by the stack lints pack, not this repo):
+#   `numeric`     — UFixed / IFixed / FastFloat / StrictFloat / USize /
+#                   Cap / Bool / Bits / ContentHash / strategy markers.
+#   `fallibility` — Maybe / Outcome / Just (notko).
+#   `string`      — Str (hilavitkutin-str).
+#
+# Anti-bypass: adding raw std primitive names (`u32`, `Option`, `String`)
+# or arbitrary strings to a crate's list has NO effect — only known
+# category tags match. The config is an auditable architectural claim
+# ("this crate brings the numeric substrate"), not a permission list.
+#
+# Layer hierarchy in arvo:
+# - `arvo` (L0) — defines the numeric substrate: `UFixed`, `IFixed`,
+#   `FastFloat`, `StrictFloat`, `USize`, `Cap`, `Bool`, strategy markers.
+# - `arvo-bits` (L1) — supplements the numeric substrate with opaque-bit
+#   containers: `Bits<N>`, `BitPrim`, `BitWidth`, `BitAccess`.
+# - `arvo-hash` (L2) — supplements the numeric substrate with hash
+#   identity: `ContentHash` (alias of `Bits<28>`), plus hasher contracts.
+# - Every other crate (`arvo-bitmask`, `arvo-graph`, `arvo-sparse`,
+#   `arvo-comb`, `arvo-spectral`) is a consumer of the substrate — stays
+#   fully strict.
+#
+# Future direction (mockspace task #119): auto-detect the categories a
+# crate introduces from its DESIGN.md.tmpl / source parse, eliminating
+# this manual declaration.
 
 [primitive-introductions]
-arvo = [
-    "u8", "u16", "u32", "u64", "u128",
-    "i8", "i16", "i32", "i64", "i128",
-    "f32", "f64",
-    "usize", "isize",
-    "bool",
-]
-arvo-bits = ["u8", "u64"]
+arvo = ["numeric"]
+arvo-bits = ["numeric"]
+arvo-hash = ["numeric"]
