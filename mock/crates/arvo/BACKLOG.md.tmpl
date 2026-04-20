@@ -108,4 +108,13 @@ here for future rounds to pick up.
   a panic under the Hot / Warm single-instruction discipline. If a
   consumer surfaces a need for a different sentinel (e.g. zero), add
   a checked_div variant rather than change the existing contract.
+- Const-generic bit accessors. The three free const fns in
+  strategy.rs (ibits_u8, fbits_u8, is_fractional) return raw u8 /
+  usize so IBits / FBits values can appear inside anonymous
+  const-generic expressions where direct field access is disallowed
+  on the current nightly. Tracked via allow-bare-numeric annotations
+  pointing at Task #71. Collapse into a single Bits newtype method
+  (e.g. const fn Bits::as_u8(self) -> u8) once nightly loosens
+  struct-construction rules in const args. No timeline — gated on
+  upstream rustc.
 

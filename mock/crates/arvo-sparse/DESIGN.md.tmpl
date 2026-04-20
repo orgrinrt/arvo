@@ -4,6 +4,15 @@ Sparse matrix representations and algorithms on const-generic
 fixed-size structures. `#![no_std]`, no alloc. Operates on
 arvo-bitmask types for small matrices and CSR for larger ones.
 
+## Absence results
+
+Absence is modelled with `notko::Maybe<T>`, not bare `Option<T>`,
+per the clause-dev primitive-vocabulary discipline. Concretely:
+`Csr::get` returns `Maybe<W>`; private rcm helpers (e.g.
+`min_degree_unvisited`) return `Maybe<USize>`. Trait method impls
+of std `Iterator::next` remain on `Option<T>` (std-trait escape
+hatch).
+
 ## Capacity
 
 Ships against `BitMatrix64` / `Mask64` (up to 64 rows or columns of
