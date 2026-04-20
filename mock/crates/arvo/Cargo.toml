@@ -5,6 +5,7 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
+notko.workspace = true
 
 [dev-dependencies]
 trybuild = "1"

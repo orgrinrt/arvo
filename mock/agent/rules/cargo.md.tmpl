@@ -37,7 +37,7 @@ Notes:
 - The lint `forbidden-imports` in `mockspace.toml` encodes this
   table. Violations are rejected at build time.
 
-### No external runtime deps
+### No external runtime deps (except notko foundation)
 
 - No `std`, no `alloc`. `#![no_std]` crate attribute is mandatory.
 - No platform crates: no `libc`, `windows-sys`, `nix`, `mio`,
@@ -47,9 +47,18 @@ Notes:
 - No numeric helper crates (`num`, `num-traits`, `fixed`): arvo
   declares its own numeric traits.
 
-If an optional crate is genuinely needed (e.g. cpu-feature detection
-for a SIMD fallback), it must be behind a default-off feature gate
-and listed explicitly in a design round before landing.
+`notko` is the single permitted workspace-foundation dep. It is
+the clause-dev primitive-vocabulary crate (`Just<T>` / `Maybe<T>` /
+`Outcome<T, E>` / `Boundable` / `NonZeroable`), ships from
+`github.com/orgrinrt/notko`, is `#![no_std]` with zero runtime
+deps, and is consumed by every clause-dev repo (arvo, hilavitkutin,
+clause). `notko-macros` and `notko-build` are pulled only when a
+crate genuinely needs `#[optimize_for]` or build-time optimiser
+distribution.
+
+If any other optional crate is genuinely needed (e.g. cpu-feature
+detection for a SIMD fallback), it must be behind a default-off
+feature gate and listed explicitly in a design round before landing.
 
 ### No proc-macro crates
 
