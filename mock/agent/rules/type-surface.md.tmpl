@@ -4,6 +4,25 @@ apply_to: ["crates/**/*.rs", "src/**/*.rs"]
 
 # Think in traits, not types. The trait is the contract; the type is an implementation.
 
+## Before the rule: what arvo IS
+
+arvo is a fixed-point arithmetic stack. Every numeric primitive —
+`u8` through `u128`, `i8` through `i128`, `f32`, `f64`, `bool`,
+`usize`, `isize` — is replaced by an arvo primitive
+(`UFixed<I, F, S>` / `IFixed<I, F, S>` / `FastFloat` / `StrictFloat`
+/ `Bool` / `USize` / `Cap`) or one of the pre-defined semantic
+aliases over them (`Byte`, `Word`, `DWord`, `QWord`, `Nibble`, `Bit`
+from arvo-bits). When you encounter a raw Rust numeric in a public
+signature, the question isn't "which arvo type matches this width";
+it's "which arvo type matches this DOMAIN". Public APIs carry
+domain aliases (`NodeId`, `Str`, `RecordIndex`, `SieveWeight`,
+`ContentHash`) grounded on arvo primitives. Never raw primitives;
+never raw newtype-over-primitive either.
+
+Enforced by `arvo-types-only` (#50) + `no-bare-numeric` (#68) +
+`no-bare-option/result/string/vec` (#66 / #67 / #69 / #76). Until
+those lints land strict, discipline carries it.
+
 Before writing any `pub` signature, ask:
 
 1. What OPERATION does this position perform?

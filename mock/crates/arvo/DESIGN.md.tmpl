@@ -1,11 +1,25 @@
 # arvo — Design
 
-Numeric primitive substrate. `#![no_std]`, no alloc, const-generic
-sizing. Same LLVM optimisation discipline whatever runs on top.
+**arvo is a fixed-point arithmetic stack.** Standalone `#![no_std]`,
+no alloc, const-generic sizing. Same LLVM optimisation discipline
+whatever runs on top. Cross-project: used by hilavitkutin,
+polka-dots, saalis, and loimu — the exclusive numeric substrate
+for the clause-dev workspace.
+
+Every numeric primitive that crosses any arvo API — parameter,
+return, struct field, associated type — flows through
+`UFixed<I, F, S>`, `IFixed<I, F, S>`, `FastFloat`, or `StrictFloat`.
+Bare Rust primitives are not valid in this universe; the
+`arvo-types-only` lint (#50) enforces their absence. See
+`PRINCIPLES.md` for the full statement.
 
 Name: arvo (Finnish: "value/worth/estimate").
 
 ## Primitive vocabulary
+
+This section enumerates the concrete shape of the identity stated
+at the top of this file; the `arvo-types-only` lint (#50) is the
+operational enforcement.
 
 arvo follows the clause-dev primitive-vocabulary discipline. Public
 API positions that would carry `Option<T>` / `Result<T, E>` on
