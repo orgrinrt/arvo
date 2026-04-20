@@ -120,3 +120,20 @@ rules = [
     # Universal — no ad-hoc threading, clocks, filesystem anywhere.
     { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
 ]
+
+# ---------------------------------------------------------------------------
+# External lint packs (mockspace #94 feature)
+# ---------------------------------------------------------------------------
+#
+# Shared stack-wide lint rules. Lives as a standalone crate so arvo,
+# hilavitkutin, and clause stay in sync on vocabulary discipline.
+#
+# Git-based dep spec only — committed config must be portable across
+# machines. For local iteration use `[patch]` in `.cargo/config.toml`.
+
+[lint-crates]
+mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "main" }
+
+# Writing-style gate — pre-existing docs trip this until sweeps tidy them.
+[lints.writing-style]
+severity = "advisory"
