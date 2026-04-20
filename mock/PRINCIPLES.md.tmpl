@@ -139,6 +139,42 @@ specific follow-up, the design is wrong, not the rule.
 
 *The following principles are specific to arvo.*
 
+## arvo: the fixed-point arithmetic stack
+
+arvo is a standalone `#![no_std]` numeric primitive library family,
+cross-project — consumed by hilavitkutin, polka-dots, saalis, and
+loimu. It is the exclusive numeric substrate for the entire
+clause-dev workspace.
+
+Every numeric primitive flows through `UFixed` / `IFixed` /
+`FastFloat` / `StrictFloat`. Bare Rust primitives — `u8`, `u16`,
+`u32`, `u64`, `u128`, `i8`, `i16`, `i32`, `i64`, `i128`, `f32`,
+`f64`, `bool`, `usize`, `isize` — effectively do not exist in
+arvo's universe. This is not a preference, not a default, not a
+"usually use": it is the identity. Reach for a raw primitive and
+you have forgotten what arvo is.
+
+The discipline is enforced by the `arvo-types-only` lint (Task #50,
+shipping via #103). The lint rejects raw numerics in data-facing
+struct fields and public-API positions across every arvo sub-crate
+and every downstream consumer (hilavitkutin, clause). Until the
+lint lands, the rule holds by convention and review.
+
+The algorithm crates (arvo-graph, arvo-sparse, arvo-comb,
+arvo-spectral) are generic over numeric trait bounds and reflexively
+reach for arvo primitives. They do not accept or return bare types
+at any boundary.
+
+Strategy markers (`Hot`, `Warm`, `Cold`, `Precise`) are type
+parameters, not runtime config — they embed operational intent
+into the type system. A `Mass<Hot>` is explicitly lossy-but-fast;
+a `Mass<Precise>` is explicitly exact-but-expensive. The caller
+picks the tradeoff at the type level.
+
+All arvo types are `repr(transparent)` over their chosen container.
+After compilation, arvo primitives incur zero overhead beyond their
+strategy's intended cost.
+
 ## no_std, no alloc
 
 Every crate is `#![no_std]` with no allocation. All collections are
