@@ -3,11 +3,11 @@
 **arvo is a fixed-point arithmetic stack.** Standalone `#![no_std]`,
 no alloc, const-generic sizing. Same LLVM optimisation discipline
 whatever runs on top. Cross-project: used by hilavitkutin,
-polka-dots, saalis, and loimu — the exclusive numeric substrate
+polka-dots, saalis, and loimu. The exclusive numeric substrate
 for the clause-dev workspace.
 
-Every numeric primitive that crosses any arvo API — parameter,
-return, struct field, associated type — flows through
+Every numeric primitive that crosses any arvo API (parameter,
+return, struct field, associated type) flows through
 `UFixed<I, F, S>`, `IFixed<I, F, S>`, `FastFloat`, or `StrictFloat`.
 Bare Rust primitives are not valid in this universe; the
 `arvo-types-only` lint (#50) enforces their absence. See
