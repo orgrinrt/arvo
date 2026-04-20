@@ -26,6 +26,7 @@ version = "0.1.0"
 dependencies = [
  "arvo",
  "arvo-bits",
+ "arvo-tensor",
  "mockspace",
 ]
 
@@ -79,6 +80,7 @@ version = "0.1.0"
 dependencies = [
  "arvo",
  "arvo-bitmask",
+ "arvo-tensor",
  "mockspace",
 ]
 
