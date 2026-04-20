@@ -174,13 +174,31 @@ where
             j += 1;
         }
 
-        // Push both halves back for further bisection if budget allows.
-        if stack_len < k && *positive_half.count() > 1 {
-            stack[stack_len] = positive_half;
-            stack_len += 1;
-        }
-        if stack_len < k && *negative_half.count() > 1 {
-            stack[stack_len] = negative_half;
+        // Push both halves back for further bisection.
+        //
+        // Guard both pushes under a single "room for two" test so we
+        // don't silently drop the negative half after admitting the
+        // positive half into the last slot. When only one slot is
+        // left we push the larger half (best-effort degradation).
+        let pos_big = *positive_half.count() > 1;
+        let neg_big = *negative_half.count() > 1;
+        let want = (pos_big as usize) + (neg_big as usize);
+        if want > 0 && stack_len + want <= k {
+            if pos_big {
+                stack[stack_len] = positive_half;
+                stack_len += 1;
+            }
+            if neg_big {
+                stack[stack_len] = negative_half;
+                stack_len += 1;
+            }
+        } else if want > 0 && stack_len + 1 <= k {
+            let pick = if *positive_half.count() >= *negative_half.count() {
+                positive_half
+            } else {
+                negative_half
+            };
+            stack[stack_len] = pick;
             stack_len += 1;
         }
     }

@@ -65,12 +65,16 @@ where
     /// Read the value at `(i, j)`.
     #[inline(always)]
     pub fn get(&self, i: USize, j: USize) -> W {
+        debug_assert!(i.0 < cap_size(N), "Matrix::get: row index out of range");
+        debug_assert!(j.0 < cap_size(N), "Matrix::get: column index out of range");
         self.data[i.0][j.0]
     }
 
     /// Write `v` to cell `(i, j)`.
     #[inline(always)]
     pub fn set(&mut self, i: USize, j: USize, v: W) {
+        debug_assert!(i.0 < cap_size(N), "Matrix::set: row index out of range");
+        debug_assert!(j.0 < cap_size(N), "Matrix::set: column index out of range");
         self.data[i.0][j.0] = v;
     }
 
