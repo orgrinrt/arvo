@@ -129,8 +129,13 @@ fn highest_set_respects_word_order() {
 #[test]
 fn iter_set_bits_crosses_words_in_order() {
     let m = mk(&[0, 63, 64, 100, 127, 128, 192, 255]);
-    let collected: Vec<_> = m.iter_set_bits().map(|u| u.0).collect();
-    assert_eq!(collected, vec![0, 63, 64, 100, 127, 128, 192, 255]);
+    let mut collected = [0usize; 256];
+    let mut n = 0usize;
+    for u in m.iter_set_bits() {
+        collected[n] = u.0;
+        n += 1;
+    }
+    assert_eq!(&collected[..n], &[0, 63, 64, 100, 127, 128, 192, 255]);
 }
 
 #[test]

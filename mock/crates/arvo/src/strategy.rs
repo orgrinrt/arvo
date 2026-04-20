@@ -18,6 +18,8 @@
 
 use core::marker::ConstParamTy;
 
+use notko::Outcome;
+
 use crate::newtype::{FBits, IBits};
 
 mod sealed {
@@ -297,6 +299,7 @@ pub const fn ifixed_bits(i: IBits, f: FBits) -> u8 {
 /// Wrapping this in a const fn lets it appear inside anonymous
 /// const-generic expressions — direct field access (`I.0`) is not
 /// permitted there on current nightly.
+// allow-bare-numeric: tracked: #71
 #[inline(always)]
 pub const fn ibits_u8(i: IBits) -> u8 {
     i.0
@@ -305,6 +308,7 @@ pub const fn ibits_u8(i: IBits) -> u8 {
 /// Extract the inner `u8` of an `FBits`.
 ///
 /// See `ibits_u8` for why this exists as a free function.
+// allow-bare-numeric: tracked: #71
 #[inline(always)]
 pub const fn fbits_u8(f: FBits) -> u8 {
     f.0
@@ -314,6 +318,7 @@ pub const fn fbits_u8(f: FBits) -> u8 {
 ///
 /// Used to express "F has a fractional component" in const-generic
 /// where-clauses without field access or struct construction.
+// allow-bare-numeric: tracked: #71
 #[inline(always)]
 pub const fn is_fractional(f: FBits) -> usize {
     if f.0 == 0 { 0 } else { 1 }
@@ -591,14 +596,14 @@ pub trait IWidenFrom<Src: IContainerFor<BITS>, const BITS: u8>: IContainerFor<BI
 /// Unsigned container narrow bridge with bounds check against the
 /// logical range `[0, 2^BITS)`.
 pub trait UNarrowFrom<Src: UContainerFor<BITS>, const BITS: u8>: UContainerFor<BITS> {
-    /// Try to narrow `v` into `Self::T`. `Err(())` when out of range.
-    fn u_try_narrow(v: Src::T) -> Result<Self::T, ()>;
+    /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
+    fn u_try_narrow(v: Src::T) -> Outcome<Self::T, ()>;
 }
 
 /// Signed container narrow bridge with logical-range check.
 pub trait INarrowFrom<Src: IContainerFor<BITS>, const BITS: u8>: IContainerFor<BITS> {
-    /// Try to narrow `v` into `Self::T`. `Err(())` when out of range.
-    fn i_try_narrow(v: Src::T) -> Result<Self::T, ()>;
+    /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
+    fn i_try_narrow(v: Src::T) -> Outcome<Self::T, ()>;
 }
 
 // Helpers to spell out widen impls. Src and Dst are both container
@@ -633,12 +638,12 @@ macro_rules! impl_u_narrow {
         $(
             impl UNarrowFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
-                fn u_try_narrow(v: $src_ty) -> Result<$dst_ty, ()> {
+                fn u_try_narrow(v: $src_ty) -> Outcome<$dst_ty, ()> {
                     // Logical max for this BITS is (1 << BITS) - 1.
                     // Compute via u128 so BITS up to 128 don't overflow
                     // the source type before the comparison.
                     let max_u128: u128 = (1u128 << $bits) - 1;
-                    if (v as u128) > max_u128 { Err(()) } else { Ok(v as $dst_ty) }
+                    if (v as u128) > max_u128 { Outcome::Err(()) } else { Outcome::Ok(v as $dst_ty) }
                 }
             }
         )+
@@ -650,14 +655,14 @@ macro_rules! impl_i_narrow {
         $(
             impl INarrowFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
-                fn i_try_narrow(v: $src_ty) -> Result<$dst_ty, ()> {
+                fn i_try_narrow(v: $src_ty) -> Outcome<$dst_ty, ()> {
                     // Signed logical range for BITS: [-(1 << (BITS-1)), (1 << (BITS-1)) - 1].
                     // Compute via i128 so BITS up to 127 don't overflow
                     // the source type during bound computation.
                     let min_i128: i128 = -(1i128 << ($bits - 1));
                     let max_i128: i128 = (1i128 << ($bits - 1)) - 1;
                     let v_i128: i128 = v as i128;
-                    if v_i128 < min_i128 || v_i128 > max_i128 { Err(()) } else { Ok(v as $dst_ty) }
+                    if v_i128 < min_i128 || v_i128 > max_i128 { Outcome::Err(()) } else { Outcome::Ok(v as $dst_ty) }
                 }
             }
         )+

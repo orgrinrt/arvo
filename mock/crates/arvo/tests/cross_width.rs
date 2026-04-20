@@ -126,3 +126,43 @@ fn ifixed_try_from_warm_to_hot_in_range_succeeds() {
     let narrowed: Result<IHot, ()> = a.try_into();
     assert_eq!(narrowed.unwrap().to_raw(), -50i8);
 }
+
+// Own-trait narrow methods return notko `Outcome<T, ()>`. The
+// `.try_into()` tests above exercise the std `TryFrom` boundary;
+// these four tests exercise the own-trait surface directly.
+
+#[test]
+fn u_try_narrow_outcome_ok() {
+    use arvo::strategy::UNarrowFrom;
+    use notko::Outcome;
+    let raw: u16 = 200;
+    let got = <Hot as UNarrowFrom<Warm, 8>>::u_try_narrow(raw);
+    assert!(matches!(got, Outcome::Ok(200u8)));
+}
+
+#[test]
+fn u_try_narrow_outcome_err() {
+    use arvo::strategy::UNarrowFrom;
+    use notko::Outcome;
+    let raw: u16 = 300;
+    let got = <Hot as UNarrowFrom<Warm, 8>>::u_try_narrow(raw);
+    assert!(matches!(got, Outcome::Err(())));
+}
+
+#[test]
+fn i_try_narrow_outcome_ok() {
+    use arvo::strategy::INarrowFrom;
+    use notko::Outcome;
+    let raw: i16 = -50;
+    let got = <Hot as INarrowFrom<Warm, 8>>::i_try_narrow(raw);
+    assert!(matches!(got, Outcome::Ok(-50i8)));
+}
+
+#[test]
+fn i_try_narrow_outcome_err() {
+    use arvo::strategy::INarrowFrom;
+    use notko::Outcome;
+    let raw: i16 = 1000;
+    let got = <Hot as INarrowFrom<Warm, 8>>::i_try_narrow(raw);
+    assert!(matches!(got, Outcome::Err(())));
+}

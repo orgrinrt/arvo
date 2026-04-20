@@ -55,8 +55,13 @@ fn highest_set_empty_is_width() {
 #[test]
 fn iter_set_bits_lowest_first() {
     let m = mk(&[0, 5, 10, 63]);
-    let collected: Vec<_> = m.iter_set_bits().map(|u| u.0).collect();
-    assert_eq!(collected, vec![0, 5, 10, 63]);
+    let mut collected = [0usize; 64];
+    let mut n = 0usize;
+    for u in m.iter_set_bits() {
+        collected[n] = u.0;
+        n += 1;
+    }
+    assert_eq!(&collected[..n], &[0, 5, 10, 63]);
 }
 
 #[test]
@@ -72,9 +77,14 @@ fn iter_set_bits_dense() {
     for i in 0..64 {
         m.insert(USize(i));
     }
-    let collected: Vec<_> = m.iter_set_bits().map(|u| u.0).collect();
-    assert_eq!(collected.len(), 64);
-    for (idx, bit) in collected.iter().enumerate() {
+    let mut collected = [0usize; 64];
+    let mut n = 0usize;
+    for u in m.iter_set_bits() {
+        collected[n] = u.0;
+        n += 1;
+    }
+    assert_eq!(n, 64);
+    for (idx, bit) in collected[..n].iter().enumerate() {
         assert_eq!(idx, *bit);
     }
 }
