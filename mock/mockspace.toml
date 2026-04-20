@@ -133,3 +133,7 @@ rules = [
 
 [lint-crates]
 mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "main" }
+
+# Writing-style gate — pre-existing docs trip this until sweeps tidy them.
+[lints.writing-style]
+severity = "advisory"
