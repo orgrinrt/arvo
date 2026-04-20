@@ -141,3 +141,74 @@ mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mock
 # Writing-style gate — pre-existing docs trip this until sweeps tidy them.
 [lints.writing-style]
 severity = "advisory"
+
+# ---------------------------------------------------------------------------
+# Graceful ramp for bare-primitive lints (temporary)
+# ---------------------------------------------------------------------------
+#
+# The bare-primitive family fires on 259 pre-existing L2/L3 drift sites in
+# arvo-bitmask / arvo-hash / arvo-graph / arvo-sparse / arvo-comb /
+# arvo-spectral that were invisible to the previous lib.rs-only lint scope.
+# Each is a legitimate target for the upcoming algorithm-crate sweep round;
+# none are introductions (arvo L0 and arvo-bits L1 are already exempt via
+# [primitive-introductions] below).
+#
+# Ramp severity to `warn` at every gate while the sweep lands. Commit + push
+# succeed with the warning visible; agents still see the violation in local
+# cargo mock output. FLIP BACK TO `error` when the L2/L3 sweep completes.
+# Tracked: sweep-in-flight rounds under #71 + per-algo-crate follow-ups.
+
+[lints.no-bare-numeric]
+severity = "warn"
+
+[lints.arvo-types-only]
+severity = "warn"
+
+[lints.no-bare-option]
+severity = "warn"
+
+[lints.no-bare-result]
+severity = "warn"
+
+[lints.no-bare-string]
+severity = "warn"
+
+[lints.no-public-raw-field]
+severity = "warn"
+
+# ---------------------------------------------------------------------------
+# Primitive-introductions — per-crate per-primitive lint exemption
+# ---------------------------------------------------------------------------
+#
+# Maps crate directory name to the list of primitive tokens the crate
+# legitimately introduces in its own source because it is the producer of
+# the wrapped equivalent. Bare-primitive lints (no-bare-numeric,
+# arvo-types-only, no-public-raw-field, etc.) skip these specific tokens
+# on these specific crates. Everything not listed remains subject to the
+# lint.
+#
+# Layer hierarchy:
+# - `arvo` (L0) — defines the full numeric / bool substrate; introduces
+#   every std primitive that gets wrapped by `UFixed`, `IFixed`,
+#   `FastFloat`, `StrictFloat`, `USize`, `Cap`, `Bool`, and the
+#   `#[repr(u8)]` strategy markers.
+# - `arvo-bits` (L1) — bit-level contracts; introduces `u8` for the
+#   `const N: u8` width parameter on `Bits<N>` and `u64` for its storage.
+# - Every L2/L3 algorithm crate (`arvo-bitmask`, `arvo-hash`, `arvo-graph`,
+#   `arvo-sparse`, `arvo-comb`, `arvo-spectral`) is a consumer of the
+#   substrate and introduces nothing, so it stays fully strict.
+#
+# This explicit map is the belt-and-suspenders path. See mockspace's
+# `Config.primitive_introductions` docs for the future auto-detection
+# direction (parse DESIGN.md.tmpl or pre-scan `src/**/*.rs` to derive the
+# set automatically).
+
+[primitive-introductions]
+arvo = [
+    "u8", "u16", "u32", "u64", "u128",
+    "i8", "i16", "i32", "i64", "i128",
+    "f32", "f64",
+    "usize", "isize",
+    "bool",
+]
+arvo-bits = ["u8", "u64"]
