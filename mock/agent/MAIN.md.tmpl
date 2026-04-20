@@ -17,8 +17,10 @@ platform dependency, and every size is const at type level.
   `Precise`), composable numeric traits, semantic aliases.
 
 **L1 — bit-level contracts:**
-- `arvo-bits` — traits only: `BitWidth`, `BitAccess`, `BitSequence`,
-  with blanket impls for arvo numerics. No fielded structs live here.
+- `arvo-bits` — traits + opaque-bit concretes: `BitWidth`, `BitAccess`,
+  `BitSequence`, `BitLogic`, with concrete impls for arvo numerics.
+  Arithmetic fielded structs live in L0 arvo; mask-specific concretes
+  live in L2 arvo-bitmask.
 
 **L2 — substrate concretes and generic algorithms:**
 - `arvo-bitmask` — `Mask64`, `Mask256`, `BitMatrix`, bit scanning
