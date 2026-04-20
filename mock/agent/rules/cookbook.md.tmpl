@@ -39,8 +39,12 @@ grids. All from `arvo-bitmask`.
 
 ## "I need bit-level operations"
 
-Take a trait bound from `arvo-bits`: `T: BitSequence + BitAccess`.
-Works across `Mask64` / `Mask256` / custom storage.
+Take a trait bound from `arvo-bits`: `T: BitSequence + BitAccess` when
+the consumer scans bits and reads / writes individual positions; add
+`+ BitLogic` when the consumer also needs whole-word OR / AND / NOT /
+XOR (or use `core::ops::{BitOr, BitAnd, BitNot, BitXor}` on the `Hot`
+containers — arvo-bits impls them). Works across `Mask64` / `Mask256`
+/ custom storage.
 
 ## "I need a sparse matrix"
 

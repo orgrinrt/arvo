@@ -49,8 +49,8 @@ new `pub struct`/`pub type` in a numeric crate lacks the parameter.
 - No `dyn Trait` anywhere.
 - No `TypeId`, no `std::any::*`.
 - Sub-crates are generic over trait bounds
-  (`BitSequence`, `BitAccess`, `TotalOrd`, `Add`, `Sqrt`, `Recip`,
-  `FromConstant`).
+  (`BitSequence`, `BitAccess`, `BitLogic`, `TotalOrd`, `Add`, `Sqrt`,
+  `Recip`, `FromConstant`).
 - Consumers pick concrete instantiations at the use site. The
   monomorphised function IS the type identity.
 
@@ -59,8 +59,11 @@ new `pub struct`/`pub type` in a numeric crate lacks the parameter.
 - `arvo` declares numeric primitives, strategy markers, and
   composable numeric traits.
 - `arvo-bits` declares bit-level contracts (`BitWidth`, `BitAccess`,
-  `BitSequence`). **Traits only.** A `pub struct` with fields in
-  `arvo-bits/src/**` is a layering violation.
+  `BitSequence`, `BitLogic`) + opaque-bit concretes via allowlist
+  (today: `Bits<N>`). **Arithmetic fielded structs live in L0 arvo;
+  mask-specific concretes live in L2 arvo-bitmask.** A new arithmetic
+  `pub struct` with fields in `arvo-bits/src/**` is a layering
+  violation.
 - `arvo-bitmask` picks `Mask64`, `Mask256`, `BitMatrix` concretes on
   top of `arvo-bits` contracts.
 - `arvo-graph` / `arvo-sparse` / `arvo-comb` / `arvo-spectral` are
