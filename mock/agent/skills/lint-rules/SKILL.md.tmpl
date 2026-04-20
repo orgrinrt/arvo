@@ -42,7 +42,7 @@ All files live in `mock/lints/`. Each exports
 | `no-alloc-enforcer` | HARD_ERROR | `use alloc::`, `Vec<`, `String`, `Box<` in arvo crates | no `alloc`. Use const-generic arrays (`[T; N]`) or consumer-owned buffers. |
 | `no-dynamic-dispatch` | HARD_ERROR | ` dyn `, `TypeId`, `std::any` | monomorphisation is the dispatch. Make the function generic and let the compiler pick. |
 | `strategy-marker-required` | PUSH_GATE (warn) | `pub struct` / `pub type` in numeric crates without `S:` generic | Add `S: Strategy = Warm` or justify in a code comment. |
-| `arvo-bits-traits-only` | HARD_ERROR | fielded `pub struct` in `arvo-bits/src/**` | `arvo-bits` is contracts only. Move concrete storage to `arvo-bitmask`. |
+| `arvo-bits-traits-only` | HARD_ERROR | fielded `pub struct` in `arvo-bits/src/**` not on the opaque-bit allowlist | `arvo-bits` hosts bit contracts + opaque-bit concretes. Arithmetic fielded types live in L0 `arvo`; masks in `arvo-bitmask`. New opaque-bit types extend `ALLOWED_OPAQUE_BITS` via a design round. |
 | `no-runtime-grow` | ADVISORY (warn) | `.push(`, `.resize(`, `.extend(`, `Vec::with_capacity` | arvo sizes are const. Make the size a const generic or pass a consumer-owned buffer. |
 
 ## Mockspace built-in lints (non-arvo-specific)

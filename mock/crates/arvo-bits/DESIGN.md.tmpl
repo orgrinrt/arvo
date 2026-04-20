@@ -1,9 +1,16 @@
 # arvo-bits — Design
 
-Bit-level contract crate. Sits between arvo (numeric primitives) and
-arvo-bitmask (fixed-width mask types). Defines traits for bit-width
-introspection, individual bit manipulation, and bit-sequence scanning.
-Provides blanket impls so all arvo fixed-point types are bit-accessible.
+Bit-level primitive crate. Sits between arvo (numeric primitives) and
+arvo-bitmask (fixed-width mask types). Ships two kinds of surface:
+
+- **Contracts** — traits for bit-width introspection, individual bit
+  manipulation, and bit-sequence scanning, with blanket impls so all
+  arvo fixed-point types are bit-accessible.
+- **Opaque-bit concretes** — fielded non-arithmetic containers for
+  fixed-width bit-pattern identities. Arithmetic fielded types (UFixed,
+  IFixed) still belong in L0 arvo; mask-specific concretes (Mask64,
+  Mask256, BitMatrix) still belong in L2 arvo-bitmask.
+
 `#![no_std]`, no alloc.
 
 Depends on arvo. No other arvo-family dependencies.
@@ -224,13 +231,40 @@ No SIMD-register-width alias: a 128-bit type would exceed our
 I+F <= 64 constraint. SIMD register width is a strategy concern
 (how many lanes of your type fit in a register), not a type alias.
 
+## Opaque-bit container: Bits
+
+The Bits type, parameterised by const N: u8, is a fixed-width
+opaque bit-pattern container. Backing storage is u64; only the low
+N bits are addressable. Non-arithmetic: compared by identity, not
+ordered arithmetically. Compile-time asserted: N must be in 1..=64.
+
+Implements `BitWidth` (reports N) and `BitAccess` (per-bit read).
+Does not implement `BitSequence`: the stream-scan semantics suit
+arithmetic contexts; opaque hashes use the full bit pattern via a
+bits() accessor.
+
+Non-arithmetic means:
+
+- No Strategy marker. Opaque-bit containers have no precision or
+  throughput tradeoff to tune. Precedent: `Bool` in L0 is a
+  non-arithmetic newtype without Strategy.
+- No Add / Sub / Mul / Ord impls. Ordering is not meaningful on
+  opaque identities; equality is via Eq, Hash.
+
+Primary consumer: arvo-hash's ContentHash alias (Bits<28>).
+General-purpose: any domain that needs a fixed-width opaque bit
+identity. Future consumer: clause pass-key identity in codegen.
+
 ## What this crate does NOT contain
 
-- Bitmask types (Mask64, Mask256, BitMatrix) — arvo-bitmask
-- Numeric operations (Add, Mul, Sqrt) — arvo
-- Set operations (union, intersection) — arvo-bitmask
-- Float types — arvo, completely separate from bit-level
-- Fallible-return types (Outcome / Just / Maybe) — consumer concern
+- Bitmask types (Mask64, Mask256, BitMatrix); live in arvo-bitmask.
+- Numeric operations (Add, Mul, Sqrt); live in arvo.
+- Set operations (union, intersection); live in arvo-bitmask.
+- Float types; live in arvo.
+- Fallible-return types (Outcome / Just / Maybe); consumer concern.
+- Arithmetic fielded types (UFixed, IFixed); live in L0 arvo. The
+  fielded-concrete permission in arvo-bits is limited to
+  non-arithmetic opaque-bit containers like the Bits type above.
 
 ## Consumers
 
