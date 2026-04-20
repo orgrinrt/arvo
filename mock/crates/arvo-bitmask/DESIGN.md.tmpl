@@ -85,9 +85,11 @@ with N ≤ 64, stored as `[Mask64; cap_size(N)]`.
 `BitMatrix256<const N: Cap>` — the 256-wide variant, stored as
 `[Mask256; cap_size(N)]`. Row `i` has bit `j` set if edge `i -> j`
 exists. `Cap` is arvo's const-generic capacity newtype;
-`cap_size(c: Cap) -> usize` is a local `const fn` that unwraps the
-newtype for array sizing (inline `.0.0` is rejected by nightly
-`generic_const_exprs`).
+`cap_size(c: Cap) -> usize` projects `Cap` to the raw `usize` that
+nightly `generic_const_exprs` requires in array-length position.
+arvo-bitmask re-exports `cap_size` from arvo-tensor (canonical home
+since round 202604280000); `BitMatrix` constructions use the
+re-export directly.
 
 ```rust
 fn edge(i: NodeId, j: NodeId) -> Bool     // BitAccess::bit, one instruction

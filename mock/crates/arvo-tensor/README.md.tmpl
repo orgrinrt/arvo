@@ -1,0 +1,7 @@
+# arvo-tensor
+
+L2 fixed-shape tensor wrappers with type-level capacity:
+`Array<T, N>` (rank-1), `Matrix<W, N>` (rank-2). `cap_size(c: Cap)`
+bridge. `Enumerator` trait with blanket `IntoIterator` impl yielding
+`(USize, &T)` for typed iteration. `#![no_std]`, no alloc, stack-only.
+Depends on arvo L0 only.

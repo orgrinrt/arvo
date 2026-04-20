@@ -47,6 +47,15 @@ Works across `Mask64` / `Mask256` / custom storage.
 `arvo_sparse::CsrMatrix<T>`. Iterate via provided accessor; never raw
 index into backing storage.
 
+## "I need a fixed-size dense array or matrix"
+
+`arvo_tensor::Array<T, N>` for rank-1, `arvo_tensor::Matrix<W, N>` for
+rank-2 N×N. Both wrap `[T; cap_size(N)]` / `[[W; N]; N]` with
+`get(USize) -> &T` / `set(USize, T)` / `from_fn(|USize| T)` APIs that
+hide the raw-usize indexing. Iterate via standard `for t in &arr { ... }`
+(IntoIterator) or `for (i, t) in arr.enumerated() { ... }` (yields
+typed `USize` indices via the `Enumerator` trait).
+
 ## "I need a bounded integer"
 
 `UFixed<I, F, S>` / `IFixed<I, F, S>` from arvo, parameterised by
