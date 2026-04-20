@@ -23,6 +23,7 @@
 
 use arvo::newtype::{Cap, USize};
 use arvo_bitmask::{NodeId, cap_size};
+use notko::Maybe;
 
 /// Compressed sparse row matrix.
 ///
@@ -85,29 +86,29 @@ where
         }
     }
 
-    /// Value at `(row, col)` if present, otherwise `None`.
+    /// Value at `(row, col)` if present, otherwise `Maybe::Isnt`.
     ///
     /// Scans `col_idx[row_ptr[row] .. row_end(row)]` for the target
     /// column. Linear in the row's non-zero count.
     #[inline]
-    pub fn get(&self, row: USize, col: NodeId) -> Option<W> {
+    pub fn get(&self, row: USize, col: NodeId) -> Maybe<W> {
         let r = row.0;
         if r >= cap_size(ROWS) {
-            return None;
+            return Maybe::Isnt;
         }
         let start = self.row_ptr[r].0;
         let end = self.row_end(r).0;
         if start > end || end > cap_size(NNZ) {
-            return None;
+            return Maybe::Isnt;
         }
         let mut k = start;
         while k < end {
             if self.col_idx[k] == col {
-                return Some(self.values[k]);
+                return Maybe::Is(self.values[k]);
             }
             k += 1;
         }
-        None
+        Maybe::Isnt
     }
 
     /// Slice of value entries for `row`.

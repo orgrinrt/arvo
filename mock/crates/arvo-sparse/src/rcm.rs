@@ -20,6 +20,7 @@
 
 use arvo::newtype::{Bool, Cap, USize};
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
+use notko::Maybe;
 
 /// Reverse Cuthill-McKee permutation.
 ///
@@ -40,8 +41,8 @@ where
         // Pick the unvisited node with the smallest combined degree.
         // Tie-break by lowest index.
         let start = match min_degree_unvisited(adjacency, &visited) {
-            Some(s) => s,
-            None => break,
+            Maybe::Is(s) => s.0,
+            Maybe::Isnt => break,
         };
 
         visited.insert(USize(start));
@@ -135,27 +136,30 @@ where
 }
 
 /// Lowest-index unvisited node with minimum combined degree, or
-/// `None` if every node in `0..N` is already visited.
+/// `Maybe::Isnt` if every node in `0..N` is already visited.
 #[inline]
 fn min_degree_unvisited<const N: Cap>(
     adj: &BitMatrix64<N>,
     visited: &Mask64,
-) -> Option<usize>
+) -> Maybe<USize>
 where
     [(); cap_size(N)]:,
 {
-    let mut best: Option<(usize, usize)> = None;
+    let mut best: Maybe<(usize, usize)> = Maybe::Isnt;
     let mut i = 0usize;
     while i < cap_size(N) {
         if let Bool(false) = visited.contains(USize(i)) {
             let d = degree(adj, NodeId::new(USize(i)));
             match best {
-                None => best = Some((i, d)),
-                Some((_, bd)) if d < bd => best = Some((i, d)),
+                Maybe::Isnt => best = Maybe::Is((i, d)),
+                Maybe::Is((_, bd)) if d < bd => best = Maybe::Is((i, d)),
                 _ => {}
             }
         }
         i += 1;
     }
-    best.map(|(i, _)| i)
+    match best {
+        Maybe::Is((i, _)) => Maybe::Is(USize(i)),
+        Maybe::Isnt => Maybe::Isnt,
+    }
 }

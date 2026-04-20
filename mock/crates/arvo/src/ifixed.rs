@@ -15,6 +15,8 @@
 use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
+use notko::Outcome;
+
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use crate::newtype::{FBits, IBits, USize};
 use crate::strategy::{
@@ -229,8 +231,10 @@ where
     type Error = ();
     #[inline(always)]
     fn try_from(src: IFixed<I, F, Warm>) -> Result<Self, Self::Error> {
-        <Hot as INarrowFrom<Warm, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw())
-            .map(Self::from_raw)
+        match <Hot as INarrowFrom<Warm, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw()) {
+            Outcome::Ok(v) => Ok(Self::from_raw(v)),
+            Outcome::Err(()) => Err(()),
+        }
     }
 }
 
@@ -242,7 +246,9 @@ where
     type Error = ();
     #[inline(always)]
     fn try_from(src: IFixed<I, F, Precise>) -> Result<Self, Self::Error> {
-        <Hot as INarrowFrom<Precise, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw())
-            .map(Self::from_raw)
+        match <Hot as INarrowFrom<Precise, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw()) {
+            Outcome::Ok(v) => Ok(Self::from_raw(v)),
+            Outcome::Err(()) => Err(()),
+        }
     }
 }

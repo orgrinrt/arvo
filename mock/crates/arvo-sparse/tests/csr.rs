@@ -7,6 +7,7 @@
 use arvo::newtype::{Cap, USize};
 use arvo_bitmask::NodeId;
 use arvo_sparse::Csr;
+use notko::Maybe;
 
 const fn cap(n: usize) -> Cap {
     Cap(USize(n))
@@ -60,20 +61,20 @@ fn round_trip_values() {
 
     // Row 0.
     assert_eq!(csr.nnz(USize(0)).0, 2);
-    assert_eq!(csr.get(USize(0), nid(0)), Some(10));
-    assert_eq!(csr.get(USize(0), nid(2)), Some(30));
-    assert_eq!(csr.get(USize(0), nid(1)), None);
+    assert_eq!(csr.get(USize(0), nid(0)), Maybe::Is(10));
+    assert_eq!(csr.get(USize(0), nid(2)), Maybe::Is(30));
+    assert_eq!(csr.get(USize(0), nid(1)), Maybe::Isnt);
 
     // Row 1.
     assert_eq!(csr.nnz(USize(1)).0, 1);
-    assert_eq!(csr.get(USize(1), nid(1)), Some(20));
-    assert_eq!(csr.get(USize(1), nid(0)), None);
+    assert_eq!(csr.get(USize(1), nid(1)), Maybe::Is(20));
+    assert_eq!(csr.get(USize(1), nid(0)), Maybe::Isnt);
 
     // Row 2.
     assert_eq!(csr.nnz(USize(2)).0, 3);
-    assert_eq!(csr.get(USize(2), nid(0)), Some(40));
-    assert_eq!(csr.get(USize(2), nid(1)), Some(50));
-    assert_eq!(csr.get(USize(2), nid(2)), Some(60));
+    assert_eq!(csr.get(USize(2), nid(0)), Maybe::Is(40));
+    assert_eq!(csr.get(USize(2), nid(1)), Maybe::Is(50));
+    assert_eq!(csr.get(USize(2), nid(2)), Maybe::Is(60));
 }
 
 #[test]
@@ -103,5 +104,5 @@ fn out_of_range_row_is_empty() {
     assert_eq!(csr.nnz(USize(5)).0, 0);
     assert_eq!(csr.row_values(USize(5)).len(), 0);
     assert_eq!(csr.row_col_indices(USize(5)).len(), 0);
-    assert_eq!(csr.get(USize(5), nid(0)), None);
+    assert_eq!(csr.get(USize(5), nid(0)), Maybe::Isnt);
 }
