@@ -6,11 +6,11 @@
 //! that two separate predicates would trigger.
 
 use arvo::newtype::{Bool, FBits, IBits, USize};
-use arvo::strategy::{Strategy, ufixed_bits};
+use arvo::strategy::{Hot, Strategy, ufixed_bits};
 use arvo::ufixed::UFixed;
 
 use crate::prim::{BitPrim, UBitContainer};
-use crate::traits::{BitAccess, BitSequence, BitWidth};
+use crate::traits::{BitAccess, BitLogic, BitSequence, BitWidth};
 
 impl<const I: IBits, const F: FBits, S: Strategy> BitWidth for UFixed<I, F, S>
 where
@@ -115,6 +115,52 @@ where
         Bool(
             <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim) == 0,
         )
+    }
+}
+
+impl<const I: IBits, const F: FBits> BitLogic for UFixed<I, F, Hot>
+where
+    Hot: UBitContainer<{ ufixed_bits(I, F) }>,
+{
+    #[inline(always)]
+    fn bitor(self, other: Self) -> Self {
+        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+        let b = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(other.to_raw());
+        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitor(a, b);
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
+    }
+
+    #[inline(always)]
+    fn bitand(self, other: Self) -> Self {
+        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+        let b = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(other.to_raw());
+        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitand(a, b);
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
+    }
+
+    #[inline(always)]
+    fn bitnot(self) -> Self {
+        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitnot(a);
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
+    }
+
+    #[inline(always)]
+    fn bitxor(self, other: Self) -> Self {
+        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+        let b = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(other.to_raw());
+        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitxor(a, b);
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
+    }
+
+    #[inline(always)]
+    fn clear_lowest_set_bit(self) -> Self
+    where
+        Self: BitAccess + BitSequence,
+    {
+        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::clear_lowest_set_bit(a);
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
     }
 }
 

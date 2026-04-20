@@ -22,7 +22,7 @@ use crate::node::NodeId;
 
 /// Unwrap `Cap` to `usize` for array sizing in
 /// `generic_const_exprs` contexts.
-pub const fn cap_size(c: Cap) -> usize {
+pub const fn cap_size(c: Cap) -> usize { // lint:allow(arvo-types-only) lint:allow(no-bare-numeric) reason: nightly generic_const_exprs requires raw usize in const-generic array-length position (language grammar constraint); tracked: #121
     c.0.0
 }
 

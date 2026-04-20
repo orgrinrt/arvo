@@ -32,4 +32,4 @@ pub mod ufixed_impl;
 pub use alias::{Bit, Byte, DWord, Nibble, QWord, Word};
 pub use bits::Bits;
 pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
-pub use traits::{BitAccess, BitSequence, BitWidth};
+pub use traits::{BitAccess, BitLogic, BitSequence, BitWidth};
