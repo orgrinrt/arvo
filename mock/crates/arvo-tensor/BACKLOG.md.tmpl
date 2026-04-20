@@ -1,0 +1,47 @@
+# arvo-tensor — backlog
+
+## Higher-rank shapes
+
+Future rank-N containers as consumer demand surfaces:
+
+- Grid<T, const N: Cap, const M: Cap> — rectangular 2D (non-square Matrix).
+  Needed when an algorithm has N rows × M columns with N != M.
+- Cube<T, const N: Cap, const M: Cap, const P: Cap> — rank-3. Needed for
+  3D spectral workloads or ML-adjacent tensor ops.
+
+Each shape follows the same pattern: `#[repr(transparent)]` wrapper over
+the raw fixed-size array-of-arrays, `get` / `set` methods taking USize
+indices, `from_fn` constructor, IntoIterator impl, participates in the
+Enumerator trait.
+
+## core::ops / Index impls
+
+Adding `impl Index<USize> for Array<T, N>` and `impl Index<(USize, USize)>
+for Matrix<W, N>` enables `arr[idx]` / `matrix[(i, j)]` syntax. Deferred
+from the initial round to keep scope focused; get/set methods suffice for
+day-one migration.
+
+## ArrayLen trait (generalised cap_size)
+
+`cap_size(c: Cap) -> usize` is a single-purpose bridge. A trait family
+like `pub trait ArrayLen { const LEN: usize; }` implemented on cap-like
+types could generalise the pattern — every newtype wrapping a usize that
+wants to participate in array sizing implements ArrayLen. #121 covers the
+underlying language blocker; ArrayLen is a possible trait-level framing
+once that resolves.
+
+## Tensor trait surface
+
+If a second rank-specific container surfaces (e.g. Grid) that shares
+structure with Array + Matrix, promote common methods to a `Tensor`
+trait. Candidate methods: `len() -> USize` (total cell count), `fill(v)`,
+`map<U, F>(f: F) -> Self::Mapped<U>`. Only do when the third concrete
+container materialises; premature abstraction otherwise.
+
+## Consumer migration
+
+Each downstream sweep round (arvo-graph, arvo-sparse, arvo-spectral)
+drops its raw `&[T; cap_size(N)]` signatures in favour of
+`&Array<T, N>`. Internal DP tables become `Matrix<W, N>`. Bit-shaped
+adjacency stays on arvo-bitmask. Tracked per-crate under the #120
+umbrella.

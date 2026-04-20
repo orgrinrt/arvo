@@ -25,6 +25,9 @@ platform dependency, and every size is const at type level.
 **L2 — substrate concretes and generic algorithms:**
 - `arvo-bitmask` — `Mask64`, `Mask256`, `BitMatrix`, bit scanning
   (concrete storage over `arvo-bits` contracts).
+- `arvo-tensor` — `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
+  tensor wrappers; `cap_size` bridge; `Enumerator` trait for
+  USize-indexed iteration. Value-generic, no bit semantics.
 - `arvo-graph` — topo sort, rank, waist, spanning tree. Generic over
   numeric trait bounds for weights.
 - `arvo-sparse` — CSR, RCM, block diagonal, Dulmage-Mendelsohn.
@@ -42,9 +45,11 @@ platform dependency, and every size is const at type level.
 
 ## Architecture rules
 
-- Dependency flow: `arvo → arvo-bits → arvo-bitmask`; L2 algorithm
-  crates depend on `arvo` and `arvo-bitmask` (not `arvo-bits`
-  directly); `arvo-spectral` depends on `arvo` and `arvo-sparse`.
+- Dependency flow: `arvo → arvo-bits → arvo-bitmask`; `arvo →
+  arvo-tensor` (L2 peer of bitmask); L2 algorithm crates depend on
+  `arvo`, `arvo-bitmask`, and `arvo-tensor` (not `arvo-bits`
+  directly); `arvo-spectral` depends on `arvo`, `arvo-sparse`,
+  and `arvo-tensor`.
 - `arvo-bits` hosts bit-level contracts plus a small allowlist of
   opaque-bit concrete containers (`Bits<const N: u8>`). Arithmetic
   fielded types (UFixed, IFixed) belong in L0 `arvo`; mask concretes
