@@ -76,3 +76,36 @@ Exhaustive comparison of arvo types vs raw `f32` / `f64` / `u32` /
 overhead beyond the strategy's intended cost. Any unexpected overhead
 is a bug to fix, not accept. Scope: its own round once the substrate
 is green.
+
+## Post-review notes
+
+Items surfaced during a post-shipping review of the substrate; kept
+here for future rounds to pick up.
+
+- Cap upper-bound enforcement. Cap(pub USize) lacks any cap on the
+  inner USize; constructing Cap(USize(usize::MAX)) is silently legal
+  even though array-sized-at-N would fail to compile or exhaust the
+  stack. A future round should consider non-pub inner fields with a
+  constructor that enforces a pragmatic ceiling (roughly 2^24 as a
+  stack-array ceiling under modern OS stack sizes). Ties into
+  ConstParamTy newtype hygiene.
+- cap_size duplication. The cap_size helper is defined separately in
+  arvo-bitmask/src/matrix.rs and arvo-spectral/src/matrix.rs. Resolve
+  to a single definition when Matrix promotes into arvo-sparse (the
+  Matrix-in-arvo-sparse item in arvo-spectral's BACKLOG). Both copies
+  are identical today; the duplication is a promotion artefact.
+- StrictFloat::sqrt no_std correctness. The 7-ULP Newton-Raphson
+  approximation used by sqrt_f32 / sqrt_f64 violates the bit-exact
+  IEEE 754 contract StrictFloat promises. The approximation is
+  acceptable for current consumer surfaces (spectral partitioning
+  Fiedler-vector sign inspection, no bit-exact dependence). Integrate
+  libm or musl-math when a consumer actually depends on
+  correctly-rounded sqrt in no_std. An std-gated path is rejected —
+  arvo's no_std discipline is absolute.
+- Wrapping div-by-zero semantic. Hot / Warm / Cold wrapping div
+  returns the numerator unchanged when the divisor is zero. Wrapping
+  has no identity for zero; silent garbage is strictly preferable to
+  a panic under the Hot / Warm single-instruction discipline. If a
+  consumer surfaces a need for a different sentinel (e.g. zero), add
+  a checked_div variant rather than change the existing contract.
+
