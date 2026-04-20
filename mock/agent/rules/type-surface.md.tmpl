@@ -55,7 +55,7 @@ Before writing ANY signature (pub or private) or field or local, ask:
 | Category | When | Examples |
 |----------|------|----------|
 | **Trait** | Varying behavior, shared contract | `UArith<BITS>`, `IArith<BITS>`, `BitSequence`, `BitAccess`, `Bool: Try` |
-| **Newtype** | Fixed rep, validation at construction | `UFixed<I, F, S>`, `FastFloat`, `StrictFloat`, `USize`, `Cap`, `ContentHash` |
+| **Newtype** | Fixed rep, validation at construction | `UFixed<I, F, S>`, `FastFloat`, `StrictFloat`, `USize`, `Cap`, `ContentHash`, `Array<T, N>`, `Matrix<W, N>` |
 | **`repr(C)` enum** | Closed set, crosses ABI | `Strategy` markers, `Priority`, `ErrorClass` |
 
 There is no fourth "bare primitive" category. Every numeric identity
