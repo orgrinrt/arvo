@@ -142,14 +142,14 @@ specific follow-up, the design is wrong, not the rule.
 ## arvo: the fixed-point arithmetic stack
 
 arvo is a standalone `#![no_std]` numeric primitive library family,
-cross-project — consumed by hilavitkutin, polka-dots, saalis, and
+cross-project; consumed by hilavitkutin, polka-dots, saalis, and
 loimu. It is the exclusive numeric substrate for the entire
 clause-dev workspace.
 
 Every numeric primitive flows through `UFixed` / `IFixed` /
-`FastFloat` / `StrictFloat`. Bare Rust primitives — `u8`, `u16`,
+`FastFloat` / `StrictFloat`. Bare Rust primitives (`u8`, `u16`,
 `u32`, `u64`, `u128`, `i8`, `i16`, `i32`, `i64`, `i128`, `f32`,
-`f64`, `bool`, `usize`, `isize` — effectively do not exist in
+`f64`, `bool`, `usize`, `isize`) effectively do not exist in
 arvo's universe. This is not a preference, not a default, not a
 "usually use": it is the identity. Reach for a raw primitive and
 you have forgotten what arvo is.
@@ -166,7 +166,7 @@ reach for arvo primitives. They do not accept or return bare types
 at any boundary.
 
 Strategy markers (`Hot`, `Warm`, `Cold`, `Precise`) are type
-parameters, not runtime config — they embed operational intent
+parameters, not runtime config. They embed operational intent
 into the type system. A `Mass<Hot>` is explicitly lossy-but-fast;
 a `Mass<Precise>` is explicitly exact-but-expensive. The caller
 picks the tradeoff at the type level.
