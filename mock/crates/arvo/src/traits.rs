@@ -181,8 +181,17 @@ impl_sqrt_ufixed_concrete!(
 
 // Float sqrt. `f32::sqrt` / `f64::sqrt` are std-only; we use a
 // Newton-Raphson iteration with a bit-manipulated seed to stay
-// no_std without libm. Substrate placeholder — correctness audit
-// tracked in arvo DESIGN.md backlog.
+// no_std without libm.
+//
+// # WARNING: 7-ULP Newton-Raphson approximation
+//
+// Three (f32) / four (f64) NR iterations land within ~7 ULP of the
+// correctly-rounded IEEE 754 result. The `StrictFloat` bit-exact
+// contract is therefore weakened in no_std builds to "deterministic
+// but not correctly-rounded". Consumer code that needs a correctly-
+// rounded sqrt must link libm at a higher layer until the substrate
+// BACKLOG item ships (see arvo/BACKLOG.md — "correctly-rounded sqrt
+// via libm feature gate").
 
 #[inline(always)]
 fn sqrt_f32(x: f32) -> f32 {

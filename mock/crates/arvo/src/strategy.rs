@@ -381,10 +381,10 @@ impl_resolve!(Precise, Cold, Precise);
 //           lands with the Cold widening table in a later round.
 //   Precise — saturating at the container level.
 //
-// Division by zero: Hot/Warm/Cold use `wrapping_div` (which panics in
-// debug on some platforms — matches the "wrapping" convention from the
-// doc CL D4). Precise guards and clamps to container max so Precise
-// never panics on div-by-zero.
+// Division by zero: Hot/Warm/Cold return the numerator unchanged
+// (wrapping math has no identity for zero, so propagating `a` is the
+// cheapest defined fallback that does not panic). Precise guards and
+// clamps to container max.
 
 /// Unsigned arithmetic dispatch for `(strategy, BITS)`.
 ///
@@ -436,8 +436,7 @@ macro_rules! impl_u_arith_wrapping {
                 fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
                     -> <Self as UContainerFor<$bits>>::T {
                     if b == <<Self as UContainerFor<$bits>>::T as Default>::default() {
-                        a.wrapping_div(<<Self as UContainerFor<$bits>>::T as Default>::default()
-                            .wrapping_add(<<Self as UContainerFor<$bits>>::T as Default>::default()))
+                        a
                     } else {
                         a.wrapping_div(b)
                     }
@@ -492,9 +491,7 @@ macro_rules! impl_i_arith_wrapping {
                 fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
                     -> <Self as IContainerFor<$bits>>::T {
                     if b == <<Self as IContainerFor<$bits>>::T as Default>::default() {
-                        a.wrapping_div(
-                            <<Self as IContainerFor<$bits>>::T as Default>::default()
-                                .wrapping_add(<<Self as IContainerFor<$bits>>::T as Default>::default()))
+                        a
                     } else {
                         a.wrapping_div(b)
                     }
