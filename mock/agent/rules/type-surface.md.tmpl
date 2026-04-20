@@ -12,18 +12,28 @@ arvo is a fixed-point arithmetic stack. Every numeric primitive
 (`UFixed<I, F, S>` / `IFixed<I, F, S>` / `FastFloat` / `StrictFloat`
 / `Bool` / `USize` / `Cap`) or one of the pre-defined semantic
 aliases over them (`Byte`, `Word`, `DWord`, `QWord`, `Nibble`, `Bit`
-from arvo-bits). When you encounter a raw Rust numeric in a public
-signature, the question isn't "which arvo type matches this width";
-it's "which arvo type matches this DOMAIN". Public APIs carry
-domain aliases (`NodeId`, `Str`, `RecordIndex`, `SieveWeight`,
-`ContentHash`) grounded on arvo primitives. Never raw primitives;
-never raw newtype-over-primitive either.
+from arvo-bits). Domain usage drives the type choice: a 28-bit
+content hash isn't "a u32"; it's `ContentHash = Bits<28>`. A node
+index isn't "a usize"; it's `NodeId`. The arvo primitive or a domain
+alias grounded on one — never the bare primitive.
 
-Enforced by `arvo-types-only` (#50), `no-bare-numeric` (#68), and
-`no-bare-option/result/string/vec` (#66, #67, #69, #76). Until
-those lints land strict, discipline carries it.
+**Scope is physical, not API-visibility.** Bare `u8..u128`, `i8..i128`,
+`f32`, `f64`, `usize`, `isize`, `bool` do not appear anywhere in
+source: not in public fn signatures, not in private fields, not in
+`let` bindings, not in cast expressions, not in literal suffixes
+(`0u32`, `1_usize`), not in array element types, not in const
+declarations, not in trait method parameter types, not in tuple-
+struct fields, not in `where` clauses. The `arvo-types-only` and
+`no-bare-numeric` lints scan every line of every `.rs` file; both
+fire on any physical occurrence of a bare primitive identifier.
 
-Before writing any `pub` signature, ask:
+Escape hatch: `// lint:allow(<rule>) reason: ...; tracked: #N` —
+only when a foreign crate's contract or an unavoidable language
+feature forces the bare primitive and no arvo impl of that contract
+is possible. Before reaching for the escape hatch, consider whether
+the foreign crate should be dropped.
+
+Before writing ANY signature (pub or private) or field or local, ask:
 
 1. What OPERATION does this position perform?
 2. Is there a trait that describes that operation? If yes, use it. If
@@ -45,9 +55,11 @@ Before writing any `pub` signature, ask:
 | Category | When | Examples |
 |----------|------|----------|
 | **Trait** | Varying behavior, shared contract | `UArith<BITS>`, `IArith<BITS>`, `BitSequence`, `BitAccess`, `Bool: Try` |
-| **Newtype** | Fixed rep, validation at construction | `UFixed<I, F, S>`, `FastFloat`, `StrictFloat`, `USize`, `Cap` |
+| **Newtype** | Fixed rep, validation at construction | `UFixed<I, F, S>`, `FastFloat`, `StrictFloat`, `USize`, `Cap`, `ContentHash` |
 | **`repr(C)` enum** | Closed set, crosses ABI | `Strategy` markers, `Priority`, `ErrorClass` |
-| **Primitive** | No semantic meaning beyond raw value | `const N: usize` (const-generic position only) |
+
+There is no fourth "bare primitive" category. Every numeric identity
+flows through arvo's type system.
 
 ## DO ✓ (trait-first)
 
@@ -59,14 +71,15 @@ Before writing any `pub` signature, ask:
 - Newtypes at public boundaries: `Cap`, `USize`, `FastFloat`
 - Scalar returns: `Outcome<T, E>`, `Maybe<T>`, `Just<T>` (from notko)
 
-## DON'T ✗ (concrete-type leakage)
+## DON'T ✗ (concrete-type leakage — anywhere in source)
 
-- Bare `Option<T>` or `Result<T, E>` — use `Maybe<T>` / `Outcome<T, E>`
-- Concrete collections in pub sigs: `Vec<T>`, `HashMap`, `Seq<T, N>`,
+- Bare `Option<T>` or `Result<T, E>` in ANY position — use `Maybe<T>` / `Outcome<T, E>`
+- Concrete collections anywhere: `Vec<T>`, `HashMap`, `Seq<T, N>`,
   `Map<K, V, N>`
-- Raw numerics in pub sigs: `usize`, `f32`, `f64`, `bool`, `u32`, `i32`
-  — use the arvo newtypes or a trait bound
-- `String` / non-static `&str` — use `&'static str` or `hilavitkutin_str::Str`
+- Raw numerics anywhere (pub fn, private field, local, cast, literal
+  suffix, array size expression): `usize`, `f32`, `f64`, `bool`,
+  `u32`, `i32`, `u64` — use the arvo newtypes or a trait bound
+- `String` / non-static `&str` in ANY position — use `&'static str` or `hilavitkutin_str::Str`
 - Concrete types when a trait exists: don't write `fn add(a: u32, b:
   u32) -> u32` when `UArith<32>` is available
 
