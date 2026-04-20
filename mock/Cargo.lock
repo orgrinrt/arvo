@@ -83,6 +83,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-tensor"
+version = "0.1.0"
+dependencies = [
+ "arvo",
+ "mockspace",
+]
+
+[[package]]
 name = "cc"
 version = "1.2.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
