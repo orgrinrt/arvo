@@ -1,71 +1,177 @@
 //! Opaque N-bit container. Non-arithmetic; compared by identity.
 //!
-//! Stores an N-bit value in a `u64`; only the low N bits are
-//! addressable. `N` is compile-time asserted to lie in 1..=64.
-//! Ordering is not provided; these are identity values, not
-//! numerics.
+//! `#[repr(transparent)]` newtype around `<S as UContainerFor<N>>::T`
+//! — the smallest native unsigned that fits N bits under the chosen
+//! strategy (u8 for 1..=8, u16 for 9..=16, u32 for 17..=32, u64
+//! for 33..=64 under Hot). Dispatches its container through the
+//! same `UContainerFor<N, S>` table that `UFixed` uses, so the
+//! storage footprint matches a same-width UFixed down to the byte.
 //!
-//! Primary consumer: `arvo-hash` `ContentHash` alias (`Bits<28>`).
+//! Bits is NOT a UFixed alias and NOT a UFixed wrapper. It is a
+//! parallel primitive family that reuses arvo's container-dispatch
+//! table to pick its storage, then presents a deliberately smaller
+//! trait surface: `BitWidth` / `BitAccess` / `BitSequence` /
+//! `BitLogic` but no `Add` / `Sub` / `Mul` / `Div` / `Ord`. Bit
+//! patterns are identities, not arithmetic values.
+//!
+//! Primary consumers: `arvo-hash`'s `ContentHash = Bits<28>`
+//! (u32-backed, 4 bytes); `hilavitkutin-str`'s `Str(Bits<32>)`
+//! (u32-backed, 4 bytes); any domain needing a fixed-width opaque
+//! identity.
 
 use arvo::{Bool, USize};
+use arvo::strategy::{Hot, Strategy, UContainerFor};
 
-use crate::traits::{BitAccess, BitWidth};
+use crate::prim::BitPrim;
+use crate::traits::{BitAccess, BitLogic, BitSequence, BitWidth};
 
-/// N-bit opaque bit-pattern. Construct via `Bits::new`; the
-/// constructor masks to the low N bits.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
-pub struct Bits<const N: u8>(u64);
+/// N-bit opaque bit-pattern. Transparent wrapper over the
+/// strategy-dispatched container primitive.
+#[repr(transparent)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug, Default)]
+pub struct Bits<const N: u8, S: Strategy = Hot>(<S as UContainerFor<N>>::T)
+where
+    S: UContainerFor<N>;
 
-impl<const N: u8> Bits<N> {
-    const _BOUNDS: () = {
-        assert!(N > 0, "Bits<0> is invalid; use Bool for 1-bit values");
-        assert!(N <= 64, "Bits<N> requires N <= 64");
-    };
-
-    const MASK: u64 = if N == 64 { u64::MAX } else { (1u64 << N) - 1 };
-
-    /// Construct a `Bits<N>` from raw bits, masking to the low N bits.
-    pub const fn new(raw: u64) -> Self {
-        let _ = Self::_BOUNDS;
-        Self(raw & Self::MASK)
+impl<const N: u8, S: Strategy> Bits<N, S>
+where
+    S: UContainerFor<N>,
+{
+    /// Construct from the raw container value.
+    pub const fn from_raw(raw: <S as UContainerFor<N>>::T) -> Self {
+        Self(raw)
     }
 
-    /// The underlying bit pattern, in the low N bits of the `u64`.
-    pub const fn bits(self) -> u64 {
+    /// Project to the raw container value.
+    pub const fn to_raw(self) -> <S as UContainerFor<N>>::T {
         self.0
     }
 }
 
-impl<const N: u8> BitWidth for Bits<N> {
+/// Per-N const-fn bridges for the u64-typed legacy path. Callers
+/// that already think in u64 (arvo-hash digests, hilavitkutin-str
+/// handles) use `new(u64)` and `bits(self) -> u64`; the narrow /
+/// widen happens through an `as` cast generated per-N via macro.
+macro_rules! impl_bits_u64 {
+    ($ty:ty, $($n:literal),+ $(,)?) => {
+        $(
+            impl Bits<$n, Hot> {
+                const MASK_U64: u64 =
+                    if $n == 64 { u64::MAX } else { (1u64 << $n) - 1 };
+
+                /// Construct from a u64, masking to N bits.
+                pub const fn new(raw: u64) -> Self {
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-N narrow from u64 to the dispatched container; arvo-bits introduces the opaque-bit substrate; tracked: #127
+                    Self((raw & Self::MASK_U64) as $ty)
+                }
+
+                /// Widen the container back to u64.
+                pub const fn bits(self) -> u64 {
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: widen dispatched container back to u64 for the uniform legacy API; tracked: #127
+                    self.0 as u64
+                }
+            }
+        )+
+    };
+}
+
+// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: container dispatch table names the native u8/u16/u32/u64 storage; tracked: #127
+impl_bits_u64!(u8, 1, 2, 3, 4, 5, 6, 7, 8);
+// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #127
+impl_bits_u64!(u16, 9, 10, 11, 12, 13, 14, 15, 16);
+// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #127
+impl_bits_u64!(
+    u32, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #127
+#[rustfmt::skip]
+impl_bits_u64!(
+    u64,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
+
+// --- Trait impls via BitPrim on the container ---------------------------
+
+impl<const N: u8, S: Strategy> BitWidth for Bits<N, S>
+where
+    S: UContainerFor<N>,
+{
     const WIDTH: USize = USize(N as usize);
 }
 
-impl<const N: u8> BitAccess for Bits<N> {
+impl<const N: u8, S: Strategy> BitAccess for Bits<N, S>
+where
+    S: UContainerFor<N>,
+    <S as UContainerFor<N>>::T: BitPrim,
+{
     fn bit(self, idx: USize) -> Bool {
-        if idx.0 >= N as usize {
-            return Bool::FALSE;
-        }
-        Bool(((self.0 >> idx.0) & 1) != 0)
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim methods take u32 indices; sealed bridge contract; tracked: #127
+        Bool(self.0.get_bit(idx.0 as u32))
     }
-
     fn with_bit_set(self, idx: USize) -> Self {
-        if idx.0 >= N as usize {
-            return self;
-        }
-        Self::new(self.0 | (1u64 << idx.0))
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #127
+        Self(self.0.with_bit_set(idx.0 as u32))
     }
-
     fn with_bit_cleared(self, idx: USize) -> Self {
-        if idx.0 >= N as usize {
-            return self;
-        }
-        Self::new(self.0 & !(1u64 << idx.0))
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #127
+        Self(self.0.with_bit_cleared(idx.0 as u32))
     }
-
     fn with_bit_toggled(self, idx: USize) -> Self {
-        if idx.0 >= N as usize {
-            return self;
-        }
-        Self::new(self.0 ^ (1u64 << idx.0))
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #127
+        Self(self.0.with_bit_toggled(idx.0 as u32))
+    }
+}
+
+impl<const N: u8, S: Strategy> BitSequence for Bits<N, S>
+where
+    S: UContainerFor<N>,
+    <S as UContainerFor<N>>::T: BitPrim,
+{
+    fn trailing_zeros(self) -> USize {
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #127
+        USize(self.0.trailing_zeros() as usize)
+    }
+    fn leading_zeros(self) -> USize {
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #127
+        let lz = self.0.leading_zeros() as usize;
+        // Container may be wider than N; subtract the gap.
+        let container_width = <<S as UContainerFor<N>>::T as BitPrim>::WIDTH as usize;
+        USize(lz.saturating_sub(container_width - N as usize))
+    }
+    fn count_ones(self) -> USize {
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #127
+        USize(self.0.count_ones() as usize)
+    }
+    fn count_zeros(self) -> USize {
+        USize(N as usize - self.count_ones().0)
+    }
+    fn is_zero(self) -> Bool {
+        Bool(self.0 == <<S as UContainerFor<N>>::T as BitPrim>::ZERO)
+    }
+}
+
+impl<const N: u8> BitLogic for Bits<N, Hot>
+where
+    Hot: UContainerFor<N>,
+    <Hot as UContainerFor<N>>::T: BitPrim
+        + core::ops::BitOr<Output = <Hot as UContainerFor<N>>::T>
+        + core::ops::BitAnd<Output = <Hot as UContainerFor<N>>::T>
+        + core::ops::BitXor<Output = <Hot as UContainerFor<N>>::T>
+        + core::ops::Not<Output = <Hot as UContainerFor<N>>::T>,
+{
+    fn bitor(self, other: Self) -> Self {
+        Self(self.0 | other.0)
+    }
+    fn bitand(self, other: Self) -> Self {
+        Self(self.0 & other.0)
+    }
+    fn bitnot(self) -> Self {
+        Self(!self.0)
+    }
+    fn bitxor(self, other: Self) -> Self {
+        Self(self.0 ^ other.0)
     }
 }
