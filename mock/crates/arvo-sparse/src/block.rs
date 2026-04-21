@@ -29,7 +29,7 @@ where
 {
     let mut block_id: [USize; cap_size(N)] = [USize(0); cap_size(N)];
     let mut visited: Mask64 = Mask64::empty();
-    let mut next_id: usize = 0;
+    let mut next_id = USize(0);
 
     let mut seed = 0usize;
     while seed < cap_size(N) {
@@ -38,8 +38,8 @@ where
             continue;
         }
 
-        let id = USize(next_id);
-        next_id += 1;
+        let id = next_id;
+        next_id = USize(next_id.0 + 1);
 
         // Iterative DFS. Stack capacity = N is a safe bound: each
         // node enters the stack at most once.
@@ -76,5 +76,5 @@ where
         seed += 1;
     }
 
-    (USize(next_id), block_id)
+    (next_id, block_id)
 }
