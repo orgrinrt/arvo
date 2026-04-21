@@ -180,6 +180,13 @@ severity = "warn"
 [lints.no-public-raw-field]
 severity = "warn"
 
+# Pre-hilavitkutin-str crates: any `const NAME: &str` / `static NAME:
+# &str` must be gated behind `#[cfg(debug_assertions)]`. arvo has
+# zero introducers of the `static-string` category (hilavitkutin-str
+# lives downstream), so every bare static str here is drift (#125).
+[lints.no-bare-static-str]
+severity = "warn"
+
 # ---------------------------------------------------------------------------
 # Primitive-introductions — per-crate substrate categories introduced
 # ---------------------------------------------------------------------------
@@ -196,10 +203,16 @@ severity = "warn"
 # "temporal") would call for a new category tag.
 #
 # Known categories (defined by the stack lints pack, not this repo):
-#   `numeric`     — UFixed / IFixed / FastFloat / StrictFloat / USize /
-#                   Cap / Bool / Bits / ContentHash / strategy markers.
-#   `fallibility` — Maybe / Outcome / Just (notko).
-#   `string`      — Str (hilavitkutin-str).
+#   `numeric`       — UFixed / IFixed / FastFloat / StrictFloat /
+#                     USize / Cap / Bool / Bits / ContentHash /
+#                     strategy markers.
+#   `fallibility`   — Maybe / Outcome / Just (notko).
+#   `string`        — Str (hilavitkutin-str).
+#   `static-string` — compile-time interned string handles
+#                     (hilavitkutin-str). Downstream crates must
+#                     gate `const NAME: &str` / `static NAME: &str`
+#                     behind `#[cfg(debug_assertions)]` or use
+#                     interning in place of a bare literal.
 #
 # Anti-bypass: adding raw std primitive names (`u32`, `Option`, `String`)
 # or arbitrary strings to a crate's list has NO effect — only known
