@@ -369,9 +369,9 @@ bitfield! {
         /// 1 = runtime-interned, 0 = compile-time-interned.
         origin: 1 at 31,
         /// Reserved for future use.
-        reserved: 3 at 28..=30,
+        reserved: 3 at 28,
         /// 28-bit interned identity.
-        id: 28 at 0..=27,
+        id: 28 at 0,
     }
 }
 ```
@@ -428,11 +428,13 @@ speculative consts keeps unused-symbol footprint minimal.
 
 Compile-time checks inside the generated code:
 
-- Sub-ranges must be disjoint. Overlapping bits = compile error.
-- Every sub-range must fit within N. Indices ≥ N = compile error.
+- Every sub-range must fit within N. `$lo + $field_bits > N` =
+  compile error.
 - N ≤ 64 (same as `Bits<N>`).
 - Gaps (unused bits) allowed. They read as zero and setters leave
   them alone.
+- Overlap detection between sub-ranges is deferred; for now authors
+  are responsible for disjoint layouts. Tracked in BACKLOG.
 
 No arithmetic. No sign. Bitfield is `Bits<N>` with a named-layout
 overlay, carrying the same opaque-identity trait surface.
