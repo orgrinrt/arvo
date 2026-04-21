@@ -37,7 +37,8 @@ fn diagonal_extracts_ii_cells() {
     // Cell value = 100 * i + j. Diagonal is [0, 101, 202, 303].
     let m: Matrix<u32, C4> = Matrix::from_fn(|i, j| (100 * i.0 + j.0) as u32);
     let d = m.diagonal();
-    assert_eq!(d, [0, 101, 202, 303]);
+    // d is `arvo_tensor::Array<u32, C4>`; compare via slice view.
+    assert_eq!(d.as_slice(), &[0, 101, 202, 303]);
 }
 
 #[test]

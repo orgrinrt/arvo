@@ -1,13 +1,11 @@
 [package]
-name = "arvo-bitmask"
+name = "arvo-tensor"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
 [dependencies]
 arvo.workspace = true
-arvo-bits.workspace = true
-arvo-tensor.workspace = true
 
 [build-dependencies]
 mockspace.workspace = true

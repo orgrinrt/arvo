@@ -4,7 +4,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, FBits, IBits, USize};
+use arvo::newtype::{Bool, Cap, FBits, IBits, USize};
 use arvo::strategy::Hot;
 use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
@@ -27,7 +27,8 @@ fn w(n: u8) -> W {
 #[test]
 fn singleton_returns_leaf_cost() {
     // N=1, cost(0,0) = 7.
-    let (cost, _splits) = matrix_chain_dp::<C1, W>(|_, _| w(7), |_, _| true);
+    let (cost, _splits) =
+        matrix_chain_dp::<C1, W>(|_, _| w(7), |_, _| Bool::TRUE);
     assert_eq!(cost.to_raw(), 7);
 }
 
@@ -37,14 +38,8 @@ fn all_leaves_cheap_root_expensive_prefers_split() {
     // leaf costs 100. DP must split to achieve cost N.
     // N=4 -> optimal cost 4 (four singletons summed).
     let (cost, _splits) = matrix_chain_dp::<C4, W>(
-        |i, j| {
-            if i.0 == j.0 {
-                w(1)
-            } else {
-                w(100)
-            }
-        },
-        |_, _| true,
+        |i, j| if i.0 == j.0 { w(1) } else { w(100) },
+        |_, _| Bool::TRUE,
     );
     assert_eq!(cost.to_raw(), 4);
 }
@@ -63,7 +58,7 @@ fn single_leaf_cheaper_than_splitting() {
                 w(100)
             }
         },
-        |_, _| true,
+        |_, _| Bool::TRUE,
     );
     assert_eq!(cost.to_raw(), 1);
 }
@@ -74,14 +69,8 @@ fn infeasible_leaves_forces_split() {
     // infeasible as a leaf, so the DP must compose singletons.
     // N=3 -> optimal cost 3.
     let (cost, _splits) = matrix_chain_dp::<C3, W>(
-        |i, j| {
-            if i.0 == j.0 {
-                w(1)
-            } else {
-                w(200)
-            }
-        },
-        |i, j| i.0 == j.0,
+        |i, j| if i.0 == j.0 { w(1) } else { w(200) },
+        |i, j| Bool(i.0 == j.0),
     );
     assert_eq!(cost.to_raw(), 3);
 }
