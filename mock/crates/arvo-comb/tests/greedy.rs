@@ -4,8 +4,9 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, USize};
+use arvo::newtype::{Bool, Cap, USize};
 use arvo_comb::{Range, greedy_group};
+use arvo_tensor::Array;
 
 const fn cap(n: usize) -> Cap {
     Cap(USize(n))
@@ -30,14 +31,11 @@ fn new_acc(cap: u32) -> SumCap {
 
 #[test]
 fn empty_input_returns_zero_groups() {
-    let items: [u32; 0] = [];
+    let items: Array<u32, C0> = Array::new([]);
     let (count, _groups) = greedy_group::<C0, C4, SumCap, u32>(
         &items,
-        |acc, x| acc.total + x <= acc.cap,
-        |acc, x| SumCap {
-            total: acc.total + *x,
-            cap: acc.cap,
-        },
+        |acc, x| Bool(acc.total + x <= acc.cap),
+        |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },
         || new_acc(10),
     );
     assert_eq!(count, USize(0));
@@ -46,21 +44,15 @@ fn empty_input_returns_zero_groups() {
 #[test]
 fn all_items_fit_one_group() {
     // Four items summing to 10, cap 10. One group covering 0..4.
-    let items: [u32; 4] = [2, 3, 4, 1];
+    let items: Array<u32, C4> = Array::new([2, 3, 4, 1]);
     let (count, groups) = greedy_group::<C4, C4, SumCap, u32>(
         &items,
-        |acc, x| acc.total + x <= acc.cap,
-        |acc, x| SumCap {
-            total: acc.total + *x,
-            cap: acc.cap,
-        },
+        |acc, x| Bool(acc.total + x <= acc.cap),
+        |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },
         || new_acc(10),
     );
     assert_eq!(count, USize(1));
-    assert_eq!(groups[0], Range {
-        start: USize(0),
-        end: USize(4),
-    });
+    assert_eq!(*groups.get(USize(0)), Range { start: USize(0), end: USize(4) });
 }
 
 #[test]
@@ -70,50 +62,32 @@ fn splits_on_overflow() {
     //   [4+1=5] fits -> close at i=4 when 3 rejected.
     //   [3] trailing.
     // Groups: [0..2), [2..4), [4..5).
-    let items: [u32; 5] = [3, 2, 4, 1, 3];
+    let items: Array<u32, C5> = Array::new([3, 2, 4, 1, 3]);
     let (count, groups) = greedy_group::<C5, C8, SumCap, u32>(
         &items,
-        |acc, x| acc.total + x <= acc.cap,
-        |acc, x| SumCap {
-            total: acc.total + *x,
-            cap: acc.cap,
-        },
+        |acc, x| Bool(acc.total + x <= acc.cap),
+        |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },
         || new_acc(5),
     );
     assert_eq!(count, USize(3));
-    assert_eq!(groups[0], Range {
-        start: USize(0),
-        end: USize(2),
-    });
-    assert_eq!(groups[1], Range {
-        start: USize(2),
-        end: USize(4),
-    });
-    assert_eq!(groups[2], Range {
-        start: USize(4),
-        end: USize(5),
-    });
+    assert_eq!(*groups.get(USize(0)), Range { start: USize(0), end: USize(2) });
+    assert_eq!(*groups.get(USize(1)), Range { start: USize(2), end: USize(4) });
+    assert_eq!(*groups.get(USize(2)), Range { start: USize(4), end: USize(5) });
 }
 
 #[test]
 fn every_item_its_own_group_when_cap_is_tight() {
     // cap = 1, all items = 1. Each item is its own group.
-    let items: [u32; 4] = [1, 1, 1, 1];
+    let items: Array<u32, C4> = Array::new([1, 1, 1, 1]);
     let (count, groups) = greedy_group::<C4, C4, SumCap, u32>(
         &items,
-        |acc, x| acc.total + x <= acc.cap,
-        |acc, x| SumCap {
-            total: acc.total + *x,
-            cap: acc.cap,
-        },
+        |acc, x| Bool(acc.total + x <= acc.cap),
+        |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },
         || new_acc(1),
     );
     assert_eq!(count, USize(4));
     for i in 0..4 {
-        assert_eq!(groups[i], Range {
-            start: USize(i),
-            end: USize(i + 1),
-        });
+        assert_eq!(*groups.get(USize(i)), Range { start: USize(i), end: USize(i + 1) });
     }
 }
 
@@ -121,23 +95,14 @@ fn every_item_its_own_group_when_cap_is_tight() {
 fn caps_at_m_when_more_groups_would_be_produced() {
     // cap=1, 4 items of 1 each would make 4 groups. With M=2, stops
     // after the second group closes.
-    let items: [u32; 4] = [1, 1, 1, 1];
+    let items: Array<u32, C4> = Array::new([1, 1, 1, 1]);
     let (count, groups) = greedy_group::<C4, C2, SumCap, u32>(
         &items,
-        |acc, x| acc.total + x <= acc.cap,
-        |acc, x| SumCap {
-            total: acc.total + *x,
-            cap: acc.cap,
-        },
+        |acc, x| Bool(acc.total + x <= acc.cap),
+        |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },
         || new_acc(1),
     );
     assert_eq!(count, USize(2));
-    assert_eq!(groups[0], Range {
-        start: USize(0),
-        end: USize(1),
-    });
-    assert_eq!(groups[1], Range {
-        start: USize(1),
-        end: USize(2),
-    });
+    assert_eq!(*groups.get(USize(0)), Range { start: USize(0), end: USize(1) });
+    assert_eq!(*groups.get(USize(1)), Range { start: USize(1), end: USize(2) });
 }

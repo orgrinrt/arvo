@@ -66,6 +66,9 @@ new `pub struct`/`pub type` in a numeric crate lacks the parameter.
   violation.
 - `arvo-bitmask` picks `Mask64`, `Mask256`, `BitMatrix` concretes on
   top of `arvo-bits` contracts.
+- `arvo-tensor` picks `Array<T, N>`, `Matrix<W, N>` dense-tensor
+  concretes; sibling of arvo-bitmask (bit storage) with value
+  storage. Hosts canonical `cap_size` and `Enumerator` trait.
 - `arvo-graph` / `arvo-sparse` / `arvo-comb` / `arvo-spectral` are
   generic over numeric trait bounds. They do not import `UFixed` or
   `IFixed` directly.
