@@ -26,8 +26,8 @@ fn nid(i: usize) -> NodeId {
     NodeId(USize(i))
 }
 
-fn w(n: u8) -> W {
-    W::from_constant(n)
+fn w(n: usize) -> W {
+    W::from_constant(USize(n))
 }
 
 #[test]

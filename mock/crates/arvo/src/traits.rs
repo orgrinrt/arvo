@@ -10,7 +10,7 @@
 //! | `Sqrt`         | `sqrt(self) -> Self`                        | floats, integer UFixed |
 //! | `Recip`        | `recip(self) -> Self`                       | floats              |
 //! | `Abs`          | `abs(self) -> Self`                         | signed + UFixed (id) |
-//! | `FromConstant` | `from_constant(u8) -> Self`                 | every concrete type |
+//! | `FromConstant` | `from_constant(USize) -> Self`              | every concrete type |
 //!
 //! Fractional UFixed / IFixed do NOT get `Sqrt` / `Recip` in this
 //! round — those require fixed-point arithmetic tables that land in
@@ -22,7 +22,7 @@ use core::cmp::Ordering;
 
 use crate::float::{FastFloat, Ieee, StrictFloat};
 use crate::ifixed::IFixed;
-use crate::newtype::{FBits, IBits};
+use crate::newtype::{FBits, IBits, USize};
 use crate::strategy::{
     Cold, Hot, IContainerFor, Precise, Strategy, UContainerFor, Warm, ifixed_bits, ufixed_bits,
 };
@@ -74,17 +74,16 @@ pub trait Abs {
 /// Lossless construction from a small integer constant.
 ///
 /// `from_constant(n)` produces the value `n` in the target numeric
-/// type. Input is `u8` so the call site cannot accidentally pass a
-/// negative or a value that overflows a narrow container.
+/// type. Input is `USize`, so the call site cannot accidentally pass
+/// a negative; callers are responsible for not passing a value larger
+/// than the logical integer range.
 ///
 /// For fixed-point types, `n` is placed at the integer-bit position
-/// (shifted left by `F`), so `from_constant(1)` gives one whole unit.
-/// Callers are responsible for not passing a value larger than the
-/// logical integer range; when out of range the value is truncated
-/// at the container.
+/// (shifted left by `F`), so `from_constant(USize(1))` gives one whole
+/// unit. When out of range the value is truncated at the container.
 pub trait FromConstant {
     /// Construct the value `n` in the target type.
-    fn from_constant(n: u8) -> Self;
+    fn from_constant(n: USize) -> Self;
 }
 
 // --- TotalOrd --------------------------------------------------------------
@@ -477,8 +476,8 @@ macro_rules! impl_from_constant_ufixed {
             // F = 0 (integer UFixed).
             impl FromConstant for UFixed<{ IBits($i) }, { FBits::ZERO }, $strategy> {
                 #[inline(always)]
-                fn from_constant(n: u8) -> Self {
-                    Self::from_raw(n as $ctype)
+                fn from_constant(n: USize) -> Self {
+                    Self::from_raw(n.0 as $ctype)
                 }
             }
         )+
@@ -490,8 +489,8 @@ macro_rules! impl_from_constant_ufixed_fractional {
         $(
             impl FromConstant for UFixed<{ IBits($i) }, { FBits($f) }, $strategy> {
                 #[inline(always)]
-                fn from_constant(n: u8) -> Self {
-                    Self::from_raw((n as $ctype) << $f)
+                fn from_constant(n: USize) -> Self {
+                    Self::from_raw((n.0 as $ctype) << $f)
                 }
             }
         )+
@@ -573,8 +572,8 @@ macro_rules! impl_from_constant_ifixed {
         $(
             impl FromConstant for IFixed<{ IBits($i) }, { FBits::ZERO }, $strategy> {
                 #[inline(always)]
-                fn from_constant(n: u8) -> Self {
-                    Self::from_raw(n as $ctype)
+                fn from_constant(n: USize) -> Self {
+                    Self::from_raw(n.0 as $ctype)
                 }
             }
         )+
@@ -586,8 +585,8 @@ macro_rules! impl_from_constant_ifixed_fractional {
         $(
             impl FromConstant for IFixed<{ IBits($i) }, { FBits($f) }, $strategy> {
                 #[inline(always)]
-                fn from_constant(n: u8) -> Self {
-                    Self::from_raw((n as $ctype) << $f)
+                fn from_constant(n: USize) -> Self {
+                    Self::from_raw((n.0 as $ctype) << $f)
                 }
             }
         )+
@@ -658,20 +657,21 @@ impl_from_constant_ifixed_fractional!(Cold, i32, 7, 16);
 impl_from_constant_ifixed_fractional!(Precise, i32, 7, 1, 2, 4, 8);
 impl_from_constant_ifixed_fractional!(Precise, i64, 7, 16);
 
-// Float FromConstant: `u8` is losslessly representable in f32 and
-// f64 (both have >= 24 mantissa bits).
+// Float FromConstant: the USize input bridges to the internal
+// `FromU8Ieee` helper via an in-range `u8` cast; callers stay in
+// USize for consistency with the public trait surface.
 
 impl<F: Ieee + FromU8Ieee> FromConstant for FastFloat<F> {
     #[inline(always)]
-    fn from_constant(n: u8) -> Self {
-        FastFloat(<F as FromU8Ieee>::from_u8_ieee(n))
+    fn from_constant(n: USize) -> Self {
+        FastFloat(<F as FromU8Ieee>::from_u8_ieee(n.0 as u8)) // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: internal `FromU8Ieee` bridge takes u8 by design; USize→u8 cast preserves IEEE lossless range for 0..=255; tracked: #123
     }
 }
 
 impl<F: Ieee + FromU8Ieee> FromConstant for StrictFloat<F> {
     #[inline(always)]
-    fn from_constant(n: u8) -> Self {
-        StrictFloat(<F as FromU8Ieee>::from_u8_ieee(n))
+    fn from_constant(n: USize) -> Self {
+        StrictFloat(<F as FromU8Ieee>::from_u8_ieee(n.0 as u8)) // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: internal `FromU8Ieee` bridge takes u8 by design; USize→u8 cast preserves IEEE lossless range for 0..=255; tracked: #123
     }
 }
 

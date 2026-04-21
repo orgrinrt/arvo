@@ -34,7 +34,7 @@ where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
     [(); cap_size(N)]:,
 {
-    let zero = <W as FromConstant>::from_constant(0);
+    let zero = <W as FromConstant>::from_constant(USize(0));
     let mut best: [W; cap_size(N)] = [zero; cap_size(N)];
     let mut pred_of: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut has_pred: Mask64 = Mask64::empty();

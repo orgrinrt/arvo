@@ -9,6 +9,7 @@
 use core::cmp::Ordering;
 use core::ops::{Add, Mul, Sub};
 
+use arvo::newtype::USize;
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
 
 /// Test-only float newtype over `f32`.
@@ -87,7 +88,7 @@ impl TotalOrd for TF {
 
 impl FromConstant for TF {
     #[inline(always)]
-    fn from_constant(n: u8) -> Self {
-        TF(n as f32)
+    fn from_constant(n: USize) -> Self {
+        TF(n.0 as f32)
     }
 }
