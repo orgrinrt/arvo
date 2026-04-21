@@ -76,10 +76,10 @@ where
     /// Returns `row_ptr[r + 1]` for non-last rows and `NNZ` for the
     /// last row. `r >= ROWS` yields `USize(0)` (empty range).
     #[inline(always)]
-    fn row_end(&self, r: usize) -> USize {
-        if r + 1 < cap_size(ROWS) {
-            self.row_ptr[r + 1]
-        } else if r < cap_size(ROWS) {
+    fn row_end(&self, r: USize) -> USize {
+        if r.0 + 1 < cap_size(ROWS) {
+            self.row_ptr[r.0 + 1]
+        } else if r.0 < cap_size(ROWS) {
             USize(cap_size(NNZ))
         } else {
             USize(0)
@@ -92,12 +92,11 @@ where
     /// column. Linear in the row's non-zero count.
     #[inline]
     pub fn get(&self, row: USize, col: NodeId) -> Maybe<W> {
-        let r = row.0;
-        if r >= cap_size(ROWS) {
+        if row.0 >= cap_size(ROWS) {
             return Maybe::Isnt;
         }
-        let start = self.row_ptr[r].0;
-        let end = self.row_end(r).0;
+        let start = self.row_ptr[row.0].0;
+        let end = self.row_end(row).0;
         if start > end || end > cap_size(NNZ) {
             return Maybe::Isnt;
         }
@@ -117,12 +116,11 @@ where
     /// offsets are inconsistent.
     #[inline]
     pub fn row_values(&self, row: USize) -> &[W] {
-        let r = row.0;
-        if r >= cap_size(ROWS) {
+        if row.0 >= cap_size(ROWS) {
             return &[];
         }
-        let start = self.row_ptr[r].0;
-        let end = self.row_end(r).0;
+        let start = self.row_ptr[row.0].0;
+        let end = self.row_end(row).0;
         if start > end || end > cap_size(NNZ) {
             return &[];
         }
@@ -135,12 +133,11 @@ where
     /// offsets are inconsistent.
     #[inline]
     pub fn row_col_indices(&self, row: USize) -> &[NodeId] {
-        let r = row.0;
-        if r >= cap_size(ROWS) {
+        if row.0 >= cap_size(ROWS) {
             return &[];
         }
-        let start = self.row_ptr[r].0;
-        let end = self.row_end(r).0;
+        let start = self.row_ptr[row.0].0;
+        let end = self.row_end(row).0;
         if start > end || end > cap_size(NNZ) {
             return &[];
         }
@@ -153,12 +150,11 @@ where
     /// offsets are inconsistent.
     #[inline]
     pub fn nnz(&self, row: USize) -> USize {
-        let r = row.0;
-        if r >= cap_size(ROWS) {
+        if row.0 >= cap_size(ROWS) {
             return USize(0);
         }
-        let start = self.row_ptr[r].0;
-        let end = self.row_end(r).0;
+        let start = self.row_ptr[row.0].0;
+        let end = self.row_end(row).0;
         if start > end || end > cap_size(NNZ) {
             return USize(0);
         }
