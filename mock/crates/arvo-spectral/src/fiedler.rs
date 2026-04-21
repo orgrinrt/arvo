@@ -79,24 +79,20 @@ where
     // even N; for odd N the deflation step pulls out the residual
     // projection on the first pass). Using all-ones as a seed would be
     // entirely in the null space and get zeroed by the first deflation.
-    let one = F::from_constant(1);
-    let zero = F::from_constant(0);
+    let one = F::from_constant(USize(1));
+    let zero = F::from_constant(USize(0));
     let mut v: [F; cap_size(N)] = core::array::from_fn(|i| {
         if i & 1 == 0 { one } else { zero - one }
     });
 
     // Reciprocal of N, used each iteration for deflation mean.
-    // `F::from_constant` takes a `u8`; we guarantee `N <= 64` via the
-    // Mask64 partitioning surface, so the `as u8` is safe at every
-    // shipping shape.
-    let n_as_u8 = n as u8; // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: arvo::traits::FromConstant::from_constant takes u8; boundary conversion until FromConstant is retrofitted to take USize; tracked: #123
-    let n_f = F::from_constant(n_as_u8);
+    let n_f = F::from_constant(USize(n));
     let n_inv = n_f.recip();
 
     // Gershgorin upper bound on lambda_max(L): max over i of 2 * L[i][i]
     // (the diagonal value equals the off-diagonal absolute sum by
     // Laplacian construction). Shift via sigma >= lambda_max.
-    let two = F::from_constant(2);
+    let two = F::from_constant(USize(2));
     let mut sigma = zero;
     let mut i = 0usize;
     while i < n {
