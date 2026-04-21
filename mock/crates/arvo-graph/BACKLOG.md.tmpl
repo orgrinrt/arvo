@@ -28,11 +28,3 @@ duplication, but introducing one has its own const-expr cost on
 current nightly — keep the two copies if promotion happens before
 an ergonomic abstraction surfaces.
 
-## cap_size helper promotion to arvo L0
-
-arvo-graph imports `cap_size` from arvo-bitmask. When a third L2 / L3
-crate needs the same `Cap -> usize` unwrap (arvo-sparse already does
-after the 202604260000 cascade; arvo-spectral has a local copy;
-arvo-comb would be the tipping point), promote the helper into arvo
-L0 as a public `const fn`. Purely additive; removes the cross-crate
-import chain on a trivially small helper.

@@ -24,10 +24,11 @@ any ROWS/NNZ the caller picks.
 
 `const N: Cap` / `const ROWS: Cap` / `const NNZ: Cap` carry arvo's
 capacity newtype on every public signature. Array storage unwraps
-via `cap_size(c: Cap) -> usize`, re-exported from arvo-bitmask.
-Array return types in signatures below are shown as `[X; N]` for
-readability; the compiled form is `[X; cap_size(N)]` with the
-implied `where [(); cap_size(N)]:` bound.
+via `cap_size(c: Cap) -> usize` (canonical home: arvo-tensor;
+arvo-bitmask re-exports, and arvo-sparse reaches it via
+`arvo_bitmask::cap_size`). Array return types in signatures below
+are shown as `[X; N]` for readability; the compiled form is `[X;
+cap_size(N)]` with the implied `where [(); cap_size(N)]:` bound.
 
 Generic over numeric trait bounds for matrix values. Does not import
 UFixed or IFixed directly. CSR is generic over the value type.
