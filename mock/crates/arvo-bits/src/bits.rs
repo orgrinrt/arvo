@@ -28,10 +28,57 @@ use crate::traits::{BitAccess, BitLogic, BitSequence, BitWidth};
 /// N-bit opaque bit-pattern. Transparent wrapper over the
 /// strategy-dispatched container primitive.
 #[repr(transparent)]
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug, Default)]
 pub struct Bits<const N: u8, S: Strategy = Hot>(<S as UContainerFor<N>>::T)
 where
     S: UContainerFor<N>;
+
+// Manual trait impls without bounds on `S` — the strategy marker
+// is a zero-sized phantom in this struct (only `<S as
+// UContainerFor<N>>::T` physically stores data), so no S-level
+// bound is needed. `derive(...)` is conservative and adds
+// `S: Copy`, `S: Hash`, etc. which the arvo strategy markers
+// (`Hot`, `Warm`, ...) don't satisfy.
+
+impl<const N: u8, S: Strategy> Copy for Bits<N, S>
+where S: UContainerFor<N> {}
+
+impl<const N: u8, S: Strategy> Clone for Bits<N, S>
+where S: UContainerFor<N>,
+{
+    fn clone(&self) -> Self { *self }
+}
+
+impl<const N: u8, S: Strategy> PartialEq for Bits<N, S>
+where S: UContainerFor<N>,
+{
+    fn eq(&self, other: &Self) -> bool { self.0 == other.0 }
+}
+impl<const N: u8, S: Strategy> Eq for Bits<N, S>
+where S: UContainerFor<N> {}
+
+impl<const N: u8, S: Strategy> core::hash::Hash for Bits<N, S>
+where S: UContainerFor<N>,
+{
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
+        self.0.hash(state);
+    }
+}
+
+impl<const N: u8, S: Strategy> core::fmt::Debug for Bits<N, S>
+where S: UContainerFor<N>,
+{
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_tuple("Bits").field(&self.0).finish()
+    }
+}
+
+impl<const N: u8, S: Strategy> Default for Bits<N, S>
+where S: UContainerFor<N>,
+{
+    fn default() -> Self {
+        Self(<<S as UContainerFor<N>>::T as Default>::default())
+    }
+}
 
 impl<const N: u8, S: Strategy> Bits<N, S>
 where
