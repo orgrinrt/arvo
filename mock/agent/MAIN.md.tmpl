@@ -28,12 +28,12 @@ platform dependency, and every size is const at type level.
 - `arvo-tensor` — `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
   tensor wrappers; `cap_size` bridge; `Enumerator` trait for
   USize-indexed iteration. Value-generic, no bit semantics.
-- `arvo-graph` — topo sort, rank, waist, spanning tree. Generic over
-  numeric trait bounds for weights.
-- `arvo-sparse` — CSR, RCM, block diagonal, Dulmage-Mendelsohn.
-  Generic over value types.
-- `arvo-comb` — DP, greedy grouping, bin-packing. Generic over cost
-  types.
+- `arvo-graph` provides topo sort, rank, waist, spanning tree,
+  generic over numeric trait bounds for weights.
+- `arvo-sparse` provides CSR, RCM, block diagonal, Dulmage-Mendelsohn,
+  generic over value types.
+- `arvo-comb` provides DP, greedy grouping, bin-packing, generic over
+  cost types.
 
 **L3 — spectral methods (built on L2):**
 - `arvo-spectral` — Laplacian, Fiedler, power iteration. Generic over
@@ -73,11 +73,11 @@ platform dependency, and every size is const at type level.
 
 arvo is a library; real code lives downstream. Known consumers:
 
-- **hilavitkutin** — pipeline execution engine. Uses `arvo-graph`
+- **hilavitkutin** is the pipeline execution engine. It uses `arvo-graph`
   for plan-stage DAG analysis, `arvo-bitmask` for `AccessMask`,
   `arvo-sparse` for RCM reordering, `arvo-spectral` for trunk
-  formation, `arvo-comb` for fiber grouping.
-- **clause** — language toolchain. Uses `arvo-graph` for pass DAGs
+  formation, and `arvo-comb` for fiber grouping.
+- **clause** is the language toolchain. It uses `arvo-graph` for pass DAGs
   and `arvo-bitmask` for artifact read/write sets.
 
 Consumer names appear here only because they drive the choice of
@@ -95,15 +95,15 @@ commit time.
 
 ## Where things live
 
-- `docs/DESIGN.md` — generated, canonical architecture.
-- `docs/STRUCTURE.md` + graph — generated, crate and item index.
+- `docs/DESIGN.md` is the generated canonical architecture.
+- `docs/STRUCTURE.md` + graph are generated, covering crate and item index.
 - `mock/DESIGN.md.tmpl`, `mock/PRINCIPLES.md.tmpl`,
-  `mock/WORKFLOW.md.tmpl` — authored sources.
-- `mock/crates/*/DESIGN.md.tmpl` — per-crate deep dives.
-- `mock/design_rounds/` — design round state machine. Do not rename
+  `mock/WORKFLOW.md.tmpl` are the authored sources.
+- `mock/crates/*/DESIGN.md.tmpl` holds per-crate deep dives.
+- `mock/design_rounds/` is the design round state machine. Do not rename
   files by hand; use `cargo mock lock` / `unlock` / `deprecate` /
   `close`.
-- `mock/agent/` — these instructions. Edit templates here, not the
+- `mock/agent/` holds these instructions. Edit templates here, not the
   generated files under `.claude/` or `.github/`.
 
 ## What not to do
