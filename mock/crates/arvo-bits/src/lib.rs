@@ -20,9 +20,11 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
+#![feature(macro_metavar_expr_concat)]
 #![allow(incomplete_features)]
 
 pub mod alias;
+pub mod bitfield;
 pub mod bits;
 pub mod ifixed_impl;
 pub mod prim;
