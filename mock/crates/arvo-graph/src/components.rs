@@ -24,7 +24,7 @@ where
 {
     let mut comp: [USize; cap_size(N)] = [USize(0); cap_size(N)];
     let mut visited: Mask64 = Mask64::empty();
-    let mut next_id: usize = 0;
+    let mut next_id = USize(0);
 
     let mut seed = 0usize;
     while seed < cap_size(N) {
@@ -34,8 +34,8 @@ where
         }
 
         // Fresh component: seed is the root.
-        let id = USize(next_id);
-        next_id += 1;
+        let id = next_id;
+        next_id = USize(next_id.0 + 1);
 
         // Iterative DFS over undirected adjacency (succ + pred).
         let mut stack: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
