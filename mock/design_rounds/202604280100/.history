@@ -1,0 +1,50 @@
+fc039ab chore: lock src changelist for 202604280100_changelist.src.lock.md
+6cb64da feat(arvo-graph): wrap internal counters + flag arrays in USize/Bool
+5efa004 docs: open src CL for arvo-graph sweep
+719fc0e chore: lock doc changelist for 202604280100_changelist.doc.lock.md
+a2a76d8 docs: open doc CL for arvo-graph sweep
+3c3addb docs: open arvo-graph sweep topic (#120 round 3)
+33c6fe4 chore: close #120 round 2 (arvo-comb sweep + arvo-tensor) 202604280000
+349cbb5 chore: lock src changelist for 202604280000_changelist.src.lock.md
+76ef3c1 feat(arvo-comb): migrate signatures + internals to arvo-tensor wrappers
+79c58e9 refactor(arvo-bitmask, arvo-spectral): re-export cap_size + Matrix from arvo-tensor
+4666e6b feat(arvo-tensor): new L2 crate — rank-N tensor wrappers
+fbaa8a3 docs: open src CL for arvo-comb sweep + arvo-tensor crate
+198f52a chore: lock doc changelist for 202604280000_changelist.doc.lock.md
+fa4c275 docs: execute doc CL for arvo-comb sweep + arvo-tensor crate
+15e32c2 docs: open doc CL for arvo-comb sweep + arvo-tensor crate
+94550dd docs: open arvo-comb sweep topic (#120 round 2)
+ef15a16 Merge pull request #9 from orgrinrt/feat/introductions-as-categories
+853a227 refactor: [primitive-introductions] lists substrate categories, not std tokens
+541e4c7 Merge pull request #8 from orgrinrt/feat/configure-primitive-introductions
+ceecd3f feat: configure [primitive-introductions] for arvo + arvo-bits
+71bcf34 Merge pull request #7 from orgrinrt/feat/tighten-bare-primitive-enforcement
+59040bd feat: tighten bare-primitive enforcement — anywhere in source
+3dd912c chore: close design round 202604201338 (#116)
+5e14488 chore: lock src changelist for #116 arvo-hash round
+d85d9eb feat: ship arvo-hash crate + Bits<N> in arvo-bits (#116)
+4cbb1de plan: open src CL for arvo-hash + Bits<N> (#116)
+f09089f chore: lock doc changelist for #116 arvo-hash round
+1c9f7d4 docs: record DOC-phase deferrals + lint/hook/skill updates (#116)
+3386670 docs: apply DOC phase for arvo-hash + Bits<N> rule adjustment (#116)
+6478187 docs: refine hash trait design - streaming canonical via HasherExt blanket (#116)
+9ea0d44 plan: open doc CL for arvo-hash + Bits<N> in arvo-bits (#116)
+c5bb8f1 plan: open topic for arvo-hash crate + Bits<N> in arvo-bits (#116)
+b361e3f chore: sync writing-style fragment + advisory override (#5)
+af2eaba docs: tighten writing-style + wire shared fragment injection markers
+bbdc512 docs: clarify top-of-doc exceptions (tables + TOC)
+4154502 docs: refine writing-style lists rule (top-of-doc prose + forbid label:desc bullets)
+8a80436 chore: close design round 202604201005 (#101)
+ddb6a3d chore: lock src changelist 202604201010 (#101)
+1cfec40 plan: src CL placeholder for doc-only round (#101)
+6142a73 chore: lock doc changelist 202604201005 (#101)
+2067c94 docs: em-dash sweep + writing-style rewrite (#101)
+475c595 chore: unlock doc changelist 202604201005 for em-dash sweep (#101)
+4f275e8 chore: lock doc changelist 202604201005 (#101)
+2a199af docs: port arvo fixed-point-first identity from originals (#101)
+ed17176 chore: close design round 202604200935 (#71)
+f041a68 chore: lock src changelist 202604200940 (#71)
+cf2d088 feat!: flip arvo narrow traits + sparse get to Outcome/Maybe (#71)
+029dafb plan: arvo sweep src CL (#71)
+eb48bb1 chore: lock doc changelist 202604200935 (#71)
+83c638f docs: arvo sweep primitive vocabulary (doc phase, #71)
