@@ -1,0 +1,39 @@
+# arvo-hash — backlog
+
+## Concrete algorithms
+
+Shipping order as consumers surface need:
+
+- Fnv1a28: 28-bit FNV-1a. First migration target; matches
+  hilavitkutin-str's existing const_fnv1a plus the 28-bit mask.
+- Fnv1a32, Fnv1a64: wider FNV variants.
+- XxHash64: when a faster non-cryptographic hash is wanted.
+- Crc32: when checksum use cases surface (clause bytecode
+  integrity, persistence file checksumming).
+
+Each concrete algorithm lands as a unit struct implementing
+Hasher<N>. HasherExt<N>::hash falls out via the blanket impl.
+
+## Hilavitkutin-str migration
+
+hilavitkutin-str const_fnv1a is the existing FNV implementation.
+Once Fnv1a28 lands in arvo-hash, migrate hilavitkutin-str to
+import or re-export that algo and adjust downstream use sites.
+
+## Wider bit widths
+
+If arvo-bits grows u128 backing for Bits (its own BACKLOG item),
+arvo-hash gains Hash128-domain semantic aliases.
+
+## Cryptographic hashes
+
+Out of scope. arvo-hash targets non-cryptographic identity hashes.
+A sibling arvo-crypto crate may appear if cryptographic hash
+needs surface.
+
+## Semantic aliases
+
+NameHash, KeyHash, or similar named aliases beyond ContentHash
+land once consumer patterns stabilise. The starting form is a
+local alias in the consuming crate over ContentHash or Bits<N>;
+promotion happens when a second consumer shares the alias.

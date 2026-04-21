@@ -1,0 +1,50 @@
+70967f5 chore: lock src changelist for #116 arvo-hash round
+a2720a0 feat: ship arvo-hash crate + Bits<N> in arvo-bits (#116)
+88e633d plan: open src CL for arvo-hash + Bits<N> (#116)
+3a0d4b5 chore: lock doc changelist for #116 arvo-hash round
+8255796 docs: record DOC-phase deferrals + lint/hook/skill updates (#116)
+91b04f3 docs: apply DOC phase for arvo-hash + Bits<N> rule adjustment (#116)
+fa28d93 docs: refine hash trait design - streaming canonical via HasherExt blanket (#116)
+6059d9f plan: open doc CL for arvo-hash + Bits<N> in arvo-bits (#116)
+d79b783 plan: open topic for arvo-hash crate + Bits<N> in arvo-bits (#116)
+af2eaba docs: tighten writing-style + wire shared fragment injection markers
+bbdc512 docs: clarify top-of-doc exceptions (tables + TOC)
+4154502 docs: refine writing-style lists rule (top-of-doc prose + forbid label:desc bullets)
+8a80436 chore: close design round 202604201005 (#101)
+ddb6a3d chore: lock src changelist 202604201010 (#101)
+1cfec40 plan: src CL placeholder for doc-only round (#101)
+6142a73 chore: lock doc changelist 202604201005 (#101)
+2067c94 docs: em-dash sweep + writing-style rewrite (#101)
+475c595 chore: unlock doc changelist 202604201005 for em-dash sweep (#101)
+4f275e8 chore: lock doc changelist 202604201005 (#101)
+2a199af docs: port arvo fixed-point-first identity from originals (#101)
+ed17176 chore: close design round 202604200935 (#71)
+f041a68 chore: lock src changelist 202604200940 (#71)
+cf2d088 feat!: flip arvo narrow traits + sparse get to Outcome/Maybe (#71)
+029dafb plan: arvo sweep src CL (#71)
+eb48bb1 chore: lock doc changelist 202604200935 (#71)
+83c638f docs: arvo sweep primitive vocabulary (doc phase, #71)
+975bd5f chore: remove stray BACKLOG.md.tmpl.new artifacts
+8cf05dd feat: add type-surface-review skill (#91)
+050c6c6 feat: extend pre-tool guard with bare Option / Result detection (#77)
+8c209e9 docs: add type-surface + cookbook agent rules (#89, #90)
+da7403f docs: add no-heap agent rule (#97)
+afb8305 docs: port shared cross-ecosystem principles fragment
+2a1667d chore: close design round 202604200354
+bdb0802 chore: lock src CL 202604200400 for arvo post-review polish
+2271d39 fix: arvo post-review — div-by-zero numerator, partition stack guard, fiedler N bound, matrix bounds, sqrt doc
+c9db769 docs: add src CL for arvo post-review polish
+6b48aca chore: lock doc changelist for 202604200354_changelist.doc.lock.md
+50a2c29 docs: expand arvo BACKLOG + DESIGN for post-review polish
+8209f8d docs: start arvo post-review polish round
+5e9f5a3 chore: close L0 float ops round 202604260500
+1708c7c chore: lock src CL 202604260600 for L0 float ops
+19c2a6b feat: wire core::ops Add/Sub/Mul/Div/Neg on float wrappers
+d3b7741 docs: add src CL for L0 float ops
+938b2f8 chore: lock doc CL 202604260500 for L0 float ops
+f651665 docs: start L0 float arithmetic ops round
+237d693 chore: close arvo-comb cleanup round 202604260300
+15ce955 chore: lock src CL 202604260400 for arvo-comb cleanup
+089a463 refactor: cascade const N: Cap through arvo-comb
+f951a1d docs: add src CL for arvo-comb Cap/USize cleanup
+da8ca70 chore: lock doc CL 202604260300 for arvo-comb cleanup

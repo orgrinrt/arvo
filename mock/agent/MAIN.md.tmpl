@@ -17,12 +17,17 @@ platform dependency, and every size is const at type level.
   `Precise`), composable numeric traits, semantic aliases.
 
 **L1 — bit-level contracts:**
-- `arvo-bits` — traits only: `BitWidth`, `BitAccess`, `BitSequence`,
-  with blanket impls for arvo numerics. No fielded structs live here.
+- `arvo-bits` — traits + opaque-bit concretes: `BitWidth`, `BitAccess`,
+  `BitSequence`, `BitLogic`, with concrete impls for arvo numerics.
+  Arithmetic fielded structs live in L0 arvo; mask-specific concretes
+  live in L2 arvo-bitmask.
 
 **L2 — substrate concretes and generic algorithms:**
 - `arvo-bitmask` — `Mask64`, `Mask256`, `BitMatrix`, bit scanning
   (concrete storage over `arvo-bits` contracts).
+- `arvo-tensor` — `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
+  tensor wrappers; `cap_size` bridge; `Enumerator` trait for
+  USize-indexed iteration. Value-generic, no bit semantics.
 - `arvo-graph` — topo sort, rank, waist, spanning tree. Generic over
   numeric trait bounds for weights.
 - `arvo-sparse` — CSR, RCM, block diagonal, Dulmage-Mendelsohn.
@@ -40,11 +45,17 @@ platform dependency, and every size is const at type level.
 
 ## Architecture rules
 
-- Dependency flow: `arvo → arvo-bits → arvo-bitmask`; L2 algorithm
-  crates depend on `arvo` and `arvo-bitmask` (not `arvo-bits`
-  directly); `arvo-spectral` depends on `arvo` and `arvo-sparse`.
-- `arvo-bits` holds contracts, not concretes. Fielded structs go in
-  `arvo-bitmask` and later crates.
+- Dependency flow: `arvo → arvo-bits → arvo-bitmask`; `arvo →
+  arvo-tensor` (L2 peer of bitmask); L2 algorithm crates depend on
+  `arvo`, `arvo-bitmask`, and `arvo-tensor` (not `arvo-bits`
+  directly); `arvo-spectral` depends on `arvo`, `arvo-sparse`,
+  and `arvo-tensor`.
+- `arvo-bits` hosts bit-level contracts plus a small allowlist of
+  opaque-bit concrete containers (`Bits<const N: u8>`). Arithmetic
+  fielded types (UFixed, IFixed) belong in L0 `arvo`; mask concretes
+  (Mask64, Mask256, BitMatrix) belong in `arvo-bitmask`. New
+  opaque-bit types extend the allowlist via a design round; the
+  `arvo-bits-traits-only` lint is the backstop.
 - Algorithm crates are generic over numeric trait bounds. They do not
   import `UFixed` or `IFixed` directly.
 - Every numeric type that has a precision/throughput tradeoff carries
@@ -99,7 +110,9 @@ commit time.
 
 - Do not add `alloc`, `std`, `Vec`, `String`, `Box`, `dyn`, or
   `TypeId` to any `arvo*` crate.
-- Do not put fielded structs in `arvo-bits`.
+- Do not put arithmetic fielded structs in `arvo-bits`. Opaque-bit
+  concretes on the allowlist (today: `Bits`) are permitted;
+  arithmetic types live in L0 `arvo`, masks in `arvo-bitmask`.
 - Do not import `UFixed` / `IFixed` directly in `arvo-graph`,
   `arvo-sparse`, `arvo-comb`, or `arvo-spectral`. Use trait bounds.
 - Do not add platform calls (`std::thread`, `std::time`, `std::fs`,

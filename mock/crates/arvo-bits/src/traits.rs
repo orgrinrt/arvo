@@ -57,3 +57,45 @@ pub trait BitSequence: BitWidth + Copy {
     /// `Bool::TRUE` when every bit is zero.
     fn is_zero(self) -> Bool;
 }
+
+/// Whole-word bitwise logic.
+///
+/// Single-instruction on the backing primitive (x86 `or` / `and` /
+/// `xor` / `not`; identical on aarch64). Loop-free. The three
+/// bit-level contracts partition: `BitAccess` covers SINGLE-BIT
+/// read/write; `BitSequence` covers SCAN / POPCOUNT; `BitLogic`
+/// covers WHOLE-WORD logical ops. Together they describe a
+/// bit-bearing container.
+///
+/// Hot-only surface. Other strategies (`Warm`, `Precise`, `Cold`)
+/// have wider containers that make whole-word ops meaningless at
+/// the logical-width level (NOT would flip surplus container bits).
+pub trait BitLogic: BitWidth + Copy {
+    /// Whole-word OR.
+    fn bitor(self, other: Self) -> Self;
+    /// Whole-word AND.
+    fn bitand(self, other: Self) -> Self;
+    /// Whole-word NOT.
+    fn bitnot(self) -> Self;
+    /// Whole-word XOR.
+    fn bitxor(self, other: Self) -> Self;
+
+    /// Clear the lowest set bit.
+    ///
+    /// Default impl uses `BitSequence::trailing_zeros` +
+    /// `BitAccess::with_bit_cleared`. Concrete types can override with
+    /// `self.to_raw() & (self.to_raw() - 1)` for the single-instruction
+    /// fast path (x86 `BLSR`). Returns `self` unchanged when the word
+    /// is already zero.
+    #[inline]
+    fn clear_lowest_set_bit(self) -> Self
+    where
+        Self: BitAccess + BitSequence,
+    {
+        if <Self as BitSequence>::is_zero(self).0 {
+            return self;
+        }
+        let idx = <Self as BitSequence>::trailing_zeros(self);
+        <Self as BitAccess>::with_bit_cleared(self, idx)
+    }
+}
