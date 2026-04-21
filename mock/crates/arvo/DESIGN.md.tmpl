@@ -448,7 +448,11 @@ via bounds:
 - `Sqrt` — square root (hardware or approximation via cfg)
 - `Recip` — reciprocal (hardware or Newton-Raphson via cfg)
 - `Abs` — absolute value
-- `FromConstant` — compile-time literal conversion
+- `FromConstant` — `fn from_constant(n: USize) -> Self`. Compile-time
+  literal conversion; input is `USize` (never a bare primitive).
+  Float impls bridge internally via a private `FromU8Ieee` helper
+  for the lossless 0..=255 range. For fixed-point types, `n` is
+  placed at the integer-bit position (shifted left by `F`).
 - `Pred<A>` / `Pred2<A, B>` / `Pred3<A, B, C>` — named predicate
   bounds for consumer callbacks. Blanket-impl'd for
   `Fn(&A) -> Bool` / `Fn(&A, &B) -> Bool` /
