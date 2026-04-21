@@ -11,6 +11,7 @@
 //! oversized.
 
 use arvo::newtype::{Bool, Cap, USize};
+use arvo::predicate::Pred2;
 use arvo_tensor::{Array, cap_size};
 
 use crate::range::Range;
@@ -33,7 +34,7 @@ use crate::range::Range;
 /// predicate should always accept the first item of a fresh group.
 pub fn greedy_group<const N: Cap, const M: Cap, A, T>(
     items: &Array<T, N>,
-    feasible: impl Fn(&A, &T) -> Bool,
+    feasible: impl Pred2<A, T>,
     merge: impl Fn(A, &T) -> A,
     init: impl Fn() -> A,
 ) -> (USize, Array<Range, M>)
@@ -62,7 +63,7 @@ where
             // Open a new group. If the predicate rejects the first
             // item against a fresh accumulator, skip to keep the
             // walk terminating.
-            if !feasible(&acc, item).0 {
+            if !feasible.test(&acc, item).0 {
                 i = USize(i.0 + 1);
                 continue;
             }
@@ -73,7 +74,7 @@ where
             continue;
         }
 
-        if feasible(&acc, item).0 {
+        if feasible.test(&acc, item).0 {
             acc = merge(acc, item);
             i = USize(i.0 + 1);
             continue;

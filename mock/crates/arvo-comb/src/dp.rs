@@ -14,6 +14,7 @@ use core::cmp::Ordering;
 use core::ops::Add;
 
 use arvo::newtype::{Bool, Cap, USize};
+use arvo::predicate::Pred2;
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_tensor::{Array, Matrix, cap_size};
 
@@ -34,7 +35,7 @@ use arvo_tensor::{Array, Matrix, cap_size};
 /// `splits` contains `USize(0)` for unreachable entries.
 pub fn matrix_chain_dp<const N: Cap, W>(
     cost: impl Fn(USize, USize) -> W,
-    feasible: impl Fn(USize, USize) -> Bool,
+    feasible: impl Pred2<USize, USize>,
 ) -> (W, Array<USize, N>)
 where
     [(); cap_size(N)]:,
@@ -63,7 +64,7 @@ where
     // as leaves; leaf cost is `cost(i, i)`.
     for i in 0..cap_size(N) {
         let iu = USize(i);
-        if feasible(iu, iu).0 {
+        if feasible.test(&iu, &iu).0 {
             dp.set(iu, iu, cost(iu, iu));
             reachable.set(iu, iu, Bool::TRUE);
         }
@@ -82,7 +83,7 @@ where
             let mut best_val = zero;
             let mut best_set = Bool::FALSE;
             let mut best_split = lou;
-            if feasible(lou, hiu).0 {
+            if feasible.test(&lou, &hiu).0 {
                 best_val = cost(lou, hiu);
                 best_set = Bool::TRUE;
                 best_split = hiu;
