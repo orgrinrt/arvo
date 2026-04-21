@@ -85,3 +85,21 @@ fn bits_sizes_match_container() {
     assert_eq!(core::mem::size_of::<Bits<32, Hot>>(), 4);
     assert_eq!(core::mem::size_of::<Bits<64, Hot>>(), 8);
 }
+
+#[test]
+fn generated_field_masks_match_layout() {
+    assert_eq!(StrHandle::origin_MASK.bits(), 1u64 << 31);
+    assert_eq!(StrHandle::reserved_MASK.bits(), 0b111u64 << 28);
+    assert_eq!(StrHandle::id_MASK.bits(), 0x0FFF_FFFF);
+}
+
+#[test]
+fn from_u64_matches_new() {
+    let via_new = Bits::<32, Hot>::new(0x1234);
+    let via_from: Bits<32, Hot> = 0x1234u64.into();
+    assert_eq!(via_new, via_from);
+}
+
+// Note: `impl From<<S as UContainerFor<N>>::T> for Bits<N, S>`
+// conflicts with core's blanket `From<T> for T`; the per-N
+// `From<u64>` path via macro is the supported conversion.

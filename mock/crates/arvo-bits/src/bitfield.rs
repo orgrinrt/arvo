@@ -122,6 +122,15 @@ macro_rules! bitfield {
 
             $(
                 $(#[$field_attr])*
+                pub const ${concat($field, _MASK)}: $crate::Bits<$n, $crate::Hot> = {
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: pre-shifted mask at parent width, computed from macro-expanded sub-range literals; tracked: #127
+                    let mask: u64 =
+                        if $field_bits == 64 { u64::MAX }
+                        else { (1u64 << $field_bits) - 1 };
+                    $crate::Bits::<$n, $crate::Hot>::new(mask << $lo)
+                };
+
+                $(#[$field_attr])*
                 pub const fn $field(self) -> $crate::Bits<$field_bits, $crate::Hot> {
                     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-field shift/mask dispatches on macro-expanded literals; tracked: #127
                     let mask: u64 =

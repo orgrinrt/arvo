@@ -292,41 +292,49 @@ I+F <= 64 constraint. SIMD register width is a strategy concern
 ## Opaque-bit container: Bits
 
 `Bits<const N: u8, S: Strategy = Hot>` is a fixed-width opaque
-bit-pattern container: a `#[repr(transparent)]` newtype around
-`UFixed<{IBits(N)}, {FBits::ZERO}, S>`. Container dispatch rides on
-UFixed's existing `UContainerFor<S, N>` — u8 for 1..=8 bits, u16
-for 9..=16, u32 for 17..=32, u64 for 33..=64 under Hot. `Bits<32,
-Hot>` is 4 bytes; `Bits<8, Hot>` is 1 byte; `Bits<28, Hot>` is 4
-bytes. Compile-time asserted: N must be in 1..=64.
+bit-pattern container: a `#[repr(transparent)]` newtype around the
+strategy-dispatched container primitive `<S as UContainerFor<N>>::T`.
+Dispatch reuses arvo's `UContainerFor<N, S>` table — u8 for 1..=8
+bits, u16 for 9..=16, u32 for 17..=32, u64 for 33..=64 under Hot.
+`Bits<32, Hot>` is 4 bytes; `Bits<8, Hot>` is 1 byte; `Bits<28, Hot>`
+is 4 bytes. Compile-time asserted: N must be in 1..=64.
 
 ```rust
 #[repr(transparent)]
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug, Default)]
-pub struct Bits<const N: u8, S: Strategy = Hot>(
-    UFixed<{ IBits(N) }, { FBits::ZERO }, S>
-)
+pub struct Bits<const N: u8, S: Strategy = Hot>(<S as UContainerFor<N>>::T)
 where
     S: UContainerFor<N>;
 ```
 
-The newtype preserves the opaque-identity semantic: `Bits` does NOT
-implement `Add` / `Sub` / `Mul` / `Div` / `Ord`. Two `Bits<N>`
-values are compared via `PartialEq` / `Hash`; there is no
-which-is-bigger question on a bit pattern.
-
-Why a newtype, not a type alias: a type alias is structurally the
-same type as its target, so `type Bits<N> = UFixed<...>` would
-inherit every trait impl — including arithmetic — with no way to
-opt out. The newtype wraps the UFixed storage but presents a
-deliberately smaller trait surface.
+Bits is not a UFixed wrapper — it is a parallel primitive family
+that shares UFixed's container-dispatch table but presents a
+deliberately smaller trait surface. Two `Bits<N>` values compare
+via `PartialEq` / `Hash`; there is no which-is-bigger question on
+a bit pattern. `Bits` does NOT implement `Add` / `Sub` / `Mul` /
+`Div` / `Ord`. Consumers that want arithmetic at width `N` reach
+for `UFixed<{IBits(N)}, {FBits::ZERO}, S>` directly.
 
 `Bits::from_raw(raw: <S as UContainerFor<N>>::T) -> Self` takes the
-exact container type (delegated to `UFixed::from_raw`). `Bits::to_raw
-(self) -> <...>::T` returns it. For the u64-erased path used by
-consumers that already think in u64 (arvo-hash hash digests,
-hilavitkutin-str handles), `Bits::new(raw: u64) -> Self` masks to N
-bits and narrows; `Bits::bits(self) -> u64` widens back. Both are
-per-N const fns generated via macro expansion.
+exact container value. `Bits::to_raw(self) -> <...>::T` returns it.
+For the u64-erased path used by consumers that already think in u64
+(arvo-hash hash digests, hilavitkutin-str handles), `Bits::new(raw:
+u64) -> Self` masks to N bits and narrows; `Bits::bits(self) -> u64`
+widens back. Both are per-N const fns generated via macro expansion.
+
+`From` impls land two conversion paths for ergonomic non-const call
+sites:
+
+```rust
+impl<N, S> From<<S as UContainerFor<N>>::T> for Bits<N, S>
+where S: UContainerFor<N> { ... }
+
+impl From<u64> for Bits<N, Hot> { ... }  // per-N via macro
+```
+
+Non-const callers write `let b: Bits<N, Hot> = value.into()` or
+`Bits::from(value)`. Const paths (`str_const!()` macro bodies,
+`bitfield!`-generated setters) keep the explicit `Bits::<N>::new(raw)`
+form — `From::from` is not `const fn` on current nightly.
 
 Implements `BitWidth` (reports N), `BitAccess` (per-bit read/write),
 `BitSequence` (scan / popcount), and `BitLogic` (whole-word bitwise)
@@ -398,6 +406,25 @@ width — the exact-width arvo primitive, never a raw `u8` / `u16` /
 form. Setters take the same type and mask to the sub-range width
 before writing, so garbage-high-bits on callers never corrupt
 neighbouring fields.
+
+The macro also generates a pre-shifted `<FIELD_UPPER>_MASK: Bits<N, Hot>`
+associated constant per sub-range. For boundary bit-arithmetic
+(consumer code that holds raw values before wrapping them into the
+bitfield), the mask saves redeclaring the layout's internal
+structure:
+
+```rust
+// In the StrLayout example above, the macro generates:
+impl StrLayout {
+    pub const ORIGIN_MASK: Bits<32, Hot> = Bits::<32>::new(1u64 << 31);
+    pub const RESERVED_MASK: Bits<32, Hot> = Bits::<32>::new(0b111u64 << 28);
+    pub const ID_MASK: Bits<32, Hot> = Bits::<32>::new(0x0FFF_FFFFu64);
+}
+```
+
+`SHIFT` and `WIDTH` constants are not generated — consumers that
+need them can read the field declaration directly; avoiding
+speculative consts keeps unused-symbol footprint minimal.
 
 Compile-time checks inside the generated code:
 
