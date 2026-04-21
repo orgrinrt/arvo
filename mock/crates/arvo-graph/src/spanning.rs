@@ -107,7 +107,7 @@ where
 
     // Highest-ranked source = trunk head. Remaining sources become
     // branch roots.
-    let mut head_idx: usize = 0;
+    let mut head_idx = USize(0);
     let mut have_head = false;
     for s_pos in sources.iter_set_bits() {
         let s = s_pos.0;
@@ -115,10 +115,10 @@ where
             continue;
         }
         if !have_head {
-            head_idx = s;
+            head_idx = USize(s);
             have_head = true;
-        } else if matches!(ranks[s].total_cmp(&ranks[head_idx]), Ordering::Greater) {
-            head_idx = s;
+        } else if matches!(ranks[s].total_cmp(&ranks[head_idx.0]), Ordering::Greater) {
+            head_idx = USize(s);
         }
     }
     if !have_head {
@@ -130,7 +130,7 @@ where
     let mut queue: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut q_head = 0usize;
     let mut q_tail = 0usize;
-    queue[q_tail] = NodeId::new(USize(head_idx));
+    queue[q_tail] = NodeId::new(head_idx);
     q_tail += 1;
 
     // Non-head sources become branch roots. Enqueue them so the
@@ -138,7 +138,7 @@ where
     // disconnected components past the main trunk would be missed.
     for s_pos in sources.iter_set_bits() {
         let s = s_pos.0;
-        if s < cap_size(N) && s != head_idx {
+        if s < cap_size(N) && s != head_idx.0 {
             out.branch_roots.insert(USize(s));
             if q_tail < cap_size(N) {
                 queue[q_tail] = NodeId::new(USize(s));
@@ -172,7 +172,7 @@ where
             }
 
             // Choose highest-ranked successor as trunk continuation.
-            let mut top_i: usize = 0;
+            let mut top_i = USize(0);
             let mut have_top = false;
             for s_pos in succ.iter_set_bits() {
                 let s = s_pos.0;
@@ -180,22 +180,22 @@ where
                     continue;
                 }
                 if !have_top {
-                    top_i = s;
+                    top_i = USize(s);
                     have_top = true;
-                } else if matches!(ranks[s].total_cmp(&ranks[top_i]), Ordering::Greater) {
-                    top_i = s;
+                } else if matches!(ranks[s].total_cmp(&ranks[top_i.0]), Ordering::Greater) {
+                    top_i = USize(s);
                 }
             }
             if !have_top {
                 break;
             }
 
-            out.trunk_next[current_i] = NodeId::new(USize(top_i));
+            out.trunk_next[current_i] = NodeId::new(top_i);
 
             // Seed branches for the remaining (non-top) successors.
             for s_pos in succ.iter_set_bits() {
                 let s = s_pos.0;
-                if s >= cap_size(N) || s == top_i {
+                if s >= cap_size(N) || s == top_i.0 {
                     continue;
                 }
                 out.branch_roots.insert(USize(s));
@@ -205,7 +205,7 @@ where
                 }
             }
 
-            current_i = top_i;
+            current_i = top_i.0;
         }
     }
 
