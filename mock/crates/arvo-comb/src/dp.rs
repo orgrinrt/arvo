@@ -40,7 +40,7 @@ where
     [(); cap_size(N)]:,
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
 {
-    let zero = <W as FromConstant>::from_constant(0);
+    let zero = <W as FromConstant>::from_constant(USize(0));
     let mut splits: Array<USize, N> = Array::filled(USize(0));
 
     if cap_size(N) == 0 {

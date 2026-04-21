@@ -17,7 +17,7 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::Cap;
+use arvo::newtype::{Cap, USize};
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_bitmask::{BitMatrix64, cap_size};
 
@@ -40,7 +40,7 @@ where
     let (valid, order) = topo_sort(dag);
 
     // Initialise ranks to zero; overwritten as we walk reverse topo.
-    let zero = <W as FromConstant>::from_constant(0);
+    let zero = <W as FromConstant>::from_constant(USize(0));
     let mut rank: [W; cap_size(N)] = [zero; cap_size(N)];
 
     // Walk the valid prefix in reverse.
@@ -97,7 +97,7 @@ where
 {
     let (valid, order) = topo_sort(dag);
 
-    let zero = <W as FromConstant>::from_constant(0);
+    let zero = <W as FromConstant>::from_constant(USize(0));
     let mut rank: [W; cap_size(N)] = [zero; cap_size(N)];
 
     let valid_n = valid.0;

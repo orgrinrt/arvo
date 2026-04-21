@@ -46,7 +46,7 @@ where
     F: TotalOrd + Copy + FromConstant,
 {
     let n = cap_size(N);
-    let zero = F::from_constant(0);
+    let zero = F::from_constant(USize(0));
     let mut positive = Mask64::default();
     let mut negative = Mask64::default();
     let mut i = 0usize;
@@ -140,7 +140,7 @@ where
         // Fiedler on the full graph. Filter by the component mask for
         // the bisection decision.
         let fiedler: [F; cap_size(N)] = fiedler_vector::<N, W, F>(weights, iterations);
-        let zero = F::from_constant(0);
+        let zero = F::from_constant(USize(0));
 
         let mut positive_half = Mask64::default();
         let mut negative_half = Mask64::default();
