@@ -7,8 +7,8 @@ to each L2 / L3 crate that uses `const N: Cap` in signatures
 (arvo-spectral, and this crate after the 202604260000 cleanup). When
 a third consumer lands (arvo-graph, arvo-sparse, or arvo-comb after
 their own Cap/USize cleanup rounds), promote the helper into arvo
-(L0) as a public const-fn. The promotion is purely additive — no
-breaking changes — and eliminates the 3-line duplication.
+(L0) as a public const-fn. The promotion is purely additive (no
+breaking changes) and eliminates the 3-line duplication.
 
 ## Mask256-wide BitMatrix trait abstraction
 

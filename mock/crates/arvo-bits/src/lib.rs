@@ -1,7 +1,7 @@
-//! arvo-bits — L1 bit-level contracts.
+//! arvo-bits: L1 bit-level contracts.
 //!
-//! Three public traits — `BitWidth`, `BitAccess`, `BitSequence` —
-//! give arvo numeric types bit-level introspection and manipulation.
+//! Three public traits (`BitWidth`, `BitAccess`, `BitSequence`) give
+//! arvo numeric types bit-level introspection and manipulation.
 //! Impl'd concretely on `UFixed<I, F, S>` and `IFixed<I, F, S>`;
 //! consumers reach the surface through the numeric type itself.
 //!
@@ -11,8 +11,8 @@
 //! implemented downstream: the supertrait is private.
 //!
 //! Semantic aliases: `Bit`, `Nibble`, `Byte`, `Word`, `DWord`, `QWord`.
-//! All default to the `Hot` strategy — bit work wants minimum container
-//! and wrapping ops.
+//! All default to the `Hot` strategy, because bit work wants minimum
+//! container and wrapping ops.
 //!
 //! `#![no_std]`, no alloc, no platform dep. L1 of the arvo stack;
 //! depends only on `arvo`.

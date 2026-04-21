@@ -1,4 +1,4 @@
-//! arvo-tensor — L2 fixed-shape tensor wrappers.
+//! arvo-tensor: L2 fixed-shape tensor wrappers.
 //!
 //! Rank-N containers with type-level capacity. `Array<T, N>` is rank-1,
 //! `Matrix<W, N>` is rank-2 N×N. Both wrap stack-allocated arrays under
@@ -12,7 +12,7 @@
 //! re-exports in arvo-bitmask / arvo-spectral.
 //!
 //! The `Enumerator` trait supplies `.enumerated()` yielding `(USize, T)`
-//! pairs — the typed-index parallel of `core::iter::Iterator::enumerate`
+//! pairs, the typed-index parallel of `core::iter::Iterator::enumerate`
 //! whose raw `usize` leaks the substrate boundary.
 //!
 //! `#![no_std]`, no alloc, no platform dep. L2 of the arvo stack; depends
