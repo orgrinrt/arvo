@@ -38,7 +38,7 @@ where
         let j_raw = j.0;
         if i_raw == j_raw {
             // Diagonal: weighted degree (sum of off-diagonal row).
-            let mut sum = F::from_constant(0);
+            let mut sum = F::from_constant(USize(0));
             let mut k = 0usize;
             while k < n {
                 if k != i_raw {
@@ -51,7 +51,7 @@ where
         } else {
             // Off-diagonal: negated weight.
             let w: F = weights.get(USize(i_raw), USize(j_raw)).into();
-            F::from_constant(0) - w
+            F::from_constant(USize(0)) - w
         }
     })
 }

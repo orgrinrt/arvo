@@ -20,8 +20,8 @@ const C4: Cap = cap(4);
 
 type W = UFixed<{ IBits(16) }, { FBits::ZERO }, Hot>;
 
-fn w(n: u8) -> W {
-    W::from_constant(n)
+fn w(n: usize) -> W {
+    W::from_constant(USize(n))
 }
 
 #[test]
