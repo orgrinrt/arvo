@@ -113,10 +113,10 @@ where
         i += 1;
     }
     stack[0] = initial;
-    let mut stack_len: usize = 1;
+    let mut stack_len = USize(1);
 
     // Current partition count. Starts at 1 (everything in partition 0).
-    let mut partition_count: usize = 1;
+    let mut partition_count = USize(1);
 
     // Compute the full-graph Fiedler vector once for each component
     // we pop. We rebuild per-pop because the Fiedler direction depends
@@ -126,9 +126,9 @@ where
     // pipeline scale (N <= 32, K <= 8) converges fast enough that
     // recomputing the full-graph Fiedler is not the hot path. A
     // follow-up round can specialise to the restricted Laplacian.
-    while stack_len > 0 && partition_count < k {
-        stack_len -= 1;
-        let component = stack[stack_len];
+    while stack_len.0 > 0 && partition_count.0 < k {
+        stack_len = USize(stack_len.0 - 1);
+        let component = stack[stack_len.0];
 
         // Count nodes in this component.
         let comp_count = component.count().0;
@@ -165,11 +165,11 @@ where
         // half keeps its existing partition id (so already-assigned
         // ids on other nodes are untouched).
         let new_id = partition_count;
-        partition_count += 1;
+        partition_count = USize(partition_count.0 + 1);
         let mut j = 0usize;
         while j < n {
             if *positive_half.contains(USize(j)) {
-                partition_id[j] = USize(new_id);
+                partition_id[j] = new_id;
             }
             j += 1;
         }
@@ -182,26 +182,30 @@ where
         // left we push the larger half (best-effort degradation).
         let pos_big = *positive_half.count() > 1;
         let neg_big = *negative_half.count() > 1;
-        let want = (pos_big as usize) + (neg_big as usize);
-        if want > 0 && stack_len + want <= k {
+        let want = match (pos_big, neg_big) {
+            (true, true) => USize(2),
+            (false, false) => USize(0),
+            _ => USize(1),
+        };
+        if want.0 > 0 && stack_len.0 + want.0 <= k {
             if pos_big {
-                stack[stack_len] = positive_half;
-                stack_len += 1;
+                stack[stack_len.0] = positive_half;
+                stack_len = USize(stack_len.0 + 1);
             }
             if neg_big {
-                stack[stack_len] = negative_half;
-                stack_len += 1;
+                stack[stack_len.0] = negative_half;
+                stack_len = USize(stack_len.0 + 1);
             }
-        } else if want > 0 && stack_len + 1 <= k {
+        } else if want.0 > 0 && stack_len.0 + 1 <= k {
             let pick = if *positive_half.count() >= *negative_half.count() {
                 positive_half
             } else {
                 negative_half
             };
-            stack[stack_len] = pick;
-            stack_len += 1;
+            stack[stack_len.0] = pick;
+            stack_len = USize(stack_len.0 + 1);
         }
     }
 
-    (USize(partition_count), partition_id)
+    (partition_count, partition_id)
 }
