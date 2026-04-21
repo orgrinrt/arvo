@@ -259,7 +259,7 @@ where
 {
     type Error = ();
     #[inline(always)]
-    fn try_from(src: UFixed<I, F, Warm>) -> Result<Self, Self::Error> {
+    fn try_from(src: UFixed<I, F, Warm>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
         match <Hot as UNarrowFrom<Warm, { ufixed_bits(I, F) }>>::u_try_narrow(src.to_raw()) {
             Outcome::Ok(v) => Ok(Self::from_raw(v)),
             Outcome::Err(()) => Err(()),
@@ -274,7 +274,7 @@ where
 {
     type Error = ();
     #[inline(always)]
-    fn try_from(src: UFixed<I, F, Precise>) -> Result<Self, Self::Error> {
+    fn try_from(src: UFixed<I, F, Precise>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
         match <Hot as UNarrowFrom<Precise, { ufixed_bits(I, F) }>>::u_try_narrow(src.to_raw()) {
             Outcome::Ok(v) => Ok(Self::from_raw(v)),
             Outcome::Err(()) => Err(()),
