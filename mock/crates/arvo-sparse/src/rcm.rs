@@ -33,11 +33,11 @@ where
 {
     let mut order: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut visited: Mask64 = Mask64::empty();
-    let mut head: usize = 0;
+    let mut head = USize(0);
 
     // Main loop: keep seeding BFS from the remaining min-degree node
     // until every node is visited. Handles disconnected graphs.
-    while head < cap_size(N) {
+    while head.0 < cap_size(N) {
         // Pick the unvisited node with the smallest combined degree.
         // Tie-break by lowest index.
         let start = match min_degree_unvisited(adjacency, &visited) {
@@ -46,15 +46,15 @@ where
         };
 
         visited.insert(USize(start));
-        order[head] = NodeId::new(USize(start));
-        head += 1;
+        order[head.0] = NodeId::new(USize(start));
+        head = USize(head.0 + 1);
 
         // BFS frontier pointers: [read, head) is the current queue.
-        let mut read = head - 1;
+        let mut read = USize(head.0 - 1);
 
-        while read < head {
-            let node = order[read];
-            read += 1;
+        while read.0 < head.0 {
+            let node = order[read.0];
+            read = USize(read.0 + 1);
 
             // Collect unvisited neighbours (successors + predecessors).
             let neigh = adjacency
@@ -85,7 +85,7 @@ where
                     let b = scratch[j];
                     let da = degree(adjacency, a);
                     let db = degree(adjacency, b);
-                    let swap = da > db || (da == db && (a.0).0 > (b.0).0);
+                    let swap = da.0 > db.0 || (da.0 == db.0 && (a.0).0 > (b.0).0);
                     if swap {
                         scratch[j - 1] = b;
                         scratch[j] = a;
@@ -104,8 +104,8 @@ where
                 let n_idx = (n.0).0;
                 if let Bool(false) = visited.contains(USize(n_idx)) {
                     visited.insert(USize(n_idx));
-                    order[head] = n;
-                    head += 1;
+                    order[head.0] = n;
+                    head = USize(head.0 + 1);
                 }
                 k += 1;
             }
@@ -114,7 +114,7 @@ where
 
     // Reverse in place.
     let mut l = 0usize;
-    let mut r = if head == 0 { 0 } else { head - 1 };
+    let mut r = if head.0 == 0 { 0 } else { head.0 - 1 };
     while l < r {
         let tmp = order[l];
         order[l] = order[r];
@@ -128,11 +128,11 @@ where
 
 /// Degree of `n` in the undirected view (successors + predecessors).
 #[inline(always)]
-fn degree<const N: Cap>(adj: &BitMatrix64<N>, n: NodeId) -> usize
+fn degree<const N: Cap>(adj: &BitMatrix64<N>, n: NodeId) -> USize
 where
     [(); cap_size(N)]:,
 {
-    adj.successors(n).union(adj.predecessors(n)).count().0
+    adj.successors(n).union(adj.predecessors(n)).count()
 }
 
 /// Lowest-index unvisited node with minimum combined degree, or
@@ -145,21 +145,21 @@ fn min_degree_unvisited<const N: Cap>(
 where
     [(); cap_size(N)]:,
 {
-    let mut best: Maybe<(usize, usize)> = Maybe::Isnt;
+    let mut best: Maybe<(USize, USize)> = Maybe::Isnt;
     let mut i = 0usize;
     while i < cap_size(N) {
         if let Bool(false) = visited.contains(USize(i)) {
             let d = degree(adj, NodeId::new(USize(i)));
             match best {
-                Maybe::Isnt => best = Maybe::Is((i, d)),
-                Maybe::Is((_, bd)) if d < bd => best = Maybe::Is((i, d)),
+                Maybe::Isnt => best = Maybe::Is((USize(i), d)),
+                Maybe::Is((_, bd)) if d.0 < bd.0 => best = Maybe::Is((USize(i), d)),
                 _ => {}
             }
         }
         i += 1;
     }
     match best {
-        Maybe::Is((i, _)) => Maybe::Is(USize(i)),
+        Maybe::Is((idx, _)) => Maybe::Is(idx),
         Maybe::Isnt => Maybe::Isnt,
     }
 }
