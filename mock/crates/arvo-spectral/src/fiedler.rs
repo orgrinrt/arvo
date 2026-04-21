@@ -89,7 +89,7 @@ where
     // `F::from_constant` takes a `u8`; we guarantee `N <= 64` via the
     // Mask64 partitioning surface, so the `as u8` is safe at every
     // shipping shape.
-    let n_as_u8 = n as u8;
+    let n_as_u8 = n as u8; // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: arvo::traits::FromConstant::from_constant takes u8; boundary conversion until FromConstant is retrofitted to take USize; tracked: #123
     let n_f = F::from_constant(n_as_u8);
     let n_inv = n_f.recip();
 
