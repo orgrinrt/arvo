@@ -33,3 +33,10 @@ pub use alias::{Bit, Byte, DWord, Nibble, QWord, Word};
 pub use bits::Bits;
 pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
 pub use traits::{BitAccess, BitLogic, BitSequence, BitWidth};
+
+// Consumer convenience: re-export the strategy / container-dispatch
+// names that appear in `Bits<N, S>` where-clauses. Downstream crates
+// (arvo-hash, hilavitkutin-str) can write the bound
+// `Hot: UContainerFor<N>` without pulling arvo directly just for
+// the names.
+pub use arvo::strategy::{Hot, Strategy, UContainerFor};
