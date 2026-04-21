@@ -32,6 +32,14 @@ pub struct Bits<const N: u8, S: Strategy = Hot>(<S as UContainerFor<N>>::T)
 where
     S: UContainerFor<N>;
 
+// `From<<S as UContainerFor<N>>::T> for Bits<N, S>` was considered
+// but conflicts with core's blanket `impl<T> From<T> for T`: the
+// associated type could theoretically equal `Bits<N, S>`, which the
+// trait solver treats as ambiguous. The per-N `From<u64>` impls in
+// the macro block below cover the common ergonomic case; consumers
+// holding a concrete u8/u16/u32/u64 container value use
+// `Bits::from_raw(...)` directly.
+
 // Manual trait impls without bounds on `S` — the strategy marker
 // is a zero-sized phantom in this struct (only `<S as
 // UContainerFor<N>>::T` physically stores data), so no S-level
@@ -116,6 +124,14 @@ macro_rules! impl_bits_u64 {
                 pub const fn bits(self) -> u64 {
                     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: widen dispatched container back to u64 for the uniform legacy API; tracked: #127
                     self.0 as u64
+                }
+            }
+
+            // Non-const `From<u64>` — ergonomic `.into()` at runtime
+            // call sites. For const contexts, use `Bits::new(raw)`.
+            impl From<u64> for Bits<$n, Hot> {
+                fn from(raw: u64) -> Self {
+                    Self::new(raw)
                 }
             }
         )+
