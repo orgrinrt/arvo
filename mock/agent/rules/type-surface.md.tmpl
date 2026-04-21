@@ -12,18 +12,28 @@ arvo is a fixed-point arithmetic stack. Every numeric primitive
 (`UFixed<I, F, S>` / `IFixed<I, F, S>` / `FastFloat` / `StrictFloat`
 / `Bool` / `USize` / `Cap`) or one of the pre-defined semantic
 aliases over them (`Byte`, `Word`, `DWord`, `QWord`, `Nibble`, `Bit`
-from arvo-bits). When you encounter a raw Rust numeric in a public
-signature, the question isn't "which arvo type matches this width";
-it's "which arvo type matches this DOMAIN". Public APIs carry
-domain aliases (`NodeId`, `Str`, `RecordIndex`, `SieveWeight`,
-`ContentHash`) grounded on arvo primitives. Never raw primitives;
-never raw newtype-over-primitive either.
+from arvo-bits). Domain usage drives the type choice: a 28-bit
+content hash isn't "a u32"; it's `ContentHash = Bits<28>`. A node
+index isn't "a usize"; it's `NodeId`. The arvo primitive or a domain
+alias grounded on one — never the bare primitive.
 
-Enforced by `arvo-types-only` (#50), `no-bare-numeric` (#68), and
-`no-bare-option/result/string/vec` (#66, #67, #69, #76). Until
-those lints land strict, discipline carries it.
+**Scope is physical, not API-visibility.** Bare `u8..u128`, `i8..i128`,
+`f32`, `f64`, `usize`, `isize`, `bool` do not appear anywhere in
+source: not in public fn signatures, not in private fields, not in
+`let` bindings, not in cast expressions, not in literal suffixes
+(`0u32`, `1_usize`), not in array element types, not in const
+declarations, not in trait method parameter types, not in tuple-
+struct fields, not in `where` clauses. The `arvo-types-only` and
+`no-bare-numeric` lints scan every line of every `.rs` file; both
+fire on any physical occurrence of a bare primitive identifier.
 
-Before writing any `pub` signature, ask:
+Escape hatch: `// lint:allow(<rule>) reason: ...; tracked: #N` —
+only when a foreign crate's contract or an unavoidable language
+feature forces the bare primitive and no arvo impl of that contract
+is possible. Before reaching for the escape hatch, consider whether
+the foreign crate should be dropped.
+
+Before writing ANY signature (pub or private) or field or local, ask:
 
 1. What OPERATION does this position perform?
 2. Is there a trait that describes that operation? If yes, use it. If
@@ -32,6 +42,32 @@ Before writing any `pub` signature, ask:
    position.
 4. Is the caller forced to pick a concrete type here? If yes, you
    leaked an implementation detail.
+
+## Exact widths, not std-primitive buckets
+
+arvo's numeric types take a bit count as an input. Do not think in
+u8 / u16 / u32 / u64 buckets. Pick the SMALLEST `N` that covers the
+domain's range and use `UFixed<N, 0, S>` (for discriminants) or
+`Bits<N>` (for opaque bit patterns).
+
+- Boolean → `Bool` (or `UFixed<1, 0, Hot>` / `Bits<1>`).
+- 3 to 4 discrete values → `UFixed<2, 0, Hot>`.
+- 5 to 8 discrete values → `UFixed<3, 0, Hot>`.
+- Max value `M` → `UFixed<ceil(log2(M+1)), 0, Hot>`.
+
+Storage packs to exactly `N` bits. Hot-path logic dispatches to the
+optimal host primitive (u8 / u16 / u32 / u64) via `S: Strategy` — the
+consumer never picks that. Choosing `UFixed<8, 0, Hot>` when the
+domain has 4 values wastes 6 bits per stored field. Over millions of
+elements that is cache, bandwidth, and SIMD density.
+
+The author's job is domain accuracy: "how many values does this
+represent?" arvo's job is packing and dispatch. These concerns do
+not mix at the type author's level.
+
+Pair the exact-width type with a domain alias: `pub type Priority =
+UFixed<2, 0, Hot>;`. The alias carries the name; the width is the
+implementation.
 
 ## Decision test
 
@@ -44,10 +80,12 @@ Before writing any `pub` signature, ask:
 
 | Category | When | Examples |
 |----------|------|----------|
-| **Trait** | Varying behavior, shared contract | `UArith<BITS>`, `IArith<BITS>`, `BitSequence`, `BitAccess`, `Bool: Try` |
-| **Newtype** | Fixed rep, validation at construction | `UFixed<I, F, S>`, `FastFloat`, `StrictFloat`, `USize`, `Cap` |
+| **Trait** | Varying behavior, shared contract | `UArith<BITS>`, `IArith<BITS>`, `BitSequence`, `BitAccess`, `BitLogic`, `Bool: Try` |
+| **Newtype** | Fixed rep, validation at construction | `UFixed<I, F, S>`, `FastFloat`, `StrictFloat`, `USize`, `Cap`, `ContentHash`, `Array<T, N>`, `Matrix<W, N>` |
 | **`repr(C)` enum** | Closed set, crosses ABI | `Strategy` markers, `Priority`, `ErrorClass` |
-| **Primitive** | No semantic meaning beyond raw value | `const N: usize` (const-generic position only) |
+
+There is no fourth "bare primitive" category. Every numeric identity
+flows through arvo's type system.
 
 ## DO ✓ (trait-first)
 
@@ -59,14 +97,15 @@ Before writing any `pub` signature, ask:
 - Newtypes at public boundaries: `Cap`, `USize`, `FastFloat`
 - Scalar returns: `Outcome<T, E>`, `Maybe<T>`, `Just<T>` (from notko)
 
-## DON'T ✗ (concrete-type leakage)
+## DON'T ✗ (concrete-type leakage — anywhere in source)
 
-- Bare `Option<T>` or `Result<T, E>` — use `Maybe<T>` / `Outcome<T, E>`
-- Concrete collections in pub sigs: `Vec<T>`, `HashMap`, `Seq<T, N>`,
+- Bare `Option<T>` or `Result<T, E>` in ANY position — use `Maybe<T>` / `Outcome<T, E>`
+- Concrete collections anywhere: `Vec<T>`, `HashMap`, `Seq<T, N>`,
   `Map<K, V, N>`
-- Raw numerics in pub sigs: `usize`, `f32`, `f64`, `bool`, `u32`, `i32`
-  — use the arvo newtypes or a trait bound
-- `String` / non-static `&str` — use `&'static str` or `hilavitkutin_str::Str`
+- Raw numerics anywhere (pub fn, private field, local, cast, literal
+  suffix, array size expression): `usize`, `f32`, `f64`, `bool`,
+  `u32`, `i32`, `u64` — use the arvo newtypes or a trait bound
+- `String` / non-static `&str` in ANY position — use `&'static str` or `hilavitkutin_str::Str`
 - Concrete types when a trait exists: don't write `fn add(a: u32, b:
   u32) -> u32` when `UArith<32>` is available
 

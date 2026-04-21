@@ -1,16 +1,33 @@
-//! Lint: `arvo-bits` is contracts only.
+//! Lint: `arvo-bits` is bit-level primitives — contracts and
+//! opaque-bit concrete containers. No arithmetic fielded structs.
 //!
-//! The `arvo-bits` crate declares bit-level contracts — traits with
-//! default methods and blanket impls. It must not declare fielded
-//! `pub struct`s. Concrete storage types (`Mask64`, `Mask256`,
-//! `BitMatrix`) live in `arvo-bitmask`.
+//! The `arvo-bits` crate ships two kinds of surface:
 //!
-//! A field-less marker struct (e.g. `pub struct Foo;`) is tolerated
-//! because it carries no storage — it exists for trait-level
-//! tagging. A struct with a body (`pub struct Foo { ... }` or
-//! `pub struct Foo(T);`) fails the lint.
+//! - Bit-level trait contracts (`BitWidth`, `BitAccess`,
+//!   `BitSequence`) with default methods and blanket impls.
+//! - Opaque-bit concrete containers: fielded `pub struct`s whose
+//!   values are non-arithmetic identities. Listed in
+//!   `ALLOWED_OPAQUE_BITS` below.
+//!
+//! Arithmetic fielded types (`UFixed`, `IFixed`) live in L0 `arvo`;
+//! mask concretes (`Mask64`, `Mask256`, `BitMatrix`) live in L2
+//! `arvo-bitmask`. Anything else with a struct body in `arvo-bits`
+//! fails the lint.
+//!
+//! A field-less marker struct (`pub struct Foo;`) is always
+//! tolerated — it carries no storage.
 
 use mockspace::{Lint, LintContext, LintError, Severity};
+
+/// Opaque-bit concrete containers permitted in `arvo-bits`.
+///
+/// Types here are fielded but non-arithmetic: identity containers
+/// compared by `Eq`, not ordered by arithmetic. To add a new entry,
+/// confirm the type satisfies both properties, then extend this
+/// list in a design round.
+const ALLOWED_OPAQUE_BITS: &[&str] = &[
+    "Bits", // opaque N-bit container; arvo-hash ContentHash alias sits on this
+];
 
 pub fn lint() -> Box<dyn Lint> {
     Box::new(ArvoBitsTraitsOnly)
@@ -55,13 +72,22 @@ impl Lint for ArvoBitsTraitsOnly {
                 continue;
             }
 
-            // Anything else (tuple struct, field struct) is forbidden.
+            // Fielded struct: check against the opaque-bit allowlist.
+            if let Some(name) = extract_struct_name(trimmed) {
+                if ALLOWED_OPAQUE_BITS.contains(&name.as_str()) {
+                    continue;
+                }
+            }
+
             errors.push(LintError::with_severity(
                 ctx.crate_name.to_string(),
                 idx + 1,
                 "arvo-bits-traits-only",
                 format!(
-                    "arvo-bits is contracts only; move concrete storage to arvo-bitmask: {}",
+                    "arvo-bits hosts bit contracts + opaque-bit concretes only; \
+                     arithmetic fielded types live in L0 arvo, masks in arvo-bitmask. \
+                     If this is a new opaque-bit container, add it to \
+                     ALLOWED_OPAQUE_BITS in a design round: {}",
                     trimmed
                 ),
                 Severity::HARD_ERROR,
@@ -69,5 +95,23 @@ impl Lint for ArvoBitsTraitsOnly {
         }
 
         errors
+    }
+}
+
+/// Extract the struct name from a `pub struct` line. Returns
+/// `Some("Bits")` for `pub struct Bits<const N: u8>(u64);` and
+/// similar shapes.
+fn extract_struct_name(line: &str) -> Option<String> {
+    // Strip leading `pub struct `.
+    let after = line.strip_prefix("pub struct ")?;
+    // Name ends at the first `<`, `(`, `{`, whitespace, or `;`.
+    let end = after
+        .find(|c: char| c == '<' || c == '(' || c == '{' || c.is_whitespace() || c == ';')
+        .unwrap_or(after.len());
+    let name = &after[..end];
+    if name.is_empty() {
+        None
+    } else {
+        Some(name.to_string())
     }
 }

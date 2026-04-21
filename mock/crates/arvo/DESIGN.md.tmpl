@@ -34,8 +34,11 @@ impls adapt at the boundary via a one-line match on the `Outcome`
 they receive from `u_try_narrow` / `i_try_narrow`. Same pattern for
 `Iterator::next -> Option<T>` (iterator impls stay on std).
 
-`&'static str` is permitted (used on `Strategy::NAME`). Three
-const-generic accessors in `strategy.rs` (`ibits_u8`, `fbits_u8`,
+`&'static str` is debug-gated: `Strategy::NAME` carries
+`#[cfg(debug_assertions)]` so release builds drop the strings
+entirely. Strategy identity at runtime flows through `RANK: u8`;
+`NAME` is for diagnostics and tests only. Three const-generic
+accessors in `strategy.rs` (`ibits_u8`, `fbits_u8`,
 `is_fractional`) retain raw `u8` / `usize` returns because they exist
 solely to let `IBits` / `FBits` values appear inside anonymous
 const-generic expressions where direct field access is disallowed on

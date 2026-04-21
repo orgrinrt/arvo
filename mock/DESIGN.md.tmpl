@@ -24,8 +24,10 @@
 | Layer | Crate | What it does |
 |-------|-------|--------------|
 | L0 | arvo | Numeric primitives, UFixed/IFixed, Hot/Warm/Cold/Precise strategies, semantic aliases |
-| L1 | arvo-bits | Bit-level contracts: BitWidth, BitAccess, BitSequence, semantic bit aliases |
+| L1 | arvo-bits | Bit-level primitives: BitWidth / BitAccess / BitSequence / BitLogic contracts, semantic bit aliases, opaque-bit Bits container for fixed-width non-arithmetic identities |
 | L2 | arvo-bitmask | Fixed-width Mask64/Mask256, bit-matrix, set ops (on arvo-bits contracts) |
+| L2 | arvo-tensor | Rank-N typed tensor wrappers: Array<T, N>, Matrix<W, N>; cap_size bridge; Enumerator trait for USize-indexed iteration |
+| L2 | arvo-hash | Hash-domain types (ContentHash alias over arvo-bits Bits) + streaming Hasher / HasherExt algorithm contracts |
 | L2 | arvo-sparse | Sparse matrix: CSR, RCM, block diagonal, Dulmage-Mendelsohn |
 | L2 | arvo-graph | DAG algorithms: topo sort, upward rank, waist detection |
 | L2 | arvo-comb | Combinatorial optimisation: DP, greedy grouping, bin-packing |
@@ -36,11 +38,13 @@
 ```
 arvo            (no deps)
   └─ arvo-bits            (deps: arvo)
-       └─ arvo-bitmask    (deps: arvo-bits)
-  ├─ arvo-sparse          (deps: arvo, arvo-bitmask)
-  ├─ arvo-graph           (deps: arvo, arvo-bitmask)
-  ├─ arvo-comb            (deps: arvo, arvo-bitmask)
-  └─ arvo-spectral        (deps: arvo, arvo-sparse)
+       ├─ arvo-bitmask    (deps: arvo-bits)
+       └─ arvo-hash       (deps: arvo-bits)
+  ├─ arvo-tensor          (deps: arvo)
+  ├─ arvo-sparse          (deps: arvo, arvo-bitmask, arvo-tensor)
+  ├─ arvo-graph           (deps: arvo, arvo-bitmask, arvo-tensor)
+  ├─ arvo-comb            (deps: arvo, arvo-bitmask, arvo-tensor)
+  └─ arvo-spectral        (deps: arvo, arvo-sparse, arvo-tensor)
 ```
 
 ## Consumers

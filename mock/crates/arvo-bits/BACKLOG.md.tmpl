@@ -1,0 +1,12 @@
+# arvo-bits — backlog
+
+## Bits extensions
+
+- BitSequence impl on the Bits type. Lands if a consumer surfaces
+  a meaningful iterate-bits-as-a-stream pattern over opaque
+  hashes. Current design ships BitWidth + BitAccess only.
+- Wider backing for Bits (u128 storage, supporting N in 65..=128).
+  Lands on demand when a hash width beyond 64 bits is needed.
+- Convenience From / TryFrom impls between Bits and the matching
+  raw integers (u32 for Bits<32>, etc). Wait for consumer
+  call-site patterns to clarify the useful set before adding.

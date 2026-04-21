@@ -32,6 +32,11 @@ mod sealed {
 /// and `Precise`. Sealed — consumers cannot add new strategies.
 pub trait Strategy: sealed::Sealed + Copy + Clone + Default + 'static {
     /// Human-readable name of the strategy.
+    ///
+    /// Debug-only: static strings are gated out of release builds
+    /// (zero `.rodata` footprint). Runtime strategy identity flows
+    /// through `RANK`; `NAME` is for diagnostics and tests.
+    #[cfg(debug_assertions)]
     const NAME: &'static str;
 
     /// Conservativeness rank. Higher is more conservative. Used by
@@ -79,18 +84,22 @@ impl sealed::Sealed for Cold {}
 impl sealed::Sealed for Precise {}
 
 impl Strategy for Hot {
+    #[cfg(debug_assertions)]
     const NAME: &'static str = "Hot";
     const RANK: u8 = 0;
 }
 impl Strategy for Warm {
+    #[cfg(debug_assertions)]
     const NAME: &'static str = "Warm";
     const RANK: u8 = 1;
 }
 impl Strategy for Cold {
+    #[cfg(debug_assertions)]
     const NAME: &'static str = "Cold";
     const RANK: u8 = 2;
 }
 impl Strategy for Precise {
+    #[cfg(debug_assertions)]
     const NAME: &'static str = "Precise";
     const RANK: u8 = 3;
 }

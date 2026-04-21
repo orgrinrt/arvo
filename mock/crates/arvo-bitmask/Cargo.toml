@@ -7,6 +7,7 @@ license.workspace = true
 [dependencies]
 arvo.workspace = true
 arvo-bits.workspace = true
+arvo-tensor.workspace = true
 
 [build-dependencies]
 mockspace.workspace = true

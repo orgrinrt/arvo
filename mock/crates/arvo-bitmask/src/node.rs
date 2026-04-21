@@ -37,7 +37,7 @@ impl Ord for NodeId {
 
 impl PartialOrd for NodeId {
     #[inline(always)]
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> { // lint:allow(no-bare-option) reason: core::cmp::PartialOrd::partial_cmp trait-method signature returns Option<Ordering>; tracked: #115
         Some(self.cmp(other))
     }
 }

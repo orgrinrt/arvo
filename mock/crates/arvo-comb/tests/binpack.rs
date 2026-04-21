@@ -9,6 +9,7 @@ use arvo::strategy::Hot;
 use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
 use arvo_comb::bin_pack;
+use arvo_tensor::Array;
 
 const fn cap(n: usize) -> Cap {
     Cap(USize(n))
@@ -27,7 +28,7 @@ fn w(n: u8) -> W {
 
 #[test]
 fn empty_input_no_bins() {
-    let items: [u8; 0] = [];
+    let items: Array<u8, C0> = Array::new([]);
     let (count, _assign) =
         bin_pack::<C0, C4, u8, W>(&items, w(10), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(0));
@@ -38,13 +39,13 @@ fn unit_weights_pack_to_ceil_n_over_capacity() {
     // 4 items, each weight 1, capacity 3. All affinities equal so
     // tie-breaking falls to insertion-sort stability (original order).
     // First-fit: items 0,1,2 -> bin 0; item 3 -> bin 1.
-    let items: [u8; 4] = [10, 20, 30, 40];
+    let items: Array<u8, C4> = Array::new([10, 20, 30, 40]);
     let (count, assign) =
         bin_pack::<C4, C4, u8, W>(&items, w(3), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(2));
     // All items must land in either bin 0 or 1.
     for i in 0..4 {
-        let b = assign[i].0;
+        let b = assign.get(USize(i)).0;
         assert!(b < 2, "item {i} -> bin {b}");
     }
 }
@@ -52,7 +53,7 @@ fn unit_weights_pack_to_ceil_n_over_capacity() {
 #[test]
 fn single_heavy_item_uses_its_own_bin() {
     // Two items, one fills a bin on its own.
-    let items: [u8; 2] = [0, 1];
+    let items: Array<u8, C2> = Array::new([0, 1]);
     let (count, _assign) =
         bin_pack::<C2, C4, u8, W>(&items, w(5), |x| if *x == 0 { w(5) } else { w(1) }, |_, _| w(0));
     assert_eq!(count, USize(2));
@@ -61,12 +62,12 @@ fn single_heavy_item_uses_its_own_bin() {
 #[test]
 fn everything_fits_one_bin() {
     // Weights 1+1+1 = 3 <= cap 5.
-    let items: [u8; 3] = [1, 2, 3];
+    let items: Array<u8, C3> = Array::new([1, 2, 3]);
     let (count, assign) =
         bin_pack::<C3, C4, u8, W>(&items, w(5), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(1));
     for i in 0..3 {
-        assert_eq!(assign[i], USize(0));
+        assert_eq!(*assign.get(USize(i)), USize(0));
     }
 }
 
@@ -76,7 +77,7 @@ fn affinity_ordering_places_high_affinity_first() {
     // (mutual), while item 1 is lonely. Capacity 2 per bin, all
     // weights 1. High-affinity items go first -> the cluster
     // {0,2,3} is placed across two bins before item 1.
-    let items: [u8; 4] = [0, 1, 2, 3];
+    let items: Array<u8, C4> = Array::new([0, 1, 2, 3]);
     let (count, _assign) = bin_pack::<C4, C4, u8, W>(
         &items,
         w(2),

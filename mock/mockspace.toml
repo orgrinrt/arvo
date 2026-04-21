@@ -24,6 +24,8 @@ strategy = "🎛️ strategy marker"
 arvo = "#E8EEF7 | #3A6EA5"
 arvo-bits = "#E8EEF7 | #3A6EA5"
 arvo-bitmask = "#E6F2E6 | #2D6A2D"
+arvo-tensor = "#E6F2E6 | #2D6A2D"
+arvo-hash = "#E6F2E6 | #2D6A2D"
 arvo-sparse = "#E6F2E6 | #2D6A2D"
 arvo-graph = "#E6F2E6 | #2D6A2D"
 arvo-comb = "#E6F2E6 | #2D6A2D"
@@ -106,16 +108,22 @@ rules = [
     # L1 — arvo-bits depends on arvo only. No concrete storage.
     { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L1 contracts depend only on L0 (arvo); concrete storage lives in arvo-bitmask" },
 
-    # L2 — arvo-bitmask depends on arvo-bits only.
-    { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 storage on arvo-bits contracts; must not depend on other L2/L3 crates" },
+    # L2 — arvo-bitmask depends on arvo-bits only. May depend on arvo-tensor for shared cap_size.
+    { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 storage on arvo-bits contracts; must not depend on other L2/L3 crates except arvo-tensor for shared cap_size" },
 
-    # L2 algorithm crates — depend on arvo + arvo-bitmask (not bits directly).
-    { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo + arvo-bitmask only" },
-    { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo + arvo-bitmask only" },
-    { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo + arvo-bitmask only" },
+    # L2 — arvo-tensor. Value-storage peer of arvo-bitmask. Depends on arvo only.
+    { scope = "arvo-tensor", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-tensor is L2 value-storage on arvo L0 only; must not depend on other L1/L2/L3 crates" },
 
-    # L3 — arvo-spectral depends on arvo + arvo-bitmask (Mask64 partition outputs this round).
-    { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-bitmask (Mask64 for partition outputs); arvo-sparse is a future-round dep per BACKLOG" },
+    # L2 — arvo-hash depends on arvo-bits only. Hash-domain types + algo contracts.
+    { scope = "arvo-hash", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-hash is L2 hash-domain surface on arvo-bits contracts; must not depend on other L2/L3 crates" },
+
+    # L2 algorithm crates — depend on arvo + arvo-bitmask + arvo-tensor (not bits directly).
+    { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo + arvo-bitmask + arvo-tensor only" },
+    { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo + arvo-bitmask + arvo-tensor only" },
+    { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo + arvo-bitmask + arvo-tensor only" },
+
+    # L3 — arvo-spectral depends on arvo + arvo-bitmask + arvo-tensor (Mask64 partition outputs this round, Matrix via arvo-tensor).
+    { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-bitmask + arvo-tensor (Mask64 for partition outputs; Matrix<W, N> for dense storage); arvo-sparse is a future-round dep per BACKLOG" },
 
     # Universal — no ad-hoc threading, clocks, filesystem anywhere.
     { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
@@ -137,3 +145,62 @@ mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mock
 # Writing-style gate — pre-existing docs trip this until sweeps tidy them.
 [lints.writing-style]
 severity = "advisory"
+
+# Bare-primitive pack lints use their default severity (error at all
+# gates). The graceful-ramp ("warn" during the sweep) was removed in
+# #126 after the L2/L3 algorithm-crate sweep (#120) and Strategy::NAME
+# debug-gate (#125) landed with drift at zero across every enabled
+# rule. Re-introduce a ramp only for a fresh round of analogous
+# breadth; single-site lint:allow annotations handle narrow cases.
+
+# ---------------------------------------------------------------------------
+# Primitive-introductions — per-crate substrate categories introduced
+# ---------------------------------------------------------------------------
+#
+# Maps crate directory name to the list of substrate CATEGORIES the crate
+# introduces. When a bare-primitive lint's enforced category appears in a
+# crate's list, the lint self-exempts for that crate entirely — the crate
+# is the one bringing the substrate to the table, so whatever it does
+# internally to define it is legitimate.
+#
+# Scales without maintenance: adding a new arvo type (new strategy marker,
+# new Bits variant, new hash width) doesn't require any lint pack change
+# or config change. Adding a genuinely new SUBSTRATE DOMAIN (rare; e.g.
+# "temporal") would call for a new category tag.
+#
+# Known categories (defined by the stack lints pack, not this repo):
+#   `numeric`       — UFixed / IFixed / FastFloat / StrictFloat /
+#                     USize / Cap / Bool / Bits / ContentHash /
+#                     strategy markers.
+#   `fallibility`   — Maybe / Outcome / Just (notko).
+#   `string`        — Str (hilavitkutin-str).
+#   `static-string` — compile-time interned string handles
+#                     (hilavitkutin-str). Downstream crates must
+#                     gate `const NAME: &str` / `static NAME: &str`
+#                     behind `#[cfg(debug_assertions)]` or use
+#                     interning in place of a bare literal.
+#
+# Anti-bypass: adding raw std primitive names (`u32`, `Option`, `String`)
+# or arbitrary strings to a crate's list has NO effect — only known
+# category tags match. The config is an auditable architectural claim
+# ("this crate brings the numeric substrate"), not a permission list.
+#
+# Layer hierarchy in arvo:
+# - `arvo` (L0) — defines the numeric substrate: `UFixed`, `IFixed`,
+#   `FastFloat`, `StrictFloat`, `USize`, `Cap`, `Bool`, strategy markers.
+# - `arvo-bits` (L1) — supplements the numeric substrate with opaque-bit
+#   containers: `Bits<N>`, `BitPrim`, `BitWidth`, `BitAccess`.
+# - `arvo-hash` (L2) — supplements the numeric substrate with hash
+#   identity: `ContentHash` (alias of `Bits<28>`), plus hasher contracts.
+# - Every other crate (`arvo-bitmask`, `arvo-graph`, `arvo-sparse`,
+#   `arvo-comb`, `arvo-spectral`) is a consumer of the substrate — stays
+#   fully strict.
+#
+# Future direction (mockspace task #119): auto-detect the categories a
+# crate introduces from its DESIGN.md.tmpl / source parse, eliminating
+# this manual declaration.
+
+[primitive-introductions]
+arvo = ["numeric"]
+arvo-bits = ["numeric"]
+arvo-hash = ["numeric"]

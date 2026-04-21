@@ -11,7 +11,7 @@
 //! whose depth is a local minimum — so consumers can re-map the
 //! waist mask back through the same `topo_order` they passed in.
 
-use arvo::newtype::{Cap, USize};
+use arvo::newtype::{Bool, Cap, USize};
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Detect waist levels in a DAG.
@@ -63,14 +63,14 @@ where
 
     // Level widths. Max possible depth is N-1 (a straight chain).
     let mut width: [USize; cap_size(N)] = [USize(0); cap_size(N)];
-    let mut max_depth_seen: usize = 0;
+    let mut max_depth_seen = USize(0);
     let mut j = 0usize;
     while j < cap_size(N) {
         let d = depth[j].0;
         if d < cap_size(N) {
             width[d] = USize(width[d].0 + 1);
-            if d > max_depth_seen {
-                max_depth_seen = d;
+            if d > max_depth_seen.0 {
+                max_depth_seen = USize(d);
             }
         }
         j += 1;
@@ -78,12 +78,12 @@ where
 
     // Collect the occupied depths in order. Occupied means width > 0.
     let mut occupied: [USize; cap_size(N)] = [USize(0); cap_size(N)];
-    let mut occ_n: usize = 0;
+    let mut occ_n = USize(0);
     let mut d = 0usize;
-    while d <= max_depth_seen && d < cap_size(N) {
+    while d <= max_depth_seen.0 && d < cap_size(N) {
         if width[d].0 > 0 {
-            occupied[occ_n] = USize(d);
-            occ_n += 1;
+            occupied[occ_n.0] = USize(d);
+            occ_n = USize(occ_n.0 + 1);
         }
         d += 1;
     }
@@ -91,15 +91,15 @@ where
     // Depths that are strict local minima among the occupied depths.
     // A length-one or length-two occupied list has no interior;
     // no minima are emitted.
-    let mut is_waist: [bool; cap_size(N)] = [false; cap_size(N)];
-    if occ_n >= 3 {
+    let mut is_waist: [Bool; cap_size(N)] = [Bool::FALSE; cap_size(N)];
+    if occ_n.0 >= 3 {
         let mut k = 1usize;
-        while k + 1 < occ_n {
+        while k + 1 < occ_n.0 {
             let prev_w = width[occupied[k - 1].0].0;
             let cur_w = width[occupied[k].0].0;
             let next_w = width[occupied[k + 1].0].0;
             if cur_w < prev_w && cur_w < next_w {
-                is_waist[occupied[k].0] = true;
+                is_waist[occupied[k].0] = Bool::TRUE;
             }
             k += 1;
         }
@@ -114,7 +114,7 @@ where
         let node_i = (node.0).0;
         if node_i < cap_size(N) {
             let d = depth[node_i].0;
-            if d < cap_size(N) && is_waist[d] {
+            if d < cap_size(N) && is_waist[d].0 {
                 out.insert(USize(k));
             }
         }
