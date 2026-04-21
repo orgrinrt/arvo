@@ -33,7 +33,7 @@ used (two fields); `Copy + Eq + Default + Debug` derived.
 ```rust
 fn matrix_chain_dp<const N: Cap, W>(
     cost: impl Fn(USize, USize) -> W,
-    feasible: impl Fn(USize, USize) -> Bool,
+    feasible: impl Pred2<USize, USize>,
 ) -> (W, Array<USize, N>)
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant
@@ -53,7 +53,7 @@ and merge function are closures:
 ```rust
 fn greedy_group<const N: Cap, const M: Cap, A, T>(
     items: &Array<T, N>,
-    feasible: impl Fn(&A, &T) -> Bool,
+    feasible: impl Pred2<A, T>,
     merge: impl Fn(A, &T) -> A,
     init: impl Fn() -> A,
 ) -> (USize, Array<Range, M>)

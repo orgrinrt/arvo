@@ -449,6 +449,11 @@ via bounds:
 - `Recip` — reciprocal (hardware or Newton-Raphson via cfg)
 - `Abs` — absolute value
 - `FromConstant` — compile-time literal conversion
+- `Pred<A>` / `Pred2<A, B>` / `Pred3<A, B, C>` — named predicate
+  bounds for consumer callbacks. Blanket-impl'd for
+  `Fn(&A) -> Bool` / `Fn(&A, &B) -> Bool` /
+  `Fn(&A, &B, &C) -> Bool`; custom callable types implement
+  `test(&self, ...)`.
 
 Consumer writes `T: Add + Mul + Sqrt` not `T: Numeric`. Only the
 needed operations appear in bounds. The mathematical sub-crates
