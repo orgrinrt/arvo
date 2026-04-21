@@ -6,7 +6,7 @@ materialised at compile time; no heap. `#![no_std]`, no alloc,
 stack-only.
 
 Depends on arvo (L0) only. No dependency on arvo-bits, arvo-bitmask, or
-any other L2 crate — tensor is value-generic, not bit-generic.
+any other L2 crate. Tensor is value-generic, not bit-generic.
 
 ## Position in the stack
 
@@ -136,7 +136,7 @@ for t in &arr {
 }
 ```
 
-The trait is blanket — any `IntoIterator` gets `enumerated()` including
+The trait is blanket: any `IntoIterator` gets `enumerated()` including
 types outside arvo-tensor.
 
 ## What this crate does NOT contain
@@ -144,12 +144,12 @@ types outside arvo-tensor.
 - Arithmetic operations on tensors (Add, Mul, Sqrt) — consumer concern.
   arvo algorithm crates supply trait bounds (Add + TotalOrd + FromConstant
   + Copy) and compose with arvo-tensor types freely.
-- Sparse shapes — arvo-sparse's domain.
-- Bit-shaped tensors — arvo-bitmask's domain.
+- Sparse shapes: arvo-sparse's domain.
+- Bit-shaped tensors: arvo-bitmask's domain.
 - ML-style broadcasting, reshaping, transpose chains — not aligned with
   arvo's substrate role. Consumers that need those build them on top
   of Array + Matrix primitives.
-- Heap-backed growable shapes — no. Sizes are const.
+- Heap-backed growable shapes: no. Sizes are const.
 
 ## Consumers
 

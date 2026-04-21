@@ -11,12 +11,12 @@
 1. **Strategy-parameterised primitives** — numeric containers declared
    at type level as Hot/Warm/Cold/Precise, driving storage width +
    codegen choices without runtime dispatch.
-2. **no_std, no alloc** — entire substrate is const-sized. Consumers
+2. **no_std, no alloc**. The entire substrate is const-sized. Consumers
    pre-allocate; arvo never calls into an allocator.
 3. **Trait contracts, not concrete types** — sub-crates generic over
    numeric trait bounds so downstream code picks its own concrete
    instantiations.
-4. **Monomorphisation is the dispatch** — no dyn, no TypeId. The
+4. **Monomorphisation is the dispatch**. No dyn, no TypeId. The
    monomorphised function IS the type identity.
 
 ## Crate layers
@@ -57,7 +57,7 @@ arvo is designed to be consumed by:
   trunk formation, arvo-comb for fiber grouping).
 - **clause** — language toolchain (uses arvo-graph for pass DAG,
   arvo-bitmask for artifact read/write sets).
-- **loimu, polka-dots, saalis** — miscellaneous numeric needs plus
+- **loimu, polka-dots, saalis**: miscellaneous numeric needs plus
   whatever hilavitkutin transitively exposes.
 
 ## See also
@@ -65,7 +65,7 @@ arvo is designed to be consumed by:
 - Per-crate DESIGN under `crates/*/DESIGN.md.tmpl`.
 - `design_rounds/` — strategy-markers consolidation, strategy-aliases,
   crate-dependency-revision, changelist.
-- `research/` — benchmarks, prior-art research.
+- `research/`: benchmarks, prior-art research.
 
 ## Stability
 
