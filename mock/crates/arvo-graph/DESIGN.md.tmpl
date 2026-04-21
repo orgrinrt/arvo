@@ -15,10 +15,11 @@ added by a follow-up round without a design change.
 
 `const N: Cap` carries arvo's capacity newtype on every public
 signature. Array storage inside bodies unwraps via `cap_size(c: Cap)
--> usize` (re-exported from arvo-bitmask). Array return types in
-signatures below are shown as `[X; N]` for readability; the compiled
-form is `[X; cap_size(N)]` with the implied `where [(); cap_size(N)]:`
-bound.
+-> usize` (canonical home: arvo-tensor; arvo-bitmask re-exports, and
+arvo-graph reaches it via `arvo_bitmask::cap_size`). Array return
+types in signatures below are shown as `[X; N]` for readability; the
+compiled form is `[X; cap_size(N)]` with the implied `where [();
+cap_size(N)]:` bound.
 
 Generic over numeric trait bounds for weight types. Does not import
 UFixed or IFixed directly. Consumer instantiates with concrete arvo
