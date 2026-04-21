@@ -283,9 +283,23 @@ I+F <= 64 constraint. SIMD register width is a strategy concern
 ## Opaque-bit container: Bits
 
 The Bits type, parameterised by const N: u8, is a fixed-width
-opaque bit-pattern container. Backing storage is u64; only the low
-N bits are addressable. Non-arithmetic: compared by identity, not
-ordered arithmetically. Compile-time asserted: N must be in 1..=64.
+opaque bit-pattern container. Backing storage is the smallest
+native integer that fits N bits — u8 for 1..=8, u16 for 9..=16,
+u32 for 17..=32, u64 for 33..=64. `#[repr(transparent)]` over that
+container, so `size_of::<Bits<N>>()` is 1, 2, 4, or 8 bytes matching
+the container. Non-arithmetic: compared by identity, not ordered
+arithmetically. Compile-time asserted: N must be in 1..=64.
+
+Container selection flows through `BitContainerFor<const N: u8>` —
+a sealed trait in arvo-bits mirroring `UContainerFor` in arvo. One
+impl per N in 1..=64 via macro expansion; each impl names the
+concrete u8/u16/u32/u64 container for that N.
+
+`Bits::new(raw: u64) -> Self` accepts a u64 at the API (widest
+representable raw value) and narrows internally, masking to the low
+N bits. `Bits::bits(self) -> u64` returns the low N bits widened
+back to u64. Internal storage stays in the narrow container for
+layout density.
 
 Implements `BitWidth` (reports N) and `BitAccess` (per-bit read).
 Does not implement `BitSequence`: the stream-scan semantics suit
@@ -300,9 +314,74 @@ Non-arithmetic means:
 - No Add / Sub / Mul / Ord impls. Ordering is not meaningful on
   opaque identities; equality is via Eq, Hash.
 
-Primary consumer: arvo-hash's ContentHash alias (Bits<28>).
-General-purpose: any domain that needs a fixed-width opaque bit
-identity. Future consumer: clause pass-key identity in codegen.
+Primary consumer: arvo-hash's ContentHash alias (Bits<28>, u32-
+backed, 4 bytes). General-purpose: any domain that needs a fixed-
+width opaque bit identity. Future consumer: clause pass-key identity
+in codegen; also hilavitkutin-str's Str handle (32-bit packed
+identity) once the structural Bitfield variant below is adopted.
+
+## Bitfield — packed layouts with named sub-ranges
+
+Where Bits<N> is "N bits, no structure", the `bitfield!` macro
+generates a `#[repr(transparent)]` struct over the same
+container-dispatched storage, with named sub-ranges and per-field
+accessor methods. Use it for packed-layout identities where the
+consumer cares about semantic sub-ranges (flag bits, reserved
+blocks, ID ranges).
+
+Example:
+
+```rust
+use arvo_bits::bitfield;
+
+bitfield! {
+    /// Interned string handle. 32 bits total.
+    pub struct StrHandle: 32 {
+        /// 1 = runtime-interned, 0 = compile-time-interned.
+        origin: 1 at 31,
+        /// Reserved for future use.
+        reserved: 3 at 28..=30,
+        /// 28-bit interned identity.
+        id: 28 at 0..=27,
+    }
+}
+```
+
+Generates a `StrHandle` that is `#[repr(transparent)]` over
+`<BitContainer as BitContainerFor<32>>::T` (= u32; 4 bytes).
+Inherent methods:
+
+```rust
+impl StrHandle {
+    pub const BITS: u8 = 32;
+    pub const fn new() -> Self;
+    pub const fn from_bits(raw: u64) -> Self;
+    pub const fn to_bits(self) -> u64;
+
+    pub const fn origin(self) -> u8;
+    pub const fn with_origin(self, value: u8) -> Self;
+    pub const fn reserved(self) -> u8;
+    pub const fn with_reserved(self, value: u8) -> Self;
+    pub const fn id(self) -> u32;
+    pub const fn with_id(self, value: u32) -> Self;
+}
+```
+
+Accessor return types are the smallest primitive that fits each
+sub-range (1-bit → u8; 3-bit → u8; 28-bit → u32). Setters mask the
+input to the sub-range width before writing, so garbage-high-bits
+on callers never corrupt neighbouring fields.
+
+Compile-time checks inside the generated code:
+
+- Sub-ranges must be disjoint. Overlapping bits = compile error.
+- Every sub-range must fit within N. Indices ≥ N = compile error.
+- N ≤ 64 (same as Bits<N>).
+- Gaps (unused bits) allowed. They read as zero and setters leave
+  them alone.
+
+No arithmetic. No sign. No strategy marker. Bitfield is Bits<N>
+with a layout overlay; not a UFixed replacement.
 
 ## What this crate does NOT contain
 
