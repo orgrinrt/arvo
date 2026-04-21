@@ -146,46 +146,12 @@ mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mock
 [lints.writing-style]
 severity = "advisory"
 
-# ---------------------------------------------------------------------------
-# Graceful ramp for bare-primitive lints (temporary)
-# ---------------------------------------------------------------------------
-#
-# The bare-primitive family fires on 259 pre-existing L2/L3 drift sites in
-# arvo-bitmask / arvo-hash / arvo-graph / arvo-sparse / arvo-comb /
-# arvo-spectral that were invisible to the previous lib.rs-only lint scope.
-# Each is a legitimate target for the upcoming algorithm-crate sweep round;
-# none are introductions (arvo L0 and arvo-bits L1 are already exempt via
-# [primitive-introductions] below).
-#
-# Ramp severity to `warn` at every gate while the sweep lands. Commit + push
-# succeed with the warning visible; agents still see the violation in local
-# cargo mock output. FLIP BACK TO `error` when the L2/L3 sweep completes.
-# Tracked: sweep-in-flight rounds under #71 + per-algo-crate follow-ups.
-
-[lints.no-bare-numeric]
-severity = "warn"
-
-[lints.arvo-types-only]
-severity = "warn"
-
-[lints.no-bare-option]
-severity = "warn"
-
-[lints.no-bare-result]
-severity = "warn"
-
-[lints.no-bare-string]
-severity = "warn"
-
-[lints.no-public-raw-field]
-severity = "warn"
-
-# Pre-hilavitkutin-str crates: any `const NAME: &str` / `static NAME:
-# &str` must be gated behind `#[cfg(debug_assertions)]`. arvo has
-# zero introducers of the `static-string` category (hilavitkutin-str
-# lives downstream), so every bare static str here is drift (#125).
-[lints.no-bare-static-str]
-severity = "warn"
+# Bare-primitive pack lints use their default severity (error at all
+# gates). The graceful-ramp ("warn" during the sweep) was removed in
+# #126 after the L2/L3 algorithm-crate sweep (#120) and Strategy::NAME
+# debug-gate (#125) landed with drift at zero across every enabled
+# rule. Re-introduce a ramp only for a fresh round of analogous
+# breadth; single-site lint:allow annotations handle narrow cases.
 
 # ---------------------------------------------------------------------------
 # Primitive-introductions — per-crate substrate categories introduced
