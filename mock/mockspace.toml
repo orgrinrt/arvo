@@ -43,17 +43,17 @@ arvo-spectral = "#EDE6F3 | #5C2D82"
 # --- Universal quality lints (mockspace built-ins) -------------------------
 
 [lints.no-empty-crate]
-commit = "off"
+commit = "warn"
 build = "warn"
 push = "warn"
 
 [lints.no-todo]
-commit = "off"
+commit = "warn"
 build = "warn"
 push = "error"
 
 [lints.file-size]
-commit = "warn"
+commit = "error"
 build = "error"
 push = "error"
 max_lines = "500"
@@ -76,8 +76,8 @@ build = "error"
 push = "error"
 
 [lints.strategy-marker-required]
-commit = "warn"
-build = "warn"
+commit = "error"
+build = "error"
 push = "error"
 
 [lints.arvo-bits-traits-only]
@@ -86,9 +86,9 @@ build = "error"
 push = "error"
 
 [lints.no-runtime-grow]
-commit = "warn"
-build = "warn"
-push = "warn"
+commit = "error"
+build = "error"
+push = "error"
 
 # --- Layer enforcement via forbidden-imports -------------------------------
 #
@@ -98,7 +98,7 @@ push = "warn"
 # to crate_prefix ("arvo").
 
 [lints.forbidden-imports]
-commit = "warn"
+commit = "error"
 build = "error"
 push = "error"
 rules = [
