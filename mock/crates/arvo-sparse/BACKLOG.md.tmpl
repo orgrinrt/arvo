@@ -21,13 +21,3 @@ design (polka-dots T3 decisions #71-74). Same representation and API
 surface as the above algorithms; add when a concrete consumer need
 surfaces.
 
-
-## Internal source sweep for bare primitives
-
-Per workspace rule `.claude/rules/no-bare-primitives.md` and round
-202604500000, replace bare `u8` / `u16` / `u32` / `u64` / `i*` / `usize`
-in non-exception positions with arvo aliases (`Uint8` / `Uint16` /
-`Uint32` / `Uint64` / `Int*` / `USize`). Exception positions
-(definition-site bottom-outs) stay bare; everything else migrates.
-Tracked as a follow-up sweep once the upstream arvo / arvo-bits /
-arvo-hash migrations land.
