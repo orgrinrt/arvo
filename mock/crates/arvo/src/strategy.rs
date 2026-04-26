@@ -333,6 +333,22 @@ pub const fn is_fractional(f: FBits) -> usize {
     if f.0 == 0 { 0 } else { 1 }
 }
 
+/// Extract the inner `u8` of a `Width`.
+///
+/// See `ibits_u8` for why this exists as a free function.
+// allow-bare-numeric: tracked: #256
+#[inline(always)]
+pub const fn width_u8(w: crate::newtype::Width) -> u8 {
+    w.0
+}
+
+/// Whether a `Width` is `<= 64`. Used by Fnv1a's const-eval guard.
+// allow-bare-numeric: tracked: #256
+#[inline(always)]
+pub const fn width_le_64(n: crate::newtype::Width) -> bool {
+    n.0 <= 64
+}
+
 // --- Strategy resolution for cross-strategy ops ----------------------------
 //
 // `Precise > Cold > Warm > Hot`. The more conservative strategy wins.

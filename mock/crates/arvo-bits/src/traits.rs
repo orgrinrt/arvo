@@ -2,7 +2,7 @@
 //!
 //! Three traits, all local to arvo-bits:
 //!
-//! - `BitWidth` — logical bit count at the type level.
+//! - `HasBitWidth` — logical bit count at the type level.
 //! - `BitAccess` — read / set / clear / toggle individual bits.
 //! - `BitSequence` — popcount and scan operations.
 //!
@@ -17,7 +17,7 @@ use arvo::newtype::{Bool, USize};
 /// `1 + I + F` (the sign bit counts). The width is the logical bit
 /// count, not the container size — the container may be wider under
 /// `Warm` / `Precise` strategies.
-pub trait BitWidth {
+pub trait HasBitWidth {
     /// Logical bit width.
     const WIDTH: USize;
 }
@@ -28,7 +28,7 @@ pub trait BitWidth {
 /// interior mutation. `idx` is LSB-first (bit 0 is least significant).
 /// Indices `>= WIDTH` do not panic: `bit` returns `Bool::FALSE` and
 /// the three `with_bit_*` mutators return `self` unchanged.
-pub trait BitAccess: BitWidth + Copy {
+pub trait BitAccess: HasBitWidth + Copy {
     /// Read bit at position `idx`.
     fn bit(self, idx: USize) -> Bool;
     /// Produce a copy with bit `idx` set to 1.
@@ -45,7 +45,7 @@ pub trait BitAccess: BitWidth + Copy {
 /// `popcnt`, `trailing_zeros` to `cttz` / `tzcnt`, `leading_zeros`
 /// to `ctlz` / `lzcnt`. Operates on the raw container bits; the
 /// logical-width contract is implicit in the types' construction.
-pub trait BitSequence: BitWidth + Copy {
+pub trait BitSequence: HasBitWidth + Copy {
     /// Count trailing (LSB) zero bits.
     fn trailing_zeros(self) -> USize;
     /// Count leading (MSB) zero bits.
@@ -70,7 +70,7 @@ pub trait BitSequence: BitWidth + Copy {
 /// Hot-only surface. Other strategies (`Warm`, `Precise`, `Cold`)
 /// have wider containers that make whole-word ops meaningless at
 /// the logical-width level (NOT would flip surplus container bits).
-pub trait BitLogic: BitWidth + Copy {
+pub trait BitLogic: HasBitWidth + Copy {
     /// Whole-word OR.
     fn bitor(self, other: Self) -> Self;
     /// Whole-word AND.

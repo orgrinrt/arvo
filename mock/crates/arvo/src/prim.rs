@@ -2,7 +2,7 @@
 //!
 //! `BitPrim` and `IBitPrim` are internal helper traits that expose a
 //! uniform bit-manipulation surface across Rust's fixed-width integer
-//! primitives. The concrete `impl BitWidth / BitAccess / BitSequence
+//! primitives. The concrete `impl HasBitWidth / BitAccess / BitSequence
 //! for UFixed<I, F, S>` (and the `IFixed` mirror) delegates through
 //! these bridges: `UFixed::to_raw()` returns the container primitive,
 //! the `BitPrim` method runs, and `UFixed::from_raw(...)` re-wraps.
@@ -271,7 +271,7 @@ impl_bit_prim_i!(i64, u64, 64);
 // Same sealed-trait-table pattern L0's `UContainerFor` uses, one
 // indirection up.
 
-use arvo::strategy::{IContainerFor, Strategy, UContainerFor};
+use crate::strategy::{IContainerFor, Strategy, UContainerFor};
 
 /// Sealed bridge: `(S, BITS)` where `S: UContainerFor<BITS>` **and**
 /// the container type is `BitPrim`. Collapses the two predicates into

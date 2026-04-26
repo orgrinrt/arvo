@@ -1,8 +1,8 @@
-//! Unit tests for `Bits<N>`: construction, masking, BitWidth,
+//! Unit tests for `Bits<N>`: construction, masking, HasBitWidth,
 //! BitAccess.
 
 use arvo::{Bool, USize};
-use arvo_bits::{BitAccess, BitWidth, Bits};
+use arvo_bits::{BitAccess, HasBitWidth, Bits};
 
 #[test]
 fn new_masks_high_bits() {
@@ -18,8 +18,8 @@ fn new_full_width_preserves() {
 
 #[test]
 fn width_matches_n() {
-    assert_eq!(<Bits<28> as BitWidth>::WIDTH, USize(28));
-    assert_eq!(<Bits<64> as BitWidth>::WIDTH, USize(64));
+    assert_eq!(<Bits<28> as HasBitWidth>::WIDTH, USize(28));
+    assert_eq!(<Bits<64> as HasBitWidth>::WIDTH, USize(64));
 }
 
 #[test]
