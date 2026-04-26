@@ -9,15 +9,22 @@
 
 Shipping order as consumers surface need:
 
-- Fnv1a28: 28-bit FNV-1a. First migration target; matches
-  hilavitkutin-str's existing const_fnv1a plus the 28-bit mask.
-- Fnv1a32, Fnv1a64: wider FNV variants.
+- Fnv1a: shipped in round 202604500000 as a single
+  generic algorithm `Fnv1a<const N: Width>` with `N <= 64` const-
+  eval guard. Promoted out of BACKLOG into arvo-hash DESIGN.
 - XxHash64: when a faster non-cryptographic hash is wanted.
 - Crc32: when checksum use cases surface (clause bytecode
   integrity, persistence file checksumming).
 
-Each concrete algorithm lands as a unit struct implementing
-Hasher<N>. HasherExt<N>::hash falls out via the blanket impl.
+Each future concrete algorithm lands as a struct implementing
+`Hasher<{ width(N) }>`. `HasherExt` falls out via the blanket impl.
+
+## Fnv1a128 algorithm
+
+`Fnv1a<const N: Width>` produces at most 64 bits of state (FNV-1a-64
+algorithm with low-N masking). For widths beyond 64, a separate
+Fnv1a128 algorithm with 128-bit state is required. Lands when a
+consumer surfaces a need for >64-bit non-cryptographic hashes.
 
 ## Hilavitkutin-str migration
 

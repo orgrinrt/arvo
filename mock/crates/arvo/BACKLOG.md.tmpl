@@ -17,6 +17,34 @@ round promotes one of these to shipping scope, move its documentation
 into the corresponding crate DESIGN.md.tmpl and delete the entry
 here.
 
+## ConstParamTy on UFixed / IFixed
+
+UFixed and IFixed do NOT derive ConstParamTy in round 202604500000.
+Required when a consumer wants `const X: UFixed<...>` const-generic
+positions. Today no consumer surface needs this; aliases live at
+use-sites only.
+
+Lift requires resolving the associated-type-projection cascade in
+`<S as UContainerFor<N>>::T` field positions (the Bits inner type
+through UFixed's `bits: Bits<{ufixed_bits(I,F)}, S>` field). Verified-
+friction on rustc 1.96-nightly (fda6d37bb 2026-03-27):
+core::marker::ConstParamTy is derive-macro-only at this rustc
+version, and using it as a trait bound on UContainerFor::T is
+non-trivial. The derive-macro path may work directly on UFixed /
+IFixed once the cascade is established; verify when a consumer
+need lands.
+
+Constraints from prior design-review prose corrections:
+
+- The cascade requirement applies only to const-generic params
+  (I: IBits, F: FBits). The S type parameter is a marker type, not
+  a const value.
+- A `_phantom: PhantomData<S>` field is redundant with the
+  `bits: Bits<..., S>` field carrying S. Do not add it on lift.
+- Auto-trait inheritance from S is preserved without function-pointer
+  phantom hacks (Strategy markers are unit structs and trivially
+  Send/Sync).
+
 ## Semantic domain aliases (researched widths)
 
 Shipped by polka-dots; dropped from arvo L0 per doc CL D1 (consumer

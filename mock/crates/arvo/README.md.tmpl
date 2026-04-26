@@ -1,5 +1,12 @@
 # arvo
 
-Numeric primitives for hilavitkutin and consumers. Const-generic
-fixed-point, float wrappers, composable traits, semantic aliases.
-`#![no_std]`, no alloc.
+Numeric primitives for hilavitkutin and consumers. L0 of the arvo
+stack. Const-generic fixed-point (`UFixed`, `IFixed`), float wrappers
+(`FastFloat`, `StrictFloat`), strategy markers (`Hot`/`Warm`/`Cold`/
+`Precise`), composable traits, the opaque-bit storage primitive
+`Bits<const N: u8, S>` (with the bit-size aliases `Bit`/`Nibble`/
+`Byte`/`Word`/`DWord`/`QWord` and the `Bitfield` packed-layout
+primitive), the `IBits` / `FBits` / `Width` ConstParamTy meta-
+newtypes, and the `Uint*` / `Int*` numeric alias surface. Wider
+contracts (`HasBitWidth`, `BitAccess`, `BitSequence`, `BitLogic`)
+live in arvo-bits L1. `#![no_std]`, no alloc.

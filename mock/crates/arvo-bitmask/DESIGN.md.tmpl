@@ -5,7 +5,7 @@ Cross-cutting foundation for arvo-graph, arvo-sparse, arvo-comb,
 and any consumer that needs set-level adjacency over bit storage.
 `#![no_std]`, no alloc, const-generic sizing.
 
-Depends on arvo-bits for bit-level contracts (BitWidth, BitAccess,
+Depends on arvo-bits for bit-level contracts (HasBitWidth, BitAccess,
 BitSequence). Does NOT depend on arvo directly — bitmasks are not
 numeric types. They do bitwise operations (OR, AND, popcount), not
 arithmetic (Add, Mul, Sqrt). The type families are fundamentally
