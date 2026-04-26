@@ -9,9 +9,13 @@ for the clause-dev workspace.
 Every numeric primitive that crosses any arvo API (parameter,
 return, struct field, associated type) flows through
 `UFixed<I, F, S>`, `IFixed<I, F, S>`, `FastFloat`, or `StrictFloat`.
-Bare Rust primitives are not valid in this universe; the
-`arvo-types-only` lint (#50) enforces their absence. See
-`PRINCIPLES.md` for the full statement.
+arvo ships UFixed-based aliases (`Uint5`..`Uint64`, `Int8`..`Int64`,
+cfg-gated `USize`) so every numeric position in consumer code uses
+an arvo type, never a bare primitive. Bit-count meta-types
+(`IBits`, `FBits`, `BitWidth`) wrap `Uint7`. Const-fn helpers
+(`ibits`, `fbits`, `width_of`) provide call-site ergonomics in
+const-generic turbofish. The `arvo-types-only` lint (#50) catches
+violations. See `PRINCIPLES.md` for the full statement.
 
 Name: arvo (Finnish: "value/worth/estimate").
 
@@ -56,35 +60,39 @@ arvo wraps Rust primitives used in public APIs. All are
 
 ```rust
 #[derive(ConstParamTy, PartialEq, Eq)]
-pub struct IBits(pub u8);  // integer bit count
+pub struct IBits(pub Uint7);  // integer bit count
 
 #[derive(ConstParamTy, PartialEq, Eq)]
-pub struct FBits(pub u8);  // fractional bit count
+pub struct FBits(pub Uint7);  // fractional bit count
+
+#[derive(ConstParamTy, PartialEq, Eq)]
+pub struct BitWidth(pub Uint7);  // arvo bit-width const-generic param
 ```
 
-Requires `adt_const_params` (nightly). Prevents accidentally
-swapping integer and fractional bit counts at type definition sites.
-Consumer code defines its own semantic aliases over `UFixed` /
-`IFixed` and rarely touches `IBits` / `FBits` directly.
+Requires `adt_const_params` (nightly). Three semantically-distinct
+newtypes, all wrapping `Uint7` (covers 0-127 with one bit of headroom
+over the realistic 0-64 range). Distinct types so I and F can't be
+swapped on a `UFixed` turbofish without a compile error, and so
+`BitWidth` (for `Bits<>` / `Hasher<>` / `UContainerFor<>` const-generic
+positions) carries its own meaning. The `pub Uint7` field is the
+inner arvo type, not a bare primitive: `Uint7` itself is a `UFixed`
+alias whose container lifts via `#[repr(transparent)]`. Consumer code
+defines its own semantic aliases over `UFixed` / `IFixed` and rarely
+touches `IBits` / `FBits` / `BitWidth` directly.
 
 ### USize
 
 ```rust
-#[derive(ConstParamTy, PartialEq, Eq)]
-#[repr(transparent)]
-pub struct USize(usize);
-
-impl Deref for USize {
-    type Target = usize;
-    fn deref(&self) -> &usize { &self.0 }
-}
+#[cfg(target_pointer_width = "64")]
+pub type USize = Uint64;
+#[cfg(target_pointer_width = "32")]
+pub type USize = Uint32;
 ```
 
-Index and count newtype. Wraps `usize` for the arvo-types-only lint.
-Implements `Deref<Target = usize>` for ergonomic array access:
-`array[*idx]`. Also derives `ConstParamTy` so it can be used inside
-other const-generic newtypes (see `Cap` below). See
-DEEPDIVE_newtype-deref for Deref rationale.
+Index and count alias, cfg-gated to the platform pointer width. Lifts
+above `UFixed` like every other arvo numeric position, so consumer
+code never touches `usize` directly. The platform-pointer-width split
+is handled at the alias layer; consumer code reads `USize` everywhere.
 
 ### Cap
 
@@ -224,6 +232,24 @@ storage width depends on the strategy.
 Both `repr(transparent)` over the strategy-determined container type.
 No runtime representation overhead. After compilation, every arvo
 type resolves to the optimal integer instruction for the target.
+
+## ConstParamTy on UFixed and IFixed
+
+`UFixed<I, F, S>` and `IFixed<I, F, S>` impl `ConstParamTy`, enabling
+them to appear as const-generic parameter types (`const X: UFixed<...>`).
+Soundness: the `repr(transparent)` lowering makes the structural-equality
+requirement satisfiable through the underlying container's structural
+eq. All type parameters (`IBits`, `FBits`, `Strategy` markers) are
+themselves `ConstParamTy`, so the cascade is sound.
+
+Implementation: derive where the cascade is clean, manual `unsafe impl`
+where it is not. Manual impls carry a doc comment explaining the
+soundness chain (transparent repr, structurally-eq inner container,
+ConstParamTy type parameters).
+
+This is what makes `Bits<const N: BitWidth>` and `Hasher<const N: BitWidth>`
+in arvo-bits and arvo-hash possible. Bare-primitive const-generic
+positions are a workaround the substrate no longer needs.
 
 ## Strategy markers
 
@@ -411,6 +437,61 @@ Converting between strategies for the same `<I, F>`:
 Converting between different `<I, F>` configurations is a computation:
 shift fractional bits, clamp or wrap integer bits. The strategy
 determines the clamping/wrapping semantics.
+
+## Numeric aliases (Uint*, Int*)
+
+arvo ships exact-width unsigned and signed aliases over `UFixed<I, F, S>`
+and `IFixed<I, F, S>` so consumer code reaches for an arvo type at every
+numeric position, never a bare primitive. Aliases default to `S = Hot`;
+consumers needing different containers reach for `UFixed` / `IFixed`
+directly with the appropriate `S`.
+
+| Alias | Width | Definition |
+|---|---|---|
+| `Uint5` | 5 | `UFixed<{ ibits(5) }, { fbits(0) }, Hot>` |
+| `Uint6` | 6 | `UFixed<{ ibits(6) }, { fbits(0) }, Hot>` |
+| `Uint7` | 7 | `UFixed<{ ibits(7) }, { fbits(0) }, Hot>` |
+| `Uint8` | 8 | `UFixed<{ ibits(8) }, { fbits(0) }, Hot>` |
+| `Uint16` | 16 | `UFixed<{ ibits(16) }, { fbits(0) }, Hot>` |
+| `Uint32` | 32 | `UFixed<{ ibits(32) }, { fbits(0) }, Hot>` |
+| `Uint64` | 64 | `UFixed<{ ibits(64) }, { fbits(0) }, Hot>` |
+| `Int8` | 8 | `IFixed<{ ibits(8) }, { fbits(0) }, Hot>` |
+| `Int16` | 16 | `IFixed<{ ibits(16) }, { fbits(0) }, Hot>` |
+| `Int32` | 32 | `IFixed<{ ibits(32) }, { fbits(0) }, Hot>` |
+| `Int64` | 64 | `IFixed<{ ibits(64) }, { fbits(0) }, Hot>` |
+
+Narrow-bit unsigned aliases (`Uint5`, `Uint6`, `Uint7`) are first-class
+because the substrate's whole point is exact widths, not byte buckets.
+New narrower or in-between aliases land as concrete needs surface.
+
+`USize` is cfg-gated (`Uint32` on 32-bit targets, `Uint64` on 64-bit) so
+it lifts above `UFixed` like every other numeric alias; see the USize
+section above.
+
+## Const-fn ergonomic helpers
+
+```rust
+pub const fn ibits(n: u8) -> IBits;
+pub const fn fbits(n: u8) -> FBits;
+pub const fn width_of(n: u8) -> BitWidth;
+```
+
+Const-fn constructors that take a bare-primitive literal and return the
+matching `ConstParamTy` newtype. They are the single allowed call-site
+exception to the bare-primitive rule (workspace policy
+`.claude/rules/no-bare-primitives.md`). The bare `u8` parameter lives
+in the helper's signature; the helper's body wraps it into the arvo
+type. Without these helpers, every literal at every consumer call site
+would require `Uint7::from_u8(...)` boilerplate, which defeats the
+substrate's ergonomic case for arvo-typed const-generic positions.
+
+Consumer turbofish reads naturally:
+
+```rust
+Bits<{ width_of(12) }, Hot>
+UFixed<{ ibits(8) }, { fbits(0) }, Hot>
+Hasher<{ width_of(28) }>
+```
 
 ## Float wrappers
 

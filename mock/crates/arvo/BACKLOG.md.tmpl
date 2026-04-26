@@ -5,6 +5,26 @@
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
 
+## Wider Int aliases / signed exact-bit forms
+
+Once a consumer surfaces a need for `Int7` / `Int13` / similar exact-bit
+signed widths beyond the standard 8/16/32/64, add as `IFixed`-based
+aliases. Same shape as the existing `Int8`..`Int64` cohort.
+
+## Strategy variants on aliases
+
+Today aliases default to `Hot`. If consumer paths want `Warm` or
+`Precise` versions of common aliases (`Uint64Warm`, `Uint64Precise`,
+etc.), add as needed. Naming convention `<base><strategy>` keeps the
+default-Hot aliases readable.
+
+## From-literal traits on Uint*
+
+`Uint8`, `Uint16`, etc. ergonomic conversion from bare primitives in
+helper-fn parameters. Currently each alias gets a per-type `from_u8` /
+`from_u16` / etc. const-fn. A unified trait would reduce duplication;
+deferred until the duplication weight is felt.
+
 Items researched and decided but deliberately out of the current
 shipping scope. Preserved here so a future round (or consumer) can
 pick them up without redoing the research. Kept OUT of DESIGN.md.tmpl
