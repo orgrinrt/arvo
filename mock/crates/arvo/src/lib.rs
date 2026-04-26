@@ -44,6 +44,7 @@ pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLik
 pub use newtype::{AsBool, Bool, Cap, FBits, IBits, USize, Width, fbits, ibits, width};
 pub use predicate::{Pred, Pred2, Pred3};
 pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
-pub use strategy::{Cold, Hot, Precise, Strategy, Warm, width_le_64, width_u8};
+pub use strategy::{Cold, Hot, Precise, Strategy, Warm, width_le_64};
 pub use traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
+pub use transparent::{NumericPrimitive, Transparent, raw};
 pub use ufixed::UFixed;
