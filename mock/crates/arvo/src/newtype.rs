@@ -31,6 +31,23 @@ use core::ops::{ControlFlow, Deref, FromResidual, Try};
 /// Bumping the inner type is a one-line macro change once the cycle
 /// is resolvable; consumer call sites stay unchanged because the
 /// helper signature (`fn $helper(n: u8) -> $W`) doesn't move.
+/// Generate a meta-bits ConstParamTy newtype with the unified
+/// `Transparent` ergonomic surface.
+///
+/// Each invocation produces:
+/// - `pub struct $W(pub u8)` with full derive set + `ConstParamTy`
+/// - `pub const ZERO` / `pub const ONE` value constants
+/// - `pub const fn raw(self) -> u8` inherent (const-fn callable;
+///   no trait import required at the call site)
+/// - `unsafe impl Transparent for $W { type Inner = u8 }`
+///   (enables `arvo::raw(w)` free fn and `Transparent::raw(w)`
+///   trait method without per-type code)
+/// - `Deref<Target = u8>` / `AsRef<u8>` / `From<u8>` / `From<$W> for u8`
+/// - `pub const fn $helper(n: u8) -> $W` for const-generic-position
+///   literal construction
+///
+/// The inherent `.raw()`, the trait `Transparent::raw()`, and the
+/// free `arvo::raw()` all collapse to the same transmute at codegen.
 macro_rules! meta_bits_wrapper {
     (
         $(#[$meta:meta])*
@@ -48,16 +65,16 @@ macro_rules! meta_bits_wrapper {
             /// One value.
             pub const ONE: Self = Self(1);
 
-            /// Read the inner native primitive (`u8`).
-            ///
-            /// Sound by `repr(transparent)` layout-equivalence with `u8`.
-            /// Use this rather than `.0` field access; `.0` is a public
-            /// field by construction (so the wrapper is constructible
-            /// without going through the helper) but call sites should
-            /// prefer `raw()` so the field type can change without
-            /// rewriting consumers.
+            /// Read the inner `u8`. See [`crate::transparent`] for the
+            /// unified `repr(transparent)` access surface.
             #[inline(always)]
             pub const fn raw(self) -> u8 { self.0 }
+        }
+
+        // SAFETY: $W is `#[repr(transparent)]` over u8; layout is
+        // byte-identical to u8 by Rust spec.
+        unsafe impl $crate::transparent::Transparent for $W {
+            type Inner = u8;
         }
 
         impl core::ops::Deref for $W {
@@ -79,15 +96,6 @@ macro_rules! meta_bits_wrapper {
         impl From<$W> for u8 {
             #[inline(always)]
             fn from(w: $W) -> u8 { w.0 }
-        }
-
-        // Typed transmute via the As<T> trait (defined in the
-        // transparent module). `repr(transparent)` over u8 is the
-        // soundness contract.
-        // SAFETY: $W is repr(transparent) over u8; layout is byte-
-        // identical to u8.
-        unsafe impl $crate::transparent::Transparent for $W {
-            type Inner = u8;
         }
 
         /// Const-fn helper for const-generic-position construction.

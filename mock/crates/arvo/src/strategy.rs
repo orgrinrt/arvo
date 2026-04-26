@@ -311,47 +311,21 @@ pub const fn ifixed_bits(i: IBits, f: FBits) -> u8 {
     1 + i.raw() + f.raw()
 }
 
-/// Extract the inner `u8` of an `IBits`.
-///
-/// Wrapping this in a const fn lets it appear inside anonymous
-/// const-generic expressions — direct field access (`I.0`) is not
-/// permitted there on current nightly. Routes through the
-/// transmute-based `as_u8` to bypass projection-cascade queries.
-// allow-bare-numeric: tracked: #256
-#[inline(always)]
-pub const fn ibits_u8(i: IBits) -> u8 {
-    i.raw()
-}
-
-/// Extract the inner `u8` of an `FBits`.
-///
-/// See `ibits_u8` for why this exists as a free function.
-// allow-bare-numeric: tracked: #256
-#[inline(always)]
-pub const fn fbits_u8(f: FBits) -> u8 {
-    f.raw()
-}
-
 /// Indicator const: `1` when `f > 0`, `0` when `f == 0`.
 ///
 /// Used to express "F has a fractional component" in const-generic
-/// where-clauses without field access or struct construction.
+/// where-clauses without struct construction.
 // allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn is_fractional(f: FBits) -> usize {
     if f.raw() == 0 { 0 } else { 1 }
 }
 
-/// Extract the inner `u8` of a `Width`.
-///
-/// See `ibits_u8` for why this exists as a free function.
-// allow-bare-numeric: tracked: #256
-#[inline(always)]
-pub const fn width_u8(w: crate::newtype::Width) -> u8 {
-    w.raw()
-}
-
 /// Whether a `Width` is `<= 64`. Used by Fnv1a's const-eval guard.
+///
+/// Predicate, not an accessor; an accessor of `Width` to its inner
+/// `u8` is `width.raw()` (or `arvo::raw(width)` if you prefer the
+/// prefix style).
 // allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn width_le_64(n: crate::newtype::Width) -> bool {

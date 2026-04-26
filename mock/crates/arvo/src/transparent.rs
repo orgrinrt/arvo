@@ -4,29 +4,35 @@
 //! type. By Rust spec, `repr(transparent)` makes the wrapper layout-
 //! equivalent to the inner — same size, alignment, ABI. This module
 //! exposes that relationship as a typed surface so consumers don't
-//! reach for `.0.0` chains or hard-code container widths.
+//! reach for `.0.0` chains or memorise per-wrapper accessor names.
 //!
-//! Two traits cover the surface:
+//! # The surface
 //!
-//! - [`Transparent`] (`unsafe`): the wrapper declares its immediate
-//!   inner type. Implementors guarantee `repr(transparent)` over the
-//!   declared `Inner`. Reading `inner()` is a layout-equivalent
-//!   transmute, not a field projection.
-//! - [`As<T>`]: typed conversion to a layout-equivalent native
-//!   primitive. Blanket-implemented across the `Transparent` chain
-//!   so `IBits → u8` works through `IBits: Transparent<Inner = u8>`
-//!   in one step (or through chained `Transparent`s if a wrapper
-//!   wraps another wrapper).
+//! Three forms reach the same value, pick whichever reads cleanest:
 //!
-//! The `NumericPrimitive` marker pins the set of primitives
-//! eligible for the `As<T>` conversion: `u8` / `u16` / `u32` / `u64`
-//! / `usize` and their signed counterparts, plus `bool`. This is the
-//! native-type universe; arvo wrappers terminate at one of these.
+//! - **Inherent method** `wrapper.raw()` — no trait import needed.
+//!   The macro that defines arvo wrappers emits this on every type;
+//!   it's `const fn` so it works in const-generic-position bodies.
+//! - **Trait method** `Transparent::raw(wrapper)` — typed bound for
+//!   generic code that wants to abstract over "any arvo wrapper".
+//! - **Free function** `arvo::raw::<T>(wrapper)` — prefix style for
+//!   consumers who'd rather write `let n: u8 = raw(ibits);` than
+//!   `let n = ibits.raw();`. Works in const-fn context.
+//!
+//! All three collapse to the same `transmute_copy` at codegen.
+//!
+//! # Soundness
+//!
+//! [`Transparent`] is `unsafe`: implementors guarantee
+//! `#[repr(transparent)]` over the declared `Inner`. The compiler
+//! treats a `repr(transparent)` wrapper as having identical layout
+//! (size, alignment, ABI) to its single non-ZST field, so
+//! `transmute_copy::<W, W::Inner>` is sound by definition. Implementing
+//! `Transparent` for a non-transparent type is undefined behaviour.
 
 use core::mem::transmute_copy;
 
-/// Marker for native primitives that arvo wrappers can transmute
-/// to via `repr(transparent)` layout-equivalence.
+/// Marker for native primitives that arvo wrappers can transmute to.
 pub trait NumericPrimitive: Copy + Sized + 'static {}
 
 impl NumericPrimitive for u8 {}
@@ -46,63 +52,36 @@ impl NumericPrimitive for bool {}
 /// # Safety
 ///
 /// Implementors must be `#[repr(transparent)]` over the declared
-/// `Inner` type. The compiler treats a `repr(transparent)` wrapper as
-/// having identical layout (size, alignment, ABI) to its single non-
-/// zero-sized field. Implementing `Transparent` for a non-transparent
-/// type is undefined behaviour because the `inner()` transmute relies
-/// on this layout invariant.
+/// `Inner` type. The default `raw()` method does a layout-equivalent
+/// transmute and relies on this invariant; implementing `Transparent`
+/// for a non-transparent type is undefined behaviour.
 pub unsafe trait Transparent: Copy + Sized {
-    /// The single non-ZST field's type. Reading this returns a
-    /// layout-equivalent value.
+    /// The single non-ZST field's type.
     type Inner: Copy;
 
     /// Read the inner value via layout-equivalent transmute.
-    ///
-    /// Bypasses `.0` field access so call sites don't depend on the
-    /// wrapper's field name or type-projection chain. Consumers that
-    /// want to chain through multiple wrappers (e.g. `IBits → Bits →
-    /// u8`) use [`As<T>`] instead.
     #[inline(always)]
-    fn inner(self) -> Self::Inner {
-        // SAFETY: implementor's `Transparent` contract guarantees
-        // `Self` is `repr(transparent)` over `Inner`, so the layouts
-        // are byte-identical and `transmute_copy` is sound.
+    fn raw(self) -> Self::Inner {
+        // SAFETY: Transparent contract guarantees Self is
+        // repr(transparent) over Inner, so layouts are byte-identical.
         unsafe { transmute_copy::<Self, Self::Inner>(&self) }
     }
 }
 
-/// Typed conversion to a layout-equivalent native primitive.
+/// Free-fn form of [`Transparent::raw`] for prefix-style call sites.
 ///
-/// Blanket-implemented for any `Transparent` whose `Inner` either IS
-/// `T` (one-step terminal) or is itself `As<T>` (recursive chain).
-/// Consumers write `let n: u8 = ibits.as_native();` (or with turbofish
-/// `ibits.as_native::<u8>()`) without naming the intermediate
-/// wrapper.
+/// `let n: u8 = arvo::raw(ibits);` is equivalent to
+/// `let n: u8 = ibits.raw();` and to
+/// `let n: u8 = Transparent::raw(ibits);`. Pick whichever reads best
+/// at the call site.
 ///
-/// At runtime this collapses to a single transmute by the optimiser
-/// (every step is a no-op via `repr(transparent)`).
-pub trait As<T: NumericPrimitive>: Sized + Copy {
-    fn as_native(self) -> T;
-}
-
-// Terminal case: T == Inner. The wrapper directly transmutes to T.
-impl<W, T> As<T> for W
+/// `const fn` so it works in const-generic-position bodies.
+#[inline(always)]
+pub const fn raw<W, T>(w: W) -> T
 where
-    W: Transparent<Inner = T>,
+    W: Transparent<Inner = T> + Copy,
     T: NumericPrimitive,
 {
-    #[inline(always)]
-    fn as_native(self) -> T {
-        self.inner()
-    }
+    // SAFETY: Transparent contract: W is repr(transparent) over T.
+    unsafe { transmute_copy::<W, T>(&w) }
 }
-
-// Note: a recursive blanket
-//   impl<W, T> As<T> for W where W: Transparent, W::Inner: As<T>
-// would conflict with the terminal impl in coherence (both could
-// match when Inner happens to be T). The terminal impl above is
-// sufficient for arvo's current wrapper depth (one level: meta-
-// newtypes wrap u8 directly). When deeper chains land (e.g. IBits
-// over Bits over u8), the chain is realised via per-pair
-// implementations declared at the wrapper's definition site, where
-// the implementor knows its full chain unambiguously.
