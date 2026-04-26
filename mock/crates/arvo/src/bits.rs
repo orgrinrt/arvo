@@ -23,10 +23,68 @@ use crate::strategy::{Hot, Strategy, UContainerFor};
 
 /// N-bit opaque bit-pattern. Transparent wrapper over the
 /// strategy-dispatched container primitive.
+///
+/// `ConstParamTy` is NOT derived on `Bits<N, S>` because the
+/// `<S as UContainerFor<N>>::T` field projection blocks the derive
+/// macro's cascade check on rustc 1.96-nightly, and a manual impl
+/// hits a deeper `IBits: Sized ↔ ufixed_bits(I, F)` const-eval
+/// cycle when used in const-generic positions. The meta-newtypes
+/// (`IBits` / `FBits` / `Width`) consequently wrap `u8` directly
+/// for now (see `newtype.rs` macro). Tracked alongside the
+/// UFixed/IFixed ConstParamTy follow-up in `BACKLOG.md.tmpl`.
 #[repr(transparent)]
 pub struct Bits<const N: u8, S: Strategy = Hot>(<S as UContainerFor<N>>::T)
 where
     S: UContainerFor<N>;
+
+// Manual trait impls without bounds on `S` — the strategy marker is
+// a zero-sized phantom (only `<S as UContainerFor<N>>::T` physically
+// stores data), so no S-level bound is needed beyond the where clause.
+
+impl<const N: u8, S: Strategy> Copy for Bits<N, S> where S: UContainerFor<N> {}
+
+impl<const N: u8, S: Strategy> Clone for Bits<N, S>
+where
+    S: UContainerFor<N>,
+{
+    fn clone(&self) -> Self { *self }
+}
+
+impl<const N: u8, S: Strategy> PartialEq for Bits<N, S>
+where
+    S: UContainerFor<N>,
+{
+    fn eq(&self, other: &Self) -> bool { self.0 == other.0 }
+}
+
+impl<const N: u8, S: Strategy> Eq for Bits<N, S> where S: UContainerFor<N> {}
+
+impl<const N: u8, S: Strategy> core::hash::Hash for Bits<N, S>
+where
+    S: UContainerFor<N>,
+{
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
+        self.0.hash(state);
+    }
+}
+
+impl<const N: u8, S: Strategy> core::fmt::Debug for Bits<N, S>
+where
+    S: UContainerFor<N>,
+{
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_tuple("Bits").field(&self.0).finish()
+    }
+}
+
+impl<const N: u8, S: Strategy> Default for Bits<N, S>
+where
+    S: UContainerFor<N>,
+{
+    fn default() -> Self {
+        Self(<<S as UContainerFor<N>>::T as Default>::default())
+    }
+}
 
 // `From<<S as UContainerFor<N>>::T> for Bits<N, S>` was considered
 // but conflicts with core's blanket `impl<T> From<T> for T`: the
@@ -35,54 +93,6 @@ where
 // the macro block below cover the common ergonomic case; consumers
 // holding a concrete u8/u16/u32/u64 container value use
 // `Bits::from_raw(...)` directly.
-
-// Manual trait impls without bounds on `S` — the strategy marker
-// is a zero-sized phantom in this struct (only `<S as
-// UContainerFor<N>>::T` physically stores data), so no S-level
-// bound is needed. `derive(...)` is conservative and adds
-// `S: Copy`, `S: Hash`, etc. which the arvo strategy markers
-// (`Hot`, `Warm`, ...) don't satisfy.
-
-impl<const N: u8, S: Strategy> Copy for Bits<N, S>
-where S: UContainerFor<N> {}
-
-impl<const N: u8, S: Strategy> Clone for Bits<N, S>
-where S: UContainerFor<N>,
-{
-    fn clone(&self) -> Self { *self }
-}
-
-impl<const N: u8, S: Strategy> PartialEq for Bits<N, S>
-where S: UContainerFor<N>,
-{
-    fn eq(&self, other: &Self) -> bool { self.0 == other.0 }
-}
-impl<const N: u8, S: Strategy> Eq for Bits<N, S>
-where S: UContainerFor<N> {}
-
-impl<const N: u8, S: Strategy> core::hash::Hash for Bits<N, S>
-where S: UContainerFor<N>,
-{
-    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
-        self.0.hash(state);
-    }
-}
-
-impl<const N: u8, S: Strategy> core::fmt::Debug for Bits<N, S>
-where S: UContainerFor<N>,
-{
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        f.debug_tuple("Bits").field(&self.0).finish()
-    }
-}
-
-impl<const N: u8, S: Strategy> Default for Bits<N, S>
-where S: UContainerFor<N>,
-{
-    fn default() -> Self {
-        Self(<<S as UContainerFor<N>>::T as Default>::default())
-    }
-}
 
 impl<const N: u8, S: Strategy> Bits<N, S>
 where
@@ -99,10 +109,35 @@ where
     }
 }
 
-/// Per-N const-fn bridges for the u64-typed legacy path. Callers
-/// that already think in u64 (arvo-hash digests, hilavitkutin-str
-/// handles) use `new(u64)` and `bits(self) -> u64`; the narrow /
-/// widen happens through an `as` cast generated per-N via macro.
+// Ergonomic surface (round 202604500000): `Deref` / `AsRef` / `From`
+// pairs so wrappers above `Bits` (IBits, FBits, Width, USize) can
+// route through one level of `*` instead of `.0.0` chains.
+
+impl<const N: u8, S: Strategy> core::ops::Deref for Bits<N, S>
+where
+    S: UContainerFor<N>,
+{
+    type Target = <S as UContainerFor<N>>::T;
+    #[inline(always)]
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<const N: u8, S: Strategy> AsRef<<S as UContainerFor<N>>::T> for Bits<N, S>
+where
+    S: UContainerFor<N>,
+{
+    #[inline(always)]
+    fn as_ref(&self) -> &<S as UContainerFor<N>>::T {
+        &self.0
+    }
+}
+
+/// Per-N const-fn bridges for the u64-typed legacy path plus the
+/// round-202604500000 width-class accessors (`from_raw_uN` /
+/// `to_raw_uN`). The narrow / widen happens through an `as` cast
+/// generated per-N via macro.
 macro_rules! impl_bits_u64 {
     ($ty:ty, $($n:literal),+ $(,)?) => {
         $(
@@ -111,23 +146,56 @@ macro_rules! impl_bits_u64 {
                     if $n == 64 { u64::MAX } else { (1u64 << $n) - 1 };
 
                 /// Construct from a u64, masking to N bits.
+                #[deprecated(since = "0.1.0", note = "use Bits::from_raw_u64; removal in a follow-up round")]
                 pub const fn new(raw: u64) -> Self {
-                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-N narrow from u64 to the dispatched container; arvo-bits introduces the opaque-bit substrate; tracked: #127
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-N narrow from u64 to the dispatched container; arvo storage primitive at L0 root; tracked: #256
                     Self((raw & Self::MASK_U64) as $ty)
                 }
 
                 /// Widen the container back to u64.
+                #[deprecated(since = "0.1.0", note = "use Bits::to_raw_u64; removal in a follow-up round")]
                 pub const fn bits(self) -> u64 {
-                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: widen dispatched container back to u64 for the uniform legacy API; tracked: #127
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: widen dispatched container back to u64 for the uniform legacy API; tracked: #256
                     self.0 as u64
+                }
+
+                /// Construct from a u64, masking to N bits. Universal masking entry.
+                pub const fn from_raw_u64(raw: u64) -> Self {
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-N narrow from u64 to the dispatched container; storage primitive at L0 root; tracked: #256
+                    Self((raw & Self::MASK_U64) as $ty)
+                }
+
+                /// Project the container to a u64.
+                pub const fn to_raw_u64(self) -> u64 {
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: widen dispatched container back to u64 at the L0 root; tracked: #256
+                    self.0 as u64
+                }
+
+                /// Construct from a u8, masking to N bits.
+                ///
+                /// For `N <= 8` this is the natural input width; for wider N
+                /// the input is zero-extended after masking.
+                pub const fn from_raw_u8(raw: u8) -> Self {
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: width-class sibling of from_raw_u64; tracked: #256
+                    let masked = (raw as u64) & Self::MASK_U64;
+                    Self(masked as $ty)
+                }
+
+                /// Project to u8 (truncating high bits if container is wider).
+                ///
+                /// Used by meta-layer wrappers (`IBits` / `FBits` / `Width`) whose
+                /// inner `Bits<7, Hot>` always fits within u8.
+                pub const fn to_raw_u8(self) -> u8 {
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: widen dispatched container back to u8 at the L0 root; meta-layer accessor; tracked: #256
+                    (self.0 as u64) as u8
                 }
             }
 
             // Non-const `From<u64>` — ergonomic `.into()` at runtime
-            // call sites. For const contexts, use `Bits::new(raw)`.
+            // call sites. For const contexts, use `Bits::from_raw_u64(raw)`.
             impl From<u64> for Bits<$n, Hot> {
                 fn from(raw: u64) -> Self {
-                    Self::new(raw)
+                    Self::from_raw_u64(raw)
                 }
             }
         )+

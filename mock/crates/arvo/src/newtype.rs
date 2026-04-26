@@ -19,76 +19,96 @@ use core::convert::Infallible;
 use core::marker::ConstParamTy;
 use core::ops::{ControlFlow, Deref, FromResidual, Try};
 
-/// Integer-bit count for fixed-point types.
+/// Generate a meta-bits ConstParamTy newtype wrapping `u8`, with
+/// `Deref` / `AsRef` / `From` to/from `u8` and a lowercase const-fn
+/// helper for const-generic-position construction.
 ///
-/// Carries the integer bit width through type-level code. Distinct
-/// from `FBits` so consumers cannot accidentally swap the two at
-/// construction sites.
-#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
-#[repr(transparent)]
-pub struct IBits(pub u8);
+/// DRYs the ergonomic surface of `IBits` / `FBits` / `Width`. The
+/// underlying field is `u8` (not `Bits<7, Hot>`) until rustc resolves
+/// the `<S as UContainerFor<N>>::T` projection cascade through the
+/// `ConstParamTy_` ↔ `Sized` query graph; tracked alongside the
+/// UFixed/IFixed ConstParamTy follow-up in `BACKLOG.md.tmpl`.
+/// Bumping the inner type is a one-line macro change once the cycle
+/// is resolvable; consumer call sites stay unchanged because the
+/// helper signature (`fn $helper(n: u8) -> $W`) doesn't move.
+macro_rules! meta_bits_wrapper {
+    (
+        $(#[$meta:meta])*
+        $vis:vis struct $W:ident;
+        helper $helper:ident;
+    ) => {
+        $(#[$meta])*
+        #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
+        #[repr(transparent)]
+        $vis struct $W(pub u8);
 
-/// Fractional-bit count for fixed-point types.
-///
-/// Carries the fractional bit width through type-level code. See
-/// `IBits` for the integer counterpart.
-#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
-#[repr(transparent)]
-pub struct FBits(pub u8);
+        impl $W {
+            /// Zero value.
+            pub const ZERO: Self = Self(0);
+            /// One value.
+            pub const ONE: Self = Self(1);
+        }
 
-// `generic_const_exprs` on current nightly forbids struct construction
-// and field access inside anonymous `{ ... }` const arguments. Any site
-// that wants `IBits(0)` / `FBits(0)` etc. as a const-generic arg must
-// reference one of these named constants.
-impl IBits {
-    /// Zero integer bits.
-    pub const ZERO: IBits = IBits(0);
-    /// One integer bit (used by the `Bit` alias in arvo-bits).
-    pub const ONE: IBits = IBits(1);
+        impl core::ops::Deref for $W {
+            type Target = u8;
+            #[inline(always)]
+            fn deref(&self) -> &u8 { &self.0 }
+        }
+
+        impl AsRef<u8> for $W {
+            #[inline(always)]
+            fn as_ref(&self) -> &u8 { &self.0 }
+        }
+
+        impl From<u8> for $W {
+            #[inline(always)]
+            fn from(n: u8) -> Self { $helper(n) }
+        }
+
+        impl From<$W> for u8 {
+            #[inline(always)]
+            fn from(w: $W) -> u8 { w.0 }
+        }
+
+        /// Const-fn helper for const-generic-position construction.
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: ergonomic helper-fn parameter constructing arvo type from u8 literal; tracked: #256
+        $vis const fn $helper(n: u8) -> $W {
+            $W(n)
+        }
+    };
 }
 
-impl FBits {
-    /// Zero fractional bits (pure integer).
-    pub const ZERO: FBits = FBits(0);
-    /// One fractional bit.
-    pub const ONE: FBits = FBits(1);
+meta_bits_wrapper! {
+    /// Integer-bit count for fixed-point types.
+    ///
+    /// Carries the integer bit width through type-level code. Distinct
+    /// from `FBits` so consumers cannot accidentally swap the two at
+    /// construction sites.
+    pub struct IBits;
+    helper ibits;
 }
 
-/// Bit-width meta value (1..=128).
-///
-/// Used as the const-generic param type for `Hasher<const N: Width>`
-/// and `Fnv1a<const N: Width>` (in arvo-hash). Lifts above the
-/// `Bits<const N: u8, S>` storage-primitive root: `Width`'s underlying
-/// representation is `u8` for now (round 202604500000 narrowed
-/// ConstParamTy soundness work; the eventual `Bits<7, Hot>` wrap is
-/// a follow-up).
-#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
-#[repr(transparent)]
-pub struct Width(pub u8);
+meta_bits_wrapper! {
+    /// Fractional-bit count for fixed-point types.
+    ///
+    /// Carries the fractional bit width through type-level code. See
+    /// `IBits` for the integer counterpart.
+    pub struct FBits;
+    helper fbits;
+}
+
+meta_bits_wrapper! {
+    /// Bit-width meta value (1..=128).
+    ///
+    /// Used as the const-generic param type for `Hasher<const N: Width>`
+    /// and `Fnv1a<const N: Width>` (in arvo-hash).
+    pub struct Width;
+    helper width;
+}
 
 impl Width {
-    /// Zero-bit width.
-    pub const ZERO: Width = Width(0);
     /// 64-bit width (FNV-1a-64 cap).
-    pub const W64: Width = Width(64);
-}
-
-/// Construct an `IBits` value from a `u8` literal.
-///
-/// Ergonomic helper for const-generic positions:
-/// `UFixed<{ ibits(8) }, ...>` reads cleanly.
-pub const fn ibits(n: u8) -> IBits {
-    IBits(n)
-}
-
-/// Construct an `FBits` value from a `u8` literal.
-pub const fn fbits(n: u8) -> FBits {
-    FBits(n)
-}
-
-/// Construct a `Width` value from a `u8` literal.
-pub const fn width(n: u8) -> Width {
-    Width(n)
+    pub const W64: Width = width(64);
 }
 
 /// Index / count newtype wrapping `usize`.
