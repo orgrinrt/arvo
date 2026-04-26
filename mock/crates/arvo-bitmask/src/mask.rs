@@ -21,7 +21,7 @@
 
 use arvo::newtype::USize;
 use arvo::strategy::Hot;
-use arvo_bits::{BitAccess, BitSequence, BitWidth, QWord};
+use arvo_bits::{BitAccess, BitSequence, HasBitWidth, QWord};
 
 /// Generic fixed-width bitmask.
 ///
@@ -63,7 +63,7 @@ where
     /// Logical bit width of the mask (from `W::WIDTH`).
     #[inline(always)]
     pub const fn width() -> USize {
-        <W as BitWidth>::WIDTH
+        <W as HasBitWidth>::WIDTH
     }
 }
 

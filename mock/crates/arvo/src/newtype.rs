@@ -54,6 +54,43 @@ impl FBits {
     pub const ONE: FBits = FBits(1);
 }
 
+/// Bit-width meta value (1..=128).
+///
+/// Used as the const-generic param type for `Hasher<const N: Width>`
+/// and `Fnv1a<const N: Width>` (in arvo-hash). Lifts above the
+/// `Bits<const N: u8, S>` storage-primitive root: `Width`'s underlying
+/// representation is `u8` for now (round 202604500000 narrowed
+/// ConstParamTy soundness work; the eventual `Bits<7, Hot>` wrap is
+/// a follow-up).
+#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
+#[repr(transparent)]
+pub struct Width(pub u8);
+
+impl Width {
+    /// Zero-bit width.
+    pub const ZERO: Width = Width(0);
+    /// 64-bit width (FNV-1a-64 cap).
+    pub const W64: Width = Width(64);
+}
+
+/// Construct an `IBits` value from a `u8` literal.
+///
+/// Ergonomic helper for const-generic positions:
+/// `UFixed<{ ibits(8) }, ...>` reads cleanly.
+pub const fn ibits(n: u8) -> IBits {
+    IBits(n)
+}
+
+/// Construct an `FBits` value from a `u8` literal.
+pub const fn fbits(n: u8) -> FBits {
+    FBits(n)
+}
+
+/// Construct a `Width` value from a `u8` literal.
+pub const fn width(n: u8) -> Width {
+    Width(n)
+}
+
 /// Index / count newtype wrapping `usize`.
 ///
 /// Wraps `usize` for the arvo-types-only lint. `Deref<Target = usize>`

@@ -10,7 +10,7 @@
 //! Bits is NOT a UFixed alias and NOT a UFixed wrapper. It is a
 //! parallel primitive family that reuses arvo's container-dispatch
 //! table to pick its storage, then presents a deliberately smaller
-//! trait surface: `BitWidth` / `BitAccess` / `BitSequence` /
+//! trait surface: `HasBitWidth` / `BitAccess` / `BitSequence` /
 //! `BitLogic` but no `Add` / `Sub` / `Mul` / `Div` / `Ord`. Bit
 //! patterns are identities, not arithmetic values.
 //!
@@ -19,11 +19,7 @@
 //! (u32-backed, 4 bytes); any domain needing a fixed-width opaque
 //! identity.
 
-use arvo::{Bool, USize};
-use arvo::strategy::{Hot, Strategy, UContainerFor};
-
-use crate::prim::BitPrim;
-use crate::traits::{BitAccess, BitLogic, BitSequence, BitWidth};
+use crate::strategy::{Hot, Strategy, UContainerFor};
 
 /// N-bit opaque bit-pattern. Transparent wrapper over the
 /// strategy-dispatched container primitive.
@@ -158,83 +154,3 @@ impl_bits_u64!(
 
 // --- Trait impls via BitPrim on the container ---------------------------
 
-impl<const N: u8, S: Strategy> BitWidth for Bits<N, S>
-where
-    S: UContainerFor<N>,
-{
-    const WIDTH: USize = USize(N as usize);
-}
-
-impl<const N: u8, S: Strategy> BitAccess for Bits<N, S>
-where
-    S: UContainerFor<N>,
-    <S as UContainerFor<N>>::T: BitPrim,
-{
-    fn bit(self, idx: USize) -> Bool {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim methods take u32 indices; sealed bridge contract; tracked: #127
-        Bool(self.0.get_bit(idx.0 as u32))
-    }
-    fn with_bit_set(self, idx: USize) -> Self {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #127
-        Self(self.0.with_bit_set(idx.0 as u32))
-    }
-    fn with_bit_cleared(self, idx: USize) -> Self {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #127
-        Self(self.0.with_bit_cleared(idx.0 as u32))
-    }
-    fn with_bit_toggled(self, idx: USize) -> Self {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #127
-        Self(self.0.with_bit_toggled(idx.0 as u32))
-    }
-}
-
-impl<const N: u8, S: Strategy> BitSequence for Bits<N, S>
-where
-    S: UContainerFor<N>,
-    <S as UContainerFor<N>>::T: BitPrim,
-{
-    fn trailing_zeros(self) -> USize {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #127
-        USize(self.0.trailing_zeros() as usize)
-    }
-    fn leading_zeros(self) -> USize {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #127
-        let lz = self.0.leading_zeros() as usize;
-        // Container may be wider than N; subtract the gap.
-        let container_width = <<S as UContainerFor<N>>::T as BitPrim>::WIDTH as usize;
-        USize(lz.saturating_sub(container_width - N as usize))
-    }
-    fn count_ones(self) -> USize {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #127
-        USize(self.0.count_ones() as usize)
-    }
-    fn count_zeros(self) -> USize {
-        USize(N as usize - self.count_ones().0)
-    }
-    fn is_zero(self) -> Bool {
-        Bool(self.0 == <<S as UContainerFor<N>>::T as BitPrim>::ZERO)
-    }
-}
-
-impl<const N: u8> BitLogic for Bits<N, Hot>
-where
-    Hot: UContainerFor<N>,
-    <Hot as UContainerFor<N>>::T: BitPrim
-        + core::ops::BitOr<Output = <Hot as UContainerFor<N>>::T>
-        + core::ops::BitAnd<Output = <Hot as UContainerFor<N>>::T>
-        + core::ops::BitXor<Output = <Hot as UContainerFor<N>>::T>
-        + core::ops::Not<Output = <Hot as UContainerFor<N>>::T>,
-{
-    fn bitor(self, other: Self) -> Self {
-        Self(self.0 | other.0)
-    }
-    fn bitand(self, other: Self) -> Self {
-        Self(self.0 & other.0)
-    }
-    fn bitnot(self) -> Self {
-        Self(!self.0)
-    }
-    fn bitxor(self, other: Self) -> Self {
-        Self(self.0 ^ other.0)
-    }
-}

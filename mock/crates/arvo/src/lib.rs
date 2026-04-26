@@ -14,23 +14,35 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
+#![feature(macro_metavar_expr_concat)]
 #![feature(try_trait_v2)]
 #![allow(incomplete_features)]
 
+pub mod alias;
+pub mod aliases;
+pub mod bitfield;
+pub mod bits;
 pub mod float;
 pub mod ifixed;
 pub mod markers;
 pub mod newtype;
 pub mod predicate;
+pub mod prim;
 pub mod strategy;
 pub mod traits;
 pub mod ufixed;
 
+pub use alias::{Bit, Byte, DWord, Nibble, QWord, Word};
+pub use aliases::{
+    Int13, Int16, Int32, Int64, Int7, Int8, Uint16, Uint32, Uint5, Uint6, Uint64, Uint7, Uint8,
+};
+pub use bits::Bits;
 pub use float::{FastFloat, Float, Ieee, StrictFloat};
 pub use ifixed::IFixed;
 pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLike};
-pub use newtype::{AsBool, Bool, Cap, FBits, IBits, USize};
+pub use newtype::{AsBool, Bool, Cap, FBits, IBits, USize, Width, fbits, ibits, width};
 pub use predicate::{Pred, Pred2, Pred3};
-pub use strategy::{Cold, Hot, Precise, Strategy, Warm};
+pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
+pub use strategy::{Cold, Hot, Precise, Strategy, Warm, width_le_64, width_u8};
 pub use traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
 pub use ufixed::UFixed;

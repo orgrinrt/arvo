@@ -1,4 +1,4 @@
-//! `BitWidth` / `BitAccess` / `BitSequence` impls on `UFixed<I, F, S>`.
+//! `HasBitWidth` / `BitAccess` / `BitSequence` impls on `UFixed<I, F, S>`.
 //!
 //! The bound `S: UBitContainer<{ ufixed_bits(I, F) }>` pulls in
 //! `UContainerFor<BITS>` and the `BitPrim` requirement on the
@@ -9,10 +9,10 @@ use arvo::newtype::{Bool, FBits, IBits, USize};
 use arvo::strategy::{Hot, Strategy, ufixed_bits};
 use arvo::ufixed::UFixed;
 
-use crate::prim::{BitPrim, UBitContainer};
-use crate::traits::{BitAccess, BitLogic, BitSequence, BitWidth};
+use arvo::prim::{BitPrim, UBitContainer};
+use crate::traits::{BitAccess, BitLogic, BitSequence, HasBitWidth};
 
-impl<const I: IBits, const F: FBits, S: Strategy> BitWidth for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> HasBitWidth for UFixed<I, F, S>
 where
     S: UBitContainer<{ ufixed_bits(I, F) }>,
 {

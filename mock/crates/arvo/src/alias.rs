@@ -7,13 +7,12 @@
 //!
 //! Because `Bits` is a newtype over `UFixed` (not a type alias), the
 //! named aliases share `Bits`'s opaque-identity trait surface —
-//! `BitWidth`, `BitAccess`, `BitSequence`, `BitLogic`, but no
+//! `HasBitWidth`, `BitAccess`, `BitSequence`, `BitLogic`, but no
 //! arithmetic. Consumers that want arithmetic on an N-bit value
 //! reach for `UFixed<{IBits(N)}, {FBits::ZERO}, S>` directly.
 
-use arvo::strategy::Hot;
-
 use crate::bits::Bits;
+use crate::strategy::Hot;
 
 /// 1-bit opaque bit-pattern.
 ///
