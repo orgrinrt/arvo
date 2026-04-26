@@ -35,7 +35,8 @@ pub mod ufixed;
 
 pub use alias::{Bit, Byte, DWord, Nibble, QWord, Word};
 pub use aliases::{
-    Int13, Int16, Int32, Int64, Int7, Int8, Uint16, Uint32, Uint5, Uint6, Uint64, Uint7, Uint8,
+    Fixed, Int13, Int16, Int32, Int64, Int7, Int8, Signed, Uint16, Uint32, Uint5, Uint6, Uint64,
+    Uint7, Uint8,
 };
 pub use bits::Bits;
 pub use float::{FastFloat, Float, Ieee, StrictFloat};
