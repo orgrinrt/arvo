@@ -1,9 +1,10 @@
-error[E0277]: the trait bound `Warm: UContainerFor<33>` is not satisfied
+error[E0277]: strategy `Warm` does not provide a container for 33-bit width
  --> tests/ui/warm_bound_negative.rs:9:12
   |
 9 |     let _: UFixed<{ IBits(17) }, { FBits(16) }, Warm> = UFixed::from_raw(0);
   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `UContainerFor<33>` is not implemented for `Warm`
   |
+  = note: Warm caps at I+F<=32; for wider widths, choose Hot or Precise explicitly: `Uint64<Hot>`, `Uint64<Precise>`, etc.
   = help: `Warm` implements trait `UContainerFor<BITS>`:
             UContainerFor<10>
             UContainerFor<11>
@@ -46,12 +47,13 @@ note: required by a bound in `UFixed`
   |     S: UContainerFor<{ ufixed_bits(I, F) }>,
   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `UFixed`
 
-error[E0277]: the trait bound `Warm: UContainerFor<33>` is not satisfied
+error[E0277]: strategy `Warm` does not provide a container for 33-bit width
  --> tests/ui/warm_bound_negative.rs:9:57
   |
 9 |     let _: UFixed<{ IBits(17) }, { FBits(16) }, Warm> = UFixed::from_raw(0);
   |                                                         ^^^^^^ the trait `UContainerFor<33>` is not implemented for `Warm`
   |
+  = note: Warm caps at I+F<=32; for wider widths, choose Hot or Precise explicitly: `Uint64<Hot>`, `Uint64<Precise>`, etc.
   = help: `Warm` implements trait `UContainerFor<BITS>`:
             UContainerFor<10>
             UContainerFor<11>
@@ -94,12 +96,13 @@ note: required by a bound in `UFixed`
   |     S: UContainerFor<{ ufixed_bits(I, F) }>,
   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `UFixed`
 
-error[E0277]: the trait bound `Warm: UContainerFor<33>` is not satisfied
+error[E0277]: strategy `Warm` does not provide a container for 33-bit width
  --> tests/ui/warm_bound_negative.rs:9:74
   |
 9 |     let _: UFixed<{ IBits(17) }, { FBits(16) }, Warm> = UFixed::from_raw(0);
   |                                                                          ^ the trait `UContainerFor<33>` is not implemented for `Warm`
   |
+  = note: Warm caps at I+F<=32; for wider widths, choose Hot or Precise explicitly: `Uint64<Hot>`, `Uint64<Precise>`, etc.
   = help: `Warm` implements trait `UContainerFor<BITS>`:
             UContainerFor<10>
             UContainerFor<11>

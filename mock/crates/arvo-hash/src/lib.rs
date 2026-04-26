@@ -16,5 +16,5 @@
 pub mod algo;
 pub mod aliases;
 
-pub use algo::{Hasher, HasherExt};
+pub use algo::{fnv1a_64, Hasher, HasherExt};
 pub use aliases::ContentHash;

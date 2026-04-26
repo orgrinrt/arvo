@@ -23,15 +23,6 @@ use crate::strategy::{Hot, Strategy, UContainerFor};
 
 /// N-bit opaque bit-pattern. Transparent wrapper over the
 /// strategy-dispatched container primitive.
-///
-/// `ConstParamTy` is NOT derived on `Bits<N, S>` because the
-/// `<S as UContainerFor<N>>::T` field projection blocks the derive
-/// macro's cascade check on rustc 1.96-nightly, and a manual impl
-/// hits a deeper `IBits: Sized ↔ ufixed_bits(I, F)` const-eval
-/// cycle when used in const-generic positions. The meta-newtypes
-/// (`IBits` / `FBits` / `Width`) consequently wrap `u8` directly
-/// for now (see `newtype.rs` macro). Tracked alongside the
-/// UFixed/IFixed ConstParamTy follow-up in `BACKLOG.md.tmpl`.
 #[repr(transparent)]
 pub struct Bits<const N: u8, S: Strategy = Hot>(<S as UContainerFor<N>>::T)
 where

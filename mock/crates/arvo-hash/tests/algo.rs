@@ -1,7 +1,7 @@
 //! Trait-bound sanity: a trivial Hasher<N> implementor compiles,
 //! and HasherExt's blanket hash() method is callable.
 
-use arvo_bits::Bits;
+use arvo::{Bits, Hot};
 use arvo_hash::{Hasher, HasherExt};
 
 /// Minimal test hasher: XORs each incoming byte into a running
@@ -16,8 +16,8 @@ impl Hasher<28> for XorHash28 {
             self.0 ^= b as u64;
         }
     }
-    fn finalize(self) -> Bits<28> {
-        Bits::<28>::new(self.0)
+    fn finalize(self) -> Bits<28, Hot> {
+        Bits::<28, Hot>::from_raw_u64(self.0)
     }
 }
 
@@ -31,7 +31,7 @@ fn hasher_streaming_path() {
     for &b in b"hello world" {
         expected ^= b as u64;
     }
-    assert_eq!(got.bits(), Bits::<28>::new(expected).bits());
+    assert_eq!(got.to_raw_u64(), Bits::<28, Hot>::from_raw_u64(expected).to_raw_u64());
 }
 
 #[test]
@@ -41,5 +41,13 @@ fn hasher_ext_oneshot_blanket() {
     for &b in b"hello world" {
         expected ^= b as u64;
     }
-    assert_eq!(got.bits(), Bits::<28>::new(expected).bits());
+    assert_eq!(got.to_raw_u64(), Bits::<28, Hot>::from_raw_u64(expected).to_raw_u64());
+}
+
+#[test]
+fn fnv1a_64_known_vector() {
+    // FNV-1a-64 of "" = 0xcbf29ce484222325 (offset basis)
+    assert_eq!(arvo_hash::fnv1a_64(b""), 0xcbf2_9ce4_8422_2325);
+    // FNV-1a-64 of "a" = 0xaf63dc4c8601ec8c
+    assert_eq!(arvo_hash::fnv1a_64(b"a"), 0xaf63_dc4c_8601_ec8c);
 }
