@@ -308,7 +308,7 @@ pub const fn ifixed_bits(i: IBits, f: FBits) -> u8 {
 /// Wrapping this in a const fn lets it appear inside anonymous
 /// const-generic expressions — direct field access (`I.0`) is not
 /// permitted there on current nightly.
-// allow-bare-numeric: tracked: #71
+// allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn ibits_u8(i: IBits) -> u8 {
     i.0
@@ -317,7 +317,7 @@ pub const fn ibits_u8(i: IBits) -> u8 {
 /// Extract the inner `u8` of an `FBits`.
 ///
 /// See `ibits_u8` for why this exists as a free function.
-// allow-bare-numeric: tracked: #71
+// allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn fbits_u8(f: FBits) -> u8 {
     f.0
@@ -327,7 +327,7 @@ pub const fn fbits_u8(f: FBits) -> u8 {
 ///
 /// Used to express "F has a fractional component" in const-generic
 /// where-clauses without field access or struct construction.
-// allow-bare-numeric: tracked: #71
+// allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn is_fractional(f: FBits) -> usize {
     if f.0 == 0 { 0 } else { 1 }
