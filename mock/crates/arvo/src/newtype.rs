@@ -47,6 +47,17 @@ macro_rules! meta_bits_wrapper {
             pub const ZERO: Self = Self(0);
             /// One value.
             pub const ONE: Self = Self(1);
+
+            /// Read the inner native primitive (`u8`).
+            ///
+            /// Sound by `repr(transparent)` layout-equivalence with `u8`.
+            /// Use this rather than `.0` field access; `.0` is a public
+            /// field by construction (so the wrapper is constructible
+            /// without going through the helper) but call sites should
+            /// prefer `raw()` so the field type can change without
+            /// rewriting consumers.
+            #[inline(always)]
+            pub const fn raw(self) -> u8 { self.0 }
         }
 
         impl core::ops::Deref for $W {
@@ -68,6 +79,15 @@ macro_rules! meta_bits_wrapper {
         impl From<$W> for u8 {
             #[inline(always)]
             fn from(w: $W) -> u8 { w.0 }
+        }
+
+        // Typed transmute via the As<T> trait (defined in the
+        // transparent module). `repr(transparent)` over u8 is the
+        // soundness contract.
+        // SAFETY: $W is repr(transparent) over u8; layout is byte-
+        // identical to u8.
+        unsafe impl $crate::transparent::Transparent for $W {
+            type Inner = u8;
         }
 
         /// Const-fn helper for const-generic-position construction.

@@ -115,6 +115,10 @@ impl Strategy for Precise {
 /// container satisfies (u8/u16/u32/u64). Keeping it broad here lets
 /// `UFixed` delegate Copy/Eq/Ord/Default without re-bounding on the
 /// const expression in every impl block.
+#[diagnostic::on_unimplemented(
+    message = "strategy `{Self}` does not provide a container for {BITS}-bit width",
+    note = "Warm caps at I+F<=32; for wider widths, choose Hot or Precise explicitly: `Uint64<Hot>`, `Uint64<Precise>`, etc."
+)]
 pub trait UContainerFor<const BITS: u8>: Strategy {
     /// Concrete storage integer for this (strategy, bit-width) pair.
     type T: Copy
@@ -131,6 +135,10 @@ pub trait UContainerFor<const BITS: u8>: Strategy {
 
 /// Signed container dispatch. Same shape as `UContainerFor` with
 /// signed integers. `BITS` is the total `1 + I + F` for `IFixed`.
+#[diagnostic::on_unimplemented(
+    message = "strategy `{Self}` does not provide a signed container for {BITS}-bit width",
+    note = "Warm caps at 1+I+F<=32; for wider widths, choose Hot or Precise explicitly: `Int64<Hot>`, `Int64<Precise>`, etc."
+)]
 pub trait IContainerFor<const BITS: u8>: Strategy {
     /// Concrete signed storage integer for this (strategy, bit-width) pair.
     type T: Copy
@@ -292,7 +300,7 @@ impl_i_container!(
 /// look up the container type.
 #[inline(always)]
 pub const fn ufixed_bits(i: IBits, f: FBits) -> u8 {
-    i.0 + f.0
+    i.raw() + f.raw()
 }
 
 /// Const-fn helper: total logical bits for an `IFixed<I, F, S>`.
@@ -300,18 +308,19 @@ pub const fn ufixed_bits(i: IBits, f: FBits) -> u8 {
 /// `IFixed` reserves one bit for the sign; logical width is `1 + I + F`.
 #[inline(always)]
 pub const fn ifixed_bits(i: IBits, f: FBits) -> u8 {
-    1 + i.0 + f.0
+    1 + i.raw() + f.raw()
 }
 
 /// Extract the inner `u8` of an `IBits`.
 ///
 /// Wrapping this in a const fn lets it appear inside anonymous
 /// const-generic expressions — direct field access (`I.0`) is not
-/// permitted there on current nightly.
+/// permitted there on current nightly. Routes through the
+/// transmute-based `as_u8` to bypass projection-cascade queries.
 // allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn ibits_u8(i: IBits) -> u8 {
-    i.0
+    i.raw()
 }
 
 /// Extract the inner `u8` of an `FBits`.
@@ -320,7 +329,7 @@ pub const fn ibits_u8(i: IBits) -> u8 {
 // allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn fbits_u8(f: FBits) -> u8 {
-    f.0
+    f.raw()
 }
 
 /// Indicator const: `1` when `f > 0`, `0` when `f == 0`.
@@ -330,7 +339,7 @@ pub const fn fbits_u8(f: FBits) -> u8 {
 // allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn is_fractional(f: FBits) -> usize {
-    if f.0 == 0 { 0 } else { 1 }
+    if f.raw() == 0 { 0 } else { 1 }
 }
 
 /// Extract the inner `u8` of a `Width`.
@@ -339,14 +348,14 @@ pub const fn is_fractional(f: FBits) -> usize {
 // allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn width_u8(w: crate::newtype::Width) -> u8 {
-    w.0
+    w.raw()
 }
 
 /// Whether a `Width` is `<= 64`. Used by Fnv1a's const-eval guard.
 // allow-bare-numeric: tracked: #256
 #[inline(always)]
 pub const fn width_le_64(n: crate::newtype::Width) -> bool {
-    n.0 <= 64
+    n.raw() <= 64
 }
 
 // --- Strategy resolution for cross-strategy ops ----------------------------

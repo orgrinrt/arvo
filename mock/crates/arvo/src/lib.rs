@@ -30,6 +30,7 @@ pub mod predicate;
 pub mod prim;
 pub mod strategy;
 pub mod traits;
+pub mod transparent;
 pub mod ufixed;
 
 pub use alias::{Bit, Byte, DWord, Nibble, QWord, Word};
