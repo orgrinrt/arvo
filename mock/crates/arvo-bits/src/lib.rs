@@ -29,4 +29,7 @@ pub use traits::{BitAccess, BitLogic, BitSequence, HasBitWidth};
 // Consumer convenience: re-export L0 names that appear with arvo-bits
 // trait bounds.
 pub use arvo::strategy::{Hot, Strategy, UContainerFor};
-pub use arvo::{Bit, Bits, Byte, DWord, Nibble, QWord, Word};
+pub use arvo::{
+    Bit, BitPrim, Bits, Byte, DWord, IBitContainer, IBitPrim, Nibble, QWord, UBitContainer, Word,
+    bitfield,
+};
