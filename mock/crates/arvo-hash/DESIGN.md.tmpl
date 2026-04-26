@@ -1,9 +1,10 @@
 # arvo-hash — Design
 
 L2 hash-domain types and algorithm contracts. Ships a domain alias
-over the arvo-bits opaque-bit container, plus generic trait contracts
-for hash algorithms. No concrete algorithm implementations this
-round; those land as trait implementors in follow-up rounds.
+over the arvo-bits opaque-bit container, generic trait contracts
+for hash algorithms, and `Fnv1a<const N: BitWidth>` as the first
+concrete `Hasher` implementation, with both runtime trait form and
+const-fn `hash_const` entry usable in compile-time positions.
 
 `#![no_std]`, no alloc. Depends on arvo-bits only.
 
@@ -23,14 +24,15 @@ aliases beyond ContentHash) is tracked in BACKLOG.
 
 ### ContentHash
 
-A type alias for arvo-bits Bits<28>. Matches hilavitkutin-str's
-low-28-bit FNV content-hash identity. Consumers that want a named
+A type alias for arvo-bits `Bits<{ width_of(28) }, Hot>`. Matches
+hilavitkutin-str's low-28-bit FNV content-hash identity, produced by
+`Fnv1a::<{ width_of(28) }>::hash_const`. Consumers that want a named
 type at call sites (hilavitkutin-persistence StringTableEntry,
-clause resolver pass-key identity) bind ContentHash instead of
-the raw Bits<28>.
+vehje resolver pass-key identity) bind ContentHash instead of the
+raw `Bits<{ width_of(28) }, Hot>`.
 
 ```rust
-pub type ContentHash = arvo_bits::Bits<28>;
+pub type ContentHash = arvo_bits::Bits<{ arvo::width_of(28) }, arvo::Hot>;
 ```
 
 A direct type alias rather than a newtype: the semantic domain is
@@ -42,7 +44,7 @@ a distinct type.
 ### Hasher (canonical, streaming)
 
 ```rust
-pub trait Hasher<const N: u8> {
+pub trait Hasher<const N: arvo::BitWidth> {
     fn update(&mut self, bytes: &[u8]);
     fn finalize(self) -> arvo_bits::Bits<N>;
 }
@@ -52,17 +54,22 @@ Streaming hash: feed bytes incrementally, finalise to an N-bit
 opaque pattern. Consumers implementing a hash algorithm implement
 this trait.
 
+The `BitWidth` const-generic param type is from arvo L0 (a `Uint7`
+ConstParamTy newtype). Bare `u8` is no longer in the public surface;
+the `arvo::width_of(n)` const-fn helper provides call-site ergonomics
+in turbofish.
+
 ### HasherExt (oneshot convenience, blanket impl)
 
 ```rust
-pub trait HasherExt<const N: u8>: Hasher<N> + Sized {
+pub trait HasherExt<const N: arvo::BitWidth>: Hasher<N> + Sized {
     /// One-shot: update with the complete input, then finalize.
     fn hash(mut self, bytes: &[u8]) -> arvo_bits::Bits<N> {
         self.update(bytes);
         self.finalize()
     }
 }
-impl<H: Hasher<N>, const N: u8> HasherExt<N> for H {}
+impl<H: Hasher<N>, const N: arvo::BitWidth> HasherExt<N> for H {}
 ```
 
 HasherExt's default method provides oneshot ergonomics over any
@@ -71,6 +78,54 @@ exposes a .hash(bytes) one-shot form; implementors do not write
 their own oneshot path. Mirrors the round-202604201048 Encoder /
 Decoder + EncoderExt / DecoderExt pattern: streaming is canonical,
 oneshot is a derived convenience.
+
+## Concrete algorithm: Fnv1a<N>
+
+`Fnv1a<const N: BitWidth>` is the first concrete `Hasher` impl
+shipped by arvo-hash. Implements canonical FNV-1a-64 (offset basis
+`0xcbf29ce484222325`, prime `0x100000001b3`). For N less than 64,
+the low-N bits of the 64-bit accumulator are returned. Matches
+`hilavitkutin-str::const_fnv1a` semantics for the 28-bit content-hash
+case (which `ContentHash` aliases).
+
+```rust
+pub struct Fnv1a<const N: arvo::BitWidth>
+where Hot: UContainerFor<N>;
+
+impl<const N: arvo::BitWidth> Hasher<N> for Fnv1a<N>
+where Hot: UContainerFor<N>
+{
+    fn update(&mut self, bytes: &[u8]) { /* runtime FNV-1a-64, mask to N bits */ }
+    fn finalize(self) -> arvo_bits::Bits<N> { /* return masked accumulator */ }
+}
+
+impl<const N: arvo::BitWidth> Fnv1a<N>
+where Hot: UContainerFor<N>
+{
+    /// Compile-time entry point: hash a byte slice, mask to N bits.
+    pub const fn hash_const(bytes: &[u8]) -> arvo_bits::Bits<N> {
+        /* const-fn FNV-1a-64 + mask */
+    }
+}
+```
+
+The runtime trait impl and the const-fn entry point coexist; both
+compute the same algorithm. The const-fn variant is what compile-time
+validation downstream consumes (e.g. the hilavitkutin app-builder
+formalisation round, which gates `.build()` on per-store hash-set
+membership proven via `Fnv1a::<{ width_of(64) }>::hash_const`
+applied to `core::any::type_name::<T>()`).
+
+| Item | Form |
+|---|---|
+| Type | `pub struct Fnv1a<const N: arvo::BitWidth>` where `Hot: UContainerFor<N>` |
+| Runtime impl | `impl<const N: arvo::BitWidth> Hasher<N> for Fnv1a<N>` |
+| Const-fn entry | `pub const fn hash_const(bytes: &[u8]) -> arvo_bits::Bits<N>` |
+| ContentHash producer | `Fnv1a::<{ arvo::width_of(28) }>::hash_const(s.as_bytes())` |
+
+The `bytes: &[u8]` parameter shape matches what const-fn callers can
+produce (e.g. `core::any::type_name::<T>().as_bytes()`). Wrapping in
+a higher-level boundary stays out of scope for this round.
 
 ## Usage
 
@@ -108,7 +163,7 @@ the dep surface minimal.
 
 ## What this crate does NOT contain
 
-- Concrete hash algorithms (FNV, xxHash, CRC32); follow-up rounds.
+- Other concrete hash algorithms (xxHash, CRC32); follow-up rounds. Fnv1a ships in this crate.
 - Cryptographic hashes (SHA, BLAKE); out of scope entirely.
   A sibling arvo-crypto crate covers cryptographic needs if they
   surface.

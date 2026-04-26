@@ -4,4 +4,6 @@ Bit-level primitives for arvo numeric types. BitWidth, BitAccess,
 BitSequence trait contracts. Semantic aliases (Bit, Byte, Word, DWord,
 QWord). Blanket impls for all arvo fixed-point types. Opaque-bit
 concrete container (Bits, parameterised by const N) for fixed-width
-non-arithmetic identity values. `#![no_std]`, no alloc.
+non-arithmetic identity values. Bit-count const-generic positions take
+`BitWidth` from arvo L0; bare `u8` is not in the public surface.
+`#![no_std]`, no alloc.
