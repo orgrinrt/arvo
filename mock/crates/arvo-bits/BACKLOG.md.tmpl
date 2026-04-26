@@ -5,20 +5,6 @@
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
 
-## Cleanup of internal lint:allow(no-bare-numeric) annotations
-
-Many `lint:allow(no-bare-numeric)` and `lint:allow(arvo-types-only)`
-annotations exist today on `const N: u8` positions in this crate's
-source. Once the `BitWidth` migration lands, sweep these out
-position by position; the new const-generic parameter type makes them
-unnecessary.
-
-## Wider per-width aliases
-
-If 128-bit storage surfaces a need (`OWord = Bits<{ width_of(128) }, S>`),
-add when concrete demand appears. Today `QWord` (64 bits) is the
-maximum; pushing past requires the wider-Bits backing item below.
-
 ## Bits extensions
 
 - Wider backing for Bits (u128 storage, supporting N in 65..=128).

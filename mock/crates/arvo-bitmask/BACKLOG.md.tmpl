@@ -22,13 +22,3 @@ bitmasks) would let row-access algorithms live in arvo-bits and be
 reused across BitMatrix64 / 256 / any future backing. Not needed by
 current consumers (arvo-graph will use BitMatrix64 directly); add
 when a second consumer shape surfaces.
-
-## Internal source sweep for bare primitives
-
-Per workspace rule `.claude/rules/no-bare-primitives.md` and round
-202604500000, replace bare `u8` / `u16` / `u32` / `u64` / `i*` / `usize`
-in non-exception positions with arvo aliases (`Uint8` / `Uint16` /
-`Uint32` / `Uint64` / `Int*` / `USize`). Exception positions
-(definition-site bottom-outs) stay bare; everything else migrates.
-Tracked as a follow-up sweep once the upstream arvo / arvo-bits /
-arvo-hash migrations land.

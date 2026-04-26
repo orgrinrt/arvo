@@ -20,13 +20,3 @@ support >64 flags per group. Common pipeline workloads per
 polka-dots T5 research stay well under 64 flags, so this is a
 non-urgent widening.
 
-
-## Internal source sweep for bare primitives
-
-Per workspace rule `.claude/rules/no-bare-primitives.md` and round
-202604500000, replace bare `u8` / `u16` / `u32` / `u64` / `i*` / `usize`
-in non-exception positions with arvo aliases (`Uint8` / `Uint16` /
-`Uint32` / `Uint64` / `Int*` / `USize`). Exception positions
-(definition-site bottom-outs) stay bare; everything else migrates.
-Tracked as a follow-up sweep once the upstream arvo / arvo-bits /
-arvo-hash migrations land.
