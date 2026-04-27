@@ -1,22 +1,29 @@
-# arvo-bits — Design
+# arvo-bits. Design
 
-Bit-level primitive crate. Sits between arvo (numeric primitives) and
-arvo-bitmask (fixed-width mask types). Ships two kinds of surface:
+Bit-level **implementation** crate. Per round 202604271346, the trait
+declarations moved to `arvo-bits-contracts`; this crate now hosts the
+concrete blanket impls of `HasBitWidth`, `BitAccess`, `BitSequence`,
+`BitLogic`, `BitPrim`, `UBitContainer`, `IBitContainer` on `Bits<N, S>`
+(from `arvo-storage`) and on the bare primitive containers (`u8`,
+`u16`, `u32`, `u64`, `i8`..`i64`). Hosts the bit-storage aliases
+(`Bit`, `Nibble`, `Byte`, `Word`, `DWord`, `QWord`) as typed
+`Bits<N, Hot>` newtypes. Hosts concrete impls of the `Predicate`
+family (declared in `arvo-numeric-contracts`) over the bit-storage
+aliases.
 
-- **Contracts** — traits for bit-width introspection (`HasBitWidth`),
-  individual bit manipulation (`BitAccess`), bit-sequence scanning and
-  popcount (`BitSequence`), and whole-word bitwise logic (`BitLogic`),
-  with concrete blanket impls so all arvo L0 primitives are
-  bit-accessible.
+The trait surface itself (declarations + their default-method bodies)
+lives in `arvo-bits-contracts`. Consumers that bound on the trait
+surface depend on the contract crate; consumers that need the
+concrete blanket dispatch reach this crate transitively via the
+`arvo` facade re-exports.
 
-Post round 202604500000, arvo-bits is a contracts-only crate. The
-`Bits<const N: u8, S>` storage primitive, the bit-size aliases
-(`Bit`, `Nibble`, `Byte`, `Word`, `DWord`, `QWord`), and the
-`Bitfield` primitive (with its `bitfield!` macro) all live in arvo
-L0. Consumers that previously imported `arvo_bits::Bits`,
-`arvo_bits::Byte`, `arvo_bits::bitfield!`, etc., update to `arvo::*`.
-Mask concretes (`Mask64`, `Mask256`, `BitMatrix`) still belong in L2
-arvo-bitmask.
+Mask concretes (`Mask64`, `Mask256`, `BitMatrix`) live in
+`arvo-bitmask`. The `Narrow<T>` concrete impls live in `arvo-narrow`.
+
+`#![no_std]`, no alloc.
+
+Depends on `arvo-storage`, `arvo-bits-contracts`,
+`arvo-numeric-contracts`. No other workspace deps.
 
 `#![no_std]`, no alloc.
 

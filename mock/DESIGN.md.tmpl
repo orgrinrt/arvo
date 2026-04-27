@@ -1,74 +1,120 @@
-# arvo — Architecture Design
+# arvo. Architecture Design
 
-> Numeric primitives + analysis algorithms with Hot/Warm/Cold/Precise
-> strategy markers. `#![no_std]`, no alloc. Zero dependency on
-> platform. Extracted from polka-dots/hilavitkutin consolidation work
-> so all consumers (hilavitkutin, loimu, saalis, clause, polka-dots)
-> share one substrate.
+> Numeric primitives + analysis algorithms with Hot / Warm / Cold /
+> Precise strategy markers. `#![no_std]`, no alloc. Zero dependency
+> on platform. Extracted from polka-dots / hilavitkutin consolidation
+> so all consumers (hilavitkutin, loimu, saalis, clause-dev's
+> language stack, polka-dots) share one substrate.
 
 ## Principles
 
-1. **Strategy-parameterised primitives** — numeric containers declared
-   at type level as Hot/Warm/Cold/Precise, driving storage width +
-   codegen choices without runtime dispatch.
-2. **no_std, no alloc**. The entire substrate is const-sized. Consumers
-   pre-allocate; arvo never calls into an allocator.
-3. **Trait contracts, not concrete types** — sub-crates generic over
-   numeric trait bounds so downstream code picks its own concrete
-   instantiations.
-4. **Monomorphisation is the dispatch**. No dyn, no TypeId. The
+1. **Strategy-parameterised primitives.** Numeric containers declared
+   at type level as `Hot` / `Warm` / `Cold` / `Precise`, driving
+   storage width and codegen choices without runtime dispatch.
+2. **no_std, no alloc.** The entire substrate is const-sized.
+   Consumers pre-allocate; arvo never calls into an allocator.
+3. **Trait contracts, not concrete types.** Sub-crates generic over
+   trait bounds so downstream code picks its own concrete
+   instantiations. Trait declarations live in dedicated contract
+   crates (small transitive dependency footprint per consumer).
+4. **Monomorphisation is the dispatch.** No `dyn`, no `TypeId`. The
    monomorphised function IS the type identity.
+5. **Const-trait-driven.** Per round 202604271346, every trait whose
+   methods are sensibly callable in const context is `pub const trait`
+   (RFC 3762 line). Trait projections work in const fn bodies; default
+   bodies stay reachable from const generic positions.
 
-## Crate layers
+## Crate topology
 
-| Layer | Crate | What it does |
-|-------|-------|--------------|
-| L0 | arvo | Numeric primitives, UFixed/IFixed, Hot/Warm/Cold/Precise strategies, semantic aliases |
-| L1 | arvo-bits | Bit-level primitives: BitWidth / BitAccess / BitSequence / BitLogic contracts, semantic bit aliases, opaque-bit Bits container for fixed-width non-arithmetic identities |
-| L2 | arvo-bitmask | Fixed-width Mask64/Mask256, bit-matrix, set ops (on arvo-bits contracts) |
-| L2 | arvo-tensor | Rank-N typed tensor wrappers: Array<T, N>, Matrix<W, N>; cap_size bridge; Enumerator trait for USize-indexed iteration |
-| L2 | arvo-hash | Hash-domain types (ContentHash alias over arvo-bits Bits) + streaming Hasher / HasherExt algorithm contracts |
-| L2 | arvo-sparse | Sparse matrix: CSR, RCM, block diagonal, Dulmage-Mendelsohn |
-| L2 | arvo-graph | DAG algorithms: topo sort, upward rank, waist detection |
-| L2 | arvo-comb | Combinatorial optimisation: DP, greedy grouping, bin-packing |
-| L3 | arvo-spectral | Spectral methods: Laplacian, power iteration, Fiedler, bisection |
+Per round 202604271346, the substrate splits into a layered set of
+small crates with a downstream facade. Dependency direction runs
+strictly upward; the facade sits at the bottom.
 
-## Dependency graph
+| Layer | Crate | What it ships |
+|---|---|---|
+| L0a | `arvo-transparent` | `Transparent` const unsafe trait. `NumericPrimitive` marker. Free `arvo::raw` const fn. |
+| L0a | `arvo-strategy` | `Strategy` marker, `Hot` / `Warm` / `Cold` / `Precise` ZSTs, `UContainerFor<N>` and `IContainerFor<N>` const traits, `Resolve<S1, S2>`. |
+| L0  | `arvo-storage` | `Bits<N, S>` storage primitive. `Bool`, `USize` platform wrappers. `IBits`, `FBits`, `Width` typed meta-bit newtypes. |
+| L0.5 | `arvo-bits-contracts` | `HasBitWidth`, `BitAccess`, `BitSequence`, `BitLogic`, `BitPrim`, `UBitContainer`, `IBitContainer` (all `pub const trait`). |
+| L0.5 | `arvo-mask-contracts` | `Mask<W>` const trait. |
+| L0.5 | `arvo-narrow-contracts` | `Narrow<T>` const trait, `Narrowed<N, T>` alias. |
+| L0.5 | `arvo-numeric-contracts` | `Abs`, `Recip`, `Sqrt`, `TotalOrd`, `FromConstant`, `Predicate` family (all `pub const trait`). |
+| L1  | `arvo-bits` | Concrete blanket impls of bit-level traits on `Bits<N, S>` and bare primitives. Bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`, `QWord`). |
+| L1  | `arvo-bitmask` | `Mask64`, `Mask256`, `BitMatrix` concrete masks. `Mask<W>` impls. |
+| L1  | `arvo-narrow` | Concrete `Narrow<T>` impls per source / target primitive pair. |
+| L1  | `arvo-tensor` | `Array<T, N>`, `Matrix<W, N>`, `Cap`, `Enumerator`. |
+| L2  | `arvo-hash` | `Hasher<N>` const trait, `Fnv1a<N>`, `ContentHash` alias. |
+| L2  | `arvo-graph` | DAG algorithms. |
+| L2  | `arvo-sparse` | CSR, RCM, block-diagonal, Dulmage-Mendelsohn. |
+| L2  | `arvo-comb` | Combinatorial optimisation. |
+| L3  | `arvo-spectral` | Laplacian, Fiedler, power iteration. |
+| facade | `arvo` | Re-exports public surface. Hosts `UFixed<I, F, S>` and `IFixed<I, F, S>` as `repr(transparent)` newtypes over `Bits`. Defines `Int<N, S>` / `Uint<N, S>` and the eight std-parallel canonical aliases. Hosts default impls of the numeric-contract traits. Floats (`FastFloat`, `StrictFloat`) and `Cap<N>` live here too. |
 
-```
-arvo            (no deps)
-  └─ arvo-bits            (deps: arvo)
-       ├─ arvo-bitmask    (deps: arvo-bits)
-       └─ arvo-hash       (deps: arvo-bits)
-  ├─ arvo-tensor          (deps: arvo)
-  ├─ arvo-sparse          (deps: arvo, arvo-bitmask, arvo-tensor)
-  ├─ arvo-graph           (deps: arvo, arvo-bitmask, arvo-tensor)
-  ├─ arvo-comb            (deps: arvo, arvo-bitmask, arvo-tensor)
-  └─ arvo-spectral        (deps: arvo, arvo-sparse, arvo-tensor)
-```
+## Trait-contract crates
+
+The split into six contract crates (`arvo-transparent`,
+`arvo-strategy`, `arvo-bits-contracts`, `arvo-mask-contracts`,
+`arvo-narrow-contracts`, `arvo-numeric-contracts`) optimises
+transitive dependency *size*, not count. A consumer that only needs
+the bit-access surface depends on `arvo-bits-contracts` plus
+`arvo-storage`, not on `arvo-bitmask` or `arvo-tensor`. The
+implementation crates pull only what they implement.
+
+The split is a starting structure. During DOC iteration of round
+202604271346, an import-set audit identifies any contract-crate
+pairs where 100% of consumers need both; those pairs merge.
+
+## The arvo facade
+
+`arvo` is the bottom of the dependency graph. Every other workspace
+crate is upstream. The facade re-exports the public surface:
+`Bits<N, S>`, the strategy markers, `Bool`, `USize`, `IBits` /
+`FBits` / `Width`, the contract traits, the mask types, the narrow
+trait, the hash types, the tensor types, the algorithm crate publics.
+
+The facade itself defines:
+
+- `UFixed<I, F, S>` and `IFixed<I, F, S>`: `repr(transparent)`
+  newtypes over `Bits<{I+F}, S>` and `Bits<{1+I+F}, S>`. Arithmetic
+  via const trait impls of `Add` / `Sub` / `Mul` / `Div` / `Recip` /
+  `Sqrt`, not via direct field manipulation.
+- `Int<const N: u8, S = Warm>` and `Uint<const N: u8, S = Warm>`:
+  ergonomic typed aliases. N is total storage bit count (std-parallel
+  semantics: `Int<8>` matches `i8`, `Uint<32>` matches `u32`).
+- Eight canonical aliases: `Uint8`, `Uint16`, `Uint32`, `Uint64`,
+  `Int8`, `Int16`, `Int32`, `Int64`. All other per-N spellings
+  (`Uint5`, `Int13`, etc.) are deleted per Q-D; consumers use the
+  generic form.
+- `FastFloat`, `StrictFloat` (unchanged this round).
+- `Cap<N>` (unchanged this round).
+- Default impls of the numeric-contract traits over the composed
+  types.
+
+## Dependency direction
+
+Strictly upward. Each lower-layer crate names only crates above it
+(or no workspace deps for L0a). The facade names every other crate.
 
 ## Consumers
 
 arvo is designed to be consumed by:
 
-- **hilavitkutin** — pipeline execution engine (primary consumer;
-  uses arvo-graph for plan-stage DAG analysis, arvo-bitmask for
-  AccessMask, arvo-sparse for RCM reordering, arvo-spectral for
-  trunk formation, arvo-comb for fiber grouping).
-- **clause** — language toolchain (uses arvo-graph for pass DAG,
-  arvo-bitmask for artifact read/write sets).
+- **hilavitkutin**: pipeline execution engine. Uses `arvo-graph` for
+  plan-stage DAG analysis, `arvo-bitmask` for `AccessMask`,
+  `arvo-sparse` for RCM reordering, `arvo-spectral` for trunk
+  formation, `arvo-comb` for fiber grouping.
+- **vehje** (the clause-dev language stack): uses `arvo-graph` for
+  pass DAG, `arvo-bitmask` for artifact read/write sets, `arvo-hash`
+  for content fingerprints.
 - **loimu, polka-dots, saalis**: miscellaneous numeric needs plus
   whatever hilavitkutin transitively exposes.
 
 ## See also
 
 - Per-crate DESIGN under `crates/*/DESIGN.md.tmpl`.
-- `design_rounds/` — strategy-markers consolidation, strategy-aliases,
-  crate-dependency-revision, changelist.
-- `research/`: benchmarks, prior-art research.
-
-## Stability
-
-This repo is the extracted substrate. Design is mature enough to
-implement L0 + L1 now (arvo + arvo-bits + arvo-bitmask). L2+ crates
-ship after hilavitkutin exercises them.
+- `design_rounds/`: round artefacts. Round 202604271346 (active) is
+  the const-traits + arvo-as-facade restructure. Round 202604500000
+  was deprecated mid-execution when the unified-API direction outgrew
+  its scope.
+- `research/`: benchmarks, prior-art research, the strategy-bound
+  trilemma analysis.
