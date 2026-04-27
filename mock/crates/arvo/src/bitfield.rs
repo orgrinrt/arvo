@@ -32,7 +32,7 @@
 //! Example:
 //!
 //! ```ignore
-//! use arvo_bits::bitfield;
+//! use arvo::bitfield;
 //!
 //! bitfield! {
 //!     /// 32-bit interned string handle.
