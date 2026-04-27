@@ -1,9 +1,28 @@
-# arvo — backlog
+# arvo. backlog
 
 > **Type-surface reminder**: new entries use `arvo::USize` /
 > `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
+
+## Round 202604271346 forward-looking entries
+
+The const-traits-and-arvo-as-facade restructure parks several
+follow-up items here for future rounds:
+
+- **Cold strategy bitpacking and widths beyond 64.** `Bits<N, Cold>`
+  for N > 64 with bitpacked storage across multiple bare primitives.
+  Out of scope for round 202604271346.
+- **`feature(implied_bounds)` adoption.** Tracked: rust-lang/rust#44491.
+  Unblocks the trilemma's bound-restatement constraint when stabilised.
+  Future round.
+- **Algorithm crate refactors beyond import-path adjustments.** The
+  current round only updates dep wiring. Genuine algorithm changes
+  (matrix ops, additional graph algorithms) wait for separate rounds.
+- **Push-gate deprecation-comparison polish.** Round 202604271346's
+  doc CL leaves push-gate advisories asking for exhaustive type
+  acknowledgment from the deprecated round 202604500000 CL. Resolved
+  during DOC iteration before lock or accepted as advisory.
 
 Items researched and decided but deliberately out of the current
 shipping scope. Preserved here so a future round (or consumer) can
