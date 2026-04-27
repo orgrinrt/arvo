@@ -1,10 +1,15 @@
 # arvo-bits-contracts. Design
 
 The bit-level trait declarations. Every trait here is `pub const trait`.
-Default-method bodies reference `Bits<N, S>` and the bare primitive
-containers; consumer call sites pull this crate to bind to the trait
-surface, then reach the concrete impls in `arvo-bits` via blanket
-dispatch. `#![no_std]`, no alloc.
+Default-method bodies reference `Bits<N, S, Sign>` and the bare
+primitive containers; consumer call sites pull this crate to bind to
+the trait surface, then reach the concrete impls in `arvo-bits` via
+blanket dispatch. `#![no_std]`, no alloc.
+
+The Sign axis on `Bits<N, S, Sign>` (round 202604280500) is invisible
+at the trait surface; bit-level operations act on raw bit patterns
+which are sign-agnostic by construction. Default `Sign = Unsigned` at
+the Bits surface keeps existing call sites unchanged.
 
 Depends on `notko`, `arvo-transparent`, `arvo-strategy`, `arvo-storage`.
 
@@ -91,9 +96,11 @@ pub const trait IBitContainer<const N: u8> {
 ```
 
 The primitive-bridge family. `BitPrim` is the sealed surface that
-`u8`, `u16`, `u32`, `u64` (and signed counterparts) implement, used
-by blanket impls in `arvo-bits` to delegate from
-`Bits<N, S>::to_raw()` to the primitive's bit method, then
+`u8`, `u16`, `u32`, `u64`, `u128` (and signed counterparts through
+`i128`) implement, plus `MultiContainer<HiT, LoT>` for the multi-value
+storage shape at logical widths beyond a single native primitive
+(round 202604280500). Used by blanket impls in `arvo-bits` to delegate
+from `Bits<N, S, Sign>::to_raw()` to the primitive's bit method, then
 `Bits::from_raw(...)` wraps the result. Const trait throughout.
 
 ## Narrow

@@ -26,10 +26,9 @@ of the substrate, not the L0 layer. The dependency graph runs:
 6. `arvo` (this crate): the facade. Re-exports the public surface,
    hosts default impls, defines `Int<N, S>` / `Uint<N, S>` generic
    aliases, hosts `UFixed<I, F, S>` as a `repr(transparent)` newtype
-   over `Bits`. `IFixed<I, F, S>` is currently a direct projection
-   wrapper (with `PhantomData<fn() -> S>` companion); the symmetric
-   reshape over `Bits<{1+I+F}, S, Signed>` lands in a follow-up round
-   alongside the `Sign` axis on `Bits`.
+   over `Bits<{I+F}, S, Unsigned>`. `IFixed<I, F, S>` is the symmetric
+   `repr(transparent)` newtype over `Bits<{1+I+F}, S, Signed>`,
+   shipped in round 202604280500 alongside the Sign axis on Bits.
 
 The deep sections below describe the round-by-round state of the
 types this facade re-exports. The facade's own job is to be the
@@ -37,9 +36,11 @@ single import-path entry point for downstream consumers and the home
 of the default trait impls. New types defined in `arvo` itself
 (post-round-202604280034) are limited to:
 
-- `UFixed<I, F, S>` (repr(transparent) newtype over `Bits`).
-- `IFixed<I, F, S>` (direct projection wrapper; reshapes over `Bits`
-  with the Sign axis in a follow-up round).
+- `UFixed<I, F, S>` (repr(transparent) newtype over
+  `Bits<{I+F}, S, Unsigned>`).
+- `IFixed<I, F, S>` (repr(transparent) newtype over
+  `Bits<{1+I+F}, S, Signed>`, symmetric counterpart shipped in round
+  202604280500).
 - `Int<const N: u8, S = Warm>`, `Uint<const N: u8, S = Warm>`
   generic aliases. **No std-parallel per-N aliases.** Per the
   exact-width discipline, `Uint8` / `Uint16` / `Uint<N>` etc are
@@ -56,10 +57,16 @@ Everything else is re-exported via `pub use`.
 The `Int<N, S>` / `Uint<N, S>` semantic convention: **N is total
 storage bit count.** `Int<8>` matches the i8-shaped logical width
 (1 sign + 7 integer bits internally). `Uint<32>` matches the
-u32-shaped logical width (32 magnitude bits). The current cap is
-`N <= 64` enforced via `Hot: UContainerFor<N>` (or `Warm` / `Precise`
-for narrower bands); a follow-up round extends to `N <= 256` via
-container-table extension and multi-value containers above 128 bits.
+u32-shaped logical width (32 magnitude bits). The cap on UFixed /
+IFixed (and so on `Uint<N, S>` / `Int<N, S>`) is `N <= 128` post round
+202604280500: native `u128` / `i128` carry the 65..=128 range, and the
+substrate's full 1..=128 logical width is reachable across all four
+strategies (subject to per-strategy projection rules in
+`arvo-strategy`). The substrate's storage-only `Bits<N, S, Sign>`
+extends further to `N <= 256` via `MultiContainer<HiT, LoT>`;
+arithmetic on multi-value containers (UArith / IArith dispatch on
+MultiContainer) is BACKLOG-tracked for a follow-up round, so UFixed /
+IFixed at 129..=256 await that bridge before they compile.
 
 ```rust
 pub type Uint<const N: u8, S = Warm> = UFixed<{ ibits(N) }, { fbits(0) }, S>;
@@ -128,21 +135,26 @@ arvo wraps Rust primitives used in public APIs. All are
 ```rust
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
-pub struct IBits(pub Bits<7, Hot>);  // integer bit count
+pub struct IBits(pub Bits<9, Hot>);  // integer bit count
 
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
-pub struct FBits(pub Bits<7, Hot>);  // fractional bit count
+pub struct FBits(pub Bits<9, Hot>);  // fractional bit count
 ```
 
-`IBits` and `FBits` wrap `Bits<7, Hot>` (the L0 storage primitive at
-7 bits, sufficient for `0..=127`), not bare `u8`. The single
-bottom-out point for `u8` const-generics is `Bits<const N: u8, S>`
-itself; meta-layer types (`IBits`, `FBits`, `Width`) lift to typed
-fields above it. The `from_raw_u8` constructor on `Bits<7, Hot>`
-masks input to 7 bits, ensuring two `IBits` values constructed from
-`135` and `7` compare structurally equal under `ConstParamTy`
-(critical for soundness on the meta layer).
+`IBits` and `FBits` wrap `Bits<9, Hot>` (the L0 storage primitive at
+9 bits, sufficient for `0..=256` with one bit wasted), not bare `u8`.
+The carrier widened from `Bits<7, Hot>` (0..=127 native) to
+`Bits<9, Hot>` (0..=511 native; 0..=256 used) in round 202604280500
+to support the substrate's bit-width cap rising from 128 to 256. The
+single bottom-out point for `u8` const-generics is
+`Bits<const N: u8, S, Sign>` itself; meta-layer types (`IBits`,
+`FBits`, `Width`) lift to typed fields above it. The `from_raw`
+constructor on `Bits<9, Hot>` accepts `u16`-typed input (the
+underlying container at N=9); two `IBits` values constructed from
+512 and 0 (which masks to 0 if Bits enforces width-mask on
+construction) compare structurally equal under `ConstParamTy` per the
+meta-layer soundness contract.
 
 Requires `adt_const_params` (nightly). Prevents accidentally
 swapping integer and fractional bit counts at type definition sites.
@@ -154,7 +166,7 @@ Consumer code defines its own semantic aliases over `UFixed` /
 ```rust
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
-pub struct Width(pub Bits<7, Hot>);  // bit-width meta value (1..=128)
+pub struct Width(pub Bits<9, Hot>);  // bit-width meta value (0..=256)
 ```
 
 The bit-width meta-newtype. Used as the const-generic param type for
@@ -162,7 +174,9 @@ The bit-width meta-newtype. Used as the const-generic param type for
 and any other API that takes a logical bit-width as a typed const
 value. The L0 storage primitive `Bits` itself keeps its `const N:
 u8` parameter as the irreducible root of the const-generic tower
-(workspace-rule exception #2); `Width` lifts above that root.
+(workspace-rule exception #2); `Width` lifts above that root. The
+`Bits<9, Hot>` carrier (round 202604280500) covers the substrate's
+0..=256 logical-width range.
 
 The name avoids collision with the `arvo_bits::HasBitWidth` trait
 (L1 contract layer; "this type has a bit width").
@@ -469,36 +483,41 @@ on current nightly). The helpers' bodies wrap / unwrap exactly once.
 
 ## Numeric aliases
 
-Domain-default aliases over `UFixed` / `IFixed` at canonical widths.
-Strategy default is `Warm` where Warm is valid (`I + F <= 32`); above
-that, the alias requires explicit strategy or fails compilation with
-a `UContainerFor`-bound error pointing the consumer at strategy
-choice (via the `#[diagnostic::on_unimplemented]` attribute on
-`UContainerFor`).
+The substrate ships exactly four numeric alias forms, all generic over
+the bit-count parameter. No std-parallel per-N aliases.
 
 ```rust
-pub type Uint5<S = Warm>  = UFixed<{ ibits(5) },  { fbits(0) }, S>;
-pub type Uint6<S = Warm>  = UFixed<{ ibits(6) },  { fbits(0) }, S>;
-pub type Uint7<S = Warm>  = UFixed<{ ibits(7) },  { fbits(0) }, S>;
-pub type Uint8<S = Warm>  = UFixed<{ ibits(8) },  { fbits(0) }, S>;
-pub type Uint16<S = Warm> = UFixed<{ ibits(16) }, { fbits(0) }, S>;
-pub type Uint32<S = Warm> = UFixed<{ ibits(32) }, { fbits(0) }, S>;
-pub type Uint64<S>        = UFixed<{ ibits(64) }, { fbits(0) }, S>;
-// Uint64 has no Warm default; Uint64<Hot> or Uint64<Precise>.
+pub type Fixed<const I: u8, const F: u8, S = Warm>
+    = UFixed<{ ibits(I) }, { fbits(F) }, S>;
 
-pub type Int7<S = Warm>   = IFixed<{ ibits(7) },  { fbits(0) }, S>;
-pub type Int8<S = Warm>   = IFixed<{ ibits(8) },  { fbits(0) }, S>;
-pub type Int13<S = Warm>  = IFixed<{ ibits(13) }, { fbits(0) }, S>;
-pub type Int16<S = Warm>  = IFixed<{ ibits(16) }, { fbits(0) }, S>;
-pub type Int32<S = Warm>  = IFixed<{ ibits(32) }, { fbits(0) }, S>;
-pub type Int64<S>         = IFixed<{ ibits(64) }, { fbits(0) }, S>;
-// Int64 has no Warm default for the same reason as Uint64.
+pub type Signed<const I: u8, const F: u8, S = Warm>
+    = IFixed<{ ibits(I) }, { fbits(F) }, S>;
+
+pub type Uint<const N: u8, S = Warm>
+    = UFixed<{ ibits(N) }, { fbits(0) }, S>;
+
+pub type Int<const N: u8, S = Warm>
+    = IFixed<{ ibits(N - 1) }, { fbits(0) }, S>;
 ```
 
-Exact-width aliases name the value the domain wants. A `0..=127`
-counter is `Uint7`, not `u8`. The container picks itself via
-`Strategy + UContainerFor`. Consumers add their own semantic aliases
-on top (`pub type NodeId = Uint32;` etc.).
+Round 202604271346 pass 7 deleted the bulk of the per-N aliases
+(`Uint5` / `Uint6` / `Uint7` / `Int7` / `Int13`). Round 202604280034
+deleted the std-parallel survivors (`Uint8` / `Uint16` / `Uint32` /
+`Uint64` / `Int8` / `Int16` / `Int32` / `Int64`) to lock in the
+exact-width discipline. The substrate is built around exact-bit-count
+thinking; std-parallel sugar reintroduces bucket thinking that the
+substrate's central premise rejects. Consumers express domain widths
+directly (`Uint<13, Warm>`, `Uint<28, Hot>`, `Int<8, Hot>`) and define
+their own semantic aliases on top
+(`pub type NodeId = arvo::Uint<32, Hot>;`).
+
+Strategy default is `Warm` where Warm is valid (`I + F <= 64` post
+round 202604280500); for `I + F > 64` (Warm's BACKLOG-tracked extension
+to 128 awaits the no-native-u256 design call), the consumer picks Hot
+or Precise explicitly. The
+`#[diagnostic::on_unimplemented]` attribute on `UContainerFor` points
+at strategy choice when an out-of-range `(N, S)` pair fails to
+resolve.
 
 ## Type family marker traits
 
@@ -565,48 +584,45 @@ stability; design intent is clear, src CL resolves the mechanism.
 ```rust
 #[repr(transparent)]
 pub struct UFixed<const I: IBits, const F: FBits, S: Strategy>(
-    Bits<{ ufixed_bits(I, F) }, S>,
+    Bits<{ ufixed_bits(I, F) }, S, Unsigned>,
 )
 where
     S: UContainerFor<{ ufixed_bits(I, F) }>;
 
 #[repr(transparent)]
-pub struct IFixed<const I: IBits, const F: FBits, S: Strategy> {
-    bits: <S as IContainerFor<{ ifixed_bits(I, F) }>>::T,
-    _s: PhantomData<fn() -> S>,
-}
+pub struct IFixed<const I: IBits, const F: FBits, S: Strategy>(
+    Bits<{ ifixed_bits(I, F) }, S, Signed>,
+)
+where
+    S: IContainerFor<{ ifixed_bits(I, F) }>;
 ```
 
 `I` = integer bits, `F` = fractional bits. `S` = strategy marker
 (no struct-level default; the strategy default lives at the alias
 layer, e.g. `pub type Uint<const N: u8, S = Warm> = UFixed<{
 ibits(N) }, { fbits(0) }, S>`). `I.0 + F.0` is the logical bit
-width. The actual storage width depends on the strategy.
+width for UFixed; `1 + I.0 + F.0` is the logical bit width for IFixed
+(the sign bit is implicit in the `Bits<{1+I+F}, S, Signed>` storage
+shape). The actual storage width depends on the strategy.
 
 The struct-level `S = Warm` default was dropped in round
 202604500000 (foundations restructure). Two sources of Warm-default
 (struct-level + alias-level) created drift risk; the alias layer is
 now the single source.
 
-`UFixed` is a `repr(transparent)` newtype over `Bits<{I+F}, S>` per
-round 202604271346 pass 4b. Every UFixed instance is byte-identical
-to a `Bits<N, S>` of matching width, which is byte-identical to the
-strategy-dispatched primitive container.
+`UFixed` is a `repr(transparent)` newtype over
+`Bits<{I+F}, S, Unsigned>` per round 202604271346 pass 4b. Every
+UFixed instance is byte-identical to a `Bits<N, S, Unsigned>` of
+matching width, which is byte-identical to the strategy-dispatched
+primitive container.
 
-**`IFixed` is currently a direct projection wrapper.** It carries
-its container as a named field (`bits: <S as IContainerFor<...>>::T`)
-plus a `PhantomData<fn() -> S>` companion to anchor the strategy
-parameter. `repr(transparent)` is preserved because `PhantomData` is
-a ZST. `IFixed` does NOT yet wrap `Bits` symmetrically with `UFixed`.
-
-The symmetric reshape (IFixed-over-Bits) is deferred to a follow-up
-round and tracked in `BACKLOG.md`. The blocker is design: `Bits<N, S>`
-currently wraps the unsigned container; `IFixed` needs the signed
-container. The reshape introduces a `Sign` const-generic axis on
-`Bits` (`Bits<N, S, Sign = Unsigned>`), with `IFixed` then wrapping
-`Bits<{1+I+F}, S, Signed>`. Once the Sign axis lands, IFixed's field
-shape collapses to a single Bits-typed field and `Transparent` impls
-extend symmetrically.
+`IFixed` is the symmetric `repr(transparent)` newtype over
+`Bits<{1+I+F}, S, Signed>`, shipped in round 202604280500 alongside
+the Sign axis on `Bits`. The previous direct-projection-wrapper shape
+(named `bits` field plus `PhantomData<fn() -> S>` companion) is gone.
+Both UFixed and IFixed now share the single-field `Bits`-wrapped
+shape with sign-aware container projection through
+`BitsContainerFor<N, Sign>`.
 
 After compilation, every arvo type resolves to the optimal integer
 instruction for the target regardless of which shape its source
@@ -725,19 +741,28 @@ unacceptable.
 
 | I + F | Hot | Warm | Cold | Precise |
 |---|---|---|---|---|
-| 1-8 | u8 | u16 | bitpacked | u16 |
-| 9-16 | u16 | u32 | bitpacked | u32 |
-| 17-32 | u32 | u64 | bitpacked | u64 |
-| 33-64 | u64 | *unavailable* | bitpacked | u64 (saturating) |
+| 1-8 | u8 | u16 | u8 (bitpacked at access) | u16 |
+| 9-16 | u16 | u32 | u16 (bitpacked at access) | u32 |
+| 17-32 | u32 | u64 | u32 (bitpacked at access) | u64 |
+| 33-64 | u64 | u128 | u64 (bitpacked at access) | u128 (saturating) |
+| 65-128 | u128 | (BACKLOG: 2x logical needs no native u256) | u128 (bitpacked at access) | (BACKLOG: same as Warm) |
+| 129-256 | `MultiContainer` (storage-only, this round) | (BACKLOG) | `MultiContainer` (storage-only) | (BACKLOG) |
 
-No u128 containers. I + F <= 64 for UFixed, 1 + I + F <= 64 for
-IFixed. Warm is a compile-time error at I + F > 32 (no u128 container
-means Warm cannot offer its 2x safety; rather than degrade silently,
-Warm is forbidden at those widths — pick Hot or Precise).
+UFixed / IFixed at logical width 1..=128 are the shipping-arithmetic
+range in round 202604280500. Bits at 129..=256 ships storage shape
+only (`MultiContainer<HiT, LoT>` per the strategy projection in
+arvo-strategy); UFixed / IFixed at those widths await UArith / IArith
+dispatch on `MultiContainer`, BACKLOG-tracked for a follow-up round.
+
+The Warm cap shifted from 32 to 64 in round 202604280500 (one band
+extension via native `u128`). The BACKLOG-tracked extension to
+65..=256 awaits the no-native-u256 design call: Warm's 2x logical
+safety contract collapses without a 256-bit primitive, so the round
+defers rather than compromise the contract.
 
 IFixed follows the same widening rules with signed containers (i8,
-i16, i32, i64). Signed saturation clamps to the logical range
-(i_MIN..i_MAX), not the container range.
+i16, i32, i64, i128, signed `MultiContainer`). Signed saturation
+clamps to the logical range (i_MIN..i_MAX), not the container range.
 
 ## Strategy comparison
 
@@ -792,10 +817,10 @@ implements `UContainerFor<N>` for the bit-counts it supports:
 
 | Strategy | Supported bit range | Notes |
 |---|---|---|
-| `Hot` | `1..=64` | Full range. |
-| `Warm` | `1..=32` | Warm cap. Above 32 is unimplemented and surfaces a compile-time error. |
-| `Cold` | `1..=64` | Bitpacked storage; widths beyond 64 are tracked in BACKLOG. |
-| `Precise` | `1..=64` | Arbitrary-width carrier inside the `<= 64` band. |
+| `Hot` | `1..=128` (single primitive); `129..=256` via `MultiContainer<HiT, LoT>` | Full range. UFixed / IFixed shipping-arithmetic cap at 128 in this round; storage-only Bits extends to 256. |
+| `Warm` | `1..=64` (single primitive `u128` for 33..=64) | Warm cap shifted from 32 to 64 in round 202604280500. Wider widths BACKLOG-tracked. |
+| `Cold` | `1..=128` (single primitive); `129..=256` via `MultiContainer<HiT, LoT>` | Same shape as Hot; bitpacking is column-store concern at access time. |
+| `Precise` | `1..=64` (single primitive); BACKLOG for 65..=256 | Saturating ops. 2x-logical rule mirrors Warm. |
 
 The `BITS: u8` parameter is workspace-rule exception #2 (storage-
 primitive const-generic at the L0 root); meta-layer types (`Width`,
@@ -808,15 +833,14 @@ human-readable terms instead of an obscure trait-bound failure:
 ```rust
 #[diagnostic::on_unimplemented(
     message = "strategy `{Self}` does not provide a container for {BITS}-bit width",
-    note = "Warm caps at I+F<=32; for wider widths, choose Hot or Precise explicitly: `Uint64<Hot>`, `Uint64<Precise>`, etc.",
+    note = "Warm caps at I+F<=64 in this round; for wider widths, choose Hot (single primitive at 65..=128, MultiContainer at 129..=256) or wait for the Warm-extension BACKLOG follow-up: e.g. `Uint<128, Hot>`, `Uint<256, Hot>`.",
 )]
 pub trait UContainerFor<const BITS: u8>: Strategy { type T: ...; }
 ```
 
-The same diagnostic attribute applies to `IContainerFor`. The Warm-
-default-Uint64 case (alias `Uint64<S = Warm>` with no explicit S)
-fires `UContainerFor<64> not implemented for Warm`; the diagnostic
-message names the strategy and the path to a fix.
+The same diagnostic attribute applies to `IContainerFor`. Out-of-range
+`(N, S)` pairs surface a one-glance message naming the strategy and
+the path to a fix.
 
 ### ConstParamTy on strategy markers
 
