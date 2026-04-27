@@ -17,8 +17,9 @@
 //! traits.
 
 pub use arvo_strategy::{
-    Cold, Hot, IArith, IContainerFor, INarrowFrom, ISaturating, IWidenFrom, Precise, Resolve,
-    Strategy, UArith, UContainerFor, UNarrowFrom, USaturating, UWidenFrom, Warm,
+    BitsContainerFor, Cold, Hot, IArith, IContainerFor, INarrowFrom, ISaturating, IWidenFrom,
+    Precise, Resolve, Signed, Signedness, Strategy, UArith, UContainerFor, UNarrowFrom,
+    USaturating, UWidenFrom, Unsigned, Warm,
 };
 
 use arvo_storage::{FBits, IBits};
