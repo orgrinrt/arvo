@@ -37,22 +37,22 @@ where
     [(); cap_size(N)]:,
     F: Add<Output = F>
         + Mul<Output = F>
-        + Sqrt
-        + Recip
+        + Sqrt<Output = F>
+        + Recip<Output = F>
         + TotalOrd
         + Copy
         + FromConstant,
 {
     let n = cap_size(N);
-    let mut v: [F; cap_size(N)] = [F::from_constant(USize(1)); cap_size(N)];
+    let mut v: [F; cap_size(N)] = [F::from_constant::<{ USize(1) }>(); cap_size(N)];
 
     let mut step = 0usize;
     while step < iterations.0 {
         // v_new = matrix * v (dense matrix-vector product).
-        let mut next: [F; cap_size(N)] = [F::from_constant(USize(0)); cap_size(N)];
+        let mut next: [F; cap_size(N)] = [F::from_constant::<{ USize(0) }>(); cap_size(N)];
         let mut i = 0usize;
         while i < n {
-            let mut acc = F::from_constant(USize(0));
+            let mut acc = F::from_constant::<{ USize(0) }>();
             let mut j = 0usize;
             while j < n {
                 acc = acc + matrix.get(USize(i), USize(j)) * v[j];
@@ -63,7 +63,7 @@ where
         }
 
         // L2 norm: sqrt of sum of squares.
-        let mut sq_sum = F::from_constant(USize(0));
+        let mut sq_sum = F::from_constant::<{ USize(0) }>();
         let mut k = 0usize;
         while k < n {
             sq_sum = sq_sum + next[k] * next[k];

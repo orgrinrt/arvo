@@ -117,7 +117,7 @@ where
         if !have_head {
             head_idx = USize(s);
             have_head = true;
-        } else if matches!(ranks[s].total_cmp(&ranks[head_idx.0]), Ordering::Greater) {
+        } else if matches!(ranks[s].total_cmp(ranks[head_idx.0]), Ordering::Greater) {
             head_idx = USize(s);
         }
     }
@@ -182,7 +182,7 @@ where
                 if !have_top {
                     top_i = USize(s);
                     have_top = true;
-                } else if matches!(ranks[s].total_cmp(&ranks[top_i.0]), Ordering::Greater) {
+                } else if matches!(ranks[s].total_cmp(ranks[top_i.0]), Ordering::Greater) {
                     top_i = USize(s);
                 }
             }

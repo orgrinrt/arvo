@@ -46,12 +46,12 @@ where
     F: TotalOrd + Copy + FromConstant,
 {
     let n = cap_size(N);
-    let zero = F::from_constant(USize(0));
+    let zero = F::from_constant::<{ USize(0) }>();
     let mut positive = Mask64::default();
     let mut negative = Mask64::default();
     let mut i = 0usize;
     while i < n {
-        match fiedler[i].total_cmp(&zero) {
+        match fiedler[i].total_cmp(zero) {
             Ordering::Greater => positive.insert(USize(i)),
             _ => negative.insert(USize(i)),
         }
@@ -85,8 +85,8 @@ where
     F: Add<Output = F>
         + Sub<Output = F>
         + Mul<Output = F>
-        + Sqrt
-        + Recip
+        + Sqrt<Output = F>
+        + Recip<Output = F>
         + TotalOrd
         + Copy
         + FromConstant,
@@ -140,14 +140,14 @@ where
         // Fiedler on the full graph. Filter by the component mask for
         // the bisection decision.
         let fiedler: [F; cap_size(N)] = fiedler_vector::<N, W, F>(weights, iterations);
-        let zero = F::from_constant(USize(0));
+        let zero = F::from_constant::<{ USize(0) }>();
 
         let mut positive_half = Mask64::default();
         let mut negative_half = Mask64::default();
         let mut j = 0usize;
         while j < n {
             if *component.contains(USize(j)) {
-                match fiedler[j].total_cmp(&zero) {
+                match fiedler[j].total_cmp(zero) {
                     Ordering::Greater => positive_half.insert(USize(j)),
                     _ => negative_half.insert(USize(j)),
                 }

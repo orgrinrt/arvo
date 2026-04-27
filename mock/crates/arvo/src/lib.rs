@@ -13,6 +13,7 @@
 
 #![no_std]
 #![feature(adt_const_params)]
+#![feature(const_trait_impl)]
 #![feature(generic_const_exprs)]
 #![feature(macro_metavar_expr_concat)]
 #![feature(try_trait_v2)]
@@ -37,6 +38,9 @@ pub use alias::{Bit, Byte, DWord, Nibble, QWord, Word};
 pub use aliases::{
     Fixed, Int13, Int16, Int32, Int64, Int7, Int8, Signed, Uint16, Uint32, Uint5, Uint6, Uint64,
     Uint7, Uint8,
+};
+pub use arvo_numeric_contracts::{
+    IsNonNegative, IsNonZero, IsPositive, IsZero, IsZeroOrPositive, Predicate,
 };
 pub use arvo_storage::{
     AsBool, Bits, Bool, Cap, FBits, IBits, USize, Width, fbits, ibits, width,

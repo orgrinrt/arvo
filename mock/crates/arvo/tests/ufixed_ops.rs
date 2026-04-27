@@ -15,8 +15,8 @@ use arvo::ufixed::UFixed;
 #[test]
 fn hot_u8_arith() {
     type U = UFixed<{ IBits(8) }, { FBits::ZERO }, Hot>;
-    let a = U::from_constant(USize(5));
-    let b = U::from_constant(USize(3));
+    let a = U::from_constant::<{ USize(5) }>();
+    let b = U::from_constant::<{ USize(3) }>();
     assert_eq!((a + b).to_raw(), 8u8);
     assert_eq!((a - b).to_raw(), 2u8);
     assert_eq!((a * b).to_raw(), 15u8);
@@ -26,8 +26,8 @@ fn hot_u8_arith() {
 #[test]
 fn warm_u8_arith() {
     type U = UFixed<{ IBits(8) }, { FBits::ZERO }, Warm>;
-    let a = U::from_constant(USize(5));
-    let b = U::from_constant(USize(3));
+    let a = U::from_constant::<{ USize(5) }>();
+    let b = U::from_constant::<{ USize(3) }>();
     assert_eq!((a + b).to_raw(), 8u16);
     assert_eq!((a - b).to_raw(), 2u16);
     assert_eq!((a * b).to_raw(), 15u16);
@@ -37,8 +37,8 @@ fn warm_u8_arith() {
 #[test]
 fn cold_u8_arith() {
     type U = UFixed<{ IBits(8) }, { FBits::ZERO }, Cold>;
-    let a = U::from_constant(USize(5));
-    let b = U::from_constant(USize(3));
+    let a = U::from_constant::<{ USize(5) }>();
+    let b = U::from_constant::<{ USize(3) }>();
     assert_eq!((a + b).to_raw(), 8u8);
     assert_eq!((a - b).to_raw(), 2u8);
 }
@@ -46,8 +46,8 @@ fn cold_u8_arith() {
 #[test]
 fn precise_u8_arith() {
     type U = UFixed<{ IBits(8) }, { FBits::ZERO }, Precise>;
-    let a = U::from_constant(USize(5));
-    let b = U::from_constant(USize(3));
+    let a = U::from_constant::<{ USize(5) }>();
+    let b = U::from_constant::<{ USize(3) }>();
     assert_eq!((a + b).to_raw(), 8u16);
     assert_eq!((a * b).to_raw(), 15u16);
 }
@@ -65,16 +65,16 @@ fn total_cmp_orders_ufixed() {
     type U = UFixed<{ IBits(8) }, { FBits::ZERO }, Hot>;
     let a = U::from_raw(10);
     let b = U::from_raw(20);
-    assert_eq!(a.total_cmp(&b), Ordering::Less);
-    assert_eq!(b.total_cmp(&a), Ordering::Greater);
-    assert_eq!(a.total_cmp(&a), Ordering::Equal);
+    assert_eq!(a.total_cmp(b), Ordering::Less);
+    assert_eq!(b.total_cmp(a), Ordering::Greater);
+    assert_eq!(a.total_cmp(a), Ordering::Equal);
 }
 
 #[test]
 fn from_constant_places_at_integer_bit_position() {
     // UFixed<8, 8, Warm>: 8.8 fixed point. from_constant(1) = 1 << 8 = 256.
     type U = UFixed<{ IBits(8) }, { FBits(8) }, Warm>;
-    let one = U::from_constant(USize(1));
+    let one = U::from_constant::<{ USize(1) }>();
     assert_eq!(one.to_raw(), 1u32 << 8);
 }
 

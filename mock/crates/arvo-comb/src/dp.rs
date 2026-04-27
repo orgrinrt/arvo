@@ -41,7 +41,7 @@ where
     [(); cap_size(N)]:,
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
 {
-    let zero = <W as FromConstant>::from_constant(USize(0));
+    let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
     let mut splits: Array<USize, N> = Array::filled(USize(0));
 
     if cap_size(N) == 0 {
@@ -97,7 +97,7 @@ where
                 if reachable.get(lou, ku).0 && reachable.get(k1u, hiu).0 {
                     let candidate = dp.get(lou, ku) + dp.get(k1u, hiu);
                     if !best_set.0
-                        || matches!(candidate.total_cmp(&best_val), Ordering::Less)
+                        || matches!(candidate.total_cmp(best_val), Ordering::Less)
                     {
                         best_val = candidate;
                         best_set = Bool::TRUE;

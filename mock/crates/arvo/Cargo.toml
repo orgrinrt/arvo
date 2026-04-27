@@ -10,6 +10,7 @@ arvo-transparent.workspace = true
 arvo-strategy.workspace = true
 arvo-storage.workspace = true
 arvo-bits-contracts.workspace = true
+arvo-numeric-contracts.workspace = true
 
 [dev-dependencies]
 trybuild = "1"
