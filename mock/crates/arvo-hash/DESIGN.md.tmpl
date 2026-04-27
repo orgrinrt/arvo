@@ -7,15 +7,19 @@ trait contracts for hash algorithms, and one concrete algorithm:
 
 `#![no_std]`, no alloc.
 
-Per round 202604271346: dependencies update. The crate depends on
-`arvo-storage` (for `Bits<N, S>`, `Width`), `arvo-bits-contracts`
-(for `BitLogic` used in mixing rounds), `arvo-bitmask` (for masks
-used in incremental absorption widths), and `arvo-numeric-contracts`
-(for `FromConstant` used by const-generic key derivation). The
-`Hasher<const N: Width>` trait declared here is now `pub const trait`
-per D-12, so `hash_const` falls out as a natural feature. The prior
-`arvo` and `arvo-bits` direct deps are replaced by the contract
-crates plus `arvo-storage`.
+Per round 202604271346: dependencies update. The crate currently
+imports through the `arvo` facade (which re-exports `Bits<N, S>`,
+`Width`, `Hot`, `UContainerFor`, etc. from the underlying L0 crates).
+A future round may switch to direct contract-crate deps
+(`arvo-storage`, `arvo-bits-contracts`, `arvo-numeric-contracts`,
+`arvo-bitmask`) to tighten the transitive footprint, once
+`BitLogic` and `FromConstant` are wired into the algorithm bodies.
+The `Hasher<const N: u8>` trait declared here is now `pub const trait`
+per D-12, so `hash_const` falls out as a natural feature.
+
+Round 202604280034 dropped the unused direct `arvo-bits` dep that
+the previous round's import path made redundant; arvo-hash reaches
+the bit-level types through the arvo facade.
 
 ## Why this crate exists
 
@@ -206,14 +210,19 @@ edits; the trait signatures stay put.
 
 ## Dependencies
 
-- arvo (L0): provides `Bits<const N: u8, S>` (the underlying
-  storage primitive), `Width` / `IBits` / `FBits` ConstParamTy
-  newtypes, the `width(n)` / `width_u8(W)` / `width_le_64(W)`
-  helpers, the strategy markers (`Hot`, `Warm`, `Cold`, `Precise`),
-  and `UContainerFor` / `IContainerFor`.
-- arvo-bits (L1): provides `HasBitWidth` / `BitAccess` /
-  `BitSequence` / `BitLogic` trait bounds where the algorithm needs
-  bit-level access on its outputs.
+- arvo (facade): re-exports the storage primitives `Bits<const N: u8,
+  S>`, `Width` / `IBits` / `FBits` ConstParamTy newtypes, the
+  `width(n)` const helpers, the strategy markers (`Hot`, `Warm`,
+  `Cold`, `Precise`), and `UContainerFor` / `IContainerFor`. arvo-hash
+  imports these via the facade; the underlying L0 crates
+  (`arvo-storage`, `arvo-strategy`) are not direct deps.
+
+The previously declared `arvo-bits` dep was dropped during round
+202604280034: arvo-hash uses no symbol from `arvo-bits` directly
+post-round-202604271346 (every reference goes through the arvo facade
+re-export). Future rounds may re-add a direct dep on
+`arvo-bits-contracts` if generic-over-bit-trait bounds become useful
+in the algorithm bodies.
 
 ## What this crate does NOT contain
 

@@ -17,52 +17,71 @@ implementation crates.
 
 ## Identity
 
-{{crate_count}} crates, layered from L0 to facade:
+{{crate_count}} crates, layered from L0 foundation up through the
+facade:
 
-**L0a foundation traits:**
-- `arvo-transparent`. `Transparent` const unsafe trait. Free
-  `arvo::raw` const fn.
-- `arvo-strategy`. `Strategy` marker, `Hot` / `Warm` / `Cold` /
-  `Precise` ZSTs, `UContainerFor<N>` and `IContainerFor<N>` const
-  traits.
-
-**L0 storage:**
-- `arvo-storage`. `Bits<N, S>` storage primitive. `Bool`, `USize`
-  platform wrappers. `IBits`, `FBits`, `Width` typed meta-bit
-  newtypes.
+**L0 foundation:**
+- `arvo-transparent`. `Transparent` const unsafe trait, the typed
+  unwrap door for every `repr(transparent)` substrate primitive.
+  Free `arvo::raw` const fn.
+- `arvo-strategy`. `Strategy` marker plus the four ZST markers
+  `Hot` / `Warm` / `Cold` / `Precise`. `UContainerFor<N>` and
+  `IContainerFor<N>` per-N const traits projecting strategy +
+  bit-width to the dispatched primitive container.
+- `arvo-storage`. `Bits<N, S>` opaque storage primitive
+  (`repr(transparent)` over the dispatched container). `Bool`,
+  `USize` platform wrappers. `IBits`, `FBits`, `Width` typed
+  meta-bit newtypes carrying bit-counts.
 
 **L0.5 trait contracts:**
 - `arvo-bits-contracts`. `HasBitWidth`, `BitAccess`, `BitSequence`,
-  `BitLogic`, `BitPrim` (all `pub const trait`).
-- `arvo-mask-contracts`. `Mask<W>` const trait.
-- `arvo-narrow-contracts`. `Narrow<T>` const trait.
+  `BitLogic`, `BitPrim`, `IBitPrim`, `UBitContainer`,
+  `IBitContainer`, plus `Narrow<T>` and the `Narrowed<N, T>` alias.
+  All `pub const trait`.
+- `arvo-mask-contracts`. `Mask<const W: u8>` const trait surface
+  for fixed-width bit set / clear / test / count operations.
 - `arvo-numeric-contracts`. `Abs`, `Recip`, `Sqrt`, `TotalOrd`,
-  `FromConstant`, `Predicate` family.
+  `FromConstant`, `Predicate`, plus the `IsZero` / `IsPositive` /
+  `IsNonZero` / `IsNonNegative` / `IsZeroOrPositive` predicate
+  family. All `pub const trait`.
 
-**L1 implementation crates:**
-- `arvo-bits`. Concrete blanket impls of bit-level traits on
-  `Bits<N, S>` and bare primitives. Bit-storage aliases (`Bit`,
-  `Nibble`, `Byte`, `Word`, `DWord`, `QWord`).
-- `arvo-bitmask`. `Mask64`, `Mask256`, `BitMatrix` concretes.
-- `arvo-narrow`. Concrete `Narrow<T>` impls per source / target pair.
-- `arvo-tensor`. `Array<T, N>`, `Matrix<W, N>`, `Cap`, `Enumerator`.
+**L1 blanket-impl carrier:**
+- `arvo-bits`. Concrete blanket impls of every L0.5 bit-level trait
+  on `Bits<N, S>` and the bare primitive containers, plus the
+  bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`,
+  `QWord` over `Bits<N, Hot>`).
 
-**L2 — substrate concretes and generic algorithms:**
-- `arvo-bitmask` — `Mask64`, `Mask256`, `BitMatrix`, bit scanning
-  (concrete storage over `arvo-bits` contracts).
-- `arvo-tensor` — `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
-  tensor wrappers; `cap_size` bridge; `Enumerator` trait for
+**L2 substrate concretes:**
+- `arvo-bitmask`. `Mask64`, `Mask256`, `BitMatrix`. Implements
+  `Mask<const W: u8>` from arvo-mask-contracts.
+- `arvo-tensor`. `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
+  tensor wrappers. `Cap` newtype + `Enumerator` trait for
   USize-indexed iteration. Value-generic, no bit semantics.
-- `arvo-graph` provides topo sort, rank, waist, spanning tree,
-  generic over numeric trait bounds for weights.
-- `arvo-sparse` provides CSR, RCM, block diagonal, Dulmage-Mendelsohn,
-  generic over value types.
-- `arvo-comb` provides DP, greedy grouping, bin-packing, generic over
-  cost types.
+- `arvo-narrow`. Concrete `Narrow<T>` impls per source-target
+  primitive pair (cross-primitive narrowing under a mask
+  precondition).
+- `arvo-hash`. Hash family (`Fnv1a` plus future better defaults)
+  with `Hasher<const N: u8>` per-N impls. `ContentHash` typed alias.
 
-**L3 — spectral methods (built on L2):**
-- `arvo-spectral` — Laplacian, Fiedler, power iteration. Generic over
-  weight and eigenvector types.
+**L2 generic algorithms:**
+- `arvo-graph`. Topological sort, rank, waist, spanning tree.
+  Generic over numeric trait bounds for edge weights.
+- `arvo-sparse`. CSR, RCM, block-diagonal, Dulmage-Mendelsohn.
+  Generic over value types.
+- `arvo-comb`. DP, greedy grouping, bin-packing. Generic over cost
+  types.
+
+**L3 spectral methods:**
+- `arvo-spectral`. Laplacian, Fiedler vector, power iteration.
+  Generic over weight and eigenvector types.
+
+**Facade:**
+- `arvo`. Re-exports the substrate. `UFixed<I, F, S>` as
+  `repr(transparent)` newtype over `Bits<{I+F}, S>`. `IFixed<I, F, S>`
+  (currently a direct projection wrapper; reshapes over `Bits` with
+  the Sign axis in a future round). `Uint<N, S>` and `Int<N, S>`
+  ergonomic generic aliases. `FastFloat<F>` and `StrictFloat<F>`
+  IEEE-width-tagged floats. `bitfield!` declarative macro.
 
 ## Crate table
 

@@ -3,11 +3,13 @@
 The concrete narrowing layer. Hosts every `impl const Narrow<T>` for
 the primitive pairs that arvo cares about. Per round 202604271346
 Q-C, this lives downstream of `arvo-bitmask` (because it uses concrete
-mask types) and downstream of `arvo-narrow-contracts` (where the trait
-is declared). `#![no_std]`, no alloc.
+mask types). The `Narrow<T>` trait declaration lives in
+`arvo-bits-contracts` (merged in from the previously-separate
+`arvo-narrow-contracts` crate during round 202604280034).
+`#![no_std]`, no alloc.
 
 Depends on `notko`, `arvo-storage`, `arvo-bits-contracts`,
-`arvo-mask-contracts`, `arvo-narrow-contracts`, `arvo-bitmask`.
+`arvo-mask-contracts`, `arvo-bitmask`.
 
 ## Concrete impls
 

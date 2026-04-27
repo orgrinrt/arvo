@@ -159,16 +159,41 @@ category 4).
 ## What does NOT live here
 
 - Trait declarations (live in the contract crates: `arvo-transparent`,
-  `arvo-strategy`, `arvo-bits-contracts`, `arvo-mask-contracts`,
-  `arvo-narrow-contracts`, `arvo-numeric-contracts`).
+  `arvo-strategy`, `arvo-bits-contracts` (which now also hosts
+  `Narrow<T>` post-merge), `arvo-mask-contracts`,
+  `arvo-numeric-contracts`).
 - Trait impls (live in the implementation crates: `arvo-bits`,
   `arvo-bitmask`, `arvo-narrow`, `arvo-tensor`, `arvo-hash`).
 - Compositions over `Bits` (`UFixed`, `IFixed`, `FastFloat`,
-  `StrictFloat`) (live in the `arvo` facade as `repr(transparent)`
-  newtypes).
+  `StrictFloat`) live in the `arvo` facade. `UFixed` is a
+  `repr(transparent)` newtype over `Bits<{I+F}, S>`. `IFixed` wraps
+  the signed container projection directly today; the symmetric
+  reshape over `Bits<{1+I+F}, S, Signed>` lands in a follow-up round
+  alongside the Sign axis (see below).
 - Algorithms (live in `arvo-graph`, `arvo-sparse`, `arvo-comb`,
   `arvo-spectral`).
 - Aliases and re-exports (live in the `arvo` facade).
+
+## Coming in a follow-up round: Sign axis on Bits
+
+`Bits<N, S>` currently wraps the unsigned container `<S as
+UContainerFor<N>>::T`. A follow-up round introduces a `Sign:
+Signedness` const-generic axis with ZST markers `Unsigned` /
+`Signed`. The reshaped declaration:
+
+```rust
+pub struct Bits<const N: u8, S: Strategy = Hot, Sign = Unsigned>(
+    /* container projected per (S, N, Sign) */
+)
+where
+    S: ContainerFor<N, Sign>;
+```
+
+Default `Sign = Unsigned` keeps existing call sites compiling
+unchanged. `IFixed<I, F, S>` reshapes to wrap `Bits<{1+I+F}, S,
+Signed>`, closing the symmetry gap with `UFixed`. The container
+dispatch table extends to cover signed primitives at every `(N, Sign)`
+pair. Tracked in the audit-driven follow-up chain (Round B).
 
 ## Sources
 

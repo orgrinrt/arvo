@@ -96,6 +96,42 @@ by blanket impls in `arvo-bits` to delegate from
 `Bits<N, S>::to_raw()` to the primitive's bit method, then
 `Bits::from_raw(...)` wraps the result. Const trait throughout.
 
+## Narrow
+
+```rust
+pub const trait Narrow<T> {
+    fn narrow_to<const N: u8>(self) -> T
+    where
+        Self: Sized;
+}
+
+pub type Narrowed<const N: u8, T> = T;
+```
+
+The unified mask-and-cast bridge for cross-primitive narrowing.
+Default body composes `Mask<W>::mask_for_width(N)` (from
+`arvo-mask-contracts`) with `BitLogic::and` then the `as` operator
+to cast to the target primitive type, sound under the mask
+precondition.
+
+Moved here from the previously-separate `arvo-narrow-contracts`
+crate during round 202604280034. The merge is justified because
+every consumer of `Narrow` already depends on `BitLogic` for the
+default-body composition; the single-trait crate split was ceremony
+without transitive-footprint benefit. Concrete impls live in
+`arvo-narrow` (cross-primitive) and may extend into `arvo-bitmask`
+(mask-using).
+
+`Narrowed<const N: u8, T>` is a cosmetic alias for the result of
+`narrow_to::<N>` so consumer signatures read `fn foo() -> Narrowed<13, u16>`
+instead of bare `u16`. The const-generic `N` is documentation only at
+the type level (the value has been narrowed to `N` bits but the
+carrier is still `T`).
+
+A follow-up round adds `narrow_to_unmasked::<const N: u8>(self) -> T`
+for the "high bits already zero" hot case (e.g. just-shifted-down
+bitfield extraction); see arvo BACKLOG.
+
 ## Sources
 
 - `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md`
