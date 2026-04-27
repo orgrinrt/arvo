@@ -39,7 +39,7 @@ edition = "2024"
 license = "MPL-2.0"
 
 [workspace.dependencies]
-mockspace = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "fix/changelist-doc-gate-shame-exemption" }
+mockspace = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "main" }
 notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false }
 arvo-transparent = { path = "crates/arvo-transparent" }
 arvo-strategy = { path = "crates/arvo-strategy" }
