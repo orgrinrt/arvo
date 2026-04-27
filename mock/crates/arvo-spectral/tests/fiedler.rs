@@ -3,7 +3,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo_spectral::{Matrix, fiedler_vector};
 
 mod common;

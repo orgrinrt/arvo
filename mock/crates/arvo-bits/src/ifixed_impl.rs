@@ -4,7 +4,7 @@
 //! `IContainerFor<BITS>` + `IBitPrim` on the container).
 
 use arvo::ifixed::IFixed;
-use arvo::newtype::{Bool, FBits, IBits, USize};
+use arvo::{Bool, FBits, IBits, USize};
 use arvo::strategy::{Strategy, ifixed_bits};
 
 use arvo::prim::{IBitContainer, IBitPrim};

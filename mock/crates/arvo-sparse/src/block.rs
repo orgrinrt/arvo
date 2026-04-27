@@ -11,7 +11,7 @@
 //! from `arvo-sparse` onto `arvo-graph` (the forbidden-imports lint
 //! prohibits `arvo_graph::*` from `arvo-sparse`).
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Bool, Cap, USize};
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Assign a component (block) ID to every node.

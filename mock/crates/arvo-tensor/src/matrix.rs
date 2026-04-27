@@ -1,6 +1,6 @@
 //! Rank-2 fixed-size N×N tensor. Promoted from arvo-spectral.
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 
 use crate::array::Array;
 use crate::cap::cap_size;

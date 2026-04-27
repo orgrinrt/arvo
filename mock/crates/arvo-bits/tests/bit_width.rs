@@ -5,7 +5,7 @@
 #![allow(incomplete_features)]
 
 use arvo::ifixed::IFixed;
-use arvo::newtype::{FBits, IBits};
+use arvo::{FBits, IBits};
 use arvo::strategy::{Cold, Hot, Precise, Warm};
 use arvo::ufixed::UFixed;
 use arvo_bits::{HasBitWidth, Byte, DWord, Nibble, QWord, Word};

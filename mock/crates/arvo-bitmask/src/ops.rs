@@ -12,7 +12,7 @@
 //! `BitAccess` for single-bit read/write. `Mask64` operates on its
 //! single `QWord<Hot>`; `Mask256` unrolls across four.
 
-use arvo::newtype::{Bool, USize};
+use arvo::{Bool, USize};
 use arvo::strategy::Hot;
 use arvo::QWord;
 use arvo_bits::{BitAccess, BitLogic, BitSequence};

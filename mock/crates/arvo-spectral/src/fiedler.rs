@@ -26,7 +26,7 @@
 
 use core::ops::{Add, Mul, Sub};
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
 
 use crate::laplacian::laplacian;

@@ -16,7 +16,7 @@ use core::ops::{Add, Div, Mul, Sub};
 use notko::Outcome;
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
-use crate::newtype::{FBits, IBits, USize};
+use arvo_storage::{FBits, IBits, USize};
 use crate::strategy::{
     Hot, Precise, Strategy, UArith, UContainerFor, UNarrowFrom, UWidenFrom, Warm, is_fractional,
     ufixed_bits,

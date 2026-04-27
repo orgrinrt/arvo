@@ -4,7 +4,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Bool, Cap, FBits, IBits, USize};
+use arvo::{Bool, Cap, FBits, IBits, USize};
 use arvo::strategy::Hot;
 use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;

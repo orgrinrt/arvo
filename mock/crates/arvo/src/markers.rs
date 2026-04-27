@@ -14,7 +14,7 @@
 //! Concrete impls for these markers live alongside the types they
 //! classify (see `ufixed`, `ifixed`, `float`, `newtype`).
 
-use crate::newtype::{Bool, FBits, IBits, USize};
+use arvo_storage::{Bool, FBits, IBits, USize};
 use crate::strategy::Hot;
 
 /// Marker for types that behave like whole numbers.

@@ -7,7 +7,7 @@
 #![allow(incomplete_features)]
 
 use arvo::ifixed::IFixed;
-use arvo::newtype::{FBits, IBits, USize};
+use arvo::{FBits, IBits, USize};
 use arvo::strategy::{Hot, Warm};
 use arvo::ufixed::UFixed;
 use arvo_bits::{BitAccess, BitPrim, Byte, IBitPrim};

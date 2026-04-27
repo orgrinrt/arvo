@@ -110,8 +110,11 @@ commit = "error"
 build = "error"
 push = "error"
 rules = [
-  # L0 — arvo has no intra-arvo deps, and no std/alloc.
-  { scope = "arvo", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L0 is the root of the arvo stack — no deps and no alloc/std" },
+  # L0 — arvo is the facade. May depend on arvo-transparent, arvo-strategy, arvo-storage. Must not depend on L1+ crates or std/alloc.
+  { scope = "arvo", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*, arvo_hash::*, arvo_narrow::*", reason = "arvo is the facade re-exporting arvo-transparent / arvo-strategy / arvo-storage; no deps on L1+ crates and no alloc/std" },
+
+  # L0 — arvo-storage depends on notko + arvo-transparent + arvo-strategy. Hosts the only fielded primitive types in the substrate.
+  { scope = "arvo-storage", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*, arvo_hash::*, arvo_narrow::*", reason = "arvo-storage is L0 storage; depends on notko + arvo-transparent + arvo-strategy only" },
 
   # L1 — arvo-bits depends on arvo only. No concrete storage.
   { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L1 contracts depend only on L0 (arvo); concrete storage lives in arvo-bitmask" },

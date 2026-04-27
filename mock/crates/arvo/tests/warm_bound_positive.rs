@@ -5,7 +5,7 @@
 
 #![no_std]
 
-use arvo::newtype::{FBits, IBits};
+use arvo::{FBits, IBits};
 use arvo::strategy::Warm;
 use arvo::ufixed::UFixed;
 

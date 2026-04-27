@@ -7,7 +7,7 @@
 #![no_std]
 
 use arvo::markers::BitPresentation;
-use arvo::newtype::{FBits, IBits, USize};
+use arvo::{FBits, IBits, USize};
 use arvo::strategy::{Cold, Hot, Precise, Warm};
 use arvo::traits::{Abs, FromConstant, TotalOrd};
 use arvo::ufixed::UFixed;

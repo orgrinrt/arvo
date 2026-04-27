@@ -9,7 +9,7 @@
 #![no_std]
 
 use arvo::ifixed::IFixed;
-use arvo::newtype::{FBits, IBits};
+use arvo::{FBits, IBits};
 use arvo::strategy::{Cold, Hot, Precise, Resolve, Strategy, Warm};
 use arvo::ufixed::UFixed;
 

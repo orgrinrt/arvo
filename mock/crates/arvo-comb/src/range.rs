@@ -5,7 +5,7 @@
 //! downstream algorithms that consume sequential groupings accept a
 //! slice of `Range` plus a count.
 
-use arvo::newtype::USize;
+use arvo::USize;
 
 /// Half-open interval `[start, end)` over `USize` indices.
 ///

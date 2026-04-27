@@ -21,7 +21,7 @@
 //! Algorithms that do (SpMV in a later round) will tighten the bound
 //! at their own impl sites.
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo_bitmask::{NodeId, cap_size};
 use notko::Maybe;
 
