@@ -15,8 +15,8 @@ use arvo::traits::{Abs, FromConstant, TotalOrd};
 fn hot_i8_arith_positive() {
     // IFixed<7, 0, Hot>: 1 + 7 = 8 bits -> i8.
     type I = IFixed<{ IBits(7) }, { FBits::ZERO }, Hot>;
-    let a = I::from_constant(USize(5));
-    let b = I::from_constant(USize(3));
+    let a = I::from_constant::<{ USize(5) }>();
+    let b = I::from_constant::<{ USize(3) }>();
     assert_eq!((a + b).to_raw(), 8i8);
     assert_eq!((a - b).to_raw(), 2i8);
     assert_eq!((a * b).to_raw(), 15i8);
@@ -88,13 +88,13 @@ fn total_cmp_orders_ifixed() {
     type I = IFixed<{ IBits(7) }, { FBits::ZERO }, Hot>;
     let neg = I::from_raw(-10);
     let pos = I::from_raw(10);
-    assert_eq!(neg.total_cmp(&pos), Ordering::Less);
+    assert_eq!(neg.total_cmp(pos), Ordering::Less);
 }
 
 #[test]
 fn from_constant_places_at_integer_position_signed() {
     // IFixed<7, 1, Hot>: 1 + 7 + 1 = 9 bits -> i16. from_constant(1) = 1 << 1 = 2.
     type I = IFixed<{ IBits(7) }, { FBits(1) }, Hot>;
-    let one = I::from_constant(USize(1));
+    let one = I::from_constant::<{ USize(1) }>();
     assert_eq!(one.to_raw(), 2i16);
 }

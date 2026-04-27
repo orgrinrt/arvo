@@ -16,6 +16,7 @@ name = "arvo"
 version = "0.1.0"
 dependencies = [
  "arvo-bits-contracts",
+ "arvo-numeric-contracts",
  "arvo-storage",
  "arvo-strategy",
  "arvo-transparent",

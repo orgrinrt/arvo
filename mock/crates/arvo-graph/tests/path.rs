@@ -6,7 +6,6 @@
 
 use arvo::{Cap, FBits, IBits, USize};
 use arvo::strategy::Hot;
-use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
 use arvo_bitmask::{BitMatrix64, NodeId};
 use arvo_graph::{longest_path, topo_sort};
@@ -26,7 +25,8 @@ fn nid(i: usize) -> NodeId {
 }
 
 fn w(n: usize) -> W {
-    W::from_constant(USize(n))
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: test helper; runtime usize→u8 cast for typed weight in concrete-W test scope; no runtime-FromConstant by design (round 202604271346); tracked: #256
+    W::from_raw(n as u8)
 }
 
 #[test]

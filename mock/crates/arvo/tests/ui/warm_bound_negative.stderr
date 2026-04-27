@@ -5,7 +5,7 @@ error[E0277]: strategy `Warm` does not provide a container for 33-bit width
   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `UContainerFor<33>` is not implemented for `Warm`
   |
   = note: Warm caps at I+F<=32; for wider widths, choose Hot or Precise explicitly: `Uint64<Hot>`, `Uint64<Precise>`, etc.
-  = help: `Warm` implements trait `UContainerFor<BITS>`:
+  = help: `Warm` implements trait `UContainerFor<N>`:
             UContainerFor<10>
             UContainerFor<11>
             UContainerFor<12>
@@ -54,7 +54,7 @@ error[E0277]: strategy `Warm` does not provide a container for 33-bit width
   |                                                         ^^^^^^ the trait `UContainerFor<33>` is not implemented for `Warm`
   |
   = note: Warm caps at I+F<=32; for wider widths, choose Hot or Precise explicitly: `Uint64<Hot>`, `Uint64<Precise>`, etc.
-  = help: `Warm` implements trait `UContainerFor<BITS>`:
+  = help: `Warm` implements trait `UContainerFor<N>`:
             UContainerFor<10>
             UContainerFor<11>
             UContainerFor<12>
@@ -103,7 +103,7 @@ error[E0277]: strategy `Warm` does not provide a container for 33-bit width
   |                                                                          ^ the trait `UContainerFor<33>` is not implemented for `Warm`
   |
   = note: Warm caps at I+F<=32; for wider widths, choose Hot or Precise explicitly: `Uint64<Hot>`, `Uint64<Precise>`, etc.
-  = help: `Warm` implements trait `UContainerFor<BITS>`:
+  = help: `Warm` implements trait `UContainerFor<N>`:
             UContainerFor<10>
             UContainerFor<11>
             UContainerFor<12>
