@@ -5,7 +5,8 @@
 #![feature(macro_metavar_expr_concat)]
 #![allow(incomplete_features)]
 
-use arvo_bits::{bitfield, Bit, Bits, Hot};
+use arvo::bitfield;
+use arvo_bits::{Bit, Bits, Hot};
 
 bitfield! {
     /// Interned string handle layout for smoke-testing.

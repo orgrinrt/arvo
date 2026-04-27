@@ -19,7 +19,6 @@
 #![feature(try_trait_v2)]
 #![allow(incomplete_features)]
 
-pub mod alias;
 pub mod aliases;
 pub mod bitfield;
 pub mod float;
@@ -34,7 +33,6 @@ pub mod transparent;
 pub mod ufixed;
 pub mod ufixed_impl;
 
-pub use alias::{Bit, Byte, DWord, Nibble, QWord, Word};
 pub use aliases::{
     Fixed, Int, Int13, Int16, Int32, Int64, Int7, Int8, Signed, Uint, Uint16, Uint32, Uint5, Uint6,
     Uint64, Uint7, Uint8,

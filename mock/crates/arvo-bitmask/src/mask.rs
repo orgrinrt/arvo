@@ -21,8 +21,8 @@
 
 use arvo::USize;
 use arvo::strategy::Hot;
-use arvo::QWord;
-use arvo_bits::{BitAccess, BitSequence, HasBitWidth};
+use arvo_bits::QWord;
+use arvo_bits_contracts::{BitAccess, BitSequence, HasBitWidth};
 
 /// Generic fixed-width bitmask.
 ///
