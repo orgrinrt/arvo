@@ -1,10 +1,21 @@
-# arvo-hash — Design
+# arvo-hash. Design
 
 L2 hash-domain types and algorithm contracts. Ships a domain alias
-over the arvo L0 storage primitive, generic trait contracts for
-hash algorithms, and one concrete algorithm: `Fnv1a<const N: Width>`.
+over the `Bits` storage primitive (now in `arvo-storage`), generic
+trait contracts for hash algorithms, and one concrete algorithm:
+`Fnv1a<const N: Width>`.
 
-`#![no_std]`, no alloc. Depends on arvo (L0) and arvo-bits (L1).
+`#![no_std]`, no alloc.
+
+Per round 202604271346: dependencies update. The crate depends on
+`arvo-storage` (for `Bits<N, S>`, `Width`), `arvo-bits-contracts`
+(for `BitLogic` used in mixing rounds), `arvo-bitmask` (for masks
+used in incremental absorption widths), and `arvo-numeric-contracts`
+(for `FromConstant` used by const-generic key derivation). The
+`Hasher<const N: Width>` trait declared here is now `pub const trait`
+per D-12, so `hash_const` falls out as a natural feature. The prior
+`arvo` and `arvo-bits` direct deps are replaced by the contract
+crates plus `arvo-storage`.
 
 ## Why this crate exists
 

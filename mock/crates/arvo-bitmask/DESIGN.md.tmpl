@@ -1,12 +1,15 @@
-# arvo-bitmask — Design
+# arvo-bitmask. Design
 
 Fixed-width bitmask types and bit-matrix adjacency structures.
 Cross-cutting foundation for arvo-graph, arvo-sparse, arvo-comb,
 and any consumer that needs set-level adjacency over bit storage.
 `#![no_std]`, no alloc, const-generic sizing.
 
-Depends on arvo-bits for bit-level contracts (HasBitWidth, BitAccess,
-BitSequence). Does NOT depend on arvo directly — bitmasks are not
+Per round 202604271346: dependencies update. The crate now depends
+on `arvo-storage` (for `Bits<N, S>` and the strategy markers),
+`arvo-bits-contracts` (for the trait surface: `HasBitWidth`,
+`BitAccess`, `BitSequence`, `BitLogic`), and `arvo-mask-contracts`
+(this crate hosts the concrete `Mask<W>` impls). Bitmasks are not
 numeric types. They do bitwise operations (OR, AND, popcount), not
 arithmetic (Add, Mul, Sqrt). The type families are fundamentally
 different.
