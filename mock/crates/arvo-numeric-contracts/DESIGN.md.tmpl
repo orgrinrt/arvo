@@ -63,13 +63,17 @@ with the partial `core::PartialOrd`.
 ## FromConstant
 
 ```rust
-pub const trait FromConstant<const C: USize> {
-    fn from_constant() -> Self;
+pub const trait FromConstant {
+    fn from_constant<const C: USize>() -> Self;
 }
 ```
 
 Compile-time constant constructor. Used by macros and bitfield
 generators that want to inject typed constants into expressions.
+The const generic lives on the method, not the trait, so a single
+impl per concrete numeric type covers every constant; consumer
+bounds stay simple (`T: FromConstant`) and call sites use turbofish
+(`T::from_constant::<{USize(5)}>()`).
 
 ## Predicate family
 
