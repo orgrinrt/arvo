@@ -56,9 +56,10 @@ where
 /// FNV-1a-64 over a byte slice (free const fn).
 ///
 /// Returns the raw 64-bit state. Concrete `Hasher<N>` implementors
-/// mask to N bits via `Bits::<N, Hot>::from_raw_u64`. The `&[u8]`
-/// parameter is workspace-rule exception #4 (boundary input from raw
-/// bytes); the `u64` return is the algorithm's state-width.
+/// mask to N bits, cast to `<Hot as UContainerFor<N>>::T`, and
+/// construct via `Bits::from_raw` (per the doc CL D-7 spec). The
+/// `&[u8]` parameter is workspace-rule exception #4 (boundary input
+/// from raw bytes); the `u64` return is the algorithm's state-width.
 // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: FNV-1a-64 algorithm boundary; raw byte slice in, raw u64 state out per algorithm contract; tracked: #256
 pub const fn fnv1a_64(bytes: &[u8]) -> u64 {
     const FNV_OFFSET_BASIS: u64 = 0xcbf2_9ce4_8422_2325;
