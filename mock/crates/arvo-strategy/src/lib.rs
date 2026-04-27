@@ -31,7 +31,6 @@ use core::marker::ConstParamTy;
 
 mod sealed {
     pub trait Sealed {}
-    pub trait SealedSign {}
 }
 
 mod arith;
@@ -134,7 +133,7 @@ impl const Strategy for Precise {
 /// markers). Used as the `Sign` const-generic on `Bits<N, S, Sign>`
 /// and routed through `BitsContainerFor<N, Sign>` to either the
 /// `UContainerFor<N>` or `IContainerFor<N>` table.
-pub trait Signedness: sealed::SealedSign + Copy + Clone + Default + 'static {}
+pub trait Signedness: sealed::Sealed + Copy + Clone + Default + 'static {}
 
 /// Unsigned bit pattern. Default `Sign` on `Bits<N, S, Sign>`.
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
@@ -144,8 +143,8 @@ pub struct Unsigned;
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
 pub struct Signed;
 
-impl sealed::SealedSign for Unsigned {}
-impl sealed::SealedSign for Signed {}
+impl sealed::Sealed for Unsigned {}
+impl sealed::Sealed for Signed {}
 
 impl Signedness for Unsigned {}
 impl Signedness for Signed {}
