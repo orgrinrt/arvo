@@ -2,14 +2,17 @@
 //!
 //! Two groups of aliases live here:
 //!
-//! - **Generic aliases** [`Fixed`] / [`Signed`] forward bare `u8`
-//!   const-generics into the `IBits` / `FBits`-wrapped form of
-//!   `UFixed` / `IFixed`. These give domain-author and consumer call
-//!   sites clean syntax (`Fixed<13, 3, Warm>`) without the
-//!   `{ ibits(...) }` / `{ fbits(...) }` boilerplate.
-//! - **Canonical-width aliases** (`Uint5` ... `Uint64`, `Int7` ...
-//!   `Int64`) name the common widths once. End-user code uses these
-//!   instead of building the type inline.
+//! - **Generic aliases** [`Fixed`] / [`Signed`] / [`Uint`] / [`Int`]
+//!   forward bare `u8` const-generics into the `IBits` /
+//!   `FBits`-wrapped form of `UFixed` / `IFixed`. These give
+//!   domain-author and consumer call sites clean syntax (`Fixed<13,
+//!   3, Warm>`, `Uint<12>`) without the `{ ibits(...) }` /
+//!   `{ fbits(...) }` boilerplate.
+//! - **Canonical-width aliases** (`Uint8`, `Uint16`, `Uint32`,
+//!   `Uint64`, `Int8`, `Int16`, `Int32`, `Int64`) name the eight
+//!   std-parallel survivors. Per Q-D, every other width (Uint5,
+//!   Uint6, Uint7, Int7, Int13, etc.) is expressed via the generic
+//!   `Uint<N>` / `Int<N>` form rather than a per-N alias.
 //!
 //! Strategy default is `Warm` where Warm is valid (`I + F <= 32`);
 //! above that, the alias requires explicit strategy or fails
@@ -53,10 +56,10 @@ pub type Signed<const I: u8, const F: u8, S = Warm> =
 /// Unsigned fixed-point integer alias parameterised by bit count `N`.
 ///
 /// `Uint<N, S>` is `UFixed<{ ibits(N) }, { fbits(0) }, S>`. Use at
-/// consumer call sites for clean integer-typed bit counts. Replaces
-/// the legacy per-N `Uint5` / `Uint6` / ... aliases (per Q-D the
-/// canonical std-parallel survivors are kept; everything else is
-/// expressed via this generic form).
+/// consumer call sites for clean integer-typed bit counts. The
+/// canonical-width survivors below are sugar for the four
+/// std-parallel widths; every other width goes through this generic
+/// form (`Uint<5>`, `Uint<12>`, `Uint<28>`, etc.).
 ///
 /// ```ignore
 /// type Counter = arvo::Uint<32, Hot>;     // 32-bit counter
@@ -68,8 +71,9 @@ pub type Uint<const N: u8, S = Warm> = UFixed<{ ibits(N) }, { fbits(0) }, S>;
 ///
 /// `Int<N, S>` is `IFixed<{ ibits(N - 1) }, { fbits(0) }, S>`. The
 /// `N - 1` accounts for the IFixed sign bit so `Int<8, _>` matches
-/// `i8`'s logical width. Replaces the legacy per-N `Int7` / `Int8` /
-/// ... aliases.
+/// `i8`'s logical width. Use at consumer call sites for clean
+/// integer-typed bit counts; the canonical-width survivors below are
+/// sugar for the four std-parallel widths.
 ///
 /// ```ignore
 /// type Delta = arvo::Int<8, Hot>;          // signed 8-bit
@@ -77,17 +81,14 @@ pub type Uint<const N: u8, S = Warm> = UFixed<{ ibits(N) }, { fbits(0) }, S>;
 /// ```
 pub type Int<const N: u8, S = Warm> = IFixed<{ ibits(N - 1) }, { fbits(0) }, S>;
 
-pub type Uint5<S = Warm> = UFixed<{ ibits(5) }, { fbits(0) }, S>;
-pub type Uint6<S = Warm> = UFixed<{ ibits(6) }, { fbits(0) }, S>;
-pub type Uint7<S = Warm> = UFixed<{ ibits(7) }, { fbits(0) }, S>;
+// Canonical-width survivors (Q-D). Eight std-parallel aliases.
+// Other widths use `Uint<N>` / `Int<N>` directly.
 pub type Uint8<S = Warm> = UFixed<{ ibits(8) }, { fbits(0) }, S>;
 pub type Uint16<S = Warm> = UFixed<{ ibits(16) }, { fbits(0) }, S>;
 pub type Uint32<S = Warm> = UFixed<{ ibits(32) }, { fbits(0) }, S>;
 pub type Uint64<S> = UFixed<{ ibits(64) }, { fbits(0) }, S>;
 
-pub type Int7<S = Warm> = IFixed<{ ibits(7) }, { fbits(0) }, S>;
 pub type Int8<S = Warm> = IFixed<{ ibits(8) }, { fbits(0) }, S>;
-pub type Int13<S = Warm> = IFixed<{ ibits(13) }, { fbits(0) }, S>;
 pub type Int16<S = Warm> = IFixed<{ ibits(16) }, { fbits(0) }, S>;
 pub type Int32<S = Warm> = IFixed<{ ibits(32) }, { fbits(0) }, S>;
 pub type Int64<S> = IFixed<{ ibits(64) }, { fbits(0) }, S>;
