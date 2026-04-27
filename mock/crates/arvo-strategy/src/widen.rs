@@ -108,17 +108,25 @@ macro_rules! impl_i_narrow {
 //   1..=8:  u8  -> u16
 //   9..=16: u16 -> u32
 //   17..=32: u32 -> u64
-// Warm unavailable for N > 32.
+//   33..=64: u64 -> u128 (round 202604280500: Warm extended via u128).
 impl_u_widen!(Hot => Warm, u8 => u16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_u_widen!(Hot => Warm, u16 => u32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_u_widen!(
     Hot => Warm, u32 => u64,
     17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
 );
+#[rustfmt::skip]
+impl_u_widen!(
+    Hot => Warm, u64 => u128,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
 
 // --- Hot -> Precise (unsigned) ---
-// Same container widths as Warm at N <= 32; at N > 32 Precise
-// uses u64 (same as Hot), so the widen is a no-op cast.
+// Same container widths as Warm at N <= 32; at 33..=64 Precise uses
+// u64 (same as Hot), so the widen is a no-op cast.
 impl_u_widen!(Hot => Precise, u8 => u16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_u_widen!(Hot => Precise, u16 => u32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_u_widen!(
@@ -135,7 +143,11 @@ impl_u_widen!(
 );
 
 // --- Warm -> Precise (unsigned) ---
-// Both use 2x container at N <= 32; widening is a no-op cast.
+// Both use 2x container at N <= 32; widening is a no-op cast. At
+// 33..=64 Warm = u128, Precise = u64 (same as Hot); narrow not widen.
+// The Warm -> Precise edge at 33..=64 ships as a Warm narrow rather
+// than a widen; tracked alongside Cold widen / narrow as a follow-up
+// once the cross-strategy resolution warning lands (Round C).
 impl_u_widen!(Warm => Precise, u16 => u16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_u_widen!(Warm => Precise, u32 => u32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_u_widen!(
@@ -149,6 +161,14 @@ impl_u_narrow!(Warm => Hot, u32 => u16, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_u_narrow!(
     Warm => Hot, u64 => u32,
     17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+#[rustfmt::skip]
+impl_u_narrow!(
+    Warm => Hot, u128 => u64,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
 );
 
 impl_u_narrow!(Precise => Hot, u16 => u8, 1, 2, 3, 4, 5, 6, 7, 8);
@@ -173,6 +193,14 @@ impl_i_widen!(
     Hot => Warm, i32 => i64,
     17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
 );
+#[rustfmt::skip]
+impl_i_widen!(
+    Hot => Warm, i64 => i128,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
 
 impl_i_widen!(Hot => Precise, i8 => i16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_i_widen!(Hot => Precise, i16 => i32, 9, 10, 11, 12, 13, 14, 15, 16);
@@ -195,12 +223,23 @@ impl_i_widen!(
     Warm => Precise, i64 => i64,
     17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
 );
+// Warm -> Precise at 33..=64 is a narrow (Warm = i128, Precise = i64);
+// shipped as a follow-up alongside Cold widen / narrow + cross-strategy
+// resolution (Round C).
 
 impl_i_narrow!(Warm => Hot, i16 => i8, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_i_narrow!(Warm => Hot, i32 => i16, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_i_narrow!(
     Warm => Hot, i64 => i32,
     17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+#[rustfmt::skip]
+impl_i_narrow!(
+    Warm => Hot, i128 => i64,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
 );
 
 impl_i_narrow!(Precise => Hot, i16 => i8, 1, 2, 3, 4, 5, 6, 7, 8);
@@ -223,3 +262,9 @@ impl_i_narrow!(
 // shape used here; tracked in arvo's BACKLOG.md.tmpl under "audit-
 // driven chain forward-looking entries"). When the impls land, the
 // `Cold` import goes back into scope at the top of this file.
+//
+// Round 202604280500: 65..=128 widen / narrow cells (Hot <-> Warm /
+// Precise) require Warm 65..=128 / Precise 65..=128 containers, which
+// this round does not ship (BACKLOG: no native u256 for the 2x logical
+// rule). Hot <-> Cold widen / narrow at the new band stays uniform
+// (both u128) and lands when the Cold widen lattice is shipped.
