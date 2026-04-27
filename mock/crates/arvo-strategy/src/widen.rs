@@ -13,7 +13,7 @@
 
 use notko::Outcome;
 
-use crate::{Cold, Hot, IContainerFor, Precise, UContainerFor, Warm};
+use crate::{Hot, IContainerFor, Precise, UContainerFor, Warm};
 
 /// Unsigned container widen bridge: `(Src, N) -> Dst::T`.
 pub trait UWidenFrom<Src: UContainerFor<N>, const N: u8>: UContainerFor<N> {
@@ -218,8 +218,8 @@ impl_i_narrow!(
     57, 58, 59, 60, 61, 62, 63, 64
 );
 
-// Suppress unused-import warning when only some helpers above are
-// invoked. `Cold` participates in the widen lattice in future rounds
-// (Cold widens to Precise via the same shape; not yet exercised here).
-#[allow(dead_code)]
-type _ColdReserved = Cold;
+// Cold widen/narrow impls deferred. Cold participates in the widen
+// lattice in a future round (Cold widens to Precise via the same
+// shape used here; tracked in arvo's BACKLOG.md.tmpl under "audit-
+// driven chain forward-looking entries"). When the impls land, the
+// `Cold` import goes back into scope at the top of this file.

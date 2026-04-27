@@ -6,9 +6,8 @@
 //! container, then `Bits::from_raw`.
 //!
 //! `N` is `u8` directly rather than the `Width` meta-newtype for the
-//! same reason `Hasher<const N: u8>` does (see `algo.rs`): nested
-//! const-fn evaluation at trait-bound resolution is unreliable on
-//! current nightly.
+//! same reason `Hasher<const N: u8>` does. See `algo.rs` for the
+//! full rationale.
 //!
 //! Width is constrained to `1..=64` implicitly by `Hot:
 //! UContainerFor<N>`: that impl exists only for those Ns, so a

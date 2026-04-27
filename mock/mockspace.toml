@@ -114,48 +114,45 @@ rules = [
   { scope = "arvo", forbidden = "std::*, alloc::*", reason = "arvo is the facade re-exporting every workspace crate; only platform / heap deps are forbidden" },
 
   # L-1 root — arvo-transparent depends on notko only.
-  { scope = "arvo-transparent", forbidden = "std::*, alloc::*, arvo::*, arvo_strategy::*, arvo_storage::*, arvo_bits_contracts::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-transparent is the L0 root: defines the Transparent trait + raw() helper; depends on notko only" },
+  { scope = "arvo-transparent", forbidden = "std::*, alloc::*, arvo::*, arvo_strategy::*, arvo_storage::*, arvo_bits_contracts::*, arvo_mask_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-transparent is the L0 root: defines the Transparent trait + raw() helper; depends on notko only" },
 
   # L-1 — arvo-strategy depends on notko + arvo-transparent.
-  { scope = "arvo-strategy", forbidden = "std::*, alloc::*, arvo::*, arvo_storage::*, arvo_bits_contracts::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-strategy is L0: strategy markers + container projection; depends on notko + arvo-transparent only" },
+  { scope = "arvo-strategy", forbidden = "std::*, alloc::*, arvo::*, arvo_storage::*, arvo_bits_contracts::*, arvo_mask_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-strategy is L0: strategy markers + container projection; depends on notko + arvo-transparent only" },
 
   # L0 — arvo-storage depends on notko + arvo-transparent + arvo-strategy. Hosts the only fielded primitive types in the substrate.
-  { scope = "arvo-storage", forbidden = "std::*, alloc::*, arvo::*, arvo_bits_contracts::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-storage is L0 storage; depends on notko + arvo-transparent + arvo-strategy only" },
+  { scope = "arvo-storage", forbidden = "std::*, alloc::*, arvo::*, arvo_bits_contracts::*, arvo_mask_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-storage is L0 storage; depends on notko + arvo-transparent + arvo-strategy only" },
 
-  # L0.5 — arvo-bits-contracts. Bit-level trait declarations + sealed-bridge impls on bare primitives. Depends on the L0 root stack.
-  { scope = "arvo-bits-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bits-contracts is L0.5 contracts; depends on notko + arvo-transparent + arvo-strategy + arvo-storage only" },
+  # L0.5 — arvo-bits-contracts. Bit-level trait declarations + sealed-bridge impls on bare primitives. Hosts Narrow<T> trait declaration post-round-202604280034 merge. Depends on the L0 root stack.
+  { scope = "arvo-bits-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bits-contracts is L0.5 contracts; depends on notko + arvo-transparent + arvo-strategy + arvo-storage only" },
 
   # L0.5 — arvo-mask-contracts depends on bits-contracts + the L0 stack.
-  { scope = "arvo-mask-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_narrow_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-mask-contracts is L0.5 contracts; depends on the L0 stack + arvo-bits-contracts only" },
-
-  # L0.5 — arvo-narrow-contracts depends on mask-contracts + bits-contracts + L0 stack.
-  { scope = "arvo-narrow-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-narrow-contracts is L0.5 contracts; depends on the L0 stack + arvo-bits-contracts + arvo-mask-contracts only" },
+  { scope = "arvo-mask-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-mask-contracts is L0.5 contracts; depends on the L0 stack + arvo-bits-contracts only" },
 
   # L0.5 — arvo-numeric-contracts depends on bits-contracts + L0 stack.
-  { scope = "arvo-numeric-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-numeric-contracts is L0.5 contracts; depends on the L0 stack + arvo-bits-contracts only" },
+  { scope = "arvo-numeric-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-numeric-contracts is L0.5 contracts; depends on the L0 stack + arvo-bits-contracts only" },
 
   # L1 — arvo-bits hosts bit-storage type aliases (Bit / Nibble / Byte / Word / DWord / QWord).
-  { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bits hosts bit-storage type aliases; depends on arvo-storage + arvo-strategy + arvo-bits-contracts + arvo-numeric-contracts only" },
+  { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bits hosts bit-storage type aliases; depends on arvo-storage + arvo-strategy + arvo-bits-contracts + arvo-numeric-contracts only" },
 
   # L2 — arvo-bitmask depends on the contracts + arvo-storage. Hosts concrete Mask<W> + Narrow<T> impls per Q-C.
-  { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo::*, arvo_numeric_contracts::*, arvo_narrow_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 mask storage; depends on arvo-storage + arvo-bits-contracts + arvo-mask-contracts + arvo-bits + arvo-tensor only" },
+  { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo::*, arvo_numeric_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 mask storage; depends on arvo-storage + arvo-bits-contracts + arvo-mask-contracts + arvo-bits + arvo-tensor only" },
 
-  # L2 — arvo-narrow hosts concrete Narrow<T> impls.
-  { scope = "arvo-narrow", forbidden = "std::*, alloc::*, arvo::*, arvo_numeric_contracts::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-narrow hosts concrete Narrow<T> impls; depends on arvo-storage + arvo-bits-contracts + arvo-mask-contracts + arvo-narrow-contracts + arvo-bitmask only" },
+  # L2 — arvo-narrow hosts concrete Narrow<T> impls. Narrow trait declaration lives in arvo-bits-contracts post-merge.
+  { scope = "arvo-narrow", forbidden = "std::*, alloc::*, arvo::*, arvo_numeric_contracts::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-narrow hosts concrete Narrow<T> impls; depends on arvo-storage + arvo-bits-contracts + arvo-mask-contracts + arvo-bitmask only" },
 
   # L2 — arvo-tensor. Value-storage peer of arvo-bitmask.
-  { scope = "arvo-tensor", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-tensor is L2 value-storage; depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts only" },
+  { scope = "arvo-tensor", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-tensor is L2 value-storage; depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts only" },
 
   # L2 — arvo-hash. Hash-domain types + algo contracts.
-  { scope = "arvo-hash", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_narrow::*, arvo_tensor::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-hash is L2 hash-domain; depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-bits + arvo-bitmask only" },
+  { scope = "arvo-hash", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_tensor::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-hash is L2 hash-domain; depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-bits + arvo-bitmask only" },
 
   # L2 algorithm crates — depend on the contract stack + arvo-tensor + arvo-bitmask.
-  { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask only" },
-  { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask only" },
-  { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask only" },
+  { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask only" },
+  { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask only" },
+  { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask only" },
 
   # L3 — arvo-spectral depends on the contract stack + arvo-tensor + arvo-bitmask + arvo-sparse.
-  { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_comb::*", reason = "arvo-spectral depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask + arvo-sparse only" },
+  { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_comb::*", reason = "arvo-spectral depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask + arvo-sparse only" },
 
   # Universal — no ad-hoc threading, clocks, filesystem anywhere.
   { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
@@ -300,6 +297,5 @@ arvo-strategy = ["numeric"]
 arvo-storage = ["numeric"]
 arvo-bits-contracts = ["numeric"]
 arvo-mask-contracts = ["numeric"]
-arvo-narrow-contracts = ["numeric"]
 arvo-bits = ["numeric"]
 arvo-hash = ["numeric"]
