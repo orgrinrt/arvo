@@ -1,0 +1,17 @@
+[package]
+name = "arvo-narrow-contracts"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+notko.workspace = true
+arvo-storage.workspace = true
+arvo-bits-contracts.workspace = true
+arvo-mask-contracts.workspace = true
+
+[build-dependencies]
+mockspace.workspace = true
+
+[features]
+default = []
