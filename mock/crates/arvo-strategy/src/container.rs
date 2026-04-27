@@ -6,7 +6,7 @@
 //! `u32` / `u64` (and signed counterparts) only, never `Bits`. The
 //! `arvo-strategy` to `arvo-storage` direction stays acyclic.
 
-use crate::{Cold, Hot, Precise, Strategy, Warm};
+use crate::{Cold, Hot, Precise, Signed, Signedness, Strategy, Unsigned, Warm};
 
 /// Unsigned container dispatch: `(strategy, logical_bits) -> type`.
 ///
@@ -41,7 +41,7 @@ pub const trait UContainerFor<const N: u8>: Strategy {
 /// signed integers. `N` is the total `1 + I + F` for `IFixed`.
 #[diagnostic::on_unimplemented(
     message = "strategy `{Self}` does not provide a signed container for {N}-bit width",
-    note = "Warm caps at 1+I+F<=32; for wider widths, choose Hot or Precise explicitly: `Int64<Hot>`, `Int64<Precise>`, etc."
+    note = "Warm caps at 1+I+F<=32; for wider widths, choose Hot or Precise explicitly: `Int<64, Hot>`, `Int<64, Precise>`, etc."
 )]
 pub const trait IContainerFor<const N: u8>: Strategy {
     /// Concrete signed storage integer for this (strategy, bit-width) pair.
@@ -55,6 +55,43 @@ pub const trait IContainerFor<const N: u8>: Strategy {
         + core::hash::Hash
         + core::fmt::Debug
         + 'static;
+}
+
+/// Sign-aware container dispatch: `(strategy, N, Sign) -> type`.
+///
+/// Indirection trait used by `Bits<N, S, Sign>` to route through
+/// either `UContainerFor<N>` or `IContainerFor<N>` based on the
+/// `Sign` marker. Keeps the U / I tables independently extensible
+/// while the Sign axis on `Bits` reaches the right table per the
+/// blanket impls below.
+///
+/// `UFixed` / `IFixed` continue to bind on `UContainerFor<N>` /
+/// `IContainerFor<N>` directly; only `Bits` itself binds on
+/// `BitsContainerFor<N, Sign>`.
+pub trait BitsContainerFor<const N: u8, Sign: Signedness>: Strategy {
+    /// Concrete storage integer for this (strategy, bit-width, sign) triple.
+    type T: Copy
+        + Clone
+        + PartialEq
+        + Eq
+        + Default
+        + core::hash::Hash
+        + core::fmt::Debug
+        + 'static;
+}
+
+impl<S: Strategy, const N: u8> BitsContainerFor<N, Unsigned> for S
+where
+    S: UContainerFor<N>,
+{
+    type T = <S as UContainerFor<N>>::T;
+}
+
+impl<S: Strategy, const N: u8> BitsContainerFor<N, Signed> for S
+where
+    S: IContainerFor<N>,
+{
+    type T = <S as IContainerFor<N>>::T;
 }
 
 // --- Container impl table --------------------------------------------------
