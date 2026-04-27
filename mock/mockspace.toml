@@ -10,7 +10,15 @@ primary_domain_macro = "strategy"
 primary_domain_label = "Strategies"
 
 # Layer labels by depth index (L0 → L3)
-layers = ["L0 primitives", "L1 contracts", "L2 substrate", "L2 substrate", "L2 substrate", "L2 substrate", "L3 spectral"]
+layers = [
+  "L0 primitives",
+  "L1 contracts",
+  "L2 substrate",
+  "L2 substrate",
+  "L2 substrate",
+  "L2 substrate",
+  "L3 spectral"
+]
 
 # Domain kind labels for STRUCTURE.md domain items table
 [domain_kinds]
@@ -102,31 +110,31 @@ commit = "error"
 build = "error"
 push = "error"
 rules = [
-    # L0 — arvo has no intra-arvo deps, and no std/alloc.
-    { scope = "arvo", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L0 is the root of the arvo stack — no deps and no alloc/std" },
+  # L0 — arvo has no intra-arvo deps, and no std/alloc.
+  { scope = "arvo", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L0 is the root of the arvo stack — no deps and no alloc/std" },
 
-    # L1 — arvo-bits depends on arvo only. No concrete storage.
-    { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L1 contracts depend only on L0 (arvo); concrete storage lives in arvo-bitmask" },
+  # L1 — arvo-bits depends on arvo only. No concrete storage.
+  { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L1 contracts depend only on L0 (arvo); concrete storage lives in arvo-bitmask" },
 
-    # L2 — arvo-bitmask depends on arvo-bits only. May depend on arvo-tensor for shared cap_size.
-    { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 storage on arvo-bits contracts; must not depend on other L2/L3 crates except arvo-tensor for shared cap_size" },
+  # L2 — arvo-bitmask depends on arvo-bits only. May depend on arvo-tensor for shared cap_size.
+  { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 storage on arvo-bits contracts; must not depend on other L2/L3 crates except arvo-tensor for shared cap_size" },
 
-    # L2 — arvo-tensor. Value-storage peer of arvo-bitmask. Depends on arvo only.
-    { scope = "arvo-tensor", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-tensor is L2 value-storage on arvo L0 only; must not depend on other L1/L2/L3 crates" },
+  # L2 — arvo-tensor. Value-storage peer of arvo-bitmask. Depends on arvo only.
+  { scope = "arvo-tensor", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-tensor is L2 value-storage on arvo L0 only; must not depend on other L1/L2/L3 crates" },
 
-    # L2 — arvo-hash depends on arvo-bits only. Hash-domain types + algo contracts.
-    { scope = "arvo-hash", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-hash is L2 hash-domain surface on arvo-bits contracts; must not depend on other L2/L3 crates" },
+  # L2 — arvo-hash depends on arvo-bits only. Hash-domain types + algo contracts.
+  { scope = "arvo-hash", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-hash is L2 hash-domain surface on arvo-bits contracts; must not depend on other L2/L3 crates" },
 
-    # L2 algorithm crates — depend on arvo + arvo-bitmask + arvo-tensor (not bits directly).
-    { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo + arvo-bitmask + arvo-tensor only" },
-    { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo + arvo-bitmask + arvo-tensor only" },
-    { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo + arvo-bitmask + arvo-tensor only" },
+  # L2 algorithm crates — depend on arvo + arvo-bitmask + arvo-tensor (not bits directly).
+  { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo + arvo-bitmask + arvo-tensor only" },
+  { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo + arvo-bitmask + arvo-tensor only" },
+  { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo + arvo-bitmask + arvo-tensor only" },
 
-    # L3 — arvo-spectral depends on arvo + arvo-bitmask + arvo-tensor (Mask64 partition outputs this round, Matrix via arvo-tensor).
-    { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-bitmask + arvo-tensor (Mask64 for partition outputs; Matrix<W, N> for dense storage); arvo-sparse is a future-round dep per BACKLOG" },
+  # L3 — arvo-spectral depends on arvo + arvo-bitmask + arvo-tensor (Mask64 partition outputs this round, Matrix via arvo-tensor).
+  { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-bitmask + arvo-tensor (Mask64 for partition outputs; Matrix<W, N> for dense storage); arvo-sparse is a future-round dep per BACKLOG" },
 
-    # Universal — no ad-hoc threading, clocks, filesystem anywhere.
-    { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
+  # Universal — no ad-hoc threading, clocks, filesystem anywhere.
+  { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
 ]
 
 # ---------------------------------------------------------------------------
@@ -139,12 +147,70 @@ rules = [
 # Git-based dep spec only — committed config must be portable across
 # machines. For local iteration use `[patch]` in `.cargo/config.toml`.
 
-[lint-crates]
-mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "main" }
-
 # Writing-style gate — pre-existing docs trip this until sweeps tidy them.
 [lints.writing-style]
 severity = "advisory"
+
+# --- Built-in mockspace lints that don't apply to arvo -------------------
+# Disables a family of lints carried over from loimu (the original home of
+# mockspace) that encode loimu's plugin / registrable / visibility-macro
+# conventions. Matches the disables in hilavitkutin and saalis
+# mockspace.toml.
+
+[lints.no-bare-pub]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.registrable-completeness]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-bare-macro-types]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-manual-id]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-primitive-key]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-raw-error-outside-primitives]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-self-define]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-pool-access]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-adhoc-error-enum]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-adhoc-framework]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-entry-suffix]
+commit = "off"
+build = "off"
+push = "off"
 
 # Bare-primitive pack lints use their default severity (error at all
 # gates). The graceful-ramp ("warn" during the sweep) was removed in
@@ -199,6 +265,9 @@ severity = "advisory"
 # Future direction (mockspace task #119): auto-detect the categories a
 # crate introduces from its DESIGN.md.tmpl / source parse, eliminating
 # this manual declaration.
+
+[lint-crates]
+mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "main" }
 
 [primitive-introductions]
 arvo = ["numeric"]

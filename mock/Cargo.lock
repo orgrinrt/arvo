@@ -15,6 +15,7 @@ dependencies = [
 name = "arvo"
 version = "0.1.0"
 dependencies = [
+ "arvo-transparent",
  "mockspace",
  "notko",
  "trybuild",
