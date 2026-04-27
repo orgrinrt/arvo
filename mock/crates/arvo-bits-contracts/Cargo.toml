@@ -1,0 +1,17 @@
+[package]
+name = "arvo-bits-contracts"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+notko.workspace = true
+arvo-transparent.workspace = true
+arvo-strategy.workspace = true
+arvo-storage.workspace = true
+
+[build-dependencies]
+mockspace.workspace = true
+
+[features]
+default = []

@@ -1,0 +1,15 @@
+[package]
+name = "arvo-strategy"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+notko.workspace = true
+arvo-transparent.workspace = true
+
+[build-dependencies]
+mockspace.workspace = true
+
+[features]
+default = []
