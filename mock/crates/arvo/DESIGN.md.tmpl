@@ -1,10 +1,69 @@
-# arvo — Design
+# arvo. Design
 
 **arvo is a fixed-point arithmetic stack.** Standalone `#![no_std]`,
 no alloc, const-generic sizing. Same LLVM optimisation discipline
 whatever runs on top. Cross-project: used by hilavitkutin,
 polka-dots, saalis, and loimu. The exclusive numeric substrate
 for the clause-dev workspace.
+
+## Round 202604271346 architecture (current)
+
+Per the round 202604271346 doc CL, `arvo` is the **downstream facade**
+of the substrate, not the L0 layer. The dependency graph runs:
+
+1. `arvo-transparent`, `arvo-strategy` (foundation traits, no
+   storage)
+2. `arvo-storage` (the new minimal L0: `Bits<N, S>`, strategy
+   markers, `Bool`, `USize`, typed meta-bits `IBits` / `FBits` /
+   `Width`)
+3. `arvo-bits-contracts`, `arvo-mask-contracts`,
+   `arvo-narrow-contracts`, `arvo-numeric-contracts` (trait
+   declarations, all `pub const trait`)
+4. `arvo-bits`, `arvo-bitmask`, `arvo-narrow`, `arvo-tensor` (concrete
+   trait impls)
+5. `arvo-hash`, `arvo-graph`, `arvo-sparse`, `arvo-comb`,
+   `arvo-spectral` (algorithm crates)
+6. `arvo` (this crate): the facade. Re-exports the public surface,
+   hosts default impls, defines `Int<N, S>` / `Uint<N, S>` and the
+   eight std-parallel canonical aliases, hosts `UFixed<I, F, S>` and
+   `IFixed<I, F, S>` as `repr(transparent)` newtypes over `Bits`.
+
+The deep sections below describe the round-by-round state of the
+types this facade re-exports. The facade's own job is to be the
+single import-path entry point for downstream consumers and the home
+of the default trait impls. New types defined in `arvo` itself
+(post-round-202604271346) are limited to:
+
+- `UFixed<I, F, S>`, `IFixed<I, F, S>` (repr(transparent) newtypes
+  over `Bits`)
+- `Int<const N: u8, S = Warm>`, `Uint<const N: u8, S = Warm>` (typed
+  aliases)
+- `Uint8` / `Uint16` / `Uint32` / `Uint64` / `Int8` / `Int16` /
+  `Int32` / `Int64` (canonical std-parallel aliases)
+- `FastFloat`, `StrictFloat` (float wrappers, unchanged this round)
+- `Cap<N>` (capacity newtype, unchanged this round)
+- Default trait impls for `Add` / `Sub` / `Mul` / `Div` / `Recip` /
+  `Sqrt` / `TotalOrd` / `Predicate` family on the composed types
+
+Everything else is re-exported via `pub use`.
+
+The `Int<N, S>` / `Uint<N, S>` semantic convention is std-parallel:
+**N is total storage bit count.** `Int<8>` matches `i8` (1 sign + 7
+integer bits internally). `Uint<32>` matches `u32` (32 magnitude
+bits). Cap: `N <= 64` enforced via `Hot: UContainerFor<N>` (or
+`Warm` / `Precise` for narrower bands).
+
+```rust
+pub type Uint<const N: u8, S = Warm> = UFixed<{ ibits(N) }, { fbits(0) }, S>;
+pub type Int<const N: u8, S = Warm>  = IFixed<{ ibits(N - 1) }, { fbits(0) }, S>;
+```
+
+Per Q-D (round 202604271346), only the eight std-parallel canonical
+aliases survive. `Uint5`, `Uint6`, `Uint7`, `Uint13`, `Int7`,
+`Int13`, and the rest of the per-N spelling get deleted; consumers
+write `Uint<5>`, `Int<13>` directly.
+
+
 
 Every numeric primitive that crosses any arvo API (parameter,
 return, struct field, associated type) flows through
