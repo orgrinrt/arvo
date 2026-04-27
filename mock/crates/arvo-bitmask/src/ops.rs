@@ -14,7 +14,8 @@
 
 use arvo::newtype::{Bool, USize};
 use arvo::strategy::Hot;
-use arvo_bits::{BitAccess, BitLogic, BitSequence, QWord};
+use arvo::QWord;
+use arvo_bits::{BitAccess, BitLogic, BitSequence};
 
 use crate::mask::{Mask, Mask256, Mask64};
 
