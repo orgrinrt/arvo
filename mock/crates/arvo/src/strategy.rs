@@ -44,9 +44,8 @@ pub const fn ifixed_bits(i: IBits, f: FBits) -> u8 {
 ///
 /// Used to express "F has a fractional component" in const-generic
 /// where-clauses without struct construction.
-// allow-bare-numeric: tracked: #256
 #[inline(always)]
-pub const fn is_fractional(f: FBits) -> usize {
+pub const fn is_fractional(f: FBits) -> usize { // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: const-generic position helper; bare usize is the const-expression carrier here pending nightly relaxation; tracked: #256
     if f.raw() == 0 { 0 } else { 1 }
 }
 
@@ -55,8 +54,7 @@ pub const fn is_fractional(f: FBits) -> usize {
 /// Predicate, not an accessor; an accessor of `Width` to its inner
 /// `u8` is `width.raw()` (or `arvo::raw(width)` if you prefer the
 /// prefix style).
-// allow-bare-numeric: tracked: #256
 #[inline(always)]
-pub const fn width_le_64(n: arvo_storage::Width) -> bool {
+pub const fn width_le_64(n: arvo_storage::Width) -> bool { // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: const-generic where-clause predicate; bare bool needed for const-eval guard; tracked: #256
     n.raw() <= 64
 }

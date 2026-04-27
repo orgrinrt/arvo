@@ -34,9 +34,7 @@ pub mod ufixed;
 pub mod ufixed_impl;
 
 pub use arvo_bits::{Bit, Byte, DWord, Nibble, QWord, Word};
-pub use aliases::{
-    Fixed, Int, Int8, Int16, Int32, Int64, Signed, Uint, Uint8, Uint16, Uint32, Uint64,
-};
+pub use aliases::{Fixed, Int, Signed, Uint};
 pub use arvo_numeric_contracts::{
     IsNonNegative, IsNonZero, IsPositive, IsZero, IsZeroOrPositive, Predicate,
 };

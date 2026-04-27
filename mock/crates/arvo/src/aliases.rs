@@ -1,18 +1,23 @@
-//! Numeric aliases at canonical widths plus generic ergonomic aliases.
+//! Numeric aliases. Generic-only public surface.
 //!
-//! Two groups of aliases live here:
+//! Four aliases live here, all generic over a const-generic bit count:
 //!
-//! - **Generic aliases** [`Fixed`] / [`Signed`] / [`Uint`] / [`Int`]
-//!   forward bare `u8` const-generics into the `IBits` /
-//!   `FBits`-wrapped form of `UFixed` / `IFixed`. These give
-//!   domain-author and consumer call sites clean syntax (`Fixed<13,
-//!   3, Warm>`, `Uint<12>`) without the `{ ibits(...) }` /
-//!   `{ fbits(...) }` boilerplate.
-//! - **Canonical-width aliases** (`Uint8`, `Uint16`, `Uint32`,
-//!   `Uint64`, `Int8`, `Int16`, `Int32`, `Int64`) name the eight
-//!   std-parallel survivors. Per Q-D, every other width (Uint5,
-//!   Uint6, Uint7, Int7, Int13, etc.) is expressed via the generic
-//!   `Uint<N>` / `Int<N>` form rather than a per-N alias.
+//! - [`Fixed`] / [`Signed`] forward bare `u8` const-generics into the
+//!   `IBits` / `FBits`-wrapped form of `UFixed` / `IFixed`. Use these
+//!   when integer and fractional bits are both meaningful (`Fixed<13,
+//!   3, Warm>` is 13 integer bits, 3 fractional bits).
+//! - [`Uint`] / [`Int`] are integer-only convenience aliases for the
+//!   common case `F = 0`. Total bit width is the sole const-generic
+//!   parameter (`Uint<12>` is a 12-bit unsigned, `Int<8>` matches
+//!   `i8`'s logical width with sign + 7 magnitude bits).
+//!
+//! No std-parallel per-N aliases. The substrate is built around
+//! exact-bit-count thinking. Round 202604280034 deleted the eight
+//! std-parallel canonical aliases (`Uint8`/`Uint16`/`Uint32`/`Uint64` +
+//! signed counterparts) that round 202604271346 retained as a
+//! transitional bridge. Consumers express exact widths directly
+//! through `Uint<N, S>` / `Int<N, S>`. Std-parallel sugar reintroduces
+//! bucket thinking and undermines the central premise.
 //!
 //! Strategy default is `Warm` where Warm is valid (`I + F <= 32`);
 //! above that, the alias requires explicit strategy or fails
@@ -81,14 +86,3 @@ pub type Uint<const N: u8, S = Warm> = UFixed<{ ibits(N) }, { fbits(0) }, S>;
 /// ```
 pub type Int<const N: u8, S = Warm> = IFixed<{ ibits(N - 1) }, { fbits(0) }, S>;
 
-// Canonical-width survivors (Q-D). Eight std-parallel aliases.
-// Other widths use `Uint<N>` / `Int<N>` directly.
-pub type Uint8<S = Warm> = UFixed<{ ibits(8) }, { fbits(0) }, S>;
-pub type Uint16<S = Warm> = UFixed<{ ibits(16) }, { fbits(0) }, S>;
-pub type Uint32<S = Warm> = UFixed<{ ibits(32) }, { fbits(0) }, S>;
-pub type Uint64<S> = UFixed<{ ibits(64) }, { fbits(0) }, S>;
-
-pub type Int8<S = Warm> = IFixed<{ ibits(8) }, { fbits(0) }, S>;
-pub type Int16<S = Warm> = IFixed<{ ibits(16) }, { fbits(0) }, S>;
-pub type Int32<S = Warm> = IFixed<{ ibits(32) }, { fbits(0) }, S>;
-pub type Int64<S> = IFixed<{ ibits(64) }, { fbits(0) }, S>;
