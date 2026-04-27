@@ -1,8 +1,13 @@
-# arvo-comb — Design
+# arvo-comb. Design
 
 Combinatorial optimisation algorithms on const-generic fixed-size
 structures. `#![no_std]`, no alloc. Constraint representations use
 arvo-bitmask; value storage uses arvo-tensor.
+
+Per round 202604271346: dependencies update. The crate depends on
+`arvo-storage`, `arvo-bits-contracts`, `arvo-numeric-contracts`,
+`arvo-tensor`, `arvo-bitmask`. The prior `arvo-bits` direct dep is
+replaced by `arvo-bits-contracts`.
 
 Generic over numeric trait bounds for cost and weight types. Does not
 import UFixed or IFixed directly. Consumer instantiates with concrete
