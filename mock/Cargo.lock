@@ -39,6 +39,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-bits-contracts"
+version = "0.1.0"
+dependencies = [
+ "arvo-storage",
+ "arvo-strategy",
+ "arvo-transparent",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
 name = "arvo-comb"
 version = "0.1.0"
 dependencies = [
@@ -67,6 +78,50 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-mask-contracts"
+version = "0.1.0"
+dependencies = [
+ "arvo-bits-contracts",
+ "arvo-storage",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
+name = "arvo-narrow"
+version = "0.1.0"
+dependencies = [
+ "arvo-bitmask",
+ "arvo-bits-contracts",
+ "arvo-mask-contracts",
+ "arvo-narrow-contracts",
+ "arvo-storage",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
+name = "arvo-narrow-contracts"
+version = "0.1.0"
+dependencies = [
+ "arvo-bits-contracts",
+ "arvo-mask-contracts",
+ "arvo-storage",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
+name = "arvo-numeric-contracts"
+version = "0.1.0"
+dependencies = [
+ "arvo-bits-contracts",
+ "arvo-storage",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
 name = "arvo-sparse"
 version = "0.1.0"
 dependencies = [
@@ -87,11 +142,38 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-storage"
+version = "0.1.0"
+dependencies = [
+ "arvo-strategy",
+ "arvo-transparent",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
+name = "arvo-strategy"
+version = "0.1.0"
+dependencies = [
+ "arvo-transparent",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
 name = "arvo-tensor"
 version = "0.1.0"
 dependencies = [
  "arvo",
  "mockspace",
+]
+
+[[package]]
+name = "arvo-transparent"
+version = "0.1.0"
+dependencies = [
+ "mockspace",
+ "notko",
 ]
 
 [[package]]

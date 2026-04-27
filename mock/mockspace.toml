@@ -202,5 +202,8 @@ severity = "advisory"
 
 [primitive-introductions]
 arvo = ["numeric"]
+arvo-transparent = ["numeric"]
+arvo-strategy = ["numeric"]
+arvo-storage = ["numeric"]
 arvo-bits = ["numeric"]
 arvo-hash = ["numeric"]
