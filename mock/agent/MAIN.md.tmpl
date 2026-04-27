@@ -27,11 +27,17 @@ facade:
 - `arvo-strategy`. `Strategy` marker plus the four ZST markers
   `Hot` / `Warm` / `Cold` / `Precise`. `UContainerFor<N>` and
   `IContainerFor<N>` per-N const traits projecting strategy +
-  bit-width to the dispatched primitive container.
-- `arvo-storage`. `Bits<N, S>` opaque storage primitive
-  (`repr(transparent)` over the dispatched container). `Bool`,
-  `USize` platform wrappers. `IBits`, `FBits`, `Width` typed
-  meta-bit newtypes carrying bit-counts.
+  bit-width to the dispatched primitive container, plus
+  `BitsContainerFor<N, Sign>` indirection routing the Sign axis on
+  Bits to the underlying U / I tables. `MultiContainer<HiT, LoT>`
+  dispatch for 129..=256 logical widths.
+- `arvo-storage`. `Bits<N, S, Sign>` opaque storage primitive
+  (`repr(transparent)` over the dispatched container; default
+  `Sign = Unsigned`). `MultiContainer<HiT, LoT>` multi-value primitive
+  for widths beyond native single primitives. `Unsigned` / `Signed`
+  ZST markers + sealed `Signedness` trait. `Bool`, `USize` platform
+  wrappers. `IBits`, `FBits`, `Width` typed meta-bit newtypes carrying
+  bit-counts (0..=256 range).
 
 **L0.5 trait contracts:**
 - `arvo-bits-contracts`. `HasBitWidth`, `BitAccess`, `BitSequence`,
@@ -77,11 +83,13 @@ facade:
 
 **Facade:**
 - `arvo`. Re-exports the substrate. `UFixed<I, F, S>` as
-  `repr(transparent)` newtype over `Bits<{I+F}, S>`. `IFixed<I, F, S>`
-  (currently a direct projection wrapper; reshapes over `Bits` with
-  the Sign axis in a future round). `Uint<N, S>` and `Int<N, S>`
-  ergonomic generic aliases. `FastFloat<F>` and `StrictFloat<F>`
-  IEEE-width-tagged floats. `bitfield!` declarative macro.
+  `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>`.
+  `IFixed<I, F, S>` as `repr(transparent)` newtype over
+  `Bits<{1+I+F}, S, Signed>` (symmetric counterpart; reshape shipped
+  in round 202604280500 alongside the Sign axis on Bits).
+  `Uint<N, S>` and `Int<N, S>` ergonomic generic aliases.
+  `FastFloat<F>` and `StrictFloat<F>` IEEE-width-tagged floats.
+  `bitfield!` declarative macro.
 
 ## Crate table
 

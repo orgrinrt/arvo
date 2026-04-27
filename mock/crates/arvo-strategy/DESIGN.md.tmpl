@@ -32,18 +32,29 @@ const generic argument. Each implements the sealed `Strategy` marker
 trait declared here.
 
 `Hot` selects the narrowest container per bit width. 1..=8 bits use
-`u8`, 9..=16 use `u16`, 17..=32 use `u32`, 33..=64 use `u64`. Picked
-when consumers want minimum storage and have explicit width
-information.
+`u8`, 9..=16 use `u16`, 17..=32 use `u32`, 33..=64 use `u64`,
+65..=128 use `u128` (single-primitive). 129..=256 dispatches via
+`MultiContainer<HiT, LoT>` with the smallest-footprint pair (e.g.
+129..=192 → `MultiContainer<u64, u128>`; 193..=256 →
+`MultiContainer<u128, u128>`). Picked when consumers want minimum
+storage and have explicit width information.
 
 `Warm` selects the ergonomic container. Always at least `u32` for
-N<=32, `u64` for 33..=64. Default for most consumer call sites.
+N<=32, `u64` for 33..=64, `u128` for 65..=128. The Warm cap shifts
+from 32 (round 202604271346 doc CL D2) to 128 in round 202604280500
+alongside the bit-width cap extension. Wider widths (129..=256)
+diagnostic the consumer at Hot or a BACKLOG-tracked Warm extension
+(no native u256 means the 2x logical safety contract collapses).
 
-`Cold` reserved for bitpacked storage of N>64. Out of scope for round
-202604271346.
+`Cold` mirrors Hot's container shape; bitpacking is an access-path
+concern, not a container-type concern. Column storage masks on access.
+Coverage extends to 1..=256 via the Hot table plus MultiContainer.
 
-`Precise` selects arbitrary-width carriers. Within the round-202604271346
-scope this is `u64` for any N<=64.
+`Precise` selects 2x-logical carriers within native primitives where
+available, with saturating arithmetic. 1..=8 → `u16`, 9..=16 → `u32`,
+17..=32 → `u64`, 33..=64 → `u128`. 65..=128 uses `MultiContainer<u128,
+u128>` (saturating per element, post-Round-B-arith). 129..=256 awaits
+the same arith bridge.
 
 ## Strategy trait
 
@@ -62,20 +73,30 @@ pub const trait UContainerFor<const N: u8>: Strategy {
 }
 
 impl const UContainerFor<1> for Hot { type T = u8; }
-impl const UContainerFor<2> for Hot { type T = u8; }
 // ... 1..=8 -> u8
 impl const UContainerFor<9> for Hot { type T = u16; }
 // ... 9..=16 -> u16
 // ... 17..=32 -> u32
 // ... 33..=64 -> u64
+// ... 65..=128 -> u128 (round 202604280500)
+impl const UContainerFor<129> for Hot { type T = MultiContainer<u64, u128>; }
+// ... 129..=192 -> MultiContainer<u64, u128>
+// ... 193..=256 -> MultiContainer<u128, u128>
 
 impl const UContainerFor<1> for Warm { type T = u32; }
-// etc.
+// ... 1..=8  -> u32 (was u16; now matches Precise's 2x-logical rule)
+// Updated rule: round 202604280500 lifts the explicit Warm-caps-at-32
+// rule to Warm-caps-at-128, with `u128` for 33..=128 and a BACKLOG-
+// tracked extension above. Existing 1..=32 cells continue to match
+// the round 202604271346 D2 placement.
 ```
 
 Per-N impl on each of the four markers. Bands per the strategy
 semantics above. Const trait so the projection
-`<S as UContainerFor<N>>::T` resolves in const fn bodies.
+`<S as UContainerFor<N>>::T` resolves in const fn bodies. The 65..=256
+range adds two new band families: native `u128` for 65..=128 and
+`MultiContainer<HiT, LoT>` for 129..=256. The MultiContainer per-cell
+shape lands in `## MultiContainer dispatch` below.
 
 ## IContainerFor
 
@@ -85,10 +106,69 @@ pub const trait IContainerFor<const N: u8>: Strategy {
 }
 
 impl const IContainerFor<1> for Hot { type T = i8; }
-// ... matching bands per signed primitives
+// ... matching bands per signed primitives, mirroring UContainerFor.
+// 65..=128 -> i128 (single-primitive).
+// 129..=256 -> MultiContainer<i_hi, i_lo> per the same strategy
+//             projection rules as UContainerFor.
 ```
 
-Signed counterpart. Same structure.
+Signed counterpart. Same structure as UContainerFor; signed primitives
+through `i128` and signed `MultiContainer` shapes for 129..=256.
+
+## BitsContainerFor
+
+```rust
+pub const trait BitsContainerFor<const N: u8, Sign: Signedness>: Strategy {
+    type T: Copy + ConstParamTy_ + ...;
+}
+
+impl<S, const N: u8> const BitsContainerFor<N, Unsigned> for S
+where S: UContainerFor<N>
+{
+    type T = <S as UContainerFor<N>>::T;
+}
+
+impl<S, const N: u8> const BitsContainerFor<N, Signed> for S
+where S: IContainerFor<N>
+{
+    type T = <S as IContainerFor<N>>::T;
+}
+```
+
+Indirection trait that projects `(N, Sign)` to either the unsigned or
+the signed container table. Used at the `Bits<N, S, Sign>` field
+declaration site. Keeps the U / I tables independently extensible
+while routing the Sign axis through a single projection trait at the
+Bits surface.
+
+UFixed and IFixed continue to bind on `UContainerFor<N>` /
+`IContainerFor<N>` directly, unchanged from prior rounds. Only `Bits`
+itself binds on `BitsContainerFor<N, Sign>`.
+
+## MultiContainer dispatch
+
+The 129..=256 logical bit-width range dispatches via
+`MultiContainer<HiT, LoT>` (declared in `arvo-storage`). Strategy-driven
+(HiT, LoT) projection per:
+
+| Strategy | Projection rule | 129..=192 example | 193..=256 example |
+|----------|-----------------|-------------------|-------------------|
+| Hot | smallest-footprint pair | `MultiContainer<u64, u128>` | `MultiContainer<u128, u128>` |
+| Cold | smallest-footprint pair (bitpacked access at column-store layer) | `MultiContainer<u64, u128>` | `MultiContainer<u128, u128>` |
+| Warm | (BACKLOG: 2x-logical doubled pair; no native u256 means cap-at-128 in this round) | (unimplemented) | (unimplemented) |
+| Precise | (BACKLOG: same-length doubled pair with saturating arithmetic) | (unimplemented) | (unimplemented) |
+
+Hot and Cold share the smallest-footprint shape (the bitpacking on
+Cold is access-time, not container-time). Warm and Precise extensions
+into 129..=256 await the no-native-u256 design call (BACKLOG-tracked).
+
+The cell-by-cell impl table is generated by macro across the per-N
+range. Round 202604280500 lands the storage projection only; UArith /
+IArith dispatch on `MultiContainer` is BACKLOG-tracked for a follow-up
+round, so UFixed / IFixed at 129..=256 await that arith bridge before
+their `Add` / `Sub` / `Mul` / `Div` impls compile (UFixed / IFixed cap
+at 128 in this round). `Bits<129..=256, S, Sign>` is available
+standalone with the storage projection landing here.
 
 ## Resolve
 
