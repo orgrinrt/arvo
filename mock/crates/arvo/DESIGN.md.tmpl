@@ -753,11 +753,12 @@ When `UFixed<I1, F1, S1>` operates with `UFixed<I2, F2, S2>`:
 bit-count)` to the concrete container type. Each strategy marker
 implements `UContainerFor<N>` for the bit-counts it supports:
 
-- `Hot`: `1..=64` (full range).
-- `Warm`: `1..=32` (Warm cap; above 32 is unimplemented and surfaces
-  a compile-time error).
-- `Cold`: `1..=64`.
-- `Precise`: `1..=64`.
+| Strategy | Supported bit range | Notes |
+|---|---|---|
+| `Hot` | `1..=64` | Full range. |
+| `Warm` | `1..=32` | Warm cap. Above 32 is unimplemented and surfaces a compile-time error. |
+| `Cold` | `1..=64` | Bitpacked storage; widths beyond 64 are tracked in BACKLOG. |
+| `Precise` | `1..=64` | Arbitrary-width carrier inside the `<= 64` band. |
 
 The `BITS: u8` parameter is workspace-rule exception #2 (storage-
 primitive const-generic at the L0 root); meta-layer types (`Width`,
