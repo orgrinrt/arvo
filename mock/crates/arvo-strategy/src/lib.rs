@@ -31,6 +31,7 @@ use core::marker::ConstParamTy;
 
 mod sealed {
     pub trait Sealed {}
+    pub trait SealedSign {}
 }
 
 mod arith;
@@ -38,7 +39,7 @@ mod container;
 mod widen;
 
 pub use arith::{IArith, ISaturating, UArith, USaturating};
-pub use container::{IContainerFor, UContainerFor};
+pub use container::{BitsContainerFor, IContainerFor, UContainerFor};
 pub use widen::{INarrowFrom, IWidenFrom, UNarrowFrom, UWidenFrom};
 
 /// Strategy marker trait.
@@ -118,6 +119,36 @@ impl const Strategy for Precise {
     const NAME: &'static str = "Precise";
     const RANK: u8 = 3;
 }
+
+// --- Sign axis markers ----------------------------------------------------
+//
+// `Signedness` is the sealed marker trait carried as the third
+// const-generic on `Bits<N, S, Sign>`. Default `Sign = Unsigned`
+// keeps every existing call site unchanged. `IFixed<I, F, S>` reaches
+// for `Sign = Signed` internally; consumers normally write `IFixed`
+// rather than `Bits<N, S, Signed>` directly.
+
+/// Sign-axis marker trait. Sealed; consumers cannot add new variants.
+///
+/// The two implementors are `Unsigned` and `Signed` (zero-sized
+/// markers). Used as the `Sign` const-generic on `Bits<N, S, Sign>`
+/// and routed through `BitsContainerFor<N, Sign>` to either the
+/// `UContainerFor<N>` or `IContainerFor<N>` table.
+pub trait Signedness: sealed::SealedSign + Copy + Clone + Default + 'static {}
+
+/// Unsigned bit pattern. Default `Sign` on `Bits<N, S, Sign>`.
+#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
+pub struct Unsigned;
+
+/// Signed bit pattern. Used by `IFixed<I, F, S>` internally.
+#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
+pub struct Signed;
+
+impl sealed::SealedSign for Unsigned {}
+impl sealed::SealedSign for Signed {}
+
+impl Signedness for Unsigned {}
+impl Signedness for Signed {}
 
 // --- Strategy resolution for cross-strategy ops ----------------------------
 //
