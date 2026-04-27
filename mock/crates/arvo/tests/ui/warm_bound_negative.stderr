@@ -41,10 +41,10 @@ error[E0277]: strategy `Warm` does not provide a container for 33-bit width
 note: required by a bound in `UFixed`
  --> src/ufixed.rs
   |
-  | pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>
+  | pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>(
   |            ------ required by a bound in this struct
-  | where
-  |     S: UContainerFor<{ ufixed_bits(I, F) }>,
+...
+  |     S: UContainerFor<{ ufixed_bits(I, F) }>;
   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `UFixed`
 
 error[E0277]: strategy `Warm` does not provide a container for 33-bit width
@@ -90,10 +90,10 @@ error[E0277]: strategy `Warm` does not provide a container for 33-bit width
 note: required by a bound in `UFixed`
  --> src/ufixed.rs
   |
-  | pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>
+  | pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>(
   |            ------ required by a bound in this struct
-  | where
-  |     S: UContainerFor<{ ufixed_bits(I, F) }>,
+...
+  |     S: UContainerFor<{ ufixed_bits(I, F) }>;
   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `UFixed`
 
 error[E0277]: strategy `Warm` does not provide a container for 33-bit width
