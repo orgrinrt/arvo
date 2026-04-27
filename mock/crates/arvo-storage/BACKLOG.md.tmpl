@@ -1,0 +1,27 @@
+# arvo-storage. Backlog
+
+Designed-but-deferred items for the L0 storage crate. Names stay
+unbacktickd until they ship.
+
+## ConstParamTy on UFixed / IFixed
+
+Manual ConstParamTy_ impl on UFixed and IFixed lets fixed-point types
+appear directly as const generic arguments. Verified-friction in
+rustc 1.96-nightly per the round 202604271346 Q-A spike scope notes.
+Lands when the friction clears or the workaround pattern stabilises.
+
+## USize as Bits-rooted
+
+Inner field of USize migrating from raw usize to Bits<{cfg-platform-width}, Hot>
+for unified bit-storage view. Round 202604500000 explored the direction.
+Currently parked. Future round revisits when the platform-width const
+generic ergonomics improve.
+
+## Cold strategy bitpacking
+
+Bits<N, Cold> for N > 64 with bitpacked storage across multiple bare
+primitives. Out of scope for round 202604271346. Future round.
+
+## Removed entries
+
+(none)

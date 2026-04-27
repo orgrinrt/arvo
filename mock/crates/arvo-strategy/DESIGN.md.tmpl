@@ -1,0 +1,110 @@
+# arvo-strategy. Design
+
+The strategy-marker and container-projection layer. Defines what
+"strategy" means in the substrate: a compile-time tag that picks the
+underlying primitive container for a given bit width. No fielded
+types beyond the four ZST markers. `#![no_std]`, no alloc.
+
+Depends on `notko` and `arvo-transparent`. Does NOT depend on
+`arvo-storage`. The trait declarations are type-only and the per-N
+impl bodies name only bare primitives (`u8`, `u16`, `u32`, `u64`,
+`i8`..`i64`); no `Bits` reference. The `arvo-strategy` to
+`arvo-storage` direction is acyclic by topology.
+
+## Strategy markers
+
+```rust
+#[derive(ConstParamTy, ...)]
+pub struct Hot;
+
+#[derive(ConstParamTy, ...)]
+pub struct Warm;
+
+#[derive(ConstParamTy, ...)]
+pub struct Cold;
+
+#[derive(ConstParamTy, ...)]
+pub struct Precise;
+```
+
+Four zero-sized types. Each derives `ConstParamTy` so it works as a
+const generic argument. Each implements the sealed `Strategy` marker
+trait declared here.
+
+`Hot` selects the narrowest container per bit width. 1..=8 bits use
+`u8`, 9..=16 use `u16`, 17..=32 use `u32`, 33..=64 use `u64`. Picked
+when consumers want minimum storage and have explicit width
+information.
+
+`Warm` selects the ergonomic container. Always at least `u32` for
+N<=32, `u64` for 33..=64. Default for most consumer call sites.
+
+`Cold` reserved for bitpacked storage of N>64. Out of scope for round
+202604271346.
+
+`Precise` selects arbitrary-width carriers. Within the round-202604271346
+scope this is `u64` for any N<=64.
+
+## Strategy trait
+
+```rust
+pub const trait Strategy {}
+```
+
+Sealed marker. The four markers above implement it. No methods.
+Const trait so bounds compose with const fns.
+
+## UContainerFor
+
+```rust
+pub const trait UContainerFor<const N: u8>: Strategy {
+    type T: Copy + ConstParamTy_ + ...;
+}
+
+impl const UContainerFor<1> for Hot { type T = u8; }
+impl const UContainerFor<2> for Hot { type T = u8; }
+// ... 1..=8 -> u8
+impl const UContainerFor<9> for Hot { type T = u16; }
+// ... 9..=16 -> u16
+// ... 17..=32 -> u32
+// ... 33..=64 -> u64
+
+impl const UContainerFor<1> for Warm { type T = u32; }
+// etc.
+```
+
+Per-N impl on each of the four markers. Bands per the strategy
+semantics above. Const trait so the projection
+`<S as UContainerFor<N>>::T` resolves in const fn bodies.
+
+## IContainerFor
+
+```rust
+pub const trait IContainerFor<const N: u8>: Strategy {
+    type T: Copy + ConstParamTy_ + ...;
+}
+
+impl const IContainerFor<1> for Hot { type T = i8; }
+// ... matching bands per signed primitives
+```
+
+Signed counterpart. Same structure.
+
+## Resolve
+
+```rust
+pub const trait Resolve<S1: Strategy, S2: Strategy>: Strategy {
+    type T: Strategy;
+}
+```
+
+Pairwise strategy resolution. Used when a binary op combines two
+operands carrying different strategies; the result strategy is the
+"broader" of the two per a documented lattice. Const trait.
+
+## Sources
+
+- `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md`
+- `mock/design_rounds/202604271346_changelist.doc.md`
+- Q-A spike confirming the const trait projection cascade resolves at
+  use sites under `feature(const_trait_impl)` + `feature(const_param_ty_trait)`.
