@@ -54,7 +54,7 @@ macro_rules! meta_bits_wrapper {
 
         // SAFETY: $W is `#[repr(transparent)]` over u8; layout is
         // byte-identical to u8 by Rust spec.
-        unsafe impl Transparent for $W {
+        unsafe impl const Transparent for $W {
             type Inner = u8;
         }
 

@@ -1,0 +1,43 @@
+# arvo-bits-contracts. Known gaps
+
+Round 202604271346 lifted these items into arvo-bits-contracts as
+part of the contract-crate split. Each has a deferred design-doc
+follow-up that lands in the next DOC-phase round; until then the
+SHAME entry silences the `undocumented-type` lint while still
+recording the gap. Nothing on this list is a permanent escape; every
+entry is a TODO for the next round.
+
+## IBit
+
+Private sealing trait gating `IBitPrim`. Lives inside the private
+`mod sealed` and is impl'd in this crate on the bare signed
+primitives `i8`, `i16`, `i32`, `i64`. The trait carries no methods;
+its only purpose is to prevent consumers outside this crate from
+adding new primitive widths to `IBitPrim`. The `undocumented-type`
+lint cannot see the private-mod context and flags the bare
+`pub(crate) trait` declaration. The next DOC-phase round adds an
+explicit "Sealing traits" section to `DESIGN.md.tmpl`; until then
+this SHAME entry records the gap.
+
+## UBridge
+
+Private sealing trait gating the `UBitContainer` blanket impl. Lives
+inside `mod sealed`, is const-generic on `BITS`, and is blanket-impl'd
+over `(Strategy, BITS)` pairs whose unsigned container implements
+`BitPrim`. No methods; pure sealing token. Same lint blind-spot as
+`IBit`: the lint flags the public-on-paper-but-private-in-practice
+declaration. The next DOC-phase round documents the sealing trio
+alongside the `BitPrim` family section; this SHAME entry temporarily
+unblocks the SRC-phase commit gate per the lint's escape-hatch path.
+
+## IBridge
+
+Private sealing trait gating the `IBitContainer` blanket impl. Same
+shape as `UBridge` but for the signed side: blanket-impl'd over
+`(Strategy, BITS)` pairs whose signed container implements `IBitPrim`.
+Separate from `UBridge` so a single `Strategy` can carry both a
+U-bridge and an I-bridge at the same `BITS` without blanket-impl
+collision. Same lint blind-spot, same DOC-phase follow-up, same
+temporary SHAME entry until the doc lands. The doc CL for round
+202604271346 will gain a sealing-traits subsection in pass 4 doc
+clean-up or a follow-up DOC round.

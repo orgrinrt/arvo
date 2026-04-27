@@ -5,12 +5,12 @@
 //! container in a single predicate — avoids the const-expr cycle
 //! that two separate predicates would trigger.
 
-use arvo::{Bool, FBits, IBits, USize};
-use arvo::strategy::{Hot, Strategy, ufixed_bits};
-use arvo::ufixed::UFixed;
+use arvo_bits_contracts::{BitAccess, BitLogic, BitPrim, BitSequence, HasBitWidth, UBitContainer};
+use arvo_storage::{Bool, FBits, IBits, USize};
+use arvo_strategy::{Hot, Strategy};
 
-use arvo::prim::{BitPrim, UBitContainer};
-use crate::traits::{BitAccess, BitLogic, BitSequence, HasBitWidth};
+use crate::strategy::ufixed_bits;
+use crate::ufixed::UFixed;
 
 impl<const I: IBits, const F: FBits, S: Strategy> HasBitWidth for UFixed<I, F, S>
 where

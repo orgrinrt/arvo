@@ -1,13 +1,15 @@
 //! `HasBitWidth` / `BitAccess` / `BitSequence` / `BitLogic` impls on
-//! the L0 `arvo::Bits<N, S>` storage primitive.
+//! the L0 `arvo_storage::Bits<N, S>` storage primitive.
 //!
-//! Post round 202604500000, `Bits` lives in arvo L0; arvo-bits hosts
-//! only the trait contracts and these blanket impls.
+//! Per round 202604271346 D-12, the trait declarations live in this
+//! crate (`arvo-bits-contracts`); the blanket impls on `Bits<N, S>`
+//! land here too because orphan rules require trait + foreign-type
+//! impls to share a crate (`Bits` is in `arvo-storage`).
 
-use arvo::strategy::{Hot, Strategy, UContainerFor};
-use arvo::{BitPrim, Bits, Bool, USize};
+use arvo_storage::{Bits, Bool, USize};
+use arvo_strategy::{Hot, Strategy, UContainerFor};
 
-use crate::traits::{BitAccess, BitLogic, BitSequence, HasBitWidth};
+use crate::{BitAccess, BitLogic, BitPrim, BitSequence, HasBitWidth};
 
 impl<const N: u8, S: Strategy> HasBitWidth for Bits<N, S>
 where
