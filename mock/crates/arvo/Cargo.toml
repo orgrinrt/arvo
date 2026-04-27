@@ -7,6 +7,7 @@ license.workspace = true
 [dependencies]
 notko.workspace = true
 arvo-transparent.workspace = true
+arvo-strategy.workspace = true
 
 [dev-dependencies]
 trybuild = "1"
