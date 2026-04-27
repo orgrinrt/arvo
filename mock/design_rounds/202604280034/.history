@@ -1,0 +1,50 @@
+356f116 chore: lock src changelist for 202604280034_changelist.src.lock.md
+64b9917 docs: round 202604280034 src CL — consolidate carry-forward H3s into single Comparison section per deprecation-comparison lint shape
+a8881cd docs: round 202604280034 src CL — strip parentheticals from comparison subsection headers to satisfy deprecation-comparison lint
+cb3686f docs: round 202604280034 src CL — add per-name and per-section carry-forward block from deprecated CL
+cbc10fe feat: round 202604280034 — std-parallel deletion + arvo-narrow-contracts merge into arvo-bits-contracts + lint:allow format fixes + arvo-hash dep cleanup + _ColdReserved cleanup
+31b5260 docs: round 202604280034 src CL — focused successor with Mask<W> deferral + execution-order doc post unlock-relock cycle
+515907a chore: re-lock doc changelist for 202604280034 post-amend
+25614c4 docs: round 202604280034 doc CL amend — workspace member dedup + BACKLOG entries for deferred Mask<W> + Cold widen/narrow + doc CL update post unlock-relock cycle
+6266f2e chore: unlock 202604280034 doc CL; deprecate src CL to delete doc templates in DOC phase
+26a3d30 docs: round 202604280034 src CL — six-pass mutation plan (hygiene, annotations, doc fixes, std-parallel deletion, contract merge, source fixes, validation)
+8b00bca chore: lock doc changelist for 202604280034_changelist.doc.lock.md
+ab3c2e7 docs: round 202604280034 doc execution — Identity dedupe + IFixed deferred-pass-4d note + arvo-narrow-contracts merge + Q-D completion + Mask<W> impl note + arvo-hash dep cleanup
+07dcfd5 docs: round 202604280034 doc CL — Round A scope (audit-driven hygiene + Q-D completion)
+dd732ce docs: round 202604280034 topic — audit-driven hygiene + Q-D completion + arvo-narrow-contracts merge + IFixed doc-fix
+b2c5b39 chore: close design round 202604271346
+668c3a2 chore: lock src changelist for 202604271346_changelist.src.lock.md
+2070f9a docs: round 202604271346 src CL — pass 9 validation gauntlet results
+9ddf87c feat: round 202604271346 pass 7 — Q-D alias deletion
+f05d75b feat: round 202604271346 pass 5+6 — per-size helper deletion + bitfield macro rewrite
+275baa3 feat: round 202604271346 pass 8 — forbidden-imports scopes flip + arvo facade bit-storage re-exports
+025d161 feat: round 202604271346 pass 4c — bit-storage aliases relocate to arvo-bits
+487e30b feat: round 202604271346 pass 4b — UFixed reshape as repr(transparent) newtype over Bits
+878980c feat: round 202604271346 pass 4a — Uint<N, S> + Int<N, S> generic aliases
+27a787b docs: round 202604271346 src CL — add per-name and per-section carry-forward block
+a57b5fa feat: round 202604271346 pass 3e — populate arvo-numeric-contracts + consumer ripple
+66025f9 docs: round 202604271346 src CL — focused successor with method-level FromConstant
+6785ca8 chore: lock doc changelist for 202604271346_changelist.doc.lock.md
+931d117 docs: round 202604271346 doc CL — FromConstant method-level const generic clarification
+96138da chore: unlock 202604271346 doc CL; deprecate src CL for FromConstant signature revision
+3aec106 feat: round 202604271346 pass 3c+3d — populate arvo-mask-contracts and arvo-narrow-contracts
+7fd44f5 feat: round 202604271346 pass 3a+3b — Transparent const trait + arvo-bits-contracts population
+73fba71 feat: round 202604271346 pass 2c — migrate Bits/Bool/USize/Cap/IBits/FBits/Width to arvo-storage
+69cd903 feat: round 202604271346 pass 2b — migrate strategy markers + container/arith/widen traits to arvo-strategy
+39cbfde chore: round 202604271346 — disable loimu-convention lint family for arvo (overseer-applied)
+48c68d8 feat: round 202604271346 pass 2a — migrate Transparent/NumericPrimitive/raw to arvo-transparent crate
+504f763 feat: round 202604271346 — register new contract crates in primitive-introductions
+17a2249 feat: round 202604271346 pass 1 — eight new crate skeletons + workspace member additions
+3950f69 docs: round 202604271346 src CL — nine-pass source mutation plan
+21549c6 chore: lock doc changelist for 202604271346_changelist.doc.lock.md
+8cb2f15 docs: round 202604271346 — full deprecation comparison + writing-style table
+7c533bd docs: round 202604271346 — workspace PRINCIPLES + agent MAIN + arvo BACKLOG
+0aabea7 docs: round 202604271346 — implementation crate dep updates (contract crates replace arvo-bits direct dep)
+f52e258 docs: round 202604271346 — workspace topology + arvo facade + arvo-bits role flip
+fdbb642 docs: round 202604271346 — new crate templates (8 crates: storage + 6 contract + narrow)
+a3cbc82 docs: round 202604271346 doc CL — const traits + arvo as facade restructure
+c20819e docs: round 202604271346 topic — const traits + arvo as facade
+16a22f4 chore: deprecate round 202604500000 CLs; design needs L0 facade rethink + arvo-bitmask Narrow placement
+7112276 docs: fix stale arvo_bits::bitfield reference in arvo::bitfield module doc
+5b64a04 src: Fnv1a streaming hasher with per-N hash_const + tests
+21e9f69 docs: capture strategy-bound trilemma as research note
