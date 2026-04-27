@@ -10,13 +10,12 @@
 //! widths above 32 bits; using `UFixed<_, _, Warm>` with `I + F > 32`
 //! is a compile error by design (doc CL D2).
 
-use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
 use notko::Outcome;
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
-use arvo_storage::{FBits, IBits, USize};
+use arvo_storage::{Bits, FBits, IBits, USize};
 use crate::strategy::{
     Hot, Precise, Strategy, UArith, UContainerFor, UNarrowFrom, UWidenFrom, Warm, is_fractional,
     ufixed_bits,
@@ -26,15 +25,15 @@ use crate::strategy::{
 ///
 /// `I` = integer bits, `F` = fractional bits, `S` = strategy
 /// (default `Warm`). Logical width is `I + F`; physical storage
-/// width is determined by `S`.
+/// width is determined by `S`. The wrapped `Bits<{I+F}, S>` carries
+/// the storage primitive directly; `repr(transparent)` keeps the
+/// layout identical to the underlying container.
 #[repr(transparent)]
-pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>
+pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>(
+    Bits<{ ufixed_bits(I, F) }, S>,
+)
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
-{
-    bits: <S as UContainerFor<{ ufixed_bits(I, F) }>>::T,
-    _s: PhantomData<fn() -> S>,
-}
+    S: UContainerFor<{ ufixed_bits(I, F) }>;
 
 impl<const I: IBits, const F: FBits, S: Strategy> UFixed<I, F, S>
 where
@@ -47,13 +46,13 @@ where
     /// value inside the logical range.
     #[inline(always)]
     pub const fn from_raw(bits: <S as UContainerFor<{ ufixed_bits(I, F) }>>::T) -> Self {
-        Self { bits, _s: PhantomData }
+        Self(Bits::from_raw(bits))
     }
 
     /// Extract the raw container value.
     #[inline(always)]
     pub const fn to_raw(self) -> <S as UContainerFor<{ ufixed_bits(I, F) }>>::T {
-        self.bits
+        self.0.to_raw()
     }
 
     /// Logical bit width (`I + F`).
@@ -63,10 +62,10 @@ where
     }
 }
 
-// The `UContainerFor::T` type is always `Copy` in our dispatch table
-// (u8/u16/u32/u64). Hand-written Copy / Clone / PartialEq / Eq / Default
-// impls delegate to whatever the container supports without adding
-// bounds that retrigger const-expr evaluation cycles.
+// Delegating Copy / Clone / PartialEq / Eq / Default to the wrapped
+// `Bits<{I+F}, S>`. Bits' impls already cover the container family
+// (`<S as UContainerFor<N>>::T` is always `Copy + PartialEq + Eq +
+// Default`); UFixed inherits via the newtype wrap.
 
 impl<const I: IBits, const F: FBits, S: Strategy> Copy for UFixed<I, F, S> where
     S: UContainerFor<{ ufixed_bits(I, F) }>
@@ -89,9 +88,7 @@ where
 {
     #[inline(always)]
     fn eq(&self, other: &Self) -> bool {
-        // Container types are all fixed-width unsigned ints; byte-wise
-        // equality equals value equality.
-        self.bits == other.bits
+        self.to_raw() == other.to_raw()
     }
 }
 
@@ -106,7 +103,7 @@ where
 {
     #[inline(always)]
     fn default() -> Self {
-        Self::from_raw(<<S as UContainerFor<{ ufixed_bits(I, F) }>>::T as Default>::default())
+        Self(Bits::default())
     }
 }
 
