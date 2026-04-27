@@ -50,6 +50,33 @@ pub type Fixed<const I: u8, const F: u8, S = Warm> =
 pub type Signed<const I: u8, const F: u8, S = Warm> =
     IFixed<{ ibits(I) }, { fbits(F) }, S>;
 
+/// Unsigned fixed-point integer alias parameterised by bit count `N`.
+///
+/// `Uint<N, S>` is `UFixed<{ ibits(N) }, { fbits(0) }, S>`. Use at
+/// consumer call sites for clean integer-typed bit counts. Replaces
+/// the legacy per-N `Uint5` / `Uint6` / ... aliases (per Q-D the
+/// canonical std-parallel survivors are kept; everything else is
+/// expressed via this generic form).
+///
+/// ```ignore
+/// type Counter = arvo::Uint<32, Hot>;     // 32-bit counter
+/// type Width = arvo::Uint<12>;             // 12-bit width, Warm default
+/// ```
+pub type Uint<const N: u8, S = Warm> = UFixed<{ ibits(N) }, { fbits(0) }, S>;
+
+/// Signed fixed-point integer alias parameterised by total bit count `N`.
+///
+/// `Int<N, S>` is `IFixed<{ ibits(N - 1) }, { fbits(0) }, S>`. The
+/// `N - 1` accounts for the IFixed sign bit so `Int<8, _>` matches
+/// `i8`'s logical width. Replaces the legacy per-N `Int7` / `Int8` /
+/// ... aliases.
+///
+/// ```ignore
+/// type Delta = arvo::Int<8, Hot>;          // signed 8-bit
+/// type Offset = arvo::Int<16>;             // signed 16-bit, Warm default
+/// ```
+pub type Int<const N: u8, S = Warm> = IFixed<{ ibits(N - 1) }, { fbits(0) }, S>;
+
 pub type Uint5<S = Warm> = UFixed<{ ibits(5) }, { fbits(0) }, S>;
 pub type Uint6<S = Warm> = UFixed<{ ibits(6) }, { fbits(0) }, S>;
 pub type Uint7<S = Warm> = UFixed<{ ibits(7) }, { fbits(0) }, S>;
