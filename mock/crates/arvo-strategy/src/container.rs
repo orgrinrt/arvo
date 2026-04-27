@@ -142,6 +142,19 @@ impl_u_container!(
     49, 50, 51, 52, 53, 54, 55, 56,
     57, 58, 59, 60, 61, 62, 63, 64
 );
+// Round 202604280500: Hot extends to 65..=128 via native u128.
+#[rustfmt::skip]
+impl_u_container!(
+    Hot, u128,
+    65, 66, 67, 68, 69, 70, 71, 72,
+    73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 91, 92, 93, 94, 95, 96,
+    97, 98, 99, 100, 101, 102, 103, 104,
+    105, 106, 107, 108, 109, 110, 111, 112,
+    113, 114, 115, 116, 117, 118, 119, 120,
+    121, 122, 123, 124, 125, 126, 127, 128
+);
 
 // Cold: same integer widths as Hot; Cold's bitpacking is an access-path
 // concern, not a container-type concern. Column storage masks on access.
@@ -158,15 +171,41 @@ impl_u_container!(
     49, 50, 51, 52, 53, 54, 55, 56,
     57, 58, 59, 60, 61, 62, 63, 64
 );
+// Round 202604280500: Cold extends to 65..=128 via native u128 (mirrors Hot).
+#[rustfmt::skip]
+impl_u_container!(
+    Cold, u128,
+    65, 66, 67, 68, 69, 70, 71, 72,
+    73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 91, 92, 93, 94, 95, 96,
+    97, 98, 99, 100, 101, 102, 103, 104,
+    105, 106, 107, 108, 109, 110, 111, 112,
+    113, 114, 115, 116, 117, 118, 119, 120,
+    121, 122, 123, 124, 125, 126, 127, 128
+);
 
-// Warm: 2x aligned. Intentionally no impls for N > 32.
+// Warm: 2x aligned. Round 202604280500 extends Warm cap from 32 to 64
+// via native u128 (the 2x-logical primitive at the new band).
 impl_u_container!(Warm, u16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_u_container!(Warm, u32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_u_container!(
     Warm, u64, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
 );
+#[rustfmt::skip]
+impl_u_container!(
+    Warm, u128,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
 
 // Precise: 2x aligned up to 32, u64 at 33..=64 with saturating semantics.
+// Round 202604280500 keeps existing Precise 33..=64 = u64 (same as Hot
+// container width, distinguished by saturating ops). Extending Precise
+// to 65..=256 awaits the no-native-u256 design call (BACKLOG; same shape
+// rationale as Warm).
 impl_u_container!(Precise, u16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_u_container!(Precise, u32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_u_container!(
@@ -196,6 +235,19 @@ impl_i_container!(
     49, 50, 51, 52, 53, 54, 55, 56,
     57, 58, 59, 60, 61, 62, 63, 64
 );
+// Round 202604280500: Hot extends to 65..=128 via native i128.
+#[rustfmt::skip]
+impl_i_container!(
+    Hot, i128,
+    65, 66, 67, 68, 69, 70, 71, 72,
+    73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 91, 92, 93, 94, 95, 96,
+    97, 98, 99, 100, 101, 102, 103, 104,
+    105, 106, 107, 108, 109, 110, 111, 112,
+    113, 114, 115, 116, 117, 118, 119, 120,
+    121, 122, 123, 124, 125, 126, 127, 128
+);
 
 impl_i_container!(Cold, i8, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_i_container!(Cold, i16, 9, 10, 11, 12, 13, 14, 15, 16);
@@ -210,11 +262,33 @@ impl_i_container!(
     49, 50, 51, 52, 53, 54, 55, 56,
     57, 58, 59, 60, 61, 62, 63, 64
 );
+// Round 202604280500: Cold extends to 65..=128 via native i128 (mirrors Hot).
+#[rustfmt::skip]
+impl_i_container!(
+    Cold, i128,
+    65, 66, 67, 68, 69, 70, 71, 72,
+    73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 91, 92, 93, 94, 95, 96,
+    97, 98, 99, 100, 101, 102, 103, 104,
+    105, 106, 107, 108, 109, 110, 111, 112,
+    113, 114, 115, 116, 117, 118, 119, 120,
+    121, 122, 123, 124, 125, 126, 127, 128
+);
 
 impl_i_container!(Warm, i16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_i_container!(Warm, i32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_i_container!(
     Warm, i64, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+// Round 202604280500: Warm extends to 33..=64 via native i128.
+#[rustfmt::skip]
+impl_i_container!(
+    Warm, i128,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
 );
 
 impl_i_container!(Precise, i16, 1, 2, 3, 4, 5, 6, 7, 8);
