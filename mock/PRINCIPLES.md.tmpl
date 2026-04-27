@@ -1,4 +1,37 @@
-# arvo — Architecture Principles
+# arvo. Architecture Principles
+
+## Topology (round 202604271346)
+
+`arvo` is the **downstream facade** of the substrate, not the L0
+layer. The minimal L0 storage primitives (`Bits<N, S>`, strategy
+markers, `Bool`, `USize`, typed meta-bits) live in `arvo-storage`.
+Trait declarations split into six contract crates: `arvo-transparent`,
+`arvo-strategy`, `arvo-bits-contracts`, `arvo-mask-contracts`,
+`arvo-narrow-contracts`, `arvo-numeric-contracts`. Concrete impls live
+in domain-organised implementation crates (`arvo-bits`, `arvo-bitmask`,
+`arvo-narrow`, `arvo-tensor`). Algorithm crates (`arvo-graph`,
+`arvo-sparse`, `arvo-comb`, `arvo-spectral`, `arvo-hash`) sit at L2 /
+L3. The `arvo` facade re-exports the public surface, hosts default
+trait impls, defines `Int<N, S>` / `Uint<N, S>` and the eight
+std-parallel canonical aliases, and hosts `UFixed<I, F, S>` /
+`IFixed<I, F, S>` as `repr(transparent)` newtypes over `Bits`. The
+facade is at the bottom of the dependency graph; consumers reach the
+substrate through it.
+
+The trait-contract split optimises **transitive dependency size**, not
+count. A consumer that needs only the bit-access surface depends on
+`arvo-bits-contracts` plus `arvo-storage`. The split is a starting
+structure; pairs that 100% co-occur in consumer dep sets merge during
+DOC iteration of the round.
+
+Per round 202604271346 D-6, every trait whose methods are sensibly
+callable in const context is `pub const trait` (RFC 3762 line). The
+nightly feature flag set: `feature(adt_const_params)`,
+`feature(generic_const_exprs)`, `feature(const_trait_impl)`,
+`feature(const_param_ty_trait)`, `feature(macro_metavar_expr_concat)`,
+`feature(try_trait_v2)`. Risk class is the same as
+`generic_const_exprs`: incomplete-but-actively-developed, not
+stabilised.
 
 [//]: # (BEGIN shared cross-ecosystem principles, synced from clause-dev/.shared/principles-fragment.md, do not edit in place)
 

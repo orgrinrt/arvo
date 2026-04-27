@@ -1,4 +1,4 @@
-# arvo — agent instructions
+# arvo. agent instructions
 
 ## What arvo is
 
@@ -7,20 +7,45 @@ strategy markers, bit-level contracts, and a handful of algorithm
 crates built on top. Everything is `#![no_std]`, no `alloc`, no
 platform dependency, and every size is const at type level.
 
+Per round 202604271346, the substrate is structured as a layered set
+of small crates with a downstream facade. `arvo` itself is the facade,
+not L0. L0 is `arvo-storage`. Trait declarations split into six
+contract crates (`arvo-transparent`, `arvo-strategy`,
+`arvo-bits-contracts`, `arvo-mask-contracts`, `arvo-narrow-contracts`,
+`arvo-numeric-contracts`). Concrete impls live in domain-organised
+implementation crates.
+
 ## Identity
 
-{{crate_count}} crates, four layers:
+{{crate_count}} crates, layered from L0 to facade:
 
-**L0 — numerics:**
-- `arvo` — `UFixed<I, F, S>`, `IFixed<I, F, S>`, `FastFloat` /
-  `StrictFloat`, strategy markers (`Hot` / `Warm` / `Cold` /
-  `Precise`), composable numeric traits, semantic aliases.
+**L0a foundation traits:**
+- `arvo-transparent`. `Transparent` const unsafe trait. Free
+  `arvo::raw` const fn.
+- `arvo-strategy`. `Strategy` marker, `Hot` / `Warm` / `Cold` /
+  `Precise` ZSTs, `UContainerFor<N>` and `IContainerFor<N>` const
+  traits.
 
-**L1 — bit-level contracts:**
-- `arvo-bits` — traits + opaque-bit concretes: `BitWidth`, `BitAccess`,
-  `BitSequence`, `BitLogic`, with concrete impls for arvo numerics.
-  Arithmetic fielded structs live in L0 arvo; mask-specific concretes
-  live in L2 arvo-bitmask.
+**L0 storage:**
+- `arvo-storage`. `Bits<N, S>` storage primitive. `Bool`, `USize`
+  platform wrappers. `IBits`, `FBits`, `Width` typed meta-bit
+  newtypes.
+
+**L0.5 trait contracts:**
+- `arvo-bits-contracts`. `HasBitWidth`, `BitAccess`, `BitSequence`,
+  `BitLogic`, `BitPrim` (all `pub const trait`).
+- `arvo-mask-contracts`. `Mask<W>` const trait.
+- `arvo-narrow-contracts`. `Narrow<T>` const trait.
+- `arvo-numeric-contracts`. `Abs`, `Recip`, `Sqrt`, `TotalOrd`,
+  `FromConstant`, `Predicate` family.
+
+**L1 implementation crates:**
+- `arvo-bits`. Concrete blanket impls of bit-level traits on
+  `Bits<N, S>` and bare primitives. Bit-storage aliases (`Bit`,
+  `Nibble`, `Byte`, `Word`, `DWord`, `QWord`).
+- `arvo-bitmask`. `Mask64`, `Mask256`, `BitMatrix` concretes.
+- `arvo-narrow`. Concrete `Narrow<T>` impls per source / target pair.
+- `arvo-tensor`. `Array<T, N>`, `Matrix<W, N>`, `Cap`, `Enumerator`.
 
 **L2 — substrate concretes and generic algorithms:**
 - `arvo-bitmask` — `Mask64`, `Mask256`, `BitMatrix`, bit scanning
