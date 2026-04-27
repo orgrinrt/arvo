@@ -97,7 +97,7 @@ where
 
 // SAFETY: `Bits<N, S>` is `repr(transparent)` over
 // `<S as UContainerFor<N>>::T`; layout is byte-identical by Rust spec.
-unsafe impl<const N: u8, S: Strategy> Transparent for Bits<N, S>
+unsafe impl<const N: u8, S: Strategy> const Transparent for Bits<N, S>
 where
     S: UContainerFor<N>,
 {

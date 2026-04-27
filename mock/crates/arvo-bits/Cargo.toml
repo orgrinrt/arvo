@@ -6,6 +6,7 @@ license.workspace = true
 
 [dependencies]
 arvo.workspace = true
+arvo-bits-contracts.workspace = true
 
 [build-dependencies]
 mockspace.workspace = true

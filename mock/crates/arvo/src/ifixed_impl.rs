@@ -3,12 +3,12 @@
 //! Mirror of `ufixed_impl.rs` keyed on `IBitContainer` (which bundles
 //! `IContainerFor<BITS>` + `IBitPrim` on the container).
 
-use arvo::ifixed::IFixed;
-use arvo::{Bool, FBits, IBits, USize};
-use arvo::strategy::{Strategy, ifixed_bits};
+use arvo_bits_contracts::{BitAccess, BitSequence, HasBitWidth, IBitContainer, IBitPrim};
+use arvo_storage::{Bool, FBits, IBits, USize};
+use arvo_strategy::Strategy;
 
-use arvo::prim::{IBitContainer, IBitPrim};
-use crate::traits::{BitAccess, BitSequence, HasBitWidth};
+use crate::ifixed::IFixed;
+use crate::strategy::ifixed_bits;
 
 impl<const I: IBits, const F: FBits, S: Strategy> HasBitWidth for IFixed<I, F, S>
 where

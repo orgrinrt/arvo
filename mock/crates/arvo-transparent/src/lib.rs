@@ -60,7 +60,11 @@ impl NumericPrimitive for bool {}
 /// `Inner` type. The default `raw()` method does a layout-equivalent
 /// transmute and relies on this invariant; implementing `Transparent`
 /// for a non-transparent type is undefined behaviour.
-pub unsafe trait Transparent: Copy + Sized {
+///
+/// Per round 202604271346 D-12, this trait is `pub const unsafe`, so
+/// the `raw()` method is callable in const context. Impl blocks are
+/// `unsafe impl const Transparent for X`.
+pub const unsafe trait Transparent: Copy + Sized {
     /// The single non-ZST field's type.
     type Inner: Copy;
 
@@ -80,11 +84,14 @@ pub unsafe trait Transparent: Copy + Sized {
 /// `let n: u8 = Transparent::raw(ibits);`. Pick whichever reads best
 /// at the call site.
 ///
-/// `const fn` so it works in const-generic-position bodies.
+/// `const fn` so it works in const-generic-position bodies. The
+/// `[const]` bound on `Transparent` requires call sites to provide a
+/// `const`-callable impl (every arvo wrapper carries `unsafe impl
+/// const Transparent` per the macro DRY).
 #[inline(always)]
 pub const fn raw<W, T>(w: W) -> T
 where
-    W: Transparent<Inner = T> + Copy,
+    W: [const] Transparent<Inner = T> + Copy,
     T: NumericPrimitive,
 {
     // SAFETY: Transparent contract: W is repr(transparent) over T.

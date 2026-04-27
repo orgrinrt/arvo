@@ -23,6 +23,7 @@ pub mod aliases;
 pub mod bitfield;
 pub mod float;
 pub mod ifixed;
+pub mod ifixed_impl;
 pub mod markers;
 pub mod predicate;
 pub mod prim;
@@ -30,6 +31,7 @@ pub mod strategy;
 pub mod traits;
 pub mod transparent;
 pub mod ufixed;
+pub mod ufixed_impl;
 
 pub use alias::{Bit, Byte, DWord, Nibble, QWord, Word};
 pub use aliases::{
