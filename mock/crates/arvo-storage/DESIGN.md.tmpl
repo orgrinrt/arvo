@@ -1,0 +1,178 @@
+# arvo-storage. Design
+
+The minimal bare-primitive layer of arvo. Sits at the bottom of every
+dependency chain in the substrate. Hosts the only fielded primitive
+types whose existence requires wrapping bare Rust primitives directly,
+the strategy markers used by every numeric type, and the typed
+meta-bit newtypes that carry bit-count meta values through const
+generic positions. `#![no_std]`, no alloc.
+
+Depends on `arvo-transparent` (for the `Transparent` const unsafe
+trait that every `repr(transparent)` type implements) and
+`arvo-strategy` (for the strategy markers and `UContainerFor<N>` /
+`IContainerFor<N>` projections). No other workspace dependencies.
+
+This crate is small on purpose. Everything else in the arvo stack
+(bit-level contracts, mask types, narrowing, fixed-point arithmetic,
+algorithms) lives upstream and consumes these primitives via trait
+bounds. New types here are added only when the type genuinely cannot
+be expressed without wrapping a bare primitive.
+
+## Bits
+
+`Bits<const N: u8, S: Strategy>` is the N-bit storage primitive. A
+`#[repr(transparent)]` newtype over `<S as UContainerFor<N>>::T`. The
+container projection picks the bare primitive that holds N bits under
+strategy S. `Bits<8, Hot>` lowers to `u8`, `Bits<7, Hot>` lowers to
+`u8` (with the high bit unused under Hot), `Bits<32, Warm>` lowers to
+`u32`, and so on per the strategy bands.
+
+The public surface is partitioned and minimal:
+
+```rust
+impl<const N: u8, S: Strategy> Bits<N, S>
+where S: UContainerFor<N>,
+{
+    pub const fn from_raw(raw: <S as UContainerFor<N>>::T) -> Self;
+    pub const fn to_raw(self) -> <S as UContainerFor<N>>::T;
+}
+```
+
+Plus `Deref<Target = ::T>`, `AsRef<::T>`, and `impl const Transparent`.
+
+Per round 202604271346 D-7, every per-size helper is gone. No
+`from_raw_uN` / `to_raw_uN` family. No `From<uN>` per N. No
+`Bits::new(u64)` / `Bits::bits()` deprecated front-doors. The
+`impl_bits_uN` macro family is removed in its entirety.
+
+Consumers that need to take a wider raw value and narrow it to fit
+`Bits<N, S>` go through `Narrow<T>::narrow_to::<N>` from
+`arvo-narrow-contracts`. The `Narrow` impls compose `Mask<W>`,
+`BitLogic`, and the `as` operator to produce the typed container
+output. The pipeline is explicit at the call site instead of hidden
+inside per-size helpers.
+
+## Strategy markers
+
+`Hot`, `Warm`, `Cold`, `Precise`. Zero-sized types. Each implements
+the sealed `Strategy` marker trait declared in `arvo-strategy`. Each
+derives `ConstParamTy` so it works as a const generic argument.
+
+Strategy semantics are unchanged from prior rounds. `Hot` picks the
+narrowest container for the bit width (1..=8 bits use `u8`, 9..=16
+use `u16`, 17..=32 use `u32`, 33..=64 use `u64`). `Warm` picks the
+ergonomic container (always at least `u32` for `N <= 32`, `u64` for
+33..=64). `Cold` is reserved for bitpacked storage of N > 64 (out of
+scope this round). `Precise` uses arbitrary-width carriers (`u64`
+within this round's scope).
+
+The `UContainerFor<N>` and `IContainerFor<N>` per-N impls live in
+`arvo-strategy`, not here. They project `S + N` to the bare primitive
+container.
+
+## Bool
+
+`pub struct Bool(pub bool)`. The newtype that carries Rust's `bool`
+through the substrate's "every public type is an arvo wrapper" rule.
+Used by predicates (`is_zero`, `bit`, `Predicate` family) and in
+control flow that returns to consumer code.
+
+`Bool` implements `Try` with `Residual = Infallible` so the `?`
+operator extracts the inner `bool` for use in `if` expressions. The
+extraction has zero runtime cost (the Continue path is the only
+inhabited path).
+
+`Bool` implements the const unsafe `Transparent` trait so the inner
+`bool` is reachable in const context via `arvo::raw(b)`.
+
+## USize
+
+`pub struct USize(pub usize)`. The newtype for platform-pointer-width
+unsigned integers. Used as the universal index/length type across the
+substrate: `Cap<N>` wraps it, `HasBitWidth::WIDTH` returns it, every
+arvo-tensor offset is a `USize`.
+
+This round preserves `USize`'s field shape (still `usize`). Future
+rounds may migrate the inner field to `Bits<{cfg-platform-width},
+Hot>` for a unified bit-storage view; the prior round explored that
+direction and parked it.
+
+`USize` implements the const unsafe `Transparent` trait.
+
+## Typed meta-bit newtypes
+
+Three `#[repr(transparent)]` newtypes over `Bits<7, Hot>`. Each
+derives `ConstParamTy` (via `feature(const_param_ty_trait)` plus a
+manual `ConstParamTy_` impl on `Bits<N, S>`):
+
+```rust
+#[derive(ConstParamTy, ...)]
+#[repr(transparent)]
+pub struct IBits(pub Bits<7, Hot>);
+
+#[derive(ConstParamTy, ...)]
+#[repr(transparent)]
+pub struct FBits(pub Bits<7, Hot>);
+
+#[derive(ConstParamTy, ...)]
+#[repr(transparent)]
+pub struct Width(pub Bits<7, Hot>);
+```
+
+`IBits` carries the integer-bit count of a fixed-point type. `FBits`
+carries the fractional-bit count. `Width` carries an arbitrary
+bit-width meta value (used by `Bits<const N: u8, S>` consumers that
+want a typed parameter, by `Hasher<const W: Width>`, and by mask
+consumers that want a typed width parameter).
+
+The width is 7 because the substrate caps at 64-bit logical widths in
+this round, and 7 bits suffices for `1..=128` if a future round
+extends. The choice of 7 over 8 is deliberate: it keeps the meta
+newtype distinct in spelling from `Byte = Bits<8, Hot>` so call sites
+read clearly.
+
+The Q-A spike (rustc 1.96.0-nightly fda6d37bb 2026-03-27, four
+nightly features active) confirmed the projection cascade resolves
+under const trait dispatch. `ibits(7)` works in const context.
+`Carrier<{ ibits(7) }>` works as a const generic argument. The
+projection `<Hot as UContainerFor<7>>::T` resolves to `u8` at compile
+time.
+
+## Const-fn helpers
+
+Three small const fns make the typed meta-bit newtypes ergonomic at
+literal call sites:
+
+```rust
+pub const fn ibits(n: u8) -> IBits;
+pub const fn fbits(n: u8) -> FBits;
+pub const fn width(n: u8) -> Width;
+```
+
+These are the only positions in the crate where bare `u8` appears in
+function-parameter form. They exist so consumers can write
+`UFixed<{ ibits(13) }, { fbits(3) }, Warm>` instead of construction
+boilerplate. The bare `u8` parameter is the documented exception
+under the workspace no-bare-primitives rule (definition-site exception
+category 4).
+
+## What does NOT live here
+
+- Trait declarations (live in the contract crates: `arvo-transparent`,
+  `arvo-strategy`, `arvo-bits-contracts`, `arvo-mask-contracts`,
+  `arvo-narrow-contracts`, `arvo-numeric-contracts`).
+- Trait impls (live in the implementation crates: `arvo-bits`,
+  `arvo-bitmask`, `arvo-narrow`, `arvo-tensor`, `arvo-hash`).
+- Compositions over `Bits` (`UFixed`, `IFixed`, `FastFloat`,
+  `StrictFloat`) (live in the `arvo` facade as `repr(transparent)`
+  newtypes).
+- Algorithms (live in `arvo-graph`, `arvo-sparse`, `arvo-comb`,
+  `arvo-spectral`).
+- Aliases and re-exports (live in the `arvo` facade).
+
+## Sources
+
+- `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md` (frozen topic)
+- `mock/design_rounds/202604271346_changelist.doc.md` (this CL)
+- `mock/research/strategy-bound-trilemma.md`
+- Q-A spike: rustc 1.96.0-nightly (commit fda6d37bb 2026-03-27)

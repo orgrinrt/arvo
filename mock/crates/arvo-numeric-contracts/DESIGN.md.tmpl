@@ -1,0 +1,90 @@
+# arvo-numeric-contracts. Design
+
+The numeric-op trait declarations. Every trait here is `pub const trait`.
+Default-impl bodies for the standard cases live in the `arvo` facade
+(where they can compose `Bits<N, S>`, `UFixed`, `IFixed`); concrete
+overrides per primitive container live in `arvo-bits` and the
+implementation crates that need them. `#![no_std]`, no alloc.
+
+Depends on `notko`, `arvo-storage`, `arvo-bits-contracts`.
+
+## Abs
+
+```rust
+pub const trait Abs {
+    type Output;
+    fn abs(self) -> Self::Output;
+}
+```
+
+Absolute value. Output is `Self` for unsigned types, `Self` for
+signed types where the type can represent the absolute value of its
+domain (one-complement edge cases excluded by the type system or
+handled per-impl).
+
+## Recip
+
+```rust
+pub const trait Recip {
+    type Output;
+    fn recip(self) -> Self::Output;
+}
+```
+
+Reciprocal `1/x`. Domain restrictions per concrete impl. For
+`UFixed<I, F, S>` with F=0, recip returns a `UFixed<0, I, S>` (the
+fractional dual). For F>0, recip returns a same-shape value via
+fixed-point reciprocal.
+
+## Sqrt
+
+```rust
+pub const trait Sqrt {
+    type Output;
+    fn sqrt(self) -> Self::Output;
+}
+```
+
+Square root. Domain is non-negative values; signed-input impls
+clamp negatives to zero or panic per impl-specific contract.
+
+## TotalOrd
+
+```rust
+pub const trait TotalOrd {
+    fn total_cmp(self, other: Self) -> Ordering;
+}
+```
+
+Total ordering. Distinct from `core::cmp::Ord` so float-bearing arvo
+types can implement a strict-NaN-policy ordering without conflicting
+with the partial `core::PartialOrd`.
+
+## FromConstant
+
+```rust
+pub const trait FromConstant<const C: USize> {
+    fn from_constant() -> Self;
+}
+```
+
+Compile-time constant constructor. Used by macros and bitfield
+generators that want to inject typed constants into expressions.
+
+## Predicate family
+
+```rust
+pub const trait Predicate {
+    fn test(self) -> Bool;
+}
+```
+
+The base predicate trait. Composes with named subtypes (`IsZero`,
+`IsPositive`, `IsNonZero`, etc.) per #122. Each named predicate is a
+`pub const trait` extending `Predicate`. Concrete impls live on the
+relevant arvo numeric type families.
+
+## Sources
+
+- `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md`
+- `mock/design_rounds/202604271346_changelist.doc.md`

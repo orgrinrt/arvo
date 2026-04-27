@@ -1,0 +1,9 @@
+# arvo-storage
+
+Minimal L0 storage primitives for arvo. Hosts the only fielded
+primitive types in the substrate: `Bits<N, S>` (the N-bit storage
+primitive), the strategy markers (`Hot`, `Warm`, `Cold`, `Precise`),
+and the platform-binding wrappers `Bool` and `USize`. Plus the typed
+meta-bit newtypes (`IBits`, `FBits`, `Width`) used as `ConstParamTy_`
+carriers for const-generic positions across the stack. `#![no_std]`,
+no alloc.

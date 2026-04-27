@@ -1,0 +1,41 @@
+# arvo-mask-contracts. Design
+
+The mask trait surface. One trait declaration: `Mask<const W: u8>`.
+Concrete impls live in `arvo-bitmask`. Consumers writing
+mask-generic code bind to this surface to keep their transitive
+dependency footprint small. `#![no_std]`, no alloc.
+
+Depends on `notko`, `arvo-storage`, `arvo-bits-contracts`.
+
+## Mask
+
+```rust
+pub const trait Mask<const W: u8>: Sized + Copy {
+    fn empty() -> Self;
+    fn full() -> Self;
+    fn set(self, idx: USize) -> Self;
+    fn clear(self, idx: USize) -> Self;
+    fn test(self, idx: USize) -> Bool;
+    fn count(self) -> USize;
+    fn union(self, other: Self) -> Self;
+    fn intersection(self, other: Self) -> Self;
+    fn difference(self, other: Self) -> Self;
+    fn complement(self) -> Self;
+    fn mask_for_width(n: USize) -> Self;
+}
+```
+
+`W` is the mask width (number of bits the mask covers). Default-method
+bodies compose `BitLogic` from `arvo-bits-contracts`. Concrete impls
+in `arvo-bitmask` (`Mask64` for W=64, `Mask256` for W=256, etc.) supply
+the storage and may override defaults with hardware-specific
+implementations.
+
+`mask_for_width(n)` produces a mask with the lowest n bits set.
+Consumed by `Narrow<T>` impls to truncate a wider raw to fit a typed
+container.
+
+## Sources
+
+- `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md`
+- `mock/design_rounds/202604271346_changelist.doc.md`
