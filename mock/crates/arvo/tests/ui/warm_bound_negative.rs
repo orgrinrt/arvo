@@ -1,6 +1,6 @@
 //! Negative compile fixture: Warm at BITS > 32 must not resolve.
 
-use arvo::newtype::{FBits, IBits};
+use arvo::{FBits, IBits};
 use arvo::strategy::Warm;
 use arvo::ufixed::UFixed;
 

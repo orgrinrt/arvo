@@ -11,7 +11,7 @@
 //! arithmetic. Consumers that want arithmetic on an N-bit value
 //! reach for `UFixed<{IBits(N)}, {FBits::ZERO}, S>` directly.
 
-use crate::bits::Bits;
+use arvo_storage::Bits;
 use crate::strategy::Hot;
 
 /// 1-bit opaque bit-pattern.

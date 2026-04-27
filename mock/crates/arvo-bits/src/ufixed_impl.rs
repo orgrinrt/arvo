@@ -5,7 +5,7 @@
 //! container in a single predicate — avoids the const-expr cycle
 //! that two separate predicates would trigger.
 
-use arvo::newtype::{Bool, FBits, IBits, USize};
+use arvo::{Bool, FBits, IBits, USize};
 use arvo::strategy::{Hot, Strategy, ufixed_bits};
 use arvo::ufixed::UFixed;
 

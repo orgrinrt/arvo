@@ -10,7 +10,7 @@
 //! Callers invoke via either the `test` method or direct `Fn` call
 //! syntax; both work because `Fn` is a supertrait.
 
-use crate::newtype::Bool;
+use arvo_storage::Bool;
 
 /// Unary predicate. Equivalent to `impl Fn(&A) -> Bool`.
 pub trait Pred<A>: Fn(&A) -> Bool {

@@ -21,11 +21,9 @@
 pub mod alias;
 pub mod aliases;
 pub mod bitfield;
-pub mod bits;
 pub mod float;
 pub mod ifixed;
 pub mod markers;
-pub mod newtype;
 pub mod predicate;
 pub mod prim;
 pub mod strategy;
@@ -38,11 +36,12 @@ pub use aliases::{
     Fixed, Int13, Int16, Int32, Int64, Int7, Int8, Signed, Uint16, Uint32, Uint5, Uint6, Uint64,
     Uint7, Uint8,
 };
-pub use bits::Bits;
+pub use arvo_storage::{
+    AsBool, Bits, Bool, Cap, FBits, IBits, USize, Width, fbits, ibits, width,
+};
 pub use float::{FastFloat, Float, Ieee, StrictFloat};
 pub use ifixed::IFixed;
 pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLike};
-pub use newtype::{AsBool, Bool, Cap, FBits, IBits, USize, Width, fbits, ibits, width};
 pub use predicate::{Pred, Pred2, Pred3};
 pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
 pub use strategy::{Cold, Hot, Precise, Strategy, Warm, width_le_64};

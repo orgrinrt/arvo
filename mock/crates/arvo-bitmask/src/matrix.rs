@@ -17,7 +17,7 @@
 //! `k`. Bitmask union is one instruction per word, so the inner loop
 //! is cheap.
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Bool, Cap, USize};
 pub use arvo_tensor::cap_size;
 
 use crate::mask::{Mask, Mask256, Mask64};

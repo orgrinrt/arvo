@@ -5,7 +5,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::USize;
+use arvo::USize;
 use arvo::strategy::{Hot, Warm};
 use arvo_bits::{Bit, BitAccess, BitSequence, HasBitWidth, Byte, DWord, Nibble, QWord, Word};
 

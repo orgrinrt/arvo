@@ -8,7 +8,7 @@
 //! Visited tracking is a `Mask64`; the DFS stack is a fixed-size
 //! `[NodeId; cap_size(N)]` with a head index — no heap, no grow.
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Bool, Cap, USize};
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Assign a component ID to every node.

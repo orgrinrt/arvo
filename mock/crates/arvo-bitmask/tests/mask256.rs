@@ -3,7 +3,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::USize;
+use arvo::USize;
 use arvo_bitmask::Mask256;
 
 fn mk(bits: &[usize]) -> Mask256 {

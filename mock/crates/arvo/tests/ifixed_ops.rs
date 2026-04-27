@@ -7,7 +7,7 @@
 #![no_std]
 
 use arvo::ifixed::IFixed;
-use arvo::newtype::{FBits, IBits, USize};
+use arvo::{FBits, IBits, USize};
 use arvo::strategy::{Hot, Precise, Warm};
 use arvo::traits::{Abs, FromConstant, TotalOrd};
 

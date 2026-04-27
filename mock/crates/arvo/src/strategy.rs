@@ -21,7 +21,7 @@ pub use arvo_strategy::{
     Strategy, UArith, UContainerFor, UNarrowFrom, USaturating, UWidenFrom, Warm,
 };
 
-use crate::newtype::{FBits, IBits};
+use arvo_storage::{FBits, IBits};
 
 /// Const-fn helper: total logical bits for a `UFixed<I, F, S>`.
 ///
@@ -57,6 +57,6 @@ pub const fn is_fractional(f: FBits) -> usize {
 /// prefix style).
 // allow-bare-numeric: tracked: #256
 #[inline(always)]
-pub const fn width_le_64(n: crate::newtype::Width) -> bool {
+pub const fn width_le_64(n: arvo_storage::Width) -> bool {
     n.raw() <= 64
 }

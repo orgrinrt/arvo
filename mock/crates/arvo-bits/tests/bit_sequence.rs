@@ -5,7 +5,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{FBits, IBits};
+use arvo::{FBits, IBits};
 use arvo::strategy::{Hot, Warm};
 use arvo::ufixed::UFixed;
 use arvo_bits::{BitSequence, Byte, DWord, QWord};

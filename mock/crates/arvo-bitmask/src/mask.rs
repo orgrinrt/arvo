@@ -19,7 +19,7 @@
 //! generic chassis; consumers that want a narrower width can
 //! substitute any `W` meeting the trait bounds.
 
-use arvo::newtype::USize;
+use arvo::USize;
 use arvo::strategy::Hot;
 use arvo::QWord;
 use arvo_bits::{BitAccess, BitSequence, HasBitWidth};

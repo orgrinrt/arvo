@@ -12,7 +12,7 @@
 
 use core::ops::{Add, Sub};
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo::traits::FromConstant;
 
 use crate::matrix::{Matrix, cap_size};

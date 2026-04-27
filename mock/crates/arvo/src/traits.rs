@@ -22,7 +22,7 @@ use core::cmp::Ordering;
 
 use crate::float::{FastFloat, Ieee, StrictFloat};
 use crate::ifixed::IFixed;
-use crate::newtype::{FBits, IBits, USize};
+use arvo_storage::{FBits, IBits, USize};
 use crate::strategy::{
     Cold, Hot, IContainerFor, Precise, Strategy, UContainerFor, Warm, ifixed_bits, ufixed_bits,
 };

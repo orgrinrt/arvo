@@ -17,7 +17,7 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_bitmask::{BitMatrix64, cap_size};
 

@@ -18,7 +18,7 @@
 //! `#[diagnostic::on_unimplemented]` attribute on `UContainerFor`).
 
 use crate::ifixed::IFixed;
-use crate::newtype::{fbits, ibits};
+use arvo_storage::{fbits, ibits};
 use crate::strategy::Warm;
 use crate::ufixed::UFixed;
 

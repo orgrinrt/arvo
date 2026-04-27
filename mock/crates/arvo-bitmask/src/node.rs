@@ -8,7 +8,7 @@
 use core::cmp::Ordering;
 use core::hash::{Hash, Hasher};
 
-use arvo::newtype::USize;
+use arvo::USize;
 
 /// Node index newtype.
 ///

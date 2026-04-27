@@ -16,7 +16,7 @@
 //! function is a pure index-shuffle; it does not rewrite the adjacency
 //! matrix.
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo_bitmask::{BitMatrix64, NodeId, cap_size};
 
 /// Topologically sort a DAG via Kahn's algorithm.

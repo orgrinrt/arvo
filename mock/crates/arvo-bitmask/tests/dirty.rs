@@ -4,7 +4,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo_bitmask::{
     BitMatrix64, BitMatrix256, Mask256, Mask64, NodeId, propagate_dirty_256,
     propagate_dirty_64,

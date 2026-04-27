@@ -9,7 +9,7 @@
 //! Concrete impls live in `ufixed_impl.rs` / `ifixed_impl.rs`. See
 //! DESIGN for the concrete-impls-not-blanket rationale.
 
-use arvo::newtype::{Bool, USize};
+use arvo::{Bool, USize};
 
 /// Logical bit width at the type level.
 ///

@@ -9,7 +9,7 @@
 use core::cmp::Ordering;
 use core::ops::{Add, Mul, Sub};
 
-use arvo::newtype::USize;
+use arvo::USize;
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
 
 /// Test-only float newtype over `f32`.
