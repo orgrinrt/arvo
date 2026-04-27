@@ -9,7 +9,6 @@ notko.workspace = true
 arvo-storage.workspace = true
 arvo-bits-contracts.workspace = true
 arvo-mask-contracts.workspace = true
-arvo-narrow-contracts.workspace = true
 arvo-bitmask.workspace = true
 
 [build-dependencies]

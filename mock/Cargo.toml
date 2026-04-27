@@ -11,7 +11,6 @@ members = [
     # L0.5 — trait contracts (declarations only)
     "crates/arvo-bits-contracts",
     "crates/arvo-mask-contracts",
-    "crates/arvo-narrow-contracts",
     "crates/arvo-numeric-contracts",
 
     # L1 — implementation crates (concrete storage + impls)
@@ -46,7 +45,6 @@ arvo-strategy = { path = "crates/arvo-strategy" }
 arvo-storage = { path = "crates/arvo-storage" }
 arvo-bits-contracts = { path = "crates/arvo-bits-contracts" }
 arvo-mask-contracts = { path = "crates/arvo-mask-contracts" }
-arvo-narrow-contracts = { path = "crates/arvo-narrow-contracts" }
 arvo-numeric-contracts = { path = "crates/arvo-numeric-contracts" }
 arvo-bits = { path = "crates/arvo-bits" }
 arvo-bitmask = { path = "crates/arvo-bitmask" }

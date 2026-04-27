@@ -77,6 +77,44 @@ round 202604280034 to lock the exact-width discipline in. Consumers
 write `Uint<N, S>` / `Int<N, S>` directly with the exact bit count
 the domain needs.
 
+## Mask<W> trait impls on Mask64 / Mask256 (deferred)
+
+The `arvo-mask-contracts::Mask<const W: u8>` const trait was declared
+during round 202604271346 with the intent that `arvo-bitmask::Mask64`
+implement `Mask<64>` and `Mask256` implement `Mask<256>`. Round
+202604280034's doc CL committed to closing the design-drift gap; the
+source side discovered the impl is not mechanical:
+
+- The trait is `pub const trait`, requiring `impl const` impls.
+- `Mask64` / `Mask256` inherent methods are non-const today
+  (`insert` / `remove` take `&mut self`); functional `set` / `clear`
+  shapes need a parallel set of methods or a const-conversion of the
+  inherent surface.
+- `full()` and `mask_for_width(n)` have no inherent equivalent and
+  need to be added.
+
+Tracked here for a follow-up round. Two work blocks:
+
+1. Const-convert (or write parallel const-fn equivalents for) the
+   inherent surface covering `set`, `clear`, `test`, `count`,
+   `union`, `intersection`, `difference`, `complement`, plus add
+   `full` and `mask_for_width(n)`.
+2. Wire `impl const Mask<64> for Mask64` and `impl const Mask<256>
+   for Mask256` delegating to step 1.
+
+Until this lands, generic-over-`Mask<W>` consumer code finds no
+implementor and binds to `Mask64` / `Mask256` concretely.
+
+## Cold widen / narrow impls (deferred)
+
+Round 202604280034 removed the `_ColdReserved` workaround in
+`arvo-strategy/src/widen.rs` after dropping the unused `Cold` import.
+The widen lattice currently covers `Hot`, `Warm`, `Precise`. `Cold`
+participates in the same shape (Cold widens to Precise, narrows from
+Precise) but the impls are not yet shipped. When added, the `Cold`
+import returns to `arvo-strategy/src/widen.rs` and the impl table
+gains the symmetric Cold rows.
+
 Items researched and decided but deliberately out of the current
 shipping scope. Preserved here so a future round (or consumer) can
 pick them up without redoing the research. Kept OUT of DESIGN.md.tmpl
