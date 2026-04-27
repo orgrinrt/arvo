@@ -24,44 +24,55 @@ of the substrate, not the L0 layer. The dependency graph runs:
 5. `arvo-hash`, `arvo-graph`, `arvo-sparse`, `arvo-comb`,
    `arvo-spectral` (algorithm crates)
 6. `arvo` (this crate): the facade. Re-exports the public surface,
-   hosts default impls, defines `Int<N, S>` / `Uint<N, S>` and the
-   eight std-parallel canonical aliases, hosts `UFixed<I, F, S>` and
-   `IFixed<I, F, S>` as `repr(transparent)` newtypes over `Bits`.
+   hosts default impls, defines `Int<N, S>` / `Uint<N, S>` generic
+   aliases, hosts `UFixed<I, F, S>` as a `repr(transparent)` newtype
+   over `Bits`. `IFixed<I, F, S>` is currently a direct projection
+   wrapper (with `PhantomData<fn() -> S>` companion); the symmetric
+   reshape over `Bits<{1+I+F}, S, Signed>` lands in a follow-up round
+   alongside the `Sign` axis on `Bits`.
 
 The deep sections below describe the round-by-round state of the
 types this facade re-exports. The facade's own job is to be the
 single import-path entry point for downstream consumers and the home
 of the default trait impls. New types defined in `arvo` itself
-(post-round-202604271346) are limited to:
+(post-round-202604280034) are limited to:
 
-- `UFixed<I, F, S>`, `IFixed<I, F, S>` (repr(transparent) newtypes
-  over `Bits`)
-- `Int<const N: u8, S = Warm>`, `Uint<const N: u8, S = Warm>` (typed
-  aliases)
-- `Uint8` / `Uint16` / `Uint32` / `Uint64` / `Int8` / `Int16` /
-  `Int32` / `Int64` (canonical std-parallel aliases)
-- `FastFloat`, `StrictFloat` (float wrappers, unchanged this round)
-- `Cap<N>` (capacity newtype, unchanged this round)
+- `UFixed<I, F, S>` (repr(transparent) newtype over `Bits`).
+- `IFixed<I, F, S>` (direct projection wrapper; reshapes over `Bits`
+  with the Sign axis in a follow-up round).
+- `Int<const N: u8, S = Warm>`, `Uint<const N: u8, S = Warm>`
+  generic aliases. **No std-parallel per-N aliases.** Per the
+  exact-width discipline, `Uint8` / `Uint16` / `Uint<N>` etc are
+  expressed via the generic form. The substrate is built around
+  exact-bit-count thinking; std-parallel sugar reintroduces bucket
+  thinking and is rejected.
+- `FastFloat`, `StrictFloat` (float wrappers).
+- `Cap<N>` (capacity newtype).
 - Default trait impls for `Add` / `Sub` / `Mul` / `Div` / `Recip` /
-  `Sqrt` / `TotalOrd` / `Predicate` family on the composed types
+  `Sqrt` / `TotalOrd` / `Predicate` family on the composed types.
 
 Everything else is re-exported via `pub use`.
 
-The `Int<N, S>` / `Uint<N, S>` semantic convention is std-parallel:
-**N is total storage bit count.** `Int<8>` matches `i8` (1 sign + 7
-integer bits internally). `Uint<32>` matches `u32` (32 magnitude
-bits). Cap: `N <= 64` enforced via `Hot: UContainerFor<N>` (or
-`Warm` / `Precise` for narrower bands).
+The `Int<N, S>` / `Uint<N, S>` semantic convention: **N is total
+storage bit count.** `Int<8>` matches the i8-shaped logical width
+(1 sign + 7 integer bits internally). `Uint<32>` matches the
+u32-shaped logical width (32 magnitude bits). The current cap is
+`N <= 64` enforced via `Hot: UContainerFor<N>` (or `Warm` / `Precise`
+for narrower bands); a follow-up round extends to `N <= 256` via
+container-table extension and multi-value containers above 128 bits.
 
 ```rust
 pub type Uint<const N: u8, S = Warm> = UFixed<{ ibits(N) }, { fbits(0) }, S>;
 pub type Int<const N: u8, S = Warm>  = IFixed<{ ibits(N - 1) }, { fbits(0) }, S>;
 ```
 
-Per Q-D (round 202604271346), only the eight std-parallel canonical
-aliases survive. `Uint5`, `Uint6`, `Uint7`, `Uint13`, `Int7`,
-`Int13`, and the rest of the per-N spelling get deleted; consumers
-write `Uint<5>`, `Int<13>` directly.
+Per Q-D (round 202604271346 pass 7) all per-N aliases except eight
+std-parallel survivors were deleted. Round 202604280034 completes Q-D
+by deleting the eight survivors too: `Uint8` / `Uint16` / `Uint32` /
+`Uint64` / `Int8` / `Int16` / `Int32` / `Int64` are gone. The
+substrate's central premise is that consumers think in exact bit
+counts the domain actually needs, not in std primitive buckets.
+Consumers write `Uint<32>` (or whatever exact count) directly.
 
 
 
@@ -101,10 +112,11 @@ accessors in `strategy.rs` (`ibits_u8`, `fbits_u8`,
 `is_fractional`) retain raw `u8` / `usize` returns because they exist
 solely to let `IBits` / `FBits` values appear inside anonymous
 const-generic expressions where direct field access is disallowed on
-the current nightly. Each carries an `allow-bare-numeric: tracked:
-#71` annotation; a BACKLOG note captures the eventual collapse into
-a `Bits` newtype accessor once nightly loosens const-expression
-rules.
+the current nightly. Each carries a `// lint:allow(no-bare-numeric)
+lint:allow(arvo-types-only) reason: ...; tracked: #N` annotation per
+the workspace lint:allow-same-line-only rule. A BACKLOG note captures
+the eventual collapse into a `Bits` newtype accessor once nightly
+loosens const-expression rules.
 
 ## Primitive newtypes
 
@@ -551,29 +563,54 @@ stability; design intent is clear, src CL resolves the mechanism.
 ## Fixed-point types
 
 ```rust
-pub struct UFixed<const I: IBits, const F: FBits, S: Strategy> {
-    bits: S::Container<I, F>,
-}
+#[repr(transparent)]
+pub struct UFixed<const I: IBits, const F: FBits, S: Strategy>(
+    Bits<{ ufixed_bits(I, F) }, S>,
+)
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>;
 
+#[repr(transparent)]
 pub struct IFixed<const I: IBits, const F: FBits, S: Strategy> {
-    bits: S::SignedContainer<I, F>,
+    bits: <S as IContainerFor<{ ifixed_bits(I, F) }>>::T,
+    _s: PhantomData<fn() -> S>,
 }
 ```
 
 `I` = integer bits, `F` = fractional bits. `S` = strategy marker
 (no struct-level default; the strategy default lives at the alias
-layer, e.g. `pub type Uint8<S = Warm> = UFixed<{ ibits(8) }, {
-fbits(0) }, S>`). `I.0 + F.0` is the logical bit width. The actual
-storage width depends on the strategy.
+layer, e.g. `pub type Uint<const N: u8, S = Warm> = UFixed<{
+ibits(N) }, { fbits(0) }, S>`). `I.0 + F.0` is the logical bit
+width. The actual storage width depends on the strategy.
 
 The struct-level `S = Warm` default was dropped in round
 202604500000 (foundations restructure). Two sources of Warm-default
 (struct-level + alias-level) created drift risk; the alias layer is
 now the single source.
 
-Both `repr(transparent)` over the strategy-determined container type.
-No runtime representation overhead. After compilation, every arvo
-type resolves to the optimal integer instruction for the target.
+`UFixed` is a `repr(transparent)` newtype over `Bits<{I+F}, S>` per
+round 202604271346 pass 4b. Every UFixed instance is byte-identical
+to a `Bits<N, S>` of matching width, which is byte-identical to the
+strategy-dispatched primitive container.
+
+**`IFixed` is currently a direct projection wrapper.** It carries
+its container as a named field (`bits: <S as IContainerFor<...>>::T`)
+plus a `PhantomData<fn() -> S>` companion to anchor the strategy
+parameter. `repr(transparent)` is preserved because `PhantomData` is
+a ZST. `IFixed` does NOT yet wrap `Bits` symmetrically with `UFixed`.
+
+The symmetric reshape (IFixed-over-Bits) is deferred to a follow-up
+round and tracked in `BACKLOG.md`. The blocker is design: `Bits<N, S>`
+currently wraps the unsigned container; `IFixed` needs the signed
+container. The reshape introduces a `Sign` const-generic axis on
+`Bits` (`Bits<N, S, Sign = Unsigned>`), with `IFixed` then wrapping
+`Bits<{1+I+F}, S, Signed>`. Once the Sign axis lands, IFixed's field
+shape collapses to a single Bits-typed field and `Transparent` impls
+extend symmetrically.
+
+After compilation, every arvo type resolves to the optimal integer
+instruction for the target regardless of which shape its source
+field uses.
 
 ## Strategy markers
 

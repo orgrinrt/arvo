@@ -12,17 +12,70 @@ follow-up items here for future rounds:
 
 - **Cold strategy bitpacking and widths beyond 64.** `Bits<N, Cold>`
   for N > 64 with bitpacked storage across multiple bare primitives.
-  Out of scope for round 202604271346.
+  Subsumed into the bit-width-cap-to-256 scope in the audit-driven
+  follow-up chain.
 - **`feature(implied_bounds)` adoption.** Tracked: rust-lang/rust#44491.
   Unblocks the trilemma's bound-restatement constraint when stabilised.
   Future round.
 - **Algorithm crate refactors beyond import-path adjustments.** The
   current round only updates dep wiring. Genuine algorithm changes
   (matrix ops, additional graph algorithms) wait for separate rounds.
-- **Push-gate deprecation-comparison polish.** Round 202604271346's
-  doc CL leaves push-gate advisories asking for exhaustive type
-  acknowledgment from the deprecated round 202604500000 CL. Resolved
-  during DOC iteration before lock or accepted as advisory.
+
+## Round 202604280034 forward-looking entries
+
+Audit-driven follow-up chain Round A. Several items deferred to the
+chain's later rounds:
+
+- **IFixed reshape over `Bits<N, S, Signed>`.** Round A's IFixed-
+  doc-only fix flagged the deferred-pass-4d shape. Round B introduces
+  the `Sign: Signedness` const-generic axis on `Bits` (ZST markers
+  `Unsigned` / `Signed`) and reshapes IFixed to a `repr(transparent)`
+  newtype over `Bits<{1+I+F}, S, Signed>`. Closes the symmetry gap
+  between UFixed and IFixed.
+- **Bit-width cap to 256 + UContainerFor table extension.** Round B.
+  Meta-newtypes `IBits` / `FBits` / `Width` carry 0..=256. Container
+  dispatch table extends 65..=128 → u128 (native where supported)
+  and 129..=256 → multi-value abstraction.
+- **Strategy axes decomposition (internal lattice).** Round C.
+  Orthogonal `WidthPolicy` × `OverflowPolicy` × `PackPolicy`
+  internal axes; the four canonical presets (`Hot` / `Warm` / `Cold`
+  / `Precise`) stay as the primary consumer interface, defined as
+  combinations of the internal axes. Unlocks missing matrix cells
+  including `Hot+Saturating` for SIMD `PADDUSB` / `SQADD` codegen
+  paths.
+- **bitfield! macro `S: Strategy` parameterisation.** Round C. The
+  macro DSL accepts an explicit `S: Strategy` parameter; default
+  `Hot` is preserved. Consumers wanting Cold-bitpacked column-store
+  bitfields override.
+- **Cross-strategy resolution warning (not error).** Round C. When
+  `Resolve<S1, S2>::Out` differs in OverflowPolicy from either
+  operand, a compile-time warning fires naming the resolution and
+  the semantic shift. Per the workspace `arvo-toolbox-not-policer`
+  rule: warn but do not police.
+- **Better hash family adoption (xxhash3 or wyhash).** Round D.
+  FNV-1a stays as an option; the new family becomes default.
+  `ContentHash` widens to `Bits<64, Hot>`.
+- **Narrow surface expansion: `narrow_to_unmasked`.** Round D. Skips
+  the mask for the "high bits already zero" hot case.
+- **arvo-narrow concrete impls.** Round D. arvo-narrow stops being
+  empty; per-source-target primitive narrowing impls plus typed
+  `Bits<M, S> → Bits<N, S>` for M > N.
+- **BACKLOG additions for substrate gaps.** Round E. SIMD-typed
+  vectors, atomic fixed-point, alignment-aware loaders, GF(2) /
+  CRC, arvo-tensor `as_chunks` / Matrix layout doc, segment tree,
+  union-find, etc.
+- **Bench infrastructure port from polka-dots.** #266. Parallel
+  with Round B+. Becomes regression-detection baseline for the
+  always-optimal-internals optimisation work.
+
+## Q-D completion (round 202604280034)
+
+The std-parallel canonical aliases `Uint8` / `Uint16` / `Uint32` /
+`Uint64` / `Int8` / `Int16` / `Int32` / `Int64` were retained as a
+transitional bridge during round 202604271346 pass 7 and removed in
+round 202604280034 to lock the exact-width discipline in. Consumers
+write `Uint<N, S>` / `Int<N, S>` directly with the exact bit count
+the domain needs.
 
 Items researched and decided but deliberately out of the current
 shipping scope. Preserved here so a future round (or consumer) can
