@@ -36,10 +36,12 @@ mod sealed {
 mod arith;
 mod axes;
 mod container;
+mod cross_strategy;
 mod multi_container;
 mod widen;
 
 pub use arith::{IArith, ISaturating, UArith, USaturating};
+pub use cross_strategy::CrossStrategyOp;
 pub use axes::{
     Bitpacked, ContainerWidth, Dense, DoubleLogical, HasAxes, Min, OverflowPolicy, Saturating,
     StorageLayout, Wrapping,
