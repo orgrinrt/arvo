@@ -13,7 +13,7 @@
 //! so consumers can call them directly from either matrix type
 //! without importing a trait.
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 
 use crate::mask::{Mask256, Mask64};
 use crate::matrix::{BitMatrix256, BitMatrix64, cap_size};

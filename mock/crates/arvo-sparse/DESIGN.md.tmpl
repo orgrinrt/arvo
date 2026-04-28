@@ -1,8 +1,13 @@
-# arvo-sparse — Design
+# arvo-sparse. Design
 
 Sparse matrix representations and algorithms on const-generic
 fixed-size structures. `#![no_std]`, no alloc. Operates on
 arvo-bitmask types for small matrices and CSR for larger ones.
+
+Per round 202604271346: dependencies update. The crate depends on
+`arvo-storage`, `arvo-bits-contracts`, `arvo-numeric-contracts`,
+`arvo-tensor`, `arvo-bitmask`. The prior `arvo-bits` direct dep is
+replaced by `arvo-bits-contracts`.
 
 ## Absence results
 

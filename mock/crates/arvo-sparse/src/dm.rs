@@ -15,7 +15,7 @@
 //! The three masks partition the `N` node indices exactly: every
 //! node `i` in `0..N` appears in exactly one mask.
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo_bitmask::{BitMatrix64, Mask64, cap_size};
 
 use arvo_bitmask::NodeId;

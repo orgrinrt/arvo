@@ -11,7 +11,7 @@
 //! whose depth is a local minimum — so consumers can re-map the
 //! waist mask back through the same `topo_order` they passed in.
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Bool, Cap, USize};
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Detect waist levels in a DAG.

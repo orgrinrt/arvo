@@ -1,0 +1,6 @@
+# arvo-transparent
+
+The `Transparent` const unsafe trait and `NumericPrimitive` marker.
+Used by every `repr(transparent)` arvo type to expose its inner
+container in const context. Plus the free `arvo::raw<W, T>` prefix-style
+accessor, callable in const fn bodies. `#![no_std]`, no alloc.

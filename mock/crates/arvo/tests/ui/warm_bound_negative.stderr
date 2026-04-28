@@ -1,135 +1,53 @@
-error[E0277]: the trait bound `Warm: UContainerFor<33>` is not satisfied
+error[E0425]: cannot find function `ibits` in this scope
+  --> tests/ui/warm_bound_negative.rs:16:21
+   |
+16 |     let _: UFixed<{ ibits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+   |                     ^^^^^
+   |
+  ::: $WORKSPACE/crates/arvo-storage/src/meta_bits.rs
+   |
+   |         $vis struct $W(pub MetaCarrier);
+   |         -------------------------------- similarly named tuple struct `IBits` defined here
+   |
+help: a tuple struct with a similar name exists
+   |
+16 -     let _: UFixed<{ ibits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+16 +     let _: UFixed<{ IBits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+   |
+help: consider importing one of these functions
+   |
+ 9 + use arvo::ibits;
+   |
+ 9 + use arvo_storage::ibits;
+   |
+
+error[E0425]: cannot find function `fbits` in this scope
+  --> tests/ui/warm_bound_negative.rs:16:36
+   |
+16 |     let _: UFixed<{ ibits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+   |                                    ^^^^^
+   |
+  ::: $WORKSPACE/crates/arvo-storage/src/meta_bits.rs
+   |
+   |         $vis struct $W(pub MetaCarrier);
+   |         -------------------------------- similarly named tuple struct `FBits` defined here
+   |
+help: a tuple struct with a similar name exists
+   |
+16 -     let _: UFixed<{ ibits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+16 +     let _: UFixed<{ ibits(33) }, { FBits(32) }, Warm> = UFixed::from_raw(0);
+   |
+help: consider importing one of these functions
+   |
+ 9 + use arvo::fbits;
+   |
+ 9 + use arvo_storage::fbits;
+   |
+
+warning: unused imports: `FBits` and `IBits`
  --> tests/ui/warm_bound_negative.rs:9:12
   |
-9 |     let _: UFixed<{ IBits(17) }, { FBits(16) }, Warm> = UFixed::from_raw(0);
-  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `UContainerFor<33>` is not implemented for `Warm`
+9 | use arvo::{FBits, IBits};
+  |            ^^^^^  ^^^^^
   |
-  = help: `Warm` implements trait `UContainerFor<BITS>`:
-            UContainerFor<10>
-            UContainerFor<11>
-            UContainerFor<12>
-            UContainerFor<13>
-            UContainerFor<14>
-            UContainerFor<15>
-            UContainerFor<16>
-            UContainerFor<17>
-            UContainerFor<18>
-            UContainerFor<19>
-            UContainerFor<1>
-            UContainerFor<20>
-            UContainerFor<21>
-            UContainerFor<22>
-            UContainerFor<23>
-            UContainerFor<24>
-            UContainerFor<25>
-            UContainerFor<26>
-            UContainerFor<27>
-            UContainerFor<28>
-            UContainerFor<29>
-            UContainerFor<2>
-            UContainerFor<30>
-            UContainerFor<31>
-            UContainerFor<32>
-            UContainerFor<3>
-            UContainerFor<4>
-            UContainerFor<5>
-            UContainerFor<6>
-            UContainerFor<7>
-            UContainerFor<8>
-            UContainerFor<9>
-note: required by a bound in `UFixed`
- --> src/ufixed.rs
-  |
-  | pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>
-  |            ------ required by a bound in this struct
-  | where
-  |     S: UContainerFor<{ ufixed_bits(I, F) }>,
-  |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `UFixed`
-
-error[E0277]: the trait bound `Warm: UContainerFor<33>` is not satisfied
- --> tests/ui/warm_bound_negative.rs:9:57
-  |
-9 |     let _: UFixed<{ IBits(17) }, { FBits(16) }, Warm> = UFixed::from_raw(0);
-  |                                                         ^^^^^^ the trait `UContainerFor<33>` is not implemented for `Warm`
-  |
-  = help: `Warm` implements trait `UContainerFor<BITS>`:
-            UContainerFor<10>
-            UContainerFor<11>
-            UContainerFor<12>
-            UContainerFor<13>
-            UContainerFor<14>
-            UContainerFor<15>
-            UContainerFor<16>
-            UContainerFor<17>
-            UContainerFor<18>
-            UContainerFor<19>
-            UContainerFor<1>
-            UContainerFor<20>
-            UContainerFor<21>
-            UContainerFor<22>
-            UContainerFor<23>
-            UContainerFor<24>
-            UContainerFor<25>
-            UContainerFor<26>
-            UContainerFor<27>
-            UContainerFor<28>
-            UContainerFor<29>
-            UContainerFor<2>
-            UContainerFor<30>
-            UContainerFor<31>
-            UContainerFor<32>
-            UContainerFor<3>
-            UContainerFor<4>
-            UContainerFor<5>
-            UContainerFor<6>
-            UContainerFor<7>
-            UContainerFor<8>
-            UContainerFor<9>
-note: required by a bound in `UFixed`
- --> src/ufixed.rs
-  |
-  | pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>
-  |            ------ required by a bound in this struct
-  | where
-  |     S: UContainerFor<{ ufixed_bits(I, F) }>,
-  |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `UFixed`
-
-error[E0277]: the trait bound `Warm: UContainerFor<33>` is not satisfied
- --> tests/ui/warm_bound_negative.rs:9:74
-  |
-9 |     let _: UFixed<{ IBits(17) }, { FBits(16) }, Warm> = UFixed::from_raw(0);
-  |                                                                          ^ the trait `UContainerFor<33>` is not implemented for `Warm`
-  |
-  = help: `Warm` implements trait `UContainerFor<BITS>`:
-            UContainerFor<10>
-            UContainerFor<11>
-            UContainerFor<12>
-            UContainerFor<13>
-            UContainerFor<14>
-            UContainerFor<15>
-            UContainerFor<16>
-            UContainerFor<17>
-            UContainerFor<18>
-            UContainerFor<19>
-            UContainerFor<1>
-            UContainerFor<20>
-            UContainerFor<21>
-            UContainerFor<22>
-            UContainerFor<23>
-            UContainerFor<24>
-            UContainerFor<25>
-            UContainerFor<26>
-            UContainerFor<27>
-            UContainerFor<28>
-            UContainerFor<29>
-            UContainerFor<2>
-            UContainerFor<30>
-            UContainerFor<31>
-            UContainerFor<32>
-            UContainerFor<3>
-            UContainerFor<4>
-            UContainerFor<5>
-            UContainerFor<6>
-            UContainerFor<7>
-            UContainerFor<8>
-            UContainerFor<9>
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default

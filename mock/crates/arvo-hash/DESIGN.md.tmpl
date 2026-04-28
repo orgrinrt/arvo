@@ -1,86 +1,262 @@
-# arvo-hash — Design
+# arvo-hash. Design
 
 L2 hash-domain types and algorithm contracts. Ships a domain alias
-over the arvo-bits opaque-bit container, plus generic trait contracts
-for hash algorithms. No concrete algorithm implementations this
-round; those land as trait implementors in follow-up rounds.
+over the `Bits` storage primitive (now in `arvo-storage`), generic
+trait contracts for hash algorithms, and two concrete algorithms:
+`XxHash3<const N: Width>` (default) and `Fnv1a<const N: Width>`
+(option for known-good fits).
 
-`#![no_std]`, no alloc. Depends on arvo-bits only.
+`#![no_std]`, no alloc.
+
+Per round 202604271346: dependencies update. The crate currently
+imports through the `arvo` facade (which re-exports `Bits<N, S>`,
+`Width`, `Hot`, `UContainerFor`, etc. from the underlying L0 crates).
+A future round may switch to direct contract-crate deps
+(`arvo-storage`, `arvo-bits-contracts`, `arvo-numeric-contracts`,
+`arvo-bitmask`) to tighten the transitive footprint, once
+`BitLogic` and `FromConstant` are wired into the algorithm bodies.
+The `Hasher<const N: u8>` trait declared here is now `pub const trait`
+per D-12, so `hash_const` falls out as a natural feature.
+
+Round 202604280034 dropped the unused direct `arvo-bits` dep that
+the previous round's import path made redundant; arvo-hash reaches
+the bit-level types through the arvo facade.
 
 ## Why this crate exists
 
 Hashes (content hashes, name hashes, pass-key identity) are numeric
-algorithms on opaque bit-patterns. The stack needed one home for
-the runtime carriers. arvo-bits provides the generic Bits container;
-arvo-hash provides the domain vocabulary (ContentHash) and the algo
-contracts (Hasher, HasherExt) consumers parameterise over.
+algorithms on opaque bit-patterns. The stack needs one home for the
+runtime carriers. arvo provides the generic `Bits` container; arvo-
+hash provides the domain vocabulary (`ContentHash`), the algo
+contracts (`Hasher`, `HasherExt`) consumers parameterise over, and
+the canonical first algorithm (`Fnv1a`).
 
-Crate size is deliberately thin today. Growth surface (concrete
-algorithms, cryptographic hashes as a sibling crate, semantic
-aliases beyond ContentHash) is tracked in BACKLOG.
+Growth surface (additional concrete algorithms, cryptographic hashes
+as a sibling crate, semantic aliases beyond ContentHash) is tracked
+in BACKLOG.
 
 ## Types
 
 ### ContentHash
 
-A type alias for arvo-bits Bits<28>. Matches hilavitkutin-str's
-low-28-bit FNV content-hash identity. Consumers that want a named
-type at call sites (hilavitkutin-persistence StringTableEntry,
-clause resolver pass-key identity) bind ContentHash instead of
-the raw Bits<28>.
+A type alias for `arvo::Bits<64, Hot>`. Carries the canonical
+content-addressed hash identity for downstream consumers
+(hilavitkutin-str interner, hilavitkutin-persistence
+StringTableEntry, clause resolver pass-key identity, loimu-style
+entity content addressing). Consumers that want a named type at
+call sites bind `ContentHash` instead of the raw `Bits<64, Hot>`.
 
 ```rust
-pub type ContentHash = arvo_bits::Bits<28>;
+pub type ContentHash = arvo::Bits<64, Hot>;
 ```
+
+The width widened from 28 to 64 in Pass B.2 of round 202604281000.
+64 bits matches `XxHash3`'s natural output and reduces collision
+probability to negligible levels for million-entity workloads (the
+prior 28-bit identity carried meaningful collision risk past about
+16k unique values; 64 bits clears the projected scale by orders of
+magnitude).
 
 A direct type alias rather than a newtype: the semantic domain is
 fully captured by the bit width; no additional invariants warrant
-a distinct type.
+a distinct type. The `Bits` const-generic widened to `u16` in
+Pass F of the same round; only `Hasher` / `Fnv1a` / `XxHash3` lift
+to `Width`.
 
 ## Algorithm contracts
 
 ### Hasher (canonical, streaming)
 
 ```rust
-pub trait Hasher<const N: u8> {
+use arvo::{Width, Bits, Hot};
+use arvo::strategy::{UContainerFor, width_u8};
+
+pub trait Hasher<const N: Width>
+where Hot: UContainerFor<{ width_u8(N) }>
+{
     fn update(&mut self, bytes: &[u8]);
-    fn finalize(self) -> arvo_bits::Bits<N>;
+    fn finalize(self) -> Bits<{ width_u8(N) }, Hot>;
 }
 ```
 
 Streaming hash: feed bytes incrementally, finalise to an N-bit
-opaque pattern. Consumers implementing a hash algorithm implement
-this trait.
+opaque pattern. The const-generic `N: Width` is the meta-newtype
+encoding the bit width; the inner `Bits` is sized via `width_u8(N)`
+into the L0 storage primitive's `u8` const-generic. Consumers
+implementing a hash algorithm implement this trait.
+
+The `&[u8]` parameter is workspace-rule exception #4 (boundary
+input from raw bytes; canonical hash input shape).
 
 ### HasherExt (oneshot convenience, blanket impl)
 
 ```rust
-pub trait HasherExt<const N: u8>: Hasher<N> + Sized {
+pub trait HasherExt<const N: Width>: Hasher<N> + Sized
+where Hot: UContainerFor<{ width_u8(N) }>
+{
     /// One-shot: update with the complete input, then finalize.
-    fn hash(mut self, bytes: &[u8]) -> arvo_bits::Bits<N> {
+    fn hash(mut self, bytes: &[u8]) -> Bits<{ width_u8(N) }, Hot> {
         self.update(bytes);
         self.finalize()
     }
 }
-impl<H: Hasher<N>, const N: u8> HasherExt<N> for H {}
+impl<H, const N: Width> HasherExt<N> for H
+where
+    H: Hasher<N> + Sized,
+    Hot: UContainerFor<{ width_u8(N) }>,
+{}
 ```
 
-HasherExt's default method provides oneshot ergonomics over any
-Hasher implementor. The blanket impl means every Hasher automatically
-exposes a .hash(bytes) one-shot form; implementors do not write
-their own oneshot path. Mirrors the round-202604201048 Encoder /
-Decoder + EncoderExt / DecoderExt pattern: streaming is canonical,
-oneshot is a derived convenience.
+`HasherExt`'s default method provides oneshot ergonomics over any
+`Hasher` implementor. The blanket impl means every `Hasher`
+automatically exposes a `.hash(bytes)` one-shot form; implementors
+do not write their own oneshot path. Mirrors the round-202604201048
+Encoder / Decoder + EncoderExt / DecoderExt pattern: streaming is
+canonical, oneshot is a derived convenience.
+
+## Default algorithm choice
+
+`XxHash3<const N: Width>` is the default hash family. `Fnv1a<const N: Width>`
+remains as an explicit option for known-good fits (small inputs in the
+8-16 byte band where FNV-1a stays competitive on bandwidth, or
+algorithm-locked test fixtures).
+
+The choice between defaults considered the substrate's primary
+consumer workload (16-128 byte entity content addressing, millions
+of entities in flight). XxHash3 wins on bandwidth above the 32-byte
+input mark; FNV-1a holds at 8-16 bytes. The default crosses the
+break-even mark into the consumer's typical band.
+
+Per the `arvo-toolbox-not-policer` workspace rule, both ship; the
+consumer picks. `ContentHasher` is the trait; `XxHash3` and `Fnv1a`
+are concrete strategies satisfying it.
+
+## Concrete algorithm: XxHash3
+
+```rust
+use arvo::{Width, Bits, Hot, width};
+use arvo::strategy::{UContainerFor, width_u16, width_le_64};
+
+/// Streaming XxHash3 hasher with N-bit output.
+///
+/// `XxHash3<{ width(N) }>` produces an N-bit hash via masking from
+/// the algorithm's natural 64-bit output. Bound: `N <= 64`.
+/// For 128-bit output see the `XxHash3_128` BACKLOG entry.
+pub struct XxHash3<const N: Width>
+where
+    Hot: UContainerFor<{ width_u16(N) }>,
+    [(); 1 / (width_le_64(N) as usize)]: ;
+
+impl<const N: Width> XxHash3<N>
+where
+    Hot: UContainerFor<{ width_u16(N) }>,
+    [(); 1 / (width_le_64(N) as usize)]: ,
+{
+    pub const fn hash_const(bytes: &[u8]) -> Bits<{ width_u16(N) }, Hot> {
+        let raw = xxhash3_64(bytes);
+        Bits::<{ width_u16(N) }, Hot>::from_raw_u64(raw)
+    }
+}
+
+impl<const N: Width> Hasher<N> for XxHash3<N>
+where
+    Hot: UContainerFor<{ width_u16(N) }>,
+    [(); 1 / (width_le_64(N) as usize)]: ,
+{
+    fn update(&mut self, bytes: &[u8]) { /* SRC */ }
+    fn finalize(self) -> Bits<{ width_u16(N) }, Hot> { /* SRC */ }
+}
+```
+
+Same const-eval `N <= 64` guard as `Fnv1a`. Consumer-facing
+ergonomics are identical; the algorithmic difference is the body
+of `update` / `finalize` and the bandwidth profile.
+
+## Concrete algorithm: Fnv1a
+
+```rust
+use arvo::{Width, Bits, Hot, width};
+use arvo::strategy::{UContainerFor, width_u8, width_le_64};
+
+/// Streaming FNV-1a-64 hasher with N-bit output.
+///
+/// `Fnv1a<{ width(N) }>` produces an N-bit hash. Bound: `N <= 64`.
+/// For wider widths see the `Fnv1a128` BACKLOG entry.
+pub struct Fnv1a<const N: Width>
+where
+    Hot: UContainerFor<{ width_u8(N) }>,
+    [(); 1 / (width_le_64(N) as usize)]: ;
+
+impl<const N: Width> Fnv1a<N>
+where
+    Hot: UContainerFor<{ width_u8(N) }>,
+    [(); 1 / (width_le_64(N) as usize)]: ,
+{
+    /// Compile-time hash construction.
+    ///
+    /// Used by hilavitkutin app-builder for compile-time access-set
+    /// hash-membership validation. Const-callable in const-generic
+    /// position on the consumer side.
+    pub const fn hash_const(bytes: &[u8]) -> Bits<{ width_u8(N) }, Hot> {
+        let raw = fnv1a_64(bytes);
+        Bits::<{ width_u8(N) }, Hot>::from_raw_u64(raw)
+    }
+}
+
+impl<const N: Width> Hasher<N> for Fnv1a<N>
+where
+    Hot: UContainerFor<{ width_u8(N) }>,
+    [(); 1 / (width_le_64(N) as usize)]: ,
+{
+    fn update(&mut self, bytes: &[u8]) { /* SRC */ }
+    fn finalize(self) -> Bits<{ width_u8(N) }, Hot> { /* SRC */ }
+}
+```
+
+The `[(); 1 / (width_le_64(N) as usize)]:` const-eval guard divides
+by zero (compile error) when `N > 64`. The `#[diagnostic::on_-
+unimplemented]` attribute on `UContainerFor` (defined in arvo)
+produces a human-readable strategy-pointing error if the bound is
+violated. An out-of-bound use such as `Fnv1a::<{ width(96) }>::hash_-
+const(b"x")` triggers the const-eval failure attached to the where-
+clause site; the diagnostic message states the `<= 64` constraint
+and points at the BACKLOG `Fnv1a128` entry.
+
+`Fnv1a::hash_const` is the entry point for compile-time access-set
+hash-membership validation downstream (hilavitkutin app-builder
+formalisation, round 202604520000). Streaming `Hasher` impl covers
+the runtime path.
+
+### fnv1a_64 free function
+
+```rust
+/// FNV-1a-64 over a byte slice (free const fn).
+///
+/// Returns the raw 64-bit state. `Fnv1a<N>::hash_const` masks to
+/// N bits via `Bits::<{ width_u8(N) }, Hot>::from_raw_u64`. The
+/// `&[u8]` parameter is workspace-rule exception #4 (boundary input
+/// from raw bytes); the `u64` return is the algorithm's state-width.
+pub const fn fnv1a_64(bytes: &[u8]) -> u64 {
+    /* body in arvo-hash/src/algo.rs (SRC phase) */
+}
+```
+
+Lives in `arvo-hash/src/algo.rs` as a free const fn at module
+scope. Reusable by any consumer that wants the raw 64-bit state
+without constructing an `Fnv1a<N>` instance.
 
 ## Usage
 
-Downstream code parameterises over the trait; swapping algorithm
-is a type-parameter change, not a call-site rewrite.
+Downstream code parameterises over the trait; swapping algorithm is
+a type-parameter change, not a call-site rewrite.
 
 Streaming:
 
 ```rust
-fn intern_chunks<H: Hasher<28>>(mut hasher: H, chunks: &[&[u8]]) -> ContentHash {
+fn intern_chunks<H>(mut hasher: H, chunks: &[&[u8]]) -> ContentHash
+where
+    H: Hasher<{ width(28) }>,
+{
     for chunk in chunks { hasher.update(chunk); }
     hasher.finalize()
 }
@@ -89,7 +265,10 @@ fn intern_chunks<H: Hasher<28>>(mut hasher: H, chunks: &[&[u8]]) -> ContentHash 
 One-shot:
 
 ```rust
-fn intern<H: HasherExt<28>>(hasher: H, bytes: &[u8]) -> ContentHash {
+fn intern<H>(hasher: H, bytes: &[u8]) -> ContentHash
+where
+    H: HasherExt<{ width(28) }>,
+{
     hasher.hash(bytes)
 }
 ```
@@ -99,35 +278,47 @@ edits; the trait signatures stay put.
 
 ## Dependencies
 
-- arvo-bits (L1): provides Bits<const N: u8> (the underlying
-  container) plus BitWidth / BitAccess trait bounds.
+- arvo (facade): re-exports the storage primitives `Bits<const N: u8,
+  S>`, `Width` / `IBits` / `FBits` ConstParamTy newtypes, the
+  `width(n)` const helpers, the strategy markers (`Hot`, `Warm`,
+  `Cold`, `Precise`), and `UContainerFor` / `IContainerFor`. arvo-hash
+  imports these via the facade; the underlying L0 crates
+  (`arvo-storage`, `arvo-strategy`) are not direct deps.
 
-arvo-hash does not depend on arvo L0 directly. Future algorithm
-modules may bring in arvo deps as needed; ship-time scope keeps
-the dep surface minimal.
+The previously declared `arvo-bits` dep was dropped during round
+202604280034: arvo-hash uses no symbol from `arvo-bits` directly
+post-round-202604271346 (every reference goes through the arvo facade
+re-export). Future rounds may re-add a direct dep on
+`arvo-bits-contracts` if generic-over-bit-trait bounds become useful
+in the algorithm bodies.
 
 ## What this crate does NOT contain
 
-- Concrete hash algorithms (FNV, xxHash, CRC32); follow-up rounds.
-- Cryptographic hashes (SHA, BLAKE); out of scope entirely.
-  A sibling arvo-crypto crate covers cryptographic needs if they
+- Cryptographic hashes (SHA, BLAKE); out of scope entirely. A
+  sibling arvo-crypto crate covers cryptographic needs if they
   surface.
+- Hash widths beyond 64 bits in `Fnv1a`; tracked as `Fnv1a128` in
+  BACKLOG.
+- Other non-cryptographic algorithms (xxHash, CRC32); tracked in
+  BACKLOG.
 - Semantic aliases beyond ContentHash; consumers that need
   NameHash, KeyHash, or similar start with their own local alias
-  over ContentHash or Bits<N> and promote to arvo-hash once
+  over ContentHash or `Bits<N, Hot>` and promote to arvo-hash once
   patterns stabilise.
 - rkyv Archive impls; consumers define Archive at their boundary.
-- Owned byte buffers; all hashing takes &[u8] input.
+- Owned byte buffers; all hashing takes `&[u8]` input.
 
 ## Design rule
 
-`#![no_std]`, no alloc. Algorithm-agnostic: the crate defines the
-contract, not the implementation. Consumer code parameterises over
-the trait; concrete algorithms ship as implementors in follow-up
-rounds.
+`#![no_std]`, no alloc. Trait-first: the contract is generic over
+`Width`, the concrete algorithm (`Fnv1a`) is one implementor, more
+land as additional implementors. Consumer code parameterises over
+the trait, not the algorithm.
 
 ## Sources
 
-- 202604201338_topic.arvo-hash-new-crate.md (this round)
+- 202604201338_topic.arvo-hash-new-crate.md (initial scope)
 - 202604201048_topic.sink-collector-codec-contracts.md (pattern
   precedent for streaming-canonical + ext-blanket shape)
+- 202604500000_topic.foundations-restructure-final.md (Fnv1a
+  promotion, Width const-generic migration, Bits-to-L0)

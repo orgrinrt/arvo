@@ -10,7 +10,7 @@
 //! the default for pipeline grouping where the DP's quadratic table is
 //! oversized.
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Bool, Cap, USize};
 use arvo::predicate::Pred2;
 use arvo_tensor::{Array, cap_size};
 

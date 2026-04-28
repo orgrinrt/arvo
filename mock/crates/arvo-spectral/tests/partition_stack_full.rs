@@ -4,10 +4,11 @@
 //! the larger half (room for one) — never admit one and lose the
 //! other.
 
+#![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo_spectral::{Matrix, k_way_partition};
 
 mod common;

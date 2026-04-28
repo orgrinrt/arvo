@@ -1,0 +1,157 @@
+# arvo-bits-contracts. Design
+
+The bit-level trait declarations. Every trait here is `pub const trait`.
+Default-method bodies reference `Bits<N, S, Sign>` and the bare
+primitive containers; consumer call sites pull this crate to bind to
+the trait surface, then reach the concrete impls in `arvo-bits` via
+blanket dispatch. `#![no_std]`, no alloc.
+
+The Sign axis on `Bits<N, S, Sign>` (round 202604280500) is invisible
+at the trait surface; bit-level operations act on raw bit patterns
+which are sign-agnostic by construction. Default `Sign = Unsigned` at
+the Bits surface keeps existing call sites unchanged.
+
+Depends on `notko`, `arvo-transparent`, `arvo-strategy`, `arvo-storage`.
+
+## HasBitWidth
+
+```rust
+pub const trait HasBitWidth {
+    const WIDTH: USize;
+}
+```
+
+How many logical bits a type occupies. Renamed from `BitWidth` per
+round 202604271346 to free that name for the `Width` newtype in
+`arvo-storage`. Const trait so `T::WIDTH` works in const fn bodies
+under generic-T.
+
+## BitAccess
+
+```rust
+pub const trait BitAccess: HasBitWidth + Copy {
+    fn bit(self, idx: USize) -> Bool;
+    fn with_bit_set(self, idx: USize) -> Self;
+    fn with_bit_cleared(self, idx: USize) -> Self;
+    fn with_bit_toggled(self, idx: USize) -> Self;
+}
+```
+
+Individual bit manipulation. Functional style, no mutation. `idx` is
+from LSB.
+
+## BitSequence
+
+```rust
+pub const trait BitSequence: HasBitWidth + Copy {
+    fn trailing_zeros(self) -> USize;
+    fn leading_zeros(self) -> USize;
+    fn count_ones(self) -> USize;
+    fn count_zeros(self) -> USize;
+    fn is_zero(self) -> Bool;
+}
+```
+
+Scanning and counting. Maps to hardware intrinsics (`cttz`, `ctlz`,
+`popcnt`). The primitives that mask iteration uses internally.
+
+## BitLogic
+
+```rust
+pub const trait BitLogic: HasBitWidth + Copy {
+    fn bitor(self, other: Self) -> Self;
+    fn bitand(self, other: Self) -> Self;
+    fn bitnot(self) -> Self;
+    fn bitxor(self, other: Self) -> Self;
+    fn shl(self, n: USize) -> Self;
+    fn shr(self, n: USize) -> Self;
+    fn clear_lowest_set_bit(self) -> Self
+    where
+        Self: BitAccess + BitSequence;
+}
+```
+
+Whole-word bitwise logic. Single-instruction on the backing
+primitive. Hot-only surface (other strategies' wider containers make
+whole-word ops meaningless at the logical-width level).
+
+`clear_lowest_set_bit` has a default body via `BitSequence` +
+`BitAccess`; concrete types override with the BLSR-equivalent fast
+path.
+
+## BitPrim family
+
+```rust
+pub const trait BitPrim: Copy + ConstParamTy_ + ... {
+    // primitive-bridge methods on bare u8/u16/u32/u64
+}
+
+pub const trait UBitContainer<const N: u8> {
+    type Container: BitPrim;
+}
+
+pub const trait IBitContainer<const N: u8> {
+    type Container: BitPrim;
+}
+```
+
+The primitive-bridge family. `BitPrim` is the sealed surface that
+`u8`, `u16`, `u32`, `u64`, `u128` (and signed counterparts through
+`i128`) implement, plus `MultiContainer<HiT, LoT>` for the multi-value
+storage shape at logical widths beyond a single native primitive
+(round 202604280500). Used by blanket impls in `arvo-bits` to delegate
+from `Bits<N, S, Sign>::to_raw()` to the primitive's bit method, then
+`Bits::from_raw(...)` wraps the result. Const trait throughout.
+
+## Narrow
+
+```rust
+pub const trait Narrow<T> {
+    fn narrow_to<const N: u16>(self) -> T
+    where
+        Self: Sized;
+
+    fn narrow_to_unmasked<const N: u16>(self) -> T
+    where
+        Self: Sized;
+}
+
+pub type Narrowed<const N: u16, T> = T;
+```
+
+The unified mask-and-cast bridge for cross-primitive narrowing.
+`narrow_to::<N>` composes `Mask<W>::mask_for_width(N)` (from
+`arvo-mask-contracts`) with `BitLogic::and` then the `as` operator
+to cast to the target primitive type, sound under the mask
+precondition.
+
+`narrow_to_unmasked::<N>` skips the mask op for the hot case where
+the high bits are already zero (chained narrow, bitfield extraction
+that just-shifted-down, value carried through a Bits<M, ...>
+projection of equal-or-narrower width). The precondition is the
+consumer's responsibility; calling with non-zero high bits produces
+silent garbage in the unmasked path.
+
+Moved here from the previously-separate `arvo-narrow-contracts`
+crate during round 202604280034. The merge is justified because
+every consumer of `Narrow` already depends on `BitLogic` for the
+default-body composition; the single-trait crate split was ceremony
+without transitive-footprint benefit. Concrete impls live in
+`arvo-narrow` (cross-primitive) and may extend into `arvo-bitmask`
+(mask-using).
+
+`Narrowed<const N: u16, T>` is a cosmetic alias for the result of
+`narrow_to::<N>` so consumer signatures read `fn foo() -> Narrowed<13, u16>`
+instead of bare `u16`. The const-generic `N` is documentation only at
+the type level (the value has been narrowed to `N` bits but the
+carrier is still `T`).
+
+The const-generic param widened from `u8` to `u16` in Pass F of round
+202604281000, matching the `Bits<const N: u16>` widening at the same
+pass. The widening accommodates reachable widths up to 65535; concrete
+narrow impls cover 1..=256.
+
+## Sources
+
+- `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md`
+- `mock/design_rounds/202604271346_changelist.doc.md`

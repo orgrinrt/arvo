@@ -4,7 +4,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Bool, Cap, USize};
 use arvo_comb::{Range, greedy_group};
 use arvo_tensor::Array;
 
