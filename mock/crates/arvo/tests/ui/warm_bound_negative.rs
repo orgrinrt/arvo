@@ -13,5 +13,5 @@ use arvo::ufixed::UFixed;
 fn main() {
     // 33 + 32 = 65 total logical bits, beyond Warm's post-Round-B
     // container table (caps at 64).
-    let _: UFixed<{ IBits(33) }, { FBits(32) }, Warm> = UFixed::from_raw(0);
+    let _: UFixed<{ ibits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
 }

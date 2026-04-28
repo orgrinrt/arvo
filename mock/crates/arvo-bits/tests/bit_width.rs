@@ -5,50 +5,50 @@
 #![allow(incomplete_features)]
 
 use arvo::ifixed::IFixed;
-use arvo::{FBits, IBits};
+use arvo::{FBits, IBits, ibits, fbits};
 use arvo::strategy::{Cold, Hot, Precise, Warm};
 use arvo::ufixed::UFixed;
 use arvo_bits::{HasBitWidth, Byte, DWord, Nibble, QWord, Word};
 
 #[test]
 fn ufixed_width_equals_i_plus_f() {
-    // `UFixed<IBits(3), FBits(5), Hot>` -> 8 logical bits.
+    // `UFixed<ibits(3), fbits(5), Hot>` -> 8 logical bits.
     assert_eq!(
-        <UFixed<{ IBits(3) }, { FBits(5) }, Hot> as HasBitWidth>::WIDTH.0,
+        <UFixed<{ ibits(3) }, { fbits(5) }, Hot> as HasBitWidth>::WIDTH.0,
         8
     );
-    // `UFixed<IBits(12), FBits(4), Warm>` -> 16 logical bits.
+    // `UFixed<ibits(12), fbits(4), Warm>` -> 16 logical bits.
     assert_eq!(
-        <UFixed<{ IBits(12) }, { FBits(4) }, Warm> as HasBitWidth>::WIDTH.0,
+        <UFixed<{ ibits(12) }, { fbits(4) }, Warm> as HasBitWidth>::WIDTH.0,
         16
     );
-    // `UFixed<IBits(32), FBits(0), Cold>` -> 32 logical bits.
+    // `UFixed<ibits(32), fbits(0), Cold>` -> 32 logical bits.
     assert_eq!(
-        <UFixed<{ IBits(32) }, { FBits::ZERO }, Cold> as HasBitWidth>::WIDTH.0,
+        <UFixed<{ ibits(32) }, { FBits::ZERO }, Cold> as HasBitWidth>::WIDTH.0,
         32
     );
-    // `UFixed<IBits(48), FBits(16), Precise>` -> 64 logical bits.
+    // `UFixed<ibits(48), fbits(16), Precise>` -> 64 logical bits.
     assert_eq!(
-        <UFixed<{ IBits(48) }, { FBits(16) }, Precise> as HasBitWidth>::WIDTH.0,
+        <UFixed<{ ibits(48) }, { fbits(16) }, Precise> as HasBitWidth>::WIDTH.0,
         64
     );
 }
 
 #[test]
 fn ifixed_width_adds_sign_bit() {
-    // `IFixed<IBits(3), FBits(4), Hot>` -> 1 + 3 + 4 = 8 logical bits.
+    // `IFixed<ibits(3), fbits(4), Hot>` -> 1 + 3 + 4 = 8 logical bits.
     assert_eq!(
-        <IFixed<{ IBits(3) }, { FBits(4) }, Hot> as HasBitWidth>::WIDTH.0,
+        <IFixed<{ ibits(3) }, { fbits(4) }, Hot> as HasBitWidth>::WIDTH.0,
         8
     );
-    // `IFixed<IBits(15), FBits(0), Warm>` -> 1 + 15 + 0 = 16.
+    // `IFixed<ibits(15), fbits(0), Warm>` -> 1 + 15 + 0 = 16.
     assert_eq!(
-        <IFixed<{ IBits(15) }, { FBits::ZERO }, Warm> as HasBitWidth>::WIDTH.0,
+        <IFixed<{ ibits(15) }, { FBits::ZERO }, Warm> as HasBitWidth>::WIDTH.0,
         16
     );
-    // `IFixed<IBits(31), FBits(32), Precise>` -> 1 + 31 + 32 = 64.
+    // `IFixed<ibits(31), fbits(32), Precise>` -> 1 + 31 + 32 = 64.
     assert_eq!(
-        <IFixed<{ IBits(31) }, { FBits(32) }, Precise> as HasBitWidth>::WIDTH.0,
+        <IFixed<{ ibits(31) }, { fbits(32) }, Precise> as HasBitWidth>::WIDTH.0,
         64
     );
 }

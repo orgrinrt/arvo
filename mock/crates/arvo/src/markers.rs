@@ -58,7 +58,7 @@ pub trait BoolLike: Copy {
     ///
     /// Defined as an associated type so arvo L0 does not need to
     /// name `arvo-bits::Bit` directly; arvo-bits pins this to its
-    /// own `Bit = UFixed<{IBits(1)}, {FBits(0)}, Hot>` alias.
+    /// own `Bit = UFixed<{ibits(1)}, {fbits(0)}, Hot>` alias.
     type Packed: BitPresentation;
 
     /// Convert a truth value to a 1-bit data value.
@@ -71,7 +71,7 @@ pub trait BoolLike: Copy {
 // type is produced via the container trait; arvo-bits re-exports the
 // Bit alias. Here we only need the value 0/1 mapping.
 //
-// The packed type is `UFixed<{IBits(1)}, {FBits(0)}, Hot>` whose
+// The packed type is `UFixed<{ibits(1)}, {fbits(0)}, Hot>` whose
 // storage container is `u8` (Hot, 1-bit-range bucket).
 
 // `Bool` blanket impl is placed in this module (not `newtype`) to keep

@@ -15,7 +15,7 @@ where
     S: IBitContainer<{ ifixed_bits(I, F) }>,
 {
     // IFixed's logical width is `1 + I + F` (sign bit counts).
-    const WIDTH: USize = USize(1 + I.0 as usize + F.0 as usize);
+    const WIDTH: USize = USize(1 + I.raw() as usize + F.raw() as usize);
 }
 
 impl<const I: IBits, const F: FBits, S: Strategy> BitAccess for IFixed<I, F, S>
@@ -81,7 +81,7 @@ where
         let container_lz =
             <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::leading_zeros(prim)
                 as usize;
-        let logical = 1 + I.0 as usize + F.0 as usize;
+        let logical = 1 + I.raw() as usize + F.raw() as usize;
         let container =
             <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::WIDTH as usize;
         let surplus = container - logical;
@@ -103,7 +103,7 @@ where
         let ones =
             <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::count_ones(prim)
                 as usize;
-        let logical = 1 + I.0 as usize + F.0 as usize;
+        let logical = 1 + I.raw() as usize + F.raw() as usize;
         USize(logical - ones)
     }
 
