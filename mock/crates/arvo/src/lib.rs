@@ -21,6 +21,7 @@
 
 pub mod aliases;
 pub mod bitfield;
+mod layout_assertions;
 pub mod float;
 pub mod ifixed;
 pub mod ifixed_impl;
