@@ -274,3 +274,140 @@ const _: () = {
     _assert_const_param_ty::<FBits>();
     _assert_const_param_ty::<Width>();
 };
+
+// --- Tier 7: Full-cell expansion (round 202604281000 Pass A.2) ------------
+//
+// Default builds keep the boundary-cell coverage above. CI nightly builds
+// running with `--cfg arvo_full_layout_audit` open the full grid: every
+// (Strategy, N, Sign) cell where the strategy implements
+// `BitsContainerFor<N, Sign>`. Catches any mid-band projection drift the
+// boundary set would miss. Compile-time impact is bounded by the cfg gate.
+//
+// To run the full audit:
+//
+// ```bash
+// RUSTFLAGS='--cfg arvo_full_layout_audit' cargo check -p arvo-storage
+// ```
+
+#[cfg(arvo_full_layout_audit)]
+mod full_audit {
+    use super::*;
+
+    macro_rules! cells_unsigned {
+        ($strategy:ty, $primitive:ty, $($n:literal),+) => {
+            $( assert_layout_eq!(Bits<$n, $strategy, Unsigned>, $primitive); )+
+        };
+    }
+
+    macro_rules! cells_signed {
+        ($strategy:ty, $primitive:ty, $($n:literal),+) => {
+            $( assert_layout_eq!(Bits<$n, $strategy, Signed>, $primitive); )+
+        };
+    }
+
+    // --- Hot, unsigned: every cell across 1..=255 ---
+    cells_unsigned!(Hot, u8, 1, 2, 3, 4, 5, 6, 7, 8);
+    cells_unsigned!(Hot, u16, 9, 10, 11, 12, 13, 14, 15, 16);
+    cells_unsigned!(
+        Hot, u32, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+    );
+    cells_unsigned!(
+        Hot, u64, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+    );
+    cells_unsigned!(
+        Hot, u128, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+        81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96,
+        97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+        113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128
+    );
+
+    // --- Hot, signed: matching span ---
+    cells_signed!(Hot, i8, 1, 2, 3, 4, 5, 6, 7, 8);
+    cells_signed!(Hot, i16, 9, 10, 11, 12, 13, 14, 15, 16);
+    cells_signed!(
+        Hot, i32, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+    );
+    cells_signed!(
+        Hot, i64, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+    );
+    cells_signed!(
+        Hot, i128, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+        81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96,
+        97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+        113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128
+    );
+
+    // --- Cold mirrors Hot at every cell ---
+    cells_unsigned!(Cold, u8, 1, 2, 3, 4, 5, 6, 7, 8);
+    cells_unsigned!(Cold, u16, 9, 10, 11, 12, 13, 14, 15, 16);
+    cells_unsigned!(
+        Cold, u32, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+    );
+    cells_unsigned!(
+        Cold, u64, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+    );
+    cells_unsigned!(
+        Cold, u128, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+        81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96,
+        97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+        113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128
+    );
+    cells_signed!(Cold, i8, 1, 2, 3, 4, 5, 6, 7, 8);
+    cells_signed!(Cold, i16, 9, 10, 11, 12, 13, 14, 15, 16);
+    cells_signed!(
+        Cold, i32, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+    );
+    cells_signed!(
+        Cold, i64, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+    );
+    cells_signed!(
+        Cold, i128, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+        81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96,
+        97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112,
+        113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128
+    );
+
+    // --- Warm: 2x logical width across 1..=64 ---
+    cells_unsigned!(Warm, u16, 1, 2, 3, 4, 5, 6, 7, 8);
+    cells_unsigned!(Warm, u32, 9, 10, 11, 12, 13, 14, 15, 16);
+    cells_unsigned!(
+        Warm, u64, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+    );
+    cells_unsigned!(
+        Warm, u128, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+    );
+    cells_signed!(Warm, i16, 1, 2, 3, 4, 5, 6, 7, 8);
+    cells_signed!(Warm, i32, 9, 10, 11, 12, 13, 14, 15, 16);
+    cells_signed!(
+        Warm, i64, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+    );
+    cells_signed!(
+        Warm, i128, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+    );
+
+    // --- Precise: same shape as Warm post-Pass-D ---
+    cells_unsigned!(Precise, u16, 1, 2, 3, 4, 5, 6, 7, 8);
+    cells_unsigned!(Precise, u32, 9, 10, 11, 12, 13, 14, 15, 16);
+    cells_unsigned!(
+        Precise, u64, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+    );
+    cells_unsigned!(
+        Precise, u128, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+    );
+    cells_signed!(Precise, i16, 1, 2, 3, 4, 5, 6, 7, 8);
+    cells_signed!(Precise, i32, 9, 10, 11, 12, 13, 14, 15, 16);
+    cells_signed!(
+        Precise, i64, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+    );
+    cells_signed!(
+        Precise, i128, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64
+    );
+}
