@@ -23,7 +23,10 @@
 //! Round 202604280841 origin: insurance for the Round C MetaCarrier
 //! workaround and follow-on transparency chains.
 
-use arvo_strategy::{Cold, Hot, MultiContainer, Precise, Signed, Unsigned, Warm};
+use arvo_strategy::{
+    Bitpacked, Cold, ContainerWidth, Dense, DoubleLogical, HasAxes, Hot, Min, MultiContainer,
+    OverflowPolicy, Precise, Saturating, Signed, StorageLayout, Unsigned, Warm, Wrapping,
+};
 
 use crate::{Bits, FBits, IBits, MetaCarrier, Width};
 
@@ -217,4 +220,56 @@ const _: () = {
         core::mem::size_of::<MultiContainer<i128, i128>>() == 32,
         "MultiContainer<i128, i128> size drift: expected 32",
     );
+};
+
+// --- Tier 5: HasAxes correctness (round 202604281000 Pass A.1) ------------
+//
+// Cross-check that each canonical strategy's `HasAxes` projection
+// matches the documented axis combination. The discriminants live on
+// the axis sub-markers (Wrapping=0/Saturating=1, Min=0/DoubleLogical=1,
+// Dense=0/Bitpacked=1). Each strategy gets three asserts.
+
+const _: () = {
+    // Hot = Wrapping / Min / Dense
+    assert!(<<Hot as HasAxes>::Overflow as OverflowPolicy>::DISCRIMINANT == Wrapping::DISCRIMINANT);
+    assert!(<<Hot as HasAxes>::Width as ContainerWidth>::DISCRIMINANT == Min::DISCRIMINANT);
+    assert!(<<Hot as HasAxes>::Layout as StorageLayout>::DISCRIMINANT == Dense::DISCRIMINANT);
+
+    // Warm = Wrapping / DoubleLogical / Dense
+    assert!(<<Warm as HasAxes>::Overflow as OverflowPolicy>::DISCRIMINANT == Wrapping::DISCRIMINANT);
+    assert!(
+        <<Warm as HasAxes>::Width as ContainerWidth>::DISCRIMINANT == DoubleLogical::DISCRIMINANT,
+    );
+    assert!(<<Warm as HasAxes>::Layout as StorageLayout>::DISCRIMINANT == Dense::DISCRIMINANT);
+
+    // Cold = Wrapping / Min / Bitpacked
+    assert!(<<Cold as HasAxes>::Overflow as OverflowPolicy>::DISCRIMINANT == Wrapping::DISCRIMINANT);
+    assert!(<<Cold as HasAxes>::Width as ContainerWidth>::DISCRIMINANT == Min::DISCRIMINANT);
+    assert!(<<Cold as HasAxes>::Layout as StorageLayout>::DISCRIMINANT == Bitpacked::DISCRIMINANT);
+
+    // Precise = Saturating / DoubleLogical / Dense
+    assert!(
+        <<Precise as HasAxes>::Overflow as OverflowPolicy>::DISCRIMINANT
+            == Saturating::DISCRIMINANT,
+    );
+    assert!(
+        <<Precise as HasAxes>::Width as ContainerWidth>::DISCRIMINANT
+            == DoubleLogical::DISCRIMINANT,
+    );
+    assert!(<<Precise as HasAxes>::Layout as StorageLayout>::DISCRIMINANT == Dense::DISCRIMINANT);
+};
+
+// --- Tier 6: ConstParamTy soundness audit (round 202604281000 Pass A.3) ---
+//
+// Every newtype that flows through const-generic position must satisfy
+// `StructuralEq + Copy + Eq + ConstParamTy`. The bound check below
+// fails to compile if any of the obligations regress on a future change.
+
+const fn _assert_const_param_ty<T: core::marker::ConstParamTy_ + Copy + Eq>() {}
+
+const _: () = {
+    _assert_const_param_ty::<MetaCarrier>();
+    _assert_const_param_ty::<IBits>();
+    _assert_const_param_ty::<FBits>();
+    _assert_const_param_ty::<Width>();
 };

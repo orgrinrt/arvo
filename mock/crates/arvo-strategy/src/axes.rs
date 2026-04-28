@@ -36,8 +36,12 @@ use crate::{Cold, Hot, Precise, Warm};
 /// How arithmetic handles overflow.
 ///
 /// Sealed marker trait. The two implementors are `Wrapping` and
-/// `Saturating` ZST markers.
-pub trait OverflowPolicy: sealed::Sealed + Copy + Clone + Default + 'static {}
+/// `Saturating` ZST markers. Each carries a `DISCRIMINANT` const for
+/// compile-time `HasAxes` cross-checks (Pass A.1 of round 202604281000).
+pub trait OverflowPolicy: sealed::Sealed + Copy + Clone + Default + 'static {
+    /// Stable per-marker discriminant for compile-time projection.
+    const DISCRIMINANT: u8;
+}
 
 /// Overflow policy: arithmetic wraps modulo container width.
 ///
@@ -56,16 +60,24 @@ pub struct Saturating;
 impl sealed::Sealed for Wrapping {}
 impl sealed::Sealed for Saturating {}
 
-impl OverflowPolicy for Wrapping {}
-impl OverflowPolicy for Saturating {}
+impl OverflowPolicy for Wrapping {
+    const DISCRIMINANT: u8 = 0;
+}
+impl OverflowPolicy for Saturating {
+    const DISCRIMINANT: u8 = 1;
+}
 
 // --- ContainerWidth axis --------------------------------------------------
 
 /// Container width relative to logical width.
 ///
 /// Sealed marker trait. The two implementors are `Min` and
-/// `DoubleLogical` ZST markers.
-pub trait ContainerWidth: sealed::Sealed + Copy + Clone + Default + 'static {}
+/// `DoubleLogical` ZST markers. Each carries a `DISCRIMINANT` const
+/// for compile-time `HasAxes` cross-checks.
+pub trait ContainerWidth: sealed::Sealed + Copy + Clone + Default + 'static {
+    /// Stable per-marker discriminant for compile-time projection.
+    const DISCRIMINANT: u8;
+}
 
 /// Container width: minimum byte-aligned width that fits the logical
 /// bit count.
@@ -85,16 +97,24 @@ pub struct DoubleLogical;
 impl sealed::Sealed for Min {}
 impl sealed::Sealed for DoubleLogical {}
 
-impl ContainerWidth for Min {}
-impl ContainerWidth for DoubleLogical {}
+impl ContainerWidth for Min {
+    const DISCRIMINANT: u8 = 0;
+}
+impl ContainerWidth for DoubleLogical {
+    const DISCRIMINANT: u8 = 1;
+}
 
 // --- StorageLayout axis ---------------------------------------------------
 
 /// How multiple values pack in column storage.
 ///
 /// Sealed marker trait. The two implementors are `Dense` and
-/// `Bitpacked` ZST markers.
-pub trait StorageLayout: sealed::Sealed + Copy + Clone + Default + 'static {}
+/// `Bitpacked` ZST markers. Each carries a `DISCRIMINANT` const for
+/// compile-time `HasAxes` cross-checks.
+pub trait StorageLayout: sealed::Sealed + Copy + Clone + Default + 'static {
+    /// Stable per-marker discriminant for compile-time projection.
+    const DISCRIMINANT: u8;
+}
 
 /// Storage layout: each value occupies a full container slot.
 ///
@@ -115,8 +135,12 @@ pub struct Bitpacked;
 impl sealed::Sealed for Dense {}
 impl sealed::Sealed for Bitpacked {}
 
-impl StorageLayout for Dense {}
-impl StorageLayout for Bitpacked {}
+impl StorageLayout for Dense {
+    const DISCRIMINANT: u8 = 0;
+}
+impl StorageLayout for Bitpacked {
+    const DISCRIMINANT: u8 = 1;
+}
 
 // --- HasAxes: bundled axis projection on Strategy markers -----------------
 
