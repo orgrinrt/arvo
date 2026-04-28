@@ -397,6 +397,25 @@ accessor methods. Use it for packed-layout identities where the
 consumer cares about semantic sub-ranges (flag bits, reserved
 blocks, ID ranges).
 
+The macro accepts an optional `S: Strategy` parameter on the wrapped
+storage. Default is `Hot` (the original shape). Consumers that want
+Cold-bitpacked column-store bitfields override:
+
+```rust
+bitfield! {
+    pub struct EntityFlags<Cold>: 32 {
+        active: 1 at 31,
+        // ... etc
+    }
+}
+```
+
+Per the `arvo-toolbox-not-policer` workspace rule, the substrate does
+not pre-judge whether a given bitfield consumer is one of the
+million-entity contiguous-storage workloads that motivate Cold. The
+default stays `Hot` for general-use bitfields; consumers with the
+contiguous storage shape and the bandwidth budget turn the knob.
+
 Example:
 
 ```rust
@@ -819,6 +838,25 @@ When `UFixed<I1, F1, S1>` operates with `UFixed<I2, F2, S2>`:
 
 3. **Result type:** `I = max(I1, I2)`, `F = max(F1, F2)`. Strategy
    is the resolved strategy from step 1.
+
+The marker trait `CrossStrategyOp<S1, S2>` carries
+`#[diagnostic::on_unimplemented]` for the unresolved projection
+cells. Cross-strategy ops resolve silently per the table above; the
+diagnostic warns at compile time when the resolution shifts overflow
+policy, container width, or storage layout. The warning names the
+axis that shifted and the resulting projection (e.g. "this op
+adopts Precise's saturating overflow; explicit cast at the call
+site silences the warning"). Per the `arvo-toolbox-not-policer`
+workspace rule, the substrate warns but never refuses; consumer
+opt-out via `lint:allow(cross-strategy-resolution)` annotation.
+
+`UArith`, `IArith`, `UWidenFrom`, `UNarrowFrom` dispatch through
+`HasAxes` rather than the bundled `Strategy` marker. The axis-driven
+dispatch lets `Hot + Saturating` (a consumer composing Hot's
+container width with saturating overflow) reach a different codegen
+path than `Hot + Wrapping` does. Unsupported axis combinations stay
+unresolved; the `CrossStrategyOp` diagnostic surfaces them at the
+call site.
 
 ## UContainerFor / IContainerFor
 

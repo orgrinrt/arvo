@@ -107,19 +107,30 @@ from `Bits<N, S, Sign>::to_raw()` to the primitive's bit method, then
 
 ```rust
 pub const trait Narrow<T> {
-    fn narrow_to<const N: u8>(self) -> T
+    fn narrow_to<const N: u16>(self) -> T
+    where
+        Self: Sized;
+
+    fn narrow_to_unmasked<const N: u16>(self) -> T
     where
         Self: Sized;
 }
 
-pub type Narrowed<const N: u8, T> = T;
+pub type Narrowed<const N: u16, T> = T;
 ```
 
 The unified mask-and-cast bridge for cross-primitive narrowing.
-Default body composes `Mask<W>::mask_for_width(N)` (from
+`narrow_to::<N>` composes `Mask<W>::mask_for_width(N)` (from
 `arvo-mask-contracts`) with `BitLogic::and` then the `as` operator
 to cast to the target primitive type, sound under the mask
 precondition.
+
+`narrow_to_unmasked::<N>` skips the mask op for the hot case where
+the high bits are already zero (chained narrow, bitfield extraction
+that just-shifted-down, value carried through a Bits<M, ...>
+projection of equal-or-narrower width). The precondition is the
+consumer's responsibility; calling with non-zero high bits produces
+silent garbage in the unmasked path.
 
 Moved here from the previously-separate `arvo-narrow-contracts`
 crate during round 202604280034. The merge is justified because
@@ -129,15 +140,16 @@ without transitive-footprint benefit. Concrete impls live in
 `arvo-narrow` (cross-primitive) and may extend into `arvo-bitmask`
 (mask-using).
 
-`Narrowed<const N: u8, T>` is a cosmetic alias for the result of
+`Narrowed<const N: u16, T>` is a cosmetic alias for the result of
 `narrow_to::<N>` so consumer signatures read `fn foo() -> Narrowed<13, u16>`
 instead of bare `u16`. The const-generic `N` is documentation only at
 the type level (the value has been narrowed to `N` bits but the
 carrier is still `T`).
 
-A follow-up round adds `narrow_to_unmasked::<const N: u8>(self) -> T`
-for the "high bits already zero" hot case (e.g. just-shifted-down
-bitfield extraction); see arvo BACKLOG.
+The const-generic param widened from `u8` to `u16` in Pass F of round
+202604281000, matching the `Bits<const N: u16>` widening at the same
+pass. The widening accommodates reachable widths up to 65535; concrete
+narrow impls cover 1..=256.
 
 ## Sources
 

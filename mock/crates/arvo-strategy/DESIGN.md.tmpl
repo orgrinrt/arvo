@@ -88,12 +88,19 @@ markers implement specific axis combinations:
 | Precise | Saturating     | DoubleLogical  | Dense         |
 
 The public surface (the four markers) is unchanged. The axis traits
-are internal documentation + future-proofing primitives:
-arithmetic / widen / narrow impls in Round C still dispatch via the
-bundled `Strategy` marker. A follow-up round refactors those impls
-to dispatch via the axis traits, allowing future experimentation
-with mixed axes (saturating bitpacked, wrapping double-logical with
-bitpacked, etc.) without breaking the public surface.
+are the dispatch backbone: `arvo`'s arithmetic / widen / narrow
+impls (`UArith`, `IArith`, `UWidenFrom`, `UNarrowFrom`) project
+through `HasAxes` to pick the codegen path per axis combination.
+A consumer composing `Hot + Saturating` (Hot's container width
+with saturating overflow) reaches a different codegen path than
+`Hot + Wrapping` does, without breaking the public marker surface.
+
+Each axis surface carries a `const DISCRIMINANT: u8` projection.
+`HasAxes::Container::DISCRIMINANT` is asserted at compile time to
+match `<S as ContainerWidth>::Output::DISCRIMINANT` for every
+strategy. The cross-check pins the documentation table above to
+behaviour: a future round changing a strategy's axis impl without
+updating `HasAxes` breaks the build, not silent runtime divergence.
 
 Per the `arvo-toolbox-not-policer` workspace rule, the axis
 decomposition exists so the substrate can grow its strategy lattice

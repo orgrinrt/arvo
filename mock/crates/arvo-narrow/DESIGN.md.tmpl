@@ -13,31 +13,55 @@ Depends on `notko`, `arvo-storage`, `arvo-bits-contracts`,
 
 ## Concrete impls
 
-Per source / target pair. Pattern:
+Pass B.4 of round 202604281000 populates the impl tables. Two
+families ship:
+
+**Per-source-target primitive narrowing.** Cross-primitive narrowing
+between `u8`, `u16`, `u32`, `u64`, `u128` (and signed counterparts).
+Each pair where the source is wider than the target gets an impl
+that masks the high bits and casts down. Pattern:
 
 ```rust
-impl<S: Strategy> const Narrow<u8> for Bits<N, S>
-where
-    S: UContainerFor<N>,
-    /* N <= 8 implied */
-{
-    fn narrow_to<const N: u8>(self) -> u8 {
+impl const Narrow<u8> for u16 {
+    fn narrow_to<const N: u16>(self) -> u8 {
         let mask = Mask64::mask_for_width(USize(N as usize));
-        let raw_u64: u64 = self.to_raw().into();  // widened
-        let masked = raw_u64 & mask.to_raw();
-        masked as u8
+        ((self as u64) & mask.to_raw()) as u8
+    }
+
+    fn narrow_to_unmasked<const N: u16>(self) -> u8 {
+        self as u8
     }
 }
 ```
 
-The pattern repeats with `u16`, `u32`, `u64` targets. Per-N band
-selection mirrors the Hot strategy's UContainerFor projection: 1..=8
-narrows to `u8`, 9..=16 to `u16`, 17..=32 to `u32`, 33..=64 to `u64`.
+The signed-source variants narrow with sign-preserving masks where
+the target is also signed; sign-source-to-unsigned-target uses the
+unmasked path's `as` cast (Rust's `as` on signed-to-unsigned takes
+the bit pattern). Each pair documents the sign-handling at the
+impl site.
 
-The exact enumeration of impl blocks (per source-strategy x target
-primitive x N-band) is open during DOC iteration; the SRC CL ships
-the final shape. Targeting is for clean monomorphisation across the
-common consumer call sites.
+**Typed `Bits<M, S, Sign> -> Bits<N, S, Sign>` narrowing for M > N.**
+Same strategy, same sign, narrower destination. The impl body
+forwards through the underlying primitive narrow:
+
+```rust
+impl<const M: u16, const N: u16, S: Strategy, Sign: Signedness>
+    const Narrow<Bits<N, S, Sign>> for Bits<M, S, Sign>
+where
+    S: BitsContainerFor<M, Sign> + BitsContainerFor<N, Sign>,
+    /* compile-time guard: M > N */
+{
+    fn narrow_to<const W: u16>(self) -> Bits<N, S, Sign> {
+        let raw = self.to_raw();
+        Bits::from_raw(raw.narrow_to::<W>())
+    }
+}
+```
+
+Cross-strategy narrowing (M > N with different S1 / S2) is out of
+scope; consumers cast strategy first via `Conversion`, then narrow.
+
+The empty-crate lint clears once these impls land.
 
 ## Why this lives downstream
 
