@@ -1,6 +1,6 @@
 //! arvo-hash — L2 hash-domain types and algorithm contracts.
 //!
-//! `ContentHash` aliases `arvo::Bits<28, Hot>` for call-site domain
+//! `ContentHash` aliases `arvo::Bits<64, Hot>` for call-site domain
 //! naming. Streaming `Hasher<const N: u8>` is canonical; oneshot
 //! ergonomics come via the blanket-impl `HasherExt<N>`. The
 //! `Fnv1a<const N: u8>` struct is the first shipped algorithm;
