@@ -129,10 +129,11 @@ assert_layout_eq!(Bits<64, Warm, Signed>, i128);
 
 // --- Tier 2: Bits projection — Precise ------------------------------------
 //
-// Precise mirrors Warm at 1..=32 (2x doubled) and stays at u64/i64
-// at 33..=64 with saturating ops (the 2x rule was never strictly
-// enforced at this band in pre-Round-B source; pre-existing semantics
-// quirk inherited per Round B notes).
+// Precise mirrors Warm's 2x-logical contract across the entire 1..=64
+// range. Round 202604281000 Pass D promoted Precise 33..=64 from u64
+// to u128 (signed: i64 to i128) to honor the 2x rule consistently;
+// pre-Pass-D Precise inherited a u64 cell at 33..=64 that violated the
+// 2x contract relative to Warm's u128 at the same band.
 
 assert_layout_eq!(Bits<1, Precise, Unsigned>, u16);
 assert_layout_eq!(Bits<8, Precise, Unsigned>, u16);
@@ -140,14 +141,14 @@ assert_layout_eq!(Bits<9, Precise, Unsigned>, u32);
 assert_layout_eq!(Bits<16, Precise, Unsigned>, u32);
 assert_layout_eq!(Bits<17, Precise, Unsigned>, u64);
 assert_layout_eq!(Bits<32, Precise, Unsigned>, u64);
-assert_layout_eq!(Bits<33, Precise, Unsigned>, u64);
-assert_layout_eq!(Bits<64, Precise, Unsigned>, u64);
+assert_layout_eq!(Bits<33, Precise, Unsigned>, u128);
+assert_layout_eq!(Bits<64, Precise, Unsigned>, u128);
 
 assert_layout_eq!(Bits<1, Precise, Signed>, i16);
 assert_layout_eq!(Bits<8, Precise, Signed>, i16);
 assert_layout_eq!(Bits<32, Precise, Signed>, i64);
-assert_layout_eq!(Bits<33, Precise, Signed>, i64);
-assert_layout_eq!(Bits<64, Precise, Signed>, i64);
+assert_layout_eq!(Bits<33, Precise, Signed>, i128);
+assert_layout_eq!(Bits<64, Precise, Signed>, i128);
 
 // --- Tier 4: MultiContainer layout invariants -----------------------------
 //

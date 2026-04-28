@@ -354,6 +354,10 @@ impl_abs_ifixed_integer_wrap!(
     Warm, i64, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 );
 
+// Precise integer IFixed: BITS = 1 + I, projection picks the
+// container per (Strategy, BITS) cell. After Pass D of round
+// 202604281000, Precise 33..=64 uses i128 (was i64); the I=32..=63
+// arm shifts to i128 to match.
 impl_abs_ifixed_integer_sat!(Precise, i16, 1, 2, 3, 4, 5, 6, 7);
 impl_abs_ifixed_integer_sat!(Precise, i32, 8, 9, 10, 11, 12, 13, 14, 15);
 impl_abs_ifixed_integer_sat!(
@@ -361,7 +365,7 @@ impl_abs_ifixed_integer_sat!(
 );
 #[rustfmt::skip]
 impl_abs_ifixed_integer_sat!(
-    Precise, i64,
+    Precise, i128,
     32, 33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48,
     49, 50, 51, 52, 53, 54, 55, 56,
@@ -498,9 +502,10 @@ impl_from_constant_ufixed!(Precise, u32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_from_constant_ufixed!(
     Precise, u64, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
 );
+// Pass D of round 202604281000: Precise 33..=64 promoted to u128.
 #[rustfmt::skip]
 impl_from_constant_ufixed!(
-    Precise, u64,
+    Precise, u128,
     33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48,
     49, 50, 51, 52, 53, 54, 55, 56,
@@ -596,9 +601,11 @@ impl_from_constant_ifixed!(Precise, i32, 8, 9, 10, 11, 12, 13, 14, 15);
 impl_from_constant_ifixed!(
     Precise, i64, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 );
+// Pass D of round 202604281000: Precise IFixed BITS=33..=64 (I=32..=63)
+// promoted to i128.
 #[rustfmt::skip]
 impl_from_constant_ifixed!(
-    Precise, i64,
+    Precise, i128,
     32, 33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48,
     49, 50, 51, 52, 53, 54, 55, 56,

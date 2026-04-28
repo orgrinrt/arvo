@@ -125,8 +125,9 @@ impl_u_widen!(
 );
 
 // --- Hot -> Precise (unsigned) ---
-// Same container widths as Warm at N <= 32; at 33..=64 Precise uses
-// u64 (same as Hot), so the widen is a no-op cast.
+// Same container widths as Warm. Round 202604281000 Pass D: Precise
+// 33..=64 promoted from u64 to u128 to mirror Warm; the widen is now
+// a real cast at this band, not a no-op.
 impl_u_widen!(Hot => Precise, u8 => u16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_u_widen!(Hot => Precise, u16 => u32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_u_widen!(
@@ -135,7 +136,7 @@ impl_u_widen!(
 );
 #[rustfmt::skip]
 impl_u_widen!(
-    Hot => Precise, u64 => u64,
+    Hot => Precise, u64 => u128,
     33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48,
     49, 50, 51, 52, 53, 54, 55, 56,
@@ -143,16 +144,22 @@ impl_u_widen!(
 );
 
 // --- Warm -> Precise (unsigned) ---
-// Both use 2x container at N <= 32; widening is a no-op cast. At
-// 33..=64 Warm = u128, Precise = u64 (same as Hot); narrow not widen.
-// The Warm -> Precise edge at 33..=64 ships as a Warm narrow rather
-// than a widen; tracked alongside Cold widen / narrow as a follow-up
-// once the cross-strategy resolution warning lands (Round C).
+// Both use 2x container across the entire 1..=64 range after Pass D
+// of round 202604281000 promoted Precise 33..=64 to u128. Widening is
+// a no-op cast at every cell.
 impl_u_widen!(Warm => Precise, u16 => u16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_u_widen!(Warm => Precise, u32 => u32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_u_widen!(
     Warm => Precise, u64 => u64,
     17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
+);
+#[rustfmt::skip]
+impl_u_widen!(
+    Warm => Precise, u128 => u128,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
 );
 
 // --- Warm -> Hot, Precise -> Hot (unsigned, TryFrom) ---
@@ -179,7 +186,7 @@ impl_u_narrow!(
 );
 #[rustfmt::skip]
 impl_u_narrow!(
-    Precise => Hot, u64 => u64,
+    Precise => Hot, u128 => u64,
     33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48,
     49, 50, 51, 52, 53, 54, 55, 56,
@@ -210,7 +217,7 @@ impl_i_widen!(
 );
 #[rustfmt::skip]
 impl_i_widen!(
-    Hot => Precise, i64 => i64,
+    Hot => Precise, i64 => i128,
     33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48,
     49, 50, 51, 52, 53, 54, 55, 56,
@@ -223,9 +230,14 @@ impl_i_widen!(
     Warm => Precise, i64 => i64,
     17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
 );
-// Warm -> Precise at 33..=64 is a narrow (Warm = i128, Precise = i64);
-// shipped as a follow-up alongside Cold widen / narrow + cross-strategy
-// resolution (Round C).
+#[rustfmt::skip]
+impl_i_widen!(
+    Warm => Precise, i128 => i128,
+    33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48,
+    49, 50, 51, 52, 53, 54, 55, 56,
+    57, 58, 59, 60, 61, 62, 63, 64
+);
 
 impl_i_narrow!(Warm => Hot, i16 => i8, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_i_narrow!(Warm => Hot, i32 => i16, 9, 10, 11, 12, 13, 14, 15, 16);
@@ -250,7 +262,7 @@ impl_i_narrow!(
 );
 #[rustfmt::skip]
 impl_i_narrow!(
-    Precise => Hot, i64 => i64,
+    Precise => Hot, i128 => i64,
     33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48,
     49, 50, 51, 52, 53, 54, 55, 56,
