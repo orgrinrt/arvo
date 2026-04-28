@@ -5,7 +5,7 @@
 
 //! arvo-mask-contracts. Mask trait declaration.
 //!
-//! `Mask<const W: u8>` is the abstract const trait over bitmask
+//! `Mask<const W: u16>` is the abstract const trait over bitmask
 //! storage. Concrete impls (`Mask64` at W=64, `Mask256` at W=256,
 //! `BitMatrix` over rows of `Mask64`) live in `arvo-bitmask`.
 //! Consumers that depend only on the abstract surface pull this
@@ -27,7 +27,7 @@ use arvo_storage::{Bool, USize};
 /// out at 256). Default-method bodies compose `BitLogic` from
 /// `arvo-bits-contracts`; concrete impls in `arvo-bitmask` may
 /// override with hardware-specific implementations.
-pub const trait Mask<const W: u8>: Sized + Copy {
+pub const trait Mask<const W: u16>: Sized + Copy {
     /// Mask with no bits set.
     fn empty() -> Self;
     /// Mask with every bit (in `[0, W)`) set.

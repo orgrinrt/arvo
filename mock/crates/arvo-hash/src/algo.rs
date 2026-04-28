@@ -17,9 +17,9 @@ use arvo::{Bits, Hot};
 /// nested const-fn evaluation at trait-bound resolution
 /// (`where Hot: UContainerFor<{ width_u8(N) }>`) is unreliable on
 /// current nightly under generic_const_exprs. The bound resolves
-/// cleanly with bare `const N: u8`. The Width newtype is preserved
+/// cleanly with bare `const N: u16`. The Width newtype is preserved
 /// for typed const-generic positions where evaluation is local.
-pub trait Hasher<const N: u8>
+pub trait Hasher<const N: u16>
 where
     Hot: UContainerFor<N>,
 {
@@ -35,7 +35,7 @@ where
 /// Blanket-implemented for every `Hasher<N>`. Consumers bind
 /// `H: HasherExt<N>`, or `H: Hasher<N>` with the ext trait in
 /// scope, to call `.hash(bytes)` on any hasher.
-pub trait HasherExt<const N: u8>: Hasher<N> + Sized
+pub trait HasherExt<const N: u16>: Hasher<N> + Sized
 where
     Hot: UContainerFor<N>,
 {
@@ -46,7 +46,7 @@ where
     }
 }
 
-impl<H, const N: u8> HasherExt<N> for H
+impl<H, const N: u16> HasherExt<N> for H
 where
     H: Hasher<N> + Sized,
     Hot: UContainerFor<N>,

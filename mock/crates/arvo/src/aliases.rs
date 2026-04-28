@@ -42,7 +42,7 @@ use crate::ufixed::UFixed;
 /// type Angle = arvo::Fixed<9, 7, Warm>;        // 9.7 unsigned
 /// type Counter = arvo::Fixed<32, 0, Hot>;       // 32-bit counter
 /// ```
-pub type Fixed<const I: u8, const F: u8, S = Warm> =
+pub type Fixed<const I: u16, const F: u16, S = Warm> =
     UFixed<{ ibits(I as u16) }, { fbits(F as u16) }, S>;
 
 /// Signed fixed-point with bare-`u8` const-generic ergonomics.
@@ -55,7 +55,7 @@ pub type Fixed<const I: u8, const F: u8, S = Warm> =
 /// type Coord = arvo::Signed<15, 16, Warm>;     // 15.16 signed
 /// type Delta = arvo::Signed<7, 0, Hot>;         // signed 8-bit
 /// ```
-pub type Signed<const I: u8, const F: u8, S = Warm> =
+pub type Signed<const I: u16, const F: u16, S = Warm> =
     IFixed<{ ibits(I as u16) }, { fbits(F as u16) }, S>;
 
 /// Unsigned fixed-point integer alias parameterised by bit count `N`.
@@ -70,7 +70,7 @@ pub type Signed<const I: u8, const F: u8, S = Warm> =
 /// type Counter = arvo::Uint<32, Hot>;     // 32-bit counter
 /// type Width = arvo::Uint<12>;             // 12-bit width, Warm default
 /// ```
-pub type Uint<const N: u8, S = Warm> = UFixed<{ ibits(N as u16) }, { fbits(0u16) }, S>;
+pub type Uint<const N: u16, S = Warm> = UFixed<{ ibits(N as u16) }, { fbits(0u16) }, S>;
 
 /// Signed fixed-point integer alias parameterised by total bit count `N`.
 ///
@@ -84,5 +84,5 @@ pub type Uint<const N: u8, S = Warm> = UFixed<{ ibits(N as u16) }, { fbits(0u16)
 /// type Delta = arvo::Int<8, Hot>;          // signed 8-bit
 /// type Offset = arvo::Int<16>;             // signed 16-bit, Warm default
 /// ```
-pub type Int<const N: u8, S = Warm> = IFixed<{ ibits((N - 1) as u16) }, { fbits(0u16) }, S>;
+pub type Int<const N: u16, S = Warm> = IFixed<{ ibits((N - 1) as u16) }, { fbits(0u16) }, S>;
 

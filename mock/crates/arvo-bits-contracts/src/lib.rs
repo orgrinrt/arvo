@@ -39,11 +39,11 @@ mod sealed {
     pub(crate) trait IBit {}
     /// Sealing trait for the `UBitContainer` bridge. Const-generic so
     /// each `(S, BITS)` pair has its own sealing impl.
-    pub(crate) trait UBridge<const BITS: u8> {}
+    pub(crate) trait UBridge<const BITS: u16> {}
     /// Sealing trait for the `IBitContainer` bridge. Separate module
     /// from `Bit` so the same Strategy can be both a U-bridge and an
     /// I-bridge at the same BITS without blanket-impl collision.
-    pub(crate) trait IBridge<const BITS: u8> {}
+    pub(crate) trait IBridge<const BITS: u16> {}
 }
 
 /// Logical bit width at the type level.
@@ -143,7 +143,7 @@ pub const trait BitLogic: HasBitWidth + Copy {
 pub trait BitPrim: sealed::Bit + Copy + 'static {
     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim is a bare-primitive bridge by definition; tracked: #256
     /// Bit width of this primitive (8, 16, 32, or 64).
-    const WIDTH: u8;
+    const WIDTH: u16;
     /// Zero value.
     const ZERO: Self;
     /// One value.
@@ -192,7 +192,7 @@ pub trait BitPrim: sealed::Bit + Copy + 'static {
 pub trait IBitPrim: sealed::IBit + Copy + 'static {
     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: IBitPrim is a bare-primitive bridge; tracked: #256
     /// Bit width of this primitive (8, 16, 32, or 64).
-    const WIDTH: u8;
+    const WIDTH: u16;
     /// Zero value.
     const ZERO: Self;
     /// One value.
@@ -234,7 +234,7 @@ macro_rules! impl_bit_prim_u {
 
         // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim impl on the bare primitive that the trait was designed to bridge; tracked: #256
         impl BitPrim for $ty {
-            const WIDTH: u8 = $width;
+            const WIDTH: u16 = $width;
             const ZERO: Self = 0;
             const ONE: Self = 1;
 
@@ -334,7 +334,7 @@ macro_rules! impl_bit_prim_i {
 
         // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: IBitPrim impl on the bare primitive that the trait was designed to bridge; tracked: #256
         impl IBitPrim for $ity {
-            const WIDTH: u8 = $width;
+            const WIDTH: u16 = $width;
             const ZERO: Self = 0;
             const ONE: Self = 1;
 
@@ -407,7 +407,7 @@ impl_bit_prim_i!(i128, u128, 128);
 /// Sealed bridge: `(S, BITS)` where `S: UContainerFor<BITS>` **and**
 /// the container type is `BitPrim`. Collapses the two predicates into
 /// one to sidestep the const-expr cycle.
-pub trait UBitContainer<const BITS: u8>: sealed::UBridge<BITS> + UContainerFor<BITS> {
+pub trait UBitContainer<const BITS: u16>: sealed::UBridge<BITS> + UContainerFor<BITS> {
     /// The container primitive for this `(S, BITS)` pair.
     type Prim: BitPrim;
     /// Coerce the strategy-selected container into the bridge's
@@ -420,7 +420,7 @@ pub trait UBitContainer<const BITS: u8>: sealed::UBridge<BITS> + UContainerFor<B
 }
 
 /// Signed counterpart of `UBitContainer`.
-pub trait IBitContainer<const BITS: u8>: sealed::IBridge<BITS> + IContainerFor<BITS> {
+pub trait IBitContainer<const BITS: u16>: sealed::IBridge<BITS> + IContainerFor<BITS> {
     /// The container primitive for this `(S, BITS)` pair.
     type Prim: IBitPrim;
     /// See `UBitContainer::to_prim`.
@@ -438,7 +438,7 @@ pub trait IBitContainer<const BITS: u8>: sealed::IBridge<BITS> + IContainerFor<B
 // is exactly the primitive type when the `: BitPrim` bound holds. The
 // associated `Prim` type can be set to the container type.
 
-impl<S, const BITS: u8> sealed::UBridge<BITS> for S
+impl<S, const BITS: u16> sealed::UBridge<BITS> for S
 where
     S: Strategy,
     S: UContainerFor<BITS>,
@@ -446,7 +446,7 @@ where
 {
 }
 
-impl<S, const BITS: u8> UBitContainer<BITS> for S
+impl<S, const BITS: u16> UBitContainer<BITS> for S
 where
     S: Strategy,
     S: UContainerFor<BITS>,
@@ -470,7 +470,7 @@ where
 // carry both a U-bridge and an I-bridge at the same BITS without the
 // two blankets colliding on a shared sealing impl.
 
-impl<S, const BITS: u8> sealed::IBridge<BITS> for S
+impl<S, const BITS: u16> sealed::IBridge<BITS> for S
 where
     S: Strategy,
     S: IContainerFor<BITS>,
@@ -478,7 +478,7 @@ where
 {
 }
 
-impl<S, const BITS: u8> IBitContainer<BITS> for S
+impl<S, const BITS: u16> IBitContainer<BITS> for S
 where
     S: Strategy,
     S: IContainerFor<BITS>,
@@ -517,7 +517,7 @@ where
 /// 202604271346; future rounds may tighten if a concrete need
 /// surfaces.
 // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: const-generic N type carrier deferred to follow-up round; Width newtype targeted in next iteration; tracked: #256
-pub type Narrowed<const N: u8, T> = T;
+pub type Narrowed<const N: u16, T> = T;
 
 /// Narrow `Self` to the lowest `N` bits as type `T`.
 ///
@@ -535,7 +535,7 @@ pub type Narrowed<const N: u8, T> = T;
 /// under generic `Narrow<T>` bounds.
 pub const trait Narrow<T> {
     /// Truncate to the lowest `N` bits and return as `T`.
-    fn narrow_to<const N: u8>(self) -> T
+    fn narrow_to<const N: u16>(self) -> T
     where
         Self: Sized;
 
@@ -547,7 +547,7 @@ pub const trait Narrow<T> {
     /// of equal-or-narrower width). Skips the mask op for the hot
     /// path. Calling with non-zero high bits produces silent garbage
     /// in the unmasked path.
-    fn narrow_to_unmasked<const N: u8>(self) -> T
+    fn narrow_to_unmasked<const N: u16>(self) -> T
     where
         Self: Sized;
 }
@@ -571,7 +571,7 @@ macro_rules! impl_narrow_u {
             // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: cross-primitive narrow impl on bare primitives that the trait was designed to bridge; tracked: #259
             impl const Narrow<$dst> for $src {
                 #[inline(always)]
-                fn narrow_to<const N: u8>(self) -> $dst {
+                fn narrow_to<const N: u16>(self) -> $dst {
                     if N == 0 {
                         return 0 as $dst;
                     }
@@ -583,7 +583,7 @@ macro_rules! impl_narrow_u {
                 }
 
                 #[inline(always)]
-                fn narrow_to_unmasked<const N: u8>(self) -> $dst {
+                fn narrow_to_unmasked<const N: u16>(self) -> $dst {
                     let _ = N;
                     self as $dst
                 }
@@ -603,7 +603,7 @@ macro_rules! impl_narrow_i {
             // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: cross-primitive signed narrow; sign-preserving mask through unsigned reinterpretation; tracked: #259
             impl const Narrow<$dst> for $src {
                 #[inline(always)]
-                fn narrow_to<const N: u8>(self) -> $dst {
+                fn narrow_to<const N: u16>(self) -> $dst {
                     if N == 0 {
                         return 0 as $dst;
                     }
@@ -617,7 +617,7 @@ macro_rules! impl_narrow_i {
                 }
 
                 #[inline(always)]
-                fn narrow_to_unmasked<const N: u8>(self) -> $dst {
+                fn narrow_to_unmasked<const N: u16>(self) -> $dst {
                     let _ = N;
                     self as $dst
                 }
@@ -639,7 +639,7 @@ impl_narrow_i!(i128, u128 => i8, i16, i32, i64);
 // supplying M <= N still get a valid result, but the masking is a
 // no-op for cells where the source width already fits.
 
-impl<const M: u8, const N: u8, S: Strategy, Sign: Signedness>
+impl<const M: u16, const N: u16, S: Strategy, Sign: Signedness>
     const Narrow<Bits<N, S, Sign>> for Bits<M, S, Sign>
 where
     S: BitsContainerFor<M, Sign>,
@@ -648,14 +648,14 @@ where
         ~const Narrow<<S as BitsContainerFor<N, Sign>>::T>,
 {
     #[inline(always)]
-    fn narrow_to<const W: u8>(self) -> Bits<N, S, Sign> {
+    fn narrow_to<const W: u16>(self) -> Bits<N, S, Sign> {
         let raw = self.to_raw();
         let narrowed = raw.narrow_to::<W>();
         Bits::from_raw(narrowed)
     }
 
     #[inline(always)]
-    fn narrow_to_unmasked<const W: u8>(self) -> Bits<N, S, Sign> {
+    fn narrow_to_unmasked<const W: u16>(self) -> Bits<N, S, Sign> {
         let raw = self.to_raw();
         let narrowed = raw.narrow_to_unmasked::<W>();
         Bits::from_raw(narrowed)
