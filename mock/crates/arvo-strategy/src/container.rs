@@ -21,7 +21,7 @@ use crate::{Cold, Hot, MultiContainer, Precise, Signed, Signedness, Strategy, Un
 /// const expression in every impl block.
 #[diagnostic::on_unimplemented(
     message = "strategy `{Self}` does not provide a container for {N}-bit width",
-    note = "Warm caps at I+F<=32; for wider widths, choose Hot or Precise explicitly: `Uint64<Hot>`, `Uint64<Precise>`, etc."
+    note = "Hot / Cold cover 1..=128 directly; Warm / Precise cover 1..=64 via 2x-logical primitives. For wider widths, choose Hot or Cold explicitly: `Uint<128, Hot>`, etc. Beyond 128 bits, `Bits<N, S, Sign>` dispatches through `MultiContainer<HiT, LoT>` for storage; arithmetic on multi-value containers is BACKLOG-tracked."
 )]
 pub const trait UContainerFor<const N: u8>: Strategy {
     /// Concrete storage integer for this (strategy, bit-width) pair.
@@ -41,7 +41,7 @@ pub const trait UContainerFor<const N: u8>: Strategy {
 /// signed integers. `N` is the total `1 + I + F` for `IFixed`.
 #[diagnostic::on_unimplemented(
     message = "strategy `{Self}` does not provide a signed container for {N}-bit width",
-    note = "Warm caps at 1+I+F<=32; for wider widths, choose Hot or Precise explicitly: `Int<64, Hot>`, `Int<64, Precise>`, etc."
+    note = "Hot / Cold cover 1..=128 directly; Warm / Precise cover 1..=64 via 2x-logical primitives. For wider widths, choose Hot or Cold explicitly: `Int<128, Hot>`, etc. Beyond 128 bits, `Bits<N, S, Sign>` dispatches through `MultiContainer<HiT, LoT>` for storage; arithmetic on multi-value containers is BACKLOG-tracked."
 )]
 pub const trait IContainerFor<const N: u8>: Strategy {
     /// Concrete signed storage integer for this (strategy, bit-width) pair.
