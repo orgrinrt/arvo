@@ -27,6 +27,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-benches"
+version = "0.0.0"
+dependencies = [
+ "mockspace-bench-core",
+ "mockspace-bench-harness",
+]
+
+[[package]]
 name = "arvo-bitmask"
 version = "0.1.0"
 dependencies = [
@@ -203,6 +211,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582"
 
 [[package]]
+name = "fnv1a"
+version = "0.0.0"
+dependencies = [
+ "arvo-hash",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
 name = "glob"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -249,7 +266,7 @@ checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 [[package]]
 name = "mockspace"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#193cbb3c93b87ff23febf25d10773bfac1710e6c"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
 dependencies = [
  "libloading",
  "mockspace-lint-rules",
@@ -260,9 +277,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "mockspace-bench-core"
+version = "0.1.0"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
+
+[[package]]
+name = "mockspace-bench-harness"
+version = "0.1.0"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
+dependencies = [
+ "libloading",
+ "mockspace-bench-core",
+ "serde",
+ "toml 0.8.23",
+]
+
+[[package]]
+name = "mockspace-bench-macro"
+version = "0.1.0"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "mockspace-lint-rules"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#193cbb3c93b87ff23febf25d10773bfac1710e6c"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
 dependencies = [
  "tree-sitter",
  "tree-sitter-rust",
@@ -421,6 +464,18 @@ dependencies = [
 
 [[package]]
 name = "toml"
+version = "0.8.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dc1beb996b9d83529a9e75c17a1686767d148d70663143c7854d8b4a09ced362"
+dependencies = [
+ "serde",
+ "serde_spanned 0.6.9",
+ "toml_datetime 0.6.11",
+ "toml_edit",
+]
+
+[[package]]
+name = "toml"
 version = "1.1.2+spec-1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81f3d15e84cbcd896376e6730314d59fb5a87f31e4b038454184435cd57defee"
@@ -528,7 +583,7 @@ dependencies = [
  "serde_json",
  "target-triple",
  "termcolor",
- "toml",
+ "toml 1.1.2+spec-1.1.0",
 ]
 
 [[package]]
@@ -581,6 +636,15 @@ name = "xxhash-rust"
 version = "0.8.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fdd20c5420375476fbd4394763288da7eb0cc0b8c11deed431a91562af7335d3"
+
+[[package]]
+name = "xxhash3"
+version = "0.0.0"
+dependencies = [
+ "arvo-hash",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
 
 [[package]]
 name = "zmij"
