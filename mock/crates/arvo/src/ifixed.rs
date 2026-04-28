@@ -115,7 +115,7 @@ impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation for IFixed<I, 
 where
     S: IContainerFor<{ ifixed_bits(I, F) }>,
 {
-    const LOGICAL_WIDTH: USize = USize(1 + I.0 as usize + F.0 as usize);
+    const LOGICAL_WIDTH: USize = USize(1 + I.raw() as usize + F.raw() as usize);
 }
 
 impl<const I: IBits, S: Strategy> IntegerLike for IFixed<I, { FBits::ZERO }, S> where

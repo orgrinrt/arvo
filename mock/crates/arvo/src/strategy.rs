@@ -27,18 +27,22 @@ use arvo_storage::{FBits, IBits};
 /// Const-fn helper: total logical bits for a `UFixed<I, F, S>`.
 ///
 /// `UFixed` logical width is `I + F`. The trait bound uses this to
-/// look up the container type.
+/// look up the container type. Round 202604280806 widened the
+/// meta-newtype carrier to a u16-backed `MetaCarrier`; this helper
+/// narrows back to u8 because `Bits<const N: u8>` itself stays at
+/// u8 (reachable bit-width caps at 255 in this round).
 #[inline(always)]
 pub const fn ufixed_bits(i: IBits, f: FBits) -> u8 {
-    i.raw() + f.raw()
+    (i.raw() + f.raw()) as u8
 }
 
 /// Const-fn helper: total logical bits for an `IFixed<I, F, S>`.
 ///
 /// `IFixed` reserves one bit for the sign; logical width is `1 + I + F`.
+/// Same u16-to-u8 narrowing as `ufixed_bits`.
 #[inline(always)]
 pub const fn ifixed_bits(i: IBits, f: FBits) -> u8 {
-    1 + i.raw() + f.raw()
+    (1 + i.raw() + f.raw()) as u8
 }
 
 /// Indicator const: `1` when `f > 0`, `0` when `f == 0`.

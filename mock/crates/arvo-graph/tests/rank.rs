@@ -4,7 +4,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::{Cap, FBits, IBits, USize};
+use arvo::{Cap, FBits, IBits, ibits, fbits, USize};
 use arvo::strategy::Hot;
 use arvo::ufixed::UFixed;
 use arvo_bitmask::{BitMatrix64, NodeId};
@@ -12,7 +12,7 @@ use arvo_graph::{downward_rank, upward_rank};
 
 // Small integer weight type. Hot strategy: wrapping arithmetic, u8
 // container.
-type W = UFixed<{ IBits(8) }, { FBits::ZERO }, Hot>;
+type W = UFixed<{ ibits(8) }, { FBits::ZERO }, Hot>;
 
 const fn cap(n: usize) -> Cap {
     Cap(USize(n))

@@ -1,234 +1,53 @@
-error[E0277]: strategy `Warm` does not provide a container for 65-bit width
-  --> tests/ui/warm_bound_negative.rs:16:12
+error[E0425]: cannot find function `ibits` in this scope
+  --> tests/ui/warm_bound_negative.rs:16:21
    |
-16 |     let _: UFixed<{ IBits(33) }, { FBits(32) }, Warm> = UFixed::from_raw(0);
-   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `UContainerFor<65>` is not implemented for `Warm`
+16 |     let _: UFixed<{ ibits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+   |                     ^^^^^
    |
-   = note: Hot / Cold cover 1..=128 directly; Warm / Precise cover 1..=64 via 2x-logical primitives. For wider widths, choose Hot or Cold explicitly: `Uint<128, Hot>`, etc. Beyond 128 bits, `Bits<N, S, Sign>` dispatches through `MultiContainer<HiT, LoT>` for storage; arithmetic on multi-value containers is BACKLOG-tracked.
-   = help: `Warm` implements trait `UContainerFor<N>`:
-             UContainerFor<10>
-             UContainerFor<11>
-             UContainerFor<12>
-             UContainerFor<13>
-             UContainerFor<14>
-             UContainerFor<15>
-             UContainerFor<16>
-             UContainerFor<17>
-             UContainerFor<18>
-             UContainerFor<19>
-             UContainerFor<1>
-             UContainerFor<20>
-             UContainerFor<21>
-             UContainerFor<22>
-             UContainerFor<23>
-             UContainerFor<24>
-             UContainerFor<25>
-             UContainerFor<26>
-             UContainerFor<27>
-             UContainerFor<28>
-             UContainerFor<29>
-             UContainerFor<2>
-             UContainerFor<30>
-             UContainerFor<31>
-             UContainerFor<32>
-             UContainerFor<33>
-             UContainerFor<34>
-             UContainerFor<35>
-             UContainerFor<36>
-             UContainerFor<37>
-             UContainerFor<38>
-             UContainerFor<39>
-             UContainerFor<3>
-             UContainerFor<40>
-             UContainerFor<41>
-             UContainerFor<42>
-             UContainerFor<43>
-             UContainerFor<44>
-             UContainerFor<45>
-             UContainerFor<46>
-             UContainerFor<47>
-             UContainerFor<48>
-             UContainerFor<49>
-             UContainerFor<4>
-             UContainerFor<50>
-             UContainerFor<51>
-             UContainerFor<52>
-             UContainerFor<53>
-             UContainerFor<54>
-             UContainerFor<55>
-             UContainerFor<56>
-             UContainerFor<57>
-             UContainerFor<58>
-             UContainerFor<59>
-             UContainerFor<5>
-             UContainerFor<60>
-             UContainerFor<61>
-             UContainerFor<62>
-             UContainerFor<63>
-             UContainerFor<64>
-             UContainerFor<6>
-             UContainerFor<7>
-             UContainerFor<8>
-             UContainerFor<9>
-note: required by a bound in `UFixed`
-  --> src/ufixed.rs
+  ::: $WORKSPACE/crates/arvo-storage/src/meta_bits.rs
    |
-   | pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>(
-   |            ------ required by a bound in this struct
-...
-   |     S: UContainerFor<{ ufixed_bits(I, F) }>;
-   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `UFixed`
+   |         $vis struct $W(pub MetaCarrier);
+   |         -------------------------------- similarly named tuple struct `IBits` defined here
+   |
+help: a tuple struct with a similar name exists
+   |
+16 -     let _: UFixed<{ ibits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+16 +     let _: UFixed<{ IBits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+   |
+help: consider importing one of these functions
+   |
+ 9 + use arvo::ibits;
+   |
+ 9 + use arvo_storage::ibits;
+   |
 
-error[E0277]: strategy `Warm` does not provide a container for 65-bit width
-  --> tests/ui/warm_bound_negative.rs:16:57
+error[E0425]: cannot find function `fbits` in this scope
+  --> tests/ui/warm_bound_negative.rs:16:36
    |
-16 |     let _: UFixed<{ IBits(33) }, { FBits(32) }, Warm> = UFixed::from_raw(0);
-   |                                                         ^^^^^^ the trait `UContainerFor<65>` is not implemented for `Warm`
+16 |     let _: UFixed<{ ibits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+   |                                    ^^^^^
    |
-   = note: Hot / Cold cover 1..=128 directly; Warm / Precise cover 1..=64 via 2x-logical primitives. For wider widths, choose Hot or Cold explicitly: `Uint<128, Hot>`, etc. Beyond 128 bits, `Bits<N, S, Sign>` dispatches through `MultiContainer<HiT, LoT>` for storage; arithmetic on multi-value containers is BACKLOG-tracked.
-   = help: `Warm` implements trait `UContainerFor<N>`:
-             UContainerFor<10>
-             UContainerFor<11>
-             UContainerFor<12>
-             UContainerFor<13>
-             UContainerFor<14>
-             UContainerFor<15>
-             UContainerFor<16>
-             UContainerFor<17>
-             UContainerFor<18>
-             UContainerFor<19>
-             UContainerFor<1>
-             UContainerFor<20>
-             UContainerFor<21>
-             UContainerFor<22>
-             UContainerFor<23>
-             UContainerFor<24>
-             UContainerFor<25>
-             UContainerFor<26>
-             UContainerFor<27>
-             UContainerFor<28>
-             UContainerFor<29>
-             UContainerFor<2>
-             UContainerFor<30>
-             UContainerFor<31>
-             UContainerFor<32>
-             UContainerFor<33>
-             UContainerFor<34>
-             UContainerFor<35>
-             UContainerFor<36>
-             UContainerFor<37>
-             UContainerFor<38>
-             UContainerFor<39>
-             UContainerFor<3>
-             UContainerFor<40>
-             UContainerFor<41>
-             UContainerFor<42>
-             UContainerFor<43>
-             UContainerFor<44>
-             UContainerFor<45>
-             UContainerFor<46>
-             UContainerFor<47>
-             UContainerFor<48>
-             UContainerFor<49>
-             UContainerFor<4>
-             UContainerFor<50>
-             UContainerFor<51>
-             UContainerFor<52>
-             UContainerFor<53>
-             UContainerFor<54>
-             UContainerFor<55>
-             UContainerFor<56>
-             UContainerFor<57>
-             UContainerFor<58>
-             UContainerFor<59>
-             UContainerFor<5>
-             UContainerFor<60>
-             UContainerFor<61>
-             UContainerFor<62>
-             UContainerFor<63>
-             UContainerFor<64>
-             UContainerFor<6>
-             UContainerFor<7>
-             UContainerFor<8>
-             UContainerFor<9>
-note: required by a bound in `UFixed`
-  --> src/ufixed.rs
+  ::: $WORKSPACE/crates/arvo-storage/src/meta_bits.rs
    |
-   | pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>(
-   |            ------ required by a bound in this struct
-...
-   |     S: UContainerFor<{ ufixed_bits(I, F) }>;
-   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `UFixed`
+   |         $vis struct $W(pub MetaCarrier);
+   |         -------------------------------- similarly named tuple struct `FBits` defined here
+   |
+help: a tuple struct with a similar name exists
+   |
+16 -     let _: UFixed<{ ibits(33) }, { fbits(32) }, Warm> = UFixed::from_raw(0);
+16 +     let _: UFixed<{ ibits(33) }, { FBits(32) }, Warm> = UFixed::from_raw(0);
+   |
+help: consider importing one of these functions
+   |
+ 9 + use arvo::fbits;
+   |
+ 9 + use arvo_storage::fbits;
+   |
 
-error[E0277]: strategy `Warm` does not provide a container for 65-bit width
-  --> tests/ui/warm_bound_negative.rs:16:74
-   |
-16 |     let _: UFixed<{ IBits(33) }, { FBits(32) }, Warm> = UFixed::from_raw(0);
-   |                                                                          ^ the trait `UContainerFor<65>` is not implemented for `Warm`
-   |
-   = note: Hot / Cold cover 1..=128 directly; Warm / Precise cover 1..=64 via 2x-logical primitives. For wider widths, choose Hot or Cold explicitly: `Uint<128, Hot>`, etc. Beyond 128 bits, `Bits<N, S, Sign>` dispatches through `MultiContainer<HiT, LoT>` for storage; arithmetic on multi-value containers is BACKLOG-tracked.
-   = help: `Warm` implements trait `UContainerFor<N>`:
-             UContainerFor<10>
-             UContainerFor<11>
-             UContainerFor<12>
-             UContainerFor<13>
-             UContainerFor<14>
-             UContainerFor<15>
-             UContainerFor<16>
-             UContainerFor<17>
-             UContainerFor<18>
-             UContainerFor<19>
-             UContainerFor<1>
-             UContainerFor<20>
-             UContainerFor<21>
-             UContainerFor<22>
-             UContainerFor<23>
-             UContainerFor<24>
-             UContainerFor<25>
-             UContainerFor<26>
-             UContainerFor<27>
-             UContainerFor<28>
-             UContainerFor<29>
-             UContainerFor<2>
-             UContainerFor<30>
-             UContainerFor<31>
-             UContainerFor<32>
-             UContainerFor<33>
-             UContainerFor<34>
-             UContainerFor<35>
-             UContainerFor<36>
-             UContainerFor<37>
-             UContainerFor<38>
-             UContainerFor<39>
-             UContainerFor<3>
-             UContainerFor<40>
-             UContainerFor<41>
-             UContainerFor<42>
-             UContainerFor<43>
-             UContainerFor<44>
-             UContainerFor<45>
-             UContainerFor<46>
-             UContainerFor<47>
-             UContainerFor<48>
-             UContainerFor<49>
-             UContainerFor<4>
-             UContainerFor<50>
-             UContainerFor<51>
-             UContainerFor<52>
-             UContainerFor<53>
-             UContainerFor<54>
-             UContainerFor<55>
-             UContainerFor<56>
-             UContainerFor<57>
-             UContainerFor<58>
-             UContainerFor<59>
-             UContainerFor<5>
-             UContainerFor<60>
-             UContainerFor<61>
-             UContainerFor<62>
-             UContainerFor<63>
-             UContainerFor<64>
-             UContainerFor<6>
-             UContainerFor<7>
-             UContainerFor<8>
-             UContainerFor<9>
+warning: unused imports: `FBits` and `IBits`
+ --> tests/ui/warm_bound_negative.rs:9:12
+  |
+9 | use arvo::{FBits, IBits};
+  |            ^^^^^  ^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default

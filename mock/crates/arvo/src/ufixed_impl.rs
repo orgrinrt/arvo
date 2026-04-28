@@ -16,7 +16,7 @@ impl<const I: IBits, const F: FBits, S: Strategy> HasBitWidth for UFixed<I, F, S
 where
     S: UBitContainer<{ ufixed_bits(I, F) }>,
 {
-    const WIDTH: USize = USize(I.0 as usize + F.0 as usize);
+    const WIDTH: USize = USize(I.raw() as usize + F.raw() as usize);
 }
 
 impl<const I: IBits, const F: FBits, S: Strategy> BitAccess for UFixed<I, F, S>
@@ -83,7 +83,7 @@ where
         let container_lz =
             <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::leading_zeros(prim)
                 as usize;
-        let logical = I.0 as usize + F.0 as usize;
+        let logical = I.raw() as usize + F.raw() as usize;
         let container =
             <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::WIDTH as usize;
         let surplus = container - logical;
@@ -105,7 +105,7 @@ where
         let ones =
             <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim)
                 as usize;
-        let logical = I.0 as usize + F.0 as usize;
+        let logical = I.raw() as usize + F.raw() as usize;
         USize(logical - ones)
     }
 

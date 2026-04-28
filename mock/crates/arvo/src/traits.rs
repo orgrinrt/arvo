@@ -23,7 +23,7 @@ use core::cmp::Ordering;
 use crate::float::{FastFloat, Ieee, StrictFloat};
 use crate::ifixed::IFixed;
 pub use arvo_numeric_contracts::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
-use arvo_storage::{FBits, IBits, USize};
+use arvo_storage::{FBits, IBits, USize, fbits, ibits};
 use crate::strategy::{
     Cold, Hot, IContainerFor, Precise, Strategy, UContainerFor, Warm, ifixed_bits, ufixed_bits,
 };
@@ -90,7 +90,7 @@ impl TotalOrd for StrictFloat<f64> {
 macro_rules! impl_sqrt_ufixed_concrete {
     ($strategy:ty, $($i:literal),+) => {
         $(
-            impl Sqrt for UFixed<{ IBits($i) }, { FBits::ZERO }, $strategy> {
+            impl Sqrt for UFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn sqrt(self) -> Self {
@@ -264,7 +264,7 @@ where
 macro_rules! impl_abs_ifixed_integer_wrap {
     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
         $(
-            impl Abs for IFixed<{ IBits($i) }, { FBits::ZERO }, $strategy> {
+            impl Abs for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn abs(self) -> Self {
@@ -278,7 +278,7 @@ macro_rules! impl_abs_ifixed_integer_wrap {
 macro_rules! impl_abs_ifixed_integer_sat {
     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
         $(
-            impl Abs for IFixed<{ IBits($i) }, { FBits::ZERO }, $strategy> {
+            impl Abs for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn abs(self) -> Self {
@@ -292,7 +292,7 @@ macro_rules! impl_abs_ifixed_integer_sat {
 macro_rules! impl_abs_ifixed_fractional_wrap {
     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
         $(
-            impl Abs for IFixed<{ IBits($i) }, { FBits($f) }, $strategy> {
+            impl Abs for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn abs(self) -> Self {
@@ -306,7 +306,7 @@ macro_rules! impl_abs_ifixed_fractional_wrap {
 macro_rules! impl_abs_ifixed_fractional_sat {
     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
         $(
-            impl Abs for IFixed<{ IBits($i) }, { FBits($f) }, $strategy> {
+            impl Abs for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn abs(self) -> Self {
@@ -435,7 +435,7 @@ macro_rules! impl_from_constant_ufixed {
     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
         $(
             // F = 0 (integer UFixed).
-            impl FromConstant for UFixed<{ IBits($i) }, { FBits::ZERO }, $strategy> {
+            impl FromConstant for UFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 #[inline(always)]
                 fn from_constant<const C: USize>() -> Self {
                     Self::from_raw(C.0 as $ctype)
@@ -448,7 +448,7 @@ macro_rules! impl_from_constant_ufixed {
 macro_rules! impl_from_constant_ufixed_fractional {
     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
         $(
-            impl FromConstant for UFixed<{ IBits($i) }, { FBits($f) }, $strategy> {
+            impl FromConstant for UFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
                 #[inline(always)]
                 fn from_constant<const C: USize>() -> Self {
                     Self::from_raw((C.0 as $ctype) << $f)
@@ -531,7 +531,7 @@ impl_from_constant_ufixed_fractional!(Precise, u64, 8, 16);
 macro_rules! impl_from_constant_ifixed {
     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
         $(
-            impl FromConstant for IFixed<{ IBits($i) }, { FBits::ZERO }, $strategy> {
+            impl FromConstant for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 #[inline(always)]
                 fn from_constant<const C: USize>() -> Self {
                     Self::from_raw(C.0 as $ctype)
@@ -544,7 +544,7 @@ macro_rules! impl_from_constant_ifixed {
 macro_rules! impl_from_constant_ifixed_fractional {
     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
         $(
-            impl FromConstant for IFixed<{ IBits($i) }, { FBits($f) }, $strategy> {
+            impl FromConstant for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
                 #[inline(always)]
                 fn from_constant<const C: USize>() -> Self {
                     Self::from_raw((C.0 as $ctype) << $f)

@@ -5,7 +5,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::{FBits, IBits};
+use arvo::{FBits, IBits, ibits, fbits};
 use arvo::strategy::{Hot, Warm};
 use arvo::ufixed::UFixed;
 use arvo_bits::{BitSequence, Byte, DWord, QWord};
@@ -34,7 +34,7 @@ fn byte_trailing_and_leading_zeros() {
 
 #[test]
 fn qword_high_bit_leading_zeros() {
-    // QWord = UFixed<IBits(64), FBits(0), Hot>. 1 << 63 -> lz = 0.
+    // QWord = UFixed<ibits(64), fbits(0), Hot>. 1 << 63 -> lz = 0.
     let q = QWord::<Hot>::from_raw(1u64 << 63);
     assert_eq!(q.leading_zeros().0, 0);
     assert_eq!(q.trailing_zeros().0, 63);
@@ -42,11 +42,11 @@ fn qword_high_bit_leading_zeros() {
 
 #[test]
 fn warm_leading_zeros_accounts_for_wider_container() {
-    // UFixed<IBits(8), FBits(0), Warm> -> logical width 8, container
+    // UFixed<ibits(8), fbits(0), Warm> -> logical width 8, container
     // is u16 (16 bits). A value of 1u16 << 7 has container leading
     // zeros = 8; logical leading zeros = 0 (bit 7 is the MSB of the
     // logical 8-bit window).
-    type W = UFixed<{ IBits(8) }, { FBits::ZERO }, Warm>;
+    type W = UFixed<{ ibits(8) }, { FBits::ZERO }, Warm>;
     let v = W::from_raw(1u16 << 7);
     assert_eq!(v.leading_zeros().0, 0);
     // Value 1: logical leading zeros = 7 (bit 0 set, 7 zeros above it
@@ -65,7 +65,7 @@ fn is_zero_across_strategies() {
     // Warm: container wider than logical width; is_zero still checks
     // the container, which is correct because consumers keep values
     // within logical range.
-    type W = UFixed<{ IBits(8) }, { FBits::ZERO }, Warm>;
+    type W = UFixed<{ ibits(8) }, { FBits::ZERO }, Warm>;
     let v = W::from_raw(0u16);
     assert!(v.is_zero().0);
     let v = W::from_raw(1u16);
