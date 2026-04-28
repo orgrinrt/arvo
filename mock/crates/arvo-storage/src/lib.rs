@@ -15,6 +15,7 @@
 //! See `DESIGN.md` for the full surface.
 
 mod bits;
+mod layout_assertions;
 mod meta_bits;
 mod platform;
 
