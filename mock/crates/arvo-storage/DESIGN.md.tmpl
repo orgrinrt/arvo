@@ -20,7 +20,7 @@ be expressed without wrapping a bare primitive.
 
 ## Bits
 
-`Bits<const N: u8, S: Strategy = Hot, Sign: Signedness = Unsigned>` is
+`Bits<const N: u16, S: Strategy = Hot, Sign: Signedness = Unsigned>` is
 the N-bit storage primitive. A `#[repr(transparent)]` newtype over
 `<S as BitsContainerFor<N, Sign>>::T`. The container projection picks
 the bare primitive (or `MultiContainer<HiT, LoT>` at the wider widths)
@@ -29,6 +29,12 @@ lowers to `u8`, `Bits<7, Hot>` lowers to `u8` (with the high bit unused
 under Hot), `Bits<32, Warm>` lowers to `u32`, `Bits<64, Hot>` to `u64`,
 `Bits<96, Hot>` to `u128`, `Bits<200, Hot>` to a strategy-driven
 `MultiContainer` shape, and so on per the strategy bands.
+
+The const-generic param is `u16` (widened from `u8` in Pass F of round
+202604281000) so the parameter space accommodates reachable widths up
+to 65535. Concrete cell projections cover 1..=256; widening the
+parameter type without growing the cell table makes future expansion
+parameter-free.
 
 Default `Sign = Unsigned` keeps every existing `Bits<N, S>` call site
 unchanged. Domain code that wants signed bit patterns writes
@@ -40,7 +46,7 @@ wrap of `Bits<{I+F}, S, Unsigned>`).
 The public surface is partitioned and minimal:
 
 ```rust
-impl<const N: u8, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
+impl<const N: u16, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
 where S: BitsContainerFor<N, Sign>,
 {
     pub const fn from_raw(raw: <S as BitsContainerFor<N, Sign>>::T) -> Self;
@@ -65,10 +71,16 @@ inside per-size helpers.
 
 The `repr(transparent)` of `Bits<N, S, Sign>` over its projection
 target is compile-time-asserted at boundary cells (1, 8, 9, 16, 17,
-32, 33, 64, 65, 128, 129, 192, 193, 255 for Hot / Cold; 1, 8, 9, 16,
+32, 33, 64, 65, 128, 129, 192, 193, 256 for Hot / Cold; 1, 8, 9, 16,
 17, 32, 33, 64 for Warm / Precise) in
 `arvo-storage/src/layout_assertions.rs`. If a future round changes
 the container projection at any boundary cell, the build breaks.
+
+The boundary set is the default. A `cfg(arvo_full_layout_audit)` gate
+opens the full (Strategy, N, Sign) tuple expansion, asserting every
+cell across the projection space. Periodic CI nightly builds run the
+full audit; default builds keep the bounded set to hold compile time
+in check.
 
 ## Strategy markers
 
@@ -76,13 +88,17 @@ the container projection at any boundary cell, the build breaks.
 the sealed `Strategy` marker trait declared in `arvo-strategy`. Each
 derives `ConstParamTy` so it works as a const generic argument.
 
-Strategy semantics are unchanged from prior rounds. `Hot` picks the
-narrowest container for the bit width (1..=8 bits use `u8`, 9..=16
-use `u16`, 17..=32 use `u32`, 33..=64 use `u64`). `Warm` picks the
-ergonomic container (always at least `u32` for `N <= 32`, `u64` for
-33..=64). `Cold` is reserved for bitpacked storage of N > 64 (out of
-scope this round). `Precise` uses arbitrary-width carriers (`u64`
-within this round's scope).
+Strategy semantics across the substrate. `Hot` picks the narrowest
+container for the bit width (1..=8 use `u8`, 9..=16 use `u16`, 17..=32
+use `u32`, 33..=64 use `u64`, 65..=128 use `u128`, 129..=192 use
+`MultiContainer<u64, u128>`, 193..=256 use `MultiContainer<u128, u128>`).
+`Warm` doubles the logical width (1..=8 use `u16`, 9..=16 use `u32`,
+17..=32 use `u64`, 33..=64 use `u128`). `Cold` mirrors Hot's container
+sizes but the upper-layer storage routes through bitpacked column
+stores. `Precise` mirrors Warm's 2x-logical-width contract at every
+cell, including 33..=64 which uses `u128` (Pass D of round 202604281000
+fixed the prior 33..=64 inconsistency where Precise used u64 while
+Warm used u128).
 
 The `UContainerFor<N>` and `IContainerFor<N>` per-N impls live in
 `arvo-strategy`, not here. They project `S + N` to the bare primitive
@@ -246,13 +262,20 @@ consumers that want a typed width parameter).
 The carrier widened from a bare u8 (range 0..=255 in pre-Round-C
 source; doc CL of round 202604280500 named the destination as
 `Bits<9, Hot>`) to `MetaCarrier` (layout-equivalent to
-`Bits<9, Hot, Unsigned>`; range 0..=511 native; 0..=255 used pending
-the `Bits<const N: u8>` widening to u16). The substrate's
-logical-width cap rises from 128 to 255 in Round B; 9 bits is the
-minimum carrier covering the substrate's logical-width range plus
-headroom. Per the `arvo-toolbox-not-policer` workspace rule, honest
-range trumps offset packing; the unused upper range costs nothing at
-codegen.
+`Bits<9, Hot, Unsigned>`; range 0..=511 native; 0..=256 used after
+Pass F of round 202604281000 lifts the `Bits` const-generic param
+from u8 to u16, with cell projections covering 1..=256). The
+substrate's logical-width cap rose from 128 to 256; 9 bits is the
+minimum carrier covering 256 plus headroom. Per the
+`arvo-toolbox-not-policer` workspace rule, honest range trumps
+offset packing; the unused upper range costs nothing at codegen.
+
+`MetaCarrier`, `IBits`, `FBits`, and `Width` all satisfy
+`StructuralEq + Copy + Eq + ConstParamTy`. The trait obligations
+are compile-time-asserted alongside the layout assertions in
+`arvo-storage/src/layout_assertions.rs`. Any future change that
+breaks the const-generic-position usability of these newtypes
+breaks the build before runtime can encounter the divergence.
 
 `MetaCarrier::as_bits()` and `IBits::as_bits()` / `FBits::as_bits()`
 / `Width::as_bits()` give the `Bits<9, Hot, Unsigned>`-typed view

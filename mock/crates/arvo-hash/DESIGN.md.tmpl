@@ -2,8 +2,9 @@
 
 L2 hash-domain types and algorithm contracts. Ships a domain alias
 over the `Bits` storage primitive (now in `arvo-storage`), generic
-trait contracts for hash algorithms, and one concrete algorithm:
-`Fnv1a<const N: Width>`.
+trait contracts for hash algorithms, and two concrete algorithms:
+`XxHash3<const N: Width>` (default) and `Fnv1a<const N: Width>`
+(option for known-good fits).
 
 `#![no_std]`, no alloc.
 
@@ -38,20 +39,29 @@ in BACKLOG.
 
 ### ContentHash
 
-A type alias for `arvo::Bits<28, Hot>`. Matches hilavitkutin-str's
-low-28-bit FNV content-hash identity. Consumers that want a named
-type at call sites (hilavitkutin-persistence StringTableEntry,
-clause resolver pass-key identity) bind `ContentHash` instead of
-the raw `Bits<28, Hot>`.
+A type alias for `arvo::Bits<64, Hot>`. Carries the canonical
+content-addressed hash identity for downstream consumers
+(hilavitkutin-str interner, hilavitkutin-persistence
+StringTableEntry, clause resolver pass-key identity, loimu-style
+entity content addressing). Consumers that want a named type at
+call sites bind `ContentHash` instead of the raw `Bits<64, Hot>`.
 
 ```rust
-pub type ContentHash = arvo::Bits<28, Hot>;
+pub type ContentHash = arvo::Bits<64, Hot>;
 ```
+
+The width widened from 28 to 64 in Pass B.2 of round 202604281000.
+64 bits matches `XxHash3`'s natural output and reduces collision
+probability to negligible levels for million-entity workloads (the
+prior 28-bit identity carried meaningful collision risk past about
+16k unique values; 64 bits clears the projected scale by orders of
+magnitude).
 
 A direct type alias rather than a newtype: the semantic domain is
 fully captured by the bit width; no additional invariants warrant
-a distinct type. The `Bits` const-generic stays `u8` (root exception
-#2); only `Hasher` / `Fnv1a` lift to `Width`.
+a distinct type. The `Bits` const-generic widened to `u16` in
+Pass F of the same round; only `Hasher` / `Fnv1a` / `XxHash3` lift
+to `Width`.
 
 ## Algorithm contracts
 
@@ -103,6 +113,64 @@ automatically exposes a `.hash(bytes)` one-shot form; implementors
 do not write their own oneshot path. Mirrors the round-202604201048
 Encoder / Decoder + EncoderExt / DecoderExt pattern: streaming is
 canonical, oneshot is a derived convenience.
+
+## Default algorithm choice
+
+`XxHash3<const N: Width>` is the default hash family. `Fnv1a<const N: Width>`
+remains as an explicit option for known-good fits (small inputs in the
+8-16 byte band where FNV-1a stays competitive on bandwidth, or
+algorithm-locked test fixtures).
+
+The choice between defaults considered the substrate's primary
+consumer workload (16-128 byte entity content addressing, millions
+of entities in flight). XxHash3 wins on bandwidth above the 32-byte
+input mark; FNV-1a holds at 8-16 bytes. The default crosses the
+break-even mark into the consumer's typical band.
+
+Per the `arvo-toolbox-not-policer` workspace rule, both ship; the
+consumer picks. `ContentHasher` is the trait; `XxHash3` and `Fnv1a`
+are concrete strategies satisfying it.
+
+## Concrete algorithm: XxHash3
+
+```rust
+use arvo::{Width, Bits, Hot, width};
+use arvo::strategy::{UContainerFor, width_u16, width_le_64};
+
+/// Streaming XxHash3 hasher with N-bit output.
+///
+/// `XxHash3<{ width(N) }>` produces an N-bit hash via masking from
+/// the algorithm's natural 64-bit output. Bound: `N <= 64`.
+/// For 128-bit output see the `XxHash3_128` BACKLOG entry.
+pub struct XxHash3<const N: Width>
+where
+    Hot: UContainerFor<{ width_u16(N) }>,
+    [(); 1 / (width_le_64(N) as usize)]: ;
+
+impl<const N: Width> XxHash3<N>
+where
+    Hot: UContainerFor<{ width_u16(N) }>,
+    [(); 1 / (width_le_64(N) as usize)]: ,
+{
+    pub const fn hash_const(bytes: &[u8]) -> Bits<{ width_u16(N) }, Hot> {
+        let raw = xxhash3_64(bytes);
+        Bits::<{ width_u16(N) }, Hot>::from_raw_u64(raw)
+    }
+}
+
+impl<const N: Width> Hasher<N> for XxHash3<N>
+where
+    Hot: UContainerFor<{ width_u16(N) }>,
+    [(); 1 / (width_le_64(N) as usize)]: ,
+{
+    fn update(&mut self, bytes: &[u8]) { /* SRC */ }
+    fn finalize(self) -> Bits<{ width_u16(N) }, Hot> { /* SRC */ }
+}
+```
+
+Same const-eval `N <= 64` guard as `Fnv1a`. Consumer-facing
+ergonomics are identical; the algorithmic difference is the body
+of `update` / `finalize` and the bandwidth profile.
 
 ## Concrete algorithm: Fnv1a
 
