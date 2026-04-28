@@ -13,29 +13,45 @@
 
 use notko::Outcome;
 
-use crate::{Hot, IContainerFor, Precise, UContainerFor, Warm};
+use crate::{HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
 
 /// Unsigned container widen bridge: `(Src, N) -> Dst::T`.
-pub trait UWidenFrom<Src: UContainerFor<N>, const N: u16>: UContainerFor<N> {
+///
+/// Pass E of round 202604281000 added `HasAxes` to source and target
+/// strategy bounds. The widen direction is controlled by the
+/// container-width axis projection on each strategy: `Min`
+/// (Hot/Cold) widens into `DoubleLogical` (Warm/Precise) by 2x; same
+/// width within an axis category. Per-strategy impls remain table-
+/// driven for concrete-type dispatch; the axis bounds document
+/// design intent and prepare for axis-only dispatch.
+pub trait UWidenFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
+    UContainerFor<N> + HasAxes
+{
     /// Widen an `Src::T` value into `Self::T`. Infallible by definition.
     fn u_widen(v: Src::T) -> Self::T;
 }
 
 /// Signed container widen bridge.
-pub trait IWidenFrom<Src: IContainerFor<N>, const N: u16>: IContainerFor<N> {
+pub trait IWidenFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
+    IContainerFor<N> + HasAxes
+{
     /// Widen an `Src::T` value into `Self::T`. Infallible by definition.
     fn i_widen(v: Src::T) -> Self::T;
 }
 
 /// Unsigned container narrow bridge with bounds check against the
 /// logical range `[0, 2^N)`.
-pub trait UNarrowFrom<Src: UContainerFor<N>, const N: u16>: UContainerFor<N> {
+pub trait UNarrowFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
+    UContainerFor<N> + HasAxes
+{
     /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
     fn u_try_narrow(v: Src::T) -> Outcome<Self::T, ()>;
 }
 
 /// Signed container narrow bridge with logical-range check.
-pub trait INarrowFrom<Src: IContainerFor<N>, const N: u16>: IContainerFor<N> {
+pub trait INarrowFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
+    IContainerFor<N> + HasAxes
+{
     /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
     fn i_try_narrow(v: Src::T) -> Outcome<Self::T, ()>;
 }
