@@ -6,6 +6,7 @@ license.workspace = true
 
 [dependencies]
 arvo.workspace = true
+xxhash-rust = { version = "0.8", default-features = false, features = ["xxh3", "const_xxh3"] }
 
 [build-dependencies]
 mockspace.workspace = true
