@@ -77,12 +77,48 @@ macro_rules! __bitfield_container_ty {
     (61) => { u64 }; (62) => { u64 }; (63) => { u64 }; (64) => { u64 };
 }
 
-/// Generates a bitfield struct wrapping `Bits<N, Hot>` with
-/// `Bits<W, Hot>`-typed accessors and setters per named sub-range.
+/// Generates a bitfield struct wrapping `Bits<N, S>` with
+/// `Bits<W, S>`-typed accessors and setters per named sub-range.
+///
+/// Accepts an optional `<S: Strategy>` after the struct name; default
+/// is `Hot`. Cold (which mirrors Hot's container projection across
+/// every cell) is also supported. Warm and Precise are not yet
+/// supported because the internal container-projection helper is
+/// keyed on Hot's table; future round generalises.
+///
+/// ```ignore
+/// // Default Hot
+/// bitfield! { pub struct StrHandle: 32 { id: 28 at 0, flags: 4 at 28 } }
+///
+/// // Explicit Cold for column-store bitpacked layouts
+/// bitfield! { pub struct EntityFlags<Cold>: 32 { active: 1 at 0, hidden: 1 at 1 } }
+/// ```
 ///
 /// See the module-level docs for grammar and examples.
 #[macro_export]
 macro_rules! bitfield {
+    // Explicit strategy arm: `pub struct Foo<S>: N { ... }`
+    (
+        $(#[$struct_attr:meta])*
+        $vis:vis struct $name:ident<$strategy:ty>: $n:tt {
+            $(
+                $(#[$field_attr:meta])*
+                $field:ident: $field_bits:tt at $lo:tt
+            ),* $(,)?
+        }
+    ) => {
+        $crate::__bitfield_impl! {
+            $(#[$struct_attr])*
+            $vis struct $name<$strategy>: $n {
+                $(
+                    $(#[$field_attr])*
+                    $field: $field_bits at $lo
+                ),*
+            }
+        }
+    };
+
+    // Default arm: `pub struct Foo: N { ... }` (Hot)
     (
         $(#[$struct_attr:meta])*
         $vis:vis struct $name:ident: $n:tt {
@@ -92,10 +128,36 @@ macro_rules! bitfield {
             ),* $(,)?
         }
     ) => {
+        $crate::__bitfield_impl! {
+            $(#[$struct_attr])*
+            $vis struct $name<$crate::Hot>: $n {
+                $(
+                    $(#[$field_attr])*
+                    $field: $field_bits at $lo
+                ),*
+            }
+        }
+    };
+}
+
+/// Internal expansion shared between the default and explicit-strategy
+/// arms of the public `bitfield!` macro. Not part of the public surface.
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __bitfield_impl {
+    (
+        $(#[$struct_attr:meta])*
+        $vis:vis struct $name:ident<$strategy:ty>: $n:tt {
+            $(
+                $(#[$field_attr:meta])*
+                $field:ident: $field_bits:tt at $lo:tt
+            ),* $(,)?
+        }
+    ) => {
         $(#[$struct_attr])*
         #[repr(transparent)]
         #[derive(Copy, Clone, Default)]
-        $vis struct $name($crate::Bits<$n, $crate::Hot>);
+        $vis struct $name($crate::Bits<$n, $strategy>);
 
         impl core::fmt::Debug for $name {
             fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
@@ -136,23 +198,23 @@ macro_rules! bitfield {
             /// Zero-initialise.
             pub const fn new() -> Self {
                 let _ = Self::_BOUNDS;
-                Self($crate::Bits::<$n, $crate::Hot>::from_raw(0 as $crate::__bitfield_container_ty!($n)))
+                Self($crate::Bits::<$n, $strategy>::from_raw(0 as $crate::__bitfield_container_ty!($n)))
             }
 
             /// Wrap a pre-built `Bits<N, Hot>` value.
-            pub const fn from_bits(raw: $crate::Bits<$n, $crate::Hot>) -> Self {
+            pub const fn from_bits(raw: $crate::Bits<$n, $strategy>) -> Self {
                 let _ = Self::_BOUNDS;
                 Self(raw)
             }
 
             /// Project to the underlying `Bits<N, Hot>`.
-            pub const fn to_bits(self) -> $crate::Bits<$n, $crate::Hot> {
+            pub const fn to_bits(self) -> $crate::Bits<$n, $strategy> {
                 self.0
             }
 
             $(
                 $(#[$field_attr])*
-                pub const ${concat($field, _MASK)}: $crate::Bits<$n, $crate::Hot> = {
+                pub const ${concat($field, _MASK)}: $crate::Bits<$n, $strategy> = {
                     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: pre-shifted mask at parent width, computed from macro-expanded sub-range literals; container truncation lives at the bitfield boundary per D-7; tracked: #256
                     let mask: u64 =
                         if $field_bits == 64 { u64::MAX }
@@ -161,11 +223,11 @@ macro_rules! bitfield {
                         if $n == 64 { u64::MAX }
                         else { (1u64 << $n) - 1 };
                     let shifted = (mask << $lo) & parent_mask;
-                    $crate::Bits::<$n, $crate::Hot>::from_raw(shifted as $crate::__bitfield_container_ty!($n))
+                    $crate::Bits::<$n, $strategy>::from_raw(shifted as $crate::__bitfield_container_ty!($n))
                 };
 
                 $(#[$field_attr])*
-                pub const fn $field(self) -> $crate::Bits<$field_bits, $crate::Hot> {
+                pub const fn $field(self) -> $crate::Bits<$field_bits, $strategy> {
                     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-field shift/mask in u64; final cast narrows to the dispatched container under the mask precondition per D-7; tracked: #256
                     let raw_typed: $crate::__bitfield_container_ty!($n) = self.0.to_raw();
                     let raw: u64 = raw_typed as u64;
@@ -173,13 +235,13 @@ macro_rules! bitfield {
                         if $field_bits == 64 { u64::MAX }
                         else { (1u64 << $field_bits) - 1 };
                     let shifted = (raw >> $lo) & mask;
-                    $crate::Bits::<$field_bits, $crate::Hot>::from_raw(shifted as $crate::__bitfield_container_ty!($field_bits))
+                    $crate::Bits::<$field_bits, $strategy>::from_raw(shifted as $crate::__bitfield_container_ty!($field_bits))
                 }
 
                 $(#[$field_attr])*
                 pub const fn ${concat(with_, $field)}(
                     self,
-                    value: $crate::Bits<$field_bits, $crate::Hot>,
+                    value: $crate::Bits<$field_bits, $strategy>,
                 ) -> Self {
                     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-field shift/mask in u64; final cast narrows to the parent container under the mask precondition per D-7; tracked: #256
                     let parent_typed: $crate::__bitfield_container_ty!($n) = self.0.to_raw();
@@ -197,7 +259,7 @@ macro_rules! bitfield {
                     let masked_value = value_raw & field_mask;
                     let shifted_value = masked_value << $lo;
                     let combined = (cleared | shifted_value) & parent_mask;
-                    Self($crate::Bits::<$n, $crate::Hot>::from_raw(combined as $crate::__bitfield_container_ty!($n)))
+                    Self($crate::Bits::<$n, $strategy>::from_raw(combined as $crate::__bitfield_container_ty!($n)))
                 }
             )*
         }
