@@ -34,11 +34,16 @@ mod sealed {
 }
 
 mod arith;
+mod axes;
 mod container;
 mod multi_container;
 mod widen;
 
 pub use arith::{IArith, ISaturating, UArith, USaturating};
+pub use axes::{
+    Bitpacked, ContainerWidth, Dense, DoubleLogical, HasAxes, Min, OverflowPolicy, Saturating,
+    StorageLayout, Wrapping,
+};
 pub use container::{BitsContainerFor, IContainerFor, UContainerFor};
 pub use multi_container::{BitPrim, MultiContainer};
 pub use widen::{INarrowFrom, IWidenFrom, UNarrowFrom, UWidenFrom};
