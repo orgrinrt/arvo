@@ -1,0 +1,13 @@
+[package]
+name = "arvo-benches"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "arvo-benches"
+path = "src/main.rs"
+
+[dependencies]
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-harness = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
