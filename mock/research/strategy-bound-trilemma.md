@@ -1,5 +1,11 @@
 # The Strategy-Bound Trilemma
 
+> **Promoted 2026-04-28**: this analysis is now shipped as
+> `mock/crates/arvo/DEEPDIVE_strategy-bound-trilemma.md.tmpl`. That
+> template is the canonical source going forward. This research file
+> remains as audit trail for the round 202604500000 investigation that
+> produced the analysis; do not edit here, edit the DEEPDIVE template.
+
 > **Status**: research note. Captured during round 202604500000 (foundations restructure + Fnv1a) source execution. Promote to a DEEPDIVE template (`mock/crates/arvo/DEEPDIVE_strategy-bound-trilemma.md.tmpl`) in a follow-up DOC-phase round.
 
 This note formalises a structural constraint encountered during round 202604500000. It explains why arvo's `UFixed` / `IFixed` / `Bits` types carry a `where S: UContainerFor<{...}>` bound that consumers writing generic-over-bit-width code must restate, and why no creative reorganisation eliminates that restatement on current rustc without compromising substrate principles.
