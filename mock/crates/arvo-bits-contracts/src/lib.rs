@@ -551,3 +551,82 @@ pub const trait Narrow<T> {
     where
         Self: Sized;
 }
+
+// --- Cross-primitive Narrow impls (round 202604281000 Pass B.4) ---------
+//
+// Coverage: u16/u32/u64/u128 unsigned + i16/i32/i64/i128 signed sources,
+// narrowing to every smaller-width primitive of the same sign family.
+// Cross-sign narrowing (e.g. u16 -> i8) is out of scope; consumers cast
+// sign first via separate impls outside this crate.
+//
+// These live in arvo-bits-contracts rather than arvo-narrow because
+// orphan rules require either the trait or one of the type arguments
+// to be local to the implementing crate. Since both Narrow and the
+// primitive types are foreign to arvo-narrow, the impls anchor here
+// with Narrow.
+
+macro_rules! impl_narrow_u {
+    ($src:ty => $($dst:ty),+) => {
+        $(
+            // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: cross-primitive narrow impl on bare primitives that the trait was designed to bridge; tracked: #259
+            impl const Narrow<$dst> for $src {
+                #[inline(always)]
+                fn narrow_to<const N: u8>(self) -> $dst {
+                    if N == 0 {
+                        return 0 as $dst;
+                    }
+                    if (N as u32) >= <$src>::BITS {
+                        return self as $dst;
+                    }
+                    let mask: $src = ((1 as $src) << (N as u32)).wrapping_sub(1);
+                    (self & mask) as $dst
+                }
+
+                #[inline(always)]
+                fn narrow_to_unmasked<const N: u8>(self) -> $dst {
+                    let _ = N;
+                    self as $dst
+                }
+            }
+        )+
+    };
+}
+
+impl_narrow_u!(u16 => u8);
+impl_narrow_u!(u32 => u8, u16);
+impl_narrow_u!(u64 => u8, u16, u32);
+impl_narrow_u!(u128 => u8, u16, u32, u64);
+
+macro_rules! impl_narrow_i {
+    ($src:ty, $unsigned:ty => $($dst:ty),+) => {
+        $(
+            // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: cross-primitive signed narrow; sign-preserving mask through unsigned reinterpretation; tracked: #259
+            impl const Narrow<$dst> for $src {
+                #[inline(always)]
+                fn narrow_to<const N: u8>(self) -> $dst {
+                    if N == 0 {
+                        return 0 as $dst;
+                    }
+                    if (N as u32) >= <$src>::BITS {
+                        return self as $dst;
+                    }
+                    let raw = self as $unsigned;
+                    let mask: $unsigned = ((1 as $unsigned) << (N as u32)).wrapping_sub(1);
+                    let masked = raw & mask;
+                    masked as $dst
+                }
+
+                #[inline(always)]
+                fn narrow_to_unmasked<const N: u8>(self) -> $dst {
+                    let _ = N;
+                    self as $dst
+                }
+            }
+        )+
+    };
+}
+
+impl_narrow_i!(i16, u16 => i8);
+impl_narrow_i!(i32, u32 => i8, i16);
+impl_narrow_i!(i64, u64 => i8, i16, i32);
+impl_narrow_i!(i128, u128 => i8, i16, i32, i64);
