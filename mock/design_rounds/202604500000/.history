@@ -1,0 +1,50 @@
+9a5ce88 chore: lock src changelist for round 202604500000
+ecf726a feat: adopt mockspace v2 bench harness for ContentHash benchmarking
+21a3341 docs: open src changelist for round 202604500000
+a3b15eb chore: lock doc changelist for round 202604500000
+84b85e2 docs: add bench infrastructure section + refresh stale see-also
+cfbc48a docs: open doc changelist for round 202604500000
+5e9e7f0 docs: open round 202604500000 — bench-harness adoption topic
+296439c docs: promote strategy-bound trilemma to DEEPDIVE (#36)
+1abc0e0 feat: bitwidth cap to 256 + Fnv1a + audit-driven follow-up rounds (A-D) (#35)
+fec30de docs: extend byline policy to PR titles, descriptions, comments (#34)
+69b8271 docs: ban ASCII box-and-arrow diagrams in writing-style rules (#30)
+d8229e9 chore: ramp arvo lint severities to match strict posture (#213) (#33)
+e93ca0c docs: rewrite README to outsider-view-only crates.io format (#32)
+24afda0 docs: arvo docs refresh — shipped items, updated signatures (#124) (#29)
+16caf87 docs: type-surface reminder block at top of every BACKLOG.md.tmpl (#92) (#28)
+7bd20fe feat: arvo::Predicate trait family Pred/Pred2/Pred3 (#122) (#27)
+2ec733a refactor: FromConstant takes USize instead of u8 (#123) (#26)
+6237970 docs: arvo writing-style sweep (#25)
+3bc411c chore: bump mockspace to pick up no-empty-crate fix (#24)
+624f8b0 docs: #129 arvo lint:allow audit — all 5 sites structurally justified (#22) (#23)
+a98a3f4 Merge pull request #21 from orgrinrt/feat/arvo-bits-ergonomics
+a0abd19 chore: close design round 202604310000
+499ae14 chore: lock src changelist for 202604310000_changelist.src.lock.md
+5108b8d feat: add From<u64> on Bits<N, Hot> + per-field MASK consts in bitfield!
+a81e56e docs: add src changelist for arvo-bits ergonomics round
+ef10447 chore: lock doc changelist for 202604310000_changelist.doc.lock.md
+ea62cb5 docs: describe Bits From impls and bitfield mask constants
+6a5443b docs: open arvo-bits ergonomics round
+f1a221b Merge pull request #20 from orgrinrt/feat/arvo-primitives-polish
+af2365e chore: close design round 202604300000
+040c3a2 chore: lock src changelist for 202604300000_changelist.src.lock.md
+1de0275 feat: add bitfield macro with Bits<W>-typed accessors
+c0de28d refactor!: rewrite Bits as newtype over container primitive
+dc8d2e1 docs: add src changelist for newtype-wrapper Bits pivot
+8e218e5 chore: lock doc changelist for 202604300000_changelist.doc.lock.md
+d6785ab docs: pivot Bits to newtype-over-UFixed; collapse named aliases
+781160a chore: unlock design round (deprecate src CL, unlock doc CL)
+502b8f5 docs: add src changelist for arvo-bits fix round
+ffc3640 chore: lock doc changelist for 202604300000_changelist.doc.lock.md
+7109edd docs: describe Bits<N> container dispatch + bitfield macro
+92235f4 docs: add doc CL for arvo-bits fix round
+1ed9f42 docs: open arvo-bits fix + bitfield round
+50ee90d Merge pull request #19 from orgrinrt/feat/port-legacy-research
+fae562b docs: import legacy arvo research from polka-dots and saalis
+de9334f Merge pull request #18 from orgrinrt/feat/exact-widths-rule
+c2ca7ff docs: teach exact-widths principle in type-surface rule
+2c4143c Merge pull request #17 from orgrinrt/feat/drop-graceful-ramp
+1307695 refactor: drop graceful-ramp severity overrides
+e7ae7ce Merge pull request #16 from orgrinrt/feat/strategy-name-debug-gate
+3b0b00f feat: enable no-bare-static-str lint + document static-string category
