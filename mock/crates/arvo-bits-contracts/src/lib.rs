@@ -531,4 +531,16 @@ pub const trait Narrow<T> {
     fn narrow_to<const N: u8>(self) -> T
     where
         Self: Sized;
+
+    /// Cast to `T` without masking the high bits.
+    ///
+    /// Sound only when the caller knows the high bits above `N` are
+    /// already zero (chained narrow, just-shifted-down bitfield
+    /// extraction, value carried through a `Bits<M, ...>` projection
+    /// of equal-or-narrower width). Skips the mask op for the hot
+    /// path. Calling with non-zero high bits produces silent garbage
+    /// in the unmasked path.
+    fn narrow_to_unmasked<const N: u8>(self) -> T
+    where
+        Self: Sized;
 }
