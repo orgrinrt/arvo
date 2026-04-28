@@ -4,6 +4,10 @@ version = "0.0.0"
 edition = "2024"
 publish = false
 
+[lib]
+name = "arvo_benches"
+path = "src/lib.rs"
+
 [[bin]]
 name = "arvo-benches"
 path = "src/main.rs"

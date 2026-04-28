@@ -6,40 +6,9 @@
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
-use mockspace_bench_core::{routine_bridge, Routine};
+use arvo_benches::Fnv1aVsXxHash3;
+use mockspace_bench_core::routine_bridge;
 use mockspace_bench_harness::{self as harness, BenchManifest, RoutineSpec, Workload};
-
-/// Routine: hash an N-byte input. Variants pick the algorithm.
-pub struct Fnv1aVsXxHash3<const N: usize>;
-
-impl<const N: usize> Routine for Fnv1aVsXxHash3<N> {
-    type Input = [u8; N];
-    type Output = u64;
-
-    fn build_input(seed: u64) -> [u8; N] {
-        // The body of this function MUST stay byte-for-byte identical
-        // across the three copies (orchestrator + each variant cdylib).
-        // Drift here means seeded inputs diverge between orchestrator
-        // and worker, breaking validation. Tracked for hoist in #281.
-        let mut buf = [0u8; N];
-        let mut x = seed.wrapping_mul(0x9E3779B97F4A7C15);
-        for chunk in buf.chunks_mut(8) {
-            x ^= x >> 30;
-            x = x.wrapping_mul(0xBF58476D1CE4E5B9);
-            let bytes = x.to_le_bytes();
-            chunk.copy_from_slice(&bytes[..chunk.len()]);
-        }
-        buf
-    }
-
-    fn ops_per_call(_input: &Self::Input) -> u64 {
-        N as u64
-    }
-
-    fn outputs_may_differ() -> bool {
-        true
-    }
-}
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().collect();
