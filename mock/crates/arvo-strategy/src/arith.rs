@@ -21,14 +21,23 @@
 //! the cheapest defined fallback that does not panic). Precise
 //! guards and clamps to container max.
 
-use crate::{Cold, Hot, IContainerFor, Precise, UContainerFor, Warm};
+use crate::{Cold, HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
 
 /// Unsigned arithmetic dispatch for `(strategy, N)`.
 ///
 /// Keyed on the same `N` that `UContainerFor` uses. Lets
 /// `UFixed<I, F, S>` delegate arithmetic to the strategy-correct
 /// container operation without re-bounding on the container type.
-pub trait UArith<const N: u16>: UContainerFor<N> {
+///
+/// The `HasAxes` supertrait expresses the axis-driven dispatch
+/// contract introduced in Pass E of round 202604281000: each impl's
+/// behavior follows from `<Self as HasAxes>::Overflow` (Wrapping vs
+/// Saturating) and `<Self as HasAxes>::Width` (Min vs DoubleLogical).
+/// Per-strategy impls below are keyed on the bundled marker for
+/// concrete-type dispatch; the axis projections document the design
+/// intent and unblock future combinations like `Hot + Saturating`
+/// once Rust trait specialisation makes axis-only dispatch possible.
+pub trait UArith<const N: u16>: UContainerFor<N> + HasAxes {
     /// Strategy-specific `+`.
     fn u_add(a: Self::T, b: Self::T) -> Self::T;
     /// Strategy-specific `-`.
@@ -41,7 +50,9 @@ pub trait UArith<const N: u16>: UContainerFor<N> {
 }
 
 /// Signed arithmetic dispatch for `(strategy, N)`.
-pub trait IArith<const N: u16>: IContainerFor<N> {
+///
+/// `HasAxes` supertrait per the same Pass E convention as `UArith`.
+pub trait IArith<const N: u16>: IContainerFor<N> + HasAxes {
     /// Strategy-specific `+`.
     fn i_add(a: Self::T, b: Self::T) -> Self::T;
     /// Strategy-specific `-`.
