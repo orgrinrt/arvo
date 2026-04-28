@@ -1,0 +1,6 @@
+*.csv
+*.meta.json
+*_findings.md
+*.tmp
+*.log
+findings.md
