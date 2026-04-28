@@ -1061,6 +1061,25 @@ file. That separation keeps the design-doc lint honest: everything
 in DESIGN.md.tmpl is a shipping claim, everything in BACKLOG.md.tmpl
 is a promissory note.
 
+## Deep dives
+
+Per-topic deep dives live in sibling `DEEPDIVE_*.md.tmpl` templates and
+render alongside this DESIGN.
+
+- `DEEPDIVE_newtype-deref.md.tmpl`: rationale for the three-path bridge
+  from arvo's primitive newtypes (`Bool`, `USize`) to their inner Rust
+  primitives (`bool`, `usize`). Covers `?` (Try), `*` (Deref), and
+  `as_bool()` / `as_usize()` (AsBool / AsUSize traits) and when each
+  applies.
+- `DEEPDIVE_strategy-bound-trilemma.md.tmpl`: the structural constraint
+  that makes consumer-facing generic-over-bit-width APIs a smell.
+  Explains why `where S: UContainerFor<{ ufixed_bits(I, F) }>`
+  restatement is intrinsic on current rustc, the three rejected
+  alternatives, the three-layer discipline (trait-first / alias-first /
+  bit-width-generic only at arvo-internal layer 3), and the
+  `CrossStrategyOp<S1, S2>` marker trait that surfaces the discipline
+  at the type level.
+
 ## Sources
 
 - 202603241200_topic.arvo-strategy-markers.md (strategy definitions)
