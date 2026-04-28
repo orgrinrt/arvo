@@ -317,6 +317,10 @@ impl_bit_prim_u!(u8, 8);
 impl_bit_prim_u!(u16, 16);
 impl_bit_prim_u!(u32, 32);
 impl_bit_prim_u!(u64, 64);
+// Round 202604281000 Pass D: u128 BitPrim impl required by Precise
+// 33..=64 promotion to u128 container. WIDTH at 128 saturates at the
+// u8-typed const but matches the primitive's bit count.
+impl_bit_prim_u!(u128, 128);
 
 // --- IBitPrim impls on bare signed primitives -----------------------------
 //
@@ -388,6 +392,9 @@ impl_bit_prim_i!(i8, u8, 8);
 impl_bit_prim_i!(i16, u16, 16);
 impl_bit_prim_i!(i32, u32, 32);
 impl_bit_prim_i!(i64, u64, 64);
+// Round 202604281000 Pass D: i128 IBitPrim impl required by Precise
+// IFixed BITS=33..=64 promotion to i128 container.
+impl_bit_prim_i!(i128, u128, 128);
 
 // --- Container bridges ----------------------------------------------------
 //

@@ -102,11 +102,12 @@ where
 //   17..=32 -> u32 / i32
 //   33..=64 -> u64 / i64
 //
-// Warm / Precise: 2x logical width (one bucket up).
+// Warm / Precise: 2x logical width (one bucket up). Round 202604281000
+// Pass D promoted Precise 33..=64 from u64 to u128 to match Warm.
 //   1..=8  -> u16 / i16
 //   9..=16 -> u32 / i32
 //   17..=32 -> u64 / i64
-//   33..=64 -> (Warm unavailable per D2; Precise uses u64 with saturating ops)
+//   33..=64 -> u128 / i128 (both Warm and Precise; Precise saturates)
 
 macro_rules! impl_u_container {
     ($strategy:ty, $ty:ty, $($bits:literal),+) => {
@@ -256,11 +257,12 @@ impl_u_container!(
     57, 58, 59, 60, 61, 62, 63, 64
 );
 
-// Precise: 2x aligned up to 32, u64 at 33..=64 with saturating semantics.
-// Round 202604280500 keeps existing Precise 33..=64 = u64 (same as Hot
-// container width, distinguished by saturating ops). Extending Precise
-// to 65..=256 awaits the no-native-u256 design call (BACKLOG; same shape
-// rationale as Warm).
+// Precise: 2x aligned across the entire 1..=64 range with saturating
+// semantics. Round 202604281000 (Pass D) promoted Precise 33..=64 from
+// u64 to u128 to honor the 2x-logical contract consistently with Warm.
+// Pre-Round-D Precise used u64 at 33..=64, leaving Warm and Precise
+// inconsistent at that band; the fix mirrors Warm's u128 cell. Extending
+// Precise to 65..=256 awaits the no-native-u256 design call (BACKLOG).
 impl_u_container!(Precise, u16, 1, 2, 3, 4, 5, 6, 7, 8);
 impl_u_container!(Precise, u32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_u_container!(
@@ -268,7 +270,7 @@ impl_u_container!(
 );
 #[rustfmt::skip]
 impl_u_container!(
-    Precise, u64,
+    Precise, u128,
     33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48,
     49, 50, 51, 52, 53, 54, 55, 56,
@@ -404,9 +406,11 @@ impl_i_container!(Precise, i32, 9, 10, 11, 12, 13, 14, 15, 16);
 impl_i_container!(
     Precise, i64, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32
 );
+// Round 202604281000 (Pass D): Precise 33..=64 promoted from i64 to
+// i128 to mirror the unsigned cell and match Warm's i128 at this band.
 #[rustfmt::skip]
 impl_i_container!(
-    Precise, i64,
+    Precise, i128,
     33, 34, 35, 36, 37, 38, 39, 40,
     41, 42, 43, 44, 45, 46, 47, 48,
     49, 50, 51, 52, 53, 54, 55, 56,
