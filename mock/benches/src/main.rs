@@ -1,13 +1,16 @@
 //! Self-bench for arvo. Compares FNV1a and xxHash3 hash algorithms
-//! across input sizes 64, 256, 1024, and 4096 bytes through the full
-//! mockspace bench harness pipeline. First arvo consumer of
-//! mockspace-bench-harness.
+//! across input sizes 64, 256, 1024, and 4096 bytes through the
+//! mockspace bench harness pipeline.
+//!
+//! Uses the bench harness v3 helpers (`ByteRoutine` from
+//! `mockspace-bench-core`, typed form of `#[bench_variant]` from
+//! `mockspace-bench-macro`) so neither the orchestrator nor the
+//! variant cdylibs declare a `Routine` impl.
 
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
-use arvo_benches::Fnv1aVsXxHash3;
-use mockspace_bench_core::routine_bridge;
+use mockspace_bench_core::{routine_bridge, ByteRoutine};
 use mockspace_bench_harness::{self as harness, BenchManifest, RoutineSpec, Workload};
 
 fn main() -> ExitCode {
@@ -126,15 +129,16 @@ fn main() -> ExitCode {
     ExitCode::SUCCESS
 }
 
-/// Pick the right monomorphised Routine bridge for a given input size.
-/// The bridge captures `Input = [u8; N]` at the type level, so each
-/// declared size gets its own bridge. New sizes need a new arm.
+/// Pick the right monomorphised Routine bridge for a given input
+/// size. `ByteRoutine<IN, 8, true>` is the canonical hash-bench
+/// shape: IN bytes in, 8 bytes out (u64 digest), independent
+/// algorithms (so cross-variant byte-equality is not required).
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     let bridge = match n {
-        64 => routine_bridge!(Fnv1aVsXxHash3<64>),
-        256 => routine_bridge!(Fnv1aVsXxHash3<256>),
-        1024 => routine_bridge!(Fnv1aVsXxHash3<1024>),
-        4096 => routine_bridge!(Fnv1aVsXxHash3<4096>),
+        64 => routine_bridge!(ByteRoutine<64, 8, true>),
+        256 => routine_bridge!(ByteRoutine<256, 8, true>),
+        1024 => routine_bridge!(ByteRoutine<1024, 8, true>),
+        4096 => routine_bridge!(ByteRoutine<4096, 8, true>),
         _ => return None,
     };
     Some(RoutineSpec {
@@ -143,8 +147,8 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     })
 }
 
-/// Take a manifest variant path with bare cargo target stem and produce
-/// the platform-shaped dylib path.
+/// Take a manifest variant path with bare cargo target stem and
+/// produce the platform-shaped dylib path.
 fn shape_variant_path(p: PathBuf) -> PathBuf {
     let parent = p.parent().map(Path::to_path_buf).unwrap_or_default();
     let stem = p.file_name().and_then(|s| s.to_str()).unwrap_or("");
