@@ -1,0 +1,50 @@
+50d3c5f chore: lock src changelist for 202604281400_changelist.src.lock.md
+e103f07 feat: round 202604281400 — em-dash sweep + cfg registration + drop dead nightly features
+16aefc5 docs: round 202604281400 src CL — post-D reviewer source plan
+006806c chore: lock doc changelist for 202604281400_changelist.doc.lock.md
+a09fd06 docs: round 202604281400 doc execution — DESIGN cap update + BACKLOG cross-link
+f1ae9d3 docs: round 202604281400 doc CL — post-D reviewer follow-up plan
+2a3c8cf docs: round 202604281400 topic — post-D reviewer follow-up
+2662125 chore: close design round 202604281000
+bdd37ba chore: lock src changelist for 202604281000_changelist.src.lock.md
+f584bce feat: round 202604281000 pass e — HasAxes supertrait on UArith/IArith/widen traits
+29737ad feat: round 202604281000 pass f — widen Bits const-generic param u8 -> u16
+9201fac feat: round 202604281000 pass b.1 — ship XxHash3 hash family (default)
+dcfeff6 feat: round 202604281000 pass b.4 — typed Bits<M> -> Bits<N> Narrow impls
+14db72f feat: round 202604281000 pass b.4 — cross-primitive Narrow impls (orphan-rule home)
+cb48275 feat: round 202604281000 pass g — CrossStrategyOp marker trait with diagnostic
+c3b929f feat: round 202604281000 pass a.2 — cfg(arvo_full_layout_audit) full-cell expansion
+fd9f0d2 feat: round 202604281000 pass c — bitfield S strategy parameter (Hot default, Cold supported)
+db73584 feat: round 202604281000 pass d — promote precise 33..=64 to u128/i128
+6901d1d feat: round 202604281000 pass b.2 — widen ContentHash to Bits<64, Hot>
+f624e7a feat: round 202604281000 pass b.3 — add narrow_to_unmasked to Narrow trait
+f0d8d64 feat: round 202604281000 pass a.1+a.3 — axis discriminants and constparamty audit
+da542c5 docs: round 202604281000 src CL — substrate completion batch source plan
+54748d4 chore: lock doc changelist for 202604281000_changelist.doc.lock.md
+a16051a docs: round 202604281000 doc execution — passes A through G
+fd00c12 docs: round 202604281000 doc CL — substrate completion batch plan
+c677f21 docs: round 202604281000 topic — substrate completion batch (Round D consolidated)
+b390362 chore: close design round 202604280841
+e568eb2 chore: lock src changelist for 202604280841_changelist.src.lock.md
+5e73e12 feat: round 202604280841 — layout-soundness gates for repr(transparent) chains
+1ada8e7 docs: round 202604280841 src CL — layout assertion modules
+d560607 chore: lock doc changelist for 202604280841_changelist.doc.lock.md
+b95a108 docs: round 202604280841 doc execution — soundness gate doc updates
+031b2df docs: round 202604280841 doc CL — soundness gate doc updates
+b0def8d docs: round 202604280841 topic — layout-soundness gates
+92a7cc4 chore: close design round 202604280806
+51b5b36 chore: lock src changelist for 202604280806_changelist.src.lock.md
+6619989 feat: round 202604280806 pass 2 — strategy axis decomposition (axis traits only)
+0f97275 feat: round 202604280806 pass 1 — meta-newtype carrier widening via MetaCarrier
+4260cd5 docs: round 202604280806 src CL — MetaCarrier + axis traits two-pass plan
+5e69195 chore: lock doc changelist for 202604280806_changelist.doc.lock.md
+e38b7aa docs: round 202604280806 doc execution — MetaCarrier + axis traits
+1c543ff docs: round 202604280806 doc CL — meta-newtype carrier workaround + axis traits
+4a2a308 docs: round 202604280806 topic — pass 2 cycle workaround + internal axes decomposition
+d2bc2ef chore: close design round 202604280500
+217530c chore: lock src changelist for 202604280500_changelist.src.lock.md
+63fcbeb fix: round 202604280500 pass 3 cleanup — refresh diagnostic notes + warm-bound trybuild fixture for new 64-bit cap
+53c9041 docs: round 202604280500 src CL — defer pass 2 meta-newtype widening due to trait-solver cycle
+37959df feat: round 202604280500 pass 4 — MultiContainer<HiT, LoT> + 129..=255 storage routing
+ad8148a feat: round 202604280500 pass 3 — extend container tables to 65..=128 (Hot/Cold u128) + Warm 33..=64 (u128)
+fe3e858 feat: round 202604280500 pass 5 — IFixed reshape over Bits<{1+I+F}, S, Signed>
