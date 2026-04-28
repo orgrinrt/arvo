@@ -23,8 +23,8 @@
 //! `IFixed<I, F, S>` live in `arvo-bits` (arvo-owned types; no
 //! orphan issue).
 
-use arvo_storage::{Bool, USize};
-use arvo_strategy::{IContainerFor, Strategy, UContainerFor};
+use arvo_storage::{Bits, Bool, USize};
+use arvo_strategy::{BitsContainerFor, IContainerFor, Signedness, Strategy, UContainerFor};
 
 mod bits_impl;
 
@@ -630,3 +630,34 @@ impl_narrow_i!(i16, u16 => i8);
 impl_narrow_i!(i32, u32 => i8, i16);
 impl_narrow_i!(i64, u64 => i8, i16, i32);
 impl_narrow_i!(i128, u128 => i8, i16, i32, i64);
+
+// --- Typed Bits<M, S, Sign> -> Bits<N, S, Sign> for M > N ---------------
+//
+// Forwards through the underlying primitive `Narrow<T_N>` impl on the
+// source's container type. Where M > N is not enforced at the type
+// level (Rust lacks negative const-bounds in stable form); consumers
+// supplying M <= N still get a valid result, but the masking is a
+// no-op for cells where the source width already fits.
+
+impl<const M: u8, const N: u8, S: Strategy, Sign: Signedness>
+    const Narrow<Bits<N, S, Sign>> for Bits<M, S, Sign>
+where
+    S: BitsContainerFor<M, Sign>,
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<M, Sign>>::T:
+        ~const Narrow<<S as BitsContainerFor<N, Sign>>::T>,
+{
+    #[inline(always)]
+    fn narrow_to<const W: u8>(self) -> Bits<N, S, Sign> {
+        let raw = self.to_raw();
+        let narrowed = raw.narrow_to::<W>();
+        Bits::from_raw(narrowed)
+    }
+
+    #[inline(always)]
+    fn narrow_to_unmasked<const W: u8>(self) -> Bits<N, S, Sign> {
+        let raw = self.to_raw();
+        let narrowed = raw.narrow_to_unmasked::<W>();
+        Bits::from_raw(narrowed)
+    }
+}
