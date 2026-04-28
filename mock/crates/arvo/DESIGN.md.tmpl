@@ -160,10 +160,14 @@ when the meta-newtype field literally writes the generic
 `Bits<9, Hot>` projection; the cycle interleaves `IBits: Sized`
 evaluation with `UFixed`'s const-eval where-clause).
 
-The 9-bit native range covers 0..=511; substrate uses 0..=255 (in
-Round B, capped at 255 because `Bits<const N: u8>` itself remains at
-u8). The single bottom-out point for `u8` const-generics is
-`Bits<const N: u8, S, Sign>` itself; meta-layer types (`IBits`,
+The 9-bit native range covers 0..=511. Round B raised the substrate
+cap to 255 (the limit of `Bits<const N: u8>` at the time); Round
+202604281000 Pass F widened that const-generic to `u16`, so the
+reachable cap is now 0..=65535 in principle. Container dispatch
+covers up to 255 today (single-primitive 65..=128 to `u128`,
+multi-primitive 129..=255 to `MultiContainer`); cells beyond 255 are
+BACKLOG-tracked. The single bottom-out point for `u16` const-generics
+is `Bits<const N: u16, S, Sign>` itself; meta-layer types (`IBits`,
 `FBits`, `Width`) lift to typed fields above it via `MetaCarrier`.
 
 Requires `adt_const_params` + `const_param_ty_trait` (nightly).

@@ -37,7 +37,8 @@ inline with the shipping-round identifier.
   extends 65..=128 → `u128` (native single-primitive) and 129..=255
   → `MultiContainer<HiT, LoT>` (storage-only). Reachable cap is 255
   not 256 in this round because `Bits<const N: u8>` itself stays at
-  u8; widening Bits's const-generic to u16 is BACKLOG-tracked.
+  u8; widening Bits's const-generic to u16 is BACKLOG-tracked
+  (later shipped in Round 202604281000 Pass F).
   Meta-newtypes (`IBits` / `FBits` / `Width`) carrier widening to
   `MetaCarrier` (layout-equivalent to `Bits<9, Hot, Unsigned>`)
   SHIPPED in round 202604280806 via the parallel-carrier workaround
