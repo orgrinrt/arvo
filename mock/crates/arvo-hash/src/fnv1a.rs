@@ -1,12 +1,12 @@
 //! FNV-1a-64 streaming hasher with N-bit output.
 //!
-//! `Fnv1a<const N: u8>` wraps the `fnv1a_64` algorithm and projects
+//! `Fnv1a<const N: u16>` wraps the `fnv1a_64` algorithm and projects
 //! its 64-bit state into the requested width via a per-N mask plus
 //! `as` cast to the dispatched `<Hot as UContainerFor<N>>::T`
 //! container, then `Bits::from_raw`.
 //!
 //! `N` is `u8` directly rather than the `Width` meta-newtype for the
-//! same reason `Hasher<const N: u8>` does. See `algo.rs` for the
+//! same reason `Hasher<const N: u16>` does. See `algo.rs` for the
 //! full rationale.
 //!
 //! Width is constrained to `1..=64` implicitly by `Hot:
@@ -32,7 +32,7 @@ use arvo::{Bits, Hot};
 /// use arvo_hash::{Fnv1a, HasherExt};
 /// let h: arvo::Bits<28, arvo::Hot> = Fnv1a::<28>::new().hash(b"hello");
 /// ```
-pub struct Fnv1a<const N: u8>
+pub struct Fnv1a<const N: u16>
 where
     Hot: UContainerFor<N>,
 {
@@ -40,7 +40,7 @@ where
     state: u64,
 }
 
-impl<const N: u8> Fnv1a<N>
+impl<const N: u16> Fnv1a<N>
 where
     Hot: UContainerFor<N>,
 {
@@ -61,7 +61,7 @@ where
     }
 }
 
-impl<const N: u8> Default for Fnv1a<N>
+impl<const N: u16> Default for Fnv1a<N>
 where
     Hot: UContainerFor<N>,
 {

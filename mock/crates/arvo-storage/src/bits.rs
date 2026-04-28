@@ -46,7 +46,7 @@ use arvo_transparent::Transparent;
 /// associated-type bounds; consumers don't repeat them.
 #[derive(PartialEq, Eq, Copy, Clone, Debug, Default, Hash)]
 #[repr(transparent)]
-pub struct Bits<const N: u8, S: Strategy = Hot, Sign: Signedness = Unsigned>(
+pub struct Bits<const N: u16, S: Strategy = Hot, Sign: Signedness = Unsigned>(
     <S as BitsContainerFor<N, Sign>>::T,
 )
 where
@@ -63,13 +63,13 @@ where
 // `MultiContainer<HiT, LoT>` shape per the strategy projection);
 // structural eq follows from the derived `PartialEq + Eq` plus the
 // inner primitive's structural eq.
-impl<const N: u8, S: Strategy + Eq, Sign: Signedness + Eq> ConstParamTy_ for Bits<N, S, Sign>
+impl<const N: u16, S: Strategy + Eq, Sign: Signedness + Eq> ConstParamTy_ for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: ConstParamTy_,
 {}
 
-impl<const N: u8, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
+impl<const N: u16, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
 {
@@ -88,7 +88,7 @@ where
 // (downstream domain newtypes) can route through one level of `*`
 // instead of `.0.0` chains.
 
-impl<const N: u8, S: Strategy, Sign: Signedness> core::ops::Deref for Bits<N, S, Sign>
+impl<const N: u16, S: Strategy, Sign: Signedness> core::ops::Deref for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
 {
@@ -99,7 +99,7 @@ where
     }
 }
 
-impl<const N: u8, S: Strategy, Sign: Signedness> AsRef<<S as BitsContainerFor<N, Sign>>::T>
+impl<const N: u16, S: Strategy, Sign: Signedness> AsRef<<S as BitsContainerFor<N, Sign>>::T>
     for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
@@ -113,7 +113,7 @@ where
 // SAFETY: `Bits<N, S, Sign>` is `repr(transparent)` over
 // `<S as BitsContainerFor<N, Sign>>::T`; layout is byte-identical by
 // Rust spec.
-unsafe impl<const N: u8, S: Strategy, Sign: Signedness> const Transparent for Bits<N, S, Sign>
+unsafe impl<const N: u16, S: Strategy, Sign: Signedness> const Transparent for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
 {

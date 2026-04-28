@@ -193,7 +193,7 @@ macro_rules! __bitfield_impl {
             };
 
             /// Total bit width of this bitfield.
-            pub const BITS: u8 = $n;
+            pub const BITS: u16 = $n;
 
             /// Zero-initialise.
             pub const fn new() -> Self {

@@ -1,6 +1,6 @@
 //! XxHash3-64 streaming hasher with N-bit output.
 //!
-//! `XxHash3<const N: u8>` wraps the `xxhash3_64` algorithm and projects
+//! `XxHash3<const N: u16>` wraps the `xxhash3_64` algorithm and projects
 //! its 64-bit state into the requested width via a per-N mask plus
 //! `as` cast to the dispatched `<Hot as UContainerFor<N>>::T` container,
 //! then `Bits::from_raw`. Same shape as `Fnv1a<N>`; consumer-facing
@@ -45,7 +45,7 @@ pub const fn xxhash3_64(bytes: &[u8]) -> u64 {
 /// const-friendly API is one-shot only. For hot-path streaming, use
 /// the `hash_const` entry point or accumulate into a single `&[u8]`
 /// before calling `update` once.
-pub struct XxHash3<const N: u8>
+pub struct XxHash3<const N: u16>
 where
     Hot: UContainerFor<N>,
 {
@@ -59,7 +59,7 @@ where
     pos: usize,
 }
 
-impl<const N: u8> XxHash3<N>
+impl<const N: u16> XxHash3<N>
 where
     Hot: UContainerFor<N>,
 {
@@ -74,7 +74,7 @@ where
     }
 }
 
-impl<const N: u8> Default for XxHash3<N>
+impl<const N: u16> Default for XxHash3<N>
 where
     Hot: UContainerFor<N>,
 {

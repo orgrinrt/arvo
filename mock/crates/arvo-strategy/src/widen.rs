@@ -16,26 +16,26 @@ use notko::Outcome;
 use crate::{Hot, IContainerFor, Precise, UContainerFor, Warm};
 
 /// Unsigned container widen bridge: `(Src, N) -> Dst::T`.
-pub trait UWidenFrom<Src: UContainerFor<N>, const N: u8>: UContainerFor<N> {
+pub trait UWidenFrom<Src: UContainerFor<N>, const N: u16>: UContainerFor<N> {
     /// Widen an `Src::T` value into `Self::T`. Infallible by definition.
     fn u_widen(v: Src::T) -> Self::T;
 }
 
 /// Signed container widen bridge.
-pub trait IWidenFrom<Src: IContainerFor<N>, const N: u8>: IContainerFor<N> {
+pub trait IWidenFrom<Src: IContainerFor<N>, const N: u16>: IContainerFor<N> {
     /// Widen an `Src::T` value into `Self::T`. Infallible by definition.
     fn i_widen(v: Src::T) -> Self::T;
 }
 
 /// Unsigned container narrow bridge with bounds check against the
 /// logical range `[0, 2^N)`.
-pub trait UNarrowFrom<Src: UContainerFor<N>, const N: u8>: UContainerFor<N> {
+pub trait UNarrowFrom<Src: UContainerFor<N>, const N: u16>: UContainerFor<N> {
     /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
     fn u_try_narrow(v: Src::T) -> Outcome<Self::T, ()>;
 }
 
 /// Signed container narrow bridge with logical-range check.
-pub trait INarrowFrom<Src: IContainerFor<N>, const N: u8>: IContainerFor<N> {
+pub trait INarrowFrom<Src: IContainerFor<N>, const N: u16>: IContainerFor<N> {
     /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
     fn i_try_narrow(v: Src::T) -> Outcome<Self::T, ()>;
 }

@@ -28,7 +28,7 @@ use crate::{Cold, Hot, IContainerFor, Precise, UContainerFor, Warm};
 /// Keyed on the same `N` that `UContainerFor` uses. Lets
 /// `UFixed<I, F, S>` delegate arithmetic to the strategy-correct
 /// container operation without re-bounding on the container type.
-pub trait UArith<const N: u8>: UContainerFor<N> {
+pub trait UArith<const N: u16>: UContainerFor<N> {
     /// Strategy-specific `+`.
     fn u_add(a: Self::T, b: Self::T) -> Self::T;
     /// Strategy-specific `-`.
@@ -41,7 +41,7 @@ pub trait UArith<const N: u8>: UContainerFor<N> {
 }
 
 /// Signed arithmetic dispatch for `(strategy, N)`.
-pub trait IArith<const N: u8>: IContainerFor<N> {
+pub trait IArith<const N: u16>: IContainerFor<N> {
     /// Strategy-specific `+`.
     fn i_add(a: Self::T, b: Self::T) -> Self::T;
     /// Strategy-specific `-`.

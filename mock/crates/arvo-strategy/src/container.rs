@@ -23,7 +23,7 @@ use crate::{Cold, Hot, MultiContainer, Precise, Signed, Signedness, Strategy, Un
     message = "strategy `{Self}` does not provide a container for {N}-bit width",
     note = "Hot / Cold cover 1..=128 directly; Warm / Precise cover 1..=64 via 2x-logical primitives. For wider widths, choose Hot or Cold explicitly: `Uint<128, Hot>`, etc. Beyond 128 bits, `Bits<N, S, Sign>` dispatches through `MultiContainer<HiT, LoT>` for storage; arithmetic on multi-value containers is BACKLOG-tracked."
 )]
-pub const trait UContainerFor<const N: u8>: Strategy {
+pub const trait UContainerFor<const N: u16>: Strategy {
     /// Concrete storage integer for this (strategy, bit-width) pair.
     type T: Copy
         + Clone
@@ -43,7 +43,7 @@ pub const trait UContainerFor<const N: u8>: Strategy {
     message = "strategy `{Self}` does not provide a signed container for {N}-bit width",
     note = "Hot / Cold cover 1..=128 directly; Warm / Precise cover 1..=64 via 2x-logical primitives. For wider widths, choose Hot or Cold explicitly: `Int<128, Hot>`, etc. Beyond 128 bits, `Bits<N, S, Sign>` dispatches through `MultiContainer<HiT, LoT>` for storage; arithmetic on multi-value containers is BACKLOG-tracked."
 )]
-pub const trait IContainerFor<const N: u8>: Strategy {
+pub const trait IContainerFor<const N: u16>: Strategy {
     /// Concrete signed storage integer for this (strategy, bit-width) pair.
     type T: Copy
         + Clone
@@ -68,7 +68,7 @@ pub const trait IContainerFor<const N: u8>: Strategy {
 /// `UFixed` / `IFixed` continue to bind on `UContainerFor<N>` /
 /// `IContainerFor<N>` directly; only `Bits` itself binds on
 /// `BitsContainerFor<N, Sign>`.
-pub trait BitsContainerFor<const N: u8, Sign: Signedness>: Strategy {
+pub trait BitsContainerFor<const N: u16, Sign: Signedness>: Strategy {
     /// Concrete storage integer for this (strategy, bit-width, sign) triple.
     type T: Copy
         + Clone
@@ -80,14 +80,14 @@ pub trait BitsContainerFor<const N: u8, Sign: Signedness>: Strategy {
         + 'static;
 }
 
-impl<S: Strategy, const N: u8> BitsContainerFor<N, Unsigned> for S
+impl<S: Strategy, const N: u16> BitsContainerFor<N, Unsigned> for S
 where
     S: UContainerFor<N>,
 {
     type T = <S as UContainerFor<N>>::T;
 }
 
-impl<S: Strategy, const N: u8> BitsContainerFor<N, Signed> for S
+impl<S: Strategy, const N: u16> BitsContainerFor<N, Signed> for S
 where
     S: IContainerFor<N>,
 {
@@ -171,7 +171,7 @@ impl_u_container!(
     185, 186, 187, 188, 189, 190, 191, 192
 );
 // Round 202604280500: Hot extends to 193..=255 via MultiContainer<u128, u128>
-// (193..=256 in design intent; const N: u8 caps at 255 in this round).
+// (193..=256 in design intent; const N: u16 caps at 255 in this round).
 #[rustfmt::skip]
 impl_u_container!(
     Hot, MultiContainer<u128, u128>,

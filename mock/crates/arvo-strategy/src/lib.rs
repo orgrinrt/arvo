@@ -66,7 +66,7 @@ pub const trait Strategy: sealed::Sealed + Copy + Clone + Default + 'static {
     /// Conservativeness rank. Higher is more conservative. Used by
     /// cross-strategy operation resolution:
     /// `Precise > Cold > Warm > Hot`.
-    const RANK: u8;
+    const RANK: u16;
 }
 
 /// Optimised for L1 density and operation throughput.
@@ -110,22 +110,22 @@ impl sealed::Sealed for Precise {}
 impl const Strategy for Hot {
     #[cfg(debug_assertions)]
     const NAME: &'static str = "Hot";
-    const RANK: u8 = 0;
+    const RANK: u16 = 0;
 }
 impl const Strategy for Warm {
     #[cfg(debug_assertions)]
     const NAME: &'static str = "Warm";
-    const RANK: u8 = 1;
+    const RANK: u16 = 1;
 }
 impl const Strategy for Cold {
     #[cfg(debug_assertions)]
     const NAME: &'static str = "Cold";
-    const RANK: u8 = 2;
+    const RANK: u16 = 2;
 }
 impl const Strategy for Precise {
     #[cfg(debug_assertions)]
     const NAME: &'static str = "Precise";
-    const RANK: u8 = 3;
+    const RANK: u16 = 3;
 }
 
 // --- Sign axis markers ----------------------------------------------------

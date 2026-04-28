@@ -11,14 +11,14 @@ use arvo_strategy::{Hot, Strategy, UContainerFor};
 
 use crate::{BitAccess, BitLogic, BitPrim, BitSequence, HasBitWidth};
 
-impl<const N: u8, S: Strategy> HasBitWidth for Bits<N, S>
+impl<const N: u16, S: Strategy> HasBitWidth for Bits<N, S>
 where
     S: UContainerFor<N>,
 {
     const WIDTH: USize = USize(N as usize);
 }
 
-impl<const N: u8, S: Strategy> BitAccess for Bits<N, S>
+impl<const N: u16, S: Strategy> BitAccess for Bits<N, S>
 where
     S: UContainerFor<N>,
     <S as UContainerFor<N>>::T: BitPrim,
@@ -41,7 +41,7 @@ where
     }
 }
 
-impl<const N: u8, S: Strategy> BitSequence for Bits<N, S>
+impl<const N: u16, S: Strategy> BitSequence for Bits<N, S>
 where
     S: UContainerFor<N>,
     <S as UContainerFor<N>>::T: BitPrim,
@@ -68,7 +68,7 @@ where
     }
 }
 
-impl<const N: u8> BitLogic for Bits<N, Hot>
+impl<const N: u16> BitLogic for Bits<N, Hot>
 where
     Hot: UContainerFor<N>,
     <Hot as UContainerFor<N>>::T: BitPrim

@@ -40,7 +40,7 @@ use crate::{Cold, Hot, Precise, Warm};
 /// compile-time `HasAxes` cross-checks (Pass A.1 of round 202604281000).
 pub trait OverflowPolicy: sealed::Sealed + Copy + Clone + Default + 'static {
     /// Stable per-marker discriminant for compile-time projection.
-    const DISCRIMINANT: u8;
+    const DISCRIMINANT: u16;
 }
 
 /// Overflow policy: arithmetic wraps modulo container width.
@@ -61,10 +61,10 @@ impl sealed::Sealed for Wrapping {}
 impl sealed::Sealed for Saturating {}
 
 impl OverflowPolicy for Wrapping {
-    const DISCRIMINANT: u8 = 0;
+    const DISCRIMINANT: u16 = 0;
 }
 impl OverflowPolicy for Saturating {
-    const DISCRIMINANT: u8 = 1;
+    const DISCRIMINANT: u16 = 1;
 }
 
 // --- ContainerWidth axis --------------------------------------------------
@@ -76,7 +76,7 @@ impl OverflowPolicy for Saturating {
 /// for compile-time `HasAxes` cross-checks.
 pub trait ContainerWidth: sealed::Sealed + Copy + Clone + Default + 'static {
     /// Stable per-marker discriminant for compile-time projection.
-    const DISCRIMINANT: u8;
+    const DISCRIMINANT: u16;
 }
 
 /// Container width: minimum byte-aligned width that fits the logical
@@ -98,10 +98,10 @@ impl sealed::Sealed for Min {}
 impl sealed::Sealed for DoubleLogical {}
 
 impl ContainerWidth for Min {
-    const DISCRIMINANT: u8 = 0;
+    const DISCRIMINANT: u16 = 0;
 }
 impl ContainerWidth for DoubleLogical {
-    const DISCRIMINANT: u8 = 1;
+    const DISCRIMINANT: u16 = 1;
 }
 
 // --- StorageLayout axis ---------------------------------------------------
@@ -113,7 +113,7 @@ impl ContainerWidth for DoubleLogical {
 /// compile-time `HasAxes` cross-checks.
 pub trait StorageLayout: sealed::Sealed + Copy + Clone + Default + 'static {
     /// Stable per-marker discriminant for compile-time projection.
-    const DISCRIMINANT: u8;
+    const DISCRIMINANT: u16;
 }
 
 /// Storage layout: each value occupies a full container slot.
@@ -136,10 +136,10 @@ impl sealed::Sealed for Dense {}
 impl sealed::Sealed for Bitpacked {}
 
 impl StorageLayout for Dense {
-    const DISCRIMINANT: u8 = 0;
+    const DISCRIMINANT: u16 = 0;
 }
 impl StorageLayout for Bitpacked {
-    const DISCRIMINANT: u8 = 1;
+    const DISCRIMINANT: u16 = 1;
 }
 
 // --- HasAxes: bundled axis projection on Strategy markers -----------------
