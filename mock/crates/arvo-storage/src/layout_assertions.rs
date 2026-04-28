@@ -60,7 +60,7 @@ assert_layout_eq!(IBits, MetaCarrier);
 assert_layout_eq!(FBits, MetaCarrier);
 assert_layout_eq!(Width, MetaCarrier);
 
-// --- Tier 2: Bits projection — Hot, unsigned ------------------------------
+// --- Tier 2: Bits projection: Hot, unsigned ------------------------------
 
 assert_layout_eq!(Bits<1, Hot, Unsigned>, u8);
 assert_layout_eq!(Bits<8, Hot, Unsigned>, u8);
@@ -77,7 +77,7 @@ assert_layout_eq!(Bits<192, Hot, Unsigned>, MultiContainer<u64, u128>);
 assert_layout_eq!(Bits<193, Hot, Unsigned>, MultiContainer<u128, u128>);
 assert_layout_eq!(Bits<255, Hot, Unsigned>, MultiContainer<u128, u128>);
 
-// --- Tier 2: Bits projection — Hot, signed --------------------------------
+// --- Tier 2: Bits projection: Hot, signed --------------------------------
 
 assert_layout_eq!(Bits<1, Hot, Signed>, i8);
 assert_layout_eq!(Bits<8, Hot, Signed>, i8);
@@ -94,7 +94,7 @@ assert_layout_eq!(Bits<192, Hot, Signed>, MultiContainer<i64, i128>);
 assert_layout_eq!(Bits<193, Hot, Signed>, MultiContainer<i128, i128>);
 assert_layout_eq!(Bits<255, Hot, Signed>, MultiContainer<i128, i128>);
 
-// --- Tier 2: Bits projection — Cold mirrors Hot ---------------------------
+// --- Tier 2: Bits projection: Cold mirrors Hot ---------------------------
 
 assert_layout_eq!(Bits<1, Cold, Unsigned>, u8);
 assert_layout_eq!(Bits<8, Cold, Unsigned>, u8);
@@ -110,7 +110,7 @@ assert_layout_eq!(Bits<128, Cold, Signed>, i128);
 assert_layout_eq!(Bits<129, Cold, Signed>, MultiContainer<i64, i128>);
 assert_layout_eq!(Bits<255, Cold, Signed>, MultiContainer<i128, i128>);
 
-// --- Tier 2: Bits projection — Warm (2x logical, caps at 64) --------------
+// --- Tier 2: Bits projection: Warm (2x logical, caps at 64) --------------
 
 assert_layout_eq!(Bits<1, Warm, Unsigned>, u16);
 assert_layout_eq!(Bits<8, Warm, Unsigned>, u16);
@@ -127,7 +127,7 @@ assert_layout_eq!(Bits<32, Warm, Signed>, i64);
 assert_layout_eq!(Bits<33, Warm, Signed>, i128);
 assert_layout_eq!(Bits<64, Warm, Signed>, i128);
 
-// --- Tier 2: Bits projection — Precise ------------------------------------
+// --- Tier 2: Bits projection: Precise ------------------------------------
 //
 // Precise mirrors Warm's 2x-logical contract across the entire 1..=64
 // range. Round 202604281000 Pass D promoted Precise 33..=64 from u64

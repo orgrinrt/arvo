@@ -14,3 +14,6 @@ mockspace.workspace = true
 
 [features]
 default = []
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(arvo_full_layout_audit)"] }
