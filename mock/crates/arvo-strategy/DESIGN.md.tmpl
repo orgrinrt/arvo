@@ -65,6 +65,41 @@ pub const trait Strategy {}
 Sealed marker. The four markers above implement it. No methods.
 Const trait so bounds compose with const fns.
 
+## Strategy axis decomposition
+
+Round C (round 202604280806) decomposes the bundled `Strategy` axis
+into three orthogonal sub-axes, each its own sealed marker trait:
+
+```rust
+pub trait OverflowPolicy { /* Wrapping / Saturating */ }
+pub trait ContainerWidth { /* Min / DoubleLogical */ }
+pub trait StorageLayout { /* Dense / Bitpacked */ }
+```
+
+Each axis has two ZST markers (`Wrapping` / `Saturating`, `Min` /
+`DoubleLogical`, `Dense` / `Bitpacked`). The four existing strategy
+markers implement specific axis combinations:
+
+| Marker  | OverflowPolicy | ContainerWidth | StorageLayout |
+|---------|----------------|----------------|---------------|
+| Hot     | Wrapping       | Min            | Dense         |
+| Warm    | Wrapping       | DoubleLogical  | Dense         |
+| Cold    | Wrapping       | Min            | Bitpacked     |
+| Precise | Saturating     | DoubleLogical  | Dense         |
+
+The public surface (the four markers) is unchanged. The axis traits
+are internal documentation + future-proofing primitives:
+arithmetic / widen / narrow impls in Round C still dispatch via the
+bundled `Strategy` marker. A follow-up round refactors those impls
+to dispatch via the axis traits, allowing future experimentation
+with mixed axes (saturating bitpacked, wrapping double-logical with
+bitpacked, etc.) without breaking the public surface.
+
+Per the `arvo-toolbox-not-policer` workspace rule, the axis
+decomposition exists so the substrate can grow its strategy lattice
+without forking the marker namespace each time. Consumer-facing
+expansion (new public markers) requires an explicit design round.
+
 ## UContainerFor
 
 ```rust

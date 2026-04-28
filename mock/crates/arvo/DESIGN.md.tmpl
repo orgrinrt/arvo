@@ -135,38 +135,42 @@ arvo wraps Rust primitives used in public APIs. All are
 ```rust
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
-pub struct IBits(pub Bits<9, Hot>);  // integer bit count
+pub struct IBits(pub MetaCarrier);  // integer bit count
 
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
-pub struct FBits(pub Bits<9, Hot>);  // fractional bit count
+pub struct FBits(pub MetaCarrier);  // fractional bit count
 ```
 
-`IBits` and `FBits` wrap `Bits<9, Hot>` (the L0 storage primitive at
-9 bits, sufficient for `0..=256` with one bit wasted), not bare `u8`.
-The carrier widened from `Bits<7, Hot>` (0..=127 native) to
-`Bits<9, Hot>` (0..=511 native; 0..=256 used) in round 202604280500
-to support the substrate's bit-width cap rising from 128 to 256. The
-single bottom-out point for `u8` const-generics is
-`Bits<const N: u8, S, Sign>` itself; meta-layer types (`IBits`,
-`FBits`, `Width`) lift to typed fields above it. The `from_raw`
-constructor on `Bits<9, Hot>` accepts `u16`-typed input (the
-underlying container at N=9); two `IBits` values constructed from
-512 and 0 (which masks to 0 if Bits enforces width-mask on
-construction) compare structurally equal under `ConstParamTy` per the
-meta-layer soundness contract.
+`IBits` and `FBits` wrap `MetaCarrier`, the L0 storage primitive's
+parallel layout-stable companion to `Bits<9, Hot, Unsigned>`. Both
+are `repr(transparent)` over u16 (the underlying container
+`<Hot as BitsContainerFor<9, Unsigned>>::T` projects to). The
+`MetaCarrier::as_bits()` accessor exposes the `Bits<9, Hot,
+Unsigned>`-typed view at zero cost. See `arvo-storage` DESIGN.md
+for the rationale (bypass of a rustc trait-solver cycle that arises
+when the meta-newtype field literally writes the generic
+`Bits<9, Hot>` projection; the cycle interleaves `IBits: Sized`
+evaluation with `UFixed`'s const-eval where-clause).
 
-Requires `adt_const_params` (nightly). Prevents accidentally
-swapping integer and fractional bit counts at type definition sites.
-Consumer code defines its own semantic aliases over `UFixed` /
-`IFixed` and rarely touches `IBits` / `FBits` directly.
+The 9-bit native range covers 0..=511; substrate uses 0..=255 (in
+Round B, capped at 255 because `Bits<const N: u8>` itself remains at
+u8). The single bottom-out point for `u8` const-generics is
+`Bits<const N: u8, S, Sign>` itself; meta-layer types (`IBits`,
+`FBits`, `Width`) lift to typed fields above it via `MetaCarrier`.
+
+Requires `adt_const_params` + `const_param_ty_trait` (nightly).
+Prevents accidentally swapping integer and fractional bit counts at
+type definition sites. Consumer code defines its own semantic
+aliases over `UFixed` / `IFixed` and rarely touches `IBits` /
+`FBits` directly.
 
 ### Width
 
 ```rust
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
-pub struct Width(pub Bits<9, Hot>);  // bit-width meta value (0..=256)
+pub struct Width(pub MetaCarrier);  // bit-width meta value (0..=255 used)
 ```
 
 The bit-width meta-newtype. Used as the const-generic param type for
@@ -175,8 +179,9 @@ and any other API that takes a logical bit-width as a typed const
 value. The L0 storage primitive `Bits` itself keeps its `const N:
 u8` parameter as the irreducible root of the const-generic tower
 (workspace-rule exception #2); `Width` lifts above that root. The
-`Bits<9, Hot>` carrier (round 202604280500) covers the substrate's
-0..=256 logical-width range.
+`MetaCarrier` field carries the same 9-bit native range used by
+`IBits` / `FBits`; the substrate's logical-width range is 0..=255 in
+Round B / Round C.
 
 The name avoids collision with the `arvo_bits::HasBitWidth` trait
 (L1 contract layer; "this type has a bit width").
