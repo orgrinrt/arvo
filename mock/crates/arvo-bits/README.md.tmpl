@@ -1,7 +1,10 @@
 # arvo-bits
 
-Bit-level primitives for arvo numeric types. BitWidth, BitAccess,
-BitSequence trait contracts. Semantic aliases (Bit, Byte, Word, DWord,
-QWord). Blanket impls for all arvo fixed-point types. Opaque-bit
-concrete container (Bits, parameterised by const N) for fixed-width
-non-arithmetic identity values. `#![no_std]`, no alloc.
+Concrete trait impls for the bit-level contracts. Blanket impls of
+`HasBitWidth`, `BitAccess`, `BitSequence`, `BitLogic`, `BitPrim`,
+`UBitContainer`, `IBitContainer` (declared in `arvo-bits-contracts`)
+on `Bits<N, S>` (from `arvo-storage`) and the bare primitive
+containers (`u8`, `u16`, `u32`, `u64`, `i8`..`i64`). Hosts the
+bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`,
+`QWord`) as typed `Bits<N, Hot>` newtypes for common widths.
+`#![no_std]`, no alloc.

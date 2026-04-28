@@ -1,0 +1,337 @@
+# arvo-storage. Design
+
+The minimal bare-primitive layer of arvo. Sits at the bottom of every
+dependency chain in the substrate. Hosts the only fielded primitive
+types whose existence requires wrapping bare Rust primitives directly,
+the strategy markers used by every numeric type, and the typed
+meta-bit newtypes that carry bit-count meta values through const
+generic positions. `#![no_std]`, no alloc.
+
+Depends on `arvo-transparent` (for the `Transparent` const unsafe
+trait that every `repr(transparent)` type implements) and
+`arvo-strategy` (for the strategy markers and `UContainerFor<N>` /
+`IContainerFor<N>` projections). No other workspace dependencies.
+
+This crate is small on purpose. Everything else in the arvo stack
+(bit-level contracts, mask types, narrowing, fixed-point arithmetic,
+algorithms) lives upstream and consumes these primitives via trait
+bounds. New types here are added only when the type genuinely cannot
+be expressed without wrapping a bare primitive.
+
+## Bits
+
+`Bits<const N: u16, S: Strategy = Hot, Sign: Signedness = Unsigned>` is
+the N-bit storage primitive. A `#[repr(transparent)]` newtype over
+`<S as BitsContainerFor<N, Sign>>::T`. The container projection picks
+the bare primitive (or `MultiContainer<HiT, LoT>` at the wider widths)
+that holds N bits under strategy S and signedness Sign. `Bits<8, Hot>`
+lowers to `u8`, `Bits<7, Hot>` lowers to `u8` (with the high bit unused
+under Hot), `Bits<32, Warm>` lowers to `u32`, `Bits<64, Hot>` to `u64`,
+`Bits<96, Hot>` to `u128`, `Bits<200, Hot>` to a strategy-driven
+`MultiContainer` shape, and so on per the strategy bands.
+
+The const-generic param is `u16` (widened from `u8` in Pass F of round
+202604281000) so the parameter space accommodates reachable widths up
+to 65535. Concrete cell projections cover 1..=256; widening the
+parameter type without growing the cell table makes future expansion
+parameter-free.
+
+Default `Sign = Unsigned` keeps every existing `Bits<N, S>` call site
+unchanged. Domain code that wants signed bit patterns writes
+`Bits<N, S, Signed>` directly; in practice the consumer reaches for
+`IFixed<I, F, S>` instead, which is itself `repr(transparent)` over
+`Bits<{1+I+F}, S, Signed>` (the symmetric counterpart of UFixed's
+wrap of `Bits<{I+F}, S, Unsigned>`).
+
+The public surface is partitioned and minimal:
+
+```rust
+impl<const N: u16, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
+where S: BitsContainerFor<N, Sign>,
+{
+    pub const fn from_raw(raw: <S as BitsContainerFor<N, Sign>>::T) -> Self;
+    pub const fn to_raw(self) -> <S as BitsContainerFor<N, Sign>>::T;
+}
+```
+
+Plus `Deref<Target = ::T>`, `AsRef<::T>`, and `impl const Transparent`.
+
+Per round 202604271346 D-7, every per-size helper is gone. No
+`from_raw_uN` / `to_raw_uN` family. No `From<uN>` per N. No
+`Bits::new(u64)` / `Bits::bits()` deprecated front-doors. The
+`impl_bits_uN` macro family is removed in its entirety.
+
+Consumers that need to take a wider raw value and narrow it to fit
+`Bits<N, S, Sign>` go through `Narrow<T>::narrow_to::<N>` from
+`arvo-bits-contracts` (post-merge of arvo-narrow-contracts during
+round 202604280034). The `Narrow` impls compose `Mask<W>`,
+`BitLogic`, and the `as` operator to produce the typed container
+output. The pipeline is explicit at the call site instead of hidden
+inside per-size helpers.
+
+The `repr(transparent)` of `Bits<N, S, Sign>` over its projection
+target is compile-time-asserted at boundary cells (1, 8, 9, 16, 17,
+32, 33, 64, 65, 128, 129, 192, 193, 256 for Hot / Cold; 1, 8, 9, 16,
+17, 32, 33, 64 for Warm / Precise) in
+`arvo-storage/src/layout_assertions.rs`. If a future round changes
+the container projection at any boundary cell, the build breaks.
+
+The boundary set is the default. A `cfg(arvo_full_layout_audit)` gate
+opens the full (Strategy, N, Sign) tuple expansion, asserting every
+cell across the projection space. Periodic CI nightly builds run the
+full audit; default builds keep the bounded set to hold compile time
+in check.
+
+## Strategy markers
+
+`Hot`, `Warm`, `Cold`, `Precise`. Zero-sized types. Each implements
+the sealed `Strategy` marker trait declared in `arvo-strategy`. Each
+derives `ConstParamTy` so it works as a const generic argument.
+
+Strategy semantics across the substrate. `Hot` picks the narrowest
+container for the bit width (1..=8 use `u8`, 9..=16 use `u16`, 17..=32
+use `u32`, 33..=64 use `u64`, 65..=128 use `u128`, 129..=192 use
+`MultiContainer<u64, u128>`, 193..=256 use `MultiContainer<u128, u128>`).
+`Warm` doubles the logical width (1..=8 use `u16`, 9..=16 use `u32`,
+17..=32 use `u64`, 33..=64 use `u128`). `Cold` mirrors Hot's container
+sizes but the upper-layer storage routes through bitpacked column
+stores. `Precise` mirrors Warm's 2x-logical-width contract at every
+cell, including 33..=64 which uses `u128` (Pass D of round 202604281000
+fixed the prior 33..=64 inconsistency where Precise used u64 while
+Warm used u128).
+
+The `UContainerFor<N>` and `IContainerFor<N>` per-N impls live in
+`arvo-strategy`, not here. They project `S + N` to the bare primitive
+container (or to `MultiContainer<HiT, LoT>` at the wider widths). The
+`BitsContainerFor<N, Sign>` indirection trait (also in `arvo-strategy`)
+selects between U and I tables based on the Sign axis.
+
+## Signedness markers
+
+`Unsigned` and `Signed` are zero-sized markers. Each implements the
+sealed `Signedness` marker trait and derives `ConstParamTy` so it
+appears as a const-generic argument on `Bits<N, S, Sign>`.
+
+```rust
+pub const trait Signedness: sealed::Sealed + Copy + Clone + Default + 'static {}
+
+#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
+pub struct Unsigned;
+
+#[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default)]
+pub struct Signed;
+
+impl const Signedness for Unsigned {}
+impl const Signedness for Signed {}
+```
+
+The Sign axis on `Bits` was introduced in round 202604280500 to close
+the symmetry gap between UFixed and IFixed. Default `Sign = Unsigned`
+on `Bits` keeps existing call sites unchanged; IFixed's
+`repr(transparent)` wrap of `Bits<{1+I+F}, S, Signed>` reaches for the
+non-default value.
+
+## MultiContainer
+
+`pub struct MultiContainer<HiT, LoT>` is the multi-value storage
+primitive used at logical bit widths above any single native primitive
+(beyond `u128` / `i128`). Generic over two `BitPrim` components: the
+hi half and the lo half.
+
+```rust
+#[repr(C)]
+pub struct MultiContainer<HiT: BitPrim, LoT: BitPrim> {
+    pub hi: HiT,
+    pub lo: LoT,
+}
+```
+
+The `BitPrim` sealed trait abstracts the native primitives that can
+participate in a multi-container split: `u8`, `u16`, `u32`, `u64`,
+`u128`, `i8`, `i16`, `i32`, `i64`, `i128`. Trait declarations in
+`arvo-strategy` so the dispatch tables there stay self-contained.
+
+Strategy projection picks the (HiT, LoT) shape per the four canonical
+strategies' policies (smallest-footprint vs same-length doubled). The
+per-cell tabulation lives in `arvo-strategy/DESIGN.md.tmpl`.
+
+Round 202604280500 ships the storage shape only. Arithmetic on
+multi-value containers (`UArith` / `IArith` dispatch on `MultiContainer`,
+`UWidenFrom` / `UNarrowFrom` cross-container widening) is BACKLOG-tracked
+for a follow-up round; UFixed / IFixed at 129..=256 logical width await
+that arith bridge before they compile (their cap stays at 128 in this
+round). `Bits<129..=256, S, Sign>` is available standalone with its
+storage projection landing in this round.
+
+The `repr(C)` layout of `MultiContainer<HiT, LoT>` is compile-time-
+asserted for the canonical pairs (`u64, u128`; `u128, u128`; `i64,
+i128`; `i128, i128`) in `arvo-storage/src/layout_assertions.rs`. The
+checks pin the lower-bound size (sum of the two halves) and the
+alignment (max of the two halves) per Rust's `repr(C)` rules. Any
+future change to those pairs that drifts the layout breaks the build.
+
+## Bool
+
+`pub struct Bool(pub bool)`. The newtype that carries Rust's `bool`
+through the substrate's "every public type is an arvo wrapper" rule.
+Used by predicates (`is_zero`, `bit`, `Predicate` family) and in
+control flow that returns to consumer code.
+
+`Bool` implements `Try` with `Residual = Infallible` so the `?`
+operator extracts the inner `bool` for use in `if` expressions. The
+extraction has zero runtime cost (the Continue path is the only
+inhabited path).
+
+`Bool` implements the const unsafe `Transparent` trait so the inner
+`bool` is reachable in const context via `arvo::raw(b)`.
+
+## USize
+
+`pub struct USize(pub usize)`. The newtype for platform-pointer-width
+unsigned integers. Used as the universal index/length type across the
+substrate: `Cap<N>` wraps it, `HasBitWidth::WIDTH` returns it, every
+arvo-tensor offset is a `USize`.
+
+This round preserves `USize`'s field shape (still `usize`). Future
+rounds may migrate the inner field to `Bits<{cfg-platform-width},
+Hot>` for a unified bit-storage view; the prior round explored that
+direction and parked it.
+
+`USize` implements the const unsafe `Transparent` trait.
+
+## MetaCarrier
+
+`pub struct MetaCarrier(pub u16)`. A `#[repr(transparent)]` companion
+to `Bits<9, Hot, Unsigned>` used as the meta-newtype carrier
+(`IBits`, `FBits`, `Width`).
+
+`MetaCarrier` is layout-equivalent to `Bits<9, Hot, Unsigned>`: both
+are `repr(transparent)` over u16 (the underlying primitive
+`<Hot as BitsContainerFor<9, Unsigned>>::T` projects to). The
+`MetaCarrier::as_bits()` const-fn exposes the Bits-typed view at zero
+cost via a layout-equivalence transmute. The same view is reachable
+on the meta-newtypes through `IBits::as_bits()` etc. accessors.
+
+This companion exists to bypass a rustc trait-solver cycle that
+arises when the meta-newtype field literally writes the generic
+`Bits<9, Hot>` projection. The cycle interleaves `IBits: Sized`
+evaluation with `UFixed`'s const-eval where-clause `Hot:
+UContainerFor<{ ufixed_bits(I, F) }>`; rustc's cycle detector trips
+even though the obligations resolve in isolation. Using a concrete
+`repr(transparent)` companion at the field type sidesteps the
+projection chain at well-formedness time while preserving the
+9-bit native range, the `Hot` strategy, and the `Unsigned` sign of
+the conceptual carrier.
+
+`MetaCarrier` derives `ConstParamTy` (via `feature(const_param_ty_trait)`
+plus the standard structural-eq derive set), so the meta-newtypes
+themselves remain const-generic-position-usable per Round B's design.
+
+The layout-equivalence invariant against `Bits<9, Hot, Unsigned>` is
+compile-time-asserted in `arvo-storage/src/layout_assertions.rs`. Any
+divergence between `MetaCarrier`'s hardcoded u16 and the projection's
+choice for `<Hot as BitsContainerFor<9, Unsigned>>::T` breaks the build
+at compile time, surfacing the drift before any runtime soundness
+violation could occur via the `as_bits()` transmute.
+
+## Typed meta-bit newtypes
+
+Three `#[repr(transparent)]` newtypes over `MetaCarrier`. Each
+derives `ConstParamTy`:
+
+```rust
+#[derive(ConstParamTy, ...)]
+#[repr(transparent)]
+pub struct IBits(pub MetaCarrier);
+
+#[derive(ConstParamTy, ...)]
+#[repr(transparent)]
+pub struct FBits(pub MetaCarrier);
+
+#[derive(ConstParamTy, ...)]
+#[repr(transparent)]
+pub struct Width(pub MetaCarrier);
+```
+
+`IBits` carries the integer-bit count of a fixed-point type. `FBits`
+carries the fractional-bit count. `Width` carries an arbitrary
+bit-width meta value (used by `Bits<const N: u8, S, Sign>` consumers
+that want a typed parameter, by `Hasher<const W: Width>`, and by mask
+consumers that want a typed width parameter).
+
+The carrier widened from a bare u8 (range 0..=255 in pre-Round-C
+source; doc CL of round 202604280500 named the destination as
+`Bits<9, Hot>`) to `MetaCarrier` (layout-equivalent to
+`Bits<9, Hot, Unsigned>`; range 0..=511 native; 0..=256 used after
+Pass F of round 202604281000 lifts the `Bits` const-generic param
+from u8 to u16, with cell projections covering 1..=256). The
+substrate's logical-width cap rose from 128 to 256; 9 bits is the
+minimum carrier covering 256 plus headroom. Per the
+`arvo-toolbox-not-policer` workspace rule, honest range trumps
+offset packing; the unused upper range costs nothing at codegen.
+
+`MetaCarrier`, `IBits`, `FBits`, and `Width` all satisfy
+`StructuralEq + Copy + Eq + ConstParamTy`. The trait obligations
+are compile-time-asserted alongside the layout assertions in
+`arvo-storage/src/layout_assertions.rs`. Any future change that
+breaks the const-generic-position usability of these newtypes
+breaks the build before runtime can encounter the divergence.
+
+`MetaCarrier::as_bits()` and `IBits::as_bits()` / `FBits::as_bits()`
+/ `Width::as_bits()` give the `Bits<9, Hot, Unsigned>`-typed view
+without going through the field-level projection. Consumers reaching
+for the Bits-typed view get it at zero cost.
+
+## Const-fn helpers
+
+Three small const fns make the typed meta-bit newtypes ergonomic at
+literal call sites:
+
+```rust
+pub const fn ibits(n: u16) -> IBits;
+pub const fn fbits(n: u16) -> FBits;
+pub const fn width(n: u16) -> Width;
+```
+
+These are the only positions in the crate where a bare integer
+appears in function-parameter form. The parameter type widened from
+`u8` to `u16` in round 202604280500 alongside the carrier widening
+(`<Hot as UContainerFor<9>>::T = u16`). They exist so consumers can
+write `UFixed<{ ibits(13) }, { fbits(3) }, Warm>` instead of
+construction boilerplate; literal-style call sites (`ibits(13)`)
+continue to work via `u16` inference at the argument position. The
+bare `u16` parameter is the documented exception under the workspace
+no-bare-primitives rule (definition-site exception category 4).
+
+## What does NOT live here
+
+- Trait declarations (live in the contract crates: `arvo-transparent`,
+  `arvo-strategy`, `arvo-bits-contracts` (which now also hosts
+  `Narrow<T>` post-merge), `arvo-mask-contracts`,
+  `arvo-numeric-contracts`).
+- Trait impls (live in the implementation crates: `arvo-bits`,
+  `arvo-bitmask`, `arvo-narrow`, `arvo-tensor`, `arvo-hash`).
+- Compositions over `Bits` (`UFixed`, `IFixed`, `FastFloat`,
+  `StrictFloat`) live in the `arvo` facade. `UFixed` is a
+  `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>` (default
+  Sign omitted at the call site). `IFixed` is a `repr(transparent)`
+  newtype over `Bits<{1+I+F}, S, Signed>`, the symmetric counterpart
+  shipped in round 202604280500.
+- Algorithms (live in `arvo-graph`, `arvo-sparse`, `arvo-comb`,
+  `arvo-spectral`).
+- Aliases and re-exports (live in the `arvo` facade).
+
+## Sign axis on Bits (shipped round 202604280500)
+
+The Sign axis on `Bits<N, S, Sign>` shipped in round 202604280500.
+See `## Bits` and `## Signedness markers` above for the declarative
+content; the previous "Coming in a follow-up round" placeholder is
+gone. IFixed's symmetric reshape over `Bits<{1+I+F}, S, Signed>` lands
+in the same round.
+
+## Sources
+
+- `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md` (frozen topic)
+- `mock/design_rounds/202604271346_changelist.doc.md` (this CL)
+- `mock/research/strategy-bound-trilemma.md`
+- Q-A spike: rustc 1.96.0-nightly (commit fda6d37bb 2026-03-27)

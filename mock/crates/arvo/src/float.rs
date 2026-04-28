@@ -25,7 +25,7 @@ mod sealed {
 /// and `f64`.
 pub trait Ieee: sealed::Sealed + Copy + Default + PartialEq + PartialOrd + 'static {
     /// Width of this IEEE type in bits.
-    const WIDTH: u8;
+    const WIDTH: u16;
     /// Zero value of this float.
     const ZERO: Self;
     /// One (multiplicative identity) of this float.
@@ -33,13 +33,13 @@ pub trait Ieee: sealed::Sealed + Copy + Default + PartialEq + PartialOrd + 'stat
 }
 
 impl Ieee for f32 {
-    const WIDTH: u8 = 32;
+    const WIDTH: u16 = 32;
     const ZERO: Self = 0.0;
     const ONE: Self = 1.0;
 }
 
 impl Ieee for f64 {
-    const WIDTH: u8 = 64;
+    const WIDTH: u16 = 64;
     const ZERO: Self = 0.0;
     const ONE: Self = 1.0;
 }

@@ -1,6 +1,6 @@
 //! `Cap` → `usize` projection for nightly `generic_const_exprs`.
 
-use arvo::newtype::Cap;
+use arvo::Cap;
 
 /// Unwrap `Cap` to `usize` for array sizing in
 /// `generic_const_exprs` contexts.

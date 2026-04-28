@@ -5,18 +5,18 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::USize;
+use arvo::USize;
 use arvo::strategy::{Hot, Warm};
-use arvo_bits::{Bit, BitAccess, BitSequence, BitWidth, Byte, DWord, Nibble, QWord, Word};
+use arvo_bits::{Bit, BitAccess, BitSequence, HasBitWidth, Byte, DWord, Nibble, QWord, Word};
 
 #[test]
 fn alias_logical_widths() {
-    assert_eq!(<Bit<Hot> as BitWidth>::WIDTH.0, 1);
-    assert_eq!(<Nibble<Hot> as BitWidth>::WIDTH.0, 4);
-    assert_eq!(<Byte<Hot> as BitWidth>::WIDTH.0, 8);
-    assert_eq!(<Word<Hot> as BitWidth>::WIDTH.0, 16);
-    assert_eq!(<DWord<Hot> as BitWidth>::WIDTH.0, 32);
-    assert_eq!(<QWord<Hot> as BitWidth>::WIDTH.0, 64);
+    assert_eq!(<Bit<Hot> as HasBitWidth>::WIDTH.0, 1);
+    assert_eq!(<Nibble<Hot> as HasBitWidth>::WIDTH.0, 4);
+    assert_eq!(<Byte<Hot> as HasBitWidth>::WIDTH.0, 8);
+    assert_eq!(<Word<Hot> as HasBitWidth>::WIDTH.0, 16);
+    assert_eq!(<DWord<Hot> as HasBitWidth>::WIDTH.0, 32);
+    assert_eq!(<QWord<Hot> as HasBitWidth>::WIDTH.0, 64);
 }
 
 #[test]
@@ -43,7 +43,7 @@ fn dword_warm_strategy_instantiable() {
     // Confirms aliases are usable with a non-default strategy by
     // instantiating the type parameter and exercising the bit surface.
     type DW = DWord<Warm>;
-    assert_eq!(<DW as BitWidth>::WIDTH.0, 32);
+    assert_eq!(<DW as HasBitWidth>::WIDTH.0, 32);
     let d = DW::from_raw(0u64).with_bit_set(USize(4));
     assert!(d.bit(USize(4)).0);
     assert_eq!(d.count_ones().0, 1);

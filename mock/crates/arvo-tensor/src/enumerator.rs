@@ -1,6 +1,6 @@
 //! `Enumerator` trait: typed-index parallel of `core::iter::Iterator::enumerate`.
 
-use arvo::newtype::USize;
+use arvo::USize;
 
 /// Parallel of `core::iter::Iterator::enumerate` that yields `USize`
 /// instead of raw `usize`.

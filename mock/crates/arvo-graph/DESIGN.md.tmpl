@@ -1,9 +1,16 @@
-# arvo-graph — Design
+# arvo-graph. Design
 
 DAG and graph algorithms on const-generic fixed-size structures.
 `#![no_std]`, no alloc. All algorithms operate on arvo-bitmask
 `BitMatrix64` and `Mask64` types. Node indices use `NodeId` from
 arvo-bitmask.
+
+Per round 202604271346: dependencies update. The crate depends on
+`arvo-storage`, `arvo-bits-contracts`, `arvo-numeric-contracts`,
+`arvo-tensor`, `arvo-bitmask`. Trait surface is reached through the
+contract crates; concrete types come from `arvo-bitmask` and
+`arvo-tensor`. The prior `arvo-bits` direct dep is replaced by
+`arvo-bits-contracts`.
 
 ## Capacity
 

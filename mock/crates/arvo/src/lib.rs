@@ -13,24 +13,41 @@
 
 #![no_std]
 #![feature(adt_const_params)]
+#![feature(const_trait_impl)]
 #![feature(generic_const_exprs)]
+#![feature(macro_metavar_expr_concat)]
 #![feature(try_trait_v2)]
 #![allow(incomplete_features)]
 
+pub mod aliases;
+pub mod bitfield;
+mod layout_assertions;
 pub mod float;
 pub mod ifixed;
+pub mod ifixed_impl;
 pub mod markers;
-pub mod newtype;
 pub mod predicate;
+pub mod prim;
 pub mod strategy;
 pub mod traits;
+pub mod transparent;
 pub mod ufixed;
+pub mod ufixed_impl;
 
+pub use arvo_bits::{Bit, Byte, DWord, Nibble, QWord, Word};
+pub use aliases::{Fixed, Int, Signed, Uint};
+pub use arvo_numeric_contracts::{
+    IsNonNegative, IsNonZero, IsPositive, IsZero, IsZeroOrPositive, Predicate,
+};
+pub use arvo_storage::{
+    AsBool, Bits, Bool, Cap, FBits, IBits, USize, Width, fbits, ibits, width,
+};
 pub use float::{FastFloat, Float, Ieee, StrictFloat};
 pub use ifixed::IFixed;
 pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLike};
-pub use newtype::{AsBool, Bool, Cap, FBits, IBits, USize};
 pub use predicate::{Pred, Pred2, Pred3};
-pub use strategy::{Cold, Hot, Precise, Strategy, Warm};
+pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
+pub use strategy::{Cold, Hot, Precise, Strategy, Warm, width_le_64};
 pub use traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
+pub use transparent::{NumericPrimitive, Transparent, raw};
 pub use ufixed::UFixed;

@@ -4,14 +4,13 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, FBits, IBits, USize};
+use arvo::{Cap, FBits, IBits, ibits, fbits, USize};
 use arvo::strategy::Hot;
-use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
 use arvo_bitmask::{BitMatrix64, NodeId};
 use arvo_graph::{longest_path, topo_sort};
 
-type W = UFixed<{ IBits(8) }, { FBits::ZERO }, Hot>;
+type W = UFixed<{ ibits(8) }, { FBits::ZERO }, Hot>;
 
 const fn cap(n: usize) -> Cap {
     Cap(USize(n))
@@ -26,7 +25,8 @@ fn nid(i: usize) -> NodeId {
 }
 
 fn w(n: usize) -> W {
-    W::from_constant(USize(n))
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: test helper; runtime usize→u8 cast for typed weight in concrete-W test scope; no runtime-FromConstant by design (round 202604271346); tracked: #256
+    W::from_raw(n as u8)
 }
 
 #[test]

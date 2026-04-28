@@ -2,10 +2,11 @@
 //! reject out-of-range indices under `cfg(debug_assertions)` with a
 //! `debug_assert!` panic (zero release cost, catches bugs in dev).
 
+#![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo_spectral::Matrix;
 
 mod common;
