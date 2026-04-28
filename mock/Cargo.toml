@@ -30,6 +30,11 @@ members = [
 
     # facade — re-exports + default impls + ergonomic aliases
     "crates/arvo",
+
+    # bench infrastructure (operational tooling, not a published artefact)
+    "benches",
+    "benches/variants/fnv1a",
+    "benches/variants/xxhash3",
 ]
 
 [workspace.package]
@@ -38,7 +43,7 @@ edition = "2024"
 license = "MPL-2.0"
 
 [workspace.dependencies]
-mockspace = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "main" }
+mockspace = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
 notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false }
 arvo-transparent = { path = "crates/arvo-transparent" }
 arvo-strategy = { path = "crates/arvo-strategy" }
