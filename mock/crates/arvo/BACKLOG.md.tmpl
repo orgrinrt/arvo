@@ -33,30 +33,39 @@ inline with the shipping-round identifier.
   `repr(transparent)` newtype over `Bits<{1+I+F}, S, Signed>`,
   closing the symmetry gap with UFixed.
 - **Bit-width cap to 256 + UContainerFor table extension.** SHIPPED
-  in round 202604280500 (storage-side). Meta-newtypes `IBits` /
-  `FBits` / `Width` widened from `Bits<7, Hot>` (0..=127) to
-  `Bits<9, Hot>` (0..=511 native, 0..=256 used). Container dispatch
-  table extends 65..=128 → `u128` (native single-primitive) and
-  129..=256 → `MultiContainer<HiT, LoT>` (storage-only). Arithmetic
-  on multi-value containers (UArith / IArith on MultiContainer) is
-  BACKLOG-tracked separately under the Round 202604280500 forward-
-  looking entries.
-- **Strategy axes decomposition (internal lattice).** Round C.
-  Orthogonal `WidthPolicy` × `OverflowPolicy` × `PackPolicy`
-  internal axes; the four canonical presets (`Hot` / `Warm` / `Cold`
-  / `Precise`) stay as the primary consumer interface, defined as
-  combinations of the internal axes. Unlocks missing matrix cells
-  including `Hot+Saturating` for SIMD `PADDUSB` / `SQADD` codegen
-  paths.
-- **bitfield! macro `S: Strategy` parameterisation.** Round C. The
-  macro DSL accepts an explicit `S: Strategy` parameter; default
-  `Hot` is preserved. Consumers wanting Cold-bitpacked column-store
-  bitfields override.
-- **Cross-strategy resolution warning (not error).** Round C. When
-  `Resolve<S1, S2>::Out` differs in OverflowPolicy from either
-  operand, a compile-time warning fires naming the resolution and
-  the semantic shift. Per the workspace `arvo-toolbox-not-policer`
-  rule: warn but do not police.
+  in round 202604280500 (storage-side). Container dispatch table
+  extends 65..=128 → `u128` (native single-primitive) and 129..=255
+  → `MultiContainer<HiT, LoT>` (storage-only). Reachable cap is 255
+  not 256 in this round because `Bits<const N: u8>` itself stays at
+  u8; widening Bits's const-generic to u16 is BACKLOG-tracked.
+  Meta-newtypes (`IBits` / `FBits` / `Width`) carrier widening to
+  `MetaCarrier` (layout-equivalent to `Bits<9, Hot, Unsigned>`)
+  SHIPPED in round 202604280806 via the parallel-carrier workaround
+  (a literal `pub Bits<9, Hot>` field tripped a rustc trait-solver
+  cycle; the workaround is layout-equivalent and concept-equivalent).
+  Arithmetic on multi-value containers (UArith / IArith on
+  MultiContainer) is BACKLOG-tracked separately under the
+  Round 202604280500 forward-looking entries.
+- **Strategy axes decomposition (internal lattice).** SHIPPED in
+  round 202604280806 (axis traits only; arithmetic dispatch refactor
+  follow-up). The three internal axes `OverflowPolicy` /
+  `ContainerWidth` / `StorageLayout` ship as sealed marker traits
+  with ZST sub-markers; the four canonical presets (`Hot` / `Warm` /
+  `Cold` / `Precise`) implement specific axis combinations. The
+  arithmetic / widen / narrow impls in Round C still dispatch via
+  bundled `Strategy`; refactoring those to dispatch via axes (and
+  unlocking new presets like `Hot+Saturating`) is a follow-up.
+- **bitfield! macro `S: Strategy` parameterisation.** Deferred from
+  Round C. The macro DSL accepts an explicit `S: Strategy`
+  parameter; default `Hot` preserved. Consumers wanting Cold-
+  bitpacked column-store bitfields override. Cascade across
+  consumers; warrants a dedicated round.
+- **Cross-strategy resolution warning (not error).** Deferred from
+  Round C. When `Resolve<S1, S2>::Out` differs in OverflowPolicy
+  from either operand, a compile-time warning fires naming the
+  resolution and the semantic shift. Per the workspace
+  `arvo-toolbox-not-policer` rule: warn but do not police. Requires
+  designing the diagnostic trait + lint-pack interaction.
 - **Better hash family adoption (xxhash3 or wyhash).** Round D.
   FNV-1a stays as an option; the new family becomes default.
   `ContentHash` widens to `Bits<64, Hot>`.
@@ -111,6 +120,42 @@ extensions defer to follow-up rounds:
   trait surface acts on raw bit patterns, which is sign-agnostic by
   construction). If a consumer surfaces a need for sign-aware bit
   ops, a future round adds it.
+
+## Round 202604280806 forward-looking entries
+
+Audit-driven follow-up chain Round C. Pass 2 carrier-widening (via
+`MetaCarrier` workaround) and the strategy-axis-decomposition trait
+surface land; bitfield S parameterisation, cross-strategy warning,
+and the strategy-axis-driven arithmetic dispatch refactor defer to
+follow-up rounds:
+
+- **Bits<const N: u16> widening.** The const-generic param `N: u8`
+  on the storage primitive `Bits` caps reachable bit-width at 255.
+  Widening to `N: u16` (or larger) lifts the cap. Cascade across
+  every consumer that wrote `Bits<N, S, Sign>` is non-trivial;
+  warrants a dedicated round when the wider range becomes load-
+  bearing for a concrete consumer.
+- **Strategy-axis-driven arithmetic dispatch.** Round C ships the
+  `OverflowPolicy` / `ContainerWidth` / `StorageLayout` axis traits
+  as documentation + future-proofing. A follow-up round refactors
+  `UArith` / `IArith` / `UWidenFrom` / `UNarrowFrom` impls to
+  dispatch via the axis traits instead of the bundled `Strategy`
+  marker. Unlocks new presets like `Hot+Saturating` (SIMD `PADDUSB`
+  / `SQADD` codegen), `Cold+Saturating`, etc., as combinations of
+  axes without expanding the public marker namespace.
+- **Bitfield S parameterisation.** Deferred from Round C. Macro DSL
+  accepts an explicit `S: Strategy` parameter; default `Hot`
+  preserved. Consumers wanting Cold-bitpacked column-store bitfields
+  override.
+- **Cross-strategy resolution warning.** Deferred from Round C.
+  Compile-time warning at the cross-strategy op site when the
+  resolved strategy shifts overflow / SIMD semantics.
+- **Pass 2 cycle root-cause (rustc).** The `MetaCarrier` workaround
+  ships in Round C; the underlying rustc trait-solver cycle that
+  blocked the literal `pub Bits<9, Hot>` field remains. If rustc
+  later disambiguates const-eval-from-where-clause cycles, the
+  workaround can be removed and the field re-instated as
+  `pub Bits<9, Hot>` with no consumer-observable change.
 
 ## Q-D completion (round 202604280034)
 

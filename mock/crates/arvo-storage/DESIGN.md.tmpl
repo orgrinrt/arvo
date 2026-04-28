@@ -169,24 +169,51 @@ direction and parked it.
 
 `USize` implements the const unsafe `Transparent` trait.
 
+## MetaCarrier
+
+`pub struct MetaCarrier(pub u16)`. A `#[repr(transparent)]` companion
+to `Bits<9, Hot, Unsigned>` used as the meta-newtype carrier
+(`IBits`, `FBits`, `Width`).
+
+`MetaCarrier` is layout-equivalent to `Bits<9, Hot, Unsigned>`: both
+are `repr(transparent)` over u16 (the underlying primitive
+`<Hot as BitsContainerFor<9, Unsigned>>::T` projects to). The
+`MetaCarrier::as_bits()` const-fn exposes the Bits-typed view at zero
+cost via a layout-equivalence transmute. The same view is reachable
+on the meta-newtypes through `IBits::as_bits()` etc. accessors.
+
+This companion exists to bypass a rustc trait-solver cycle that
+arises when the meta-newtype field literally writes the generic
+`Bits<9, Hot>` projection. The cycle interleaves `IBits: Sized`
+evaluation with `UFixed`'s const-eval where-clause `Hot:
+UContainerFor<{ ufixed_bits(I, F) }>`; rustc's cycle detector trips
+even though the obligations resolve in isolation. Using a concrete
+`repr(transparent)` companion at the field type sidesteps the
+projection chain at well-formedness time while preserving the
+9-bit native range, the `Hot` strategy, and the `Unsigned` sign of
+the conceptual carrier.
+
+`MetaCarrier` derives `ConstParamTy` (via `feature(const_param_ty_trait)`
+plus the standard structural-eq derive set), so the meta-newtypes
+themselves remain const-generic-position-usable per Round B's design.
+
 ## Typed meta-bit newtypes
 
-Three `#[repr(transparent)]` newtypes over `Bits<9, Hot>`. Each
-derives `ConstParamTy` (via `feature(const_param_ty_trait)` plus a
-manual `ConstParamTy_` impl on `Bits<N, S, Sign>`):
+Three `#[repr(transparent)]` newtypes over `MetaCarrier`. Each
+derives `ConstParamTy`:
 
 ```rust
 #[derive(ConstParamTy, ...)]
 #[repr(transparent)]
-pub struct IBits(pub Bits<9, Hot>);
+pub struct IBits(pub MetaCarrier);
 
 #[derive(ConstParamTy, ...)]
 #[repr(transparent)]
-pub struct FBits(pub Bits<9, Hot>);
+pub struct FBits(pub MetaCarrier);
 
 #[derive(ConstParamTy, ...)]
 #[repr(transparent)]
-pub struct Width(pub Bits<9, Hot>);
+pub struct Width(pub MetaCarrier);
 ```
 
 `IBits` carries the integer-bit count of a fixed-point type. `FBits`
@@ -195,21 +222,21 @@ bit-width meta value (used by `Bits<const N: u8, S, Sign>` consumers
 that want a typed parameter, by `Hasher<const W: Width>`, and by mask
 consumers that want a typed width parameter).
 
-The carrier widened from `Bits<7, Hot>` (range 0..=127) to
-`Bits<9, Hot>` (range 0..=511 native; 0..=256 used) in round
-202604280500. The substrate's logical-width cap rises from 128 to 256;
-9 bits is the minimum carrier covering `0..=256` without offset
-trickery. One bit is wasted at the const-generic-position layer
-(values 257..=511 are valid bit patterns but unused at the meta-newtype
-layer). Per the `arvo-toolbox-not-policer` workspace rule, honest
-range trumps offset packing; the wasted bit costs nothing at codegen.
+The carrier widened from a bare u8 (range 0..=255 in pre-Round-C
+source; doc CL of round 202604280500 named the destination as
+`Bits<9, Hot>`) to `MetaCarrier` (layout-equivalent to
+`Bits<9, Hot, Unsigned>`; range 0..=511 native; 0..=255 used pending
+the `Bits<const N: u8>` widening to u16). The substrate's
+logical-width cap rises from 128 to 255 in Round B; 9 bits is the
+minimum carrier covering the substrate's logical-width range plus
+headroom. Per the `arvo-toolbox-not-policer` workspace rule, honest
+range trumps offset packing; the unused upper range costs nothing at
+codegen.
 
-The Q-A spike (rustc 1.96.0-nightly fda6d37bb 2026-03-27, four
-nightly features active) confirmed the projection cascade resolves
-under const trait dispatch. `ibits(7)` works in const context.
-`Carrier<{ ibits(7) }>` works as a const generic argument. The
-projection `<Hot as UContainerFor<9>>::T` resolves to `u16` at compile
-time.
+`MetaCarrier::as_bits()` and `IBits::as_bits()` / `FBits::as_bits()`
+/ `Width::as_bits()` give the `Bits<9, Hot, Unsigned>`-typed view
+without going through the field-level projection. Consumers reaching
+for the Bits-typed view get it at zero cost.
 
 ## Const-fn helpers
 
