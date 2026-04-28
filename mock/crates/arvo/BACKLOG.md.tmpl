@@ -157,6 +157,34 @@ follow-up rounds:
   workaround can be removed and the field re-instated as
   `pub Bits<9, Hot>` with no consumer-observable change.
 
+## Round 202604280841 forward-looking entries
+
+Audit-driven follow-up chain Round D-aux. Layout-soundness gates for
+the `repr(transparent)` chains and the MetaCarrier transmute land;
+deeper soundness audits defer to follow-ups:
+
+- **Strategy-axis HasAxes correctness check.** Compile-time cross-
+  check that the four canonical strategy markers' `HasAxes` impls
+  match the documented axis combinations (Hot = Wrapping/Min/Dense,
+  Warm = Wrapping/DoubleLogical/Dense, Cold = Wrapping/Min/Bitpacked,
+  Precise = Saturating/DoubleLogical/Dense). Possible via
+  marker-as-discriminant const evaluation; warrants a small dedicated
+  surface.
+- **Auto-generated assertions for every Bits cell.** Round D-aux
+  ships boundary-cell coverage; expanding to every (Strategy, N, Sign)
+  cell would require macro expansion across the full table. Worth
+  doing if a projection-table change lands; until then boundary
+  coverage suffices.
+- **ConstParamTy soundness audit.** Separate concern from layout
+  equivalence; the trait derives + manual impls already encode the
+  relevant invariants but a focused audit pass would check that
+  every newtype that flows through const-generic position has the
+  right structural-eq + Copy + Eq guarantees.
+- **Mockspace lint to auto-generate layout assertions.** Future
+  feature: lint scans the `unsafe impl Transparent` declarations
+  and emits / verifies a corresponding `assert_layout_eq!` block.
+  Manual guards are correct insurance until the lint exists.
+
 ## Q-D completion (round 202604280034)
 
 The std-parallel canonical aliases `Uint8` / `Uint16` / `Uint32` /
