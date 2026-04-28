@@ -130,6 +130,13 @@ loosens const-expression rules.
 arvo wraps Rust primitives used in public APIs. All are
 `repr(transparent)` — zero overhead after compilation.
 
+The `repr(transparent)` of `UFixed<I, F, S>` over `Bits<{I+F}, S,
+Unsigned>` and `IFixed<I, F, S>` over `Bits<{1+I+F}, S, Signed>` is
+compile-time-asserted at representative cells in
+`arvo/src/layout_assertions.rs`. The checks pin the wrapper-to-Bits
+transparency end-to-end (UFixed → Bits → projection target → native
+primitive). Any future drift in the chain breaks the build.
+
 ### Const generic bit counts
 
 ```rust

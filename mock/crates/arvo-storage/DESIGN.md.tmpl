@@ -63,6 +63,13 @@ round 202604280034). The `Narrow` impls compose `Mask<W>`,
 output. The pipeline is explicit at the call site instead of hidden
 inside per-size helpers.
 
+The `repr(transparent)` of `Bits<N, S, Sign>` over its projection
+target is compile-time-asserted at boundary cells (1, 8, 9, 16, 17,
+32, 33, 64, 65, 128, 129, 192, 193, 255 for Hot / Cold; 1, 8, 9, 16,
+17, 32, 33, 64 for Warm / Precise) in
+`arvo-storage/src/layout_assertions.rs`. If a future round changes
+the container projection at any boundary cell, the build breaks.
+
 ## Strategy markers
 
 `Hot`, `Warm`, `Cold`, `Precise`. Zero-sized types. Each implements
@@ -140,6 +147,13 @@ that arith bridge before they compile (their cap stays at 128 in this
 round). `Bits<129..=256, S, Sign>` is available standalone with its
 storage projection landing in this round.
 
+The `repr(C)` layout of `MultiContainer<HiT, LoT>` is compile-time-
+asserted for the canonical pairs (`u64, u128`; `u128, u128`; `i64,
+i128`; `i128, i128`) in `arvo-storage/src/layout_assertions.rs`. The
+checks pin the lower-bound size (sum of the two halves) and the
+alignment (max of the two halves) per Rust's `repr(C)` rules. Any
+future change to those pairs that drifts the layout breaks the build.
+
 ## Bool
 
 `pub struct Bool(pub bool)`. The newtype that carries Rust's `bool`
@@ -196,6 +210,13 @@ the conceptual carrier.
 `MetaCarrier` derives `ConstParamTy` (via `feature(const_param_ty_trait)`
 plus the standard structural-eq derive set), so the meta-newtypes
 themselves remain const-generic-position-usable per Round B's design.
+
+The layout-equivalence invariant against `Bits<9, Hot, Unsigned>` is
+compile-time-asserted in `arvo-storage/src/layout_assertions.rs`. Any
+divergence between `MetaCarrier`'s hardcoded u16 and the projection's
+choice for `<Hot as BitsContainerFor<9, Unsigned>>::T` breaks the build
+at compile time, surfacing the drift before any runtime soundness
+violation could occur via the `as_bits()` transmute.
 
 ## Typed meta-bit newtypes
 
