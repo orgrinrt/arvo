@@ -109,12 +109,30 @@ arvo is designed to be consumed by:
 - **loimu, polka-dots, saalis**: miscellaneous numeric needs plus
   whatever hilavitkutin transitively exposes.
 
+## Bench infrastructure
+
+arvo carries a bench infrastructure under `mock/benches/` modeled
+on the mockspace self-bench. The bench bin orchestrates variant
+cdylibs through the `mockspace-bench-harness` orchestrator + worker
++ dlopen pipeline; results land in CSV plus a `findings.md` report.
+
+The first bench compares `arvo_hash::Fnv1a` and `arvo_hash::XxHash3`
+at input sizes 64, 256, 1024, and 4096 bytes, with
+`outputs_may_differ = true` since the algorithms are independent.
+Variants are nested workspace members under `mock/benches/variants/`.
+Run with `cargo run --release` from inside `mock/benches/`.
+
+Bench discipline lives in mockspace's bench docs; arvo's role here
+is to be a real consumer of the harness and to surface measurement
+evidence behind the strategy and hash decisions arvo makes.
+
 ## See also
 
 - Per-crate DESIGN under `crates/*/DESIGN.md.tmpl`.
-- `design_rounds/`: round artefacts. Round 202604271346 (active) is
-  the const-traits + arvo-as-facade restructure. Round 202604500000
-  was deprecated mid-execution when the unified-API direction outgrew
-  its scope.
+- `design_rounds/`: round artefacts. The most recent round
+  (202604500000, in flight at template-edit time) adopts the
+  mockspace v2 bench harness for arvo's hash-algo perf measurement.
+  Prior rounds are archived under `design_rounds/<id>/` per the
+  mockspace state machine.
 - `research/`: benchmarks, prior-art research, the strategy-bound
   trilemma analysis.

@@ -1,0 +1,15 @@
+[package]
+name = "fnv1a"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "fnv1a"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+arvo-hash.workspace = true
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
