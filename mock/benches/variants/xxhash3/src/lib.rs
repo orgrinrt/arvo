@@ -13,6 +13,8 @@ impl<const N: usize> Routine for Fnv1aVsXxHash3<N> {
     type Output = u64;
 
     fn build_input(seed: u64) -> [u8; N] {
+        // Body MUST stay byte-for-byte identical across orchestrator
+        // and both variant cdylibs. See sibling notes. Tracked #281.
         let mut buf = [0u8; N];
         let mut x = seed.wrapping_mul(0x9E3779B97F4A7C15);
         for chunk in buf.chunks_mut(8) {
