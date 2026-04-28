@@ -214,7 +214,6 @@ checksum = "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582"
 name = "fnv1a"
 version = "0.0.0"
 dependencies = [
- "arvo-benches",
  "arvo-hash",
  "mockspace-bench-core",
  "mockspace-bench-macro",
@@ -267,7 +266,7 @@ checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 [[package]]
 name = "mockspace"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#9a35478abf25c65188ca07bbb9b66854ea79a93e"
 dependencies = [
  "libloading",
  "mockspace-lint-rules",
@@ -280,12 +279,12 @@ dependencies = [
 [[package]]
 name = "mockspace-bench-core"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#9a35478abf25c65188ca07bbb9b66854ea79a93e"
 
 [[package]]
 name = "mockspace-bench-harness"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#9a35478abf25c65188ca07bbb9b66854ea79a93e"
 dependencies = [
  "libloading",
  "mockspace-bench-core",
@@ -296,7 +295,7 @@ dependencies = [
 [[package]]
 name = "mockspace-bench-macro"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#9a35478abf25c65188ca07bbb9b66854ea79a93e"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -306,7 +305,7 @@ dependencies = [
 [[package]]
 name = "mockspace-lint-rules"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#2d76e6340e5c5e60c857d75f7aab38303020776d"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#9a35478abf25c65188ca07bbb9b66854ea79a93e"
 dependencies = [
  "tree-sitter",
  "tree-sitter-rust",
@@ -642,7 +641,6 @@ checksum = "fdd20c5420375476fbd4394763288da7eb0cc0b8c11deed431a91562af7335d3"
 name = "xxhash3"
 version = "0.0.0"
 dependencies = [
- "arvo-benches",
  "arvo-hash",
  "mockspace-bench-core",
  "mockspace-bench-macro",
