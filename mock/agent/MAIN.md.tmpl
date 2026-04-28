@@ -1,4 +1,4 @@
-# arvo — agent instructions
+# arvo. agent instructions
 
 ## What arvo is
 
@@ -7,37 +7,89 @@ strategy markers, bit-level contracts, and a handful of algorithm
 crates built on top. Everything is `#![no_std]`, no `alloc`, no
 platform dependency, and every size is const at type level.
 
+Per round 202604271346, the substrate is structured as a layered set
+of small crates with a downstream facade. `arvo` itself is the facade,
+not L0. L0 is `arvo-storage`. Trait declarations split into six
+contract crates (`arvo-transparent`, `arvo-strategy`,
+`arvo-bits-contracts`, `arvo-mask-contracts`, `arvo-narrow-contracts`,
+`arvo-numeric-contracts`). Concrete impls live in domain-organised
+implementation crates.
+
 ## Identity
 
-{{crate_count}} crates, four layers:
+{{crate_count}} crates, layered from L0 foundation up through the
+facade:
 
-**L0 — numerics:**
-- `arvo` — `UFixed<I, F, S>`, `IFixed<I, F, S>`, `FastFloat` /
-  `StrictFloat`, strategy markers (`Hot` / `Warm` / `Cold` /
-  `Precise`), composable numeric traits, semantic aliases.
+**L0 foundation:**
+- `arvo-transparent`. `Transparent` const unsafe trait, the typed
+  unwrap door for every `repr(transparent)` substrate primitive.
+  Free `arvo::raw` const fn.
+- `arvo-strategy`. `Strategy` marker plus the four ZST markers
+  `Hot` / `Warm` / `Cold` / `Precise`. `UContainerFor<N>` and
+  `IContainerFor<N>` per-N const traits projecting strategy +
+  bit-width to the dispatched primitive container, plus
+  `BitsContainerFor<N, Sign>` indirection routing the Sign axis on
+  Bits to the underlying U / I tables. `MultiContainer<HiT, LoT>`
+  dispatch for 129..=256 logical widths.
+- `arvo-storage`. `Bits<N, S, Sign>` opaque storage primitive
+  (`repr(transparent)` over the dispatched container; default
+  `Sign = Unsigned`). `MultiContainer<HiT, LoT>` multi-value primitive
+  for widths beyond native single primitives. `Unsigned` / `Signed`
+  ZST markers + sealed `Signedness` trait. `Bool`, `USize` platform
+  wrappers. `IBits`, `FBits`, `Width` typed meta-bit newtypes carrying
+  bit-counts (0..=256 range).
 
-**L1 — bit-level contracts:**
-- `arvo-bits` — traits + opaque-bit concretes: `BitWidth`, `BitAccess`,
-  `BitSequence`, `BitLogic`, with concrete impls for arvo numerics.
-  Arithmetic fielded structs live in L0 arvo; mask-specific concretes
-  live in L2 arvo-bitmask.
+**L0.5 trait contracts:**
+- `arvo-bits-contracts`. `HasBitWidth`, `BitAccess`, `BitSequence`,
+  `BitLogic`, `BitPrim`, `IBitPrim`, `UBitContainer`,
+  `IBitContainer`, plus `Narrow<T>` and the `Narrowed<N, T>` alias.
+  All `pub const trait`.
+- `arvo-mask-contracts`. `Mask<const W: u8>` const trait surface
+  for fixed-width bit set / clear / test / count operations.
+- `arvo-numeric-contracts`. `Abs`, `Recip`, `Sqrt`, `TotalOrd`,
+  `FromConstant`, `Predicate`, plus the `IsZero` / `IsPositive` /
+  `IsNonZero` / `IsNonNegative` / `IsZeroOrPositive` predicate
+  family. All `pub const trait`.
 
-**L2 — substrate concretes and generic algorithms:**
-- `arvo-bitmask` — `Mask64`, `Mask256`, `BitMatrix`, bit scanning
-  (concrete storage over `arvo-bits` contracts).
-- `arvo-tensor` — `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
-  tensor wrappers; `cap_size` bridge; `Enumerator` trait for
+**L1 blanket-impl carrier:**
+- `arvo-bits`. Concrete blanket impls of every L0.5 bit-level trait
+  on `Bits<N, S>` and the bare primitive containers, plus the
+  bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`,
+  `QWord` over `Bits<N, Hot>`).
+
+**L2 substrate concretes:**
+- `arvo-bitmask`. `Mask64`, `Mask256`, `BitMatrix`. Implements
+  `Mask<const W: u8>` from arvo-mask-contracts.
+- `arvo-tensor`. `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
+  tensor wrappers. `Cap` newtype + `Enumerator` trait for
   USize-indexed iteration. Value-generic, no bit semantics.
-- `arvo-graph` provides topo sort, rank, waist, spanning tree,
-  generic over numeric trait bounds for weights.
-- `arvo-sparse` provides CSR, RCM, block diagonal, Dulmage-Mendelsohn,
-  generic over value types.
-- `arvo-comb` provides DP, greedy grouping, bin-packing, generic over
-  cost types.
+- `arvo-narrow`. Concrete `Narrow<T>` impls per source-target
+  primitive pair (cross-primitive narrowing under a mask
+  precondition).
+- `arvo-hash`. Hash family (`Fnv1a` plus future better defaults)
+  with `Hasher<const N: u8>` per-N impls. `ContentHash` typed alias.
 
-**L3 — spectral methods (built on L2):**
-- `arvo-spectral` — Laplacian, Fiedler, power iteration. Generic over
-  weight and eigenvector types.
+**L2 generic algorithms:**
+- `arvo-graph`. Topological sort, rank, waist, spanning tree.
+  Generic over numeric trait bounds for edge weights.
+- `arvo-sparse`. CSR, RCM, block-diagonal, Dulmage-Mendelsohn.
+  Generic over value types.
+- `arvo-comb`. DP, greedy grouping, bin-packing. Generic over cost
+  types.
+
+**L3 spectral methods:**
+- `arvo-spectral`. Laplacian, Fiedler vector, power iteration.
+  Generic over weight and eigenvector types.
+
+**Facade:**
+- `arvo`. Re-exports the substrate. `UFixed<I, F, S>` as
+  `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>`.
+  `IFixed<I, F, S>` as `repr(transparent)` newtype over
+  `Bits<{1+I+F}, S, Signed>` (symmetric counterpart; reshape shipped
+  in round 202604280500 alongside the Sign axis on Bits).
+  `Uint<N, S>` and `Int<N, S>` ergonomic generic aliases.
+  `FastFloat<F>` and `StrictFloat<F>` IEEE-width-tagged floats.
+  `bitfield!` declarative macro.
 
 ## Crate table
 

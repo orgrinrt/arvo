@@ -10,7 +10,7 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
@@ -34,7 +34,7 @@ where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
     [(); cap_size(N)]:,
 {
-    let zero = <W as FromConstant>::from_constant(USize(0));
+    let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
     let mut best: [W; cap_size(N)] = [zero; cap_size(N)];
     let mut pred_of: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
     let mut has_pred: Mask64 = Mask64::empty();
@@ -68,7 +68,7 @@ where
                 top = candidate;
                 top_p = NodeId::new(USize(p_idx));
                 any_pred = true;
-            } else if matches!(candidate.total_cmp(&top), Ordering::Greater) {
+            } else if matches!(candidate.total_cmp(top), Ordering::Greater) {
                 top = candidate;
                 top_p = NodeId::new(USize(p_idx));
             }
@@ -84,7 +84,7 @@ where
         if !any_node {
             overall = this_best;
             any_node = true;
-        } else if matches!(this_best.total_cmp(&overall), Ordering::Greater) {
+        } else if matches!(this_best.total_cmp(overall), Ordering::Greater) {
             overall = this_best;
         }
 

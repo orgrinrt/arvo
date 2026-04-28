@@ -1,12 +1,17 @@
-# arvo-tensor — Design
+# arvo-tensor. Design
 
 Fixed-shape, type-level-capacity tensor wrappers. Every container binds
 a `Cap` const generic to a homogeneous value type; every slot is
 materialised at compile time; no heap. `#![no_std]`, no alloc,
 stack-only.
 
-Depends on arvo (L0) only. No dependency on arvo-bits, arvo-bitmask, or
-any other L2 crate. Tensor is value-generic, not bit-generic.
+Per round 202604271346: dependencies update. The crate now depends on
+`arvo-storage` (for `USize` and the strategy markers used in trait
+bounds), `arvo-bits-contracts` (for the `HasBitWidth` and related
+trait surface used by bit-bearing tensor consumers), and
+`arvo-numeric-contracts` (for the `Predicate` family applied in
+filter / select operations). No dependency on `arvo-bitmask` or any
+other L1 / L2 crate. Tensor is value-generic, not bit-generic.
 
 ## Position in the stack
 

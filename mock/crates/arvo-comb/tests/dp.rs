@@ -4,9 +4,8 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Bool, Cap, FBits, IBits, USize};
+use arvo::{Bool, Cap, FBits, IBits, ibits, fbits, USize};
 use arvo::strategy::Hot;
-use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
 use arvo_comb::matrix_chain_dp;
 
@@ -18,10 +17,11 @@ const C1: Cap = cap(1);
 const C3: Cap = cap(3);
 const C4: Cap = cap(4);
 
-type W = UFixed<{ IBits(16) }, { FBits::ZERO }, Hot>;
+type W = UFixed<{ ibits(16) }, { FBits::ZERO }, Hot>;
 
 fn w(n: usize) -> W {
-    W::from_constant(USize(n))
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: test helper; runtime usize→u16 cast for typed weight in concrete-W test scope; no runtime-FromConstant by design (round 202604271346); tracked: #256
+    W::from_raw(n as u16)
 }
 
 #[test]

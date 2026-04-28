@@ -1,0 +1,68 @@
+# arvo-transparent. Design
+
+The transparent-wrapper substrate. Defines the trait every
+`repr(transparent)` arvo type implements to expose its inner container
+in const context, and the free function that consumes it. No fielded
+types. `#![no_std]`, no alloc.
+
+Depends on `notko` only.
+
+## Transparent
+
+```rust
+pub const unsafe trait Transparent {
+    type Inner;
+    fn raw(self) -> Self::Inner;
+}
+```
+
+`pub const unsafe trait`: the `unsafe` reflects the `repr(transparent)`
+soundness obligation (the implementor must guarantee the layout is
+identical to `Inner`). The `const` reflects that the default `raw()`
+body uses `transmute_copy` and is callable in const context.
+
+The default body:
+
+```rust
+default fn raw(self) -> Self::Inner {
+    unsafe { core::mem::transmute_copy(&self) }
+}
+```
+
+Implementors that want a different body can override; most accept the
+default.
+
+## NumericPrimitive
+
+```rust
+pub trait NumericPrimitive {}
+```
+
+Clean marker. Identifies the bottom-out primitives that arvo wrappers
+ultimately transmute to: `u8`, `u16`, `u32`, `u64`, `usize`, `bool`,
+`i8`, `i16`, `i32`, `i64`, `isize`. No methods. Used as a bound where
+arvo trait machinery needs to know "this is the primitive layer, stop
+recursing".
+
+Per round 202604271346 D-11, this returns to its clean marker-only
+role. No `from_u64_masked`, `to_u64`, or per-size method on this
+trait.
+
+## Free arvo::raw fn
+
+```rust
+pub const fn raw<W, T>(w: W) -> T
+where
+    W: [const] Transparent<Inner = T>,
+{
+    w.raw()
+}
+```
+
+Re-exported from the `arvo` facade as `arvo::raw`. Prefix-style
+ergonomic for `transmute_copy`-via-trait. Callable in const fn bodies.
+
+## Sources
+
+- `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md`
+- `mock/design_rounds/202604271346_changelist.doc.md`

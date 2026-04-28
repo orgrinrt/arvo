@@ -1,5 +1,13 @@
 # arvo
 
-Numeric primitives for hilavitkutin and consumers. Const-generic
-fixed-point, float wrappers, composable traits, semantic aliases.
-`#![no_std]`, no alloc.
+The downstream facade of the arvo numeric stack. Re-exports the
+public surface from every upstream crate, hosts default impls for the
+trait contracts so consumers get composed numeric behaviour for free,
+defines ergonomic `Int<N, S>` and `Uint<N, S>` aliases plus eight
+std-parallel canonical aliases (`Uint8` / `Uint16` / `Uint32` /
+`Uint64` / `Int8` / `Int16` / `Int32` / `Int64`), and hosts
+`UFixed<I, F, S>` / `IFixed<I, F, S>` as `repr(transparent)` newtypes
+over `Bits<{I+F}, S>`. Float wrappers (`FastFloat`, `StrictFloat`)
+and `Cap<N>` live here too. Storage primitives (`Bits`, strategy
+markers, `Bool`, `USize`, `IBits` / `FBits` / `Width`) live upstream
+in `arvo-storage`. `#![no_std]`, no alloc.

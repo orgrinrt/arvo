@@ -15,7 +15,7 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Bool, Cap, USize};
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_tensor::{Array, cap_size};
 
@@ -41,7 +41,7 @@ where
     [(); cap_size(B)]:,
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
 {
-    let zero = <W as FromConstant>::from_constant(USize(0));
+    let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
     let mut bins_of_items: Array<USize, N> = Array::filled(USize(0));
 
     if cap_size(N) == 0 || cap_size(B) == 0 {
@@ -72,7 +72,7 @@ where
             let prev_score = *score.get(prev);
             // Descending: move cur left while its score exceeds the
             // predecessor.
-            if matches!(cur_score.total_cmp(&prev_score), Ordering::Greater) {
+            if matches!(cur_score.total_cmp(prev_score), Ordering::Greater) {
                 order.set(USize(k), prev);
                 k -= 1;
             } else {
@@ -98,7 +98,7 @@ where
         for b in 0..opened.0 {
             let after = *used.get(USize(b)) + w;
             // Fit if `after <= capacity`, i.e. not Greater.
-            if !matches!(after.total_cmp(&capacity), Ordering::Greater) {
+            if !matches!(after.total_cmp(capacity), Ordering::Greater) {
                 used.set(USize(b), after);
                 bins_of_items.set(idx, USize(b));
                 placed = Bool::TRUE;
@@ -108,7 +108,7 @@ where
 
         // Open a new bin if capacity allows and we are under `B`.
         if !placed.0 && opened.0 < cap_size(B) {
-            if !matches!(w.total_cmp(&capacity), Ordering::Greater) {
+            if !matches!(w.total_cmp(capacity), Ordering::Greater) {
                 used.set(USize(opened.0), w);
                 bins_of_items.set(idx, USize(opened.0));
                 opened = USize(opened.0 + 1);

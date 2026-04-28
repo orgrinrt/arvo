@@ -1,6 +1,6 @@
 //! Smoke tests for the `Enumerator` blanket impl.
 
-use arvo::newtype::USize;
+use arvo::USize;
 use arvo_tensor::Enumerator;
 
 #[test]

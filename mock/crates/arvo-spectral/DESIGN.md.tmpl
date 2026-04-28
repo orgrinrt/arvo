@@ -1,10 +1,15 @@
-# arvo-spectral — Design
+# arvo-spectral. Design
 
 Spectral graph methods on const-generic fixed-size structures.
 `#![no_std]`, no alloc. Operates on dense weighted matrices via
 `arvo_tensor::Matrix<W, N>`; does NOT depend on arvo-sparse at
-runtime — small-N spectral methods fit in stack-allocated dense
+runtime. Small-N spectral methods fit in stack-allocated dense
 arrays.
+
+Per round 202604271346: dependencies update. The crate depends on
+`arvo-storage`, `arvo-bits-contracts`, `arvo-numeric-contracts`,
+`arvo-tensor`, `arvo-bitmask`. The prior `arvo-bits` direct dep is
+replaced by `arvo-bits-contracts`.
 
 ## Matrix wrapper
 

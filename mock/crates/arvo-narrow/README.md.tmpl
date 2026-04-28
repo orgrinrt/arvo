@@ -1,0 +1,7 @@
+# arvo-narrow
+
+Concrete `Narrow<T>` impls. Per source / per target primitive pair,
+using the abstract `Mask<W>` from `arvo-bitmask` and `BitLogic` from
+`arvo-bits-contracts`. Generic-over-Narrow consumers depend on
+`arvo-narrow-contracts`; this crate is reached only when consumers
+compose with concrete masks. `#![no_std]`, no alloc.

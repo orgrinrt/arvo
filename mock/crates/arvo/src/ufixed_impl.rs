@@ -1,22 +1,22 @@
-//! `BitWidth` / `BitAccess` / `BitSequence` impls on `UFixed<I, F, S>`.
+//! `HasBitWidth` / `BitAccess` / `BitSequence` impls on `UFixed<I, F, S>`.
 //!
 //! The bound `S: UBitContainer<{ ufixed_bits(I, F) }>` pulls in
 //! `UContainerFor<BITS>` and the `BitPrim` requirement on the
 //! container in a single predicate — avoids the const-expr cycle
 //! that two separate predicates would trigger.
 
-use arvo::newtype::{Bool, FBits, IBits, USize};
-use arvo::strategy::{Hot, Strategy, ufixed_bits};
-use arvo::ufixed::UFixed;
+use arvo_bits_contracts::{BitAccess, BitLogic, BitPrim, BitSequence, HasBitWidth, UBitContainer};
+use arvo_storage::{Bool, FBits, IBits, USize};
+use arvo_strategy::{Hot, Strategy};
 
-use crate::prim::{BitPrim, UBitContainer};
-use crate::traits::{BitAccess, BitLogic, BitSequence, BitWidth};
+use crate::strategy::ufixed_bits;
+use crate::ufixed::UFixed;
 
-impl<const I: IBits, const F: FBits, S: Strategy> BitWidth for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> HasBitWidth for UFixed<I, F, S>
 where
     S: UBitContainer<{ ufixed_bits(I, F) }>,
 {
-    const WIDTH: USize = USize(I.0 as usize + F.0 as usize);
+    const WIDTH: USize = USize(I.raw() as usize + F.raw() as usize);
 }
 
 impl<const I: IBits, const F: FBits, S: Strategy> BitAccess for UFixed<I, F, S>
@@ -83,7 +83,7 @@ where
         let container_lz =
             <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::leading_zeros(prim)
                 as usize;
-        let logical = I.0 as usize + F.0 as usize;
+        let logical = I.raw() as usize + F.raw() as usize;
         let container =
             <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::WIDTH as usize;
         let surplus = container - logical;
@@ -105,7 +105,7 @@ where
         let ones =
             <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim)
                 as usize;
-        let logical = I.0 as usize + F.0 as usize;
+        let logical = I.raw() as usize + F.raw() as usize;
         USize(logical - ones)
     }
 

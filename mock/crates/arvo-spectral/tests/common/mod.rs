@@ -9,7 +9,7 @@
 use core::cmp::Ordering;
 use core::ops::{Add, Mul, Sub};
 
-use arvo::newtype::USize;
+use arvo::USize;
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
 
 /// Test-only float newtype over `f32`.
@@ -50,6 +50,7 @@ impl Mul for TF {
 }
 
 impl Sqrt for TF {
+    type Output = Self;
     #[inline(always)]
     fn sqrt(self) -> Self {
         // no_std sqrt via Newton-Raphson, matches arvo's internal fn.
@@ -73,6 +74,7 @@ impl Sqrt for TF {
 }
 
 impl Recip for TF {
+    type Output = Self;
     #[inline(always)]
     fn recip(self) -> Self {
         TF(1.0_f32 / self.0)
@@ -81,14 +83,14 @@ impl Recip for TF {
 
 impl TotalOrd for TF {
     #[inline(always)]
-    fn total_cmp(&self, other: &Self) -> Ordering {
+    fn total_cmp(self, other: Self) -> Ordering {
         self.0.total_cmp(&other.0)
     }
 }
 
 impl FromConstant for TF {
     #[inline(always)]
-    fn from_constant(n: USize) -> Self {
-        TF(n.0 as f32)
+    fn from_constant<const C: USize>() -> Self {
+        TF(C.0 as f32)
     }
 }

@@ -5,37 +5,44 @@
 //! bits, and strategy `S`; the sign bit is separate, so the logical
 //! width is `1 + I + F`.
 //!
-//! Container is selected by the sealed `IContainerFor` table in
-//! `strategy.rs`. `repr(transparent)` over the container. Signed
-//! saturation (for `Precise` / widen-op) clamps to the logical range
-//! `i_MIN..i_MAX` defined by `1 + I + F`, not the container range.
+//! `repr(transparent)` newtype over `Bits<{1+I+F}, S, Signed>`,
+//! the symmetric counterpart to `UFixed`'s wrap of
+//! `Bits<{I+F}, S, Unsigned>`. Round 202604280500 reshape (closes the
+//! deferred-pass-4d symmetry gap left from round 202604271346 pass 4b).
 //!
-//! `Warm` is a compile error for `1 + I + F > 32` per doc CL D2.
+//! Container is selected by the sealed `IContainerFor` table in
+//! `arvo-strategy`. Signed saturation (for `Precise` / widen-op)
+//! clamps to the logical range `i_MIN..i_MAX` defined by `1 + I + F`,
+//! not the container range.
+//!
+//! `Warm` is a compile error for `1 + I + F > 64` per round
+//! 202604280500 (Warm cap shifted from 32 to 64 alongside the bit-width
+//! cap extension).
 
-use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
 use notko::Outcome;
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
-use crate::newtype::{FBits, IBits, USize};
+use arvo_storage::{Bits, FBits, IBits, USize};
 use crate::strategy::{
-    Hot, IArith, IContainerFor, INarrowFrom, IWidenFrom, Precise, Strategy, Warm, ifixed_bits,
-    is_fractional,
+    Hot, IArith, IContainerFor, INarrowFrom, IWidenFrom, Precise, Signed, Strategy, Warm,
+    ifixed_bits, is_fractional,
 };
 
 /// Signed fixed-point value.
 ///
 /// `I` = integer bits (magnitude), `F` = fractional bits, `S` =
 /// strategy. The sign bit is implicit: logical width is `1 + I + F`.
+/// `repr(transparent)` newtype over `Bits<{1+I+F}, S, Signed>` (the
+/// symmetric counterpart of UFixed's wrap of
+/// `Bits<{I+F}, S, Unsigned>`).
 #[repr(transparent)]
-pub struct IFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>
+pub struct IFixed<const I: IBits, const F: FBits, S: Strategy = Warm>(
+    Bits<{ ifixed_bits(I, F) }, S, Signed>,
+)
 where
-    S: IContainerFor<{ ifixed_bits(I, F) }>,
-{
-    bits: <S as IContainerFor<{ ifixed_bits(I, F) }>>::T,
-    _s: PhantomData<fn() -> S>,
-}
+    S: IContainerFor<{ ifixed_bits(I, F) }>;
 
 impl<const I: IBits, const F: FBits, S: Strategy> IFixed<I, F, S>
 where
@@ -46,13 +53,13 @@ where
     /// Caller keeps the value inside the logical range.
     #[inline(always)]
     pub const fn from_raw(bits: <S as IContainerFor<{ ifixed_bits(I, F) }>>::T) -> Self {
-        Self { bits, _s: PhantomData }
+        Self(Bits::from_raw(bits))
     }
 
     /// Extract the raw signed container value.
     #[inline(always)]
     pub const fn to_raw(self) -> <S as IContainerFor<{ ifixed_bits(I, F) }>>::T {
-        self.bits
+        self.0.to_raw()
     }
 
     /// Logical bit width (`1 + I + F`).
@@ -83,7 +90,7 @@ where
 {
     #[inline(always)]
     fn eq(&self, other: &Self) -> bool {
-        self.bits == other.bits
+        self.to_raw() == other.to_raw()
     }
 }
 
@@ -98,7 +105,7 @@ where
 {
     #[inline(always)]
     fn default() -> Self {
-        Self::from_raw(<<S as IContainerFor<{ ifixed_bits(I, F) }>>::T as Default>::default())
+        Self(Bits::default())
     }
 }
 
@@ -108,7 +115,7 @@ impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation for IFixed<I, 
 where
     S: IContainerFor<{ ifixed_bits(I, F) }>,
 {
-    const LOGICAL_WIDTH: USize = USize(1 + I.0 as usize + F.0 as usize);
+    const LOGICAL_WIDTH: USize = USize(1 + I.raw() as usize + F.raw() as usize);
 }
 
 impl<const I: IBits, S: Strategy> IntegerLike for IFixed<I, { FBits::ZERO }, S> where

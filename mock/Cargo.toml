@@ -1,19 +1,35 @@
 [workspace]
 resolver = "2"
 members = [
-    # L0 — numeric primitives, strategy markers
-    "crates/arvo",
-    # L1 — bit-level contracts
+    # L0a — foundation traits (no storage, no algorithms)
+    "crates/arvo-transparent",
+    "crates/arvo-strategy",
+
+    # L0 — minimal bare-primitive layer
+    "crates/arvo-storage",
+
+    # L0.5 — trait contracts (declarations only)
+    "crates/arvo-bits-contracts",
+    "crates/arvo-mask-contracts",
+    "crates/arvo-numeric-contracts",
+
+    # L1 — implementation crates (concrete storage + impls)
     "crates/arvo-bits",
-    # L2 — built on contracts
     "crates/arvo-bitmask",
+    "crates/arvo-narrow",
     "crates/arvo-tensor",
+
+    # L2 — algorithm + hash crates
     "crates/arvo-hash",
     "crates/arvo-sparse",
     "crates/arvo-graph",
     "crates/arvo-comb",
-    # L3 — built on L2 substrate
+
+    # L3 — spectral
     "crates/arvo-spectral",
+
+    # facade — re-exports + default impls + ergonomic aliases
+    "crates/arvo",
 ]
 
 [workspace.package]
@@ -24,12 +40,19 @@ license = "MPL-2.0"
 [workspace.dependencies]
 mockspace = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "main" }
 notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false }
-arvo = { path = "crates/arvo" }
+arvo-transparent = { path = "crates/arvo-transparent" }
+arvo-strategy = { path = "crates/arvo-strategy" }
+arvo-storage = { path = "crates/arvo-storage" }
+arvo-bits-contracts = { path = "crates/arvo-bits-contracts" }
+arvo-mask-contracts = { path = "crates/arvo-mask-contracts" }
+arvo-numeric-contracts = { path = "crates/arvo-numeric-contracts" }
 arvo-bits = { path = "crates/arvo-bits" }
 arvo-bitmask = { path = "crates/arvo-bitmask" }
+arvo-narrow = { path = "crates/arvo-narrow" }
 arvo-tensor = { path = "crates/arvo-tensor" }
 arvo-hash = { path = "crates/arvo-hash" }
 arvo-graph = { path = "crates/arvo-graph" }
 arvo-sparse = { path = "crates/arvo-sparse" }
 arvo-spectral = { path = "crates/arvo-spectral" }
 arvo-comb = { path = "crates/arvo-comb" }
+arvo = { path = "crates/arvo" }

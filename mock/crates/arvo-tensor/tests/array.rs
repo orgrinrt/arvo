@@ -4,7 +4,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo_tensor::{Array, Enumerator, cap_size};
 
 const C4: Cap = Cap(USize(4));

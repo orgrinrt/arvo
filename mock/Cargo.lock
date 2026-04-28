@@ -15,6 +15,12 @@ dependencies = [
 name = "arvo"
 version = "0.1.0"
 dependencies = [
+ "arvo-bits",
+ "arvo-bits-contracts",
+ "arvo-numeric-contracts",
+ "arvo-storage",
+ "arvo-strategy",
+ "arvo-transparent",
  "mockspace",
  "notko",
  "trybuild",
@@ -26,6 +32,7 @@ version = "0.1.0"
 dependencies = [
  "arvo",
  "arvo-bits",
+ "arvo-bits-contracts",
  "arvo-tensor",
  "mockspace",
 ]
@@ -35,7 +42,21 @@ name = "arvo-bits"
 version = "0.1.0"
 dependencies = [
  "arvo",
+ "arvo-bits-contracts",
+ "arvo-storage",
+ "arvo-strategy",
  "mockspace",
+]
+
+[[package]]
+name = "arvo-bits-contracts"
+version = "0.1.0"
+dependencies = [
+ "arvo-storage",
+ "arvo-strategy",
+ "arvo-transparent",
+ "mockspace",
+ "notko",
 ]
 
 [[package]]
@@ -61,8 +82,41 @@ dependencies = [
 name = "arvo-hash"
 version = "0.1.0"
 dependencies = [
- "arvo-bits",
+ "arvo",
  "mockspace",
+ "xxhash-rust",
+]
+
+[[package]]
+name = "arvo-mask-contracts"
+version = "0.1.0"
+dependencies = [
+ "arvo-bits-contracts",
+ "arvo-storage",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
+name = "arvo-narrow"
+version = "0.1.0"
+dependencies = [
+ "arvo-bitmask",
+ "arvo-bits-contracts",
+ "arvo-mask-contracts",
+ "arvo-storage",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
+name = "arvo-numeric-contracts"
+version = "0.1.0"
+dependencies = [
+ "arvo-bits-contracts",
+ "arvo-storage",
+ "mockspace",
+ "notko",
 ]
 
 [[package]]
@@ -86,11 +140,38 @@ dependencies = [
 ]
 
 [[package]]
+name = "arvo-storage"
+version = "0.1.0"
+dependencies = [
+ "arvo-strategy",
+ "arvo-transparent",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
+name = "arvo-strategy"
+version = "0.1.0"
+dependencies = [
+ "arvo-transparent",
+ "mockspace",
+ "notko",
+]
+
+[[package]]
 name = "arvo-tensor"
 version = "0.1.0"
 dependencies = [
  "arvo",
  "mockspace",
+]
+
+[[package]]
+name = "arvo-transparent"
+version = "0.1.0"
+dependencies = [
+ "mockspace",
+ "notko",
 ]
 
 [[package]]
@@ -168,7 +249,7 @@ checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 [[package]]
 name = "mockspace"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#e3f6f6dc30690a5f480ba2bce46b870ece2d17b7"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#193cbb3c93b87ff23febf25d10773bfac1710e6c"
 dependencies = [
  "libloading",
  "mockspace-lint-rules",
@@ -181,7 +262,7 @@ dependencies = [
 [[package]]
 name = "mockspace-lint-rules"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#e3f6f6dc30690a5f480ba2bce46b870ece2d17b7"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=main#193cbb3c93b87ff23febf25d10773bfac1710e6c"
 dependencies = [
  "tree-sitter",
  "tree-sitter-rust",
@@ -494,6 +575,12 @@ name = "winnow"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "09dac053f1cd375980747450bfc7250c264eaae0583872e845c0c7cd578872b5"
+
+[[package]]
+name = "xxhash-rust"
+version = "0.8.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fdd20c5420375476fbd4394763288da7eb0cc0b8c11deed431a91562af7335d3"
 
 [[package]]
 name = "zmij"

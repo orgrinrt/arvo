@@ -1,6 +1,6 @@
 //! Rank-1 fixed-size tensor.
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 
 use crate::cap::cap_size;
 

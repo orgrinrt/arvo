@@ -18,7 +18,7 @@
 //! Returns `[NodeId; N]` mapping new position to old node id:
 //! `result[new_pos] = old_NodeId`.
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Bool, Cap, USize};
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 use notko::Maybe;
 

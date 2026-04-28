@@ -1,0 +1,7 @@
+# arvo-strategy
+
+Strategy markers and the type-only container-projection traits.
+`Hot`, `Warm`, `Cold`, `Precise` ZSTs identify the precision /
+throughput tradeoff. `UContainerFor<N>` and `IContainerFor<N>` const
+traits project a strategy + bit-width to the bare primitive container
+that holds it. `#![no_std]`, no alloc.

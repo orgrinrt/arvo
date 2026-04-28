@@ -1,0 +1,50 @@
+51b5b36 chore: lock src changelist for 202604280806_changelist.src.lock.md
+6619989 feat: round 202604280806 pass 2 — strategy axis decomposition (axis traits only)
+0f97275 feat: round 202604280806 pass 1 — meta-newtype carrier widening via MetaCarrier
+4260cd5 docs: round 202604280806 src CL — MetaCarrier + axis traits two-pass plan
+5e69195 chore: lock doc changelist for 202604280806_changelist.doc.lock.md
+e38b7aa docs: round 202604280806 doc execution — MetaCarrier + axis traits
+1c543ff docs: round 202604280806 doc CL — meta-newtype carrier workaround + axis traits
+4a2a308 docs: round 202604280806 topic — pass 2 cycle workaround + internal axes decomposition
+d2bc2ef chore: close design round 202604280500
+217530c chore: lock src changelist for 202604280500_changelist.src.lock.md
+63fcbeb fix: round 202604280500 pass 3 cleanup — refresh diagnostic notes + warm-bound trybuild fixture for new 64-bit cap
+53c9041 docs: round 202604280500 src CL — defer pass 2 meta-newtype widening due to trait-solver cycle
+37959df feat: round 202604280500 pass 4 — MultiContainer<HiT, LoT> + 129..=255 storage routing
+ad8148a feat: round 202604280500 pass 3 — extend container tables to 65..=128 (Hot/Cold u128) + Warm 33..=64 (u128)
+fe3e858 feat: round 202604280500 pass 5 — IFixed reshape over Bits<{1+I+F}, S, Signed>
+2ad4a36 fix: round 202604280500 pass 1 — reuse sealed::Sealed for Signedness
+3107535 feat: round 202604280500 pass 1 — Sign axis on Bits
+de7a361 docs: round 202604280500 src CL — six-pass mutation plan
+76837f5 chore: lock doc changelist for 202604280500_changelist.doc.lock.md
+be81ae1 docs: round 202604280500 doc execution
+8f14cfe docs: round 202604280500 doc CL
+ffaf3d8 docs: round 202604280500 topic
+faaf1e3 chore: close design round 202604280034
+356f116 chore: lock src changelist for 202604280034_changelist.src.lock.md
+64b9917 docs: round 202604280034 src CL — consolidate carry-forward H3s into single Comparison section per deprecation-comparison lint shape
+a8881cd docs: round 202604280034 src CL — strip parentheticals from comparison subsection headers to satisfy deprecation-comparison lint
+cb3686f docs: round 202604280034 src CL — add per-name and per-section carry-forward block from deprecated CL
+cbc10fe feat: round 202604280034 — std-parallel deletion + arvo-narrow-contracts merge into arvo-bits-contracts + lint:allow format fixes + arvo-hash dep cleanup + _ColdReserved cleanup
+31b5260 docs: round 202604280034 src CL — focused successor with Mask<W> deferral + execution-order doc post unlock-relock cycle
+515907a chore: re-lock doc changelist for 202604280034 post-amend
+25614c4 docs: round 202604280034 doc CL amend — workspace member dedup + BACKLOG entries for deferred Mask<W> + Cold widen/narrow + doc CL update post unlock-relock cycle
+6266f2e chore: unlock 202604280034 doc CL; deprecate src CL to delete doc templates in DOC phase
+26a3d30 docs: round 202604280034 src CL — six-pass mutation plan (hygiene, annotations, doc fixes, std-parallel deletion, contract merge, source fixes, validation)
+8b00bca chore: lock doc changelist for 202604280034_changelist.doc.lock.md
+ab3c2e7 docs: round 202604280034 doc execution — Identity dedupe + IFixed deferred-pass-4d note + arvo-narrow-contracts merge + Q-D completion + Mask<W> impl note + arvo-hash dep cleanup
+07dcfd5 docs: round 202604280034 doc CL — Round A scope (audit-driven hygiene + Q-D completion)
+dd732ce docs: round 202604280034 topic — audit-driven hygiene + Q-D completion + arvo-narrow-contracts merge + IFixed doc-fix
+b2c5b39 chore: close design round 202604271346
+668c3a2 chore: lock src changelist for 202604271346_changelist.src.lock.md
+2070f9a docs: round 202604271346 src CL — pass 9 validation gauntlet results
+9ddf87c feat: round 202604271346 pass 7 — Q-D alias deletion
+f05d75b feat: round 202604271346 pass 5+6 — per-size helper deletion + bitfield macro rewrite
+275baa3 feat: round 202604271346 pass 8 — forbidden-imports scopes flip + arvo facade bit-storage re-exports
+025d161 feat: round 202604271346 pass 4c — bit-storage aliases relocate to arvo-bits
+487e30b feat: round 202604271346 pass 4b — UFixed reshape as repr(transparent) newtype over Bits
+878980c feat: round 202604271346 pass 4a — Uint<N, S> + Int<N, S> generic aliases
+27a787b docs: round 202604271346 src CL — add per-name and per-section carry-forward block
+a57b5fa feat: round 202604271346 pass 3e — populate arvo-numeric-contracts + consumer ripple
+66025f9 docs: round 202604271346 src CL — focused successor with method-level FromConstant
+6785ca8 chore: lock doc changelist for 202604271346_changelist.doc.lock.md

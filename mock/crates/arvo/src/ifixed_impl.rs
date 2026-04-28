@@ -1,21 +1,21 @@
-//! `BitWidth` / `BitAccess` / `BitSequence` impls on `IFixed<I, F, S>`.
+//! `HasBitWidth` / `BitAccess` / `BitSequence` impls on `IFixed<I, F, S>`.
 //!
 //! Mirror of `ufixed_impl.rs` keyed on `IBitContainer` (which bundles
 //! `IContainerFor<BITS>` + `IBitPrim` on the container).
 
-use arvo::ifixed::IFixed;
-use arvo::newtype::{Bool, FBits, IBits, USize};
-use arvo::strategy::{Strategy, ifixed_bits};
+use arvo_bits_contracts::{BitAccess, BitSequence, HasBitWidth, IBitContainer, IBitPrim};
+use arvo_storage::{Bool, FBits, IBits, USize};
+use arvo_strategy::Strategy;
 
-use crate::prim::{IBitContainer, IBitPrim};
-use crate::traits::{BitAccess, BitSequence, BitWidth};
+use crate::ifixed::IFixed;
+use crate::strategy::ifixed_bits;
 
-impl<const I: IBits, const F: FBits, S: Strategy> BitWidth for IFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> HasBitWidth for IFixed<I, F, S>
 where
     S: IBitContainer<{ ifixed_bits(I, F) }>,
 {
     // IFixed's logical width is `1 + I + F` (sign bit counts).
-    const WIDTH: USize = USize(1 + I.0 as usize + F.0 as usize);
+    const WIDTH: USize = USize(1 + I.raw() as usize + F.raw() as usize);
 }
 
 impl<const I: IBits, const F: FBits, S: Strategy> BitAccess for IFixed<I, F, S>
@@ -81,7 +81,7 @@ where
         let container_lz =
             <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::leading_zeros(prim)
                 as usize;
-        let logical = 1 + I.0 as usize + F.0 as usize;
+        let logical = 1 + I.raw() as usize + F.raw() as usize;
         let container =
             <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::WIDTH as usize;
         let surplus = container - logical;
@@ -103,7 +103,7 @@ where
         let ones =
             <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::count_ones(prim)
                 as usize;
-        let logical = 1 + I.0 as usize + F.0 as usize;
+        let logical = 1 + I.raw() as usize + F.raw() as usize;
         USize(logical - ones)
     }
 

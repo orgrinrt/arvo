@@ -26,7 +26,7 @@
 
 use core::ops::{Add, Mul, Sub};
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
 
 use crate::laplacian::laplacian;
@@ -54,8 +54,8 @@ where
     F: Add<Output = F>
         + Sub<Output = F>
         + Mul<Output = F>
-        + Sqrt
-        + Recip
+        + Sqrt<Output = F>
+        + Recip<Output = F>
         + TotalOrd
         + Copy
         + FromConstant,
@@ -79,25 +79,34 @@ where
     // even N; for odd N the deflation step pulls out the residual
     // projection on the first pass). Using all-ones as a seed would be
     // entirely in the null space and get zeroed by the first deflation.
-    let one = F::from_constant(USize(1));
-    let zero = F::from_constant(USize(0));
+    let one = F::from_constant::<{ USize(1) }>();
+    let zero = F::from_constant::<{ USize(0) }>();
     let mut v: [F; cap_size(N)] = core::array::from_fn(|i| {
         if i & 1 == 0 { one } else { zero - one }
     });
 
-    // Reciprocal of N, used each iteration for deflation mean.
-    let n_f = F::from_constant(USize(n));
+    // Reciprocal of N. `n` is a runtime fn arg, so we cannot use the
+    // const-generic `from_constant::<{USize(n)}>()` form. Build via
+    // fold-counted addition: `n_f = sum(one for _ in 0..n)`. O(n) with
+    // n <= 64 (Fiedler's documented bound), negligible against the
+    // matrix-multiply core loop below.
+    let mut n_f = zero;
+    let mut k = 0usize;
+    while k < n {
+        n_f = n_f + one;
+        k += 1;
+    }
     let n_inv = n_f.recip();
 
     // Gershgorin upper bound on lambda_max(L): max over i of 2 * L[i][i]
     // (the diagonal value equals the off-diagonal absolute sum by
     // Laplacian construction). Shift via sigma >= lambda_max.
-    let two = F::from_constant(USize(2));
+    let two = F::from_constant::<{ USize(2) }>();
     let mut sigma = zero;
     let mut i = 0usize;
     while i < n {
         let candidate = two * lap.get(USize(i), USize(i));
-        if sigma.total_cmp(&candidate) == core::cmp::Ordering::Less {
+        if sigma.total_cmp(candidate) == core::cmp::Ordering::Less {
             sigma = candidate;
         }
         i += 1;

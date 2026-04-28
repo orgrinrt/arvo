@@ -7,7 +7,7 @@
 #![allow(incomplete_features)]
 
 use arvo::ifixed::IFixed;
-use arvo::newtype::{FBits, IBits, USize};
+use arvo::{FBits, IBits, ibits, fbits, USize};
 use arvo::strategy::{Hot, Warm};
 use arvo::ufixed::UFixed;
 use arvo_bits::{BitAccess, BitPrim, Byte, IBitPrim};
@@ -54,7 +54,7 @@ fn ibitprim_signed_roundtrip() {
 
 #[test]
 fn ufixed_bit_access_hot_u8() {
-    // Byte = UFixed<IBits(8), FBits(0), Hot> — container u8.
+    // Byte = UFixed<ibits(8), fbits(0), Hot> — container u8.
     let b = Byte::<Hot>::from_raw(0b0001_1000);
     assert!(!b.bit(USize(0)).0);
     assert!(b.bit(USize(3)).0);
@@ -71,9 +71,9 @@ fn ufixed_bit_access_hot_u8() {
 
 #[test]
 fn ufixed_bit_access_warm_wider_container() {
-    // UFixed<IBits(8), FBits(0), Warm> — container is u16 (2x).
+    // UFixed<ibits(8), fbits(0), Warm> — container is u16 (2x).
     // Bit semantics are LSB-first regardless of container width.
-    type W = UFixed<{ IBits(8) }, { FBits::ZERO }, Warm>;
+    type W = UFixed<{ ibits(8) }, { FBits::ZERO }, Warm>;
     let v = W::from_raw(0u16).with_bit_set(USize(5));
     assert!(v.bit(USize(5)).0);
     assert_eq!(v.to_raw(), 1u16 << 5);
@@ -90,9 +90,9 @@ fn ufixed_bit_access_warm_wider_container() {
 
 #[test]
 fn ifixed_bit_access_hot_i16() {
-    // IFixed<IBits(7), FBits(8), Hot> — 1 + 7 + 8 = 16 logical bits,
+    // IFixed<ibits(7), fbits(8), Hot> — 1 + 7 + 8 = 16 logical bits,
     // container is i16.
-    type I = IFixed<{ IBits(7) }, { FBits(8) }, Hot>;
+    type I = IFixed<{ ibits(7) }, { fbits(8) }, Hot>;
     let x = I::from_raw(0i16).with_bit_set(USize(15));
     // Bit 15 is the sign bit for i16 — setting it flips the signed
     // interpretation but the bit-level read is a plain `true`.

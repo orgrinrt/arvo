@@ -1,9 +1,10 @@
 //! `Matrix` construction, get/set, and diagonal round-trip.
 
+#![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo_spectral::Matrix;
 
 mod common;

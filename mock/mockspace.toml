@@ -10,7 +10,15 @@ primary_domain_macro = "strategy"
 primary_domain_label = "Strategies"
 
 # Layer labels by depth index (L0 → L3)
-layers = ["L0 primitives", "L1 contracts", "L2 substrate", "L2 substrate", "L2 substrate", "L2 substrate", "L3 spectral"]
+layers = [
+  "L0 primitives",
+  "L1 contracts",
+  "L2 substrate",
+  "L2 substrate",
+  "L2 substrate",
+  "L2 substrate",
+  "L3 spectral"
+]
 
 # Domain kind labels for STRUCTURE.md domain items table
 [domain_kinds]
@@ -102,31 +110,52 @@ commit = "error"
 build = "error"
 push = "error"
 rules = [
-    # L0 — arvo has no intra-arvo deps, and no std/alloc.
-    { scope = "arvo", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L0 is the root of the arvo stack — no deps and no alloc/std" },
+  # Facade — arvo re-exports the public surface from every workspace crate. Forbid only std / alloc.
+  { scope = "arvo", forbidden = "std::*, alloc::*", reason = "arvo is the facade re-exporting every workspace crate; only platform / heap deps are forbidden" },
 
-    # L1 — arvo-bits depends on arvo only. No concrete storage.
-    { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "L1 contracts depend only on L0 (arvo); concrete storage lives in arvo-bitmask" },
+  # L-1 root — arvo-transparent depends on notko only.
+  { scope = "arvo-transparent", forbidden = "std::*, alloc::*, arvo::*, arvo_strategy::*, arvo_storage::*, arvo_bits_contracts::*, arvo_mask_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-transparent is the L0 root: defines the Transparent trait + raw() helper; depends on notko only" },
 
-    # L2 — arvo-bitmask depends on arvo-bits only. May depend on arvo-tensor for shared cap_size.
-    { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 storage on arvo-bits contracts; must not depend on other L2/L3 crates except arvo-tensor for shared cap_size" },
+  # L-1 — arvo-strategy depends on notko + arvo-transparent.
+  { scope = "arvo-strategy", forbidden = "std::*, alloc::*, arvo::*, arvo_storage::*, arvo_bits_contracts::*, arvo_mask_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-strategy is L0: strategy markers + container projection; depends on notko + arvo-transparent only" },
 
-    # L2 — arvo-tensor. Value-storage peer of arvo-bitmask. Depends on arvo only.
-    { scope = "arvo-tensor", forbidden = "std::*, alloc::*, arvo_bits::*, arvo_bitmask::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-tensor is L2 value-storage on arvo L0 only; must not depend on other L1/L2/L3 crates" },
+  # L0 — arvo-storage depends on notko + arvo-transparent + arvo-strategy. Hosts the only fielded primitive types in the substrate.
+  { scope = "arvo-storage", forbidden = "std::*, alloc::*, arvo::*, arvo_bits_contracts::*, arvo_mask_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-storage is L0 storage; depends on notko + arvo-transparent + arvo-strategy only" },
 
-    # L2 — arvo-hash depends on arvo-bits only. Hash-domain types + algo contracts.
-    { scope = "arvo-hash", forbidden = "std::*, alloc::*, arvo_bitmask::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-hash is L2 hash-domain surface on arvo-bits contracts; must not depend on other L2/L3 crates" },
+  # L0.5 — arvo-bits-contracts. Bit-level trait declarations + sealed-bridge impls on bare primitives. Hosts Narrow<T> trait declaration post-round-202604280034 merge. Depends on the L0 root stack.
+  { scope = "arvo-bits-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bits-contracts is L0.5 contracts; depends on notko + arvo-transparent + arvo-strategy + arvo-storage only" },
 
-    # L2 algorithm crates — depend on arvo + arvo-bitmask + arvo-tensor (not bits directly).
-    { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo + arvo-bitmask + arvo-tensor only" },
-    { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo + arvo-bitmask + arvo-tensor only" },
-    { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo + arvo-bitmask + arvo-tensor only" },
+  # L0.5 — arvo-mask-contracts depends on bits-contracts + the L0 stack.
+  { scope = "arvo-mask-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_numeric_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-mask-contracts is L0.5 contracts; depends on the L0 stack + arvo-bits-contracts only" },
 
-    # L3 — arvo-spectral depends on arvo + arvo-bitmask + arvo-tensor (Mask64 partition outputs this round, Matrix via arvo-tensor).
-    { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*", reason = "arvo-spectral depends on arvo + arvo-bitmask + arvo-tensor (Mask64 for partition outputs; Matrix<W, N> for dense storage); arvo-sparse is a future-round dep per BACKLOG" },
+  # L0.5 — arvo-numeric-contracts depends on bits-contracts + L0 stack.
+  { scope = "arvo-numeric-contracts", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-numeric-contracts is L0.5 contracts; depends on the L0 stack + arvo-bits-contracts only" },
 
-    # Universal — no ad-hoc threading, clocks, filesystem anywhere.
-    { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
+  # L1 — arvo-bits hosts bit-storage type aliases (Bit / Nibble / Byte / Word / DWord / QWord).
+  { scope = "arvo-bits", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_bitmask::*, arvo_narrow::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bits hosts bit-storage type aliases; depends on arvo-storage + arvo-strategy + arvo-bits-contracts + arvo-numeric-contracts only" },
+
+  # L2 — arvo-bitmask depends on the contracts + arvo-storage. Hosts concrete Mask<W> + Narrow<T> impls per Q-C.
+  { scope = "arvo-bitmask", forbidden = "std::*, alloc::*, arvo::*, arvo_numeric_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-bitmask is L2 mask storage; depends on arvo-storage + arvo-bits-contracts + arvo-mask-contracts + arvo-bits + arvo-tensor only" },
+
+  # L2 — arvo-narrow hosts concrete Narrow<T> impls. Narrow trait declaration lives in arvo-bits-contracts post-merge.
+  { scope = "arvo-narrow", forbidden = "std::*, alloc::*, arvo::*, arvo_numeric_contracts::*, arvo_tensor::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-narrow hosts concrete Narrow<T> impls; depends on arvo-storage + arvo-bits-contracts + arvo-mask-contracts + arvo-bitmask only" },
+
+  # L2 — arvo-tensor. Value-storage peer of arvo-bitmask.
+  { scope = "arvo-tensor", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_bits::*, arvo_bitmask::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-tensor is L2 value-storage; depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts only" },
+
+  # L2 — arvo-hash. Hash-domain types + algo contracts.
+  { scope = "arvo-hash", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_tensor::*, arvo_graph::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-hash is L2 hash-domain; depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-bits + arvo-bitmask only" },
+
+  # L2 algorithm crates — depend on the contract stack + arvo-tensor + arvo-bitmask.
+  { scope = "arvo-graph", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_sparse::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-graph depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask only" },
+  { scope = "arvo-sparse", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_comb::*, arvo_spectral::*", reason = "arvo-sparse depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask only" },
+  { scope = "arvo-comb", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_sparse::*, arvo_spectral::*", reason = "arvo-comb depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask only" },
+
+  # L3 — arvo-spectral depends on the contract stack + arvo-tensor + arvo-bitmask + arvo-sparse.
+  { scope = "arvo-spectral", forbidden = "std::*, alloc::*, arvo::*, arvo_mask_contracts::*, arvo_narrow::*, arvo_hash::*, arvo_graph::*, arvo_comb::*", reason = "arvo-spectral depends on arvo-storage + arvo-bits-contracts + arvo-numeric-contracts + arvo-tensor + arvo-bitmask + arvo-sparse only" },
+
+  # Universal — no ad-hoc threading, clocks, filesystem anywhere.
+  { scope = "*", forbidden = "std::thread::*, std::time::*, std::fs::*, std::net::*, std::process::*, std::io::*", reason = "arvo has zero platform dep; syscalls belong in consumer crates" },
 ]
 
 # ---------------------------------------------------------------------------
@@ -139,12 +168,70 @@ rules = [
 # Git-based dep spec only — committed config must be portable across
 # machines. For local iteration use `[patch]` in `.cargo/config.toml`.
 
-[lint-crates]
-mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "main" }
-
 # Writing-style gate — pre-existing docs trip this until sweeps tidy them.
 [lints.writing-style]
 severity = "advisory"
+
+# --- Built-in mockspace lints that don't apply to arvo -------------------
+# Disables a family of lints carried over from loimu (the original home of
+# mockspace) that encode loimu's plugin / registrable / visibility-macro
+# conventions. Matches the disables in hilavitkutin and saalis
+# mockspace.toml.
+
+[lints.no-bare-pub]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.registrable-completeness]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-bare-macro-types]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-manual-id]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-primitive-key]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-raw-error-outside-primitives]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-self-define]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-pool-access]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-adhoc-error-enum]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-adhoc-framework]
+commit = "off"
+build = "off"
+push = "off"
+
+[lints.no-entry-suffix]
+commit = "off"
+build = "off"
+push = "off"
 
 # Bare-primitive pack lints use their default severity (error at all
 # gates). The graceful-ramp ("warn" during the sweep) was removed in
@@ -200,7 +287,15 @@ severity = "advisory"
 # crate introduces from its DESIGN.md.tmpl / source parse, eliminating
 # this manual declaration.
 
+[lint-crates]
+mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "main" }
+
 [primitive-introductions]
 arvo = ["numeric"]
+arvo-transparent = ["numeric"]
+arvo-strategy = ["numeric"]
+arvo-storage = ["numeric"]
+arvo-bits-contracts = ["numeric"]
+arvo-mask-contracts = ["numeric"]
 arvo-bits = ["numeric"]
 arvo-hash = ["numeric"]

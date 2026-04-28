@@ -1,8 +1,10 @@
 # arvo-hash
 
-L2 hash-domain types and algorithm contracts. ContentHash aliases
-arvo-bits Bits<28> for call-site domain naming. Generic streaming
-Hasher<const N: u8> trait with blanket HasherExt<const N: u8> for
-oneshot ergonomics lets downstream code parameterise over algorithm
-choice; concrete algorithms (FNV, xxHash, CRC32) ship in follow-up
-rounds as trait implementors. `#![no_std]`, no alloc.
+L2 hash-domain types and algorithm contracts. `ContentHash` aliases
+arvo `Bits<28, Hot>` for call-site domain naming. Generic streaming
+`Hasher<const N: Width>` trait with blanket `HasherExt<const N:
+Width>` for oneshot ergonomics lets downstream code parameterise
+over algorithm choice. Ships `Fnv1a<const N: Width>` (FNV-1a-64
+algorithm with `N <= 64` const-eval guard) as the first concrete
+algorithm; further algorithms (xxHash, CRC32) ship as additional
+trait implementors. `#![no_std]`, no alloc.
