@@ -18,6 +18,7 @@ mod bits;
 mod meta_bits;
 mod platform;
 
+pub use arvo_strategy::{BitPrim, MultiContainer};
 pub use bits::Bits;
 pub use meta_bits::{FBits, IBits, Width, fbits, ibits, width};
 pub use platform::{AsBool, Bool, Cap, USize};

@@ -35,10 +35,12 @@ mod sealed {
 
 mod arith;
 mod container;
+mod multi_container;
 mod widen;
 
 pub use arith::{IArith, ISaturating, UArith, USaturating};
 pub use container::{BitsContainerFor, IContainerFor, UContainerFor};
+pub use multi_container::{BitPrim, MultiContainer};
 pub use widen::{INarrowFrom, IWidenFrom, UNarrowFrom, UWidenFrom};
 
 /// Strategy marker trait.
