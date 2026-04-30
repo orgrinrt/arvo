@@ -24,7 +24,7 @@
 //! orphan issue).
 
 use arvo_storage::{Bits, Bool, USize};
-use arvo_strategy::{BitsContainerFor, IContainerFor, Signed, Signedness, Strategy, UContainerFor, Unsigned};
+use arvo_strategy::{BitsContainerFor, IContainerFor, Signedness, Strategy, UContainerFor};
 
 mod bits_impl;
 mod cross_domain;
