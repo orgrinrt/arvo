@@ -137,8 +137,9 @@ crate during round 202604280034. The merge is justified because
 every consumer of `Narrow` already depends on `BitLogic` for the
 default-body composition; the single-trait crate split was ceremony
 without transitive-footprint benefit. Concrete impls live in
-`arvo-narrow` (cross-primitive) and may extend into `arvo-bitmask`
-(mask-using).
+`arvo-bits-contracts` itself (cross-primitive + cross-Bits forwarder)
+and are re-exported via `arvo-refit` (combined narrow + widen
+gateway crate, renamed from `arvo-narrow` in round 202604300826).
 
 `Narrowed<const N: u16, T>` is a cosmetic alias for the result of
 `narrow_to::<N>` so consumer signatures read `fn foo() -> Narrowed<13, u16>`
@@ -151,7 +152,113 @@ The const-generic param widened from `u8` to `u16` in Pass F of round
 pass. The widening accommodates reachable widths up to 65535; concrete
 narrow impls cover 1..=256.
 
+The cross-primitive impl matrix is closed under same-container
+narrowing as of round 202604300826: `u8: Narrow<u8>`, `u16:
+Narrow<u16>`, ..., `i128: Narrow<i128>`. The macro body's `>= BITS`
+short-circuit handles the same-width case as a no-op (mask of full
+width zero-extends, cast is identity). Same-container Narrow
+unblocks cross-Bits narrowing within one container range
+(`Bits<32, Hot>` → `Bits<28, Hot>` both u32-backed; `Bits<28, Hot>`
+→ `Bits<24, Hot>` both u32-backed). Without the same-container
+impls the cross-Bits forwarder's `<S as BitsContainerFor<M>>::T:
+Narrow<<S as BitsContainerFor<N>>::T>` where-clause cannot be
+satisfied when M and N project to the same carrier.
+
+## Widen
+
+```rust
+pub const trait Widen<T> {
+    fn widen_to(self) -> T
+    where
+        Self: Sized;
+
+    fn widen_to_unmasked(self) -> T
+    where
+        Self: Sized;
+}
+
+pub type Widened<T> = T;
+```
+
+The dual to `Narrow<T>`. `widen_to` promotes a value into a wider
+bit-width. Unsigned widening zero-extends through Rust's `as` cast;
+signed widening sign-extends. For sub-carrier-width `Bits<M, S, Signed>`
+the cross-Bits impl masks bits 0..M of the source carrier and sign-
+extends bit M-1 across the destination carrier's high bits, using M
+from impl context.
+
+`widen_to_unmasked` skips the source-side mask for the hot case where
+bits above the source's logical width are already zero (well-formed
+`Bits<M, ...>` source); the masked variant masks first for safety
+against malformed or over-wide carrier values.
+
+### Asymmetry with `Narrow`
+
+`Widen<T>` does not carry the const-N parameter `Narrow<T>` does.
+Narrow's const-N is the *destination* logical width and is load-
+bearing for the mask: `wide_u32.narrow_to::<13>()` masks to 13 bits
+out of 32, the same wide_u32 narrows to any logical width in `0..32`
+under one impl. Widen does not have an analogous degree of freedom.
+Each `Widen<T>` impl widens from a fixed source type to a fixed
+target type; the source bit-width is determined by the impl context
+(carrier `BITS` for primitives, `M` for `Bits<M, S, Sign>`). A const
+parameter on `widen_to` would be informational (consumer-side
+declaration of source width) at best and misleading (callers might
+expect it to drive sign-extension behaviour, but the impl context
+already determines that) at worst.
+
+The asymmetry is deliberate. Documented in round 202604300826 topic
+file decision A. Consumers reaching for symmetry between the two
+traits land on `Narrow::narrow_to::<N>()` and `Widen::widen_to()` as
+parallel call shapes; the const param appears only where it
+materially drives behaviour.
+
+### Cross-primitive Widen impls
+
+Macro-generated symmetric to the cross-primitive Narrow tables:
+unsigned `u8 → {u16, u32, u64, u128}`, `u16 → {u32, u64, u128}`,
+`u32 → {u64, u128}`, `u64 → u128`; signed counterparts using sign-
+extending `as`. Same orphan-rule reasoning as `Narrow`: the impls
+live here because both trait and primitive types are foreign to
+`arvo-refit`.
+
+### Cross-Bits Widen impl
+
+Forwards through the underlying primitive `Widen<T_N>` impl on the
+source's container type, parallel to the cross-Bits Narrow forwarder:
+
+```rust
+impl<const M: u16, const N: u16, S: Strategy, Sign: Signedness>
+    const Widen<Bits<N, S, Sign>> for Bits<M, S, Sign>
+where
+    S: BitsContainerFor<M, Sign>,
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<M, Sign>>::T:
+        ~const Widen<<S as BitsContainerFor<N, Sign>>::T>,
+{
+    fn widen_to(self) -> Bits<N, S, Sign> { ... }
+}
+```
+
+Where M < N is not enforced at the type level (parallel to Narrow's
+M > N non-enforcement); consumers supplying M >= N still get a valid
+result, but the widening is a no-op for cells where the source width
+already matches the destination.
+
+## Cross-domain primitive↔Bits direct impls
+
+Symmetric `Pri: Narrow<Bits<N, S, Sign>>` and `Bits<N, S, Sign>:
+Widen<Pri>` impls let consumers refit a primitive directly into a
+typed `Bits`, or refit a typed `Bits` directly into a primitive
+carrier, without an intermediate `Bits::from_raw` wrap. Macro-
+generated over the strategy-and-sign matrix the existing tables
+cover. The cross-domain impls underlie the `Bits::from_narrowed<Src>`
+and `Bits::from_widened<Src>` ergonomic constructors (see
+`arvo-storage/DESIGN.md.tmpl`).
+
 ## Sources
 
 - `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md`
 - `mock/design_rounds/202604271346_changelist.doc.md`
+- `mock/design_rounds/202604280034_topic.audit-driven-hygiene-and-Q-D-completion.md`
+- `mock/design_rounds/202604300826_topic.refit-narrow-widen-completion.md`

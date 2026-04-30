@@ -17,10 +17,14 @@ of the substrate, not the L0 layer. The dependency graph runs:
    markers, `Bool`, `USize`, typed meta-bits `IBits` / `FBits` /
    `Width`)
 3. `arvo-bits-contracts`, `arvo-mask-contracts`,
-   `arvo-narrow-contracts`, `arvo-numeric-contracts` (trait
-   declarations, all `pub const trait`)
-4. `arvo-bits`, `arvo-bitmask`, `arvo-narrow`, `arvo-tensor` (concrete
-   trait impls)
+   `arvo-numeric-contracts` (trait declarations, all `pub const trait`).
+   `Narrow<T>` and `Widen<T>` declarations live in `arvo-bits-contracts`
+   (post-merge of `arvo-narrow-contracts` during round 202604280034;
+   Widen added during round 202604300826).
+4. `arvo-bits`, `arvo-bitmask`, `arvo-refit`, `arvo-tensor` (concrete
+   trait impls and re-export gateways). `arvo-refit` is the combined
+   narrow + widen re-export crate (renamed from `arvo-narrow` in round
+   202604300826).
 5. `arvo-hash`, `arvo-graph`, `arvo-sparse`, `arvo-comb`,
    `arvo-spectral` (algorithm crates)
 6. `arvo` (this crate): the facade. Re-exports the public surface,

@@ -18,7 +18,10 @@ concrete blanket dispatch reach this crate transitively via the
 `arvo` facade re-exports.
 
 Mask concretes (`Mask64`, `Mask256`, `BitMatrix`) live in
-`arvo-bitmask`. The `Narrow<T>` concrete impls live in `arvo-narrow`.
+`arvo-bitmask`. The `Narrow<T>` and `Widen<T>` trait declarations and
+concrete impls live in `arvo-bits-contracts`; the surface is re-
+exported through `arvo-refit` (combined narrow + widen gateway crate,
+renamed from `arvo-narrow` in round 202604300826).
 
 `#![no_std]`, no alloc.
 

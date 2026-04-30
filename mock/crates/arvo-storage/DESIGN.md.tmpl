@@ -51,6 +51,12 @@ where S: BitsContainerFor<N, Sign>,
 {
     pub const fn from_raw(raw: <S as BitsContainerFor<N, Sign>>::T) -> Self;
     pub const fn to_raw(self) -> <S as BitsContainerFor<N, Sign>>::T;
+
+    pub const fn from_narrowed<Src>(src: Src) -> Self
+    where Src: ~const Narrow<<S as BitsContainerFor<N, Sign>>::T>;
+
+    pub const fn from_widened<Src>(src: Src) -> Self
+    where Src: ~const Widen<<S as BitsContainerFor<N, Sign>>::T>;
 }
 ```
 
@@ -62,12 +68,41 @@ Per round 202604271346 D-7, every per-size helper is gone. No
 `impl_bits_uN` macro family is removed in its entirety.
 
 Consumers that need to take a wider raw value and narrow it to fit
-`Bits<N, S, Sign>` go through `Narrow<T>::narrow_to::<N>` from
-`arvo-bits-contracts` (post-merge of arvo-narrow-contracts during
-round 202604280034). The `Narrow` impls compose `Mask<W>`,
-`BitLogic`, and the `as` operator to produce the typed container
-output. The pipeline is explicit at the call site instead of hidden
-inside per-size helpers.
+`Bits<N, S, Sign>` go through the refit family from
+`arvo-bits-contracts` (post-merge of arvo-refit-contracts during
+round 202604280034, post-Widen-addition during round 202604300826):
+`Narrow<T>::narrow_to::<N>` for shrinks, `Widen<T>::widen_to` for
+promotions. The trait surface and impl tables are re-exported
+through the `arvo-refit` crate (renamed from `arvo-refit` in round
+202604300826). The pipeline is explicit at the call site instead of
+hidden inside per-size helpers.
+
+### Ergonomic constructors `from_narrowed` and `from_widened`
+
+The inherent `Bits<N, S, Sign>` impl ships two refit-aware
+constructors that route through the `Narrow` and `Widen` traits:
+
+```rust
+let bits28 = Bits::<28, Hot>::from_narrowed(wide_u64);   // narrow_to::<28>() inside
+let bits64 = Bits::<64, Hot>::from_widened(bits28);       // widen_to() inside
+let raw28 = Bits::<28, Hot>::from_raw(carrier_u32);       // unchecked entry point
+```
+
+The source type `Src` is inferred from the value at the call site;
+no turbofish needed. The constructors' bodies route through the
+trait's method (`src.narrow_to::<N>()` for `from_narrowed` where N
+is `Self`'s outer const-generic; `src.widen_to()` for `from_widened`
+where the source's bit-width derives from the impl context). Cross-
+domain primitive↔Bits direct impls (round 202604300826) provide
+the trait coverage so these constructors work with primitive sources
+as well as `Bits<M, ...>` sources.
+
+Constructor names match trait names (`from_narrowed` ← `Narrow`,
+`from_widened` ← `Widen`); verb-style consistent with `from_raw`.
+
+`from_raw` remains the unchecked entry point; `from_narrowed` and
+`from_widened` are the recommended path when the source type does
+not exactly match the carrier projection.
 
 The `repr(transparent)` of `Bits<N, S, Sign>` over its projection
 target is compile-time-asserted at boundary cells (1, 8, 9, 16, 17,
@@ -310,7 +345,7 @@ no-bare-primitives rule (definition-site exception category 4).
   `Narrow<T>` post-merge), `arvo-mask-contracts`,
   `arvo-numeric-contracts`).
 - Trait impls (live in the implementation crates: `arvo-bits`,
-  `arvo-bitmask`, `arvo-narrow`, `arvo-tensor`, `arvo-hash`).
+  `arvo-bitmask`, `arvo-refit`, `arvo-tensor`, `arvo-hash`).
 - Compositions over `Bits` (`UFixed`, `IFixed`, `FastFloat`,
   `StrictFloat`) live in the `arvo` facade. `UFixed` is a
   `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>` (default
