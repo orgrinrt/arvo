@@ -534,7 +534,7 @@ pub type Narrowed<const N: u16, T> = T;
 ///
 /// Per topic Q-C, the trait declaration lives here (post-round-
 /// 202604280034 merge) and the concrete impls live in `arvo-bitmask`
-/// (mask-side) and `arvo-narrow` (cross-primitive). Const trait so
+/// (mask-side) and `arvo-refit` (cross-primitive). Const trait so
 /// consumers can call `wide.narrow_to::<13>()` in const fn bodies
 /// under generic `Narrow<T>` bounds.
 pub const trait Narrow<T> {
@@ -563,10 +563,10 @@ pub const trait Narrow<T> {
 // Cross-sign narrowing (e.g. u16 -> i8) is out of scope; consumers cast
 // sign first via separate impls outside this crate.
 //
-// These live in arvo-bits-contracts rather than arvo-narrow because
+// These live in arvo-bits-contracts rather than arvo-refit because
 // orphan rules require either the trait or one of the type arguments
 // to be local to the implementing crate. Since both Narrow and the
-// primitive types are foreign to arvo-narrow, the impls anchor here
+// primitive types are foreign to arvo-refit, the impls anchor here
 // with Narrow.
 
 macro_rules! impl_narrow_u {
