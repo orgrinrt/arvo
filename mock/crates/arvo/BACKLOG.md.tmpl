@@ -78,8 +78,8 @@ inline with the shipping-round identifier.
   (Pass B.4) under the prior name `arvo-narrow`. Per-source-target
   primitive narrowing impls plus typed `Bits<M, S, Sign> → Bits<N,
   S, Sign>` for M > N populate the previously-empty crate. Crate
-  renamed to `arvo-refit` in round 202604300826 alongside the
-  `Widen<T>` addition.
+  renamed to `arvo-refit` in round 202604301700 (the `Widen<T>` API
+  addition itself shipped in round 202604300826).
 - **BACKLOG additions for substrate gaps.** Round E. SIMD-typed
   vectors, atomic fixed-point, alignment-aware loaders, GF(2) /
   CRC, arvo-tensor `as_chunks` / Matrix layout doc, segment tree,
@@ -207,9 +207,9 @@ generated during the round:
   one strategy. Round 202604300826 added `Widen<T>` + same-
   container Narrow + cross-domain primitive Bits direct impls +
   `Bits::from_narrowed` / `Bits::from_widened` ergonomic
-  constructors and renamed the crate to `arvo-refit`. Cross-
-  strategy refit (different S1 / S2) and algebraic narrowing
-  surfaces remain future-round concerns.
+  constructors. Round 202604301700 renamed the crate to
+  `arvo-refit`. Cross-strategy refit (different S1 / S2) and
+  algebraic narrowing surfaces remain future-round concerns.
 - **`Bits<const N: u16>` cell-table extension beyond 256.** Pass F
   widened the const-generic param to u16 (range 1..=65535); cell
   projections still cover 1..=256. Future round extends the cell

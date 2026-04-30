@@ -73,8 +73,8 @@ Consumers that need to take a wider raw value and narrow it to fit
 round 202604280034, post-Widen-addition during round 202604300826):
 `Narrow<T>::narrow_to::<N>` for shrinks, `Widen<T>::widen_to` for
 promotions. The trait surface and impl tables are re-exported
-through the `arvo-narrow` crate (a follow-up round renames it to
-`arvo-refit` to name the domain rather than one of the two
+through the `arvo-refit` crate (renamed from `arvo-narrow` in round
+202604301700 to name the domain rather than one of the two
 directions). The pipeline is explicit at the call site instead of
 hidden inside per-size helpers.
 
@@ -346,7 +346,7 @@ no-bare-primitives rule (definition-site exception category 4).
   `Narrow<T>` post-merge), `arvo-mask-contracts`,
   `arvo-numeric-contracts`).
 - Trait impls (live in the implementation crates: `arvo-bits`,
-  `arvo-bitmask`, `arvo-narrow`, `arvo-tensor`, `arvo-hash`).
+  `arvo-bitmask`, `arvo-refit`, `arvo-tensor`, `arvo-hash`).
 - Compositions over `Bits` (`UFixed`, `IFixed`, `FastFloat`,
   `StrictFloat`) live in the `arvo` facade. `UFixed` is a
   `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>` (default

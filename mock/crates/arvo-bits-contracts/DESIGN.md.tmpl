@@ -139,7 +139,7 @@ default-body composition; the single-trait crate split was ceremony
 without transitive-footprint benefit. Concrete impls live in
 `arvo-bits-contracts` itself (cross-primitive + cross-Bits forwarder)
 and are re-exported via `arvo-refit` (combined narrow + widen
-gateway crate, renamed from `arvo-narrow` in round 202604300826).
+gateway crate, renamed from `arvo-narrow` in round 202604301700).
 
 `Narrowed<const N: u16, T>` is a cosmetic alias for the result of
 `narrow_to::<N>` so consumer signatures read `fn foo() -> Narrowed<13, u16>`
