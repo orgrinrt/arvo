@@ -63,9 +63,11 @@ facade:
 - `arvo-tensor`. `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
   tensor wrappers. `Cap` newtype + `Enumerator` trait for
   USize-indexed iteration. Value-generic, no bit semantics.
-- `arvo-narrow`. Concrete `Narrow<T>` impls per source-target
-  primitive pair (cross-primitive narrowing under a mask
-  precondition).
+- `arvo-refit`. Re-export gateway for the bit-width refit family.
+  Re-exports `Narrow<T>` / `Widen<T>` / `Narrowed` / `Widened` from
+  `arvo-bits-contracts`; concrete impls (cross-primitive plus cross-
+  Bits) live in `arvo-bits-contracts` itself. Renamed from
+  `arvo-narrow` in round 202604301700.
 - `arvo-hash`. Hash family (`Fnv1a` plus future better defaults)
   with `Hasher<const N: u8>` per-N impls. `ContentHash` typed alias.
 

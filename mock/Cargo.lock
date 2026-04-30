@@ -106,22 +106,22 @@ dependencies = [
 ]
 
 [[package]]
-name = "arvo-narrow"
+name = "arvo-numeric-contracts"
 version = "0.1.0"
 dependencies = [
- "arvo-bitmask",
  "arvo-bits-contracts",
- "arvo-mask-contracts",
  "arvo-storage",
  "mockspace",
  "notko",
 ]
 
 [[package]]
-name = "arvo-numeric-contracts"
+name = "arvo-refit"
 version = "0.1.0"
 dependencies = [
+ "arvo-bitmask",
  "arvo-bits-contracts",
+ "arvo-mask-contracts",
  "arvo-storage",
  "mockspace",
  "notko",

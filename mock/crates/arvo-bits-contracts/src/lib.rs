@@ -27,6 +27,10 @@ use arvo_storage::{Bits, Bool, USize};
 use arvo_strategy::{BitsContainerFor, IContainerFor, Signedness, Strategy, UContainerFor};
 
 mod bits_impl;
+mod cross_domain;
+mod widen;
+
+pub use widen::{Widen, Widened};
 
 mod sealed {
     /// Private supertrait gating `BitPrim`. Impl'd in this crate on
@@ -530,7 +534,7 @@ pub type Narrowed<const N: u16, T> = T;
 ///
 /// Per topic Q-C, the trait declaration lives here (post-round-
 /// 202604280034 merge) and the concrete impls live in `arvo-bitmask`
-/// (mask-side) and `arvo-narrow` (cross-primitive). Const trait so
+/// (mask-side) and `arvo-refit` (cross-primitive). Const trait so
 /// consumers can call `wide.narrow_to::<13>()` in const fn bodies
 /// under generic `Narrow<T>` bounds.
 pub const trait Narrow<T> {
@@ -559,10 +563,10 @@ pub const trait Narrow<T> {
 // Cross-sign narrowing (e.g. u16 -> i8) is out of scope; consumers cast
 // sign first via separate impls outside this crate.
 //
-// These live in arvo-bits-contracts rather than arvo-narrow because
+// These live in arvo-bits-contracts rather than arvo-refit because
 // orphan rules require either the trait or one of the type arguments
 // to be local to the implementing crate. Since both Narrow and the
-// primitive types are foreign to arvo-narrow, the impls anchor here
+// primitive types are foreign to arvo-refit, the impls anchor here
 // with Narrow.
 
 macro_rules! impl_narrow_u {
@@ -592,10 +596,11 @@ macro_rules! impl_narrow_u {
     };
 }
 
-impl_narrow_u!(u16 => u8);
-impl_narrow_u!(u32 => u8, u16);
-impl_narrow_u!(u64 => u8, u16, u32);
-impl_narrow_u!(u128 => u8, u16, u32, u64);
+impl_narrow_u!(u8 => u8);
+impl_narrow_u!(u16 => u8, u16);
+impl_narrow_u!(u32 => u8, u16, u32);
+impl_narrow_u!(u64 => u8, u16, u32, u64);
+impl_narrow_u!(u128 => u8, u16, u32, u64, u128);
 
 macro_rules! impl_narrow_i {
     ($src:ty, $unsigned:ty => $($dst:ty),+) => {
@@ -626,10 +631,11 @@ macro_rules! impl_narrow_i {
     };
 }
 
-impl_narrow_i!(i16, u16 => i8);
-impl_narrow_i!(i32, u32 => i8, i16);
-impl_narrow_i!(i64, u64 => i8, i16, i32);
-impl_narrow_i!(i128, u128 => i8, i16, i32, i64);
+impl_narrow_i!(i8, u8 => i8);
+impl_narrow_i!(i16, u16 => i8, i16);
+impl_narrow_i!(i32, u32 => i8, i16, i32);
+impl_narrow_i!(i64, u64 => i8, i16, i32, i64);
+impl_narrow_i!(i128, u128 => i8, i16, i32, i64, i128);
 
 // --- Typed Bits<M, S, Sign> -> Bits<N, S, Sign> for M > N ---------------
 //
