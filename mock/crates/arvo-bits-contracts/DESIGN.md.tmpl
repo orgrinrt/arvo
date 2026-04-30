@@ -181,16 +181,33 @@ pub type Widened<T> = T;
 ```
 
 The dual to `Narrow<T>`. `widen_to` promotes a value into a wider
-bit-width. Unsigned widening zero-extends through Rust's `as` cast;
-signed widening sign-extends. For sub-carrier-width `Bits<M, S, Signed>`
-the cross-Bits impl masks bits 0..M of the source carrier and sign-
-extends bit M-1 across the destination carrier's high bits, using M
-from impl context.
+bit-width carrier. For primitive sources (full-carrier-width values),
+unsigned widening zero-extends and signed widening sign-extends
+through Rust's `as` cast.
 
-`widen_to_unmasked` skips the source-side mask for the hot case where
-bits above the source's logical width are already zero (well-formed
-`Bits<M, ...>` source); the masked variant masks first for safety
-against malformed or over-wide carrier values.
+For sub-carrier-width `Bits<M, S, Sign>` the substrate's contract is
+**bit-pattern-preserving**, not logical-value-preserving, on both
+`Narrow` and `Widen`. The cross-Bits forwarder calls the carrier-
+side primitive trait method without any explicit M-bit sign-extension
+machinery: bits above M in the source carrier are forwarded to the
+destination carrier as-is. For values constructed via `Narrow` (which
+zero-pads above the logical width via `(source as unsigned) & ((1 <<
+N) - 1)`), this produces zeros above the logical width in the widened
+result regardless of the source's logical signedness.
+
+Consumers needing logical-value-preserving signed conversion (sign-
+extension at bit M-1 on cross-Bits widen) compose `Narrow`, explicit
+sign-extension, and `Widen` at the application layer. The substrate's
+refit family stays bit-pattern-preserving by contract; the
+`IFixed<I, F, S>` numeric type holds carrier bits matching its
+declared logical width via construction, and its consumers do not
+typically refit through the bit-pattern path.
+
+`widen_to_unmasked` is the source-side-mask-free variant for hot
+paths where bits above the source's logical width are already zero
+(well-formed `Bits<M, ...>` constructed via `Narrow`); `widen_to`
+calls the same carrier-side widen body without an extra source mask
+because the carrier-side `as` cast preserves bit pattern unconditionally.
 
 ### Asymmetry with `Narrow`
 
