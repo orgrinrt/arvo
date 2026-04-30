@@ -10,4 +10,4 @@
 
 #![no_std]
 
-pub use arvo_bits_contracts::{Narrow, Narrowed};
+pub use arvo_bits_contracts::{Narrow, Narrowed, Widen, Widened};

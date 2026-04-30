@@ -24,9 +24,13 @@
 //! orphan issue).
 
 use arvo_storage::{Bits, Bool, USize};
-use arvo_strategy::{BitsContainerFor, IContainerFor, Signedness, Strategy, UContainerFor};
+use arvo_strategy::{BitsContainerFor, IContainerFor, Signed, Signedness, Strategy, UContainerFor, Unsigned};
 
 mod bits_impl;
+mod cross_domain;
+mod widen;
+
+pub use widen::{Widen, Widened};
 
 mod sealed {
     /// Private supertrait gating `BitPrim`. Impl'd in this crate on
@@ -592,10 +596,11 @@ macro_rules! impl_narrow_u {
     };
 }
 
-impl_narrow_u!(u16 => u8);
-impl_narrow_u!(u32 => u8, u16);
-impl_narrow_u!(u64 => u8, u16, u32);
-impl_narrow_u!(u128 => u8, u16, u32, u64);
+impl_narrow_u!(u8 => u8);
+impl_narrow_u!(u16 => u8, u16);
+impl_narrow_u!(u32 => u8, u16, u32);
+impl_narrow_u!(u64 => u8, u16, u32, u64);
+impl_narrow_u!(u128 => u8, u16, u32, u64, u128);
 
 macro_rules! impl_narrow_i {
     ($src:ty, $unsigned:ty => $($dst:ty),+) => {
@@ -626,10 +631,11 @@ macro_rules! impl_narrow_i {
     };
 }
 
-impl_narrow_i!(i16, u16 => i8);
-impl_narrow_i!(i32, u32 => i8, i16);
-impl_narrow_i!(i64, u64 => i8, i16, i32);
-impl_narrow_i!(i128, u128 => i8, i16, i32, i64);
+impl_narrow_i!(i8, u8 => i8);
+impl_narrow_i!(i16, u16 => i8, i16);
+impl_narrow_i!(i32, u32 => i8, i16, i32);
+impl_narrow_i!(i64, u64 => i8, i16, i32, i64);
+impl_narrow_i!(i128, u128 => i8, i16, i32, i64, i128);
 
 // --- Typed Bits<M, S, Sign> -> Bits<N, S, Sign> for M > N ---------------
 //
@@ -661,3 +667,4 @@ where
         Bits::from_raw(narrowed)
     }
 }
+
