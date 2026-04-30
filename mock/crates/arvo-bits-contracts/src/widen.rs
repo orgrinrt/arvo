@@ -1,13 +1,23 @@
 //! `Widen<T>` trait family and concrete impls.
 //!
 //! The bit-width counterpart to `Narrow<T>`. `widen_to` promotes a value
-//! into a wider bit-width carrier; unsigned widening zero-extends, signed
-//! widening sign-extends. For sub-carrier-width `Bits<M, S, Signed>` the
-//! cross-Bits impl masks bits 0..M of the source carrier and sign-extends
-//! bit M-1, using M from impl context.
+//! into a wider bit-width carrier. For primitive sources (full-carrier-
+//! width values), unsigned widening zero-extends and signed widening
+//! sign-extends through Rust's `as` cast.
 //!
-//! `widen_to_unmasked` skips the source-side mask for the hot case where
-//! bits above the source's logical width are already zero.
+//! For sub-carrier-width `Bits<M, S, Sign>` the substrate's contract is
+//! bit-pattern-preserving on both `Narrow` and `Widen`. The cross-Bits
+//! forwarder calls the carrier-side primitive trait method without
+//! explicit M-bit sign-extension; bits above M in the source carrier are
+//! forwarded to the destination carrier as-is. For values constructed
+//! via `Narrow` (which zero-pads above the logical width via
+//! `(source as unsigned) & ((1 << N) - 1)`), this produces zeros above
+//! the logical width in the widened result regardless of source sign.
+//!
+//! `widen_to_unmasked` is the hot-path variant for symmetry with
+//! `Narrow`'s unmasked variant; on this trait family it is equivalent
+//! to `widen_to` because the carrier-side `as` cast preserves bit
+//! pattern unconditionally.
 
 use arvo_storage::Bits;
 use arvo_strategy::{BitsContainerFor, Signedness, Strategy};
@@ -23,9 +33,12 @@ pub type Widened<T> = T;
 /// Widen `Self` into a wider bit-width carrier `T`.
 ///
 /// `Self` is a narrower raw value (a bare primitive or a
-/// `Bits<M, S, Sign>`). `T` is the target carrier type. Unsigned
-/// widening zero-extends through Rust's `as` cast; signed widening
-/// sign-extends.
+/// `Bits<M, S, Sign>`). `T` is the target carrier type. For primitive
+/// sources, unsigned widening zero-extends and signed widening sign-
+/// extends through Rust's `as` cast. For sub-carrier-width
+/// `Bits<M, ...>` sources, the cross-Bits forwarder preserves the
+/// carrier bit pattern (no explicit sign-extension at bit M-1); see
+/// the module-level doc for the contract.
 ///
 /// Asymmetric with `Narrow<T>`: `Widen<T>` does NOT carry a const-N
 /// parameter. The source bit-width is determined by impl context
@@ -36,19 +49,23 @@ pub type Widened<T> = T;
 pub const trait Widen<T> {
     /// Widen `Self` into `T`.
     ///
-    /// Zero-extends for unsigned source-target. Sign-extends for
-    /// signed source-target. For sub-carrier-width `Bits<M, ...>`
-    /// source the body masks bits 0..M before the cast.
+    /// Sign-extends at the carrier's high bit for signed primitive
+    /// sources. Zero-extends for unsigned primitive sources. For
+    /// sub-carrier-width `Bits<M, ...>` sources, forwards the
+    /// carrier bit pattern through the carrier-side widen; bits
+    /// above the source's logical width are preserved as-is, not
+    /// re-sign-extended at bit M-1.
     fn widen_to(self) -> T
     where
         Self: Sized;
 
-    /// Widen without source-side masking.
+    /// Hot-path widen for symmetry with `Narrow::narrow_to_unmasked`.
     ///
-    /// Sound when the caller knows bits above the source's logical
-    /// width are already zero (well-formed `Bits<M, ...>`, primitive
-    /// source where all bits are valid). Skips the source-side mask
-    /// in the body.
+    /// On this trait family `widen_to_unmasked` is equivalent to
+    /// `widen_to` because the carrier-side `as` cast preserves bit
+    /// pattern unconditionally; the variant exists so consumer
+    /// generic code over the refit family can name both directions
+    /// uniformly.
     fn widen_to_unmasked(self) -> T
     where
         Self: Sized;

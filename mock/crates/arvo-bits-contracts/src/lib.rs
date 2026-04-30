@@ -667,4 +667,3 @@ where
         Bits::from_raw(narrowed)
     }
 }
-
