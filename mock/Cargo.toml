@@ -16,7 +16,7 @@ members = [
     # L1 — implementation crates (concrete storage + impls)
     "crates/arvo-bits",
     "crates/arvo-bitmask",
-    "crates/arvo-narrow",
+    "crates/arvo-refit",
     "crates/arvo-tensor",
 
     # L2 — algorithm + hash crates
@@ -53,7 +53,7 @@ arvo-mask-contracts = { path = "crates/arvo-mask-contracts" }
 arvo-numeric-contracts = { path = "crates/arvo-numeric-contracts" }
 arvo-bits = { path = "crates/arvo-bits" }
 arvo-bitmask = { path = "crates/arvo-bitmask" }
-arvo-narrow = { path = "crates/arvo-narrow" }
+arvo-refit = { path = "crates/arvo-refit" }
 arvo-tensor = { path = "crates/arvo-tensor" }
 arvo-hash = { path = "crates/arvo-hash" }
 arvo-graph = { path = "crates/arvo-graph" }

@@ -34,7 +34,9 @@ pub mod transparent;
 pub mod ufixed;
 pub mod ufixed_impl;
 
-pub use arvo_bits::{Bit, Byte, DWord, Nibble, QWord, Word};
+pub use arvo_bits::{
+    Bit, BitsRefitCtor, Byte, DWord, Narrow, Narrowed, Nibble, QWord, Widen, Widened, Word,
+};
 pub use aliases::{Fixed, Int, Signed, Uint};
 pub use arvo_numeric_contracts::{
     IsNonNegative, IsNonZero, IsPositive, IsZero, IsZeroOrPositive, Predicate,

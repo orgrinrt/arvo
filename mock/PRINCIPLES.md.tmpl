@@ -5,11 +5,18 @@
 `arvo` is the **downstream facade** of the substrate, not the L0
 layer. The minimal L0 storage primitives (`Bits<N, S>`, strategy
 markers, `Bool`, `USize`, typed meta-bits) live in `arvo-storage`.
-Trait declarations split into six contract crates: `arvo-transparent`,
-`arvo-strategy`, `arvo-bits-contracts`, `arvo-mask-contracts`,
-`arvo-narrow-contracts`, `arvo-numeric-contracts`. Concrete impls live
-in domain-organised implementation crates (`arvo-bits`, `arvo-bitmask`,
-`arvo-narrow`, `arvo-tensor`). Algorithm crates (`arvo-graph`,
+Trait declarations split into five contract crates: `arvo-transparent`,
+`arvo-strategy`, `arvo-bits-contracts` (which absorbed
+`arvo-narrow-contracts` during round 202604280034 and gained `Widen<T>`
+during round 202604300826), `arvo-mask-contracts`, `arvo-numeric-
+contracts`. Concrete impls live in domain-organised implementation
+crates (`arvo-bits`, `arvo-bitmask`, `arvo-refit`, `arvo-tensor`).
+`arvo-refit` ships the bit-width refit re-export surface
+(`Narrow<T>` plus `Widen<T>` plus their `Narrowed` / `Widened`
+aliases). The crate was renamed from `arvo-narrow` in round
+202604301700 to name the domain rather than one of the two
+directions; both narrow and widen sit under one re-export gateway.
+Algorithm crates (`arvo-graph`,
 `arvo-sparse`, `arvo-comb`, `arvo-spectral`, `arvo-hash`) sit at L2 /
 L3. The `arvo` facade re-exports the public surface, hosts default
 trait impls, defines `Int<N, S>` / `Uint<N, S>` and the eight

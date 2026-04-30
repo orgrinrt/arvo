@@ -74,10 +74,12 @@ inline with the shipping-round identifier.
 - **Narrow surface expansion: `narrow_to_unmasked`.** SHIPPED in
   round 202604281000 (Pass B.3). Added alongside `narrow_to` in
   the `Narrow` trait surface.
-- **arvo-narrow concrete impls.** SHIPPED in round 202604281000
-  (Pass B.4). Per-source-target primitive narrowing impls plus
-  typed `Bits<M, S, Sign> → Bits<N, S, Sign>` for M > N populate
-  the previously-empty crate.
+- **arvo-refit concrete impls.** SHIPPED in round 202604281000
+  (Pass B.4) under the prior name `arvo-narrow`. Per-source-target
+  primitive narrowing impls plus typed `Bits<M, S, Sign> → Bits<N,
+  S, Sign>` for M > N populate the previously-empty crate. Crate
+  renamed to `arvo-refit` in round 202604301700 (the `Widen<T>` API
+  addition itself shipped in round 202604300826).
 - **BACKLOG additions for substrate gaps.** Round E. SIMD-typed
   vectors, atomic fixed-point, alignment-aware loaders, GF(2) /
   CRC, arvo-tensor `as_chunks` / Matrix layout doc, segment tree,
@@ -186,7 +188,7 @@ deeper soundness audits defer to follow-ups:
 Audit-driven follow-up chain Round D consolidated. Seven passes ship
 in this round (Pass A soundness extensions, Pass B original D content
 including hash family + ContentHash widen + Narrow expansion +
-arvo-narrow population, Pass C bitfield S param, Pass D Precise/Warm
+arvo-refit (then arvo-narrow) population, Pass C bitfield S param, Pass D Precise/Warm
 33..=64 fix, Pass E axis-driven arith dispatch, Pass F `Bits<u16>`
 widening, Pass G cross-strategy warning). Forward-looking entries
 generated during the round:
@@ -199,11 +201,15 @@ generated during the round:
   `CrossStrategyOp<S1, S2>` warning with the initial diagnostic
   text. Consumer feedback may sharpen the message; future round
   iterates.
-- **arvo-narrow generic-N-to-N narrowing.** Pass B.4 covers
-  per-source-target primitive narrowing plus typed
-  `Bits<M, S, Sign> -> Bits<N, S, Sign>` for M > N within one
-  strategy. Cross-strategy narrowing (different S1 / S2) and
-  algebraic narrowing surfaces are future-round concerns.
+- **arvo-refit cross-strategy refit.** Pass B.4 of round
+  202604281000 covered per-source-target primitive narrowing plus
+  typed `Bits<M, S, Sign> -> Bits<N, S, Sign>` for M > N within
+  one strategy. Round 202604300826 added `Widen<T>` + same-
+  container Narrow + cross-domain primitive Bits direct impls +
+  `Bits::from_narrowed` / `Bits::from_widened` ergonomic
+  constructors. Round 202604301700 renamed the crate to
+  `arvo-refit`. Cross-strategy refit (different S1 / S2) and
+  algebraic narrowing surfaces remain future-round concerns.
 - **`Bits<const N: u16>` cell-table extension beyond 256.** Pass F
   widened the const-generic param to u16 (range 1..=65535); cell
   projections still cover 1..=256. Future round extends the cell
