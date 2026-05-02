@@ -205,10 +205,27 @@ round):
 
 `Bounded` (MIN / MAX) and `Identity` (ZERO / ONE) are the canonical
 const-trait surfaces for typed-min, typed-max, typed-zero, typed-one
-across the substrate. Every primitive-wrapper impls them. Consumer
-code reaches for `<T as Bounded>::MAX` and `<T as Identity>::ZERO`,
-not type-specific inherent constants. Inherent constants stay as
-ergonomic shorthand routed through the trait.
+across the substrate. Every primitive-wrapper impls them. The trait
+**is** the canonical surface: consumer code reaches for
+`<T as Bounded>::MAX` / `<T as Identity>::ZERO`, or imports the
+trait (`use arvo_strategy::{Bounded, Identity};`) and writes
+`T::MAX` / `T::ZERO` resolved through trait associated-const
+lookup.
+
+Inherent re-definitions of the form `impl T { pub const ZERO: T =
+<T as Identity>::ZERO; }` are deliberately NOT maintained. They
+duplicate trait constants, promise an API consistency the substrate
+would have to remember to maintain across every wrapper, and rot the
+moment a trait gains a constant. The substrate ships the trait
+impls; consumer ergonomics is satisfied by `use`-importing the trait.
+
+Existing inherent constants on substrate primitives (USize::ZERO,
+USize::ONE, USize::MAX, Cap::ZERO, Cap::ONE, Mask64::EMPTY,
+Mask64::FULL, etc. shipped in earlier rounds) are removed during
+round 202605021800's source application. Call sites that previously
+read those names migrate to the trait projection. The migration is
+a one-time mechanical sweep covered by the round's source
+changelist.
 
 Round 202605021800 adds `SignedIdentity` for the signed `-1`:
 
