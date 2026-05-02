@@ -46,15 +46,15 @@ where
         };
 
         visited.insert(USize(start));
-        order[head.0] = NodeId::new(USize(start));
-        head = USize(head.0 + 1);
+        order[*head] = NodeId::new(USize(start));
+        head = head + USize::ONE;
 
         // BFS frontier pointers: [read, head) is the current queue.
-        let mut read = USize(head.0 - 1);
+        let mut read = head - USize::ONE;
 
         while read.0 < head.0 {
-            let node = order[read.0];
-            read = USize(read.0 + 1);
+            let node = order[*read];
+            read = read + USize::ONE;
 
             // Collect unvisited neighbours (successors + predecessors).
             let neigh = adjacency
@@ -104,8 +104,8 @@ where
                 let n_idx = (n.0).0;
                 if let Bool(false) = visited.contains(USize(n_idx)) {
                     visited.insert(USize(n_idx));
-                    order[head.0] = n;
-                    head = USize(head.0 + 1);
+                    order[*head] = n;
+                    head = head + USize::ONE;
                 }
                 k += 1;
             }
@@ -152,7 +152,7 @@ where
             let d = degree(adj, NodeId::new(USize(i)));
             match best {
                 Maybe::Isnt => best = Maybe::Is((USize(i), d)),
-                Maybe::Is((_, bd)) if d.0 < bd.0 => best = Maybe::Is((USize(i), d)),
+                Maybe::Is((_, bd)) if d < bd => best = Maybe::Is((USize(i), d)),
                 _ => {}
             }
         }

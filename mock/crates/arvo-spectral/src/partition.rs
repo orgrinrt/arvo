@@ -127,7 +127,7 @@ where
     // recomputing the full-graph Fiedler is not the hot path. A
     // follow-up round can specialise to the restricted Laplacian.
     while stack_len.0 > 0 && partition_count.0 < k {
-        stack_len = USize(stack_len.0 - 1);
+        stack_len = stack_len - USize::ONE;
         let component = stack[stack_len.0];
 
         // Count nodes in this component.
@@ -165,7 +165,7 @@ where
         // half keeps its existing partition id (so already-assigned
         // ids on other nodes are untouched).
         let new_id = partition_count;
-        partition_count = USize(partition_count.0 + 1);
+        partition_count = partition_count + USize::ONE;
         let mut j = 0usize;
         while j < n {
             if *positive_half.contains(USize(j)) {
@@ -190,11 +190,11 @@ where
         if want.0 > 0 && stack_len.0 + want.0 <= k {
             if pos_big {
                 stack[stack_len.0] = positive_half;
-                stack_len = USize(stack_len.0 + 1);
+                stack_len = stack_len + USize::ONE;
             }
             if neg_big {
                 stack[stack_len.0] = negative_half;
-                stack_len = USize(stack_len.0 + 1);
+                stack_len = stack_len + USize::ONE;
             }
         } else if want.0 > 0 && stack_len.0 + 1 <= k {
             let pick = if *positive_half.count() >= *negative_half.count() {
@@ -203,7 +203,7 @@ where
                 negative_half
             };
             stack[stack_len.0] = pick;
-            stack_len = USize(stack_len.0 + 1);
+            stack_len = stack_len + USize::ONE;
         }
     }
 

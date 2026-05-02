@@ -85,7 +85,9 @@ impl BoolLike for Bool {
     #[inline(always)]
     fn pack(self) -> Self::Packed {
         // Hot container for 1 logical bit is `u8`. `bool as u8` is
-        // 0 or 1, inside the 1-bit range.
+        // 0 or 1, inside the 1-bit range. boundary: Bool is the bottom-
+        // level wrapper around `bool`; the inner-field access is the
+        // FFI-shaped path documented in round 202605021200 FINDINGS.
         UFixed::<{ IBits::ONE }, { FBits::ZERO }, Hot>::from_raw(self.0 as u8)
     }
 }

@@ -39,7 +39,7 @@ where
         }
 
         let id = next_id;
-        next_id = USize(next_id.0 + 1);
+        next_id = next_id + USize::ONE;
 
         // Iterative DFS. Stack capacity = N is a safe bound: each
         // node enters the stack at most once.

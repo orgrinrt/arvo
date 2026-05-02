@@ -35,7 +35,7 @@ where
 
         // Fresh component: seed is the root.
         let id = next_id;
-        next_id = USize(next_id.0 + 1);
+        next_id = next_id + USize::ONE;
 
         // Iterative DFS over undirected adjacency (succ + pred).
         let mut stack: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];

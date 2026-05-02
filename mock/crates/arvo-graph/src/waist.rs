@@ -68,7 +68,7 @@ where
     while j < cap_size(N) {
         let d = depth[j].0;
         if d < cap_size(N) {
-            width[d] = USize(width[d].0 + 1);
+            width[d] = width[d] + USize::ONE;
             if d > max_depth_seen.0 {
                 max_depth_seen = USize(d);
             }
@@ -82,8 +82,8 @@ where
     let mut d = 0usize;
     while d <= max_depth_seen.0 && d < cap_size(N) {
         if width[d].0 > 0 {
-            occupied[occ_n.0] = USize(d);
-            occ_n = USize(occ_n.0 + 1);
+            occupied[*occ_n] = USize(d);
+            occ_n = occ_n + USize::ONE;
         }
         d += 1;
     }

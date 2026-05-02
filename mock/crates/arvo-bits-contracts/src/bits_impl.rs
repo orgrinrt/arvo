@@ -61,7 +61,7 @@ where
         USize(self.to_raw().count_ones() as usize)
     }
     fn count_zeros(self) -> USize {
-        USize(N as usize - self.count_ones().0)
+        USize(N as usize) - self.count_ones()
     }
     fn is_zero(self) -> Bool {
         Bool(self.to_raw() == <<S as UContainerFor<N>>::T as BitPrim>::ZERO)

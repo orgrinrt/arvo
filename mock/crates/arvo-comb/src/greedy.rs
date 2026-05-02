@@ -64,25 +64,25 @@ where
             // item against a fresh accumulator, skip to keep the
             // walk terminating.
             if !feasible.test(&acc, item).0 {
-                i = USize(i.0 + 1);
+                i = i + USize::ONE;
                 continue;
             }
             acc = merge(acc, item);
             range_start = i;
             open = Bool::TRUE;
-            i = USize(i.0 + 1);
+            i = i + USize::ONE;
             continue;
         }
 
         if feasible.test(&acc, item).0 {
             acc = merge(acc, item);
-            i = USize(i.0 + 1);
+            i = i + USize::ONE;
             continue;
         }
 
         // Close the open group at `[range_start, i)`.
         groups.set(count, Range { start: range_start, end: i });
-        count = USize(count.0 + 1);
+        count = count + USize::ONE;
         if count.0 == cap_size(M) {
             return (count, groups);
         }
@@ -99,7 +99,7 @@ where
             count,
             Range { start: range_start, end: USize(cap_size(N)) },
         );
-        count = USize(count.0 + 1);
+        count = count + USize::ONE;
     }
 
     (count, groups)
