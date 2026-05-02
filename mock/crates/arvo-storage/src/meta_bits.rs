@@ -25,7 +25,9 @@ use arvo_strategy::{Bounded, Hot, Identity, Unsigned};
 use arvo_transparent::Transparent;
 
 use crate::Bits;
-use crate::bridges::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
+use crate::bridges::{
+    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+};
 use crate::platform::Bool;
 
 /// Layout-stable companion to `Bits<9, Hot, Unsigned>` used as the
@@ -48,6 +50,11 @@ use crate::platform::Bool;
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default, Hash)]
 #[repr(transparent)]
 pub struct MetaCarrier(pub u16);
+
+// SAFETY: `repr(transparent)` over `u16`. Layout-identical by Rust spec.
+unsafe impl const Transparent for MetaCarrier {
+    type Inner = u16;
+}
 
 impl MetaCarrier {
     /// Construct from the raw u16 carrier value.
@@ -83,30 +90,39 @@ impl const Identity for MetaCarrier {
     const ONE: Self = MetaCarrier(<u16 as Identity>::ONE);
 }
 
-impl const ConstEq for MetaCarrier {
+impl const ConstPartialEq for MetaCarrier {
     #[inline(always)]
     fn const_eq(&self, other: &Self) -> Bool {
-        Bool(self.0 == other.0)
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <u16 as ConstPartialEq>::const_eq(&a, &b)
+    }
+}
+
+impl const ConstEq for MetaCarrier {}
+
+impl const ConstBitEq for MetaCarrier {
+    #[inline(always)]
+    fn const_bit_eq(&self, other: &Self) -> Bool {
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <u16 as ConstBitEq>::const_bit_eq(&a, &b)
     }
 }
 
 impl const ConstOrd for MetaCarrier {
     #[inline(always)]
     fn const_cmp(&self, other: &Self) -> ConstOrdering {
-        if self.0 < other.0 {
-            ConstOrdering::Less
-        } else if self.0 > other.0 {
-            ConstOrdering::Greater
-        } else {
-            ConstOrdering::Equal
-        }
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <u16 as ConstOrd>::const_cmp(&a, &b)
     }
 }
 
 impl const ConstDefault for MetaCarrier {
     #[inline(always)]
     fn const_default() -> Self {
-        MetaCarrier(0)
+        MetaCarrier(<u16 as ConstDefault>::const_default())
     }
 }
 
@@ -196,25 +212,38 @@ macro_rules! meta_bits_wrapper {
             const ONE: Self = Self(MetaCarrier::from_raw(<u16 as Identity>::ONE));
         }
 
-        impl const ConstEq for $W {
+        impl const ConstPartialEq for $W {
             #[inline(always)]
             fn const_eq(&self, other: &Self) -> Bool {
-                Bool(self.0.0 == other.0.0)
+                let a = <Self as Transparent>::raw(*self);
+                let b = <Self as Transparent>::raw(*other);
+                <u16 as ConstPartialEq>::const_eq(&a, &b)
+            }
+        }
+
+        impl const ConstEq for $W {}
+
+        impl const ConstBitEq for $W {
+            #[inline(always)]
+            fn const_bit_eq(&self, other: &Self) -> Bool {
+                let a = <Self as Transparent>::raw(*self);
+                let b = <Self as Transparent>::raw(*other);
+                <u16 as ConstBitEq>::const_bit_eq(&a, &b)
             }
         }
 
         impl const ConstOrd for $W {
             #[inline(always)]
             fn const_cmp(&self, other: &Self) -> ConstOrdering {
-                if self.0.0 < other.0.0 { ConstOrdering::Less }
-                else if self.0.0 > other.0.0 { ConstOrdering::Greater }
-                else { ConstOrdering::Equal }
+                let a = <Self as Transparent>::raw(*self);
+                let b = <Self as Transparent>::raw(*other);
+                <u16 as ConstOrd>::const_cmp(&a, &b)
             }
         }
 
         impl const ConstDefault for $W {
             #[inline(always)]
-            fn const_default() -> Self { Self(MetaCarrier::from_raw(0)) }
+            fn const_default() -> Self { Self(MetaCarrier::from_raw(<u16 as ConstDefault>::const_default())) }
         }
 
         impl From<u8> for $W {

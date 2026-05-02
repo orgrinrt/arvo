@@ -15,7 +15,7 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::{Bool, Cap, USize};
+use arvo::{Identity, Bool, Cap, USize};
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_tensor::{Array, cap_size};
 

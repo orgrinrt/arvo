@@ -23,6 +23,8 @@ mod platform;
 
 pub use arvo_strategy::{BitPrim, Bounded, Identity, MultiContainer, SignedIdentity};
 pub use bits::Bits;
-pub use bridges::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
+pub use bridges::{
+    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+};
 pub use meta_bits::{FBits, IBits, MetaCarrier, Width, fbits, ibits, width};
 pub use platform::{AsBool, Bool, Cap, USize};

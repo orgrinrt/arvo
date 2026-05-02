@@ -51,8 +51,8 @@ pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLik
 pub use predicate::{Pred, Pred2, Pred3};
 pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
 pub use strategy::{
-    Bounded, Cold, ConstDefault, ConstEq, ConstOrd, ConstOrdering, Hot, Identity, Precise,
-    SignedIdentity, Strategy, Warm, width_le_64,
+    Bounded, Cold, ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+    Hot, Identity, Precise, SignedIdentity, Strategy, Warm, width_le_64,
 };
 pub use traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
 pub use transparent::{NumericPrimitive, Transparent, raw};

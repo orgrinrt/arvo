@@ -7,6 +7,14 @@
 //!
 //! `AsBool` is the bridge trait for boundary call sites that need a
 //! raw `bool`.
+//!
+//! Per round 202605021800: USize and Cap share the entire canonical
+//! const surface (Bounded + Identity + ConstPartialEq + ConstEq +
+//! ConstBitEq + ConstOrd + ConstDefault + every core::ops + Deref +
+//! AsRef) through one `impl_unsigned_integer_newtype!` macro. The
+//! macro emits delegating bodies that read inner values through
+//! `<Self as Transparent>::raw(self)` rather than `.0` field access,
+//! so the substrate never normalises field-access on its own primitives.
 
 use core::cmp::Ordering;
 use core::convert::Infallible;
@@ -17,25 +25,29 @@ use core::ops::{
 };
 
 use arvo_strategy::{Bounded, Identity};
+use arvo_transparent::Transparent;
 
-use crate::bridges::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
+use crate::bridges::{
+    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+};
 
 /// Index / count newtype wrapping `usize`.
 ///
 /// Wraps `usize` for the arvo-types-only lint. `Deref<Target = usize>`
 /// gives `array[*idx]` ergonomics. Derives `ConstParamTy` so `USize`
 /// values can be used inside other const-generic newtypes (see `Cap`).
+///
+/// Canonical const surface (Bounded / Identity / ConstPartialEq /
+/// ConstEq / ConstBitEq / ConstOrd / ConstDefault / arith ops / bit
+/// ops) is supplied by `impl_unsigned_integer_newtype!` below.
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
 pub struct USize(pub usize);
 
-impl USize {
-    /// Constant `USize(0)`.
-    pub const ZERO: USize = USize(0);
-    /// Constant `USize(1)`.
-    pub const ONE: USize = USize(1);
-    /// Constant `USize(usize::MAX)`.
-    pub const MAX: USize = USize(usize::MAX);
+// SAFETY: `repr(transparent)` over `usize`. Layout-identical by Rust
+// spec; transmute soundness follows from the repr.
+unsafe impl const Transparent for USize {
+    type Inner = usize;
 }
 
 impl Deref for USize {
@@ -46,177 +58,193 @@ impl Deref for USize {
     }
 }
 
-impl const Add<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn add(self, rhs: USize) -> USize {
-        USize(self.0 + rhs.0)
-    }
-}
-
-impl const Sub<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn sub(self, rhs: USize) -> USize {
-        USize(self.0 - rhs.0)
-    }
-}
-
-impl const Mul<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn mul(self, rhs: USize) -> USize {
-        USize(self.0 * rhs.0)
-    }
-}
-
-impl const Div<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn div(self, rhs: USize) -> USize {
-        USize(self.0 / rhs.0)
-    }
-}
-
-impl const Rem<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn rem(self, rhs: USize) -> USize {
-        USize(self.0 % rhs.0)
-    }
-}
-
-impl const Shl<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn shl(self, rhs: USize) -> USize {
-        USize(self.0 << rhs.0)
-    }
-}
-
-impl const Shr<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn shr(self, rhs: USize) -> USize {
-        USize(self.0 >> rhs.0)
-    }
-}
-
-impl const BitAnd<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn bitand(self, rhs: USize) -> USize {
-        USize(self.0 & rhs.0)
-    }
-}
-
-impl const BitOr<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn bitor(self, rhs: USize) -> USize {
-        USize(self.0 | rhs.0)
-    }
-}
-
-impl const BitXor<USize> for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn bitxor(self, rhs: USize) -> USize {
-        USize(self.0 ^ rhs.0)
-    }
-}
-
-impl const Not for USize {
-    type Output = USize;
-    #[inline(always)]
-    fn not(self) -> USize {
-        USize(!self.0)
-    }
-}
-
-impl PartialOrd<USize> for USize {
-    #[inline(always)]
-    fn partial_cmp(&self, rhs: &USize) -> Option<Ordering> { // lint:allow(no-bare-option) reason: core::cmp::PartialOrd::partial_cmp trait-method signature returns Option<Ordering>; tracked: #115
-        self.0.partial_cmp(&rhs.0)
-    }
-}
-
-impl Ord for USize {
-    #[inline(always)]
-    fn cmp(&self, rhs: &USize) -> Ordering {
-        self.0.cmp(&rhs.0)
-    }
-}
-
 /// Const-generic capacity for fixed-size structures.
 ///
 /// Used wherever a const generic sizes an array. The type prevents
 /// mixing capacities with unrelated integers. The const parameter
 /// name carries the semantic distinction (`N`, `ROWS`, `NNZ`).
+///
+/// Canonical const surface comes from `impl_unsigned_integer_newtype!`
+/// (same macro that generates USize's surface), so Cap and USize have
+/// identical APIs by construction. The asymmetry that previously
+/// existed (USize had bit ops, Cap did not) is gone.
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
 pub struct Cap(pub USize);
 
-impl Cap {
-    /// Constant `Cap(USize::ZERO)`.
-    pub const ZERO: Cap = Cap(USize::ZERO);
-    /// Constant `Cap(USize::ONE)`.
-    pub const ONE: Cap = Cap(USize::ONE);
+// SAFETY: `repr(transparent)` over `USize` (which is itself
+// `repr(transparent)` over `usize`). Layout-identical by Rust spec.
+unsafe impl const Transparent for Cap {
+    type Inner = USize;
 }
 
-impl const Add<Cap> for Cap {
-    type Output = Cap;
-    #[inline(always)]
-    fn add(self, rhs: Cap) -> Cap {
-        Cap(self.0.add(rhs.0))
-    }
+/// Generate the canonical const surface for an unsigned-integer
+/// newtype.
+///
+/// Emits `Bounded`, `Identity`, `ConstPartialEq`, `ConstEq`,
+/// `ConstBitEq`, `ConstOrd`, `ConstDefault`, the eleven `core::ops`
+/// arith / bit ops (`Add`, `Sub`, `Mul`, `Div`, `Rem`, `Shl`, `Shr`,
+/// `BitAnd`, `BitOr`, `BitXor`, `Not`), and `PartialOrd` / `Ord`
+/// for `$outer`, where `$outer: repr(transparent)` over `$inner`
+/// and `$inner` already provides the same surface. Bodies route
+/// through `<$outer as Transparent>::raw` for unwrap and
+/// tuple-struct construction for wrap, so the macro never normalises
+/// `.0` field access on the wrapper.
+///
+/// `$inner` must implement: `Bounded + Identity + ConstPartialEq +
+/// ConstEq + ConstBitEq + ConstOrd + ConstDefault + Add + Sub + Mul
+/// + Div + Rem + Shl + Shr + BitAnd + BitOr + BitXor + Not +
+/// PartialOrd + Ord` (every method called by the emitted bodies).
+/// `$outer` must implement `[const] Transparent<Inner = $inner>`.
+macro_rules! impl_unsigned_integer_newtype {
+    ($outer:ty, $inner:ty) => {
+        // ---- canonical typed-const surfaces ----
+        impl const Bounded for $outer {
+            const MIN: Self = Self(<$inner as Bounded>::MIN);
+            const MAX: Self = Self(<$inner as Bounded>::MAX);
+        }
+        impl const Identity for $outer {
+            const ZERO: Self = Self(<$inner as Identity>::ZERO);
+            const ONE: Self = Self(<$inner as Identity>::ONE);
+        }
+        impl const ConstPartialEq for $outer {
+            #[inline(always)]
+            fn const_eq(&self, other: &Self) -> Bool {
+                <$inner as ConstPartialEq>::const_eq(
+                    &<Self as Transparent>::raw(*self),
+                    &<Self as Transparent>::raw(*other),
+                )
+            }
+        }
+        impl const ConstEq for $outer {}
+        impl const ConstBitEq for $outer {
+            #[inline(always)]
+            fn const_bit_eq(&self, other: &Self) -> Bool {
+                <$inner as ConstBitEq>::const_bit_eq(
+                    &<Self as Transparent>::raw(*self),
+                    &<Self as Transparent>::raw(*other),
+                )
+            }
+        }
+        impl const ConstOrd for $outer {
+            #[inline(always)]
+            fn const_cmp(&self, other: &Self) -> ConstOrdering {
+                <$inner as ConstOrd>::const_cmp(
+                    &<Self as Transparent>::raw(*self),
+                    &<Self as Transparent>::raw(*other),
+                )
+            }
+        }
+        impl const ConstDefault for $outer {
+            #[inline(always)]
+            fn const_default() -> Self {
+                Self(<$inner as ConstDefault>::const_default())
+            }
+        }
+
+        // ---- core::ops arith ----
+        impl const Add<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn add(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) + <Self as Transparent>::raw(rhs))
+            }
+        }
+        impl const Sub<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn sub(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) - <Self as Transparent>::raw(rhs))
+            }
+        }
+        impl const Mul<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn mul(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) * <Self as Transparent>::raw(rhs))
+            }
+        }
+        impl const Div<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn div(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) / <Self as Transparent>::raw(rhs))
+            }
+        }
+        impl const Rem<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn rem(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) % <Self as Transparent>::raw(rhs))
+            }
+        }
+
+        // ---- core::ops bit ops ----
+        impl const Shl<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn shl(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) << <Self as Transparent>::raw(rhs))
+            }
+        }
+        impl const Shr<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn shr(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) >> <Self as Transparent>::raw(rhs))
+            }
+        }
+        impl const BitAnd<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn bitand(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) & <Self as Transparent>::raw(rhs))
+            }
+        }
+        impl const BitOr<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn bitor(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) | <Self as Transparent>::raw(rhs))
+            }
+        }
+        impl const BitXor<$outer> for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn bitxor(self, rhs: $outer) -> $outer {
+                Self(<Self as Transparent>::raw(self) ^ <Self as Transparent>::raw(rhs))
+            }
+        }
+        impl const Not for $outer {
+            type Output = $outer;
+            #[inline(always)]
+            fn not(self) -> $outer {
+                Self(!<Self as Transparent>::raw(self))
+            }
+        }
+
+        // ---- core::cmp PartialOrd / Ord (non-const, std-compat) ----
+        impl PartialOrd<$outer> for $outer {
+            #[inline(always)]
+            fn partial_cmp(&self, rhs: &$outer) -> Option<Ordering> { // lint:allow(no-bare-option) reason: core::cmp::PartialOrd::partial_cmp trait-method signature returns Option<Ordering>; tracked: #115
+                let a = <Self as Transparent>::raw(*self);
+                let b = <Self as Transparent>::raw(*rhs);
+                a.partial_cmp(&b)
+            }
+        }
+        impl Ord for $outer {
+            #[inline(always)]
+            fn cmp(&self, rhs: &$outer) -> Ordering {
+                let a = <Self as Transparent>::raw(*self);
+                let b = <Self as Transparent>::raw(*rhs);
+                a.cmp(&b)
+            }
+        }
+    };
 }
 
-impl const Sub<Cap> for Cap {
-    type Output = Cap;
-    #[inline(always)]
-    fn sub(self, rhs: Cap) -> Cap {
-        Cap(self.0.sub(rhs.0))
-    }
-}
-
-impl const Mul<Cap> for Cap {
-    type Output = Cap;
-    #[inline(always)]
-    fn mul(self, rhs: Cap) -> Cap {
-        Cap(self.0.mul(rhs.0))
-    }
-}
-
-impl const Div<Cap> for Cap {
-    type Output = Cap;
-    #[inline(always)]
-    fn div(self, rhs: Cap) -> Cap {
-        Cap(self.0.div(rhs.0))
-    }
-}
-
-impl const Rem<Cap> for Cap {
-    type Output = Cap;
-    #[inline(always)]
-    fn rem(self, rhs: Cap) -> Cap {
-        Cap(self.0.rem(rhs.0))
-    }
-}
-
-impl PartialOrd<Cap> for Cap {
-    #[inline(always)]
-    fn partial_cmp(&self, rhs: &Cap) -> Option<Ordering> { // lint:allow(no-bare-option) reason: core::cmp::PartialOrd::partial_cmp trait-method signature returns Option<Ordering>; tracked: #115
-        self.0.partial_cmp(&rhs.0)
-    }
-}
-
-impl Ord for Cap {
-    #[inline(always)]
-    fn cmp(&self, rhs: &Cap) -> Ordering {
-        self.0.cmp(&rhs.0)
-    }
-}
+impl_unsigned_integer_newtype!(USize, usize);
+impl_unsigned_integer_newtype!(Cap, USize);
 
 /// Control-flow boolean.
 ///
@@ -226,6 +254,11 @@ impl Ord for Cap {
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
 pub struct Bool(pub bool);
+
+// SAFETY: `repr(transparent)` over `bool`. Layout-identical by spec.
+unsafe impl const Transparent for Bool {
+    type Inner = bool;
+}
 
 impl Bool {
     /// Constant `Bool(true)`.
@@ -253,7 +286,7 @@ impl Try for Bool {
 
     #[inline(always)]
     fn branch(self) -> ControlFlow<Infallible, bool> {
-        ControlFlow::Continue(self.0)
+        ControlFlow::Continue(<Self as Transparent>::raw(self))
     }
 }
 
@@ -276,7 +309,7 @@ pub const trait AsBool {
 impl const AsBool for Bool {
     #[inline(always)]
     fn as_bool(&self) -> bool {
-        self.0
+        <Self as Transparent>::raw(*self)
     }
 }
 
@@ -290,100 +323,50 @@ impl From<bool> for Bool {
 impl From<Bool> for bool {
     #[inline(always)]
     fn from(b: Bool) -> Self {
-        b.0
+        <Bool as Transparent>::raw(b)
     }
 }
 
-// --- Canonical typed-const surfaces (round 202605021800) ----------------
-//
-// `Bounded`, `Identity`, `ConstEq`, `ConstOrd`, `ConstDefault` are the
-// trait-canonical const surfaces. The substrate routes consumer code
-// through these traits rather than facade-mirror inherent constants.
-// Per the user's pushback in round 202605021800: re-defining ZERO/ONE/MAX
-// as inherent constants on USize/Cap would duplicate Identity::ZERO etc.
-// and create fragile one-off redirects. The trait IS the canonical
-// surface; consumers reach for `<USize as Identity>::ZERO` (which
-// `USize::ZERO` resolves to via trait associated-const lookup when
-// `Identity` is in scope).
+// ---- Bool canonical surface (subset of integer-newtype macro;
+// Bool has only two values so Bounded/Arith are not meaningful).
+// ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault
+// route through inner `bool`.
 
-impl const Bounded for USize {
-    const MIN: Self = USize(<usize as Bounded>::MIN);
-    const MAX: Self = USize(<usize as Bounded>::MAX);
-}
-
-impl const Identity for USize {
-    const ZERO: Self = USize(<usize as Identity>::ZERO);
-    const ONE: Self = USize(<usize as Identity>::ONE);
-}
-
-impl const ConstEq for USize {
+impl const ConstPartialEq for Bool {
     #[inline(always)]
     fn const_eq(&self, other: &Self) -> Bool {
-        Bool(self.0 == other.0)
+        <bool as ConstPartialEq>::const_eq(
+            &<Self as Transparent>::raw(*self),
+            &<Self as Transparent>::raw(*other),
+        )
     }
 }
 
-impl const ConstOrd for USize {
+impl const ConstEq for Bool {}
+
+impl const ConstBitEq for Bool {
+    #[inline(always)]
+    fn const_bit_eq(&self, other: &Self) -> Bool {
+        <bool as ConstBitEq>::const_bit_eq(
+            &<Self as Transparent>::raw(*self),
+            &<Self as Transparent>::raw(*other),
+        )
+    }
+}
+
+impl const ConstOrd for Bool {
     #[inline(always)]
     fn const_cmp(&self, other: &Self) -> ConstOrdering {
-        if self.0 < other.0 {
-            ConstOrdering::Less
-        } else if self.0 > other.0 {
-            ConstOrdering::Greater
-        } else {
-            ConstOrdering::Equal
-        }
-    }
-}
-
-impl const ConstDefault for USize {
-    #[inline(always)]
-    fn const_default() -> Self {
-        USize(0)
-    }
-}
-
-impl const Bounded for Cap {
-    const MIN: Self = Cap(<USize as Bounded>::MIN);
-    const MAX: Self = Cap(<USize as Bounded>::MAX);
-}
-
-impl const Identity for Cap {
-    const ZERO: Self = Cap(<USize as Identity>::ZERO);
-    const ONE: Self = Cap(<USize as Identity>::ONE);
-}
-
-impl const ConstEq for Cap {
-    #[inline(always)]
-    fn const_eq(&self, other: &Self) -> Bool {
-        self.0.const_eq(&other.0)
-    }
-}
-
-impl const ConstOrd for Cap {
-    #[inline(always)]
-    fn const_cmp(&self, other: &Self) -> ConstOrdering {
-        self.0.const_cmp(&other.0)
-    }
-}
-
-impl const ConstDefault for Cap {
-    #[inline(always)]
-    fn const_default() -> Self {
-        Cap(<USize as ConstDefault>::const_default())
-    }
-}
-
-impl const ConstEq for Bool {
-    #[inline(always)]
-    fn const_eq(&self, other: &Self) -> Bool {
-        Bool(self.0 == other.0)
+        <bool as ConstOrd>::const_cmp(
+            &<Self as Transparent>::raw(*self),
+            &<Self as Transparent>::raw(*other),
+        )
     }
 }
 
 impl const ConstDefault for Bool {
     #[inline(always)]
     fn const_default() -> Self {
-        Bool(false)
+        Bool(<bool as ConstDefault>::const_default())
     }
 }

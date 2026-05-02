@@ -495,3 +495,18 @@ macro_rules! impl_signed_identity {
 }
 
 impl_signed_identity!(i8, i16, i32, i64, i128, isize);
+
+// Float SignedIdentity. ML / scientific code uses `-1.0` as a
+// canonical constant; the substrate provides it through the same
+// trait surface as signed integers so consumers reach for
+// `<F as SignedIdentity>::NEG_ONE` rather than a type-specific path.
+// Per audit pivot 7 followup: ship in this round, not later.
+macro_rules! impl_signed_identity_f {
+    ($($ty:ty),+) => {
+        $(impl const SignedIdentity for $ty {
+            const NEG_ONE: Self = -1.0;
+        })+
+    };
+}
+
+impl_signed_identity_f!(f32, f64);

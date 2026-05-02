@@ -13,7 +13,7 @@
 //! implement `Ieee`.
 
 use crate::markers::FloatLike;
-use crate::strategy::{Bounded, ConstDefault, ConstEq, Identity};
+use crate::strategy::{Bounded, ConstBitEq, ConstDefault, ConstPartialEq, Identity};
 use arvo_storage::Bool;
 
 mod sealed {
@@ -94,12 +94,36 @@ impl<F: Ieee> StrictFloat<F> {
 impl<F: Ieee> const FloatLike for FastFloat<F> {}
 impl<F: Ieee> const FloatLike for StrictFloat<F> {}
 
+// SAFETY: `repr(transparent)` over `F` (which is `f32` or `f64` via
+// the `Ieee` seal). Layout-identical by Rust spec.
+unsafe impl<F: Ieee> const arvo_transparent::Transparent for FastFloat<F> {
+    type Inner = F;
+}
+
+unsafe impl<F: Ieee> const arvo_transparent::Transparent for StrictFloat<F> {
+    type Inner = F;
+}
+
 // --- Canonical const surfaces for FastFloat / StrictFloat ----------------
 //
-// `Bounded`, `Identity`, `ConstEq`, `ConstDefault` blanket impls keyed
-// on the inner `F: [const] Ieee` projection. ConstOrd is omitted: float
-// total ordering is not constructible without NaN handling, which the
-// substrate routes through `TotalOrd` (numeric-contracts) instead.
+// `Bounded`, `Identity`, `ConstPartialEq`, `ConstBitEq`,
+// `ConstDefault` blanket impls keyed on the inner `F: [const] Ieee`
+// projection.
+//
+// `ConstEq` (the reflexivity-promising marker) is deliberately NOT
+// implemented for FastFloat / StrictFloat because NaN breaks
+// reflexivity (`NaN.const_eq(&NaN) == FALSE` under PartialEq).
+// Consumers who need reflexive equality on float values reach for
+// `ConstBitEq` (bitwise equality, always reflexive). Consumers who
+// need partial equality reach for `ConstPartialEq`. Total ordering on
+// floats routes through `arvo-numeric-contracts::TotalOrd`.
+//
+// Note on `Identity::ZERO` value-vs-formal-additive-identity under
+// fast-math: `FastFloat<F>::ZERO = 0.0` is the *value* zero. Under
+// LLVM fast-math passes (signed-zero-ignoring), `x + 0.0` may be
+// rewritten to `x` even for `x = -0.0`; the additive-identity
+// property is preserved up to fast-math's signed-zero collapse,
+// which is the documented contract of `FastFloat`.
 
 impl<F: [const] Ieee> const Bounded for FastFloat<F> {
     const MIN: Self = Self(<F as Bounded>::MIN);
@@ -111,10 +135,21 @@ impl<F: [const] Ieee> const Identity for FastFloat<F> {
     const ONE: Self = Self(<F as Identity>::ONE);
 }
 
-impl<F: [const] Ieee + [const] ConstEq> const ConstEq for FastFloat<F> {
+impl<F: [const] Ieee + [const] ConstPartialEq> const ConstPartialEq for FastFloat<F> {
     #[inline(always)]
     fn const_eq(&self, other: &Self) -> Bool {
-        self.0.const_eq(&other.0)
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <F as ConstPartialEq>::const_eq(&a, &b)
+    }
+}
+
+impl<F: [const] Ieee + [const] ConstBitEq> const ConstBitEq for FastFloat<F> {
+    #[inline(always)]
+    fn const_bit_eq(&self, other: &Self) -> Bool {
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <F as ConstBitEq>::const_bit_eq(&a, &b)
     }
 }
 
@@ -135,10 +170,21 @@ impl<F: [const] Ieee> const Identity for StrictFloat<F> {
     const ONE: Self = Self(<F as Identity>::ONE);
 }
 
-impl<F: [const] Ieee + [const] ConstEq> const ConstEq for StrictFloat<F> {
+impl<F: [const] Ieee + [const] ConstPartialEq> const ConstPartialEq for StrictFloat<F> {
     #[inline(always)]
     fn const_eq(&self, other: &Self) -> Bool {
-        self.0.const_eq(&other.0)
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <F as ConstPartialEq>::const_eq(&a, &b)
+    }
+}
+
+impl<F: [const] Ieee + [const] ConstBitEq> const ConstBitEq for StrictFloat<F> {
+    #[inline(always)]
+    fn const_bit_eq(&self, other: &Self) -> Bool {
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <F as ConstBitEq>::const_bit_eq(&a, &b)
     }
 }
 

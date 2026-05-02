@@ -87,3 +87,19 @@ impl<HiT: BitPrim, LoT: BitPrim> MultiContainer<HiT, LoT> {
     #[inline(always)]
     pub const fn new(hi: HiT, lo: LoT) -> Self { Self { hi, lo } }
 }
+
+// SAFETY: `MultiContainer<HiT, LoT>` is `repr(C)` over two halves.
+// `ConstParamTy_` requires structural eq + bitwise stable
+// representation. Both halves are `BitPrim + ConstParamTy_` (every
+// primitive in the BitPrim seal — u8..u128 — has the derive); the
+// composite is structurally equal under the standard derive. Audit
+// C2: this impl closes the gap that previously made
+// `Bits<N, ..., Signed>` unsound at `N >= 129` (where the projection
+// resolves to a `MultiContainer<HiT, LoT>` carrier and Bits's own
+// `ConstParamTy_` impl bounds on the inner being `ConstParamTy_`).
+impl<HiT, LoT> core::marker::ConstParamTy_ for MultiContainer<HiT, LoT>
+where
+    HiT: BitPrim + core::marker::ConstParamTy_,
+    LoT: BitPrim + core::marker::ConstParamTy_,
+{
+}

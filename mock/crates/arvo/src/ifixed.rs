@@ -44,6 +44,16 @@ pub struct IFixed<const I: IBits, const F: FBits, S: Strategy = Warm>(
 where
     S: IContainerFor<{ ifixed_bits(I, F) }>;
 
+// SAFETY: `repr(transparent)` over `Bits<{1+I+F}, S, Signed>`.
+// Layout-identical by Rust spec. See UFixed for rationale.
+unsafe impl<const I: IBits, const F: FBits, S: Strategy> const arvo_transparent::Transparent
+    for IFixed<I, F, S>
+where
+    S: IContainerFor<{ ifixed_bits(I, F) }>,
+{
+    type Inner = Bits<{ ifixed_bits(I, F) }, S, Signed>;
+}
+
 // Generic Identity blanket on IFixed wires through the inner Bits's
 // Identity. Bridge follows the same single-predicate pattern as
 // UFixed step 7. ZERO/ONE come from Bits::ZERO / ONE; MINUS_ONE on
@@ -58,16 +68,39 @@ where
     const ONE: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ONE);
 }
 
-// ConstEq / ConstOrd / ConstDefault blankets routed through the inner
-// signed Bits. Same single-predicate cycle-avoidance pattern as Identity.
+// ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault
+// blankets routed through the inner signed Bits. Same single-predicate
+// cycle-avoidance pattern as Identity.
+impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstPartialEq for IFixed<I, F, S>
+where
+    S: IContainerFor<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstPartialEq,
+{
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> arvo_storage::Bool {
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstPartialEq>::const_eq(&a, &b)
+    }
+}
+
 impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstEq for IFixed<I, F, S>
 where
     S: IContainerFor<{ ifixed_bits(I, F) }>,
     Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstEq,
 {
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstBitEq for IFixed<I, F, S>
+where
+    S: IContainerFor<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstBitEq,
+{
     #[inline(always)]
-    fn const_eq(&self, other: &Self) -> arvo_storage::Bool {
-        self.0.const_eq(&other.0)
+    fn const_bit_eq(&self, other: &Self) -> arvo_storage::Bool {
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstBitEq>::const_bit_eq(&a, &b)
     }
 }
 
@@ -78,7 +111,9 @@ where
 {
     #[inline(always)]
     fn const_cmp(&self, other: &Self) -> crate::strategy::ConstOrdering {
-        self.0.const_cmp(&other.0)
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstOrd>::const_cmp(&a, &b)
     }
 }
 

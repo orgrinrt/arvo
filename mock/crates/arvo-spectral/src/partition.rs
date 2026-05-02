@@ -16,7 +16,7 @@
 
 use core::cmp::Ordering;
 
-use arvo::{Cap, USize};
+use arvo::{Identity, Cap, USize};
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
 use arvo_bitmask::Mask64;
 

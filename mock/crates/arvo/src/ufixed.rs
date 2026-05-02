@@ -15,7 +15,9 @@ use core::ops::{Add, Div, Mul, Sub};
 use notko::Outcome;
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
-use crate::strategy::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
+use crate::strategy::{
+    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+};
 use arvo_storage::{Bits, Bool, FBits, IBits, USize};
 use crate::strategy::{
     Hot, Identity, Precise, Strategy, UArith, UContainerFor, UNarrowFrom, UWidenFrom, Warm,
@@ -36,6 +38,19 @@ pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy:
 where
     S: UContainerFor<{ ufixed_bits(I, F) }>;
 
+// SAFETY: `repr(transparent)` over `Bits<{I+F}, S>`. Layout-identical
+// by Rust spec. The Transparent contract is what lets the canonical
+// const surface (ConstPartialEq / ConstEq / ConstBitEq / ConstOrd /
+// Bounded / Identity) read inner bits without resorting to `.0`
+// field-access on the wrapper.
+unsafe impl<const I: IBits, const F: FBits, S: Strategy> const arvo_transparent::Transparent
+    for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+{
+    type Inner = Bits<{ ufixed_bits(I, F) }, S>;
+}
+
 // Generic Identity blanket on UFixed wires through the inner Bits's
 // Identity blanket (which itself wires through the container's
 // Identity per round 202605021600 step 4). Single predicate at the
@@ -51,16 +66,40 @@ where
     const ONE: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ONE);
 }
 
-// ConstEq / ConstOrd / ConstDefault blankets routed through the inner
-// Bits. Same single-predicate cycle-avoidance pattern as Identity.
+// ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault
+// blankets routed through the inner Bits. Same single-predicate
+// cycle-avoidance pattern as Identity (each impl bounds only on the
+// inner type's bridge bound, not the container projection).
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstPartialEq for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstPartialEq,
+{
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <Bits<{ ufixed_bits(I, F) }, S> as ConstPartialEq>::const_eq(&a, &b)
+    }
+}
+
 impl<const I: IBits, const F: FBits, S: Strategy> const ConstEq for UFixed<I, F, S>
 where
     S: UContainerFor<{ ufixed_bits(I, F) }>,
     Bits<{ ufixed_bits(I, F) }, S>: [const] ConstEq,
 {
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstBitEq for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstBitEq,
+{
     #[inline(always)]
-    fn const_eq(&self, other: &Self) -> Bool {
-        self.0.const_eq(&other.0)
+    fn const_bit_eq(&self, other: &Self) -> Bool {
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <Bits<{ ufixed_bits(I, F) }, S> as ConstBitEq>::const_bit_eq(&a, &b)
     }
 }
 
@@ -71,7 +110,9 @@ where
 {
     #[inline(always)]
     fn const_cmp(&self, other: &Self) -> ConstOrdering {
-        self.0.const_cmp(&other.0)
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <Bits<{ ufixed_bits(I, F) }, S> as ConstOrd>::const_cmp(&a, &b)
     }
 }
 

@@ -38,7 +38,9 @@ use arvo_strategy::{
 };
 use arvo_transparent::Transparent;
 
-use crate::bridges::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
+use crate::bridges::{
+    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+};
 use crate::platform::Bool;
 
 /// N-bit opaque bit-pattern. Transparent wrapper over the
@@ -115,16 +117,43 @@ where
     const ONE: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ONE);
 }
 
-// Generic ConstEq blanket. Bit patterns compare structurally through
-// the inner container primitive's ConstEq.
+// Generic ConstPartialEq + ConstEq + ConstBitEq blankets. Bit
+// patterns compare structurally through the inner container
+// primitive's bridges. Integer-like containers are reflexive
+// (ConstEq); the marker propagates here. Bit-pattern equality
+// (ConstBitEq) is always reflexive regardless of inner type and is
+// what consumers reach for when value equality and bit equality
+// must coincide.
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstPartialEq for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] ConstPartialEq,
+{
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <<S as BitsContainerFor<N, Sign>>::T as ConstPartialEq>::const_eq(&a, &b)
+    }
+}
+
 impl<const N: u16, S: Strategy, Sign: Signedness> const ConstEq for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: [const] ConstEq,
 {
+}
+
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstBitEq for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] ConstBitEq,
+{
     #[inline(always)]
-    fn const_eq(&self, other: &Self) -> Bool {
-        self.0.const_eq(&other.0)
+    fn const_bit_eq(&self, other: &Self) -> Bool {
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <<S as BitsContainerFor<N, Sign>>::T as ConstBitEq>::const_bit_eq(&a, &b)
     }
 }
 
@@ -140,7 +169,9 @@ where
 {
     #[inline(always)]
     fn const_cmp(&self, other: &Self) -> ConstOrdering {
-        self.0.const_cmp(&other.0)
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <<S as BitsContainerFor<N, Sign>>::T as ConstOrd>::const_cmp(&a, &b)
     }
 }
 
