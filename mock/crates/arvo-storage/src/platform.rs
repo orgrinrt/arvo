@@ -16,6 +16,10 @@ use core::ops::{
     Sub, Try,
 };
 
+use arvo_strategy::{Bounded, Identity};
+
+use crate::bridges::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
+
 /// Index / count newtype wrapping `usize`.
 ///
 /// Wraps `usize` for the arvo-types-only lint. `Deref<Target = usize>`
@@ -264,12 +268,12 @@ impl FromResidual<Infallible> for Bool {
 ///
 /// Preferred path in WU code is `?`; `as_bool()` exists for boundary
 /// compatibility with libraries that expose `bool` directly.
-pub trait AsBool {
+pub const trait AsBool {
     /// Extract the inner `bool`.
     fn as_bool(&self) -> bool;
 }
 
-impl AsBool for Bool {
+impl const AsBool for Bool {
     #[inline(always)]
     fn as_bool(&self) -> bool {
         self.0
@@ -287,5 +291,99 @@ impl From<Bool> for bool {
     #[inline(always)]
     fn from(b: Bool) -> Self {
         b.0
+    }
+}
+
+// --- Canonical typed-const surfaces (round 202605021800) ----------------
+//
+// `Bounded`, `Identity`, `ConstEq`, `ConstOrd`, `ConstDefault` are the
+// trait-canonical const surfaces. The substrate routes consumer code
+// through these traits rather than facade-mirror inherent constants.
+// Per the user's pushback in round 202605021800: re-defining ZERO/ONE/MAX
+// as inherent constants on USize/Cap would duplicate Identity::ZERO etc.
+// and create fragile one-off redirects. The trait IS the canonical
+// surface; consumers reach for `<USize as Identity>::ZERO` (which
+// `USize::ZERO` resolves to via trait associated-const lookup when
+// `Identity` is in scope).
+
+impl const Bounded for USize {
+    const MIN: Self = USize(<usize as Bounded>::MIN);
+    const MAX: Self = USize(<usize as Bounded>::MAX);
+}
+
+impl const Identity for USize {
+    const ZERO: Self = USize(<usize as Identity>::ZERO);
+    const ONE: Self = USize(<usize as Identity>::ONE);
+}
+
+impl const ConstEq for USize {
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        Bool(self.0 == other.0)
+    }
+}
+
+impl const ConstOrd for USize {
+    #[inline(always)]
+    fn const_cmp(&self, other: &Self) -> ConstOrdering {
+        if self.0 < other.0 {
+            ConstOrdering::Less
+        } else if self.0 > other.0 {
+            ConstOrdering::Greater
+        } else {
+            ConstOrdering::Equal
+        }
+    }
+}
+
+impl const ConstDefault for USize {
+    #[inline(always)]
+    fn const_default() -> Self {
+        USize(0)
+    }
+}
+
+impl const Bounded for Cap {
+    const MIN: Self = Cap(<USize as Bounded>::MIN);
+    const MAX: Self = Cap(<USize as Bounded>::MAX);
+}
+
+impl const Identity for Cap {
+    const ZERO: Self = Cap(<USize as Identity>::ZERO);
+    const ONE: Self = Cap(<USize as Identity>::ONE);
+}
+
+impl const ConstEq for Cap {
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        self.0.const_eq(&other.0)
+    }
+}
+
+impl const ConstOrd for Cap {
+    #[inline(always)]
+    fn const_cmp(&self, other: &Self) -> ConstOrdering {
+        self.0.const_cmp(&other.0)
+    }
+}
+
+impl const ConstDefault for Cap {
+    #[inline(always)]
+    fn const_default() -> Self {
+        Cap(<USize as ConstDefault>::const_default())
+    }
+}
+
+impl const ConstEq for Bool {
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        Bool(self.0 == other.0)
+    }
+}
+
+impl const ConstDefault for Bool {
+    #[inline(always)]
+    fn const_default() -> Self {
+        Bool(false)
     }
 }

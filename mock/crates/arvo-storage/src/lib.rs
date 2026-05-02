@@ -16,11 +16,13 @@
 //! See `DESIGN.md` for the full surface.
 
 mod bits;
+mod bridges;
 mod layout_assertions;
 mod meta_bits;
 mod platform;
 
-pub use arvo_strategy::{BitPrim, MultiContainer};
+pub use arvo_strategy::{BitPrim, Bounded, Identity, MultiContainer, SignedIdentity};
 pub use bits::Bits;
+pub use bridges::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
 pub use meta_bits::{FBits, IBits, MetaCarrier, Width, fbits, ibits, width};
 pub use platform::{AsBool, Bool, Cap, USize};
