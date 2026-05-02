@@ -117,7 +117,7 @@ macro_rules! impl_u_arith_wrapping {
                 #[inline(always)]
                 fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
                     -> <Self as UContainerFor<$bits>>::T {
-                    if b == <<Self as UContainerFor<$bits>>::T as UPrimConst>::ZERO {
+                    if b == <<Self as UContainerFor<$bits>>::T as Identity>::ZERO {
                         a
                     } else {
                         a.wrapping_div(b)
@@ -145,7 +145,7 @@ macro_rules! impl_u_arith_saturating {
                 fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
                     -> <Self as UContainerFor<$bits>>::T {
                     // Precise never panics on div-by-zero: clamp to MAX.
-                    if b == <<Self as UContainerFor<$bits>>::T as UPrimConst>::ZERO {
+                    if b == <<Self as UContainerFor<$bits>>::T as Identity>::ZERO {
                         <<Self as UContainerFor<$bits>>::T as USaturating>::saturating_max()
                     } else {
                         a / b
@@ -172,7 +172,7 @@ macro_rules! impl_i_arith_wrapping {
                 #[inline(always)]
                 fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
                     -> <Self as IContainerFor<$bits>>::T {
-                    if b == <<Self as IContainerFor<$bits>>::T as IPrimConst>::ZERO {
+                    if b == <<Self as IContainerFor<$bits>>::T as Identity>::ZERO {
                         a
                     } else {
                         a.wrapping_div(b)
@@ -200,7 +200,7 @@ macro_rules! impl_i_arith_saturating {
                 fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
                     -> <Self as IContainerFor<$bits>>::T {
                     // Precise guards against div-by-zero: clamp to MAX.
-                    if b == <<Self as IContainerFor<$bits>>::T as IPrimConst>::ZERO {
+                    if b == <<Self as IContainerFor<$bits>>::T as Identity>::ZERO {
                         <<Self as IContainerFor<$bits>>::T as ISaturating>::saturating_max()
                     } else {
                         // Guard signed overflow (MIN / -1) by preferring
@@ -440,68 +440,36 @@ macro_rules! impl_bounded_identity_i {
     };
 }
 
-impl_bounded_identity_u!(u8, u16, u32, u64, u128);
-impl_bounded_identity_i!(i8, i16, i32, i64, i128);
+impl_bounded_identity_u!(u8, u16, u32, u64, u128, usize);
+impl_bounded_identity_i!(i8, i16, i32, i64, i128, isize);
 
-// --- Primitive const bridges (round 202605021400) -----------------------
+// --- SignedIdentity (round 202605021800) ---------------------------------
 //
-// `UPrimConst` / `IPrimConst` give per-primitive const access to ZERO /
-// ONE / MAX (and MIN / NEG_ONE for signed). The bridge unblocks two
-// things: (1) generic-context bodies that need a typed-zero const can
-// route through `<T as UPrimConst>::ZERO` instead of non-const
-// `Default::default()`; (2) UFixed / IFixed inherent constants like
-// `pub const ZERO: UFixed<I, F, S>` resolve through the same const
-// projection chain that UArith uses for arithmetic.
+// `SignedIdentity` is the signed-primitive companion to `Identity`. It
+// adds `NEG_ONE`, the only constant beyond ZERO/ONE that consumers
+// reach for on signed types where the asymmetry matters. Per round
+// 202605021800, the prior `UPrimConst` / `IPrimConst` traits (which
+// duplicated Bounded + Identity with a NEG_ONE on the signed side) are
+// removed; the canonical surfaces are `Bounded`, `Identity`, and
+// `SignedIdentity`. Consumers route through these, not through type-
+// specific inherent constants.
 
-/// Per-primitive unsigned const surface.
+/// Per-signed-type negative-one const surface.
 ///
-/// `pub const trait`. Implemented for `u8` / `u16` / `u32` / `u64` /
-/// `u128`. Generic contexts reach typed-primitive zero / one / max
-/// without falling back to non-const `Default`.
-pub const trait UPrimConst: Sized {
-    /// Zero of the primitive type.
-    const ZERO: Self;
-    /// One of the primitive type.
-    const ONE: Self;
-    /// Max of the primitive type.
-    const MAX: Self;
-}
-
-/// Per-primitive signed const surface. Signed counterpart of `UPrimConst`.
-pub const trait IPrimConst: Sized {
-    /// Zero of the primitive type.
-    const ZERO: Self;
-    /// One of the primitive type.
-    const ONE: Self;
-    /// Negative one of the primitive type.
+/// `pub const trait`. Supertrait-bounded on `Identity`. Implemented for
+/// `i8` / `i16` / `i32` / `i64` / `i128` / `isize` and substrate types
+/// that wrap signed primitives (`IFixed`, `Bits<N, S, Signed>`).
+pub const trait SignedIdentity: [const] Identity {
+    /// The additive inverse of the multiplicative identity (signed -1).
     const NEG_ONE: Self;
-    /// Min of the primitive type.
-    const MIN: Self;
-    /// Max of the primitive type.
-    const MAX: Self;
 }
 
-macro_rules! impl_uprimconst {
+macro_rules! impl_signed_identity {
     ($($ty:ty),+) => {
-        $(impl const UPrimConst for $ty {
-            const ZERO: Self = 0;
-            const ONE: Self = 1;
-            const MAX: Self = <$ty>::MAX;
-        })+
-    };
-}
-
-macro_rules! impl_iprimconst {
-    ($($ty:ty),+) => {
-        $(impl const IPrimConst for $ty {
-            const ZERO: Self = 0;
-            const ONE: Self = 1;
+        $(impl const SignedIdentity for $ty {
             const NEG_ONE: Self = -1;
-            const MIN: Self = <$ty>::MIN;
-            const MAX: Self = <$ty>::MAX;
         })+
     };
 }
 
-impl_uprimconst!(u8, u16, u32, u64, u128);
-impl_iprimconst!(i8, i16, i32, i64, i128);
+impl_signed_identity!(i8, i16, i32, i64, i128, isize);

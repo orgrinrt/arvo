@@ -42,7 +42,7 @@ mod multi_container;
 mod widen;
 
 pub use arith::{
-    Bounded, IArith, IPrimConst, ISaturating, Identity, UArith, UPrimConst, USaturating,
+    Bounded, IArith, ISaturating, Identity, SignedIdentity, UArith, USaturating,
 };
 pub use cross_strategy::CrossStrategyOp;
 pub use axes::{
