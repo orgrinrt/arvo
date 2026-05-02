@@ -191,13 +191,23 @@ Strategy projection picks the (HiT, LoT) shape per the four canonical
 strategies' policies (smallest-footprint vs same-length doubled). The
 per-cell tabulation lives in `arvo-strategy/DESIGN.md.tmpl`.
 
-Round 202604280500 ships the storage shape only. Arithmetic on
-multi-value containers (`UArith` / `IArith` dispatch on `MultiContainer`,
-`UWidenFrom` / `UNarrowFrom` cross-container widening) is BACKLOG-tracked
-for a follow-up round; UFixed / IFixed at 129..=256 logical width await
-that arith bridge before they compile (their cap stays at 128 in this
-round). `Bits<129..=256, S, Sign>` is available standalone with its
-storage projection landing in this round.
+Round 202604280500 shipped the storage shape only. Round 202605021800
+adds the const-callable bit-op surface: `MultiContainer<HiT, LoT>`
+gains `impl const BitPrim`, `impl const Bounded`, and `impl const
+Identity` (signatures and bodies documented in
+`arvo-strategy/DESIGN.md.tmpl` under the canonical const surface
+section). Per-half composition: `WIDTH = HiT::WIDTH + LoT::WIDTH`,
+`bitor/bitand/bitnot/bitxor` element-wise, `count_ones = hi + lo`,
+`trailing_zeros` and `leading_zeros` cascade across the boundary,
+`is_zero = hi.is_zero() && lo.is_zero()`. With these impls landed,
+`Bits<N, S, Sign>` for N=129..=256 gains a fully const-callable
+bit-op surface (was storage-only before this round).
+
+UFixed / IFixed at 129..=256 logical width still await the arithmetic
+bridge (`UArith` / `IArith` dispatch on `MultiContainer`,
+`UWidenFrom` / `UNarrowFrom` cross-container widening). That work is
+BACKLOG-tracked for a follow-up round; UFixed / IFixed at 129..=256
+do not compile yet (their cap stays at 128).
 
 The `repr(C)` layout of `MultiContainer<HiT, LoT>` is compile-time-
 asserted for the canonical pairs (`u64, u128`; `u128, u128`; `i64,
@@ -221,6 +231,39 @@ inhabited path).
 `Bool` implements the const unsafe `Transparent` trait so the inner
 `bool` is reachable in const context via `arvo::raw(b)`.
 
+### Const-trait surfaces (round 202605021800)
+
+Round 202605021800 lifts the `AsBool` trait to `pub const trait` and
+adds substrate-bridge `ConstEq` and `ConstDefault` impls on `Bool`.
+
+```rust
+pub const trait AsBool {
+    fn as_bool(&self) -> bool;
+}
+
+impl const AsBool for Bool {
+    fn as_bool(&self) -> bool { self.0 }
+}
+
+impl const ConstEq for Bool {
+    fn const_eq(&self, other: &Self) -> Bool {
+        Bool(self.0 == other.0)
+    }
+}
+
+impl const ConstDefault for Bool {
+    fn const_default() -> Self { Bool(false) }
+}
+```
+
+`ConstOrd` is skipped for `Bool` (only two values; lattice ordering
+is trivial and not consumer-needed). `Bool` is not a candidate for
+`Bounded` / `Identity`: it is not a numeric primitive.
+
+Stdlib `From<bool> for Bool` and `From<Bool> for bool` impls remain
+non-const for boundary coverage. The parallel `ConstFrom` impls land
+in Round 4 (#314) once the `ConstFrom` substrate bridge ships.
+
 ## USize
 
 `pub struct USize(pub usize)`. The newtype for platform-pointer-width
@@ -243,11 +286,25 @@ falling back to `.0` field-access on the inner `usize`.
 
 ```rust
 impl USize {
-    pub const ZERO: USize = USize(0);
-    pub const ONE: USize = USize(1);
-    pub const MAX: USize = USize(usize::MAX);
+    pub const ZERO: USize = <Self as Identity>::ZERO;
+    pub const ONE: USize = <Self as Identity>::ONE;
+    pub const MAX: USize = <Self as Bounded>::MAX;
 }
 ```
+
+Round 202605021800 lifts the inherent constants to route through the
+canonical `Bounded` / `Identity` const-trait projections (in
+`arvo-strategy`). Consumer code reaches for `USize::MAX` (ergonomic
+shorthand) or `<USize as Bounded>::MAX` (generic-context); both
+resolve to the same value. The bare-primitive `usize::MAX` literal
+appears only at the bottom-out point inside `impl const Bounded for
+USize`'s body, per `no-bare-primitives.md` definition-site exception
+3 (platform-binding wrappers).
+
+`USize` also gains `impl const ConstEq`, `impl const ConstOrd`, and
+`impl const ConstDefault` substrate-bridge impls in this round,
+routing through the inner `usize`'s primitive `==`, `cmp`, and `0`
+respectively.
 
 Const-trait impls cover the full `core::ops::*` surface: `Add`,
 `Sub`, `Mul`, `Div`, `Rem`, `Shl<USize>`, `Shr<USize>`, `BitAnd`,
@@ -290,10 +347,17 @@ Cap mirrors USize's const-arithmetic surface:
 
 ```rust
 impl Cap {
-    pub const ZERO: Cap = Cap(USize::ZERO);
-    pub const ONE: Cap = Cap(USize::ONE);
+    pub const ZERO: Cap = <Self as Identity>::ZERO;
+    pub const ONE: Cap = <Self as Identity>::ONE;
+    pub const MAX: Cap = <Self as Bounded>::MAX;
 }
 ```
+
+Round 202605021800 closes the asymmetry vs USize: Cap gains a `MAX`
+constant (was previously absent). All three inherent constants route
+through the canonical `Bounded` / `Identity` const-trait projections.
+Cap also gains `impl const ConstEq`, `impl const ConstOrd`, and
+`impl const ConstDefault` impls; bodies delegate to the inner USize.
 
 Const-trait ops on Cap operating against Cap: `Add`, `Sub`, `Mul`,
 `Div`, `Rem`. Bodies delegate through USize's const-trait surface
