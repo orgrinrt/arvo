@@ -24,7 +24,7 @@ use crate::{HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
 /// width within an axis category. Per-strategy impls remain table-
 /// driven for concrete-type dispatch; the axis bounds document
 /// design intent and prepare for axis-only dispatch.
-pub trait UWidenFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
+pub const trait UWidenFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
     UContainerFor<N> + HasAxes
 {
     /// Widen an `Src::T` value into `Self::T`. Infallible by definition.
@@ -32,7 +32,7 @@ pub trait UWidenFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
 }
 
 /// Signed container widen bridge.
-pub trait IWidenFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
+pub const trait IWidenFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
     IContainerFor<N> + HasAxes
 {
     /// Widen an `Src::T` value into `Self::T`. Infallible by definition.
@@ -41,7 +41,7 @@ pub trait IWidenFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
 
 /// Unsigned container narrow bridge with bounds check against the
 /// logical range `[0, 2^N)`.
-pub trait UNarrowFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
+pub const trait UNarrowFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
     UContainerFor<N> + HasAxes
 {
     /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
@@ -49,7 +49,7 @@ pub trait UNarrowFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
 }
 
 /// Signed container narrow bridge with logical-range check.
-pub trait INarrowFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
+pub const trait INarrowFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
     IContainerFor<N> + HasAxes
 {
     /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
@@ -64,7 +64,7 @@ pub trait INarrowFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
 macro_rules! impl_u_widen {
     ($src_strategy:ty => $dst_strategy:ty, $src_ty:ty => $dst_ty:ty, $($bits:literal),+) => {
         $(
-            impl UWidenFrom<$src_strategy, $bits> for $dst_strategy {
+            impl const UWidenFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
                 fn u_widen(v: $src_ty) -> $dst_ty { v as $dst_ty }
             }
@@ -75,7 +75,7 @@ macro_rules! impl_u_widen {
 macro_rules! impl_i_widen {
     ($src_strategy:ty => $dst_strategy:ty, $src_ty:ty => $dst_ty:ty, $($bits:literal),+) => {
         $(
-            impl IWidenFrom<$src_strategy, $bits> for $dst_strategy {
+            impl const IWidenFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
                 fn i_widen(v: $src_ty) -> $dst_ty { v as $dst_ty }
             }
@@ -86,7 +86,7 @@ macro_rules! impl_i_widen {
 macro_rules! impl_u_narrow {
     ($src_strategy:ty => $dst_strategy:ty, $src_ty:ty => $dst_ty:ty, $($bits:literal),+) => {
         $(
-            impl UNarrowFrom<$src_strategy, $bits> for $dst_strategy {
+            impl const UNarrowFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
                 fn u_try_narrow(v: $src_ty) -> Outcome<$dst_ty, ()> {
                     // Logical max for this N is (1 << N) - 1.
@@ -103,7 +103,7 @@ macro_rules! impl_u_narrow {
 macro_rules! impl_i_narrow {
     ($src_strategy:ty => $dst_strategy:ty, $src_ty:ty => $dst_ty:ty, $($bits:literal),+) => {
         $(
-            impl INarrowFrom<$src_strategy, $bits> for $dst_strategy {
+            impl const INarrowFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
                 fn i_try_narrow(v: $src_ty) -> Outcome<$dst_ty, ()> {
                     // Signed logical range for N: [-(1 << (N-1)), (1 << (N-1)) - 1].

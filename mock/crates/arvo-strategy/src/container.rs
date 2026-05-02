@@ -68,7 +68,7 @@ pub const trait IContainerFor<const N: u16>: Strategy {
 /// `UFixed` / `IFixed` continue to bind on `UContainerFor<N>` /
 /// `IContainerFor<N>` directly; only `Bits` itself binds on
 /// `BitsContainerFor<N, Sign>`.
-pub trait BitsContainerFor<const N: u16, Sign: Signedness>: Strategy {
+pub const trait BitsContainerFor<const N: u16, Sign: Signedness>: Strategy {
     /// Concrete storage integer for this (strategy, bit-width, sign) triple.
     type T: Copy
         + Clone
@@ -80,14 +80,14 @@ pub trait BitsContainerFor<const N: u16, Sign: Signedness>: Strategy {
         + 'static;
 }
 
-impl<S: Strategy, const N: u16> BitsContainerFor<N, Unsigned> for S
+impl<S: Strategy, const N: u16> const BitsContainerFor<N, Unsigned> for S
 where
     S: UContainerFor<N>,
 {
     type T = <S as UContainerFor<N>>::T;
 }
 
-impl<S: Strategy, const N: u16> BitsContainerFor<N, Signed> for S
+impl<S: Strategy, const N: u16> const BitsContainerFor<N, Signed> for S
 where
     S: IContainerFor<N>,
 {
