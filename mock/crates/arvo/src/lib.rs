@@ -14,6 +14,7 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
+#![feature(const_ops)]
 #![feature(generic_const_exprs)]
 #![feature(macro_metavar_expr_concat)]
 #![feature(try_trait_v2)]

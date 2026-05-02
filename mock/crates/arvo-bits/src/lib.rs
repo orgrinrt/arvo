@@ -2,6 +2,7 @@
 #![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![feature(const_trait_impl)]
+#![feature(const_ops)]
 #![allow(incomplete_features)]
 
 //! arvo-bits — bit-storage aliases.
