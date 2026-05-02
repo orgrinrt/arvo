@@ -68,12 +68,15 @@ Const trait so bounds compose with const fns.
 ## Strategy axis decomposition
 
 Round C (round 202604280806) decomposes the bundled `Strategy` axis
-into three orthogonal sub-axes, each its own sealed marker trait:
+into three orthogonal sub-axes, each its own sealed marker trait. Round
+202605021800 lifts every axis trait to `pub const trait` so `[const]`
+propagation reaches every `Self: HasAxes` projection through the
+substrate.
 
 ```rust
-pub trait OverflowPolicy { /* Wrapping / Saturating */ }
-pub trait ContainerWidth { /* Min / DoubleLogical */ }
-pub trait StorageLayout { /* Dense / Bitpacked */ }
+pub const trait OverflowPolicy { /* Wrapping / Saturating */ }
+pub const trait ContainerWidth { /* Min / DoubleLogical */ }
+pub const trait StorageLayout { /* Dense / Bitpacked */ }
 ```
 
 Each axis has two ZST markers (`Wrapping` / `Saturating`, `Min` /
@@ -102,10 +105,208 @@ strategy. The cross-check pins the documentation table above to
 behaviour: a future round changing a strategy's axis impl without
 updating `HasAxes` breaks the build, not silent runtime divergence.
 
+`HasAxes` itself is `pub const trait` (round 202605021800). The four
+strategy `impl const HasAxes for Hot/Warm/Cold/Precise` blocks lift to
+`impl const`. Every consumer-side `where T: HasAxes` bound becomes
+`where T: [const] HasAxes` for const-context callers.
+
 Per the `arvo-toolbox-not-policer` workspace rule, the axis
 decomposition exists so the substrate can grow its strategy lattice
 without forking the marker namespace each time. Consumer-facing
 expansion (new public markers) requires an explicit design round.
+
+## Sealed marker traits and `pub const trait` discipline
+
+Workspace-wide pattern (round 202605021800): sealed marker traits
+carrying associated types or const discriminants but no method bodies
+(or trivially-pure bodies) lift to `pub const trait` so `[const]`
+propagation reaches every where-clause that bounds on them.
+
+The traits covered by this round:
+
+- `Strategy` (sealed marker; `pub const trait`).
+- `OverflowPolicy`, `ContainerWidth`, `StorageLayout`, `HasAxes`
+  (axis decomposition above).
+- `BitsContainerFor<N, Sign>` (signed-axis projection below).
+- `CrossStrategyOp<S1, S2>` (cross-strategy diagnostic marker; sibling
+  of the already-const `Resolve`).
+- `Signedness` (in `arvo-storage`; sealed `Unsigned` / `Signed` marker
+  trait carried as a const-generic bound on `Bits<N, S, Sign>`).
+- `Ieee` and `FromU8Ieee` (in `arvo`; supertrait-bound on `Identity`
+  per round 202605021800 to drop the redundant `Ieee::ZERO` /
+  `Ieee::ONE` declarations).
+- `IntegerLike`, `FractionLike`, `BitPresentation`, `FloatLike`,
+  `BoolLike` (in `arvo`; consumer-facing markers).
+- `AsBool` (in `arvo-storage`; `Bool::as_bool` projection).
+- `MultiContainerHalf` (in `arvo-strategy/multi_container.rs`;
+  renamed from prior `BitPrim` sealing-marker to free the canonical
+  name for `arvo_bits_contracts::BitPrim`).
+
+Every existing `impl X for Y` block for these traits lifts to
+`impl const X for Y` in the same round.
+
+## Const-trait substrate bridges (`ConstEq`, `ConstOrd`, `ConstDefault`)
+
+Round 202605021800 introduces three substrate-level const-trait
+bridges. They replace stdlib non-const trait usage in const fn bodies
+where the substrate composes generically.
+
+```rust
+pub const trait ConstEq {
+    fn const_eq(&self, other: &Self) -> Bool;
+    fn const_ne(&self, other: &Self) -> Bool {
+        Bool(!self.const_eq(other).0)
+    }
+}
+
+pub const trait ConstOrd: ConstEq {
+    fn const_cmp(&self, other: &Self) -> Ordering;
+    fn const_lt(&self, other: &Self) -> Bool;
+    fn const_le(&self, other: &Self) -> Bool;
+    fn const_gt(&self, other: &Self) -> Bool;
+    fn const_ge(&self, other: &Self) -> Bool;
+}
+
+pub const trait ConstDefault {
+    fn const_default() -> Self;
+}
+```
+
+`Ordering` reuses `core::cmp::Ordering` if const-constructible on
+rustc 1.96.0-nightly; otherwise the substrate ships `pub enum
+ConstOrdering { Less, Equal, Greater }`. The decision is recorded at
+round close.
+
+Coverage: every primitive-wrapper substrate type (`USize`, `Cap`,
+`Bool`, `Bits<N, S, Sign>`, `UFixed<I, F, S>`, `IFixed<I, F, S>`,
+`FastFloat<F>`, `StrictFloat<F>`, `Mask64`, `Mask256`, `NodeId`,
+`MetaCarrier`, `IBits`, `FBits`, `Width`) gains `impl const ConstEq`
+and `impl const ConstDefault` in this round. `ConstOrd` lands for the
+totally-ordered subset (skip `Mask` lattice; skip floats due to NaN).
+
+Stdlib `Default`, `PartialEq`, `Eq`, `PartialOrd`, `Ord` impls remain
+alongside (boundary coverage). The bridges are additive, not
+replacements.
+
+Deferred-bridge cross-references (BACKLOG-tracked, not landing in this
+round):
+
+- `ConstFrom<T>` / `ConstTryFrom<T, E>` substrate bridges. Replace
+  non-const `From::from` / `TryFrom::try_from`. Round 4 / #314.
+- `ConstDeref` / `ConstAsRef<T>` substrate bridges (placed in
+  `arvo-transparent`). Replace non-const `Deref::deref` /
+  `AsRef::as_ref`. Round 4 / #314.
+- `ConstTry` / `ConstControlFlow<R, O>`. Replace non-const `Try` /
+  `FromResidual`. Round 5 / #315.
+- `ConstHash` / `ConstHasher` (in `arvo-hash`). Replace non-const
+  `Hash::hash`. Round 5 / #315.
+
+## Canonical typed-const surfaces: `Bounded`, `Identity`, `SignedIdentity`
+
+`Bounded` (MIN / MAX) and `Identity` (ZERO / ONE) are the canonical
+const-trait surfaces for typed-min, typed-max, typed-zero, typed-one
+across the substrate. Every primitive-wrapper impls them. Consumer
+code reaches for `<T as Bounded>::MAX` and `<T as Identity>::ZERO`,
+not type-specific inherent constants. Inherent constants stay as
+ergonomic shorthand routed through the trait.
+
+Round 202605021800 adds `SignedIdentity` for the signed `-1`:
+
+```rust
+pub const trait SignedIdentity: Identity {
+    const NEG_ONE: Self;
+}
+```
+
+Per-signed-primitive `impl const SignedIdentity` for `i8`..=`i128`
+and `isize`. Body wraps the underlying `-1` of the typed primitive.
+
+Deletion: `UPrimConst` and `IPrimConst` (which previously duplicated
+`Bounded` + `Identity`) are removed in this round. The two-trait-for-
+one-axis pattern is rejected per `arvo-toolbox-not-policer`. The
+internal references at `arith.rs:120, 148, 175, 203` rewrite to
+`<<...>::T as Identity>::ZERO`. The facade re-exports of `UPrimConst`
+/ `IPrimConst` from `arvo/src/strategy.rs:19-23` drop.
+
+## MultiContainer canonical const surface (`BitPrim` + `Bounded` + `Identity`)
+
+Round 202605021800 ships const-trait `BitPrim`, `Bounded`, and
+`Identity` impls on `MultiContainer<HiT, LoT>`. The 129..=256 logical
+bit-width range — the substrate's primary downstream workload — gains
+a fully const-callable bit-op surface in this round.
+
+```rust
+impl<HiT: [const] BitPrim, LoT: [const] BitPrim>
+const BitPrim for MultiContainer<HiT, LoT>
+{
+    const WIDTH: USize = HiT::WIDTH + LoT::WIDTH;
+    fn count_ones(self) -> USize {
+        self.hi.count_ones() + self.lo.count_ones()
+    }
+    fn trailing_zeros(self) -> USize {
+        if self.lo.is_zero() {
+            LoT::WIDTH + self.hi.trailing_zeros()
+        } else {
+            self.lo.trailing_zeros()
+        }
+    }
+    // leading_zeros / bitor / bitand / bitnot / bitxor /
+    // with_bit_set / with_bit_cleared / with_bit_toggled / get_bit /
+    // is_zero / clear_lowest_set_bit similarly compose hi/lo halves.
+}
+
+impl<HiT: [const] Bounded, LoT: [const] Bounded>
+const Bounded for MultiContainer<HiT, LoT>
+{
+    const MIN: Self = MultiContainer { hi: HiT::MIN, lo: LoT::MIN };
+    const MAX: Self = MultiContainer { hi: HiT::MAX, lo: LoT::MAX };
+}
+
+impl<HiT: [const] Identity, LoT: [const] Identity>
+const Identity for MultiContainer<HiT, LoT>
+{
+    const ZERO: Self = MultiContainer { hi: HiT::ZERO, lo: LoT::ZERO };
+    const ONE: Self = MultiContainer { hi: HiT::ZERO, lo: LoT::ONE };
+}
+```
+
+`BitPrim::WIDTH` lifts from `u16` to `USize` in this round
+(MultiContainer's `WIDTH = HiT::WIDTH + LoT::WIDTH` body needs
+USize-additive arithmetic). The single-half `BitPrim` impls cascade
+to USize-typed `count_ones` / `trailing_zeros` / `leading_zeros`.
+
+Naming: the prior `arvo_strategy::multi_container::BitPrim` (sealed
+marker on MultiContainer halves) renames to `MultiContainerHalf` to
+free the canonical name for `arvo_bits_contracts::BitPrim`. The
+`arvo-storage` re-export at `lib.rs:23` switches accordingly.
+
+## Strategy widen / narrow as `pub const trait`
+
+Round 202605021800 lifts `UWidenFrom`, `UNarrowFrom`, `IWidenFrom`,
+`INarrowFrom` from `pub trait` to `pub const trait`. All bodies are
+pure (`v as $dst_ty` casts and bounded comparison branches with
+`Outcome::Ok` / `Outcome::Err`). All four macro-emitted impl families
+(`impl_u_widen!`, `impl_i_widen!`, `impl_u_narrow!`, `impl_i_narrow!`)
+update from `impl ... for ...` to `impl const ... for ...`.
+
+`notko::Outcome::Ok` / `Outcome::Err` constructors are const-callable
+(plain enum constructors); verified to compile inside `impl const`.
+
+This unblocks `From<UFixed<I, F, Hot>> for UFixed<I, F, Warm>` to
+become `impl const ConstFrom` (Round 4 cascade); the substrate-side
+widen/narrow chain is fully const-callable in this round.
+
+## Macro-generated impls: `impl_bounded_identity_*!` extension
+
+Round 202605021800 extends the `impl_bounded_identity_u!` macro (in
+`arith.rs`) to include `usize`. The `impl_bounded_identity_i!` macro
+extends to include `isize`. The macros emit `impl const Bounded` +
+`impl const Identity` for the listed primitives. Bodies bottom out at
+`<$ty>::MIN` / `<$ty>::MAX` / `0` / `1` for the bare primitive
+(definition-site exception 3 per `no-bare-primitives.md`).
+
+This enables `USize` and `Cap` (in `arvo-storage`) to impl `Bounded`
++ `Identity` routing through `<usize as Bounded>::MAX` etc.
 
 ## UContainerFor
 
@@ -224,38 +425,18 @@ Pairwise strategy resolution. Used when a binary op combines two
 operands carrying different strategies; the result strategy is the
 "broader" of the two per a documented lattice. Const trait.
 
-## Primitive const bridges (round 202605021400)
+## Const-trait arithmetic surface (round 202605021400)
 
-`UPrimConst` and `IPrimConst` are `pub const trait` typed-primitive
-const surfaces. They carry the per-primitive `ZERO` / `ONE` / `MAX`
-(plus `MIN` / `NEG_ONE` on the signed variant) as const associated
-items.
-
-```rust
-pub const trait UPrimConst: Sized {
-    const ZERO: Self;
-    const ONE: Self;
-    const MAX: Self;
-}
-
-pub const trait IPrimConst: Sized {
-    const ZERO: Self;
-    const ONE: Self;
-    const NEG_ONE: Self;
-    const MIN: Self;
-    const MAX: Self;
-}
-```
-
-Implemented on `u8` / `u16` / `u32` / `u64` / `u128` and `i8` / `i16`
-/ `i32` / `i64` / `i128`. Generic-context bodies use `<T as
-UPrimConst>::ZERO` instead of falling back to non-const `Default`.
-The bridge unblocks UFixed / IFixed / Bits inherent constants and
-the const-trait UArith / IArith bodies' div-by-zero guard.
-
-`UArith<N>` / `IArith<N>` / `USaturating` / `ISaturating` are now
+`UArith<N>` / `IArith<N>` / `USaturating` / `ISaturating` are
 `pub const trait`. Surface unchanged at the type level; the `const`
 qualifier opens the trait for use in const-context call sites.
+
+The `UPrimConst` / `IPrimConst` typed-primitive bridges shipped in
+round 202605021400 are removed in round 202605021800 (replaced by the
+canonical `Bounded` + `Identity` + `SignedIdentity` family above).
+Generic-context bodies that previously called `<T as UPrimConst>::ZERO`
+now call `<T as Identity>::ZERO`; signed-`-1` cases use
+`<T as SignedIdentity>::NEG_ONE`.
 
 ## Sources
 
