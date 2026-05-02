@@ -79,29 +79,104 @@ whole-word ops meaningless at the logical-width level).
 `BitAccess`; concrete types override with the BLSR-equivalent fast
 path.
 
+### Sign-axis generalisation (round 202605021800)
+
+The blanket impls of `BitAccess`, `BitSequence`, `BitLogic`, and
+`HasBitWidth` on `Bits<N, S, Sign>` generalise from `Sign = Unsigned`
+(default) to `Sign: Signedness` in round 202605021800. Before the
+round, `Bits<N, S, Signed>` (which is what `IFixed<I, F, S>` wraps)
+exposed no const-callable bit-op surface: half the substrate's
+domain primitives could not call any bit method in const fn bodies.
+
+The new blanket signature:
+
+```rust
+impl<const N: u16, S: Strategy, Sign: Signedness>
+const HasBitWidth for Bits<N, S, Sign>
+where
+    S: [const] BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] BitsBitPrim<Sign>,
+{ /* ... */ }
+```
+
+`BitsBitPrim<Sign>` is a sealed bridge trait introduced in this round
+to single-predicate the BitPrim-or-IBitPrim selection. Two impls
+(one for `Sign = Unsigned` projecting to `BitPrim`; one for
+`Sign = Signed` projecting to `IBitPrim`) plus a `type T` associated
+type that names the underlying primitive bridge. The single-
+predicate-per-impl-block shape avoids the `generic_const_exprs` cycle
+that two parallel predicates (`<S as ...>::T: [const] BitPrim` AND
+`<S as ...>::T: [const] IBitPrim`) would trigger.
+
+Once the blanket generalises, every const-callable bit op on
+`Bits<N, S, Sign>` routes through the appropriate primitive bridge.
+`IFixed<I, F, S>` consumers gain the same const-callable bit-op
+surface as `UFixed<I, F, S>` consumers.
+
 ## BitPrim family
 
 ```rust
 pub const trait BitPrim: Copy + ConstParamTy_ + ... {
-    // primitive-bridge methods on bare u8/u16/u32/u64
+    const WIDTH: USize;
+
+    fn count_ones(self) -> USize;
+    fn trailing_zeros(self) -> USize;
+    fn leading_zeros(self) -> USize;
+    fn get_bit(self, idx: USize) -> Bool;
+    fn with_bit_set(self, idx: USize) -> Self;
+    fn with_bit_cleared(self, idx: USize) -> Self;
+    fn with_bit_toggled(self, idx: USize) -> Self;
+    fn bitor(self, other: Self) -> Self;
+    fn bitand(self, other: Self) -> Self;
+    fn bitnot(self) -> Self;
+    fn bitxor(self, other: Self) -> Self;
+    fn clear_lowest_set_bit(self) -> Self;
+    fn is_zero(self) -> Bool;
 }
 
-pub const trait UBitContainer<const N: u8> {
-    type Container: BitPrim;
+pub const trait IBitPrim: Copy + ConstParamTy_ + ... {
+    // signed counterpart with full method parity vs BitPrim
+    // (round 202605021800 closes the parity gap)
 }
 
-pub const trait IBitContainer<const N: u8> {
-    type Container: BitPrim;
+pub const trait UBitContainer<const N: u16> {
+    type Container: [const] BitPrim;
+}
+
+pub const trait IBitContainer<const N: u16> {
+    type Container: [const] IBitPrim;
 }
 ```
 
 The primitive-bridge family. `BitPrim` is the sealed surface that
-`u8`, `u16`, `u32`, `u64`, `u128` (and signed counterparts through
-`i128`) implement, plus `MultiContainer<HiT, LoT>` for the multi-value
-storage shape at logical widths beyond a single native primitive
-(round 202604280500). Used by blanket impls in `arvo-bits` to delegate
-from `Bits<N, S, Sign>::to_raw()` to the primitive's bit method, then
-`Bits::from_raw(...)` wraps the result. Const trait throughout.
+`u8`, `u16`, `u32`, `u64`, `u128` implement, plus
+`MultiContainer<HiT, LoT>` for the multi-value storage shape at
+logical widths beyond a single native primitive (storage projection
+shipped round 202604280500; `impl const BitPrim for MultiContainer`
+ships round 202605021800 in `arvo-strategy`).
+
+`IBitPrim` mirrors the same surface for signed primitives `i8`..`i128`.
+Round 202605021800 closes the prior parity gap: `IBitPrim` previously
+shipped only `count_ones` / `trailing_zeros` / `leading_zeros` /
+`get_bit` / `with_bit_*`. Round 202605021800 extends `IBitPrim` to
+include `is_zero`, `bitor`, `bitand`, `bitnot`, `bitxor`,
+`clear_lowest_set_bit`. Macro-emitted bodies route through the
+unsigned reinterpretation pattern already used for shifts (cast to
+`$uty`, op, cast back to `$ity`).
+
+Round 202605021800 lifts `BitPrim::WIDTH` from `u16` to `USize`.
+Cascading lifts: `count_ones`, `trailing_zeros`, `leading_zeros`
+return `USize` (was `u32`); `get_bit`, `with_bit_*` accept `idx: USize`
+(was `u32`). The `tracked: #256` lint:allow markers across the
+BitPrim macro impls (which carried bare-`u32` returns / `u16` WIDTH)
+drop in this round.
+
+Used by blanket impls in `arvo-bits` to delegate from
+`Bits<N, S, Sign>::to_raw()` to the primitive's bit method, then
+`Bits::from_raw(...)` wraps the result. Const trait throughout. Once
+the parity gap closes, the previously-Hot-only `BitLogic` blanket
+impl on `Bits<N, S, Sign>` can route signed-axis Bits through
+`IBitPrim` (Sign-axis generalisation below).
 
 ## Narrow
 
