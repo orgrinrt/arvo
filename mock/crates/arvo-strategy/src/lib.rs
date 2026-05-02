@@ -50,7 +50,7 @@ pub use axes::{
     StorageLayout, Wrapping,
 };
 pub use container::{BitsContainerFor, IContainerFor, UContainerFor};
-pub use multi_container::{BitPrim, MultiContainer};
+pub use multi_container::{MultiContainer, MultiContainerHalf};
 pub use widen::{INarrowFrom, IWidenFrom, UNarrowFrom, UWidenFrom};
 
 /// Strategy marker trait.

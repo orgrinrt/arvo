@@ -8,6 +8,7 @@
 
 use arvo_storage::{Bits, Bool, USize};
 use arvo_strategy::{Hot, Strategy, UContainerFor};
+use arvo_transparent::Transparent;
 
 use crate::{BitAccess, BitLogic, BitPrim, BitSequence, HasBitWidth};
 
@@ -24,20 +25,16 @@ where
     <S as UContainerFor<N>>::T: [const] BitPrim,
 {
     fn bit(self, idx: USize) -> Bool {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim methods take u32 indices; sealed bridge contract; tracked: #256
-        Bool(self.to_raw().get_bit(idx.0 as u32))
+        self.to_raw().get_bit(idx)
     }
     fn with_bit_set(self, idx: USize) -> Self {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
-        Self::from_raw(self.to_raw().with_bit_set(idx.0 as u32))
+        Self::from_raw(self.to_raw().with_bit_set(idx))
     }
     fn with_bit_cleared(self, idx: USize) -> Self {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
-        Self::from_raw(self.to_raw().with_bit_cleared(idx.0 as u32))
+        Self::from_raw(self.to_raw().with_bit_cleared(idx))
     }
     fn with_bit_toggled(self, idx: USize) -> Self {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
-        Self::from_raw(self.to_raw().with_bit_toggled(idx.0 as u32))
+        Self::from_raw(self.to_raw().with_bit_toggled(idx))
     }
 }
 
@@ -47,26 +44,29 @@ where
     <S as UContainerFor<N>>::T: [const] BitPrim,
 {
     fn trailing_zeros(self) -> USize {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #256
-        USize(self.to_raw().trailing_zeros() as usize)
+        self.to_raw().trailing_zeros()
     }
     fn leading_zeros(self) -> USize {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #256
-        let lz = self.to_raw().leading_zeros() as usize;
-        let container_width = <<S as UContainerFor<N>>::T as BitPrim>::WIDTH as usize;
+        // The container may be wider than the logical width N; the
+        // raw `leading_zeros` includes the container's surplus bits
+        // above N, which the contract subtracts back out.
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: bare N here is the const-generic bit-width parameter still typed `u16` until Round 2 (#312); the saturating_sub composes through bare usize for one expression to bridge container width - N
+        let lz = <USize as Transparent>::raw(self.to_raw().leading_zeros());
+        let container_width =
+            <USize as Transparent>::raw(<<S as UContainerFor<N>>::T as BitPrim>::WIDTH);
         USize(lz.saturating_sub(container_width - N as usize))
     }
     fn count_ones(self) -> USize {
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #256
-        USize(self.to_raw().count_ones() as usize)
+        self.to_raw().count_ones()
     }
     fn count_zeros(self) -> USize {
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: bare N is the const-generic bit-width parameter still typed `u16` until Round 2 (#312)
         USize(N as usize) - self.count_ones()
     }
     fn is_zero(self) -> Bool {
         // Routes through the const-stable BitPrim::is_zero bridge instead
         // of generic-context PartialEq (which is not stable as const).
-        Bool(<<S as UContainerFor<N>>::T as BitPrim>::is_zero(self.to_raw()))
+        <<S as UContainerFor<N>>::T as BitPrim>::is_zero(self.to_raw())
     }
 }
 

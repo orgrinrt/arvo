@@ -21,7 +21,7 @@ mod layout_assertions;
 mod meta_bits;
 mod platform;
 
-pub use arvo_strategy::{BitPrim, Bounded, Identity, MultiContainer, SignedIdentity};
+pub use arvo_strategy::{Bounded, Identity, MultiContainer, MultiContainerHalf, SignedIdentity};
 pub use bits::Bits;
 pub use bridges::{
     ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,

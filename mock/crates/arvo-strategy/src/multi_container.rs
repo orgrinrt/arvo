@@ -1,16 +1,23 @@
 //! Multi-value storage primitive for bit widths beyond 128.
 //!
-//! `MultiContainer<HiT, LoT>` pairs two `BitPrim` halves to back
+//! `MultiContainer<HiT, LoT>` pairs two `MultiContainerHalf` halves to back
 //! `Bits<N, S, Sign>` at logical widths exceeding any single native
 //! primitive. Round 202604280500 ships the storage shape only; the
 //! arithmetic surface (`UArith` / `IArith` / `UWidenFrom` /
 //! `UNarrowFrom` for `MultiContainer`) is BACKLOG-tracked for a
 //! follow-up round.
 //!
-//! `BitPrim` is the sealed marker trait abstracting the native
-//! primitives that may appear as halves: `u8` / `u16` / `u32` / `u64`
-//! / `u128` for unsigned, `i8` / `i16` / `i32` / `i64` / `i128` for
-//! signed. Mixed-sign pairs are not supported in this round.
+//! `MultiContainerHalf` is the sealed marker trait abstracting the
+//! native primitives that may appear as halves: `u8` / `u16` / `u32`
+//! / `u64` / `u128` for unsigned, `i8` / `i16` / `i32` / `i64` /
+//! `i128` for signed. Mixed-sign pairs are not supported in this
+//! round.
+//!
+//! The trait was previously named `BitPrim` here, conflicting in
+//! intent (but not in path) with the canonical `BitPrim` in
+//! `arvo-bits-contracts`. Renamed to `MultiContainerHalf` (round
+//! 202605021800) to free the canonical name and to make the marker's
+//! purpose explicit at the call site.
 //!
 //! Re-exported from `arvo-storage` for the documented public surface
 //! (`arvo_storage::MultiContainer`); defined here because
@@ -24,9 +31,9 @@ use crate::sealed;
 ///
 /// Implemented for `u8` / `u16` / `u32` / `u64` / `u128` and
 /// `i8` / `i16` / `i32` / `i64` / `i128`. The bound surface matches
-/// `UContainerFor<N>::T`'s minimum so any `BitPrim` can flow through
-/// the projection.
-pub trait BitPrim:
+/// `UContainerFor<N>::T`'s minimum so any `MultiContainerHalf` can
+/// flow through the projection.
+pub trait MultiContainerHalf:
     sealed::Sealed
     + Copy
     + Clone
@@ -52,22 +59,22 @@ impl sealed::Sealed for i32 {}
 impl sealed::Sealed for i64 {}
 impl sealed::Sealed for i128 {}
 
-impl BitPrim for u8 {}
-impl BitPrim for u16 {}
-impl BitPrim for u32 {}
-impl BitPrim for u64 {}
-impl BitPrim for u128 {}
-impl BitPrim for i8 {}
-impl BitPrim for i16 {}
-impl BitPrim for i32 {}
-impl BitPrim for i64 {}
-impl BitPrim for i128 {}
+impl MultiContainerHalf for u8 {}
+impl MultiContainerHalf for u16 {}
+impl MultiContainerHalf for u32 {}
+impl MultiContainerHalf for u64 {}
+impl MultiContainerHalf for u128 {}
+impl MultiContainerHalf for i8 {}
+impl MultiContainerHalf for i16 {}
+impl MultiContainerHalf for i32 {}
+impl MultiContainerHalf for i64 {}
+impl MultiContainerHalf for i128 {}
 
 /// Two-half multi-value storage container.
 ///
-/// Pairs two `BitPrim` halves under a stable C layout. `hi` carries
-/// the most-significant half, `lo` the least. The pair backs
-/// `Bits<N, S, Sign>` at `N >= 129` per the `UContainerFor` /
+/// Pairs two `MultiContainerHalf` halves under a stable C layout.
+/// `hi` carries the most-significant half, `lo` the least. The pair
+/// backs `Bits<N, S, Sign>` at `N >= 129` per the `UContainerFor` /
 /// `IContainerFor` table.
 ///
 /// Lex ordering on `(hi, lo)` is sound for storage purposes (stable,
@@ -75,14 +82,14 @@ impl BitPrim for i128 {}
 /// BACKLOG-tracked.
 #[repr(C)]
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Default, Hash, Debug)]
-pub struct MultiContainer<HiT: BitPrim, LoT: BitPrim> {
+pub struct MultiContainer<HiT: MultiContainerHalf, LoT: MultiContainerHalf> {
     /// Most-significant half.
     pub hi: HiT,
     /// Least-significant half.
     pub lo: LoT,
 }
 
-impl<HiT: BitPrim, LoT: BitPrim> MultiContainer<HiT, LoT> {
+impl<HiT: MultiContainerHalf, LoT: MultiContainerHalf> MultiContainer<HiT, LoT> {
     /// Construct a `MultiContainer` from two halves.
     #[inline(always)]
     pub const fn new(hi: HiT, lo: LoT) -> Self { Self { hi, lo } }
@@ -90,16 +97,16 @@ impl<HiT: BitPrim, LoT: BitPrim> MultiContainer<HiT, LoT> {
 
 // SAFETY: `MultiContainer<HiT, LoT>` is `repr(C)` over two halves.
 // `ConstParamTy_` requires structural eq + bitwise stable
-// representation. Both halves are `BitPrim + ConstParamTy_` (every
-// primitive in the BitPrim seal — u8..u128 — has the derive); the
-// composite is structurally equal under the standard derive. Audit
-// C2: this impl closes the gap that previously made
+// representation. Both halves are `MultiContainerHalf +
+// ConstParamTy_` (every primitive in the seal, u8..u128, has the
+// derive); the composite is structurally equal under the standard
+// derive. Audit C2: this impl closes the gap that previously made
 // `Bits<N, ..., Signed>` unsound at `N >= 129` (where the projection
 // resolves to a `MultiContainer<HiT, LoT>` carrier and Bits's own
 // `ConstParamTy_` impl bounds on the inner being `ConstParamTy_`).
 impl<HiT, LoT> core::marker::ConstParamTy_ for MultiContainer<HiT, LoT>
 where
-    HiT: BitPrim + core::marker::ConstParamTy_,
-    LoT: BitPrim + core::marker::ConstParamTy_,
+    HiT: MultiContainerHalf + core::marker::ConstParamTy_,
+    LoT: MultiContainerHalf + core::marker::ConstParamTy_,
 {
 }

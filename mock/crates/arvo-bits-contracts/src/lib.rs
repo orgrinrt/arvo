@@ -26,6 +26,7 @@
 
 use arvo_storage::{Bits, Bool, USize};
 use arvo_strategy::{BitsContainerFor, IContainerFor, Signedness, Strategy, UContainerFor};
+use arvo_transparent::Transparent;
 
 mod bits_impl;
 mod cross_domain;
@@ -142,40 +143,38 @@ pub const trait BitLogic: HasBitWidth + Copy {
 
 /// Sealed unsigned primitive bit bridge.
 ///
-/// Implemented for `u8` / `u16` / `u32` / `u64` (in this crate, by
-/// orphan rules). Used by the concrete `UFixed` / `Bits` impls of
-/// `BitAccess` / `BitSequence` / `BitLogic` in `arvo-bits`.
+/// Implemented for `u8` / `u16` / `u32` / `u64` / `u128` (in this
+/// crate, by orphan rules). Used by the concrete `UFixed` / `Bits`
+/// impls of `BitAccess` / `BitSequence` / `BitLogic` in `arvo-bits`.
+///
+/// The trait surface is fully typed: bit counts and indices are
+/// `USize`, predicates return `Bool`. The macro impls on each bare
+/// primitive route through `<$ty>::BITS` / `<$ty>::count_ones` etc.
+/// and wrap results in the typed surface at the boundary, so the
+/// only `bool` / `u32` exposure is one wrap inside each impl body.
 pub const trait BitPrim: sealed::Bit + Copy + 'static {
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim is a bare-primitive bridge by definition; tracked: #256
-    /// Bit width of this primitive (8, 16, 32, or 64).
-    const WIDTH: u16;
+    /// Bit width of this primitive (8, 16, 32, 64, or 128).
+    const WIDTH: USize;
     /// Zero value.
     const ZERO: Self;
     /// One value.
     const ONE: Self;
 
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim primitive-bridge surface; tracked: #256
     /// Count set bits.
-    fn count_ones(self) -> u32;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    fn count_ones(self) -> USize;
     /// Count trailing zero bits (LSB-first).
-    fn trailing_zeros(self) -> u32;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    fn trailing_zeros(self) -> USize;
     /// Count leading zero bits (MSB-first).
-    fn leading_zeros(self) -> u32;
+    fn leading_zeros(self) -> USize;
 
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
-    /// Read bit `idx`. Returns `false` for `idx >= WIDTH`.
-    fn get_bit(self, idx: u32) -> bool;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    /// Read bit `idx`. Returns `Bool::FALSE` for `idx >= WIDTH`.
+    fn get_bit(self, idx: USize) -> Bool;
     /// Set bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
-    fn with_bit_set(self, idx: u32) -> Self;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    fn with_bit_set(self, idx: USize) -> Self;
     /// Clear bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
-    fn with_bit_cleared(self, idx: u32) -> Self;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    fn with_bit_cleared(self, idx: USize) -> Self;
     /// Toggle bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
-    fn with_bit_toggled(self, idx: u32) -> Self;
+    fn with_bit_toggled(self, idx: USize) -> Self;
 
     /// Whole-word OR.
     fn bitor(self, other: Self) -> Self;
@@ -188,56 +187,62 @@ pub const trait BitPrim: sealed::Bit + Copy + 'static {
     /// Clear the lowest set bit. `self & (self.wrapping_sub(1))`.
     fn clear_lowest_set_bit(self) -> Self;
 
-    // --- Const-equality bridge (round 202605021600) -----------------------
-    //
-    // The standard library's `PartialEq` is not stable as a const trait
-    // on bare primitives. Generic `T: BitPrim` bodies that needed const
-    // equality previously couldn't compose. This method bridges: per-
-    // primitive impls evaluate `self == 0` directly on the concrete
-    // type, where bare-primitive `==` IS const-stable; consumers reach
-    // it via the const-trait dispatch.
-    //
-    // lint:allow(no-bare-numeric) reason: BitPrim is a bare-primitive bridge by definition; tracked: #256
-    /// True if and only if every bit of the primitive is zero.
-    fn is_zero(self) -> bool;
+    /// `Bool::TRUE` when every bit of the primitive is zero.
+    ///
+    /// Bridges around `core::cmp::PartialEq` not yet being const-stable
+    /// on bare primitives: per-primitive impls evaluate `self == 0`
+    /// directly on the concrete type (const-stable for bare integers)
+    /// and wrap the result. Consumers reach the predicate through the
+    /// trait projection in const-generic bodies.
+    fn is_zero(self) -> Bool;
 }
 
 /// Sealed signed primitive bit bridge.
 ///
-/// Implemented for `i8` / `i16` / `i32` / `i64`. Bit operations
-/// reinterpret the bits through the corresponding unsigned type so
-/// signed-shift semantics do not leak in.
+/// Implemented for `i8` / `i16` / `i32` / `i64` / `i128`. Bit
+/// operations reinterpret the bits through the corresponding unsigned
+/// type so signed-shift semantics do not leak in.
+///
+/// Mirrors `BitPrim` exactly: same `USize` / `Bool` surface, same
+/// six whole-word and clear-lowest-bit ops, same `is_zero`. Round
+/// 202605021800 added the parity methods (six previously absent).
 pub const trait IBitPrim: sealed::IBit + Copy + 'static {
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: IBitPrim is a bare-primitive bridge; tracked: #256
-    /// Bit width of this primitive (8, 16, 32, or 64).
-    const WIDTH: u16;
+    /// Bit width of this primitive (8, 16, 32, 64, or 128).
+    const WIDTH: USize;
     /// Zero value.
     const ZERO: Self;
     /// One value.
     const ONE: Self;
 
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
     /// Count set bits.
-    fn count_ones(self) -> u32;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    fn count_ones(self) -> USize;
     /// Count trailing zero bits (LSB-first).
-    fn trailing_zeros(self) -> u32;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    fn trailing_zeros(self) -> USize;
     /// Count leading zero bits (MSB-first).
-    fn leading_zeros(self) -> u32;
+    fn leading_zeros(self) -> USize;
 
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
-    /// Read bit `idx`. Returns `false` for `idx >= WIDTH`.
-    fn get_bit(self, idx: u32) -> bool;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    /// Read bit `idx`. Returns `Bool::FALSE` for `idx >= WIDTH`.
+    fn get_bit(self, idx: USize) -> Bool;
     /// Set bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
-    fn with_bit_set(self, idx: u32) -> Self;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    fn with_bit_set(self, idx: USize) -> Self;
     /// Clear bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
-    fn with_bit_cleared(self, idx: u32) -> Self;
-    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
+    fn with_bit_cleared(self, idx: USize) -> Self;
     /// Toggle bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
-    fn with_bit_toggled(self, idx: u32) -> Self;
+    fn with_bit_toggled(self, idx: USize) -> Self;
+
+    /// Whole-word OR.
+    fn bitor(self, other: Self) -> Self;
+    /// Whole-word AND.
+    fn bitand(self, other: Self) -> Self;
+    /// Whole-word NOT.
+    fn bitnot(self) -> Self;
+    /// Whole-word XOR.
+    fn bitxor(self, other: Self) -> Self;
+    /// Clear the lowest set bit. `self & (self.wrapping_sub(1))`.
+    fn clear_lowest_set_bit(self) -> Self;
+
+    /// `Bool::TRUE` when every bit of the primitive is zero.
+    fn is_zero(self) -> Bool;
 }
 
 // --- BitPrim impls on bare unsigned primitives ----------------------------
@@ -250,57 +255,61 @@ macro_rules! impl_bit_prim_u {
     ($ty:ty, $width:literal) => {
         impl sealed::Bit for $ty {}
 
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim impl on the bare primitive that the trait was designed to bridge; tracked: #256
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim impl on the bare primitive that the trait was designed to bridge; the bridge surface itself is fully typed (USize / Bool); body wraps each raw result at the boundary; tracked: #311
         impl const BitPrim for $ty {
-            const WIDTH: u16 = $width;
+            const WIDTH: USize = USize($width);
             const ZERO: Self = 0;
             const ONE: Self = 1;
 
             #[inline(always)]
-            fn count_ones(self) -> u32 {
-                <$ty>::count_ones(self)
+            fn count_ones(self) -> USize {
+                USize(<$ty>::count_ones(self) as usize)
             }
 
             #[inline(always)]
-            fn trailing_zeros(self) -> u32 {
-                <$ty>::trailing_zeros(self)
+            fn trailing_zeros(self) -> USize {
+                USize(<$ty>::trailing_zeros(self) as usize)
             }
 
             #[inline(always)]
-            fn leading_zeros(self) -> u32 {
-                <$ty>::leading_zeros(self)
+            fn leading_zeros(self) -> USize {
+                USize(<$ty>::leading_zeros(self) as usize)
             }
 
             #[inline(always)]
-            fn get_bit(self, idx: u32) -> bool {
-                if idx >= $width {
-                    return false;
+            fn get_bit(self, idx: USize) -> Bool {
+                let i = <USize as Transparent>::raw(idx);
+                if i >= $width {
+                    return Bool(false);
                 }
-                (self >> idx) & 1 == 1
+                Bool((self >> i) & 1 == 1)
             }
 
             #[inline(always)]
-            fn with_bit_set(self, idx: u32) -> Self {
-                if idx >= $width {
+            fn with_bit_set(self, idx: USize) -> Self {
+                let i = <USize as Transparent>::raw(idx);
+                if i >= $width {
                     return self;
                 }
-                self | (1 as $ty) << idx
+                self | (1 as $ty) << i
             }
 
             #[inline(always)]
-            fn with_bit_cleared(self, idx: u32) -> Self {
-                if idx >= $width {
+            fn with_bit_cleared(self, idx: USize) -> Self {
+                let i = <USize as Transparent>::raw(idx);
+                if i >= $width {
                     return self;
                 }
-                self & !((1 as $ty) << idx)
+                self & !((1 as $ty) << i)
             }
 
             #[inline(always)]
-            fn with_bit_toggled(self, idx: u32) -> Self {
-                if idx >= $width {
+            fn with_bit_toggled(self, idx: USize) -> Self {
+                let i = <USize as Transparent>::raw(idx);
+                if i >= $width {
                     return self;
                 }
-                self ^ (1 as $ty) << idx
+                self ^ (1 as $ty) << i
             }
 
             #[inline(always)]
@@ -329,9 +338,8 @@ macro_rules! impl_bit_prim_u {
             }
 
             #[inline(always)]
-            fn is_zero(self) -> bool {
-                // lint:allow(no-bare-numeric) reason: BitPrim impl on bare primitive; const-stable concrete equality bridge; tracked: #256
-                self == 0
+            fn is_zero(self) -> Bool {
+                Bool(self == 0)
             }
         }
     };
@@ -356,57 +364,92 @@ macro_rules! impl_bit_prim_i {
     ($ity:ty, $uty:ty, $width:literal) => {
         impl sealed::IBit for $ity {}
 
-        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: IBitPrim impl on the bare primitive that the trait was designed to bridge; tracked: #256
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: IBitPrim impl on the bare primitive that the trait was designed to bridge; the bridge surface itself is fully typed (USize / Bool); body wraps each raw result at the boundary; tracked: #311
         impl const IBitPrim for $ity {
-            const WIDTH: u16 = $width;
+            const WIDTH: USize = USize($width);
             const ZERO: Self = 0;
             const ONE: Self = 1;
 
             #[inline(always)]
-            fn count_ones(self) -> u32 {
-                <$ity>::count_ones(self)
+            fn count_ones(self) -> USize {
+                USize(<$ity>::count_ones(self) as usize)
             }
 
             #[inline(always)]
-            fn trailing_zeros(self) -> u32 {
-                <$ity>::trailing_zeros(self)
+            fn trailing_zeros(self) -> USize {
+                USize(<$ity>::trailing_zeros(self) as usize)
             }
 
             #[inline(always)]
-            fn leading_zeros(self) -> u32 {
-                <$ity>::leading_zeros(self)
+            fn leading_zeros(self) -> USize {
+                USize(<$ity>::leading_zeros(self) as usize)
             }
 
             #[inline(always)]
-            fn get_bit(self, idx: u32) -> bool {
-                if idx >= $width {
-                    return false;
+            fn get_bit(self, idx: USize) -> Bool {
+                let i = <USize as Transparent>::raw(idx);
+                if i >= $width {
+                    return Bool(false);
                 }
-                ((self as $uty) >> idx) & 1 == 1
+                Bool(((self as $uty) >> i) & 1 == 1)
             }
 
             #[inline(always)]
-            fn with_bit_set(self, idx: u32) -> Self {
-                if idx >= $width {
+            fn with_bit_set(self, idx: USize) -> Self {
+                let i = <USize as Transparent>::raw(idx);
+                if i >= $width {
                     return self;
                 }
-                ((self as $uty) | (1 as $uty) << idx) as $ity
+                ((self as $uty) | (1 as $uty) << i) as $ity
             }
 
             #[inline(always)]
-            fn with_bit_cleared(self, idx: u32) -> Self {
-                if idx >= $width {
+            fn with_bit_cleared(self, idx: USize) -> Self {
+                let i = <USize as Transparent>::raw(idx);
+                if i >= $width {
                     return self;
                 }
-                ((self as $uty) & !((1 as $uty) << idx)) as $ity
+                ((self as $uty) & !((1 as $uty) << i)) as $ity
             }
 
             #[inline(always)]
-            fn with_bit_toggled(self, idx: u32) -> Self {
-                if idx >= $width {
+            fn with_bit_toggled(self, idx: USize) -> Self {
+                let i = <USize as Transparent>::raw(idx);
+                if i >= $width {
                     return self;
                 }
-                ((self as $uty) ^ (1 as $uty) << idx) as $ity
+                ((self as $uty) ^ (1 as $uty) << i) as $ity
+            }
+
+            #[inline(always)]
+            fn bitor(self, other: Self) -> Self {
+                ((self as $uty) | (other as $uty)) as $ity
+            }
+
+            #[inline(always)]
+            fn bitand(self, other: Self) -> Self {
+                ((self as $uty) & (other as $uty)) as $ity
+            }
+
+            #[inline(always)]
+            fn bitnot(self) -> Self {
+                (!(self as $uty)) as $ity
+            }
+
+            #[inline(always)]
+            fn bitxor(self, other: Self) -> Self {
+                ((self as $uty) ^ (other as $uty)) as $ity
+            }
+
+            #[inline(always)]
+            fn clear_lowest_set_bit(self) -> Self {
+                let u = self as $uty;
+                (u & u.wrapping_sub(1)) as $ity
+            }
+
+            #[inline(always)]
+            fn is_zero(self) -> Bool {
+                Bool(self == 0)
             }
         }
     };

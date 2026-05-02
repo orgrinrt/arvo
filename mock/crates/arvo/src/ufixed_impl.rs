@@ -8,6 +8,7 @@
 use arvo_bits_contracts::{BitAccess, BitLogic, BitPrim, BitSequence, HasBitWidth, UBitContainer};
 use arvo_storage::{Bool, FBits, IBits, USize};
 use arvo_strategy::{Hot, Strategy};
+use arvo_transparent::Transparent;
 
 use crate::strategy::ufixed_bits;
 use crate::ufixed::UFixed;
@@ -26,17 +27,14 @@ where
     #[inline(always)]
     fn bit(self, idx: USize) -> Bool {
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
-        Bool(<<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::get_bit(
-            prim, idx.0 as u32,
-        ))
+        <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::get_bit(prim, idx)
     }
 
     #[inline(always)]
     fn with_bit_set(self, idx: USize) -> Self {
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
-        let out = <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::with_bit_set(
-            prim, idx.0 as u32,
-        );
+        let out =
+            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::with_bit_set(prim, idx);
         Self::from_raw(<S as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
     }
 
@@ -44,8 +42,7 @@ where
     fn with_bit_cleared(self, idx: USize) -> Self {
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
         let out = <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::with_bit_cleared(
-            prim,
-            idx.0 as u32,
+            prim, idx,
         );
         Self::from_raw(<S as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
     }
@@ -54,8 +51,7 @@ where
     fn with_bit_toggled(self, idx: USize) -> Self {
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
         let out = <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::with_bit_toggled(
-            prim,
-            idx.0 as u32,
+            prim, idx,
         );
         Self::from_raw(<S as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
     }
@@ -68,10 +64,7 @@ where
     #[inline(always)]
     fn trailing_zeros(self) -> USize {
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
-        USize(
-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::trailing_zeros(prim)
-                as usize,
-        )
+        <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::trailing_zeros(prim)
     }
 
     #[inline(always)]
@@ -80,12 +73,13 @@ where
         // Precise. Report logical leading zeros by subtracting the
         // container's surplus bits.
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
-        let container_lz =
-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::leading_zeros(prim)
-                as usize;
+        let container_lz = <USize as Transparent>::raw(
+            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::leading_zeros(prim),
+        );
         let logical = I.raw() as usize + F.raw() as usize;
-        let container =
-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::WIDTH as usize;
+        let container = <USize as Transparent>::raw(
+            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::WIDTH,
+        );
         let surplus = container - logical;
         USize(container_lz.saturating_sub(surplus))
     }
@@ -93,18 +87,15 @@ where
     #[inline(always)]
     fn count_ones(self) -> USize {
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
-        USize(
-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim)
-                as usize,
-        )
+        <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim)
     }
 
     #[inline(always)]
     fn count_zeros(self) -> USize {
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
-        let ones =
-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim)
-                as usize;
+        let ones = <USize as Transparent>::raw(
+            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim),
+        );
         let logical = I.raw() as usize + F.raw() as usize;
         USize(logical - ones)
     }
@@ -112,9 +103,7 @@ where
     #[inline(always)]
     fn is_zero(self) -> Bool {
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
-        Bool(
-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim) == 0,
-        )
+        <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::is_zero(prim)
     }
 }
 
