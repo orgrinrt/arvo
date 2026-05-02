@@ -1,6 +1,7 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
+#![feature(const_ops)]
 #![feature(const_param_ty_trait)]
 #![allow(incomplete_features)]
 
@@ -40,7 +41,7 @@ mod cross_strategy;
 mod multi_container;
 mod widen;
 
-pub use arith::{IArith, ISaturating, UArith, USaturating};
+pub use arith::{IArith, IPrimConst, ISaturating, UArith, UPrimConst, USaturating};
 pub use cross_strategy::CrossStrategyOp;
 pub use axes::{
     Bitpacked, ContainerWidth, Dense, DoubleLogical, HasAxes, Min, OverflowPolicy, Saturating,

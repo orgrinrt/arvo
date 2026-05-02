@@ -376,3 +376,66 @@ impl_i_arith_saturating!(
     49, 50, 51, 52, 53, 54, 55, 56,
     57, 58, 59, 60, 61, 62, 63, 64
 );
+
+// --- Primitive const bridges (round 202605021400) -----------------------
+//
+// `UPrimConst` / `IPrimConst` give per-primitive const access to ZERO /
+// ONE / MAX (and MIN / NEG_ONE for signed). The bridge unblocks two
+// things: (1) generic-context bodies that need a typed-zero const can
+// route through `<T as UPrimConst>::ZERO` instead of non-const
+// `Default::default()`; (2) UFixed / IFixed inherent constants like
+// `pub const ZERO: UFixed<I, F, S>` resolve through the same const
+// projection chain that UArith uses for arithmetic.
+
+/// Per-primitive unsigned const surface.
+///
+/// `pub const trait`. Implemented for `u8` / `u16` / `u32` / `u64` /
+/// `u128`. Generic contexts reach typed-primitive zero / one / max
+/// without falling back to non-const `Default`.
+pub const trait UPrimConst: Sized {
+    /// Zero of the primitive type.
+    const ZERO: Self;
+    /// One of the primitive type.
+    const ONE: Self;
+    /// Max of the primitive type.
+    const MAX: Self;
+}
+
+/// Per-primitive signed const surface. Signed counterpart of `UPrimConst`.
+pub const trait IPrimConst: Sized {
+    /// Zero of the primitive type.
+    const ZERO: Self;
+    /// One of the primitive type.
+    const ONE: Self;
+    /// Negative one of the primitive type.
+    const NEG_ONE: Self;
+    /// Min of the primitive type.
+    const MIN: Self;
+    /// Max of the primitive type.
+    const MAX: Self;
+}
+
+macro_rules! impl_uprimconst {
+    ($($ty:ty),+) => {
+        $(impl const UPrimConst for $ty {
+            const ZERO: Self = 0;
+            const ONE: Self = 1;
+            const MAX: Self = <$ty>::MAX;
+        })+
+    };
+}
+
+macro_rules! impl_iprimconst {
+    ($($ty:ty),+) => {
+        $(impl const IPrimConst for $ty {
+            const ZERO: Self = 0;
+            const ONE: Self = 1;
+            const NEG_ONE: Self = -1;
+            const MIN: Self = <$ty>::MIN;
+            const MAX: Self = <$ty>::MAX;
+        })+
+    };
+}
+
+impl_uprimconst!(u8, u16, u32, u64, u128);
+impl_iprimconst!(i8, i16, i32, i64, i128);
