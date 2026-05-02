@@ -114,3 +114,9 @@ pub const trait IsNonNegative: Predicate {}
 
 /// Predicate that holds when `self` is zero or strictly positive.
 pub const trait IsZeroOrPositive: Predicate {}
+
+mod predicates;
+
+pub use predicates::{
+    ConstSign, IsNonNegativeOf, IsNonZeroOf, IsPositiveOf, IsZeroOf, IsZeroOrPositiveOf,
+};
