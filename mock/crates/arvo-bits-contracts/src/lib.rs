@@ -26,12 +26,14 @@
 
 use arvo_storage::{Bits, Bool, USize};
 use arvo_strategy::{
-    BitsContainerFor, IContainerFor, Signed, Signedness, Strategy, UContainerFor, Unsigned,
+    BitsContainerFor, IContainerFor, MultiContainerHalf, Signed, Signedness, Strategy,
+    UContainerFor, Unsigned,
 };
 use arvo_transparent::Transparent;
 
 mod bits_impl;
 mod cross_domain;
+mod multi_container;
 mod widen;
 
 pub use widen::{Widen, Widened};

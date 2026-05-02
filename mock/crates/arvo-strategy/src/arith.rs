@@ -465,6 +465,32 @@ macro_rules! impl_bounded_identity_f {
 
 impl_bounded_identity_f!(f32, f64);
 
+// --- MultiContainer canonical const surface ------------------------------
+//
+// `MultiContainer<HiT, LoT>` is the multi-value storage carrier for
+// logical bit widths beyond a single native primitive. Its Bounded /
+// Identity surface delegates to each half. Round 202605021800 added
+// these impls; previously the multi-container had no canonical const
+// constants, forcing consumers to construct `MultiContainer { hi: 0,
+// lo: 0 }` literals.
+
+use crate::multi_container::{MultiContainer, MultiContainerHalf};
+
+impl<HiT: [const] Bounded + MultiContainerHalf, LoT: [const] Bounded + MultiContainerHalf>
+    const Bounded for MultiContainer<HiT, LoT>
+{
+    const MIN: Self = MultiContainer { hi: <HiT as Bounded>::MIN, lo: <LoT as Bounded>::MIN };
+    const MAX: Self = MultiContainer { hi: <HiT as Bounded>::MAX, lo: <LoT as Bounded>::MAX };
+}
+
+impl<HiT: [const] Identity + MultiContainerHalf, LoT: [const] Identity + MultiContainerHalf>
+    const Identity for MultiContainer<HiT, LoT>
+{
+    const ZERO: Self = MultiContainer { hi: <HiT as Identity>::ZERO, lo: <LoT as Identity>::ZERO };
+    /// One value sits in the low half; high half is zero.
+    const ONE: Self = MultiContainer { hi: <HiT as Identity>::ZERO, lo: <LoT as Identity>::ONE };
+}
+
 // --- SignedIdentity (round 202605021800) ---------------------------------
 //
 // `SignedIdentity` is the signed-primitive companion to `Identity`. It
