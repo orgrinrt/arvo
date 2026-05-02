@@ -8,9 +8,13 @@
 //! `AsBool` is the bridge trait for boundary call sites that need a
 //! raw `bool`.
 
+use core::cmp::Ordering;
 use core::convert::Infallible;
 use core::marker::ConstParamTy;
-use core::ops::{ControlFlow, Deref, FromResidual, Try};
+use core::ops::{
+    Add, BitAnd, BitOr, BitXor, ControlFlow, Deref, Div, FromResidual, Mul, Not, Rem, Shl, Shr,
+    Sub, Try,
+};
 
 /// Index / count newtype wrapping `usize`.
 ///
@@ -21,11 +25,122 @@ use core::ops::{ControlFlow, Deref, FromResidual, Try};
 #[repr(transparent)]
 pub struct USize(pub usize);
 
+impl USize {
+    /// Constant `USize(0)`.
+    pub const ZERO: USize = USize(0);
+    /// Constant `USize(1)`.
+    pub const ONE: USize = USize(1);
+    /// Constant `USize(usize::MAX)`.
+    pub const MAX: USize = USize(usize::MAX);
+}
+
 impl Deref for USize {
     type Target = usize;
     #[inline(always)]
     fn deref(&self) -> &usize {
         &self.0
+    }
+}
+
+impl const Add<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn add(self, rhs: USize) -> USize {
+        USize(self.0 + rhs.0)
+    }
+}
+
+impl const Sub<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn sub(self, rhs: USize) -> USize {
+        USize(self.0 - rhs.0)
+    }
+}
+
+impl const Mul<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn mul(self, rhs: USize) -> USize {
+        USize(self.0 * rhs.0)
+    }
+}
+
+impl const Div<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn div(self, rhs: USize) -> USize {
+        USize(self.0 / rhs.0)
+    }
+}
+
+impl const Rem<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn rem(self, rhs: USize) -> USize {
+        USize(self.0 % rhs.0)
+    }
+}
+
+impl const Shl<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn shl(self, rhs: USize) -> USize {
+        USize(self.0 << rhs.0)
+    }
+}
+
+impl const Shr<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn shr(self, rhs: USize) -> USize {
+        USize(self.0 >> rhs.0)
+    }
+}
+
+impl const BitAnd<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn bitand(self, rhs: USize) -> USize {
+        USize(self.0 & rhs.0)
+    }
+}
+
+impl const BitOr<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn bitor(self, rhs: USize) -> USize {
+        USize(self.0 | rhs.0)
+    }
+}
+
+impl const BitXor<USize> for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn bitxor(self, rhs: USize) -> USize {
+        USize(self.0 ^ rhs.0)
+    }
+}
+
+impl const Not for USize {
+    type Output = USize;
+    #[inline(always)]
+    fn not(self) -> USize {
+        USize(!self.0)
+    }
+}
+
+impl PartialOrd<USize> for USize {
+    #[inline(always)]
+    fn partial_cmp(&self, rhs: &USize) -> Option<Ordering> { // lint:allow(no-bare-option) reason: core::cmp::PartialOrd::partial_cmp trait-method signature returns Option<Ordering>; tracked: #115
+        self.0.partial_cmp(&rhs.0)
+    }
+}
+
+impl Ord for USize {
+    #[inline(always)]
+    fn cmp(&self, rhs: &USize) -> Ordering {
+        self.0.cmp(&rhs.0)
     }
 }
 
@@ -37,6 +152,67 @@ impl Deref for USize {
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
 pub struct Cap(pub USize);
+
+impl Cap {
+    /// Constant `Cap(USize::ZERO)`.
+    pub const ZERO: Cap = Cap(USize::ZERO);
+    /// Constant `Cap(USize::ONE)`.
+    pub const ONE: Cap = Cap(USize::ONE);
+}
+
+impl const Add<Cap> for Cap {
+    type Output = Cap;
+    #[inline(always)]
+    fn add(self, rhs: Cap) -> Cap {
+        Cap(self.0.add(rhs.0))
+    }
+}
+
+impl const Sub<Cap> for Cap {
+    type Output = Cap;
+    #[inline(always)]
+    fn sub(self, rhs: Cap) -> Cap {
+        Cap(self.0.sub(rhs.0))
+    }
+}
+
+impl const Mul<Cap> for Cap {
+    type Output = Cap;
+    #[inline(always)]
+    fn mul(self, rhs: Cap) -> Cap {
+        Cap(self.0.mul(rhs.0))
+    }
+}
+
+impl const Div<Cap> for Cap {
+    type Output = Cap;
+    #[inline(always)]
+    fn div(self, rhs: Cap) -> Cap {
+        Cap(self.0.div(rhs.0))
+    }
+}
+
+impl const Rem<Cap> for Cap {
+    type Output = Cap;
+    #[inline(always)]
+    fn rem(self, rhs: Cap) -> Cap {
+        Cap(self.0.rem(rhs.0))
+    }
+}
+
+impl PartialOrd<Cap> for Cap {
+    #[inline(always)]
+    fn partial_cmp(&self, rhs: &Cap) -> Option<Ordering> { // lint:allow(no-bare-option) reason: core::cmp::PartialOrd::partial_cmp trait-method signature returns Option<Ordering>; tracked: #115
+        self.0.partial_cmp(&rhs.0)
+    }
+}
+
+impl Ord for Cap {
+    #[inline(always)]
+    fn cmp(&self, rhs: &Cap) -> Ordering {
+        self.0.cmp(&rhs.0)
+    }
+}
 
 /// Control-flow boolean.
 ///
