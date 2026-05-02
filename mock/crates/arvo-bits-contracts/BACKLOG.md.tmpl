@@ -1,6 +1,27 @@
 # arvo-bits-contracts. Backlog
 
-(none currently)
+## Round 2 prerequisites
+
+Round 2 (#312) of the post-202605021600 substrate-fundamentals work
+lifts the const-generic position on Bits from bare u16 to the typed
+Width meta-newtype: Bits\<const N: u16, ...\> becomes
+Bits\<const N: Width, ...\>. UContainerFor, IContainerFor,
+BitsContainerFor, UArith, IArith, UBitContainer, IBitContainer, and
+Narrow::narrow_to::\<const N\> all switch from const N: u16 to
+const N: Width.
+
+Prerequisites landed in Round 1 (round 202605021800):
+- Signedness lifted to pub const trait
+- BitsContainerFor\<N, Sign\> lifted to pub const trait
+- IBitPrim parity with BitPrim (full method surface)
+- BitAccess / BitSequence / BitLogic blanket impls generalised to
+  Bits\<N, S, Sign: Signedness\> with BitsBitPrim\<Sign\> sealed
+  bridge
+
+Once Round 2 lands, the meta-newtype layer (IBits, FBits, Width,
+MetaCarrier in arvo-storage) becomes load-bearing throughout the
+const-generic dispatch tables instead of being a soundness-asserted
+companion to bare u16.
 
 ## Removed entries
 

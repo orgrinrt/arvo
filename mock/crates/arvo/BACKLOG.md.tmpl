@@ -5,6 +5,26 @@
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
 
+## Round 1 closeout — deferred substrate bridges (round 202605021800)
+
+Round 1 of the post-202605021600 substrate-fundamentals work
+introduces the canonical const-trait substrate bridges (`ConstEq`,
+`ConstOrd`, `ConstDefault`) and lifts the marker-trait family
+plus `Bounded`, `Identity`, `SignedIdentity` to the canonical
+trait-only surface. Four substrate bridges are deferred to later
+rounds within PR #42; the authoritative tracking lives in
+`arvo-strategy/BACKLOG.md.tmpl` under "Tracked bridge expansions":
+
+- ConstFrom / ConstTryFrom — Round 4 / #314
+- ConstDeref / ConstAsRef — Round 4 / #314
+- ConstTry / ConstControlFlow — Round 5 / #315
+- ConstHash / ConstHasher — Round 5 / #315
+
+Consumers needing const-callable Deref / From / TryFrom / Try / Hash
+on substrate types reach for the bridge name in those rounds. Until
+then, the stdlib trait remains the only available surface for those
+six axes, non-const.
+
 ## Round 202604271346 forward-looking entries
 
 The const-traits-and-arvo-as-facade restructure parks several

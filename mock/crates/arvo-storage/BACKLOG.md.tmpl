@@ -22,6 +22,21 @@ generic ergonomics improve.
 Bits<N, Cold> for N > 64 with bitpacked storage across multiple bare
 primitives. Out of scope for round 202604271346. Future round.
 
+## Round 3 prerequisites (post-202605021800 work)
+
+Round 3 (#313) of the post-202605021600 substrate-fundamentals work
+generalises Mask\<W\> over Bits, with Mask256 collapsing from a hand-
+rolled \[QWord\<Hot\>; 4\] struct to a type alias over
+Mask\<Bits\<{Width::W256}, Hot, Unsigned\>\>. The work depends on
+Round 1's MultiContainer BitPrim impl (round 202605021800) being
+landed first; that is now landed.
+
+Round 3 also lifts BitPrim::WIDTH from u16 to USize (was originally
+deferred to Round 4 in the prior round split; reassigned to Round 3
+during the round 202605021800 expansion since the lift naturally
+cascades from MultiContainer's WIDTH = HiT::WIDTH + LoT::WIDTH body
+needing USize-additive arithmetic).
+
 ## Round 202605021200 follow-ups
 
 - ISize: signed platform-pointer-width companion to USize. Round 202605021200 punted on the call. Arvo's signed needs are met today by IFixed and IBits, not platform-width signed integers. Ship if a consumer surfaces signed-platform-pointer arithmetic as load-bearing.
