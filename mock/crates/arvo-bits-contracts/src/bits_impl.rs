@@ -11,9 +11,9 @@ use arvo_strategy::{Hot, Strategy, UContainerFor};
 
 use crate::{BitAccess, BitLogic, BitPrim, BitSequence, HasBitWidth};
 
-impl<const N: u16, S: Strategy> HasBitWidth for Bits<N, S>
+impl<const N: u16, S: Strategy> const HasBitWidth for Bits<N, S>
 where
-    S: UContainerFor<N>,
+    S: [const] UContainerFor<N>,
 {
     const WIDTH: USize = USize(N as usize);
 }

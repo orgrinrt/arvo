@@ -2,6 +2,7 @@
 #![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![feature(const_trait_impl)]
+#![feature(const_ops)]
 #![feature(const_param_ty_trait)]
 #![allow(incomplete_features)]
 
@@ -144,7 +145,7 @@ pub const trait BitLogic: HasBitWidth + Copy {
 /// Implemented for `u8` / `u16` / `u32` / `u64` (in this crate, by
 /// orphan rules). Used by the concrete `UFixed` / `Bits` impls of
 /// `BitAccess` / `BitSequence` / `BitLogic` in `arvo-bits`.
-pub trait BitPrim: sealed::Bit + Copy + 'static {
+pub const trait BitPrim: sealed::Bit + Copy + 'static {
     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim is a bare-primitive bridge by definition; tracked: #256
     /// Bit width of this primitive (8, 16, 32, or 64).
     const WIDTH: u16;
@@ -193,7 +194,7 @@ pub trait BitPrim: sealed::Bit + Copy + 'static {
 /// Implemented for `i8` / `i16` / `i32` / `i64`. Bit operations
 /// reinterpret the bits through the corresponding unsigned type so
 /// signed-shift semantics do not leak in.
-pub trait IBitPrim: sealed::IBit + Copy + 'static {
+pub const trait IBitPrim: sealed::IBit + Copy + 'static {
     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: IBitPrim is a bare-primitive bridge; tracked: #256
     /// Bit width of this primitive (8, 16, 32, or 64).
     const WIDTH: u16;
@@ -237,7 +238,7 @@ macro_rules! impl_bit_prim_u {
         impl sealed::Bit for $ty {}
 
         // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim impl on the bare primitive that the trait was designed to bridge; tracked: #256
-        impl BitPrim for $ty {
+        impl const BitPrim for $ty {
             const WIDTH: u16 = $width;
             const ZERO: Self = 0;
             const ONE: Self = 1;
@@ -337,7 +338,7 @@ macro_rules! impl_bit_prim_i {
         impl sealed::IBit for $ity {}
 
         // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: IBitPrim impl on the bare primitive that the trait was designed to bridge; tracked: #256
-        impl IBitPrim for $ity {
+        impl const IBitPrim for $ity {
             const WIDTH: u16 = $width;
             const ZERO: Self = 0;
             const ONE: Self = 1;
@@ -411,9 +412,9 @@ impl_bit_prim_i!(i128, u128, 128);
 /// Sealed bridge: `(S, BITS)` where `S: UContainerFor<BITS>` **and**
 /// the container type is `BitPrim`. Collapses the two predicates into
 /// one to sidestep the const-expr cycle.
-pub trait UBitContainer<const BITS: u16>: sealed::UBridge<BITS> + UContainerFor<BITS> {
+pub const trait UBitContainer<const BITS: u16>: sealed::UBridge<BITS> + [const] UContainerFor<BITS> {
     /// The container primitive for this `(S, BITS)` pair.
-    type Prim: BitPrim;
+    type Prim: [const] BitPrim;
     /// Coerce the strategy-selected container into the bridge's
     /// primitive type. Identity at runtime: same underlying integer
     /// type; the coercion exists only to route `UContainerFor::T`
@@ -424,9 +425,9 @@ pub trait UBitContainer<const BITS: u16>: sealed::UBridge<BITS> + UContainerFor<
 }
 
 /// Signed counterpart of `UBitContainer`.
-pub trait IBitContainer<const BITS: u16>: sealed::IBridge<BITS> + IContainerFor<BITS> {
+pub const trait IBitContainer<const BITS: u16>: sealed::IBridge<BITS> + [const] IContainerFor<BITS> {
     /// The container primitive for this `(S, BITS)` pair.
-    type Prim: IBitPrim;
+    type Prim: [const] IBitPrim;
     /// See `UBitContainer::to_prim`.
     fn to_prim(t: <Self as IContainerFor<BITS>>::T) -> Self::Prim;
     /// Reverse of `to_prim`.
@@ -450,11 +451,11 @@ where
 {
 }
 
-impl<S, const BITS: u16> UBitContainer<BITS> for S
+impl<S, const BITS: u16> const UBitContainer<BITS> for S
 where
     S: Strategy,
-    S: UContainerFor<BITS>,
-    <S as UContainerFor<BITS>>::T: BitPrim,
+    S: [const] UContainerFor<BITS>,
+    <S as UContainerFor<BITS>>::T: [const] BitPrim,
 {
     type Prim = <S as UContainerFor<BITS>>::T;
 
@@ -482,11 +483,11 @@ where
 {
 }
 
-impl<S, const BITS: u16> IBitContainer<BITS> for S
+impl<S, const BITS: u16> const IBitContainer<BITS> for S
 where
     S: Strategy,
-    S: IContainerFor<BITS>,
-    <S as IContainerFor<BITS>>::T: IBitPrim,
+    S: [const] IContainerFor<BITS>,
+    <S as IContainerFor<BITS>>::T: [const] IBitPrim,
 {
     type Prim = <S as IContainerFor<BITS>>::T;
 
