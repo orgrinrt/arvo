@@ -24,58 +24,116 @@ use crate::float::{FastFloat, Ieee, StrictFloat};
 use crate::ifixed::IFixed;
 pub use arvo_numeric_contracts::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
 use arvo_storage::{FBits, IBits, USize, fbits, ibits};
+use arvo_transparent::Transparent;
 use crate::strategy::{
     Cold, Hot, IContainerFor, Precise, Strategy, UContainerFor, Warm, ifixed_bits, ufixed_bits,
 };
 use crate::ufixed::UFixed;
 
 // --- TotalOrd --------------------------------------------------------------
+//
+// Bodies use direct `<` / `>` / `==` comparison rather than the inherent
+// `cmp` / `total_cmp` methods because those are not const-stable on
+// rustc 1.96.0-nightly. The bare-primitive comparison operators ARE
+// const-stable for every integer width, and the float bit-reinterpret
+// XOR trick (see `total_cmp_f32` / `total_cmp_f64`) gives the same
+// total ordering as `f*::total_cmp` while staying const-callable.
 
-impl<const I: IBits, const F: FBits, S: Strategy> TotalOrd for UFixed<I, F, S>
+/// Const-callable equivalent of `f32::total_cmp`. Reinterprets the float
+/// bits as i32, applies the standard XOR mask so positive floats sort
+/// after negative floats by bit pattern, then compares as signed.
+#[inline(always)]
+const fn total_cmp_f32(a: f32, b: f32) -> Ordering {
+    let mut left = a.to_bits() as i32;
+    let mut right = b.to_bits() as i32;
+    left ^= (((left >> 31) as u32) >> 1) as i32;
+    right ^= (((right >> 31) as u32) >> 1) as i32;
+    if left < right {
+        Ordering::Less
+    } else if left > right {
+        Ordering::Greater
+    } else {
+        Ordering::Equal
+    }
+}
+
+/// Const-callable equivalent of `f64::total_cmp`. Same XOR-mask trick
+/// as `total_cmp_f32`, widened to i64.
+#[inline(always)]
+const fn total_cmp_f64(a: f64, b: f64) -> Ordering {
+    let mut left = a.to_bits() as i64;
+    let mut right = b.to_bits() as i64;
+    left ^= (((left >> 63) as u64) >> 1) as i64;
+    right ^= (((right >> 63) as u64) >> 1) as i64;
+    if left < right {
+        Ordering::Less
+    } else if left > right {
+        Ordering::Greater
+    } else {
+        Ordering::Equal
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const TotalOrd for UFixed<I, F, S>
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    S: [const] UContainerFor<{ ufixed_bits(I, F) }>,
+    Self: [const] arvo_storage::ConstOrd,
 {
     #[inline(always)]
     fn total_cmp(self, other: Self) -> Ordering {
-        self.to_raw().cmp(&other.to_raw())
+        const_ordering_to_core(<Self as arvo_storage::ConstOrd>::const_cmp(&self, &other))
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> TotalOrd for IFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const TotalOrd for IFixed<I, F, S>
 where
-    S: IContainerFor<{ ifixed_bits(I, F) }>,
+    S: [const] IContainerFor<{ ifixed_bits(I, F) }>,
+    Self: [const] arvo_storage::ConstOrd,
 {
     #[inline(always)]
     fn total_cmp(self, other: Self) -> Ordering {
-        self.to_raw().cmp(&other.to_raw())
+        const_ordering_to_core(<Self as arvo_storage::ConstOrd>::const_cmp(&self, &other))
     }
 }
 
-impl TotalOrd for FastFloat<f32> {
-    #[inline(always)]
-    fn total_cmp(self, other: Self) -> Ordering {
-        self.0.total_cmp(&other.0)
+/// Const-callable bridge from substrate `ConstOrdering` to core
+/// `Ordering`. Wraps the existing bidirectional `From` impl in a
+/// const fn since `From::from` is not yet const-stable as a trait
+/// method on rustc 1.96.0-nightly.
+#[inline(always)]
+const fn const_ordering_to_core(o: arvo_storage::ConstOrdering) -> Ordering {
+    match o {
+        arvo_storage::ConstOrdering::Less => Ordering::Less,
+        arvo_storage::ConstOrdering::Equal => Ordering::Equal,
+        arvo_storage::ConstOrdering::Greater => Ordering::Greater,
     }
 }
 
-impl TotalOrd for FastFloat<f64> {
+impl const TotalOrd for FastFloat<f32> {
     #[inline(always)]
     fn total_cmp(self, other: Self) -> Ordering {
-        self.0.total_cmp(&other.0)
+        total_cmp_f32(<Self as Transparent>::raw(self), <Self as Transparent>::raw(other))
     }
 }
 
-impl TotalOrd for StrictFloat<f32> {
+impl const TotalOrd for FastFloat<f64> {
     #[inline(always)]
     fn total_cmp(self, other: Self) -> Ordering {
-        self.0.total_cmp(&other.0)
+        total_cmp_f64(<Self as Transparent>::raw(self), <Self as Transparent>::raw(other))
     }
 }
 
-impl TotalOrd for StrictFloat<f64> {
+impl const TotalOrd for StrictFloat<f32> {
     #[inline(always)]
     fn total_cmp(self, other: Self) -> Ordering {
-        self.0.total_cmp(&other.0)
+        total_cmp_f32(<Self as Transparent>::raw(self), <Self as Transparent>::raw(other))
+    }
+}
+
+impl const TotalOrd for StrictFloat<f64> {
+    #[inline(always)]
+    fn total_cmp(self, other: Self) -> Ordering {
+        total_cmp_f64(<Self as Transparent>::raw(self), <Self as Transparent>::raw(other))
     }
 }
 
@@ -90,7 +148,7 @@ impl TotalOrd for StrictFloat<f64> {
 macro_rules! impl_sqrt_ufixed_concrete {
     ($strategy:ty, $($i:literal),+) => {
         $(
-            impl Sqrt for UFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
+            impl const Sqrt for UFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn sqrt(self) -> Self {
@@ -136,9 +194,13 @@ impl_sqrt_ufixed_concrete!(
 // BACKLOG item ships (see arvo/BACKLOG.md — "correctly-rounded sqrt
 // via libm feature gate").
 
+// `is_nan` is not const-stable on f32/f64 in rustc 1.96.0-nightly; the
+// const-callable substitute is `x != x` (NaN is the only float that
+// fails self-equality). The rest of the body (bit-reinterpretation,
+// float arithmetic, comparison) is const-stable.
 #[inline(always)]
-fn sqrt_f32(x: f32) -> f32 {
-    if x < 0.0 || x.is_nan() {
+pub const fn sqrt_f32(x: f32) -> f32 {
+    if x < 0.0 || x != x {
         return f32::NAN;
     }
     if x == 0.0 {
@@ -154,8 +216,8 @@ fn sqrt_f32(x: f32) -> f32 {
 }
 
 #[inline(always)]
-fn sqrt_f64(x: f64) -> f64 {
-    if x < 0.0 || x.is_nan() {
+pub const fn sqrt_f64(x: f64) -> f64 {
+    if x < 0.0 || x != x {
         return f64::NAN;
     }
     if x == 0.0 {
@@ -171,77 +233,77 @@ fn sqrt_f64(x: f64) -> f64 {
     g
 }
 
-impl Sqrt for FastFloat<f32> {
+impl const Sqrt for FastFloat<f32> {
     type Output = Self;
     #[inline(always)]
     fn sqrt(self) -> Self {
-        FastFloat(sqrt_f32(self.0))
+        FastFloat(sqrt_f32(<Self as Transparent>::raw(self)))
     }
 }
 
-impl Sqrt for FastFloat<f64> {
+impl const Sqrt for FastFloat<f64> {
     type Output = Self;
     #[inline(always)]
     fn sqrt(self) -> Self {
-        FastFloat(sqrt_f64(self.0))
+        FastFloat(sqrt_f64(<Self as Transparent>::raw(self)))
     }
 }
 
-impl Sqrt for StrictFloat<f32> {
+impl const Sqrt for StrictFloat<f32> {
     type Output = Self;
     #[inline(always)]
     fn sqrt(self) -> Self {
-        StrictFloat(sqrt_f32(self.0))
+        StrictFloat(sqrt_f32(<Self as Transparent>::raw(self)))
     }
 }
 
-impl Sqrt for StrictFloat<f64> {
+impl const Sqrt for StrictFloat<f64> {
     type Output = Self;
     #[inline(always)]
     fn sqrt(self) -> Self {
-        StrictFloat(sqrt_f64(self.0))
+        StrictFloat(sqrt_f64(<Self as Transparent>::raw(self)))
     }
 }
 
 // --- Recip -----------------------------------------------------------------
 
-impl Recip for FastFloat<f32> {
+impl const Recip for FastFloat<f32> {
     type Output = Self;
     #[inline(always)]
     fn recip(self) -> Self {
-        FastFloat(1.0f32 / self.0)
+        FastFloat(1.0f32 / <Self as Transparent>::raw(self))
     }
 }
 
-impl Recip for FastFloat<f64> {
+impl const Recip for FastFloat<f64> {
     type Output = Self;
     #[inline(always)]
     fn recip(self) -> Self {
-        FastFloat(1.0f64 / self.0)
+        FastFloat(1.0f64 / <Self as Transparent>::raw(self))
     }
 }
 
-impl Recip for StrictFloat<f32> {
+impl const Recip for StrictFloat<f32> {
     type Output = Self;
     #[inline(always)]
     fn recip(self) -> Self {
-        StrictFloat(1.0f32 / self.0)
+        StrictFloat(1.0f32 / <Self as Transparent>::raw(self))
     }
 }
 
-impl Recip for StrictFloat<f64> {
+impl const Recip for StrictFloat<f64> {
     type Output = Self;
     #[inline(always)]
     fn recip(self) -> Self {
-        StrictFloat(1.0f64 / self.0)
+        StrictFloat(1.0f64 / <Self as Transparent>::raw(self))
     }
 }
 
 // --- Abs -------------------------------------------------------------------
 
-impl<const I: IBits, const F: FBits, S: Strategy> Abs for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const Abs for UFixed<I, F, S>
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    S: [const] UContainerFor<{ ufixed_bits(I, F) }>,
 {
     type Output = Self;
     /// Identity: unsigned values are their own absolute value.
@@ -264,7 +326,7 @@ where
 macro_rules! impl_abs_ifixed_integer_wrap {
     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
         $(
-            impl Abs for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
+            impl const Abs for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn abs(self) -> Self {
@@ -278,7 +340,7 @@ macro_rules! impl_abs_ifixed_integer_wrap {
 macro_rules! impl_abs_ifixed_integer_sat {
     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
         $(
-            impl Abs for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
+            impl const Abs for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn abs(self) -> Self {
@@ -292,7 +354,7 @@ macro_rules! impl_abs_ifixed_integer_sat {
 macro_rules! impl_abs_ifixed_fractional_wrap {
     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
         $(
-            impl Abs for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
+            impl const Abs for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn abs(self) -> Self {
@@ -306,7 +368,7 @@ macro_rules! impl_abs_ifixed_fractional_wrap {
 macro_rules! impl_abs_ifixed_fractional_sat {
     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
         $(
-            impl Abs for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
+            impl const Abs for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
                 type Output = Self;
                 #[inline(always)]
                 fn abs(self) -> Self {
@@ -385,47 +447,49 @@ impl_abs_ifixed_fractional_wrap!(Cold, i32, 7, 16);
 impl_abs_ifixed_fractional_sat!(Precise, i32, 7, 1, 2, 4, 8);
 impl_abs_ifixed_fractional_sat!(Precise, i64, 7, 16);
 
-// Float abs. No_std-compatible via sign-bit clear.
+// Float abs. No_std-compatible via sign-bit clear. `f*::from_bits` and
+// `f*::to_bits` are const-stable, so the helpers stay const fn and the
+// impls can be const.
 
 #[inline(always)]
-fn abs_f32(x: f32) -> f32 {
+pub const fn abs_f32(x: f32) -> f32 {
     f32::from_bits(x.to_bits() & 0x7fff_ffffu32)
 }
 
 #[inline(always)]
-fn abs_f64(x: f64) -> f64 {
+pub const fn abs_f64(x: f64) -> f64 {
     f64::from_bits(x.to_bits() & 0x7fff_ffff_ffff_ffffu64)
 }
 
-impl Abs for FastFloat<f32> {
+impl const Abs for FastFloat<f32> {
     type Output = Self;
     #[inline(always)]
     fn abs(self) -> Self {
-        FastFloat(abs_f32(self.0))
+        FastFloat(abs_f32(<Self as Transparent>::raw(self)))
     }
 }
 
-impl Abs for FastFloat<f64> {
+impl const Abs for FastFloat<f64> {
     type Output = Self;
     #[inline(always)]
     fn abs(self) -> Self {
-        FastFloat(abs_f64(self.0))
+        FastFloat(abs_f64(<Self as Transparent>::raw(self)))
     }
 }
 
-impl Abs for StrictFloat<f32> {
+impl const Abs for StrictFloat<f32> {
     type Output = Self;
     #[inline(always)]
     fn abs(self) -> Self {
-        StrictFloat(abs_f32(self.0))
+        StrictFloat(abs_f32(<Self as Transparent>::raw(self)))
     }
 }
 
-impl Abs for StrictFloat<f64> {
+impl const Abs for StrictFloat<f64> {
     type Output = Self;
     #[inline(always)]
     fn abs(self) -> Self {
-        StrictFloat(abs_f64(self.0))
+        StrictFloat(abs_f64(<Self as Transparent>::raw(self)))
     }
 }
 
@@ -439,10 +503,10 @@ macro_rules! impl_from_constant_ufixed {
     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
         $(
             // F = 0 (integer UFixed).
-            impl FromConstant for UFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
+            impl const FromConstant for UFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 #[inline(always)]
                 fn from_constant<const C: USize>() -> Self {
-                    Self::from_raw(C.0 as $ctype)
+                    Self::from_raw(<USize as Transparent>::raw(C) as $ctype)
                 }
             }
         )+
@@ -452,10 +516,10 @@ macro_rules! impl_from_constant_ufixed {
 macro_rules! impl_from_constant_ufixed_fractional {
     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
         $(
-            impl FromConstant for UFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
+            impl const FromConstant for UFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
                 #[inline(always)]
                 fn from_constant<const C: USize>() -> Self {
-                    Self::from_raw((C.0 as $ctype) << $f)
+                    Self::from_raw((<USize as Transparent>::raw(C) as $ctype) << $f)
                 }
             }
         )+
@@ -536,10 +600,10 @@ impl_from_constant_ufixed_fractional!(Precise, u64, 8, 16);
 macro_rules! impl_from_constant_ifixed {
     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
         $(
-            impl FromConstant for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
+            impl const FromConstant for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
                 #[inline(always)]
                 fn from_constant<const C: USize>() -> Self {
-                    Self::from_raw(C.0 as $ctype)
+                    Self::from_raw(<USize as Transparent>::raw(C) as $ctype)
                 }
             }
         )+
@@ -549,10 +613,10 @@ macro_rules! impl_from_constant_ifixed {
 macro_rules! impl_from_constant_ifixed_fractional {
     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
         $(
-            impl FromConstant for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
+            impl const FromConstant for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
                 #[inline(always)]
                 fn from_constant<const C: USize>() -> Self {
-                    Self::from_raw((C.0 as $ctype) << $f)
+                    Self::from_raw((<USize as Transparent>::raw(C) as $ctype) << $f)
                 }
             }
         )+
@@ -629,34 +693,36 @@ impl_from_constant_ifixed_fractional!(Precise, i64, 7, 16);
 // `FromU8Ieee` helper via an in-range `u8` cast; callers stay in
 // USize for consistency with the public trait surface.
 
-impl<F: Ieee + FromU8Ieee> FromConstant for FastFloat<F> {
+impl<F: [const] Ieee + [const] FromU8Ieee> const FromConstant for FastFloat<F> {
     #[inline(always)]
     fn from_constant<const C: USize>() -> Self {
-        FastFloat(<F as FromU8Ieee>::from_u8_ieee(C.0 as u8)) // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: internal `FromU8Ieee` bridge takes u8 by design; USize→u8 cast preserves IEEE lossless range for 0..=255; tracked: #123
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: internal `FromU8Ieee` bridge takes u8 by design; USize→u8 cast preserves IEEE lossless range for 0..=255; tracked: #123
+        FastFloat(<F as FromU8Ieee>::from_u8_ieee(<USize as Transparent>::raw(C) as u8))
     }
 }
 
-impl<F: Ieee + FromU8Ieee> FromConstant for StrictFloat<F> {
+impl<F: [const] Ieee + [const] FromU8Ieee> const FromConstant for StrictFloat<F> {
     #[inline(always)]
     fn from_constant<const C: USize>() -> Self {
-        StrictFloat(<F as FromU8Ieee>::from_u8_ieee(C.0 as u8)) // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: internal `FromU8Ieee` bridge takes u8 by design; USize→u8 cast preserves IEEE lossless range for 0..=255; tracked: #123
+        // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: internal `FromU8Ieee` bridge takes u8 by design; USize→u8 cast preserves IEEE lossless range for 0..=255; tracked: #123
+        StrictFloat(<F as FromU8Ieee>::from_u8_ieee(<USize as Transparent>::raw(C) as u8))
     }
 }
 
 /// Lossless `u8 -> IEEE float` bridge.
-pub trait FromU8Ieee: Ieee {
+pub const trait FromU8Ieee: Ieee {
     /// Convert the given `u8` into this IEEE float type.
     fn from_u8_ieee(n: u8) -> Self;
 }
 
-impl FromU8Ieee for f32 {
+impl const FromU8Ieee for f32 {
     #[inline(always)]
     fn from_u8_ieee(n: u8) -> Self {
         n as f32
     }
 }
 
-impl FromU8Ieee for f64 {
+impl const FromU8Ieee for f64 {
     #[inline(always)]
     fn from_u8_ieee(n: u8) -> Self {
         n as f64
