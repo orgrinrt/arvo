@@ -12,6 +12,8 @@
 //! `BitAccess` for single-bit read/write. `Mask64` operates on its
 //! single `QWord<Hot>`; `Mask256` unrolls across four.
 
+use core::ops::{BitAnd, BitOr, BitXor, Not};
+
 use arvo::{Bool, USize};
 use arvo::strategy::{Bounded, Hot, Identity};
 use arvo_bits::QWord;
@@ -128,6 +130,44 @@ impl Iterator for SetBitsIter64 {
         let idx = <QWord<Hot> as BitSequence>::trailing_zeros(self.remaining);
         self.remaining = <QWord<Hot> as BitLogic>::clear_lowest_set_bit(self.remaining);
         Some(idx)
+    }
+}
+
+// --- Mask64 const-trait core::ops impls (round 202605021600) -----------
+//
+// With BitLogic on Bits<N, Hot> lifted to impl const (step 3), the
+// Mask64 bitwise operators now ship as const-callable. Bodies route
+// through the BitLogic trait methods.
+
+impl const BitAnd for Mask<QWord<Hot>> {
+    type Output = Self;
+    #[inline(always)]
+    fn bitand(self, rhs: Self) -> Self {
+        Self::from_word(<QWord<Hot> as BitLogic>::bitand(self.word, rhs.word))
+    }
+}
+
+impl const BitOr for Mask<QWord<Hot>> {
+    type Output = Self;
+    #[inline(always)]
+    fn bitor(self, rhs: Self) -> Self {
+        Self::from_word(<QWord<Hot> as BitLogic>::bitor(self.word, rhs.word))
+    }
+}
+
+impl const BitXor for Mask<QWord<Hot>> {
+    type Output = Self;
+    #[inline(always)]
+    fn bitxor(self, rhs: Self) -> Self {
+        Self::from_word(<QWord<Hot> as BitLogic>::bitxor(self.word, rhs.word))
+    }
+}
+
+impl const Not for Mask<QWord<Hot>> {
+    type Output = Self;
+    #[inline(always)]
+    fn not(self) -> Self {
+        Self::from_word(<QWord<Hot> as BitLogic>::bitnot(self.word))
     }
 }
 
@@ -348,3 +388,69 @@ impl Iterator for SetBitsIter256 {
 // `Mask64` alias re-use so the public surface name works from lib.
 #[allow(dead_code)]
 type _Mask64Alias = Mask64;
+
+// --- Mask256 const-trait core::ops impls (round 202605021600) ----------
+//
+// Mask256 stays an explicit type for this round; #307 tracks collapsing
+// it into Mask<[W; N]> once array-shaped Bit* contracts land. The
+// const-trait ops here mirror the inherent methods unrolled across
+// four words.
+
+impl const BitAnd for Mask256 {
+    type Output = Self;
+    #[inline(always)]
+    fn bitand(self, rhs: Self) -> Self {
+        let a = self.0;
+        let b = rhs.0;
+        Self([
+            <QWord<Hot> as BitLogic>::bitand(a[0], b[0]),
+            <QWord<Hot> as BitLogic>::bitand(a[1], b[1]),
+            <QWord<Hot> as BitLogic>::bitand(a[2], b[2]),
+            <QWord<Hot> as BitLogic>::bitand(a[3], b[3]),
+        ])
+    }
+}
+
+impl const BitOr for Mask256 {
+    type Output = Self;
+    #[inline(always)]
+    fn bitor(self, rhs: Self) -> Self {
+        let a = self.0;
+        let b = rhs.0;
+        Self([
+            <QWord<Hot> as BitLogic>::bitor(a[0], b[0]),
+            <QWord<Hot> as BitLogic>::bitor(a[1], b[1]),
+            <QWord<Hot> as BitLogic>::bitor(a[2], b[2]),
+            <QWord<Hot> as BitLogic>::bitor(a[3], b[3]),
+        ])
+    }
+}
+
+impl const BitXor for Mask256 {
+    type Output = Self;
+    #[inline(always)]
+    fn bitxor(self, rhs: Self) -> Self {
+        let a = self.0;
+        let b = rhs.0;
+        Self([
+            <QWord<Hot> as BitLogic>::bitxor(a[0], b[0]),
+            <QWord<Hot> as BitLogic>::bitxor(a[1], b[1]),
+            <QWord<Hot> as BitLogic>::bitxor(a[2], b[2]),
+            <QWord<Hot> as BitLogic>::bitxor(a[3], b[3]),
+        ])
+    }
+}
+
+impl const Not for Mask256 {
+    type Output = Self;
+    #[inline(always)]
+    fn not(self) -> Self {
+        let a = self.0;
+        Self([
+            <QWord<Hot> as BitLogic>::bitnot(a[0]),
+            <QWord<Hot> as BitLogic>::bitnot(a[1]),
+            <QWord<Hot> as BitLogic>::bitnot(a[2]),
+            <QWord<Hot> as BitLogic>::bitnot(a[3]),
+        ])
+    }
+}
