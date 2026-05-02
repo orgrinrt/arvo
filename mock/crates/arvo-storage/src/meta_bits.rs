@@ -21,10 +21,12 @@
 
 use core::marker::ConstParamTy;
 
-use arvo_strategy::{Hot, Unsigned};
+use arvo_strategy::{Bounded, Hot, Identity, Unsigned};
 use arvo_transparent::Transparent;
 
 use crate::Bits;
+use crate::bridges::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
+use crate::platform::Bool;
 
 /// Layout-stable companion to `Bits<9, Hot, Unsigned>` used as the
 /// meta-newtype carrier (`IBits`, `FBits`, `Width`).
@@ -65,6 +67,46 @@ impl MetaCarrier {
     pub const fn as_bits(self) -> Bits<9, Hot, Unsigned> {
         // SAFETY: layout-identical (repr(transparent) over u16).
         unsafe { core::mem::transmute(self) }
+    }
+}
+
+// Canonical const surfaces for MetaCarrier (the meta-newtype payload
+// type). Routes through inner u16. See module docs on meta-bit
+// carrier semantics.
+impl const Bounded for MetaCarrier {
+    const MIN: Self = MetaCarrier(<u16 as Bounded>::MIN);
+    const MAX: Self = MetaCarrier(<u16 as Bounded>::MAX);
+}
+
+impl const Identity for MetaCarrier {
+    const ZERO: Self = MetaCarrier(<u16 as Identity>::ZERO);
+    const ONE: Self = MetaCarrier(<u16 as Identity>::ONE);
+}
+
+impl const ConstEq for MetaCarrier {
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        Bool(self.0 == other.0)
+    }
+}
+
+impl const ConstOrd for MetaCarrier {
+    #[inline(always)]
+    fn const_cmp(&self, other: &Self) -> ConstOrdering {
+        if self.0 < other.0 {
+            ConstOrdering::Less
+        } else if self.0 > other.0 {
+            ConstOrdering::Greater
+        } else {
+            ConstOrdering::Equal
+        }
+    }
+}
+
+impl const ConstDefault for MetaCarrier {
+    #[inline(always)]
+    fn const_default() -> Self {
+        MetaCarrier(0)
     }
 }
 
@@ -141,6 +183,38 @@ macro_rules! meta_bits_wrapper {
         impl AsRef<u16> for $W {
             #[inline(always)]
             fn as_ref(&self) -> &u16 { &self.0.0 }
+        }
+
+        // Canonical const surfaces routed through the inner u16.
+        impl const Bounded for $W {
+            const MIN: Self = Self(MetaCarrier::from_raw(<u16 as Bounded>::MIN));
+            const MAX: Self = Self(MetaCarrier::from_raw(<u16 as Bounded>::MAX));
+        }
+
+        impl const Identity for $W {
+            const ZERO: Self = Self(MetaCarrier::from_raw(<u16 as Identity>::ZERO));
+            const ONE: Self = Self(MetaCarrier::from_raw(<u16 as Identity>::ONE));
+        }
+
+        impl const ConstEq for $W {
+            #[inline(always)]
+            fn const_eq(&self, other: &Self) -> Bool {
+                Bool(self.0.0 == other.0.0)
+            }
+        }
+
+        impl const ConstOrd for $W {
+            #[inline(always)]
+            fn const_cmp(&self, other: &Self) -> ConstOrdering {
+                if self.0.0 < other.0.0 { ConstOrdering::Less }
+                else if self.0.0 > other.0.0 { ConstOrdering::Greater }
+                else { ConstOrdering::Equal }
+            }
+        }
+
+        impl const ConstDefault for $W {
+            #[inline(always)]
+            fn const_default() -> Self { Self(MetaCarrier::from_raw(0)) }
         }
 
         impl From<u8> for $W {

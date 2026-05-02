@@ -58,6 +58,41 @@ where
     const ONE: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ONE);
 }
 
+// ConstEq / ConstOrd / ConstDefault blankets routed through the inner
+// signed Bits. Same single-predicate cycle-avoidance pattern as Identity.
+impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstEq for IFixed<I, F, S>
+where
+    S: IContainerFor<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstEq,
+{
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> arvo_storage::Bool {
+        self.0.const_eq(&other.0)
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstOrd for IFixed<I, F, S>
+where
+    S: IContainerFor<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstOrd,
+{
+    #[inline(always)]
+    fn const_cmp(&self, other: &Self) -> crate::strategy::ConstOrdering {
+        self.0.const_cmp(&other.0)
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstDefault for IFixed<I, F, S>
+where
+    S: IContainerFor<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Identity,
+{
+    #[inline(always)]
+    fn const_default() -> Self {
+        Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ZERO)
+    }
+}
+
 impl<const I: IBits, const F: FBits, S: Strategy> IFixed<I, F, S>
 where
     S: IContainerFor<{ ifixed_bits(I, F) }>,

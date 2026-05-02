@@ -38,6 +38,9 @@ use arvo_strategy::{
 };
 use arvo_transparent::Transparent;
 
+use crate::bridges::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
+use crate::platform::Bool;
+
 /// N-bit opaque bit-pattern. Transparent wrapper over the
 /// strategy-and-sign-dispatched container primitive.
 ///
@@ -110,6 +113,47 @@ where
 {
     const ZERO: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ZERO);
     const ONE: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ONE);
+}
+
+// Generic ConstEq blanket. Bit patterns compare structurally through
+// the inner container primitive's ConstEq.
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstEq for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] ConstEq,
+{
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        self.0.const_eq(&other.0)
+    }
+}
+
+// Generic ConstOrd blanket. Bit-pattern total ordering routes through
+// the inner container primitive. For multi-value containers
+// (`MultiContainer<HiT, LoT>`), the ordering follows the high half
+// first then the low half (lexicographic on (Hi, Lo)); the
+// `MultiContainer` ConstOrd impl encodes this.
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstOrd for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] ConstOrd,
+{
+    #[inline(always)]
+    fn const_cmp(&self, other: &Self) -> ConstOrdering {
+        self.0.const_cmp(&other.0)
+    }
+}
+
+// Generic ConstDefault blanket. Default Bits is the all-zero pattern.
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstDefault for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] Identity,
+{
+    #[inline(always)]
+    fn const_default() -> Self {
+        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ZERO)
+    }
 }
 
 // Ergonomic surface: `Deref` / `AsRef` so wrappers above `Bits`

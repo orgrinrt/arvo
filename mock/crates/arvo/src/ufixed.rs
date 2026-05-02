@@ -15,7 +15,8 @@ use core::ops::{Add, Div, Mul, Sub};
 use notko::Outcome;
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
-use arvo_storage::{Bits, FBits, IBits, USize};
+use crate::strategy::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
+use arvo_storage::{Bits, Bool, FBits, IBits, USize};
 use crate::strategy::{
     Hot, Identity, Precise, Strategy, UArith, UContainerFor, UNarrowFrom, UWidenFrom, Warm,
     is_fractional, ufixed_bits,
@@ -48,6 +49,41 @@ where
 {
     const ZERO: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ZERO);
     const ONE: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ONE);
+}
+
+// ConstEq / ConstOrd / ConstDefault blankets routed through the inner
+// Bits. Same single-predicate cycle-avoidance pattern as Identity.
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstEq for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstEq,
+{
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        self.0.const_eq(&other.0)
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstOrd for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstOrd,
+{
+    #[inline(always)]
+    fn const_cmp(&self, other: &Self) -> ConstOrdering {
+        self.0.const_cmp(&other.0)
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstDefault for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] Identity,
+{
+    #[inline(always)]
+    fn const_default() -> Self {
+        Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ZERO)
+    }
 }
 
 impl<const I: IBits, const F: FBits, S: Strategy> UFixed<I, F, S>
