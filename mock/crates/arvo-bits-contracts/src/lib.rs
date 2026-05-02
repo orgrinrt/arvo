@@ -187,6 +187,19 @@ pub const trait BitPrim: sealed::Bit + Copy + 'static {
     fn bitxor(self, other: Self) -> Self;
     /// Clear the lowest set bit. `self & (self.wrapping_sub(1))`.
     fn clear_lowest_set_bit(self) -> Self;
+
+    // --- Const-equality bridge (round 202605021600) -----------------------
+    //
+    // The standard library's `PartialEq` is not stable as a const trait
+    // on bare primitives. Generic `T: BitPrim` bodies that needed const
+    // equality previously couldn't compose. This method bridges: per-
+    // primitive impls evaluate `self == 0` directly on the concrete
+    // type, where bare-primitive `==` IS const-stable; consumers reach
+    // it via the const-trait dispatch.
+    //
+    // lint:allow(no-bare-numeric) reason: BitPrim is a bare-primitive bridge by definition; tracked: #256
+    /// True if and only if every bit of the primitive is zero.
+    fn is_zero(self) -> bool;
 }
 
 /// Sealed signed primitive bit bridge.
@@ -313,6 +326,12 @@ macro_rules! impl_bit_prim_u {
             #[inline(always)]
             fn clear_lowest_set_bit(self) -> Self {
                 self & self.wrapping_sub(1)
+            }
+
+            #[inline(always)]
+            fn is_zero(self) -> bool {
+                // lint:allow(no-bare-numeric) reason: BitPrim impl on bare primitive; const-stable concrete equality bridge; tracked: #256
+                self == 0
             }
         }
     };
