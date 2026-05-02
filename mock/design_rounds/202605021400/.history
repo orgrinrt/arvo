@@ -1,0 +1,50 @@
+caafc43 chore: lock src changelist for round 202605021400
+fa921d7 test: extend const-context smoke with chained USize add
+22df45a feat: Mask64 / Mask256 inherent EMPTY and FULL constants
+e8bb620 feat: lift UFixed/IFixed/FastFloat/StrictFloat ops to impl const
+31e2b4f feat: lift BitPrim/IBitPrim/UBitContainer/IBitContainer to pub const trait
+263dbe4 feat: lift UArith/IArith/USaturating/ISaturating to pub const trait
+8e39180 feat: arvo-strategy UPrimConst + IPrimConst const bridges
+1e922a1 docs: open SRC CL for round 202605021400 const-trait machinery lift
+1f31d15 chore: lock doc changelist for round 202605021400
+13da7df docs: arvo-strategy primitive const bridges + UArith const lift (202605021400)
+2a17339 docs: open DOC CL for round 202605021400 const-trait machinery lift
+3acac85 docs: open round 202605021400 const-trait machinery lift topic
+4103d87 chore: close design round 202605021200
+29e50ea chore: lock src changelist for round 202605021200
+ea859ff test: const-context smoke test for USize/Cap const-arith
+e059dc5 refactor: sweep .0 field-access on USize across arvo L2/L3 algorithms
+a8a1e27 refactor: arvo-bitmask sweep .0 field-access on USize to const-arith ops
+668c439 feat: feature(const_ops) crate-root flag in arvo-bits + arvo
+85409ab feat: USize + Cap const-arith surface
+fd22883 docs: open SRC CL for round 202605021200 with full A+B+C apply plan
+f39a875 chore: lock doc changelist for round 202605021200
+351f8b9 docs: arvo-bits/arvo-bitmask DESIGN const-trait notes + PRINCIPLES no-.0-access extension
+ba7eb2d docs: arvo facade DESIGN const-arith section for UFixed/IFixed/FastFloat/StrictFloat
+f871456 docs: strip em-dashes from DOC CL
+3ccc144 docs: rewrite DOC CL to cover full A+B+C scope (round 202605021200)
+25fbfd3 docs: USize const-arith subsection + Cap section + BACKLOG follow-ups (round 202605021200)
+c3e2862 docs: open DOC CL for round 202605021200 (USize+Cap const-arith)
+918b403 chore: gitignore sketch rustc artefacts + scrub libsketch.rmeta
+da0b3e8 research: sketch validates const-trait arithmetic on every arvo numeric
+5ebd099 docs: expand round 202605021200 to every arvo numeric primitive
+a414c3d docs: open round 202605021200 USize const arith topic
+d0b3c74 fix: bump mockspace lockfile pin to dev HEAD + restore generated docs/ (#41)
+52261d8 feat!: Widen trait, ergonomic Bits constructors, arvo-narrow → arvo-refit (#40)
+bcc3830 refactor: migrate bench to ByteRoutine + typed bench_variant form (#39)
+3301c40 refactor: extract shared bench Routine into arvo-benches lib (#38)
+71ab9fa feat: adopt mockspace v2 bench harness for ContentHash benchmarking (#37)
+296439c docs: promote strategy-bound trilemma to DEEPDIVE (#36)
+1abc0e0 feat: bitwidth cap to 256 + Fnv1a + audit-driven follow-up rounds (A-D) (#35)
+fec30de docs: extend byline policy to PR titles, descriptions, comments (#34)
+69b8271 docs: ban ASCII box-and-arrow diagrams in writing-style rules (#30)
+d8229e9 chore: ramp arvo lint severities to match strict posture (#213) (#33)
+e93ca0c docs: rewrite README to outsider-view-only crates.io format (#32)
+24afda0 docs: arvo docs refresh — shipped items, updated signatures (#124) (#29)
+16caf87 docs: type-surface reminder block at top of every BACKLOG.md.tmpl (#92) (#28)
+7bd20fe feat: arvo::Predicate trait family Pred/Pred2/Pred3 (#122) (#27)
+2ec733a refactor: FromConstant takes USize instead of u8 (#123) (#26)
+6237970 docs: arvo writing-style sweep (#25)
+3bc411c chore: bump mockspace to pick up no-empty-crate fix (#24)
+624f8b0 docs: #129 arvo lint:allow audit — all 5 sites structurally justified (#22) (#23)
+a98a3f4 Merge pull request #21 from orgrinrt/feat/arvo-bits-ergonomics
