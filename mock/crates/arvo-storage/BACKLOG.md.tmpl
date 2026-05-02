@@ -22,6 +22,12 @@ generic ergonomics improve.
 Bits<N, Cold> for N > 64 with bitpacked storage across multiple bare
 primitives. Out of scope for round 202604271346. Future round.
 
+## Round 202605021200 follow-ups
+
+- ISize: signed platform-pointer-width companion to USize. Round 202605021200 punted on the call. Arvo's signed needs are met today by IFixed and IBits, not platform-width signed integers. Ship if a consumer surfaces signed-platform-pointer arithmetic as load-bearing.
+- USize and Cap checked-arithmetic helpers (checked_add returning Maybe of USize). Round 202605021200 documented overflow as matching primitive usize (panic on debug-asserts, wrap on release). A Maybe-returning shim ships when a consumer surfaces overflow-as-error semantic.
+- Workspace lint rule forbidding .0 field-access on arvo primitives outside the implementing crate. The const-trait surface from round 202605021200 is the typed access path; the lint enforces it once the round 202605021400 sweep validates that no false-positive call sites remain. Lives in mockspace-hilavitkutin-stack-lints.
+
 ## Removed entries
 
 (none)
