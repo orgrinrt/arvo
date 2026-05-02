@@ -26,8 +26,8 @@ use notko::Outcome;
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use arvo_storage::{Bits, FBits, IBits, USize};
 use crate::strategy::{
-    Hot, IArith, IContainerFor, INarrowFrom, IWidenFrom, Precise, Signed, Strategy, Warm,
-    ifixed_bits, is_fractional,
+    Hot, IArith, IContainerFor, INarrowFrom, IWidenFrom, Identity, Precise, Signed, Strategy,
+    Warm, ifixed_bits, is_fractional,
 };
 
 /// Signed fixed-point value.
@@ -43,6 +43,20 @@ pub struct IFixed<const I: IBits, const F: FBits, S: Strategy = Warm>(
 )
 where
     S: IContainerFor<{ ifixed_bits(I, F) }>;
+
+// Generic Identity blanket on IFixed wires through the inner Bits's
+// Identity. Bridge follows the same single-predicate pattern as
+// UFixed step 7. ZERO/ONE come from Bits::ZERO / ONE; MINUS_ONE on
+// IFixed-specific surface uses raw -1 via from_raw with a typed
+// bridge (signed counterpart added in a later step if needed).
+impl<const I: IBits, const F: FBits, S: Strategy> const Identity for IFixed<I, F, S>
+where
+    S: IContainerFor<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Identity,
+{
+    const ZERO: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ZERO);
+    const ONE: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ONE);
+}
 
 impl<const I: IBits, const F: FBits, S: Strategy> IFixed<I, F, S>
 where

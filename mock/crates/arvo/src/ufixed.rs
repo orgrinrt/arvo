@@ -17,8 +17,8 @@ use notko::Outcome;
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use arvo_storage::{Bits, FBits, IBits, USize};
 use crate::strategy::{
-    Hot, Precise, Strategy, UArith, UContainerFor, UNarrowFrom, UWidenFrom, Warm, is_fractional,
-    ufixed_bits,
+    Hot, Identity, Precise, Strategy, UArith, UContainerFor, UNarrowFrom, UWidenFrom, Warm,
+    is_fractional, ufixed_bits,
 };
 
 /// Unsigned fixed-point value.
@@ -34,6 +34,21 @@ pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy:
 )
 where
     S: UContainerFor<{ ufixed_bits(I, F) }>;
+
+// Generic Identity blanket on UFixed wires through the inner Bits's
+// Identity blanket (which itself wires through the container's
+// Identity per round 202605021600 step 4). Single predicate at the
+// impl block — the inner Bits trait projection bundles the container
+// requirement, sidestepping the generic_const_exprs cycle that
+// previously tripped two-predicate forms.
+impl<const I: IBits, const F: FBits, S: Strategy> const Identity for UFixed<I, F, S>
+where
+    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] Identity,
+{
+    const ZERO: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ZERO);
+    const ONE: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ONE);
+}
 
 impl<const I: IBits, const F: FBits, S: Strategy> UFixed<I, F, S>
 where

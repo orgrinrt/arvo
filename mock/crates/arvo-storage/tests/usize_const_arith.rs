@@ -8,6 +8,7 @@
 #![feature(const_ops)]
 
 use arvo_storage::{Cap, USize};
+use arvo_strategy::{Bounded, Identity};
 
 const _USIZE_ZERO_PLUS_ONE: USize = USize::ZERO + USize::ONE;
 const _USIZE_ADD: USize = USize(5) + USize(3);
@@ -29,6 +30,11 @@ const _CAP_SUM: Cap = Cap(USize(10)) + Cap(USize(5));
 // const lift on USize Add doesn't break under repeated invocation in
 // a single const expression.
 const _USIZE_CHAIN: USize = USize(1) + USize(2) + USize(3) + USize(4);
+
+// Round 202605021600: Bounded + Identity blanket on bare primitives.
+const _U8_MIN: u8 = <u8 as Bounded>::MIN;
+const _U64_MAX: u64 = <u64 as Bounded>::MAX;
+const _I32_NEG: i32 = <i32 as Identity>::ONE;
 
 #[test]
 fn const_evaluations_match_runtime() {
