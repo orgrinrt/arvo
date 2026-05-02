@@ -18,10 +18,10 @@ where
     const WIDTH: USize = USize(N as usize);
 }
 
-impl<const N: u16, S: Strategy> BitAccess for Bits<N, S>
+impl<const N: u16, S: Strategy> const BitAccess for Bits<N, S>
 where
-    S: UContainerFor<N>,
-    <S as UContainerFor<N>>::T: BitPrim,
+    S: [const] UContainerFor<N>,
+    <S as UContainerFor<N>>::T: [const] BitPrim,
 {
     fn bit(self, idx: USize) -> Bool {
         // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim methods take u32 indices; sealed bridge contract; tracked: #256
@@ -41,10 +41,10 @@ where
     }
 }
 
-impl<const N: u16, S: Strategy> BitSequence for Bits<N, S>
+impl<const N: u16, S: Strategy> const BitSequence for Bits<N, S>
 where
-    S: UContainerFor<N>,
-    <S as UContainerFor<N>>::T: BitPrim,
+    S: [const] UContainerFor<N>,
+    <S as UContainerFor<N>>::T: [const] BitPrim,
 {
     fn trailing_zeros(self) -> USize {
         // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim returns u32 counts; tracked: #256
@@ -64,18 +64,20 @@ where
         USize(N as usize) - self.count_ones()
     }
     fn is_zero(self) -> Bool {
-        Bool(self.to_raw() == <<S as UContainerFor<N>>::T as BitPrim>::ZERO)
+        // Routes through the const-stable BitPrim::is_zero bridge instead
+        // of generic-context PartialEq (which is not stable as const).
+        Bool(<<S as UContainerFor<N>>::T as BitPrim>::is_zero(self.to_raw()))
     }
 }
 
-impl<const N: u16> BitLogic for Bits<N, Hot>
+impl<const N: u16> const BitLogic for Bits<N, Hot>
 where
-    Hot: UContainerFor<N>,
-    <Hot as UContainerFor<N>>::T: BitPrim
-        + core::ops::BitOr<Output = <Hot as UContainerFor<N>>::T>
-        + core::ops::BitAnd<Output = <Hot as UContainerFor<N>>::T>
-        + core::ops::BitXor<Output = <Hot as UContainerFor<N>>::T>
-        + core::ops::Not<Output = <Hot as UContainerFor<N>>::T>,
+    Hot: [const] UContainerFor<N>,
+    <Hot as UContainerFor<N>>::T: [const] BitPrim
+        + [const] core::ops::BitOr<Output = <Hot as UContainerFor<N>>::T>
+        + [const] core::ops::BitAnd<Output = <Hot as UContainerFor<N>>::T>
+        + [const] core::ops::BitXor<Output = <Hot as UContainerFor<N>>::T>
+        + [const] core::ops::Not<Output = <Hot as UContainerFor<N>>::T>,
 {
     fn bitor(self, other: Self) -> Self {
         Self::from_raw(self.to_raw() | other.to_raw())
