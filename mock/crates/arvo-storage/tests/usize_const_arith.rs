@@ -25,6 +25,11 @@ const _USIZE_NOT: USize = !USize(0);
 const _CAP_ZERO_PLUS_ONE: Cap = Cap::ZERO + Cap::ONE;
 const _CAP_SUM: Cap = Cap(USize(10)) + Cap(USize(5));
 
+// Chained const-trait composition: validates round-202605021400 step 2
+// const lift on USize Add doesn't break under repeated invocation in
+// a single const expression.
+const _USIZE_CHAIN: USize = USize(1) + USize(2) + USize(3) + USize(4);
+
 #[test]
 fn const_evaluations_match_runtime() {
     assert_eq!(_USIZE_ZERO_PLUS_ONE.0, 1);
@@ -39,4 +44,5 @@ fn const_evaluations_match_runtime() {
     assert_eq!(_USIZE_OR.0, 0xFF);
     assert_eq!(_USIZE_XOR.0, 0x55);
     assert_eq!(_CAP_SUM.0.0, 15);
+    assert_eq!(_USIZE_CHAIN.0, 10);
 }
