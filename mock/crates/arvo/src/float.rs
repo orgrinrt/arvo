@@ -26,10 +26,18 @@ mod sealed {
 /// IEEE float width marker. Sealed: implementable only for `f32`
 /// and `f64`.
 ///
-/// Carries `[const] Identity` as a supertrait so consumers reach for
-/// `<F as Identity>::ZERO` / `<F as Identity>::ONE` rather than
-/// type-specific inherent constants. The `Identity` impls on `f32` /
-/// `f64` ship from `arvo-strategy::arith`.
+/// Carries `[const] Identity + [const] Bounded` as supertraits so
+/// consumers reach for `<F as Identity>::ZERO` / `<F as Identity>::ONE`
+/// / `<F as Bounded>::MIN` / `<F as Bounded>::MAX` rather than
+/// type-specific inherent constants. The supertrait commitment is
+/// load-bearing: every future float implementor (the seal admits
+/// `f32` / `f64` today; later additions like `f16` / `bf16` / `f128`
+/// would require seal expansion in this file plus `arvo-strategy`'s
+/// `impl_bounded_identity_f!` extension to cover the new type at the
+/// substrate-level Bounded / Identity boundary). The `Identity` /
+/// `Bounded` impls on `f32` / `f64` ship from `arvo-strategy::arith`
+/// to satisfy orphan rules (the trait is in arvo-strategy; the type
+/// is from core; arvo facade can't impl across that boundary).
 pub const trait Ieee:
     sealed::Sealed + Copy + Default + PartialEq + PartialOrd + [const] Identity + [const] Bounded + 'static
 {
