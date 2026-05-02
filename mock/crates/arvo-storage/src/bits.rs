@@ -33,7 +33,9 @@
 
 use core::marker::ConstParamTy_;
 
-use arvo_strategy::{BitsContainerFor, Hot, Signedness, Strategy, Unsigned};
+use arvo_strategy::{
+    BitsContainerFor, Bounded, Hot, Identity, Signedness, Strategy, Unsigned,
+};
 use arvo_transparent::Transparent;
 
 /// N-bit opaque bit-pattern. Transparent wrapper over the
@@ -82,6 +84,32 @@ where
     pub const fn to_raw(self) -> <S as BitsContainerFor<N, Sign>>::T {
         self.0
     }
+}
+
+// Generic Bounded blanket on Bits<N, S, Sign> wires through the
+// container primitive's Bounded impl. EMPTY = MIN, FULL = MAX at the
+// container level; for unsigned containers EMPTY corresponds to all-
+// bits-zero, FULL to all-bits-one. The blanket lifts every
+// (S, N, Sign) tuple where the container primitive impls Bounded.
+impl<const N: u16, S: Strategy, Sign: Signedness> const Bounded for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] Bounded,
+{
+    const MIN: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Bounded>::MIN);
+    const MAX: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Bounded>::MAX);
+}
+
+// Generic Identity blanket. ZERO is the additive identity; ONE the
+// multiplicative identity. At the bit-pattern level these are the
+// underlying primitive's 0 and 1.
+impl<const N: u16, S: Strategy, Sign: Signedness> const Identity for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] Identity,
+{
+    const ZERO: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ZERO);
+    const ONE: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ONE);
 }
 
 // Ergonomic surface: `Deref` / `AsRef` so wrappers above `Bits`
