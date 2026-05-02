@@ -41,7 +41,9 @@ mod cross_strategy;
 mod multi_container;
 mod widen;
 
-pub use arith::{IArith, IPrimConst, ISaturating, UArith, UPrimConst, USaturating};
+pub use arith::{
+    Bounded, IArith, IPrimConst, ISaturating, Identity, UArith, UPrimConst, USaturating,
+};
 pub use cross_strategy::CrossStrategyOp;
 pub use axes::{
     Bitpacked, ContainerWidth, Dense, DoubleLogical, HasAxes, Min, OverflowPolicy, Saturating,

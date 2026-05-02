@@ -377,6 +377,72 @@ impl_i_arith_saturating!(
     57, 58, 59, 60, 61, 62, 63, 64
 );
 
+// --- Generic const-bound traits (round 202605021600) -------------------
+//
+// `Bounded` and `Identity` are the canonical const-trait surfaces for
+// bottom/top and zero/one constants. Any type that meaningfully carries
+// a min/max can impl Bounded; any type with a multiplicative identity
+// can impl Identity. The substrate uses these to drive blanket impls
+// of mask EMPTY/FULL, UFixed/IFixed inherent ZERO/ONE, and Bits ZERO.
+
+/// Per-type bottom/top const surface.
+///
+/// `pub const trait`. Implemented for u8 / u16 / u32 / u64 / u128 and
+/// i8 / i16 / i32 / i64 / i128 by macro impls below. Substrate types
+/// that wrap these (Bits, UFixed, IFixed, Mask families) gain Bounded
+/// via blanket impls keyed on the underlying primitive.
+pub const trait Bounded: Sized {
+    /// The minimum representable value of this type.
+    const MIN: Self;
+    /// The maximum representable value of this type.
+    const MAX: Self;
+}
+
+/// Per-type multiplicative identity const surface.
+///
+/// `pub const trait`. Carries `ZERO` and `ONE` const associated items.
+/// Substrate types gain Identity via blanket impls keyed on the
+/// underlying primitive's Identity impl.
+pub const trait Identity: Sized {
+    /// The additive identity of this type.
+    const ZERO: Self;
+    /// The multiplicative identity of this type.
+    const ONE: Self;
+}
+
+macro_rules! impl_bounded_identity_u {
+    ($($ty:ty),+) => {
+        $(
+            impl const Bounded for $ty {
+                const MIN: Self = <$ty>::MIN;
+                const MAX: Self = <$ty>::MAX;
+            }
+            impl const Identity for $ty {
+                const ZERO: Self = 0;
+                const ONE: Self = 1;
+            }
+        )+
+    };
+}
+
+macro_rules! impl_bounded_identity_i {
+    ($($ty:ty),+) => {
+        $(
+            impl const Bounded for $ty {
+                const MIN: Self = <$ty>::MIN;
+                const MAX: Self = <$ty>::MAX;
+            }
+            impl const Identity for $ty {
+                const ZERO: Self = 0;
+                const ONE: Self = 1;
+            }
+        )+
+    };
+}
+
+impl_bounded_identity_u!(u8, u16, u32, u64, u128);
+impl_bounded_identity_i!(i8, i16, i32, i64, i128);
+
 // --- Primitive const bridges (round 202605021400) -----------------------
 //
 // `UPrimConst` / `IPrimConst` give per-primitive const access to ZERO /
