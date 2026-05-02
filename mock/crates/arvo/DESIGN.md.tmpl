@@ -561,19 +561,28 @@ resolve.
 ## Type family marker traits
 
 Five marker traits classify arvo's type families. Used by arvo-bits
-for blanket impls and by consumers for generic constraints.
+for blanket impls and by consumers for generic constraints. Round
+202605021800 lifts every marker trait to `pub const trait` so
+`[const]` propagation reaches consumer where-clause bounds in const
+fn bodies.
 
 ```rust
-pub trait IntegerLike: Copy {}
-pub trait FractionLike: Copy {}
-pub trait BitPresentation: Copy {
+pub const trait IntegerLike: Copy {}
+pub const trait FractionLike: Copy {}
+pub const trait BitPresentation: Copy {
     const LOGICAL_WIDTH: USize;
 }
-pub trait FloatLike: Copy {}
-pub trait BoolLike: Copy {
-    fn pack(self) -> Bit;
+pub const trait FloatLike: Copy {}
+pub const trait BoolLike: Copy {
+    type Packed: [const] BitPresentation;
+    fn pack(self) -> Self::Packed;
 }
 ```
+
+Every existing `impl X for Y` block lifts to `impl const X for Y`
+in this round. `BoolLike::pack` body (`Bool::pack` returns
+`UFixed::<...>::from_raw(self.0 as u8)`) is pure; the impl const
+lift is mechanical.
 
 | Marker | Types | Semantic domain |
 |---|---|---|
@@ -971,6 +980,53 @@ FastFloat operations via hilavitkutin-build.
 fast-math. For validation, comparison, and contexts where bit-exact
 reproducibility matters.
 
+### Float-side const surface (round 202605021800)
+
+Round 202605021800 lifts `Ieee` and `FromU8Ieee` to `pub const trait`
+and supertrait-bounds `Ieee: Identity`. The previous `Ieee::ZERO`
+and `Ieee::ONE` declarations are dropped (redundant with
+`<F as Identity>::ZERO/ONE`).
+
+```rust
+pub const trait Ieee: sealed::Sealed + [const] Identity + Copy + Default + ... {
+    const WIDTH: USize;
+}
+
+pub const trait FromU8Ieee {
+    fn from_u8(n: u8) -> Self;
+}
+
+impl const Ieee for f32 { const WIDTH: USize = USize(32); }
+impl const Ieee for f64 { const WIDTH: USize = USize(64); }
+
+impl const Identity for f32 { const ZERO: Self = 0.0; const ONE: Self = 1.0; }
+impl const Identity for f64 { const ZERO: Self = 0.0; const ONE: Self = 1.0; }
+```
+
+`FastFloat<F>` and `StrictFloat<F>` blanket through inner Identity:
+
+```rust
+impl<F: [const] Ieee> const Identity for FastFloat<F> {
+    const ZERO: Self = Self(<F as Identity>::ZERO);
+    const ONE: Self = Self(<F as Identity>::ONE);
+}
+
+impl<F: [const] Ieee> const Identity for StrictFloat<F> { /* same */ }
+```
+
+`Bounded` impls on floats are deliberately omitted: IEEE `f32::MAX`
+is the largest finite, `f32::MIN` is the most-negative finite (not
+the smallest positive). Consumer use-cases for `<f32 as Bounded>::MAX`
+typically diverge enough on those semantics that no single `Bounded`
+impl serves cleanly. Float-side `MAX` access stays through the
+inherent `f32::MAX` constant for now; a `FloatBounds` substrate trait
+covering MIN/MAX/MIN_POSITIVE/SUBNORMAL_MIN can land in a follow-up
+round if a consumer needs it.
+
+`ConstEq` impls land for `FastFloat<F>` and `StrictFloat<F>` via
+`F == F` on the inner; `ConstOrd` is skipped on floats (NaN-tainted;
+a separate `FloatTotalOrd` trait handles total ordering).
+
 `StrictFloat::sqrt` is currently a 7-ULP Newton-Raphson approximation
 in no_std (the substrate has no libm dependency). The bit-exact
 contract still stands in design intent; the approximation is a
@@ -1011,6 +1067,98 @@ Consumer writes `T: Add + Mul + Sqrt` not `T: Numeric`. Only the
 needed operations appear in bounds. The mathematical sub-crates
 (arvo-graph, arvo-sparse, arvo-spectral, arvo-comb) are generic
 over these trait bounds, not concrete arvo types.
+
+## Numeric-contracts impl const sweep (round 202605021800)
+
+The numeric-contract trait declarations (`Sqrt`, `Recip`, `Abs`,
+`FromConstant`, `TotalOrd`, `Predicate`, the predicate sub-family)
+are `pub const trait` from earlier rounds. Their impls in
+`arvo/src/traits.rs` were plain `impl X for Y` despite having pure
+bodies (`Self::from_raw(self.to_raw().isqrt())`,
+`Self::from_raw(<$ctype>::wrapping_abs(...))`, sign-bit-clear bit
+twiddles, etc.). Round 202605021800 adds `const` to every such impl
+block plus every macro-generated impl across the (strategy, I, F,
+container) cells.
+
+Free fns `sqrt_f32` / `sqrt_f64` / `abs_f32` / `abs_f64` lift to
+`pub const fn`. The `u*::isqrt` family is const-stable on rustc
+1.96.0-nightly per `feature(const_int_sqrt)`; gate accordingly at
+the SRC CL. Float `sqrt` paths via `f32::from_bits` / `f32::to_bits`
+are const-stable; the StrictFloat 7-ULP Newton-Raphson body is
+already pure, just lacks the const annotation.
+
+Once the impls lift, every consumer reaching for `T: Sqrt` /
+`T: Abs` / `T: FromConstant` / `T: TotalOrd` in a const fn body
+calls through with `[const]` bounds. The mathematical sub-crates
+(arvo-graph, arvo-sparse, arvo-spectral, arvo-comb) gain the
+const-callable bound surface.
+
+## Predicate family impls (round 202605021800)
+
+The `Predicate`, `IsZero`, `IsPositive`, `IsNonZero`,
+`IsNonNegative`, `IsZeroOrPositive` const traits in
+`arvo-numeric-contracts` shipped with zero impls; substrate trait
+machinery declared but never consumed. Round 202605021800 closes the
+gap by adding per-(I, F, S) blanket impls on UFixed, IFixed, and
+Bits.
+
+`Predicate::test(self) -> Bool` body checks against
+`<Self as Identity>::ZERO` via `<Self as ConstEq>::const_eq`. The
+five named predicates delegate to `Predicate::test` plus an
+additional sign / nonzero check.
+
+```rust
+impl<const I: IBits, const F: FBits, S: Strategy> const Predicate
+    for UFixed<I, F, S>
+where
+    S: [const] UContainerFor<{ ufixed_bits(I, F) }>,
+    Self: [const] ConstEq + [const] Identity,
+{
+    fn test(self) -> Bool {
+        <Self as ConstEq>::const_ne(&self, &<Self as Identity>::ZERO)
+    }
+}
+```
+
+Same shape for IFixed (with sign-axis-aware predicate variants
+through SignedIdentity for IsNegative-flavoured sub-impls in a
+follow-up round) and Bits.
+
+Algorithm crates can then use `T: Predicate` bounds in const fn
+bodies, e.g. arvo-graph topological sort guarding zero edge weight,
+arvo-spectral power iteration guarding zero residual.
+
+## Per-primitive ConstEq / ConstOrd / ConstDefault coverage (round 202605021800)
+
+Round 202605021800 introduces `ConstEq`, `ConstOrd`, and
+`ConstDefault` substrate bridges in `arvo-strategy`. Every
+primitive-wrapper impls them per the coverage table:
+
+| Type | ConstEq | ConstOrd | ConstDefault |
+|---|---|---|---|
+| `USize` | yes | yes | yes (`USize(0)`) |
+| `Cap` | yes | yes | yes (route through inner USize) |
+| `Bool` | yes | (skip — only two values; lattice trivial) | yes (`Bool(false)`) |
+| `Bits<N, S, Sign>` | yes (via `BitPrim::is_zero` / `IBitPrim::is_zero` on raw) | yes | yes (`<Self as Identity>::ZERO`) |
+| `UFixed<I, F, S>` | yes (route through inner Bits) | yes | yes (route through inner Bits) |
+| `IFixed<I, F, S>` | yes | yes | yes |
+| `FastFloat<F>` | yes (`F == F`) | (skip — NaN-tainted; FloatTotalOrd is separate) | yes |
+| `StrictFloat<F>` | yes | (skip) | yes |
+| `Mask64` | yes | (lattice ordering is a separate concern, not in this round) | yes (`<Self as Identity>::ZERO`) |
+| `Mask256` | yes | (lattice) | yes |
+| `NodeId` | yes | yes | yes |
+| `MetaCarrier` | yes | yes | yes |
+| `IBits`, `FBits`, `Width` | yes | yes | yes |
+
+`UFixed` / `IFixed` / `Bits` signed-axis ConstOrd lands in this round
+(was previously deferred to a Round 2 split). The IBitPrim parity
+extension and the Sign-axis-generalised BitLogic blankets in
+`arvo-bits-contracts` (round 202605021800) provide the const-callable
+foundation for signed-Bits ordering.
+
+Stdlib `PartialEq` / `Eq` / `PartialOrd` / `Ord` / `Default` impls
+remain alongside the bridges for stdlib boundary coverage. Bridges
+are additive, never replacements.
 
 ## L0 non-members
 
