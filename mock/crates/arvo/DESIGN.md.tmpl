@@ -1132,23 +1132,23 @@ arvo-spectral power iteration guarding zero residual.
 
 Round 202605021800 introduces `ConstEq`, `ConstOrd`, and
 `ConstDefault` substrate bridges in `arvo-strategy`. Every
-primitive-wrapper impls them per the coverage table:
+primitive-wrapper that ships from a substrate crate impls them; the
+arvo facade re-exports the trait family. Coverage on the arvo
+facade's own primitives:
 
 | Type | ConstEq | ConstOrd | ConstDefault |
 |---|---|---|---|
-| `USize` | yes | yes | yes (`USize(0)`) |
-| `Cap` | yes | yes | yes (route through inner USize) |
-| `Bool` | yes | (skip — only two values; lattice trivial) | yes (`Bool(false)`) |
-| `Bits<N, S, Sign>` | yes (via `BitPrim::is_zero` / `IBitPrim::is_zero` on raw) | yes | yes (`<Self as Identity>::ZERO`) |
 | `UFixed<I, F, S>` | yes (route through inner Bits) | yes | yes (route through inner Bits) |
 | `IFixed<I, F, S>` | yes | yes | yes |
 | `FastFloat<F>` | yes (`F == F`) | (skip — NaN-tainted; FloatTotalOrd is separate) | yes |
 | `StrictFloat<F>` | yes | (skip) | yes |
-| `Mask64` | yes | (lattice ordering is a separate concern, not in this round) | yes (`<Self as Identity>::ZERO`) |
-| `Mask256` | yes | (lattice) | yes |
-| `NodeId` | yes | yes | yes |
-| `MetaCarrier` | yes | yes | yes |
-| `IBits`, `FBits`, `Width` | yes | yes | yes |
+
+Substrate primitives in other crates (USize / Cap / Bool / Bits /
+IBits / FBits / Width in arvo-storage; Mask family + BitMatrix +
+NodeId in arvo-bitmask; MetaCarrier in arvo-storage) gain the same
+bridge impls per their own crate docs. Mask types skip ConstOrd
+(lattice ordering is a separate concern); Bool skips ConstOrd (only
+two values).
 
 `UFixed` / `IFixed` / `Bits` signed-axis ConstOrd lands in this round
 (was previously deferred to a Round 2 split). The IBitPrim parity
