@@ -37,7 +37,7 @@ use crate::{Cold, HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
 /// concrete-type dispatch; the axis projections document the design
 /// intent and unblock future combinations like `Hot + Saturating`
 /// once Rust trait specialisation makes axis-only dispatch possible.
-pub trait UArith<const N: u16>: UContainerFor<N> + HasAxes {
+pub const trait UArith<const N: u16>: [const] UContainerFor<N> + HasAxes {
     /// Strategy-specific `+`.
     fn u_add(a: Self::T, b: Self::T) -> Self::T;
     /// Strategy-specific `-`.
@@ -52,7 +52,7 @@ pub trait UArith<const N: u16>: UContainerFor<N> + HasAxes {
 /// Signed arithmetic dispatch for `(strategy, N)`.
 ///
 /// `HasAxes` supertrait per the same Pass E convention as `UArith`.
-pub trait IArith<const N: u16>: IContainerFor<N> + HasAxes {
+pub const trait IArith<const N: u16>: [const] IContainerFor<N> + HasAxes {
     /// Strategy-specific `+`.
     fn i_add(a: Self::T, b: Self::T) -> Self::T;
     /// Strategy-specific `-`.
@@ -69,26 +69,26 @@ pub trait IArith<const N: u16>: IContainerFor<N> + HasAxes {
 /// Needed because generic contexts can't call `T::MAX` directly.
 /// `MAX` is an inherent associated const, not routed through any
 /// `num-traits` style surface (which arvo doesn't carry).
-pub trait USaturating: Sized {
+pub const trait USaturating: Sized {
     /// `T::MAX` for this container.
     fn saturating_max() -> Self;
 }
 
 /// Signed counterpart of `USaturating`.
-pub trait ISaturating: Sized {
+pub const trait ISaturating: Sized {
     /// `T::MAX` for this container.
     fn saturating_max() -> Self;
 }
 
 macro_rules! impl_saturating {
     (unsigned: $($ty:ty),+) => {
-        $(impl USaturating for $ty {
+        $(impl const USaturating for $ty {
             #[inline(always)]
             fn saturating_max() -> Self { <$ty>::MAX }
         })+
     };
     (signed: $($ty:ty),+) => {
-        $(impl ISaturating for $ty {
+        $(impl const ISaturating for $ty {
             #[inline(always)]
             fn saturating_max() -> Self { <$ty>::MAX }
         })+
@@ -104,7 +104,7 @@ impl_saturating!(signed: i8, i16, i32, i64, i128);
 macro_rules! impl_u_arith_wrapping {
     ($strategy:ty, $($bits:literal),+) => {
         $(
-            impl UArith<$bits> for $strategy {
+            impl const UArith<$bits> for $strategy {
                 #[inline(always)]
                 fn u_add(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
                     -> <Self as UContainerFor<$bits>>::T { a.wrapping_add(b) }
@@ -117,7 +117,7 @@ macro_rules! impl_u_arith_wrapping {
                 #[inline(always)]
                 fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
                     -> <Self as UContainerFor<$bits>>::T {
-                    if b == <<Self as UContainerFor<$bits>>::T as Default>::default() {
+                    if b == <<Self as UContainerFor<$bits>>::T as UPrimConst>::ZERO {
                         a
                     } else {
                         a.wrapping_div(b)
@@ -131,7 +131,7 @@ macro_rules! impl_u_arith_wrapping {
 macro_rules! impl_u_arith_saturating {
     ($strategy:ty, $($bits:literal),+) => {
         $(
-            impl UArith<$bits> for $strategy {
+            impl const UArith<$bits> for $strategy {
                 #[inline(always)]
                 fn u_add(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
                     -> <Self as UContainerFor<$bits>>::T { a.saturating_add(b) }
@@ -145,7 +145,7 @@ macro_rules! impl_u_arith_saturating {
                 fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
                     -> <Self as UContainerFor<$bits>>::T {
                     // Precise never panics on div-by-zero: clamp to MAX.
-                    if b == <<Self as UContainerFor<$bits>>::T as Default>::default() {
+                    if b == <<Self as UContainerFor<$bits>>::T as UPrimConst>::ZERO {
                         <<Self as UContainerFor<$bits>>::T as USaturating>::saturating_max()
                     } else {
                         a / b
@@ -159,7 +159,7 @@ macro_rules! impl_u_arith_saturating {
 macro_rules! impl_i_arith_wrapping {
     ($strategy:ty, $($bits:literal),+) => {
         $(
-            impl IArith<$bits> for $strategy {
+            impl const IArith<$bits> for $strategy {
                 #[inline(always)]
                 fn i_add(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
                     -> <Self as IContainerFor<$bits>>::T { a.wrapping_add(b) }
@@ -172,7 +172,7 @@ macro_rules! impl_i_arith_wrapping {
                 #[inline(always)]
                 fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
                     -> <Self as IContainerFor<$bits>>::T {
-                    if b == <<Self as IContainerFor<$bits>>::T as Default>::default() {
+                    if b == <<Self as IContainerFor<$bits>>::T as IPrimConst>::ZERO {
                         a
                     } else {
                         a.wrapping_div(b)
@@ -186,7 +186,7 @@ macro_rules! impl_i_arith_wrapping {
 macro_rules! impl_i_arith_saturating {
     ($strategy:ty, $($bits:literal),+) => {
         $(
-            impl IArith<$bits> for $strategy {
+            impl const IArith<$bits> for $strategy {
                 #[inline(always)]
                 fn i_add(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
                     -> <Self as IContainerFor<$bits>>::T { a.saturating_add(b) }
@@ -200,7 +200,7 @@ macro_rules! impl_i_arith_saturating {
                 fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
                     -> <Self as IContainerFor<$bits>>::T {
                     // Precise guards against div-by-zero: clamp to MAX.
-                    if b == <<Self as IContainerFor<$bits>>::T as Default>::default() {
+                    if b == <<Self as IContainerFor<$bits>>::T as IPrimConst>::ZERO {
                         <<Self as IContainerFor<$bits>>::T as ISaturating>::saturating_max()
                     } else {
                         // Guard signed overflow (MIN / -1) by preferring
