@@ -101,11 +101,11 @@ impl<F: Ieee> FloatLike for StrictFloat<F> {}
 
 macro_rules! float_binop_impl {
     ($wrapper:ident, $op:ident, $method:ident) => {
-        impl<F: Ieee + core::ops::$op<Output = F>> core::ops::$op for $wrapper<F> {
+        impl<F: Ieee + [const] core::ops::$op<Output = F>> const core::ops::$op for $wrapper<F> {
             type Output = Self;
             #[inline(always)]
             fn $method(self, other: Self) -> Self {
-                Self(core::ops::$op::$method(self.0, other.0))
+                Self(<F as core::ops::$op>::$method(self.0, other.0))
             }
         }
     };
@@ -113,11 +113,11 @@ macro_rules! float_binop_impl {
 
 macro_rules! float_neg_impl {
     ($wrapper:ident) => {
-        impl<F: Ieee + core::ops::Neg<Output = F>> core::ops::Neg for $wrapper<F> {
+        impl<F: Ieee + [const] core::ops::Neg<Output = F>> const core::ops::Neg for $wrapper<F> {
             type Output = Self;
             #[inline(always)]
             fn neg(self) -> Self {
-                Self(core::ops::Neg::neg(self.0))
+                Self(<F as core::ops::Neg>::neg(self.0))
             }
         }
     };

@@ -139,9 +139,9 @@ where
 // TODO: cross-width arithmetic blocked on generic_const_exprs max() support — next round.
 // TODO: cross-strategy arithmetic blocked on const-expr support for associated-type const projection — next round.
 
-impl<const I: IBits, const F: FBits, S: Strategy> Add for IFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const Add for IFixed<I, F, S>
 where
-    S: IArith<{ ifixed_bits(I, F) }>,
+    S: [const] IArith<{ ifixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
@@ -153,9 +153,9 @@ where
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> Sub for IFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const Sub for IFixed<I, F, S>
 where
-    S: IArith<{ ifixed_bits(I, F) }>,
+    S: [const] IArith<{ ifixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
@@ -167,9 +167,9 @@ where
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> Mul for IFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const Mul for IFixed<I, F, S>
 where
-    S: IArith<{ ifixed_bits(I, F) }>,
+    S: [const] IArith<{ ifixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
@@ -181,9 +181,9 @@ where
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> Div for IFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const Div for IFixed<I, F, S>
 where
-    S: IArith<{ ifixed_bits(I, F) }>,
+    S: [const] IArith<{ ifixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
