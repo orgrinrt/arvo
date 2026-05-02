@@ -25,7 +25,9 @@
 //! orphan issue).
 
 use arvo_storage::{Bits, Bool, USize};
-use arvo_strategy::{BitsContainerFor, IContainerFor, Signedness, Strategy, UContainerFor};
+use arvo_strategy::{
+    BitsContainerFor, IContainerFor, Signed, Signedness, Strategy, UContainerFor, Unsigned,
+};
 use arvo_transparent::Transparent;
 
 mod bits_impl;
@@ -462,6 +464,130 @@ impl_bit_prim_i!(i64, u64, 64);
 // Round 202604281000 Pass D: i128 IBitPrim impl required by Precise
 // IFixed BITS=33..=64 promotion to i128 container.
 impl_bit_prim_i!(i128, u128, 128);
+
+// --- Sign-axis primitive bridge -------------------------------------------
+//
+// `BitsBitPrim<Sign>` collapses the `BitPrim` (Unsigned) / `IBitPrim`
+// (Signed) dichotomy into a single Sign-keyed trait. Consumers like
+// `bits_impl.rs` can then carry one bound `<S as BitsContainerFor<N,
+// Sign>>::T: BitsBitPrim<Sign>` instead of branching on Sign at the
+// blanket-impl level. The blanket impls below route per-method to
+// the underlying BitPrim or IBitPrim trait projection.
+//
+// Round 202605021800 introduced this bridge to let `Bits<N, S,
+// Signed>` resolve all bit-level methods (previously the blanket was
+// gated on Sign=Unsigned via the `BitPrim` bound on the container,
+// which IBitPrim primitives do not satisfy).
+
+/// Sign-keyed primitive bridge.
+///
+/// Implemented for every primitive that satisfies `BitPrim`
+/// (`Sign = Unsigned`) or `IBitPrim` (`Sign = Signed`). Methods
+/// mirror the primitive bridge but route through the Sign-appropriate
+/// underlying trait.
+pub const trait BitsBitPrim<Sign: Signedness>: Copy + 'static {
+    /// Bit width of this primitive.
+    const WIDTH: USize;
+    /// Zero value.
+    const ZERO: Self;
+    /// One value.
+    const ONE: Self;
+
+    /// Count set bits.
+    fn count_ones(self) -> USize;
+    /// Count trailing zero bits (LSB-first).
+    fn trailing_zeros(self) -> USize;
+    /// Count leading zero bits (MSB-first).
+    fn leading_zeros(self) -> USize;
+    /// `Bool::TRUE` when every bit is zero.
+    fn is_zero(self) -> Bool;
+
+    /// Read bit `idx`. Returns `Bool::FALSE` for `idx >= WIDTH`.
+    fn get_bit(self, idx: USize) -> Bool;
+    /// Set bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
+    fn with_bit_set(self, idx: USize) -> Self;
+    /// Clear bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
+    fn with_bit_cleared(self, idx: USize) -> Self;
+    /// Toggle bit `idx`. Leaves self unchanged for `idx >= WIDTH`.
+    fn with_bit_toggled(self, idx: USize) -> Self;
+
+    /// Whole-word OR.
+    fn bitor(self, other: Self) -> Self;
+    /// Whole-word AND.
+    fn bitand(self, other: Self) -> Self;
+    /// Whole-word NOT.
+    fn bitnot(self) -> Self;
+    /// Whole-word XOR.
+    fn bitxor(self, other: Self) -> Self;
+    /// Clear the lowest set bit.
+    fn clear_lowest_set_bit(self) -> Self;
+}
+
+impl<T: [const] BitPrim> const BitsBitPrim<Unsigned> for T {
+    const WIDTH: USize = <T as BitPrim>::WIDTH;
+    const ZERO: Self = <T as BitPrim>::ZERO;
+    const ONE: Self = <T as BitPrim>::ONE;
+
+    #[inline(always)]
+    fn count_ones(self) -> USize { <T as BitPrim>::count_ones(self) }
+    #[inline(always)]
+    fn trailing_zeros(self) -> USize { <T as BitPrim>::trailing_zeros(self) }
+    #[inline(always)]
+    fn leading_zeros(self) -> USize { <T as BitPrim>::leading_zeros(self) }
+    #[inline(always)]
+    fn is_zero(self) -> Bool { <T as BitPrim>::is_zero(self) }
+    #[inline(always)]
+    fn get_bit(self, idx: USize) -> Bool { <T as BitPrim>::get_bit(self, idx) }
+    #[inline(always)]
+    fn with_bit_set(self, idx: USize) -> Self { <T as BitPrim>::with_bit_set(self, idx) }
+    #[inline(always)]
+    fn with_bit_cleared(self, idx: USize) -> Self { <T as BitPrim>::with_bit_cleared(self, idx) }
+    #[inline(always)]
+    fn with_bit_toggled(self, idx: USize) -> Self { <T as BitPrim>::with_bit_toggled(self, idx) }
+    #[inline(always)]
+    fn bitor(self, other: Self) -> Self { <T as BitPrim>::bitor(self, other) }
+    #[inline(always)]
+    fn bitand(self, other: Self) -> Self { <T as BitPrim>::bitand(self, other) }
+    #[inline(always)]
+    fn bitnot(self) -> Self { <T as BitPrim>::bitnot(self) }
+    #[inline(always)]
+    fn bitxor(self, other: Self) -> Self { <T as BitPrim>::bitxor(self, other) }
+    #[inline(always)]
+    fn clear_lowest_set_bit(self) -> Self { <T as BitPrim>::clear_lowest_set_bit(self) }
+}
+
+impl<T: [const] IBitPrim> const BitsBitPrim<Signed> for T {
+    const WIDTH: USize = <T as IBitPrim>::WIDTH;
+    const ZERO: Self = <T as IBitPrim>::ZERO;
+    const ONE: Self = <T as IBitPrim>::ONE;
+
+    #[inline(always)]
+    fn count_ones(self) -> USize { <T as IBitPrim>::count_ones(self) }
+    #[inline(always)]
+    fn trailing_zeros(self) -> USize { <T as IBitPrim>::trailing_zeros(self) }
+    #[inline(always)]
+    fn leading_zeros(self) -> USize { <T as IBitPrim>::leading_zeros(self) }
+    #[inline(always)]
+    fn is_zero(self) -> Bool { <T as IBitPrim>::is_zero(self) }
+    #[inline(always)]
+    fn get_bit(self, idx: USize) -> Bool { <T as IBitPrim>::get_bit(self, idx) }
+    #[inline(always)]
+    fn with_bit_set(self, idx: USize) -> Self { <T as IBitPrim>::with_bit_set(self, idx) }
+    #[inline(always)]
+    fn with_bit_cleared(self, idx: USize) -> Self { <T as IBitPrim>::with_bit_cleared(self, idx) }
+    #[inline(always)]
+    fn with_bit_toggled(self, idx: USize) -> Self { <T as IBitPrim>::with_bit_toggled(self, idx) }
+    #[inline(always)]
+    fn bitor(self, other: Self) -> Self { <T as IBitPrim>::bitor(self, other) }
+    #[inline(always)]
+    fn bitand(self, other: Self) -> Self { <T as IBitPrim>::bitand(self, other) }
+    #[inline(always)]
+    fn bitnot(self) -> Self { <T as IBitPrim>::bitnot(self) }
+    #[inline(always)]
+    fn bitxor(self, other: Self) -> Self { <T as IBitPrim>::bitxor(self, other) }
+    #[inline(always)]
+    fn clear_lowest_set_bit(self) -> Self { <T as IBitPrim>::clear_lowest_set_bit(self) }
+}
 
 // --- Container bridges ----------------------------------------------------
 //
