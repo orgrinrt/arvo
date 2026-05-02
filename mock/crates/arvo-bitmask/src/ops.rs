@@ -98,7 +98,7 @@ impl Mask<QWord<Hot>> {
             return USize(64);
         }
         let lz = <QWord<Hot> as BitSequence>::leading_zeros(self.word);
-        USize(63 - lz.0)
+        USize(63) - lz
     }
 
     /// Iterator over set bit indices, lowest-first.
@@ -221,8 +221,8 @@ impl Mask256 {
         if pos.0 >= 256 {
             return Bool::FALSE;
         }
-        let word_idx = USize(pos.0 >> 6);
-        let bit_idx = USize(pos.0 & 63);
+        let word_idx = pos >> USize(6);
+        let bit_idx = pos & USize(63);
         <QWord<Hot> as BitAccess>::bit(self.0[word_idx.0], bit_idx)
     }
 
@@ -232,8 +232,8 @@ impl Mask256 {
         if pos.0 >= 256 {
             return;
         }
-        let word_idx = USize(pos.0 >> 6);
-        let bit_idx = USize(pos.0 & 63);
+        let word_idx = pos >> USize(6);
+        let bit_idx = pos & USize(63);
         self.0[word_idx.0] =
             <QWord<Hot> as BitAccess>::with_bit_set(self.0[word_idx.0], bit_idx);
     }
@@ -244,8 +244,8 @@ impl Mask256 {
         if pos.0 >= 256 {
             return;
         }
-        let word_idx = USize(pos.0 >> 6);
-        let bit_idx = USize(pos.0 & 63);
+        let word_idx = pos >> USize(6);
+        let bit_idx = pos & USize(63);
         self.0[word_idx.0] =
             <QWord<Hot> as BitAccess>::with_bit_cleared(self.0[word_idx.0], bit_idx);
     }
@@ -258,7 +258,7 @@ impl Mask256 {
         let n1 = <QWord<Hot> as BitSequence>::count_ones(a[1]);
         let n2 = <QWord<Hot> as BitSequence>::count_ones(a[2]);
         let n3 = <QWord<Hot> as BitSequence>::count_ones(a[3]);
-        USize(n0.0 + n1.0 + n2.0 + n3.0)
+        n0 + n1 + n2 + n3
     }
 
     /// Lowest set bit index, lowest-word-first. Returns 256 if the
@@ -270,13 +270,13 @@ impl Mask256 {
             return <QWord<Hot> as BitSequence>::trailing_zeros(a[0]);
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[1]).0 {
-            return USize(64 + <QWord<Hot> as BitSequence>::trailing_zeros(a[1]).0);
+            return USize(64) + <QWord<Hot> as BitSequence>::trailing_zeros(a[1]);
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[2]).0 {
-            return USize(128 + <QWord<Hot> as BitSequence>::trailing_zeros(a[2]).0);
+            return USize(128) + <QWord<Hot> as BitSequence>::trailing_zeros(a[2]);
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[3]).0 {
-            return USize(192 + <QWord<Hot> as BitSequence>::trailing_zeros(a[3]).0);
+            return USize(192) + <QWord<Hot> as BitSequence>::trailing_zeros(a[3]);
         }
         USize(256)
     }
@@ -288,19 +288,19 @@ impl Mask256 {
         let a = self.0;
         if !<QWord<Hot> as BitSequence>::is_zero(a[3]).0 {
             let lz = <QWord<Hot> as BitSequence>::leading_zeros(a[3]);
-            return USize(192 + 63 - lz.0);
+            return USize(192 + 63) - lz;
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[2]).0 {
             let lz = <QWord<Hot> as BitSequence>::leading_zeros(a[2]);
-            return USize(128 + 63 - lz.0);
+            return USize(128 + 63) - lz;
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[1]).0 {
             let lz = <QWord<Hot> as BitSequence>::leading_zeros(a[1]);
-            return USize(64 + 63 - lz.0);
+            return USize(64 + 63) - lz;
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[0]).0 {
             let lz = <QWord<Hot> as BitSequence>::leading_zeros(a[0]);
-            return USize(63 - lz.0);
+            return USize(63) - lz;
         }
         USize(256)
     }
@@ -337,9 +337,9 @@ impl Iterator for SetBitsIter256 {
             if !<QWord<Hot> as BitSequence>::is_zero(w).0 {
                 let bit = <QWord<Hot> as BitSequence>::trailing_zeros(w);
                 self.words[self.word_idx.0] = <QWord<Hot> as BitLogic>::clear_lowest_set_bit(w);
-                return Some(USize(self.word_idx.0 * 64 + bit.0));
+                return Some(self.word_idx * USize(64) + bit);
             }
-            self.word_idx = USize(self.word_idx.0 + 1);
+            self.word_idx = self.word_idx + USize::ONE;
         }
         None
     }

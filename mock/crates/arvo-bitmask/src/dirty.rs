@@ -13,7 +13,7 @@
 //! so consumers can call them directly from either matrix type
 //! without importing a trait.
 
-use arvo::{Cap, USize};
+use arvo::Cap;
 
 use crate::mask::{Mask256, Mask64};
 use crate::matrix::{BitMatrix256, BitMatrix64, cap_size};
@@ -33,7 +33,7 @@ where
         let snapshot = before;
         for i in snapshot.iter_set_bits() {
             let row = if i.0 < cap_size(N) {
-                matrix.successors(NodeId(USize(i.0)))
+                matrix.successors(NodeId(i))
             } else {
                 Mask64::empty()
             };
@@ -59,7 +59,7 @@ where
         let snapshot = before;
         for i in snapshot.iter_set_bits() {
             let row = if i.0 < cap_size(N) {
-                matrix.successors(NodeId(USize(i.0)))
+                matrix.successors(NodeId(i))
             } else {
                 Mask256::empty()
             };
