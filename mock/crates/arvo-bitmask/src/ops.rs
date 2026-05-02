@@ -22,6 +22,13 @@ use crate::mask::{Mask, Mask256, Mask64};
 // --- Mask64 (== Mask<QWord<Hot>>) -----------------------------------------
 
 impl Mask<QWord<Hot>> {
+    /// Empty mask (all 64 bits cleared). Const-context constructor for
+    /// round 202605021400 (#304).
+    pub const EMPTY: Mask64 = Mask::from_word(QWord::<Hot>::from_raw(0u64)); // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: Bits::from_raw boundary takes the container primitive (here u64) by design; tracked: #304
+
+    /// Full mask (all 64 bits set). Const-context constructor.
+    pub const FULL: Mask64 = Mask::from_word(QWord::<Hot>::from_raw(u64::MAX)); // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #304
+
     /// Union (bitwise OR).
     #[inline(always)]
     pub fn union(self, other: Self) -> Self {
@@ -134,6 +141,13 @@ impl Iterator for SetBitsIter64 {
 // --- Mask256 ---------------------------------------------------------------
 
 impl Mask256 {
+    /// Empty mask (all 256 bits cleared). Const-context constructor for
+    /// round 202605021400 (#304).
+    pub const EMPTY: Mask256 = Mask256([QWord::<Hot>::from_raw(0u64); 4]); // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: Bits::from_raw boundary takes the container primitive (here u64) by design; tracked: #304
+
+    /// Full mask (all 256 bits set). Const-context constructor.
+    pub const FULL: Mask256 = Mask256([QWord::<Hot>::from_raw(u64::MAX); 4]); // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #304
+
     /// Union (bitwise OR across all four words).
     #[inline]
     pub fn union(self, other: Self) -> Self {
