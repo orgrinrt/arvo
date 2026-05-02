@@ -13,6 +13,8 @@
 //! implement `Ieee`.
 
 use crate::markers::FloatLike;
+use crate::strategy::{Bounded, ConstDefault, ConstEq, Identity};
+use arvo_storage::Bool;
 
 mod sealed {
     /// Hidden supertrait used to seal `Ieee`.
@@ -23,25 +25,24 @@ mod sealed {
 
 /// IEEE float width marker. Sealed: implementable only for `f32`
 /// and `f64`.
-pub trait Ieee: sealed::Sealed + Copy + Default + PartialEq + PartialOrd + 'static {
+///
+/// Carries `[const] Identity` as a supertrait so consumers reach for
+/// `<F as Identity>::ZERO` / `<F as Identity>::ONE` rather than
+/// type-specific inherent constants. The `Identity` impls on `f32` /
+/// `f64` ship from `arvo-strategy::arith`.
+pub const trait Ieee:
+    sealed::Sealed + Copy + Default + PartialEq + PartialOrd + [const] Identity + [const] Bounded + 'static
+{
     /// Width of this IEEE type in bits.
     const WIDTH: u16;
-    /// Zero value of this float.
-    const ZERO: Self;
-    /// One (multiplicative identity) of this float.
-    const ONE: Self;
 }
 
-impl Ieee for f32 {
+impl const Ieee for f32 {
     const WIDTH: u16 = 32;
-    const ZERO: Self = 0.0;
-    const ONE: Self = 1.0;
 }
 
-impl Ieee for f64 {
+impl const Ieee for f64 {
     const WIDTH: u16 = 64;
-    const ZERO: Self = 0.0;
-    const ONE: Self = 1.0;
 }
 
 /// Fast-math IEEE wrapper.
@@ -90,8 +91,63 @@ impl<F: Ieee> StrictFloat<F> {
     }
 }
 
-impl<F: Ieee> FloatLike for FastFloat<F> {}
-impl<F: Ieee> FloatLike for StrictFloat<F> {}
+impl<F: Ieee> const FloatLike for FastFloat<F> {}
+impl<F: Ieee> const FloatLike for StrictFloat<F> {}
+
+// --- Canonical const surfaces for FastFloat / StrictFloat ----------------
+//
+// `Bounded`, `Identity`, `ConstEq`, `ConstDefault` blanket impls keyed
+// on the inner `F: [const] Ieee` projection. ConstOrd is omitted: float
+// total ordering is not constructible without NaN handling, which the
+// substrate routes through `TotalOrd` (numeric-contracts) instead.
+
+impl<F: [const] Ieee> const Bounded for FastFloat<F> {
+    const MIN: Self = Self(<F as Bounded>::MIN);
+    const MAX: Self = Self(<F as Bounded>::MAX);
+}
+
+impl<F: [const] Ieee> const Identity for FastFloat<F> {
+    const ZERO: Self = Self(<F as Identity>::ZERO);
+    const ONE: Self = Self(<F as Identity>::ONE);
+}
+
+impl<F: [const] Ieee + [const] ConstEq> const ConstEq for FastFloat<F> {
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        self.0.const_eq(&other.0)
+    }
+}
+
+impl<F: [const] Ieee> const ConstDefault for FastFloat<F> {
+    #[inline(always)]
+    fn const_default() -> Self {
+        Self(<F as Identity>::ZERO)
+    }
+}
+
+impl<F: [const] Ieee> const Bounded for StrictFloat<F> {
+    const MIN: Self = Self(<F as Bounded>::MIN);
+    const MAX: Self = Self(<F as Bounded>::MAX);
+}
+
+impl<F: [const] Ieee> const Identity for StrictFloat<F> {
+    const ZERO: Self = Self(<F as Identity>::ZERO);
+    const ONE: Self = Self(<F as Identity>::ONE);
+}
+
+impl<F: [const] Ieee + [const] ConstEq> const ConstEq for StrictFloat<F> {
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        self.0.const_eq(&other.0)
+    }
+}
+
+impl<F: [const] Ieee> const ConstDefault for StrictFloat<F> {
+    #[inline(always)]
+    fn const_default() -> Self {
+        Self(<F as Identity>::ZERO)
+    }
+}
 
 // --- core::ops arithmetic -------------------------------------------------
 //

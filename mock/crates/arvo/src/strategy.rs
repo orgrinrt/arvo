@@ -16,6 +16,7 @@
 //! facade and would create a cycle if moved alongside the strategy
 //! traits.
 
+pub use arvo_storage::{ConstDefault, ConstEq, ConstOrd, ConstOrdering};
 pub use arvo_strategy::{
     BitsContainerFor, Bounded, Cold, Hot, IArith, IContainerFor, INarrowFrom,
     ISaturating, IWidenFrom, Identity, Precise, Resolve, Signed, SignedIdentity, Signedness,

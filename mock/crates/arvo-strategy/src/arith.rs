@@ -443,6 +443,28 @@ macro_rules! impl_bounded_identity_i {
 impl_bounded_identity_u!(u8, u16, u32, u64, u128, usize);
 impl_bounded_identity_i!(i8, i16, i32, i64, i128, isize);
 
+// Float Bounded / Identity. Bottom-out at the language-defined MIN /
+// MAX inherents and 0.0 / 1.0 literals. The `Ieee` seal on the public
+// surface restricts these traits' use to `f32` / `f64` exposure
+// through `FastFloat<F>` / `StrictFloat<F>`, but the substrate impls
+// land here so the canonical const surface stays unified.
+macro_rules! impl_bounded_identity_f {
+    ($($ty:ty),+) => {
+        $(
+            impl const Bounded for $ty {
+                const MIN: Self = <$ty>::MIN;
+                const MAX: Self = <$ty>::MAX;
+            }
+            impl const Identity for $ty {
+                const ZERO: Self = 0.0;
+                const ONE: Self = 1.0;
+            }
+        )+
+    };
+}
+
+impl_bounded_identity_f!(f32, f64);
+
 // --- SignedIdentity (round 202605021800) ---------------------------------
 //
 // `SignedIdentity` is the signed-primitive companion to `Identity`. It

@@ -163,3 +163,23 @@ impl const ConstDefault for bool {
         false
     }
 }
+
+// ---- float ConstEq + ConstDefault (no ConstOrd; NaN ordering is total
+// only via the substrate's `TotalOrd` from numeric-contracts) ----------
+
+macro_rules! impl_const_eq_default_float {
+    ($($ty:ty),+) => {
+        $(
+            impl const ConstEq for $ty {
+                #[inline(always)]
+                fn const_eq(&self, other: &Self) -> Bool { Bool(*self == *other) }
+            }
+            impl const ConstDefault for $ty {
+                #[inline(always)]
+                fn const_default() -> Self { 0.0 }
+            }
+        )+
+    };
+}
+
+impl_const_eq_default_float!(f32, f64);

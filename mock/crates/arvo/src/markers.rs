@@ -20,12 +20,12 @@ use crate::strategy::Hot;
 /// Marker for types that behave like whole numbers.
 ///
 /// UFixed / IFixed with `F = 0`. No fractional part.
-pub trait IntegerLike: Copy {}
+pub const trait IntegerLike: Copy {}
 
 /// Marker for types that carry a fractional component.
 ///
 /// UFixed / IFixed with `F > 0`.
-pub trait FractionLike: Copy {}
+pub const trait FractionLike: Copy {}
 
 /// Marker for types whose raw bits are accessible.
 ///
@@ -33,7 +33,7 @@ pub trait FractionLike: Copy {}
 /// bit count addressable through `BitAccess` in arvo-bits. Container
 /// size (= physical width) may be larger than `LOGICAL_WIDTH`
 /// depending on the strategy.
-pub trait BitPresentation: Copy {
+pub const trait BitPresentation: Copy {
     /// Logical bit width of this type.
     ///
     /// For `UFixed<I, F, S>`: `I + F`.
@@ -44,22 +44,22 @@ pub trait BitPresentation: Copy {
 /// Marker for IEEE-float-wrapping types.
 ///
 /// `FastFloat` and `StrictFloat`. These do not carry a `Strategy`
-/// marker — float precision is defined by the IEEE width, not by
+/// marker. Float precision is defined by the IEEE width, not by
 /// fixed-point container rules.
-pub trait FloatLike: Copy {}
+pub const trait FloatLike: Copy {}
 
 /// Marker for truth-value types.
 ///
 /// Currently `Bool`. `pack()` converts a control-flow `Bool` into
 /// a 1-bit data value. The returned type is the `UFixed<1, 0, Hot>`
 /// shape that arvo-bits aliases as `Bit`.
-pub trait BoolLike: Copy {
+pub const trait BoolLike: Copy {
     /// Concrete 1-bit packed storage type produced by `pack`.
     ///
     /// Defined as an associated type so arvo L0 does not need to
     /// name `arvo-bits::Bit` directly; arvo-bits pins this to its
     /// own `Bit = UFixed<{ibits(1)}, {fbits(0)}, Hot>` alias.
-    type Packed: BitPresentation;
+    type Packed: [const] BitPresentation;
 
     /// Convert a truth value to a 1-bit data value.
     fn pack(self) -> Self::Packed;
@@ -79,7 +79,7 @@ pub trait BoolLike: Copy {
 // type is forward-declared: arvo-bits aliases it as `Bit`.
 use crate::ufixed::UFixed;
 
-impl BoolLike for Bool {
+impl const BoolLike for Bool {
     type Packed = UFixed<{ IBits::ONE }, { FBits::ZERO }, Hot>;
 
     #[inline(always)]

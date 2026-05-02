@@ -50,7 +50,10 @@ pub use ifixed::IFixed;
 pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLike};
 pub use predicate::{Pred, Pred2, Pred3};
 pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
-pub use strategy::{Cold, Hot, Precise, Strategy, Warm, width_le_64};
+pub use strategy::{
+    Bounded, Cold, ConstDefault, ConstEq, ConstOrd, ConstOrdering, Hot, Identity, Precise,
+    SignedIdentity, Strategy, Warm, width_le_64,
+};
 pub use traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
 pub use transparent::{NumericPrimitive, Transparent, raw};
 pub use ufixed::UFixed;

@@ -125,19 +125,19 @@ where
 
 // --- Marker trait impls ----------------------------------------------------
 
-impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation for IFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const BitPresentation for IFixed<I, F, S>
 where
     S: IContainerFor<{ ifixed_bits(I, F) }>,
 {
     const LOGICAL_WIDTH: USize = USize(1 + I.raw() as usize + F.raw() as usize);
 }
 
-impl<const I: IBits, S: Strategy> IntegerLike for IFixed<I, { FBits::ZERO }, S> where
+impl<const I: IBits, S: Strategy> const IntegerLike for IFixed<I, { FBits::ZERO }, S> where
     S: IContainerFor<{ ifixed_bits(I, FBits::ZERO) }>
 {
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> FractionLike for IFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const FractionLike for IFixed<I, F, S>
 where
     S: IContainerFor<{ ifixed_bits(I, F) }>,
     [(); 1 / is_fractional(F)]:,

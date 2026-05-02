@@ -124,7 +124,7 @@ where
 
 // --- Marker trait impls ----------------------------------------------------
 
-impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const BitPresentation for UFixed<I, F, S>
 where
     S: UContainerFor<{ ufixed_bits(I, F) }>,
 {
@@ -134,14 +134,14 @@ where
 // IntegerLike: only when F == 0. Using the named `FBits::ZERO`
 // constant because struct construction is not allowed inside an
 // anonymous const-generic argument on current nightly.
-impl<const I: IBits, S: Strategy> IntegerLike for UFixed<I, { FBits::ZERO }, S> where
+impl<const I: IBits, S: Strategy> const IntegerLike for UFixed<I, { FBits::ZERO }, S> where
     S: UContainerFor<{ ufixed_bits(I, FBits::ZERO) }>
 {
 }
 
 // FractionLike: F > 0. Encoded via a const-expression that fails to
 // evaluate when `F == FBits::ZERO` (division by zero at const time).
-impl<const I: IBits, const F: FBits, S: Strategy> FractionLike for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const FractionLike for UFixed<I, F, S>
 where
     S: UContainerFor<{ ufixed_bits(I, F) }>,
     [(); 1 / is_fractional(F)]:,
