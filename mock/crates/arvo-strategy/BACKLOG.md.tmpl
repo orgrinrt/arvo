@@ -11,15 +11,17 @@ Const-trait substrate bridges deferred from round 202605021800 (Round 1) to late
 
 Each bridge follows the same pattern as ConstEq / ConstDefault shipped in Round 1: a substrate-owned const trait alongside the stdlib trait (which stays for boundary coverage). Consumer code imports the substrate bridge to compose const-callable substrate operations.
 
-## Round 3 deferred work (#313)
+## Round 3 SHIPPED in round 202605031748 (#313)
 
-Round 3 work LANDS on top of #316: Mask\<W\> over Bits + BitMatrix\<W,
-N\> + mask-contracts impl + BitPrim::WIDTH typed lift. The previous
-chicken-and-egg with Width relocation is resolved by #316 (Width
-relocates from arvo-storage to arvo-strategy as part of #316's
-foundational restructure; UContainerFor / IContainerFor are deleted
-entirely; BitsContainerFor unifies the projection). Round 3 is
-mechanical refresh on top.
+Round 3 landed on top of #316: Mask\<W\> over Bits + BitMatrix\<W,
+N\> + MaskOps trait impl + dogfood sweep (BitPrim::mask_low method,
+FastFloat / StrictFloat Identity blanket, Mask\<W\>::empty via
+Identity::ZERO). The Mask64 / Mask256 / BitMatrix64 / BitMatrix256
+parallel structs deleted entirely per the Strategy/Sign-discoverability
+discipline. The arvo\_mask\_contracts trait renamed Mask → MaskOps to
+disambiguate from the chassis struct. BitPrim::WIDTH typed lift was
+already shipped in Round 2 (#311) so audit Finding 8 was mooted at
+the start.
 
 ## Hot tier expansion (#320)
 

@@ -5,13 +5,16 @@
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
 
-## Mask256 partition outputs
+## Wider-W partition outputs
 
-`spectral_bisection` / `k_way_partition` ship with `Mask64` and
-`[USize; N]` outputs respectively — supports N ≤ 64. `Mask256`-backed
-siblings would support N ≤ 256. Spectral methods are typically small-N
-(per polka-dots research N ≤ 32 is common), so this is a widening for
-atypical workloads, not a default need.
+`spectral_bisection` / `k_way_partition` ship with
+`Mask<Bits<64, Hot, Unsigned>>` and `[USize; N]` outputs respectively
+(supports N ≤ 64). The chassis is generic over W; instantiating with
+`W = Bits<256, Hot, Unsigned>` extends to N ≤ 256 via the substrate's
+MultiContainer plumbing without an algorithmic-shape change.
+Spectral methods are typically small-N (per polka-dots research N ≤
+32 is common), so this is a widening for atypical workloads, not a
+default need.
 
 ## Non-dense matrix formats
 

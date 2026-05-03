@@ -1,6 +1,6 @@
 //! Reverse Cuthill-McKee reordering.
 //!
-//! Bandwidth minimisation on a `BitMatrix64<N>` adjacency. The
+//! Bandwidth minimisation on a `BitMatrix<Bits<64, Hot, Unsigned>, N>` adjacency. The
 //! algorithm:
 //!
 //! 1. Pick the start node as the one with the lowest combined
@@ -19,7 +19,8 @@
 //! `result[new_pos] = old_NodeId`.
 
 use arvo::{Identity, Bool, Cap, USize};
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
+use arvo::{Bits, Hot, Unsigned};
+use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use notko::Maybe;
 
 /// Reverse Cuthill-McKee permutation.
@@ -27,12 +28,12 @@ use notko::Maybe;
 /// `result[new_pos] = old_NodeId`. Min-degree start, ascending-degree
 /// BFS ordering, final reverse.
 #[inline]
-pub fn rcm_reorder<const N: Cap>(adjacency: &BitMatrix64<N>) -> [NodeId; cap_size(N)]
+pub fn rcm_reorder<const N: Cap>(adjacency: &BitMatrix<Bits<64, Hot, Unsigned>, N>) -> [NodeId; cap_size(N)]
 where
     [(); cap_size(N)]:,
 {
     let mut order: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
-    let mut visited: Mask64 = Mask64::empty();
+    let mut visited: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
     let mut head = USize(0);
 
     // Main loop: keep seeding BFS from the remaining min-degree node
@@ -128,7 +129,7 @@ where
 
 /// Degree of `n` in the undirected view (successors + predecessors).
 #[inline(always)]
-fn degree<const N: Cap>(adj: &BitMatrix64<N>, n: NodeId) -> USize
+fn degree<const N: Cap>(adj: &BitMatrix<Bits<64, Hot, Unsigned>, N>, n: NodeId) -> USize
 where
     [(); cap_size(N)]:,
 {
@@ -139,8 +140,8 @@ where
 /// `Maybe::Isnt` if every node in `0..N` is already visited.
 #[inline]
 fn min_degree_unvisited<const N: Cap>(
-    adj: &BitMatrix64<N>,
-    visited: &Mask64,
+    adj: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
+    visited: &Mask<Bits<64, Hot, Unsigned>>,
 ) -> Maybe<USize>
 where
     [(); cap_size(N)]:,

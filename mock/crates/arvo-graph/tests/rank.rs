@@ -5,9 +5,10 @@
 #![allow(incomplete_features)]
 
 use arvo::{Cap, FBits, IBits, ibits, fbits, USize};
-use arvo::strategy::Hot;
+use arvo::strategy::{Hot, Unsigned};
+use arvo::Bits;
 use arvo::ufixed::UFixed;
-use arvo_bitmask::{BitMatrix64, NodeId};
+use arvo_bitmask::{BitMatrix, NodeId};
 use arvo_graph::{downward_rank, upward_rank};
 
 // Small integer weight type. Hot strategy: wrapping arithmetic, u8
@@ -34,7 +35,7 @@ fn w(n: usize) -> W {
 fn upward_rank_linear_chain() {
     // 0 -> 1 -> 2 -> 3, all weights = 1.
     // Upward: rank[3] = 1; rank[2] = 1 + 1 = 2; rank[1] = 3; rank[0] = 4.
-    let mut dag: BitMatrix64<C4> = BitMatrix64::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(3));
@@ -50,7 +51,7 @@ fn upward_rank_linear_chain() {
 fn upward_rank_diamond_picks_max_branch() {
     // 0 -> 1, 0 -> 2, 1 -> 3, 2 -> 3. Weights: 1, 5, 2, 1.
     // rank[3] = 1; rank[1] = 5 + 1 = 6; rank[2] = 2 + 1 = 3; rank[0] = 1 + max(6, 3) = 7.
-    let mut dag: BitMatrix64<C4> = BitMatrix64::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(3));
@@ -67,7 +68,7 @@ fn upward_rank_diamond_picks_max_branch() {
 fn downward_rank_linear_chain() {
     // 0 -> 1 -> 2 -> 3, all weights = 1.
     // Downward: rank[0] = 1; rank[1] = 2; rank[2] = 3; rank[3] = 4.
-    let mut dag: BitMatrix64<C4> = BitMatrix64::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(3));
@@ -84,7 +85,7 @@ fn downward_rank_diamond_picks_max_predecessor() {
     // 0 -> 1, 0 -> 2, 1 -> 3, 2 -> 3. Weights: 1, 5, 2, 1.
     // rank[0] = 1; rank[1] = 5 + 1 = 6; rank[2] = 2 + 1 = 3;
     // rank[3] = 1 + max(6, 3) = 7.
-    let mut dag: BitMatrix64<C4> = BitMatrix64::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(3));
@@ -100,7 +101,7 @@ fn downward_rank_diamond_picks_max_predecessor() {
 #[test]
 fn rank_singleton() {
     // Single node, no edges. Rank is own weight in both directions.
-    let dag: BitMatrix64<C1> = BitMatrix64::empty();
+    let dag: BitMatrix<Bits<64, Hot, Unsigned>, C1> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     let weights: [W; 1] = [w(7)];
     let up = upward_rank(&dag, &weights);
     let down = downward_rank(&dag, &weights);

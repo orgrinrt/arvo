@@ -1,6 +1,6 @@
 //! Topological sort and node renumbering.
 //!
-//! `topo_sort` runs Kahn's algorithm over a `BitMatrix64` adjacency.
+//! `topo_sort` runs Kahn's algorithm over a `BitMatrix<Bits<64, Hot, Unsigned>>` adjacency.
 //! Start with the set of in-degree-zero nodes, pop one, record it in
 //! the output order, and decrement each successor's in-degree. A
 //! successor hitting zero joins the frontier. The loop stops when the
@@ -17,7 +17,8 @@
 //! matrix.
 
 use arvo::{Cap, USize};
-use arvo_bitmask::{BitMatrix64, NodeId, cap_size};
+use arvo::{Bits, Hot, Unsigned};
+use arvo_bitmask::{BitMatrix, NodeId, cap_size};
 
 /// Topologically sort a DAG via Kahn's algorithm.
 ///
@@ -31,7 +32,7 @@ use arvo_bitmask::{BitMatrix64, NodeId, cap_size};
 /// in-degree table and a `[NodeId; cap_size(N)]` frontier queue.
 #[inline]
 pub fn topo_sort<const N: Cap>(
-    dag: &BitMatrix64<N>,
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
 ) -> (USize, [NodeId; cap_size(N)])
 where
     [(); cap_size(N)]:,

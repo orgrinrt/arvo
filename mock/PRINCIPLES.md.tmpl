@@ -84,12 +84,13 @@ remediation task.
 
 The no-bare-primitives discipline extends to field-access on arvo
 primitives. As of round 202605021200, every arvo numeric primitive
-(USize, Cap, UFixed, IFixed, FastFloat, StrictFloat, Bits, Mask64,
-Mask256, BitMatrix, Bitfield, plus aliases) ships full const-trait
-arithmetic via `impl const` on `core::ops::*`. Consumer code
-computes on arvo primitives at const time through the typed
-surface (`x + y`, `USize::ONE`, `Mask64::EMPTY`, etc.) without
-falling back to `.0` field-access on the inner primitive.
+(USize, Cap, UFixed, IFixed, FastFloat, StrictFloat, Bits, Mask\<W\>
+chassis, BitMatrix\<W, N\> chassis, Bitfield, plus aliases) ships
+full const-trait arithmetic via `impl const` on `core::ops::*`.
+Consumer code computes on arvo primitives at const time through the
+typed surface (`x + y`, `USize::ONE`, `Mask::<Bits<64, Hot,
+Unsigned>>::empty()`, etc.) without falling back to `.0`
+field-access on the inner primitive.
 
 `x.0` on an arvo primitive is a smell. The principled
 alternatives:

@@ -20,10 +20,13 @@ hatch).
 
 ## Capacity
 
-Ships against `BitMatrix64` / `Mask64` (up to 64 rows or columns of
-adjacency). `BitMatrix256` / `Mask256` sibling algorithms are tracked
-in `BACKLOG.md.tmpl`; the algorithmic shape is identical, only the
-bitmask backing changes. `Csr<ROWS, NNZ, W>` is keyed on arvo `Cap`
+Ships against `BitMatrix<Bits<64, Hot, Unsigned>, N>` /
+`Mask<Bits<64, Hot, Unsigned>>` (up to 64 rows or columns of
+adjacency). The chassis is generic over the word type W; wider
+instantiations with `W = Bits<256, Hot, Unsigned>` extend the
+algorithms to 256 rows/columns without an algorithmic-shape change.
+The wider-W instantiations are tracked in BACKLOG.md.tmpl as
+ergonomic helpers. `Csr<ROWS, NNZ, W>` is keyed on arvo `Cap`
 const generics and has no arvo-bitmask dependency, so it scales to
 any ROWS/NNZ the caller picks.
 
@@ -63,7 +66,8 @@ values.
 
 ## Sparse matrix representations
 
-**Bitmask matrix** (<=64 rows/cols): `[Mask64; N]` from arvo-bitmask.
+**Bitmask matrix** (<=64 rows/cols):
+`[Mask<Bits<64, Hot, Unsigned>>; N]` from arvo-bitmask.
 One-instruction operations. Used when the access matrix fits in
 64 nodes (typical for small-to-medium DAGs).
 
@@ -81,7 +85,7 @@ Reverse Cuthill-McKee bandwidth minimization. O(n + nnz).
 
 ```rust
 fn rcm_reorder<const N: Cap>(
-    adjacency: &BitMatrix64<N>,
+    adjacency: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
 ) -> [NodeId; N]  // permutation: new position -> old NodeId
 ```
 
@@ -104,7 +108,7 @@ Sub-microsecond at typical pipeline scale.
 
 ```rust
 fn block_diagonal<const N: Cap>(
-    adjacency: &BitMatrix64<N>,
+    adjacency: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
 ) -> (USize, [USize; N])  // (block_count, block_id_per_node)
 ```
 
@@ -126,13 +130,13 @@ diagonal always").
 
 ```rust
 pub struct DulmageMendelsohn<const N: Cap> {
-    pub horizontal: Mask64,  // dead-end rows (output never read)
-    pub vertical: Mask64,    // read-only columns (never written)
-    pub square: Mask64,      // core matched row-column pairs
+    pub horizontal: Mask<Bits<64, Hot, Unsigned>>,  // dead-end rows (output never read)
+    pub vertical: Mask<Bits<64, Hot, Unsigned>>,    // read-only columns (never written)
+    pub square: Mask<Bits<64, Hot, Unsigned>>,      // core matched row-column pairs
 }
 
 fn dulmage_mendelsohn<const N: Cap>(
-    adjacency: &BitMatrix64<N>,
+    adjacency: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
 ) -> DulmageMendelsohn<N>
 ```
 
