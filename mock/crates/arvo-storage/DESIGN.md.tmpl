@@ -9,8 +9,9 @@ generic positions. `#![no_std]`, no alloc.
 
 Depends on `arvo-transparent` (for the `Transparent` const unsafe
 trait that every `repr(transparent)` type implements) and
-`arvo-strategy` (for the strategy markers and `UContainerFor<N>` /
-`IContainerFor<N>` projections). No other workspace dependencies.
+`arvo-strategy` (for the strategy markers, the unified
+`BitsContainerFor<N, Sign>` projection trait, and the `Width`
+newtype). No other workspace dependencies.
 
 This crate is small on purpose. Everything else in the arvo stack
 (bit-level contracts, mask types, narrowing, fixed-point arithmetic,
@@ -20,21 +21,23 @@ be expressed without wrapping a bare primitive.
 
 ## Bits
 
-`Bits<const N: u16, S: Strategy = Hot, Sign: Signedness = Unsigned>` is
+`Bits<const N: Width, S: Strategy = Hot, Sign: Signedness = Unsigned>` is
 the N-bit storage primitive. A `#[repr(transparent)]` newtype over
 `<S as BitsContainerFor<N, Sign>>::T`. The container projection picks
-the bare primitive (or `MultiContainer<HiT, LoT>` at the wider widths)
-that holds N bits under strategy S and signedness Sign. `Bits<8, Hot>`
-lowers to `u8`, `Bits<7, Hot>` lowers to `u8` (with the high bit unused
-under Hot), `Bits<32, Warm>` lowers to `u32`, `Bits<64, Hot>` to `u64`,
-`Bits<96, Hot>` to `u128`, `Bits<200, Hot>` to a strategy-driven
-`MultiContainer` shape, and so on per the strategy bands.
+either a native primitive (N ≤ 128) or a byte-sequence storage
+(`WideBits<bytes_for(N)>` or `AlignedWideBits16<bytes_for(N)>` for
+N > 128, see below) per the strategy axis. `Bits<8, Hot>` lowers to
+`u8`, `Bits<7, Hot>` lowers to `u8` (with the high bit unused under
+Hot), `Bits<32, Warm>` lowers to `u32`, `Bits<64, Hot>` to `u64`,
+`Bits<96, Hot>` to `u128`, `Bits<200, Hot>` to `AlignedWideBits16<25>`
+(byte-sequence at align(16)), `Bits<200, Warm>` to `WideBits<25>`
+(byte-sequence at align-1), and so on per the strategy bands.
 
-The const-generic param is `u16` (widened from `u8` in Pass F of round
-202604281000) so the parameter space accommodates reachable widths up
-to 65535. Concrete cell projections cover 1..=256; widening the
-parameter type without growing the cell table makes future expansion
-parameter-free.
+The const-generic param is `Width` (the typed newtype around `u16`),
+relocated from this crate to `arvo-strategy` in round 202605031400.
+`arvo-storage` re-exports it via `pub use arvo_strategy::Width;` for
+source-compatibility within the workspace facade. The parameter
+space accommodates 1..=65535 logical bits.
 
 Default `Sign = Unsigned` keeps every existing `Bits<N, S>` call site
 unchanged. Domain code that wants signed bit patterns writes
@@ -46,7 +49,7 @@ wrap of `Bits<{I+F}, S, Unsigned>`).
 The public surface is partitioned and minimal:
 
 ```rust
-impl<const N: u16, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
+impl<const N: Width, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
 where S: BitsContainerFor<N, Sign>,
 {
     pub const fn from_raw(raw: <S as BitsContainerFor<N, Sign>>::T) -> Self;
@@ -73,10 +76,8 @@ Consumers that need to take a wider raw value and narrow it to fit
 round 202604280034, post-Widen-addition during round 202604300826):
 `Narrow<T>::narrow_to::<N>` for shrinks, `Widen<T>::widen_to` for
 promotions. The trait surface and impl tables are re-exported
-through the `arvo-refit` crate (renamed from `arvo-narrow` in round
-202604301700 to name the domain rather than one of the two
-directions). The pipeline is explicit at the call site instead of
-hidden inside per-size helpers.
+through the `arvo-refit` crate. The pipeline is explicit at the call
+site instead of hidden inside per-size helpers.
 
 ### Ergonomic constructors `from_narrowed` and `from_widened`
 
@@ -84,9 +85,9 @@ The inherent `Bits<N, S, Sign>` impl ships two refit-aware
 constructors that route through the `Narrow` and `Widen` traits:
 
 ```rust
-let bits28 = Bits::<28, Hot>::from_narrowed(wide_u64);   // narrow_to::<28>() inside
-let bits64 = Bits::<64, Hot>::from_widened(bits28);       // widen_to() inside
-let raw28 = Bits::<28, Hot>::from_raw(carrier_u32);       // unchecked entry point
+let bits28 = Bits::<{width(28)}, Hot>::from_narrowed(wide_u64);   // narrow_to::<28>() inside
+let bits64 = Bits::<{width(64)}, Hot>::from_widened(bits28);       // widen_to() inside
+let raw28 = Bits::<{width(28)}, Hot>::from_raw(carrier_u32);       // unchecked entry point
 ```
 
 The source type `Src` is inferred from the value at the call site;
@@ -98,19 +99,18 @@ domain primitive↔Bits direct impls (round 202604300826) provide
 the trait coverage so these constructors work with primitive sources
 as well as `Bits<M, ...>` sources.
 
-Constructor names match trait names (`from_narrowed` ← `Narrow`,
-`from_widened` ← `Widen`); verb-style consistent with `from_raw`.
-
 `from_raw` remains the unchecked entry point; `from_narrowed` and
 `from_widened` are the recommended path when the source type does
 not exactly match the carrier projection.
 
 The `repr(transparent)` of `Bits<N, S, Sign>` over its projection
-target is compile-time-asserted at boundary cells (1, 8, 9, 16, 17,
-32, 33, 64, 65, 128, 129, 192, 193, 256 for Hot / Cold; 1, 8, 9, 16,
-17, 32, 33, 64 for Warm / Precise) in
-`arvo-storage/src/layout_assertions.rs`. If a future round changes
-the container projection at any boundary cell, the build breaks.
+target is compile-time-asserted at boundary cells in
+`arvo-storage/src/layout_assertions.rs`. The boundary set covers
+each of the five native buckets (1, 8, 9, 16, 17, 32, 33, 64, 65,
+128) plus representative wide widths (129, 200, 256, 4096) for both
+the WideBits (Warm/Cold/Precise) and AlignedWideBits16 (Hot)
+projections. If a future round changes the container projection at
+any boundary cell, the build breaks.
 
 The boundary set is the default. A `cfg(arvo_full_layout_audit)` gate
 opens the full (Strategy, N, Sign) tuple expansion, asserting every
@@ -118,29 +118,34 @@ cell across the projection space. Periodic CI nightly builds run the
 full audit; default builds keep the bounded set to hold compile time
 in check.
 
-## Strategy markers
+## Strategy markers (re-exported)
 
-`Hot`, `Warm`, `Cold`, `Precise`. Zero-sized types. Each implements
-the sealed `Strategy` marker trait declared in `arvo-strategy`. Each
-derives `ConstParamTy` so it works as a const generic argument.
+`Hot`, `Warm`, `Cold`, `Precise` are zero-sized types declared in
+`arvo-strategy`. arvo-storage re-exports them via `pub use
+arvo_strategy::{Hot, Warm, Cold, Precise};` so consumers reaching
+for the storage primitive at `arvo_storage::Bits<...>` can name the
+strategy without importing two crates.
 
-Strategy semantics across the substrate. `Hot` picks the narrowest
-container for the bit width (1..=8 use `u8`, 9..=16 use `u16`, 17..=32
-use `u32`, 33..=64 use `u64`, 65..=128 use `u128`, 129..=192 use
-`MultiContainer<u64, u128>`, 193..=256 use `MultiContainer<u128, u128>`).
-`Warm` doubles the logical width (1..=8 use `u16`, 9..=16 use `u32`,
-17..=32 use `u64`, 33..=64 use `u128`). `Cold` mirrors Hot's container
-sizes but the upper-layer storage routes through bitpacked column
-stores. `Precise` mirrors Warm's 2x-logical-width contract at every
-cell, including 33..=64 which uses `u128` (Pass D of round 202604281000
-fixed the prior 33..=64 inconsistency where Precise used u64 while
-Warm used u128).
+Strategy semantics across the substrate (full detail in
+`arvo-strategy/DESIGN.md.tmpl`):
 
-The `UContainerFor<N>` and `IContainerFor<N>` per-N impls live in
-`arvo-strategy`, not here. They project `S + N` to the bare primitive
-container (or to `MultiContainer<HiT, LoT>` at the wider widths). The
-`BitsContainerFor<N, Sign>` indirection trait (also in `arvo-strategy`)
-selects between U and I tables based on the Sign axis.
+- `Hot` picks the narrowest container per bit width. 1..=8 → `u8`,
+  9..=16 → `u16`, ..., 65..=128 → `u128`. Above 128 →
+  `AlignedWideBits16<bytes_for(N)>` (align(16) byte sequence).
+- `Warm` mirrors Hot's container shape below 128. Above 128 →
+  `WideBits<bytes_for(N)>` (align-1 byte sequence). The previous
+  "2x logical width" Warm contract collapsed once the substrate
+  passed single native primitives in width.
+- `Cold` mirrors Warm's per-value container shape. Bitpacking happens
+  at the column-store layer above the per-Bits container, not at the
+  per-value container shape.
+- `Precise` mirrors Warm's container shape; saturating arithmetic
+  distinguishes the strategy at the op layer.
+
+The unified `BitsContainerFor<const N: Width, Sign: Signedness>`
+projection trait lives in `arvo-strategy` (not here). Round 202605031400
+deletes the previous `UContainerFor` / `IContainerFor` split and the
+`MultiContainer<HiT, LoT>` family entirely.
 
 ## Signedness markers
 
@@ -167,54 +172,116 @@ on `Bits` keeps existing call sites unchanged; IFixed's
 `repr(transparent)` wrap of `Bits<{1+I+F}, S, Signed>` reaches for the
 non-default value.
 
-## MultiContainer
+## WideBits
 
-`pub struct MultiContainer<HiT, LoT>` is the multi-value storage
-primitive used at logical bit widths above any single native primitive
-(beyond `u128` / `i128`). Generic over two `BitPrim` components: the
-hi half and the lo half.
+`pub struct WideBits<const BYTES: usize>` is the byte-sequence storage
+primitive used at logical bit widths above 128 (where no native
+primitive exists). Round 202605031400 introduces this type as the
+replacement for the deleted `MultiContainer<HiT, LoT>` family.
 
 ```rust
 #[repr(C)]
-pub struct MultiContainer<HiT: BitPrim, LoT: BitPrim> {
-    pub hi: HiT,
-    pub lo: LoT,
+pub struct WideBits<const BYTES: usize> {
+    bytes: [u8; BYTES],
 }
 ```
 
-The `BitPrim` sealed trait abstracts the native primitives that can
-participate in a multi-container split: `u8`, `u16`, `u32`, `u64`,
-`u128`, `i8`, `i16`, `i32`, `i64`, `i128`. Trait declarations in
-`arvo-strategy` so the dispatch tables there stay self-contained.
+`#[repr(C)]` with a single `[u8; BYTES]` field. Layout is exactly
+BYTES bytes; alignment is 1. Sketch 02 verified the layout across
+widths 1, 25, 32, 64, 128, 512: size matches BYTES exactly, align
+matches 1 universally. No internal padding.
 
-Strategy projection picks the (HiT, LoT) shape per the four canonical
-strategies' policies (smallest-footprint vs same-length doubled). The
-per-cell tabulation lives in `arvo-strategy/DESIGN.md.tmpl`.
+`WideBits<BYTES>` is the Strategy projection target for Warm, Cold,
+and Precise when N > 128 (`bytes_for(N) = (N + 7) / 8`).
 
-Round 202604280500 shipped the storage shape only. Round 202605021800
-adds the const-callable bit-op surface: `MultiContainer<HiT, LoT>`
-gains `impl const BitPrim`, `impl const Bounded`, and `impl const
-Identity` (signatures and bodies documented in
-`arvo-strategy/DESIGN.md.tmpl` under the canonical const surface
-section). Per-half composition: `WIDTH = HiT::WIDTH + LoT::WIDTH`,
-`bitor/bitand/bitnot/bitxor` element-wise, `count_ones = hi + lo`,
-`trailing_zeros` and `leading_zeros` cascade across the boundary,
-`is_zero = hi.is_zero() && lo.is_zero()`. With these impls landed,
-`Bits<N, S, Sign>` for N=129..=256 gains a fully const-callable
-bit-op surface (was storage-only before this round).
+### Byte-ordering convention
 
-UFixed / IFixed at 129..=256 logical width still await the arithmetic
-bridge (`UArith` / `IArith` dispatch on `MultiContainer`,
-`UWidenFrom` / `UNarrowFrom` cross-container widening). That work is
-BACKLOG-tracked for a follow-up round; UFixed / IFixed at 129..=256
-do not compile yet (their cap stays at 128).
+The byte-ordering convention for `WideBits` and `AlignedWideBits16`
+matches `u128::trailing_zeros` / `u128::leading_zeros` semantics
+viewed as bit-significance order:
 
-The `repr(C)` layout of `MultiContainer<HiT, LoT>` is compile-time-
-asserted for the canonical pairs (`u64, u128`; `u128, u128`; `i64,
-i128`; `i128, i128`) in `arvo-storage/src/layout_assertions.rs`. The
-checks pin the lower-bound size (sum of the two halves) and the
-alignment (max of the two halves) per Rust's `repr(C)` rules. Any
-future change to those pairs that drifts the layout breaks the build.
+- Bit index 0 is the LSB of byte 0.
+- `count_ones`: order-independent, sum of `bytes[i].count_ones()`.
+- `count_zeros`: `BYTES * 8 - count_ones()`.
+- `trailing_zeros`: walks from byte 0 LSB upward. If `bytes[0] == 0`,
+  accumulate 8 and advance; otherwise return accumulated +
+  `bytes[0].trailing_zeros()`.
+- `leading_zeros`: walks from byte BYTES-1 MSB downward symmetrically.
+- `get_bit(idx: USize)`: `(bytes[idx/8] >> (idx % 8)) & 1`.
+- Bitwise ops (`bitand` / `bitor` / `bitxor` / `bitnot`): byte-wise.
+- `is_zero`: all bytes zero.
+- `clear_lowest_set_bit`: locate first non-zero byte, apply
+  `b & (b-1)` semantics.
+
+This mirrors the existing `MultiContainer` lo-first cascade
+(MultiContainer's `trailing_zeros` consulted `lo` first, `leading_zeros`
+consulted `hi` first; with byte-sequence storage, `lo` is byte 0 and
+`hi` is byte BYTES-1). The convention preserves observable behaviour
+for every consumer transitioning across the 128-bit boundary. Per
+audit C1, this is locked at the doc-CL level so the src CL does not
+silently flip the convention.
+
+### Size envelope
+
+BYTES ranges from 1 to 8191 (Width=u16 → max 65535 logical bits → max
+8192 physical bytes; one byte slack accounts for the type system's
+unsigned-arithmetic bookkeeping in the projection const fns). For
+N=129 (smallest wide width above the native ladder), BYTES = 17. For
+N=4096 (RSA-4096 modulus), BYTES = 512. For SHA3-512 digest (N=512),
+BYTES = 64.
+
+### BitPrim impl (in arvo-bits-contracts)
+
+The `BitPrim` impl lives in `arvo-bits-contracts/src/widebits.rs`
+because `arvo-storage` cannot depend on `arvo-bits-contracts` (the
+direction is the other way). Methods compose byte-by-byte per the
+byte-ordering convention; full surface documented in
+`arvo-bits-contracts/DESIGN.md.tmpl`.
+
+## AlignedWideBits16
+
+`pub struct AlignedWideBits16<const BYTES: usize>` is the
+SIMD-aligned variant of WideBits. Used by the `Hot` strategy for
+N > 128 to provide align(16) byte storage compatible with SSE2 +
+NEON aligned-load instructions.
+
+```rust
+#[repr(C, align(16))]
+pub struct AlignedWideBits16<const BYTES: usize> {
+    bytes: [u8; BYTES],
+}
+```
+
+`#[repr(C, align(16))]` with a single `[u8; BYTES]` field. Size is
+`round_up(BYTES, 16)`; alignment is 16. Trailing pad bytes from the
+alignment requirement are not initialized by the standard
+constructors (`zero` / `from_bytes`); reading the full struct as
+bytes via transmute or raw-pointer cast is **undefined behaviour**.
+Only `as_bytes() -> &[u8; BYTES]` returns a safe view of the
+initialized portion.
+
+Sketch 03 verified the layout across BYTES values 17, 25, 32, 33, 64,
+512: size = round_up(BYTES, 16), align = 16. The trailing pad ranges
+from 0 (when BYTES is already a multiple of 16) to 15 bytes.
+
+### Wider alignment tiers
+
+`AlignedWideBits16` is the align(16) baseline (SSE2 + NEON
+compatible). Wider alignment tiers (align(32) for AVX-2, align(64)
+for AVX-512) are not currently exposed. Per audit H1, the cfg-driven
+internal alignment originally proposed in round 202605031400's
+original topic was rejected as a `arvo-toolbox-not-policer`
+violation: it silently imposed up to 4× storage overhead on the
+consumer with no visibility. Future bench evidence (#320) will
+determine whether `AlignedWideBits32` and `AlignedWideBits64` ship
+as opt-in `HotAvx2` / `HotAvx512` consumer-visible strategy variants.
+
+### BitPrim impl (in arvo-bits-contracts)
+
+Same surface as `WideBits`'s BitPrim impl, parameterised over the
+aligned storage. The `as_bytes()` view returns `&[u8; BYTES]`
+identical to WideBits; the trailing pad is invisible to the bit-op
+methods.
 
 ## Bool
 
@@ -297,17 +364,12 @@ literal appears only at the bottom-out point inside `impl const
 Bounded for USize`'s body, per `no-bare-primitives.md` definition-
 site exception 3 (platform-binding wrappers).
 
-The inherent constants `USize::ZERO`, `USize::ONE`, `USize::MAX`
-shipped in round 202605021200 are removed in round 202605021800.
 Consumer code reaches for `<USize as Identity>::ZERO` /
 `<USize as Identity>::ONE` / `<USize as Bounded>::MAX` directly, or
 `use arvo_strategy::{Identity, Bounded};` and writes
 `USize::ZERO` / `USize::ONE` / `USize::MAX` resolved through the
 trait associated constants. The trait is the canonical surface;
-inherent re-definitions are not maintained because they would
-duplicate trait constants and rot the moment the trait surface
-grows. Removing them avoids the false-consistency trap of remembering
-to mirror every trait constant on every wrapper.
+inherent re-definitions are not maintained.
 
 Mixed-arity ops (`USize + bare-usize`) deliberately do not compile.
 Consumer call sites that need a literal use `<USize as Identity>::ONE`
@@ -315,28 +377,7 @@ Consumer call sites that need a literal use `<USize as Identity>::ONE`
 arbitrary literals.
 
 Overflow semantics match `usize`'s primitive contract: panic on
-debug-assertion builds, wrap on release. Documented as the contract;
-consumers needing checked arithmetic use `Maybe<USize>`-returning
-helpers in a follow-up round.
-
-The const-arith surface plus the canonical-const trait family is
-how consumer crates avoid `.0` access on USize in const contexts.
-
-Mixed-arity ops (`USize + bare-usize`) deliberately do not compile.
-Consumer call sites that need a literal use `USize::ONE` /
-`USize::ZERO` for the common cases or `USize(N)` for arbitrary
-literals.
-
-Overflow semantics match `usize`'s primitive contract: panic on
-debug-assertion builds, wrap on release. Documented as the contract;
-consumers needing checked arithmetic use `Maybe<USize>`-returning
-helpers in a follow-up round.
-
-The const-arith surface is how consumer crates avoid `.0` access on
-USize in const contexts. The lint rule forbidding `.0` access on
-arvo primitives outside the implementing crate is filed as a
-follow-up round; once it ships, the const-arith surface is the
-typed access path the lint enforces.
+debug-assertion builds, wrap on release.
 
 ## Cap
 
@@ -348,17 +389,8 @@ carries the semantic distinction (`N`, `ROWS`, `NNZ`).
 Cap impls `Bounded`, `Identity`, `ConstEq`, `ConstOrd`, and
 `ConstDefault` (round 202605021800). Bodies delegate through the
 inner USize's trait projections; no raw `usize` arithmetic in Cap's
-body. Round 202605021800 closes a prior asymmetry: USize had a
-canonical-MAX projection through `Bounded`, Cap had no MAX shipped.
-Now both reach the same trait surface.
-
-The inherent constants `Cap::ZERO` and `Cap::ONE` shipped in round
-202605021200 are removed in round 202605021800. Consumer code
-reaches for `<Cap as Identity>::ZERO` / `<Cap as Identity>::ONE` /
-`<Cap as Bounded>::MAX`. Inherent re-definitions are not maintained
-for the same reason as USize: facade-mirroring promises consistency
-the substrate has to remember to maintain and rots the moment a
-trait gains a constant.
+body. Consumer code reaches for `<Cap as Identity>::ZERO` /
+`<Cap as Identity>::ONE` / `<Cap as Bounded>::MAX`.
 
 Const-trait ops on Cap operating against Cap: `Add`, `Sub`, `Mul`,
 `Div`, `Rem`. Bodies delegate through USize's const-trait surface
@@ -371,22 +403,18 @@ Cap implements `Transparent` over USize.
 ## MetaCarrier
 
 `pub struct MetaCarrier(pub u16)`. A `#[repr(transparent)]` companion
-to `Bits<9, Hot, Unsigned>` used as the meta-newtype carrier
-(`IBits`, `FBits`, `Width`).
+to `Bits<{width(9)}, Hot, Unsigned>` used as the meta-newtype carrier
+(`IBits`, `FBits`).
 
-`MetaCarrier` is layout-equivalent to `Bits<9, Hot, Unsigned>`: both
-are `repr(transparent)` over u16 (the underlying primitive
-`<Hot as BitsContainerFor<9, Unsigned>>::T` projects to). The
+`MetaCarrier` is layout-equivalent to `Bits<{width(9)}, Hot, Unsigned>`:
+both are `repr(transparent)` over u16 (the underlying primitive
+`<Hot as BitsContainerFor<{width(9)}, Unsigned>>::T` projects to). The
 `MetaCarrier::as_bits()` const-fn exposes the Bits-typed view at zero
-cost via a layout-equivalence transmute. The same view is reachable
-on the meta-newtypes through `IBits::as_bits()` etc. accessors.
+cost via a layout-equivalence transmute.
 
 This companion exists to bypass a rustc trait-solver cycle that
 arises when the meta-newtype field literally writes the generic
-`Bits<9, Hot>` projection. The cycle interleaves `IBits: Sized`
-evaluation with `UFixed`'s const-eval where-clause `Hot:
-UContainerFor<{ ufixed_bits(I, F) }>`; rustc's cycle detector trips
-even though the obligations resolve in isolation. Using a concrete
+`Bits<{width(9)}, Hot>` projection. Using a concrete
 `repr(transparent)` companion at the field type sidesteps the
 projection chain at well-formedness time while preserving the
 9-bit native range, the `Hot` strategy, and the `Unsigned` sign of
@@ -394,19 +422,19 @@ the conceptual carrier.
 
 `MetaCarrier` derives `ConstParamTy` (via `feature(const_param_ty_trait)`
 plus the standard structural-eq derive set), so the meta-newtypes
-themselves remain const-generic-position-usable per Round B's design.
+themselves remain const-generic-position-usable.
 
-The layout-equivalence invariant against `Bits<9, Hot, Unsigned>` is
-compile-time-asserted in `arvo-storage/src/layout_assertions.rs`. Any
-divergence between `MetaCarrier`'s hardcoded u16 and the projection's
-choice for `<Hot as BitsContainerFor<9, Unsigned>>::T` breaks the build
-at compile time, surfacing the drift before any runtime soundness
-violation could occur via the `as_bits()` transmute.
+The layout-equivalence invariant against `Bits<{width(9)}, Hot, Unsigned>`
+is compile-time-asserted in `arvo-storage/src/layout_assertions.rs`.
+Any divergence between `MetaCarrier`'s hardcoded u16 and the projection's
+choice for `<Hot as BitsContainerFor<{width(9)}, Unsigned>>::T` breaks
+the build at compile time, surfacing the drift before any runtime
+soundness violation could occur via the `as_bits()` transmute.
 
 ## Typed meta-bit newtypes
 
-Three `#[repr(transparent)]` newtypes over `MetaCarrier`. Each
-derives `ConstParamTy`:
+Two `#[repr(transparent)]` newtypes over `MetaCarrier`. Each derives
+`ConstParamTy`:
 
 ```rust
 #[derive(ConstParamTy, ...)]
@@ -416,40 +444,29 @@ pub struct IBits(pub MetaCarrier);
 #[derive(ConstParamTy, ...)]
 #[repr(transparent)]
 pub struct FBits(pub MetaCarrier);
-
-#[derive(ConstParamTy, ...)]
-#[repr(transparent)]
-pub struct Width(pub MetaCarrier);
 ```
 
 `IBits` carries the integer-bit count of a fixed-point type. `FBits`
-carries the fractional-bit count. `Width` carries an arbitrary
-bit-width meta value (used by `Bits<const N: u8, S, Sign>` consumers
-that want a typed parameter, by `Hasher<const W: Width>`, and by mask
-consumers that want a typed width parameter).
+carries the fractional-bit count.
 
-The carrier widened from a bare u8 (range 0..=255 in pre-Round-C
-source; doc CL of round 202604280500 named the destination as
-`Bits<9, Hot>`) to `MetaCarrier` (layout-equivalent to
-`Bits<9, Hot, Unsigned>`; range 0..=511 native; 0..=256 used after
-Pass F of round 202604281000 lifts the `Bits` const-generic param
-from u8 to u16, with cell projections covering 1..=256). The
-substrate's logical-width cap rose from 128 to 256; 9 bits is the
-minimum carrier covering 256 plus headroom. Per the
-`arvo-toolbox-not-policer` workspace rule, honest range trumps
-offset packing; the unused upper range costs nothing at codegen.
+`Width` previously lived here as a third meta-newtype; round
+202605031400 relocates it to `arvo-strategy::width` per the
+`arvo-bridge-home-rule` workspace rule (Width's primary use is as a
+const-generic parameter of the projection traits in arvo-strategy;
+the type belongs in the lowest crate where its position is reachable).
+arvo-storage re-exports it via `pub use arvo_strategy::Width;` in
+`lib.rs` so consumer imports through `arvo_storage::Width` keep
+working.
 
-`MetaCarrier`, `IBits`, `FBits`, and `Width` all satisfy
-`StructuralEq + Copy + Eq + ConstParamTy`. The trait obligations
-are compile-time-asserted alongside the layout assertions in
-`arvo-storage/src/layout_assertions.rs`. Any future change that
-breaks the const-generic-position usability of these newtypes
-breaks the build before runtime can encounter the divergence.
+`MetaCarrier`, `IBits`, `FBits`, and `Width` (re-exported) all satisfy
+`StructuralEq + Copy + Eq + ConstParamTy`. The trait obligations are
+compile-time-asserted alongside the layout assertions in
+`arvo-storage/src/layout_assertions.rs`.
 
-`MetaCarrier::as_bits()` and `IBits::as_bits()` / `FBits::as_bits()`
-/ `Width::as_bits()` give the `Bits<9, Hot, Unsigned>`-typed view
-without going through the field-level projection. Consumers reaching
-for the Bits-typed view get it at zero cost.
+`MetaCarrier::as_bits()` and `IBits::as_bits()` / `FBits::as_bits()` /
+`Width::as_bits()` give the `Bits<{width(9)}, Hot, Unsigned>`-typed
+view without going through the field-level projection. Consumers
+reaching for the Bits-typed view get it at zero cost.
 
 ## Const-fn helpers
 
@@ -462,15 +479,15 @@ pub const fn fbits(n: u16) -> FBits;
 pub const fn width(n: u16) -> Width;
 ```
 
-These are the only positions in the crate where a bare integer
-appears in function-parameter form. The parameter type widened from
-`u8` to `u16` in round 202604280500 alongside the carrier widening
-(`<Hot as UContainerFor<9>>::T = u16`). They exist so consumers can
-write `UFixed<{ ibits(13) }, { fbits(3) }, Warm>` instead of
-construction boilerplate; literal-style call sites (`ibits(13)`)
-continue to work via `u16` inference at the argument position. The
-bare `u16` parameter is the documented exception under the workspace
-no-bare-primitives rule (definition-site exception category 4).
+`ibits` and `fbits` are declared in arvo-storage. `width` is declared
+in arvo-strategy alongside the relocated `Width` type and re-exported
+from arvo-storage for source compatibility. These are the only
+positions in the crate where a bare integer appears in
+function-parameter form; consumers write
+`UFixed<{ ibits(13) }, { fbits(3) }, Warm>` instead of construction
+boilerplate. The bare `u16` parameter is the documented exception
+under the workspace no-bare-primitives rule (definition-site
+exception category 4).
 
 ## What does NOT live here
 
@@ -482,25 +499,50 @@ no-bare-primitives rule (definition-site exception category 4).
   `arvo-bitmask`, `arvo-refit`, `arvo-tensor`, `arvo-hash`).
 - Compositions over `Bits` (`UFixed`, `IFixed`, `FastFloat`,
   `StrictFloat`) live in the `arvo` facade. `UFixed` is a
-  `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>` (default
-  Sign omitted at the call site). `IFixed` is a `repr(transparent)`
-  newtype over `Bits<{1+I+F}, S, Signed>`, the symmetric counterpart
-  shipped in round 202604280500.
+  `repr(transparent)` newtype over `Bits<{width(I+F)}, S, Unsigned>`
+  (default Sign omitted at the call site). `IFixed` is a
+  `repr(transparent)` newtype over `Bits<{width(1+I+F)}, S, Signed>`,
+  the symmetric counterpart shipped in round 202604280500.
 - Algorithms (live in `arvo-graph`, `arvo-sparse`, `arvo-comb`,
   `arvo-spectral`).
 - Aliases and re-exports (live in the `arvo` facade).
 
-## Sign axis on Bits (shipped round 202604280500)
+## Architectural pivot record (round 202605031400)
 
-The Sign axis on `Bits<N, S, Sign>` shipped in round 202604280500.
-See `## Bits` and `## Signedness markers` above for the declarative
-content; the previous "Coming in a follow-up round" placeholder is
-gone. IFixed's symmetric reshape over `Bits<{1+I+F}, S, Signed>` lands
-in the same round.
+The previous wide-storage primitive `MultiContainer<HiT, LoT>` is
+deleted entirely in round 202605031400. Sketch 01 verified that
+`MultiContainer<u64, u128>` was always 32 bytes physical (the
+alignment-of-largest-prim padding rule in `repr(C)` forces the total
+to round up to a multiple of 16, the alignment of u128). The "u64+u128
+saves bytes" rationale documented in prior rounds was incorrect:
+sketch 01 measured the existing substrate's physical layout and
+confirmed the supposed savings did not exist.
+
+The replacement is byte-sequence storage (`WideBits`) at align-1 for
+Warm/Cold/Precise and `AlignedWideBits16` at align(16) for Hot. Same
+physical size as the previous MultiContainer for the canonical pairs;
+honest about what the substrate stores; substrate-implementor cost
+of the byte-by-byte BitPrim impl is offset by no per-pair
+combinatorics in the projection table.
+
+Per `no-legacy-shims-pre-1.0.md`, no deprecation alias for
+MultiContainer. Workspace consumers were grep'd 2026-05-03T14:30Z;
+zero references in any consumer repo (hilavitkutin, viola, vehje,
+notko, viola-grammar-ts, viola-script-lints, mockspace,
+mockspace-hilavitkutin-stack-lints). Deletion is mechanical.
 
 ## Sources
 
 - `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md` (frozen topic)
-- `mock/design_rounds/202604271346_changelist.doc.md` (this CL)
+- `mock/design_rounds/202604271346_changelist.doc.md`
+- `mock/design_rounds/202605031400_topic_foundational_redesign.md`
+- `mock/design_rounds/202605031430_topic_audit_corrections.md`
+- `mock/design_rounds/202605031400_changelist.doc.md`
 - `mock/research/strategy-bound-trilemma.md`
-- Q-A spike: rustc 1.96.0-nightly (commit fda6d37bb 2026-03-27)
+- `mock/research/sketches/202605031400_hlist_heterogeneous_container/01..07`
+  (architectural pivot validation: heterogeneous Cons invalidated under
+  repr(C); WideBits scalar baseline verified across 17/25/32/64/128/512
+  bytes; AlignedWideBits16 align(16) baseline verified; cfg-gated SIMD
+  surface compiles cleanly; Pattern C const-tag dispatch validated).
+- Senior architectural audit (2026-05-03): PROCEED-WITH-CHANGES verdict.
+- Q-A spike: rustc 1.96.0-nightly (commit fda6d37bb 2026-03-27).
