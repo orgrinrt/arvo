@@ -1,4 +1,4 @@
-//! `NarrowFromU64<N, S, Sign>` — bounded-generic narrowing of a u64
+//! `NarrowFromU64<N, S, Sign>`. Bounded-generic narrowing of a u64
 //! to the dispatched container.
 //!
 //! Used by `ConstHash` (arvo-hash) to produce typed `Bits<N, S, Sign>`

@@ -22,7 +22,7 @@
 
 use core::marker::ConstParamTy;
 
-use crate::{Bounded, Identity};
+use crate::{Bounded, ConstFrom, Identity};
 
 /// Logical bit-width carrier.
 ///
@@ -57,6 +57,19 @@ impl const Bounded for Width {
 impl const Identity for Width {
     const ZERO: Self = Width(<u16 as Identity>::ZERO);
     const ONE: Self = Width(<u16 as Identity>::ONE);
+}
+
+/// Canonical `ConstFrom<u16>` impl for `Width`.
+///
+/// Wraps a u16 literal into the typed `Width` carrier in const context.
+/// Round 4 (#314) ships `ConstFrom<T>` as a substrate bridge; this impl
+/// is the canonical exercise of the trait shape.
+impl const ConstFrom<u16> for Width {
+    #[inline(always)]
+    // lint:allow(no-bare-numeric) reason: definition-site exception 4 — ergonomic helper-fn parameter constructing arvo type from u16 literal; tracked: #314
+    fn const_from(value: u16) -> Self {
+        Width(value)
+    }
 }
 
 /// Construct a `Width` from a u16 literal.

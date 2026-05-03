@@ -98,6 +98,14 @@ where
 {
     #[inline]
     fn update(&mut self, bytes: &[u8]) {
+        // Buffer overflow is a contract violation (the streaming surface
+        // bounds at 256 bytes by design; consumers above that band reach
+        // for `ConstHash::hash_const`). Visible in debug, silent in
+        // release to match the no-overhead substrate philosophy.
+        debug_assert!(
+            self.pos + bytes.len() <= self.buffer.len(),
+            "XxHash3<N>::update exceeds 256-byte buffer; use ConstHash::hash_const for the full byte slice"
+        );
         // lint:allow(no-bare-numeric) reason: streaming-buffer copy; bounded by 256-byte stack buffer; tracked: #259
         let mut i = 0;
         while i < bytes.len() && self.pos < self.buffer.len() {
