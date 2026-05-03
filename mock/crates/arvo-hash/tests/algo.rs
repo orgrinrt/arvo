@@ -1,8 +1,13 @@
 //! Trait-bound sanity: a trivial Hasher<N> implementor compiles,
-//! and HasherExt's blanket hash() method is callable.
+//! and the streaming `update` / `finalize` round-trip works.
+
+#![feature(adt_const_params)]
+#![feature(const_trait_impl)]
+#![feature(generic_const_exprs)]
+#![allow(incomplete_features)]
 
 use arvo::{Bits, Hot};
-use arvo_hash::{Hasher, HasherExt};
+use arvo_hash::Hasher;
 
 /// Minimal test hasher: XORs each incoming byte into a running
 /// 28-bit state. Not a real hash algorithm; exists to prove the
@@ -42,8 +47,10 @@ fn hasher_streaming_path() {
 }
 
 #[test]
-fn hasher_ext_oneshot_blanket() {
-    let got = XorHash28::default().hash(b"hello world");
+fn hasher_streaming_oneshot_via_update_finalize() {
+    let mut h = XorHash28::default();
+    h.update(b"hello world");
+    let got = h.finalize();
     // lint:allow(no-bare-numeric) reason: test scaffolding; tracked: #256
     let mut expected: u64 = 0;
     for &b in b"hello world" {

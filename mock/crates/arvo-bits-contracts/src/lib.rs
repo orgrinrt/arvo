@@ -30,8 +30,10 @@ use arvo_transparent::Transparent;
 
 mod bits_impl;
 mod cross_domain;
+mod narrow_from;
 mod widen;
 
+pub use narrow_from::NarrowFromU64;
 pub use widen::{Widen, Widened};
 
 mod sealed {

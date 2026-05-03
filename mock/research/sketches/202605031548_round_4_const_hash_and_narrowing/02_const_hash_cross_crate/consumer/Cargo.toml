@@ -1,0 +1,12 @@
+[package]
+name = "sketch-consumer"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+sketch-provider = { path = "../provider" }
+
+[[bin]]
+name = "consumer"
+path = "src/main.rs"

@@ -22,7 +22,7 @@
 
 use core::marker::ConstParamTy;
 
-use crate::{Bounded, Identity};
+use crate::{Bounded, ConstFrom, Identity};
 
 /// Logical bit-width carrier.
 ///
@@ -57,6 +57,19 @@ impl const Bounded for Width {
 impl const Identity for Width {
     const ZERO: Self = Width(<u16 as Identity>::ZERO);
     const ONE: Self = Width(<u16 as Identity>::ONE);
+}
+
+/// Canonical `ConstFrom<u16>` impl for `Width`.
+///
+/// Wraps a u16 literal into the typed `Width` carrier in const context.
+/// Round 4 (#314) ships `ConstFrom<T>` as a substrate bridge; this impl
+/// is the canonical exercise of the trait shape.
+impl const ConstFrom<u16> for Width {
+    #[inline(always)]
+    // lint:allow(no-bare-numeric) reason: definition-site exception 4 — ergonomic helper-fn parameter constructing arvo type from u16 literal; tracked: #314
+    fn const_from(value: u16) -> Self {
+        Width(value)
+    }
 }
 
 /// Construct a `Width` from a u16 literal.
@@ -127,4 +140,25 @@ pub const fn tag(n: Width) -> usize {
 #[inline(always)]
 pub const fn bytes_for(n: Width) -> usize {
     (n.0 as usize).div_ceil(8)
+}
+
+/// Mask the low N bits of a u64.
+///
+/// Returns `(1 << N) - 1` for `N < 64`; saturates to `u64::MAX` for `N >= 64`
+/// to avoid the `1u64 << 64` undefined-behaviour shift.
+///
+/// Used by `NarrowFromU64` (arvo-bits-contracts) and any consumer that
+/// needs to mask a u64 algorithm-state to N bits. Centralises the
+/// pattern previously inlined four times in the FNV-1a / XxHash3 macro
+/// pastes in arvo-hash.
+// lint:allow(no-bare-numeric) reason: helper returns a u64 mask for use in
+// algorithm-state narrowing; both parameter and return are algorithm-fixed
+// widths at the substrate's u64-state hash boundary; tracked: #314
+#[inline(always)]
+pub const fn mask_low_bits(n: u16) -> u64 {
+    if n >= 64 {
+        u64::MAX
+    } else {
+        (1u64 << n) - 1
+    }
 }

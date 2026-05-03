@@ -44,7 +44,7 @@
 //! `MultiContainer`'s lo-first cascade and matches `u128::trailing_zeros`
 //! semantics.
 
-use arvo_transparent::Transparent;
+use arvo_transparent::{ConstAsRef, ConstDeref, Transparent};
 
 /// Alignment marker trait. Implementations are zero-sized types
 /// whose `repr(C, align(N))` gives the desired alignment when
@@ -148,5 +148,31 @@ impl<const BYTES: usize, A: Align> Default for WideBits<BYTES, A> {
     #[inline(always)]
     fn default() -> Self {
         Self::zero()
+    }
+}
+
+/// Canonical `ConstDeref` impl for `WideBits<BYTES, A>`.
+///
+/// Round 4 (#314) follow-up: ships the bridge family with at least one
+/// canonical impl per trait so the trait shape is exercised. Mirrors
+/// `core::ops::Deref` for the const-callable path; consumers reach for
+/// the underlying byte sequence in const context via `const_deref()`.
+impl<const BYTES: usize, A: Align> const ConstDeref for WideBits<BYTES, A> {
+    type Target = [u8; BYTES];
+    #[inline(always)]
+    fn const_deref(&self) -> &Self::Target {
+        &self.bytes
+    }
+}
+
+/// Canonical `ConstAsRef<[u8; BYTES]>` impl for `WideBits<BYTES, A>`.
+///
+/// Same shape as the `ConstDeref` impl above; the as-ref form is the
+/// idiomatic choice when consumer code carries a `&[u8; BYTES]` bound
+/// rather than relying on auto-deref.
+impl<const BYTES: usize, A: Align> const ConstAsRef<[u8; BYTES]> for WideBits<BYTES, A> {
+    #[inline(always)]
+    fn const_as_ref(&self) -> &[u8; BYTES] {
+        &self.bytes
     }
 }
