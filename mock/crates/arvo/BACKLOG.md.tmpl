@@ -15,15 +15,12 @@ trait-only surface. Four substrate bridges are deferred to later
 rounds within PR #42; the authoritative tracking lives in
 `arvo-strategy/BACKLOG.md.tmpl` under "Tracked bridge expansions":
 
-- ConstFrom / ConstTryFrom — Round 4 / #314
-- ConstDeref / ConstAsRef — Round 4 / #314
-- ConstTry / ConstControlFlow — Round 5 / #315
-- ConstHash / ConstHasher — Round 5 / #315
+- ConstFrom / ConstTryFrom — SHIPPED in round 202605031548 (#314)
+- ConstDeref / ConstAsRef — SHIPPED in round 202605031548 (#314)
+- ConstHash<N, S, Sign> + NarrowFromU64<N, S, Sign> — SHIPPED in round 202605031548 (#314); replaces the Round 5 deferred ConstHash entry
+- ConstTry / ConstControlFlow — Round 5 / #315 (deferred)
 
-Consumers needing const-callable Deref / From / TryFrom / Try / Hash
-on substrate types reach for the bridge name in those rounds. Until
-then, the stdlib trait remains the only available surface for those
-six axes, non-const.
+Consumers needing const-callable Deref / From / TryFrom on substrate types reach for the bridge name shipping in this round. Const-callable Try lands in Round 5; the stdlib `?` operator is still the surface for boundary use.
 
 ## Round 202604271346 forward-looking entries
 
