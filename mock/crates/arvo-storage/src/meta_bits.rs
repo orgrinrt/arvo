@@ -3,7 +3,7 @@
 //! `IBits`, `FBits`, `Width` carry bit-count semantics distinct from
 //! bare `u8`. They derive `ConstParamTy` so they appear as
 //! const-generic parameters on `UFixed<const I: IBits, ...>`,
-//! `IFixed<const I: IBits, ...>`, `Hasher<const N: Width>`, etc.
+//! `IFixed<const I: IBits, ...>`, and similar typed-const positions.
 //!
 //! The `meta_bits_wrapper!` macro DRYs the ergonomic surface so each
 //! type gets the same accessor set without duplication.
@@ -296,8 +296,10 @@ meta_bits_wrapper! {
 meta_bits_wrapper! {
     /// Bit-width meta value (1..=128).
     ///
-    /// Used as the const-generic param type for `Hasher<const N: Width>`
-    /// and `Fnv1a<const N: Width>` (in arvo-hash).
+    /// Pre-#316 carrier for the `Hasher<const N>` / `Fnv1a<const N>`
+    /// const-generic position. Post-#316 those types take `const N: u16`
+    /// directly. `Width` retains its typed-const role for surfaces that
+    /// still benefit from a tagged carrier.
     pub struct Width;
     helper width;
 }

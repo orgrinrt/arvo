@@ -136,7 +136,14 @@ pub const trait BitsContainerFor<const N: u16, Sign: Signedness>: Strategy {
 
 /// Bucket-keyed projection helper. Per-Strategy impls below cover
 /// every reachable `(TAG, Sign, S)` combination for that Strategy.
-pub trait Project<const TAG: usize, Sign: Signedness, const BYTES: usize, S: Strategy> {
+///
+/// Sealed via the `crate::sealed::Sealed` supertrait. Downstream
+/// consumers cannot add `impl Project<6, ..., Picker>` etc.; only
+/// types in this crate that impl `Sealed` can implement `Project`.
+/// Today the sole implementor is `Picker`.
+pub trait Project<const TAG: usize, Sign: Signedness, const BYTES: usize, S: Strategy>:
+    crate::sealed::Sealed
+{
     /// Concrete storage type for this projection slot.
     type T: Copy
         + Clone
@@ -149,71 +156,80 @@ pub trait Project<const TAG: usize, Sign: Signedness, const BYTES: usize, S: Str
 }
 
 /// Single dispatch site for `Project` impls. Zero-sized.
+///
+/// Stays `pub` because it appears in the public associated-type body
+/// of every `BitsContainerFor` impl (`type T = <Picker as Project<...>>::T`).
+/// Demoting `Picker` to `pub(crate)` triggers `E0446: private type Picker
+/// in public interface` per round 202605031548 sketch 02 finding 2. The
+/// gate against downstream impls is the `Project` seal, not Picker's
+/// visibility.
 pub struct Picker;
 
+impl crate::sealed::Sealed for Picker {}
+
 // ---------------------------------------------------------------------------
-// Native bucket Project impls (Strategy-aware).
+// Native bucket Project impls (Strategy-aware), via macro_rules.
 //
 // Hot / Cold: minimum aligned (5 buckets per Sign).
 // Warm / Precise: 2x logical (4 buckets per Sign; no bucket 4).
 //
 // The `BYTES` generic is unused for native impls; consumers always
-// pass `bytes_for(N)` but the projection ignores it at native TAGs.
+// pass `bytes_for_u16(N)` but the projection ignores it at native TAGs.
+//
+// Per round 202605031548 (#314), the 40 hand-written native-bucket
+// impl blocks collapse to 4 macro invocations (one per Strategy).
+// Total impl count is unchanged; source-line count drops by ~70%.
 // ---------------------------------------------------------------------------
 
-// Hot native (unsigned)
-impl<const BYTES: usize> Project<0, Unsigned, BYTES, Hot> for Picker { type T = u8; }
-impl<const BYTES: usize> Project<1, Unsigned, BYTES, Hot> for Picker { type T = u16; }
-impl<const BYTES: usize> Project<2, Unsigned, BYTES, Hot> for Picker { type T = u32; }
-impl<const BYTES: usize> Project<3, Unsigned, BYTES, Hot> for Picker { type T = u64; }
-impl<const BYTES: usize> Project<4, Unsigned, BYTES, Hot> for Picker { type T = u128; }
+macro_rules! impl_native_bucket {
+    (
+        $strategy:ty,
+        [ $( $u_tag:literal => $u_ty:ty ),+ $(,)? ],
+        [ $( $i_tag:literal => $i_ty:ty ),+ $(,)? ]
+        $(,)?
+    ) => {
+        $(
+            impl<const BYTES: usize> Project<$u_tag, Unsigned, BYTES, $strategy> for Picker {
+                type T = $u_ty;
+            }
+        )+
+        $(
+            impl<const BYTES: usize> Project<$i_tag, Signed, BYTES, $strategy> for Picker {
+                type T = $i_ty;
+            }
+        )+
+    };
+}
 
-// Hot native (signed)
-impl<const BYTES: usize> Project<0, Signed, BYTES, Hot> for Picker { type T = i8; }
-impl<const BYTES: usize> Project<1, Signed, BYTES, Hot> for Picker { type T = i16; }
-impl<const BYTES: usize> Project<2, Signed, BYTES, Hot> for Picker { type T = i32; }
-impl<const BYTES: usize> Project<3, Signed, BYTES, Hot> for Picker { type T = i64; }
-impl<const BYTES: usize> Project<4, Signed, BYTES, Hot> for Picker { type T = i128; }
+// Hot: 5 buckets, min aligned native ladder.
+impl_native_bucket!(
+    Hot,
+    [0 => u8, 1 => u16, 2 => u32, 3 => u64, 4 => u128],
+    [0 => i8, 1 => i16, 2 => i32, 3 => i64, 4 => i128],
+);
 
-// Cold native (unsigned). Same widths as Hot; bitpacking is an
-// access-path concern, not a container-type concern.
-impl<const BYTES: usize> Project<0, Unsigned, BYTES, Cold> for Picker { type T = u8; }
-impl<const BYTES: usize> Project<1, Unsigned, BYTES, Cold> for Picker { type T = u16; }
-impl<const BYTES: usize> Project<2, Unsigned, BYTES, Cold> for Picker { type T = u32; }
-impl<const BYTES: usize> Project<3, Unsigned, BYTES, Cold> for Picker { type T = u64; }
-impl<const BYTES: usize> Project<4, Unsigned, BYTES, Cold> for Picker { type T = u128; }
+// Cold: same primitive ladder as Hot; bitpacking is an access-path
+// concern, not a container-type concern.
+impl_native_bucket!(
+    Cold,
+    [0 => u8, 1 => u16, 2 => u32, 3 => u64, 4 => u128],
+    [0 => i8, 1 => i16, 2 => i32, 3 => i64, 4 => i128],
+);
 
-// Cold native (signed)
-impl<const BYTES: usize> Project<0, Signed, BYTES, Cold> for Picker { type T = i8; }
-impl<const BYTES: usize> Project<1, Signed, BYTES, Cold> for Picker { type T = i16; }
-impl<const BYTES: usize> Project<2, Signed, BYTES, Cold> for Picker { type T = i32; }
-impl<const BYTES: usize> Project<3, Signed, BYTES, Cold> for Picker { type T = i64; }
-impl<const BYTES: usize> Project<4, Signed, BYTES, Cold> for Picker { type T = i128; }
+// Warm: 4 buckets, 2x-logical native ladder. 1..=8 dispatches to u16, etc.
+impl_native_bucket!(
+    Warm,
+    [0 => u16, 1 => u32, 2 => u64, 3 => u128],
+    [0 => i16, 1 => i32, 2 => i64, 3 => i128],
+);
 
-// Warm native (unsigned). 2x logical: 1..=8 → u16, etc.
-impl<const BYTES: usize> Project<0, Unsigned, BYTES, Warm> for Picker { type T = u16; }
-impl<const BYTES: usize> Project<1, Unsigned, BYTES, Warm> for Picker { type T = u32; }
-impl<const BYTES: usize> Project<2, Unsigned, BYTES, Warm> for Picker { type T = u64; }
-impl<const BYTES: usize> Project<3, Unsigned, BYTES, Warm> for Picker { type T = u128; }
-
-// Warm native (signed)
-impl<const BYTES: usize> Project<0, Signed, BYTES, Warm> for Picker { type T = i16; }
-impl<const BYTES: usize> Project<1, Signed, BYTES, Warm> for Picker { type T = i32; }
-impl<const BYTES: usize> Project<2, Signed, BYTES, Warm> for Picker { type T = i64; }
-impl<const BYTES: usize> Project<3, Signed, BYTES, Warm> for Picker { type T = i128; }
-
-// Precise native (unsigned). Same widths as Warm; saturating
-// semantics implemented in arith.rs, container shape is identical.
-impl<const BYTES: usize> Project<0, Unsigned, BYTES, Precise> for Picker { type T = u16; }
-impl<const BYTES: usize> Project<1, Unsigned, BYTES, Precise> for Picker { type T = u32; }
-impl<const BYTES: usize> Project<2, Unsigned, BYTES, Precise> for Picker { type T = u64; }
-impl<const BYTES: usize> Project<3, Unsigned, BYTES, Precise> for Picker { type T = u128; }
-
-// Precise native (signed)
-impl<const BYTES: usize> Project<0, Signed, BYTES, Precise> for Picker { type T = i16; }
-impl<const BYTES: usize> Project<1, Signed, BYTES, Precise> for Picker { type T = i32; }
-impl<const BYTES: usize> Project<2, Signed, BYTES, Precise> for Picker { type T = i64; }
-impl<const BYTES: usize> Project<3, Signed, BYTES, Precise> for Picker { type T = i128; }
+// Precise: same primitive ladder as Warm; saturating semantics
+// implemented in arith.rs, container shape is identical.
+impl_native_bucket!(
+    Precise,
+    [0 => u16, 1 => u32, 2 => u64, 3 => u128],
+    [0 => i16, 1 => i32, 2 => i64, 3 => i128],
+);
 
 // ---------------------------------------------------------------------------
 // Wide bucket Project impls (TAG=5).

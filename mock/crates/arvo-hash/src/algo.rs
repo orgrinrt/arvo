@@ -1,24 +1,31 @@
 //! Hash algorithm contracts + free FNV-1a-64 helper.
 //!
-//! Concrete algorithms implement `Hasher<N>`. The blanket impl of
-//! `HasherExt<N>` over every `Hasher<N>` exposes a `hash(bytes)`
-//! one-shot form without extra work at the impl site.
+//! Two trait surfaces:
+//!
+//! - `Hasher<N>`: streaming. Feed bytes via `update`; finalise to a
+//!   `Bits<N, Hot>`.
+//! - `ConstHash<N, S, Sign>`: one-shot, const-callable. Produces a
+//!   typed `Bits<N, S, Sign>` from a byte slice in const context.
+//!
+//! `ConstHash` replaces the prior per-N `hash_const` inherent method
+//! pattern (round 4 / #314). `HasherExt` is removed; one-shot
+//! ergonomics ride on `ConstHash`. Streaming and one-shot are now
+//! independent trait surfaces; consumers pick the one that fits.
 
-use arvo::strategy::{BitsContainerFor, Unsigned};
+use arvo::strategy::{BitsContainerFor, Signed, Signedness, Strategy, Unsigned};
 use arvo::{Bits, Hot};
+use arvo_bits_contracts::NarrowFromU64;
 
 /// Streaming N-bit hasher. Feed bytes via `update`, finalise to a
 /// `Bits<N, Hot>`.
 ///
-/// Algorithms implement this trait. One-shot ergonomics come from
-/// the `HasherExt<N>` ext trait via its blanket impl.
+/// Algorithms implement this trait. The bounded-generic `impl<const N: u16>
+/// Hasher<N>` per algorithm replaces the prior 64-impl macro paste:
+/// the width-dispatched narrowing step lifts to `NarrowFromU64<N, S, Sign>`
+/// (declared in `arvo-bits-contracts`).
 ///
-/// `N` is `u8` directly rather than the `Width` meta-newtype because
-/// nested const-fn evaluation at trait-bound resolution
-/// (`where Hot: BitsContainerFor<{ width_u8(N) }, Unsigned>`) is unreliable on
-/// current nightly under generic_const_exprs. The bound resolves
-/// cleanly with bare `const N: u16`. The Width newtype is preserved
-/// for typed const-generic positions where evaluation is local.
+/// `N` is `u16` directly (matches the substrate cap; round 202605031400
+/// removed the `Width` newtype layer).
 pub trait Hasher<const N: u16>
 where
     Hot: BitsContainerFor<N, Unsigned>,
@@ -30,36 +37,38 @@ where
     fn finalize(self) -> Bits<N, Hot>;
 }
 
-/// One-shot convenience: update with all bytes, then finalize.
+/// Compile-time, one-shot hash construction.
 ///
-/// Blanket-implemented for every `Hasher<N>`. Consumers bind
-/// `H: HasherExt<N>`, or `H: Hasher<N>` with the ext trait in
-/// scope, to call `.hash(bytes)` on any hasher.
-pub trait HasherExt<const N: u16>: Hasher<N> + Sized
+/// Produces a typed `Bits<N, S, Sign>` from a byte slice in const
+/// context. Mirrors the strategy-aware `BitsContainerFor<N, Sign>`
+/// cascade.
+///
+/// The `[const]` host-effect bound on the supertrait constraint is
+/// required for cross-crate const dispatch. Sketch 02 (round
+/// 202605031548) validates the chain `ConstHash → NarrowFromU64
+/// → BitsContainerFor → Project` resolves at both compile time and
+/// runtime in a downstream crate.
+///
+/// Algorithms implement once each, generic over `N`. Consumer code
+/// reaches for `<Fnv1a<N> as ConstHash<N, Hot, Unsigned>>::hash_const(bytes)`,
+/// or imports the trait and writes `Fnv1a::<N>::hash_const(bytes)`
+/// resolved through trait associated-fn lookup.
+pub const trait ConstHash<const N: u16, S: Strategy, Sign: Signedness>: Sized
 where
-    Hot: BitsContainerFor<N, Unsigned>,
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] NarrowFromU64<N, S, Sign>,
 {
-    /// Hash a complete byte slice in one pass.
-    fn hash(mut self, bytes: &[u8]) -> Bits<N, Hot> {
-        self.update(bytes);
-        self.finalize()
-    }
-}
-
-impl<H, const N: u16> HasherExt<N> for H
-where
-    H: Hasher<N> + Sized,
-    Hot: BitsContainerFor<N, Unsigned>,
-{
+    /// Hash the byte slice and produce the typed N-bit digest.
+    fn hash_const(bytes: &[u8]) -> Bits<N, S, Sign>;
 }
 
 /// FNV-1a-64 over a byte slice (free const fn).
 ///
 /// Returns the raw 64-bit state. Concrete `Hasher<N>` implementors
-/// mask to N bits, cast to `<Hot as BitsContainerFor<N, Unsigned>>::T`, and
-/// construct via `Bits::from_raw` (per the doc CL D-7 spec). The
-/// `&[u8]` parameter is workspace-rule exception #4 (boundary input
-/// from raw bytes); the `u64` return is the algorithm's state-width.
+/// mask to N bits via `NarrowFromU64`. The `&[u8]` parameter is
+/// workspace-rule exception #4 (boundary input from raw bytes;
+/// canonical hash input shape); the `u64` return is the algorithm's
+/// state-width.
 // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: FNV-1a-64 algorithm boundary; raw byte slice in, raw u64 state out per algorithm contract; tracked: #256
 pub const fn fnv1a_64(bytes: &[u8]) -> u64 {
     const FNV_OFFSET_BASIS: u64 = 0xcbf2_9ce4_8422_2325;
@@ -73,3 +82,14 @@ pub const fn fnv1a_64(bytes: &[u8]) -> u64 {
     }
     hash
 }
+
+// Suppress unused-import lint for `Signed`: it appears in the
+// `ConstHash<N, S, Sign>` Sign bound but rustc currently does not
+// flag the import as used because the trait is generic. Keep the
+// import so consumers writing `impl ConstHash<N, S, Signed>` can
+// resolve the marker through this crate's re-export surface.
+#[allow(dead_code)]
+const _: fn() = || {
+    fn _bound<T: Signedness>() {}
+    _bound::<Signed>();
+};

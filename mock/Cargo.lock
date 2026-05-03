@@ -91,6 +91,7 @@ name = "arvo-hash"
 version = "0.1.0"
 dependencies = [
  "arvo",
+ "arvo-bits-contracts",
  "mockspace",
  "xxhash-rust",
 ]
@@ -216,6 +217,7 @@ checksum = "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582"
 name = "fnv1a"
 version = "0.0.0"
 dependencies = [
+ "arvo",
  "arvo-hash",
  "mockspace-bench-core",
  "mockspace-bench-macro",
@@ -643,6 +645,7 @@ checksum = "fdd20c5420375476fbd4394763288da7eb0cc0b8c11deed431a91562af7335d3"
 name = "xxhash3"
 version = "0.0.0"
 dependencies = [
+ "arvo",
  "arvo-hash",
  "mockspace-bench-core",
  "mockspace-bench-macro",
