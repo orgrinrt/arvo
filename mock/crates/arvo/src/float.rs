@@ -13,45 +13,12 @@
 //! implement `Ieee`.
 
 use crate::markers::FloatLike;
-use crate::strategy::{Bounded, ConstBitEq, ConstDefault, ConstPartialEq, Identity};
+use crate::strategy::{Bounded, ConstBitEq, ConstDefault, ConstPartialEq, Identity, Ieee};
 use arvo_storage::Bool;
 
-mod sealed {
-    /// Hidden supertrait used to seal `Ieee`.
-    pub trait Sealed {}
-    impl Sealed for f32 {}
-    impl Sealed for f64 {}
-}
-
-/// IEEE float width marker. Sealed: implementable only for `f32`
-/// and `f64`.
-///
-/// Carries `[const] Identity + [const] Bounded` as supertraits so
-/// consumers reach for `<F as Identity>::ZERO` / `<F as Identity>::ONE`
-/// / `<F as Bounded>::MIN` / `<F as Bounded>::MAX` rather than
-/// type-specific inherent constants. The supertrait commitment is
-/// load-bearing: every future float implementor (the seal admits
-/// `f32` / `f64` today; later additions like `f16` / `bf16` / `f128`
-/// would require seal expansion in this file plus `arvo-strategy`'s
-/// `impl_bounded_identity_f!` extension to cover the new type at the
-/// substrate-level Bounded / Identity boundary). The `Identity` /
-/// `Bounded` impls on `f32` / `f64` ship from `arvo-strategy::arith`
-/// to satisfy orphan rules (the trait is in arvo-strategy; the type
-/// is from core; arvo facade can't impl across that boundary).
-pub const trait Ieee:
-    sealed::Sealed + Copy + Default + PartialEq + PartialOrd + [const] Identity + [const] Bounded + 'static
-{
-    /// Width of this IEEE type in bits.
-    const WIDTH: u16;
-}
-
-impl const Ieee for f32 {
-    const WIDTH: u16 = 32;
-}
-
-impl const Ieee for f64 {
-    const WIDTH: u16 = 64;
-}
+// Ieee + FromU8Ieee live in arvo-strategy::ieee per round 202605030400.
+// The arvo facade re-exports both at lib.rs level; consumer code
+// keeps the existing arvo::Ieee / arvo::FromU8Ieee paths.
 
 /// Fast-math IEEE wrapper.
 ///

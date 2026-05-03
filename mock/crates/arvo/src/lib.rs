@@ -46,14 +46,14 @@ pub use arvo_numeric_contracts::{
 pub use arvo_storage::{
     AsBool, Bits, Bool, Cap, FBits, IBits, USize, Width, fbits, ibits, width,
 };
-pub use float::{FastFloat, Float, Ieee, StrictFloat};
+pub use float::{FastFloat, Float, StrictFloat};
 pub use ifixed::IFixed;
 pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLike};
 pub use predicate::{Pred, Pred2, Pred3};
 pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
 pub use strategy::{
     Bounded, Cold, ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
-    Hot, Identity, Precise, SignedIdentity, Strategy, Warm, width_le_64,
+    FromU8Ieee, Hot, Identity, Ieee, Precise, SignedIdentity, Strategy, Warm, width_le_64,
 };
 pub use traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
 pub use transparent::{NumericPrimitive, Transparent, raw};

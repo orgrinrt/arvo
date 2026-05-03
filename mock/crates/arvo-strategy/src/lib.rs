@@ -38,6 +38,7 @@ mod arith;
 mod axes;
 mod container;
 mod cross_strategy;
+mod ieee;
 mod multi_container;
 mod widen;
 
@@ -45,6 +46,7 @@ pub use arith::{
     Bounded, IArith, ISaturating, Identity, SignedIdentity, UArith, USaturating,
 };
 pub use cross_strategy::CrossStrategyOp;
+pub use ieee::{FromU8Ieee, Ieee};
 pub use axes::{
     Bitpacked, ContainerWidth, Dense, DoubleLogical, HasAxes, Min, OverflowPolicy, Saturating,
     StorageLayout, Wrapping,

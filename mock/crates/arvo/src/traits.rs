@@ -20,13 +20,14 @@
 
 use core::cmp::Ordering;
 
-use crate::float::{FastFloat, Ieee, StrictFloat};
+use crate::float::{FastFloat, StrictFloat};
 use crate::ifixed::IFixed;
 pub use arvo_numeric_contracts::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
 use arvo_storage::{FBits, IBits, USize, fbits, ibits};
 use arvo_transparent::Transparent;
 use crate::strategy::{
-    Cold, Hot, IContainerFor, Precise, Strategy, UContainerFor, Warm, ifixed_bits, ufixed_bits,
+    Cold, FromU8Ieee, Hot, IContainerFor, Ieee, Precise, Strategy, UContainerFor, Warm,
+    ifixed_bits, ufixed_bits,
 };
 use crate::ufixed::UFixed;
 
@@ -709,25 +710,10 @@ impl<F: [const] Ieee + [const] FromU8Ieee> const FromConstant for StrictFloat<F>
     }
 }
 
-/// Lossless `u8 -> IEEE float` bridge.
-pub const trait FromU8Ieee: Ieee {
-    /// Convert the given `u8` into this IEEE float type.
-    fn from_u8_ieee(n: u8) -> Self;
-}
-
-impl const FromU8Ieee for f32 {
-    #[inline(always)]
-    fn from_u8_ieee(n: u8) -> Self {
-        n as f32
-    }
-}
-
-impl const FromU8Ieee for f64 {
-    #[inline(always)]
-    fn from_u8_ieee(n: u8) -> Self {
-        n as f64
-    }
-}
+// FromU8Ieee lives in arvo-strategy::ieee per round 202605030400.
+// The arvo facade re-exports it at lib.rs level; consumer code keeps
+// the existing arvo::FromU8Ieee path. The FromConstant impls above
+// reach the trait via the crate::FromU8Ieee re-export path.
 
 // --- Float ConstSign impls — feed the predicate-wrapper blankets --------
 //

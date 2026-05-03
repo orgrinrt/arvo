@@ -20,8 +20,8 @@ pub use arvo_storage::{
     ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
 };
 pub use arvo_strategy::{
-    BitsContainerFor, Bounded, Cold, Hot, IArith, IContainerFor, INarrowFrom,
-    ISaturating, IWidenFrom, Identity, Precise, Resolve, Signed, SignedIdentity, Signedness,
+    BitsContainerFor, Bounded, Cold, FromU8Ieee, Hot, IArith, IContainerFor, INarrowFrom,
+    ISaturating, IWidenFrom, Identity, Ieee, Precise, Resolve, Signed, SignedIdentity, Signedness,
     Strategy, UArith, UContainerFor, UNarrowFrom, USaturating, UWidenFrom, Unsigned, Warm,
 };
 

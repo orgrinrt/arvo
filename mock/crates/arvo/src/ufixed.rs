@@ -205,7 +205,7 @@ impl<const I: IBits, const F: FBits, S: Strategy> const BitPresentation for UFix
 where
     S: UContainerFor<{ ufixed_bits(I, F) }>,
 {
-    const LOGICAL_WIDTH: USize = USize(I.raw() as usize + F.raw() as usize);
+    const LOGICAL_WIDTH: USize = crate::markers::logical_width_unsigned(I, F);
 }
 
 // IntegerLike: only when F == 0. Using the named `FBits::ZERO`

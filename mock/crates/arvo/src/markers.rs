@@ -41,6 +41,22 @@ pub const trait BitPresentation: Copy {
     const LOGICAL_WIDTH: USize;
 }
 
+/// Compose `LOGICAL_WIDTH` for `UFixed<I, F, S>`. Round 202605030400
+/// extracts the meta-bit composition into a typed-surface helper so
+/// the impl body reads as one call.
+#[inline(always)]
+pub const fn logical_width_unsigned(i: IBits, f: FBits) -> USize {
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: typed-meta-bit boundary lift to USize; tracked: #312
+    USize(i.raw() as usize + f.raw() as usize)
+}
+
+/// Compose `LOGICAL_WIDTH` for `IFixed<I, F, S>` (1 sign bit + I + F).
+#[inline(always)]
+pub const fn logical_width_signed(i: IBits, f: FBits) -> USize {
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: typed-meta-bit boundary lift to USize; tracked: #312
+    USize(1 + i.raw() as usize + f.raw() as usize)
+}
+
 /// Marker for IEEE-float-wrapping types.
 ///
 /// `FastFloat` and `StrictFloat`. These do not carry a `Strategy`

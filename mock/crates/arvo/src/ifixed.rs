@@ -199,7 +199,7 @@ impl<const I: IBits, const F: FBits, S: Strategy> const BitPresentation for IFix
 where
     S: IContainerFor<{ ifixed_bits(I, F) }>,
 {
-    const LOGICAL_WIDTH: USize = USize(1 + I.raw() as usize + F.raw() as usize);
+    const LOGICAL_WIDTH: USize = crate::markers::logical_width_signed(I, F);
 }
 
 impl<const I: IBits, S: Strategy> const IntegerLike for IFixed<I, { FBits::ZERO }, S> where
