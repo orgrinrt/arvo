@@ -1,15 +1,19 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
+#![feature(const_ops)]
 #![feature(const_param_ty_trait)]
+#![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 //! arvo-strategy. Strategy markers + container-projection traits.
 //!
 //! `Hot` / `Warm` / `Cold` / `Precise` ZSTs. `Strategy` marker
-//! trait. `UContainerFor<N>` / `IContainerFor<N>` const traits
-//! projecting strategy + bit-width to bare primitive containers.
-//! `Resolve<S1, S2>` strategy resolution.
+//! trait. `BitsContainerFor<const N: u16, Sign: Signedness>` const
+//! trait projecting (strategy, bit-width, sign) to a concrete
+//! container via Pattern C const-tag dispatch through the
+//! `Project<TAG, Sign, BYTES, S>` helper. `Resolve<S1, S2>` strategy
+//! resolution.
 //!
 //! Four strategies determine container width, arithmetic semantics,
 //! and cross-width rules for `UFixed` / `IFixed`:
@@ -21,11 +25,15 @@
 //! | `Cold`   | min (bitpacked)    | widen-op-narrow      |
 //! | `Precise`| 2x logical         | saturating           |
 //!
-//! Container selection is handled by the sealed `UContainerFor` /
-//! `IContainerFor` const traits: one impl per (strategy, bit-range)
-//! pair. `Warm` is not implemented for the `33..=64` bit range,
-//! making `UFixed<_, _, Warm>` with `I + F > 32` a compile-time
-//! error per the doc CL D2 resolution.
+//! Container selection runs through the unified `BitsContainerFor`
+//! impl per Strategy. Hot / Cold cover `1..=128` natively (min aligned
+//! ladder); Warm / Precise cover `1..=64` natively (2x-logical ladder
+//! with no native bucket above N=64). Above the per-Strategy native
+//! cap, all four strategies project to `WideBits<bytes_for(N), A>`,
+//! where `A = A16` for Hot (SSE2 / NEON aligned baseline) and `A = A1`
+//! for Cold / Warm / Precise. `UFixed<_, _, Warm>` with `I + F > 64`
+//! is a compile-time error pointing at Hot or Cold via the
+//! `#[diagnostic::on_unimplemented]` note on `BitsContainerFor`.
 
 use core::marker::ConstParamTy;
 
@@ -37,17 +45,24 @@ mod arith;
 mod axes;
 mod container;
 mod cross_strategy;
-mod multi_container;
+mod ieee;
+mod widebits;
 mod widen;
+pub mod width;
 
-pub use arith::{IArith, ISaturating, UArith, USaturating};
+pub use widebits::{A1, A16, A32, A64, Align, WideBits};
+pub use width::{Width, bytes_for, tag, width, width_le_64, width_u16, width_u8};
+
+pub use arith::{
+    Bounded, IArith, ISaturating, Identity, SignedIdentity, UArith, USaturating,
+};
 pub use cross_strategy::CrossStrategyOp;
+pub use ieee::{FromU8Ieee, Ieee};
 pub use axes::{
     Bitpacked, ContainerWidth, Dense, DoubleLogical, HasAxes, Min, OverflowPolicy, Saturating,
     StorageLayout, Wrapping,
 };
-pub use container::{BitsContainerFor, IContainerFor, UContainerFor};
-pub use multi_container::{BitPrim, MultiContainer};
+pub use container::{BitsContainerFor, Picker, Project};
 pub use widen::{INarrowFrom, IWidenFrom, UNarrowFrom, UWidenFrom};
 
 /// Strategy marker trait.
@@ -140,8 +155,8 @@ impl const Strategy for Precise {
 ///
 /// The two implementors are `Unsigned` and `Signed` (zero-sized
 /// markers). Used as the `Sign` const-generic on `Bits<N, S, Sign>`
-/// and routed through `BitsContainerFor<N, Sign>` to either the
-/// `UContainerFor<N>` or `IContainerFor<N>` table.
+/// and routed through `BitsContainerFor<N, Sign>` to the dispatched
+/// container via Pattern C const-tag projection through `Project`.
 pub trait Signedness: sealed::Sealed + Copy + Clone + Default + 'static {}
 
 /// Unsigned bit pattern. Default `Sign` on `Bits<N, S, Sign>`.

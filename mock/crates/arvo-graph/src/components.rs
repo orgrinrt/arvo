@@ -8,7 +8,7 @@
 //! Visited tracking is a `Mask64`; the DFS stack is a fixed-size
 //! `[NodeId; cap_size(N)]` with a head index — no heap, no grow.
 
-use arvo::{Bool, Cap, USize};
+use arvo::{Identity, Bool, Cap, USize};
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Assign a component ID to every node.
@@ -35,7 +35,7 @@ where
 
         // Fresh component: seed is the root.
         let id = next_id;
-        next_id = USize(next_id.0 + 1);
+        next_id = next_id + USize::ONE;
 
         // Iterative DFS over undirected adjacency (succ + pred).
         let mut stack: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];

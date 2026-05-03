@@ -20,7 +20,7 @@
 //! substitute any `W` meeting the trait bounds.
 
 use arvo::USize;
-use arvo::strategy::Hot;
+use arvo::strategy::{Bounded, Hot, Identity};
 use arvo_bits::QWord;
 use arvo_bits_contracts::{BitAccess, BitSequence, HasBitWidth};
 
@@ -120,4 +120,50 @@ impl Default for Mask256 {
     fn default() -> Self {
         Self::empty()
     }
+}
+
+// --- Generic Bounded / Identity blankets (round 202605021600) ----------
+//
+// `Mask<W>::MIN` (empty / all-zero) and `Mask<W>::MAX` (full / all-ones)
+// flow through the underlying word's Bounded impl. The hand-coded
+// `pub const FULL = ...u64::MAX...` constants from round 202605021400
+// were leaky abstractions: the Mask<W> signature did not promise its
+// container's primitive width, but the constants assumed u64. The
+// blanket here removes that assumption: Mask<W>::MAX is always whatever
+// `<W as Bounded>::MAX` is, which is correct for any future container.
+//
+// Identity::ZERO is the empty mask (no bits set). ONE corresponds to
+// the underlying word's ONE (the lowest bit set), which is occasionally
+// useful for shift-and-test patterns.
+
+impl<W> const Bounded for Mask<W>
+where
+    W: BitSequence + BitAccess + Copy + Default + [const] Bounded,
+{
+    const MIN: Self = Self::from_word(<W as Bounded>::MIN);
+    const MAX: Self = Self::from_word(<W as Bounded>::MAX);
+}
+
+impl<W> const Identity for Mask<W>
+where
+    W: BitSequence + BitAccess + Copy + Default + [const] Identity,
+{
+    const ZERO: Self = Self::from_word(<W as Identity>::ZERO);
+    const ONE: Self = Self::from_word(<W as Identity>::ONE);
+}
+
+impl const Bounded for Mask256 {
+    const MIN: Self = Self([<QWord<Hot> as Bounded>::MIN; 4]);
+    const MAX: Self = Self([<QWord<Hot> as Bounded>::MAX; 4]);
+}
+
+impl const Identity for Mask256 {
+    const ZERO: Self = Self([<QWord<Hot> as Identity>::ZERO; 4]);
+    // ONE on Mask256 sets the lowest bit of the lowest word.
+    const ONE: Self = Self([
+        <QWord<Hot> as Identity>::ONE,
+        <QWord<Hot> as Identity>::ZERO,
+        <QWord<Hot> as Identity>::ZERO,
+        <QWord<Hot> as Identity>::ZERO,
+    ]);
 }

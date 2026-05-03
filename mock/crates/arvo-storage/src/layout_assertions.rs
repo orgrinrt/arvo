@@ -12,8 +12,8 @@
 //! - Every `Bits<N, S, Sign>` is `repr(transparent)` over its
 //!   `BitsContainerFor<N, Sign>` projection target. The assertions
 //!   pin this at boundary cells.
-//! - `MultiContainer<HiT, LoT>` uses `repr(C)` two-field layout.
-//!   The assertions pin size lower-bound and alignment.
+//! - `WideBits<BYTES, A>` uses `repr(C)` over `[A; 0]` + `[u8; BYTES]`.
+//!   The assertions pin size and alignment per `A` marker.
 //!
 //! The module is private (no `pub use`); assertions fire at compile
 //! time without exporting any surface. Adding a new transparency
@@ -24,8 +24,8 @@
 //! workaround and follow-on transparency chains.
 
 use arvo_strategy::{
-    Bitpacked, Cold, ContainerWidth, Dense, DoubleLogical, HasAxes, Hot, Min, MultiContainer,
-    OverflowPolicy, Precise, Saturating, Signed, StorageLayout, Unsigned, Warm, Wrapping,
+    A1, A16, Bitpacked, Cold, ContainerWidth, Dense, DoubleLogical, HasAxes, Hot, Min,
+    OverflowPolicy, Precise, Saturating, Signed, StorageLayout, Unsigned, Warm, WideBits, Wrapping,
 };
 
 use crate::{Bits, FBits, IBits, MetaCarrier, Width};
@@ -72,10 +72,14 @@ assert_layout_eq!(Bits<33, Hot, Unsigned>, u64);
 assert_layout_eq!(Bits<64, Hot, Unsigned>, u64);
 assert_layout_eq!(Bits<65, Hot, Unsigned>, u128);
 assert_layout_eq!(Bits<128, Hot, Unsigned>, u128);
-assert_layout_eq!(Bits<129, Hot, Unsigned>, MultiContainer<u64, u128>);
-assert_layout_eq!(Bits<192, Hot, Unsigned>, MultiContainer<u64, u128>);
-assert_layout_eq!(Bits<193, Hot, Unsigned>, MultiContainer<u128, u128>);
-assert_layout_eq!(Bits<255, Hot, Unsigned>, MultiContainer<u128, u128>);
+// Hot wide bucket projects to WideBits<bytes_for(N), A16>. The
+// alignment baseline (A16) produces 32-byte physical size for
+// 17..=32 byte payloads, matching the canonical pre-redesign
+// envelope at the same width. Audit-validated by sketch 01.
+assert_layout_eq!(Bits<129, Hot, Unsigned>, WideBits<17, A16>);
+assert_layout_eq!(Bits<192, Hot, Unsigned>, WideBits<24, A16>);
+assert_layout_eq!(Bits<193, Hot, Unsigned>, WideBits<25, A16>);
+assert_layout_eq!(Bits<255, Hot, Unsigned>, WideBits<32, A16>);
 
 // --- Tier 2: Bits projection: Hot, signed --------------------------------
 
@@ -89,10 +93,13 @@ assert_layout_eq!(Bits<33, Hot, Signed>, i64);
 assert_layout_eq!(Bits<64, Hot, Signed>, i64);
 assert_layout_eq!(Bits<65, Hot, Signed>, i128);
 assert_layout_eq!(Bits<128, Hot, Signed>, i128);
-assert_layout_eq!(Bits<129, Hot, Signed>, MultiContainer<i64, i128>);
-assert_layout_eq!(Bits<192, Hot, Signed>, MultiContainer<i64, i128>);
-assert_layout_eq!(Bits<193, Hot, Signed>, MultiContainer<i128, i128>);
-assert_layout_eq!(Bits<255, Hot, Signed>, MultiContainer<i128, i128>);
+// Hot wide bucket signed mirrors unsigned (Sign axis is structurally
+// transparent at the wide storage level; bit interpretation lives in
+// arvo-bits-contracts BitPrim impls).
+assert_layout_eq!(Bits<129, Hot, Signed>, WideBits<17, A16>);
+assert_layout_eq!(Bits<192, Hot, Signed>, WideBits<24, A16>);
+assert_layout_eq!(Bits<193, Hot, Signed>, WideBits<25, A16>);
+assert_layout_eq!(Bits<255, Hot, Signed>, WideBits<32, A16>);
 
 // --- Tier 2: Bits projection: Cold mirrors Hot ---------------------------
 
@@ -101,14 +108,17 @@ assert_layout_eq!(Bits<8, Cold, Unsigned>, u8);
 assert_layout_eq!(Bits<64, Cold, Unsigned>, u64);
 assert_layout_eq!(Bits<65, Cold, Unsigned>, u128);
 assert_layout_eq!(Bits<128, Cold, Unsigned>, u128);
-assert_layout_eq!(Bits<129, Cold, Unsigned>, MultiContainer<u64, u128>);
-assert_layout_eq!(Bits<255, Cold, Unsigned>, MultiContainer<u128, u128>);
+// Cold wide bucket projects to WideBits<bytes_for(N), A1>: align-1
+// byte-exact (Cold is bitpacked column-store; alignment on the
+// per-value container is not load-bearing).
+assert_layout_eq!(Bits<129, Cold, Unsigned>, WideBits<17, A1>);
+assert_layout_eq!(Bits<255, Cold, Unsigned>, WideBits<32, A1>);
 
 assert_layout_eq!(Bits<8, Cold, Signed>, i8);
 assert_layout_eq!(Bits<64, Cold, Signed>, i64);
 assert_layout_eq!(Bits<128, Cold, Signed>, i128);
-assert_layout_eq!(Bits<129, Cold, Signed>, MultiContainer<i64, i128>);
-assert_layout_eq!(Bits<255, Cold, Signed>, MultiContainer<i128, i128>);
+assert_layout_eq!(Bits<129, Cold, Signed>, WideBits<17, A1>);
+assert_layout_eq!(Bits<255, Cold, Signed>, WideBits<32, A1>);
 
 // --- Tier 2: Bits projection: Warm (2x logical, caps at 64) --------------
 
@@ -150,76 +160,60 @@ assert_layout_eq!(Bits<32, Precise, Signed>, i64);
 assert_layout_eq!(Bits<33, Precise, Signed>, i128);
 assert_layout_eq!(Bits<64, Precise, Signed>, i128);
 
-// --- Tier 4: MultiContainer layout invariants -----------------------------
+// --- Tier 4: WideBits layout invariants -----------------------------------
 //
-// `repr(C)` lays the struct out as `(hi, lo)` with field order. Alignment
-// is `max(align_of::<HiT>(), align_of::<LoT>())`. Size is
-// `align_up(align_up(size_of::<HiT>(), align_of::<LoT>()) +
-// size_of::<LoT>(), struct_align)`. For our canonical pairs:
-//   `(u64, u128)`: u64 at offset 0 (8 bytes), 8 bytes padding to align 16,
-//     u128 at offset 16 (16 bytes), total 32, align 16.
-//   `(u128, u128)`: u128 at offset 0 (16), u128 at offset 16 (16), total
-//     32, align 16.
-//   Signed mirrors match.
+// `WideBits<BYTES, A>` is `repr(C)` over `([A; 0], [u8; BYTES])`. The
+// zero-sized `[A; 0]` marker pins alignment to `A::VALUE`; the byte
+// array follows immediately.
+//
+// `WideBits<BYTES, A1>`: align-1, exact size BYTES.
+// `WideBits<BYTES, A16>`: align-16, size = align_up(BYTES, 16).
+// `WideBits<BYTES, A32>`: align-32, size = align_up(BYTES, 32). (#320)
+// `WideBits<BYTES, A64>`: align-64, size = align_up(BYTES, 64). (#320)
 
 const _: () = {
-    // Size lower bound: at least the sum of two halves (padding may make
-    // actual size larger; `>=` catches any drift that loses bytes).
+    // A1: align-1 byte-exact, size = BYTES.
     assert!(
-        core::mem::size_of::<MultiContainer<u64, u128>>()
-            >= core::mem::size_of::<u64>() + core::mem::size_of::<u128>(),
-        "MultiContainer<u64, u128> size drift: under sum of halves",
+        core::mem::size_of::<WideBits<17, A1>>() == 17,
+        "WideBits<17, A1> size drift: expected 17 bytes (align-1)",
     );
     assert!(
-        core::mem::size_of::<MultiContainer<u128, u128>>()
-            >= core::mem::size_of::<u128>() + core::mem::size_of::<u128>(),
-        "MultiContainer<u128, u128> size drift: under sum of halves",
+        core::mem::size_of::<WideBits<32, A1>>() == 32,
+        "WideBits<32, A1> size drift: expected 32 bytes (align-1)",
     );
     assert!(
-        core::mem::size_of::<MultiContainer<i64, i128>>()
-            >= core::mem::size_of::<i64>() + core::mem::size_of::<i128>(),
-        "MultiContainer<i64, i128> size drift: under sum of halves",
+        core::mem::align_of::<WideBits<17, A1>>() == 1,
+        "WideBits<17, A1> alignment drift: expected 1",
     );
     assert!(
-        core::mem::size_of::<MultiContainer<i128, i128>>()
-            >= core::mem::size_of::<i128>() + core::mem::size_of::<i128>(),
-        "MultiContainer<i128, i128> size drift: under sum of halves",
+        core::mem::align_of::<WideBits<32, A1>>() == 1,
+        "WideBits<32, A1> alignment drift: expected 1",
     );
-    // Alignment: pinned to LoT's alignment (the larger half in all our
-    // canonical pairs).
+
+    // A16: align-16, size = align_up(BYTES, 16). The Hot baseline
+    // tier covering SSE2 / NEON. Hits the same 32-byte physical
+    // envelope at 17..=32 byte payloads as the pre-redesign
+    // heterogeneous-pair shape, with an explicit alignment marker
+    // rather than relying on a larger-half alignment leak.
     assert!(
-        core::mem::align_of::<MultiContainer<u64, u128>>() == core::mem::align_of::<u128>(),
-        "MultiContainer<u64, u128> alignment drift",
-    );
-    assert!(
-        core::mem::align_of::<MultiContainer<u128, u128>>() == core::mem::align_of::<u128>(),
-        "MultiContainer<u128, u128> alignment drift",
-    );
-    assert!(
-        core::mem::align_of::<MultiContainer<i64, i128>>() == core::mem::align_of::<i128>(),
-        "MultiContainer<i64, i128> alignment drift",
+        core::mem::size_of::<WideBits<17, A16>>() == 32,
+        "WideBits<17, A16> size drift: expected 32 bytes (align_up(17, 16))",
     );
     assert!(
-        core::mem::align_of::<MultiContainer<i128, i128>>() == core::mem::align_of::<i128>(),
-        "MultiContainer<i128, i128> alignment drift",
-    );
-    // Exact sizes for the canonical pairs (32 bytes for all four; computed
-    // as align_up(8+16, 16) and align_up(16+16, 16) respectively).
-    assert!(
-        core::mem::size_of::<MultiContainer<u64, u128>>() == 32,
-        "MultiContainer<u64, u128> size drift: expected 32",
+        core::mem::size_of::<WideBits<32, A16>>() == 32,
+        "WideBits<32, A16> size drift: expected 32 bytes (align_up(32, 16))",
     );
     assert!(
-        core::mem::size_of::<MultiContainer<u128, u128>>() == 32,
-        "MultiContainer<u128, u128> size drift: expected 32",
+        core::mem::size_of::<WideBits<24, A16>>() == 32,
+        "WideBits<24, A16> size drift: expected 32 bytes (align_up(24, 16))",
     );
     assert!(
-        core::mem::size_of::<MultiContainer<i64, i128>>() == 32,
-        "MultiContainer<i64, i128> size drift: expected 32",
+        core::mem::align_of::<WideBits<17, A16>>() == 16,
+        "WideBits<17, A16> alignment drift: expected 16",
     );
     assert!(
-        core::mem::size_of::<MultiContainer<i128, i128>>() == 32,
-        "MultiContainer<i128, i128> size drift: expected 32",
+        core::mem::align_of::<WideBits<32, A16>>() == 16,
+        "WideBits<32, A16> alignment drift: expected 16",
     );
 };
 

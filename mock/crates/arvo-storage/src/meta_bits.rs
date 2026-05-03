@@ -21,10 +21,14 @@
 
 use core::marker::ConstParamTy;
 
-use arvo_strategy::{Hot, Unsigned};
+use arvo_strategy::{Bounded, Hot, Identity, Unsigned};
 use arvo_transparent::Transparent;
 
 use crate::Bits;
+use crate::bridges::{
+    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+};
+use crate::platform::Bool;
 
 /// Layout-stable companion to `Bits<9, Hot, Unsigned>` used as the
 /// meta-newtype carrier (`IBits`, `FBits`, `Width`).
@@ -38,7 +42,7 @@ use crate::Bits;
 /// arises when the meta-newtype field literally writes the generic
 /// `Bits<9, Hot>` projection. The cycle interleaves
 /// `IBits: Sized` evaluation with `UFixed`'s const-eval where-clause
-/// `Hot: UContainerFor<{ ufixed_bits(I, F) }>`. Using a concrete
+/// `Hot: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>`. Using a concrete
 /// `repr(transparent)` companion at the field type sidesteps the
 /// projection chain at well-formedness time while preserving the
 /// 9-bit native range, the `Hot` strategy, and the `Unsigned` sign
@@ -46,6 +50,11 @@ use crate::Bits;
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug, Default, Hash)]
 #[repr(transparent)]
 pub struct MetaCarrier(pub u16);
+
+// SAFETY: `repr(transparent)` over `u16`. Layout-identical by Rust spec.
+unsafe impl const Transparent for MetaCarrier {
+    type Inner = u16;
+}
 
 impl MetaCarrier {
     /// Construct from the raw u16 carrier value.
@@ -65,6 +74,55 @@ impl MetaCarrier {
     pub const fn as_bits(self) -> Bits<9, Hot, Unsigned> {
         // SAFETY: layout-identical (repr(transparent) over u16).
         unsafe { core::mem::transmute(self) }
+    }
+}
+
+// Canonical const surfaces for MetaCarrier (the meta-newtype payload
+// type). Routes through inner u16. See module docs on meta-bit
+// carrier semantics.
+impl const Bounded for MetaCarrier {
+    const MIN: Self = MetaCarrier(<u16 as Bounded>::MIN);
+    const MAX: Self = MetaCarrier(<u16 as Bounded>::MAX);
+}
+
+impl const Identity for MetaCarrier {
+    const ZERO: Self = MetaCarrier(<u16 as Identity>::ZERO);
+    const ONE: Self = MetaCarrier(<u16 as Identity>::ONE);
+}
+
+impl const ConstPartialEq for MetaCarrier {
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <u16 as ConstPartialEq>::const_eq(&a, &b)
+    }
+}
+
+impl const ConstEq for MetaCarrier {}
+
+impl const ConstBitEq for MetaCarrier {
+    #[inline(always)]
+    fn const_bit_eq(&self, other: &Self) -> Bool {
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <u16 as ConstBitEq>::const_bit_eq(&a, &b)
+    }
+}
+
+impl const ConstOrd for MetaCarrier {
+    #[inline(always)]
+    fn const_cmp(&self, other: &Self) -> ConstOrdering {
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <u16 as ConstOrd>::const_cmp(&a, &b)
+    }
+}
+
+impl const ConstDefault for MetaCarrier {
+    #[inline(always)]
+    fn const_default() -> Self {
+        MetaCarrier(<u16 as ConstDefault>::const_default())
     }
 }
 
@@ -141,6 +199,51 @@ macro_rules! meta_bits_wrapper {
         impl AsRef<u16> for $W {
             #[inline(always)]
             fn as_ref(&self) -> &u16 { &self.0.0 }
+        }
+
+        // Canonical const surfaces routed through the inner u16.
+        impl const Bounded for $W {
+            const MIN: Self = Self(MetaCarrier::from_raw(<u16 as Bounded>::MIN));
+            const MAX: Self = Self(MetaCarrier::from_raw(<u16 as Bounded>::MAX));
+        }
+
+        impl const Identity for $W {
+            const ZERO: Self = Self(MetaCarrier::from_raw(<u16 as Identity>::ZERO));
+            const ONE: Self = Self(MetaCarrier::from_raw(<u16 as Identity>::ONE));
+        }
+
+        impl const ConstPartialEq for $W {
+            #[inline(always)]
+            fn const_eq(&self, other: &Self) -> Bool {
+                let a = <Self as Transparent>::raw(*self);
+                let b = <Self as Transparent>::raw(*other);
+                <u16 as ConstPartialEq>::const_eq(&a, &b)
+            }
+        }
+
+        impl const ConstEq for $W {}
+
+        impl const ConstBitEq for $W {
+            #[inline(always)]
+            fn const_bit_eq(&self, other: &Self) -> Bool {
+                let a = <Self as Transparent>::raw(*self);
+                let b = <Self as Transparent>::raw(*other);
+                <u16 as ConstBitEq>::const_bit_eq(&a, &b)
+            }
+        }
+
+        impl const ConstOrd for $W {
+            #[inline(always)]
+            fn const_cmp(&self, other: &Self) -> ConstOrdering {
+                let a = <Self as Transparent>::raw(*self);
+                let b = <Self as Transparent>::raw(*other);
+                <u16 as ConstOrd>::const_cmp(&a, &b)
+            }
+        }
+
+        impl const ConstDefault for $W {
+            #[inline(always)]
+            fn const_default() -> Self { Self(MetaCarrier::from_raw(<u16 as ConstDefault>::const_default())) }
         }
 
         impl From<u8> for $W {

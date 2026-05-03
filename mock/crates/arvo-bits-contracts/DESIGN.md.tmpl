@@ -79,44 +79,173 @@ whole-word ops meaningless at the logical-width level).
 `BitAccess`; concrete types override with the BLSR-equivalent fast
 path.
 
+### Sign-axis generalisation (round 202605021800)
+
+The blanket impls of `BitAccess`, `BitSequence`, `BitLogic`, and
+`HasBitWidth` on `Bits<N, S, Sign>` generalise from `Sign = Unsigned`
+(default) to `Sign: Signedness` in round 202605021800. Before the
+round, `Bits<N, S, Signed>` (which is what `IFixed<I, F, S>` wraps)
+exposed no const-callable bit-op surface: half the substrate's
+domain primitives could not call any bit method in const fn bodies.
+
+The new blanket signature (post round 202605031400 Width lift):
+
+```rust
+impl<const N: Width, S: Strategy, Sign: Signedness>
+const HasBitWidth for Bits<N, S, Sign>
+where
+    S: [const] BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] BitsBitPrim<Sign>,
+{ /* ... */ }
+```
+
+`BitsBitPrim<Sign>` is a sealed bridge trait introduced in this round
+to single-predicate the BitPrim-or-IBitPrim selection. Two impls
+(one for `Sign = Unsigned` projecting to `BitPrim`; one for
+`Sign = Signed` projecting to `IBitPrim`) plus a `type T` associated
+type that names the underlying primitive bridge. The single-
+predicate-per-impl-block shape avoids the `generic_const_exprs` cycle
+that two parallel predicates (`<S as ...>::T: [const] BitPrim` AND
+`<S as ...>::T: [const] IBitPrim`) would trigger.
+
+Once the blanket generalises, every const-callable bit op on
+`Bits<N, S, Sign>` routes through the appropriate primitive bridge.
+`IFixed<I, F, S>` consumers gain the same const-callable bit-op
+surface as `UFixed<I, F, S>` consumers.
+
+Round 202605031400 lifts the const-generic `N` from `u16` to `Width`
+to match `arvo-storage::Bits<const N: Width, ...>` after Round 2's
+Width lift cascaded through the projection layer.
+
 ## BitPrim family
 
 ```rust
 pub const trait BitPrim: Copy + ConstParamTy_ + ... {
-    // primitive-bridge methods on bare u8/u16/u32/u64
+    const WIDTH: USize;
+
+    fn count_ones(self) -> USize;
+    fn trailing_zeros(self) -> USize;
+    fn leading_zeros(self) -> USize;
+    fn get_bit(self, idx: USize) -> Bool;
+    fn with_bit_set(self, idx: USize) -> Self;
+    fn with_bit_cleared(self, idx: USize) -> Self;
+    fn with_bit_toggled(self, idx: USize) -> Self;
+    fn bitor(self, other: Self) -> Self;
+    fn bitand(self, other: Self) -> Self;
+    fn bitnot(self) -> Self;
+    fn bitxor(self, other: Self) -> Self;
+    fn clear_lowest_set_bit(self) -> Self;
+    fn is_zero(self) -> Bool;
 }
 
-pub const trait UBitContainer<const N: u8> {
-    type Container: BitPrim;
+pub const trait IBitPrim: Copy + ConstParamTy_ + ... {
+    // signed counterpart with full method parity vs BitPrim
+    // (round 202605021800 closes the parity gap)
 }
 
-pub const trait IBitContainer<const N: u8> {
-    type Container: BitPrim;
+pub const trait UBitContainer<const N: Width> {
+    type Container: [const] BitPrim;
+}
+
+pub const trait IBitContainer<const N: Width> {
+    type Container: [const] IBitPrim;
 }
 ```
 
 The primitive-bridge family. `BitPrim` is the sealed surface that
-`u8`, `u16`, `u32`, `u64`, `u128` (and signed counterparts through
-`i128`) implement, plus `MultiContainer<HiT, LoT>` for the multi-value
-storage shape at logical widths beyond a single native primitive
-(round 202604280500). Used by blanket impls in `arvo-bits` to delegate
-from `Bits<N, S, Sign>::to_raw()` to the primitive's bit method, then
+`u8`, `u16`, `u32`, `u64`, `u128` implement (the five native bucket
+projections from `BitsContainerFor<N, Unsigned>` for N ≤ 128) plus
+`WideBits<const BYTES: usize>` for the byte-sequence storage shape at
+N > 128 (Warm/Cold/Precise) and `AlignedWideBits16<const BYTES: usize>`
+for the SIMD-aligned shape at N > 128 (Hot). The `MultiContainer<HiT,
+LoT>` impl shipped briefly in round 202605021800 is deleted entirely
+in round 202605031400 alongside the type itself; per
+`no-legacy-shims-pre-1.0.md`, no deprecation alias.
+
+`IBitPrim` mirrors the same surface for signed primitives `i8`..`i128`.
+The signed wide-width path uses the same `WideBits` /
+`AlignedWideBits16` storage with sign-aware op composition (the byte
+storage is sign-erased; the BitPrim impl interprets bytes per the
+caller's Bits<N, S, Signed> wrapping).
+
+Round 202605021800 lifted `BitPrim::WIDTH` from `u16` to `USize`.
+Cascading lifts: `count_ones`, `trailing_zeros`, `leading_zeros`
+return `USize` (was `u32`); `get_bit`, `with_bit_*` accept `idx: USize`
+(was `u32`).
+
+Round 202605031400 lifts the `N` const-generic on `UBitContainer` /
+`IBitContainer` from `u16` to `Width`, matching the arvo-storage
+`Bits<const N: Width, ...>` shape and the unified
+`BitsContainerFor<const N: Width, Sign>` projection in arvo-strategy.
+
+Used by blanket impls in `arvo-bits` to delegate from
+`Bits<N, S, Sign>::to_raw()` to the primitive's bit method, then
 `Bits::from_raw(...)` wraps the result. Const trait throughout.
+
+### BitPrim impls on WideBits / AlignedWideBits16
+
+Round 202605031400 ships the BitPrim impl on the byte-sequence
+storage shapes. The previous BitPrim impl on `MultiContainer<HiT,
+LoT>` (which composed half-by-half across two native primitives) is
+replaced by byte-by-byte composition over `[u8; BYTES]`.
+
+```rust
+impl<const BYTES: usize> const BitPrim for WideBits<BYTES> {
+    const WIDTH: USize = USize::new(BYTES * 8);
+
+    fn count_ones(self) -> USize { /* sum of bytes[i].count_ones() */ }
+    fn count_zeros(self) -> USize { /* WIDTH - count_ones() */ }
+    fn trailing_zeros(self) -> USize { /* walk from byte 0 LSB upward */ }
+    fn leading_zeros(self) -> USize { /* walk from byte BYTES-1 MSB downward */ }
+    fn get_bit(self, idx: USize) -> Bool { /* (bytes[idx/8] >> (idx % 8)) & 1 */ }
+    fn with_bit_set(self, idx: USize) -> Self { /* byte-indexed mask set */ }
+    fn with_bit_cleared(self, idx: USize) -> Self { /* byte-indexed mask clear */ }
+    fn with_bit_toggled(self, idx: USize) -> Self { /* byte-indexed mask xor */ }
+    fn bitor(self, other: Self) -> Self { /* byte-wise */ }
+    fn bitand(self, other: Self) -> Self { /* byte-wise */ }
+    fn bitnot(self) -> Self { /* byte-wise */ }
+    fn bitxor(self, other: Self) -> Self { /* byte-wise */ }
+    fn clear_lowest_set_bit(self) -> Self { /* locate byte, apply b & (b-1) */ }
+    fn is_zero(self) -> Bool { /* all bytes zero */ }
+}
+
+// AlignedWideBits16 has identical surface; only storage layout differs.
+impl<const BYTES: usize> const BitPrim for AlignedWideBits16<BYTES> { /* same body */ }
+```
+
+The byte-ordering convention (locked at the doc-CL level per audit
+C1): bit 0 is the LSB of byte 0; `trailing_zeros` walks from byte 0
+upward; `leading_zeros` walks from byte BYTES-1 downward. This
+matches `u128::trailing_zeros` / `u128::leading_zeros` semantics
+viewed as bit-significance order.
+
+Sketch 02 in
+`mock/research/sketches/202605031400_hlist_heterogeneous_container/02_widebits_basic.rs`
+verified the byte-by-byte composition across BYTES values 17, 25, 32,
+64, 128, 512: count_ones + bitwise ops produce correct results
+across all test patterns.
+
+Sketch 04 verified the cfg(target_arch) intrinsic surface compiles
+cleanly on x86_64 (SSE2 + popcnt) and aarch64 (NEON vcntq_u8 + horizontal
+sum). Three implementation paths (scalar, chunked-u64, intrinsic-load)
+produce identical results across test patterns. The intrinsic-driven
+fast paths land in #320 with bench evidence; the scalar baseline above
+ships in #316 with the deletion of MultiContainer.
 
 ## Narrow
 
 ```rust
 pub const trait Narrow<T> {
-    fn narrow_to<const N: u16>(self) -> T
+    fn narrow_to<const N: Width>(self) -> T
     where
         Self: Sized;
 
-    fn narrow_to_unmasked<const N: u16>(self) -> T
+    fn narrow_to_unmasked<const N: Width>(self) -> T
     where
         Self: Sized;
 }
 
-pub type Narrowed<const N: u16, T> = T;
+pub type Narrowed<const N: Width, T> = T;
 ```
 
 The unified mask-and-cast bridge for cross-primitive narrowing.
@@ -245,7 +374,7 @@ Forwards through the underlying primitive `Widen<T_N>` impl on the
 source's container type, parallel to the cross-Bits Narrow forwarder:
 
 ```rust
-impl<const M: u16, const N: u16, S: Strategy, Sign: Signedness>
+impl<const M: Width, const N: Width, S: Strategy, Sign: Signedness>
     const Widen<Bits<N, S, Sign>> for Bits<M, S, Sign>
 where
     S: BitsContainerFor<M, Sign>,
@@ -279,3 +408,11 @@ and `Bits::from_widened<Src>` ergonomic constructors (see
 - `mock/design_rounds/202604271346_changelist.doc.md`
 - `mock/design_rounds/202604280034_topic.audit-driven-hygiene-and-Q-D-completion.md`
 - `mock/design_rounds/202604300826_topic.refit-narrow-widen-completion.md`
+- `mock/design_rounds/202605031400_topic_foundational_redesign.md`
+- `mock/design_rounds/202605031430_topic_audit_corrections.md`
+- `mock/design_rounds/202605031400_changelist.doc.md`
+- `mock/research/sketches/202605031400_hlist_heterogeneous_container/02_widebits_basic.rs`
+  (BitPrim impl on WideBits — byte-by-byte composition validated).
+- `mock/research/sketches/202605031400_hlist_heterogeneous_container/04_simd_count_ones.rs`
+  (cfg-gated SIMD intrinsic surface validated for x86_64 + aarch64;
+  scalar / chunked-u64 / intrinsic-load paths produce identical results).

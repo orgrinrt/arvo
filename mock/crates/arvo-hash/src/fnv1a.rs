@@ -2,7 +2,7 @@
 //!
 //! `Fnv1a<const N: u16>` wraps the `fnv1a_64` algorithm and projects
 //! its 64-bit state into the requested width via a per-N mask plus
-//! `as` cast to the dispatched `<Hot as UContainerFor<N>>::T`
+//! `as` cast to the dispatched `<Hot as BitsContainerFor<N, Unsigned>>::T`
 //! container, then `Bits::from_raw`.
 //!
 //! `N` is `u8` directly rather than the `Width` meta-newtype for the
@@ -10,7 +10,7 @@
 //! full rationale.
 //!
 //! Width is constrained to `1..=64` implicitly by `Hot:
-//! UContainerFor<N>`: that impl exists only for those Ns, so a
+//! BitsContainerFor<N, Unsigned>`: that impl exists only for those Ns, so a
 //! consumer using `Fnv1a<N>` outside that range gets a missing-impl
 //! error pointing at strategy choice. Wider widths (FNV state >= 128
 //! bits) are tracked in `BACKLOG.md` as a separate `Fnv1a128` type.
@@ -20,7 +20,7 @@
 
 use crate::Hasher;
 use crate::algo::fnv1a_64;
-use arvo::strategy::UContainerFor;
+use arvo::strategy::{BitsContainerFor, Unsigned};
 use arvo::{Bits, Hot};
 
 /// Streaming FNV-1a-64 hasher with N-bit output.
@@ -34,7 +34,7 @@ use arvo::{Bits, Hot};
 /// ```
 pub struct Fnv1a<const N: u16>
 where
-    Hot: UContainerFor<N>,
+    Hot: BitsContainerFor<N, Unsigned>,
 {
     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: FNV-1a-64 internal state width is fixed by the algorithm specification; tracked: #256
     state: u64,
@@ -42,7 +42,7 @@ where
 
 impl<const N: u16> Fnv1a<N>
 where
-    Hot: UContainerFor<N>,
+    Hot: BitsContainerFor<N, Unsigned>,
 {
     /// FNV-1a-64 offset basis, the algorithm's initial state value.
     // lint:allow(no-bare-numeric) reason: FNV offset basis; algorithm-fixed constant; tracked: #256
@@ -63,7 +63,7 @@ where
 
 impl<const N: u16> Default for Fnv1a<N>
 where
-    Hot: UContainerFor<N>,
+    Hot: BitsContainerFor<N, Unsigned>,
 {
     #[inline(always)]
     fn default() -> Self {
@@ -119,7 +119,7 @@ macro_rules! impl_fnv1a {
     };
 }
 
-// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-size-class container dispatch table mirrors UContainerFor<Hot, N>; tracked: #256
+// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-size-class container dispatch table mirrors BitsContainerFor<Hot, N, Unsigned>; tracked: #256
 impl_fnv1a!(u8, 1, 2, 3, 4, 5, 6, 7, 8);
 // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
 impl_fnv1a!(u16, 9, 10, 11, 12, 13, 14, 15, 16);

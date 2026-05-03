@@ -11,7 +11,7 @@
 //! from `arvo-sparse` onto `arvo-graph` (the forbidden-imports lint
 //! prohibits `arvo_graph::*` from `arvo-sparse`).
 
-use arvo::{Bool, Cap, USize};
+use arvo::{Identity, Bool, Cap, USize};
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
 /// Assign a component (block) ID to every node.
@@ -39,7 +39,7 @@ where
         }
 
         let id = next_id;
-        next_id = USize(next_id.0 + 1);
+        next_id = next_id + USize::ONE;
 
         // Iterative DFS. Stack capacity = N is a safe bound: each
         // node enters the stack at most once.

@@ -1,0 +1,50 @@
+9ae55ac chore: lock src changelist for round 202605031400
+c601f84 feat!: pattern c + parametric widebits cascade
+ebf2e6c research: sketch 08 — Strategy-aware native bucket gap (apply-time finding)
+2e295f0 refactor(arvo-strategy): relocate WideBits + AlignedWideBits16 from arvo-storage
+db047bb feat(arvo-storage): add WideBits + AlignedWideBits16 (src CL steps 2-3)
+66cb4ce feat(arvo-strategy): add Width newtype + helper const fns (src CL step 1)
+3e0650b design: open src CL for #316 foundational redesign
+24cc2c1 chore: lock doc changelist for #316 foundational redesign
+b61059b docs: apply doc CL across remaining 10 templates for #316
+ec859dd docs(arvo-storage,arvo-bits-contracts): apply doc CL O1 + B1
+1990522 docs(arvo-strategy): rewrite DESIGN per #316 doc CL S1
+3c8580a design: open doc CL for #316 — DOC phase begins
+9525a82 design: corrective topic for #316 + sketch 07 (audit-driven)
+9c5c672 design: open #316 round — topic file with seven structural decisions
+d0a8254 research: sketches 04-06 — SIMD cfg gating, single-impl projection, end-to-end Bits
+436f19b research: sketches 02-03 — WideBits scalar baseline + AlignedWideBits tiers
+fabaec1 research: sketch 01 README — pivot to byte-sequence + strategy-aware alignment
+4608c39 research: sketch 01 — HList heterogeneous container layout finding
+c1e4ba9 chore: close design round 202605030400
+c581580 chore: lock src changelist for 202605030400_changelist.src.lock.md
+5e6c8b8 design: re-issue src CL with comparison section against re-locked doc CL
+87013cd chore: re-lock doc changelist 202605030400 after comparison-section extension
+270399e design: extend doc CL comparison section to address all deprecated-CL substrate names
+0517426 chore: unlock design round 202605030400 (deprecate src CL, unlock doc CL)
+6a17f13 feat: round 202605030400 src — Ieee relocation to arvo-strategy + LOGICAL_WIDTH typed helpers
+01f7a4d design: round 202605030400 src CL — Ieee relocation + LOGICAL_WIDTH helpers
+9aac419 chore: lock doc changelist for 202605030400_changelist.doc.lock.md
+875c1bc design: extend doc CL comparison section with all substrate items from deprecated CL
+c8fc51f design: round 202605030400 doc execution — Ieee section in arvo-strategy + facade re-export note + LOGICAL_WIDTH narrative + Round 3 BACKLOG
+682f73e design: round 202605030400 doc CL — Ieee relocation + LOGICAL_WIDTH internals (corrected scope)
+de1764b design: round 202605030400 topic correction — drop Deliverable C, scope to Ieee + LOGICAL_WIDTH
+e245ac7 chore: deprecate doc changelist 202605030400_changelist.doc.md
+e69c499 design: round 202605030400 doc CL — typed Width relocation + Ieee + LOGICAL_WIDTH
+c7b06d3 design: round 202605030400 topic — typed Width + Ieee relocation + LOGICAL_WIDTH internals
+1ed339e docs: regenerate post-round-close timestamps
+6dc71c6 chore: close design round 202605021800
+f5f3646 chore: lock src changelist for 202605021800_changelist.src.lock.md
+62db055 docs: regenerate after round 202605021800 src CL
+05f0f03 chore: refresh Cargo.lock for arvo-numeric-contracts dep additions
+0058b12 feat: round 202605021800 src — Predicate family wrapper-impl design
+1e17e21 feat: round 202605021800 src — numeric-contracts impl const sweep
+1814bef feat: round 202605021800 src — MultiContainer canonical surface (BitPrim, Bounded, Identity)
+2d16ecb feat: round 202605021800 src — BitsBitPrim<Sign> bridge + Bits Sign-axis generalisation
+b729b95 feat: round 202605021800 src — typed BitPrim/IBitPrim + sealing-marker rename
+e2487b8 test+docs: round 202605021800 — H1 Ieee seal commitment doc + H3 LOGICAL_WIDTH const probe
+6ee9b85 test: round 202605021800 — canonical const surface smoke test
+94f01b1 feat: round 202605021800 src — substrate audit pivots: ConstEq split, MultiContainer ConstParamTy_, Cap unification, no .0 access
+fa6f866 feat: round 202605021800 src — arvo-strategy axes/cross_strategy/widen/container const lifts
+9b56091 feat: round 202605021800 src — ConstEq/ConstOrd/ConstDefault on Bits / UFixed / IFixed / meta-bits
+0bf9ebd feat: round 202605021800 src — markers + Ieee const lifts + Float canonical surface

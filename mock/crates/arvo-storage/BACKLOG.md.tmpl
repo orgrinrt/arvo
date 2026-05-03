@@ -22,6 +22,35 @@ generic ergonomics improve.
 Bits<N, Cold> for N > 64 with bitpacked storage across multiple bare
 primitives. Out of scope for round 202604271346. Future round.
 
+## Round 3 prerequisites (post-#316 work)
+
+Round 3 (#313) of the substrate-fundamentals work generalises
+Mask\<W\> over Bits, with Mask256 collapsing from a hand-rolled
+\[QWord\<Hot\>; 4\] struct to a type alias over
+Mask\<Bits\<{width(256)}, Hot, Unsigned\>\>. Round 3 unblocks once
+#316 lands (the foundational redesign with WideBits, unified
+BitsContainerFor, Width relocation).
+
+Round 3 also lifts BitPrim::WIDTH typing finalisation. The bulk of
+the const-generic position lift happens in #316 (u16 → Width across
+the projection layer); Round 3 polishes any remaining BitPrim::WIDTH
+positioning.
+
+## #316 follow-ups (post-redesign)
+
+The #316 foundational redesign deletes MultiContainer entirely and
+introduces WideBits + AlignedWideBits16. The MultiContainer-related
+backlog items are gone; the Round 1 BitPrim impl on MultiContainer
+shipped briefly in 202605021800 and is removed in #316 alongside the
+type. Hot tier expansion (AlignedWideBits32 / AlignedWideBits64) is
+deferred to #320 with bench-driven justification per audit H1.
+
+## Round 202605021200 follow-ups
+
+- ISize: signed platform-pointer-width companion to USize. Round 202605021200 punted on the call. Arvo's signed needs are met today by IFixed and IBits, not platform-width signed integers. Ship if a consumer surfaces signed-platform-pointer arithmetic as load-bearing.
+- USize and Cap checked-arithmetic helpers (checked_add returning Maybe of USize). Round 202605021200 documented overflow as matching primitive usize (panic on debug-asserts, wrap on release). A Maybe-returning shim ships when a consumer surfaces overflow-as-error semantic.
+- Workspace lint rule forbidding .0 field-access on arvo primitives outside the implementing crate. The const-trait surface from round 202605021200 is the typed access path; the lint enforces it once the round 202605021400 sweep validates that no false-positive call sites remain. Lives in mockspace-hilavitkutin-stack-lints.
+
 ## Removed entries
 
 (none)

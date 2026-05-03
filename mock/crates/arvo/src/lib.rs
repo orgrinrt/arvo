@@ -14,6 +14,8 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
+#![feature(const_ops)]
+#![feature(const_cmp)]
 #![feature(generic_const_exprs)]
 #![feature(macro_metavar_expr_concat)]
 #![feature(try_trait_v2)]
@@ -44,12 +46,15 @@ pub use arvo_numeric_contracts::{
 pub use arvo_storage::{
     AsBool, Bits, Bool, Cap, FBits, IBits, USize, Width, fbits, ibits, width,
 };
-pub use float::{FastFloat, Float, Ieee, StrictFloat};
+pub use float::{FastFloat, Float, StrictFloat};
 pub use ifixed::IFixed;
 pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLike};
 pub use predicate::{Pred, Pred2, Pred3};
 pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
-pub use strategy::{Cold, Hot, Precise, Strategy, Warm, width_le_64};
+pub use strategy::{
+    Bounded, Cold, ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+    FromU8Ieee, Hot, Identity, Ieee, Precise, SignedIdentity, Strategy, Warm, width_le_64,
+};
 pub use traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
 pub use transparent::{NumericPrimitive, Transparent, raw};
 pub use ufixed::UFixed;

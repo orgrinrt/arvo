@@ -4,7 +4,7 @@
 //! `HasherExt<N>` over every `Hasher<N>` exposes a `hash(bytes)`
 //! one-shot form without extra work at the impl site.
 
-use arvo::strategy::UContainerFor;
+use arvo::strategy::{BitsContainerFor, Unsigned};
 use arvo::{Bits, Hot};
 
 /// Streaming N-bit hasher. Feed bytes via `update`, finalise to a
@@ -15,13 +15,13 @@ use arvo::{Bits, Hot};
 ///
 /// `N` is `u8` directly rather than the `Width` meta-newtype because
 /// nested const-fn evaluation at trait-bound resolution
-/// (`where Hot: UContainerFor<{ width_u8(N) }>`) is unreliable on
+/// (`where Hot: BitsContainerFor<{ width_u8(N) }, Unsigned>`) is unreliable on
 /// current nightly under generic_const_exprs. The bound resolves
 /// cleanly with bare `const N: u16`. The Width newtype is preserved
 /// for typed const-generic positions where evaluation is local.
 pub trait Hasher<const N: u16>
 where
-    Hot: UContainerFor<N>,
+    Hot: BitsContainerFor<N, Unsigned>,
 {
     /// Feed a byte chunk into the hasher.
     fn update(&mut self, bytes: &[u8]);
@@ -37,7 +37,7 @@ where
 /// scope, to call `.hash(bytes)` on any hasher.
 pub trait HasherExt<const N: u16>: Hasher<N> + Sized
 where
-    Hot: UContainerFor<N>,
+    Hot: BitsContainerFor<N, Unsigned>,
 {
     /// Hash a complete byte slice in one pass.
     fn hash(mut self, bytes: &[u8]) -> Bits<N, Hot> {
@@ -49,14 +49,14 @@ where
 impl<H, const N: u16> HasherExt<N> for H
 where
     H: Hasher<N> + Sized,
-    Hot: UContainerFor<N>,
+    Hot: BitsContainerFor<N, Unsigned>,
 {
 }
 
 /// FNV-1a-64 over a byte slice (free const fn).
 ///
 /// Returns the raw 64-bit state. Concrete `Hasher<N>` implementors
-/// mask to N bits, cast to `<Hot as UContainerFor<N>>::T`, and
+/// mask to N bits, cast to `<Hot as BitsContainerFor<N, Unsigned>>::T`, and
 /// construct via `Bits::from_raw` (per the doc CL D-7 spec). The
 /// `&[u8]` parameter is workspace-rule exception #4 (boundary input
 /// from raw bytes); the `u64` return is the algorithm's state-width.
