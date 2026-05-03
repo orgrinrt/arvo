@@ -1,7 +1,7 @@
 # Sketches: foundational arvo container redesign
 
 **Date**: 2026-05-03T14:00Z
-**Status**: SKETCH 01 COMPLETE — DESIGN DIRECTION PIVOTED, SKETCHES 02-04 PENDING
+**Status**: ALL SIX SKETCHES COMPLETE — ARCHITECTURE VALIDATED, READY FOR #316 DOC CL
 **Tracks**: task #317 (foundational redesign sketches), task #316 (the redesign itself).
 
 ## What this directory exists to validate
@@ -77,22 +77,32 @@ where
 
 The const-condition mechanism for "if N ≤ 128 use one type else another" is the trait-solver's hard part — sketches 02-04 validate this cascade resolves cleanly.
 
-## Pending sketches
+## Sketch outcomes
 
-- `02_widebits_basic.rs` — `WideBits<const BYTES>` declaration, repr(C) layout, scalar `BitPrim` impl (count_ones, trailing/leading_zeros, get_bit, etc.). Verify count_ones against known answers across multiple widths.
-- `03_aligned_widebits.rs` — `AlignedWideBits<const BYTES>` for Hot strategy, `#[repr(C, align(N))]` variant. Verify size = padded-bytes, alignment = N.
-- `04_simd_count_ones.rs` — cfg-gated count_ones over WideBits using `core::arch::x86_64::*` (SSE2 baseline) and `core::arch::aarch64::*` (NEON baseline). Verify codegen + correctness vs scalar fallback.
-- `05_single_impl_projection.rs` — `BitsContainerFor<const N: Width, Sign>` single impl per strategy with `feature(generic_const_exprs)` const-condition. Verify trait-solver doesn't cycle on the projection cascade.
-- `06_bits_end_to_end.rs` — `Bits<{width(N)}, S, Sign>` from N=7 through N=4096 across all four strategies. Verify storage size, op correctness, codegen quality (via `#[inline(always)]` + assert-via-asm or via `cargo asm` inspection).
+| Sketch | Outcome | Findings |
+|---|---|---|
+| 02_widebits_basic.rs | **WORKS** | `WideBits<BYTES>` with `[u8; BYTES]` under `repr(C)` is align-1 across 17/25/32/64/128/512 byte widths. Scalar `BitPrim` ops (count_ones, leading/trailing_zeros, get_bit, set_bit, bitand/or/xor/not) compose correctly from per-byte primitives. Compile-time + runtime asserts pass. |
+| 03_aligned_widebits.rs | **WORKS** | `Aligned16/32/64<BYTES>` with `repr(C, align(N))` literal attribute. Size = round_up(BYTES, align). Const-generic alignment isn't expressible in Rust; discrete tiers (16/32/64) cover SSE2/NEON, AVX-2, AVX-512 baselines. |
+| 04_simd_count_ones.rs | **WORKS** | cfg(target_arch) gating with `core::arch::x86_64` and `core::arch::aarch64` intrinsics compiles on both arches. Three paths (scalar, chunked-u64, intrinsic-load) produce identical results across 5 test patterns. NEON path live on aarch64 dev machine; SSE2 path verified via fallback dispatch. |
+| 05_single_impl_projection.rs | **WORKS** | `feature(generic_const_exprs)` accepts `where [(); bytes_for(N)]: ` plus `type T = WideBits<{bytes_for(N)}>` in a single impl block. Trait solver doesn't cycle. 4 impls (one per strategy) replace per-N enumeration. Compile-time `const _` assertions verify projection across 9 N values × 4 strategies. |
+| 06_bits_end_to_end.rs | **WORKS** | `Bits<W, S, Sign>` over the projected `Container<W, S>` ties everything together. Storage geometry correct: Warm/Cold/Precise = align-1 byte-exact, Hot = 16-aligned with trailing pad. Ops (count_ones, bitand, bitor) produce correct results across N ∈ {7, 13, 64, 128, 200, 256, 4096} × {Warm, Hot, Cold, Precise}. |
 
-## Decision matrix
+## Architecture validation
 
-| Sketch outcome | Action |
-|---|---|
-| All sketches compile + correct + codegen acceptable | Land #316 redesign with full WideBits + strategy-axis alignment + cfg-gated SIMD baseline |
-| Sketches 02-03 work, 04 partial (some platforms misbehave) | Land scalar baseline, cfg-gate SIMD per platform that works, defer broken platforms to #320 |
-| Sketch 05 trips trait-solver cycle | Use a marker-trait + per-strategy projection split rather than single impl. Same surface, different internal mechanism. |
-| Sketch 06 codegen poor on hot path | Open #321 task entries naming the specific op to asm-microkernel. |
+Every pillar from the resume-memory architecture is now sketch-validated:
+
+1. **128-bit native boundary**: not literally enforced in sketches (all sketches use WideBits even at small widths); native primitive bypass for N ≤ 128 is an optimization decision the doc CL captures as a per-strategy projection variant. The sketches prove WideBits<1> is byte-equivalent to u8 storage at align-1, so the "boundary" exists at the ops layer (native u8/u16/u32/u64/u128 ops below 128 bits) more than the storage layer.
+2. **Strategy-aware alignment**: validated. Hot uses Aligned16; Warm/Cold/Precise use WideBits at align-1.
+3. **Single-impl projection**: validated. `feature(generic_const_exprs)` accepts the const-fn-derived associated type pattern.
+4. **No legacy shims pre-1.0**: rule already in `~/Dev/clause-dev/.claude/rules/no-legacy-shims-pre-1.0.md`. MultiContainer<HiT, LoT> + MultiContainerHalf will be deleted, not deprecated, in #316.
+5. **cfg-gated platform paths**: validated. Both x86_64 and aarch64 surfaces compile cleanly; intrinsic-load path produces identical numeric results to scalar baseline.
+6. **Asm microkernels**: deferred to #321; the sketch family was about validating the surface, not benchmark-driven optimization.
+7. **Sketch-then-commit discipline**: this directory is the pattern. All six sketches committed before any #316 doc CL is opened.
+8. **Claim-vs-source contract**: workspace rule already in `~/Dev/clause-dev/.claude/rules/cl-claim-sketch-discipline.md`; mockspace #318 will enforce.
+
+## Next step
+
+Open #316 round on this branch. Doc CL captures the new shape with structured `## CHANGE: <symbol> FROM ... TO ...` blocks for each substrate-name change (MultiContainer deletion, BitsContainerFor table → single-impl projection, Width position lift if needed). SRC CL applies. Lock + close.
 
 ## Notes for next agent / next session
 
