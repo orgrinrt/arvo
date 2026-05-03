@@ -16,7 +16,9 @@
 //! `impl_bounded_identity_f!` macro invocation in
 //! `arvo-strategy::arith` so the supertraits stay satisfied.
 
+use crate::Width;
 use crate::arith::{Bounded, Identity};
+use crate::const_convert::ConstFrom;
 
 mod sealed {
     /// Hidden supertrait used to seal `Ieee`.
@@ -41,15 +43,15 @@ pub const trait Ieee:
     sealed::Sealed + Copy + Default + PartialEq + PartialOrd + [const] Identity + [const] Bounded + 'static
 {
     /// Width of this IEEE type in bits.
-    const WIDTH: u16;
+    const WIDTH: Width;
 }
 
 impl const Ieee for f32 {
-    const WIDTH: u16 = 32;
+    const WIDTH: Width = <Width as ConstFrom<u16>>::const_from(32);
 }
 
 impl const Ieee for f64 {
-    const WIDTH: u16 = 64;
+    const WIDTH: Width = <Width as ConstFrom<u16>>::const_from(64);
 }
 
 /// Lossless `u8 -> IEEE float` bridge.
