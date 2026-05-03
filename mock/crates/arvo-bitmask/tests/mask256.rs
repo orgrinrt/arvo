@@ -1,13 +1,13 @@
-//! `Mask256` behaviour across multi-word boundaries.
+//! `Mask<Bits<256, Hot, Unsigned>>` behaviour across multi-word boundaries.
 
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 use arvo::USize;
-use arvo_bitmask::Mask256;
+use arvo_bitmask::Mask;
 
-fn mk(bits: &[usize]) -> Mask256 {
-    let mut m = Mask256::empty();
+fn mk(bits: &[usize]) -> Mask<Bits<256, Hot, Unsigned>> {
+    let mut m = Mask::<Bits<256, Hot, Unsigned>>::empty();
     for b in bits {
         m.insert(USize(*b));
     }
@@ -16,7 +16,7 @@ fn mk(bits: &[usize]) -> Mask256 {
 
 #[test]
 fn empty_is_empty() {
-    let m = Mask256::empty();
+    let m = Mask::<Bits<256, Hot, Unsigned>>::empty();
     assert!(*m.is_empty());
     assert_eq!(m.count(), USize(0));
     assert_eq!(m.lowest_set(), USize(256));
@@ -140,7 +140,7 @@ fn iter_set_bits_crosses_words_in_order() {
 
 #[test]
 fn iter_set_bits_empty_yields_nothing() {
-    let m = Mask256::empty();
+    let m = Mask::<Bits<256, Hot, Unsigned>>::empty();
     let mut it = m.iter_set_bits();
     assert!(it.next().is_none());
 }

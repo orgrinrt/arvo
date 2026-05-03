@@ -16,9 +16,9 @@
 
 use core::cmp::Ordering;
 
-use arvo::{Identity, Cap, USize};
+use arvo::{Bits, Hot, Identity, Cap, USize, Unsigned};
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
-use arvo_bitmask::Mask64;
+use arvo_bitmask::Mask;
 
 use core::ops::{Add, Mul, Sub};
 
@@ -33,22 +33,22 @@ use crate::matrix::{Matrix, cap_size};
 /// otherwise into `negative_mask`. Ties and negative values go to the
 /// negative side.
 ///
-/// Requires `N <= 64` at call site (Mask64 output); enforcement lives
+/// Requires `N <= 64` at call site (Mask<Bits<64, Hot, Unsigned>> output); enforcement lives
 /// at the caller by choosing an appropriate `N`. Nodes with index
 /// `>= 64` cannot be represented in either mask and would be dropped;
 /// the function does not iterate past `N`.
 #[inline]
 pub fn spectral_bisection<const N: Cap, F>(
     fiedler: &[F; cap_size(N)],
-) -> (Mask64, Mask64)
+) -> (Mask<Bits<64, Hot, Unsigned>>, Mask<Bits<64, Hot, Unsigned>>)
 where
     [(); cap_size(N)]:,
     F: TotalOrd + Copy + FromConstant,
 {
     let n = cap_size(N);
     let zero = F::from_constant::<{ USize(0) }>();
-    let mut positive = Mask64::default();
-    let mut negative = Mask64::default();
+    let mut positive = Mask::<Bits<64, Hot, Unsigned>>::default();
+    let mut negative = Mask::<Bits<64, Hot, Unsigned>>::default();
     let mut i = 0usize;
     while i < n {
         match fiedler[i].total_cmp(zero) {
@@ -103,10 +103,10 @@ where
     // Work stack: fixed-size array sized to K. At most K - 1
     // bisections produce K partitions; the stack depth is bounded by
     // K at any moment (each pop produces two pushes at most).
-    let mut stack: [Mask64; cap_size(K)] = [Mask64::default(); cap_size(K)];
+    let mut stack: [Mask<Bits<64, Hot, Unsigned>>; cap_size(K)] = [Mask::<Bits<64, Hot, Unsigned>>::default(); cap_size(K)];
 
     // Seed: the full-node mask.
-    let mut initial = Mask64::default();
+    let mut initial = Mask::<Bits<64, Hot, Unsigned>>::default();
     let mut i = 0usize;
     while i < n {
         initial.insert(USize(i));
@@ -142,8 +142,8 @@ where
         let fiedler: [F; cap_size(N)] = fiedler_vector::<N, W, F>(weights, iterations);
         let zero = F::from_constant::<{ USize(0) }>();
 
-        let mut positive_half = Mask64::default();
-        let mut negative_half = Mask64::default();
+        let mut positive_half = Mask::<Bits<64, Hot, Unsigned>>::default();
+        let mut negative_half = Mask::<Bits<64, Hot, Unsigned>>::default();
         let mut j = 0usize;
         while j < n {
             if *component.contains(USize(j)) {

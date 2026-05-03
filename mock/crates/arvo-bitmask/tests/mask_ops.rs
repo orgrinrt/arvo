@@ -1,14 +1,14 @@
-//! Set operations on `Mask64`: union, intersection, difference,
+//! Set operations on `Mask<Bits<64, Hot, Unsigned>>`: union, intersection, difference,
 //! complement, and the predicate surface.
 
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 use arvo::USize;
-use arvo_bitmask::Mask64;
+use arvo_bitmask::Mask;
 
-fn mk(bits: &[usize]) -> Mask64 {
-    let mut m = Mask64::empty();
+fn mk(bits: &[usize]) -> Mask<Bits<64, Hot, Unsigned>> {
+    let mut m = Mask::<Bits<64, Hot, Unsigned>>::empty();
     for b in bits {
         m.insert(USize(*b));
     }
@@ -17,14 +17,14 @@ fn mk(bits: &[usize]) -> Mask64 {
 
 #[test]
 fn empty_is_empty() {
-    let m = Mask64::empty();
+    let m = Mask::<Bits<64, Hot, Unsigned>>::empty();
     assert!(*m.is_empty());
     assert_eq!(m.count(), USize(0));
 }
 
 #[test]
 fn insert_and_contains() {
-    let mut m = Mask64::empty();
+    let mut m = Mask::<Bits<64, Hot, Unsigned>>::empty();
     m.insert(USize(0));
     m.insert(USize(5));
     m.insert(USize(63));
@@ -102,7 +102,7 @@ fn intersects_reports_any_overlap() {
 #[test]
 fn empty_union_is_self() {
     let a = mk(&[3, 7]);
-    let z = Mask64::empty();
+    let z = Mask::<Bits<64, Hot, Unsigned>>::empty();
     assert!(a.union(z) == a);
 }
 
