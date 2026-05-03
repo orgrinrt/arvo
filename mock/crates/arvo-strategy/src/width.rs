@@ -128,3 +128,24 @@ pub const fn tag(n: Width) -> usize {
 pub const fn bytes_for(n: Width) -> usize {
     (n.0 as usize).div_ceil(8)
 }
+
+/// Mask the low N bits of a u64.
+///
+/// Returns `(1 << N) - 1` for `N < 64`; saturates to `u64::MAX` for `N >= 64`
+/// to avoid the `1u64 << 64` undefined-behaviour shift.
+///
+/// Used by `NarrowFromU64` (arvo-bits-contracts) and any consumer that
+/// needs to mask a u64 algorithm-state to N bits. Centralises the
+/// pattern previously inlined four times in the FNV-1a / XxHash3 macro
+/// pastes in arvo-hash.
+// lint:allow(no-bare-numeric) reason: helper returns a u64 mask for use in
+// algorithm-state narrowing; both parameter and return are algorithm-fixed
+// widths at the substrate's u64-state hash boundary; tracked: #314
+#[inline(always)]
+pub const fn mask_low_bits(n: u16) -> u64 {
+    if n >= 64 {
+        u64::MAX
+    } else {
+        (1u64 << n) - 1
+    }
+}

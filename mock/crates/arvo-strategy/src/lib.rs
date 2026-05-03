@@ -51,7 +51,7 @@ mod widen;
 pub mod width;
 
 pub use widebits::{A1, A16, A32, A64, Align, WideBits};
-pub use width::{Width, bytes_for, tag, width, width_le_64, width_u16, width_u8};
+pub use width::{Width, bytes_for, mask_low_bits, tag, width, width_le_64, width_u16, width_u8};
 
 pub use arith::{
     Bounded, IArith, ISaturating, Identity, SignedIdentity, UArith, USaturating,
