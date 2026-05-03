@@ -4,7 +4,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::USize;
+use arvo::{Bits, Hot, USize, Unsigned};
 use arvo_bitmask::Mask;
 
 fn mk(bits: &[usize]) -> Mask<Bits<64, Hot, Unsigned>> {

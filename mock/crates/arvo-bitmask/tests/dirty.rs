@@ -21,7 +21,7 @@ fn nid(i: usize) -> NodeId {
 #[test]
 fn single_dirty_bit_propagates_to_successors() {
     // 0 -> 1 -> 2 -> 3. Dirty 0 should propagate to all.
-    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(1), nid(2));
     m.set_edge(nid(2), nid(3));
@@ -37,7 +37,7 @@ fn single_dirty_bit_propagates_to_successors() {
 #[test]
 fn dirty_does_not_touch_unrelated_nodes() {
     // Two chains: 0 -> 1, 2 -> 3. Dirty 0 should reach only 0, 1.
-    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(2), nid(3));
     let mut dirty = Mask::<Bits<64, Hot, Unsigned>>::empty();
@@ -53,7 +53,7 @@ fn dirty_does_not_touch_unrelated_nodes() {
 #[test]
 fn dirty_fan_out_reaches_all_descendants() {
     // 0 -> 1, 0 -> 2; 1 -> 3; 2 -> 4; 3 -> 5.
-    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C6> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C6> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(0), nid(2));
     m.set_edge(nid(1), nid(3));
@@ -68,7 +68,7 @@ fn dirty_fan_out_reaches_all_descendants() {
 #[test]
 fn dirty_mid_chain_reaches_only_downstream() {
     // 0 -> 1 -> 2 -> 3; dirty 2 should reach only 2, 3.
-    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(1), nid(2));
     m.set_edge(nid(2), nid(3));
@@ -84,7 +84,7 @@ fn dirty_mid_chain_reaches_only_downstream() {
 
 #[test]
 fn empty_dirty_stays_empty() {
-    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     let mut dirty = Mask::<Bits<64, Hot, Unsigned>>::empty();
     propagate_dirty(&m, &mut dirty);
@@ -94,7 +94,7 @@ fn empty_dirty_stays_empty() {
 #[test]
 fn dirty_terminates_on_no_successors() {
     // 0 has no outgoing edges; dirty 0 should stay {0}.
-    let m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     let mut dirty = Mask::<Bits<64, Hot, Unsigned>>::empty();
     dirty.insert(USize(0));
     propagate_dirty(&m, &mut dirty);
@@ -105,7 +105,7 @@ fn dirty_terminates_on_no_successors() {
 #[test]
 fn mask256_dirty_propagation() {
     // 0 -> 1 -> 2 -> 3 in a Mask<Bits<256, Hot, Unsigned>>-backed matrix.
-    let mut m: BitMatrix<Bits<256, Hot, Unsigned>, C4> = BitMatrix<Bits<256, Hot, Unsigned>>::empty();
+    let mut m: BitMatrix<Bits<256, Hot, Unsigned>, C4> = BitMatrix::<Bits<256, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(1), nid(2));
     m.set_edge(nid(2), nid(3));

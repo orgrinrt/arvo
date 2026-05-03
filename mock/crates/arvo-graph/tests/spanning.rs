@@ -5,7 +5,8 @@
 #![allow(incomplete_features)]
 
 use arvo::{Cap, FBits, IBits, ibits, fbits, USize};
-use arvo::strategy::Hot;
+use arvo::strategy::{Hot, Unsigned};
+use arvo::Bits;
 use arvo::ufixed::UFixed;
 use arvo_bitmask::{BitMatrix, NodeId};
 use arvo_graph::{spanning_tree, upward_rank};
@@ -31,7 +32,7 @@ fn w(n: usize) -> W {
 #[test]
 fn linear_chain_is_all_trunk() {
     // 0 -> 1 -> 2 -> 3, weights 1 each. The whole chain is the trunk.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(3));
@@ -55,7 +56,7 @@ fn diamond_has_trunk_and_bridge() {
     // Trunk from 0: highest-ranked successor is 1 (r=6 > r=3). Then
     // from 1: only successor 3. Trunk: 0, 1, 3. Node 2 is a branch
     // root. Node 3 is a bridge (two predecessors).
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(3));
@@ -78,7 +79,7 @@ fn two_sources_highest_ranked_wins() {
     // upward_rank: r[2] = 1; r[0] = 1 + 1 = 2; r[1] = 5 + 1 = 6.
     // Trunk head = 1 (rank 6). Trunk: 1, 2. 0 is a branch root.
     // 2 is a bridge.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(2));
     let weights: [W; 3] = [w(1), w(5), w(1)];
@@ -93,7 +94,7 @@ fn two_sources_highest_ranked_wins() {
 #[test]
 fn disconnected_components_both_yield_trunks() {
     // 0 -> 1 ; 2 -> 3. No shared nodes. Two separate trunks.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(2), nid(3));
     let weights: [W; 4] = [w(1); 4];

@@ -46,6 +46,8 @@
 
 use arvo_transparent::{ConstAsRef, ConstDeref, Transparent};
 
+use crate::arith::{Bounded, Identity};
+
 /// Alignment marker trait. Implementations are zero-sized types
 /// whose `repr(C, align(N))` gives the desired alignment when
 /// embedded as `[A; 0]` in a `WideBits<BYTES, A>`.
@@ -149,6 +151,37 @@ impl<const BYTES: usize, A: Align> Default for WideBits<BYTES, A> {
     fn default() -> Self {
         Self::zero()
     }
+}
+
+/// `Identity::ZERO` is the all-zero byte pattern; `ONE` is the byte
+/// pattern with a single set bit at LSB of `bytes[0]`. Mirrors the
+/// integer primitive Identity convention.
+impl<const BYTES: usize, A: Align> const Identity for WideBits<BYTES, A> {
+    const ZERO: Self = Self {
+        _align: [],
+        bytes: [0u8; BYTES],
+    };
+    const ONE: Self = {
+        let mut b = [0u8; BYTES];
+        if BYTES > 0 {
+            b[0] = 1;
+        }
+        Self { _align: [], bytes: b }
+    };
+}
+
+/// `Bounded::MIN` is the all-zero byte pattern (saturating low);
+/// `MAX` is the all-ones byte pattern. Unsigned semantics for the
+/// byte-sequence storage.
+impl<const BYTES: usize, A: Align> const Bounded for WideBits<BYTES, A> {
+    const MIN: Self = Self {
+        _align: [],
+        bytes: [0u8; BYTES],
+    };
+    const MAX: Self = Self {
+        _align: [],
+        bytes: [0xFFu8; BYTES],
+    };
 }
 
 /// Canonical `ConstDeref` impl for `WideBits<BYTES, A>`.

@@ -4,7 +4,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::{Cap, USize};
+use arvo::{Bits, Cap, Hot, USize, Unsigned};
 use arvo_bitmask::{BitMatrix, NodeId};
 use arvo_sparse::dulmage_mendelsohn;
 
@@ -26,7 +26,7 @@ fn three_masks_partition_the_nodes() {
     // Node 1: has preds + has succs -> square.
     // Node 2: has preds, no succs -> horizontal.
     // Node 3: isolated -> vertical (no preds).
-    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     adj.set_edge(nid(0), nid(1));
     adj.set_edge(nid(1), nid(2));
 
@@ -42,7 +42,7 @@ fn three_masks_partition_the_nodes() {
 
 #[test]
 fn chain_classification() {
-    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     adj.set_edge(nid(0), nid(1));
     adj.set_edge(nid(1), nid(2));
 
@@ -57,7 +57,7 @@ fn chain_classification() {
 
 #[test]
 fn isolated_node_is_vertical() {
-    let adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     let dm = dulmage_mendelsohn(&adj);
     // Per impl decision: isolated nodes classify as vertical.
     for i in 0..3 {
@@ -71,7 +71,7 @@ fn isolated_node_is_vertical() {
 fn fan_out_source_is_vertical() {
     // 0 -> 1, 0 -> 2. Node 0 is a source (no preds), nodes 1 and 2
     // are sinks (no succs).
-    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     adj.set_edge(nid(0), nid(1));
     adj.set_edge(nid(0), nid(2));
 
@@ -84,7 +84,7 @@ fn fan_out_source_is_vertical() {
 #[test]
 fn fan_in_sink_is_horizontal() {
     // 0 -> 2, 1 -> 2. Nodes 0 and 1 are sources, 2 is a sink.
-    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     adj.set_edge(nid(0), nid(2));
     adj.set_edge(nid(1), nid(2));
 

@@ -4,7 +4,7 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::{Cap, USize};
+use arvo::{Bits, Cap, Hot, USize, Unsigned};
 use arvo_bitmask::{BitMatrix, NodeId};
 use arvo_graph::components;
 
@@ -21,7 +21,7 @@ fn nid(i: usize) -> NodeId {
 #[test]
 fn all_isolated_nodes_get_distinct_ids() {
     // No edges: each node is its own component.
-    let dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     let c = components(&dag);
     // 4 distinct IDs total.
     let mut seen = [false; 4];
@@ -35,7 +35,7 @@ fn all_isolated_nodes_get_distinct_ids() {
 
 #[test]
 fn linear_chain_is_one_component() {
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(3));
@@ -48,7 +48,7 @@ fn linear_chain_is_one_component() {
 #[test]
 fn two_disjoint_edges_two_components() {
     // 0 -> 1, 2 -> 3.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(2), nid(3));
     let c = components(&dag);
@@ -59,7 +59,7 @@ fn two_disjoint_edges_two_components() {
 
 #[test]
 fn diamond_is_one_component() {
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(3));
@@ -73,7 +73,7 @@ fn diamond_is_one_component() {
 #[test]
 fn isolated_plus_chain() {
     // 0 -> 1 -> 2 ; 3 isolated.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix<Bits<64, Hot, Unsigned>>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(1), nid(2));
     let c = components(&dag);
