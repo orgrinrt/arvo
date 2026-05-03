@@ -11,12 +11,14 @@ Space-filling curve ordering for dispatch interleaving. Same
 constraint representation as greedy grouping. Deferred per
 polka-dots T3 decisions #71-74 — not day-one.
 
-## Mask256-backed bin_pack variant
+## Wider-W bin_pack variant
 
 `bin_pack` ships with a `Cap` up to 64-ish items per bin (bounded
-by internal Mask64 helpers where consumers pair it with
-hierarchical co-firing flags). A `Mask256`-backed sibling would
-support >64 flags per group. Common pipeline workloads per
-polka-dots T5 research stay well under 64 flags, so this is a
-non-urgent widening.
+by internal `Mask<Bits<64, Hot, Unsigned>>` helpers where consumers
+pair it with hierarchical co-firing flags). Instantiating the same
+helpers with `W = Bits<256, Hot, Unsigned>` would support >64 flags
+per group via the substrate's MultiContainer plumbing without an
+algorithmic-shape change. Common pipeline workloads per polka-dots
+T5 research stay well under 64 flags, so this is a non-urgent
+widening.
 
