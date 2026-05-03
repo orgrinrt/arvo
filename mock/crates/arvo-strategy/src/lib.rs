@@ -41,6 +41,9 @@ mod cross_strategy;
 mod ieee;
 mod multi_container;
 mod widen;
+pub mod width;
+
+pub use width::{Width, bytes_for, tag, width, width_le_64, width_u16, width_u8};
 
 pub use arith::{
     Bounded, IArith, ISaturating, Identity, SignedIdentity, UArith, USaturating,
