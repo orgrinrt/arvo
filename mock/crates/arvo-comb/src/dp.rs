@@ -13,7 +13,7 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::{Bool, Cap, USize};
+use arvo::{Identity, Bool, Cap, USize};
 use arvo::predicate::Pred2;
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_tensor::{Array, Matrix, cap_size};
@@ -130,8 +130,8 @@ where
     );
 
     let root_end = USize(cap_size(N) - 1);
-    let final_cost = if reachable.get(USize(0), root_end).0 {
-        dp.get(USize(0), root_end)
+    let final_cost = if reachable.get(USize::ZERO, root_end).0 {
+        dp.get(USize::ZERO, root_end)
     } else {
         zero
     };
@@ -161,7 +161,7 @@ fn fill_splits<const N: Cap>(
         return;
     }
     out.set(*out_idx, k);
-    *out_idx = USize(out_idx.0 + 1);
+    *out_idx = *out_idx + USize::ONE;
     fill_splits::<N>(split, reachable, lo, k, out, out_idx);
-    fill_splits::<N>(split, reachable, USize(k.0 + 1), hi, out, out_idx);
+    fill_splits::<N>(split, reachable, k + USize::ONE, hi, out, out_idx);
 }

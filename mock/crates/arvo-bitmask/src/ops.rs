@@ -12,8 +12,10 @@
 //! `BitAccess` for single-bit read/write. `Mask64` operates on its
 //! single `QWord<Hot>`; `Mask256` unrolls across four.
 
+use core::ops::{BitAnd, BitOr, BitXor, Not};
+
 use arvo::{Bool, USize};
-use arvo::strategy::Hot;
+use arvo::strategy::{Bounded, Hot, Identity};
 use arvo_bits::QWord;
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 
@@ -98,7 +100,7 @@ impl Mask<QWord<Hot>> {
             return USize(64);
         }
         let lz = <QWord<Hot> as BitSequence>::leading_zeros(self.word);
-        USize(63 - lz.0)
+        USize(63) - lz
     }
 
     /// Iterator over set bit indices, lowest-first.
@@ -128,6 +130,44 @@ impl Iterator for SetBitsIter64 {
         let idx = <QWord<Hot> as BitSequence>::trailing_zeros(self.remaining);
         self.remaining = <QWord<Hot> as BitLogic>::clear_lowest_set_bit(self.remaining);
         Some(idx)
+    }
+}
+
+// --- Mask64 const-trait core::ops impls (round 202605021600) -----------
+//
+// With BitLogic on Bits<N, Hot> lifted to impl const (step 3), the
+// Mask64 bitwise operators now ship as const-callable. Bodies route
+// through the BitLogic trait methods.
+
+impl const BitAnd for Mask<QWord<Hot>> {
+    type Output = Self;
+    #[inline(always)]
+    fn bitand(self, rhs: Self) -> Self {
+        Self::from_word(<QWord<Hot> as BitLogic>::bitand(self.word, rhs.word))
+    }
+}
+
+impl const BitOr for Mask<QWord<Hot>> {
+    type Output = Self;
+    #[inline(always)]
+    fn bitor(self, rhs: Self) -> Self {
+        Self::from_word(<QWord<Hot> as BitLogic>::bitor(self.word, rhs.word))
+    }
+}
+
+impl const BitXor for Mask<QWord<Hot>> {
+    type Output = Self;
+    #[inline(always)]
+    fn bitxor(self, rhs: Self) -> Self {
+        Self::from_word(<QWord<Hot> as BitLogic>::bitxor(self.word, rhs.word))
+    }
+}
+
+impl const Not for Mask<QWord<Hot>> {
+    type Output = Self;
+    #[inline(always)]
+    fn not(self) -> Self {
+        Self::from_word(<QWord<Hot> as BitLogic>::bitnot(self.word))
     }
 }
 
@@ -221,8 +261,8 @@ impl Mask256 {
         if pos.0 >= 256 {
             return Bool::FALSE;
         }
-        let word_idx = USize(pos.0 >> 6);
-        let bit_idx = USize(pos.0 & 63);
+        let word_idx = pos >> USize(6);
+        let bit_idx = pos & USize(63);
         <QWord<Hot> as BitAccess>::bit(self.0[word_idx.0], bit_idx)
     }
 
@@ -232,8 +272,8 @@ impl Mask256 {
         if pos.0 >= 256 {
             return;
         }
-        let word_idx = USize(pos.0 >> 6);
-        let bit_idx = USize(pos.0 & 63);
+        let word_idx = pos >> USize(6);
+        let bit_idx = pos & USize(63);
         self.0[word_idx.0] =
             <QWord<Hot> as BitAccess>::with_bit_set(self.0[word_idx.0], bit_idx);
     }
@@ -244,8 +284,8 @@ impl Mask256 {
         if pos.0 >= 256 {
             return;
         }
-        let word_idx = USize(pos.0 >> 6);
-        let bit_idx = USize(pos.0 & 63);
+        let word_idx = pos >> USize(6);
+        let bit_idx = pos & USize(63);
         self.0[word_idx.0] =
             <QWord<Hot> as BitAccess>::with_bit_cleared(self.0[word_idx.0], bit_idx);
     }
@@ -258,7 +298,7 @@ impl Mask256 {
         let n1 = <QWord<Hot> as BitSequence>::count_ones(a[1]);
         let n2 = <QWord<Hot> as BitSequence>::count_ones(a[2]);
         let n3 = <QWord<Hot> as BitSequence>::count_ones(a[3]);
-        USize(n0.0 + n1.0 + n2.0 + n3.0)
+        n0 + n1 + n2 + n3
     }
 
     /// Lowest set bit index, lowest-word-first. Returns 256 if the
@@ -270,13 +310,13 @@ impl Mask256 {
             return <QWord<Hot> as BitSequence>::trailing_zeros(a[0]);
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[1]).0 {
-            return USize(64 + <QWord<Hot> as BitSequence>::trailing_zeros(a[1]).0);
+            return USize(64) + <QWord<Hot> as BitSequence>::trailing_zeros(a[1]);
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[2]).0 {
-            return USize(128 + <QWord<Hot> as BitSequence>::trailing_zeros(a[2]).0);
+            return USize(128) + <QWord<Hot> as BitSequence>::trailing_zeros(a[2]);
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[3]).0 {
-            return USize(192 + <QWord<Hot> as BitSequence>::trailing_zeros(a[3]).0);
+            return USize(192) + <QWord<Hot> as BitSequence>::trailing_zeros(a[3]);
         }
         USize(256)
     }
@@ -288,19 +328,19 @@ impl Mask256 {
         let a = self.0;
         if !<QWord<Hot> as BitSequence>::is_zero(a[3]).0 {
             let lz = <QWord<Hot> as BitSequence>::leading_zeros(a[3]);
-            return USize(192 + 63 - lz.0);
+            return USize(192 + 63) - lz;
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[2]).0 {
             let lz = <QWord<Hot> as BitSequence>::leading_zeros(a[2]);
-            return USize(128 + 63 - lz.0);
+            return USize(128 + 63) - lz;
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[1]).0 {
             let lz = <QWord<Hot> as BitSequence>::leading_zeros(a[1]);
-            return USize(64 + 63 - lz.0);
+            return USize(64 + 63) - lz;
         }
         if !<QWord<Hot> as BitSequence>::is_zero(a[0]).0 {
             let lz = <QWord<Hot> as BitSequence>::leading_zeros(a[0]);
-            return USize(63 - lz.0);
+            return USize(63) - lz;
         }
         USize(256)
     }
@@ -337,9 +377,9 @@ impl Iterator for SetBitsIter256 {
             if !<QWord<Hot> as BitSequence>::is_zero(w).0 {
                 let bit = <QWord<Hot> as BitSequence>::trailing_zeros(w);
                 self.words[self.word_idx.0] = <QWord<Hot> as BitLogic>::clear_lowest_set_bit(w);
-                return Some(USize(self.word_idx.0 * 64 + bit.0));
+                return Some(self.word_idx * USize(64) + bit);
             }
-            self.word_idx = USize(self.word_idx.0 + 1);
+            self.word_idx = self.word_idx + USize::ONE;
         }
         None
     }
@@ -348,3 +388,69 @@ impl Iterator for SetBitsIter256 {
 // `Mask64` alias re-use so the public surface name works from lib.
 #[allow(dead_code)]
 type _Mask64Alias = Mask64;
+
+// --- Mask256 const-trait core::ops impls (round 202605021600) ----------
+//
+// Mask256 stays an explicit type for this round; #307 tracks collapsing
+// it into Mask<[W; N]> once array-shaped Bit* contracts land. The
+// const-trait ops here mirror the inherent methods unrolled across
+// four words.
+
+impl const BitAnd for Mask256 {
+    type Output = Self;
+    #[inline(always)]
+    fn bitand(self, rhs: Self) -> Self {
+        let a = self.0;
+        let b = rhs.0;
+        Self([
+            <QWord<Hot> as BitLogic>::bitand(a[0], b[0]),
+            <QWord<Hot> as BitLogic>::bitand(a[1], b[1]),
+            <QWord<Hot> as BitLogic>::bitand(a[2], b[2]),
+            <QWord<Hot> as BitLogic>::bitand(a[3], b[3]),
+        ])
+    }
+}
+
+impl const BitOr for Mask256 {
+    type Output = Self;
+    #[inline(always)]
+    fn bitor(self, rhs: Self) -> Self {
+        let a = self.0;
+        let b = rhs.0;
+        Self([
+            <QWord<Hot> as BitLogic>::bitor(a[0], b[0]),
+            <QWord<Hot> as BitLogic>::bitor(a[1], b[1]),
+            <QWord<Hot> as BitLogic>::bitor(a[2], b[2]),
+            <QWord<Hot> as BitLogic>::bitor(a[3], b[3]),
+        ])
+    }
+}
+
+impl const BitXor for Mask256 {
+    type Output = Self;
+    #[inline(always)]
+    fn bitxor(self, rhs: Self) -> Self {
+        let a = self.0;
+        let b = rhs.0;
+        Self([
+            <QWord<Hot> as BitLogic>::bitxor(a[0], b[0]),
+            <QWord<Hot> as BitLogic>::bitxor(a[1], b[1]),
+            <QWord<Hot> as BitLogic>::bitxor(a[2], b[2]),
+            <QWord<Hot> as BitLogic>::bitxor(a[3], b[3]),
+        ])
+    }
+}
+
+impl const Not for Mask256 {
+    type Output = Self;
+    #[inline(always)]
+    fn not(self) -> Self {
+        let a = self.0;
+        Self([
+            <QWord<Hot> as BitLogic>::bitnot(a[0]),
+            <QWord<Hot> as BitLogic>::bitnot(a[1]),
+            <QWord<Hot> as BitLogic>::bitnot(a[2]),
+            <QWord<Hot> as BitLogic>::bitnot(a[3]),
+        ])
+    }
+}

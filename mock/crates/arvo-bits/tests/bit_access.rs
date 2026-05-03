@@ -15,40 +15,40 @@ use arvo_bits::{BitAccess, BitPrim, Byte, IBitPrim};
 #[test]
 fn bitprim_u8_roundtrip() {
     let v: u8 = 0b0000_0000;
-    let v = v.with_bit_set(3);
-    assert!(v.get_bit(3));
-    assert!(!v.get_bit(2));
-    let v = v.with_bit_set(7);
+    let v = v.with_bit_set(USize(3));
+    assert!(v.get_bit(USize(3)).0);
+    assert!(!v.get_bit(USize(2)).0);
+    let v = v.with_bit_set(USize(7));
     assert_eq!(v, 0b1000_1000);
-    let v = v.with_bit_cleared(3);
+    let v = v.with_bit_cleared(USize(3));
     assert_eq!(v, 0b1000_0000);
-    let v = v.with_bit_toggled(0);
+    let v = v.with_bit_toggled(USize(0));
     assert_eq!(v, 0b1000_0001);
-    // Out-of-range idx: value unchanged, read returns false.
-    assert!(!v.get_bit(42));
-    assert_eq!(v.with_bit_set(42), 0b1000_0001);
-    assert_eq!(v.with_bit_cleared(42), 0b1000_0001);
-    assert_eq!(v.with_bit_toggled(42), 0b1000_0001);
+    // Out-of-range idx: value unchanged, read returns Bool::FALSE.
+    assert!(!v.get_bit(USize(42)).0);
+    assert_eq!(v.with_bit_set(USize(42)), 0b1000_0001);
+    assert_eq!(v.with_bit_cleared(USize(42)), 0b1000_0001);
+    assert_eq!(v.with_bit_toggled(USize(42)), 0b1000_0001);
 }
 
 #[test]
 fn bitprim_u64_high_bits() {
     let v: u64 = 0;
-    let v = v.with_bit_set(63);
-    assert!(v.get_bit(63));
+    let v = v.with_bit_set(USize(63));
+    assert!(v.get_bit(USize(63)).0);
     assert_eq!(v, 1u64 << 63);
-    let v = v.with_bit_toggled(63);
+    let v = v.with_bit_toggled(USize(63));
     assert_eq!(v, 0);
 }
 
 #[test]
 fn ibitprim_signed_roundtrip() {
     let v: i16 = 0;
-    let v = v.with_bit_set(15);
+    let v = v.with_bit_set(USize(15));
     // Setting bit 15 on i16 flips sign (two's complement).
     assert!(v < 0);
-    assert!(v.get_bit(15));
-    let v = v.with_bit_cleared(15);
+    assert!(v.get_bit(USize(15)).0);
+    let v = v.with_bit_cleared(USize(15));
     assert_eq!(v, 0);
 }
 

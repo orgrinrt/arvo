@@ -1,7 +1,66 @@
 # arvo-strategy. Backlog
 
-(none currently)
+## Tracked bridge expansions
+
+Const-trait substrate bridges deferred from round 202605021800 (Round 1)
+to later rounds within PR #42:
+
+- ConstFrom\<T\> / ConstTryFrom\<T, E\> substrate bridge. Replaces
+  non-const stdlib From::from / TryFrom::try_from for in-substrate
+  const-context conversion. Lands in Round 4 (#314). Surfaces from
+  Expert B Finding 8.
+- ConstDeref / ConstAsRef\<T\> substrate bridge, placed in
+  arvo-transparent. Replaces non-const stdlib Deref::deref /
+  AsRef::as_ref for transparent-newtype const-projection. Lands in
+  Round 4 (#314). Surfaces from Expert B Findings 6, 24.
+- ConstTry / ConstControlFlow\<R, O\>. Replaces non-const stdlib
+  Try / FromResidual for ? on Bool in const context. Lands in
+  Round 5 (#315). Surfaces from Expert B Finding 21.
+- ConstHash / ConstHasher (in arvo-hash). Replaces non-const stdlib
+  Hash::hash for compile-time content addressing. Lands in
+  Round 5 (#315). Surfaces from Expert B Finding 40.
+
+Each bridge follows the same pattern as ConstEq / ConstDefault
+shipped in Round 1: a substrate-owned const trait alongside the
+stdlib trait (which stays for boundary coverage). Consumer code
+imports the substrate bridge to compose const-callable substrate
+operations.
+
+## Round 3 deferred work (#313)
+
+Round 3 work LANDS on top of #316: Mask\<W\> over Bits + BitMatrix\<W,
+N\> + mask-contracts impl + BitPrim::WIDTH typed lift. The previous
+chicken-and-egg with Width relocation is resolved by #316 (Width
+relocates from arvo-storage to arvo-strategy as part of #316's
+foundational restructure; UContainerFor / IContainerFor are deleted
+entirely; BitsContainerFor unifies the projection). Round 3 is
+mechanical refresh on top.
+
+## Hot tier expansion (#320)
+
+AVX-2 align(32) and AVX-512 align(64) Hot tiers are deferred to #320
+with bench-driven evidence per the audit's H1 finding. Current Hot
+ships with align(16) baseline only via AlignedWideBits16. If bench
+evidence justifies the storage overhead, opt-in `HotAvx2` / `HotAvx512`
+strategy variants ship as consumer-visible markers (toolbox-not-policer
+compliant). The cfg-driven internal alignment originally proposed in
+#316's first topic was rejected.
+
+## Asm microkernels (#321)
+
+Hot-path bit ops on WideBits / AlignedWideBits16 (count_ones,
+trailing/leading_zeros, bitwise) get asm-microkernel implementations
+when bench evidence shows compiler-generated SIMD doesn't hit the
+inlined-instruction-count target. Drops down a tier from
+intrinsic-load to inline asm only with measured justification.
+
+## HotTruncate research (#322)
+
+A possible future Hot variant that explicitly truncates wide widths
+to 128 for compute (lossy but native-fast). Deferred for research.
+Not in the current strategy lattice.
 
 ## Removed entries
 
-(none)
+- "UContainerFor / IContainerFor extension to wider widths" — both
+  traits are deleted entirely in #316 per no-legacy-shims-pre-1.0.

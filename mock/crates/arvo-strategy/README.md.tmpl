@@ -1,7 +1,8 @@
 # arvo-strategy
 
-Strategy markers and the type-only container-projection traits.
+Strategy markers and the type-only container-projection trait.
 `Hot`, `Warm`, `Cold`, `Precise` ZSTs identify the precision /
-throughput tradeoff. `UContainerFor<N>` and `IContainerFor<N>` const
-traits project a strategy + bit-width to the bare primitive container
-that holds it. `#![no_std]`, no alloc.
+throughput tradeoff. The unified `BitsContainerFor<const N: Width,
+Sign: Signedness>` const trait projects a strategy + bit-width +
+sign axis to either a native primitive (N <= 128) or byte-sequence
+storage (N > 128). `Width` newtype lives here. `#![no_std]`, no alloc.

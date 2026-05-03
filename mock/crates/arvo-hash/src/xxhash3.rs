@@ -2,7 +2,7 @@
 //!
 //! `XxHash3<const N: u16>` wraps the `xxhash3_64` algorithm and projects
 //! its 64-bit state into the requested width via a per-N mask plus
-//! `as` cast to the dispatched `<Hot as UContainerFor<N>>::T` container,
+//! `as` cast to the dispatched `<Hot as BitsContainerFor<N, Unsigned>>::T` container,
 //! then `Bits::from_raw`. Same shape as `Fnv1a<N>`; consumer-facing
 //! ergonomics are identical.
 //!
@@ -10,11 +10,11 @@
 //! family. FNV-1a remains as `Fnv1a<N>` for known-good fits where its
 //! 8-16 byte band performance edge holds.
 //!
-//! Width is constrained to `1..=64` implicitly by `Hot: UContainerFor<N>`.
+//! Width is constrained to `1..=64` implicitly by `Hot: BitsContainerFor<N, Unsigned>`.
 //! Wider widths (XxHash3-128) are tracked as a future-round concern.
 
 use crate::Hasher;
-use arvo::strategy::UContainerFor;
+use arvo::strategy::{BitsContainerFor, Unsigned};
 use arvo::{Bits, Hot};
 use xxhash_rust::const_xxh3::xxh3_64;
 
@@ -47,7 +47,7 @@ pub const fn xxhash3_64(bytes: &[u8]) -> u64 {
 /// before calling `update` once.
 pub struct XxHash3<const N: u16>
 where
-    Hot: UContainerFor<N>,
+    Hot: BitsContainerFor<N, Unsigned>,
 {
     /// Buffered bytes. Bounded by stack-allocated array; size matches
     /// the substrate's typical content-addressing payload (16-128
@@ -61,7 +61,7 @@ where
 
 impl<const N: u16> XxHash3<N>
 where
-    Hot: UContainerFor<N>,
+    Hot: BitsContainerFor<N, Unsigned>,
 {
     /// Construct a fresh hasher in its initial state.
     #[inline(always)]
@@ -76,7 +76,7 @@ where
 
 impl<const N: u16> Default for XxHash3<N>
 where
-    Hot: UContainerFor<N>,
+    Hot: BitsContainerFor<N, Unsigned>,
 {
     #[inline(always)]
     fn default() -> Self {

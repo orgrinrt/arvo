@@ -104,6 +104,33 @@ Three sites retain compiler-mandated primitive types, annotated with
 
 No other raw primitives live in arvo-bitmask sources.
 
+### Const-trait surface (round 202605021200)
+
+`Mask64` and `Mask256` ship inherent constants and `impl const`
+on the bit-op family:
+
+```rust
+impl Mask64 {
+    pub const EMPTY: Mask64 = ...;
+    pub const FULL: Mask64 = ...;
+}
+
+impl Mask256 {
+    pub const EMPTY: Mask256 = ...;
+    pub const FULL: Mask256 = ...;
+}
+```
+
+`impl const BitAnd`, `impl const BitOr`, `impl const BitXor`,
+`impl const Not` on Mask64 and Mask256 (and the corresponding
+inherent methods `union` / `intersection` / `difference` /
+`complement` are `const fn`). Round 202605021200 added
+`feature(const_ops)` to the crate root.
+
+`BitMatrix` similarly gains const-context constructors and
+const inherent methods where the underlying op chain supports
+const evaluation.
+
 ## Bit scanning
 
 Iterate over set bits efficiently, built on arvo-bits contracts:

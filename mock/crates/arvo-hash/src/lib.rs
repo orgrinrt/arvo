@@ -23,3 +23,4 @@ pub use algo::{Hasher, HasherExt, fnv1a_64};
 pub use aliases::ContentHash;
 pub use fnv1a::Fnv1a;
 pub use xxhash3::{XxHash3, xxhash3_64};
+

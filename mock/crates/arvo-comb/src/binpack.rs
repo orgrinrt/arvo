@@ -15,7 +15,7 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::{Bool, Cap, USize};
+use arvo::{Identity, Bool, Cap, USize};
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_tensor::{Array, cap_size};
 
@@ -109,9 +109,9 @@ where
         // Open a new bin if capacity allows and we are under `B`.
         if !placed.0 && opened.0 < cap_size(B) {
             if !matches!(w.total_cmp(capacity), Ordering::Greater) {
-                used.set(USize(opened.0), w);
-                bins_of_items.set(idx, USize(opened.0));
-                opened = USize(opened.0 + 1);
+                used.set(opened, w);
+                bins_of_items.set(idx, opened);
+                opened = opened + USize::ONE;
             }
         }
 

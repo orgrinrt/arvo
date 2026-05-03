@@ -4,17 +4,19 @@
 //! `<S as BitsContainerFor<N, Sign>>::T`, the storage primitive that
 //! holds N bits under the chosen strategy and signedness. Routes
 //! through `BitsContainerFor<N, Sign>` (in `arvo-strategy`) which
-//! projects to `UContainerFor<N>::T` for `Sign = Unsigned` or
-//! `IContainerFor<N>::T` for `Sign = Signed`. Default `Sign = Unsigned`
-//! keeps every existing call site unchanged; `IFixed<I, F, S>` reaches
-//! for `Sign = Signed` internally.
+//! projects via Pattern C const-tag dispatch through `Project` to
+//! the concrete container. Default `Sign = Unsigned` keeps every
+//! existing call site unchanged; `IFixed<I, F, S>` reaches for
+//! `Sign = Signed` internally.
 //!
 //! Container projections: u8 for 1..=8 under Hot, u16 for 9..=16,
-//! u32 for 17..=32, u64 for 33..=64. Round 202604280500 extended the
-//! tables: u128 for 65..=128 (Hot/Cold), u128 for 33..=64
-//! (Warm/Precise as the 2x-logical primitive). 129..=255 dispatches
-//! through `MultiContainer<HiT, LoT>` (storage-only this round;
-//! arithmetic on multi-value containers is BACKLOG-tracked).
+//! u32 for 17..=32, u64 for 33..=64, u128 for 65..=128 (Hot/Cold).
+//! Warm/Precise use the 2x-logical ladder (u16 for 1..=8, u32 for
+//! 9..=16, u64 for 17..=32, u128 for 33..=64) and have no native
+//! bucket above N=64. Above the per-Strategy native cap, all four
+//! strategies project to `WideBits<bytes_for(N), A>` where `A = A16`
+//! for Hot (SSE2 / NEON aligned baseline) and `A = A1` for Cold /
+//! Warm / Precise (align-1 byte-exact).
 //!
 //! Bits is NOT a UFixed alias and NOT a UFixed wrapper. It is a
 //! parallel primitive family that reuses arvo's container-dispatch
@@ -33,8 +35,15 @@
 
 use core::marker::ConstParamTy_;
 
-use arvo_strategy::{BitsContainerFor, Hot, Signedness, Strategy, Unsigned};
+use arvo_strategy::{
+    BitsContainerFor, Bounded, Hot, Identity, Signedness, Strategy, Unsigned,
+};
 use arvo_transparent::Transparent;
+
+use crate::bridges::{
+    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+};
+use crate::platform::Bool;
 
 /// N-bit opaque bit-pattern. Transparent wrapper over the
 /// strategy-and-sign-dispatched container primitive.
@@ -60,7 +69,7 @@ where
 // SAFETY: `ConstParamTy_` requires structural eq + bitwise stable
 // representation. `Bits<N, S, Sign>` is `repr(transparent)` over
 // `<S as BitsContainerFor<N, Sign>>::T` (a native primitive or a
-// `MultiContainer<HiT, LoT>` shape per the strategy projection);
+// `WideBits<BYTES, A>` shape per the Pattern C strategy projection);
 // structural eq follows from the derived `PartialEq + Eq` plus the
 // inner primitive's structural eq.
 impl<const N: u16, S: Strategy + Eq, Sign: Signedness + Eq> ConstParamTy_ for Bits<N, S, Sign>
@@ -81,6 +90,102 @@ where
     /// Project to the raw container value.
     pub const fn to_raw(self) -> <S as BitsContainerFor<N, Sign>>::T {
         self.0
+    }
+}
+
+// Generic Bounded blanket on Bits<N, S, Sign> wires through the
+// container primitive's Bounded impl. EMPTY = MIN, FULL = MAX at the
+// container level; for unsigned containers EMPTY corresponds to all-
+// bits-zero, FULL to all-bits-one. The blanket lifts every
+// (S, N, Sign) tuple where the container primitive impls Bounded.
+impl<const N: u16, S: Strategy, Sign: Signedness> const Bounded for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] Bounded,
+{
+    const MIN: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Bounded>::MIN);
+    const MAX: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Bounded>::MAX);
+}
+
+// Generic Identity blanket. ZERO is the additive identity; ONE the
+// multiplicative identity. At the bit-pattern level these are the
+// underlying primitive's 0 and 1.
+impl<const N: u16, S: Strategy, Sign: Signedness> const Identity for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] Identity,
+{
+    const ZERO: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ZERO);
+    const ONE: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ONE);
+}
+
+// Generic ConstPartialEq + ConstEq + ConstBitEq blankets. Bit
+// patterns compare structurally through the inner container
+// primitive's bridges. Integer-like containers are reflexive
+// (ConstEq); the marker propagates here. Bit-pattern equality
+// (ConstBitEq) is always reflexive regardless of inner type and is
+// what consumers reach for when value equality and bit equality
+// must coincide.
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstPartialEq for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] ConstPartialEq,
+{
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <<S as BitsContainerFor<N, Sign>>::T as ConstPartialEq>::const_eq(&a, &b)
+    }
+}
+
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstEq for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] ConstEq,
+{
+}
+
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstBitEq for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] ConstBitEq,
+{
+    #[inline(always)]
+    fn const_bit_eq(&self, other: &Self) -> Bool {
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <<S as BitsContainerFor<N, Sign>>::T as ConstBitEq>::const_bit_eq(&a, &b)
+    }
+}
+
+// Generic ConstOrd blanket. Bit-pattern total ordering routes through
+// the inner container primitive. For multi-value containers
+// (`MultiContainer<HiT, LoT>`), the ordering follows the high half
+// first then the low half (lexicographic on (Hi, Lo)); the
+// `MultiContainer` ConstOrd impl encodes this.
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstOrd for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] ConstOrd,
+{
+    #[inline(always)]
+    fn const_cmp(&self, other: &Self) -> ConstOrdering {
+        let a = <Self as Transparent>::raw(*self);
+        let b = <Self as Transparent>::raw(*other);
+        <<S as BitsContainerFor<N, Sign>>::T as ConstOrd>::const_cmp(&a, &b)
+    }
+}
+
+// Generic ConstDefault blanket. Default Bits is the all-zero pattern.
+impl<const N: u16, S: Strategy, Sign: Signedness> const ConstDefault for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] Identity,
+{
+    #[inline(always)]
+    fn const_default() -> Self {
+        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ZERO)
     }
 }
 

@@ -48,7 +48,7 @@
 //! ```
 
 /// Internal helper: yields the concrete container primitive type for
-/// a `Bits<N, Hot>` width literal. Mirrors `<Hot as UContainerFor<N>>::T`
+/// a `Bits<N, Hot>` width literal. Mirrors `<Hot as BitsContainerFor<N, Unsigned>>::T`
 /// per-N: `u8` for 1..=8, `u16` for 9..=16, `u32` for 17..=32, `u64`
 /// for 33..=64.
 ///

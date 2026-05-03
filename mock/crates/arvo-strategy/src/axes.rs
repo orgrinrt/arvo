@@ -38,7 +38,7 @@ use crate::{Cold, Hot, Precise, Warm};
 /// Sealed marker trait. The two implementors are `Wrapping` and
 /// `Saturating` ZST markers. Each carries a `DISCRIMINANT` const for
 /// compile-time `HasAxes` cross-checks (Pass A.1 of round 202604281000).
-pub trait OverflowPolicy: sealed::Sealed + Copy + Clone + Default + 'static {
+pub const trait OverflowPolicy: sealed::Sealed + Copy + Clone + Default + 'static {
     /// Stable per-marker discriminant for compile-time projection.
     const DISCRIMINANT: u16;
 }
@@ -60,10 +60,10 @@ pub struct Saturating;
 impl sealed::Sealed for Wrapping {}
 impl sealed::Sealed for Saturating {}
 
-impl OverflowPolicy for Wrapping {
+impl const OverflowPolicy for Wrapping {
     const DISCRIMINANT: u16 = 0;
 }
-impl OverflowPolicy for Saturating {
+impl const OverflowPolicy for Saturating {
     const DISCRIMINANT: u16 = 1;
 }
 
@@ -74,7 +74,7 @@ impl OverflowPolicy for Saturating {
 /// Sealed marker trait. The two implementors are `Min` and
 /// `DoubleLogical` ZST markers. Each carries a `DISCRIMINANT` const
 /// for compile-time `HasAxes` cross-checks.
-pub trait ContainerWidth: sealed::Sealed + Copy + Clone + Default + 'static {
+pub const trait ContainerWidth: sealed::Sealed + Copy + Clone + Default + 'static {
     /// Stable per-marker discriminant for compile-time projection.
     const DISCRIMINANT: u16;
 }
@@ -97,10 +97,10 @@ pub struct DoubleLogical;
 impl sealed::Sealed for Min {}
 impl sealed::Sealed for DoubleLogical {}
 
-impl ContainerWidth for Min {
+impl const ContainerWidth for Min {
     const DISCRIMINANT: u16 = 0;
 }
-impl ContainerWidth for DoubleLogical {
+impl const ContainerWidth for DoubleLogical {
     const DISCRIMINANT: u16 = 1;
 }
 
@@ -111,7 +111,7 @@ impl ContainerWidth for DoubleLogical {
 /// Sealed marker trait. The two implementors are `Dense` and
 /// `Bitpacked` ZST markers. Each carries a `DISCRIMINANT` const for
 /// compile-time `HasAxes` cross-checks.
-pub trait StorageLayout: sealed::Sealed + Copy + Clone + Default + 'static {
+pub const trait StorageLayout: sealed::Sealed + Copy + Clone + Default + 'static {
     /// Stable per-marker discriminant for compile-time projection.
     const DISCRIMINANT: u16;
 }
@@ -135,10 +135,10 @@ pub struct Bitpacked;
 impl sealed::Sealed for Dense {}
 impl sealed::Sealed for Bitpacked {}
 
-impl StorageLayout for Dense {
+impl const StorageLayout for Dense {
     const DISCRIMINANT: u16 = 0;
 }
-impl StorageLayout for Bitpacked {
+impl const StorageLayout for Bitpacked {
     const DISCRIMINANT: u16 = 1;
 }
 
@@ -156,7 +156,7 @@ impl StorageLayout for Bitpacked {
 /// | Warm    | Wrapping   | DoubleLogical  | Dense     |
 /// | Cold    | Wrapping   | Min            | Bitpacked |
 /// | Precise | Saturating | DoubleLogical  | Dense     |
-pub trait HasAxes {
+pub const trait HasAxes {
     /// Overflow policy of this strategy.
     type Overflow: OverflowPolicy;
     /// Container width of this strategy.
@@ -165,25 +165,25 @@ pub trait HasAxes {
     type Layout: StorageLayout;
 }
 
-impl HasAxes for Hot {
+impl const HasAxes for Hot {
     type Overflow = Wrapping;
     type Width = Min;
     type Layout = Dense;
 }
 
-impl HasAxes for Warm {
+impl const HasAxes for Warm {
     type Overflow = Wrapping;
     type Width = DoubleLogical;
     type Layout = Dense;
 }
 
-impl HasAxes for Cold {
+impl const HasAxes for Cold {
     type Overflow = Wrapping;
     type Width = Min;
     type Layout = Bitpacked;
 }
 
-impl HasAxes for Precise {
+impl const HasAxes for Precise {
     type Overflow = Saturating;
     type Width = DoubleLogical;
     type Layout = Dense;

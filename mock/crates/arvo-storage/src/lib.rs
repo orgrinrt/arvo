@@ -2,6 +2,7 @@
 #![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![feature(const_trait_impl)]
+#![feature(const_ops)]
 #![feature(const_param_ty_trait)]
 #![feature(try_trait_v2)]
 #![allow(incomplete_features)]
@@ -15,11 +16,15 @@
 //! See `DESIGN.md` for the full surface.
 
 mod bits;
+mod bridges;
 mod layout_assertions;
 mod meta_bits;
 mod platform;
 
-pub use arvo_strategy::{BitPrim, MultiContainer};
+pub use arvo_strategy::{A1, A16, A32, A64, Align, Bounded, Identity, SignedIdentity, WideBits};
 pub use bits::Bits;
+pub use bridges::{
+    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+};
 pub use meta_bits::{FBits, IBits, MetaCarrier, Width, fbits, ibits, width};
 pub use platform::{AsBool, Bool, Cap, USize};

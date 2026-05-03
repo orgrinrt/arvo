@@ -13,7 +13,7 @@
 
 use core::cmp::Ordering;
 
-use arvo::{Cap, USize};
+use arvo::{Identity, Cap, USize};
 use arvo::traits::TotalOrd;
 use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 
@@ -95,7 +95,7 @@ where
     let mut src_any = false;
     let mut j = 0usize;
     while j < cap_size(N) {
-        if dag.predecessors(NodeId::new(USize(j))).count().0 == 0 {
+        if dag.predecessors(NodeId::new(USize(j))).count() == USize::ZERO {
             sources.insert(USize(j));
             src_any = true;
         }

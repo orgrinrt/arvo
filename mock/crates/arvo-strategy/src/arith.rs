@@ -21,11 +21,11 @@
 //! the cheapest defined fallback that does not panic). Precise
 //! guards and clamps to container max.
 
-use crate::{Cold, HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
+use crate::{BitsContainerFor, Cold, HasAxes, Hot, Precise, Signed, Unsigned, Warm};
 
 /// Unsigned arithmetic dispatch for `(strategy, N)`.
 ///
-/// Keyed on the same `N` that `UContainerFor` uses. Lets
+/// Keyed on the same `N` that `BitsContainerFor` uses. Lets
 /// `UFixed<I, F, S>` delegate arithmetic to the strategy-correct
 /// container operation without re-bounding on the container type.
 ///
@@ -37,31 +37,55 @@ use crate::{Cold, HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
 /// concrete-type dispatch; the axis projections document the design
 /// intent and unblock future combinations like `Hot + Saturating`
 /// once Rust trait specialisation makes axis-only dispatch possible.
-pub trait UArith<const N: u16>: UContainerFor<N> + HasAxes {
+pub const trait UArith<const N: u16>: [const] BitsContainerFor<N, Unsigned> + HasAxes {
     /// Strategy-specific `+`.
-    fn u_add(a: Self::T, b: Self::T) -> Self::T;
+    fn u_add(
+        a: <Self as BitsContainerFor<N, Unsigned>>::T,
+        b: <Self as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
     /// Strategy-specific `-`.
-    fn u_sub(a: Self::T, b: Self::T) -> Self::T;
+    fn u_sub(
+        a: <Self as BitsContainerFor<N, Unsigned>>::T,
+        b: <Self as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
     /// Strategy-specific `*`.
-    fn u_mul(a: Self::T, b: Self::T) -> Self::T;
+    fn u_mul(
+        a: <Self as BitsContainerFor<N, Unsigned>>::T,
+        b: <Self as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
     /// Strategy-specific `/`. Div-by-zero: wrapping strategies use
     /// `wrapping_div` (panic convention); Precise clamps to max.
-    fn u_div(a: Self::T, b: Self::T) -> Self::T;
+    fn u_div(
+        a: <Self as BitsContainerFor<N, Unsigned>>::T,
+        b: <Self as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
 }
 
 /// Signed arithmetic dispatch for `(strategy, N)`.
 ///
 /// `HasAxes` supertrait per the same Pass E convention as `UArith`.
-pub trait IArith<const N: u16>: IContainerFor<N> + HasAxes {
+pub const trait IArith<const N: u16>: [const] BitsContainerFor<N, Signed> + HasAxes {
     /// Strategy-specific `+`.
-    fn i_add(a: Self::T, b: Self::T) -> Self::T;
+    fn i_add(
+        a: <Self as BitsContainerFor<N, Signed>>::T,
+        b: <Self as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
     /// Strategy-specific `-`.
-    fn i_sub(a: Self::T, b: Self::T) -> Self::T;
+    fn i_sub(
+        a: <Self as BitsContainerFor<N, Signed>>::T,
+        b: <Self as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
     /// Strategy-specific `*`.
-    fn i_mul(a: Self::T, b: Self::T) -> Self::T;
+    fn i_mul(
+        a: <Self as BitsContainerFor<N, Signed>>::T,
+        b: <Self as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
     /// Strategy-specific `/`. Div-by-zero: wrapping strategies use
     /// `wrapping_div` (panic convention); Precise clamps to max.
-    fn i_div(a: Self::T, b: Self::T) -> Self::T;
+    fn i_div(
+        a: <Self as BitsContainerFor<N, Signed>>::T,
+        b: <Self as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
 }
 
 /// Helper trait: yields the MAX value of an unsigned container type.
@@ -69,26 +93,26 @@ pub trait IArith<const N: u16>: IContainerFor<N> + HasAxes {
 /// Needed because generic contexts can't call `T::MAX` directly.
 /// `MAX` is an inherent associated const, not routed through any
 /// `num-traits` style surface (which arvo doesn't carry).
-pub trait USaturating: Sized {
+pub const trait USaturating: Sized {
     /// `T::MAX` for this container.
     fn saturating_max() -> Self;
 }
 
 /// Signed counterpart of `USaturating`.
-pub trait ISaturating: Sized {
+pub const trait ISaturating: Sized {
     /// `T::MAX` for this container.
     fn saturating_max() -> Self;
 }
 
 macro_rules! impl_saturating {
     (unsigned: $($ty:ty),+) => {
-        $(impl USaturating for $ty {
+        $(impl const USaturating for $ty {
             #[inline(always)]
             fn saturating_max() -> Self { <$ty>::MAX }
         })+
     };
     (signed: $($ty:ty),+) => {
-        $(impl ISaturating for $ty {
+        $(impl const ISaturating for $ty {
             #[inline(always)]
             fn saturating_max() -> Self { <$ty>::MAX }
         })+
@@ -104,20 +128,20 @@ impl_saturating!(signed: i8, i16, i32, i64, i128);
 macro_rules! impl_u_arith_wrapping {
     ($strategy:ty, $($bits:literal),+) => {
         $(
-            impl UArith<$bits> for $strategy {
+            impl const UArith<$bits> for $strategy {
                 #[inline(always)]
-                fn u_add(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.wrapping_add(b) }
+                fn u_add(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.wrapping_add(b) }
                 #[inline(always)]
-                fn u_sub(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.wrapping_sub(b) }
+                fn u_sub(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.wrapping_sub(b) }
                 #[inline(always)]
-                fn u_mul(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.wrapping_mul(b) }
+                fn u_mul(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.wrapping_mul(b) }
                 #[inline(always)]
-                fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T {
-                    if b == <<Self as UContainerFor<$bits>>::T as Default>::default() {
+                fn u_div(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity>::ZERO {
                         a
                     } else {
                         a.wrapping_div(b)
@@ -131,22 +155,22 @@ macro_rules! impl_u_arith_wrapping {
 macro_rules! impl_u_arith_saturating {
     ($strategy:ty, $($bits:literal),+) => {
         $(
-            impl UArith<$bits> for $strategy {
+            impl const UArith<$bits> for $strategy {
                 #[inline(always)]
-                fn u_add(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.saturating_add(b) }
+                fn u_add(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.saturating_add(b) }
                 #[inline(always)]
-                fn u_sub(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.saturating_sub(b) }
+                fn u_sub(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.saturating_sub(b) }
                 #[inline(always)]
-                fn u_mul(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.saturating_mul(b) }
+                fn u_mul(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.saturating_mul(b) }
                 #[inline(always)]
-                fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T {
+                fn u_div(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
                     // Precise never panics on div-by-zero: clamp to MAX.
-                    if b == <<Self as UContainerFor<$bits>>::T as Default>::default() {
-                        <<Self as UContainerFor<$bits>>::T as USaturating>::saturating_max()
+                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity>::ZERO {
+                        <<Self as BitsContainerFor<$bits, Unsigned>>::T as USaturating>::saturating_max()
                     } else {
                         a / b
                     }
@@ -159,20 +183,20 @@ macro_rules! impl_u_arith_saturating {
 macro_rules! impl_i_arith_wrapping {
     ($strategy:ty, $($bits:literal),+) => {
         $(
-            impl IArith<$bits> for $strategy {
+            impl const IArith<$bits> for $strategy {
                 #[inline(always)]
-                fn i_add(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.wrapping_add(b) }
+                fn i_add(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.wrapping_add(b) }
                 #[inline(always)]
-                fn i_sub(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.wrapping_sub(b) }
+                fn i_sub(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.wrapping_sub(b) }
                 #[inline(always)]
-                fn i_mul(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.wrapping_mul(b) }
+                fn i_mul(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.wrapping_mul(b) }
                 #[inline(always)]
-                fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T {
-                    if b == <<Self as IContainerFor<$bits>>::T as Default>::default() {
+                fn i_div(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T {
+                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity>::ZERO {
                         a
                     } else {
                         a.wrapping_div(b)
@@ -186,22 +210,22 @@ macro_rules! impl_i_arith_wrapping {
 macro_rules! impl_i_arith_saturating {
     ($strategy:ty, $($bits:literal),+) => {
         $(
-            impl IArith<$bits> for $strategy {
+            impl const IArith<$bits> for $strategy {
                 #[inline(always)]
-                fn i_add(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.saturating_add(b) }
+                fn i_add(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.saturating_add(b) }
                 #[inline(always)]
-                fn i_sub(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.saturating_sub(b) }
+                fn i_sub(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.saturating_sub(b) }
                 #[inline(always)]
-                fn i_mul(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.saturating_mul(b) }
+                fn i_mul(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.saturating_mul(b) }
                 #[inline(always)]
-                fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T {
+                fn i_div(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T {
                     // Precise guards against div-by-zero: clamp to MAX.
-                    if b == <<Self as IContainerFor<$bits>>::T as Default>::default() {
-                        <<Self as IContainerFor<$bits>>::T as ISaturating>::saturating_max()
+                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity>::ZERO {
+                        <<Self as BitsContainerFor<$bits, Signed>>::T as ISaturating>::saturating_max()
                     } else {
                         // Guard signed overflow (MIN / -1) by preferring
                         // `saturating_div` rather than `wrapping_div`.
@@ -376,3 +400,137 @@ impl_i_arith_saturating!(
     49, 50, 51, 52, 53, 54, 55, 56,
     57, 58, 59, 60, 61, 62, 63, 64
 );
+
+// --- Generic const-bound traits (round 202605021600) -------------------
+//
+// `Bounded` and `Identity` are the canonical const-trait surfaces for
+// bottom/top and zero/one constants. Any type that meaningfully carries
+// a min/max can impl Bounded; any type with a multiplicative identity
+// can impl Identity. The substrate uses these to drive blanket impls
+// of mask EMPTY/FULL, UFixed/IFixed inherent ZERO/ONE, and Bits ZERO.
+
+/// Per-type bottom/top const surface.
+///
+/// `pub const trait`. Implemented for u8 / u16 / u32 / u64 / u128 and
+/// i8 / i16 / i32 / i64 / i128 by macro impls below. Substrate types
+/// that wrap these (Bits, UFixed, IFixed, Mask families) gain Bounded
+/// via blanket impls keyed on the underlying primitive.
+pub const trait Bounded: Sized {
+    /// The minimum representable value of this type.
+    const MIN: Self;
+    /// The maximum representable value of this type.
+    const MAX: Self;
+}
+
+/// Per-type multiplicative identity const surface.
+///
+/// `pub const trait`. Carries `ZERO` and `ONE` const associated items.
+/// Substrate types gain Identity via blanket impls keyed on the
+/// underlying primitive's Identity impl.
+pub const trait Identity: Sized {
+    /// The additive identity of this type.
+    const ZERO: Self;
+    /// The multiplicative identity of this type.
+    const ONE: Self;
+}
+
+macro_rules! impl_bounded_identity_u {
+    ($($ty:ty),+) => {
+        $(
+            impl const Bounded for $ty {
+                const MIN: Self = <$ty>::MIN;
+                const MAX: Self = <$ty>::MAX;
+            }
+            impl const Identity for $ty {
+                const ZERO: Self = 0;
+                const ONE: Self = 1;
+            }
+        )+
+    };
+}
+
+macro_rules! impl_bounded_identity_i {
+    ($($ty:ty),+) => {
+        $(
+            impl const Bounded for $ty {
+                const MIN: Self = <$ty>::MIN;
+                const MAX: Self = <$ty>::MAX;
+            }
+            impl const Identity for $ty {
+                const ZERO: Self = 0;
+                const ONE: Self = 1;
+            }
+        )+
+    };
+}
+
+impl_bounded_identity_u!(u8, u16, u32, u64, u128, usize);
+impl_bounded_identity_i!(i8, i16, i32, i64, i128, isize);
+
+// Float Bounded / Identity. Bottom-out at the language-defined MIN /
+// MAX inherents and 0.0 / 1.0 literals. The `Ieee` seal on the public
+// surface restricts these traits' use to `f32` / `f64` exposure
+// through `FastFloat<F>` / `StrictFloat<F>`, but the substrate impls
+// land here so the canonical const surface stays unified.
+macro_rules! impl_bounded_identity_f {
+    ($($ty:ty),+) => {
+        $(
+            impl const Bounded for $ty {
+                const MIN: Self = <$ty>::MIN;
+                const MAX: Self = <$ty>::MAX;
+            }
+            impl const Identity for $ty {
+                const ZERO: Self = 0.0;
+                const ONE: Self = 1.0;
+            }
+        )+
+    };
+}
+
+impl_bounded_identity_f!(f32, f64);
+
+// --- SignedIdentity (round 202605021800) ---------------------------------
+//
+// `SignedIdentity` is the signed-primitive companion to `Identity`. It
+// adds `NEG_ONE`, the only constant beyond ZERO/ONE that consumers
+// reach for on signed types where the asymmetry matters. Per round
+// 202605021800, the prior `UPrimConst` / `IPrimConst` traits (which
+// duplicated Bounded + Identity with a NEG_ONE on the signed side) are
+// removed; the canonical surfaces are `Bounded`, `Identity`, and
+// `SignedIdentity`. Consumers route through these, not through type-
+// specific inherent constants.
+
+/// Per-signed-type negative-one const surface.
+///
+/// `pub const trait`. Supertrait-bounded on `Identity`. Implemented for
+/// `i8` / `i16` / `i32` / `i64` / `i128` / `isize` and substrate types
+/// that wrap signed primitives (`IFixed`, `Bits<N, S, Signed>`).
+pub const trait SignedIdentity: [const] Identity {
+    /// The additive inverse of the multiplicative identity (signed -1).
+    const NEG_ONE: Self;
+}
+
+macro_rules! impl_signed_identity {
+    ($($ty:ty),+) => {
+        $(impl const SignedIdentity for $ty {
+            const NEG_ONE: Self = -1;
+        })+
+    };
+}
+
+impl_signed_identity!(i8, i16, i32, i64, i128, isize);
+
+// Float SignedIdentity. ML / scientific code uses `-1.0` as a
+// canonical constant; the substrate provides it through the same
+// trait surface as signed integers so consumers reach for
+// `<F as SignedIdentity>::NEG_ONE` rather than a type-specific path.
+// Per audit pivot 7 followup: ship in this round, not later.
+macro_rules! impl_signed_identity_f {
+    ($($ty:ty),+) => {
+        $(impl const SignedIdentity for $ty {
+            const NEG_ONE: Self = -1.0;
+        })+
+    };
+}
+
+impl_signed_identity_f!(f32, f64);
