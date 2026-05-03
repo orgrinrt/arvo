@@ -1,190 +1,103 @@
-# Sketch: HList-style heterogeneous N-ary container
+# Sketches: foundational arvo container redesign
 
 **Date**: 2026-05-03T14:00Z
-**Status**: SKETCH 01 COMPLETE — DESIGN DECISION REQUIRED
-**Outcome**: Heterogeneous HList does **not** deliver optimal-fit under `repr(C)`. The original design rationale collapses; design needs rethink.
+**Status**: SKETCH 01 COMPLETE — DESIGN DIRECTION PIVOTED, SKETCHES 02-04 PENDING
 **Tracks**: task #317 (foundational redesign sketches), task #316 (the redesign itself).
 
-## Critical finding from Sketch 01
+## What this directory exists to validate
 
-Sketch `01_hlist_basic.rs` ran on rustc 1.96.0-nightly, edition 2024. Real layout sizes:
+The senior audit on 2026-05-03 found that the substrate's `MultiContainer<HiT, LoT>` binary nesting was the lazy-choice fallback from an earlier round. The audit + user discussion led to the conclusion that container projection above 128 bits should be re-architected. This directory holds the sketches that validate the new architecture before it lands in source.
 
-| Shape | Logical bits | Physical bytes | Cons content | Trailing pad |
-|---|---|---|---|---|
-| `u128` | 128 | 16 | n/a | 0 |
-| `Cons<u128, u64>` | 192 | 32 | 24 | 8 |
-| `Cons<u128, u128>` | 256 | 32 | 32 | 0 |
-| `Cons<u128, Cons<u64, u8>>` | 200 | 32 | 25 | 7 |
-| `Cons<u8, Cons<u64, u128>>` | 200 | 48 | 25 | 23 |
-| `Cons<u128, Cons<u128, u128>>` | 384 | 48 | 48 | 0 |
+## Sketch 01: HList heterogeneous container layout finding
 
-**The padding rule.** Rust requires `total_size % alignment == 0`. Struct alignment = `max(field alignments)`. Heterogeneous Cons of `(u128, u64)` has alignment 16; content is 24 bytes; total is rounded up to 32. This is fundamental Rust layout, not a workaround surface — `repr(C)` honors it, default repr also honors it, field reordering doesn't change it.
+`01_hlist_basic.rs` ran on rustc 1.96.0-nightly. Real layout sizes:
 
-**Consequence.** `Cons<u128, u64>` (192 logical bits) uses the **same 32 bytes** as `Cons<u128, u128>` (256 logical bits). Heterogeneous offers **zero storage benefit** over homogeneous in the typical case. The "u128, u64, u32 to fit 224 bits exactly" intuition is wrong — the 224-bit shape pads to whatever the largest-aligned element demands.
+| Shape | Logical bits | Physical bytes | Padding |
+|---|---|---|---|
+| `u128` | 128 | 16 | 0 |
+| `Cons<u128, u64>` | 192 | 32 | 8 (forced by 16-byte alignment) |
+| `Cons<u128, u128>` | 256 | 32 | 0 |
+| `Cons<u128, Cons<u64, u8>>` | 200 | 32 | 7 |
+| `Cons<u8, Cons<u64, u128>>` (small-first) | 200 | 48 | 23 |
+| `Cons<u128, Cons<u128, u128>>` | 384 | 48 | 0 |
 
-**Where heterogeneous DOES help.** Only when all elements have equal alignment. `Cons<u64, Cons<u64, u64>>` (192 bits) = 24 bytes content, alignment 8, total 24. So 3-of-u64 fits exactly. But the same 192 bits in `[u64; 3]` = 24 bytes also exact. Heterogeneous gives nothing that homogeneous doesn't already give — it just lets you mix primitives, with no fitting advantage.
+**The padding rule**: Rust requires `total_size % alignment == 0`. Struct alignment = `max(field alignments)`. Heterogeneous Cons of `(u128, u64)` has alignment 16; content is 24 bytes; total is rounded up to 32. This is fundamental Rust layout under `repr(C)`, default repr, and field reordering. The "exact bit width" promise of heterogeneous-with-mixed-aligns is impossible without `repr(packed)`.
 
-**Where heterogeneous can NEVER help.** Mixing primitives of different alignments (u128 + u64, u64 + u32, u32 + u16) always forces trailing-pad to the highest alignment. The "smallest exact fit" promise is impossible without `repr(packed)`.
+**The same issue affects the existing `MultiContainer<u64, u128>`**: verified at `/tmp/mc_existing.rs` runtime — 32 bytes, identical to `MultiContainer<u128, u128>`. The "u64+u128 saves 8 bytes" rationale baked into the substrate was always fiction; nobody noticed.
 
-## What this means for the design decision
+## Design pivot from this finding
 
-The design conversation went:
-> "Homogeneous loses optimal fit between primitive boundaries (e.g., 129..=192 with `u64+u128` = 192 bits)."
+The user's response to the finding: **stop forcing native-primitive composition above 128 bits**. Three observations drove the pivot:
 
-That's wrong under repr(C). `MultiContainer<u64, u128>` is 32 bytes (256 bits stored) for 192 logical bits — same waste as `MultiContainer<u128, u128>`. The current substrate's existing layout has the same waste already. The heterogeneous design saves nothing.
+1. The substrate already pays the custom-ops cost above 128 bits — every op on `MultiContainer<HiT, LoT>` is hand-composed across halves. We never used native primitive ops for wide values.
+2. Native-primitive composition with mixed alignment is no smaller than aligned native composition (proven above). The supposed benefit doesn't exist.
+3. Modern hardware (x86-64 ≥ Sandy Bridge 2011, ARMv7+, all aarch64, WASM, RISC-V most cores) has near-zero unaligned-access cost for non-cache-line-crossing reads. Byte-exact storage at align-1 is performant on every relevant target.
 
-So the practical choice between heterogeneous and homogeneous reduces to:
+The pivot:
 
-| Approach | Storage (typical) | Type complexity | Trait-solver risk | Arity expressibility |
-|---|---|---|---|---|
-| Heterogeneous HList (repr C) | aligned-padded; same as homogeneous | High — recursive Cons types | High — recursive trait impls | Unbounded |
-| Homogeneous `[T; N]` | aligned-padded; same as heterogeneous | Low — uniform array | Low — direct loop | Unbounded |
-| Heterogeneous repr(packed) | True byte-exact | High + unaligned-access codegen cost + can't ref fields | High | Unbounded |
-| Per-arity macro structs (`MC1<T0>`..`MC32<T0..T31>`) | Aligned-padded | Medium — N concrete types | None — flat impls | Bounded by macro emission |
+- **N ≤ 128**: bare primitive (u8 / u16 / u32 / u64 / u128). Native ops via stdlib.
+- **N > 128**: `WideBits<const BYTES: usize>` byte-sequence storage. Custom ops via cfg-gated platform paths (scalar + SSE2-x86-64 + NEON-aarch64 baseline; AVX-2/AVX-512/SVE/WASM-SIMD/RVV expansions in #320).
 
-Homogeneous `[T; N]` wins on every axis except the fictional optimal-fit advantage that turned out not to exist. The user's preference for heterogeneous was based on the belief that it preserved exact-bit storage; this sketch shows it does not.
+The strategy axis genuinely drives the storage shape:
 
-## Recommendation
+- **Hot**: SIMD-aligned byte-sequence (`#[repr(C, align(N))]` where N matches the largest SIMD vector targeted, e.g., 32 for AVX-2, 16 for SSE2/NEON). Trailing pad ≤ alignment-1 bytes. Lossy-compute path (`HotTruncate` variant) deferred to research task #322.
+- **Warm**: align-1 byte-exact `[u8; BYTES]`. Development default; full precision; no SIMD assumption.
+- **Cold**: align-1 byte-exact. Column-bitpacked layout happens at a layer above the per-Bits container (Cold's existing column-store work is unchanged).
+- **Precise**: align-1 byte-exact. Saturating semantics; full precision.
 
-Pivot to **homogeneous `[T; N]`-backed MultiContainer**:
+## What this means concretely
 
-```rust
-#[repr(C)]
-pub struct MultiContainer<T: BitPrim, const COUNT: usize> {
-    parts: [T; COUNT],
-}
-```
+`MultiContainer<HiT, LoT>` and `MultiContainerHalf` are **deleted** in #316 — no deprecation alias per `clause-dev/.claude/rules/no-legacy-shims-pre-1.0.md`. The replacement is `WideBits<const BYTES: usize>` parameterized over the strategy axis (different alignment per strategy).
 
-`T` is a base primitive (u8 / u16 / u32 / u64 / u128). `COUNT` is the multiplier. Tier projection picks `(T, COUNT)` per N range, e.g.:
-- `N ≤ 8`: bare u8 (no MC wrapper)
-- `N ≤ 16`: bare u16
-- `N ≤ 32`: bare u32
-- `N ≤ 64`: bare u64
-- `N ≤ 128`: bare u128
-- `N ≤ 256`: `MultiContainer<u128, 2>` (32 bytes — same as heterogeneous)
-- `N ≤ 384`: `MultiContainer<u128, 3>` (48 bytes — same as heterogeneous)
-- ... etc, no architectural cap
-
-Single-impl projection via `feature(generic_const_exprs)` becomes:
+Single-impl projection via `feature(generic_const_exprs)`:
 
 ```rust
-pub const fn parts_count(n: u16) -> usize {
-    let n = n as usize;
-    if n <= 128 { 1 } else { (n + 127) / 128 }
+pub const fn bytes_for(n: Width) -> usize {
+    let bits = n.raw() as usize;
+    (bits + 7) / 8
 }
 
-impl<const N: Width, Sign> const BitsContainerFor<N, Sign> for Hot
+// Hot uses aligned wrapper; others use align-1.
+impl<const N: Width, Sign: Signedness> const BitsContainerFor<N, Sign> for Hot
 where
-    [(); parts_count(N.raw())]:,
-    // sign axis projection
+    [(); bytes_for(N)]:,
+    /* sign-axis projection */
 {
-    type T = MultiContainer<u128, { parts_count(N.raw()) }>;
+    type T = /* if N <= 128: native primitive; else: AlignedWideBits<{bytes_for(N)}> */;
+}
+
+impl<const N: Width, Sign: Signedness> const BitsContainerFor<N, Sign> for Warm
+where
+    [(); bytes_for(N)]:,
+    /* sign-axis projection */
+{
+    type T = /* if N <= 128: native primitive; else: WideBits<{bytes_for(N)}> */;
 }
 ```
 
-For N ≤ 64 the table still picks bare primitives (small-N fastpath). The MultiContainer covers 65+ in unified shape.
+The const-condition mechanism for "if N ≤ 128 use one type else another" is the trait-solver's hard part — sketches 02-04 validate this cascade resolves cleanly.
 
-`BitPrim` impl over `MultiContainer<T, COUNT>` is one impl with a const-loop (LLVM unrolls for known COUNT):
+## Pending sketches
 
-```rust
-impl<T: [const] BitPrim, const COUNT: usize> const BitPrim for MultiContainer<T, COUNT> {
-    const WIDTH: USize = USize(<T as BitPrim>::WIDTH.raw() * COUNT);
-    fn count_ones(self) -> USize {
-        let mut sum = 0;
-        let mut i = 0;
-        while i < COUNT {
-            sum += <T as BitPrim>::count_ones(self.parts[i]).raw();
-            i += 1;
-        }
-        USize(sum)
-    }
-    // trailing_zeros, leading_zeros, get_bit, etc. — all const loops
-}
-```
-
-Sketch 02 (next file in this directory) will implement this and verify.
-
-## Sketches that this round will run
-
-- `01_hlist_basic.rs` — DONE. Layout finding documented above.
-- `02_homogeneous_multicontainer.rs` — TODO. Build `MultiContainer<T, const COUNT>` + const BitPrim impl. Verify count_ones / trailing_zeros etc. compile and produce correct values.
-- `03_single_impl_projection.rs` — TODO. `BitsContainerFor<const N: Width, Sign>` single-impl via generic_const_exprs. Verify trait-solver doesn't cycle.
-- `04_bits_with_homogeneous_mc.rs` — TODO. End-to-end Bits<const N: Width, S, Sign> from N=7 through N=1024.
-
-## Decision required
-
-The user's earlier call was heterogeneous N-ary specifically for optimal-fit. That rationale doesn't hold. Two paths:
-
-  - **(a) Homogeneous pivot.** Drop heterogeneous; ship homogeneous `[T; N]` MultiContainer. Same storage cost, much cleaner. (My recommendation.)
-  - **(b) Heterogeneous via repr(packed).** Pay unaligned-access cost for true byte-exact storage. Requires consumer-side discipline (no field refs, only field reads via `read_unaligned`). Substantial codegen impact.
-  - **(c) Hybrid.** Default `Hot`/`Warm` use homogeneous (aligned, fast). `Cold` strategy already does manual bitpacking at column level — leave it; the repr(packed) alternative is unnecessary for `Cold`. So in practice we just go homogeneous everywhere for the `Bits<N>` container itself.
-
-Path (a) and (c) are functionally equivalent — the substrate's `Cold` strategy doesn't need a repr(packed) container because Cold is column-bitpacked at a level above the per-Bits container.
-
-## Notes for next agent / next session
-
-If user picks (a) or (c): proceed with homogeneous `[T; N]` MultiContainer for sketches 02-04.
-If user picks (b): rewrite Sketch 01 with `repr(packed)` and re-run layout assertions. Note that sketch 02-04 will need significant unaligned-access trait/method machinery.
-
-Either way, this sketch's layout finding is the audit-trail record. The heterogeneous-vs-homogeneous question is decided by Rust layout rules, not by preference.
-
-## Hypothesis
-
-`MultiContainer<HiT, LoT>` (binary-nested) is the lazy choice. The substrate's `arvo-toolbox-not-policer` rule says we provide tools; capping at 256 bits is a policy. The audit (2026-05-03) confirmed: the cap exists because the per-N projection table stops at 255. Architecturally there's no reason to cap.
-
-The right shape is a heterogeneous N-ary container. Each "part" can be a different primitive (`u128`, `u64`, `u32`, `u16`, `u8`) so optimal-fit holds for any logical width — `Bits<200, _, _>` projects to `u128 + u64 + u8 = 200 bits exactly`, no waste.
-
-Rust does not have variadic generics. The standard rust-native pattern for type-level lists is HList: `Cons<H, T>` recursively + `Nil` base case. This sketch tests whether HList composes cleanly with the substrate's existing const-trait machinery (`BitPrim`, `ConstParamTy`, `Transparent`, `repr(transparent)` chains).
-
-## What we want to verify
-
-1. **Layout**: `Cons<H, T>` where H, T are themselves `BitPrim` types lays out predictably under `repr(C)`. Total size is `sizeof(H) + sizeof(T)` plus alignment padding. The padding question matters — packed layout via `repr(packed)` might be needed, with the soundness implications that brings.
-
-2. **BitPrim composition**: a single recursive impl of `BitPrim` for `Cons<H, T>` (with `H: BitPrim, T: BitPrim`) covers count_ones, trailing_zeros, leading_zeros, get_bit, with_bit_set, etc. Base case is `Nil` (zero bits, all-zeros operations).
-
-3. **Const-callability**: every method is `impl const` and the recursion terminates via `Nil` impl. No methods break const-fn-ness.
-
-4. **Trait-solver cycle behavior**: when `Cons<H, T>` is used inside a generic `Bits<const N: Width, S, Sign>` projection, does the trait solver accept the recursive Cons traversal? This is the load-bearing question. MetaCarrier was created exactly to dodge a similar cycle.
-
-5. **Optimal projection**: a const-fn or trait that, given `N: Width`, picks the smallest HList shape covering N bits. E.g., `optimal::<200>` = `Cons<u128, Cons<u64, Cons<u8, Nil>>>`.
-
-## Sketch files
-
-This directory will contain:
-
-- `01_hlist_basic.rs` — Cons/Nil declarations + repr(C) layout + size assertions.
-- `02_hlist_bitprim.rs` — recursive const BitPrim impl + Nil base case + sample composition tests.
-- `03_optimal_projection.rs` — const-fn picking optimal HList shape for a given Width.
-- `04_bits_with_hlist.rs` — Bits<const N: Width, S, Sign> projecting through HList.
-
-Each sketch file is a standalone Rust file that compiles (or fails) under rustc 1.96.0-nightly with the substrate's feature gates.
-
-## Fallback if HList trips the trait-solver cycle
-
-Per-arity macro-generated structs:
-
-```rust
-pub struct MultiContainer1<T0> { p0: T0 }
-pub struct MultiContainer2<T0, T1> { p0: T0, p1: T1 }
-// ... up to MultiContainer16<T0..T15>
-```
-
-Each `MultiContainerK` has its own non-recursive `impl const BitPrim`. The projection table picks `(T0, T1, ..., Tk)` per N range. Caps at K_MAX × u128 = 16 × 128 = 2048 bits with K=16, or 32 × 128 = 4096 bits with K=32. The cap is a macro-emission knob.
-
-This loses: clean type-level recursion, single-impl projection.
-This gains: zero trait-solver cycle risk, predictable compile time.
+- `02_widebits_basic.rs` — `WideBits<const BYTES>` declaration, repr(C) layout, scalar `BitPrim` impl (count_ones, trailing/leading_zeros, get_bit, etc.). Verify count_ones against known answers across multiple widths.
+- `03_aligned_widebits.rs` — `AlignedWideBits<const BYTES>` for Hot strategy, `#[repr(C, align(N))]` variant. Verify size = padded-bytes, alignment = N.
+- `04_simd_count_ones.rs` — cfg-gated count_ones over WideBits using `core::arch::x86_64::*` (SSE2 baseline) and `core::arch::aarch64::*` (NEON baseline). Verify codegen + correctness vs scalar fallback.
+- `05_single_impl_projection.rs` — `BitsContainerFor<const N: Width, Sign>` single impl per strategy with `feature(generic_const_exprs)` const-condition. Verify trait-solver doesn't cycle on the projection cascade.
+- `06_bits_end_to_end.rs` — `Bits<{width(N)}, S, Sign>` from N=7 through N=4096 across all four strategies. Verify storage size, op correctness, codegen quality (via `#[inline(always)]` + assert-via-asm or via `cargo asm` inspection).
 
 ## Decision matrix
 
 | Sketch outcome | Action |
 |---|---|
-| All four sketches compile | Land HList redesign in #316. Single-impl projection, no per-N table, no cap. |
-| Sketch 01-02 compile, 03-04 cycle | Use HList for the container shape but keep a per-N projection table that emits `Cons<...>` types per range. Loses single-impl but keeps optimal-fit + arbitrary cap. |
-| Sketch 01-02 cycle | Fall back to per-arity macro-generated structs (`MultiContainer1..MultiContainerN`). Cap = N × u128. |
-| Layout fails (padding) | `repr(packed)` chain or rethink. Possibly fall back to homogeneous `[u128; N]` for the bulk + small explicit tail. |
+| All sketches compile + correct + codegen acceptable | Land #316 redesign with full WideBits + strategy-axis alignment + cfg-gated SIMD baseline |
+| Sketches 02-03 work, 04 partial (some platforms misbehave) | Land scalar baseline, cfg-gate SIMD per platform that works, defer broken platforms to #320 |
+| Sketch 05 trips trait-solver cycle | Use a marker-trait + per-strategy projection split rather than single impl. Same surface, different internal mechanism. |
+| Sketch 06 codegen poor on hot path | Open #321 task entries naming the specific op to asm-microkernel. |
 
-## Notes for next agent
+## Notes for next agent / next session
 
-The substrate already uses `feature(generic_const_exprs)` in places (e.g., `ufixed_bits(I, F)` const-fn projection at `arvo/src/strategy.rs:30-40`). The HList approach pushes that machinery harder. Any cycle that emerges here probably emerges in similar shape elsewhere; documenting the cycle precisely is itself useful.
+The architectural decision is locked: byte-sequence above 128 bits, native below, strategy-aware alignment. Sketches 02-06 validate the implementation. If any sketch fails, the resolution is documented inline (per `cl-claim-sketch-discipline.md`) and the next sketch builds on the resolution.
 
-The MetaCarrier resolution from round 202604280806 is the canonical workaround pattern: introduce a layout-equivalent companion type that bypasses the trait-solver cycle while preserving the underlying layout. If HList trips, the analogous workaround would be a `HListCarrier<const SHAPE: ShapeDescriptor>` newtype that the trait solver sees as a single concrete type — but that defeats heterogeneity. So if HList trips, the fallback is the per-arity structs, not a MetaCarrier-style workaround.
+`MultiContainer<HiT, LoT>` and `MultiContainerHalf` go away in #316. The arvo-storage `meta_bits.rs` `MetaCarrier` companion stays — it serves a different purpose (ConstParamTy_ const-generic carrier for meta-newtypes), unrelated to the wide-container projection.
+
+The Width newtype gives Width=u16 → 65535 bits max. That's 8KB per `Bits<N>` value. Sufficient for substrate use cases (loimu column-store, hash digests up to SHA3-512, RSA up to 4096 bits, etc.). If a consumer needs more, Width can be lifted to u32 — no architectural impact on the WideBits shape.
