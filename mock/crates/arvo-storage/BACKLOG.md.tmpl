@@ -22,20 +22,28 @@ generic ergonomics improve.
 Bits<N, Cold> for N > 64 with bitpacked storage across multiple bare
 primitives. Out of scope for round 202604271346. Future round.
 
-## Round 3 prerequisites (post-202605021800 work)
+## Round 3 prerequisites (post-#316 work)
 
-Round 3 (#313) of the post-202605021600 substrate-fundamentals work
-generalises Mask\<W\> over Bits, with Mask256 collapsing from a hand-
-rolled \[QWord\<Hot\>; 4\] struct to a type alias over
-Mask\<Bits\<{Width::W256}, Hot, Unsigned\>\>. The work depends on
-Round 1's MultiContainer BitPrim impl (round 202605021800) being
-landed first; that is now landed.
+Round 3 (#313) of the substrate-fundamentals work generalises
+Mask\<W\> over Bits, with Mask256 collapsing from a hand-rolled
+\[QWord\<Hot\>; 4\] struct to a type alias over
+Mask\<Bits\<{width(256)}, Hot, Unsigned\>\>. Round 3 unblocks once
+#316 lands (the foundational redesign with WideBits, unified
+BitsContainerFor, Width relocation).
 
-Round 3 also lifts BitPrim::WIDTH from u16 to USize (was originally
-deferred to Round 4 in the prior round split; reassigned to Round 3
-during the round 202605021800 expansion since the lift naturally
-cascades from MultiContainer's WIDTH = HiT::WIDTH + LoT::WIDTH body
-needing USize-additive arithmetic).
+Round 3 also lifts BitPrim::WIDTH typing finalisation. The bulk of
+the const-generic position lift happens in #316 (u16 → Width across
+the projection layer); Round 3 polishes any remaining BitPrim::WIDTH
+positioning.
+
+## #316 follow-ups (post-redesign)
+
+The #316 foundational redesign deletes MultiContainer entirely and
+introduces WideBits + AlignedWideBits16. The MultiContainer-related
+backlog items are gone; the Round 1 BitPrim impl on MultiContainer
+shipped briefly in 202605021800 and is removed in #316 alongside the
+type. Hot tier expansion (AlignedWideBits32 / AlignedWideBits64) is
+deferred to #320 with bench-driven justification per audit H1.
 
 ## Round 202605021200 follow-ups
 

@@ -1,16 +1,13 @@
 # arvo-bits-contracts. Backlog
 
-## Round 2 prerequisites
+## Status — #316 redesign
 
-Round 2 (#312) of the post-202605021600 substrate-fundamentals work
-lifts the const-generic position on Bits from bare u16 to the typed
-Width meta-newtype: Bits\<const N: u16, ...\> becomes
-Bits\<const N: Width, ...\>. UContainerFor, IContainerFor,
-BitsContainerFor, UArith, IArith, UBitContainer, IBitContainer, and
-Narrow::narrow_to::\<const N\> all switch from const N: u16 to
-const N: Width.
+The const-generic position lift to Width (Round 2 / #312) landed for
+Bits in arvo-storage. The cascade through arvo-bits-contracts'
+projection traits (UBitContainer, IBitContainer, Narrow, Widen) lifts
+in #316 alongside the unified BitsContainerFor introduction.
 
-Prerequisites landed in Round 1 (round 202605021800):
+Round 1 (round 202605021800) prerequisites landed:
 - Signedness lifted to pub const trait
 - BitsContainerFor\<N, Sign\> lifted to pub const trait
 - IBitPrim parity with BitPrim (full method surface)
@@ -18,11 +15,13 @@ Prerequisites landed in Round 1 (round 202605021800):
   Bits\<N, S, Sign: Signedness\> with BitsBitPrim\<Sign\> sealed
   bridge
 
-Once Round 2 lands, the meta-newtype layer (IBits, FBits, Width,
-MetaCarrier in arvo-storage) becomes load-bearing throughout the
-const-generic dispatch tables instead of being a soundness-asserted
-companion to bare u16.
+#316 ships the BitPrim impl on WideBits / AlignedWideBits16 (replaces
+the deleted MultiContainer impl from round 202605021800). Byte-by-byte
+composition per the locked byte-ordering convention (bit 0 = LSB of
+byte 0; lo-first cascade matching u128 semantics; audit C1).
 
 ## Removed entries
 
-(none)
+- "BitPrim impl on MultiContainer" — MultiContainer is deleted entirely
+  in #316 per no-legacy-shims-pre-1.0; the impl moves to WideBits +
+  AlignedWideBits16.

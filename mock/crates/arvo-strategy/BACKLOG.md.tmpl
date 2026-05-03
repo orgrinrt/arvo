@@ -26,17 +26,41 @@ stdlib trait (which stays for boundary coverage). Consumer code
 imports the substrate bridge to compose const-callable substrate
 operations.
 
-## Round 3 deferred work
+## Round 3 deferred work (#313)
 
-Round 3 Bits-const-Width-lift: lift the substrate const-generic positions
-from bare u16 to typed Width across Bits, UContainerFor, IContainerFor,
-BitsContainerFor, UBitContainer, IBitContainer, Narrow, Widen. Includes
-Ieee::WIDTH typing (deferred from Round 2). Spans 70+ sites across five
-crates and may require relocating Width / IBits / FBits / MetaCarrier
-from arvo-storage to arvo-strategy if the lift hits a trait-solver cycle
-resolution that needs the meta-newtypes reachable below the bridge
-layer. Tracked under #313.
+Round 3 work LANDS on top of #316: Mask\<W\> over Bits + BitMatrix\<W,
+N\> + mask-contracts impl + BitPrim::WIDTH typed lift. The previous
+chicken-and-egg with Width relocation is resolved by #316 (Width
+relocates from arvo-storage to arvo-strategy as part of #316's
+foundational restructure; UContainerFor / IContainerFor are deleted
+entirely; BitsContainerFor unifies the projection). Round 3 is
+mechanical refresh on top.
+
+## Hot tier expansion (#320)
+
+AVX-2 align(32) and AVX-512 align(64) Hot tiers are deferred to #320
+with bench-driven evidence per the audit's H1 finding. Current Hot
+ships with align(16) baseline only via AlignedWideBits16. If bench
+evidence justifies the storage overhead, opt-in `HotAvx2` / `HotAvx512`
+strategy variants ship as consumer-visible markers (toolbox-not-policer
+compliant). The cfg-driven internal alignment originally proposed in
+#316's first topic was rejected.
+
+## Asm microkernels (#321)
+
+Hot-path bit ops on WideBits / AlignedWideBits16 (count_ones,
+trailing/leading_zeros, bitwise) get asm-microkernel implementations
+when bench evidence shows compiler-generated SIMD doesn't hit the
+inlined-instruction-count target. Drops down a tier from
+intrinsic-load to inline asm only with measured justification.
+
+## HotTruncate research (#322)
+
+A possible future Hot variant that explicitly truncates wide widths
+to 128 for compute (lossy but native-fast). Deferred for research.
+Not in the current strategy lattice.
 
 ## Removed entries
 
-(none)
+- "UContainerFor / IContainerFor extension to wider widths" — both
+  traits are deleted entirely in #316 per no-legacy-shims-pre-1.0.

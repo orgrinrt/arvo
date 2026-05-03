@@ -108,44 +108,40 @@ inline with the shipping-round identifier.
   with Round B+. Becomes regression-detection baseline for the
   always-optimal-internals optimisation work.
 
-## Round 202604280500 forward-looking entries
+## Round 202604280500 forward-looking entries (REVISED post-#316)
 
-Audit-driven follow-up chain Round B. Storage-side of the Sign axis +
-bit-width cap to 256 lands; arithmetic and a few cross-strategy
-extensions defer to follow-up rounds:
+The original Round B forward-looking entries pointed at MultiContainer
+arithmetic / widen / narrow follow-up work. Round #316 deletes
+MultiContainer entirely and replaces it with byte-sequence WideBits
+(Warm/Cold/Precise) and AlignedWideBits16 (Hot baseline). The
+forward-looking entries are revised:
 
-- **UFixed / IFixed at 129..=256 logical width.** Awaits UArith /
-  IArith dispatch on `MultiContainer<HiT, LoT>` (multi-precision add
-  with carry, multi-precision mul with double-width intermediate,
-  saturating variants on Precise). Round B-arith / Round C follow-up.
-  Bits at those widths is available standalone; UFixed / IFixed cap
-  at 128 in this round and surface a `UArith` /  `IArith` unimplemented
-  diagnostic at 129..=256 pointing at the BACKLOG entry.
-- **UWidenFrom / UNarrowFrom for MultiContainer.** Cross-strategy and
-  cross-container widening / narrowing through `MultiContainer<HiT,
-  LoT>` shapes. Required before Bits<M, S, Sign> → Bits<N, S, Sign>
-  conversions work transparently across the 1..=256 range. Round
-  B-arith follow-up.
-- **Warm / Precise extension to 65..=256.** The 2x-logical safety
-  contract for Warm (and the same shape adopted by Precise with
-  saturating arithmetic) collapses without a 256-bit native primitive.
-  Two design paths: (a) define Warm at 65..=256 as
-  `MultiContainer<u128, u128>` and accept the contract loss as a
-  BACKLOG-warned diagnostic, (b) keep Warm capped at 64 / 128 with a
-  diagnostic pointing at Hot. Round B opted for (b) pending a
-  considered design call. Future round resolves.
-- **u128-native cells in Hot 65..=128 range.** The current dispatch
-  uses native `u128` for Hot 65..=128. A bench-driven follow-up may
-  reroute some cells (e.g. 121..=128 where `MultiContainer<u64, u64>`
-  matches u128 storage but allows consumer-controlled half access)
-  through MultiContainer instead. BACKLOG-tracked; bench evidence
-  drives the call per the always-optimal-internals rule.
+- **UFixed / IFixed at 129..=65535 logical width.** Awaits UArith /
+  IArith dispatch on `WideBits<BYTES>` / `AlignedWideBits16<BYTES>`
+  (byte-sequence multi-precision add with carry, multi-precision mul
+  with double-width intermediate, saturating variants on Precise).
+  Tracked under #320 / #321 (bench-driven SIMD platform expansion
+  + asm microkernels for hot ops). Bits at those widths is available
+  standalone with the BitPrim impl shipping in #316 (count_ones,
+  trailing/leading_zeros, bitwise ops, etc.); UFixed / IFixed
+  add/sub/mul/div at 129..=65535 await the arith bridge.
+- **Cross-Bits Widen / Narrow for wide widths.** Cross-strategy and
+  cross-container widening / narrowing through WideBits /
+  AlignedWideBits16 shapes. Tracked alongside #320.
+- **Hot AVX-2 / AVX-512 alignment tiers.** Tracked under #320 with
+  bench-driven evidence per audit H1. Current Hot is align(16)
+  baseline only via AlignedWideBits16. If bench evidence justifies
+  the storage overhead, opt-in `HotAvx2` / `HotAvx512` consumer-visible
+  strategy variants ship as separate markers (toolbox-not-policer
+  compliant).
+- **HotTruncate strategy variant.** Possible future Hot variant that
+  truncates wide widths to 128 for compute (lossy but native-fast).
+  Deferred for research under #322. Not in current strategy lattice.
 - **Sign axis on `Mask<W>` and other bit-level traits.** Round B
-  introduces the Sign axis on Bits only. Mask<W> / BitLogic /
-  BitAccess / BitSequence stay sign-agnostic in this round (the
-  trait surface acts on raw bit patterns, which is sign-agnostic by
-  construction). If a consumer surfaces a need for sign-aware bit
-  ops, a future round adds it.
+  introduced the Sign axis on Bits only. Mask<W> / BitLogic /
+  BitAccess / BitSequence stay sign-agnostic (the trait surface acts
+  on raw bit patterns, sign-agnostic by construction). If a consumer
+  surfaces a need for sign-aware bit ops, a future round adds it.
 
 ## Round 202604280806 forward-looking entries
 
@@ -302,14 +298,15 @@ positions. Today no consumer surface needs this; aliases live at
 use-sites only.
 
 Lift requires resolving the associated-type-projection cascade in
-`<S as UContainerFor<N>>::T` field positions (the Bits inner type
-through UFixed's `bits: Bits<{ufixed_bits(I,F)}, S>` field). Verified-
-friction on rustc 1.96-nightly (fda6d37bb 2026-03-27):
-core::marker::ConstParamTy is derive-macro-only at this rustc
-version, and using it as a trait bound on UContainerFor::T is
-non-trivial. The derive-macro path may work directly on UFixed /
-IFixed once the cascade is established; verify when a consumer
-need lands.
+`<S as BitsContainerFor<N, Sign>>::T` field positions (the Bits inner
+type through UFixed's `bits: Bits<{ufixed_bits(I,F)}, S>` field; the
+unified BitsContainerFor lands in #316 replacing the deleted
+UContainerFor / IContainerFor pair). Verified-friction on rustc
+1.96-nightly (fda6d37bb 2026-03-27): core::marker::ConstParamTy is
+derive-macro-only at this rustc version, and using it as a trait
+bound on BitsContainerFor::T is non-trivial. The derive-macro path
+may work directly on UFixed / IFixed once the cascade is established;
+verify when a consumer need lands.
 
 Constraints from prior design-review prose corrections:
 
