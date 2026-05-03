@@ -16,7 +16,7 @@
 //! without E0119 conflicts.
 
 use arvo_strategy::{
-    A1, A16, Align, Cold, Hot, Precise, Signed, Signedness, Strategy, Unsigned, Warm, WideBits,
+    Align, Cold, Hot, Precise, Signed, Signedness, Strategy, Unsigned, Warm, WideBits,
     mask_low_bits,
 };
 
