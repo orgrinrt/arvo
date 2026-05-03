@@ -15,20 +15,19 @@
 //!
 //! See `DESIGN.md` for the full surface.
 
-pub mod aligned_widebits;
 mod bits;
 mod bridges;
 mod layout_assertions;
 mod meta_bits;
 mod platform;
-pub mod widebits;
 
-pub use aligned_widebits::AlignedWideBits16;
-pub use arvo_strategy::{Bounded, Identity, MultiContainer, MultiContainerHalf, SignedIdentity};
+pub use arvo_strategy::{
+    AlignedWideBits16, Bounded, Identity, MultiContainer, MultiContainerHalf, SignedIdentity,
+    WideBits,
+};
 pub use bits::Bits;
 pub use bridges::{
     ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
 };
 pub use meta_bits::{FBits, IBits, MetaCarrier, Width, fbits, ibits, width};
 pub use platform::{AsBool, Bool, Cap, USize};
-pub use widebits::WideBits;
