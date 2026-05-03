@@ -1,27 +1,22 @@
 //! FNV-1a-64 streaming hasher with N-bit output.
 //!
 //! `Fnv1a<const N: u16>` wraps the `fnv1a_64` algorithm and projects
-//! its 64-bit state into the requested width via a per-N mask plus
-//! `as` cast to the dispatched `<Hot as BitsContainerFor<N, Unsigned>>::T`
-//! container, then `Bits::from_raw`.
-//!
-//! `N` is `u8` directly rather than the `Width` meta-newtype for the
-//! same reason `Hasher<const N: u16>` does. See `algo.rs` for the
-//! full rationale.
+//! its 64-bit state into the requested width. The width-dispatched
+//! narrowing step lifts to `NarrowFromU64<N, S, Sign>` (declared in
+//! arvo-bits-contracts); this module ships one bounded-generic
+//! `Hasher<N>` impl plus one bounded-generic `ConstHash<N, Hot, Unsigned>`
+//! impl per algorithm, replacing the prior 64-impl macro paste.
 //!
 //! Width is constrained to `1..=64` implicitly by `Hot:
-//! BitsContainerFor<N, Unsigned>`: that impl exists only for those Ns, so a
-//! consumer using `Fnv1a<N>` outside that range gets a missing-impl
-//! error pointing at strategy choice. Wider widths (FNV state >= 128
-//! bits) are tracked in `BACKLOG.md` as a separate `Fnv1a128` type.
-//! The per-N `Hasher<N> for Fnv1a<N>` impls below cover N=1..=64
-//! exhaustively, expanded once per size class so the final container
-//! cast targets the right primitive.
+//! BitsContainerFor<N, Unsigned>` plus FNV-1a-64's 64-bit state. Wider
+//! widths (FNV state >= 128 bits) are tracked in `BACKLOG.md` as a
+//! separate `Fnv1a128` type.
 
-use crate::Hasher;
+use crate::{ConstHash, Hasher};
 use crate::algo::fnv1a_64;
 use arvo::strategy::{BitsContainerFor, Unsigned};
 use arvo::{Bits, Hot};
+use arvo_bits_contracts::NarrowFromU64;
 
 /// Streaming FNV-1a-64 hasher with N-bit output.
 ///
@@ -29,8 +24,12 @@ use arvo::{Bits, Hot};
 /// state width (`Fnv1a128`, deferred).
 ///
 /// ```ignore
-/// use arvo_hash::{Fnv1a, HasherExt};
-/// let h: arvo::Bits<28, arvo::Hot> = Fnv1a::<28>::new().hash(b"hello");
+/// use arvo_hash::{Fnv1a, ConstHash};
+/// use arvo::{Hot};
+/// use arvo::strategy::Unsigned;
+///
+/// let h: arvo::Bits<28, Hot> =
+///     <Fnv1a<28> as ConstHash<28, Hot, Unsigned>>::hash_const(b"hello");
 /// ```
 pub struct Fnv1a<const N: u16>
 where
@@ -71,66 +70,57 @@ where
     }
 }
 
-/// Per-N `Hasher<N>` impls plus per-N `hash_const` inherents.
+/// Streaming `Hasher<N>` impl. Single bounded-generic block replaces
+/// the prior 64-impl macro paste.
 ///
-/// Generated for `N` in `1..=64`, expanded once per size class so the
-/// macro can name the dispatched container primitive (`u8` / `u16` /
-/// `u32` / `u64`) directly when narrowing the FNV-1a-64 state to N
-/// bits. Per the doc CL D-7 spec, narrowing composes a u64 mask with
-/// `as <container>` under the mask precondition, then `Bits::from_raw`
-/// constructs the typed value.
-macro_rules! impl_fnv1a {
-    ($ty:ty, $($n:literal),+ $(,)?) => {
-        $(
-            impl Fnv1a<$n> {
-                /// Compile-time hash construction.
-                ///
-                /// Equivalent to `Fnv1a::new().hash(bytes)` but
-                /// callable from `const` context.
-                #[inline]
-                pub const fn hash_const(bytes: &[u8]) -> Bits<$n, Hot> {
-                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: FNV state is u64 by algorithm spec; mask + container cast per D-7; tracked: #256
-                    let raw: u64 = fnv1a_64(bytes);
-                    let mask: u64 = if $n == 64 { u64::MAX } else { (1u64 << $n) - 1 };
-                    Bits::<$n, Hot>::from_raw((raw & mask) as $ty)
-                }
-            }
+/// `update` runs the FNV-1a round byte-by-byte; `finalize` narrows the
+/// 64-bit state to N bits via `NarrowFromU64`.
+impl<const N: u16> Hasher<N> for Fnv1a<N>
+where
+    Hot: BitsContainerFor<N, Unsigned>,
+    <Hot as BitsContainerFor<N, Unsigned>>::T: NarrowFromU64<N, Hot, Unsigned>,
+{
+    #[inline]
+    fn update(&mut self, bytes: &[u8]) {
+        let mut i = 0;
+        while i < bytes.len() {
+            // lint:allow(no-bare-numeric) reason: FNV-1a-64 round; algorithm-fixed u8/u64 arithmetic; tracked: #256
+            self.state ^= bytes[i] as u64;
+            self.state = self.state.wrapping_mul(Self::PRIME);
+            i += 1;
+        }
+    }
 
-            impl Hasher<$n> for Fnv1a<$n> {
-                #[inline]
-                fn update(&mut self, bytes: &[u8]) {
-                    let mut i = 0;
-                    while i < bytes.len() {
-                        // lint:allow(no-bare-numeric) reason: FNV-1a-64 round; algorithm-fixed u8/u64 arithmetic; tracked: #256
-                        self.state ^= bytes[i] as u64;
-                        self.state = self.state.wrapping_mul(Self::PRIME);
-                        i += 1;
-                    }
-                }
-
-                #[inline]
-                fn finalize(self) -> Bits<$n, Hot> {
-                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: mask FNV state to N bits + cast to dispatched container per D-7; tracked: #256
-                    let mask: u64 = if $n == 64 { u64::MAX } else { (1u64 << $n) - 1 };
-                    Bits::<$n, Hot>::from_raw((self.state & mask) as $ty)
-                }
-            }
-        )+
-    };
+    #[inline]
+    fn finalize(self) -> Bits<N, Hot> {
+        let raw = <<Hot as BitsContainerFor<N, Unsigned>>::T as NarrowFromU64<
+            N,
+            Hot,
+            Unsigned,
+        >>::narrow_u64(self.state);
+        Bits::<N, Hot>::from_raw(raw)
+    }
 }
 
-// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-size-class container dispatch table mirrors BitsContainerFor<Hot, N, Unsigned>; tracked: #256
-impl_fnv1a!(u8, 1, 2, 3, 4, 5, 6, 7, 8);
-// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
-impl_fnv1a!(u16, 9, 10, 11, 12, 13, 14, 15, 16);
-// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
-impl_fnv1a!(u32, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
-// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: same; tracked: #256
-#[rustfmt::skip]
-impl_fnv1a!(
-    u64,
-    33, 34, 35, 36, 37, 38, 39, 40,
-    41, 42, 43, 44, 45, 46, 47, 48,
-    49, 50, 51, 52, 53, 54, 55, 56,
-    57, 58, 59, 60, 61, 62, 63, 64
-);
+/// One-shot `ConstHash<N, Hot, Unsigned>` impl. Const-callable;
+/// equivalent to `Fnv1a::new()`, then `update(bytes)`, then `finalize()`.
+///
+/// Replaces the prior per-N inherent `hash_const` method pattern; the
+/// trait identity is now focused on hash-as-const-construction rather
+/// than bolted onto every per-N implementor as inherents.
+impl<const N: u16> const ConstHash<N, Hot, Unsigned> for Fnv1a<N>
+where
+    Hot: BitsContainerFor<N, Unsigned>,
+    <Hot as BitsContainerFor<N, Unsigned>>::T: [const] NarrowFromU64<N, Hot, Unsigned>,
+{
+    #[inline]
+    fn hash_const(bytes: &[u8]) -> Bits<N, Hot, Unsigned> {
+        let raw_u64 = fnv1a_64(bytes);
+        let raw = <<Hot as BitsContainerFor<N, Unsigned>>::T as NarrowFromU64<
+            N,
+            Hot,
+            Unsigned,
+        >>::narrow_u64(raw_u64);
+        Bits::<N, Hot, Unsigned>::from_raw(raw)
+    }
+}

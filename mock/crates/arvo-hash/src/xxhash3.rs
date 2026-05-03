@@ -1,29 +1,30 @@
 //! XxHash3-64 streaming hasher with N-bit output.
 //!
 //! `XxHash3<const N: u16>` wraps the `xxhash3_64` algorithm and projects
-//! its 64-bit state into the requested width via a per-N mask plus
-//! `as` cast to the dispatched `<Hot as BitsContainerFor<N, Unsigned>>::T` container,
-//! then `Bits::from_raw`. Same shape as `Fnv1a<N>`; consumer-facing
-//! ergonomics are identical.
+//! its 64-bit state into the requested width via `NarrowFromU64<N, S, Sign>`
+//! (declared in arvo-bits-contracts). Same shape as `Fnv1a<N>` post
+//! round 4 (#314): one bounded-generic `Hasher<N>` impl plus one
+//! bounded-generic `ConstHash<N, Hot, Unsigned>` impl per algorithm.
 //!
-//! Round 202604281000 Pass B.1: ships XxHash3 as the new default hash
+//! Round 202604281000 Pass B.1 ships XxHash3 as the new default hash
 //! family. FNV-1a remains as `Fnv1a<N>` for known-good fits where its
 //! 8-16 byte band performance edge holds.
 //!
 //! Width is constrained to `1..=64` implicitly by `Hot: BitsContainerFor<N, Unsigned>`.
 //! Wider widths (XxHash3-128) are tracked as a future-round concern.
 
-use crate::Hasher;
+use crate::{ConstHash, Hasher};
 use arvo::strategy::{BitsContainerFor, Unsigned};
 use arvo::{Bits, Hot};
+use arvo_bits_contracts::NarrowFromU64;
 use xxhash_rust::const_xxh3::xxh3_64;
 
 /// XxHash3-64 over a byte slice (free const fn).
 ///
-/// Returns the raw 64-bit state. `XxHash3<N>::hash_const` masks to N
-/// bits via `Bits::<N, Hot>::from_raw`. The `&[u8]` parameter is the
-/// boundary input from raw bytes; the `u64` return is the algorithm's
-/// state-width.
+/// Returns the raw 64-bit state. Concrete `Hasher<N>` / `ConstHash<N, S, Sign>`
+/// implementors mask to N bits via `NarrowFromU64`. The `&[u8]`
+/// parameter is the boundary input from raw bytes; the `u64` return
+/// is the algorithm's state-width.
 // lint:allow(no-bare-numeric) reason: xxhash3 state is u64 by algorithm spec; mirrors fnv1a_64; tracked: #259
 pub const fn xxhash3_64(bytes: &[u8]) -> u64 {
     xxh3_64(bytes)
@@ -36,15 +37,19 @@ pub const fn xxhash3_64(bytes: &[u8]) -> u64 {
 /// different state width (`XxHash3_128`, deferred).
 ///
 /// ```ignore
-/// use arvo_hash::{XxHash3, HasherExt};
-/// let h: arvo::Bits<64, arvo::Hot> = XxHash3::<64>::new().hash(b"hello");
+/// use arvo_hash::{XxHash3, ConstHash};
+/// use arvo::{Hot};
+/// use arvo::strategy::Unsigned;
+///
+/// let h: arvo::Bits<64, Hot> =
+///     <XxHash3<64> as ConstHash<64, Hot, Unsigned>>::hash_const(b"hello");
 /// ```
 ///
 /// The streaming impl buffers bytes and computes the hash on
 /// `finalize()`. xxhash-rust's streaming Xxh3 is alloc-using; the
 /// const-friendly API is one-shot only. For hot-path streaming, use
-/// the `hash_const` entry point or accumulate into a single `&[u8]`
-/// before calling `update` once.
+/// `ConstHash::hash_const` or accumulate into a single `&[u8]` before
+/// calling `update` once.
 pub struct XxHash3<const N: u16>
 where
     Hot: BitsContainerFor<N, Unsigned>,
@@ -84,56 +89,54 @@ where
     }
 }
 
-/// Per-N `Hasher<N>` impls plus per-N `hash_const` inherents.
-///
-/// Generated for `N` in `1..=64`, mirroring the `Fnv1a` table shape.
-macro_rules! impl_xxhash3 {
-    ($ty:ty, $($n:literal),+ $(,)?) => {
-        $(
-            impl XxHash3<$n> {
-                /// Compile-time hash construction.
-                #[inline]
-                pub const fn hash_const(bytes: &[u8]) -> Bits<$n, Hot> {
-                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: xxh3 state is u64 by algorithm spec; mask + container cast per D-7; tracked: #259
-                    let raw: u64 = xxhash3_64(bytes);
-                    let mask: u64 = if $n == 64 { u64::MAX } else { (1u64 << $n) - 1 };
-                    Bits::<$n, Hot>::from_raw((raw & mask) as $ty)
-                }
-            }
+/// Streaming `Hasher<N>` impl. Single bounded-generic block replaces
+/// the prior 64-impl macro paste.
+impl<const N: u16> Hasher<N> for XxHash3<N>
+where
+    Hot: BitsContainerFor<N, Unsigned>,
+    <Hot as BitsContainerFor<N, Unsigned>>::T: NarrowFromU64<N, Hot, Unsigned>,
+{
+    #[inline]
+    fn update(&mut self, bytes: &[u8]) {
+        // lint:allow(no-bare-numeric) reason: streaming-buffer copy; bounded by 256-byte stack buffer; tracked: #259
+        let mut i = 0;
+        while i < bytes.len() && self.pos < self.buffer.len() {
+            self.buffer[self.pos] = bytes[i];
+            self.pos += 1;
+            i += 1;
+        }
+    }
 
-            impl Hasher<$n> for XxHash3<$n> {
-                #[inline]
-                fn update(&mut self, bytes: &[u8]) {
-                    // lint:allow(no-bare-numeric) reason: streaming-buffer copy; bounded by 256-byte stack buffer; tracked: #259
-                    let mut i = 0;
-                    while i < bytes.len() && self.pos < self.buffer.len() {
-                        self.buffer[self.pos] = bytes[i];
-                        self.pos += 1;
-                        i += 1;
-                    }
-                }
-
-                #[inline]
-                fn finalize(self) -> Bits<$n, Hot> {
-                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: hash buffered slice + mask to N bits; tracked: #259
-                    let raw: u64 = xxhash3_64(&self.buffer[..self.pos]);
-                    let mask: u64 = if $n == 64 { u64::MAX } else { (1u64 << $n) - 1 };
-                    Bits::<$n, Hot>::from_raw((raw & mask) as $ty)
-                }
-            }
-        )+
-    };
+    #[inline]
+    fn finalize(self) -> Bits<N, Hot> {
+        let raw_u64 = xxhash3_64(&self.buffer[..self.pos]);
+        let raw = <<Hot as BitsContainerFor<N, Unsigned>>::T as NarrowFromU64<
+            N,
+            Hot,
+            Unsigned,
+        >>::narrow_u64(raw_u64);
+        Bits::<N, Hot>::from_raw(raw)
+    }
 }
 
-// lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-size-class container dispatch table; tracked: #259
-impl_xxhash3!(u8, 1, 2, 3, 4, 5, 6, 7, 8);
-impl_xxhash3!(u16, 9, 10, 11, 12, 13, 14, 15, 16);
-impl_xxhash3!(u32, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
-#[rustfmt::skip]
-impl_xxhash3!(
-    u64,
-    33, 34, 35, 36, 37, 38, 39, 40,
-    41, 42, 43, 44, 45, 46, 47, 48,
-    49, 50, 51, 52, 53, 54, 55, 56,
-    57, 58, 59, 60, 61, 62, 63, 64
-);
+/// One-shot `ConstHash<N, Hot, Unsigned>` impl. Const-callable.
+///
+/// xxhash-rust's `xxh3_64` is const-callable, so this trait impl
+/// composes through `NarrowFromU64` cleanly without per-N
+/// specialisation.
+impl<const N: u16> const ConstHash<N, Hot, Unsigned> for XxHash3<N>
+where
+    Hot: BitsContainerFor<N, Unsigned>,
+    <Hot as BitsContainerFor<N, Unsigned>>::T: [const] NarrowFromU64<N, Hot, Unsigned>,
+{
+    #[inline]
+    fn hash_const(bytes: &[u8]) -> Bits<N, Hot, Unsigned> {
+        let raw_u64 = xxhash3_64(bytes);
+        let raw = <<Hot as BitsContainerFor<N, Unsigned>>::T as NarrowFromU64<
+            N,
+            Hot,
+            Unsigned,
+        >>::narrow_u64(raw_u64);
+        Bits::<N, Hot, Unsigned>::from_raw(raw)
+    }
+}
