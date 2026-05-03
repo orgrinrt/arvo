@@ -26,6 +26,17 @@ stdlib trait (which stays for boundary coverage). Consumer code
 imports the substrate bridge to compose const-callable substrate
 operations.
 
+## Round 3 deferred work
+
+Round 3 Bits-const-Width-lift: lift the substrate const-generic positions
+from bare u16 to typed Width across Bits, UContainerFor, IContainerFor,
+BitsContainerFor, UBitContainer, IBitContainer, Narrow, Widen. Includes
+Ieee::WIDTH typing (deferred from Round 2). Spans 70+ sites across five
+crates and may require relocating Width / IBits / FBits / MetaCarrier
+from arvo-storage to arvo-strategy if the lift hits a trait-solver cycle
+resolution that needs the meta-newtypes reachable below the bridge
+layer. Tracked under #313.
+
 ## Removed entries
 
 (none)

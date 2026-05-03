@@ -455,6 +455,54 @@ Generic-context bodies that previously called `<T as UPrimConst>::ZERO`
 now call `<T as Identity>::ZERO`; signed-`-1` cases use
 `<T as SignedIdentity>::NEG_ONE`.
 
+## Ieee (relocated round 202605030400)
+
+`Ieee` is the IEEE float-width seal. Relocates this round to live
+alongside its supertraits `[const] Identity` and `[const] Bounded`,
+both already shipping from `arvo-strategy::arith`. The previous home
+at `arvo/src/float.rs` left the trait declaration one layer above
+its supertraits with no need for the higher-layer placement.
+
+Canonical signature:
+
+```rust
+pub const trait Ieee:
+    sealed::Sealed + Copy + Default + PartialEq + PartialOrd
+    + [const] Identity + [const] Bounded + 'static
+{
+    const WIDTH: u16;
+}
+
+impl const Ieee for f32 { const WIDTH: u16 = 32; }
+impl const Ieee for f64 { const WIDTH: u16 = 64; }
+```
+
+Companion trait `FromU8Ieee` rides along, same orphan-rule
+constraints, same logical family:
+
+```rust
+pub const trait FromU8Ieee {
+    fn from_u8_ieee(n: u8) -> Self;
+}
+
+impl const FromU8Ieee for f32 { fn from_u8_ieee(n: u8) -> Self { n as f32 } }
+impl const FromU8Ieee for f64 { fn from_u8_ieee(n: u8) -> Self { n as f64 } }
+```
+
+The seal admits `f32` and `f64` today. Future widenings (`f16` /
+`bf16` / `f128`) extend the seal in this file plus the existing
+`impl_bounded_identity_f!` macro invocation in `arvo-strategy::arith`.
+The seal lives in a private `sealed` module with marker impls for the
+admitted types only.
+
+`WIDTH: u16` stays bare-primitive-typed for round 202605030400.
+Round 3 (#313) lifts it to `Width` once the broader bare-`u16` to
+typed `Width` substrate sweep cascades through the bridge family.
+
+The arvo facade re-exports `Ieee` and `FromU8Ieee` from arvo-strategy
+so consumer imports through `arvo::Ieee` and `arvo::FromU8Ieee` keep
+working.
+
 ## Sources
 
 - `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md`
