@@ -43,6 +43,7 @@ mod sealed {
 
 mod arith;
 mod axes;
+mod const_convert;
 mod container;
 mod cross_strategy;
 mod ieee;
@@ -56,6 +57,7 @@ pub use width::{Width, bytes_for, mask_low_bits, tag, width, width_le_64, width_
 pub use arith::{
     Bounded, IArith, ISaturating, Identity, SignedIdentity, UArith, USaturating,
 };
+pub use const_convert::{ConstFrom, ConstTryFrom};
 pub use cross_strategy::CrossStrategyOp;
 pub use ieee::{FromU8Ieee, Ieee};
 pub use axes::{

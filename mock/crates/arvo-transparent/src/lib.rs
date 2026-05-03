@@ -77,6 +77,33 @@ pub const unsafe trait Transparent: Copy + Sized {
     }
 }
 
+/// Const-callable mirror of `core::ops::Deref`.
+///
+/// Returns `&Self::Target` from `&Self` in const context. Per the
+/// bridge-home rule, this trait lives in `arvo-transparent`: the
+/// typed unwrap-door layer is exactly what hosts the deref pattern,
+/// and no other crate is lower in the dependency graph that would
+/// reach it.
+///
+/// Stdlib `Deref` impls remain alongside (boundary coverage). The
+/// bridges are additive, not replacements. Per-substrate-type impls
+/// land in the type-declaring crate via forward composition.
+pub const trait ConstDeref {
+    /// Deref target.
+    type Target: ?Sized;
+    /// Const-callable deref.
+    fn const_deref(&self) -> &Self::Target;
+}
+
+/// Const-callable mirror of `core::convert::AsRef<T>`.
+///
+/// Returns `&T` from `&Self` in const context. Same placement
+/// rationale as `ConstDeref`.
+pub const trait ConstAsRef<T: ?Sized> {
+    /// Const-callable as-ref.
+    fn const_as_ref(&self) -> &T;
+}
+
 /// Free-fn form of [`Transparent::raw`] for prefix-style call sites.
 ///
 /// `let n: u8 = arvo::raw(ibits);` is equivalent to
