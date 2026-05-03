@@ -25,7 +25,7 @@ use crate::{BitsContainerFor, Cold, HasAxes, Hot, Precise, Signed, Unsigned, War
 
 /// Unsigned arithmetic dispatch for `(strategy, N)`.
 ///
-/// Keyed on the same `N` that `UContainerFor` uses. Lets
+/// Keyed on the same `N` that `BitsContainerFor` uses. Lets
 /// `UFixed<I, F, S>` delegate arithmetic to the strategy-correct
 /// container operation without re-bounding on the container type.
 ///

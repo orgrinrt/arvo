@@ -42,7 +42,7 @@ use crate::platform::Bool;
 /// arises when the meta-newtype field literally writes the generic
 /// `Bits<9, Hot>` projection. The cycle interleaves
 /// `IBits: Sized` evaluation with `UFixed`'s const-eval where-clause
-/// `Hot: UContainerFor<{ ufixed_bits(I, F) }>`. Using a concrete
+/// `Hot: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>`. Using a concrete
 /// `repr(transparent)` companion at the field type sidesteps the
 /// projection chain at well-formedness time while preserving the
 /// 9-bit native range, the `Hot` strategy, and the `Unsigned` sign

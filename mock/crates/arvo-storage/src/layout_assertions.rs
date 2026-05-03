@@ -12,8 +12,8 @@
 //! - Every `Bits<N, S, Sign>` is `repr(transparent)` over its
 //!   `BitsContainerFor<N, Sign>` projection target. The assertions
 //!   pin this at boundary cells.
-//! - `MultiContainer<HiT, LoT>` uses `repr(C)` two-field layout.
-//!   The assertions pin size lower-bound and alignment.
+//! - `WideBits<BYTES, A>` uses `repr(C)` over `[A; 0]` + `[u8; BYTES]`.
+//!   The assertions pin size and alignment per `A` marker.
 //!
 //! The module is private (no `pub use`); assertions fire at compile
 //! time without exporting any surface. Adding a new transparency
@@ -74,8 +74,8 @@ assert_layout_eq!(Bits<65, Hot, Unsigned>, u128);
 assert_layout_eq!(Bits<128, Hot, Unsigned>, u128);
 // Hot wide bucket projects to WideBits<bytes_for(N), A16>. The
 // alignment baseline (A16) produces 32-byte physical size for
-// 17..=32 byte payloads, matching the canonical MultiContainer<u64,
-// u128> envelope it replaces. Audit-validated by sketch 01.
+// 17..=32 byte payloads, matching the canonical pre-redesign
+// envelope at the same width. Audit-validated by sketch 01.
 assert_layout_eq!(Bits<129, Hot, Unsigned>, WideBits<17, A16>);
 assert_layout_eq!(Bits<192, Hot, Unsigned>, WideBits<24, A16>);
 assert_layout_eq!(Bits<193, Hot, Unsigned>, WideBits<25, A16>);
@@ -191,12 +191,10 @@ const _: () = {
     );
 
     // A16: align-16, size = align_up(BYTES, 16). The Hot baseline
-    // tier covering SSE2 / NEON. Replaces MultiContainer<u64, u128>
-    // and MultiContainer<u128, u128> at the canonical 17..=32 byte
-    // payload sizes (both produce the same 32-byte physical envelope
-    // for those payloads, with an explicit alignment rather than
-    // relying on the larger-half alignment leak from the deleted
-    // heterogeneous pair).
+    // tier covering SSE2 / NEON. Hits the same 32-byte physical
+    // envelope at 17..=32 byte payloads as the pre-redesign
+    // heterogeneous-pair shape, with an explicit alignment marker
+    // rather than relying on a larger-half alignment leak.
     assert!(
         core::mem::size_of::<WideBits<17, A16>>() == 32,
         "WideBits<17, A16> size drift: expected 32 bytes (align_up(17, 16))",

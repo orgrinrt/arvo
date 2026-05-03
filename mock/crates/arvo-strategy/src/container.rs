@@ -175,7 +175,7 @@ impl<const BYTES: usize> Project<2, Signed, BYTES, Hot> for Picker { type T = i3
 impl<const BYTES: usize> Project<3, Signed, BYTES, Hot> for Picker { type T = i64; }
 impl<const BYTES: usize> Project<4, Signed, BYTES, Hot> for Picker { type T = i128; }
 
-// Cold native (unsigned) — same widths as Hot; bitpacking is an
+// Cold native (unsigned). Same widths as Hot; bitpacking is an
 // access-path concern, not a container-type concern.
 impl<const BYTES: usize> Project<0, Unsigned, BYTES, Cold> for Picker { type T = u8; }
 impl<const BYTES: usize> Project<1, Unsigned, BYTES, Cold> for Picker { type T = u16; }
@@ -190,7 +190,7 @@ impl<const BYTES: usize> Project<2, Signed, BYTES, Cold> for Picker { type T = i
 impl<const BYTES: usize> Project<3, Signed, BYTES, Cold> for Picker { type T = i64; }
 impl<const BYTES: usize> Project<4, Signed, BYTES, Cold> for Picker { type T = i128; }
 
-// Warm native (unsigned) — 2x logical: 1..=8 → u16, etc.
+// Warm native (unsigned). 2x logical: 1..=8 → u16, etc.
 impl<const BYTES: usize> Project<0, Unsigned, BYTES, Warm> for Picker { type T = u16; }
 impl<const BYTES: usize> Project<1, Unsigned, BYTES, Warm> for Picker { type T = u32; }
 impl<const BYTES: usize> Project<2, Unsigned, BYTES, Warm> for Picker { type T = u64; }
@@ -202,7 +202,7 @@ impl<const BYTES: usize> Project<1, Signed, BYTES, Warm> for Picker { type T = i
 impl<const BYTES: usize> Project<2, Signed, BYTES, Warm> for Picker { type T = i64; }
 impl<const BYTES: usize> Project<3, Signed, BYTES, Warm> for Picker { type T = i128; }
 
-// Precise native (unsigned) — same widths as Warm; saturating
+// Precise native (unsigned). Same widths as Warm; saturating
 // semantics implemented in arith.rs, container shape is identical.
 impl<const BYTES: usize> Project<0, Unsigned, BYTES, Precise> for Picker { type T = u16; }
 impl<const BYTES: usize> Project<1, Unsigned, BYTES, Precise> for Picker { type T = u32; }

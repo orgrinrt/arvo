@@ -4,17 +4,19 @@
 //! `<S as BitsContainerFor<N, Sign>>::T`, the storage primitive that
 //! holds N bits under the chosen strategy and signedness. Routes
 //! through `BitsContainerFor<N, Sign>` (in `arvo-strategy`) which
-//! projects to `UContainerFor<N>::T` for `Sign = Unsigned` or
-//! `IContainerFor<N>::T` for `Sign = Signed`. Default `Sign = Unsigned`
-//! keeps every existing call site unchanged; `IFixed<I, F, S>` reaches
-//! for `Sign = Signed` internally.
+//! projects via Pattern C const-tag dispatch through `Project` to
+//! the concrete container. Default `Sign = Unsigned` keeps every
+//! existing call site unchanged; `IFixed<I, F, S>` reaches for
+//! `Sign = Signed` internally.
 //!
 //! Container projections: u8 for 1..=8 under Hot, u16 for 9..=16,
-//! u32 for 17..=32, u64 for 33..=64. Round 202604280500 extended the
-//! tables: u128 for 65..=128 (Hot/Cold), u128 for 33..=64
-//! (Warm/Precise as the 2x-logical primitive). 129..=255 dispatches
-//! through `MultiContainer<HiT, LoT>` (storage-only this round;
-//! arithmetic on multi-value containers is BACKLOG-tracked).
+//! u32 for 17..=32, u64 for 33..=64, u128 for 65..=128 (Hot/Cold).
+//! Warm/Precise use the 2x-logical ladder (u16 for 1..=8, u32 for
+//! 9..=16, u64 for 17..=32, u128 for 33..=64) and have no native
+//! bucket above N=64. Above the per-Strategy native cap, all four
+//! strategies project to `WideBits<bytes_for(N), A>` where `A = A16`
+//! for Hot (SSE2 / NEON aligned baseline) and `A = A1` for Cold /
+//! Warm / Precise (align-1 byte-exact).
 //!
 //! Bits is NOT a UFixed alias and NOT a UFixed wrapper. It is a
 //! parallel primitive family that reuses arvo's container-dispatch
@@ -67,7 +69,7 @@ where
 // SAFETY: `ConstParamTy_` requires structural eq + bitwise stable
 // representation. `Bits<N, S, Sign>` is `repr(transparent)` over
 // `<S as BitsContainerFor<N, Sign>>::T` (a native primitive or a
-// `MultiContainer<HiT, LoT>` shape per the strategy projection);
+// `WideBits<BYTES, A>` shape per the Pattern C strategy projection);
 // structural eq follows from the derived `PartialEq + Eq` plus the
 // inner primitive's structural eq.
 impl<const N: u16, S: Strategy + Eq, Sign: Signedness + Eq> ConstParamTy_ for Bits<N, S, Sign>
