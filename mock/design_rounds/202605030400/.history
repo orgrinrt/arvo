@@ -1,0 +1,50 @@
+c581580 chore: lock src changelist for 202605030400_changelist.src.lock.md
+5e6c8b8 design: re-issue src CL with comparison section against re-locked doc CL
+87013cd chore: re-lock doc changelist 202605030400 after comparison-section extension
+270399e design: extend doc CL comparison section to address all deprecated-CL substrate names
+0517426 chore: unlock design round 202605030400 (deprecate src CL, unlock doc CL)
+6a17f13 feat: round 202605030400 src — Ieee relocation to arvo-strategy + LOGICAL_WIDTH typed helpers
+01f7a4d design: round 202605030400 src CL — Ieee relocation + LOGICAL_WIDTH helpers
+9aac419 chore: lock doc changelist for 202605030400_changelist.doc.lock.md
+875c1bc design: extend doc CL comparison section with all substrate items from deprecated CL
+c8fc51f design: round 202605030400 doc execution — Ieee section in arvo-strategy + facade re-export note + LOGICAL_WIDTH narrative + Round 3 BACKLOG
+682f73e design: round 202605030400 doc CL — Ieee relocation + LOGICAL_WIDTH internals (corrected scope)
+de1764b design: round 202605030400 topic correction — drop Deliverable C, scope to Ieee + LOGICAL_WIDTH
+e245ac7 chore: deprecate doc changelist 202605030400_changelist.doc.md
+e69c499 design: round 202605030400 doc CL — typed Width relocation + Ieee + LOGICAL_WIDTH
+c7b06d3 design: round 202605030400 topic — typed Width + Ieee relocation + LOGICAL_WIDTH internals
+1ed339e docs: regenerate post-round-close timestamps
+6dc71c6 chore: close design round 202605021800
+f5f3646 chore: lock src changelist for 202605021800_changelist.src.lock.md
+62db055 docs: regenerate after round 202605021800 src CL
+05f0f03 chore: refresh Cargo.lock for arvo-numeric-contracts dep additions
+0058b12 feat: round 202605021800 src — Predicate family wrapper-impl design
+1e17e21 feat: round 202605021800 src — numeric-contracts impl const sweep
+1814bef feat: round 202605021800 src — MultiContainer canonical surface (BitPrim, Bounded, Identity)
+2d16ecb feat: round 202605021800 src — BitsBitPrim<Sign> bridge + Bits Sign-axis generalisation
+b729b95 feat: round 202605021800 src — typed BitPrim/IBitPrim + sealing-marker rename
+e2487b8 test+docs: round 202605021800 — H1 Ieee seal commitment doc + H3 LOGICAL_WIDTH const probe
+6ee9b85 test: round 202605021800 — canonical const surface smoke test
+94f01b1 feat: round 202605021800 src — substrate audit pivots: ConstEq split, MultiContainer ConstParamTy_, Cap unification, no .0 access
+fa6f866 feat: round 202605021800 src — arvo-strategy axes/cross_strategy/widen/container const lifts
+9b56091 feat: round 202605021800 src — ConstEq/ConstOrd/ConstDefault on Bits / UFixed / IFixed / meta-bits
+0bf9ebd feat: round 202605021800 src — markers + Ieee const lifts + Float canonical surface
+60d83b4 feat: round 202605021800 src — ConstEq/ConstOrd/ConstDefault bridges + USize/Cap canonical surfaces
+baf2e87 feat: round 202605021800 src — UPrimConst→Identity collapse + SignedIdentity + macro extension
+323cbf6 docs: add round 202605021800 src changelist
+2a92965 chore: lock doc changelist for round 202605021800
+ad43732 docs: BACKLOG cross-references for round 202605021800
+d0a518f docs: arvo facade ConstEq table — drop cross-crate types
+3e1a7e0 docs: arvo DESIGN — round 202605021800 sections
+aae7ab6 docs: arvo-bits-contracts DESIGN — round 202605021800 sections
+4e3fad4 docs: drop facade-mirror inherents on USize/Cap, trait IS the surface
+2b9dc94 docs: arvo-storage DESIGN — round 202605021800 sections
+529bcc1 docs: arvo-strategy DESIGN — round 202605021800 sections
+0ef28c1 docs: address deprecation-comparison push gate
+47433e4 docs: add expanded round 202605021800 doc changelist
+41f005a docs: expand round 202605021800 topic — full P0 const-trait + dogfood
+0bb3737 chore: deprecate doc changelist 202605021800_changelist.doc.md
+48415ca docs: add round 202605021800 doc changelist
+f060199 docs: open round 202605021800 topic — substrate const-trait foundation lifts
+daf9518 chore: close design round 202605021600
+3d46cbd chore: lock src changelist for round 202605021600
