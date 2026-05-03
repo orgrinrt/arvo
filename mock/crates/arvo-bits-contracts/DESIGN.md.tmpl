@@ -136,11 +136,19 @@ pub const trait BitPrim: Copy + ConstParamTy_ + ... {
     fn bitxor(self, other: Self) -> Self;
     fn clear_lowest_set_bit(self) -> Self;
     fn is_zero(self) -> Bool;
+
+    // Round 202605031748: substrate helper consumed by mask /
+    // hash / bitfield call sites that build a low-N-bits mask.
+    // Default body composes through Identity::ZERO, Bounded::MAX,
+    // Identity::ONE, and the const-stable shift bridge.
+    fn mask_low(n: USize) -> Self;
 }
 
 pub const trait IBitPrim: Copy + ConstParamTy_ + ... {
     // signed counterpart with full method parity vs BitPrim
-    // (round 202605021800 closes the parity gap)
+    // (round 202605021800 closes the parity gap;
+    // round 202605031748 adds the mask_low method)
+    fn mask_low(n: USize) -> Self;
 }
 
 pub const trait UBitContainer<const N: Width> {
