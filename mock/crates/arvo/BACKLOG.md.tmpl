@@ -134,11 +134,14 @@ forward-looking entries are revised:
 - **HotTruncate strategy variant.** Possible future Hot variant that
   truncates wide widths to 128 for compute (lossy but native-fast).
   Deferred for research under #322. Not in current strategy lattice.
-- **Sign axis on `Mask<W>` and other bit-level traits.** Round B
-  introduced the Sign axis on Bits only. Mask<W> / BitLogic /
-  BitAccess / BitSequence stay sign-agnostic (the trait surface acts
-  on raw bit patterns, sign-agnostic by construction). If a consumer
-  surfaces a need for sign-aware bit ops, a future round adds it.
+- **Sign axis on bit-level traits.** Round B introduced the Sign
+  axis on Bits only. Mask\<W\> / BitLogic / BitAccess / BitSequence
+  stay sign-agnostic (the trait surface acts on raw bit patterns,
+  sign-agnostic by construction). The Sign axis is reachable
+  externally: a consumer building `Mask<Bits<64, Hot, Signed>>` gets
+  a sign-tagged mask whose bit ops still ignore the tag. If a
+  consumer surfaces a need for sign-aware bit ops, a future round
+  adds it.
 
 ## Round 202604280806 forward-looking entries
 
@@ -237,33 +240,21 @@ round 202604280034 to lock the exact-width discipline in. Consumers
 write `Uint<N, S>` / `Int<N, S>` directly with the exact bit count
 the domain needs.
 
-## Mask<W> trait impls on Mask64 / Mask256 (deferred)
+## MaskOps trait impls (SHIPPED in round 202605031748)
 
 The `arvo-mask-contracts::Mask<const W: u8>` const trait was declared
-during round 202604271346 with the intent that `arvo-bitmask::Mask64`
-implement `Mask<64>` and `Mask256` implement `Mask<256>`. Round
-202604280034's doc CL committed to closing the design-drift gap; the
-source side discovered the impl is not mechanical:
+during round 202604271346 and renamed to `MaskOps<const W: Width>` in
+round 202605031748 (#313) to disambiguate from the `arvo-bitmask::Mask<W>`
+chassis struct. The same round shipped the const-trait impls:
 
-- The trait is `pub const trait`, requiring `impl const` impls.
-- `Mask64` / `Mask256` inherent methods are non-const today
-  (`insert` / `remove` take `&mut self`); functional `set` / `clear`
-  shapes need a parallel set of methods or a const-conversion of the
-  inherent surface.
-- `full()` and `mask_for_width(n)` have no inherent equivalent and
-  need to be added.
+- `impl const MaskOps<{ Width::from_u16(64) }> for Mask<Bits<64, Hot, Unsigned>>`.
+- `impl const MaskOps<{ Width::from_u16(256) }> for Mask<Bits<256, Hot, Unsigned>>`.
 
-Tracked here for a follow-up round. Two work blocks:
-
-1. Const-convert (or write parallel const-fn equivalents for) the
-   inherent surface covering `set`, `clear`, `test`, `count`,
-   `union`, `intersection`, `difference`, `complement`, plus add
-   `full` and `mask_for_width(n)`.
-2. Wire `impl const Mask<64> for Mask64` and `impl const Mask<256>
-   for Mask256` delegating to step 1.
-
-Until this lands, generic-over-`Mask<W>` consumer code finds no
-implementor and binds to `Mask64` / `Mask256` concretely.
+The chassis const-routes `empty()` through `Identity::ZERO`, `full()`
+through `Bounded::MAX`. `mask_for_width(n)` composes through
+`BitPrim::mask_low(n)` (the per-primitive helper added in the same
+round). Generic-over-MaskOps consumer code now binds to the trait and
+reaches all eleven methods in const context.
 
 ## Cold widen / narrow impls (deferred)
 

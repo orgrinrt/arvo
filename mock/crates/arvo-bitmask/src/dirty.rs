@@ -8,24 +8,27 @@
 //! width. Each pass either adds at least one bit (loop continues) or
 //! adds nothing (loop exits). Upper bound is `width` iterations.
 //!
-//! Two overloads exist: one for `(BitMatrix64<N>, Mask64)` and one
-//! for `(BitMatrix256<N>, Mask256)`. Free functions, not methods,
-//! so consumers can call them directly from either matrix type
-//! without importing a trait.
+//! Round 202605031748 (#313) collapsed the parallel
+//! `propagate_dirty_64` / `propagate_dirty_256` shipping shapes onto
+//! this single generic chassis. Free function, not a method, so
+//! consumers can call it from any matrix instantiation without
+//! importing a trait.
 
 use arvo::Cap;
+use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 
-use crate::mask::{Mask256, Mask64};
-use crate::matrix::{BitMatrix256, BitMatrix64, cap_size};
+use crate::mask::Mask;
+use crate::matrix::{BitMatrix, cap_size};
 use crate::node::NodeId;
 
-/// Propagate dirty bits through a 64-wide adjacency matrix.
+/// Propagate dirty bits through a `BitMatrix<W, N>` adjacency matrix.
 ///
 /// For each set bit `i` in `dirty`, union in `matrix.successors(i)`.
 /// Repeat until no change.
 #[inline]
-pub fn propagate_dirty_64<const N: Cap>(matrix: &BitMatrix64<N>, dirty: &mut Mask64)
+pub fn propagate_dirty<W, const N: Cap>(matrix: &BitMatrix<W, N>, dirty: &mut Mask<W>)
 where
+    W: BitSequence + BitAccess + BitLogic + Copy + Default + PartialEq,
     [(); cap_size(N)]:,
 {
     loop {
@@ -35,33 +38,7 @@ where
             let row = if i.0 < cap_size(N) {
                 matrix.successors(NodeId(i))
             } else {
-                Mask64::empty()
-            };
-            *dirty = dirty.union(row);
-        }
-        if *dirty == before {
-            return;
-        }
-    }
-}
-
-/// Propagate dirty bits through a 256-wide adjacency matrix.
-///
-/// Same algorithm as `propagate_dirty_64`, iterating across the four
-/// 64-bit words of `Mask256`.
-#[inline]
-pub fn propagate_dirty_256<const N: Cap>(matrix: &BitMatrix256<N>, dirty: &mut Mask256)
-where
-    [(); cap_size(N)]:,
-{
-    loop {
-        let before = *dirty;
-        let snapshot = before;
-        for i in snapshot.iter_set_bits() {
-            let row = if i.0 < cap_size(N) {
-                matrix.successors(NodeId(i))
-            } else {
-                Mask256::empty()
+                Mask::<W>::from_word(W::default())
             };
             *dirty = dirty.union(row);
         }

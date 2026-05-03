@@ -53,7 +53,8 @@ pub use predicate::{Pred, Pred2, Pred3};
 pub use prim::{BitPrim, IBitContainer, IBitPrim, UBitContainer};
 pub use strategy::{
     Bounded, Cold, ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
-    FromU8Ieee, Hot, Identity, Ieee, Precise, SignedIdentity, Strategy, Warm, width_le_64,
+    FromU8Ieee, Hot, Identity, Ieee, Precise, SignedIdentity, Signedness, Strategy, Unsigned,
+    Warm, width_le_64,
 };
 pub use traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
 pub use transparent::{NumericPrimitive, Transparent, raw};

@@ -18,8 +18,9 @@ other L1 / L2 crate. Tensor is value-generic, not bit-generic.
 arvo-tensor sits at L2 as a peer of arvo-bitmask. The division is by
 element domain:
 
-- **arvo-bitmask** — fixed-shape bit containers (Mask64, Mask256, BitMatrix
-  over bits). Every slot is a bit, ops are bitwise.
+- **arvo-bitmask** — fixed-shape bit containers (Mask\<W\> chassis,
+  BitMatrix\<W, N\> chassis over bits). Every slot is a bit, ops are
+  bitwise.
 - **arvo-tensor** — fixed-shape value containers (Array<T, N>, Matrix<W, N>
   over arbitrary T). Every slot is a T, ops are trait-generic over T.
 

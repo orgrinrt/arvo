@@ -14,8 +14,9 @@
 use core::cmp::Ordering;
 
 use arvo::{Identity, Cap, USize};
+use arvo::{Bits, Hot, Unsigned};
 use arvo::traits::TotalOrd;
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
+use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 
 /// Flat spanning-tree decomposition.
 ///
@@ -32,13 +33,13 @@ where
     [(); cap_size(N)]:,
 {
     /// Nodes that sit on a trunk (main or branch).
-    pub on_trunk: Mask64,
+    pub on_trunk: Mask<Bits<64, Hot, Unsigned>>,
     /// Successor of each on-trunk node. Undefined off the trunk.
     pub trunk_next: [NodeId; cap_size(N)],
     /// Starting nodes of branches.
-    pub branch_roots: Mask64,
+    pub branch_roots: Mask<Bits<64, Hot, Unsigned>>,
     /// Fan-in nodes (predecessor count >= 2).
-    pub bridges: Mask64,
+    pub bridges: Mask<Bits<64, Hot, Unsigned>>,
 }
 
 impl<const N: Cap> SpanningTree<N>
@@ -49,10 +50,10 @@ where
     #[inline]
     pub fn empty() -> Self {
         Self {
-            on_trunk: Mask64::empty(),
+            on_trunk: Mask::<Bits<64, Hot, Unsigned>>::empty(),
             trunk_next: [NodeId::new(USize(0)); cap_size(N)],
-            branch_roots: Mask64::empty(),
-            bridges: Mask64::empty(),
+            branch_roots: Mask::<Bits<64, Hot, Unsigned>>::empty(),
+            bridges: Mask::<Bits<64, Hot, Unsigned>>::empty(),
         }
     }
 }
@@ -71,7 +72,7 @@ where
 /// silently yields an empty decomposition for the cyclic remainder.
 #[inline]
 pub fn spanning_tree<const N: Cap, W>(
-    dag: &BitMatrix64<N>,
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
     ranks: &[W; cap_size(N)],
 ) -> SpanningTree<N>
 where
@@ -91,7 +92,7 @@ where
     }
 
     // Identify sources: predecessors().count() == 0.
-    let mut sources: Mask64 = Mask64::empty();
+    let mut sources: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
     let mut src_any = false;
     let mut j = 0usize;
     while j < cap_size(N) {
@@ -147,7 +148,7 @@ where
         }
     }
 
-    let mut visited: Mask64 = Mask64::empty();
+    let mut visited: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
 
     while q_head < q_tail {
         let start = queue[q_head];

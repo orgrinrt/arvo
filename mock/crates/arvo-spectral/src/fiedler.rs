@@ -60,7 +60,7 @@ where
         + Copy
         + FromConstant,
 {
-    // Promote the documented "N <= 64 via Mask64" invariant to a
+    // Promote the documented "N <= 64 via Mask<Bits<64, Hot, Unsigned>>" invariant to a
     // check that fires well before the silent `as u8` truncation
     // below. `const { ... }` on a generic const parameter is not
     // supported under the current generic_const_exprs feature, so
@@ -69,7 +69,7 @@ where
     // const-block restriction lifts.
     debug_assert!(
         cap_size(N) <= 64,
-        "fiedler_vector requires N <= 64 (Mask64 partition surface)"
+        "fiedler_vector requires N <= 64 (Mask<Bits<64, Hot, Unsigned>> partition surface)"
     );
 
     let n = cap_size(N);

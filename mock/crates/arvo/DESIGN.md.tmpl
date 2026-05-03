@@ -1019,23 +1019,24 @@ and `arvo::FromU8Ieee` keep working unchanged. See
 ```rust
 // canonical declaration: arvo-strategy::ieee
 pub const trait Ieee: sealed::Sealed + [const] Identity + [const] Bounded + Copy + Default + ... {
-    const WIDTH: u16;
+    const WIDTH: Width;
 }
 
 pub const trait FromU8Ieee {
     fn from_u8_ieee(n: u8) -> Self;
 }
 
-impl const Ieee for f32 { const WIDTH: u16 = 32; }
-impl const Ieee for f64 { const WIDTH: u16 = 64; }
+impl const Ieee for f32 { const WIDTH: Width = Width::from_u16(32); }
+impl const Ieee for f64 { const WIDTH: Width = Width::from_u16(64); }
 
 impl const Identity for f32 { const ZERO: Self = 0.0; const ONE: Self = 1.0; }
 impl const Identity for f64 { const ZERO: Self = 0.0; const ONE: Self = 1.0; }
 ```
 
-`WIDTH: u16` stays bare-primitive-typed for round 202605030400.
-Round 3 (#313) lifts it to `Width` once the broader bare-`u16` to
-typed `Width` substrate sweep cascades through the bridge family.
+Round 3 (#313, round 202605031748) lifted `Ieee::WIDTH` from bare
+`u16` to `Width`, matching the broader bare-primitive substrate
+discipline. The lift cascades into `FastFloat<F>::WIDTH` and
+`StrictFloat<F>::WIDTH` re-exports.
 
 `FastFloat<F>` and `StrictFloat<F>` blanket through inner Identity:
 

@@ -18,8 +18,9 @@ use core::cmp::Ordering;
 use core::ops::Add;
 
 use arvo::{Cap, USize};
+use arvo::{Bits, Hot, Unsigned};
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo_bitmask::{BitMatrix64, cap_size};
+use arvo_bitmask::{BitMatrix, cap_size};
 
 use crate::topo::topo_sort;
 
@@ -30,7 +31,7 @@ use crate::topo::topo_sort;
 /// visited. Leaves ground at their own weight.
 #[inline]
 pub fn upward_rank<const N: Cap, W>(
-    dag: &BitMatrix64<N>,
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
     weights: &[W; cap_size(N)],
 ) -> [W; cap_size(N)]
 where
@@ -88,7 +89,7 @@ where
 /// computed when a node is reached. Roots ground at their own weight.
 #[inline]
 pub fn downward_rank<const N: Cap, W>(
-    dag: &BitMatrix64<N>,
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
     weights: &[W; cap_size(N)],
 ) -> [W; cap_size(N)]
 where

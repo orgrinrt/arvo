@@ -1,7 +1,7 @@
 //! arvo-sparse — L2 sparse matrix substrate.
 //!
 //! Fixed-size sparse matrix storage (`Csr`) and structural-analysis
-//! algorithms over `BitMatrix64` adjacency: reverse Cuthill-McKee
+//! algorithms over `BitMatrix<Bits<64, Hot, Unsigned>>` adjacency: reverse Cuthill-McKee
 //! reordering (`rcm_reorder`), block-diagonal detection
 //! (`block_diagonal`), and Dulmage-Mendelsohn decomposition
 //! (`dulmage_mendelsohn`).

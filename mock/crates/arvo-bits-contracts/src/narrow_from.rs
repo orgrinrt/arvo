@@ -15,10 +15,12 @@
 //! validates that the per-`(S, Sign)`-keyed blanket impls compose
 //! without E0119 conflicts.
 
+use arvo_storage::USize;
 use arvo_strategy::{
     Align, Cold, Hot, Precise, Signed, Signedness, Strategy, Unsigned, Warm, WideBits,
-    mask_low_bits,
 };
+
+use crate::BitPrim;
 
 /// Narrow a u64 to `Self` under the `(N, S, Sign)` projection.
 ///
@@ -65,7 +67,7 @@ macro_rules! impl_narrow_for_prims {
             impl<const N: u16> const NarrowFromU64<N, $strategy, $sign> for $prim {
                 #[inline(always)]
                 fn narrow_u64(raw: u64) -> Self {
-                    (raw & mask_low_bits(N)) as $prim
+                    (raw & <u64 as BitPrim>::mask_low(USize(N as usize))) as $prim
                 }
             }
         )+
@@ -98,7 +100,7 @@ impl<const N: u16, S: Strategy, Sign: Signedness, const BYTES: usize, A: Align>
 {
     #[inline]
     fn narrow_u64(raw: u64) -> Self {
-        let masked = raw & mask_low_bits(N);
+        let masked = raw & <u64 as BitPrim>::mask_low(USize(N as usize));
         let masked_bytes = masked.to_le_bytes();
         let mut bytes = [0u8; BYTES];
         let copy_len = if BYTES < 8 { BYTES } else { 8 };

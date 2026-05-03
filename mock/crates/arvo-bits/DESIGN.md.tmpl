@@ -17,8 +17,8 @@ surface depend on the contract crate; consumers that need the
 concrete blanket dispatch reach this crate transitively via the
 `arvo` facade re-exports.
 
-Mask concretes (`Mask64`, `Mask256`, `BitMatrix`) live in
-`arvo-bitmask`. The `Narrow<T>` and `Widen<T>` trait declarations and
+The mask chassis (`Mask<W>` and `BitMatrix<W, const N: Cap>`) lives
+in `arvo-bitmask`. The `Narrow<T>` and `Widen<T>` trait declarations and
 concrete impls live in `arvo-bits-contracts`; the surface is re-
 exported through `arvo-refit` (combined narrow + widen gateway crate,
 renamed from `arvo-narrow` in round 202604301700).
@@ -35,9 +35,10 @@ Depends on arvo. No other arvo-family dependencies.
 ## Why this crate exists
 
 arvo defines numeric types (UFixed, IFixed, Float). arvo-bitmask
-defines bit-level types (Mask64, Mask256, BitMatrix). These are
-fundamentally different type families: numerics do Add/Mul/Sqrt,
-bitmasks do OR/AND/popcount. The original structure had arvo-bitmask
+defines bit-level types (Mask\<W\> chassis and BitMatrix\<W, N\>
+chassis). These are fundamentally different type families: numerics
+do Add/Mul/Sqrt, bitmasks do OR/AND/popcount. The original structure
+had arvo-bitmask
 depending directly on arvo, but bitmasks are not numeric — the
 dependency existed only for the arvo-types-only lint, not for any
 numeric operation.
@@ -283,7 +284,7 @@ as 8 individual flag bits).
 
 ## What this crate does NOT contain
 
-- Bitmask types (Mask64, Mask256, BitMatrix); live in arvo-bitmask.
+- Mask chassis (Mask\<W\>, BitMatrix\<W, N\>); live in arvo-bitmask.
 - Numeric operations (Add, Mul, Sqrt); live in arvo.
 - Set operations (union, intersection); live in arvo-bitmask.
 - Float types; live in arvo.
@@ -295,12 +296,15 @@ as 8 individual flag bits).
 
 ## Consumers
 
-- **arvo-bitmask**: builds Mask types on HasBitWidth + BitAccess +
-  BitSequence + BitLogic contracts. Mask64's `count()` delegates to
+- **arvo-bitmask**: builds the `Mask<W>` chassis on HasBitWidth +
+  BitAccess + BitSequence + BitLogic contracts. `count()` delegates to
   `BitSequence::count_ones`; `union` / `intersection` / `difference` /
   `complement` delegate to `BitLogic::{bitor, bitand, bitxor, bitnot}`
   (or equivalently via `core::ops`). Bit scanning uses `trailing_zeros`
-  / `leading_zeros`. No reach-through to raw `u64`.
+  / `leading_zeros`. The chassis works uniformly for `W = Bits<64,
+  Hot, Unsigned>` (single-word) and `W = Bits<256, Hot, Unsigned>`
+  (multi-word via the substrate's MultiContainer plumbing). No
+  reach-through to raw container primitives.
 - Other arvo algorithm crates (graph, sparse, comb, spectral) depend
   on arvo-bitmask, not arvo-bits, for adjacency and set work.
 

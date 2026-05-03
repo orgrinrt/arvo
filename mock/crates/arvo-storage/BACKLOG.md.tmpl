@@ -22,19 +22,18 @@ generic ergonomics improve.
 Bits<N, Cold> for N > 64 with bitpacked storage across multiple bare
 primitives. Out of scope for round 202604271346. Future round.
 
-## Round 3 prerequisites (post-#316 work)
+## Round 3 SHIPPED (post-#316 work)
 
-Round 3 (#313) of the substrate-fundamentals work generalises
-Mask\<W\> over Bits, with Mask256 collapsing from a hand-rolled
-\[QWord\<Hot\>; 4\] struct to a type alias over
-Mask\<Bits\<{width(256)}, Hot, Unsigned\>\>. Round 3 unblocks once
-#316 lands (the foundational redesign with WideBits, unified
-BitsContainerFor, Width relocation).
-
-Round 3 also lifts BitPrim::WIDTH typing finalisation. The bulk of
-the const-generic position lift happens in #316 (u16 → Width across
-the projection layer); Round 3 polishes any remaining BitPrim::WIDTH
-positioning.
+Round 3 (#313) of the substrate-fundamentals work shipped in round
+202605031748. Mask\<W\> generic over Bits with the per-width
+parallel structs (Mask256, BitMatrix64, BitMatrix256) deleted
+entirely. Consumer code names Mask\<Bits\<64, Hot, Unsigned\>\> and
+Mask\<Bits\<256, Hot, Unsigned\>\> directly, keeping the Strategy
+and Signedness axes statically visible. BitPrim::WIDTH typing
+finalisation was already shipped in Round 2 (#311) so the round
+focused on the chassis collapse and the dogfood sweep (BitPrim
+mask_low method, FastFloat / StrictFloat Identity, Mask::empty via
+Identity::ZERO).
 
 ## #316 follow-ups (post-redesign)
 

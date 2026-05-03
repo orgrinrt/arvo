@@ -3,17 +3,23 @@
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
 
-//! arvo-mask-contracts. Mask trait declaration.
+//! arvo-mask-contracts. Mask operations contract.
 //!
-//! `Mask<const W: u16>` is the abstract const trait over bitmask
-//! storage. Concrete impls (`Mask64` at W=64, `Mask256` at W=256,
-//! `BitMatrix` over rows of `Mask64`) live in `arvo-bitmask`.
-//! Consumers that depend only on the abstract surface pull this
-//! crate, not the concrete-storage one.
+//! `MaskOps<const W: Width>` is the abstract const trait over bitmask
+//! storage of width `W`. Concrete impls (the chassis `Mask<W>` from
+//! `arvo-bitmask` at concrete W) live in `arvo-bitmask`. Consumers
+//! that depend only on the abstract surface pull this crate, not the
+//! concrete-storage one.
+//!
+//! Round 202605031748 (#313) renamed the trait `Mask` -> `MaskOps`
+//! to disambiguate from the concrete chassis struct
+//! `arvo_bitmask::Mask<W>`. Same round lifted the `W` const-generic
+//! from bare `u16` to typed `Width`.
 //!
 //! See `DESIGN.md` for the full surface.
 
 use arvo_storage::{Bool, USize};
+use arvo_strategy::Width;
 
 /// Bitmask of width `W` bits.
 ///
@@ -23,11 +29,11 @@ use arvo_storage::{Bool, USize};
 /// produces a mask with the lowest `n` bits set; consumed by
 /// `Narrow<T>` impls to truncate a wider raw to a typed container.
 ///
-/// `W` is encoded as `const u8` (mask widths in this stack top
+/// `W` is encoded as `const Width` (mask widths in this stack top
 /// out at 256). Default-method bodies compose `BitLogic` from
 /// `arvo-bits-contracts`; concrete impls in `arvo-bitmask` may
 /// override with hardware-specific implementations.
-pub const trait Mask<const W: u16>: Sized + Copy {
+pub const trait MaskOps<const W: Width>: Sized + Copy {
     /// Mask with no bits set.
     fn empty() -> Self;
     /// Mask with every bit (in `[0, W)`) set.

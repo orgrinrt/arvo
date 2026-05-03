@@ -1,14 +1,14 @@
-//! Bit scanning on `Mask64`: `lowest_set`, `highest_set`,
+//! Bit scanning on `Mask<Bits<64, Hot, Unsigned>>`: `lowest_set`, `highest_set`,
 //! `iter_set_bits` ordering.
 
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::USize;
-use arvo_bitmask::Mask64;
+use arvo::{Bits, Hot, USize, Unsigned};
+use arvo_bitmask::Mask;
 
-fn mk(bits: &[usize]) -> Mask64 {
-    let mut m = Mask64::empty();
+fn mk(bits: &[usize]) -> Mask<Bits<64, Hot, Unsigned>> {
+    let mut m = Mask::<Bits<64, Hot, Unsigned>>::empty();
     for b in bits {
         m.insert(USize(*b));
     }
@@ -29,7 +29,7 @@ fn lowest_set_picks_minimum() {
 
 #[test]
 fn lowest_set_empty_is_width() {
-    let m = Mask64::empty();
+    let m = Mask::<Bits<64, Hot, Unsigned>>::empty();
     // trailing_zeros of zero word returns container width (64).
     assert_eq!(m.lowest_set(), USize(64));
 }
@@ -48,7 +48,7 @@ fn highest_set_topmost() {
 
 #[test]
 fn highest_set_empty_is_width() {
-    let m = Mask64::empty();
+    let m = Mask::<Bits<64, Hot, Unsigned>>::empty();
     assert_eq!(m.highest_set(), USize(64));
 }
 
@@ -66,14 +66,14 @@ fn iter_set_bits_lowest_first() {
 
 #[test]
 fn iter_set_bits_empty_yields_nothing() {
-    let m = Mask64::empty();
+    let m = Mask::<Bits<64, Hot, Unsigned>>::empty();
     let mut it = m.iter_set_bits();
     assert!(it.next().is_none());
 }
 
 #[test]
 fn iter_set_bits_dense() {
-    let mut m = Mask64::empty();
+    let mut m = Mask::<Bits<64, Hot, Unsigned>>::empty();
     for i in 0..64 {
         m.insert(USize(i));
     }

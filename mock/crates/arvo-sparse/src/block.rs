@@ -1,18 +1,19 @@
 //! Block-diagonal detection via connected components.
 //!
-//! Treats the `BitMatrix64<N>` adjacency as an undirected graph
+//! Treats the `BitMatrix<Bits<64, Hot, Unsigned>, N>` adjacency as an undirected graph
 //! (successors ∪ predecessors) and assigns each node a component
 //! identifier. The result permits permuting rows and columns into
 //! block-diagonal form: each block is an independent sub-problem.
 //!
 //! DFS is iterative on a fixed-size `[NodeId; cap_size(N)]` stack
-//! with a `Mask64` visited set. The implementation mirrors
+//! with a `Mask<Bits<64, Hot, Unsigned>>` visited set. The implementation mirrors
 //! `arvo-graph::components` but lives here to avoid a dependency edge
 //! from `arvo-sparse` onto `arvo-graph` (the forbidden-imports lint
 //! prohibits `arvo_graph::*` from `arvo-sparse`).
 
 use arvo::{Identity, Bool, Cap, USize};
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
+use arvo::{Bits, Hot, Unsigned};
+use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 
 /// Assign a component (block) ID to every node.
 ///
@@ -22,13 +23,13 @@ use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 /// per distinct component.
 #[inline]
 pub fn block_diagonal<const N: Cap>(
-    adjacency: &BitMatrix64<N>,
+    adjacency: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
 ) -> (USize, [USize; cap_size(N)])
 where
     [(); cap_size(N)]:,
 {
     let mut block_id: [USize; cap_size(N)] = [USize(0); cap_size(N)];
-    let mut visited: Mask64 = Mask64::empty();
+    let mut visited: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
     let mut next_id = USize(0);
 
     let mut seed = 0usize;

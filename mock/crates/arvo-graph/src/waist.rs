@@ -12,20 +12,21 @@
 //! waist mask back through the same `topo_order` they passed in.
 
 use arvo::{Identity, Bool, Cap, USize};
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
+use arvo::{Bits, Hot, Unsigned};
+use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 
 /// Detect waist levels in a DAG.
 ///
-/// Returns a `Mask64` whose bit `k` is set when the node at
+/// Returns a `Mask<Bits<64, Hot, Unsigned>>` whose bit `k` is set when the node at
 /// `topo_order[k]` sits at a depth whose level width is a strict
 /// local minimum relative to the occupied depths on either side.
 /// Nodes outside the valid prefix (e.g. when a cycle clipped the
 /// topo sort) contribute nothing.
 #[inline]
 pub fn waist_detect<const N: Cap>(
-    dag: &BitMatrix64<N>,
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
     topo_order: &[NodeId; cap_size(N)],
-) -> Mask64
+) -> Mask<Bits<64, Hot, Unsigned>>
 where
     [(); cap_size(N)]:,
 {
@@ -107,7 +108,7 @@ where
 
     // Emit bits at the topo-order POSITIONS of nodes whose depth is a
     // waist depth.
-    let mut out = Mask64::empty();
+    let mut out = Mask::<Bits<64, Hot, Unsigned>>::empty();
     let mut k = 0usize;
     while k < cap_size(N) {
         let node = topo_order[k];
