@@ -21,7 +21,7 @@
 //! the cheapest defined fallback that does not panic). Precise
 //! guards and clamps to container max.
 
-use crate::{Cold, HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
+use crate::{BitsContainerFor, Cold, HasAxes, Hot, Precise, Signed, Unsigned, Warm};
 
 /// Unsigned arithmetic dispatch for `(strategy, N)`.
 ///
@@ -37,31 +37,55 @@ use crate::{Cold, HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
 /// concrete-type dispatch; the axis projections document the design
 /// intent and unblock future combinations like `Hot + Saturating`
 /// once Rust trait specialisation makes axis-only dispatch possible.
-pub const trait UArith<const N: u16>: [const] UContainerFor<N> + HasAxes {
+pub const trait UArith<const N: u16>: [const] BitsContainerFor<N, Unsigned> + HasAxes {
     /// Strategy-specific `+`.
-    fn u_add(a: Self::T, b: Self::T) -> Self::T;
+    fn u_add(
+        a: <Self as BitsContainerFor<N, Unsigned>>::T,
+        b: <Self as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
     /// Strategy-specific `-`.
-    fn u_sub(a: Self::T, b: Self::T) -> Self::T;
+    fn u_sub(
+        a: <Self as BitsContainerFor<N, Unsigned>>::T,
+        b: <Self as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
     /// Strategy-specific `*`.
-    fn u_mul(a: Self::T, b: Self::T) -> Self::T;
+    fn u_mul(
+        a: <Self as BitsContainerFor<N, Unsigned>>::T,
+        b: <Self as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
     /// Strategy-specific `/`. Div-by-zero: wrapping strategies use
     /// `wrapping_div` (panic convention); Precise clamps to max.
-    fn u_div(a: Self::T, b: Self::T) -> Self::T;
+    fn u_div(
+        a: <Self as BitsContainerFor<N, Unsigned>>::T,
+        b: <Self as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
 }
 
 /// Signed arithmetic dispatch for `(strategy, N)`.
 ///
 /// `HasAxes` supertrait per the same Pass E convention as `UArith`.
-pub const trait IArith<const N: u16>: [const] IContainerFor<N> + HasAxes {
+pub const trait IArith<const N: u16>: [const] BitsContainerFor<N, Signed> + HasAxes {
     /// Strategy-specific `+`.
-    fn i_add(a: Self::T, b: Self::T) -> Self::T;
+    fn i_add(
+        a: <Self as BitsContainerFor<N, Signed>>::T,
+        b: <Self as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
     /// Strategy-specific `-`.
-    fn i_sub(a: Self::T, b: Self::T) -> Self::T;
+    fn i_sub(
+        a: <Self as BitsContainerFor<N, Signed>>::T,
+        b: <Self as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
     /// Strategy-specific `*`.
-    fn i_mul(a: Self::T, b: Self::T) -> Self::T;
+    fn i_mul(
+        a: <Self as BitsContainerFor<N, Signed>>::T,
+        b: <Self as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
     /// Strategy-specific `/`. Div-by-zero: wrapping strategies use
     /// `wrapping_div` (panic convention); Precise clamps to max.
-    fn i_div(a: Self::T, b: Self::T) -> Self::T;
+    fn i_div(
+        a: <Self as BitsContainerFor<N, Signed>>::T,
+        b: <Self as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
 }
 
 /// Helper trait: yields the MAX value of an unsigned container type.
@@ -106,18 +130,18 @@ macro_rules! impl_u_arith_wrapping {
         $(
             impl const UArith<$bits> for $strategy {
                 #[inline(always)]
-                fn u_add(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.wrapping_add(b) }
+                fn u_add(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.wrapping_add(b) }
                 #[inline(always)]
-                fn u_sub(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.wrapping_sub(b) }
+                fn u_sub(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.wrapping_sub(b) }
                 #[inline(always)]
-                fn u_mul(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.wrapping_mul(b) }
+                fn u_mul(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.wrapping_mul(b) }
                 #[inline(always)]
-                fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T {
-                    if b == <<Self as UContainerFor<$bits>>::T as Identity>::ZERO {
+                fn u_div(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity>::ZERO {
                         a
                     } else {
                         a.wrapping_div(b)
@@ -133,20 +157,20 @@ macro_rules! impl_u_arith_saturating {
         $(
             impl const UArith<$bits> for $strategy {
                 #[inline(always)]
-                fn u_add(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.saturating_add(b) }
+                fn u_add(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.saturating_add(b) }
                 #[inline(always)]
-                fn u_sub(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.saturating_sub(b) }
+                fn u_sub(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.saturating_sub(b) }
                 #[inline(always)]
-                fn u_mul(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T { a.saturating_mul(b) }
+                fn u_mul(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.saturating_mul(b) }
                 #[inline(always)]
-                fn u_div(a: <Self as UContainerFor<$bits>>::T, b: <Self as UContainerFor<$bits>>::T)
-                    -> <Self as UContainerFor<$bits>>::T {
+                fn u_div(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T)
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
                     // Precise never panics on div-by-zero: clamp to MAX.
-                    if b == <<Self as UContainerFor<$bits>>::T as Identity>::ZERO {
-                        <<Self as UContainerFor<$bits>>::T as USaturating>::saturating_max()
+                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity>::ZERO {
+                        <<Self as BitsContainerFor<$bits, Unsigned>>::T as USaturating>::saturating_max()
                     } else {
                         a / b
                     }
@@ -161,18 +185,18 @@ macro_rules! impl_i_arith_wrapping {
         $(
             impl const IArith<$bits> for $strategy {
                 #[inline(always)]
-                fn i_add(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.wrapping_add(b) }
+                fn i_add(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.wrapping_add(b) }
                 #[inline(always)]
-                fn i_sub(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.wrapping_sub(b) }
+                fn i_sub(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.wrapping_sub(b) }
                 #[inline(always)]
-                fn i_mul(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.wrapping_mul(b) }
+                fn i_mul(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.wrapping_mul(b) }
                 #[inline(always)]
-                fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T {
-                    if b == <<Self as IContainerFor<$bits>>::T as Identity>::ZERO {
+                fn i_div(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T {
+                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity>::ZERO {
                         a
                     } else {
                         a.wrapping_div(b)
@@ -188,20 +212,20 @@ macro_rules! impl_i_arith_saturating {
         $(
             impl const IArith<$bits> for $strategy {
                 #[inline(always)]
-                fn i_add(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.saturating_add(b) }
+                fn i_add(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.saturating_add(b) }
                 #[inline(always)]
-                fn i_sub(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.saturating_sub(b) }
+                fn i_sub(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.saturating_sub(b) }
                 #[inline(always)]
-                fn i_mul(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T { a.saturating_mul(b) }
+                fn i_mul(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.saturating_mul(b) }
                 #[inline(always)]
-                fn i_div(a: <Self as IContainerFor<$bits>>::T, b: <Self as IContainerFor<$bits>>::T)
-                    -> <Self as IContainerFor<$bits>>::T {
+                fn i_div(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T)
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T {
                     // Precise guards against div-by-zero: clamp to MAX.
-                    if b == <<Self as IContainerFor<$bits>>::T as Identity>::ZERO {
-                        <<Self as IContainerFor<$bits>>::T as ISaturating>::saturating_max()
+                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity>::ZERO {
+                        <<Self as BitsContainerFor<$bits, Signed>>::T as ISaturating>::saturating_max()
                     } else {
                         // Guard signed overflow (MIN / -1) by preferring
                         // `saturating_div` rather than `wrapping_div`.
@@ -464,32 +488,6 @@ macro_rules! impl_bounded_identity_f {
 }
 
 impl_bounded_identity_f!(f32, f64);
-
-// --- MultiContainer canonical const surface ------------------------------
-//
-// `MultiContainer<HiT, LoT>` is the multi-value storage carrier for
-// logical bit widths beyond a single native primitive. Its Bounded /
-// Identity surface delegates to each half. Round 202605021800 added
-// these impls; previously the multi-container had no canonical const
-// constants, forcing consumers to construct `MultiContainer { hi: 0,
-// lo: 0 }` literals.
-
-use crate::multi_container::{MultiContainer, MultiContainerHalf};
-
-impl<HiT: [const] Bounded + MultiContainerHalf, LoT: [const] Bounded + MultiContainerHalf>
-    const Bounded for MultiContainer<HiT, LoT>
-{
-    const MIN: Self = MultiContainer { hi: <HiT as Bounded>::MIN, lo: <LoT as Bounded>::MIN };
-    const MAX: Self = MultiContainer { hi: <HiT as Bounded>::MAX, lo: <LoT as Bounded>::MAX };
-}
-
-impl<HiT: [const] Identity + MultiContainerHalf, LoT: [const] Identity + MultiContainerHalf>
-    const Identity for MultiContainer<HiT, LoT>
-{
-    const ZERO: Self = MultiContainer { hi: <HiT as Identity>::ZERO, lo: <LoT as Identity>::ZERO };
-    /// One value sits in the low half; high half is zero.
-    const ONE: Self = MultiContainer { hi: <HiT as Identity>::ZERO, lo: <LoT as Identity>::ONE };
-}
 
 // --- SignedIdentity (round 202605021800) ---------------------------------
 //

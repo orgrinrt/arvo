@@ -1,7 +1,7 @@
 //! `HasBitWidth` / `BitAccess` / `BitSequence` impls on `IFixed<I, F, S>`.
 //!
 //! Mirror of `ufixed_impl.rs` keyed on `IBitContainer` (which bundles
-//! `IContainerFor<BITS>` + `IBitPrim` on the container).
+//! `BitsContainerFor<BITS, Signed>` + `IBitPrim` on the container).
 
 use arvo_bits_contracts::{BitAccess, BitSequence, HasBitWidth, IBitContainer, IBitPrim};
 use arvo_storage::{Bool, FBits, IBits, USize};

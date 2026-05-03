@@ -3,6 +3,7 @@
 #![feature(const_trait_impl)]
 #![feature(const_ops)]
 #![feature(const_param_ty_trait)]
+#![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 //! arvo-strategy. Strategy markers + container-projection traits.
@@ -34,19 +35,16 @@ mod sealed {
     pub trait Sealed {}
 }
 
-mod aligned_widebits;
 mod arith;
 mod axes;
 mod container;
 mod cross_strategy;
 mod ieee;
-mod multi_container;
 mod widebits;
 mod widen;
 pub mod width;
 
-pub use aligned_widebits::AlignedWideBits16;
-pub use widebits::WideBits;
+pub use widebits::{A1, A16, A32, A64, Align, WideBits};
 pub use width::{Width, bytes_for, tag, width, width_le_64, width_u16, width_u8};
 
 pub use arith::{
@@ -58,8 +56,7 @@ pub use axes::{
     Bitpacked, ContainerWidth, Dense, DoubleLogical, HasAxes, Min, OverflowPolicy, Saturating,
     StorageLayout, Wrapping,
 };
-pub use container::{BitsContainerFor, IContainerFor, UContainerFor};
-pub use multi_container::{MultiContainer, MultiContainerHalf};
+pub use container::{BitsContainerFor, Picker, Project};
 pub use widen::{INarrowFrom, IWidenFrom, UNarrowFrom, UWidenFrom};
 
 /// Strategy marker trait.

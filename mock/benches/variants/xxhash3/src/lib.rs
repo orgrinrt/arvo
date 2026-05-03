@@ -1,6 +1,6 @@
 //! xxHash3 variant for the arvo ContentHash bench.
 
-use arvo_hash::{HasherExt, XxHash3};
+use arvo_hash::XxHash3;
 use mockspace_bench_core::{timed, FfiBenchCall};
 use mockspace_bench_macro::bench_variant;
 
@@ -8,7 +8,7 @@ use mockspace_bench_macro::bench_variant;
 fn run_xxhash3<const N: usize>(input: &[u8; N], output: &mut [u8; 8]) -> FfiBenchCall {
     timed! {
         run {
-            *output = XxHash3::<64>::new().hash(input).to_raw().to_le_bytes();
+            *output = XxHash3::<64>::hash_const(input).to_raw().to_le_bytes();
         }
     }
 }

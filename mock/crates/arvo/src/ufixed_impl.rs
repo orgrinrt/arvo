@@ -1,7 +1,7 @@
 //! `HasBitWidth` / `BitAccess` / `BitSequence` impls on `UFixed<I, F, S>`.
 //!
 //! The bound `S: UBitContainer<{ ufixed_bits(I, F) }>` pulls in
-//! `UContainerFor<BITS>` and the `BitPrim` requirement on the
+//! `BitsContainerFor<BITS, Unsigned>` and the `BitPrim` requirement on the
 //! container in a single predicate — avoids the const-expr cycle
 //! that two separate predicates would trigger.
 

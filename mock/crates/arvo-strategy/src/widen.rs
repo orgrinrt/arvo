@@ -13,7 +13,7 @@
 
 use notko::Outcome;
 
-use crate::{HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
+use crate::{BitsContainerFor, HasAxes, Hot, Precise, Signed, Unsigned, Warm};
 
 /// Unsigned container widen bridge: `(Src, N) -> Dst::T`.
 ///
@@ -24,36 +24,44 @@ use crate::{HasAxes, Hot, IContainerFor, Precise, UContainerFor, Warm};
 /// width within an axis category. Per-strategy impls remain table-
 /// driven for concrete-type dispatch; the axis bounds document
 /// design intent and prepare for axis-only dispatch.
-pub const trait UWidenFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
-    UContainerFor<N> + HasAxes
+pub const trait UWidenFrom<Src: BitsContainerFor<N, Unsigned> + HasAxes, const N: u16>:
+    BitsContainerFor<N, Unsigned> + HasAxes
 {
     /// Widen an `Src::T` value into `Self::T`. Infallible by definition.
-    fn u_widen(v: Src::T) -> Self::T;
+    fn u_widen(
+        v: <Src as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
 }
 
 /// Signed container widen bridge.
-pub const trait IWidenFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
-    IContainerFor<N> + HasAxes
+pub const trait IWidenFrom<Src: BitsContainerFor<N, Signed> + HasAxes, const N: u16>:
+    BitsContainerFor<N, Signed> + HasAxes
 {
     /// Widen an `Src::T` value into `Self::T`. Infallible by definition.
-    fn i_widen(v: Src::T) -> Self::T;
+    fn i_widen(
+        v: <Src as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
 }
 
 /// Unsigned container narrow bridge with bounds check against the
 /// logical range `[0, 2^N)`.
-pub const trait UNarrowFrom<Src: UContainerFor<N> + HasAxes, const N: u16>:
-    UContainerFor<N> + HasAxes
+pub const trait UNarrowFrom<Src: BitsContainerFor<N, Unsigned> + HasAxes, const N: u16>:
+    BitsContainerFor<N, Unsigned> + HasAxes
 {
     /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
-    fn u_try_narrow(v: Src::T) -> Outcome<Self::T, ()>;
+    fn u_try_narrow(
+        v: <Src as BitsContainerFor<N, Unsigned>>::T,
+    ) -> Outcome<<Self as BitsContainerFor<N, Unsigned>>::T, ()>;
 }
 
 /// Signed container narrow bridge with logical-range check.
-pub const trait INarrowFrom<Src: IContainerFor<N> + HasAxes, const N: u16>:
-    IContainerFor<N> + HasAxes
+pub const trait INarrowFrom<Src: BitsContainerFor<N, Signed> + HasAxes, const N: u16>:
+    BitsContainerFor<N, Signed> + HasAxes
 {
     /// Try to narrow `v` into `Self::T`. `Outcome::Err(())` when out of range.
-    fn i_try_narrow(v: Src::T) -> Outcome<Self::T, ()>;
+    fn i_try_narrow(
+        v: <Src as BitsContainerFor<N, Signed>>::T,
+    ) -> Outcome<<Self as BitsContainerFor<N, Signed>>::T, ()>;
 }
 
 // Helpers to spell out widen impls. Src and Dst are both container
@@ -66,7 +74,13 @@ macro_rules! impl_u_widen {
         $(
             impl const UWidenFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
-                fn u_widen(v: $src_ty) -> $dst_ty { v as $dst_ty }
+                fn u_widen(
+                    v: <$src_strategy as BitsContainerFor<$bits, Unsigned>>::T,
+                ) -> <$dst_strategy as BitsContainerFor<$bits, Unsigned>>::T {
+                    let v: $src_ty = v;
+                    let r: $dst_ty = v as $dst_ty;
+                    r
+                }
             }
         )+
     };
@@ -77,7 +91,13 @@ macro_rules! impl_i_widen {
         $(
             impl const IWidenFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
-                fn i_widen(v: $src_ty) -> $dst_ty { v as $dst_ty }
+                fn i_widen(
+                    v: <$src_strategy as BitsContainerFor<$bits, Signed>>::T,
+                ) -> <$dst_strategy as BitsContainerFor<$bits, Signed>>::T {
+                    let v: $src_ty = v;
+                    let r: $dst_ty = v as $dst_ty;
+                    r
+                }
             }
         )+
     };
@@ -88,12 +108,17 @@ macro_rules! impl_u_narrow {
         $(
             impl const UNarrowFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
-                fn u_try_narrow(v: $src_ty) -> Outcome<$dst_ty, ()> {
-                    // Logical max for this N is (1 << N) - 1.
-                    // Compute via u128 so N up to 128 don't overflow
-                    // the source type before the comparison.
+                fn u_try_narrow(
+                    v: <$src_strategy as BitsContainerFor<$bits, Unsigned>>::T,
+                ) -> Outcome<<$dst_strategy as BitsContainerFor<$bits, Unsigned>>::T, ()> {
+                    let v: $src_ty = v;
                     let max_u128: u128 = (1u128 << $bits) - 1;
-                    if (v as u128) > max_u128 { Outcome::Err(()) } else { Outcome::Ok(v as $dst_ty) }
+                    if (v as u128) > max_u128 {
+                        Outcome::Err(())
+                    } else {
+                        let r: $dst_ty = v as $dst_ty;
+                        Outcome::Ok(r)
+                    }
                 }
             }
         )+
@@ -105,14 +130,19 @@ macro_rules! impl_i_narrow {
         $(
             impl const INarrowFrom<$src_strategy, $bits> for $dst_strategy {
                 #[inline(always)]
-                fn i_try_narrow(v: $src_ty) -> Outcome<$dst_ty, ()> {
-                    // Signed logical range for N: [-(1 << (N-1)), (1 << (N-1)) - 1].
-                    // Compute via i128 so N up to 127 don't overflow
-                    // the source type during bound computation.
+                fn i_try_narrow(
+                    v: <$src_strategy as BitsContainerFor<$bits, Signed>>::T,
+                ) -> Outcome<<$dst_strategy as BitsContainerFor<$bits, Signed>>::T, ()> {
+                    let v: $src_ty = v;
                     let min_i128: i128 = -(1i128 << ($bits - 1));
                     let max_i128: i128 = (1i128 << ($bits - 1)) - 1;
                     let v_i128: i128 = v as i128;
-                    if v_i128 < min_i128 || v_i128 > max_i128 { Outcome::Err(()) } else { Outcome::Ok(v as $dst_ty) }
+                    if v_i128 < min_i128 || v_i128 > max_i128 {
+                        Outcome::Err(())
+                    } else {
+                        let r: $dst_ty = v as $dst_ty;
+                        Outcome::Ok(r)
+                    }
                 }
             }
         )+

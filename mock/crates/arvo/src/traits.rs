@@ -26,7 +26,7 @@ pub use arvo_numeric_contracts::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
 use arvo_storage::{FBits, IBits, USize, fbits, ibits};
 use arvo_transparent::Transparent;
 use crate::strategy::{
-    Cold, FromU8Ieee, Hot, IContainerFor, Ieee, Precise, Strategy, UContainerFor, Warm,
+    BitsContainerFor, Cold, FromU8Ieee, Hot, Ieee, Precise, Signed, Strategy, Unsigned, Warm,
     ifixed_bits, ufixed_bits,
 };
 use crate::ufixed::UFixed;
@@ -77,7 +77,7 @@ const fn total_cmp_f64(a: f64, b: f64) -> Ordering {
 
 impl<const I: IBits, const F: FBits, S: Strategy> const TotalOrd for UFixed<I, F, S>
 where
-    S: [const] UContainerFor<{ ufixed_bits(I, F) }>,
+    S: [const] BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
     Self: [const] arvo_storage::ConstOrd,
 {
     #[inline(always)]
@@ -88,7 +88,7 @@ where
 
 impl<const I: IBits, const F: FBits, S: Strategy> const TotalOrd for IFixed<I, F, S>
 where
-    S: [const] IContainerFor<{ ifixed_bits(I, F) }>,
+    S: [const] BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
     Self: [const] arvo_storage::ConstOrd,
 {
     #[inline(always)]
@@ -143,7 +143,7 @@ impl const TotalOrd for StrictFloat<f64> {
 // Integer UFixed (F == 0) uses `u*::isqrt`. Fractional UFixed is out
 // of scope for this round. We spell out one impl per `(strategy, I)`
 // pair so each impl has a concrete container type — avoids the
-// const-expr cycle that a blanket `where <S as UContainerFor<...>>::T:
+// const-expr cycle that a blanket `where <S as BitsContainerFor<..., Unsigned>>::T:
 // ...` produces.
 
 macro_rules! impl_sqrt_ufixed_concrete {
@@ -304,7 +304,7 @@ impl const Recip for StrictFloat<f64> {
 
 impl<const I: IBits, const F: FBits, S: Strategy> const Abs for UFixed<I, F, S>
 where
-    S: [const] UContainerFor<{ ufixed_bits(I, F) }>,
+    S: [const] BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
 {
     type Output = Self;
     /// Identity: unsigned values are their own absolute value.

@@ -25,15 +25,11 @@
 //! orphan issue).
 
 use arvo_storage::{Bits, Bool, USize};
-use arvo_strategy::{
-    BitsContainerFor, IContainerFor, MultiContainerHalf, Signed, Signedness, Strategy,
-    UContainerFor, Unsigned,
-};
+use arvo_strategy::{BitsContainerFor, Signed, Signedness, Strategy, Unsigned};
 use arvo_transparent::Transparent;
 
 mod bits_impl;
 mod cross_domain;
-mod multi_container;
 mod widen;
 
 pub use widen::{Widen, Widened};
@@ -599,29 +595,29 @@ impl<T: [const] IBitPrim> const BitsBitPrim<Signed> for T {
 // `<S as UContainerFor<{K}>>::T: BitPrim`). The bridge traits below
 // collapse both requirements into a single predicate per impl block.
 
-/// Sealed bridge: `(S, BITS)` where `S: UContainerFor<BITS>` **and**
+/// Sealed bridge: `(S, BITS)` where `S: BitsContainerFor<BITS, Unsigned>` **and**
 /// the container type is `BitPrim`. Collapses the two predicates into
 /// one to sidestep the const-expr cycle.
-pub const trait UBitContainer<const BITS: u16>: sealed::UBridge<BITS> + [const] UContainerFor<BITS> {
+pub const trait UBitContainer<const BITS: u16>: sealed::UBridge<BITS> + [const] BitsContainerFor<BITS, Unsigned> {
     /// The container primitive for this `(S, BITS)` pair.
     type Prim: [const] BitPrim;
     /// Coerce the strategy-selected container into the bridge's
     /// primitive type. Identity at runtime: same underlying integer
     /// type; the coercion exists only to route `UContainerFor::T`
     /// values into `BitPrim` methods inside generic contexts.
-    fn to_prim(t: <Self as UContainerFor<BITS>>::T) -> Self::Prim;
+    fn to_prim(t: <Self as BitsContainerFor<BITS, Unsigned>>::T) -> Self::Prim;
     /// Reverse of `to_prim`.
-    fn from_prim(p: Self::Prim) -> <Self as UContainerFor<BITS>>::T;
+    fn from_prim(p: Self::Prim) -> <Self as BitsContainerFor<BITS, Unsigned>>::T;
 }
 
 /// Signed counterpart of `UBitContainer`.
-pub const trait IBitContainer<const BITS: u16>: sealed::IBridge<BITS> + [const] IContainerFor<BITS> {
+pub const trait IBitContainer<const BITS: u16>: sealed::IBridge<BITS> + [const] BitsContainerFor<BITS, Signed> {
     /// The container primitive for this `(S, BITS)` pair.
     type Prim: [const] IBitPrim;
     /// See `UBitContainer::to_prim`.
-    fn to_prim(t: <Self as IContainerFor<BITS>>::T) -> Self::Prim;
+    fn to_prim(t: <Self as BitsContainerFor<BITS, Signed>>::T) -> Self::Prim;
     /// Reverse of `to_prim`.
-    fn from_prim(p: Self::Prim) -> <Self as IContainerFor<BITS>>::T;
+    fn from_prim(p: Self::Prim) -> <Self as BitsContainerFor<BITS, Signed>>::T;
 }
 
 // Blanket impl: every strategy that picks a `BitPrim` container at a
@@ -629,33 +625,33 @@ pub const trait IBitContainer<const BITS: u16>: sealed::IBridge<BITS> + [const] 
 // the trait keeps downstream code from implementing the bridge, while
 // the blanket below covers the intended `(S, BITS)` pairs.
 //
-// The blanket uses identity coercion because `<S as UContainerFor<BITS>>::T`
+// The blanket uses identity coercion because `<S as BitsContainerFor<BITS, Unsigned>>::T`
 // is exactly the primitive type when the `: BitPrim` bound holds. The
 // associated `Prim` type can be set to the container type.
 
 impl<S, const BITS: u16> sealed::UBridge<BITS> for S
 where
     S: Strategy,
-    S: UContainerFor<BITS>,
-    <S as UContainerFor<BITS>>::T: BitPrim,
+    S: BitsContainerFor<BITS, Unsigned>,
+    <S as BitsContainerFor<BITS, Unsigned>>::T: BitPrim,
 {
 }
 
 impl<S, const BITS: u16> const UBitContainer<BITS> for S
 where
     S: Strategy,
-    S: [const] UContainerFor<BITS>,
-    <S as UContainerFor<BITS>>::T: [const] BitPrim,
+    S: [const] BitsContainerFor<BITS, Unsigned>,
+    <S as BitsContainerFor<BITS, Unsigned>>::T: [const] BitPrim,
 {
-    type Prim = <S as UContainerFor<BITS>>::T;
+    type Prim = <S as BitsContainerFor<BITS, Unsigned>>::T;
 
     #[inline(always)]
-    fn to_prim(t: <Self as UContainerFor<BITS>>::T) -> Self::Prim {
+    fn to_prim(t: <Self as BitsContainerFor<BITS, Unsigned>>::T) -> Self::Prim {
         t
     }
 
     #[inline(always)]
-    fn from_prim(p: Self::Prim) -> <Self as UContainerFor<BITS>>::T {
+    fn from_prim(p: Self::Prim) -> <Self as BitsContainerFor<BITS, Unsigned>>::T {
         p
     }
 }
@@ -668,26 +664,26 @@ where
 impl<S, const BITS: u16> sealed::IBridge<BITS> for S
 where
     S: Strategy,
-    S: IContainerFor<BITS>,
-    <S as IContainerFor<BITS>>::T: IBitPrim,
+    S: BitsContainerFor<BITS, Signed>,
+    <S as BitsContainerFor<BITS, Signed>>::T: IBitPrim,
 {
 }
 
 impl<S, const BITS: u16> const IBitContainer<BITS> for S
 where
     S: Strategy,
-    S: [const] IContainerFor<BITS>,
-    <S as IContainerFor<BITS>>::T: [const] IBitPrim,
+    S: [const] BitsContainerFor<BITS, Signed>,
+    <S as BitsContainerFor<BITS, Signed>>::T: [const] IBitPrim,
 {
-    type Prim = <S as IContainerFor<BITS>>::T;
+    type Prim = <S as BitsContainerFor<BITS, Signed>>::T;
 
     #[inline(always)]
-    fn to_prim(t: <Self as IContainerFor<BITS>>::T) -> Self::Prim {
+    fn to_prim(t: <Self as BitsContainerFor<BITS, Signed>>::T) -> Self::Prim {
         t
     }
 
     #[inline(always)]
-    fn from_prim(p: Self::Prim) -> <Self as IContainerFor<BITS>>::T {
+    fn from_prim(p: Self::Prim) -> <Self as BitsContainerFor<BITS, Signed>>::T {
         p
     }
 }

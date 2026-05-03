@@ -21,10 +21,7 @@ mod layout_assertions;
 mod meta_bits;
 mod platform;
 
-pub use arvo_strategy::{
-    AlignedWideBits16, Bounded, Identity, MultiContainer, MultiContainerHalf, SignedIdentity,
-    WideBits,
-};
+pub use arvo_strategy::{A1, A16, A32, A64, Align, Bounded, Identity, SignedIdentity, WideBits};
 pub use bits::Bits;
 pub use bridges::{
     ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
