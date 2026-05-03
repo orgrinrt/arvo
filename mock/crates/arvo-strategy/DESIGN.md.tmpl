@@ -204,8 +204,8 @@ round close.
 
 Coverage: every primitive-wrapper substrate type (`USize`, `Cap`,
 `Bool`, `Bits<N, S, Sign>`, `UFixed<I, F, S>`, `IFixed<I, F, S>`,
-`FastFloat<F>`, `StrictFloat<F>`, `Mask64`, `Mask256`, `NodeId`,
-`MetaCarrier`, `IBits`, `FBits`, `Width`) gains `impl const ConstEq`
+`FastFloat<F>`, `StrictFloat<F>`, `Mask<W>`, `BitMatrix<W, const N: Cap>`,
+`NodeId`, `MetaCarrier`, `IBits`, `FBits`, `Width`) gains `impl const ConstEq`
 and `impl const ConstDefault`. `ConstOrd` lands for the totally-ordered
 subset (skip `Mask` lattice; skip floats due to NaN).
 
