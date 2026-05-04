@@ -750,6 +750,87 @@ The const-trait surface composes through aliases: `Uint<N, S>`,
 `Int<N, S>`, `Uint8`, `Uint16`, etc. inherit the const ops via
 their underlying UFixed / IFixed shapes. No fresh impls per alias.
 
+### Const-callable trait family (rounds 202605021800, 202605041128)
+
+UFixed and IFixed impl a canonical const-trait family via the
+predicate-bundling pattern: each trait's blanket impl bounds only
+on the inner `Bits<W, S, Sign>` trait projection (not on the
+container projection separately), sidestepping the
+`generic_const_exprs` cycle that two-predicate forms trip.
+
+Trait family on UFixed and IFixed:
+
+- `Identity` (`ZERO`, `ONE`). Round 202605021800. Forwards through
+  inner `Bits` Identity.
+- `Bounded` (`MIN`, `MAX`). Round 202605041128 (#325). Forwards
+  through inner `Bits` Bounded; MIN/MAX project to the container
+  bounds (the substrate semantics inherited from
+  `arvo-storage/src/bits.rs:101`).
+- `ConstPartialEq` (value equality at const time). Round
+  202605021800.
+- `ConstEq` (reflexive marker over ConstPartialEq). Round
+  202605021800.
+- `ConstBitEq` (bit-pattern equality, structurally reflexive).
+  Round 202605021800.
+- `ConstOrd` (total ordering at const time). Round 202605021800.
+- `ConstDefault` (typed default; `default()` returns
+  `Identity::ZERO`). Round 202605021800.
+
+The predicate-bundling shape, exemplified by Bounded:
+
+```rust
+impl<const I: IBits, const F: FBits, S: Strategy> const Bounded for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] Bounded,
+{
+    const MIN: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Bounded>::MIN);
+    const MAX: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Bounded>::MAX);
+}
+```
+
+The two predicates are intentional. The first
+(`BitsContainerFor`) is the container projection requirement at
+the UFixed layer; the second (`[const] Bounded`) bounds the inner
+Bits projection's const-trait surface. Without the second, the
+trait solver cannot prove the inner blanket is const-callable, and
+the impl's body fails. With both, the projection composes cleanly
+through repr(transparent) wrapping. See
+`mock/crates/arvo/src/ufixed.rs` for Identity and Bounded blankets
+side by side.
+
+IFixed mirrors the shape with `Signed` sign axis and
+`ifixed_bits(I, F) = 1 + I + F` logical width:
+
+```rust
+impl<const I: IBits, const F: FBits, S: Strategy> const Bounded for IFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Bounded,
+{
+    const MIN: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Bounded>::MIN);
+    const MAX: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Bounded>::MAX);
+}
+```
+
+What is intentionally omitted:
+
+- IFixed gains `SignedIdentity::MINUS_ONE` separately (signed-only).
+  UFixed has no `MINUS_ONE` because unsigned has no negative values.
+- Bounded MIN / MAX project to the CONTAINER bounds, not the
+  LOGICAL bit-width bounds. For example `<U16Warm as Bounded>::MAX
+  = u32::MAX` because the Warm 16-bit container is u32. A
+  `LogicalBounds` trait that returns the logical-width bounds is
+  a separate substrate decision; tracked in BACKLOG.
+- Float-side const surface is documented separately under
+  "### Float-side const surface". `Bounded` on floats is
+  intentionally omitted there with its own rationale.
+
+The const-trait family composes through the `Uint<N, S>` /
+`Int<N, S>` aliases plus the per-width aliases (Uint8, Uint16,
+etc.). Aliases inherit the family through the underlying UFixed
+and IFixed types; no fresh impls per alias.
+
 ## Strategy markers
 
 The strategy is a type parameter that controls container width,
