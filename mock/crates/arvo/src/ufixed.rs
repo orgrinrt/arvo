@@ -20,8 +20,8 @@ use crate::strategy::{
 };
 use arvo_storage::{Bits, Bool, FBits, IBits, USize};
 use crate::strategy::{
-    BitsContainerFor, Hot, Identity, Precise, Strategy, UArith, UNarrowFrom, UWidenFrom, Unsigned,
-    Warm, is_fractional, ufixed_bits,
+    BitsContainerFor, Bounded, Hot, Identity, Precise, Strategy, UArith, UNarrowFrom, UWidenFrom,
+    Unsigned, Warm, is_fractional, ufixed_bits,
 };
 
 /// Unsigned fixed-point value.
@@ -64,6 +64,18 @@ where
 {
     const ZERO: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ZERO);
     const ONE: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ONE);
+}
+
+// Generic Bounded blanket on UFixed wires through the inner Bits's
+// Bounded blanket. Same single-predicate cycle-avoidance pattern as
+// Identity. Closes Round 6 deviation 3 / NIT 5 (#325).
+impl<const I: IBits, const F: FBits, S: Strategy> const Bounded for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] Bounded,
+{
+    const MIN: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Bounded>::MIN);
+    const MAX: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Bounded>::MAX);
 }
 
 // ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault
