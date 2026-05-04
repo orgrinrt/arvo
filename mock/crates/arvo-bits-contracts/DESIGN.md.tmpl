@@ -141,6 +141,10 @@ pub const trait BitPrim: Copy + ConstParamTy_ + ... {
     // hash / bitfield call sites that build a low-N-bits mask.
     // Default body composes through Identity::ZERO, Bounded::MAX,
     // Identity::ONE, and the const-stable shift bridge.
+    // Round 202605040602: now consumed by the `bitfield!` macro
+    // emission in the arvo facade for slot-mask construction
+    // (replaces the hardcoded `(1u64 << N) - 1` pattern with
+    // strategy-aware routing).
     fn mask_low(n: USize) -> Self;
 }
 
@@ -257,10 +261,14 @@ pub type Narrowed<const N: Width, T> = T;
 ```
 
 The unified mask-and-cast bridge for cross-primitive narrowing.
-`narrow_to::<N>` composes `Mask<W>::mask_for_width(N)` (from
-`arvo-mask-contracts`) with `BitLogic::and` then the `as` operator
-to cast to the target primitive type, sound under the mask
-precondition.
+`narrow_to::<N>` composes `BitPrim::mask_low(N)` (from this crate)
+with `BitLogic::and` then the `as` operator to cast to the target
+primitive type, sound under the mask precondition. Routing through
+`BitPrim` keeps the narrow path inside the bare-primitive layer
+where the cast actually happens; the prior reference to
+`Mask<W>::mask_for_width(N)` from `arvo-mask-contracts` predated the
+trait reshape in round 202605040602 and is no longer the substrate
+primitive that drives narrowing.
 
 `narrow_to_unmasked::<N>` skips the mask op for the hot case where
 the high bits are already zero (chained narrow, bitfield extraction

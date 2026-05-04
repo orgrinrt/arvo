@@ -27,4 +27,4 @@ pub use bridges::{
     ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
 };
 pub use meta_bits::{FBits, IBits, MetaCarrier, Width, fbits, ibits, width};
-pub use platform::{AsBool, Bool, Cap, USize};
+pub use platform::{AsBool, Bool, Cap, NUSize, USize};

@@ -19,6 +19,7 @@
 use core::cmp::Ordering;
 use core::convert::Infallible;
 use core::marker::ConstParamTy;
+use core::num::NonZeroUsize;
 use core::ops::{
     Add, BitAnd, BitOr, BitXor, ControlFlow, Deref, Div, FromResidual, Mul, Not, Rem, Shl, Shr,
     Sub, Try,
@@ -26,6 +27,7 @@ use core::ops::{
 
 use arvo_strategy::{Bounded, Identity};
 use arvo_transparent::Transparent;
+use notko::{ConstFromResidual, ConstTry, Maybe, Slot};
 
 use crate::bridges::{
     ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
@@ -369,4 +371,129 @@ impl const ConstDefault for Bool {
     fn const_default() -> Self {
         Bool(<bool as ConstDefault>::const_default())
     }
+}
+
+// ---- Bool ConstTry / ConstFromResidual (Round 5, #315) -------------
+//
+// Mirrors the existing `Try` / `FromResidual` impls above, lifted to
+// notko's const-callable bridges. `?` desugars to core::ops::Try and
+// stays unchanged; const-context call sites that need const-callable
+// fallibility (mockspace lints, narrow_from helpers, future const
+// validators) reach the same routing through the const family.
+
+impl const ConstTry for Bool {
+    type Output = bool;
+    type Residual = Infallible;
+
+    #[inline(always)]
+    fn from_output(output: bool) -> Self {
+        Bool(output)
+    }
+
+    #[inline(always)]
+    fn branch(self) -> ControlFlow<Infallible, bool> {
+        ControlFlow::Continue(<Self as Transparent>::raw(self))
+    }
+}
+
+impl const ConstFromResidual<Infallible> for Bool {
+    #[inline(always)]
+    fn from_residual(residual: Infallible) -> Self {
+        match residual {}
+    }
+}
+
+// ---- NUSize: niche-filled USize alternative (Round 5, #315) --------
+//
+// `NUSize` wraps `Slot<NonZeroUsize>` with a logical +1 / -1 shift so
+// consumers can use it as a 0-indexed `USize` without remembering the
+// shift. The transparent layout and Slot's niche-filling mean
+// `Array<NUSize, N>` packs to exactly `N * size_of::<usize>()` bytes,
+// the same as `Array<USize, N>`. The "absent" marker is `NUSize::NONE`,
+// distinct from any logical value (including `USize(0)`).
+//
+// Domain placement: `arvo-comb::binpack` consumes this for the
+// "did this item fit any bin" return shape, replacing the prior
+// overloaded `USize(0)` sentinel. See round-5 src CL Topic 2 for
+// rationale.
+
+/// Niche-filled optional `USize`.
+///
+/// `Slot<NonZeroUsize>` with a +1 shift on `some` and a -1 shift on
+/// `into_maybe`, so consumers see logical 0..usize::MAX-1 with
+/// `NUSize::NONE` distinct from any logical value. Layout-identical
+/// to `usize` (no `Array<NUSize, N>` overhead vs `Array<USize, N>`).
+///
+/// Construction can fail when the logical value is `usize::MAX` (the
+/// +1 would overflow); construction returns `NUSize::NONE` in that
+/// case. Practical workloads (item counts, bin indices, capacity-bound
+/// indices) never hit the cap because `Cap<N>` is bounded well below
+/// `usize::MAX`.
+#[derive(Copy, Clone, Eq, PartialEq, Debug)]
+#[repr(transparent)]
+pub struct NUSize(Slot<NonZeroUsize>);
+
+impl NUSize {
+    /// The absent value. Equivalent to `Slot::NONE`.
+    pub const NONE: Self = Self(Slot::NONE);
+
+    /// Construct from a logical 0-indexed `USize`. Internally shifts
+    /// by +1 so logical 0 maps to `NonZeroUsize::new(1)`. Returns
+    /// `NUSize::NONE` if the logical value is `usize::MAX` (the +1
+    /// shift would overflow).
+    pub const fn some(logical: USize) -> Self {
+        match <USize as Transparent>::raw(logical).checked_add(1) {
+            Some(shifted) => match NonZeroUsize::new(shifted) {
+                Some(nz) => Self(Slot::some(nz)),
+                None => Self::NONE,
+            },
+            None => Self::NONE,
+        }
+    }
+
+    /// Extract as a logical `Maybe<USize>`. Inner -1 shift maps
+    /// `NonZeroUsize::new(1)` back to logical 0. Consuming form
+    /// because the shift produces a fresh value (no in-memory
+    /// `Maybe<USize>` exists to borrow into); follows notko's
+    /// `Slot::into_maybe` convention.
+    pub const fn into_maybe(self) -> Maybe<USize> {
+        match self.0.into_maybe() {
+            Maybe::Is(nz) => Maybe::Is(USize(nz.get() - 1)),
+            Maybe::Isnt => Maybe::Isnt,
+        }
+    }
+
+    /// Logical value or the supplied default when absent.
+    pub const fn unwrap_or(self, default: USize) -> USize {
+        match self.into_maybe() {
+            Maybe::Is(v) => v,
+            Maybe::Isnt => default,
+        }
+    }
+
+    /// `Bool::TRUE` when carrying a logical value.
+    pub const fn is_some(&self) -> Bool {
+        Bool(self.0.is_some())
+    }
+
+    /// `Bool::TRUE` when absent.
+    pub const fn is_none(&self) -> Bool {
+        Bool(self.0.is_none())
+    }
+}
+
+impl Default for NUSize {
+    #[inline(always)]
+    fn default() -> Self {
+        Self::NONE
+    }
+}
+
+// SAFETY: `repr(transparent)` over `Slot<NonZeroUsize>`, which is
+// `repr(transparent)` over `Maybe<NonZeroUsize>`, which niche-fills
+// to a single `usize`. Layout-identical to `usize` by transitive
+// transparent guarantee plus notko's per-instantiation
+// `_LAYOUT_ASSERT` covering `NonZeroUsize`.
+unsafe impl const Transparent for NUSize {
+    type Inner = Slot<NonZeroUsize>;
 }

@@ -22,6 +22,17 @@ call-site spelling takes a Width const value rather than a u16
 literal. Document the Width construction pattern (`Width::from_u16`)
 in cookbook once a real consumer surfaces.
 
+## Concrete MaskOps W specialisations
+
+Round 202605040602 ships only the blanket `impl<W: [const] BitPrim>
+const MaskOps<...> for Mask<W>`. Concrete per-W overrides (e.g.,
+Mask\<QWord\<Hot\>\>, Mask\<Bits\<256, Hot, Unsigned\>\>) land
+behind `min_specialization` when bench evidence shows a concrete W
+beats the blanket. Likely candidates: SIMD shortcuts on QWord-wide
+or 256-bit-wide masks where a hand-written intrinsic chain
+outperforms the generic body. Tracked alongside #320 SIMD platform
+expansion.
+
 ## BitMatrix iter contract in arvo-bits-contracts
 
 A BitMatrix-shaped contract in arvo-bits-contracts (paralleling

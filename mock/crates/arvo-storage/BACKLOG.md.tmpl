@@ -50,6 +50,16 @@ deferred to #320 with bench-driven justification per audit H1.
 - USize and Cap checked-arithmetic helpers (checked_add returning Maybe of USize). Round 202605021200 documented overflow as matching primitive usize (panic on debug-asserts, wrap on release). A Maybe-returning shim ships when a consumer surfaces overflow-as-error semantic.
 - Workspace lint rule forbidding .0 field-access on arvo primitives outside the implementing crate. The const-trait surface from round 202605021200 is the typed access path; the lint enforces it once the round 202605021400 sweep validates that no false-positive call sites remain. Lives in mockspace-hilavitkutin-stack-lints.
 
+## NU8 / NU16 / NU32 / NU64 family
+
+Niche-packed Maybe-of-primitive companions to NUSize. Same shape over
+the corresponding NonZero primitive (NonZeroU8 / NonZeroU16 /
+NonZeroU32 / NonZeroU64). The N-prefix naming convention was
+established with NUSize in round 202605040602; per-width variants
+ship when a consumer demands them. Plausible early demand: NU32 for
+hash slots; NU8 for byte-shaped enums; NU16 for short content
+identifiers. No round opens until a concrete consumer surfaces.
+
 ## Removed entries
 
 (none)
