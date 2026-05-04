@@ -488,6 +488,33 @@ Primary consumer: arvo-hash's `ContentHash` alias (`Bits<28, Hot>`,
 u32-backed, 4 bytes). hilavitkutin-str's `Str` handle uses `Bitfield`
 for its 32-bit packed identity layout.
 
+#### Const-callable equality and default (round 202605040602)
+
+The `bitfield!` macro emits `impl const ConstEq` and
+`impl const ConstDefault` per generated bitfield type:
+
+- `ConstEq::const_eq` body delegates to bit-pattern equality on the
+  inner storage (`self.to_bits() == other.to_bits()` routed through
+  the inner type's `ConstEq`).
+- `ConstDefault::const_default` returns the all-zeros bit pattern
+  (`Self::from_bits(<Bits<N, S> as Identity>::ZERO)`).
+
+The const surface is additive: the existing manual `PartialEq` /
+`Hash` / `Debug` emissions stay non-const for std-trait coverage.
+Consumer code that needs const equality reaches for `ConstEq::const_eq`
+explicitly; non-const call sites continue to use `==`.
+
+#### Slot mask routing through `BitPrim::mask_low` (round 202605040602)
+
+The macro emission constructs per-sub-range slot masks via
+`<S as BitPrim>::mask_low(USize::from(N))` rather than the prior
+hardcoded `(1u64 << N) - 1` pattern. The substrate-aware routing
+picks the strategy-appropriate path: `Hot` uses a single shift on a
+native primitive; `Warm` / `Precise` / `Cold` may fold across multi-
+word containers per `BitPrim::mask_low`'s impl. The macro stays a
+declarative `macro_rules!`; the change is the substituted call body
+inside the generated impl, not the macro shape.
+
 ## Const-fn ergonomic helpers
 
 ```rust

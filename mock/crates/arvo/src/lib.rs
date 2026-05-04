@@ -44,8 +44,9 @@ pub use arvo_numeric_contracts::{
     IsNonNegative, IsNonZero, IsPositive, IsZero, IsZeroOrPositive, Predicate,
 };
 pub use arvo_storage::{
-    AsBool, Bits, Bool, Cap, FBits, IBits, USize, Width, fbits, ibits, width,
+    AsBool, Bits, Bool, Cap, FBits, IBits, NUSize, USize, Width, fbits, ibits, width,
 };
+pub use notko::{Just, Maybe, Outcome};
 pub use float::{FastFloat, Float, StrictFloat};
 pub use ifixed::IFixed;
 pub use markers::{BitPresentation, BoolLike, FloatLike, FractionLike, IntegerLike};

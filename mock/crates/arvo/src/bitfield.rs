@@ -180,6 +180,23 @@ macro_rules! __bitfield_impl {
             }
         }
 
+        // Round 5 (#315): const-callable equality and default routed
+        // through the inner `Bits<N, S>`. Parallel to the std impls
+        // above; does not replace them.
+        impl const $crate::ConstPartialEq for $name {
+            fn const_eq(&self, other: &Self) -> $crate::Bool {
+                <$crate::Bits<$n, $strategy> as $crate::ConstPartialEq>::const_eq(&self.0, &other.0)
+            }
+        }
+
+        impl const $crate::ConstEq for $name {}
+
+        impl const $crate::ConstDefault for $name {
+            fn const_default() -> Self {
+                Self(<$crate::Bits<$n, $strategy> as $crate::Identity>::ZERO)
+            }
+        }
+
         impl $name {
             const _BOUNDS: () = {
                 // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: compile-time bounds checks on macro input; the assertions themselves are arithmetic on the declared literals; tracked: #127
@@ -215,26 +232,27 @@ macro_rules! __bitfield_impl {
             $(
                 $(#[$field_attr])*
                 pub const ${concat($field, _MASK)}: $crate::Bits<$n, $strategy> = {
-                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: pre-shifted mask at parent width, computed from macro-expanded sub-range literals; container truncation lives at the bitfield boundary per D-7; tracked: #256
-                    let mask: u64 =
-                        if $field_bits == 64 { u64::MAX }
-                        else { (1u64 << $field_bits) - 1 };
-                    let parent_mask: u64 =
-                        if $n == 64 { u64::MAX }
-                        else { (1u64 << $n) - 1 };
-                    let shifted = (mask << $lo) & parent_mask;
-                    $crate::Bits::<$n, $strategy>::from_raw(shifted as $crate::__bitfield_container_ty!($n))
+                    // Round 5 (#315): mask construction routed through
+                    // `BitPrim::mask_low` on the dispatched container.
+                    // The saturating-at-WIDTH semantic of `mask_low`
+                    // absorbs the prior `if width == container { MAX }`
+                    // branch.
+                    let field_mask = <$crate::__bitfield_container_ty!($n) as $crate::BitPrim>::mask_low($crate::USize($field_bits as usize));
+                    let parent_mask = <$crate::__bitfield_container_ty!($n) as $crate::BitPrim>::mask_low($crate::USize($n as usize));
+                    let shifted = (field_mask << $lo) & parent_mask;
+                    $crate::Bits::<$n, $strategy>::from_raw(shifted)
                 };
 
                 $(#[$field_attr])*
                 pub const fn $field(self) -> $crate::Bits<$field_bits, $strategy> {
-                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-field shift/mask in u64; final cast narrows to the dispatched container under the mask precondition per D-7; tracked: #256
+                    // Round 5 (#315): extract via container-typed shift
+                    // and `BitPrim::mask_low`. The narrow cast at the
+                    // boundary stays per D-7 (field container may be
+                    // narrower than parent container).
                     let raw_typed: $crate::__bitfield_container_ty!($n) = self.0.to_raw();
-                    let raw: u64 = raw_typed as u64;
-                    let mask: u64 =
-                        if $field_bits == 64 { u64::MAX }
-                        else { (1u64 << $field_bits) - 1 };
-                    let shifted = (raw >> $lo) & mask;
+                    let mask = <$crate::__bitfield_container_ty!($n) as $crate::BitPrim>::mask_low($crate::USize($field_bits as usize));
+                    let shifted = (raw_typed >> $lo) & mask;
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: parent-to-field container narrowing at the bitfield boundary; mask precondition enforces zero high bits per D-7; tracked: #256
                     $crate::Bits::<$field_bits, $strategy>::from_raw(shifted as $crate::__bitfield_container_ty!($field_bits))
                 }
 
@@ -243,23 +261,21 @@ macro_rules! __bitfield_impl {
                     self,
                     value: $crate::Bits<$field_bits, $strategy>,
                 ) -> Self {
-                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: per-field shift/mask in u64; final cast narrows to the parent container under the mask precondition per D-7; tracked: #256
+                    // Round 5 (#315): clear-and-set via container-typed
+                    // operations. Field value widens through `as` cast
+                    // (sound: field container is no wider than parent).
                     let parent_typed: $crate::__bitfield_container_ty!($n) = self.0.to_raw();
                     let value_typed: $crate::__bitfield_container_ty!($field_bits) = value.to_raw();
-                    let parent_raw: u64 = parent_typed as u64;
-                    let value_raw: u64 = value_typed as u64;
-                    let field_mask: u64 =
-                        if $field_bits == 64 { u64::MAX }
-                        else { (1u64 << $field_bits) - 1 };
-                    let parent_mask: u64 =
-                        if $n == 64 { u64::MAX }
-                        else { (1u64 << $n) - 1 };
-                    let in_place_mask: u64 = field_mask << $lo;
-                    let cleared = parent_raw & !in_place_mask;
-                    let masked_value = value_raw & field_mask;
+                    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: field-to-parent container widening for shift-and-or in parent width; lossless by D-7's $field_bits + $lo <= $n invariant; tracked: #256
+                    let value_widened: $crate::__bitfield_container_ty!($n) = value_typed as $crate::__bitfield_container_ty!($n);
+                    let field_mask = <$crate::__bitfield_container_ty!($n) as $crate::BitPrim>::mask_low($crate::USize($field_bits as usize));
+                    let parent_mask = <$crate::__bitfield_container_ty!($n) as $crate::BitPrim>::mask_low($crate::USize($n as usize));
+                    let in_place_mask = field_mask << $lo;
+                    let cleared = parent_typed & !in_place_mask;
+                    let masked_value = value_widened & field_mask;
                     let shifted_value = masked_value << $lo;
                     let combined = (cleared | shifted_value) & parent_mask;
-                    Self($crate::Bits::<$n, $strategy>::from_raw(combined as $crate::__bitfield_container_ty!($n)))
+                    Self($crate::Bits::<$n, $strategy>::from_raw(combined))
                 }
             )*
         }

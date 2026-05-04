@@ -519,10 +519,10 @@ pub type Narrowed<const N: u16, T> = T;
 ///
 /// `Self` is a wider raw value (a bare primitive or a `Bits<M, S>`
 /// with `M > N`). `T` is the target container type. The default
-/// body composes `Mask<W>::mask_for_width(N)` from
-/// `arvo-mask-contracts` with `BitLogic::and` from this crate, then
-/// the `as` operator (sound under the mask precondition) to cast to
-/// the target primitive type.
+/// body composes `<W as BitPrim>::mask_low(N)` (or `IBitPrim` for
+/// signed) with `BitLogic::and` from this crate, then the `as`
+/// operator (sound under the mask precondition) to cast to the
+/// target primitive type.
 ///
 /// Per topic Q-C, the trait declaration lives here (post-round-
 /// 202604280034 merge) and the concrete impls live in `arvo-bitmask`

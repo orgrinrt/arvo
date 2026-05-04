@@ -44,7 +44,7 @@ license = "MPL-2.0"
 
 [workspace.dependencies]
 mockspace = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
-notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false }
+notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false, features = ["const"] }
 arvo-transparent = { path = "crates/arvo-transparent" }
 arvo-strategy = { path = "crates/arvo-strategy" }
 arvo-storage = { path = "crates/arvo-storage" }

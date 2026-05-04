@@ -41,6 +41,7 @@ dependencies = [
  "arvo",
  "arvo-bits",
  "arvo-bits-contracts",
+ "arvo-mask-contracts",
  "arvo-tensor",
  "mockspace",
 ]
@@ -319,7 +320,7 @@ dependencies = [
 [[package]]
 name = "notko"
 version = "0.1.0"
-source = "git+ssh://git@github.com/orgrinrt/notko.git?branch=dev#d76b04a4aa0cd2c2ab0bb21ff80834d1e4290c67"
+source = "git+ssh://git@github.com/orgrinrt/notko.git?branch=dev#adc0e306150902723cca222a006a11703f349b5c"
 
 [[package]]
 name = "proc-macro2"

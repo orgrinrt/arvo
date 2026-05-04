@@ -81,11 +81,13 @@ gives a 32-element bitmask backed by `u32`. The chassis works for
 any W that the trait bounds accept.
 
 `arvo-bitmask::Mask<W>` (the chassis struct) and
-`arvo-mask-contracts::MaskOps<const W: Width>` (the abstract
-operation contract) are both shipped. The trait surface lets
-generic-over-mask consumer code bind to the contract without naming
-the storage shape. Implementations are documented under
-`Const-trait surface` below.
+`arvo-mask-contracts::MaskOps` (the abstract operation contract)
+are both shipped. The trait surface lets generic-over-mask consumer
+code bind to the contract without naming the storage shape.
+Round 202605040602 dropped the prior `const W: Width` parameter on
+`MaskOps`. Width information lives on the implementor's underlying
+word type. The trait is now uniform across mask widths.
+Implementations are documented under `Const-trait surface` below.
 
 ## Set operations
 
@@ -163,18 +165,38 @@ Round 202605031748 routed `Mask<W>::empty()` and
 defaults via `W::default()` retire; the const-trait route is
 canonical.
 
-`arvo-mask-contracts::MaskOps<const W: Width>` impls land at
-concrete W:
+`arvo-mask-contracts::MaskOps` ships in round 202605040602 as a
+single blanket impl over the generic chassis:
 
-- `impl const MaskOps<{ Width::from_u16(64) }> for Mask<Bits<64,
-  Hot, Unsigned>>`.
-- `impl const MaskOps<{ Width::from_u16(256) }> for Mask<Bits<256,
-  Hot, Unsigned>>`.
+```rust
+impl<W> const MaskOps for Mask<W>
+where
+    W: Copy + Default
+        + [const] BitAccess
+        + [const] BitLogic
+        + [const] BitSequence
+        + [const] Bounded
+        + [const] Identity,
+{
+    // Bodies delegate to the inherent surface on Mask<W>.
+}
+```
 
-Each method body delegates to the inherent surface above (which is
-already const). `MaskOps::mask_for_width(n: USize) -> Self` is the
-truncation primitive consumed by `Narrow<T>` impls; body composes
-through `BitPrim::mask_low(n)` from arvo-bits-contracts.
+One blanket impl covers every concrete `Mask<W>` instantiation. No
+per-W concrete impls (`Mask<Bits<64, ...>>`, `Mask<Bits<256, ...>>`,
+etc.) ship with this round. Per `arvo-always-optimal-internals.md`'s
+naive-baseline-first principle, the blanket is the substrate's
+correct-by-construction baseline; concrete W specialisations land
+later only when bench evidence shows a win (e.g., a SIMD shortcut
+that the generic body cannot express). `min_specialization` stays
+unused this round and enables when a future concrete override is
+introduced. See `BACKLOG.md.tmpl` for the gating.
+
+Truncation under `Narrow<T>` composes through
+`BitPrim::mask_low(n)` from arvo-bits-contracts at the bare-primitive
+layer. Round 202605040602 dropped the prior
+`MaskOps::mask_for_width(n: USize) -> Self` method (zero callers at
+the trait surface; consumers already routed through `BitPrim`).
 
 `BitMatrix<W, const N: Cap>` similarly carries const constructors
 and const inherent methods where the underlying op chain supports

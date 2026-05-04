@@ -18,9 +18,21 @@ rounds within PR #42; the authoritative tracking lives in
 - ConstFrom / ConstTryFrom — SHIPPED in round 202605031548 (#314)
 - ConstDeref / ConstAsRef — SHIPPED in round 202605031548 (#314)
 - ConstHash<N, S, Sign> + NarrowFromU64<N, S, Sign> — SHIPPED in round 202605031548 (#314); replaces the Round 5 deferred ConstHash entry
-- ConstTry / ConstControlFlow — Round 5 / #315 (deferred)
+- ConstTry / ConstControlFlow: round 202605040602 / #315 (notko-side trait declaration; arvo-storage-side impl on Bool)
 
 Consumers needing const-callable Deref / From / TryFrom on substrate types reach for the bridge name shipping in this round. Const-callable Try lands in Round 5; the stdlib `?` operator is still the surface for boundary use.
+
+## NBits<N>: niche-filled Bits variant
+
+Maybe of NBits niche-optimises to size_of of Bits, giving "optional
+N-bit value without discriminant overhead." Use cases include
+optional bitfield slots, hash slots, packed enum fields. Tracked as
+task #323; gated behind viola TS ecosystem verified (#197) plus
+substrate-readiness gate (#231) so it stays in the future-tasks pool
+until the gate clears. Open design questions for the future round:
+where the niche lives (all-zeros default; configurable via marker?),
+interaction with multi-container backing on Bits N greater than 128,
+and the BitsContainerFor projection shape.
 
 ## Round 202604271346 forward-looking entries
 
@@ -243,18 +255,17 @@ the domain needs.
 ## MaskOps trait impls (SHIPPED in round 202605031748)
 
 The `arvo-mask-contracts::Mask<const W: u8>` const trait was declared
-during round 202604271346 and renamed to `MaskOps<const W: Width>` in
-round 202605031748 (#313) to disambiguate from the `arvo-bitmask::Mask<W>`
-chassis struct. The same round shipped the const-trait impls:
-
-- `impl const MaskOps<{ Width::from_u16(64) }> for Mask<Bits<64, Hot, Unsigned>>`.
-- `impl const MaskOps<{ Width::from_u16(256) }> for Mask<Bits<256, Hot, Unsigned>>`.
-
-The chassis const-routes `empty()` through `Identity::ZERO`, `full()`
-through `Bounded::MAX`. `mask_for_width(n)` composes through
-`BitPrim::mask_low(n)` (the per-primitive helper added in the same
-round). Generic-over-MaskOps consumer code now binds to the trait and
-reaches all eleven methods in const context.
+during round 202604271346 and renamed to MaskOps in round 202605031748
+(#313) to disambiguate from the arvo-bitmask Mask chassis struct.
+Round 202605040602 (#315) reshaped MaskOps to drop the const-Width
+parameter (the parameter was dead in every method body) and the
+mask_for_width method (zero callers; the substrate's BitPrim mask_low
+covers Narrow's actual route). The reshape replaced the prior per-W
+concrete impls with a single blanket impl on Mask&lt;W&gt; for any W
+satisfying the underlying bit traits. The chassis const-routes empty
+through Identity::ZERO and full through Bounded::MAX. Generic-over
+MaskOps consumer code binds to the trait and reaches all ten methods
+in const context.
 
 ## Cold widen / narrow impls (deferred)
 

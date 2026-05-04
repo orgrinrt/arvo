@@ -16,7 +16,9 @@
 use core::ops::{BitAnd, BitOr, BitXor, Not};
 
 use arvo::{Bool, USize};
+use arvo::strategy::{Bounded, Identity};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
+use arvo_mask_contracts::MaskOps;
 
 use crate::mask::Mask;
 
@@ -187,6 +189,81 @@ where
     type Output = Self;
     #[inline(always)]
     fn not(self) -> Self {
+        Self::from_word(<W as BitLogic>::bitnot(self.word))
+    }
+}
+
+// --- MaskOps blanket impl (round 202605040602, #315) ----------------
+//
+// The chassis already routes set / clear / test / count / union / etc
+// through the underlying word's bit traits. The blanket lifts those
+// inherent routings into the `MaskOps` const-trait surface, so
+// downstream code that bounds on `[const] MaskOps` reaches the same
+// codegen path that direct chassis calls produce. The bound mirrors
+// the chassis bound on `Mask<W>` plus `[const] BitAccess + [const]
+// BitLogic + [const] BitSequence + [const] Bounded + [const]
+// Identity` for const callability through trait projection.
+//
+// `empty` and `full` route through `Identity::ZERO` and `Bounded::MAX`
+// (matching the audit Finding-11 fix in the chassis inherent block).
+
+impl<W> const MaskOps for Mask<W>
+where
+    W: Copy + Default
+        + [const] BitAccess
+        + [const] BitLogic
+        + [const] BitSequence
+        + [const] Bounded
+        + [const] Identity,
+{
+    #[inline(always)]
+    fn empty() -> Self {
+        <Self as Identity>::ZERO
+    }
+
+    #[inline(always)]
+    fn full() -> Self {
+        <Self as Bounded>::MAX
+    }
+
+    #[inline(always)]
+    fn set(self, idx: USize) -> Self {
+        Self::from_word(<W as BitAccess>::with_bit_set(self.word, idx))
+    }
+
+    #[inline(always)]
+    fn clear(self, idx: USize) -> Self {
+        Self::from_word(<W as BitAccess>::with_bit_cleared(self.word, idx))
+    }
+
+    #[inline(always)]
+    fn test(self, idx: USize) -> Bool {
+        <W as BitAccess>::bit(self.word, idx)
+    }
+
+    #[inline(always)]
+    fn count(self) -> USize {
+        <W as BitSequence>::count_ones(self.word)
+    }
+
+    #[inline(always)]
+    fn union(self, other: Self) -> Self {
+        Self::from_word(<W as BitLogic>::bitor(self.word, other.word))
+    }
+
+    #[inline(always)]
+    fn intersection(self, other: Self) -> Self {
+        Self::from_word(<W as BitLogic>::bitand(self.word, other.word))
+    }
+
+    #[inline(always)]
+    fn difference(self, other: Self) -> Self {
+        let not_other = <W as BitLogic>::bitnot(other.word);
+        Self::from_word(<W as BitLogic>::bitand(self.word, not_other))
+    }
+
+    #[inline(always)]
+    fn complement(self) -> Self {
         Self::from_word(<W as BitLogic>::bitnot(self.word))
     }
 }

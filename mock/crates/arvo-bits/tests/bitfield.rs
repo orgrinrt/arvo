@@ -4,6 +4,7 @@
 //! `Bits::from_raw(<container>)` and `Bits::to_raw()` directly.
 
 #![feature(adt_const_params)]
+#![feature(const_trait_impl)]
 #![feature(generic_const_exprs)]
 #![feature(macro_metavar_expr_concat)]
 #![allow(incomplete_features)]
