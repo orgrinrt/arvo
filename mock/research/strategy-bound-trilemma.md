@@ -30,7 +30,7 @@ On current rustc (`adt_const_params` + `generic_const_exprs` available, `implied
 
 The mechanism: `UFixed<const I: IBits, const F: FBits, S: Strategy>`'s storage field is `<S as UContainerFor<{ ufixed_bits(I, F) }>>::T`. The field type is a projection through a trait bound that depends on a const-expression over the type's own generic parameters. For the type to be well-formed (Sized, layout-known), rustc must verify the bound. For consumer code that writes `Fixed<I, F, S>` while itself being generic over `<const I: u8, const F: u8, S: Strategy>`, rustc cannot verify the bound at the consumer's definition site without the consumer restating it.
 
-The relevant rustc feature that would erase this restatement is `feature(implied_bounds)` (RFC 2089, tracking issue #44491). It lets a struct's where-clause apply implicitly when the struct is named in a consumer's signature. The feature has been open since September 2017 with open design questions on crate-local vs module-local scope and type-inference interactions; not on a near-term stabilisation track. Adopting it would be on the same risk class as `feature(fundamental)` (explicitly "not intended to be stabilized as-is" per its tracking issue) — too uncertain to commit to.
+The relevant rustc feature that would erase this restatement is `feature(implied_bounds)` (RFC 2089, tracking issue #44491). It lets a struct's where-clause apply implicitly when the struct is named in a consumer's signature. The feature has been open since September 2017 with open design questions on crate-local vs module-local scope and type-inference interactions; not on a near-term stabilisation track. Adopting it would be on the same risk class as `feature(fundamental)` (explicitly "not intended to be stabilized as-is" per its tracking issue): too uncertain to commit to.
 
 ## Why the alternatives compromise principle
 
@@ -62,7 +62,7 @@ During round 202604500000 src execution, the following angles were traced and re
 2. **`MaybeUninit<projection-typed field>`**: same projection, just less initialised. The Sized/layout query still hits the bound.
 3. **Union of all container types** (u8/u16/u32/u64): would work, but max-size = u64 violates Cold's exact-bit-density principle. Reduces to alternative A.
 4. **`[u8; size_of_container::<S, I, F>()]` field**: array length is a const-expr, still depends on generic params, same propagation issue.
-5. **Phantom-only struct, storage moves off-type**: breaks per-value semantics — `let x: UFixed<I, F, S> = ...` requires storage on the type.
+5. **Phantom-only struct, storage moves off-type**: breaks per-value semantics: `let x: UFixed<I, F, S> = ...` requires storage on the type.
 6. **Specialisation-based fallback**: `feature(specialization)` is famously incomplete + has known unsoundness in non-trivial uses. Worse than `implied_bounds`.
 7. **Const-eval guard via `[(); 1 / valid()]:`** (the Fnv1a trick): same const-expr propagation issue when used inside generic-over-width caller code.
 
@@ -76,7 +76,7 @@ Three layers of access, each with its own pattern. The friction is concentrated 
 
 End users (vehje, viola consumers, downstream Clause) write canonical-width aliases (`Uint8`, `Int16`, `Bits<28, Hot>`) and domain aliases their crate defines locally. They never see the bound. Their imports reach `arvo::{Uint8, Int16, USize, Bits, ...}` and that's the surface.
 
-Code at this layer is monomorphic — every type is fully specified at the use site. The bound is verified once at the alias definition's instantiation, never at the consumer's signature.
+Code at this layer is monomorphic: every type is fully specified at the use site. The bound is verified once at the alias definition's instantiation, never at the consumer's signature.
 
 ### Layer 2: domain-author code
 
@@ -91,7 +91,7 @@ pub type Coord = Signed<15, 16, Warm>;
 pub type Hash = arvo::Bits<28, arvo::Hot>;
 ```
 
-`Fixed<I, F, S>` and `Signed<I, F, S>` are bare-`u8`-const-generic aliases that forward to the `IBits` / `FBits`-wrapped form internally. The alias body is the only place `{ ibits(...) }` machinery appears; consumer call sites never see it. Like layer 1, code here is monomorphic — `Fixed<13, 3, Warm>` substitutes concrete values.
+`Fixed<I, F, S>` and `Signed<I, F, S>` are bare-`u8`-const-generic aliases that forward to the `IBits` / `FBits`-wrapped form internally. The alias body is the only place `{ ibits(...) }` machinery appears; consumer call sites never see it. Like layer 1, code here is monomorphic: `Fixed<13, 3, Warm>` substitutes concrete values.
 
 ### Layer 3: arvo-internal generic-over-width code
 
@@ -111,7 +111,7 @@ This is verbose. It's also internal: no consumer reads it; it lives in arvo crat
 Generic-over-bit-width APIs at consumer-facing surfaces are the smell that drags layer-3 friction into layer 1 / layer 2. The discipline:
 
 - **Public consumer APIs use trait-bound abstractions, not bit-width-generic abstractions.** Take `T: BitPresentation + Add + Mul` not `<const I: IBits, const F: FBits, S>`. Algorithms generic over numeric trait bounds (the existing `arvo-graph` / `arvo-sparse` pattern) are clean. Algorithms generic over the const-generic bit width are the smell.
-- **Domain types are aliases, not generic over width.** `pub type Coord = Fixed<13, 3, Warm>` is right. `pub type Coord<const I: u8, const F: u8> = Fixed<I, F, Warm>` is the smell — it pushes the bound up to every Coord use site.
+- **Domain types are aliases, not generic over width.** `pub type Coord = Fixed<13, 3, Warm>` is right. `pub type Coord<const I: u8, const F: u8> = Fixed<I, F, Warm>` is the smell: it pushes the bound up to every Coord use site.
 - **When a consumer is tempted to write `<const I: u8, const F: u8>`, redesign as `<T: SomeNumericBound>`.** The trait-first cookbook (`.claude/rules/cookbook.md`) is the existing workspace-level guidance; this constraint reinforces why it matters beyond aesthetics.
 
 If discipline is followed, the friction never manifests at consumer call sites. Layers 1 and 2 stay clean; layer 3 absorbs the verbosity in the substrate's own implementation.
@@ -127,5 +127,5 @@ Until then: the design is correct on principle, the friction is real but contain
 - `mock/design_rounds/202604500000_topic.foundations-restructure-final.md` (round driving this analysis)
 - `mock/design_rounds/202604500000_changelist.src.md` "Ergonomic surface for arvo primitive newtypes" section (the surrounding investigation)
 - Rust tracking issue #44491 (`implied_bounds`)
-- Rust tracking issue #29635 (`fundamental` — explicitly "not intended to be stabilized as-is", referenced for comparison)
-- Rust tracking issue #112792 (`lazy_type_alias` — referenced for comparison)
+- Rust tracking issue #29635 (`fundamental`: explicitly "not intended to be stabilized as-is", referenced for comparison)
+- Rust tracking issue #112792 (`lazy_type_alias`: referenced for comparison)

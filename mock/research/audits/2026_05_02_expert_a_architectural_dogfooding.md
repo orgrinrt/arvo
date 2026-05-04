@@ -1,6 +1,6 @@
 # arvo Substrate Dogfooding Audit (Expert A, 2026-05-02)
 
-Audit dispatched 2026-05-02 against branch `feat/usize-const-arith` (PR #42) at commit `daf9518`. Audit charge: find every place arvo fails to dogfood its own framework — every parallel hand-rolled width-specific type, every hardcoded primitive literal, every concrete impl that should be a generic blanket impl.
+Audit dispatched 2026-05-02 against branch `feat/usize-const-arith` (PR #42) at commit `daf9518`. Audit charge: find every place arvo fails to dogfood its own framework: every parallel hand-rolled width-specific type, every hardcoded primitive literal, every concrete impl that should be a generic blanket impl.
 
 The substrate has built rich abstractions (`Bits<N, S, Sign>`, `MultiContainer<HiT, LoT>`, `Bounded`, `Identity`, `BitPrim`, `BitLogic`) but does not consistently consume them itself.
 
@@ -46,7 +46,7 @@ The substrate has built rich abstractions (`Bits<N, S, Sign>`, `MultiContainer<H
 
 **Location:** `arvo-storage/src/platform.rs:29-35, 158-161`.
 
-**Smell:** USize and Cap each carry inherent `pub const ZERO / ONE / MAX` constants — exactly the pattern Mask was just refactored away from. They predate `Bounded` / `Identity` and don't yet route through them. `usize::MAX` is reached as a literal at platform.rs:34, not `<usize as Bounded>::MAX`.
+**Smell:** USize and Cap each carry inherent `pub const ZERO / ONE / MAX` constants: exactly the pattern Mask was just refactored away from. They predate `Bounded` / `Identity` and don't yet route through them. `usize::MAX` is reached as a literal at platform.rs:34, not `<usize as Bounded>::MAX`.
 
 **Substrate generalisation:** Implement `Bounded` and `Identity` for `USize` and `Cap`. Extend `impl_bounded_identity_u!` to include `usize`; `impl_bounded_identity_i!` to include `isize`.
 
