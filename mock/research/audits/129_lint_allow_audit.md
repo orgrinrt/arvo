@@ -1,4 +1,4 @@
-# #129 — arvo ecosystem lint:allow audit
+# #129: arvo ecosystem lint:allow audit
 
 **Date:** 2026-04-21
 **Scope:** arvo workspace source files (8 crates)
@@ -62,7 +62,7 @@ the macro-generated impl bodies (9 methods × 4 primitive types =
 layering achievable.
 
 Lines 197, 201, 208: BitSequence bridge (`USize(self.0.count_ones()
-as usize)`). Same reasoning as the BitAccess bridge — maps
+as usize)`). Same reasoning as the BitAccess bridge: maps
 BitPrim's u32 counts into arvo-bits' USize contract.
 
 ### arvo-bits/src/bitfield.rs (4 sites, #127)
@@ -101,7 +101,7 @@ contract (#123), or substrate-floor (#127) walls.
 
 #129 closes with no code change. When #121 and #123 resolve, the
 annotations on cap.rs and fiedler.rs lift. The #127 annotations
-are permanent — arvo-bits is the boundary where the type stack
+are permanent: arvo-bits is the boundary where the type stack
 meets the host's native integers.
 
 ## Collateral findings (outside #129 scope)
@@ -111,11 +111,11 @@ in `lint:allow` comments (pre-#80 `// lint:allow(X) -- reason`
 form instead of the current `// lint:allow(X) reason: ...; tracked:
 #N` form). These are tracked under their respective sweeps:
 
-- hilavitkutin-persistence/manifest.rs:17,23 — tracked: #72
-- hilavitkutin-api/src/lib.rs, hint.rs; hilavitkutin-str/src/*.rs —
+- hilavitkutin-persistence/manifest.rs:17,23: tracked: #72
+- hilavitkutin-api/src/lib.rs, hint.rs; hilavitkutin-str/src/*.rs:
   tracked: #72 residual
 - clause-syntax, clause-typecheck, clause-codegen, clause-runtime-*
-  — `lint:allow(bare_collection)` escapes to remove per #76 when
+ : `lint:allow(bare_collection)` escapes to remove per #76 when
   the clause sweep (#73) lands.
 
 None of these are arvo sites. They close as part of their respective
