@@ -22,6 +22,21 @@ rounds within PR #42; the authoritative tracking lives in
 
 Consumers needing const-callable Deref / From / TryFrom on substrate types reach for the bridge name shipping in this round. Const-callable Try lands in Round 5; the stdlib `?` operator is still the surface for boundary use.
 
+## LogicalBounds substrate trait (round 202605041128 follow-up)
+
+Today `<UFixed<I, F, S> as Bounded>::MIN/MAX` projects through the
+inner Bits container bounds, so `<U16Warm as Bounded>::MAX` returns
+`u32::MAX` (the Warm 16-bit container). A separate `LogicalBounds`
+substrate trait returning the logical-width bounds (`2^(I+F) - 1`
+for unsigned UFixed, `-2^(I+F) .. 2^(I+F) - 1` for signed IFixed)
+would expose the type-level bounds without requiring container
+unwrap. Surfaced by Round 7 (#325) reviewer NIT during the Bounded
+blanket landing; not blocking; ships when a consumer needs it. Open
+design questions: whether to land as a separate trait or extend
+`BitPresentation` (which already carries `LOGICAL_WIDTH`); whether
+saturating, wrapping, and strict bound semantics belong on the same
+trait or split.
+
 ## NBits<N>: niche-filled Bits variant
 
 Maybe of NBits niche-optimises to size_of of Bits, giving "optional
