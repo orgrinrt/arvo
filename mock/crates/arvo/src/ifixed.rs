@@ -26,8 +26,8 @@ use notko::Outcome;
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use arvo_storage::{Bits, FBits, IBits, USize};
 use crate::strategy::{
-    BitsContainerFor, Hot, IArith, INarrowFrom, IWidenFrom, Identity, Precise, Signed, Strategy,
-    Warm, ifixed_bits, is_fractional,
+    BitsContainerFor, Bounded, Hot, IArith, INarrowFrom, IWidenFrom, Identity, Precise, Signed,
+    Strategy, Warm, ifixed_bits, is_fractional,
 };
 
 /// Signed fixed-point value.
@@ -66,6 +66,18 @@ where
 {
     const ZERO: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ZERO);
     const ONE: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ONE);
+}
+
+// Generic Bounded blanket on IFixed wires through the inner signed
+// Bits's Bounded blanket. Same single-predicate cycle-avoidance pattern
+// as Identity. Closes Round 6 deviation 3 / NIT 5 (#325).
+impl<const I: IBits, const F: FBits, S: Strategy> const Bounded for IFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Bounded,
+{
+    const MIN: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Bounded>::MIN);
+    const MAX: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Bounded>::MAX);
 }
 
 // ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault

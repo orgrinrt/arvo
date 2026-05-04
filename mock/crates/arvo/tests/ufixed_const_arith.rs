@@ -3,9 +3,10 @@
 //! Closes audit Finding 28 (UFixed half) (round 202605041051,
 //! task #324). Round 202605021400 lifted UFixed `Add`/`Sub`/`Mul`/
 //! `Div` impls to `impl const`. Round 306 added blanket `Identity`
-//! ZERO/ONE projections through inner `Bits`. This file exercises
-//! the const composition surface in const blocks across
-//! representative width tuples covering Hot, Warm, Cold, Precise.
+//! ZERO/ONE projections through inner `Bits`. Round 202605041128
+//! (#325) added blanket `Bounded` MIN/MAX projections through inner
+//! `Bits`; this file extends to assert MIN/MAX const-callable surface
+//! plus runtime parity against the container bounds.
 
 #![feature(adt_const_params)]
 #![feature(const_ops)]
@@ -17,7 +18,7 @@ use arvo::strategy::{Cold, Hot, Precise, Warm};
 use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
 use arvo::{USize, fbits, ibits};
-use arvo_strategy::Identity;
+use arvo_strategy::{Bounded, Identity};
 
 type U8Hot = UFixed<{ ibits(8) }, { fbits(0) }, Hot>;
 type U16Warm = UFixed<{ ibits(16) }, { fbits(0) }, Warm>;
@@ -35,6 +36,17 @@ const _U32_ONE: U32Cold = <U32Cold as Identity>::ONE;
 
 const _U64_ZERO: U64Precise = <U64Precise as Identity>::ZERO;
 const _U64_ONE: U64Precise = <U64Precise as Identity>::ONE;
+
+// Bounded MIN / MAX projections through the inner Bits Bounded blanket
+// (Round 7, #325). Round 6 had to skip these per deviation 3; closed.
+const _U8_MIN: U8Hot = <U8Hot as Bounded>::MIN;
+const _U8_MAX: U8Hot = <U8Hot as Bounded>::MAX;
+const _U16_MIN: U16Warm = <U16Warm as Bounded>::MIN;
+const _U16_MAX: U16Warm = <U16Warm as Bounded>::MAX;
+const _U32_MIN: U32Cold = <U32Cold as Bounded>::MIN;
+const _U32_MAX: U32Cold = <U32Cold as Bounded>::MAX;
+const _U64_MIN: U64Precise = <U64Precise as Bounded>::MIN;
+const _U64_MAX: U64Precise = <U64Precise as Bounded>::MAX;
 
 const _U8_HOT_ADD_ZERO_ONE: U8Hot = {
     let z = <U8Hot as Identity>::ZERO;
@@ -97,4 +109,16 @@ fn ufixed_const_runtime_parity_strategies() {
     assert_eq!(_U16_WARM_ADD.to_raw(), 300u32);
     assert_eq!(_U32_COLD_ADD.to_raw(), 3000u32);
     assert_eq!(_U64_PRECISE_ADD.to_raw(), 30u128);
+}
+
+#[test]
+fn ufixed_bounded_runtime_parity() {
+    assert_eq!(_U8_MIN.to_raw(), u8::MIN);
+    assert_eq!(_U8_MAX.to_raw(), u8::MAX);
+    assert_eq!(_U16_MIN.to_raw(), u32::MIN);
+    assert_eq!(_U16_MAX.to_raw(), u32::MAX);
+    assert_eq!(_U32_MIN.to_raw(), u32::MIN);
+    assert_eq!(_U32_MAX.to_raw(), u32::MAX);
+    assert_eq!(_U64_MIN.to_raw(), u128::MIN);
+    assert_eq!(_U64_MAX.to_raw(), u128::MAX);
 }
