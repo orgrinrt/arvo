@@ -1,6 +1,7 @@
 # arvo-mask-contracts
 
-The `Mask<W>` const trait. Abstract surface over `Mask64`,
-`Mask256`, `BitMatrix` and other concrete masks from `arvo-bitmask`.
-Consumers that depend only on the abstract mask surface pull this
-crate, not the concrete-storage one. `#![no_std]`, no alloc.
+The `MaskOps<const W: Width>` const trait (renamed from `Mask` in
+round 202605031748). Abstract surface for the `Mask<W>` chassis and
+`BitMatrix<W, N>` concretes from `arvo-bitmask`. Consumers that
+depend only on the abstract mask surface pull this crate, not the
+concrete-storage one. `#![no_std]`, no alloc.
