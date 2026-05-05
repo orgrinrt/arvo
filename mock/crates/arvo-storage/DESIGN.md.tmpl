@@ -1,7 +1,7 @@
 # arvo-storage. Design
 
 The minimal bare-primitive layer of arvo. Sits at the bottom of every
-dependency chain in the substrate. Hosts the only fielded primitive
+dependency chain in the arvo. Hosts the only fielded primitive
 types whose existence requires wrapping bare Rust primitives directly,
 the strategy markers used by every numeric type, and the typed
 meta-bit newtypes that carry bit-count meta values through const
@@ -127,7 +127,7 @@ arvo_strategy::{Hot, Warm, Cold, Precise};` so consumers reaching
 for the storage primitive at `arvo_storage::Bits<...>` can name the
 strategy without importing two crates.
 
-Strategy semantics across the substrate (full detail in
+Strategy semantics across the arvo (full detail in
 `arvo-strategy/DESIGN.md.tmpl`):
 
 - `Hot` picks the narrowest container per bit width. 1..=8 → `u8`,
@@ -135,7 +135,7 @@ Strategy semantics across the substrate (full detail in
   `WideBits<bytes_for(N), A16>` (align(16) byte sequence).
 - `Warm` mirrors Hot's container shape below 128. Above 128 →
   `WideBits<bytes_for(N), A1>` (align-1 byte sequence). The previous
-  "2x logical width" Warm contract collapsed once the substrate
+  "2x logical width" Warm contract collapsed once the arvo
   passed single native primitives in width.
 - `Cold` mirrors Warm's per-value container shape. Bitpacking happens
   at the column-store layer above the per-Bits container, not at the
@@ -277,7 +277,7 @@ form makes the alignment choice explicit at the dispatch site.
 ## Bool
 
 `pub struct Bool(pub bool)`. The newtype that carries Rust's `bool`
-through the substrate's "every public type is an arvo wrapper" rule.
+through the arvo's "every public type is an arvo wrapper" rule.
 Used by predicates (`is_zero`, `bit`, `Predicate` family) and in
 control flow that returns to consumer code.
 
@@ -289,7 +289,7 @@ inhabited path).
 `Bool` implements `notko::ConstTry` and
 `notko::ConstFromResidual<core::convert::Infallible>` so the existing
 non-const `core::ops::Try` / `FromResidual` impls have const-callable
-counterparts. This is a substrate-internal const-branch surface
+counterparts. This is a arvo-internal const-branch surface
 reached via explicit `match b.const_branch() { ... }`; the `?` syntax
 itself stays non-const because rustc desugars `?` directly to
 `core::ops::Try::branch`, which is not `pub const trait` as of
@@ -301,7 +301,7 @@ itself stays non-const because rustc desugars `?` directly to
 ### Const-trait surfaces (round 202605021800)
 
 Round 202605021800 lifts the `AsBool` trait to `pub const trait` and
-adds substrate-bridge `ConstEq` and `ConstDefault` impls on `Bool`.
+adds arvo-bridge `ConstEq` and `ConstDefault` impls on `Bool`.
 
 ```rust
 pub const trait AsBool {
@@ -329,13 +329,13 @@ is trivial and not consumer-needed). `Bool` is not a candidate for
 
 Stdlib `From<bool> for Bool` and `From<Bool> for bool` impls remain
 non-const for boundary coverage. The parallel `ConstFrom` impls land
-in Round 4 (#314) once the `ConstFrom` substrate bridge ships.
+in Round 4 (#314) once the `ConstFrom` arvo bridge ships.
 
 ## USize
 
 `pub struct USize(pub usize)`. The newtype for platform-pointer-width
 unsigned integers. Used as the universal index/length type across the
-substrate: `Cap` wraps it, `HasBitWidth::WIDTH` returns it, every
+arvo: `Cap` wraps it, `HasBitWidth::WIDTH` returns it, every
 arvo-tensor offset is a `USize`.
 
 This round preserves `USize`'s field shape (still `usize`). Future
@@ -447,7 +447,7 @@ known.
 
 Replaces the `USize(0)` overloaded sentinel idiom previously used in
 `arvo-comb/src/binpack.rs` (Expert A audit Finding 14, round
-202605040602). Use NUSize whenever the substrate needs "an optional
+202605040602). Use NUSize whenever the arvo needs "an optional
 USize without paying discriminant overhead."
 
 NU8 / NU16 / NU32 / NU64 are not shipped this round; the N-prefix
@@ -569,7 +569,7 @@ deleted entirely in round 202605031400. Sketch 01 verified that
 alignment-of-largest-prim padding rule in `repr(C)` forces the total
 to round up to a multiple of 16, the alignment of u128). The "u64+u128
 saves bytes" rationale documented in prior rounds was incorrect:
-sketch 01 measured the existing substrate's physical layout and
+sketch 01 measured the existing arvo's physical layout and
 confirmed the supposed savings did not exist.
 
 The replacement is the parametric `WideBits<BYTES, A: Align = A1>`:
@@ -579,7 +579,7 @@ The `Align` axis is parametric on a ZST marker family
 tier; the typedef-per-tier shape from earlier sketches
 (`AlignedWideBits16` etc.) was rejected as fragile. Same physical
 size as the previous MultiContainer for the canonical pairs; honest
-about what the substrate stores; substrate-implementor cost of the
+about what the arvo stores; arvo-implementor cost of the
 byte-by-byte BitPrim impl is offset by no per-pair combinatorics in
 the projection table.
 
@@ -596,7 +596,7 @@ mockspace-hilavitkutin-stack-lints). Deletion is mechanical.
 - `mock/design_rounds/202605031400_topic_foundational_redesign.md`
 - `mock/design_rounds/202605031430_topic_audit_corrections.md`
 - `mock/design_rounds/202605031400_changelist.doc.md`
-- `mock/research/strategy-bound-trilemma.md`
+- `mock/crates/arvo/DEEPDIVE_strategy-bound-trilemma.md.tmpl`
 - `mock/research/sketches/202605031400_hlist_heterogeneous_container/01..07`
   (architectural pivot validation: heterogeneous Cons invalidated under
   repr(C); `WideBits<BYTES, A>` scalar baseline verified across

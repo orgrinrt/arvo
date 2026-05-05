@@ -55,7 +55,7 @@ Doc CL captures this: seal `Project`, keep `Picker` public, document the visibil
 
 ### Finding 3 (corollary): `[const]` host-effect propagation pattern
 
-When a const trait carries a where-clause bound on an associated type produced by another const trait, the inner trait must be referenced with `[const]` even if the outer trait is `pub const trait`. The substrate's existing const-trait definitions should be audited for this pattern; `BitsContainerFor` itself does not currently carry such cross-trait associated-type bounds, so the only round-4 surfaces affected are `ConstHash` and any future const trait that bounds on `<X as BitsContainerFor<...>>::T: SomeConstTrait`.
+When a const trait carries a where-clause bound on an associated type produced by another const trait, the inner trait must be referenced with `[const]` even if the outer trait is `pub const trait`. arvo's existing const-trait definitions should be audited for this pattern; `BitsContainerFor` itself does not currently carry such cross-trait associated-type bounds, so the only round-4 surfaces affected are `ConstHash` and any future const trait that bounds on `<X as BitsContainerFor<...>>::T: SomeConstTrait`.
 
 ## How to reproduce
 

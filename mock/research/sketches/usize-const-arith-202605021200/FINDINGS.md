@@ -6,7 +6,7 @@
 
 ## Validated facts
 
-The substrate can land `impl const` on every `core::ops::*` trait used by arvo numerics. The sketch validates the full op matrix on USize, the Cap layered-composition shape, the UFixed-shaped const-generic case, the Mask bit-op case, and the load-bearing hilavitkutin Depth case. Every const expression in the sketch folds at compile time; the assert! statements all pass.
+arvo can land `impl const` on every `core::ops::*` trait used by arvo numerics. The sketch validates the full op matrix on USize, the Cap layered-composition shape, the UFixed-shaped const-generic case, the Mask bit-op case, and the load-bearing hilavitkutin Depth case. Every const expression in the sketch folds at compile time; the assert! statements all pass.
 
 The full op matrix on USize that compiles at const time:
 
@@ -83,7 +83,7 @@ The const constants `USize::ZERO`, `USize::ONE`, `USize::MAX` cover the common l
 
 ## Const-context concerns
 
-One concern surfaced and resolved: `feature(const_ops)` is currently named that way and was previously called `feature(const_trait_impls_for_std)` or similar. The naming may shift before stabilisation. The substrate ships under nightly already (the workspace policy is "compile-time last; nightly is the contract"), so feature renames are tracked as they happen. Document the current name in the relevant DESIGN.md.tmpl with a footnote.
+One concern surfaced and resolved: `feature(const_ops)` is currently named that way and was previously called `feature(const_trait_impls_for_std)` or similar. The naming may shift before stabilisation. arvo ships under nightly already (the workspace policy is "compile-time last; nightly is the contract"), so feature renames are tracked as they happen. Document the current name in the relevant DESIGN.md.tmpl with a footnote.
 
 A second concern: the const-trait infrastructure has interactions with const-generic-position requirements. None of the sketch's stress instances exercise an arvo type *inside* a `const N: ArvoType` position other than `USize` and `Cap` already in `ConstParamTy`. Round 202604271346 already wired this path. No new const-generic-position changes required.
 

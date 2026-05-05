@@ -1,4 +1,4 @@
-# arvo-graph — backlog
+# arvo-graph, backlog
 
 > **Type-surface reminder**: new entries use `arvo::USize` /
 > `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
@@ -9,12 +9,12 @@ Round 202605031748 (#313) collapsed the BitMatrix family onto
 `BitMatrix<W, const N: Cap>` chassis. Algorithms ship today against
 `W = Bits<64, Hot, Unsigned>` for up to 64 nodes; instantiating the
 same algorithms with `W = Bits<256, Hot, Unsigned>` extends to 256
-nodes via the substrate's MultiContainer plumbing without an
+nodes via arvo's MultiContainer plumbing without an
 algorithmic-shape change.
 
 ## Wider-W ergonomic helpers
 
-Common pipeline workloads per polka-dots research stay well under 64
+Common pipeline workloads in observed research stay well under 64
 nodes, so the 64-wide instantiation covers the common case. When a
 consumer surfaces a concrete need for >64-node adjacency, the
 algorithm bodies require zero changes; only the call-site

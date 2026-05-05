@@ -1,4 +1,4 @@
-# arvo-tensor — backlog
+# arvo-tensor, backlog
 
 > **Type-surface reminder**: new entries use `arvo::USize` /
 > `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
@@ -9,9 +9,9 @@
 
 Future rank-N containers as consumer demand surfaces:
 
-- Grid<T, const N: Cap, const M: Cap> — rectangular 2D (non-square Matrix).
+- Grid<T, const N: Cap, const M: Cap>, rectangular 2D (non-square Matrix).
   Needed when an algorithm has N rows × M columns with N != M.
-- Cube<T, const N: Cap, const M: Cap, const P: Cap> — rank-3. Needed for
+- Cube<T, const N: Cap, const M: Cap, const P: Cap>, rank-3. Needed for
   3D spectral workloads or ML-adjacent tensor ops.
 
 Each shape follows the same pattern: `#[repr(transparent)]` wrapper over
@@ -30,7 +30,7 @@ day-one migration.
 
 `cap_size(c: Cap) -> usize` is a single-purpose bridge. A trait family
 like `pub trait ArrayLen { const LEN: usize; }` implemented on cap-like
-types could generalise the pattern — every newtype wrapping a usize that
+types could generalise the pattern, every newtype wrapping a usize that
 wants to participate in array sizing implements ArrayLen. #121 covers the
 underlying language blocker; ArrayLen is a possible trait-level framing
 once that resolves.

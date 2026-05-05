@@ -85,7 +85,7 @@ The blanket impls of `BitAccess`, `BitSequence`, `BitLogic`, and
 `HasBitWidth` on `Bits<N, S, Sign>` generalise from `Sign = Unsigned`
 (default) to `Sign: Signedness` in round 202605021800. Before the
 round, `Bits<N, S, Signed>` (which is what `IFixed<I, F, S>` wraps)
-exposed no const-callable bit-op surface: half the substrate's
+exposed no const-callable bit-op surface: half of arvo's
 domain primitives could not call any bit method in const fn bodies.
 
 The new blanket signature (post round 202605031400 Width lift):
@@ -137,7 +137,7 @@ pub const trait BitPrim: Copy + ConstParamTy_ + ... {
     fn clear_lowest_set_bit(self) -> Self;
     fn is_zero(self) -> Bool;
 
-    // Round 202605031748: substrate helper consumed by mask /
+    // Round 202605031748: helper consumed by mask /
     // hash / bitfield call sites that build a low-N-bits mask.
     // Default body composes through Identity::ZERO, Bounded::MAX,
     // Identity::ONE, and the const-stable shift bridge.
@@ -267,7 +267,7 @@ primitive type, sound under the mask precondition. Routing through
 `BitPrim` keeps the narrow path inside the bare-primitive layer
 where the cast actually happens; the prior reference to
 `Mask<W>::mask_for_width(N)` from `arvo-mask-contracts` predated the
-trait reshape in round 202605040602 and is no longer the substrate
+trait reshape in round 202605040602 and is no longer the
 primitive that drives narrowing.
 
 `narrow_to_unmasked::<N>` skips the mask op for the hot case where
@@ -330,7 +330,7 @@ bit-width carrier. For primitive sources (full-carrier-width values),
 unsigned widening zero-extends and signed widening sign-extends
 through Rust's `as` cast.
 
-For sub-carrier-width `Bits<M, S, Sign>` the substrate's contract is
+For sub-carrier-width `Bits<M, S, Sign>` the contract is
 **bit-pattern-preserving**, not logical-value-preserving, on both
 `Narrow` and `Widen`. The cross-Bits forwarder calls the carrier-
 side primitive trait method without any explicit M-bit sign-extension
@@ -342,7 +342,7 @@ result regardless of the source's logical signedness.
 
 Consumers needing logical-value-preserving signed conversion (sign-
 extension at bit M-1 on cross-Bits widen) compose `Narrow`, explicit
-sign-extension, and `Widen` at the application layer. The substrate's
+sign-extension, and `Widen` at the application layer. The
 refit family stays bit-pattern-preserving by contract; the
 `IFixed<I, F, S>` numeric type holds carrier bits matching its
 declared logical width via construction, and its consumers do not
@@ -457,7 +457,7 @@ and `Bits::from_widened<Src>` ergonomic constructors (see
 - `mock/design_rounds/202605031430_topic_audit_corrections.md`
 - `mock/design_rounds/202605031400_changelist.doc.md`
 - `mock/research/sketches/202605031400_hlist_heterogeneous_container/02_widebits_basic.rs`
-  (BitPrim impl on WideBits — byte-by-byte composition validated).
+  (BitPrim impl on WideBits, byte-by-byte composition validated).
 - `mock/research/sketches/202605031400_hlist_heterogeneous_container/04_simd_count_ones.rs`
   (cfg-gated SIMD intrinsic surface validated for x86_64 + aarch64;
   scalar / chunked-u64 / intrinsic-load paths produce identical results).

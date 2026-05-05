@@ -4,7 +4,7 @@ Source material backing the arvo designs. Research notes are NOT gated by the wr
 
 ## `imported-from-polka-dots/`
 
-Primary sources copied verbatim from `~/Dev/polka-dots/`. The polka-dots workspace is where arvo's numeric substrate was originally researched and ratified.
+Primary sources copied verbatim from `~/Dev/polka-dots/`. The polka-dots workspace is where arvo's numeric foundations were originally researched and ratified.
 
 - `rust-nightly-features-for-type-constraints.md`: nightly-only features that arvo leans on (const-generic expressions, ConstParamTy, specialization, etc.). Grounds arvo's nightly-by-default stance.
 - `design_rounds/202603241200_topic.arvo-strategy-markers.md`: origin of the Hot/Warm/Cold/Precise strategy markers. Rank ordering, cross-strategy resolution.
@@ -14,7 +14,7 @@ Primary sources copied verbatim from `~/Dev/polka-dots/`. The polka-dots workspa
 
 ## `imported-from-saalis/`
 
-Primary sources copied verbatim from `~/Dev/saalis/`. Saalis ran a separate primitives-design round that overlaps arvo's substrate concerns.
+Primary sources copied verbatim from `~/Dev/saalis/`. Saalis ran a separate primitives-design round that overlaps arvo's core concerns.
 
 - `design_rounds/202603170810/`: primitives-design round (topic + doc CL + src CL, all locked in the source workspace). Historical context for how arvo's primitive surface converged.
 

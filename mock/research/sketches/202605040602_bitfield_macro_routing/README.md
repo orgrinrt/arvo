@@ -26,7 +26,7 @@ Two questions:
 
 Both compose. `BitPrim` is `pub const trait`, the macro's container is a bare
 unsigned primitive (u8 through u64), and bare integer `<<` / `&` are
-const-stable in `const fn`. The substrate's `narrow_from.rs` already routes
+const-stable in `const fn`. arvo's `narrow_from.rs` already routes
 through `<u64 as BitPrim>::mask_low(USize(N as usize))` in similar shape, so
 the const-callability is established for at least one container width.
 

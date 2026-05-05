@@ -4,9 +4,9 @@ I have enough. Let me deliver the comprehensive report now.
 
 ---
 
-# Const-trait completeness audit: arvo substrate
+# Const-trait completeness audit: arvo
 
-PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 202605021400 / 202605021600) lifted the highest-value surfaces: strategy markers, container projections, UArith/IArith, BitPrim, BitAccess/BitSequence/BitLogic on Bits, Bounded/Identity, USize/Cap inherent ops. The substrate is now genuinely const-callable along the spine. But const-trait reach has stopped at the spine and not propagated outward to the trait declarations the consumer actually walks (Sign axis, marker traits, Widen/Narrow strategy bridges, numeric-contract impls, mask concretes, float wrappers, refit cross-domain). The audit below names every gap and the cascading work needed before PR merge.
+PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 202605021400 / 202605021600) lifted the highest-value surfaces: strategy markers, container projections, UArith/IArith, BitPrim, BitAccess/BitSequence/BitLogic on Bits, Bounded/Identity, USize/Cap inherent ops. arvo is now genuinely const-callable along the spine. But const-trait reach has stopped at the spine and not propagated outward to the trait declarations the consumer actually walks (Sign axis, marker traits, Widen/Narrow strategy bridges, numeric-contract impls, mask concretes, float wrappers, refit cross-domain). The audit below names every gap and the cascading work needed before PR merge.
 
 ---
 
@@ -30,7 +30,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Location:** `arvo-strategy/src/container.rs:71-95`
 
-**Gap:** The trait carries an associated type `T` (no method bodies), and its two blanket impls dispatch through `S: UContainerFor<N>` / `IContainerFor<N>` (both already `pub const trait`). Body purity is trivial. Yet `pub trait BitsContainerFor<...>` is not const, so every downstream `S: BitsContainerFor<N, Sign>` bound on Bits, on the Bounded/Identity blankets, on cross-domain Narrow/Widen, cannot satisfy a `[const]` constraint. This is the blocker that makes the Bits-with-Signed half of the substrate non-const-callable.
+**Gap:** The trait carries an associated type `T` (no method bodies), and its two blanket impls dispatch through `S: UContainerFor<N>` / `IContainerFor<N>` (both already `pub const trait`). Body purity is trivial. Yet `pub trait BitsContainerFor<...>` is not const, so every downstream `S: BitsContainerFor<N, Sign>` bound on Bits, on the Bounded/Identity blankets, on cross-domain Narrow/Widen, cannot satisfy a `[const]` constraint. This is the blocker that makes the Bits-with-Signed half of arvo non-const-callable.
 
 **Concrete change:** `pub const trait BitsContainerFor<const N: u16, Sign: Signedness>: Strategy { type T: Copy + ... ; }`. Both blanket impls (lines 83-95) → `impl<...> const BitsContainerFor<...>` with `S: [const] UContainerFor<N>` / `[const] IContainerFor<N>`.
 
@@ -54,7 +54,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Bridge required?** Yes: needs `IBitPrim::is_zero` / signed Whole-word logic surface (Finding 5) plus a unified `BitPrim`-or-`IBitPrim` bound expressible in one impl block.
 
-**Priority:** P0. Without this, half of the substrate (everything signed) is permanently non-const-callable on bit ops.
+**Priority:** P0. Without this, half of arvo (everything signed) is permanently non-const-callable on bit ops.
 
 ---
 
@@ -94,7 +94,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Location:** `arvo-storage/src/bits.rs:119-139` (Bits Deref/AsRef), `arvo-storage/src/platform.rs:37-43, 233-239` (USize, Bool Deref), `arvo-storage/src/meta_bits.rs:135-144` (meta-bits wrapper Deref/AsRef)
 
-**Gap:** Every `Deref::deref` / `AsRef::as_ref` body is a one-line `&self.0` / `&self.0.0`. Pure. None is `impl const`. `core::ops::Deref` and `core::convert::AsRef` are NOT const-stable in stdlib, so direct `impl const Deref` is rustc-blocked. The substrate must ship its own bridge.
+**Gap:** Every `Deref::deref` / `AsRef::as_ref` body is a one-line `&self.0` / `&self.0.0`. Pure. None is `impl const`. `core::ops::Deref` and `core::convert::AsRef` are NOT const-stable in stdlib, so direct `impl const Deref` is rustc-blocked. arvo must ship its own bridge.
 
 **Concrete change:** Define `pub const trait ConstDeref { type Target; fn const_deref(&self) -> &Self::Target; }` and `pub const trait ConstAsRef<T> { fn const_as_ref(&self) -> &T; }` in `arvo-transparent` (the L0 root). Keep the non-const `Deref` / `AsRef` impls for stdlib trait coverage; ADD parallel `impl const ConstDeref for ...` / `impl const ConstAsRef<...> for ...` impls on every wrapper. Consumers that need const-context dereferencing route through the bridge.
 
@@ -110,7 +110,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Location:** Multiple. `arvo-bitmask/src/mask.rs:71-79, 118-123` (Mask Default, Mask256 Default), `arvo-bitmask/src/matrix.rs:127-138, 231-242` (BitMatrix Default), `arvo/src/ufixed.rs:115-123`, `arvo/src/ifixed.rs:116-124`, `arvo/src/bitfield.rs:159` (derived). Bits is `#[derive(Default)]` (arvo-storage/src/bits.rs:49). The derived/manual impls all have pure bodies.
 
-**Gap:** `core::default::Default::default` is not const-stable in stdlib. The substrate needs a `ConstDefault` bridge. Currently `Mask::empty()` (mask.rs:48) is not even const fn because its body calls non-const `W::default()`.
+**Gap:** `core::default::Default::default` is not const-stable in stdlib. arvo needs a `ConstDefault` bridge. Currently `Mask::empty()` (mask.rs:48) is not even const fn because its body calls non-const `W::default()`.
 
 **Concrete change:** Define `pub const trait ConstDefault { fn const_default() -> Self; }` in `arvo-strategy` (sibling to Bounded/Identity). Implement on every primitive wrapper; the body for ZSTs / numeric types is `Self::ZERO` (via Identity) or hand-coded `Self::from_raw(0)`. Convert `Mask::empty`, `Mask256::empty`, `BitMatrix64::empty`, `BitMatrix256::empty`, `UFixed::default`, `IFixed::default` to delegate through `<Self as ConstDefault>::const_default()`. Lift the inherent `empty()` fns to `pub const fn`.
 
@@ -122,13 +122,13 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 ---
 
-### Finding 8: `From` / `Into` / `TryFrom` impls across the substrate are not const
+### Finding 8: `From` / `Into` / `TryFrom` impls across arvo are not const
 
 **Location:** `arvo-storage/src/platform.rs:279-291` (`From<bool> for Bool`, `From<Bool> for bool`), `arvo-storage/src/meta_bits.rs:146-164` (`From<u8>`/`From<u16>`/`From<$W>` for u8/u16 in `meta_bits_wrapper!`), `arvo/src/ufixed.rs:232-295` (UFixed strategy conversions), `arvo/src/ifixed.rs:214-275` (IFixed strategy conversions)
 
 **Gap:** `core::convert::From` / `Into` / `TryFrom` are not const-stable in stdlib. Every `From::from` / `TryFrom::try_from` body in arvo is a one-line constructor (e.g. `Bool(b)`, `Self::from_raw(...)`). Pure. Currently rustc-blocked from `impl const From`.
 
-**Concrete change:** Define `pub const trait ConstFrom<T> { fn const_from(t: T) -> Self; }` and `pub const trait ConstTryFrom<T, E> { fn const_try_from(t: T) -> Outcome<Self, E>; }` in `arvo-strategy` (since they live above `arvo-storage`'s wrapper layer). Mirror every existing `From`/`TryFrom` impl with `impl const ConstFrom for ...`. Keep stdlib From for boundary compatibility; add the const counterpart for in-substrate const-context consumption.
+**Concrete change:** Define `pub const trait ConstFrom<T> { fn const_from(t: T) -> Self; }` and `pub const trait ConstTryFrom<T, E> { fn const_try_from(t: T) -> Outcome<Self, E>; }` in `arvo-strategy` (since they live above `arvo-storage`'s wrapper layer). Mirror every existing `From`/`TryFrom` impl with `impl const ConstFrom for ...`. Keep stdlib From for boundary compatibility; add the const counterpart for in-arvo const-context consumption.
 
 **Cascade:** UFixed↔UFixed strategy widening conversions (Hot→Warm, Hot→Precise, Warm→Precise) become const-callable. Same for IFixed. `Bool` ↔ `bool`. The meta-bits wrappers' `From<u8>` / `From<u16>` / `From<$W> for u16` / `for u8`. The `TryFrom` narrowing edges in UFixed/IFixed become const via `Outcome` (already const-friendly via notko).
 
@@ -142,7 +142,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Location:** `arvo-storage/src/platform.rs:133-145, 203-214` (USize, Cap PartialOrd/Ord), `arvo/src/ufixed.rs:100-108`, `arvo/src/ifixed.rs:101-109`, `arvo/src/bitfield.rs:170-175` (derived bitfield PartialEq), `arvo/src/traits.rs:34-80` (TotalOrd impls call `cmp` / `partial_cmp`).
 
-**Gap:** `core::cmp::PartialEq::eq`, `Ord::cmp`, `PartialOrd::partial_cmp` are non-const-stable. Bodies pure. `BitPrim::is_zero` (Finding 5 sibling) is the substrate's pattern: a const-trait method with body `self == 0` (const-stable on bare primitives only). To extend the pattern to compound equality between two arvo wrappers, bridge traits are needed. Currently `UFixed::eq` (ufixed.rs:104) cannot be called from const fn even though its body is `self.to_raw() == other.to_raw()` (const-stable on the primitive `==`).
+**Gap:** `core::cmp::PartialEq::eq`, `Ord::cmp`, `PartialOrd::partial_cmp` are non-const-stable. Bodies pure. `BitPrim::is_zero` (Finding 5 sibling) is the arvo's pattern: a const-trait method with body `self == 0` (const-stable on bare primitives only). To extend the pattern to compound equality between two arvo wrappers, bridge traits are needed. Currently `UFixed::eq` (ufixed.rs:104) cannot be called from const fn even though its body is `self.to_raw() == other.to_raw()` (const-stable on the primitive `==`).
 
 **Concrete change:** Define `pub const trait ConstEq { fn const_eq(&self, other: &Self) -> Bool; fn const_ne(&self, other: &Self) -> Bool { Bool(!self.const_eq(other).0) } }` and `pub const trait ConstOrd: ConstEq { fn const_cmp(&self, other: &Self) -> Ordering; fn const_lt(&self, other: &Self) -> Bool; fn const_le(&self, other: &Self) -> Bool; fn const_gt(&self, other: &Self) -> Bool; fn const_ge(&self, other: &Self) -> Bool; }` in `arvo-strategy`. (Ordering itself is `core::cmp::Ordering` which already has const constructor literals in nightly; if not, ship `pub enum ConstOrdering { Less, Equal, Greater }`.) Implement on USize, Cap, Bool, Bits, UFixed, IFixed, FastFloat, StrictFloat, Mask64, Mask256, NodeId, MetaCarrier, IBits, FBits, Width.
 
@@ -244,7 +244,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Cascade:** `FastFloat::new` / `StrictFloat::new` / `into_inner` (already const fn). `Float<F>` cfg-resolved alias becomes fully const-arithmetic. Float TotalOrd/Sqrt/Recip/Abs (Finding 13) gain const-callable IEEE projections.
 
-**Bridge required?** No: Ieee is a substrate-owned trait.
+**Bridge required?** No: Ieee is a arvo-owned trait.
 
 **Priority:** P1.
 
@@ -334,7 +334,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Gap:** `Bool` impls `Try` (allowing `?` on Bool) and `FromResidual<Infallible>`. Bodies are pure constructors. `core::ops::Try` and `FromResidual` are not const-stable in stdlib.
 
-**Concrete change:** Currently rustc-blocked. The substrate already has `notko::Outcome` for the Result-shape const path. For Bool's `?` ergonomics in const contexts, define a `pub const trait ConstTry { type Output; type Residual; fn const_branch(self) -> ConstControlFlow<Self::Residual, Self::Output>; ... }` mirror in arvo-storage or notko, with `pub const enum ConstControlFlow<R, O> { Continue(O), Break(R) }`. Implement on `Bool` with const bodies.
+**Concrete change:** Currently rustc-blocked. arvo already has `notko::Outcome` for the Result-shape const path. For Bool's `?` ergonomics in const contexts, define a `pub const trait ConstTry { type Output; type Residual; fn const_branch(self) -> ConstControlFlow<Self::Residual, Self::Output>; ... }` mirror in arvo-storage or notko, with `pub const enum ConstControlFlow<R, O> { Continue(O), Break(R) }`. Implement on `Bool` with const bodies.
 
 **Cascade:** Consumers using `?` on Bool in const fn (currently impossible) gain that surface.
 
@@ -432,7 +432,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Location:** No `arvo/tests/ufixed_const_arith.rs` (only `ufixed_ops.rs` etc., presumably runtime).
 
-**Gap:** UFixed/IFixed const Add/Sub/Mul/Div impls landed in round 202605021400. UFixed/IFixed `Identity::ZERO` / `ONE` blankets landed in round 202605021600. No smoke test exercising `const _: UFixed<{ ibits(8) }, { fbits(0) }, Hot> = UFixed::ZERO + UFixed::ONE;` or `const _: IFixed<...> = IFixed::ZERO * IFixed::ONE;`. The substrate's most consumer-visible surface has zero const-context proof.
+**Gap:** UFixed/IFixed const Add/Sub/Mul/Div impls landed in round 202605021400. UFixed/IFixed `Identity::ZERO` / `ONE` blankets landed in round 202605021600. No smoke test exercising `const _: UFixed<{ ibits(8) }, { fbits(0) }, Hot> = UFixed::ZERO + UFixed::ONE;` or `const _: IFixed<...> = IFixed::ZERO * IFixed::ONE;`. arvo's most consumer-visible surface has zero const-context proof.
 
 **Concrete change:** `arvo/tests/ufixed_const_arith.rs` and `ifixed_const_arith.rs` exercising:
 1. UFixed Identity ZERO/ONE per strategy.
@@ -580,7 +580,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Location:** `arvo/src/ufixed.rs:32` (default Warm), `arvo/src/ifixed.rs:41` (default Warm), `arvo-storage/src/bits.rs:51` (default Hot)
 
-**Gap:** Not directly a const-trait gap, but a substrate-fundamentals gap. Inconsistent defaults mean `const _: Bits<8> = ...;` uses Hot, `const _: UFixed<{ibits(4)},{fbits(4)}> = ...;` uses Warm. Const expression composition across types becomes subtly cross-strategy without consumer awareness. This is a design-smell signal: likely intentional but worth flagging during the substrate-foundations push.
+**Gap:** Not directly a const-trait gap, but a core-fundamentals gap. Inconsistent defaults mean `const _: Bits<8> = ...;` uses Hot, `const _: UFixed<{ibits(4)},{fbits(4)}> = ...;` uses Warm. Const expression composition across types becomes subtly cross-strategy without consumer awareness. This is a design-smell signal: likely intentional but worth flagging during the substrate-foundations push.
 
 **Concrete change:** Document explicitly in DESIGN.md (or per-type doc) that Bits's Hot default reflects bit-pattern-storage semantics while UFixed/IFixed Warm reflects arithmetic-correctness ergonomics. Confirm via the user that this asymmetry is intended; if not, unify.
 
@@ -592,7 +592,7 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 **Location:** Throughout: `Bits` derives Hash (arvo-storage/src/bits.rs:49), MetaCarrier derives Hash (meta_bits.rs:46), bitfield macro emits manual Hash (bitfield.rs:177). Plus arvo-hash crate (Hasher / Fnv1a) likely has non-const trait impls.
 
-**Gap:** `core::hash::Hash::hash` is not const-stable. No substrate bridge. Consumers cannot hash arvo values in const context. The `arvo-hash` crate (with `Fnv1a`, `Hasher<const N: Width>`, `ContentHash`) likely has the same gap; it's a substrate-shipped hash family that should be const-callable for compile-time content addressing.
+**Gap:** `core::hash::Hash::hash` is not const-stable. No bridge. Consumers cannot hash arvo values in const context. The `arvo-hash` crate (with `Fnv1a`, `Hasher<const N: Width>`, `ContentHash`) likely has the same gap; it's a arvo-shipped hash family that should be const-callable for compile-time content addressing.
 
 **Concrete change:** Define `pub const trait ConstHash<H: [const] ConstHasher>: { fn const_hash(&self, hasher: &mut H); }` and `pub const trait ConstHasher { fn const_write(&mut self, bytes: &[u8]); fn const_finish(&self) -> u64; }` in arvo-hash. Implement on Fnv1a (FNV-1a is purely const-friendly: per-byte xor + multiply). Bridge ConstHash for every primitive wrapper type. This unlocks compile-time content addressing: a documented use case.
 
@@ -606,9 +606,9 @@ PR #42 branch: `feat/usize-const-arith`. The recent rounds (202605021200 / 20260
 
 The audit identifies six distinct bridges the substrate needs to define before PR #42 merge:
 
-1. **`ConstEq`** (and `ConstOrd` as supertrait): `arvo-strategy`. Replaces non-const `PartialEq` / `Eq` / `PartialOrd` / `Ord` for in-substrate generic-context use. Required by Findings 9, 13, 14, 25, 38.
+1. **`ConstEq`** (and `ConstOrd` as supertrait): `arvo-strategy`. Replaces non-const `PartialEq` / `Eq` / `PartialOrd` / `Ord` for in-arvo generic-context use. Required by Findings 9, 13, 14, 25, 38.
 2. **`ConstDefault`**: `arvo-strategy`. Replaces non-const `Default::default` for typed-zero const construction. Required by Findings 7, 18, 38.
-3. **`ConstFrom<T>` / `ConstTryFrom<T, E>`**: `arvo-strategy`. Replaces non-const `From::from` / `TryFrom::try_from` for in-substrate conversions. Required by Findings 8, 24.
+3. **`ConstFrom<T>` / `ConstTryFrom<T, E>`**: `arvo-strategy`. Replaces non-const `From::from` / `TryFrom::try_from` for in-arvo conversions. Required by Findings 8, 24.
 4. **`ConstDeref` / `ConstAsRef<T>`**: `arvo-transparent`. Replaces non-const `Deref::deref` / `AsRef::as_ref`. Required by Findings 6, 24.
 5. **`ConstTry` / `ConstControlFlow<R, O>`**: notko or arvo-storage. Replaces non-const `core::ops::Try` / `FromResidual` for `?`-on-Bool in const context. Required by Finding 21.
 6. **`ConstHash` / `ConstHasher`**: arvo-hash. Replaces non-const `core::hash::Hash::hash` / `Hasher::write`. Required by Finding 40.

@@ -32,7 +32,7 @@ dead data: every method in the trait body takes/returns `Self` and `USize`,
 none reference `W`. The only place width matters is `mask_for_width(n: USize)
 -> Self`, where `n` is a runtime-shaped (const-callable) parameter, not the
 trait's `W`. Removing `W` simplifies the trait and lets the blanket impl
-satisfy the substrate's "tools, not policy" stance: consumers pick the chassis
+satisfy arvo's "tools, not policy" stance: consumers pick the chassis
 flavor (`Mask<Bits<64, Hot, Unsigned>>` or `Mask<Bits<256, Hot, Unsigned>>`)
 and the trait is uniform across them.
 
@@ -60,7 +60,7 @@ move to a future bench-driven round (BACKLOG entry).
 
 The `mask_for_width(n: USize)` method on the reshaped trait reads its operand
 as a runtime `USize`, not a const generic. This is the same shape used by
-`BitPrim::mask_low(n: USize) -> Self` (the substrate helper used by `Narrow`
+`BitPrim::mask_low(n: USize) -> Self` (the helper used by `Narrow`
 impls). The chassis's `Mask<W>::mask_for_width` already exists as an inherent
 method via the underlying `BitPrim::mask_low` route; the trait method
 delegates.

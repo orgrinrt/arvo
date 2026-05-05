@@ -1,7 +1,7 @@
 # arvo-strategy. Design
 
 The strategy-marker and container-projection layer. Defines what
-"strategy" means in the substrate: a compile-time tag that picks the
+"strategy" means in arvo: a compile-time tag that picks the
 underlying primitive container for a given bit width. No fielded
 types beyond the four ZST markers. `#![no_std]`, no alloc.
 
@@ -42,7 +42,7 @@ minimum storage and SIMD-friendly alignment for the SSE2/NEON floor.
 
 `Warm` selects a containers matching Hot's footprint up to native
 primitives. The earlier "2x-logical safety" Warm cap collapsed to
-"same projection as Hot" once the substrate's bit-width range exceeded
+"same projection as Hot" once arvo's bit-width range exceeded
 single native primitives. Above 128 bits, Warm uses
 `WideBits<{bytes_for(N)}>` (align-1 byte-exact). Picked for
 development ergonomics; full precision; no SIMD assumption.
@@ -86,8 +86,7 @@ Const trait so bounds compose with const fns.
 Round C (round 202604280806) decomposes the bundled `Strategy` axis
 into three orthogonal sub-axes, each its own sealed marker trait. Round
 202605021800 lifts every axis trait to `pub const trait` so `[const]`
-propagation reaches every `Self: HasAxes` projection through the
-substrate.
+propagation reaches every `Self: HasAxes` projection through arvo.
 
 ```rust
 pub const trait OverflowPolicy { /* Wrapping / Saturating */ }
@@ -133,7 +132,7 @@ strategy `impl const HasAxes for Hot/Warm/Cold/Precise` blocks are
 `where T: [const] HasAxes` for const-context callers.
 
 Per the `arvo-toolbox-not-policer` workspace rule, the axis
-decomposition exists so the substrate can grow its strategy lattice
+decomposition exists so arvo can grow its strategy lattice
 without forking the marker namespace each time. Consumer-facing
 expansion (new public markers) requires an explicit design round.
 
@@ -142,9 +141,8 @@ expansion (new public markers) requires an explicit design round.
 Workspace-wide pattern (round 202605021800): sealed marker traits
 carrying associated types or const discriminants but no method bodies
 (or trivially-pure bodies) lift to `pub const trait` so `[const]`
-propagation reaches every where-clause that bounds on them.
-
-The traits covered:
+propagation reaches every where-clause that bounds on them. The
+following traits across the foundation crates are covered.
 
 - `Strategy` (sealed marker; `pub const trait`).
 - `OverflowPolicy`, `ContainerWidth`, `StorageLayout`, `HasAxes`
@@ -170,11 +168,11 @@ Round 202605031400 deletes `MultiContainerHalf` along with the
 128 bits goes through byte-sequence storage; no half-marker is
 required.
 
-## Const-trait substrate bridges (`ConstEq`, `ConstOrd`, `ConstDefault`)
+## Const-trait bridges (`ConstEq`, `ConstOrd`, `ConstDefault`)
 
-Round 202605021800 introduces three substrate-level const-trait
-bridges. They replace stdlib non-const trait usage in const fn bodies
-where the substrate composes generically.
+Round 202605021800 introduces three const-trait bridges in arvo.
+They replace stdlib non-const trait usage in const fn bodies
+where the foundation composes generically.
 
 ```rust
 pub const trait ConstEq {
@@ -198,11 +196,11 @@ pub const trait ConstDefault {
 ```
 
 `Ordering` reuses `core::cmp::Ordering` if const-constructible on
-rustc 1.96.0-nightly; otherwise the substrate ships `pub enum
+rustc 1.96.0-nightly; otherwise arvo ships `pub enum
 ConstOrdering { Less, Equal, Greater }`. The decision is recorded at
 round close.
 
-Coverage: every primitive-wrapper substrate type (`USize`, `Cap`,
+Coverage: every primitive-wrapper type (`USize`, `Cap`,
 `Bool`, `Bits<N, S, Sign>`, `UFixed<I, F, S>`, `IFixed<I, F, S>`,
 `FastFloat<F>`, `StrictFloat<F>`, `Mask<W>`, `BitMatrix<W, const N: Cap>`,
 `NodeId`, `MetaCarrier`, `IBits`, `FBits`, `Width`) gains `impl const ConstEq`
@@ -215,14 +213,14 @@ replacements.
 
 Bridge cross-references and shipping status:
 
-- `ConstFrom<T>` / `ConstTryFrom<T, E>` substrate bridges (this crate). Ships in round 202605031548 (#314). See `## ConstFrom and ConstTryFrom bridges` below.
-- `ConstDeref` / `ConstAsRef<T>` substrate bridges (placed in `arvo-transparent`). Ships in round 202605031548 (#314). See `arvo-transparent/DESIGN.md.tmpl`.
+- `ConstFrom<T>` / `ConstTryFrom<T, E>` bridges (this crate). Ships in round 202605031548 (#314). See `## ConstFrom and ConstTryFrom bridges` below.
+- `ConstDeref` / `ConstAsRef<T>` bridges (placed in `arvo-transparent`). Ships in round 202605031548 (#314). See `arvo-transparent/DESIGN.md.tmpl`.
 - `ConstHash<N, S, Sign>` (placed in `arvo-hash`) plus `NarrowFromU64<N, S, Sign>` (placed in `arvo-bits-contracts`). Ships in round 202605031548 (#314). See `arvo-hash/DESIGN.md.tmpl` and `arvo-bits-contracts/DESIGN.md.tmpl`.
 - `ConstTry` / `ConstControlFlow<R, O>`. Replace non-const `Try` / `FromResidual`. Round 5 / #315 (deferred).
 
 ## ConstFrom and ConstTryFrom bridges
 
-Substrate-owned const traits mirroring `core::convert::From` and `core::convert::TryFrom`, callable from `const` context.
+Const traits mirroring `core::convert::From` and `core::convert::TryFrom`, callable from `const` context.
 
 ```rust
 pub const trait ConstFrom<T>: Sized {
@@ -235,13 +233,13 @@ pub const trait ConstTryFrom<T>: Sized {
 }
 ```
 
-`Outcome<T, E>` is `notko::Outcome`. The trait declarations live in `arvo-strategy` per the bridge-home rule: `notko` (which hosts `Outcome`) is reachable from `arvo-strategy`, and the bridges return `Self` and `Outcome<Self, ...>` respectively. Per-substrate-type impls live in the type-declaring crate (forward composition through the bridge).
+`Outcome<T, E>` is `notko::Outcome`. The trait declarations live in `arvo-strategy` per the bridge-home rule: `notko` (which hosts `Outcome`) is reachable from `arvo-strategy`, and the bridges return `Self` and `Outcome<Self, ...>` respectively. Per-type impls live in the type-declaring crate (forward composition through the bridge).
 
 ## Canonical typed-const surfaces: `Bounded`, `Identity`, `SignedIdentity`
 
 `Bounded` (MIN / MAX) and `Identity` (ZERO / ONE) are the canonical
 const-trait surfaces for typed-min, typed-max, typed-zero, typed-one
-across the substrate. Every primitive-wrapper impls them. The trait
+across arvo. Every primitive-wrapper impls them. The trait
 **is** the canonical surface: consumer code reaches for
 `<T as Bounded>::MAX` / `<T as Identity>::ZERO`, or imports the
 trait (`use arvo_strategy::{Bounded, Identity};`) and writes
@@ -250,10 +248,11 @@ lookup.
 
 Inherent re-definitions of the form `impl T { pub const ZERO: T =
 <T as Identity>::ZERO; }` are deliberately NOT maintained. They
-duplicate trait constants, promise an API consistency the substrate
+duplicate trait constants, promise an API consistency arvo
 would have to remember to maintain across every wrapper, and rot the
-moment a trait gains a constant. The substrate ships the trait
-impls; consumer ergonomics is satisfied by `use`-importing the trait.
+moment a trait gains a constant. The trait impls ship as the
+canonical surface; consumer ergonomics is satisfied by `use`-importing
+the trait.
 
 Round 202605021800 adds `SignedIdentity` for the signed `-1`:
 
@@ -280,7 +279,7 @@ relocates it to `arvo-strategy::width`.
 pub struct Width(pub u16);
 ```
 
-Per `arvo-bridge-home-rule.md`, a substrate type lives in the lowest
+Per `arvo-bridge-home-rule.md`, a foundation type lives in the lowest
 crate where its position-as-const-generic-param is reachable. `Width`
 appears as the const-generic parameter of the projection traits
 (`BitsContainerFor<const N: Width, Sign>`), which live here in
@@ -294,17 +293,17 @@ on arvo-storage). Relocation to `arvo-strategy::width` resolves both.
 source-compatibility within the workspace facade. The `MetaCarrier`
 companion stays in `arvo-storage` (it carries Width but doesn't
 define it; the `ConstParamTy_` carrier shape belongs alongside the
-substrate-storage primitives that use it).
+storage primitives that use it).
 
 ## Storage primitives (cross-references)
 
 The container projection bottoms out at concrete storage types
 declared in `arvo-storage`:
 
-- `Bits<const N: Width, S: Strategy, Sign: Signedness>` — the
+- `Bits<const N: Width, S: Strategy, Sign: Signedness>`, the
   user-facing typed-width bit container. Resolves its physical
   storage via `<S as BitsContainerFor<N, Sign>>::T`.
-- `WideBits<const BYTES: usize>` — byte-sequence storage at
+- `WideBits<const BYTES: usize>`, byte-sequence storage at
   align-1, used by Warm/Cold/Precise for N > 128.
 - `WideBits<const BYTES: usize, A: Align = A1>` covers all wide
   storage. The `Align` trait + ZST markers `A1` / `A16` / `A32` /
@@ -504,7 +503,7 @@ admitted types only.
 
 `WIDTH: u16` stays bare-primitive-typed for round 202605030400.
 Round 3 (#313) lifts it to `Width` once the broader bare-`u16` to
-typed `Width` substrate sweep cascades through the bridge family.
+typed `Width` sweep cascades through the bridge family.
 
 The arvo facade re-exports `Ieee` and `FromU8Ieee` from arvo-strategy
 so consumer imports through `arvo::Ieee` and `arvo::FromU8Ieee` keep

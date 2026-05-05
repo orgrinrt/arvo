@@ -2,12 +2,12 @@
 
 ## What arvo is
 
-arvo is a numeric + analysis substrate: fixed-point primitives with
+arvo is a numeric + analysis foundation: fixed-point primitives with
 strategy markers, bit-level contracts, and a handful of algorithm
 crates built on top. Everything is `#![no_std]`, no `alloc`, no
 platform dependency, and every size is const at type level.
 
-Per round 202604271346, the substrate is structured as a layered set
+Per round 202604271346, arvo is structured as a layered set
 of small crates with a downstream facade. `arvo` itself is the facade,
 not L0. L0 is `arvo-storage`. Trait declarations split into six
 contract crates (`arvo-transparent`, `arvo-strategy`,
@@ -22,7 +22,7 @@ facade:
 
 **L0 foundation:**
 - `arvo-transparent`. `Transparent` const unsafe trait, the typed
-  unwrap door for every `repr(transparent)` substrate primitive.
+  unwrap door for every `repr(transparent)` arvo primitive.
   Free `arvo::raw` const fn.
 - `arvo-strategy`. `Strategy` marker plus the four ZST markers
   `Hot` / `Warm` / `Cold` / `Precise`. Unified `BitsContainerFor<const
@@ -60,7 +60,7 @@ facade:
   bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`,
   `QWord` over `Bits<N, Hot>`).
 
-**L2 substrate concretes:**
+**L2 concretes:**
 - `arvo-bitmask`. `Mask64`, `Mask256`, `BitMatrix`. Implements
   `Mask<const W: u8>` from arvo-mask-contracts.
 - `arvo-tensor`. `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
@@ -87,7 +87,7 @@ facade:
   Generic over weight and eigenvector types.
 
 **Facade:**
-- `arvo`. Re-exports the substrate. `UFixed<I, F, S>` as
+- `arvo`. Re-exports the consumer surface. `UFixed<I, F, S>` as
   `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>`.
   `IFixed<I, F, S>` as `repr(transparent)` newtype over
   `Bits<{1+I+F}, S, Signed>` (symmetric counterpart; reshape shipped
@@ -139,7 +139,7 @@ arvo is a library; real code lives downstream. Known consumers:
 
 Consumer names appear here only because they drive the choice of
 which L2/L3 algorithms exist. arvo's API is not shaped by any one
-consumer; the substrate stays usable by anyone.
+consumer; arvo stays usable by anyone.
 
 ## Commit style
 

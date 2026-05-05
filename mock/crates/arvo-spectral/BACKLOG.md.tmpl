@@ -1,4 +1,4 @@
-# arvo-spectral — backlog
+# arvo-spectral, backlog
 
 > **Type-surface reminder**: new entries use `arvo::USize` /
 > `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
@@ -10,9 +10,9 @@
 `spectral_bisection` / `k_way_partition` ship with
 `Mask<Bits<64, Hot, Unsigned>>` and `[USize; N]` outputs respectively
 (supports N ≤ 64). The chassis is generic over W; instantiating with
-`W = Bits<256, Hot, Unsigned>` extends to N ≤ 256 via the substrate's
+`W = Bits<256, Hot, Unsigned>` extends to N ≤ 256 via arvo's
 MultiContainer plumbing without an algorithmic-shape change.
-Spectral methods are typically small-N (per polka-dots research N ≤
+Spectral methods are typically small-N (in observed workloads N ≤
 32 is common), so this is a widening for atypical workloads, not a
 default need.
 
