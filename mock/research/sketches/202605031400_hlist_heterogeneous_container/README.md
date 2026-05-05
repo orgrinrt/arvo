@@ -6,9 +6,9 @@
 
 ## What this directory exists to validate
 
-The senior audit on 2026-05-03 found that the substrate's `MultiContainer<HiT, LoT>` binary nesting was the lazy-choice fallback from an earlier round. The audit + user discussion led to the conclusion that container projection above 128 bits should be re-architected. This directory holds the sketches that validate the new architecture before it lands in source.
+The senior audit on 2026-05-03 found that the arvo's `MultiContainer<HiT, LoT>` binary nesting was the lazy-choice fallback from an earlier round. The audit + user discussion led to the conclusion that container projection above 128 bits should be re-architected. This directory holds the sketches that validate the new architecture before it lands in source.
 
-## Sketch 01: HList heterogeneous container layout finding
+## Sketch 01: cons-list heterogeneous container layout finding
 
 `01_hlist_basic.rs` ran on rustc 1.96.0-nightly. Real layout sizes:
 
@@ -23,13 +23,13 @@ The senior audit on 2026-05-03 found that the substrate's `MultiContainer<HiT, L
 
 **The padding rule**: Rust requires `total_size % alignment == 0`. Struct alignment = `max(field alignments)`. Heterogeneous Cons of `(u128, u64)` has alignment 16; content is 24 bytes; total is rounded up to 32. This is fundamental Rust layout under `repr(C)`, default repr, and field reordering. The "exact bit width" promise of heterogeneous-with-mixed-aligns is impossible without `repr(packed)`.
 
-**The same issue affects the existing `MultiContainer<u64, u128>`**: verified at `/tmp/mc_existing.rs` runtime — 32 bytes, identical to `MultiContainer<u128, u128>`. The "u64+u128 saves 8 bytes" rationale baked into the substrate was always fiction; nobody noticed.
+**The same issue affects the existing `MultiContainer<u64, u128>`**: verified at `/tmp/mc_existing.rs` runtime — 32 bytes, identical to `MultiContainer<u128, u128>`. The "u64+u128 saves 8 bytes" rationale baked into the arvo was always fiction; nobody noticed.
 
 ## Design pivot from this finding
 
 The user's response to the finding: **stop forcing native-primitive composition above 128 bits**. Three observations drove the pivot:
 
-1. The substrate already pays the custom-ops cost above 128 bits — every op on `MultiContainer<HiT, LoT>` is hand-composed across halves. We never used native primitive ops for wide values.
+1. The arvo already pays the custom-ops cost above 128 bits — every op on `MultiContainer<HiT, LoT>` is hand-composed across halves. We never used native primitive ops for wide values.
 2. Native-primitive composition with mixed alignment is no smaller than aligned native composition (proven above). The supposed benefit doesn't exist.
 3. Modern hardware (x86-64 ≥ Sandy Bridge 2011, ARMv7+, all aarch64, WASM, RISC-V most cores) has near-zero unaligned-access cost for non-cache-line-crossing reads. Byte-exact storage at align-1 is performant on every relevant target.
 
@@ -102,7 +102,7 @@ Every pillar from the resume-memory architecture is now sketch-validated:
 
 ## Next step
 
-Open #316 round on this branch. Doc CL captures the new shape with structured `## CHANGE: <symbol> FROM ... TO ...` blocks for each substrate-name change (MultiContainer deletion, BitsContainerFor table → single-impl projection, Width position lift if needed). SRC CL applies. Lock + close.
+Open #316 round on this branch. Doc CL captures the new shape with structured `## CHANGE: <symbol> FROM ... TO ...` blocks for each arvo-name change (MultiContainer deletion, BitsContainerFor table → single-impl projection, Width position lift if needed). SRC CL applies. Lock + close.
 
 ## Notes for next agent / next session
 
@@ -110,4 +110,4 @@ The architectural decision is locked: byte-sequence above 128 bits, native below
 
 `MultiContainer<HiT, LoT>` and `MultiContainerHalf` go away in #316. The arvo-storage `meta_bits.rs` `MetaCarrier` companion stays — it serves a different purpose (ConstParamTy_ const-generic carrier for meta-newtypes), unrelated to the wide-container projection.
 
-The Width newtype gives Width=u16 → 65535 bits max. That's 8KB per `Bits<N>` value. Sufficient for substrate use cases (loimu column-store, hash digests up to SHA3-512, RSA up to 4096 bits, etc.). If a consumer needs more, Width can be lifted to u32 — no architectural impact on the WideBits shape.
+The Width newtype gives Width=u16 → 65535 bits max. That's 8KB per `Bits<N>` value. Sufficient for arvo use cases (loimu column-store, hash digests up to SHA3-512, RSA up to 4096 bits, etc.). If a consumer needs more, Width can be lifted to u32 — no architectural impact on the WideBits shape.

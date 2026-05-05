@@ -1,4 +1,4 @@
-# arvo-comb — backlog
+# arvo-comb, backlog
 
 > **Type-surface reminder**: new entries use `arvo::USize` /
 > `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
@@ -9,7 +9,7 @@
 
 Space-filling curve ordering for dispatch interleaving. Same
 constraint representation as greedy grouping. Deferred per
-polka-dots T3 decisions #71-74 — not day-one.
+T3 decisions #71-74, not day-one.
 
 ## Wider-W bin_pack variant
 
@@ -17,8 +17,8 @@ polka-dots T3 decisions #71-74 — not day-one.
 by internal `Mask<Bits<64, Hot, Unsigned>>` helpers where consumers
 pair it with hierarchical co-firing flags). Instantiating the same
 helpers with `W = Bits<256, Hot, Unsigned>` would support >64 flags
-per group via the substrate's MultiContainer plumbing without an
-algorithmic-shape change. Common pipeline workloads per polka-dots
-T5 research stay well under 64 flags, so this is a non-urgent
+per group via arvo's MultiContainer plumbing without an
+algorithmic-shape change. Common pipeline workloads in observed
+research stay well under 64 flags, so this is a non-urgent
 widening.
 

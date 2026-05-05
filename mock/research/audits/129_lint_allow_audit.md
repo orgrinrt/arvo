@@ -26,7 +26,7 @@ Grep pattern: `lint:allow\((arvo-types-only|no-bare-numeric|no-bare-static-str)`
 
 | File | Sites | Tracked | Class |
 |------|-------|---------|-------|
-| arvo-bits/src/bits.rs | 9 | #127 | structural substrate |
+| arvo-bits/src/bits.rs | 9 | #127 | structural floor |
 | arvo-bits/src/bitfield.rs | 4 | #127 | structural macro-expansion |
 | arvo-tensor/src/cap.rs | 1 | #121 | external blocker (rustc) |
 | arvo-spectral/src/fiedler.rs | 1 | #123 | deferred retrofit |
@@ -40,7 +40,7 @@ Total: 15 annotations across 5 source sites.
 Lines 119, 125: per-N narrow from u64 to the dispatched container
 (`Self((raw & Self::MASK_U64) as $ty)`) and widen back (`self.0 as
 u64`). The macro-expanded `$ty` is `u8`/`u16`/`u32`/`u64`. arvo-bits
-is the substrate that introduces `Bits<N>` as the opaque-bit
+introduces `Bits<N>` as the opaque-bit
 primitive; its internal bridge to the native container is the
 canonical floor of the type stack. Nothing shorter can be
 expressed using only arvo primitives.
@@ -48,7 +48,7 @@ expressed using only arvo primitives.
 Lines 141, 143, 145, 149: the `impl_bits_u64!` dispatch table
 (`impl_bits_u64!(u8, 1..=8)`, etc). Names the native storage
 primitives that `UContainerFor<N>` picks. Structural by definition
-of the substrate.
+of the layer.
 
 Lines 174, 178, 182, 186: `BitAccess` bridge to the sealed
 `BitPrim` trait (`self.0.get_bit(idx.0 as u32)`). `BitPrim` is an
@@ -97,7 +97,7 @@ All 15 annotations across 5 sites are genuinely necessary under the
 current language and crate-layering constraints. No bare primitives
 in arvo source are replaceable by arvo primitives today; the
 boundary lives at language-grammar (#121), internal-trait
-contract (#123), or substrate-floor (#127) walls.
+contract (#123), or core-floor (#127) walls.
 
 #129 closes with no code change. When #121 and #123 resolve, the
 annotations on cap.rs and fiedler.rs lift. The #127 annotations

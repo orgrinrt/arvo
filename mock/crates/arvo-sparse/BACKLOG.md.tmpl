@@ -1,4 +1,4 @@
-# arvo-sparse — backlog
+# arvo-sparse, backlog
 
 > **Type-surface reminder**: new entries use `arvo::USize` /
 > `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
@@ -15,7 +15,7 @@ Unsigned>` extends to 256 nodes without an algorithmic-shape change.
 
 `rcm_reorder`, `block_diagonal`, `dulmage_mendelsohn` accept the
 chassis form. The 256-wide instantiation extends the algorithms to
-larger sparse adjacencies via the substrate's MultiContainer
+larger sparse adjacencies via arvo's MultiContainer
 plumbing. Promote when a concrete consumer surfaces >64-node
 adjacency; cookbook documentation of the wider-W pattern is the only
 deferred work.
@@ -23,6 +23,6 @@ deferred work.
 ## SpMV
 
 Sparse matrix-vector multiply patterns. Deferred per the original
-design (polka-dots T3 decisions #71-74). Same representation and API
+design (T3 decisions #71-74). Same representation and API
 surface as the above algorithms; add when a concrete consumer need
 surfaces.

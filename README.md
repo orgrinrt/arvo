@@ -8,17 +8,17 @@
 [![GitHub Issues](https://img.shields.io/github/issues/orgrinrt/arvo.svg)](https://github.com/orgrinrt/arvo/issues)
 ![License](https://img.shields.io/github/license/orgrinrt/arvo?color=%23009689)
 
-> Fixed-point numeric substrate plus analysis algorithms. `#![no_std]`, no alloc, no platform dep. Every numeric type carries a `Strategy` marker, monomorphisation is the dispatch.
+> Fixed-point numerics plus analysis algorithms. `#![no_std]`, no alloc, no platform dep. Every numeric type carries a `Strategy` marker, monomorphisation is the dispatch.
 
 </div>
 
 ## What it is
 
-`arvo` replaces bare integer and float primitives with fixed-point types that carry a strategy marker. `UFixed<I, F, S>` is an unsigned value with `I` integer bits, `F` fractional bits, and `S: Strategy` selecting the precision-versus-throughput tradeoff at monomorphisation time. `IFixed<I, F, S>` is its signed counterpart, sharing the same `Bits<{1+I+F}, S, Signed>` storage primitive through a Sign axis. `FastFloat<F>` and `StrictFloat<F>` cover floating-point calls where a consumer needs `f32` / `f64` shape under the substrate's typed-numeric umbrella, parameterised by the IEEE float width `F`.
+`arvo` replaces bare integer and float primitives with fixed-point types that carry a strategy marker. `UFixed<I, F, S>` is an unsigned value with `I` integer bits, `F` fractional bits, and `S: Strategy` selecting the precision-versus-throughput tradeoff at monomorphisation time. `IFixed<I, F, S>` is its signed counterpart, sharing the same `Bits<{1+I+F}, S, Signed>` storage primitive through a Sign axis. `FastFloat<F>` and `StrictFloat<F>` cover floating-point calls where a consumer needs `f32` / `f64` shape under arvo's typed-numeric umbrella, parameterised by the IEEE float width `F`.
 
 Strategy markers are zero-sized types that the compiler uses to pick implementation at each call site. `Hot` assumes invariants are proven and compiles to bare-primitive arithmetic on a host integer up to 64 bits, or a 16-byte aligned wide container above that. `Warm` is the default and takes a pragmatic tradeoff between width and speed. `Cold` prefers correctness over throughput. `Precise` supports widths up to 256 bits via multi-limb backing. The same `UFixed<16, 0, ?>` compiles to different code depending on `?`, letting the caller set the tradeoff without the callee branching.
 
-The substrate is built around six contract crates and a facade. The facade re-exports the consumer-visible surface; the contract crates carry trait declarations as `pub const trait` so calls dispatch at compile time. Above the numerics, a small set of crates layers fixed-shape tensors, bitmask concretes, hash-domain containers, and a handful of generic analysis algorithms. Algorithm crates take trait bounds rather than concrete `UFixed` or `IFixed`, so the substrate stays usable without pulling in any one algorithm crate.
+arvo is built around six contract crates and a facade. The facade re-exports the consumer-visible surface; the contract crates carry trait declarations as `pub const trait` so calls dispatch at compile time. Above the numerics, a small set of crates layers fixed-shape tensors, bitmask concretes, hash-domain containers, and a handful of generic analysis algorithms. Algorithm crates take trait bounds rather than concrete `UFixed` or `IFixed`, so the foundations stay usable without pulling in any one algorithm crate.
 
 ## Status
 
@@ -28,7 +28,7 @@ The substrate is built around six contract crates and a facade. The facade re-ex
 
 | Crate | Layer | Purpose |
 |---|---|---|
-| `arvo-transparent` | L0 | `Transparent` const unsafe trait, the typed unwrap door for every `repr(transparent)` substrate primitive. Free `arvo::raw` const fn. |
+| `arvo-transparent` | L0 | `Transparent` const unsafe trait, the typed unwrap door for every `repr(transparent)` arvo primitive. Free `arvo::raw` const fn. |
 | `arvo-strategy` | L0 | `Strategy` marker plus the four ZST markers `Hot` / `Warm` / `Cold` / `Precise`. `BitsContainerFor<N, Sign>` projection from (strategy, width, sign) to dispatched container. Hosts the `Width` newtype. |
 | `arvo-storage` | L0 | `Bits<N, S, Sign>` opaque storage primitive (`repr(transparent)`). `WideBits<BYTES>` byte-sequence storage at align-1 (Warm/Cold/Precise above 128 bits). `AlignedWideBits16<BYTES>` at align(16) (Hot above 128 bits). `Bool`, `USize` platform wrappers. `Unsigned` / `Signed` Sign markers. |
 | `arvo-bits-contracts` | L0.5 | `HasBitWidth`, `BitAccess`, `BitSequence`, `BitLogic`, `BitPrim`, `IBitPrim`, `Narrow<T>`. All `pub const trait`. |
@@ -43,7 +43,7 @@ The substrate is built around six contract crates and a facade. The facade re-ex
 | `arvo-sparse` | L2 | Sparse matrix storage: CSR, RCM, block diagonal, Dulmage-Mendelsohn. Generic over value types. |
 | `arvo-comb` | L2 | Combinatorial optimisation: DP, greedy grouping, bin-packing. Generic over cost types. |
 | `arvo-spectral` | L3 | Spectral methods: Laplacian, Fiedler, power iteration. Built on `arvo-sparse` plus `arvo-tensor`. |
-| `arvo` | facade | Re-exports the substrate. `UFixed<I, F, S>`, `IFixed<I, F, S>`, `Uint<N, S>` / `Int<N, S>`, `FastFloat<F>` / `StrictFloat<F>`, `bitfield!` declarative macro. |
+| `arvo` | facade | Re-exports the consumer surface. `UFixed<I, F, S>`, `IFixed<I, F, S>`, `Uint<N, S>` / `Int<N, S>`, `FastFloat<F>` / `StrictFloat<F>`, `bitfield!` declarative macro. |
 
 ## Five layers, one rule each
 
@@ -55,7 +55,7 @@ The stack has five dependency-ordered layers. Each layer has a single architectu
 
 **L1 blanket-impl carrier (`arvo-bits`).** Concrete blanket impls of L0.5 bit-level traits on `Bits<N, S>` and bare primitive containers. Bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`, `QWord`).
 
-**L2 substrate concretes plus generic algorithms.** Mask concretes (`arvo-bitmask`), value-storage tensors (`arvo-tensor`), refit gateway (`arvo-refit`), hash family (`arvo-hash`). Algorithm crates (`arvo-graph`, `arvo-sparse`, `arvo-comb`) take trait bounds (`T: UArith<BITS>`, `T: Boundable`, and similar), not concrete `UFixed<...>`.
+**L2 concretes plus generic algorithms.** Mask concretes (`arvo-bitmask`), value-storage tensors (`arvo-tensor`), refit gateway (`arvo-refit`), hash family (`arvo-hash`). Algorithm crates (`arvo-graph`, `arvo-sparse`, `arvo-comb`) take trait bounds (`T: UArith<BITS>`, `T: Boundable`, and similar), not concrete `UFixed<...>`.
 
 **L3 spectral methods (`arvo-spectral`).** Built on L2. Spectral analysis over sparse weight types. No dependency back toward L2 peers it does not need.
 
@@ -76,7 +76,7 @@ Dispatch happens at monomorphisation. `UFixed<16, 0, Hot>` and `UFixed<16, 0, Co
 
 Every consumer-walkable trait in arvo's contract surface is declared `pub const trait`. `BitAccess` / `BitSequence` / `BitLogic` / `Abs` / `Sqrt` / `Recip` / `TotalOrd` / `FromConstant` / `Predicate` from L0.5 are all callable in `const fn` bodies, alongside the typed-const `Bounded` / `Identity` / `SignedIdentity` family that lives in `arvo-strategy` at L0. Bridges from std traits (`ConstPartialEq` over `Bool`, `ConstOrd`, `ConstDefault`, `ConstFrom<T>`, `ConstTryFrom<T, E>`, `ConstDeref`, `ConstAsRef`) sit in the appropriate L0 / L0.5 crate per the trait's home-rule placement (return type's lowest reachable layer).
 
-The `from_constant` family is meaningfully callable at compile time: typed-const value construction, strategy projection at the trait-solver level, and the const `where` clauses that gate Warm at 33+ bits with a clean diagnostic all compose into one const-callable spine.
+The `from_constant` family is callable at compile time: typed-const value construction, strategy projection at the trait-solver level, and the const `where` clauses that gate Warm at 33+ bits with a clean diagnostic all compose into one const-callable spine.
 
 ## Installation
 
@@ -91,7 +91,7 @@ Or add to your `Cargo.toml`:
 arvo = "0.1"
 ```
 
-The facade pulls in the substrate. Consumers that only want bit-level contracts can depend directly on `arvo-bits` or any specific L0 / L0.5 crate; the algorithm crates (`arvo-graph`, `arvo-sparse`, `arvo-comb`, `arvo-spectral`) are independently usable subject to their layer position.
+The facade pulls in the full surface. Consumers that only want bit-level contracts can depend directly on `arvo-bits` or any specific L0 / L0.5 crate; the algorithm crates (`arvo-graph`, `arvo-sparse`, `arvo-comb`, `arvo-spectral`) are independently usable subject to their layer position.
 
 ## Usage
 

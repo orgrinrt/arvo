@@ -17,10 +17,10 @@ contract crates; concrete types come from `arvo-bitmask` and
 ## Capacity
 
 Algorithms ship against `BitMatrix<Bits<64, Hot, Unsigned>, N>`. Up
-to 64 nodes per adjacency row, covering the common case per
-polka-dots research. The chassis is generic over W; instantiating
+to 64 nodes per adjacency row, covering the common case observed in
+prior empirical research. The chassis is generic over W; instantiating
 the same algorithms with `W = Bits<256, Hot, Unsigned>` extends to
-256 nodes via the substrate's MultiContainer plumbing without an
+256 nodes via arvo's MultiContainer plumbing without an
 algorithmic-shape change. The wider-W instantiations are tracked in
 BACKLOG.md.tmpl as ergonomic helpers; the algorithm bodies are the
 same.
@@ -83,7 +83,7 @@ fn renumber<const N: Cap>(
 
 After topo sort, renumber all node IDs so they match reverse
 topological order. Upward rank traversal then accesses the rank
-array sequentially — the hardware prefetcher sees a sequential
+array sequentially, the hardware prefetcher sees a sequential
 scan. Same principle as column co-location: make access patterns
 sequential for the prefetcher.
 
@@ -150,7 +150,7 @@ read `predecessors[i]` when the Mask bit is set.
 ## Critical path analysis
 
 The critical path is the longest weighted path from any root to any
-leaf. Computed via upward rank — the path following the highest-ranked
+leaf. Computed via upward rank, the path following the highest-ranked
 successor at each step. Identifies the serial bottleneck in a DAG.
 
 The weight type is consumer-chosen; a common pattern is summing
@@ -176,7 +176,7 @@ independent sub-problems. Waist detection finds narrow bottleneck
 points WITHIN a connected DAG where all paths converge through a few
 nodes before fanning out again.
 
-Common application: phase decomposition — the waist points become
+Common application: phase decomposition, the waist points become
 natural phase boundaries in a staged pipeline.
 
 ## Spanning tree decomposition
@@ -212,7 +212,7 @@ for any consumer that batches along trunks.
 
 - 202603241400_topic.arvo-crate-dependency-revision.md (generic contracts)
 - 202604191900_changelist.doc.md (this round)
-- T5 L1044-1094 (renumbering, step ranges — polka-dots)
-- T6 L2490-2501 (spanning tree algorithm — polka-dots)
-- T6 L2710-2712 (waist detection — polka-dots)
-- T3 L1694-1750 (connected components for partitioning — polka-dots)
+- T5 L1044-1094 (renumbering, step ranges)
+- T6 L2490-2501 (spanning tree algorithm)
+- T6 L2710-2712 (waist detection)
+- T3 L1694-1750 (connected components for partitioning)

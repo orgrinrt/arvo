@@ -1,4 +1,4 @@
-# arvo-bitmask — backlog
+# arvo-bitmask, backlog
 
 > **Type-surface reminder**: new entries use `arvo::USize` /
 > `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
@@ -9,11 +9,11 @@
 
 Mask4096 / Mask1024 / Mask128 ergonomic instantiations are deferred
 post-1.0 if a consumer surfaces the need. The chassis is already
-generic over W; the substrate's BitsContainerFor projection
+generic over W; arvo's BitsContainerFor projection
 currently caps logical widths at 256 via the MultiContainer
-plumbing. Wider widths require the substrate's WideBits / extended
+plumbing. Wider widths require arvo's WideBits / extended
 container support to land first. The arvo-bitmask side is a no-op
-once the substrate side does.
+once that lands.
 
 ## MaskOps Width-typed const-generic on consumers
 

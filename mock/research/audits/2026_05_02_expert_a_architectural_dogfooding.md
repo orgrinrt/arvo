@@ -1,8 +1,8 @@
-# arvo Substrate Dogfooding Audit (Expert A, 2026-05-02)
+# arvo Dogfooding Audit (Expert A, 2026-05-02)
 
 Audit dispatched 2026-05-02 against branch `feat/usize-const-arith` (PR #42) at commit `daf9518`. Audit charge: find every place arvo fails to dogfood its own framework: every parallel hand-rolled width-specific type, every hardcoded primitive literal, every concrete impl that should be a generic blanket impl.
 
-The substrate has built rich abstractions (`Bits<N, S, Sign>`, `MultiContainer<HiT, LoT>`, `Bounded`, `Identity`, `BitPrim`, `BitLogic`) but does not consistently consume them itself.
+arvo has built rich abstractions (`Bits<N, S, Sign>`, `MultiContainer<HiT, LoT>`, `Bounded`, `Identity`, `BitPrim`, `BitLogic`) but does not consistently consume them itself.
 
 ---
 
@@ -10,7 +10,7 @@ The substrate has built rich abstractions (`Bits<N, S, Sign>`, `MultiContainer<H
 
 **Location:** `arvo-bitmask/src/mask.rs:88-123`, plus the entire 256-specific surface in `ops.rs:174-456` and `dirty.rs:48-72`, and `BitMatrix256` in `matrix.rs:137-239`.
 
-**Smell:** `Mask256` is `pub struct Mask256(pub [QWord<Hot>; 4])`, not `Mask<Bits<256, Hot, Unsigned>>`. Module docs at `mask.rs:11-15` justify it as "Rust arrays don't implement the arvo-bits traits", but `arvo-storage::Bits<256, Hot, Unsigned>` ALREADY exists with a `MultiContainer<HiT, LoT>` projection (round 202604280500), and `BitsContainerFor<256, Unsigned>` ALREADY routes through it. The substrate built the mechanism; the bitmask crate ignores it. Result: 280 lines of unrolled `a[0..3]` boilerplate that should be N lines of generic code, and `Mask4096` / `Mask1024` / `Mask128` are forced to be hand-authored or absent.
+**Smell:** `Mask256` is `pub struct Mask256(pub [QWord<Hot>; 4])`, not `Mask<Bits<256, Hot, Unsigned>>`. Module docs at `mask.rs:11-15` justify it as "Rust arrays don't implement the arvo-bits traits", but `arvo-storage::Bits<256, Hot, Unsigned>` ALREADY exists with a `MultiContainer<HiT, LoT>` projection (round 202604280500), and `BitsContainerFor<256, Unsigned>` ALREADY routes through it. arvo built the mechanism; the bitmask crate ignores it. Result: 280 lines of unrolled `a[0..3]` boilerplate that should be N lines of generic code, and `Mask4096` / `Mask1024` / `Mask128` are forced to be hand-authored or absent.
 
 **Substrate generalisation:** Add `BitAccess + BitSequence + BitLogic + HasBitWidth` impls on `MultiContainer<HiT, LoT>` (or on `Bits<N, S, Sign>` where the container is `MultiContainer<...>`). Recursive composition: `bitor(a, b) = MultiContainer { hi: BitLogic::bitor(a.hi, b.hi), lo: BitLogic::bitor(a.lo, b.lo) }`. With those impls, `Mask256` collapses to `pub type Mask256 = Mask<Bits<256, Hot, Unsigned>>`.
 
@@ -58,7 +58,7 @@ The substrate has built rich abstractions (`Bits<N, S, Sign>`, `MultiContainer<H
 
 **Location:** `arvo-storage/src/bits.rs:51`, `arvo-bits-contracts/src/lib.rs` (entire file), `arvo-strategy/src/container.rs:26, 46, 71`, `arvo-strategy/src/arith.rs:40, 55`.
 
-**Smell:** The const generic on `Bits` is bare `u16`. The `Width` newtype was created precisely for this position. Per `no-bare-primitives.md` definition-site exception 4 (ergonomic helper-fn parameters), the `width(n: u16) -> Width` helper exists; the substrate intends `Bits<{ width(12) }, Hot>` calls to be the discipline. But the Bits struct itself takes `const N: u16` rather than `const N: Width`, so the discipline ends at the struct boundary.
+**Smell:** The const generic on `Bits` is bare `u16`. The `Width` newtype was created precisely for this position. Per `no-bare-primitives.md` definition-site exception 4 (ergonomic helper-fn parameters), the `width(n: u16) -> Width` helper exists; arvo intends `Bits<{ width(12) }, Hot>` calls to be the discipline. But the Bits struct itself takes `const N: u16` rather than `const N: Width`, so the discipline ends at the struct boundary.
 
 Secondary sub-finding: `MetaCarrier(pub u16)` itself wraps a bare `u16` because of a const-eval cycle. The cycle existed because `Bits<{...}, ...>::T` projected through `BitsContainerFor<9, Unsigned>` which projected through `UContainerFor<9>` which projected back to `MetaCarrier` for the carrier. With the lift to `Bits<const N: Width, ...>`, the cycle resolves.
 
@@ -74,7 +74,7 @@ Secondary sub-finding: `MetaCarrier(pub u16)` itself wraps a bare `u16` because 
 
 **Location:** `arvo-graph/src/topo.rs:42, 51-66, 110`, `arvo-graph/src/spanning.rs:84, 96, 131-132`, `arvo-graph/src/components.rs:29, 42`, `arvo-graph/src/rank.rs:104`, `arvo-graph/src/path.rs:45`, `arvo-graph/src/waist.rs:36`, `arvo-spectral/src/fiedler.rs:94, 106, 115, 119, 122, 134, 140, 148, 154`, `arvo-spectral/src/partition.rs:52, 110, 147, 169`, `arvo-sparse/src/block.rs:34, 47`.
 
-**Smell:** L2/L3 algorithm crates bottom out at bare `let mut i = 0usize; while i < cap_size(N) { ...; i += 1; }` for every loop. The substrate just shipped `USize::ZERO + USize::ONE + const Add/Sub/Mul + Ord` (round 202605021200). Algorithm crates predate that round and were never migrated.
+**Smell:** L2/L3 algorithm crates bottom out at bare `let mut i = 0usize; while i < cap_size(N) { ...; i += 1; }` for every loop. arvo just shipped `USize::ZERO + USize::ONE + const Add/Sub/Mul + Ord` (round 202605021200). Algorithm crates predate that round and were never migrated.
 
 **Substrate generalisation:** Sweep `let mut i = 0usize; while i < cap_size(N)` to `let mut i = USize::ZERO; let limit = USize(cap_size(N)); while i < limit`. All increments `i += 1` become `i = i + USize::ONE`.
 
@@ -110,9 +110,9 @@ Secondary sub-finding: `MetaCarrier(pub u16)` itself wraps a bare `u16` because 
 
 **Location:** `arvo-hash/src/fnv1a.rs:94, 114`, `arvo-hash/src/xxhash3.rs:99, 120`, `arvo/src/bitfield.rs:219-256`.
 
-**Smell:** Each callsite is the same pattern: build a mask of `N` low bits as a u64. Each hardcodes `u64::MAX` for the saturated case and `1u64 << $n` for the rest. The substrate has `BitPrim::ONE` / `Bounded::MAX` per primitive.
+**Smell:** Each callsite is the same pattern: build a mask of `N` low bits as a u64. Each hardcodes `u64::MAX` for the saturated case and `1u64 << $n` for the rest. arvo has `BitPrim::ONE` / `Bounded::MAX` per primitive.
 
-**Substrate generalisation:** Add `BitPrim::mask_low(n: USize) -> Self` substrate helper. Body: `if n.0 == 0 { T::ZERO } else if n.0 >= T::WIDTH.0 { <T as Bounded>::MAX } else { (T::ONE << n.0) - T::ONE }`.
+**Core generalisation:** Add `BitPrim::mask_low(n: USize) -> Self` helper. Body: `if n.0 == 0 { T::ZERO } else if n.0 >= T::WIDTH.0 { <T as Bounded>::MAX } else { (T::ONE << n.0) - T::ONE }`.
 
 **Priority:** P1. Independent.
 
