@@ -21,7 +21,7 @@ be expressed without wrapping a bare primitive.
 
 ## Bits
 
-`Bits<const N: Width, S: Strategy = Hot, Sign: Signedness = Unsigned>` is
+`Bits<const N: u16, S: Strategy = Hot, Sign: Signedness = Unsigned>` is
 the N-bit storage primitive. A `#[repr(transparent)]` newtype over
 `<S as BitsContainerFor<N, Sign>>::T`. The container projection picks
 either a native primitive (N ≤ 128) or a byte-sequence storage
@@ -34,7 +34,7 @@ to `u32`, `Bits<64, Hot>` to `u64`, `Bits<96, Hot>` to `u128`,
 and so on per the strategy bands.
 
 The const-generic param is `Width` (the typed newtype around `u16`),
-relocated from this crate to `arvo-strategy` in round 202605031400.
+relocated from this crate to `arvo-strategy`.
 `arvo-storage` re-exports it via `pub use arvo_strategy::Width;` for
 source-compatibility within the workspace facade. The parameter
 space accommodates 1..=65535 logical bits.
@@ -49,23 +49,23 @@ wrap of `Bits<{I+F}, S, Unsigned>`).
 The public surface is partitioned and minimal:
 
 ```rust
-impl<const N: Width, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
+impl<const N: u16, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
 where S: BitsContainerFor<N, Sign>,
 {
-    pub const fn from_raw(raw: <S as BitsContainerFor<N, Sign>>::T) -> Self;
-    pub const fn to_raw(self) -> <S as BitsContainerFor<N, Sign>>::T;
+ pub const fn from_raw(raw: <S as BitsContainerFor<N, Sign>>::T) -> Self;
+ pub const fn to_raw(self) -> <S as BitsContainerFor<N, Sign>>::T;
 
-    pub const fn from_narrowed<Src>(src: Src) -> Self
-    where Src: ~const Narrow<<S as BitsContainerFor<N, Sign>>::T>;
+ pub const fn from_narrowed<Src>(src: Src) -> Self
+ where Src: ~const Narrow<<S as BitsContainerFor<N, Sign>>::T>;
 
-    pub const fn from_widened<Src>(src: Src) -> Self
-    where Src: ~const Widen<<S as BitsContainerFor<N, Sign>>::T>;
+ pub const fn from_widened<Src>(src: Src) -> Self
+ where Src: ~const Widen<<S as BitsContainerFor<N, Sign>>::T>;
 }
 ```
 
 Plus `Deref<Target = ::T>`, `AsRef<::T>`, and `impl const Transparent`.
 
-Per round 202604271346 D-7, every per-size helper is gone. No
+Per D-7, every per-size helper is gone. No
 `from_raw_uN` / `to_raw_uN` family. No `From<uN>` per N. No
 `Bits::new(u64)` / `Bits::bits()` deprecated front-doors. The
 `impl_bits_uN` macro family is removed in its entirety.
@@ -73,7 +73,7 @@ Per round 202604271346 D-7, every per-size helper is gone. No
 Consumers that need to take a wider raw value and narrow it to fit
 `Bits<N, S, Sign>` go through the refit family from
 `arvo-bits-contracts` (post-merge of arvo-narrow-contracts during
-round 202604280034, post-Widen-addition during round 202604300826):
+, post-Widen-addition):
 `Narrow<T>::narrow_to::<N>` for shrinks, `Widen<T>::widen_to` for
 promotions. The trait surface and impl tables are re-exported
 through the `arvo-refit` crate. The pipeline is explicit at the call
@@ -85,9 +85,9 @@ The inherent `Bits<N, S, Sign>` impl ships two refit-aware
 constructors that route through the `Narrow` and `Widen` traits:
 
 ```rust
-let bits28 = Bits::<{width(28)}, Hot>::from_narrowed(wide_u64);   // narrow_to::<28>() inside
-let bits64 = Bits::<{width(64)}, Hot>::from_widened(bits28);       // widen_to() inside
-let raw28 = Bits::<{width(28)}, Hot>::from_raw(carrier_u32);       // unchecked entry point
+let bits28 = Bits::<{width(28)}, Hot>::from_narrowed(wide_u64); // narrow_to::<28>() inside
+let bits64 = Bits::<{width(64)}, Hot>::from_widened(bits28); // widen_to() inside
+let raw28 = Bits::<{width(28)}, Hot>::from_raw(carrier_u32); // unchecked entry point
 ```
 
 The source type `Src` is inferred from the value at the call site;
@@ -95,9 +95,9 @@ no turbofish needed. The constructors' bodies route through the
 trait's method (`src.narrow_to::<N>()` for `from_narrowed` where N
 is `Self`'s outer const-generic; `src.widen_to()` for `from_widened`
 where the source's bit-width derives from the impl context). Cross-
-domain primitive↔Bits direct impls (round 202604300826) provide
+domain primitive↔Bits direct impls provide
 the trait coverage so these constructors work with primitive sources
-as well as `Bits<M, ...>` sources.
+as well as `Bits<M,...>` sources.
 
 `from_raw` remains the unchecked entry point; `from_narrowed` and
 `from_widened` are the recommended path when the source type does
@@ -128,23 +128,23 @@ for the storage primitive at `arvo_storage::Bits<...>` can name the
 strategy without importing two crates.
 
 Strategy semantics across the arvo (full detail in
-`arvo-strategy/DESIGN.md.tmpl`):
+`arvo-strategy/DESIGN.md`):
 
 - `Hot` picks the narrowest container per bit width. 1..=8 → `u8`,
-  9..=16 → `u16`, ..., 65..=128 → `u128`. Above 128 →
-  `WideBits<bytes_for(N), A16>` (align(16) byte sequence).
+ 9..=16 → `u16`,..., 65..=128 → `u128`. Above 128 →
+ `WideBits<bytes_for(N), A16>` (align(16) byte sequence).
 - `Warm` mirrors Hot's container shape below 128. Above 128 →
-  `WideBits<bytes_for(N), A1>` (align-1 byte sequence). The previous
-  "2x logical width" Warm contract collapsed once the arvo
-  passed single native primitives in width.
+ `WideBits<bytes_for(N), A1>` (align-1 byte sequence). The previous
+ "2x logical width" Warm contract collapsed once the arvo
+ passed single native primitives in width.
 - `Cold` mirrors Warm's per-value container shape. Bitpacking happens
-  at the column-store layer above the per-Bits container, not at the
-  per-value container shape.
+ at the column-store layer above the per-Bits container, not at the
+ per-value container shape.
 - `Precise` mirrors Warm's container shape; saturating arithmetic
-  distinguishes the strategy at the op layer.
+ distinguishes the strategy at the op layer.
 
-The unified `BitsContainerFor<const N: Width, Sign: Signedness>`
-projection trait lives in `arvo-strategy` (not here). Round 202605031400
+The unified `BitsContainerFor<const N: u16, Sign: Signedness>`
+projection trait lives in `arvo-strategy` (not here). The pivot
 deletes the previous `UContainerFor` / `IContainerFor` split and the
 `MultiContainer<HiT, LoT>` family entirely.
 
@@ -167,7 +167,7 @@ impl const Signedness for Unsigned {}
 impl const Signedness for Signed {}
 ```
 
-The Sign axis on `Bits` was introduced in round 202604280500 to close
+The Sign axis on `Bits` was introduced to close
 the symmetry gap between UFixed and IFixed. Default `Sign = Unsigned`
 on `Bits` keeps existing call sites unchanged; IFixed's
 `repr(transparent)` wrap of `Bits<{1+I+F}, S, Signed>` reaches for the
@@ -177,22 +177,22 @@ non-default value.
 
 `pub struct WideBits<const BYTES: usize, A: Align = A1>` is the
 byte-sequence storage primitive used at logical bit widths above
-128 (where no native primitive exists). Round 202605031400 introduces
+128 (where no native primitive exists). Currently, introduces
 this type as the replacement for the deleted `MultiContainer<HiT, LoT>`
 family.
 
 ```rust
 pub trait Align: Copy { const VALUE: usize; }
 
-#[repr(C, align(1))]   pub struct A1;
-#[repr(C, align(16))]  pub struct A16;
-#[repr(C, align(32))]  pub struct A32;
-#[repr(C, align(64))]  pub struct A64;
+#[repr(C, align(1))] pub struct A1;
+#[repr(C, align(16))] pub struct A16;
+#[repr(C, align(32))] pub struct A32;
+#[repr(C, align(64))] pub struct A64;
 
 #[repr(C)]
 pub struct WideBits<const BYTES: usize, A: Align = A1> {
-    _align: [A; 0],
-    pub bytes: [u8; BYTES],
+ _align: [A; 0],
+ pub bytes: [u8; BYTES],
 }
 ```
 
@@ -219,14 +219,14 @@ viewed as bit-significance order:
 - `count_ones`: order-independent, sum of `bytes[i].count_ones()`.
 - `count_zeros`: `BYTES * 8 - count_ones()`.
 - `trailing_zeros`: walks from byte 0 LSB upward. If `bytes[0] == 0`,
-  accumulate 8 and advance; otherwise return accumulated +
-  `bytes[0].trailing_zeros()`.
+ accumulate 8 and advance; otherwise return accumulated +
+ `bytes[0].trailing_zeros()`.
 - `leading_zeros`: walks from byte BYTES-1 MSB downward symmetrically.
 - `get_bit(idx: USize)`: `(bytes[idx/8] >> (idx % 8)) & 1`.
 - Bitwise ops (`bitand` / `bitor` / `bitxor` / `bitnot`): byte-wise.
 - `is_zero`: all bytes zero.
 - `clear_lowest_set_bit`: locate first non-zero byte, apply
-  `b & (b-1)` semantics.
+ `b & (b-1)` semantics.
 
 This mirrors the existing `MultiContainer` lo-first cascade
 (MultiContainer's `trailing_zeros` consulted `lo` first, `leading_zeros`
@@ -251,7 +251,7 @@ The `BitPrim` impl lives in `arvo-bits-contracts/src/widebits.rs`
 because `arvo-storage` cannot depend on `arvo-bits-contracts` (the
 direction is the other way). Methods compose byte-by-byte per the
 byte-ordering convention; full surface documented in
-`arvo-bits-contracts/DESIGN.md.tmpl`.
+`arvo-bits-contracts/DESIGN.md`.
 
 ## Wider alignment tiers via `Align` markers
 
@@ -269,7 +269,7 @@ portion.
 `A1` and `A16` are the actively-used markers today. `A32` and `A64`
 are declared for future SIMD use behind cfg gates per #320. Per
 audit H1, the cfg-driven internal alignment originally proposed in
-round 202605031400's first topic was rejected as a
+'s first topic was rejected as a
 `arvo-toolbox-not-policer` violation: it silently imposed up to 4×
 storage overhead on the consumer with no visibility. The marker-based
 form makes the alignment choice explicit at the dispatch site.
@@ -290,7 +290,7 @@ inhabited path).
 `notko::ConstFromResidual<core::convert::Infallible>` so the existing
 non-const `core::ops::Try` / `FromResidual` impls have const-callable
 counterparts. This is a arvo-internal const-branch surface
-reached via explicit `match b.const_branch() { ... }`; the `?` syntax
+reached via explicit `match b.const_branch() {... }`; the `?` syntax
 itself stays non-const because rustc desugars `?` directly to
 `core::ops::Try::branch`, which is not `pub const trait` as of
 2026-05.
@@ -298,28 +298,28 @@ itself stays non-const because rustc desugars `?` directly to
 `Bool` implements the const unsafe `Transparent` trait so the inner
 `bool` is reachable in const context via `arvo::raw(b)`.
 
-### Const-trait surfaces (round 202605021800)
+### Const-trait surfaces
 
-Round 202605021800 lifts the `AsBool` trait to `pub const trait` and
+This lifts the `AsBool` trait to `pub const trait` and
 adds arvo-bridge `ConstEq` and `ConstDefault` impls on `Bool`.
 
 ```rust
 pub const trait AsBool {
-    fn as_bool(&self) -> bool;
+ fn as_bool(&self) -> bool;
 }
 
 impl const AsBool for Bool {
-    fn as_bool(&self) -> bool { self.0 }
+ fn as_bool(&self) -> bool { self.0 }
 }
 
 impl const ConstEq for Bool {
-    fn const_eq(&self, other: &Self) -> Bool {
-        Bool(self.0 == other.0)
-    }
+ fn const_eq(&self, other: &Self) -> Bool {
+ Bool(self.0 == other.0)
+ }
 }
 
 impl const ConstDefault for Bool {
-    fn const_default() -> Self { Bool(false) }
+ fn const_default() -> Self { Bool(false) }
 }
 ```
 
@@ -345,7 +345,7 @@ direction and parked it.
 
 `USize` implements the const unsafe `Transparent` trait.
 
-### Const-trait surface (round 202605021200, refined round 202605021800)
+### Const-trait surface
 
 `USize` impls `core::ops::*` const traits: `Add`, `Sub`, `Mul`,
 `Div`, `Rem`, `Shl<USize>`, `Shr<USize>`, `BitAnd`, `BitOr`,
@@ -354,9 +354,9 @@ op is `impl const Trait<USize> for USize`. Two crate-level features
 are required at any crate that authors or consumes the const-trait
 surface: `feature(const_trait_impl)` (already shipped via
 `arvo-transparent`, set on `arvo-storage`'s crate root) and
-`feature(const_ops)` (new in round 202605021200).
+`feature(const_ops)` (new).
 
-Round 202605021800 makes the canonical-const surface trait-only:
+This makes the canonical-const surface trait-only:
 `USize` impls `Bounded`, `Identity`, `ConstEq`, `ConstOrd`, and
 `ConstDefault` (all from `arvo-strategy`). Bodies route to the inner
 `usize`'s primitive operators. The bare-primitive `usize::MAX`
@@ -387,7 +387,7 @@ mixing capacities with unrelated indices. The const parameter name
 carries the semantic distinction (`N`, `ROWS`, `NNZ`).
 
 Cap impls `Bounded`, `Identity`, `ConstEq`, `ConstOrd`, and
-`ConstDefault` (round 202605021800). Bodies delegate through the
+`ConstDefault`. Bodies delegate through the
 inner USize's trait projections; no raw `usize` arithmetic in Cap's
 body. Consumer code reaches for `<Cap as Identity>::ZERO` /
 `<Cap as Identity>::ONE` / `<Cap as Bounded>::MAX`.
@@ -412,12 +412,12 @@ slot that `NonZero` excludes.
 
 ```rust
 impl NUSize {
-    pub const NONE: Self;
-    pub const fn some(logical: USize) -> Self;
-    pub const fn into_maybe(self) -> Maybe<USize>;
-    pub const fn unwrap_or(self, default: USize) -> USize;
-    pub const fn is_some(&self) -> Bool;
-    pub const fn is_none(&self) -> Bool;
+ pub const NONE: Self;
+ pub const fn some(logical: USize) -> Self;
+ pub const fn into_maybe(self) -> Maybe<USize>;
+ pub const fn unwrap_or(self, default: USize) -> USize;
+ pub const fn is_some(&self) -> Bool;
+ pub const fn is_none(&self) -> Bool;
 }
 ```
 
@@ -491,11 +491,11 @@ Two `#[repr(transparent)]` newtypes over `MetaCarrier`. Each derives
 `ConstParamTy`:
 
 ```rust
-#[derive(ConstParamTy, ...)]
+#[derive(ConstParamTy,...)]
 #[repr(transparent)]
 pub struct IBits(pub MetaCarrier);
 
-#[derive(ConstParamTy, ...)]
+#[derive(ConstParamTy,...)]
 #[repr(transparent)]
 pub struct FBits(pub MetaCarrier);
 ```
@@ -546,25 +546,25 @@ exception category 4).
 ## What does NOT live here
 
 - Trait declarations (live in the contract crates: `arvo-transparent`,
-  `arvo-strategy`, `arvo-bits-contracts` (which now also hosts
-  `Narrow<T>` post-merge), `arvo-mask-contracts`,
-  `arvo-numeric-contracts`).
+ `arvo-strategy`, `arvo-bits-contracts` (which now also hosts
+ `Narrow<T>` post-merge), `arvo-mask-contracts`,
+ `arvo-numeric-contracts`).
 - Trait impls (live in the implementation crates: `arvo-bits`,
-  `arvo-bitmask`, `arvo-refit`, `arvo-tensor`, `arvo-hash`).
+ `arvo-bitmask`, `arvo-refit`, `arvo-tensor`, `arvo-hash`).
 - Compositions over `Bits` (`UFixed`, `IFixed`, `FastFloat`,
-  `StrictFloat`) live in the `arvo` facade. `UFixed` is a
-  `repr(transparent)` newtype over `Bits<{width(I+F)}, S, Unsigned>`
-  (default Sign omitted at the call site). `IFixed` is a
-  `repr(transparent)` newtype over `Bits<{width(1+I+F)}, S, Signed>`,
-  the symmetric counterpart shipped in round 202604280500.
+ `StrictFloat`) live in the `arvo` facade. `UFixed` is a
+ `repr(transparent)` newtype over `Bits<{width(I+F)}, S, Unsigned>`
+ (default Sign omitted at the call site). `IFixed` is a
+ `repr(transparent)` newtype over `Bits<{width(1+I+F)}, S, Signed>`,
+ the symmetric counterpart shipped.
 - Algorithms (live in `arvo-graph`, `arvo-sparse`, `arvo-comb`,
-  `arvo-spectral`).
+ `arvo-spectral`).
 - Aliases and re-exports (live in the `arvo` facade).
 
-## Architectural pivot record (round 202605031400)
+## Architectural pivot record
 
 The previous wide-storage primitive `MultiContainer<HiT, LoT>` is
-deleted entirely in round 202605031400. Sketch 01 verified that
+deleted entirely. Sketch 01 verified that
 `MultiContainer<u64, u128>` was always 32 bytes physical (the
 alignment-of-largest-prim padding rule in `repr(C)` forces the total
 to round up to a multiple of 16, the alignment of u128). The "u64+u128
@@ -589,18 +589,5 @@ zero references in any consumer repo (hilavitkutin, viola, vehje,
 notko, viola-grammar-ts, viola-script-lints, mockspace,
 mockspace-hilavitkutin-stack-lints). Deletion is mechanical.
 
-## Sources
 
-- `mock/design_rounds/202604271346_topic.const-traits-and-arvo-as-facade.md` (frozen topic)
-- `mock/design_rounds/202604271346_changelist.doc.md`
-- `mock/design_rounds/202605031400_topic_foundational_redesign.md`
-- `mock/design_rounds/202605031430_topic_audit_corrections.md`
-- `mock/design_rounds/202605031400_changelist.doc.md`
-- `mock/crates/arvo/DEEPDIVE_strategy-bound-trilemma.md.tmpl`
-- `mock/research/sketches/202605031400_hlist_heterogeneous_container/01..07`
-  (architectural pivot validation: heterogeneous Cons invalidated under
-  repr(C); `WideBits<BYTES, A>` scalar baseline verified across
-  17/25/32/64/128/512 bytes with `A1` / `A16` markers; cfg-gated SIMD
-  surface compiles cleanly; Pattern C const-tag dispatch validated).
-- Senior architectural audit (2026-05-03): PROCEED-WITH-CHANGES verdict.
-- Q-A spike: rustc 1.96.0-nightly (commit fda6d37bb 2026-03-27).
+Round-by-round history is recorded in `mock/research/arvo-storage-history.md` (Tier 2).

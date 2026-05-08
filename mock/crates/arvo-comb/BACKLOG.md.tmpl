@@ -9,7 +9,7 @@
 
 Space-filling curve ordering for dispatch interleaving. Same
 constraint representation as greedy grouping. Deferred per
-T3 decisions #71-74, not day-one.
+not day-one.
 
 ## Wider-W bin_pack variant
 
@@ -17,7 +17,7 @@ T3 decisions #71-74, not day-one.
 by internal `Mask<Bits<64, Hot, Unsigned>>` helpers where consumers
 pair it with hierarchical co-firing flags). Instantiating the same
 helpers with `W = Bits<256, Hot, Unsigned>` would support >64 flags
-per group via arvo's MultiContainer plumbing without an
+per group via WideBits storage without an
 algorithmic-shape change. Common pipeline workloads in observed
 research stay well under 64 flags, so this is a non-urgent
 widening.

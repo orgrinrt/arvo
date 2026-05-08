@@ -9,8 +9,8 @@
 
 Shipping order as consumers surface need:
 
-- Fnv1a: shipped (round 202604500000, refactored to bounded-generic impl in round 202605031548). Generic algorithm `Fnv1a<const N: u16>` impls `Hasher<N>` once and `ConstHash<N, Hot, Unsigned>` once, replacing the prior 64-impl macro paste.
-- XxHash3: shipped (round 202604281000) as arvo-hash's default hash family; same bounded-generic shape after round 202605031548.
+- Fnv1a: shipped (, refactored to bounded-generic impl). Generic algorithm `Fnv1a<const N: u16>` impls `Hasher<N>` once and `ConstHash<N, Hot, Unsigned>` once, replacing the prior 64-impl macro paste.
+- XxHash3: shipped as arvo-hash's default hash family; same bounded-generic shape after.
 - XxHash64: when a faster non-cryptographic hash is wanted (separate algorithm-state width from XxHash3).
 - Crc32: when checksum use cases surface (clause bytecode integrity, persistence file checksumming).
 
