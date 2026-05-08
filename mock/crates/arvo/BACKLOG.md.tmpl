@@ -76,21 +76,16 @@ inline with the shipping-round identifier.
  with ZST markers `Unsigned` / `Signed` lands. IFixed becomes a
  `repr(transparent)` newtype over `Bits<{1+I+F}, S, Signed>`,
  closing the symmetry gap with UFixed.
-- **Bit-width cap to 256 + UContainerFor table extension.** SHIPPED
- (storage-side). Container dispatch table
- extends 65..=128 → `u128` (native single-primitive) and 129..=255
- → `MultiContainer<HiT, LoT>` (storage-only). Reachable cap is 255
- not 256 in this round because `Bits<const N: u8>` itself stays at
- u8; widening Bits's const-generic to u16 is BACKLOG-tracked
- (later shipped in Currently Pass F).
- Meta-newtypes (`IBits` / `FBits` / `Width`) carrier widening to
- `MetaCarrier` (layout-equivalent to `Bits<9, Hot, Unsigned>`)
- SHIPPED via the parallel-carrier workaround
- (a literal `pub Bits<9, Hot>` field tripped a rustc trait-solver
- cycle; the workaround is layout-equivalent and concept-equivalent).
- Arithmetic on multi-value containers (UArith / IArith on
- MultiContainer) is BACKLOG-tracked separately under the
- Currently forward-looking entries.
+- **Bit-width cap to 65535 + container dispatch.** SHIPPED. The
+ container dispatch table extends 65..=128 → `u128` (native single-
+ primitive) and 129..=65535 → `WideBits<bytes_for(N)>` /
+ `AlignedWideBits16<bytes_for(N)>` (byte-sequence storage). The
+ `Bits` const-generic is `u16`. Meta-newtypes (`IBits` / `FBits`)
+ wrap `MetaCarrier` (layout-equivalent to `Bits<9, Hot, Unsigned>`)
+ via a parallel-carrier workaround for a rustc trait-solver cycle.
+ Arithmetic on multi-value containers (UArith / IArith on WideBits)
+ is BACKLOG-tracked separately under the SIMD/asm forward-looking
+ entries.
 - **Strategy axes decomposition (internal lattice).** SHIPPED in
  (axis traits only; arithmetic dispatch refactor
  follow-up). The three internal axes `OverflowPolicy` /
