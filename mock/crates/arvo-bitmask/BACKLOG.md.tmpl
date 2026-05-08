@@ -10,10 +10,10 @@
 Mask4096 / Mask1024 / Mask128 ergonomic instantiations are deferred
 post-1.0 if a consumer surfaces the need. The chassis is already
 generic over W; arvo's BitsContainerFor projection
-currently caps logical widths at 256 via the MultiContainer
-plumbing. Wider widths require arvo's WideBits / extended
-container support to land first. The arvo-bitmask side is a no-op
-once that lands.
+currently caps logical widths at 256 via WideBits
+plumbing. Mask widths beyond 256 are deferred post-1.0
+until a consumer surfaces the need.
+
 
 ## MaskOps Width-typed const-generic on consumers
 
@@ -24,7 +24,7 @@ in cookbook once a real consumer surfaces.
 
 ## Concrete MaskOps W specialisations
 
-Round 202605040602 ships only the blanket `impl<W: [const] BitPrim>
+This ships only the blanket `impl<W: [const] BitPrim>
 const MaskOps<...> for Mask<W>`. Concrete per-W overrides (e.g.,
 Mask\<QWord\<Hot\>\>, Mask\<Bits\<256, Hot, Unsigned\>\>) land
 behind `min_specialization` when bench evidence shows a concrete W

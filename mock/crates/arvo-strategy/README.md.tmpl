@@ -2,7 +2,7 @@
 
 Strategy markers and the type-only container-projection trait.
 `Hot`, `Warm`, `Cold`, `Precise` ZSTs identify the precision /
-throughput tradeoff. The unified `BitsContainerFor<const N: Width,
+throughput tradeoff. The unified `BitsContainerFor<const N: u16,
 Sign: Signedness>` const trait projects a strategy + bit-width +
 sign axis to either a native primitive (N <= 128) or byte-sequence
 storage (N > 128). `Width` newtype lives here. `#![no_std]`, no alloc.

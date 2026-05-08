@@ -10,9 +10,9 @@
 Future rank-N containers as consumer demand surfaces:
 
 - Grid<T, const N: Cap, const M: Cap>, rectangular 2D (non-square Matrix).
-  Needed when an algorithm has N rows × M columns with N != M.
+ Needed when an algorithm has N rows × M columns with N != M.
 - Cube<T, const N: Cap, const M: Cap, const P: Cap>, rank-3. Needed for
-  3D spectral workloads or ML-adjacent tensor ops.
+ 3D spectral workloads or ML-adjacent tensor ops.
 
 Each shape follows the same pattern: `#[repr(transparent)]` wrapper over
 the raw fixed-size array-of-arrays, `get` / `set` methods taking USize

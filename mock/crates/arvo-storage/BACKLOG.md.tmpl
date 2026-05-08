@@ -7,20 +7,20 @@ unbacktickd until they ship.
 
 Manual ConstParamTy_ impl on UFixed and IFixed lets fixed-point types
 appear directly as const generic arguments. Verified-friction in
-rustc 1.96-nightly per the round 202604271346 Q-A spike scope notes.
+rustc 1.96-nightly per the Q-A spike scope notes.
 Lands when the friction clears or the workaround pattern stabilises.
 
 ## USize as Bits-rooted
 
 Inner field of USize migrating from raw usize to Bits<{cfg-platform-width}, Hot>
-for unified bit-storage view. Round 202604500000 explored the direction.
+for unified bit-storage view. Currently, explored the direction.
 Currently parked. Future round revisits when the platform-width const
 generic ergonomics improve.
 
 ## Cold strategy bitpacking
 
 Bits<N, Cold> for N > 64 with bitpacked storage across multiple bare
-primitives. Out of scope for round 202604271346. Future round.
+primitives. Out of scope for. Future round.
 
 ## Round 3 SHIPPED (post-#316 work)
 
@@ -44,18 +44,18 @@ shipped briefly in 202605021800 and is removed in #316 alongside the
 type. Hot tier expansion (AlignedWideBits32 / AlignedWideBits64) is
 deferred to #320 with bench-driven justification per audit H1.
 
-## Round 202605021200 follow-ups
+## Const-arith follow-ups
 
-- ISize: signed platform-pointer-width companion to USize. Round 202605021200 punted on the call. Arvo's signed needs are met today by IFixed and IBits, not platform-width signed integers. Ship if a consumer surfaces signed-platform-pointer arithmetic as load-bearing.
-- USize and Cap checked-arithmetic helpers (checked_add returning Maybe of USize). Round 202605021200 documented overflow as matching primitive usize (panic on debug-asserts, wrap on release). A Maybe-returning shim ships when a consumer surfaces overflow-as-error semantic.
-- Workspace lint rule forbidding .0 field-access on arvo primitives outside the implementing crate. The const-trait surface from round 202605021200 is the typed access path; the lint enforces it once the round 202605021400 sweep validates that no false-positive call sites remain. Lives in mockspace-hilavitkutin-stack-lints.
+- ISize: signed platform-pointer-width companion to USize. Currently, punted on the call. Arvo's signed needs are met today by IFixed and IBits, not platform-width signed integers. Ship if a consumer surfaces signed-platform-pointer arithmetic as load-bearing.
+- USize and Cap checked-arithmetic helpers (checked_add returning Maybe of USize). Currently, documented overflow as matching primitive usize (panic on debug-asserts, wrap on release). A Maybe-returning shim ships when a consumer surfaces overflow-as-error semantic.
+- Workspace lint rule forbidding.0 field-access on arvo primitives outside the implementing crate. The const-trait surface from is the typed access path; the lint enforces it once the sweep validates that no false-positive call sites remain. Lives in mockspace-hilavitkutin-stack-lints.
 
 ## NU8 / NU16 / NU32 / NU64 family
 
 Niche-packed Maybe-of-primitive companions to NUSize. Same shape over
 the corresponding NonZero primitive (NonZeroU8 / NonZeroU16 /
 NonZeroU32 / NonZeroU64). The N-prefix naming convention was
-established with NUSize in round 202605040602; per-width variants
+established with NUSize; per-width variants
 ship when a consumer demands them. Plausible early demand: NU32 for
 hash slots; NU8 for byte-shaped enums; NU16 for short content
 identifiers. No round opens until a concrete consumer surfaces.

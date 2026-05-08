@@ -5,7 +5,7 @@
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
 
-Round 202605031748 (#313) collapsed the BitMatrix family onto
+This collapsed the BitMatrix family onto
 `BitMatrix<W, const N: Cap>` chassis. Algorithms ship today against
 `W = Bits<64, Hot, Unsigned>` for up to 64-node adjacency.
 Instantiating the same algorithms with `W = Bits<256, Hot,
@@ -15,7 +15,7 @@ Unsigned>` extends to 256 nodes without an algorithmic-shape change.
 
 `rcm_reorder`, `block_diagonal`, `dulmage_mendelsohn` accept the
 chassis form. The 256-wide instantiation extends the algorithms to
-larger sparse adjacencies via arvo's MultiContainer
+larger sparse adjacencies via WideBits
 plumbing. Promote when a concrete consumer surfaces >64-node
 adjacency; cookbook documentation of the wider-W pattern is the only
 deferred work.
@@ -23,6 +23,6 @@ deferred work.
 ## SpMV
 
 Sparse matrix-vector multiply patterns. Deferred per the original
-design (T3 decisions #71-74). Same representation and API
+design. Same representation and API
 surface as the above algorithms; add when a concrete consumer need
 surfaces.

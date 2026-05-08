@@ -5,7 +5,7 @@ Cross-cutting foundation for arvo-graph, arvo-sparse, arvo-comb,
 and any consumer that needs set-level adjacency over bit storage.
 `#![no_std]`, no alloc, const-generic sizing.
 
-Per round 202604271346, the crate depends on `arvo-storage` (for
+Currently, the crate depends on `arvo-storage` (for
 `Bits<N, S, Sign>` and the strategy markers), `arvo-bits-contracts`
 (for the trait surface: `HasBitWidth`, `BitAccess`, `BitSequence`,
 `BitLogic`), and `arvo-mask-contracts` (this crate hosts the
@@ -13,9 +13,9 @@ concrete `MaskOps<W>` impls). Bitmasks are not numeric types. They
 do bitwise operations (OR, AND, popcount), not arithmetic (Add,
 Mul, Sqrt). The type families are different.
 
-Per round 202605031748, the per-width parallel concretes (Mask256,
+Currently, the per-width parallel concretes (Mask256,
 BitMatrix64, BitMatrix256) collapsed onto generic `Mask<W>` and
-`BitMatrix<W, const N: Cap>` chassis. The arvo's `MultiContainer`
+`BitMatrix<W, const N: Cap>` chassis. The `WideBits`
 BitPrim plumbing (#311) lets `Bits<256, Hot, Unsigned>` reach the
 bit-level surface that `Mask<W>` requires; the same chassis handles
 narrower widths (`Bits<64, Hot, Unsigned>`) and wider widths up to
@@ -42,8 +42,8 @@ Default`. The bitmask width follows from `<W as HasBitWidth>::WIDTH`.
 `W` in regular use is a `Bits<N, S, Sign>` from arvo-storage. For
 single-word storage, `Bits<64, Hot, Unsigned>` (formerly the Mask64
 payload) is the canonical W. For 256-wide storage backed by the
-arvo's `MultiContainer<u128, u128>`, `Bits<256, Hot, Unsigned>`
-is the canonical W. Round 202605031748 closed the gap: the
+`WideBits<32, A16>` (32 bytes, 16-byte alignment for Hot at N > 128), `Bits<256, Hot, Unsigned>`
+is the canonical W. Currently, closed the gap: the
 arvo's `BitsContainerFor<N, Sign>` projection routes both cases
 through the same trait-method composition, so `Mask<W>` no longer
 needs a per-width parallel struct.
@@ -58,23 +58,24 @@ repeat them.
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct Mask<W>
 where
-    W: BitSequence + BitAccess + Copy + Default,
+ W: BitSequence + BitAccess + Copy + Default,
 {
-    pub word: W,
+ pub word: W,
 }
 ```
 
 Concrete shipping shapes:
 
 - `Mask<Bits<64, Hot, Unsigned>>`: backed by `u64` via the
-  `BitsContainerFor<64, Unsigned>` projection. Single-word storage,
-  single-instruction set ops on x86 (`or` / `and` / `xor` / `not`),
-  identical instructions on aarch64.
+ `BitsContainerFor<64, Unsigned>` projection. Single-word storage,
+ single-instruction set ops on x86 (`or` / `and` / `xor` / `not`),
+ identical instructions on aarch64.
 - `Mask<Bits<256, Hot, Unsigned>>`: backed by
-  `MultiContainer<u128, u128>` via `BitsContainerFor<256,
-  Unsigned>`. Multi-word storage with the unroll handled by the
-  arvo's MultiContainer BitPrim impls. Loop-free, branch-free
-  composition.
+ `AlignedWideBits16<32>` via `BitsContainerFor<256, Unsigned>` (32
+ bytes, 16-byte aligned for the Hot SIMD baseline; Warm / Cold /
+ Precise project to `WideBits<32>` at 1-byte alignment). Multi-word
+ storage with the unroll handled by the `WideBits` BitPrim impls.
+ Loop-free, branch-free composition.
 
 Narrower widths are equally valid: `Mask<Bits<32, Hot, Unsigned>>`
 gives a 32-element bitmask backed by `u32`. The chassis works for
@@ -84,7 +85,7 @@ any W that the trait bounds accept.
 `arvo-mask-contracts::MaskOps` (the abstract operation contract)
 are both shipped. The trait surface lets generic-over-mask consumer
 code bind to the contract without naming the storage shape.
-Round 202605040602 dropped the prior `const W: Width` parameter on
+This dropped the prior `const W: Width` parameter on
 `MaskOps`. Width information lives on the implementor's underlying
 word type. The trait is now uniform across mask widths.
 Implementations are documented under `Const-trait surface` below.
@@ -93,21 +94,21 @@ Implementations are documented under `Const-trait surface` below.
 
 All operations delegate to arvo-bits trait methods on the backing
 word type. `Mask<W>` routes through `BitLogic + BitAccess +
-BitSequence` on `W` uniformly; the arvo's MultiContainer impls
+BitSequence` on `W` uniformly; the the WideBits impls
 handle the multi-word unroll at the storage layer, so the chassis
 methods stay one-line trait-method delegations.
 
 ```rust
-fn union(self, other: Self) -> Self        // BitLogic::bitor
+fn union(self, other: Self) -> Self // BitLogic::bitor
 fn intersection(self, other: Self) -> Self // BitLogic::bitand
-fn difference(self, other: Self) -> Self   // self & !other via BitLogic
-fn complement(self) -> Self                // BitLogic::bitnot
-fn is_empty(self) -> Bool                  // BitSequence::is_zero
-fn intersects(self, other: Self) -> Bool   // bitand + is_zero negation
-fn contains(self, pos: USize) -> Bool      // BitAccess::bit
-fn insert(&mut self, pos: USize)           // BitAccess::with_bit_set
-fn remove(&mut self, pos: USize)           // BitAccess::with_bit_cleared
-fn count(self) -> USize                    // BitSequence::count_ones
+fn difference(self, other: Self) -> Self // self & !other via BitLogic
+fn complement(self) -> Self // BitLogic::bitnot
+fn is_empty(self) -> Bool // BitSequence::is_zero
+fn intersects(self, other: Self) -> Bool // bitand + is_zero negation
+fn contains(self, pos: USize) -> Bool // BitAccess::bit
+fn insert(&mut self, pos: USize) // BitAccess::with_bit_set
+fn remove(&mut self, pos: USize) // BitAccess::with_bit_cleared
+fn count(self) -> USize // BitSequence::count_ones
 ```
 
 ### Implementation
@@ -115,22 +116,22 @@ fn count(self) -> USize                    // BitSequence::count_ones
 Single-instruction on the backing primitive: `bitor` / `bitand` /
 `bitxor` / `bitnot` on `Bits<64, Hot, Unsigned>` map to `or` / `and`
 / `xor` / `not` on x86 (identical on aarch64). On
-`Bits<256, Hot, Unsigned>` the arvo's MultiContainer BitPrim
+`Bits<256, Hot, Unsigned>` the WideBits BitPrim
 impls issue four 64-bit-equivalent ops loop-free. Bit scanning uses
 `BitSequence::trailing_zeros` / `leading_zeros` directly; iterator
 state carries `Bits<N, S, Sign>` (not raw container primitives).
 
 Two sites retain compiler-mandated primitive types, annotated with
-`lint:allow(...) reason: ...; tracked: #N`:
+`lint:allow(...) reason:...; tracked: #N`:
 
 - `matrix.rs`: `cap_size(c: Cap) -> usize`. Rust arrays `[T; N]`
-  require `N: usize` at the language grammar level. Tracked #121.
+ require `N: usize` at the language grammar level. Tracked #121.
 - `node.rs`: `impl PartialOrd for NodeId`. Trait method
-  `partial_cmp` returns `Option<Ordering>` by core contract.
-  Tracked #115.
+ `partial_cmp` returns `Option<Ordering>` by core contract.
+ Tracked #115.
 - `ops.rs`: `impl Iterator` blocks for `SetBitsIter<W>`. Trait
-  method `next` returns `Option<Self::Item>` by core contract.
-  Tracked #115.
+ method `next` returns `Option<Self::Item>` by core contract.
+ Tracked #115.
 
 No other raw primitives live in arvo-bitmask sources.
 
@@ -142,16 +143,16 @@ on the bit-op family:
 ```rust
 impl<W> Mask<W>
 where
-    W: BitSequence + BitAccess + Copy + Default + [const] Identity,
+ W: BitSequence + BitAccess + Copy + Default + [const] Identity,
 {
-    pub const fn empty() -> Self { <Self as Identity>::ZERO }
+ pub const fn empty() -> Self { <Self as Identity>::ZERO }
 }
 
 impl<W> Mask<W>
 where
-    W: BitSequence + BitAccess + Copy + Default + [const] Bounded,
+ W: BitSequence + BitAccess + Copy + Default + [const] Bounded,
 {
-    pub const fn full() -> Self { <Self as Bounded>::MAX }
+ pub const fn full() -> Self { <Self as Bounded>::MAX }
 }
 ```
 
@@ -159,42 +160,42 @@ where
 `impl const Not` on `Mask<W>`. The `feature(const_ops)` flag enables
 these.
 
-Round 202605031748 routed `Mask<W>::empty()` and
+This routed `Mask<W>::empty()` and
 `Mask<W>::full()` through `<Self as Identity>::ZERO` and
 `<Self as Bounded>::MAX` per audit Finding 11. The hand-coded
 defaults via `W::default()` retire; the const-trait route is
 canonical.
 
-`arvo-mask-contracts::MaskOps` ships in round 202605040602 as a
+`arvo-mask-contracts::MaskOps` ships as a
 single blanket impl over the generic chassis:
 
 ```rust
 impl<W> const MaskOps for Mask<W>
 where
-    W: Copy + Default
-        + [const] BitAccess
-        + [const] BitLogic
-        + [const] BitSequence
-        + [const] Bounded
-        + [const] Identity,
+ W: Copy + Default
+ + [const] BitAccess
+ + [const] BitLogic
+ + [const] BitSequence
+ + [const] Bounded
+ + [const] Identity,
 {
-    // Bodies delegate to the inherent surface on Mask<W>.
+ // Bodies delegate to the inherent surface on Mask<W>.
 }
 ```
 
 One blanket impl covers every concrete `Mask<W>` instantiation. No
-per-W concrete impls (`Mask<Bits<64, ...>>`, `Mask<Bits<256, ...>>`,
+per-W concrete impls (`Mask<Bits<64,...>>`, `Mask<Bits<256,...>>`,
 etc.) ship with this round. Per `arvo-always-optimal-internals.md`'s
 naive-baseline-first principle, the blanket is the arvo's
 correct-by-construction baseline; concrete W specialisations land
 later only when bench evidence shows a win (e.g., a SIMD shortcut
 that the generic body cannot express). `min_specialization` stays
 unused this round and enables when a future concrete override is
-introduced. See `BACKLOG.md.tmpl` for the gating.
+introduced. See `BACKLOG.md` for the gating.
 
 Truncation under `Narrow<T>` composes through
 `BitPrim::mask_low(n)` from arvo-bits-contracts at the bare-primitive
-layer. Round 202605040602 dropped the prior
+layer. Currently, dropped the prior
 `MaskOps::mask_for_width(n: USize) -> Self` method (zero callers at
 the trait surface; consumers already routed through `BitPrim`).
 
@@ -207,8 +208,8 @@ const evaluation.
 Iterate over set bits efficiently, built on arvo-bits contracts:
 
 ```rust
-fn lowest_set(self) -> USize    // BitSequence::trailing_zeros
-fn highest_set(self) -> USize   // BitSequence::leading_zeros then subtract
+fn lowest_set(self) -> USize // BitSequence::trailing_zeros
+fn highest_set(self) -> USize // BitSequence::leading_zeros then subtract
 fn iter_set_bits(self) -> impl Iterator<Item = USize>
 ```
 
@@ -231,22 +232,22 @@ const-eval over newtypes stabilises.
 ```rust
 pub struct BitMatrix<W, const N: Cap>
 where
-    W: BitSequence + BitAccess + Copy + Default,
-    [(); cap_size(N)]:,
+ W: BitSequence + BitAccess + Copy + Default,
+ [(); cap_size(N)]:,
 {
-    pub rows: [Mask<W>; cap_size(N)],
+ pub rows: [Mask<W>; cap_size(N)],
 }
 
-fn edge(i: NodeId, j: NodeId) -> Bool     // BitAccess::bit on row i
-fn set_edge(i: NodeId, j: NodeId)         // BitAccess::with_bit_set
-fn successors(i: NodeId) -> Mask<W>       // row i (all outgoing edges)
-fn predecessors(j: NodeId) -> Mask<W>     // scan column j across all rows
-fn transitive_closure(&mut self)          // Warshall on bitmasks
+fn edge(i: NodeId, j: NodeId) -> Bool // BitAccess::bit on row i
+fn set_edge(i: NodeId, j: NodeId) // BitAccess::with_bit_set
+fn successors(i: NodeId) -> Mask<W> // row i (all outgoing edges)
+fn predecessors(j: NodeId) -> Mask<W> // scan column j across all rows
+fn transitive_closure(&mut self) // Warshall on bitmasks
 ```
 
-Round 202605031748 collapsed the prior parallel `BitMatrix64<N>` and
+This collapsed the prior parallel `BitMatrix64<N>` and
 `BitMatrix256<N>` structs into the generic chassis. The arvo's
-`MultiContainer` BitPrim work made the previous "Two concrete types
+The `WideBits` BitPrim work made the previous "Two concrete types
 ... abstracting via a trait fights `generic_const_exprs`" trade-off
 obsolete; the trait machinery now resolves cleanly across both
 single-word and multi-word backings.
@@ -255,12 +256,12 @@ single-word and multi-word backings.
 
 ```rust
 fn propagate_dirty<W, const N: Cap>(
-    dag: &BitMatrix<W, N>,
-    dirty: &mut Mask<W>,
+ dag: &BitMatrix<W, N>,
+ dirty: &mut Mask<W>,
 )
 where
-    W: BitSequence + BitAccess + Copy + Default,
-    [(); cap_size(N)]:,
+ W: BitSequence + BitAccess + Copy + Default,
+ [(); cap_size(N)]:,
 ```
 
 OR sequence through DAG adjacency. For each set bit in `dirty`, OR
@@ -270,7 +271,7 @@ dependency graph. One AND per node. For 50 nodes on
 
 Generic primitive. Any consumer that needs to propagate a change
 flag through DAG adjacency uses the same function across width
-choices. Round 202605031748 collapsed the parallel `propagate_dirty_64`
+choices. Currently, collapsed the parallel `propagate_dirty_64`
 and `propagate_dirty_256` shipping shapes into this single
 chassis.
 
@@ -284,13 +285,5 @@ Downstream consumers (pipeline engines, compilers) use these through
 the algorithm crates above, or directly for access-set / dirty-bit
 tracking.
 
-## Sources
 
-- 202603241400_topic.arvo-crate-dependency-revision.md (dependency revision)
-- 202604191900_changelist.doc.md (original round)
-- 202604260000_changelist.doc.md (Cap/USize cleanup round)
-- 202604270000_changelist.doc.md (BitLogic routing + primitive cleanup)
-- 202605031748_changelist.doc.md (Mask\<W\> over Bits collapse, BitMatrix\<W, N\> generic, dogfood sweep)
-- T5 L1022-1041 (bitmask access sets)
-- T5 L1079-1087 (bit-matrix DAG adjacency)
-- T5 L1173-1179 (dirty propagation)
+Round-by-round history is recorded in `mock/research/arvo-bitmask-history.md` (Tier 2).

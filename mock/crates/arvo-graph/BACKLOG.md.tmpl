@@ -5,11 +5,11 @@
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
 
-Round 202605031748 (#313) collapsed the BitMatrix family onto
+This collapsed the BitMatrix family onto
 `BitMatrix<W, const N: Cap>` chassis. Algorithms ship today against
 `W = Bits<64, Hot, Unsigned>` for up to 64 nodes; instantiating the
 same algorithms with `W = Bits<256, Hot, Unsigned>` extends to 256
-nodes via arvo's MultiContainer plumbing without an
+nodes via WideBits storage without an
 algorithmic-shape change.
 
 ## Wider-W ergonomic helpers
