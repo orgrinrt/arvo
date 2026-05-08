@@ -272,7 +272,7 @@ checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 [[package]]
 name = "mockspace"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#bdf7db93cf3eac9b5ef8f803fee0558cb6629c40"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
 dependencies = [
  "libloading",
  "mockspace-lint-rules",
@@ -285,12 +285,12 @@ dependencies = [
 [[package]]
 name = "mockspace-bench-core"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#bdf7db93cf3eac9b5ef8f803fee0558cb6629c40"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
 
 [[package]]
 name = "mockspace-bench-harness"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#bdf7db93cf3eac9b5ef8f803fee0558cb6629c40"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
 dependencies = [
  "libloading",
  "mockspace-bench-core",
@@ -301,7 +301,7 @@ dependencies = [
 [[package]]
 name = "mockspace-bench-macro"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#bdf7db93cf3eac9b5ef8f803fee0558cb6629c40"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -311,7 +311,7 @@ dependencies = [
 [[package]]
 name = "mockspace-lint-rules"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#bdf7db93cf3eac9b5ef8f803fee0558cb6629c40"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
 dependencies = [
  "tree-sitter",
  "tree-sitter-rust",
