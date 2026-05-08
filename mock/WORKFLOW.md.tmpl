@@ -1,45 +1,43 @@
 # Workflow
 
-This file captures the day-to-day authoring loop for arvo: how a change
-enters the mock workspace, how design work validates, and when a crate
-graduates from `mock/` to the repo root. Read it before starting any
-change that touches design, source, or structure.
+How a consumer uses arvo from a Rust project, what shape the dependency
+takes, and how arvo evolves.
 
-## Pre-work checklist
+## Adding arvo to a project
 
-- On main? If not, you are on a PR branch.
-- Look for branch TODO: `TODO.{branch}.md` overrides main TODO.
-- Read STRUCTURE to see what exists.
-- Read relevant DESIGN sections; update if your plan differs.
-- Grep for existing helpers and types before adding new ones.
+```toml
+[dependencies]
+arvo = { version = "0.0", default-features = false }
+```
 
-## Development order
+arvo is `#![no_std]` and ships with no platform dependency. The crate
+re-exports the public surface from the layered foundation crates
+(`arvo-storage`, `arvo-strategy`, `arvo-bits-contracts`, ...); reaching
+for `arvo` directly is the supported path. Only depend on a foundation
+crate by name when an explicit dependency-size reduction is wanted.
 
-**Current phase: design.** The mockspace validates design via `cargo
-check` + doc generation. Source is not expected to have real
-implementations yet. The goal is every DESIGN.md.tmpl agrees with
-every other and the types compile.
+## Picking primitives
 
-1. Design. Update the mock workspace crate sources and documentation.
-2. Validate. `cargo check` in the mock workspace. It must compile.
-3. Regenerate. `cargo mock` to produce generated docs.
-4. Types. Declare internal types if needed.
-5. Tests. Write to fail first.
-6. Implement, code until tests pass.
-7. Document, STRUCTURE is auto-generated; verify it reflects changes.
+Reach for the exact width: `Uint<3>`, `Uint<14>`, `Int<47>`. The
+`Strategy` parameter defaults to `Warm`. Choose `Hot` for the fast
+release path, `Precise` for saturating semantics, `Cold` for bitpacked
+column-store layouts. The strategy marker is a type-level knob that
+drives container width and codegen; it does not change at runtime.
 
-Rules:
-- Do not change tests to make them pass; fix design or code.
-- Keep changes small and merge-friendly.
-- `#![no_std]`, no `alloc`, no platform deps.
-- Prefer trait contracts over concrete types in sub-crate APIs.
-- Every numeric with a tradeoff axis carries a `Strategy` parameter.
+Fixed-point arithmetic uses `UFixed<I, F, S>` and `IFixed<I, F, S>`,
+where `I` is integer bit count and `F` is fractional bit count. Floats
+use `FastFloat` and `StrictFloat`. Boolean values use `Bool`. Pointer-
+width sizes use `USize` and the `Cap` newtype for type-level capacities.
 
-## Graduation to real repo
+## Pre-1.0 stability
 
-When an arvo crate's design is locked and implementation stabilises, its
-contents move from `mock/crates/<name>/` to `crates/<name>/` at the
-repo root. Root-level `Cargo.toml` workspace takes over from
-`mock/Cargo.toml`.
+arvo is in pre-1.0 design phase. Public surfaces stabilise at `0.0.x`;
+expect breaking changes between minor versions. Consumers depending on
+arvo today pin a specific version; once the surface stabilises and the
+first `0.1` release ships, semver guarantees apply.
 
-Until then, everything lives under `mock/`.
+## Reporting issues
+
+Issues and feature discussion happen on the GitHub repo. Patches arrive
+as feature-branch PRs. The repository's CONTRIBUTING file (when shipped)
+describes the local validation loop.

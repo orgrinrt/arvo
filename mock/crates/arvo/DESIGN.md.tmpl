@@ -5,86 +5,79 @@ no alloc, const-generic sizing. Same LLVM optimisation discipline
 whatever runs on top. Used by hilavitkutin and downstream
 applications as the exclusive numeric layer.
 
-## Round 202604271346 architecture (current)
+## Architecture
 
-Per the round 202604271346 doc CL, `arvo` is the **downstream facade**,
-not the L0 layer. The dependency graph runs:
+`arvo` is the **downstream facade**, not the L0 layer. The dependency
+graph runs:
 
 1. `arvo-transparent`, `arvo-strategy` (foundation traits, no
    storage)
-2. `arvo-storage` (the new minimal L0: `Bits<N, S>`, strategy
+2. `arvo-storage` (the minimal L0: `Bits<N, S, Sign>`, strategy
    markers, `Bool`, `USize`, typed meta-bits `IBits` / `FBits` /
    `Width`)
 3. `arvo-bits-contracts`, `arvo-mask-contracts`,
    `arvo-numeric-contracts` (trait declarations, all `pub const trait`).
-   `Narrow<T>` and `Widen<T>` declarations live in `arvo-bits-contracts`
-   (post-merge of `arvo-narrow-contracts` during round 202604280034;
-   Widen added during round 202604300826).
+   `Narrow<T>` and `Widen<T>` declarations live in `arvo-bits-contracts`.
 4. `arvo-bits`, `arvo-bitmask`, `arvo-refit`, `arvo-tensor` (concrete
    trait impls and re-export gateways). `arvo-refit` is the combined
-   narrow + widen re-export crate (renamed from `arvo-narrow` in round
-   202604301700).
+   narrow + widen re-export crate.
 5. `arvo-hash`, `arvo-graph`, `arvo-sparse`, `arvo-comb`,
    `arvo-spectral` (algorithm crates)
 6. `arvo` (this crate): the facade. Re-exports the public surface,
-   hosts default impls, defines `Int<N, S>` / `Uint<N, S>` generic
-   aliases, hosts `UFixed<I, F, S>` as a `repr(transparent)` newtype
-   over `Bits<{I+F}, S, Unsigned>`. `IFixed<I, F, S>` is the symmetric
-   `repr(transparent)` newtype over `Bits<{1+I+F}, S, Signed>`,
-   shipped in round 202604280500 alongside the Sign axis on Bits.
+   hosts default impls, defines `Int<const N: u16, S>` /
+   `Uint<const N: u16, S>` generic aliases, hosts `UFixed<I, F, S>`
+   as a `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>`.
+   `IFixed<I, F, S>` is the symmetric `repr(transparent)` newtype
+   over `Bits<{1+I+F}, S, Signed>`.
 
-The deep sections below describe the round-by-round state of the
-types this facade re-exports. The facade's own job is to be the
-single import-path entry point for downstream consumers and the home
-of the default trait impls. New types defined in `arvo` itself
-(post-round-202604280034) are limited to:
+The sections below describe the types this facade re-exports. The
+facade's own job is to be the single import-path entry point for
+downstream consumers and the home of the default trait impls. New
+types defined in `arvo` itself are limited to:
 
 - `UFixed<I, F, S>` (repr(transparent) newtype over
   `Bits<{I+F}, S, Unsigned>`).
 - `IFixed<I, F, S>` (repr(transparent) newtype over
-  `Bits<{1+I+F}, S, Signed>`, symmetric counterpart shipped in round
-  202604280500).
-- `Int<const N: Width, S = Warm>`, `Uint<const N: Width, S = Warm>`
+  `Bits<{1+I+F}, S, Signed>`).
+- `Int<const N: u16, S = Warm>`, `Uint<const N: u16, S = Warm>`
   generic aliases. **No std-parallel per-N aliases.** Per the
-  exact-width discipline, `Uint8` / `Uint16` / `Uint<N>` etc are
-  expressed via the generic form. arvo is built around
-  exact-bit-count thinking; std-parallel sugar reintroduces bucket
-  thinking and is rejected.
+  exact-width discipline, `Uint8` / `Uint16` / `Int8` / `Int16` and
+  the rest of the std-parallel sugar are not part of the surface.
+  arvo is built around exact-bit-count thinking; std-parallel sugar
+  reintroduces bucket thinking and is rejected.
 - `FastFloat`, `StrictFloat` (float wrappers).
-- `Cap<N>` (capacity newtype).
+- `Cap` (capacity newtype).
 - Default trait impls for `Add` / `Sub` / `Mul` / `Div` / `Recip` /
   `Sqrt` / `TotalOrd` / `Predicate` family on the composed types.
 
 Everything else is re-exported via `pub use`.
 
-The `Int<N, S>` / `Uint<N, S>` semantic convention: **N is total
-storage bit count.** `Int<8>` matches the i8-shaped logical width
-(1 sign + 7 integer bits internally). `Uint<32>` matches the
-u32-shaped logical width (32 magnitude bits). The cap on UFixed /
-IFixed (and so on `Uint<N, S>` / `Int<N, S>`) is `N <= 128` post round
-202604280500: native `u128` / `i128` carry the 65..=128 range, and the
-full 1..=128 logical width is reachable across all four
-strategies (subject to per-strategy projection rules in
-`arvo-strategy`). The storage-only `Bits<N, S, Sign>`
-extends to `N <= 65535` via byte-sequence `WideBits<bytes_for(N)>` /
-`AlignedWideBits16<bytes_for(N)>` (Hot) above 128;
-arithmetic on multi-value containers (UArith / IArith dispatch on
-WideBits) is BACKLOG-tracked under #320/#321 (bench-driven SIMD +
-asm microkernels), so UFixed /
+The `Int<const N: u16, S>` / `Uint<const N: u16, S>` semantic
+convention: **N is total storage bit count.** `Int<8>` matches the
+i8-shaped logical width (1 sign + 7 integer bits internally).
+`Uint<32>` matches the u32-shaped logical width (32 magnitude bits).
+The cap on UFixed / IFixed (and so on `Uint<N, S>` / `Int<N, S>`) is
+`N <= 128`: native `u128` / `i128` carry the 65..=128 range, and the
+full 1..=128 logical width is reachable across all four strategies
+(subject to per-strategy projection rules in `arvo-strategy`). The
+storage-only `Bits<N, S, Sign>` extends to `N <= 65535` via
+byte-sequence `WideBits<bytes_for(N)>` /
+`AlignedWideBits16<bytes_for(N)>` (Hot) above 128. Arithmetic on
+multi-value containers (UArith / IArith dispatch on WideBits) is
+BACKLOG-tracked (bench-driven SIMD + asm microkernels), so UFixed /
 IFixed at 129..=256 await that bridge before they compile.
 
 ```rust
-pub type Uint<const N: Width, S = Warm> = UFixed<{ ibits(N) }, { fbits(0) }, S>;
-pub type Int<const N: Width, S = Warm>  = IFixed<{ ibits(N - 1) }, { fbits(0) }, S>;
+pub type Uint<const N: u16, S = Warm> = UFixed<{ ibits(N) }, { fbits(0) }, S>;
+pub type Int<const N: u16, S = Warm>  = IFixed<{ ibits(N - 1) }, { fbits(0) }, S>;
 ```
 
-Per Q-D (round 202604271346 pass 7) all per-N aliases except eight
-std-parallel survivors were deleted. Round 202604280034 completes Q-D
-by deleting the eight survivors too: `Uint8` / `Uint16` / `Uint32` /
-`Uint64` / `Int8` / `Int16` / `Int32` / `Int64` are gone. The
-central premise is that consumers think in exact bit
-counts the domain actually needs, not in std primitive buckets.
-Consumers write `Uint<32>` (or whatever exact count) directly.
+Per the exact-width discipline, all per-N std-parallel aliases
+(`Uint8`, `Uint16`, `Uint32`, `Uint64`, `Int8`, `Int16`, `Int32`,
+`Int64`) are deleted. The central premise is that consumers think in
+exact bit counts the domain actually needs, not in std primitive
+buckets. Consumers write `Uint<32>` (or whatever exact count)
+directly.
 
 
 
@@ -165,18 +158,15 @@ when the meta-newtype field literally writes the generic
 `Bits<9, Hot>` projection; the cycle interleaves `IBits: Sized`
 evaluation with `UFixed`'s const-eval where-clause).
 
-The 9-bit native range covers 0..=511. Round B raised arvo
-cap to 255 (the limit of `Bits<const N: u8>` at the time; later
-widened to `const N: Width` in Round 2 / #312, with Width relocated
-to arvo-strategy in #316); Round
-202604281000 Pass F widened that const-generic to `u16`, so the
-reachable cap is now 0..=65535 in principle. Container dispatch
-covers up to 255 today (single-primitive 65..=128 to `u128`,
-byte-sequence 129..=65535 to `WideBits<bytes_for(N)>` /
-`AlignedWideBits16<bytes_for(N)>` per #316); cells beyond 65535 are
+The 9-bit native range covers 0..=511. The `Bits` const-generic
+parameter is `u16`, so the reachable cap is 0..=65535 in principle.
+Container dispatch covers up to 255 today (single-primitive 65..=128
+to `u128`, byte-sequence 129..=65535 to `WideBits<bytes_for(N)>` /
+`AlignedWideBits16<bytes_for(N)>`); cells beyond 65535 are
 BACKLOG-tracked. The single bottom-out point for `u16` const-generics
-is `Bits<const N: u16, S, Sign>` itself; meta-layer types (`IBits`,
-`FBits`, `Width`) lift to typed fields above it via `MetaCarrier`.
+is `Bits<const N: u16, S, Sign>` itself; the meta-layer types
+(`IBits`, `FBits`) lift to typed fields above it via `MetaCarrier`.
+`Width` lives in `arvo-strategy` and wraps `u16` directly.
 
 Requires `adt_const_params` + `const_param_ty_trait` (nightly).
 Prevents accidentally swapping integer and fractional bit counts at
@@ -189,18 +179,17 @@ aliases over `UFixed` / `IFixed` and rarely touches `IBits` /
 ```rust
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
-pub struct Width(pub MetaCarrier);  // bit-width meta value (0..=255 used)
+pub struct Width(pub u16);  // bit-width meta value
 ```
 
-The bit-width meta-newtype. Used as the const-generic param type for
-`Hasher<const N: Width>` (in arvo-hash), `Fnv1a<const N: Width>`,
-and any other API that takes a logical bit-width as a typed const
-value. The L0 storage primitive `Bits` itself keeps its `const N:
-u8` parameter as the irreducible root of the const-generic tower
-(workspace-rule exception #2); `Width` lifts above that root. The
-`MetaCarrier` field carries the same 9-bit native range used by
-`IBits` / `FBits`; arvo's logical-width range is 0..=255 in
-Round B / Round C.
+The bit-width meta-newtype. Lives in `arvo-strategy` and is
+re-exported through `arvo-storage` and the `arvo` facade. Used as a
+typed sibling to bare `u16` const-generics in surfaces where the
+typed shape adds value. The const-generic positions on `Bits`,
+`Hasher`, and `Fnv1a` use `const N: u16` directly (the irreducible
+root of the const-generic tower per workspace-rule exception #2);
+`Width` is the typed wrapper for cases where the type-level identity
+matters more than ergonomic numeric writing.
 
 The name avoids collision with the `arvo_bits::HasBitWidth` trait
 (L1 contract layer; "this type has a bit width").
@@ -304,13 +293,12 @@ Deref choice.
 
 ## Bits, the storage primitive
 
-`Bits<const N: Width, S: Strategy = Hot, Sign: Signedness = Unsigned>`
-is the L0 storage primitive.
-It moved to arvo from arvo-bits in round 202604500000 because every
-meta-layer ConstParamTy newtype (`IBits`, `FBits`, `Width`) wraps
-`Bits<7, Hot>`, and `UFixed` / `IFixed` use `Bits<{ufixed_bits(I, F)},
-S>` for transparent storage. Hosting `Bits` in arvo-bits would
-create a circular dependency with arvo's own primitive layer.
+`Bits<const N: u16, S: Strategy = Hot, Sign: Signedness = Unsigned>`
+is the L0 storage primitive. It lives in `arvo-storage` and is
+re-exported through this facade. The meta-layer ConstParamTy
+newtypes (`IBits`, `FBits`) wrap `MetaCarrier` (a parallel layout-
+stable companion to `Bits<9, Hot, Unsigned>`); `UFixed` / `IFixed`
+use `Bits<{ufixed_bits(I, F)}, S, Sign>` for transparent storage.
 
 `Bits` is opaque to arithmetic by deliberate design (no `Add` /
 `Sub` / `Mul` / `Div` / `Ord`). It is the storage carrier;
@@ -321,22 +309,21 @@ there is no which-is-bigger question on a bit pattern.
 ```rust
 #[derive(ConstParamTy, PartialEq, Eq, Copy, Clone, Debug)]
 #[repr(transparent)]
-pub struct Bits<const N: Width, S: Strategy = Hot, Sign: Signedness = Unsigned>(
+pub struct Bits<const N: u16, S: Strategy = Hot, Sign: Signedness = Unsigned>(
     <S as BitsContainerFor<N, Sign>>::T
 )
 where
     S: BitsContainerFor<N, Sign>;
 ```
 
-The `const N: Width` parameter is typed (Round 2 / #312 lift; the
-Width newtype lives in arvo-strategy post-#316). Every higher-layer
-const-generic (`Hasher<const N: Width>`, `Fnv1a<const N: Width>`)
-takes the same typed Width. Range: 1..=65535.
+The `const N: u16` parameter is the irreducible bottom-out of the
+const-generic tower. Higher-layer const-generics (`Hasher<const N:
+u16>`, `Fnv1a<const N: u16>`) match. Range: 1..=65535.
 
 ### Constructor surface
 
 ```rust
-impl<const N: Width, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
+impl<const N: u16, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
 where S: BitsContainerFor<N, Sign>
 {
     /// Associated-type-typed constructor.
@@ -355,24 +342,9 @@ where S: BitsContainerFor<N, Sign>
 }
 ```
 
-Per round 202604271346 D-7, every per-size helper (`from_raw_uN` /
-`to_raw_uN` family) is gone; consumers route through `from_narrowed` /
-`from_widened` for refit, or `from_raw` for the unchecked entry.
-
-`from_raw_uN` masks to N bits before storing. This is critical for
-`ConstParamTy` soundness: `Bits<7, Hot>::from_raw_u8(255)` masks to
-`255 & 0b0111_1111 = 127`. Two `Width` values constructed via
-`Width(Bits::<7, Hot>::from_raw_u8(7))` and `Width(Bits::<7,
-Hot>::from_raw_u8(135))` (which masks to 7) compare structurally
-equal at the type level. Without masking they would be unequal.
-
-### Deprecated in this round
-
-`Bits::new(u64)` and `Bits::bits(self) -> u64` are deprecated. They
-remain in source for one round of migration grace; a follow-up round
-removes them. Consumers migrate `Bits::<N, S>::new(x)` →
-`Bits::<N, S>::from_raw_u64(x)` and `b.bits()` → `b.to_raw_u64()`
-(or the width-class equivalent).
+Every per-size helper (`from_raw_uN` / `to_raw_uN` family) is gone;
+consumers route through `from_narrowed` / `from_widened` for refit, or
+`from_raw` for the unchecked entry.
 
 ### Trait surface
 
@@ -483,11 +455,11 @@ The macro also generates per-sub-range pre-shifted
 where consumers hold raw values before wrapping them into the
 bitfield.
 
-Primary consumer: arvo-hash's `ContentHash` alias (`Bits<28, Hot>`,
-u32-backed, 4 bytes). hilavitkutin-str's `Str` handle uses `Bitfield`
-for its 32-bit packed identity layout.
+Primary consumer: arvo-hash's `ContentHash` alias (`Bits<64, Hot>`).
+hilavitkutin-str's `Str` handle uses `Bitfield` for its 32-bit packed
+identity layout.
 
-#### Const-callable equality and default (round 202605040602)
+#### Const-callable equality and default
 
 The `bitfield!` macro emits `impl const ConstEq` and
 `impl const ConstDefault` per generated bitfield type:
@@ -566,39 +538,33 @@ pub type Fixed<const I: u8, const F: u8, S = Warm>
 pub type Signed<const I: u8, const F: u8, S = Warm>
     = IFixed<{ ibits(I) }, { fbits(F) }, S>;
 
-pub type Uint<const N: Width, S = Warm>
+pub type Uint<const N: u16, S = Warm>
     = UFixed<{ ibits(N) }, { fbits(0) }, S>;
 
-pub type Int<const N: Width, S = Warm>
+pub type Int<const N: u16, S = Warm>
     = IFixed<{ ibits(N - 1) }, { fbits(0) }, S>;
 ```
 
-Round 202604271346 pass 7 deleted the bulk of the per-N aliases
-(`Uint5` / `Uint6` / `Uint7` / `Int7` / `Int13`). Round 202604280034
-deleted the std-parallel survivors (`Uint8` / `Uint16` / `Uint32` /
-`Uint64` / `Int8` / `Int16` / `Int32` / `Int64`) to lock in the
-exact-width discipline. arvo is built around exact-bit-count
-thinking; std-parallel sugar reintroduces bucket thinking that the
-arvo's central premise rejects. Consumers express domain widths
-directly (`Uint<13, Warm>`, `Uint<28, Hot>`, `Int<8, Hot>`) and define
-their own semantic aliases on top
-(`pub type NodeId = arvo::Uint<32, Hot>;`).
+No std-parallel per-N aliases: `Uint8`, `Uint16`, `Uint32`, `Uint64`,
+`Int8`, `Int16`, `Int32`, `Int64` are not part of the surface. arvo
+is built around exact-bit-count thinking; std-parallel sugar
+reintroduces bucket thinking that the arvo's central premise rejects.
+Consumers express domain widths directly (`Uint<13, Warm>`,
+`Uint<28, Hot>`, `Int<8, Hot>`) and define their own semantic aliases
+on top (`pub type NodeId = arvo::Uint<32, Hot>;`).
 
-Strategy default is `Warm` where Warm is valid (`I + F <= 64` post
-round 202604280500); for `I + F > 64` (Warm's BACKLOG-tracked extension
-to 128 awaits the no-native-u256 design call), the consumer picks Hot
-or Precise explicitly. The
-`#[diagnostic::on_unimplemented]` attribute on `BitsContainerFor` points
-at strategy choice when an out-of-range `(N, S)` pair fails to
+Strategy default is `Warm` where Warm is valid (`I + F <= 128`); for
+`I + F > 128`, the consumer picks Hot or Precise explicitly. The
+`#[diagnostic::on_unimplemented]` attribute on `BitsContainerFor`
+points at strategy choice when an out-of-range `(N, S)` pair fails to
 resolve.
 
 ## Type family marker traits
 
 Five marker traits classify arvo's type families. Used by arvo-bits
-for blanket impls and by consumers for generic constraints. Round
-202605021800 lifts every marker trait to `pub const trait` so
-`[const]` propagation reaches consumer where-clause bounds in const
-fn bodies.
+for blanket impls and by consumers for generic constraints. Every
+marker trait is `pub const trait` so `[const]` propagation reaches
+consumer where-clause bounds in const fn bodies.
 
 ```rust
 pub const trait IntegerLike: Copy {}
@@ -638,9 +604,9 @@ impl<const I: IBits, S: Strategy> IntegerLike
 impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation
     for UFixed<I, F, S>
 {
-    // round 202605030400: typed arithmetic at the meta-bit layer.
-    // Trait surface stays at USize; the impl body composes through
-    // const-callable typed surfaces and casts at the emit boundary.
+    // typed arithmetic at the meta-bit layer. The trait surface stays
+    // at USize; the impl body composes through const-callable typed
+    // surfaces and casts at the emit boundary.
     const LOGICAL_WIDTH: USize = logical_width_unsigned(I, F);
 }
 
@@ -684,36 +650,27 @@ where
 
 `I` = integer bits, `F` = fractional bits. `S` = strategy marker
 (no struct-level default; the strategy default lives at the alias
-layer, e.g. `pub type Uint<const N: Width, S = Warm> = UFixed<{
+layer, e.g. `pub type Uint<const N: u16, S = Warm> = UFixed<{
 ibits(N) }, { fbits(0) }, S>`). `I.0 + F.0` is the logical bit
 width for UFixed; `1 + I.0 + F.0` is the logical bit width for IFixed
 (the sign bit is implicit in the `Bits<{1+I+F}, S, Signed>` storage
 shape). The actual storage width depends on the strategy.
 
-The struct-level `S = Warm` default was dropped in round
-202604500000 (foundations restructure). Two sources of Warm-default
-(struct-level + alias-level) created drift risk; the alias layer is
-now the single source.
-
 `UFixed` is a `repr(transparent)` newtype over
-`Bits<{I+F}, S, Unsigned>` per round 202604271346 pass 4b. Every
-UFixed instance is byte-identical to a `Bits<N, S, Unsigned>` of
-matching width, which is byte-identical to the strategy-dispatched
-primitive container.
+`Bits<{I+F}, S, Unsigned>`. Every UFixed instance is byte-identical to
+a `Bits<N, S, Unsigned>` of matching width, which is byte-identical to
+the strategy-dispatched primitive container.
 
 `IFixed` is the symmetric `repr(transparent)` newtype over
-`Bits<{1+I+F}, S, Signed>`, shipped in round 202604280500 alongside
-the Sign axis on `Bits`. The previous direct-projection-wrapper shape
-(named `bits` field plus `PhantomData<fn() -> S>` companion) is gone.
-Both UFixed and IFixed now share the single-field `Bits`-wrapped
-shape with sign-aware container projection through
-`BitsContainerFor<N, Sign>`.
+`Bits<{1+I+F}, S, Signed>`. Both UFixed and IFixed share the single-
+field `Bits`-wrapped shape with sign-aware container projection
+through `BitsContainerFor<N, Sign>`.
 
 After compilation, every arvo type resolves to the optimal integer
 instruction for the target regardless of which shape its source
 field uses.
 
-### Const arithmetic surface (round 202605021200)
+### Const arithmetic surface
 
 `UFixed<I, F, S>` and `IFixed<I, F, S>` ship arithmetic ops as
 `impl const Trait`, plus inherent constants:
@@ -745,11 +702,11 @@ round. Float arithmetic at const time follows the same const-eval
 contract as the underlying primitive (limited but sufficient for
 typed-zero / typed-one / typed-literal construction).
 
-The const-trait surface composes through aliases: `Uint<N, S>`,
-`Int<N, S>`, `Uint8`, `Uint16`, etc. inherit the const ops via
-their underlying UFixed / IFixed shapes. No fresh impls per alias.
+The const-trait surface composes through aliases: `Uint<N, S>` and
+`Int<N, S>` inherit the const ops via their underlying UFixed / IFixed
+shapes. No fresh impls per alias.
 
-### Const-callable trait family (rounds 202605021800, 202605041128)
+### Const-callable trait family
 
 UFixed and IFixed impl a canonical const-trait family via the
 predicate-bundling pattern: each trait's blanket impl bounds only
@@ -759,21 +716,15 @@ container projection separately), sidestepping the
 
 Trait family on UFixed and IFixed:
 
-- `Identity` (`ZERO`, `ONE`). Round 202605021800. Forwards through
-  inner `Bits` Identity.
-- `Bounded` (`MIN`, `MAX`). Round 202605041128 (#325). Forwards
-  through inner `Bits` Bounded; MIN/MAX project to the container
-  bounds (arvo semantics inherited from
-  `arvo-storage/src/bits.rs:101`).
-- `ConstPartialEq` (value equality at const time). Round
-  202605021800.
-- `ConstEq` (reflexive marker over ConstPartialEq). Round
-  202605021800.
+- `Identity` (`ZERO`, `ONE`). Forwards through inner `Bits` Identity.
+- `Bounded` (`MIN`, `MAX`). Forwards through inner `Bits` Bounded;
+  MIN/MAX project to the container bounds.
+- `ConstPartialEq` (value equality at const time).
+- `ConstEq` (reflexive marker over ConstPartialEq).
 - `ConstBitEq` (bit-pattern equality, structurally reflexive).
-  Round 202605021800.
-- `ConstOrd` (total ordering at const time). Round 202605021800.
+- `ConstOrd` (total ordering at const time).
 - `ConstDefault` (typed default; `default()` returns
-  `Identity::ZERO`). Round 202605021800.
+  `Identity::ZERO`).
 
 The predicate-bundling shape, exemplified by Bounded:
 
