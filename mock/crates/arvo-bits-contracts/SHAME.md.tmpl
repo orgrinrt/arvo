@@ -1,6 +1,6 @@
 # arvo-bits-contracts. Known gaps
 
-Round 202604271346 lifted these items into arvo-bits-contracts as
+This lifted these items into arvo-bits-contracts as
 part of the contract-crate split. Each has a deferred design-doc
 follow-up that lands in the next DOC-phase round; until then the
 SHAME entry silences the `undocumented-type` lint while still
@@ -16,7 +16,7 @@ its only purpose is to prevent consumers outside this crate from
 adding new primitive widths to `IBitPrim`. The `undocumented-type`
 lint cannot see the private-mod context and flags the bare
 `pub(crate) trait` declaration. The next DOC-phase round adds an
-explicit "Sealing traits" section to `DESIGN.md.tmpl`; until then
+explicit "Sealing traits" section to `DESIGN.md`; until then
 this SHAME entry records the gap.
 
 ## UBridge

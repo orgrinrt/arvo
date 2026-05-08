@@ -3,14 +3,14 @@
 L2 hash-domain types and algorithm contracts. Ships a domain alias
 over the `Bits` storage primitive (now in `arvo-storage`), generic
 trait contracts for hash algorithms, and two concrete algorithms:
-`XxHash3<const N: Width>` (default) and `Fnv1a<const N: Width>`
+`XxHash3<const N: u16>` (default) and `Fnv1a<const N: u16>`
 (option for known-good fits).
 
 `#![no_std]`, no alloc.
 
-Per round 202605031548 (#314): arvo-hash takes a direct dep on `arvo-bits-contracts` for the new `NarrowFromU64<N, S, Sign>` trait used by the bounded-generic `Hasher` impl. Other deps unchanged: imports flow through the `arvo` facade for `Bits`, `Hot`, `BitsContainerFor`. The `arvo-bits-contracts` direct dep is added because `NarrowFromU64` is the contract surface the algorithm impls bind to; pulling it through the facade would loop the dep graph back through arvo.
+Per (#314): arvo-hash takes a direct dep on `arvo-bits-contracts` for the new `NarrowFromU64<N, S, Sign>` trait used by the bounded-generic `Hasher` impl. Other deps unchanged: imports flow through the `arvo` facade for `Bits`, `Hot`, `BitsContainerFor`. The `arvo-bits-contracts` direct dep is added because `NarrowFromU64` is the contract surface the algorithm impls bind to; pulling it through the facade would loop the dep graph back through arvo.
 
-Per round 202605031400 (#316): the `Bits` const-generic and `Hasher<const N: u16>` are u16-typed; the `Width` newtype layer used in earlier rounds is gone. `width_u8` / `width_u16` const helpers are not used by hash crate code post-#316.
+Per (#316): the `Bits` const-generic and `Hasher<const N: u16>` are u16-typed; the `Width` newtype layer used in earlier rounds is gone. `width_u8` / `width_u16` const helpers are not used by hash crate code post-#316.
 
 ## Why this crate exists
 
@@ -35,14 +35,14 @@ call sites bind `ContentHash` instead of the raw `Bits<64, Hot>`.
 pub type ContentHash = arvo::Bits<64, Hot>;
 ```
 
-The width widened from 28 to 64 in Pass B.2 of round 202604281000.
+The width widened from 28 to 64 in Pass B.2 of.
 64 bits matches `XxHash3`'s natural output and reduces collision
 probability to negligible levels for million-entity workloads (the
 prior 28-bit identity carried meaningful collision risk past about
 16k unique values; 64 bits clears the projected scale by orders of
 magnitude).
 
-A direct type alias rather than a newtype: the semantic domain is fully captured by the bit width; no additional invariants warrant a distinct type. Per round 202605031400 (#316), the `Bits` const-generic is `u16`; `Hasher` / `Fnv1a` / `XxHash3` carry `const N: u16` directly.
+A direct type alias rather than a newtype: the semantic domain is fully captured by the bit width; no additional invariants warrant a distinct type. Per (#316), the `Bits` const-generic is `u16`; `Hasher` / `Fnv1a` / `XxHash3` carry `const N: u16` directly.
 
 ## Algorithm contracts
 
@@ -55,8 +55,8 @@ use arvo::strategy::{BitsContainerFor, Unsigned};
 pub trait Hasher<const N: u16>
 where Hot: BitsContainerFor<N, Unsigned>
 {
-    fn update(&mut self, bytes: &[u8]);
-    fn finalize(self) -> Bits<N, Hot>;
+ fn update(&mut self, bytes: &[u8]);
+ fn finalize(self) -> Bits<N, Hot>;
 }
 ```
 
@@ -77,14 +77,14 @@ use arvo_bits_contracts::NarrowFromU64;
 
 pub const trait ConstHash<const N: u16, S: Strategy, Sign: Signedness>: Sized
 where
-    S: BitsContainerFor<N, Sign>,
-    <S as BitsContainerFor<N, Sign>>::T: [const] NarrowFromU64<N, S, Sign>,
+ S: BitsContainerFor<N, Sign>,
+ <S as BitsContainerFor<N, Sign>>::T: [const] NarrowFromU64<N, S, Sign>,
 {
-    fn hash_const(bytes: &[u8]) -> Bits<N, S, Sign>;
+ fn hash_const(bytes: &[u8]) -> Bits<N, S, Sign>;
 }
 ```
 
-The `[const]` host-effect bound on the supertrait constraint is required for cross-crate const dispatch. Sketch 02 (round 202605031548) validates the chain `ConstHash → NarrowFromU64 → BitsContainerFor → Project` resolves at both compile time and runtime in a downstream crate.
+The `[const]` host-effect bound on the supertrait constraint is required for cross-crate const dispatch. Sketch 02 validates the chain `ConstHash → NarrowFromU64 → BitsContainerFor → Project` resolves at both compile time and runtime in a downstream crate.
 
 Algorithms implement `ConstHash` once each, generic over `N, S, Sign`. Per-N `hash_const` inherent methods on `Fnv1a<N>` and `XxHash3<N>` are gone; consumers reach for `<Fnv1a<N> as ConstHash<N, Hot, Unsigned>>::hash_const(bytes)` (or import the trait and write `Fnv1a::<N>::hash_const(bytes)` resolved through trait associated-fn lookup).
 
@@ -98,7 +98,7 @@ Round 4 deletes `HasherExt` outright per `no-legacy-shims-pre-1.0` (no deprecati
 
 ## Default algorithm choice
 
-`XxHash3<const N: Width>` is the default hash family. `Fnv1a<const N: Width>`
+`XxHash3<const N: u16>` is the default hash family. `Fnv1a<const N: u16>`
 remains as an explicit option for known-good fits (small inputs in the
 8-16 byte band where FNV-1a stays competitive on bandwidth, or
 algorithm-locked test fixtures).
@@ -131,16 +131,16 @@ where Hot: BitsContainerFor<N, Unsigned>;
 impl<const N: u16> Hasher<N> for XxHash3<N>
 where Hot: BitsContainerFor<N, Unsigned>
 {
-    fn update(&mut self, bytes: &[u8]) { /* SRC */ }
-    fn finalize(self) -> Bits<N, Hot> { /* SRC */ }
+ fn update(&mut self, bytes: &[u8]) { /* SRC */ }
+ fn finalize(self) -> Bits<N, Hot> { /* SRC */ }
 }
 
 impl<const N: u16> const ConstHash<N, Hot, Unsigned> for XxHash3<N>
 where
-    Hot: BitsContainerFor<N, Unsigned>,
-    <Hot as BitsContainerFor<N, Unsigned>>::T: [const] NarrowFromU64<N, Hot, Unsigned>,
+ Hot: BitsContainerFor<N, Unsigned>,
+ <Hot as BitsContainerFor<N, Unsigned>>::T: [const] NarrowFromU64<N, Hot, Unsigned>,
 {
-    fn hash_const(bytes: &[u8]) -> Bits<N, Hot, Unsigned> { /* SRC */ }
+ fn hash_const(bytes: &[u8]) -> Bits<N, Hot, Unsigned> { /* SRC */ }
 }
 ```
 
@@ -167,22 +167,22 @@ where Hot: BitsContainerFor<N, Unsigned>;
 impl<const N: u16> Hasher<N> for Fnv1a<N>
 where Hot: BitsContainerFor<N, Unsigned>
 {
-    fn update(&mut self, bytes: &[u8]) { /* SRC */ }
-    fn finalize(self) -> Bits<N, Hot> { /* SRC */ }
+ fn update(&mut self, bytes: &[u8]) { /* SRC */ }
+ fn finalize(self) -> Bits<N, Hot> { /* SRC */ }
 }
 
 impl<const N: u16> const ConstHash<N, Hot, Unsigned> for Fnv1a<N>
 where
-    Hot: BitsContainerFor<N, Unsigned>,
-    <Hot as BitsContainerFor<N, Unsigned>>::T: [const] NarrowFromU64<N, Hot, Unsigned>,
+ Hot: BitsContainerFor<N, Unsigned>,
+ <Hot as BitsContainerFor<N, Unsigned>>::T: [const] NarrowFromU64<N, Hot, Unsigned>,
 {
-    fn hash_const(bytes: &[u8]) -> Bits<N, Hot, Unsigned> { /* SRC */ }
+ fn hash_const(bytes: &[u8]) -> Bits<N, Hot, Unsigned> { /* SRC */ }
 }
 ```
 
 The width bound is enforced through `Hot: BitsContainerFor<N, Unsigned>`: `Hot` covers `1..=128` natively, but FNV-1a-64's 64-bit state caps practical use at `N <= 64`. The `Fnv1a128` BACKLOG entry tracks wider state. The `#[diagnostic::on_unimplemented]` attribute on `BitsContainerFor` produces a human-readable strategy-pointing error if a consumer exceeds the bound.
 
-`<Fnv1a<N> as ConstHash<N, Hot, Unsigned>>::hash_const` is the entry point for compile-time access-set hash-membership validation downstream (hilavitkutin app-builder formalisation, round 202604520000). Streaming `Hasher` impl covers the runtime path.
+`<Fnv1a<N> as ConstHash<N, Hot, Unsigned>>::hash_const` is the entry point for compile-time access-set hash-membership validation downstream (hilavitkutin app-builder formalisation, ). Streaming `Hasher` impl covers the runtime path.
 
 ### fnv1a_64 free function
 
@@ -194,7 +194,7 @@ The width bound is enforced through `Hot: BitsContainerFor<N, Unsigned>`: `Hot` 
 /// `&[u8]` parameter is workspace-rule exception #4 (boundary input
 /// from raw bytes); the `u64` return is the algorithm's state-width.
 pub const fn fnv1a_64(bytes: &[u8]) -> u64 {
-    /* body in arvo-hash/src/algo.rs (SRC phase) */
+ /* body in arvo-hash/src/algo.rs (SRC phase) */
 }
 ```
 
@@ -211,10 +211,10 @@ Streaming:
 ```rust
 fn intern_chunks<H>(mut hasher: H, chunks: &[&[u8]]) -> ContentHash
 where
-    H: Hasher<64>,
+ H: Hasher<64>,
 {
-    for chunk in chunks { hasher.update(chunk); }
-    hasher.finalize()
+ for chunk in chunks { hasher.update(chunk); }
+ hasher.finalize()
 }
 ```
 
@@ -230,7 +230,7 @@ Or via trait-in-scope shorthand:
 use arvo_hash::ConstHash;
 
 const fn fingerprint(bytes: &[u8]) -> ContentHash {
-    XxHash3::<64>::hash_const(bytes)
+ XxHash3::<64>::hash_const(bytes)
 }
 ```
 
@@ -239,23 +239,23 @@ To swap algorithm, change the type the caller supplies. No site edits; the trait
 ## Dependencies
 
 - `arvo` (facade): re-exports the storage primitives `Bits<const N: u16, S, Sign>`, the strategy markers (`Hot`, `Warm`, `Cold`, `Precise`), the `Unsigned` / `Signed` Sign markers, and the unified `BitsContainerFor<N, Sign>` projection. arvo-hash imports these via the facade.
-- `arvo-bits-contracts` (direct dep added in round 202605031548): hosts the `NarrowFromU64<N, S, Sign>` const trait that the bounded-generic `Hasher` impl binds to. The bound `<S as BitsContainerFor<N, Sign>>::T: [const] NarrowFromU64<N, S, Sign>` is the arvo-level contract that lets one impl block cover all valid `(N, S, Sign)` combinations without per-N enumeration.
+- `arvo-bits-contracts` (direct dep added): hosts the `NarrowFromU64<N, S, Sign>` const trait that the bounded-generic `Hasher` impl binds to. The bound `<S as BitsContainerFor<N, Sign>>::T: [const] NarrowFromU64<N, S, Sign>` is the arvo-level contract that lets one impl block cover all valid `(N, S, Sign)` combinations without per-N enumeration.
 
-The previously declared `arvo-bits` dep was dropped during round 202604280034 and stays dropped.
+The previously declared `arvo-bits` dep was dropped and stays dropped.
 
 ## What this crate does NOT contain
 
 - Cryptographic hashes (SHA, BLAKE); out of scope entirely. A
-  sibling arvo-crypto crate covers cryptographic needs if they
-  surface.
+ sibling arvo-crypto crate covers cryptographic needs if they
+ surface.
 - Hash widths beyond 64 bits in `Fnv1a`; tracked as `Fnv1a128` in
-  BACKLOG.
+ BACKLOG.
 - Other non-cryptographic algorithms (xxHash, CRC32); tracked in
-  BACKLOG.
+ BACKLOG.
 - Semantic aliases beyond ContentHash; consumers that need
-  NameHash, KeyHash, or similar start with their own local alias
-  over ContentHash or `Bits<N, Hot>` and promote to arvo-hash once
-  patterns stabilise.
+ NameHash, KeyHash, or similar start with their own local alias
+ over ContentHash or `Bits<N, Hot>` and promote to arvo-hash once
+ patterns stabilise.
 - rkyv Archive impls; consumers define Archive at their boundary.
 - Owned byte buffers; all hashing takes `&[u8]` input.
 
@@ -266,10 +266,5 @@ The previously declared `arvo-bits` dep was dropped during round 202604280034 an
 land as additional implementors. Consumer code parameterises over
 the trait, not the algorithm.
 
-## Sources
 
-- 202604201338_topic.arvo-hash-new-crate.md (initial scope)
-- 202604201048_topic.sink-collector-codec-contracts.md (pattern
-  precedent for streaming-canonical + ext-blanket shape)
-- 202604500000_topic.foundations-restructure-final.md (Fnv1a
-  promotion, Width const-generic migration, Bits-to-L0)
+Round-by-round history is recorded in `mock/research/arvo-hash-history.md` (Tier 2).

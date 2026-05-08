@@ -7,21 +7,21 @@ Bits in arvo-storage. The cascade through arvo-bits-contracts'
 projection traits (UBitContainer, IBitContainer, Narrow, Widen) lifts
 in #316 alongside the unified BitsContainerFor introduction.
 
-Round 1 (round 202605021800) prerequisites landed:
+Round 1 prerequisites landed:
 - Signedness lifted to pub const trait
 - BitsContainerFor\<N, Sign\> lifted to pub const trait
 - IBitPrim parity with BitPrim (full method surface)
 - BitAccess / BitSequence / BitLogic blanket impls generalised to
-  Bits\<N, S, Sign: Signedness\> with BitsBitPrim\<Sign\> sealed
-  bridge
+ Bits\<N, S, Sign: Signedness\> with BitsBitPrim\<Sign\> sealed
+ bridge
 
 #316 ships the BitPrim impl on WideBits / AlignedWideBits16 (replaces
-the deleted MultiContainer impl from round 202605021800). Byte-by-byte
+the deleted MultiContainer impl from ). Byte-by-byte
 composition per the locked byte-ordering convention (bit 0 = LSB of
 byte 0; lo-first cascade matching u128 semantics; audit C1).
 
 ## Removed entries
 
 - "BitPrim impl on MultiContainer", MultiContainer is deleted entirely
-  in #316 per no-legacy-shims-pre-1.0; the impl moves to WideBits +
-  AlignedWideBits16.
+ in #316 per no-legacy-shims-pre-1.0; the impl moves to WideBits +
+ AlignedWideBits16.
