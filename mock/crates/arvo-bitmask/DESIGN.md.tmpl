@@ -71,10 +71,11 @@ Concrete shipping shapes:
  single-instruction set ops on x86 (`or` / `and` / `xor` / `not`),
  identical instructions on aarch64.
 - `Mask<Bits<256, Hot, Unsigned>>`: backed by
- `MultiContainer<u128, u128>` via `BitsContainerFor<256,
- Unsigned>`. Multi-word storage with the unroll handled by the
- the `WideBits` BitPrim impls. Loop-free, branch-free
- composition.
+ `AlignedWideBits16<32>` via `BitsContainerFor<256, Unsigned>` (32
+ bytes, 16-byte aligned for the Hot SIMD baseline; Warm / Cold /
+ Precise project to `WideBits<32>` at 1-byte alignment). Multi-word
+ storage with the unroll handled by the `WideBits` BitPrim impls.
+ Loop-free, branch-free composition.
 
 Narrower widths are equally valid: `Mask<Bits<32, Hot, Unsigned>>`
 gives a 32-element bitmask backed by `u32`. The chassis works for
