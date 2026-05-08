@@ -13,7 +13,8 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Identity, Bool, Cap, USize};
+use arvo::predicate::Pred2;
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_tensor::{Array, Matrix, cap_size};
 
@@ -34,13 +35,13 @@ use arvo_tensor::{Array, Matrix, cap_size};
 /// `splits` contains `USize(0)` for unreachable entries.
 pub fn matrix_chain_dp<const N: Cap, W>(
     cost: impl Fn(USize, USize) -> W,
-    feasible: impl Fn(USize, USize) -> Bool,
+    feasible: impl Pred2<USize, USize>,
 ) -> (W, Array<USize, N>)
 where
     [(); cap_size(N)]:,
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
 {
-    let zero = <W as FromConstant>::from_constant(0);
+    let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
     let mut splits: Array<USize, N> = Array::filled(USize(0));
 
     if cap_size(N) == 0 {
@@ -63,7 +64,7 @@ where
     // as leaves; leaf cost is `cost(i, i)`.
     for i in 0..cap_size(N) {
         let iu = USize(i);
-        if feasible(iu, iu).0 {
+        if feasible.test(&iu, &iu).0 {
             dp.set(iu, iu, cost(iu, iu));
             reachable.set(iu, iu, Bool::TRUE);
         }
@@ -82,7 +83,7 @@ where
             let mut best_val = zero;
             let mut best_set = Bool::FALSE;
             let mut best_split = lou;
-            if feasible(lou, hiu).0 {
+            if feasible.test(&lou, &hiu).0 {
                 best_val = cost(lou, hiu);
                 best_set = Bool::TRUE;
                 best_split = hiu;
@@ -96,7 +97,7 @@ where
                 if reachable.get(lou, ku).0 && reachable.get(k1u, hiu).0 {
                     let candidate = dp.get(lou, ku) + dp.get(k1u, hiu);
                     if !best_set.0
-                        || matches!(candidate.total_cmp(&best_val), Ordering::Less)
+                        || matches!(candidate.total_cmp(best_val), Ordering::Less)
                     {
                         best_val = candidate;
                         best_set = Bool::TRUE;
@@ -129,8 +130,8 @@ where
     );
 
     let root_end = USize(cap_size(N) - 1);
-    let final_cost = if reachable.get(USize(0), root_end).0 {
-        dp.get(USize(0), root_end)
+    let final_cost = if reachable.get(USize::ZERO, root_end).0 {
+        dp.get(USize::ZERO, root_end)
     } else {
         zero
     };
@@ -160,7 +161,7 @@ fn fill_splits<const N: Cap>(
         return;
     }
     out.set(*out_idx, k);
-    *out_idx = USize(out_idx.0 + 1);
+    *out_idx = *out_idx + USize::ONE;
     fill_splits::<N>(split, reachable, lo, k, out, out_idx);
-    fill_splits::<N>(split, reachable, USize(k.0 + 1), hi, out, out_idx);
+    fill_splits::<N>(split, reachable, k + USize::ONE, hi, out, out_idx);
 }

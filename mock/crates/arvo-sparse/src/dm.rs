@@ -1,6 +1,6 @@
 //! Dulmage-Mendelsohn structural decomposition.
 //!
-//! Classifies each node of a `BitMatrix64<N>` adjacency into one of
+//! Classifies each node of a `BitMatrix<Bits<64, Hot, Unsigned>, N>` adjacency into one of
 //! three disjoint masks based on the presence of incoming and
 //! outgoing edges:
 //!
@@ -15,8 +15,9 @@
 //! The three masks partition the `N` node indices exactly: every
 //! node `i` in `0..N` appears in exactly one mask.
 
-use arvo::newtype::{Cap, USize};
-use arvo_bitmask::{BitMatrix64, Mask64, cap_size};
+use arvo::{Cap, USize};
+use arvo::{Bits, Hot, Unsigned};
+use arvo_bitmask::{BitMatrix, Mask, cap_size};
 
 use arvo_bitmask::NodeId;
 
@@ -30,25 +31,25 @@ where
     [(); cap_size(N)]:,
 {
     /// Nodes with incoming edges but no outgoing edges.
-    pub horizontal: Mask64,
+    pub horizontal: Mask<Bits<64, Hot, Unsigned>>,
     /// Nodes with no incoming edges (sources and isolates).
-    pub vertical: Mask64,
+    pub vertical: Mask<Bits<64, Hot, Unsigned>>,
     /// Nodes with both incoming and outgoing edges.
-    pub square: Mask64,
+    pub square: Mask<Bits<64, Hot, Unsigned>>,
 }
 
 /// Classify each node in the adjacency into one of the three masks.
 #[inline]
 pub fn dulmage_mendelsohn<const N: Cap>(
-    adjacency: &BitMatrix64<N>,
+    adjacency: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
 ) -> DulmageMendelsohn<N>
 where
     [(); cap_size(N)]:,
 {
     let mut out: DulmageMendelsohn<N> = DulmageMendelsohn {
-        horizontal: Mask64::empty(),
-        vertical: Mask64::empty(),
-        square: Mask64::empty(),
+        horizontal: Mask::<Bits<64, Hot, Unsigned>>::empty(),
+        vertical: Mask::<Bits<64, Hot, Unsigned>>::empty(),
+        square: Mask::<Bits<64, Hot, Unsigned>>::empty(),
     };
 
     let mut i = 0usize;

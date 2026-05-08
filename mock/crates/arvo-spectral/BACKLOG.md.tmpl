@@ -1,22 +1,20 @@
-# arvo-spectral — backlog
+# arvo-spectral, backlog
 
-## Matrix-in-arvo-sparse promotion
+> **Type-surface reminder**: new entries use `arvo::USize` /
+> `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
+> `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
+> `rules/type-surface.md`.
 
-The `Matrix<W, const N: Cap>` dense-matrix wrapper currently lives in
-arvo-spectral. If other consumers (hilavitkutin, clause, or future
-arvo algorithm crates) need a dense-matrix surface, promote it into
-arvo-sparse (the "matrix representations" crate) as part of a
-cleanup round. The Csr<ROWS, NNZ, W> sparse format already lives
-there; a dense sibling is the natural neighbor.
+## Wider-W partition outputs
 
-
-## Mask256 partition outputs
-
-`spectral_bisection` / `k_way_partition` ship with `Mask64` and
-`[USize; N]` outputs respectively — supports N ≤ 64. `Mask256`-backed
-siblings would support N ≤ 256. Spectral methods are typically small-N
-(per polka-dots research N ≤ 32 is common), so this is a widening for
-atypical workloads, not a default need.
+`spectral_bisection` / `k_way_partition` ship with
+`Mask<Bits<64, Hot, Unsigned>>` and `[USize; N]` outputs respectively
+(supports N ≤ 64). The chassis is generic over W; instantiating with
+`W = Bits<256, Hot, Unsigned>` extends to N ≤ 256 via arvo's
+MultiContainer plumbing without an algorithmic-shape change.
+Spectral methods are typically small-N (in observed workloads N ≤
+32 is common), so this is a widening for atypical workloads, not a
+default need.
 
 ## Non-dense matrix formats
 

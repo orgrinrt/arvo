@@ -1,0 +1,50 @@
+f5f3646 chore: lock src changelist for 202605021800_changelist.src.lock.md
+62db055 docs: regenerate after round 202605021800 src CL
+05f0f03 chore: refresh Cargo.lock for arvo-numeric-contracts dep additions
+0058b12 feat: round 202605021800 src — Predicate family wrapper-impl design
+1e17e21 feat: round 202605021800 src — numeric-contracts impl const sweep
+1814bef feat: round 202605021800 src — MultiContainer canonical surface (BitPrim, Bounded, Identity)
+2d16ecb feat: round 202605021800 src — BitsBitPrim<Sign> bridge + Bits Sign-axis generalisation
+b729b95 feat: round 202605021800 src — typed BitPrim/IBitPrim + sealing-marker rename
+e2487b8 test+docs: round 202605021800 — H1 Ieee seal commitment doc + H3 LOGICAL_WIDTH const probe
+6ee9b85 test: round 202605021800 — canonical const surface smoke test
+94f01b1 feat: round 202605021800 src — substrate audit pivots: ConstEq split, MultiContainer ConstParamTy_, Cap unification, no .0 access
+fa6f866 feat: round 202605021800 src — arvo-strategy axes/cross_strategy/widen/container const lifts
+9b56091 feat: round 202605021800 src — ConstEq/ConstOrd/ConstDefault on Bits / UFixed / IFixed / meta-bits
+0bf9ebd feat: round 202605021800 src — markers + Ieee const lifts + Float canonical surface
+60d83b4 feat: round 202605021800 src — ConstEq/ConstOrd/ConstDefault bridges + USize/Cap canonical surfaces
+baf2e87 feat: round 202605021800 src — UPrimConst→Identity collapse + SignedIdentity + macro extension
+323cbf6 docs: add round 202605021800 src changelist
+2a92965 chore: lock doc changelist for round 202605021800
+ad43732 docs: BACKLOG cross-references for round 202605021800
+d0a518f docs: arvo facade ConstEq table — drop cross-crate types
+3e1a7e0 docs: arvo DESIGN — round 202605021800 sections
+aae7ab6 docs: arvo-bits-contracts DESIGN — round 202605021800 sections
+4e3fad4 docs: drop facade-mirror inherents on USize/Cap, trait IS the surface
+2b9dc94 docs: arvo-storage DESIGN — round 202605021800 sections
+529bcc1 docs: arvo-strategy DESIGN — round 202605021800 sections
+0ef28c1 docs: address deprecation-comparison push gate
+47433e4 docs: add expanded round 202605021800 doc changelist
+41f005a docs: expand round 202605021800 topic — full P0 const-trait + dogfood
+0bb3737 chore: deprecate doc changelist 202605021800_changelist.doc.md
+48415ca docs: add round 202605021800 doc changelist
+f060199 docs: open round 202605021800 topic — substrate const-trait foundation lifts
+daf9518 chore: close design round 202605021600
+3d46cbd chore: lock src changelist for round 202605021600
+4d5776c feat: UFixed/IFixed inherent ZERO/ONE via Bits Identity bridge
+c57011e feat: impl const BitAnd/BitOr/BitXor/Not for Mask64 and Mask256
+a534f63 feat: Mask EMPTY/FULL via generic Bounded blanket, no hardcoded u64::MAX
+fd78219 feat: Bits<N, S, Sign> generic Bounded + Identity blanket impls
+0e240d0 feat: lift Bits BitAccess/BitSequence/BitLogic blanket impls to impl const
+764bf2a feat: BitPrim::is_zero const-equality bridge
+147f9df feat: Bounded + Identity const traits in arvo-strategy
+a0e11a2 docs: open SRC CL for round 202605021600
+214cce9 chore: lock doc changelist for round 202605021600
+d782f7d docs: open DOC CL for round 202605021600
+e5d73a2 docs: open round 202605021600 const-trait bridges + mask traits
+190c40c chore: close design round 202605021400
+caafc43 chore: lock src changelist for round 202605021400
+fa921d7 test: extend const-context smoke with chained USize add
+22df45a feat: Mask64 / Mask256 inherent EMPTY and FULL constants
+e8bb620 feat: lift UFixed/IFixed/FastFloat/StrictFloat ops to impl const
+31e2b4f feat: lift BitPrim/IBitPrim/UBitContainer/IBitContainer to pub const trait

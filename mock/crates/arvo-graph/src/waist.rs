@@ -11,21 +11,22 @@
 //! whose depth is a local minimum — so consumers can re-map the
 //! waist mask back through the same `topo_order` they passed in.
 
-use arvo::newtype::{Bool, Cap, USize};
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
+use arvo::{Identity, Bool, Cap, USize};
+use arvo::{Bits, Hot, Unsigned};
+use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 
 /// Detect waist levels in a DAG.
 ///
-/// Returns a `Mask64` whose bit `k` is set when the node at
+/// Returns a `Mask<Bits<64, Hot, Unsigned>>` whose bit `k` is set when the node at
 /// `topo_order[k]` sits at a depth whose level width is a strict
 /// local minimum relative to the occupied depths on either side.
 /// Nodes outside the valid prefix (e.g. when a cycle clipped the
 /// topo sort) contribute nothing.
 #[inline]
 pub fn waist_detect<const N: Cap>(
-    dag: &BitMatrix64<N>,
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
     topo_order: &[NodeId; cap_size(N)],
-) -> Mask64
+) -> Mask<Bits<64, Hot, Unsigned>>
 where
     [(); cap_size(N)]:,
 {
@@ -68,7 +69,7 @@ where
     while j < cap_size(N) {
         let d = depth[j].0;
         if d < cap_size(N) {
-            width[d] = USize(width[d].0 + 1);
+            width[d] = width[d] + USize::ONE;
             if d > max_depth_seen.0 {
                 max_depth_seen = USize(d);
             }
@@ -82,8 +83,8 @@ where
     let mut d = 0usize;
     while d <= max_depth_seen.0 && d < cap_size(N) {
         if width[d].0 > 0 {
-            occupied[occ_n.0] = USize(d);
-            occ_n = USize(occ_n.0 + 1);
+            occupied[*occ_n] = USize(d);
+            occ_n = occ_n + USize::ONE;
         }
         d += 1;
     }
@@ -107,7 +108,7 @@ where
 
     // Emit bits at the topo-order POSITIONS of nodes whose depth is a
     // waist depth.
-    let mut out = Mask64::empty();
+    let mut out = Mask::<Bits<64, Hot, Unsigned>>::empty();
     let mut k = 0usize;
     while k < cap_size(N) {
         let node = topo_order[k];

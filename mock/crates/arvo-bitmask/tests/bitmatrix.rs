@@ -5,8 +5,8 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, USize};
-use arvo_bitmask::{BitMatrix64, BitMatrix256, NodeId};
+use arvo::{Bits, Cap, Hot, USize, Unsigned};
+use arvo_bitmask::{BitMatrix, NodeId};
 
 const fn cap(n: usize) -> Cap {
     Cap(USize(n))
@@ -22,7 +22,7 @@ fn nid(i: usize) -> NodeId {
 
 #[test]
 fn empty_matrix_has_no_edges() {
-    let m: BitMatrix64<C8> = BitMatrix64::empty();
+    let m: BitMatrix<Bits<64, Hot, Unsigned>, C8> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     for i in 0..8 {
         for j in 0..8 {
             assert!(!*m.edge(nid(i), nid(j)));
@@ -32,7 +32,7 @@ fn empty_matrix_has_no_edges() {
 
 #[test]
 fn set_edge_then_edge_reads_true() {
-    let mut m: BitMatrix64<C8> = BitMatrix64::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C8> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(3), nid(5));
     assert!(*m.edge(nid(3), nid(5)));
     assert!(!*m.edge(nid(5), nid(3)));
@@ -40,7 +40,7 @@ fn set_edge_then_edge_reads_true() {
 
 #[test]
 fn clear_edge_removes_edge() {
-    let mut m: BitMatrix64<C8> = BitMatrix64::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C8> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(1), nid(2));
     m.clear_edge(nid(1), nid(2));
     assert!(!*m.edge(nid(1), nid(2)));
@@ -48,7 +48,7 @@ fn clear_edge_removes_edge() {
 
 #[test]
 fn successors_returns_outgoing() {
-    let mut m: BitMatrix64<C8> = BitMatrix64::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C8> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(0), nid(3));
     m.set_edge(nid(0), nid(7));
@@ -61,7 +61,7 @@ fn successors_returns_outgoing() {
 
 #[test]
 fn predecessors_scans_column() {
-    let mut m: BitMatrix64<C8> = BitMatrix64::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C8> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(5));
     m.set_edge(nid(2), nid(5));
     m.set_edge(nid(4), nid(5));
@@ -76,7 +76,7 @@ fn predecessors_scans_column() {
 #[test]
 fn transitive_closure_chain() {
     // 0 -> 1 -> 2 -> 3. Closure should yield direct + transitive edges.
-    let mut m: BitMatrix64<C4> = BitMatrix64::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(1), nid(2));
     m.set_edge(nid(2), nid(3));
@@ -99,7 +99,7 @@ fn transitive_closure_chain() {
 #[test]
 fn transitive_closure_fan_out() {
     // 0 -> 1, 0 -> 2; 1 -> 3; 2 -> 4.
-    let mut m: BitMatrix64<C5> = BitMatrix64::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C5> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(0), nid(2));
     m.set_edge(nid(1), nid(3));
@@ -116,7 +116,7 @@ fn transitive_closure_fan_out() {
 #[test]
 fn transitive_closure_disconnected() {
     // Two disjoint edges: 0 -> 1, 2 -> 3.
-    let mut m: BitMatrix64<C4> = BitMatrix64::empty();
+    let mut m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(2), nid(3));
     m.transitive_closure();
@@ -129,16 +129,16 @@ fn transitive_closure_disconnected() {
 
 #[test]
 fn out_of_range_edge_is_false() {
-    let m: BitMatrix64<C4> = BitMatrix64::empty();
+    let m: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     assert!(!*m.edge(nid(10), nid(0)));
     assert!(!*m.edge(nid(0), nid(10))); // bit index beyond width is still false
 }
 
-// --- BitMatrix256 -------------------------------------------------------
+// --- BitMatrix<Bits<256, Hot, Unsigned>> -------------------------------------------------------
 
 #[test]
 fn bitmatrix256_edge_set_clear() {
-    let mut m: BitMatrix256<C4> = BitMatrix256::empty();
+    let mut m: BitMatrix<Bits<256, Hot, Unsigned>, C4> = BitMatrix::<Bits<256, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(200));
     assert!(*m.edge(nid(0), nid(200)));
     m.clear_edge(nid(0), nid(200));
@@ -147,7 +147,7 @@ fn bitmatrix256_edge_set_clear() {
 
 #[test]
 fn bitmatrix256_closure_chain() {
-    let mut m: BitMatrix256<C4> = BitMatrix256::empty();
+    let mut m: BitMatrix<Bits<256, Hot, Unsigned>, C4> = BitMatrix::<Bits<256, Hot, Unsigned>, _>::empty();
     m.set_edge(nid(0), nid(1));
     m.set_edge(nid(1), nid(2));
     m.set_edge(nid(2), nid(3));

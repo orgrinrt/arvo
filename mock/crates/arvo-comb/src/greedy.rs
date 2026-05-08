@@ -10,7 +10,8 @@
 //! the default for pipeline grouping where the DP's quadratic table is
 //! oversized.
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Identity, Bool, Cap, USize};
+use arvo::predicate::Pred2;
 use arvo_tensor::{Array, cap_size};
 
 use crate::range::Range;
@@ -33,7 +34,7 @@ use crate::range::Range;
 /// predicate should always accept the first item of a fresh group.
 pub fn greedy_group<const N: Cap, const M: Cap, A, T>(
     items: &Array<T, N>,
-    feasible: impl Fn(&A, &T) -> Bool,
+    feasible: impl Pred2<A, T>,
     merge: impl Fn(A, &T) -> A,
     init: impl Fn() -> A,
 ) -> (USize, Array<Range, M>)
@@ -62,26 +63,26 @@ where
             // Open a new group. If the predicate rejects the first
             // item against a fresh accumulator, skip to keep the
             // walk terminating.
-            if !feasible(&acc, item).0 {
-                i = USize(i.0 + 1);
+            if !feasible.test(&acc, item).0 {
+                i = i + USize::ONE;
                 continue;
             }
             acc = merge(acc, item);
             range_start = i;
             open = Bool::TRUE;
-            i = USize(i.0 + 1);
+            i = i + USize::ONE;
             continue;
         }
 
-        if feasible(&acc, item).0 {
+        if feasible.test(&acc, item).0 {
             acc = merge(acc, item);
-            i = USize(i.0 + 1);
+            i = i + USize::ONE;
             continue;
         }
 
         // Close the open group at `[range_start, i)`.
         groups.set(count, Range { start: range_start, end: i });
-        count = USize(count.0 + 1);
+        count = count + USize::ONE;
         if count.0 == cap_size(M) {
             return (count, groups);
         }
@@ -98,7 +99,7 @@ where
             count,
             Range { start: range_start, end: USize(cap_size(N)) },
         );
-        count = USize(count.0 + 1);
+        count = count + USize::ONE;
     }
 
     (count, groups)

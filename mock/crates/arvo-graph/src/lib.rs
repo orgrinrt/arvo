@@ -1,6 +1,6 @@
 //! arvo-graph — L2 graph algorithms.
 //!
-//! DAG analysis over `BitMatrix64` adjacency: topological sort, rank
+//! DAG analysis over `BitMatrix<Bits<64, Hot, Unsigned>>` adjacency: topological sort, rank
 //! computation, connected components, longest-path DP, waist detection,
 //! and spanning-tree decomposition. Every algorithm is stack-only and
 //! const-generic on node count `N` (up to 64).

@@ -1,13 +1,53 @@
-# arvo — Architecture Principles
+# arvo. Architecture Principles
 
-<!-- BEGIN: shared cross-ecosystem principles (synced from clause-dev/.shared/principles-fragment.md — do not edit in place) -->
+## Topology (round 202604271346)
+
+`arvo` is the **downstream facade** of the foundations, not the L0
+layer. The minimal L0 storage primitives (`Bits<N, S>`, strategy
+markers, `Bool`, `USize`, typed meta-bits) live in `arvo-storage`.
+Trait declarations split into five contract crates: `arvo-transparent`,
+`arvo-strategy`, `arvo-bits-contracts` (which absorbed
+`arvo-narrow-contracts` during round 202604280034 and gained `Widen<T>`
+during round 202604300826), `arvo-mask-contracts`, `arvo-numeric-
+contracts`. Concrete impls live in domain-organised implementation
+crates (`arvo-bits`, `arvo-bitmask`, `arvo-refit`, `arvo-tensor`).
+`arvo-refit` ships the bit-width refit re-export surface
+(`Narrow<T>` plus `Widen<T>` plus their `Narrowed` / `Widened`
+aliases). The crate was renamed from `arvo-narrow` in round
+202604301700 to name the domain rather than one of the two
+directions; both narrow and widen sit under one re-export gateway.
+Algorithm crates (`arvo-graph`,
+`arvo-sparse`, `arvo-comb`, `arvo-spectral`, `arvo-hash`) sit at L2 /
+L3. The `arvo` facade re-exports the public surface, hosts default
+trait impls, defines `Int<N, S>` / `Uint<N, S>` and the eight
+std-parallel canonical aliases, and hosts `UFixed<I, F, S>` /
+`IFixed<I, F, S>` as `repr(transparent)` newtypes over `Bits`. The
+facade is at the bottom of the dependency graph; consumers reach the
+foundation crates through it.
+
+The trait-contract split optimises **transitive dependency size**, not
+count. A consumer that needs only the bit-access surface depends on
+`arvo-bits-contracts` plus `arvo-storage`. The split is a starting
+structure; pairs that 100% co-occur in consumer dep sets merge during
+DOC iteration of the round.
+
+Per round 202604271346 D-6, every trait whose methods are sensibly
+callable in const context is `pub const trait` (RFC 3762 line). The
+nightly feature flag set: `feature(adt_const_params)`,
+`feature(generic_const_exprs)`, `feature(const_trait_impl)`,
+`feature(const_param_ty_trait)`, `feature(macro_metavar_expr_concat)`,
+`feature(try_trait_v2)`. Risk class is the same as
+`generic_const_exprs`: incomplete-but-actively-developed, not
+stabilised.
+
+[//]: # (BEGIN shared cross-ecosystem principles, synced from workspace .shared/principles-fragment.md, do not edit in place)
 
 ## No heap. Ever.
 
 No ad-hoc allocations. Allocation is scheduler-managed, declared at
-compile time, never runtime-fabricated. `#![no_std]` + `#![no_alloc]`
-aren't crate attributes first — they're the universe. `Vec`, `Box`,
-`Rc`, `Arc`, `HashMap`, `String`, `format!` don't exist here.
+compile time, never runtime-fabricated. The `no_std` and `no_alloc`
+attributes aren't crate attributes first; they're the universe. `Vec`, `Box`,
+`Rc`, `Arc`, `HashMap`, `String`, and the `format` macro don't exist here.
 
 If an API feels like it wants a runtime-growable container, the shape
 is wrong: reshape toward a trait-bound emitter / iterator / bounded
@@ -17,8 +57,7 @@ this moment".
 ## No bare primitives. Anywhere.
 
 `u8` through `u128`, `i8` through `i128`, `f32`, `f64`, `usize`,
-`isize`, `bool`, `Option`, `Result`, `String`, non-static `&str` —
-**they do not exist in this stack.** Not in public signatures, not
+`isize`, `bool`, `Option`, `Result`, `String`, non-static `&str`, **they do not exist in this stack.** Not in public signatures, not
 in private fields, not in internal `let` bindings, not in cast
 expressions, not in literal suffixes, not in type aliases, not in
 `const`/`static` declarations, not in trait method parameter types,
@@ -40,6 +79,36 @@ hatch `// lint:allow(<rule>) reason: ...; tracked: #N` exists only
 for the genuinely unavoidable boundary, always with a tracked
 remediation task.
 
+### No `.0` field-access on arvo primitives (round 202605021200)
+
+The no-bare-primitives discipline extends to field-access on arvo
+primitives. As of round 202605021200, every arvo numeric primitive
+(USize, Cap, UFixed, IFixed, FastFloat, StrictFloat, Bits, Mask\<W\>
+chassis, BitMatrix\<W, N\> chassis, Bitfield, plus aliases) ships
+full const-trait arithmetic via `impl const` on `core::ops::*`.
+Consumer code computes on arvo primitives at const time through the
+typed surface (`x + y`, `USize::ONE`, `Mask::<Bits<64, Hot,
+Unsigned>>::empty()`, etc.) without falling back to `.0`
+field-access on the inner primitive.
+
+`x.0` on an arvo primitive is a smell. The alternatives:
+
+- For arithmetic at const time: use the const-trait ops
+  (`impl const Add` etc.) or the inherent constants
+  (`USize::ZERO`, `USize::ONE`, `USize::MAX`).
+- For boundary unwrap to a raw primitive (FFI, `core::*` APIs that
+  take `usize` directly): use `*x` (the existing `Deref` impl on
+  USize / Bool) or `Transparent::raw(x)` for arbitrary arvo
+  wrappers. Document the boundary use with an inline comment if
+  it's not obvious.
+- For literal construction: `USize(N)` constructor on a tuple
+  struct is fine; the ban is on read-side field-access in
+  arithmetic contexts, not on construction.
+
+A workspace lint forbidding `.0` field-access on arvo primitives
+outside the implementing crate is filed as a follow-up; the
+const-trait surface is the typed access path the lint enforces.
+
 ## Think in traits, not types
 
 Signatures take trait bounds. The concrete type is whatever the
@@ -52,8 +121,8 @@ call sites means no turbofish.
 
 Patterns throughout the stack are instances of this single mental
 model: arvo's `UArith<BITS>` / `IArith<BITS>`, arvo-bits' `Bool: Try`,
-hilavitkutin-api's 22 access/context/platform traits, saalis's
-"no Vec in trait signatures". All the same rule.
+hilavitkutin-api's 22 access/context/platform traits, the workspace
+"no Vec in trait signatures" rule. All the same rule.
 
 **Decision test:** "Can I imagine two implementations with different
 behavior?" If yes, it's a trait slot, not a concrete type.
@@ -81,8 +150,8 @@ traits + `repr(C)` descriptors (inventory pattern), not `dyn`.
 
 ## Type taxonomy
 
-Every type anywhere in source — public or private, fn sig or field,
-local or cast expression — falls into one of three categories:
+Every type anywhere in source, public or private, fn sig or field,
+local or cast expression, falls into one of three categories:
 
 | Category | When | Examples |
 |----------|------|----------|
@@ -98,7 +167,7 @@ Decision test is the same as above: if two plausible implementations
 could differ, it's a trait.
 
 If you're asking "should this enum have room for plugin extensions?"
-— it shouldn't be an enum. It should be a trait.
+It shouldn't be an enum. It should be a trait.
 
 ## Sizes are const at type level
 
@@ -133,7 +202,7 @@ no copies, no parallel naming.
 ## ZST markers for discrimination
 
 Schema kinds, events, settings domains, storage locations, access
-levels, HTTP methods — all ZSTs. Marker types carry compile-time
+levels, HTTP methods, all ZSTs. Marker types carry compile-time
 identity without runtime footprint.
 
 ## Primitive vocabulary (the stack's own)
@@ -167,7 +236,7 @@ Everywhere else, the rule stands.
 debt with a linked task id. If the suppression isn't traceable to a
 specific follow-up, the design is wrong, not the rule.
 
-<!-- END: shared cross-ecosystem principles -->
+[//]: # (END shared cross-ecosystem principles)
 
 ---
 
@@ -175,10 +244,10 @@ specific follow-up, the design is wrong, not the rule.
 
 ## arvo: the fixed-point arithmetic stack
 
-arvo is a standalone `#![no_std]` numeric primitive library family,
-cross-project; consumed by hilavitkutin, polka-dots, saalis, and
-loimu. It is the exclusive numeric substrate for the entire
-clause-dev workspace.
+arvo is a standalone `no_std` numeric primitive library family,
+cross-project; consumed by hilavitkutin and downstream applications.
+It is the exclusive numeric foundation for every consumer in the
+stack.
 
 Every numeric primitive flows through `UFixed` / `IFixed` /
 `FastFloat` / `StrictFloat`. Bare Rust primitives (`u8`, `u16`,
@@ -211,7 +280,7 @@ strategy's intended cost.
 
 ## no_std, no alloc
 
-Every crate is `#![no_std]` with no allocation. All collections are
+Every crate is `no_std` with no allocation. All collections are
 const-sized. Consumers own allocation strategy; arvo never calls out.
 
 ## Strategy markers are load-bearing
@@ -219,7 +288,7 @@ const-sized. Consumers own allocation strategy; arvo never calls out.
 `Hot` / `Warm` / `Cold` / `Precise` are not decoration. They drive:
 - Container physical width (u8 / u16 / u32 / u64 / arbitrary).
 - Codegen decisions (branch hints, fused-mul-add, prefetch).
-- Tradeoff clarity — a `Mass<Hot>` is explicitly lossy in exchange for
+- Tradeoff clarity, a `Mass<Hot>` is explicitly lossy in exchange for
   speed; a `Mass<Precise>` is explicitly exact in exchange for cost.
 
 Default strategy is `Warm` unless called out. Every semantic alias

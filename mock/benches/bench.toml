@@ -1,0 +1,39 @@
+[bench.fnv1a-vs-xxhash3]
+title = "ContentHash algorithms: FNV1a vs xxHash3"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.fnv1a-vs-xxhash3.sizes]]
+n = 64
+variants = [
+    "../target/release/fnv1a",
+    "../target/release/xxhash3",
+]
+
+[[bench.fnv1a-vs-xxhash3.sizes]]
+n = 256
+variants = [
+    "../target/release/fnv1a",
+    "../target/release/xxhash3",
+]
+
+[[bench.fnv1a-vs-xxhash3.sizes]]
+n = 1024
+variants = [
+    "../target/release/fnv1a",
+    "../target/release/xxhash3",
+]
+
+[[bench.fnv1a-vs-xxhash3.sizes]]
+n = 4096
+variants = [
+    "../target/release/fnv1a",
+    "../target/release/xxhash3",
+]
+
+[timing]
+passes = 4
+runs_per_pass = 1000
+batch_size = 100
+harness_runs = 1
+cooldowns_ms = [0]

@@ -4,9 +4,8 @@
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
-use arvo::newtype::{Cap, FBits, IBits, USize};
+use arvo::{Cap, FBits, Maybe, USize, ibits};
 use arvo::strategy::Hot;
-use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
 use arvo_comb::bin_pack;
 use arvo_tensor::Array;
@@ -20,10 +19,11 @@ const C2: Cap = cap(2);
 const C3: Cap = cap(3);
 const C4: Cap = cap(4);
 
-type W = UFixed<{ IBits(16) }, { FBits::ZERO }, Hot>;
+type W = UFixed<{ ibits(16) }, { FBits::ZERO }, Hot>;
 
-fn w(n: u8) -> W {
-    W::from_constant(n)
+fn w(n: usize) -> W {
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: test helper; runtime usize→u16 cast for typed weight in concrete-W test scope; no runtime-FromConstant by design (round 202604271346); tracked: #256
+    W::from_raw(n as u16)
 }
 
 #[test]
@@ -43,10 +43,14 @@ fn unit_weights_pack_to_ceil_n_over_capacity() {
     let (count, assign) =
         bin_pack::<C4, C4, u8, W>(&items, w(3), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(2));
-    // All items must land in either bin 0 or 1.
+    // All items must land in either bin 0 or 1, and every item must
+    // have placed (NUSize::some). The previous overloaded USize(0)
+    // sentinel is replaced; an unplaced item would now read NUSize::NONE.
     for i in 0..4 {
-        let b = assign.get(USize(i)).0;
-        assert!(b < 2, "item {i} -> bin {b}");
+        match assign.get(USize(i)).into_maybe() {
+            Maybe::Is(b) => assert!(b.0 < 2, "item {i} -> bin {}", b.0),
+            Maybe::Isnt => panic!("item {i} unplaced; expected bin 0 or 1"),
+        }
     }
 }
 
@@ -67,7 +71,10 @@ fn everything_fits_one_bin() {
         bin_pack::<C3, C4, u8, W>(&items, w(5), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(1));
     for i in 0..3 {
-        assert_eq!(*assign.get(USize(i)), USize(0));
+        // Single bin: every item lands at NUSize::some(USize(0)).
+        // Compare via into_maybe so the test reads the sentinel-distinct
+        // representation correctly.
+        assert!(matches!(assign.get(USize(i)).into_maybe(), Maybe::Is(USize(0))));
     }
 }
 

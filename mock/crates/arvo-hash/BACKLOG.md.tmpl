@@ -1,18 +1,24 @@
-# arvo-hash — backlog
+# arvo-hash, backlog
+
+> **Type-surface reminder**: new entries use `arvo::USize` /
+> `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
+> `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
+> `rules/type-surface.md`.
 
 ## Concrete algorithms
 
 Shipping order as consumers surface need:
 
-- Fnv1a28: 28-bit FNV-1a. First migration target; matches
-  hilavitkutin-str's existing const_fnv1a plus the 28-bit mask.
-- Fnv1a32, Fnv1a64: wider FNV variants.
-- XxHash64: when a faster non-cryptographic hash is wanted.
-- Crc32: when checksum use cases surface (clause bytecode
-  integrity, persistence file checksumming).
+- Fnv1a: shipped (round 202604500000, refactored to bounded-generic impl in round 202605031548). Generic algorithm `Fnv1a<const N: u16>` impls `Hasher<N>` once and `ConstHash<N, Hot, Unsigned>` once, replacing the prior 64-impl macro paste.
+- XxHash3: shipped (round 202604281000) as arvo-hash's default hash family; same bounded-generic shape after round 202605031548.
+- XxHash64: when a faster non-cryptographic hash is wanted (separate algorithm-state width from XxHash3).
+- Crc32: when checksum use cases surface (clause bytecode integrity, persistence file checksumming).
 
-Each concrete algorithm lands as a unit struct implementing
-Hasher<N>. HasherExt<N>::hash falls out via the blanket impl.
+Each future concrete algorithm lands as a struct implementing `Hasher<const N: u16>` (streaming) and `ConstHash<N, Hot, Unsigned>` (one-shot const-callable). Non-Hot strategy `ConstHash` impls land per-consumer-need.
+
+## Fnv1a128 algorithm
+
+`Fnv1a<const N: u16>` produces at most 64 bits of state (FNV-1a-64 algorithm with low-N masking). For widths beyond 64, a separate Fnv1a128 algorithm with 128-bit state is required. Lands when a consumer surfaces a need for >64-bit non-cryptographic hashes.
 
 ## Hilavitkutin-str migration
 

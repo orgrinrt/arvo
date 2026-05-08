@@ -1,0 +1,53 @@
+# arvo-strategy. Backlog
+
+## Tracked bridge expansions
+
+Const-trait bridges deferred from round 202605021800 (Round 1) to later rounds within PR #42:
+
+- ConstFrom\<T\> / ConstTryFrom\<T, E\> bridge. **SHIPPED in round 202605031548 (#314).** See `## ConstFrom and ConstTryFrom bridges` in DESIGN.md.tmpl.
+- ConstDeref / ConstAsRef\<T\> bridge, placed in arvo-transparent. **SHIPPED in round 202605031548 (#314).** See `arvo-transparent/DESIGN.md.tmpl`.
+- ConstHash\<N, S, Sign\> + NarrowFromU64\<N, S, Sign\> (placed in arvo-hash + arvo-bits-contracts respectively). **SHIPPED in round 202605031548 (#314).** Replaces the per-N `hash_const` inherent pattern with a focused trait contract; collapses 128 hand-written `Hasher<N>` impl bodies to 2 bounded-generic blocks. See `arvo-hash/DESIGN.md.tmpl`.
+- ConstTry / ConstControlFlow\<R, O\>. Replaces non-const stdlib Try / FromResidual for ? on Bool in const context. Lands in Round 5 (#315). Surfaces from Expert B Finding 21.
+
+Each bridge follows the same pattern as ConstEq / ConstDefault shipped in Round 1: an arvo-owned const trait alongside the stdlib trait (which stays for boundary coverage). Consumer code imports the bridge to compose const-callable arvo operations.
+
+## Round 3 SHIPPED in round 202605031748 (#313)
+
+Round 3 landed on top of #316: Mask\<W\> over Bits + BitMatrix\<W,
+N\> + MaskOps trait impl + dogfood sweep (BitPrim::mask_low method,
+FastFloat / StrictFloat Identity blanket, Mask\<W\>::empty via
+Identity::ZERO). The Mask64 / Mask256 / BitMatrix64 / BitMatrix256
+parallel structs deleted entirely per the Strategy/Sign-discoverability
+discipline. The arvo\_mask\_contracts trait renamed Mask → MaskOps to
+disambiguate from the chassis struct. BitPrim::WIDTH typed lift was
+already shipped in Round 2 (#311) so audit Finding 8 was mooted at
+the start.
+
+## Hot tier expansion (#320)
+
+AVX-2 align(32) and AVX-512 align(64) Hot tiers are deferred to #320
+with bench-driven evidence per the audit's H1 finding. Current Hot
+ships with align(16) baseline only via AlignedWideBits16. If bench
+evidence justifies the storage overhead, opt-in `HotAvx2` / `HotAvx512`
+strategy variants ship as consumer-visible markers (toolbox-not-policer
+compliant). The cfg-driven internal alignment originally proposed in
+#316's first topic was rejected.
+
+## Asm microkernels (#321)
+
+Hot-path bit ops on WideBits / AlignedWideBits16 (count_ones,
+trailing/leading_zeros, bitwise) get asm-microkernel implementations
+when bench evidence shows compiler-generated SIMD doesn't hit the
+inlined-instruction-count target. Drops down a tier from
+intrinsic-load to inline asm only with measured justification.
+
+## HotTruncate research (#322)
+
+A possible future Hot variant that explicitly truncates wide widths
+to 128 for compute (lossy but native-fast). Deferred for research.
+Not in the current strategy lattice.
+
+## Removed entries
+
+- "UContainerFor / IContainerFor extension to wider widths", both
+  traits are deleted entirely in #316 per no-legacy-shims-pre-1.0.

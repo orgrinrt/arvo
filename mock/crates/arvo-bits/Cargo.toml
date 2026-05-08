@@ -5,6 +5,11 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
+arvo-storage.workspace = true
+arvo-strategy.workspace = true
+arvo-bits-contracts.workspace = true
+
+[dev-dependencies]
 arvo.workspace = true
 
 [build-dependencies]

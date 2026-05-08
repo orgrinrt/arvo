@@ -1,0 +1,7 @@
+# arvo-numeric-contracts
+
+Numeric-op trait contracts: `Abs`, `Recip`, `Sqrt`, `TotalOrd`,
+`FromConstant`, the `Predicate` family. All `pub const trait`.
+Default impl bodies live in the `arvo` facade; concrete impls bind to
+`Bits<N, S>`, `UFixed<I, F, S>`, and `IFixed<I, F, S>` downstream.
+`#![no_std]`, no alloc.

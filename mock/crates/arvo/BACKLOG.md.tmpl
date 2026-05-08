@@ -1,10 +1,302 @@
-# arvo — backlog
+# arvo. backlog
+
+> **Type-surface reminder**: new entries use `arvo::USize` /
+> `Bool` / `UFixed<N, 0, S>` instead of `usize` / `bool` / `u*`;
+> `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
+> `rules/type-surface.md`.
+
+## Round 1 closeout, deferred bridges (round 202605021800)
+
+Round 1 of the post-202605021600 core-fundamentals work
+introduces the canonical const-trait bridges (`ConstEq`,
+`ConstOrd`, `ConstDefault`) and lifts the marker-trait family
+plus `Bounded`, `Identity`, `SignedIdentity` to the canonical
+trait-only surface. Four bridges are deferred to later
+rounds within PR #42; the authoritative tracking lives in
+`arvo-strategy/BACKLOG.md.tmpl` under "Tracked bridge expansions":
+
+- ConstFrom / ConstTryFrom: SHIPPED in round 202605031548 (#314)
+- ConstDeref / ConstAsRef: SHIPPED in round 202605031548 (#314)
+- ConstHash<N, S, Sign> + NarrowFromU64<N, S, Sign>,SHIPPED in round 202605031548 (#314); replaces the Round 5 deferred ConstHash entry
+- ConstTry / ConstControlFlow: round 202605040602 / #315 (notko-side trait declaration; arvo-storage-side impl on Bool)
+
+Consumers needing const-callable Deref / From / TryFrom on arvo types reach for the bridge name shipping in this round. Const-callable Try lands in Round 5; the stdlib `?` operator is still the surface for boundary use.
+
+## LogicalBounds trait (round 202605041128 follow-up)
+
+Today `<UFixed<I, F, S> as Bounded>::MIN/MAX` projects through the
+inner Bits container bounds, so `<U16Warm as Bounded>::MAX` returns
+`u32::MAX` (the Warm 16-bit container). A separate `LogicalBounds`
+trait returning the logical-width bounds (`2^(I+F) - 1`
+for unsigned UFixed, `-2^(I+F) .. 2^(I+F) - 1` for signed IFixed)
+would expose the type-level bounds without requiring container
+unwrap. Surfaced by Round 7 (#325) reviewer NIT during the Bounded
+blanket landing; not blocking; ships when a consumer needs it. Open
+design questions: whether to land as a separate trait or extend
+`BitPresentation` (which already carries `LOGICAL_WIDTH`); whether
+saturating, wrapping, and strict bound semantics belong on the same
+trait or split.
+
+## NBits<N>: niche-filled Bits variant
+
+Maybe of NBits niche-optimises to size_of of Bits, giving "optional
+N-bit value without discriminant overhead." Use cases include
+optional bitfield slots, hash slots, packed enum fields. Tracked as
+task #323; gated behind viola TS ecosystem verified (#197) plus
+readiness gate (#231) so it stays in the future-tasks pool
+until the gate clears. Open design questions for the future round:
+where the niche lives (all-zeros default; configurable via marker?),
+interaction with multi-container backing on Bits N greater than 128,
+and the BitsContainerFor projection shape.
+
+## Round 202604271346 forward-looking entries
+
+The const-traits-and-arvo-as-facade restructure parks several
+follow-up items here for future rounds:
+
+- **Cold strategy bitpacking and widths beyond 64.** `Bits<N, Cold>`
+  for N > 64 with bitpacked storage across multiple bare primitives.
+  Subsumed into the bit-width-cap-to-256 scope in the audit-driven
+  follow-up chain.
+- **`feature(implied_bounds)` adoption.** Tracked: rust-lang/rust#44491.
+  Unblocks the trilemma's bound-restatement constraint when stabilised.
+  Future round.
+- **Algorithm crate refactors beyond import-path adjustments.** The
+  current round only updates dep wiring. Genuine algorithm changes
+  (matrix ops, additional graph algorithms) wait for separate rounds.
+
+## Round 202604280034 forward-looking entries
+
+Audit-driven follow-up chain Round A. Several items deferred to the
+chain's later rounds. Items shipped in subsequent rounds are noted
+inline with the shipping-round identifier.
+
+- **IFixed reshape over `Bits<N, S, Signed>`.** SHIPPED in round
+  202604280500. The `Sign: Signedness` const-generic axis on `Bits`
+  with ZST markers `Unsigned` / `Signed` lands. IFixed becomes a
+  `repr(transparent)` newtype over `Bits<{1+I+F}, S, Signed>`,
+  closing the symmetry gap with UFixed.
+- **Bit-width cap to 256 + UContainerFor table extension.** SHIPPED
+  in round 202604280500 (storage-side). Container dispatch table
+  extends 65..=128 → `u128` (native single-primitive) and 129..=255
+  → `MultiContainer<HiT, LoT>` (storage-only). Reachable cap is 255
+  not 256 in this round because `Bits<const N: u8>` itself stays at
+  u8; widening Bits's const-generic to u16 is BACKLOG-tracked
+  (later shipped in Round 202604281000 Pass F).
+  Meta-newtypes (`IBits` / `FBits` / `Width`) carrier widening to
+  `MetaCarrier` (layout-equivalent to `Bits<9, Hot, Unsigned>`)
+  SHIPPED in round 202604280806 via the parallel-carrier workaround
+  (a literal `pub Bits<9, Hot>` field tripped a rustc trait-solver
+  cycle; the workaround is layout-equivalent and concept-equivalent).
+  Arithmetic on multi-value containers (UArith / IArith on
+  MultiContainer) is BACKLOG-tracked separately under the
+  Round 202604280500 forward-looking entries.
+- **Strategy axes decomposition (internal lattice).** SHIPPED in
+  round 202604280806 (axis traits only; arithmetic dispatch refactor
+  follow-up). The three internal axes `OverflowPolicy` /
+  `ContainerWidth` / `StorageLayout` ship as sealed marker traits
+  with ZST sub-markers; the four canonical presets (`Hot` / `Warm` /
+  `Cold` / `Precise`) implement specific axis combinations. The
+  arithmetic / widen / narrow impls in Round C still dispatch via
+  bundled `Strategy`; refactoring those to dispatch via axes (and
+  enabling new presets like `Hot+Saturating`) is a follow-up.
+- **bitfield! macro `S: Strategy` parameterisation.** SHIPPED in
+  round 202604281000 (Pass C). Macro DSL accepts an explicit
+  `S: Strategy` parameter; default `Hot` preserved.
+- **Cross-strategy resolution warning (not error).** SHIPPED in
+  round 202604281000 (Pass G). `CrossStrategyOp<S1, S2>` marker
+  trait with `#[diagnostic::on_unimplemented]`. Per the workspace
+  `arvo-toolbox-not-policer` rule: warn but do not police.
+  Diagnostic-text iteration tracked as a follow-up forward-looking
+  entry under Round 202604281000.
+- **Better hash family adoption.** SHIPPED in round 202604281000
+  (Pass B.1). XxHash3 is the new default; FNV-1a remains as option
+  for known-good fits. wyhash variant comparison stays as future-
+  round forward-looking entry.
+- **`ContentHash` widens to `Bits<64, Hot>`.** SHIPPED in round
+  202604281000 (Pass B.2).
+- **Narrow surface expansion: `narrow_to_unmasked`.** SHIPPED in
+  round 202604281000 (Pass B.3). Added alongside `narrow_to` in
+  the `Narrow` trait surface.
+- **arvo-refit concrete impls.** SHIPPED in round 202604281000
+  (Pass B.4) under the prior name `arvo-narrow`. Per-source-target
+  primitive narrowing impls plus typed `Bits<M, S, Sign> → Bits<N,
+  S, Sign>` for M > N populate the previously-empty crate. Crate
+  renamed to `arvo-refit` in round 202604301700 (the `Widen<T>` API
+  addition itself shipped in round 202604300826).
+- **BACKLOG additions for core gaps.** Round E. SIMD-typed
+  vectors, atomic fixed-point, alignment-aware loaders, GF(2) /
+  CRC, arvo-tensor `as_chunks` / Matrix layout doc, segment tree,
+  union-find, etc.
+- **Bench infrastructure port.** #266. Parallel
+  with Round B+. Becomes regression-detection baseline for the
+  always-optimal-internals optimisation work.
+
+## Round 202604280500 forward-looking entries (REVISED post-#316)
+
+The original Round B forward-looking entries pointed at MultiContainer
+arithmetic / widen / narrow follow-up work. Round #316 deletes
+MultiContainer entirely and replaces it with byte-sequence WideBits
+(Warm/Cold/Precise) and AlignedWideBits16 (Hot baseline). The
+forward-looking entries are revised:
+
+- **UFixed / IFixed at 129..=65535 logical width.** Awaits UArith /
+  IArith dispatch on `WideBits<BYTES>` / `AlignedWideBits16<BYTES>`
+  (byte-sequence multi-precision add with carry, multi-precision mul
+  with double-width intermediate, saturating variants on Precise).
+  Tracked under #320 / #321 (bench-driven SIMD platform expansion
+  + asm microkernels for hot ops). Bits at those widths is available
+  standalone with the BitPrim impl shipping in #316 (count_ones,
+  trailing/leading_zeros, bitwise ops, etc.); UFixed / IFixed
+  add/sub/mul/div at 129..=65535 await the arith bridge.
+- **Cross-Bits Widen / Narrow for wide widths.** Cross-strategy and
+  cross-container widening / narrowing through WideBits /
+  AlignedWideBits16 shapes. Tracked alongside #320.
+- **Hot AVX-2 / AVX-512 alignment tiers.** Tracked under #320 with
+  bench-driven evidence per audit H1. Current Hot is align(16)
+  baseline only via AlignedWideBits16. If bench evidence justifies
+  the storage overhead, opt-in `HotAvx2` / `HotAvx512` consumer-visible
+  strategy variants ship as separate markers (toolbox-not-policer
+  compliant).
+- **HotTruncate strategy variant.** Possible future Hot variant that
+  truncates wide widths to 128 for compute (lossy but native-fast).
+  Deferred for research under #322. Not in current strategy lattice.
+- **Sign axis on bit-level traits.** Round B introduced the Sign
+  axis on Bits only. Mask\<W\> / BitLogic / BitAccess / BitSequence
+  stay sign-agnostic (the trait surface acts on raw bit patterns,
+  sign-agnostic by construction). The Sign axis is reachable
+  externally: a consumer building `Mask<Bits<64, Hot, Signed>>` gets
+  a sign-tagged mask whose bit ops still ignore the tag. If a
+  consumer surfaces a need for sign-aware bit ops, a future round
+  adds it.
+
+## Round 202604280806 forward-looking entries
+
+Audit-driven follow-up chain Round C. Pass 2 carrier-widening (via
+`MetaCarrier` workaround) and the strategy-axis-decomposition trait
+surface land; bitfield S parameterisation, cross-strategy warning,
+and the strategy-axis-driven arithmetic dispatch refactor defer to
+follow-up rounds:
+
+- **`Bits<const N: u16>` widening.** SHIPPED in round 202604281000
+  (Pass F). The const-generic param widened from `u8` to `u16`,
+  lifting the reachable cap from 255 to 65535. Concrete cell
+  projections cover 1..=256 in this round; growing the cell table is
+  parameter-free from here.
+- **Strategy-axis-driven arithmetic dispatch.** SHIPPED in round
+  202604281000 (Pass E). `UArith` / `IArith` / `UWidenFrom` /
+  `UNarrowFrom` now dispatch via `HasAxes`. New presets like
+  `Hot+Saturating` (SIMD `PADDUSB` / `SQADD` codegen),
+  `Cold+Saturating`, etc., compose without expanding the public
+  marker namespace.
+- **Bitfield S parameterisation.** SHIPPED in round 202604281000
+  (Pass C). Deferred from Round C; absorbed here. Duplicate of
+  earlier entry above.
+- **Cross-strategy resolution warning.** SHIPPED in round
+  202604281000 (Pass G). Deferred from Round C; absorbed here.
+  Duplicate of earlier entry above.
+- **Pass 2 cycle root-cause (rustc).** The `MetaCarrier` workaround
+  ships in Round C; the underlying rustc trait-solver cycle that
+  blocked the literal `pub Bits<9, Hot>` field remains. If rustc
+  later disambiguates const-eval-from-where-clause cycles, the
+  workaround can be removed and the field re-instated as
+  `pub Bits<9, Hot>` with no consumer-observable change.
+
+## Round 202604280841 forward-looking entries
+
+Audit-driven follow-up chain Round D-aux. Layout-soundness gates for
+the `repr(transparent)` chains and the MetaCarrier transmute land;
+deeper soundness audits defer to follow-ups:
+
+- **Strategy-axis HasAxes correctness check.** SHIPPED in round
+  202604281000 (Pass A.1). Compile-time discriminant cross-check
+  via `assert_eq!` between `<S as HasAxes>::Container::DISCRIMINANT`
+  and `<S as ContainerWidth>::Output::DISCRIMINANT`.
+- **Auto-generated assertions for every Bits cell.** SHIPPED in
+  round 202604281000 (Pass A.2). Default boundary set unchanged;
+  `cfg(arvo_full_layout_audit)` opens the full (Strategy, N, Sign)
+  expansion for periodic CI runs.
+- **ConstParamTy soundness audit.** SHIPPED in round 202604281000
+  (Pass A.3). Compile-time `assert_impl!` lines added in
+  `arvo-storage/src/layout_assertions.rs` for every newtype in
+  const-generic position.
+- **Mockspace lint to auto-generate layout assertions.** Future
+  feature: lint scans the `unsafe impl Transparent` declarations
+  and emits / verifies a corresponding `assert_layout_eq!` block.
+  Manual guards are correct insurance until the lint exists.
+  Mockspace-side change; tracked separately.
+
+## Round 202604281000 forward-looking entries
+
+Audit-driven follow-up chain Round D consolidated. Seven passes ship
+in this round (Pass A soundness extensions, Pass B original D content
+including hash family + ContentHash widen + Narrow expansion +
+arvo-refit (then arvo-narrow) population, Pass C bitfield S param, Pass D Precise/Warm
+33..=64 fix, Pass E axis-driven arith dispatch, Pass F `Bits<u16>`
+widening, Pass G cross-strategy warning). Forward-looking entries
+generated during the round:
+
+- **wyhash bench comparison vs xxhash3 default.** The Pass B.1
+  decision to default to xxhash3 used representative-payload micro-
+  benches. A future round runs the full bench port
+  (#266) against wyhash variants to confirm or revisit the default.
+- **Cross-strategy diagnostic-text iteration.** Pass G ships the
+  `CrossStrategyOp<S1, S2>` warning with the initial diagnostic
+  text. Consumer feedback may sharpen the message; future round
+  iterates.
+- **arvo-refit cross-strategy refit.** Pass B.4 of round
+  202604281000 covered per-source-target primitive narrowing plus
+  typed `Bits<M, S, Sign> -> Bits<N, S, Sign>` for M > N within
+  one strategy. Round 202604300826 added `Widen<T>` + same-
+  container Narrow + cross-domain primitive Bits direct impls +
+  `Bits::from_narrowed` / `Bits::from_widened` ergonomic
+  constructors. Round 202604301700 renamed the crate to
+  `arvo-refit`. Cross-strategy refit (different S1 / S2) and
+  algebraic narrowing surfaces remain future-round concerns.
+- **`Bits<const N: u16>` cell-table extension beyond 256.** Pass F
+  widened the const-generic param to u16 (range 1..=65535); cell
+  projections still cover 1..=256. Future round extends the cell
+  table when a consumer surfaces the need.
+
+## Q-D completion (round 202604280034)
+
+The std-parallel canonical aliases `Uint8` / `Uint16` / `Uint32` /
+`Uint64` / `Int8` / `Int16` / `Int32` / `Int64` were retained as a
+transitional bridge during round 202604271346 pass 7 and removed in
+round 202604280034 to lock the exact-width discipline in. Consumers
+write `Uint<N, S>` / `Int<N, S>` directly with the exact bit count
+the domain needs.
+
+## MaskOps trait impls (SHIPPED in round 202605031748)
+
+The `arvo-mask-contracts::Mask<const W: u8>` const trait was declared
+during round 202604271346 and renamed to MaskOps in round 202605031748
+(#313) to disambiguate from the arvo-bitmask Mask chassis struct.
+Round 202605040602 (#315) reshaped MaskOps to drop the const-Width
+parameter (the parameter was dead in every method body) and the
+mask_for_width method (zero callers; the arvo's BitPrim mask_low
+covers Narrow's actual route). The reshape replaced the prior per-W
+concrete impls with a single blanket impl on Mask&lt;W&gt; for any W
+satisfying the underlying bit traits. The chassis const-routes empty
+through Identity::ZERO and full through Bounded::MAX. Generic-over
+MaskOps consumer code binds to the trait and reaches all ten methods
+in const context.
+
+## Cold widen / narrow impls (deferred)
+
+Round 202604280034 removed the `_ColdReserved` workaround in
+`arvo-strategy/src/widen.rs` after dropping the unused `Cold` import.
+The widen lattice currently covers `Hot`, `Warm`, `Precise`. `Cold`
+participates in the same shape (Cold widens to Precise, narrows from
+Precise) but the impls are not yet shipped. When added, the `Cold`
+import returns to `arvo-strategy/src/widen.rs` and the impl table
+gains the symmetric Cold rows.
 
 Items researched and decided but deliberately out of the current
 shipping scope. Preserved here so a future round (or consumer) can
 pick them up without redoing the research. Kept OUT of DESIGN.md.tmpl
 specifically so the `design-doc-source-mismatch` lint doesn't flag
-these as undocumented source items — they're designed-but-deferred,
+these as undocumented source items. They're designed-but-deferred,
 not shipped-and-missing.
 
 Convention: entries here are promissory. If a consumer or future
@@ -12,42 +304,72 @@ round promotes one of these to shipping scope, move its documentation
 into the corresponding crate DESIGN.md.tmpl and delete the entry
 here.
 
+## ConstParamTy on UFixed / IFixed
+
+UFixed and IFixed do NOT derive ConstParamTy in round 202604500000.
+Required when a consumer wants `const X: UFixed<...>` const-generic
+positions. Today no consumer surface needs this; aliases live at
+use-sites only.
+
+Lift requires resolving the associated-type-projection cascade in
+`<S as BitsContainerFor<N, Sign>>::T` field positions (the Bits inner
+type through UFixed's `bits: Bits<{ufixed_bits(I, F)}, S>` field; the
+unified BitsContainerFor lands in #316 replacing the deleted
+UContainerFor / IContainerFor pair). Verified-friction on rustc
+1.96-nightly (fda6d37bb 2026-03-27): core::marker::ConstParamTy is
+derive-macro-only at this rustc version, and using it as a trait
+bound on BitsContainerFor::T is non-trivial. The derive-macro path
+may work directly on UFixed / IFixed once the cascade is established;
+verify when a consumer need lands.
+
+Constraints from prior design-review prose corrections:
+
+- The cascade requirement applies only to const-generic params
+  (I: IBits, F: FBits). The S type parameter is a marker type, not
+  a const value.
+- A `_phantom: PhantomData<S>` field is redundant with the
+  `bits: Bits<..., S>` field carrying S. Do not add it on lift.
+- Auto-trait inheritance from S is preserved without function-pointer
+  phantom hacks (Strategy markers are unit structs and trivially
+  Send/Sync).
+
 ## Semantic domain aliases (researched widths)
 
-Shipped by polka-dots; dropped from arvo L0 per doc CL D1 (consumer
-concern). Each width was chosen deliberately; when a consumer
+Shipped historically by downstream consumers; dropped from arvo L0
+per doc CL D1 (consumer concern). Each width was chosen deliberately;
+when a consumer
 re-introduces one, these are the researched defaults. Names are
 written unquoted so the design-doc lint does not treat them as
 backticked types.
 
 | Alias     |  I |  F | Rationale                                           |
 |-----------|---:|---:|-----------------------------------------------------|
-| Ratio     |  0 |  8 | pure fractional [0, 1) — probabilities, weights     |
-| Factor    |  2 |  8 | [0, 4) range — multipliers, scale factors           |
-| Norm      |  1 | 14 | signed [-1, 1) — normalised eigenvector components  |
+| Ratio     |  0 |  8 | pure fractional [0, 1); probabilities, weights    |
+| Factor    |  2 |  8 | [0, 4) range; multipliers, scale factors          |
+| Norm      |  1 | 14 | signed [-1, 1); normalised eigenvector components |
 | Angle     |  9 |  7 | 512+ directions, sub-degree precision               |
 | Coord     | 16 | 16 | ±65k range with sub-pixel precision                 |
 | Count     | 32 |  0 | row / element counts                                |
 | Average   | 16 | 16 | symmetric precision for means of coordinates        |
-| Deviation |  8 | 24 | mostly fractional — variance components             |
+| Deviation |  8 | 24 | mostly fractional; variance components            |
 | Bool      |  1 |  0 | single-bit; stays Hot (no precision to lose)        |
 
 Default strategy `Warm` in consumer code, except `Bool` which stays
-`Hot`. Source: polka-dots loimu-primitives.
+`Hot`.
 
 ## Deferred newtypes
 
 Decided to live in consuming layers, not L0:
 
-- ByteCount — `u64` wrapping byte counts. Belongs where memory sizing
+- ByteCount: `u64` wrapping byte counts. Belongs where memory sizing
   happens (column storage layer / arena engine).
-- Alignment — power-of-two alignment value. Belongs at the storage
+- Alignment: power-of-two alignment value. Belongs at the storage
   boundary.
-- CoreCount — small-int CPU core count. Platform-environment; lives
+- CoreCount: small-int CPU core count. Platform-environment; lives
   adjacent to `ThreadPool`.
-- Nanoseconds — `u64` nanosecond count. Lives adjacent to `Clock`.
+- Nanoseconds: `u64` nanosecond count. Lives adjacent to `Clock`.
 
-No written rationale for specific widths survived into polka-dots
+No written rationale for specific widths survived into prior
 design docs; pick per-consumer as needs arise.
 
 ## Cross-width and cross-strategy arithmetic
@@ -74,12 +396,12 @@ Exhaustive comparison of arvo types vs raw `f32` / `f64` / `u32` /
 `u64` across add / sub / mul / div / sqrt / recip and chain lengths
 1 / 4 / 16 / 64, per strategy. Purpose: prove arvo types add no
 overhead beyond the strategy's intended cost. Any unexpected overhead
-is a bug to fix, not accept. Scope: its own round once the substrate
+is a bug to fix, not accept. Scope: its own round once the foundations
 is green.
 
 ## Post-review notes
 
-Items surfaced during a post-shipping review of the substrate; kept
+Items surfaced during a post-shipping review of arvo; kept
 here for future rounds to pick up.
 
 - Cap upper-bound enforcement. Cap(pub USize) lacks any cap on the
@@ -100,7 +422,7 @@ here for future rounds to pick up.
   acceptable for current consumer surfaces (spectral partitioning
   Fiedler-vector sign inspection, no bit-exact dependence). Integrate
   libm or musl-math when a consumer actually depends on
-  correctly-rounded sqrt in no_std. An std-gated path is rejected —
+  correctly-rounded sqrt in no_std. An std-gated path is rejected.
   arvo's no_std discipline is absolute.
 - Wrapping div-by-zero semantic. Hot / Warm / Cold wrapping div
   returns the numerator unchanged when the divisor is zero. Wrapping
@@ -115,6 +437,6 @@ here for future rounds to pick up.
   on the current nightly. Tracked via allow-bare-numeric annotations
   pointing at Task #71. Collapse into a single Bits newtype method
   (e.g. const fn Bits::as_u8(self) -> u8) once nightly loosens
-  struct-construction rules in const args. No timeline — gated on
+  struct-construction rules in const args. No timeline, gated on
   upstream rustc.
 

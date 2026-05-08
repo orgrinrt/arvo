@@ -17,9 +17,10 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::Cap;
+use arvo::{Cap, USize};
+use arvo::{Bits, Hot, Unsigned};
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo_bitmask::{BitMatrix64, cap_size};
+use arvo_bitmask::{BitMatrix, cap_size};
 
 use crate::topo::topo_sort;
 
@@ -30,7 +31,7 @@ use crate::topo::topo_sort;
 /// visited. Leaves ground at their own weight.
 #[inline]
 pub fn upward_rank<const N: Cap, W>(
-    dag: &BitMatrix64<N>,
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
     weights: &[W; cap_size(N)],
 ) -> [W; cap_size(N)]
 where
@@ -40,7 +41,7 @@ where
     let (valid, order) = topo_sort(dag);
 
     // Initialise ranks to zero; overwritten as we walk reverse topo.
-    let zero = <W as FromConstant>::from_constant(0);
+    let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
     let mut rank: [W; cap_size(N)] = [zero; cap_size(N)];
 
     // Walk the valid prefix in reverse.
@@ -71,7 +72,7 @@ where
             if !any {
                 best = r;
                 any = true;
-            } else if matches!(r.total_cmp(&best), Ordering::Greater) {
+            } else if matches!(r.total_cmp(best), Ordering::Greater) {
                 best = r;
             }
         }
@@ -88,7 +89,7 @@ where
 /// computed when a node is reached. Roots ground at their own weight.
 #[inline]
 pub fn downward_rank<const N: Cap, W>(
-    dag: &BitMatrix64<N>,
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
     weights: &[W; cap_size(N)],
 ) -> [W; cap_size(N)]
 where
@@ -97,7 +98,7 @@ where
 {
     let (valid, order) = topo_sort(dag);
 
-    let zero = <W as FromConstant>::from_constant(0);
+    let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
     let mut rank: [W; cap_size(N)] = [zero; cap_size(N)];
 
     let valid_n = valid.0;
@@ -124,7 +125,7 @@ where
             if !any {
                 best = r;
                 any = true;
-            } else if matches!(r.total_cmp(&best), Ordering::Greater) {
+            } else if matches!(r.total_cmp(best), Ordering::Greater) {
                 best = r;
             }
         }

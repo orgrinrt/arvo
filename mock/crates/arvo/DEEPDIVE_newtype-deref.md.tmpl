@@ -1,27 +1,34 @@
-# arvo — Deep Dive: Deref on Primitive Newtypes
+# arvo, Deep Dive: Deref on Primitive Newtypes
 
 ## Context
 
 arvo wraps several Rust primitives in newtypes to enforce semantic
 meaning and satisfy the arvo-types-only lint:
 
-- `Bool(bool)` — control flow boolean, returned by predicates
-- `USize(usize)` — index and count type
-- `IBits(u8)` — integer bit count for const generics
-- `FBits(u8)` — fractional bit count for const generics
+- `Bool(bool)`, control flow boolean, returned by predicates
+- `USize(Bits<{cfg-platform-width}, Hot>)`, index and count type
+- `IBits(Bits<7, Hot>)`, integer bit count for const generics
+- `FBits(Bits<7, Hot>)`, fractional bit count for const generics
+- `Width(Bits<7, Hot>)`, bit-width meta value for const generics
 
 These newtypes are `repr(transparent)`. After compilation they are
-identical to their inner type. They exist purely for compile-time
-type safety: you cannot accidentally pass a `USize` where a `Bool`
-is expected, even though both are small integers at the machine
-level.
+identical to their inner type's underlying container. They exist
+purely for compile-time type safety: you cannot accidentally pass a
+`USize` where a `Bool` is expected, and you cannot swap an `IBits`
+with an `FBits` even though both wrap the same `Bits<7, Hot>` shape.
+
+The four ConstParamTy newtypes (`USize`, `IBits`, `FBits`, `Width`)
+moved to wrapping `Bits` over wrapping a bare primitive in round
+202604500000. The `Bits` storage primitive itself bottoms out at a
+`u8` const-generic (workspace-rule exception #2 root); the
+meta-newtypes lift above that root.
 
 The question is how to access the inner value when you need it.
 
 ## The problem
 
 Rust's `if` requires `bool`. Not a type that wraps `bool`, not a
-type that can be converted to `bool` — exactly `bool`. Similarly,
+type that can be converted to `bool`, exactly `bool`. Similarly,
 array indexing requires `usize`. These are hard-wired into the
 language with no trait-based extension point.
 
@@ -144,7 +151,7 @@ These newtypes are `repr(transparent)` wrappers. At the machine
 level, `&Bool` and `&bool` are the same pointer to the same byte.
 The deref coercion makes the language-level behaviour match the
 machine-level reality. A function accepting `&bool` receiving a
-`&Bool` is not a type safety violation — it is the intended
+`&Bool` is not a type safety violation, it is the intended
 transparency.
 
 ### Trait bound inconsistency is a learnable quirk

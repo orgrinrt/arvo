@@ -10,35 +10,138 @@
 //! widths above 32 bits; using `UFixed<_, _, Warm>` with `I + F > 32`
 //! is a compile error by design (doc CL D2).
 
-use core::marker::PhantomData;
 use core::ops::{Add, Div, Mul, Sub};
 
 use notko::Outcome;
 
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
-use crate::newtype::{FBits, IBits, USize};
 use crate::strategy::{
-    Hot, Precise, Strategy, UArith, UContainerFor, UNarrowFrom, UWidenFrom, Warm, is_fractional,
-    ufixed_bits,
+    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
+};
+use arvo_storage::{Bits, Bool, FBits, IBits, USize};
+use crate::strategy::{
+    BitsContainerFor, Bounded, Hot, Identity, Precise, Strategy, UArith, UNarrowFrom, UWidenFrom,
+    Unsigned, Warm, is_fractional, ufixed_bits,
 };
 
 /// Unsigned fixed-point value.
 ///
 /// `I` = integer bits, `F` = fractional bits, `S` = strategy
 /// (default `Warm`). Logical width is `I + F`; physical storage
-/// width is determined by `S`.
+/// width is determined by `S`. The wrapped `Bits<{I+F}, S>` carries
+/// the storage primitive directly; `repr(transparent)` keeps the
+/// layout identical to the underlying container.
 #[repr(transparent)]
-pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>
+pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>(
+    Bits<{ ufixed_bits(I, F) }, S>,
+)
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>;
+
+// SAFETY: `repr(transparent)` over `Bits<{I+F}, S>`. Layout-identical
+// by Rust spec. The Transparent contract is what lets the canonical
+// const surface (ConstPartialEq / ConstEq / ConstBitEq / ConstOrd /
+// Bounded / Identity) read inner bits without resorting to `.0`
+// field-access on the wrapper.
+unsafe impl<const I: IBits, const F: FBits, S: Strategy> const arvo_transparent::Transparent
+    for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
 {
-    bits: <S as UContainerFor<{ ufixed_bits(I, F) }>>::T,
-    _s: PhantomData<fn() -> S>,
+    type Inner = Bits<{ ufixed_bits(I, F) }, S>;
+}
+
+// Generic Identity blanket on UFixed wires through the inner Bits's
+// Identity blanket (which itself wires through the container's
+// Identity per round 202605021600 step 4). Single predicate at the
+// impl block — the inner Bits trait projection bundles the container
+// requirement, sidestepping the generic_const_exprs cycle that
+// previously tripped two-predicate forms.
+impl<const I: IBits, const F: FBits, S: Strategy> const Identity for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] Identity,
+{
+    const ZERO: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ZERO);
+    const ONE: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ONE);
+}
+
+// Generic Bounded blanket on UFixed wires through the inner Bits's
+// Bounded blanket. Same single-predicate cycle-avoidance pattern as
+// Identity. Closes Round 6 deviation 3 / NIT 5 (#325).
+impl<const I: IBits, const F: FBits, S: Strategy> const Bounded for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] Bounded,
+{
+    const MIN: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Bounded>::MIN);
+    const MAX: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Bounded>::MAX);
+}
+
+// ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault
+// blankets routed through the inner Bits. Same single-predicate
+// cycle-avoidance pattern as Identity (each impl bounds only on the
+// inner type's bridge bound, not the container projection).
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstPartialEq for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstPartialEq,
+{
+    #[inline(always)]
+    fn const_eq(&self, other: &Self) -> Bool {
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <Bits<{ ufixed_bits(I, F) }, S> as ConstPartialEq>::const_eq(&a, &b)
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstEq for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstEq,
+{
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstBitEq for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstBitEq,
+{
+    #[inline(always)]
+    fn const_bit_eq(&self, other: &Self) -> Bool {
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <Bits<{ ufixed_bits(I, F) }, S> as ConstBitEq>::const_bit_eq(&a, &b)
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstOrd for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstOrd,
+{
+    #[inline(always)]
+    fn const_cmp(&self, other: &Self) -> ConstOrdering {
+        let a = <Self as arvo_transparent::Transparent>::raw(*self);
+        let b = <Self as arvo_transparent::Transparent>::raw(*other);
+        <Bits<{ ufixed_bits(I, F) }, S> as ConstOrd>::const_cmp(&a, &b)
+    }
+}
+
+impl<const I: IBits, const F: FBits, S: Strategy> const ConstDefault for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S>: [const] Identity,
+{
+    #[inline(always)]
+    fn const_default() -> Self {
+        Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ZERO)
+    }
 }
 
 impl<const I: IBits, const F: FBits, S: Strategy> UFixed<I, F, S>
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
 {
     /// Construct from the raw container value.
     ///
@@ -46,14 +149,14 @@ where
     /// check is performed; the caller is responsible for keeping the
     /// value inside the logical range.
     #[inline(always)]
-    pub const fn from_raw(bits: <S as UContainerFor<{ ufixed_bits(I, F) }>>::T) -> Self {
-        Self { bits, _s: PhantomData }
+    pub const fn from_raw(bits: <S as BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>>::T) -> Self {
+        Self(Bits::from_raw(bits))
     }
 
     /// Extract the raw container value.
     #[inline(always)]
-    pub const fn to_raw(self) -> <S as UContainerFor<{ ufixed_bits(I, F) }>>::T {
-        self.bits
+    pub const fn to_raw(self) -> <S as BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>>::T {
+        self.0.to_raw()
     }
 
     /// Logical bit width (`I + F`).
@@ -63,19 +166,19 @@ where
     }
 }
 
-// The `UContainerFor::T` type is always `Copy` in our dispatch table
-// (u8/u16/u32/u64). Hand-written Copy / Clone / PartialEq / Eq / Default
-// impls delegate to whatever the container supports without adding
-// bounds that retrigger const-expr evaluation cycles.
+// Delegating Copy / Clone / PartialEq / Eq / Default to the wrapped
+// `Bits<{I+F}, S>`. Bits' impls already cover the container family
+// (`<S as BitsContainerFor<N, Unsigned>>::T` is always `Copy + PartialEq + Eq +
+// Default`); UFixed inherits via the newtype wrap.
 
 impl<const I: IBits, const F: FBits, S: Strategy> Copy for UFixed<I, F, S> where
-    S: UContainerFor<{ ufixed_bits(I, F) }>
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>
 {
 }
 
 impl<const I: IBits, const F: FBits, S: Strategy> Clone for UFixed<I, F, S>
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
 {
     #[inline(always)]
     fn clone(&self) -> Self {
@@ -85,53 +188,51 @@ where
 
 impl<const I: IBits, const F: FBits, S: Strategy> PartialEq for UFixed<I, F, S>
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
 {
     #[inline(always)]
     fn eq(&self, other: &Self) -> bool {
-        // Container types are all fixed-width unsigned ints; byte-wise
-        // equality equals value equality.
-        self.bits == other.bits
+        self.to_raw() == other.to_raw()
     }
 }
 
 impl<const I: IBits, const F: FBits, S: Strategy> Eq for UFixed<I, F, S> where
-    S: UContainerFor<{ ufixed_bits(I, F) }>
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>
 {
 }
 
 impl<const I: IBits, const F: FBits, S: Strategy> Default for UFixed<I, F, S>
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
 {
     #[inline(always)]
     fn default() -> Self {
-        Self::from_raw(<<S as UContainerFor<{ ufixed_bits(I, F) }>>::T as Default>::default())
+        Self(Bits::default())
     }
 }
 
 // --- Marker trait impls ----------------------------------------------------
 
-impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const BitPresentation for UFixed<I, F, S>
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
 {
-    const LOGICAL_WIDTH: USize = USize(I.0 as usize + F.0 as usize);
+    const LOGICAL_WIDTH: USize = crate::markers::logical_width_unsigned(I, F);
 }
 
 // IntegerLike: only when F == 0. Using the named `FBits::ZERO`
 // constant because struct construction is not allowed inside an
 // anonymous const-generic argument on current nightly.
-impl<const I: IBits, S: Strategy> IntegerLike for UFixed<I, { FBits::ZERO }, S> where
-    S: UContainerFor<{ ufixed_bits(I, FBits::ZERO) }>
+impl<const I: IBits, S: Strategy> const IntegerLike for UFixed<I, { FBits::ZERO }, S> where
+    S: BitsContainerFor<{ ufixed_bits(I, FBits::ZERO) }, Unsigned>
 {
 }
 
 // FractionLike: F > 0. Encoded via a const-expression that fails to
 // evaluate when `F == FBits::ZERO` (division by zero at const time).
-impl<const I: IBits, const F: FBits, S: Strategy> FractionLike for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const FractionLike for UFixed<I, F, S>
 where
-    S: UContainerFor<{ ufixed_bits(I, F) }>,
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
     [(); 1 / is_fractional(F)]:,
 {
 }
@@ -153,9 +254,9 @@ where
 // TODO: cross-width arithmetic blocked on generic_const_exprs max() support — next round.
 // TODO: cross-strategy arithmetic blocked on const-expr support for associated-type const projection — next round.
 
-impl<const I: IBits, const F: FBits, S: Strategy> Add for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const Add for UFixed<I, F, S>
 where
-    S: UArith<{ ufixed_bits(I, F) }>,
+    S: [const] UArith<{ ufixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
@@ -167,9 +268,9 @@ where
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> Sub for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const Sub for UFixed<I, F, S>
 where
-    S: UArith<{ ufixed_bits(I, F) }>,
+    S: [const] UArith<{ ufixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
@@ -181,9 +282,9 @@ where
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> Mul for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const Mul for UFixed<I, F, S>
 where
-    S: UArith<{ ufixed_bits(I, F) }>,
+    S: [const] UArith<{ ufixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
@@ -195,9 +296,9 @@ where
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> Div for UFixed<I, F, S>
+impl<const I: IBits, const F: FBits, S: Strategy> const Div for UFixed<I, F, S>
 where
-    S: UArith<{ ufixed_bits(I, F) }>,
+    S: [const] UArith<{ ufixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
@@ -219,7 +320,7 @@ where
 
 impl<const I: IBits, const F: FBits> From<UFixed<I, F, Hot>> for UFixed<I, F, Warm>
 where
-    Hot: UContainerFor<{ ufixed_bits(I, F) }>,
+    Hot: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
     Warm: UWidenFrom<Hot, { ufixed_bits(I, F) }>,
 {
     #[inline(always)]
@@ -232,7 +333,7 @@ where
 
 impl<const I: IBits, const F: FBits> From<UFixed<I, F, Hot>> for UFixed<I, F, Precise>
 where
-    Hot: UContainerFor<{ ufixed_bits(I, F) }>,
+    Hot: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
     Precise: UWidenFrom<Hot, { ufixed_bits(I, F) }>,
 {
     #[inline(always)]
@@ -243,7 +344,7 @@ where
 
 impl<const I: IBits, const F: FBits> From<UFixed<I, F, Warm>> for UFixed<I, F, Precise>
 where
-    Warm: UContainerFor<{ ufixed_bits(I, F) }>,
+    Warm: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
     Precise: UWidenFrom<Warm, { ufixed_bits(I, F) }>,
 {
     #[inline(always)]
@@ -254,7 +355,7 @@ where
 
 impl<const I: IBits, const F: FBits> TryFrom<UFixed<I, F, Warm>> for UFixed<I, F, Hot>
 where
-    Warm: UContainerFor<{ ufixed_bits(I, F) }>,
+    Warm: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
     Hot: UNarrowFrom<Warm, { ufixed_bits(I, F) }>,
 {
     type Error = ();
@@ -269,7 +370,7 @@ where
 
 impl<const I: IBits, const F: FBits> TryFrom<UFixed<I, F, Precise>> for UFixed<I, F, Hot>
 where
-    Precise: UContainerFor<{ ufixed_bits(I, F) }>,
+    Precise: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
     Hot: UNarrowFrom<Precise, { ufixed_bits(I, F) }>,
 {
     type Error = ();

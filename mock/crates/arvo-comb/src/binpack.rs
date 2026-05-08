@@ -9,13 +9,16 @@
 //! subtraction. Bin state is tracked as "used weight", and fit checks
 //! compare `used + w` against the capacity directly.
 //!
-//! Returns the bin assignment per item in original input order; items
-//! that do not fit any bin leave the sentinel index `USize(0)`.
+//! Returns the bin assignment per item in original input order. Items
+//! that do not fit any bin map to `NUSize::NONE`; items that placed
+//! map to `NUSize::some(bin_id)`. The prior overloaded `USize(0)`
+//! sentinel for "did not fit" is replaced by `NUSize::NONE` so logical
+//! 0 stays a valid bin index distinct from the absent marker.
 
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::newtype::{Bool, Cap, USize};
+use arvo::{Identity, Bool, Cap, NUSize, USize};
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo_tensor::{Array, cap_size};
 
@@ -27,22 +30,23 @@ use arvo_tensor::{Array, cap_size};
 /// first to keep co-firing pairs in the same bin).
 ///
 /// Returns `(bin_count, bin_id_per_item)`. `bin_id_per_item` is an
-/// `Array<USize, N>` keyed by original input order. `bin_count` is
-/// the number of bins that received at least one item (never greater
-/// than `B`).
+/// `Array<NUSize, N>` keyed by original input order; consumers read
+/// per-item placement via `into_maybe()` on each `NUSize` cell.
+/// `bin_count` is the number of bins that received at least one item
+/// (never greater than `B`).
 pub fn bin_pack<const N: Cap, const B: Cap, T, W>(
     items: &Array<T, N>,
     capacity: W,
     weight_of: impl Fn(&T) -> W,
     affinity: impl Fn(&T, &T) -> W,
-) -> (USize, Array<USize, N>)
+) -> (USize, Array<NUSize, N>)
 where
     [(); cap_size(N)]:,
     [(); cap_size(B)]:,
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
 {
-    let zero = <W as FromConstant>::from_constant(0);
-    let mut bins_of_items: Array<USize, N> = Array::filled(USize(0));
+    let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
+    let mut bins_of_items: Array<NUSize, N> = Array::filled(NUSize::NONE);
 
     if cap_size(N) == 0 || cap_size(B) == 0 {
         return (USize(0), bins_of_items);
@@ -72,7 +76,7 @@ where
             let prev_score = *score.get(prev);
             // Descending: move cur left while its score exceeds the
             // predecessor.
-            if matches!(cur_score.total_cmp(&prev_score), Ordering::Greater) {
+            if matches!(cur_score.total_cmp(prev_score), Ordering::Greater) {
                 order.set(USize(k), prev);
                 k -= 1;
             } else {
@@ -98,9 +102,9 @@ where
         for b in 0..opened.0 {
             let after = *used.get(USize(b)) + w;
             // Fit if `after <= capacity`, i.e. not Greater.
-            if !matches!(after.total_cmp(&capacity), Ordering::Greater) {
+            if !matches!(after.total_cmp(capacity), Ordering::Greater) {
                 used.set(USize(b), after);
-                bins_of_items.set(idx, USize(b));
+                bins_of_items.set(idx, NUSize::some(USize(b)));
                 placed = Bool::TRUE;
                 break;
             }
@@ -108,17 +112,17 @@ where
 
         // Open a new bin if capacity allows and we are under `B`.
         if !placed.0 && opened.0 < cap_size(B) {
-            if !matches!(w.total_cmp(&capacity), Ordering::Greater) {
-                used.set(USize(opened.0), w);
-                bins_of_items.set(idx, USize(opened.0));
-                opened = USize(opened.0 + 1);
+            if !matches!(w.total_cmp(capacity), Ordering::Greater) {
+                used.set(opened, w);
+                bins_of_items.set(idx, NUSize::some(opened));
+                opened = opened + USize::ONE;
             }
         }
 
         // Items that do not fit a fresh bin (weight > capacity) or
-        // that arrive after `B` bins are already full remain at the
-        // sentinel `USize(0)`. Consumers detect via `bin_count` and a
-        // weight recheck.
+        // that arrive after `B` bins are already full stay at
+        // `NUSize::NONE`. Consumers detect via `into_maybe()` on the
+        // per-item cell, distinct from any logical bin index.
     }
 
     (opened, bins_of_items)

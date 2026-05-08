@@ -48,10 +48,10 @@ Notes:
   declares its own numeric traits.
 
 `notko` is the single permitted workspace-foundation dep. It is
-the clause-dev primitive-vocabulary crate (`Just<T>` / `Maybe<T>` /
+the workspace primitive-vocabulary crate (`Just<T>` / `Maybe<T>` /
 `Outcome<T, E>` / `Boundable` / `NonZeroable`), ships from
 `github.com/orgrinrt/notko`, is `#![no_std]` with zero runtime
-deps, and is consumed by every clause-dev repo (arvo, hilavitkutin,
+deps, and is consumed by every workspace repo (arvo, hilavitkutin,
 clause). `notko-macros` and `notko-build` are pulled only when a
 crate genuinely needs `#[optimize_for]` or build-time optimiser
 distribution.

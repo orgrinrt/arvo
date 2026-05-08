@@ -1,6 +1,6 @@
 //! Reverse Cuthill-McKee reordering.
 //!
-//! Bandwidth minimisation on a `BitMatrix64<N>` adjacency. The
+//! Bandwidth minimisation on a `BitMatrix<Bits<64, Hot, Unsigned>, N>` adjacency. The
 //! algorithm:
 //!
 //! 1. Pick the start node as the one with the lowest combined
@@ -18,8 +18,9 @@
 //! Returns `[NodeId; N]` mapping new position to old node id:
 //! `result[new_pos] = old_NodeId`.
 
-use arvo::newtype::{Bool, Cap, USize};
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
+use arvo::{Identity, Bool, Cap, USize};
+use arvo::{Bits, Hot, Unsigned};
+use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use notko::Maybe;
 
 /// Reverse Cuthill-McKee permutation.
@@ -27,12 +28,12 @@ use notko::Maybe;
 /// `result[new_pos] = old_NodeId`. Min-degree start, ascending-degree
 /// BFS ordering, final reverse.
 #[inline]
-pub fn rcm_reorder<const N: Cap>(adjacency: &BitMatrix64<N>) -> [NodeId; cap_size(N)]
+pub fn rcm_reorder<const N: Cap>(adjacency: &BitMatrix<Bits<64, Hot, Unsigned>, N>) -> [NodeId; cap_size(N)]
 where
     [(); cap_size(N)]:,
 {
     let mut order: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
-    let mut visited: Mask64 = Mask64::empty();
+    let mut visited: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
     let mut head = USize(0);
 
     // Main loop: keep seeding BFS from the remaining min-degree node
@@ -46,15 +47,15 @@ where
         };
 
         visited.insert(USize(start));
-        order[head.0] = NodeId::new(USize(start));
-        head = USize(head.0 + 1);
+        order[*head] = NodeId::new(USize(start));
+        head = head + USize::ONE;
 
         // BFS frontier pointers: [read, head) is the current queue.
-        let mut read = USize(head.0 - 1);
+        let mut read = head - USize::ONE;
 
         while read.0 < head.0 {
-            let node = order[read.0];
-            read = USize(read.0 + 1);
+            let node = order[*read];
+            read = read + USize::ONE;
 
             // Collect unvisited neighbours (successors + predecessors).
             let neigh = adjacency
@@ -104,8 +105,8 @@ where
                 let n_idx = (n.0).0;
                 if let Bool(false) = visited.contains(USize(n_idx)) {
                     visited.insert(USize(n_idx));
-                    order[head.0] = n;
-                    head = USize(head.0 + 1);
+                    order[*head] = n;
+                    head = head + USize::ONE;
                 }
                 k += 1;
             }
@@ -128,7 +129,7 @@ where
 
 /// Degree of `n` in the undirected view (successors + predecessors).
 #[inline(always)]
-fn degree<const N: Cap>(adj: &BitMatrix64<N>, n: NodeId) -> USize
+fn degree<const N: Cap>(adj: &BitMatrix<Bits<64, Hot, Unsigned>, N>, n: NodeId) -> USize
 where
     [(); cap_size(N)]:,
 {
@@ -139,8 +140,8 @@ where
 /// `Maybe::Isnt` if every node in `0..N` is already visited.
 #[inline]
 fn min_degree_unvisited<const N: Cap>(
-    adj: &BitMatrix64<N>,
-    visited: &Mask64,
+    adj: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
+    visited: &Mask<Bits<64, Hot, Unsigned>>,
 ) -> Maybe<USize>
 where
     [(); cap_size(N)]:,
@@ -152,7 +153,7 @@ where
             let d = degree(adj, NodeId::new(USize(i)));
             match best {
                 Maybe::Isnt => best = Maybe::Is((USize(i), d)),
-                Maybe::Is((_, bd)) if d.0 < bd.0 => best = Maybe::Is((USize(i), d)),
+                Maybe::Is((_, bd)) if d < bd => best = Maybe::Is((USize(i), d)),
                 _ => {}
             }
         }

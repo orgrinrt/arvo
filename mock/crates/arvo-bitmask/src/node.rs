@@ -2,13 +2,13 @@
 //!
 //! `NodeId` wraps a `USize` to keep node indices distinct from bit
 //! positions, column indices, or other counts at the type level. Used
-//! by `BitMatrix64` / `BitMatrix256` and any consumer that speaks in
-//! nodes rather than raw integers.
+//! by `BitMatrix<W, N>` and any consumer that speaks in nodes rather
+//! than raw integers.
 
 use core::cmp::Ordering;
 use core::hash::{Hash, Hasher};
 
-use arvo::newtype::USize;
+use arvo::USize;
 
 /// Node index newtype.
 ///

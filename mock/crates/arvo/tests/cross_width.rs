@@ -9,7 +9,7 @@
 #![no_std]
 
 use arvo::ifixed::IFixed;
-use arvo::newtype::{FBits, IBits};
+use arvo::{FBits, IBits, ibits, fbits};
 use arvo::strategy::{Cold, Hot, Precise, Resolve, Strategy, Warm};
 use arvo::ufixed::UFixed;
 
@@ -44,8 +44,8 @@ fn resolve_hot_cold_is_cold() {
 
 #[test]
 fn ufixed_from_hot_to_warm_widens_losslessly() {
-    type UHot = UFixed<{ IBits(8) }, { FBits::ZERO }, Hot>;
-    type UWarm = UFixed<{ IBits(8) }, { FBits::ZERO }, Warm>;
+    type UHot = UFixed<{ ibits(8) }, { FBits::ZERO }, Hot>;
+    type UWarm = UFixed<{ ibits(8) }, { FBits::ZERO }, Warm>;
     let a = UHot::from_raw(200);
     let b: UWarm = a.into();
     assert_eq!(b.to_raw(), 200u16);
@@ -53,8 +53,8 @@ fn ufixed_from_hot_to_warm_widens_losslessly() {
 
 #[test]
 fn ufixed_from_hot_to_precise_widens_losslessly() {
-    type UHot = UFixed<{ IBits(8) }, { FBits::ZERO }, Hot>;
-    type UPrecise = UFixed<{ IBits(8) }, { FBits::ZERO }, Precise>;
+    type UHot = UFixed<{ ibits(8) }, { FBits::ZERO }, Hot>;
+    type UPrecise = UFixed<{ ibits(8) }, { FBits::ZERO }, Precise>;
     let a = UHot::from_raw(200);
     let b: UPrecise = a.into();
     assert_eq!(b.to_raw(), 200u16);
@@ -62,8 +62,8 @@ fn ufixed_from_hot_to_precise_widens_losslessly() {
 
 #[test]
 fn ufixed_from_warm_to_precise_widens_losslessly() {
-    type UWarm = UFixed<{ IBits(8) }, { FBits::ZERO }, Warm>;
-    type UPrecise = UFixed<{ IBits(8) }, { FBits::ZERO }, Precise>;
+    type UWarm = UFixed<{ ibits(8) }, { FBits::ZERO }, Warm>;
+    type UPrecise = UFixed<{ ibits(8) }, { FBits::ZERO }, Precise>;
     let a = UWarm::from_raw(300);
     let b: UPrecise = a.into();
     assert_eq!(b.to_raw(), 300u16);
@@ -71,8 +71,8 @@ fn ufixed_from_warm_to_precise_widens_losslessly() {
 
 #[test]
 fn ufixed_try_from_warm_to_hot_in_range_succeeds() {
-    type UHot = UFixed<{ IBits(8) }, { FBits::ZERO }, Hot>;
-    type UWarm = UFixed<{ IBits(8) }, { FBits::ZERO }, Warm>;
+    type UHot = UFixed<{ ibits(8) }, { FBits::ZERO }, Hot>;
+    type UWarm = UFixed<{ ibits(8) }, { FBits::ZERO }, Warm>;
     let a = UWarm::from_raw(200);
     let narrowed: Result<UHot, ()> = a.try_into();
     assert_eq!(narrowed.unwrap().to_raw(), 200u8);
@@ -80,8 +80,8 @@ fn ufixed_try_from_warm_to_hot_in_range_succeeds() {
 
 #[test]
 fn ufixed_try_from_warm_to_hot_out_of_range_fails() {
-    type UHot = UFixed<{ IBits(8) }, { FBits::ZERO }, Hot>;
-    type UWarm = UFixed<{ IBits(8) }, { FBits::ZERO }, Warm>;
+    type UHot = UFixed<{ ibits(8) }, { FBits::ZERO }, Hot>;
+    type UWarm = UFixed<{ ibits(8) }, { FBits::ZERO }, Warm>;
     // 300 doesn't fit in 8 logical bits (max 255).
     let a = UWarm::from_raw(300);
     let narrowed: Result<UHot, ()> = a.try_into();
@@ -90,8 +90,8 @@ fn ufixed_try_from_warm_to_hot_out_of_range_fails() {
 
 #[test]
 fn ufixed_try_from_precise_to_hot_out_of_range_fails() {
-    type UHot = UFixed<{ IBits(8) }, { FBits::ZERO }, Hot>;
-    type UPrecise = UFixed<{ IBits(8) }, { FBits::ZERO }, Precise>;
+    type UHot = UFixed<{ ibits(8) }, { FBits::ZERO }, Hot>;
+    type UPrecise = UFixed<{ ibits(8) }, { FBits::ZERO }, Precise>;
     let a = UPrecise::from_raw(256);
     let narrowed: Result<UHot, ()> = a.try_into();
     assert!(narrowed.is_err());
@@ -101,8 +101,8 @@ fn ufixed_try_from_precise_to_hot_out_of_range_fails() {
 
 #[test]
 fn ifixed_from_hot_to_warm_widens_losslessly() {
-    type IHot = IFixed<{ IBits(7) }, { FBits::ZERO }, Hot>;
-    type IWarm = IFixed<{ IBits(7) }, { FBits::ZERO }, Warm>;
+    type IHot = IFixed<{ ibits(7) }, { FBits::ZERO }, Hot>;
+    type IWarm = IFixed<{ ibits(7) }, { FBits::ZERO }, Warm>;
     let a = IHot::from_raw(-50);
     let b: IWarm = a.into();
     assert_eq!(b.to_raw(), -50i16);
@@ -110,8 +110,8 @@ fn ifixed_from_hot_to_warm_widens_losslessly() {
 
 #[test]
 fn ifixed_try_from_warm_to_hot_out_of_range_fails() {
-    type IHot = IFixed<{ IBits(7) }, { FBits::ZERO }, Hot>;
-    type IWarm = IFixed<{ IBits(7) }, { FBits::ZERO }, Warm>;
+    type IHot = IFixed<{ ibits(7) }, { FBits::ZERO }, Hot>;
+    type IWarm = IFixed<{ ibits(7) }, { FBits::ZERO }, Warm>;
     // 1000 doesn't fit in 8 logical bits signed (max 127).
     let a = IWarm::from_raw(1000);
     let narrowed: Result<IHot, ()> = a.try_into();
@@ -120,8 +120,8 @@ fn ifixed_try_from_warm_to_hot_out_of_range_fails() {
 
 #[test]
 fn ifixed_try_from_warm_to_hot_in_range_succeeds() {
-    type IHot = IFixed<{ IBits(7) }, { FBits::ZERO }, Hot>;
-    type IWarm = IFixed<{ IBits(7) }, { FBits::ZERO }, Warm>;
+    type IHot = IFixed<{ ibits(7) }, { FBits::ZERO }, Hot>;
+    type IWarm = IFixed<{ ibits(7) }, { FBits::ZERO }, Warm>;
     let a = IWarm::from_raw(-50);
     let narrowed: Result<IHot, ()> = a.try_into();
     assert_eq!(narrowed.unwrap().to_raw(), -50i8);

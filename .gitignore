@@ -14,3 +14,7 @@
 /.github/instructions/
 /.github/skills/
 # === end mockspace-managed ===
+
+# sketch rustc artefacts (research/sketches/ outputs)
+mock/research/sketches/*/libsketch.rmeta
+mock/research/sketches/*/*.rmeta

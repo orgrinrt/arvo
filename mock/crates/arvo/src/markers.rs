@@ -14,18 +14,18 @@
 //! Concrete impls for these markers live alongside the types they
 //! classify (see `ufixed`, `ifixed`, `float`, `newtype`).
 
-use crate::newtype::{Bool, FBits, IBits, USize};
+use arvo_storage::{Bool, FBits, IBits, USize};
 use crate::strategy::Hot;
 
 /// Marker for types that behave like whole numbers.
 ///
 /// UFixed / IFixed with `F = 0`. No fractional part.
-pub trait IntegerLike: Copy {}
+pub const trait IntegerLike: Copy {}
 
 /// Marker for types that carry a fractional component.
 ///
 /// UFixed / IFixed with `F > 0`.
-pub trait FractionLike: Copy {}
+pub const trait FractionLike: Copy {}
 
 /// Marker for types whose raw bits are accessible.
 ///
@@ -33,7 +33,7 @@ pub trait FractionLike: Copy {}
 /// bit count addressable through `BitAccess` in arvo-bits. Container
 /// size (= physical width) may be larger than `LOGICAL_WIDTH`
 /// depending on the strategy.
-pub trait BitPresentation: Copy {
+pub const trait BitPresentation: Copy {
     /// Logical bit width of this type.
     ///
     /// For `UFixed<I, F, S>`: `I + F`.
@@ -41,25 +41,41 @@ pub trait BitPresentation: Copy {
     const LOGICAL_WIDTH: USize;
 }
 
+/// Compose `LOGICAL_WIDTH` for `UFixed<I, F, S>`. Round 202605030400
+/// extracts the meta-bit composition into a typed-surface helper so
+/// the impl body reads as one call.
+#[inline(always)]
+pub const fn logical_width_unsigned(i: IBits, f: FBits) -> USize {
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: typed-meta-bit boundary lift to USize; tracked: #312
+    USize(i.raw() as usize + f.raw() as usize)
+}
+
+/// Compose `LOGICAL_WIDTH` for `IFixed<I, F, S>` (1 sign bit + I + F).
+#[inline(always)]
+pub const fn logical_width_signed(i: IBits, f: FBits) -> USize {
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: typed-meta-bit boundary lift to USize; tracked: #312
+    USize(1 + i.raw() as usize + f.raw() as usize)
+}
+
 /// Marker for IEEE-float-wrapping types.
 ///
 /// `FastFloat` and `StrictFloat`. These do not carry a `Strategy`
-/// marker — float precision is defined by the IEEE width, not by
+/// marker. Float precision is defined by the IEEE width, not by
 /// fixed-point container rules.
-pub trait FloatLike: Copy {}
+pub const trait FloatLike: Copy {}
 
 /// Marker for truth-value types.
 ///
 /// Currently `Bool`. `pack()` converts a control-flow `Bool` into
 /// a 1-bit data value. The returned type is the `UFixed<1, 0, Hot>`
 /// shape that arvo-bits aliases as `Bit`.
-pub trait BoolLike: Copy {
+pub const trait BoolLike: Copy {
     /// Concrete 1-bit packed storage type produced by `pack`.
     ///
     /// Defined as an associated type so arvo L0 does not need to
     /// name `arvo-bits::Bit` directly; arvo-bits pins this to its
-    /// own `Bit = UFixed<{IBits(1)}, {FBits(0)}, Hot>` alias.
-    type Packed: BitPresentation;
+    /// own `Bit = UFixed<{ibits(1)}, {fbits(0)}, Hot>` alias.
+    type Packed: [const] BitPresentation;
 
     /// Convert a truth value to a 1-bit data value.
     fn pack(self) -> Self::Packed;
@@ -71,7 +87,7 @@ pub trait BoolLike: Copy {
 // type is produced via the container trait; arvo-bits re-exports the
 // Bit alias. Here we only need the value 0/1 mapping.
 //
-// The packed type is `UFixed<{IBits(1)}, {FBits(0)}, Hot>` whose
+// The packed type is `UFixed<{ibits(1)}, {fbits(0)}, Hot>` whose
 // storage container is `u8` (Hot, 1-bit-range bucket).
 
 // `Bool` blanket impl is placed in this module (not `newtype`) to keep
@@ -79,13 +95,15 @@ pub trait BoolLike: Copy {
 // type is forward-declared: arvo-bits aliases it as `Bit`.
 use crate::ufixed::UFixed;
 
-impl BoolLike for Bool {
+impl const BoolLike for Bool {
     type Packed = UFixed<{ IBits::ONE }, { FBits::ZERO }, Hot>;
 
     #[inline(always)]
     fn pack(self) -> Self::Packed {
         // Hot container for 1 logical bit is `u8`. `bool as u8` is
-        // 0 or 1, inside the 1-bit range.
+        // 0 or 1, inside the 1-bit range. boundary: Bool is the bottom-
+        // level wrapper around `bool`; the inner-field access is the
+        // FFI-shaped path documented in round 202605021200 FINDINGS.
         UFixed::<{ IBits::ONE }, { FBits::ZERO }, Hot>::from_raw(self.0 as u8)
     }
 }

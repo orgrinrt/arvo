@@ -16,9 +16,9 @@
 
 use core::cmp::Ordering;
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Bits, Hot, Identity, Cap, USize, Unsigned};
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
-use arvo_bitmask::Mask64;
+use arvo_bitmask::Mask;
 
 use core::ops::{Add, Mul, Sub};
 
@@ -33,25 +33,25 @@ use crate::matrix::{Matrix, cap_size};
 /// otherwise into `negative_mask`. Ties and negative values go to the
 /// negative side.
 ///
-/// Requires `N <= 64` at call site (Mask64 output); enforcement lives
+/// Requires `N <= 64` at call site (Mask<Bits<64, Hot, Unsigned>> output); enforcement lives
 /// at the caller by choosing an appropriate `N`. Nodes with index
 /// `>= 64` cannot be represented in either mask and would be dropped;
 /// the function does not iterate past `N`.
 #[inline]
 pub fn spectral_bisection<const N: Cap, F>(
     fiedler: &[F; cap_size(N)],
-) -> (Mask64, Mask64)
+) -> (Mask<Bits<64, Hot, Unsigned>>, Mask<Bits<64, Hot, Unsigned>>)
 where
     [(); cap_size(N)]:,
     F: TotalOrd + Copy + FromConstant,
 {
     let n = cap_size(N);
-    let zero = F::from_constant(0);
-    let mut positive = Mask64::default();
-    let mut negative = Mask64::default();
+    let zero = F::from_constant::<{ USize(0) }>();
+    let mut positive = Mask::<Bits<64, Hot, Unsigned>>::default();
+    let mut negative = Mask::<Bits<64, Hot, Unsigned>>::default();
     let mut i = 0usize;
     while i < n {
-        match fiedler[i].total_cmp(&zero) {
+        match fiedler[i].total_cmp(zero) {
             Ordering::Greater => positive.insert(USize(i)),
             _ => negative.insert(USize(i)),
         }
@@ -85,8 +85,8 @@ where
     F: Add<Output = F>
         + Sub<Output = F>
         + Mul<Output = F>
-        + Sqrt
-        + Recip
+        + Sqrt<Output = F>
+        + Recip<Output = F>
         + TotalOrd
         + Copy
         + FromConstant,
@@ -103,10 +103,10 @@ where
     // Work stack: fixed-size array sized to K. At most K - 1
     // bisections produce K partitions; the stack depth is bounded by
     // K at any moment (each pop produces two pushes at most).
-    let mut stack: [Mask64; cap_size(K)] = [Mask64::default(); cap_size(K)];
+    let mut stack: [Mask<Bits<64, Hot, Unsigned>>; cap_size(K)] = [Mask::<Bits<64, Hot, Unsigned>>::default(); cap_size(K)];
 
     // Seed: the full-node mask.
-    let mut initial = Mask64::default();
+    let mut initial = Mask::<Bits<64, Hot, Unsigned>>::default();
     let mut i = 0usize;
     while i < n {
         initial.insert(USize(i));
@@ -127,7 +127,7 @@ where
     // recomputing the full-graph Fiedler is not the hot path. A
     // follow-up round can specialise to the restricted Laplacian.
     while stack_len.0 > 0 && partition_count.0 < k {
-        stack_len = USize(stack_len.0 - 1);
+        stack_len = stack_len - USize::ONE;
         let component = stack[stack_len.0];
 
         // Count nodes in this component.
@@ -140,14 +140,14 @@ where
         // Fiedler on the full graph. Filter by the component mask for
         // the bisection decision.
         let fiedler: [F; cap_size(N)] = fiedler_vector::<N, W, F>(weights, iterations);
-        let zero = F::from_constant(0);
+        let zero = F::from_constant::<{ USize(0) }>();
 
-        let mut positive_half = Mask64::default();
-        let mut negative_half = Mask64::default();
+        let mut positive_half = Mask::<Bits<64, Hot, Unsigned>>::default();
+        let mut negative_half = Mask::<Bits<64, Hot, Unsigned>>::default();
         let mut j = 0usize;
         while j < n {
             if *component.contains(USize(j)) {
-                match fiedler[j].total_cmp(&zero) {
+                match fiedler[j].total_cmp(zero) {
                     Ordering::Greater => positive_half.insert(USize(j)),
                     _ => negative_half.insert(USize(j)),
                 }
@@ -165,7 +165,7 @@ where
         // half keeps its existing partition id (so already-assigned
         // ids on other nodes are untouched).
         let new_id = partition_count;
-        partition_count = USize(partition_count.0 + 1);
+        partition_count = partition_count + USize::ONE;
         let mut j = 0usize;
         while j < n {
             if *positive_half.contains(USize(j)) {
@@ -190,11 +190,11 @@ where
         if want.0 > 0 && stack_len.0 + want.0 <= k {
             if pos_big {
                 stack[stack_len.0] = positive_half;
-                stack_len = USize(stack_len.0 + 1);
+                stack_len = stack_len + USize::ONE;
             }
             if neg_big {
                 stack[stack_len.0] = negative_half;
-                stack_len = USize(stack_len.0 + 1);
+                stack_len = stack_len + USize::ONE;
             }
         } else if want.0 > 0 && stack_len.0 + 1 <= k {
             let pick = if *positive_half.count() >= *negative_half.count() {
@@ -203,7 +203,7 @@ where
                 negative_half
             };
             stack[stack_len.0] = pick;
-            stack_len = USize(stack_len.0 + 1);
+            stack_len = stack_len + USize::ONE;
         }
     }
 

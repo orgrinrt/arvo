@@ -1,8 +1,13 @@
-# arvo-comb — Design
+# arvo-comb. Design
 
 Combinatorial optimisation algorithms on const-generic fixed-size
 structures. `#![no_std]`, no alloc. Constraint representations use
 arvo-bitmask; value storage uses arvo-tensor.
+
+Per round 202604271346: dependencies update. The crate depends on
+`arvo-storage`, `arvo-bits-contracts`, `arvo-numeric-contracts`,
+`arvo-tensor`, `arvo-bitmask`. The prior `arvo-bits` direct dep is
+replaced by `arvo-bits-contracts`.
 
 Generic over numeric trait bounds for cost and weight types. Does not
 import UFixed or IFixed directly. Consumer instantiates with concrete
@@ -33,7 +38,7 @@ used (two fields); `Copy + Eq + Default + Debug` derived.
 ```rust
 fn matrix_chain_dp<const N: Cap, W>(
     cost: impl Fn(USize, USize) -> W,
-    feasible: impl Fn(USize, USize) -> Bool,
+    feasible: impl Pred2<USize, USize>,
 ) -> (W, Array<USize, N>)
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant
@@ -47,13 +52,13 @@ reachability, `Matrix<USize, N>` for split points. All stack-allocated.
 
 ## Greedy interval grouping
 
-Fully generic. No numeric traits needed — the feasibility predicate
+Fully generic. No numeric traits needed, the feasibility predicate
 and merge function are closures:
 
 ```rust
 fn greedy_group<const N: Cap, const M: Cap, A, T>(
     items: &Array<T, N>,
-    feasible: impl Fn(&A, &T) -> Bool,
+    feasible: impl Pred2<A, T>,
     merge: impl Fn(A, &T) -> A,
     init: impl Fn() -> A,
 ) -> (USize, Array<Range, M>)
@@ -61,8 +66,7 @@ fn greedy_group<const N: Cap, const M: Cap, A, T>(
 
 Sequential grouping under a feasibility predicate. Walk items in
 order; accumulate into current group while feasible; break when
-infeasible and start new group. Returns `(group_count, groups)` —
-only the first `group_count` entries of `groups` are meaningful.
+infeasible and start new group. Returns `(group_count, groups)`. Only the first `group_count` entries of `groups` are meaningful.
 
 `M` is the caller-supplied upper bound on the number of groups. It
 must be ≥ ceil(N / min_group_size); the algorithm asserts this at
@@ -90,12 +94,12 @@ recorded split for each interval length. Stack table `[[W; N]; N]`.
 Typical pipeline-grouping application:
 - Cost: `element_count × sum of size_of::<T_k>()` for union data
   of ops `i..j` (memory bandwidth of one walk over the group's arena).
-- Feasibility: a holistic resource check (register file, L1 write
+- Feasibility: a whole-pipeline resource check (register file, L1 write
   budget, L1+L2 total, no fan-in, no pipeline breaker).
 
 Researched threshold: use DP when problem size exceeds 10 units;
 fall back to greedy's left-to-right sequential join below that
-(polka-dots T3 decision #70).
+(T3 decision #70).
 
 ## Bin-packing
 
@@ -108,18 +112,31 @@ fn bin_pack<const N: Cap, const B: Cap, T, W>(
     capacity: W,
     weight_of: impl Fn(&T) -> W,
     affinity: impl Fn(&T, &T) -> W,
-) -> (USize, Array<USize, N>)
+) -> (USize, Array<NUSize, N>)
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant
 ```
 
-Returns `(bin_count, bin_id_per_item)`. `B` is the upper bound on the
-number of bins (used for internal stack-allocated per-bin accumulator
-arrays). `W` is the weight/affinity numeric type, must be addable,
-ordered, copyable, and have a zero via `FromConstant`.
+Returns `(bin_count, bin_id_per_item)`. The first element is the
+opened-bin count. The second element holds, per input item, either
+`NUSize::some(USize(b))` for placement in bin `b` (0-indexed) or
+`NUSize::NONE` for items that did not fit. Niche-packed: per-slot
+layout is one usize, same as raw `USize`, so the array footprint is
+unchanged from the prior raw-USize representation.
 
-Common application: bit assignment for co-firing flags — items that
-co-fire packed into the same byte/word enable hierarchical skip
+`B` is the upper bound on the number of bins (used for internal
+stack-allocated per-bin accumulator arrays). `W` is the weight /
+affinity numeric type; must be addable, ordered, copyable, and have a
+zero via `FromConstant`.
+
+Round 202605040602 replaced the prior `Array<USize, N>` return with
+`Array<NUSize, N>`. The previous shape used `USize(0)` as both "first
+valid bin" and "did not fit", an overloaded sentinel that surfaced as
+Expert A audit Finding 14. The NUSize form distinguishes the cases at
+the type level without paying a discriminant byte.
+
+Common application: bit assignment for co-firing flags. Items that
+co-fire pack into the same byte / word and enable hierarchical skip
 (u64 == 0 → skip 64 bits). Affinity-ordered: high-co-fire pairs
 placed adjacent.
 
@@ -132,7 +149,7 @@ constraint representation as greedy grouping. Not day-one.
 
 - 202603241400_topic.arvo-crate-dependency-revision.md (generic contracts)
 - 202604191900_changelist.doc.md (this round)
-- T3 L1837-1937 (matrix chain ordering DP — polka-dots)
-- T3 decision #70 (DP when problem size >10 — polka-dots)
-- T5 L233-247 (affinity-ordered bit assignment — polka-dots)
-- T3 decisions #71-74 (deferred Morton / Hilbert dispatch ordering — polka-dots)
+- T3 L1837-1937 (matrix chain ordering DP)
+- T3 decision #70 (DP when problem size >10)
+- T5 L233-247 (affinity-ordered bit assignment)
+- T3 decisions #71-74 (deferred Morton / Hilbert dispatch ordering)

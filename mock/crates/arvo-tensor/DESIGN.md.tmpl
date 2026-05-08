@@ -1,21 +1,27 @@
-# arvo-tensor — Design
+# arvo-tensor. Design
 
 Fixed-shape, type-level-capacity tensor wrappers. Every container binds
 a `Cap` const generic to a homogeneous value type; every slot is
 materialised at compile time; no heap. `#![no_std]`, no alloc,
 stack-only.
 
-Depends on arvo (L0) only. No dependency on arvo-bits, arvo-bitmask, or
-any other L2 crate — tensor is value-generic, not bit-generic.
+Per round 202604271346: dependencies update. The crate now depends on
+`arvo-storage` (for `USize` and the strategy markers used in trait
+bounds), `arvo-bits-contracts` (for the `HasBitWidth` and related
+trait surface used by bit-bearing tensor consumers), and
+`arvo-numeric-contracts` (for the `Predicate` family applied in
+filter / select operations). No dependency on `arvo-bitmask` or any
+other L1 / L2 crate. Tensor is value-generic, not bit-generic.
 
 ## Position in the stack
 
 arvo-tensor sits at L2 as a peer of arvo-bitmask. The division is by
 element domain:
 
-- **arvo-bitmask** — fixed-shape bit containers (Mask64, Mask256, BitMatrix
-  over bits). Every slot is a bit, ops are bitwise.
-- **arvo-tensor** — fixed-shape value containers (Array<T, N>, Matrix<W, N>
+- **arvo-bitmask**, fixed-shape bit containers (Mask\<W\> chassis,
+  BitMatrix\<W, N\> chassis over bits). Every slot is a bit, ops are
+  bitwise.
+- **arvo-tensor**, fixed-shape value containers (Array<T, N>, Matrix<W, N>
   over arbitrary T). Every slot is a T, ops are trait-generic over T.
 
 Every algorithm crate (arvo-graph / arvo-sparse / arvo-comb / arvo-spectral)
@@ -23,7 +29,7 @@ depends on whichever of the two its input shape matches. When an algorithm
 mixes both (e.g. graph adjacency as bitmask + node weights as tensor), it
 depends on both.
 
-## cap_size — canonical Cap → usize bridge
+## cap_size, canonical Cap → usize bridge
 
 ```rust
 #[inline(always)]
@@ -63,7 +69,7 @@ where
 ```
 
 `get` / `set` take `USize`. The `.0` unwrap used for internal array
-indexing lives inside the method body — not at the call site.
+indexing lives inside the method body, not at the call site.
 
 `Array<T, N>` implements `IntoIterator for &Array<T, N>` yielding `&T`
 (so `for t in &arr { ... }` works with standard Rust idioms) and
@@ -99,9 +105,9 @@ where
 arvo-spectral re-exports via `pub use arvo_tensor::Matrix;` so existing
 import paths keep working while consumers migrate.
 
-## Enumerator — USize-typed enumeration
+## Enumerator, USize-typed enumeration
 
-`core::iter::Iterator::enumerate()` yields `(usize, T)` — raw usize
+`core::iter::Iterator::enumerate()` yields `(usize, T)`, raw usize
 leaks. arvo-tensor ships a parallel trait with a blanket impl:
 
 ```rust
@@ -136,30 +142,30 @@ for t in &arr {
 }
 ```
 
-The trait is blanket — any `IntoIterator` gets `enumerated()` including
+The trait is blanket: any `IntoIterator` gets `enumerated()` including
 types outside arvo-tensor.
 
 ## What this crate does NOT contain
 
-- Arithmetic operations on tensors (Add, Mul, Sqrt) — consumer concern.
+- Arithmetic operations on tensors (Add, Mul, Sqrt), consumer concern.
   arvo algorithm crates supply trait bounds (Add + TotalOrd + FromConstant
   + Copy) and compose with arvo-tensor types freely.
-- Sparse shapes — arvo-sparse's domain.
-- Bit-shaped tensors — arvo-bitmask's domain.
-- ML-style broadcasting, reshaping, transpose chains — not aligned with
-  arvo's substrate role. Consumers that need those build them on top
+- Sparse shapes: arvo-sparse's domain.
+- Bit-shaped tensors: arvo-bitmask's domain.
+- ML-style broadcasting, reshaping, transpose chains, not aligned with
+  arvo's role. Consumers that need those build them on top
   of Array + Matrix primitives.
-- Heap-backed growable shapes — no. Sizes are const.
+- Heap-backed growable shapes: no. Sizes are const.
 
 ## Consumers
 
-- **arvo-comb** — passes `&Array<T, N>` inputs, uses `Matrix<W, N>` /
+- **arvo-comb**, passes `&Array<T, N>` inputs, uses `Matrix<W, N>` /
   `Matrix<Bool, N>` / `Matrix<USize, N>` for internal DP tables.
-- **arvo-graph** (future round) — bit-matrix adjacency via arvo-bitmask;
+- **arvo-graph** (future round), bit-matrix adjacency via arvo-bitmask;
   per-node value tables via arvo-tensor.
-- **arvo-sparse** (future round) — sparse-matrix value storage backed by
+- **arvo-sparse** (future round), sparse-matrix value storage backed by
   `Array<W, N>` where the sparse-structure layer permits.
-- **arvo-spectral** (future round) — dense-matrix workloads already use
+- **arvo-spectral** (future round), dense-matrix workloads already use
   Matrix; migration is the re-import change.
 
 Downstream consumers (hilavitkutin, clause) will also use arvo-tensor
@@ -169,6 +175,6 @@ crates.
 ## Sources
 
 - 202604270000_topic.arvo-bitmask-sweep.md (round 1; established the BitLogic-contract-in-arvo-bits pattern mirrored here)
-- 202604280000_topic.arvo-comb-sweep.md (this round — scope expansion justification + Q1/Q1a/Q1b/Q2/Q3/Q4 decisions)
-- 202604280000_changelist.doc.md (this round — doc CL)
+- 202604280000_topic.arvo-comb-sweep.md (this round, scope expansion justification + Q1/Q1a/Q1b/Q2/Q3/Q4 decisions)
+- 202604280000_changelist.doc.md (this round, doc CL)
 - arvo-spectral/src/matrix.rs (source of the Matrix pattern, relocating here)

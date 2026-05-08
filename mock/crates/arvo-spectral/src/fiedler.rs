@@ -26,7 +26,7 @@
 
 use core::ops::{Add, Mul, Sub};
 
-use arvo::newtype::{Cap, USize};
+use arvo::{Cap, USize};
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
 
 use crate::laplacian::laplacian;
@@ -54,13 +54,13 @@ where
     F: Add<Output = F>
         + Sub<Output = F>
         + Mul<Output = F>
-        + Sqrt
-        + Recip
+        + Sqrt<Output = F>
+        + Recip<Output = F>
         + TotalOrd
         + Copy
         + FromConstant,
 {
-    // Promote the documented "N <= 64 via Mask64" invariant to a
+    // Promote the documented "N <= 64 via Mask<Bits<64, Hot, Unsigned>>" invariant to a
     // check that fires well before the silent `as u8` truncation
     // below. `const { ... }` on a generic const parameter is not
     // supported under the current generic_const_exprs feature, so
@@ -69,7 +69,7 @@ where
     // const-block restriction lifts.
     debug_assert!(
         cap_size(N) <= 64,
-        "fiedler_vector requires N <= 64 (Mask64 partition surface)"
+        "fiedler_vector requires N <= 64 (Mask<Bits<64, Hot, Unsigned>> partition surface)"
     );
 
     let n = cap_size(N);
@@ -79,29 +79,34 @@ where
     // even N; for odd N the deflation step pulls out the residual
     // projection on the first pass). Using all-ones as a seed would be
     // entirely in the null space and get zeroed by the first deflation.
-    let one = F::from_constant(1);
-    let zero = F::from_constant(0);
+    let one = F::from_constant::<{ USize(1) }>();
+    let zero = F::from_constant::<{ USize(0) }>();
     let mut v: [F; cap_size(N)] = core::array::from_fn(|i| {
         if i & 1 == 0 { one } else { zero - one }
     });
 
-    // Reciprocal of N, used each iteration for deflation mean.
-    // `F::from_constant` takes a `u8`; we guarantee `N <= 64` via the
-    // Mask64 partitioning surface, so the `as u8` is safe at every
-    // shipping shape.
-    let n_as_u8 = n as u8; // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: arvo::traits::FromConstant::from_constant takes u8; boundary conversion until FromConstant is retrofitted to take USize; tracked: #123
-    let n_f = F::from_constant(n_as_u8);
+    // Reciprocal of N. `n` is a runtime fn arg, so we cannot use the
+    // const-generic `from_constant::<{USize(n)}>()` form. Build via
+    // fold-counted addition: `n_f = sum(one for _ in 0..n)`. O(n) with
+    // n <= 64 (Fiedler's documented bound), negligible against the
+    // matrix-multiply core loop below.
+    let mut n_f = zero;
+    let mut k = 0usize;
+    while k < n {
+        n_f = n_f + one;
+        k += 1;
+    }
     let n_inv = n_f.recip();
 
     // Gershgorin upper bound on lambda_max(L): max over i of 2 * L[i][i]
     // (the diagonal value equals the off-diagonal absolute sum by
     // Laplacian construction). Shift via sigma >= lambda_max.
-    let two = F::from_constant(2);
+    let two = F::from_constant::<{ USize(2) }>();
     let mut sigma = zero;
     let mut i = 0usize;
     while i < n {
         let candidate = two * lap.get(USize(i), USize(i));
-        if sigma.total_cmp(&candidate) == core::cmp::Ordering::Less {
+        if sigma.total_cmp(candidate) == core::cmp::Ordering::Less {
             sigma = candidate;
         }
         i += 1;

@@ -1,0 +1,50 @@
+469091c chore: lock src changelist for 202604301700
+530d27b docs: add comparison subheaders to round 202604301700 src CL
+09b24b0 refactor!: rename arvo-narrow crate to arvo-refit
+045c779 docs: write src CL for round 202604301700 arvo-narrow rename
+d6e509c chore: lock doc changelist for 202604301700
+1039da8 docs: rename arvo-narrow doc templates dir to arvo-refit
+4db975a chore: unlock doc CL and deprecate src CL for round 202604301700
+a792b04 docs: write src CL for round 202604301700 arvo-narrow rename
+eb3d91a chore: lock doc changelist for 202604301700
+32f9d03 docs: apply doc CL edits for round 202604301700
+263c4fb docs: write doc CL for round 202604301700 arvo-narrow rename
+0c1e42a docs: open round 202604301700 arvo-narrow rename to arvo-refit
+d5f5838 chore: close design round 202604301539
+e414b61 chore: lock src changelist for 202604301539
+a8ae252 docs: align widen.rs in-source contract with bit-pattern-preserving fact
+f412ff3 docs: write src CL for round 202604301539 refit polish
+4e04a7c chore: lock doc changelist for 202604301539
+cf060f2 docs: apply doc CL edits for round 202604301539
+81e3f55 docs: write doc CL for round 202604301539 refit polish
+cfe28d2 docs: open round 202604301539 refit polish reviewer findings
+fa4ea5d chore: close design round 202604300826
+0d3bd76 chore: lock src changelist for 202604300826
+e9067ff chore: drop unused Signed/Unsigned imports in arvo-bits-contracts lib.rs
+db1ef2d feat: add Widen trait, ergonomic ctors, and same-container Narrow
+4209946 docs: write src CL for round 202604300826 refit narrow widen
+a63fa83 chore: lock doc changelist for 202604300826
+109903e docs: apply doc CL edits for round 202604300826 refit
+fbc3258 docs: write doc CL for round 202604300826 refit narrow widen
+bbd993a docs: open round 202604300826 refit narrow widen completion
+bcc3830 refactor: migrate bench to ByteRoutine + typed bench_variant form (#39)
+3301c40 refactor: extract shared bench Routine into arvo-benches lib (#38)
+71ab9fa feat: adopt mockspace v2 bench harness for ContentHash benchmarking (#37)
+296439c docs: promote strategy-bound trilemma to DEEPDIVE (#36)
+1abc0e0 feat: bitwidth cap to 256 + Fnv1a + audit-driven follow-up rounds (A-D) (#35)
+fec30de docs: extend byline policy to PR titles, descriptions, comments (#34)
+69b8271 docs: ban ASCII box-and-arrow diagrams in writing-style rules (#30)
+d8229e9 chore: ramp arvo lint severities to match strict posture (#213) (#33)
+e93ca0c docs: rewrite README to outsider-view-only crates.io format (#32)
+24afda0 docs: arvo docs refresh — shipped items, updated signatures (#124) (#29)
+16caf87 docs: type-surface reminder block at top of every BACKLOG.md.tmpl (#92) (#28)
+7bd20fe feat: arvo::Predicate trait family Pred/Pred2/Pred3 (#122) (#27)
+2ec733a refactor: FromConstant takes USize instead of u8 (#123) (#26)
+6237970 docs: arvo writing-style sweep (#25)
+3bc411c chore: bump mockspace to pick up no-empty-crate fix (#24)
+624f8b0 docs: #129 arvo lint:allow audit — all 5 sites structurally justified (#22) (#23)
+a98a3f4 Merge pull request #21 from orgrinrt/feat/arvo-bits-ergonomics
+a0abd19 chore: close design round 202604310000
+499ae14 chore: lock src changelist for 202604310000_changelist.src.lock.md
+5108b8d feat: add From<u64> on Bits<N, Hot> + per-field MASK consts in bitfield!
+a81e56e docs: add src changelist for arvo-bits ergonomics round

@@ -5,11 +5,12 @@
 //! node we allocate a fresh component ID, then DFS every node
 //! reachable in either direction and tag it with that ID.
 //!
-//! Visited tracking is a `Mask64`; the DFS stack is a fixed-size
+//! Visited tracking is a `Mask<Bits<64, Hot, Unsigned>>`; the DFS stack is a fixed-size
 //! `[NodeId; cap_size(N)]` with a head index — no heap, no grow.
 
-use arvo::newtype::{Bool, Cap, USize};
-use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
+use arvo::{Identity, Bool, Cap, USize};
+use arvo::{Bits, Hot, Unsigned};
+use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 
 /// Assign a component ID to every node.
 ///
@@ -18,12 +19,12 @@ use arvo_bitmask::{BitMatrix64, Mask64, NodeId, cap_size};
 /// nodes receive the same ID exactly when their DFS closure
 /// (successors + predecessors, transitively) intersects.
 #[inline]
-pub fn components<const N: Cap>(dag: &BitMatrix64<N>) -> [USize; cap_size(N)]
+pub fn components<const N: Cap>(dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>) -> [USize; cap_size(N)]
 where
     [(); cap_size(N)]:,
 {
     let mut comp: [USize; cap_size(N)] = [USize(0); cap_size(N)];
-    let mut visited: Mask64 = Mask64::empty();
+    let mut visited: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
     let mut next_id = USize(0);
 
     let mut seed = 0usize;
@@ -35,7 +36,7 @@ where
 
         // Fresh component: seed is the root.
         let id = next_id;
-        next_id = USize(next_id.0 + 1);
+        next_id = next_id + USize::ONE;
 
         // Iterative DFS over undirected adjacency (succ + pred).
         let mut stack: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];

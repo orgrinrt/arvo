@@ -1,43 +1,100 @@
-# arvo — agent instructions
+# arvo. agent instructions
 
 ## What arvo is
 
-arvo is a numeric + analysis substrate: fixed-point primitives with
+arvo is a numeric + analysis foundation: fixed-point primitives with
 strategy markers, bit-level contracts, and a handful of algorithm
 crates built on top. Everything is `#![no_std]`, no `alloc`, no
 platform dependency, and every size is const at type level.
 
+Per round 202604271346, arvo is structured as a layered set
+of small crates with a downstream facade. `arvo` itself is the facade,
+not L0. L0 is `arvo-storage`. Trait declarations split into six
+contract crates (`arvo-transparent`, `arvo-strategy`,
+`arvo-bits-contracts`, `arvo-mask-contracts`, `arvo-narrow-contracts`,
+`arvo-numeric-contracts`). Concrete impls live in domain-organised
+implementation crates.
+
 ## Identity
 
-{{crate_count}} crates, four layers:
+{{crate_count}} crates, layered from L0 foundation up through the
+facade:
 
-**L0 — numerics:**
-- `arvo` — `UFixed<I, F, S>`, `IFixed<I, F, S>`, `FastFloat` /
-  `StrictFloat`, strategy markers (`Hot` / `Warm` / `Cold` /
-  `Precise`), composable numeric traits, semantic aliases.
+**L0 foundation:**
+- `arvo-transparent`. `Transparent` const unsafe trait, the typed
+  unwrap door for every `repr(transparent)` arvo primitive.
+  Free `arvo::raw` const fn.
+- `arvo-strategy`. `Strategy` marker plus the four ZST markers
+  `Hot` / `Warm` / `Cold` / `Precise`. Unified `BitsContainerFor<const
+  N: Width, Sign: Signedness>` const trait projecting (strategy, N,
+  sign) to the dispatched container via Pattern C const-tag dispatch
+  through the `Project<TAG, Sign, BYTES, S>` helper. Native primitives
+  (u8/u16/u32/u64/u128 or signed) for N <= 128; `WideBits<BYTES>` /
+  `AlignedWideBits16<BYTES>` (declared in arvo-storage) for N > 128.
+  Hosts the `Width` newtype.
+- `arvo-storage`. `Bits<N, S, Sign>` opaque storage primitive
+  (`repr(transparent)` over the dispatched container; default
+  `Sign = Unsigned`). `WideBits<const BYTES: usize>` byte-sequence
+  storage at align-1 (Warm/Cold/Precise for N > 128).
+  `AlignedWideBits16<const BYTES: usize>` byte-sequence at align(16)
+  (Hot for N > 128; SSE2/NEON-aligned baseline). `Unsigned` / `Signed`
+  ZST markers + sealed `Signedness` trait. `Bool`, `USize` platform
+  wrappers. `IBits`, `FBits` typed meta-bit newtypes; `Width`
+  re-exported from arvo-strategy.
 
-**L1 — bit-level contracts:**
-- `arvo-bits` — traits + opaque-bit concretes: `BitWidth`, `BitAccess`,
-  `BitSequence`, `BitLogic`, with concrete impls for arvo numerics.
-  Arithmetic fielded structs live in L0 arvo; mask-specific concretes
-  live in L2 arvo-bitmask.
+**L0.5 trait contracts:**
+- `arvo-bits-contracts`. `HasBitWidth`, `BitAccess`, `BitSequence`,
+  `BitLogic`, `BitPrim`, `IBitPrim`, `UBitContainer`,
+  `IBitContainer`, plus `Narrow<T>` and the `Narrowed<N, T>` alias.
+  All `pub const trait`.
+- `arvo-mask-contracts`. `Mask<const W: u8>` const trait surface
+  for fixed-width bit set / clear / test / count operations.
+- `arvo-numeric-contracts`. `Abs`, `Recip`, `Sqrt`, `TotalOrd`,
+  `FromConstant`, `Predicate`, plus the `IsZero` / `IsPositive` /
+  `IsNonZero` / `IsNonNegative` / `IsZeroOrPositive` predicate
+  family. All `pub const trait`.
 
-**L2 — substrate concretes and generic algorithms:**
-- `arvo-bitmask` — `Mask64`, `Mask256`, `BitMatrix`, bit scanning
-  (concrete storage over `arvo-bits` contracts).
-- `arvo-tensor` — `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
-  tensor wrappers; `cap_size` bridge; `Enumerator` trait for
+**L1 blanket-impl carrier:**
+- `arvo-bits`. Concrete blanket impls of every L0.5 bit-level trait
+  on `Bits<N, S>` and the bare primitive containers, plus the
+  bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`,
+  `QWord` over `Bits<N, Hot>`).
+
+**L2 concretes:**
+- `arvo-bitmask`. `Mask64`, `Mask256`, `BitMatrix`. Implements
+  `Mask<const W: u8>` from arvo-mask-contracts.
+- `arvo-tensor`. `Array<T, N>`, `Matrix<W, N>` fixed-shape typed
+  tensor wrappers. `Cap` newtype + `Enumerator` trait for
   USize-indexed iteration. Value-generic, no bit semantics.
-- `arvo-graph` — topo sort, rank, waist, spanning tree. Generic over
-  numeric trait bounds for weights.
-- `arvo-sparse` — CSR, RCM, block diagonal, Dulmage-Mendelsohn.
+- `arvo-refit`. Re-export gateway for the bit-width refit family.
+  Re-exports `Narrow<T>` / `Widen<T>` / `Narrowed` / `Widened` from
+  `arvo-bits-contracts`; concrete impls (cross-primitive plus cross-
+  Bits) live in `arvo-bits-contracts` itself. Renamed from
+  `arvo-narrow` in round 202604301700.
+- `arvo-hash`. Hash family (`Fnv1a` plus future better defaults)
+  with `Hasher<const N: u8>` per-N impls. `ContentHash` typed alias.
+
+**L2 generic algorithms:**
+- `arvo-graph`. Topological sort, rank, waist, spanning tree.
+  Generic over numeric trait bounds for edge weights.
+- `arvo-sparse`. CSR, RCM, block-diagonal, Dulmage-Mendelsohn.
   Generic over value types.
-- `arvo-comb` — DP, greedy grouping, bin-packing. Generic over cost
+- `arvo-comb`. DP, greedy grouping, bin-packing. Generic over cost
   types.
 
-**L3 — spectral methods (built on L2):**
-- `arvo-spectral` — Laplacian, Fiedler, power iteration. Generic over
-  weight and eigenvector types.
+**L3 spectral methods:**
+- `arvo-spectral`. Laplacian, Fiedler vector, power iteration.
+  Generic over weight and eigenvector types.
+
+**Facade:**
+- `arvo`. Re-exports the consumer surface. `UFixed<I, F, S>` as
+  `repr(transparent)` newtype over `Bits<{I+F}, S, Unsigned>`.
+  `IFixed<I, F, S>` as `repr(transparent)` newtype over
+  `Bits<{1+I+F}, S, Signed>` (symmetric counterpart; reshape shipped
+  in round 202604280500 alongside the Sign axis on Bits).
+  `Uint<N, S>` and `Int<N, S>` ergonomic generic aliases.
+  `FastFloat<F>` and `StrictFloat<F>` IEEE-width-tagged floats.
+  `bitfield!` declarative macro.
 
 ## Crate table
 
@@ -73,16 +130,16 @@ platform dependency, and every size is const at type level.
 
 arvo is a library; real code lives downstream. Known consumers:
 
-- **hilavitkutin** — pipeline execution engine. Uses `arvo-graph`
+- **hilavitkutin** is the pipeline execution engine. It uses `arvo-graph`
   for plan-stage DAG analysis, `arvo-bitmask` for `AccessMask`,
   `arvo-sparse` for RCM reordering, `arvo-spectral` for trunk
-  formation, `arvo-comb` for fiber grouping.
-- **clause** — language toolchain. Uses `arvo-graph` for pass DAGs
+  formation, and `arvo-comb` for fiber grouping.
+- **clause** is the language toolchain. It uses `arvo-graph` for pass DAGs
   and `arvo-bitmask` for artifact read/write sets.
 
 Consumer names appear here only because they drive the choice of
 which L2/L3 algorithms exist. arvo's API is not shaped by any one
-consumer; the substrate stays usable by anyone.
+consumer; arvo stays usable by anyone.
 
 ## Commit style
 
@@ -95,15 +152,15 @@ commit time.
 
 ## Where things live
 
-- `docs/DESIGN.md` — generated, canonical architecture.
-- `docs/STRUCTURE.md` + graph — generated, crate and item index.
+- `docs/DESIGN.md` is the generated canonical architecture.
+- `docs/STRUCTURE.md` + graph are generated, covering crate and item index.
 - `mock/DESIGN.md.tmpl`, `mock/PRINCIPLES.md.tmpl`,
-  `mock/WORKFLOW.md.tmpl` — authored sources.
-- `mock/crates/*/DESIGN.md.tmpl` — per-crate deep dives.
-- `mock/design_rounds/` — design round state machine. Do not rename
+  `mock/WORKFLOW.md.tmpl` are the authored sources.
+- `mock/crates/*/DESIGN.md.tmpl` holds per-crate deep dives.
+- `mock/design_rounds/` is the design round state machine. Do not rename
   files by hand; use `cargo mock lock` / `unlock` / `deprecate` /
   `close`.
-- `mock/agent/` — these instructions. Edit templates here, not the
+- `mock/agent/` holds these instructions. Edit templates here, not the
   generated files under `.claude/` or `.github/`.
 
 ## What not to do

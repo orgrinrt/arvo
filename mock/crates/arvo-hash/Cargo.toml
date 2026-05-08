@@ -5,7 +5,9 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-arvo-bits.workspace = true
+arvo.workspace = true
+arvo-bits-contracts.workspace = true
+xxhash-rust = { version = "0.8", default-features = false, features = ["xxh3", "const_xxh3"] }
 
 [build-dependencies]
 mockspace.workspace = true
