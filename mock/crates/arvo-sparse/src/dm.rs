@@ -19,9 +19,10 @@
 //! is independent of `W`, so consumers downstream of the
 //! classification do not thread W through their signatures.
 
-use arvo::{Cap, USize};
-use arvo_bitmask::{BitMatrix, NodeId, cap_size};
-use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
+use arvo::{Bool, Cap, USize};
+use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
+use arvo_bits_contracts::{BitAccess, BitLogic, BitPrim, BitSequence};
+use notko::Maybe;
 
 use crate::adjacency::BidirectionalSparseAdjacency;
 
@@ -127,4 +128,34 @@ where
         class_count: USize(3),
         class,
     }
+}
+
+/// Project a class into a fits-in-W bitmask.
+///
+/// Returns `Maybe::Is(mask)` when `cap_size(N) <= W::WIDTH` so every
+/// node index can be represented in one `Mask<W>`. Returns
+/// `Maybe::Isnt` when the node count exceeds W's bit width; in
+/// that case the consumer should walk `dm.class` directly or pick
+/// a wider `W`.
+#[inline]
+pub fn classification_to_mask<W, const N: Cap>(
+    dm: &DulmageMendelsohn<N>,
+    class_id: USize,
+) -> Maybe<Mask<W>> // lint:allow(no-bare-option) reason: Maybe is notko, not bare Option; tracked: #115
+where
+    W: BitPrim + BitSequence + BitAccess + BitLogic + arvo::Identity + Copy + Default,
+    [(); cap_size(N)]:,
+{
+    if cap_size(N) > *<W as BitPrim>::WIDTH {
+        return Maybe::Isnt;
+    }
+    let mut mask: Mask<W> = Mask::<W>::empty();
+    let mut i = 0usize;
+    while i < cap_size(N) {
+        if dm.class[i] == class_id {
+            mask.insert(USize(i));
+        }
+        i += 1;
+    }
+    Maybe::Is(mask)
 }
