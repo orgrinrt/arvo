@@ -14,7 +14,7 @@
 use core::marker::PhantomData;
 use core::ops::{Add, Mul, Sub};
 
-use arvo::traits::FromConstant;
+use arvo::traits::{FromConstant, TotalOrd};
 use arvo::{Cap, USize};
 use arvo_sparse::Csr;
 
@@ -97,6 +97,53 @@ where
             csr,
             _phantom: PhantomData,
         }
+    }
+
+    /// Gershgorin upper bound on `lambda_max(L)`.
+    ///
+    /// For the Laplacian `L = D - A`, the Gershgorin disc bound is
+    /// `max_i 2 * D[i] = max_i 2 * sum_{j != i} w(i, j)`. The result
+    /// is suitable as the `sigma` parameter of `fiedler_vector`.
+    ///
+    /// Assumes non-negative weights (the standard graph-Laplacian
+    /// case). For signed weights, the bound is `max_i 2 * sum_{j != i}
+    /// |w(i, j)|`; consumers with signed weights compute it
+    /// themselves.
+    ///
+    /// The same computation is exposed via the
+    /// `SpectralBipartitioner::lambda_max_bound` trait method; this
+    /// inherent is the one to call when the caller does not want to
+    /// bring the trait into scope.
+    #[inline]
+    pub fn gershgorin_lambda_max(&self) -> F
+    where
+        F: Add<Output = F> + Mul<Output = F> + TotalOrd + Copy + FromConstant,
+    {
+        let n = cap_size(ROWS);
+        let zero = F::from_constant::<{ USize(0) }>();
+        let two = F::from_constant::<{ USize(2) }>();
+        let mut sigma = zero;
+        let mut i = 0usize;
+        while i < n {
+            let cols = self.csr.row_col_indices(USize(i));
+            let vals = self.csr.row_values(USize(i));
+            let mut row_sum = zero;
+            let mut k = 0usize;
+            while k < cols.len() {
+                let j_idx = (cols[k].0).0;
+                if j_idx != i && j_idx < n {
+                    let wf: F = vals[k].into();
+                    row_sum = row_sum + wf;
+                }
+                k += 1;
+            }
+            let candidate = two * row_sum;
+            if sigma.total_cmp(candidate) == core::cmp::Ordering::Less {
+                sigma = candidate;
+            }
+            i += 1;
+        }
+        sigma
     }
 }
 

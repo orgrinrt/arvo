@@ -18,9 +18,9 @@ pub mod operator;
 pub mod partition;
 pub mod power;
 
-pub use fiedler::fiedler_vector;
+pub use fiedler::{dense_laplacian_lambda_max_bound, fiedler_vector};
 pub use laplacian::laplacian;
 pub use matrix::Matrix;
 pub use operator::{LinearOperator, SparseLaplacian};
-pub use partition::{k_way_partition, spectral_bisection};
+pub use partition::{SpectralBipartitioner, k_way_partition, spectral_bisection};
 pub use power::power_iteration;
