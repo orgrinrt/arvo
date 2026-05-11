@@ -182,6 +182,10 @@ where
             (false, false) => 0usize,
             _ => 1usize,
         };
+        // invariant: stack_len.0 < k here (the loop guard ensures we
+        // never enter the body with a full stack). The room-for-two
+        // branch admits both halves; the room-for-one fallback picks
+        // the larger half and drops the smaller (F2 fix).
         if want > 0 && stack_len.0 + want <= k {
             if pos_big {
                 stack[stack_len.0] = new_id;
@@ -226,6 +230,9 @@ where
 {
     /// Return the operator's Gershgorin upper bound on
     /// `lambda_max(L)`. Used as the shift for Fiedler iteration.
+    ///
+    /// `SparseLaplacian` provides an inherent `gershgorin_lambda_max`
+    /// with the same body; either spelling is fine at the call site.
     fn lambda_max_bound(&self) -> F;
 
     /// Run Fiedler iteration and sign-partition.

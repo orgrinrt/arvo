@@ -254,6 +254,17 @@ where
     /// indices (no values duplicated). The forward CSR is copied
     /// in; the transpose row pointers and column indices are built
     /// via count-prefix-scatter.
+    ///
+    /// Preconditions: the input CSR is well-formed. Specifically,
+    /// `row_ptr` is monotone non-decreasing with `row_ptr[ROWS - 1]
+    /// <= NNZ`, and every `col_idx[k].0.0 < ROWS`. Out-of-range
+    /// column indices are silently skipped (treated as having no
+    /// transpose contribution); a malformed `row_ptr` may truncate
+    /// the scatter at the per-column cursor bound. The type system
+    /// is the contract: substrate algorithms trust their input
+    /// shapes per `arvo-toolbox-not-policer`. Construct the input
+    /// CSR through the documented constructors and the
+    /// preconditions hold by construction.
     pub fn with_transpose(self) -> CsrBidirectional<ROWS, NNZ, W> {
         let n_rows = cap_size(ROWS);
         let n_nnz = cap_size(NNZ);

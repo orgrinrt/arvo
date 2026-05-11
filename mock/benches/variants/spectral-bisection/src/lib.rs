@@ -63,6 +63,7 @@ impl Mul for TF {
 }
 impl Sqrt for TF {
     type Output = Self;
+    // bench-local: low-precision Newton-Raphson sqrt; NOT a reference impl.
     #[inline(always)]
     fn sqrt(self) -> Self {
         if self.0 < 0.0 || self.0.is_nan() {
@@ -178,54 +179,72 @@ impl<const N: usize> Routine for Fiedler<N> {
     }
 }
 
-#[inline(never)]
-fn run_at_c16(input: &FiedlerInput<16>, output: &mut FiedlerOutput<16>) {
-    let mut w: Matrix<u32, C16> = Matrix::from_fn(|_, _| 0u32);
-    for i in 0..16 {
-        for j in 0..16 {
-            w.set(USize(i), USize(j), input.weights[i][j] as u32);
+/// Per-N safe dispatch trait. Each supported size implements this
+/// with a body that instantiates the arvo algorithm at the
+/// corresponding named `Cap` constant. The variant fn dispatches
+/// via `<Fiedler<N> as FiedlerDispatch>::run(input, output)`,
+/// propagating the `Fiedler<N>: FiedlerDispatch` bound through the
+/// `bench_variant` macro expansion. The compiler resolves the impl
+/// per literal `N` the macro emits, so no runtime match and no
+/// unsafe pointer casts.
+pub trait FiedlerDispatch: Routine {
+    fn run(input: &Self::Input, output: &mut Self::Output);
+}
+
+impl FiedlerDispatch for Fiedler<16> {
+    #[inline(never)]
+    fn run(input: &FiedlerInput<16>, output: &mut FiedlerOutput<16>) {
+        let mut w: Matrix<u32, C16> = Matrix::from_fn(|_, _| 0u32);
+        for i in 0..16 {
+            for j in 0..16 {
+                w.set(USize(i), USize(j), input.weights[i][j] as u32);
+            }
         }
-    }
-    let lap: Matrix<TF, C16> = laplacian(&w);
-    let sigma = dense_laplacian_lambda_max_bound(&lap);
-    let fv: [TF; 16] = fiedler_vector(&lap, sigma, USize(50));
-    let (_count, ids) = spectral_bisection::<C16, TF>(&fv);
-    for i in 0..16 {
-        output.ids[i] = ids[i].0 as u8;
+        let lap: Matrix<TF, C16> = laplacian(&w);
+        let sigma = dense_laplacian_lambda_max_bound(&lap);
+        let fv: [TF; 16] = fiedler_vector(&lap, sigma, USize(50));
+        let (_count, ids) = spectral_bisection::<C16, TF>(&fv);
+        for i in 0..16 {
+            output.ids[i] = ids[i].0 as u8;
+        }
     }
 }
 
-#[inline(never)]
-fn run_at_c32(input: &FiedlerInput<32>, output: &mut FiedlerOutput<32>) {
-    let mut w: Matrix<u32, C32> = Matrix::from_fn(|_, _| 0u32);
-    for i in 0..32 {
-        for j in 0..32 {
-            w.set(USize(i), USize(j), input.weights[i][j] as u32);
+impl FiedlerDispatch for Fiedler<32> {
+    #[inline(never)]
+    fn run(input: &FiedlerInput<32>, output: &mut FiedlerOutput<32>) {
+        let mut w: Matrix<u32, C32> = Matrix::from_fn(|_, _| 0u32);
+        for i in 0..32 {
+            for j in 0..32 {
+                w.set(USize(i), USize(j), input.weights[i][j] as u32);
+            }
         }
-    }
-    let lap: Matrix<TF, C32> = laplacian(&w);
-    let sigma = dense_laplacian_lambda_max_bound(&lap);
-    let fv: [TF; 32] = fiedler_vector(&lap, sigma, USize(50));
-    let (_count, ids) = spectral_bisection::<C32, TF>(&fv);
-    for i in 0..32 {
-        output.ids[i] = ids[i].0 as u8;
+        let lap: Matrix<TF, C32> = laplacian(&w);
+        let sigma = dense_laplacian_lambda_max_bound(&lap);
+        let fv: [TF; 32] = fiedler_vector(&lap, sigma, USize(50));
+        let (_count, ids) = spectral_bisection::<C32, TF>(&fv);
+        for i in 0..32 {
+            output.ids[i] = ids[i].0 as u8;
+        }
     }
 }
 
-#[inline(never)]
-fn run_at_c64(input: &FiedlerInput<64>, output: &mut FiedlerOutput<64>) {
-    let mut w: Matrix<u32, C64> = Matrix::from_fn(|_, _| 0u32);
-    for i in 0..64 {
-        for j in 0..64 {
-            w.set(USize(i), USize(j), input.weights[i][j] as u32);
+impl FiedlerDispatch for Fiedler<64> {
+    #[inline(never)]
+    fn run(input: &FiedlerInput<64>, output: &mut FiedlerOutput<64>) {
+        let mut w: Matrix<u32, C64> = Matrix::from_fn(|_, _| 0u32);
+        for i in 0..64 {
+            for j in 0..64 {
+                w.set(USize(i), USize(j), input.weights[i][j] as u32);
+            }
         }
-    }
-    let lap: Matrix<TF, C64> = laplacian(&w);
-    let sigma = dense_laplacian_lambda_max_bound(&lap);
-    let fv: [TF; 64] = fiedler_vector(&lap, sigma, USize(50));
-    let (_count, ids) = spectral_bisection::<C64, TF>(&fv);
-    for i in 0..64 {
-        output.ids[i] = ids[i].0 as u8;
+        let lap: Matrix<TF, C64> = laplacian(&w);
+        let sigma = dense_laplacian_lambda_max_bound(&lap);
+        let fv: [TF; 64] = fiedler_vector(&lap, sigma, USize(50));
+        let (_count, ids) = spectral_bisection::<C64, TF>(&fv);
+        for i in 0..64 {
+            output.ids[i] = ids[i].0 as u8;
+        }
     }
 }
 
@@ -233,27 +252,13 @@ fn run_at_c64(input: &FiedlerInput<64>, output: &mut FiedlerOutput<64>) {
 fn fiedler_variant<const N: usize>(
     input: &<Fiedler<N> as Routine>::Input,
     output: &mut <Fiedler<N> as Routine>::Output,
-) -> FfiBenchCall {
+) -> FfiBenchCall
+where
+    Fiedler<N>: FiedlerDispatch,
+{
     timed! {
         run {
-            match N {
-                16 => {
-                    let i: &FiedlerInput<16> = unsafe { &*(input as *const _ as *const FiedlerInput<16>) };
-                    let o: &mut FiedlerOutput<16> = unsafe { &mut *(output as *mut _ as *mut FiedlerOutput<16>) };
-                    run_at_c16(i, o);
-                }
-                32 => {
-                    let i: &FiedlerInput<32> = unsafe { &*(input as *const _ as *const FiedlerInput<32>) };
-                    let o: &mut FiedlerOutput<32> = unsafe { &mut *(output as *mut _ as *mut FiedlerOutput<32>) };
-                    run_at_c32(i, o);
-                }
-                64 => {
-                    let i: &FiedlerInput<64> = unsafe { &*(input as *const _ as *const FiedlerInput<64>) };
-                    let o: &mut FiedlerOutput<64> = unsafe { &mut *(output as *mut _ as *mut FiedlerOutput<64>) };
-                    run_at_c64(i, o);
-                }
-                _ => unreachable!(),
-            }
+            <Fiedler<N> as FiedlerDispatch>::run(input, output);
         }
     }
 }

@@ -88,51 +88,68 @@ impl<const N: usize> Routine for Rcm<N> {
     }
 }
 
-#[inline(never)]
-fn run_at_c16(input: &RcmInput<16>, output: &mut [u32; 16]) {
-    let mut adj: BitMatrix<W, C16> = BitMatrix::<W, _>::empty();
-    for i in 0..16 {
-        for j in 0..16 {
-            if (input.rows[i] >> j) & 1 == 1 {
-                adj.set_edge(NodeId::new(USize(i)), NodeId::new(USize(j)));
+/// Per-N safe dispatch trait. Each supported size implements this with
+/// a body that instantiates the arvo algorithm at the corresponding
+/// named `Cap` constant. The variant fn then dispatches via
+/// `<Rcm<N> as RcmDispatch>::run(input, output)`, propagating the
+/// `Rcm<N>: RcmDispatch` bound through the `bench_variant` macro
+/// expansion. The compiler resolves the impl per literal `N` the
+/// macro emits, so no runtime match and no unsafe pointer casts.
+pub trait RcmDispatch: Routine {
+    fn run(input: &Self::Input, output: &mut Self::Output);
+}
+
+impl RcmDispatch for Rcm<16> {
+    #[inline(never)]
+    fn run(input: &RcmInput<16>, output: &mut [u32; 16]) {
+        let mut adj: BitMatrix<W, C16> = BitMatrix::<W, _>::empty();
+        for i in 0..16 {
+            for j in 0..16 {
+                if (input.rows[i] >> j) & 1 == 1 {
+                    adj.set_edge(NodeId::new(USize(i)), NodeId::new(USize(j)));
+                }
             }
         }
-    }
-    let perm = rcm_reorder(&adj);
-    for i in 0..16 {
-        output[i] = perm[i].0.0 as u32;
+        let perm = rcm_reorder(&adj);
+        for i in 0..16 {
+            output[i] = perm[i].0.0 as u32;
+        }
     }
 }
 
-#[inline(never)]
-fn run_at_c32(input: &RcmInput<32>, output: &mut [u32; 32]) {
-    let mut adj: BitMatrix<W, C32> = BitMatrix::<W, _>::empty();
-    for i in 0..32 {
-        for j in 0..32 {
-            if (input.rows[i] >> j) & 1 == 1 {
-                adj.set_edge(NodeId::new(USize(i)), NodeId::new(USize(j)));
+impl RcmDispatch for Rcm<32> {
+    #[inline(never)]
+    fn run(input: &RcmInput<32>, output: &mut [u32; 32]) {
+        let mut adj: BitMatrix<W, C32> = BitMatrix::<W, _>::empty();
+        for i in 0..32 {
+            for j in 0..32 {
+                if (input.rows[i] >> j) & 1 == 1 {
+                    adj.set_edge(NodeId::new(USize(i)), NodeId::new(USize(j)));
+                }
             }
         }
-    }
-    let perm = rcm_reorder(&adj);
-    for i in 0..32 {
-        output[i] = perm[i].0.0 as u32;
+        let perm = rcm_reorder(&adj);
+        for i in 0..32 {
+            output[i] = perm[i].0.0 as u32;
+        }
     }
 }
 
-#[inline(never)]
-fn run_at_c64(input: &RcmInput<64>, output: &mut [u32; 64]) {
-    let mut adj: BitMatrix<W, C64> = BitMatrix::<W, _>::empty();
-    for i in 0..64 {
-        for j in 0..64 {
-            if (input.rows[i] >> j) & 1 == 1 {
-                adj.set_edge(NodeId::new(USize(i)), NodeId::new(USize(j)));
+impl RcmDispatch for Rcm<64> {
+    #[inline(never)]
+    fn run(input: &RcmInput<64>, output: &mut [u32; 64]) {
+        let mut adj: BitMatrix<W, C64> = BitMatrix::<W, _>::empty();
+        for i in 0..64 {
+            for j in 0..64 {
+                if (input.rows[i] >> j) & 1 == 1 {
+                    adj.set_edge(NodeId::new(USize(i)), NodeId::new(USize(j)));
+                }
             }
         }
-    }
-    let perm = rcm_reorder(&adj);
-    for i in 0..64 {
-        output[i] = perm[i].0.0 as u32;
+        let perm = rcm_reorder(&adj);
+        for i in 0..64 {
+            output[i] = perm[i].0.0 as u32;
+        }
     }
 }
 
@@ -140,27 +157,13 @@ fn run_at_c64(input: &RcmInput<64>, output: &mut [u32; 64]) {
 fn rcm_variant<const N: usize>(
     input: &<Rcm<N> as Routine>::Input,
     output: &mut <Rcm<N> as Routine>::Output,
-) -> FfiBenchCall {
+) -> FfiBenchCall
+where
+    Rcm<N>: RcmDispatch,
+{
     timed! {
         run {
-            match N {
-                16 => {
-                    let input16: &RcmInput<16> = unsafe { &*(input as *const _ as *const RcmInput<16>) };
-                    let output16: &mut [u32; 16] = unsafe { &mut *(output as *mut _ as *mut [u32; 16]) };
-                    run_at_c16(input16, output16);
-                }
-                32 => {
-                    let input32: &RcmInput<32> = unsafe { &*(input as *const _ as *const RcmInput<32>) };
-                    let output32: &mut [u32; 32] = unsafe { &mut *(output as *mut _ as *mut [u32; 32]) };
-                    run_at_c32(input32, output32);
-                }
-                64 => {
-                    let input64: &RcmInput<64> = unsafe { &*(input as *const _ as *const RcmInput<64>) };
-                    let output64: &mut [u32; 64] = unsafe { &mut *(output as *mut _ as *mut [u32; 64]) };
-                    run_at_c64(input64, output64);
-                }
-                _ => unreachable!(),
-            }
+            <Rcm<N> as RcmDispatch>::run(input, output);
         }
     }
 }
