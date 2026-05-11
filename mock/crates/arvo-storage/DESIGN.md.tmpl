@@ -327,9 +327,11 @@ impl const ConstDefault for Bool {
 is trivial and not consumer-needed). `Bool` is not a candidate for
 `Bounded` / `Identity`: it is not a numeric primitive.
 
-Stdlib `From<bool> for Bool` and `From<Bool> for bool` impls remain
-non-const for boundary coverage. The parallel `ConstFrom` impls land
-in Round 4 (#314) once the `ConstFrom` arvo bridge ships.
+Stdlib `From<bool> for Bool` and `From<Bool> for bool` are `impl
+const From` (round 202605112200 lifted them; see `## From bridges`
+below). The substrate's separate `ConstFrom` bridge trait family
+(distinct from this stdlib lift, per `arvo-bridge-home-rule`)
+shipped in Round 4 (#314).
 
 ## USize
 
