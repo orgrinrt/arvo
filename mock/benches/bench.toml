@@ -31,6 +31,52 @@ variants = [
     "../target/release/xxhash3",
 ]
 
+[bench.structural-decomposition]
+title = "Graph structural decomposition: RCM reorder"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.structural-decomposition.sizes]]
+n = 16
+variants = [
+    "../target/release/bench_structural_decomposition",
+]
+
+[[bench.structural-decomposition.sizes]]
+n = 32
+variants = [
+    "../target/release/bench_structural_decomposition",
+]
+
+[[bench.structural-decomposition.sizes]]
+n = 64
+variants = [
+    "../target/release/bench_structural_decomposition",
+]
+
+[bench.spectral-bisection]
+title = "Spectral bisection: Fiedler vector + sign-cut partition"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.spectral-bisection.sizes]]
+n = 16
+variants = [
+    "../target/release/bench_spectral_bisection",
+]
+
+[[bench.spectral-bisection.sizes]]
+n = 32
+variants = [
+    "../target/release/bench_spectral_bisection",
+]
+
+[[bench.spectral-bisection.sizes]]
+n = 64
+variants = [
+    "../target/release/bench_spectral_bisection",
+]
+
 [timing]
 passes = 4
 runs_per_pass = 1000

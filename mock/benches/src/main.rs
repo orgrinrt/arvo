@@ -53,7 +53,7 @@ fn main() -> ExitCode {
                 .into_iter()
                 .map(shape_variant_path)
                 .collect();
-            let routine = match routine_for_n(&section.workload, config.n) {
+            let routine = match routine_for_n(bench_name, config.n) {
                 Some(r) => r,
                 None => {
                     eprintln!(
@@ -129,16 +129,31 @@ fn main() -> ExitCode {
     ExitCode::SUCCESS
 }
 
-/// Pick the right monomorphised Routine bridge for a given input
-/// size. `ByteRoutine<IN, 8, true>` is the canonical hash-bench
-/// shape: IN bytes in, 8 bytes out (u64 digest), independent
-/// algorithms (so cross-variant byte-equality is not required).
+/// Pick the right monomorphised Routine bridge for a given bench
+/// name + input size. Hash benches go through `ByteRoutine`; graph
+/// + spectral benches go through their per-routine bridges.
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
-    let bridge = match n {
-        64 => routine_bridge!(ByteRoutine<64, 8, true>),
-        256 => routine_bridge!(ByteRoutine<256, 8, true>),
-        1024 => routine_bridge!(ByteRoutine<1024, 8, true>),
-        4096 => routine_bridge!(ByteRoutine<4096, 8, true>),
+    use bench_spectral_bisection::Fiedler;
+    use bench_structural_decomposition::Rcm;
+
+    let bridge = match (name, n) {
+        // hash benches: byte-array IO via ByteRoutine.
+        ("fnv1a-vs-xxhash3", 64) => routine_bridge!(ByteRoutine<64, 8, true>),
+        ("fnv1a-vs-xxhash3", 256) => routine_bridge!(ByteRoutine<256, 8, true>),
+        ("fnv1a-vs-xxhash3", 1024) => routine_bridge!(ByteRoutine<1024, 8, true>),
+        ("fnv1a-vs-xxhash3", 4096) => routine_bridge!(ByteRoutine<4096, 8, true>),
+
+        // graph bench: RCM over BitMatrix-shaped input.
+        ("structural-decomposition", 16) => routine_bridge!(Rcm<16>),
+        ("structural-decomposition", 32) => routine_bridge!(Rcm<32>),
+        ("structural-decomposition", 64) => routine_bridge!(Rcm<64>),
+
+        // spectral bench: Fiedler vector + sign-cut partition over
+        // dense Laplacian-weighted input.
+        ("spectral-bisection", 16) => routine_bridge!(Fiedler<16>),
+        ("spectral-bisection", 32) => routine_bridge!(Fiedler<32>),
+        ("spectral-bisection", 64) => routine_bridge!(Fiedler<64>),
+
         _ => return None,
     };
     Some(RoutineSpec {

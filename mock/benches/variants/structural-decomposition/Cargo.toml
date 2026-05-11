@@ -1,0 +1,21 @@
+[package]
+name = "bench-structural-decomposition"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_structural_decomposition"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "bench-structural-decomposition"
+path = "src/main.rs"
+
+[dependencies]
+arvo.workspace = true
+arvo-bitmask.workspace = true
+arvo-sparse.workspace = true
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
