@@ -19,7 +19,7 @@
 //! is independent of `W`, so consumers downstream of the
 //! classification do not thread W through their signatures.
 
-use arvo::{Bool, Cap, USize};
+use arvo::{Cap, USize};
 use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitPrim, BitSequence};
 use notko::Maybe;

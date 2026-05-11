@@ -13,7 +13,6 @@
 #![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![feature(const_trait_impl)]
-#![feature(const_index)]
 #![allow(incomplete_features)]
 
 pub mod adjacency;
