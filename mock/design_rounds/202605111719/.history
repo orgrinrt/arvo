@@ -1,0 +1,50 @@
+f3aca30 chore: lock src changelist for 202605111719_changelist.src.lock.md
+2e23a52 fix: address pre-PR review findings for round 202605111719
+c9b5171 feat: bench bundles for structural-decomposition + spectral-bisection
+818e084 test: rehab arvo-sparse + arvo-spectral tests for round 202605111719
+780f97a feat: operator-generic spectral algorithms + SpectralBipartitioner
+d755421 feat: LinearOperator trait + Matrix/SparseLaplacian impls
+4cceaf0 feat: classification_to_mask helper for DulmageMendelsohn
+ccc5cee feat: trait-driven _via overloads + problem-shaped traits
+8905ef9 feat: W-generic rcm/block/dm + DulmageMendelsohn class-array reshape
+1524477 feat: Csr + CsrBidirectional SparseAdjacency impls
+bb1cf8b refactor: adopt .into() in BitMatrix node_count via new From bridge
+462b1e7 feat: SparseAdjacency trait family with BitMatrix impls
+adffefc docs: open SRC phase for round 202605111719
+487542c chore: lock doc changelist for 202605111719_changelist.doc.lock.md
+0840152 docs: clarify doc CL lock criteria for round 202605111719
+6d52c08 docs: apply round 202605111719 DOC phase
+0ff6536 docs: open DOC phase for round 202605111719
+81675b8 docs: topic corrections + arvo arbitrary-limitations audit
+83b8eca docs: sketches for graph+spectral round (S1 PASSES)
+963f011 docs: topic for arvo graph+spectral CSR-driven algorithms
+fd19593 Merge pull request #62 from orgrinrt/feat/cap-usize-const-from
+2a83524 chore: close design round 202605112230
+b9ad65b chore: lock src changelist for 202605112230_changelist.src.lock.md
+6d0bd0d test: route from_bridges const unwraps through Transparent::raw
+5f52e5b docs: open SRC phase for review-followup round 202605112230
+4e88a72 chore: lock doc changelist for 202605112230_changelist.doc.lock.md
+bb26a27 docs: rewrite stale Bool/From paragraph to acknowledge const lift
+95a6f57 docs: open DOC phase for review-followup round 202605112230
+dc895cb docs: topic for review-followup round 202605112230
+7d513df chore: close design round 202605112200
+1119b85 chore: lock src changelist for 202605112200_changelist.src.lock.md
+6b26f92 feat: Cap <-> USize const From bridges + lift Bool <-> bool to const
+bd3d481 docs: open SRC phase for round 202605112200
+93e838c chore: lock doc changelist for 202605112200_changelist.doc.lock.md
+791c4b4 docs: apply round 202605112200 DOC phase
+f944cee docs: open DOC phase for round 202605112200
+4ff12ec docs: topic for Cap/USize const From bridges round 202605112200
+0f5711c docs: arvo doc audit round (Tier 1 leakage + drift sweep) (#60)
+de59475 chore: bump mockspace pin + regen docs (#59)
+0a820a8 docs: rewrite readme (#57)
+b0a40a6 docs: vocab + leakage + em-dash sweep across templates (#56)
+47858a0 docs: refresh README post-restructure for current crate layout
+7bb92b8 chore: sweep em-dashes from arvo research notes and audits
+91c314e chore: close design round 202605041144 (#53)
+8388967 docs: round 8 ufixed/ifixed const-callable trait family subsection (#52)
+28da51b chore: close design round 202605041128 (#51)
+5681663 feat: round 7 ufixed/ifixed bounded blanket forward (#50)
+ae3fe9a chore: close design round 202605041051 (#49)
+02efc5e test: round 6 const-context smoke tests for audit findings F26-F36 (#48)
+cb60b8f chore: close design round 202605040602 (#47)
