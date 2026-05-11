@@ -1,0 +1,19 @@
+# arvo-sparse. Known gaps
+
+The entries below silence push-gate `design-doc-source-mismatch` lint
+warnings for types documented in the round-202605111719 DOC-phase
+that do not yet exist in source. The round's src CL lands these
+types; entries are removed when source catches up.
+
+## CsrBidirectional
+
+Round 202605111719 introduces `CsrBidirectional<ROWS, NNZ, W>` as a
+bidirectional CSR wrapping the original adjacency plus its transpose
+for O(out_degree) predecessor lookup. The type is documented in
+`DESIGN.md.tmpl` under its own section, with the constructor
+`Csr::with_transpose(...)` and the `BidirectionalSparseAdjacency`
+trait impl. Source landing happens in the round's src CL alongside
+the `SparseAdjacency` / `BidirectionalSparseAdjacency` trait family
+implementations. Until then, this SHAME entry silences the
+push-gate lint while the round is in DOC phase. The entry is
+removed when the src CL lands and source matches docs.

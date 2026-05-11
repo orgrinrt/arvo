@@ -35,6 +35,8 @@ members = [
     "benches",
     "benches/variants/fnv1a",
     "benches/variants/xxhash3",
+    "benches/variants/structural-decomposition",
+    "benches/variants/spectral-bisection",
 ]
 
 [workspace.package]

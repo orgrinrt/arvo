@@ -1,11 +1,16 @@
 //! `fiedler_vector` sign partitions a known-bipartition graph.
+//!
+//! Post round 202605111719: `fiedler_vector` is operator-generic and
+//! takes `sigma` (the Gershgorin upper bound) as an explicit
+//! parameter. The caller builds the Laplacian and passes
+//! `dense_laplacian_lambda_max_bound(&lap)` as sigma.
 
 #![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 use arvo::{Cap, USize};
-use arvo_spectral::{Matrix, fiedler_vector};
+use arvo_spectral::{Matrix, dense_laplacian_lambda_max_bound, fiedler_vector, laplacian};
 
 mod common;
 use common::TF;
@@ -38,7 +43,9 @@ fn bipartition_shows_sign_split() {
     // Signs of the Fiedler vector should agree on intra-cluster nodes
     // and disagree across the cut.
     let w = two_cluster_weights();
-    let v: [TF; 4] = fiedler_vector::<C4, u32, TF>(&w, USize(100));
+    let lap: Matrix<TF, C4> = laplacian(&w);
+    let sigma = dense_laplacian_lambda_max_bound(&lap);
+    let v: [TF; 4] = fiedler_vector(&lap, sigma, USize(100));
     let s0 = v[0].0.signum();
     let s1 = v[1].0.signum();
     let s2 = v[2].0.signum();
@@ -56,7 +63,9 @@ fn sum_close_to_zero_after_deflation() {
     // Because of the deflation step, the Fiedler vector should be
     // orthogonal to the all-ones vector; i.e. its sum is ~0.
     let w = two_cluster_weights();
-    let v: [TF; 4] = fiedler_vector::<C4, u32, TF>(&w, USize(100));
+    let lap: Matrix<TF, C4> = laplacian(&w);
+    let sigma = dense_laplacian_lambda_max_bound(&lap);
+    let v: [TF; 4] = fiedler_vector(&lap, sigma, USize(100));
     let s: f32 = v[0].0 + v[1].0 + v[2].0 + v[3].0;
     assert!(s.abs() < 1e-4, "sum = {s}, v = {v:?}");
 }

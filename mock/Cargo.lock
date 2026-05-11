@@ -30,6 +30,8 @@ dependencies = [
 name = "arvo-benches"
 version = "0.0.0"
 dependencies = [
+ "bench-spectral-bisection",
+ "bench-structural-decomposition",
  "mockspace-bench-core",
  "mockspace-bench-harness",
 ]
@@ -138,6 +140,7 @@ version = "0.1.0"
 dependencies = [
  "arvo",
  "arvo-bitmask",
+ "arvo-bits-contracts",
  "mockspace",
  "notko",
 ]
@@ -148,6 +151,7 @@ version = "0.1.0"
 dependencies = [
  "arvo",
  "arvo-bitmask",
+ "arvo-sparse",
  "arvo-tensor",
  "mockspace",
 ]
@@ -185,6 +189,29 @@ version = "0.1.0"
 dependencies = [
  "mockspace",
  "notko",
+]
+
+[[package]]
+name = "bench-spectral-bisection"
+version = "0.0.0"
+dependencies = [
+ "arvo",
+ "arvo-bitmask",
+ "arvo-spectral",
+ "arvo-tensor",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-structural-decomposition"
+version = "0.0.0"
+dependencies = [
+ "arvo",
+ "arvo-bitmask",
+ "arvo-sparse",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
 ]
 
 [[package]]

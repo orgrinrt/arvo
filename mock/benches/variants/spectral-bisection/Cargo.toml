@@ -1,0 +1,22 @@
+[package]
+name = "bench-spectral-bisection"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_spectral_bisection"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "bench-spectral-bisection"
+path = "src/main.rs"
+
+[dependencies]
+arvo.workspace = true
+arvo-bitmask.workspace = true
+arvo-tensor.workspace = true
+arvo-spectral.workspace = true
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
