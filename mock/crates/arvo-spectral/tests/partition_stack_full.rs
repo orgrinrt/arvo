@@ -1,7 +1,7 @@
 //! Pins the post-review fix (F2) for `k_way_partition`: when the
 //! push-back stack fills, the algorithm must NOT silently drop a
 //! half. It must either push both (room for two) or fall back to
-//! the larger half (room for one) — never admit one and lose the
+//! the larger half (room for one). Never admit one and lose the
 //! other.
 
 #![feature(adt_const_params)]
@@ -9,7 +9,7 @@
 #![allow(incomplete_features)]
 
 use arvo::{Cap, USize};
-use arvo_spectral::{Matrix, k_way_partition};
+use arvo_spectral::{Matrix, dense_laplacian_lambda_max_bound, k_way_partition, laplacian};
 
 mod common;
 use common::TF;
@@ -44,7 +44,9 @@ fn k_way_fills_stack_without_dropping_halves() {
     // maximum depth mid-run. Pre-fix the algorithm silently dropped
     // a half; post-fix every node is assigned to some partition.
     let w = four_cluster_weights_8();
-    let (count, ids) = k_way_partition::<C8, K4, u32, TF>(&w, USize(100));
+    let lap: Matrix<TF, C8> = laplacian(&w);
+    let sigma = dense_laplacian_lambda_max_bound(&lap);
+    let (count, ids) = k_way_partition::<_, C8, K4, TF>(&lap, sigma, USize(100));
     assert!(*count >= 2, "should produce at least 2 partitions, got {count:?}");
     assert!(*count <= 4, "partition count capped by K=4, got {count:?}");
     // Every node has a valid partition id (< count).
@@ -64,6 +66,8 @@ fn k_way_k_equals_one_produces_single_partition() {
     // guard must still let this case through cleanly.
     const K1: Cap = Cap(USize(1));
     let w = four_cluster_weights_8();
-    let (count, _ids) = k_way_partition::<C8, K1, u32, TF>(&w, USize(100));
+    let lap: Matrix<TF, C8> = laplacian(&w);
+    let sigma = dense_laplacian_lambda_max_bound(&lap);
+    let (count, _ids) = k_way_partition::<_, C8, K1, TF>(&lap, sigma, USize(100));
     assert_eq!(count, USize(1), "K=1 must produce exactly one partition");
 }
