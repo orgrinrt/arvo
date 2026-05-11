@@ -23,6 +23,8 @@ use arvo::{Cap, USize};
 use arvo_bitmask::{BitMatrix, NodeId, cap_size};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 
+use crate::adjacency::BidirectionalSparseAdjacency;
+
 /// Dulmage-Mendelsohn decomposition result.
 ///
 /// `class[i]` is the class ID of node `i` in `0..N`. Class IDs:
@@ -78,6 +80,44 @@ where
             class[i] = USize(0);
         } else {
             // Both directions: core.
+            class[i] = USize(2);
+        }
+        i += 1;
+    }
+
+    DulmageMendelsohn {
+        class_count: USize(3),
+        class,
+    }
+}
+
+/// Trait-driven variant of `dulmage_mendelsohn`.
+///
+/// Operates through the `BidirectionalSparseAdjacency<N>` contract,
+/// so any consumer that implements the trait (BitMatrix, Csr's
+/// `CsrBidirectional`, future representations) gets the same
+/// classification without depending on bit-storage representation.
+/// The trade is one method call per direction-test per node; the
+/// mask-based `dulmage_mendelsohn` is strictly faster on `BitMatrix`.
+#[inline]
+pub fn dulmage_mendelsohn_via<T, const N: Cap>(adjacency: &T) -> DulmageMendelsohn<N>
+where
+    T: BidirectionalSparseAdjacency<N>,
+    [(); cap_size(N)]:,
+{
+    let mut class: [USize; cap_size(N)] = [USize(0); cap_size(N)];
+
+    let mut i = 0usize;
+    while i < cap_size(N) {
+        let node = NodeId::new(USize(i));
+        let has_succ = adjacency.successors(node).next().is_some(); // lint:allow(no-bare-option) reason: core::iter::Iterator::next returns Option; tracked: #115
+        let has_pred = adjacency.predecessors(node).next().is_some(); // lint:allow(no-bare-option) reason: core::iter::Iterator::next returns Option; tracked: #115
+
+        if !has_pred {
+            class[i] = USize(1);
+        } else if !has_succ {
+            class[i] = USize(0);
+        } else {
             class[i] = USize(2);
         }
         i += 1;

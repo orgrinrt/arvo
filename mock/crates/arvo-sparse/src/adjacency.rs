@@ -135,3 +135,83 @@ where
         }
     }
 }
+
+// --- Problem-shaped traits -------------------------------------------
+//
+// Each names what the algorithm produces, with a default impl that
+// runs the canonical algorithm through the iterator-based `_via`
+// path. Consumers with a `BitMatrix<W, N>` adjacency can call the
+// free-function variants (`rcm_reorder`, `block_diagonal`,
+// `dulmage_mendelsohn`) directly for the mask-based fast path; the
+// trait defaults exist so any `SparseAdjacency` /
+// `BidirectionalSparseAdjacency` implementor gets the result without
+// re-implementing the algorithm.
+
+/// Bandwidth-reduction reorder. Default impl runs RCM.
+pub trait BandwidthReducer<const N: Cap>: BidirectionalSparseAdjacency<N>
+where
+    [(); arvo_bitmask::cap_size(N)]:,
+{
+    /// Return a permutation `[NodeId; cap_size(N)]` where
+    /// `result[new_pos] = old_NodeId`.
+    #[inline]
+    fn reduce_bandwidth(&self) -> [NodeId; arvo_bitmask::cap_size(N)]
+    where
+        Self: Sized,
+    {
+        crate::rcm::rcm_reorder_via::<Self, N>(self)
+    }
+}
+
+/// Block-diagonal partitioner. Default impl runs connected-components.
+pub trait BlockPartitioner<const N: Cap>: BidirectionalSparseAdjacency<N>
+where
+    [(); arvo_bitmask::cap_size(N)]:,
+{
+    /// Return `(block_count, per_node_block_ids)`.
+    #[inline]
+    fn partition_blocks(&self) -> (USize, [USize; arvo_bitmask::cap_size(N)])
+    where
+        Self: Sized,
+    {
+        crate::block::block_diagonal_via::<Self, N>(self)
+    }
+}
+
+/// Bipartite structural analyser. Default impl runs Dulmage-Mendelsohn.
+pub trait BipartiteStructuralAnalysis<const N: Cap>: BidirectionalSparseAdjacency<N>
+where
+    [(); arvo_bitmask::cap_size(N)]:,
+{
+    /// Return a `DulmageMendelsohn<N>` classification.
+    #[inline]
+    fn analyse_structure(&self) -> crate::dm::DulmageMendelsohn<N>
+    where
+        Self: Sized,
+    {
+        crate::dm::dulmage_mendelsohn_via::<Self, N>(self)
+    }
+}
+
+// Blanket impls: every `BidirectionalSparseAdjacency` consumer gets
+// the three problem-shaped methods for free.
+impl<T, const N: Cap> BandwidthReducer<N> for T
+where
+    T: BidirectionalSparseAdjacency<N>,
+    [(); arvo_bitmask::cap_size(N)]:,
+{
+}
+
+impl<T, const N: Cap> BlockPartitioner<N> for T
+where
+    T: BidirectionalSparseAdjacency<N>,
+    [(); arvo_bitmask::cap_size(N)]:,
+{
+}
+
+impl<T, const N: Cap> BipartiteStructuralAnalysis<N> for T
+where
+    T: BidirectionalSparseAdjacency<N>,
+    [(); arvo_bitmask::cap_size(N)]:,
+{
+}

@@ -23,6 +23,8 @@ use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use notko::Maybe;
 
+use crate::adjacency::BidirectionalSparseAdjacency;
+
 /// Reverse Cuthill-McKee permutation.
 ///
 /// `result[new_pos] = old_NodeId`. Min-degree start, ascending-degree
@@ -156,6 +158,174 @@ where
     while i < cap_size(N) {
         if let Bool(false) = visited.contains(USize(i)) {
             let d = degree(adj, NodeId::new(USize(i)));
+            match best {
+                Maybe::Isnt => best = Maybe::Is((USize(i), d)),
+                Maybe::Is((_, bd)) if d < bd => best = Maybe::Is((USize(i), d)),
+                _ => {}
+            }
+        }
+        i += 1;
+    }
+    match best {
+        Maybe::Is((idx, _)) => Maybe::Is(idx),
+        Maybe::Isnt => Maybe::Isnt,
+    }
+}
+
+/// Trait-driven variant of `rcm_reorder`.
+///
+/// Operates through the `BidirectionalSparseAdjacency<N>` contract.
+/// Visited tracking uses a `[Bool; cap_size(N)]` flag array; degree
+/// computation walks both iterators and dedupes through a
+/// `[Bool; cap_size(N)]` set buffer. Algorithmic shape mirrors
+/// `rcm_reorder` (min-degree start, BFS with ascending-degree
+/// neighbour ordering, final reverse).
+///
+/// The mask-based `rcm_reorder` is strictly faster on `BitMatrix`;
+/// this version is the right call for CSR-shaped or other
+/// iterator-only adjacency representations.
+#[inline]
+pub fn rcm_reorder_via<T, const N: Cap>(adjacency: &T) -> [NodeId; cap_size(N)]
+where
+    T: BidirectionalSparseAdjacency<N>,
+    [(); cap_size(N)]:,
+{
+    let mut order: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
+    let mut visited: [Bool; cap_size(N)] = [Bool(false); cap_size(N)];
+    let mut head = USize(0);
+
+    while head.0 < cap_size(N) {
+        let start = match min_degree_unvisited_via(adjacency, &visited) {
+            Maybe::Is(s) => s.0,
+            Maybe::Isnt => break,
+        };
+
+        visited[start] = Bool(true);
+        order[*head] = NodeId::new(USize(start));
+        head = head + USize::ONE;
+
+        let mut read = head - USize::ONE;
+
+        while read.0 < head.0 {
+            let node = order[*read];
+            read = read + USize::ONE;
+
+            // Collect neighbours (successors ∪ predecessors) into a
+            // scratch buffer, deduping through a local flag array.
+            let mut scratch: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
+            let mut scratch_len = 0usize;
+            let mut in_scratch: [Bool; cap_size(N)] = [Bool(false); cap_size(N)];
+
+            for n in adjacency.successors(node) {
+                let n_idx = (n.0).0;
+                if n_idx < cap_size(N) && !visited[n_idx].0 && !in_scratch[n_idx].0 {
+                    in_scratch[n_idx] = Bool(true);
+                    scratch[scratch_len] = n;
+                    scratch_len += 1;
+                }
+            }
+            for n in adjacency.predecessors(node) {
+                let n_idx = (n.0).0;
+                if n_idx < cap_size(N) && !visited[n_idx].0 && !in_scratch[n_idx].0 {
+                    in_scratch[n_idx] = Bool(true);
+                    scratch[scratch_len] = n;
+                    scratch_len += 1;
+                }
+            }
+
+            // Insertion sort by ascending degree, tie-break by index.
+            let mut i = 1usize;
+            while i < scratch_len {
+                let mut j = i;
+                while j > 0 {
+                    let a = scratch[j - 1];
+                    let b = scratch[j];
+                    let da = degree_via(adjacency, a);
+                    let db = degree_via(adjacency, b);
+                    let swap = da.0 > db.0 || (da.0 == db.0 && (a.0).0 > (b.0).0);
+                    if swap {
+                        scratch[j - 1] = b;
+                        scratch[j] = a;
+                        j -= 1;
+                    } else {
+                        break;
+                    }
+                }
+                i += 1;
+            }
+
+            let mut k = 0usize;
+            while k < scratch_len {
+                let n = scratch[k];
+                let n_idx = (n.0).0;
+                if !visited[n_idx].0 {
+                    visited[n_idx] = Bool(true);
+                    order[*head] = n;
+                    head = head + USize::ONE;
+                }
+                k += 1;
+            }
+        }
+    }
+
+    let mut l = 0usize;
+    let mut r = if head.0 == 0 { 0 } else { head.0 - 1 };
+    while l < r {
+        let tmp = order[l];
+        order[l] = order[r];
+        order[r] = tmp;
+        l += 1;
+        r -= 1;
+    }
+
+    order
+}
+
+/// Undirected-view degree via the trait contract.
+///
+/// `|successors ∪ predecessors|`, computed by walking both iterators
+/// and counting unique node IDs through a `[Bool; cap_size(N)]` set
+/// buffer.
+#[inline]
+fn degree_via<T, const N: Cap>(adj: &T, n: NodeId) -> USize
+where
+    T: BidirectionalSparseAdjacency<N>,
+    [(); cap_size(N)]:,
+{
+    let mut seen: [Bool; cap_size(N)] = [Bool(false); cap_size(N)];
+    let mut count = USize(0);
+    for s in adj.successors(n) {
+        let idx = (s.0).0;
+        if idx < cap_size(N) && !seen[idx].0 {
+            seen[idx] = Bool(true);
+            count = count + USize::ONE;
+        }
+    }
+    for p in adj.predecessors(n) {
+        let idx = (p.0).0;
+        if idx < cap_size(N) && !seen[idx].0 {
+            seen[idx] = Bool(true);
+            count = count + USize::ONE;
+        }
+    }
+    count
+}
+
+/// Trait-driven counterpart to `min_degree_unvisited`.
+#[inline]
+fn min_degree_unvisited_via<T, const N: Cap>(
+    adj: &T,
+    visited: &[Bool; cap_size(N)],
+) -> Maybe<USize>
+where
+    T: BidirectionalSparseAdjacency<N>,
+    [(); cap_size(N)]:,
+{
+    let mut best: Maybe<(USize, USize)> = Maybe::Isnt;
+    let mut i = 0usize;
+    while i < cap_size(N) {
+        if !visited[i].0 {
+            let d = degree_via(adj, NodeId::new(USize(i)));
             match best {
                 Maybe::Isnt => best = Maybe::Is((USize(i), d)),
                 Maybe::Is((_, bd)) if d < bd => best = Maybe::Is((USize(i), d)),
