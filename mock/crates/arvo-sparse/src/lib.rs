@@ -12,13 +12,17 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(generic_const_exprs)]
+#![feature(const_trait_impl)]
+#![feature(const_index)]
 #![allow(incomplete_features)]
 
+pub mod adjacency;
 pub mod block;
 pub mod csr;
 pub mod dm;
 pub mod rcm;
 
+pub use adjacency::{BidirectionalSparseAdjacency, SparseAdjacency};
 pub use block::block_diagonal;
 pub use csr::Csr;
 pub use dm::{DulmageMendelsohn, dulmage_mendelsohn};
