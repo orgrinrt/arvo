@@ -24,6 +24,6 @@ pub mod rcm;
 
 pub use adjacency::{BidirectionalSparseAdjacency, SparseAdjacency};
 pub use block::block_diagonal;
-pub use csr::Csr;
+pub use csr::{Csr, CsrBidirectional};
 pub use dm::{DulmageMendelsohn, dulmage_mendelsohn};
 pub use rcm::rcm_reorder;

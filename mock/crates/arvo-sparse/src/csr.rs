@@ -172,3 +172,220 @@ where
         Self::new()
     }
 }
+
+// ---- SparseAdjacency impl on Csr (round 202605111719) -----------------
+//
+// Walks `col_idx[row_ptr[i] .. row_end(i)]` as a slice iterator. The
+// associated `Successors<'a>` is `Copied<Iter<'a, NodeId>>` because
+// `NodeId` is `Copy` and the trait's iterator must yield `NodeId` by
+// value (not `&NodeId`).
+
+impl<const ROWS: Cap, const NNZ: Cap, W: Copy> crate::adjacency::SparseAdjacency<ROWS>
+    for Csr<ROWS, NNZ, W>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
+    type Successors<'a>
+        = core::iter::Copied<core::slice::Iter<'a, NodeId>>
+    where
+        Self: 'a;
+
+    #[inline]
+    fn successors<'a>(&'a self, node: NodeId) -> Self::Successors<'a> {
+        // NodeId derefs to USize; row_col_indices takes USize.
+        self.row_col_indices(node.0).iter().copied()
+    }
+
+    #[inline]
+    fn node_count(&self) -> USize {
+        ROWS.into()
+    }
+}
+
+// ---- CsrBidirectional + Csr::with_transpose (round 202605111719) ------
+//
+// Carries the original CSR plus a transposed CSR (transpose_row_ptr +
+// transpose_col_idx, no values needed because predecessor queries only
+// ask "which rows have an edge to me"). The transpose is built once at
+// construction in O(NNZ + ROWS) via the canonical count-prefix-scatter
+// algorithm.
+//
+// Predecessor lookup costs O(in_degree). The trade vs forward-only `Csr`
+// is 2x memory for the transpose indices (no values duplicated) plus
+// one construction sweep. Algorithms needing predecessors (RCM step,
+// Dulmage-Mendelsohn) bound on `BidirectionalSparseAdjacency<ROWS>`.
+
+/// Bidirectional compressed sparse row matrix.
+///
+/// Carries the original CSR (`forward`) plus a transpose row/col index
+/// pair (`transpose_row_ptr`, `transpose_col_idx`) for cheap predecessor
+/// lookup. Predecessor of node `j` is found by walking
+/// `transpose_col_idx[transpose_row_ptr[j] .. transpose_row_end(j)]`,
+/// which lists every row `i` whose forward edge `i -> j` exists.
+///
+/// The transpose has the same `NNZ` count and is built once via
+/// `Csr::with_transpose`. Use `Csr` directly when only successor
+/// queries are needed.
+#[derive(Copy, Clone)]
+pub struct CsrBidirectional<const ROWS: Cap, const NNZ: Cap, W: Copy>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
+    /// Forward CSR (carries values).
+    pub forward: Csr<ROWS, NNZ, W>,
+    /// Transpose row start offsets. `transpose_row_ptr[j]` indexes
+    /// `transpose_col_idx` for the predecessors of node `j`.
+    pub transpose_row_ptr: [USize; cap_size(ROWS)],
+    /// Transpose column indices: the predecessor rows themselves.
+    pub transpose_col_idx: [NodeId; cap_size(NNZ)],
+}
+
+impl<const ROWS: Cap, const NNZ: Cap, W: Copy + Default> Csr<ROWS, NNZ, W>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
+    /// Consume this CSR and build a bidirectional view with the
+    /// transpose pre-computed.
+    ///
+    /// Cost: O(NNZ + ROWS) construction, 2x memory for the transpose
+    /// indices (no values duplicated). The forward CSR is copied
+    /// in; the transpose row pointers and column indices are built
+    /// via count-prefix-scatter.
+    pub fn with_transpose(self) -> CsrBidirectional<ROWS, NNZ, W> {
+        let n_rows = cap_size(ROWS);
+        let n_nnz = cap_size(NNZ);
+
+        // Count incoming edges per column.
+        let mut counts: [USize; cap_size(ROWS)] = [USize(0); cap_size(ROWS)];
+        let mut k = 0;
+        while k < n_nnz {
+            let col = self.col_idx[k].0;
+            if col.0 < n_rows {
+                counts[col.0] = USize(counts[col.0].0 + 1);
+            }
+            k += 1;
+        }
+
+        // Prefix-sum into transpose_row_ptr.
+        let mut transpose_row_ptr: [USize; cap_size(ROWS)] = [USize(0); cap_size(ROWS)];
+        let mut acc = 0;
+        let mut r = 0;
+        while r < n_rows {
+            transpose_row_ptr[r] = USize(acc);
+            acc += counts[r].0;
+            r += 1;
+        }
+
+        // Scatter: for each forward edge (i, col_idx[k]), record
+        // i at transpose_col_idx[cursor[col]++].
+        let mut cursor: [USize; cap_size(ROWS)] = transpose_row_ptr;
+        let mut transpose_col_idx: [NodeId; cap_size(NNZ)] =
+            [NodeId::new(USize(0)); cap_size(NNZ)];
+        let mut i = 0;
+        while i < n_rows {
+            let start = self.row_ptr[i].0;
+            let end = if i + 1 < n_rows {
+                self.row_ptr[i + 1].0
+            } else {
+                n_nnz
+            };
+            let mut k = start;
+            while k < end {
+                let col = self.col_idx[k].0;
+                if col.0 < n_rows {
+                    let slot = cursor[col.0].0;
+                    if slot < n_nnz {
+                        transpose_col_idx[slot] = NodeId::new(USize(i));
+                        cursor[col.0] = USize(slot + 1);
+                    }
+                }
+                k += 1;
+            }
+            i += 1;
+        }
+
+        CsrBidirectional {
+            forward: self,
+            transpose_row_ptr,
+            transpose_col_idx,
+        }
+    }
+}
+
+impl<const ROWS: Cap, const NNZ: Cap, W: Copy> CsrBidirectional<ROWS, NNZ, W>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
+    /// End offset of transpose row `r`.
+    ///
+    /// Symmetric to `Csr::row_end`. Returns `transpose_row_ptr[r + 1]`
+    /// for non-last rows and `NNZ` for the last row.
+    #[inline(always)]
+    fn transpose_row_end(&self, r: USize) -> USize {
+        if r.0 + 1 < cap_size(ROWS) {
+            self.transpose_row_ptr[r.0 + 1]
+        } else if r.0 < cap_size(ROWS) {
+            USize(cap_size(NNZ))
+        } else {
+            USize(0)
+        }
+    }
+
+    /// Slice of predecessor row indices for node `node`.
+    #[inline]
+    fn predecessors_slice(&self, node: NodeId) -> &[NodeId] {
+        let r = node.0;
+        if r.0 >= cap_size(ROWS) {
+            return &[];
+        }
+        let start = self.transpose_row_ptr[r.0].0;
+        let end = self.transpose_row_end(r).0;
+        if start > end || end > cap_size(NNZ) {
+            return &[];
+        }
+        &self.transpose_col_idx[start..end]
+    }
+}
+
+impl<const ROWS: Cap, const NNZ: Cap, W: Copy> crate::adjacency::SparseAdjacency<ROWS>
+    for CsrBidirectional<ROWS, NNZ, W>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
+    type Successors<'a>
+        = core::iter::Copied<core::slice::Iter<'a, NodeId>>
+    where
+        Self: 'a;
+
+    #[inline]
+    fn successors<'a>(&'a self, node: NodeId) -> Self::Successors<'a> {
+        self.forward.row_col_indices(node.0).iter().copied()
+    }
+
+    #[inline]
+    fn node_count(&self) -> USize {
+        ROWS.into()
+    }
+}
+
+impl<const ROWS: Cap, const NNZ: Cap, W: Copy>
+    crate::adjacency::BidirectionalSparseAdjacency<ROWS> for CsrBidirectional<ROWS, NNZ, W>
+where
+    [(); cap_size(ROWS)]:,
+    [(); cap_size(NNZ)]:,
+{
+    type Predecessors<'a>
+        = core::iter::Copied<core::slice::Iter<'a, NodeId>>
+    where
+        Self: 'a;
+
+    #[inline]
+    fn predecessors<'a>(&'a self, node: NodeId) -> Self::Predecessors<'a> {
+        self.predecessors_slice(node).iter().copied()
+    }
+}
