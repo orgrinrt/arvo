@@ -1,7 +1,7 @@
 //! Reverse Cuthill-McKee reordering.
 //!
-//! Bandwidth minimisation on a `BitMatrix<Bits<64, Hot, Unsigned>, N>` adjacency. The
-//! algorithm:
+//! Bandwidth minimisation on a `BitMatrix<W, N>` adjacency, generic
+//! over the bit-container word `W`. The algorithm:
 //!
 //! 1. Pick the start node as the one with the lowest combined
 //!    (successors + predecessors) degree, tie-broken by lowest index.
@@ -19,21 +19,24 @@
 //! `result[new_pos] = old_NodeId`.
 
 use arvo::{Identity, Bool, Cap, USize};
-use arvo::{Bits, Hot, Unsigned};
 use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
+use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use notko::Maybe;
 
 /// Reverse Cuthill-McKee permutation.
 ///
 /// `result[new_pos] = old_NodeId`. Min-degree start, ascending-degree
-/// BFS ordering, final reverse.
+/// BFS ordering, final reverse. Generic over the bit-container word
+/// `W`; the algorithm operates entirely through the `Mask<W>` set
+/// surface, so any W satisfying the bounds works.
 #[inline]
-pub fn rcm_reorder<const N: Cap>(adjacency: &BitMatrix<Bits<64, Hot, Unsigned>, N>) -> [NodeId; cap_size(N)]
+pub fn rcm_reorder<W, const N: Cap>(adjacency: &BitMatrix<W, N>) -> [NodeId; cap_size(N)]
 where
+    W: BitSequence + BitAccess + BitLogic + Identity + Copy + Default,
     [(); cap_size(N)]:,
 {
     let mut order: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
-    let mut visited: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
+    let mut visited: Mask<W> = Mask::<W>::empty();
     let mut head = USize(0);
 
     // Main loop: keep seeding BFS from the remaining min-degree node
@@ -129,8 +132,9 @@ where
 
 /// Degree of `n` in the undirected view (successors + predecessors).
 #[inline(always)]
-fn degree<const N: Cap>(adj: &BitMatrix<Bits<64, Hot, Unsigned>, N>, n: NodeId) -> USize
+fn degree<W, const N: Cap>(adj: &BitMatrix<W, N>, n: NodeId) -> USize
 where
+    W: BitSequence + BitAccess + BitLogic + Identity + Copy + Default,
     [(); cap_size(N)]:,
 {
     adj.successors(n).union(adj.predecessors(n)).count()
@@ -139,11 +143,12 @@ where
 /// Lowest-index unvisited node with minimum combined degree, or
 /// `Maybe::Isnt` if every node in `0..N` is already visited.
 #[inline]
-fn min_degree_unvisited<const N: Cap>(
-    adj: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
-    visited: &Mask<Bits<64, Hot, Unsigned>>,
+fn min_degree_unvisited<W, const N: Cap>(
+    adj: &BitMatrix<W, N>,
+    visited: &Mask<W>,
 ) -> Maybe<USize>
 where
+    W: BitSequence + BitAccess + BitLogic + Identity + Copy + Default,
     [(); cap_size(N)]:,
 {
     let mut best: Maybe<(USize, USize)> = Maybe::Isnt;

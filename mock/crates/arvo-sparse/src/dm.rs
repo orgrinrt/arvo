@@ -1,56 +1,68 @@
 //! Dulmage-Mendelsohn structural decomposition.
 //!
-//! Classifies each node of a `BitMatrix<Bits<64, Hot, Unsigned>, N>` adjacency into one of
-//! three disjoint masks based on the presence of incoming and
+//! Classifies each node of a `BitMatrix<W, N>` adjacency into one of
+//! three disjoint classes based on the presence of incoming and
 //! outgoing edges:
 //!
-//! - `horizontal`: sinks — node has incoming edges but no outgoing
-//!   edges. Row reads but never writes (dead-end output).
-//! - `vertical`: sources and isolates — node has no incoming edges.
-//!   Covers pure producers *and* nodes with no edges at all (treated
-//!   as read-only constants).
-//! - `square`: core — node has both incoming and outgoing edges. The
-//!   matched row-column pairs.
+//! - `horizontal` (class ID `0`): sinks. Node has incoming edges but
+//!   no outgoing edges. Row reads but never writes (dead-end output).
+//! - `vertical` (class ID `1`): sources and isolates. Node has no
+//!   incoming edges. Covers pure producers and nodes with no edges at
+//!   all (treated as read-only constants).
+//! - `square` (class ID `2`): core. Node has both incoming and
+//!   outgoing edges. The matched row-column pairs.
 //!
-//! The three masks partition the `N` node indices exactly: every
-//! node `i` in `0..N` appears in exactly one mask.
+//! The three classes partition the `N` node indices exactly: every
+//! node `i` in `0..N` carries exactly one class ID.
+//!
+//! Generic over the bit-container word `W`; the result struct itself
+//! is independent of `W`, so consumers downstream of the
+//! classification do not thread W through their signatures.
 
 use arvo::{Cap, USize};
-use arvo::{Bits, Hot, Unsigned};
-use arvo_bitmask::{BitMatrix, Mask, cap_size};
-
-use arvo_bitmask::NodeId;
+use arvo_bitmask::{BitMatrix, NodeId, cap_size};
+use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 
 /// Dulmage-Mendelsohn decomposition result.
 ///
-/// `horizontal`, `vertical`, `square` are pairwise disjoint and
-/// together cover the node indices `0..N`.
-#[derive(Copy, Clone, Default)]
+/// `class[i]` is the class ID of node `i` in `0..N`. Class IDs:
+/// `0` for horizontal, `1` for vertical, `2` for square. `class_count`
+/// is the number of distinct classes used (always `3` for this
+/// algorithm; carried for parity with other partitioner results).
+#[derive(Copy, Clone)]
 pub struct DulmageMendelsohn<const N: Cap>
 where
     [(); cap_size(N)]:,
 {
-    /// Nodes with incoming edges but no outgoing edges.
-    pub horizontal: Mask<Bits<64, Hot, Unsigned>>,
-    /// Nodes with no incoming edges (sources and isolates).
-    pub vertical: Mask<Bits<64, Hot, Unsigned>>,
-    /// Nodes with both incoming and outgoing edges.
-    pub square: Mask<Bits<64, Hot, Unsigned>>,
+    /// Number of distinct classes used.
+    pub class_count: USize,
+    /// Class ID per node: `0` horizontal, `1` vertical, `2` square.
+    pub class: [USize; cap_size(N)],
 }
 
-/// Classify each node in the adjacency into one of the three masks.
-#[inline]
-pub fn dulmage_mendelsohn<const N: Cap>(
-    adjacency: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
-) -> DulmageMendelsohn<N>
+impl<const N: Cap> Default for DulmageMendelsohn<N>
 where
     [(); cap_size(N)]:,
 {
-    let mut out: DulmageMendelsohn<N> = DulmageMendelsohn {
-        horizontal: Mask::<Bits<64, Hot, Unsigned>>::empty(),
-        vertical: Mask::<Bits<64, Hot, Unsigned>>::empty(),
-        square: Mask::<Bits<64, Hot, Unsigned>>::empty(),
-    };
+    #[inline]
+    fn default() -> Self {
+        DulmageMendelsohn {
+            class_count: USize(0),
+            class: [USize(0); cap_size(N)],
+        }
+    }
+}
+
+/// Classify each node in the adjacency into one of the three classes.
+#[inline]
+pub fn dulmage_mendelsohn<W, const N: Cap>(
+    adjacency: &BitMatrix<W, N>,
+) -> DulmageMendelsohn<N>
+where
+    W: BitSequence + BitAccess + BitLogic + Copy + Default,
+    [(); cap_size(N)]:,
+{
+    let mut class: [USize; cap_size(N)] = [USize(0); cap_size(N)];
 
     let mut i = 0usize;
     while i < cap_size(N) {
@@ -60,16 +72,19 @@ where
 
         if !has_pred {
             // No incoming edges: source or isolate.
-            out.vertical.insert(USize(i));
+            class[i] = USize(1);
         } else if !has_succ {
             // Has incoming but no outgoing: dead-end sink.
-            out.horizontal.insert(USize(i));
+            class[i] = USize(0);
         } else {
             // Both directions: core.
-            out.square.insert(USize(i));
+            class[i] = USize(2);
         }
         i += 1;
     }
 
-    out
+    DulmageMendelsohn {
+        class_count: USize(3),
+        class,
+    }
 }
