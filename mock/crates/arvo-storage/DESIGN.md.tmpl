@@ -400,6 +400,41 @@ USize` does not compile.
 
 Cap implements `Transparent` over USize.
 
+Project between `Cap` and `USize` via `impl const From` (see `## From
+bridges` below). Consumer code prefers `.into()` over
+`Transparent::raw` or `cap_size` for the typed projection case; the
+bare-`usize` projections (via `cap_size` / `Deref`) stay as-is for
+FFI / `core::*` integration.
+
+## From bridges
+
+arvo primitives expose ergonomic `.into()` projections between paired
+newtype layers. Each impl is `impl const From`, so call sites resolve
+at const time when both operands are const-known. The bridges are
+typed projections; raw integer access still routes through
+`Deref` / `Transparent::raw` / `cap_size` per the existing
+`.0`-field-access-is-a-smell discipline.
+
+| From | To | const | Use |
+|---|---|---|---|
+| `Cap` | `USize` | yes | Project a const-generic capacity to a typed count (returns, where-clauses, function arguments) |
+| `USize` | `Cap` | yes | Construct a capacity from a typed count (rare; symmetric companion to the above) |
+| `bool` | `Bool` | yes | Lift a raw `bool` to the typed `Bool` at FFI boundaries |
+| `Bool` | `bool` | yes | Extract a raw `bool` from `Bool` at boundary call sites (parallel to `as_bool()`) |
+
+The const-ness matters for compile-time eval paths: const-generic
+computations, `const _: USize = Cap::ONE.into()` type-level checks,
+const-fn bodies that need to project a Cap-typed parameter to a
+typed count. Per `arvo-always-optimal-internals`, the impls compile
+to a copy under repr-transparent layout; zero runtime cost.
+
+The four impls are the closed set this round ships. Bare-`usize`
+edges (`usize ↔ USize`, `usize ↔ Cap`) stay through existing paths
+(`Deref<Target = usize>` on `USize`, `Transparent::raw`, the
+canonical `cap_size: Cap -> usize` const fn, tuple-struct
+construction). Adding more `From` impls touching bare `usize` is a
+separate decision once a consumer demand surfaces.
+
 ## NUSize
 
 `pub struct NUSize(Slot<NonZeroUSize>)`. The newtype that carries
