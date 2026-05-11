@@ -11,3 +11,5 @@ path = "src/main.rs"
 [dependencies]
 mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
 mockspace-bench-harness = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
+bench-structural-decomposition = { path = "variants/structural-decomposition" }
+bench-spectral-bisection = { path = "variants/spectral-bisection" }

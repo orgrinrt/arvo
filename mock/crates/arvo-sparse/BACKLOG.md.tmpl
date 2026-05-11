@@ -5,24 +5,22 @@
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
 
-This collapsed the BitMatrix family onto
-`BitMatrix<W, const N: Cap>` chassis. Algorithms ship today against
-`W = Bits<64, Hot, Unsigned>` for up to 64-node adjacency.
-Instantiating the same algorithms with `W = Bits<256, Hot,
-Unsigned>` extends to 256 nodes without an algorithmic-shape change.
-
-## Wider-W ergonomic helpers
-
-`rcm_reorder`, `block_diagonal`, `dulmage_mendelsohn` accept the
-chassis form. The 256-wide instantiation extends the algorithms to
-larger sparse adjacencies via WideBits
-plumbing. Promote when a concrete consumer surfaces >64-node
-adjacency; cookbook documentation of the wider-W pattern is the only
-deferred work.
+Round 202605111719 lifted every algorithm to W-generic at the public
+surface. Wider-than-64 adjacency works out of the box for any
+`W: BitPrim` the consumer picks, and CSR-shaped adjacency drives the
+same algorithms through the `SparseAdjacency` trait family. BACKLOG
+entries below name only items not yet shipped.
 
 ## SpMV
 
 Sparse matrix-vector multiply patterns. Deferred per the original
-design. Same representation and API
-surface as the above algorithms; add when a concrete consumer need
-surfaces.
+design. Same representation and API surface as the above algorithms;
+add when a concrete consumer need surfaces.
+
+## arvo-graph W-generic sweep
+
+`arvo-graph` carries the same `Bits<64, Hot, Unsigned>` hardcoding in
+`topo_sort`, `upward_rank`, `downward_rank`, `longest_path`,
+`components`, `waist_detect`, `spanning_tree`. Tracked in the
+workspace audit at round 202605111741; lands as a follow-up round
+opening after the current sparse + spectral round closes.

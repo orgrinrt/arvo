@@ -7,16 +7,17 @@
 //! `sigma >= lambda_max(L)`. Power iteration on `M` with orthogonal
 //! deflation against the all-ones vector (the zero-eigenvalue
 //! eigenvector of `L`) converges to the eigenvector of `M`'s second-
-//! largest eigenvalue — which is `L`'s second-smallest — the Fiedler
+//! largest eigenvalue, which is `L`'s second-smallest, the Fiedler
 //! vector.
 //!
-//! Shift budget. `lambda_max(L)` is bounded above by `2 * max_i
-//! (L[i][i])` (Gershgorin circle theorem applied to the Laplacian's
-//! non-positive off-diagonal structure). We pick `sigma` as exactly
-//! that bound; any tighter value would risk the shifted matrix
-//! retaining a negative-sign mode that outruns Fiedler.
+//! Operator surface: `fiedler_vector` takes any `LinearOperator<F, N>`
+//! whose action is `y = L * x`. The caller supplies sigma. Convenience
+//! helpers (`dense_laplacian_lambda_max_bound` and
+//! `SparseLaplacian::lambda_max_bound`) compute the Gershgorin upper
+//! bound `sigma = max_i 2 * L[i][i]` for the two shipped operator
+//! types; consumers with custom operators provide their own.
 //!
-//! Deflation step: `v = v - (sum(v) / N) * [1, 1, ..., 1]`. This is
+//! Deflation: `v = v - (sum(v) / N) * [1, 1, ..., 1]`. This is
 //! Gram-Schmidt against the normalised all-ones direction (eigenvector
 //! of `M`'s largest eigenvalue `sigma`).
 //!
@@ -26,31 +27,36 @@
 
 use core::ops::{Add, Mul, Sub};
 
-use arvo::{Cap, USize};
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
+use arvo::{Cap, USize};
 
-use crate::laplacian::laplacian;
 use crate::matrix::{Matrix, cap_size};
+use crate::operator::LinearOperator;
 
-/// Compute the Fiedler vector for a weighted adjacency matrix.
+/// Compute the Fiedler vector via shifted, deflated power iteration on
+/// any Laplacian-shaped operator.
 ///
-/// Builds the Laplacian `L = D - W`, then iterates `v <- L * v`,
-/// deflating against the all-ones eigenvector and normalising in L2
-/// after each step. Runs for `iterations` rounds; no convergence
-/// check. Consumer-supplied `F` is typically `FastFloat<f32>` or
-/// `StrictFloat<f32>`.
+/// `operator` applies `L * x`. `sigma` is the shift, an upper bound on
+/// `lambda_max(L)`. The shipped operator types both expose a Gershgorin
+/// bound helper:
+///
+/// - dense `Matrix<F, N>` representing a Laplacian:
+///   `dense_laplacian_lambda_max_bound(&lap)`.
+/// - sparse `SparseLaplacian<'_, ROWS, NNZ, W, F>`:
+///   `lap.lambda_max_bound()`.
 ///
 /// The returned array carries only signs that `spectral_bisection`
 /// consumes; magnitudes are L2-normalised but not otherwise
 /// calibrated.
 #[inline]
-pub fn fiedler_vector<const N: Cap, W, F>(
-    weights: &Matrix<W, N>,
+pub fn fiedler_vector<Op, const N: Cap, F>(
+    operator: &Op,
+    sigma: F,
     iterations: USize,
 ) -> [F; cap_size(N)]
 where
+    Op: LinearOperator<F, N>,
     [(); cap_size(N)]:,
-    W: Into<F> + Copy,
     F: Add<Output = F>
         + Sub<Output = F>
         + Mul<Output = F>
@@ -60,36 +66,19 @@ where
         + Copy
         + FromConstant,
 {
-    // Promote the documented "N <= 64 via Mask<Bits<64, Hot, Unsigned>>" invariant to a
-    // check that fires well before the silent `as u8` truncation
-    // below. `const { ... }` on a generic const parameter is not
-    // supported under the current generic_const_exprs feature, so
-    // we use a `debug_assert!` — zero release cost, catches mis-
-    // instantiation in debug. Promote to compile-time when the
-    // const-block restriction lifts.
-    debug_assert!(
-        cap_size(N) <= 64,
-        "fiedler_vector requires N <= 64 (Mask<Bits<64, Hot, Unsigned>> partition surface)"
-    );
-
     let n = cap_size(N);
-    let lap: Matrix<F, N> = laplacian(weights);
+    let one = F::from_constant::<{ USize(1) }>();
+    let zero = F::from_constant::<{ USize(0) }>();
 
     // Seed: alternating +1 / -1 (orthogonal to the all-ones vector for
     // even N; for odd N the deflation step pulls out the residual
-    // projection on the first pass). Using all-ones as a seed would be
+    // projection on the first pass). The all-ones seed would be
     // entirely in the null space and get zeroed by the first deflation.
-    let one = F::from_constant::<{ USize(1) }>();
-    let zero = F::from_constant::<{ USize(0) }>();
     let mut v: [F; cap_size(N)] = core::array::from_fn(|i| {
         if i & 1 == 0 { one } else { zero - one }
     });
 
-    // Reciprocal of N. `n` is a runtime fn arg, so we cannot use the
-    // const-generic `from_constant::<{USize(n)}>()` form. Build via
-    // fold-counted addition: `n_f = sum(one for _ in 0..n)`. O(n) with
-    // n <= 64 (Fiedler's documented bound), negligible against the
-    // matrix-multiply core loop below.
+    // Reciprocal of N built via fold-counted addition; `n` is runtime.
     let mut n_f = zero;
     let mut k = 0usize;
     while k < n {
@@ -98,34 +87,17 @@ where
     }
     let n_inv = n_f.recip();
 
-    // Gershgorin upper bound on lambda_max(L): max over i of 2 * L[i][i]
-    // (the diagonal value equals the off-diagonal absolute sum by
-    // Laplacian construction). Shift via sigma >= lambda_max.
-    let two = F::from_constant::<{ USize(2) }>();
-    let mut sigma = zero;
-    let mut i = 0usize;
-    while i < n {
-        let candidate = two * lap.get(USize(i), USize(i));
-        if sigma.total_cmp(candidate) == core::cmp::Ordering::Less {
-            sigma = candidate;
-        }
-        i += 1;
-    }
-
     let mut step = 0usize;
     while step < iterations.0 {
-        // v_new = (sigma * I - L) * v = sigma * v - L * v.
+        // lv = L * v
+        let mut lv: [F; cap_size(N)] = [zero; cap_size(N)];
+        operator.apply(&v, &mut lv);
+
+        // next = sigma * v - lv  (shifted: M * v)
         let mut next: [F; cap_size(N)] = [zero; cap_size(N)];
         let mut i = 0usize;
         while i < n {
-            let mut acc = zero;
-            let mut j = 0usize;
-            while j < n {
-                acc = acc + lap.get(USize(i), USize(j)) * v[j];
-                j += 1;
-            }
-            // Shifted product: sigma * v[i] - (L * v)[i].
-            next[i] = sigma * v[i] - acc;
+            next[i] = sigma * v[i] - lv[i];
             i += 1;
         }
 
@@ -162,4 +134,31 @@ where
     }
 
     v
+}
+
+/// Gershgorin upper bound on `lambda_max(L)` for a dense Laplacian.
+///
+/// For a Laplacian `L = D - W`, the row sum of absolute values equals
+/// `2 * L[i][i]` (the diagonal value equals the off-diagonal absolute
+/// sum by construction). The Gershgorin disc upper bound is then
+/// `max_i 2 * L[i][i]`. Use this for the `sigma` parameter of
+/// `fiedler_vector` when the operator wraps a dense Laplacian matrix.
+#[inline]
+pub fn dense_laplacian_lambda_max_bound<const N: Cap, F>(lap: &Matrix<F, N>) -> F
+where
+    [(); cap_size(N)]:,
+    F: Add<Output = F> + Mul<Output = F> + TotalOrd + Copy + FromConstant,
+{
+    let n = cap_size(N);
+    let two = F::from_constant::<{ USize(2) }>();
+    let mut sigma = F::from_constant::<{ USize(0) }>();
+    let mut i = 0usize;
+    while i < n {
+        let candidate = two * lap.get(USize(i), USize(i));
+        if sigma.total_cmp(candidate) == core::cmp::Ordering::Less {
+            sigma = candidate;
+        }
+        i += 1;
+    }
+    sigma
 }

@@ -1,39 +1,45 @@
 //! Power iteration for the dominant eigenvector.
 //!
-//! Repeatedly multiply a vector by the matrix and renormalise to the
+//! Repeatedly multiply a vector by the operator and renormalise to the
 //! L2 unit. After `iterations` rounds, the vector converges toward the
 //! eigenvector of the largest-magnitude eigenvalue. No convergence
 //! ratio check this round: the caller picks the iteration count.
+//!
+//! The operator surface is `LinearOperator<F, N>`, so the same routine
+//! runs across dense `Matrix<F, N>`, sparse `SparseLaplacian`, or any
+//! consumer-supplied operator that implements the trait.
 //!
 //! Initial vector is the all-ones vector `[1, 1, ..., 1]`. Constant
 //! construction uses `F::from_constant(1)`.
 
 use core::ops::{Add, Mul};
 
-use arvo::{Cap, USize};
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
+use arvo::{Cap, USize};
 
-use crate::matrix::{Matrix, cap_size};
+use crate::matrix::cap_size;
+use crate::operator::LinearOperator;
 
-/// Run power iteration on `matrix` for `iterations` rounds.
+/// Run power iteration on `operator` for `iterations` rounds.
 ///
 /// Returns the approximate dominant eigenvector, L2-normalised. The
 /// initial guess is the all-ones vector. Each round applies the
-/// matrix then divides by the L2 norm. `iterations = 0` returns the
+/// operator then divides by the L2 norm. `iterations = 0` returns the
 /// normalised all-ones vector.
 ///
-/// Behaviour when the vector collapses to zero (e.g. the matrix has a
-/// zero eigenvector along the all-ones direction): the normalisation
+/// Behaviour when the vector collapses to zero (e.g. the operator has
+/// a zero eigenvector along the all-ones direction): the normalisation
 /// multiplies by `recip(sqrt(0))`, which for float types is infinity
-/// or NaN. Callers sensitive to this case should deflate the matrix
-/// against the known zero-eigenvector direction first — `fiedler.rs`
+/// or NaN. Callers sensitive to this case should deflate the operator
+/// against the known zero-eigenvector direction first. `fiedler.rs`
 /// does exactly that.
 #[inline]
-pub fn power_iteration<const N: Cap, F>(
-    matrix: &Matrix<F, N>,
+pub fn power_iteration<Op, const N: Cap, F>(
+    operator: &Op,
     iterations: USize,
 ) -> [F; cap_size(N)]
 where
+    Op: LinearOperator<F, N>,
     [(); cap_size(N)]:,
     F: Add<Output = F>
         + Mul<Output = F>
@@ -48,19 +54,9 @@ where
 
     let mut step = 0usize;
     while step < iterations.0 {
-        // v_new = matrix * v (dense matrix-vector product).
+        // next = operator.apply(v)
         let mut next: [F; cap_size(N)] = [F::from_constant::<{ USize(0) }>(); cap_size(N)];
-        let mut i = 0usize;
-        while i < n {
-            let mut acc = F::from_constant::<{ USize(0) }>();
-            let mut j = 0usize;
-            while j < n {
-                acc = acc + matrix.get(USize(i), USize(j)) * v[j];
-                j += 1;
-            }
-            next[i] = acc;
-            i += 1;
-        }
+        operator.apply(&v, &mut next);
 
         // L2 norm: sqrt of sum of squares.
         let mut sq_sum = F::from_constant::<{ USize(0) }>();
@@ -69,8 +65,7 @@ where
             sq_sum = sq_sum + next[k] * next[k];
             k += 1;
         }
-        let norm = sq_sum.sqrt();
-        let inv = norm.recip();
+        let inv = sq_sum.sqrt().recip();
 
         // Normalise in place.
         let mut k = 0usize;

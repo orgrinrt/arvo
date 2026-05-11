@@ -5,25 +5,6 @@
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
 
-## Wider-W partition outputs
-
-`spectral_bisection` / `k_way_partition` ship with
-`Mask<Bits<64, Hot, Unsigned>>` and `[USize; N]` outputs respectively
-(supports N ≤ 64). The chassis is generic over W; instantiating with
-`W = Bits<256, Hot, Unsigned>` extends to N ≤ 256 via arvo's
-MultiContainer plumbing without an algorithmic-shape change.
-Spectral methods are typically small-N (in observed workloads N ≤
-32 is common), so this is a widening for atypical workloads, not a
-default need.
-
-## Non-dense matrix formats
-
-Current signatures take `&[[W; N]; N]` dense. If a consumer has a
-sparse weighted graph via `arvo-sparse::Csr`, they densify at the
-boundary. A direct sparse path would save memory on very sparse
-matrices but adds an API variant; promote when a consumer's cache
-profile actually benefits.
-
 ## Other decompositions
 
 SVD, QR, LU, Cholesky are all plausible additions if a consumer
@@ -36,3 +17,12 @@ Current `fiedler_vector` assumes the weighted adjacency is symmetric
 (Laplacian derivation requires it). For directed graph spectral
 analysis we would need a different construction (Markov / normalized
 Laplacian on the underlying undirected graph). Not shipping.
+
+## Restricted-Laplacian per-component eigen
+
+`k_way_partition`'s recursive bisection re-computes a full-graph
+Laplacian per recursion. A restricted-Laplacian variant computing
+only the active component would save work proportional to the
+recursion depth. Deferred; promote when benches show this on a hot
+path (currently dominated by total iterations, not per-recursion
+operator cost).

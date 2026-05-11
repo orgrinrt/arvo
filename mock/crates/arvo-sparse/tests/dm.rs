@@ -19,77 +19,88 @@ fn nid(i: usize) -> NodeId {
     NodeId::new(USize(i))
 }
 
+// Class IDs in the new DulmageMendelsohn shape:
+//   0 = horizontal (sinks: incoming + no outgoing)
+//   1 = vertical (sources and isolates: no incoming)
+//   2 = square (core: both directions).
+const H: USize = USize(0);
+const V: USize = USize(1);
+const S: USize = USize(2);
+
 #[test]
-fn three_masks_partition_the_nodes() {
-    // Chain 0 -> 1 -> 2, plus isolated 3.
-    // Node 0: source (no preds) -> vertical.
-    // Node 1: has preds + has succs -> square.
-    // Node 2: has preds, no succs -> horizontal.
-    // Node 3: isolated -> vertical (no preds).
-    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+fn class_count_is_three() {
+    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C4> =
+        BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     adj.set_edge(nid(0), nid(1));
     adj.set_edge(nid(1), nid(2));
 
     let dm = dulmage_mendelsohn(&adj);
+    assert_eq!(dm.class_count, USize(3));
+    // Every node lands in exactly one class; class[i] is a single id,
+    // not a set, so the partition is exact by construction.
     for i in 0..4 {
-        let in_h = *dm.horizontal.contains(USize(i));
-        let in_v = *dm.vertical.contains(USize(i));
-        let in_s = *dm.square.contains(USize(i));
-        let count = (in_h as u8) + (in_v as u8) + (in_s as u8);
-        assert_eq!(count, 1, "node {} not in exactly one mask", i);
+        let c = dm.class[i];
+        assert!(
+            c == H || c == V || c == S,
+            "node {} has unknown class id {:?}",
+            i,
+            c
+        );
     }
 }
 
 #[test]
 fn chain_classification() {
-    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    // Chain 0 -> 1 -> 2.
+    // 0: source -> vertical.
+    // 1: matched -> square.
+    // 2: sink -> horizontal.
+    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> =
+        BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     adj.set_edge(nid(0), nid(1));
     adj.set_edge(nid(1), nid(2));
 
     let dm = dulmage_mendelsohn(&adj);
-    // 0 is a pure source.
-    assert!(*dm.vertical.contains(USize(0)));
-    // 1 is matched (both directions).
-    assert!(*dm.square.contains(USize(1)));
-    // 2 is a pure sink.
-    assert!(*dm.horizontal.contains(USize(2)));
+    assert_eq!(dm.class[0], V);
+    assert_eq!(dm.class[1], S);
+    assert_eq!(dm.class[2], H);
 }
 
 #[test]
 fn isolated_node_is_vertical() {
-    let adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> =
+        BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     let dm = dulmage_mendelsohn(&adj);
-    // Per impl decision: isolated nodes classify as vertical.
+    // Isolated nodes have no predecessors and classify as vertical.
     for i in 0..3 {
-        assert!(*dm.vertical.contains(USize(i)));
-        assert!(!*dm.horizontal.contains(USize(i)));
-        assert!(!*dm.square.contains(USize(i)));
+        assert_eq!(dm.class[i], V);
     }
 }
 
 #[test]
 fn fan_out_source_is_vertical() {
-    // 0 -> 1, 0 -> 2. Node 0 is a source (no preds), nodes 1 and 2
-    // are sinks (no succs).
-    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    // 0 -> 1, 0 -> 2. Node 0 is a source, nodes 1 and 2 are sinks.
+    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> =
+        BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     adj.set_edge(nid(0), nid(1));
     adj.set_edge(nid(0), nid(2));
 
     let dm = dulmage_mendelsohn(&adj);
-    assert!(*dm.vertical.contains(USize(0)));
-    assert!(*dm.horizontal.contains(USize(1)));
-    assert!(*dm.horizontal.contains(USize(2)));
+    assert_eq!(dm.class[0], V);
+    assert_eq!(dm.class[1], H);
+    assert_eq!(dm.class[2], H);
 }
 
 #[test]
 fn fan_in_sink_is_horizontal() {
     // 0 -> 2, 1 -> 2. Nodes 0 and 1 are sources, 2 is a sink.
-    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let mut adj: BitMatrix<Bits<64, Hot, Unsigned>, C3> =
+        BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     adj.set_edge(nid(0), nid(2));
     adj.set_edge(nid(1), nid(2));
 
     let dm = dulmage_mendelsohn(&adj);
-    assert!(*dm.vertical.contains(USize(0)));
-    assert!(*dm.vertical.contains(USize(1)));
-    assert!(*dm.horizontal.contains(USize(2)));
+    assert_eq!(dm.class[0], V);
+    assert_eq!(dm.class[1], V);
+    assert_eq!(dm.class[2], H);
 }
