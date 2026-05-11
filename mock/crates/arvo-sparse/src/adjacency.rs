@@ -13,7 +13,7 @@
 //! signature to a W-generic + trait-driven surface.
 
 use arvo::{Cap, USize};
-use arvo_bitmask::{BitMatrix, NodeId, SetBitsIter, cap_size};
+use arvo_bitmask::{BitMatrix, NodeId, SetBitsIter};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 
 /// Sealed const trait naming the interface for sparse adjacency.
@@ -114,7 +114,7 @@ where
 
     #[inline]
     fn node_count(&self) -> USize {
-        USize(cap_size(N))
+        N.into()
     }
 }
 
