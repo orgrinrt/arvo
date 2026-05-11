@@ -315,17 +315,51 @@ impl const AsBool for Bool {
     }
 }
 
-impl From<bool> for Bool {
+impl const From<bool> for Bool {
     #[inline(always)]
     fn from(b: bool) -> Self {
         Bool(b)
     }
 }
 
-impl From<Bool> for bool {
+impl const From<Bool> for bool {
     #[inline(always)]
     fn from(b: Bool) -> Self {
         <Bool as Transparent>::raw(b)
+    }
+}
+
+// ---- Cap <-> USize const From bridges (round 202605112200) ----
+//
+// Typed ergonomic projection between the `Cap` capacity newtype and
+// the `USize` count newtype. `impl const From` makes `.into()`
+// resolve at const time when both operands are const-known
+// (const-generic computations, `const _: USize = Cap::ONE.into()`
+// type-level checks, const-fn bodies that project a Cap-typed
+// parameter to a typed count).
+//
+// Bodies route through `Transparent::raw` (already `const unsafe
+// impl const Transparent for Cap` / `USize`) for the unwrap and
+// tuple-struct construction for the wrap, so neither direction
+// normalises `.0` field-access on its own primitives.
+//
+// Bare-`usize` projections (`USize` <-> `usize`, `Cap` <-> `usize`)
+// stay through the existing paths: `Deref<Target = usize>` on
+// `USize`, `Transparent::raw`, the canonical `cap_size: Cap ->
+// usize` const fn in `arvo-tensor`. This round only ships the two
+// arvo-internal newtype edges.
+
+impl const From<Cap> for USize {
+    #[inline(always)]
+    fn from(c: Cap) -> Self {
+        <Cap as Transparent>::raw(c)
+    }
+}
+
+impl const From<USize> for Cap {
+    #[inline(always)]
+    fn from(u: USize) -> Self {
+        Cap(u)
     }
 }
 
