@@ -1,0 +1,50 @@
+bca9e35 feat: debug impls for ufixed and ifixed
+eb8f0ce docs: src cl for arvo debug ufixed ifixed
+e08336d docs: lock doc cl for arvo debug ufixed ifixed round
+5eb8858 docs: backlog entry for debug ufixed ifixed + regen docs
+5a26fd7 docs: topic + doc cl for arvo debug ufixed ifixed
+85be3de fix: remove stale CsrBidirectional SHAME entry from arvo-sparse (#64)
+a6d8cd7 feat: graph + spectral algorithms for hilavitkutin (round 202605111719) (#63)
+fd19593 Merge pull request #62 from orgrinrt/feat/cap-usize-const-from
+2a83524 chore: close design round 202605112230
+b9ad65b chore: lock src changelist for 202605112230_changelist.src.lock.md
+6d0bd0d test: route from_bridges const unwraps through Transparent::raw
+5f52e5b docs: open SRC phase for review-followup round 202605112230
+4e88a72 chore: lock doc changelist for 202605112230_changelist.doc.lock.md
+bb26a27 docs: rewrite stale Bool/From paragraph to acknowledge const lift
+95a6f57 docs: open DOC phase for review-followup round 202605112230
+dc895cb docs: topic for review-followup round 202605112230
+7d513df chore: close design round 202605112200
+1119b85 chore: lock src changelist for 202605112200_changelist.src.lock.md
+6b26f92 feat: Cap <-> USize const From bridges + lift Bool <-> bool to const
+bd3d481 docs: open SRC phase for round 202605112200
+93e838c chore: lock doc changelist for 202605112200_changelist.doc.lock.md
+791c4b4 docs: apply round 202605112200 DOC phase
+f944cee docs: open DOC phase for round 202605112200
+4ff12ec docs: topic for Cap/USize const From bridges round 202605112200
+0f5711c docs: arvo doc audit round (Tier 1 leakage + drift sweep) (#60)
+de59475 chore: bump mockspace pin + regen docs (#59)
+0a820a8 docs: rewrite readme (#57)
+b0a40a6 docs: vocab + leakage + em-dash sweep across templates (#56)
+47858a0 docs: refresh README post-restructure for current crate layout
+7bb92b8 chore: sweep em-dashes from arvo research notes and audits
+91c314e chore: close design round 202605041144 (#53)
+8388967 docs: round 8 ufixed/ifixed const-callable trait family subsection (#52)
+28da51b chore: close design round 202605041128 (#51)
+5681663 feat: round 7 ufixed/ifixed bounded blanket forward (#50)
+ae3fe9a chore: close design round 202605041051 (#49)
+02efc5e test: round 6 const-context smoke tests for audit findings F26-F36 (#48)
+cb60b8f chore: close design round 202605040602 (#47)
+c1dbbac feat: round 5 substrate fundamentals completion (#46)
+03bfeac chore: round 3 doc-drift cleanup (reviewer findings 3+4) (#45)
+8c77af4 feat: arvo round 3 — Mask<W> + BitMatrix<W,N> chassis collapse (#44)
+ff43976 feat: round 4 — ConstHash trait lift + bounded-generic narrowing + bridge family (#43)
+3ba0250 feat: const-trait arithmetic across the arvo numeric stack (#42)
+d0b3c74 fix: bump mockspace lockfile pin to dev HEAD + restore generated docs/ (#41)
+52261d8 feat!: Widen trait, ergonomic Bits constructors, arvo-narrow → arvo-refit (#40)
+bcc3830 refactor: migrate bench to ByteRoutine + typed bench_variant form (#39)
+3301c40 refactor: extract shared bench Routine into arvo-benches lib (#38)
+71ab9fa feat: adopt mockspace v2 bench harness for ContentHash benchmarking (#37)
+296439c docs: promote strategy-bound trilemma to DEEPDIVE (#36)
+1abc0e0 feat: bitwidth cap to 256 + Fnv1a + audit-driven follow-up rounds (A-D) (#35)
+fec30de docs: extend byline policy to PR titles, descriptions, comments (#34)

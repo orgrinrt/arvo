@@ -382,3 +382,13 @@ where
         }
     }
 }
+
+impl<const I: IBits, const F: FBits, S: Strategy> core::fmt::Debug for UFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+    Bits<{ ufixed_bits(I, F) }, S, Unsigned>: core::fmt::Debug,
+{
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_tuple("UFixed").field(&self.0).finish()
+    }
+}

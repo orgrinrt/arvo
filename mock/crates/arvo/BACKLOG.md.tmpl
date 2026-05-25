@@ -5,6 +5,10 @@
 > `notko::Maybe` / `Outcome` instead of `Option` / `Result`. See
 > `rules/type-surface.md`.
 
+## Debug on UFixed and IFixed (shipped in round 202605250730)
+
+Task #428 was a rolling sweep adding Debug derives across the arvo numeric type family. Of the named types (`Bits`, `USize`, `Bool`, `FastFloat`, `StrictFloat`, `UFixed`, `IFixed`), all but `UFixed` and `IFixed` had Debug landed in earlier rounds via derive. Round 202605250730 ships the two remaining types via manual `impl Debug` (the const-generic + `BitsContainerFor` bound shape rejects `#[derive]`, matching the existing manual `Copy`/`Clone`/`PartialEq`/`Eq` impl pattern in those files). Both impls delegate to the inner `Bits` value's Debug.
+
 ## Closeout, deferred bridges
 
 Round 1 of the post-202605021600 core-fundamentals work
