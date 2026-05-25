@@ -355,3 +355,13 @@ where
         }
     }
 }
+
+impl<const I: IBits, const F: FBits, S: Strategy> core::fmt::Debug for IFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: core::fmt::Debug,
+{
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_tuple("IFixed").field(&self.0).finish()
+    }
+}
