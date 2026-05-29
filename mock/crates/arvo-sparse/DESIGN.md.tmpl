@@ -58,12 +58,24 @@ pub struct Csr<const ROWS: Cap, const NNZ: Cap, W: Copy> {
  row_ptr: [USize; ROWS],
  col_idx: [NodeId; NNZ],
  values: [W; NNZ],
+ live_rows: USize, // live node count; defaults to cap_size(ROWS)
+ live_nnz: USize,  // live edge count; defaults to cap_size(NNZ)
 }
 ```
 
 Compressed sparse row. Const-generic fixed-size arrays, no heap.
 `ROWS` and `NNZ` are arvo's `Cap` const-generic capacity newtype.
 Row pointers and column indices use `NodeId` from arvo-bitmask.
+
+The matrix is packed by default: `new()` sets `live_rows` to `cap_size(ROWS)`
+and `live_nnz` to `cap_size(NNZ)`, so a freshly-constructed matrix behaves
+exactly as a fully-packed CSR and existing consumers are unchanged. A
+capacity-with-slack consumer (a fixed-capacity buffer with a runtime live
+count, such as a pipeline scheduler's dependency graph) sets a smaller live
+count. `row_end` of the last live row then returns `live_nnz` rather than
+`cap_size(NNZ)`, so the slack tail of `col_idx` past `live_nnz` is never read.
+Storage stays sized at `cap_size(ROWS)` and `cap_size(NNZ)`; only the
+iteration bounds follow the live counts.
 
 Generic over the value type `W`. No numeric trait needed on W for
 the structure itself, only for algorithms that compute on the
@@ -82,6 +94,10 @@ transpose CSR. Constructor `Csr::with_transpose(...)` returns a
 `CsrBidirectional` by sweeping the input once to build the
 transpose. Cost: 2x memory plus one construction sweep. Benefit:
 O(out_degree) predecessor lookup.
+
+`with_transpose` reads only the live range (the live rows, and the scatter
+over the live edges) and carries the live counts through to the result, so
+the transpose records no spurious predecessor from an unfilled tail.
 
 Implements `BidirectionalSparseAdjacency<ROWS>` (sub-trait of
 `SparseAdjacency<ROWS>`). Algorithms that need predecessor access
@@ -145,6 +161,13 @@ pub const trait BidirectionalSparseAdjacency<const N: Cap>:
 (collect into the mask). Impls override when they can answer the
 bitmap question more cheaply than walking the iterator. For
 example, `BitMatrix` returns the row mask directly.
+
+`node_count()` returns the live node count. For `BitMatrix` and a packed
+`Csr` it equals the cap (`ROWS`), so existing behaviour is unchanged; for a
+capacity-with-slack `Csr` it is the live row count. The trait-driven
+algorithms visit node seeds over the range `0` to `node_count()`, so a
+consumer with fewer live nodes than the cap never visits the unfilled
+remainder.
 
 The const-trait declaration requires `#![feature(const_trait_impl)]`
 and `#![feature(const_index)]` at crate root. Sketch 01 from round
@@ -212,6 +235,10 @@ any `SparseAdjacency` impl (CSR, future representations). The
 default-W consumer call `rcm_reorder::<_, N>(adj)` over
 `Adjacency<N>` stays short.
 
+The `_via` overload visits the node range `0` to `node_count()` and sizes
+its output and visited arrays at `cap_size(N)`; non-live node slots keep
+their default and the consumer reads the live prefix.
+
 Common applications:
 
 **Row reordering (execution order):** reorders matrix rows so that
@@ -242,6 +269,9 @@ Trait-driven overload `block_diagonal_via<T, const N: Cap>(adjacency:
 &T) -> (USize, [USize; cap_size(N)]) where T: SparseAdjacency<N>`
 accepts CSR-shaped adjacency directly. Used by hilavitkutin's
 plan-stage `block_diagonalise` step.
+
+Visits the node range `0` to `node_count()`; storage stays `cap_size(N)`-sized
+as above.
 
 Permute the access matrix to block diagonal form. Each block is an
 independent sub-problem with no shared columns between blocks.
@@ -280,6 +310,9 @@ adjacency: &T) -> DulmageMendelsohn<N> where T:
 BidirectionalSparseAdjacency<N>`. The bound is the bidirectional
 sub-trait; DM needs predecessor access. Used by hilavitkutin's
 plan-stage when bipartite analysis becomes relevant.
+
+Visits the node range `0` to `node_count()`; storage stays `cap_size(N)`-sized
+as above.
 
 Structural decomposition of a bipartite graph into fine and coarse
 components. Refines block diagonal detection:

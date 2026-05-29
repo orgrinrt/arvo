@@ -109,7 +109,11 @@ where
     let mut class: [USize; cap_size(N)] = [USize(0); cap_size(N)];
 
     let mut i = 0usize;
-    while i < cap_size(N) {
+    // Classify the live node range only. Packed (BitMatrix / packed
+    // Csr) reports the cap, so packed consumers are unchanged; the tail
+    // past the live count keeps the default class and is never read.
+    let node_count = adjacency.node_count().0;
+    while i < node_count {
         let node = NodeId::new(USize(i));
         let has_succ = adjacency.successors(node).next().is_some(); // lint:allow(no-bare-option) reason: core::iter::Iterator::next returns Option; tracked: #115
         let has_pred = adjacency.predecessors(node).next().is_some(); // lint:allow(no-bare-option) reason: core::iter::Iterator::next returns Option; tracked: #115
