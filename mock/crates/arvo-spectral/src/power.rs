@@ -49,8 +49,12 @@ where
         + Copy
         + FromConstant,
 {
-    let n = cap_size(N);
-    let mut v: [F; cap_size(N)] = [F::from_constant::<{ USize(1) }>(); cap_size(N)];
+    let n = operator.live_dim().0;
+    let one = F::from_constant::<{ USize(1) }>();
+    let zero = F::from_constant::<{ USize(0) }>();
+    // Seed the live span with ones; the slack tail stays zero so it
+    // never enters the norm or the matvec output.
+    let mut v: [F; cap_size(N)] = core::array::from_fn(|i| if i < n { one } else { zero });
 
     let mut step = 0usize;
     while step < iterations.0 {

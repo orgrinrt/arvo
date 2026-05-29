@@ -37,16 +37,19 @@ use crate::operator::{LinearOperator, SparseLaplacian};
 /// Returns `(class_count, per_node_class_id)`. `class_id[i]` is `0`
 /// when `fiedler[i] > 0` (strict, per `TotalOrd`) and `1` otherwise.
 /// `class_count` is always `2`. Ties and negative values go to class
-/// `1`.
+/// `1`. Only the first `live_n` entries are classified; entries at or
+/// beyond `live_n` keep class `1` (a loose graph's slack rows are not
+/// real nodes).
 #[inline]
 pub fn spectral_bisection<const N: Cap, F>(
     fiedler: &[F; cap_size(N)],
+    live_n: USize,
 ) -> (USize, [USize; cap_size(N)])
 where
     [(); cap_size(N)]:,
     F: TotalOrd + Copy + FromConstant,
 {
-    let n = cap_size(N);
+    let n = live_n.0;
     let zero = F::from_constant::<{ USize(0) }>();
     let mut class: [USize; cap_size(N)] = [USize(1); cap_size(N)];
     let mut i = 0usize;
@@ -95,7 +98,9 @@ where
         + Copy
         + FromConstant,
 {
-    let n = cap_size(N);
+    // Live node count: a loose-CSR operator excludes its empty slack
+    // rows, so they are never counted into a partition or split.
+    let n = operator.live_dim().0;
     let k = cap_size(K);
 
     let mut partition_id: [USize; cap_size(N)] = [USize(0); cap_size(N)];
@@ -247,7 +252,7 @@ where
     {
         let sigma = <Self as SpectralBipartitioner<N, F>>::lambda_max_bound(self);
         let fiedler: [F; cap_size(N)] = fiedler_vector(self, sigma, iterations);
-        spectral_bisection::<N, F>(&fiedler)
+        spectral_bisection::<N, F>(&fiedler, self.live_dim())
     }
 }
 

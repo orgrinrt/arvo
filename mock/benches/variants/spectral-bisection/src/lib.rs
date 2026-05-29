@@ -203,7 +203,7 @@ impl FiedlerDispatch for Fiedler<16> {
         let lap: Matrix<TF, C16> = laplacian(&w);
         let sigma = dense_laplacian_lambda_max_bound(&lap);
         let fv: [TF; 16] = fiedler_vector(&lap, sigma, USize(50));
-        let (_count, ids) = spectral_bisection::<C16, TF>(&fv);
+        let (_count, ids) = spectral_bisection::<C16, TF>(&fv, USize(16));
         for i in 0..16 {
             output.ids[i] = ids[i].0 as u8;
         }
@@ -222,7 +222,7 @@ impl FiedlerDispatch for Fiedler<32> {
         let lap: Matrix<TF, C32> = laplacian(&w);
         let sigma = dense_laplacian_lambda_max_bound(&lap);
         let fv: [TF; 32] = fiedler_vector(&lap, sigma, USize(50));
-        let (_count, ids) = spectral_bisection::<C32, TF>(&fv);
+        let (_count, ids) = spectral_bisection::<C32, TF>(&fv, USize(32));
         for i in 0..32 {
             output.ids[i] = ids[i].0 as u8;
         }
@@ -241,7 +241,7 @@ impl FiedlerDispatch for Fiedler<64> {
         let lap: Matrix<TF, C64> = laplacian(&w);
         let sigma = dense_laplacian_lambda_max_bound(&lap);
         let fv: [TF; 64] = fiedler_vector(&lap, sigma, USize(50));
-        let (_count, ids) = spectral_bisection::<C64, TF>(&fv);
+        let (_count, ids) = spectral_bisection::<C64, TF>(&fv, USize(64));
         for i in 0..64 {
             output.ids[i] = ids[i].0 as u8;
         }

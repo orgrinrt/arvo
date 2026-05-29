@@ -102,13 +102,22 @@ where
  [(); cap_size(N)]:,
 {
  fn apply(&self, x: &[F; cap_size(N)], out: &mut [F; cap_size(N)]);
- fn dim(&self) -> USize;
+ fn live_dim(&self) -> USize;
 }
 ```
 
 The trait is plain (non-const). Power iteration and Fiedler run in
 non-const contexts; the const-trait family is reserved for shapes
 that benefit from const callability, which `apply` does not.
+
+`live_dim` reports how many nodes the operator spans. A dense
+`Matrix` returns `cap_size(N)`; a `SparseLaplacian` over a loose CSR
+returns its live row count. The iterative methods iterate over
+`live_dim()` rather than `cap_size(N)`, so a loose graph's empty
+slack rows are excluded from the Fiedler iteration and the partition
+budget. The method is required, not defaulted: every operator
+declares its span, so a loose consumer cannot silently inherit a
+full-capacity dimension.
 
 ## Sparse Laplacian
 
