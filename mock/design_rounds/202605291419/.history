@@ -1,0 +1,50 @@
+61ee2b5 chore: lock src changelist for Bool try-residual round
+0b54a62 fix: adapt Bool Try to owned residual for core Residual bound
+b8f2e57 docs: open src changelist for Bool try-residual round
+7a9717f chore: lock doc changelist for Bool try-residual round
+1102eed docs: scope round doc CL to source-only (defer tmpl fix to round B)
+ea9cde7 docs: open doc changelist for Bool try-residual round
+be58cee docs: open round topic for Bool try_trait_v2 residual adaptation
+692b00c chore: pin nightly toolchain to nightly-2026-05-28
+1840531 feat: add cap, the usize to Cap const constructor
+83af326 docs: catalog arvo arbitrary limitations
+b5db00d chore: add restrict-main-merges workflow
+ac9b875 feat: debug impls for ufixed and ifixed
+85be3de fix: remove stale CsrBidirectional SHAME entry from arvo-sparse (#64)
+a6d8cd7 feat: graph + spectral algorithms for hilavitkutin (round 202605111719) (#63)
+fd19593 Merge pull request #62 from orgrinrt/feat/cap-usize-const-from
+2a83524 chore: close design round 202605112230
+b9ad65b chore: lock src changelist for 202605112230_changelist.src.lock.md
+6d0bd0d test: route from_bridges const unwraps through Transparent::raw
+5f52e5b docs: open SRC phase for review-followup round 202605112230
+4e88a72 chore: lock doc changelist for 202605112230_changelist.doc.lock.md
+bb26a27 docs: rewrite stale Bool/From paragraph to acknowledge const lift
+95a6f57 docs: open DOC phase for review-followup round 202605112230
+dc895cb docs: topic for review-followup round 202605112230
+7d513df chore: close design round 202605112200
+1119b85 chore: lock src changelist for 202605112200_changelist.src.lock.md
+6b26f92 feat: Cap <-> USize const From bridges + lift Bool <-> bool to const
+bd3d481 docs: open SRC phase for round 202605112200
+93e838c chore: lock doc changelist for 202605112200_changelist.doc.lock.md
+791c4b4 docs: apply round 202605112200 DOC phase
+f944cee docs: open DOC phase for round 202605112200
+4ff12ec docs: topic for Cap/USize const From bridges round 202605112200
+0f5711c docs: arvo doc audit round (Tier 1 leakage + drift sweep) (#60)
+de59475 chore: bump mockspace pin + regen docs (#59)
+0a820a8 docs: rewrite readme (#57)
+b0a40a6 docs: vocab + leakage + em-dash sweep across templates (#56)
+47858a0 docs: refresh README post-restructure for current crate layout
+7bb92b8 chore: sweep em-dashes from arvo research notes and audits
+91c314e chore: close design round 202605041144 (#53)
+8388967 docs: round 8 ufixed/ifixed const-callable trait family subsection (#52)
+28da51b chore: close design round 202605041128 (#51)
+5681663 feat: round 7 ufixed/ifixed bounded blanket forward (#50)
+ae3fe9a chore: close design round 202605041051 (#49)
+02efc5e test: round 6 const-context smoke tests for audit findings F26-F36 (#48)
+cb60b8f chore: close design round 202605040602 (#47)
+c1dbbac feat: round 5 substrate fundamentals completion (#46)
+03bfeac chore: round 3 doc-drift cleanup (reviewer findings 3+4) (#45)
+8c77af4 feat: arvo round 3 — Mask<W> + BitMatrix<W,N> chassis collapse (#44)
+ff43976 feat: round 4 — ConstHash trait lift + bounded-generic narrowing + bridge family (#43)
+3ba0250 feat: const-trait arithmetic across the arvo numeric stack (#42)
+d0b3c74 fix: bump mockspace lockfile pin to dev HEAD + restore generated docs/ (#41)

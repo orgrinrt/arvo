@@ -6,6 +6,7 @@
 #![feature(const_ops)]
 #![feature(const_param_ty_trait)]
 #![feature(try_trait_v2)]
+#![feature(try_trait_v2_residual)]
 #![allow(incomplete_features)]
 
 //! arvo-storage. Minimal L0 storage primitives.
@@ -28,4 +29,4 @@ pub use bridges::{
     ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
 };
 pub use meta_bits::{FBits, IBits, MetaCarrier, Width, fbits, ibits, width};
-pub use platform::{AsBool, Bool, Cap, NUSize, USize};
+pub use platform::{AsBool, Bool, BoolResidual, Cap, NUSize, USize};
