@@ -194,7 +194,11 @@ where
     let mut visited: [Bool; cap_size(N)] = [Bool(false); cap_size(N)];
     let mut head = USize(0);
 
-    while head.0 < cap_size(N) {
+    // Seed BFS over the live node range only. `node_count()` is the
+    // cap for BitMatrix / packed Csr (so packed consumers are
+    // unchanged) and the smaller live count for a loose Csr.
+    let node_count = adjacency.node_count().0;
+    while head.0 < node_count {
         let start = match min_degree_unvisited_via(adjacency, &visited) {
             Maybe::Is(s) => s.0,
             Maybe::Isnt => break,
@@ -323,7 +327,8 @@ where
 {
     let mut best: Maybe<(USize, USize)> = Maybe::Isnt;
     let mut i = 0usize;
-    while i < cap_size(N) {
+    let node_count = adj.node_count().0;
+    while i < node_count {
         if !visited[i].0 {
             let d = degree_via(adj, NodeId::new(USize(i)));
             match best {

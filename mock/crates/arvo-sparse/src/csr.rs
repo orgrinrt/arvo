@@ -44,6 +44,16 @@ where
     pub col_idx: [NodeId; cap_size(NNZ)],
     /// Value of each non-zero, flattened row-major.
     pub values: [W; cap_size(NNZ)],
+    /// Live row count. Rows `0..live_rows` carry data; rows at or
+    /// beyond it are empty. `new` defaults this to `cap_size(ROWS)`
+    /// (fully packed). A capacity-with-slack consumer sets a smaller
+    /// count so the unused tail is never iterated.
+    pub live_rows: USize,
+    /// Live non-zero count. The last live row ends at `live_nnz`
+    /// rather than `cap_size(NNZ)`, so the slack tail of `col_idx` /
+    /// `values` past it is never read. `new` defaults it to
+    /// `cap_size(NNZ)` (fully packed).
+    pub live_nnz: USize,
 }
 
 impl<const ROWS: Cap, const NNZ: Cap, W: Copy + Default> Csr<ROWS, NNZ, W>
@@ -62,7 +72,27 @@ where
             row_ptr: [USize(0); cap_size(ROWS)],
             col_idx: [NodeId::new(USize(0)); cap_size(NNZ)],
             values: [W::default(); cap_size(NNZ)],
+            // packed default: every row and every nnz slot is live.
+            live_rows: USize(cap_size(ROWS)),
+            live_nnz: USize(cap_size(NNZ)),
         }
+    }
+
+    /// Empty matrix with explicit live counts.
+    ///
+    /// Like `new`, but sets `live_rows` / `live_nnz` to the given
+    /// counts instead of the full caps. A capacity-with-slack consumer
+    /// (a fixed-capacity buffer with a runtime live count) uses this to
+    /// declare how much of the storage carries data, so the unused tail
+    /// is never iterated by the algorithms or the transpose builder.
+    /// Callers then populate `row_ptr` / `col_idx` / `values` for the
+    /// live range by direct field assignment.
+    #[inline]
+    pub fn with_live_counts(live_rows: USize, live_nnz: USize) -> Self {
+        let mut csr = Self::new();
+        csr.live_rows = live_rows;
+        csr.live_nnz = live_nnz;
+        csr
     }
 }
 
@@ -77,10 +107,17 @@ where
     /// last row. `r >= ROWS` yields `USize(0)` (empty range).
     #[inline(always)]
     fn row_end(&self, r: USize) -> USize {
-        if r.0 + 1 < cap_size(ROWS) {
+        // Live counts clamped to the caps so a bogus live count can
+        // never index past the storage arrays (defensive, matching the
+        // query-side `end > cap_size(NNZ)` guards below). For a packed
+        // matrix (live == cap) this reduces exactly to the prior
+        // last-row-to-`cap_size(NNZ)` behaviour.
+        let live_rows = self.live_rows.0.min(cap_size(ROWS));
+        let live_nnz = self.live_nnz.0.min(cap_size(NNZ));
+        if r.0 + 1 < live_rows {
             self.row_ptr[r.0 + 1]
-        } else if r.0 < cap_size(ROWS) {
-            USize(cap_size(NNZ))
+        } else if r.0 + 1 == live_rows {
+            USize(live_nnz)
         } else {
             USize(0)
         }
@@ -199,7 +236,10 @@ where
 
     #[inline]
     fn node_count(&self) -> USize {
-        ROWS.into()
+        // Live node count, clamped to the cap. A packed Csr reports the
+        // cap (so existing packed consumers are unchanged); a loose Csr
+        // reports its smaller live row count, bounding the algorithms.
+        USize(self.live_rows.0.min(cap_size(ROWS)))
     }
 }
 
@@ -240,6 +280,13 @@ where
     pub transpose_row_ptr: [USize; cap_size(ROWS)],
     /// Transpose column indices: the predecessor rows themselves.
     pub transpose_col_idx: [NodeId; cap_size(NNZ)],
+    /// Live row count, carried from the forward CSR. Predecessor
+    /// queries and `node_count` honour it; rows at or beyond it are
+    /// empty.
+    pub live_rows: USize,
+    /// Live non-zero count, carried from the forward CSR. The last
+    /// live transpose row ends at `live_nnz`.
+    pub live_nnz: USize,
 }
 
 impl<const ROWS: Cap, const NNZ: Cap, W: Copy + Default> Csr<ROWS, NNZ, W>
@@ -266,8 +313,17 @@ where
     /// CSR through the documented constructors and the
     /// preconditions hold by construction.
     pub fn with_transpose(self) -> CsrBidirectional<ROWS, NNZ, W> {
-        let n_rows = cap_size(ROWS);
-        let n_nnz = cap_size(NNZ);
+        // Capture the live counts before `self` is moved into the
+        // result, and clamp the iteration bounds to the caps so the
+        // loops never index past the storage arrays. The slack tail
+        // (rows beyond `live_rows`, nnz slots beyond `live_nnz`) is
+        // never read, so no phantom edge into a default-`NodeId(0)`
+        // tail slot is ever counted. For a packed matrix (live == cap)
+        // the bounds equal the caps and behaviour is unchanged.
+        let live_rows = self.live_rows;
+        let live_nnz = self.live_nnz;
+        let n_rows = live_rows.0.min(cap_size(ROWS));
+        let n_nnz = live_nnz.0.min(cap_size(NNZ));
 
         // Count incoming edges per column.
         let mut counts: [USize; cap_size(ROWS)] = [USize(0); cap_size(ROWS)];
@@ -322,6 +378,8 @@ where
             forward: self,
             transpose_row_ptr,
             transpose_col_idx,
+            live_rows,
+            live_nnz,
         }
     }
 }
@@ -337,10 +395,16 @@ where
     /// for non-last rows and `NNZ` for the last row.
     #[inline(always)]
     fn transpose_row_end(&self, r: USize) -> USize {
-        if r.0 + 1 < cap_size(ROWS) {
+        // Symmetric to `Csr::row_end`: the last live transpose row ends
+        // at `live_nnz`, rows at or beyond `live_rows` are empty. Live
+        // counts clamped to the caps; packed (live == cap) reduces to
+        // the prior last-row-to-`cap_size(NNZ)` behaviour.
+        let live_rows = self.live_rows.0.min(cap_size(ROWS));
+        let live_nnz = self.live_nnz.0.min(cap_size(NNZ));
+        if r.0 + 1 < live_rows {
             self.transpose_row_ptr[r.0 + 1]
-        } else if r.0 < cap_size(ROWS) {
-            USize(cap_size(NNZ))
+        } else if r.0 + 1 == live_rows {
+            USize(live_nnz)
         } else {
             USize(0)
         }
@@ -380,7 +444,10 @@ where
 
     #[inline]
     fn node_count(&self) -> USize {
-        ROWS.into()
+        // Live node count, clamped to the cap. A packed Csr reports the
+        // cap (so existing packed consumers are unchanged); a loose Csr
+        // reports its smaller live row count, bounding the algorithms.
+        USize(self.live_rows.0.min(cap_size(ROWS)))
     }
 }
 

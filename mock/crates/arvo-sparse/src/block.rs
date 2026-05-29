@@ -104,7 +104,10 @@ where
     let mut next_id = USize(0);
 
     let mut seed = 0usize;
-    while seed < cap_size(N) {
+    // Seed DFS over the live node range only. Packed (BitMatrix /
+    // packed Csr) reports the cap, so packed consumers are unchanged.
+    let node_count = adjacency.node_count().0;
+    while seed < node_count {
         if visited[seed].0 {
             seed += 1;
             continue;
