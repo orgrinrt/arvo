@@ -1,7 +1,6 @@
 //! Bit scanning on `Mask<Bits<64, Hot, Unsigned>>`: `lowest_set`, `highest_set`,
 //! `iter_set_bits` ordering.
 
-#![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 use arvo::{Bits, Hot, USize, Unsigned};

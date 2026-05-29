@@ -20,6 +20,13 @@
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![feature(const_ops)]
+// WATCH-tier unstable feature, soundness-vetted in the stack sweep (task #626).
+// `generic_const_exprs` is used here only for const-expression bounds and const-
+// generic array lengths (`[(); cap_size(N)]:` array sizing, `[(); EXPR]:` compile-
+// time assertions, width arithmetic in const-generic position). Its one known
+// unsoundness (#97156, const `TypeId` resolved into types with higher-ranked-trait-
+// bound subtyping) is unreachable: the stack bans `TypeId`. Builds clean on the
+// pinned nightly. Migration to `generic_const_args` is tracked: #628.
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 

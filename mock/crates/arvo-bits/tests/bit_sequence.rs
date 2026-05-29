@@ -2,7 +2,6 @@
 //! `trailing_zeros` / `leading_zeros` / `is_zero`.
 
 #![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 use arvo::{FBits, IBits, ibits, fbits};

@@ -18,7 +18,6 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
-#![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 pub mod algo;

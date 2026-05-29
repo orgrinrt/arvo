@@ -13,7 +13,6 @@
 //! UFixed, IFixed, and float wrappers.
 
 #![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
 
