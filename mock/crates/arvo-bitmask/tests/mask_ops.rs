@@ -1,7 +1,6 @@
 //! Set operations on `Mask<Bits<64, Hot, Unsigned>>`: union, intersection, difference,
 //! complement, and the predicate surface.
 
-#![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 use arvo::{Bits, Hot, USize, Unsigned};

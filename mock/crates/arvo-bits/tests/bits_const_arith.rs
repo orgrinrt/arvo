@@ -9,7 +9,6 @@
 
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
-#![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 use arvo_bits::{BitAccess, BitLogic, BitSequence};

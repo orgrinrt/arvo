@@ -1,6 +1,5 @@
 //! `Mask<Bits<256, Hot, Unsigned>>` behaviour across multi-word boundaries.
 
-#![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 use arvo::{Bits, Hot, USize, Unsigned};

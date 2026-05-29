@@ -1,7 +1,10 @@
 #![no_std]
 #![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
 #![feature(const_trait_impl)]
+// const_convert is not stale: on the pinned nightly the feature is still named
+// `const_convert` and points at the live const-From/Into umbrella (rustc #143773).
+// The `const_from` successor name is not yet the gate name here. Reclassified by
+// the soundness sweep (task #624); keep the gate.
 #![feature(const_convert)]
 #![feature(const_ops)]
 #![feature(const_param_ty_trait)]
