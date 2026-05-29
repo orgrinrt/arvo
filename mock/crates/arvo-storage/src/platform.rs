@@ -21,8 +21,8 @@ use core::convert::Infallible;
 use core::marker::ConstParamTy;
 use core::num::NonZeroUsize;
 use core::ops::{
-    Add, BitAnd, BitOr, BitXor, ControlFlow, Deref, Div, FromResidual, Mul, Not, Rem, Shl, Shr,
-    Sub, Try,
+    Add, BitAnd, BitOr, BitXor, ControlFlow, Deref, Div, FromResidual, Mul, Not, Rem, Residual,
+    Shl, Shr, Sub, Try,
 };
 
 use arvo_strategy::{Bounded, Identity};
@@ -277,9 +277,19 @@ impl Deref for Bool {
     }
 }
 
+/// Uninhabited residual for [`Bool`]'s infallible `Try`.
+///
+/// `Bool` never short-circuits (`branch` always returns `Continue`), so
+/// its `?` residual is the empty type. This carries the `Residual<bool>`
+/// impl that `core::ops::Try::Residual` now requires. Bare
+/// `core::convert::Infallible` cannot: the orphan rule forbids
+/// implementing `core`'s `Residual` for a foreign type. Not a numeric
+/// type, so it carries no `S: Strategy`.
+pub enum BoolResidual {}
+
 impl Try for Bool {
     type Output = bool;
-    type Residual = Infallible;
+    type Residual = BoolResidual;
 
     #[inline(always)]
     fn from_output(output: bool) -> Self {
@@ -287,16 +297,20 @@ impl Try for Bool {
     }
 
     #[inline(always)]
-    fn branch(self) -> ControlFlow<Infallible, bool> {
+    fn branch(self) -> ControlFlow<BoolResidual, bool> {
         ControlFlow::Continue(<Self as Transparent>::raw(self))
     }
 }
 
-impl FromResidual<Infallible> for Bool {
+impl FromResidual<BoolResidual> for Bool {
     #[inline(always)]
-    fn from_residual(residual: Infallible) -> Self {
+    fn from_residual(residual: BoolResidual) -> Self {
         match residual {}
     }
+}
+
+impl Residual<bool> for BoolResidual {
+    type TryType = Bool;
 }
 
 /// Bridge trait for code paths that need a raw `bool`.

@@ -347,7 +347,7 @@ dependencies = [
 [[package]]
 name = "notko"
 version = "0.1.0"
-source = "git+ssh://git@github.com/orgrinrt/notko.git?branch=dev#adc0e306150902723cca222a006a11703f349b5c"
+source = "git+ssh://git@github.com/orgrinrt/notko.git?branch=dev#c2e5b195b695595eb3c8153eea59ff1501894a2d"
 
 [[package]]
 name = "proc-macro2"
