@@ -43,6 +43,20 @@ arvo-spectral previously shipped local duplicates; both now re-export from
 arvo-tensor. Tracked under #121 for revisit when rustc const-eval over
 newtypes stabilises.
 
+## cap, canonical usize → Cap constructor
+
+```rust
+#[inline(always)]
+pub const fn cap(n: usize) -> Cap { /* Cap(USize(n)) */ }
+```
+
+The inverse of `cap_size`. A literal `Cap(USize(n))` construction is rejected in
+const-generic position ("struct/enum construction is not supported in generic
+constants"); a named `const fn` is the accepted form, the same constraint that
+forces `cap_size` to exist for the other direction. `cap` is the bridge a
+consumer uses to form a `Cap`-parameterised type (such as `Csr<{cap(N)}, ..>`)
+from a `usize` const-param. Same `#121` tracking as `cap_size`.
+
 ## Array<T, const N: Cap>
 
 Rank-1 tensor. `#[repr(transparent)]` over `[T; cap_size(N)]`.

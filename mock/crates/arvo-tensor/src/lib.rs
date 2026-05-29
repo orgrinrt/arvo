@@ -29,6 +29,6 @@ pub mod enumerator;
 pub mod matrix;
 
 pub use array::Array;
-pub use cap::cap_size;
+pub use cap::{cap, cap_size};
 pub use enumerator::Enumerator;
 pub use matrix::Matrix;
