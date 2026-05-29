@@ -16,7 +16,7 @@ use core::ops::{Add, Mul, Sub};
 
 use arvo::traits::{FromConstant, TotalOrd};
 use arvo::{Cap, USize};
-use arvo_sparse::Csr;
+use arvo_sparse::{Csr, SparseAdjacency};
 
 use crate::matrix::{Matrix, cap_size};
 
@@ -30,6 +30,17 @@ where
 {
     /// Write `A * x` into `y`. `y` must not alias `x`.
     fn apply(&self, x: &[F; cap_size(N)], y: &mut [F; cap_size(N)]);
+
+    /// Number of nodes the operator spans.
+    ///
+    /// `cap_size(N)` for a fully packed operator (dense `Matrix`), the
+    /// live row count for a `SparseLaplacian` over a loose CSR. The
+    /// iterative algorithms iterate `[0, live_dim())`, so a loose
+    /// graph's empty slack rows stay out of the Fiedler iteration and
+    /// the partition budget. Required, not defaulted: every operator
+    /// declares its span so a loose consumer cannot silently inherit a
+    /// full-capacity dimension.
+    fn live_dim(&self) -> USize;
 }
 
 // Dense Matrix<F, N>: classic O(N^2) matvec.
@@ -53,6 +64,12 @@ where
             y[i] = acc;
             i += 1;
         }
+    }
+
+    #[inline]
+    fn live_dim(&self) -> USize {
+        // Dense matrices are always fully packed: the span is the cap.
+        USize(cap_size(N))
     }
 }
 
@@ -119,7 +136,9 @@ where
     where
         F: Add<Output = F> + Mul<Output = F> + TotalOrd + Copy + FromConstant,
     {
-        let n = cap_size(ROWS);
+        // Iterate live rows only; slack rows are empty (zero row-sum)
+        // and would not raise the bound, but skipping them is cheaper.
+        let n = self.csr.node_count().0;
         let zero = F::from_constant::<{ USize(0) }>();
         let two = F::from_constant::<{ USize(2) }>();
         let mut sigma = zero;
@@ -178,5 +197,11 @@ where
             y[i] = acc;
             i += 1;
         }
+    }
+
+    #[inline]
+    fn live_dim(&self) -> USize {
+        // The live row count: loose-CSR slack rows are not real nodes.
+        self.csr.node_count()
     }
 }

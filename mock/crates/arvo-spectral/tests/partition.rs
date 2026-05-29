@@ -36,7 +36,7 @@ const NEG: USize = USize(1);
 fn bisection_splits_positive_and_nonpositive() {
     // Fiedler-like input: [+, +, -, -].
     let f: [TF; 4] = [TF(0.5), TF(0.2), TF(-0.3), TF(-0.6)];
-    let (count, ids) = spectral_bisection::<C4, TF>(&f);
+    let (count, ids) = spectral_bisection::<C4, TF>(&f, USize(4));
     assert_eq!(count, USize(2));
     assert_eq!(ids[0], POS);
     assert_eq!(ids[1], POS);
@@ -48,7 +48,7 @@ fn bisection_splits_positive_and_nonpositive() {
 fn bisection_ties_go_negative() {
     // Tie (== 0) should route to the negative class per the contract.
     let f: [TF; 4] = [TF(0.5), TF(0.0), TF(-0.1), TF(1.0)];
-    let (_, ids) = spectral_bisection::<C4, TF>(&f);
+    let (_, ids) = spectral_bisection::<C4, TF>(&f, USize(4));
     assert_eq!(ids[1], NEG, "tie at index 1 should land in the negative class");
     assert_eq!(ids[0], POS);
     assert_eq!(ids[3], POS);

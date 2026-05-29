@@ -66,16 +66,23 @@ where
         + Copy
         + FromConstant,
 {
-    let n = cap_size(N);
+    let n = operator.live_dim().0;
     let one = F::from_constant::<{ USize(1) }>();
     let zero = F::from_constant::<{ USize(0) }>();
 
-    // Seed: alternating +1 / -1 (orthogonal to the all-ones vector for
-    // even N; for odd N the deflation step pulls out the residual
-    // projection on the first pass). The all-ones seed would be
-    // entirely in the null space and get zeroed by the first deflation.
+    // Seed: alternating +1 / -1 over the live span (orthogonal to the
+    // all-ones vector for even live counts; for odd counts the
+    // deflation step pulls out the residual projection on the first
+    // pass). The slack tail stays zero so the empty rows of a loose
+    // CSR never enter the deflation mean or the L2 norm.
     let mut v: [F; cap_size(N)] = core::array::from_fn(|i| {
-        if i & 1 == 0 { one } else { zero - one }
+        if i >= n {
+            zero
+        } else if i & 1 == 0 {
+            one
+        } else {
+            zero - one
+        }
     });
 
     // Reciprocal of N built via fold-counted addition; `n` is runtime.

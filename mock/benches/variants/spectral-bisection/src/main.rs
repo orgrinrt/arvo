@@ -198,11 +198,11 @@ where
     let lin_fv: [TF; cap_size(N)] = fiedler_vector(&lin_lap, lin_sigma, fv_iters);
     let two_fv: [TF; cap_size(N)] = fiedler_vector(&two_lap, two_sigma, fv_iters);
     let bi_lin = time_micros(|| {
-        let r = spectral_bisection::<N, TF>(&lin_fv);
+        let r = spectral_bisection::<N, TF>(&lin_fv, USize(cap_size(N)));
         std::hint::black_box(&r);
     }, iters * 10);
     let bi_two = time_micros(|| {
-        let r = spectral_bisection::<N, TF>(&two_fv);
+        let r = spectral_bisection::<N, TF>(&two_fv, USize(cap_size(N)));
         std::hint::black_box(&r);
     }, iters * 10);
 
