@@ -17,5 +17,6 @@ path = "src/main.rs"
 arvo.workspace = true
 arvo-bitmask.workspace = true
 arvo-sparse.workspace = true
+arvo-tensor.workspace = true
 mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
 mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }

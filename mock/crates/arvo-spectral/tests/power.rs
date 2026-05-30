@@ -1,27 +1,26 @@
 //! `power_iteration` convergence on a known-eigenvector matrix.
 //!
 //! Post round 202605111719: `power_iteration` is operator-generic.
-//! The `Matrix<F, N>` impl of `LinearOperator<F, N>` ships in
+//! The `Matrix<F, C>` impl of `LinearOperator<F, C>` ships in
 //! arvo-spectral; callers pass `&m` directly.
 
+// `adt_const_params` is required by the `common::TF` `FromConstant` impl
+// (`from_constant<const C: USize>`), not by capacity arithmetic. The
+// migration dropped `generic_const_exprs`; this gate is independent of it.
 #![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
 
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo_spectral::{Matrix, power_iteration};
+use arvo_tensor::Dim;
 
 mod common;
 use common::TF;
-
-const C3: Cap = Cap(USize(3));
-const C4: Cap = Cap(USize(4));
 
 #[test]
 fn diagonal_matrix_converges_to_dominant_axis() {
     // Diagonal matrix diag(1, 2, 10). Dominant eigenvalue is 10 at
     // index 2; dominant eigenvector is e2 = [0, 0, 1].
-    let m: Matrix<TF, C3> = Matrix::from_fn(|i, j| {
+    let m: Matrix<TF, Dim<3>> = Matrix::from_fn(|i, j| {
         if i.0 != j.0 {
             TF(0.0)
         } else {
@@ -49,7 +48,7 @@ fn diagonal_matrix_converges_to_dominant_axis() {
 fn identity_like_preserves_unit() {
     // Identity matrix * v = v. v starts as all-ones and gets
     // normalised to 1/sqrt(N) per entry.
-    let m: Matrix<TF, C4> = Matrix::from_fn(|i, j| if i.0 == j.0 { TF(1.0) } else { TF(0.0) });
+    let m: Matrix<TF, Dim<4>> = Matrix::from_fn(|i, j| if i.0 == j.0 { TF(1.0) } else { TF(0.0) });
     let v: [TF; 4] = power_iteration(&m, USize(5));
     let expected = 1.0f32 / (4.0f32).sqrt();
     for (i, vi) in v.iter().enumerate() {
@@ -67,7 +66,7 @@ fn zero_iterations_returns_normalised_seed() {
     // Any matrix: with iterations = 0 the result is the seed
     // ([1, 1, ..., 1], unnormalised under the current contract.
     // The function does not normalise before the loop).
-    let m: Matrix<TF, C3> = Matrix::from_fn(|_, _| TF(0.0));
+    let m: Matrix<TF, Dim<3>> = Matrix::from_fn(|_, _| TF(0.0));
     let v: [TF; 3] = power_iteration(&m, USize(0));
     // Current impl seeds at all-ones without normalisation on step 0.
     assert_eq!(v[0].0, 1.0);

@@ -5,11 +5,10 @@
 //! `#[repr(transparent)]`, exposing typed `get` / `set` / `from_fn`
 //! methods that hide the raw-usize indexing inside their bodies.
 //!
-//! `cap_size(c: Cap) -> usize` is the canonical `Cap` → `usize`
-//! projection required by nightly `generic_const_exprs` in array-length
-//! position (language grammar constraint; tracked #121). Consumers reach
-//! it through either `arvo_tensor::cap_size` directly or via the
-//! re-exports in arvo-bitmask / arvo-spectral.
+//! `cap_size(c: Cap) -> usize` is the canonical `Cap` → `usize` projection.
+//! The containers read it in value position to recover a capacity's count
+//! (`cap_size(C::CAP)`); it no longer appears in type position here. The `cap`
+//! inverse builds a `Cap` from a `usize` for the `Dim<N>` associated const.
 //!
 //! The `Enumerator` trait supplies `.enumerated()` yielding `(USize, T)`
 //! pairs, the typed-index parallel of `core::iter::Iterator::enumerate`
@@ -19,16 +18,12 @@
 //! on arvo L0 only.
 
 #![no_std]
-#![feature(adt_const_params)]
-// WATCH-tier unstable feature, soundness-vetted in the stack sweep (task #626).
-// `generic_const_exprs` is used here only for const-expression bounds and const-
-// generic array lengths (`[(); cap_size(N)]:` array sizing, `[(); EXPR]:` compile-
-// time assertions, width arithmetic in const-generic position). Its one known
-// unsoundness (#97156, const `TypeId` resolved into types with higher-ranked-trait-
-// bound subtyping) is unreachable: the stack bans `TypeId`. Builds clean on the
-// pinned nightly. Migration to `generic_const_args` is tracked: #628.
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
+// No `generic_const_exprs` / `adt_const_params` gates: the capacity is a TYPE
+// (`C: Capacity`, backing array `C::Array<T>`), so no `cap_size` expression sits
+// in type position and no `Cap` const generic appears. The GCE surface the
+// `Array<T, const N: Cap>` form needed is gone (the gate-drop bonus of the
+// capacity-as-type migration; obviates the #628 GCE-to-GCA migration for this
+// crate). `cap_size` survives only as a value-position const fn over `C::CAP`.
 
 pub mod array;
 pub mod cap;

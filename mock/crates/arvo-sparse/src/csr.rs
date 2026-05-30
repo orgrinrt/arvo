@@ -1,14 +1,19 @@
 //! Compressed sparse row storage.
 //!
-//! `Csr<ROWS, NNZ, W>` holds a compressed sparse row matrix in three
-//! fixed-size arrays:
+//! `Csr<R, NNZ, W>` holds a compressed sparse row matrix in three
+//! fixed-size capacity arrays:
 //!
 //! - `row_ptr[r]` is the start offset of row `r` into `col_idx` /
-//!   `values`. `row_ptr[ROWS - 1]` acts as the end of the last row
-//!   (see `row_end` accessor; the single-exclusive-end cell is
-//!   implicit from `NNZ`).
+//!   `values`. The last live row's end is `live_nnz` (see `row_end`
+//!   accessor).
 //! - `col_idx[k]` is the column `NodeId` of the `k`-th non-zero.
 //! - `values[k]` is the value of the `k`-th non-zero.
+//!
+//! `R` and `NNZ` are `Capacity` types (the row capacity and the nnz
+//! capacity). Storage is the associated array `R::Array<USize>` /
+//! `NNZ::Array<NodeId>` / `NNZ::Array<W>`, so no `cap_size` expression
+//! sits in type position. A body that needs a count as a value reads
+//! `cap_size(R::CAP)` / `cap_size(NNZ::CAP)`.
 //!
 //! This round ships read-only storage. The constructor fills every
 //! slot with a default value. Population happens via direct field
@@ -21,46 +26,58 @@
 //! Algorithms that do (SpMV in a later round) will tighten the bound
 //! at their own impl sites.
 
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo_bitmask::{NodeId, cap_size};
+use arvo_tensor::Capacity;
 use notko::Maybe;
 
 /// Compressed sparse row matrix.
 ///
-/// Storage: `row_ptr` of length `ROWS`, `col_idx` and `values` of
-/// length `NNZ`. Row `r` occupies `col_idx[row_ptr[r] .. row_end(r)]`
+/// Storage: `row_ptr` of capacity `R`, `col_idx` and `values` of
+/// capacity `NNZ`. Row `r` occupies `col_idx[row_ptr[r] .. row_end(r)]`
 /// with corresponding entries in `values`. `row_end(r)` is
-/// `row_ptr[r + 1]` for `r < ROWS - 1` and `NNZ` for the last row.
-#[derive(Copy, Clone)]
-pub struct Csr<const ROWS: Cap, const NNZ: Cap, W: Copy>
-where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
-{
+/// `row_ptr[r + 1]` for non-last rows and `live_nnz` for the last row.
+pub struct Csr<R: Capacity, NNZ: Capacity, W: Copy> {
     /// Row start offsets. `row_ptr[r]` is the index of row `r`'s
     /// first non-zero within `col_idx` / `values`.
-    pub row_ptr: [USize; cap_size(ROWS)],
+    pub row_ptr: R::Array<USize>,
     /// Column index of each non-zero, flattened row-major.
-    pub col_idx: [NodeId; cap_size(NNZ)],
+    pub col_idx: NNZ::Array<NodeId>,
     /// Value of each non-zero, flattened row-major.
-    pub values: [W; cap_size(NNZ)],
+    pub values: NNZ::Array<W>,
     /// Live row count. Rows `0..live_rows` carry data; rows at or
-    /// beyond it are empty. `new` defaults this to `cap_size(ROWS)`
+    /// beyond it are empty. `new` defaults this to `cap_size(R::CAP)`
     /// (fully packed). A capacity-with-slack consumer sets a smaller
     /// count so the unused tail is never iterated.
     pub live_rows: USize,
     /// Live non-zero count. The last live row ends at `live_nnz`
-    /// rather than `cap_size(NNZ)`, so the slack tail of `col_idx` /
+    /// rather than `cap_size(NNZ::CAP)`, so the slack tail of `col_idx` /
     /// `values` past it is never read. `new` defaults it to
-    /// `cap_size(NNZ)` (fully packed).
+    /// `cap_size(NNZ::CAP)` (fully packed).
     pub live_nnz: USize,
 }
 
-impl<const ROWS: Cap, const NNZ: Cap, W: Copy + Default> Csr<ROWS, NNZ, W>
+impl<R: Capacity, NNZ: Capacity, W: Copy> Copy for Csr<R, NNZ, W>
 where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
+    R::Array<USize>: Copy,
+    NNZ::Array<NodeId>: Copy,
+    NNZ::Array<W>: Copy,
 {
+}
+
+impl<R: Capacity, NNZ: Capacity, W: Copy> Clone for Csr<R, NNZ, W>
+where
+    R::Array<USize>: Copy,
+    NNZ::Array<NodeId>: Copy,
+    NNZ::Array<W>: Copy,
+{
+    #[inline(always)]
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl<R: Capacity, NNZ: Capacity, W: Copy + Default> Csr<R, NNZ, W> {
     /// Empty matrix: all offsets zero, all columns `NodeId(USize(0))`,
     /// all values `W::default()`.
     ///
@@ -69,12 +86,12 @@ where
     #[inline]
     pub fn new() -> Self {
         Self {
-            row_ptr: [USize(0); cap_size(ROWS)],
-            col_idx: [NodeId::new(USize(0)); cap_size(NNZ)],
-            values: [W::default(); cap_size(NNZ)],
+            row_ptr: R::filled(USize(0)),
+            col_idx: NNZ::filled(NodeId::new(USize(0))),
+            values: NNZ::filled(W::default()),
             // packed default: every row and every nnz slot is live.
-            live_rows: USize(cap_size(ROWS)),
-            live_nnz: USize(cap_size(NNZ)),
+            live_rows: USize(cap_size(R::CAP)),
+            live_nnz: USize(cap_size(NNZ::CAP)),
         }
     }
 
@@ -96,26 +113,22 @@ where
     }
 }
 
-impl<const ROWS: Cap, const NNZ: Cap, W: Copy> Csr<ROWS, NNZ, W>
-where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
-{
+impl<R: Capacity, NNZ: Capacity, W: Copy> Csr<R, NNZ, W> {
     /// End offset of row `r`.
     ///
-    /// Returns `row_ptr[r + 1]` for non-last rows and `NNZ` for the
-    /// last row. `r >= ROWS` yields `USize(0)` (empty range).
+    /// Returns `row_ptr[r + 1]` for non-last rows and `live_nnz` for the
+    /// last row. `r >= live_rows` yields `USize(0)` (empty range).
     #[inline(always)]
     fn row_end(&self, r: USize) -> USize {
         // Live counts clamped to the caps so a bogus live count can
         // never index past the storage arrays (defensive, matching the
-        // query-side `end > cap_size(NNZ)` guards below). For a packed
-        // matrix (live == cap) this reduces exactly to the prior
-        // last-row-to-`cap_size(NNZ)` behaviour.
-        let live_rows = self.live_rows.0.min(cap_size(ROWS));
-        let live_nnz = self.live_nnz.0.min(cap_size(NNZ));
+        // query-side `end > cap_size(NNZ::CAP)` guards below). For a
+        // packed matrix (live == cap) this reduces exactly to the prior
+        // last-row-to-`cap_size(NNZ::CAP)` behaviour.
+        let live_rows = self.live_rows.0.min(cap_size(R::CAP));
+        let live_nnz = self.live_nnz.0.min(cap_size(NNZ::CAP));
         if r.0 + 1 < live_rows {
-            self.row_ptr[r.0 + 1]
+            self.row_ptr.as_ref()[r.0 + 1]
         } else if r.0 + 1 == live_rows {
             USize(live_nnz)
         } else {
@@ -129,18 +142,20 @@ where
     /// column. Linear in the row's non-zero count.
     #[inline]
     pub fn get(&self, row: USize, col: NodeId) -> Maybe<W> {
-        if row.0 >= cap_size(ROWS) {
+        if row.0 >= cap_size(R::CAP) {
             return Maybe::Isnt;
         }
-        let start = self.row_ptr[row.0].0;
+        let start = self.row_ptr.as_ref()[row.0].0;
         let end = self.row_end(row).0;
-        if start > end || end > cap_size(NNZ) {
+        if start > end || end > cap_size(NNZ::CAP) {
             return Maybe::Isnt;
         }
+        let cols = self.col_idx.as_ref();
+        let vals = self.values.as_ref();
         let mut k = start;
         while k < end {
-            if self.col_idx[k] == col {
-                return Maybe::Is(self.values[k]);
+            if cols[k] == col {
+                return Maybe::Is(vals[k]);
             }
             k += 1;
         }
@@ -153,15 +168,15 @@ where
     /// offsets are inconsistent.
     #[inline]
     pub fn row_values(&self, row: USize) -> &[W] {
-        if row.0 >= cap_size(ROWS) {
+        if row.0 >= cap_size(R::CAP) {
             return &[];
         }
-        let start = self.row_ptr[row.0].0;
+        let start = self.row_ptr.as_ref()[row.0].0;
         let end = self.row_end(row).0;
-        if start > end || end > cap_size(NNZ) {
+        if start > end || end > cap_size(NNZ::CAP) {
             return &[];
         }
-        &self.values[start..end]
+        &self.values.as_ref()[start..end]
     }
 
     /// Slice of column indices for `row`.
@@ -170,15 +185,15 @@ where
     /// offsets are inconsistent.
     #[inline]
     pub fn row_col_indices(&self, row: USize) -> &[NodeId] {
-        if row.0 >= cap_size(ROWS) {
+        if row.0 >= cap_size(R::CAP) {
             return &[];
         }
-        let start = self.row_ptr[row.0].0;
+        let start = self.row_ptr.as_ref()[row.0].0;
         let end = self.row_end(row).0;
-        if start > end || end > cap_size(NNZ) {
+        if start > end || end > cap_size(NNZ::CAP) {
             return &[];
         }
-        &self.col_idx[start..end]
+        &self.col_idx.as_ref()[start..end]
     }
 
     /// Number of non-zeros in `row`.
@@ -187,23 +202,19 @@ where
     /// offsets are inconsistent.
     #[inline]
     pub fn nnz(&self, row: USize) -> USize {
-        if row.0 >= cap_size(ROWS) {
+        if row.0 >= cap_size(R::CAP) {
             return USize(0);
         }
-        let start = self.row_ptr[row.0].0;
+        let start = self.row_ptr.as_ref()[row.0].0;
         let end = self.row_end(row).0;
-        if start > end || end > cap_size(NNZ) {
+        if start > end || end > cap_size(NNZ::CAP) {
             return USize(0);
         }
         USize(end - start)
     }
 }
 
-impl<const ROWS: Cap, const NNZ: Cap, W: Copy + Default> Default for Csr<ROWS, NNZ, W>
-where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
-{
+impl<R: Capacity, NNZ: Capacity, W: Copy + Default> Default for Csr<R, NNZ, W> {
     #[inline(always)]
     fn default() -> Self {
         Self::new()
@@ -217,11 +228,8 @@ where
 // `NodeId` is `Copy` and the trait's iterator must yield `NodeId` by
 // value (not `&NodeId`).
 
-impl<const ROWS: Cap, const NNZ: Cap, W: Copy> crate::adjacency::SparseAdjacency<ROWS>
-    for Csr<ROWS, NNZ, W>
-where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
+impl<R: Capacity, NNZ: Capacity, W: Copy> crate::adjacency::SparseAdjacency<R>
+    for Csr<R, NNZ, W>
 {
     type Successors<'a>
         = core::iter::Copied<core::slice::Iter<'a, NodeId>>
@@ -239,7 +247,7 @@ where
         // Live node count, clamped to the cap. A packed Csr reports the
         // cap (so existing packed consumers are unchanged); a loose Csr
         // reports its smaller live row count, bounding the algorithms.
-        USize(self.live_rows.0.min(cap_size(ROWS)))
+        USize(self.live_rows.0.min(cap_size(R::CAP)))
     }
 }
 
@@ -254,7 +262,7 @@ where
 // Predecessor lookup costs O(in_degree). The trade vs forward-only `Csr`
 // is 2x memory for the transpose indices (no values duplicated) plus
 // one construction sweep. Algorithms needing predecessors (RCM step,
-// Dulmage-Mendelsohn) bound on `BidirectionalSparseAdjacency<ROWS>`.
+// Dulmage-Mendelsohn) bound on `BidirectionalSparseAdjacency<R>`.
 
 /// Bidirectional compressed sparse row matrix.
 ///
@@ -264,22 +272,17 @@ where
 /// `transpose_col_idx[transpose_row_ptr[j] .. transpose_row_end(j)]`,
 /// which lists every row `i` whose forward edge `i -> j` exists.
 ///
-/// The transpose has the same `NNZ` count and is built once via
+/// The transpose has the same `NNZ` capacity and is built once via
 /// `Csr::with_transpose`. Use `Csr` directly when only successor
 /// queries are needed.
-#[derive(Copy, Clone)]
-pub struct CsrBidirectional<const ROWS: Cap, const NNZ: Cap, W: Copy>
-where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
-{
+pub struct CsrBidirectional<R: Capacity, NNZ: Capacity, W: Copy> {
     /// Forward CSR (carries values).
-    pub forward: Csr<ROWS, NNZ, W>,
+    pub forward: Csr<R, NNZ, W>,
     /// Transpose row start offsets. `transpose_row_ptr[j]` indexes
     /// `transpose_col_idx` for the predecessors of node `j`.
-    pub transpose_row_ptr: [USize; cap_size(ROWS)],
+    pub transpose_row_ptr: R::Array<USize>,
     /// Transpose column indices: the predecessor rows themselves.
-    pub transpose_col_idx: [NodeId; cap_size(NNZ)],
+    pub transpose_col_idx: NNZ::Array<NodeId>,
     /// Live row count, carried from the forward CSR. Predecessor
     /// queries and `node_count` honour it; rows at or beyond it are
     /// empty.
@@ -289,11 +292,27 @@ where
     pub live_nnz: USize,
 }
 
-impl<const ROWS: Cap, const NNZ: Cap, W: Copy + Default> Csr<ROWS, NNZ, W>
+impl<R: Capacity, NNZ: Capacity, W: Copy> Copy for CsrBidirectional<R, NNZ, W>
 where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
+    Csr<R, NNZ, W>: Copy,
+    R::Array<USize>: Copy,
+    NNZ::Array<NodeId>: Copy,
 {
+}
+
+impl<R: Capacity, NNZ: Capacity, W: Copy> Clone for CsrBidirectional<R, NNZ, W>
+where
+    Csr<R, NNZ, W>: Copy,
+    R::Array<USize>: Copy,
+    NNZ::Array<NodeId>: Copy,
+{
+    #[inline(always)]
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl<R: Capacity, NNZ: Capacity, W: Copy + Default> Csr<R, NNZ, W> {
     /// Consume this CSR and build a bidirectional view with the
     /// transpose pre-computed.
     ///
@@ -303,8 +322,8 @@ where
     /// via count-prefix-scatter.
     ///
     /// Preconditions: the input CSR is well-formed. Specifically,
-    /// `row_ptr` is monotone non-decreasing with `row_ptr[ROWS - 1]
-    /// <= NNZ`, and every `col_idx[k].0.0 < ROWS`. Out-of-range
+    /// `row_ptr` is monotone non-decreasing with `row_ptr[live_rows - 1]
+    /// <= live_nnz`, and every `col_idx[k].0.0 < live_rows`. Out-of-range
     /// column indices are silently skipped (treated as having no
     /// transpose contribution); a malformed `row_ptr` may truncate
     /// the scatter at the per-column cursor bound. The type system
@@ -312,7 +331,11 @@ where
     /// shapes per `arvo-toolbox-not-policer`. Construct the input
     /// CSR through the documented constructors and the
     /// preconditions hold by construction.
-    pub fn with_transpose(self) -> CsrBidirectional<ROWS, NNZ, W> {
+    pub fn with_transpose(self) -> CsrBidirectional<R, NNZ, W>
+    where
+        R::Array<USize>: Copy,
+        NNZ::Array<NodeId>: Copy,
+    {
         // Capture the live counts before `self` is moved into the
         // result, and clamp the iteration bounds to the caps so the
         // loops never index past the storage arrays. The slack tail
@@ -322,60 +345,83 @@ where
         // the bounds equal the caps and behaviour is unchanged.
         let live_rows = self.live_rows;
         let live_nnz = self.live_nnz;
-        let n_rows = live_rows.0.min(cap_size(ROWS));
-        let n_nnz = live_nnz.0.min(cap_size(NNZ));
+        let n_rows = live_rows.0.min(cap_size(R::CAP));
+        let n_nnz = live_nnz.0.min(cap_size(NNZ::CAP));
+
+        let fwd_col_idx = self.col_idx;
+        let fwd_row_ptr = self.row_ptr;
 
         // Count incoming edges per column.
-        let mut counts: [USize; cap_size(ROWS)] = [USize(0); cap_size(ROWS)];
-        let mut k = 0;
-        while k < n_nnz {
-            let col = self.col_idx[k].0;
-            if col.0 < n_rows {
-                counts[col.0] = USize(counts[col.0].0 + 1);
+        let mut counts: R::Array<USize> = R::filled(USize(0));
+        {
+            let cols = fwd_col_idx.as_ref();
+            let counts_mut = counts.as_mut();
+            let mut k = 0;
+            while k < n_nnz {
+                let col = cols[k].0;
+                if col.0 < n_rows {
+                    counts_mut[col.0] = USize(counts_mut[col.0].0 + 1);
+                }
+                k += 1;
             }
-            k += 1;
         }
 
         // Prefix-sum into transpose_row_ptr.
-        let mut transpose_row_ptr: [USize; cap_size(ROWS)] = [USize(0); cap_size(ROWS)];
-        let mut acc = 0;
-        let mut r = 0;
-        while r < n_rows {
-            transpose_row_ptr[r] = USize(acc);
-            acc += counts[r].0;
-            r += 1;
+        let mut transpose_row_ptr: R::Array<USize> = R::filled(USize(0));
+        {
+            let counts_ref = counts.as_ref();
+            let trp = transpose_row_ptr.as_mut();
+            let mut acc = 0;
+            let mut r = 0;
+            while r < n_rows {
+                trp[r] = USize(acc);
+                acc += counts_ref[r].0;
+                r += 1;
+            }
         }
 
         // Scatter: for each forward edge (i, col_idx[k]), record
         // i at transpose_col_idx[cursor[col]++].
-        let mut cursor: [USize; cap_size(ROWS)] = transpose_row_ptr;
-        let mut transpose_col_idx: [NodeId; cap_size(NNZ)] =
-            [NodeId::new(USize(0)); cap_size(NNZ)];
-        let mut i = 0;
-        while i < n_rows {
-            let start = self.row_ptr[i].0;
-            let end = if i + 1 < n_rows {
-                self.row_ptr[i + 1].0
-            } else {
-                n_nnz
-            };
-            let mut k = start;
-            while k < end {
-                let col = self.col_idx[k].0;
-                if col.0 < n_rows {
-                    let slot = cursor[col.0].0;
-                    if slot < n_nnz {
-                        transpose_col_idx[slot] = NodeId::new(USize(i));
-                        cursor[col.0] = USize(slot + 1);
+        let mut cursor: R::Array<USize> = transpose_row_ptr;
+        let mut transpose_col_idx: NNZ::Array<NodeId> =
+            NNZ::filled(NodeId::new(USize(0)));
+        {
+            let cols = fwd_col_idx.as_ref();
+            let row_ptr = fwd_row_ptr.as_ref();
+            let cursor_mut = cursor.as_mut();
+            let tci = transpose_col_idx.as_mut();
+            let mut i = 0;
+            while i < n_rows {
+                let start = row_ptr[i].0;
+                let end = if i + 1 < n_rows {
+                    row_ptr[i + 1].0
+                } else {
+                    n_nnz
+                };
+                let mut k = start;
+                while k < end {
+                    let col = cols[k].0;
+                    if col.0 < n_rows {
+                        let slot = cursor_mut[col.0].0;
+                        if slot < n_nnz {
+                            tci[slot] = NodeId::new(USize(i));
+                            cursor_mut[col.0] = USize(slot + 1);
+                        }
                     }
+                    k += 1;
                 }
-                k += 1;
+                i += 1;
             }
-            i += 1;
         }
 
         CsrBidirectional {
-            forward: self,
+            forward: Csr {
+                row_ptr: fwd_row_ptr,
+                col_idx: fwd_col_idx,
+                values: self.values,
+                live_rows,
+                live_nnz,
+            },
             transpose_row_ptr,
             transpose_col_idx,
             live_rows,
@@ -384,25 +430,21 @@ where
     }
 }
 
-impl<const ROWS: Cap, const NNZ: Cap, W: Copy> CsrBidirectional<ROWS, NNZ, W>
-where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
-{
+impl<R: Capacity, NNZ: Capacity, W: Copy> CsrBidirectional<R, NNZ, W> {
     /// End offset of transpose row `r`.
     ///
     /// Symmetric to `Csr::row_end`. Returns `transpose_row_ptr[r + 1]`
-    /// for non-last rows and `NNZ` for the last row.
+    /// for non-last rows and `live_nnz` for the last row.
     #[inline(always)]
     fn transpose_row_end(&self, r: USize) -> USize {
         // Symmetric to `Csr::row_end`: the last live transpose row ends
         // at `live_nnz`, rows at or beyond `live_rows` are empty. Live
         // counts clamped to the caps; packed (live == cap) reduces to
-        // the prior last-row-to-`cap_size(NNZ)` behaviour.
-        let live_rows = self.live_rows.0.min(cap_size(ROWS));
-        let live_nnz = self.live_nnz.0.min(cap_size(NNZ));
+        // the prior last-row-to-`cap_size(NNZ::CAP)` behaviour.
+        let live_rows = self.live_rows.0.min(cap_size(R::CAP));
+        let live_nnz = self.live_nnz.0.min(cap_size(NNZ::CAP));
         if r.0 + 1 < live_rows {
-            self.transpose_row_ptr[r.0 + 1]
+            self.transpose_row_ptr.as_ref()[r.0 + 1]
         } else if r.0 + 1 == live_rows {
             USize(live_nnz)
         } else {
@@ -414,23 +456,20 @@ where
     #[inline]
     fn predecessors_slice(&self, node: NodeId) -> &[NodeId] {
         let r = node.0;
-        if r.0 >= cap_size(ROWS) {
+        if r.0 >= cap_size(R::CAP) {
             return &[];
         }
-        let start = self.transpose_row_ptr[r.0].0;
+        let start = self.transpose_row_ptr.as_ref()[r.0].0;
         let end = self.transpose_row_end(r).0;
-        if start > end || end > cap_size(NNZ) {
+        if start > end || end > cap_size(NNZ::CAP) {
             return &[];
         }
-        &self.transpose_col_idx[start..end]
+        &self.transpose_col_idx.as_ref()[start..end]
     }
 }
 
-impl<const ROWS: Cap, const NNZ: Cap, W: Copy> crate::adjacency::SparseAdjacency<ROWS>
-    for CsrBidirectional<ROWS, NNZ, W>
-where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
+impl<R: Capacity, NNZ: Capacity, W: Copy> crate::adjacency::SparseAdjacency<R>
+    for CsrBidirectional<R, NNZ, W>
 {
     type Successors<'a>
         = core::iter::Copied<core::slice::Iter<'a, NodeId>>
@@ -447,15 +486,12 @@ where
         // Live node count, clamped to the cap. A packed Csr reports the
         // cap (so existing packed consumers are unchanged); a loose Csr
         // reports its smaller live row count, bounding the algorithms.
-        USize(self.live_rows.0.min(cap_size(ROWS)))
+        USize(self.live_rows.0.min(cap_size(R::CAP)))
     }
 }
 
-impl<const ROWS: Cap, const NNZ: Cap, W: Copy>
-    crate::adjacency::BidirectionalSparseAdjacency<ROWS> for CsrBidirectional<ROWS, NNZ, W>
-where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
+impl<R: Capacity, NNZ: Capacity, W: Copy>
+    crate::adjacency::BidirectionalSparseAdjacency<R> for CsrBidirectional<R, NNZ, W>
 {
     type Predecessors<'a>
         = core::iter::Copied<core::slice::Iter<'a, NodeId>>

@@ -2,37 +2,35 @@
 //! + bench_variant cdylib for `fiedler_vector` over a dense
 //! `Matrix<TF, C>` Laplacian.
 //!
-//! Same named-const dispatch pattern as Bundle 1: the Routine keeps
-//! its const generic as `usize` for `bench_variant` compatibility,
-//! and the variant body dispatches per N to functions that
-//! instantiate `Matrix<TF, C>` with named `Cap` constants. This
-//! sidesteps the rustc const-eval ICE that fires when arvo
-//! algorithms receive Cap arguments computed from `const fn`
-//! applications.
+//! The capacity-as-type migration replaced the spectral algorithms'
+//! `const N: Cap` parameter with `C: Capacity`. The variant body
+//! dispatches per N to functions that instantiate `Matrix<TF, Dim<N>>`
+//! directly; the prior named-`Cap`-constant ICE workaround is gone
+//! because `Dim<N>` is plain min-const-generics with no `cap_size`
+//! const-eval. The Routine keeps its const generic as `usize` for
+//! `bench_variant` compatibility.
 //!
 //! TF (test float) is a local Copy newtype over f32 that satisfies
 //! the arvo numeric trait surface (Sqrt, Recip, TotalOrd,
 //! FromConstant, ...) required by `fiedler_vector` and friends.
 
 #![no_std]
+// `adt_const_params` is required by the local `TF` `FromConstant` impl
+// (`from_constant<const C: USize>`), not by capacity arithmetic. The
+// migration dropped `generic_const_exprs`; this gate is independent of it.
 #![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
 
 use core::cmp::Ordering;
 use core::ops::{Add, Mul, Sub};
 
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo_spectral::{
     Matrix, dense_laplacian_lambda_max_bound, fiedler_vector, laplacian, spectral_bisection,
 };
+use arvo_tensor::Dim;
 use mockspace_bench_core::{FfiBenchCall, Routine, timed};
 use mockspace_bench_macro::bench_variant;
-
-const C16: Cap = Cap(USize(16));
-const C32: Cap = Cap(USize(32));
-const C64: Cap = Cap(USize(64));
 
 /// Local Copy newtype over `f32` satisfying the arvo numeric trait
 /// surface. Lives inside the bench so the orphan rule doesn't bite.
@@ -194,16 +192,16 @@ pub trait FiedlerDispatch: Routine {
 impl FiedlerDispatch for Fiedler<16> {
     #[inline(never)]
     fn run(input: &FiedlerInput<16>, output: &mut FiedlerOutput<16>) {
-        let mut w: Matrix<u32, C16> = Matrix::from_fn(|_, _| 0u32);
+        let mut w: Matrix<u32, Dim<16>> = Matrix::from_fn(|_, _| 0u32);
         for i in 0..16 {
             for j in 0..16 {
                 w.set(USize(i), USize(j), input.weights[i][j] as u32);
             }
         }
-        let lap: Matrix<TF, C16> = laplacian(&w);
+        let lap: Matrix<TF, Dim<16>> = laplacian(&w);
         let sigma = dense_laplacian_lambda_max_bound(&lap);
         let fv: [TF; 16] = fiedler_vector(&lap, sigma, USize(50));
-        let (_count, ids) = spectral_bisection::<C16, TF>(&fv, USize(16));
+        let (_count, ids) = spectral_bisection::<Dim<16>, TF>(&fv, USize(16));
         for i in 0..16 {
             output.ids[i] = ids[i].0 as u8;
         }
@@ -213,16 +211,16 @@ impl FiedlerDispatch for Fiedler<16> {
 impl FiedlerDispatch for Fiedler<32> {
     #[inline(never)]
     fn run(input: &FiedlerInput<32>, output: &mut FiedlerOutput<32>) {
-        let mut w: Matrix<u32, C32> = Matrix::from_fn(|_, _| 0u32);
+        let mut w: Matrix<u32, Dim<32>> = Matrix::from_fn(|_, _| 0u32);
         for i in 0..32 {
             for j in 0..32 {
                 w.set(USize(i), USize(j), input.weights[i][j] as u32);
             }
         }
-        let lap: Matrix<TF, C32> = laplacian(&w);
+        let lap: Matrix<TF, Dim<32>> = laplacian(&w);
         let sigma = dense_laplacian_lambda_max_bound(&lap);
         let fv: [TF; 32] = fiedler_vector(&lap, sigma, USize(50));
-        let (_count, ids) = spectral_bisection::<C32, TF>(&fv, USize(32));
+        let (_count, ids) = spectral_bisection::<Dim<32>, TF>(&fv, USize(32));
         for i in 0..32 {
             output.ids[i] = ids[i].0 as u8;
         }
@@ -232,16 +230,16 @@ impl FiedlerDispatch for Fiedler<32> {
 impl FiedlerDispatch for Fiedler<64> {
     #[inline(never)]
     fn run(input: &FiedlerInput<64>, output: &mut FiedlerOutput<64>) {
-        let mut w: Matrix<u32, C64> = Matrix::from_fn(|_, _| 0u32);
+        let mut w: Matrix<u32, Dim<64>> = Matrix::from_fn(|_, _| 0u32);
         for i in 0..64 {
             for j in 0..64 {
                 w.set(USize(i), USize(j), input.weights[i][j] as u32);
             }
         }
-        let lap: Matrix<TF, C64> = laplacian(&w);
+        let lap: Matrix<TF, Dim<64>> = laplacian(&w);
         let sigma = dense_laplacian_lambda_max_bound(&lap);
         let fv: [TF; 64] = fiedler_vector(&lap, sigma, USize(50));
-        let (_count, ids) = spectral_bisection::<C64, TF>(&fv, USize(64));
+        let (_count, ids) = spectral_bisection::<Dim<64>, TF>(&fv, USize(64));
         for i in 0..64 {
             output.ids[i] = ids[i].0 as u8;
         }

@@ -14,9 +14,10 @@
 //!   and skewed distributions are follow-up work.
 //! - N capped at 64 for parity with Bundle 1.
 
+// `adt_const_params` is required by the local `TF` `FromConstant` impl
+// (`from_constant<const C: USize>`), not by capacity arithmetic. The
+// migration dropped `generic_const_exprs`; this gate is independent of it.
 #![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
 
 use core::cmp::Ordering;
 use core::ops::{Add, Mul, Sub};
@@ -24,16 +25,13 @@ use core::ops::{Add, Mul, Sub};
 use std::time::Instant;
 
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo_bitmask::cap_size;
 use arvo_spectral::{
     Matrix, dense_laplacian_lambda_max_bound, fiedler_vector, laplacian, power_iteration,
     spectral_bisection,
 };
-
-const fn cap(n: usize) -> Cap {
-    Cap(USize(n))
-}
+use arvo_tensor::{Capacity, Dim};
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug, Default)]
 struct TF(pub f32);
@@ -111,12 +109,9 @@ impl From<u32> for TF {
     }
 }
 
-fn linear_weights<const N: Cap>() -> Matrix<u32, N>
-where
-    [(); cap_size(N)]:,
-{
+fn linear_weights<N: Capacity>() -> Matrix<u32, N> {
     let mut m: Matrix<u32, N> = Matrix::from_fn(|_, _| 0u32);
-    let n = N.0.0;
+    let n = cap_size(N::CAP);
     for i in 0..(n - 1) {
         m.set(USize(i), USize(i + 1), 1);
         m.set(USize(i + 1), USize(i), 1);
@@ -124,12 +119,9 @@ where
     m
 }
 
-fn two_cluster_weights<const N: Cap>() -> Matrix<u32, N>
-where
-    [(); cap_size(N)]:,
-{
+fn two_cluster_weights<N: Capacity>() -> Matrix<u32, N> {
     let mut m: Matrix<u32, N> = Matrix::from_fn(|_, _| 0u32);
-    let n = N.0.0;
+    let n = cap_size(N::CAP);
     let half = n / 2;
     for i in 0..half {
         for j in 0..half {
@@ -160,11 +152,8 @@ fn time_micros<F: FnMut()>(mut f: F, iters: u32) -> f64 {
     elapsed.as_nanos() as f64 / iters as f64 / 1000.0
 }
 
-fn run_n<const N: Cap>(label: &str)
-where
-    [(); cap_size(N)]:,
-{
-    let n = N.0.0;
+fn run_n<N: Capacity>(label: &str) {
+    let n = cap_size(N::CAP);
     let iters = 100;
     let pi_iters = USize(50);
     let fv_iters = USize(50);
@@ -178,31 +167,31 @@ where
     let two_sigma = dense_laplacian_lambda_max_bound(&two_lap);
 
     let pi_lin = time_micros(|| {
-        let v: [TF; cap_size(N)] = power_iteration(&lin_lap, pi_iters);
+        let v: N::Array<TF> = power_iteration(&lin_lap, pi_iters);
         std::hint::black_box(&v);
     }, iters);
     let pi_two = time_micros(|| {
-        let v: [TF; cap_size(N)] = power_iteration(&two_lap, pi_iters);
+        let v: N::Array<TF> = power_iteration(&two_lap, pi_iters);
         std::hint::black_box(&v);
     }, iters);
 
     let fv_lin = time_micros(|| {
-        let v: [TF; cap_size(N)] = fiedler_vector(&lin_lap, lin_sigma, fv_iters);
+        let v: N::Array<TF> = fiedler_vector(&lin_lap, lin_sigma, fv_iters);
         std::hint::black_box(&v);
     }, iters);
     let fv_two = time_micros(|| {
-        let v: [TF; cap_size(N)] = fiedler_vector(&two_lap, two_sigma, fv_iters);
+        let v: N::Array<TF> = fiedler_vector(&two_lap, two_sigma, fv_iters);
         std::hint::black_box(&v);
     }, iters);
 
-    let lin_fv: [TF; cap_size(N)] = fiedler_vector(&lin_lap, lin_sigma, fv_iters);
-    let two_fv: [TF; cap_size(N)] = fiedler_vector(&two_lap, two_sigma, fv_iters);
+    let lin_fv: N::Array<TF> = fiedler_vector(&lin_lap, lin_sigma, fv_iters);
+    let two_fv: N::Array<TF> = fiedler_vector(&two_lap, two_sigma, fv_iters);
     let bi_lin = time_micros(|| {
-        let r = spectral_bisection::<N, TF>(&lin_fv, USize(cap_size(N)));
+        let r = spectral_bisection::<N, TF>(&lin_fv, USize(n));
         std::hint::black_box(&r);
     }, iters * 10);
     let bi_two = time_micros(|| {
-        let r = spectral_bisection::<N, TF>(&two_fv, USize(cap_size(N)));
+        let r = spectral_bisection::<N, TF>(&two_fv, USize(n));
         std::hint::black_box(&r);
     }, iters * 10);
 
@@ -219,7 +208,7 @@ fn main() {
     println!("| Variant | PI (lin) | PI (2cl) | FV (lin) | FV (2cl) | Bi (lin) | Bi (2cl) |");
     println!("|---|---:|---:|---:|---:|---:|---:|");
 
-    run_n::<{ cap(16) }>("spectral-bisection");
-    run_n::<{ cap(32) }>("spectral-bisection");
-    run_n::<{ cap(64) }>("spectral-bisection");
+    run_n::<Dim<16>>("spectral-bisection");
+    run_n::<Dim<32>>("spectral-bisection");
+    run_n::<Dim<64>>("spectral-bisection");
 }

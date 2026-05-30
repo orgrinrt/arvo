@@ -2,26 +2,24 @@
 //!
 //! A `SparseLaplacian` over a loose `Csr` (live rows below the const
 //! cap) must partition only the live nodes. The empty slack rows are
-//! degree-0 isolated nodes; if the algorithms iterated `cap_size(N)`
+//! degree-0 isolated nodes; if the algorithms iterated `cap_size(C::CAP)`
 //! they would each be a zero-eigenvalue connected component, degenerate
 //! the Fiedler vector, and consume the partition budget. `live_dim()`
 //! excludes them.
 
+// `adt_const_params` is required by the `common::TF` `FromConstant` impl
+// (`from_constant<const C: USize>`), not by capacity arithmetic. The
+// migration dropped `generic_const_exprs`; this gate is independent of it.
 #![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
 
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo_bitmask::NodeId;
 use arvo_sparse::Csr;
 use arvo_spectral::{SparseLaplacian, k_way_partition};
+use arvo_tensor::Dim;
 
 mod common;
 use common::TF;
-
-const C8: Cap = Cap(USize(8));
-const E16: Cap = Cap(USize(16));
-const K2: Cap = Cap(USize(2));
 
 impl From<u32> for TF {
     fn from(v: u32) -> TF {
@@ -33,9 +31,9 @@ impl From<u32> for TF {
 /// symmetric loose CSR: 4 live nodes in an 8-row cap (4 isolated slack
 /// rows). Edges 0-1 and 2-3 carry weight 10; the bridge 1-2 carries
 /// weight 1. The Fiedler cut of the live graph runs through the bridge.
-fn loose_bridged_clusters() -> Csr<C8, E16, u32> {
+fn loose_bridged_clusters() -> Csr<Dim<8>, Dim<16>, u32> {
     // live_rows = 4, live_nnz = 6 (1 + 2 + 2 + 1 directed entries).
-    let mut csr: Csr<C8, E16, u32> = Csr::with_live_counts(USize(4), USize(6));
+    let mut csr: Csr<Dim<8>, Dim<16>, u32> = Csr::with_live_counts(USize(4), USize(6));
     csr.row_ptr[0] = USize(0);
     csr.row_ptr[1] = USize(1);
     csr.row_ptr[2] = USize(3);
@@ -62,9 +60,9 @@ fn loose_bridged_clusters() -> Csr<C8, E16, u32> {
 #[test]
 fn loose_csr_partitions_only_live_nodes() {
     let csr = loose_bridged_clusters();
-    let lap: SparseLaplacian<C8, E16, u32, TF> = SparseLaplacian::new(&csr);
+    let lap: SparseLaplacian<Dim<8>, Dim<16>, u32, TF> = SparseLaplacian::new(&csr);
     let sigma = lap.gershgorin_lambda_max();
-    let (count, ids) = k_way_partition::<_, C8, K2, TF>(&lap, sigma, USize(100));
+    let (count, ids) = k_way_partition::<_, Dim<8>, Dim<2>, TF>(&lap, sigma, USize(100));
 
     // Exactly two partitions: the live graph is one connected component
     // (the bridge keeps it connected), so the Fiedler cut splits it in

@@ -13,10 +13,10 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::{Identity, Bool, Cap, USize};
+use arvo::{Identity, Bool, USize};
 use arvo::predicate::Pred2;
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo_tensor::{Array, Matrix, cap_size};
+use arvo_tensor::{Array, Capacity, Matrix, cap_size};
 
 /// Minimise the total cost of splitting `[0..N]` into intervals.
 ///
@@ -33,23 +33,25 @@ use arvo_tensor::{Array, Matrix, cap_size};
 /// back on composing feasible children; if even that fails, the
 /// returned cost reflects the best feasible split discovered, and
 /// `splits` contains `USize(0)` for unreachable entries.
-pub fn matrix_chain_dp<const N: Cap, W>(
+pub fn matrix_chain_dp<N: Capacity, W>(
     cost: impl Fn(USize, USize) -> W,
     feasible: impl Pred2<USize, USize>,
 ) -> (W, Array<USize, N>)
 where
-    [(); cap_size(N)]:,
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
+    N::Array<W>: Copy,
+    N::Array<Bool>: Copy,
+    N::Array<USize>: Copy,
 {
     let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
     let mut splits: Array<USize, N> = Array::filled(USize(0));
 
-    if cap_size(N) == 0 {
+    if cap_size(N::CAP) == 0 {
         return (zero, splits);
     }
 
     let root_cost = cost(USize(0), USize(0));
-    if cap_size(N) == 1 {
+    if cap_size(N::CAP) == 1 {
         return (root_cost, splits);
     }
 
@@ -62,7 +64,7 @@ where
 
     // Base case: single-element intervals. Reachable only when feasible
     // as leaves; leaf cost is `cost(i, i)`.
-    for i in 0..cap_size(N) {
+    for i in 0..cap_size(N::CAP) {
         let iu = USize(i);
         if feasible.test(&iu, &iu).0 {
             dp.set(iu, iu, cost(iu, iu));
@@ -72,9 +74,9 @@ where
 
     // Fill intervals of increasing length. `len` is inclusive width
     // minus one, so `len = 1` is pairs, up to `N - 1` for the root.
-    for len in 1..cap_size(N) {
+    for len in 1..cap_size(N::CAP) {
         let mut lo = 0usize;
-        while lo + len < cap_size(N) {
+        while lo + len < cap_size(N::CAP) {
             let hi = lo + len;
             let lou = USize(lo);
             let hiu = USize(hi);
@@ -124,12 +126,12 @@ where
         &split,
         &reachable,
         USize(0),
-        USize(cap_size(N) - 1),
+        USize(cap_size(N::CAP) - 1),
         &mut splits,
         &mut out_idx,
     );
 
-    let root_end = USize(cap_size(N) - 1);
+    let root_end = USize(cap_size(N::CAP) - 1);
     let final_cost = if reachable.get(USize::ZERO, root_end).0 {
         dp.get(USize::ZERO, root_end)
     } else {
@@ -142,17 +144,15 @@ where
 /// Preorder-walk the decomposition table, writing each visited split
 /// into the output array. Leaf intervals (whose recorded split equals
 /// their right endpoint) are skipped.
-fn fill_splits<const N: Cap>(
+fn fill_splits<N: Capacity>(
     split: &Matrix<USize, N>,
     reachable: &Matrix<Bool, N>,
     lo: USize,
     hi: USize,
     out: &mut Array<USize, N>,
     out_idx: &mut USize,
-) where
-    [(); cap_size(N)]:,
-{
-    if lo.0 >= hi.0 || out_idx.0 >= cap_size(N) || !reachable.get(lo, hi).0 {
+) {
+    if lo.0 >= hi.0 || out_idx.0 >= cap_size(N::CAP) || !reachable.get(lo, hi).0 {
         return;
     }
     let k = split.get(lo, hi);

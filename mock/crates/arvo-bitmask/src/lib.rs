@@ -1,7 +1,7 @@
 //! arvo-bitmask. L2 bit storage.
 //!
 //! Generic fixed-width bitmask chassis (`Mask<W>`) and bit-matrix
-//! adjacency chassis (`BitMatrix<W, const N: Cap>`) built on
+//! adjacency chassis (`BitMatrix<W, C: Capacity>`) built on
 //! arvo-bits bit-level contracts. `NodeId` newtypes node indices at
 //! the type level. `propagate_dirty` OR-propagates a change flag
 //! through DAG adjacency.
@@ -11,24 +11,21 @@
 //! `BitMatrix256` aliases. Per the workspace's
 //! Strategy/Sign-discoverability discipline, the chassis form is
 //! the only spelling: consumers name `Mask<Bits<64, Hot, Unsigned>>`
-//! and `BitMatrix<Bits<64, Hot, Unsigned>, N>` directly.
+//! and `BitMatrix<Bits<64, Hot, Unsigned>, C>` directly.
 //!
 //! `#![no_std]`, no alloc, const-generic sizing. L2 of the arvo
 //! stack; depends on arvo and arvo-bits.
 
 #![no_std]
-#![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![feature(const_ops)]
-// WATCH-tier unstable feature, soundness-vetted in the stack sweep (task #626).
-// `generic_const_exprs` is used here only for const-expression bounds and const-
-// generic array lengths (`[(); cap_size(N)]:` array sizing, `[(); EXPR]:` compile-
-// time assertions, width arithmetic in const-generic position). Its one known
-// unsoundness (#97156, const `TypeId` resolved into types with higher-ranked-trait-
-// bound subtyping) is unreachable: the stack bans `TypeId`. Builds clean on the
-// pinned nightly. Migration to `generic_const_args` is tracked: #628.
-#![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
+// No `generic_const_exprs` / `adt_const_params` gates: `BitMatrix`'s row count
+// is now a `Capacity`
+// type (`C`, backing `C::Array<Mask<W>>`), so no `cap_size` expression sits in
+// type position. `cap_size` survives only as a value-position const fn over
+// `C::CAP`. The GCE surface the `const N: Cap` form needed is gone (the
+// gate-drop bonus of the capacity-as-type migration; obviates #628 here).
 
 pub mod dirty;
 pub mod mask;

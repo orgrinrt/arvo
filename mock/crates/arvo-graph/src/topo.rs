@@ -1,6 +1,6 @@
 //! Topological sort and node renumbering.
 //!
-//! `topo_sort` runs Kahn's algorithm over a `BitMatrix<Bits<64, Hot, Unsigned>>` adjacency.
+//! `topo_sort` runs Kahn's algorithm over a `BitMatrix<Bits<64, Hot, Unsigned>, C>` adjacency.
 //! Start with the set of in-degree-zero nodes, pop one, record it in
 //! the output order, and decrement each successor's in-degree. A
 //! successor hitting zero joins the frontier. The loop stops when the
@@ -16,9 +16,10 @@
 //! function is a pure index-shuffle; it does not rewrite the adjacency
 //! matrix.
 
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo::{Bits, Hot, Unsigned};
 use arvo_bitmask::{BitMatrix, NodeId, cap_size};
+use arvo_tensor::Capacity;
 
 /// Topologically sort a DAG via Kahn's algorithm.
 ///
@@ -28,61 +29,62 @@ use arvo_bitmask::{BitMatrix, NodeId, cap_size};
 /// `valid_count` entries of `topo_order` are meaningful; the rest are
 /// defaulted to `NodeId::new(USize(0))`.
 ///
-/// All working storage is stack-allocated: a `[USize; cap_size(N)]`
-/// in-degree table and a `[NodeId; cap_size(N)]` frontier queue.
+/// All working storage is stack-allocated: a `C::Array<USize>`
+/// in-degree table and a `C::Array<NodeId>` frontier queue.
 #[inline]
-pub fn topo_sort<const N: Cap>(
-    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
-) -> (USize, [NodeId; cap_size(N)])
+pub fn topo_sort<C: Capacity>(
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+) -> (USize, C::Array<NodeId>)
 where
-    [(); cap_size(N)]:,
+    C::Array<USize>: Copy,
+    C::Array<NodeId>: Copy,
 {
     // In-degree per node. Computed by counting bits set in each
     // node's predecessor mask.
-    let mut in_deg: [USize; cap_size(N)] = [USize(0); cap_size(N)];
+    let mut in_deg: C::Array<USize> = C::filled(USize(0));
     let mut i = 0usize;
-    while i < cap_size(N) {
-        in_deg[i] = dag.predecessors(NodeId::new(USize(i))).count();
+    while i < cap_size(C::CAP) {
+        in_deg.as_mut()[i] = dag.predecessors(NodeId::new(USize(i))).count();
         i += 1;
     }
 
     // Frontier queue holds in-degree-zero nodes. Fixed array with
     // head / tail indices; no heap grow.
-    let mut queue: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
+    let mut queue: C::Array<NodeId> = C::filled(NodeId::new(USize(0)));
     let mut q_head = 0usize;
     let mut q_tail = 0usize;
 
     // Seed the frontier with every node whose in-degree is zero.
     let mut j = 0usize;
-    while j < cap_size(N) {
-        if in_deg[j].0 == 0 {
-            queue[q_tail] = NodeId::new(USize(j));
+    while j < cap_size(C::CAP) {
+        if in_deg.as_ref()[j].0 == 0 {
+            queue.as_mut()[q_tail] = NodeId::new(USize(j));
             q_tail += 1;
         }
         j += 1;
     }
 
     // Output order and how many nodes have been sorted so far.
-    let mut order: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
+    let mut order: C::Array<NodeId> = C::filled(NodeId::new(USize(0)));
     let mut sorted = 0usize;
 
     while q_head < q_tail {
-        let node = queue[q_head];
+        let node = queue.as_ref()[q_head];
         q_head += 1;
 
-        order[sorted] = node;
+        order.as_mut()[sorted] = node;
         sorted += 1;
 
         // Decrement successor in-degrees. When one hits zero, enqueue.
         let succ = dag.successors(node);
         for s_pos in succ.iter_set_bits() {
             let s_idx = s_pos.0;
-            if s_idx < cap_size(N) {
-                let cur = in_deg[s_idx].0;
+            if s_idx < cap_size(C::CAP) {
+                let cur = in_deg.as_ref()[s_idx].0;
                 if cur > 0 {
-                    in_deg[s_idx] = USize(cur - 1);
-                    if in_deg[s_idx].0 == 0 {
-                        queue[q_tail] = NodeId::new(USize(s_idx));
+                    in_deg.as_mut()[s_idx] = USize(cur - 1);
+                    if in_deg.as_ref()[s_idx].0 == 0 {
+                        queue.as_mut()[q_tail] = NodeId::new(USize(s_idx));
                         q_tail += 1;
                     }
                 }
@@ -101,16 +103,16 @@ where
 /// weights sequentially in topo order, the pattern is:
 /// `new_weights[k] = old_weights[new_to_old[k].0.0]`.
 #[inline]
-pub fn renumber<const N: Cap>(
-    topo_order: &[NodeId; cap_size(N)],
-) -> [NodeId; cap_size(N)]
+pub fn renumber<C: Capacity>(
+    topo_order: &C::Array<NodeId>,
+) -> C::Array<NodeId>
 where
-    [(); cap_size(N)]:,
+    C::Array<NodeId>: Copy,
 {
-    let mut new_to_old: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
+    let mut new_to_old: C::Array<NodeId> = C::filled(NodeId::new(USize(0)));
     let mut k = 0usize;
-    while k < cap_size(N) {
-        new_to_old[k] = topo_order[k];
+    while k < cap_size(C::CAP) {
+        new_to_old.as_mut()[k] = topo_order.as_ref()[k];
         k += 1;
     }
     new_to_old

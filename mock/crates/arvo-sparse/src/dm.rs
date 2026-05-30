@@ -1,6 +1,6 @@
 //! Dulmage-Mendelsohn structural decomposition.
 //!
-//! Classifies each node of a `BitMatrix<W, N>` adjacency into one of
+//! Classifies each node of a `BitMatrix<W, C>` adjacency into one of
 //! three disjoint classes based on the presence of incoming and
 //! outgoing edges:
 //!
@@ -19,9 +19,10 @@
 //! is independent of `W`, so consumers downstream of the
 //! classification do not thread W through their signatures.
 
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitPrim, BitSequence};
+use arvo_tensor::Capacity;
 use notko::Maybe;
 
 use crate::adjacency::BidirectionalSparseAdjacency;
@@ -32,56 +33,60 @@ use crate::adjacency::BidirectionalSparseAdjacency;
 /// `0` for horizontal, `1` for vertical, `2` for square. `class_count`
 /// is the number of distinct classes used (always `3` for this
 /// algorithm; carried for parity with other partitioner results).
-#[derive(Copy, Clone)]
-pub struct DulmageMendelsohn<const N: Cap>
-where
-    [(); cap_size(N)]:,
-{
+pub struct DulmageMendelsohn<C: Capacity> {
     /// Number of distinct classes used.
     pub class_count: USize,
     /// Class ID per node: `0` horizontal, `1` vertical, `2` square.
-    pub class: [USize; cap_size(N)],
+    pub class: C::Array<USize>,
 }
 
-impl<const N: Cap> Default for DulmageMendelsohn<N>
+impl<C: Capacity> Copy for DulmageMendelsohn<C> where C::Array<USize>: Copy {}
+
+impl<C: Capacity> Clone for DulmageMendelsohn<C>
 where
-    [(); cap_size(N)]:,
+    C::Array<USize>: Copy,
 {
+    #[inline(always)]
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl<C: Capacity> Default for DulmageMendelsohn<C> {
     #[inline]
     fn default() -> Self {
         DulmageMendelsohn {
             class_count: USize(0),
-            class: [USize(0); cap_size(N)],
+            class: C::filled(USize(0)),
         }
     }
 }
 
 /// Classify each node in the adjacency into one of the three classes.
 #[inline]
-pub fn dulmage_mendelsohn<W, const N: Cap>(
-    adjacency: &BitMatrix<W, N>,
-) -> DulmageMendelsohn<N>
+pub fn dulmage_mendelsohn<W, C: Capacity>(
+    adjacency: &BitMatrix<W, C>,
+) -> DulmageMendelsohn<C>
 where
     W: BitSequence + BitAccess + BitLogic + Copy + Default,
-    [(); cap_size(N)]:,
 {
-    let mut class: [USize; cap_size(N)] = [USize(0); cap_size(N)];
+    let mut class: C::Array<USize> = C::filled(USize(0));
 
     let mut i = 0usize;
-    while i < cap_size(N) {
+    while i < cap_size(C::CAP) {
         let node = NodeId::new(USize(i));
         let has_succ = !*adjacency.successors(node).is_empty();
         let has_pred = !*adjacency.predecessors(node).is_empty();
 
         if !has_pred {
             // No incoming edges: source or isolate.
-            class[i] = USize(1);
+            class.as_mut()[i] = USize(1);
         } else if !has_succ {
             // Has incoming but no outgoing: dead-end sink.
-            class[i] = USize(0);
+            class.as_mut()[i] = USize(0);
         } else {
             // Both directions: core.
-            class[i] = USize(2);
+            class.as_mut()[i] = USize(2);
         }
         i += 1;
     }
@@ -94,19 +99,18 @@ where
 
 /// Trait-driven variant of `dulmage_mendelsohn`.
 ///
-/// Operates through the `BidirectionalSparseAdjacency<N>` contract,
+/// Operates through the `BidirectionalSparseAdjacency<C>` contract,
 /// so any consumer that implements the trait (BitMatrix, Csr's
 /// `CsrBidirectional`, future representations) gets the same
 /// classification without depending on bit-storage representation.
 /// The trade is one method call per direction-test per node; the
 /// mask-based `dulmage_mendelsohn` is strictly faster on `BitMatrix`.
 #[inline]
-pub fn dulmage_mendelsohn_via<T, const N: Cap>(adjacency: &T) -> DulmageMendelsohn<N>
+pub fn dulmage_mendelsohn_via<T, C: Capacity>(adjacency: &T) -> DulmageMendelsohn<C>
 where
-    T: BidirectionalSparseAdjacency<N>,
-    [(); cap_size(N)]:,
+    T: BidirectionalSparseAdjacency<C>,
 {
-    let mut class: [USize; cap_size(N)] = [USize(0); cap_size(N)];
+    let mut class: C::Array<USize> = C::filled(USize(0));
 
     let mut i = 0usize;
     // Classify the live node range only. Packed (BitMatrix / packed
@@ -119,11 +123,11 @@ where
         let has_pred = adjacency.predecessors(node).next().is_some(); // lint:allow(no-bare-option) reason: core::iter::Iterator::next returns Option; tracked: #115
 
         if !has_pred {
-            class[i] = USize(1);
+            class.as_mut()[i] = USize(1);
         } else if !has_succ {
-            class[i] = USize(0);
+            class.as_mut()[i] = USize(0);
         } else {
-            class[i] = USize(2);
+            class.as_mut()[i] = USize(2);
         }
         i += 1;
     }
@@ -136,27 +140,27 @@ where
 
 /// Project a class into a fits-in-W bitmask.
 ///
-/// Returns `Maybe::Is(mask)` when `cap_size(N) <= W::WIDTH` so every
+/// Returns `Maybe::Is(mask)` when `cap_size(C::CAP) <= W::WIDTH` so every
 /// node index can be represented in one `Mask<W>`. Returns
 /// `Maybe::Isnt` when the node count exceeds W's bit width; in
 /// that case the consumer should walk `dm.class` directly or pick
 /// a wider `W`.
 #[inline]
-pub fn classification_to_mask<W, const N: Cap>(
-    dm: &DulmageMendelsohn<N>,
+pub fn classification_to_mask<W, C: Capacity>(
+    dm: &DulmageMendelsohn<C>,
     class_id: USize,
 ) -> Maybe<Mask<W>> // lint:allow(no-bare-option) reason: Maybe is notko, not bare Option; tracked: #115
 where
     W: BitPrim + BitSequence + BitAccess + BitLogic + arvo::Identity + Copy + Default,
-    [(); cap_size(N)]:,
 {
-    if cap_size(N) > *<W as BitPrim>::WIDTH {
+    if cap_size(C::CAP) > *<W as BitPrim>::WIDTH {
         return Maybe::Isnt;
     }
     let mut mask: Mask<W> = Mask::<W>::empty();
+    let class = dm.class.as_ref();
     let mut i = 0usize;
-    while i < cap_size(N) {
-        if dm.class[i] == class_id {
+    while i < cap_size(C::CAP) {
+        if class[i] == class_id {
             mask.insert(USize(i));
         }
         i += 1;

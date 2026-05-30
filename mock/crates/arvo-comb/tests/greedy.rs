@@ -1,22 +1,12 @@
 //! greedy_group: sequential interval grouping correctness.
+//!
+//! No `#![feature(...)]` gates: the migrated `greedy_group<N: Capacity, M:
+//! Capacity, ..>` threads both capacities as types, escaping the
+//! `generic_const_exprs` surface.
 
-#![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
-
-use arvo::{Bool, Cap, USize};
+use arvo::{Bool, USize};
 use arvo_comb::{Range, greedy_group};
-use arvo_tensor::Array;
-
-const fn cap(n: usize) -> Cap {
-    Cap(USize(n))
-}
-
-const C0: Cap = cap(0);
-const C2: Cap = cap(2);
-const C4: Cap = cap(4);
-const C5: Cap = cap(5);
-const C8: Cap = cap(8);
+use arvo_tensor::{Array, Dim};
 
 /// Sum-capped accumulator: the group holds items whose total is <= cap.
 #[derive(Copy, Clone)]
@@ -31,8 +21,8 @@ fn new_acc(cap: u32) -> SumCap {
 
 #[test]
 fn empty_input_returns_zero_groups() {
-    let items: Array<u32, C0> = Array::new([]);
-    let (count, _groups) = greedy_group::<C0, C4, SumCap, u32>(
+    let items: Array<u32, Dim<0>> = Array::new([]);
+    let (count, _groups) = greedy_group::<Dim<0>, Dim<4>, SumCap, u32>(
         &items,
         |acc, x| Bool(acc.total + x <= acc.cap),
         |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },
@@ -44,8 +34,8 @@ fn empty_input_returns_zero_groups() {
 #[test]
 fn all_items_fit_one_group() {
     // Four items summing to 10, cap 10. One group covering 0..4.
-    let items: Array<u32, C4> = Array::new([2, 3, 4, 1]);
-    let (count, groups) = greedy_group::<C4, C4, SumCap, u32>(
+    let items: Array<u32, Dim<4>> = Array::new([2, 3, 4, 1]);
+    let (count, groups) = greedy_group::<Dim<4>, Dim<4>, SumCap, u32>(
         &items,
         |acc, x| Bool(acc.total + x <= acc.cap),
         |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },
@@ -62,8 +52,8 @@ fn splits_on_overflow() {
     //   [4+1=5] fits -> close at i=4 when 3 rejected.
     //   [3] trailing.
     // Groups: [0..2), [2..4), [4..5).
-    let items: Array<u32, C5> = Array::new([3, 2, 4, 1, 3]);
-    let (count, groups) = greedy_group::<C5, C8, SumCap, u32>(
+    let items: Array<u32, Dim<5>> = Array::new([3, 2, 4, 1, 3]);
+    let (count, groups) = greedy_group::<Dim<5>, Dim<8>, SumCap, u32>(
         &items,
         |acc, x| Bool(acc.total + x <= acc.cap),
         |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },
@@ -78,8 +68,8 @@ fn splits_on_overflow() {
 #[test]
 fn every_item_its_own_group_when_cap_is_tight() {
     // cap = 1, all items = 1. Each item is its own group.
-    let items: Array<u32, C4> = Array::new([1, 1, 1, 1]);
-    let (count, groups) = greedy_group::<C4, C4, SumCap, u32>(
+    let items: Array<u32, Dim<4>> = Array::new([1, 1, 1, 1]);
+    let (count, groups) = greedy_group::<Dim<4>, Dim<4>, SumCap, u32>(
         &items,
         |acc, x| Bool(acc.total + x <= acc.cap),
         |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },
@@ -95,8 +85,8 @@ fn every_item_its_own_group_when_cap_is_tight() {
 fn caps_at_m_when_more_groups_would_be_produced() {
     // cap=1, 4 items of 1 each would make 4 groups. With M=2, stops
     // after the second group closes.
-    let items: Array<u32, C4> = Array::new([1, 1, 1, 1]);
-    let (count, groups) = greedy_group::<C4, C2, SumCap, u32>(
+    let items: Array<u32, Dim<4>> = Array::new([1, 1, 1, 1]);
+    let (count, groups) = greedy_group::<Dim<4>, Dim<2>, SumCap, u32>(
         &items,
         |acc, x| Bool(acc.total + x <= acc.cap),
         |acc, x| SumCap { total: acc.total + *x, cap: acc.cap },

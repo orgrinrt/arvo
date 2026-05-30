@@ -1,10 +1,10 @@
 //! Bit-matrix adjacency structures.
 //!
-//! `BitMatrix<W, const N: Cap>` stores an adjacency matrix as
-//! `[Mask<W>; cap_size(N)]`. Row `i` (a `Mask<W>`) has bit `j` set
-//! when edge `i -> j` exists. `N: Cap` carries arvo's const-generic
-//! capacity newtype on the public surface; `cap_size(c: Cap) ->
-//! usize` unwraps for array sizing.
+//! `BitMatrix<W, C: Capacity>` stores an adjacency matrix as the capacity's
+//! backing array `C::Array<Mask<W>>`. Row `i` (a `Mask<W>`) has bit `j` set
+//! when edge `i -> j` exists. `C` is a `Capacity` type carrying the row count;
+//! the capacity is a type, so no `cap_size` expression sits in type position.
+//! A body that needs the row count as a value reads `cap_size(C::CAP)`.
 //!
 //! Round 202605031748 (#313) collapsed the prior parallel
 //! `BitMatrix64<N>` and `BitMatrix256<N>` structs onto this single
@@ -12,8 +12,9 @@
 //! plus the `BitPrim` impls on `WideBits` (round 3 substrate side)
 //! make the chassis work uniformly across W up to 256 bits.
 
-use arvo::{Bool, Cap, USize};
+use arvo::{Bool, USize};
 pub use arvo_tensor::cap_size;
+use arvo_tensor::Capacity;
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 
 use crate::mask::Mask;
@@ -21,29 +22,27 @@ use crate::node::NodeId;
 
 /// Generic adjacency matrix chassis.
 ///
-/// Row `i` (a `Mask<W>`) has bit `j` set when edge `i -> j` exists.
-/// `N` is the row count; bit positions within a row cover up to
-/// `<W as HasBitWidth>::WIDTH` column nodes.
-#[derive(Copy, Clone, Eq, PartialEq)]
-pub struct BitMatrix<W, const N: Cap>
+/// Row `i` (a `Mask<W>`) has bit `j` set when edge `i -> j` exists. `C`'s
+/// capacity is the row count; bit positions within a row cover up to
+/// `<W as HasBitWidth>::WIDTH` column nodes. The per-row bit-width `W` is a
+/// separate axis from the row-count capacity `C`.
+pub struct BitMatrix<W, C: Capacity>
 where
     W: BitSequence + BitAccess + Copy + Default,
-    [(); cap_size(N)]:,
 {
     /// Row storage. `rows[i]` is the successor mask of node `i`.
-    pub rows: [Mask<W>; cap_size(N)],
+    pub rows: C::Array<Mask<W>>,
 }
 
-impl<W, const N: Cap> BitMatrix<W, N>
+impl<W, C: Capacity> BitMatrix<W, C>
 where
     W: BitSequence + BitAccess + BitLogic + Copy + Default,
-    [(); cap_size(N)]:,
 {
     /// Empty matrix (no edges).
     #[inline]
     pub fn empty() -> Self {
         Self {
-            rows: [Mask::<W>::from_word(W::default()); cap_size(N)],
+            rows: C::filled(Mask::<W>::from_word(W::default())),
         }
     }
 
@@ -51,10 +50,10 @@ where
     #[inline(always)]
     pub fn edge(&self, i: NodeId, j: NodeId) -> Bool {
         let row_idx = (i.0).0;
-        if row_idx >= cap_size(N) {
+        if row_idx >= cap_size(C::CAP) {
             return Bool::FALSE;
         }
-        self.rows[row_idx].contains(j.0)
+        self.rows.as_ref()[row_idx].contains(j.0)
     }
 
     /// Set edge `i -> j`. Leaves self unchanged when `i` or `j` is
@@ -62,10 +61,10 @@ where
     #[inline(always)]
     pub fn set_edge(&mut self, i: NodeId, j: NodeId) {
         let row_idx = (i.0).0;
-        if row_idx >= cap_size(N) {
+        if row_idx >= cap_size(C::CAP) {
             return;
         }
-        self.rows[row_idx].insert(j.0);
+        self.rows.as_mut()[row_idx].insert(j.0);
     }
 
     /// Clear edge `i -> j`. Leaves self unchanged when `i` or `j` is
@@ -73,20 +72,20 @@ where
     #[inline(always)]
     pub fn clear_edge(&mut self, i: NodeId, j: NodeId) {
         let row_idx = (i.0).0;
-        if row_idx >= cap_size(N) {
+        if row_idx >= cap_size(C::CAP) {
             return;
         }
-        self.rows[row_idx].remove(j.0);
+        self.rows.as_mut()[row_idx].remove(j.0);
     }
 
     /// Successor mask of node `i` (all outgoing edges).
     #[inline(always)]
     pub fn successors(&self, i: NodeId) -> Mask<W> {
         let row_idx = (i.0).0;
-        if row_idx >= cap_size(N) {
+        if row_idx >= cap_size(C::CAP) {
             return Mask::<W>::from_word(W::default());
         }
-        self.rows[row_idx]
+        self.rows.as_ref()[row_idx]
     }
 
     /// Predecessor mask of node `j` (all incoming edges).
@@ -96,8 +95,9 @@ where
     #[inline]
     pub fn predecessors(&self, j: NodeId) -> Mask<W> {
         let mut out = Mask::<W>::from_word(W::default());
-        for i in 0..cap_size(N) {
-            if *self.rows[i].contains(j.0) {
+        let rows = self.rows.as_ref();
+        for i in 0..cap_size(C::CAP) {
+            if *rows[i].contains(j.0) {
                 out.insert(USize(i));
             }
         }
@@ -110,21 +110,58 @@ where
     /// row `k`. Runs in place.
     #[inline]
     pub fn transitive_closure(&mut self) {
-        for k in 0..cap_size(N) {
-            let row_k = self.rows[k];
-            for i in 0..cap_size(N) {
-                if *self.rows[i].contains(USize(k)) {
-                    self.rows[i] = self.rows[i].union(row_k);
+        let n = cap_size(C::CAP);
+        for k in 0..n {
+            let row_k = self.rows.as_ref()[k];
+            for i in 0..n {
+                if *self.rows.as_ref()[i].contains(USize(k)) {
+                    let unioned = self.rows.as_ref()[i].union(row_k);
+                    self.rows.as_mut()[i] = unioned;
                 }
             }
         }
     }
 }
 
-impl<W, const N: Cap> Default for BitMatrix<W, N>
+impl<W, C: Capacity> Copy for BitMatrix<W, C>
+where
+    W: BitSequence + BitAccess + Copy + Default,
+    C::Array<Mask<W>>: Copy,
+{
+}
+
+impl<W, C: Capacity> Clone for BitMatrix<W, C>
+where
+    W: BitSequence + BitAccess + Copy + Default,
+    C::Array<Mask<W>>: Copy,
+{
+    #[inline(always)]
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl<W, C: Capacity> PartialEq for BitMatrix<W, C>
+where
+    W: BitSequence + BitAccess + Copy + Default,
+    Mask<W>: PartialEq,
+{
+    #[inline]
+    fn eq(&self, other: &Self) -> bool { // lint:allow(arvo-types-only) lint:allow(no-bare-numeric) reason: std-trait method signature; core::cmp::PartialEq::eq is fixed to return bool by the trait (no-bare-primitives.md exception 5, std-trait method impls); tracked: #207
+        self.rows.as_ref() == other.rows.as_ref()
+    }
+}
+
+impl<W, C: Capacity> Eq for BitMatrix<W, C>
+where
+    W: BitSequence + BitAccess + Copy + Default,
+    Mask<W>: Eq,
+{
+}
+
+impl<W, C: Capacity> Default for BitMatrix<W, C>
 where
     W: BitSequence + BitAccess + BitLogic + Copy + Default,
-    [(); cap_size(N)]:,
 {
     #[inline(always)]
     fn default() -> Self {

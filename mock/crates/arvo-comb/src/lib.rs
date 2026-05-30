@@ -13,16 +13,12 @@
 //! `#![no_std]`, no alloc. Depends on arvo and arvo-bitmask only.
 
 #![no_std]
-#![feature(adt_const_params)]
-// WATCH-tier unstable feature, soundness-vetted in the stack sweep (task #626).
-// `generic_const_exprs` is used here only for const-expression bounds and const-
-// generic array lengths (`[(); cap_size(N)]:` array sizing, `[(); EXPR]:` compile-
-// time assertions, width arithmetic in const-generic position). Its one known
-// unsoundness (#97156, const `TypeId` resolved into types with higher-ranked-trait-
-// bound subtyping) is unreachable: the stack bans `TypeId`. Builds clean on the
-// pinned nightly. Migration to `generic_const_args` is tracked: #628.
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
+// No `generic_const_exprs` / `adt_const_params` gates: the capacity is a TYPE
+// (`N: Capacity`, value storage through `arvo_tensor::Array` / `Matrix` whose
+// backing is `Capacity::Array`), so no `cap_size` expression sits in type
+// position and no `Cap` const generic appears. The GCE surface the algorithms
+// needed under the `const N: Cap` form is gone (the gate-drop bonus of the
+// capacity-as-type migration; obviates the #628 GCE-to-GCA migration here).
 
 pub mod binpack;
 pub mod dp;

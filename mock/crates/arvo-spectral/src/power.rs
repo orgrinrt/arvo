@@ -5,9 +5,10 @@
 //! eigenvector of the largest-magnitude eigenvalue. No convergence
 //! ratio check this round: the caller picks the iteration count.
 //!
-//! The operator surface is `LinearOperator<F, N>`, so the same routine
-//! runs across dense `Matrix<F, N>`, sparse `SparseLaplacian`, or any
-//! consumer-supplied operator that implements the trait.
+//! The operator surface is `LinearOperator<F, C>`, so the same routine
+//! runs across dense `Matrix<F, C>`, sparse `SparseLaplacian`, or any
+//! consumer-supplied operator that implements the trait. The capacity
+//! is a TYPE (`C: Capacity`); the ping-pong buffers are `C::Array<F>`.
 //!
 //! Initial vector is the all-ones vector `[1, 1, ..., 1]`. Constant
 //! construction uses `F::from_constant(1)`.
@@ -15,9 +16,9 @@
 use core::ops::{Add, Mul};
 
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
-use arvo::{Cap, USize};
+use arvo::USize;
+use arvo_tensor::Capacity;
 
-use crate::matrix::cap_size;
 use crate::operator::LinearOperator;
 
 /// Run power iteration on `operator` for `iterations` rounds.
@@ -34,13 +35,12 @@ use crate::operator::LinearOperator;
 /// against the known zero-eigenvector direction first. `fiedler.rs`
 /// does exactly that.
 #[inline]
-pub fn power_iteration<Op, const N: Cap, F>(
+pub fn power_iteration<Op, C: Capacity, F>(
     operator: &Op,
     iterations: USize,
-) -> [F; cap_size(N)]
+) -> C::Array<F>
 where
-    Op: LinearOperator<F, N>,
-    [(); cap_size(N)]:,
+    Op: LinearOperator<F, C>,
     F: Add<Output = F>
         + Mul<Output = F>
         + Sqrt<Output = F>
@@ -54,28 +54,31 @@ where
     let zero = F::from_constant::<{ USize(0) }>();
     // Seed the live span with ones; the slack tail stays zero so it
     // never enters the norm or the matvec output.
-    let mut v: [F; cap_size(N)] = core::array::from_fn(|i| if i < n { one } else { zero });
+    let mut v: C::Array<F> = C::from_fn(|i| if i.0 < n { one } else { zero });
 
     let mut step = 0usize;
     while step < iterations.0 {
         // next = operator.apply(v)
-        let mut next: [F; cap_size(N)] = [F::from_constant::<{ USize(0) }>(); cap_size(N)];
+        let mut next: C::Array<F> = C::filled(zero);
         operator.apply(&v, &mut next);
 
-        // L2 norm: sqrt of sum of squares.
-        let mut sq_sum = F::from_constant::<{ USize(0) }>();
-        let mut k = 0usize;
-        while k < n {
-            sq_sum = sq_sum + next[k] * next[k];
-            k += 1;
-        }
-        let inv = sq_sum.sqrt().recip();
+        {
+            let ns = next.as_mut();
+            // L2 norm: sqrt of sum of squares.
+            let mut sq_sum = zero;
+            let mut k = 0usize;
+            while k < n {
+                sq_sum = sq_sum + ns[k] * ns[k];
+                k += 1;
+            }
+            let inv = sq_sum.sqrt().recip();
 
-        // Normalise in place.
-        let mut k = 0usize;
-        while k < n {
-            next[k] = next[k] * inv;
-            k += 1;
+            // Normalise in place.
+            let mut k = 0usize;
+            while k < n {
+                ns[k] = ns[k] * inv;
+                k += 1;
+            }
         }
 
         v = next;

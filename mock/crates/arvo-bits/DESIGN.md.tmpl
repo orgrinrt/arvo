@@ -17,7 +17,7 @@ surface depend on the contract crate; consumers that need the
 concrete blanket dispatch reach this crate transitively via the
 `arvo` facade re-exports.
 
-The mask chassis (`Mask<W>` and `BitMatrix<W, const N: Cap>`) lives
+The mask chassis (`Mask<W>` and `BitMatrix<W, C: Capacity>`) lives
 in `arvo-bitmask`. The `Narrow<T>` and `Widen<T>` trait declarations and
 concrete impls live in `arvo-bits-contracts`; the surface is re-
 exported through `arvo-refit` (combined narrow + widen gateway crate,

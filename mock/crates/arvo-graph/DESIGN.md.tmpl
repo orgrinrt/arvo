@@ -1,8 +1,8 @@
 # arvo-graph. Design
 
-DAG and graph algorithms on const-generic fixed-size structures.
+DAG and graph algorithms on fixed-capacity structures.
 `#![no_std]`, no alloc. All algorithms operate on the
-`BitMatrix<W, const N: Cap>` and `Mask<W>` chassis from
+`BitMatrix<W, C: Capacity>` and `Mask<W>` chassis from
 arvo-bitmask, with `W = Bits<64, Hot, Unsigned>` as the canonical
 single-word backing for up to 64 nodes. Node indices use `NodeId`
 from arvo-bitmask.
@@ -16,7 +16,7 @@ contract crates; concrete types come from `arvo-bitmask` and
 
 ## Capacity
 
-Algorithms ship against `BitMatrix<Bits<64, Hot, Unsigned>, N>`. Up
+Algorithms ship against `BitMatrix<Bits<64, Hot, Unsigned>, C>`. Up
 to 64 nodes per adjacency row, covering the common case observed in
 prior empirical research. The chassis is generic over W; instantiating
 the same algorithms with `W = Bits<256, Hot, Unsigned>` extends to
@@ -25,13 +25,14 @@ algorithmic-shape change. The wider-W instantiations are tracked in
 BACKLOG.md as ergonomic helpers; the algorithm bodies are the
 same.
 
-`const N: Cap` carries arvo's capacity newtype on every public
-signature. Array storage inside bodies unwraps via `cap_size(c: Cap)
--> usize` (canonical home: arvo-tensor; arvo-bitmask re-exports, and
-arvo-graph reaches it via `arvo_bitmask::cap_size`). Array return
-types in signatures below are shown as `[X; N]` for readability; the
-compiled form is `[X; cap_size(N)]` with the implied `where [();
-cap_size(N)]:` bound.
+The capacity is a TYPE: `C: Capacity` (arvo-tensor's `Capacity`) in
+place of the prior `const N: Cap`. Array storage is the associated
+type `C::Array<X>`, so no `cap_size` expression sits in type position;
+the algorithm bodies that need the count as a value read
+`cap_size(C::CAP)` (a value-position const-fn call). Weight inputs and
+array returns in the signatures below are `&C::Array<W>` and
+`C::Array<X>`; the prior form spelled these `&[W; N]` and `[X; N]`
+with an implied `where [(); cap_size(N)]:` bound that is now gone.
 
 Generic over numeric trait bounds for weight types. Does not import
 UFixed or IFixed directly. Consumer instantiates with concrete arvo
@@ -40,10 +41,10 @@ types; this crate is library code.
 ## Weight type contract
 
 ```rust
-fn upward_rank<const N: Cap, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
- weights: &[W; N],
-) -> [W; N]
+fn upward_rank<C: Capacity, W>(
+ dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+ weights: &C::Array<W>,
+) -> C::Array<W>
 where
  W: Add<Output = W> + TotalOrd + Copy + FromConstant
 ```
@@ -62,23 +63,23 @@ choosing W.
 Kahn's algorithm on BitMatrix adjacency:
 
 ```rust
-fn topo_sort<const N: Cap>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
-) -> (USize, [NodeId; N]) // (valid_count, topo_order)
+fn topo_sort<C: Capacity>(
+ dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+) -> (USize, C::Array<NodeId>) // (valid_count, topo_order)
 ```
 
-Fixed `[NodeId; N]` queue + `[USize; N]` in-degree array. Zero heap.
+Fixed `C::Array<NodeId>` queue + `C::Array<USize>` in-degree array. Zero heap.
 Returns topo-ordered node IDs and the count of successfully sorted
-nodes. Cycle detection built-in: `valid_count < N` means a cycle
+nodes. Cycle detection built-in: `valid_count < node_count` means a cycle
 was detected. `valid_count` tells you exactly how many nodes were
 sorted before the cycle was hit.
 
 ## Node renumbering
 
 ```rust
-fn renumber<const N: Cap>(
- topo_order: &[NodeId; N],
-) -> [NodeId; N]
+fn renumber<C: Capacity>(
+ topo_order: &C::Array<NodeId>,
+) -> C::Array<NodeId>
 ```
 
 After topo sort, renumber all node IDs so they match reverse
@@ -90,17 +91,17 @@ sequential for the prefetcher.
 ## Rank computation
 
 ```rust
-fn upward_rank<const N: Cap, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
- weights: &[W; N],
-) -> [W; N]
+fn upward_rank<C: Capacity, W>(
+ dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+ weights: &C::Array<W>,
+) -> C::Array<W>
 where
  W: Add<Output = W> + TotalOrd + Copy + FromConstant
 
-fn downward_rank<const N: Cap, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
- weights: &[W; N],
-) -> [W; N]
+fn downward_rank<C: Capacity, W>(
+ dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+ weights: &C::Array<W>,
+) -> C::Array<W>
 where
  W: Add<Output = W> + TotalOrd + Copy + FromConstant
 ```
@@ -117,13 +118,13 @@ Both computed in one pass each over the topo-ordered nodes.
 ## Connected components
 
 ```rust
-fn components<const N: Cap>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
-) -> [USize; N]
+fn components<C: Capacity>(
+ dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+) -> C::Array<USize>
 ```
 
 DFS on BitMatrix adjacency using a `Mask` as the visited set. Stack
-is a fixed `[NodeId; N]` array. Returns component ID (as USize) per
+is a fixed `C::Array<NodeId>`. Returns component ID (as USize) per
 node. Two nodes are in the same component if their access masks
 intersect (directly or transitively).
 
@@ -133,11 +134,11 @@ component membership with block-diagonal detection results.
 ## Longest/shortest weighted path
 
 ```rust
-fn longest_path<const N: Cap, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
- weights: &[W; N],
- topo_order: &[NodeId; N],
-) -> (W, Mask<Bits<64, Hot, Unsigned>>, [NodeId; N]) // (path_weight, has_predecessor, predecessors)
+fn longest_path<C: Capacity, W>(
+ dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+ weights: &C::Array<W>,
+ topo_order: &C::Array<NodeId>,
+) -> (W, Mask<Bits<64, Hot, Unsigned>>, C::Array<NodeId>) // (path_weight, has_predecessor, predecessors)
 where
  W: Add<Output = W> + TotalOrd + Copy + FromConstant
 ```
@@ -160,9 +161,9 @@ per-element compute cost in a pipeline setting.
 ## Waist detection
 
 ```rust
-fn waist_detect<const N: Cap>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
- topo_order: &[NodeId; N],
+fn waist_detect<C: Capacity>(
+ dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+ topo_order: &C::Array<NodeId>,
 ) -> Mask<Bits<64, Hot, Unsigned>>
 ```
 
@@ -182,17 +183,17 @@ natural phase boundaries in a staged pipeline.
 ## Spanning tree decomposition
 
 ```rust
-pub struct SpanningTree<const N: Cap> {
+pub struct SpanningTree<C: Capacity> {
  pub on_trunk: Mask<Bits<64, Hot, Unsigned>>, // which nodes are on the trunk
- pub trunk_next: [NodeId; N], // next node on trunk (valid where on_trunk is set)
+ pub trunk_next: C::Array<NodeId>, // next node on trunk (valid where on_trunk is set)
  pub branch_roots: Mask<Bits<64, Hot, Unsigned>>, // nodes that start branches
  pub bridges: Mask<Bits<64, Hot, Unsigned>>, // fan-in nodes (mandatory fiber breaks)
 }
 
-fn spanning_tree<const N: Cap, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
- ranks: &[W; N],
-) -> SpanningTree<N>
+fn spanning_tree<C: Capacity, W>(
+ dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+ ranks: &C::Array<W>,
+) -> SpanningTree<C>
 where
  W: TotalOrd + Copy
 ```

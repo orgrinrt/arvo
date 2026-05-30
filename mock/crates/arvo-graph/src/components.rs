@@ -6,11 +6,12 @@
 //! reachable in either direction and tag it with that ID.
 //!
 //! Visited tracking is a `Mask<Bits<64, Hot, Unsigned>>`; the DFS stack is a fixed-size
-//! `[NodeId; cap_size(N)]` with a head index — no heap, no grow.
+//! `C::Array<NodeId>` with a head index, so no heap, no grow.
 
-use arvo::{Identity, Bool, Cap, USize};
+use arvo::{Identity, Bool, USize};
 use arvo::{Bits, Hot, Unsigned};
 use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
+use arvo_tensor::Capacity;
 
 /// Assign a component ID to every node.
 ///
@@ -19,16 +20,17 @@ use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 /// nodes receive the same ID exactly when their DFS closure
 /// (successors + predecessors, transitively) intersects.
 #[inline]
-pub fn components<const N: Cap>(dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>) -> [USize; cap_size(N)]
+pub fn components<C: Capacity>(dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>) -> C::Array<USize>
 where
-    [(); cap_size(N)]:,
+    C::Array<USize>: Copy,
+    C::Array<NodeId>: Copy,
 {
-    let mut comp: [USize; cap_size(N)] = [USize(0); cap_size(N)];
+    let mut comp: C::Array<USize> = C::filled(USize(0));
     let mut visited: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
     let mut next_id = USize(0);
 
     let mut seed = 0usize;
-    while seed < cap_size(N) {
+    while seed < cap_size(C::CAP) {
         if *visited.contains(USize(seed)) {
             seed += 1;
             continue;
@@ -39,29 +41,29 @@ where
         next_id = next_id + USize::ONE;
 
         // Iterative DFS over undirected adjacency (succ + pred).
-        let mut stack: [NodeId; cap_size(N)] = [NodeId::new(USize(0)); cap_size(N)];
+        let mut stack: C::Array<NodeId> = C::filled(NodeId::new(USize(0)));
         let mut sp = 0usize;
-        stack[sp] = NodeId::new(USize(seed));
+        stack.as_mut()[sp] = NodeId::new(USize(seed));
         sp += 1;
         visited.insert(USize(seed));
-        comp[seed] = id;
+        comp.as_mut()[seed] = id;
 
         while sp > 0 {
             sp -= 1;
-            let node = stack[sp];
+            let node = stack.as_ref()[sp];
 
             // Undirected neighbour set = successors ∪ predecessors.
             let neigh = dag.successors(node).union(dag.predecessors(node));
 
             for n_pos in neigh.iter_set_bits() {
                 let n_idx = n_pos.0;
-                if n_idx >= cap_size(N) {
+                if n_idx >= cap_size(C::CAP) {
                     continue;
                 }
                 if let Bool(false) = visited.contains(USize(n_idx)) {
                     visited.insert(USize(n_idx));
-                    comp[n_idx] = id;
-                    stack[sp] = NodeId::new(USize(n_idx));
+                    comp.as_mut()[n_idx] = id;
+                    stack.as_mut()[sp] = NodeId::new(USize(n_idx));
                     sp += 1;
                 }
             }

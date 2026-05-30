@@ -5,27 +5,13 @@
 //! in a tight cap, and `with_transpose` must not count the unfilled tail
 //! (default `NodeId(0)` slots) as edges into node 0.
 
-#![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
-
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo_bitmask::NodeId;
 use arvo_sparse::{
     BidirectionalSparseAdjacency, Csr, CsrBidirectional, SparseAdjacency, block_diagonal_via,
     dulmage_mendelsohn_via, rcm_reorder_via,
 };
-
-const fn cap(n: usize) -> Cap {
-    Cap(USize(n))
-}
-
-const R2: Cap = cap(2);
-const R3: Cap = cap(3);
-const R4: Cap = cap(4);
-const NNZ2: Cap = cap(2);
-const NNZ3: Cap = cap(3);
-const NNZ8: Cap = cap(8);
+use arvo_tensor::{Capacity, Dim};
 
 fn nid(i: usize) -> NodeId {
     NodeId::new(USize(i))
@@ -34,14 +20,10 @@ fn nid(i: usize) -> NodeId {
 /// Collect predecessor node indices into a fixed buffer (no alloc).
 /// Returns the count plus the buffer (sources arrive in ascending order
 /// from the count-prefix-scatter, so a direct prefix compare is valid).
-fn preds<const ROWS: Cap, const NNZ: Cap>(
-    bidi: &CsrBidirectional<ROWS, NNZ, u32>,
+fn preds<R: Capacity, NNZ: Capacity>(
+    bidi: &CsrBidirectional<R, NNZ, u32>,
     node: usize,
-) -> (usize, [usize; 8])
-where
-    [(); arvo_bitmask::cap_size(ROWS)]:,
-    [(); arvo_bitmask::cap_size(NNZ)]:,
-{
+) -> (usize, [usize; 8]) {
     let mut buf = [usize::MAX; 8];
     let mut n = 0;
     for p in bidi.predecessors(nid(node)) {
@@ -51,11 +33,11 @@ where
     (n, buf)
 }
 
-/// Two-node cycle (0 -> 1, 1 -> 0) living in a cap(4)/cap(8) buffer with
+/// Two-node cycle (0 -> 1, 1 -> 0) living in a Dim<4>/Dim<8> buffer with
 /// only 2 live rows and 2 live edges. The 6 trailing `col_idx` slots are
 /// the constructor default `NodeId(0)`.
-fn build_loose_2cycle() -> CsrBidirectional<R4, NNZ8, u32> {
-    let mut csr: Csr<R4, NNZ8, u32> = Csr::with_live_counts(USize(2), USize(2));
+fn build_loose_2cycle() -> CsrBidirectional<Dim<4>, Dim<8>, u32> {
+    let mut csr: Csr<Dim<4>, Dim<8>, u32> = Csr::with_live_counts(USize(2), USize(2));
     csr.row_ptr = [USize(0), USize(1), USize(0), USize(0)];
     csr.col_idx = [
         nid(1),
@@ -70,17 +52,17 @@ fn build_loose_2cycle() -> CsrBidirectional<R4, NNZ8, u32> {
     csr.with_transpose()
 }
 
-/// The same two-node cycle in a tight cap(2)/cap(2) packed buffer.
-fn build_tight_2cycle() -> CsrBidirectional<R2, NNZ2, u32> {
-    let mut csr: Csr<R2, NNZ2, u32> = Csr::new();
+/// The same two-node cycle in a tight Dim<2>/Dim<2> packed buffer.
+fn build_tight_2cycle() -> CsrBidirectional<Dim<2>, Dim<2>, u32> {
+    let mut csr: Csr<Dim<2>, Dim<2>, u32> = Csr::new();
     csr.row_ptr = [USize(0), USize(1)];
     csr.col_idx = [nid(1), nid(0)];
     csr.with_transpose()
 }
 
-/// Three-node cycle (0 -> 1 -> 2 -> 0) packed in a tight cap(3)/cap(3).
-fn build_tight_3cycle() -> CsrBidirectional<R3, NNZ3, u32> {
-    let mut csr: Csr<R3, NNZ3, u32> = Csr::new();
+/// Three-node cycle (0 -> 1 -> 2 -> 0) packed in a tight Dim<3>/Dim<3>.
+fn build_tight_3cycle() -> CsrBidirectional<Dim<3>, Dim<3>, u32> {
+    let mut csr: Csr<Dim<3>, Dim<3>, u32> = Csr::new();
     csr.row_ptr = [USize(0), USize(1), USize(2)];
     csr.col_idx = [nid(1), nid(2), nid(0)];
     csr.with_transpose()
@@ -136,7 +118,7 @@ fn node_count_reflects_live() {
     let loose = build_loose_2cycle();
     assert_eq!(loose.node_count().0, 2);
     // A packed Csr reports the cap (existing consumers unchanged).
-    let packed: Csr<R4, NNZ8, u32> = Csr::new();
+    let packed: Csr<Dim<4>, Dim<8>, u32> = Csr::new();
     assert_eq!(packed.node_count().0, 4);
 }
 
@@ -144,8 +126,8 @@ fn node_count_reflects_live() {
 fn rcm_via_slack_equals_tight() {
     let loose = build_loose_2cycle();
     let tight = build_tight_2cycle();
-    let loose_perm = rcm_reorder_via::<CsrBidirectional<R4, NNZ8, u32>, R4>(&loose);
-    let tight_perm = rcm_reorder_via::<CsrBidirectional<R2, NNZ2, u32>, R2>(&tight);
+    let loose_perm = rcm_reorder_via::<CsrBidirectional<Dim<4>, Dim<8>, u32>, Dim<4>>(&loose);
+    let tight_perm = rcm_reorder_via::<CsrBidirectional<Dim<2>, Dim<2>, u32>, Dim<2>>(&tight);
     let l = [(loose_perm[0].0).0, (loose_perm[1].0).0];
     let t = [(tight_perm[0].0).0, (tight_perm[1].0).0];
     // Min-degree start (node 0), BFS, reverse: [1, 0].
@@ -157,8 +139,10 @@ fn rcm_via_slack_equals_tight() {
 fn block_via_slack_equals_tight() {
     let loose = build_loose_2cycle();
     let tight = build_tight_2cycle();
-    let (loose_n, loose_blocks) = block_diagonal_via::<CsrBidirectional<R4, NNZ8, u32>, R4>(&loose);
-    let (tight_n, tight_blocks) = block_diagonal_via::<CsrBidirectional<R2, NNZ2, u32>, R2>(&tight);
+    let (loose_n, loose_blocks) =
+        block_diagonal_via::<CsrBidirectional<Dim<4>, Dim<8>, u32>, Dim<4>>(&loose);
+    let (tight_n, tight_blocks) =
+        block_diagonal_via::<CsrBidirectional<Dim<2>, Dim<2>, u32>, Dim<2>>(&tight);
     // Both nodes are connected: one block.
     assert_eq!(loose_n.0, 1);
     assert_eq!(tight_n.0, 1);
@@ -173,8 +157,8 @@ fn block_via_slack_equals_tight() {
 fn dm_via_slack_equals_tight() {
     let loose = build_loose_2cycle();
     let tight = build_tight_2cycle();
-    let loose_dm = dulmage_mendelsohn_via::<CsrBidirectional<R4, NNZ8, u32>, R4>(&loose);
-    let tight_dm = dulmage_mendelsohn_via::<CsrBidirectional<R2, NNZ2, u32>, R2>(&tight);
+    let loose_dm = dulmage_mendelsohn_via::<CsrBidirectional<Dim<4>, Dim<8>, u32>, Dim<4>>(&loose);
+    let tight_dm = dulmage_mendelsohn_via::<CsrBidirectional<Dim<2>, Dim<2>, u32>, Dim<2>>(&tight);
     assert_eq!(loose_dm.class_count.0, 3);
     // Both nodes have incoming and outgoing edges: class 2 (square).
     assert_eq!(loose_dm.class[0].0, 2);

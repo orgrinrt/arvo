@@ -1,6 +1,6 @@
 //! `Capacity`, the GCE-free fixed-capacity foundation.
 
-use arvo::Cap;
+use arvo::{Cap, USize};
 
 use crate::cap::cap;
 
@@ -25,6 +25,13 @@ pub trait Capacity {
 
     /// Build the backing array with `v` in every slot.
     fn filled<T: Copy>(v: T) -> Self::Array<T>;
+
+    /// Build the backing array by invoking `f(i)` for each slot index.
+    ///
+    /// The GAT-returning replacement for `core::array::from_fn`, which cannot
+    /// produce the opaque `Self::Array<T>`. Every index-built container and
+    /// algorithm routes its per-slot construction through this method.
+    fn from_fn<T, F: FnMut(USize) -> T>(f: F) -> Self::Array<T>;
 }
 
 /// A capacity of exactly `N` slots.
@@ -43,5 +50,10 @@ impl<const N: usize> Capacity for Dim<N> { // lint:allow(arvo-types-only) lint:a
     #[inline(always)]
     fn filled<T: Copy>(v: T) -> [T; N] {
         [v; N]
+    }
+
+    #[inline]
+    fn from_fn<T, F: FnMut(USize) -> T>(mut f: F) -> [T; N] {
+        core::array::from_fn(|i| f(USize(i)))
     }
 }

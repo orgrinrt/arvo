@@ -1,26 +1,26 @@
 //! `laplacian` correctness on a known weighted graph.
 
+// `adt_const_params` is required by the `common::TF` `FromConstant` impl
+// (`from_constant<const C: USize>`), not by capacity arithmetic. The
+// migration dropped `generic_const_exprs`; this gate is independent of it.
 #![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
 
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo_spectral::{Matrix, laplacian};
+use arvo_tensor::Dim;
 
 mod common;
 use common::TF;
 
-const C4: Cap = Cap(USize(4));
-
 /// Build a symmetric weighted adjacency matrix.
-fn sample_weights() -> Matrix<u32, C4> {
+fn sample_weights() -> Matrix<u32, Dim<4>> {
     // Graph:
     //   0 -- 1  weight 2
     //   0 -- 2  weight 3
     //   1 -- 2  weight 1
     //   2 -- 3  weight 4
     // Diagonal is zero (no self-loops).
-    let mut m: Matrix<u32, C4> = Matrix::from_fn(|_, _| 0u32);
+    let mut m: Matrix<u32, Dim<4>> = Matrix::from_fn(|_, _| 0u32);
     m.set(USize(0), USize(1), 2);
     m.set(USize(1), USize(0), 2);
     m.set(USize(0), USize(2), 3);
@@ -41,7 +41,7 @@ impl From<u32> for TF {
 #[test]
 fn off_diagonal_is_negated_weight() {
     let w = sample_weights();
-    let lap: Matrix<TF, C4> = laplacian::<C4, u32, TF>(&w);
+    let lap: Matrix<TF, Dim<4>> = laplacian::<Dim<4>, u32, TF>(&w);
     // L[0][1] = -w[0][1] = -2.
     assert!((lap.get(USize(0), USize(1)).0 - (-2.0)).abs() < 1e-6);
     // L[2][3] = -w[2][3] = -4.
@@ -53,7 +53,7 @@ fn off_diagonal_is_negated_weight() {
 #[test]
 fn diagonal_is_weighted_degree() {
     let w = sample_weights();
-    let lap: Matrix<TF, C4> = laplacian::<C4, u32, TF>(&w);
+    let lap: Matrix<TF, Dim<4>> = laplacian::<Dim<4>, u32, TF>(&w);
     // Node 0: connects to 1 (w=2) and 2 (w=3). Degree = 5.
     assert!((lap.get(USize(0), USize(0)).0 - 5.0).abs() < 1e-6);
     // Node 1: connects to 0 (w=2) and 2 (w=1). Degree = 3.
@@ -68,7 +68,7 @@ fn diagonal_is_weighted_degree() {
 fn row_sums_to_zero() {
     // Property of any Laplacian: rows sum to zero.
     let w = sample_weights();
-    let lap: Matrix<TF, C4> = laplacian::<C4, u32, TF>(&w);
+    let lap: Matrix<TF, Dim<4>> = laplacian::<Dim<4>, u32, TF>(&w);
     for i in 0..4 {
         let mut row_sum = 0.0f32;
         for j in 0..4 {
