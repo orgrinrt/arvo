@@ -32,10 +32,12 @@
 
 pub mod array;
 pub mod cap;
+pub mod capacity;
 pub mod enumerator;
 pub mod matrix;
 
 pub use array::Array;
 pub use cap::{cap, cap_size};
+pub use capacity::{Capacity, Dim};
 pub use enumerator::Enumerator;
 pub use matrix::Matrix;
