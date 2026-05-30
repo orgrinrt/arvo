@@ -57,6 +57,57 @@ forces `cap_size` to exist for the other direction. `cap` is the bridge a
 consumer uses to form a `Cap`-parameterised type (such as `Csr<{cap(N)}, ..>`)
 from a `usize` const-param. Same `#121` tracking as `cap_size`.
 
+## Capacity and Dim, the GCE-free capacity foundation
+
+Fixed-capacity storage where the capacity is a TYPE, not a `Cap` const
+generic. A `Cap`-parameterised container stores `[T; cap_size(N)]`, which
+places a const expression in type position and invokes nightly
+`generic_const_exprs`. That holds when the capacity is concrete at the use
+site, but the round-trip `cap_size(cap(N))` overflows the well-formedness
+evaluator and ICEs the moment a generic consumer threads the capacity
+through its own generic code. `Capacity` removes the const expression from
+type position entirely.
+
+```rust
+pub trait Capacity {
+    // backing storage for T at this capacity; [T; N] for Dim<N>.
+    // the AsRef/AsMut bound gives slice access without a const-generic
+    // Index HKT, and lets 2-D storage be the composition
+    // R::Array<C::Array<T>> with no separate trait.
+    type Array<T>: AsRef<[T]> + AsMut<[T]>;
+    // the typed surface capacity; Dim<N> maps to cap(N).
+    const CAP: Cap;
+    // build the backing array with v in every slot.
+    fn filled<T: Copy>(v: T) -> Self::Array<T>;
+}
+
+// one generic marker, any exact size. the implementing TYPE is generic
+// over const N: usize; the trait stays non-generic, so consumers bind
+// C: Capacity with no const param and keep the type-dispatch property.
+pub struct Dim<const N: usize>;
+impl<const N: usize> Capacity for Dim<N> {
+    type Array<T> = [T; N];      // plain min-const-generics, no cap_size
+    const CAP: Cap = cap(N);     // cap() only in value position
+    fn filled<T: Copy>(v: T) -> [T; N] { [v; N] }
+}
+```
+
+`[T; N]` is plain min-const-generics: no `cap_size`, no
+`generic_const_exprs`. `cap(N)` appears only in the associated-const value
+position, never in type position. The one bare `usize` is `Dim`'s `const N`,
+the irreducible array-length-grammar root (array lengths must be `usize` at
+the language level). It is the single permitted bare primitive in the
+capacity-as-type convention, the same root that already forces `cap` and
+`cap_size` to exist.
+
+This is the escape `arvo-strategy`'s `BitsContainerFor` already uses for bit
+widths (dispatch a width to a container type rather than computing a
+length), generalised from picking a scalar container to picking an array
+type.
+
+`Array`, `Matrix`, `Csr`, and `BitMatrix` keep their `Cap`-const-generic
+shape for now; their migration onto `Capacity` lands in a follow-on round.
+
 ## Array<T, const N: Cap>
 
 Rank-1 tensor. `#[repr(transparent)]` over `[T; cap_size(N)]`.
