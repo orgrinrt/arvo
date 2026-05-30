@@ -2,7 +2,7 @@
 //!
 //! `NodeId` wraps a `USize` to keep node indices distinct from bit
 //! positions, column indices, or other counts at the type level. Used
-//! by `BitMatrix<W, N>` and any consumer that speaks in nodes rather
+//! by `BitMatrix<W, C>` and any consumer that speaks in nodes rather
 //! than raw integers.
 
 use core::cmp::Ordering;

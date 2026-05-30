@@ -1,31 +1,28 @@
 //! Rank-2 fixed-size N×N tensor. Promoted from arvo-spectral.
 
-use arvo::{Cap, USize};
+use arvo::USize;
 
 use crate::array::Array;
 use crate::cap::cap_size;
+use crate::capacity::Capacity;
 
 /// Dense `N × N` matrix over element type `W`.
 ///
-/// `#[repr(transparent)]` over `[[W; cap_size(N)]; cap_size(N)]`. Row-major
-/// storage. Typed `get(USize, USize)` / `set(USize, USize, W)` hide the
-/// raw-`usize` array indexing behind the method calls.
+/// `#[repr(transparent)]` over the 2-D composition `C::Array<C::Array<W>>`,
+/// row-major (row index first, column index second). Typed
+/// `get(USize, USize)` / `set(USize, USize, W)` hide the raw-`usize` slice
+/// indexing behind the method calls. The capacity is a TYPE on both axes, so
+/// no `cap_size` expression sits in type position.
 #[repr(transparent)]
-pub struct Matrix<W: Copy, const N: Cap>
-where
-    [(); cap_size(N)]:,
-{
+pub struct Matrix<W: Copy, C: Capacity> {
     /// Private row-major storage. Row index first, column index second.
-    data: [[W; cap_size(N)]; cap_size(N)],
+    data: C::Array<C::Array<W>>,
 }
 
-impl<W: Copy, const N: Cap> Matrix<W, N>
-where
-    [(); cap_size(N)]:,
-{
-    /// Construct from a pre-built inner array-of-arrays.
+impl<W: Copy, C: Capacity> Matrix<W, C> {
+    /// Construct from a pre-built backing array-of-arrays.
     #[inline(always)]
-    pub const fn new(data: [[W; cap_size(N)]; cap_size(N)]) -> Self {
+    pub const fn new(data: C::Array<C::Array<W>>) -> Self {
         Self { data }
     }
 
@@ -35,46 +32,49 @@ where
     where
         F: FnMut(USize, USize) -> W,
     {
-        let data = core::array::from_fn(|i| {
-            core::array::from_fn(|j| f(USize(i), USize(j)))
-        });
+        let data = C::from_fn(|i| C::from_fn(|j| f(i, j)));
         Self { data }
-    }
-
-    /// Build a Matrix populated with `v` in every cell.
-    #[inline]
-    pub fn filled(v: W) -> Self {
-        Self { data: [[v; cap_size(N)]; cap_size(N)] }
     }
 
     /// Read the value at `(i, j)`.
     #[inline(always)]
     pub fn get(&self, i: USize, j: USize) -> W {
-        debug_assert!(i.0 < cap_size(N), "Matrix::get: row index out of range");
-        debug_assert!(j.0 < cap_size(N), "Matrix::get: column index out of range");
-        self.data[i.0][j.0]
+        debug_assert!(i.0 < cap_size(C::CAP), "Matrix::get: row index out of range");
+        debug_assert!(j.0 < cap_size(C::CAP), "Matrix::get: column index out of range");
+        self.data.as_ref()[i.0].as_ref()[j.0]
     }
 
     /// Write `v` to cell `(i, j)`.
     #[inline(always)]
     pub fn set(&mut self, i: USize, j: USize, v: W) {
-        debug_assert!(i.0 < cap_size(N), "Matrix::set: row index out of range");
-        debug_assert!(j.0 < cap_size(N), "Matrix::set: column index out of range");
-        self.data[i.0][j.0] = v;
+        debug_assert!(i.0 < cap_size(C::CAP), "Matrix::set: row index out of range");
+        debug_assert!(j.0 < cap_size(C::CAP), "Matrix::set: column index out of range");
+        self.data.as_mut()[i.0].as_mut()[j.0] = v;
     }
 
-    /// Extract the diagonal as an `Array<W, N>`.
+    /// Extract the diagonal as an `Array<W, C>`.
     #[inline]
-    pub fn diagonal(&self) -> Array<W, N> {
-        Array::from_fn(|i| self.data[i.0][i.0])
+    pub fn diagonal(&self) -> Array<W, C> {
+        Array::from_fn(|i| self.get(i, i))
     }
 }
 
-impl<W: Copy, const N: Cap> Copy for Matrix<W, N> where [(); cap_size(N)]: {}
-
-impl<W: Copy, const N: Cap> Clone for Matrix<W, N>
+impl<W: Copy, C: Capacity> Matrix<W, C>
 where
-    [(); cap_size(N)]:,
+    C::Array<W>: Copy,
+{
+    /// Build a Matrix populated with `v` in every cell.
+    #[inline]
+    pub fn filled(v: W) -> Self {
+        Self { data: C::filled(C::filled(v)) }
+    }
+}
+
+impl<W: Copy, C: Capacity> Copy for Matrix<W, C> where C::Array<C::Array<W>>: Copy {}
+
+impl<W: Copy, C: Capacity> Clone for Matrix<W, C>
+where
+    C::Array<C::Array<W>>: Copy,
 {
     #[inline(always)]
     fn clone(&self) -> Self {

@@ -13,12 +13,15 @@ Generic over numeric trait bounds for cost and weight types. Does not
 import UFixed or IFixed directly. Consumer instantiates with concrete
 arvo types; this crate is library code.
 
-`const N: Cap` / `const M: Cap` / `const B: Cap` carry arvo's
-capacity newtype on every public signature. Value storage flows through
-`arvo_tensor::Array<T, N>` and `arvo_tensor::Matrix<W, N>` rather than
-raw `[T; cap_size(N)]` arrays; the wrappers hide the `cap_size` bridge
-inside their `get` / `set` methods. `cap_size(c: Cap) -> usize` itself
-is re-exported from arvo-tensor (canonical home).
+`N` / `M` / `B` are `Capacity` type parameters (arvo-tensor's
+`Capacity`) in place of the prior `const N: Cap` / `const M: Cap` /
+`const B: Cap`. Value storage flows through `arvo_tensor::Array<T, N>`
+and `arvo_tensor::Matrix<W, N>`, whose backing is the
+`Capacity::Array` associated type, so no `cap_size` sits in type
+position. The wrappers hide indexing inside their `get` / `set`
+methods; where a body needs the count as a value it reads
+`cap_size(N::CAP)`. `cap_size` is re-exported from arvo-tensor
+(canonical home).
 
 ## Range
 
@@ -36,7 +39,7 @@ used (two fields); `Copy + Eq + Default + Debug` derived.
 ## Cost type contract
 
 ```rust
-fn matrix_chain_dp<const N: Cap, W>(
+fn matrix_chain_dp<N: Capacity, W>(
  cost: impl Fn(USize, USize) -> W,
  feasible: impl Pred2<USize, USize>,
 ) -> (W, Array<USize, N>)
@@ -56,7 +59,7 @@ Fully generic. No numeric traits needed, the feasibility predicate
 and merge function are closures:
 
 ```rust
-fn greedy_group<const N: Cap, const M: Cap, A, T>(
+fn greedy_group<N: Capacity, M: Capacity, A, T>(
  items: &Array<T, N>,
  feasible: impl Pred2<A, T>,
  merge: impl Fn(A, &T) -> A,
@@ -89,7 +92,7 @@ cost under feasibility constraints. Generic over:
 DP recurrence: `dp[i][j] = min over valid split points k: dp[i][k] + dp[k+1][j]`
 
 Returns `(optimal_cost, split_points)` where `split_points` is the
-recorded split for each interval length. Stack table `[[W; N]; N]`.
+recorded split for each interval length. Stack table `Matrix<W, N>`.
 
 Typical pipeline-grouping application:
 - Cost: `element_count × sum of size_of::<T_k>()` for union data
@@ -106,7 +109,7 @@ Two-level greedy bin-packing. Pack items into fixed-capacity bins,
 minimising bin count.
 
 ```rust
-fn bin_pack<const N: Cap, const B: Cap, T, W>(
+fn bin_pack<N: Capacity, B: Capacity, T, W>(
  items: &Array<T, N>,
  capacity: W,
  weight_of: impl Fn(&T) -> W,

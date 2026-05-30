@@ -1,20 +1,9 @@
 //! Waist detection on known-shape DAGs.
 
-#![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
-
-use arvo::{Bits, Cap, Hot, USize, Unsigned};
+use arvo::{Bits, Hot, USize, Unsigned};
 use arvo_bitmask::{BitMatrix, NodeId};
 use arvo_graph::{topo_sort, waist_detect};
-
-const fn cap(n: usize) -> Cap {
-    Cap(USize(n))
-}
-
-const C4: Cap = cap(4);
-const C5: Cap = cap(5);
-const C6: Cap = cap(6);
+use arvo_tensor::Dim;
 
 fn nid(i: usize) -> NodeId {
     NodeId(USize(i))
@@ -24,7 +13,7 @@ fn nid(i: usize) -> NodeId {
 fn linear_chain_has_no_waist() {
     // 0 -> 1 -> 2 -> 3. Each level has width 1. No strict local
     // minimum.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<4>> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(3));
@@ -39,14 +28,14 @@ fn hourglass_waist_detected() {
     // Level 1: {2}     width 1   (waist).
     // Level 2: {3, 4}  width 2.
     // Edges: 0->2, 1->2, 2->3, 2->4.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C5> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<5>> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(3));
     dag.set_edge(nid(2), nid(4));
     let (_, order) = topo_sort(&dag);
     let waist = waist_detect(&dag, &order);
-    // Exactly one waist bit — the position in topo order where node 2
+    // Exactly one waist bit, the position in topo order where node 2
     // lands.
     assert_eq!(waist.count(), USize(1));
     let pos2 = order.iter().position(|&n| n == nid(2)).unwrap();
@@ -59,7 +48,7 @@ fn no_waist_when_width_monotone() {
     // Level 1: {1, 2}      width 2.
     // Level 2: {3, 4, 5}   width 3.
     // Edges: 0 -> 1, 0 -> 2, 1 -> 3, 1 -> 4, 2 -> 5.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C6> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<6>> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(3));

@@ -1,31 +1,29 @@
-//! Smoke tests for `Array<T, N>`.
+//! Smoke tests for `Array<T, C>`.
+//!
+//! No `#![feature(...)]` gates: the `Capacity`-migrated `Array` escapes the
+//! `generic_const_exprs` surface (the capacity is a type, not a `Cap` const
+//! generic with `cap_size(N)` in type position).
 
-#![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
-
-use arvo::{Cap, USize};
-use arvo_tensor::{Array, Enumerator, cap_size};
-
-const C4: Cap = Cap(USize(4));
+use arvo::USize;
+use arvo_tensor::{cap_size, Array, Capacity, Dim, Enumerator};
 
 #[test]
 fn new_and_get() {
-    let a: Array<u32, C4> = Array::new([10, 20, 30, 40]);
+    let a: Array<u32, Dim<4>> = Array::new([10, 20, 30, 40]);
     assert_eq!(*a.get(USize(0)), 10);
     assert_eq!(*a.get(USize(3)), 40);
 }
 
 #[test]
 fn set_overwrites() {
-    let mut a: Array<u32, C4> = Array::new([0; 4]);
+    let mut a: Array<u32, Dim<4>> = Array::new([0; 4]);
     a.set(USize(2), 99);
     assert_eq!(*a.get(USize(2)), 99);
 }
 
 #[test]
 fn from_fn_uses_usize_index() {
-    let a: Array<usize, C4> = Array::from_fn(|i| i.0 * 10);
+    let a: Array<usize, Dim<4>> = Array::from_fn(|i| i.0 * 10);
     assert_eq!(*a.get(USize(0)), 0);
     assert_eq!(*a.get(USize(1)), 10);
     assert_eq!(*a.get(USize(2)), 20);
@@ -34,13 +32,13 @@ fn from_fn_uses_usize_index() {
 
 #[test]
 fn len_matches_cap() {
-    assert_eq!(Array::<u32, C4>::len().0, 4);
-    assert_eq!(Array::<u32, C4>::len().0, cap_size(C4));
+    assert_eq!(Array::<u32, Dim<4>>::len().0, 4);
+    assert_eq!(Array::<u32, Dim<4>>::len().0, cap_size(<Dim<4> as Capacity>::CAP));
 }
 
 #[test]
 fn into_iter_yields_refs_in_order() {
-    let a: Array<u32, C4> = Array::new([1, 2, 3, 4]);
+    let a: Array<u32, Dim<4>> = Array::new([1, 2, 3, 4]);
     let collected: [u32; 4] = core::array::from_fn(|_| 0);
     let mut collected = collected;
     for (idx, t) in (&a).into_iter().enumerate() {
@@ -51,7 +49,7 @@ fn into_iter_yields_refs_in_order() {
 
 #[test]
 fn enumerated_yields_typed_usize() {
-    let a: Array<u32, C4> = Array::new([100, 200, 300, 400]);
+    let a: Array<u32, Dim<4>> = Array::new([100, 200, 300, 400]);
     let mut total: usize = 0;
     for (i, t) in (&a).enumerated() {
         total += i.0 * (*t as usize);
@@ -61,7 +59,7 @@ fn enumerated_yields_typed_usize() {
 
 #[test]
 fn mutable_iter_allows_writes() {
-    let mut a: Array<u32, C4> = Array::new([0; 4]);
+    let mut a: Array<u32, Dim<4>> = Array::new([0; 4]);
     for t in (&mut a).into_iter() {
         *t = 7;
     }
@@ -70,7 +68,7 @@ fn mutable_iter_allows_writes() {
 
 #[test]
 fn copy_and_clone_preserve_data() {
-    let a: Array<u32, C4> = Array::new([1, 2, 3, 4]);
+    let a: Array<u32, Dim<4>> = Array::new([1, 2, 3, 4]);
     let b = a;
     let c = b.clone();
     assert_eq!(*a.get(USize(0)), *b.get(USize(0)));
@@ -79,7 +77,7 @@ fn copy_and_clone_preserve_data() {
 
 #[test]
 fn filled_populates_every_slot() {
-    let a: Array<u32, C4> = Array::filled(42);
+    let a: Array<u32, Dim<4>> = Array::filled(42);
     for t in &a {
         assert_eq!(*t, 42);
     }

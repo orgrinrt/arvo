@@ -1,23 +1,14 @@
 //! bin_pack: packing counts and affinity ordering.
+//!
+//! No `#![feature(...)]` gates: the migrated `bin_pack<N: Capacity, B:
+//! Capacity, ..>` threads both capacities as types, escaping the
+//! `generic_const_exprs` surface.
 
-#![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
-
-use arvo::{Cap, FBits, Maybe, USize, ibits};
+use arvo::{FBits, Maybe, USize, ibits};
 use arvo::strategy::Hot;
 use arvo::ufixed::UFixed;
 use arvo_comb::bin_pack;
-use arvo_tensor::Array;
-
-const fn cap(n: usize) -> Cap {
-    Cap(USize(n))
-}
-
-const C0: Cap = cap(0);
-const C2: Cap = cap(2);
-const C3: Cap = cap(3);
-const C4: Cap = cap(4);
+use arvo_tensor::{Array, Dim};
 
 type W = UFixed<{ ibits(16) }, { FBits::ZERO }, Hot>;
 
@@ -28,9 +19,9 @@ fn w(n: usize) -> W {
 
 #[test]
 fn empty_input_no_bins() {
-    let items: Array<u8, C0> = Array::new([]);
+    let items: Array<u8, Dim<0>> = Array::new([]);
     let (count, _assign) =
-        bin_pack::<C0, C4, u8, W>(&items, w(10), |_| w(1), |_, _| w(0));
+        bin_pack::<Dim<0>, Dim<4>, u8, W>(&items, w(10), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(0));
 }
 
@@ -39,9 +30,9 @@ fn unit_weights_pack_to_ceil_n_over_capacity() {
     // 4 items, each weight 1, capacity 3. All affinities equal so
     // tie-breaking falls to insertion-sort stability (original order).
     // First-fit: items 0,1,2 -> bin 0; item 3 -> bin 1.
-    let items: Array<u8, C4> = Array::new([10, 20, 30, 40]);
+    let items: Array<u8, Dim<4>> = Array::new([10, 20, 30, 40]);
     let (count, assign) =
-        bin_pack::<C4, C4, u8, W>(&items, w(3), |_| w(1), |_, _| w(0));
+        bin_pack::<Dim<4>, Dim<4>, u8, W>(&items, w(3), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(2));
     // All items must land in either bin 0 or 1, and every item must
     // have placed (NUSize::some). The previous overloaded USize(0)
@@ -57,18 +48,18 @@ fn unit_weights_pack_to_ceil_n_over_capacity() {
 #[test]
 fn single_heavy_item_uses_its_own_bin() {
     // Two items, one fills a bin on its own.
-    let items: Array<u8, C2> = Array::new([0, 1]);
+    let items: Array<u8, Dim<2>> = Array::new([0, 1]);
     let (count, _assign) =
-        bin_pack::<C2, C4, u8, W>(&items, w(5), |x| if *x == 0 { w(5) } else { w(1) }, |_, _| w(0));
+        bin_pack::<Dim<2>, Dim<4>, u8, W>(&items, w(5), |x| if *x == 0 { w(5) } else { w(1) }, |_, _| w(0));
     assert_eq!(count, USize(2));
 }
 
 #[test]
 fn everything_fits_one_bin() {
     // Weights 1+1+1 = 3 <= cap 5.
-    let items: Array<u8, C3> = Array::new([1, 2, 3]);
+    let items: Array<u8, Dim<3>> = Array::new([1, 2, 3]);
     let (count, assign) =
-        bin_pack::<C3, C4, u8, W>(&items, w(5), |_| w(1), |_, _| w(0));
+        bin_pack::<Dim<3>, Dim<4>, u8, W>(&items, w(5), |_| w(1), |_, _| w(0));
     assert_eq!(count, USize(1));
     for i in 0..3 {
         // Single bin: every item lands at NUSize::some(USize(0)).
@@ -84,8 +75,8 @@ fn affinity_ordering_places_high_affinity_first() {
     // (mutual), while item 1 is lonely. Capacity 2 per bin, all
     // weights 1. High-affinity items go first -> the cluster
     // {0,2,3} is placed across two bins before item 1.
-    let items: Array<u8, C4> = Array::new([0, 1, 2, 3]);
-    let (count, _assign) = bin_pack::<C4, C4, u8, W>(
+    let items: Array<u8, Dim<4>> = Array::new([0, 1, 2, 3]);
+    let (count, _assign) = bin_pack::<Dim<4>, Dim<4>, u8, W>(
         &items,
         w(2),
         |_| w(1),

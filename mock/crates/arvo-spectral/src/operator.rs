@@ -3,38 +3,38 @@
 //! Spectral algorithms (power_iteration, fiedler_vector) need exactly
 //! one capability from their input: the matrix-vector product
 //! `y = A * x`. Making that the trait surface lifts the algorithms
-//! across every concrete representation. Dense `Matrix<F, N>` runs the
+//! across every concrete representation. Dense `Matrix<F, C>` runs the
 //! classic `O(N^2)` matvec. CSR-backed `SparseLaplacian` computes
 //! `(L * x)[i] = sum over j of w(i, j) * (x[i] - x[j])` walking the
 //! row directly, `O(NNZ)` per apply.
 //!
 //! The trait contract: `apply(x, y)` writes `A * x` into `y`. `y` must
 //! not alias `x`. Algorithms keep `y` as an exclusive scratch buffer.
+//! The capacity is a TYPE (`C: Capacity`); vectors are the associated
+//! array `C::Array<F>`.
 
 use core::marker::PhantomData;
 use core::ops::{Add, Mul, Sub};
 
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo_sparse::{Csr, SparseAdjacency};
+use arvo_tensor::{Capacity, cap_size};
 
-use crate::matrix::{Matrix, cap_size};
+use crate::matrix::Matrix;
 
-/// Linear operator `y = A * x` on a fixed-size vector space.
+/// Linear operator `y = A * x` on a fixed-capacity vector space.
 ///
-/// `apply(x, y)` writes `A * x` into `y`. The two slices must not
+/// `apply(x, y)` writes `A * x` into `y`. The two arrays must not
 /// alias; spectral algorithms keep `y` as exclusive scratch.
-pub trait LinearOperator<F, const N: Cap>
-where
-    [(); cap_size(N)]:,
-{
+pub trait LinearOperator<F, C: Capacity> {
     /// Write `A * x` into `y`. `y` must not alias `x`.
-    fn apply(&self, x: &[F; cap_size(N)], y: &mut [F; cap_size(N)]);
+    fn apply(&self, x: &C::Array<F>, y: &mut C::Array<F>);
 
     /// Number of nodes the operator spans.
     ///
-    /// `cap_size(N)` for a fully packed operator (dense `Matrix`), the
-    /// live row count for a `SparseLaplacian` over a loose CSR. The
+    /// `cap_size(C::CAP)` for a fully packed operator (dense `Matrix`),
+    /// the live row count for a `SparseLaplacian` over a loose CSR. The
     /// iterative algorithms iterate `[0, live_dim())`, so a loose
     /// graph's empty slack rows stay out of the Fiedler iteration and
     /// the partition budget. Required, not defaulted: every operator
@@ -43,25 +43,26 @@ where
     fn live_dim(&self) -> USize;
 }
 
-// Dense Matrix<F, N>: classic O(N^2) matvec.
-impl<F, const N: Cap> LinearOperator<F, N> for Matrix<F, N>
+// Dense Matrix<F, C>: classic O(N^2) matvec.
+impl<F, C: Capacity> LinearOperator<F, C> for Matrix<F, C>
 where
-    [(); cap_size(N)]:,
     F: Add<Output = F> + Mul<Output = F> + Copy + FromConstant,
 {
     #[inline]
-    fn apply(&self, x: &[F; cap_size(N)], y: &mut [F; cap_size(N)]) {
-        let n = cap_size(N);
+    fn apply(&self, x: &C::Array<F>, y: &mut C::Array<F>) {
+        let n = cap_size(C::CAP);
         let zero = F::from_constant::<{ USize(0) }>();
+        let xs = x.as_ref();
+        let ys = y.as_mut();
         let mut i = 0usize;
         while i < n {
             let mut acc = zero;
             let mut j = 0usize;
             while j < n {
-                acc = acc + self.get(USize(i), USize(j)) * x[j];
+                acc = acc + self.get(USize(i), USize(j)) * xs[j];
                 j += 1;
             }
-            y[i] = acc;
+            ys[i] = acc;
             i += 1;
         }
     }
@@ -69,7 +70,7 @@ where
     #[inline]
     fn live_dim(&self) -> USize {
         // Dense matrices are always fully packed: the span is the cap.
-        USize(cap_size(N))
+        USize(cap_size(C::CAP))
     }
 }
 
@@ -86,30 +87,27 @@ where
 /// adjacency, no rebuild on each iteration. `F` is the spectral
 /// eigenvector type (typically `FastFloat<f32>` / `StrictFloat<f32>`),
 /// `W` is the edge weight type. The per-cell conversion runs through
-/// `W: Into<F>` at apply time.
+/// `W: Into<F>` at apply time. The row capacity `R` is the operator's
+/// `Capacity`; the nnz capacity `NNZ` is the CSR's storage axis.
 ///
 /// Diagonal entries in the CSR are ignored (a self-edge does not
 /// contribute to either the off-diagonal or the degree, by the
 /// Laplacian's definition).
-pub struct SparseLaplacian<'data, const ROWS: Cap, const NNZ: Cap, W, F>
+pub struct SparseLaplacian<'data, R: Capacity, NNZ: Capacity, W, F>
 where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
     W: Copy + Into<F>,
 {
-    csr: &'data Csr<ROWS, NNZ, W>,
+    csr: &'data Csr<R, NNZ, W>,
     _phantom: PhantomData<F>,
 }
 
-impl<'data, const ROWS: Cap, const NNZ: Cap, W, F> SparseLaplacian<'data, ROWS, NNZ, W, F>
+impl<'data, R: Capacity, NNZ: Capacity, W, F> SparseLaplacian<'data, R, NNZ, W, F>
 where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
     W: Copy + Into<F>,
 {
     /// Build a Laplacian operator over the borrowed CSR.
     #[inline]
-    pub fn new(csr: &'data Csr<ROWS, NNZ, W>) -> Self {
+    pub fn new(csr: &'data Csr<R, NNZ, W>) -> Self {
         Self {
             csr,
             _phantom: PhantomData,
@@ -166,23 +164,23 @@ where
     }
 }
 
-impl<'data, const ROWS: Cap, const NNZ: Cap, W, F> LinearOperator<F, ROWS>
-    for SparseLaplacian<'data, ROWS, NNZ, W, F>
+impl<'data, R: Capacity, NNZ: Capacity, W, F> LinearOperator<F, R>
+    for SparseLaplacian<'data, R, NNZ, W, F>
 where
-    [(); cap_size(ROWS)]:,
-    [(); cap_size(NNZ)]:,
     W: Copy + Into<F>,
     F: Add<Output = F> + Sub<Output = F> + Mul<Output = F> + Copy + FromConstant,
 {
     #[inline]
-    fn apply(&self, x: &[F; cap_size(ROWS)], y: &mut [F; cap_size(ROWS)]) {
-        let n = cap_size(ROWS);
+    fn apply(&self, x: &R::Array<F>, y: &mut R::Array<F>) {
+        let n = cap_size(R::CAP);
         let zero = F::from_constant::<{ USize(0) }>();
+        let xs = x.as_ref();
+        let ys = y.as_mut();
         let mut i = 0usize;
         while i < n {
             let cols = self.csr.row_col_indices(USize(i));
             let vals = self.csr.row_values(USize(i));
-            let xi = x[i];
+            let xi = xs[i];
             let mut acc = zero;
             let mut k = 0usize;
             while k < cols.len() {
@@ -190,11 +188,11 @@ where
                 // Skip self-edges and out-of-range indices.
                 if j_idx != i && j_idx < n {
                     let wf: F = vals[k].into();
-                    acc = acc + wf * (xi - x[j_idx]);
+                    acc = acc + wf * (xi - xs[j_idx]);
                 }
                 k += 1;
             }
-            y[i] = acc;
+            ys[i] = acc;
             i += 1;
         }
     }

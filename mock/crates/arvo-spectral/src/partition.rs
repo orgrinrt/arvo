@@ -2,33 +2,34 @@
 //!
 //! `spectral_bisection` splits an `N`-node set into two classes by the
 //! sign of the Fiedler vector. The return shape is
-//! `(class_count, [USize; cap_size(N)])` where `class[i]` is the
+//! `(class_count, C::Array<USize>)` where `class[i]` is the
 //! class id of node `i`. Class IDs: `0` for positive, `1` for
 //! non-positive. Ties go to the negative class; `F::from_constant(0)`
 //! compared strictly-greater-than via `TotalOrd`. `class_count` is
 //! always `2`.
 //!
 //! `k_way_partition` runs recursive spectral bisection. A
-//! stack-allocated fixed-size work stack holds partition IDs awaiting
+//! stack-allocated fixed-capacity work stack holds partition IDs awaiting
 //! a split. Each pop bisects one partition by recomputing the Fiedler
 //! vector on the full operator and partitioning by sign within the
 //! membership filter. Output is `(partition_count, per_node_partition_id)`.
 //! `partition_count` can be less than `K` if a component becomes
 //! unsplittable before the budget is exhausted.
 //!
-//! Both routines are operator-generic over `LinearOperator<F, N>`.
-//! Callers wrap their Laplacian (dense `Matrix<F, N>` or
+//! Both routines are operator-generic over `LinearOperator<F, C>`.
+//! Callers wrap their Laplacian (dense `Matrix<F, C>` or
 //! `SparseLaplacian<...>`) once and reuse for both eigenvector and
-//! partition stages.
+//! partition stages. The capacity is a TYPE (`C: Capacity`); the
+//! partition budget is a second capacity `K: Capacity`.
 
 use core::cmp::Ordering;
 use core::ops::{Add, Mul, Sub};
 
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
-use arvo::{Cap, Identity, USize};
+use arvo::{Identity, USize};
+use arvo_tensor::{Capacity, cap_size};
 
 use crate::fiedler::fiedler_vector;
-use crate::matrix::cap_size;
 use crate::operator::{LinearOperator, SparseLaplacian};
 
 /// Partition `N` nodes into two classes by the sign of their Fiedler
@@ -41,21 +42,22 @@ use crate::operator::{LinearOperator, SparseLaplacian};
 /// beyond `live_n` keep class `1` (a loose graph's slack rows are not
 /// real nodes).
 #[inline]
-pub fn spectral_bisection<const N: Cap, F>(
-    fiedler: &[F; cap_size(N)],
+pub fn spectral_bisection<C: Capacity, F>(
+    fiedler: &C::Array<F>,
     live_n: USize,
-) -> (USize, [USize; cap_size(N)])
+) -> (USize, C::Array<USize>)
 where
-    [(); cap_size(N)]:,
     F: TotalOrd + Copy + FromConstant,
 {
     let n = live_n.0;
     let zero = F::from_constant::<{ USize(0) }>();
-    let mut class: [USize; cap_size(N)] = [USize(1); cap_size(N)];
+    let mut class: C::Array<USize> = C::filled(USize(1));
+    let fs = fiedler.as_ref();
+    let cs = class.as_mut();
     let mut i = 0usize;
     while i < n {
-        if let Ordering::Greater = fiedler[i].total_cmp(zero) {
-            class[i] = USize(0);
+        if let Ordering::Greater = fs[i].total_cmp(zero) {
+            cs[i] = USize(0);
         }
         i += 1;
     }
@@ -80,15 +82,14 @@ where
 /// step (the operator is reused, so one sigma serves the whole
 /// recursion).
 #[inline]
-pub fn k_way_partition<Op, const N: Cap, const K: Cap, F>(
+pub fn k_way_partition<Op, C: Capacity, K: Capacity, F>(
     operator: &Op,
     sigma: F,
     iterations: USize,
-) -> (USize, [USize; cap_size(N)])
+) -> (USize, C::Array<USize>)
 where
-    Op: LinearOperator<F, N>,
-    [(); cap_size(N)]:,
-    [(); cap_size(K)]:,
+    Op: LinearOperator<F, C>,
+    C::Array<F>: Copy,
     F: Add<Output = F>
         + Sub<Output = F>
         + Mul<Output = F>
@@ -101,17 +102,17 @@ where
     // Live node count: a loose-CSR operator excludes its empty slack
     // rows, so they are never counted into a partition or split.
     let n = operator.live_dim().0;
-    let k = cap_size(K);
+    let k = cap_size(K::CAP);
 
-    let mut partition_id: [USize; cap_size(N)] = [USize(0); cap_size(N)];
+    let mut partition_id: C::Array<USize> = C::filled(USize(0));
     if n <= 1 || k <= 1 {
         return (USize(if n == 0 { 0 } else { 1 }), partition_id);
     }
 
     // Work stack: partition IDs awaiting bisection. At most K - 1
     // bisections produce K partitions; stack depth bounded by K.
-    let mut stack: [USize; cap_size(K)] = [USize(0); cap_size(K)];
-    stack[0] = USize(0);
+    let mut stack: K::Array<USize> = K::filled(USize(0));
+    stack.as_mut()[0] = USize(0);
     let mut stack_len = USize(1);
 
     let mut partition_count = USize(1);
@@ -119,16 +120,19 @@ where
 
     while stack_len.0 > 0 && partition_count.0 < k {
         stack_len = stack_len - USize::ONE;
-        let active = stack[stack_len.0];
+        let active = stack.as_ref()[stack_len.0];
 
         // Count active partition's nodes; singletons cannot be split.
         let mut active_count = 0usize;
-        let mut j = 0usize;
-        while j < n {
-            if partition_id[j] == active {
-                active_count += 1;
+        {
+            let pid = partition_id.as_ref();
+            let mut j = 0usize;
+            while j < n {
+                if pid[j] == active {
+                    active_count += 1;
+                }
+                j += 1;
             }
-            j += 1;
         }
         if active_count <= 1 {
             continue;
@@ -138,21 +142,25 @@ where
         // for the bisection. Recomputing per-pop is the documented
         // approximation per arvo-spectral BACKLOG; restricted-Laplacian
         // per-component eigen is a follow-up round's scope.
-        let fiedler: [F; cap_size(N)] = fiedler_vector(operator, sigma, iterations);
+        let fiedler: C::Array<F> = fiedler_vector(operator, sigma, iterations);
 
         // Tally positive vs non-positive sides within the active set.
         let mut positive_count = 0usize;
         let mut negative_count = 0usize;
-        let mut j = 0usize;
-        while j < n {
-            if partition_id[j] == active {
-                if let Ordering::Greater = fiedler[j].total_cmp(zero) {
-                    positive_count += 1;
-                } else {
-                    negative_count += 1;
+        {
+            let pid = partition_id.as_ref();
+            let fs = fiedler.as_ref();
+            let mut j = 0usize;
+            while j < n {
+                if pid[j] == active {
+                    if let Ordering::Greater = fs[j].total_cmp(zero) {
+                        positive_count += 1;
+                    } else {
+                        negative_count += 1;
+                    }
                 }
+                j += 1;
             }
-            j += 1;
         }
 
         // Degenerate bisection (one side empty): cannot split.
@@ -164,14 +172,18 @@ where
         // the existing `active` id.
         let new_id = partition_count;
         partition_count = partition_count + USize::ONE;
-        let mut j = 0usize;
-        while j < n {
-            if partition_id[j] == active {
-                if let Ordering::Greater = fiedler[j].total_cmp(zero) {
-                    partition_id[j] = new_id;
+        {
+            let pid = partition_id.as_mut();
+            let fs = fiedler.as_ref();
+            let mut j = 0usize;
+            while j < n {
+                if pid[j] == active {
+                    if let Ordering::Greater = fs[j].total_cmp(zero) {
+                        pid[j] = new_id;
+                    }
                 }
+                j += 1;
             }
-            j += 1;
         }
 
         // Push both halves back for further bisection.
@@ -193,16 +205,16 @@ where
         // the larger half and drops the smaller (F2 fix).
         if want > 0 && stack_len.0 + want <= k {
             if pos_big {
-                stack[stack_len.0] = new_id;
+                stack.as_mut()[stack_len.0] = new_id;
                 stack_len = stack_len + USize::ONE;
             }
             if neg_big {
-                stack[stack_len.0] = active;
+                stack.as_mut()[stack_len.0] = active;
                 stack_len = stack_len + USize::ONE;
             }
         } else if want > 0 && stack_len.0 + 1 <= k {
             let pick = if positive_count >= negative_count { new_id } else { active };
-            stack[stack_len.0] = pick;
+            stack.as_mut()[stack_len.0] = pick;
             stack_len = stack_len + USize::ONE;
         }
     }
@@ -215,15 +227,15 @@ where
 /// Any type providing both the Laplacian-shaped operator and its
 /// Gershgorin upper bound implements this trait; the default impl
 /// composes `fiedler_vector` + `spectral_bisection`. Consumers with a
-/// `Matrix<F, N>` representing a Laplacian or a `SparseLaplacian<'_,
+/// `Matrix<F, C>` representing a Laplacian or a `SparseLaplacian<'_,
 /// ...>` get the bipartition without naming the algorithm.
 ///
 /// The trait is plain `pub trait` rather than `pub const trait`
 /// because the underlying Fiedler iteration uses floating-point
 /// `Sqrt` / `Recip` operations that are not const-callable.
-pub trait SpectralBipartitioner<const N: Cap, F>: LinearOperator<F, N>
+pub trait SpectralBipartitioner<C: Capacity, F>: LinearOperator<F, C>
 where
-    [(); cap_size(N)]:,
+    C::Array<F>: Copy,
     F: Add<Output = F>
         + Sub<Output = F>
         + Mul<Output = F>
@@ -246,23 +258,22 @@ where
     /// implementation composes the shipped `fiedler_vector` +
     /// `spectral_bisection` free functions.
     #[inline]
-    fn bipartition(&self, iterations: USize) -> (USize, [USize; cap_size(N)])
+    fn bipartition(&self, iterations: USize) -> (USize, C::Array<USize>)
     where
         Self: Sized,
     {
-        let sigma = <Self as SpectralBipartitioner<N, F>>::lambda_max_bound(self);
-        let fiedler: [F; cap_size(N)] = fiedler_vector(self, sigma, iterations);
-        spectral_bisection::<N, F>(&fiedler, self.live_dim())
+        let sigma = <Self as SpectralBipartitioner<C, F>>::lambda_max_bound(self);
+        let fiedler: C::Array<F> = fiedler_vector(self, sigma, iterations);
+        spectral_bisection::<C, F>(&fiedler, self.live_dim())
     }
 }
 
 // Wire SparseLaplacian into the bipartitioner trait. The bound is the
 // Gershgorin upper bound, reused as the Fiedler shift.
-impl<'data, const ROWS: Cap, const NNZ: Cap, W, F> SpectralBipartitioner<ROWS, F>
-    for SparseLaplacian<'data, ROWS, NNZ, W, F>
+impl<'data, R: Capacity, NNZ: Capacity, W, F> SpectralBipartitioner<R, F>
+    for SparseLaplacian<'data, R, NNZ, W, F>
 where
-    [(); cap_size(ROWS)]:,
-    [(); arvo_bitmask::cap_size(NNZ)]:,
+    R::Array<F>: Copy,
     W: Copy + Into<F>,
     F: Add<Output = F>
         + Sub<Output = F>

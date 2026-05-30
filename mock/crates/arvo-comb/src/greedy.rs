@@ -10,9 +10,9 @@
 //! the default for pipeline grouping where the DP's quadratic table is
 //! oversized.
 
-use arvo::{Identity, Bool, Cap, USize};
+use arvo::{Identity, Bool, USize};
 use arvo::predicate::Pred2;
-use arvo_tensor::{Array, cap_size};
+use arvo_tensor::{Array, Capacity, cap_size};
 
 use crate::range::Range;
 
@@ -32,21 +32,17 @@ use crate::range::Range;
 /// If a just-reset accumulator still reports an item as infeasible,
 /// that item is skipped to avoid an infinite loop. A well-formed
 /// predicate should always accept the first item of a fresh group.
-pub fn greedy_group<const N: Cap, const M: Cap, A, T>(
+pub fn greedy_group<N: Capacity, M: Capacity, A, T>(
     items: &Array<T, N>,
     feasible: impl Pred2<A, T>,
     merge: impl Fn(A, &T) -> A,
     init: impl Fn() -> A,
-) -> (USize, Array<Range, M>)
-where
-    [(); cap_size(N)]:,
-    [(); cap_size(M)]:,
-{
+) -> (USize, Array<Range, M>) {
     let mut groups: Array<Range, M> = Array::filled(Range::default());
     let mut count = USize(0);
 
     // Empty input: no groups.
-    if cap_size(N) == 0 || cap_size(M) == 0 {
+    if cap_size(N::CAP) == 0 || cap_size(M::CAP) == 0 {
         return (count, groups);
     }
 
@@ -56,7 +52,7 @@ where
     let mut open = Bool::FALSE;
     let mut i = USize(0);
 
-    while i.0 < cap_size(N) {
+    while i.0 < cap_size(N::CAP) {
         let item = items.get(i);
 
         if !open.0 {
@@ -83,7 +79,7 @@ where
         // Close the open group at `[range_start, i)`.
         groups.set(count, Range { start: range_start, end: i });
         count = count + USize::ONE;
-        if count.0 == cap_size(M) {
+        if count.0 == cap_size(M::CAP) {
             return (count, groups);
         }
 
@@ -94,10 +90,10 @@ where
     }
 
     // Close the trailing open group.
-    if open.0 && count.0 < cap_size(M) {
+    if open.0 && count.0 < cap_size(M::CAP) {
         groups.set(
             count,
-            Range { start: range_start, end: USize(cap_size(N)) },
+            Range { start: range_start, end: USize(cap_size(N::CAP)) },
         );
         count = count + USize::ONE;
     }

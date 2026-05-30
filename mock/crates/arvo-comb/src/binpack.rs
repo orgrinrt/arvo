@@ -18,9 +18,9 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::{Identity, Bool, Cap, NUSize, USize};
+use arvo::{Identity, Bool, NUSize, USize};
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo_tensor::{Array, cap_size};
+use arvo_tensor::{Array, Capacity, cap_size};
 
 /// First-fit bin packing with affinity-based pre-ordering.
 ///
@@ -34,29 +34,27 @@ use arvo_tensor::{Array, cap_size};
 /// per-item placement via `into_maybe()` on each `NUSize` cell.
 /// `bin_count` is the number of bins that received at least one item
 /// (never greater than `B`).
-pub fn bin_pack<const N: Cap, const B: Cap, T, W>(
+pub fn bin_pack<N: Capacity, B: Capacity, T, W>(
     items: &Array<T, N>,
     capacity: W,
     weight_of: impl Fn(&T) -> W,
     affinity: impl Fn(&T, &T) -> W,
 ) -> (USize, Array<NUSize, N>)
 where
-    [(); cap_size(N)]:,
-    [(); cap_size(B)]:,
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
 {
     let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
     let mut bins_of_items: Array<NUSize, N> = Array::filled(NUSize::NONE);
 
-    if cap_size(N) == 0 || cap_size(B) == 0 {
+    if cap_size(N::CAP) == 0 || cap_size(B::CAP) == 0 {
         return (USize(0), bins_of_items);
     }
 
     // Total-affinity score per item: sum over all other items.
     let mut score: Array<W, N> = Array::filled(zero);
-    for a in 0..cap_size(N) {
+    for a in 0..cap_size(N::CAP) {
         let mut s = zero;
-        for b in 0..cap_size(N) {
+        for b in 0..cap_size(N::CAP) {
             if a != b {
                 s = s + affinity(items.get(USize(a)), items.get(USize(b)));
             }
@@ -67,7 +65,7 @@ where
     // Index array sorted by `score` descending via insertion sort.
     // Bounded N, O(N^2) in the const size, no alloc.
     let mut order: Array<USize, N> = Array::from_fn(|i| i);
-    for j in 1..cap_size(N) {
+    for j in 1..cap_size(N::CAP) {
         let cur = *order.get(USize(j));
         let cur_score = *score.get(cur);
         let mut k = j;
@@ -93,7 +91,7 @@ where
     let mut opened = USize(0);
 
     // Walk items in affinity-descending order and place first-fit.
-    for p in 0..cap_size(N) {
+    for p in 0..cap_size(N::CAP) {
         let idx = *order.get(USize(p));
         let w = weight_of(items.get(idx));
 
@@ -111,7 +109,7 @@ where
         }
 
         // Open a new bin if capacity allows and we are under `B`.
-        if !placed.0 && opened.0 < cap_size(B) {
+        if !placed.0 && opened.0 < cap_size(B::CAP) {
             if !matches!(w.total_cmp(capacity), Ordering::Greater) {
                 used.set(opened, w);
                 bins_of_items.set(idx, NUSize::some(opened));

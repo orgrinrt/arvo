@@ -20,33 +20,23 @@
 //! (round 202605111741) and arvo-graph W-generic sweep cover the
 //! axis expansion.
 
-#![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
-
 use std::time::Instant;
 
-use arvo::{Bits, Cap, Hot, USize, Unsigned};
+use arvo::{Bits, Hot, USize, Unsigned};
 use arvo_bitmask::{BitMatrix, NodeId, cap_size};
 use arvo_sparse::{block_diagonal, dulmage_mendelsohn, rcm_reorder};
+use arvo_tensor::{Capacity, Dim};
 
 type W = Bits<64, Hot, Unsigned>;
-
-const fn cap(n: usize) -> Cap {
-    Cap(USize(n))
-}
 
 fn nid(i: usize) -> NodeId {
     NodeId::new(USize(i))
 }
 
 /// Linear chain: 0 -> 1 -> 2 -> ... -> N-1, undirected.
-fn linear_chain<const N: Cap>() -> BitMatrix<W, N>
-where
-    [(); cap_size(N)]:,
-{
+fn linear_chain<N: Capacity>() -> BitMatrix<W, N> {
     let mut adj: BitMatrix<W, N> = BitMatrix::<W, _>::empty();
-    let n = N.0.0;
+    let n = cap_size(N::CAP);
     for i in 0..(n - 1) {
         adj.set_edge(nid(i), nid(i + 1));
         adj.set_edge(nid(i + 1), nid(i));
@@ -56,12 +46,9 @@ where
 
 /// Deterministic pseudo-random graph (~50% density). LCG over the
 /// node-pair index decides each edge; identical across runs.
-fn pseudo_random<const N: Cap>() -> BitMatrix<W, N>
-where
-    [(); cap_size(N)]:,
-{
+fn pseudo_random<N: Capacity>() -> BitMatrix<W, N> {
     let mut adj: BitMatrix<W, N> = BitMatrix::<W, _>::empty();
-    let n = N.0.0;
+    let n = cap_size(N::CAP);
     let mut state: u64 = 0x1234_5678_9ABC_DEF0;
     for i in 0..n {
         for j in 0..n {
@@ -87,11 +74,8 @@ fn time_micros<F: FnMut()>(mut f: F, iters: u32) -> f64 {
     elapsed.as_nanos() as f64 / iters as f64 / 1000.0
 }
 
-fn run_n<const N: Cap>(label: &str)
-where
-    [(); cap_size(N)]:,
-{
-    let n = N.0.0;
+fn run_n<N: Capacity>(label: &str) {
+    let n = cap_size(N::CAP);
     let lin = linear_chain::<N>();
     let rnd = pseudo_random::<N>();
     let iters = 1000;
@@ -135,7 +119,7 @@ fn main() {
     println!("| Variant | RCM (lin) | RCM (rnd) | Blk (lin) | Blk (rnd) | DM (lin) | DM (rnd) |");
     println!("|---|---:|---:|---:|---:|---:|---:|");
 
-    run_n::<{ cap(16) }>("structural-decomposition");
-    run_n::<{ cap(32) }>("structural-decomposition");
-    run_n::<{ cap(64) }>("structural-decomposition");
+    run_n::<Dim<16>>("structural-decomposition");
+    run_n::<Dim<32>>("structural-decomposition");
+    run_n::<Dim<64>>("structural-decomposition");
 }

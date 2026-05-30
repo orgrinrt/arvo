@@ -17,10 +17,11 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo::{Bits, Hot, Unsigned};
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo_bitmask::{BitMatrix, cap_size};
+use arvo_bitmask::{BitMatrix, NodeId, cap_size};
+use arvo_tensor::Capacity;
 
 use crate::topo::topo_sort;
 
@@ -30,33 +31,35 @@ use crate::topo::topo_sort;
 /// every successor's rank is already computed when a node is
 /// visited. Leaves ground at their own weight.
 #[inline]
-pub fn upward_rank<const N: Cap, W>(
-    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
-    weights: &[W; cap_size(N)],
-) -> [W; cap_size(N)]
+pub fn upward_rank<C: Capacity, W>(
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+    weights: &C::Array<W>,
+) -> C::Array<W>
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
-    [(); cap_size(N)]:,
+    C::Array<W>: Copy,
+    C::Array<USize>: Copy,
+    C::Array<NodeId>: Copy,
 {
     let (valid, order) = topo_sort(dag);
 
     // Initialise ranks to zero; overwritten as we walk reverse topo.
     let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
-    let mut rank: [W; cap_size(N)] = [zero; cap_size(N)];
+    let mut rank: C::Array<W> = C::filled(zero);
 
     // Walk the valid prefix in reverse.
     let valid_n = valid.0;
     let mut idx = valid_n;
     while idx > 0 {
         idx -= 1;
-        let node = order[idx];
+        let node = order.as_ref()[idx];
         let node_i = (node.0).0;
-        if node_i >= cap_size(N) {
+        if node_i >= cap_size(C::CAP) {
             continue;
         }
 
         // Start with own weight.
-        let w = weights[node_i];
+        let w = weights.as_ref()[node_i];
 
         // Find max successor rank. If no successors, contribution is
         // zero so the total collapses to `w`.
@@ -65,10 +68,10 @@ where
         let mut any = false;
         for s_pos in succ.iter_set_bits() {
             let s_idx = s_pos.0;
-            if s_idx >= cap_size(N) {
+            if s_idx >= cap_size(C::CAP) {
                 continue;
             }
-            let r = rank[s_idx];
+            let r = rank.as_ref()[s_idx];
             if !any {
                 best = r;
                 any = true;
@@ -77,7 +80,7 @@ where
             }
         }
 
-        rank[node_i] = if any { w + best } else { w };
+        rank.as_mut()[node_i] = if any { w + best } else { w };
     }
 
     rank
@@ -88,40 +91,42 @@ where
 /// Walks the valid topo prefix forward so every predecessor is
 /// computed when a node is reached. Roots ground at their own weight.
 #[inline]
-pub fn downward_rank<const N: Cap, W>(
-    dag: &BitMatrix<Bits<64, Hot, Unsigned>, N>,
-    weights: &[W; cap_size(N)],
-) -> [W; cap_size(N)]
+pub fn downward_rank<C: Capacity, W>(
+    dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+    weights: &C::Array<W>,
+) -> C::Array<W>
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
-    [(); cap_size(N)]:,
+    C::Array<W>: Copy,
+    C::Array<USize>: Copy,
+    C::Array<NodeId>: Copy,
 {
     let (valid, order) = topo_sort(dag);
 
     let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
-    let mut rank: [W; cap_size(N)] = [zero; cap_size(N)];
+    let mut rank: C::Array<W> = C::filled(zero);
 
     let valid_n = valid.0;
     let mut idx = 0usize;
     while idx < valid_n {
-        let node = order[idx];
+        let node = order.as_ref()[idx];
         let node_i = (node.0).0;
-        if node_i >= cap_size(N) {
+        if node_i >= cap_size(C::CAP) {
             idx += 1;
             continue;
         }
 
-        let w = weights[node_i];
+        let w = weights.as_ref()[node_i];
 
         let pred = dag.predecessors(node);
         let mut best = zero;
         let mut any = false;
         for p_pos in pred.iter_set_bits() {
             let p_idx = p_pos.0;
-            if p_idx >= cap_size(N) {
+            if p_idx >= cap_size(C::CAP) {
                 continue;
             }
-            let r = rank[p_idx];
+            let r = rank.as_ref()[p_idx];
             if !any {
                 best = r;
                 any = true;
@@ -130,7 +135,7 @@ where
             }
         }
 
-        rank[node_i] = if any { w + best } else { w };
+        rank.as_mut()[node_i] = if any { w + best } else { w };
 
         idx += 1;
     }

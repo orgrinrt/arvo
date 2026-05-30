@@ -1,37 +1,31 @@
 //! Bundle 1 (proper harness form): structural-decomposition Routine
 //! + bench_variant cdylib for `rcm_reorder`.
 //!
-//! Sidesteps a rustc ICE during const-evaluation of `rcm_reorder`'s
-//! internal `cap_size(N)` bound when N comes from a const-fn
-//! application (`cap_of(N_usize)`). The workaround uses **named
-//! Cap constants** per supported N. Each `run_rcm_at_*` call site
-//! passes a literal `Cap` constant, not a const-fn expression, so
-//! rustc evaluates `cap_size(C16)` etc. directly without trigger.
+//! The capacity-as-type migration replaced `rcm_reorder`'s `const N:
+//! Cap` parameter with `C: Capacity`. The backing array is now the GAT
+//! `C::Array<NodeId>` (`[NodeId; N]` for `Dim<N>`), so no `cap_size`
+//! expression sits in type position and the prior named-`Cap`-constant
+//! ICE workaround is gone: each `run` call site instantiates the
+//! algorithm at `Dim<N>` directly.
 //!
 //! The Routine's Input/Output stay usize-parameterised so the
 //! mockspace `bench_variant` macro (which emits `usize` literals)
 //! works unchanged. Input carries raw `[u64; N]` bit storage; the
-//! variant reconstructs `BitMatrix<W, C>` per-N at call time.
+//! variant reconstructs `BitMatrix<W, Dim<N>>` per-N at call time.
 
 #![no_std]
-#![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
 
-use arvo::{Bits, Cap, Hot, USize, Unsigned};
+use arvo::{Bits, Hot, USize, Unsigned};
 use arvo_bitmask::{BitMatrix, NodeId};
 use arvo_sparse::rcm_reorder;
+use arvo_tensor::Dim;
 use mockspace_bench_core::{FfiBenchCall, Routine, timed};
 use mockspace_bench_macro::bench_variant;
 
 pub type W = Bits<64, Hot, Unsigned>;
 
-const C16: Cap = Cap(USize(16));
-const C32: Cap = Cap(USize(32));
-const C64: Cap = Cap(USize(64));
-
 /// FFI-safe input: raw row-bit storage. The variant converts to
-/// `BitMatrix<W, C>` per-N at call time.
+/// `BitMatrix<W, Dim<N>>` per-N at call time.
 #[derive(Copy, Clone, Debug, PartialEq)]
 #[repr(transparent)]
 pub struct RcmInput<const N: usize> {
@@ -102,7 +96,7 @@ pub trait RcmDispatch: Routine {
 impl RcmDispatch for Rcm<16> {
     #[inline(never)]
     fn run(input: &RcmInput<16>, output: &mut [u32; 16]) {
-        let mut adj: BitMatrix<W, C16> = BitMatrix::<W, _>::empty();
+        let mut adj: BitMatrix<W, Dim<16>> = BitMatrix::<W, _>::empty();
         for i in 0..16 {
             for j in 0..16 {
                 if (input.rows[i] >> j) & 1 == 1 {
@@ -120,7 +114,7 @@ impl RcmDispatch for Rcm<16> {
 impl RcmDispatch for Rcm<32> {
     #[inline(never)]
     fn run(input: &RcmInput<32>, output: &mut [u32; 32]) {
-        let mut adj: BitMatrix<W, C32> = BitMatrix::<W, _>::empty();
+        let mut adj: BitMatrix<W, Dim<32>> = BitMatrix::<W, _>::empty();
         for i in 0..32 {
             for j in 0..32 {
                 if (input.rows[i] >> j) & 1 == 1 {
@@ -138,7 +132,7 @@ impl RcmDispatch for Rcm<32> {
 impl RcmDispatch for Rcm<64> {
     #[inline(never)]
     fn run(input: &RcmInput<64>, output: &mut [u32; 64]) {
-        let mut adj: BitMatrix<W, C64> = BitMatrix::<W, _>::empty();
+        let mut adj: BitMatrix<W, Dim<64>> = BitMatrix::<W, _>::empty();
         for i in 0..64 {
             for j in 0..64 {
                 if (input.rows[i] >> j) & 1 == 1 {

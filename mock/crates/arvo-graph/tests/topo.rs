@@ -1,19 +1,9 @@
 //! topo_sort Kahn's algorithm + renumber tests.
 
-#![feature(adt_const_params)]
-#![feature(generic_const_exprs)]
-#![allow(incomplete_features)]
-
-use arvo::{Bits, Cap, Hot, USize, Unsigned};
+use arvo::{Bits, Hot, USize, Unsigned};
 use arvo_bitmask::{BitMatrix, NodeId};
 use arvo_graph::{renumber, topo_sort};
-
-const fn cap(n: usize) -> Cap {
-    Cap(USize(n))
-}
-
-const C3: Cap = cap(3);
-const C4: Cap = cap(4);
+use arvo_tensor::Dim;
 
 fn nid(i: usize) -> NodeId {
     NodeId(USize(i))
@@ -23,7 +13,7 @@ fn nid(i: usize) -> NodeId {
 fn empty_dag_sorts_all_nodes() {
     // No edges: every node is a root. Valid count is N; any order
     // returned is a valid extension.
-    let dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<4>> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     let (valid, _order) = topo_sort(&dag);
     assert_eq!(valid, USize(4));
 }
@@ -31,7 +21,7 @@ fn empty_dag_sorts_all_nodes() {
 #[test]
 fn linear_chain_sort_is_stable() {
     // 0 -> 1 -> 2 -> 3. Only valid topo order is 0,1,2,3.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<4>> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(3));
@@ -46,7 +36,7 @@ fn linear_chain_sort_is_stable() {
 #[test]
 fn diamond_sort_respects_order() {
     // 0 -> 1, 0 -> 2, 1 -> 3, 2 -> 3.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<4>> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(0), nid(2));
     dag.set_edge(nid(1), nid(3));
@@ -64,7 +54,7 @@ fn diamond_sort_respects_order() {
 #[test]
 fn cycle_is_detected() {
     // 0 -> 1 -> 2 -> 0. No in-degree-zero seed.
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C3> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<3>> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(1), nid(2));
     dag.set_edge(nid(2), nid(0));
@@ -75,7 +65,7 @@ fn cycle_is_detected() {
 #[test]
 fn partial_cycle_sorts_reachable_prefix() {
     // 0 -> 1, 2 -> 3 -> 2 (cycle between 2 and 3).
-    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, C4> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
+    let mut dag: BitMatrix<Bits<64, Hot, Unsigned>, Dim<4>> = BitMatrix::<Bits<64, Hot, Unsigned>, _>::empty();
     dag.set_edge(nid(0), nid(1));
     dag.set_edge(nid(2), nid(3));
     dag.set_edge(nid(3), nid(2));
@@ -87,7 +77,7 @@ fn partial_cycle_sorts_reachable_prefix() {
 #[test]
 fn renumber_identity_pass_through() {
     let order = [nid(3), nid(1), nid(0), nid(2)];
-    let out = renumber::<C4>(&order);
+    let out = renumber::<Dim<4>>(&order);
     assert_eq!(out[0], nid(3));
     assert_eq!(out[1], nid(1));
     assert_eq!(out[2], nid(0));

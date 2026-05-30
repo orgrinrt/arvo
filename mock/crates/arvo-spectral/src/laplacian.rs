@@ -8,14 +8,16 @@
 //!
 //! The input uses weight type `W`; the output uses float type `F`.
 //! The per-cell conversion happens through `Into<F>`, so weights can
-//! be fixed-point and eigenvectors can be floats.
+//! be fixed-point and eigenvectors can be floats. The capacity is a
+//! TYPE (`C: Capacity`).
 
 use core::ops::{Add, Sub};
 
-use arvo::{Cap, USize};
+use arvo::USize;
 use arvo::traits::FromConstant;
+use arvo_tensor::{Capacity, cap_size};
 
-use crate::matrix::{Matrix, cap_size};
+use crate::matrix::Matrix;
 
 /// Build the graph Laplacian `L = D - W`.
 ///
@@ -26,13 +28,12 @@ use crate::matrix::{Matrix, cap_size};
 /// weights in the input are ignored; only the off-diagonal edges
 /// contribute to the degree sum.
 #[inline]
-pub fn laplacian<const N: Cap, W, F>(weights: &Matrix<W, N>) -> Matrix<F, N>
+pub fn laplacian<C: Capacity, W, F>(weights: &Matrix<W, C>) -> Matrix<F, C>
 where
-    [(); cap_size(N)]:,
     W: Into<F> + Copy,
     F: Add<Output = F> + Sub<Output = F> + Copy + FromConstant,
 {
-    let n = cap_size(N);
+    let n = cap_size(C::CAP);
     Matrix::from_fn(|i, j| {
         let i_raw = i.0;
         let j_raw = j.0;
