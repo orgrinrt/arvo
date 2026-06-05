@@ -12,23 +12,24 @@
 //! waist mask back through the same `topo_order` they passed in.
 
 use arvo::{Identity, Bool, USize};
-use arvo::{Bits, Hot, Unsigned};
+use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_tensor::Capacity;
 
 /// Detect waist levels in a DAG.
 ///
-/// Returns a `Mask<Bits<64, Hot, Unsigned>>` whose bit `k` is set when the node at
+/// Returns a `Mask<B>` whose bit `k` is set when the node at
 /// `topo_order[k]` sits at a depth whose level width is a strict
 /// local minimum relative to the occupied depths on either side.
 /// Nodes outside the valid prefix (e.g. when a cycle clipped the
 /// topo sort) contribute nothing.
 #[inline]
-pub fn waist_detect<C: Capacity>(
-    dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+pub fn waist_detect<C: Capacity, B>(
+    dag: &BitMatrix<B, C>,
     topo_order: &C::Array<NodeId>,
-) -> Mask<Bits<64, Hot, Unsigned>>
+) -> Mask<B>
 where
+    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity,
     C::Array<USize>: Copy,
     C::Array<Bool>: Copy,
 {
@@ -110,7 +111,7 @@ where
 
     // Emit bits at the topo-order POSITIONS of nodes whose depth is a
     // waist depth.
-    let mut out = Mask::<Bits<64, Hot, Unsigned>>::empty();
+    let mut out = Mask::<B>::empty();
     let mut k = 0usize;
     while k < cap_size(C::CAP) {
         let node = topo_order.as_ref()[k];

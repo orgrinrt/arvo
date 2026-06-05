@@ -14,8 +14,8 @@
 use core::cmp::Ordering;
 
 use arvo::{Identity, USize};
-use arvo::{Bits, Hot, Unsigned};
 use arvo::traits::TotalOrd;
+use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_tensor::Capacity;
 
@@ -28,20 +28,23 @@ use arvo_tensor::Capacity;
 /// - `branch_roots`: bit set at every node that starts a branch
 ///   (non-trunk successor of a fan-out point, or a secondary root).
 /// - `bridges`: bit set at every node with two or more predecessors.
-pub struct SpanningTree<C: Capacity> {
+pub struct SpanningTree<C: Capacity, B: BitSequence + BitAccess + Copy + Default> {
     /// Nodes that sit on a trunk (main or branch).
-    pub on_trunk: Mask<Bits<64, Hot, Unsigned>>,
+    pub on_trunk: Mask<B>,
     /// Successor of each on-trunk node. Undefined off the trunk.
     pub trunk_next: C::Array<NodeId>,
     /// Starting nodes of branches.
-    pub branch_roots: Mask<Bits<64, Hot, Unsigned>>,
+    pub branch_roots: Mask<B>,
     /// Fan-in nodes (predecessor count >= 2).
-    pub bridges: Mask<Bits<64, Hot, Unsigned>>,
+    pub bridges: Mask<B>,
 }
 
-impl<C: Capacity> Copy for SpanningTree<C> where C::Array<NodeId>: Copy {}
+impl<C: Capacity, B: BitSequence + BitAccess + Copy + Default> Copy for SpanningTree<C, B> where
+    C::Array<NodeId>: Copy
+{
+}
 
-impl<C: Capacity> Clone for SpanningTree<C>
+impl<C: Capacity, B: BitSequence + BitAccess + Copy + Default> Clone for SpanningTree<C, B>
 where
     C::Array<NodeId>: Copy,
 {
@@ -51,7 +54,7 @@ where
     }
 }
 
-impl<C: Capacity> SpanningTree<C>
+impl<C: Capacity, B: BitSequence + BitAccess + Copy + Default + Identity> SpanningTree<C, B>
 where
     C::Array<NodeId>: Copy,
 {
@@ -59,10 +62,10 @@ where
     #[inline]
     pub fn empty() -> Self {
         Self {
-            on_trunk: Mask::<Bits<64, Hot, Unsigned>>::empty(),
+            on_trunk: Mask::<B>::empty(),
             trunk_next: C::filled(NodeId::new(USize(0))),
-            branch_roots: Mask::<Bits<64, Hot, Unsigned>>::empty(),
-            bridges: Mask::<Bits<64, Hot, Unsigned>>::empty(),
+            branch_roots: Mask::<B>::empty(),
+            bridges: Mask::<B>::empty(),
         }
     }
 }
@@ -80,15 +83,16 @@ where
 /// or a branch root. Unreached sources are skipped, a cyclic input
 /// silently yields an empty decomposition for the cyclic remainder.
 #[inline]
-pub fn spanning_tree<C: Capacity, W>(
-    dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+pub fn spanning_tree<C: Capacity, W, B>(
+    dag: &BitMatrix<B, C>,
     ranks: &C::Array<W>,
-) -> SpanningTree<C>
+) -> SpanningTree<C, B>
 where
     W: TotalOrd + Copy,
+    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity,
     C::Array<NodeId>: Copy,
 {
-    let mut out: SpanningTree<C> = SpanningTree::empty();
+    let mut out: SpanningTree<C, B> = SpanningTree::empty();
 
     // Every node with predecessor count >= 2 is a bridge.
     let mut i = 0usize;
@@ -101,7 +105,7 @@ where
     }
 
     // Identify sources: predecessors().count() == 0.
-    let mut sources: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
+    let mut sources: Mask<B> = Mask::<B>::empty();
     let mut src_any = false;
     let mut j = 0usize;
     while j < cap_size(C::CAP) {
@@ -157,7 +161,7 @@ where
         }
     }
 
-    let mut visited: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
+    let mut visited: Mask<B> = Mask::<B>::empty();
 
     while q_head < q_tail {
         let start = queue.as_ref()[q_head];
