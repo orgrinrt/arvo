@@ -5,11 +5,11 @@
 //! node we allocate a fresh component ID, then DFS every node
 //! reachable in either direction and tag it with that ID.
 //!
-//! Visited tracking is a `Mask<Bits<64, Hot, Unsigned>>`; the DFS stack is a fixed-size
-//! `C::Array<NodeId>` with a head index, so no heap, no grow.
+//! Visited tracking is a `Mask<B>` over the row-word `B`; the DFS stack is a
+//! fixed-size `C::Array<NodeId>` with a head index, so no heap, no grow.
 
 use arvo::{Identity, Bool, USize};
-use arvo::{Bits, Hot, Unsigned};
+use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_tensor::Capacity;
 
@@ -20,13 +20,14 @@ use arvo_tensor::Capacity;
 /// nodes receive the same ID exactly when their DFS closure
 /// (successors + predecessors, transitively) intersects.
 #[inline]
-pub fn components<C: Capacity>(dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>) -> C::Array<USize>
+pub fn components<C: Capacity, B>(dag: &BitMatrix<B, C>) -> C::Array<USize>
 where
+    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity,
     C::Array<USize>: Copy,
     C::Array<NodeId>: Copy,
 {
     let mut comp: C::Array<USize> = C::filled(USize(0));
-    let mut visited: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
+    let mut visited: Mask<B> = Mask::<B>::empty();
     let mut next_id = USize(0);
 
     let mut seed = 0usize;

@@ -1,9 +1,11 @@
 //! arvo-graph — L2 graph algorithms.
 //!
-//! DAG analysis over `BitMatrix<Bits<64, Hot, Unsigned>, C>` adjacency:
-//! topological sort, rank computation, connected components, longest-path
-//! DP, waist detection, and spanning-tree decomposition. Every algorithm
-//! is stack-only and generic over the node-count capacity `C: Capacity`.
+//! DAG analysis over `BitMatrix<B, C>` adjacency: topological sort, rank
+//! computation, connected components, longest-path DP, waist detection, and
+//! spanning-tree decomposition. Every algorithm is stack-only and generic
+//! over both the node-count capacity `C: Capacity` and the adjacency
+//! row-word `B`, so the node ceiling is the chosen word's width, not a fixed
+//! 64.
 //!
 //! Weight types enter through trait bounds from arvo: `TotalOrd` for
 //! max-selection, `FromConstant` for zero init, `core::ops::Add` for

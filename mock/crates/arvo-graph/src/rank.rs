@@ -18,8 +18,8 @@ use core::cmp::Ordering;
 use core::ops::Add;
 
 use arvo::USize;
-use arvo::{Bits, Hot, Unsigned};
 use arvo::traits::{FromConstant, TotalOrd};
+use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use arvo_bitmask::{BitMatrix, NodeId, cap_size};
 use arvo_tensor::Capacity;
 
@@ -31,12 +31,13 @@ use crate::topo::topo_sort;
 /// every successor's rank is already computed when a node is
 /// visited. Leaves ground at their own weight.
 #[inline]
-pub fn upward_rank<C: Capacity, W>(
-    dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+pub fn upward_rank<C: Capacity, W, B>(
+    dag: &BitMatrix<B, C>,
     weights: &C::Array<W>,
 ) -> C::Array<W>
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
+    B: BitSequence + BitAccess + BitLogic + Copy + Default,
     C::Array<W>: Copy,
     C::Array<USize>: Copy,
     C::Array<NodeId>: Copy,
@@ -91,12 +92,13 @@ where
 /// Walks the valid topo prefix forward so every predecessor is
 /// computed when a node is reached. Roots ground at their own weight.
 #[inline]
-pub fn downward_rank<C: Capacity, W>(
-    dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+pub fn downward_rank<C: Capacity, W, B>(
+    dag: &BitMatrix<B, C>,
     weights: &C::Array<W>,
 ) -> C::Array<W>
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
+    B: BitSequence + BitAccess + BitLogic + Copy + Default,
     C::Array<W>: Copy,
     C::Array<USize>: Copy,
     C::Array<NodeId>: Copy,

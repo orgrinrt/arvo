@@ -10,9 +10,9 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::USize;
-use arvo::{Bits, Hot, Unsigned};
+use arvo::{Identity, USize};
 use arvo::traits::{FromConstant, TotalOrd};
+use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_tensor::Capacity;
 
@@ -21,26 +21,27 @@ use arvo_tensor::Capacity;
 /// Returns `(overall_max, has_predecessor, pred_of)`:
 ///
 /// - `overall_max` is the maximum path weight ending at any node.
-/// - `has_predecessor` is a `Mask<Bits<64, Hot, Unsigned>>` with bit `i` set when node `i`
+/// - `has_predecessor` is a `Mask<B>` with bit `i` set when node `i`
 ///   has a best predecessor. Roots (and unreached nodes past the
 ///   valid topo prefix) have their bit unset.
 /// - `pred_of[i]` is the chosen predecessor of node `i` when
 ///   `has_predecessor` bit `i` is set; otherwise undefined.
 #[inline]
-pub fn longest_path<C: Capacity, W>(
-    dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+pub fn longest_path<C: Capacity, W, B>(
+    dag: &BitMatrix<B, C>,
     weights: &C::Array<W>,
     topo_order: &C::Array<NodeId>,
-) -> (W, Mask<Bits<64, Hot, Unsigned>>, C::Array<NodeId>)
+) -> (W, Mask<B>, C::Array<NodeId>)
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
+    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity,
     C::Array<W>: Copy,
     C::Array<NodeId>: Copy,
 {
     let zero = <W as FromConstant>::from_constant::<{ USize(0) }>();
     let mut best: C::Array<W> = C::filled(zero);
     let mut pred_of: C::Array<NodeId> = C::filled(NodeId::new(USize(0)));
-    let mut has_pred: Mask<Bits<64, Hot, Unsigned>> = Mask::<Bits<64, Hot, Unsigned>>::empty();
+    let mut has_pred: Mask<B> = Mask::<B>::empty();
 
     let mut overall = zero;
     let mut any_node = false;

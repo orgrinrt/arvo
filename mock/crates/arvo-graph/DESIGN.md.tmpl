@@ -3,9 +3,11 @@
 DAG and graph algorithms on fixed-capacity structures.
 `#![no_std]`, no alloc. All algorithms operate on the
 `BitMatrix<W, C: Capacity>` and `Mask<W>` chassis from
-arvo-bitmask, with `W = Bits<64, Hot, Unsigned>` as the canonical
-single-word backing for up to 64 nodes. Node indices use `NodeId`
-from arvo-bitmask.
+arvo-bitmask, generic over the row-bearing word. `Bits<64, Hot, Unsigned>`
+is one instantiation (single-word, up to 64 nodes); the consumer picks
+the word width its node count needs, and the algorithms span whatever
+widths the substrate's container projection offers. Node indices use
+`NodeId` from arvo-bitmask.
 
 The crate depends on
 `arvo-storage`, `arvo-bits-contracts`, `arvo-numeric-contracts`,
@@ -16,14 +18,17 @@ contract crates; concrete types come from `arvo-bitmask` and
 
 ## Capacity
 
-Algorithms ship against `BitMatrix<Bits<64, Hot, Unsigned>, C>`. Up
-to 64 nodes per adjacency row, covering the common case observed in
-prior empirical research. The chassis is generic over W; instantiating
-the same algorithms with `W = Bits<256, Hot, Unsigned>` extends to
-256 nodes via WideBits storage without an
-algorithmic-shape change. The wider-W instantiations are tracked in
-BACKLOG.md as ergonomic helpers; the algorithm bodies are the
-same.
+Algorithms are generic over the adjacency row-word, a type parameter
+named `B` (distinct from the edge-weight `W` on the weighted algorithms),
+bounded on the bit-sequence traits the bodies use (`BitSequence +
+BitAccess + BitLogic + Copy + Default + Identity`). A consumer chooses
+the word width its node count needs: `Bits<64, Hot, Unsigned>` for up to
+64 nodes, `Bits<128>` / `Bits<256>` for wider, any width the substrate's
+container projection supports (native up to 128, wide bucket 129 to 256
+via WideBits). The node ceiling is the chosen word's width, not a fixed
+64; the algorithm bodies are the same across widths. The container-width
+projection itself (how wide `Bits<N>` can go) is a separate arvo-storage
+axis.
 
 The capacity is a TYPE: `C: Capacity` (arvo-tensor's `Capacity`) in
 place of the prior `const N: Cap`. Array storage is the associated
@@ -41,8 +46,8 @@ types; this crate is library code.
 ## Weight type contract
 
 ```rust
-fn upward_rank<C: Capacity, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+fn upward_rank<C: Capacity, W, B>(
+ dag: &BitMatrix<B, C>,
  weights: &C::Array<W>,
 ) -> C::Array<W>
 where
@@ -63,8 +68,8 @@ choosing W.
 Kahn's algorithm on BitMatrix adjacency:
 
 ```rust
-fn topo_sort<C: Capacity>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+fn topo_sort<C: Capacity, B>(
+ dag: &BitMatrix<B, C>,
 ) -> (USize, C::Array<NodeId>) // (valid_count, topo_order)
 ```
 
@@ -91,15 +96,15 @@ sequential for the prefetcher.
 ## Rank computation
 
 ```rust
-fn upward_rank<C: Capacity, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+fn upward_rank<C: Capacity, W, B>(
+ dag: &BitMatrix<B, C>,
  weights: &C::Array<W>,
 ) -> C::Array<W>
 where
  W: Add<Output = W> + TotalOrd + Copy + FromConstant
 
-fn downward_rank<C: Capacity, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+fn downward_rank<C: Capacity, W, B>(
+ dag: &BitMatrix<B, C>,
  weights: &C::Array<W>,
 ) -> C::Array<W>
 where
@@ -118,8 +123,8 @@ Both computed in one pass each over the topo-ordered nodes.
 ## Connected components
 
 ```rust
-fn components<C: Capacity>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+fn components<C: Capacity, B>(
+ dag: &BitMatrix<B, C>,
 ) -> C::Array<USize>
 ```
 
@@ -134,11 +139,11 @@ component membership with block-diagonal detection results.
 ## Longest/shortest weighted path
 
 ```rust
-fn longest_path<C: Capacity, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+fn longest_path<C: Capacity, W, B>(
+ dag: &BitMatrix<B, C>,
  weights: &C::Array<W>,
  topo_order: &C::Array<NodeId>,
-) -> (W, Mask<Bits<64, Hot, Unsigned>>, C::Array<NodeId>) // (path_weight, has_predecessor, predecessors)
+) -> (W, Mask<B>, C::Array<NodeId>) // (path_weight, has_predecessor, predecessors)
 where
  W: Add<Output = W> + TotalOrd + Copy + FromConstant
 ```
@@ -161,10 +166,10 @@ per-element compute cost in a pipeline setting.
 ## Waist detection
 
 ```rust
-fn waist_detect<C: Capacity>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+fn waist_detect<C: Capacity, B>(
+ dag: &BitMatrix<B, C>,
  topo_order: &C::Array<NodeId>,
-) -> Mask<Bits<64, Hot, Unsigned>>
+) -> Mask<B>
 ```
 
 Walk topo order. At each level (set of nodes at the same topo depth),
@@ -183,17 +188,17 @@ natural phase boundaries in a staged pipeline.
 ## Spanning tree decomposition
 
 ```rust
-pub struct SpanningTree<C: Capacity> {
- pub on_trunk: Mask<Bits<64, Hot, Unsigned>>, // which nodes are on the trunk
+pub struct SpanningTree<C: Capacity, B> {
+ pub on_trunk: Mask<B>, // which nodes are on the trunk
  pub trunk_next: C::Array<NodeId>, // next node on trunk (valid where on_trunk is set)
- pub branch_roots: Mask<Bits<64, Hot, Unsigned>>, // nodes that start branches
- pub bridges: Mask<Bits<64, Hot, Unsigned>>, // fan-in nodes (mandatory fiber breaks)
+ pub branch_roots: Mask<B>, // nodes that start branches
+ pub bridges: Mask<B>, // fan-in nodes (mandatory fiber breaks)
 }
 
-fn spanning_tree<C: Capacity, W>(
- dag: &BitMatrix<Bits<64, Hot, Unsigned>, C>,
+fn spanning_tree<C: Capacity, W, B>(
+ dag: &BitMatrix<B, C>,
  ranks: &C::Array<W>,
-) -> SpanningTree<C>
+) -> SpanningTree<C, B>
 where
  W: TotalOrd + Copy
 ```
