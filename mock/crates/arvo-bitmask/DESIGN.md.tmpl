@@ -243,6 +243,14 @@ fn predecessors(j: NodeId) -> Mask<W> // scan column j across all rows
 fn transitive_closure(&mut self) // Warshall on bitmasks
 ```
 
+The `W` bound, `BitSequence + BitAccess + BitLogic + Copy + Default`, names
+three traits declared in arvo-bits-contracts (L0.5). arvo-bitmask re-exports
+all three from the crate root, alongside the chassis types they bound. A
+consumer that holds a `BitMatrix<W, C>` field, or writes a function generic
+over the row word, spells that bound through arvo-bitmask, the same L2 layer
+it already pulls in for `BitMatrix` / `Mask` / `cap_size`. The bound travels
+with the type it bounds; no direct arvo-bits-contracts dependency is needed.
+
 This collapsed the prior parallel `BitMatrix64<N>` and
 `BitMatrix256<N>` structs into the generic chassis. The arvo's
 The `WideBits` BitPrim work made the previous "Two concrete types
@@ -280,7 +288,10 @@ chassis.
 
 Downstream consumers (pipeline engines, compilers) use these through
 the algorithm crates above, or directly for access-set / dirty-bit
-tracking.
+tracking. The row-word bound travels with the chassis: the re-exported
+contract traits let a consumer carry an adjacency row word as its own
+generic associated type, bounded at L2, so the row width can track the
+consumer's capacity instead of being hardcoded.
 
 
 Round-by-round history is recorded in `mock/research/arvo-bitmask-history.md` (Tier 2).

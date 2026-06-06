@@ -33,6 +33,7 @@ pub mod matrix;
 pub mod node;
 pub mod ops;
 
+pub use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 pub use dirty::propagate_dirty;
 pub use mask::Mask;
 pub use matrix::{BitMatrix, cap_size};
