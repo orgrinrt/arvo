@@ -57,3 +57,64 @@ impl<const N: usize> Capacity for Dim<N> { // lint:allow(arvo-types-only) lint:a
         core::array::from_fn(|i| f(USize(i)))
     }
 }
+
+/// The const-callable capacity surface, the const analog of [`Capacity`].
+///
+/// Carries the minimal surface a `const fn` needs to build and index a
+/// fixed-capacity backing array in const context: a const `filled` constructor
+/// and const indexed `get` / `set`. A const fn generic over
+/// `C: [const] ConstCapacity` allocates and walks scratch arrays at compile
+/// time, which is what compile-time DAG analysis (a const `waist_detect`)
+/// requires.
+///
+/// `Capacity` itself cannot be a `const trait`: its `from_fn` takes an
+/// `F: FnMut(USize) -> T` closure and calls `core::array::from_fn` in its body,
+/// neither const-callable, and `impl const Trait` must provide a const body for
+/// every method. `ConstCapacity` is therefore a sibling trait, not an
+/// extension: `Capacity` keeps its `AsRef` / `AsMut` / `from_fn` runtime
+/// surface verbatim, and this adds the const surface alongside. `Dim<N>`
+/// implements both, so a consumer needing both binds both and shares the one
+/// `Dim<N>` impl.
+///
+/// `ConstCapacity::Array` is a distinct GAT from `Capacity::Array`, carrying the
+/// `Copy` bound the const surface needs (the array is returned and indexed by
+/// value in const context, dealing in `Copy` scalars: counts, bit-words). For
+/// `Dim<N>` both resolve to `[T; N]`, so a const consumer's
+/// `ConstCapacity::Array<USize>` is the same `[USize; N]` a runtime consumer's
+/// `Capacity::Array<USize>` is.
+pub const trait ConstCapacity {
+    /// The backing array for `T` at this capacity. `[T; N]` for `Dim<N>`.
+    type Array<T: Copy>: Copy;
+
+    /// The typed capacity. `Dim<N>` maps to `cap(N)`.
+    const CAP: Cap;
+
+    /// Build the backing array with `v` in every slot.
+    fn filled<T: Copy>(v: T) -> Self::Array<T>;
+
+    /// Read the slot at `i` by value.
+    fn get<T: Copy>(a: &Self::Array<T>, i: USize) -> T;
+
+    /// Write `v` to the slot at `i`.
+    fn set<T: Copy>(a: &mut Self::Array<T>, i: USize, v: T);
+}
+
+impl<const N: usize> const ConstCapacity for Dim<N> { // lint:allow(arvo-types-only) lint:allow(no-bare-numeric) reason: array-length-grammar root, see the Dim declaration; tracked: #649
+    type Array<T: Copy> = [T; N];
+    const CAP: Cap = cap(N);
+
+    #[inline(always)]
+    fn filled<T: Copy>(v: T) -> [T; N] {
+        [v; N]
+    }
+
+    #[inline(always)]
+    fn get<T: Copy>(a: &[T; N], i: USize) -> T {
+        a[i.0]
+    }
+
+    #[inline(always)]
+    fn set<T: Copy>(a: &mut [T; N], i: USize, v: T) {
+        a[i.0] = v;
+    }
+}
