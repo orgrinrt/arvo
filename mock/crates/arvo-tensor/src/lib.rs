@@ -18,7 +18,12 @@
 //! on arvo L0 only.
 
 #![no_std]
-// No `generic_const_exprs` / `adt_const_params` gates: the capacity is a TYPE
+#![feature(const_trait_impl)]
+// `const_trait_impl` (WATCH-tier ALLOWED in the unstable-feature sweep; already
+// in use across arvo-bits / arvo-bitmask / arvo-storage / the contract crates)
+// gates the `ConstCapacity` const trait, the const-callable sibling of
+// `Capacity`. No `generic_const_exprs` / `adt_const_params` gates: the capacity
+// is a TYPE
 // (`C: Capacity`, backing array `C::Array<T>`), so no `cap_size` expression sits
 // in type position and no `Cap` const generic appears. The GCE surface the
 // `Array<T, const N: Cap>` form needed is gone (the gate-drop bonus of the
@@ -33,6 +38,6 @@ pub mod matrix;
 
 pub use array::Array;
 pub use cap::{cap, cap_size};
-pub use capacity::{Capacity, Dim};
+pub use capacity::{Capacity, ConstCapacity, Dim};
 pub use enumerator::Enumerator;
 pub use matrix::Matrix;

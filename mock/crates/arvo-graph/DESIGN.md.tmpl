@@ -185,6 +185,34 @@ nodes before fanning out again.
 Common application: phase decomposition, the waist points become
 natural phase boundaries in a staged pipeline.
 
+### waist_detect_const, the compile-time analog
+
+```rust
+pub const fn waist_detect_const<C, W>(
+ succ_rows: &C::Array<W>,        // succ_rows[i] = successor word of node i (bit j set = edge i -> j)
+ topo_order: &C::Array<NodeId>,
+) -> C::Array<Bool>              // slot k = topo position k sits at a waist depth
+where
+ C: [const] ConstCapacity,
+ W: [const] BitAccess;
+```
+
+The const version of `waist_detect`, for consumers that need waist boundaries
+at compile time (the canonical phase axis is waist-bounded, so a const dispatch
+plan computes phases from the access graph at const time). Same algorithm: topo
+depth pass, level widths, strict local minima among occupied depths, flags at
+the topo positions of waist-depth nodes.
+
+The runtime `waist_detect` is not const: it builds arrays through
+`Capacity::filled` + `AsRef`/`AsMut` and iterates predecessors via
+`Mask::iter_set_bits`, none const-callable. `waist_detect_const` works over the
+`ConstCapacity` contract (const `filled`/`get`/`set`) and inlines the
+predecessor test with the const `BitAccess::bit` contract, so it touches no
+non-const `BitMatrix`/`Mask` method. Its input is the raw successor words (the
+`BitMatrix.rows[i].word` analog) and its output is a `C::Array<Bool>` flag per
+topo position, which agrees with the runtime `Mask<B>` position-for-position
+(flag `k` true iff bit `k` set). The runtime `waist_detect` is unchanged.
+
 ## Spanning tree decomposition
 
 ```rust

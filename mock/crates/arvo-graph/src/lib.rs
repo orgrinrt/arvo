@@ -20,7 +20,10 @@
 //! `#![no_std]`, no alloc. Depends on arvo, arvo-bitmask, and arvo-tensor.
 
 #![no_std]
-
+#![feature(const_trait_impl)]
+// `const_trait_impl` (WATCH-tier ALLOWED in the unstable-feature sweep; same
+// gate arvo-tensor uses for `ConstCapacity`) gates `waist_detect_const`, the
+// const-callable analog of `waist_detect`.
 
 pub mod components;
 pub mod path;
@@ -28,6 +31,7 @@ pub mod rank;
 pub mod spanning;
 pub mod topo;
 pub mod waist;
+pub mod waist_const;
 
 pub use components::components;
 pub use path::longest_path;
@@ -35,3 +39,4 @@ pub use rank::{downward_rank, upward_rank};
 pub use spanning::{SpanningTree, spanning_tree};
 pub use topo::{renumber, topo_sort};
 pub use waist::waist_detect;
+pub use waist_const::waist_detect_const;
