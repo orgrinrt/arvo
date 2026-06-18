@@ -146,6 +146,10 @@ const trait ConstCapacity {
     fn filled<T: Copy>(v: T) -> Self::Array<T>;
     fn get<T: Copy>(a: &Self::Array<T>, i: USize) -> T;
     fn set<T: Copy>(a: &mut Self::Array<T>, i: USize, v: T);
+    // const bridge from the GAT array to a slice, the const analog of
+    // Capacity's runtime AsRef / AsMut.
+    fn slice<T: Copy>(a: &Self::Array<T>) -> &[T];
+    fn slice_mut<T: Copy>(a: &mut Self::Array<T>) -> &mut [T];
 }
 
 impl<const N: usize> const ConstCapacity for Dim<N> {
@@ -154,8 +158,19 @@ impl<const N: usize> const ConstCapacity for Dim<N> {
     fn filled<T: Copy>(v: T) -> [T; N] { [v; N] }
     fn get<T: Copy>(a: &[T; N], i: USize) -> T { a[i.0] }       // typed index in, language index out
     fn set<T: Copy>(a: &mut [T; N], i: USize, v: T) { a[i.0] = v; }
+    fn slice<T: Copy>(a: &[T; N]) -> &[T] { a }                 // built-in unsized coercion
+    fn slice_mut<T: Copy>(a: &mut [T; N]) -> &mut [T] { a }
 }
 ```
+
+`slice` / `slice_mut` exist because the const surface deals in arrays by
+value, but a `const fn` generic over `C: [const] ConstCapacity` that builds a
+`C::Array<T>` scratch and then hands it to a slice-taking `[const]` helper
+(the shape compile-time DAG grouping uses, filling `&mut [USize]` mask and
+rank scratch) has no const-callable path from the GAT array to a slice:
+`Capacity`'s `AsRef` / `AsMut` are not const. These two methods are that
+bridge, and for `Dim<N>` each body is the language's own array-to-slice
+coercion.
 
 `ConstCapacity::Array` is a distinct GAT from `Capacity::Array`, carrying the
 `Copy` bound the const surface needs. For `Dim<N>` both resolve to `[T; N]`, so a
