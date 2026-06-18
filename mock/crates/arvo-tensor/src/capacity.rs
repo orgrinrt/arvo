@@ -97,6 +97,19 @@ pub const trait ConstCapacity {
 
     /// Write `v` to the slot at `i`.
     fn set<T: Copy>(a: &mut Self::Array<T>, i: USize, v: T);
+
+    /// View the backing array as a slice in const context.
+    ///
+    /// The const analog of [`Capacity`]'s runtime `AsRef`. Bridges a built
+    /// `Self::Array<T>` scratch to a slice-taking `[const]` helper, which is
+    /// how a const fn hands its GAT scratch to a slice-filling routine
+    /// (compile-time DAG grouping fills `&mut [USize]` mask scratch this way).
+    fn slice<T: Copy>(a: &Self::Array<T>) -> &[T];
+
+    /// View the backing array as a mutable slice in const context.
+    ///
+    /// The const analog of [`Capacity`]'s runtime `AsMut`.
+    fn slice_mut<T: Copy>(a: &mut Self::Array<T>) -> &mut [T];
 }
 
 impl<const N: usize> const ConstCapacity for Dim<N> { // lint:allow(arvo-types-only) lint:allow(no-bare-numeric) reason: array-length-grammar root, see the Dim declaration; tracked: #649
@@ -116,5 +129,15 @@ impl<const N: usize> const ConstCapacity for Dim<N> { // lint:allow(arvo-types-o
     #[inline(always)]
     fn set<T: Copy>(a: &mut [T; N], i: USize, v: T) {
         a[i.0] = v;
+    }
+
+    #[inline(always)]
+    fn slice<T: Copy>(a: &[T; N]) -> &[T] {
+        a
+    }
+
+    #[inline(always)]
+    fn slice_mut<T: Copy>(a: &mut [T; N]) -> &mut [T] {
+        a
     }
 }
