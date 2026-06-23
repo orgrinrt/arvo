@@ -72,6 +72,16 @@ logical width up to 64 the native `i128` / `u128` widen holds it; above
 that the intermediate is a 256-bit limb product. The rescale uses an
 arithmetic shift, so negative results floor toward minus infinity.
 
+The fixed-point divide mirrors it: the result raw is `(a << F) / b`
+(the `2^F` cancels in `a_val / b_val`, then the result is re-scaled by
+`F`). The numerator `a << F` is widened before the division to hold its
+up-to-`N + F` bits; for logical width up to 64 the native `i128` /
+`u128` widen suffices, and Quantity-shaped types live here. Above 64
+the numerator needs a 256-bit value divided by a 128-bit divisor
+(256/128 long division, no `carrying` intrinsic), which is a tracked
+follow-up. The divide truncates toward zero, the natural integer-`/`
+behaviour, a documented asymmetry with the multiply's floor.
+
 The 128-bit boundary captures the rustc primitive ladder: u8/u16/u32/
 u64/u128 each have stable Rust support with stdlib ops that lower as
 well as the toolchain currently does for that width. Above 128 we

@@ -322,11 +322,13 @@ where
 impl<const I: IBits, const F: FBits, S: Strategy> const Div for UFixed<I, F, S>
 where
     S: [const] UArith<{ ufixed_bits(I, F) }>,
+    (): FracShift<{ frac(F) }>,
 {
     type Output = Self;
     #[inline(always)]
     fn div(self, rhs: Self) -> Self {
-        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_div(
+        // Fixed-point divide: rescale by the fractional bit count F. F == 0 is integer divide.
+        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_div_fixed::<{ frac(F) }>(
             self.to_raw(),
             rhs.to_raw(),
         ))
