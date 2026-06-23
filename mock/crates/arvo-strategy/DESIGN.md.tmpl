@@ -488,6 +488,33 @@ arithmetic). Per-byte composition for bitwise ops; the
 `Add` / `Sub` / `Mul` / `Div` family for wide widths is separate
 follow-up work tracked under #320 / #321.
 
+## Scalar euclidean raw contract
+
+`ScalarEuclidRaw<N>` (signed) and `UScalarEuclidRaw<N>` (unsigned) are
+the inner per-width capability contracts behind the fixed-point
+euclidean and even-split traits in `arvo`. They are separate from
+`IArith` / `UArith` (composed by bound, not folded in), macro-impl'd
+per strategy x native container for widths 1..=128. Each supplies the
+concrete-container operations the outer traits cannot express
+generically over the projected container type:
+
+- `div_euclid_scalar` / `rem_euclid_scalar`: the raw container divided
+  by an integer count, euclidean (non-negative remainder), at ULP
+  granularity. The concrete container makes the count-to-container cast
+  resolve.
+- `div_euclid_whole` / `rem_euclid_whole`: a `FRAC` const carrier names
+  the fractional bits; the divisor is a fixed-point value and the
+  quotient is floored to whole integer units (the coarse, conserving
+  variant).
+
+The bodies are strategy-independent: euclidean division by a count of
+one or more shrinks magnitude, so the quotient stays inside the logical
+bound the numerator already satisfied, and no Precise-style clamp is
+needed. Div-by-zero returns the numerator (the `i_div` convention).
+N > 128 is excluded, matching the arith surface (#320 / #321). This is
+the array-`Capacity`-contract pattern: a contract for the specific
+capability, concrete impls per width, outer traits blanket-bound on it.
+
 ## Ieee
 
 `Ieee` is the IEEE float-width seal. Lives alongside its supertraits

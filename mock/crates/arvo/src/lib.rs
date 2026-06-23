@@ -65,6 +65,8 @@ pub use strategy::{
     FromU8Ieee, Hot, Identity, Ieee, Precise, SignedIdentity, Signedness, Strategy, Unsigned,
     Warm, width_le_64,
 };
-pub use traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
+pub use traits::{
+    Abs, EuclidDiv, EvenShares, EvenSplittable, FromConstant, Recip, ScalarEuclid, Sqrt, TotalOrd,
+};
 pub use transparent::{NumericPrimitive, Transparent, raw};
 pub use ufixed::UFixed;

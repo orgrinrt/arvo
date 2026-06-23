@@ -21,8 +21,9 @@ pub use arvo_storage::{
 };
 pub use arvo_strategy::{
     BitsContainerFor, Bounded, Cold, FromU8Ieee, Hot, IArith, INarrowFrom,
-    ISaturating, IWidenFrom, Identity, Ieee, Precise, Resolve, Signed, SignedIdentity, Signedness,
-    Strategy, UArith, UNarrowFrom, USaturating, UWidenFrom, Unsigned, Warm,
+    ISaturating, IWidenFrom, Identity, Ieee, Precise, Resolve, ScalarEuclidRaw, Signed, UScalarEuclidRaw,
+    SignedIdentity, Signedness, Strategy, UArith, UNarrowFrom, USaturating, UWidenFrom, Unsigned,
+    Warm,
 };
 
 use arvo_storage::{FBits, IBits};
