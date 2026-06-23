@@ -69,6 +69,16 @@ pub const trait UArith<const N: u16>: [const] BitsContainerFor<N, Unsigned> + Ha
         a: <Self as BitsContainerFor<N, Unsigned>>::T,
         b: <Self as BitsContainerFor<N, Unsigned>>::T,
     ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
+    /// Fixed-point `/` for values scaled by `2^FRAC`: the quotient of two
+    /// `FRAC`-scaled values cancels the scale, so the numerator is shifted
+    /// left by `FRAC` before the divide to return to `FRAC` scale
+    /// (`(a << FRAC) / b`). `FRAC == 0` reduces to `u_div`. The numerator
+    /// is widened so `a << FRAC` does not overflow before the divide.
+    /// Truncates toward zero.
+    fn u_div_fixed<const FRAC: u16>( // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier, mirrors the const N: u16 width carrier on this trait; tracked: #256
+        a: <Self as BitsContainerFor<N, Unsigned>>::T,
+        b: <Self as BitsContainerFor<N, Unsigned>>::T,
+    ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
 }
 
 /// Signed arithmetic dispatch for `(strategy, N)`.
@@ -98,6 +108,11 @@ pub const trait IArith<const N: u16>: [const] BitsContainerFor<N, Signed> + HasA
     ) -> <Self as BitsContainerFor<N, Signed>>::T;
     /// Fixed-point `*` for values scaled by `2^FRAC`: see `UArith::u_mul_fixed`.
     fn i_mul_fixed<const FRAC: u16>( // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier, mirrors the const N: u16 width carrier on this trait; tracked: #256
+        a: <Self as BitsContainerFor<N, Signed>>::T,
+        b: <Self as BitsContainerFor<N, Signed>>::T,
+    ) -> <Self as BitsContainerFor<N, Signed>>::T;
+    /// Fixed-point `/` for values scaled by `2^FRAC`: see `UArith::u_div_fixed`.
+    fn i_div_fixed<const FRAC: u16>( // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier, mirrors the const N: u16 width carrier on this trait; tracked: #256
         a: <Self as BitsContainerFor<N, Signed>>::T,
         b: <Self as BitsContainerFor<N, Signed>>::T,
     ) -> <Self as BitsContainerFor<N, Signed>>::T;
@@ -165,6 +180,16 @@ macro_rules! impl_u_arith_wrapping {
                 #[inline(always)]
                 fn u_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
                     -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.wrapping_mul(b) >> FRAC }
+                #[inline(always)]
+                fn u_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+                    // DoubleLogical container holds `a << FRAC` for F <= N; div-by-zero returns the numerator.
+                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity>::ZERO {
+                        a
+                    } else {
+                        (a << FRAC) / b
+                    }
+                }
             }
         )+
     };
@@ -218,6 +243,19 @@ macro_rules! impl_u_arith_saturating {
                     let v = a.wrapping_mul(b) >> FRAC;
                     if v > hi { hi } else { v }
                 }
+                #[inline(always)]
+                fn u_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+                    let hi: <Self as BitsContainerFor<$bits, Unsigned>>::T = (1 << $bits) - 1; // lint:allow(no-bare-numeric) reason: const logical-bound max over the dispatched container primitive; tracked: #256
+                    // Precise never panics on div-by-zero: clamp to the logical MAX. DoubleLogical holds
+                    // `a << FRAC` for F <= N; clamp the quotient to the logical bound.
+                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity>::ZERO {
+                        hi
+                    } else {
+                        let v = (a << FRAC) / b;
+                        if v > hi { hi } else { v }
+                    }
+                }
             }
         )+
     };
@@ -248,6 +286,16 @@ macro_rules! impl_i_arith_wrapping {
                 #[inline(always)]
                 fn i_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
                     -> <Self as BitsContainerFor<$bits, Signed>>::T { a.wrapping_mul(b) >> FRAC }
+                #[inline(always)]
+                fn i_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T {
+                    // DoubleLogical container holds `a << FRAC` for F <= N; div-by-zero returns the numerator.
+                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity>::ZERO {
+                        a
+                    } else {
+                        (a << FRAC) / b
+                    }
+                }
             }
         )+
     };
@@ -306,6 +354,20 @@ macro_rules! impl_i_arith_saturating {
                     let v = a.wrapping_mul(b) >> FRAC;
                     if v < lo { lo } else if v > hi { hi } else { v }
                 }
+                #[inline(always)]
+                fn i_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T {
+                    let hi: <Self as BitsContainerFor<$bits, Signed>>::T = (1 << ($bits - 1)) - 1; // lint:allow(no-bare-numeric) reason: const logical-bound max over the dispatched container primitive; tracked: #256
+                    let lo: <Self as BitsContainerFor<$bits, Signed>>::T = -(1 << ($bits - 1)); // lint:allow(no-bare-numeric) reason: const logical-bound min over the dispatched container primitive; tracked: #256
+                    // Precise never panics on div-by-zero: clamp to the logical MAX. DoubleLogical holds
+                    // `a << FRAC` for F <= N; clamp the quotient to the logical bound.
+                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity>::ZERO {
+                        hi
+                    } else {
+                        let v = (a << FRAC) / b;
+                        if v < lo { lo } else if v > hi { hi } else { v }
+                    }
+                }
             }
         )+
     };
@@ -350,6 +412,17 @@ macro_rules! impl_u_arith_wrapping_widen {
                     let narrowed: $container = (prod >> FRAC) as $container;
                     narrowed
                 }
+                #[inline(always)]
+                fn u_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+                    // (a << FRAC) / b widened to the native 2x so `a << FRAC` does not overflow `$container`.
+                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity>::ZERO {
+                        a
+                    } else {
+                        let num: u128 = (a as u128) << FRAC; // lint:allow(no-bare-numeric) reason: native 2x widen numerator for the fixed-point divide; tracked: #256
+                        (num / (b as u128)) as $container // lint:allow(no-bare-numeric) reason: native 2x widen divisor for the fixed-point divide; tracked: #256
+                    }
+                }
             }
         )+
     };
@@ -385,6 +458,17 @@ macro_rules! impl_i_arith_wrapping_widen {
                     let prod: i128 = (ac as i128).wrapping_mul(bc as i128); // lint:allow(no-bare-numeric) reason: native 2x widen target for the fixed-point multiply; tracked: #256
                     let narrowed: $container = (prod >> FRAC) as $container;
                     narrowed
+                }
+                #[inline(always)]
+                fn i_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T {
+                    // (a << FRAC) / b widened to the native 2x; signed `/` truncates toward zero.
+                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity>::ZERO {
+                        a
+                    } else {
+                        let num: i128 = (a as i128) << FRAC; // lint:allow(no-bare-numeric) reason: native 2x widen numerator for the fixed-point divide; tracked: #256
+                        (num / (b as i128)) as $container // lint:allow(no-bare-numeric) reason: native 2x widen divisor for the fixed-point divide; tracked: #256
+                    }
                 }
             }
         )+
@@ -487,6 +571,18 @@ macro_rules! impl_u_arith_wrapping_widen256 {
                 #[inline(always)]
                 fn u_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
                     -> <Self as BitsContainerFor<$bits, Unsigned>>::T { u_mul_fixed_128(a, b, FRAC as u32) } // lint:allow(no-bare-numeric) reason: FRAC widened to the helper shift-amount type; tracked: #256
+                #[inline(always)]
+                fn u_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+                    // CATALOGUE (tracked, task #5): correct only when `a << FRAC` fits the u128 container; the
+                    // 65..=128 case needs 256/128 long division (no `carrying_div` intrinsic). The ignored
+                    // catalogue test pins the target. div-by-zero returns the numerator.
+                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity>::ZERO {
+                        a
+                    } else {
+                        (a << FRAC) / b
+                    }
+                }
             }
         )+
     };
@@ -517,6 +613,18 @@ macro_rules! impl_i_arith_wrapping_widen256 {
                 #[inline(always)]
                 fn i_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
                     -> <Self as BitsContainerFor<$bits, Signed>>::T { i_mul_fixed_128(a, b, FRAC as u32) } // lint:allow(no-bare-numeric) reason: FRAC widened to the helper shift-amount type; tracked: #256
+                #[inline(always)]
+                fn i_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                    -> <Self as BitsContainerFor<$bits, Signed>>::T {
+                    // CATALOGUE (tracked, task #5): correct only when `a << FRAC` fits the i128 container; the
+                    // 65..=128 case needs 256/128 long division. The ignored catalogue test pins the target.
+                    // div-by-zero returns the numerator; signed `/` truncates toward zero.
+                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity>::ZERO {
+                        a
+                    } else {
+                        (a << FRAC) / b
+                    }
+                }
             }
         )+
     };

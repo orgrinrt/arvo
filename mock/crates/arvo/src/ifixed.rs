@@ -301,12 +301,14 @@ where
 
 impl<const I: IBits, const F: FBits, S: Strategy> const Div for IFixed<I, F, S>
 where
-    S: const IArith<{ ifixed_bits(I, F) }>,
+    S: [const] IArith<{ ifixed_bits(I, F) }>,
+    (): FracShift<{ frac(F) }>,
 {
     type Output = Self;
     #[inline(always)]
     fn div(self, rhs: Self) -> Self {
-        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_div(
+        // Fixed-point divide: rescale by the fractional bit count F. F == 0 is integer divide.
+        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_div_fixed::<{ frac(F) }>(
             self.to_raw(),
             rhs.to_raw(),
         ))
