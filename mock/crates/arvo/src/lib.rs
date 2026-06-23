@@ -31,6 +31,7 @@
 pub mod aliases;
 pub mod bitfield;
 mod layout_assertions;
+pub(crate) mod fixed_scale;
 pub mod float;
 pub mod ifixed;
 pub mod ifixed_impl;

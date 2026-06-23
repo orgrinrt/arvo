@@ -14,6 +14,7 @@ use core::ops::{Add, Div, Mul, Sub};
 
 use notko::Outcome;
 
+use crate::fixed_scale::{FracShift, frac};
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use crate::strategy::{
     ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
@@ -57,13 +58,33 @@ where
 // impl block — the inner Bits trait projection bundles the container
 // requirement, sidestepping the generic_const_exprs cycle that
 // previously tripped two-predicate forms.
+/// The fixed-point one for `UFixed<I, F, S>`, raw `1 << F`: double the container raw 1 exactly F times
+/// through the strategy's `u_add` (`F == 0` -> raw 1, the integer one). Routes only through the
+/// `S: UArith<{ufixed_bits(I, F)}>` strategy bound and the inner `Bits` bound, never the container-T
+/// projection, so it avoids the const-eval cycle a T-projection bound trips. A free const fn because
+/// inherent impls cannot carry const trait bounds and the associated-const initializer cannot call the
+/// const-trait method directly. See sketch 202606231130_fixed-point-one-construction.
+const fn ufixed_fixed_one<const I: IBits, const F: FBits, S: Strategy>() -> UFixed<I, F, S>
+where
+    S: const UArith<{ ufixed_bits(I, F) }>,
+    Bits<{ ufixed_bits(I, F) }, S>: const Identity,
+{
+    let mut acc = <Bits<{ ufixed_bits(I, F) }, S> as Identity>::ONE.to_raw();
+    let mut doublings: u16 = 0; // lint:allow(no-bare-numeric) reason: const-loop counter for the 1<<F doubling; tracked: #256
+    while doublings < F.raw() {
+        acc = <S as UArith<{ ufixed_bits(I, F) }>>::u_add(acc, acc);
+        doublings += 1;
+    }
+    UFixed::from_raw(acc)
+}
+
 impl<const I: IBits, const F: FBits, S: Strategy> const Identity for UFixed<I, F, S>
 where
-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
-    Bits<{ ufixed_bits(I, F) }, S>: [const] Identity,
+    S: const UArith<{ ufixed_bits(I, F) }>,
+    Bits<{ ufixed_bits(I, F) }, S>: const Identity,
 {
     const ZERO: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ZERO);
-    const ONE: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity>::ONE);
+    const ONE: Self = ufixed_fixed_one::<I, F, S>();
 }
 
 // Generic Bounded blanket on UFixed wires through the inner Bits's
@@ -285,11 +306,13 @@ where
 impl<const I: IBits, const F: FBits, S: Strategy> const Mul for UFixed<I, F, S>
 where
     S: [const] UArith<{ ufixed_bits(I, F) }>,
+    (): FracShift<{ frac(F) }>,
 {
     type Output = Self;
     #[inline(always)]
     fn mul(self, rhs: Self) -> Self {
-        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_mul(
+        // Fixed-point multiply: rescale by the fractional bit count F. F == 0 is integer multiply.
+        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_mul_fixed::<{ frac(F) }>(
             self.to_raw(),
             rhs.to_raw(),
         ))

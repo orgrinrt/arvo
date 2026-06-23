@@ -23,6 +23,7 @@ use core::ops::{Add, Div, Mul, Sub};
 
 use notko::Outcome;
 
+use crate::fixed_scale::{FracShift, frac};
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use arvo_storage::{Bits, FBits, IBits, USize};
 use crate::strategy::{
@@ -59,13 +60,32 @@ where
 // UFixed step 7. ZERO/ONE come from Bits::ZERO / ONE; MINUS_ONE on
 // IFixed-specific surface uses raw -1 via from_raw with a typed
 // bridge (signed counterpart added in a later step if needed).
+/// The fixed-point one for `IFixed<I, F, S>`, raw `1 << F`: double the container raw 1 exactly F times
+/// through the strategy's `i_add`. `F == 0` runs zero doublings -> raw 1 (the integer one). Routes only
+/// through the `S: IArith<{ifixed_bits(I, F)}>` strategy bound (the const-expr-as-generic-arg shape the
+/// inner `Bits` bounds also use), never the container-T projection, so it avoids the const-eval cycle a
+/// T-projection bound trips. A free const fn because inherent impls cannot carry `[const]` trait bounds.
+const fn ifixed_fixed_one<const I: IBits, const F: FBits, S: Strategy>() -> IFixed<I, F, S>
+where
+    S: const IArith<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity,
+{
+    let mut acc = <Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ONE.to_raw();
+    let mut doublings: u16 = 0; // lint:allow(no-bare-numeric) reason: const-loop counter for the 1<<F doubling; tracked: #256
+    while doublings < F.raw() {
+        acc = <S as IArith<{ ifixed_bits(I, F) }>>::i_add(acc, acc);
+        doublings += 1;
+    }
+    IFixed::from_raw(acc)
+}
+
 impl<const I: IBits, const F: FBits, S: Strategy> const Identity for IFixed<I, F, S>
 where
-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
-    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Identity,
+    S: const IArith<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity,
 {
     const ZERO: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ZERO);
-    const ONE: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ONE);
+    const ONE: Self = ifixed_fixed_one::<I, F, S>();
 }
 
 // Generic Bounded blanket on IFixed wires through the inner signed
@@ -237,7 +257,7 @@ where
 
 impl<const I: IBits, const F: FBits, S: Strategy> const Add for IFixed<I, F, S>
 where
-    S: [const] IArith<{ ifixed_bits(I, F) }>,
+    S: const IArith<{ ifixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
@@ -251,7 +271,7 @@ where
 
 impl<const I: IBits, const F: FBits, S: Strategy> const Sub for IFixed<I, F, S>
 where
-    S: [const] IArith<{ ifixed_bits(I, F) }>,
+    S: const IArith<{ ifixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]
@@ -266,11 +286,13 @@ where
 impl<const I: IBits, const F: FBits, S: Strategy> const Mul for IFixed<I, F, S>
 where
     S: [const] IArith<{ ifixed_bits(I, F) }>,
+    (): FracShift<{ frac(F) }>,
 {
     type Output = Self;
     #[inline(always)]
     fn mul(self, rhs: Self) -> Self {
-        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_mul(
+        // Fixed-point multiply: rescale by the fractional bit count F. F == 0 is integer multiply.
+        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_mul_fixed::<{ frac(F) }>(
             self.to_raw(),
             rhs.to_raw(),
         ))
@@ -279,7 +301,7 @@ where
 
 impl<const I: IBits, const F: FBits, S: Strategy> const Div for IFixed<I, F, S>
 where
-    S: [const] IArith<{ ifixed_bits(I, F) }>,
+    S: const IArith<{ ifixed_bits(I, F) }>,
 {
     type Output = Self;
     #[inline(always)]

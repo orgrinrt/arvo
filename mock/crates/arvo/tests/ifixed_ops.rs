@@ -68,18 +68,21 @@ fn warm_i8_add_no_wrap() {
 
 #[test]
 fn precise_i8_add_saturates() {
-    // Use a wider IFixed so we can see the saturation against the Precise container.
-    // IFixed<15, 0, Precise>: 1 + 15 = 16 -> i32 container.
+    // Precise saturates at the LOGICAL bound, not the container bound (round 202606231229). IFixed<15, 0,
+    // Precise> is logical width N = 1 + 15 + 0 = 16 in a DoubleLogical i32 container (2N = 32). The logical
+    // i16 range is `-(1<<15) ..= (1<<15)-1`. Feeding raws beyond the logical range, the result clamps to the
+    // logical bound, NOT to the container's i32::MAX/MIN (which is what the pre-fix container-bound
+    // saturation returned).
     type I = IFixed<{ ibits(15) }, { FBits::ZERO }, Precise>;
     let a = I::from_raw(i32::MAX - 5);
     let b = I::from_raw(100);
     let sum = a + b;
-    assert_eq!(sum.to_raw(), i32::MAX);
+    assert_eq!(sum.to_raw(), (1 << 15) - 1);
 
     let c = I::from_raw(i32::MIN + 5);
     let d = I::from_raw(-100);
     let diff = c + d;
-    assert_eq!(diff.to_raw(), i32::MIN);
+    assert_eq!(diff.to_raw(), -(1 << 15));
 }
 
 #[test]
