@@ -1,0 +1,50 @@
+af926ea chore: lock src changelist for 202606232300
+1663be0 fix: guard even-split base+1 and saturate euclid whole-unit shift overflow
+91f9e31 docs: open src cl euclid overflow fixes
+1253d6e chore: lock doc changelist for 202606232300
+e8ca928 docs: euclid saturating + zero-split conventions
+2d455bd docs: open doc cl euclid overflow fixes
+543d09c docs: topic euclid/split overflow fixes
+0c2dc56 chore: close design round 202606232230
+bbab2c5 chore: lock src changelist for 202606232230
+9510804 feat: ScalarEuclid/EuclidDiv/EvenSplittable + inner euclid contracts (signed+unsigned)
+a791bfb feat: ScalarEuclidRaw inner euclid contract (signed Hot 1-64, validated)
+1594888 docs: open src cl euclid + even-split
+bd5942c chore: lock doc changelist for 202606232230
+1274e50 docs: euclid + even-split traits design
+828aafe docs: open doc cl euclid + even-split
+35efab2 docs: topic euclid + even-split traits
+942778a fix: fixed-point divide for IFixed/UFixed
+3f2266b feat: fixed-point multiply and fixed-point ONE for IFixed/UFixed
+f5cf306 feat: const slice/slice_mut on ConstCapacity
+6f587b5 feat: const capacity surface + const waist detection
+7cf00dc feat: re-export bit-contract traits through arvo-bitmask
+ff514a7 feat!: generalize arvo-graph dag algorithms over the adjacency row-word
+5496288 refactor!: migrate arvo containers and algorithms off Cap to Capacity
+c774b59 feat: add Capacity trait and Dim marker to arvo-tensor
+4cec32a feat: live-node-count awareness for loose-CSR spectral partitioning
+0d6fb4f feat: parameterise csr over live row and nnz counts
+57cd6d3 refactor: scope generic_const_exprs gates to crates that use them
+5776b61 fix: pin nightly, adapt Bool Try to core's Residual bound
+1840531 feat: add cap, the usize to Cap const constructor
+83af326 docs: catalog arvo arbitrary limitations
+b5db00d chore: add restrict-main-merges workflow
+ac9b875 feat: debug impls for ufixed and ifixed
+85be3de fix: remove stale CsrBidirectional SHAME entry from arvo-sparse (#64)
+a6d8cd7 feat: graph + spectral algorithms for hilavitkutin (round 202605111719) (#63)
+fd19593 Merge pull request #62 from orgrinrt/feat/cap-usize-const-from
+2a83524 chore: close design round 202605112230
+b9ad65b chore: lock src changelist for 202605112230_changelist.src.lock.md
+6d0bd0d test: route from_bridges const unwraps through Transparent::raw
+5f52e5b docs: open SRC phase for review-followup round 202605112230
+4e88a72 chore: lock doc changelist for 202605112230_changelist.doc.lock.md
+bb26a27 docs: rewrite stale Bool/From paragraph to acknowledge const lift
+95a6f57 docs: open DOC phase for review-followup round 202605112230
+dc895cb docs: topic for review-followup round 202605112230
+7d513df chore: close design round 202605112200
+1119b85 chore: lock src changelist for 202605112200_changelist.src.lock.md
+6b26f92 feat: Cap <-> USize const From bridges + lift Bool <-> bool to const
+bd3d481 docs: open SRC phase for round 202605112200
+93e838c chore: lock doc changelist for 202605112200_changelist.doc.lock.md
+791c4b4 docs: apply round 202605112200 DOC phase
+f944cee docs: open DOC phase for round 202605112200

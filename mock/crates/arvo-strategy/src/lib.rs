@@ -71,7 +71,8 @@ pub use widebits::{A1, A16, A32, A64, Align, WideBits};
 pub use width::{Width, bytes_for, tag, width, width_le_64, width_u16, width_u8};
 
 pub use arith::{
-    Bounded, IArith, ISaturating, Identity, SignedIdentity, UArith, USaturating,
+    Bounded, IArith, ISaturating, Identity, ScalarEuclidRaw, SignedIdentity, UArith, USaturating,
+    UScalarEuclidRaw,
 };
 pub use const_convert::{ConstFrom, ConstTryFrom};
 pub use cross_strategy::CrossStrategyOp;
