@@ -76,15 +76,14 @@ fn cold_u8_uses_wrapping_container_for_now() {
 
 #[test]
 fn precise_u16_saturates_on_add_overflow() {
-    // UFixed<8, 0, Precise> -> u16 container. Max is u16::MAX, but
-    // u8 + u8 cannot overflow u16 in a single op — use a larger
-    // width to see saturation.
+    // UFixed<16, 0, Precise> -> logical width 16 in a DoubleLogical u32 container (2x). Precise saturates at
+    // the LOGICAL bound (round 202606231229), so an add that exceeds the logical u16 range clamps to the
+    // logical max `(1<<16)-1`, NOT to the container's u32::MAX.
     type U = UFixed<{ ibits(16) }, { FBits::ZERO }, Precise>;
     let a = U::from_raw(u32::MAX - 10);
     let b = U::from_raw(100);
-    // Wait: U32 container, so u32::MAX - 10 + 100 saturates to u32::MAX.
     let sum = a + b;
-    assert_eq!(sum.to_raw(), u32::MAX);
+    assert_eq!(sum.to_raw(), (1 << 16) - 1);
 }
 
 #[test]
@@ -99,11 +98,12 @@ fn precise_u16_saturates_on_sub_underflow() {
 
 #[test]
 fn precise_div_by_zero_clamps_to_max() {
+    // Precise div-by-zero never panics; it clamps to the LOGICAL max `(1<<16)-1`, not the container u32::MAX.
     type U = UFixed<{ ibits(16) }, { FBits::ZERO }, Precise>;
     let a = U::from_raw(42);
     let b = U::from_raw(0);
     let q = a / b;
-    assert_eq!(q.to_raw(), u32::MAX);
+    assert_eq!(q.to_raw(), (1 << 16) - 1);
 }
 
 #[test]
@@ -119,12 +119,13 @@ fn ifixed_hot_i8_add_wraps() {
 
 #[test]
 fn ifixed_precise_saturates_on_add() {
-    // IFixed<15, 0, Precise> -> 1 + 15 = 16 logical bits -> i32 container (Precise 2x).
+    // IFixed<15, 0, Precise> -> 1 + 15 = 16 logical bits in a DoubleLogical i32 container (2x). Precise
+    // clamps at the LOGICAL bound, so the add saturates to the logical i16 max `(1<<15)-1`, not i32::MAX.
     type I = IFixed<{ ibits(15) }, { FBits::ZERO }, Precise>;
     let a = I::from_raw(i32::MAX - 10);
     let b = I::from_raw(100);
     let sum = a + b;
-    assert_eq!(sum.to_raw(), i32::MAX);
+    assert_eq!(sum.to_raw(), (1 << 15) - 1);
 }
 
 #[test]

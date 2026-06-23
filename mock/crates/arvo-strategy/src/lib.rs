@@ -11,6 +11,15 @@
 // bound subtyping) is unreachable: the stack bans `TypeId`. Builds clean on the
 // pinned nightly. Migration to `generic_const_args` is tracked: #628.
 #![feature(generic_const_exprs)]
+// ALLOWED-tier unstable feature, soundness-vetted 2026-06-23 and recorded in the
+// workspace `unstable-features.md`. `const_unsigned_bigint_helpers` (tracking
+// rust-lang/rust#152015) enables const use of `u128::carrying_mul`, which the
+// >64-bit-logical fixed-point widening multiply uses to form the 256-bit product.
+// The method is runtime-stable since 1.91; only its const-qualification is gated,
+// blocked behind the const-traits umbrella. No `I-unsound` label, no soundness
+// hole: it is const-eval of stable, pure arithmetic. core uses the bigint helpers
+// internally for multi-limb integer math, so the std-internal carve-out applies.
+#![feature(const_unsigned_bigint_helpers)]
 #![allow(incomplete_features)]
 
 //! arvo-strategy. Strategy markers + container-projection traits.
