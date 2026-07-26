@@ -198,8 +198,9 @@ fn zero_integer_width_has_no_multiplicative_identity() {
     // identity flipped sign. Container slack is strategy-dependent and is not what
     // makes a value a member of the type.
     //
-    // The refusal itself is a compile-fail case and cannot be written here; it is
-    // pinned in `identity_laws.rs`, which asserts the whole width matrix.
+    // The refusal itself is a compile-fail case and cannot be written here or
+    // in `identity_laws.rs`, which says so explicitly. It is pinned under
+    // `tests/ui/`, one case per impl and per strategy.
     type Q = IFixed<{ ibits(0) }, { fbits(16) }, Hot>;
     let zero = <Q as Identity<Additive>>::IDENTITY;
     assert_eq!(zero.to_raw(), 0, "Q0.F still has an additive identity");

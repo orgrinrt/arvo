@@ -28,7 +28,7 @@ use crate::markers::{BitPresentation, FractionLike, IntegerLike};
 use crate::strategy::{
     ifixed_bits, is_fractional, tag_one_representable, Additive, BitsContainerFor, Bounded, Hot,
     IArith, INarrowFrom, IWidenFrom, Identity, Multiplicative, OneRepresentable, Picker, Precise,
-    Signed, Strategy, Warm,
+    Signed, SignedIdentity, Strategy, Warm,
 };
 use arvo_storage::{Bits, FBits, IBits, USize};
 
@@ -104,6 +104,43 @@ where
     Picker: OneRepresentable<{ tag_one_representable(I.raw()) }>,
 {
     const IDENTITY: Self = ifixed_fixed_one::<I, F, S>();
+}
+
+/// The fixed-point minus one for `IFixed<I, F, S>`, raw `-(1 << F)`.
+///
+/// Same doubling loop as `ifixed_fixed_one`, started from the container's
+/// `NEG_ONE` instead of its one: doubling minus one `F` times gives
+/// `-(2^F)`. Routes through the strategy bound rather than the container-T
+/// projection for the same const-eval-cycle reason.
+const fn ifixed_fixed_neg_one<const I: IBits, const F: FBits, S: Strategy>() -> IFixed<I, F, S>
+where
+    S: const IArith<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: const SignedIdentity,
+{
+    let mut acc = <Bits<{ ifixed_bits(I, F) }, S, Signed> as SignedIdentity>::NEG_ONE.to_raw();
+    let mut doublings: u16 = 0; // lint:allow(no-bare-numeric) reason: const-loop counter for the -(1<<F) doubling; tracked: #256
+    while doublings < F.raw() {
+        acc = <S as IArith<{ ifixed_bits(I, F) }>>::i_add(acc, acc);
+        doublings += 1;
+    }
+    IFixed::from_raw(acc)
+}
+
+// `NEG_ONE` is unconditional, where `Identity<Multiplicative>` is not, and
+// the reason is the range rather than a stipulation. `IFixed<I, F, S>`
+// spans `[-2^I, 2^I)`: minus one is inside at every `I`, and at `I == 0`
+// it is exactly the container minimum, while one is outside there. So the
+// representability projection gates the multiplicative identity and must
+// not be copied here.
+//
+// Four artifacts asserted this impl existed before it did. It did not, at
+// any width, which is why the law over the matrix now pins it.
+const impl<const I: IBits, const F: FBits, S: Strategy> SignedIdentity for IFixed<I, F, S>
+where
+    S: const IArith<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: const SignedIdentity,
+{
+    const NEG_ONE: Self = ifixed_fixed_neg_one::<I, F, S>();
 }
 
 // Generic Bounded blanket on IFixed wires through the inner signed

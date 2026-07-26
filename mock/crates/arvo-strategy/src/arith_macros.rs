@@ -39,8 +39,10 @@ macro_rules! impl_u_arith_wrapping {
                     if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY {
                         a
                     } else {
-                        // `wrapping_div`, not `/`. Signed MIN / -1 has no representable answer and
-                        // `/` panics on it, which a never-panic strategy must not do.
+                        // `wrapping_div` for uniformity with the signed macros, where `/` panics
+                        // on MIN / -1. Unsigned division cannot overflow once the zero divisor is
+                        // guarded above, so this is the same operation; one spelling across both
+                        // stops a reader copying the unguarded form into a signed body.
                         (a << FRAC).wrapping_div(b)
                     }
                 }
@@ -106,9 +108,12 @@ macro_rules! impl_u_arith_saturating {
                     if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY {
                         hi
                     } else {
-                        // `wrapping_div`, not `/`. Signed MIN / -1 has no representable answer and
-                        // `/` panics on it, which a never-panic strategy must not do.
-                        let v = (a << FRAC).wrapping_div(b);
+                        // `saturating_div`, matching the sibling `i_div` above. `/` panics on
+                        // signed MIN / -1, and `wrapping_div` answers it with the minimum, which
+                        // the clamp below reads as already inside the bound and passes through.
+                        // The mathematical answer is +2^(N-1), so a saturating strategy owes the
+                        // maximum here; wrapping and saturating disagree in sign at this one input.
+                        let v = (a << FRAC).saturating_div(b);
                         if v > hi { hi } else { v }
                     }
                 }
@@ -222,9 +227,12 @@ macro_rules! impl_i_arith_saturating {
                     if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY {
                         hi
                     } else {
-                        // `wrapping_div`, not `/`. Signed MIN / -1 has no representable answer and
-                        // `/` panics on it, which a never-panic strategy must not do.
-                        let v = (a << FRAC).wrapping_div(b);
+                        // `saturating_div`, matching the sibling `i_div` above. `/` panics on
+                        // signed MIN / -1, and `wrapping_div` answers it with the minimum, which
+                        // the clamp below reads as already inside the bound and passes through.
+                        // The mathematical answer is +2^(N-1), so a saturating strategy owes the
+                        // maximum here; wrapping and saturating disagree in sign at this one input.
+                        let v = (a << FRAC).saturating_div(b);
                         if v < lo { lo } else if v > hi { hi } else { v }
                     }
                 }
@@ -460,8 +468,10 @@ macro_rules! impl_u_arith_wrapping_widen256 {
                     if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY {
                         a
                     } else {
-                        // `wrapping_div`, not `/`. Signed MIN / -1 has no representable answer and
-                        // `/` panics on it, which a never-panic strategy must not do.
+                        // `wrapping_div` for uniformity with the signed macros, where `/` panics
+                        // on MIN / -1. Unsigned division cannot overflow once the zero divisor is
+                        // guarded above, so this is the same operation; one spelling across both
+                        // stops a reader copying the unguarded form into a signed body.
                         (a << FRAC).wrapping_div(b)
                     }
                 }

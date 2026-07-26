@@ -36,7 +36,8 @@
 use core::marker::ConstParamTy_;
 
 use arvo_strategy::{
-    Additive, BitsContainerFor, Bounded, Hot, Identity, Signedness, Strategy, Unsigned,
+    Additive, BitsContainerFor, Bounded, Hot, Identity, SignedIdentity, Signedness, Strategy,
+    Unsigned,
 };
 use arvo_transparent::Transparent;
 
@@ -116,6 +117,19 @@ where
 {
     const IDENTITY: Self =
         Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity<Op>>::IDENTITY);
+}
+
+// `SignedIdentity` forwards the same way, and only reaches signed
+// containers: the bound names the container's own impl, which exists for
+// `i8`..=`i128` and nothing unsigned, so `Bits<N, S, Unsigned>` has no
+// impl rather than a refused one.
+const impl<const N: u16, S: Strategy, Sign: Signedness> SignedIdentity for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] SignedIdentity,
+{
+    const NEG_ONE: Self =
+        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as SignedIdentity>::NEG_ONE);
 }
 
 // Generic ConstPartialEq + ConstEq + ConstBitEq blankets. Bit

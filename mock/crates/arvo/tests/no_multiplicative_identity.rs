@@ -8,5 +8,13 @@
 #[test]
 fn no_multiplicative_identity_at_zero_integer_bits() {
     let t = trybuild::TestCases::new();
+    // Per impl and per strategy. One case is not a pin: a review found that
+    // loosening the bound on `IFixed` left the suite green, because only the
+    // `UFixed` refusal was named, and the topic had called the signed case the
+    // worst of the four.
     t.compile_fail("tests/ui/no_multiplicative_identity.rs");
+    t.compile_fail("tests/ui/no_multiplicative_identity_signed_hot.rs");
+    t.compile_fail("tests/ui/no_multiplicative_identity_unsigned_warm.rs");
+    t.compile_fail("tests/ui/no_multiplicative_identity_unsigned_cold.rs");
+    t.compile_fail("tests/ui/no_multiplicative_identity_unsigned_precise.rs");
 }

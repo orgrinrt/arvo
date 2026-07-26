@@ -23,7 +23,9 @@
 #![no_std]
 
 use arvo::ifixed::IFixed;
-use arvo::strategy::{Additive, Cold, Hot, Identity, Multiplicative, Precise, Warm};
+use arvo::strategy::{
+    Additive, Cold, Hot, Identity, Multiplicative, Precise, SignedIdentity, Warm,
+};
 use arvo::ufixed::UFixed;
 use arvo::{fbits, ibits};
 
@@ -54,13 +56,82 @@ macro_rules! both_identities {
 
             // The laws, over a spread of operands rather than one: raw zero,
             // raw one, the identity itself, and a value with bits set on both
-            // sides of the fractional point.
+            // sides of the fractional point. `negatives` adds the mirror of
+            // each where the container is signed; every probe here was
+            // non-negative until the review pointed out that neither law was
+            // asserted on a negative operand anywhere.
             let probes = [0, 1, one.to_raw(), one.to_raw() | 1];
             for raw in probes {
                 let x = T::from_raw(raw);
                 assert_eq!((x + zero).to_raw(), raw, "x + ZERO == x at raw {}", raw);
                 assert_eq!((x * one).to_raw(), raw, "x * ONE == x at raw {}", raw);
             }
+        }
+    };
+}
+
+/// `NEG_ONE` on a signed shape, at every width including zero integer bits.
+///
+/// Its absence is what let four artifacts describe an impl that did not
+/// exist: the trait's doc comment, the facade's design document, the locked
+/// changelist justifying the dropped supertrait, and a comment in this very
+/// file. Every one of them reasoned correctly about an asymmetry nothing
+/// implemented, and none of them was a test.
+///
+/// Unconditional, unlike the multiplicative identity. `IFixed<I, F, S>` spans
+/// `[-2^I, 2^I)`: minus one is inside at every `I`, and at `I == 0` it is
+/// exactly the container minimum, while one is outside there.
+macro_rules! neg_one_law {
+    ($name:ident, $ty:ty) => {
+        #[test]
+        fn $name() {
+            type T = $ty;
+
+            let zero = <T as Identity<Additive>>::IDENTITY;
+            let neg_one = <T as SignedIdentity>::NEG_ONE;
+
+            // Asserted as laws rather than against `-(1 << F)`, and not for
+            // convenience. At `I == 0` that literal does not compile: the
+            // container is `1 + F` bits, so `+(1 << F)` is not representable
+            // there and the negation overflows, while `-(1 << F)` is exactly
+            // the container minimum and perfectly fine as a value. The
+            // expected value has no expressible form precisely where the
+            // asymmetry this trait exists for lives, so writing it down is
+            // not available and the laws are what pin it.
+            assert!(neg_one.to_raw() < zero.to_raw(), "NEG_ONE is below zero");
+            assert_eq!(
+                (neg_one + zero).to_raw(),
+                neg_one.to_raw(),
+                "NEG_ONE + ZERO == NEG_ONE, the additive law on a negative operand",
+            );
+        }
+    };
+}
+
+/// `ONE + NEG_ONE == ZERO`, where the shape has both.
+///
+/// This is the law that ties the two traits together, and it is the reason
+/// they can be separate without drifting apart: whatever `NEG_ONE` is, adding
+/// it to the multiplicative identity must land on the additive one.
+macro_rules! neg_one_cancels_one {
+    ($name:ident, $ty:ty) => {
+        #[test]
+        fn $name() {
+            type T = $ty;
+
+            let zero = <T as Identity<Additive>>::IDENTITY;
+            let one = <T as Identity<Multiplicative>>::IDENTITY;
+            let neg_one = <T as SignedIdentity>::NEG_ONE;
+
+            assert_eq!(
+                (one + neg_one).to_raw(),
+                zero.to_raw(),
+                "ONE + NEG_ONE == ZERO"
+            );
+            // Where `ONE` exists the encoding IS expressible, so pin it: the
+            // two are mirrors, and `-(one.to_raw())` cannot overflow when the
+            // type has an integer bit to hold the positive side.
+            assert_eq!(neg_one.to_raw(), -(one.to_raw()), "NEG_ONE is -ONE");
         }
     };
 }
@@ -93,9 +164,11 @@ macro_rules! additive_only {
 
 // --- Unsigned. Container width is I + F. ------------------------------------
 //
-// Warm and Precise reach 64 logical bits; Hot and Cold reach 128. Every
-// (I, F) pair below is inside all four, so the matrix is square and no
-// strategy is quietly under-tested relative to another.
+// Warm and Precise reach 64 logical bits; Hot and Cold reach 128. The rows
+// below run on all four; the wide band that only Hot and Cold reach is a
+// separate block, because 65..=128 is a different implementation family (the
+// one holding the 256-bit widening multiply) and skipping it to keep the
+// matrix square would be trading coverage for symmetry.
 
 macro_rules! u_matrix {
     ($($strategy:ident => $prefix:ident),+ $(,)?) => { $(
@@ -159,8 +232,51 @@ macro_rules! i_matrix {
             both_identities!(i_23_8, IFixed<{ ibits(23) }, { fbits(8) }, $strategy>, 8);
             both_identities!(i_31_32, IFixed<{ ibits(31) }, { fbits(32) }, $strategy>, 32);
             both_identities!(i_47_16, IFixed<{ ibits(47) }, { fbits(16) }, $strategy>, 16);
+
+            // NEG_ONE at every width, including the zero-integer-bit shapes
+            // where it is the container minimum and where `ONE` does not exist.
+            neg_one_law!(neg_one_0_1, IFixed<{ ibits(0) }, { fbits(1) }, $strategy>);
+            neg_one_law!(neg_one_0_7, IFixed<{ ibits(0) }, { fbits(7) }, $strategy>);
+            neg_one_law!(neg_one_0_15, IFixed<{ ibits(0) }, { fbits(15) }, $strategy>);
+            neg_one_law!(neg_one_0_31, IFixed<{ ibits(0) }, { fbits(31) }, $strategy>);
+            neg_one_law!(neg_one_1_6, IFixed<{ ibits(1) }, { fbits(6) }, $strategy>);
+            neg_one_law!(neg_one_7_8, IFixed<{ ibits(7) }, { fbits(8) }, $strategy>);
+            neg_one_law!(neg_one_15_16, IFixed<{ ibits(15) }, { fbits(16) }, $strategy>);
+            neg_one_law!(neg_one_31_32, IFixed<{ ibits(31) }, { fbits(32) }, $strategy>);
+
+            neg_one_cancels_one!(cancels_1_6, IFixed<{ ibits(1) }, { fbits(6) }, $strategy>);
+            neg_one_cancels_one!(cancels_7_8, IFixed<{ ibits(7) }, { fbits(8) }, $strategy>);
+            neg_one_cancels_one!(cancels_15_16, IFixed<{ ibits(15) }, { fbits(16) }, $strategy>);
+            neg_one_cancels_one!(cancels_31_32, IFixed<{ ibits(31) }, { fbits(32) }, $strategy>);
         }
     )+ };
 }
 
 i_matrix!(Hot => i_hot, Warm => i_warm, Cold => i_cold, Precise => i_precise);
+
+// --- The wide band: 65..=128 logical bits, which only Hot and Cold reach. ---
+//
+// A separate implementation family, the one carrying the 256-bit widening
+// multiply that this arc patched. The square matrix above stops at 64 because
+// Warm and Precise stop there; stopping the whole file at 64 for symmetry
+// would have left the patched family untested.
+
+macro_rules! wide_matrix {
+    ($($strategy:ident => $prefix:ident),+ $(,)?) => { $(
+        mod $prefix {
+            use super::*;
+
+            additive_only!(u_0_100, UFixed<{ ibits(0) }, { fbits(100) }, $strategy>, 100);
+            both_identities!(u_1_99, UFixed<{ ibits(1) }, { fbits(99) }, $strategy>, 99);
+            both_identities!(u_65_35, UFixed<{ ibits(65) }, { fbits(35) }, $strategy>, 35);
+            both_identities!(u_100_28, UFixed<{ ibits(100) }, { fbits(28) }, $strategy>, 28);
+
+            additive_only!(i_0_100, IFixed<{ ibits(0) }, { fbits(100) }, $strategy>, 100);
+            both_identities!(i_1_98, IFixed<{ ibits(1) }, { fbits(98) }, $strategy>, 98);
+            both_identities!(i_65_34, IFixed<{ ibits(65) }, { fbits(34) }, $strategy>, 34);
+            both_identities!(i_100_27, IFixed<{ ibits(100) }, { fbits(27) }, $strategy>, 27);
+        }
+    )+ };
+}
+
+wide_matrix!(Hot => wide_hot, Cold => wide_cold);
