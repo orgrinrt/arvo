@@ -1,3 +1,5 @@
+mockspace_branch = "dev"
+
 project_name = "arvo"
 crate_prefix = "arvo"
 abi_version = 1
