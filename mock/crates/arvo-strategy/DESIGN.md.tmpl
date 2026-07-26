@@ -76,6 +76,19 @@ logical range is a contract every strategy keeps. It is a contract
 a consumer that needs the raw to stay inside the logical range either
 picks `Precise` or masks on output.
 
+A zero divisor has a per-strategy answer, and the strategies differ.
+`Hot`, `Warm` and `Cold` return the numerator unchanged: wrapping
+arithmetic has no defined answer for division by zero, and propagating
+the numerator is the cheapest fallback that does not panic. `Precise`
+clamps to the logical bound on the side the quotient is heading toward,
+which is the maximum for a non-negative numerator and the minimum for a
+negative one.
+
+The sign matters and is the part that is easy to get wrong. A saturating
+strategy's answer at an extreme is a bound, and reaching for the maximum
+unconditionally gives a positive result for `-5 / 0`, which is the wrong
+side of the range and not a clamp of anything.
+
 At the container minimum the signed multiply returns that minimum
 directly, rather than reaching it by negating its own magnitude. The
 magnitude of the minimum is not representable in the signed container,
