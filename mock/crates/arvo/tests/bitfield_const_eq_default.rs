@@ -7,13 +7,12 @@
 //! shapes: a 1-bit slot, a multi-bit slot inside a u64 parent, and
 //! a multi-bit slot inside a u32 parent.
 
-#![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![feature(macro_metavar_expr_concat)]
 #![allow(incomplete_features)]
 
 use arvo::bitfield;
-use arvo::{Bool, ConstDefault, ConstEq, ConstPartialEq};
+use arvo::{ConstDefault, ConstEq, ConstPartialEq};
 
 bitfield! {
     /// 1-bit slot inside an 8-bit parent (smallest meaningful shape).

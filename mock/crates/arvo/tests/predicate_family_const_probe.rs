@@ -12,13 +12,12 @@
 //! This probe validates const-callability of all five wrappers across
 //! UFixed, IFixed, and float wrappers.
 
-#![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
 
-use arvo::{FastFloat, IFixed, StrictFloat, UFixed, fbits, ibits};
 use arvo::strategy::Hot;
 use arvo::traits::FromConstant;
+use arvo::{fbits, ibits, FastFloat, IFixed, StrictFloat, UFixed};
 use arvo_numeric_contracts::{
     IsNonNegativeOf, IsNonZeroOf, IsPositiveOf, IsZeroOf, IsZeroOrPositiveOf, Predicate,
 };
@@ -73,15 +72,12 @@ const _I16_FIVE_ZERO_OR_POSITIVE: Bool = {
 
 // ---- Float wrappers via direct ConstSign impl in arvo facade -----------
 
-const _F32_THREE_POSITIVE: Bool = <IsPositiveOf<FastFloat<f32>> as Predicate>::test(
-    IsPositiveOf(FastFloat(3.0)),
-);
-const _F32_NEG_NOT_POSITIVE: Bool = <IsPositiveOf<FastFloat<f32>> as Predicate>::test(
-    IsPositiveOf(FastFloat(-3.0)),
-);
-const _F64_ZERO_NON_NEGATIVE: Bool = <IsNonNegativeOf<StrictFloat<f64>> as Predicate>::test(
-    IsNonNegativeOf(StrictFloat(0.0)),
-);
+const _F32_THREE_POSITIVE: Bool =
+    <IsPositiveOf<FastFloat<f32>> as Predicate>::test(IsPositiveOf(FastFloat(3.0)));
+const _F32_NEG_NOT_POSITIVE: Bool =
+    <IsPositiveOf<FastFloat<f32>> as Predicate>::test(IsPositiveOf(FastFloat(-3.0)));
+const _F64_ZERO_NON_NEGATIVE: Bool =
+    <IsNonNegativeOf<StrictFloat<f64>> as Predicate>::test(IsNonNegativeOf(StrictFloat(0.0)));
 
 // ---- Float zero-equality via ConstPartialEq blanket --------------------
 

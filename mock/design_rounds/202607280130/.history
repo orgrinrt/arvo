@@ -1,0 +1,50 @@
+be4a640 fix: implement the SignedIdentity the design had only described
+b15e2f4 chore: open the src changelist for the review findings
+cfa7f77 docs: correct what the design claims about SignedIdentity
+199a512 docs: topic for the identity round's review findings
+2dcb5c8 chore: lock and close the identity-per-operation round
+092ad89 feat: make the identity belong to its operation
+6333956 chore: lock the doc changelist and open the src changelist
+891f999 docs: state the identity with respect to its operation
+e32760c chore: regenerate docs under mockspace
+4aa77b2 docs: topic for identity per operation
+8623847 chore: lock the doc changelist and open the src changelist
+c6ad45c docs: write the release-blocker corrections into the design
+8c55b39 docs: topic for the release-blocker round
+ed439a9 chore: regenerate docs after the fixed-point arithmetic rounds
+157c1bc feat: euclidean division + even-split traits for fixed-point
+587da1b fix: fixed-point divide for IFixed/UFixed
+77ce667 feat: fixed-point multiply and fixed-point ONE for IFixed/UFixed
+3844850 feat: const slice/slice_mut on ConstCapacity
+7ea8e2c feat: const capacity surface + const waist detection
+0331fdc feat: re-export bit-contract traits through arvo-bitmask
+1c63375 feat!: generalize arvo-graph dag algorithms over the adjacency row-word
+01a313a refactor!: migrate arvo containers and algorithms off Cap to Capacity
+4727fcb feat: add Capacity trait and Dim marker to arvo-tensor
+0884c00 feat: live-node-count awareness for loose-CSR spectral partitioning
+afe375f feat: parameterise csr over live row and nnz counts
+979f51f refactor: scope generic_const_exprs gates to crates that use them
+a49b1df fix: pin nightly, adapt Bool Try to core's Residual bound
+26f47f6 feat: add cap, the usize to Cap const constructor
+af02e57 docs: catalog arvo arbitrary limitations
+ffadcf7 chore: add restrict-main-merges workflow
+e774ab9 feat: debug impls for ufixed and ifixed
+0ef8a2b fix: remove stale CsrBidirectional SHAME entry from arvo-sparse (#64)
+f6ace87 feat: graph + spectral algorithms for hilavitkutin (round 202605111719) (#63)
+604cb74 Merge pull request #62 from orgrinrt/feat/cap-usize-const-from
+9c4c6cc chore: close design round 202605112230
+a59c89f chore: lock src changelist for 202605112230_changelist.src.lock.md
+ae83417 test: route from_bridges const unwraps through Transparent::raw
+d4bfa1a docs: open SRC phase for review-followup round 202605112230
+3ac6e25 chore: lock doc changelist for 202605112230_changelist.doc.lock.md
+92e6483 docs: rewrite stale Bool/From paragraph to acknowledge const lift
+b066e08 docs: open DOC phase for review-followup round 202605112230
+3ca1a9c docs: topic for review-followup round 202605112230
+be3bb07 chore: close design round 202605112200
+644ca40 chore: lock src changelist for 202605112200_changelist.src.lock.md
+88624fd feat: Cap <-> USize const From bridges + lift Bool <-> bool to const
+557fdf9 docs: open SRC phase for round 202605112200
+3082eb9 chore: lock doc changelist for 202605112200_changelist.doc.lock.md
+6f44bfe docs: apply round 202605112200 DOC phase
+bb1e801 docs: open DOC phase for round 202605112200
+4981360 docs: topic for Cap/USize const From bridges round 202605112200

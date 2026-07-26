@@ -2,13 +2,12 @@
 //! / `with_bit_toggled` across UFixed, IFixed, and the primitive
 //! bridges.
 
-#![feature(adt_const_params)]
 #![allow(incomplete_features)]
 
 use arvo::ifixed::IFixed;
-use arvo::{FBits, IBits, ibits, fbits, USize};
 use arvo::strategy::{Hot, Warm};
 use arvo::ufixed::UFixed;
+use arvo::{fbits, ibits, FBits, USize};
 use arvo_bits::{BitAccess, BitPrim, Byte, IBitPrim};
 
 #[test]

@@ -8,7 +8,6 @@
 //! context. The blanket `impl<W: ...> const MaskOps for Mask<W>`
 //! that landed in round 202605040602 covers each instantiation.
 
-#![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
 

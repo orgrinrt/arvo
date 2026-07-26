@@ -12,8 +12,8 @@
 //! widths (FNV state >= 128 bits) are tracked in `BACKLOG.md` as a
 //! separate `Fnv1a128` type.
 
-use crate::{ConstHash, Hasher};
 use crate::algo::fnv1a_64;
+use crate::{ConstHash, Hasher};
 use arvo::strategy::{BitsContainerFor, Unsigned};
 use arvo::{Bits, Hot};
 use arvo_bits_contracts::NarrowFromU64;
@@ -25,8 +25,7 @@ use arvo_bits_contracts::NarrowFromU64;
 ///
 /// ```ignore
 /// use arvo_hash::{Fnv1a, ConstHash};
-/// use arvo::{Hot};
-/// use arvo::strategy::Unsigned;
+/// /// use arvo::strategy::Unsigned;
 ///
 /// let h: arvo::Bits<28, Hot> =
 ///     <Fnv1a<28> as ConstHash<28, Hot, Unsigned>>::hash_const(b"hello");
@@ -108,7 +107,7 @@ where
 /// Replaces the prior per-N inherent `hash_const` method pattern; the
 /// trait identity is now focused on hash-as-const-construction rather
 /// than bolted onto every per-N implementor as inherents.
-impl<const N: u16> const ConstHash<N, Hot, Unsigned> for Fnv1a<N>
+const impl<const N: u16> ConstHash<N, Hot, Unsigned> for Fnv1a<N>
 where
     Hot: BitsContainerFor<N, Unsigned>,
     <Hot as BitsContainerFor<N, Unsigned>>::T: [const] NarrowFromU64<N, Hot, Unsigned>,

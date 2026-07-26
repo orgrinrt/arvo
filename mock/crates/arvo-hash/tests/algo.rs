@@ -1,7 +1,6 @@
 //! Trait-bound sanity: a trivial Hasher<N> implementor compiles,
 //! and the streaming `update` / `finalize` round-trip works.
 
-#![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
 

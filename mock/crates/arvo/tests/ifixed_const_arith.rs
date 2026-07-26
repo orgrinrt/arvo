@@ -8,7 +8,6 @@
 //! projections through inner signed `Bits`; this file extends to
 //! assert MIN/MAX const-callable surface plus runtime parity.
 
-#![feature(adt_const_params)]
 #![feature(const_ops)]
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
@@ -16,18 +15,18 @@
 use arvo::ifixed::IFixed;
 use arvo::strategy::{Hot, Precise, Warm};
 use arvo::traits::FromConstant;
-use arvo::{FBits, USize, ibits};
-use arvo_strategy::{Bounded, Identity};
+use arvo::{ibits, FBits, USize};
+use arvo_strategy::{Additive, Bounded, Identity, Multiplicative};
 
 // IFixed<7, 0, Hot> = 1 sign + 7 = 8 bits = i8.
 type I8Hot = IFixed<{ ibits(7) }, { FBits::ZERO }, Hot>;
 type I16Warm = IFixed<{ ibits(15) }, { FBits::ZERO }, Warm>;
 type I32Precise = IFixed<{ ibits(31) }, { FBits::ZERO }, Precise>;
 
-const _I8_ZERO: I8Hot = <I8Hot as Identity>::ZERO;
-const _I8_ONE: I8Hot = <I8Hot as Identity>::ONE;
-const _I16_ZERO: I16Warm = <I16Warm as Identity>::ZERO;
-const _I32_ZERO: I32Precise = <I32Precise as Identity>::ZERO;
+const _I8_ZERO: I8Hot = <I8Hot as Identity<Additive>>::IDENTITY;
+const _I8_ONE: I8Hot = <I8Hot as Identity<Multiplicative>>::IDENTITY;
+const _I16_ZERO: I16Warm = <I16Warm as Identity<Additive>>::IDENTITY;
+const _I32_ZERO: I32Precise = <I32Precise as Identity<Additive>>::IDENTITY;
 
 // Bounded MIN / MAX projections through the inner signed Bits Bounded
 // blanket (Round 7, #325). Round 6 had to skip these per deviation 3.

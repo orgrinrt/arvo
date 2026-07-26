@@ -7,10 +7,9 @@
 //! `const N: Cap` form. No `#![feature(...)]` gate: its absence is the proof
 //! the algorithms escaped the GCE surface.
 
-use arvo::{Bool, USize};
 use arvo::strategy::Hot;
 use arvo::ufixed::UFixed;
-use arvo::{FBits, ibits};
+use arvo::{ibits, Bool, FBits, USize};
 use arvo_comb::{greedy_group, matrix_chain_dp, Range};
 use arvo_tensor::{Array, Capacity, Dim};
 

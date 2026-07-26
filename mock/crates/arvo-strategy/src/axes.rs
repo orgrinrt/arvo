@@ -60,10 +60,10 @@ pub struct Saturating;
 impl sealed::Sealed for Wrapping {}
 impl sealed::Sealed for Saturating {}
 
-impl const OverflowPolicy for Wrapping {
+const impl OverflowPolicy for Wrapping {
     const DISCRIMINANT: u16 = 0;
 }
-impl const OverflowPolicy for Saturating {
+const impl OverflowPolicy for Saturating {
     const DISCRIMINANT: u16 = 1;
 }
 
@@ -97,10 +97,10 @@ pub struct DoubleLogical;
 impl sealed::Sealed for Min {}
 impl sealed::Sealed for DoubleLogical {}
 
-impl const ContainerWidth for Min {
+const impl ContainerWidth for Min {
     const DISCRIMINANT: u16 = 0;
 }
-impl const ContainerWidth for DoubleLogical {
+const impl ContainerWidth for DoubleLogical {
     const DISCRIMINANT: u16 = 1;
 }
 
@@ -135,10 +135,10 @@ pub struct Bitpacked;
 impl sealed::Sealed for Dense {}
 impl sealed::Sealed for Bitpacked {}
 
-impl const StorageLayout for Dense {
+const impl StorageLayout for Dense {
     const DISCRIMINANT: u16 = 0;
 }
-impl const StorageLayout for Bitpacked {
+const impl StorageLayout for Bitpacked {
     const DISCRIMINANT: u16 = 1;
 }
 
@@ -165,25 +165,25 @@ pub const trait HasAxes {
     type Layout: StorageLayout;
 }
 
-impl const HasAxes for Hot {
+const impl HasAxes for Hot {
     type Overflow = Wrapping;
     type Width = Min;
     type Layout = Dense;
 }
 
-impl const HasAxes for Warm {
+const impl HasAxes for Warm {
     type Overflow = Wrapping;
     type Width = DoubleLogical;
     type Layout = Dense;
 }
 
-impl const HasAxes for Cold {
+const impl HasAxes for Cold {
     type Overflow = Wrapping;
     type Width = Min;
     type Layout = Bitpacked;
 }
 
-impl const HasAxes for Precise {
+const impl HasAxes for Precise {
     type Overflow = Saturating;
     type Width = DoubleLogical;
     type Layout = Dense;

@@ -36,13 +36,12 @@
 use core::marker::ConstParamTy_;
 
 use arvo_strategy::{
-    BitsContainerFor, Bounded, Hot, Identity, Signedness, Strategy, Unsigned,
+    Additive, BitsContainerFor, Bounded, Hot, Identity, SignedIdentity, Signedness, Strategy,
+    Unsigned,
 };
 use arvo_transparent::Transparent;
 
-use crate::bridges::{
-    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
-};
+use crate::bridges::{ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq};
 use crate::platform::Bool;
 
 /// N-bit opaque bit-pattern. Transparent wrapper over the
@@ -76,7 +75,8 @@ impl<const N: u16, S: Strategy + Eq, Sign: Signedness + Eq> ConstParamTy_ for Bi
 where
     S: BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: ConstParamTy_,
-{}
+{
+}
 
 impl<const N: u16, S: Strategy, Sign: Signedness> Bits<N, S, Sign>
 where
@@ -98,7 +98,7 @@ where
 // container level; for unsigned containers EMPTY corresponds to all-
 // bits-zero, FULL to all-bits-one. The blanket lifts every
 // (S, N, Sign) tuple where the container primitive impls Bounded.
-impl<const N: u16, S: Strategy, Sign: Signedness> const Bounded for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> Bounded for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: [const] Bounded,
@@ -110,13 +110,26 @@ where
 // Generic Identity blanket. ZERO is the additive identity; ONE the
 // multiplicative identity. At the bit-pattern level these are the
 // underlying primitive's 0 and 1.
-impl<const N: u16, S: Strategy, Sign: Signedness> const Identity for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness, Op> Identity<Op> for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
-    <S as BitsContainerFor<N, Sign>>::T: [const] Identity,
+    <S as BitsContainerFor<N, Sign>>::T: [const] Identity<Op>,
 {
-    const ZERO: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ZERO);
-    const ONE: Self = Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ONE);
+    const IDENTITY: Self =
+        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity<Op>>::IDENTITY);
+}
+
+// `SignedIdentity` forwards the same way, and only reaches signed
+// containers: the bound names the container's own impl, which exists for
+// `i8`..=`i128` and nothing unsigned, so `Bits<N, S, Unsigned>` has no
+// impl rather than a refused one.
+const impl<const N: u16, S: Strategy, Sign: Signedness> SignedIdentity for Bits<N, S, Sign>
+where
+    S: BitsContainerFor<N, Sign>,
+    <S as BitsContainerFor<N, Sign>>::T: [const] SignedIdentity,
+{
+    const NEG_ONE: Self =
+        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as SignedIdentity>::NEG_ONE);
 }
 
 // Generic ConstPartialEq + ConstEq + ConstBitEq blankets. Bit
@@ -126,7 +139,7 @@ where
 // (ConstBitEq) is always reflexive regardless of inner type and is
 // what consumers reach for when value equality and bit equality
 // must coincide.
-impl<const N: u16, S: Strategy, Sign: Signedness> const ConstPartialEq for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> ConstPartialEq for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: [const] ConstPartialEq,
@@ -139,14 +152,14 @@ where
     }
 }
 
-impl<const N: u16, S: Strategy, Sign: Signedness> const ConstEq for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> ConstEq for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: [const] ConstEq,
 {
 }
 
-impl<const N: u16, S: Strategy, Sign: Signedness> const ConstBitEq for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> ConstBitEq for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: [const] ConstBitEq,
@@ -164,7 +177,7 @@ where
 // (`MultiContainer<HiT, LoT>`), the ordering follows the high half
 // first then the low half (lexicographic on (Hi, Lo)); the
 // `MultiContainer` ConstOrd impl encodes this.
-impl<const N: u16, S: Strategy, Sign: Signedness> const ConstOrd for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> ConstOrd for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: [const] ConstOrd,
@@ -178,14 +191,14 @@ where
 }
 
 // Generic ConstDefault blanket. Default Bits is the all-zero pattern.
-impl<const N: u16, S: Strategy, Sign: Signedness> const ConstDefault for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> ConstDefault for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
-    <S as BitsContainerFor<N, Sign>>::T: [const] Identity,
+    <S as BitsContainerFor<N, Sign>>::T: [const] Identity<Additive>,
 {
     #[inline(always)]
     fn const_default() -> Self {
-        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity>::ZERO)
+        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as Identity<Additive>>::IDENTITY)
     }
 }
 
@@ -218,7 +231,7 @@ where
 // SAFETY: `Bits<N, S, Sign>` is `repr(transparent)` over
 // `<S as BitsContainerFor<N, Sign>>::T`; layout is byte-identical by
 // Rust spec.
-unsafe impl<const N: u16, S: Strategy, Sign: Signedness> const Transparent for Bits<N, S, Sign>
+const unsafe impl<const N: u16, S: Strategy, Sign: Signedness> Transparent for Bits<N, S, Sign>
 where
     S: BitsContainerFor<N, Sign>,
 {

@@ -4,14 +4,13 @@
 //! through the `ConstHash<N, Hot, Unsigned>` trait. The streaming and
 //! one-shot paths produce identical digests.
 
-#![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![feature(generic_const_exprs)]
 #![allow(incomplete_features)]
 
 use arvo::strategy::Unsigned;
 use arvo::{Bits, Hot};
-use arvo_hash::{ConstHash, Fnv1a, Hasher, fnv1a_64};
+use arvo_hash::{fnv1a_64, ConstHash, Fnv1a, Hasher};
 
 #[test]
 fn streaming_matches_oneshot() {

@@ -10,9 +10,9 @@
 //! the default for pipeline grouping where the DP's quadratic table is
 //! oversized.
 
-use arvo::{Identity, Bool, USize};
 use arvo::predicate::Pred2;
-use arvo_tensor::{Array, Capacity, cap_size};
+use arvo::{Bool, Identity, Multiplicative, USize};
+use arvo_tensor::{cap_size, Array, Capacity};
 
 use crate::range::Range;
 
@@ -60,25 +60,31 @@ pub fn greedy_group<N: Capacity, M: Capacity, A, T>(
             // item against a fresh accumulator, skip to keep the
             // walk terminating.
             if !feasible.test(&acc, item).0 {
-                i = i + USize::ONE;
+                i = i + <USize as Identity<Multiplicative>>::IDENTITY;
                 continue;
             }
             acc = merge(acc, item);
             range_start = i;
             open = Bool::TRUE;
-            i = i + USize::ONE;
+            i = i + <USize as Identity<Multiplicative>>::IDENTITY;
             continue;
         }
 
         if feasible.test(&acc, item).0 {
             acc = merge(acc, item);
-            i = i + USize::ONE;
+            i = i + <USize as Identity<Multiplicative>>::IDENTITY;
             continue;
         }
 
         // Close the open group at `[range_start, i)`.
-        groups.set(count, Range { start: range_start, end: i });
-        count = count + USize::ONE;
+        groups.set(
+            count,
+            Range {
+                start: range_start,
+                end: i,
+            },
+        );
+        count = count + <USize as Identity<Multiplicative>>::IDENTITY;
         if count.0 == cap_size(M::CAP) {
             return (count, groups);
         }
@@ -93,9 +99,12 @@ pub fn greedy_group<N: Capacity, M: Capacity, A, T>(
     if open.0 && count.0 < cap_size(M::CAP) {
         groups.set(
             count,
-            Range { start: range_start, end: USize(cap_size(N::CAP)) },
+            Range {
+                start: range_start,
+                end: USize(cap_size(N::CAP)),
+            },
         );
-        count = count + USize::ONE;
+        count = count + <USize as Identity<Multiplicative>>::IDENTITY;
     }
 
     (count, groups)

@@ -6,7 +6,9 @@
 #![no_std]
 
 use arvo::ifixed::IFixed;
-use arvo::strategy::{Cold, Hot, IArith, Identity, Precise, UArith, Warm};
+use arvo::strategy::{
+    Additive, Cold, Hot, IArith, Identity, Multiplicative, Precise, UArith, Warm,
+};
 use arvo::ufixed::UFixed;
 use arvo::{fbits, ibits};
 
@@ -55,19 +57,27 @@ fn u_mul_fixed_doublelogical_no_extra_widen() {
 
 #[test]
 fn fixed_point_one_is_multiplicative_identity() {
-    // The coupled ONE + Mul flip: with `*` rescaling by F, `Identity::ONE` must be the fixed-point one
+    // The coupled ONE + Mul flip: with `*` rescaling by F, `Identity::<Multiplicative>::IDENTITY` must be the fixed-point one
     // (raw 1<<F) so that `x * ONE == x`. F = 16 here (a genuinely fractional width).
     type Q = IFixed<{ ibits(15) }, { fbits(16) }, Hot>;
-    let one = <Q as Identity>::ONE;
+    let one = <Q as Identity<Multiplicative>>::IDENTITY;
     // ONE is raw 1<<16, not raw 1.
     assert_eq!(one.to_raw(), 1 << 16);
     let x = Q::from_raw(3 << 16); // 3.0
     assert_eq!((x * one).to_raw(), x.to_raw(), "x * ONE must equal x");
-    assert_eq!((one * one).to_raw(), one.to_raw(), "ONE * ONE must equal ONE");
+    assert_eq!(
+        (one * one).to_raw(),
+        one.to_raw(),
+        "ONE * ONE must equal ONE"
+    );
     // a real fractional product: 2.5 * 1.5 = 3.75.
     let two_five = Q::from_raw((5 << 16) / 2);
     let one_five = Q::from_raw((3 << 16) / 2);
-    assert_eq!((two_five * one_five).to_raw(), (15 << 16) / 4, "2.5 * 1.5 = 3.75");
+    assert_eq!(
+        (two_five * one_five).to_raw(),
+        (15 << 16) / 4,
+        "2.5 * 1.5 = 3.75"
+    );
 }
 
 // --- Guard tests: the per-strategy paths and constraints this round established. If a future change
@@ -104,17 +114,21 @@ fn fixed_point_one_identity_unsigned_and_doublelogical() {
     // The identity holds for unsigned types and for a DoubleLogical strategy too. UFixed<8, 8, Warm>:
     // logical 16 -> u32 container (2x), F = 8, so ONE = raw 1<<8.
     type U = UFixed<{ ibits(8) }, { fbits(8) }, Warm>;
-    let one = <U as Identity>::ONE;
+    let one = <U as Identity<Multiplicative>>::IDENTITY;
     assert_eq!(one.to_raw(), 1 << 8);
     let x = U::from_raw(5 << 8); // 5.0
-    assert_eq!((x * one).to_raw(), x.to_raw(), "unsigned x * ONE must equal x");
+    assert_eq!(
+        (x * one).to_raw(),
+        x.to_raw(),
+        "unsigned x * ONE must equal x"
+    );
 }
 
 #[test]
 fn fixed_point_identity_integer_width_is_raw_one() {
     // At F = 0 the fixed-point one collapses to the integer one (raw 1), and `*` is integer multiply.
     type I = IFixed<{ ibits(15) }, { fbits(0) }, Hot>;
-    let one = <I as Identity>::ONE;
+    let one = <I as Identity<Multiplicative>>::IDENTITY;
     assert_eq!(one.to_raw(), 1);
     let x = I::from_raw(9);
     assert_eq!((x * one).to_raw(), 9, "integer x * ONE == x");
@@ -128,16 +142,32 @@ fn fixed_point_mul_logical_level_requires_widen() {
     // overflows i64; the i128 widen makes it correct (a non-widening `*` would wrap to 0).
     type Q = IFixed<{ ibits(31) }, { fbits(16) }, Hot>;
     let a = Q::from_raw(1 << 32);
-    assert_eq!((a * a).to_raw(), 1 << 48, "65536.0^2 = 2^32 via the widen, through `*`");
+    assert_eq!(
+        (a * a).to_raw(),
+        1 << 48,
+        "65536.0^2 = 2^32 via the widen, through `*`"
+    );
 }
 
 #[test]
 fn i_mul_fixed_signed_negatives() {
     // Sign coverage on the Min widen path (Hot N=8 -> i8, widen to i128). raws at FRAC=4: -16 = -1.0,
     // 16 = 1.0, -24 = -1.5.
-    assert_eq!(<Hot as IArith<8>>::i_mul_fixed::<4>(-16, 16), -16, "-1.0 * 1.0 = -1.0");
-    assert_eq!(<Hot as IArith<8>>::i_mul_fixed::<4>(-16, -16), 16, "-1.0 * -1.0 = 1.0");
-    assert_eq!(<Hot as IArith<8>>::i_mul_fixed::<4>(-24, 16), -24, "-1.5 * 1.0 = -1.5");
+    assert_eq!(
+        <Hot as IArith<8>>::i_mul_fixed::<4>(-16, 16),
+        -16,
+        "-1.0 * 1.0 = -1.0"
+    );
+    assert_eq!(
+        <Hot as IArith<8>>::i_mul_fixed::<4>(-16, -16),
+        16,
+        "-1.0 * -1.0 = 1.0"
+    );
+    assert_eq!(
+        <Hot as IArith<8>>::i_mul_fixed::<4>(-24, 16),
+        -24,
+        "-1.5 * 1.0 = -1.5"
+    );
 }
 
 #[test]
@@ -146,19 +176,36 @@ fn i_mul_fixed_negative_floor_rounding() {
     // zero). raw -1 (=-1/16) * raw 8 (=0.5) = -1/32, which at FRAC=4 lands between raw -1 and raw 0 and
     // floors to raw -1. This pins the rounding policy; whether floor (vs toward-zero / nearest) is the
     // intended fixed-point rounding is a design question tracked in task #3.
-    assert_eq!(<Hot as IArith<8>>::i_mul_fixed::<4>(-1, 8), -1, "arithmetic-shift floor on negatives");
+    assert_eq!(
+        <Hot as IArith<8>>::i_mul_fixed::<4>(-1, 8),
+        -1,
+        "arithmetic-shift floor on negatives"
+    );
 }
 
 #[test]
-fn fixed_point_identity_zero_integer_width() {
-    // I = 0 (Q0.F, a pure fraction in [-1, 1)). ONE = 1<<F always fits the container (width >= 1+I+F >=
-    // F+1 bits), and x * ONE == x holds mechanically even though the value 1.0 sits at the exclusive upper
-    // bound of the logical range. Documents the edge (it is not an overflow bug).
+fn zero_integer_width_has_no_multiplicative_identity() {
+    // `IFixed<0, F, S>` spans [-1, 1), which does not contain one, so it has no
+    // multiplicative identity and its `Identity<Multiplicative>` impl does not
+    // exist. The additive one is unaffected: zero is representable at every width.
+    //
+    // This replaces a test that asserted the opposite. That one named
+    // `IFixed<0, 16, Hot>`, read `1 << 16` back out of it, and concluded in a
+    // comment that the edge "is not an overflow bug". It passed for a reason that
+    // has nothing to do with the type being correct: 17 logical bits project to an
+    // i32 container under Hot, so the encoding had room. At `IFixed<0, 7, Hot>` the
+    // container is i8 and the same encoding lands on -128, so multiplying by the
+    // identity flipped sign. Container slack is strategy-dependent and is not what
+    // makes a value a member of the type.
+    //
+    // The refusal itself is a compile-fail case and cannot be written here or
+    // in `identity_laws.rs`, which says so explicitly. It is pinned under
+    // `tests/ui/`, one case per impl and per strategy.
     type Q = IFixed<{ ibits(0) }, { fbits(16) }, Hot>;
-    let one = <Q as Identity>::ONE;
-    assert_eq!(one.to_raw(), 1 << 16);
+    let zero = <Q as Identity<Additive>>::IDENTITY;
+    assert_eq!(zero.to_raw(), 0, "Q0.F still has an additive identity");
     let x = Q::from_raw(1 << 15); // 0.5
-    assert_eq!((x * one).to_raw(), x.to_raw(), "Q0.F: x * ONE == x");
+    assert_eq!((x + zero).to_raw(), x.to_raw(), "Q0.F: x + ZERO == x");
 }
 
 // --- The >64-bit-logical fixed-point multiply (256-bit widen, round 202606231229). Hot/Cold 65..128 use a
@@ -168,25 +215,37 @@ fn fixed_point_identity_zero_integer_width() {
 fn i_mul_fixed_widen_above_64_bits() {
     // Hot N=128 -> i128 container. raw 1<<64 at FRAC=30; (1<<64)^2 = 1<<128 overflows i128 and would wrap to
     // 0 in a non-widening body, so >>30 = 0. The 256-bit widen gives the correct (1<<128)>>30 = 1<<98.
-    assert_eq!(<Hot as IArith<128>>::i_mul_fixed::<30>(1 << 64, 1 << 64), 1 << 98);
+    assert_eq!(
+        <Hot as IArith<128>>::i_mul_fixed::<30>(1 << 64, 1 << 64),
+        1 << 98
+    );
 }
 
 #[test]
 fn u_mul_fixed_widen_above_64_bits_unsigned() {
     // Unsigned 256-bit widen: Hot N=128 -> u128 container. Same product as the signed case, via umul256.
-    assert_eq!(<Hot as UArith<128>>::u_mul_fixed::<30>(1 << 64, 1 << 64), 1 << 98);
+    assert_eq!(
+        <Hot as UArith<128>>::u_mul_fixed::<30>(1 << 64, 1 << 64),
+        1 << 98
+    );
 }
 
 #[test]
 fn i_mul_fixed_widen_above_64_bits_cold() {
     // Cold is the other Min-container strategy at N=128 -> i128; it must take the same 256-bit widen.
-    assert_eq!(<Cold as IArith<128>>::i_mul_fixed::<30>(1 << 64, 1 << 64), 1 << 98);
+    assert_eq!(
+        <Cold as IArith<128>>::i_mul_fixed::<30>(1 << 64, 1 << 64),
+        1 << 98
+    );
 }
 
 #[test]
 fn i_mul_fixed_widen_above_64_bits_negative_exact() {
     // Sign on the 256-bit path: -(1<<64) * (1<<64) = -(1<<128); >>30 with no dropped bits = -(1<<98).
-    assert_eq!(<Hot as IArith<128>>::i_mul_fixed::<30>(-(1 << 64), 1 << 64), -(1 << 98));
+    assert_eq!(
+        <Hot as IArith<128>>::i_mul_fixed::<30>(-(1 << 64), 1 << 64),
+        -(1 << 98)
+    );
 }
 
 #[test]
@@ -237,5 +296,8 @@ fn i_mul_fixed_precise_doublelogical_33_64_clamps() {
     // Where Track 1 (logical clamp) meets the DoubleLogical 33..64 band: Precise N=40 -> i128 container
     // (2N=80) holds the product, then the result clamps to the logical 40-bit bound. raw 1<<25 * raw 1<<25
     // at FRAC=0 = 1<<50, above the logical i40 max (1<<39)-1, so it clamps there.
-    assert_eq!(<Precise as IArith<40>>::i_mul_fixed::<0>(1 << 25, 1 << 25), (1 << 39) - 1);
+    assert_eq!(
+        <Precise as IArith<40>>::i_mul_fixed::<0>(1 << 25, 1 << 25),
+        (1 << 39) - 1
+    );
 }

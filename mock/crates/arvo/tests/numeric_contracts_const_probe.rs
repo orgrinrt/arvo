@@ -7,15 +7,14 @@
 //! `f32::total_cmp`) route through `arvo_storage::ConstOrd::const_cmp`
 //! plus a const-callable `ConstOrdering -> Ordering` bridge.
 
-#![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
 
 use core::cmp::Ordering;
 
-use arvo::{FastFloat, IFixed, StrictFloat, UFixed, fbits, ibits};
 use arvo::strategy::Hot;
 use arvo::traits::{Abs, FromConstant, Recip, Sqrt, TotalOrd};
+use arvo::{fbits, ibits, FastFloat, IFixed, StrictFloat, UFixed};
 use arvo_storage::USize;
 
 type U16 = UFixed<{ ibits(16) }, { fbits(0) }, Hot>;
@@ -54,7 +53,8 @@ const _F32_ABS: FastFloat<f32> = <FastFloat<f32> as Abs>::abs(FastFloat(-3.0));
 const _F32_TC: Ordering = <FastFloat<f32> as TotalOrd>::total_cmp(FastFloat(1.0), FastFloat(2.0));
 
 const _F64_SQRT: StrictFloat<f64> = <StrictFloat<f64> as Sqrt>::sqrt(StrictFloat(100.0));
-const _F64_TC: Ordering = <StrictFloat<f64> as TotalOrd>::total_cmp(StrictFloat(2.0), StrictFloat(1.0));
+const _F64_TC: Ordering =
+    <StrictFloat<f64> as TotalOrd>::total_cmp(StrictFloat(2.0), StrictFloat(1.0));
 
 #[test]
 fn const_projections_resolve_at_runtime() {

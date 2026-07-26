@@ -32,8 +32,9 @@ where
     #[inline(always)]
     fn with_bit_set(self, idx: USize) -> Self {
         let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
-        let out =
-            <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::with_bit_set(prim, idx);
+        let out = <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::with_bit_set(
+            prim, idx,
+        );
         Self::from_raw(<S as IBitContainer<{ ifixed_bits(I, F) }>>::from_prim(out))
     }
 
@@ -69,9 +70,11 @@ where
     #[inline(always)]
     fn leading_zeros(self) -> USize {
         let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
-        let container_lz = <USize as Transparent>::raw(
-            <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::leading_zeros(prim),
-        );
+        let container_lz = <USize as Transparent>::raw(<<S as IBitContainer<
+            { ifixed_bits(I, F) },
+        >>::Prim as IBitPrim>::leading_zeros(
+            prim
+        ));
         let logical = 1 + I.raw() as usize + F.raw() as usize;
         let container = <USize as Transparent>::raw(
             <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::WIDTH,

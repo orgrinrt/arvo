@@ -12,8 +12,5 @@ arvo-bits-contracts.workspace = true
 [dev-dependencies]
 arvo.workspace = true
 
-[build-dependencies]
-mockspace.workspace = true
-
 [features]
 default = []

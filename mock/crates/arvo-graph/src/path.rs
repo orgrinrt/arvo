@@ -10,10 +10,10 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::{Identity, USize};
 use arvo::traits::{FromConstant, TotalOrd};
+use arvo::{Additive, Identity, USize};
+use arvo_bitmask::{cap_size, BitMatrix, Mask, NodeId};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
-use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_tensor::Capacity;
 
 /// Longest path in a DAG as a DP over forward topo order.
@@ -34,7 +34,7 @@ pub fn longest_path<C: Capacity, W, B>(
 ) -> (W, Mask<B>, C::Array<NodeId>)
 where
     W: Add<Output = W> + TotalOrd + Copy + FromConstant,
-    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity,
+    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity<Additive>,
     C::Array<W>: Copy,
     C::Array<NodeId>: Copy,
 {

@@ -9,7 +9,6 @@
 //! chassis carries inherent methods of the same names that are not
 //! `const fn`; only the trait projection is const-callable.
 
-#![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
 

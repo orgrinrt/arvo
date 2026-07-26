@@ -9,9 +9,9 @@
 #![no_std]
 
 use arvo::ifixed::IFixed;
-use arvo::{FBits, IBits, ibits, fbits};
 use arvo::strategy::{Cold, Hot, Precise, Resolve, Strategy, Warm};
 use arvo::ufixed::UFixed;
+use arvo::{ibits, FBits};
 
 // Resolve matrix: more conservative wins.
 

@@ -7,9 +7,9 @@
 #![no_std]
 
 use arvo::ifixed::IFixed;
-use arvo::{FBits, IBits, ibits, fbits, USize};
 use arvo::strategy::{Hot, Precise, Warm};
 use arvo::traits::{Abs, FromConstant, TotalOrd};
+use arvo::{fbits, ibits, FBits, USize};
 
 #[test]
 fn hot_i8_arith_positive() {

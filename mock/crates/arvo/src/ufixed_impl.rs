@@ -73,9 +73,10 @@ where
         // Precise. Report logical leading zeros by subtracting the
         // container's surplus bits.
         let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
-        let container_lz = <USize as Transparent>::raw(
-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::leading_zeros(prim),
-        );
+        let container_lz =
+            <USize as Transparent>::raw(
+                <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::leading_zeros(prim),
+            );
         let logical = I.raw() as usize + F.raw() as usize;
         let container = <USize as Transparent>::raw(
             <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::WIDTH,
@@ -116,7 +117,9 @@ where
         let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
         let b = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(other.to_raw());
         let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitor(a, b);
-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
+            out,
+        ))
     }
 
     #[inline(always)]
@@ -124,14 +127,18 @@ where
         let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
         let b = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(other.to_raw());
         let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitand(a, b);
-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
+            out,
+        ))
     }
 
     #[inline(always)]
     fn bitnot(self) -> Self {
         let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
         let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitnot(a);
-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
+            out,
+        ))
     }
 
     #[inline(always)]
@@ -139,7 +146,9 @@ where
         let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
         let b = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(other.to_raw());
         let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitxor(a, b);
-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
+            out,
+        ))
     }
 
     #[inline(always)]
@@ -148,8 +157,12 @@ where
         Self: BitAccess + BitSequence,
     {
         let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
-        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::clear_lowest_set_bit(a);
-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
+        let out =
+            <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::clear_lowest_set_bit(
+                a,
+            );
+        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
+            out,
+        ))
     }
 }
-

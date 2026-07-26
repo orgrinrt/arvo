@@ -44,7 +44,7 @@
 //! match production and was repaired here).
 
 use crate::{
-    A1, A16, Align, Cold, Hot, Precise, Signed, Signedness, Strategy, Unsigned, Warm, WideBits,
+    Align, Cold, Hot, Precise, Signed, Signedness, Strategy, Unsigned, Warm, WideBits, A1, A16,
 };
 
 // ---------------------------------------------------------------------------
@@ -115,14 +115,7 @@ pub const trait BitsContainerFor<const N: u16, Sign: Signedness>: Strategy {
     /// Concrete storage type for this `(strategy, bit-width, sign)`
     /// triple. Either a native primitive (native bucket) or a
     /// `WideBits<BYTES, A>` (wide bucket).
-    type T: Copy
-        + Clone
-        + PartialEq
-        + Eq
-        + Default
-        + core::hash::Hash
-        + core::fmt::Debug
-        + 'static;
+    type T: Copy + Clone + PartialEq + Eq + Default + core::hash::Hash + core::fmt::Debug + 'static;
 }
 
 // ---------------------------------------------------------------------------
@@ -145,14 +138,7 @@ pub trait Project<const TAG: usize, Sign: Signedness, const BYTES: usize, S: Str
     crate::sealed::Sealed
 {
     /// Concrete storage type for this projection slot.
-    type T: Copy
-        + Clone
-        + PartialEq
-        + Eq
-        + Default
-        + core::hash::Hash
-        + core::fmt::Debug
-        + 'static;
+    type T: Copy + Clone + PartialEq + Eq + Default + core::hash::Hash + core::fmt::Debug + 'static;
 }
 
 /// Single dispatch site for `Project` impls. Zero-sized.
@@ -265,28 +251,28 @@ impl<Sign: Signedness, const BYTES: usize> Project<5, Sign, BYTES, Precise> for 
 // clauses validate the const expressions at trait-resolution time.
 // ---------------------------------------------------------------------------
 
-impl<const N: u16, Sign: Signedness> const BitsContainerFor<N, Sign> for Hot
+const impl<const N: u16, Sign: Signedness> BitsContainerFor<N, Sign> for Hot
 where
     Picker: Project<{ tag_hot_cold(N) }, Sign, { bytes_for_u16(N) }, Hot>,
 {
     type T = <Picker as Project<{ tag_hot_cold(N) }, Sign, { bytes_for_u16(N) }, Hot>>::T;
 }
 
-impl<const N: u16, Sign: Signedness> const BitsContainerFor<N, Sign> for Cold
+const impl<const N: u16, Sign: Signedness> BitsContainerFor<N, Sign> for Cold
 where
     Picker: Project<{ tag_hot_cold(N) }, Sign, { bytes_for_u16(N) }, Cold>,
 {
     type T = <Picker as Project<{ tag_hot_cold(N) }, Sign, { bytes_for_u16(N) }, Cold>>::T;
 }
 
-impl<const N: u16, Sign: Signedness> const BitsContainerFor<N, Sign> for Warm
+const impl<const N: u16, Sign: Signedness> BitsContainerFor<N, Sign> for Warm
 where
     Picker: Project<{ tag_warm_precise(N) }, Sign, { bytes_for_u16(N) }, Warm>,
 {
     type T = <Picker as Project<{ tag_warm_precise(N) }, Sign, { bytes_for_u16(N) }, Warm>>::T;
 }
 
-impl<const N: u16, Sign: Signedness> const BitsContainerFor<N, Sign> for Precise
+const impl<const N: u16, Sign: Signedness> BitsContainerFor<N, Sign> for Precise
 where
     Picker: Project<{ tag_warm_precise(N) }, Sign, { bytes_for_u16(N) }, Precise>,
 {

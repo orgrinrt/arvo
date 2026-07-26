@@ -46,7 +46,7 @@
 
 use arvo_transparent::{ConstAsRef, ConstDeref, Transparent};
 
-use crate::arith::{Bounded, Identity};
+use crate::identity::{Additive, Bounded, Identity, Multiplicative};
 
 /// Alignment marker trait. Implementations are zero-sized types
 /// whose `repr(C, align(N))` gives the desired alignment when
@@ -142,7 +142,7 @@ impl<const BYTES: usize, A: Align> WideBits<BYTES, A> {
 // array follows immediately. The struct's layout is identical to
 // `[u8; BYTES]` with the alignment lifted to `A::VALUE`. The single
 // non-ZST field is the byte array.
-unsafe impl<const BYTES: usize, A: Align + 'static> const Transparent for WideBits<BYTES, A> {
+const unsafe impl<const BYTES: usize, A: Align + 'static> Transparent for WideBits<BYTES, A> {
     type Inner = [u8; BYTES];
 }
 
@@ -153,27 +153,33 @@ impl<const BYTES: usize, A: Align> Default for WideBits<BYTES, A> {
     }
 }
 
-/// `Identity::ZERO` is the all-zero byte pattern; `ONE` is the byte
-/// pattern with a single set bit at LSB of `bytes[0]`. Mirrors the
-/// integer primitive Identity convention.
-impl<const BYTES: usize, A: Align> const Identity for WideBits<BYTES, A> {
-    const ZERO: Self = Self {
+/// The additive identity is the all-zero byte pattern; the multiplicative
+/// one is the pattern with a single set bit at the LSB of `bytes[0]`.
+/// Mirrors the integer primitive convention.
+const impl<const BYTES: usize, A: Align> Identity<Additive> for WideBits<BYTES, A> {
+    const IDENTITY: Self = Self {
         _align: [],
         bytes: [0u8; BYTES],
     };
-    const ONE: Self = {
+}
+
+const impl<const BYTES: usize, A: Align> Identity<Multiplicative> for WideBits<BYTES, A> {
+    const IDENTITY: Self = {
         let mut b = [0u8; BYTES];
         if BYTES > 0 {
             b[0] = 1;
         }
-        Self { _align: [], bytes: b }
+        Self {
+            _align: [],
+            bytes: b,
+        }
     };
 }
 
 /// `Bounded::MIN` is the all-zero byte pattern (saturating low);
 /// `MAX` is the all-ones byte pattern. Unsigned semantics for the
 /// byte-sequence storage.
-impl<const BYTES: usize, A: Align> const Bounded for WideBits<BYTES, A> {
+const impl<const BYTES: usize, A: Align> Bounded for WideBits<BYTES, A> {
     const MIN: Self = Self {
         _align: [],
         bytes: [0u8; BYTES],
@@ -190,7 +196,7 @@ impl<const BYTES: usize, A: Align> const Bounded for WideBits<BYTES, A> {
 /// canonical impl per trait so the trait shape is exercised. Mirrors
 /// `core::ops::Deref` for the const-callable path; consumers reach for
 /// the underlying byte sequence in const context via `const_deref()`.
-impl<const BYTES: usize, A: Align> const ConstDeref for WideBits<BYTES, A> {
+const impl<const BYTES: usize, A: Align> ConstDeref for WideBits<BYTES, A> {
     type Target = [u8; BYTES];
     #[inline(always)]
     fn const_deref(&self) -> &Self::Target {
@@ -203,7 +209,7 @@ impl<const BYTES: usize, A: Align> const ConstDeref for WideBits<BYTES, A> {
 /// Same shape as the `ConstDeref` impl above; the as-ref form is the
 /// idiomatic choice when consumer code carries a `&[u8; BYTES]` bound
 /// rather than relying on auto-deref.
-impl<const BYTES: usize, A: Align> const ConstAsRef<[u8; BYTES]> for WideBits<BYTES, A> {
+const impl<const BYTES: usize, A: Align> ConstAsRef<[u8; BYTES]> for WideBits<BYTES, A> {
     #[inline(always)]
     fn const_as_ref(&self) -> &[u8; BYTES] {
         &self.bytes

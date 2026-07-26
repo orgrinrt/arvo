@@ -1,12 +1,11 @@
 //! `BitSequence` coverage: `count_ones` / `count_zeros` /
 //! `trailing_zeros` / `leading_zeros` / `is_zero`.
 
-#![feature(adt_const_params)]
 #![allow(incomplete_features)]
 
-use arvo::{FBits, IBits, ibits, fbits};
 use arvo::strategy::{Hot, Warm};
 use arvo::ufixed::UFixed;
+use arvo::{ibits, FBits};
 use arvo_bits::{BitSequence, Byte, DWord, QWord};
 
 #[test]

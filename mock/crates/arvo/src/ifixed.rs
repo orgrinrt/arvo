@@ -23,13 +23,14 @@ use core::ops::{Add, Div, Mul, Sub};
 
 use notko::Outcome;
 
-use crate::fixed_scale::{FracShift, frac};
+use crate::fixed_scale::{frac, FracShift};
 use crate::markers::{BitPresentation, FractionLike, IntegerLike};
-use arvo_storage::{Bits, FBits, IBits, USize};
 use crate::strategy::{
-    BitsContainerFor, Bounded, Hot, IArith, INarrowFrom, IWidenFrom, Identity, Precise, Signed,
-    Strategy, Warm, ifixed_bits, is_fractional,
+    ifixed_bits, is_fractional, tag_one_representable, Additive, BitsContainerFor, Bounded, Hot,
+    IArith, INarrowFrom, IWidenFrom, Identity, Multiplicative, OneRepresentable, Picker, Precise,
+    Signed, SignedIdentity, Strategy, Warm,
 };
+use arvo_storage::{Bits, FBits, IBits, USize};
 
 /// Signed fixed-point value.
 ///
@@ -47,7 +48,7 @@ where
 
 // SAFETY: `repr(transparent)` over `Bits<{1+I+F}, S, Signed>`.
 // Layout-identical by Rust spec. See UFixed for rationale.
-unsafe impl<const I: IBits, const F: FBits, S: Strategy> const arvo_transparent::Transparent
+const unsafe impl<const I: IBits, const F: FBits, S: Strategy> arvo_transparent::Transparent
     for IFixed<I, F, S>
 where
     S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
@@ -68,9 +69,10 @@ where
 const fn ifixed_fixed_one<const I: IBits, const F: FBits, S: Strategy>() -> IFixed<I, F, S>
 where
     S: const IArith<{ ifixed_bits(I, F) }>,
-    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity<Multiplicative>,
 {
-    let mut acc = <Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ONE.to_raw();
+    let mut acc =
+        <Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity<Multiplicative>>::IDENTITY.to_raw();
     let mut doublings: u16 = 0; // lint:allow(no-bare-numeric) reason: const-loop counter for the 1<<F doubling; tracked: #256
     while doublings < F.raw() {
         acc = <S as IArith<{ ifixed_bits(I, F) }>>::i_add(acc, acc);
@@ -79,19 +81,72 @@ where
     IFixed::from_raw(acc)
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> const Identity for IFixed<I, F, S>
+// The additive identity is unconditional: zero is representable at every
+// width.
+const impl<const I: IBits, const F: FBits, S: Strategy> Identity<Additive> for IFixed<I, F, S>
+where
+    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity<Additive>,
+{
+    const IDENTITY: Self =
+        Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity<Additive>>::IDENTITY);
+}
+
+// The multiplicative one is not. `IFixed<0, F, S>` spans `[-1, 1)`, which does
+// not contain one: the raw encoding `1 << F` overflows the signed container and
+// landed on its minimum under Hot, so `x * ONE` flipped sign, and clamped just
+// below one under Precise. Minus one, by contrast, IS representable there, as
+// the container minimum, which is why `SignedIdentity` carries no such gate.
+const impl<const I: IBits, const F: FBits, S: Strategy> Identity<Multiplicative> for IFixed<I, F, S>
 where
     S: const IArith<{ ifixed_bits(I, F) }>,
-    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity<Multiplicative>,
+    Picker: OneRepresentable<{ tag_one_representable(I.raw()) }>,
 {
-    const ZERO: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ZERO);
-    const ONE: Self = ifixed_fixed_one::<I, F, S>();
+    const IDENTITY: Self = ifixed_fixed_one::<I, F, S>();
+}
+
+/// The fixed-point minus one for `IFixed<I, F, S>`, raw `-(1 << F)`.
+///
+/// Same doubling loop as `ifixed_fixed_one`, started from the container's
+/// `NEG_ONE` instead of its one: doubling minus one `F` times gives
+/// `-(2^F)`. Routes through the strategy bound rather than the container-T
+/// projection for the same const-eval-cycle reason.
+const fn ifixed_fixed_neg_one<const I: IBits, const F: FBits, S: Strategy>() -> IFixed<I, F, S>
+where
+    S: const IArith<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: const SignedIdentity,
+{
+    let mut acc = <Bits<{ ifixed_bits(I, F) }, S, Signed> as SignedIdentity>::NEG_ONE.to_raw();
+    let mut doublings: u16 = 0; // lint:allow(no-bare-numeric) reason: const-loop counter for the -(1<<F) doubling; tracked: #256
+    while doublings < F.raw() {
+        acc = <S as IArith<{ ifixed_bits(I, F) }>>::i_add(acc, acc);
+        doublings += 1;
+    }
+    IFixed::from_raw(acc)
+}
+
+// `NEG_ONE` is unconditional, where `Identity<Multiplicative>` is not, and
+// the reason is the range rather than a stipulation. `IFixed<I, F, S>`
+// spans `[-2^I, 2^I)`: minus one is inside at every `I`, and at `I == 0`
+// it is exactly the container minimum, while one is outside there. So the
+// representability projection gates the multiplicative identity and must
+// not be copied here.
+//
+// Four artifacts asserted this impl existed before it did. It did not, at
+// any width, which is why the law over the matrix now pins it.
+const impl<const I: IBits, const F: FBits, S: Strategy> SignedIdentity for IFixed<I, F, S>
+where
+    S: const IArith<{ ifixed_bits(I, F) }>,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: const SignedIdentity,
+{
+    const NEG_ONE: Self = ifixed_fixed_neg_one::<I, F, S>();
 }
 
 // Generic Bounded blanket on IFixed wires through the inner signed
 // Bits's Bounded blanket. Same single-predicate cycle-avoidance pattern
 // as Identity. Closes Round 6 deviation 3 / NIT 5 (#325).
-impl<const I: IBits, const F: FBits, S: Strategy> const Bounded for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> Bounded for IFixed<I, F, S>
 where
     S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
     Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Bounded,
@@ -103,7 +158,8 @@ where
 // ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault
 // blankets routed through the inner signed Bits. Same single-predicate
 // cycle-avoidance pattern as Identity.
-impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstPartialEq for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstPartialEq
+    for IFixed<I, F, S>
 where
     S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
     Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstPartialEq,
@@ -112,18 +168,21 @@ where
     fn const_eq(&self, other: &Self) -> arvo_storage::Bool {
         let a = <Self as arvo_transparent::Transparent>::raw(*self);
         let b = <Self as arvo_transparent::Transparent>::raw(*other);
-        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstPartialEq>::const_eq(&a, &b)
+        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstPartialEq>::const_eq(
+            &a, &b,
+        )
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstEq for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstEq for IFixed<I, F, S>
 where
     S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
     Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstEq,
 {
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstBitEq for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstBitEq
+    for IFixed<I, F, S>
 where
     S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
     Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstBitEq,
@@ -132,11 +191,14 @@ where
     fn const_bit_eq(&self, other: &Self) -> arvo_storage::Bool {
         let a = <Self as arvo_transparent::Transparent>::raw(*self);
         let b = <Self as arvo_transparent::Transparent>::raw(*other);
-        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstBitEq>::const_bit_eq(&a, &b)
+        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstBitEq>::const_bit_eq(
+            &a, &b,
+        )
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstOrd for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstOrd
+    for IFixed<I, F, S>
 where
     S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
     Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstOrd,
@@ -149,14 +211,15 @@ where
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> const crate::strategy::ConstDefault for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstDefault
+    for IFixed<I, F, S>
 where
     S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
-    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Identity,
+    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Identity<Additive>,
 {
     #[inline(always)]
     fn const_default() -> Self {
-        Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity>::ZERO)
+        Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity<Additive>>::IDENTITY)
     }
 }
 
@@ -227,19 +290,19 @@ where
 
 // --- Marker trait impls ----------------------------------------------------
 
-impl<const I: IBits, const F: FBits, S: Strategy> const BitPresentation for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation for IFixed<I, F, S>
 where
     S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
 {
     const LOGICAL_WIDTH: USize = crate::markers::logical_width_signed(I, F);
 }
 
-impl<const I: IBits, S: Strategy> const IntegerLike for IFixed<I, { FBits::ZERO }, S> where
+const impl<const I: IBits, S: Strategy> IntegerLike for IFixed<I, { FBits::ZERO }, S> where
     S: BitsContainerFor<{ ifixed_bits(I, FBits::ZERO) }, Signed>
 {
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> const FractionLike for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> FractionLike for IFixed<I, F, S>
 where
     S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
     [(); 1 / is_fractional(F)]:,
@@ -255,7 +318,7 @@ where
 // TODO: cross-width arithmetic blocked on generic_const_exprs max() support — next round.
 // TODO: cross-strategy arithmetic blocked on const-expr support for associated-type const projection — next round.
 
-impl<const I: IBits, const F: FBits, S: Strategy> const Add for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> Add for IFixed<I, F, S>
 where
     S: const IArith<{ ifixed_bits(I, F) }>,
 {
@@ -269,7 +332,7 @@ where
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> const Sub for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> Sub for IFixed<I, F, S>
 where
     S: const IArith<{ ifixed_bits(I, F) }>,
 {
@@ -283,7 +346,7 @@ where
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> const Mul for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> Mul for IFixed<I, F, S>
 where
     S: [const] IArith<{ ifixed_bits(I, F) }>,
     (): FracShift<{ frac(F) }>,
@@ -292,14 +355,13 @@ where
     #[inline(always)]
     fn mul(self, rhs: Self) -> Self {
         // Fixed-point multiply: rescale by the fractional bit count F. F == 0 is integer multiply.
-        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_mul_fixed::<{ frac(F) }>(
-            self.to_raw(),
-            rhs.to_raw(),
-        ))
+        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_mul_fixed::<
+            { frac(F) },
+        >(self.to_raw(), rhs.to_raw()))
     }
 }
 
-impl<const I: IBits, const F: FBits, S: Strategy> const Div for IFixed<I, F, S>
+const impl<const I: IBits, const F: FBits, S: Strategy> Div for IFixed<I, F, S>
 where
     S: [const] IArith<{ ifixed_bits(I, F) }>,
     (): FracShift<{ frac(F) }>,
@@ -308,10 +370,9 @@ where
     #[inline(always)]
     fn div(self, rhs: Self) -> Self {
         // Fixed-point divide: rescale by the fractional bit count F. F == 0 is integer divide.
-        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_div_fixed::<{ frac(F) }>(
-            self.to_raw(),
-            rhs.to_raw(),
-        ))
+        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_div_fixed::<
+            { frac(F) },
+        >(self.to_raw(), rhs.to_raw()))
     }
 }
 
@@ -324,7 +385,9 @@ where
 {
     #[inline(always)]
     fn from(src: IFixed<I, F, Hot>) -> Self {
-        Self::from_raw(<Warm as IWidenFrom<Hot, { ifixed_bits(I, F) }>>::i_widen(src.to_raw()))
+        Self::from_raw(<Warm as IWidenFrom<Hot, { ifixed_bits(I, F) }>>::i_widen(
+            src.to_raw(),
+        ))
     }
 }
 
@@ -357,6 +420,9 @@ where
 {
     type Error = ();
     #[inline(always)]
+    // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+    // violation is on, and the formatter otherwise moves the comment below it.
+    #[rustfmt::skip]
     fn try_from(src: IFixed<I, F, Warm>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
         match <Hot as INarrowFrom<Warm, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw()) {
             Outcome::Ok(v) => Ok(Self::from_raw(v)),
@@ -372,6 +438,9 @@ where
 {
     type Error = ();
     #[inline(always)]
+    // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+    // violation is on, and the formatter otherwise moves the comment below it.
+    #[rustfmt::skip]
     fn try_from(src: IFixed<I, F, Precise>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
         match <Hot as INarrowFrom<Precise, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw()) {
             Outcome::Ok(v) => Ok(Self::from_raw(v)),

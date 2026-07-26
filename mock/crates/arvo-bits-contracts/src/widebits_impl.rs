@@ -26,7 +26,7 @@ use arvo_storage::{Bool, USize};
 use arvo_strategy::{Align, WideBits};
 use arvo_transparent::Transparent;
 
-use crate::{BitPrim, sealed};
+use crate::{sealed, BitPrim};
 
 // SAFETY: WideBits is the byte-sequence storage primitive at the wide
 // bucket of BitsContainerFor. Adding it to the sealed Bit marker
@@ -35,7 +35,7 @@ use crate::{BitPrim, sealed};
 impl<const BYTES: usize, A: Align + 'static> sealed::Bit for WideBits<BYTES, A> {}
 
 // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: WideBits inner storage is bare-byte by construction (see WideBits docs); this BitPrim impl bridges the typed surface to the byte-level op composition; tracked: #313
-impl<const BYTES: usize, A: Align + 'static> const BitPrim for WideBits<BYTES, A> {
+const impl<const BYTES: usize, A: Align + 'static> BitPrim for WideBits<BYTES, A> {
     const WIDTH: USize = USize(BYTES * 8);
     const ZERO: Self = Self::zero();
     const ONE: Self = {
@@ -209,7 +209,11 @@ impl<const BYTES: usize, A: Align + 'static> const BitPrim for WideBits<BYTES, A
         if n_bits == 0 {
             return Self::from_bytes(bytes);
         }
-        let n_bits = if n_bits >= total_bits { total_bits } else { n_bits };
+        let n_bits = if n_bits >= total_bits {
+            total_bits
+        } else {
+            n_bits
+        };
         let full_bytes = n_bits / 8;
         let rem_bits = n_bits % 8;
         let mut i = 0;

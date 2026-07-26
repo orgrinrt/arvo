@@ -15,8 +15,8 @@
 
 use core::ops::{BitAnd, BitOr, BitXor, Not};
 
+use arvo::strategy::{Additive, Bounded, Identity};
 use arvo::{Bool, USize};
-use arvo::strategy::{Bounded, Identity};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use arvo_mask_contracts::MaskOps;
 
@@ -111,7 +111,9 @@ where
     /// Iterator over set bit indices, lowest-first.
     #[inline(always)]
     pub fn iter_set_bits(self) -> SetBitsIter<W> {
-        SetBitsIter { remaining: self.word }
+        SetBitsIter {
+            remaining: self.word,
+        }
     }
 }
 
@@ -134,6 +136,9 @@ where
     type Item = USize;
 
     #[inline(always)]
+    // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+    // violation is on, and the formatter otherwise moves the comment below it.
+    #[rustfmt::skip]
     fn next(&mut self) -> Option<USize> { // lint:allow(no-bare-option) reason: core::iter::Iterator::next trait-method signature returns Option<Self::Item>; tracked: #115
         if <W as BitSequence>::is_zero(self.remaining).0 {
             return None;
@@ -149,7 +154,7 @@ where
 // `BitLogic` on `Bits<N, S, Sign>` is `impl const`, so the chassis
 // `core::ops` mirrors are also const-callable across the W range.
 
-impl<W> const BitAnd for Mask<W>
+const impl<W> BitAnd for Mask<W>
 where
     W: BitSequence + BitAccess + [const] BitLogic + Copy + Default,
 {
@@ -160,7 +165,7 @@ where
     }
 }
 
-impl<W> const BitOr for Mask<W>
+const impl<W> BitOr for Mask<W>
 where
     W: BitSequence + BitAccess + [const] BitLogic + Copy + Default,
 {
@@ -171,7 +176,7 @@ where
     }
 }
 
-impl<W> const BitXor for Mask<W>
+const impl<W> BitXor for Mask<W>
 where
     W: BitSequence + BitAccess + [const] BitLogic + Copy + Default,
 {
@@ -182,7 +187,7 @@ where
     }
 }
 
-impl<W> const Not for Mask<W>
+const impl<W> Not for Mask<W>
 where
     W: BitSequence + BitAccess + [const] BitLogic + Copy + Default,
 {
@@ -204,21 +209,22 @@ where
 // BitLogic + [const] BitSequence + [const] Bounded + [const]
 // Identity` for const callability through trait projection.
 //
-// `empty` and `full` route through `Identity::ZERO` and `Bounded::MAX`
+// `empty` and `full` route through `Identity::<Additive>::IDENTITY` and `Bounded::MAX`
 // (matching the audit Finding-11 fix in the chassis inherent block).
 
-impl<W> const MaskOps for Mask<W>
+const impl<W> MaskOps for Mask<W>
 where
-    W: Copy + Default
+    W: Copy
+        + Default
         + [const] BitAccess
         + [const] BitLogic
         + [const] BitSequence
         + [const] Bounded
-        + [const] Identity,
+        + [const] Identity<Additive>,
 {
     #[inline(always)]
     fn empty() -> Self {
-        <Self as Identity>::ZERO
+        <Self as Identity<Additive>>::IDENTITY
     }
 
     #[inline(always)]

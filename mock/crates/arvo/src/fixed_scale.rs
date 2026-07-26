@@ -12,7 +12,8 @@ use arvo_storage::FBits;
 /// const expression in a const-generic turbofish: the inherent `FBits::raw()` method is flagged
 /// "unconstrained generic constant" in that position, whereas a free-fn call is accepted, the same way
 /// `ifixed_bits(I, F)` is accepted as a const-generic argument throughout.
-pub(crate) const fn frac(f: FBits) -> u16 { // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier mirroring ifixed_bits; tracked: #256
+pub(crate) const fn frac(f: FBits) -> u16 {
+    // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier mirroring ifixed_bits; tracked: #256
     f.raw()
 }
 

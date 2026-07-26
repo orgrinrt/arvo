@@ -12,8 +12,8 @@
 //! `arvo-graph` (the forbidden-imports lint prohibits `arvo_graph::*`
 //! from `arvo-sparse`).
 
-use arvo::{Identity, Bool, USize};
-use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
+use arvo::{Additive, Bool, Identity, Multiplicative, USize};
+use arvo_bitmask::{cap_size, BitMatrix, Mask, NodeId};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use arvo_tensor::Capacity;
 
@@ -26,11 +26,9 @@ use crate::adjacency::BidirectionalSparseAdjacency;
 /// block ID of node `i`; IDs start at `USize(0)` and increase by one
 /// per distinct component.
 #[inline]
-pub fn block_diagonal<W, C: Capacity>(
-    adjacency: &BitMatrix<W, C>,
-) -> (USize, C::Array<USize>)
+pub fn block_diagonal<W, C: Capacity>(adjacency: &BitMatrix<W, C>) -> (USize, C::Array<USize>)
 where
-    W: BitSequence + BitAccess + BitLogic + Identity + Copy + Default,
+    W: BitSequence + BitAccess + BitLogic + Identity<Additive> + Copy + Default,
 {
     let mut block_id: C::Array<USize> = C::filled(USize(0));
     let mut visited: Mask<W> = Mask::<W>::empty();
@@ -44,7 +42,7 @@ where
         }
 
         let id = next_id;
-        next_id = next_id + USize::ONE;
+        next_id = next_id + <USize as Identity<Multiplicative>>::IDENTITY;
 
         // Iterative DFS. Stack capacity = N is a safe bound: each
         // node enters the stack at most once.
@@ -113,7 +111,7 @@ where
         }
 
         let id = next_id;
-        next_id = next_id + USize::ONE;
+        next_id = next_id + <USize as Identity<Multiplicative>>::IDENTITY;
 
         let mut stack: C::Array<NodeId> = C::filled(NodeId::new(USize(0)));
         let mut sp = 0usize;

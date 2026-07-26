@@ -11,8 +11,5 @@ arvo-strategy.workspace = true
 arvo-storage.workspace = true
 arvo-bits-contracts.workspace = true
 
-[build-dependencies]
-mockspace.workspace = true
-
 [features]
 default = []
