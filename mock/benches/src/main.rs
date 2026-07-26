@@ -199,6 +199,11 @@ fn run_worker(args: &[String]) -> ExitCode {
     let max_call_us: Option<u64> = get("--max-call-us")
         .and_then(|s| s.parse().ok())
         .filter(|&v| v > 0);
+    // The coordinator passes this through from the manifest's `threaded`.
+    // A threaded bench's spawned workers never inherit a core pin, so the
+    // harness skips pinning rather than pin only the coordinating thread
+    // and skew the workload.
+    let threaded = args.iter().any(|a| a == "--threaded");
 
     let routine = match routine_for_n(&bench_name, n) {
         Some(r) => r,
@@ -225,6 +230,7 @@ fn run_worker(args: &[String]) -> ExitCode {
         n,
         batch_k,
         max_call_us,
+        threaded,
     );
     ExitCode::SUCCESS
 }

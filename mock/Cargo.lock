@@ -220,9 +220,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.2.60"
+version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43c5703da9466b66a946814e1adf53ea2c90f10063b86290cc9eb67ce3478a20"
+checksum = "5add81bb678e6cb321aff7fa0dc7689ad82b112dbc032cea19f91d6b8e3582b9"
 dependencies = [
  "find-msvc-tools",
  "shlex",
@@ -303,10 +303,11 @@ checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 [[package]]
 name = "mockspace"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#38d1c597df5424cbc929d06277b246991a1a2b01"
 dependencies = [
  "libloading",
  "mockspace-lint-rules",
+ "mockspace-manifest",
  "serde",
  "toml_edit",
  "tree-sitter",
@@ -316,12 +317,12 @@ dependencies = [
 [[package]]
 name = "mockspace-bench-core"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#38d1c597df5424cbc929d06277b246991a1a2b01"
 
 [[package]]
 name = "mockspace-bench-harness"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#38d1c597df5424cbc929d06277b246991a1a2b01"
 dependencies = [
  "libloading",
  "mockspace-bench-core",
@@ -332,7 +333,7 @@ dependencies = [
 [[package]]
 name = "mockspace-bench-macro"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#38d1c597df5424cbc929d06277b246991a1a2b01"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -342,10 +343,19 @@ dependencies = [
 [[package]]
 name = "mockspace-lint-rules"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#48d0279fff1ffa3108cafe01d6ba2876ed3e7d65"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#38d1c597df5424cbc929d06277b246991a1a2b01"
 dependencies = [
  "tree-sitter",
  "tree-sitter-rust",
+]
+
+[[package]]
+name = "mockspace-manifest"
+version = "0.1.0"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#38d1c597df5424cbc929d06277b246991a1a2b01"
+dependencies = [
+ "serde",
+ "toml 0.8.23",
 ]
 
 [[package]]
@@ -373,9 +383,9 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.12.3"
+version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e10754a14b9137dd7b1e3e5b0493cc9171fdd105e0ab477f51b72e7f3ac0e276"
+checksum = "f020237b6c8eed93db2e2cb53c00c60a8e1bc73da7d073199a1180401450218d"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -385,9 +395,9 @@ dependencies = [
 
 [[package]]
 name = "regex-automata"
-version = "0.4.14"
+version = "0.4.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6e1dd4122fc1595e8162618945476892eefca7b88c52820e74af6262213cae8f"
+checksum = "8fcfdb36bda0c880c5931cdc7a2bcdc8ba4556847b9d912bca70bc94708711ad"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -396,9 +406,9 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.8.10"
+version = "0.8.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc897dd8d9e8bd1ed8cdad82b5966c3e0ecae09fb1907d58efaa013543185d0a"
+checksum = "d6f6ff9a378485b298a5286656da665ba74413d36db0979633275d2e708145d4"
 
 [[package]]
 name = "serde"
@@ -463,9 +473,9 @@ dependencies = [
 
 [[package]]
 name = "shlex"
-version = "1.3.0"
+version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
+checksum = "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba"
 
 [[package]]
 name = "streaming-iterator"
