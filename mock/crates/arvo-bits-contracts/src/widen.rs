@@ -120,13 +120,12 @@ impl_widen_i!(i64 => i128);
 // (parallel to Narrow's M > N non-enforcement); consumers supplying M >= N
 // still get a valid result.
 
-impl<const M: u16, const N: u16, S: Strategy, Sign: Signedness>
-    const Widen<Bits<N, S, Sign>> for Bits<M, S, Sign>
+const impl<const M: u16, const N: u16, S: Strategy, Sign: Signedness> Widen<Bits<N, S, Sign>>
+    for Bits<M, S, Sign>
 where
     S: BitsContainerFor<M, Sign>,
     S: BitsContainerFor<N, Sign>,
-    <S as BitsContainerFor<M, Sign>>::T:
-        ~const Widen<<S as BitsContainerFor<N, Sign>>::T>,
+    <S as BitsContainerFor<M, Sign>>::T: [const] Widen<<S as BitsContainerFor<N, Sign>>::T>,
 {
     #[inline(always)]
     fn widen_to(self) -> Bits<N, S, Sign> {

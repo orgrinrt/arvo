@@ -7,10 +7,10 @@
 #![no_std]
 
 use arvo::markers::BitPresentation;
-use arvo::{FBits, IBits, ibits, fbits, USize};
 use arvo::strategy::{Cold, Hot, Precise, Warm};
 use arvo::traits::{Abs, FromConstant, TotalOrd};
 use arvo::ufixed::UFixed;
+use arvo::{fbits, ibits, FBits, USize};
 
 #[test]
 fn hot_u8_arith() {

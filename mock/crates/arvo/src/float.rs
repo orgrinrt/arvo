@@ -13,7 +13,9 @@
 //! implement `Ieee`.
 
 use crate::markers::FloatLike;
-use crate::strategy::{Bounded, ConstBitEq, ConstDefault, ConstPartialEq, Identity, Ieee};
+use crate::strategy::{
+    Additive, Bounded, ConstBitEq, ConstDefault, ConstPartialEq, Identity, Ieee,
+};
 use arvo_storage::Bool;
 
 // Ieee + FromU8Ieee live in arvo-strategy::ieee per round 202605030400.
@@ -66,16 +68,16 @@ impl<F: Ieee> StrictFloat<F> {
     }
 }
 
-impl<F: Ieee> const FloatLike for FastFloat<F> {}
-impl<F: Ieee> const FloatLike for StrictFloat<F> {}
+const impl<F: Ieee> FloatLike for FastFloat<F> {}
+const impl<F: Ieee> FloatLike for StrictFloat<F> {}
 
 // SAFETY: `repr(transparent)` over `F` (which is `f32` or `f64` via
 // the `Ieee` seal). Layout-identical by Rust spec.
-unsafe impl<F: Ieee> const arvo_transparent::Transparent for FastFloat<F> {
+const unsafe impl<F: Ieee> arvo_transparent::Transparent for FastFloat<F> {
     type Inner = F;
 }
 
-unsafe impl<F: Ieee> const arvo_transparent::Transparent for StrictFloat<F> {
+const unsafe impl<F: Ieee> arvo_transparent::Transparent for StrictFloat<F> {
     type Inner = F;
 }
 
@@ -93,24 +95,23 @@ unsafe impl<F: Ieee> const arvo_transparent::Transparent for StrictFloat<F> {
 // need partial equality reach for `ConstPartialEq`. Total ordering on
 // floats routes through `arvo-numeric-contracts::TotalOrd`.
 //
-// Note on `Identity::ZERO` value-vs-formal-additive-identity under
+// Note on `Identity::<Additive>::IDENTITY` value-vs-formal-additive-identity under
 // fast-math: `FastFloat<F>::ZERO = 0.0` is the *value* zero. Under
 // LLVM fast-math passes (signed-zero-ignoring), `x + 0.0` may be
 // rewritten to `x` even for `x = -0.0`; the additive-identity
 // property is preserved up to fast-math's signed-zero collapse,
 // which is the documented contract of `FastFloat`.
 
-impl<F: [const] Ieee> const Bounded for FastFloat<F> {
+const impl<F: [const] Ieee> Bounded for FastFloat<F> {
     const MIN: Self = Self(<F as Bounded>::MIN);
     const MAX: Self = Self(<F as Bounded>::MAX);
 }
 
-impl<F: [const] Ieee> const Identity for FastFloat<F> {
-    const ZERO: Self = Self(<F as Identity>::ZERO);
-    const ONE: Self = Self(<F as Identity>::ONE);
+const impl<F: [const] Ieee + [const] Identity<Op>, Op> Identity<Op> for FastFloat<F> {
+    const IDENTITY: Self = Self(<F as Identity<Op>>::IDENTITY);
 }
 
-impl<F: [const] Ieee + [const] ConstPartialEq> const ConstPartialEq for FastFloat<F> {
+const impl<F: [const] Ieee + [const] ConstPartialEq> ConstPartialEq for FastFloat<F> {
     #[inline(always)]
     fn const_eq(&self, other: &Self) -> Bool {
         let a = <Self as arvo_transparent::Transparent>::raw(*self);
@@ -119,7 +120,7 @@ impl<F: [const] Ieee + [const] ConstPartialEq> const ConstPartialEq for FastFloa
     }
 }
 
-impl<F: [const] Ieee + [const] ConstBitEq> const ConstBitEq for FastFloat<F> {
+const impl<F: [const] Ieee + [const] ConstBitEq> ConstBitEq for FastFloat<F> {
     #[inline(always)]
     fn const_bit_eq(&self, other: &Self) -> Bool {
         let a = <Self as arvo_transparent::Transparent>::raw(*self);
@@ -128,24 +129,23 @@ impl<F: [const] Ieee + [const] ConstBitEq> const ConstBitEq for FastFloat<F> {
     }
 }
 
-impl<F: [const] Ieee> const ConstDefault for FastFloat<F> {
+const impl<F: [const] Ieee> ConstDefault for FastFloat<F> {
     #[inline(always)]
     fn const_default() -> Self {
-        Self(<F as Identity>::ZERO)
+        Self(<F as Identity<Additive>>::IDENTITY)
     }
 }
 
-impl<F: [const] Ieee> const Bounded for StrictFloat<F> {
+const impl<F: [const] Ieee> Bounded for StrictFloat<F> {
     const MIN: Self = Self(<F as Bounded>::MIN);
     const MAX: Self = Self(<F as Bounded>::MAX);
 }
 
-impl<F: [const] Ieee> const Identity for StrictFloat<F> {
-    const ZERO: Self = Self(<F as Identity>::ZERO);
-    const ONE: Self = Self(<F as Identity>::ONE);
+const impl<F: [const] Ieee + [const] Identity<Op>, Op> Identity<Op> for StrictFloat<F> {
+    const IDENTITY: Self = Self(<F as Identity<Op>>::IDENTITY);
 }
 
-impl<F: [const] Ieee + [const] ConstPartialEq> const ConstPartialEq for StrictFloat<F> {
+const impl<F: [const] Ieee + [const] ConstPartialEq> ConstPartialEq for StrictFloat<F> {
     #[inline(always)]
     fn const_eq(&self, other: &Self) -> Bool {
         let a = <Self as arvo_transparent::Transparent>::raw(*self);
@@ -154,7 +154,7 @@ impl<F: [const] Ieee + [const] ConstPartialEq> const ConstPartialEq for StrictFl
     }
 }
 
-impl<F: [const] Ieee + [const] ConstBitEq> const ConstBitEq for StrictFloat<F> {
+const impl<F: [const] Ieee + [const] ConstBitEq> ConstBitEq for StrictFloat<F> {
     #[inline(always)]
     fn const_bit_eq(&self, other: &Self) -> Bool {
         let a = <Self as arvo_transparent::Transparent>::raw(*self);
@@ -163,10 +163,10 @@ impl<F: [const] Ieee + [const] ConstBitEq> const ConstBitEq for StrictFloat<F> {
     }
 }
 
-impl<F: [const] Ieee> const ConstDefault for StrictFloat<F> {
+const impl<F: [const] Ieee> ConstDefault for StrictFloat<F> {
     #[inline(always)]
     fn const_default() -> Self {
-        Self(<F as Identity>::ZERO)
+        Self(<F as Identity<Additive>>::IDENTITY)
     }
 }
 
@@ -178,7 +178,7 @@ impl<F: [const] Ieee> const ConstDefault for StrictFloat<F> {
 
 macro_rules! float_binop_impl {
     ($wrapper:ident, $op:ident, $method:ident) => {
-        impl<F: Ieee + [const] core::ops::$op<Output = F>> const core::ops::$op for $wrapper<F> {
+        const impl<F: Ieee + [const] core::ops::$op<Output = F>> core::ops::$op for $wrapper<F> {
             type Output = Self;
             #[inline(always)]
             fn $method(self, other: Self) -> Self {
@@ -190,7 +190,7 @@ macro_rules! float_binop_impl {
 
 macro_rules! float_neg_impl {
     ($wrapper:ident) => {
-        impl<F: Ieee + [const] core::ops::Neg<Output = F>> const core::ops::Neg for $wrapper<F> {
+        const impl<F: Ieee + [const] core::ops::Neg<Output = F>> core::ops::Neg for $wrapper<F> {
             type Output = Self;
             #[inline(always)]
             fn neg(self) -> Self {

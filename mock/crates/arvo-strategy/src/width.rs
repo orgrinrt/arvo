@@ -49,14 +49,16 @@ impl Width {
     }
 }
 
-impl const Bounded for Width {
+const impl Bounded for Width {
     const MIN: Self = Width(<u16 as Bounded>::MIN);
     const MAX: Self = Width(<u16 as Bounded>::MAX);
 }
 
-impl const Identity for Width {
-    const ZERO: Self = Width(<u16 as Identity>::ZERO);
-    const ONE: Self = Width(<u16 as Identity>::ONE);
+const impl<Op> Identity<Op> for Width
+where
+    u16: [const] Identity<Op>, // lint:allow(no-bare-numeric) reason: Width's inner carrier; tracked: #256
+{
+    const IDENTITY: Self = Width(<u16 as Identity<Op>>::IDENTITY); // lint:allow(no-bare-numeric) reason: Width's inner carrier; tracked: #256
 }
 
 /// Canonical `ConstFrom<u16>` impl for `Width`.
@@ -64,7 +66,7 @@ impl const Identity for Width {
 /// Wraps a u16 literal into the typed `Width` carrier in const context.
 /// Round 4 (#314) ships `ConstFrom<T>` as a substrate bridge; this impl
 /// is the canonical exercise of the trait shape.
-impl const ConstFrom<u16> for Width {
+const impl ConstFrom<u16> for Width {
     #[inline(always)]
     // lint:allow(no-bare-numeric) reason: definition-site exception 4 — ergonomic helper-fn parameter constructing arvo type from u16 literal; tracked: #314
     fn const_from(value: u16) -> Self {
@@ -141,4 +143,3 @@ pub const fn tag(n: Width) -> usize {
 pub const fn bytes_for(n: Width) -> usize {
     (n.0 as usize).div_ceil(8)
 }
-

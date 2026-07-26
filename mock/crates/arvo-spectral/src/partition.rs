@@ -26,8 +26,8 @@ use core::cmp::Ordering;
 use core::ops::{Add, Mul, Sub};
 
 use arvo::traits::{FromConstant, Recip, Sqrt, TotalOrd};
-use arvo::{Identity, USize};
-use arvo_tensor::{Capacity, cap_size};
+use arvo::{Identity, Multiplicative, USize};
+use arvo_tensor::{cap_size, Capacity};
 
 use crate::fiedler::fiedler_vector;
 use crate::operator::{LinearOperator, SparseLaplacian};
@@ -119,7 +119,7 @@ where
     let zero = F::from_constant::<{ USize(0) }>();
 
     while stack_len.0 > 0 && partition_count.0 < k {
-        stack_len = stack_len - USize::ONE;
+        stack_len = stack_len - <USize as Identity<Multiplicative>>::IDENTITY;
         let active = stack.as_ref()[stack_len.0];
 
         // Count active partition's nodes; singletons cannot be split.
@@ -171,17 +171,16 @@ where
         // Assign the new id to the positive half. Negative half keeps
         // the existing `active` id.
         let new_id = partition_count;
-        partition_count = partition_count + USize::ONE;
+        partition_count = partition_count + <USize as Identity<Multiplicative>>::IDENTITY;
         {
             let pid = partition_id.as_mut();
             let fs = fiedler.as_ref();
             let mut j = 0usize;
             while j < n {
-                if pid[j] == active {
-                    if let Ordering::Greater = fs[j].total_cmp(zero) {
+                if pid[j] == active
+                    && let Ordering::Greater = fs[j].total_cmp(zero) {
                         pid[j] = new_id;
                     }
-                }
                 j += 1;
             }
         }
@@ -206,16 +205,20 @@ where
         if want > 0 && stack_len.0 + want <= k {
             if pos_big {
                 stack.as_mut()[stack_len.0] = new_id;
-                stack_len = stack_len + USize::ONE;
+                stack_len = stack_len + <USize as Identity<Multiplicative>>::IDENTITY;
             }
             if neg_big {
                 stack.as_mut()[stack_len.0] = active;
-                stack_len = stack_len + USize::ONE;
+                stack_len = stack_len + <USize as Identity<Multiplicative>>::IDENTITY;
             }
-        } else if want > 0 && stack_len.0 + 1 <= k {
-            let pick = if positive_count >= negative_count { new_id } else { active };
+        } else if want > 0 && stack_len.0 < k {
+            let pick = if positive_count >= negative_count {
+                new_id
+            } else {
+                active
+            };
             stack.as_mut()[stack_len.0] = pick;
-            stack_len = stack_len + USize::ONE;
+            stack_len = stack_len + <USize as Identity<Multiplicative>>::IDENTITY;
         }
     }
 

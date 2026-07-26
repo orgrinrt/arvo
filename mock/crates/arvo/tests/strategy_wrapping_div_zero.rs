@@ -8,9 +8,9 @@
 #![no_std]
 
 use arvo::ifixed::IFixed;
-use arvo::{FBits, IBits, ibits, fbits};
 use arvo::strategy::{Cold, Hot, Warm};
 use arvo::ufixed::UFixed;
+use arvo::{ibits, FBits};
 
 #[test]
 fn u_div_by_zero_returns_numerator_hot() {

@@ -17,14 +17,14 @@ use arvo_transparent::Transparent;
 
 use crate::{BitAccess, BitLogic, BitSequence, BitsBitPrim, HasBitWidth};
 
-impl<const N: u16, S: Strategy, Sign: Signedness> const HasBitWidth for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> HasBitWidth for Bits<N, S, Sign>
 where
     S: [const] BitsContainerFor<N, Sign>,
 {
     const WIDTH: USize = USize(N as usize);
 }
 
-impl<const N: u16, S: Strategy, Sign: Signedness> const BitAccess for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> BitAccess for Bits<N, S, Sign>
 where
     S: [const] BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: [const] BitsBitPrim<Sign>,
@@ -33,26 +33,32 @@ where
         <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::get_bit(self.to_raw(), idx)
     }
     fn with_bit_set(self, idx: USize) -> Self {
-        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::with_bit_set(
-            self.to_raw(),
-            idx,
-        ))
+        Self::from_raw(
+            <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::with_bit_set(
+                self.to_raw(),
+                idx,
+            ),
+        )
     }
     fn with_bit_cleared(self, idx: USize) -> Self {
-        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::with_bit_cleared(
-            self.to_raw(),
-            idx,
-        ))
+        Self::from_raw(
+            <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::with_bit_cleared(
+                self.to_raw(),
+                idx,
+            ),
+        )
     }
     fn with_bit_toggled(self, idx: USize) -> Self {
-        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::with_bit_toggled(
-            self.to_raw(),
-            idx,
-        ))
+        Self::from_raw(
+            <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::with_bit_toggled(
+                self.to_raw(),
+                idx,
+            ),
+        )
     }
 }
 
-impl<const N: u16, S: Strategy, Sign: Signedness> const BitSequence for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> BitSequence for Bits<N, S, Sign>
 where
     S: [const] BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: [const] BitsBitPrim<Sign>,
@@ -65,9 +71,10 @@ where
         // raw `leading_zeros` includes the container's surplus bits
         // above N, which the contract subtracts back out.
         // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: bare N here is the const-generic bit-width parameter still typed `u16` until Round 2 (#312); the saturating_sub composes through bare usize for one expression to bridge container width - N; tracked: #312
-        let lz = <USize as Transparent>::raw(
-            <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::leading_zeros(self.to_raw()),
-        );
+        let lz =
+            <USize as Transparent>::raw(<<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<
+                Sign,
+            >>::leading_zeros(self.to_raw()));
         let container_width = <USize as Transparent>::raw(
             <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::WIDTH,
         );
@@ -88,32 +95,38 @@ where
     }
 }
 
-impl<const N: u16, S: Strategy, Sign: Signedness> const BitLogic for Bits<N, S, Sign>
+const impl<const N: u16, S: Strategy, Sign: Signedness> BitLogic for Bits<N, S, Sign>
 where
     S: [const] BitsContainerFor<N, Sign>,
     <S as BitsContainerFor<N, Sign>>::T: [const] BitsBitPrim<Sign>,
 {
     fn bitor(self, other: Self) -> Self {
-        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::bitor(
-            self.to_raw(),
-            other.to_raw(),
-        ))
+        Self::from_raw(
+            <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::bitor(
+                self.to_raw(),
+                other.to_raw(),
+            ),
+        )
     }
     fn bitand(self, other: Self) -> Self {
-        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::bitand(
-            self.to_raw(),
-            other.to_raw(),
-        ))
+        Self::from_raw(
+            <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::bitand(
+                self.to_raw(),
+                other.to_raw(),
+            ),
+        )
     }
     fn bitnot(self) -> Self {
-        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::bitnot(
-            self.to_raw(),
-        ))
+        Self::from_raw(
+            <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::bitnot(self.to_raw()),
+        )
     }
     fn bitxor(self, other: Self) -> Self {
-        Self::from_raw(<<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::bitxor(
-            self.to_raw(),
-            other.to_raw(),
-        ))
+        Self::from_raw(
+            <<S as BitsContainerFor<N, Sign>>::T as BitsBitPrim<Sign>>::bitxor(
+                self.to_raw(),
+                other.to_raw(),
+            ),
+        )
     }
 }

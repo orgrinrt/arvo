@@ -139,8 +139,8 @@ pub const trait BitPrim: Copy + ConstParamTy_ +... {
 
  // helper consumed by mask /
  // hash / bitfield call sites that build a low-N-bits mask.
- // Default body composes through Identity::ZERO, Bounded::MAX,
- // Identity::ONE, and the const-stable shift bridge.
+ // Default body composes through the additive and multiplicative
+ // identities, Bounded::MAX, and the const-stable shift bridge.
  // now consumed by the `bitfield!` macro
  // emission in the arvo facade for slot-mask construction
  // (replaces the hardcoded `(1u64 << N) - 1` pattern with

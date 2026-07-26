@@ -18,9 +18,9 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::{Identity, Bool, NUSize, USize};
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo_tensor::{Array, Capacity, cap_size};
+use arvo::{Bool, Identity, Multiplicative, NUSize, USize};
+use arvo_tensor::{cap_size, Array, Capacity};
 
 /// First-fit bin packing with affinity-based pre-ordering.
 ///
@@ -109,12 +109,13 @@ where
         }
 
         // Open a new bin if capacity allows and we are under `B`.
-        if !placed.0 && opened.0 < cap_size(B::CAP) {
-            if !matches!(w.total_cmp(capacity), Ordering::Greater) {
-                used.set(opened, w);
-                bins_of_items.set(idx, NUSize::some(opened));
-                opened = opened + USize::ONE;
-            }
+        if !placed.0
+            && opened.0 < cap_size(B::CAP)
+            && !matches!(w.total_cmp(capacity), Ordering::Greater)
+        {
+            used.set(opened, w);
+            bins_of_items.set(idx, NUSize::some(opened));
+            opened = opened + <USize as Identity<Multiplicative>>::IDENTITY;
         }
 
         // Items that do not fit a fresh bin (weight > capacity) or

@@ -16,8 +16,5 @@ arvo-bits.workspace = true
 [dev-dependencies]
 trybuild = "1"
 
-[build-dependencies]
-mockspace.workspace = true
-
 [features]
 default = []

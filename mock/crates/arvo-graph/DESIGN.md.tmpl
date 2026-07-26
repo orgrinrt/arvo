@@ -21,7 +21,8 @@ contract crates; concrete types come from `arvo-bitmask` and
 Algorithms are generic over the adjacency row-word, a type parameter
 named `B` (distinct from the edge-weight `W` on the weighted algorithms),
 bounded on the bit-sequence traits the bodies use (`BitSequence +
-BitAccess + BitLogic + Copy + Default + Identity`). A consumer chooses
+BitAccess + BitLogic + Copy + Default + Identity<Additive>`). A consumer
+chooses
 the word width its node count needs: `Bits<64, Hot, Unsigned>` for up to
 64 nodes, `Bits<128>` / `Bits<256>` for wider, any width the substrate's
 container projection supports (native up to 128, wide bucket 129 to 256

@@ -45,7 +45,6 @@ edition = "2024"
 license = "MPL-2.0"
 
 [workspace.dependencies]
-mockspace = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
 notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false, features = ["const", "try_trait_v2"] }
 arvo-transparent = { path = "crates/arvo-transparent" }
 arvo-strategy = { path = "crates/arvo-strategy" }
@@ -63,3 +62,18 @@ arvo-sparse = { path = "crates/arvo-sparse" }
 arvo-spectral = { path = "crates/arvo-spectral" }
 arvo-comb = { path = "crates/arvo-comb" }
 arvo = { path = "crates/arvo" }
+
+# Incremental compilation is off here, deliberately.
+#
+# arvo's cost is in monomorphised output, not in source it could reuse: the
+# per-width, per-strategy, per-sign impl macros turn a small file into an
+# enormous object, and `libarvo_strategy.rlib` alone is 19 MB. Incremental
+# caches a dep graph proportional to that output on every rustc invocation and
+# cargo garbage-collects the sessions lazily, so an afternoon of iteration put
+# 8.9 GB in `target/debug/incremental` across a thousand session directories.
+#
+# It buys correspondingly little: the expensive part is re-monomorphising, which
+# incremental does not avoid. Turning it off makes a cold build marginally
+# slower and stops the directory growing without bound.
+[profile.dev]
+incremental = false

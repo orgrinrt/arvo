@@ -1,7 +1,6 @@
 //! `BitLogic` coverage: `bitor` / `bitand` / `bitnot` / `bitxor` /
 //! `clear_lowest_set_bit` on Hot containers.
 
-#![feature(adt_const_params)]
 #![allow(incomplete_features)]
 
 use arvo::strategy::Hot;
@@ -42,7 +41,10 @@ fn byte_bitxor() {
 fn qword_bitor_bitand() {
     let a = QWord::<Hot>::from_raw(0xFFFF_0000_0000_FFFF);
     let b = QWord::<Hot>::from_raw(0x0000_FFFF_FFFF_0000);
-    assert_eq!(<QWord<Hot> as BitLogic>::bitor(a, b).to_raw(), 0xFFFF_FFFF_FFFF_FFFF);
+    assert_eq!(
+        <QWord<Hot> as BitLogic>::bitor(a, b).to_raw(),
+        0xFFFF_FFFF_FFFF_FFFF
+    );
     assert_eq!(<QWord<Hot> as BitLogic>::bitand(a, b).to_raw(), 0);
 }
 

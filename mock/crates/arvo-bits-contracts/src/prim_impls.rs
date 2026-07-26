@@ -7,7 +7,7 @@
 use arvo_storage::{Bool, USize};
 use arvo_transparent::Transparent;
 
-use crate::{BitPrim, IBitPrim, sealed};
+use crate::{sealed, BitPrim, IBitPrim};
 
 // --- BitPrim impls on bare unsigned primitives ----------------------------
 //
@@ -20,7 +20,7 @@ macro_rules! impl_bit_prim_u {
         impl sealed::Bit for $ty {}
 
         // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: BitPrim impl on the bare primitive that the trait was designed to bridge; the bridge surface itself is fully typed (USize / Bool); body wraps each raw result at the boundary; tracked: #311
-        impl const BitPrim for $ty {
+        const impl BitPrim for $ty {
             const WIDTH: USize = USize($width);
             const ZERO: Self = 0;
             const ONE: Self = 1;
@@ -141,7 +141,7 @@ macro_rules! impl_bit_prim_i {
         impl sealed::IBit for $ity {}
 
         // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: IBitPrim impl on the bare primitive that the trait was designed to bridge; the bridge surface itself is fully typed (USize / Bool); body wraps each raw result at the boundary; tracked: #311
-        impl const IBitPrim for $ity {
+        const impl IBitPrim for $ity {
             const WIDTH: USize = USize($width);
             const ZERO: Self = 0;
             const ONE: Self = 1;

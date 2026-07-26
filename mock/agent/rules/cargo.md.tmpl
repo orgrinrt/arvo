@@ -66,21 +66,21 @@ arvo does not ship a proc-macro crate. `proc_macro_crates = []` in
 `mockspace.toml`. If a `_derive` crate becomes necessary, its
 addition is a design-round topic, not a routine edit.
 
-### build.rs pattern
+### No build script carries the tooling
 
-Every arvo crate has a one-line `build.rs`:
+arvo crates do not depend on mockspace and do not run it from a
+build script. The `cargo mock` launcher is installed once on the
+machine, reads `mockspace.toml` at the repo root, and resolves its
+own engine pin from the `mockspace_branch` there.
 
-```rust
-fn main() { mockspace::bootstrap_from_buildscript(); }
-```
+This keeps the published crates free of a git dependency. A build
+script that pulled the design tooling in would make every consumer
+of arvo fetch it too, for a tool that does nothing at their build
+time, and would block publishing outright, since a registry refuses
+a crate whose dependency resolves to a git source.
 
-and:
-
-```toml
-[build-dependencies]
-mockspace = { workspace = true }
-```
-
-Mockspace's bootstrap writes `.cargo/config.toml` (`cargo mock`
-alias) and installs hooks under `mock/target/hooks/` on first build.
-Do not hand-author those files.
+`mock/crates/arvo/build.rs` is the one build script that remains. It
+declares the `arvo_fast_math` cfg that hilavitkutin-build's FastMath
+pragma sets, so rustc does not warn on `#[cfg(arvo_fast_math)]`. It
+has nothing to do with the design tooling. A new crate needs no
+build script at all.

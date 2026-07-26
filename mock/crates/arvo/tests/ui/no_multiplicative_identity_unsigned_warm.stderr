@@ -1,0 +1,14 @@
+error[E0277]: this type has no multiplicative identity
+  --> tests/ui/no_multiplicative_identity_unsigned_warm.rs:14:14
+   |
+14 |     let _ = <UFixed<{ ibits(0) }, { fbits(8) }, Warm> as Identity<Multiplicative>>::IDENTITY;
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `OneRepresentable<1>` is not implemented for `Picker`
+   |
+   = note: A purely fractional fixed-point type has zero integer bits, so it spans [0, 1) unsigned or [-1, 1) signed and one is not a value of it. Its `Identity<Multiplicative>` impl does not exist, because an identity element must be a value of the type it is an identity for. `Identity<Additive>` is unaffected and available at every width. If you need to multiply by one here, the type needs at least one integer bit.
+help: the trait `OneRepresentable<1>` is not implemented for `Picker`
+      but trait `OneRepresentable<0>` is implemented for it
+  --> $WORKSPACE/crates/arvo-strategy/src/identity.rs
+   |
+   | impl OneRepresentable<0> for Picker {}
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: required for `UFixed<IBits(arvo_storage::meta_bits::MetaCarrier(0)), FBits(arvo_storage::meta_bits::MetaCarrier(8))>` to implement `Identity<Multiplicative>`

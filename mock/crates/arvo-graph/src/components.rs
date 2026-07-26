@@ -8,9 +8,9 @@
 //! Visited tracking is a `Mask<B>` over the row-word `B`; the DFS stack is a
 //! fixed-size `C::Array<NodeId>` with a head index, so no heap, no grow.
 
-use arvo::{Identity, Bool, USize};
+use arvo::{Additive, Bool, Identity, Multiplicative, USize};
+use arvo_bitmask::{cap_size, BitMatrix, Mask, NodeId};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
-use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_tensor::Capacity;
 
 /// Assign a component ID to every node.
@@ -22,7 +22,7 @@ use arvo_tensor::Capacity;
 #[inline]
 pub fn components<C: Capacity, B>(dag: &BitMatrix<B, C>) -> C::Array<USize>
 where
-    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity,
+    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity<Additive>,
     C::Array<USize>: Copy,
     C::Array<NodeId>: Copy,
 {
@@ -39,7 +39,7 @@ where
 
         // Fresh component: seed is the root.
         let id = next_id;
-        next_id = next_id + USize::ONE;
+        next_id = next_id + <USize as Identity<Multiplicative>>::IDENTITY;
 
         // Iterative DFS over undirected adjacency (succ + pred).
         let mut stack: C::Array<NodeId> = C::filled(NodeId::new(USize(0)));

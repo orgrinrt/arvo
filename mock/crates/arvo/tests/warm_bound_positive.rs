@@ -5,9 +5,9 @@
 
 #![no_std]
 
-use arvo::{FBits, IBits, ibits, fbits};
 use arvo::strategy::Warm;
 use arvo::ufixed::UFixed;
+use arvo::{fbits, ibits, FBits};
 
 #[test]
 fn warm_at_32_bits_compiles_and_runs() {

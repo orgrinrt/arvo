@@ -1,13 +1,12 @@
 //! `HasBitWidth::WIDTH` correctness across types and strategies.
 
-#![feature(adt_const_params)]
 #![allow(incomplete_features)]
 
 use arvo::ifixed::IFixed;
-use arvo::{FBits, IBits, ibits, fbits};
 use arvo::strategy::{Cold, Hot, Precise, Warm};
 use arvo::ufixed::UFixed;
-use arvo_bits::{HasBitWidth, Byte, DWord, Nibble, QWord, Word};
+use arvo::{fbits, ibits, FBits};
+use arvo_bits::{Byte, DWord, HasBitWidth, Nibble, QWord, Word};
 
 #[test]
 fn ufixed_width_equals_i_plus_f() {

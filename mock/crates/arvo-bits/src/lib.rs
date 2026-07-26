@@ -1,7 +1,6 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
-#![feature(const_ops)]
 #![allow(incomplete_features)]
 
 //! arvo-bits — bit-storage aliases.
@@ -49,7 +48,7 @@ mod refit_constructors {
         /// `from_raw`. `Self`'s outer N drives the mask width.
         fn from_narrowed<Src>(src: Src) -> Bits<N, S, Sign>
         where
-            Src: ~const Narrow<<S as BitsContainerFor<N, Sign>>::T>;
+            Src: [const] Narrow<<S as BitsContainerFor<N, Sign>>::T>;
 
         /// Construct from a narrower source via `Widen`.
         ///
@@ -59,18 +58,18 @@ mod refit_constructors {
         /// `Bits<M, ...>`).
         fn from_widened<Src>(src: Src) -> Bits<N, S, Sign>
         where
-            Src: ~const Widen<<S as BitsContainerFor<N, Sign>>::T>;
+            Src: [const] Widen<<S as BitsContainerFor<N, Sign>>::T>;
     }
 
-    impl<const N: u16, S: Strategy, Sign: Signedness>
-        const BitsRefitCtor<N, S, Sign> for Bits<N, S, Sign>
+    const impl<const N: u16, S: Strategy, Sign: Signedness> BitsRefitCtor<N, S, Sign>
+        for Bits<N, S, Sign>
     where
         S: BitsContainerFor<N, Sign>,
     {
         #[inline(always)]
         fn from_narrowed<Src>(src: Src) -> Bits<N, S, Sign>
         where
-            Src: ~const Narrow<<S as BitsContainerFor<N, Sign>>::T>,
+            Src: [const] Narrow<<S as BitsContainerFor<N, Sign>>::T>,
         {
             Bits::from_raw(src.narrow_to::<N>())
         }
@@ -78,7 +77,7 @@ mod refit_constructors {
         #[inline(always)]
         fn from_widened<Src>(src: Src) -> Bits<N, S, Sign>
         where
-            Src: ~const Widen<<S as BitsContainerFor<N, Sign>>::T>,
+            Src: [const] Widen<<S as BitsContainerFor<N, Sign>>::T>,
         {
             Bits::from_raw(src.widen_to())
         }

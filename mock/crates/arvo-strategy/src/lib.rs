@@ -1,8 +1,6 @@
 #![no_std]
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
-#![feature(const_ops)]
-#![feature(const_param_ty_trait)]
 // WATCH-tier unstable feature, soundness-vetted in the stack sweep (task #626).
 // `generic_const_exprs` is used here only for const-expression bounds and const-
 // generic array lengths (`[(); cap_size(N)]:` array sizing, `[(); EXPR]:` compile-
@@ -58,30 +56,36 @@ mod sealed {
 }
 
 mod arith;
+mod arith_impls;
+mod arith_macros;
 mod axes;
 mod const_convert;
 mod container;
 mod cross_strategy;
+mod euclid;
+mod identity;
 mod ieee;
 mod widebits;
 mod widen;
 pub mod width;
 
-pub use widebits::{A1, A16, A32, A64, Align, WideBits};
-pub use width::{Width, bytes_for, tag, width, width_le_64, width_u16, width_u8};
+pub use widebits::{Align, WideBits, A1, A16, A32, A64};
+pub use width::{bytes_for, tag, width, width_le_64, width_u16, width_u8, Width};
 
-pub use arith::{
-    Bounded, IArith, ISaturating, Identity, ScalarEuclidRaw, SignedIdentity, UArith, USaturating,
-    UScalarEuclidRaw,
-};
-pub use const_convert::{ConstFrom, ConstTryFrom};
-pub use cross_strategy::CrossStrategyOp;
-pub use ieee::{FromU8Ieee, Ieee};
+pub use arith::{IArith, ISaturating, UArith, USaturating};
 pub use axes::{
     Bitpacked, ContainerWidth, Dense, DoubleLogical, HasAxes, Min, OverflowPolicy, Saturating,
     StorageLayout, Wrapping,
 };
+pub use const_convert::{ConstFrom, ConstTryFrom};
 pub use container::{BitsContainerFor, Picker, Project};
+pub use cross_strategy::CrossStrategyOp;
+pub use euclid::{ScalarEuclidRaw, UScalarEuclidRaw};
+pub use identity::{
+    tag_one_representable, Additive, Bounded, Identity, Multiplicative, OneRepresentable,
+    SignedIdentity,
+};
+pub use ieee::{FromU8Ieee, Ieee};
 pub use widen::{INarrowFrom, IWidenFrom, UNarrowFrom, UWidenFrom};
 
 /// Strategy marker trait.
@@ -141,22 +145,22 @@ impl sealed::Sealed for Warm {}
 impl sealed::Sealed for Cold {}
 impl sealed::Sealed for Precise {}
 
-impl const Strategy for Hot {
+const impl Strategy for Hot {
     #[cfg(debug_assertions)]
     const NAME: &'static str = "Hot";
     const RANK: u16 = 0;
 }
-impl const Strategy for Warm {
+const impl Strategy for Warm {
     #[cfg(debug_assertions)]
     const NAME: &'static str = "Warm";
     const RANK: u16 = 1;
 }
-impl const Strategy for Cold {
+const impl Strategy for Cold {
     #[cfg(debug_assertions)]
     const NAME: &'static str = "Cold";
     const RANK: u16 = 2;
 }
-impl const Strategy for Precise {
+const impl Strategy for Precise {
     #[cfg(debug_assertions)]
     const NAME: &'static str = "Precise";
     const RANK: u16 = 3;
@@ -210,7 +214,7 @@ pub const trait Resolve<Other: Strategy>: Strategy {
 
 macro_rules! impl_resolve {
     ($lhs:ty, $rhs:ty, $out:ty) => {
-        impl const Resolve<$rhs> for $lhs {
+        const impl Resolve<$rhs> for $lhs {
             type Out = $out;
         }
     };

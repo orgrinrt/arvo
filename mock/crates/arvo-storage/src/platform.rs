@@ -9,7 +9,7 @@
 //! raw `bool`.
 //!
 //! Per round 202605021800: USize and Cap share the entire canonical
-//! const surface (Bounded + Identity + ConstPartialEq + ConstEq +
+//! const surface (Bounded + Identity<Additive> + ConstPartialEq + ConstEq +
 //! ConstBitEq + ConstOrd + ConstDefault + every core::ops + Deref +
 //! AsRef) through one `impl_unsigned_integer_newtype!` macro. The
 //! macro emits delegating bodies that read inner values through
@@ -29,9 +29,7 @@ use arvo_strategy::{Bounded, Identity};
 use arvo_transparent::Transparent;
 use notko::{ConstFromResidual, ConstTry, Maybe, Slot};
 
-use crate::bridges::{
-    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
-};
+use crate::bridges::{ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq};
 
 /// Index / count newtype wrapping `usize`.
 ///
@@ -48,7 +46,7 @@ pub struct USize(pub usize);
 
 // SAFETY: `repr(transparent)` over `usize`. Layout-identical by Rust
 // spec; transmute soundness follows from the repr.
-unsafe impl const Transparent for USize {
+const unsafe impl Transparent for USize {
     type Inner = usize;
 }
 
@@ -76,7 +74,7 @@ pub struct Cap(pub USize);
 
 // SAFETY: `repr(transparent)` over `USize` (which is itself
 // `repr(transparent)` over `usize`). Layout-identical by Rust spec.
-unsafe impl const Transparent for Cap {
+const unsafe impl Transparent for Cap {
     type Inner = USize;
 }
 
@@ -93,7 +91,7 @@ unsafe impl const Transparent for Cap {
 /// tuple-struct construction for wrap, so the macro never normalises
 /// `.0` field access on the wrapper.
 ///
-/// `$inner` must implement: `Bounded + Identity + ConstPartialEq +
+/// `$inner` must implement: `Bounded + Identity<Additive> + ConstPartialEq +
 /// ConstEq + ConstBitEq + ConstOrd + ConstDefault + Add + Sub + Mul
 /// + Div + Rem + Shl + Shr + BitAnd + BitOr + BitXor + Not +
 /// PartialOrd + Ord` (every method called by the emitted bodies).
@@ -101,15 +99,17 @@ unsafe impl const Transparent for Cap {
 macro_rules! impl_unsigned_integer_newtype {
     ($outer:ty, $inner:ty) => {
         // ---- canonical typed-const surfaces ----
-        impl const Bounded for $outer {
+        const impl Bounded for $outer {
             const MIN: Self = Self(<$inner as Bounded>::MIN);
             const MAX: Self = Self(<$inner as Bounded>::MAX);
         }
-        impl const Identity for $outer {
-            const ZERO: Self = Self(<$inner as Identity>::ZERO);
-            const ONE: Self = Self(<$inner as Identity>::ONE);
+        const impl<Op> Identity<Op> for $outer
+        where
+            $inner: [const] Identity<Op>,
+        {
+            const IDENTITY: Self = Self(<$inner as Identity<Op>>::IDENTITY);
         }
-        impl const ConstPartialEq for $outer {
+        const impl ConstPartialEq for $outer {
             #[inline(always)]
             fn const_eq(&self, other: &Self) -> Bool {
                 <$inner as ConstPartialEq>::const_eq(
@@ -118,8 +118,8 @@ macro_rules! impl_unsigned_integer_newtype {
                 )
             }
         }
-        impl const ConstEq for $outer {}
-        impl const ConstBitEq for $outer {
+        const impl ConstEq for $outer {}
+        const impl ConstBitEq for $outer {
             #[inline(always)]
             fn const_bit_eq(&self, other: &Self) -> Bool {
                 <$inner as ConstBitEq>::const_bit_eq(
@@ -128,7 +128,7 @@ macro_rules! impl_unsigned_integer_newtype {
                 )
             }
         }
-        impl const ConstOrd for $outer {
+        const impl ConstOrd for $outer {
             #[inline(always)]
             fn const_cmp(&self, other: &Self) -> ConstOrdering {
                 <$inner as ConstOrd>::const_cmp(
@@ -137,7 +137,7 @@ macro_rules! impl_unsigned_integer_newtype {
                 )
             }
         }
-        impl const ConstDefault for $outer {
+        const impl ConstDefault for $outer {
             #[inline(always)]
             fn const_default() -> Self {
                 Self(<$inner as ConstDefault>::const_default())
@@ -145,35 +145,35 @@ macro_rules! impl_unsigned_integer_newtype {
         }
 
         // ---- core::ops arith ----
-        impl const Add<$outer> for $outer {
+        const impl Add<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn add(self, rhs: $outer) -> $outer {
                 Self(<Self as Transparent>::raw(self) + <Self as Transparent>::raw(rhs))
             }
         }
-        impl const Sub<$outer> for $outer {
+        const impl Sub<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn sub(self, rhs: $outer) -> $outer {
                 Self(<Self as Transparent>::raw(self) - <Self as Transparent>::raw(rhs))
             }
         }
-        impl const Mul<$outer> for $outer {
+        const impl Mul<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn mul(self, rhs: $outer) -> $outer {
                 Self(<Self as Transparent>::raw(self) * <Self as Transparent>::raw(rhs))
             }
         }
-        impl const Div<$outer> for $outer {
+        const impl Div<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn div(self, rhs: $outer) -> $outer {
                 Self(<Self as Transparent>::raw(self) / <Self as Transparent>::raw(rhs))
             }
         }
-        impl const Rem<$outer> for $outer {
+        const impl Rem<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn rem(self, rhs: $outer) -> $outer {
@@ -182,42 +182,42 @@ macro_rules! impl_unsigned_integer_newtype {
         }
 
         // ---- core::ops bit ops ----
-        impl const Shl<$outer> for $outer {
+        const impl Shl<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn shl(self, rhs: $outer) -> $outer {
                 Self(<Self as Transparent>::raw(self) << <Self as Transparent>::raw(rhs))
             }
         }
-        impl const Shr<$outer> for $outer {
+        const impl Shr<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn shr(self, rhs: $outer) -> $outer {
                 Self(<Self as Transparent>::raw(self) >> <Self as Transparent>::raw(rhs))
             }
         }
-        impl const BitAnd<$outer> for $outer {
+        const impl BitAnd<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn bitand(self, rhs: $outer) -> $outer {
                 Self(<Self as Transparent>::raw(self) & <Self as Transparent>::raw(rhs))
             }
         }
-        impl const BitOr<$outer> for $outer {
+        const impl BitOr<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn bitor(self, rhs: $outer) -> $outer {
                 Self(<Self as Transparent>::raw(self) | <Self as Transparent>::raw(rhs))
             }
         }
-        impl const BitXor<$outer> for $outer {
+        const impl BitXor<$outer> for $outer {
             type Output = $outer;
             #[inline(always)]
             fn bitxor(self, rhs: $outer) -> $outer {
                 Self(<Self as Transparent>::raw(self) ^ <Self as Transparent>::raw(rhs))
             }
         }
-        impl const Not for $outer {
+        const impl Not for $outer {
             type Output = $outer;
             #[inline(always)]
             fn not(self) -> $outer {
@@ -228,11 +228,14 @@ macro_rules! impl_unsigned_integer_newtype {
         // ---- core::cmp PartialOrd / Ord (non-const, std-compat) ----
         impl PartialOrd<$outer> for $outer {
             #[inline(always)]
+            // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+            // violation is on, and the formatter otherwise moves the comment below it.
+                                    #[rustfmt::skip]
             fn partial_cmp(&self, rhs: &$outer) -> Option<Ordering> { // lint:allow(no-bare-option) reason: core::cmp::PartialOrd::partial_cmp trait-method signature returns Option<Ordering>; tracked: #115
-                let a = <Self as Transparent>::raw(*self);
-                let b = <Self as Transparent>::raw(*rhs);
-                a.partial_cmp(&b)
-            }
+                                        let a = <Self as Transparent>::raw(*self);
+                                        let b = <Self as Transparent>::raw(*rhs);
+                                        a.partial_cmp(&b)
+                                    }
         }
         impl Ord for $outer {
             #[inline(always)]
@@ -258,7 +261,7 @@ impl_unsigned_integer_newtype!(Cap, USize);
 pub struct Bool(pub bool);
 
 // SAFETY: `repr(transparent)` over `bool`. Layout-identical by spec.
-unsafe impl const Transparent for Bool {
+const unsafe impl Transparent for Bool {
     type Inner = bool;
 }
 
@@ -322,21 +325,21 @@ pub const trait AsBool {
     fn as_bool(&self) -> bool;
 }
 
-impl const AsBool for Bool {
+const impl AsBool for Bool {
     #[inline(always)]
     fn as_bool(&self) -> bool {
         <Self as Transparent>::raw(*self)
     }
 }
 
-impl const From<bool> for Bool {
+const impl From<bool> for Bool {
     #[inline(always)]
     fn from(b: bool) -> Self {
         Bool(b)
     }
 }
 
-impl const From<Bool> for bool {
+const impl From<Bool> for bool {
     #[inline(always)]
     fn from(b: Bool) -> Self {
         <Bool as Transparent>::raw(b)
@@ -348,7 +351,7 @@ impl const From<Bool> for bool {
 // Typed ergonomic projection between the `Cap` capacity newtype and
 // the `USize` count newtype. `impl const From` makes `.into()`
 // resolve at const time when both operands are const-known
-// (const-generic computations, `const _: USize = Cap::ONE.into()`
+// (const-generic computations, `const _: USize = <Cap as Identity<Multiplicative>>::IDENTITY.into()`
 // type-level checks, const-fn bodies that project a Cap-typed
 // parameter to a typed count).
 //
@@ -363,14 +366,14 @@ impl const From<Bool> for bool {
 // usize` const fn in `arvo-tensor`. This round only ships the two
 // arvo-internal newtype edges.
 
-impl const From<Cap> for USize {
+const impl From<Cap> for USize {
     #[inline(always)]
     fn from(c: Cap) -> Self {
         <Cap as Transparent>::raw(c)
     }
 }
 
-impl const From<USize> for Cap {
+const impl From<USize> for Cap {
     #[inline(always)]
     fn from(u: USize) -> Self {
         Cap(u)
@@ -382,7 +385,7 @@ impl const From<USize> for Cap {
 // ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault
 // route through inner `bool`.
 
-impl const ConstPartialEq for Bool {
+const impl ConstPartialEq for Bool {
     #[inline(always)]
     fn const_eq(&self, other: &Self) -> Bool {
         <bool as ConstPartialEq>::const_eq(
@@ -392,9 +395,9 @@ impl const ConstPartialEq for Bool {
     }
 }
 
-impl const ConstEq for Bool {}
+const impl ConstEq for Bool {}
 
-impl const ConstBitEq for Bool {
+const impl ConstBitEq for Bool {
     #[inline(always)]
     fn const_bit_eq(&self, other: &Self) -> Bool {
         <bool as ConstBitEq>::const_bit_eq(
@@ -404,7 +407,7 @@ impl const ConstBitEq for Bool {
     }
 }
 
-impl const ConstOrd for Bool {
+const impl ConstOrd for Bool {
     #[inline(always)]
     fn const_cmp(&self, other: &Self) -> ConstOrdering {
         <bool as ConstOrd>::const_cmp(
@@ -414,7 +417,7 @@ impl const ConstOrd for Bool {
     }
 }
 
-impl const ConstDefault for Bool {
+const impl ConstDefault for Bool {
     #[inline(always)]
     fn const_default() -> Self {
         Bool(<bool as ConstDefault>::const_default())
@@ -429,7 +432,7 @@ impl const ConstDefault for Bool {
 // fallibility (mockspace lints, narrow_from helpers, future const
 // validators) reach the same routing through the const family.
 
-impl const ConstTry for Bool {
+const impl ConstTry for Bool {
     type Output = bool;
     type Residual = Infallible;
 
@@ -444,7 +447,7 @@ impl const ConstTry for Bool {
     }
 }
 
-impl const ConstFromResidual<Infallible> for Bool {
+const impl ConstFromResidual<Infallible> for Bool {
     #[inline(always)]
     fn from_residual(residual: Infallible) -> Self {
         match residual {}
@@ -542,6 +545,6 @@ impl Default for NUSize {
 // to a single `usize`. Layout-identical to `usize` by transitive
 // transparent guarantee plus notko's per-instantiation
 // `_LAYOUT_ASSERT` covering `NonZeroUsize`.
-unsafe impl const Transparent for NUSize {
+const unsafe impl Transparent for NUSize {
     type Inner = Slot<NonZeroUsize>;
 }

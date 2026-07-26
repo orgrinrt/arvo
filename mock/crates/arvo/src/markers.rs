@@ -14,8 +14,8 @@
 //! Concrete impls for these markers live alongside the types they
 //! classify (see `ufixed`, `ifixed`, `float`, `newtype`).
 
-use arvo_storage::{Bool, FBits, IBits, USize};
 use crate::strategy::Hot;
+use arvo_storage::{Bool, FBits, IBits, USize};
 
 /// Marker for types that behave like whole numbers.
 ///
@@ -95,7 +95,7 @@ pub const trait BoolLike: Copy {
 // type is forward-declared: arvo-bits aliases it as `Bit`.
 use crate::ufixed::UFixed;
 
-impl const BoolLike for Bool {
+const impl BoolLike for Bool {
     type Packed = UFixed<{ IBits::ONE }, { FBits::ZERO }, Hot>;
 
     #[inline(always)]

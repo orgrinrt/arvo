@@ -20,10 +20,10 @@ pub use arvo_storage::{
     ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
 };
 pub use arvo_strategy::{
-    BitsContainerFor, Bounded, Cold, FromU8Ieee, Hot, IArith, INarrowFrom,
-    ISaturating, IWidenFrom, Identity, Ieee, Precise, Resolve, ScalarEuclidRaw, Signed, UScalarEuclidRaw,
-    SignedIdentity, Signedness, Strategy, UArith, UNarrowFrom, USaturating, UWidenFrom, Unsigned,
-    Warm,
+    tag_one_representable, Additive, BitsContainerFor, Bounded, Cold, FromU8Ieee, Hot, IArith,
+    INarrowFrom, ISaturating, IWidenFrom, Identity, Ieee, Multiplicative, OneRepresentable, Picker,
+    Precise, Resolve, ScalarEuclidRaw, Signed, SignedIdentity, Signedness, Strategy, UArith,
+    UNarrowFrom, USaturating, UScalarEuclidRaw, UWidenFrom, Unsigned, Warm,
 };
 
 use arvo_storage::{FBits, IBits};
@@ -37,7 +37,7 @@ use arvo_storage::{FBits, IBits};
 /// helper now stays in u16 throughout.
 #[inline(always)]
 pub const fn ufixed_bits(i: IBits, f: FBits) -> u16 {
-    (i.raw() + f.raw()) as u16
+    i.raw() + f.raw()
 }
 
 /// Const-fn helper: total logical bits for an `IFixed<I, F, S>`.
@@ -46,7 +46,7 @@ pub const fn ufixed_bits(i: IBits, f: FBits) -> u16 {
 /// Same u16 width as `ufixed_bits`.
 #[inline(always)]
 pub const fn ifixed_bits(i: IBits, f: FBits) -> u16 {
-    (1 + i.raw() + f.raw()) as u16
+    1 + i.raw() + f.raw()
 }
 
 /// Indicator const: `1` when `f > 0`, `0` when `f == 0`.
@@ -54,8 +54,13 @@ pub const fn ifixed_bits(i: IBits, f: FBits) -> u16 {
 /// Used to express "F has a fractional component" in const-generic
 /// where-clauses without struct construction.
 #[inline(always)]
-pub const fn is_fractional(f: FBits) -> usize { // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: const-generic position helper; bare usize is the const-expression carrier here pending nightly relaxation; tracked: #256
-    if f.raw() == 0 { 0 } else { 1 }
+pub const fn is_fractional(f: FBits) -> usize {
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: const-generic position helper; bare usize is the const-expression carrier here pending nightly relaxation; tracked: #256
+    if f.raw() == 0 {
+        0
+    } else {
+        1
+    }
 }
 
 /// Whether a `Width` is `<= 64`. Used by Fnv1a's const-eval guard.
@@ -64,6 +69,7 @@ pub const fn is_fractional(f: FBits) -> usize { // lint:allow(no-bare-numeric) l
 /// `u8` is `width.raw()` (or `arvo::raw(width)` if you prefer the
 /// prefix style).
 #[inline(always)]
-pub const fn width_le_64(n: arvo_storage::Width) -> bool { // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: const-generic where-clause predicate; bare bool needed for const-eval guard; tracked: #256
+pub const fn width_le_64(n: arvo_storage::Width) -> bool {
+    // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: const-generic where-clause predicate; bare bool needed for const-eval guard; tracked: #256
     n.raw() <= 64
 }

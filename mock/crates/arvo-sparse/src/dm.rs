@@ -20,7 +20,7 @@
 //! classification do not thread W through their signatures.
 
 use arvo::USize;
-use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
+use arvo_bitmask::{cap_size, BitMatrix, Mask, NodeId};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitPrim, BitSequence};
 use arvo_tensor::Capacity;
 use notko::Maybe;
@@ -64,9 +64,7 @@ impl<C: Capacity> Default for DulmageMendelsohn<C> {
 
 /// Classify each node in the adjacency into one of the three classes.
 #[inline]
-pub fn dulmage_mendelsohn<W, C: Capacity>(
-    adjacency: &BitMatrix<W, C>,
-) -> DulmageMendelsohn<C>
+pub fn dulmage_mendelsohn<W, C: Capacity>(adjacency: &BitMatrix<W, C>) -> DulmageMendelsohn<C>
 where
     W: BitSequence + BitAccess + BitLogic + Copy + Default,
 {
@@ -149,9 +147,16 @@ where
 pub fn classification_to_mask<W, C: Capacity>(
     dm: &DulmageMendelsohn<C>,
     class_id: USize,
-) -> Maybe<Mask<W>> // lint:allow(no-bare-option) reason: Maybe is notko, not bare Option; tracked: #115
+) -> Maybe<Mask<W>>
+// lint:allow(no-bare-option) reason: Maybe is notko, not bare Option; tracked: #115
 where
-    W: BitPrim + BitSequence + BitAccess + BitLogic + arvo::Identity + Copy + Default,
+    W: BitPrim
+        + BitSequence
+        + BitAccess
+        + BitLogic
+        + arvo::Identity<arvo::Additive>
+        + Copy
+        + Default,
 {
     if cap_size(C::CAP) > *<W as BitPrim>::WIDTH {
         return Maybe::Isnt;

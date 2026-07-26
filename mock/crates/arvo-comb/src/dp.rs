@@ -13,10 +13,10 @@
 use core::cmp::Ordering;
 use core::ops::Add;
 
-use arvo::{Identity, Bool, USize};
 use arvo::predicate::Pred2;
 use arvo::traits::{FromConstant, TotalOrd};
-use arvo_tensor::{Array, Capacity, Matrix, cap_size};
+use arvo::{Additive, Bool, Identity, Multiplicative, USize};
+use arvo_tensor::{cap_size, Array, Capacity, Matrix};
 
 /// Minimise the total cost of splitting `[0..N]` into intervals.
 ///
@@ -98,9 +98,7 @@ where
                 let k1u = USize(k + 1);
                 if reachable.get(lou, ku).0 && reachable.get(k1u, hiu).0 {
                     let candidate = dp.get(lou, ku) + dp.get(k1u, hiu);
-                    if !best_set.0
-                        || matches!(candidate.total_cmp(best_val), Ordering::Less)
-                    {
+                    if !best_set.0 || matches!(candidate.total_cmp(best_val), Ordering::Less) {
                         best_val = candidate;
                         best_set = Bool::TRUE;
                         best_split = ku;
@@ -132,8 +130,11 @@ where
     );
 
     let root_end = USize(cap_size(N::CAP) - 1);
-    let final_cost = if reachable.get(USize::ZERO, root_end).0 {
-        dp.get(USize::ZERO, root_end)
+    let final_cost = if reachable
+        .get(<USize as Identity<Additive>>::IDENTITY, root_end)
+        .0
+    {
+        dp.get(<USize as Identity<Additive>>::IDENTITY, root_end)
     } else {
         zero
     };
@@ -161,7 +162,14 @@ fn fill_splits<N: Capacity>(
         return;
     }
     out.set(*out_idx, k);
-    *out_idx = *out_idx + USize::ONE;
+    *out_idx = *out_idx + <USize as Identity<Multiplicative>>::IDENTITY;
     fill_splits::<N>(split, reachable, lo, k, out, out_idx);
-    fill_splits::<N>(split, reachable, k + USize::ONE, hi, out, out_idx);
+    fill_splits::<N>(
+        split,
+        reachable,
+        k + <USize as Identity<Multiplicative>>::IDENTITY,
+        hi,
+        out,
+        out_idx,
+    );
 }

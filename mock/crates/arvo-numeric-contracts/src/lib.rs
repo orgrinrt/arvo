@@ -1,6 +1,5 @@
 #![no_std]
 #![feature(adt_const_params)]
-#![feature(const_param_ty_trait)]
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
 

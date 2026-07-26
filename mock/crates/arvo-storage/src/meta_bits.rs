@@ -24,11 +24,9 @@ use core::marker::ConstParamTy;
 use arvo_strategy::{Bounded, Hot, Identity, Unsigned};
 use arvo_transparent::Transparent;
 
-use crate::Bits;
-use crate::bridges::{
-    ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq,
-};
+use crate::bridges::{ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering, ConstPartialEq};
 use crate::platform::Bool;
+use crate::Bits;
 
 /// Layout-stable companion to `Bits<9, Hot, Unsigned>` used as the
 /// meta-newtype carrier (`IBits`, `FBits`, `Width`).
@@ -52,18 +50,22 @@ use crate::platform::Bool;
 pub struct MetaCarrier(pub u16);
 
 // SAFETY: `repr(transparent)` over `u16`. Layout-identical by Rust spec.
-unsafe impl const Transparent for MetaCarrier {
+const unsafe impl Transparent for MetaCarrier {
     type Inner = u16;
 }
 
 impl MetaCarrier {
     /// Construct from the raw u16 carrier value.
     #[inline(always)]
-    pub const fn from_raw(n: u16) -> Self { Self(n) }
+    pub const fn from_raw(n: u16) -> Self {
+        Self(n)
+    }
 
     /// Project to the raw u16 carrier value.
     #[inline(always)]
-    pub const fn to_raw(self) -> u16 { self.0 }
+    pub const fn to_raw(self) -> u16 {
+        self.0
+    }
 
     /// Zero-cost view as `Bits<9, Hot, Unsigned>`.
     ///
@@ -80,17 +82,19 @@ impl MetaCarrier {
 // Canonical const surfaces for MetaCarrier (the meta-newtype payload
 // type). Routes through inner u16. See module docs on meta-bit
 // carrier semantics.
-impl const Bounded for MetaCarrier {
+const impl Bounded for MetaCarrier {
     const MIN: Self = MetaCarrier(<u16 as Bounded>::MIN);
     const MAX: Self = MetaCarrier(<u16 as Bounded>::MAX);
 }
 
-impl const Identity for MetaCarrier {
-    const ZERO: Self = MetaCarrier(<u16 as Identity>::ZERO);
-    const ONE: Self = MetaCarrier(<u16 as Identity>::ONE);
+const impl<Op> Identity<Op> for MetaCarrier
+where
+    u16: [const] Identity<Op>, // lint:allow(no-bare-numeric) reason: MetaCarrier's inner carrier; tracked: #256
+{
+    const IDENTITY: Self = MetaCarrier(<u16 as Identity<Op>>::IDENTITY); // lint:allow(no-bare-numeric) reason: MetaCarrier's inner carrier; tracked: #256
 }
 
-impl const ConstPartialEq for MetaCarrier {
+const impl ConstPartialEq for MetaCarrier {
     #[inline(always)]
     fn const_eq(&self, other: &Self) -> Bool {
         let a = <Self as Transparent>::raw(*self);
@@ -99,9 +103,9 @@ impl const ConstPartialEq for MetaCarrier {
     }
 }
 
-impl const ConstEq for MetaCarrier {}
+const impl ConstEq for MetaCarrier {}
 
-impl const ConstBitEq for MetaCarrier {
+const impl ConstBitEq for MetaCarrier {
     #[inline(always)]
     fn const_bit_eq(&self, other: &Self) -> Bool {
         let a = <Self as Transparent>::raw(*self);
@@ -110,7 +114,7 @@ impl const ConstBitEq for MetaCarrier {
     }
 }
 
-impl const ConstOrd for MetaCarrier {
+const impl ConstOrd for MetaCarrier {
     #[inline(always)]
     fn const_cmp(&self, other: &Self) -> ConstOrdering {
         let a = <Self as Transparent>::raw(*self);
@@ -119,7 +123,7 @@ impl const ConstOrd for MetaCarrier {
     }
 }
 
-impl const ConstDefault for MetaCarrier {
+const impl ConstDefault for MetaCarrier {
     #[inline(always)]
     fn const_default() -> Self {
         MetaCarrier(<u16 as ConstDefault>::const_default())
@@ -207,9 +211,12 @@ macro_rules! meta_bits_wrapper {
             const MAX: Self = Self(MetaCarrier::from_raw(<u16 as Bounded>::MAX));
         }
 
-        impl const Identity for $W {
-            const ZERO: Self = Self(MetaCarrier::from_raw(<u16 as Identity>::ZERO));
-            const ONE: Self = Self(MetaCarrier::from_raw(<u16 as Identity>::ONE));
+        impl<Op> const Identity<Op> for $W
+        where
+            u16: [const] Identity<Op>, // lint:allow(no-bare-numeric) reason: the meta carrier's inner type; tracked: #256
+        {
+            const IDENTITY: Self =
+                Self(MetaCarrier::from_raw(<u16 as Identity<Op>>::IDENTITY)); // lint:allow(no-bare-numeric) reason: the meta carrier's inner type; tracked: #256
         }
 
         impl const ConstPartialEq for $W {

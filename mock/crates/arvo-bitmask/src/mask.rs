@@ -14,13 +14,13 @@
 //! chassis form (`Mask<Bits<64, Hot, Unsigned>>`) directly so the
 //! axes stay visible at every use site.
 //!
-//! `empty()` and `full()` route through `<Self as Identity>::ZERO`
+//! `empty()` and `full()` route through `<Self as Identity<Additive>>::IDENTITY`
 //! and `<Self as Bounded>::MAX` (audit Finding 11). The const-trait
 //! delegates exercise the substrate's own bridges rather than
 //! hand-coding `W::default()`.
 
+use arvo::strategy::{Additive, Bounded, Identity};
 use arvo::USize;
-use arvo::strategy::{Bounded, Identity};
 use arvo_bits_contracts::{BitAccess, BitSequence, HasBitWidth};
 
 /// Generic fixed-width bitmask.
@@ -63,13 +63,13 @@ where
 
 impl<W> Mask<W>
 where
-    W: BitSequence + BitAccess + Copy + Default + Identity,
+    W: BitSequence + BitAccess + Copy + Default + Identity<Additive>,
 {
     /// Empty mask (all bits cleared). Routes through
-    /// `<Self as Identity>::ZERO`.
+    /// `<Self as Identity<Additive>>::IDENTITY`.
     #[inline(always)]
     pub fn empty() -> Self {
-        <Self as Identity>::ZERO
+        <Self as Identity<Additive>>::IDENTITY
     }
 }
 
@@ -98,12 +98,12 @@ where
 // --- Generic Bounded / Identity blankets (round 202605021600) ----------
 //
 // `Mask<W>::MIN` (empty / all-zero) and `Mask<W>::MAX` (full / all-ones)
-// flow through the underlying word's Bounded impl. Identity::ZERO is
+// flow through the underlying word's Bounded impl. Identity::<Additive>::IDENTITY is
 // the empty mask (no bits set). ONE corresponds to the underlying
 // word's ONE (the lowest bit set), which is occasionally useful for
 // shift-and-test patterns.
 
-impl<W> const Bounded for Mask<W>
+const impl<W> Bounded for Mask<W>
 where
     W: BitSequence + BitAccess + Copy + Default + [const] Bounded,
 {
@@ -111,10 +111,9 @@ where
     const MAX: Self = Self::from_word(<W as Bounded>::MAX);
 }
 
-impl<W> const Identity for Mask<W>
+const impl<W, Op> Identity<Op> for Mask<W>
 where
-    W: BitSequence + BitAccess + Copy + Default + [const] Identity,
+    W: BitSequence + BitAccess + Copy + Default + [const] Identity<Op>,
 {
-    const ZERO: Self = Self::from_word(<W as Identity>::ZERO);
-    const ONE: Self = Self::from_word(<W as Identity>::ONE);
+    const IDENTITY: Self = Self::from_word(<W as Identity<Op>>::IDENTITY);
 }

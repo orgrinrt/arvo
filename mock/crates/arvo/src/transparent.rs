@@ -5,4 +5,4 @@
 //! This module re-exports them so `arvo::Transparent`, `arvo::raw`,
 //! and `arvo::NumericPrimitive` import paths remain valid.
 
-pub use arvo_transparent::{NumericPrimitive, Transparent, raw};
+pub use arvo_transparent::{raw, NumericPrimitive, Transparent};

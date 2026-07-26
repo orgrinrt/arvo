@@ -9,7 +9,7 @@
 //! The ord-requiring predicates (IsPositive/IsNonNegative/
 //! IsZeroOrPositive) route through a unified `ConstSign` trait
 //! rather than `ConstOrd` directly. Fixed types pick up `ConstSign`
-//! automatically through a blanket on `ConstOrd + Identity`. Floats
+//! automatically through a blanket on `ConstOrd + Identity<Additive>`. Floats
 //! cannot impl `ConstOrd` (NaN breaks reflexivity), so they impl
 //! `ConstSign` directly in the arvo facade with bare-primitive
 //! comparison against 0.0. Single dispatch path through `ConstSign`
@@ -46,7 +46,7 @@
 //! works on them, keeping the Pivot 5 no-`.0`-access discipline.
 
 use arvo_storage::{Bool, ConstOrd, ConstPartialEq};
-use arvo_strategy::Identity;
+use arvo_strategy::{Additive, Identity};
 use arvo_transparent::Transparent;
 
 use crate::{IsNonNegative, IsNonZero, IsPositive, IsZero, IsZeroOrPositive, Predicate};
@@ -72,25 +72,25 @@ pub const trait ConstSign {
     fn is_zero_or_positive(self) -> Bool;
 }
 
-impl<T> const ConstSign for T
+const impl<T> ConstSign for T
 where
-    T: Copy + [const] ConstOrd + [const] Identity,
+    T: Copy + [const] ConstOrd + [const] Identity<Additive>,
 {
     #[inline(always)]
     fn is_positive(self) -> Bool {
-        <T as ConstOrd>::const_gt(&self, &<T as Identity>::ZERO)
+        <T as ConstOrd>::const_gt(&self, &<T as Identity<Additive>>::IDENTITY)
     }
     #[inline(always)]
     fn is_non_negative(self) -> Bool {
-        <T as ConstOrd>::const_ge(&self, &<T as Identity>::ZERO)
+        <T as ConstOrd>::const_ge(&self, &<T as Identity<Additive>>::IDENTITY)
     }
     #[inline(always)]
     fn is_zero_or_positive(self) -> Bool {
-        <T as ConstOrd>::const_ge(&self, &<T as Identity>::ZERO)
+        <T as ConstOrd>::const_ge(&self, &<T as Identity<Additive>>::IDENTITY)
     }
 }
 
-/// Wraps a value and tests whether it equals `<T as Identity>::ZERO`.
+/// Wraps a value and tests whether it equals `<T as Identity<Additive>>::IDENTITY`.
 #[repr(transparent)]
 #[derive(Copy, Clone, PartialEq, Eq, Default, Debug)]
 pub struct IsZeroOf<T: Copy>(pub T);
@@ -117,65 +117,65 @@ pub struct IsZeroOrPositiveOf<T: Copy>(pub T);
 
 // SAFETY: All five wrappers are `repr(transparent)` over `T`. Layout
 // is identical; transmute through `Transparent::raw` is sound.
-unsafe impl<T: Copy> const Transparent for IsZeroOf<T> {
+const unsafe impl<T: Copy> Transparent for IsZeroOf<T> {
     type Inner = T;
 }
-unsafe impl<T: Copy> const Transparent for IsPositiveOf<T> {
+const unsafe impl<T: Copy> Transparent for IsPositiveOf<T> {
     type Inner = T;
 }
-unsafe impl<T: Copy> const Transparent for IsNonZeroOf<T> {
+const unsafe impl<T: Copy> Transparent for IsNonZeroOf<T> {
     type Inner = T;
 }
-unsafe impl<T: Copy> const Transparent for IsNonNegativeOf<T> {
+const unsafe impl<T: Copy> Transparent for IsNonNegativeOf<T> {
     type Inner = T;
 }
-unsafe impl<T: Copy> const Transparent for IsZeroOrPositiveOf<T> {
+const unsafe impl<T: Copy> Transparent for IsZeroOrPositiveOf<T> {
     type Inner = T;
 }
 
-// --- IsZeroOf: blanket Predicate + IsZero via ConstPartialEq + Identity --
+// --- IsZeroOf: blanket Predicate + IsZero via ConstPartialEq + Identity<Additive> --
 
-impl<T> const Predicate for IsZeroOf<T>
+const impl<T> Predicate for IsZeroOf<T>
 where
-    T: Copy + [const] ConstPartialEq + [const] Identity,
+    T: Copy + [const] ConstPartialEq + [const] Identity<Additive>,
 {
     #[inline(always)]
     fn test(self) -> Bool {
         let v = <Self as Transparent>::raw(self);
-        <T as ConstPartialEq>::const_eq(&v, &<T as Identity>::ZERO)
+        <T as ConstPartialEq>::const_eq(&v, &<T as Identity<Additive>>::IDENTITY)
     }
 }
 
-impl<T> const IsZero for IsZeroOf<T> where
-    T: Copy + [const] ConstPartialEq + [const] Identity
+const impl<T> IsZero for IsZeroOf<T> where
+    T: Copy + [const] ConstPartialEq + [const] Identity<Additive>
 {
 }
 
 // --- IsNonZeroOf: blanket Predicate + IsNonZero via ConstPartialEq -------
 
-impl<T> const Predicate for IsNonZeroOf<T>
+const impl<T> Predicate for IsNonZeroOf<T>
 where
-    T: Copy + [const] ConstPartialEq + [const] Identity,
+    T: Copy + [const] ConstPartialEq + [const] Identity<Additive>,
 {
     #[inline(always)]
     fn test(self) -> Bool {
         let v = <Self as Transparent>::raw(self);
-        <T as ConstPartialEq>::const_ne(&v, &<T as Identity>::ZERO)
+        <T as ConstPartialEq>::const_ne(&v, &<T as Identity<Additive>>::IDENTITY)
     }
 }
 
-impl<T> const IsNonZero for IsNonZeroOf<T> where
-    T: Copy + [const] ConstPartialEq + [const] Identity
+const impl<T> IsNonZero for IsNonZeroOf<T> where
+    T: Copy + [const] ConstPartialEq + [const] Identity<Additive>
 {
 }
 
 // --- IsPositiveOf: blanket Predicate + IsPositive via ConstSign ----------
 //
-// ConstSign auto-blanket covers fixed types via ConstOrd + Identity.
+// ConstSign auto-blanket covers fixed types via ConstOrd + Identity<Additive>.
 // Floats impl ConstSign directly in arvo facade since they opt out of
 // ConstOrd (NaN breaks reflexivity).
 
-impl<T> const Predicate for IsPositiveOf<T>
+const impl<T> Predicate for IsPositiveOf<T>
 where
     T: Copy + [const] ConstSign,
 {
@@ -185,11 +185,11 @@ where
     }
 }
 
-impl<T> const IsPositive for IsPositiveOf<T> where T: Copy + [const] ConstSign {}
+const impl<T> IsPositive for IsPositiveOf<T> where T: Copy + [const] ConstSign {}
 
 // --- IsNonNegativeOf: blanket Predicate + IsNonNegative via ConstSign ----
 
-impl<T> const Predicate for IsNonNegativeOf<T>
+const impl<T> Predicate for IsNonNegativeOf<T>
 where
     T: Copy + [const] ConstSign,
 {
@@ -199,11 +199,11 @@ where
     }
 }
 
-impl<T> const IsNonNegative for IsNonNegativeOf<T> where T: Copy + [const] ConstSign {}
+const impl<T> IsNonNegative for IsNonNegativeOf<T> where T: Copy + [const] ConstSign {}
 
 // --- IsZeroOrPositiveOf: blanket Predicate + IsZeroOrPositive via ConstSign
 
-impl<T> const Predicate for IsZeroOrPositiveOf<T>
+const impl<T> Predicate for IsZeroOrPositiveOf<T>
 where
     T: Copy + [const] ConstSign,
 {
@@ -213,4 +213,4 @@ where
     }
 }
 
-impl<T> const IsZeroOrPositive for IsZeroOrPositiveOf<T> where T: Copy + [const] ConstSign {}
+const impl<T> IsZeroOrPositive for IsZeroOrPositiveOf<T> where T: Copy + [const] ConstSign {}

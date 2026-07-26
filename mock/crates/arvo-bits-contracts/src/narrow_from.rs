@@ -74,14 +74,14 @@ macro_rules! impl_narrow_for_prims {
     };
 }
 
-impl_narrow_for_prims!(Hot,     Unsigned, u8, u16, u32, u64, u128);
-impl_narrow_for_prims!(Hot,     Signed,   i8, i16, i32, i64, i128);
-impl_narrow_for_prims!(Cold,    Unsigned, u8, u16, u32, u64, u128);
-impl_narrow_for_prims!(Cold,    Signed,   i8, i16, i32, i64, i128);
-impl_narrow_for_prims!(Warm,    Unsigned, u16, u32, u64, u128);
-impl_narrow_for_prims!(Warm,    Signed,   i16, i32, i64, i128);
+impl_narrow_for_prims!(Hot, Unsigned, u8, u16, u32, u64, u128);
+impl_narrow_for_prims!(Hot, Signed, i8, i16, i32, i64, i128);
+impl_narrow_for_prims!(Cold, Unsigned, u8, u16, u32, u64, u128);
+impl_narrow_for_prims!(Cold, Signed, i8, i16, i32, i64, i128);
+impl_narrow_for_prims!(Warm, Unsigned, u16, u32, u64, u128);
+impl_narrow_for_prims!(Warm, Signed, i16, i32, i64, i128);
 impl_narrow_for_prims!(Precise, Unsigned, u16, u32, u64, u128);
-impl_narrow_for_prims!(Precise, Signed,   i16, i32, i64, i128);
+impl_narrow_for_prims!(Precise, Signed, i16, i32, i64, i128);
 
 // ---------------------------------------------------------------------------
 // Wide-bucket impl.
@@ -95,8 +95,8 @@ impl_narrow_for_prims!(Precise, Signed,   i16, i32, i64, i128);
 // lint:allow(no-bare-numeric) reason: WideBits inner storage is bare-byte by
 // design; narrow_u64 places the masked u64 little-endian into the low 8
 // bytes of the byte sequence; tracked: #314
-impl<const N: u16, S: Strategy, Sign: Signedness, const BYTES: usize, A: Align>
-    const NarrowFromU64<N, S, Sign> for WideBits<BYTES, A>
+const impl<const N: u16, S: Strategy, Sign: Signedness, const BYTES: usize, A: Align>
+    NarrowFromU64<N, S, Sign> for WideBits<BYTES, A>
 {
     #[inline]
     fn narrow_u64(raw: u64) -> Self {

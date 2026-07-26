@@ -61,9 +61,7 @@ pub const trait SparseAdjacency<C: Capacity> {
 /// this sub-trait; consumers needing predecessors construct a
 /// bidirectional wrapper (e.g. `CsrBidirectional` builds a transpose at
 /// construction time).
-pub const trait BidirectionalSparseAdjacency<C: Capacity>:
-    SparseAdjacency<C>
-{
+pub const trait BidirectionalSparseAdjacency<C: Capacity>: SparseAdjacency<C> {
     /// Iterator over the predecessors of a given node.
     type Predecessors<'a>: Iterator<Item = NodeId>
     where
@@ -96,6 +94,9 @@ where
     type Item = NodeId;
 
     #[inline(always)]
+    // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+    // violation is on, and the formatter otherwise moves the comment below it.
+    #[rustfmt::skip]
     fn next(&mut self) -> Option<NodeId> { // lint:allow(no-bare-option) reason: core::iter::Iterator::next trait-method signature returns Option<Self::Item>; tracked: #115
         self.inner.next().map(NodeId)
     }
@@ -111,7 +112,7 @@ where
         Self: 'a;
 
     #[inline]
-    fn successors<'a>(&'a self, node: NodeId) -> BitMatrixSuccessors<W> {
+    fn successors(&self, node: NodeId) -> BitMatrixSuccessors<W> {
         BitMatrixSuccessors {
             inner: BitMatrix::<W, C>::successors(self, node).iter_set_bits(),
         }
@@ -133,7 +134,7 @@ where
         Self: 'a;
 
     #[inline]
-    fn predecessors<'a>(&'a self, node: NodeId) -> BitMatrixSuccessors<W> {
+    fn predecessors(&self, node: NodeId) -> BitMatrixSuccessors<W> {
         BitMatrixSuccessors {
             inner: BitMatrix::<W, C>::predecessors(self, node).iter_set_bits(),
         }
@@ -177,9 +178,7 @@ pub trait BlockPartitioner<C: Capacity>: BidirectionalSparseAdjacency<C> {
 }
 
 /// Bipartite structural analyser. Default impl runs Dulmage-Mendelsohn.
-pub trait BipartiteStructuralAnalysis<C: Capacity>:
-    BidirectionalSparseAdjacency<C>
-{
+pub trait BipartiteStructuralAnalysis<C: Capacity>: BidirectionalSparseAdjacency<C> {
     /// Return a `DulmageMendelsohn<C>` classification.
     #[inline]
     fn analyse_structure(&self) -> crate::dm::DulmageMendelsohn<C>
@@ -192,17 +191,8 @@ pub trait BipartiteStructuralAnalysis<C: Capacity>:
 
 // Blanket impls: every `BidirectionalSparseAdjacency` consumer gets
 // the three problem-shaped methods for free.
-impl<T, C: Capacity> BandwidthReducer<C> for T where
-    T: BidirectionalSparseAdjacency<C>
-{
-}
+impl<T, C: Capacity> BandwidthReducer<C> for T where T: BidirectionalSparseAdjacency<C> {}
 
-impl<T, C: Capacity> BlockPartitioner<C> for T where
-    T: BidirectionalSparseAdjacency<C>
-{
-}
+impl<T, C: Capacity> BlockPartitioner<C> for T where T: BidirectionalSparseAdjacency<C> {}
 
-impl<T, C: Capacity> BipartiteStructuralAnalysis<C> for T where
-    T: BidirectionalSparseAdjacency<C>
-{
-}
+impl<T, C: Capacity> BipartiteStructuralAnalysis<C> for T where T: BidirectionalSparseAdjacency<C> {}
