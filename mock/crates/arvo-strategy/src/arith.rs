@@ -18,8 +18,10 @@
 //!
 //! Division by zero: Hot/Warm/Cold return the numerator unchanged
 //! (wrapping math has no identity for zero, so propagating `a` is
-//! the cheapest defined fallback that does not panic). Precise
-//! guards and clamps to container max.
+//! the cheapest defined fallback that does not panic). Precise guards
+//! and clamps to the logical bound on the side the quotient heads
+//! toward, which is the maximum for a non-negative numerator and the
+//! minimum for a negative one.
 
 use crate::{BitsContainerFor, HasAxes, Signed, Unsigned};
 
@@ -55,8 +57,10 @@ pub const trait UArith<const N: u16>:
         a: <Self as BitsContainerFor<N, Unsigned>>::T,
         b: <Self as BitsContainerFor<N, Unsigned>>::T,
     ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
-    /// Strategy-specific `/`. Div-by-zero: wrapping strategies use
-    /// `wrapping_div` (panic convention); Precise clamps to max.
+    /// Strategy-specific `/`. On a zero divisor the wrapping strategies
+    /// return the numerator unchanged, and `Precise` clamps to the logical
+    /// bound on the side the quotient heads toward: the maximum for a
+    /// non-negative numerator, the minimum for a negative one.
     fn u_div(
         a: <Self as BitsContainerFor<N, Unsigned>>::T,
         b: <Self as BitsContainerFor<N, Unsigned>>::T,
@@ -104,8 +108,10 @@ pub const trait IArith<const N: u16>: [const] BitsContainerFor<N, Signed> + HasA
         a: <Self as BitsContainerFor<N, Signed>>::T,
         b: <Self as BitsContainerFor<N, Signed>>::T,
     ) -> <Self as BitsContainerFor<N, Signed>>::T;
-    /// Strategy-specific `/`. Div-by-zero: wrapping strategies use
-    /// `wrapping_div` (panic convention); Precise clamps to max.
+    /// Strategy-specific `/`. On a zero divisor the wrapping strategies
+    /// return the numerator unchanged, and `Precise` clamps to the logical
+    /// bound on the side the quotient heads toward: the maximum for a
+    /// non-negative numerator, the minimum for a negative one.
     fn i_div(
         a: <Self as BitsContainerFor<N, Signed>>::T,
         b: <Self as BitsContainerFor<N, Signed>>::T,

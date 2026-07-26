@@ -210,3 +210,65 @@ fn wrapping_division_wraps_where_precise_saturates() {
     assert_eq!(<Hot as IArith<64>>::i_div(min, neg_one), min);
     assert_eq!(<Cold as IArith<64>>::i_div_fixed::<0>(min, neg_one), min);
 }
+
+/// A zero divisor has a per-strategy answer, and `Precise`'s depends on the
+/// sign of the numerator.
+///
+/// The wrapping strategies return the numerator: wrapping arithmetic has no
+/// defined answer for division by zero, and propagating `a` is the cheapest
+/// fallback that does not panic. `Precise` clamps to the bound on the side the
+/// quotient heads toward.
+///
+/// Both halves were documented wrongly on the public trait, and the `Precise`
+/// half was implemented wrongly: it reached for the maximum whatever the sign,
+/// so `-5 / 0` came back positive, which is the wrong end of the range and not
+/// a clamp of anything. The `lo` bound was computed one line above and that
+/// branch never reached it.
+#[test]
+fn zero_divisor_answers_per_strategy() {
+    type T = <Precise as BitsContainerFor<64, Signed>>::T;
+    let zero = <T as Identity<Additive>>::IDENTITY;
+    let one = <T as Identity<Multiplicative>>::IDENTITY;
+    let neg = <T as SignedIdentity>::NEG_ONE;
+
+    assert!(
+        <Precise as IArith<64>>::i_div(neg, zero) < zero,
+        "a negative numerator over zero clamps to the low bound",
+    );
+    assert!(
+        <Precise as IArith<64>>::i_div(one, zero) > zero,
+        "a positive numerator over zero clamps to the high bound",
+    );
+    assert!(
+        <Precise as IArith<64>>::i_div_fixed::<0>(neg, zero) < zero,
+        "i_div_fixed agrees with its sibling on the sign",
+    );
+    assert!(<Precise as IArith<64>>::i_div_fixed::<0>(one, zero) > zero);
+
+    // The wrapping strategies return the numerator unchanged. The trait doc
+    // used to claim they called `wrapping_div` here, which no impl does.
+    // Each names its own container: `Precise` at 64 logical bits projects to a
+    // wider primitive than `Hot` does, so the values above do not carry over.
+    wrapping_div_by_zero_returns_the_numerator::<Hot>();
+    wrapping_div_by_zero_returns_the_numerator::<Cold>();
+    wrapping_div_by_zero_returns_the_numerator::<Warm>();
+
+    // Unsigned has no low side, so the clamp is unconditional there.
+    type U = <Precise as BitsContainerFor<64, Unsigned>>::T;
+    let uzero = <U as Identity<Additive>>::IDENTITY;
+    let uone = <U as Identity<Multiplicative>>::IDENTITY;
+    assert!(<Precise as UArith<64>>::u_div(uone, uzero) > uzero);
+}
+
+/// One wrapping strategy's zero-divisor answer, over its own container.
+fn wrapping_div_by_zero_returns_the_numerator<S>()
+where
+    S: IArith<64>,
+    <S as BitsContainerFor<64, Signed>>::T:
+        SignedIdentity + Identity<Additive> + PartialEq + core::fmt::Debug,
+{
+    type C<S> = <S as BitsContainerFor<64, Signed>>::T;
+    let zero = <C<S> as Identity<Additive>>::IDENTITY;
+    let neg = <C<S> as SignedIdentity>::NEG_ONE;
+    assert_eq!(<S as IArith<64>>::i_div(neg, zero), neg);
+}

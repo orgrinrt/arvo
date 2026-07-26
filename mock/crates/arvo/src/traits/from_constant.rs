@@ -97,7 +97,7 @@ impl_from_constant_ufixed!(
 // Fractional UFixed: a representative slice at I=8 for common F
 // widths. Full coverage of every (I, F) pair would balloon; the
 // tests exercise representative shapes and consumers compose their
-// own wrappers. The trait surface is the guarantee — specific
+// own wrappers. The trait surface is the guarantee; specific
 // instantiations can be added as needed without an API break.
 
 // Container buckets by BITS = I + F = 8 + F:

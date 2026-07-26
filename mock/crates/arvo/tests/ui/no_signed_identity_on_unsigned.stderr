@@ -1,0 +1,17 @@
+error[E0277]: the trait bound `UFixed<IBits(arvo_storage::meta_bits::MetaCarrier(1)), FBits(arvo_storage::meta_bits::MetaCarrier(7)), Hot>: SignedIdentity` is not satisfied
+  --> tests/ui/no_signed_identity_on_unsigned.rs:19:14
+   |
+19 |     let _ = <UFixed<{ ibits(1) }, { fbits(7) }, Hot> as SignedIdentity>::NEG_ONE;
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+   |
+   = help: the trait `SignedIdentity` is not implemented for `UFixed<IBits(arvo_storage::meta_bits::MetaCarrier(1)), FBits(arvo_storage::meta_bits::MetaCarrier(7)), Hot>`
+   = help: the following other types implement trait `SignedIdentity`:
+             Bits<N, S, Sign>
+             IFixed<I, F, S>
+             f32
+             f64
+             i128
+             i16
+             i32
+             i64
+           and $N others

@@ -6,14 +6,14 @@
 use crate::float::{FastFloat, StrictFloat};
 use arvo_transparent::Transparent;
 
-// --- Float ConstSign impls — feed the predicate-wrapper blankets --------
+// --- Float ConstSign impls, feeding the predicate-wrapper blankets ------
 //
 // arvo-numeric-contracts ships `IsPositiveOf<T>` / `IsNonNegativeOf<T>`
 // / `IsZeroOrPositiveOf<T>` blanket Predicate impls bound on `T:
 // [const] ConstSign`. Fixed types pick up ConstSign automatically via
 // the ConstOrd+Identity blanket. Floats opt out of ConstOrd (NaN
 // breaks reflexivity), so they need direct ConstSign impls. Bodies
-// use bare-primitive `>` / `>=` against 0.0 — const-callable on
+// use bare-primitive `>` / `>=` against 0.0, const-callable on
 // f32/f64. NaN compares as not-greater and not-greater-or-equal,
 // consistently returning false for all sign predicates, which is the
 // intended semantic.

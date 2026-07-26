@@ -14,7 +14,7 @@ use arvo_transparent::Transparent;
 //
 // Integer UFixed (F == 0) uses `u*::isqrt`. Fractional UFixed is out
 // of scope for this round. We spell out one impl per `(strategy, I)`
-// pair so each impl has a concrete container type — avoids the
+// pair so each impl has a concrete container type, which avoids the
 // const-expr cycle that a blanket `where <S as BitsContainerFor<..., Unsigned>>::T:
 // ...` produces.
 
@@ -64,7 +64,7 @@ impl_sqrt_ufixed_concrete!(
 // contract is therefore weakened in no_std builds to "deterministic
 // but not correctly-rounded". Consumer code that needs a correctly-
 // rounded sqrt must link libm at a higher layer until the substrate
-// BACKLOG item ships (see arvo/BACKLOG.md — "correctly-rounded sqrt
+// BACKLOG item ships (see arvo/BACKLOG.md, "correctly-rounded sqrt
 // via libm feature gate").
 
 // `is_nan` is not const-stable on f32/f64 in rustc 1.96.0-nightly; the

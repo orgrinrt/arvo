@@ -108,11 +108,10 @@ macro_rules! impl_u_arith_saturating {
                     if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY {
                         hi
                     } else {
-                        // `saturating_div`, matching the sibling `i_div` above. `/` panics on
-                        // signed MIN / -1, and `wrapping_div` answers it with the minimum, which
-                        // the clamp below reads as already inside the bound and passes through.
-                        // The mathematical answer is +2^(N-1), so a saturating strategy owes the
-                        // maximum here; wrapping and saturating disagree in sign at this one input.
+                        // `saturating_div` for uniformity with the signed macros. Unsigned
+                        // division cannot overflow once the zero divisor is guarded above, so
+                        // this is the same operation; one spelling across both stops a reader
+                        // copying the unguarded form into a signed body.
                         let v = (a << FRAC).saturating_div(b);
                         if v > hi { hi } else { v }
                     }
@@ -199,9 +198,12 @@ macro_rules! impl_i_arith_saturating {
                     -> <Self as BitsContainerFor<$bits, Signed>>::T {
                     let hi: <Self as BitsContainerFor<$bits, Signed>>::T = (1 << ($bits - 1)) - 1; // lint:allow(no-bare-numeric) reason: const logical-bound max over the dispatched container primitive; tracked: #256
                     let lo: <Self as BitsContainerFor<$bits, Signed>>::T = -(1 << ($bits - 1)); // lint:allow(no-bare-numeric) reason: const logical-bound min over the dispatched container primitive; tracked: #256
-                    // Precise never panics on div-by-zero: clamp to the logical MAX.
+                    // Precise never panics on div-by-zero, and clamps to the bound on the
+                    // side the quotient heads toward. Reaching for `hi` unconditionally makes
+                    // `-5 / 0` positive, which is the wrong end of the range and not a clamp of
+                    // anything; `lo` above was unreachable from this branch.
                     if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY {
-                        hi
+                        if a < <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY { lo } else { hi }
                     } else {
                         // Guard signed overflow (MIN / -1) with `saturating_div`, then clamp to logical.
                         let v = a.saturating_div(b);
@@ -222,10 +224,12 @@ macro_rules! impl_i_arith_saturating {
                     -> <Self as BitsContainerFor<$bits, Signed>>::T {
                     let hi: <Self as BitsContainerFor<$bits, Signed>>::T = (1 << ($bits - 1)) - 1; // lint:allow(no-bare-numeric) reason: const logical-bound max over the dispatched container primitive; tracked: #256
                     let lo: <Self as BitsContainerFor<$bits, Signed>>::T = -(1 << ($bits - 1)); // lint:allow(no-bare-numeric) reason: const logical-bound min over the dispatched container primitive; tracked: #256
-                    // Precise never panics on div-by-zero: clamp to the logical MAX. DoubleLogical holds
-                    // `a << FRAC` for F <= N; clamp the quotient to the logical bound.
+                    // Precise never panics on div-by-zero, and clamps to the bound on the
+                    // side the quotient heads toward, exactly as the sibling `i_div` does.
+                    // DoubleLogical holds `a << FRAC` for F <= N; the quotient is clamped to
+                    // the logical bound below.
                     if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY {
-                        hi
+                        if a < <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY { lo } else { hi }
                     } else {
                         // `saturating_div`, matching the sibling `i_div` above. `/` panics on
                         // signed MIN / -1, and `wrapping_div` answers it with the minimum, which

@@ -13,7 +13,7 @@
 //! | `FromConstant` | `from_constant(USize) -> Self`              | every concrete type |
 //!
 //! Fractional UFixed / IFixed do NOT get `Sqrt` / `Recip` in this
-//! round — those require fixed-point arithmetic tables that land in
+//! round. Those require fixed-point arithmetic tables that land in
 //! a later round. The trait surface exists; the per-type impls stop
 //! at the unambiguous cases (integer UFixed sqrt via `u*::isqrt`, and
 //! every float wrapper).

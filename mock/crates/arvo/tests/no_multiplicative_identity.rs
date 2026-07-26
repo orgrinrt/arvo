@@ -17,4 +17,11 @@ fn no_multiplicative_identity_at_zero_integer_bits() {
     t.compile_fail("tests/ui/no_multiplicative_identity_unsigned_warm.rs");
     t.compile_fail("tests/ui/no_multiplicative_identity_unsigned_cold.rs");
     t.compile_fail("tests/ui/no_multiplicative_identity_unsigned_precise.rs");
+    t.compile_fail("tests/ui/no_multiplicative_identity_signed_warm.rs");
+    t.compile_fail("tests/ui/no_multiplicative_identity_signed_cold.rs");
+    t.compile_fail("tests/ui/no_multiplicative_identity_signed_precise.rs");
+
+    // A different refusal, and one nothing pinned: unsigned has no minus one,
+    // so `SignedIdentity` must not reach `UFixed` at any width or strategy.
+    t.compile_fail("tests/ui/no_signed_identity_on_unsigned.rs");
 }
