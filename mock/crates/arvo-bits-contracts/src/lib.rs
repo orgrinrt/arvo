@@ -2,7 +2,6 @@
 #![feature(adt_const_params)]
 #![feature(const_trait_impl)]
 #![feature(const_ops)]
-#![feature(const_param_ty_trait)]
 #![allow(incomplete_features)]
 
 //! arvo-bits-contracts. Bit-level trait declarations.
@@ -25,7 +24,6 @@
 
 use arvo_storage::{Bits, Bool, USize};
 use arvo_strategy::{BitsContainerFor, Signed, Signedness, Strategy, Unsigned};
-use arvo_transparent::Transparent;
 
 mod bits_impl;
 mod cross_domain;
@@ -266,7 +264,6 @@ pub const trait IBitPrim: sealed::IBit + Copy + 'static {
     fn mask_low(n: USize) -> Self;
 }
 
-
 // --- Sign-axis primitive bridge -------------------------------------------
 //
 // `BitsBitPrim<Sign>` collapses the `BitPrim` (Unsigned) / `IBitPrim`
@@ -325,70 +322,122 @@ pub const trait BitsBitPrim<Sign: Signedness>: Copy + 'static {
     fn clear_lowest_set_bit(self) -> Self;
 }
 
-impl<T: [const] BitPrim> const BitsBitPrim<Unsigned> for T {
+const impl<T: [const] BitPrim> BitsBitPrim<Unsigned> for T {
     const WIDTH: USize = <T as BitPrim>::WIDTH;
     const ZERO: Self = <T as BitPrim>::ZERO;
     const ONE: Self = <T as BitPrim>::ONE;
 
     #[inline(always)]
-    fn count_ones(self) -> USize { <T as BitPrim>::count_ones(self) }
+    fn count_ones(self) -> USize {
+        <T as BitPrim>::count_ones(self)
+    }
     #[inline(always)]
-    fn trailing_zeros(self) -> USize { <T as BitPrim>::trailing_zeros(self) }
+    fn trailing_zeros(self) -> USize {
+        <T as BitPrim>::trailing_zeros(self)
+    }
     #[inline(always)]
-    fn leading_zeros(self) -> USize { <T as BitPrim>::leading_zeros(self) }
+    fn leading_zeros(self) -> USize {
+        <T as BitPrim>::leading_zeros(self)
+    }
     #[inline(always)]
-    fn is_zero(self) -> Bool { <T as BitPrim>::is_zero(self) }
+    fn is_zero(self) -> Bool {
+        <T as BitPrim>::is_zero(self)
+    }
     #[inline(always)]
-    fn get_bit(self, idx: USize) -> Bool { <T as BitPrim>::get_bit(self, idx) }
+    fn get_bit(self, idx: USize) -> Bool {
+        <T as BitPrim>::get_bit(self, idx)
+    }
     #[inline(always)]
-    fn with_bit_set(self, idx: USize) -> Self { <T as BitPrim>::with_bit_set(self, idx) }
+    fn with_bit_set(self, idx: USize) -> Self {
+        <T as BitPrim>::with_bit_set(self, idx)
+    }
     #[inline(always)]
-    fn with_bit_cleared(self, idx: USize) -> Self { <T as BitPrim>::with_bit_cleared(self, idx) }
+    fn with_bit_cleared(self, idx: USize) -> Self {
+        <T as BitPrim>::with_bit_cleared(self, idx)
+    }
     #[inline(always)]
-    fn with_bit_toggled(self, idx: USize) -> Self { <T as BitPrim>::with_bit_toggled(self, idx) }
+    fn with_bit_toggled(self, idx: USize) -> Self {
+        <T as BitPrim>::with_bit_toggled(self, idx)
+    }
     #[inline(always)]
-    fn bitor(self, other: Self) -> Self { <T as BitPrim>::bitor(self, other) }
+    fn bitor(self, other: Self) -> Self {
+        <T as BitPrim>::bitor(self, other)
+    }
     #[inline(always)]
-    fn bitand(self, other: Self) -> Self { <T as BitPrim>::bitand(self, other) }
+    fn bitand(self, other: Self) -> Self {
+        <T as BitPrim>::bitand(self, other)
+    }
     #[inline(always)]
-    fn bitnot(self) -> Self { <T as BitPrim>::bitnot(self) }
+    fn bitnot(self) -> Self {
+        <T as BitPrim>::bitnot(self)
+    }
     #[inline(always)]
-    fn bitxor(self, other: Self) -> Self { <T as BitPrim>::bitxor(self, other) }
+    fn bitxor(self, other: Self) -> Self {
+        <T as BitPrim>::bitxor(self, other)
+    }
     #[inline(always)]
-    fn clear_lowest_set_bit(self) -> Self { <T as BitPrim>::clear_lowest_set_bit(self) }
+    fn clear_lowest_set_bit(self) -> Self {
+        <T as BitPrim>::clear_lowest_set_bit(self)
+    }
 }
 
-impl<T: [const] IBitPrim> const BitsBitPrim<Signed> for T {
+const impl<T: [const] IBitPrim> BitsBitPrim<Signed> for T {
     const WIDTH: USize = <T as IBitPrim>::WIDTH;
     const ZERO: Self = <T as IBitPrim>::ZERO;
     const ONE: Self = <T as IBitPrim>::ONE;
 
     #[inline(always)]
-    fn count_ones(self) -> USize { <T as IBitPrim>::count_ones(self) }
+    fn count_ones(self) -> USize {
+        <T as IBitPrim>::count_ones(self)
+    }
     #[inline(always)]
-    fn trailing_zeros(self) -> USize { <T as IBitPrim>::trailing_zeros(self) }
+    fn trailing_zeros(self) -> USize {
+        <T as IBitPrim>::trailing_zeros(self)
+    }
     #[inline(always)]
-    fn leading_zeros(self) -> USize { <T as IBitPrim>::leading_zeros(self) }
+    fn leading_zeros(self) -> USize {
+        <T as IBitPrim>::leading_zeros(self)
+    }
     #[inline(always)]
-    fn is_zero(self) -> Bool { <T as IBitPrim>::is_zero(self) }
+    fn is_zero(self) -> Bool {
+        <T as IBitPrim>::is_zero(self)
+    }
     #[inline(always)]
-    fn get_bit(self, idx: USize) -> Bool { <T as IBitPrim>::get_bit(self, idx) }
+    fn get_bit(self, idx: USize) -> Bool {
+        <T as IBitPrim>::get_bit(self, idx)
+    }
     #[inline(always)]
-    fn with_bit_set(self, idx: USize) -> Self { <T as IBitPrim>::with_bit_set(self, idx) }
+    fn with_bit_set(self, idx: USize) -> Self {
+        <T as IBitPrim>::with_bit_set(self, idx)
+    }
     #[inline(always)]
-    fn with_bit_cleared(self, idx: USize) -> Self { <T as IBitPrim>::with_bit_cleared(self, idx) }
+    fn with_bit_cleared(self, idx: USize) -> Self {
+        <T as IBitPrim>::with_bit_cleared(self, idx)
+    }
     #[inline(always)]
-    fn with_bit_toggled(self, idx: USize) -> Self { <T as IBitPrim>::with_bit_toggled(self, idx) }
+    fn with_bit_toggled(self, idx: USize) -> Self {
+        <T as IBitPrim>::with_bit_toggled(self, idx)
+    }
     #[inline(always)]
-    fn bitor(self, other: Self) -> Self { <T as IBitPrim>::bitor(self, other) }
+    fn bitor(self, other: Self) -> Self {
+        <T as IBitPrim>::bitor(self, other)
+    }
     #[inline(always)]
-    fn bitand(self, other: Self) -> Self { <T as IBitPrim>::bitand(self, other) }
+    fn bitand(self, other: Self) -> Self {
+        <T as IBitPrim>::bitand(self, other)
+    }
     #[inline(always)]
-    fn bitnot(self) -> Self { <T as IBitPrim>::bitnot(self) }
+    fn bitnot(self) -> Self {
+        <T as IBitPrim>::bitnot(self)
+    }
     #[inline(always)]
-    fn bitxor(self, other: Self) -> Self { <T as IBitPrim>::bitxor(self, other) }
+    fn bitxor(self, other: Self) -> Self {
+        <T as IBitPrim>::bitxor(self, other)
+    }
     #[inline(always)]
-    fn clear_lowest_set_bit(self) -> Self { <T as IBitPrim>::clear_lowest_set_bit(self) }
+    fn clear_lowest_set_bit(self) -> Self {
+        <T as IBitPrim>::clear_lowest_set_bit(self)
+    }
 }
 
 // --- Container bridges ----------------------------------------------------
@@ -402,7 +451,9 @@ impl<T: [const] IBitPrim> const BitsBitPrim<Signed> for T {
 /// Sealed bridge: `(S, BITS)` where `S: BitsContainerFor<BITS, Unsigned>` **and**
 /// the container type is `BitPrim`. Collapses the two predicates into
 /// one to sidestep the const-expr cycle.
-pub const trait UBitContainer<const BITS: u16>: sealed::UBridge<BITS> + [const] BitsContainerFor<BITS, Unsigned> {
+pub const trait UBitContainer<const BITS: u16>:
+    sealed::UBridge<BITS> + [const] BitsContainerFor<BITS, Unsigned>
+{
     /// The container primitive for this `(S, BITS)` pair.
     type Prim: [const] BitPrim;
     /// Coerce the strategy-selected container into the bridge's
@@ -415,7 +466,9 @@ pub const trait UBitContainer<const BITS: u16>: sealed::UBridge<BITS> + [const] 
 }
 
 /// Signed counterpart of `UBitContainer`.
-pub const trait IBitContainer<const BITS: u16>: sealed::IBridge<BITS> + [const] BitsContainerFor<BITS, Signed> {
+pub const trait IBitContainer<const BITS: u16>:
+    sealed::IBridge<BITS> + [const] BitsContainerFor<BITS, Signed>
+{
     /// The container primitive for this `(S, BITS)` pair.
     type Prim: [const] IBitPrim;
     /// See `UBitContainer::to_prim`.
@@ -441,7 +494,7 @@ where
 {
 }
 
-impl<S, const BITS: u16> const UBitContainer<BITS> for S
+const impl<S, const BITS: u16> UBitContainer<BITS> for S
 where
     S: Strategy,
     S: [const] BitsContainerFor<BITS, Unsigned>,
@@ -473,7 +526,7 @@ where
 {
 }
 
-impl<S, const BITS: u16> const IBitContainer<BITS> for S
+const impl<S, const BITS: u16> IBitContainer<BITS> for S
 where
     S: Strategy,
     S: [const] BitsContainerFor<BITS, Signed>,
@@ -636,13 +689,12 @@ impl_narrow_i!(i128, u128 => i8, i16, i32, i64, i128);
 // supplying M <= N still get a valid result, but the masking is a
 // no-op for cells where the source width already fits.
 
-impl<const M: u16, const N: u16, S: Strategy, Sign: Signedness>
-    const Narrow<Bits<N, S, Sign>> for Bits<M, S, Sign>
+const impl<const M: u16, const N: u16, S: Strategy, Sign: Signedness> Narrow<Bits<N, S, Sign>>
+    for Bits<M, S, Sign>
 where
     S: BitsContainerFor<M, Sign>,
     S: BitsContainerFor<N, Sign>,
-    <S as BitsContainerFor<M, Sign>>::T:
-        ~const Narrow<<S as BitsContainerFor<N, Sign>>::T>,
+    <S as BitsContainerFor<M, Sign>>::T: [const] Narrow<<S as BitsContainerFor<N, Sign>>::T>,
 {
     #[inline(always)]
     fn narrow_to<const W: u16>(self) -> Bits<N, S, Sign> {

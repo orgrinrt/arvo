@@ -10,11 +10,11 @@
 
 #![feature(const_trait_impl)]
 
-use arvo::{Bits, Hot, Identity, USize, Unsigned};
-use arvo_bits_contracts::BitAccess;
+use arvo::{Additive, Bits, Hot, Identity, USize, Unsigned};
 use arvo_bitmask::{BitMatrix, NodeId};
+use arvo_bits_contracts::BitAccess;
 use arvo_graph::{topo_sort, waist_detect, waist_detect_const};
-use arvo_tensor::{ConstCapacity, Dim};
+use arvo_tensor::Dim;
 
 type W = Bits<64, Hot, Unsigned>;
 
@@ -27,7 +27,7 @@ fn nid(i: usize) -> NodeId {
 // `j < 8` scan is fixture-scoped to this 8-node DAG (W = Bits<64> holds far
 // more); extending the fixture past 8 nodes means widening this bound.
 const fn mk_row(targets: u64) -> W {
-    let mut w = <W as Identity>::ZERO;
+    let mut w = <W as Identity<Additive>>::IDENTITY;
     let mut j = 0usize;
     while j < 8 {
         if (targets >> j) & 1 == 1 {
@@ -78,7 +78,10 @@ fn const_eval_lands_waist_flag_at_waist_position() {
         i += 1;
     }
     assert_eq!(set, 1, "exactly one waist");
-    assert!(FLAGS[4].0, "the waist flag lands at node 4's topo position (4)");
+    assert!(
+        FLAGS[4].0,
+        "the waist flag lands at node 4's topo position (4)"
+    );
 }
 
 // Build the raw successor words from a BitMatrix's rows (Mask is repr-transparent

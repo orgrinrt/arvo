@@ -13,10 +13,10 @@
 
 use core::cmp::Ordering;
 
-use arvo::{Identity, USize};
 use arvo::traits::TotalOrd;
+use arvo::{Additive, Identity, USize};
+use arvo_bitmask::{cap_size, BitMatrix, Mask, NodeId};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
-use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_tensor::Capacity;
 
 /// Flat spanning-tree decomposition.
@@ -54,7 +54,8 @@ where
     }
 }
 
-impl<C: Capacity, B: BitSequence + BitAccess + Copy + Default + Identity> SpanningTree<C, B>
+impl<C: Capacity, B: BitSequence + BitAccess + Copy + Default + Identity<Additive>>
+    SpanningTree<C, B>
 where
     C::Array<NodeId>: Copy,
 {
@@ -89,7 +90,7 @@ pub fn spanning_tree<C: Capacity, W, B>(
 ) -> SpanningTree<C, B>
 where
     W: TotalOrd + Copy,
-    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity,
+    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity<Additive>,
     C::Array<NodeId>: Copy,
 {
     let mut out: SpanningTree<C, B> = SpanningTree::empty();
@@ -109,7 +110,9 @@ where
     let mut src_any = false;
     let mut j = 0usize;
     while j < cap_size(C::CAP) {
-        if dag.predecessors(NodeId::new(USize(j))).count() == USize::ZERO {
+        if dag.predecessors(NodeId::new(USize(j))).count()
+            == <USize as Identity<Additive>>::IDENTITY
+        {
             sources.insert(USize(j));
             src_any = true;
         }
@@ -131,7 +134,10 @@ where
         if !have_head {
             head_idx = USize(s);
             have_head = true;
-        } else if matches!(ranks.as_ref()[s].total_cmp(ranks.as_ref()[head_idx.0]), Ordering::Greater) {
+        } else if matches!(
+            ranks.as_ref()[s].total_cmp(ranks.as_ref()[head_idx.0]),
+            Ordering::Greater
+        ) {
             head_idx = USize(s);
         }
     }
@@ -196,7 +202,10 @@ where
                 if !have_top {
                     top_i = USize(s);
                     have_top = true;
-                } else if matches!(ranks.as_ref()[s].total_cmp(ranks.as_ref()[top_i.0]), Ordering::Greater) {
+                } else if matches!(
+                    ranks.as_ref()[s].total_cmp(ranks.as_ref()[top_i.0]),
+                    Ordering::Greater
+                ) {
                     top_i = USize(s);
                 }
             }

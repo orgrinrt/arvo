@@ -19,7 +19,7 @@
 //! The module is private (no `pub use`); assertions fire at compile
 //! time without exporting any surface.
 
-use arvo_storage::{Bits, fbits, ibits};
+use arvo_storage::{fbits, ibits, Bits};
 use arvo_strategy::{Cold, Hot, Signed, Unsigned, Warm};
 
 use crate::ifixed::IFixed;

@@ -8,9 +8,10 @@
 #![feature(const_ops)]
 
 use arvo_storage::{Cap, USize};
-use arvo_strategy::{Bounded, Identity};
+use arvo_strategy::{Additive, Bounded, Identity, Multiplicative};
 
-const _USIZE_ZERO_PLUS_ONE: USize = USize::ZERO + USize::ONE;
+const _USIZE_ZERO_PLUS_ONE: USize =
+    <USize as Identity<Additive>>::IDENTITY + <USize as Identity<Multiplicative>>::IDENTITY;
 const _USIZE_ADD: USize = USize(5) + USize(3);
 const _USIZE_SUB: USize = USize(10) - USize(4);
 const _USIZE_MUL: USize = USize(6) * USize(7);
@@ -23,7 +24,8 @@ const _USIZE_OR: USize = USize(0xF0) | USize(0x0F);
 const _USIZE_XOR: USize = USize(0xFF) ^ USize(0xAA);
 const _USIZE_NOT: USize = !USize(0);
 
-const _CAP_ZERO_PLUS_ONE: Cap = Cap::ZERO + Cap::ONE;
+const _CAP_ZERO_PLUS_ONE: Cap =
+    <Cap as Identity<Additive>>::IDENTITY + <Cap as Identity<Multiplicative>>::IDENTITY;
 const _CAP_SUM: Cap = Cap(USize(10)) + Cap(USize(5));
 
 // Chained const-trait composition: validates round-202605021400 step 2
@@ -31,10 +33,10 @@ const _CAP_SUM: Cap = Cap(USize(10)) + Cap(USize(5));
 // a single const expression.
 const _USIZE_CHAIN: USize = USize(1) + USize(2) + USize(3) + USize(4);
 
-// Round 202605021600: Bounded + Identity blanket on bare primitives.
+// Round 202605021600: Bounded + Identity<Op> blanket on bare primitives.
 const _U8_MIN: u8 = <u8 as Bounded>::MIN;
 const _U64_MAX: u64 = <u64 as Bounded>::MAX;
-const _I32_NEG: i32 = <i32 as Identity>::ONE;
+const _I32_NEG: i32 = <i32 as Identity<Multiplicative>>::IDENTITY;
 
 #[test]
 fn const_evaluations_match_runtime() {
@@ -49,6 +51,6 @@ fn const_evaluations_match_runtime() {
     assert_eq!(_USIZE_AND.0, 0x0F);
     assert_eq!(_USIZE_OR.0, 0xFF);
     assert_eq!(_USIZE_XOR.0, 0x55);
-    assert_eq!(_CAP_SUM.0.0, 15);
+    assert_eq!(_CAP_SUM.0 .0, 15);
     assert_eq!(_USIZE_CHAIN.0, 10);
 }

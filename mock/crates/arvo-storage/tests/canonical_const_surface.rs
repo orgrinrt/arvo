@@ -1,7 +1,7 @@
 //! Canonical const surface smoke test for round 202605021800.
 //!
 //! Validates that every substrate primitive carries the full
-//! canonical const surface (Bounded + Identity + ConstPartialEq +
+//! canonical const surface (Bounded + Identity<Additive> + ConstPartialEq +
 //! ConstEq + ConstBitEq + ConstOrd + ConstDefault) where
 //! semantically applicable, and that consumers reach these constants
 //! through trait projection without ever needing `.0` field access
@@ -16,16 +16,18 @@
 #![feature(const_trait_impl)]
 #![feature(const_ops)]
 
-use arvo_storage::{Bool, Cap, ConstBitEq, ConstDefault, ConstEq, ConstOrd, ConstOrdering,
-    ConstPartialEq, MetaCarrier, USize, fbits, ibits, width};
-use arvo_strategy::{Bounded, Identity, SignedIdentity};
+use arvo_storage::{
+    fbits, ibits, width, Bool, Cap, ConstBitEq, ConstDefault, ConstOrd, ConstOrdering,
+    ConstPartialEq, MetaCarrier, USize,
+};
+use arvo_strategy::{Additive, Bounded, Identity, Multiplicative, SignedIdentity};
 
 // ---- USize: full surface ----
 
 const _USIZE_MIN: USize = <USize as Bounded>::MIN;
 const _USIZE_MAX: USize = <USize as Bounded>::MAX;
-const _USIZE_ZERO: USize = <USize as Identity>::ZERO;
-const _USIZE_ONE: USize = <USize as Identity>::ONE;
+const _USIZE_ZERO: USize = <USize as Identity<Additive>>::IDENTITY;
+const _USIZE_ONE: USize = <USize as Identity<Multiplicative>>::IDENTITY;
 const _USIZE_DEFAULT: USize = <USize as ConstDefault>::const_default();
 const _USIZE_LT: Bool = <USize as ConstOrd>::const_lt(&USize(3), &USize(5));
 const _USIZE_EQ: Bool = <USize as ConstPartialEq>::const_eq(&USize(7), &USize(7));
@@ -35,8 +37,8 @@ const _USIZE_BIT_EQ: Bool = <USize as ConstBitEq>::const_bit_eq(&USize(7), &USiz
 
 const _CAP_MIN: Cap = <Cap as Bounded>::MIN;
 const _CAP_MAX: Cap = <Cap as Bounded>::MAX;
-const _CAP_ZERO: Cap = <Cap as Identity>::ZERO;
-const _CAP_ONE: Cap = <Cap as Identity>::ONE;
+const _CAP_ZERO: Cap = <Cap as Identity<Additive>>::IDENTITY;
+const _CAP_ONE: Cap = <Cap as Identity<Multiplicative>>::IDENTITY;
 const _CAP_DEFAULT: Cap = <Cap as ConstDefault>::const_default();
 const _CAP_LT: Bool = <Cap as ConstOrd>::const_lt(&_CAP_ZERO, &_CAP_ONE);
 
@@ -59,11 +61,10 @@ const _BOOL_LT: Bool = <Bool as ConstOrd>::const_lt(&Bool(false), &Bool(true));
 
 const _META_MIN: MetaCarrier = <MetaCarrier as Bounded>::MIN;
 const _META_MAX: MetaCarrier = <MetaCarrier as Bounded>::MAX;
-const _META_ZERO: MetaCarrier = <MetaCarrier as Identity>::ZERO;
-const _IBITS_ZERO: arvo_storage::IBits = <arvo_storage::IBits as Identity>::ZERO;
-const _IBITS_ONE: arvo_storage::IBits = <arvo_storage::IBits as Identity>::ONE;
-const _FBITS_DEFAULT: arvo_storage::FBits =
-    <arvo_storage::FBits as ConstDefault>::const_default();
+const _META_ZERO: MetaCarrier = <MetaCarrier as Identity<Additive>>::IDENTITY;
+const _IBITS_ZERO: arvo_storage::IBits = <arvo_storage::IBits as Identity<Additive>>::IDENTITY;
+const _IBITS_ONE: arvo_storage::IBits = <arvo_storage::IBits as Identity<Multiplicative>>::IDENTITY;
+const _FBITS_DEFAULT: arvo_storage::FBits = <arvo_storage::FBits as ConstDefault>::const_default();
 const _WIDTH_MAX: arvo_storage::Width = <arvo_storage::Width as Bounded>::MAX;
 
 // ---- bare primitive: SignedIdentity reaches NEG_ONE through trait ----
@@ -77,15 +78,15 @@ const _F64_NEG_ONE: f64 = <f64 as SignedIdentity>::NEG_ONE;
 // ---- bare primitive: full surface ----
 
 const _U64_BOUNDED_MAX: u64 = <u64 as Bounded>::MAX;
-const _U64_IDENTITY_ONE: u64 = <u64 as Identity>::ONE;
+const _U64_IDENTITY_ONE: u64 = <u64 as Identity<Multiplicative>>::IDENTITY;
 const _U64_DEFAULT: u64 = <u64 as ConstDefault>::const_default();
 
 // Float canonical (no ConstEq, no ConstOrd; ConstPartialEq +
-// ConstBitEq + Bounded + Identity + ConstDefault).
+// ConstBitEq + Bounded + Identity<Additive> + ConstDefault).
 const _F32_MIN: f32 = <f32 as Bounded>::MIN;
 const _F32_MAX: f32 = <f32 as Bounded>::MAX;
-const _F32_ZERO: f32 = <f32 as Identity>::ZERO;
-const _F32_ONE: f32 = <f32 as Identity>::ONE;
+const _F32_ZERO: f32 = <f32 as Identity<Additive>>::IDENTITY;
+const _F32_ONE: f32 = <f32 as Identity<Multiplicative>>::IDENTITY;
 const _F32_DEFAULT: f32 = <f32 as ConstDefault>::const_default();
 
 #[test]

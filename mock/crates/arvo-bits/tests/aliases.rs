@@ -1,12 +1,11 @@
 //! Alias-width sanity: each semantic alias resolves to the expected
 //! logical width and participates in the bit-level surface.
 
-#![feature(adt_const_params)]
 #![allow(incomplete_features)]
 
-use arvo::USize;
 use arvo::strategy::{Hot, Warm};
-use arvo_bits::{Bit, BitAccess, BitSequence, HasBitWidth, Byte, DWord, Nibble, QWord, Word};
+use arvo::USize;
+use arvo_bits::{Bit, BitAccess, BitSequence, Byte, DWord, HasBitWidth, Nibble, QWord, Word};
 
 #[test]
 fn alias_logical_widths() {

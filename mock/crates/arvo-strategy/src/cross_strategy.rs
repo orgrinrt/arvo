@@ -44,11 +44,11 @@ use crate::{Cold, Hot, Precise, Strategy, Warm};
 #[diagnostic::on_unimplemented(
     message = "cross-strategy operation between `{S1}` and `{S2}` shifts arithmetic semantics",
     label = "this op resolves to `Resolve<{S1}, {S2}>::Out` and may adopt different overflow / container / layout semantics than either operand",
-    note = "consumer choice: insert an explicit `.cast::<S>()` to make the strategy shift visible at the call site, or annotate the surrounding scope with `// lint:allow(cross-strategy-resolution)` to silence the warning",
+    note = "consumer choice: insert an explicit `.cast::<S>()` to make the strategy shift visible at the call site, or annotate the surrounding scope with `// lint:allow(cross-strategy-resolution)` to silence the warning"
 )]
 pub const trait CrossStrategyOp<S1: Strategy, S2: Strategy> {}
 
-impl const CrossStrategyOp<Hot, Hot> for () {}
-impl const CrossStrategyOp<Warm, Warm> for () {}
-impl const CrossStrategyOp<Cold, Cold> for () {}
-impl const CrossStrategyOp<Precise, Precise> for () {}
+const impl CrossStrategyOp<Hot, Hot> for () {}
+const impl CrossStrategyOp<Warm, Warm> for () {}
+const impl CrossStrategyOp<Cold, Cold> for () {}
+const impl CrossStrategyOp<Precise, Precise> for () {}

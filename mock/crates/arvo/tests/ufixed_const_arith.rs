@@ -8,7 +8,6 @@
 //! `Bits`; this file extends to assert MIN/MAX const-callable surface
 //! plus runtime parity against the container bounds.
 
-#![feature(adt_const_params)]
 #![feature(const_ops)]
 #![feature(const_trait_impl)]
 #![allow(incomplete_features)]
@@ -16,25 +15,25 @@
 use arvo::strategy::{Cold, Hot, Precise, Warm};
 use arvo::traits::FromConstant;
 use arvo::ufixed::UFixed;
-use arvo::{USize, fbits, ibits};
-use arvo_strategy::{Bounded, Identity};
+use arvo::{fbits, ibits, USize};
+use arvo_strategy::{Additive, Bounded, Identity, Multiplicative};
 
 type U8Hot = UFixed<{ ibits(8) }, { fbits(0) }, Hot>;
 type U16Warm = UFixed<{ ibits(16) }, { fbits(0) }, Warm>;
 type U32Cold = UFixed<{ ibits(32) }, { fbits(0) }, Cold>;
 type U64Precise = UFixed<{ ibits(64) }, { fbits(0) }, Precise>;
 
-const _U8_ZERO: U8Hot = <U8Hot as Identity>::ZERO;
-const _U8_ONE: U8Hot = <U8Hot as Identity>::ONE;
+const _U8_ZERO: U8Hot = <U8Hot as Identity<Additive>>::IDENTITY;
+const _U8_ONE: U8Hot = <U8Hot as Identity<Multiplicative>>::IDENTITY;
 
-const _U16_ZERO: U16Warm = <U16Warm as Identity>::ZERO;
-const _U16_ONE: U16Warm = <U16Warm as Identity>::ONE;
+const _U16_ZERO: U16Warm = <U16Warm as Identity<Additive>>::IDENTITY;
+const _U16_ONE: U16Warm = <U16Warm as Identity<Multiplicative>>::IDENTITY;
 
-const _U32_ZERO: U32Cold = <U32Cold as Identity>::ZERO;
-const _U32_ONE: U32Cold = <U32Cold as Identity>::ONE;
+const _U32_ZERO: U32Cold = <U32Cold as Identity<Additive>>::IDENTITY;
+const _U32_ONE: U32Cold = <U32Cold as Identity<Multiplicative>>::IDENTITY;
 
-const _U64_ZERO: U64Precise = <U64Precise as Identity>::ZERO;
-const _U64_ONE: U64Precise = <U64Precise as Identity>::ONE;
+const _U64_ZERO: U64Precise = <U64Precise as Identity<Additive>>::IDENTITY;
+const _U64_ONE: U64Precise = <U64Precise as Identity<Multiplicative>>::IDENTITY;
 
 // Bounded MIN / MAX projections through the inner Bits Bounded blanket
 // (Round 7, #325). Round 6 had to skip these per deviation 3; closed.
@@ -48,8 +47,8 @@ const _U64_MIN: U64Precise = <U64Precise as Bounded>::MIN;
 const _U64_MAX: U64Precise = <U64Precise as Bounded>::MAX;
 
 const _U8_HOT_ADD_ZERO_ONE: U8Hot = {
-    let z = <U8Hot as Identity>::ZERO;
-    let o = <U8Hot as Identity>::ONE;
+    let z = <U8Hot as Identity<Additive>>::IDENTITY;
+    let o = <U8Hot as Identity<Multiplicative>>::IDENTITY;
     z + o
 };
 

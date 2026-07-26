@@ -38,8 +38,7 @@ pub const fn xxhash3_64(bytes: &[u8]) -> u64 {
 ///
 /// ```ignore
 /// use arvo_hash::{XxHash3, ConstHash};
-/// use arvo::{Hot};
-/// use arvo::strategy::Unsigned;
+/// /// use arvo::strategy::Unsigned;
 ///
 /// let h: arvo::Bits<64, Hot> =
 ///     <XxHash3<64> as ConstHash<64, Hot, Unsigned>>::hash_const(b"hello");
@@ -132,7 +131,7 @@ where
 /// xxhash-rust's `xxh3_64` is const-callable, so this trait impl
 /// composes through `NarrowFromU64` cleanly without per-N
 /// specialisation.
-impl<const N: u16> const ConstHash<N, Hot, Unsigned> for XxHash3<N>
+const impl<const N: u16> ConstHash<N, Hot, Unsigned> for XxHash3<N>
 where
     Hot: BitsContainerFor<N, Unsigned>,
     <Hot as BitsContainerFor<N, Unsigned>>::T: [const] NarrowFromU64<N, Hot, Unsigned>,

@@ -18,8 +18,8 @@
 //! Returns `C::Array<NodeId>` mapping new position to old node id:
 //! `result[new_pos] = old_NodeId`.
 
-use arvo::{Identity, Bool, USize};
-use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
+use arvo::{Additive, Bool, Identity, Multiplicative, USize};
+use arvo_bitmask::{cap_size, BitMatrix, Mask, NodeId};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
 use arvo_tensor::Capacity;
 use notko::Maybe;
@@ -35,7 +35,7 @@ use crate::adjacency::BidirectionalSparseAdjacency;
 #[inline]
 pub fn rcm_reorder<W, C: Capacity>(adjacency: &BitMatrix<W, C>) -> C::Array<NodeId>
 where
-    W: BitSequence + BitAccess + BitLogic + Identity + Copy + Default,
+    W: BitSequence + BitAccess + BitLogic + Identity<Additive> + Copy + Default,
 {
     let mut order: C::Array<NodeId> = C::filled(NodeId::new(USize(0)));
     let mut visited: Mask<W> = Mask::<W>::empty();
@@ -53,14 +53,14 @@ where
 
         visited.insert(USize(start));
         order.as_mut()[*head] = NodeId::new(USize(start));
-        head = head + USize::ONE;
+        head = head + <USize as Identity<Multiplicative>>::IDENTITY;
 
         // BFS frontier pointers: [read, head) is the current queue.
-        let mut read = head - USize::ONE;
+        let mut read = head - <USize as Identity<Multiplicative>>::IDENTITY;
 
         while read.0 < head.0 {
             let node = order.as_ref()[*read];
-            read = read + USize::ONE;
+            read = read + <USize as Identity<Multiplicative>>::IDENTITY;
 
             // Collect unvisited neighbours (successors + predecessors).
             let neigh = adjacency
@@ -111,7 +111,7 @@ where
                 if let Bool(false) = visited.contains(USize(n_idx)) {
                     visited.insert(USize(n_idx));
                     order.as_mut()[*head] = n;
-                    head = head + USize::ONE;
+                    head = head + <USize as Identity<Multiplicative>>::IDENTITY;
                 }
                 k += 1;
             }
@@ -123,9 +123,7 @@ where
     let mut r = if head.0 == 0 { 0 } else { head.0 - 1 };
     while l < r {
         let ord = order.as_mut();
-        let tmp = ord[l];
-        ord[l] = ord[r];
-        ord[r] = tmp;
+        ord.swap(l, r);
         l += 1;
         r -= 1;
     }
@@ -137,7 +135,7 @@ where
 #[inline(always)]
 fn degree<W, C: Capacity>(adj: &BitMatrix<W, C>, n: NodeId) -> USize
 where
-    W: BitSequence + BitAccess + BitLogic + Identity + Copy + Default,
+    W: BitSequence + BitAccess + BitLogic + Identity<Additive> + Copy + Default,
 {
     adj.successors(n).union(adj.predecessors(n)).count()
 }
@@ -145,12 +143,9 @@ where
 /// Lowest-index unvisited node with minimum combined degree, or
 /// `Maybe::Isnt` if every node in `0..N` is already visited.
 #[inline]
-fn min_degree_unvisited<W, C: Capacity>(
-    adj: &BitMatrix<W, C>,
-    visited: &Mask<W>,
-) -> Maybe<USize>
+fn min_degree_unvisited<W, C: Capacity>(adj: &BitMatrix<W, C>, visited: &Mask<W>) -> Maybe<USize>
 where
-    W: BitSequence + BitAccess + BitLogic + Identity + Copy + Default,
+    W: BitSequence + BitAccess + BitLogic + Identity<Additive> + Copy + Default,
 {
     let mut best: Maybe<(USize, USize)> = Maybe::Isnt;
     let mut i = 0usize;
@@ -204,13 +199,13 @@ where
 
         visited.as_mut()[start] = Bool(true);
         order.as_mut()[*head] = NodeId::new(USize(start));
-        head = head + USize::ONE;
+        head = head + <USize as Identity<Multiplicative>>::IDENTITY;
 
-        let mut read = head - USize::ONE;
+        let mut read = head - <USize as Identity<Multiplicative>>::IDENTITY;
 
         while read.0 < head.0 {
             let node = order.as_ref()[*read];
-            read = read + USize::ONE;
+            read = read + <USize as Identity<Multiplicative>>::IDENTITY;
 
             // Collect neighbours (successors ∪ predecessors) into a
             // scratch buffer, deduping through a local flag array.
@@ -269,7 +264,7 @@ where
                 if !visited.as_ref()[n_idx].0 {
                     visited.as_mut()[n_idx] = Bool(true);
                     order.as_mut()[*head] = n;
-                    head = head + USize::ONE;
+                    head = head + <USize as Identity<Multiplicative>>::IDENTITY;
                 }
                 k += 1;
             }
@@ -280,9 +275,7 @@ where
     let mut r = if head.0 == 0 { 0 } else { head.0 - 1 };
     while l < r {
         let ord = order.as_mut();
-        let tmp = ord[l];
-        ord[l] = ord[r];
-        ord[r] = tmp;
+        ord.swap(l, r);
         l += 1;
         r -= 1;
     }
@@ -306,14 +299,14 @@ where
         let idx = (s.0).0;
         if idx < cap_size(C::CAP) && !seen.as_ref()[idx].0 {
             seen.as_mut()[idx] = Bool(true);
-            count = count + USize::ONE;
+            count = count + <USize as Identity<Multiplicative>>::IDENTITY;
         }
     }
     for p in adj.predecessors(n) {
         let idx = (p.0).0;
         if idx < cap_size(C::CAP) && !seen.as_ref()[idx].0 {
             seen.as_mut()[idx] = Bool(true);
-            count = count + USize::ONE;
+            count = count + <USize as Identity<Multiplicative>>::IDENTITY;
         }
     }
     count
@@ -321,10 +314,7 @@ where
 
 /// Trait-driven counterpart to `min_degree_unvisited`.
 #[inline]
-fn min_degree_unvisited_via<T, C: Capacity>(
-    adj: &T,
-    visited: &C::Array<Bool>,
-) -> Maybe<USize>
+fn min_degree_unvisited_via<T, C: Capacity>(adj: &T, visited: &C::Array<Bool>) -> Maybe<USize>
 where
     T: BidirectionalSparseAdjacency<C>,
 {

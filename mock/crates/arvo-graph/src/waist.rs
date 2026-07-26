@@ -11,9 +11,9 @@
 //! whose depth is a local minimum, so consumers can re-map the
 //! waist mask back through the same `topo_order` they passed in.
 
-use arvo::{Identity, Bool, USize};
+use arvo::{Additive, Bool, Identity, Multiplicative, USize};
+use arvo_bitmask::{cap_size, BitMatrix, Mask, NodeId};
 use arvo_bits_contracts::{BitAccess, BitLogic, BitSequence};
-use arvo_bitmask::{BitMatrix, Mask, NodeId, cap_size};
 use arvo_tensor::Capacity;
 
 /// Detect waist levels in a DAG.
@@ -24,12 +24,9 @@ use arvo_tensor::Capacity;
 /// Nodes outside the valid prefix (e.g. when a cycle clipped the
 /// topo sort) contribute nothing.
 #[inline]
-pub fn waist_detect<C: Capacity, B>(
-    dag: &BitMatrix<B, C>,
-    topo_order: &C::Array<NodeId>,
-) -> Mask<B>
+pub fn waist_detect<C: Capacity, B>(dag: &BitMatrix<B, C>, topo_order: &C::Array<NodeId>) -> Mask<B>
 where
-    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity,
+    B: BitSequence + BitAccess + BitLogic + Copy + Default + Identity<Additive>,
     C::Array<USize>: Copy,
     C::Array<Bool>: Copy,
 {
@@ -72,7 +69,7 @@ where
     while j < cap_size(C::CAP) {
         let d = depth.as_ref()[j].0;
         if d < cap_size(C::CAP) {
-            width.as_mut()[d] = width.as_ref()[d] + USize::ONE;
+            width.as_mut()[d] = width.as_ref()[d] + <USize as Identity<Multiplicative>>::IDENTITY;
             if d > max_depth_seen.0 {
                 max_depth_seen = USize(d);
             }
@@ -87,7 +84,7 @@ where
     while d <= max_depth_seen.0 && d < cap_size(C::CAP) {
         if width.as_ref()[d].0 > 0 {
             occupied.as_mut()[*occ_n] = USize(d);
-            occ_n = occ_n + USize::ONE;
+            occ_n = occ_n + <USize as Identity<Multiplicative>>::IDENTITY;
         }
         d += 1;
     }
