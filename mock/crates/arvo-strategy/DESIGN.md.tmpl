@@ -379,14 +379,18 @@ pub const trait SignedIdentity: Sized {
 
 Minus one is not the identity of any operation, so it does not fold
 into `Identity<Op>` and keeps its own trait. Per-signed-primitive
-`impl const SignedIdentity` for `i8`..=`i128` and `isize`. Body wraps
-the underlying `-1` of the typed primitive.
+`impl const SignedIdentity` for `i8`..=`i128` and `isize`, whose body
+wraps the underlying `-1`. Substrate wrappers carry it too:
+`Bits<N, S, Signed>` forwards to its container, and `IFixed<I, F, S>`
+holds raw `-(1 << F)`.
 
-The representability condition above is deliberately **not** copied
-onto it. A signed purely fractional type spans `[-1, 1)`, so minus one
-is representable there, as the container minimum, while one is not. The
-asymmetry is real rather than an oversight, and the two must not be
-assumed symmetric.
+Those impls are unconditional, where `Identity<Multiplicative>` is not,
+and the reason is the range rather than a stipulation.
+`IFixed<I, F, S>` spans `[-2^I, 2^I)`. Minus one is inside that at
+every `I`, including zero, where it is exactly the container minimum.
+One is outside it at `I == 0`. So the representability projection gates
+the multiplicative identity and must not be copied onto `NEG_ONE`; the
+asymmetry falls out of the two bounds not being symmetric about zero.
 
 Deletion of `UPrimConst` and `IPrimConst` (which previously duplicated
 `Bounded` + `Identity`) landed. The two-trait-

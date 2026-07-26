@@ -729,7 +729,7 @@ The wrapping cases are obvious once seen. The saturating ones are worse:
 `x * ONE` returns something plausible and slightly smaller, so an error
 compounds quietly instead of announcing itself.
 
-`SignedIdentity::MINUS_ONE` on `IFixed` is not covered by the same
+`SignedIdentity::NEG_ONE` on `IFixed` is not covered by the same
 condition. `[-1, 1)` contains minus one, as the container minimum, while
 it does not contain one, so the two are not symmetric and the constraint
 is not copied across.
@@ -803,8 +803,11 @@ where
 
 What is intentionally omitted:
 
-- IFixed gains `SignedIdentity::MINUS_ONE` separately (signed-only).
- UFixed has no `MINUS_ONE` because unsigned has no negative values.
+- IFixed carries `SignedIdentity::NEG_ONE`, raw `-(1 << F)`, at every
+  width. No condition guards it: `IFixed<I, F, S>` spans `[-2^I, 2^I)`,
+  so minus one is inside at every `I` and is exactly the container
+  minimum at `I == 0`, while one is outside there. UFixed has no
+  `NEG_ONE` because unsigned has no negative values.
 - Bounded MIN / MAX project to the CONTAINER bounds, not the
  LOGICAL bit-width bounds. For example `<U16Warm as Bounded>::MAX
  = u32::MAX` because the Warm 16-bit container is u32. A
