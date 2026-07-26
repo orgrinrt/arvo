@@ -699,6 +699,45 @@ library's `core::ops::*` traits as const traits).
 
 `FastFloat<F>` and `StrictFloat<F>` carry the same surface: ZERO
 and ONE inherent constants, plus `impl const Add/Sub/Mul/Div`.
+
+### `Identity` requires at least one integer bit
+
+`UFixed<0, F, S>` has logical range `[0, 1)`. One is not a value of
+the type, so it has no multiplicative identity and its `Identity`
+impl does not exist. `ZERO` is unaffected and available at every
+width, because zero is representable everywhere.
+
+Reaching for `<UFixed<0, 8, Hot> as Identity>::ONE` is therefore a
+trait-resolution error naming the missing constraint, not a value.
+This matters because the alternative is worse than an error: the raw
+encoding of one is `1 << F`, which needs a container of `I + F` bits
+to hold, so at `I == 0` the final carry leaves the container. `Hot`
+wrapped it to zero and `Precise` saturated it to the maximum, which
+meant `x * ONE == 0` for every purely fractional `Hot` value, with
+nothing to indicate the identity had stopped being one.
+
+### `Requires` and `Satisfied`
+
+The constraint above is carried by a const-predicate witness rather
+than by an assertion inside the constant:
+
+```rust
+pub struct Requires<const COND: bool>;
+pub trait Satisfied {}
+impl Satisfied for Requires<true> {}
+```
+
+An impl bounded on `Requires<{ ... }>: Satisfied` does not exist when
+the predicate is false, so the failure is a trait-resolution error at
+the point of use, carrying a `#[diagnostic::on_unimplemented]` note
+that says what to do. An assertion inside the associated constant
+would fire only after monomorphisation, which means the impl still
+exists, the type still claims the trait, and generic code bounded on
+it still accepts the type and breaks somewhere else later.
+
+This is the same shape `UContainerFor` already uses to point a
+consumer at strategy choice when `Warm` cannot reach a width. The
+witness generalises it to any const predicate.
 The four ops shipped via task #52 convert to `impl const` in this
 round. Float arithmetic at const time follows the same const-eval
 contract as the underlying primitive (limited but sufficient for

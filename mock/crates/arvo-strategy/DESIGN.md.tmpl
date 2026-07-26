@@ -66,6 +66,23 @@ the storage strategy. Intermediate computation may use the full
 container (or a wider product) for exactness; the result is clamped to
 the logical bound on output.
 
+`Hot` and `Cold` do not. They wrap at the **container** width, not the
+logical width, so a result may hold a raw above the logical maximum: a
+multiply at logical 12 in a 16-bit container can return 57408 against a
+logical maximum of 4095. Stated explicitly because the paragraph above
+describes `Precise` alone, and a reader can otherwise conclude the
+logical range is a contract every strategy keeps. It is a contract
+`Precise` keeps. Choosing a never-panic strategy is choosing this, and
+a consumer that needs the raw to stay inside the logical range either
+picks `Precise` or masks on output.
+
+At the container minimum the signed multiply returns that minimum
+directly, rather than reaching it by negating its own magnitude. The
+magnitude of the minimum is not representable in the signed container,
+so the negation overflows: on `Hot` and `Cold` that is a panic from the
+two strategies that promise not to panic, and under const evaluation it
+is a hard error that fails the build rather than the run.
+
 The fixed-point multiply forms a `2N`-bit intermediate before the
 `>> F` rescale (the product of two `N`-bit values needs `2N` bits). For
 logical width up to 64 the native `i128` / `u128` widen holds it; above
