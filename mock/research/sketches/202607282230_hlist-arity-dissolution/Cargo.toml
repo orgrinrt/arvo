@@ -1,0 +1,11 @@
+[package]
+name="sketch-hlist-arity-dissolution"
+version="0.0.0"
+edition="2024"
+publish=false
+
+[lib]
+path="src/lib.rs"
+
+# Standalone. Detached so the sketch owns its (absent) feature gates.
+[workspace]
