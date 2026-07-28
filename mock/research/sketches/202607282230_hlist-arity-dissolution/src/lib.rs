@@ -18,6 +18,7 @@
 #[cfg(test)]
 extern crate std;
 
+pub mod call_syntax;
 pub mod ergonomics;
 pub mod inferred;
 pub mod recursive;

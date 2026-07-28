@@ -195,3 +195,71 @@ only if predicates had to be const-callable).
 27 assertions across four shapes, passing on the pinned nightly with no feature gates in the sketch
 crate. Mutation-checked: breaking the recursive base case fails all six recursive assertions, and
 breaking Shape A's argument order does not compile at all.
+
+## Shape F: literal `f(a, b)`, no gates. This is the answer.
+
+`call_syntax.rs`. Reading `core::ops::function` explains why every earlier attempt hit a wall: `Fn`
+carries `#[lang = "fn"]` and **`#[rustc_paren_sugar]`**, so the call syntax is a lang-item attribute
+that a user trait cannot attach, and all three `Fn*` traits are `#[fundamental]`. Implementing them
+directly needs `unboxed_closures`, vetted forbidden.
+
+**But call position autoderefs, and `Deref` is stable to implement.**
+
+```rust
+pub struct Pred<L, F>(F, PhantomData<L>);
+
+impl<L: Describes<F>, F> Pred<L, F> {          // validation
+    pub fn new(f: F) -> Self { Pred(f, PhantomData) }
+}
+
+impl<L, F> Deref for Pred<L, F> {              // invocation: ONE impl, no arity
+    type Target = F;
+    fn deref(&self) -> &F { &self.0 }
+}
+```
+
+Consumers write `lt(&1, &2)`. Ordinary call syntax, on a typestate-carrying wrapper, at any arity,
+with no feature gate. Verified at arities one through four, with capturing closures, plain `fn` items,
+heterogeneous payloads, and two distinct predicates at one arity staying distinct.
+
+**The split this achieves.** Invocation is one `Deref` impl with no arity in it, because the arity
+lives in the closure and never reaches the wrapper. Validation is `Describes<F>`, a marker trait with
+no methods and no bodies, whose impls are per-arity. So the arity survives only as a compile-time
+table that never dispatches and never runs.
+
+**Without the validation bound the typestate lies, and it compiled.** This was tested:
+
+```rust
+let liar = Pred::<L2<u32, u32>, _>::new(|a: &u8| Bool(*a > 0));   // compiled fine
+```
+
+A type parameter claiming a shape it does not enforce is worse than no parameter. With
+`L: Describes<F>` on `new`, the same line fails:
+
+```
+error[E0593]: closure is expected to take 2 arguments, but it takes 1 argument
+```
+
+Recorded because the unenforced version looked correct, ran, and would have shipped a lying
+typestate.
+
+## Where the arity ends up, across all six shapes
+
+| Shape | Consumer writes | Arity lives in | Gates |
+|---|---|---|---|
+| Today | `impl Pred2<A, B>` | three public traits | none |
+| A carrier dispatch | `impl Pred<P2<A,B>>` | `Apply` impls, which dispatch | none |
+| B recursive | curried, nested tuple | nowhere | none |
+| C macros | `pred!` and `args!` | macro repetition | none |
+| D consumer names it | `holds2(&f, a, b)` | the consumer's own signature | none |
+| **F deref wrapper** | **`f(a, b)`** | **marker impls that never run** | **none** |
+| E `fn_traits` | `f(a, b)` | `Fn` impls | **forbidden** |
+
+Shape F gets the syntax E wanted without the forbidden feature, and pushes the residual arity further
+than any of the others: into empty marker impls that exist only to reject a mismatch at compile time.
+
+## Final verification
+
+35 assertions across six shapes, all passing on the pinned nightly, no feature gates in the sketch
+crate. Mutation-checked twice: breaking the recursive base case fails all six recursive assertions,
+and breaking Shape A's argument order fails to compile rather than failing an assertion.
