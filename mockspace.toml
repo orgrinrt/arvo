@@ -21,15 +21,31 @@ module_crates = []
 primary_domain_macro = "strategy"
 primary_domain_label = "Strategies"
 
-# Layer labels by depth index (L0 → L3)
+# Layer labels by depth index, one per depth the dependency graph
+# actually produces. The graph currently has ten depths (0 to 9); the
+# previous list had seven, so depths 7 to 9 rendered as "Other" and
+# "L2 substrate" appeared four times. Fixed as item 3 of D14 in
+# design_rounds/202607290050_topic.the-restructure-widens.md.
+#
+# These describe what occupies each depth, which is computed from real
+# dependency edges. They are deliberately NOT the L0a / L0 / L0.5 / L1
+# / L2 / L3 numbering in mock/DESIGN.md.tmpl, because the two genuinely
+# disagree about structure rather than about naming: the graph puts
+# arvo-hash beside arvo-tensor at depth 6, and arvo-refit beside the
+# algorithm crates at depth 8, where the document calls them L2, L1 and
+# L1. That disagreement is a finding for the restructure round, not
+# something to paper over by relabelling here.
 layers = [
-  "L0 primitives",
-  "L1 contracts",
-  "L2 substrate",
-  "L2 substrate",
-  "L2 substrate",
-  "L2 substrate",
-  "L3 spectral"
+  "L0 root",              # arvo-transparent
+  "L0 strategy",          # arvo-strategy
+  "L0 storage",           # arvo-storage
+  "L0.5 bit contracts",   # arvo-bits-contracts
+  "L0.5 contracts",       # arvo-bits, arvo-mask-contracts, arvo-numeric-contracts
+  "unoccupied",           # no crate sits at this depth today
+  "L1 value storage",     # arvo-hash, arvo-tensor
+  "L1 mask storage",      # arvo-bitmask
+  "L2 algorithms",        # arvo-comb, arvo-graph, arvo-refit, arvo-sparse
+  "L3 spectral"           # arvo-spectral
 ]
 
 # Domain kind labels for STRUCTURE.md domain items table
