@@ -27,17 +27,31 @@ use core::ops::Deref;
 
 /// Does this list describe this callable? Marker only: no methods, no bodies.
 ///
-/// One impl per arity, macro-generated in a real crate. They exist solely so a
-/// mismatched typestate fails to compile.
+/// The impls are per-arity, and that is unavoidable: `Fn(&A, &B) -> Bool` names
+/// both types in one bound, which no recursion can generate without variadic
+/// generics. But they are pure repetition, so the whole table is one macro
+/// invocation and the cap is one visible line.
 pub trait Describes<F> {}
 
-impl<A, F: Fn(&A) -> Bool> Describes<F> for Cons<A, Empty> {}
-impl<A, B, F: Fn(&A, &B) -> Bool> Describes<F> for Cons<A, Cons<B, Empty>> {}
-impl<A, B, C, F: Fn(&A, &B, &C) -> Bool> Describes<F> for Cons<A, Cons<B, Cons<C, Empty>>> {}
-impl<A, B, C, D, F: Fn(&A, &B, &C, &D) -> Bool> Describes<F>
-    for Cons<A, Cons<B, Cons<C, Cons<D, Empty>>>>
-{
+/// Build the hlist type from a parameter list.
+macro_rules! hl {
+    () => { Empty };
+    ($h:ident $(, $r:ident)*) => { Cons<$h, hl!($($r),*)> };
 }
+
+/// One `Describes` impl per arity, peeling the head each recursion, so a single
+/// invocation emits arity N down to 1.
+macro_rules! describes {
+    () => {};
+    ($h:ident $(, $r:ident)*) => {
+        impl<$h, $($r,)* F> Describes<F> for hl!($h $(, $r)*)
+        where F: Fn(&$h $(, &$r)*) -> Bool {}
+        describes!($($r),*);
+    };
+}
+
+// The entire table. Raising the cap is editing this line.
+describes!(A1, A2, A3, A4, A5, A6, A7, A8);
 
 /// A predicate carrying its argument list as typestate.
 pub struct Pred<L, F>(F, PhantomData<L>);

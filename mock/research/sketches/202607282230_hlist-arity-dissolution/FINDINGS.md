@@ -319,3 +319,57 @@ absence of variadic generics rather than a missing trick.
 crate. Mutation-checked: breaking the recursive base case fails all six of Shape B's assertions, and
 breaking Shape A's argument order fails to compile rather than failing an assertion. Shape G's three
 mismatch cases were each verified rejected.
+
+## Shape F, boilerplate removed
+
+The `Describes` table was the only thing left in F that read as hand-written arity trickery. It is
+pure repetition, so it collapses to one macro invocation:
+
+```rust
+macro_rules! describes {
+    () => {};
+    ($h:ident $(, $r:ident)*) => {
+        impl<$h, $($r,)* F> Describes<F> for hl!($h $(, $r)*)
+        where F: Fn(&$h $(, &$r)*) -> Bool {}
+        describes!($($r),*);
+    };
+}
+
+describes!(A1, A2, A3, A4, A5, A6, A7, A8);   // the entire table
+```
+
+The recursion peels the head, so one invocation emits arity 8 down to 1. Raising the cap is editing
+that line. Verified to arity eight; the sketch's 41 assertions pass unchanged after the swap.
+
+**What Shape F now costs, in full:** a marker trait (1 line), two macros (about 12 lines), one
+invocation (1 line), the wrapper struct and its two impls (about 10 lines). Roughly 25 lines for the
+entire mechanism at any arity up to the cap.
+
+**Against what it replaces:** three hand-written traits, three blanket impls and three doc blocks, 44
+lines, capped at three with no way to extend but writing a fourth by hand.
+
+## Why Shape F is the semantically correct one, which is not an ergonomic argument
+
+Checked at the source. `Pred`, `Pred2` and `Pred3` have no relationship to each other: each has one
+supertrait, its own `Fn` arity and its own blanket impl, and nothing in `predicate.rs` references
+anything else in `predicate.rs`. The family is three unrelated aliases whose sequence exists only in
+the names. Nothing would break if they were called `Foo`, `Bar` and `Baz`.
+
+So the original is naive per-arity matching, not a chain. And the real call site confirms which
+semantics the domain has:
+
+```rust
+pub fn greedy_group<N: Capacity, M: Capacity, A, T>(
+    items: &Array<T, N>,
+    feasible: impl Pred2<A, T>,
+    ...
+```
+
+`feasible(&acc, &item)` is a joint test on an accumulator and an item. It is atomic: there is no
+meaningful value after applying only the accumulator. Currying it would express a chain the domain
+does not have, and the intermediate closure would be an artifact of the encoding rather than
+something a reader could name.
+
+**Shape G is the more elegant construction and the wrong semantics for both existing callers.** It
+remains banked for any predicate that genuinely is a chain of successive refinements. Nothing in arvo
+currently is one.
