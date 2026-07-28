@@ -7,9 +7,6 @@
 //! removes the expression from type position entirely, so no const-generic
 //! feature is needed at all.
 //!
-//! Shape B below is the candidate. Shape A (associated-const path, retaining
-//! `const N: u16`) is in `shape_a.rs` for comparison.
-//!
 //! NO feature gates in this file. That absence is the claim under test.
 
 #![no_std]
