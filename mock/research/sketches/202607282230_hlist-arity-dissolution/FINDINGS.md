@@ -127,3 +127,71 @@ value-level fold, and covers neither.
 Whether the same treatment is owed anywhere else. A scan found `Pred2` and `Pred3` to be the only
 hand-written per-arity trait family in arvo, hilavitkutin or kolli, so this is isolated rather than
 systemic.
+
+## Shape C: macros over Shape B
+
+`ergonomics.rs`. `pred!(a: u32, b: u32 => a < b)` and `args!(1, 2)`, each defined once with a
+`macro_rules!` repetition, which is the variadic mechanism the type system lacks. Works to arity six
+with nothing added.
+
+**Rejected on reading.** The call site becomes
+`feasible::<argl!(u32, u32), _>(&lt, args!(1u32, 2u32))`: three macros and a turbofish, which is worse
+than the `|a, b|` it replaces. Kept in the sketch as the record of a dead end.
+
+## Shape D: the consumer names its own arity
+
+`inferred.rs`. The turbofish in Shape C was the tell. `L` was a parameter nobody could infer, but a
+**consumer function knows its own arity**, so it names the list once in its own signature and presents
+an ordinary call outward.
+
+```rust
+pub fn holds2<A, B, F>(f: &F, a: A, b: B) -> Bool
+where Cons<A, Cons<B, Empty>>: Chain<F, Args = (A, (B, ()))>,
+{ <Cons<A, Cons<B, Empty>> as Chain<F>>::run(f, (a, (b, ()))) }
+```
+
+Callers write `holds2(&lt, 1u32, 2u32)`. No list, no tuple, no turbofish, no macro. The library keeps
+its two impls and no arity; the arity appears once, in the signature of the function that has one.
+
+**This is the best ergonomic result found**, and it needs no feature gate.
+
+## Why the list cannot simply be inferred
+
+Recorded because it is the natural next idea and it does not work.
+
+```
+impl<A, G, F> Chained for F where F: Fn(&A) -> G, G: Chained
+error[E0207]: the type parameter `A` is not constrained by the impl trait, self type, or predicates
+```
+
+A type may implement `Fn` at more than one argument type, so `A` is not determined by `F` alone. The
+typestate has to name the argument types somewhere. That is not a flaw in the approach; it is exactly
+why `Chain` is keyed on the list, where `A` and `B` are named and therefore constrained.
+
+## Shape E: literal `f(a, b)` on a custom type, and why it is not taken
+
+Tested and it works. Implementing `FnOnce` / `FnMut` / `Fn` for a wrapper makes `p(1u32, 2u32)` legal
+call syntax on a non-closure. It requires `#![feature(unboxed_closures, fn_traits)]`.
+
+**Vetted 2026-07-28 and forbidden.** Tracking issue #29625 has been open since 2015 carrying
+`S-tracking-design-concerns`, with no FCP and two documented defects (#45510, #42736). It carries no
+`I-unsound`, so it fails the second half of the gate rather than the first: it is not on a
+stabilisation path. The std-internal carve-out does not rescue it, because that carve-out requires
+first checking whether a stable wrapper suffices, and Shape D is that wrapper.
+
+## The standing fact behind all of this
+
+The pinned toolchain documents 247 unstable language features and **not one of them is variadic
+generics**. The only variadic support is `c_variadic`, the C ABI's varargs, which does not apply to
+Rust generics. Arity genericity can only be built from recursion over a type-level list, from macro
+repetition, or from a per-arity impl table. Three adjacent features were checked and none help:
+`impl_trait_in_fn_trait_return` (#99697, implementation incomplete, three open design questions, and
+unnecessary here since `Chain` binds the chain through a trait rather than by naming the type),
+`fn_delegation` (#118212, unrelated despite the name), and `const_closures` (#106003, would matter
+only if predicates had to be const-callable).
+
+## Final verification
+
+27 assertions across four shapes, passing on the pinned nightly with no feature gates in the sketch
+crate. Mutation-checked: breaking the recursive base case fails all six recursive assertions, and
+breaking Shape A's argument order does not compile at all.

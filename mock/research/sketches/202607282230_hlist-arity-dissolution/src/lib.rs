@@ -18,6 +18,8 @@
 #[cfg(test)]
 extern crate std;
 
+pub mod ergonomics;
+pub mod inferred;
 pub mod recursive;
 
 pub struct Bool(pub bool);
