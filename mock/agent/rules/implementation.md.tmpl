@@ -28,7 +28,7 @@ pub type Angle   = UFixed<9, 7, Warm>;
 pub type Bool    = UFixed<1, 0, Hot>;   // explicit override
 ```
 
-Strategies (summary — see
+Strategies (summary, see
 `design_rounds/202603241200_topic.arvo-strategy-markers.md` for the
 full table):
 
@@ -78,7 +78,7 @@ new `pub struct`/`pub type` in a numeric crate lacks the parameter.
 Every size lives at type level: `Mask64`, `Mask256`, `Seq<T, N>`,
 `[W; N]`. No runtime resize. No runtime grow. If you reach for
 `.push(`, `.resize(`, `.extend(`, `Vec::with_capacity`, you are
-solving the wrong problem — either make the size const-generic or
+solving the wrong problem, either make the size const-generic or
 the consumer owns the buffer.
 
 ### Zero platform dep

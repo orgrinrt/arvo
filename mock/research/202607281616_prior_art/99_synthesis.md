@@ -105,13 +105,39 @@ compile-time expressible.
 
 ## What the field challenges
 
-**`generic_const_exprs` is worse than the workspace's WATCH-tier framing, on independent evidence.**
-Two passes reached this from different directions without coordination. The type-level pass found the
-Rust project's own 2026 goals describing it as fundamentally flawed and being replaced by the narrower
-`min_generic_const_args`. The number-systems pass found the Rust `fixed` crate independently hitting
-the same wall. arvo depends on it pervasively, and the workspace already records that migration is
-blocked by a roughly 314-site rewrite and a mutually exclusive solver flag. This is outside
-corroboration of a known risk, not a new one, and it makes the risk harder to defer.
+**`generic_const_exprs` was never the constraint, and this synthesis said the opposite in its first
+revision.** The baseline handed to every pass described GCE as a pervasive arvo dependency. It is not.
+It is **forbidden**, arvo had already migrated away from it before these passes ran, and a sketch has
+since proved the last remaining use expressible without it.
+
+Corrected, with what each pass actually contributes:
+
+The type-level pass found the Rust project's own 2026 goals describing GCE as fundamentally flawed and
+being replaced by `min_generic_const_args`. That is **corroboration of a migration arvo completed
+ahead of upstream**, not a risk. The `Capacity` trait with its associated `Array` type replaced the
+`const N: Cap` plus `cap_size(N)` form, and `arvo-comb`, `arvo-graph` and `arvo-spectral` each dropped
+their gate because of it. The sketch at `mock/research/sketches/202607282100_container-projection-without-gce/`
+closes the remainder: the Pattern C container projection reproduces as typestate and compiles clean
+with **zero feature gates**, including the caller-threads-its-own-generic case.
+
+Two genuinely new findings came out of the revision, and both matter more than the original framing.
+
+**Precedent exists for the exact move arvo is making.** The `fixed` crate's stable 1.x line encodes
+fractional-bit count as a `typenum` type rather than a const generic, and `generic-array`'s
+`ArrayLength` trait does the same type-with-associated-container move generally, predating Rust's const
+generics and stating its own equivalence to `const N: usize`. So width-as-typestate is not novel
+territory; it is the pre-const-generics idiom, reached again from the other side.
+
+**The compile-time warning does not transfer, and the distinction is depth versus breadth.** The
+shapeless ten-minute build and frunk's `recursion_limit` wall are costs of **recursive chain depth**
+through type-level induction. A per-width associated-type impl table is **flat breadth**: one impl per
+width per family, resolved by a single lookup rather than a fold. Those are different costs and the
+literature on the first says little about the second. The pass went looking for the breadth question
+directly and found the rustc-dev-guide's own trait-resolution chapter carrying an open `TODO` where
+that answer would be, which it reports as the negative result it is.
+
+So the open cost question is real but narrower than feared, and it is a bench question rather than a
+literature one.
 
 **The compile-time cost of D4 is unmeasured and the comparable precedent is alarming.** Shapeless
 documented roughly ten-minute compile times on about seventy lenses, two orders of magnitude, from

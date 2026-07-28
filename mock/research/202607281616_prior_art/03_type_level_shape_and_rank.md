@@ -6,6 +6,38 @@
 `mock/design_rounds/202607281220_topic.the-ndim-and-shape-design.md`, decisions D4 through D9. Both
 are read and cited directly below rather than summarised from memory.
 
+**Revised 2026-07-28, correcting a baseline error in the framing, not in the underlying literature.**
+The first revision of this pass treated `generic_const_exprs` (GCE) as a live constraint arvo's design
+leans on, following the description in the `00_context.md` this pass originally read, which stated GCE
+was "already in use" across the stack. That description was itself wrong, and the error was in the
+baseline document, not in this pass's reading of it. The corrected `00_context.md` states, verified by
+grepping every crate root directly rather than by reading an inventory: `generic_const_exprs` is
+forbidden outright by the lead designer, alongside full `specialization`, under a standing gate
+("allowed only if not proven unsound or unstable, and, absent a very strong reason, itself on the
+stabilisation path"), GCE fails that gate on its own terms because `min_generic_const_args` is its own
+documented successor. Two commands confirm the corrected picture directly against this pass's own
+read of source: `grep -n 'generic_const_exprs' mock/crates/arvo/src/lib.rs` and the equivalent for
+`arvo-strategy/src/lib.rs` both still show a live `#![feature(generic_const_exprs)]` gate today, each
+carrying an inline comment restricting its use to "const-expression bounds and const-fn `where`
+clauses"; `mock/crates/arvo-graph/src/lib.rs:17` states plainly that `generic_const_exprs` "is not
+needed. Working arrays are the capacity's [own array]"; and `mock/crates/arvo-spectral/tests/capacity_threading.rs:12`
+states its own "GCE-escape proof is the absence of `#![feature(generic_const_exprs)]`." A sketch
+(`mock/research/sketches/202607282100_container-projection-without-gce/`) has since reproduced the
+remaining live use, arvo-strategy's Pattern C container projection, under zero feature gates of any
+kind, and its findings record that the sketch "compiles clean with no `#![feature(...)]` gate of any
+kind, on the pinned toolchain," settling that GCE is not load-bearing anywhere in arvo. Every section
+below that discussed GCE has been corrected against this baseline. The correction changes the framing
+of one finding, not its citations: the Rust project's own disavowal of GCE, cited below, was reported in
+the first revision as a risk finding weighing against a mechanism arvo depends on. It is not that. It is
+independent, external corroboration of a migration arvo had already made, in a language and a design
+independent of arvo's own reasoning for making it. **Everything else in this pass, the shapeless and
+frunk compile-time material, the Accelerate precedent, the Futhark size-type failure mode, Remora and
+the rank-polymorphism distinction, `generic-array` and `typenum` as precedent for a count parameterised
+by its carrier, the binary-over-Peano encoding note, and the folds material, is unaffected by the
+correction and is carried forward unchanged.** A new section has been added at the end of the Rust-
+specific material, addressing the cost question the corrected baseline actually raises: not what GCE
+costs, since arvo does not use it, but what the mechanism that replaced it costs.
+
 The question this pass was asked is narrower than "how does the field represent array shape." It is:
 given that a shape is a rank-generic sequence of per-axis extents, and given that the reason for
 choosing a cons-list of capacities over a stride-and-flat-length scheme is that rank and element count
@@ -241,29 +273,55 @@ authors formalised under a different representation and did not directly validat
 
 ## Rust specifically: what is real on the current nightly versus folklore
 
-The design round's own premise, "the toolchain is nightly with a vetted set of unstable features, so this
-is not the wall the agent described" (D10's correction), is worth checking against the state of the
-specific features D4 leans on, because this is exactly where folklore and current reality diverge fastest
-in a fast-moving nightly compiler.
+`generic_const_exprs` (GCE) is the feature that would let a const expression, rather than an associated
+const, reach type position. arvo's design does not lean on it: it is forbidden by standing gate, and the
+last live use in the crate tree (arvo-strategy's Pattern C container projection) has been reproduced
+under zero feature gates by `mock/research/sketches/202607282100_container-projection-without-gce/`,
+whose findings record the projection "compiles clean with no `#![feature(...)]` gate of any kind, on the
+pinned toolchain." Two gates remain textually present in source today (`arvo/src/lib.rs` and
+`arvo-strategy/src/lib.rs`, both confirmed directly by this pass), each restricted by its own inline
+comment to const-expression bounds and const-fn `where` clauses rather than to the container-projection
+mechanism the sketch has now shown does not need it; `arvo-graph/src/lib.rs:17` and
+`arvo-spectral/tests/capacity_threading.rs:12` both record, in source, that the capacity system already
+carries the same escape for the algorithm crates. So what follows is not a report on a risk to a
+mechanism arvo depends on. It is what the field's own record says about the feature arvo has moved away
+from, offered because the corrected baseline changes what that record means, not because it changes what
+the record says.
 
-`generic_const_exprs` (the feature that would let a const expression, rather than an associated const,
-reach type position, which is exactly what D4 forbids reaching for) is, per the Rust project's own 2026
-project goals page, considered to have a "fundamentally flawed" design that introduces "significant
-complexity to the compiler," and the project's own retrospective goal explicitly plans to "communicate
-why that design did not work out" (https://rust-lang.github.io/rust-project-goals/2024h2/min_generic_const_arguments.html,
+Per the Rust project's own 2026 project goals page, GCE is considered to have a "fundamentally flawed"
+design that introduces "significant complexity to the compiler," and the project's own retrospective goal
+explicitly plans to "communicate why that design did not work out"
+(https://rust-lang.github.io/rust-project-goals/2024h2/min_generic_const_arguments.html,
 https://rust-lang.github.io/rust-project-goals/2026/const-generics.html). The replacement effort,
 `min_generic_const_args` (tracking issue #132980, https://github.com/rust-lang/rust/issues/132980), is a
 ground-up rewrite scoped specifically to let a generic parameter appear inside a const generic argument
-(the `Foo<{ T::ASSOC }>` shape), deliberately narrower than `generic_const_exprs`, chosen precisely
-because the narrower scope has a real path to soundness and stabilisation where the broad one does not.
-This is independent, external confirmation, from the language team itself rather than from this workspace's
-own `unstable-features.md`, of the exact judgment D4 is built on: value-position arithmetic on associated
-consts is the sound, currently-real mechanism; const expressions reaching type position is the mechanism
-the language's own maintainers consider broken enough to be actively deprecating in favour of a narrower
-replacement. As of the most recent nightly this survey could check reports against (early-to-mid 2026),
-`generic_const_exprs` is additionally showing fresh regressions unrelated to the retrospective (issue
+(the `Foo<{ T::ASSOC }>` shape), deliberately narrower than GCE, chosen precisely because the narrower
+scope has a real path to soundness and stabilisation where the broad one does not. Read against the
+corrected baseline, this is not a warning about a wall arvo might hit. It is corroboration, from a
+process entirely independent of arvo's own reasoning, that arvo's own standing gate ("not proven unsound
+or unstable, and, absent a very strong reason, itself on the stabilisation path") reached the same
+verdict on GCE that the language's own maintainers reached, for the same underlying reason: a feature
+whose own documented successor exists specifically to replace it is not on the stabilisation path it
+would need to be on. As of the most recent nightly this survey could check reports against
+(early-to-mid 2026), GCE is additionally showing fresh regressions unrelated to the retrospective (issue
 #153393, unification failures between a const generic and its associated-const value), which is further
-evidence against relying on it for anything beyond what is already shipped.
+corroboration in the same direction rather than a new finding.
+
+The sketch's own record is worth citing directly here, because it independently reaches the field's
+conclusion from the opposite side, by trying to build the thing rather than by reading about it. Its
+findings state: "Three builds against the real crate established the ladder": the gate removed outright
+fails with "generic parameters may not be used in const operations" at sixteen sites; `min_generic_const_args`
+fails with "complex const arguments must be placed inside of a const block"; wrapping in a `const { ... }`
+block escalates to needing `generic_const_args`, GCE's own full, un-narrowed successor. So the inline
+const-expression form the crate's remaining gates defend cannot be expressed under the narrower
+replacement either. What settles the question is not that the narrower successor covers what GCE covered
+(it does not, for this exact call shape); it is that the crate never needed the call shape to be in type
+position at all. The sketch's finding names this precisely: "the projection's GCE dependency comes from
+computing the tag and the byte count with const functions in const-generic argument position," and
+"carrying the selection as typestate, the way `Capacity` carries `Array`, removes the expression from
+type position entirely, so no const-generic feature is needed." This is the same move D4 makes for shape:
+an associated type standing in for a computed value, so the compiler is never asked to evaluate an
+expression where a type is expected.
 
 `adt_const_params` (letting a struct or enum, rather than only an integer, `char` or `bool`, be a const
 generic parameter, load-bearing for D4's `Cons<H, T>` cell if a capacity or a rotor-basis marker is ever
@@ -271,9 +329,11 @@ used directly as a const parameter rather than only as a type parameter) remains
 Book and the 2026 project goals page, incomplete: only ADTs satisfying `ConstParamTy` (structural equality,
 no private fields, no interior mutability) are currently accepted, and the project's own stated next step
 is to carve out a narrower `min_adt_const_params` that excludes structs with private fields via an RFC,
-precisely mirroring the `generic_const_exprs`-to-`min_generic_const_args` narrowing pattern. This is
-consistent with this workspace's own `unstable-features.md` classification of `adt_const_params` as
-"largely complete" and on a real stabilisation path, and this survey found nothing that contradicts that.
+precisely mirroring the GCE-to-`min_generic_const_args` narrowing pattern. This is consistent with this
+workspace's own `unstable-features.md` classification of `adt_const_params` as "largely complete" and on
+a real stabilisation path, and this survey found nothing that contradicts that. Unlike GCE, nothing in
+the corrected baseline changes this: `adt_const_params` is genuinely in use across arvo today and remains
+so.
 
 **Type-level counts parameterised by their own carrier type, the specific shape D5 and D9 need, already
 has a direct, shipped Rust precedent that predates const generics entirely.** `generic-array`
@@ -293,6 +353,63 @@ of any Rust-version-specific trait-solver quirk. `generic-array`'s own migration
 `Const<N>` wrapper and an `IntoArrayLength` bridge trait so const-generic callers and `typenum`-based
 callers can both satisfy `ArrayLength`, is itself a working precedent for D5's stated intent that the
 count type is a genuine, swappable choice rather than one fixed carrier.
+
+## The shape that actually ships: what a per-width associated-type impl table costs
+
+The sketch that settled the GCE question did not settle a compile-time question; it changed which one is
+live. `WidthFor<F: Family>` maps a width, carried as typestate (`Wid<N>`, the direct analogue of `Dim<N>`),
+to a bucket, carried as an associated type, one impl per concrete width per strategy family. The sketch's
+own findings name the shape and its scope directly: "Per-width impls, one row per supported width per
+family. The sketch covers the boundaries plus representative interior widths; the real crate expands its
+full range by macro," and states plainly that this cost "is already licensed by a ratified rule,"
+quoting `arvo-compile-time-last.md`'s own statement that the substrate is allowed to "spend trait-solver
+work on per-N const-trait impls (4 strategies x 64+ widths x 2 sign = hundreds of impls) when the
+alternative is a runtime container check." So the multiplication the corrected brief names, the width
+range times two tag families times four strategies times two signs, is not a new question this pass is
+raising; it is an already-ratified cost whose actual size, in trait-solver terms, this survey can now
+try to locate in the literature.
+
+**This is a different trait-solver workload from the recursive hlist question above, and the difference
+matters for which prior art applies.** The shapeless and frunk material is about **recursive structural
+induction**: resolving `Contains<T>` or `Plucker<T, _>` over a cons-list requires the solver to walk one
+cell at a time, so cost scales with how deep the chain of obligations goes before it bottoms out, and
+that is exactly the axis that hit rustc's `recursion_limit` in frunk and shapeless's implicit-search
+budget in Scala. The per-width table is not that shape. `W: WidthFor<HotCold>` is a direct lookup: for a
+concrete `Wid<13>`, there is exactly one matching impl, found by ordinary impl selection against a
+concrete self type, with no chain of intermediate obligations to walk through first. The obligation count
+is proportional to how many impls exist in total (breadth), not to how many steps a single resolution has
+to take to reach an answer (depth). Whether rustc's trait solver scales differently across those two axes
+is, in principle, exactly the kind of question the frunk and shapeless findings should bear on, because
+both are reports of what became expensive in a solver doing typeclass-shaped work; read against the per-
+width table, they say the expensive part in both reported cases was the chain, not the count of available
+instances, which is some evidence, though not direct evidence, that a flat, non-recursive table of the
+size D2's crate split will produce is not the same hazard.
+
+**This survey was not able to confirm that reading against a source that measures it.** The
+`rustc-dev-guide`'s own chapter on trait resolution (https://rustc-dev-guide.rust-lang.org/traits/resolution.html)
+describes candidate assembly ("searches for impls/where-clauses/etc that might possibly be used to
+satisfy the obligation"), matching ("unifying the impl header... while ignoring nested obligations"), and
+winnowing (narrowing ambiguous candidates), but carries its own unresolved `**TODO**: Talk about _why_ we
+have different candidates, and why it needs to happen in a probe`, and states nothing about how candidate
+assembly cost scales with the number of non-overlapping impls a trait carries, nor any fast-rejection or
+indexing mechanism keyed on the self type's outermost constructor. This survey found no benchmark, blog
+post, or paper, in the time available and against the search budget this pass had left, that measures
+rustc's compile time as a function of a large, flat, macro-generated set of concrete trait impls of the
+kind `num-traits`-shaped or `generic-array`-shaped crates ship, as distinct from the recursive-induction
+cost the hlist lineage already documents well. `generic-array` itself, cited above, does not answer this
+either: `typenum`'s `UInt<U, B>` composition is a binary tree of cons cells, which is closer in shape to
+the recursive hlist question than to a flat per-width table, so it is not a working example of the
+breadth question either.
+
+**The honest state of this question, after this pass, is: the literature that exists supports treating a
+flat per-width impl table as a materially different, and plausibly cheaper, trait-solver workload than
+the recursive hlist question the rest of this pass covers in depth, but nothing found here measures that
+difference directly, for Rust, at the table sizes D2's crate split will actually generate.** That is
+itself the answer to what the corrected brief asks for: not a citation that settles the cost, because none
+exists, but a precise statement of which comparison the existing citations do and do not license, so a
+bench (per `bench-and-sketch-discipline.md`, the same resolution named throughout this pass for compile-
+time questions the literature leaves open) is aimed at the right shape rather than at re-measuring the
+hlist-recursion question the field has already measured well.
 
 ## Compile-time cost of deep type-level lists: measured, or folklore
 
@@ -326,7 +443,8 @@ already name the right resolution for this open question: whether `notko-hlist` 
 `arvo-shape` actually needs (low single digits) produces measurable compile-time cost on the pinned
 nightly is a bench question, answerable directly and cheaply, not a literature question. This survey did
 not find that anyone else has run that specific bench, for this specific feature combination, at this
-specific depth. That is the sharpest negative result in this pass.
+specific depth. That is the sharpest negative result in this pass, and the per-width table question
+directly above is a second, distinct instance of the same shape of gap.
 
 ## Type-level folds, membership, and satisfaction: what `Contains`, `ContainsAll`, `Concat` already are
 
@@ -365,7 +483,12 @@ compile-time or ergonomic cost of pairing a cons-list shape encoding with `adt_c
 to plain type parameters), which is the specific combination D4 and `202607281547`'s note on rotor
 component counts (D10) both lean on; the closest is the general `adt_const_params` incompleteness tracked
 by the Rust project itself, cited above, which is about the feature in isolation rather than about this
-combination. And no source in the C++ metaprogramming literature this pass could reach specified the
-actual mechanism (variadic template versus cons-recursion) behind Boost.Hana's documented compile-time
-win over Boost.Fusion and Boost.MPL, so that citation stands as a directional signal only, not a
-mechanism-level one.
+combination. No source in the C++ metaprogramming literature this pass could reach specified the actual
+mechanism (variadic template versus cons-recursion) behind Boost.Hana's documented compile-time win over
+Boost.Fusion and Boost.MPL, so that citation stands as a directional signal only, not a mechanism-level
+one. And, added by the revision, no source measures rustc's trait-solver cost as a function of the number
+of non-overlapping impls in a flat, macro-generated table (the shape `arvo-strategy`'s per-width
+container projection actually uses, and the shape the corrected brief asks this pass to weigh), as
+distinct from the recursive-induction cost the hlist lineage documents well; the `rustc-dev-guide`'s own
+resolution chapter has an open documentation gap at exactly this question, and no external source found
+in this pass closes it.

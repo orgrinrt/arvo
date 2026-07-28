@@ -47,8 +47,49 @@ the dispatch. No platform dependency at all, so no threads, no clock, no filesys
 
 Fixed point is the primary representation, and floats are a tagged wrapper rather than the default.
 The toolchain is a pinned nightly (`nightly-2026-05-28`) with a deliberately vetted set of unstable
-features, so "that needs a nightly feature" is not by itself an objection. `generic_const_exprs`,
-`adt_const_params`, `const_trait_impl` and the const-traits family are all already in use.
+features, so "that needs a nightly feature" is not by itself an objection.
+
+**The unstable-feature position, corrected 2026-07-28 and verified by grepping every crate root
+rather than by reading the workspace inventory.** `const_trait_impl` is in all sixteen crates and
+`adt_const_params` in six. **`generic_const_exprs` is in exactly two, `arvo-strategy` and the `arvo`
+facade**, each carrying an inline vetting comment: WATCH-tier under the stack soundness sweep, its one
+known unsoundness (rustc #97156, const `TypeId` into types with higher-ranked-trait-bound subtyping)
+unreachable because the stack bans `TypeId`, building clean on the pinned nightly, migration tracked.
+`min_generic_const_args` is used nowhere.
+
+**arvo has already migrated away from `generic_const_exprs`, and the capacity system is the mechanism
+it migrated by.** `arvo-comb/src/lib.rs:16` states it: "the capacity is a TYPE ... so no `cap_size`
+expression sits in type position and no `Cap` const generic appears. The GCE surface the algorithms
+needed under the `const N: Cap` form is gone." `arvo-graph` and `arvo-spectral` say the same, and the
+spectral tests carry the line "GCE-escape proof is the absence of `#![feature(generic_const_exprs)]`".
+
+This matters for how the restructure reads. `arvo-capacity` and `arvo-shape` are not lifting out an
+untested idea. They are lifting out a **proven escape from const-expression-in-type-position**, which
+the algorithm crates already ran and already dropped their gates because of.
+
+**Superseded again on the same day, and this is the final position.** op has forbidden
+`generic_const_exprs` outright, alongside full `specialization`, restating a gate that predates this
+workspace: a feature is allowed only if it is **not proven unsound or unstable**, **and**, absent a
+very strong reason, is **itself on the stabilisation path**. GCE fails the second on its own terms,
+since `min_generic_const_args` is the documented successor and GCE is what it replaces. The workspace
+rule now carries it in the forbidden table.
+
+A sketch settled the last open question. `mock/research/sketches/202607282100_container-projection-without-gce/`
+reproduces the full Pattern C container projection as typestate and **compiles clean with zero feature
+gates of any kind**, including the caller-threads-its-own-generic case. So the remaining gates are not
+load-bearing either: the tag is a closed vocabulary of slots and becomes an enum of types, width
+becomes typestate the way `Dim<N>` already is, and the const arguments become paths. Nothing computes
+in type position, so nothing needs a const-generic feature.
+
+**Treat any claim in this directory that GCE is necessary, pervasive, or a live constraint on arvo as
+false.** Two earlier revisions of this document were wrong about it in opposite directions, the first
+listing it among features "already in use", taken from a `unstable-features.md` inventory rather than
+from source. That inventory was itself drifted: the vetting had flagged FORBID and the record read
+WATCH, and a second rule file, `arvo-compile-time-last.md`, separately listed GCE among licensed
+features. Both are corrected.
+
+Passes dispatched against the earlier revisions inherited the wrong picture. See the coverage section
+of `99_synthesis.md` for which ones and how much it affects them.
 
 Two standing principles shape what an acceptable answer looks like. **arvo ships tools and never
 polices its consumers**: it exposes the full lattice of choices with the tradeoffs documented, rather

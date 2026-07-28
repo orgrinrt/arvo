@@ -7,6 +7,27 @@
 Read `00_context.md` in this directory first; this file assumes its provenance rules, its constraint
 list, and its instruction not to recommend.
 
+**Correction, 2026-07-28.** An earlier revision of this document, following the `00_context.md` it was
+written against at the time, framed the Rust `fixed` crate's need for the nightly `generic_const_exprs`
+feature as a wall arvo shares. That premise was wrong. `generic_const_exprs` is not a constraint arvo
+carries going forward: the lead designer has forbidden it outright, alongside full `specialization`,
+under a standing gate that predates this workspace (a feature is allowed only if it is not proven
+unsound or unstable and, absent a strong reason, is itself on the stabilisation path). arvo had already
+migrated most of its own use of the feature away via the `Capacity` trait's associated `Array` type
+before that gate was restated, and a sketch at
+`mock/research/sketches/202607282100_container-projection-without-gce/` has since proven the one
+remaining live use, the container projection in `arvo-strategy` and the `arvo` facade, expressible as
+typestate with zero feature gates of any kind. Verified directly against source for this correction:
+`generic_const_exprs` is gated at exactly `mock/crates/arvo-strategy/src/lib.rs:11` and
+`mock/crates/arvo/src/lib.rs:25` today, matching the corrected `00_context.md`'s count, and the sketch's
+own `FINDINGS.md` records a clean `cargo check` with zero `#![feature(...)]` lines. The observation
+about the `fixed` crate hitting the `generic_const_exprs` wall in its own 2.0 alpha line is still
+accurate on its own terms and still stands, in the CORDIC section below; only the claim that arvo
+shares that wall has been removed, and a further passage there answers a follow-up question, raised by
+this correction, about precedent for encoding width as a type with an associated container rather than
+as a const-generic parameter. Nothing else in this document changed; every other section is independent
+of the `generic_const_exprs` question.
+
 arvo's identity is a single, specific bet: every logical number is fixed point, every container is
 exact-width and const-sized, and the tradeoff between speed and precision is a type parameter
 (`Hot` / `Warm` / `Cold` / `Precise`) rather than a runtime branch or a library-wide compile flag.
@@ -507,16 +528,28 @@ than division or square root, which the Newton-Raphson and Goldschmidt families 
 Rust ecosystem has settled on `cordic` as the crate providing this (referenced, alongside the
 narrower `fixed_math` and `fixed_trigonometry` crates, via the discussion at
 [users.rust-lang.org/t/fixed-point-no-std-sin-cos-calculation/64910](https://users.rust-lang.org/t/fixed-point-no-std-sin-cos-calculation/64910)),
-built against the general-purpose `fixed` crate. The `fixed` crate itself is a useful, cautionary
-data point for arvo specifically: its own 2.0 alpha line, which moves the fractional-bit count to a
-true const generic rather than an associated-type trick, **requires the nightly `generic_const_exprs`
-feature to build at all**, which is the same unstable feature arvo already carries at `WATCH` status
-in its own `unstable-features.md` audit for exactly the reason `fixed` needed it: encoding a
-value-dependent array length (or, in `fixed`'s case, a bit-count-dependent container choice) in the
-type system runs straight into `generic_const_exprs`'s known incompleteness. That the field's other
-prominent fixed-point library independently hit the identical wall is corroboration that arvo's
-current toolchain dependency is not an arvo-specific problem to be engineered around locally; it is
-the state of the Rust type system's const-generics story as a whole, as of this pin.
+built against the general-purpose `fixed` crate. The `fixed` crate's own history is a useful data point
+here, corrected from the framing an earlier revision of this document gave it (see the correction note
+at the top of this document): it is not evidence that arvo shares a `generic_const_exprs` constraint,
+because arvo does not carry one. The crate's stable 1.x line encodes the fractional-bit count as a
+**type**, not a const generic, through `typenum`'s `Unsigned` marker types (`FixedU32<U16>` names a
+16-fractional-bit unsigned 32-bit value). Only its 2.0 alpha line moves the fractional-bit count to a
+true const generic, and that alpha line is the one that requires the nightly `generic_const_exprs`
+feature to build at all, a fact about `fixed`'s own migration path, not a fact about arvo. What the
+split between `fixed`'s two lines does confirm, independent of the corrected framing, is that encoding
+a bit-width as a type carrying an associated concrete container, rather than as a const-generic
+parameter, is precedented, established practice, not an invention specific to arvo's own container
+projection. `typenum` plus `generic-array`'s `ArrayLength` trait does the identical thing one level
+more generally, and predates Rust's const generics (stabilised in Rust 1.51, 2021) by several years: a
+type parameter `N: ArrayLength` carries an associated `ArrayType<T>`, and the crate's own documentation
+states the equivalence directly, "consider `N: ArrayLength` to be equivalent to `const N: usize`"
+([docs.rs/generic-array/latest/generic_array/trait.ArrayLength.html](https://docs.rs/generic-array/latest/generic_array/trait.ArrayLength.html)).
+`fixed`'s 1.x fractional-bit encoding is the same mechanism applied to a scalar bit count instead of an
+array length. Neither example is const-generic-shaped, neither ever needed `generic_const_exprs` to
+exist, and both predate or run parallel to the identical move arvo's own container-projection sketch
+just reproduced: a closed vocabulary of widths becomes an enum of marker types, and the const
+expression that used to compute a container from a number becomes an associated type that a trait
+resolves from a type.
 
 ## Comparison at a glance
 
