@@ -263,3 +263,59 @@ than any of the others: into empty marker impls that exist only to reject a mism
 35 assertions across six shapes, all passing on the pinned nightly, no feature gates in the sketch
 crate. Mutation-checked twice: breaking the recursive base case fails all six recursive assertions,
 and breaking Shape A's argument order fails to compile rather than failing an assertion.
+
+## Shape G: recursive validation, zero arity anywhere
+
+`recursive_describes.rs`. Shape F pushed the arity into marker impls that never run. This removes the
+table entirely.
+
+```rust
+pub trait Describes<F> {}
+impl Describes<Bool> for Empty {}                    // base
+impl<H, T, F, G> Describes<F> for Cons<H, T>         // step
+where F: Fn(H) -> G, T: Describes<G> {}
+```
+
+**Two impls. No arity in either.** `Deref` still supplies real call syntax, so a consumer writes
+`lt(1)(2)` and `g(1)(2)(3)(4)(5)`. Verified at arities one, two, three and five with nothing added.
+
+**The wall it gets around, stated precisely.** `Fn(&A, &B) -> Bool` names both types in **one** bound,
+and generating that bound from a recursive structure needs variadic generics, which this toolchain
+does not have. Currying gives the recursion somewhere to go, one argument per step. That is why
+Shape F needs a table and Shape G does not, and it is not a cleverness gap between them.
+
+**Enforcement is complete**, verified by compile-fail on all three mismatch kinds:
+
+| Attempted construction | Result |
+|---|---|
+| `Pred::<G2<u32,u32>,_>::new(\|a: u32\| Bool(a > 0))` (too few) | rejected |
+| `Pred::<G2<u32,u32>,_>::new(\|a: u8\| move \|b: u32\| ...)` (wrong type) | rejected |
+| `Pred::<G1<u32>,_>::new(\|a: u32\| move \|b: u32\| ...)` (too many) | rejected |
+
+**The price is the call shape**, `f(a)(b)` rather than `f(a, b)`, and by-value arguments, which is
+what makes currying read cleanly. Fine for the `Copy` scalars a predicate over arvo primitives sees;
+a large payload would prefer Shape F.
+
+## The two banked answers
+
+Both are complete, enforced, and gate-free. The choice between them is one trade and nothing else.
+
+| | Shape F | Shape G |
+|---|---|---|
+| Call site | `f(a, b)` | `f(a)(b)` |
+| Impls | 1 `Deref` + N markers | **2 total** |
+| Arity lives in | markers that never run | **nowhere** |
+| Arguments | by reference | by value |
+| Enforcement | complete | complete |
+| Feature gates | none | none |
+
+Shape F buys familiar call syntax with a generated table. Shape G buys a genuinely arity-free
+construction with curried call sites. There is no third option that has both, and the reason is the
+absence of variadic generics rather than a missing trick.
+
+## Final verification
+
+41 assertions across seven shapes, all passing on the pinned nightly, no feature gates in the sketch
+crate. Mutation-checked: breaking the recursive base case fails all six of Shape B's assertions, and
+breaking Shape A's argument order fails to compile rather than failing an assertion. Shape G's three
+mismatch cases were each verified rejected.

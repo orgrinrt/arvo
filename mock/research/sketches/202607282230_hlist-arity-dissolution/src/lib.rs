@@ -22,6 +22,7 @@ pub mod call_syntax;
 pub mod ergonomics;
 pub mod inferred;
 pub mod recursive;
+pub mod recursive_describes;
 
 pub struct Bool(pub bool);
 
