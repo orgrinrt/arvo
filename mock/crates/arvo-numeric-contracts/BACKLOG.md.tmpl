@@ -5,3 +5,13 @@
 ## Removed entries
 
 (none)
+- Connect the predicate markers to algorithm selection. IsZero,
+ IsPositive, IsNonZero, IsNonNegative and IsZeroOrPositive exist as
+ marker subtraits so that a bound can name the semantic an algorithm
+ needs, and no algorithm bounds on one. Round 202607290200 (D15)
+ makes this family the degenerate instance of the unified typestate
+ predicate, and D16 fixes the risk split it has to adopt: a derived
+ property is a safe associated const, an asserted property is an
+ unsafe impl with a stated contract. These five are derived (each is
+ a computation over the value), so they stay safe. Blocked on the
+ unified predicate, which is blocked on notko's truth contract.

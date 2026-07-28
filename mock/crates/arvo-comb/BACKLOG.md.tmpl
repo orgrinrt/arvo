@@ -22,3 +22,15 @@ algorithmic-shape change. Common pipeline workloads in observed
 research stay well under 64 flags, so this is a non-urgent
 widening.
 
+- Carry greedy_group's fresh-accumulator requirement as a property
+ rather than as prose plus a guard. The function documents that a
+ well-formed predicate always accepts the first item of a fresh
+ group, and pays for the cases where it does not with an extra
+ predicate call and a branch on every group-open, present so the walk
+ cannot loop forever. That requirement is exactly what a typed
+ predicate can carry: under the unified predicate of round
+ 202607290200 the property rides on the predicate type, and the guard
+ is selected away for any predicate that promises it while remaining
+ for any that cannot. This is the one property in arvo with a named
+ consequence in shipped source, so it is the first candidate when the
+ property set gets populated. Blocked on the unified predicate.

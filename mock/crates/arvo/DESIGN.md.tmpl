@@ -1197,10 +1197,11 @@ via bounds:
  for the lossless 0..=255 range. For fixed-point types, `n` is
  placed at the integer-bit position (shifted left by `F`).
 - `Pred<A>` / `Pred2<A, B>` / `Pred3<A, B, C>`: named predicate
- bounds for consumer callbacks. Blanket-impl'd for
- `Fn(&A) -> Bool` / `Fn(&A, &B) -> Bool` /
- `Fn(&A, &B, &C) -> Bool`; custom callable types implement
- `test(&self,...)`.
+ bounds for consumer callbacks. Each carries a `Fn` supertrait and an
+ empty blanket impl, so they are spellings of the `Fn` bound and
+ nothing more. A custom callable type cannot implement them: the
+ supertrait requires it to be a closure. Round 202607290200 decided
+ the family is deleted and replaced; see BACKLOG.
 - `ScalarEuclid`: `div_euclid_scalar(self, n: USize) -> Self` /
  `rem_euclid_scalar(self, n: USize) -> Self`. Euclidean division of a
  fixed-point value by an integer count at ULP granularity (the

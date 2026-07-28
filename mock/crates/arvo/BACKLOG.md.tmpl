@@ -439,3 +439,22 @@ here for future rounds to pick up.
  struct-construction rules in const args. No timeline, gated on
  upstream rustc.
 
+- The unified typestate predicate. Round 202607290200 (D15) deletes
+ Pred, Pred2 and Pred3 and replaces them with one named predicate
+ type carrying two things: its argument list as a type-level hlist,
+ with Deref supplying ordinary f(a, b) call syntax at any arity and
+ no feature gates, and its properties as associated consts. The
+ second half is the reason a typed predicate exists at all: a closure
+ carries no properties, so an algorithm handed one can know nothing
+ about it. Both halves are proven gate-free in
+ mock/research/sketches/202607282230_hlist-arity-dissolution and
+ mock/research/sketches/202607290030_typestate-algorithm-selection,
+ the second from emitted assembly. D16 splits the properties by risk:
+ a derived property is computed by the type from itself and is a safe
+ associated const, an asserted property is an unchecked promise whose
+ falsehood returns a wrong answer rather than a slow one and is an
+ unsafe impl carrying a stated contract. D17 places the concept in
+ notko, on a truth contract shaped the way Cardinal is the contract
+ for a count, with arvo's Bool implementing it; see
+ notko/docs/202607290100_design.the-predicate-concept-may-belong-here.md.
+ Blocked on that contract existing.

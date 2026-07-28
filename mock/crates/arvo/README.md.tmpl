@@ -7,6 +7,6 @@ defines ergonomic `Int<const N: u16, S>` and `Uint<const N: u16, S>`
 generic aliases, and hosts `UFixed<I, F, S>` / `IFixed<I, F, S>` as
 `repr(transparent)` newtypes over `Bits<{I+F}, S, Unsigned>` /
 `Bits<{1+I+F}, S, Signed>`. Float wrappers (`FastFloat`,
-`StrictFloat`) and `Cap` live here too. Storage primitives (`Bits`,
-strategy markers, `Bool`, `USize`, `IBits` / `FBits` / `Width`) live
+`StrictFloat`) live here too. Storage primitives (`Bits`, strategy
+markers, `Bool`, `USize`, `Cap`, `IBits` / `FBits` / `Width`) live
 upstream in `arvo-storage`. `#![no_std]`, no alloc.

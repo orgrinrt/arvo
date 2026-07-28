@@ -88,5 +88,21 @@ The base predicate trait. Composes with named subtypes (`IsZero`,
 `pub const trait` extending `Predicate`. Concrete impls live on the
 relevant arvo numeric type families.
 
+The predicate is the type and the value is the receiver, which is the
+inverse of how the facade's `Pred` aliases read. Round 202607290200
+(D15) found the two are one concept implemented twice, and that this
+family is the degenerate case of it: the predicate has exactly one
+body and its property is its name.
+
+**The markers gate nothing today.** The module doc for the wrapper
+types states that a marker gates which algorithms accept a wrapper.
+No algorithm in this workspace bounds on one: the five names appear
+only in their own declarations, their own impls, and one test. The
+clearest sign is internal, since `IsNonNegative` and
+`IsZeroOrPositive` have identical bodies and are kept distinct purely
+so a bound can name the semantic, with no bound reading either. The
+mechanism was built one step short of its purpose; connecting it is
+the work D15 and D16 describe, and it is tracked in BACKLOG.
+
 
 Round-by-round history is recorded in `mock/research/arvo-numeric-contracts-history.md` (Tier 2).
