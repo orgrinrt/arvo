@@ -1,0 +1,19 @@
+[workspace]
+# Standalone: this crate is a throwaway measurement artefact for panel file
+# 32, never a member of the real arvo mock/Cargo.toml workspace. The empty
+# [workspace] table stops cargo's auto-discovery from splicing this path
+# into the shipping workspace's `members` list.
+
+[package]
+name = "identity_model"
+edition = "2021"
+version = "0.0.0"
+publish = false
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+[dependencies]
