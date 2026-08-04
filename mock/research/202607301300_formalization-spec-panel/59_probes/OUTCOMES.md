@@ -153,3 +153,21 @@ probe_6 WORKS: 1 of 16 cells reaches the hardware door, and it is (Hot, Hot)
 
 The assertion is on the whole matrix, not on a sample: `hardware_cells == vec![("Hot", "Hot",
 "Hot")]` fails if any other cell reaches hardware or if that one stops doing so.
+
+## probe_7_precise_has_no_hardware_door.rs, MEASURED
+
+Whether `Precise`'s door is a preference or is forced. `Precise` owes saturation on overflow
+(`arvo-strategy/src/lib.rs:135-139`); this asks the host what it delivers, under the entry control
+state:
+
+```
+f32::MAX * 2.0      = inf (is_infinite true)
+-f32::MAX * 2.0     = -inf (is_infinite true)
+f32::MAX saturating = 340282350000000000000000000000000000000
+probe_7: the host delivers infinity where `Precise` owes saturation
+```
+
+A different value, so the hardware door is not a `Lowering` for `Precise` at any pinning of the
+environment (58:798-806). The one control state under which IEEE itself saturates is a directed
+rounding mode, and it saturates only on the side rounding moves toward, so it is not `Precise`'s
+two-sided clamp either; that clause is reasoned from the standard's overflow behaviour, not measured.
