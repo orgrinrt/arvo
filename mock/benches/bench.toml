@@ -221,3 +221,89 @@ variants = [
     "../target/release/bench_bitpack_aligned_rand",
     "../target/release/bench_bitpack_zeropad_rand",
 ]
+
+[bench.bitpack-decoder-shape]
+title = "Layout::Bitpacked decoder shape: index-driven vs plan-driven, across the L1 boundary"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-decoder-shape.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_plan_native",
+    "../target/release/bench_bitpack_plan_naive",
+    "../target/release/bench_bitpack_plan_windowed",
+    "../target/release/bench_bitpack_plan_simd",
+]
+
+[[bench.bitpack-decoder-shape.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_plan_native",
+    "../target/release/bench_bitpack_plan_naive",
+    "../target/release/bench_bitpack_plan_windowed",
+    "../target/release/bench_bitpack_plan_simd",
+]
+
+[[bench.bitpack-decoder-shape.sizes]]
+n = 98304
+variants = [
+    "../target/release/bench_bitpack_plan_native",
+    "../target/release/bench_bitpack_plan_naive",
+    "../target/release/bench_bitpack_plan_windowed",
+    "../target/release/bench_bitpack_plan_simd",
+]
+
+[[bench.bitpack-decoder-shape.sizes]]
+n = 262144
+variants = [
+    "../target/release/bench_bitpack_plan_native",
+    "../target/release/bench_bitpack_plan_naive",
+    "../target/release/bench_bitpack_plan_windowed",
+    "../target/release/bench_bitpack_plan_simd",
+]
+
+[bench.bitpack-kernel-amortisation]
+title = "Layout::Bitpacked decode against per-element consumer work"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-kernel-amortisation.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_mac_native",
+    "../target/release/bench_bitpack_mac_naive",
+    "../target/release/bench_bitpack_mac_windowed",
+    "../target/release/bench_bitpack_mac_narrow",
+    "../target/release/bench_bitpack_mac_simd",
+]
+
+[[bench.bitpack-kernel-amortisation.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_mac_native",
+    "../target/release/bench_bitpack_mac_naive",
+    "../target/release/bench_bitpack_mac_windowed",
+    "../target/release/bench_bitpack_mac_narrow",
+    "../target/release/bench_bitpack_mac_simd",
+]
+
+[[bench.bitpack-kernel-amortisation.sizes]]
+n = 98304
+variants = [
+    "../target/release/bench_bitpack_mac_native",
+    "../target/release/bench_bitpack_mac_naive",
+    "../target/release/bench_bitpack_mac_windowed",
+    "../target/release/bench_bitpack_mac_narrow",
+    "../target/release/bench_bitpack_mac_simd",
+]
+
+[[bench.bitpack-kernel-amortisation.sizes]]
+n = 262144
+variants = [
+    "../target/release/bench_bitpack_mac_native",
+    "../target/release/bench_bitpack_mac_naive",
+    "../target/release/bench_bitpack_mac_windowed",
+    "../target/release/bench_bitpack_mac_narrow",
+    "../target/release/bench_bitpack_mac_simd",
+]

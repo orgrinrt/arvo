@@ -16,3 +16,4 @@ bench-spectral-bisection = { path = "variants/spectral-bisection" }
 bench-quantiser-fadd-shared = { path = "variants/quantiser-fadd-shared" }
 bench-quantiser-radix-shared = { path = "variants/quantiser-radix-shared" }
 bench-bitpack-shared = { path = "variants/bitpack-shared" }
+bench-bitpack-plan-shared = { path = "variants/bitpack-plan-shared" }

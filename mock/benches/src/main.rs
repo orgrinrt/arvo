@@ -135,6 +135,7 @@ fn main() -> ExitCode {
 /// name + input size. Hash benches go through `ByteRoutine`; graph
 /// + spectral benches go through their per-routine bridges.
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
+    use bench_bitpack_plan_shared::{MacColumn, PlanColumn};
     use bench_bitpack_shared::Column;
     use bench_quantiser_fadd_shared::AddSweep;
     use bench_quantiser_radix_shared::RadixAdd;
@@ -193,6 +194,23 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("bitpack-random-sum", 256) => routine_bridge!(Column<256>),
         ("bitpack-random-sum", 4096) => routine_bridge!(Column<4096>),
         ("bitpack-random-sum", 16384) => routine_bridge!(Column<16384>),
+
+        // bitpack decoder-shape bench: the identical zero-inter-value-padding
+        // buffer read three ways (dense native carrier, index-driven decode,
+        // plan-driven decode), swept across sizes that bracket this host's
+        // L1 data cache rather than sitting entirely inside it.
+        ("bitpack-decoder-shape", 16384) => routine_bridge!(PlanColumn<16384>),
+        ("bitpack-decoder-shape", 65536) => routine_bridge!(PlanColumn<65536>),
+        ("bitpack-decoder-shape", 98304) => routine_bridge!(PlanColumn<98304>),
+        ("bitpack-decoder-shape", 262144) => routine_bridge!(PlanColumn<262144>),
+
+        // the identical decoders feeding a heavier per-element kernel, to see
+        // whether the decode-shape multiple is an upper bound over consumer
+        // work or a constant factor on it.
+        ("bitpack-kernel-amortisation", 16384) => routine_bridge!(MacColumn<16384>),
+        ("bitpack-kernel-amortisation", 65536) => routine_bridge!(MacColumn<65536>),
+        ("bitpack-kernel-amortisation", 98304) => routine_bridge!(MacColumn<98304>),
+        ("bitpack-kernel-amortisation", 262144) => routine_bridge!(MacColumn<262144>),
 
         _ => return None,
     };
