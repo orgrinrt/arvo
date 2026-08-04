@@ -1,0 +1,12 @@
+kind,count,ms_run1,ms_run2,ms_min
+dyadic,0,69,74,69
+dyadic,25,157,137,137
+dyadic,50,244,262,244
+dyadic,100,366,302,302
+dyadic,200,537,482,482
+distinct16,5,829,722,722
+distinct16,50,7117,6922,6922
+distinct16,100,14513,14335,14335
+repeat16,100,3538,3361,3361
+headline,3,84,96,84
+chained,1,125,97,97
