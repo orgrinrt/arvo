@@ -145,7 +145,7 @@ Only the forbidden feature admits it. `arvo-strategy/src/lib.rs:11` carries that
 ## probe_6_cross_strategy_door.rs, WORKS, and carries a theorem
 
 The whole 4x4 cross-strategy resolution matrix under the shipped rank ordering
-(`arvo-strategy/src/lib.rs:105-108`), with each resolved strategy's default door read off. Prints:
+(`arvo-strategy/src/lib.rs:104-107`), with each resolved strategy's default door read off. Prints:
 
 ```
 probe_6 WORKS: 1 of 16 cells reaches the hardware door, and it is (Hot, Hot)
