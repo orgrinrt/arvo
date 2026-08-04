@@ -1,0 +1,16 @@
+error[E0038]: the trait `Pos` is not dyn compatible
+  --> probe_8_dyn_refused.rs:15:21
+   |
+15 | pub fn observe(_x: &dyn Pos) {}
+   |                     ^^^^^^^ `Pos` is not dyn compatible
+   |
+note: for a trait to be dyn compatible it needs to allow building a vtable
+      for more information, visit <https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility>
+  --> vu_nat_sealed_adj.rs:53:11
+   |
+53 |     const VAL: u64;
+   |           ^^^ the trait is not dyn compatible because it contains associated const `VAL`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0038`.
