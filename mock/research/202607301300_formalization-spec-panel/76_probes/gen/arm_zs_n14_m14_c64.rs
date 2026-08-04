@@ -1,0 +1,561 @@
+#![no_std]
+use core::marker::PhantomData;
+mod seal {
+    pub trait Sealed {}
+}
+pub struct H;
+pub struct O<P>(PhantomData<P>);
+pub struct I<P>(PhantomData<P>);
+pub struct Z;
+pub struct Pz<P>(PhantomData<P>);
+impl seal::Sealed for H {}
+impl<P: Pos> seal::Sealed for O<P> {}
+impl<P: Pos> seal::Sealed for I<P> {}
+impl seal::Sealed for Z {}
+impl<P: Pos> seal::Sealed for Pz<P> {}
+pub trait Pos: seal::Sealed {
+    const VAL: usize;
+}
+impl Pos for H {
+    const VAL: usize = 1;
+}
+impl<P: Pos> Pos for O<P> {
+    const VAL: usize = 2 * P::VAL;
+}
+impl<P: Pos> Pos for I<P> {
+    const VAL: usize = 2 * P::VAL + 1;
+}
+pub trait Nat: seal::Sealed {
+    const VAL: usize;
+}
+impl Nat for Z {
+    const VAL: usize = 0;
+}
+impl<P: Pos> Nat for Pz<P> {
+    const VAL: usize = P::VAL;
+}
+
+// Successor and addition on the sealed encoding: the machinery route Z needs
+// so that a stored width is a type. Peano would be linear in the VALUE; this
+// is the binary encoding, so it is linear in the number of BITS.
+pub trait SuccP {
+    type Out: Pos;
+}
+impl SuccP for H {
+    type Out = O<H>;
+}
+impl<P: Pos> SuccP for O<P> {
+    type Out = I<P>;
+}
+impl<P: Pos> SuccP for I<P>
+where
+    P: SuccP,
+{
+    type Out = O<<P as SuccP>::Out>;
+}
+
+pub trait AddP<R> {
+    type Out: Pos;
+}
+impl AddP<H> for H {
+    type Out = O<H>;
+}
+impl<P: Pos> AddP<H> for O<P> {
+    type Out = I<P>;
+}
+impl<P: Pos> AddP<H> for I<P>
+where
+    P: SuccP,
+{
+    type Out = O<<P as SuccP>::Out>;
+}
+impl<P: Pos> AddP<O<P>> for H
+where
+    P: SuccP,
+{
+    type Out = I<P>;
+}
+impl<P: Pos> AddP<I<P>> for H
+where
+    P: SuccP,
+{
+    type Out = O<<P as SuccP>::Out>;
+}
+impl<A: Pos, B: Pos> AddP<O<B>> for O<A>
+where
+    A: AddP<B>,
+{
+    type Out = O<<A as AddP<B>>::Out>;
+}
+impl<A: Pos, B: Pos> AddP<I<B>> for O<A>
+where
+    A: AddP<B>,
+{
+    type Out = I<<A as AddP<B>>::Out>;
+}
+impl<A: Pos, B: Pos> AddP<O<B>> for I<A>
+where
+    A: AddP<B>,
+{
+    type Out = I<<A as AddP<B>>::Out>;
+}
+impl<A: Pos, B: Pos> AddP<I<B>> for I<A>
+where
+    A: AddP<B>,
+    <A as AddP<B>>::Out: SuccP,
+{
+    type Out = O<<<A as AddP<B>>::Out as SuccP>::Out>;
+}
+
+pub trait AddN<R> {
+    type Out: Nat;
+}
+impl AddN<Z> for Z {
+    type Out = Z;
+}
+impl<P: Pos> AddN<Z> for Pz<P> {
+    type Out = Pz<P>;
+}
+impl<P: Pos> AddN<Pz<P>> for Z {
+    type Out = Pz<P>;
+}
+impl<A: Pos, B: Pos> AddN<Pz<B>> for Pz<A>
+where
+    A: AddP<B>,
+{
+    type Out = Pz<<A as AddP<B>>::Out>;
+}
+
+// Obligation 2: one is representable exactly when the integer part is nonzero.
+// A bound, not a bool: the absence at Z is what refuses.
+pub trait OneRepresentable {}
+impl<P: Pos> OneRepresentable for Pz<P> {}
+// Obligation 3.
+pub trait IsZero {}
+impl IsZero for Z {}
+pub trait NonZero {}
+impl<P: Pos> NonZero for Pz<P> {}
+
+pub struct Hot;
+pub struct Warm;
+pub struct Cold;
+pub trait Strategy {}
+impl Strategy for Hot {}
+impl Strategy for Warm {}
+impl Strategy for Cold {}
+
+// Obligation 4: the capacity, split by layer (probe B2). The count is the
+// shared carrier; the array grammar is the lowering-side literal.
+pub struct Slot<N, const K: usize>(PhantomData<N>);
+impl<N: Nat, const K: usize> seal::Sealed for Slot<N, K> {}
+impl<N: Nat, const K: usize> Nat for Slot<N, K> {
+    const VAL: usize = N::VAL;
+}
+pub const fn agrees<N: Nat, const K: usize>() -> bool {
+    N::VAL == K
+}
+pub trait Capacity: Nat {
+    type Array<T>: AsRef<[T]> + AsMut<[T]>;
+    fn build<T: Copy>(v: T) -> Self::Array<T>;
+}
+impl<N: Nat, const K: usize> Capacity for Slot<N, K> {
+    type Array<T> = [T; K];
+    fn build<T: Copy>(v: T) -> [T; K] {
+        const { assert!(agrees::<N, K>(), "capacity length disagrees with its value") };
+        [v; K]
+    }
+}
+
+pub struct UFixed<Ib, Fb, S>(PhantomData<(Ib, Fb, S)>);
+// Obligation 1: the stored width. Under this arm it is a type-level sum, and
+// the solver folds it wherever a consumer reads it.
+pub trait Stored {
+    type Width: Nat;
+    const W: usize;
+}
+impl<Ib: Nat + AddN<Fb>, Fb: Nat, S: Strategy> Stored for UFixed<Ib, Fb, S> {
+    type Width = <Ib as AddN<Fb>>::Out;
+    const W: usize = <<Ib as AddN<Fb>>::Out as Nat>::VAL;
+}
+// Obligation 2 at the numeral: reachable only when the integer part has one.
+pub trait HasOne {}
+impl<Ib: Nat + OneRepresentable, Fb: Nat, S: Strategy> HasOne for UFixed<Ib, Fb, S> {}
+// Arithmetic: the sum of two numerals, which is where a width genuinely has to
+// be computed rather than declared, in both arms.
+pub trait AddNum<R> {
+    type Out;
+}
+impl<Ia: Nat + AddN<Ib>, Fa: Nat + AddN<Fb>, Ib: Nat, Fb: Nat, S: Strategy>
+    AddNum<UFixed<Ib, Fb, S>> for UFixed<Ia, Fa, S>
+{
+    type Out = UFixed<<Ia as AddN<Ib>>::Out, <Fa as AddN<Fb>>::Out, S>;
+}
+
+pub type Ib0 = Pz<H>;
+pub type Fb0 = Z;
+pub type Wb0 = Pz<H>;
+pub type N0 = UFixed<Ib0, Fb0, Hot>;
+pub const W0: usize = <Wb0 as Nat>::VAL;
+const _: () = assert!(W0 == 1);
+pub fn one_ok_0()
+where
+    N0: HasOne,
+{
+}
+pub fn int_like_0()
+where
+    Fb0: IsZero,
+{
+}
+pub type Ib1 = Pz<O<H>>;
+pub type Fb1 = Z;
+pub type Wb1 = Pz<O<H>>;
+pub type N1 = UFixed<Ib1, Fb1, Warm>;
+pub const W1: usize = <Wb1 as Nat>::VAL;
+const _: () = assert!(W1 == 2);
+pub fn one_ok_1()
+where
+    N1: HasOne,
+{
+}
+pub fn int_like_1()
+where
+    Fb1: IsZero,
+{
+}
+pub type Ib2 = Pz<I<H>>;
+pub type Fb2 = Z;
+pub type Wb2 = Pz<I<H>>;
+pub type N2 = UFixed<Ib2, Fb2, Cold>;
+pub const W2: usize = <Wb2 as Nat>::VAL;
+const _: () = assert!(W2 == 3);
+pub fn one_ok_2()
+where
+    N2: HasOne,
+{
+}
+pub fn int_like_2()
+where
+    Fb2: IsZero,
+{
+}
+pub type Ib3 = Pz<O<O<H>>>;
+pub type Fb3 = Z;
+pub type Wb3 = Pz<O<O<H>>>;
+pub type N3 = UFixed<Ib3, Fb3, Hot>;
+pub const W3: usize = <Wb3 as Nat>::VAL;
+const _: () = assert!(W3 == 4);
+pub fn one_ok_3()
+where
+    N3: HasOne,
+{
+}
+pub fn int_like_3()
+where
+    Fb3: IsZero,
+{
+}
+pub type Ib4 = Pz<I<O<H>>>;
+pub type Fb4 = Z;
+pub type Wb4 = Pz<I<O<H>>>;
+pub type N4 = UFixed<Ib4, Fb4, Warm>;
+pub const W4: usize = <Wb4 as Nat>::VAL;
+const _: () = assert!(W4 == 5);
+pub fn one_ok_4()
+where
+    N4: HasOne,
+{
+}
+pub fn int_like_4()
+where
+    Fb4: IsZero,
+{
+}
+pub type Ib5 = Pz<O<I<H>>>;
+pub type Fb5 = Z;
+pub type Wb5 = Pz<O<I<H>>>;
+pub type N5 = UFixed<Ib5, Fb5, Cold>;
+pub const W5: usize = <Wb5 as Nat>::VAL;
+const _: () = assert!(W5 == 6);
+pub fn one_ok_5()
+where
+    N5: HasOne,
+{
+}
+pub fn int_like_5()
+where
+    Fb5: IsZero,
+{
+}
+pub type Ib6 = Pz<I<I<H>>>;
+pub type Fb6 = Z;
+pub type Wb6 = Pz<I<I<H>>>;
+pub type N6 = UFixed<Ib6, Fb6, Hot>;
+pub const W6: usize = <Wb6 as Nat>::VAL;
+const _: () = assert!(W6 == 7);
+pub fn one_ok_6()
+where
+    N6: HasOne,
+{
+}
+pub fn int_like_6()
+where
+    Fb6: IsZero,
+{
+}
+pub type Ib7 = Pz<I<I<O<H>>>>;
+pub type Fb7 = Z;
+pub type Wb7 = Pz<I<I<O<H>>>>;
+pub type N7 = UFixed<Ib7, Fb7, Warm>;
+pub const W7: usize = <Wb7 as Nat>::VAL;
+const _: () = assert!(W7 == 11);
+pub fn one_ok_7()
+where
+    N7: HasOne,
+{
+}
+pub fn int_like_7()
+where
+    Fb7: IsZero,
+{
+}
+pub type Ib8 = Pz<O<I<I<H>>>>;
+pub type Fb8 = Z;
+pub type Wb8 = Pz<O<I<I<H>>>>;
+pub type N8 = UFixed<Ib8, Fb8, Cold>;
+pub const W8: usize = <Wb8 as Nat>::VAL;
+const _: () = assert!(W8 == 14);
+pub fn one_ok_8()
+where
+    N8: HasOne,
+{
+}
+pub fn int_like_8()
+where
+    Fb8: IsZero,
+{
+}
+pub type Ib9 = Pz<O<O<O<O<H>>>>>;
+pub type Fb9 = Z;
+pub type Wb9 = Pz<O<O<O<O<H>>>>>;
+pub type N9 = UFixed<Ib9, Fb9, Hot>;
+pub const W9: usize = <Wb9 as Nat>::VAL;
+const _: () = assert!(W9 == 16);
+pub fn one_ok_9()
+where
+    N9: HasOne,
+{
+}
+pub fn int_like_9()
+where
+    Fb9: IsZero,
+{
+}
+pub type Ib10 = Pz<I<I<O<I<H>>>>>;
+pub type Fb10 = Z;
+pub type Wb10 = Pz<I<I<O<I<H>>>>>;
+pub type N10 = UFixed<Ib10, Fb10, Warm>;
+pub const W10: usize = <Wb10 as Nat>::VAL;
+const _: () = assert!(W10 == 27);
+pub fn one_ok_10()
+where
+    N10: HasOne,
+{
+}
+pub fn int_like_10()
+where
+    Fb10: IsZero,
+{
+}
+pub type Ib11 = Pz<O<O<I<I<H>>>>>;
+pub type Fb11 = Z;
+pub type Wb11 = Pz<O<O<I<I<H>>>>>;
+pub type N11 = UFixed<Ib11, Fb11, Cold>;
+pub const W11: usize = <Wb11 as Nat>::VAL;
+const _: () = assert!(W11 == 28);
+pub fn one_ok_11()
+where
+    N11: HasOne,
+{
+}
+pub fn int_like_11()
+where
+    Fb11: IsZero,
+{
+}
+pub type Ib12 = Pz<O<O<O<O<O<O<H>>>>>>>;
+pub type Fb12 = Z;
+pub type Wb12 = Pz<O<O<O<O<O<O<H>>>>>>>;
+pub type N12 = UFixed<Ib12, Fb12, Hot>;
+pub const W12: usize = <Wb12 as Nat>::VAL;
+const _: () = assert!(W12 == 64);
+pub fn one_ok_12()
+where
+    N12: HasOne,
+{
+}
+pub fn int_like_12()
+where
+    Fb12: IsZero,
+{
+}
+pub type Ib13 = Z;
+pub type Fb13 = Pz<O<O<O<O<H>>>>>;
+pub type Wb13 = Pz<O<O<O<O<H>>>>>;
+pub type N13 = UFixed<Ib13, Fb13, Warm>;
+pub const W13: usize = <Wb13 as Nat>::VAL;
+const _: () = assert!(W13 == 16);
+pub fn frac_like_13()
+where
+    Fb13: NonZero,
+{
+}
+pub type Sum0 = <N0 as AddNum<N3>>::Out;
+pub const SW0: usize = <Sum0 as Stored>::W;
+pub type Sum1 = <N1 as AddNum<N4>>::Out;
+pub const SW1: usize = <Sum1 as Stored>::W;
+pub type Sum2 = <N2 as AddNum<N5>>::Out;
+pub const SW2: usize = <Sum2 as Stored>::W;
+pub type Sum3 = <N3 as AddNum<N6>>::Out;
+pub const SW3: usize = <Sum3 as Stored>::W;
+pub type Sum4 = <N4 as AddNum<N7>>::Out;
+pub const SW4: usize = <Sum4 as Stored>::W;
+pub type Sum5 = <N5 as AddNum<N8>>::Out;
+pub const SW5: usize = <Sum5 as Stored>::W;
+pub type Sum6 = <N6 as AddNum<N9>>::Out;
+pub const SW6: usize = <Sum6 as Stored>::W;
+pub type Sum7 = <N7 as AddNum<N10>>::Out;
+pub const SW7: usize = <Sum7 as Stored>::W;
+pub type Sum8 = <N8 as AddNum<N11>>::Out;
+pub const SW8: usize = <Sum8 as Stored>::W;
+pub type Sum9 = <N9 as AddNum<N12>>::Out;
+pub const SW9: usize = <Sum9 as Stored>::W;
+pub type Sum10 = <N10 as AddNum<N13>>::Out;
+pub const SW10: usize = <Sum10 as Stored>::W;
+pub type C0 = Slot<Pz<H>, 1>;
+pub fn build0() -> <C0 as Capacity>::Array<u32> {
+    C0::build(0)
+}
+pub type C1 = Slot<Pz<I<H>>, 3>;
+pub fn build1() -> <C1 as Capacity>::Array<u32> {
+    C1::build(0)
+}
+pub type C2 = Slot<Pz<O<O<H>>>, 4>;
+pub fn build2() -> <C2 as Capacity>::Array<u32> {
+    C2::build(0)
+}
+pub type C3 = Slot<Pz<I<I<H>>>, 7>;
+pub fn build3() -> <C3 as Capacity>::Array<u32> {
+    C3::build(0)
+}
+pub type C4 = Slot<Pz<O<O<O<H>>>>, 8>;
+pub fn build4() -> <C4 as Capacity>::Array<u32> {
+    C4::build(0)
+}
+pub type C5 = Slot<Pz<I<O<I<H>>>>, 13>;
+pub fn build5() -> <C5 as Capacity>::Array<u32> {
+    C5::build(0)
+}
+pub type C6 = Slot<Pz<O<O<O<O<H>>>>>, 16>;
+pub fn build6() -> <C6 as Capacity>::Array<u32> {
+    C6::build(0)
+}
+pub type C7 = Slot<Pz<O<O<I<I<H>>>>>, 28>;
+pub fn build7() -> <C7 as Capacity>::Array<u32> {
+    C7::build(0)
+}
+pub type C8 = Slot<Pz<O<O<O<O<O<H>>>>>>, 32>;
+pub fn build8() -> <C8 as Capacity>::Array<u32> {
+    C8::build(0)
+}
+pub type C9 = Slot<Pz<O<O<O<O<O<O<H>>>>>>>, 64>;
+pub fn build9() -> <C9 as Capacity>::Array<u32> {
+    C9::build(0)
+}
+pub type C10 = Slot<Pz<O<O<I<H>>>>, 12>;
+pub fn build10() -> <C10 as Capacity>::Array<u32> {
+    C10::build(0)
+}
+pub type C11 = Slot<Pz<O<I<I<H>>>>, 14>;
+pub fn build11() -> <C11 as Capacity>::Array<u32> {
+    C11::build(0)
+}
+pub type C12 = Slot<Pz<I<I<I<H>>>>, 15>;
+pub fn build12() -> <C12 as Capacity>::Array<u32> {
+    C12::build(0)
+}
+pub type C13 = Slot<Pz<O<I<O<O<H>>>>>, 18>;
+pub fn build13() -> <C13 as Capacity>::Array<u32> {
+    C13::build(0)
+}
+
+// Obligation 4: build and walk, generic over the capacity.
+pub fn fold_generic<C: Capacity>(seed: u32) -> u32 {
+    let mut a = C::build(seed);
+    let s: &mut [u32] = a.as_mut();
+    let mut i = 0;
+    while i < s.len() {
+        s[i] = s[i].wrapping_add(i as u32);
+        i += 1;
+    }
+    let r: &[u32] = a.as_ref();
+    let mut acc = 0u32;
+    let mut j = 0;
+    while j < r.len() {
+        acc = acc.wrapping_add(r[j]);
+        j += 1;
+    }
+    acc
+}
+// Obligation 5: generic over a numeral AND a capacity at once. This is the
+// site staging cannot reach, because neither width is known here.
+pub fn scaled_fold<Ib, Fb, S, C>(seed: u32) -> u32
+where
+    Ib: Nat + AddN<Fb>,
+    Fb: Nat,
+    S: Strategy,
+    C: Capacity,
+    UFixed<Ib, Fb, S>: Stored + HasOne,
+{
+    fold_generic::<C>(seed).wrapping_mul(<UFixed<Ib, Fb, S> as Stored>::W as u32)
+}
+
+pub fn call0() -> u32 {
+    scaled_fold::<Ib0, Fb0, Hot, C0>(0)
+}
+pub fn call1() -> u32 {
+    scaled_fold::<Ib1, Fb1, Warm, C1>(1)
+}
+pub fn call2() -> u32 {
+    scaled_fold::<Ib2, Fb2, Cold, C2>(2)
+}
+pub fn call3() -> u32 {
+    scaled_fold::<Ib3, Fb3, Hot, C3>(3)
+}
+pub fn call4() -> u32 {
+    scaled_fold::<Ib4, Fb4, Warm, C4>(4)
+}
+pub fn call5() -> u32 {
+    scaled_fold::<Ib5, Fb5, Cold, C5>(5)
+}
+pub fn call6() -> u32 {
+    scaled_fold::<Ib6, Fb6, Hot, C6>(6)
+}
+pub fn call7() -> u32 {
+    scaled_fold::<Ib7, Fb7, Warm, C7>(7)
+}
+pub fn call8() -> u32 {
+    scaled_fold::<Ib8, Fb8, Cold, C8>(8)
+}
+pub fn call9() -> u32 {
+    scaled_fold::<Ib9, Fb9, Hot, C9>(9)
+}
+pub fn call10() -> u32 {
+    scaled_fold::<Ib10, Fb10, Warm, C10>(10)
+}
+pub fn call11() -> u32 {
+    scaled_fold::<Ib11, Fb11, Cold, C11>(11)
+}
+pub fn call12() -> u32 {
+    scaled_fold::<Ib12, Fb12, Hot, C12>(12)
+}
