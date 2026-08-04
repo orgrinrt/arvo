@@ -20,6 +20,8 @@ dependencies = [
 name = "arvo-benches"
 version = "0.0.0"
 dependencies = [
+ "bench-bitpack-plan-shared",
+ "bench-bitpack-shared",
  "bench-quantiser-fadd-shared",
  "bench-quantiser-radix-shared",
  "bench-spectral-bisection",
@@ -169,6 +171,155 @@ name = "arvo-transparent"
 version = "0.1.0"
 dependencies = [
  "notko",
+]
+
+[[package]]
+name = "bench-bitpack-aligned-rand"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-aligned-seq"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-mac-naive"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-mac-narrow"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-mac-native"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-mac-simd"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-mac-windowed"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-native-rand"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-native-seq"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-plan-naive"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-plan-native"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-plan-shared"
+version = "0.0.0"
+dependencies = [
+ "mockspace-bench-core",
+]
+
+[[package]]
+name = "bench-bitpack-plan-simd"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-plan-windowed"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-shared"
+version = "0.0.0"
+dependencies = [
+ "mockspace-bench-core",
+]
+
+[[package]]
+name = "bench-bitpack-zeropad-rand"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-zeropad-seq"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
 ]
 
 [[package]]

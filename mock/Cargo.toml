@@ -50,6 +50,16 @@ members = [
     "benches/variants/bitpack-zeropad-rand",
     "benches/variants/bitpack-native-seq",
     "benches/variants/bitpack-native-rand",
+    "benches/variants/bitpack-plan-shared",
+    "benches/variants/bitpack-plan-native",
+    "benches/variants/bitpack-plan-naive",
+    "benches/variants/bitpack-plan-windowed",
+    "benches/variants/bitpack-mac-native",
+    "benches/variants/bitpack-mac-naive",
+    "benches/variants/bitpack-mac-windowed",
+    "benches/variants/bitpack-mac-narrow",
+    "benches/variants/bitpack-plan-simd",
+    "benches/variants/bitpack-mac-simd",
 ]
 
 [workspace.package]
