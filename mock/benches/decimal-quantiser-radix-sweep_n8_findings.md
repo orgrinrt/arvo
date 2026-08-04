@@ -9,117 +9,129 @@ Baseline for all deltas below: **quantiser-radix10**. (Deltas are paired `varian
 
 ### Baseline (quantiser-radix10) is the SLOWEST variant; every rival beats it
 
-The declared/defaulted baseline quantiser-radix10 has the worst median (9.57 us). Every delta is therefore measured against the worst performer, which flatters all rivals and compresses the differences that matter among them (e.g. fastest quantiser-radix2 at 5.26 us).
+The declared/defaulted baseline quantiser-radix10 has the worst median (10.72 us). Every delta is therefore measured against the worst performer, which flatters all rivals and compresses the differences that matter among them (e.g. fastest quantiser-radix2 at 5.74 us).
 
 _Why it matters:_ A baseline picked by accident (often the first variant to run / sort) silently skews every comparison. Re-baseline via `[bench.<name>.normalise]` on a representative variant.
 
-### quantiser-radix2 dominates: 82% faster than the next best (quantiser-radix10)
+### quantiser-radix2 dominates: 87% faster than the next best (quantiser-radix10)
 
-quantiser-radix2 (5.26 us) leads quantiser-radix10 (9.57 us) by 82%, a clear separation rather than a photo finish. CV 3.6%.
+quantiser-radix2 (5.74 us) leads quantiser-radix10 (10.72 us) by 87%, a clear separation rather than a photo finish. CV 6.2%.
 
 _Why it matters:_ A dominant, well-separated winner is a safe default pick for this workload shape.
 
-### quantiser-radix2 beats baseline by 45% (significant)
+### quantiser-radix2 beats baseline by 46% (significant)
 
-quantiser-radix2 is -4.28 us (45%) faster than baseline quantiser-radix10, with a CI that excludes zero.
+quantiser-radix2 is -4.96 us (46%) faster than baseline quantiser-radix10, with a CI that excludes zero.
 
 _Why it matters:_ A large, significant improvement over the current baseline is a concrete reason to switch.
 
+### quantiser-radix10 shows warm-up / thermal drift (autocorr +0.59)
+
+quantiser-radix10's per-pass series has lag-1 autocorrelation +0.59, indicating warm-up / thermal drift. Its timing may not be at steady state.
+
+_Why it matters:_ Autocorrelated samples violate the independence the CIs assume; the interval is optimistic until the drift is warmed out or cooled down.
+
+### quantiser-radix10 is inconsistent: worst-20% is 1.7x its best-20%
+
+quantiser-radix10's best 20% of batches run at 9.68 us but its worst 20% at 16.38 us (1.7x) - a bimodal or bursty profile the median hides.
+
+_Why it matters:_ A fat tail matters for latency budgets even when the median looks fine; a steadier variant may serve better under load.
+
 ## Key findings
 
-- **Fastest: quantiser-radix2** at 5256.7 ns median (-45.1% vs baseline)
+- **Fastest: quantiser-radix2** at 5737.7 ns median (-46.5% vs baseline)
 - 1 variant significantly faster than baseline
-- Spread: 1.82x (fastest 5256.7 ns, slowest 9573.5 ns)
+- Spread: 1.87x (fastest 5737.7 ns, slowest 10722.5 ns)
 
 ## End-to-end (all cooldowns combined)
 
 | Variant | mean | median | best 20% | mid 60% | worst 20% | Δ mean |
 |---|---|---|---|---|---|---|
-| quantiser-radix10 | 9695ns | 9645ns | 9203ns | 9629ns | 10384ns | base |
-| quantiser-radix2 | 5244ns | 5325ns | 4978ns | 5256ns | 5474ns | -45.91% |
+| quantiser-radix10 | 11838ns | 10810ns | 9746ns | 10976ns | 16514ns | base |
+| quantiser-radix2 | 5882ns | 5809ns | 5614ns | 5791ns | 6426ns | -50.31% |
 
 ## Function-under-test only (all cooldowns combined)
 
 | Variant | mean | best 20% | worst 20% | Δ mean | throughput (Gops/s) |
 |---|---|---|---|---|---|
-| quantiser-radix10 | 9618ns | 9135ns | 10278ns | base | 0.027 |
-| quantiser-radix2 | 5170ns | 4905ns | 5392ns | -46.24% | 0.050 |
+| quantiser-radix10 | 11746ns | 9679ns | 16382ns | base | 0.022 |
+| quantiser-radix2 | 5795ns | 5536ns | 6286ns | -50.67% | 0.044 |
 
 ## Performance model
 
-- Peak throughput: **0.052 Gops/s** (quantiser-radix2; best 20% batches)
+- Peak throughput: **0.046 Gops/s** (quantiser-radix2; best 20% batches)
 - Ops per call: 256
 
 | Variant | Gops/s (median) | % of peak |
 |---|---|---|
-| quantiser-radix10 | 0.027 | 51.2% |
-| quantiser-radix2 | 0.049 | 93.3% |
+| quantiser-radix10 | 0.024 | 51.6% |
+| quantiser-radix2 | 0.045 | 96.5% |
 
 ## Per-cooldown breakdown (e2e mean)
 
 | Variant | 0ms | avg | Δ avg |
 |---|---|---|---|
-| quantiser-radix10 | 9695ns | 9695ns | base |
-| quantiser-radix2 | 5244ns | 5244ns | -45.91% |
+| quantiser-radix10 | 11838ns | 11838ns | base |
+| quantiser-radix2 | 5882ns | 5882ns | -50.31% |
 
 ## Statistical comparison (algo, 95% bootstrap CI)
 
 | Variant | median | Δ median | Δ CI | 95% CI | sig? | adj. p | sign p | ties |
 |---|---|---|---|---|---|---|---|---|
-| quantiser-radix10 | 9574ns | base | --- | [9454, 9610] | --- | --- | --- | --- |
-| quantiser-radix2 | 5257ns | -4381.2ns (-45.8%) | [-4455, -4340]ns | [5035, 5260] | YES | 0.0000 | 0.0000 | 0 |
+| quantiser-radix10 | 10722ns | base | --- | [10641, 11137] | --- | --- | --- | --- |
+| quantiser-radix2 | 5738ns | -4954.4ns (-46.2%) | [-5343, -4887]ns | [5667, 5753] | YES | 0.0000 | 0.0000 | 0 |
 
 ## Per-pass consistency (nonstop e2e, Δ vs baseline)
 
 | Pass | quantiser-radix10 | quantiser-radix2 |
 |---|---|---|
-| 1 | 9456ns | -46.5% |
-| 2 | 9458ns | -47.0% |
-| 3 | 9455ns | -41.5% |
-| 4 | 10475ns | -52.2% |
-| 5 | 9370ns | -46.6% |
-| 6 | 10310ns | -51.4% |
-| 7 | 9512ns | -47.3% |
-| 8 | 9520ns | -47.4% |
-| 9 | 9557ns | -47.6% |
-| 10 | 10628ns | -51.9% |
-| 11 | 9089ns | -46.4% |
-| 12 | 9608ns | -48.5% |
-| 13 | 9390ns | -48.3% |
-| 14 | 10423ns | -53.5% |
-| 15 | 9034ns | -41.3% |
-| 16 | 9050ns | -44.4% |
-| 17 | 9328ns | -47.8% |
-| 18 | 9071ns | -42.2% |
-| 19 | 9069ns | -46.7% |
-| 20 | 9068ns | -44.5% |
-| 21 | 10041ns | -44.3% |
-| 22 | 10065ns | -47.1% |
-| 23 | 10038ns | -47.0% |
-| 24 | 10043ns | -47.1% |
-| 25 | 10240ns | -48.1% |
-| 26 | 9453ns | -43.7% |
-| 27 | 9438ns | -43.7% |
-| 28 | 9430ns | -43.6% |
-| 29 | 9431ns | -42.7% |
-| 30 | 9434ns | -43.6% |
-| 31 | 9590ns | -45.2% |
-| 32 | 9666ns | -45.6% |
-| 33 | 9612ns | -45.3% |
-| 34 | 9609ns | -45.3% |
-| 35 | 9610ns | -45.3% |
-| 36 | 9662ns | -45.6% |
-| 37 | 9609ns | -45.3% |
-| 38 | 9609ns | -44.5% |
-| 39 | 9610ns | -45.3% |
-| 40 | 9662ns | -45.6% |
+| 1 | 18853ns | -70.5% |
+| 2 | 17628ns | -66.2% |
+| 3 | 11236ns | -41.0% |
+| 4 | 10550ns | -28.6% |
+| 5 | 10918ns | -48.7% |
+| 6 | 11990ns | -53.3% |
+| 7 | 24311ns | -77.0% |
+| 8 | 19779ns | -72.6% |
+| 9 | 14803ns | -63.7% |
+| 10 | 11839ns | -53.5% |
+| 11 | 11565ns | -51.0% |
+| 12 | 11852ns | -50.3% |
+| 13 | 11464ns | -50.6% |
+| 14 | 11506ns | -50.7% |
+| 15 | 11491ns | -50.7% |
+| 16 | 10795ns | -47.5% |
+| 17 | 11037ns | -48.7% |
+| 18 | 10498ns | -46.0% |
+| 19 | 10491ns | -46.0% |
+| 20 | 10629ns | -46.7% |
+| 21 | 10740ns | -42.1% |
+| 22 | 10640ns | -45.8% |
+| 23 | 10851ns | -47.1% |
+| 24 | 10641ns | -46.0% |
+| 25 | 10689ns | -46.2% |
+| 26 | 10645ns | -46.1% |
+| 27 | 10643ns | -46.1% |
+| 28 | 10640ns | -46.1% |
+| 29 | 11594ns | -50.5% |
+| 30 | 10754ns | -47.7% |
+| 31 | 9665ns | -40.4% |
+| 32 | 9669ns | -40.4% |
+| 33 | 9667ns | -40.4% |
+| 34 | 9670ns | -40.4% |
+| 35 | 9694ns | -38.2% |
+| 36 | 9686ns | -40.5% |
+| 37 | 9668ns | -40.1% |
+| 38 | 9712ns | -35.5% |
+| 39 | 10705ns | -46.5% |
+| 40 | 10642ns | -46.3% |
 
 **Autocorrelation (lag-1) per-pass series:**
 
 | Variant | r₁ | note |
 |---|---|---|
-| quantiser-radix10 | 0.017 | ok |
-| quantiser-radix2 | 0.404 | moderate+ |
+| quantiser-radix10 | 0.587 | HIGH+ (drift/warm-up) |
+| quantiser-radix2 | 0.339 | moderate+ |
 
 **Consistency summary:**
 
@@ -129,56 +141,61 @@ _Why it matters:_ A large, significant improvement over the current baseline is 
 
 | Variant | mean bridge | algo mean | bridge % | flag |
 |---|---|---|---|---|
-| quantiser-radix10 | 2.5ns | 9618.1ns | 0.0% |  |
-| quantiser-radix2 | 2.2ns | 5170.3ns | 0.0% |  |
+| quantiser-radix10 | 2.8ns | 11746.3ns | 0.0% |  |
+| quantiser-radix2 | 2.5ns | 5794.5ns | 0.0% |  |
 
 ## Distribution (algo ns)
 
 ```
-quantiser-radix10 (n=40, range 9134.8-10278.2 ns)
-   9134.8 |
-   9192.0 |
-   9249.1 |
-   9306.3 |#####
-   9363.5 |##########
-   9420.6 |########################################
-   9477.8 |##########
-   9535.0 |##########
-   9592.1 |###################################
-   9649.3 |###############
-   9706.5 |
-   9763.6 |
-   9820.8 |
-   9878.0 |
-   9935.2 |
-   9992.3 |###############
-  10049.5 |#####
-  10106.7 |
-  10163.8 |
-  10221.0 |#####
-  (6 below, 4 above range)
+quantiser-radix10 (n=40, range 9679.1-16381.9 ns)
+   9679.1 |############
+  10014.2 |
+  10349.3 |########################################
+  10684.5 |############################
+  11019.6 |########
+  11354.8 |####################
+  11689.9 |############
+  12025.0 |
+  12360.2 |
+  12695.3 |
+  13030.5 |
+  13365.6 |
+  13700.8 |
+  14035.9 |
+  14371.0 |
+  14706.2 |####
+  15041.3 |
+  15376.5 |
+  15711.6 |
+  16046.7 |
+  (5 below, 4 above range)
 
-quantiser-radix2 (n=40, range 4905.2-5392.5 ns)
-   4905.2 |
-   4929.6 |####
-   4953.9 |
-   4978.3 |
-   5002.7 |###############################
-   5027.0 |########
-   5051.4 |####
-   5075.8 |
-   5100.1 |####
-   5124.5 |
-   5148.9 |
-   5173.2 |
-   5197.6 |
-   5221.9 |####
-   5246.3 |########################################
-   5270.7 |
-   5295.0 |######################
-   5319.4 |######################
-   5343.8 |
-   5368.1 |
-  (5 below, 3 above range)
+quantiser-radix2 (n=40, range 5536.1-6286.3 ns)
+   5536.1 |####
+   5573.6 |#############
+   5611.1 |####
+   5648.6 |########################################
+   5686.1 |####
+   5723.7 |########################################
+   5761.2 |##########################
+   5798.7 |
+   5836.2 |
+   5873.7 |####
+   5911.2 |
+   5948.7 |####
+   5986.2 |####
+   6023.8 |
+   6061.3 |
+   6098.8 |
+   6136.3 |
+   6173.8 |
+   6211.3 |####
+   6248.8 |####
+  (3 below, 2 above range)
 
 ```
+
+## Diagnostics
+
+- **quantiser-radix10**: CV=26.0% (high variance, measurements may be unstable)
+- **quantiser-radix10**: autocorrelation=0.59 (measurement drift or warm-up artifact)

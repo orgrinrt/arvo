@@ -43,6 +43,13 @@ members = [
     "benches/variants/quantiser-radix-shared",
     "benches/variants/quantiser-radix2",
     "benches/variants/quantiser-radix10",
+    "benches/variants/bitpack-shared",
+    "benches/variants/bitpack-aligned-seq",
+    "benches/variants/bitpack-aligned-rand",
+    "benches/variants/bitpack-zeropad-seq",
+    "benches/variants/bitpack-zeropad-rand",
+    "benches/variants/bitpack-native-seq",
+    "benches/variants/bitpack-native-rand",
 ]
 
 [workspace.package]

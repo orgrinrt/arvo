@@ -135,6 +135,7 @@ fn main() -> ExitCode {
 /// name + input size. Hash benches go through `ByteRoutine`; graph
 /// + spectral benches go through their per-routine bridges.
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
+    use bench_bitpack_shared::Column;
     use bench_quantiser_fadd_shared::AddSweep;
     use bench_quantiser_radix_shared::RadixAdd;
     use bench_spectral_bisection::Fiedler;
@@ -179,6 +180,19 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("decimal-quantiser-radix-sweep", 2) => routine_bridge!(RadixAdd<2>),
         ("decimal-quantiser-radix-sweep", 8) => routine_bridge!(RadixAdd<8>),
         ("decimal-quantiser-radix-sweep", 20) => routine_bridge!(RadixAdd<20>),
+
+        // bitpack access-pattern bench: the two `Layout::Bitpacked`
+        // readings (byte-aligned slot, zero-inter-value-padding) dispatched
+        // per swept column size. Sequential and random-access sections each
+        // share the identical Column* Input/Output shape across their two
+        // variant dylibs; only the extraction transform inside each dylib
+        // differs.
+        ("bitpack-sequential-sum", 256) => routine_bridge!(Column<256>),
+        ("bitpack-sequential-sum", 4096) => routine_bridge!(Column<4096>),
+        ("bitpack-sequential-sum", 16384) => routine_bridge!(Column<16384>),
+        ("bitpack-random-sum", 256) => routine_bridge!(Column<256>),
+        ("bitpack-random-sum", 4096) => routine_bridge!(Column<4096>),
+        ("bitpack-random-sum", 16384) => routine_bridge!(Column<16384>),
 
         _ => return None,
     };

@@ -7,131 +7,125 @@ Baseline: **quantiser-hardware**
 
 Baseline for all deltas below: **quantiser-hardware**. (Deltas are paired `variant - baseline` medians; `*` marks a CI that excludes zero.)
 
-### quantiser-hardware dominates: 1141% faster than the next best (quantiser-software)
+### quantiser-hardware dominates: 1179% faster than the next best (quantiser-software)
 
-quantiser-hardware (286 ns) leads quantiser-software (3.55 us) by 1141%, a clear separation rather than a photo finish. CV 16.5%.
+quantiser-hardware (319 ns) leads quantiser-software (4.09 us) by 1179%, a clear separation rather than a photo finish. CV 22.3%.
 
 _Why it matters:_ A dominant, well-separated winner is a safe default pick for this workload shape.
 
-### quantiser-hardware is fastest but the noisiest (CV 16.5%)
+### quantiser-hardware is fastest but the noisiest (CV 22.3%)
 
-quantiser-hardware wins on median (286 ns) yet has the highest variance (CV 16.5%), while quantiser-software is the steadiest (CV 4.1%, 3.55 us).
+quantiser-hardware wins on median (319 ns) yet has the highest variance (CV 22.3%), while quantiser-software is the steadiest (CV 3.4%, 4.09 us).
 
 _Why it matters:_ For latency-sensitive or tail-bound paths, the steadier variant can beat the faster-on-average one; weigh peak vs consistency.
 
-### quantiser-software shows warm-up / thermal drift (autocorr +0.73)
-
-quantiser-software's per-pass series has lag-1 autocorrelation +0.73, indicating warm-up / thermal drift. Its timing may not be at steady state.
-
-_Why it matters:_ Autocorrelated samples violate the independence the CIs assume; the interval is optimistic until the drift is warmed out or cooled down.
-
 ### No variant beats the baseline (quantiser-hardware)
 
-The baseline quantiser-hardware is the fastest (286 ns median); no rival improves on it (all deltas are >= 0).
+The baseline quantiser-hardware is the fastest (319 ns median); no rival improves on it (all deltas are >= 0).
 
 _Why it matters:_ When nothing beats the baseline, the current choice stands; the contenders cost speed for whatever else they buy.
 
-### Wide spread: slowest is 12.4x the fastest
+### Wide spread: slowest is 12.8x the fastest
 
-Fastest quantiser-hardware (286 ns) to slowest quantiser-software (3.55 us): 12.4x. The strategy choice matters a lot for this workload.
+Fastest quantiser-hardware (319 ns) to slowest quantiser-software (4.09 us): 12.8x. The strategy choice matters a lot for this workload.
 
 _Why it matters:_ A wide field means the strategy is load-bearing here; getting it right (or wrong) has large consequences.
 
 ## Key findings
 
-- **Baseline (quantiser-hardware) is the fastest** at 286.4 ns median
+- **Baseline (quantiser-hardware) is the fastest** at 319.4 ns median
 - 1 variant significantly slower than baseline
-- Spread: 12.41x (fastest 286.4 ns, slowest 3554.8 ns)
+- Spread: 12.79x (fastest 319.4 ns, slowest 4086.6 ns)
 
 ## End-to-end (all cooldowns combined)
 
 | Variant | mean | median | best 20% | mid 60% | worst 20% | Δ mean |
 |---|---|---|---|---|---|---|
-| quantiser-hardware | 365ns | 354ns | 334ns | 357ns | 421ns | base |
-| quantiser-software | 3693ns | 3622ns | 3539ns | 3669ns | 3918ns | +911.56% |
+| quantiser-hardware | 410ns | 394ns | 375ns | 394ns | 491ns | base |
+| quantiser-software | 4227ns | 4166ns | 4132ns | 4173ns | 4486ns | +932.15% |
 
 ## Function-under-test only (all cooldowns combined)
 
 | Variant | mean | best 20% | worst 20% | Δ mean | throughput (Gops/s) |
 |---|---|---|---|---|---|
-| quantiser-hardware | 298ns | 271ns | 350ns | base | 0.860 |
-| quantiser-software | 3621ns | 3470ns | 3838ns | +1116.53% | 0.071 |
+| quantiser-hardware | 333ns | 304ns | 405ns | base | 0.769 |
+| quantiser-software | 4140ns | 4051ns | 4378ns | +1143.67% | 0.062 |
 
 ## Performance model
 
-- Peak throughput: **0.946 Gops/s** (quantiser-hardware; best 20% batches)
+- Peak throughput: **0.843 Gops/s** (quantiser-hardware; best 20% batches)
 - Ops per call: 256
 
 | Variant | Gops/s (median) | % of peak |
 |---|---|---|
-| quantiser-hardware | 0.894 | 94.5% |
-| quantiser-software | 0.072 | 7.6% |
+| quantiser-hardware | 0.802 | 95.1% |
+| quantiser-software | 0.063 | 7.4% |
 
 ## Per-cooldown breakdown (e2e mean)
 
 | Variant | 0ms | avg | Δ avg |
 |---|---|---|---|
-| quantiser-hardware | 365ns | 365ns | base |
-| quantiser-software | 3693ns | 3693ns | +911.56% |
+| quantiser-hardware | 410ns | 410ns | base |
+| quantiser-software | 4227ns | 4227ns | +932.15% |
 
 ## Statistical comparison (algo, 95% bootstrap CI)
 
 | Variant | median | Δ median | Δ CI | 95% CI | sig? | adj. p | sign p | ties |
 |---|---|---|---|---|---|---|---|---|
-| quantiser-hardware | 286ns | base | --- | [285, 288] | --- | --- | --- | --- |
-| quantiser-software | 3555ns | +3268.8ns (+1141.1%) | [+3257, +3428]ns | [3524, 3723] | YES | 0.0000 | 0.0000 | 0 |
+| quantiser-hardware | 319ns | base | --- | [307, 330] | --- | --- | --- | --- |
+| quantiser-software | 4087ns | +3768.6ns (+1179.9%) | [+3758, +3783]ns | [4065, 4108] | YES | 0.0000 | 0.0000 | 0 |
 
 ## Per-pass consistency (nonstop e2e, Δ vs baseline)
 
 | Pass | quantiser-hardware | quantiser-software |
 |---|---|---|
-| 1 | 306ns | +1116.9% |
-| 2 | 308ns | +1134.7% |
-| 3 | 305ns | +1039.9% |
-| 4 | 304ns | +1041.6% |
-| 5 | 305ns | +1037.4% |
-| 6 | 307ns | +1031.7% |
-| 7 | 307ns | +1032.9% |
-| 8 | 306ns | +1034.2% |
-| 9 | 303ns | +1043.8% |
-| 10 | 305ns | +1036.5% |
-| 11 | 265ns | +1230.8% |
-| 12 | 267ns | +1221.2% |
-| 13 | 266ns | +1225.1% |
-| 14 | 264ns | +1236.5% |
-| 15 | 261ns | +1249.0% |
-| 16 | 276ns | +1175.8% |
-| 17 | 286ns | +1131.5% |
-| 18 | 285ns | +1135.7% |
-| 19 | 287ns | +1129.4% |
-| 20 | 285ns | +1134.9% |
-| 21 | 285ns | +1145.3% |
-| 22 | 288ns | +1135.9% |
-| 23 | 287ns | +1140.1% |
-| 24 | 282ns | +1158.7% |
-| 25 | 285ns | +1148.4% |
-| 26 | 287ns | +1139.2% |
-| 27 | 288ns | +1210.4% |
-| 28 | 285ns | +1230.7% |
-| 29 | 561ns | +627.7% |
-| 30 | 290ns | +1209.1% |
-| 31 | 286ns | +1202.3% |
-| 32 | 285ns | +1206.7% |
-| 33 | 285ns | +1205.0% |
-| 34 | 287ns | +1199.3% |
-| 35 | 284ns | +1231.2% |
-| 36 | 285ns | +1204.4% |
-| 37 | 286ns | +1204.0% |
-| 38 | 288ns | +1267.5% |
-| 39 | 284ns | +1210.1% |
-| 40 | 399ns | +833.5% |
+| 1 | 305ns | +1225.0% |
+| 2 | 303ns | +1231.3% |
+| 3 | 303ns | +1241.5% |
+| 4 | 307ns | +1224.4% |
+| 5 | 304ns | +1238.6% |
+| 6 | 308ns | +1221.4% |
+| 7 | 307ns | +1223.9% |
+| 8 | 305ns | +1233.3% |
+| 9 | 304ns | +1238.1% |
+| 10 | 305ns | +1232.2% |
+| 11 | 302ns | +1255.4% |
+| 12 | 304ns | +1260.5% |
+| 13 | 308ns | +1232.7% |
+| 14 | 305ns | +1239.2% |
+| 15 | 305ns | +1267.3% |
+| 16 | 305ns | +1378.3% |
+| 17 | 307ns | +1321.6% |
+| 18 | 308ns | +1229.8% |
+| 19 | 310ns | +1220.6% |
+| 20 | 308ns | +1229.0% |
+| 21 | 329ns | +1162.4% |
+| 22 | 722ns | +476.0% |
+| 23 | 330ns | +1287.0% |
+| 24 | 330ns | +1150.5% |
+| 25 | 333ns | +1134.8% |
+| 26 | 331ns | +1141.1% |
+| 27 | 333ns | +1133.0% |
+| 28 | 523ns | +763.0% |
+| 29 | 331ns | +1160.5% |
+| 30 | 331ns | +1197.2% |
+| 31 | 331ns | +1126.1% |
+| 32 | 332ns | +1123.9% |
+| 33 | 330ns | +1130.0% |
+| 34 | 332ns | +1120.9% |
+| 35 | 331ns | +1120.0% |
+| 36 | 332ns | +1123.9% |
+| 37 | 331ns | +1125.2% |
+| 38 | 330ns | +1242.5% |
+| 39 | 330ns | +1128.6% |
+| 40 | 330ns | +1126.9% |
 
 **Autocorrelation (lag-1) per-pass series:**
 
 | Variant | r₁ | note |
 |---|---|---|
-| quantiser-hardware | 0.019 | ok |
-| quantiser-software | 0.730 | HIGH+ (drift/warm-up) |
+| quantiser-hardware | 0.056 | ok |
+| quantiser-software | 0.181 | ok |
 
 **Consistency summary:**
 
@@ -141,60 +135,60 @@ _Why it matters:_ A wide field means the strategy is load-bearing here; getting 
 
 | Variant | mean bridge | algo mean | bridge % | flag |
 |---|---|---|---|---|
-| quantiser-hardware | 2.6ns | 297.6ns | 0.9% |  |
-| quantiser-software | 2.1ns | 3620.8ns | 0.1% |  |
+| quantiser-hardware | 3.0ns | 332.9ns | 0.9% |  |
+| quantiser-software | 3.1ns | 4139.8ns | 0.1% |  |
 
 ## Distribution (algo ns)
 
 ```
-quantiser-hardware (n=40, range 270.7-349.9 ns)
-    270.7 |
-    274.6 |###
-    278.6 |###
-    282.6 |########################################
-    286.5 |########################
-    290.5 |
-    294.4 |
-    298.4 |
-    302.4 |#####################
-    306.3 |#########
-    310.3 |
-    314.2 |
-    318.2 |
-    322.2 |
-    326.1 |
-    330.1 |
-    334.0 |
-    338.0 |
-    342.0 |
-    345.9 |
-  (5 below, 2 above range)
+quantiser-hardware (n=40, range 303.8-404.8 ns)
+    303.8 |###################################
+    308.8 |##
+    313.9 |
+    318.9 |
+    324.0 |
+    329.0 |########################################
+    334.1 |
+    339.1 |
+    344.2 |
+    349.2 |
+    354.3 |
+    359.3 |
+    364.4 |
+    369.4 |
+    374.5 |
+    379.5 |
+    384.6 |
+    389.6 |
+    394.7 |
+    399.7 |
+  (3 below, 2 above range)
 
-quantiser-software (n=40, range 3470.4-3837.8 ns)
-   3470.4 |#################
-   3488.8 |
-   3507.1 |###################################
-   3525.5 |########
-   3543.9 |##########################
-   3562.2 |
-   3580.6 |
-   3599.0 |
-   3617.3 |
-   3635.7 |
-   3654.1 |
-   3672.4 |
-   3690.8 |
-   3709.2 |########################################
-   3727.5 |
-   3745.9 |
-   3764.3 |####
-   3782.6 |#############
-   3801.0 |####
-   3819.4 |
-  (4 below, 2 above range)
+quantiser-software (n=40, range 4050.6-4378.1 ns)
+   4050.6 |########################################
+   4067.0 |#####
+   4083.3 |##############
+   4099.7 |###########
+   4116.1 |##
+   4132.5 |##
+   4148.8 |#####
+   4165.2 |#####
+   4181.6 |
+   4198.0 |
+   4214.3 |
+   4230.7 |
+   4247.1 |
+   4263.5 |
+   4279.9 |##
+   4296.2 |
+   4312.6 |
+   4329.0 |
+   4345.4 |##
+   4361.7 |
+  (3 below, 4 above range)
 
 ```
 
 ## Diagnostics
 
-- **quantiser-software**: autocorrelation=0.73 (measurement drift or warm-up artifact)
+- **quantiser-hardware**: CV=21.4% (high variance, measurements may be unstable)

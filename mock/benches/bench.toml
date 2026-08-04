@@ -163,3 +163,61 @@ runs_per_pass = 1000
 batch_size = 100
 harness_runs = 1
 cooldowns_ms = [0]
+
+[bench.bitpack-sequential-sum]
+title = "Layout::Bitpacked reading, sequential column sum: byte-aligned slot vs zero-inter-value-padding"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-sequential-sum.sizes]]
+n = 256
+variants = [
+    "../target/release/bench_bitpack_native_seq",
+    "../target/release/bench_bitpack_aligned_seq",
+    "../target/release/bench_bitpack_zeropad_seq",
+]
+
+[[bench.bitpack-sequential-sum.sizes]]
+n = 4096
+variants = [
+    "../target/release/bench_bitpack_native_seq",
+    "../target/release/bench_bitpack_aligned_seq",
+    "../target/release/bench_bitpack_zeropad_seq",
+]
+
+[[bench.bitpack-sequential-sum.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_native_seq",
+    "../target/release/bench_bitpack_aligned_seq",
+    "../target/release/bench_bitpack_zeropad_seq",
+]
+
+[bench.bitpack-random-sum]
+title = "Layout::Bitpacked reading, random-access column sum: byte-aligned slot vs zero-inter-value-padding"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-random-sum.sizes]]
+n = 256
+variants = [
+    "../target/release/bench_bitpack_native_rand",
+    "../target/release/bench_bitpack_aligned_rand",
+    "../target/release/bench_bitpack_zeropad_rand",
+]
+
+[[bench.bitpack-random-sum.sizes]]
+n = 4096
+variants = [
+    "../target/release/bench_bitpack_native_rand",
+    "../target/release/bench_bitpack_aligned_rand",
+    "../target/release/bench_bitpack_zeropad_rand",
+]
+
+[[bench.bitpack-random-sum.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_native_rand",
+    "../target/release/bench_bitpack_aligned_rand",
+    "../target/release/bench_bitpack_zeropad_rand",
+]
