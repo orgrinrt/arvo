@@ -22,6 +22,19 @@ fn main() -> ExitCode {
 
     let report_only = args.iter().any(|a| a == "--report-only");
 
+    // Section filter. Without it every invocation re-runs every bench in the
+    // manifest and rewrites every committed csv, meta and findings file, so a
+    // dispatch measuring one thing destroys the artifact trail of all the
+    // others. Six consecutive panel files declined to bench for exactly that
+    // reason. `--bench <name>` may repeat; absent, the filter is inert and the
+    // whole manifest runs as before.
+    let only: Vec<String> = args
+        .iter()
+        .enumerate()
+        .filter(|(_, a)| a.as_str() == "--bench")
+        .filter_map(|(i, _)| args.get(i + 1).cloned())
+        .collect();
+
     let manifest_path = Path::new("bench.toml");
     let manifest = match BenchManifest::load(manifest_path) {
         Ok(m) => m,
@@ -39,7 +52,19 @@ fn main() -> ExitCode {
         b.stage(vec![harness::algo_call(), harness::light_scalar()]);
     });
 
+    if !only.is_empty() {
+        for name in &only {
+            if !manifest.bench.contains_key(name) {
+                eprintln!("error: --bench `{name}` names no section in bench.toml");
+                return ExitCode::FAILURE;
+            }
+        }
+    }
+
     for (bench_name, section) in &manifest.bench {
+        if !only.is_empty() && !only.iter().any(|n| n == bench_name) {
+            continue;
+        }
         for (size_idx, _size) in section.sizes.iter().enumerate() {
             let config = match manifest.for_size(bench_name, size_idx, &mock_benches_dir) {
                 Ok(c) => c,
