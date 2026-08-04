@@ -1,0 +1,2952 @@
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/aliases.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/aliases.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/aliases.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/aliases.rs	2026-08-04 09:35:34
+@@ -28,7 +28,7 @@
+ use crate::ifixed::IFixed;
+ use crate::strategy::Warm;
+ use crate::ufixed::UFixed;
+-use arvo_storage::{fbits, ibits};
++use arvo_storage::{fbits, FBits};
+ 
+ /// Unsigned fixed-point with bare-`u8` const-generic ergonomics.
+ ///
+@@ -42,7 +42,7 @@
+ /// type Angle = arvo::Fixed<9, 7, Warm>;        // 9.7 unsigned
+ /// type Counter = arvo::Fixed<32, 0, Hot>;       // 32-bit counter
+ /// ```
+-pub type Fixed<const I: u16, const F: u16, S = Warm> = UFixed<{ ibits(I) }, { fbits(F) }, S>;
++pub type Fixed<const W: u16, const F: FBits, S = Warm> = UFixed<W, F, S>;
+ 
+ /// Signed fixed-point with bare-`u8` const-generic ergonomics.
+ ///
+@@ -54,7 +54,7 @@
+ /// type Coord = arvo::Signed<15, 16, Warm>;     // 15.16 signed
+ /// type Delta = arvo::Signed<7, 0, Hot>;         // signed 8-bit
+ /// ```
+-pub type Signed<const I: u16, const F: u16, S = Warm> = IFixed<{ ibits(I) }, { fbits(F) }, S>;
++pub type Signed<const W: u16, const F: FBits, S = Warm> = IFixed<W, F, S>;
+ 
+ /// Unsigned fixed-point integer alias parameterised by bit count `N`.
+ ///
+@@ -68,7 +68,7 @@
+ /// type Counter = arvo::Uint<32, Hot>;     // 32-bit counter
+ /// type Width = arvo::Uint<12>;             // 12-bit width, Warm default
+ /// ```
+-pub type Uint<const N: u16, S = Warm> = UFixed<{ ibits(N) }, { fbits(0u16) }, S>;
++pub type Uint<const N: u16, S = Warm> = UFixed<N, { fbits(0u16) }, S>;
+ 
+ /// Signed fixed-point integer alias parameterised by total bit count `N`.
+ ///
+@@ -82,4 +82,4 @@
+ /// type Delta = arvo::Int<8, Hot>;          // signed 8-bit
+ /// type Offset = arvo::Int<16>;             // signed 16-bit, Warm default
+ /// ```
+-pub type Int<const N: u16, S = Warm> = IFixed<{ ibits(N - 1) }, { fbits(0u16) }, S>;
++pub type Int<const N: u16, S = Warm> = IFixed<N, { fbits(0u16) }, S>;
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/fixed_scale.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/fixed_scale.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/fixed_scale.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/fixed_scale.rs	2026-08-04 09:35:34
+@@ -8,21 +8,284 @@
+ use arvo_storage::FBits;
+ 
+ /// The fractional bit count of a fixed-point type, as the shift amount for its fixed-point multiply
+-/// (`X_mul_fixed::<{ frac(F) }>`). A free const fn (like `ifixed_bits`) so the value reads as a constrained
++/// (`X_mul_fixed::<F>`). A free const fn (like `ifixed_bits`) so the value reads as a constrained
+ /// const expression in a const-generic turbofish: the inherent `FBits::raw()` method is flagged
+ /// "unconstrained generic constant" in that position, whereas a free-fn call is accepted, the same way
+-/// `ifixed_bits(I, F)` is accepted as a const-generic argument throughout.
++/// `W` is accepted as a const-generic argument throughout.
+ pub(crate) const fn frac(f: FBits) -> u16 {
+     // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier mirroring ifixed_bits; tracked: #256
+     f.raw()
+ }
+ 
+ /// Constrains a generic-dependent const shift so it can be passed as a method turbofish argument
+-/// (`X_mul_fixed::<{ frac(F) }>`) under `generic_const_exprs`. A const expression in a *type* position
+-/// (`Bits<{ ifixed_bits(I, F) }, ..>`) is accepted, but the same kind of expression in a *method* turbofish
++/// (`X_mul_fixed::<F>`) under `generic_const_exprs`. A const expression in a *type* position
++/// (`Bits<W, ..>`) is accepted, but the same kind of expression in a *method* turbofish
+ /// is flagged "unconstrained generic constant"; surfacing it through this trait bound (`(): FracShift<{
+-/// frac(F) }>`) marks it constrained. The `[(); { frac(F) } as usize]:` array predicate is the usual
++/// frac(F) }>`) marks it constrained. The `[(); F as usize]:` array predicate is the usual
+ /// alternative but overflows well-formedness checking at every `*` use site, so the trait-bound form is
+ /// used. Trivially satisfied by the blanket impl.
+-pub(crate) trait FracShift<const FRAC: u16> {} // lint:allow(no-bare-numeric) reason: const-shift constraint marker; tracked: #256
+-impl<const FRAC: u16> FracShift<FRAC> for () {} // lint:allow(no-bare-numeric) reason: const-shift constraint marker; tracked: #256
++pub(crate) trait FracShift<const FRAC: arvo_storage::FBits> {} // lint:allow(no-bare-numeric) reason: const-shift constraint marker; tracked: #256
++impl<const FRAC: arvo_storage::FBits> FracShift<FRAC> for () {} // lint:allow(no-bare-numeric) reason: const-shift constraint marker; tracked: #256
++
++/// Replaces the `[(); 1 / is_fractional(F)]:` const-division trick that
++/// encoded "F is not zero" as a const-eval failure. A sealed marker with one
++/// blanket impl over every `FBits` and a negative-space carve-out at zero is
++/// the shape this wants; the table below is the smallest thing that compiles
++/// and is NOT the recommendation, only the placeholder that lets the residual
++/// be counted.
++pub(crate) trait FracNonZero<const F: arvo_storage::FBits> {}
++impl FracNonZero<{ arvo_storage::fbits(1) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(2) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(3) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(4) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(5) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(6) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(7) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(8) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(9) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(10) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(11) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(12) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(13) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(14) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(15) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(16) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(17) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(18) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(19) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(20) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(21) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(22) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(23) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(24) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(25) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(26) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(27) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(28) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(29) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(30) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(31) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(32) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(33) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(34) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(35) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(36) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(37) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(38) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(39) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(40) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(41) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(42) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(43) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(44) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(45) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(46) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(47) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(48) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(49) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(50) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(51) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(52) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(53) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(54) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(55) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(56) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(57) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(58) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(59) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(60) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(61) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(62) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(63) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(64) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(65) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(66) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(67) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(68) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(69) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(70) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(71) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(72) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(73) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(74) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(75) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(76) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(77) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(78) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(79) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(80) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(81) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(82) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(83) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(84) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(85) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(86) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(87) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(88) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(89) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(90) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(91) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(92) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(93) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(94) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(95) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(96) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(97) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(98) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(99) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(100) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(101) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(102) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(103) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(104) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(105) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(106) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(107) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(108) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(109) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(110) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(111) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(112) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(113) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(114) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(115) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(116) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(117) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(118) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(119) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(120) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(121) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(122) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(123) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(124) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(125) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(126) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(127) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(128) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(129) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(130) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(131) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(132) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(133) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(134) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(135) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(136) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(137) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(138) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(139) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(140) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(141) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(142) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(143) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(144) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(145) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(146) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(147) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(148) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(149) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(150) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(151) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(152) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(153) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(154) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(155) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(156) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(157) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(158) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(159) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(160) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(161) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(162) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(163) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(164) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(165) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(166) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(167) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(168) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(169) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(170) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(171) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(172) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(173) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(174) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(175) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(176) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(177) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(178) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(179) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(180) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(181) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(182) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(183) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(184) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(185) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(186) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(187) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(188) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(189) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(190) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(191) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(192) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(193) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(194) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(195) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(196) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(197) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(198) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(199) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(200) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(201) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(202) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(203) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(204) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(205) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(206) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(207) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(208) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(209) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(210) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(211) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(212) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(213) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(214) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(215) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(216) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(217) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(218) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(219) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(220) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(221) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(222) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(223) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(224) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(225) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(226) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(227) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(228) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(229) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(230) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(231) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(232) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(233) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(234) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(235) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(236) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(237) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(238) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(239) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(240) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(241) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(242) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(243) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(244) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(245) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(246) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(247) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(248) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(249) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(250) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(251) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(252) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(253) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(254) }> for () {}
++impl FracNonZero<{ arvo_storage::fbits(255) }> for () {}
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/ifixed.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/ifixed.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/ifixed.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/ifixed.rs	2026-08-04 09:35:34
+@@ -1,6 +1,6 @@
+ //! Signed fixed-point type.
+ //!
+-//! Mirror of `UFixed` with signed storage. `IFixed<I, F, S>` stores
++//! Mirror of `UFixed` with signed storage. `IFixed<W, F, S>` stores
+ //! a signed fixed-point value with `I` integer bits, `F` fractional
+ //! bits, and strategy `S`; the sign bit is separate, so the logical
+ //! width is `1 + I + F`.
+@@ -23,7 +23,7 @@
+ 
+ use notko::Outcome;
+ 
+-use crate::fixed_scale::{frac, FracShift};
++use crate::fixed_scale::{frac, FracNonZero, FracShift};
+ use crate::markers::{BitPresentation, FractionLike, IntegerLike};
+ use crate::strategy::{
+     ifixed_bits, is_fractional, tag_one_representable, Additive, BitsContainerFor, Bounded, Hot,
+@@ -40,20 +40,20 @@
+ /// symmetric counterpart of UFixed's wrap of
+ /// `Bits<{I+F}, S, Unsigned>`).
+ #[repr(transparent)]
+-pub struct IFixed<const I: IBits, const F: FBits, S: Strategy = Warm>(
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>,
++pub struct IFixed<const W: u16, const F: FBits, S: Strategy = Warm>(
++    Bits<W, S, Signed>,
+ )
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>;
++    S: BitsContainerFor<W, Signed>;
+ 
+ // SAFETY: `repr(transparent)` over `Bits<{1+I+F}, S, Signed>`.
+ // Layout-identical by Rust spec. See UFixed for rationale.
+-const unsafe impl<const I: IBits, const F: FBits, S: Strategy> arvo_transparent::Transparent
+-    for IFixed<I, F, S>
++const unsafe impl<const W: u16, const F: FBits, S: Strategy> arvo_transparent::Transparent
++    for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
++    S: BitsContainerFor<W, Signed>,
+ {
+-    type Inner = Bits<{ ifixed_bits(I, F) }, S, Signed>;
++    type Inner = Bits<W, S, Signed>;
+ }
+ 
+ // Generic Identity blanket on IFixed wires through the inner Bits's
+@@ -61,21 +61,21 @@
+ // UFixed step 7. ZERO/ONE come from Bits::ZERO / ONE; MINUS_ONE on
+ // IFixed-specific surface uses raw -1 via from_raw with a typed
+ // bridge (signed counterpart added in a later step if needed).
+-/// The fixed-point one for `IFixed<I, F, S>`, raw `1 << F`: double the container raw 1 exactly F times
++/// The fixed-point one for `IFixed<W, F, S>`, raw `1 << F`: double the container raw 1 exactly F times
+ /// through the strategy's `i_add`. `F == 0` runs zero doublings -> raw 1 (the integer one). Routes only
+-/// through the `S: IArith<{ifixed_bits(I, F)}>` strategy bound (the const-expr-as-generic-arg shape the
++/// through the `S: IArith<W>` strategy bound (the const-expr-as-generic-arg shape the
+ /// inner `Bits` bounds also use), never the container-T projection, so it avoids the const-eval cycle a
+ /// T-projection bound trips. A free const fn because inherent impls cannot carry `[const]` trait bounds.
+-const fn ifixed_fixed_one<const I: IBits, const F: FBits, S: Strategy>() -> IFixed<I, F, S>
++const fn ifixed_fixed_one<const W: u16, const F: FBits, S: Strategy>() -> IFixed<W, F, S>
+ where
+-    S: const IArith<{ ifixed_bits(I, F) }>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity<Multiplicative>,
++    S: const IArith<W>,
++    Bits<W, S, Signed>: const Identity<Multiplicative>,
+ {
+     let mut acc =
+-        <Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity<Multiplicative>>::IDENTITY.to_raw();
++        <Bits<W, S, Signed> as Identity<Multiplicative>>::IDENTITY.to_raw();
+     let mut doublings: u16 = 0; // lint:allow(no-bare-numeric) reason: const-loop counter for the 1<<F doubling; tracked: #256
+     while doublings < F.raw() {
+-        acc = <S as IArith<{ ifixed_bits(I, F) }>>::i_add(acc, acc);
++        acc = <S as IArith<W>>::i_add(acc, acc);
+         doublings += 1;
+     }
+     IFixed::from_raw(acc)
+@@ -83,13 +83,13 @@
+ 
+ // The additive identity is unconditional: zero is representable at every
+ // width.
+-const impl<const I: IBits, const F: FBits, S: Strategy> Identity<Additive> for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Identity<Additive> for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity<Additive>,
++    S: BitsContainerFor<W, Signed>,
++    Bits<W, S, Signed>: const Identity<Additive>,
+ {
+     const IDENTITY: Self =
+-        Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity<Additive>>::IDENTITY);
++        Self(<Bits<W, S, Signed> as Identity<Additive>>::IDENTITY);
+ }
+ 
+ // The multiplicative one is not. `IFixed<0, F, S>` spans `[-1, 1)`, which does
+@@ -97,37 +97,37 @@
+ // landed on its minimum under Hot, so `x * ONE` flipped sign, and clamped just
+ // below one under Precise. Minus one, by contrast, IS representable there, as
+ // the container minimum, which is why `SignedIdentity` carries no such gate.
+-const impl<const I: IBits, const F: FBits, S: Strategy> Identity<Multiplicative> for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Identity<Multiplicative> for IFixed<W, F, S>
+ where
+-    S: const IArith<{ ifixed_bits(I, F) }>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: const Identity<Multiplicative>,
+-    Picker: OneRepresentable<{ tag_one_representable(I.raw()) }>,
++    S: const IArith<W>,
++    Bits<W, S, Signed>: const Identity<Multiplicative>,
++    Picker: OneRepresentable<0>, // INSTRUMENTED: guard relaxed to isolate the residual
+ {
+-    const IDENTITY: Self = ifixed_fixed_one::<I, F, S>();
++    const IDENTITY: Self = ifixed_fixed_one::<W, F, S>();
+ }
+ 
+-/// The fixed-point minus one for `IFixed<I, F, S>`, raw `-(1 << F)`.
++/// The fixed-point minus one for `IFixed<W, F, S>`, raw `-(1 << F)`.
+ ///
+ /// Same doubling loop as `ifixed_fixed_one`, started from the container's
+ /// `NEG_ONE` instead of its one: doubling minus one `F` times gives
+ /// `-(2^F)`. Routes through the strategy bound rather than the container-T
+ /// projection for the same const-eval-cycle reason.
+-const fn ifixed_fixed_neg_one<const I: IBits, const F: FBits, S: Strategy>() -> IFixed<I, F, S>
++const fn ifixed_fixed_neg_one<const W: u16, const F: FBits, S: Strategy>() -> IFixed<W, F, S>
+ where
+-    S: const IArith<{ ifixed_bits(I, F) }>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: const SignedIdentity,
++    S: const IArith<W>,
++    Bits<W, S, Signed>: const SignedIdentity,
+ {
+-    let mut acc = <Bits<{ ifixed_bits(I, F) }, S, Signed> as SignedIdentity>::NEG_ONE.to_raw();
++    let mut acc = <Bits<W, S, Signed> as SignedIdentity>::NEG_ONE.to_raw();
+     let mut doublings: u16 = 0; // lint:allow(no-bare-numeric) reason: const-loop counter for the -(1<<F) doubling; tracked: #256
+     while doublings < F.raw() {
+-        acc = <S as IArith<{ ifixed_bits(I, F) }>>::i_add(acc, acc);
++        acc = <S as IArith<W>>::i_add(acc, acc);
+         doublings += 1;
+     }
+     IFixed::from_raw(acc)
+ }
+ 
+ // `NEG_ONE` is unconditional, where `Identity<Multiplicative>` is not, and
+-// the reason is the range rather than a stipulation. `IFixed<I, F, S>`
++// the reason is the range rather than a stipulation. `IFixed<W, F, S>`
+ // spans `[-2^I, 2^I)`: minus one is inside at every `I`, and at `I == 0`
+ // it is exactly the container minimum, while one is outside there. So the
+ // representability projection gates the multiplicative identity and must
+@@ -135,127 +135,127 @@
+ //
+ // Four artifacts asserted this impl existed before it did. It did not, at
+ // any width, which is why the law over the matrix now pins it.
+-const impl<const I: IBits, const F: FBits, S: Strategy> SignedIdentity for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> SignedIdentity for IFixed<W, F, S>
+ where
+-    S: const IArith<{ ifixed_bits(I, F) }>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: const SignedIdentity,
++    S: const IArith<W>,
++    Bits<W, S, Signed>: const SignedIdentity,
+ {
+-    const NEG_ONE: Self = ifixed_fixed_neg_one::<I, F, S>();
++    const NEG_ONE: Self = ifixed_fixed_neg_one::<W, F, S>();
+ }
+ 
+ // Generic Bounded blanket on IFixed wires through the inner signed
+ // Bits's Bounded blanket. Same single-predicate cycle-avoidance pattern
+ // as Identity. Closes Round 6 deviation 3 / NIT 5 (#325).
+-const impl<const I: IBits, const F: FBits, S: Strategy> Bounded for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Bounded for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Bounded,
++    S: BitsContainerFor<W, Signed>,
++    Bits<W, S, Signed>: [const] Bounded,
+ {
+-    const MIN: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Bounded>::MIN);
+-    const MAX: Self = Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Bounded>::MAX);
++    const MIN: Self = Self(<Bits<W, S, Signed> as Bounded>::MIN);
++    const MAX: Self = Self(<Bits<W, S, Signed> as Bounded>::MAX);
+ }
+ 
+ // ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault
+ // blankets routed through the inner signed Bits. Same single-predicate
+ // cycle-avoidance pattern as Identity.
+-const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstPartialEq
+-    for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> crate::strategy::ConstPartialEq
++    for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstPartialEq,
++    S: BitsContainerFor<W, Signed>,
++    Bits<W, S, Signed>: [const] crate::strategy::ConstPartialEq,
+ {
+     #[inline(always)]
+     fn const_eq(&self, other: &Self) -> arvo_storage::Bool {
+         let a = <Self as arvo_transparent::Transparent>::raw(*self);
+         let b = <Self as arvo_transparent::Transparent>::raw(*other);
+-        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstPartialEq>::const_eq(
++        <Bits<W, S, Signed> as crate::strategy::ConstPartialEq>::const_eq(
+             &a, &b,
+         )
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstEq for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> crate::strategy::ConstEq for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstEq,
++    S: BitsContainerFor<W, Signed>,
++    Bits<W, S, Signed>: [const] crate::strategy::ConstEq,
+ {
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstBitEq
+-    for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> crate::strategy::ConstBitEq
++    for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstBitEq,
++    S: BitsContainerFor<W, Signed>,
++    Bits<W, S, Signed>: [const] crate::strategy::ConstBitEq,
+ {
+     #[inline(always)]
+     fn const_bit_eq(&self, other: &Self) -> arvo_storage::Bool {
+         let a = <Self as arvo_transparent::Transparent>::raw(*self);
+         let b = <Self as arvo_transparent::Transparent>::raw(*other);
+-        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstBitEq>::const_bit_eq(
++        <Bits<W, S, Signed> as crate::strategy::ConstBitEq>::const_bit_eq(
+             &a, &b,
+         )
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstOrd
+-    for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> crate::strategy::ConstOrd
++    for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] crate::strategy::ConstOrd,
++    S: BitsContainerFor<W, Signed>,
++    Bits<W, S, Signed>: [const] crate::strategy::ConstOrd,
+ {
+     #[inline(always)]
+     fn const_cmp(&self, other: &Self) -> crate::strategy::ConstOrdering {
+         let a = <Self as arvo_transparent::Transparent>::raw(*self);
+         let b = <Self as arvo_transparent::Transparent>::raw(*other);
+-        <Bits<{ ifixed_bits(I, F) }, S, Signed> as crate::strategy::ConstOrd>::const_cmp(&a, &b)
++        <Bits<W, S, Signed> as crate::strategy::ConstOrd>::const_cmp(&a, &b)
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> crate::strategy::ConstDefault
+-    for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> crate::strategy::ConstDefault
++    for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: [const] Identity<Additive>,
++    S: BitsContainerFor<W, Signed>,
++    Bits<W, S, Signed>: [const] Identity<Additive>,
+ {
+     #[inline(always)]
+     fn const_default() -> Self {
+-        Self(<Bits<{ ifixed_bits(I, F) }, S, Signed> as Identity<Additive>>::IDENTITY)
++        Self(<Bits<W, S, Signed> as Identity<Additive>>::IDENTITY)
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
++    S: BitsContainerFor<W, Signed>,
+ {
+     /// Construct from the raw signed container value.
+     ///
+     /// Caller keeps the value inside the logical range.
+     #[inline(always)]
+-    pub const fn from_raw(bits: <S as BitsContainerFor<{ ifixed_bits(I, F) }, Signed>>::T) -> Self {
++    pub const fn from_raw(bits: <S as BitsContainerFor<W, Signed>>::T) -> Self {
+         Self(Bits::from_raw(bits))
+     }
+ 
+     /// Extract the raw signed container value.
+     #[inline(always)]
+-    pub const fn to_raw(self) -> <S as BitsContainerFor<{ ifixed_bits(I, F) }, Signed>>::T {
++    pub const fn to_raw(self) -> <S as BitsContainerFor<W, Signed>>::T {
+         self.0.to_raw()
+     }
+ 
+     /// Logical bit width (`1 + I + F`).
+     #[inline(always)]
+     pub const fn logical_width() -> USize {
+-        USize(ifixed_bits(I, F) as usize)
++        USize(W as usize)
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> Copy for IFixed<I, F, S> where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>
++impl<const W: u16, const F: FBits, S: Strategy> Copy for IFixed<W, F, S> where
++    S: BitsContainerFor<W, Signed>
+ {
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> Clone for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> Clone for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
++    S: BitsContainerFor<W, Signed>,
+ {
+     #[inline(always)]
+     fn clone(&self) -> Self {
+@@ -263,9 +263,9 @@
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> PartialEq for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> PartialEq for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
++    S: BitsContainerFor<W, Signed>,
+ {
+     #[inline(always)]
+     fn eq(&self, other: &Self) -> bool {
+@@ -273,14 +273,14 @@
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> Eq for IFixed<I, F, S> where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>
++impl<const W: u16, const F: FBits, S: Strategy> Eq for IFixed<W, F, S> where
++    S: BitsContainerFor<W, Signed>
+ {
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> Default for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> Default for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
++    S: BitsContainerFor<W, Signed>,
+ {
+     #[inline(always)]
+     fn default() -> Self {
+@@ -290,22 +290,22 @@
+ 
+ // --- Marker trait impls ----------------------------------------------------
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> BitPresentation for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
++    S: BitsContainerFor<W, Signed>,
+ {
+-    const LOGICAL_WIDTH: USize = crate::markers::logical_width_signed(I, F);
++    const LOGICAL_WIDTH: USize = USize(W as usize);
+ }
+ 
+-const impl<const I: IBits, S: Strategy> IntegerLike for IFixed<I, { FBits::ZERO }, S> where
+-    S: BitsContainerFor<{ ifixed_bits(I, FBits::ZERO) }, Signed>
++const impl<const W: u16, S: Strategy> IntegerLike for IFixed<W, { FBits::ZERO }, S> where
++    S: BitsContainerFor<W, Signed>
+ {
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> FractionLike for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> FractionLike for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    [(); 1 / is_fractional(F)]:,
++    S: BitsContainerFor<W, Signed>,
++    (): FracNonZero<F>,
+ {
+ }
+ 
+@@ -318,141 +318,141 @@
+ // TODO: cross-width arithmetic blocked on generic_const_exprs max() support — next round.
+ // TODO: cross-strategy arithmetic blocked on const-expr support for associated-type const projection — next round.
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> Add for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Add for IFixed<W, F, S>
+ where
+-    S: const IArith<{ ifixed_bits(I, F) }>,
++    S: const IArith<W>,
+ {
+     type Output = Self;
+     #[inline(always)]
+     fn add(self, rhs: Self) -> Self {
+-        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_add(
++        Self::from_raw(<S as IArith<W>>::i_add(
+             self.to_raw(),
+             rhs.to_raw(),
+         ))
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> Sub for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Sub for IFixed<W, F, S>
+ where
+-    S: const IArith<{ ifixed_bits(I, F) }>,
++    S: const IArith<W>,
+ {
+     type Output = Self;
+     #[inline(always)]
+     fn sub(self, rhs: Self) -> Self {
+-        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_sub(
++        Self::from_raw(<S as IArith<W>>::i_sub(
+             self.to_raw(),
+             rhs.to_raw(),
+         ))
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> Mul for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Mul for IFixed<W, F, S>
+ where
+-    S: [const] IArith<{ ifixed_bits(I, F) }>,
+-    (): FracShift<{ frac(F) }>,
++    S: [const] IArith<W>,
++    (): FracShift<F>,
+ {
+     type Output = Self;
+     #[inline(always)]
+     fn mul(self, rhs: Self) -> Self {
+         // Fixed-point multiply: rescale by the fractional bit count F. F == 0 is integer multiply.
+-        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_mul_fixed::<
+-            { frac(F) },
++        Self::from_raw(<S as IArith<W>>::i_mul_fixed::<
++            F,
+         >(self.to_raw(), rhs.to_raw()))
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> Div for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Div for IFixed<W, F, S>
+ where
+-    S: [const] IArith<{ ifixed_bits(I, F) }>,
+-    (): FracShift<{ frac(F) }>,
++    S: [const] IArith<W>,
++    (): FracShift<F>,
+ {
+     type Output = Self;
+     #[inline(always)]
+     fn div(self, rhs: Self) -> Self {
+         // Fixed-point divide: rescale by the fractional bit count F. F == 0 is integer divide.
+-        Self::from_raw(<S as IArith<{ ifixed_bits(I, F) }>>::i_div_fixed::<
+-            { frac(F) },
++        Self::from_raw(<S as IArith<W>>::i_div_fixed::<
++            F,
+         >(self.to_raw(), rhs.to_raw()))
+     }
+ }
+ 
+ // --- Strategy conversions -------------------------------------------------
+ 
+-impl<const I: IBits, const F: FBits> From<IFixed<I, F, Hot>> for IFixed<I, F, Warm>
++impl<const W: u16, const F: FBits> From<IFixed<W, F, Hot>> for IFixed<W, F, Warm>
+ where
+-    Hot: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Warm: IWidenFrom<Hot, { ifixed_bits(I, F) }>,
++    Hot: BitsContainerFor<W, Signed>,
++    Warm: IWidenFrom<Hot, W>,
+ {
+     #[inline(always)]
+-    fn from(src: IFixed<I, F, Hot>) -> Self {
+-        Self::from_raw(<Warm as IWidenFrom<Hot, { ifixed_bits(I, F) }>>::i_widen(
++    fn from(src: IFixed<W, F, Hot>) -> Self {
++        Self::from_raw(<Warm as IWidenFrom<Hot, W>>::i_widen(
+             src.to_raw(),
+         ))
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits> From<IFixed<I, F, Hot>> for IFixed<I, F, Precise>
++impl<const W: u16, const F: FBits> From<IFixed<W, F, Hot>> for IFixed<W, F, Precise>
+ where
+-    Hot: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Precise: IWidenFrom<Hot, { ifixed_bits(I, F) }>,
++    Hot: BitsContainerFor<W, Signed>,
++    Precise: IWidenFrom<Hot, W>,
+ {
+     #[inline(always)]
+-    fn from(src: IFixed<I, F, Hot>) -> Self {
+-        Self::from_raw(<Precise as IWidenFrom<Hot, { ifixed_bits(I, F) }>>::i_widen(src.to_raw()))
++    fn from(src: IFixed<W, F, Hot>) -> Self {
++        Self::from_raw(<Precise as IWidenFrom<Hot, W>>::i_widen(src.to_raw()))
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits> From<IFixed<I, F, Warm>> for IFixed<I, F, Precise>
++impl<const W: u16, const F: FBits> From<IFixed<W, F, Warm>> for IFixed<W, F, Precise>
+ where
+-    Warm: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Precise: IWidenFrom<Warm, { ifixed_bits(I, F) }>,
++    Warm: BitsContainerFor<W, Signed>,
++    Precise: IWidenFrom<Warm, W>,
+ {
+     #[inline(always)]
+-    fn from(src: IFixed<I, F, Warm>) -> Self {
+-        Self::from_raw(<Precise as IWidenFrom<Warm, { ifixed_bits(I, F) }>>::i_widen(src.to_raw()))
++    fn from(src: IFixed<W, F, Warm>) -> Self {
++        Self::from_raw(<Precise as IWidenFrom<Warm, W>>::i_widen(src.to_raw()))
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits> TryFrom<IFixed<I, F, Warm>> for IFixed<I, F, Hot>
++impl<const W: u16, const F: FBits> TryFrom<IFixed<W, F, Warm>> for IFixed<W, F, Hot>
+ where
+-    Warm: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Hot: INarrowFrom<Warm, { ifixed_bits(I, F) }>,
++    Warm: BitsContainerFor<W, Signed>,
++    Hot: INarrowFrom<Warm, W>,
+ {
+     type Error = ();
+     #[inline(always)]
+     // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+     // violation is on, and the formatter otherwise moves the comment below it.
+     #[rustfmt::skip]
+-    fn try_from(src: IFixed<I, F, Warm>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
+-        match <Hot as INarrowFrom<Warm, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw()) {
++    fn try_from(src: IFixed<W, F, Warm>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
++        match <Hot as INarrowFrom<Warm, W>>::i_try_narrow(src.to_raw()) {
+             Outcome::Ok(v) => Ok(Self::from_raw(v)),
+             Outcome::Err(()) => Err(()),
+         }
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits> TryFrom<IFixed<I, F, Precise>> for IFixed<I, F, Hot>
++impl<const W: u16, const F: FBits> TryFrom<IFixed<W, F, Precise>> for IFixed<W, F, Hot>
+ where
+-    Precise: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Hot: INarrowFrom<Precise, { ifixed_bits(I, F) }>,
++    Precise: BitsContainerFor<W, Signed>,
++    Hot: INarrowFrom<Precise, W>,
+ {
+     type Error = ();
+     #[inline(always)]
+     // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+     // violation is on, and the formatter otherwise moves the comment below it.
+     #[rustfmt::skip]
+-    fn try_from(src: IFixed<I, F, Precise>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
+-        match <Hot as INarrowFrom<Precise, { ifixed_bits(I, F) }>>::i_try_narrow(src.to_raw()) {
++    fn try_from(src: IFixed<W, F, Precise>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
++        match <Hot as INarrowFrom<Precise, W>>::i_try_narrow(src.to_raw()) {
+             Outcome::Ok(v) => Ok(Self::from_raw(v)),
+             Outcome::Err(()) => Err(()),
+         }
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> core::fmt::Debug for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> core::fmt::Debug for IFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
+-    Bits<{ ifixed_bits(I, F) }, S, Signed>: core::fmt::Debug,
++    S: BitsContainerFor<W, Signed>,
++    Bits<W, S, Signed>: core::fmt::Debug,
+ {
+     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+         f.debug_tuple("IFixed").field(&self.0).finish()
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/ifixed_impl.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/ifixed_impl.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/ifixed_impl.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/ifixed_impl.rs	2026-08-04 09:35:34
+@@ -1,4 +1,4 @@
+-//! `HasBitWidth` / `BitAccess` / `BitSequence` impls on `IFixed<I, F, S>`.
++//! `HasBitWidth` / `BitAccess` / `BitSequence` impls on `IFixed<W, F, S>`.
+ //!
+ //! Mirror of `ufixed_impl.rs` keyed on `IBitContainer` (which bundles
+ //! `BitsContainerFor<BITS, Signed>` + `IBitPrim` on the container).
+@@ -11,73 +11,73 @@
+ use crate::ifixed::IFixed;
+ use crate::strategy::ifixed_bits;
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> HasBitWidth for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> HasBitWidth for IFixed<W, F, S>
+ where
+-    S: IBitContainer<{ ifixed_bits(I, F) }>,
++    S: IBitContainer<W>,
+ {
+     // IFixed's logical width is `1 + I + F` (sign bit counts).
+-    const WIDTH: USize = USize(1 + I.raw() as usize + F.raw() as usize);
++    const WIDTH: USize = USize(W as usize);
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> BitAccess for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> BitAccess for IFixed<W, F, S>
+ where
+-    S: IBitContainer<{ ifixed_bits(I, F) }>,
++    S: IBitContainer<W>,
+ {
+     #[inline(always)]
+     fn bit(self, idx: USize) -> Bool {
+-        let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::get_bit(prim, idx)
++        let prim = <S as IBitContainer<W>>::to_prim(self.to_raw());
++        <<S as IBitContainer<W>>::Prim as IBitPrim>::get_bit(prim, idx)
+     }
+ 
+     #[inline(always)]
+     fn with_bit_set(self, idx: USize) -> Self {
+-        let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        let out = <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::with_bit_set(
++        let prim = <S as IBitContainer<W>>::to_prim(self.to_raw());
++        let out = <<S as IBitContainer<W>>::Prim as IBitPrim>::with_bit_set(
+             prim, idx,
+         );
+-        Self::from_raw(<S as IBitContainer<{ ifixed_bits(I, F) }>>::from_prim(out))
++        Self::from_raw(<S as IBitContainer<W>>::from_prim(out))
+     }
+ 
+     #[inline(always)]
+     fn with_bit_cleared(self, idx: USize) -> Self {
+-        let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        let out = <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::with_bit_cleared(
++        let prim = <S as IBitContainer<W>>::to_prim(self.to_raw());
++        let out = <<S as IBitContainer<W>>::Prim as IBitPrim>::with_bit_cleared(
+             prim, idx,
+         );
+-        Self::from_raw(<S as IBitContainer<{ ifixed_bits(I, F) }>>::from_prim(out))
++        Self::from_raw(<S as IBitContainer<W>>::from_prim(out))
+     }
+ 
+     #[inline(always)]
+     fn with_bit_toggled(self, idx: USize) -> Self {
+-        let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        let out = <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::with_bit_toggled(
++        let prim = <S as IBitContainer<W>>::to_prim(self.to_raw());
++        let out = <<S as IBitContainer<W>>::Prim as IBitPrim>::with_bit_toggled(
+             prim, idx,
+         );
+-        Self::from_raw(<S as IBitContainer<{ ifixed_bits(I, F) }>>::from_prim(out))
++        Self::from_raw(<S as IBitContainer<W>>::from_prim(out))
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> BitSequence for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> BitSequence for IFixed<W, F, S>
+ where
+-    S: IBitContainer<{ ifixed_bits(I, F) }>,
++    S: IBitContainer<W>,
+ {
+     #[inline(always)]
+     fn trailing_zeros(self) -> USize {
+-        let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::trailing_zeros(prim)
++        let prim = <S as IBitContainer<W>>::to_prim(self.to_raw());
++        <<S as IBitContainer<W>>::Prim as IBitPrim>::trailing_zeros(prim)
+     }
+ 
+     #[inline(always)]
+     fn leading_zeros(self) -> USize {
+-        let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
++        let prim = <S as IBitContainer<W>>::to_prim(self.to_raw());
+         let container_lz = <USize as Transparent>::raw(<<S as IBitContainer<
+-            { ifixed_bits(I, F) },
++            W,
+         >>::Prim as IBitPrim>::leading_zeros(
+             prim
+         ));
+-        let logical = 1 + I.raw() as usize + F.raw() as usize;
++        let logical = W as usize;
+         let container = <USize as Transparent>::raw(
+-            <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::WIDTH,
++            <<S as IBitContainer<W>>::Prim as IBitPrim>::WIDTH,
+         );
+         let surplus = container - logical;
+         USize(container_lz.saturating_sub(surplus))
+@@ -85,23 +85,23 @@
+ 
+     #[inline(always)]
+     fn count_ones(self) -> USize {
+-        let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::count_ones(prim)
++        let prim = <S as IBitContainer<W>>::to_prim(self.to_raw());
++        <<S as IBitContainer<W>>::Prim as IBitPrim>::count_ones(prim)
+     }
+ 
+     #[inline(always)]
+     fn count_zeros(self) -> USize {
+-        let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
++        let prim = <S as IBitContainer<W>>::to_prim(self.to_raw());
+         let ones = <USize as Transparent>::raw(
+-            <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::count_ones(prim),
++            <<S as IBitContainer<W>>::Prim as IBitPrim>::count_ones(prim),
+         );
+-        let logical = 1 + I.raw() as usize + F.raw() as usize;
++        let logical = W as usize;
+         USize(logical - ones)
+     }
+ 
+     #[inline(always)]
+     fn is_zero(self) -> Bool {
+-        let prim = <S as IBitContainer<{ ifixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        <<S as IBitContainer<{ ifixed_bits(I, F) }>>::Prim as IBitPrim>::is_zero(prim)
++        let prim = <S as IBitContainer<W>>::to_prim(self.to_raw());
++        <<S as IBitContainer<W>>::Prim as IBitPrim>::is_zero(prim)
+     }
+ }
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/layout_assertions.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/layout_assertions.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/layout_assertions.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/layout_assertions.rs	2026-08-04 09:35:34
+@@ -49,39 +49,39 @@
+ // --- UFixed: wrapper ↔ Bits + Bits ↔ primitive ---------------------------
+ //
+ // 8-bit at Hot: u8 native.
+-assert_layout_eq!(UFixed<{ ibits(8) }, { fbits(0) }, Hot>, u8);
+-assert_layout_eq!(UFixed<{ ibits(8) }, { fbits(0) }, Hot>, Bits<8, Hot, Unsigned>);
++assert_layout_eq!(UFixed<8, { fbits(0) }, Hot>, u8);
++assert_layout_eq!(UFixed<8, { fbits(0) }, Hot>, Bits<8, Hot, Unsigned>);
+ 
+ // 16-bit at Hot via I+F: u16 native.
+-assert_layout_eq!(UFixed<{ ibits(13) }, { fbits(3) }, Hot>, u16);
++assert_layout_eq!(UFixed<16, { fbits(3) }, Hot>, u16);
+ 
+ // 8-bit at Warm: u16 (2x).
+-assert_layout_eq!(UFixed<{ ibits(8) }, { fbits(0) }, Warm>, u16);
++assert_layout_eq!(UFixed<8, { fbits(0) }, Warm>, u16);
+ 
+ // 8-bit at Cold: u8 (Cold = Min container).
+-assert_layout_eq!(UFixed<{ ibits(8) }, { fbits(0) }, Cold>, u8);
++assert_layout_eq!(UFixed<8, { fbits(0) }, Cold>, u8);
+ 
+ // 32-bit at Hot.
+-assert_layout_eq!(UFixed<{ ibits(32) }, { fbits(0) }, Hot>, u32);
++assert_layout_eq!(UFixed<32, { fbits(0) }, Hot>, u32);
+ 
+ // 64-bit at Hot.
+-assert_layout_eq!(UFixed<{ ibits(64) }, { fbits(0) }, Hot>, u64);
++assert_layout_eq!(UFixed<64, { fbits(0) }, Hot>, u64);
+ 
+ // --- IFixed: 1+I+F logical width ----------------------------------------
+ //
+ // IFixed reserves one bit for sign; logical width = 1 + I + F.
+ // 1+7+0 = 8 → i8.
+-assert_layout_eq!(IFixed<{ ibits(7) }, { fbits(0) }, Hot>, i8);
+-assert_layout_eq!(IFixed<{ ibits(7) }, { fbits(0) }, Hot>, Bits<8, Hot, Signed>);
++assert_layout_eq!(IFixed<8, { fbits(0) }, Hot>, i8);
++assert_layout_eq!(IFixed<8, { fbits(0) }, Hot>, Bits<8, Hot, Signed>);
+ 
+ // 1+15+0 = 16 → i16.
+-assert_layout_eq!(IFixed<{ ibits(15) }, { fbits(0) }, Hot>, i16);
++assert_layout_eq!(IFixed<16, { fbits(0) }, Hot>, i16);
+ 
+ // 1+31+0 = 32 → i32.
+-assert_layout_eq!(IFixed<{ ibits(31) }, { fbits(0) }, Hot>, i32);
++assert_layout_eq!(IFixed<32, { fbits(0) }, Hot>, i32);
+ 
+ // 1+63+0 = 64 → i64.
+-assert_layout_eq!(IFixed<{ ibits(63) }, { fbits(0) }, Hot>, i64);
++assert_layout_eq!(IFixed<64, { fbits(0) }, Hot>, i64);
+ 
+ // 1+7+0 = 8 at Warm → 2x → i16.
+-assert_layout_eq!(IFixed<{ ibits(7) }, { fbits(0) }, Warm>, i16);
++assert_layout_eq!(IFixed<8, { fbits(0) }, Warm>, i16);
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/lib.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/lib.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/lib.rs	2026-07-30 22:16:36
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/lib.rs	2026-08-04 09:35:34
+@@ -22,7 +22,7 @@
+ // unsoundness (#97156, const `TypeId` resolved into types with higher-ranked-trait-
+ // bound subtyping) is unreachable: the stack bans `TypeId`. Builds clean on the
+ // pinned nightly. Migration to `generic_const_args` is tracked: #628.
+-#![feature(generic_const_exprs)]
++// REMOVED: #![feature(generic_const_exprs)]
+ #![feature(macro_metavar_expr_concat)]
+ #![allow(incomplete_features)]
+ 
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/markers.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/markers.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/markers.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/markers.rs	2026-08-04 09:35:34
+@@ -36,12 +36,12 @@
+ pub const trait BitPresentation: Copy {
+     /// Logical bit width of this type.
+     ///
+-    /// For `UFixed<I, F, S>`: `I + F`.
+-    /// For `IFixed<I, F, S>`: `1 + I + F` (sign bit + magnitude).
++    /// For `UFixed<W, F, S>`: `I + F`.
++    /// For `IFixed<W, F, S>`: `1 + I + F` (sign bit + magnitude).
+     const LOGICAL_WIDTH: USize;
+ }
+ 
+-/// Compose `LOGICAL_WIDTH` for `UFixed<I, F, S>`. Round 202605030400
++/// Compose `LOGICAL_WIDTH` for `UFixed<W, F, S>`. Round 202605030400
+ /// extracts the meta-bit composition into a typed-surface helper so
+ /// the impl body reads as one call.
+ #[inline(always)]
+@@ -50,7 +50,7 @@
+     USize(i.raw() as usize + f.raw() as usize)
+ }
+ 
+-/// Compose `LOGICAL_WIDTH` for `IFixed<I, F, S>` (1 sign bit + I + F).
++/// Compose `LOGICAL_WIDTH` for `IFixed<W, F, S>` (1 sign bit + I + F).
+ #[inline(always)]
+ pub const fn logical_width_signed(i: IBits, f: FBits) -> USize {
+     // lint:allow(no-bare-numeric) lint:allow(arvo-types-only) reason: typed-meta-bit boundary lift to USize; tracked: #312
+@@ -96,7 +96,7 @@
+ use crate::ufixed::UFixed;
+ 
+ const impl BoolLike for Bool {
+-    type Packed = UFixed<{ IBits::ONE }, { FBits::ZERO }, Hot>;
++    type Packed = UFixed<1, { FBits::ZERO }, Hot>;
+ 
+     #[inline(always)]
+     fn pack(self) -> Self::Packed {
+@@ -104,6 +104,6 @@
+         // 0 or 1, inside the 1-bit range. boundary: Bool is the bottom-
+         // level wrapper around `bool`; the inner-field access is the
+         // FFI-shaped path documented in round 202605021200 FINDINGS.
+-        UFixed::<{ IBits::ONE }, { FBits::ZERO }, Hot>::from_raw(self.0 as u8)
++        UFixed::<1, { FBits::ZERO }, Hot>::from_raw(self.0 as u8)
+     }
+ }
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/strategy.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/strategy.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/strategy.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/strategy.rs	2026-08-04 09:35:34
+@@ -28,7 +28,7 @@
+ 
+ use arvo_storage::{FBits, IBits};
+ 
+-/// Const-fn helper: total logical bits for a `UFixed<I, F, S>`.
++/// Const-fn helper: total logical bits for a `UFixed<W, F, S>`.
+ ///
+ /// `UFixed` logical width is `I + F`. The trait bound uses this to
+ /// look up the container type. Round 202604280806 widened the
+@@ -40,7 +40,7 @@
+     i.raw() + f.raw()
+ }
+ 
+-/// Const-fn helper: total logical bits for an `IFixed<I, F, S>`.
++/// Const-fn helper: total logical bits for an `IFixed<W, F, S>`.
+ ///
+ /// `IFixed` reserves one bit for the sign; logical width is `1 + I + F`.
+ /// Same u16 width as `ufixed_bits`.
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/abs.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/abs.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/abs.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/abs.rs	2026-08-04 09:35:34
+@@ -15,9 +15,9 @@
+ 
+ // --- Abs -------------------------------------------------------------------
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> Abs for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Abs for UFixed<W, F, S>
+ where
+-    S: [const] BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
++    S: [const] BitsContainerFor<W, Unsigned>,
+ {
+     type Output = Self;
+     /// Identity: unsigned values are their own absolute value.
+@@ -40,7 +40,7 @@
+ macro_rules! impl_abs_ifixed_integer_wrap {
+     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
+         $(
+-            impl const Abs for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
++            impl const Abs for IFixed<{ $i + 1 }, { FBits::ZERO }, $strategy> {
+                 type Output = Self;
+                 #[inline(always)]
+                 fn abs(self) -> Self {
+@@ -54,7 +54,7 @@
+ macro_rules! impl_abs_ifixed_integer_sat {
+     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
+         $(
+-            impl const Abs for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
++            impl const Abs for IFixed<{ $i + 1 }, { FBits::ZERO }, $strategy> {
+                 type Output = Self;
+                 #[inline(always)]
+                 fn abs(self) -> Self {
+@@ -68,7 +68,7 @@
+ macro_rules! impl_abs_ifixed_fractional_wrap {
+     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
+         $(
+-            impl const Abs for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
++            impl const Abs for IFixed<{ $i + $f + 1 }, { fbits($f) }, $strategy> {
+                 type Output = Self;
+                 #[inline(always)]
+                 fn abs(self) -> Self {
+@@ -82,7 +82,7 @@
+ macro_rules! impl_abs_ifixed_fractional_sat {
+     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
+         $(
+-            impl const Abs for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
++            impl const Abs for IFixed<{ $i + $f + 1 }, { fbits($f) }, $strategy> {
+                 type Output = Self;
+                 #[inline(always)]
+                 fn abs(self) -> Self {
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/euclid.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/euclid.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/euclid.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/euclid.rs	2026-08-04 09:35:34
+@@ -85,33 +85,33 @@
+     fn split_evenly(self, n: USize) -> EvenShares<Self>;
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> ScalarEuclid for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> ScalarEuclid for IFixed<W, F, S>
+ where
+-    S: ScalarEuclidRaw<{ ifixed_bits(I, F) }>,
++    S: ScalarEuclidRaw<W>,
+ {
+     #[inline]
+     fn div_euclid_scalar(self, n: USize) -> Self {
+         Self::from_raw(
+-            <S as ScalarEuclidRaw<{ ifixed_bits(I, F) }>>::div_euclid_scalar(self.to_raw(), n.0),
++            <S as ScalarEuclidRaw<W>>::div_euclid_scalar(self.to_raw(), n.0),
+         )
+     }
+     #[inline]
+     fn rem_euclid_scalar(self, n: USize) -> Self {
+         Self::from_raw(
+-            <S as ScalarEuclidRaw<{ ifixed_bits(I, F) }>>::rem_euclid_scalar(self.to_raw(), n.0),
++            <S as ScalarEuclidRaw<W>>::rem_euclid_scalar(self.to_raw(), n.0),
+         )
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> EuclidDiv for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> EuclidDiv for IFixed<W, F, S>
+ where
+-    S: ScalarEuclidRaw<{ ifixed_bits(I, F) }>,
+-    (): FracShift<{ frac(F) }>,
++    S: ScalarEuclidRaw<W>,
++    (): FracShift<F>,
+ {
+     #[inline]
+     fn div_euclid(self, rhs: Self) -> Self {
+         Self::from_raw(
+-            <S as ScalarEuclidRaw<{ ifixed_bits(I, F) }>>::div_euclid_whole::<{ frac(F) }>(
++            <S as ScalarEuclidRaw<W>>::div_euclid_whole::<F>(
+                 self.to_raw(),
+                 rhs.to_raw(),
+             ),
+@@ -120,7 +120,7 @@
+     #[inline]
+     fn rem_euclid(self, rhs: Self) -> Self {
+         Self::from_raw(
+-            <S as ScalarEuclidRaw<{ ifixed_bits(I, F) }>>::rem_euclid_whole::<{ frac(F) }>(
++            <S as ScalarEuclidRaw<W>>::rem_euclid_whole::<F>(
+                 self.to_raw(),
+                 rhs.to_raw(),
+             ),
+@@ -128,14 +128,14 @@
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> EvenSplittable for IFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> EvenSplittable for IFixed<W, F, S>
+ where
+-    S: ScalarEuclidRaw<{ ifixed_bits(I, F) }>,
++    S: ScalarEuclidRaw<W>,
+ {
+     #[inline]
+     fn split_evenly(self, n: USize) -> EvenShares<Self> {
+         let (base, base_plus, r) =
+-            <S as ScalarEuclidRaw<{ ifixed_bits(I, F) }>>::even_split_parts(self.to_raw(), n.0);
++            <S as ScalarEuclidRaw<W>>::even_split_parts(self.to_raw(), n.0);
+         EvenShares {
+             base: Self::from_raw(base),
+             base_plus: Self::from_raw(base_plus),
+@@ -153,7 +153,7 @@
+ 
+     // A non-power-of-two-width signed fixed-point: 13 integer bits, 16
+     // fractional, Hot. Logical width 30 -> i32 container.
+-    type Q = IFixed<{ ibits(13) }, { fbits(16) }, Hot>;
++    type Q = IFixed<30, { fbits(16) }, Hot>;
+ 
+     // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+     // violation is on, and the formatter otherwise moves the comment below it.
+@@ -248,33 +248,33 @@
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> ScalarEuclid for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> ScalarEuclid for UFixed<W, F, S>
+ where
+-    S: UScalarEuclidRaw<{ ufixed_bits(I, F) }>,
++    S: UScalarEuclidRaw<W>,
+ {
+     #[inline]
+     fn div_euclid_scalar(self, n: USize) -> Self {
+         Self::from_raw(
+-            <S as UScalarEuclidRaw<{ ufixed_bits(I, F) }>>::div_euclid_scalar(self.to_raw(), n.0),
++            <S as UScalarEuclidRaw<W>>::div_euclid_scalar(self.to_raw(), n.0),
+         )
+     }
+     #[inline]
+     fn rem_euclid_scalar(self, n: USize) -> Self {
+         Self::from_raw(
+-            <S as UScalarEuclidRaw<{ ufixed_bits(I, F) }>>::rem_euclid_scalar(self.to_raw(), n.0),
++            <S as UScalarEuclidRaw<W>>::rem_euclid_scalar(self.to_raw(), n.0),
+         )
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> EuclidDiv for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> EuclidDiv for UFixed<W, F, S>
+ where
+-    S: UScalarEuclidRaw<{ ufixed_bits(I, F) }>,
+-    (): FracShift<{ frac(F) }>,
++    S: UScalarEuclidRaw<W>,
++    (): FracShift<F>,
+ {
+     #[inline]
+     fn div_euclid(self, rhs: Self) -> Self {
+         Self::from_raw(
+-            <S as UScalarEuclidRaw<{ ufixed_bits(I, F) }>>::div_euclid_whole::<{ frac(F) }>(
++            <S as UScalarEuclidRaw<W>>::div_euclid_whole::<F>(
+                 self.to_raw(),
+                 rhs.to_raw(),
+             ),
+@@ -283,7 +283,7 @@
+     #[inline]
+     fn rem_euclid(self, rhs: Self) -> Self {
+         Self::from_raw(
+-            <S as UScalarEuclidRaw<{ ufixed_bits(I, F) }>>::rem_euclid_whole::<{ frac(F) }>(
++            <S as UScalarEuclidRaw<W>>::rem_euclid_whole::<F>(
+                 self.to_raw(),
+                 rhs.to_raw(),
+             ),
+@@ -291,14 +291,14 @@
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> EvenSplittable for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> EvenSplittable for UFixed<W, F, S>
+ where
+-    S: UScalarEuclidRaw<{ ufixed_bits(I, F) }>,
++    S: UScalarEuclidRaw<W>,
+ {
+     #[inline]
+     fn split_evenly(self, n: USize) -> EvenShares<Self> {
+         let (base, base_plus, r) =
+-            <S as UScalarEuclidRaw<{ ufixed_bits(I, F) }>>::even_split_parts(self.to_raw(), n.0);
++            <S as UScalarEuclidRaw<W>>::even_split_parts(self.to_raw(), n.0);
+         EvenShares {
+             base: Self::from_raw(base),
+             base_plus: Self::from_raw(base_plus),
+@@ -315,7 +315,7 @@
+     use crate::ufixed::UFixed;
+ 
+     // 13 integer bits, 16 fractional, Hot. Logical width 29 -> u32 container.
+-    type U = UFixed<{ ibits(13) }, { fbits(16) }, Hot>;
++    type U = UFixed<29, { fbits(16) }, Hot>;
+ 
+     // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+     // violation is on, and the formatter otherwise moves the comment below it.
+@@ -362,9 +362,9 @@
+     use arvo_storage::{fbits, ibits};
+ 
+     // Width-8 containers: IFixed<7,0> -> i8 (logical 1+7+0=8), UFixed<8,0> -> u8.
+-    type Q8 = IFixed<{ ibits(7) }, { fbits(0) }, Hot>;
+-    type U8 = UFixed<{ ibits(8) }, { fbits(0) }, Hot>;
+-    type Q = IFixed<{ ibits(13) }, { fbits(16) }, Hot>;
++    type Q8 = IFixed<8, { fbits(0) }, Hot>;
++    type U8 = UFixed<8, { fbits(0) }, Hot>;
++    type Q = IFixed<30, { fbits(16) }, Hot>;
+ 
+     #[test]
+     fn split_one_at_signed_max_does_not_overflow() {
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/from_constant.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/from_constant.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/from_constant.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/from_constant.rs	2026-08-04 09:35:34
+@@ -21,7 +21,7 @@
+     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
+         $(
+             // F = 0 (integer UFixed).
+-            impl const FromConstant for UFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
++            impl const FromConstant for UFixed<{ $i }, { FBits::ZERO }, $strategy> {
+                 #[inline(always)]
+                 fn from_constant<const C: USize>() -> Self {
+                     Self::from_raw(<USize as Transparent>::raw(C) as $ctype)
+@@ -34,7 +34,7 @@
+ macro_rules! impl_from_constant_ufixed_fractional {
+     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
+         $(
+-            impl const FromConstant for UFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
++            impl const FromConstant for UFixed<{ $i + $f }, { fbits($f) }, $strategy> {
+                 #[inline(always)]
+                 fn from_constant<const C: USize>() -> Self {
+                     Self::from_raw((<USize as Transparent>::raw(C) as $ctype) << $f)
+@@ -118,7 +118,7 @@
+ macro_rules! impl_from_constant_ifixed {
+     ($strategy:ty, $ctype:ty, $($i:literal),+) => {
+         $(
+-            impl const FromConstant for IFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
++            impl const FromConstant for IFixed<{ $i + 1 }, { FBits::ZERO }, $strategy> {
+                 #[inline(always)]
+                 fn from_constant<const C: USize>() -> Self {
+                     Self::from_raw(<USize as Transparent>::raw(C) as $ctype)
+@@ -131,7 +131,7 @@
+ macro_rules! impl_from_constant_ifixed_fractional {
+     ($strategy:ty, $ctype:ty, $i:literal, $($f:literal),+) => {
+         $(
+-            impl const FromConstant for IFixed<{ ibits($i) }, { fbits($f) }, $strategy> {
++            impl const FromConstant for IFixed<{ $i + $f + 1 }, { fbits($f) }, $strategy> {
+                 #[inline(always)]
+                 fn from_constant<const C: USize>() -> Self {
+                     Self::from_raw((<USize as Transparent>::raw(C) as $ctype) << $f)
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/sqrt.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/sqrt.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/sqrt.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/sqrt.rs	2026-08-04 09:35:34
+@@ -21,7 +21,7 @@
+ macro_rules! impl_sqrt_ufixed_concrete {
+     ($strategy:ty, $($i:literal),+) => {
+         $(
+-            impl const Sqrt for UFixed<{ ibits($i) }, { FBits::ZERO }, $strategy> {
++            impl const Sqrt for UFixed<{ $i }, { FBits::ZERO }, $strategy> {
+                 type Output = Self;
+                 #[inline(always)]
+                 fn sqrt(self) -> Self {
+@@ -32,7 +32,7 @@
+     };
+ }
+ 
+-// Hot: integer UFixed<I, 0, Hot> across I = 1..=64.
++// Hot: integer UFixed<W, 0, Hot> across I = 1..=64.
+ impl_sqrt_ufixed_concrete!(
+     Hot, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+     26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/total_ord.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/total_ord.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/traits/total_ord.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/traits/total_ord.rs	2026-08-04 09:35:34
+@@ -57,9 +57,9 @@
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> TotalOrd for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> TotalOrd for UFixed<W, F, S>
+ where
+-    S: [const] BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
++    S: [const] BitsContainerFor<W, Unsigned>,
+     Self: [const] arvo_storage::ConstOrd,
+ {
+     #[inline(always)]
+@@ -68,9 +68,9 @@
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> TotalOrd for IFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> TotalOrd for IFixed<W, F, S>
+ where
+-    S: [const] BitsContainerFor<{ ifixed_bits(I, F) }, Signed>,
++    S: [const] BitsContainerFor<W, Signed>,
+     Self: [const] arvo_storage::ConstOrd,
+ {
+     #[inline(always)]
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/ufixed.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/ufixed.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/ufixed.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/ufixed.rs	2026-08-04 09:35:34
+@@ -1,6 +1,6 @@
+ //! Unsigned fixed-point type.
+ //!
+-//! `UFixed<I, F, S>` stores a non-negative fixed-point value with
++//! `UFixed<W, F, S>` stores a non-negative fixed-point value with
+ //! `I` integer bits, `F` fractional bits, and strategy `S`. The
+ //! backing container is selected by the strategy via the sealed
+ //! `UContainerFor` table in `strategy.rs`. `repr(transparent)` over
+@@ -14,7 +14,7 @@
+ 
+ use notko::Outcome;
+ 
+-use crate::fixed_scale::{frac, FracShift};
++use crate::fixed_scale::{frac, FracNonZero, FracShift};
+ use crate::markers::{BitPresentation, FractionLike, IntegerLike};
+ use crate::strategy::{
+     is_fractional, tag_one_representable, ufixed_bits, Additive, BitsContainerFor, Bounded,
+@@ -32,23 +32,23 @@
+ /// the storage primitive directly; `repr(transparent)` keeps the
+ /// layout identical to the underlying container.
+ #[repr(transparent)]
+-pub struct UFixed<const I: IBits, const F: FBits, S: Strategy = crate::strategy::Warm>(
+-    Bits<{ ufixed_bits(I, F) }, S>,
++pub struct UFixed<const W: u16, const F: FBits, S: Strategy = crate::strategy::Warm>(
++    Bits<W, S>,
+ )
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>;
++    S: BitsContainerFor<W, Unsigned>;
+ 
+ // SAFETY: `repr(transparent)` over `Bits<{I+F}, S>`. Layout-identical
+ // by Rust spec. The Transparent contract is what lets the canonical
+ // const surface (ConstPartialEq / ConstEq / ConstBitEq / ConstOrd /
+ // Bounded / Identity) read inner bits without resorting to `.0`
+ // field-access on the wrapper.
+-const unsafe impl<const I: IBits, const F: FBits, S: Strategy> arvo_transparent::Transparent
+-    for UFixed<I, F, S>
++const unsafe impl<const W: u16, const F: FBits, S: Strategy> arvo_transparent::Transparent
++    for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
++    S: BitsContainerFor<W, Unsigned>,
+ {
+-    type Inner = Bits<{ ufixed_bits(I, F) }, S>;
++    type Inner = Bits<W, S>;
+ }
+ 
+ // Generic Identity blanket on UFixed wires through the inner Bits's
+@@ -57,21 +57,21 @@
+ // impl block — the inner Bits trait projection bundles the container
+ // requirement, sidestepping the generic_const_exprs cycle that
+ // previously tripped two-predicate forms.
+-/// The fixed-point one for `UFixed<I, F, S>`, raw `1 << F`: double the container raw 1 exactly F times
++/// The fixed-point one for `UFixed<W, F, S>`, raw `1 << F`: double the container raw 1 exactly F times
+ /// through the strategy's `u_add` (`F == 0` -> raw 1, the integer one). Routes only through the
+-/// `S: UArith<{ufixed_bits(I, F)}>` strategy bound and the inner `Bits` bound, never the container-T
++/// `S: UArith<W>` strategy bound and the inner `Bits` bound, never the container-T
+ /// projection, so it avoids the const-eval cycle a T-projection bound trips. A free const fn because
+ /// inherent impls cannot carry const trait bounds and the associated-const initializer cannot call the
+ /// const-trait method directly. See sketch 202606231130_fixed-point-one-construction.
+-const fn ufixed_fixed_one<const I: IBits, const F: FBits, S: Strategy>() -> UFixed<I, F, S>
++const fn ufixed_fixed_one<const W: u16, const F: FBits, S: Strategy>() -> UFixed<W, F, S>
+ where
+-    S: const UArith<{ ufixed_bits(I, F) }>,
+-    Bits<{ ufixed_bits(I, F) }, S>: const Identity<Multiplicative>,
++    S: const UArith<W>,
++    Bits<W, S>: const Identity<Multiplicative>,
+ {
+-    let mut acc = <Bits<{ ufixed_bits(I, F) }, S> as Identity<Multiplicative>>::IDENTITY.to_raw();
++    let mut acc = <Bits<W, S> as Identity<Multiplicative>>::IDENTITY.to_raw();
+     let mut doublings: u16 = 0; // lint:allow(no-bare-numeric) reason: const-loop counter for the 1<<F doubling; tracked: #256
+     while doublings < F.raw() {
+-        acc = <S as UArith<{ ufixed_bits(I, F) }>>::u_add(acc, acc);
++        acc = <S as UArith<W>>::u_add(acc, acc);
+         doublings += 1;
+     }
+     UFixed::from_raw(acc)
+@@ -79,12 +79,12 @@
+ 
+ // The additive identity is unconditional: zero is representable at every
+ // width, purely fractional included.
+-const impl<const I: IBits, const F: FBits, S: Strategy> Identity<Additive> for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Identity<Additive> for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Bits<{ ufixed_bits(I, F) }, S>: const Identity<Additive>,
++    S: BitsContainerFor<W, Unsigned>,
++    Bits<W, S>: const Identity<Additive>,
+ {
+-    const IDENTITY: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity<Additive>>::IDENTITY);
++    const IDENTITY: Self = Self(<Bits<W, S> as Identity<Additive>>::IDENTITY);
+ }
+ 
+ // The multiplicative one is not. `UFixed<0, F, S>` spans `[0, 1)`, which does
+@@ -93,91 +93,91 @@
+ // Precise, and `x * ONE` silently annihilated or shrank. The projection below
+ // has no impl at zero integer bits, so this impl does not exist there and
+ // naming IDENTITY for it is a trait-resolution error carrying the note.
+-const impl<const I: IBits, const F: FBits, S: Strategy> Identity<Multiplicative> for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Identity<Multiplicative> for UFixed<W, F, S>
+ where
+-    S: const UArith<{ ufixed_bits(I, F) }>,
+-    Bits<{ ufixed_bits(I, F) }, S>: const Identity<Multiplicative>,
+-    Picker: OneRepresentable<{ tag_one_representable(I.raw()) }>,
++    S: const UArith<W>,
++    Bits<W, S>: const Identity<Multiplicative>,
++    Picker: OneRepresentable<0>, // INSTRUMENTED: guard relaxed to isolate the residual
+ {
+-    const IDENTITY: Self = ufixed_fixed_one::<I, F, S>();
++    const IDENTITY: Self = ufixed_fixed_one::<W, F, S>();
+ }
+ 
+ // Generic Bounded blanket on UFixed wires through the inner Bits's
+ // Bounded blanket. Same single-predicate cycle-avoidance pattern as
+ // Identity. Closes Round 6 deviation 3 / NIT 5 (#325).
+-const impl<const I: IBits, const F: FBits, S: Strategy> Bounded for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Bounded for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Bits<{ ufixed_bits(I, F) }, S>: [const] Bounded,
++    S: BitsContainerFor<W, Unsigned>,
++    Bits<W, S>: [const] Bounded,
+ {
+-    const MIN: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Bounded>::MIN);
+-    const MAX: Self = Self(<Bits<{ ufixed_bits(I, F) }, S> as Bounded>::MAX);
++    const MIN: Self = Self(<Bits<W, S> as Bounded>::MIN);
++    const MAX: Self = Self(<Bits<W, S> as Bounded>::MAX);
+ }
+ 
+ // ConstPartialEq / ConstEq / ConstBitEq / ConstOrd / ConstDefault
+ // blankets routed through the inner Bits. Same single-predicate
+ // cycle-avoidance pattern as Identity (each impl bounds only on the
+ // inner type's bridge bound, not the container projection).
+-const impl<const I: IBits, const F: FBits, S: Strategy> ConstPartialEq for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> ConstPartialEq for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstPartialEq,
++    S: BitsContainerFor<W, Unsigned>,
++    Bits<W, S>: [const] ConstPartialEq,
+ {
+     #[inline(always)]
+     fn const_eq(&self, other: &Self) -> Bool {
+         let a = <Self as arvo_transparent::Transparent>::raw(*self);
+         let b = <Self as arvo_transparent::Transparent>::raw(*other);
+-        <Bits<{ ufixed_bits(I, F) }, S> as ConstPartialEq>::const_eq(&a, &b)
++        <Bits<W, S> as ConstPartialEq>::const_eq(&a, &b)
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> ConstEq for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> ConstEq for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstEq,
++    S: BitsContainerFor<W, Unsigned>,
++    Bits<W, S>: [const] ConstEq,
+ {
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> ConstBitEq for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> ConstBitEq for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstBitEq,
++    S: BitsContainerFor<W, Unsigned>,
++    Bits<W, S>: [const] ConstBitEq,
+ {
+     #[inline(always)]
+     fn const_bit_eq(&self, other: &Self) -> Bool {
+         let a = <Self as arvo_transparent::Transparent>::raw(*self);
+         let b = <Self as arvo_transparent::Transparent>::raw(*other);
+-        <Bits<{ ufixed_bits(I, F) }, S> as ConstBitEq>::const_bit_eq(&a, &b)
++        <Bits<W, S> as ConstBitEq>::const_bit_eq(&a, &b)
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> ConstOrd for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> ConstOrd for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Bits<{ ufixed_bits(I, F) }, S>: [const] ConstOrd,
++    S: BitsContainerFor<W, Unsigned>,
++    Bits<W, S>: [const] ConstOrd,
+ {
+     #[inline(always)]
+     fn const_cmp(&self, other: &Self) -> ConstOrdering {
+         let a = <Self as arvo_transparent::Transparent>::raw(*self);
+         let b = <Self as arvo_transparent::Transparent>::raw(*other);
+-        <Bits<{ ufixed_bits(I, F) }, S> as ConstOrd>::const_cmp(&a, &b)
++        <Bits<W, S> as ConstOrd>::const_cmp(&a, &b)
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> ConstDefault for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> ConstDefault for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Bits<{ ufixed_bits(I, F) }, S>: [const] Identity<Additive>,
++    S: BitsContainerFor<W, Unsigned>,
++    Bits<W, S>: [const] Identity<Additive>,
+ {
+     #[inline(always)]
+     fn const_default() -> Self {
+-        Self(<Bits<{ ufixed_bits(I, F) }, S> as Identity<Additive>>::IDENTITY)
++        Self(<Bits<W, S> as Identity<Additive>>::IDENTITY)
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
++    S: BitsContainerFor<W, Unsigned>,
+ {
+     /// Construct from the raw container value.
+     ///
+@@ -186,21 +186,21 @@
+     /// value inside the logical range.
+     #[inline(always)]
+     pub const fn from_raw(
+-        bits: <S as BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>>::T,
++        bits: <S as BitsContainerFor<W, Unsigned>>::T,
+     ) -> Self {
+         Self(Bits::from_raw(bits))
+     }
+ 
+     /// Extract the raw container value.
+     #[inline(always)]
+-    pub const fn to_raw(self) -> <S as BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>>::T {
++    pub const fn to_raw(self) -> <S as BitsContainerFor<W, Unsigned>>::T {
+         self.0.to_raw()
+     }
+ 
+     /// Logical bit width (`I + F`).
+     #[inline(always)]
+     pub const fn logical_width() -> USize {
+-        USize(ufixed_bits(I, F) as usize)
++        USize(W as usize)
+     }
+ }
+ 
+@@ -209,14 +209,14 @@
+ // (`<S as BitsContainerFor<N, Unsigned>>::T` is always `Copy + PartialEq + Eq +
+ // Default`); UFixed inherits via the newtype wrap.
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> Copy for UFixed<I, F, S> where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>
++impl<const W: u16, const F: FBits, S: Strategy> Copy for UFixed<W, F, S> where
++    S: BitsContainerFor<W, Unsigned>
+ {
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> Clone for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> Clone for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
++    S: BitsContainerFor<W, Unsigned>,
+ {
+     #[inline(always)]
+     fn clone(&self) -> Self {
+@@ -224,9 +224,9 @@
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> PartialEq for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> PartialEq for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
++    S: BitsContainerFor<W, Unsigned>,
+ {
+     #[inline(always)]
+     fn eq(&self, other: &Self) -> bool {
+@@ -234,14 +234,14 @@
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> Eq for UFixed<I, F, S> where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>
++impl<const W: u16, const F: FBits, S: Strategy> Eq for UFixed<W, F, S> where
++    S: BitsContainerFor<W, Unsigned>
+ {
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> Default for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> Default for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
++    S: BitsContainerFor<W, Unsigned>,
+ {
+     #[inline(always)]
+     fn default() -> Self {
+@@ -251,27 +251,27 @@
+ 
+ // --- Marker trait impls ----------------------------------------------------
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> BitPresentation for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> BitPresentation for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
++    S: BitsContainerFor<W, Unsigned>,
+ {
+-    const LOGICAL_WIDTH: USize = crate::markers::logical_width_unsigned(I, F);
++    const LOGICAL_WIDTH: USize = USize(W as usize);
+ }
+ 
+ // IntegerLike: only when F == 0. Using the named `FBits::ZERO`
+ // constant because struct construction is not allowed inside an
+ // anonymous const-generic argument on current nightly.
+-const impl<const I: IBits, S: Strategy> IntegerLike for UFixed<I, { FBits::ZERO }, S> where
+-    S: BitsContainerFor<{ ufixed_bits(I, FBits::ZERO) }, Unsigned>
++const impl<const W: u16, S: Strategy> IntegerLike for UFixed<W, { FBits::ZERO }, S> where
++    S: BitsContainerFor<W, Unsigned>
+ {
+ }
+ 
+ // FractionLike: F > 0. Encoded via a const-expression that fails to
+ // evaluate when `F == FBits::ZERO` (division by zero at const time).
+-const impl<const I: IBits, const F: FBits, S: Strategy> FractionLike for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> FractionLike for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    [(); 1 / is_fractional(F)]:,
++    S: BitsContainerFor<W, Unsigned>,
++    (): FracNonZero<F>,
+ {
+ }
+ 
+@@ -292,60 +292,60 @@
+ // TODO: cross-width arithmetic blocked on generic_const_exprs max() support — next round.
+ // TODO: cross-strategy arithmetic blocked on const-expr support for associated-type const projection — next round.
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> Add for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Add for UFixed<W, F, S>
+ where
+-    S: [const] UArith<{ ufixed_bits(I, F) }>,
++    S: [const] UArith<W>,
+ {
+     type Output = Self;
+     #[inline(always)]
+     fn add(self, rhs: Self) -> Self {
+-        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_add(
++        Self::from_raw(<S as UArith<W>>::u_add(
+             self.to_raw(),
+             rhs.to_raw(),
+         ))
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> Sub for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Sub for UFixed<W, F, S>
+ where
+-    S: [const] UArith<{ ufixed_bits(I, F) }>,
++    S: [const] UArith<W>,
+ {
+     type Output = Self;
+     #[inline(always)]
+     fn sub(self, rhs: Self) -> Self {
+-        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_sub(
++        Self::from_raw(<S as UArith<W>>::u_sub(
+             self.to_raw(),
+             rhs.to_raw(),
+         ))
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> Mul for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Mul for UFixed<W, F, S>
+ where
+-    S: [const] UArith<{ ufixed_bits(I, F) }>,
+-    (): FracShift<{ frac(F) }>,
++    S: [const] UArith<W>,
++    (): FracShift<F>,
+ {
+     type Output = Self;
+     #[inline(always)]
+     fn mul(self, rhs: Self) -> Self {
+         // Fixed-point multiply: rescale by the fractional bit count F. F == 0 is integer multiply.
+-        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_mul_fixed::<
+-            { frac(F) },
++        Self::from_raw(<S as UArith<W>>::u_mul_fixed::<
++            F,
+         >(self.to_raw(), rhs.to_raw()))
+     }
+ }
+ 
+-const impl<const I: IBits, const F: FBits, S: Strategy> Div for UFixed<I, F, S>
++const impl<const W: u16, const F: FBits, S: Strategy> Div for UFixed<W, F, S>
+ where
+-    S: [const] UArith<{ ufixed_bits(I, F) }>,
+-    (): FracShift<{ frac(F) }>,
++    S: [const] UArith<W>,
++    (): FracShift<F>,
+ {
+     type Output = Self;
+     #[inline(always)]
+     fn div(self, rhs: Self) -> Self {
+         // Fixed-point divide: rescale by the fractional bit count F. F == 0 is integer divide.
+-        Self::from_raw(<S as UArith<{ ufixed_bits(I, F) }>>::u_div_fixed::<
+-            { frac(F) },
++        Self::from_raw(<S as UArith<W>>::u_div_fixed::<
++            F,
+         >(self.to_raw(), rhs.to_raw()))
+     }
+ }
+@@ -358,81 +358,81 @@
+ // `UWidenFrom` / `UNarrowFrom` bridges on the destination strategy,
+ // keyed on the shared `BITS = I + F`.
+ 
+-impl<const I: IBits, const F: FBits> From<UFixed<I, F, Hot>> for UFixed<I, F, Warm>
++impl<const W: u16, const F: FBits> From<UFixed<W, F, Hot>> for UFixed<W, F, Warm>
+ where
+-    Hot: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Warm: UWidenFrom<Hot, { ufixed_bits(I, F) }>,
++    Hot: BitsContainerFor<W, Unsigned>,
++    Warm: UWidenFrom<Hot, W>,
+ {
+     #[inline(always)]
+-    fn from(src: UFixed<I, F, Hot>) -> Self {
+-        Self::from_raw(<Warm as UWidenFrom<Hot, { ufixed_bits(I, F) }>>::u_widen(
++    fn from(src: UFixed<W, F, Hot>) -> Self {
++        Self::from_raw(<Warm as UWidenFrom<Hot, W>>::u_widen(
+             src.to_raw(),
+         ))
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits> From<UFixed<I, F, Hot>> for UFixed<I, F, Precise>
++impl<const W: u16, const F: FBits> From<UFixed<W, F, Hot>> for UFixed<W, F, Precise>
+ where
+-    Hot: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Precise: UWidenFrom<Hot, { ufixed_bits(I, F) }>,
++    Hot: BitsContainerFor<W, Unsigned>,
++    Precise: UWidenFrom<Hot, W>,
+ {
+     #[inline(always)]
+-    fn from(src: UFixed<I, F, Hot>) -> Self {
+-        Self::from_raw(<Precise as UWidenFrom<Hot, { ufixed_bits(I, F) }>>::u_widen(src.to_raw()))
++    fn from(src: UFixed<W, F, Hot>) -> Self {
++        Self::from_raw(<Precise as UWidenFrom<Hot, W>>::u_widen(src.to_raw()))
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits> From<UFixed<I, F, Warm>> for UFixed<I, F, Precise>
++impl<const W: u16, const F: FBits> From<UFixed<W, F, Warm>> for UFixed<W, F, Precise>
+ where
+-    Warm: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Precise: UWidenFrom<Warm, { ufixed_bits(I, F) }>,
++    Warm: BitsContainerFor<W, Unsigned>,
++    Precise: UWidenFrom<Warm, W>,
+ {
+     #[inline(always)]
+-    fn from(src: UFixed<I, F, Warm>) -> Self {
+-        Self::from_raw(<Precise as UWidenFrom<Warm, { ufixed_bits(I, F) }>>::u_widen(src.to_raw()))
++    fn from(src: UFixed<W, F, Warm>) -> Self {
++        Self::from_raw(<Precise as UWidenFrom<Warm, W>>::u_widen(src.to_raw()))
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits> TryFrom<UFixed<I, F, Warm>> for UFixed<I, F, Hot>
++impl<const W: u16, const F: FBits> TryFrom<UFixed<W, F, Warm>> for UFixed<W, F, Hot>
+ where
+-    Warm: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Hot: UNarrowFrom<Warm, { ufixed_bits(I, F) }>,
++    Warm: BitsContainerFor<W, Unsigned>,
++    Hot: UNarrowFrom<Warm, W>,
+ {
+     type Error = ();
+     #[inline(always)]
+     // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+     // violation is on, and the formatter otherwise moves the comment below it.
+     #[rustfmt::skip]
+-    fn try_from(src: UFixed<I, F, Warm>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
+-        match <Hot as UNarrowFrom<Warm, { ufixed_bits(I, F) }>>::u_try_narrow(src.to_raw()) {
++    fn try_from(src: UFixed<W, F, Warm>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
++        match <Hot as UNarrowFrom<Warm, W>>::u_try_narrow(src.to_raw()) {
+             Outcome::Ok(v) => Ok(Self::from_raw(v)),
+             Outcome::Err(()) => Err(()),
+         }
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits> TryFrom<UFixed<I, F, Precise>> for UFixed<I, F, Hot>
++impl<const W: u16, const F: FBits> TryFrom<UFixed<W, F, Precise>> for UFixed<W, F, Hot>
+ where
+-    Precise: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Hot: UNarrowFrom<Precise, { ufixed_bits(I, F) }>,
++    Precise: BitsContainerFor<W, Unsigned>,
++    Hot: UNarrowFrom<Precise, W>,
+ {
+     type Error = ();
+     #[inline(always)]
+     // `rustfmt::skip` keeps the allow on its line: the lint reads the line the
+     // violation is on, and the formatter otherwise moves the comment below it.
+     #[rustfmt::skip]
+-    fn try_from(src: UFixed<I, F, Precise>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
+-        match <Hot as UNarrowFrom<Precise, { ufixed_bits(I, F) }>>::u_try_narrow(src.to_raw()) {
++    fn try_from(src: UFixed<W, F, Precise>) -> Result<Self, Self::Error> { // lint:allow(no-bare-result) reason: core::convert::TryFrom::try_from trait-method signature returns Result<Self, Self::Error>; tracked: #115
++        match <Hot as UNarrowFrom<Precise, W>>::u_try_narrow(src.to_raw()) {
+             Outcome::Ok(v) => Ok(Self::from_raw(v)),
+             Outcome::Err(()) => Err(()),
+         }
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> core::fmt::Debug for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> core::fmt::Debug for UFixed<W, F, S>
+ where
+-    S: BitsContainerFor<{ ufixed_bits(I, F) }, Unsigned>,
+-    Bits<{ ufixed_bits(I, F) }, S, Unsigned>: core::fmt::Debug,
++    S: BitsContainerFor<W, Unsigned>,
++    Bits<W, S, Unsigned>: core::fmt::Debug,
+ {
+     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+         f.debug_tuple("UFixed").field(&self.0).finish()
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/ufixed_impl.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/ufixed_impl.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo/src/ufixed_impl.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo/src/ufixed_impl.rs	2026-08-04 09:35:34
+@@ -1,6 +1,6 @@
+-//! `HasBitWidth` / `BitAccess` / `BitSequence` impls on `UFixed<I, F, S>`.
++//! `HasBitWidth` / `BitAccess` / `BitSequence` impls on `UFixed<W, F, S>`.
+ //!
+-//! The bound `S: UBitContainer<{ ufixed_bits(I, F) }>` pulls in
++//! The bound `S: UBitContainer<W>` pulls in
+ //! `BitsContainerFor<BITS, Unsigned>` and the `BitPrim` requirement on the
+ //! container in a single predicate — avoids the const-expr cycle
+ //! that two separate predicates would trigger.
+@@ -13,58 +13,58 @@
+ use crate::strategy::ufixed_bits;
+ use crate::ufixed::UFixed;
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> HasBitWidth for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> HasBitWidth for UFixed<W, F, S>
+ where
+-    S: UBitContainer<{ ufixed_bits(I, F) }>,
++    S: UBitContainer<W>,
+ {
+-    const WIDTH: USize = USize(I.raw() as usize + F.raw() as usize);
++    const WIDTH: USize = USize(W as usize);
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> BitAccess for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> BitAccess for UFixed<W, F, S>
+ where
+-    S: UBitContainer<{ ufixed_bits(I, F) }>,
++    S: UBitContainer<W>,
+ {
+     #[inline(always)]
+     fn bit(self, idx: USize) -> Bool {
+-        let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::get_bit(prim, idx)
++        let prim = <S as UBitContainer<W>>::to_prim(self.to_raw());
++        <<S as UBitContainer<W>>::Prim as BitPrim>::get_bit(prim, idx)
+     }
+ 
+     #[inline(always)]
+     fn with_bit_set(self, idx: USize) -> Self {
+-        let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
++        let prim = <S as UBitContainer<W>>::to_prim(self.to_raw());
+         let out =
+-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::with_bit_set(prim, idx);
+-        Self::from_raw(<S as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
++            <<S as UBitContainer<W>>::Prim as BitPrim>::with_bit_set(prim, idx);
++        Self::from_raw(<S as UBitContainer<W>>::from_prim(out))
+     }
+ 
+     #[inline(always)]
+     fn with_bit_cleared(self, idx: USize) -> Self {
+-        let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        let out = <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::with_bit_cleared(
++        let prim = <S as UBitContainer<W>>::to_prim(self.to_raw());
++        let out = <<S as UBitContainer<W>>::Prim as BitPrim>::with_bit_cleared(
+             prim, idx,
+         );
+-        Self::from_raw(<S as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
++        Self::from_raw(<S as UBitContainer<W>>::from_prim(out))
+     }
+ 
+     #[inline(always)]
+     fn with_bit_toggled(self, idx: USize) -> Self {
+-        let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        let out = <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::with_bit_toggled(
++        let prim = <S as UBitContainer<W>>::to_prim(self.to_raw());
++        let out = <<S as UBitContainer<W>>::Prim as BitPrim>::with_bit_toggled(
+             prim, idx,
+         );
+-        Self::from_raw(<S as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(out))
++        Self::from_raw(<S as UBitContainer<W>>::from_prim(out))
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits, S: Strategy> BitSequence for UFixed<I, F, S>
++impl<const W: u16, const F: FBits, S: Strategy> BitSequence for UFixed<W, F, S>
+ where
+-    S: UBitContainer<{ ufixed_bits(I, F) }>,
++    S: UBitContainer<W>,
+ {
+     #[inline(always)]
+     fn trailing_zeros(self) -> USize {
+-        let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::trailing_zeros(prim)
++        let prim = <S as UBitContainer<W>>::to_prim(self.to_raw());
++        <<S as UBitContainer<W>>::Prim as BitPrim>::trailing_zeros(prim)
+     }
+ 
+     #[inline(always)]
+@@ -72,14 +72,14 @@
+         // Container may be wider than the logical width under Warm /
+         // Precise. Report logical leading zeros by subtracting the
+         // container's surplus bits.
+-        let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
++        let prim = <S as UBitContainer<W>>::to_prim(self.to_raw());
+         let container_lz =
+             <USize as Transparent>::raw(
+-                <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::leading_zeros(prim),
++                <<S as UBitContainer<W>>::Prim as BitPrim>::leading_zeros(prim),
+             );
+-        let logical = I.raw() as usize + F.raw() as usize;
++        let logical = W as usize;
+         let container = <USize as Transparent>::raw(
+-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::WIDTH,
++            <<S as UBitContainer<W>>::Prim as BitPrim>::WIDTH,
+         );
+         let surplus = container - logical;
+         USize(container_lz.saturating_sub(surplus))
+@@ -87,66 +87,66 @@
+ 
+     #[inline(always)]
+     fn count_ones(self) -> USize {
+-        let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim)
++        let prim = <S as UBitContainer<W>>::to_prim(self.to_raw());
++        <<S as UBitContainer<W>>::Prim as BitPrim>::count_ones(prim)
+     }
+ 
+     #[inline(always)]
+     fn count_zeros(self) -> USize {
+-        let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
++        let prim = <S as UBitContainer<W>>::to_prim(self.to_raw());
+         let ones = <USize as Transparent>::raw(
+-            <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::count_ones(prim),
++            <<S as UBitContainer<W>>::Prim as BitPrim>::count_ones(prim),
+         );
+-        let logical = I.raw() as usize + F.raw() as usize;
++        let logical = W as usize;
+         USize(logical - ones)
+     }
+ 
+     #[inline(always)]
+     fn is_zero(self) -> Bool {
+-        let prim = <S as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        <<S as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::is_zero(prim)
++        let prim = <S as UBitContainer<W>>::to_prim(self.to_raw());
++        <<S as UBitContainer<W>>::Prim as BitPrim>::is_zero(prim)
+     }
+ }
+ 
+-impl<const I: IBits, const F: FBits> BitLogic for UFixed<I, F, Hot>
++impl<const W: u16, const F: FBits> BitLogic for UFixed<W, F, Hot>
+ where
+-    Hot: UBitContainer<{ ufixed_bits(I, F) }>,
++    Hot: UBitContainer<W>,
+ {
+     #[inline(always)]
+     fn bitor(self, other: Self) -> Self {
+-        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        let b = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(other.to_raw());
+-        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitor(a, b);
+-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
++        let a = <Hot as UBitContainer<W>>::to_prim(self.to_raw());
++        let b = <Hot as UBitContainer<W>>::to_prim(other.to_raw());
++        let out = <<Hot as UBitContainer<W>>::Prim as BitPrim>::bitor(a, b);
++        Self::from_raw(<Hot as UBitContainer<W>>::from_prim(
+             out,
+         ))
+     }
+ 
+     #[inline(always)]
+     fn bitand(self, other: Self) -> Self {
+-        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        let b = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(other.to_raw());
+-        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitand(a, b);
+-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
++        let a = <Hot as UBitContainer<W>>::to_prim(self.to_raw());
++        let b = <Hot as UBitContainer<W>>::to_prim(other.to_raw());
++        let out = <<Hot as UBitContainer<W>>::Prim as BitPrim>::bitand(a, b);
++        Self::from_raw(<Hot as UBitContainer<W>>::from_prim(
+             out,
+         ))
+     }
+ 
+     #[inline(always)]
+     fn bitnot(self) -> Self {
+-        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitnot(a);
+-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
++        let a = <Hot as UBitContainer<W>>::to_prim(self.to_raw());
++        let out = <<Hot as UBitContainer<W>>::Prim as BitPrim>::bitnot(a);
++        Self::from_raw(<Hot as UBitContainer<W>>::from_prim(
+             out,
+         ))
+     }
+ 
+     #[inline(always)]
+     fn bitxor(self, other: Self) -> Self {
+-        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
+-        let b = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(other.to_raw());
+-        let out = <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::bitxor(a, b);
+-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
++        let a = <Hot as UBitContainer<W>>::to_prim(self.to_raw());
++        let b = <Hot as UBitContainer<W>>::to_prim(other.to_raw());
++        let out = <<Hot as UBitContainer<W>>::Prim as BitPrim>::bitxor(a, b);
++        Self::from_raw(<Hot as UBitContainer<W>>::from_prim(
+             out,
+         ))
+     }
+@@ -156,12 +156,12 @@
+     where
+         Self: BitAccess + BitSequence,
+     {
+-        let a = <Hot as UBitContainer<{ ufixed_bits(I, F) }>>::to_prim(self.to_raw());
++        let a = <Hot as UBitContainer<W>>::to_prim(self.to_raw());
+         let out =
+-            <<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::Prim as BitPrim>::clear_lowest_set_bit(
++            <<Hot as UBitContainer<W>>::Prim as BitPrim>::clear_lowest_set_bit(
+                 a,
+             );
+-        Self::from_raw(<Hot as UBitContainer<{ ufixed_bits(I, F) }>>::from_prim(
++        Self::from_raw(<Hot as UBitContainer<W>>::from_prim(
+             out,
+         ))
+     }
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/arith.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/arith.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/arith.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/arith.rs	2026-08-04 09:34:16
+@@ -65,24 +65,24 @@
+         a: <Self as BitsContainerFor<N, Unsigned>>::T,
+         b: <Self as BitsContainerFor<N, Unsigned>>::T,
+     ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
+-    /// Fixed-point `*` for values scaled by `2^FRAC`: the product of two
+-    /// `FRAC`-scaled values is `2^{2*FRAC}`-scaled, so it is shifted right
+-    /// by `FRAC` to return to `FRAC` scale. `FRAC == 0` reduces to
++    /// Fixed-point `*` for values scaled by `2^FRAC.0`: the product of two
++    /// `FRAC.0`-scaled values is `2^{2*FRAC.0}`-scaled, so it is shifted right
++    /// by `FRAC.0` to return to `FRAC.0` scale. `FRAC.0 == 0` reduces to
+     /// `u_mul`. Min-container strategies multiply in a wider container so
+     /// the product does not overflow before the shift; DoubleLogical
+     /// strategies already hold the full product.
+-    fn u_mul_fixed<const FRAC: u16>(
++    fn u_mul_fixed<const FRAC: crate::FBitsShim>(
+         // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier, mirrors the const N: u16 width carrier on this trait; tracked: #256
+         a: <Self as BitsContainerFor<N, Unsigned>>::T,
+         b: <Self as BitsContainerFor<N, Unsigned>>::T,
+     ) -> <Self as BitsContainerFor<N, Unsigned>>::T;
+-    /// Fixed-point `/` for values scaled by `2^FRAC`: the quotient of two
+-    /// `FRAC`-scaled values cancels the scale, so the numerator is shifted
+-    /// left by `FRAC` before the divide to return to `FRAC` scale
+-    /// (`(a << FRAC) / b`). `FRAC == 0` reduces to `u_div`. The numerator
+-    /// is widened so `a << FRAC` does not overflow before the divide.
++    /// Fixed-point `/` for values scaled by `2^FRAC.0`: the quotient of two
++    /// `FRAC.0`-scaled values cancels the scale, so the numerator is shifted
++    /// left by `FRAC.0` before the divide to return to `FRAC.0` scale
++    /// (`(a << FRAC.0) / b`). `FRAC.0 == 0` reduces to `u_div`. The numerator
++    /// is widened so `a << FRAC.0` does not overflow before the divide.
+     /// Truncates toward zero.
+-    fn u_div_fixed<const FRAC: u16>(
++    fn u_div_fixed<const FRAC: crate::FBitsShim>(
+         // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier, mirrors the const N: u16 width carrier on this trait; tracked: #256
+         a: <Self as BitsContainerFor<N, Unsigned>>::T,
+         b: <Self as BitsContainerFor<N, Unsigned>>::T,
+@@ -116,14 +116,14 @@
+         a: <Self as BitsContainerFor<N, Signed>>::T,
+         b: <Self as BitsContainerFor<N, Signed>>::T,
+     ) -> <Self as BitsContainerFor<N, Signed>>::T;
+-    /// Fixed-point `*` for values scaled by `2^FRAC`: see `UArith::u_mul_fixed`.
+-    fn i_mul_fixed<const FRAC: u16>(
++    /// Fixed-point `*` for values scaled by `2^FRAC.0`: see `UArith::u_mul_fixed`.
++    fn i_mul_fixed<const FRAC: crate::FBitsShim>(
+         // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier, mirrors the const N: u16 width carrier on this trait; tracked: #256
+         a: <Self as BitsContainerFor<N, Signed>>::T,
+         b: <Self as BitsContainerFor<N, Signed>>::T,
+     ) -> <Self as BitsContainerFor<N, Signed>>::T;
+-    /// Fixed-point `/` for values scaled by `2^FRAC`: see `UArith::u_div_fixed`.
+-    fn i_div_fixed<const FRAC: u16>(
++    /// Fixed-point `/` for values scaled by `2^FRAC.0`: see `UArith::u_div_fixed`.
++    fn i_div_fixed<const FRAC: crate::FBitsShim>(
+         // lint:allow(no-bare-numeric) reason: const-generic shift-amount carrier, mirrors the const N: u16 width carrier on this trait; tracked: #256
+         a: <Self as BitsContainerFor<N, Signed>>::T,
+         b: <Self as BitsContainerFor<N, Signed>>::T,
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/arith_macros.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/arith_macros.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/arith_macros.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/arith_macros.rs	2026-08-04 09:34:16
+@@ -30,12 +30,12 @@
+                     }
+                 }
+                 #[inline(always)]
+-                fn u_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+-                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.wrapping_mul(b) >> FRAC }
++                fn u_mul_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { a.wrapping_mul(b) >> FRAC.0 }
+                 #[inline(always)]
+-                fn u_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn u_div_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+-                    // DoubleLogical container holds `a << FRAC` for F <= N; div-by-zero returns the numerator.
++                    // DoubleLogical container holds `a << FRAC.0` for F <= N; div-by-zero returns the numerator.
+                     if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY {
+                         a
+                     } else {
+@@ -43,7 +43,7 @@
+                         // on MIN / -1. Unsigned division cannot overflow once the zero divisor is
+                         // guarded above, so this is the same operation; one spelling across both
+                         // stops a reader copying the unguarded form into a signed body.
+-                        (a << FRAC).wrapping_div(b)
++                        (a << FRAC.0).wrapping_div(b)
+                     }
+                 }
+             }
+@@ -92,19 +92,19 @@
+                     }
+                 }
+                 #[inline(always)]
+-                fn u_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn u_mul_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+                     let hi: <Self as BitsContainerFor<$bits, Unsigned>>::T = (1 << $bits) - 1; // lint:allow(no-bare-numeric) reason: const logical-bound max over the dispatched container primitive; tracked: #256
+                     // DoubleLogical container holds the 2N product, so wrapping is exact; clamp to logical.
+-                    let v = a.wrapping_mul(b) >> FRAC;
++                    let v = a.wrapping_mul(b) >> FRAC.0;
+                     if v > hi { hi } else { v }
+                 }
+                 #[inline(always)]
+-                fn u_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn u_div_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+                     let hi: <Self as BitsContainerFor<$bits, Unsigned>>::T = (1 << $bits) - 1; // lint:allow(no-bare-numeric) reason: const logical-bound max over the dispatched container primitive; tracked: #256
+                     // Precise never panics on div-by-zero: clamp to the logical MAX. DoubleLogical holds
+-                    // `a << FRAC` for F <= N; clamp the quotient to the logical bound.
++                    // `a << FRAC.0` for F <= N; clamp the quotient to the logical bound.
+                     if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY {
+                         hi
+                     } else {
+@@ -112,7 +112,7 @@
+                         // division cannot overflow once the zero divisor is guarded above, so
+                         // this is the same operation; one spelling across both stops a reader
+                         // copying the unguarded form into a signed body.
+-                        let v = (a << FRAC).saturating_div(b);
++                        let v = (a << FRAC.0).saturating_div(b);
+                         if v > hi { hi } else { v }
+                     }
+                 }
+@@ -144,18 +144,18 @@
+                     }
+                 }
+                 #[inline(always)]
+-                fn i_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+-                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.wrapping_mul(b) >> FRAC }
++                fn i_mul_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                    -> <Self as BitsContainerFor<$bits, Signed>>::T { a.wrapping_mul(b) >> FRAC.0 }
+                 #[inline(always)]
+-                fn i_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn i_div_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Signed>>::T {
+-                    // DoubleLogical container holds `a << FRAC` for F <= N; div-by-zero returns the numerator.
++                    // DoubleLogical container holds `a << FRAC.0` for F <= N; div-by-zero returns the numerator.
+                     if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY {
+                         a
+                     } else {
+                         // `wrapping_div`, not `/`. Signed MIN / -1 has no representable answer and
+                         // `/` panics on it, which a never-panic strategy must not do.
+-                        (a << FRAC).wrapping_div(b)
++                        (a << FRAC.0).wrapping_div(b)
+                     }
+                 }
+             }
+@@ -211,22 +211,22 @@
+                     }
+                 }
+                 #[inline(always)]
+-                fn i_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn i_mul_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Signed>>::T {
+                     let hi: <Self as BitsContainerFor<$bits, Signed>>::T = (1 << ($bits - 1)) - 1; // lint:allow(no-bare-numeric) reason: const logical-bound max over the dispatched container primitive; tracked: #256
+                     let lo: <Self as BitsContainerFor<$bits, Signed>>::T = -(1 << ($bits - 1)); // lint:allow(no-bare-numeric) reason: const logical-bound min over the dispatched container primitive; tracked: #256
+                     // DoubleLogical container holds the 2N product; arithmetic-shift floors, then clamp.
+-                    let v = a.wrapping_mul(b) >> FRAC;
++                    let v = a.wrapping_mul(b) >> FRAC.0;
+                     if v < lo { lo } else if v > hi { hi } else { v }
+                 }
+                 #[inline(always)]
+-                fn i_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn i_div_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Signed>>::T {
+                     let hi: <Self as BitsContainerFor<$bits, Signed>>::T = (1 << ($bits - 1)) - 1; // lint:allow(no-bare-numeric) reason: const logical-bound max over the dispatched container primitive; tracked: #256
+                     let lo: <Self as BitsContainerFor<$bits, Signed>>::T = -(1 << ($bits - 1)); // lint:allow(no-bare-numeric) reason: const logical-bound min over the dispatched container primitive; tracked: #256
+                     // Precise never panics on div-by-zero, and clamps to the bound on the
+                     // side the quotient heads toward, exactly as the sibling `i_div` does.
+-                    // DoubleLogical holds `a << FRAC` for F <= N; the quotient is clamped to
++                    // DoubleLogical holds `a << FRAC.0` for F <= N; the quotient is clamped to
+                     // the logical bound below.
+                     if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY {
+                         if a < <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY { lo } else { hi }
+@@ -236,7 +236,7 @@
+                         // the clamp below reads as already inside the bound and passes through.
+                         // The mathematical answer is +2^(N-1), so a saturating strategy owes the
+                         // maximum here; wrapping and saturating disagree in sign at this one input.
+-                        let v = (a << FRAC).saturating_div(b);
++                        let v = (a << FRAC.0).saturating_div(b);
+                         if v < lo { lo } else if v > hi { hi } else { v }
+                     }
+                 }
+@@ -246,13 +246,13 @@
+ }
+ 
+ // Widening fixed-point multiply for Min-container wrapping strategies (Hot / Cold) at logical widths
+-// 1..=64. Their container equals the logical width, so a raw product overflows before the `>> FRAC`
++// 1..=64. Their container equals the logical width, so a raw product overflows before the `>> FRAC.0`
+ // rescale; the fixed-point multiply widens to the native 2x type (i128/u128, wide enough for any product
+ // of two <=64-bit-container values), multiplies, shifts, and narrows back to `$container`. add/sub/mul/div
+ // are the same wrapping ops as `impl_*_arith_wrapping`. The `$container` parameter names the concrete
+ // container so the widen / narrow casts resolve. Logical widths 65..=128 (i128/u128 container) stay on the
+ // non-widening macro: their 2x is a 256-bit WideBits, deferred until a >64-bit fixed-point multiply is
+-// first needed (the non-widening body is correct for FRAC == 0).
++// first needed (the non-widening body is correct for FRAC.0 == 0).
+ macro_rules! impl_u_arith_wrapping_widen {
+     ($strategy:ty, $container:ty, $($bits:literal),+) => {
+         $(
+@@ -276,22 +276,22 @@
+                     }
+                 }
+                 #[inline(always)]
+-                fn u_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn u_mul_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+                     let ac: $container = a;
+                     let bc: $container = b;
+                     let prod: u128 = (ac as u128).wrapping_mul(bc as u128); // lint:allow(no-bare-numeric) reason: native 2x widen target for the fixed-point multiply; tracked: #256
+-                    let narrowed: $container = (prod >> FRAC) as $container;
++                    let narrowed: $container = (prod >> FRAC.0) as $container;
+                     narrowed
+                 }
+                 #[inline(always)]
+-                fn u_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn u_div_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+-                    // (a << FRAC) / b widened to the native 2x so `a << FRAC` does not overflow `$container`.
++                    // (a << FRAC.0) / b widened to the native 2x so `a << FRAC.0` does not overflow `$container`.
+                     if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY {
+                         a
+                     } else {
+-                        let num: u128 = (a as u128) << FRAC; // lint:allow(no-bare-numeric) reason: native 2x widen numerator for the fixed-point divide; tracked: #256
++                        let num: u128 = (a as u128) << FRAC.0; // lint:allow(no-bare-numeric) reason: native 2x widen numerator for the fixed-point divide; tracked: #256
+                         (num / (b as u128)) as $container // lint:allow(no-bare-numeric) reason: native 2x widen divisor for the fixed-point divide; tracked: #256
+                     }
+                 }
+@@ -323,22 +323,22 @@
+                     }
+                 }
+                 #[inline(always)]
+-                fn i_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn i_mul_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Signed>>::T {
+                     let ac: $container = a;
+                     let bc: $container = b;
+                     let prod: i128 = (ac as i128).wrapping_mul(bc as i128); // lint:allow(no-bare-numeric) reason: native 2x widen target for the fixed-point multiply; tracked: #256
+-                    let narrowed: $container = (prod >> FRAC) as $container;
++                    let narrowed: $container = (prod >> FRAC.0) as $container;
+                     narrowed
+                 }
+                 #[inline(always)]
+-                fn i_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn i_div_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Signed>>::T {
+-                    // (a << FRAC) / b widened to the native 2x; signed `/` truncates toward zero.
++                    // (a << FRAC.0) / b widened to the native 2x; signed `/` truncates toward zero.
+                     if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY {
+                         a
+                     } else {
+-                        let num: i128 = (a as i128) << FRAC; // lint:allow(no-bare-numeric) reason: native 2x widen numerator for the fixed-point divide; tracked: #256
++                        let num: i128 = (a as i128) << FRAC.0; // lint:allow(no-bare-numeric) reason: native 2x widen numerator for the fixed-point divide; tracked: #256
+                         (num / (b as i128)) as $container // lint:allow(no-bare-numeric) reason: native 2x widen divisor for the fixed-point divide; tracked: #256
+                     }
+                 }
+@@ -349,7 +349,7 @@
+ 
+ // 256-bit intermediate for the >64-bit-logical fixed-point widening multiply. Min-container Hot / Cold at
+ // logical 65..=128 use a u128 / i128 container; the product of two 128-bit values needs 256 bits before the
+-// `>> FRAC` rescale. These const helpers form the 256-bit product as two u128 limbs and shift it back to one
++// `>> FRAC.0` rescale. These const helpers form the 256-bit product as two u128 limbs and shift it back to one
+ // container word. All const-evaluable on the pinned nightly.
+ //
+ // SAFETY (const_unsigned_bigint_helpers carve-out, vetted ALLOWED, tracking rust-lang/rust#152015):
+@@ -397,7 +397,7 @@
+ 
+ // Signed 128-bit-container fixed-point multiply: magnitude product, arithmetic-shift floor toward minus
+ // infinity (subtract 1 when the result is negative and any shifted-out low bit was set), reapply sign. This
+-// matches the `>> FRAC` floor the 1..=64 native-widen path and the catalogue assertions use.
++// matches the `>> FRAC.0` floor the 1..=64 native-widen path and the catalogue assertions use.
+ #[inline(always)]
+ pub(crate) const fn i_mul_fixed_128(a: i128, b: i128, frac: u32) -> i128 {
+     // lint:allow(no-bare-numeric) reason: 256-bit widen limbs; tracked: #256
+@@ -461,12 +461,12 @@
+                     }
+                 }
+                 #[inline(always)]
+-                fn u_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+-                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { u_mul_fixed_128(a, b, FRAC as u32) } // lint:allow(no-bare-numeric) reason: FRAC widened to the helper shift-amount type; tracked: #256
++                fn u_mul_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                    -> <Self as BitsContainerFor<$bits, Unsigned>>::T { u_mul_fixed_128(a, b, FRAC.0 as u32) } // lint:allow(no-bare-numeric) reason: FRAC.0 widened to the helper shift-amount type; tracked: #256
+                 #[inline(always)]
+-                fn u_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn u_div_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Unsigned>>::T {
+-                    // CATALOGUE (tracked, task #5): correct only when `a << FRAC` fits the u128 container; the
++                    // CATALOGUE (tracked, task #5): correct only when `a << FRAC.0` fits the u128 container; the
+                     // 65..=128 case needs 256/128 long division (no `carrying_div` intrinsic). The ignored
+                     // catalogue test pins the target. div-by-zero returns the numerator.
+                     if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY {
+@@ -476,7 +476,7 @@
+                         // on MIN / -1. Unsigned division cannot overflow once the zero divisor is
+                         // guarded above, so this is the same operation; one spelling across both
+                         // stops a reader copying the unguarded form into a signed body.
+-                        (a << FRAC).wrapping_div(b)
++                        (a << FRAC.0).wrapping_div(b)
+                     }
+                 }
+             }
+@@ -507,12 +507,12 @@
+                     }
+                 }
+                 #[inline(always)]
+-                fn i_mul_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+-                    -> <Self as BitsContainerFor<$bits, Signed>>::T { i_mul_fixed_128(a, b, FRAC as u32) } // lint:allow(no-bare-numeric) reason: FRAC widened to the helper shift-amount type; tracked: #256
++                fn i_mul_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                    -> <Self as BitsContainerFor<$bits, Signed>>::T { i_mul_fixed_128(a, b, FRAC.0 as u32) } // lint:allow(no-bare-numeric) reason: FRAC.0 widened to the helper shift-amount type; tracked: #256
+                 #[inline(always)]
+-                fn i_div_fixed<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
++                fn i_div_fixed<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) // lint:allow(no-bare-numeric) reason: const-generic shift carrier mirrors const N: u16; tracked: #256
+                     -> <Self as BitsContainerFor<$bits, Signed>>::T {
+-                    // CATALOGUE (tracked, task #5): correct only when `a << FRAC` fits the i128 container; the
++                    // CATALOGUE (tracked, task #5): correct only when `a << FRAC.0` fits the i128 container; the
+                     // 65..=128 case needs 256/128 long division. The ignored catalogue test pins the target.
+                     // div-by-zero returns the numerator; signed `/` truncates toward zero.
+                     if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY {
+@@ -520,7 +520,7 @@
+                     } else {
+                         // `wrapping_div`, not `/`. Signed MIN / -1 has no representable answer and
+                         // `/` panics on it, which a never-panic strategy must not do.
+-                        (a << FRAC).wrapping_div(b)
++                        (a << FRAC.0).wrapping_div(b)
+                     }
+                 }
+             }
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/container.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/container.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/container.rs	2026-07-28 20:09:35
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/container.rs	2026-08-04 09:25:52
+@@ -43,247 +43,104 @@
+ //! cannot be Strategy-erased; sketch 07's simplification did not
+ //! match production and was repaired here).
+ 
++
++
++
+ use crate::{
+     Align, Cold, Hot, Precise, Signed, Signedness, Strategy, Unsigned, Warm, WideBits, A1, A16,
+ };
+ 
+-// ---------------------------------------------------------------------------
+-// Bucket tag functions (Strategy-aware).
+-//
+-// 0..=4 are native primitive buckets. 5 is the wide bucket.
+-// Hot / Cold span 0..=4 native (N=1..=128). Warm / Precise span 0..=3
+-// native (N=1..=64); their bucket 4 is undefined and N=65..=128 falls
+-// straight to wide.
+-// ---------------------------------------------------------------------------
++// --- bucket vocabulary (was: an integer computed by a const fn) ------------
++pub struct B8; pub struct B16; pub struct B32; pub struct B64; pub struct B128;
++pub struct BWide<const BYTES: usize>;
++pub trait Bucket {}
++impl Bucket for B8 {} impl Bucket for B16 {} impl Bucket for B32 {}
++impl Bucket for B64 {} impl Bucket for B128 {}
++impl<const BYTES: usize> Bucket for BWide<BYTES> {}
+ 
+-#[inline(always)]
+-pub const fn tag_hot_cold(n: u16) -> usize {
+-    let n = n as usize;
+-    if n <= 8 {
+-        0
+-    } else if n <= 16 {
+-        1
+-    } else if n <= 32 {
+-        2
+-    } else if n <= 64 {
+-        3
+-    } else if n <= 128 {
+-        4
+-    } else {
+-        5
+-    }
+-}
++pub trait Family {}
++pub struct HotCold; impl Family for HotCold {}
++pub struct WarmPrecise; impl Family for WarmPrecise {}
+ 
+-#[inline(always)]
+-pub const fn tag_warm_precise(n: u16) -> usize {
+-    let n = n as usize;
+-    if n <= 8 {
+-        0
+-    } else if n <= 16 {
+-        1
+-    } else if n <= 32 {
+-        2
+-    } else if n <= 64 {
+-        3
+-    } else {
+-        5
+-    }
+-}
++// Width as typestate. Internal: it never appears in a public signature, which
++// is what keeps this change inside one file.
++pub struct Wid<const N: u16>;
++pub trait WidthFor<F: Family> { type Bkt: Bucket; }
+ 
+-#[inline(always)]
+-pub const fn bytes_for_u16(n: u16) -> usize {
+-    (n as usize).div_ceil(8)
++macro_rules! widths {
++    ($fam:ty, $( $n:literal => $bkt:ty ),* $(,)?) => {
++        $( impl WidthFor<$fam> for Wid<$n> { type Bkt = $bkt; } )*
++    };
+ }
+ 
+-// ---------------------------------------------------------------------------
+-// User-facing trait.
+-// ---------------------------------------------------------------------------
+-
+-/// Sign-aware container dispatch: `(strategy, logical_bits, sign) -> type`.
+-///
+-/// One impl per Strategy. Each defers to the
+-/// `Project<TAG, Sign, BYTES, S>` helper trait through a
+-/// Strategy-specific `tag` const fn. Absence of a Project impl for
+-/// a given `(TAG, Sign, S)` triple is how `Uint<100, Warm>`
+-/// (N=100, no native u256) becomes a compile error pointing at the
+-/// `#[diagnostic::on_unimplemented]` note below.
+ #[diagnostic::on_unimplemented(
+-    message = "strategy `{Self}` does not provide a container for {N}-bit width",
+-    note = "Hot / Cold cover 1..=128 directly via native u8/u16/u32/u64/u128. Warm / Precise cover 1..=64 via 2x-logical primitives (u16/u32/u64/u128); for 65..=128 they have no native bucket and must use Hot or Cold. Above 128 bits all four strategies dispatch through `WideBits<bytes_for(N), A>` (Hot uses align-16 baseline, others align-1). If this fires on Warm/Precise at N=65..=128, choose Hot or Cold explicitly."
++    message = "strategy `{Self}` does not provide a container for {N}-bit width"
+ )]
+ pub const trait BitsContainerFor<const N: u16, Sign: Signedness>: Strategy {
+-    /// Concrete storage type for this `(strategy, bit-width, sign)`
+-    /// triple. Either a native primitive (native bucket) or a
+-    /// `WideBits<BYTES, A>` (wide bucket).
+     type T: Copy + Clone + PartialEq + Eq + Default + core::hash::Hash + core::fmt::Debug + 'static;
+ }
+ 
+-// ---------------------------------------------------------------------------
+-// Pattern C helper trait.
+-//
+-// Distinct impls keyed on the const-generic `TAG` value avoid E0119
+-// overlap. The `BYTES` const generic is unused for native buckets
+-// (TAG 0..=4) but threaded through so the wide bucket (TAG=5) can
+-// build `WideBits<BYTES, A>`.
+-// ---------------------------------------------------------------------------
+-
+-/// Bucket-keyed projection helper. Per-Strategy impls below cover
+-/// every reachable `(TAG, Sign, S)` combination for that Strategy.
+-///
+-/// Sealed via the `crate::sealed::Sealed` supertrait. Downstream
+-/// consumers cannot add `impl Project<6, ..., Picker>` etc.; only
+-/// types in this crate that impl `Sealed` can implement `Project`.
+-/// Today the sole implementor is `Picker`.
+-pub trait Project<const TAG: usize, Sign: Signedness, const BYTES: usize, S: Strategy>:
+-    crate::sealed::Sealed
+-{
+-    /// Concrete storage type for this projection slot.
++pub trait Project<B: Bucket, Sign: Signedness, S: Strategy>: crate::sealed::Sealed {
+     type T: Copy + Clone + PartialEq + Eq + Default + core::hash::Hash + core::fmt::Debug + 'static;
+ }
+-
+-/// Single dispatch site for `Project` impls. Zero-sized.
+-///
+-/// Stays `pub` because it appears in the public associated-type body
+-/// of every `BitsContainerFor` impl (`type T = <Picker as Project<...>>::T`).
+-/// Demoting `Picker` to `pub(crate)` triggers `E0446: private type Picker
+-/// in public interface` per round 202605031548 sketch 02 finding 2. The
+-/// gate against downstream impls is the `Project` seal, not Picker's
+-/// visibility.
+ pub struct Picker;
+-
+ impl crate::sealed::Sealed for Picker {}
+ 
+-// ---------------------------------------------------------------------------
+-// Native bucket Project impls (Strategy-aware), via macro_rules.
+-//
+-// Hot / Cold: minimum aligned (5 buckets per Sign).
+-// Warm / Precise: 2x logical (4 buckets per Sign; no bucket 4).
+-//
+-// The `BYTES` generic is unused for native impls; consumers always
+-// pass `bytes_for_u16(N)` but the projection ignores it at native TAGs.
+-//
+-// Per round 202605031548 (#314), the 40 hand-written native-bucket
+-// impl blocks collapse to 4 macro invocations (one per Strategy).
+-// Total impl count is unchanged; source-line count drops by ~70%.
+-// ---------------------------------------------------------------------------
+-
+-macro_rules! impl_native_bucket {
+-    (
+-        $strategy:ty,
+-        [ $( $u_tag:literal => $u_ty:ty ),+ $(,)? ],
+-        [ $( $i_tag:literal => $i_ty:ty ),+ $(,)? ]
+-        $(,)?
+-    ) => {
+-        $(
+-            impl<const BYTES: usize> Project<$u_tag, Unsigned, BYTES, $strategy> for Picker {
+-                type T = $u_ty;
+-            }
+-        )+
+-        $(
+-            impl<const BYTES: usize> Project<$i_tag, Signed, BYTES, $strategy> for Picker {
+-                type T = $i_ty;
+-            }
+-        )+
+-    };
++macro_rules! project_native {
++    ($s:ty, $( $b:ty => ($u:ty, $i:ty) ),* $(,)?) => { $(
++        impl Project<$b, Unsigned, $s> for Picker { type T = $u; }
++        impl Project<$b, Signed,   $s> for Picker { type T = $i; }
++    )* };
+ }
++project_native!(Hot,  B8 => (u8,i8), B16 => (u16,i16), B32 => (u32,i32), B64 => (u64,i64), B128 => (u128,i128));
++project_native!(Cold, B8 => (u8,i8), B16 => (u16,i16), B32 => (u32,i32), B64 => (u64,i64), B128 => (u128,i128));
++project_native!(Warm,    B16 => (u16,i16), B32 => (u32,i32), B64 => (u64,i64), B128 => (u128,i128));
++project_native!(Precise, B16 => (u16,i16), B32 => (u32,i32), B64 => (u64,i64), B128 => (u128,i128));
+ 
+-// Hot: 5 buckets, min aligned native ladder.
+-impl_native_bucket!(
+-    Hot,
+-    [0 => u8, 1 => u16, 2 => u32, 3 => u64, 4 => u128],
+-    [0 => i8, 1 => i16, 2 => i32, 3 => i64, 4 => i128],
+-);
+-
+-// Cold: same primitive ladder as Hot; bitpacking is an access-path
+-// concern, not a container-type concern.
+-impl_native_bucket!(
+-    Cold,
+-    [0 => u8, 1 => u16, 2 => u32, 3 => u64, 4 => u128],
+-    [0 => i8, 1 => i16, 2 => i32, 3 => i64, 4 => i128],
+-);
+-
+-// Warm: 4 buckets, 2x-logical native ladder. 1..=8 dispatches to u16, etc.
+-impl_native_bucket!(
+-    Warm,
+-    [0 => u16, 1 => u32, 2 => u64, 3 => u128],
+-    [0 => i16, 1 => i32, 2 => i64, 3 => i128],
+-);
+-
+-// Precise: same primitive ladder as Warm; saturating semantics
+-// implemented in arith.rs, container shape is identical.
+-impl_native_bucket!(
+-    Precise,
+-    [0 => u16, 1 => u32, 2 => u64, 3 => u128],
+-    [0 => i16, 1 => i32, 2 => i64, 3 => i128],
+-);
+-
+-// ---------------------------------------------------------------------------
+-// Wide bucket Project impls (TAG=5).
+-//
+-// Hot uses A16 (SSE2 / NEON baseline). Cold / Warm / Precise use A1
+-// (align-1 byte-exact). Sign axis is structurally irrelevant at the
+-// wide storage layer (bytes are bytes); BitPrim impls on
+-// `WideBits<BYTES, A>` in arvo-bits-contracts add the sign-aware
+-// interpretation.
+-// ---------------------------------------------------------------------------
+-
+-impl<Sign: Signedness, const BYTES: usize> Project<5, Sign, BYTES, Hot> for Picker {
++impl<Sign: Signedness, const BYTES: usize> Project<BWide<BYTES>, Sign, Hot> for Picker {
+     type T = WideBits<BYTES, A16>;
+ }
+-
+-impl<Sign: Signedness, const BYTES: usize> Project<5, Sign, BYTES, Cold> for Picker {
++impl<Sign: Signedness, const BYTES: usize> Project<BWide<BYTES>, Sign, Cold> for Picker {
+     type T = WideBits<BYTES, A1>;
+ }
+-
+-impl<Sign: Signedness, const BYTES: usize> Project<5, Sign, BYTES, Warm> for Picker {
++impl<Sign: Signedness, const BYTES: usize> Project<BWide<BYTES>, Sign, Warm> for Picker {
+     type T = WideBits<BYTES, A1>;
+ }
+-
+-impl<Sign: Signedness, const BYTES: usize> Project<5, Sign, BYTES, Precise> for Picker {
++impl<Sign: Signedness, const BYTES: usize> Project<BWide<BYTES>, Sign, Precise> for Picker {
+     type T = WideBits<BYTES, A1>;
+ }
+ 
+-// ---------------------------------------------------------------------------
+-// User-facing `BitsContainerFor` impls (4 total, one per Strategy).
+-//
+-// Each defers to `<Picker as Project<{ tag(N) }, Sign, { bytes_for_u16(N) }, Self>>::T`
+-// using its Strategy-specific tag function. The `[(); ...]:` where-
+-// clauses validate the const expressions at trait-resolution time.
+-// ---------------------------------------------------------------------------
+-
+ const impl<const N: u16, Sign: Signedness> BitsContainerFor<N, Sign> for Hot
+-where
+-    Picker: Project<{ tag_hot_cold(N) }, Sign, { bytes_for_u16(N) }, Hot>,
+-{
+-    type T = <Picker as Project<{ tag_hot_cold(N) }, Sign, { bytes_for_u16(N) }, Hot>>::T;
+-}
++where Wid<N>: WidthFor<HotCold>, Picker: Project<<Wid<N> as WidthFor<HotCold>>::Bkt, Sign, Hot>
++{ type T = <Picker as Project<<Wid<N> as WidthFor<HotCold>>::Bkt, Sign, Hot>>::T; }
+ 
+ const impl<const N: u16, Sign: Signedness> BitsContainerFor<N, Sign> for Cold
+-where
+-    Picker: Project<{ tag_hot_cold(N) }, Sign, { bytes_for_u16(N) }, Cold>,
+-{
+-    type T = <Picker as Project<{ tag_hot_cold(N) }, Sign, { bytes_for_u16(N) }, Cold>>::T;
+-}
++where Wid<N>: WidthFor<HotCold>, Picker: Project<<Wid<N> as WidthFor<HotCold>>::Bkt, Sign, Cold>
++{ type T = <Picker as Project<<Wid<N> as WidthFor<HotCold>>::Bkt, Sign, Cold>>::T; }
+ 
+ const impl<const N: u16, Sign: Signedness> BitsContainerFor<N, Sign> for Warm
+-where
+-    Picker: Project<{ tag_warm_precise(N) }, Sign, { bytes_for_u16(N) }, Warm>,
+-{
+-    type T = <Picker as Project<{ tag_warm_precise(N) }, Sign, { bytes_for_u16(N) }, Warm>>::T;
+-}
++where Wid<N>: WidthFor<WarmPrecise>, Picker: Project<<Wid<N> as WidthFor<WarmPrecise>>::Bkt, Sign, Warm>
++{ type T = <Picker as Project<<Wid<N> as WidthFor<WarmPrecise>>::Bkt, Sign, Warm>>::T; }
+ 
+ const impl<const N: u16, Sign: Signedness> BitsContainerFor<N, Sign> for Precise
+-where
+-    Picker: Project<{ tag_warm_precise(N) }, Sign, { bytes_for_u16(N) }, Precise>,
+-{
+-    type T = <Picker as Project<{ tag_warm_precise(N) }, Sign, { bytes_for_u16(N) }, Precise>>::T;
+-}
++where Wid<N>: WidthFor<WarmPrecise>, Picker: Project<<Wid<N> as WidthFor<WarmPrecise>>::Bkt, Sign, Precise>
++{ type T = <Picker as Project<<Wid<N> as WidthFor<WarmPrecise>>::Bkt, Sign, Precise>>::T; }
+ 
+-// Mark `Align` as used inside this module so its trait bound on the
+-// wide-bucket impls keeps the import alive even when only A1 / A16
+-// are reached at the projection level today.
+-const _: fn() = || {
+-    fn _bound<A: Align>() {}
+-    _bound::<A1>();
+-    _bound::<A16>();
+-};
++const _: fn() = || { fn _b<A: Align>() {} _b::<A1>(); _b::<A16>(); };
++
++// --- the generated table (this is the piece that does not scale) ----------
++widths!(HotCold, 1 => B8, 2 => B8, 3 => B8, 4 => B8, 5 => B8, 6 => B8, 7 => B8, 8 => B8, 9 => B16, 10 => B16, 11 => B16, 12 => B16, 13 => B16, 14 => B16, 15 => B16, 16 => B16, 17 => B32, 18 => B32, 19 => B32, 20 => B32, 21 => B32, 22 => B32, 23 => B32, 24 => B32, 25 => B32, 26 => B32, 27 => B32, 28 => B32, 29 => B32, 30 => B32, 31 => B32, 32 => B32, 33 => B64, 34 => B64, 35 => B64, 36 => B64, 37 => B64, 38 => B64, 39 => B64, 40 => B64, 41 => B64, 42 => B64, 43 => B64, 44 => B64, 45 => B64, 46 => B64, 47 => B64, 48 => B64, 49 => B64, 50 => B64, 51 => B64, 52 => B64, 53 => B64, 54 => B64, 55 => B64, 56 => B64, 57 => B64, 58 => B64, 59 => B64, 60 => B64, 61 => B64, 62 => B64, 63 => B64, 64 => B64, 65 => B128, 66 => B128, 67 => B128, 68 => B128, 69 => B128, 70 => B128, 71 => B128, 72 => B128, 73 => B128, 74 => B128, 75 => B128, 76 => B128, 77 => B128, 78 => B128, 79 => B128, 80 => B128, 81 => B128, 82 => B128, 83 => B128, 84 => B128, 85 => B128, 86 => B128, 87 => B128, 88 => B128, 89 => B128, 90 => B128, 91 => B128, 92 => B128, 93 => B128, 94 => B128, 95 => B128, 96 => B128, 97 => B128, 98 => B128, 99 => B128, 100 => B128, 101 => B128, 102 => B128, 103 => B128, 104 => B128, 105 => B128, 106 => B128, 107 => B128, 108 => B128, 109 => B128, 110 => B128, 111 => B128, 112 => B128, 113 => B128, 114 => B128, 115 => B128, 116 => B128, 117 => B128, 118 => B128, 119 => B128, 120 => B128, 121 => B128, 122 => B128, 123 => B128, 124 => B128, 125 => B128, 126 => B128, 127 => B128, 128 => B128, 129 => BWide<17>, 130 => BWide<17>, 131 => BWide<17>, 132 => BWide<17>, 133 => BWide<17>, 134 => BWide<17>, 135 => BWide<17>, 136 => BWide<17>, 137 => BWide<18>, 138 => BWide<18>, 139 => BWide<18>, 140 => BWide<18>, 141 => BWide<18>, 142 => BWide<18>, 143 => BWide<18>, 144 => BWide<18>, 145 => BWide<19>, 146 => BWide<19>, 147 => BWide<19>, 148 => BWide<19>, 149 => BWide<19>, 150 => BWide<19>, 151 => BWide<19>, 152 => BWide<19>, 153 => BWide<20>, 154 => BWide<20>, 155 => BWide<20>, 156 => BWide<20>, 157 => BWide<20>, 158 => BWide<20>, 159 => BWide<20>, 160 => BWide<20>, 161 => BWide<21>, 162 => BWide<21>, 163 => BWide<21>, 164 => BWide<21>, 165 => BWide<21>, 166 => BWide<21>, 167 => BWide<21>, 168 => BWide<21>, 169 => BWide<22>, 170 => BWide<22>, 171 => BWide<22>, 172 => BWide<22>, 173 => BWide<22>, 174 => BWide<22>, 175 => BWide<22>, 176 => BWide<22>, 177 => BWide<23>, 178 => BWide<23>, 179 => BWide<23>, 180 => BWide<23>, 181 => BWide<23>, 182 => BWide<23>, 183 => BWide<23>, 184 => BWide<23>, 185 => BWide<24>, 186 => BWide<24>, 187 => BWide<24>, 188 => BWide<24>, 189 => BWide<24>, 190 => BWide<24>, 191 => BWide<24>, 192 => BWide<24>, 193 => BWide<25>, 194 => BWide<25>, 195 => BWide<25>, 196 => BWide<25>, 197 => BWide<25>, 198 => BWide<25>, 199 => BWide<25>, 200 => BWide<25>, 201 => BWide<26>, 202 => BWide<26>, 203 => BWide<26>, 204 => BWide<26>, 205 => BWide<26>, 206 => BWide<26>, 207 => BWide<26>, 208 => BWide<26>, 209 => BWide<27>, 210 => BWide<27>, 211 => BWide<27>, 212 => BWide<27>, 213 => BWide<27>, 214 => BWide<27>, 215 => BWide<27>, 216 => BWide<27>, 217 => BWide<28>, 218 => BWide<28>, 219 => BWide<28>, 220 => BWide<28>, 221 => BWide<28>, 222 => BWide<28>, 223 => BWide<28>, 224 => BWide<28>, 225 => BWide<29>, 226 => BWide<29>, 227 => BWide<29>, 228 => BWide<29>, 229 => BWide<29>, 230 => BWide<29>, 231 => BWide<29>, 232 => BWide<29>, 233 => BWide<30>, 234 => BWide<30>, 235 => BWide<30>, 236 => BWide<30>, 237 => BWide<30>, 238 => BWide<30>, 239 => BWide<30>, 240 => BWide<30>, 241 => BWide<31>, 242 => BWide<31>, 243 => BWide<31>, 244 => BWide<31>, 245 => BWide<31>, 246 => BWide<31>, 247 => BWide<31>, 248 => BWide<31>, 249 => BWide<32>, 250 => BWide<32>, 251 => BWide<32>, 252 => BWide<32>, 253 => BWide<32>, 254 => BWide<32>, 255 => BWide<32>, 256 => BWide<32>);
++widths!(WarmPrecise, 1 => B16, 2 => B16, 3 => B16, 4 => B16, 5 => B16, 6 => B16, 7 => B16, 8 => B16, 9 => B32, 10 => B32, 11 => B32, 12 => B32, 13 => B32, 14 => B32, 15 => B32, 16 => B32, 17 => B64, 18 => B64, 19 => B64, 20 => B64, 21 => B64, 22 => B64, 23 => B64, 24 => B64, 25 => B64, 26 => B64, 27 => B64, 28 => B64, 29 => B64, 30 => B64, 31 => B64, 32 => B64, 33 => B128, 34 => B128, 35 => B128, 36 => B128, 37 => B128, 38 => B128, 39 => B128, 40 => B128, 41 => B128, 42 => B128, 43 => B128, 44 => B128, 45 => B128, 46 => B128, 47 => B128, 48 => B128, 49 => B128, 50 => B128, 51 => B128, 52 => B128, 53 => B128, 54 => B128, 55 => B128, 56 => B128, 57 => B128, 58 => B128, 59 => B128, 60 => B128, 61 => B128, 62 => B128, 63 => B128, 64 => B128, 65 => BWide<9>, 66 => BWide<9>, 67 => BWide<9>, 68 => BWide<9>, 69 => BWide<9>, 70 => BWide<9>, 71 => BWide<9>, 72 => BWide<9>, 73 => BWide<10>, 74 => BWide<10>, 75 => BWide<10>, 76 => BWide<10>, 77 => BWide<10>, 78 => BWide<10>, 79 => BWide<10>, 80 => BWide<10>, 81 => BWide<11>, 82 => BWide<11>, 83 => BWide<11>, 84 => BWide<11>, 85 => BWide<11>, 86 => BWide<11>, 87 => BWide<11>, 88 => BWide<11>, 89 => BWide<12>, 90 => BWide<12>, 91 => BWide<12>, 92 => BWide<12>, 93 => BWide<12>, 94 => BWide<12>, 95 => BWide<12>, 96 => BWide<12>, 97 => BWide<13>, 98 => BWide<13>, 99 => BWide<13>, 100 => BWide<13>, 101 => BWide<13>, 102 => BWide<13>, 103 => BWide<13>, 104 => BWide<13>, 105 => BWide<14>, 106 => BWide<14>, 107 => BWide<14>, 108 => BWide<14>, 109 => BWide<14>, 110 => BWide<14>, 111 => BWide<14>, 112 => BWide<14>, 113 => BWide<15>, 114 => BWide<15>, 115 => BWide<15>, 116 => BWide<15>, 117 => BWide<15>, 118 => BWide<15>, 119 => BWide<15>, 120 => BWide<15>, 121 => BWide<16>, 122 => BWide<16>, 123 => BWide<16>, 124 => BWide<16>, 125 => BWide<16>, 126 => BWide<16>, 127 => BWide<16>, 128 => BWide<16>, 129 => BWide<17>, 130 => BWide<17>, 131 => BWide<17>, 132 => BWide<17>, 133 => BWide<17>, 134 => BWide<17>, 135 => BWide<17>, 136 => BWide<17>, 137 => BWide<18>, 138 => BWide<18>, 139 => BWide<18>, 140 => BWide<18>, 141 => BWide<18>, 142 => BWide<18>, 143 => BWide<18>, 144 => BWide<18>, 145 => BWide<19>, 146 => BWide<19>, 147 => BWide<19>, 148 => BWide<19>, 149 => BWide<19>, 150 => BWide<19>, 151 => BWide<19>, 152 => BWide<19>, 153 => BWide<20>, 154 => BWide<20>, 155 => BWide<20>, 156 => BWide<20>, 157 => BWide<20>, 158 => BWide<20>, 159 => BWide<20>, 160 => BWide<20>, 161 => BWide<21>, 162 => BWide<21>, 163 => BWide<21>, 164 => BWide<21>, 165 => BWide<21>, 166 => BWide<21>, 167 => BWide<21>, 168 => BWide<21>, 169 => BWide<22>, 170 => BWide<22>, 171 => BWide<22>, 172 => BWide<22>, 173 => BWide<22>, 174 => BWide<22>, 175 => BWide<22>, 176 => BWide<22>, 177 => BWide<23>, 178 => BWide<23>, 179 => BWide<23>, 180 => BWide<23>, 181 => BWide<23>, 182 => BWide<23>, 183 => BWide<23>, 184 => BWide<23>, 185 => BWide<24>, 186 => BWide<24>, 187 => BWide<24>, 188 => BWide<24>, 189 => BWide<24>, 190 => BWide<24>, 191 => BWide<24>, 192 => BWide<24>, 193 => BWide<25>, 194 => BWide<25>, 195 => BWide<25>, 196 => BWide<25>, 197 => BWide<25>, 198 => BWide<25>, 199 => BWide<25>, 200 => BWide<25>, 201 => BWide<26>, 202 => BWide<26>, 203 => BWide<26>, 204 => BWide<26>, 205 => BWide<26>, 206 => BWide<26>, 207 => BWide<26>, 208 => BWide<26>, 209 => BWide<27>, 210 => BWide<27>, 211 => BWide<27>, 212 => BWide<27>, 213 => BWide<27>, 214 => BWide<27>, 215 => BWide<27>, 216 => BWide<27>, 217 => BWide<28>, 218 => BWide<28>, 219 => BWide<28>, 220 => BWide<28>, 221 => BWide<28>, 222 => BWide<28>, 223 => BWide<28>, 224 => BWide<28>, 225 => BWide<29>, 226 => BWide<29>, 227 => BWide<29>, 228 => BWide<29>, 229 => BWide<29>, 230 => BWide<29>, 231 => BWide<29>, 232 => BWide<29>, 233 => BWide<30>, 234 => BWide<30>, 235 => BWide<30>, 236 => BWide<30>, 237 => BWide<30>, 238 => BWide<30>, 239 => BWide<30>, 240 => BWide<30>, 241 => BWide<31>, 242 => BWide<31>, 243 => BWide<31>, 244 => BWide<31>, 245 => BWide<31>, 246 => BWide<31>, 247 => BWide<31>, 248 => BWide<31>, 249 => BWide<32>, 250 => BWide<32>, 251 => BWide<32>, 252 => BWide<32>, 253 => BWide<32>, 254 => BWide<32>, 255 => BWide<32>, 256 => BWide<32>);
++
++#[inline(always)]
++pub const fn tag_hot_cold(n: u16) -> usize {
++    let n = n as usize;
++    if n <= 8 {0} else if n <= 16 {1} else if n <= 32 {2} else if n <= 64 {3} else if n <= 128 {4} else {5}
++}
++#[inline(always)]
++pub const fn tag_warm_precise(n: u16) -> usize {
++    let n = n as usize;
++    if n <= 8 {0} else if n <= 16 {1} else if n <= 32 {2} else if n <= 64 {3} else {5}
++}
++#[inline(always)]
++pub const fn bytes_for_u16(n: u16) -> usize { (n as usize).div_ceil(8) }
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/euclid.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/euclid.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/euclid.rs	2026-07-26 23:48:34
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/euclid.rs	2026-08-04 09:34:16
+@@ -47,16 +47,16 @@
+         <Self as BitsContainerFor<N, Signed>>::T,
+         usize,
+     ); // lint:allow(no-bare-numeric) reason: divisor count + remainder share-count carriers; tracked: #256
+-    /// Whole-unit euclidean quotient by a fixed-point divisor (`FRAC` fractional bits), floored to units.
+-    fn div_euclid_whole<const FRAC: u16>(
++    /// Whole-unit euclidean quotient by a fixed-point divisor (`FRAC.0` fractional bits), floored to units.
++    fn div_euclid_whole<const FRAC: crate::FBitsShim>(
+         a: <Self as BitsContainerFor<N, Signed>>::T,
+         b: <Self as BitsContainerFor<N, Signed>>::T,
+-    ) -> <Self as BitsContainerFor<N, Signed>>::T; // lint:allow(no-bare-numeric) reason: const-generic FRAC carrier mirrors i_div_fixed; tracked: #256
++    ) -> <Self as BitsContainerFor<N, Signed>>::T; // lint:allow(no-bare-numeric) reason: const-generic FRAC.0 carrier mirrors i_div_fixed; tracked: #256
+     /// Whole-unit euclidean remainder by a fixed-point divisor (the fixed-point leftover).
+-    fn rem_euclid_whole<const FRAC: u16>(
++    fn rem_euclid_whole<const FRAC: crate::FBitsShim>(
+         a: <Self as BitsContainerFor<N, Signed>>::T,
+         b: <Self as BitsContainerFor<N, Signed>>::T,
+-    ) -> <Self as BitsContainerFor<N, Signed>>::T; // lint:allow(no-bare-numeric) reason: const-generic FRAC carrier; tracked: #256
++    ) -> <Self as BitsContainerFor<N, Signed>>::T; // lint:allow(no-bare-numeric) reason: const-generic FRAC.0 carrier; tracked: #256
+ }
+ 
+ macro_rules! impl_scalar_euclid_i {
+@@ -76,11 +76,11 @@
+                     if n == 0 { (a, a, 0) } else { let base = a.div_euclid(n as $container); let rc = a.rem_euclid(n as $container) as usize; let base_plus = if rc == 0 { base } else { base + 1 }; (base, base_plus, rc) } // lint:allow(no-bare-numeric) reason: remainder share-count cast; tracked: #256
+                 }
+                 #[inline(always)]
+-                fn div_euclid_whole<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) -> <Self as BitsContainerFor<$bits, Signed>>::T { // lint:allow(no-bare-numeric) reason: const-generic FRAC carrier mirrors i_div_fixed; tracked: #256
+-                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY { a } else { a.div_euclid(b).saturating_mul((1 as $container) << FRAC) }
++                fn div_euclid_whole<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) -> <Self as BitsContainerFor<$bits, Signed>>::T { // lint:allow(no-bare-numeric) reason: const-generic FRAC.0 carrier mirrors i_div_fixed; tracked: #256
++                    if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY { a } else { a.div_euclid(b).saturating_mul((1 as $container) << FRAC.0) }
+                 }
+                 #[inline(always)]
+-                fn rem_euclid_whole<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) -> <Self as BitsContainerFor<$bits, Signed>>::T { // lint:allow(no-bare-numeric) reason: const-generic FRAC carrier; tracked: #256
++                fn rem_euclid_whole<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Signed>>::T, b: <Self as BitsContainerFor<$bits, Signed>>::T) -> <Self as BitsContainerFor<$bits, Signed>>::T { // lint:allow(no-bare-numeric) reason: const-generic FRAC.0 carrier; tracked: #256
+                     if b == <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY { <<Self as BitsContainerFor<$bits, Signed>>::T as Identity<Additive>>::IDENTITY } else { a.rem_euclid(b) }
+                 }
+             }
+@@ -153,16 +153,16 @@
+         <Self as BitsContainerFor<N, Unsigned>>::T,
+         usize,
+     ); // lint:allow(no-bare-numeric) reason: divisor count + remainder share-count carriers; tracked: #256
+-    /// Whole-unit euclidean quotient by a fixed-point divisor (`FRAC` fractional bits), floored to units.
+-    fn div_euclid_whole<const FRAC: u16>(
++    /// Whole-unit euclidean quotient by a fixed-point divisor (`FRAC.0` fractional bits), floored to units.
++    fn div_euclid_whole<const FRAC: crate::FBitsShim>(
+         a: <Self as BitsContainerFor<N, Unsigned>>::T,
+         b: <Self as BitsContainerFor<N, Unsigned>>::T,
+-    ) -> <Self as BitsContainerFor<N, Unsigned>>::T; // lint:allow(no-bare-numeric) reason: const-generic FRAC carrier mirrors u_div_fixed; tracked: #256
++    ) -> <Self as BitsContainerFor<N, Unsigned>>::T; // lint:allow(no-bare-numeric) reason: const-generic FRAC.0 carrier mirrors u_div_fixed; tracked: #256
+     /// Whole-unit euclidean remainder by a fixed-point divisor (the fixed-point leftover).
+-    fn rem_euclid_whole<const FRAC: u16>(
++    fn rem_euclid_whole<const FRAC: crate::FBitsShim>(
+         a: <Self as BitsContainerFor<N, Unsigned>>::T,
+         b: <Self as BitsContainerFor<N, Unsigned>>::T,
+-    ) -> <Self as BitsContainerFor<N, Unsigned>>::T; // lint:allow(no-bare-numeric) reason: const-generic FRAC carrier; tracked: #256
++    ) -> <Self as BitsContainerFor<N, Unsigned>>::T; // lint:allow(no-bare-numeric) reason: const-generic FRAC.0 carrier; tracked: #256
+ }
+ 
+ macro_rules! impl_scalar_euclid_u {
+@@ -182,11 +182,11 @@
+                     if n == 0 { (a, a, 0) } else { let base = a.div_euclid(n as $container); let rc = a.rem_euclid(n as $container) as usize; let base_plus = if rc == 0 { base } else { base + 1 }; (base, base_plus, rc) } // lint:allow(no-bare-numeric) reason: remainder share-count cast; tracked: #256
+                 }
+                 #[inline(always)]
+-                fn div_euclid_whole<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) -> <Self as BitsContainerFor<$bits, Unsigned>>::T { // lint:allow(no-bare-numeric) reason: const-generic FRAC carrier mirrors u_div_fixed; tracked: #256
+-                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY { a } else { a.div_euclid(b).saturating_mul((1 as $container) << FRAC) }
++                fn div_euclid_whole<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) -> <Self as BitsContainerFor<$bits, Unsigned>>::T { // lint:allow(no-bare-numeric) reason: const-generic FRAC.0 carrier mirrors u_div_fixed; tracked: #256
++                    if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY { a } else { a.div_euclid(b).saturating_mul((1 as $container) << FRAC.0) }
+                 }
+                 #[inline(always)]
+-                fn rem_euclid_whole<const FRAC: u16>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) -> <Self as BitsContainerFor<$bits, Unsigned>>::T { // lint:allow(no-bare-numeric) reason: const-generic FRAC carrier; tracked: #256
++                fn rem_euclid_whole<const FRAC: crate::FBitsShim>(a: <Self as BitsContainerFor<$bits, Unsigned>>::T, b: <Self as BitsContainerFor<$bits, Unsigned>>::T) -> <Self as BitsContainerFor<$bits, Unsigned>>::T { // lint:allow(no-bare-numeric) reason: const-generic FRAC.0 carrier; tracked: #256
+                     if b == <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY { <<Self as BitsContainerFor<$bits, Unsigned>>::T as Identity<Additive>>::IDENTITY } else { a.rem_euclid(b) }
+                 }
+             }
+Only in /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src: fbits_shim.rs
+diff -ru /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/lib.rs /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/lib.rs
+--- /Users/orgrinrt/Dev/clause-dev/arvo/mock/crates/arvo-strategy/src/lib.rs	2026-07-30 22:22:48
++++ /private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/arvo-copy/mock/crates/arvo-strategy/src/lib.rs	2026-08-04 09:35:15
+@@ -8,7 +8,7 @@
+ // unsoundness (#97156, const `TypeId` resolved into types with higher-ranked-trait-
+ // bound subtyping) is unreachable: the stack bans `TypeId`. Builds clean on the
+ // pinned nightly. Migration to `generic_const_args` is tracked: #628.
+-#![feature(generic_const_exprs)]
++// REMOVED: #![feature(generic_const_exprs)]
+ // ALLOWED-tier unstable feature, soundness-vetted 2026-06-23 and recorded in the
+ // workspace `unstable-features.md`. `const_unsigned_bigint_helpers` (tracking
+ // rust-lang/rust#152015) enables const use of `u128::carrying_mul`, which the
+@@ -61,6 +61,8 @@
+ mod axes;
+ mod const_convert;
+ mod container;
++mod fbits_shim;
++pub use fbits_shim::{fbits_shim, FBitsShim};
+ mod cross_strategy;
+ mod euclid;
+ mod identity;
