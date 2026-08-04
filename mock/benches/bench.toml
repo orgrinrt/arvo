@@ -124,6 +124,39 @@ variants = [
     "../target/release/bench_quantiser_fadd_hardware",
 ]
 
+[bench.decimal-quantiser-radix-sweep]
+title = "Quantiser cost by radix: decimal32 against binary32, exponent spread swept"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.decimal-quantiser-radix-sweep.sizes]]
+n = 0
+variants = [
+    "../target/release/bench_quantiser_radix2",
+    "../target/release/bench_quantiser_radix10",
+]
+
+[[bench.decimal-quantiser-radix-sweep.sizes]]
+n = 2
+variants = [
+    "../target/release/bench_quantiser_radix2",
+    "../target/release/bench_quantiser_radix10",
+]
+
+[[bench.decimal-quantiser-radix-sweep.sizes]]
+n = 8
+variants = [
+    "../target/release/bench_quantiser_radix2",
+    "../target/release/bench_quantiser_radix10",
+]
+
+[[bench.decimal-quantiser-radix-sweep.sizes]]
+n = 20
+variants = [
+    "../target/release/bench_quantiser_radix2",
+    "../target/release/bench_quantiser_radix10",
+]
+
 [timing]
 passes = 4
 runs_per_pass = 1000

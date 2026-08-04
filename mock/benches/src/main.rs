@@ -136,6 +136,7 @@ fn main() -> ExitCode {
 /// + spectral benches go through their per-routine bridges.
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     use bench_quantiser_fadd_shared::AddSweep;
+    use bench_quantiser_radix_shared::RadixAdd;
     use bench_spectral_bisection::Fiedler;
     use bench_structural_decomposition::Rcm;
 
@@ -168,6 +169,16 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("quantiser-vs-fadd-subnormal-sweep", 50) => routine_bridge!(AddSweep<50>),
         ("quantiser-vs-fadd-subnormal-sweep", 75) => routine_bridge!(AddSweep<75>),
         ("quantiser-vs-fadd-subnormal-sweep", 100) => routine_bridge!(AddSweep<100>),
+
+        // decimal-quantiser bench: RadixAdd<SPREAD> dispatched per swept
+        // exponent-spread size. Both variants (radix two at binary32's
+        // parameters, radix ten at decimal32's) share this bridge and the
+        // identical operand stream; only the radix the kernel monomorphises
+        // at differs.
+        ("decimal-quantiser-radix-sweep", 0) => routine_bridge!(RadixAdd<0>),
+        ("decimal-quantiser-radix-sweep", 2) => routine_bridge!(RadixAdd<2>),
+        ("decimal-quantiser-radix-sweep", 8) => routine_bridge!(RadixAdd<8>),
+        ("decimal-quantiser-radix-sweep", 20) => routine_bridge!(RadixAdd<20>),
 
         _ => return None,
     };

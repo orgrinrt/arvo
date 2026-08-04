@@ -40,6 +40,9 @@ members = [
     "benches/variants/quantiser-fadd-shared",
     "benches/variants/quantiser-fadd-software",
     "benches/variants/quantiser-fadd-hardware",
+    "benches/variants/quantiser-radix-shared",
+    "benches/variants/quantiser-radix2",
+    "benches/variants/quantiser-radix10",
 ]
 
 [workspace.package]

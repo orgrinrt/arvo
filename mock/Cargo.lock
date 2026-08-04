@@ -21,6 +21,7 @@ name = "arvo-benches"
 version = "0.0.0"
 dependencies = [
  "bench-quantiser-fadd-shared",
+ "bench-quantiser-radix-shared",
  "bench-spectral-bisection",
  "bench-structural-decomposition",
  "mockspace-bench-core",
@@ -191,6 +192,31 @@ name = "bench-quantiser-fadd-software"
 version = "0.0.0"
 dependencies = [
  "bench-quantiser-fadd-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-quantiser-radix-shared"
+version = "0.0.0"
+dependencies = [
+ "mockspace-bench-core",
+]
+
+[[package]]
+name = "bench-quantiser-radix10"
+version = "0.0.0"
+dependencies = [
+ "bench-quantiser-radix-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-quantiser-radix2"
+version = "0.0.0"
+dependencies = [
+ "bench-quantiser-radix-shared",
  "mockspace-bench-core",
  "mockspace-bench-macro",
 ]

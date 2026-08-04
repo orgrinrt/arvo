@@ -1,6 +1,6 @@
-*.csv
-*.meta.json
-*_findings.md
+# Bench artifacts (CSV, meta, findings) are TRACKED, not ignored: the artifact trail is what
+# makes a harness result reproducible, auditable and citable, and it is why a measurement
+# belongs in mock/benches/ rather than in a probe with a timer. See
+# .claude/rules/bench-and-sketch-discipline.md.
 *.tmp
 *.log
-findings.md
