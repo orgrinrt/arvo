@@ -1,0 +1,24 @@
+Cheap single-sweep predicate, one const fn, one exhaustive pass over all ordered
+pairs of N-bit values, body = one wrapping_add and one comparison.
+rustc 1.98.0-nightly (57d06900f 2026-05-27), aarch64-apple-darwin, --edition 2024
+--crate-type=lib, run from inside the repo tree.
+
+bits=3  real=0.04s  ok
+bits=4  real=0.04s  ok
+bits=5  real=0.04s  ok
+bits=6  real=0.06s  ok
+bits=7  real=0.10s  ok
+bits=8  real=0.29s  ok
+bits=9  real=1.05s  ok
+bits=10 real=3.12s  REFUSED (long_running_const_eval)
+
+Same quantification at NINE bits with a heavier body (ten extra multiply-add
+steps per pair, heavy9.rs):
+
+bits=9  real=3.01s  REFUSED (long_running_const_eval)
+
+The quadrupling is structural (it is the complexity of the quantification: 2.9x
+from 7 to 8, 3.6x from 8 to 9). The WIDTH AT WHICH RUSTC REFUSES IS NOT: it is a
+step budget divided by the per-pair step cost. File 08 measured five constructors
+with a stability check each and refused at nine; one cheap sweep reaches ten, and
+one heavy sweep refuses at nine.

@@ -1,0 +1,100 @@
+
+radix 2, Underflow = Abrupt
+  p  span   absorption-free   associative   |V|
+  2     1   TRUE              TRUE          3
+  2     2   TRUE              TRUE          5
+  2     3   FALSE             FALSE         7
+  2     4   FALSE             FALSE         9
+  2     5   FALSE             FALSE         11
+  2     6   FALSE             FALSE         13
+  3     1   TRUE              TRUE          5
+  3     2   TRUE              FALSE         9
+  3     3   TRUE              FALSE         13
+  3     4   FALSE             FALSE         17
+  3     5   FALSE             FALSE         21
+  3     6   FALSE             FALSE         25
+  3     7   FALSE             FALSE         29
+  4     1   TRUE              TRUE          9
+  4     2   TRUE              FALSE         17
+  4     3   TRUE              FALSE         25
+  4     4   TRUE              FALSE         33
+  4     5   FALSE             FALSE         41
+  4     6   FALSE             FALSE         49
+  4     7   FALSE             FALSE         57
+  4     8   FALSE             FALSE         65
+
+radix 2, Underflow = Gradual
+  p  span   absorption-free   associative   |V|
+  2     1   TRUE              TRUE          4
+  2     2   FALSE             FALSE         6
+  2     3   FALSE             FALSE         8
+  2     4   FALSE             FALSE         10
+  2     5   FALSE             FALSE         12
+  2     6   FALSE             FALSE         14
+  3     1   TRUE              TRUE          8
+  3     2   FALSE             FALSE         12
+  3     3   FALSE             FALSE         16
+  3     4   FALSE             FALSE         20
+  3     5   FALSE             FALSE         24
+  3     6   FALSE             FALSE         28
+  3     7   FALSE             FALSE         32
+  4     1   TRUE              TRUE          16
+  4     2   FALSE             FALSE         24
+  4     3   FALSE             FALSE         32
+  4     4   FALSE             FALSE         40
+  4     5   FALSE             FALSE         48
+  4     6   FALSE             FALSE         56
+  4     7   FALSE             FALSE         64
+  4     8   FALSE             FALSE         72
+
+radix 10, Underflow = Abrupt
+  p  span   absorption-free   associative   |V|
+  2     1   TRUE              TRUE          91
+  2     2   TRUE              FALSE         181
+  2     3   FALSE             FALSE         271
+  2     4   FALSE             -             361
+  2     5   FALSE             -             451
+  2     6   FALSE             -             541
+  3     1   TRUE              -             901
+  3     2   TRUE              -             1801
+  3     3   TRUE              -             2701
+  3     4   FALSE             -             3601
+  3     5   FALSE             -             4501
+  3     6   FALSE             -             5401
+  3     7   -                 -             6301
+  4     1   -                 -             9001
+  4     2   -                 -             18001
+  4     3   -                 -             27001
+  4     4   -                 -             36001
+  4     5   -                 -             45001
+  4     6   -                 -             54001
+  4     7   -                 -             63001
+  4     8   -                 -             72001
+
+radix 10, Underflow = Gradual
+  p  span   absorption-free   associative   |V|
+  2     1   TRUE              TRUE          100
+  2     2   FALSE             FALSE         190
+  2     3   FALSE             FALSE         280
+  2     4   FALSE             -             370
+  2     5   FALSE             -             460
+  2     6   FALSE             -             550
+  3     1   TRUE              -             1000
+  3     2   FALSE             -             1900
+  3     3   FALSE             -             2800
+  3     4   FALSE             -             3700
+  3     5   FALSE             -             4600
+  3     6   FALSE             -             5500
+  3     7   -                 -             6400
+  4     1   -                 -             10000
+  4     2   -                 -             19000
+  4     3   -                 -             28000
+  4     4   -                 -             37000
+  4     5   -                 -             46000
+  4     6   -                 -             55000
+  4     7   -                 -             64000
+  4     8   -                 -             73000
+
+witness at r=2 p=3 Abrupt span=4: x = Val { m: 4, q: 1 }, y = Val { m: 4, q: -2 }, quantise(x+y) = x, y != 0
+Gradual: absorbing from span 2 at p = 2, 3, 4; Abrupt: from span p+1.
+same p, same code, same monomorphisation discipline; only EMAX moved by one.
