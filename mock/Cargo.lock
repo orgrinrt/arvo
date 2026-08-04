@@ -20,6 +20,7 @@ dependencies = [
 name = "arvo-benches"
 version = "0.0.0"
 dependencies = [
+ "bench-quantiser-fadd-shared",
  "bench-spectral-bisection",
  "bench-structural-decomposition",
  "mockspace-bench-core",
@@ -167,6 +168,31 @@ name = "arvo-transparent"
 version = "0.1.0"
 dependencies = [
  "notko",
+]
+
+[[package]]
+name = "bench-quantiser-fadd-hardware"
+version = "0.0.0"
+dependencies = [
+ "bench-quantiser-fadd-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-quantiser-fadd-shared"
+version = "0.0.0"
+dependencies = [
+ "mockspace-bench-core",
+]
+
+[[package]]
+name = "bench-quantiser-fadd-software"
+version = "0.0.0"
+dependencies = [
+ "bench-quantiser-fadd-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
 ]
 
 [[package]]

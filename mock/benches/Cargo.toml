@@ -13,3 +13,4 @@ mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git
 mockspace-bench-harness = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }
 bench-structural-decomposition = { path = "variants/structural-decomposition" }
 bench-spectral-bisection = { path = "variants/spectral-bisection" }
+bench-quantiser-fadd-shared = { path = "variants/quantiser-fadd-shared" }

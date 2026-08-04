@@ -7,7 +7,7 @@
 //! `mockspace-bench-macro`) so neither the orchestrator nor the
 //! variant cdylibs declare a `Routine` impl.
 
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::ExitCode;
 
 use mockspace_bench_core::{routine_bridge, ByteRoutine};
@@ -41,18 +41,20 @@ fn main() -> ExitCode {
 
     for (bench_name, section) in &manifest.bench {
         for (size_idx, _size) in section.sizes.iter().enumerate() {
-            let mut config = match manifest.for_size(bench_name, size_idx, &mock_benches_dir) {
+            let config = match manifest.for_size(bench_name, size_idx, &mock_benches_dir) {
                 Ok(c) => c,
                 Err(e) => {
                     eprintln!("error: {e}");
                     return ExitCode::FAILURE;
                 }
             };
-            config.variant_paths = config
-                .variant_paths
-                .into_iter()
-                .map(shape_variant_path)
-                .collect();
+            // `BenchManifest::for_size` (mockspace-bench-harness `resolve_variant_path`)
+            // already applies the platform dylib prefix/suffix to any extensionless
+            // variant entry; re-shaping here doubled it (`liblibfoo.dylib.dylib`),
+            // which is why every bench in this file failed to `dlopen` with
+            // TIMEOUT/<load-fail> before this fix (found while landing the
+            // quantiser-vs-fadd bench, file 57 of the formalization panel; not
+            // specific to that bench, every existing bench in this manifest hit it).
             let routine = match routine_for_n(bench_name, config.n) {
                 Some(r) => r,
                 None => {
@@ -133,6 +135,7 @@ fn main() -> ExitCode {
 /// name + input size. Hash benches go through `ByteRoutine`; graph
 /// + spectral benches go through their per-routine bridges.
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
+    use bench_quantiser_fadd_shared::AddSweep;
     use bench_spectral_bisection::Fiedler;
     use bench_structural_decomposition::Rcm;
 
@@ -154,25 +157,24 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("spectral-bisection", 32) => routine_bridge!(Fiedler<32>),
         ("spectral-bisection", 64) => routine_bridge!(Fiedler<64>),
 
+        // quantiser-vs-fadd bench: AddSweep<PCT> dispatched per swept
+        // subnormal-fraction percentage PCT. Both variants (software
+        // quantiser, hardware fadd) share this one Routine bridge per PCT;
+        // which dylib runs is resolved from bench.toml's `variants` list,
+        // not from this table, so one match arm per size covers both.
+        ("quantiser-vs-fadd-subnormal-sweep", 0) => routine_bridge!(AddSweep<0>),
+        ("quantiser-vs-fadd-subnormal-sweep", 10) => routine_bridge!(AddSweep<10>),
+        ("quantiser-vs-fadd-subnormal-sweep", 25) => routine_bridge!(AddSweep<25>),
+        ("quantiser-vs-fadd-subnormal-sweep", 50) => routine_bridge!(AddSweep<50>),
+        ("quantiser-vs-fadd-subnormal-sweep", 75) => routine_bridge!(AddSweep<75>),
+        ("quantiser-vs-fadd-subnormal-sweep", 100) => routine_bridge!(AddSweep<100>),
+
         _ => return None,
     };
     Some(RoutineSpec {
         name: name.to_string(),
         bridge,
     })
-}
-
-/// Take a manifest variant path with bare cargo target stem and
-/// produce the platform-shaped dylib path.
-fn shape_variant_path(p: PathBuf) -> PathBuf {
-    let parent = p.parent().map(Path::to_path_buf).unwrap_or_default();
-    let stem = p.file_name().and_then(|s| s.to_str()).unwrap_or("");
-    parent.join(format!(
-        "{}{}{}",
-        std::env::consts::DLL_PREFIX,
-        stem,
-        std::env::consts::DLL_SUFFIX
-    ))
 }
 
 fn run_worker(args: &[String]) -> ExitCode {

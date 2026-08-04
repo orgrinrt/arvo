@@ -77,6 +77,53 @@ variants = [
     "../target/release/bench_spectral_bisection",
 ]
 
+[bench.quantiser-vs-fadd-subnormal-sweep]
+title = "Round-first software quantiser add vs native hardware fadd, subnormal fraction swept"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 0
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 10
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 25
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 50
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 75
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
+[[bench.quantiser-vs-fadd-subnormal-sweep.sizes]]
+n = 100
+variants = [
+    "../target/release/bench_quantiser_fadd_software",
+    "../target/release/bench_quantiser_fadd_hardware",
+]
+
 [timing]
 passes = 4
 runs_per_pass = 1000
