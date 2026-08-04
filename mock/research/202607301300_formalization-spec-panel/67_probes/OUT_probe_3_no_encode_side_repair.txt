@@ -1,0 +1,11 @@
+   r   p    data   escaping   quantise(escaping) outcomes
+   2   2       9          1   Value   0 / Overflow   0 / Refused   1
+   2   3      21          4   Value   0 / Overflow   0 / Refused   4
+  10   2     297          9   Value   0 / Overflow   0 / Refused   9
+  10   3    2997        108   Value   0 / Overflow   0 / Refused 108
+
+  negative control: quantise is the identity on all 2701 values of V(N), r=10 p=3
+
+  ALL ASSERTIONS PASSED
+  => `encode . quantise . decode` is partial at exactly the data where
+     `encode . decode` was. The encode-side repair does not exist.

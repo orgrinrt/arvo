@@ -1,0 +1,8 @@
+  width  container  doubling of 200 wraps
+      8  u8         true
+      9  u16        false
+     17  u32        false
+
+  ALL ASSERTIONS PASSED
+  => a property TRUE at 8 bits and FALSE at 9, one parametric body,
+     no specialization, no TypeId, no forbidden feature.
