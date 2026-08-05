@@ -91,6 +91,31 @@ that test (`40:6-9`), and section 1.6, section 1.17 and section 1.24 below each 
 `40:602-605` carried it; `49:786-791` is the standing-directives paragraph that replaced it and does not,
 and it has been absent from every consolidation since (`109:119-125`).
 
+**And the test has a shipping half, which is a separate ratified call.** D67 (`talk:1454-1470`, op,
+2026-07-30): "**arvo writes the abstraction; every established convention ships as an optional feature
+defining that convention's vocabulary as aliases over it.**" Generalising D66 from the quantisation modes
+to a standing principle across the crate family: `conv-ieee754`, `conv-systemc`, `conv-matlab`,
+`conv-amd-vitis`, `conv-flocq` and whatever else earns one, **each off by default, each containing type
+aliases and nothing else**, applied wherever it makes sense rather than everywhere, because the internals
+stay arvo's own and what the conventions cover is the surface vocabulary a consumer arrives already
+thinking in (`arvo-toolbox-not-policer.md`'s own reasoning, `talk:1404-1405`). D72's crate table places
+them: `arvo-numeric` holds "the `conv-*` alias sets" (section 1.25).
+
+**D67's second half is the falsifiable test itself**, which is what `13c`'s standard later restated in
+op's own later words and which section 0.1 above carries: if a convention's mode cannot be written as an
+alias over arvo's abstraction, the abstraction is not general enough, and an axis needing a bespoke impl
+rather than an alias has a gap in it (`talk:1467-1470`). D68's own note records the test passing where it
+had just failed: "`conv-matlab` becomes complete under this" (`talk:1547`).
+
+> **Correction, file 114.** Section 8 recorded the conventions mechanism as not restored "because op's
+> standard from `13c` is what it was reaching for and section 0.1 states that directly". **That reason
+> covers one half of a two-half decision.** `13c`'s standard is an acceptance test for the review and says
+> nothing about what ships; D67's first half is a shipping mandate naming feature-gated alias sets on
+> named crates, and it was dropped with no successor and no entry, in a sentence that reads as though the
+> whole decision were absorbed (`113:152-181`). The shipping half is restored here and section 8's entry
+> is corrected. The `conv-*` features are the concrete artifact of the one test section 0.1 says every
+> design question is answered against, and they are input to the taxonomy round.
+
 ### 0.2 The four standing directives
 
 All four are op's, all four stand, and two of them left the record at the fifth consolidation while a
@@ -127,11 +152,62 @@ is the position this document is repeatedly in, and it has been out of the recor
 tenth (`102:942`). Its content is sharpened by section 0.3.
 
 Two further op postures stand unchanged and are restated because they are cited below. **The novelty
-posture** (`34b`, via `78:790-791`): attempt what looks unsolvable, and distinguish "cannot, because
-impossible" from "cannot, because nobody has done it," treating the second as an absence to fill rather
-than a wall. **The convergence directive** (`30b`, via `58:962`). And **op's constructive-deliverable
-directive** (`40:610-612`), absent from every consolidation since the third (`109:316-317`): every member
-owes a constructive deliverable, and the files that move a stretch furthest each build something.
+posture** (`34b:38-69`, the source; carried into the record via `78:790-791`): attempt what looks
+unsolvable, and distinguish "cannot, because impossible" (a constraint of the type system, of
+monomorphisation, of the forbidden-feature list, or of mathematics) from "cannot, because nobody has
+done it" (no paper names it, no library ships it, no vocabulary exists for it), **treating the second as
+an absence to fill rather than a wall**. What it does not license is permuting the axes already in hand
+and calling it novelty, or proposing a mechanism without compiling it (`34b:66-69`). **The convergence
+directive** (`30b:40-57`, the source; carried via `58:962`): where a predecessor's proposal survives an
+attack, strengthen it and carry it forward as shape rather than restating that it survived; where it
+fails, the replacement is the deliverable rather than the failure; **a file that leaves three more things
+open than it closes has moved the wrong way, however true its findings.** And **op's
+constructive-deliverable directive** (`24b:18-30`, the source; restated at `40:610-612`), absent from
+every consolidation since the third (`109:316-317`): every member owes a constructive deliverable, not
+only findings, and **a proposal offered with stated low confidence beats a finding offered alone.**
+
+**The four posture directives from `16b` and `16c`, absent from every consolidation, restored here.**
+All four are standing instructions to members, and the technical half of `16b` survived into this
+document unattributed (section 1.25's "arvo grows no build harness of its own" is `16b:50-53` and
+`16c:57-64` in design form) while the instructions that produced it did not (`112:228-267`).
+
+**The existing code is irrelevant. Assume everything is being rewritten.** Op, `16b:19-21`: "The existing
+code is irrelevant to us. We have to assume we are rewriting everything." A finding of the form "the
+shipped source does not currently do X" is not a finding about the design unless the design's *shape* is
+what makes X impossible or wrong (`16b:25-27`). Reading source stays legitimate for exactly two purposes:
+checking a factual claim in a brief before reasoning from it, and understanding what a mechanism is well
+enough to design its successor (`16b:32-35`). This pillar had already decayed once and was repaired by
+the review itself at file 69 (`77b:43-44`); this is its second restoration.
+
+**The spec is the subject.** Op, `16c:14-16`: "Make them critique and analyse the spec we are writing.
+Current code can exist as extra info about why we are redesigning; it is wrong, broken, insufficient, we
+know this, this is why the panel exists." And the reasoning that disposes of a whole category of
+contribution, `16c:23-25`: "the premise is, anything that exists nowadays, can be overwritten and
+shouldn't be analysed too closely, because the very reason we are reworking things already builds in the
+implication that the existing shit is fucked." The current state being broken is the premise of the
+exercise, not a finding within it.
+
+**Every member owes its boundary a design, not an observation** (`16c:31-53`, the obligation `16c` calls
+"the obligation nobody has been given"). For the part of the design a member touches: **how it works for
+a downstream target doing the lowering**, concretely, naming what that target reads out of the types,
+what it can determine from what it reads, and what it does with it; and **what arvo needs back from that
+target** where arvo cannot express the thing concretely on its own side. Op's standard for it, `16c:49-50`:
+"It has to be documented and designed for, no handwaved, but we should acknowledge this and answer to it."
+And the thing that is not wanted, `16c:57-59`: do not "fault arvo or the design for being unable to
+express a thing it fundamentally can't, unless we write our own build harness on arvo end that is a pita
+to maintain". Naming that gap as a defect is not analysis.
+
+**Novel answers to a boundary outrank observations that the boundary exists.** Op, `16c:68-69`: "answers
+to these problems that I haven't thought of, are 100% welcome and should be considered, instead of
+stating existing faults and limitations etc." This is the constructive twin of the boundary obligation
+and it is the sentence that makes the boundary worth a dispatch rather than a note.
+
+> **Correction, file 114.** The novelty posture, the convergence directive and the constructive-deliverable
+> directive were each cited to the last document that carried them rather than to op's own file, which is
+> the method defect `111:544-551` names and this document commits three further times on op's own text
+> (`112:414-427`). The sources are attached above and the last carriers kept beside them. The four
+> `16b`/`16c` directives were absent entirely: seven searches for their wording returned zero in this
+> document (`112:232-234`).
 
 ### 0.3 A ratification is made under the evidence available at the time
 
@@ -151,16 +227,151 @@ later measurement.
 
 ### 0.4 Provenance, stated so the rest of the document can be read
 
-The **ratified rung** is op's own text and the checkpoints whose own text records op deciding: `13c`, `16b`,
-`16c`, `16d`, `24b`, `30b`, `34b`, `39b`, `44b`, `68b`, `70b`, `74b`, `77b`, `79b`, `82b`, `86b`, `108b`,
-and the earlier `04b`, `06b`, `08b`, `12b`, `13b`, `17b`. The **persona-decided** checkpoints, which state
-in their own text that a persona stood in for op during his absence, are `48b`, `53b`, `57b`, `62b`, `67b`,
-`90b`, `95b`, `101b`, `106b`, and `101b`'s siblings. Everything else, including every consolidation
-including this one, is agent output produced without a recorded human decision. Where an unratified file
-conflicts with the ratified rung, the ratified rung wins and the other is drift.
+The **ratified rung** has two parts, and the second was missing from this enumeration until file 113
+found it.
+
+**Op's own numbered decision register**, in the round's three flat topic files. They are op's own text,
+they carry their decisions marked "Decision (op, 2026-07-30)" inline, and they are frozen at TOPIC phase:
+`mock/design_rounds/202607301100_topic.the-formalization-talk.md`,
+`mock/design_rounds/202607301200_topic.the-formalization-spec.md`, and
+`mock/design_rounds/202607301000_topic.inherited-state-from-the-formalization-round.md`, which is where
+the decisions the first two cite by number are declared. **These govern this panel exactly as the
+checkpoints do**, and the register is the input to the taxonomy round that follows the canon
+(`68b:14-21`).
+
+**The panel's own op checkpoints**, twenty-three files, whose own text records op deciding: `04b`, `06b`,
+`08b`, `12b`, `13b`, `13c`, `16b`, `16c`, `16d`, `17b`, `24b`, `30b`, `34b`, `39b`, `44b`, `68b`, `70b`,
+`74b`, `77b`, `79b`, `82b`, `86b`, `108b`. **A roster entry is not a citation**: seven of the
+twenty-three (`08b`, `12b`, `13b`, `16b`, `16c`, `17b`, `24b`) were cited in this document exactly once
+each before this repair, and the single citation was this roster (`112:112-128`).
+
+The **persona-decided** checkpoints, which state in their own text that a persona stood in for op during
+his absence, are `48b`, `53b`, `57b`, `62b`, `67b`, `90b`, `95b`, `101b`, `106b`: **nine files, and that
+is the whole list.** They are agent output on the provenance ladder, individually walked by op at
+`68b:6-8` (the first five) and `108b:6-8` (the last four); `106b:4-6` records that it ran at the
+persona's own tier rather than Fable's, which is a weaker checkpoint again and says so.
+
+Everything else, including every consolidation including this one, is agent output produced without a
+recorded human decision. Where an unratified file conflicts with the ratified rung, the ratified rung
+wins and the other is drift.
+
+> **Correction, file 114.** This enumeration omitted the two topic files carrying op's numbered decision
+> register, which is the structural cause of the register drift file 113 measured: the standing base's
+> own definition of its oracle excluded the register, so nobody diffed it, and the agreement rate by
+> number came out at 15 of 46 (`113:14-20`, `113:70-90`). The document cited the talk file once in four
+> thousand nine hundred lines and the spec file zero times. The third file, the inherited-state topic, is
+> added with them because it is where the twenty-three prior-round decisions the other two cite are
+> declared (`113:44-50`). The persona list also ended with "and `101b`'s siblings" after `101b` had
+> already been named, which reads as a trailing group that does not exist (`112:90-92`).
+
+**A defect in the register itself, recorded rather than resolved, because the fix is op's.** The
+identifiers are not unique. The inherited-state file carries **two overlapping `D1` through `D4`
+sequences**, one at its `:495-644` (the dimensional foundation, the four new crates, the hlist, curves)
+and a second at its `:763-798` (the forbidden features, the container projection, the gate sweep, the
+vetting audit), with `D14` resuming at `:820`; both are live and both are cited. The talk file's own
+question grid additionally runs rows `D1` through `D3`, colliding with the decision prefix, and there is
+no decision `D3` at all (`113:32-58`). So this document's crate table cites "`arvo-shape` | D1-D4" and a
+reader following that into the talk file reads a forbidden-feature ruling as a shape-crate ratification.
+**A number that is not unique is worse than no number**, because it resolves silently to the wrong
+decision. File 113's proposal, offered as a suggestion and not adopted here, is a round-qualified
+citation form (`202607282100/D1` against `202604.../D1`) with the bare form read as ambiguous rather than
+as the nearest match. **The call is op's** and it comes before any renumbering, because every disposition
+below is keyed on a number.
 
 The persona checkpoints from this arc (`90b`, `95b`, `101b`, `106b`) were walked individually by op at
 `108b:6-8` rather than confirmed as a block, and section 2 records which of their calls survive that walk.
+
+### 0.5 How the review runs, how it ends, and what happens after
+
+**Absent from every consolidation ever written, including the ten before this one** (`112:18-23`,
+`112:140-182`). Op has stated the review's termination criteria three times in three files and no
+standing base has carried any of the three, which is why the earmarking question keeps arriving as a
+matter of opinion rather than as a test with a procedure.
+
+**Op's own statement of the mode and the stopping condition**, `13c:38-42`, verbatim:
+
+> Don't poll this. I will literally say when we are done. This current one should be another deep dive
+> like the prior ten, into this specifically. It may take another ten. Then after that, we again
+> consolidate and start a new fresh eyes based on that, do another 10 or so experts focusing on another
+> area, and we do this until our very design is both concrete, valid and critically, ideal, optimal, the
+> dream achieved, nothing less will we stop for.
+
+Read out into a repeating four-step cycle at `13c:44-53`, of which the third step is the one this
+document's own central property exists to be measured by:
+
+1. **A deep dive.** Roughly ten members, sequential and cumulative, going all the way into one area.
+2. **A consolidation.** The area's result compacted into a standalone statement of the shape.
+3. **A fresh read.** A member who is given **only the consolidation, with the transcripts withheld**, so
+   the next area is chosen by someone not carrying the last one's assumptions.
+4. **The next deep dive**, on whatever that read exposes.
+
+And the closing line, `13c:52-53`: "Repeating until the design is concrete, valid, and ideal. **Nothing
+less is a stopping condition, and no member should treat running long as a reason to converge early.**"
+
+**Step three is the acceptance test for a standalone consolidation, and it is op's, not this document's.**
+This consolidation independently arrived at the property that step consumes and named it as its own
+invention ("a reader can reconstruct the design from this file alone", above), because the procedure that
+tests it had left the record eight consolidations earlier. The instrument has been run exactly once, at
+file 12, and `12b:18-21` records that it produced the widest finding in the review: a missing axis, an
+entire absent area of the taxonomy, and a rule collision ten prior members had walked past. **Judging a
+consolidation by hand is not the same act**; the fresh read is a dispatch shape with the transcripts
+withheld, and nobody has run it since.
+
+**Op's checkpoint cadence.** `04b:42-43`, verbatim: "Let's get similar checkpoint with me every 2
+experts, too", read out at `04b:19-21` as "Op takes a checkpoint like this one after every two experts."
+The rhythm actually run drifted twice: `77b:101-105` restates it as "the four-checkpoint-four-checkpoint-
+consolidate rhythm" and `86b:50-53` as "four more on the open list, then consolidation nine"
+(`112:347-363`). **The record cannot show whether the drift from two to four was op's or the
+dispatcher's**, because neither the instruction nor either restatement has ever been in a standing base
+for a member to notice drift against. It is restored as instruction, and the discrepancy is on the open
+list as op's to settle.
+
+**Op's licence to argue against a ratified call.** `04b:72-74`: "Any member is free to argue against any
+of them, including the ones this file has just reaffirmed, **provided the argument is made rather than
+asserted**." This document carried the first half of the pair ("only op's calls are final, and even those
+go stale") and not the qualifier, and the qualifier is the operative half: it is what makes a reopening
+legitimate rather than presumptuous. Section 1.27's reopening of the array grammar's forcing argument
+hedges heavily on `108b:11-20`'s re-derivation licence where `04b:72-74` authorises it outright.
+
+**What happens after the canon**, stated twice by op three checkpoints apart. `68b:14-21`, verbatim:
+
+> we are strictly designing here... we want to formalise, fully define, the ideal shape to set as the new
+> canon. This is our job. Not implementing anything. We will settle the canon in full, and then start a
+> design round about the new settled taxonomy, creating it and its docs, then implementing in source it as
+> stubs. Then we'll start doing design rounds where we go through the settled canon piece by piece to
+> implement it into the stubs. But we will not go there until the full design is settled, the spec is
+> complete and answers all, and we can earmark it as the first full canon in arvo, to guide all future
+> work.
+
+So the sequence has four phases: **settle the canon in full; a design round creating the settled taxonomy
+and its documents; source stubs; then design rounds implementing the canon piece by piece into those
+stubs.** `79b:64-69` states the same four phases and binds the verification mandate (parity suites,
+exhaustiveness in both directions, red as the starting state) to **the last two**, "recorded now so it is
+not rediscovered late or watered down when the volume becomes apparent." This document has carried the
+prohibition half of `68b` repeatedly and never the sequence, which is why the earmarking question had to
+be reconstructed from `108b:184-193` alone (`111:391-399`).
+
+**The taxonomy round reads this document.** That is the direct consequence, and it is why the register
+restorations below matter: the round that builds the crate structure will be briefed off the standing
+base, so an op decision about the crate structure that is not in the standing base is a decision that
+round will re-invent (`113:126-128`).
+
+**Op's statement of the end state**, `70b:52-57`: settle the current focus, then explore for more, then
+close the findings, then explore again, **alternating until a full spec emerges that is proven, valid,
+and importantly efficient and ergonomic**, in op's words invisible for the most part to downstream
+consumers while doing real work underneath and **lowering transparently to optimal instructions.**
+
+This is a criterion rather than a process note, and it is the consumer-facing half of the bar. Section
+0.1's standard covers optimal, representative and representable; this covers invisible and ergonomic.
+**The two together are the standard**, and the standing base had one of them.
+
+> **Correction, file 114.** This subsection did not exist. Nine searches for op's stopping-condition
+> wording return zero across all ten consolidations (`112:159-162`); `stub` occurs eight times in this
+> document, every one meaning a documentation stub and none meaning the source stubs op's sequence names
+> (`112:197-199`); `lowering transparently` and `optimal instructions` return zero (`112:217-218`); the
+> cadence and the licence-to-argue qualifier return zero (`112:352-353`, `112:370-371`). All four are op's
+> own text on the ratified rung. Restored verbatim where short enough, from op's own files rather than
+> from any later carrier.
 
 ---
 
@@ -174,14 +385,43 @@ the record entirely at `102:90` (`109:32-42`).
 ### The spine rule
 
 **A quantity that is computed and then has to appear in a type is a type; a quantity that only ever has to
-be read is a const.** Eleven occurrences stand (`78:120-129`): two founding (op's own, `44b`), seven through
-the eighth consolidation (`68:98-101`), and two capacity-shaped, the print buffer's `ShortCap` and the byte
-buffer's `ByteCap`, each refusing under the naive const-expression spelling with `generic_const_exprs`
-named in rustc's own help text and shipping as an associated type with a declaration-site coverage
-assertion instead (`72_probes/probe_3`, `73_probes/probe_1`). Eleven independent firings of one rule across
-unrelated quantities (grade projections, notation faces, seal witnesses, container widths, text and byte
-capacities) is evidence the rule is a property of this design's shape rather than a coincidence noticed
-repeatedly. No new instance and no new attack this stretch.
+be read is a const.** **Eleven occurrences stand, and they are enumerated here rather than counted**, from
+`63:106-123` (the last document to carry the list) and `78:120-129` (the two added since):
+
+1. **The width chain.** Founding, op's own at `44b`.
+2. **The biased-product formula.** Founding, op's own at `44b`.
+3. **The fold's `Grade`** (files 47 and 48).
+4. **The `Ranged` exponent bounds**, reasoned by file 48, compiled by file 50.
+5. **`Implicit`'s single exponent**, compiled by file 54, overturning file 36's own contrary claim.
+6. **`Capacity`'s size** (file 55), the first firing outside the `Numeral` contract entirely, at a
+   different crate and a different layer.
+7. **The notation macro's const-struct face**, sealing a computed reduced-fraction condition (file 56).
+8. **The notation macro's magnitude**, a second and structurally distinct wall inside the same macro,
+   compiled separately by file 61: a value-to-type escape for a literal's digits, refused identically to
+   the exponent case.
+9. **The shipped `arvo-strategy` container dispatch and its facade**, where file 59's reduced probe and
+   file 62's whole-crate compile (sixteen refusal sites in `arvo-strategy`, four hundred seventy-eight in
+   the facade) confirm the wall is the reason two live crates carry a forbidden feature gate today.
+10. **The print buffer's `ShortCap`** (file 72, `72_probes/probe_3`), refusing under the naive
+    const-expression spelling with `generic_const_exprs` named in rustc's own help text, shipping as an
+    associated type with a declaration-site coverage assertion instead.
+11. **The byte buffer's `ByteCap`** (file 73, `73_probes/probe_1`), the identical refusal shape.
+
+Eleven independent firings of one rule across unrelated quantities (grade projections, notation faces,
+seal witnesses, container widths, text and byte capacities) is evidence the rule is a property of this
+design's shape rather than a coincidence noticed repeatedly. No new instance and no new attack this
+stretch.
+
+> **Correction, file 114.** The eleven was quantified over and never enumerated, and the design's
+> strongest methodological conclusion was drawn from the number. Its provenance ran through
+> `78:120-129` to "seven through the eighth (`68:98-101`)", where `68:98-101` in fact reads "**Nine
+> occurrences stand from the sixth consolidation's count**", so the chain terminated in a count inherited
+> from a document rather than in a list (`111:261-277`). This document states the governing rule twice,
+> at its own seal section ("a count cannot be checked and a list can") and in the `90b` discipline that a
+> count names the command that produced it, and applied it to the seal and not to its own first design
+> rule. **The list did exist**, at `63:106-123`, one consolidation below the count that replaced it, which
+> is the same shape of loss the rest of this document repairs. Enumerated rather than downgraded, because
+> the enumeration was recoverable.
 
 ### The carrier-at-birth rule
 
@@ -358,13 +598,24 @@ sentence that makes the scheme mean anything and it is restored here.
 quantiser commutes with scaling a value by `r^k` when the window shifts by `k`, checked over **509,660,160
 instances** (every value and every exact pairwise sum, two radices, two precisions, four spans, both
 underflow policies, five shifts) with zero failures, plus two negative controls that both correctly
-disagree. The condition, that no `Numeral` member contributes a nonzero additive constant to the value,
-holds today because `Ranged` carries no `Bias` member; the day `Ranged` gains one, the symmetry dies
-silently unless the condition is written down, which it now is. Multiplication is equivariant into a window
-shifted by `2k` rather than `k`, exactly `mulnum`'s own construction. The span carries `saturation`, at a
-measured threshold of `p + 1` under `Abrupt` and 2 under `Gradual`, independent of `p`. **Precision and
-radix carry `unargued`**; no induction argument exists for either, and the radix is known genuinely
-non-uniform.
+disagree: **a window-only shift disagrees on 8 of 13 values, and adding a nonzero additive constant to the
+value map breaks the symmetry on 29 of 51 checks.** The condition, that no `Numeral` member contributes a
+nonzero additive constant to the value, holds today because `Ranged` carries no `Bias` member; the day
+`Ranged` gains one, the symmetry dies silently unless the condition is written down, which it now is.
+**Two of the six coordinates collapse into one: only the span matters, not the absolute position of the
+window**, which is what makes the index set six coordinates rather than seven and is load-bearing for
+anyone re-running the argument. Multiplication is equivariant into a window shifted by `2k` rather than
+`k`, exactly `mulnum`'s own construction. The span carries `saturation`, at a measured threshold of
+`p + 1` under `Abrupt` and 2 under `Gradual`, independent of `p`, **and the sixth consolidation's own
+models (file 50's fold at span 8, its band model at six binades) cleared that threshold by luck rather
+than by design, since nothing told their authors what the threshold was.** **Precision and radix carry
+`unargued`**; no induction argument exists for either, and the radix is known genuinely non-uniform.
+
+> **Correction, file 114.** The two negative controls kept their existence and lost their figures, and a
+> restored measurement without its numbers is a restored assertion. The coordinate-collapse sentence and
+> the cleared-by-luck sentence were absent (`111:151-168`). The second of those is a statement about the
+> reliability of the review's own prior work, which is the class of statement this exercise exists to
+> preserve. All three restored from `68:473-488`.
 
 **The third coordinate the mechanical bans do not close at all: container class** (`68:490-504`).
 `arvo-strategy/src/container.rs:254-280` projects a width through a const-tag dispatch to a distinct
@@ -374,7 +625,17 @@ specialization, no `TypeId`, a property TRUE at eight bits (`u8` wraps on doubli
 (`u16` does not). The forbidden-feature bans close the ways an instantiation can get a different *body*;
 they never closed the ways it can get a different *type*, and this is that third way. It takes a
 `saturation` ground with the cleanest threshold in the scheme, one width per container class, read straight
-off `tag_hot_cold`. **Twelve distinct container types exist across the strategy markers** (six classes for
+off `tag_hot_cold`. **Op named this defect class at the fourth checkpoint and it was rediscovered forty
+files later.** `12b:46-54`, adopted at the time: "**The verification spine gates the crate relocations.**
+Adopted. File 12 established that the spine has never met `Bits`-backed storage, and that the argument
+letting a check at a small width stand for a large one **does not cover `WideBits` limb arithmetic, whose
+code path diverges per bucket, a hole invisible to the checking apparatus by construction.**" The gating
+half is superseded and correctly: `68b:23-28` puts all source work out of bounds, so no crate moves for a
+larger reason. **The technical half is not superseded**, it is the same hole at the same mechanism, found
+independently by file 68 and credited there. `WideBits` returns zero hits in this document and has been in
+no consolidation since `26` (`112:300-322`). **The cost of that drop was not the sentence, it was the
+rediscovery**: the review spent files 66 and 67 building the transfer-grounds scheme around a defect class
+op had already flagged, and nobody could see that he had. **Twelve distinct container types exist across the strategy markers** (six classes for
 `Hot`/`Cold`, five for `Warm`/`Precise`), and every model claim this review has run, including file 50's
 41-million-operation binary32 check and file 64's exhaustive eight-bit `TotalOrd` matrix, exercises exactly
 one of them, none saying so. Classes above `u32` are `unargued`, and the spec states that in those words.
@@ -485,9 +746,13 @@ rationals at all: `Specials`, section 1.16). The numeral has two jobs, naming th
 naming the indexing, and D69 put those two jobs on two different sides of the design rather than deriving
 one from the other (`40:41-46`, `68:147-151`).
 
-**D69 was overturned by op at `30b`**: identity is parameterised in mathematical coordinates, not encoding
-coordinates. Precision and the exponent bounds are primitive; total width, the hidden bit, and field
-encoding are derived on the physical side. Two independent readings reached this (files 27 and 28, formed
+**D65 and D69 were both overturned by op at `30b`**: identity is parameterised in mathematical
+coordinates, not encoding coordinates. Precision and the exponent bounds are primitive; total width, the
+hidden bit, and field encoding are derived on the physical side. **The sentence being overturned is
+D65's**, `talk:1394-1400`, which had made precision and minimum exponent derive from the field width "which
+is how IEEE defines its interchange formats"; **D69's own content is the ten-axis table with
+`LogicalWidth` on `Numeral`** (`talk:1621-1641`), overturned at the same checkpoint by the same
+correction. Two independent readings reached this (files 27 and 28, formed
 independently, one from the shipped facade's own declaration, one from Flocq's two-sided float
 formalisation that CompCert ships on), which is the threshold this review's discipline requires before a
 call of this kind reaches op. The standing consequence: the off-by-one against real hardware float formats
@@ -503,9 +768,19 @@ consolidation names the formula without stating it (`109:236-238`). **The value 
 under a numeral is `Adjustment * radix^exponent * k + Bias`.** `Adjustment` and `Bias` cannot be folded
 into each other: one changes the spacing between representable values, the other moves the origin, and an
 affine map is not determined by either half alone. The worked example, which proves the independence rather
-than asserting it: UNORM8's values are `k/255`; an adjustment factor of `256/255` lands `k = 0` on 0 and
-`k = 255` on exactly 1, and no bias alone can do both, since matching one endpoint with a bias displaces
-the other (`11:176-181`). Section 1.11 and section 1.28 are both this example generalised.
+than asserting it: UNORM8's values are `k/255`; **at exponent `e = -F` an adjustment factor of
+`r^F / (r^F - 1)`, which is `256/255` at `r = 2, F = 8`,** lands `k = 0` on 0 and `k = 255` on exactly 1,
+and no bias alone can do both, since matching one endpoint with a bias displaces the other (`11:157`,
+`11:176-181`). Section 1.11 and section 1.28 are both this example generalised.
+
+> **Correction, file 114.** This document states the same constant twice in two spellings and named no
+> convention for either: `256/255` here and `Adjustment = 1/(r^F - 1)` at section 1.11. **Both are correct
+> and they are correct under different exponent conventions**, `e = -F` here and `e = 0` there, so under
+> this document's own widened completeness line ("a name defined twice with different content is defined
+> nowhere") the constant was defined nowhere (`111:381-388`). The convention is named at both sites and
+> the two spellings are left standing, because both are in use and neither is wrong. `FullRange`'s
+> survival as a named `Adjustment` constructor is on the open list, so this is live rather than
+> historical.
 
 ### 1.2 The identity contract
 
@@ -552,6 +827,28 @@ is sealed and it left the record at the sixth consolidation (`109:367-368`).
 
 **`Bias` and `Adjustment` are signed, gcd-normalised rationals, value-unique and sealed**, as ratified at
 `44b`; every reference elsewhere in this document assumes that shape.
+
+**How `Numeral` got these members, since the register says something else and nothing connected the two.**
+Op ratified **D68** at `talk:1529-1545`: "`Numeral` carries **four flat members**. Decision (op,
+2026-07-30). `ExponentForm`, `Adjustment`, `Bias` and `Sign`", with `Adjustment` defaulting to `Unit` and
+`Bias` to `Zero` so neither costs anything where it is unused, amending D65 which predated the bias
+question. `talk:1509-1527` records why flat won over grouping. The declaration above nests `Adjustment`
+and `Bias` inside the exponent form and carries `Radix`, `Precision`, `Exponent` and `Domain` at the top
+level, which is **neither of the two options op chose between**. The nesting's argument is section 1.2's
+own, from `Underflow` having no bottom to fall off under a constant exponent (`49:125-128`), and block
+floating point was withdrawn as evidence for it and droplisted. **The one half of D68 that survives by
+content unnumbered is its closure gate**, `impl<N: Numeral<Bias = Zero>> AddClosed for N {}`, which
+section 1.7 carries as "the shipped `AddClosed` gate on `Bias = Zero`".
+
+> **Correction, file 114.** D68 was superseded silently: the standing base declares a shape op did not
+> choose, argues it on independent grounds, and nowhere says a ratified flat call existed (`113:207-218`).
+> A supersession that is stated is legitimate under `108b:11-20`, because a ratification is made under the
+> evidence at the time; one that is merely omitted is a drop wearing better clothes, and a future member
+> re-deriving whether `Adjustment` should be flat finds a ratified answer in the register and a contrary
+> shape here with nothing joining them. **The supersession is stated, not reversed**: the nesting argument
+> stands on `Underflow` and the four-member top level stands on D69's overturn at `30b`, both of which
+> postdate D68. **Whether op accepts the supersession is op's**, and it is on the open list, because the
+> two contrary shapes are both his.
 
 **`SC_SAT_SYM` and the payoff of the `Sign` split**, restored from `49:122-124` (`109:321-323`, dropped at
 the fifth consolidation and absent since; `SC_SAT` returns zero hits in `58` and in files 50 through 57):
@@ -733,8 +1030,34 @@ Confirmed against binary32 on **41,380,159 operations with zero mismatches** (fi
 kernel repaired and regression-checked bit for bit against silicon at radix two (file 59). **A tie is
 reachable only at an even radix**, re-derived independently from the quantiser itself over radices two
 through thirteen as one of the two compiled supports under the transfer-argument refutation
-(`68:290-294`). That figure and that fact are two of the compiled supports the eighth consolidation claimed
-stood unchanged while carrying neither (`109:462-464`).
+(`68:290-294`), with the rounding counts recorded so the odd rows are not vacuous (318 roundings at
+`r = 3`, 188,448 at `r = 13`, zero ties in either, `68:448-450`). That figure and that fact are two of the
+compiled supports the eighth consolidation claimed stood unchanged while carrying neither (`109:462-464`).
+
+**The refutation's second compiled support, and it is the sharper of the two** (`68:451-455`):
+**absorption-freedom (for all nonzero `y`, `quantise(x + y) != x`) is exhaustively TRUE at exponent span
+`p` and FALSE at span `p + 1`, with the precision, the code and the bans all held fixed.** `EMAX` moved by
+one and the property's truth value moved with it. Same precision, same code, same bans, and the outer
+quantifier failed anyway, because nothing about implementation uniformity ever bore on it. This is the
+sharper result because it is the one where the outer quantifier fails **with the bans in force**, which is
+the whole content of the claim that implementation uniformity does not give property uniformity.
+
+**What the refutation is a refutation of**, restored with it because a refutation without its target is
+an assertion (`68:438-446`). `unstable-features.md`'s last sentence promotes **implementation uniformity**
+(one parametric function, no instantiation gets a different body) to a sufficient condition for
+**property uniformity** (the truth value of a claim about the function's outputs does not move as the
+parameters move). The rule's own source, file 10, gave the transfer argument **four legs** and knew the
+difference: **leg one is parametricity**, which the bans enforce and which the ratified sentence kept;
+**leg three is width-uniformity of the rule's own shape**, "arguable in prose... never mechanical", named
+correctly as unproved and never proved since. The compression from four legs to one sentence kept the
+mechanical leg and attached the other three legs' conclusion to it.
+
+> **Correction, file 114.** The two compiled supports were named as two and stated as one. The second
+> support, the four-legs analysis it rests on, and the necessary-promoted-to-sufficient statement of what
+> is being refuted were all absent, on a document whose largest pending item for op is three
+> `unstable-features.md` wording edits whose first is exactly this correction (`111:127-149`). Op was
+> being asked to edit a ratified workspace rule on half the evidence the panel produced for it. Restored
+> from `68:438-455`, which is where the counterexamples were compiled, rather than from any later carrier.
 
 **A `Ranged` numeral's own quantiser statement**, restored from `58:220-224`:
 
@@ -985,9 +1308,11 @@ does not** (`33:669-671`).
 > inherited the third consolidation's loss of the third conjunct (`q` divides `b^2 - b`). Both are restored
 > above from `33`, which is where the probe established them, rather than from the last document to carry
 > them. The failure mode is general and is recorded at `111`: a restoration that cites the most recent
-> carrier inherits every paraphrase between it and the source. The fourth consolidation reproduced this heading sentence verbatim and
-replaced the body with meta-commentary about how the probe was re-run (`109:307-309`); the derived reason is
-the content and it is restored.
+> carrier inherits every paraphrase between it and the source.
+
+The fourth consolidation reproduced this heading sentence verbatim and replaced the body with
+meta-commentary about how the probe was re-run (`109:307-309`); the derived reason is the content and it
+is restored.
 
 **The transfer rule, and why no consumer declares a waiver** (`40:296-312`). File 37's first mechanism let a
 consumer declare a required view and checked the law against it; the compiler killed it, because the licence
@@ -1162,10 +1487,28 @@ operand, or `maximumNumber`, which suppresses it; **both are required by the sta
 **No preset the design ships or can spell is a dioid over `(max, +)`**: wrapping addition fails
 distributivity, saturating addition fails associativity and separately fails the annihilation axiom,
 `Precise` addition is partial. This is not grounds to drop the `Dioid` rung under D47 (the ladder goes as
-deep as the theory does); it is grounds for the rung being **derived rather than declared**, reporting a
+deep as the theory does, which is **D75**, `talk:1802-1812`, op, 2026-07-30, and it is D75's own
+reconciliation with D47 rather than a panel derivation: the two do not conflict once *declaring* and
+*implementing* are separated, D47's sketch-and-bench obligation attaching to implementations, which are
+claims about arvo, and not to declarations, which are not, `spec:308-311`); it is grounds for the rung being
+**derived rather than declared**, reporting a
 correct "no" with the failing axiom named. A numeral carrying an absorbing `Specials` element could make the
 rung non-empty, which is scoped as a requirement on the identity contract discovered from the algebra side,
 not designed now.
+
+**The rename that occasioned that reconciliation, absent from this document until now.** D75
+(`talk:1802-1808`, op): **"`Combine<Op>` is `Magma<Op>`, and the ladder is named in full."** E2 asked
+whether the two were the same trait; they are not, and the confusion came from `Combine` being coined
+before the ladder was named. **A magma is a set with a binary operation and no law claimed; a semigroup is
+a magma whose operation is associative.** So the operation-carrier and the structure are two things, the
+laws stay separate markers per D51, and `Combine` was a placeholder for the one that already had a name.
+**The ladder is written out to the depth the theory goes, not to the depth arvo's own numerals reach**
+(`spec:307-308`), which is the sentence the `Dioid` paragraph above is applying.
+
+> **Correction, file 114.** `Magma`, `Combine`, `Semigroup`, `Monoid` and `semigroup` all returned zero in
+> this document, so **every rung name below `Dioid` was gone** while the reconciliation D75 performed
+> survived attributed entirely to D47 (`113:274-283`). The rung vocabulary is the algebra ladder's own
+> surface and the taxonomy round mints it.
 
 **`mul_full`'s exponent sum is computed at the type level, which the transfer scheme's exponent-offset
 symmetry needs to hold multiplicatively** (`68:325-330`, dropped at `78`, `109:466`): the symmetry that lets
@@ -1180,6 +1523,49 @@ already lands exactly there, **checked at 254,830,080 instances with zero failur
 ### 1.10 Widening and Growth: two axes removed, closed shut
 
 Both left the axis table at `39b`, ratified, closed shut. Restored from `40:386-400`, `58:315-339`.
+
+**The axis table they left, stated so the removals have a subject.** D69 (`talk:1621-1641`, op,
+2026-07-30, and explicitly marked "overturnable if the reasoning does not hold") ratified ten axes across
+three contracts:
+
+| Contract | Axis | Instances | Status now |
+|---|---|---|---|
+| `Numeral` | `ExponentForm` | `Implicit<EXPONENT>`, `Stored<BITS, U>` | stands, reshaped: `Implicit`/`Ranged`, section 1.2 |
+| `Numeral` | `Adjustment` | `Unit`, `FullRange<F>` | stands, nested inside the exponent form |
+| `Numeral` | `Bias` | `Zero`, `Offset<..>` | stands, nested, signed gcd-normalised rational at `44b` |
+| `Numeral` | `Sign` | `Unsigned`, `Signed` | stands, split into `SignDomain` and `SignIndexing` |
+| `Numeral` | `LogicalWidth` | the total, significand derives | **removed as a primitive axis, `39b`** |
+| `Policy` | `Quantisation` | a triple of `Direction` and a pair of `Resolution` | stands, section 1.23 |
+| `Policy` | `Growth` | `Exact`, `Narrowed<Width, Anchor>` | **removed, `39b`, and left `Policy` entirely** |
+| `Lowering` | `StoredWidth` | `Minimum`, `DoubleLogical` | stands, denotes the carrier (section 1.22) |
+| `Lowering` | `Widening` | `InContainer`, `PerOperation` | **removed, `39b`** |
+| `Lowering` | `Layout` | `Dense`, `Bitpacked` | stands |
+
+`Underflow` is not a top-level axis, being nested in the stored-exponent form where it is the only place
+it means anything, and number-system membership is not an axis at all, deriving from the numeral
+(`talk:1643-1645`, section 1.6).
+
+**So the set is not ten and has not been since `39b`.** Three of D69's ten are ratified out and the
+surviving seven have since been reshaped, joined by `Radix`, `Precision`, `Encoding` and `Door` at the
+trait table (section 1.23). **This document does not assert a replacement count**, because the trait
+table's members and D69's axes are different populations and a count that cannot be checked against a
+list is the shape section 1.12 already refuses.
+
+**And op held the completeness claim open in those words.** `12b:28-33`: the arithmetic-fidelity axis is
+"a proposal, not an adoption"; op "holds it open rather than reopening the ratified set"; and **"It stays
+attackable, and so does the claim that the ten-axis set is complete."** The fidelity *mechanisms* are
+droplisted in section 6 and correctly; **op's hold on the axis, and his statement that a completeness
+claim over the axis set stays attackable, are separate from that** and are restored here. Whether a
+completeness claim still stands over a set that has since lost three members is a different question from
+whether any one member is open, and op left it open.
+
+> **Correction, file 114.** "The ten axes" was quantified over twice in this document and enumerated
+> nowhere, and at Thread B the stale count is a **premise in a live finding** ("delivery is not one of the
+> ten axes"), which is worse than undefined (`113:414-425`, `111:279-284`). The axis table with instances
+> has been out of every consolidation since `26` carried names only; this document disposed of its dead
+> instances correctly and never restored the live ones. `12b`'s hold and its attackability sentence were
+> absent (`112:399-412`). Enumerated from D69 at source with the removals marked, rather than replaced by
+> a second uncheckable count.
 
 **`Widening`'s three old instances (`None`, `InContainer`, `PerOperation`) decompose entirely into three
 pre-existing mechanisms**: which primitive is named, what numeral type that primitive's return type is (the
@@ -1227,7 +1613,9 @@ carrier for it.
 as one candidate. The panel's ratified `Adjustment` grammar closes it: **a closed-interval numeral, the kind
 a rotor component, a direction cosine, or a normalised colour channel all are, is not a new type. It is
 `Adjustment = 1/(r^F - 1)` on an ordinary significand, a value of a parameter the identity contract already
-seals**, compiled to `F = 24` with no new mechanism (section 1.28). Round and panel converged on the same
+seals**, at exponent `e = 0` (the same constant section 1.1 writes as `r^F / (r^F - 1)` at `e = -F`;
+the convention is named at both sites because the document carries both spellings), compiled to `F = 24`
+with no new mechanism (section 1.28). Round and panel converged on the same
 mechanism under different names; the MV-chain observation survives as the literature name for what the
 instantiation is.
 
@@ -2088,9 +2476,24 @@ standing-base claim had become decorative, and it is on ratified material.
 of both storage and compute, `Warm` is the compromise that suits most default cases and behaves intuitively"
 (`202607301100_topic.the-formalization-talk.md:1659-1661`). On `Warm` (`68b:62-67`): "I think we should assume
 that it'll work the same as writing regular old floats would work... The intuition is that it works and
-behaves as f32 and f64 etc in rust today without any framework on top of it." On `Cold` (`68b:69-73`): "It
-should be something between warm and precise... It can take more cost than warm, but shouldn't just be
-precise in disguise."
+behaves as f32 and f64 etc in rust today without any framework on top of it." On `Cold` (`68b:69-73`),
+quoted whole rather than elided: "It should be something between warm and precise. **Cold also tells us
+it's seldom computed or used, it's on a cold path.** It can take more cost than warm, but shouldn't just
+be precise in disguise."
+
+**So `Cold` carries two meanings, not one: cold storage and cold path**, and `68b:76-78` draws the
+consequence in the checkpoint's own voice: **seldom computed, so it may pay more than `Warm`**, and it
+must remain distinguishable from `Precise` on at least two cells per D71's own construction. **The
+cold-path meaning is what licenses `Cold` paying more compute than `Warm`**, and it is the reason
+`108b:126-128` names concurrent multi-column bandwidth contention as the measurement `Cold`'s intent is
+actually waiting on.
+
+> **Correction, file 114.** The ellipsis in the `Cold` quotation removed op's own middle sentence, inside
+> the passage this document flags as its flagship restoration of ratified material. `seldom` returned
+> zero in every consolidation and `cold path` zero here (`112:324-346`). The row's justification below
+> then reads `Cold` as "stores as small as possible" literally, the storage meaning alone: **the bench
+> target survived and the reason for it did not.** This is a paraphrase weakening a claim while restoring
+> it, which is the structural failure `111` names, occurring inside the restoration itself.
 
 **The old table is void, in full**, per the `tree-meaning` correction. Nothing below carries forward any cell,
 quote, or "shipped meaning" framing from files 59, `62b`, `63`, or `68`. Every row is re-derived from op's own
@@ -2114,7 +2517,34 @@ requires a refusing branch; doubled storage lets a chain of operations retain mo
 exactness before a narrow forces a decision. `Warm` and `Cold` both round nearest and clamp for the identical
 reason (a type nobody expects to crash has no reason to accept truncation bias), differing only on the
 remaining two rows: `Warm`'s doubled, dense shape matches a naive hand-rolled fixed-point type; `Cold`'s
-minimum, bitpacked shape is "stores as small as possible" literally.
+minimum, bitpacked shape is "stores as small as possible" **on the storage half of its intent, while the
+cold-path half is what pays for the rounding**: seldom computed, so it may pay more than `Warm`
+(`68b:71-78`).
+
+**The nearest-rounding ground is a re-derivation and is marked as one.** Op's own ground at
+`talk:1674-1678` was that `Cold` "is already paying a widen and a narrow per operation, so the compare
+and increment that nearest-even costs is small against what it has already spent". **That ground depends
+on the `Widening` axis, which was ratified out at `39b`**, so the substituted ground above (a type nobody
+expects to crash has no reason to accept truncation bias) is a correct re-derivation under section 0.3
+rather than a restatement, and it is stated as such here rather than presented as op's own reasoning
+(`113:376-381`).
+
+**Op stated three consequences of D71 and this document carried one.** Restored from `talk:1702-1715`:
+
+- **`Precise` is fallible.** Its arithmetic returns through the refusing branch of the quantisation's
+  fallibility projection, so call sites unwrap. Carried above and in Thread B.
+- **Only `Hot` folds for signed values.** Clamping and refusing are both unfaithful, so `AddAssoc` holds
+  for `Hot` alone among the four once the operands are signed. **The marker chosen for speed is the only
+  one whose signed folds the type system permits**, which reads backwards until you remember that wrapping
+  is exactly the arithmetic of `ℤ/2ⁿℤ` and the others are deviations from a group. This is the same fact
+  section 1.20's droplist entry reaches from the algorithm-crate side, and it is op's own statement of it.
+- **`Cold` now pays a compare and select on every store.** A real cost in the marker built for density,
+  taken because **a bitpacked column that wraps silently corrupts a stored value rather than an
+  intermediate, and a corrupted store is worse than a slower one.**
+
+> **Correction, file 114.** Two of D71's three stated consequences were absent (`113:365-374`), including
+> the signed-fold consequence, which is the one a consumer meets first and which this document reaches
+> independently elsewhere without crediting op's statement of it.
 
 **`Door` is inert for fixed-point, and the reason is structural rather than asserted**: a native integer add
 and `Hot`'s own software composition (`mul_full` then `ReduceModulo`) compile to the same instruction,
@@ -2508,6 +2938,98 @@ pub unsafe trait Crosses<N: Numeral>: Lowering {
 }
 ```
 
+**The test that sorts an axis between `Numeral` and `Policy`, which is op's D54 and was invoked by name in
+this document without being stated once.** Op, `talk:352-356`, verbatim:
+
+> The test that separates the two columns, stated so later additions sort themselves: change the axis and
+> ask whether the set of representable values changed. If it did, the axis is identity. If the same values
+> are still representable and only the arithmetic differs, it is policy.
+
+Op's statement of the principle behind it, `talk:334-336`: **what the number *is* does not change through
+strategies**, so the strategy marker carries only the compute policy and a separate contract carries the
+identity. `spec:33-36` restates it as "the test that sorts any axis added later". **Thread B's delivery
+reframe cites it by that name** ("is by this design's own axis-sorting test a `Lowering`-level choice"),
+and section 1.13's reading of flush-to-zero as a `Quantisation` resolution rather than a `Numeral` fact
+runs it without naming it, which is what a test stated nowhere produces.
+
+**The `Policy` axis's own vocabulary, stated because the table above names `Quantisation` and nothing in
+this document defined it.** D64 (`talk:1387-1393`): the policy axis is `Quantisation`, **one axis over
+five situations**, because rounding and overflow are not two axes but the in-range and out-of-range halves
+of one map from an exact value onto the representable set, which is what the field calls a quantiser. An
+exact result sits in one of five situations relative to the representable set: strictly between two
+neighbours below their midpoint, exactly on the midpoint, strictly between them above the midpoint, past
+the top of the range, or past the bottom (`11:191-197`).
+
+```rust
+/// What is returned when an exact value is not representable.
+pub const trait Resolution {}
+
+/// The subset available when two neighbours exist, so the rule is a
+/// choice between them.
+pub const trait Direction: [const] Resolution {}
+
+pub struct TowardNegative;  pub struct TowardPositive;
+pub struct TowardZero;      pub struct AwayFromZero;
+pub struct ToEven;          pub struct ToOdd;
+// Direction, and therefore also Resolution
+
+pub struct ReduceModulo;    pub struct SubstituteZero;
+pub struct Refuse;
+// Resolution only: meaningless where a neighbour exists
+
+pub const trait Quantisation {
+    type UnderMidpoint: Direction;
+    type OnMidpoint:    Direction;
+    type OverMidpoint:  Direction;
+    type OverRange:     Resolution;
+    type UnderRange:    Resolution;
+    type Fallibility<T>: notko::ConstTry<Output = T>;
+}
+```
+
+Restored from `talk:1243-1266` and `11:198-216`. **`Direction`'s six members are IEEE's own rounding-
+direction attributes spelled in full per D56** (`talk:1128-1140`), and the rounding rule is the triple
+over the three midpoint positions, so IEEE's five modes and SystemC's seven are all rows rather than a
+table. **Clamping needs no name of its own**: clamping a value above the range is `TowardNegative`, the
+same marker rounding already uses, which is why the range positions take a `Resolution` rather than a
+fourth vocabulary. **The three `Resolution`-only members are exactly the options a range end has that a
+midpoint does not**: take the one neighbour that exists (still a `Direction`), return something unrelated
+to where the value was (`SubstituteZero`, `ReduceModulo`), or refuse (`11:194-197`). **`ReduceModulo` is
+not a `Direction`, so it cannot be written at a midpoint position at all**, which is the mechanism
+carrying the meaninglessness rather than a convention discouraging it.
+
+**So the "four members of the `Resolution` axis" section 1.13 quantifies over** are the four things a range
+end can do: **clamp** (a `Direction` at the range position), **`ReduceModulo`**, **`SubstituteZero`**, and
+**`Refuse`**. The ordering "by how much they lie" that section 1.13 attaches to them is this document's
+own reading and is stated in no source; it is left as a reading rather than promoted.
+
+**`Number`'s own spelling, and the aliases** (D53, `talk:326-332`): **there is one numeric type, and every
+family arvo ships today becomes a semantic alias over a composition of it.** `UFixed`, `IFixed`,
+`FastFloat` and `StrictFloat` **stop being four types and become four names for four compositions**. The
+cost accepted with it is wordier rustc diagnostics, since the expanded composition is what an error
+prints, which is the cost Thread A's modifier work is against. The precedent is D40's `Rect` over
+`Orthotope` (`spec:317-318`), and **D48 and D31 are satisfied without special handling because an alias
+preserves a spelling exactly**: `UFixed<13, 3, Warm>`, `Uint<13>` and `Bits<13, Hot>` each still read as
+themselves, width stays a const parameter publicly, and a migration changing the spelling would charge
+every call site for an internal restructuring (`inherited:1894-1899`, D48, op, 2026-07-29).
+
+**And compositions are public and bindable, so the presets are the default path rather than the only one**
+(D52, `inherited:2110-2114`, op, 2026-07-30): "Compositions are public and bindable by anyone; semantic
+names and strategy presets are the default documented path, not the only path", citing
+`arvo-toolbox-not-policer.md` as independently deciding it, because sealing the composition would be arvo
+choosing which combinations a consumer may want. **The two ratified preset tables in section 1.21 are
+therefore four documented points, not the surface.**
+
+> **Correction, file 114.** Five ratified decisions were absent by number and by content. **D54** was
+> invoked by name and stated nowhere, so a reader could neither tell it was op's ratified call rather than
+> a panel coinage nor apply it (`113:289-315`). **D64**'s `Quantisation`, **D63**'s `Direction` and the
+> `Resolution` members were the four undefined terms `111:279-300` found under this document's own
+> completeness line, with `Quantisation` the sole content of `Policy` in the ratified trait table.
+> **D53**'s alias half and **D52** were absent (`113:317-332`, `113:130-150`), leaving the standing base
+> carrying two preset tables and no sentence saying they are one path among several, which makes Thread
+> A's nominal-constructor work unintelligible. **D48** and **D31**'s public-spelling constraint was absent
+> (`113:266-272`). All restored from the register at source.
+
 **`Int` stays dropped**, confirmed at `68b`; one line to restore if op reverses, and section 1.15 states why it
 survives the future case as well as the past one.
 
@@ -2579,10 +3101,103 @@ rather than to arvo itself**: the hardware-float-lowering receipt (section 1.21:
 invalidated process-wide by any code writing the FP control register); the reassociation-licence receipt
 (section 1.8's four clauses); and the environment receipt with its split verdict (section 1.26).
 
+**The crate split, D72, op's own, and the single largest thing this document was missing.** Op,
+`talk:1723-1741`, restated at `spec:289-300` with a seventh row added:
+
+> **D72. One crate per contract, and `arvo-strategy` keeps only the presets.** Decision (op, 2026-07-30).
+> Closes C1 through C4 together.
+
+| Crate | Holds |
+|---|---|
+| `arvo-numeral` | `Numeral`, `ExponentForm`, `Adjustment`, `Bias`, `Underflow`, and their markers |
+| `arvo-policy` | `Policy`, `Quantisation`, `Resolution`, `Direction`, `Growth`, and their markers |
+| `arvo-lowering` | `Lowering`, `StoredWidth`, `Widening`, `StorageLayout`, and their markers |
+| `arvo-strategy` | `Hot`, `Cold`, `Warm`, `Precise`, and nothing else |
+| `arvo-numeric` | `Number<N, S>`, the semantic aliases, the `conv-*` alias sets |
+| `arvo-algebra-contracts` | the ladder and the law markers |
+
+**The table is transcribed from `spec:291-300` cell by cell**, which is the seven-row form; the talk
+file's own six-row form omits `arvo-algebra-contracts` and is otherwise identical. **Two rows name axes
+this design has since ratified out**: `Growth` left `Policy` entirely (section 1.10) and `Widening` left
+`Lowering` (section 1.10), both at `39b`, both after D72 was written, so those two cells are stale on the
+register's own side and the crates are not.
+
+**What the split resolves and what it does not.** It resolves C1's question about `arvo-strategy`'s
+identity by emptying it: the crate stops being where the strategy machinery lives and becomes where the
+four strategies live, and it depends on `arvo-policy` and `arvo-lowering` rather than declaring what it
+implements, which is the ordinary shape for a crate of instances (`talk:1735-1741`). **D23 and D27 had
+already started that direction**: D23 (`inherited:1087-1094`, op, 2026-07-29) moves `Identity` and
+`SignedIdentity` to `arvo-algebra-contracts`, on the reasoning that identity is algebraic structure,
+`Monoid<Op>` is `Identity<Op> + Combine<Op>`, and keeping identity in the strategy-marker crate splits one
+concept across two crates; `Additive` and `Multiplicative` move with it. **D32** (`inherited:1324-1329`,
+op) splits the marker family on what it describes: `IntegerLike`, `FractionLike`, `FloatLike` and
+`BoolLike` to `arvo-numeric-contracts` as numeric contracts, `BitPresentation` to `arvo-bits-contracts` as
+the bit surface's question, **the split being on subject matter rather than on current co-location**.
+**D33** (`inherited:1330-1340`, derived by an agent on op's instruction and marked as such, so it sits a
+rung below the rest) sends each width const fn after its subject, with `width_le_64` the one exception
+because it asks a question about container selection.
+
+**And D73 decides how that marker family is produced** (`talk:1758-1776`, op, closing C5 and C6).
+`IntegerLike`, `FractionLike` and `FloatLike` **become blanket impls conditioned on the exponent form**
+rather than hand-written per type; the obstacle is that "fractional" means a negative exponent and an
+inequality in a bound needs const-expression bounds, which are forbidden, and the cure is a macro-expanded
+table declaring integrality on the `Implicit` markers so the bound becomes an associated-type equality
+rather than a comparison. **`BoolLike` leaves, because it was never a member of the same family**: four of
+the five markers classify numerals and the fifth classifies `Bool`, which has no numeral and is not a
+`Number`, so it follows `Bool` rather than sitting among things that describe the shape of a number.
+D73's other half is carried in the crate table's `arvo-container` row already, unnumbered: **the
+numeral's range is identity and the carrier's range is lowering, and they differ exactly when the stored
+width is doubled**, so the two questions have two places to be asked rather than one contract standing
+between them. **The marker half was absent by every name** (`113:352-363`), which matters because section
+1.30 works `Bool`'s placement at length and never as this.
+
+**What the split does not close, compiled** (`09:135-170`, `09:198-254`). Section 1.3's enforcement result
+carries the positive half: a law key is a `const fn` parameter list and `Lowering` is not a parameter, and
+a value-level fact in the algebra-contracts crate cannot name an `Encoding` or `Lowering` type. **File 09's
+harder result is that the crate that legitimately owns `Number` can still condition a law on `L`, and the
+split does nothing to stop it.** The dishonest impl builds clean at the one location a real D72 would put
+it, and `Number<Fix13_3Signed, Warm, MinWidth>` folds while `Number<Fix13_3Signed, Warm, DoubleWidth>`
+refuses with `Bitpacked: IsDense is not satisfied`: **two numerals equal in every identity and policy
+respect disagreeing on whether their addition is associative**, which is exactly what D54 forbids. The
+reason is structural: `Number`'s own definition requires `Lowering` in scope, so any crate that can write
+the impl at all is a crate where `L` has methods a where-clause can name. **A shape that closes it
+completely exists and is verified**: make the type the law targets not require `Lowering` at all, a
+phantom `LogicalNumber<N, P, L>` with `L` free and unbounded, proven inside the `Lowering`-blind crate,
+with the hostile second impl refused by `E0117`. Its honest cost, stated rather than priced: **it is an
+architectural change past D72's literal shape**, since the type a law is proven about becomes distinct
+from the type that holds bytes.
+
+**And a call op reserved to himself at the third checkpoint has never been made.** `08b:47-51`, under the
+heading "What is not being asked":
+
+> The next member is not asked to rule on whether the split is worth its cost, nor to choose between fused
+> and split. **Those are op's**, and they are downstream of whether enforcement is possible. Report what
+> is mechanically true and let the call follow.
+
+The three-contract split ships in the ratified trait table with `Numeral` marked "ratified: identity
+contract" and **no ratification marked on the split itself**, and no op file records one. Two readings
+survive and the evidence does not force one. Under the first, the split has been exercised through eighty
+files without producing the failure file 08 compiled, and the call has been made by practice. Under the
+second, **a call op explicitly reserved cannot be made by practice**, and the enforcement answer that was
+supposed to gate it is exactly the half that left the record. It is on the loudest-for-op list.
+
+> **Correction, file 114.** D72 was absent entirely. `arvo-numeral`, `arvo-policy` and `arvo-lowering`
+> each returned zero hits in this document, searched four ways (`113:94-128`), while `110`'s open list
+> restores "what `arvo-numeric` ends up containing once the numeral, policy and lowering definitions move
+> out", **presupposing a move whose text is nowhere**. File 112 recorded D72 as carried by the crate table
+> below and file 113 corrected that at source: the table below is the eleven-row periphery taxonomy and
+> not one of D72's rows appears in it. **The later reading wins because it shows its work.** This matters
+> beyond bookkeeping: the taxonomy round op scheduled at `68b:14-21` builds the crate structure and will
+> be briefed off this document, so a crate split absent here is a crate split that round re-invents.
+> D23, D32 and D33 were absent by number and content (`113:256-272`). File 09's harder enforcement result
+> and op's reserved call were absent (`112:269-298`).
+
 **The eleven-row taxonomy the design round drew before the panel opened survives its first recheck with zero
 deletions and zero merges** (`78:664-697`), and the periphery correction at `101b` replaced the blanket "every
-other row survives" sentence with a table at decision granularity (`102:645-673`). The current state, with
-this stretch's three content reviews folded in:
+other row survives" sentence with a table at decision granularity (`102:645-673`). **Its "Round decisions"
+column is keyed on the inherited-state file's numbering, which is the sequence that collides**, so a row
+reading "D1-D4" resolves against `inherited:495-644` and not against the talk file's D1 and D2. The current
+state, with this stretch's three content reviews folded in:
 
 | Subject | Round decisions | Verdict |
 |---|---|---|
@@ -2650,6 +3265,33 @@ rule** (`unstable-features.md`'s "the forbidden list is verification infrastruct
 reason a model-width check transfers at all.
 
 ### 1.26 Naming, and the environment parameter
+
+**Two naming rules stand, and they are orthogonal. The standing base carried one of them.** The first
+constrains what a name may *claim*; the second constrains how a name is *spelled*, and it governs
+everything the taxonomy round will mint.
+
+**D56, op's own** (`talk:399-404`), verbatim:
+
+> **D56. No gratuitous abbreviation. Full, legible, recognisable words for every member.** Decision (op,
+> 2026-07-30). An abbreviation is acceptable only where it is the stable form nearly everyone in the field
+> already recognises. Coining short forms of words that were already a sensible length is not arvo's style
+> and has never been. This applies to the whole round's output, not to one draft.
+
+Applied by op in the same call, with the reason each short form was wrong (`talk:408-418`): `Under` to
+**`Underflow`** (the full word is the axis, and it is four characters longer); `Over` to **`Overflow`**
+(`Over` reads as a comparison); `Round` to **`Rounding`** (`Round` is a verb; the axis is the discipline,
+not the act); `Grow` to **`Growth`** (same); `Total` to **`LogicalWidth`** (`Total` names no quantity);
+`fexp` to **`canonical_exponent`** (Flocq's own prose calls it the canonical exponent; `fexp` is its Coq
+identifier, not the concept's name). `Scale`, `Sign` and `Layout` stay, being complete words already.
+**Every member name this document uses is a D56 output**, which is why the vocabulary reads the way it
+does and why a future proposal reintroducing a short form is refused by a ratified call rather than by
+taste.
+
+> **Correction, file 114.** D56 was absent: six searches for its wording returned zero in this document,
+> and section 1.26's own principle is a different rule adopted at `90b` about what a name may promise
+> (`113:219-239`). The two do not conflict and neither substitutes for the other. **The taxonomy round
+> mints every name in the design**, so a standing base carrying one of the two rules is a standing base
+> that licenses half the naming.
 
 **The refined principle, adopted at `90b`, one word repaired, confirmed whole at `108b:104-108`.**
 
@@ -3699,14 +4341,32 @@ ratified in full, division held, every claim grounded (`44b`). The four standing
 (section 0). **The intent outranks every instruction, is vague on purpose, and only op's calls are final, and
 even those go stale.**
 
+**The eleven checkpoints before `30b`, whose content this document carried nowhere until the restoration
+pass.** `04b`: the three open threads, the checkpoint cadence, the licence to argue against a ratified
+call provided the argument is made rather than asserted, and the standing instruction that op will say
+when the panel is ready for synthesis (sections 0.2, 0.5, 5). `06b`: the downstream-evidence correction,
+that what a consumer currently writes is evidence of what was absent when they wrote it (section 5).
+`08b`: the enforcement job, and the fused-versus-split call reserved to op (section 1.25). `12b`: the
+fidelity axis held open with the ten-axis completeness claim left attackable, and the `WideBits` hole
+(sections 1.10, the registry section). `13b`: the relocation refused, with the separate place inside arvo
+worth designing rather than defaulting (section 5). `13c`: the standard, and the review's own mode and
+stopping condition (sections 0.1, 0.5). `16b`: design the shape, the existing code is irrelevant, arvo
+declares and the build side lowers (section 0.2). `16c`: the spec is the subject, every member owes its
+boundary a design, and novel answers outrank observations (section 0.2). `16d`: the spirit outranks all,
+the intent is vague on purpose, keep the current shape where it serves (section 0.2). `17b`: fidelity
+grants are checked rather than asserted, and partial associativity named (section 6, the fidelity entry).
+`24b`: every member owes a constructive deliverable (section 0.2).
+
 **`68b`**: the panel's scope is design, not source, and `mock/crates` is out of bounds until the canon is
-complete; the `arvo-strategy` migration authorization withdrawn; `Int` dropped, exponent bounds as types,
+complete; **the four-phase sequence after the canon** (section 0.5); the `arvo-strategy` migration authorization withdrawn; `Int` dropped, exponent bounds as types,
 `Radix` sealed, `Specials` as a product all confirmed; the layer-keying rule, the transfer-ground scheme and
 the `TotalOrd` split confirmed; the strategy-door table's justification named as a regression.
 
 **`70b`**: both preset tables ratified in full (section 1.21); the `tree-fact`/`tree-meaning` split adopted,
 both halves, with the mechanical deletion test as the standing check; one cell left open with op's own instinct
-attached, closed at `74b`.
+attached, closed at `74b`; **and op's statement of the end state**, a full spec that is proven, valid,
+efficient and ergonomic, invisible for the most part to downstream consumers while doing real work
+underneath and lowering transparently to optimal instructions (section 0.5).
 
 **`74b`**: the far-point rule ratified as one statement covering three instances; one sealed bottom carrier
 crate adopted for capacity with `Capacity` kept as a named semantic alias over it, on op's condition that "the
@@ -3720,7 +4380,11 @@ as the coming stretch's first question.
 **`79b`**, recorded rather than dispatched, binding the implementation phase: the parity-suite mandate
 (namesake aliases as an intent pillar, differential tests against the namesake's own implementation) and the
 exhaustiveness mandate (both directions: what should hold must pass, what should be unrepresentable must fail
-to compile, red is the starting state). **No member is briefed to design against it, this stretch either.**
+to compile, red is the starting state). **No member is briefed to design against it, this stretch either**,
+and `79b:64-69` states why that is correct rather than a gap: the mandate **binds the last two phases of
+op's four-phase sequence** (the stubs round and the per-piece implementation rounds), not this one, and it
+is recorded early "so it is not rediscovered late or watered down when the volume becomes apparent"
+(section 0.5).
 
 **`82b`**: the bitpack price corrected to 1.50x and 1.29x; three items opened and since closed; **the
 owed-list discipline adopted** (an owed item names the artifact whose existence would close it).
@@ -3803,6 +4467,22 @@ canon**. Fable is unavailable; dispatches run at Opus until it returns.
 19. **Whether construction one stays in the spec as a recorded fallback** (`78:872-873`, item 12), the item
     the ninth consolidation dropped, which section 1.27 shows is not a fallback but the third column of a
     live fork.
+
+**Added by the restoration pass, and placed at the top of this list rather than the bottom, because each
+is a call op reserved or made that the standing base was not carrying when the list was last ordered.**
+
+- **The fused-versus-split call reserved at `08b:47-51` and never made** (section 1.25). Op named it as
+  his in those words and made it downstream of whether enforcement is possible; the enforcement answer's
+  harder half (file 09's dishonest impl, which the split does not stop) left the record, so the call has
+  been outstanding for a hundred files with nothing saying so. **One line either way, plus a decision on
+  whether file 09's `LogicalNumber` shape, which does close it and is verified, is worth its architectural
+  cost past D72's literal shape.**
+- **Whether the nested `Numeral` shape supersedes D68's four flat members** (section 1.2). Two op calls,
+  contrary shapes, nothing connecting them until this pass.
+- **The decision register's colliding identifiers** (section 0.4). This one gates the others, because
+  every disposition is keyed on a number.
+- **The seventeen open rows in op's own round**, never reconciled with this list (section 5), and the
+  input the taxonomy round reads alongside D72.
 
 ---
 
@@ -4093,6 +4773,65 @@ level-naming clause (absorbed at the ninth, dropped at the tenth; section 8).
   at `58:1068-1132` instead (`109:323-327`). **Artifact:** the shrunk item.
 - **The two unbuilt grounding tiers** (a mockspace registry namespace; a probe-header line).
 
+**Added by the restoration pass, and every one of these is op's own to settle rather than a member's.**
+They are grouped because they arrived together, from the two sweeps of op's material and the register
+diff, and because each is one line for op rather than a dispatch.
+
+- **The decision register's identifiers are not unique**, and every disposition in this document is keyed
+  on a number. Two overlapping `D1` through `D4` sequences are live in the inherited-state topic file and
+  a question grid shares the prefix (section 0.4). **Artifact:** op's choice of a disambiguation
+  convention, applied going forward rather than by renumbering frozen text. File 113 offers a
+  round-qualified form as a suggestion.
+- **The fused-versus-split call op reserved at `08b:47-51` and has never made.** The three-contract split
+  ships in the ratified trait table with no ratification marked on the split itself, and the enforcement
+  finding that was supposed to gate it is half-carried (section 1.25). **Artifact:** op's call, or an
+  explicit note that practice has made it. Also on the loudest list.
+- **Whether the nested `Numeral` shape supersedes D68's ratified four flat members** (section 1.2). Both
+  shapes are op's, the nesting's argument postdates D68, and the standing base declared the nested one
+  without recording that a contrary ratified call existed. **Artifact:** op's word on the supersession.
+- **The checkpoint cadence op set at `04b:42-43`** (every two experts) against the two later restatements
+  at `77b:101-105` and `86b:50-53` (four, then four-then-consolidate). **Artifact:** one line saying which
+  is current, since the record cannot show whether the drift was op's or the dispatcher's (section 0.5).
+- **A fourth `unstable-features.md` wording item**, alongside the three already on the loudest list.
+  `63:456-460`: the width ceiling's quadrupling and rustc's refusal at nine bits are structural and
+  machine-independent, while **"only the specific wall-clock figure (28.45 seconds) is one machine's
+  measurement through one harness; the proposal to op is to mark it as such wherever quoted."** The figure
+  occurs in twelve panel files and in **no consolidation after the sixth**, and the workspace rule quotes
+  it today as a durable fact (`111:349-355`). **Artifact:** op's wording, with the quadrupling and the
+  refusal kept as the durable facts the rule's argument actually needs.
+- **The round's own seventeen open rows have never been reconciled with this list.** The talk file carries
+  "**Status:** open" seventeen times against four settled, including A1 (the scale), A2 (the format
+  decomposition), B1 (the composition type), B3 (what a preset is mechanically), C2, C3, C4, C6, E1 and
+  E4. Two of them reach this document only because a different route rediscovered them, cited to file 11
+  rather than to the round (`113:443-448`). **Artifact:** one pass reconciling the two lists, which is a
+  dispatch rather than an edit and belongs before the taxonomy round.
+- **Three op decisions in the register carry no D-number**, so no number-keyed instrument can find them
+  (`113:427-441`). The four preset intents are carried (section 1.21). **The two-impl faithfulness
+  derivation** at `talk:1187-1203` and `spec:203-222`, including
+  `impl<A: Resolution, B: Resolution> AddAssoc for ((A, B), Unsigned) {}`, sits in the spec file's
+  ratified body and is **droplisted in section 6 as refuted by compiled counterexample**, with the entry
+  not naming what it refutes, so a reader of the spec file finds the impl standing and a reader of this
+  document finds it dead with nothing joining them. **Artifact:** one clause on the droplist entry naming
+  the spec's own impl, which is written into that entry by this pass; op's part is only whether the
+  refutation stands against his own text.
+- **Three instruments named as owed and none of them run.** They are distinct, keyed on different
+  populations, and no amount of any one substitutes for another. **First**, a sweep of the ninety-nine
+  numbered member files and the probe directories for material no consolidation ever absorbed, named owed
+  at `109:643-646`, sampled six times by file 111 and confirmed untouched at `112:541-546`. **Second**,
+  the same register diff run against `mock/design_rounds/202607301000_topic.inherited-state-from-the-
+  formalization-round.md`, which carries fifty-two decisions plus the duplicate sequence and of which this
+  document cites twenty-one by number; **it has never been diffed against anything** (`113:450-457`).
+  **Third**, a restoration ledger keyed on what a consolidation restored, one row per item, carrying the
+  source range that *established* the statement rather than the last carrier, so an entailment check is
+  two line ranges per row rather than a full re-read of the archive (`111:474-501`). **Artifact:** three
+  dispatches. The first two find material; the third makes the next restoration checkable.
+- **Op's `13b:10-22` instruction is discharged and nothing records it.** Op refused relocating the
+  algebraic laws to hilavitkutin and said the useful residue is that "a separate place within arvo is
+  available and is worth designing rather than defaulting". **The separate place exists**: it is the
+  algebra-contracts crate, which this document names at three places. **Artifact:** one line saying so,
+  written here; what remains genuinely open is the crate's dependency edge, listed above, which is the
+  same question one layer down and currently reads as unrelated to op's call (`112:440-447`).
+
 ### Unchanged and untouched, carried forward
 
 The reduction firing site and whether `FullRange` survives as its own named `Adjustment` constructor. The
@@ -4115,9 +4854,11 @@ failing trait lacks the diagnostic attribute or the failure sits one where-claus
 recover the spelling of the numeral half but not the policy or lowering half, which is the half a consumer
 varies day to day. **The strongest measured result is a third shape: nominal constructors at every position a
 consumer selects, combined with small per-axis modifier types that delegate every member except the one being
-changed**, under which ten axes render for free in an error message provided every value a consumer can select
-is reached through a *named* type, because rustc prints the type arguments a consumer applied but not the
-associated types those arguments project to. Three unresolved costs ride with it: it was measured under the
+changed**, under which **every axis of the composition renders for free in an error message** provided every
+value a consumer can select is reached through a *named* type, because rustc prints the type arguments a
+consumer applied but not the associated types those arguments project to. (The measurement was run against
+D69's ten-axis set, which section 1.10 records as three members short since `39b`; the mechanism is
+indifferent to the count and the figure below is not.) Three unresolved costs ride with it: it was measured under the
 fused two-parameter form and costs roughly 1.8x more rendered length under a three-parameter split, so the
 diagnostic win and the parameter-count question are coupled; bounding a law on a computed boolean produces an
 error naming `False` rather than the composition that failed, and the four-line fix is verified and not folded
@@ -4129,7 +4870,27 @@ zero hits in `26` and `40`, re-verified fresh.
 **Thread B, fallible arithmetic.** Op keeps `Precise` refusing and prefers widening the algorithm crates to
 accept it, while stating there is untapped potential in the shape, so the live question is what the best
 possible form of fallible arithmetic in a `no_std`, no-`alloc`, monomorphisation-only substrate is, **and what
-it unlocks rather than what the current form costs** (`04b:57-60`). **The sharpest reframe of the thread**:
+it unlocks rather than what the current form costs** (`04b:57-60`).
+
+**The thread's two positive results, restored, because the standing base carried its three costs and no
+mechanism.** First (`11:509-515`): **one generic arithmetic function body can serve both a total and a
+fallible composition without duplicating the body, provided the resolution rule constructs its own answer**
+in whichever carrier it needs, rather than the calling body constructing a refusal generically. This
+matters because arvo cannot implement its own operator traits on a foreign type such as `notko::Outcome`,
+the orphan rule forbidding it, **so any design where the calling body builds a refusal directly hits a
+wall the panel initially mistook for a fundamental limit rather than a consequence of one specific
+shape.** Second (`11:517-520`): with two range positions, **the return type any composition needs is the
+join of the two resolutions' own carrier choices, connected by a lift where they differ**, which is the
+same shape effect systems use for combining independently-installed handlers, **and it scales cleanly to
+a third or fourth effect** (a divide-by-zero refusal, say) **without redesign.**
+
+> **Correction, file 114.** Section 8 claimed Thread B restored at its reframe, its three costs and the
+> `ConstantTime` finding, which is exactly what it did, so the accounting was honest and the section text
+> was not: it presents itself as the thread's state and the thread's state included two positive results
+> now surviving in one file in the corpus (`111:178-197`). A future member opening Thread B from here read
+> three costs and no mechanism, and would rebuild both.
+
+**The sharpest reframe of the thread**:
 whether a refusal *arrives* as a checked sum type, as an absorbing bottom value carried inside the numeral's
 own spare bit pattern, or as an accumulated sticky flag read once at the end, **is by this design's own
 axis-sorting test a `Lowering`-level choice**, since the representable set and the mathematical function
@@ -4147,8 +4908,32 @@ before the 2019 revision fixed it**, and at least one of this design's own gener
 exactly that kind of selection today. And under the sum-type delivery a refusing operation's short-circuit is
 measurably not constant time (two data-dependent branch exits per element against none for the bottom
 delivery), **which means the `ConstantTime` derived marker is currently keyed on data that does not decide it:
-delivery decides it, and delivery is not one of the ten axes.** `delivery` occurs fourteen times in `11` and
-zero in `26` and every consolidation after; `ConstantTime` four times and zero (`109:153-158`). **A converging
+delivery decides it, and delivery is not an axis of the composition at all** (not in D69's ratified ten,
+and not among the members that survive it at section 1.10 or the trait table at section 1.23; the finding
+was first written against the ten and does not depend on the count). `delivery` occurs fourteen times in `11` and
+zero in `26` and every consolidation after; `ConstantTime` four times and zero (`109:153-158`).
+
+**The boundary op drew around that marker, restored with the finding.** D74 (`talk:1829-1837`, op,
+2026-07-30): "`ConstantTime` is a derived marker, not an axis", joining `Deterministic` as a property
+computed over the composition rather than requested through it. And op's own clause, recorded in the
+decision **"so a later reader does not reopen it as an oversight"**: the marker **reports rather than
+requests**. A consumer can check whether the composition they chose is constant-time; **they cannot demand
+it and be refused when it is not**, and an internals change adding a data-dependent early exit for speed
+would silently withdraw the property. **That is the accepted trade.** Two readings survive on whether the
+finding above is the reopening D74 forbids, and the evidence does not force one: under the first it is,
+arriving because the clause was absent; under the second D74's clause covers an internals change
+withdrawing the property while the finding is that the marker's *key* is wrong, a defect D74 never
+addressed. File 113 leans to the second on the ground that the finding's ground is delivery rather than an
+early exit (`113:334-350`). Either way the clause belongs beside the finding.
+
+**Its sibling survives and its sibling's mechanism does not.** D70 (`talk:1648-1654`, op): **`Deterministic`
+is a derived marker over the composition**, a blanket impl keyed on the composition making structural the
+qualification D49 stated in prose, so **the marker holds for a composition rather than for arvo and the
+claim a consumer can rely on is exactly the claim the type makes.** D49 survives in this document by
+number as the determinism argument's source; the mechanism it was given was absent (`113:241-254`), and
+the standing base carried one of the two derived markers op declared in the same stretch.
+
+**A converging
 finding from three independent directions** (layout cost, generated code shape, and the orphan rule): whichever
 delivery mechanism is chosen, **the carrier holding a refusal should be arvo's own sealed type, with a single
 `settle()`/`observe()` accessor as its only door**, which is the perimeter rule arriving at this question
@@ -4243,6 +5028,17 @@ constructor's classification was already disarmed, **because the implementor wri
 check for the lie inside the same impl block.** Replaced by recomputing the relation inline in an ordinary
 `const {}` block at every consumption site.
 
+> **Correction, file 114.** This entry droplists the mechanism and the principle it was trying to satisfy
+> is op's adoption, which the standing base never stated. `17b:19-30`: **"a fidelity grant is checked
+> rather than asserted, on the same footing as the recovery map that the earlier verification thread ended
+> up witnessing."** Op also recorded what that does *not* settle: the shape, since a licence witness is
+> not a port of the recovery-map witness, there being no returned value to check a grant against, "which
+> is precisely why the corruption went undetected." The replacement above satisfies the adoption in
+> substance, because recomputing inline is checking rather than asserting, **and no sentence in this
+> document states the principle**, so a reader could learn only that one particular way of not checking
+> failed (`112:466-473`, correcting `111:341-346`, which reported the adoption as neither restored nor
+> droplisted nor named open). The principle is stated here, at the entry it governs.
+
 **A pushed, registered build-layer manifest** for monomorphisation recovery: strictly worse information than
 the pull-shaped symbol-table read, since it records what a consumer *declared* rather than what got
 *instantiated*, silently misses every composition reached only through generic code, and **cannot be written
@@ -4269,7 +5065,14 @@ position's neighbour rather than removing the position; the midpoint that decide
 round-first amendment's unbounded grid.
 
 **The unsigned faithfulness blanket over every `Resolution` pair**: refuted by compiled counterexample.
-`SubstituteZero` breaks associativity where clamping and modular reduction preserve it.
+`SubstituteZero` breaks associativity where clamping and modular reduction preserve it. **What it refutes,
+named because the entry did not name it** (`113:427-438`): the two-impl law derivation in the round's own
+ratified body, `impl<A: Resolution, B: Resolution> AddAssoc for ((A, B), Unsigned) {}` at `talk:1187-1203`
+and `spec:203-222`, which carries no D-number and is not among the items `spec:356-359` marks as the
+agent's own. Its reasoning was that unsigned addition can only leave the range above, so one end is
+unreachable and the rule is truncated addition whatever it does there. **The counterexample is that
+`SubstituteZero` at the reachable end is not truncation.** The signed impl, bounded on `Faithful` rather
+than on `Recovery`, is unaffected.
 
 **Classify-then-round as the quantiser's order**: disagrees with all three test standards on the band past the
 largest representable but within half a quantum of it. Replaced by round-first, classify-second.
@@ -4304,6 +5107,24 @@ distinct promises (section 1.8).
 
 **The ordered three-relation ladder** (weak, then Kleene, then graded): replaced outright by the nine-point
 view lattice, which is not a chain and contains two shipped presets at incomparable points.
+
+**"Partial associativity" as a named gap in the algebra vocabulary**, adopted by op at `17b:40-50` after
+file 17 measured that `Precise` has zero numeric spread across groupings and that its regrouping
+sensitivity is entirely about which groupings are defined at all, with op recording that "the design does
+not name it, and no standard vocabulary carried in the spec covers it": **retired with the ladder above.**
+The nine-point view lattice supersedes it, and the point it names is stated positively at section 1.7,
+`Precise` below interior safety sitting where a view "preserves values and events while losing
+definedness", which is the definedness reading the partial law was for. **The entry above retired the
+ladder and said nothing about op's adopted name going with it**, so a reader found an op adoption in
+`17b` with nothing anywhere saying what became of it (`112:377-397`, resolving the pair `111:527-537`
+could not distinguish, by the evidence inside this document rather than by preference).
+
+**`ffl` as a member of the physical-grounds row** (`63:447` lists `pin`, `host`, `flags`, `model`, `ffl`;
+the registry section above lists the first four): removed, because the transfer-ground scheme replaces
+what `ffl` was credited with, per `68`'s own section heading, and `109:398` flagged it as used and
+undefined. **The removal is probably correct and it was silent**, which under this document's own rule
+that section 6 is the cumulative diff is the thing the rule forbids (`111:170-176`). One line closes it,
+and this is the line.
 
 **The reification-stability generalisation** (that the graded relation is the only one stable under a
 `Refuse`-to-special reification): true of one reifier and false in general. Under an out-of-set absorbing
@@ -4572,9 +5393,26 @@ predecessor. Where a section genuinely did not change, its content is written ou
 **And the second half, which is the one a future author will be tempted to skip**: **the check that a
 compression entails the prior text is performed by someone other than the author of the compression**, because
 the author of the compression is the person who believes it entails (`109:610-615`). This document is the
-first attempt at satisfying it, and it satisfies it imperfectly: file 109 audited the compressions, this
-document restores from that audit, and the restoration itself has not been audited by a third party. **That
-is the residual and it is named rather than smoothed.**
+first attempt at satisfying it, and it satisfied it imperfectly: file 109 audited the compressions, this
+document restored from that audit, and the restoration itself was unaudited when it first stood. **That
+was the residual, named rather than smoothed, and it has since been discharged three times.**
+
+**The three audits, and what each could see that the one before it could not.** File 111 checked the
+restorations against their sources and found two entailment failures, both repaired inline above, and six
+claims resting on nothing but repetition. File 112 swept op's own twenty-three files item by item, having
+first established that the working list in circulation named twelve and was missing the eleven earliest,
+**and the eleven it dropped are the eleven that tell a member how to work, what the standard is, and when
+to stop.** File 113 diffed op's numbered decision register, which sits in the topic files outside this
+directory and which no instrument had ever touched, because this document's own definition of the ratified
+rung excluded it. **A restoration pass, file 114, applied every repair the three identify**, and its own
+report of what it could not resolve is at `114`.
+
+**The rule the three audits jointly earn, and it is one line longer than the format change**: **a
+restoration cites the source that established the statement, not the last document that carried it, and
+where the two differ the restoration says so** (`111:544-551`). Both entailment failures file 111 found
+were paraphrases produced while restoring from the document that last carried the sentence; three further
+instances landed on op's own text (`112:414-427`); and file 113's largest finding is the same defect one
+level up, a standing base whose oracle enumeration omitted the register.
 
 **And the droplist gains a second half that is a diff against the predecessor rather than a record of the
 stretch's own reversals.** Section 6 is the cumulative diff; section 7 is the reversals; the two do not share
@@ -4688,7 +5526,13 @@ dropped**" (`78:872-873`), is **absent from the ninth and the tenth consolidatio
 while item 13 from the same list, a tautological test to delete, is still being reported twenty-eight files
 later. The audit's `78` to `91` pair list does not contain it. **The consolidation kept the trivial item and
 lost the load-bearing one, and the sentence that replaced it (`91:791-798`, the array grammar "forced by the
-language, not chosen") asserts the opposite of what the lost construction proves.** Fresh greps for this
+language, not chosen") asserts the opposite of what the lost construction proves.** **Credit where it
+belongs**: op had already named this item at `108b:22-26`, "an item filed as an open question for op was
+carried by consolidation eight and dropped silently by nine and ten while a sibling item from the same
+list is still reported twenty-eight files later", and this document presented it as its own discovery
+without citing him (`111:326-333`). Under-crediting op is the harmless direction; it is recorded because
+it is evidence about assembly, showing that at that point the document was working file 109's list rather
+than `108b`'s text. Fresh greps for this
 document: `construction one|b1_structural|derive the storage structurally` returns files `76`, `78` and `96`
 only; `construction one|recorded fallback` returns zero in both `91` and `102`; `91`'s droplist read in full
 rather than grepped, because a claim about absence from a list is a claim about the list. Section 1.27 carries
@@ -4731,13 +5575,35 @@ diff the archive has had since the fourth consolidation, and section 7 keeps the
 **Every item on file 109's ratified-or-op-authored list is restored, and the remainder is not.** The honest
 count matters more than a clean claim, so it is given rather than asserted.
 
+> **Correction, file 114.** That sentence is true and it is a smaller claim than it reads as, and the
+> document did not draw the consequence. **Restoring from an audit bounds the restoration by the audit's
+> recall** (`111:318-324`). File 109's list is eleven items it found by diffing consolidations against
+> each other, so anything that never reached a consolidation at all is outside both instruments. Three
+> further sweeps have since measured that ceiling: file 111 found six ratified or op-addressed items in no
+> consolidation and on no list, **every one of them incidentally while checking something else**; file 112
+> swept op's own twenty-three files on purpose and found fourteen absent, seven partially carried and
+> three silently superseded out of ninety-three items; file 113 diffed op's numbered register, which no
+> instrument had ever touched, and found agreement by number at fifteen of forty-six. **The population
+> outside the consolidation chain was large, and the reason it stayed invisible is that every instrument
+> before file 112 was keyed on what a consolidation carried rather than on what op said.** The remaining
+> instrument nobody has run is the same sweep over the ninety-nine numbered member files, which
+> `109:643-646` named as owed and larger than its own list and which `112:541-546` confirms is still
+> untouched.
+
 **Recorded as correct removals rather than restorations, with the reason.** File 11's dead axis instances
 (`Widening`'s three, `Growth`'s two, `LogicalWidth` as a primitive axis, `Underflow`'s `Unbounded`/`Flushed`
 members, the `Narrowed<W, A>` shape) go with the axes themselves, ratified out at `39b`; the affine value map
 and the UNORM8 example that shared their section **are** restored, because they survived the removal. The
-conventions mechanism (`conv-ieee754` through `conv-flocq`) is not restored as a mechanism, because op's
-standard from `13c` is what it was reaching for and section 0.1 states that directly; the two unrepaired gaps
-it carried are restored to the open list as the adequacy question that standard's own test poses. File 11's
+conventions mechanism (`conv-ieee754` through `conv-flocq`) **is restored as a mechanism** at section 0.1,
+and this entry as first written was wrong. It said the mechanism was not restored because op's standard
+from `13c` is what it was reaching for. **That reason covers one half of a two-half decision.** D67's
+second half is the falsifiable expressibility test, which `13c` does restate in op's own later words,
+op-on-op with the later winning, correctly. **D67's first half is a shipping mandate**: feature-gated
+alias sets containing type aliases and nothing else, off by default, on named crates D72's table places.
+`13c`'s standard is an acceptance test for the review and says nothing about what ships, so the shipping
+half was dropped with no successor in a sentence that read as though the whole decision were absorbed
+(`113:152-181`). The two unrepaired gaps it carried remain on the open list as the adequacy question that
+standard's own test poses. File 11's
 scope-section reading instruction ("Nothing below should be read as a statement about any of the untouched
 rows") is not restored, because there are no untouched rows left: every one of the eleven has now had a
 content review, and the instruction would be false if carried.
@@ -4788,6 +5654,48 @@ left the standing base, **not that any of it was correct**. A clause that vanish
 a droplist entry would have said so, that is precisely the entry that does not exist, and section 6's
 restorations carry their reasoning so a member who believes a retest would come out differently knows what has
 to be overturned.
+
+### What the restoration pass added, and what it deliberately did not
+
+**File 114 applied the repairs files 111, 112 and 113 identify.** Every one is marked inline in the
+section it lands in, in a blockquote beginning "Correction, file 114", stating what was wrong and what it
+now says, because the trail matters as much as the fix. Grouped by kind rather than listed twice:
+
+**The oracle enumeration itself** (section 0.4): op's three topic files added to the ratified rung, the
+persona list closed, the register's own identifier collision recorded. **This is the repair the other
+register repairs depend on**, and file 113 identifies it as the structural cause of the whole register
+drift.
+
+**Op's own material** (sections 0.1, 0.2, 0.5, 2, 5, 6): the stopping condition and the four-step cycle
+whose third step is the acceptance test this document proposes without knowing it exists; the post-canon
+four-phase sequence, twice-stated, and where `79b` binds the verification mandate inside it; the end
+state; the checkpoint cadence and its two drifts; the licence to argue; the four `16b`/`16c` posture
+directives; `Cold`'s cold-path meaning; the `WideBits` hole; the reserved fused-versus-split call; the
+fidelity principle; `12b`'s hold on the axis-set completeness claim; and three attribution repairs on op's
+text that cited the last carrier rather than op's file.
+
+**The register** (sections 0.1, 1.1, 1.2, 1.10, 1.23, 1.25, 1.26, 1.9): D72's crate split with its table
+transcribed cell by cell, D52, D53, D54, D56, D63, D64, D65's mis-keyed supersession, D66/D67's shipping
+half, D68's flat call and its silent supersession stated, D70, D71's two lost consequences, D73's marker
+half, D74's accepted trade, D75's rename, D23, D31, D32, D33, D48.
+
+**The counts and the claims resting on repetition** (spine rule, section 1.5, the registry section,
+section 1.10): the eleven firings enumerated from `63:106-123` rather than downgraded, because the list
+was recoverable one consolidation below the count that replaced it; the transfer refutation's second
+compiled support and the four-legs analysis it rests on; D69's ten axes tabled with the three removals
+marked, replacing two live uses of a stale count; the `Ranged` coordinates' lost figures.
+
+**Three silent supersessions made explicit** (D68, partial associativity, `ffl`), because a supersession
+that is stated is legitimate under `108b:11-20` and one that is merely omitted is a drop wearing better
+clothes.
+
+**And what it did not do.** It made no design call. Where a repair would have required one, the item went
+to the open list addressed to op rather than being decided: the register's disambiguation convention, the
+fused-versus-split call, whether the nested `Numeral` shape supersedes D68, which cadence is current, the
+`unstable-features.md` figure's wording, and the reconciliation of the round's seventeen open rows with
+this list. Where an audit named something absent and the pass could not find what it said, it recorded
+that at `114` as unresolved rather than reconstructing it, **because guessing at op's call is worse than
+leaving a gap that is labelled.**
 
 ---
 
@@ -4876,6 +5784,24 @@ guarantee counts as a guarantee for the route-multiplicity discriminator; and th
 > enumerated or downgraded to a claim about what has been checked, and neither has happened yet. Full
 > statement at `111`.
 
+> **Correction, file 114.** All six are disposed of, three by definition, one by enumeration, one by a
+> table and one by restoration, each from the source that established it rather than from a later carrier.
+> **The spine rule's eleven** are enumerated at the rule's own statement, from `63:106-123`, the list one
+> consolidation below the count that replaced it. **The ten axes** are tabled at section 1.10 from D69 at
+> `talk:1621-1641` with the three ratified out at `39b` marked, and the two live uses of the stale count
+> are rewritten so neither rests on it. **The `Resolution` axis's members**, **`Quantisation`** and
+> **`Direction`** are declared at section 1.23 from D64 and D63 at `talk:1243-1266` and `talk:1128-1140`,
+> with the `Resolution`-only three distinguished from the six `Direction` members and the reason
+> `ReduceModulo` cannot occupy a midpoint position stated as a mechanism rather than a convention. **The
+> transfer refutation's second support** is restored at section 1.5 from `68:451-455`, with the four-legs
+> analysis and the necessary-promoted-to-sufficient statement of what it refutes. **One reading is left
+> standing rather than promoted**: section 1.13's ordering of the four resolutions "by how much they lie"
+> is stated in no source, and it is marked as this document's own reading at section 1.23. A seventh term
+> file 113 found under the same line, **the axis-sorting test invoked by name and stated nowhere**, is
+> restored at section 1.23 as op's D54 at `talk:352-356` (`113:310-315`). The line above now holds for
+> these seven; it has not been re-performed over the document as a whole since the restoration pass added
+> to it, and that is the current residual.
+
 ### The separation requirement, performed
 
 Three models this document states as its own, each checked where the distinction is nonvacuous and each stated
@@ -4919,9 +5845,23 @@ They verify that this document's own terms are placed, its models have content, 
 searched. **They do not verify that every verdict above is correct.** This document is a compression of six
 deliverables, one audit and one op checkpoint, plus a restoration from ten prior consolidations, and it is not
 a fresh re-read of every probe any of them produced. Where a verdict rests on a predecessor's own compiled or
-measured claim rather than on an independent re-derivation, the citation says so. **And the restoration itself
-carries the residual named in section 8: file 109 audited the compressions, this document restores from that
-audit, and no third party has yet audited the restoration.**
+measured claim rather than on an independent re-derivation, the citation says so.
+
+**The residual named in section 8 has moved rather than closed.** File 109 audited the compressions, this
+document restored from that audit, and three parties have since audited the restoration: file 111 against
+the sources, file 112 against op's own twenty-three files, file 113 against op's numbered register. The
+repairs all three identify are applied and marked inline. **The residual is now one instrument down**: no
+sweep has been run over the ninety-nine numbered member files for material no consolidation ever absorbed,
+which `109:643-646` named as owed and larger than its own list and which `112:541-546` confirms is
+untouched. Every negative in this document that was re-run by any of the three carries its date and its
+runner at the point of use.
+
+**And the searches remain the weakest part of every claim here.** Files 111, 112 and 113 each closed with
+the same disclosure and each demonstrated it in their own work: file 112 records three verdicts that
+changed when a second vocabulary found what the first had not, and file 113 three more. **That is six
+demonstrations this stretch, up from the four this section first counted**, and the correct reading is
+that a universal negative in this document is a statement about this document's vocabulary and nothing
+wider.
 
 **Only op's calls are final, and even those go stale when their evidence moves.** Everything above that is not
 cited to the ratified rung is evidence and suggestion.
