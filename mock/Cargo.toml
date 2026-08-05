@@ -60,6 +60,11 @@ members = [
     "benches/variants/bitpack-mac-narrow",
     "benches/variants/bitpack-plan-simd",
     "benches/variants/bitpack-mac-simd",
+    "benches/variants/bitpack-footprint-shared",
+    "benches/variants/bitpack-footprint-dense",
+    "benches/variants/bitpack-footprint-dense-alt",
+    "benches/variants/bitpack-footprint-packed",
+    "benches/variants/bitpack-footprint-packed-naive",
 ]
 
 [workspace.package]

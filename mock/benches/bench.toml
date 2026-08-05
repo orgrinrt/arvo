@@ -307,3 +307,97 @@ variants = [
     "../target/release/bench_bitpack_mac_narrow",
     "../target/release/bench_bitpack_mac_simd",
 ]
+
+[bench.bitpack-footprint-dense]
+title = "Layout::Dense footprint: sequential sum swept past L1 and L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 1048576
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 4194304
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 7000000
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[[bench.bitpack-footprint-dense.sizes]]
+n = 33554432
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+]
+
+[bench.bitpack-footprint-packed]
+title = "Layout::Bitpacked footprint: plan-driven sum swept past L1 and L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 1048576
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 4194304
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 7000000
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-packed.sizes]]
+n = 33554432
+variants = [
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]

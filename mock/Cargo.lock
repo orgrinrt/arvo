@@ -20,6 +20,7 @@ dependencies = [
 name = "arvo-benches"
 version = "0.0.0"
 dependencies = [
+ "bench-bitpack-footprint-shared",
  "bench-bitpack-plan-shared",
  "bench-bitpack-shared",
  "bench-quantiser-fadd-shared",
@@ -189,6 +190,50 @@ dependencies = [
  "bench-bitpack-shared",
  "mockspace-bench-core",
  "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-footprint-dense"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-footprint-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-footprint-dense-alt"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-footprint-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-footprint-packed"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-footprint-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-footprint-packed-naive"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-footprint-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-footprint-shared"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
 ]
 
 [[package]]

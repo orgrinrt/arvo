@@ -160,6 +160,7 @@ fn main() -> ExitCode {
 /// name + input size. Hash benches go through `ByteRoutine`; graph
 /// + spectral benches go through their per-routine bridges.
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
+    use bench_bitpack_footprint_shared::FootprintColumn;
     use bench_bitpack_plan_shared::{MacColumn, PlanColumn};
     use bench_bitpack_shared::Column;
     use bench_quantiser_fadd_shared::AddSweep;
@@ -236,6 +237,32 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("bitpack-kernel-amortisation", 65536) => routine_bridge!(MacColumn<65536>),
         ("bitpack-kernel-amortisation", 98304) => routine_bridge!(MacColumn<98304>),
         ("bitpack-kernel-amortisation", 262144) => routine_bridge!(MacColumn<262144>),
+
+        // footprint bench: prices Cold's own intent (a smaller column fits
+        // where a larger one does not) rather than decode cost at
+        // cache-resident sizes, which is all every bitpack bench above this
+        // one measures. Sizes bracket this host's own 128 KB L1 and 12 MB L2
+        // (read fresh via sysctl, `bitpack-footprint-shared`'s own doc
+        // comment): 16384 and 65536 stay inside L1 for continuity with the
+        // decoder-shape sweep; 1048576 and 4194304 sit inside L2; 7000000 is
+        // the crossover where the packed region (10.85 MiB) still fits L2 and
+        // the dense region (13.35 MiB) no longer does; 33554432 puts both
+        // regions well past any cache this host has. Dense and packed share
+        // one `FootprintColumn<N>` bridge (same seed, same logical value
+        // stream, two encodings), so both bench sections below register the
+        // identical routine per size.
+        ("bitpack-footprint-dense", 16384) => routine_bridge!(FootprintColumn<16384>),
+        ("bitpack-footprint-dense", 65536) => routine_bridge!(FootprintColumn<65536>),
+        ("bitpack-footprint-dense", 1048576) => routine_bridge!(FootprintColumn<1048576>),
+        ("bitpack-footprint-dense", 4194304) => routine_bridge!(FootprintColumn<4194304>),
+        ("bitpack-footprint-dense", 7000000) => routine_bridge!(FootprintColumn<7000000>),
+        ("bitpack-footprint-dense", 33554432) => routine_bridge!(FootprintColumn<33554432>),
+        ("bitpack-footprint-packed", 16384) => routine_bridge!(FootprintColumn<16384>),
+        ("bitpack-footprint-packed", 65536) => routine_bridge!(FootprintColumn<65536>),
+        ("bitpack-footprint-packed", 1048576) => routine_bridge!(FootprintColumn<1048576>),
+        ("bitpack-footprint-packed", 4194304) => routine_bridge!(FootprintColumn<4194304>),
+        ("bitpack-footprint-packed", 7000000) => routine_bridge!(FootprintColumn<7000000>),
+        ("bitpack-footprint-packed", 33554432) => routine_bridge!(FootprintColumn<33554432>),
 
         _ => return None,
     };
