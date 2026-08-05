@@ -838,6 +838,20 @@ Restored verbatim from `40:209-212`, compressed to a crate name at `49:206` and 
 > checkpoint (`30b`), despite two readings finding its stated mechanism does not compile and that a
 > membership predicate over the whole ambient set is vacuously true of everything.
 
+**And D39's objection has an answer, which is restored here with it** (`40:227-235`, twenty lines below the
+text the block above restores from). The predicate is **inhabits**, not **equals**. So `Inhabits<Real>`
+being vacuously true of every finite numeral is a correct fact about the top of the tower rather than a
+refutation of the predicate. The honest derived fact is the **finest inhabited system**, which exists and is
+unique because the tower is a chain, and this is the identical move the laws make: do not choose a relation,
+report the finest one that holds. Membership is then decidable from the identity axes alone (`Natural` iff
+`Domain = NonNegative` and quantum and bias are naturals, and so on), which makes it a derived fact keyed on
+the numeral rather than a declaration.
+
+> **Correction, file 111.** The restoration above carried D39's objection verbatim and left its answer
+> behind, so op's held call reached the standing base described only by what was said against it. `Inhabits`
+> returned zero hits in this document before this repair. The answer was in the same file, twenty lines
+> further on.
+
 The aggravating fact worth recording: file 45 defines the `d38` ground slug by pointing at `40:209-212`
 (`45:127`, "op, carried `40:209-212`"), so the fourth consolidation deleted the text its own grounding
 registry cites as a definition. The consequence lands seven consolidations later, where `78:678` instructs a
@@ -955,11 +969,23 @@ file 37, flagged at `49:235-237` as moved "from prospective to load-bearing" by 
 
 **Direction enters a law's key exactly when the exact result can leave the operand lattice** (`40:288-294`).
 This is a single predicate replacing two separately-measured facts (`Precise` addition never rounds in
-range; `Precise` multiplication rounds on roughly half of pairs). Additive lattice closure holds exactly
-when bias and adjustment are integers (the shipped `AddClosed` gate on `Bias = Zero` is the special case);
-narrowed-multiplicative closure additionally needs the adjustment and bias both integers, **which no
-fixed-point numeral with a fractional digit ever satisfies, which is the derived reason multiplication needs
-`mul_full` and addition does not.** The fourth consolidation reproduced this heading sentence verbatim and
+range; `Precise` multiplication rounds on roughly half of pairs). **Additive lattice closure holds exactly
+when `bias / adjustment` is an integer**, and the shipped `AddClosed` gate on `Bias = Zero` is the special
+case of that, which means there exist numerals with nonzero bias that are additively closed and that the
+shipped gate would refuse (`33:264-267`, `33:665-667`, compiled at probe 5 against exhaustive computation in
+both directions). **Narrowed-multiplicative closure holds exactly when the adjustment and the bias are both
+integers and the adjustment divides `bias^2 - bias`**, and no fixed-point numeral with a fractional digit
+satisfies the first conjunct, **which is the derived reason multiplication needs `mul_full` and addition
+does not** (`33:669-671`).
+
+> **Correction, file 111.** This paragraph as first restored read "additive lattice closure holds exactly
+> when bias and adjustment are integers", which is a different and stronger condition than the compiled one,
+> made the following clause vacuous by repeating its own content, and was falsified by the parenthetical in
+> its own sentence, since `AddClosed` gates on `Bias = Zero` alone and constrains no adjustment. It also
+> inherited the third consolidation's loss of the third conjunct (`q` divides `b^2 - b`). Both are restored
+> above from `33`, which is where the probe established them, rather than from the last document to carry
+> them. The failure mode is general and is recorded at `111`: a restoration that cites the most recent
+> carrier inherits every paraphrase between it and the source. The fourth consolidation reproduced this heading sentence verbatim and
 replaced the body with meta-commentary about how the probe was re-run (`109:307-309`); the derived reason is
 the content and it is restored.
 
@@ -4834,7 +4860,21 @@ the platform crate's name, deferred to the taxonomy round; the required-field re
 guarantee counts as a guarantee for the route-multiplicity discriminator; and the convention parameter for
 `arvo-geom`'s model-choice half.
 
-**No term in this document's own new prose is left undefined or uncited.**
+**No term in this document is left undefined or uncited.**
+
+> **Correction, file 111.** This line first read "in this document's own **new** prose", which scoped the
+> completeness requirement away from exactly the population a restoration consists of, while the requirement
+> as stated at `271-272` quantifies over the whole ratifying text. With the exemption struck, the line does
+> not yet hold, and the following are used here and defined nowhere in it, each recorded rather than
+> silently repaired: the **spine rule's eleven firings** (quantified over, never enumerated, and the count
+> traces back through `68:98-101` to a prior count rather than to a list, which the document's own reasoning
+> at `1232-1233` says is the wrong shape, "because a count cannot be checked and a list can"); **the ten
+> axes** (quantified over twice, listed nowhere); the **`Resolution` axis's four members**; **`Quantisation`**,
+> which is the sole content of `Policy` in the ratified trait table; **`Direction`**; and the transfer-argument
+> refutation's **second support**, which is called two compiled supports with one stated (the absorption-freedom
+> result at `68:451-455`, which is the evidence for this document's largest pending item). Each is either
+> enumerated or downgraded to a claim about what has been checked, and neither has happened yet. Full
+> statement at `111`.
 
 ### The separation requirement, performed
 
