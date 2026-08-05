@@ -734,9 +734,15 @@ Collected here because each was adopted inside a specific finding and three of t
 
 ## 1. The agreed shape
 
-Twenty-nine subsections. Every one states its content. Where a section's last full statement lived in an
-earlier consolidation, that statement is reproduced here with its origin cited, and where the tenth
-consolidation carried a stub the restoration is noted in section 8 rather than in the section itself.
+Thirty subsections, `1.1` through `1.30`, which is a range a reader can check against the headings below.
+Every one states its content. Where a section's last full statement lived in an earlier consolidation, that
+statement is reproduced here with its origin cited, and where the tenth consolidation carried a stub the
+restoration is noted in section 8 rather than in the section itself.
+
+> **Correction, file 118.** This read "twenty-nine subsections" against thirty headings (`115:167-173`). A
+> count that disagrees with its own list is the defect section 1.12 refuses and that this document corrects
+> in a predecessor two sections above, so it is repaired by stating a range the headings check rather than by
+> moving the number.
 
 ### 1.1 What a number is
 
@@ -745,6 +751,43 @@ type-level rule injecting `k` into a set of rationals** (plus, for floats, a han
 rationals at all: `Specials`, section 1.16). The numeral has two jobs, naming the representable set and
 naming the indexing, and D69 put those two jobs on two different sides of the design rather than deriving
 one from the other (`40:41-46`, `68:147-151`).
+
+**The declaration, stated here because the sentence above is the only place this document describes the type,
+and the type is never written down.**
+
+```rust
+pub struct Number<N: Numeral, S: Policy + Lowering> {
+    datum:    <S as Lowering>::Container,  // the container level, W_C (1.22)
+    _numeral: PhantomData<N>,
+}
+```
+
+**Two parameters, and the second implements both strategy-side contracts.** The arity is settled by this
+document's own evidence rather than by preference. Section 1.3 states that `Encoding` nests inside `Lowering`
+**so that a third parameter is never paid** (`945-948`, resting on `26:32-35`'s measured 1.8x diagnostic
+cost); D72's crate table gives `arvo-numeric` the row "`Number<N, S>`" (`3342`); and the parameter-count
+question was closed against the split on measurement, separately from the trait-count question, which is the
+one still open (`117:47-52`).
+
+**The bound on `S` is the sentence the whole shape hangs on, and it appears nowhere in this document**, four
+searches, zero hits in 5900 lines (`117:60-64`). The only statement of it anywhere in the record is
+`26:28-35`, which is agent output: **`S: Policy + Lowering`**. It is stated here because a two-parameter type
+whose second parameter relates to two of its three contracts by no stated rule cannot be built against, and it
+is **owed op's one-line word**, since that parameter is the subject of the fused-versus-split call he reserved
+at `08b:47-51` and has never made (section 1.25).
+
+**`Container` is the container level's own type**, the type-valued projection of the stored width through the
+dispatch menu that section 1.22 already states is derived and never declared (`2765-2772`). It is spelled here
+as a `Lowering` member because that is where its inputs already are. **Whether it stays there or moves to a
+one-member carrier contract below `Lowering`** is `117:452-458`'s second rider, and it is on the open list;
+the declaration above does not move either way, only the path the projection travels.
+
+> **Correction, file 118.** `Number` was declared nowhere, and two cold reads reached that independently
+> (`115:23-35`, `116:64-70`), each naming it the largest single gap in the document and each finding two
+> arities in use with nothing reconciling them. The declaration and the bound are added above. **The
+> three-argument spelling at `3390` is not a second arity of this type**: it is file 09's own probe topology,
+> now marked as such at section 1.25. Nothing here decides the fused-versus-split call; it states the bound
+> the record already carries so that the call has a subject.
 
 **D65 and D69 were both overturned by op at `30b`**: identity is parameterised in mathematical
 coordinates, not encoding coordinates. Precision and the exponent bounds are primitive; total width, the
@@ -785,6 +828,8 @@ and no bias alone can do both, since matching one endpoint with a bias displaces
 ### 1.2 The identity contract
 
 ```rust
+// The member set is a stated supersession of D68's four flat members; see the
+// correction below before reading this block as settled.
 pub const trait Numeral {
     type Radix:     Radix;        // Rad<P>, one constructor family over sealed Pos
     type Precision: Precision;    // significand digit count, primitive (D69), a Nat
@@ -792,9 +837,24 @@ pub const trait Numeral {
     type Domain:    SignDomain;   // NonNegative | Symmetric | AsymmetricLow, a value fact
 }
 
-pub struct Implicit<E: Exponent, A: Adjustment, B: Bias>;
-pub struct Ranged<EMIN: Exponent, EMAX: Exponent, U: Underflow, S: Specials>;
+pub struct Implicit<E: Exponent, A: Adjustment, B: Bias>(PhantomData<(E, A, B)>);
+pub struct Ranged<EMIN: Exponent, EMAX: Exponent, U: Underflow, S: Specials>(
+    PhantomData<(EMIN, EMAX, U, S)>,
+);
 ```
+
+> **Correction, file 118, and it is a compiled one.** The two structs were carried as unit structs, and
+> **as written they do not compile**: seven instances of `error[E0392]: type parameter E is never used`,
+> reproduced under the pin (`rustc +nightly-2026-05-28 --edition 2024 --crate-type=lib`), with rustc's own
+> help line naming the repair, "consider removing `E`, referring to it in a field, or using a marker such as
+> `PhantomData`". The repair is taken. This is the identity contract's own shape, the most-cited code block
+> in the document, and it had never been put through a compiler.
+>
+> **A second, smaller thing the block cannot say for itself.** The member named `Exponent` is bounded by
+> `ExponentForm`, while the trait named `Exponent` is the sealed signed integer of section 1.15, and
+> `Implicit`'s own `E` is bounded by that one. Two ratified definitions, one token, different content, which
+> is address one of section 1.26's own three mechanical addresses. **Renaming either is op's**, and it is one
+> line; the collision is recorded rather than repaired here.
 
 Restored from `58:122-161` and `68:155-165`. `Implicit`, `Ranged`, `NonNegative` and `AsymmetricLow` all
 return zero hits in `78`, `91` and `102`, re-verified fresh, **and the far-point rule and the float preset
@@ -840,6 +900,17 @@ floating point was withdrawn as evidence for it and droplisted. **The one half o
 content unnumbered is its closure gate**, `impl<N: Numeral<Bias = Zero>> AddClosed for N {}`, which
 section 1.7 carries as "the shipped `AddClosed` gate on `Bias = Zero`".
 
+> **Correction, file 118, on which shape is current.** The reconciliation asked for is already performed in
+> the correction below and the answer is not reversed by anything since: **the nested shape is current and the
+> supersession is stated, not silent.** Both of its grounds postdate D68 (`Underflow` having no bottom under a
+> constant exponent, `49:125-128`; D69's overturn at `30b`, which makes `Precision` and `Radix` primitive top
+> level members D68 could not have known about), and `108b:11-20` makes a ratification the best answer
+> available under the evidence at the time rather than a frozen one. **What was missing is that the code block
+> above carried no sign of any of it**, so a reader taking a compiling Rust item as the settled shape, which
+> is what a reader of a specification does, had no route to the standing conflict (`116:178-186`). The block
+> now says so on its first line. **Op's acceptance of the supersession is still owed and is still on the open
+> list**; nothing here rules on it.
+>
 > **Correction, file 114.** D68 was superseded silently: the standing base declares a shape op did not
 > choose, argues it on independent grounds, and nowhere says a ratified flat call existed (`113:207-218`).
 > A supersession that is stated is legitimate under `108b:11-20`, because a ratification is made under the
@@ -1577,12 +1648,27 @@ intermediate, where a truncated result needs fewer limb-products than a full one
 folds to the direct hardware multiply's four instructions once the optimiser can see through it.
 
 **`Growth` leaves the law key, ratified; and it leaves `Policy` entirely, closed by file 51, compiled in both
-directions** (`58:321-339`). The positive enumeration: eleven operations drawn from the design's surface
-(in-numeral add, sub, mul, div; `mul_full`; `mulnum` over `Ranged`; `div_exact`; the `div_floor`/`rem` pair;
-`fold`, `fold_sequential`, `fold_compensated`; `quantize`), each with its own growth trait generic over the
-operand numeral type(s) alone, none taking a `Policy` parameter. **The structural theorem, which is the
-stronger of the two results**: every operation the design has or could design computes its result numeral
-inside one trait impl, and for that impl's answer to vary "by policy" without the parameter being inert, two
+directions** (`58:321-339`).
+
+**The positive enumeration, given as a list because the count it carried is checkable and wrong.** Thirteen
+operations drawn from the design's surface, computed by ten growth traits, every one generic over the operand
+numeral type(s) alone and none taking a `Policy` parameter: in-numeral `add`, `sub`, `mul` and `div` (four
+operations sharing one growth trait, since none of them grows); `mul_full`; `mulnum` over `Ranged`;
+`div_exact`; `div_floor` and `rem` (two operations, two traits); `fold`, `fold_sequential` and
+`fold_compensated`; and `quantize`.
+
+> **Correction, file 118.** This read "eleven operations" against a parenthetical naming twelve, or thirteen
+> counting the Euclidean pair as the two operations it is (`115:175-185`). **The count is wrong at the source
+> and not in transcription**: `51:56-64` says eleven, and `51:245` says "none of the eleven trait
+> declarations", while `51_probes/probe_1_growth_surface_enumeration.rs` declares **ten** growth traits over
+> **thirteen** operations, counted from the file. So eleven matches neither of its own two candidate lists.
+> Both numbers are restated above from the probe, and the enumeration is what carries the claim. **Nothing
+> downstream moves**: the structural theorem below is the result the universal conclusion rests on, and it
+> quantifies over every operation the design could have rather than over this list, which is exactly why the
+> miscount cost nothing beyond checkability.
+
+**The structural theorem, which is the stronger of the two results**: every operation the design has or could
+design computes its result numeral inside one trait impl, and for that impl's answer to vary "by policy" without the parameter being inert, two
 impls disagreeing on the answer would have to coexist for the same generic domain, and coherence refuses that
 outright (`E0119`), independent of which operation or which two numerals. So the result is not "checked
 eleven operations, found none" but **"no operation expressible in this type system's dispatch discipline can
@@ -2317,6 +2403,14 @@ error[E0277]: expected accumulator width `Q37`, this one is `Q53`
 help: the trait `SameFaceAs<Q37>` is not implemented for `Q53`
 ```
 
+> **Correction, file 118.** The paragraph below is added; nothing above it changes.
+
+**`SameFaceAs` is the probe's own spelling inside a quoted diagnostic, not a member of the design's
+vocabulary**: the design content is the lever, restating a comparison as a bound rather than as an equality,
+and the trait a real implementation reaches for at that position is `NumeralFace`'s own coarsening bound. The
+clarification is here because a cold read met the name only in this diagnostic and had no way to tell which
+it was (`115:122-124`).
+
 That lever, restated at `58:785-787` as a general result (wherever a numeral mismatch can be expressed as a
 bound rather than an equality the error is readable for free, independently found by three files), was
 dropped at `63:427-435` (`109:376-377`). It is the strongest diagnostic result in the review and it is
@@ -2576,6 +2670,25 @@ add bookkeeping the hardware never asks for and the "no framework on top of it" 
 So `Warm`'s float row matches `Hot`'s on both `StoredWidth` and `Layout`, and diverges from `Warm`'s own
 fixed-point row on both, **because the two number kinds needed the doubling for the same underlying reason
 (correctly-rounded intermediates) and only one of them lacks hardware that gives it away for free.**
+
+> **Finding, file 118, and it is the one gap the two tables create between them.** One preset name denotes
+> two rows, one per number kind, which section 1.26 states as a boundary sentence in its own words (`3573`)
+> and which the two tables exhibit at four cells. **The trait table's members cannot carry that.**
+> `Policy::Quantisation` and `Lowering::StoredWidth` are nullary associated types on the marker, so
+> `Warm::StoredWidth` is one type, and the ratified tables say it is `doubled` for fixed-point and `minimum`
+> for float. Under this document's own layer-keying rule that is not a small inconsistency, it is the rule's
+> **dual failure named for the first time in section 1.30**: a fact keyed on something that does not
+> determine it, which is a non-function presented as one (`4394-4398`). The row is a function of the pair,
+> the preset and the number kind.
+>
+> **Two spellings close it and this document does not pick, because the record contains neither.** Either the
+> two contracts take the numeral, `Policy<N>` and `Lowering<N>`, exactly as `Crosses<N: Numeral>` already
+> does on the same side of the design, and `Number`'s bound becomes `S: Policy<N> + Lowering<N>` with nothing
+> else moving; or the four preset names stay nullary and the semantic aliases map each to a per-kind marker,
+> which D53's alias mechanism admits since an alias preserves the consumer's spelling exactly (`3224-3226`).
+> **One line either way, and the bound in section 1.1 is the only text that changes.** It is on the open
+> list, and it is the second thing op has to say about `S` after the fused-versus-split call, because both
+> are questions about what that one parameter is.
 
 **Refusal, not silent fallback, binds every preset, design-wide, cited by rule rather than by any marker's own
 meaning.** `arvo-toolbox-not-policer.md` forbids exactly the failure mode a silent hardware-to-software
@@ -2911,6 +3024,8 @@ pub const trait Lowering {
     type StoredWidth: StoredWidth;        // the carrier level; W_F <= W_S, declared (1.22)
     type Layout:      StorageLayout;      // {Dense, Bitpacked}, selects the container granularity
     type Door:        LoweringDoor;       // both presets ratified (1.21)
+    type Container;                       // the container level W_C: derived, never declared
+                                          // as an axis (1.22), and what Number holds (1.1)
     // Widening removed: RATIFIED.
 }
 
@@ -2937,6 +3052,118 @@ pub unsafe trait Crosses<N: Numeral>: Lowering {
     // obligation actually bites.
 }
 ```
+
+**The vocabulary every member above is bounded by, declared rather than named.** The table declares four
+contracts whose members are bounded by nineteen further traits, and not one of the nineteen existed as a
+declaration anywhere in this document: a reader could see that `Numeral::Precision` is bounded by `Precision`
+and had no way to learn what `Precision` is (`116:81-85`). **The nineteen are the block below**, in its
+order, so the count is checkable against a list rather than asserted: `Pos`, `Nat`, `AtLeastTwo`, `Exponent`,
+`Radix`, `Bias`, `Gcd`, `Dec`, `Precision`, `Capacity`, `Adjustment`, `ExponentForm`, `SignDomain`,
+`SignIndexing`, `FieldLayout`, `Canonicalisation`, `StoredWidth`, `StorageLayout`, `LoweringDoor`. The BNF comment at the head of this
+section is the same gap in the other direction: a closed and unambiguous enumeration, in a comment, of the
+carrier the whole design rests on (`116:46-49`). Both are written out below, from what this document already
+says about each. **Nothing here is a new decision**, and where writing one down would have required a
+decision it is on the open list instead, named in section 5.
+
+```rust
+// ---- the sealed bottom carrier: the BNF above, as declarations ----------
+mod sealed { pub trait Sealed {} }
+use sealed::Sealed;
+
+pub const trait Pos: Sealed { const VAL: u64; }   // readout ceiling at 10^20: 1.18
+pub struct H;
+pub struct O<P: Pos>(PhantomData<P>);
+pub struct I<P: Pos>(PhantomData<P>);
+
+pub const trait Nat: Sealed { const VAL: u64; }   // one seal, one ordering, one
+pub struct Z;                                     // arithmetic, inherited whole (1.27)
+pub struct Pz<P: Pos>(PhantomData<P>);
+
+pub const trait AtLeastTwo: [const] Pos {}        // O<P> and I<P>, never H (1.2)
+
+pub const trait Exponent: Sealed {}               // the signed exponent (1.15)
+pub struct EZero;
+pub struct EPos<P: Pos>(PhantomData<P>);
+pub struct ENeg<P: Pos>(PhantomData<P>);
+
+pub const trait Radix: Sealed {}
+pub struct Rad<P: AtLeastTwo>(PhantomData<P>);
+
+pub const trait Bias: Sealed {}                   // signed gcd-normalised rational, 44b
+pub struct BZero;
+pub struct BPos<N: Pos, D: Pos>(PhantomData<(N, D)>) where N: Gcd<D, Out = H>;
+pub struct BNeg<N: Pos, D: Pos>(PhantomData<(N, D)>) where N: Gcd<D, Out = H>;
+
+// The tower's type-level arithmetic. These two are the members whose codomain
+// this document states; the rest of the family is in section 5.
+pub const trait Gcd<Rhs>: Sealed { type Out: [const] Pos; }
+pub const trait Dec: [const] Pos { type Out: [const] Nat; }   // the predecessor (1.27)
+
+// Named semantic aliases over the carrier, on 74b's own pattern for Capacity:
+// no second seal, no second arithmetic, no second ordering.
+pub trait Precision:  Nat  {}   impl<T: Nat>  Precision  for T {}
+pub trait Capacity:   Nat  {}   impl<T: Nat>  Capacity   for T {}
+pub trait Adjustment: Bias {}   impl<T: Bias> Adjustment for T {}
+
+// ---- what the three contracts' members are bounded by -------------------
+pub const trait ExponentForm: Sealed {}           // Implicit | Ranged (1.2)
+
+pub const trait SignDomain: Sealed {}             // a value fact (1.2)
+pub struct NonNegative;  pub struct Symmetric;  pub struct AsymmetricLow;
+
+pub const trait SignIndexing: Sealed {}           // a datum fact (1.3)
+pub struct Unsigned;      pub struct TwosComplement;
+pub struct SignMagnitude; pub struct OnesComplement;
+
+pub const trait FieldLayout {
+    type Extent: Precision;   // W_F, statement 0's own quantifier domain (1.22)
+    // The hidden bit, the encoding bias and the reserved codes are this
+    // contract's remaining content; their member spellings are in section 5.
+}
+
+pub const trait Canonicalisation {}   // signed zero, preferred cohort, NaN
+                                      // canonicalisation; members in section 5
+
+pub const trait StoredWidth: Sealed {}            // the carrier level, W_S (1.22)
+pub struct Minimum;  pub struct DoubleLogical;
+
+pub const trait StorageLayout: Sealed {}          // container granularity (1.22)
+pub struct Dense;    pub struct Bitpacked;
+
+pub const trait LoweringDoor: Sealed {}           // both preset tables (1.21)
+pub struct Inert;    pub struct Quantised;
+pub struct HostFloat<E>(PhantomData<E>);          // E is the environment (1.26)
+
+pub struct Folded<const N: usize>;                // the site count (1.14)
+```
+
+**`Folded`'s parameter is a const rather than a `Nat`, and the document's own compiled evidence is what
+settles it.** A moved count offered to it is refused with `E0435` (`1949-1950`), which is the error for a
+non-constant value in a constant position and is available at no other spelling; a `Nat`-typed parameter
+would have refused with a name-resolution error instead. What is not settled is whether the witness rides as
+a returned value or as a parameter on the fold's result numeral, and that is one line in section 5.
+
+**Everything above compiles.** The whole of this section's table, plus section 1.2's two structs and section
+1.1's `Number`, built as one crate under the pin (`rustc 1.98.0-nightly (57d06900f 2026-05-27)`,
+`--edition 2024 --crate-type=lib`), exit 0, one dead-code warning on `Number`'s own field, which is what a
+declaration-only crate produces. **Two things had to change to get there and both are recorded where they
+happened**: section 1.2's unit structs (`E0392`, seven times) and a bound spelling, since **a struct cannot
+carry a `[const]` bound at all** (`error: [const] is not allowed here`, `note: structs cannot have [const]
+trait bounds`), so every carrier constructor above takes its parameter's bound plain while the traits keep
+theirs.
+
+> **Correction, file 118.** Nineteen names were used as bounds in this section's own table and in the BNF
+> above it, and declared nowhere in the document, and the section that assembles the trait table is where a
+> reader looks for them.
+> They are declared above, each from the text that determines it. `Precision`, `Capacity` and `Adjustment`
+> are stated as named semantic aliases over the carrier rather than as second encodings, which is `74b`'s
+> own pattern for `Capacity` (`4671-4673`) applied to the two names that share its shape. `FieldLayout` and
+> `Canonicalisation` are declared with the one member the document fixes and their remaining members are on
+> the open list, because the document names the facts they carry and never their spellings, **and inventing
+> those spellings here would put a decision nobody made into the canon's voice**. **One member is added to a
+> ratified trait**, `Lowering::Container`, and it is a projection rather than an axis: section 1.22 already
+> states that the container level is derived and never declared, and section 1.1 explains why `Number` has to
+> be able to name its result.
 
 **The test that sorts an axis between `Numeral` and `Policy`, which is op's D54 and was invoked by name in
 this document without being stated once.** Op, `talk:352-356`, verbatim:
@@ -3012,6 +3239,24 @@ prints, which is the cost Thread A's modifier work is against. The precedent is 
 preserves a spelling exactly**: `UFixed<13, 3, Warm>`, `Uint<13>` and `Bits<13, Hot>` each still read as
 themselves, width stays a const parameter publicly, and a migration changing the spelling would charge
 every call site for an internal restructuring (`inherited:1894-1899`, D48, op, 2026-07-29).
+
+> **Correction, file 118.** D53's alias half was restored by file 114 with no statement of what an alias
+> expands to, and the step below is the one a reader hits immediately. The paragraph is added; D53's own
+> text is untouched.
+
+**What the aliases expand to has never been written down, and one step of it is not obvious.** D53 makes
+`UFixed`, `IFixed`, `FastFloat` and `StrictFloat` four names for four compositions over `Number`, D48 and D31
+keep the public spelling `UFixed<13, 3, Warm>` with its widths as const parameters, and the numeral inside
+the composition takes `Precision` as a `Nat`. **Those two facts do not meet on their own**: `I + F` in type
+position is a const expression and section 1.2 has already compiled every permitted door to it shut
+(`867-872`). The bridge is a generated table, one impl per admitted width, plus the tower's own type-level
+addition, and it is **compiled for this document, exit 0, with no feature gate at all**, carrying
+`<Precision<13, 3> as Nat>::VAL == 16` through a const assertion. One spelling detail is worth recording
+because it costs a confusing diagnostic otherwise: a const parameter forwarded into a table's index position
+needs braces, `NatOf<{ I }>`, or rustc reports `error[E0747]: type provided when a constant was expected` and
+suggests exactly that. **What is open is not whether the bridge exists but whether it is the design's answer
+and where the table is emitted** (section 2), since a table is a binding-time decision and section 1.18
+already says what those are.
 
 **And compositions are public and bindable, so the presets are the default path rather than the only one**
 (D52, `inherited:2110-2114`, op, 2026-07-30): "Compositions are public and bindable by anyone; semantic
@@ -3155,9 +3400,14 @@ between them. **The marker half was absent by every name** (`113:352-363`), whic
 carries the positive half: a law key is a `const fn` parameter list and `Lowering` is not a parameter, and
 a value-level fact in the algebra-contracts crate cannot name an `Encoding` or `Lowering` type. **File 09's
 harder result is that the crate that legitimately owns `Number` can still condition a law on `L`, and the
-split does nothing to stop it.** The dishonest impl builds clean at the one location a real D72 would put
-it, and `Number<Fix13_3Signed, Warm, MinWidth>` folds while `Number<Fix13_3Signed, Warm, DoubleWidth>`
-refuses with `Bitpacked: IsDense is not satisfied`: **two numerals equal in every identity and policy
+split does nothing to stop it.** **The three-argument spelling in the next sentence is file 09's own probe
+topology, where the lowering is a third free parameter, and it is not this design's `Number`, which takes
+two** (section 1.1, correction, file 118; the sentence it qualifies is unchanged). Both cold reads took it for a second arity of the shipped type and could not reconcile
+it with section 1.3 (`115:187-196`, `116:219-224`); file 09 was working a three-parameter topology
+throughout, which is also why its own closure does not transpose to the fused form unaltered
+(`117:230-237`). Read with that said, the result stands exactly as it did. The dishonest impl builds clean at
+the one location a real D72 would put it, and `Number<Fix13_3Signed, Warm, MinWidth>` folds while
+`Number<Fix13_3Signed, Warm, DoubleWidth>` refuses with `Bitpacked: IsDense is not satisfied`: **two numerals equal in every identity and policy
 respect disagreeing on whether their addition is associative**, which is exactly what D54 forbids. The
 reason is structural: `Number`'s own definition requires `Lowering` in scope, so any crate that can write
 the impl at all is a crate where `L` has methods a where-clause can name. **A shape that closes it
@@ -3998,6 +4248,16 @@ six independent public routes: a public field (`arvo-storage/src/platform.rs:261
 primitive it names, and that route is stated in the type's own definition; every other route is absent, not
 discouraged.*
 
+> **Correction, file 118.** The paragraph below is added, and it is the one place in this pass where the
+> right repair was to leave a declaration unwritten and say why.
+
+**The five named types are quoted here as tree facts and are deliberately not declared.** `Bool`, `USize`,
+`Cap`, `NUSize` and `BoolResidual` appear above by citation into the shipped tree because the chapter's
+subject is how many doors each has, and **the door that survives is op's call**, listed in section 2. Writing
+a declaration here would be writing that call. A cold read flagged all five as used without definition
+(`115:107-110`), which is right about the text and wrong about the cause: this is the one place in the
+document where a missing declaration is the finding rather than a gap in it.
+
 **The ground for that sentence is redundancy, not soundness, and the distinction decides whose call it is.**
 An earlier draft cited the workspace perimeter rule, and **the citation is struck**: the rule's own Boundary
 section says "This is not 'make everything private'. A type with no invariant to protect loses nothing by
@@ -4204,9 +4464,17 @@ data":
 ```rust
 pub fn max<T>(a: T, b: T) -> T
 where T: Compare + Select<Truth = <T as Compare>::Truth> {
-    T::select(a.lt(b), b, a)
+    T::select(a.lt(&b), b, a)
 }
 ```
+
+> **Correction, file 118, compiled.** The body read `a.lt(b)` and **does not compile**, because a by-value
+> comparison moves `b` and both operands are used again in the same expression:
+> `error[E0382]: use of moved value: b`, with rustc's own note pointing at the repair, "consider changing
+> this parameter type in method `lt` to borrow instead if owning the value isn't necessary". The borrowing
+> form is taken, since the alternative repair is a `Copy` bound this document states for no numeric type
+> anywhere. **This is the document's one operational code sample** (`116:43-45`), presented as the resolution
+> of a locked fork with a compiler diagnostic quoted in support, and it had never been built.
 
 That compiles at one lane and at two, and at one lane it is byte-identical to the raw primitive. **No exit
 appears in the bound, in the body, or in the emitted code.** Routing through an exit above one lane is not
@@ -4299,6 +4567,71 @@ later.
 > **Consequences worth stating in the same place.** `Bool`'s route to its primitive is this contract's
 > declared exit, which settles as derived what was handed over as taste, and the four redundant spellings of
 > it are four spellings of one door. The number of routes is one, per D27's own "named once".
+
+> **Correction, file 118.** The locked statement above is untouched. What follows it is added, because the
+> statement names three things and declares none of them, and the section's own worked example is written
+> against two.
+
+**The three organs, declared.** The statement above names an algebra, an exit and a selector, and binds the
+fifteen declarations on the first of the three. All three were used by name for the length of the section and
+declared nowhere, and the worked `max` above is written against two of them, so a reader following the
+section's own advice compiles nothing (`116:71-77`, which found `Compare` and `Select` used, undeclared, and
+absent from section 9's own named-open list as well).
+
+```rust
+/// The algebra. Working name; the contract's own name is on the open list.
+pub const trait Truth: Sized {
+    const TRUE: Self;
+    const FALSE: Self;
+    fn and(self, rhs: Self) -> Self;
+    fn or(self, rhs: Self) -> Self;
+    fn not(self) -> Self;
+    // and nothing else: no route to the language's bool.
+}
+
+/// The exit, partial over truth types: one lane has it and it is the identity,
+/// more than one lane has none.
+pub const trait Branch: [const] Truth { fn is_true(self) -> bool; }
+
+/// The producer. Fifteen declarations have this shape and none branches on its
+/// own result, which is why the bound here is the algebra and not the exit.
+pub const trait Compare: Sized {
+    type Truth: [const] Truth;
+    fn lt(&self, rhs: &Self) -> Self::Truth;
+    // the rest of the comparison surface has the same shape; this document
+    // names only `lt`, so only `lt` is written down.
+}
+
+/// The selector, on the datum, keyed on the pair, both arms evaluated,
+/// lane-wise, at every lane count, requiring no choice.
+pub const trait Select: Sized {
+    type Truth: [const] Truth;
+    fn select(t: Self::Truth, on_true: Self, on_false: Self) -> Self;
+}
+```
+
+**Every member above is read off the locked statement rather than chosen.** `Truth`'s five members are its
+first sentence; the working name is the one this section already uses ("any exit a `Truth` impl for
+`Mask<W>` supplies"), and the contract's real name stays where it was, on the open list. `Branch` is the
+name in the section's own compiled diagnostic (`Mask2: Branch is not satisfied`), and `is_true` is the member
+the five-introduction-route enumeration spells. `Compare`'s associated `Truth` and its `lt` are what the
+`max` example projects and calls. `Select`'s three arguments and its associated type are the statement's
+fourth paragraph, and the associated-type spelling rather than a type parameter is forced by `max`'s own
+`Select<Truth = <T as Compare>::Truth>`.
+
+**The supertrait direction is the safe one, and it is worth stating because the other one is a live trap.**
+The edge runs from the exit up to the algebra, so a crate bounding on `Truth` never gains a route to
+`Branch`. `117:355-366` compiles the reverse case and finds that **projection travels through a supertrait
+edge that nameability does not**: a crate that cannot write `use lowering::Lowering` can still project
+`S::Layout` if anything it bounds on has `Lowering` above it, so the `E0432` check reports closed while the
+design is open. The same shape here would put the exit back on every producer.
+
+**Two names in this section are not declarations and should not be read as ones.** `Mask<W>` is the design's
+existing lane-mask family used as the worked instance at `W` lanes, not a type this section introduces; the
+statement's content about it is the product construction, which holds of any finite product of truth types.
+`TruthAlgebra<N>` belongs to the priced alternative immediately below and is not a member of the locked
+shape. Both were read as undeclared design vocabulary on a cold pass (`116:97-99`), which is what an
+undifferentiated backtick does.
 
 **An alternative, priced rather than recommended.** An arity-indexed algebra (`TruthAlgebra<N>`) with the exit
 blanketed at one lane compiles, refuses the mask with a diagnostic that says *why* rather than only *that*
@@ -4483,6 +4816,35 @@ is a call op reserved or made that the standing base was not carrying when the l
   every disposition is keyed on a number.
 - **The seventeen open rows in op's own round**, never reconciled with this list (section 5), and the
   input the taxonomy round reads alongside D72.
+
+**Added by file 118, and each is one line, because each is a question about a type nothing can be built
+against until it is answered.** Two cold reads returned "this cannot be implemented from" and the reasons
+were declarations rather than design (`115`, `116`); the declarations are written and these five are what was
+left over. **The first two are one question about one parameter and it would be cheapest to answer them with
+the reserved fused-versus-split call, in one sitting.**
+
+- **The bound on `S`.** `Number<N, S>` is a two-parameter type whose second parameter this document never
+  relates to any of its three contracts. `26:28-35`, agent output and the only statement of it anywhere,
+  says `S: Policy + Lowering`; section 1.1 now states it on that basis and it is **owed op's word**, since
+  the same parameter is the subject of the call reserved at `08b:47-51`.
+- **How a preset carries two rows.** One preset name denotes two rows, one per number kind (`3573`, and the
+  two ratified tables differ at four cells), and a nullary associated type on one marker cannot be a function
+  of two things. Either the two contracts take the numeral (`Policy<N>`, `Lowering<N>`, which is what
+  `Crosses<N: Numeral>` already does), or the semantic aliases map each preset to a per-kind marker. Section
+  1.21 states both and picks neither.
+- **How a public const width reaches a type-level `Nat`.** D48 and D31 keep `UFixed<13, 3, Warm>` spelled
+  exactly that way, with the width a const parameter publicly (`3224-3226`); the numeral it composes over
+  needs `Precision` as a `Nat`; and `I + F` in type position is a const expression, which section 1.2 has
+  already compiled shut in both directions (`867-872`). **So D53's "four names for four compositions" has no
+  stated expansion**, and the missing step is one bridge rather than a design change. A generated table plus
+  the tower's own addition supplies it, **compiled gate-free for this document** (section 1.23), so what op
+  owes is whether that is the mechanism and where the table is emitted, not whether one exists.
+- **`Dec` or `PosPred`, one name.** The capacity predecessor is written both ways in one sentence
+  (`3435`, `3703`, `3949`). One construction with two spellings is, by this document's own widened
+  completeness line, defined nowhere.
+- **`Exponent` against `ExponentForm`.** `Numeral`'s member named `Exponent` is bounded by `ExponentForm`,
+  while the trait named `Exponent` is section 1.15's sealed signed integer. One token, two ratified
+  definitions, different content: address one of section 1.26's own three.
 
 ---
 
@@ -4831,6 +5193,31 @@ diff, and because each is one line for op rather than a dispatch.
   algebra-contracts crate, which this document names at three places. **Artifact:** one line saying so,
   written here; what remains genuinely open is the crate's dependency edge, listed above, which is the
   same question one layer down and currently reads as unrelated to op's call (`112:440-447`).
+
+**Added by file 118, all four artifact-shaped rather than op-shaped**, and all four are what stopped a
+declaration from being written where the rest of the vocabulary got one.
+
+- **The rest of the tower's arithmetic family, named here so "the rest" is a list.** Section 1.23 declares
+  `Gcd` and `Dec`, the two whose codomain this document fixes. Five more are used by name: `VAL`, which is
+  the readout and is an associated const rather than an operation; `Sum`, whose codomain is a `Nat` and
+  which section 1.27 exercises (`Pz<Sum<N5,N7>>`); `Reduce` and `BiasProduct`, which compute a numeral's
+  adjustment and its bias respectively and whose codomain is therefore the rational carrier (`2028`,
+  `2357`), with `Reduce`'s own domain, an unreduced pair, spelled nowhere; and
+  **`Cmp`, which is the one that cannot be declared**, named at four sites (`3705`, `3817`, `3949`, and the
+  family list it appears in) and given a result type at none. It is the only member that answers a question
+  rather than producing a number, and the design has no type-level ordering vocabulary for it to answer in.
+  **Artifact:** one sentence naming what a type-level comparison projects to.
+- **`FieldLayout`'s members past its extent, and `Canonicalisation`'s members.** Both are described by the
+  facts they carry (field widths, the hidden bit, the encoding bias, reserved codes; signed zero, preferred
+  cohort, NaN canonicalisation) and never by a spelling. Both are declared with what is fixed and nothing
+  else. **Artifact:** the member lists, from the format instantiations that need them.
+- **Where `Folded`'s witness rides**, as a returned value beside the fold's result or as a parameter on the
+  result numeral. The site count itself is settled and compiled; only its residence is not. **Artifact:** one
+  line, in section 1.14.
+- **Where the container projection lives**, as `Lowering::Container` where section 1.1 now spells it, or in a
+  one-member carrier contract below `Lowering`, which is `117:452-458`'s second rider and which that file
+  argues is also where the residual discrimination surface closes. **Artifact:** op's word plus the one
+  attempted equality constraint `117:318-324` names, run at the moment the carrier is declared.
 
 ### Unchanged and untouched, carried forward
 
@@ -5608,7 +5995,7 @@ scope-section reading instruction ("Nothing below should be read as a statement 
 rows") is not restored, because there are no untouched rows left: every one of the eleven has now had a
 content review, and the instruction would be false if carried.
 
-**Not restored, and the reader should know which.** Nine items from file 109's per-pair lists are neither
+**Not restored, and the reader should know which.** Thirteen items from file 109's per-pair lists are neither
 restored above nor carried on the open list, because this document could not establish from the audit's
 citation alone whether the item survived a later resolution or simply vanished, and **stating a design
 sentence this document has not checked would be exactly the failure the whole exercise is against.** They are
@@ -5630,22 +6017,32 @@ named here so the next dispatch can work them rather than rediscovering them:
   sense, where file 29 independently reaches the same classification from the quantisation side. The
   substance of the audit's finding survives (the residue is in no consolidation after the second, and
   `Contract` is nowhere after file 29), and the universal negative as stated is false.
-- **The classification-versus-exhaustive-check overlap** (`26:92-97`) and **the accumulator's three readings**
-  (`26:619-622`), both silently resolved by adoption rather than by ruling.
+- **The classification-versus-exhaustive-check overlap** (`26:92-97`), silently resolved by adoption rather
+  than by ruling.
+- **The accumulator's three readings** (`26:619-622`), the same way.
 - **The `HostImplemented` locus item** (`63:621-623`), one of three narrow items the seventh consolidation
   closed by accounting for two.
 - **The third of the three residuals at `63:864-868`**, a host arithmetic wider than `u128` to exercise the
   structural ceiling, for which the seventh consolidation substituted a droplist entry, so the real residual
   is neither carried nor closed.
-- **The four items files 80 and 85 genuinely closed** (the IEEE §4.3.1 overflow tie, the OCP mode split,
-  `Crosses`'s second read, and statement 0 against `quantize` and `roundToIntegralExact`) which left the ninth
-  consolidation's open list **without appearing in its closed list**, in a document whose own preamble says
-  items closed this stretch are named once so the next member does not re-open them. Two of the four are
-  carried as owed above, on independent grounds; whether the other two are genuinely closed is what a
-  disposition would settle.
+- **Four items files 80 and 85 genuinely closed**, which left the ninth consolidation's open list **without
+  appearing in its closed list**, in a document whose own preamble says items closed this stretch are named
+  once so the next member does not re-open them. Two of the four are carried as owed above, on independent
+  grounds; whether the other two are genuinely closed is what a disposition would settle. They are:
+  - the IEEE §4.3.1 overflow tie;
+  - the OCP mode split;
+  - `Crosses`'s second read;
+  - statement 0 against `quantize` and `roundToIntegralExact`.
 
-**That is nine items this document names and does not answer**, against roughly one hundred and twenty it
-restores, carries or droplists. **Naming them is the whole point: an item leaves the open list when it is
+**That is thirteen items this document names and does not answer**, carried in ten bullets, the last of which
+holds four that share one reason, against roughly one hundred and twenty it restores, carries or droplists.
+
+> **Correction, file 118.** This read "nine items" and its bullets named thirteen: one bullet carried two
+> items joined by "and", and one carried four in a parenthetical (`116:204-217`). The bullets are split so
+> the list and the count agree. **This is the document's own thesis failing in the document's own final
+> accounting of itself**, restated at least three times and applied to a predecessor in section 0: a count
+> cannot be checked and a list can. It is fixed by enumerating, which is the only repair that does not
+> reproduce the defect. **Naming them is the whole point: an item leaves the open list when it is
 answered or explicitly droplisted, never by attrition, and an item this document could not verify is an open
 item rather than a silence.**
 
@@ -5768,7 +6165,26 @@ the platform crate's name, deferred to the taxonomy round; the required-field re
 guarantee counts as a guarantee for the route-multiplicity discriminator; and the convention parameter for
 `arvo-geom`'s model-choice half.
 
-**No term in this document is left undefined or uncited.**
+**Named open by file 118, each with its line in section 5 or section 2**: whether the `TotalOrd` split is two
+traits or one trait with two methods (section 1.20 states it open in prose and it never reached this list);
+`Cmp`'s codomain, the ordering carrier the tower's comparison projects to, which is named at four sites and
+given a result type at none; `FieldLayout`'s members past its extent, and `Canonicalisation`'s members, both
+of which the document describes by the facts they carry and never by a spelling; where `Folded`'s witness
+rides; where the container projection lives; and the bridge from a public const-parameter width to the
+type-level `Nat` the numeral needs.
+
+**No term in this document is left undefined or uncited**, with the residual immediately below.
+
+> **Correction, file 118.** That line was false on the document's own text when it was written, and two cold
+> reads found it independently. `Compare` and `Select`, the two traits the section 1.30 worked example is
+> written against, were neither defined nor on the list above (`116:139-152`); `Number`'s own arity was
+> neither resolved nor listed (`116:219-224`); and fourteen further names were used as bounds in the section
+> 1.23 trait table with no declaration anywhere (`116:60-99`, `115:71-124`). All are declared now, at the
+> section that determines each, and the ones a declaration could not be written for without making a decision
+> are named open above rather than invented. **The line is re-performed over this document as a whole for the
+> first time since the restoration pass**, which section 8 recorded as the outstanding residual, and it now
+> holds subject to the same honest limit every other performance here carries: it verifies that this
+> document's terms are placed, not that a third reader with a different vocabulary finds nothing.
 
 > **Correction, file 111.** This line first read "in this document's own **new** prose", which scoped the
 > completeness requirement away from exactly the population a restoration consists of, while the requirement
