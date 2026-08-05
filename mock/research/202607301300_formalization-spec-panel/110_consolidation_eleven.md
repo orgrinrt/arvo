@@ -278,6 +278,50 @@ citation form (`202607282100/D1` against `202604.../D1`) with the bare form read
 as the nearest match. **The call is op's** and it comes before any renumbering, because every disposition
 below is keyed on a number.
 
+> **Correction, file 121.** The proposal above is evaluated against the three files rather than repeated, and
+> **one half of it does not survive that check while the other turns out not to be a proposal at all.**
+>
+> **Qualifying by file cannot work, and it fails on the exact collision it would be adopted for.** Both
+> `D1` through `D4` runs live in **one** file, `202607301000_topic.inherited-state-from-the-formalization-round.md`,
+> at `:495` and `:763`. A file-qualified citation is therefore exactly as ambiguous as a bare one, and it is
+> worse than a bare one, because it reads as though it had been disambiguated.
+>
+> **Qualifying by round works, and the reason is structural rather than lucky.** The inherited file is a
+> concatenation of prior-round summaries under `# <round-id> <title>` headings, so every decision already sits
+> under exactly one round: run one is under `# 202607281220` (`:293`), run two under `# 202607282100`
+> (`:719`), and `D14` resumes under `# 202607290050` (`:814`). The qualifier is therefore **derivable by
+> reading upward** rather than remembered, which is what makes a wrong pairing fail loudly: `D4 (from
+> 202607282100)` is checkable and false, where a bare `D4` is uncheckable and silently one of two.
+>
+> **And it is already op's own practice, in his own frozen text, three times**: `inherited:821`, "D1 and D2
+> (from `202607281220`) stand"; `inherited:1792`, "the same pattern as `Rect` aliasing rank 2 under D40 (from
+> `202607291910`)"; and `talk:655`, "D1 and D2, `202607282100`". So the convention is **recovered rather than
+> designed**, which is a materially lower bar for op than adopting a scheme a panel invented, and the form to
+> standardise on is his parenthetical one rather than file 113's slash form.
+>
+> **The two register-side halves of the proposal are declined here and the reasons are the same reason.**
+> Prefixing or renumbering the inherited sequence edits a file frozen at TOPIC phase (`234`), and it would
+> invalidate every existing citation to those numbers across this document and the panel, which is a larger
+> blast radius than the defect. Assigning numbers to op's unnumbered decisions mints identifiers with **no
+> definition site in the register**, so a reader following one finds nothing, and it puts agent-assigned
+> numbers in the same namespace as op's own. Qualification is additive and touches no committed text;
+> both of those are destructive. An unnumbered decision is cited by `file:line`, which is what file 113
+> already does for the two it found (the faithfulness derivation at `talk:1187-1203` and `spec:203-222`, and
+> the four preset intents at `talk:1659-1661`). **Two is what this pass could establish**, not three; the
+> other unnumbered items in file 113 are numbered decisions that **this document** carried without their
+> number, which is a different defect with a different repair.
+>
+> **The question grid is a third namespace and qualification only half-covers it.** The talk file's grid is
+> headed `ID` and its rows run `A1` through `E5` (`talk:55-79`), so `D1` through `D3` there are the fourth
+> letter-group of a question grid, not decisions. Round-qualification happens to separate them, but only
+> because the talk file's decisions start at `D53`, which is a fact a reader has to know rather than one the
+> citation carries. A grid citation naming itself as one closes it properly. **Naming that marker is op's**,
+> and the item is on section 2's list with the rest.
+>
+> **Applied here, to this document only.** Five citations in this document use the colliding range, at `3455`
+> (twice, the `arvo-shape` and `arvo-geom` rows), `3732` and `3884` (twice). All five resolve to run one, and
+> all five are now qualified in place, each marked where it sits. The register itself is untouched.
+
 The persona checkpoints from this arc (`90b`, `95b`, `101b`, `106b`) were walked individually by op at
 `108b:6-8` rather than confirmed as a block, and section 2 records which of their calls survive that walk.
 
@@ -855,6 +899,34 @@ pub struct Ranged<EMIN: Exponent, EMAX: Exponent, U: Underflow, S: Specials>(
 > `Implicit`'s own `E` is bounded by that one. Two ratified definitions, one token, different content, which
 > is address one of section 1.26's own three mechanical addresses. **Renaming either is op's**, and it is one
 > line; the collision is recorded rather than repaired here.
+
+> **Correction, file 121, and it is additive: the block above does not change.** File 118 took the repair on
+> rustc's authority and recorded it as the third of three suggestions. **It is better founded than that, and
+> the reason matters for the ten other constructors that share the shape.** `PhantomData` is this document's
+> own idiom at exactly this position, carried by nine sealed constructors in the section 1.23 block
+> (`O<P>`, `I<P>`, `Pz<P>`, `EPos<P>`, `ENeg<P>`, `Rad<P>`, `BPos<N, D>`, `BNeg<N, D>`, `HostFloat<E>`), so
+> the two identity structs were the odd ones out rather than the ones being changed.
+>
+> **And the two forms differ on the seal, which is the thing section 1.12 spends eleven firings on.** A unit
+> struct is nameable and constructible as a value by any downstream crate. The tuple form carries a private
+> field, so the same attempt refuses:
+>
+> ```
+> error[E0423]: cannot initialize a tuple struct which contains private fields
+>  --> consumer2.rs:4:55
+>   |
+> 4 | pub fn try_build() -> Implicit<EZero, BZero, BZero> { Implicit(PhantomData) }
+>   |                                                       ^^^^^^^^
+>   |
+> note: constructor is not visible here due to private fields
+> ```
+>
+> Compiled across a real crate boundary rather than within one file, which is the only way this distinction is
+> visible at all. **These are type-level markers and no value of one should exist**, so the pre-repair form was
+> not merely unused-parameter noise: it left a value door open in a sealed vocabulary. **Whether the markers
+> should be uninhabited outright rather than merely unconstructible is not decided here**, because the
+> document nowhere says, and the answer would apply to all eleven at once; on the evidence available the
+> perimeter is closed either way, so it is not on op's list.
 
 Restored from `58:122-161` and `68:155-165`. `Implicit`, `Ranged`, `NonNegative` and `AsymmetricLow` all
 return zero hits in `78`, `91` and `102`, re-verified fresh, **and the far-point rule and the float preset
@@ -3258,6 +3330,38 @@ suggests exactly that. **What is open is not whether the bridge exists but wheth
 and where the table is emitted** (section 2), since a table is a binding-time decision and section 1.18
 already says what those are.
 
+> **Correction, file 121, compiled.** The sentence above spells the bridge's result type `Precision<13, 3>`,
+> and **`Precision` is not a type in this document**: the block at `3104` declares
+> `pub trait Precision: Nat {}`, a nullary marker trait with a blanket impl over the carrier, and that is the
+> only declaration of the token anywhere here. Written as the sentence spells it, against this document's own
+> declarations assembled as one crate, rustc refuses:
+>
+> ```
+> error[E0782]: expected a type, found a trait
+>    --> probe_precision.rs:258:24
+>     |
+> 258 | const _: () = assert!(<Precision<13, 3> as Nat>::VAL == 16);
+>     |                        ^^^^^^^^^^^^^^^^
+>     |
+> help: you can add the `dyn` keyword if you want a trait object
+> ```
+>
+> **Rustc's own suggestion is unavailable**, because `dyn` is forbidden across arvo, so the diagnostic has no
+> repair the design admits. **This is a third instance of the one-token-two-meanings defect**, the same class
+> as `Exponent` against `ExponentForm` at section 1.2 and `Dec` against `PosPred` at section 1.27, and it is
+> the instance that sits on the consumer surface: section 9 names this bridge as the single item standing
+> between a fresh reader and the four semantic aliases. The paragraph's second named type, `NatOf<{ I }>`, is
+> declared nowhere either, and the two are presumably the same type under two spellings, which by this
+> document's own widened completeness line means it is defined nowhere.
+>
+> **Two spellings close it and neither is chosen here.** Either the bridge's result type takes a name of its
+> own and the marker trait keeps `Precision` (so the sentence reads `<PrecisionOf<13, 3> as Nat>::VAL`, with
+> `NatOf` the same construction at one argument), or the marker trait is renamed and `Precision` becomes the
+> type constructor. **Both are one line and both are naming calls, so both are op's**, and the item is on
+> section 2's list. **What is not in question is that the bridge works**: the mechanism file 118 compiled is
+> unaffected, and re-verified here at a concrete numeral, `<<U13F3 as Numeral>::Precision as Nat>::VAL == 16`
+> through a const assertion, exit 0. Only the name it is written under is unavailable.
+
 **And compositions are public and bindable, so the presets are the default path rather than the only one**
 (D52, `inherited:2110-2114`, op, 2026-07-30): "Compositions are public and bindable by anyone; semantic
 names and strategy presets are the default documented path, not the only path", citing
@@ -3452,8 +3556,8 @@ state, with this stretch's three content reviews folded in:
 | Subject | Round decisions | Verdict |
 |---|---|---|
 | `arvo-capacity` | D5, D6, D7, D9, D18b (op) | Resolved as a locus. Capacity is a parameter, not the far point's own subject; a direct `Nat` instance for its value; the row owns a genuinely new construction (a predecessor on `Pos`, `Dec`/`PosPred`). The array-grammar question is reopened this stretch, section 1.27. |
-| `arvo-shape` | D1-D4, D7, D8, D43, D44 (op) | Ratified, content-reviewed, two details overtaken (section 1.28). Gains a job: the column-shaped capacity file 73 flagged as homeless is this crate's subject. |
-| `arvo-geom` | D2 contents, D10, D11, D40, D41 (op) | Ratified, content-reviewed, one ground overtaken (section 1.28). Two inherited obligations: the still-undecided dependency edge onto the algebra-contracts crate (open since file 26, still nobody's call) and D10's motors, now discharged since division's hold lifted. |
+| `arvo-shape` | D1-D4 (from `202607281220`), D7, D8, D43, D44 (op) | Ratified, content-reviewed, two details overtaken (section 1.28). Gains a job: the column-shaped capacity file 73 flagged as homeless is this crate's subject. |
+| `arvo-geom` | D2 (from `202607281220`) contents, D10, D11, D40, D41 (op) | Ratified, content-reviewed, one ground overtaken (section 1.28). Two inherited obligations: the still-undecided dependency edge onto the algebra-contracts crate (open since file 26, still nobody's call) and D10's motors, now discharged since division's hold lifted. |
 | `arvo-platform` | D27 (op) | Ratified, **content-reviewed this stretch** (section 1.30). The charter is stated; the naming door has six exits; the Bool-placement fork is priced on both branches and locked to branch B bound on the algebra. The crate's name collides with the principles document's own "platform". |
 | `arvo-float` packaging | D29, D30, D50 (op) | Ratified, overtaken in the strongest sense: the tower absorbed the packaging's contents and forced the boundary rather than the boundary choosing it. What remains is real: IEEE interchange-format instantiations, hardware-door lowerings, `Crosses` impls for hand-laid IEEE layouts. |
 | Predicate concept | D15, D16, D17 (op) | **Content-reviewed this stretch** (section 1.30). D16 is not a rung but the risk annotation on rung 2. D15's emphasis inverts: the degenerate marker family is load-bearing at three ratified sites and the arity machinery has no panel consumer. D17 is placeable, compiled, for a reason D5's precedent does not supply. |
@@ -3462,6 +3566,13 @@ state, with this stretch's three content reviews folded in:
 | `arvo-bitfield` | D25 (op) | Ratified, **content-reviewed this stretch** (section 1.29). The decision stands; both its stated grounds are replaced by the category the design acquired since. |
 | `arvo-num-systems` | D38, D39 (op) | Ratified and panel-worked; not periphery at all. File 64's correction folded in before the crate ships: scope the "finest" fact to the real/Cayley-Dickson chain explicitly; independent predicates per branch elsewhere. |
 | `notko-hlist` + `Cardinal` | D5, D6, D7, D9, D18b (op) | Ratified; **one binding-time sentence still owed**: a count that decides a type is a type-level `Nat`; a count computed at runtime is a `Cardinal`; the mirror between them is a one-way projection. `notko-hlist` was flagged at `26:661-666` as "the single cheapest, most repeatedly-flagged open item in the whole document" by six separate members independently, and it is still owed. |
+
+> **Correction, file 121.** The two rows citing the colliding range, `arvo-shape` and `arvo-geom`, are
+> qualified by round, per the convention proposed at section 0.4 and written up in file 121. The prose above
+> already said the column is keyed on the inherited file's numbering; the rows now carry that in the citation
+> rather than leaving it to a sentence a reader has to have read first. Both resolve to run one,
+> `202607281220`, checkable by finding `**D1.` through `**D4.` under that round's heading at `inherited:293`.
+> No other cell changes and no verdict moves.
 
 **Why this is a layering question rather than a naming pass** (`78:687-693`). Three newer mechanisms make
 crate boundaries load-bearing in ways the original round could not have weighed: the seal's guarantee rests on
@@ -3729,12 +3840,18 @@ numeral-specific meaning.
 **The agreement fact, and the repair it needs, in both halves.** `91:796-802`'s sentence that the array
 grammar's agreement is "checked to agree in an inline const block at the one construction door" **is false
 above rank 0**: the door the capacity resolution means is the inherent method, where the assertion lives;
-D4's recursion is written against the **trait** method instead, which had no check at all, because at rank 1
+D4 (from `202607281220`)'s recursion is written against the **trait** method instead, which had no check at
+all, because at rank 1
 the inherent door was the only door. Compiled: a rank-3 shape whose middle axis declares a `Nat` of 4 against
 a literal of 7 has two disagreeing const-evaluable counts and nothing raises (`E0080` fires through the
 inherent door; the trait route silently returns the wrong array). **The repair lifts the agreement to
 `const AGREES: bool` on `Capacity` itself**, a fact about the type rather than about one call site, exactly
 the shape the level-ordering refusal already uses.
+
+> **Correction, file 121.** The bare `D4` above is qualified by round. Nothing else in the paragraph changes,
+> and the finding it states is untouched: the qualifier only records which of the two live `D4`s it was
+> always about, which is `202607281220`'s "a shape is a cons-list of capacities" (`inherited:527`) and not
+> `202607282100`'s vetting-record decision (`inherited:798`).
 
 **Both halves are needed and either alone leaves a door**, and the second half is the demand-driven clause
 arriving at its own address: **an associated const nothing touches is not evaluated**, so a capacity whose
@@ -3881,7 +3998,8 @@ numerics, not space. **`arvo-shape` is downstream of the capacity resolution and
 container, the third instance of a pattern this design has already worked out twice**: a logical extent, a
 declared carrier, and an allocated container, one dimension up from the width levels.
 
-**D4 survives the capacity resolution verbatim, compiled**: a rank-3 shape's nested-array storage and its
+**D4 (from `202607281220`) survives the capacity resolution verbatim, compiled**: a rank-3 shape's
+nested-array storage and its
 independently-computed element count agree by two unrelated routes, not by restatement. **But D4's own
 sentence makes the array composition constitutive of the shape, while D43 (op, the same round, one day later)
 states the opposite**: "the shape abstraction supplies rank and extent and nothing else, so a bit container
@@ -3889,6 +4007,10 @@ implements both and neither one grows the other's surface." **Resolved by writin
 `Shape` carries rank and extents; **a separate trait projects a shape to storage, once per element domain.**
 Not a new mechanism, but the `Lowering` charter one dimension up, exactly the layer-keying rule's own instance
 named in this document's rules section. **Adopted as a working shape, second read owed.**
+
+> **Correction, file 121.** The first `D4` above is qualified by round, `202607281220`; the second mention in
+> the same sentence inherits it. No content moves. The `D43` beside it needs no qualifier, since it occurs
+> once in the register.
 
 **`Layout::Bitpacked` at rank N needs no new mechanism, and the exact coincidence condition with the per-axis
 reading is derived rather than sampled.** Two readings exist at rank 2 and above (pack each innermost row
@@ -4845,6 +4967,25 @@ the reserved fused-versus-split call, in one sitting.**
 - **`Exponent` against `ExponentForm`.** `Numeral`'s member named `Exponent` is bounded by `ExponentForm`,
   while the trait named `Exponent` is section 1.15's sealed signed integer. One token, two ratified
   definitions, different content: address one of section 1.26's own three.
+
+**Added by file 121, from a mechanical sweep of every code block in this document rather than from reading
+for them.** Both are one line and both are naming calls, which is the same shape as the two above them.
+
+- **`Precision` the trait against `Precision<13, 3>` the type** (section 1.23). The bridge paragraph that
+  closes D53's alias expansion, which section 9 names as the one item between a fresh reader and the consumer
+  surface, spells its result type with a token this document declares as a nullary marker trait. Written as
+  spelled it is `error[E0782]: expected a type, found a trait`, and rustc's suggested repair is `dyn`, which
+  arvo forbids. **The bridge itself is unaffected and re-verified**; only the name is unavailable. Either the
+  result type takes its own name (`PrecisionOf<13, 3>`, with `NatOf` its one-argument form, which the same
+  paragraph already uses undeclared) or the marker trait is renamed. **This is the third instance of the
+  one-token-two-meanings defect and the first to sit on the surface a consumer writes**, so it is worth
+  answering with the `Exponent` and `Dec` calls in one sitting.
+- **The register's citation form, and the grid's own marker** (section 0.4). File 113's round-qualified form
+  is the one that works, and it is already op's own practice in three places in his frozen text, so what is
+  owed is confirmation rather than a decision. The genuinely open half is the question grid: its `D1` through
+  `D3` are the fourth letter-group of an `A1`-through-`E5` question grid, not decisions, and a citation to one
+  should say so. **One word, and it is op's**, because the panel naming a marker inside op's register is the
+  thing this whole item exists to prevent.
 
 ---
 
@@ -6254,6 +6395,54 @@ crate table's `arvo-capacity` row was rewritten to carry the reopened array-gram
 ninth consolidation's settled phrasing, which the array-grammar finding makes stale; and the three-column
 capacity table's compile-time row was corrected from the first measurement to the isolated one, because the
 first measured a constructing body rather than the type machinery.
+
+### The code-block sweep, performed
+
+> **Correction, file 121.** This subsection did not exist. Every compile claim in this document was made
+> about a block someone had reason to build; **no pass had ever extracted the blocks mechanically and tried
+> all of them**, which is why the two defects file 118 found fell out of writing declarations rather than out
+> of looking, and why the one below survived a full audit, a full restoration and two cold reads.
+
+**Nine fenced blocks, extracted by position rather than by reading.** Eight are tagged `rust`, at `758`,
+`830`, `940`, `3001`, `3068`, `3190`, `4464` and `4581`. The ninth, at `2401`, is a rustc diagnostic
+transcript rather than Rust and is not a compile target.
+
+**All eight fail in isolation, and none of the failures is a defect.** Every one resolves to `E0405`,
+`E0425` or `E0433` on a name another block declares, which is the expected shape for a specification whose
+declarations are distributed across its sections. The honest test is therefore the assembled unit, and the
+counts below are of that: **eight blocks compiled as one crate, zero failing.**
+
+**Three additions were needed to assemble it, and they are recorded because this document does not state
+them.** A `#![feature(const_trait_impl)]` gate, without which all twenty-three `pub const trait`
+declarations are `E0658`; `use core::marker::PhantomData`, which nine constructors and both identity structs
+name; and a stand-in for `notko::ConstTry`, the one out-of-document name any block references
+(`Quantisation::Fallibility`, `3213`). The first two are ordinary crate-root material and the third is a real
+dependency the crate table already carries, so none is a finding. **What is a finding is that file 118's
+"exit 0" and this one both rest on all three silently**, and a reader assembling the blocks as written gets
+twenty-nine errors before reaching anything the document decided.
+
+**The assembly is `exit 0` under the pin**, `rustc 1.98.0-nightly (57d06900f 2026-05-27)`,
+`--edition 2024 --crate-type=lib`, one dead-code warning on `Number::datum`, which reproduces exactly what
+section 1.23 claims at a wider scope than section 1.23 claims it for: file 118 compiled sections 1.1, 1.2 and
+1.23 together, and this adds 1.3's `Encoding`, 1.23's quantiser block, and 1.30's four truth-contract
+declarations with the worked `max`.
+
+**One block fails against the prose that introduces it, and that is the sweep's whole yield**: section
+1.23's bridge paragraph spells a type this document declares as a trait, `E0782`, marked at the site.
+
+**Two things a declaration-only `exit 0` does not establish, checked separately rather than assumed.**
+**First, that the tower can carry an instance at all**: a concrete `Numeral` built from the declared
+constructors compiles, and `<<U13F3 as Numeral>::Precision as Nat>::VAL == 16` passes as a const assertion,
+so the type-level readout the whole design rests on is not vacuous. **Second, that the worked `max` does
+what section 1.30 says it does**: implemented at one lane over a `bool` wrapper and at two over a
+two-lane mask, both compile, and the two-lane result is `[7, 9]` at `a = [7,2]`, `b = [3,9]`, which is the
+answer that section states and neither of the two wrong reductions it prices. **The section's headline claim
+is confirmed rather than repeated.**
+
+**What this does not establish.** The blocks compile and one instance runs through them; **that is not a
+statement that the shape is correct**, and the sweep is silent on every verdict this document reaches. It
+also cannot see a block that should exist and does not, which is the failure mode the two cold reads found
+and no compiler will.
 
 ### The honest limit of all three performances
 
