@@ -5430,6 +5430,44 @@ mechanism and is op's.
   **One sentence naming the admitted range for a written total width decides it, and the emitted marker that
   enforces it is one extra line per row.**
 
+> **Correction, file 123.** The bullet above is left standing as the audit trail of what was asked; the
+> disposition below supersedes it. **Two of its three halves are now settled and the marker it offers is
+> refuted**, so what remains open is one number rather than a question about ceilings.
+>
+> **A ceiling on each written width already exists and is forced rather than chosen.** The bridge is an
+> enumeration because an impl is the only case split Rust has over a const parameter and every other route
+> is compiled shut (`119:56-121`, and section 1.23's own correction above). An enumeration has a largest
+> row, so "no ceiling" is unavailable on that axis under any wording. The bound above it is the const
+> parameter's type, enforced by rustc's own deny-by-default `overflowing_literals` at exactly the wrap that
+> would otherwise land on an admitted row and compile. `Pos`'s two ceilings (`2436-2440`) are ceilings on a
+> magnitude, so a width would have to exceed `2^64` to meet either.
+>
+> **No second ceiling on the sum, on three compiled grounds.** The marker this bullet offers refuses a
+> legitimate product, which the bullet's own second sentence predicts and file 123 compiled: a 20-by-20
+> fixed-point value squared has precision 80 and fails the marker. It cannot be narrowed to the written
+> site to dodge that, because a `where` clause on a type alias is refused outright and its repair is
+> `lazy_type_alias`, which appears on no list in `unstable-features.md`; hanging the bound on a struct
+> instead changes the public spelling and breaks D48 and D31. And its refusal is illegible where the
+> per-width refusal is not: a consumer who writes `UFixed<40, 30>` is shown eleven numeral trees and no
+> number, against `403-406`'s consumer-facing bar. **So the marker is not one extra line per row, it is one
+> line per row plus a new type in the design, and it buys a worse diagnostic than the design already has.**
+>
+> **Nothing else forces one either, and this connects two open items.** The only mechanism that would have
+> made the sum need a row is a per-width container menu, which entry 6 of section 3 already rejects on its
+> own measurement (`5513-5515`). A carrier is reachable from any numeral by five impls, gate-free, with
+> `size_of` checked at widths the table does not hold, so totality over twice the table's range is
+> available. **The container fix op withheld at `68b` on scope grounds is the same fix that keeps the sum
+> unbounded**; were the per-width menu ever restored, the sum ceiling returns with it and not as a choice.
+>
+> **What is left is one number, `W_MAX`, and it is priced rather than argued.** The table costs 0.13 s at
+> 1024 rows, 0.94 s at 4096, 11.78 s at 16384, and 279.62 s at the whole `u16` range, paid once by the
+> crate that declares the carrier, which the pricing pillar at `501-508` licenses in op's own words. The
+> number that does argue is downstream: linking the table costs a consumer nothing at any size, and using
+> it costs about 1.25 ms per distinct composition to 4096 rows and about 2.8 ms at 16384, against section
+> 1.24's dyadic row at 2.1 ms. **File 119's linearity reading does not survive the extension**; the curve
+> is roughly quadratic past 4096, the same character `5513-5515` measured for the container. The canon
+> paragraph to carry, at whatever `W_MAX` op sets, is file 123 section 7.
+
 
 ---
 
