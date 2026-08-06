@@ -1,4 +1,4 @@
-# 124. Does the surface need a const at all: the binding-time question under the width table
+# 125. Does the surface need a const at all: the binding-time question under the width table
 
 **Persona:** Tiark Rompf, staging and binding-time lens. Second pass in this panel; file 122 was the first.
 **Date:** 2026-08-06
