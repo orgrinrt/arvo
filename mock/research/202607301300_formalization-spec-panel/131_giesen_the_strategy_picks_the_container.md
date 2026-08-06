@@ -10,7 +10,7 @@ shipped `arvo-strategy/src/container.rs`.
 **Pin:** `rustc 1.98.0-nightly (57d06900f 2026-05-27)`, `--edition 2024`, scratch tree outside the
 repository. `mock/crates` read but untouched, `mock/design_rounds/` untouched. Probes at
 `/private/tmp/claude-501/-Users-orgrinrt-Dev-clause-dev/dea47dac-5762-46b6-956e-0d22cc5d3832/scratchpad/rygc/`,
-named `a1` through `cv1` roughly in the order they appear here.
+thirty-eight files, named `a1` through `wt_M_is_const` roughly in the order they appear here.
 
 Op ruled that the container parameter should not exist, and the reason he gave is not ergonomic. It is that
 arvo's whole proposition is that the consumer states a policy and the design picks the storage. That ruling
@@ -59,11 +59,11 @@ The governing calls here are op's three rulings quoted in the brief, D48's surfa
 overturn (`110:869-873`), and the convergence pressure (`127b:12-18`). Section 7 reports the one place I
 contradict a ratified line and hands the call back rather than making it.
 
-**Test gate.** Not run, and I am naming it rather than letting it pass. `126:39-44` ran
+**Test gate.** Not run, and I am naming it rather than letting it pass. `126:47-48` ran
 `cargo test --offline --workspace` and got 155 binaries, 672 passed, 0 failed, 9 ignored, on a tree nothing
 has moved since; `129:47-52` and `130:51-56` both declined to re-run it on op's ruling at `108b:174-181`
 that a further report of the same collected tautologies is what that ruling exists to stop. My deliverable
-touches no crate in that tree. The instrument here was the compiler, thirty-one times.
+touches no crate in that tree. The instrument here was the compiler, across thirty-eight probe files.
 
 **The toolchain.** `rustc +nightly-2026-05-28 --version --verbose` reports
 `1.98.0-nightly (57d06900f 2026-05-27)`, matching the brief and confirming `128:364-366`'s report that
@@ -74,7 +74,7 @@ touches no crate in that tree. The instrument here was the compiler, thirty-one 
 *"File `128` reports the carry-and-read discipline gives the full hardware ladder with zero gates and no
 flag; verify and build the surface on it."* **The report holds and the instruction does not follow from it.**
 `128:147-159`'s ladder is a **fit check**, not a projection. Its own next sentence says so: "the consumer
-names the container and the compiler checks it, rather than the compiler deriving it" (`128:171-173`).
+names the container and the compiler checks it, rather than the compiler deriving it" (`128:170-173`).
 Under op's ruling the consumer does not name the container, so what `128` proved gate-free is not the thing
 the brief asks me to build on. I checked whether the projection is available under the same discipline, and
 it is not (`a1_gatefree_project.rs`):
@@ -184,7 +184,7 @@ const PRECISION: u32 = G::EXTRA + I + F;   // door two: an associated const body
 ```
 
 Two lines above, the same file cites D69 as "precision and the exponent bounds are primitive; total width,
-the hidden bit, and field encoding are derived on the physical side" (`130:141-143`, quoting `110:869-873`).
+the hidden bit, and field encoding are derived on the physical side" (`130:138-140`, quoting `110:869-873`).
 `G::EXTRA` is the sign bit. The sign bit is field encoding. Putting it into `PRECISION` puts a physical
 coordinate into the mathematical set, in the same impl block that cites the overturn separating them.
 
@@ -446,7 +446,7 @@ than a const read, and what each actually needs.
 | **Precision agreement as a bound** | **yes, or an associated-const equality** | `p1_nat.rs`, section 4.1 |
 | A type keyed on precision (a column, a bitfield slot, an arena row) | **yes** | `p1_nat.rs`, section 4.2 |
 | `Crosses<N: Numeral>`, which takes the numeral as a type | no, the numeral is already a type | `110:3262` |
-| Radix and exponent form | no, both are already types | `110:913-916`, `130:699-703` |
+| Radix and exponent form | no, both are already types | `110:912-914`, `130:699-703` |
 | Type-level arithmetic over precisions (the tower) | removed | `126:294-335` |
 
 Two rows want a `Nat`. Both get one.
