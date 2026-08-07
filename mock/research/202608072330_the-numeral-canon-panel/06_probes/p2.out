@@ -1,0 +1,58 @@
+# P2. the overshoot mechanism, and whether a tight formula exists
+
+## Q1. is the overshoot confined to degenerate operands?
+
+### mul_full
+   NON-degenerate operands : tight 1098, overshoot 127
+   at least one degenerate : tight 1, overshoot 70
+   first NON-degenerate overshoot: U(0, 1) , U(1, 0) -> formula U(1, 1), least U(0, 1)
+
+### add_mixed
+   NON-degenerate operands : tight 1175, overshoot 50
+   at least one degenerate : tight 0, overshoot 71
+   first NON-degenerate overshoot: U(0, 1) , U(1, 0) -> formula U(2, 1), least U(1, 1)
+
+### sub_mixed
+   NON-degenerate operands : tight 715, overshoot 510
+   at least one degenerate : tight 36, overshoot 35
+   first NON-degenerate overshoot: U(0, 1) , U(1, 0) -> formula U(1, 1), least U(0, 1)
+
+## Q2. the mechanism, for whichever site still overshoots
+
+### mul_full: 127 non-degenerate overshoots
+   integer-width excess values : [1]
+   fraction-width excess values: [0]
+   every least answer equals (I1, max(F1,F2)) : False
+   e.g. U(0, 1) , U(1, 0) -> formula U(1, 1), least U(0, 1)
+   e.g. U(0, 1) , U(1, 1) -> formula U(1, 2), least U(0, 2)
+   e.g. U(0, 1) , U(1, 2) -> formula U(1, 3), least U(0, 3)
+
+### add_mixed: 50 non-degenerate overshoots
+   integer-width excess values : [1]
+   fraction-width excess values: [0]
+   every least answer equals (I1, max(F1,F2)) : False
+   e.g. U(0, 1) , U(1, 0) -> formula U(2, 1), least U(1, 1)
+   e.g. U(0, 1) , U(2, 0) -> formula U(3, 1), least U(2, 1)
+   e.g. U(0, 1) , U(3, 0) -> formula U(4, 1), least U(3, 1)
+
+### sub_mixed: 510 non-degenerate overshoots
+   integer-width excess values : [1, 2, 3, 4, 5]
+   fraction-width excess values: [0]
+   every least answer equals (I1, max(F1,F2)) : True
+   e.g. U(0, 1) , U(1, 0) -> formula U(1, 1), least U(0, 1)
+   e.g. U(0, 1) , U(1, 1) -> formula U(1, 1), least U(0, 1)
+   e.g. U(0, 1) , U(1, 2) -> formula U(1, 2), least U(0, 2)
+
+## Q3. the corrected closed forms, and whether they are tight everywhere
+
+   mul_full  : corrected form tight 1169/1296, contains 1296/1296
+              first miss: U(0, 1) , U(1, 0) -> U(1, 1) against least U(0, 1)
+   add_mixed : corrected form tight 1296/1296, contains 1296/1296
+   sub_mixed : corrected form tight 1296/1296, contains 1296/1296
+
+## Q4. is the LEAST-CONTAINING map itself a coordinatewise function?
+   (if it is, then 'take the least upper bound' is itself a formula,
+    and the formula-versus-extremum distinction is not structural)
+   mul_full  : I_out factors through (I1,I2) alone: False ; F_out factors through (F1,F2) alone: False
+   add_mixed : I_out factors through (I1,I2) alone: False ; F_out factors through (F1,F2) alone: True
+   sub_mixed : I_out factors through (I1,I2) alone: True ; F_out factors through (F1,F2) alone: False

@@ -1,0 +1,12 @@
+error[E0119]: conflicting implementations of trait `JoinNum<Flt<_, _, _>>` for type `Uni<_, _>`
+   --> p4_cross_family_join.rs:190:5
+    |
+187 |     impl<I1: Nat, F1: Nat, P2: Nat, ELo: Nat, EHi: Nat> JoinNum<Flt<P2, ELo, EHi>> for Uni<I1, F1> {
+    |     ---------------------------------------------------------------------------------------------- first implementation here
+...
+190 |     impl<I1: Nat, F1: Nat, P2: Nat, ELo: Nat, EHi: Nat> JoinNum<Flt<P2, ELo, EHi>> for Uni<I1, F1> {
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ conflicting implementation for `Uni<_, _>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0119`.

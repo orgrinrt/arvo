@@ -1,0 +1,36 @@
+# P5. tight product form. shapes=81 pairs=6561 (I,F in 0..8)
+
+## Q0. analytic least-containing against full set enumeration
+   control pairs: 256, disagreements: 0
+
+## Q1. does the derived closed form equal the least containing shape?
+   agrees    : 6546/6561
+   disagrees : 15/6561
+   first miss: U(0, 1) x U(0, 1) -> derived U(-1, 2), least U(0, 2)
+
+## the baseline, for comparison
+   sum-of-widths form tight : 6100/6561
+   sum-of-widths form wastes at least one bit : 461/6561
+
+## Q2. when does the saving fire? characterised by total widths
+   does the saving depend only on the two TOTAL widths? True
+   (minW, maxW) pairs where one bit is saved: [(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11), (1, 12), (1, 13), (1, 14), (1, 15), (1, 16)]
+   (minW, maxW) pairs where it is not: 120 combinations
+
+## Q3. how far up does the saving reach?
+   minimum total width among firing pairs : [1]
+   so the saving fires exactly when the NARROWER operand's total
+   width is in [1], at every width of the wider one.
+
+## Q4. what the wasted bit costs, stated structurally rather than priced
+   the excess is exactly one bit on the result's TOTAL width, so it
+   crosses a container boundary exactly when the tight total width is
+   a power of two. examples over this box:
+   U(0, 1) x U(1, 7): tight total 8 bits, sum-of-widths 9 bits
+   U(0, 1) x U(2, 6): tight total 8 bits, sum-of-widths 9 bits
+   U(0, 1) x U(3, 5): tight total 8 bits, sum-of-widths 9 bits
+   U(0, 1) x U(4, 4): tight total 8 bits, sum-of-widths 9 bits
+   U(0, 1) x U(5, 3): tight total 8 bits, sum-of-widths 9 bits
+   U(0, 1) x U(6, 2): tight total 8 bits, sum-of-widths 9 bits
+   count of such boundary crossings in this box: 38
+   UNPRICED: no bench harness run bears on what a container jump costs.

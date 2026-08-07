@@ -1,0 +1,52 @@
+warning: type `A_N` should have an upper camel case name
+   --> p7_tight_form_in_typestate.rs:281:6
+    |
+281 | type A_N = <Num<N3, N5> as MulNaive<Num<N2, N1>>>::Out;
+    |      ^^^ help: convert the identifier to upper camel case: `AN`
+    |
+    = note: `#[warn(non_camel_case_types)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: type `A_T` should have an upper camel case name
+   --> p7_tight_form_in_typestate.rs:282:6
+    |
+282 | type A_T = <Num<N3, N5> as MulTight<Num<N2, N1>>>::Out;
+    |      ^^^ help: convert the identifier to upper camel case: `AT`
+
+warning: type `B_N` should have an upper camel case name
+   --> p7_tight_form_in_typestate.rs:290:6
+    |
+290 | type B_N = <Num<N0, N1> as MulNaive<Num<N1, N0>>>::Out;
+    |      ^^^ help: convert the identifier to upper camel case: `BN`
+
+warning: type `B_T` should have an upper camel case name
+   --> p7_tight_form_in_typestate.rs:291:6
+    |
+291 | type B_T = <Num<N0, N1> as MulTight<Num<N1, N0>>>::Out;
+    |      ^^^ help: convert the identifier to upper camel case: `BT`
+
+warning: type `C_N` should have an upper camel case name
+   --> p7_tight_form_in_typestate.rs:298:6
+    |
+298 | type C_N = <Num<N0, N1> as MulNaive<Num<N1, N7>>>::Out;
+    |      ^^^ help: convert the identifier to upper camel case: `CN`
+
+warning: type `C_T` should have an upper camel case name
+   --> p7_tight_form_in_typestate.rs:299:6
+    |
+299 | type C_T = <Num<N0, N1> as MulTight<Num<N1, N7>>>::Out;
+    |      ^^^ help: convert the identifier to upper camel case: `CT`
+
+warning: type `D_N` should have an upper camel case name
+   --> p7_tight_form_in_typestate.rs:304:6
+    |
+304 | type D_N = <Num<N4, N4> as MulNaive<Num<N3, N5>>>::Out;
+    |      ^^^ help: convert the identifier to upper camel case: `DN`
+
+warning: type `D_T` should have an upper camel case name
+   --> p7_tight_form_in_typestate.rs:305:6
+    |
+305 | type D_T = <Num<N4, N4> as MulTight<Num<N3, N5>>>::Out;
+    |      ^^^ help: convert the identifier to upper camel case: `DT`
+
+warning: 8 warnings emitted
+
