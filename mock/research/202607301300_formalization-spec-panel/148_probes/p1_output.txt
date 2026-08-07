@@ -1,0 +1,34 @@
+numerals: 576
+ordered pairs: 331776
+
+oracle: 8109 of 331776 ordered pairs include
+
+condition set            false-positive  false-negative
+C_two  (grid, top)                17037               0
+C_four (grid,phase,lo,hi)             0               0
+C_lat  (lattice, range)               0               0
+C_decl (top,grid,dom)                  0            5853
+C_pure (prec,exp,dom)               2064            5853
+
+pure-product-order false positive (it claims an inclusion the oracle refuses):
+  source: r=2 p=1 e=-1 A=1/1 B=0/1 dom=NonNegative  values [Rat { n: 0, d: 1 } .. Rat { n: 1, d: 2 }] step Rat { n: 1, d: 2 }
+  target: r=2 p=1 e=-2 A=1/1 B=0/1 dom=NonNegative  values [Rat { n: 0, d: 1 } .. Rat { n: 1, d: 4 }] step Rat { n: 1, d: 4 }
+
+of C_two's false positives: 6549 are sole phase failures, 5229 are sole lower-range failures
+
+phase witness (finer grid, containing range, no shared value):
+  source: r=2 p=1 e=-2 A=1/1 B=0/1 dom=NonNegative  values [Rat { n: 0, d: 1 } .. Rat { n: 1, d: 4 }] step Rat { n: 1, d: 4 }
+  target: r=2 p=1 e=-2 A=1/1 B=1/3 dom=AsymmetricLow  values [Rat { n: -1, d: 6 } .. Rat { n: 7, d: 12 }] step Rat { n: 1, d: 4 }
+  source quantum Rat { n: 1, d: 4 }  target quantum Rat { n: 1, d: 4 }  ratio integral: true
+  source range [Rat { n: 0, d: 1 },Rat { n: 1, d: 4 }] target range [Rat { n: -1, d: 6 },Rat { n: 7, d: 12 }]
+  source has 2 values, 0 of them are in the target
+
+lower-range witness (C_two checks only the top):
+  source: r=2 p=1 e=-2 A=1/1 B=0/1 dom=NonNegative  values [Rat { n: 0, d: 1 } .. Rat { n: 1, d: 4 }] step Rat { n: 1, d: 4 }
+  target: r=2 p=1 e=-2 A=1/1 B=1/2 dom=NonNegative  values [Rat { n: 1, d: 2 } .. Rat { n: 3, d: 4 }] step Rat { n: 1, d: 4 }
+
+same radix/adjustment/bias slice: product order has 0 false positives, 120 false negatives
+
+pairs where the sign domain strictly DECREASES and inclusion still holds: 120
+  source: r=2 p=1 e=-2 A=1/1 B=0/1 dom=AsymmetricLow  values [Rat { n: -1, d: 2 } .. Rat { n: 1, d: 4 }] step Rat { n: 1, d: 4 }
+  target: r=2 p=2 e=-2 A=1/1 B=0/1 dom=Symmetric  values [Rat { n: -3, d: 4 } .. Rat { n: 3, d: 4 }] step Rat { n: 1, d: 4 }
