@@ -155,6 +155,60 @@ automatic, and saying so forecloses a direction rather than opening one. Congrue
 reduced product: flagged as the most promising lead and explicitly marked unverified against the
 literature's own definitions.
 
+## The founding premise, tested from outside, and what it turned out to hide
+
+`08` took the panel's own founding sentence, that the primitives are named compositions over **one
+format concept**, and asked what that concept excludes. Twenty-one representations classified
+mechanically against one test.
+
+**The premise survives.** Eighteen of the twenty-one are inside. The three axes that carve the space
+are the value set, the encoding, and the locus, and they are independent.
+
+**The boundary, in one sentence a canon could carry:**
+
+> A representation is a numeral when a datum denotes one rational, when the denotable magnitudes in
+> each binade of some admitted radix form one arithmetic progression at one phase whose step is that
+> radix to some power, and when the set is fixed by the type alone.
+
+Everything outside fails exactly one of those three clauses, and **which clause it fails names the
+layer it belongs to instead**, which is a better outcome than a list. Logarithmic and rational-slash
+formats and complex radices fail the first; unevaluated sums fail the second; block floating point
+and frame-of-reference column encodings fail the locus clause; intervals and stochastic streams fail
+the denotation clause.
+
+### The result nobody predicted, and it resolves `03`'s cross-kind failure by another route
+
+**The design's named shapes are meet-closed and not join-closed.**
+
+Gradual underflow **is** the meet of a fixed-point format and a float. Measured twice, once by
+enumeration and once by the trait solver in a diagnostic. The join is the mirror shape, and **it has
+no name**, which is the whole of `03`'s cross-kind join failure.
+
+And `03`'s own witness pair does have a join in the general class. It is `{0, 1/2, 1, 2, 3}`, sitting
+strictly inside both of the minimal upper bounds `03` named. So the antichain `03` measured is an
+artifact of the **named** shapes rather than of the concept.
+
+This also bounds `07`'s completion result: the Moore closure buys the glue shapes and **not** the
+tapers, because intersection takes the pointwise maximum while posits need a steeper slope.
+
+### Two further things the survey turned up
+
+**The panel has been using a two-point sample of its own concept.** The exponent form has two
+instances where the concept has a function space, and a ratified naming call renamed the literature's
+term to one that appears in no axis table.
+
+**Posits are inside the concept and outside every named shape.** All three configurations classify
+inside, with a canonical exponent of no named form. Separately, five representations differ from a
+plain fixed-point numeral in **no value-set respect at all**: residue systems, thermometer,
+carry-save, negabinary, and mixed radix. Whether those are worth distinguishing is an encoding
+question, not a value question.
+
+**The probe three predecessors said was owed is now written**: a segmented format expressed in the
+typestate, gate-free, refusing at type check, erasing to one symbol whose body is a bare return.
+
+`08` also flags, unprompted, that most of its agreement with `03`, `06` and `07` is **inherited
+rather than independent**, which is the distinction this panel's provenance ladder turns on.
+
 ## Method notes worth your attention
 
 Both experts kept a broken instrument rather than deleting it. `03`'s first reported zero
