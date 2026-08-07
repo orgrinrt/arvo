@@ -1,0 +1,40 @@
+instrument 4: the categories op's three readings do not cover
+==============================================================================
+Q17 is the radix the seam, or is the step set the seam?
+    radix 2 with radix 4 (commensurable, 4 = 2^2)
+      cross pairs 129: join present 98, no upper bound 31, bounds-but-no-least 0
+    radix 2 with radix 8 (commensurable, 8 = 2^3)
+      cross pairs 144: join present 120, no upper bound 24, bounds-but-no-least 0
+    radix 3 with radix 9 (commensurable, 9 = 3^2)
+      cross pairs 129: join present 98, no upper bound 31, bounds-but-no-least 0
+    radix 2 with radix 3 (incommensurable)
+      cross pairs 149: join present 53, no upper bound 96, bounds-but-no-least 0
+    radix 2 with radix 6 (shares a factor, 6 = 2*3)
+      cross pairs 149: join present 94, no upper bound 52, bounds-but-no-least 3
+    note the shape of the failure: across radices the join dies for want of any
+    upper bound, not for want of a least one. Those are different repairs.
+
+Q18 the multi-cover reading: how many MINIMAL upper bounds does a pair have?
+    fixed-point alone: pairs 210
+         70  no upper bound at all
+        140  a join
+      widest antichain of minimal upper bounds seen: 1
+    fixed-point and float: pairs 1540
+        323  no upper bound at all
+        997  a join
+        220  2 minimal upper bounds
+      widest antichain of minimal upper bounds seen: 2
+    a tie-break rule over a small antichain makes a total operation. what it
+    costs is that the answer is chosen rather than forced.
+
+Q19 the uniform-grid seam, measured instead of assumed
+    points 56: value sets that ARE an arithmetic progression 23, that are not 33
+    float-declared shapes whose value set is nevertheless uniform: 3
+      ['U<1,0> = F<p1,e0..0>', 'F<p1,e-1..0>', 'F<p1,e0..1>']
+    so the declared kind and the geometric shape are not the same partition, and
+    a family boundary drawn on the declaration cuts through numerals that agree.
+    join failures split by whether each side's value set is uniform:
+      uni-uni: 100 of 253 pairs have no join
+      uni-non: 360 of 759 pairs have no join
+      non-non: 83 of 528 pairs have no join
+
