@@ -209,3 +209,110 @@ consumer-facing half of the design. What is owed:
 Nothing further on the container or the surface until that is established. The prior section's closing
 sentence stands with its reason corrected: the panel keeps optimising a surface that is not the primary one,
 and cells that are not constants.
+
+---
+
+# Second clarification: the three tiers, and where the typestate is actually written
+
+Op, same session, continuing. This answers most of what the previous section listed as owed, and it changes
+what the surface question costs.
+
+## Op's words
+
+> The inference comes in from the arvo public APIs. The algos and all will work on contracts, that arvo will
+> have blanket impled or actually uses core ones like Mul or Add or whatever. Then as consumer supplies
+> whatever they have, they only see and understand that this trait bound needs to be implemented. Under the
+> hood we derive the arvo end fully to cover soundness and validity and infer the special compile-time
+> branches and behavioral arms, and extend the typestate through the public api. At the end, the end user
+> gets perhaps the very same T: Add they piped in, type-wise. Or a matrix filled with the T. Or it will have
+> a generic to describe the output, and they can override its default whatever that might be, to have our
+> end do the simplification and arvo erasure for the return Val.
+>
+> Then for frameworks and apps that want to wholesale take arvo, they'll write their own domain aliases like
+> StrHandle = UInt<5> (which is itself an alias for UFixed<5,0> which is an alias for the Numeral<...> etc)
+> and all the code just reads non-verbose and ergonomic StrHandle. No generics, nothing.
+
+## Tier one: the consumer who never adopts arvo
+
+**The public API is trait-bound shaped.** Algorithms take contracts, either traits arvo blanket-implements
+or core ones like `Add` and `Mul`. A consumer supplies whatever numeric type they already have. What they
+see and must understand is that a trait bound needs satisfying, and nothing else.
+
+**Arvo derives its own end underneath.** Soundness and validity are covered on arvo's side, the
+compile-time branches and behavioural arms are inferred, and the typestate is extended through the public
+API rather than demanded at it.
+
+**And it hands back something they recognise.** Possibly the very same `T: Add` they piped in, type-wise. Or
+a matrix filled with that `T`. Or a generic describing the output, **whose default they may override**, and
+overriding it is what asks arvo's end to do the simplification and the erasure for the returned value.
+
+That last mechanism is a real design element the panel does not have anywhere: **the output type is a
+generic with a default, and the default is the erasure policy.** A consumer who does nothing gets the plain
+thing back; a consumer who overrides it gets arvo's simplification applied to the return.
+
+## Tier two: the framework or application that takes arvo wholesale
+
+**They write domain aliases and then never write a generic again.** `StrHandle = UInt<5>`, and all the code
+reads `StrHandle`. Non-verbose, ergonomic, no generics, nothing.
+
+And the chain underneath is the thing that has now been stated three times and has not stuck:
+
+```
+StrHandle  ->  UInt<5>  ->  UFixed<5, 0>  ->  Numeral<...>
+```
+
+**Every named type is an alias over one representation.** `UInt` is an alias, `UFixed` is an alias, and
+`Numeral<...>` is the representation. This is `138b`'s point made concrete, and the concreteness is what was
+missing: the panel kept re-deriving "they are points in a product of axes" from the mechanism, because the
+document never showed the chain.
+
+## Tier three: the explicit spelling
+
+Someone writing `UFixed<13, 3, Warm>` in type position. It has to exist and it has to work.
+
+**But it is now clearly the narrowest tier, and it is mostly not written at call sites at all.** A tier-two
+consumer writes it **once, in an alias definition**, and then writes `StrHandle` everywhere. A tier-one
+consumer never writes it.
+
+## What this does to the bridge question
+
+Five files and their checkpoints priced the const-to-type bridge as a per-call-site cost: `129`, `130`,
+`133`, `134`, `139`, and the routes were argued on how a consumer writes a width at every use.
+
+**The bridge is exercised once per alias definition.** Not per call site, not per operation, not per
+function signature. A framework defining forty domain aliases crosses it forty times, in one file, at
+compile time.
+
+That changes every trade the panel made:
+
+- The diagnostic quality at the crossing matters at alias-definition sites, where a developer is looking at
+  the definition, rather than deep inside unrelated code.
+- A per-width bridge entry, refused three times as an enumeration, is a line next to an alias that already
+  exists. That does not resurrect it as an answer, because op refused enumerations on principle rather than
+  on cost, but the cost figure it was refused against was wrong by orders of magnitude.
+- A mechanism carrying a compile-time cost per crossing is paid tens of times per project rather than
+  thousands.
+- The surface arity argument, three parameters against four, is an argument about a line that appears once
+  per alias.
+
+**None of this is a conclusion.** It is a repricing, and the routes have to be re-examined against it rather
+than re-ranked from memory.
+
+## What is still owed
+
+The previous section listed six items. Three are now answered: what the typestate is inferred from (the
+public API's trait bounds, with arvo deriving its own end underneath), what the alias chain is, and where
+the explicit spelling sits.
+
+Still open, and these are the ones that decide mechanism:
+
+- **The precedence rule.** What counts as "a specific config declaring intended use", and how an explicit
+  declaration composes with an enclosing `#[optimize_for]`.
+- **Whether inference can carry tier one**, concretely: what arvo can derive from a bare `T: Add` about
+  width, range and resolution, and what it must assume.
+- **Agreement between the tiers.** A cell reached by inference and a cell reached by an alias must agree, or
+  the design gives two answers to one question.
+- **The output-generic default**, which is stated as a mechanism and specified nowhere: what the default is,
+  what overriding it means, and what "simplification and arvo erasure for the return value" does.
+- **The arvo and notko boundary** for the rewrite, since the attribute lives in one and the types in the
+  other.
