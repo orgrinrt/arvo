@@ -316,3 +316,70 @@ Still open, and these are the ones that decide mechanism:
   what overriding it means, and what "simplification and arvo erasure for the return value" does.
 - **The arvo and notko boundary** for the rewrite, since the attribute lives in one and the types in the
   other.
+
+---
+
+# Correction to the repricing: rarity raises the bar, it does not lower it
+
+The section above concluded that the bridge is exercised once per alias definition and called that a
+repricing that loosens the trade. **That inference is wrong**, and op corrected it immediately.
+
+## Op's words
+
+> It's not deflating it. To write the domain aliases, it has to be easy and intuitive to write the types
+> they alias. UInt<5> is great and easy, intuitive. Ufixed as in the example too. But if there were precision
+> in there, container types, it'd be fucking ass for anyone who doesn't know nor care about all that
+> plumbing, to write. So the ergonomics of UFixed, FastFloat, all those, are crucial and perhaps more
+> important than the plumbing itself.
+
+## Why the previous section's inference fails
+
+It read "written rarely" as "cheap to get wrong". The opposite holds, and for a reason specific to who
+writes at that site.
+
+**The alias-definition site is written by someone who does not know or care about the plumbing.** A
+framework author reaching for arvo writes `StrHandle = UInt<5>` because they want a five-bit handle. They
+have no context on containers, no practice with the parameter order, and no interest in acquiring either.
+They will write this line a handful of times in the project's life, which means they will never build
+fluency in it, which means **it has to be self-evident on first contact and stay self-evident after six
+months away.**
+
+A surface written thousands of times by a specialist can afford to be dense, because the writer amortises
+the learning. A surface written forty times by someone who does not want to learn it cannot afford anything.
+
+So rarity does not buy tolerance. It removes the only thing that would have paid for complexity.
+
+## The standard, stated as op stated it
+
+**`UInt<5>` is the bar.** A name and a number. `UFixed<5, 0>` is at the bar: a name and the two numbers
+someone thinking about a fixed-point value is already thinking in.
+
+**What falls below it:** a precision parameter, a container type, anything that requires knowing what a rung
+is, anything whose parameter order has to be memorised, and anything that makes the writer ask what a
+parameter is for before they can write the line.
+
+**And the ranking op gives is the part to carry:** the ergonomics of `UFixed`, `FastFloat` and the rest are
+**crucial, and perhaps more important than the plumbing itself.** The plumbing exists to make those spellings
+possible. A mechanism that is elegant underneath and forces an unintuitive spelling above has inverted the
+priority.
+
+## What this does to the routes the panel has been weighing
+
+Every surface candidate is now judged by one question: **can someone who does not care about the plumbing
+write this alias correctly on first contact?**
+
+That is a harder constraint than the panel has been working with, not a softer one, and it disqualifies
+things the previous section's reasoning had made cheaper rather than dearer:
+
+- **A container parameter in the spelling** fails outright. It is the exact case op names.
+- **A type-level magnitude**, `Fixed<N13, N3, Warm>`, fails: the alias writer has to know that a width is
+  spelled as a type and which type, which is plumbing surfacing at the worst possible site.
+- **A macro invocation** was already refused as a surface, and the alias site is where that refusal bites
+  hardest, since an alias is a type definition and a macro call is not.
+- **Arity** is now an ergonomics question rather than a mechanism question: each additional parameter is one
+  more thing an uninitiated writer must know, at the one site where they have no context to draw on.
+
+**The bridge question is therefore not deflated. It is sharpened.** The mechanism must produce a spelling at
+`UInt<5>`'s standard, and the cost of the mechanism is secondary to whether it does. The previous section's
+repricing stands only as a statement about *compile-time cost per crossing*, which is genuinely small, and
+that was never the binding constraint.
