@@ -11,9 +11,9 @@
 //! — any hit is a signal that someone is mentally modelling a
 //! runtime-grow pattern even if they haven't written `Vec` yet.
 
-use mockspace::{Lint, LintContext, LintError, Severity};
+use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
-pub fn lint() -> Box<dyn Lint> {
+pub fn lint() -> Box<dyn CrateLint> {
     Box::new(NoRuntimeGrow)
 }
 
@@ -27,7 +27,9 @@ impl Lint for NoRuntimeGrow {
     fn default_severity(&self) -> Severity {
         Severity::ADVISORY
     }
+}
 
+impl CrateLint for NoRuntimeGrow {
     fn check(&self, ctx: &LintContext) -> Vec<LintError> {
         if ctx.is_proc_macro_crate() {
             return Vec::new();

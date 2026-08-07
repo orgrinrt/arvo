@@ -17,7 +17,7 @@
 //! A field-less marker struct (`pub struct Foo;`) is always
 //! tolerated — it carries no storage.
 
-use mockspace::{Lint, LintContext, LintError, Severity};
+use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
 /// Opaque-bit concrete containers permitted in `arvo-bits`.
 ///
@@ -29,7 +29,7 @@ const ALLOWED_OPAQUE_BITS: &[&str] = &[
     "Bits", // opaque N-bit container; arvo-hash ContentHash alias sits on this
 ];
 
-pub fn lint() -> Box<dyn Lint> {
+pub fn lint() -> Box<dyn CrateLint> {
     Box::new(ArvoBitsTraitsOnly)
 }
 
@@ -43,7 +43,9 @@ impl Lint for ArvoBitsTraitsOnly {
     fn default_severity(&self) -> Severity {
         Severity::HARD_ERROR
     }
+}
 
+impl CrateLint for ArvoBitsTraitsOnly {
     fn check(&self, ctx: &LintContext) -> Vec<LintError> {
         if ctx.is_proc_macro_crate() {
             return Vec::new();

@@ -316,7 +316,7 @@ push = "off"
 # this manual declaration.
 
 [lint-crates]
-mockspace-hilavitkutin-stack-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "main" }
+mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "dev" }
 
 [primitive-introductions]
 arvo = ["numeric"]
