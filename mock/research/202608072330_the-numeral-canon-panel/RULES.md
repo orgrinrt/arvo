@@ -172,6 +172,24 @@ holding a complete investigation in a single final write.
 predecessor, and op's files. The prior panel reached 210,000 tokens of markdown, at which point
 telling a member to read the panel was telling it to exhaust its context before starting.
 
+### Cumulative reading makes the TWO EXPERTS rung unreachable unless the dispatch says otherwise
+
+Noticed at the first checkpoint of this panel, and it is a defect in these rules rather than in any
+file. Cumulative sequential reading is mandated above. Independent derivation is required for the
+TWO EXPERTS rung. A member that reads its predecessor first cannot then derive independently, so
+**every agreement produced by the default dispatch shape is inherited by construction**, and the
+middle rung can never be earned. Three members of the first stretch flagged inheritance about
+themselves; none noticed that the shape guaranteed it.
+
+The fix is the dispatch, not the rule. **When a dispatch exists to second-read a specific claim, it
+says so explicitly and inverts the order for that claim only:** derive your own answer first, write
+it down, and only then read the predecessor and say where you agree and where you do not. Everything
+else in the reading list is still read first, because the point is independence on one question
+rather than ignorance of the panel.
+
+A dispatch that does not say this produces a ONE EXPERT result no matter how many files agree, and
+the dispatcher records it as such.
+
 **Native personas**, whose definitions withhold the Agent tool, so a member cannot nest and lose its
 work underneath.
 
