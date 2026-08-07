@@ -1,0 +1,4 @@
+meet closure of fixed+float: 24
+is it inside the gradual-underflow family: True
+gradual-underflow family size: 30
+join closure of fixed+float: 24 inside knee family: False

@@ -1,0 +1,20 @@
+error[E0277]: the trait bound `Cons<S<Z>, Cons<S<Z>, Cons<S<S<Z>>, Nil>>>: Same<Cons<Z, Cons<S<Z>, Cons<S<S<Z>>, Nil>>>>` is not satisfied
+   --> p3_negctl2.rs:9:19
+    |
+  9 |     assert_same::<<Fixed as Meet<Float>>::Out, Float>();
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Same<Cons<Z, Cons<S<Z>, Cons<S<S<Z>>, Nil>>>>` is not implemented for `Cons<S<Z>, Cons<S<Z>, Cons<S<S<Z>>, Nil>>>`
+   --> p3_shapes_include.rs:33:1
+    |
+ 33 | pub struct Cons<H, T>(PhantomData<(H, T)>);
+    | ^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `assert_same`
+   --> p3_shapes_include.rs:159:8
+    |
+157 | const fn assert_same<A, B>()
+    |          ----------- required by a bound in this function
+158 | where
+159 |     A: Same<B>,
+    |        ^^^^^^^ required by this bound in `assert_same`
+

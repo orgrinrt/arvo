@@ -1,0 +1,33 @@
+ window  depth      all  named  meet-closed  join-closed
+      4      3      121     10           10           15
+      6      4     2380     15           15           31
+      8      4    25213     15           15           31
+     10      5   625184     21           21           63
+
+At window 6, depth 4: the join closure adds 16 shapes to 15 named.
+The added shapes, by the run-length of their slopes:
+       3  slope 1 x1 then slope 0 x1 then slope 1 x3
+       2  slope 1 x2 then slope 0 x1 then slope 1 x2
+       2  slope 0 x1 then slope 1 x1 then slope 0 x1 then slope 1 x2
+       2  slope 1 x1 then slope 0 x2 then slope 1 x2
+       1  slope 1 x3 then slope 0 x1 then slope 1 x1
+       1  slope 0 x1 then slope 1 x2 then slope 0 x1 then slope 1 x1
+       1  slope 1 x1 then slope 0 x1 then slope 1 x1 then slope 0 x1 then slope 1 x1
+       1  slope 1 x2 then slope 0 x2 then slope 1 x1
+       1  slope 0 x2 then slope 1 x1 then slope 0 x1 then slope 1 x1
+       1  slope 0 x1 then slope 1 x1 then slope 0 x2 then slope 1 x1
+       1  slope 1 x1 then slope 0 x3 then slope 1 x1
+
+Three added shapes in full, with the pair that produced each:
+    (-3, -2, -1, 0, 1, 2)  (float (slope one))
+  v (-2, -2, -2, -1, 0, 1)  (float with gradual underflow (constant, then slope one))
+  = (-3, -2, -2, -1, 0, 1)  -> slope 1 x1 then slope 0 x1 then slope 1 x3, unnamed
+    (-3, -2, -1, 0, 1, 2)  (float (slope one))
+  v (-1, -1, -1, -1, 0, 1)  (float with gradual underflow (constant, then slope one))
+  = (-3, -2, -1, -1, 0, 1)  -> slope 1 x2 then slope 0 x1 then slope 1 x2, unnamed
+    (-3, -2, -1, 0, 1, 2)  (float (slope one))
+  v (0, 0, 0, 0, 0, 1)  (float with gradual underflow (constant, then slope one))
+  = (-3, -2, -1, 0, 0, 1)  -> slope 1 x3 then slope 0 x1 then slope 1 x1, unnamed
+
+And the same question asked of the meet, for symmetry:
+    none: every pointwise maximum of two named shapes is named.
