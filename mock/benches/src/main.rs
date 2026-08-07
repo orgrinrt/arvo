@@ -167,6 +167,7 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     use bench_quantiser_radix_shared::RadixAdd;
     use bench_spectral_bisection::Fiedler;
     use bench_structural_decomposition::Rcm;
+    use bench_warm_container_shared::Case;
 
     let bridge = match (name, n) {
         // hash benches: byte-array IO via ByteRoutine.
@@ -237,6 +238,68 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("bitpack-kernel-amortisation", 65536) => routine_bridge!(MacColumn<65536>),
         ("bitpack-kernel-amortisation", 98304) => routine_bridge!(MacColumn<98304>),
         ("bitpack-kernel-amortisation", 262144) => routine_bridge!(MacColumn<262144>),
+
+        // container fork (panel file 141): the shipped Warm/Precise rule
+        // against the deletion, against rung(W+1), against plain Rust
+        // primitive arithmetic. One Case<KEY> bridge per row; which of
+        // the four dylibs runs comes from bench.toml, not from here.
+        ("warm-container-width-l1", 80003) => routine_bridge!(Case<80003>),
+        ("warm-container-width-l1", 130003) => routine_bridge!(Case<130003>),
+        ("warm-container-width-l1", 160003) => routine_bridge!(Case<160003>),
+        ("warm-container-width-l1", 320003) => routine_bridge!(Case<320003>),
+        ("warm-container-width-l1", 600003) => routine_bridge!(Case<600003>),
+        ("warm-container-width-l1", 640003) => routine_bridge!(Case<640003>),
+        ("warm-container-width-l2", 81003) => routine_bridge!(Case<81003>),
+        ("warm-container-width-l2", 131003) => routine_bridge!(Case<131003>),
+        ("warm-container-width-l2", 161003) => routine_bridge!(Case<161003>),
+        ("warm-container-width-l2", 321003) => routine_bridge!(Case<321003>),
+        ("warm-container-width-l2", 601003) => routine_bridge!(Case<601003>),
+        ("warm-container-width-l2", 641003) => routine_bridge!(Case<641003>),
+        ("warm-container-density-w13", 130001) => routine_bridge!(Case<130001>),
+        ("warm-container-density-w13", 130002) => routine_bridge!(Case<130002>),
+        ("warm-container-density-w13", 130004) => routine_bridge!(Case<130004>),
+        ("warm-container-density-w13", 130008) => routine_bridge!(Case<130008>),
+        ("warm-container-density-w13", 130016) => routine_bridge!(Case<130016>),
+        ("warm-container-density-w64", 640001) => routine_bridge!(Case<640001>),
+        ("warm-container-density-w64", 640002) => routine_bridge!(Case<640002>),
+        ("warm-container-density-w64", 640004) => routine_bridge!(Case<640004>),
+        ("warm-container-density-w64", 640008) => routine_bridge!(Case<640008>),
+        ("warm-container-density-w64", 640016) => routine_bridge!(Case<640016>),
+        ("precise-container-width-l1", 80103) => routine_bridge!(Case<80103>),
+        ("precise-container-width-l1", 130103) => routine_bridge!(Case<130103>),
+        ("precise-container-width-l1", 160103) => routine_bridge!(Case<160103>),
+        ("precise-container-width-l1", 320103) => routine_bridge!(Case<320103>),
+        ("precise-container-width-l1", 600103) => routine_bridge!(Case<600103>),
+        ("precise-container-width-l1", 640103) => routine_bridge!(Case<640103>),
+        ("warm-elementwise-width-l1", 80204) => routine_bridge!(Case<80204>),
+        ("warm-elementwise-width-l1", 130204) => routine_bridge!(Case<130204>),
+        ("warm-elementwise-width-l1", 160204) => routine_bridge!(Case<160204>),
+        ("warm-elementwise-width-l1", 320204) => routine_bridge!(Case<320204>),
+        ("warm-elementwise-width-l1", 600204) => routine_bridge!(Case<600204>),
+        ("warm-elementwise-width-l1", 640204) => routine_bridge!(Case<640204>),
+        ("precise-elementwise-width-l1", 80304) => routine_bridge!(Case<80304>),
+        ("precise-elementwise-width-l1", 130304) => routine_bridge!(Case<130304>),
+        ("precise-elementwise-width-l1", 160304) => routine_bridge!(Case<160304>),
+        ("precise-elementwise-width-l1", 320304) => routine_bridge!(Case<320304>),
+        ("precise-elementwise-width-l1", 600304) => routine_bridge!(Case<600304>),
+        ("precise-elementwise-width-l1", 640304) => routine_bridge!(Case<640304>),
+        ("warm-affine-collapse-l1", 80403) => routine_bridge!(Case<80403>),
+        ("warm-affine-collapse-l1", 130403) => routine_bridge!(Case<130403>),
+        ("warm-affine-collapse-l1", 160403) => routine_bridge!(Case<160403>),
+        ("warm-affine-collapse-l1", 320403) => routine_bridge!(Case<320403>),
+        ("warm-affine-collapse-l1", 600403) => routine_bridge!(Case<600403>),
+        ("warm-affine-collapse-l1", 640403) => routine_bridge!(Case<640403>),
+        ("precise-widening-theorem-l1", 80501) => routine_bridge!(Case<80501>),
+        ("precise-widening-theorem-l1", 130501) => routine_bridge!(Case<130501>),
+        ("precise-widening-theorem-l1", 160501) => routine_bridge!(Case<160501>),
+        ("precise-widening-theorem-l1", 320501) => routine_bridge!(Case<320501>),
+        ("precise-widening-theorem-l1", 600501) => routine_bridge!(Case<600501>),
+        ("precise-widening-theorem-l1", 640501) => routine_bridge!(Case<640501>),
+        ("warm-affine-density-w13", 130401) => routine_bridge!(Case<130401>),
+        ("warm-affine-density-w13", 130402) => routine_bridge!(Case<130402>),
+        ("warm-affine-density-w13", 130404) => routine_bridge!(Case<130404>),
+        ("warm-affine-density-w13", 130408) => routine_bridge!(Case<130408>),
+        ("warm-affine-density-w13", 130416) => routine_bridge!(Case<130416>),
 
         // footprint bench: prices Cold's own intent (a smaller column fits
         // where a larger one does not) rather than decode cost at

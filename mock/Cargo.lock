@@ -27,6 +27,7 @@ dependencies = [
  "bench-quantiser-radix-shared",
  "bench-spectral-bisection",
  "bench-structural-decomposition",
+ "bench-warm-container-shared",
  "mockspace-bench-core",
  "mockspace-bench-harness",
 ]
@@ -439,6 +440,67 @@ dependencies = [
  "arvo-tensor",
  "mockspace-bench-core",
  "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-container-headroom"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-container-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-container-kernel"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-container-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-container-lanes-deferred"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-container-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-container-minimum"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-container-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-container-native"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-container-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-container-plusone"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-container-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-container-shared"
+version = "0.0.0"
+dependencies = [
+ "mockspace-bench-core",
 ]
 
 [[package]]

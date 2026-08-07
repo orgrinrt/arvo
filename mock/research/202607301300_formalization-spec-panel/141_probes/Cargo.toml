@@ -1,0 +1,26 @@
+# Code-inspection artifact for panel file 141. NOT a bench and produces no
+# timings: it exists so the emitted machine code behind each bench arm can be
+# read directly, one symbol per case, instead of hunting the 28-key dispatch
+# inside a variant dylib. The transform is the bench's own
+# (`bench-warm-container-shared::run_wrap` / `run_sat`), imported by path, so
+# nothing here is a second copy of the kernel.
+#
+#   cargo +nightly-2026-05-28 rustc --release -- --emit asm
+#   (output lands in target/release/deps/p141_asm-*.s)
+[package]
+name = "p141-asm"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[workspace]
+
+[lib]
+name = "p141_asm"
+path = "src/lib.rs"
+
+[dependencies]
+bench-warm-container-shared = { path = "../../../benches/variants/warm-container-shared" }
+
+[profile.release]
+opt-level = 3

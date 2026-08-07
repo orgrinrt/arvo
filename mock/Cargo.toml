@@ -65,6 +65,13 @@ members = [
     "benches/variants/bitpack-footprint-dense-alt",
     "benches/variants/bitpack-footprint-packed",
     "benches/variants/bitpack-footprint-packed-naive",
+    "benches/variants/warm-container-shared",
+    "benches/variants/warm-container-headroom",
+    "benches/variants/warm-container-minimum",
+    "benches/variants/warm-container-plusone",
+    "benches/variants/warm-container-native",
+    "benches/variants/warm-container-kernel",
+    "benches/variants/warm-container-lanes-deferred",
 ]
 
 [workspace.package]

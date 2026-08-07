@@ -401,3 +401,656 @@ variants = [
     "../target/release/bench_bitpack_footprint_packed",
     "../target/release/bench_bitpack_footprint_packed_naive",
 ]
+
+# ---------------------------------------------------------------------------
+# The container fork (panel file 141). Four arms per row, all computing the
+# identical value: `headroom` is the shipped rule (rung(rung_bits(W)+1)),
+# `minimum` is the deletion, `plusone` is rung(W+1) kept as an aliasing
+# control, `native` is plain Rust primitive arithmetic with the projection
+# written once. The size field is a key: W*10000 + NC*1000 + OP*100 + D,
+# decoded by `bench-warm-container-shared`'s `key_w` / `key_nc` / `key_op` /
+# `key_d`. NC 0 is 8192 elements, NC 1 is 1048576. OP 0 is wrapping (Warm),
+# OP 1 is saturating (Precise). D is operations per element.
+# ---------------------------------------------------------------------------
+
+[bench.warm-container-width-l1]
+title = "Container fork, declared-width sweep, cache-resident (8192 elements, 3 ops/element, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-container-width-l1.sizes]]
+n = 80003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 130003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 160003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 320003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 600003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-width-l1.sizes]]
+n = 640003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[bench.warm-container-width-l2]
+title = "Container fork, declared-width sweep, 1048576 elements (3 ops/element, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-container-width-l2.sizes]]
+n = 81003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 131003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 161003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 321003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 601003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[[bench.warm-container-width-l2.sizes]]
+n = 641003
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+]
+
+[bench.warm-container-density-w13]
+title = "Container fork, operation-density sweep at 13 bits (8192 elements, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130001
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130002
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130004
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130008
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-container-density-w13.sizes]]
+n = 130016
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[bench.warm-container-density-w64]
+title = "Container fork, operation-density sweep at 64 bits (8192 elements, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640001
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640002
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640004
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640008
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-container-density-w64.sizes]]
+n = 640016
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[bench.precise-container-width-l1]
+title = "Container fork under saturating semantics, declared-width sweep (8192 elements, 3 ops/element)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.precise-container-width-l1.sizes]]
+n = 80103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 130103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 160103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 320103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 600103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-container-width-l1.sizes]]
+n = 640103
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[bench.warm-elementwise-width-l1]
+title = "Container fork, elementwise transform with no loop-carried value, declared-width sweep (8192 elements, 4 ops/element, wrapping)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 80204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 130204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 160204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 320204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 600204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.warm-elementwise-width-l1.sizes]]
+n = 640204
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[bench.precise-elementwise-width-l1]
+title = "Container fork under saturating semantics, elementwise, declared-width sweep (8192 elements, 4 ops/element)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 80304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 130304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 160304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 320304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 600304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[[bench.precise-elementwise-width-l1.sizes]]
+n = 640304
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+]
+
+[bench.warm-affine-collapse-l1]
+title = "Wrapping reduction whose steps are all affine: what the interior projection prevents the optimiser from doing (8192 elements, 3 ops/element)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 80403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 130403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 160403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 320403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 600403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-collapse-l1.sizes]]
+n = 640403
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[bench.precise-widening-theorem-l1]
+title = "Saturating accumulation of a W-bit column into a 64-bit accumulator, with and without the theorem that the saturation cannot occur (8192 elements)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 80501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 130501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 160501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 320501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 600501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.precise-widening-theorem-l1.sizes]]
+n = 640501
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[bench.warm-affine-density-w13]
+title = "Affine-only wrapping reduction at 13 bits, operation-density swept: how much of the deferred form's advantage is the optimiser collapsing the chain rather than the mask being gone"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130401
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130402
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130404
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130408
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
+
+[[bench.warm-affine-density-w13.sizes]]
+n = 130416
+variants = [
+    "../target/release/bench_warm_container_headroom",
+    "../target/release/bench_warm_container_minimum",
+    "../target/release/bench_warm_container_plusone",
+    "../target/release/bench_warm_container_native",
+    "../target/release/bench_warm_container_kernel",
+    "../target/release/bench_warm_container_lanes_deferred",
+]
