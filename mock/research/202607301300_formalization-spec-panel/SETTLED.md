@@ -17,11 +17,24 @@ live disputes over a body of agreements they were never shown.
 settlement that is not written here within the same act as its checkpoint is a settlement the next
 reader will lose, which is the failure this file was created to end.
 
-**Status.** This is the index, seeded from the checkpoints of the 130 to 149 stretch. Four thematic
-sweeps of the full panel history are in flight and merge into the sections below, each also carrying
-a casualty list of claims that looked settled and did not survive. Until they land, the earlier
-stretch is under-represented here, and its absence from this file is not evidence that it settled
-nothing.
+**Status.** All four thematic sweeps of the full panel history have landed. **63 survivors and 27
+casualties** across them. This file stays the index; the detail lives in the sweeps, each of which
+carries its own casualty list and its own honest coverage bound:
+
+| Sweep | Survivors | Casualties |
+|---|---|---|
+| `SETTLED_strategy.md` | 10 | 5 |
+| `SETTLED_container.md` | 15 | 7 |
+| `SETTLED_laws.md` | 19 | 6 |
+| `SETTLED_surface.md` | 19 | 9 |
+
+Read a sweep before relying on any row below that its theme covers. Several rows the sweeps rate as
+most-constraining were invisible from the recent checkpoints alone and are folded in below.
+
+**A provenance caution the sweeps raised themselves.** Several of the panel's strongest technical
+results form cumulative chains, where each file was dispatched to read and correct its predecessor
+rather than to derive independently. The sweeps declined to inflate those to `TWO EXPERTS`, which is
+correct and means the `ONE EXPERT` rows are more numerous than the panel's confidence would suggest.
 
 ## The acceptance criterion
 
@@ -69,11 +82,15 @@ A later checkpoint records the gate as met, and how it was met as itself load-be
 | The alias-reach question is closed and out of scope. | `144c:16` | RATIFIED |
 | Both diagnostics ship, belts and suspenders. | `130b:69` | RATIFIED |
 | The coherence overlap between a by-reference `From` and `core`'s reflexive impl fails at the head constructor, above where substitution happens, so it is structurally impossible rather than untriggered. | `146`, `148` | TWO EXPERTS |
+| Three consumer tiers, with a hard ergonomics bar of `UInt<5>` at the alias-definition tier. This disqualifies a container parameter, a type-level magnitude and a macro call at that one site, on ergonomics grounds alone, independent of whatever computes the container underneath. | `142c` | RATIFIED |
+| No enumeration, ever, if it can be helped. Refused three separate times against three different proposals: a width table, a per-width bridge population line, and a macro escape. | `127b`, `137b:28`, `139b`, `145b` | RATIFIED, four times |
 
 ## Laws, algebra and conversion
 
 | Claim | Where | Provenance |
 |---|---|---|
+| The `TotalOrd` split: a value-level order usable in laws, distinct from a datum-level total order. Not a naming cleanup: `136` shows it is a precondition of the distributivity law. | `68b` | RATIFIED |
+| The finest-view mechanism: a grade monoid, view homomorphisms, and a unique finest view per law. Its literature-relation identification is broken and excluded, see the open list. | `39b` | RATIFIED, minus one part |
 | Inclusion between numerals needs the grid, phase and both endpoint conditions. The two-condition form is not merely incomplete, it is unsound, admitting conversions that lose values. | `146`, `148` | TWO EXPERTS |
 | The antichain result holds as a cardinality argument, for every bias, adjustment, radix and sign domain, and needs no sweep. It is a stronger justification for the canonicity withdrawal than the arguments that were available when that withdrawal was made. | `146` | ONE EXPERT |
 | The narrowing schema does not say which of a conversion's two strategies adjudicates. The claim that no new key was needed does not hold. | `146`, `148` | TWO EXPERTS, negative only |
@@ -105,6 +122,15 @@ Listed so that absence from the tables above is never read as an oversight.
   differ. Unresolved, and it will poison a consolidation that quotes either number.
 - **What the sign domain is**, as opposed to what it is not.
 - **The remedy for the adjudicating-strategy gap**, where the two experts who found it differ.
+- **The container-derivation mechanism was never ratified.** The `SETTLED_surface.md` sweep names
+  this as the reason: every gate-free candidate the panel built either enumerated widths or degraded
+  the diagnostic to something unreadable, and op declined the trade each time rather than picking a
+  side. The erasure gate is ratified and its mechanism is not, which is the largest structural gap
+  in the panel.
+- **The finest-view mechanism's literature relation is refuted and unrepaired.** `136` compile-refuted
+  the identification (the Kleene equation is not the claimed pair whenever the specials set is
+  populated). Op declared prior calls stale over it at `137b`, and it was never resolved. The
+  mechanism survives; this one identification inside it does not.
 - **`Precise` on `inexact`**, open since `145`.
 - **The `Ranged` model**, disputed between `146` and `148`.
 - **Whether `Embed` ships beside `From`**, or the `From` alone.
