@@ -1,0 +1,4 @@
+plain      = 7
+hot scope  = 7
+declared under a Hot scope refuses = true
+alias identity unchanged: p08_ambient_marker_reaches_tier_two::Num<5, p08_ambient_marker_reaches_tier_two::Ambient>
