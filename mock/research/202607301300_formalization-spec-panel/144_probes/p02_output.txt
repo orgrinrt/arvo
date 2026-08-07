@@ -1,0 +1,6 @@
+A plain          body = p02_scope_shadowing::Warm
+B annotated      body = p02_scope_shadowing::Hot
+C sig-typed      body = p02_scope_shadowing::Hot
+C sig-typed      sig  = p02_scope_shadowing::Num<5, p02_scope_shadowing::Warm>
+D via alias      body = p02_scope_shadowing::Warm
+E explicit       body = p02_scope_shadowing::Warm

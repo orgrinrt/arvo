@@ -1,0 +1,11 @@
+[package]
+name = "p07-notko-granularity"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+notko = { path = "../../../../../../notko" }
+notko-macros = { path = "../../../../../../notko/notko-macros" }
+
+[workspace]

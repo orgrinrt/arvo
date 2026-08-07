@@ -70,3 +70,51 @@ mechanism, and mechanisms move underneath it. The panel produces canon, not sour
 `mock/benches/` are its ground and `mock/crates` is out of bounds. Experts are dispatched one at a time,
 each reading the ones before it, each writing incrementally, each going down the rabbit hole rather than
 reporting blockers.
+
+---
+
+# Clarification, same session: incompleteness is the plan, not a finding
+
+The section above treated the standing base's fixed-value statements as newly revealed to be incomplete, and
+framed that as a large surface to be measured against later. Op corrected the framing:
+
+> Yes it is incomplete by a lot. I was under impression we are first tackling the basic shape, perhaps the
+> one we reserve for debug assertions time, and we write separate arms for release and such then? It's
+> always been incomplete. Nothing changes in standing base.
+
+**Nothing changes in the standing base.** Not now, not at consolidation time as a correction pass. The
+incompleteness is not a defect that was just discovered; it is the shape of the work in progress and always
+was.
+
+## What the existing tables are
+
+**One arm.** The preset tables and the fixed cells the panel has been arguing over are the **basic shape**,
+and op's reading is that this is plausibly the arm reserved for debug-assertions time. The arms for release
+and for other conditions are written separately and later.
+
+That is a materially different reading from the one the section above implied, and it is better in three
+ways.
+
+**The existing cells are not wrong and not broken.** They are one arm of a function whose other arms are
+unwritten. A cell stating a value is a complete statement about its own arm.
+
+**Nothing is owed retroactively.** There is no annotation pass, no sweep, no re-statement of existing
+sentences with domains attached. The domain is the arm, and the arm is identified by which table the cell
+sits in.
+
+**And the future work is additive rather than corrective.** Writing the release arm does not edit the debug
+arm; it adds a table beside it. Under the chain's own rules that matters, because an append invalidates
+nothing while a modification invalidates the declared dependents.
+
+## What this does to the ruling above
+
+It does not soften it. Everything still varies granularly, a constant is still a function, and a value still
+holds over a domain rather than absolutely. What changes is where the obligation lands: **the domain is
+carried by which arm a table belongs to**, rather than by annotating each cell with the conditions it holds
+under.
+
+So the question for any cell is not "what is missing from this sentence" but "which arm is this table, and
+which arms are not written yet". The first has an answer today. The second is the roadmap.
+
+The panel should therefore stop treating unstated variation as a gap to be filled in place, and start
+treating the arm as the unit that gets written, reviewed and eventually promoted.
