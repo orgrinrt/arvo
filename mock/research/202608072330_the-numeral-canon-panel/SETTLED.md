@@ -146,11 +146,26 @@ Listed so that absence from the tables above is never read as an oversight.
   differ. Unresolved, and it will poison a consolidation that quotes either number.
 - **What the sign domain is**, as opposed to what it is not.
 - **The remedy for the adjudicating-strategy gap**, where the two experts who found it differ.
-- **The container-derivation mechanism was never ratified.** The `SETTLED_surface.md` sweep names
-  this as the reason: every gate-free candidate the panel built either enumerated widths or degraded
-  the diagnostic to something unreadable, and op declined the trade each time rather than picking a
-  side. The erasure gate is ratified and its mechanism is not, which is the largest structural gap
-  in the panel.
+- **The container-derivation mechanism was never ratified**, and **this entry as originally written
+  was wrong in a way that mattered.** It said every gate-free candidate either enumerated widths or
+  degraded the diagnostic, joined with "either", which made two unrelated defects read as a trade
+  nobody was ever offered, and made a **built and working mechanism read as unbuilt**.
+
+  Corrected by `10`, which opened the artifact rather than the summary. The attempt is the closed
+  panel's `137` and its probes. Of op's four properties, three hold outright: no forbidden features
+  (in fact **zero unstable features at all**), contracts work, typestate works. The fourth,
+  no enumeration, **holds of the ladder and fails of the bridge**, which is one impl per written
+  width. The two defects sit in two different places and are independent; `10` demonstrated that by
+  fixing the diagnostic while leaving the bridge untouched.
+
+  `seed/SETTLED_container.md` states this correctly. The compression of it into this file did not,
+  which is the compression failure this panel's own rules warn about, occurring inside the file that
+  warns about it.
+
+  Still open: the bridge. `10` reports it is **not dissolvable** under the design's constraints,
+  with three compiled refusals in three syntactic positions all naming a forbidden feature, and
+  thirteen routes enumerated of which six were attacked and six previously refused. That is a
+  concession with a long list behind it rather than an unexplored gap.
 - **The finest-view mechanism's literature relation is refuted and unrepaired.** `136` compile-refuted
   the identification (the Kleene equation is not the claimed pair whenever the specials set is
   populated). Op declared prior calls stale over it at `137b`, and it was never resolved. The

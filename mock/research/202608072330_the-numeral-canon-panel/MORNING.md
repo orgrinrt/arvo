@@ -5,6 +5,54 @@ This is angles opened, routes closed, and questions sharpened, presented for op 
 
 Read this first; it points at the files. Each entry says what changed and what it cost to find out.
 
+## Your standing instruction, taken at last, and it went well
+
+Nobody had taken it for four dispatches. `10` did, and the answer is better than the record suggested.
+
+**The mechanism is built, it works, and it stands on the pin.** The attempt is the closed panel's
+`137` and its probes. Of your four properties: no forbidden features **holds, and more strongly than
+you claimed**, since there are zero unstable features at all rather than merely zero forbidden ones;
+contracts **hold**; typestate **holds**; and no enumeration **holds of the ladder and fails of the
+bridge**, which is one impl per written width and is the shape you have refused four times.
+
+**The contradiction was a summarisation defect, and it was mine.** `SETTLED.md` said every gate-free
+candidate "either enumerated widths or degraded the diagnostic". That "either" joined two unrelated
+defects into a trade nobody was ever offered, and it made a working mechanism read as unbuilt. The
+two sit in different places and are independent; `10` proved it by fixing the diagnostic while
+leaving the bridge untouched. The theme sweep at `seed/SETTLED_container.md` had it right; my
+compression of it did not, which is the exact failure this panel's rules warn about, committed inside
+the file that carries the warning. Now corrected there.
+
+**Correction to your recollection, offered carefully.** `10` grepped the closed panel for "fresh
+eyes": ten hits, and the only call of that shape attaches to **the headroom rule**, not the container
+derivation. It identified `137` from your four properties instead, and flagged that identification as
+its own inference rather than something recorded. So the instruction stands and is now discharged;
+where exactly you gave it is less certain than either of us assumed.
+
+### Four improvements, all gate-free and codegen-identical
+
+Six bodies and 95 instructions on both sides, only anonymous symbol hashes differing.
+
+- **The law diagnostic**, previously a digit tower reading `type mismatch resolving <Idx<30> as
+  ToNat<Arvo>>::N == D0<D1<D0<D1<D1<Term>>>>>`, now reads **"width 30 is not the sum of widths 13 and
+  13"**. Zero digit towers, inference preserved.
+- **A leak nobody had named**: rustc was dumping arvo's entire shipped width table into every
+  consumer error, sorted lexicographically. Suppressed, worth 1002 bytes of error text per message.
+- **Unshipped width** now names the width and spells the remedy with it substituted in.
+- **Four repeated bounds collapse to one**, a cost the record had never priced.
+
+### The concession, with the list behind it
+
+`10` did not dissolve the bridge and states plainly that it does not believe it is dissolvable.
+Three compiled refusals in three syntactic positions all name a forbidden feature, and the sound
+subset refuses a generic parameter in the position that would be needed, for const and type
+parameters alike. Thirteen routes enumerated, six attacked here, six previously refused.
+
+Two facts fell out that you asked for earlier: **an unused bridge row costs nothing**, which is
+precisely the property you asked about at the closed panel's `127b`; and a dense table is expressible
+at 8193 rows, recorded explicitly as a **residue** of a shape you have refused four times rather than
+as a proposal.
+
 ## The single biggest shift
 
 **The panel may have been answering a question with no caller.**
