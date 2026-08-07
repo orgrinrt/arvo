@@ -25,13 +25,13 @@ which sentence demanded it.
 1. The premise check, and what this file assumes that it should not
 2. What a law row has to carry, derived from `110:1426-1430`
 3. The enumeration
-4. The derivations, and what they remove from the count
+4. The derivations, and what they remove
 5. What the operation surface implies and nobody has written
 6. The count, and what the count prices
 7. The decoder-ring correction, carried per the brief
 8. `134c`, and what it moves
 9. What cannot be written yet, and what blocks each
-10. What is op's
+10. Attacking the premise, and what is op's
 
 
 ## 1. The premise check
@@ -481,3 +481,153 @@ half is almost free for 39 of the 54 rows, is unpriced-and-large for the 10 trut
 the truth-type count and the width set, is genuinely hard for 4 rows for a reason the design has compiled, and
 is a citation for 1. The right next act is not to build either diagnostic. It is to state the truth-type count
 and the width set, which is one line of fact and turns the largest unknown into a number.
+
+## 7. The decoder-ring correction
+
+Carried as a paragraph per the brief, marked, and resting on `134` alone. It is here because a member reading
+the algebra section reads past the numeral notation on the way, and because a live defect in the standing base
+should not wait for a dispatch of its own.
+
+`110:2501-2505` states two things: that the decoder ring is a confirmed ceiling rather than an open item to
+keep chasing, and that the one lever which moves it is not a diagnostic attribute but restating the comparison
+as a bound (`E0277`) rather than an equality (`E0308`). **File 134 establishes that both halves are wrong, and
+in different ways.** The ceiling is an artifact of the numeral's base rather than a property of rustc: base ten
+prints the magnitude's digits in reading order with no elision on the differing coordinate, and is strictly
+shorter than binary at every width (`134:200-212`, `134:342-345`). The lever's reach is narrower than the
+standing base implies: it fires where the expected width is pinned independently of the operation, a declared
+accumulator being the canonical case, **and it does not cover a plain annotated return, which is the common
+case** (`134:168-178`). File 134 also observes that the lever does not solve the problem it was invented for,
+since `E0308` and `E0277` print the same type names and readability comes from the base.
+
+Two qualifications travel with the correction and neither is optional. **It rests on one expert's first read**,
+which is the provenance the checkpoint flags as the worst a canon paragraph can have, so it is a correction
+owed a second read rather than a settled replacement. And `134b:317-328` is right that `134:17`'s own verdict
+sentence overstates its own table: at `134:373` the common case still prints `expected N1<N3<End>>, found
+N1<N6<End>>`, which is a lexical decode step rather than the consumer reading their own number back. **The
+word is mitigated, not refuted**, and it matters because the figure is a cost column in a fork op is about to
+decide. A downstream face layer was built on the false ceiling and priced at doubling the relevant trait
+surface, which is what makes this a live defect rather than a nuance.
+
+## 8. `134c`, and what it moves in this table
+
+`134c` is a probe by the dispatching agent, an interested party, with no second read, and it says so at its own
+head. I treat it with the suspicion that provenance earns and I do not build on it. The question the brief puts
+is narrower and I can answer it from the table: does any law's statement or key depend on the claim `134c`
+falsifies, that a consumer cannot extend the width bridge?
+
+**No row does.** Every key in section 3 names numerals, resolutions, arities, biases, adjustments, exponent
+bounds and radices. None names how a width reaches type position. That is step A of the encoding fork, and
+`133:568-573` already found that the downstream contract is stable across the mechanism because every fact a
+lowering layer needs is reachable as a value-position const. The law list is a second, independent instance of
+that finding: **the laws are invariant under the fork, so this table is safe to promote while the fork is
+open.** That is worth saying plainly, because it means the largest gap in the canon can be closed without
+waiting on the largest open question, and nothing in the checkpoint's ordering made that obvious.
+
+**One consequence does reach the table, and it reaches the pricing rather than the rows.** If the bridge is
+consumer-extensible, a consumer introduces numerals arvo never listed. Section 6's witness arithmetic assumes
+the quantification "at every width" ranges over a width set arvo ships and therefore knows. If a consumer can
+add widths, that set is open, an exhaustive witness over it is not available in principle, and the truth
+suite's own instruction (`110:5586-5589`, every width and not a sample) becomes a statement arvo cannot
+discharge alone. The repair is not hard and it is the one this design reaches for everywhere else: the
+obligation transfers to whoever extends the bridge, as a documented downstream contract rather than as a cap.
+**But it is a real change to what section 6 prices, it follows from a probe with the weakest provenance in the
+panel, and I am flagging it rather than folding it in.**
+
+## 9. What cannot be written yet, and what blocks each
+
+Six items, and the useful half of this section is that only three of them are genuinely blocked.
+
+**The four numeral families beyond fixed point.** Every row in section 3 is a fixed-point or truth-type row.
+Float and decimal carry the same operations, `110:2379-2381` makes a claim to the world that arvo's decimal
+`Ranged` numerals deliver IEEE's values while being non-conformant to its preferred-exponent rules and that
+decimal `Implicit` numerals are strictly stronger than the standard, and the laws that claim rests on are
+written nowhere. Blocked on the checkpoint's dispatch two, which is already scheduled. **This is the single
+largest addition the count is missing and I will not guess its size**, beyond observing that the operations are
+the same, so the ceiling is around fifty-four again rather than around five.
+
+**The exponent form's own laws.** Same dispatch, and `130` section 10 is the only place the design has four
+families interpreting one contract, on one expert's first read, written with a container as a written
+parameter that op refused hours later.
+
+**The conversion laws.** `narrow ∘ widen = id` and the failure of its converse, plus whatever the four other
+conversion relations claim. Blocked on the checkpoint's dispatch three, which also owes the lossy narrowing
+that `131:625-628` left undesigned.
+
+**The truth-type count and the width set.** Not blocked on a dispatch, blocked on a fact. Section 6 cannot
+multiply the largest family without it and neither can anyone else. One line.
+
+**The evaluation strategy of a refusing operand's sibling.** Op's, correctly, and already on his list.
+
+**The identity contract's absorbing element.** `110:1672-1674` scopes it as a requirement on the identity
+contract discovered from the algebra side and does not design it. It gates whether the `Dioid` rung can ever be
+non-empty, which is N4's only escape.
+
+**And three of section 5's gaps are blocked on nothing at all.** The identity laws, the order laws, and the
+view homomorphism laws can be written today, from the standing base, by whoever next opens the algebra section.
+Each is one or two rows. The view homomorphism laws in particular should be written before this table is
+promoted, because the finest-view column of every row above is well defined only if they hold, and asserting
+them for nine views is the cheapest structural check in the whole enumeration.
+
+## 10. Attacking the premise, and what is op's
+
+### The premise this brief takes for granted, and it is a real one
+
+The brief asks for a list and the checkpoint asks for a list, and both are confident the artifact is right.
+There is a reason to doubt it, and it is the design's own.
+
+**One chapter over, this design considered the list-versus-test question and chose the test.** `110:2317-2318`
+adopts the operation surface's closure sentence "in the admission-test form rather than a list, **because a
+list reopens with every member and a test does not**", and `110:2321-2324` states the five things an operation
+must state to join. That is a deliberate form decision with a stated reason, taken about the adjacent object,
+and an enumeration of laws is the shape it refused. Nobody noticed the tension, including me until I had
+written most of the table.
+
+I do not think it defeats the list, and I will say why rather than assert it. The admission test governs
+**membership**: which operations are in the design. A law list is not a membership claim, it is the extension
+of a definition that has only been given intensionally, and the two are complementary in the way an axiom
+schema and its instances are. The test tells you whether a new operation belongs; the list tells you what the
+current design claims, which is what the implementation phase needs and what a promoted canon reads as
+complete or incomplete. **But the reason the design gave for preferring a test applies here too**: this list
+reopens with every operation, every numeral family, and every truth type, and section 9 has three families
+queued that will reopen it within days.
+
+So the shape I would suggest, and it is a suggestion: **carry both, and mark the list as the current extension
+rather than as closed.** The definition at `110:1426-1430` is the intension and stays governing. The
+enumeration is dated, states its own coverage boundary (fixed point and truth types, not the four families),
+and is explicitly the thing that grows. A canon section carrying a definition, an admission test for new laws
+in the shape of `110:2321-2324`, and a dated extension, reads as complete because it is, and a reader can tell
+a deferred law from a forgotten one, which is the property op asked the operation table for at `108b:92-93`.
+
+**Two further things this brief assumed that I would not.** It assumed the law list is the biggest hole in the
+canon, and `134b:196-214` says so too. Having written it, I think the view homomorphism laws are a worse one,
+because they are upstream of the mechanism the whole algebra section is built on, they are three lines to
+state, and their absence makes a column of this table conditionally defined. And it assumed that writing the
+list was blocked on nothing, which was right, and which is why it should not have taken four files to notice.
+
+### What is op's
+
+Four things, one line each, and I am not touching any of them.
+
+1. **Whether the canon carries the list, the test, or both**, per the tension above. He already made this call
+   once, one chapter over, in the direction of the test. That is a reason to ask rather than to infer.
+2. **The evaluation strategy of a refusing operand's sibling** (`110:1517-1524`), already his, unchanged, and
+   it is one row of section 3 when it closes.
+3. **Whether the digest's order sensitivity is a stated law of the combine or an observation made while
+   separating two properties** (`110:1614-1617`). The count is fifty-four or fifty-five accordingly.
+4. **Whether the identity contract gains an absorbing element** (`110:1672-1674`), which decides whether the
+   `Dioid` rung can ever be non-empty and is the only escape from N4.
+
+Everything else in this file is either harvested with a citation or derived and shown. Where I have suggested
+a shape, I have said it is a suggestion. Nothing here is ratification and nothing here is a call op reserved.
+
+### Standing
+
+This file is agent output on the suspect rung. The rows are harvested from the standing base with citations so
+a reader can check each against its source rather than against me, which is the only property that makes an
+enumeration worth more than the prose it came from. The count is fifty-four and it is a floor. Section 5 names
+eight operations that carry no law, section 9 names three families whose laws are unwritten, and each of those
+raises it.
+
+The correction in section 7 rests on `134` alone and is owed a second read. The consequence in section 8 rests
+on `134c`, whose provenance is the weakest in the panel, and is flagged rather than folded in. Neither should
+be carried forward as settled by any later file.
