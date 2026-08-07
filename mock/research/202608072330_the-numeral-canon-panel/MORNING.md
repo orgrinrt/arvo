@@ -11,8 +11,10 @@ Read this first; it points at the files. Each entry says what changed and what i
 
 `03` noticed in passing that the multiply's result numeral is a **formula over the operands**, not a
 lattice join: the product sits at the sum of the widths, the join sits at the pairwise maxima, and
-arithmetic calls the first. `06` was dispatched to test that head-on and enumerated **twenty sites**
-where the design produces a numeral the consumer did not write.
+arithmetic calls the first. `06` was dispatched to test that head-on and enumerated **twenty
+candidate sites**, of which **eight turned out to be determined by the consumer after all**. That
+eight is `06`'s headline rather than a footnote: **the design's actual inference surface is ten
+sites, not twenty.**
 
 It replaced the carve it was given. The useful axis is not formula-versus-extremum, because **an
 extremum here is always a formula**; coordinatewise maximum is a total function of four declared
@@ -113,10 +115,15 @@ citing it as external prior art. The ground was new.
 at the fibre (rounding into a fixed numeral, against the embedding) and one at the index (which
 numeral, given a set of exact values). The consequence that matters:
 
-**`06`'s D0/D1 split is the fibre/index line falling out of the mathematics**, rather than a taxonomy
-imposed on the sites. Two experts arrived at the same boundary from opposite directions, one by
-enumerating twenty sites and one by setting up the adjunction, neither having derived it from the
-other.
+**`06`'s D0/D1 split appears to be the fibre/index line falling out of the mathematics**, rather than
+a taxonomy imposed on the sites.
+
+**This is one expert, not two, and an earlier version of this file said otherwise.** `07` read `06`
+in full before deriving, says so, calls its own agreement inherited, and puts this exact claim first
+on its own owed-a-second-read list. Promoting it to independent corroboration was the dispatcher's
+error, caught at the checkpoint, and it is precisely the rung inflation this panel's provenance
+ladder exists to prevent. The claim is attractive and may well be right; it has one expert behind it
+and owes a properly ordered second read.
 
 The index level holds, and its condition is meet-preservation, which the record already carries. The
 fibre level holds against the embedding **only for round-toward-positive-infinity, and only in
@@ -138,8 +145,9 @@ never uses `06`'s inequality. That is two instances arrived at differently, whic
 - **A refined composition law**, arrived at after the expert's own first prediction over-fired: a
   rounding mode composes across nested grids exactly when its direction switches only at points of
   the coarser grid. Four pivots on the grid, zero failures; four off it, seven each.
-- **The cross-kind case is priced rather than closed**: completing it settles at a 16 to 34 percent
-  enlargement, every added shape a segmented grid that neither family names.
+- **The cross-kind case is counted rather than closed**: completing it enlarges the shape set by 16
+  to 34 percent, every added shape a segmented grid that neither family names. `08` later bounded
+  this: the completion buys the glue shapes and not the tapers.
 
 ### The cost, and the recommendation
 
@@ -211,7 +219,8 @@ rather than independent**, which is the distinction this panel's provenance ladd
 
 ## Method notes worth your attention
 
-Both experts kept a broken instrument rather than deleting it. `03`'s first reported zero
+**All four experts kept a broken instrument** rather than deleting it, which is the main reason to
+believe the numbers. `03`'s first reported zero
 disagreements through setup that helped; `06` killed two for cost and kept them as controls. Every
 number above was produced by a command recorded in the probe directories.
 
@@ -219,8 +228,24 @@ number above was produced by a command recorded in the probe directories.
 
 ## What is still open, and what is running
 
-Open and named: whether mixed-numeral addition exists; whether the shape space should be closed
-under formula clamps; the six items in `06` section 10; the family question itself, now reframed.
+**Op's one standing instruction is the one nobody took.** `01` is not a question waiting on him on
+the container derivation; it is an order, "I said fresh eyes on it, that holds". Four dispatches ran
+and none located the attempt. There is also a live contradiction inside it: op's recollection that it
+had no enumeration and working contracts and typestate is flatly contradicted by `SETTLED.md`, which
+says every gate-free candidate either enumerated widths or degraded the diagnostic. He flagged his
+recall as approximate, so neither settles it, and opening the candidate is one probe's work.
 
-Running: `07`, on whether the exact-to-representable pair is an adjunction, a framing the panel has
-never used, and what it buys or costs if it is.
+Open and named: whether mixed-numeral addition exists; what the top of a saturating numeral denotes;
+the mode-composition condition `07` derived; `08`'s question one, which it calls the one everything
+else is downstream of; whether the shape space should be closed under formula clamps; the six items
+in `06` section 10; and the family question itself, now reframed twice.
+
+**Dropped or demoted at the checkpoint**, so they do not sit in the record looking live: the Moore
+completion, which closes an operation `06` proved has no caller and `E0119` says has no expressible
+form, and which `08` shows does not reach the tapers anyway; the `canonical_exponent` naming call as
+a cost argument, which is a fact rather than an argument; and `03`'s reading F, superseded and
+disclaimed by its own author.
+
+**Still unresolved from the closed panel**: a count contradiction between its `148` and `150` on the
+same slice, 81 against zero. It must be promoted to a task or explicitly abandoned before any
+consolidation, because a consolidation quoting either number inherits the defect.
