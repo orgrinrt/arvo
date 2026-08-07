@@ -1,0 +1,16 @@
+
+================ reading P1
+  radix  2: ordered pairs = 576, disagreements = 48, of which source carries fewer than two values = 48, other = 0
+            restricted to both sides carrying two or more values: pairs = 256, disagreements = 0
+  radix  3: ordered pairs = 576, disagreements = 36, of which source carries fewer than two values = 36, other = 0
+            restricted to both sides carrying two or more values: pairs = 324, disagreements = 0
+  radix 10: ordered pairs = 576, disagreements = 36, of which source carries fewer than two values = 36, other = 0
+            restricted to both sides carrying two or more values: pairs = 324, disagreements = 0
+
+================ reading P2
+  radix  2: ordered pairs = 576, disagreements = 24, of which source carries fewer than two values = 24, other = 0
+            restricted to both sides carrying two or more values: pairs = 400, disagreements = 0
+  radix  3: ordered pairs = 576, disagreements = 24, of which source carries fewer than two values = 24, other = 0
+            restricted to both sides carrying two or more values: pairs = 400, disagreements = 0
+  radix 10: ordered pairs = 576, disagreements = 24, of which source carries fewer than two values = 24, other = 0
+            restricted to both sides carrying two or more values: pairs = 400, disagreements = 0

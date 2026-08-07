@@ -1,0 +1,34 @@
+
+================ reading P1
+  radix  2: structural predicate checked against materialised sets on 576 ordered pairs, disagreements = 48
+            non-degenerate numerals in the box =  80, partial orders on the three domains tried = 19, surviving = 0
+            domain relations the order forces: ['Asy<=Asy', 'Asy<=Sym', 'Non<=Asy', 'Non<=Non', 'Non<=Sym', 'Sym<=Asy', 'Sym<=Sym']
+            witness: Symmetric(p=2) spanning [-1,1] quanta strictly inside AsymmetricLow(p=2) spanning [-2,1] quanta, precision 2 <= 2
+            witness: AsymmetricLow(p=1) spanning [-1,0] quanta strictly inside Symmetric(p=2) spanning [-1,1] quanta, precision 1 <= 2
+  radix  3: structural predicate checked against materialised sets on 576 ordered pairs, disagreements = 36
+            non-degenerate numerals in the box =  60, partial orders on the three domains tried = 19, surviving = 0
+            domain relations the order forces: ['Asy<=Asy', 'Asy<=Sym', 'Non<=Asy', 'Non<=Non', 'Non<=Sym', 'Sym<=Asy', 'Sym<=Sym']
+            witness: AsymmetricLow(p=1) spanning [-1,1] quanta strictly inside Symmetric(p=2) spanning [-4,4] quanta, precision 1 <= 2
+            witness: AsymmetricLow(p=2) spanning [-4,4] quanta strictly inside Symmetric(p=3) spanning [-13,13] quanta, precision 2 <= 3
+  radix 10: structural predicate checked against materialised sets on 576 ordered pairs, disagreements = 36
+            non-degenerate numerals in the box =  36, partial orders on the three domains tried = 19, surviving = 0
+            domain relations the order forces: ['Asy<=Asy', 'Asy<=Sym', 'Non<=Asy', 'Non<=Non', 'Non<=Sym', 'Sym<=Asy', 'Sym<=Sym']
+            witness: Symmetric(p=1) spanning [-4,4] quanta strictly inside AsymmetricLow(p=1) spanning [-5,4] quanta, precision 1 <= 1
+            witness: AsymmetricLow(p=1) spanning [-5,4] quanta strictly inside Symmetric(p=2) spanning [-49,49] quanta, precision 1 <= 2
+
+================ reading P2
+  radix  2: structural predicate checked against materialised sets on 576 ordered pairs, disagreements = 24
+            non-degenerate numerals in the box =  88, partial orders on the three domains tried = 19, surviving = 0
+            domain relations the order forces: ['Asy<=Asy', 'Asy<=Sym', 'Non<=Asy', 'Non<=Non', 'Non<=Sym', 'Sym<=Asy', 'Sym<=Sym']
+            witness: Symmetric(p=1) spanning [-1,1] quanta strictly inside AsymmetricLow(p=1) spanning [-2,1] quanta, precision 1 <= 1
+            witness: AsymmetricLow(p=0) spanning [-1,0] quanta strictly inside Symmetric(p=1) spanning [-1,1] quanta, precision 0 <= 1
+  radix  3: structural predicate checked against materialised sets on 576 ordered pairs, disagreements = 24
+            non-degenerate numerals in the box =  64, partial orders on the three domains tried = 19, surviving = 0
+            domain relations the order forces: ['Asy<=Asy', 'Asy<=Sym', 'Non<=Asy', 'Non<=Non', 'Non<=Sym', 'Sym<=Asy', 'Sym<=Sym']
+            witness: Symmetric(p=1) spanning [-2,2] quanta strictly inside AsymmetricLow(p=1) spanning [-3,2] quanta, precision 1 <= 1
+            witness: AsymmetricLow(p=0) spanning [-1,0] quanta strictly inside Symmetric(p=1) spanning [-2,2] quanta, precision 0 <= 1
+  radix 10: structural predicate checked against materialised sets on 576 ordered pairs, disagreements = 24
+            non-degenerate numerals in the box =  40, partial orders on the three domains tried = 19, surviving = 0
+            domain relations the order forces: ['Asy<=Asy', 'Asy<=Sym', 'Non<=Asy', 'Non<=Non', 'Non<=Sym', 'Sym<=Asy', 'Sym<=Sym']
+            witness: Symmetric(p=1) spanning [-9,9] quanta strictly inside AsymmetricLow(p=1) spanning [-10,9] quanta, precision 1 <= 1
+            witness: AsymmetricLow(p=0) spanning [-1,0] quanta strictly inside Symmetric(p=1) spanning [-9,9] quanta, precision 0 <= 1

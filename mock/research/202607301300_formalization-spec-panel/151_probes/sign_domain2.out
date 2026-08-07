@@ -1,0 +1,42 @@
+
+================ reading P1
+--- A  cross-domain value-set collisions with at least two values   [P1]
+  radix  2: 0 collisions
+  radix  3: 20 collisions
+            p=1 e=-3  Symmetric == AsymmetricLow  (3 values)
+            p=1 e=-2  Symmetric == AsymmetricLow  (3 values)
+  radix 10: 0 collisions
+--- B  a non-degenerate pair no order on the domains can carry   [P1]
+  radix  2: none in this box
+  radix  3: none in this box
+  radix 10: none in this box
+--- C  the three domains at equal grid and equal precision, p >= 1   [P1]
+  radix  2: p=1: Sym<Non Non|Asy Sym<Asy | p=2: Non|Sym Non|Asy Sym<Asy | p=3: Non|Sym Non|Asy Sym<Asy | p=4: Non|Sym Non|Asy Sym<Asy
+  radix  3: p=1: Non|Sym Non|Asy Sym=Asy | p=2: Non|Sym Non|Asy Sym=Asy | p=3: Non|Sym Non|Asy Sym=Asy | p=4: Non|Sym Non|Asy Sym=Asy
+  radix 10: p=1: Non|Sym Non|Asy Sym<Asy | p=2: Non|Sym Non|Asy Sym<Asy | p=3: Non|Sym Non|Asy Sym<Asy | p=4: Non|Sym Non|Asy Sym<Asy
+--- D  does the order have a bottom if precision zero is refused?   [P1]
+  radix  2: [(1, 'Symmetric')]
+  radix  3: no numeral at p >= 1 denotes exactly {0}
+  radix 10: no numeral at p >= 1 denotes exactly {0}
+--- E  meets and joins at fixed grid with precision zero refused   [P1]
+  radix 2 p in [1, 2, 3, 4]: pairs=66  meet absent=0 non-unique=0  join absent=0 non-unique=0
+
+================ reading P2
+--- A  cross-domain value-set collisions with at least two values   [P2]
+  radix  2: 0 collisions
+  radix  3: 0 collisions
+  radix 10: 0 collisions
+--- B  a non-degenerate pair no order on the domains can carry   [P2]
+  radix  2: none in this box
+  radix  3: none in this box
+  radix 10: none in this box
+--- C  the three domains at equal grid and equal precision, p >= 1   [P2]
+  radix  2: p=1: Non<Sym Non<Asy Sym<Asy | p=2: Non<Sym Non<Asy Sym<Asy | p=3: Non<Sym Non<Asy Sym<Asy | p=4: Non<Sym Non<Asy Sym<Asy
+  radix  3: p=1: Non<Sym Non<Asy Sym<Asy | p=2: Non<Sym Non<Asy Sym<Asy | p=3: Non<Sym Non<Asy Sym<Asy | p=4: Non<Sym Non<Asy Sym<Asy
+  radix 10: p=1: Non<Sym Non<Asy Sym<Asy | p=2: Non<Sym Non<Asy Sym<Asy | p=3: Non<Sym Non<Asy Sym<Asy | p=4: Non<Sym Non<Asy Sym<Asy
+--- D  does the order have a bottom if precision zero is refused?   [P2]
+  radix  2: no numeral at p >= 1 denotes exactly {0}
+  radix  3: no numeral at p >= 1 denotes exactly {0}
+  radix 10: no numeral at p >= 1 denotes exactly {0}
+--- E  meets and joins at fixed grid with precision zero refused   [P2]
+  radix 2 p in [1, 2, 3, 4]: pairs=66  meet absent=0 non-unique=0  join absent=0 non-unique=0
