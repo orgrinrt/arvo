@@ -128,3 +128,17 @@ each reading the ones before it, and each writes its file incrementally.
 The consolidation is promoted to canon whole and supersedes everything before it, so comprehensiveness is a
 requirement rather than a virtue, and the erasure gate at `135b` is part of what it is measured against.
 Both open questions, the bridge and Warm's rule, come before the consolidation on op's call at `138b`.
+
+---
+
+> **Correction, file 140.** The figure quoted in this checkpoint as "roughly 1600 instructions against 81"
+> is wrong by a factor of four; it is **339 against 81**. `139` multiplied the loop body by the element
+> count rather than by the trip count, and the loop is unrolled four elements per iteration.
+>
+> **Op's ruling stands and was re-confirmed against the corrected figure.** He ruled on the structural
+> ground, that a loop over values fitting a native register must not lose its vector form, and that does not
+> depend on the magnitude. Recorded because the record should not carry a wrong number he was shown.
+>
+> Under the evidence rule adopted since, neither figure prices anything: both are ad-hoc quick spikes taken
+> outside the bench harness, and the fork stays unpriced until harness benches with real competitor arms
+> have run.

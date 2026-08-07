@@ -515,3 +515,19 @@ it is the option nobody had put in front of him.
 three are one problem with one fix. The third is not, and the reason the three felt alike is that all three
 compensated for a missing derivation with a written artifact that read as a design element. That pattern,
 rather than any of the three quantities, is what I would go looking for next.
+
+---
+
+> **Correction, file 140.** Every rolled instruction figure in this file is wrong by a factor of four. The
+> loops are unrolled four elements per iteration, so the trip count over sixty-four elements is sixteen, not
+> sixty-four, and this file multiplied the loop body by the element count instead of the trip count. The
+> headline figure reported as "roughly 1600 instructions" is **339**. `140_probes/rolled.py` carries the
+> trip-count derivation and the assembly shows `subs x10, x10, #4` as the step.
+>
+> Op ruled on the 1600 figure and **the ruling stands**, because what he ruled was that a loop over values
+> fitting a native register must not lose its vector form, which is structural rather than numeric.
+>
+> Separately, and it applies to the corrected figure too: under
+> `.claude/rules/evidence-lives-in-the-repo-or-it-never-happened.md`, an instruction count taken outside
+> `mock/benches/` is an ad-hoc quick spike with no substance and cannot price a fork. The magnitude here is
+> **unpriced**, and the qualitative findings are what survive.
