@@ -38,6 +38,12 @@ conservatively:
 So this rung is a queue entry, not a doubt about the author. A row sitting at ONE EXPERT is asking
 for the second read it has not had.
 
+**PERSONA.** The `orgrinrt` persona standing in while op is away. It steers and offers a
+designer-shaped perspective, and it has **no authority at all**. A persona call never ratifies, never
+becomes canon, is never quoted to an expert as a warrant, and always lands in `PERSONA_CALLS.md`
+marked persona-decided. Where it appears to conflict with op's recorded words, his govern and the
+conflict is written down rather than resolved silently.
+
 **Agreement among unratified artifacts is not corroboration.** It is shared drift, because agents
 copy each other's framing.
 
