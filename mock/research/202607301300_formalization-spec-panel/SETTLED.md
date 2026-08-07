@@ -13,6 +13,17 @@ live disputes over a body of agreements they were never shown.
 - **ONE EXPERT** means asserted once and never contested. Weakest rung, and a candidate for a second
   read rather than a settled call.
 
+**A cumulative chain counts as ONE EXPERT, deliberately.** Where each file was dispatched to read and
+correct its predecessor rather than to derive independently, the agreement is inherited rather than
+found, and inheriting a framing is how this panel has drifted before. Op, on the sweeps electing to
+classify those conservatively rather than inflate them:
+
+> One expert is a good stance I think, because it forces a double check.
+
+So the rung is not a complaint about those results. It is the mechanism that sends them for the
+second read they have not yet had, and a row sitting at ONE EXPERT is a queue entry rather than a
+doubt about its author.
+
 **How this file is maintained.** Appended the moment a checkpoint lands, before anything else. A
 settlement that is not written here within the same act as its checkpoint is a settlement the next
 reader will lose, which is the failure this file was created to end.
