@@ -88,13 +88,72 @@ So **a canon sentence claiming the derived numeral is the tightest honest answer
 gate-free with a negative control that fails at `E0080`, so the assertions are load-bearing rather
 than decorative.
 
-## The cheapest question waiting for you
+## The two cheapest questions waiting for you
+
+Both are one sentence, and each collapses a large part of the map.
 
 **Does the design have a mixed-numeral addition at all?** `06` found no operation anywhere in the
 record that adds values from two different numerals. If it does not, addition joins the
 consumer-determined block and **the entire inference surface is multiplication plus the container**.
 
-That is a one-sentence answer from you that would collapse a large part of the remaining map.
+**What does the top of a saturating numeral denote?** `07` found that saturation's soundness is an
+**unstated concretisation choice**, and that the two readings are not close. Read the top as a point,
+and saturating is exactly as unsound as wrapping, 512 of 1024 at one size. Read it as absorbing
+everything above, and it is sound at zero failures for every size tried while wrapping reaches 55,085
+of 65,536. **Identical arithmetic, opposite verdicts.** The design's own algorithm crates already
+behave as though this were answered.
+
+## The frame that turned out to explain the other two files
+
+`07` asked whether the exact-to-representable pair is an adjunction, a framing the predecessor's 320
+files never once used. Verified: zero hits across the whole tree for the vocabulary, one near-miss
+citing it as external prior art. The ground was new.
+
+**There are two adjunctions, not one, and the panel has been holding them as a single object.** One
+at the fibre (rounding into a fixed numeral, against the embedding) and one at the index (which
+numeral, given a set of exact values). The consequence that matters:
+
+**`06`'s D0/D1 split is the fibre/index line falling out of the mathematics**, rather than a taxonomy
+imposed on the sites. Two experts arrived at the same boundary from opposite directions, one by
+enumerating twenty sites and one by setting up the adjunction, neither having derived it from the
+other.
+
+The index level holds, and its condition is meet-preservation, which the record already carries. The
+fibre level holds against the embedding **only for round-toward-positive-infinity, and only in
+range**: zero failures over 34,976 pairs, 184 once out-of-range values are admitted.
+
+**The distinction `06` needed corrected simply dissolves.** The join and the product numeral are the
+same function at different arguments, so formula-versus-lattice was never a real separation.
+
+**And `06`'s tight product form now has independent corroboration.** Computing the least containing
+numeral from the value set directly agrees with it at 400 of 400 operand pairs, by a derivation that
+never uses `06`'s inequality. That is two instances arrived at differently, which is the bar.
+
+### What the frame predicts that the panel did not have
+
+- **The fold's sufficiency check is a single diagonal**, and the range half needs no bound at all.
+  Zero unsound sequences on and above it, nonzero strictly below. It compiles as an ordinary bound,
+  gate-free, **refuses at type-check rather than at monomorphisation**, and erases to the same ten
+  instructions as the unguarded fold, with both guarded call sites folded onto one symbol.
+- **A refined composition law**, arrived at after the expert's own first prediction over-fired: a
+  rounding mode composes across nested grids exactly when its direction switches only at points of
+  the coarser grid. Four pivots on the grid, zero failures; four off it, seven each.
+- **The cross-kind case is priced rather than closed**: completing it settles at a 16 to 34 percent
+  enlargement, every added shape a segmented grid that neither family names.
+
+### The cost, and the recommendation
+
+**The vocabulary, and nothing else.** Section 5.1 of `07` restates every result without it. Its own
+recommendation is to keep the frame in the audit trail and out of the canon, with one qualification:
+the soundness-versus-bestness pair is hard to state crisply without it. It flags that risk against
+the record's own precedent, the finest-view mechanism whose literature relation was refuted and never
+repaired.
+
+Neighbouring framings were mapped rather than one being exhausted. Closure operator: same content,
+reads better for a canon. Monad and comonad: **degenerate**, because posets make every coherence
+automatic, and saying so forecloses a direction rather than opening one. Congruence-times-interval
+reduced product: flagged as the most promising lead and explicitly marked unverified against the
+literature's own definitions.
 
 ## Method notes worth your attention
 
