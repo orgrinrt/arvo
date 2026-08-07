@@ -634,9 +634,10 @@ asymmetry has no semantic content whatsoever; it is a shadow of the coherence ru
 Shipping it would be an ad hoc restriction wearing an ergonomic face, and the consumer who hit the second case
 after using the first would have no way to understand why.
 
-**The strategy retag should not be a `From` impl.** It is one today, six times per family
-(`ufixed.rs:361-395`, `ifixed.rs:381-415`). It changes no value. It changes the resolution of every subsequent
-operation, and therefore fails condition four:
+**The strategy retag should not be a `From` impl.** It is one today in three of its directions per family,
+the upward ones (`ufixed.rs:361-395`, `ifixed.rs:381-415`), with the two downward directions as `TryFrom`. It
+changes no value. It changes the resolution of every subsequent operation, and therefore fails condition
+four:
 
 ```
 checked 87360 non-commuting 26670
@@ -901,6 +902,59 @@ wrong side of `110:1530-1534`'s distinction. I believe it is not, because `110:1
 is the value set and the crossing contract is explicitly the one family where it is not (`135:188-190`), but
 believing is not checking and the shipped `from_raw` perimeter means the tree currently behaves as though the
 answer were the other one.
+
+### The alternatives I did not take
+
+Written down because the next expert attacking this from another angle should start from the list rather than
+from nothing, and because two of these look better on paper than they turn out to be.
+
+**Keep `131`'s five and add narrowing as a sixth.** The smallest possible change and it is what the brief's
+shape invites. Dropped because the classification is the problem rather than the count: naming conversions by
+which coordinate moved cuts across the two things that decide what happens, which is why `131`'s own flagship
+`rescale` example is a range event described as a grid event. A sixth row on that basis would have inherited
+the miscut.
+
+**Enumerate the `From` impls per width pair.** It restores implicit embedding and it is the only mechanism
+that certainly works. Dropped at `O(W^4)` and because it is exactly the per-width enumeration op refused at
+`127b:36-50` and the panel spent three files removing from the container projection.
+
+**An unbounded `From` with a const-assert body.** I expected this to be the fallback: admit every pair, check
+the order in the body, take a post-monomorphisation error. It is not available at all, because `e1` shows the
+unbounded impl is refused by coherence before any body exists. Recorded because the reasoning that reaches for
+it is natural and the refutation is one file.
+
+**Route B, a `From` that moves the numeral and the strategy together.** Compiles, exit 0
+(`e4_routes_after_refusal.rs`). Refused on design grounds in section 6: it would make implicitness available
+exactly when the strategy also changes, an asymmetry that is a shadow of the coherence rule rather than a
+statement about numbers.
+
+**Make `quantise` refuse where no embedding exists, so a consumer opts in per pair.** It would give the lossy
+case the same loud diagnostic the exact case gets. Dropped because it leaves a consumer with no total
+conversion at all, and because the strategy already declares what happens to what does not fit, so a refusal
+would be the design asking a question it has already answered.
+
+**Key the order on precision plus scale rather than on the pair `(I, F)`.** The same information in different
+coordinates, and it is the coordinate system the withdrawn requirement was reasoning in. Dropped because the
+antichain result is invisible there: in `(precision, scale)` the equal-precision family is a line and looks
+like something that ought to be connected, while in `(I, F)` it is visibly an antichain. Two coordinate
+systems for one lattice, and only one of them shows the structure that decides the question.
+
+**Keep the retag implicit upward and written downward, which is what the tree does.** It has a real argument
+behind it, the `Resolve` join, and section 6 answers that argument rather than ignoring it. Dropped on X12,
+and the ruling is section 9's second entry rather than mine to make.
+
+**Treat a conversion as a datum-level operation.** Not an alternative mechanism but an alternative frame, and
+it is the premise a second read should attack. It is named at the end of the two-expert entry above.
+
+### The fork that dissolved
+
+The question as posed is a fork: which conversions are implicit and which are written. It has no answer in
+that shape, because the language decides one axis and the operation surface removes the need on the other.
+Once both of those are on the table the fork is gone: nothing can be implicit that should be, nothing that can
+be implicit should be, and the arithmetic never needed a conversion in the first place. What is left is a
+single small chapter about storing a value into a format a consumer named, which is the one place a consumer
+has already said what they want.
+
 
 ---
 

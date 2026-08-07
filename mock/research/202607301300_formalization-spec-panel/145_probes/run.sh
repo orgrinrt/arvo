@@ -49,4 +49,4 @@ $RS -O q1_quantise.rs -o q1_quantise && ./q1_quantise
 
 banner "q2_retag.rs  (expected: many non-commuting, zero on the diagonal and Warm<->Cold)"
 $RS -O q2_retag.rs -o q2_retag && ./q2_retag
-rm -f o1_order q1_quantise q2_retag
+rm -f o1_order q1_quantise q2_retag *.rlib
