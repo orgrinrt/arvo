@@ -1,0 +1,15 @@
+[package]
+name = "bench-warm-clamp-acc64"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_warm_clamp_acc64"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+bench-warm-clamp-shared = { path = "../warm-clamp-shared" }
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }

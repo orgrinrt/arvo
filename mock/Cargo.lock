@@ -27,6 +27,7 @@ dependencies = [
  "bench-quantiser-radix-shared",
  "bench-spectral-bisection",
  "bench-structural-decomposition",
+ "bench-warm-clamp-shared",
  "bench-warm-container-shared",
  "mockspace-bench-core",
  "mockspace-bench-harness",
@@ -440,6 +441,67 @@ dependencies = [
  "arvo-tensor",
  "mockspace-bench-core",
  "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-clamp-acc64"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-clamp-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-clamp-accfit"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-clamp-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-clamp-accfit-dyn"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-clamp-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-clamp-head"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-clamp-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-clamp-min-lanes"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-clamp-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-clamp-minimum"
+version = "0.0.0"
+dependencies = [
+ "bench-warm-clamp-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-warm-clamp-shared"
+version = "0.0.0"
+dependencies = [
+ "mockspace-bench-core",
 ]
 
 [[package]]

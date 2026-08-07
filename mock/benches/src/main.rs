@@ -167,6 +167,7 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     use bench_quantiser_radix_shared::RadixAdd;
     use bench_spectral_bisection::Fiedler;
     use bench_structural_decomposition::Rcm;
+    use bench_warm_clamp_shared::Case as ClampCase;
     use bench_warm_container_shared::Case;
 
     let bridge = match (name, n) {
@@ -295,6 +296,55 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("precise-widening-theorem-l1", 320501) => routine_bridge!(Case<320501>),
         ("precise-widening-theorem-l1", 600501) => routine_bridge!(Case<600501>),
         ("precise-widening-theorem-l1", 640501) => routine_bridge!(Case<640501>),
+
+        // clamping-semantics bench (file 142). One ClampCase<KEY> bridge per row;
+        // the six arms are resolved from bench.toml's `variants` list.
+        ("warm-clamp-arity-w8", 80010) => routine_bridge!(ClampCase<80010>),
+        ("warm-clamp-arity-w8", 80020) => routine_bridge!(ClampCase<80020>),
+        ("warm-clamp-arity-w8", 80030) => routine_bridge!(ClampCase<80030>),
+        ("warm-clamp-arity-w8", 80040) => routine_bridge!(ClampCase<80040>),
+        ("warm-clamp-arity-w13", 130010) => routine_bridge!(ClampCase<130010>),
+        ("warm-clamp-arity-w13", 130020) => routine_bridge!(ClampCase<130020>),
+        ("warm-clamp-arity-w13", 130030) => routine_bridge!(ClampCase<130030>),
+        ("warm-clamp-arity-w13", 130040) => routine_bridge!(ClampCase<130040>),
+        ("warm-clamp-arity-w13", 130060) => routine_bridge!(ClampCase<130060>),
+        ("warm-clamp-arity-w13", 130080) => routine_bridge!(ClampCase<130080>),
+        ("warm-clamp-arity-w16", 160010) => routine_bridge!(ClampCase<160010>),
+        ("warm-clamp-arity-w16", 160020) => routine_bridge!(ClampCase<160020>),
+        ("warm-clamp-arity-w16", 160030) => routine_bridge!(ClampCase<160030>),
+        ("warm-clamp-arity-w16", 160040) => routine_bridge!(ClampCase<160040>),
+        ("warm-clamp-arity-w16", 160060) => routine_bridge!(ClampCase<160060>),
+        ("warm-clamp-arity-w16", 160080) => routine_bridge!(ClampCase<160080>),
+        ("warm-clamp-arity-w32", 320010) => routine_bridge!(ClampCase<320010>),
+        ("warm-clamp-arity-w32", 320020) => routine_bridge!(ClampCase<320020>),
+        ("warm-clamp-arity-w32", 320030) => routine_bridge!(ClampCase<320030>),
+        ("warm-clamp-arity-w32", 320040) => routine_bridge!(ClampCase<320040>),
+        ("warm-clamp-arity-w32", 320060) => routine_bridge!(ClampCase<320060>),
+        ("warm-clamp-arity-w32", 320080) => routine_bridge!(ClampCase<320080>),
+        ("warm-clamp-arity-w60", 600010) => routine_bridge!(ClampCase<600010>),
+        ("warm-clamp-arity-w60", 600020) => routine_bridge!(ClampCase<600020>),
+        ("warm-clamp-arity-w60", 600030) => routine_bridge!(ClampCase<600030>),
+        ("warm-clamp-arity-w60", 600040) => routine_bridge!(ClampCase<600040>),
+        ("warm-clamp-arity-w60", 600060) => routine_bridge!(ClampCase<600060>),
+        ("warm-clamp-arity-w60", 600080) => routine_bridge!(ClampCase<600080>),
+        ("warm-clamp-arity-w64", 640010) => routine_bridge!(ClampCase<640010>),
+        ("warm-clamp-arity-w64", 640020) => routine_bridge!(ClampCase<640020>),
+        ("warm-clamp-arity-w64", 640030) => routine_bridge!(ClampCase<640030>),
+        ("warm-clamp-arity-w64", 640040) => routine_bridge!(ClampCase<640040>),
+        ("warm-clamp-arity-w64", 640060) => routine_bridge!(ClampCase<640060>),
+        ("warm-clamp-arity-w64", 640080) => routine_bridge!(ClampCase<640080>),
+        ("warm-clamp-chain-l1", 80001) => routine_bridge!(ClampCase<80001>),
+        ("warm-clamp-chain-l1", 130001) => routine_bridge!(ClampCase<130001>),
+        ("warm-clamp-chain-l1", 160001) => routine_bridge!(ClampCase<160001>),
+        ("warm-clamp-chain-l1", 320001) => routine_bridge!(ClampCase<320001>),
+        ("warm-clamp-chain-l1", 600001) => routine_bridge!(ClampCase<600001>),
+        ("warm-clamp-chain-l1", 640001) => routine_bridge!(ClampCase<640001>),
+        ("warm-clamp-arity-l2", 81040) => routine_bridge!(ClampCase<81040>),
+        ("warm-clamp-arity-l2", 131040) => routine_bridge!(ClampCase<131040>),
+        ("warm-clamp-arity-l2", 161040) => routine_bridge!(ClampCase<161040>),
+        ("warm-clamp-arity-l2", 321040) => routine_bridge!(ClampCase<321040>),
+        ("warm-clamp-arity-l2", 601040) => routine_bridge!(ClampCase<601040>),
+        ("warm-clamp-arity-l2", 641040) => routine_bridge!(ClampCase<641040>),
         ("warm-affine-density-w13", 130401) => routine_bridge!(Case<130401>),
         ("warm-affine-density-w13", 130402) => routine_bridge!(Case<130402>),
         ("warm-affine-density-w13", 130404) => routine_bridge!(Case<130404>),

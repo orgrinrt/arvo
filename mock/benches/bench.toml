@@ -1054,3 +1054,549 @@ variants = [
     "../target/release/bench_warm_container_kernel",
     "../target/release/bench_warm_container_lanes_deferred",
 ]
+
+[bench.warm-clamp-arity-w8]
+title = "Clamping fold at 8 bits, arity 2 / 4 / 8 / 16: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w8.sizes]]
+n = 80010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w8.sizes]]
+n = 80020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w8.sizes]]
+n = 80030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w8.sizes]]
+n = 80040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w13]
+title = "Clamping fold at 13 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w13.sizes]]
+n = 130080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w16]
+title = "Clamping fold at 16 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w16.sizes]]
+n = 160080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w32]
+title = "Clamping fold at 32 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w32.sizes]]
+n = 320080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w60]
+title = "Clamping fold at 60 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w60.sizes]]
+n = 600080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-w64]
+title = "Clamping fold at 64 bits, arity 2 / 4 / 8 / 16 / 64 / 256: the shipped doubled container against minimum storage, against minimum storage with the fold lane-split, and against minimum storage with the accumulator sized by the design's own interior-safety rule"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640010
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640020
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640030
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640060
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-w64.sizes]]
+n = 640080
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-chain-l1]
+title = "Elementwise clamping chain of four steps, width swept: what the doubled container costs when no fold accumulator is involved"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 80001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 130001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 160001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 320001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 600001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-chain-l1.sizes]]
+n = 640001
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[bench.warm-clamp-arity-l2]
+title = "Clamping fold at arity 16, 1048576 elements: the same fork with both containers crossing this host's L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 81040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 131040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 161040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 321040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 601040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
+
+[[bench.warm-clamp-arity-l2.sizes]]
+n = 641040
+variants = [
+    "../target/release/bench_warm_clamp_head",
+    "../target/release/bench_warm_clamp_minimum",
+    "../target/release/bench_warm_clamp_min_lanes",
+    "../target/release/bench_warm_clamp_acc64",
+    "../target/release/bench_warm_clamp_accfit",
+    "../target/release/bench_warm_clamp_accfit_dyn",
+]
