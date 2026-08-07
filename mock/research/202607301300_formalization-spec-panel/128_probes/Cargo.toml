@@ -1,0 +1,6 @@
+[workspace]
+members = ["gcalib", "gcelib"]
+resolver = "2"
+
+[profile.dev.package.gcalib]
+rustflags = ["-Znext-solver=globally"]
