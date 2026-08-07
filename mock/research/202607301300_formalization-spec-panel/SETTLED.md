@@ -78,14 +78,31 @@ A later checkpoint records the gate as met, and how it was met as itself load-be
 | The antichain result holds as a cardinality argument, for every bias, adjustment, radix and sign domain, and needs no sweep. It is a stronger justification for the canonicity withdrawal than the arguments that were available when that withdrawal was made. | `146` | ONE EXPERT |
 | The narrowing schema does not say which of a conversion's two strategies adjudicates. The claim that no new key was needed does not hold. | `146`, `148` | TWO EXPERTS, negative only |
 | The sign domain is not a partition of the order. | `146`, `148` | TWO EXPERTS, refutation only |
+| The structure question is a closure question about the shape space, not a question about the order. The ambient order on finite rational sets is a complete lattice for free; the numerals are a subset, and restriction does not preserve that. An operation can only fail by naming a shape the design does not admit. | `150` | ONE EXPERT |
+| The deciding ingredient is whether refinement and reach move together. Within one radix, adding a digit refines the grid and multiplies the count, so the least cover is forced. Across radices it does not, and the finer cover can be the shorter one. | `150` | ONE EXPERT |
+| Within one radix, zero bias, and a closed shape space, both operations are total and the meet is exact. | `145`, `150` | TWO EXPERTS |
+
+### A correction to `149`
+
+`149` recorded `146` and `148` as exact inverses of each other. **They are not.** `150` establishes
+that they agree on the meet, and that `148` supplied the reconciliation itself at `148:396`. The
+dispute was narrower than the checkpoint stated, and the checkpoint's framing of it as a
+three-way standoff overstated the disagreement. `149` stands as written, as the audit trail; this
+row is the correction.
 
 ## Open, and named as open
 
 Listed so that absence from the tables above is never read as an oversight.
 
-- **The algebraic structure.** Three files, three incompatible answers, no two agreeing. Consequence
-  reaches the canon: if a join exists a common target is derivable, and if not it must be named.
-  A third read is in flight. See `149`.
+- **Is the numeral space one family, or several?** This is now the question, and it is op's. `150`
+  shows every structural failure in the record reduces to this one tie, so a single sentence
+  settles all of them. Both answers are workable and nothing mathematical decides it. If one
+  family: does a zero-width numeral exist, and negative integer width? If several: does the tie
+  break toward more refinement or more reach?
+- **A discrepancy in the record.** `148` reports 81 decided join failures in the unbiased radix-two
+  slice; two independent instruments in `150` find zero there, and `150` says a third instrument is
+  owed. Either `148`'s slice admits shapes `150`'s reconstruction does not, or the two families
+  differ. Unresolved, and it will poison a consolidation that quotes either number.
 - **What the sign domain is**, as opposed to what it is not.
 - **The remedy for the adjudicating-strategy gap**, where the two experts who found it differ.
 - **`Precise` on `inexact`**, open since `145`.
