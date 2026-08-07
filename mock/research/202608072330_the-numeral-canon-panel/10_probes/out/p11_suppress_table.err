@@ -1,0 +1,71 @@
+error[E0277]: arvo does not ship this width: Idx<7>
+  --> p11_suppress_table.rs:64:28
+   |
+64 | pub fn unbridged_direct(a: Fixed<7, 1, Hot>) -> Fixed<7, 1, Hot> { a }
+   |                            ^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+   |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<7>`
+  --> p11_suppress_table.rs:17:1
+   |
+17 | pub struct Idx<const N: u32>;
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<7>` and spell the numeral against `MyWidths`
+note: required by a bound in `Fixed`
+  --> p11_suppress_table.rs:47:13
+   |
+45 | pub struct Fixed<const I: u32, const F: u32, S, M = Arvo>
+   |            ----- required by a bound in this struct
+46 | where
+47 |     Idx<I>: ToNat<M>, Idx<F>: ToNat<M>,
+   |             ^^^^^^^^ required by this bound in `Fixed`
+
+error[E0277]: arvo does not ship this width: Idx<1>
+  --> p11_suppress_table.rs:64:28
+   |
+64 | pub fn unbridged_direct(a: Fixed<7, 1, Hot>) -> Fixed<7, 1, Hot> { a }
+   |                            ^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+   |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<1>`
+  --> p11_suppress_table.rs:17:1
+   |
+17 | pub struct Idx<const N: u32>;
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<1>` and spell the numeral against `MyWidths`
+note: required by a bound in `Fixed`
+  --> p11_suppress_table.rs:47:31
+   |
+45 | pub struct Fixed<const I: u32, const F: u32, S, M = Arvo>
+   |            ----- required by a bound in this struct
+46 | where
+47 |     Idx<I>: ToNat<M>, Idx<F>: ToNat<M>,
+   |                               ^^^^^^^^ required by this bound in `Fixed`
+
+error[E0277]: arvo does not ship this width: Idx<7>
+  --> p11_suppress_table.rs:64:49
+   |
+64 | pub fn unbridged_direct(a: Fixed<7, 1, Hot>) -> Fixed<7, 1, Hot> { a }
+   |                                                 ^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+   |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<7>`
+  --> p11_suppress_table.rs:17:1
+   |
+17 | pub struct Idx<const N: u32>;
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<7>` and spell the numeral against `MyWidths`
+
+error[E0277]: arvo does not ship this width: Idx<1>
+  --> p11_suppress_table.rs:64:49
+   |
+64 | pub fn unbridged_direct(a: Fixed<7, 1, Hot>) -> Fixed<7, 1, Hot> { a }
+   |                                                 ^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+   |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<1>`
+  --> p11_suppress_table.rs:17:1
+   |
+17 | pub struct Idx<const N: u32>;
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<1>` and spell the numeral against `MyWidths`
+
+error: aborting due to 4 previous errors
+
+For more information about this error, try `rustc --explain E0277`.

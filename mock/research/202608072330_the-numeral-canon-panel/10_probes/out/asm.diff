@@ -1,0 +1,32 @@
+12c12
+< 	adrp	x0, l_anon.2a841b5b273377fe48de9399aecbce0f.0@PAGE
+---
+> 	adrp	x0, l_anon.62dca2b5fec80b15a4137768560c6f67.0@PAGE
+14c14
+< 	add	x0, x0, l_anon.2a841b5b273377fe48de9399aecbce0f.0@PAGEOFF
+---
+> 	add	x0, x0, l_anon.62dca2b5fec80b15a4137768560c6f67.0@PAGEOFF
+16c16
+< 	adrp	x2, l_anon.2a841b5b273377fe48de9399aecbce0f.2@PAGE
+---
+> 	adrp	x2, l_anon.62dca2b5fec80b15a4137768560c6f67.2@PAGE
+18c18
+< 	add	x2, x2, l_anon.2a841b5b273377fe48de9399aecbce0f.2@PAGEOFF
+---
+> 	add	x2, x2, l_anon.62dca2b5fec80b15a4137768560c6f67.2@PAGEOFF
+172c172
+< l_anon.2a841b5b273377fe48de9399aecbce0f.0:
+---
+> l_anon.62dca2b5fec80b15a4137768560c6f67.0:
+176c176
+< l_anon.2a841b5b273377fe48de9399aecbce0f.1:
+---
+> l_anon.62dca2b5fec80b15a4137768560c6f67.1:
+180,182c180,182
+< l_anon.2a841b5b273377fe48de9399aecbce0f.2:
+< 	.quad	l_anon.2a841b5b273377fe48de9399aecbce0f.1
+< 	.asciz	"\031\000\000\000\000\000\000\000\273\000\000\000\005\000\000"
+---
+> l_anon.62dca2b5fec80b15a4137768560c6f67.2:
+> 	.quad	l_anon.62dca2b5fec80b15a4137768560c6f67.1
+> 	.asciz	"\024\000\000\000\000\000\000\000\334\000\000\000\005\000\000"
