@@ -10,6 +10,8 @@ p6: content check on every cited range
   ok    RULES.md:224-228                       contains 'mock/benches/'
   ok    RULES.md:20-27                         contains 'ACK'
   ok    35:41-43                               contains 'a quantity that lives in the composition'
+  ok    35:113-115                             contains 'taxonomy classifies a site by which'
+  ok    35:820-822                             contains 'I did not read vehje at'
   ok    35:96-97                               contains 'The boundary is the runtime trip count and nothing else'
   ok    08:287-288                             contains 'no per-datum type can express a constraint that holds between'
   ok    08:292-294                             contains 'the workload arvo exists'
@@ -33,7 +35,7 @@ p6: content check on every cited range
   ok    seed/SETTLED_laws.md:274               contains 'Adjustment'
   ok    DROPLIST.md:400                        contains 'compositions public and bindable'
 
-  checked: 32   failures: 0
+  checked: 34   failures: 0
 
 cross-check: citations present in the document but absent here
   none

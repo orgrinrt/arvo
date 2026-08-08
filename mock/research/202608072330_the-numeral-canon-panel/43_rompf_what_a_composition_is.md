@@ -626,9 +626,9 @@ halves have different strengths of evidence.
 ### 8.1 The contract belongs to arvo, and the argument is `42`'s with a different subject
 
 **The composition contract is the second input to derivations arvo already owns.** `35`'s accumulator
-relation takes a numeral **and a capacity**, and `06`'s D0/D1/D2/D3 taxonomy has no cell for it, because
-that taxonomy classifies a site by which **operands** determine the numeral and the capacity is not an
-operand. Something has to supply the second input, and it cannot be the consumer without the consumer
+relation takes a numeral **and a capacity**, and `06`'s taxonomy of inference sites has no cell for it,
+because, in `35:113-115`'s account of a file I have not read, "`06`'s taxonomy classifies a site by which
+**operands** determine the numeral and the missing input here is not an operand and not a numeral". Something has to supply the second input, and it cannot be the consumer without the consumer
 re-deriving `35`'s sufficiency argument by hand. `35` section 3.3, 3.4 and 3.10 are three worked
 instances of what happens when a precondition of that kind is assumed rather than stated, one of which is
 a documented downstream invariant that does not hold at 87.5% of inputs.
@@ -656,8 +656,9 @@ vehje and each downstream consumer bring their own concrete storage satisfying i
 **What I could not do is decide it, because the deciding evidence is a fact about consumers and I have
 none.** The question is whether two consumers' concrete containers would differ in ways a shared one
 could not serve, and answering it needs a survey of what hilavitkutin and vehje actually hold. `35`
-section 9 names the same gap about its own requirements: "I did not read vehje at all... this remains the
-largest gap." I inherit it and I did not close it.
+section 9 names the same gap about its own requirements, at `35:820-822`: "I did not read vehje at
+all. Op named both consumers at `32`, so this remains the largest gap." I inherit it and did not close
+it.
 
 **What I can say is what would decide it.** If every downstream aggregate is a fixed-capacity run of one
 element numeral, one container serves and shipping it is cheap. If the aggregates differ in rank, in
@@ -887,7 +888,7 @@ absence to be read as an oversight, and section 11 marks every place a magnitude
 | `p4` | compiler, 3 arms, gate-free | type-level capacity multiplication is expressible; the flattened accumulator reach is a type the derivation consumes; the flat-against-nested gap is one bit at `s3`'s witness, asserted at compile time; two negative controls |
 | `s5` | exact rational arithmetic | a raw same-grid add reads the bias and reads neither the adjustment nor the canonical exponent; a fold's effective origin is `n·B` with `n` dynamic; the product's derived grid step matches `A²r^{2e}` at 9 of 9 zero-bias grids and 8 of 18 nonzero-bias grids |
 | `p7` | qualitative assembly read, 7 traversals | a composition's `len <= capacity` invariant enforced by its only constructor still emits two failure-path calls and the largest body of any arm; one clamp at the loop header takes it to zero; the clamped subslice form reaches zero in 58 lines against 94, with an eighth of the SIMD register mentions |
-| `p6` | citation checker | opens every `file:line` in this document and tests its content against a word it must contain: **32 checked, 0 failures**, and a cross-check confirms the probe's table and the document's citations are the same set. It failed on its first run, at one wrong range and three citations absent from its own table, and both defects are recorded in section 12 rather than repaired silently |
+| `p6` | citation checker | opens every `file:line` in this document and tests its content against a word it must contain: **34 checked, 0 failures**, and a cross-check confirms the probe's table and the document's citations are the same set. It failed on its first run, at one wrong range and three citations absent from its own table, and both defects are recorded in section 12 rather than repaired silently |
 
 **Self-checks that fired, reported rather than hidden.** Four, and each changed what I would have
 written.
@@ -908,8 +909,9 @@ rather than for the check.
 6.4 records it in full. I found it by opening that symbol's assembly by hand rather than by trusting the
 count, which is the only way that class of defect is ever found.
 
-`p6` failed on its first run, on one citation of mine and on three of my own citations it did not know
-about. `08:283-290` opened mid-sentence and missed the phrase the claim needed, which is exactly the
+`p6` failed on three separate runs: once on a citation range of mine that opened mid-sentence, once on
+three citations present in the prose and absent from its own table, and once on a range I had transcribed
+one line off. `08:283-290` opened mid-sentence and missed the phrase the claim needed, which is exactly the
 class `RULES.md:126-133` describes: it resolved, and it did not say what I claimed. The range is now
 `08:282-290`. And three citations were in the prose and not in the probe's table, so they were silently
 unchecked; the cross-check that reported them was in the probe from the start and is the reason they were
