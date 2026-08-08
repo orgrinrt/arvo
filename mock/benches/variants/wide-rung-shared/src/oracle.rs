@@ -173,6 +173,7 @@ mod tests {
         }
         macro_rules! all_d {
             ($w:literal) => {
+                check::<$w, 0>();
                 check::<$w, 1>();
                 check::<$w, 2>();
                 check::<$w, 3>();

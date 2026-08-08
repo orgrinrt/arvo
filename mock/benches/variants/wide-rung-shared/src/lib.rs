@@ -185,6 +185,7 @@ impl<const KEY: usize> Routine for Case<KEY> {
 macro_rules! __for_each_d {
     ($l:ty, $w:literal, $d:expr, $base:expr, $n:expr) => {
         match $d {
+            0 => $crate::run::<$l, $w, 0>($base, $n),
             1 => $crate::run::<$l, $w, 1>($base, $n),
             2 => $crate::run::<$l, $w, 2>($base, $n),
             3 => $crate::run::<$l, $w, 3>($base, $n),
@@ -244,6 +245,13 @@ pub const ALL_KEYS: &[usize] = &[
     129103, 160103, 192103, 200103, 232103, 256103,
     // operation-count sweep at the ratified numeral, cache-resident
     200001, 200002, 200004, 200008,
+    // the bare column walk past L2: one wide operation per element, which is
+    // the highest byte-to-work ratio the transform can reach and therefore the
+    // only shape in which a footprint difference can show as throughput. The
+    // D=3 sweep runs at 8 to 12 GB/s against this host's roughly 60, so it is
+    // issue-bound on the limb arithmetic and every arm runs at the same
+    // limb-op rate regardless of how many bytes it touched.
+    129100, 160100, 192100, 200100, 232100, 256100,
 ];
 
 #[cfg(test)]

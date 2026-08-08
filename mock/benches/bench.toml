@@ -1788,3 +1788,78 @@ variants = [
     "../target/release/bench_wide_rung_wordround_alias",
     "../target/release/bench_wide_rung_align16",
 ]
+
+# ---------------------------------------------------------------------------
+# The bare column walk past L2 (panel file 22, section 5). One wide operation
+# per element, which is the highest byte-to-work ratio this transform reaches.
+# The D=3 sweep above runs at 8 to 12 GB/s against this host's roughly 60, so
+# it is issue-bound on the limb arithmetic and a footprint difference cannot
+# show as throughput there. This section is the same six widths with the
+# arithmetic removed, which is the only shape in which the ragged payload's
+# fewer bytes can pay.
+# ---------------------------------------------------------------------------
+
+[bench.wide-rung-walk-l2]
+title = "Wide rung, bare column walk, 458752 elements (1 wide op/element, past L2)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 129100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 160100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 192100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 200100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 232100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l2.sizes]]
+n = 256100
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]

@@ -1,0 +1,34 @@
+# Ad-hoc quick spike, not a bench. It emits no timing and can price nothing.
+#
+# It exists to answer the ratified claim in the ratified claim's own units: the
+# rule at `seed/SETTLED_container.md:345-350` says ragged is "fourteen
+# instructions" against word-rounded's "eleven", three per operation. That is a
+# statement about emitted code, and the harness cannot check it on this host
+# because `instructions` and `cycles` read zero in every committed CSV on
+# aarch64 macOS.
+#
+# Detached from the arvo mock workspace with an empty `[workspace]` table so it
+# does not need a member entry, and it depends on the real bench crate rather
+# than re-deriving the loaders, because a probe that copies the kernel measures
+# a copy.
+[workspace]
+
+[package]
+name = "wide-rung-loop-shape"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "wide_rung_loop_shape"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+bench-wide-rung-shared = { path = "../../../../benches/variants/wide-rung-shared" }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"

@@ -40,7 +40,7 @@ fn every_declared_key_names_a_swept_width_and_a_declared_operation_count() {
             key_w(key)
         );
         assert!(
-            [1usize, 2, 3, 4, 8].contains(&key_d(key)),
+            [0usize, 1, 2, 3, 4, 8].contains(&key_d(key)),
             "key {key} names operation count {} which the dispatch table does not declare",
             key_d(key)
         );
