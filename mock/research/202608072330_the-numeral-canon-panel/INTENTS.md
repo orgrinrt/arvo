@@ -1,0 +1,168 @@
+# The intent catalogue
+
+**Op's stated intents for arvo, in his own words, with provenance.** This is the material that
+graduates into the canon. Everything else this panel produces is working towards it.
+
+**Opened 2026-08-08**, after op asked whether his ratifiable intents had been written into any
+catalogue and the answer was no. They had been recorded only in the numbered audit-trail files, because
+the panel's explore-do-not-settle mode was applied to them uniformly. That was a category error: the
+mode exists so that **agent-derived conclusions** are not settled before the experts converge, and an
+intent op states in his own words is not a derived conclusion. It is the source those conclusions are
+measured against.
+
+## What may be in here, and what may not
+
+**In:** intents op has stated, quoted rather than paraphrased, with where he said it.
+
+**Out:** every conclusion drawn from an intent, every per-strategy ruling an agent derived, every
+mechanism, and every number. Those live in the panel files and in `OPTIONS.md`, and a reader who wants
+them should go there rather than find them dressed as intent here.
+
+The distinction is not decorative. Op, 2026-08-08: "we don't ratify these as absolutes, rather,
+*intent* as stated by me here and prior." An absolute derived from an intent is exactly the thing that
+must not appear in this file.
+
+## How to read an entry
+
+**RATIFIED** means it sits on the record as ratified with op in the loop, with the provenance shown.
+
+**STATED** means op has said it and marked it canon-bound, and it has not been through the convergence
+that ratification requires. Under his own correction, an opinion given before the experts converge is
+an ack meaning the direction checks out. A STATED entry is his intent and is not yet a settled answer.
+
+**A standing instruction applies to every entry below**, and it is his: *"You should not write these as
+clear cut and settled. The intent is clear I think, but nothing about them is absolute otherwise."*
+
+---
+
+## I1. The strategy set is closed at exactly four
+
+**RATIFIED.** `seed/SETTLED_strategy.md` section 1, carried from the prior panel.
+
+`Hot`, `Cold`, `Warm`, `Precise`, and nothing else.
+
+## I2. Each preset names a stated intent, not a derived rule
+
+**RATIFIED.** Op's own words, quoted at `seed/SETTLED_strategy.md` section 2, from the prior panel at
+`70:106-109` and requoted at `124:2578-2580`.
+
+> `Hot` is as fast as possible, `Cold` stores as small as possible, `Precise` is the most precise at
+> the price of both storage and compute, `Warm` is the compromise that suits most default cases and
+> behaves intuitively.
+
+## I3. Warm behaves as a native Rust primitive would
+
+**RATIFIED.** Op's own words at `140b:16-21`, carried at `seed/SETTLED_strategy.md` section 3.
+
+> My standing call is "It should behave like native primitives in regular old rust would"... The
+> intent, here, is what matters. The mechanisms and theory may live freely and shift under and around
+> it, the intent is what remains and matters.
+
+The seed records that this call was re-stated twice in two days because it kept failing to stick, and
+op restated it again on 2026-08-08. Four statements of the same call.
+
+## I4. Warm's objective is the intuitive best choice, and imitation serves it rather than defines it
+
+**STATED.** `38`, 2026-08-08.
+
+> Warm does not merely imitate, its intent is to be intuitive best choice for most every use case, and
+> the intuitive part demands it mimics, but it does not make it absolutely required, if mimicking is
+> consistently just worse choice.
+
+## I5. Hot may sacrifice soundness, for a proven meaningful gain
+
+**STATED.** `34`, 2026-08-08.
+
+> the intent behind Hot is performance, efficiency, even at the cost of accuracy or soundness
+
+> Hot *can* sacrifice soundness, that is its explicit purpose, but it should not lose it for nothing,
+> instead, provable meaningful gains.
+
+## I6. Cold is for cold paths and cold storage
+
+**STATED.** `36` and `37`, 2026-08-08.
+
+> Cold is optimised for cold paths and cold storage, which means, it aggressively minimises and
+> bitpacks, *but* because it optimises for cold paths, it has more leeway to do things non-efficient.
+
+> It's intent is that it is for cold paths, cold use. Which means, it should remain small for memory or
+> disk storage, because it's just sitting basically.
+
+And the bound on that leeway, `38`:
+
+> Cold does not *have to* drop efficiency wins elsewhere. It can use the same paths Hot uses, not
+> because it needs to by intent, but nothing in its intent would fight it. But if the path fights the
+> intent, then it's not for Cold.
+
+## I7. Precise is accurate across chains, not only per operation
+
+**STATED.** `36`, 2026-08-08.
+
+> Precise on other hand is the one that sacrifices as much performance and efficiency as makes sense,
+> to be the most precise possible answer, throwing out all cold or hot axis optimisations to be
+> *accurate* and *precise*, especially within chains and ops, not only alone.
+
+## I8. The strategies weigh measurements differently
+
+**STATED.** `38`, 2026-08-08. Op calls this the mental unlock.
+
+> All of them should be decided by measurement, just measuring different things, and, this is I think
+> the mental unlock: They weigh different measurements differently. For the most part, they probably
+> agree, because in general, the best answer fits all, because it fights none of their intent. But
+> perhaps my instinct is wrong there, and all truly differ for the most part.
+
+The second half is part of the intent rather than a hedge on it: whether the weightings usually agree
+is **open**, and he says so.
+
+## I9. The strategy is what makes an answer correct
+
+**STATED.** `37`, 2026-08-08.
+
+> The strategies aren't orthogonal to the threaded question you had, or its answer, strategies are the
+> variables that change what the "correct" answer is for what we choose as the path.
+
+## I10. arvo takes no stance on how many cores it runs on
+
+**STATED.** `32`, 2026-08-08.
+
+> We will run in threads = 1, threads = 2, threads = n where n can be any finite. We don't take stances
+> on these. If it gives juice and proves more efficient than the alternatives, we should do that, when
+> we can detect we have several cores available. When we don't, we do what is the most efficient thing
+> in a single-threaded realm.
+
+Read with I5: the soundness condition in the fuller quote at `32` is not uniform across strategies.
+
+## I11. arvo is a library, and the value is what composes on top of it
+
+**STATED.** `32`, 2026-08-08.
+
+> We are a library, not a program, so we don't know how end users will use us, however, our main
+> selling point are the algo crates that hilavitkutin, vehje, pretty much every single repo and project
+> I have, downstream, use. As well as the contracts for things that compose to bigger units than just
+> numerals alone. But we need this base to work, to build the bigger things.
+
+## I12. An opinion given before the experts converge is an ack, not a ratification
+
+**STATED.** `01` section 0, 2026-08-07. Governs how every entry above is read, including itself.
+
+> we don't need to settle this with so loose base. We can explore more. And where there aren't any
+> ratifications, it only makes sense to make the experts work it out until they agree and stop
+> attacking each other and concede that this is actually good. Until that time, my word is only thing
+> that ratifies shit, and the last panel process taught me that I shouldn't go and ratify anything
+> before the experts actually agree and have a converged thing to bring to me, with all the angles
+> considered and perhaps some options too, alternatives. Until that time, we are wasting time taking my
+> opinions as anything other than "yeah checks out, direction is good" acks.
+
+---
+
+## What this file is not
+
+Not a canon. A canon states intent in its own voice, having established that what it intends is
+doable, and this is a catalogue of quotations with provenance. It is the input to that work.
+
+Not a substitute for the panel files. Each entry names where it came from, and the surrounding
+reasoning, the connections to open questions, and the corrections between files are there rather than
+here.
+
+Not complete. Anything op has said that is not quoted above is missing rather than excluded, and the
+remedy is to add it.
