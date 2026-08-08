@@ -756,6 +756,32 @@ arrival). Consequence for how a canon states the two-output design: "the derivat
 container and a stride" invites reading them as two coordinates of one answer; "the derivation answers
 a per-value question and a per-aggregate question" states why they are not (`16` section 12).
 
+> **Converged after an exchange, `44` to `45` to `46` to `45` again. This is the panel's first
+> TWO EXPERTS result on a substantive claim, and it is narrower than `45` first stated.**
+>
+> **Forced unconditionally, by `Cold` alone.** `45` derived it; `46` re-derived it independently from
+> `16:126-141` rather than from `45`'s prose, as an injectivity failure where eight distinct `Cold`
+> widths collapse onto one native carrier. It needs only `Cold`'s ratified packing intent plus the fact
+> that Rust has no arbitrary-bit-width native type. **Two independent derivations, which is the rung.**
+>
+> **Conditional, and `45` conceded this.** Its second forcing, the wide-rung alignment collision, took
+> its carrier types from the dead tree and called that settled architecture. `15:418-429` says the
+> opposite about itself, under a heading reading "What the strategy semantics are is NOT settled here,
+> deliberately", calling the alignment rule an assumption "safe to leave open". On being resumed, `45`
+> built `45_probes/p7`, which compiles the collision at byte counts and alignments sharing nothing with
+> the dead tree's types, and states what it does not establish: **the mechanism is general and
+> unconditional; whether arvo's strategies ever pick two different alignments is an unratified design
+> choice.** So this is a real second forcing waiting on an axis nobody has settled, not a second fact
+> standing beside `Cold`'s.
+>
+> **And a vacuous check was found and replaced.** `45_probes/p4`'s "widening recovers" arm compared a
+> value to the identical expression, so it could not fail. `46` caught it; `45` conceded and built
+> `45_probes/p6`, which models a genuinely finite intermediate rounded twice. At F=6, of 73,461
+> disagreement witnesses, zero headroom disagrees with all and full doubling recovers all, with minimum
+> headroom distributing `{1: 57679, 2: 11971, 3: 2788, 4: 695, 5: 243, 6: 85}`. **Most witnesses need
+> one bit; a small growing tail needs the full doubling**, which is why the widening cannot be trimmed
+> to the common case. The tautological check could not have produced that.
+
 > **Corrected by `45`: this is not blocked on `Precise`, and the two-output shape is already forced.**
 > `45_probes/p1` compiles a witness at W=256 where `Warm` takes a carrier of size 32 align 1 and `Hot`
 > takes one of size 32 align 16: same width, same stride, same byte count, **different carrier type**,
