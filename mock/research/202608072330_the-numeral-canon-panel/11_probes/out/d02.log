@@ -1,0 +1,19 @@
+error[E0080]: evaluation panicked: this numeral's byte count is too small for its bit width
+  --> d02_postmono_check_fires.rs:36:23
+   |
+36 |       const CHECK: () = assert!(
+   |  _______________________^
+37 | |         B * 8 >= (I + F) as usize,
+38 | |         "this numeral's byte count is too small for its bit width"
+39 | |     );
+   | |_____^ evaluation of `Fixed::<40, 0, 2, Hot>::CHECK` failed here
+
+note: erroneous constant encountered
+  --> d02_postmono_check_fires.rs:41:18
+   |
+41 |         let () = Self::CHECK;
+   |                  ^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

@@ -1,0 +1,17 @@
+a01_cpp                                  COMPILES
+a02_zig                                  COMPILES
+b01_table_caps_the_algebra               REFUSES: error[E0277]: arvo does not ship this width: Idx<48>
+b02_the_table_chases_its_tail            REFUSES: error[E0277]: arvo does not ship this width: Idx<96>
+b03_the_ceiling_is_the_const_surface     COMPILES
+d01_bare_parameter_carrier               COMPILES
+d02_postmono_check_fires                 REFUSES: error[E0080]: evaluation panicked: this numeral's byte count is too smal
+e01_enumeration_free_bridge              COMPILES
+e02_closing_the_overshoot                REFUSES: error: generic parameters may not be used in const operations
+e03_overshoot_under_min_gca              REFUSES: error: complex const arguments must be placed inside of a `const` block
+e04_overshoot_const_block                REFUSES: error: generic parameters may not be used in const operations
+f01_const_param_default_from_siblings    REFUSES: error: generic parameters may not be used in const operations
+arvo_min                                 COMPILES
+consumer_ok                              COMPILES
+consumer_bad                             REFUSES: error[E0117]: only traits defined in the current crate can be impl
+consumer_partition                       REFUSES: error[E0277]: the trait bound `arvo_min::Idx<0>: arvo_min::ToNat<L
+consumer_partition_nored                 REFUSES: error[E0277]: the trait bound `arvo_min::Idx<13>: arvo_min::ToNat<

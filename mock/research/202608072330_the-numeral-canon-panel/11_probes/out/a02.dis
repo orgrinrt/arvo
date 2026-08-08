@@ -1,0 +1,12 @@
+
+out/a02.o:	file format mach-o arm64
+
+Disassembly of section __TEXT,__text:
+
+0000000000000000 <ltmp0>:
+       0: a9bf7bfd     	stp	x29, x30, [sp, #-0x10]!
+       4: 910003fd     	mov	x29, sp
+       8: 0b000028     	add	w8, w1, w0
+       c: 12003d00     	and	w0, w8, #0xffff
+      10: a8c17bfd     	ldp	x29, x30, [sp], #0x10
+      14: d65f03c0     	ret
