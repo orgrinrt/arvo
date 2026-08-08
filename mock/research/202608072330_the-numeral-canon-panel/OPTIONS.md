@@ -840,8 +840,12 @@ and over static-length lists (`35` section 3, `35_probes/p1`).
   accumulator is derivable as the width plus the log of the capacity, compiled gate-free (`35_probes/p7`,
   `p8`). Costs a second input to a derivation that currently takes only numerals, which `06`'s
   D0/D1/D2/D3 taxonomy has no cell for.
-- **Both**, which is what `p7` compiles: the structure names what a fold may do, the capacity how wide
-  the result is.
+- **Both**, which is what `35_probes/p7` compiles: the structure names what a fold may do, the capacity
+  how wide the result is. `42_probes/p2` composes the two in one signature with **independent refusal
+  for each half**, one for width insufficiency and one for law failure, and `40`'s observable/
+  unobservable axis split survives at that composition point. That is evidence for the specific
+  combination tested, not a general proof that every fold-layer mechanism pairs with every law-layer
+  one.
 - **The composition supplies everything and the numeral stays a value type.** The mirror image. Puts the
   accumulator relation in tensor-shaped code rather than in the numeral, at the cost of every
   composition re-deriving it.
@@ -868,6 +872,31 @@ exactly reassociable, which float never is, and nobody in the panel had said so.
 - **Say nothing**, and let the answer depend on the core count. Recorded so the space is not silently
   three-sided. Under the soundness condition this is a sacrifice for every strategy except the one
   whose purpose is to make it.
+
+**The mechanism behind the sign asymmetry, from `42`, and it is not sign.** `35` measured that signed
+saturating folds diverge at 70.1% while unsigned saturating diverge at 0, which reads as a fact about
+sign or about clamp count. It is neither. `42_probes/p3` refutes "one clamp associates, two do not" and
+establishes the real condition: **associativity survives exactly when the fold's actual trajectory
+cannot reach both clamped endpoints.** Verified on plain integers, independent of any fixed-point
+representation: two clamps with an unreachable floor give 0 failures over 2,197 to 15,625 triples,
+while a *reachable* floor gives 48 and 450. Unsigned saturating addition never reaches its floor, which
+is why it associates; the sign domain is a proxy for reachability rather than the cause. The refuted
+first hypothesis is kept on the record.
+
+**A drafting note rather than an option.** Wrapping's four separately-measured properties
+(associativity, commutativity, identity, inverse) are **one theorem**, that the representation realises
+the cyclic group of its width, rather than four independent facts. Whoever writes the law-layer prose
+can state it once.
+
+**And commutativity is free.** Exhaustive over 626,224 pairs across both overflow policies and both
+sign domains, for addition and multiplication: **zero failures** (`42_probes/p1`). It does not vary
+with the strategy, so it costs nothing to state once rather than track per axis value.
+
+**A caution recorded so it does not have to be rebuilt.** No entry here should acquire a rewriting or
+equality-saturation *engine*, deciding which algebraic rewrites to apply. `42` argues that is a domain
+and extraction-strategy decision the substrate may not make for a consumer, per the toolbox-not-policer
+rule, and it refused to propose one despite that being its own home ground. Nothing currently proposes
+it; the argument is on record in case something later does.
 
 **A candidate reframing rather than an option, spanning Q5 and Q6.** State per strategy **which
 properties the arithmetic has** (does the top absorb, is addition monotone, associative, invertible,
