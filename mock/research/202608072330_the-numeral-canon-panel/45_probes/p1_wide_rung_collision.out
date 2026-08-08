@@ -1,0 +1,22 @@
+sweeping W = 129..=768 (the wide rung, three 128-bit periods)
+
+W values in 129..=768 where Hot's byte count equals Warm's (no padding needed): 40 of 640
+first witness: W = 249, byte count = 32 for both Hot and Warm
+
+at this W, both declarations have IDENTICAL (W, stride):
+  W = 249, stride = 256 bits, for BOTH Hot and Warm
+
+compiled, const-checked witness at W = 256:
+  Warm carrier: WideBits<32>            size  32  align  1
+  Hot  carrier: AlignedWideBits16<32>    size  32  align 16
+  same declared width (256), same stride (256 bits), same byte count (32).
+  different carrier TYPE (different alignment).
+
+so the pair (W, stride) does NOT determine carrier, at 40 of 640 wide-rung
+widths in this sweep, with ZERO dependence on Precise and ZERO dependence on sign.
+this collision arises purely from Hot's align-16 wide-rung padding coinciding with
+Warm's align-1 unpadded byte count at widths where the byte count already happens
+to be a multiple of 16.
+
+negative control: at a width where the byte counts genuinely differ, no collision.
+  W = 240: Warm bytes = 30, Hot bytes = 32. Different strides, no collision at this W.
