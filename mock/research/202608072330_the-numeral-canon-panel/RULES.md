@@ -132,6 +132,21 @@ wrote it. The prior
 panel propagated two floating numbers nobody could reproduce, and one expert's headline counts turned
 out to be an artifact of its own enumeration bound.
 
+## A shared source read by nobody is a single point of failure
+
+Two files now rest on `16` without either having read it: `35` and `43` both reach it through
+`OPTIONS.md`'s account, and both said so. That is the register working as intended, and it is also
+exactly the condition under which one compression's error becomes two files' error and reads as
+corroboration.
+
+**Where two or more files depend on the same unread source, the next dispatch on that material reads
+the source itself.** Not the register's account of it. The register is a working surface and its
+provenance section says so; it was assembled twice and missed a flagged question both times.
+
+State the exposure the way `43` did, by name: which file you leaned on, which you did not read, and
+which of your sections would move if the account were wrong. A coverage bound naming the specific risk
+is worth more than a claim of completeness, which this workspace has repeatedly caught being unmeasured.
+
 ## The mode: explore, do not settle
 
 Standing for roughly the panel's first hundred files, on op's instruction. Full statement in
