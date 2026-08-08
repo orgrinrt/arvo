@@ -97,7 +97,10 @@ pub use routine::Contend;
 /// paid once per slice per pass, amortised over at least `N / T` elements, and
 /// paid identically by every arm.
 ///
+/// The base pointer is erased to `*const u8` so the pool can carry a layout it
+/// does not know about; each kernel casts it back to the one it reads.
+///
 /// # Safety
-/// `base` must point at a live `Layout` that outlives the call, and
-/// `lo <= hi <= N` for the `N` the input was built at.
-pub type SliceKernel = unsafe fn(base: *const Layout, lo: usize, hi: usize) -> u64;
+/// `base` must point at a live layout of the kind the kernel expects, which must
+/// outlive the call, and `lo <= hi <= N` for the `N` the input was built at.
+pub type SliceKernel = unsafe fn(base: *const u8, lo: usize, hi: usize) -> u64;

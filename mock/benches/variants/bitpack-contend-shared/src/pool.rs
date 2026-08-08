@@ -8,7 +8,7 @@
 use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 use std::sync::OnceLock;
 
-use crate::input::{slice_bounds, Layout, MAX_THREADS};
+use crate::input::{slice_bounds, MAX_THREADS};
 use crate::SliceKernel;
 
 // ── the pool ───────────────────────────────────────────────────────────────
@@ -125,7 +125,7 @@ fn worker(pool: &'static Pool, index: usize) {
         let kernel: SliceKernel = unsafe {
             std::mem::transmute::<usize, SliceKernel>(pool.kernel.load(Ordering::Relaxed))
         };
-        let base = pool.base.load(Ordering::Relaxed) as *const Layout;
+        let base = pool.base.load(Ordering::Relaxed) as *const u8;
         let n = pool.n.load(Ordering::Relaxed);
         let threads = pool.threads.load(Ordering::Relaxed);
         let (lo, hi) = slice_bounds(index, n, threads);
@@ -145,15 +145,11 @@ fn worker(pool: &'static Pool, index: usize) {
 /// measured region.
 ///
 /// # Safety
-/// `base` must point at a live `Layout` built for at least `n` elements, and `n`
-/// must be a multiple of `threads` times the packed period.
+/// `base` must point at a live layout of the kind `kernel` reads, built for at
+/// least `n` elements, and `n` must be a multiple of `threads` times the packed
+/// period.
 #[inline(never)]
-pub unsafe fn column_pass(
-    threads: usize,
-    n: usize,
-    base: *const Layout,
-    kernel: SliceKernel,
-) -> u64 {
+pub unsafe fn column_pass(threads: usize, n: usize, base: *const u8, kernel: SliceKernel) -> u64 {
     if threads == 1 {
         // Through the pool's init so the coordinator is QoS-biased the same way,
         // but with no barrier: a barrier nobody waits on is not the same code

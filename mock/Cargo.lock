@@ -25,6 +25,7 @@ dependencies = [
  "bench-bitpack-footprint-shared",
  "bench-bitpack-plan-shared",
  "bench-bitpack-shared",
+ "bench-bitpack-wide-shared",
  "bench-quantiser-fadd-shared",
  "bench-quantiser-radix-shared",
  "bench-spectral-bisection",
@@ -513,6 +514,56 @@ dependencies = [
 name = "bench-bitpack-shared"
 version = "0.0.0"
 dependencies = [
+ "mockspace-bench-core",
+]
+
+[[package]]
+name = "bench-bitpack-wide-d16"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "bench-bitpack-wide-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-wide-d16-control"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "bench-bitpack-wide-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-wide-d16-padal"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "bench-bitpack-wide-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-wide-pipe4"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "bench-bitpack-wide-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-wide-shared"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-carrier-shared",
+ "bench-bitpack-contend-shared",
+ "bench-bitpack-plan-shared",
  "mockspace-bench-core",
 ]
 

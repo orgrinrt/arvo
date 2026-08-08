@@ -108,7 +108,7 @@ mod suite {
         const N: usize = 16384;
         let buf = build_bytes(N, 5);
         let col: &Layout = unsafe { &*(buf.as_ptr() as *const Layout) };
-        let base = col as *const Layout;
+        let base = buf.as_ptr();
 
         let mut truth = 0u64;
         for &v in col.d16[..N].iter() {
@@ -145,7 +145,7 @@ mod suite {
         const N: usize = 16384;
         let buf = build_bytes(N, 13);
         let col: &Layout = unsafe { &*(buf.as_ptr() as *const Layout) };
-        let base = col as *const Layout;
+        let base = buf.as_ptr();
 
         let mut truth = 0u64;
         for &v in col.d16[..N].iter() {

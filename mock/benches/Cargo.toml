@@ -20,6 +20,7 @@ bench-bitpack-plan-shared = { path = "variants/bitpack-plan-shared" }
 bench-bitpack-footprint-shared = { path = "variants/bitpack-footprint-shared" }
 bench-bitpack-carrier-shared = { path = "variants/bitpack-carrier-shared" }
 bench-bitpack-contend-shared = { path = "variants/bitpack-contend-shared" }
+bench-bitpack-wide-shared = { path = "variants/bitpack-wide-shared" }
 bench-warm-container-shared = { path = "variants/warm-container-shared" }
 bench-warm-clamp-shared = { path = "variants/warm-clamp-shared" }
 bench-wide-rung-shared = { path = "variants/wide-rung-shared" }

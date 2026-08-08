@@ -30,7 +30,7 @@ fn run_contend_d16_padal<const KEY: usize>(
     let () = Contend::<KEY>::KEY_SPLITS;
     let t = Contend::<KEY>::T;
     let n = Contend::<KEY>::N;
-    let base = input as *const _;
+    let base = input as *const _ as *const u8;
     timed! {
         run {
             // SAFETY: the input outlives the pass and `KEY_SPLITS` refused any

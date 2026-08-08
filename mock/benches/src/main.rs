@@ -195,6 +195,7 @@ fn main() -> ExitCode {
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     use bench_bitpack_carrier_shared::CarrierColumn;
     use bench_bitpack_contend_shared::Contend;
+    use bench_bitpack_wide_shared::Wide;
     use bench_bitpack_footprint_shared::FootprintColumn;
     use bench_bitpack_plan_shared::{MacColumn, PlanColumn};
     use bench_bitpack_shared::Column;
@@ -499,6 +500,17 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("bitpack-contend-best", 41943044) => routine_bridge!(Contend<41943044>),
         ("bitpack-contend-best", 83886081) => routine_bridge!(Contend<83886081>),
         ("bitpack-contend-best", 83886084) => routine_bridge!(Contend<83886084>),
+
+        // the u16 question at a column several times past L2 (panel file 27
+        // section 15), where the contention sweep's largest row left it a tie
+        // inside the noise floor because both regions were only just past the
+        // cache.
+        ("bitpack-wide", 83886081) => routine_bridge!(Wide<83886081>),
+        ("bitpack-wide", 83886084) => routine_bridge!(Wide<83886084>),
+        ("bitpack-wide", 167772161) => routine_bridge!(Wide<167772161>),
+        ("bitpack-wide", 167772164) => routine_bridge!(Wide<167772164>),
+        ("bitpack-wide", 335544321) => routine_bridge!(Wide<335544321>),
+        ("bitpack-wide", 335544324) => routine_bridge!(Wide<335544324>),
         _ => return None,
     };
     Some(RoutineSpec {

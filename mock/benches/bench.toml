@@ -2372,3 +2372,69 @@ variants = [
     "../target/release/bench_bitpack_contend_packed_simd",
     "../target/release/bench_bitpack_contend_pipe4",
 ]
+
+[bench.bitpack-wide]
+title = "Packed 13-bit against the u16 carrier with both columns several times past a 12 MB L2, at one and four threads"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+threaded = true
+
+# n = 8,388,608 elements, 1 thread(s); u16 region 16 MiB, packed 13 MiB
+[[bench.bitpack-wide.sizes]]
+n = 83886081
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 8,388,608 elements, 4 thread(s); u16 region 16 MiB, packed 13 MiB
+[[bench.bitpack-wide.sizes]]
+n = 83886084
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 16,777,216 elements, 1 thread(s); u16 region 32 MiB, packed 26 MiB
+[[bench.bitpack-wide.sizes]]
+n = 167772161
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 16,777,216 elements, 4 thread(s); u16 region 32 MiB, packed 26 MiB
+[[bench.bitpack-wide.sizes]]
+n = 167772164
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 33,554,432 elements, 1 thread(s); u16 region 64 MiB, packed 52 MiB
+[[bench.bitpack-wide.sizes]]
+n = 335544321
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]
+
+# n = 33,554,432 elements, 4 thread(s); u16 region 64 MiB, packed 52 MiB
+[[bench.bitpack-wide.sizes]]
+n = 335544324
+variants = [
+    "../target/release/bench_bitpack_wide_d16",
+    "../target/release/bench_bitpack_wide_d16_control",
+    "../target/release/bench_bitpack_wide_d16_padal",
+    "../target/release/bench_bitpack_wide_pipe4",
+]

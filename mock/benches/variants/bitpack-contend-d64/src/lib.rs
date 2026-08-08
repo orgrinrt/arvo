@@ -26,7 +26,7 @@ fn run_contend_d64<const KEY: usize>(
     let () = Contend::<KEY>::KEY_SPLITS;
     let t = Contend::<KEY>::T;
     let n = Contend::<KEY>::N;
-    let base = input as *const _;
+    let base = input as *const _ as *const u8;
     timed! {
         run {
             // SAFETY: the input outlives the pass, `n` is the count it was built
