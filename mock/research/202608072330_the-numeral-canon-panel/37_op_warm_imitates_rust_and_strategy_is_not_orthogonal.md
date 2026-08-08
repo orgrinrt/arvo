@@ -3,6 +3,16 @@
 **Date:** 2026-08-08. **Position:** after `36`, closing the hole it named and correcting its framing.
 **Required reading.**
 
+> **Corrected by `38`, and this file may not be read without it.** Two things below are wrong. This
+> file sorts the carrier question into answers of different **kinds**, with `Cold` "decided by intent,
+> and possibly not by measurement at all" and "a measurement could not overturn this". Op: "All of
+> them should be decided by measurement, just measuring different things, and, this is I think the
+> mental unlock: They weigh different measurements differently." And this file reads `Warm` as defined
+> by imitation, where its intent is to be the intuitive best choice, with mimicry downstream of that
+> and droppable if consistently worse. His instruction on the framing: "You should not write these as
+> clear cut and settled." Full correction in
+> `38_op_the_strategies_weigh_measurements_differently.md`.
+
 ## His words, verbatim
 
 > Warm is what regular old rust would do. In fact, this is the one thing you can check from the prior
