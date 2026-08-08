@@ -5,6 +5,68 @@ This is angles opened, routes closed, and questions sharpened, presented for op 
 
 Read this first; it points at the files. Each entry says what changed and what it cost to find out.
 
+## Read this one first: the bridge table cannot be closed, at any size
+
+`11` went looking outside the project for a route past the bridge that `10` conceded. It did not find
+one. It found something worse and more useful.
+
+**`10`'s own multiply demands a bridge row for the *output* width.** Two inputs both in the table
+produce an output that is not, and adding that row by hand fails again one octave up. Multiplication
+doubles widths, so **no finite table is closed under the design's own law algebra**. Not at 1148
+rows, not at 8193, not at any size.
+
+Compiled, in three steps: a failure at 48 from two tabled inputs; the row added by hand and the
+failure reappearing at 96 and 32; and then the same ladder keyed on **nat types instead of consts**
+compiling three octaves plus a 1636-bit numeral at 208 bytes, **with no bridge anywhere**.
+
+Two things make this matter more than another route closed.
+
+**It is the objection that already killed something else, moved onto new ground.** The fixed-width
+carrier died in the closed panel on exactly this argument. `11` reports the same argument now applies
+to the law algebra, and that **it appears nowhere in the record**.
+
+**And it locates the cost precisely.** The ceiling is not the bridge; it belongs to the const surface.
+`11` wrote a total, uncapped, enumeration-free const-to-type bridge in **one blanket impl**,
+gate-free. It overshoots by exactly eight, and closing that gap is a single division, refused in four
+further syntactic positions all terminally naming a forbidden feature. So the bridge is not blocked.
+**Its codomain is.**
+
+### Defect, or the known price? Both, and the split is the answer
+
+`11` was told to hold the comfortable conclusion to a higher standard, and did. typenum ships arvo's
+exact three declarations at **1148 rows and 4758 generated lines**, so the table genuinely is what
+Rust's position costs, and calling it a defect alone would be wrong.
+
+But: **a price is paid once, and this one is charged unboundedly against a ratified property.** That
+is the distinction, and it is why the finding is not simply absolution.
+
+### What it says is yours
+
+The question it puts to you has a precedent that is exactly on point. **Capacity was a const and
+became a type, on your own direction**, and the workspace's own feature rule records that as the move
+that let three crates drop a forbidden gate. `11` asks whether the const width surface is the same
+decision, now with a compiled consequence attached rather than a preference.
+
+Also yours: whether the closure argument above holds; and whether the bridge's real cost changes a
+refusal you made when its cost was stated as "one line".
+
+### Two corrections it made to its predecessor and to me
+
+**`10`'s improved diagnostic prints a false sentence.** On a missing row it emits "width 48 is not the
+sum of widths 24 and 24", which is arithmetically wrong and would mislead a consumer badly. The
+improvement is otherwise real; this one case needs repair.
+
+**`SETTLED.md`'s consumer-extension row survives a second read but partitions the numerals.** A
+consumer adding one width must re-declare every width it uses, and a numeral declared in one crate
+does not flow into the other. The property holds; its cost was understated when you refused the
+bridge on it.
+
+### What it could not check
+
+No Ada, VHDL, Idris, Agda, Coq, Scala or F* toolchain on this machine, so five survey sections are
+recollection rather than verification. It flags **the Ada entry as the one it most wants checked**,
+because Ada carries the one property that is actually available here.
+
 ## Your standing instruction, taken at last, and it went well
 
 Nobody had taken it for four dispatches. `10` did, and the answer is better than the record suggested.
