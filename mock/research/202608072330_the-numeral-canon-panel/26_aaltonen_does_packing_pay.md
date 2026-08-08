@@ -1,7 +1,7 @@
 # 26. Does packing pay at the workload arvo says it exists for
 
-**Date:** 2026-08-08. **Member:** Aaltonen. **Status:** in progress, written to disk early and
-extended in place per `RULES.md`.
+**Date:** 2026-08-08. **Member:** Aaltonen. **Status:** complete. Written to disk early and
+extended in place per `RULES.md`; probes and artifacts committed at `fbac19c` and `ea6b0ac`.
 
 **Assignment:** build and run the bench that settles whether packing pays at the workload arvo's
 own rules declare it exists for: contiguous column-store storage, millions of records, predictable
