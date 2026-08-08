@@ -199,6 +199,8 @@ def main():
     check_num(29.1, wide(167772164, "pipe4"), 0.02, "section 15 wide pipe4 at n=16777216 t=4")
     check_num(38.9, wide(167772161, "d16-padal"), 0.02, "section 15 wide d16-padal at n=16777216 t=1")
     check_num(89.0, wide(167772161, "d16"), 0.02, "section 15 wide d16 at n=16777216 t=1")
+    check_num(33.3, wide(335544321, "d16-padal"), 0.02, "section 15 wide d16-padal at n=33554432 t=1")
+    check_num(85.7, wide(335544321, "d16"), 0.02, "section 15 wide d16 at n=33554432 t=1")
 
     print(f"{ok} of {ok + len(fail)} citations and numbers check out")
     for f in fail:

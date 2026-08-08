@@ -70,4 +70,23 @@
   Subprocess sanity OK
   Warmup spawn complete.
   ── Harness run 1/1 ──
-  pass 1/4 cd=0ms...
+  pass 1/4 cd=0ms... done (516s elapsed, ~1547s left)
+  pass 2/4 cd=0ms... done (983s elapsed, ~983s left)
+  pass 3/4 cd=0ms... done (1469s elapsed, ~490s left)
+  pass 4/4 cd=0ms... done (1934s elapsed, ~0s left)
+  Total: 1934.0s
+  CSV: bitpack-wide_n335544321.csv (320 rows)
+  Meta: bitpack-wide_n335544321.meta.json
+  wrote bitpack-wide_n335544321.csv + bitpack-wide_n335544321_findings.md
+  Validating 4 variants × 100 seeds...
+  Validation OK: all 4 variants produce identical output
+  Determinism check: 4 variants × 10 seeds...
+  Determinism OK: all 4 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_wide_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (575s elapsed, ~1725s left)
+  pass 2/4 cd=0ms... done (1149s elapsed, ~1149s left)
+  pass 3/4 cd=0ms... done (1725s elapsed, ~575s left)
+  pass 4/4 cd=0ms...

@@ -670,7 +670,12 @@ Instantiated on this host, for a 13-bit field, with the best kernel available on
 |---|---|---|
 | `u64` (8 bytes) | wins by 5 to 9% | wins by 67 to 71% |
 | `u32` (4 bytes) | loses by 3 to 10% warm, wins by 10 to 18% cold | **wins by 48 to 60%** |
-| `u16` (2 bytes) | loses by 59 to 111% | **ties**, within 2.5% either way, on a column past L2 |
+| `u16` (2 bytes) | loses by 59 to 111% | ~~**ties**, within 2.5% either way~~ **superseded** |
+
+**The `u16` row is superseded by section 15 and section 10.4 states what replaces it.** It read as a
+tie because the largest column available at the time put both arms only 1.3 and 1.1 times past the
+cache; measured with both several times past it, packing wins by 14 to 16 per cent. The rest of this
+table stands as measured. Nothing else in sections 7 through 10 changes.
 
 And the break-even carrier width, which is the form the dispatch asked for:
 
@@ -683,6 +688,24 @@ And the break-even carrier width, which is the form the dispatch asked for:
 **The break-even moves by a factor of two and a half to four.** It is the single number the canon's
 claim turns on and it is not stable under thread count, so a canon that carries the inequality and not
 the number is the only version that survives.
+
+### 10.4 Which of section 10 and section 15 stands, stated rather than left to a reader
+
+Section 15 was measured after this section was written, on a layout built to remove the one condition
+this section could not control. Where the two touch, **section 15 stands and this section's `u16` row
+does not.**
+
+Concretely: this section reports the `u16` comparison at four cores as a tie inside the noise floor,
+at -2.4 to -2.5 per cent against a floor of 2 to 3. Section 15 reports it at **-14.1 per cent warm and
+-15.9 cold against a 2.4 per cent floor**, on a column 2.7 times past the cache instead of 1.3, and
+with `d16` carrying the better of its two kernels. The two are not in conflict about any measurement.
+They are the same effect at two distances from the cache, and the earlier one was taken too close to
+it to resolve.
+
+Everything else in this section is unaffected, because nothing else in it turns on that row: the
+`u64` and `u32` results, the ceiling at 59 to 60 GB/s, the flat `d64` scaling, the break-even
+trajectory from 7 bytes to under 3, and the conditions in 10.2 all stand exactly as measured. The
+break-even figure gains one row at the bottom, and section 15.2 carries it.
 
 ### 10.1 What does not change, which is the more consequential half
 
@@ -822,6 +845,11 @@ covered.
 directory rather than chosen. The break-even is a function of both the field width and the carrier
 width and only one of those was swept.
 
+**A second layout for the wide sweep rather than a wider carrier layout.** Section 15 drops the `u32`
+and `u64` regions to buy record count inside the same allocation, so its rows carry no break-even
+interpolation and answer only the `u16` question. That is the question the 8,388,608 row left open,
+and widening the four-region layout instead would have cost four times the allocation to answer it.
+
 ## 13. What I did not cover
 
 **Eight threads, and the efficiency cores.** Named above. The pool supports it and every key is
@@ -846,6 +874,12 @@ proves a third shape would not do better.
 **More than one host.** One M1, four performance cores, a 12 MB L2, about 60 GB/s aggregate. Section
 10.2 lists what that specifically cannot tell you.
 
+**The 33,554,432-record rows.** Declared in `bench.toml`, monomorphised, and left running when this
+file was written. They put the `u16` column at 5.3 times L2 and the packed one at 4.3, against the
+2.7 and 2.2 the 16,777,216 rows reach, so they would confirm section 15's result at a wider margin
+rather than test anything it does not. Whatever they produced is in `mock/benches/bitpack-wide_n3*`
+if the run finished, and nothing in this file rests on them.
+
 **Whether the six earlier bitpack families are individually sound.** I read `bitpack-carrier-*`
 closely because this file extends it, and took the rest at face value.
 
@@ -856,12 +890,11 @@ said this and it is still unpriced.
 
 ## 14. Alternatives I did not take, for whoever picks this up
 
-**A larger `MAX_N`, so both arms are comfortably past L2.** The sharpest row in this file,
-`n = 8,388,608`, has a 16 MB `u16` column against a 12 MB L2 and a 13.0 MB packed column against the
-same, so both are only just past it and partial residency is still in the numbers. A layout carrying
-only the `u16` and packed regions could reach 32M records inside the same allocation and put both arms
-four to five times past the cache, where the comparison would be purely about bytes. This is the
-cheapest remaining improvement to the result and I would take it first.
+**A larger `MAX_N`, so both arms are comfortably past L2.** ~~This is the cheapest remaining
+improvement to the result and I would take it first.~~ **Taken.** Section 15 is that bench, and it
+turned the `u16` tie into a 14 to 16 per cent win for packing, which is the single largest change to
+the answer any part of this file produced. The entry is struck rather than deleted because a list of
+routes not taken is worth more when a reader can see which ones paid.
 
 **Perf counters.** The harness supports `--perf-counters` under sudo and emits instructions and cycles
 per sample. Every mechanism claim in sections 8 and 9 is inferred from disassembly plus timing; measured
