@@ -1,0 +1,23 @@
+F1  Cold packing, W=13 against W=16
+    flat pair:     carrier u16 both; stride 13 against 16  -> SEPARATES
+    single output: Packed<W13> against Packed<W16>         -> SEPARATES
+
+F2  alignment divergence, W=256, Hot against Warm
+    flat pair:     stride 256 both; carrier size 32 both; ALIGN 16 against 1
+                   the carrier is a TYPE, so it separates. 45's p1 collision is
+                   against a carrier represented as a BIT COUNT, not against the
+                   flat pair as 15 and 16 actually state it. -> SEPARATES
+    single output: PaddedAligned<W256> against Padded<W256> -> SEPARATES
+
+F3  Precise widening, W=13, Precise against Warm
+    flat pair:     stride 16 both; carrier u16 both -> DOES NOT SEPARATE
+    single output: PaddedWideCompute<W13> (compute u32) against Padded<W13> (compute u16)
+                   -> SEPARATES, with no change to the derivation's arity.
+
+so the three forcings do not all bear on the same question:
+  F1 forces the codomain past the native machine types. both forms handle it.
+  F2 forces the carrier to be a TYPE rather than a width. both forms handle it,
+     and only a bit-count carrier fails, which is a representation choice inside
+     an instrument rather than a fact about the derivation.
+  F3 forces a THIRD projection. the flat form's arity moves; the single output's
+     does not, because the projection is added to the result's contract.
