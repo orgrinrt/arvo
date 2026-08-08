@@ -270,6 +270,30 @@ def main():
             " -> ".join(short(w) for w in win)))
     print()
 
+    print("ARE THE INTERIOR WEIGHTINGS REDUNDANT?")
+    print()
+    print("  A compromise objective is worth naming only if it selects something")
+    print("  no pure objective selects. The two pure objectives are the two ends")
+    print("  of the weighting range, so an arm in the hull set that is neither")
+    print("  end is an arm reachable only from the interior.")
+    print()
+    print("  {:>10}  {:>5}  {:<40}".format("records", "count", "arms only an interior weighting selects"))
+    interior_total = 0
+    counts_with_interior = 0
+    for n in sorted(fam):
+        win, _ = hull_winners(all_points[n])
+        ends = {win[0], win[-1]}
+        interior = [w for w in win if w not in ends]
+        interior_total += len(interior)
+        counts_with_interior += 1 if interior else 0
+        print("  {:>10}  {:>5}  {:<40}".format(
+            n, len(interior),
+            ", ".join(w.replace("bitpack-carrier-", "") for w in interior) or "(none)"))
+    print()
+    print(f"  record counts with at least one interior-only arm: {counts_with_interior} of {len(fam)}")
+    print(f"  interior-only selections in total: {interior_total}")
+    print()
+
     print("  switch points, reported as an artifact of min-max normalisation")
     print("  rather than as a finding (the winner SET is normalisation-free,")
     print("  the switch weight is not):")

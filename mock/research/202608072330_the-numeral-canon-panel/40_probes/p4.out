@@ -37,6 +37,24 @@ HOW MANY MECHANISM ANSWERS THIS OBJECTIVE SPACE DISTINGUISHES
      4194304       2  d16, packed-simd                                 2  packed-simd -> d16
      8388608       2  d16-control, packed-simd                         2  packed-simd -> d16-control
 
+ARE THE INTERIOR WEIGHTINGS REDUNDANT?
+
+  A compromise objective is worth naming only if it selects something
+  no pure objective selects. The two pure objectives are the two ends
+  of the weighting range, so an arm in the hull set that is neither
+  end is an arm reachable only from the interior.
+
+     records  count  arms only an interior weighting selects 
+       16384      2  d16, d32                                
+      131072      1  d16-control                             
+     1048576      1  d16                                     
+     2097152      0  (none)                                  
+     4194304      0  (none)                                  
+     8388608      0  (none)                                  
+
+  record counts with at least one interior-only arm: 3 of 6
+  interior-only selections in total: 4
+
   switch points, reported as an artifact of min-max normalisation
   rather than as a finding (the winner SET is normalisation-free,
   the switch weight is not):
