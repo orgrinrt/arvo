@@ -67,6 +67,8 @@ members = [
     "benches/variants/bitpack-contend-packed-simd",
     "benches/variants/bitpack-contend-pipe2",
     "benches/variants/bitpack-contend-pipe4",
+    "benches/variants/bitpack-contend-d16-padal",
+    "benches/variants/bitpack-contend-d32-padal",
     "benches/variants/bitpack-plan-native",
     "benches/variants/bitpack-plan-naive",
     "benches/variants/bitpack-plan-windowed",

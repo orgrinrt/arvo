@@ -279,7 +279,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "bench-bitpack-contend-d16-padal"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
 name = "bench-bitpack-contend-d32"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-contend-d32-padal"
 version = "0.0.0"
 dependencies = [
  "bench-bitpack-contend-shared",

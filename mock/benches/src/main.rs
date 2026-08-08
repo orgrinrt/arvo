@@ -491,6 +491,14 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("bitpack-contend-decode", 41943044) => routine_bridge!(Contend<41943044>),
         ("bitpack-contend-decode", 83886081) => routine_bridge!(Contend<83886081>),
         ("bitpack-contend-decode", 83886084) => routine_bridge!(Contend<83886084>),
+
+        // the dense side attacked as well (panel file 27 section 9), so the
+        // comparison is between two kernels written with the same care rather
+        // than between an attacked one and whichever was committed first.
+        ("bitpack-contend-best", 41943041) => routine_bridge!(Contend<41943041>),
+        ("bitpack-contend-best", 41943044) => routine_bridge!(Contend<41943044>),
+        ("bitpack-contend-best", 83886081) => routine_bridge!(Contend<83886081>),
+        ("bitpack-contend-best", 83886084) => routine_bridge!(Contend<83886084>),
         _ => return None,
     };
     Some(RoutineSpec {

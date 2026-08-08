@@ -5,7 +5,7 @@
 //! share one function-pointer shape so the pool can carry any of them and the
 //! tests can drive all of them through one table.
 
-use bench_bitpack_carrier_shared::{sum_d16, sum_d32, sum_d64, Plan13, LOGICAL_BITS};
+use bench_bitpack_carrier_shared::{sum_d16, sum_d32, sum_d64, Plan13, LOGICAL_BITS, MASK13};
 
 use crate::input::Layout;
 
@@ -241,6 +241,193 @@ mod pipe_tests {
     #[cfg(target_arch = "aarch64")]
     #[test]
     fn pipelined_kernels_agree_across_a_drain_boundary() {
+        agrees_at(4194304);
+        agrees_at(4194304 - 8);
+    }
+}
+
+// ── attacking the dense side too ────────────────────────────────────────────
+//
+// The decode attack above is worth about 40 per cent, which raises a question
+// the bench has to answer before any of it can be believed: is the dense arm
+// it is being compared against the best dense arm, or is it the one that
+// happened to be committed?
+//
+// It is not the best one. `sum_d16`'s disassembly is a `ldp q, q` pair, a
+// `bic.8h` mask and then four `uaddw` widening adds per sixteen elements, about
+// one instruction per element, and it runs at 3.5 elements per cycle on an
+// eight-wide core. The widening is the same cost `sum_simd_padal` removed on the
+// packed side and it is removable the same way: `UADALP` folds eight 16-bit
+// lanes into four 32-bit lanes in one instruction, which drops the loop to a
+// load, a mask and an accumulate for every eight elements.
+//
+// Comparing an attacked packed kernel against an unattacked dense one is the
+// strawman failure, so both sides get the same attack and the comparison is
+// between two kernels written with the same care.
+
+/// The `u16` dense read with pairwise accumulation and four accumulators.
+///
+/// Identical semantics to `sum_d16`: every element is masked to the logical
+/// width and wrapping-added, so the two agree bit for bit and the harness's
+/// cross-variant comparison holds them to it.
+///
+/// # Safety
+/// `vals` holds at least `n` elements.
+#[cfg(target_arch = "aarch64")]
+#[inline(always)]
+pub unsafe fn sum_d16_padal(vals: &[u16], n: usize) -> u64 { unsafe {
+    use core::arch::aarch64::*;
+
+    let mask = vdupq_n_u16(MASK13 as u16);
+    // a 32-bit lane takes two 16-bit lanes per group of eight, so it holds at
+    // most `2 * MASK * groups` and must drain on the same period the packed
+    // kernel uses
+    let drain: usize = (u32::MAX as u64 / (2 * MASK13)) as usize;
+    let groups = n / 8;
+    let mut total: u64 = 0;
+    let mut done = 0usize;
+    let p = vals.as_ptr();
+    unsafe {
+        while done < groups {
+            let chunk = core::cmp::min(groups - done, drain);
+            let mut a = [vdupq_n_u32(0); 4];
+            let quads = chunk / 4;
+            let mut g = done;
+            for _ in 0..quads {
+                let v0 = vandq_u16(vld1q_u16(p.add(g * 8)), mask);
+                let v1 = vandq_u16(vld1q_u16(p.add(g * 8 + 8)), mask);
+                let v2 = vandq_u16(vld1q_u16(p.add(g * 8 + 16)), mask);
+                let v3 = vandq_u16(vld1q_u16(p.add(g * 8 + 24)), mask);
+                a[0] = vpadalq_u16(a[0], v0);
+                a[1] = vpadalq_u16(a[1], v1);
+                a[2] = vpadalq_u16(a[2], v2);
+                a[3] = vpadalq_u16(a[3], v3);
+                g += 4;
+            }
+            for _ in 0..(chunk - quads * 4) {
+                a[0] = vpadalq_u16(a[0], vandq_u16(vld1q_u16(p.add(g * 8)), mask));
+                g += 1;
+            }
+            let w = vaddq_u64(
+                vaddq_u64(vpaddlq_u32(a[0]), vpaddlq_u32(a[1])),
+                vaddq_u64(vpaddlq_u32(a[2]), vpaddlq_u32(a[3])),
+            );
+            total = total
+                .wrapping_add(vgetq_lane_u64(w, 0))
+                .wrapping_add(vgetq_lane_u64(w, 1));
+            done += chunk;
+        }
+        for i in (groups * 8)..n {
+            total = total.wrapping_add((*p.add(i) as u64) & MASK13);
+        }
+    }
+    total
+}}
+
+/// The `u32` dense read with pairwise accumulation and four accumulators.
+///
+/// `vpadalq_u32` folds four 32-bit lanes into two 64-bit lanes, which cannot
+/// overflow for any column this bench can hold, so unlike the 16-bit case there
+/// is no drain.
+///
+/// # Safety
+/// `vals` holds at least `n` elements.
+#[cfg(target_arch = "aarch64")]
+#[inline(always)]
+pub unsafe fn sum_d32_padal(vals: &[u32], n: usize) -> u64 { unsafe {
+    use core::arch::aarch64::*;
+
+    let mask = vdupq_n_u32(MASK13 as u32);
+    let groups = n / 4;
+    let mut a = [vdupq_n_u64(0); 4];
+    let quads = groups / 4;
+    let p = vals.as_ptr();
+    unsafe {
+        let mut g = 0usize;
+        for _ in 0..quads {
+            let v0 = vandq_u32(vld1q_u32(p.add(g * 4)), mask);
+            let v1 = vandq_u32(vld1q_u32(p.add(g * 4 + 4)), mask);
+            let v2 = vandq_u32(vld1q_u32(p.add(g * 4 + 8)), mask);
+            let v3 = vandq_u32(vld1q_u32(p.add(g * 4 + 12)), mask);
+            a[0] = vpadalq_u32(a[0], v0);
+            a[1] = vpadalq_u32(a[1], v1);
+            a[2] = vpadalq_u32(a[2], v2);
+            a[3] = vpadalq_u32(a[3], v3);
+            g += 4;
+        }
+        for _ in 0..(groups - quads * 4) {
+            a[0] = vpadalq_u32(a[0], vandq_u32(vld1q_u32(p.add(g * 4)), mask));
+            g += 1;
+        }
+        let w = vaddq_u64(vaddq_u64(a[0], a[1]), vaddq_u64(a[2], a[3]));
+        let mut total = vgetq_lane_u64(w, 0).wrapping_add(vgetq_lane_u64(w, 1));
+        for i in (groups * 4)..n {
+            total = total.wrapping_add((*p.add(i) as u64) & MASK13);
+        }
+        total
+    }
+}}
+
+/// # Safety
+/// See [`crate::SliceKernel`].
+#[cfg(target_arch = "aarch64")]
+pub unsafe fn kern_d16_padal(base: *const Layout, lo: usize, hi: usize) -> u64 {
+    let col = unsafe { &*base };
+    unsafe { sum_d16_padal(&col.d16[lo..hi], hi - lo) }
+}
+
+/// # Safety
+/// See [`crate::SliceKernel`].
+#[cfg(target_arch = "aarch64")]
+pub unsafe fn kern_d32_padal(base: *const Layout, lo: usize, hi: usize) -> u64 {
+    let col = unsafe { &*base };
+    unsafe { sum_d32_padal(&col.d32[lo..hi], hi - lo) }
+}
+
+#[cfg(test)]
+mod dense_padal_tests {
+    use bench_bitpack_carrier_shared::{sum_d16, sum_d32};
+
+    use super::*;
+    use crate::input::build_bytes;
+
+    /// The attacked dense kernels agree with the reference ones they replace,
+    /// at sizes on both sides of the 16-bit drain boundary and at sizes that
+    /// are not multiples of the unroll factor, which is where a mishandled
+    /// tail would hide.
+    #[cfg(target_arch = "aarch64")]
+    fn agrees_at(n: usize) {
+        let buf = build_bytes(n, 31);
+        let col: &Layout = unsafe { &*(buf.as_ptr() as *const Layout) };
+        let r16 = sum_d16(&col.d16[..n], n);
+        let r32 = sum_d32(&col.d32[..n], n);
+        assert_eq!(
+            unsafe { sum_d16_padal(&col.d16[..n], n) },
+            r16,
+            "sum_d16_padal disagrees at n={n}"
+        );
+        assert_eq!(
+            unsafe { sum_d32_padal(&col.d32[..n], n) },
+            r32,
+            "sum_d32_padal disagrees at n={n}"
+        );
+        assert_eq!(
+            r16, r32,
+            "the two carriers disagree, so the fixture is wrong"
+        );
+    }
+
+    #[cfg(target_arch = "aarch64")]
+    #[test]
+    fn attacked_dense_kernels_agree_below_one_drain() {
+        agrees_at(16384);
+        agrees_at(131072);
+        agrees_at(131072 - 24);
+    }
+
+    #[cfg(target_arch = "aarch64")]
+    #[test]
+    fn attacked_dense_kernels_agree_across_a_drain_boundary() {
         agrees_at(4194304);
         agrees_at(4194304 - 8);
     }
