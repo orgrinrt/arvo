@@ -1073,8 +1073,8 @@ The verdict at `19:716-717` has two parts, and they have fared differently.
 **Part one, that the panel converged on methodology for the mechanism rather than on a canon.** This
 was accurate for files `02` through `18`. `19:686-688` counts it itself: of the four files in its own
 stretch, one is almost wholly methodology and one is design plus one methodological finding. My
-inventory bears it out from the other side. Of twenty-nine rows, the ones I refused wholesale (S29) are
-all instrument findings, and they represent a large share of the panel's best-argued pages.
+inventory bears it out from the other side. Of thirty rows, the ones I refused wholesale (S29) are all
+instrument findings, and they represent a large share of the panel's best-argued pages.
 
 **Part two, the reason: that the doability a canon must assert is, for arvo, a workload claim, and the
 panel had not made one.** `19:707-714` grounds this in `arvo-toolbox-not-policer.md`, which says
