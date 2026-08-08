@@ -27,6 +27,11 @@ $ python3 23_probes/spot_check_citation_content.py
 22      604-612   operation is            OK
 RULES    99-101   Keeping something       OK
 
+$ python3 23_probes/count_strategy_mentions.py
+rows total: 30
+rows mentioning 'strateg' anywhere: 8 -> S18, S19, S21, S22, S23, S25, S26, S29
+rows whose canon sentence says 'strateg': 3 -> S19, S23, S26
+
 $ inventory counts
 rows          30
 blocked       7

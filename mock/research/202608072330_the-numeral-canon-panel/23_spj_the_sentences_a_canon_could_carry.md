@@ -1017,12 +1017,14 @@ This list is more useful than the inventory, and I have tried to make it specifi
 from rather than gesturing at areas.
 
 **The seam sentence.** How the concept vocabulary and the width vocabulary name the same object. This
-is the single missing sentence that would turn three clusters into one, and no file has been pointed at
-it. It is the item I would put first.
+is the single missing sentence that would join the inventory's two halves, and no file has been pointed
+at it. It is the item I would put first.
 
-**What a strategy is.** The inventory contains four sentences that mention the strategy axis and not
-one that says what it is. S19 says what one strategy is a statement about. S22 says the design's
-`Precise` semantics decides whether S18 is forced. S26 and S27 measure what strategy choices cost.
+**What a strategy is.** Measured over the rows: **eight rows mention the strategy axis and three name
+it inside their canon sentence, and not one of the thirty says what it is.** S19 says what one strategy
+is a statement about. S22 says the design's `Precise` semantics decides whether S18 is forced by
+arithmetic or only by the type system. S26 and S27 measure what strategy choices cost. The counting
+script for this is in `23_probes/`.
 `SETTLED.md:82-87` carries six strategy rows all marked RATIFIED under the superseded reading. **A
 canon for arvo's numerals with no sentence defining the strategy axis is missing its most consumer-
 visible concept**, and the workspace's own `arvo-toolbox-not-policer.md` says the axis is how the
@@ -1048,11 +1050,18 @@ answer is no, a large part of Cluster B has no caller.** One sentence from op co
 
 **What the wide rung's semantics is.** Blocks S26 and reweighs S27.
 
-**Nothing about the consumer's experience, at all.** The inventory has one row about diagnostics (S16,
-blocked) and none about what using the design feels like. The ratified ergonomics bar is the thing
+**Almost nothing about the consumer's experience.** Two rows touch it and neither is what is wanted.
+S13b says the written form and the parameter form are separable, which is a statement about the
+machinery's freedom rather than about the consumer. S16 is about diagnostics and is blocked. Nothing
+says what using the design is supposed to feel like, and the ratified ergonomics bar is the thing
 `SETTLED.md:109` warns has already been compressed wrongly once and cost an expert an hour. A canon
-that says what a numeral is, how it derives, and what erases, and says nothing about what a consumer
+that says what a numeral is, how it derives and what erases, and says nothing about what a consumer
 writes and reads, has described the machine and not the tool.
+
+**And I want to be careful not to overstate this one**, because `12` and `13` between them did a great
+deal of work on exactly the consumer's reading experience, and it produced S16 and a pile of refuted
+repairs rather than a sentence. That is the honest position: the work was done, it did not converge,
+and the gap is a gap rather than an oversight.
 
 ## Is the checkpoint's verdict right?
 
