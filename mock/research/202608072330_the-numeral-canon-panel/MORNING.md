@@ -41,6 +41,33 @@ for them.
 6. **One family, or several?** Your original question, reframed twice tonight and no longer the
    blocker it appeared to be. Sections one through three.
 
+## How to read the rest
+
+Sections **one** and **two** are the pair that moved the design: the table cannot be closed, and the
+assumption that forced the table is false. Section **three** is where both gaps closed and your
+criterion turned out to have a second noun. Section **four** is the check that certified your gate
+being blind to half of it. Section **five** is what the panel's evidence is worth, and it is the one
+that reaches backwards over everything else.
+
+Section **nine** is what all of it amounts to **in canon terms**: thirty candidate sentences, how
+many are carryable, and the seam between two vocabularies that nobody crossed. Read it if you want
+the answer to "did this night produce a canon or a method".
+
+After those: what your standing instruction produced, the routes closed with their diagnostics, the
+corrections files made to each other and to me, and the method notes.
+
+**On checking anything here.** An independent entailment check (`21`) measured this file against its
+sources and found the sources carry **297 line-level anchors across 119 unique targets while this
+file carried zero**, against 295 numeric tokens. Nothing in it was checkable without opening every
+panel file and guessing.
+
+Every major section now opens with a *Sources* line naming the files and probe directories its
+claims come from. That is a repair at file granularity rather than line granularity, which is the
+honest limit of what I can add without re-verifying 295 numbers by hand and risking a fresh error in
+the act of fixing one. **If a number here matters to a decision, open the named probe directory
+rather than trusting this file.** `21` checked 51 of them and 50 reproduced exactly, so the
+arithmetic underneath is sound; the failures it found were all in my compression of it.
+
 ## Nine: what the night produced in canon terms, and the seam nobody crossed
 
 *Sources: `23`, with `23_probes/RUN.out` carrying every count's command.*
@@ -104,29 +131,6 @@ from this file. Go to the named file.** The Sources lines exist for that.
 
 `23` also caught this document overstating a count: I wrote that a later check found four more rung
 errors, when `21` found four **in total** of which three were already flagged. One new. Corrected.
-
-## How to read the rest
-
-Sections **one** and **two** are the pair that moved the design: the table cannot be closed, and the
-assumption that forced the table is false. Section **three** is where both gaps closed and your
-criterion turned out to have a second noun. Section **four** is the check that certified your gate
-being blind to half of it. Section **five** is what the panel's evidence is worth, and it is the one
-that reaches backwards over everything else.
-
-After those: what your standing instruction produced, the routes closed with their diagnostics, the
-corrections files made to each other and to me, and the method notes.
-
-**On checking anything here.** An independent entailment check (`21`) measured this file against its
-sources and found the sources carry **297 line-level anchors across 119 unique targets while this
-file carried zero**, against 295 numeric tokens. Nothing in it was checkable without opening every
-panel file and guessing.
-
-Every major section now opens with a *Sources* line naming the files and probe directories its
-claims come from. That is a repair at file granularity rather than line granularity, which is the
-honest limit of what I can add without re-verifying 295 numbers by hand and risking a fresh error in
-the act of fixing one. **If a number here matters to a decision, open the named probe directory
-rather than trusting this file.** `21` checked 51 of them and 50 reproduced exactly, so the
-arithmetic underneath is sound; the failures it found were all in my compression of it.
 
 ## The correction that matters most: the `Cold` trade is not unpriced
 
