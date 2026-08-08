@@ -790,13 +790,21 @@ a per-value question and a per-aggregate question" states why they are not (`16`
 > **Independence declared honestly:** `47` read `45` and `46` before deriving, so its support for the
 > converged claim is a third **read**, not a third independent instance.
 
-> **Converged after an exchange, `44` to `45` to `46` to `45` again. This is the panel's first
-> TWO EXPERTS result on a substantive claim, and it is narrower than `45` first stated.**
+> **Converged after an exchange, `44` to `45` to `46` to `45` again, and narrower than `45` first
+> stated.**
 >
-> **Forced unconditionally, by `Cold` alone.** `45` derived it; `46` re-derived it independently from
-> `16:126-141` rather than from `45`'s prose, as an injectivity failure where eight distinct `Cold`
-> widths collapse onto one native carrier. It needs only `Cold`'s ratified packing intent plus the fact
-> that Rust has no arbitrary-bit-width native type. **Two independent derivations, which is the rung.**
+> **Rung, corrected by `48` after the dispatching agent inflated it.** An earlier version of this entry
+> called it the panel's first TWO EXPERTS result and said `46` re-derived it independently. `46` says
+> the opposite about itself: "my confirmation is a third read, not a third independent instance, and I
+> say so rather than claiming a rung I have not earned." The honest rung: **ONE EXPERT on the count**,
+> since `16:17-33` downgrades its own agreement there because a commit subject leaked the number before
+> it derived anything; **TWO EXPERTS on the content**, from `15` and `16` deriving before either read
+> `45`; plus three reads. `44:380-383` writes "two independent derivation routes" while reporting
+> `16`'s self-downgrade at `44:72-79`, and that internal inconsistency is where the inflation came from.
+>
+> **Forced unconditionally, by `Cold` alone.** An injectivity failure where eight distinct `Cold` widths
+> collapse onto one native carrier (`16:126-141`), needing only `Cold`'s ratified packing intent plus
+> the fact that Rust has no arbitrary-bit-width native type.
 >
 > **Conditional, and `45` conceded this.** Its second forcing, the wide-rung alignment collision, took
 > its carrier types from the dead tree and called that settled architecture. `15:418-429` says the
