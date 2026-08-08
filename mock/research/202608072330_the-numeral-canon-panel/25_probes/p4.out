@@ -1,0 +1,49 @@
+committed findings files read : 34
+uncommitted, SKIPPED (a claim on one of these would be void): 2
+    warm-clamp-arity-l2_n601040_findings.md
+    warm-clamp-arity-l2_n641040_findings.md
+
+run                                    fastest arm                   median ns   vs base
+warm-clamp-arity-l2_n131040            warm-clamp-accfit               34901.3     -50.3
+warm-clamp-arity-l2_n161040            warm-clamp-accfit               34940.2     -51.0
+warm-clamp-arity-l2_n321040            warm-clamp-accfit               58646.0      -1.2
+warm-clamp-arity-l2_n81040             warm-clamp-accfit               29401.2     -63.1
+warm-clamp-arity-w13_n130010           warm-clamp-minimum                254.8     -69.2
+warm-clamp-arity-w13_n130020           warm-clamp-accfit                 273.3     -61.6
+warm-clamp-arity-w13_n130030           warm-clamp-minimum                524.4     -11.9
+warm-clamp-arity-w13_n130040           warm-clamp-accfit                 286.4     -47.9
+warm-clamp-arity-w13_n130060           warm-clamp-accfit                 207.9     -61.3
+warm-clamp-arity-w13_n130080           warm-clamp-accfit                 190.0     -63.5
+warm-clamp-arity-w16_n160010           warm-clamp-min-lanes              251.7     -70.9
+warm-clamp-arity-w16_n160020           warm-clamp-minimum                253.9     -64.3
+warm-clamp-arity-w16_n160030           warm-clamp-accfit                 526.2     -13.4
+warm-clamp-arity-w16_n160040           warm-clamp-accfit                 281.9     -50.3
+warm-clamp-arity-w16_n160060           warm-clamp-accfit                 197.2     -62.0
+warm-clamp-arity-w16_n160080           warm-clamp-accfit                 188.6     -63.4
+warm-clamp-arity-w32_n320010           warm-clamp-minimum                422.1     -50.7
+warm-clamp-arity-w32_n320020           warm-clamp-min-lanes              504.8     -39.6
+warm-clamp-arity-w32_n320040           warm-clamp-accfit                 416.0      -0.0
+warm-clamp-arity-w32_n320060           warm-clamp-accfit                 390.2      -1.9
+warm-clamp-arity-w32_n320080           warm-clamp-min-lanes              330.6     -23.2
+warm-clamp-arity-w60_n600010           warm-clamp-minimum               1003.3      -3.5
+warm-clamp-arity-w60_n600030           warm-clamp-minimum                621.5      -0.2
+warm-clamp-arity-w60_n600060           warm-clamp-accfit                2479.6     -73.6
+warm-clamp-arity-w60_n600080           warm-clamp-min-lanes             1825.4     -82.3
+warm-clamp-arity-w64_n640010           warm-clamp-minimum                824.2      -1.6
+warm-clamp-arity-w64_n640030           warm-clamp-min-lanes             1831.1      -0.1
+warm-clamp-arity-w64_n640040           warm-clamp-min-lanes             1779.2     -20.4
+warm-clamp-arity-w64_n640060           warm-clamp-min-lanes             1792.9     -51.4
+warm-clamp-arity-w64_n640080           warm-clamp-min-lanes             2035.2     -59.7
+warm-clamp-arity-w8_n80010             warm-clamp-minimum                107.9     -87.5
+warm-clamp-arity-w8_n80020             warm-clamp-min-lanes              126.9     -82.9
+warm-clamp-arity-w8_n80030             warm-clamp-accfit                 467.7     -30.0
+warm-clamp-arity-w8_n80040             warm-clamp-accfit                 237.1     -63.7
+
+winner tally across committed runs:
+   warm-clamp-accfit        17 runs   [headroom=minimum, accumulator by interior-safety rule]
+   warm-clamp-min-lanes      9 runs   [headroom=minimum + fold lane-split]
+   warm-clamp-minimum        8 runs   [headroom=minimum]
+
+RESULT: the winning arm is NOT constant across the family.
+  -> 3 distinct arms win somewhere.
+  -> the best value on these axes is a function of the run's conditions, not a constant.

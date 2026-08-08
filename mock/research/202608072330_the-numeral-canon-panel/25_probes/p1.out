@@ -1,0 +1,30 @@
+========================================================================
+PANEL *.md (incl. SETTLED, RULES, CANON_CANDIDATE, MORNING)
+========================================================================
+mock/research/202608072330_the-numeral-canon-panel/06_kiselyov_where_a_numeral_is_inferred.md :306   elements at equal width. **The strategy is what breaks that tie.**
+mock/research/202608072330_the-numeral-canon-panel/10_lattner_fresh_eyes_on_the_container_derivation.md :193   That does not touch the derivation. The ladder does not know what a strategy is; it maps a width to a
+mock/research/202608072330_the-numeral-canon-panel/11_chlipala_prior_art_on_typed_widths.md :545   know what a strategy is; it maps a width to a container", and it is total. Nothing about 48 bits is hard.
+mock/research/202608072330_the-numeral-canon-panel/15_giesen_the_axes_the_ladders_left_out.md :258   because the markers are present as inert phantoms. The check is whether anything **consults** them.
+mock/research/202608072330_the-numeral-canon-panel/23_spj_the_sentences_a_canon_could_carry.md :701   `10:195-197` says: "The ladder does not know what a strategy is; it maps a width to a container. Where
+mock/research/202608072330_the-numeral-canon-panel/23_spj_the_sentences_a_canon_could_carry.md :709   These are not the same design. Under `10`'s, the strategy is upstream of the ladder and the ladder is
+mock/research/202608072330_the-numeral-canon-panel/23_spj_the_sentences_a_canon_could_carry.md :710   strategy-blind. Under `15`'s, the strategy is a key of the ladder. Both compile. The observable
+mock/research/202608072330_the-numeral-canon-panel/23_spj_the_sentences_a_canon_could_carry.md :813   > The strategy axis is not carrying the trade the rule says it carries. It is carrying a footprint
+mock/research/202608072330_the-numeral-canon-panel/23_spj_the_sentences_a_canon_could_carry.md :1023  **What a strategy is.** Measured over the rows: **eight rows mention the strategy axis and three name
+mock/research/202608072330_the-numeral-canon-panel/23_spj_the_sentences_a_canon_could_carry.md :1029  canon for arvo's numerals with no sentence defining the strategy axis is missing its most consumer-
+mock/research/202608072330_the-numeral-canon-panel/23_spj_the_sentences_a_canon_could_carry.md :1096  `22:580-583` reports the strategy axis is carrying a footprint difference invisible to a consumer
+mock/research/202608072330_the-numeral-canon-panel/25_torvalds_what_a_strategy_is.md :1     # 25. What a strategy is
+mock/research/202608072330_the-numeral-canon-panel/MORNING.md :108   **No row anywhere says what a strategy is.** Eight rows mention the axis, three name it inside their
+mock/research/202608072330_the-numeral-canon-panel/MORNING.md :280   shapes and sizes, not addition on the values"; `12` says the strategy is an inert marker in every
+-> 14 hits
+
+========================================================================
+arvo/.claude (the repository's own agent rules)
+========================================================================
+.claude/rules/implementation.md                      :31    ### Strategy markers are load-bearing
+-> 1 hits
+
+========================================================================
+workspace .claude/rules
+========================================================================
+-> 0 hits
+
