@@ -1,114 +1,22 @@
+# arvo's mock workspace, deliberately empty.
+#
+# `mock/crates` was deleted on 2026-08-08 while the canon is written. This is the
+# mutation order the canon/design/code chain requires rather than housekeeping:
+# canon work is licensed by the lower tiers being declared dead, and an agent
+# that consults the shipped source during it is reattaching the tier that had to
+# be detached for the work to be permitted.
+#
+# Nothing is lost. Git history holds every byte, and `origin/dev` still carries
+# the full tree for consumers pinned to it. That is precisely why it could leave
+# the working tree.
+#
+# Do not restore a crate here to make something build. The canon comes first,
+# then designs derived from it, then code written from those. Source that
+# predates the canon is not a starting point; it is the thing being replaced.
+
 [workspace]
 resolver = "2"
-members = [
-    # L0a — foundation traits (no storage, no algorithms)
-    "crates/arvo-transparent",
-    "crates/arvo-strategy",
-
-    # L0 — minimal bare-primitive layer
-    "crates/arvo-storage",
-
-    # L0.5 — trait contracts (declarations only)
-    "crates/arvo-bits-contracts",
-    "crates/arvo-mask-contracts",
-    "crates/arvo-numeric-contracts",
-
-    # L1 — implementation crates (concrete storage + impls)
-    "crates/arvo-bits",
-    "crates/arvo-bitmask",
-    "crates/arvo-refit",
-    "crates/arvo-tensor",
-
-    # L2 — algorithm + hash crates
-    "crates/arvo-hash",
-    "crates/arvo-sparse",
-    "crates/arvo-graph",
-    "crates/arvo-comb",
-
-    # L3 — spectral
-    "crates/arvo-spectral",
-
-    # facade — re-exports + default impls + ergonomic aliases
-    "crates/arvo",
-
-    # bench infrastructure (operational tooling, not a published artefact)
-    "benches",
-    "benches/variants/fnv1a",
-    "benches/variants/xxhash3",
-    "benches/variants/structural-decomposition",
-    "benches/variants/spectral-bisection",
-    "benches/variants/quantiser-fadd-shared",
-    "benches/variants/quantiser-fadd-software",
-    "benches/variants/quantiser-fadd-hardware",
-    "benches/variants/quantiser-radix-shared",
-    "benches/variants/quantiser-radix2",
-    "benches/variants/quantiser-radix10",
-    "benches/variants/bitpack-shared",
-    "benches/variants/bitpack-aligned-seq",
-    "benches/variants/bitpack-aligned-rand",
-    "benches/variants/bitpack-zeropad-seq",
-    "benches/variants/bitpack-zeropad-rand",
-    "benches/variants/bitpack-native-seq",
-    "benches/variants/bitpack-native-rand",
-    "benches/variants/bitpack-plan-shared",
-    "benches/variants/bitpack-carrier-shared",
-    "benches/variants/bitpack-carrier-d64",
-    "benches/variants/bitpack-carrier-d32",
-    "benches/variants/bitpack-carrier-d16",
-    "benches/variants/bitpack-carrier-d16-control",
-    "benches/variants/bitpack-carrier-packed",
-    "benches/variants/bitpack-carrier-packed-simd",
-    "benches/variants/bitpack-contend-shared",
-    "benches/variants/bitpack-contend-d16",
-    "benches/variants/bitpack-contend-d16-control",
-    "benches/variants/bitpack-contend-d32",
-    "benches/variants/bitpack-contend-d64",
-    "benches/variants/bitpack-contend-packed",
-    "benches/variants/bitpack-contend-packed-simd",
-    "benches/variants/bitpack-contend-pipe2",
-    "benches/variants/bitpack-contend-pipe4",
-    "benches/variants/bitpack-contend-d16-padal",
-    "benches/variants/bitpack-contend-d32-padal",
-    "benches/variants/bitpack-wide-shared",
-    "benches/variants/bitpack-wide-d16",
-    "benches/variants/bitpack-wide-d16-control",
-    "benches/variants/bitpack-wide-d16-padal",
-    "benches/variants/bitpack-wide-pipe4",
-    "benches/variants/bitpack-plan-native",
-    "benches/variants/bitpack-plan-naive",
-    "benches/variants/bitpack-plan-windowed",
-    "benches/variants/bitpack-mac-native",
-    "benches/variants/bitpack-mac-naive",
-    "benches/variants/bitpack-mac-windowed",
-    "benches/variants/bitpack-mac-narrow",
-    "benches/variants/bitpack-plan-simd",
-    "benches/variants/bitpack-mac-simd",
-    "benches/variants/bitpack-footprint-shared",
-    "benches/variants/bitpack-footprint-dense",
-    "benches/variants/bitpack-footprint-dense-alt",
-    "benches/variants/bitpack-footprint-packed",
-    "benches/variants/bitpack-footprint-packed-naive",
-    "benches/variants/warm-container-shared",
-    "benches/variants/warm-container-headroom",
-    "benches/variants/warm-container-minimum",
-    "benches/variants/warm-container-plusone",
-    "benches/variants/warm-container-native",
-    "benches/variants/warm-container-kernel",
-    "benches/variants/warm-container-lanes-deferred",
-    "benches/variants/warm-clamp-shared",
-    "benches/variants/warm-clamp-head",
-    "benches/variants/warm-clamp-minimum",
-    "benches/variants/warm-clamp-acc64",
-    "benches/variants/warm-clamp-accfit",
-    "benches/variants/warm-clamp-accfit-dyn",
-    "benches/variants/warm-clamp-min-lanes",
-    "benches/variants/wide-rung-shared",
-    "benches/variants/wide-rung-ragged",
-    "benches/variants/wide-rung-ragged-overread",
-    "benches/variants/wide-rung-wordround",
-    "benches/variants/wide-rung-wordround-alias",
-    "benches/variants/wide-rung-align16",
-]
+members = []
 
 [workspace.package]
 version = "0.1.0"
@@ -117,34 +25,17 @@ license = "MPL-2.0"
 
 [workspace.dependencies]
 notko = { git = "ssh://git@github.com/orgrinrt/notko.git", branch = "dev", default-features = false, features = ["const", "try_trait_v2"] }
-arvo-transparent = { path = "crates/arvo-transparent" }
-arvo-strategy = { path = "crates/arvo-strategy" }
-arvo-storage = { path = "crates/arvo-storage" }
-arvo-bits-contracts = { path = "crates/arvo-bits-contracts" }
-arvo-mask-contracts = { path = "crates/arvo-mask-contracts" }
-arvo-numeric-contracts = { path = "crates/arvo-numeric-contracts" }
-arvo-bits = { path = "crates/arvo-bits" }
-arvo-bitmask = { path = "crates/arvo-bitmask" }
-arvo-refit = { path = "crates/arvo-refit" }
-arvo-tensor = { path = "crates/arvo-tensor" }
-arvo-hash = { path = "crates/arvo-hash" }
-arvo-graph = { path = "crates/arvo-graph" }
-arvo-sparse = { path = "crates/arvo-sparse" }
-arvo-spectral = { path = "crates/arvo-spectral" }
-arvo-comb = { path = "crates/arvo-comb" }
-arvo = { path = "crates/arvo" }
 
 # Incremental compilation is off here, deliberately.
 #
 # arvo's cost is in monomorphised output, not in source it could reuse: the
 # per-width, per-strategy, per-sign impl macros turn a small file into an
-# enormous object, and `libarvo_strategy.rlib` alone is 19 MB. Incremental
+# enormous object, and `libarvo_strategy.rlib` alone was 19 MB. Incremental
 # caches a dep graph proportional to that output on every rustc invocation and
 # cargo garbage-collects the sessions lazily, so an afternoon of iteration put
 # 8.9 GB in `target/debug/incremental` across a thousand session directories.
 #
 # It buys correspondingly little: the expensive part is re-monomorphising, which
-# incremental does not avoid. Turning it off makes a cold build marginally
-# slower and stops the directory growing without bound.
+# incremental does not avoid. Kept for whatever is built here next.
 [profile.dev]
 incremental = false
