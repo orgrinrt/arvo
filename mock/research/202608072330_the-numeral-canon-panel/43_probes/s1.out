@@ -1,0 +1,347 @@
+
+==============================================================================
+panel files 00-42
+==============================================================================
+
+-- 00_brief.md  (1 occurrences)
+       8  FUNC       Arvo has no canon. This panel writes it: the primitives become named compositions over one format
+
+-- 02_carried_what_replaces_the_two_refutations.md  (1 occurrences)
+     570  UNCLEAR    everywhere.** The composition is a ratified commitment plus a compiled uniformity result, and neither half is
+
+-- 03_lamport_the_family_question_and_its_consequences.md  (2 occurrences)
+     658  BIND       the composite, and every structural failure in the design has one address: realisation.
+     662  FUNC       later invalidates that sentence. Under this decomposition the canon says the composite is defined exactly
+
+-- 06_kiselyov_where_a_numeral_is_inferred.md  (2 occurrences)
+     200  UNCLEAR    conclusions, and they compose rather than duplicate: the first says the answer cannot vary, the second
+     690  AGGREGATE  composes: `p5` measures one multiplication and says nothing about `x * y * z`, where the
+
+-- 07_orchard_the_adjunction_frame.md  (28 occurrences)
+      77  UNCLEAR    **Three. Rounding modes split by what they compose with, and the split is measurable.** Directed modes
+      78  UNCLEAR    compose across nested grids at 0 failures; nearest modes fail even nested, with the classical witness
+      79  UNCLEAR    (`p4.out` Q2, Q3). My prediction that only the two infinity-directed modes would compose was **refuted**
+      80  UNCLEAR    by toward-zero composing anyway, and the refined claim that survived a decisive test is that a mode
+      81  UNCLEAR    composes exactly when its direction changes only at points of the coarser grid: 0 failures at three such
+      96  BIND       level two compose, that is, whether rounding commutes with change of numeral. That is the compatibility
+     260  UNCLEAR    design's narrowing composes. **The record has narrowing as "the quantiser with the operation set to the
+     262  FUNC       compose.** The frame says the question exists and section 2.3 answers it.
+     337  FUNC       made it.** It is not an error bound bolted on afterwards; it is what the type means. And it composes:
+     341  FUNC       ### 2.4 Composition, the prediction that over-fired, and the claim that survived
+     343  FUNC       Adjunctions compose, so a mode that is an adjoint to the embedding must satisfy the double-rounding law
+     356  UNCLEAR    Nested grids: the four directed modes compose, both nearest modes do not, with the classical witness at
+     359  UNCLEAR    **And toward-zero composes, which it should not have if being an adjoint to the embedding were the
+     362  FUNC       sufficient for the composition law and is not necessary.**
+     365  UNCLEAR    adjoint on each side of a point that lies on every grid here. The refined claim is that a mode composes
+     370  UNCLEAR    | pivot | on the coarse grid | composition fails at |
+     377  UNCLEAR    > A rounding mode composes across nested grids exactly when its direction switches only at points of the
+     379  UNCLEAR    > point of every anchored family, so it composes. Round to nearest switches at every cell midpoint of the
+     380  UNCLEAR    > finer grid, none of which is a coarse point, so it never composes.
+     383  UNCLEAR    and it hands the design a usable rule: **narrowing composes iff the mode's pivot set is contained in
+     707  FUNC       that hold on their own and compose. A sealed inductive order on a type-level nat, two impls and no
+     827  FUNC       The natural graded question here is whether the loss a rounding incurs forms a grade, so that a composite
+     829  FUNC       $\gamma'(v) - v$ measured per mode is exactly a per-operation quantity of that shape, and it composes
+     833  UNCLEAR    composes additively under addition and not under multiplication, so the semiring is not obviously there,
+     870  UNCLEAR    **"Only the two infinity-directed rounding modes compose."** Closed by `p4.out` Q2b: toward-zero and
+     871  UNCLEAR    away-from-zero compose at 0 failures over a signed range, on three nested triples, and neither is an
+     974  BIND       **Four: does the design want narrowing to compose?** Sections 1.5 and 2.4. Two narrowings equal one
+     976  BIND       never satisfies that; the directed modes and round-toward-zero always do. If the design wants composable
+
+-- 08_knuth_what_the_one_format_concept_covers.md  (11 occurrences)
+       5  UNCLEAR    "named compositions over one format concept". Every file so far has worked inside that sentence. This one
+     285  BIND       composite numeral over a shared external exponent."
+     537  BIND       differentiation is a real constituency in arvo's own downstream. The composition is available and the design
+     538  BIND       owes only the statement that it is the composition rather than a numeral.
+     565  BIND       anything denoting a set or a distribution. Those are compositions above a numeral, and section 4.5 measures
+     566  BIND       that the composition needs nothing from the numeral that the design does not already have.
+     614  UNCLEAR    One honest deduction against my own conclusion. The premise says the primitives become **named compositions
+     615  UNCLEAR    over** one format concept. Everything above is about the format concept and nothing is about the composition.
+     616  UNCLEAR    Whether the primitives are named compositions over it is a separate claim that this file does not test, and
+     684  UNCLEAR    test composes with the exponent half, which is `p3`'s stated omission. Whether the tapered region has a
+     735  BIND       single-mode alternative. If it does, interval arithmetic is a consumer-side composition and excluding it
+
+-- 09_persona_checkpoint.md  (3 occurrences)
+     236  FUNC       though the answer were given. Section 2.4's refined composition law, arrived at **after** the author's
+     316  UNCLEAR    is a design finding rather than a filing problem. Right now the storage-composition question is on
+     423  BIND       I am **guessing** that the storage-composition gap is worth putting on the map now rather than after the
+
+-- 11_chlipala_prior_art_on_typed_widths.md  (4 occurrences)
+     775  UNCLEAR    pub fn compose(x: Fixed<13, 0, LibA>) -> Fixed<13, 0, Arvo> { x }
+     784  UNCLEAR    arvo's shipped widths, or entering a private universe that composes with nobody. That is a cost of the
+     827  BIND       coherence, so a crate using the macro enters the partition, and its numerals stop composing with
+     985  BIND       uses including `Idx<0>`, and its numerals then compose with nobody. The refusal was right and the thing
+
+-- 12_muratori_can_the_surface_meet_the_bar.md  (5 occurrences)
+     290  UNCLEAR    The composition that falls out is the actual answer to the dispatch, and section 8 states it.
+     422  UNCLEAR    ## 8. The composition
+     439  BIND       `11`'s `consumer_partition.rs` proved two markers do not compose, so two crates that each declared width
+     444  BIND       **The two repairs to C4's diagnostic are independent and compose.** Consts in front (`p06`) recovers the
+     501  UNCLEAR    I did not test whether `lazy_type_alias` composes with the rest of the ladder once bounds are written,
+
+-- 13_dolan_second_read_on_the_width_surface.md  (4 occurrences)
+     198  AGGREGATE  `ceil(n/8)` is that composed three times. `p10` checks it against every width `0..=130`, whole matrix.
+     207  UNCLEAR    wide rung compose into one expression written once. `p10` checks the selected container against every
+     413  UNCLEAR    ## The composition
+     630  UNCLEAR    declaration past that. I have not decided whether that composition is better than either alone and I
+
+-- 14_persona_checkpoint_two.md  (1 occurrences)
+     424  FUNC       **Thin.** `p08`'s two-head split is the thing that makes the whole composition work and `12:504-507`
+
+-- 15_giesen_the_axes_the_ladders_left_out.md  (2 occurrences)
+     521  UNCLEAR    **So the composition that comes out of tonight is four things stacked**, and none of them was
+     524  UNCLEAR    outputs for the strategy and sign axes. I present that as a composition to look at, not as a
+
+-- 16_aaltonen_second_read_on_the_two_outputs.md  (3 occurrences)
+     596  AGGREGATE  so `Cold` cannot be a statement about the standalone type and must be a statement about composition.
+     647  UNCLEAR    way. Mine is about a one-output map passing the certification. They compose: **the second output is
+     687  UNCLEAR    about composition rather than about the value**, and that is why it has no standalone type. Under that
+
+-- 19_persona_checkpoint_three.md  (1 occurrences)
+     482  UNCLEAR    so", and "Mine is about a one-output map passing the certification. They compose ... and the second
+
+-- 20_fog_what_the_benches_already_know.md  (5 occurrences)
+      81  FUNC       composed the chain into one multiply-add for the lazily-projected form and could not for the eager one, and
+      83  UNCLEAR    away and an exclusive or was introduced to break the composition. **A bench that documents its own discarded
+     221  AGGREGATE  support a composition.
+     489  FUNC       out: a chain of affine steps composes to one multiply-add by ordinary algebra, LLVM performs that
+     490  FUNC       composition only when it can see the chain, and a mask between the steps is not affine so the compiler has
+
+-- 21_ringer_entailment_check_on_the_map.md  (1 occurrences)
+     184  UNCLEAR    > Mine is about a one-output map passing the certification. They compose: **the second output is both
+
+-- 22_xu_the_bench_that_was_missing.md  (1 occurrences)
+     607  UNCLEAR    or is not optional: without a non-affine step the chain composes to one multiply-add and
+
+-- 23_spj_the_sentences_a_canon_could_carry.md  (3 occurrences)
+     422  BIND       make every operation the composite. Every structural failure in the design then has one address:
+     651  UNCLEAR    #### S19. `Cold` is a statement about composition, not about a value
+     654  AGGREGATE  > run of values composes, which is why a single value under it has no distinct standalone form. The
+
+-- 25_torvalds_what_a_strategy_is.md  (1 occurrences)
+     584  UNCLEAR    **And it composes with a question already in front of him.** `MORNING.md`'s question five, carried at
+
+-- 27_fog_packing_under_contention.md  (3 occurrences)
+     208  AGGREGATE  makes the two files compose instead of sitting beside each other.
+     283  AGGREGATE  claim that these numbers compose with `26`'s true rather than hopeful. `slices_tile_the_column_at_
+     327  UNCLEAR    within a few percent on every arm. **The two files compose.**
+
+-- 30_willsey_rebuilding_the_option_register.md  (1 occurrences)
+     137  UNCLEAR    existing denotation readings, composing with all of them rather than replacing any) and a correction
+
+-- 32_op_arvo_adapts_to_the_cores_it_finds.md  (4 occurrences)
+      29  BIND       > and project I have, downstream, use. As well as the contracts for things that compose to bigger
+      73  UNCLEAR    > for things that compose to bigger units than just numerals alone. But we need this base to work, to
+      80  BIND       - **The selling point is the algorithm crates and the composition contracts**, not the numerals. The
+      82  BIND       - **Composition to units bigger than a numeral is a first-class concern**, named in the same breath as
+
+-- 35_mcsherry_what_the_layers_above_need_from_the_numeral.md  (19 occurrences)
+      41  AGGREGATE  is a function of the element width and the **capacity**, which is a quantity that lives in the composition
+      44  UNCLEAR    compose to bigger units than just numerals alone".
+      96  UNCLEAR    work: it composes perfectly well when the arity is a compile-time fact, and arm C's width tracks the
+     189  UNCLEAR    The requirement that survives a rewrite: **the composition contract is keyed on the algebraic structure,
+     339  AGGREGATE  ### 3.8 What a composition needs that a value does not
+     347  AGGREGATE  per-aggregate question" is exactly the distinction a composition contract needs. **This is a keep**, and it
+     349  AGGREGATE  panel where the composition layer has already forced something into the numeral's answer.
+     384  UNCLEAR    a group. **Retraction stays an open question about what the composition contract forecloses**, not a
+     520  UNCLEAR    except on degenerate data". 3.8 says the composition layer needs a total order at essentially every routine
+     612  UNCLEAR    declaring it. A composition contract saying "these two numerals may be summed into this accumulator" is also
+     615  UNCLEAR    mechanism the composition contracts need, which is a point in its favour on the "serves all other parts of
+     643  UNCLEAR    Not dead, and this is the composition rather than the winner. Two spellings survive and they are not
+     646  FUNC       - **A2, the trait relation.** The check lives in the signature, so it composes: a caller's own bound can
+     653  FUNC       A per-site answer rather than a global one: **the trait relation where the constraint must compose upward,
+     694  AGGREGATE  and what does a composition supply?** None of Q1 through Q10 is about arity-n or about laws under
+     710  AGGREGATE  - **The composition supplies everything and the numeral stays a value type.** The mirror image. Puts the
+     712  AGGREGATE  composition re-deriving it.
+     757  BIND       `32`. Deriving the compositions first and the numeral from them would produce a numeral shaped by whichever
+     758  BIND       compositions happened to get written first, which is the failure the panel is already avoiding elsewhere.
+
+-- 36_op_the_intent_behind_each_strategy.md  (1 occurrences)
+      45  UNCLEAR    alone"**. `Precise` is a claim about composed computation rather than about a single operation, so
+
+-- 37_op_warm_imitates_rust_and_strategy_is_not_orthogonal.md  (2 occurrences)
+      64  UNCLEAR    ops, not only alone**. The composed-computation clause is entirely new.
+     100  UNCLEAR    **The regime question and the strategy question compose rather than stacking.** Detected core count
+
+-- 40_leijen_what_the_axes_actually_are.md  (1 occurrences)
+     679  UNCLEAR    and "especially within chains and ops, not only alone", which scopes the objective to composed
+
+-- 42_willsey_the_law_layer.md  (23 occurrences)
+      55  FUNC       mechanisms compose in one signature with no interaction hazard: the width-sufficiency check and the
+      94  UNCLEAR    **`42_probes/p2`** composes `35`'s capacity-derived accumulator with `40`'s property-bound mechanism into
+      98  FUNC       at this composition point. Section 4 is the full account.
+     199  FUNC       ## 4. How a consumer states a requirement, composed with the fold layer
+     207  AGGREGATE  Nobody had asked whether that composes with `35`'s fold-accumulator derivation, which is the shape a real
+     213  UNCLEAR    ### 4.1 The composed contract
+     252  UNCLEAR    ### 4.2 The observable/unobservable split survives at the composition point
+     303  UNCLEAR    associative for the ordinary reason `min` and `+` compose over a totally ordered set), and two active
+     454  FUNC       compose upward and the post-monomorphisation const assertion where the message matters locally (`35`
+     455  FUNC       section 3, Q9).** My `p2` uses the trait-relation form throughout, because the composed fold's bound has
+     456  FUNC       to compose upward through `generic_consumer`, and it does, without needing the const-assertion form at
+     496  AGGREGATE  composed contract is a second worked instance beyond `35_probes/p7`.* `35` section 3 found the trait
+     497  AGGREGATE  relation composes upward and the post-monomorphisation const assertion does not. My `p2` builds a second,
+     498  AGGREGATE  independent generic site (the composed fold, not the bare accumulator) entirely in the trait-relation
+     499  AGGREGATE  form and it composes through `generic_consumer` without incident. Small, and it is a second data point on
+     502  UNCLEAR    **Q11, what the numeral guarantees to a fold, and what a composition supplies.** *Fits the "both" reading
+     505  FUNC       capacity-relation option composing in one signature; `p2` shows they do, with no interaction hazard, which
+     509  FUNC       as a gap in section 9) might not compose as cleanly.
+     541  FUNC       concrete worked instance beyond `p7`: `42_probes/p2` composes the structure-naming property bound with the
+     544  FUNC       pairing of a fold-layer mechanism with a law-layer mechanism composes; the register entry should say which
+     587  AGGREGATE  **Not verified:** whether the composed contract in section 4 generalises past the one fold shape I built
+     593  FUNC       **Not measured:** anything about performance, compile time, or trait-solver cost of the composed bound at
+     599  FUNC       (exhaustive commutativity, 626,224 pairs, zero anchored feature gates). `p2` (composed fold-and-law
+
+-- 43_rompf_what_a_composition_is.md  (1 occurrences)
+       1  UNCLEAR    # 43. What a composition is, and what the canon owes it
+
+   subtotal panel files 00-42: AGGREGATE=20, BIND=21, FUNC=29, UNCLEAR=64
+
+==============================================================================
+panel instruments
+==============================================================================
+
+-- 00_brief.md  (1 occurrences)
+       8  FUNC       Arvo has no canon. This panel writes it: the primitives become named compositions over one format
+
+-- RULES.md  (1 occurrences)
+      73  UNCLEAR    renders, naming things, and stating requirements, relations, associations, what composes with what
+
+-- OPTIONS.md  (13 occurrences)
+     217  UNCLEAR    reading; it composes with all four denotation options above.
+     532  BIND       composite. Changes what a canon sentence quantifies over (adding a family later adds a theorem about
+     607  UNCLEAR    `12` section 5, its K1). Two independent, composable repairs exist and each costs something: (a) carry
+     657  UNCLEAR    outputs where the table covers them and require a declaration past that; whether that composition is
+     747  AGGREGATE  composes, and this is why it has no standalone value form at all.** Independently reached from both
+     820  UNCLEAR    ## Q11. What does the numeral guarantee to a fold, and what does a composition supply?
+     829  AGGREGATE  boundary at the **runtime trip count** rather than at the widening, which composes fine in expressions
+     844  FUNC       how wide the result is. `42_probes/p2` composes the two in one signature with **independent refusal
+     846  FUNC       unobservable axis split survives at that composition point. That is evidence for the specific
+     849  AGGREGATE  - **The composition supplies everything and the numeral stays a value type.** The mirror image. Puts the
+     851  AGGREGATE  composition re-deriving it.
+    1018  BIND       **Does the design want narrowing to compose?** Two narrowings equal one narrowing exactly when the
+    1022  BIND       several trials). If composable narrowing is wanted, this is a constraint on which rounding modes a
+
+-- INTENTS.md  (2 occurrences)
+     152  UNCLEAR    ## I11. arvo is a library, and the value is what composes on top of it
+     158  UNCLEAR    > I have, downstream, use. As well as the contracts for things that compose to bigger units than just
+
+-- DROPLIST.md  (5 occurrences)
+      70  UNCLEAR    *instantiated*, silently misses every composition reached only through generic code, and **cannot be written at
+      82  FUNC       citation before a third caught it with a single grep.** Checked against its own admitted compositions and found
+     115  BIND       decision stands on the `Underflow` argument alone (section 1.2); BFP is a different kind of object, a composite
+     400  BIND       `Number<Binary32, WarmFixed>` type-checks at a value position, and D52 makes compositions public and bindable so
+     437  AGGREGATE  narrowed rather than shipped. A prediction that the placement composite needed stating, refuted by the optimiser
+
+   subtotal panel instruments: AGGREGATE=5, BIND=5, FUNC=4, UNCLEAR=8
+
+==============================================================================
+archived consolidation
+==============================================================================
+
+-- archive/CANON_CANDIDATE.md  (82 occurrences)
+     489  FUNC       is the rule applied at a composite, where the fields side is a list rather than a scalar.
+    1055  AGGREGATE  **Measured** (`40:137-143`): a trivial `Canonicalisation` (identity, every `Specials = None` composition) adds
+    1129  BIND       escaping data at the encoding is widening the target, composing through the quantiser, and the quantiser
+    1390  BIND       under which it holds, derived by blanket construction over the composition rather than declared per type (D51
+    1400  FUNC       exhaustively over nine such views and nine compositions: the set of views under which a law holds is downward
+    1463  FUNC       on both axes: 0.130 ms per composition against 0.193 ms, and 907 bytes against 1854, at `--emit=metadata`**,
+    1471  FUNC       not. Measured to change the published grade and no law's verdict, at every composition tested. File 39's
+    1515  UNCLEAR    strongest row of file 37's compositions table and the design's clearest single argument for where the widening
+    1688  AGGREGATE  composite `mul_full`-then-`quantize` call, and a `Precise`-shaped exact-widening call all fold to the identical
+    1690  AGGREGATE  a truncated result needs fewer limb-products than a full one) the composite form still folds to the direct
+    2013  FUNC       condition, read by law verdicts and conformance compositions, never published by default, because a numeral
+    2362  UNCLEAR    first**: any magnitude between 65 and 128 bits produces a `Pos` type that compiles, composes, and satisfies
+    2389  UNCLEAR    (face form) per composition**; the same declaration, with the type checker forced to run the tower's own
+    2391  UNCLEAR    from section 1.24's composition-cost table and should not be read against it directly; it prices declaration of
+    2392  UNCLEAR    one literal's own `Bias`, never composed with anything. The eighth consolidation derived a methodological
+    2660  AGGREGATE  and `Hot`'s own software composition (`mul_full` then `ReduceModulo`) compile to the same instruction, measured
+    2662  AGGREGATE  distinguish**; every preset's effective door is the software composition, folded to the native instruction
+    2727  UNCLEAR    That is fatal under a ratified decision rather than under taste: **D52 (from `202607300400`) makes compositions
+    2945  FUNC       A digest is a composition of the tower's own established canonicalising projections, chosen by which equality
+    3375  UNCLEAR    numeric type, and every family arvo ships today becomes a semantic alias over a composition of it.** `UFixed`,
+    3376  UNCLEAR    `IFixed`, `FastFloat` and `StrictFloat` **stop being four types and become four names for four compositions**.
+    3377  UNCLEAR    The cost accepted with it is wordier rustc diagnostics, since the expanded composition is what an error prints,
+    3385  BIND       **And compositions are public and bindable, so the presets are the default path rather than the only one**
+    3386  BIND       (D52 (from `202607300400`), `inherited:2110-2114`, op, 2026-07-30): "Compositions are public and bindable by
+    3388  BIND       `arvo-toolbox-not-policer.md` as independently deciding it, because sealing the composition would be arvo
+    3397  BIND       `UFixed`, `IFixed`, `FastFloat` and `StrictFloat` four names for four compositions over `Number`, D48 and D31
+    3399  BIND       composition takes `Precision` as a `Nat`. **Those two facts do not meet on their own**: `I + F` in type
+    3547  UNCLEAR    The cost has two terms: **a marginal cost per distinct composition, and a smaller marginal cost per repeated
+    3548  UNCLEAR    site of an already-instantiated composition, both linear throughout, both measured independently twice** (an
+    3551  BIND       | profile | marginal cost per distinct composition |
+    3558  UNCLEAR    | repeated site of an already-instantiated 16-bit composition | ~28 ms |
+    3574  UNCLEAR    rational compositions cost 14.3 seconds; four hundred cost 63.7 seconds.** That figure sat in a committed CSV
+    3579  UNCLEAR    **Whether the per-composition verification cost can be made cheaper for that specific bulk-import profile is on
+    3582  BIND       **Scope, stated honestly.** This prices **composition** (combining two already-declared numerals), the only
+    3584  UNCLEAR    pricing (one literal's own `Bias`, never composed) and the two figures should not be read against each other.
+    3586  AGGREGATE  sections as cheap at the single-composition grain (0.1 to 0.2 ms), and **none has been priced at aggregate
+    3589  UNCLEAR    the precision bridge's table at about 1.25 ms per distinct composition to 4096 rows and about 2.8 ms at 16384,
+    3703  FUNC       > over the one crate that composes them. A crate bounding on `Policy` cannot mention a `Lowering` member
+    3851  FUNC       without a compiled artifact.** Two additions the second dive found missing entirely: that a composition's
+    4143  AGGREGATE  8) and shape composition (any concatenation, split, reshape or broadcast on a multi-dimensional index domain
+    4230  AGGREGATE  restatement. **But D4's own sentence makes the array composition constitutive of the shape, while D43 (from
+    4264  AGGREGATE  **Geometry's multilinear half (points, orthotopes, affine maps, their predicates, their measure) composes over
+    4266  AGGREGATE  operation is a sum of products; exact accumulator widths for dot product, affine apply, rotor compose, and
+    4285  AGGREGATE  composable object, `Affine` is the rigid-motion-plus-scale type geometry already wants), and nothing above
+    4320  AGGREGATE  than merely cheap, invisible to a naive bench**. Degradation under repeated composition restates as the site
+    4335  UNCLEAR    ### 1.29 The bitfield, and the composite level
+    4364  UNCLEAR    foreign layout (`Crosses`'s hand-laid impls). **The bitfield is their composition, and that is the whole of what
+    4373  UNCLEAR    **A bitfield is not a numeral, and the composite level is datum-only by construction.** A numeral is
+    4379  UNCLEAR    ratified law about a composite is a statement about placement, materialisation or digests, and none of them is
+    4431  AGGREGATE  **The composite of two placements is a placement, and the algebra closes the category.** Element `i` of a
+    4434  AGGREGATE  `o + w <= W_S`, which is the containment obligation.** The composite is a placement, **and the reason it is one
+    4435  AGGREGATE  is the obligation a declaration owes; the check is not bureaucracy, it is what makes the composition valid.**
+    4449  AGGREGATE  **Which composite to emit is not a property of the layout.** Measured, per group of eight: one field two-step
+    4455  AGGREGATE  composed read can use a narrower load (at stride 57 the element needs an eight-byte load where a three-bit
+    4460  AGGREGATE  **A refutation recorded because refutations are the point.** The composite was predicted to need stating, on
+    4463  AGGREGATE  the collapse itself, at both binding times** (four bodies, 23/24/23/24 instructions, the composed forms one
+    4464  UNCLEAR    instruction *worse* because of the address add). **The composition is a statement about what is true, not an
+    4467  AGGREGATE  **Under a genuinely bitpacked column of bitfields, no field has a byte image.** File 73's law composed once:
+    5174  UNCLEAR    decomposition), B1 (the composition type), B3 (what a preset is mechanically), C2, C3, C4, C6, E1 and E4.
+    5227  UNCLEAR    distinct composition to 4096 rows and about 2.8 ms at 16384, against section 1.24's dyadic row at 2.1 ms. **The
+    5244  UNCLEAR    > about 1.25 ms per distinct composition to use, against 2.1 ms for the composition itself. Nothing downstream
+    5244  UNCLEAR    > about 1.25 ms per distinct composition to use, against 2.1 ms for the composition itself. Nothing downstream
+    5396  UNCLEAR    residuals, both closed in a form the record had lost. The composite-of-two-placements category. Whether a field
+    5616  UNCLEAR    under which **every axis of the composition renders for free in an error message** provided every value a
+    5623  FUNC       `False` rather than the composition that failed, and the four-line fix is verified and not folded into the
+    5625  AGGREGATE  the same composition with different spellings and different rendered error text, which matters for anything
+    5636  FUNC       function body can serve both a total and a fallible composition without duplicating the body, provided the
+    5642  UNCLEAR    composition needs is the join of the two resolutions' own carrier choices, connected by a lift where they
+    5651  FUNC       picks how the refusal travels; a refusing composition delivered as an absorbing bottom was run unmodified
+    5663  UNCLEAR    decide it: delivery decides it, and delivery is not an axis of the composition at all** (not in D69's ratified
+    5670  FUNC       composition rather than requested through it. And op's own clause, recorded in the decision **"so a later
+    5672  UNCLEAR    whether the composition they chose is constant-time; **they cannot demand it and be refused when it is not**,
+    5681  FUNC       op): **`Deterministic` is a derived marker over the composition**, a blanket impl keyed on the composition
+    5681  FUNC       op): **`Deterministic` is a derived marker over the composition**, a blanket impl keyed on the composition
+    5683  FUNC       composition rather than for arvo and the claim a consumer can rely on is exactly the claim the type makes.**
+    5792  UNCLEAR    *instantiated*, silently misses every composition reached only through generic code, and **cannot be written at
+    5804  FUNC       citation before a third caught it with a single grep.** Checked against its own admitted compositions and found
+    5837  BIND       decision stands on the `Underflow` argument alone (section 1.2); BFP is a different kind of object, a composite
+    6122  BIND       `Number<Binary32, WarmFixed>` type-checks at a value position, and D52 makes compositions public and bindable so
+    6159  AGGREGATE  narrowed rather than shipped. A prediction that the placement composite needed stating, refuted by the optimiser
+    6323  UNCLEAR    §5.3 list is at `11:793-811` and is four different questions: what the composition type is called and its
+    6324  UNCLEAR    parameter order and defaults; **what a preset is mechanically** (a plain type alias over one fixed composition,
+
+   subtotal archived consolidation: AGGREGATE=22, BIND=11, FUNC=16, UNCLEAR=33
+
+==============================================================================
+seed sweeps
+==============================================================================
+
+-- seed/SETTLED_surface.md  (1 occurrences)
+     266  FUNC       checked compositions), and a correction to the naive witness-selection rule (a witness can be a false
+
+   subtotal seed sweeps: FUNC=1
+
+==============================================================================
+GRAND TOTAL
+==============================================================================
+  AGGREGATE  47
+  BIND       37
+  FUNC       50
+  UNCLEAR    105
+
+The founding sentence, from 00_brief.md:
+  00_brief.md:8: Arvo has no canon. This panel writes it: the primitives become named compositions over one format
+
+Op's sentence, from 32_op_arvo_adapts_to_the_cores_it_finds.md:
+  32:73: > for things that compose to bigger units than just numerals alone. But we need this base to work, to
