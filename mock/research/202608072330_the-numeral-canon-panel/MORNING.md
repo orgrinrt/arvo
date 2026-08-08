@@ -469,6 +469,71 @@ findings files**. The end-to-end figure is derived by subtraction rather than me
 The timing bracket carries an attribute on this architecture that stops it being a barrier,
 characterised but not closed. And **146 of the 147 runs were taken from a dirty tree.**
 
+## Eight: somebody wrote the bench, and the ratified claim does not survive
+
+*Sources: `22`, with the bench at `mock/benches/variants/wide-rung-shared/` and artifacts at
+`mock/benches/wide-rung-*`. Commits `441c0b3` through `1d139a5`.*
+
+Twenty-one files argued. This one measured. Your own position is why: somebody has to be confident
+enough to write the benches, and once they exist it is hard to deny what they tell.
+
+The gap `20` named was that **the wide rung above 64 bits is ratified on an instruction count with no
+harness run touching it**. There is now one. Five sections, 28 size rows, 11,200 CSV rows.
+
+**Both halves of the ratified claim fail.**
+
+The three-instructions-per-operation figure is **zero at five of the six widths swept, including the
+width where the claim was originally counted**. Where it is non-zero it follows an exact formula in
+the tail residue, verified at all eight residues. And it is per **element**, flat while the loop
+around it grows from 16 to 89 instructions. Written with an over-reading load it is zero everywhere.
+
+The seven-bytes-per-value figure is correct as arithmetic and is **not a throughput quantity**.
+Word-rounded is **0 to 7.5 percent faster at every width** while touching up to 41 percent more
+bytes.
+
+**And the one large effect kills the footprint reading.** The 1.353x at one width is 1.353 in a 34 KB
+working set and 1.353 past a 12 MiB cache, **identical to three decimals**. Whatever that win is, it
+is not the bytes.
+
+### The harness has never validated its own arms
+
+This is the finding that reaches past this panel.
+
+**The orchestrator does not call its validation pass.** The worker-side validate entry point is not
+reachable from the crate root. `22` injected a one-character off-by-one into a loader, corrupting
+exactly one width, and the run produced 400 rows per size and **exited zero**.
+
+That is the mechanism behind `20`'s observation that the fidelity columns are zero in all 55,280
+committed rows. **No committed bench in this repository has ever checked that its arms compute the
+same thing.**
+
+Fixed in the driver, and the fix is instructive: the first change alone printed `Validation OK: all 0
+variants`, **a vacuous pass it would have shipped had it not looked at the number**. With both
+changes the injected bug passes at one width and is refused at the other with a byte offset and a
+non-zero exit. Every section was re-run: 28 validations, zero mismatches.
+
+### It refuted itself, in writing
+
+`22` opened by correcting `20` on exactly this point, then found `20` was right. It left the wrong
+paragraph standing with a pointer to the refutation rather than editing it away.
+
+It also cleared `20` of one charge: the "146 of 147 runs from a dirty tree" is a **harness artifact**,
+not a discipline failure. The harness writes into the tree it hashes, so the first row records clean
+and every later one dirty while the working tree has no changed files.
+
+### What it could not explain
+
+A reproducible width-dependent baseline difference of 2.1x at three limbs. It ruled out instruction
+count, run order, loaded-byte contiguity and the memory system, each with evidence. **It did not find
+the mechanism and did not invent one.**
+
+Uncovered and named: signed, multiply and divide at the wide rung, any non-aarch64 target, saturating
+semantics, and the widths between 65 and 128.
+
+**What it says is yours** is the same sentence `20` handed you: does the wide rung wrap, or clamp. Its
+numbers turn on it. Whether the rule stands is explicitly not yours to rule on now, by your own
+position, because the arm is built.
+
 ### A number reconciled before it could become a second contradiction
 
 `15`'s product-overshoot count is 476 where the first stretch's was 461. It reconciled them exactly,
