@@ -955,6 +955,48 @@ independently stateable and not independently resolvable.
 - **Per axis with interactions named as exceptions.** The pragmatic form. Costs a list that grows by
   discovery with no rule behind it.
 
+## Q16. Which sense does "composition" carry, and does the canon need both words?
+
+**Added from `43`, which found the word overloaded and one sense sitting in this panel's founding
+sentence.** This is `24`'s phase collision one word further in, and it is op's to settle because both
+senses carry his word on different objects.
+
+**Sense one, a numeral kind bound to a strategy.** This is what `00_brief.md`'s opening sentence means
+by "the primitives become named compositions over one format concept", and it is what the inherited
+record ratified: compositions are public and bindable by anyone, with semantic names and strategy
+presets the default documented path rather than the only one.
+
+**Sense two, an aggregate over numerals.** This is op at `32`: "contracts for things that compose to
+bigger units than just numerals alone". Vectors, matrices, sparse structures, graph weights.
+
+The dispatching agent briefed `43` on sense two while the panel's founding sentence uses sense one, and
+did not notice. The options are to keep one word and pick a sense, to keep both with distinct names, or
+to find that they are the same concept at two scales, which nobody has argued.
+
+**What `43` established about sense two, independent of the naming.** An aggregate is a **binding-time
+distinction rather than a container**: its static part carries what a numeral's type cannot, because
+those are facts about a *run*. The defining boundary is **capacity static, length dynamic**, and `35`'s
+fold refusal is that boundary crossed wrongly. `16`, `35` and `08` each found one instance of this and
+none had a word for it.
+
+Three compiled results attached to it:
+
+- **No derivation reads the grid** (`43_probes/p2`): carrier and accumulator are literally the same
+  types across grids differing in adjustment, bias, phase and canonical exponent, with three negative
+  controls including one proving the equality mechanism is not vacuous.
+- **The operations disagree with the derivations, exactly** (`43_probes/s5`, exact rationals): a
+  same-grid add reads neither adjustment nor exponent; a multiply reads the exponent; the **bias** is in
+  neither set, since a fold's effective origin is the bias times a dynamic count. The product's derived
+  step matches at 9 of 9 zero-bias grids against 8 of 18 nonzero-bias.
+- **Nesting must be flattened** (`43_probes/s3`, `p4`): per-level derivation is one bit wide on 1201 of
+  4096 shapes and never tighter; the flattened form compiles gate-free.
+
+**And one that bears on the erasure gate.** The invariant does not survive lowering (`43_probes/p7`): a
+run whose length is bounded by its capacity, enforced by its **only** constructor, still emits two
+bounds-check failure paths and the largest body of any arm. One clamp at the loop header takes it to
+zero. That is the typestate holding at the type level and not reaching the backend, which is the
+microkernelling shape the workspace already names.
+
 ## Questions with live options that op has not been asked
 
 Kept separate because the eight (now nine, with Q9 above) carry his direction where he has spoken and
