@@ -191,9 +191,41 @@ commit subject line and is owed an independent read that has not run.
 
 ## Q7. Which carrier is the packing claim about?
 
-**Held pending the contention run.** Op: "Explore, wait for Fog." Every measurement the panel holds is
-single-threaded while arvo's own rules declare the workload concurrent, so the regime may be wrong
-rather than the answer.
+**The contention run has landed (`27`) and it moved the answer.** Op's "explore, wait for Fog" is
+discharged. The question is not closed, but its shape changed: **the carrier the claim is about now
+depends on how many cores are running**, so a claim naming a carrier without naming a regime is
+underspecified twice over.
+
+Break-even carrier, one core against four:
+
+| | one core | four cores |
+|---|---|---|
+| committed kernels, warm | 6.9 to 7.4 bytes | 2.7 to 3.0 bytes |
+| committed kernels, cold | 5.6 to 6.2 bytes | 1.8 to 2.1 bytes |
+| best kernel each side, warm | above 8 bytes | about 1.7 bytes |
+
+Against real carriers with the best kernel on each side, past last-level cache: `u64` goes from
++5-9% to +67-71%, **`u32` changes sign** from -3-10% to +48-60%, and `u16`, which packing had never
+beaten anywhere, goes from -94-116% to +9-16%.
+
+**The mechanism, as a controlled experiment rather than an argument.** The identical `UADALP` change
+is worth 23-25% on `d32` at one core and **+0.9%** at four. At 33.5M records the best dense kernel in
+the directory returns **0.99** from four cores: four times the cores, the time one core took. Under
+contention a dense column's cost stops being a property of its kernel and becomes a property of its
+width.
+
+**A new option this creates, and it is now the live one.** *The claim is about the declared workload,
+which is concurrent, and therefore about a break-even near two to three bytes rather than near
+seven.* That is a different sentence from any option below and it inverts which carriers the claim is
+true against.
+
+**What `27` says is op's**: whether the canon's claim is about one core or the declared parallel
+workload, since they differ **in sign** against `u32`.
+
+Host bound, stated because it limits every number above: one M1, four performance cores, 12 MB L2,
+roughly 60 GB/s aggregate. One core already pulls 53-55 of that, so contention arrives at two cores
+here and would arrive elsewhere on a different core-to-bandwidth ratio. Reads only, sequential only.
+Every warm-against-cold disagreement in `27` is a statement about that 12 MB.
 
 **An eight-byte carrier.** The claim is about displacing a machine word, and against one it measures
 true past a threshold record count, with the crossing where the eight-byte column stops fitting the

@@ -389,6 +389,57 @@ ceiling, and fixed the guard rather than raising the threshold.
 It also found nine files belonging to another dispatch in the working tree and **left all nine
 untouched**, staging only its own paths.
 
+## Thirteen: the regime was the wrong one, and fixing it moved the answer
+
+*Sources: `27` throughout, with `27_probes/` and 22 committed rows across four bench sections in
+`mock/benches/`. Bench crates under `mock/benches/variants/bitpack-contend-*` and `bitpack-wide-*`.*
+
+`26` named concurrency as its own largest gap and said it pointed in packing's favour. It did, and by
+more than anyone guessed. **Every measurement this panel held was single-threaded while arvo's own
+rules declare the workload concurrent**, so the question was not what the answer was but which regime
+the answer was about.
+
+**Break-even carrier moves by a factor of two and a half to four.** Committed kernels warm: 6.9 to 7.4
+bytes at one core against 2.7 to 3.0 at four. Cold: 5.6 to 6.2 against 1.8 to 2.1. Best kernel on each
+side, warm: above eight bytes at one core, about 1.7 at four.
+
+Against real carriers, best kernel each side, past last-level cache: `u64` goes from +5-9% to +67-71%,
+**`u32` changes sign** from -3-10% to +48-60%, and `u16`, which packing had never beaten anywhere,
+goes from -94-116% to +9-16%.
+
+### The mechanism, as a controlled experiment
+
+The identical `UADALP` change is worth 23-25% on `d32` at one core and **+0.9%** at four. At 33.5M
+records the best dense kernel in the directory returns **0.99** from four cores: four times the cores,
+the time one core took.
+
+**Under contention a dense column's cost stops being a property of its kernel and becomes a property
+of its width.** That is why the answer moves, and it is a stronger statement than the numbers alone.
+
+### It destroyed its own first result, and that is the finding
+
+Attacking only the packed decode gave packing a clean 12-20% win. Attacking the **dense** side with the
+same instrument destroyed it. The 40% decode win is real and kept; the conclusion it appeared to
+support was an artifact of an unattacked competitor. The reversal is in the file rather than tidied
+away.
+
+It also struck its own `u16` row in place: section 15 supersedes section 10's tie, and §10.4 states
+which stands rather than leaving two sections for a reader to reconcile. Nothing else in section 10
+moved, and the two never disagreed about a measurement, only about how far past the cache it was taken.
+
+### What the host cannot show
+
+One M1, four performance cores, 12 MB L2, roughly 60 GB/s aggregate measured where three unrelated
+arms converge. **One core already pulls 53-55 of that**, so contention arrives at two cores here and
+would arrive elsewhere on a different core-to-bandwidth ratio. Reads only, sequential only. Every
+warm-against-cold disagreement in the file is a statement about that 12 MB.
+
+### What it says is op's
+
+**Is the canon's claim about one core, or about the declared parallel workload?** They differ **in
+sign** against a four-byte carrier, so this is not a precision question. Secondarily, whether the canon
+carries the inequality alone rather than any threshold.
+
 ## The correction that matters most: the `Cold` trade is not unpriced
 
 
