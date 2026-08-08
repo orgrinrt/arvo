@@ -1,0 +1,23 @@
+ARM 1  a ONE-output derivation, and the site computing the stride itself
+       (this is the construction 48:331-336 needs, and 47_probes/p2b is not it:
+        p2b projects a stride an impl wrote down, it does not recompute one)
+       W13 Cold    site says  13
+       W13 Warm    site says  16
+       compiles gate-free. so under Reading B, stride is recoverable and the
+       criterion demotes it. the collapse 48 reports is real.
+
+ARM 2  what the recomputation actually is: the packing rule, at the site
+       W13 Grid4   site says  13   truth  16   WRONG by 3
+       W12 Grid4   site says  12   truth  12   agrees, which is how a sampled test
+                                              reports green over a broken rule
+
+ARM 3  the repair: put the grid on the strategy marker
+       W13 Grid4   site says  16   truth  16   correct
+       the fact did not disappear. it moved from the derivation's result onto the
+       strategy, where it is still a fact the derivation supplies.
+
+ARM 4  a sixth strategy whose packing is not a grid
+       W13 Tagged  site says  13   truth  14   WRONG again
+       so the repair in ARM 3 was a bet on the shape of the next strategy, not a
+       removal of the fact. under an open strategy set (INTENTS I1) every such bet
+       is a fact the derivation owes and the site is guessing at.

@@ -1,0 +1,25 @@
+Reading A: a site holds only the derivation's outputs (carrier, stride).
+
+swept box: widths 1..=128, four strategies, one sign  =  512 declarations
+distinct (carrier, stride) classes                    =  128
+classes carrying more than one declared width         =  5
+declarations whose W IS recoverable from the pair     =  123 of 512
+declarations whose W is NOT recoverable from the pair =  389 of 512  (76.0%)
+
+the largest ambiguous classes:
+  carrier 128 bits, stride 128 bits  <-  64 widths, 65..=128
+  carrier  64 bits, stride  64 bits  <-  32 widths, 33..=64
+  carrier  32 bits, stride  32 bits  <-  16 widths, 17..=32
+  carrier   8 bits, stride   8 bits  <-  8 widths, 1..=8
+  carrier  16 bits, stride  16 bits  <-  8 widths, 9..=16
+
+restricted to Cold alone: 128 classes over 128 widths, ambiguous classes 0
+  so W IS recoverable from the pair when the strategy packs at stride == W,
+  and that recovery is what the unpacked strategies destroy.
+
+what a site that has lost W cannot then do, at one worked declaration:
+  UFixed<13,0,Warm> and UFixed<16,0,Warm> both present as (carrier 16, stride 16)
+  a multiply must shift right by F and mask to W bits. both are functions of the
+  declaration, and neither is a function of (carrier, stride). so under Reading A
+  the criterion's clause one has excluded a fact the machine needs and the site
+  cannot reach. that is not a count being wrong. it is the reading being unsound.

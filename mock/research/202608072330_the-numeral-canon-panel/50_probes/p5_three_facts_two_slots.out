@@ -1,0 +1,16 @@
+three facts at W=13, under the Precise-widens reading:
+  strategy   at-rest   compute   stride
+  Warm       u16       u16       16
+  Precise    u16       u32       16
+  Cold       u16       u16       13
+
+M2  slot = at-rest type   (u16, 16) for both  -> DOES NOT SEPARATE
+    compiled as a must-not-refuse assertion. this is 47's arm, and it holds.
+
+M1  slot = compute type   (u16, 16) against (u32, 16)  -> SEPARATES
+    so 48's 'either way you are short one fact' is not symmetric on information.
+    under M1 the pair separates, and what is missing is the at-rest TYPE, which is
+    unreachable from a stride const rather than absent from the information.
+
+both halves close, and the same wall closes them: 47 section 2.3's kind boundary.
+see p5b_negctl_three_facts.rs for the two refusals.

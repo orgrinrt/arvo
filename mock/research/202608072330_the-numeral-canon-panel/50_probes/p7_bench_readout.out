@@ -1,0 +1,28 @@
+source: mock/benches/bitpack-decoder-shape_n*.csv, committed, four sizes
+host, from the committed meta: Apple M1, rustc 1.98.0-nightly (57d06900f 2026-05-27)
+column read: algo_ns. statistic: median over every sample of every run.
+
+median algo_ns
+n         bitpack-plan-naive        bitpack-plan-native       bitpack-plan-simd         bitpack-plan-windowed   
+16384     8545.4                    1811.0                    3405.6                    2739.6                  
+65536     33256.2                   7290.2                    13696.0                   10863.5                 
+98304     51220.6                   10941.2                   20556.5                   16409.8                 
+262144    132782.7                  29191.9                   54917.9                   43744.6                 
+
+ratios, each row independent of the others
+n         naive / windowed       windowed / native      naive / native
+16384     3.12                   1.51                   4.72
+65536     3.06                   1.49                   4.56
+98304     3.12                   1.50                   4.68
+262144    3.04                   1.50                   4.55
+
+what this does and does not say:
+  * the magnitude 47 and 48 call unpriced is priced. an access plan derived per element
+    at runtime costs about 3.1 times one that is a compile-time constant, stable across
+    four sizes spanning the L1 boundary, against a dense-carrier competitor arm.
+  * it prices COMPILE TIME AGAINST RUNTIME, not derivation against site. a site holding
+    the width and the strategy's rule as consts could reach the windowed number itself.
+    what the bench bounds is the cost of the plan not being a const at all.
+  * the windowed arm's plan is P = 8 / gcd(W, 8) fields per whole byte group. that gcd is
+    the same phase-period fact p4 derives and 16:179-180 generalises wrongly from W=13.
+    an independent instance of p4's finding, in committed harness code by another author.
