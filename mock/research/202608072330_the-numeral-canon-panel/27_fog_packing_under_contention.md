@@ -883,3 +883,97 @@ exactly, and would cost one more variant.
 **A `u24` or `u48` carrier.** The break-even lands between two and four bytes under contention and the
 sweep has no point in that interval, so every figure in that band is an interpolation between `u16` and
 `u32`. A three-byte carrier is a real thing a consumer might use and it sits exactly where the answer is.
+
+## 15. The tie was an artifact of the column being only just past the cache
+
+Section 9 leaves the `u16` comparison at -2.4 to -2.5 per cent, which is inside the threaded noise
+floor and is therefore a tie rather than a result. Section 14 named the reason and the fix: at
+`n = 8,388,608` the `u16` column is 16 MiB and the packed one 13.0 MiB against a 12 MiB L2, so both
+are past it by 1.3 and 1.1 times and partial residency is still in the numbers.
+
+A layout carrying only those two regions reaches four times the record count inside the same
+allocation. `bitpack-wide-shared` is that layout: 33,554,432 records, a 64 MiB `u16` region and a
+52 MiB packed one, against the same 12 MiB.
+
+| n | `u16` region | packed region | `u16` over L2 | packed over L2 |
+|---|---|---|---|---|
+| 8,388,608 | 16 MiB | 13 MiB | 1.3x | 1.1x |
+| 16,777,216 | 32 MiB | 26 MiB | 2.7x | 2.2x |
+| 33,554,432 | 64 MiB | 52 MiB | 5.3x | 4.3x |
+
+Four arms: the `u16` carrier as committed, its byte-identical control, the `u16` carrier with the
+`UADALP` attack, and the packed decode with four accumulators. The packed arm is compared against the
+**better** of the two dense arms at every row.
+
+The pool's base pointer had to be erased to `*const u8` so it could carry a second layout without
+knowing about it, and each kernel casts back. That is behaviour-neutral, and it is checked rather than
+asserted: this section's `d16` arm at `n = 8,388,608` reads **86.8 ps** against the contention
+section's **86.6 ps** at the same key, a difference of 0.3 per cent, on separate builds of separate
+crates over different layouts.
+
+```
+$ cd mock/benches && ../target/release/arvo-benches --bench bitpack-wide
+```
+
+Warm-mode tenth percentiles, picoseconds per element:
+
+| n | t | `d16` | `d16-control` | `d16-padal` | `pipe4` |
+|---|---|---|---|---|---|
+| 8,388,608 | 1 | 86.8 | 86.5 | 34.0 | 72.8 |
+| 8,388,608 | 4 | 31.9 | 31.0 | 28.0 | 28.7 |
+| 16,777,216 | 1 | 89.0 | 89.8 | 38.9 | 75.7 |
+| 16,777,216 | 4 | 33.8 | 34.6 | 34.1 | 29.1 |
+
+### 15.1 The row that settles it
+
+At `n = 16,777,216`, four threads, warm:
+
+| | value |
+|---|---|
+| noise floor, control against `d16` | +2.42% |
+| what the `UADALP` attack bought on `d16` | **+0.7%** |
+| `pipe4` against the best `u16` arm | **-14.1%** |
+| aggregate bandwidth, all four arms | 55.9 to 59.1 GB/s |
+
+Three things in that block, and the second is the one worth the space.
+
+**The attack that is worth 56 to 61 per cent at one core is worth 0.7 per cent at four.** Same source,
+same arm, same column, same input. At one core `d16-padal` runs 38.9 ps against `d16`'s 89.0; at four
+cores it runs 34.1 against 33.8, which is the wrong sign and inside the floor. There is no clearer
+statement available that a dense carrier's cost under contention is a property of its width and not of
+its kernel.
+
+**All four arms converge on 56 to 59 GB/s**, which is the same ceiling three unrelated arms found in
+section 7.2, now found by four more with a different layout and a different allocation.
+
+**Packing beats the tightest native carrier a 13-bit field can have, by 14.1 per cent**, against that
+carrier's best kernel, on the arm's own terms, with a 2.4 per cent floor under it. Cold mode at the
+same row says -15.9 per cent, though its control gap there is -10.7 per cent and it is the less
+trustworthy of the two.
+
+The theoretical figure is the byte ratio, 1.625 against 2, or -18.75 per cent. Measured -14.1, and the
+residue is that `pipe4` sits at 55.9 GB/s while the dense arms reach 59.1, so it is a little short of
+the ceiling the others are pinned to. Its own compute floor is 75.7 / 4 = 18.9 ps against a measured
+29.1, so it is not compute-bound either; the gap is the same parallel-efficiency loss every arm in this
+file shows at four threads.
+
+### 15.2 What this does to the answer
+
+Section 10's table has one row that has to change.
+
+| The carrier packing replaces | One core | Four cores, column past cache |
+|---|---|---|
+| `u64` (8 bytes) | wins by 5 to 9% | wins by 67 to 71% |
+| `u32` (4 bytes) | loses by 3 to 10% warm, wins by 10 to 18% cold | wins by 48 to 60% |
+| `u16` (2 bytes) | loses by 94 to 116% | **wins by 14 to 16%** |
+
+**The break-even carrier width under contention is below two bytes.** Not straddling it, below it. On
+this host, at four cores, on a column the cache cannot hold, packing a 13-bit field pays against every
+native carrier that could hold it, including the tightest, and it pays by roughly the ratio of the
+bytes it saves.
+
+And the condition attached to that sentence is worth as much as the sentence: **the column has to be
+past the cache.** At `n = 4,194,304` warm, where an 8 MiB `u16` column lives comfortably in a 12 MiB
+L2, the same comparison has packing losing by 124 per cent. The regime, not the record count, is what
+the canon's claim turns on, and the regime is the working set against the last-level cache and the
+demanded rate against the memory system.
