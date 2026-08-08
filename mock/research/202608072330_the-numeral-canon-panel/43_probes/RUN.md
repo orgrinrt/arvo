@@ -140,3 +140,20 @@ $ python3 43_probes/p6_citation_check.py
 Result recorded in p6.out. It opens every file:line in the document and
 tests its content against a word the claim requires, and cross-checks its
 own table against the citations present in the document.
+
+## p7: does the capacity bound survive lowering
+
+A qualitative assembly read. Not a bench, no timing, and the file says so in
+its own header and in section 6.4 of the document.
+
+```
+$ rustc +nightly-2026-05-28 --edition 2021 --crate-type lib -O --emit asm \
+        p7_does_the_capacity_bound_survive_lowering.rs --out-dir build
+$ python3 p7_asm_census.py > p7.out
+```
+
+The emitted assembly is committed as `p7.s` beside the source, so a reader can
+check the census rather than rerun it. `p7_asm_census.py` carries, in its own
+docstring, the instrument defect it started with: its first failure-path pattern
+contained `_failed`, which does not match `slice_index_fail`, and it reported
+zero for the one arm the conclusion turned on.

@@ -68,6 +68,14 @@ them and no place to put them. So the canon has **two** concepts and owes the re
 and the relation is cheap, because it is one staging discipline applied to two different static
 descriptions.
 
+**And the invariant does not survive lowering, which is where a composition contract would pay for
+itself.** `43_probes/p7` reads the emitted assembly for seven traversals of a 64-element run. A run whose
+`len <= capacity` is enforced by its **only constructor** still emits two bounds-check failure paths and
+is the largest body of any arm. One `min` at the loop header takes it to zero; clamping and then
+traversing a subslice reaches zero in 58 assembly lines against 94, at the cost of an eighth of the SIMD
+register mentions, and which of those a workload prefers is **unpriced**. This is a qualitative assembly
+read and is called one.
+
 **Whether compositions belong in arvo is two questions with different answers.** The **contract** must be
 arvo's, for the same reason `42:33-38` gives for the law layer: it is the second input to derivations arvo
 already owns, and a consumer re-deriving it is `35`'s wrong-answer classes going undetected at compile
@@ -514,6 +522,69 @@ load type used to read one element out of a packed run is "neither of the two ou
 derivable quantity, and reaching for the carrier reads too few bits at 28 of 64 widths. I did not
 investigate indexing and it is the largest thing I left, named in section 8.
 
+### 6.4 The other eliminator: indexing, and whether the capacity bound survives lowering
+
+I named indexing as the thing I had not investigated and then went at it, because a composition's
+`len <= capacity` invariant is the exact shape `small-wins-compound-into-the-program.md` describes: a
+fact the typestate holds and lowering discards, leaving one provably dead instruction in the way of
+something larger.
+
+`43_probes/p7` compiles seven traversals of a 64-element run and reads the emitted assembly for whether
+a bounds-check failure path is present. **It is a qualitative read and I call it one**: one host, one
+toolchain, `-O`, aarch64, `#[inline(never)]` forcing each arm to stand alone. It is not a bench, it
+prices nothing, and no timing figure appears in it. What an assembly read can support is an existence
+claim, which is what this is.
+
+| traversal | asm lines | failure-path calls | branches | simd regs |
+|---|---|---|---|---|
+| a bare slice, runtime length | 73 | 2 | 6 | 4 |
+| the run, length in an ordinary field | 119 | 2 | 12 | 32 |
+| **the run, length enforced by the only constructor** | **143** | **2** | 12 | 32 |
+| the run, length clamped to the capacity at the loop header | 94 | **0** | 11 | 32 |
+| the constructor-enforced run, traversed as a subslice | 78 | 1 | 6 | 4 |
+| the run, clamped then traversed as a subslice | 58 | **0** | 5 | 4 |
+| the whole capacity, no length at all | 63 | **0** | 0 | 32 |
+
+**The third row is the finding.** `BoundedRun`'s only constructor refuses a length past the capacity, so
+every value of the type satisfies the invariant by construction, and the traversal still emits two
+failure-path calls and is the **largest** body of any arm at 143 lines. The proof lives in the
+constructor and does not survive to the backend. Stating a composition's invariant where a reader can
+see it buys the reader something and buys the generated code nothing.
+
+**One instruction supplies what the constructor could not.** A `min(len, capacity)` at the loop header
+takes the failure calls to zero. That is the microkernelling shape in one line: the typestate already
+knew the bound, lowering discarded it, and handing it back costs one instruction and removes a whole
+class of emitted check.
+
+**And the shape supplies it more cheaply than the instruction does, at a cost.** Clamping and then
+traversing a subslice is 58 lines with 5 branches, against the clamped index loop's 94 and 11. Same
+proof, roughly 60% of the body. **But the subslice arm carries 4 SIMD register mentions against the
+clamped arm's 32**, so the smaller body is the less vectorised one. Which of the two a real workload
+prefers is **unpriced**: it is a magnitude, it needs the harness, and no harness run in this repository
+bears on it.
+
+**The residual, which is the honest limit of the shape route.** The constructor-enforced run traversed
+as a subslice still emits **one** failure call, because `&self.data[..self.len]` is itself a checked
+operation and the constructor's guarantee is invisible at that site. Only the arm that re-establishes the
+bound immediately before slicing reaches zero. So a composition contract that wants the check gone has to
+hand the traversal a bound the backend can see at the traversal, not a promise the type made at
+construction.
+
+**What this adds to section 4.3's staging table.** The capacity is decided at the type, two stages before
+the traversal, and by the time the traversal runs the compiler has forgotten it. That is a stage boundary
+the design can do something about, and it is the first place in this file where a composition contract
+would pay for itself in emitted code rather than in refused programs.
+
+**Instrument defect, kept on the record.** The first version of `p7`'s reader matched failure paths with
+a pattern containing `_failed`, which does not match `slice_index_fail`, and it reported **zero** failure
+calls for the constructor-enforced subslice arm. That was the one arm the conclusion turned on, and a
+zero from a broken matcher is indistinguishable from a zero from a working one. I caught it by opening
+the assembly for that symbol by hand rather than trusting the count, found the call to
+`core::slice::index::slice_index_fail` at its tail, and repaired the matcher to an explicit list of
+symbols printed in the output. `24` section 3.6 records the same class from the other direction, a probe
+that reported zero because a glob had broken, and notes that the failure mode is to confirm what you were
+expecting and stop.
+
 ## 7. Is the numeral a degenerate composition
 
 **Partly, and the part that degenerates is worth keeping while the part that does not is why there are two
@@ -744,14 +815,17 @@ my dispatch does not. It is op's, and it is cheap to ask.
 what hilavitkutin and vehje actually hold, and I read neither. `35` names the same gap about its own
 requirements and it is still open.
 
-**Indexing, which is the second eliminator and the one I did not investigate.** Section 6.3. A
-composition's `len <= capacity` invariant is what would make a bound check removable, and that is the
-microkernelling shape the workspace's `small-wins-compound-into-the-program.md` describes: a proof the
-typestate holds and lowering discards. `16`'s load-type finding, which reaches me only through
-`OPTIONS.md`, is about the same operation and says the load type is a third derivable quantity that is
-neither of the two outputs. Whether a composition's capacity bound survives to the backend as a removable
-check is a real question, it is measurable, and I did not measure it. It is the first thing I would attack
-next.
+**Which of the two check-free traversals is actually faster.** Section 6.4 establishes that the clamped
+index loop and the clamped subslice traversal both reach zero failure-path calls, and that the second is
+roughly 60% of the body while carrying an eighth of the SIMD register mentions. Which a real workload
+prefers is a magnitude, it needs the bench harness, and no committed run bears on it. **Unpriced**, and
+that is the shape of the next dispatch on this thread rather than a gap in this one.
+
+**The packed case of the same question.** `p7`'s runs are dense arrays. `16`'s load-type finding, which
+reaches me only through `OPTIONS.md`, says the load type for one element of a **packed** run is a third
+derivable quantity that is neither of the container derivation's two outputs, and that reaching for the
+carrier reads too few bits at 28 of 64 widths. Whether a packed traversal's bound behaves like `p7`'s
+dense one is untested, and it is the case arvo's own workload actually uses.
 
 **Whether a sparse composition's capacity is its dense extent or its nonzero bound.** CSR, the graph
 crates and the comb crates all hold structures where the two differ by orders of magnitude, and the
@@ -802,7 +876,8 @@ which nobody has checked for `16` specifically.
 here that can price anything, and nothing in this file is a price. I say so rather than leaving the
 absence to be read as an oversight, and section 11 marks every place a magnitude would decide something.
 
-**Probes:** `43_probes/`, committed with sources, raw compiler output and run logs, per `RUN.md`.
+**Probes:** `43_probes/`, committed with sources, raw compiler output, emitted assembly and run logs, per
+`RUN.md`.
 
 | probe | kind | what it establishes |
 |---|---|---|
@@ -811,9 +886,10 @@ absence to be read as an oversight, and section 11 marks every place a magnitude
 | `s3` | exhaustive integer arithmetic | flattening is never wider than nesting over 4096 pairs; nesting is one bit wider on 1201 of them and two bits at three levels; the flat accumulator overflows 0 of 8192 including per-row intermediates, against 6502 one bit narrower |
 | `p4` | compiler, 3 arms, gate-free | type-level capacity multiplication is expressible; the flattened accumulator reach is a type the derivation consumes; the flat-against-nested gap is one bit at `s3`'s witness, asserted at compile time; two negative controls |
 | `s5` | exact rational arithmetic | a raw same-grid add reads the bias and reads neither the adjustment nor the canonical exponent; a fold's effective origin is `n·B` with `n` dynamic; the product's derived grid step matches `A²r^{2e}` at 9 of 9 zero-bias grids and 8 of 18 nonzero-bias grids |
+| `p7` | qualitative assembly read, 7 traversals | a composition's `len <= capacity` invariant enforced by its only constructor still emits two failure-path calls and the largest body of any arm; one clamp at the loop header takes it to zero; the clamped subslice form reaches zero in 58 lines against 94, with an eighth of the SIMD register mentions |
 | `p6` | citation checker | opens every `file:line` in this document and tests its content against a word it must contain: **32 checked, 0 failures**, and a cross-check confirms the probe's table and the document's citations are the same set. It failed on its first run, at one wrong range and three citations absent from its own table, and both defects are recorded in section 12 rather than repaired silently |
 
-**Self-checks that fired, reported rather than hidden.** Three, and each changed what I would have
+**Self-checks that fired, reported rather than hidden.** Four, and each changed what I would have
 written.
 
 `s5`'s first version asked whether the product **result set** of a grid is a uniform grid, got 0 of 27 at
@@ -826,6 +902,11 @@ the result worth having. The wrong question is kept in the file with the correct
 called, so the crate compiled and the impl was never exercised. It is deleted with a note, because an
 unexercised wrong impl in a committed probe is precisely what a later reader would cite for the shape
 rather than for the check.
+
+`p7`'s assembly reader matched failure paths with a pattern containing `_failed`, which does not match
+`slice_index_fail`, and reported **zero** failure calls for the one arm the conclusion turned on. Section
+6.4 records it in full. I found it by opening that symbol's assembly by hand rather than by trusting the
+count, which is the only way that class of defect is ever found.
 
 `p6` failed on its first run, on one citation of mine and on three of my own citations it did not know
 about. `08:283-290` opened mid-sentence and missed the phrase the claim needed, which is exactly the
