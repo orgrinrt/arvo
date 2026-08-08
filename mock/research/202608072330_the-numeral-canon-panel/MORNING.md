@@ -512,6 +512,26 @@ variants`, **a vacuous pass it would have shipped had it not looked at the numbe
 changes the injected bug passes at one width and is refused at the other with a byte offset and a
 non-zero exit. Every section was re-run: 28 validations, zero mismatches.
 
+### The defect is upstream, and I have deliberately not fixed it
+
+`22` fixed this in **arvo's own driver**, which is a consumer workaround. I checked where the defect
+actually lives and it is not arvo's.
+
+`mockspace-bench-core`, from `hiisi-digital/mockspace` on `dev`. Verified in a clean clone: the
+orchestrator contains **zero** mentions of validate, and the worker-side validate entry point is
+**not re-exported** from the crate root. So no consumer can reach it, and that is true of every repo
+in this workspace that benches, not only arvo.
+
+**I have not touched mockspace**, and the reason is a rule you and I wrote yesterday after I widened
+a one-repo instruction into four and destroyed work in trees I was not sent to. That rule says
+widening is a decision rather than a detail, and that where a fix plainly belongs elsewhere I say so
+and let you decide, because you know which of those repos have somebody mid-task in them and I do
+not.
+
+So: the fix is one small change in `bench-core` and it makes every bench in the workspace able to
+validate its arms for the first time. It is yours to authorise, and it is the highest-leverage single
+change I saw all night.
+
 ### It refuted itself, in writing
 
 `22` opened by correcting `20` on exactly this point, then found `20` was right. It left the wrong
