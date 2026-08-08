@@ -35,19 +35,19 @@ error: generic parameters may not be used in const operations
    = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
 
 error: generic parameters may not be used in const operations
-   --> p2_scalar_single_output_refused.rs:101:66
+   --> p2_scalar_single_output_refused.rs:103:27
     |
-101 | pub fn read_one<W: Width, S>(_bits: u64) -> <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T
-    |                                                                  ^ cannot perform const operation using `W`
+103 | ) -> <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T
+    |                           ^ cannot perform const operation using `W`
     |
     = note: type parameters may not be used in const expressions
     = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
 
 error: generic parameters may not be used in const operations
-   --> p2_scalar_single_output_refused.rs:101:84
+   --> p2_scalar_single_output_refused.rs:103:45
     |
-101 | pub fn read_one<W: Width, S>(_bits: u64) -> <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T
-    |                                                                                    ^ cannot perform const operation using `S`
+103 | ) -> <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T
+    |                                             ^ cannot perform const operation using `S`
     |
     = note: type parameters may not be used in const expressions
     = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
