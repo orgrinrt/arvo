@@ -186,6 +186,31 @@ as converged. That is a fact about the shape, not about the evidence.
 Eight experts on one subject can converge, and can locate exactly where they do not. **Disagreement
 surviving eight passes is itself a result** and goes to op as one.
 
+### A rung needs someone who derived before reading, and that gets harder every file
+
+Every agreement in the panel's first proper unit turned out to be a **read**. Four files agreed, and not
+one derived before reading its predecessors, so the claim sat at a weaker rung than the file count
+suggested. The dispatching agent then wrote the inflated rung into the register, which is the third
+instance of that failure in one night.
+
+**So a unit needs at least one cold derivation, and the sooner the better.** The protocol:
+
+**Phase one.** The expert reads only the premises: op's intents, the acceptance criterion, the workspace
+rules. **No panel files, no register, no probes, no git log, no commit messages.** It derives its own
+answer, builds its own evidence, writes it, and **commits** it.
+
+**Phase two.** Only then does it read the panel, and it appends a reconciliation saying where it agrees,
+where it does not, and what it would change. **Phase one is never rewritten.** Its whole value is that
+it was written blind, and editing it afterwards destroys exactly the property it was dispatched for.
+
+A cold derivation that turns out wrong, honestly reported, is worth more than a right one that read the
+answer first. The first is evidence; the second is an echo.
+
+**Dispatch it early.** Every file added makes a cold derivation harder to obtain, because the pool of
+experts who have not been told the answer shrinks and the answer leaks through the reading list. A unit
+that reaches its checkpoint with no independent instance has to spend one of its remaining four slots
+buying one.
+
 ### The eight are an argument, not a relay
 
 Op, immediately after stating the cadence:
