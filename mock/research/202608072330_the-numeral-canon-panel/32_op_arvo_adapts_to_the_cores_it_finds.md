@@ -4,6 +4,12 @@
 **Required reading.** Op marks this as **a ratifiable intent behind arvo**, which is the first time
 anything in this panel has been named that way.
 
+> **Corrected by `34`, and this file may not be read without it.** The phrase "without sacrificing the
+> soundness" below reads as a uniform condition over every strategy. It is not. Op: it "is property of
+> all of them except Hot. Hot *can* sacrifice soundness, that is its explicit purpose, but it should
+> not lose it for nothing, instead, provable meaningful gains." The correction is recorded in full at
+> `34_op_hot_may_sacrifice_soundness_for_proven_gain.md`.
+
 ## The question this answers, and the options it was choosing among
 
 `27` measured packing under memory-system contention and found the break-even carrier moves by a
@@ -41,7 +47,9 @@ Four things follow that are load-bearing, and they are separable.
 
 **Adaptation is conditional on proof, both ways.** "Wherever it is proven to improve performance
 without sacrificing the soundness." Two conditions, not one, and the soundness condition is the one an
-optimisation pass will be tempted to trade against.
+optimisation pass will be tempted to trade against. **Per `34`, that second condition is per strategy
+rather than global**: hard for every strategy except `Hot`, and for `Hot` a price (a proven meaningful
+gain) rather than a prohibition, because trading soundness away is what `Hot` is for.
 
 **The core count is detected, not declared.** "When we can detect we have several cores available",
 and otherwise "what is the most efficient thing in a single-threaded realm". So there is a
