@@ -62,21 +62,36 @@ fn main() {
     const _: () = assert!(align_of::<A4>() != align_of::<A8>());
     println!(
         "pair 1: align({},{}) size {:>2} vs {:>2}  align {:>2} vs {:>2}",
-        4, 8, size_of::<A4>(), size_of::<A8>(), align_of::<A4>(), align_of::<A8>()
+        4,
+        8,
+        size_of::<A4>(),
+        size_of::<A8>(),
+        align_of::<A4>(),
+        align_of::<A8>()
     );
 
     const _: () = assert!(size_of::<A2>() == size_of::<A32>());
     const _: () = assert!(align_of::<A2>() != align_of::<A32>());
     println!(
         "pair 2: align({},{}) size {:>2} vs {:>2}  align {:>2} vs {:>2}",
-        2, 32, size_of::<A2>(), size_of::<A32>(), align_of::<A2>(), align_of::<A32>()
+        2,
+        32,
+        size_of::<A2>(),
+        size_of::<A32>(),
+        align_of::<A2>(),
+        align_of::<A32>()
     );
 
     const _: () = assert!(size_of::<A1>() == size_of::<A4Small>());
     const _: () = assert!(align_of::<A1>() != align_of::<A4Small>());
     println!(
         "pair 3: align({},{}) size {:>2} vs {:>2}  align {:>2} vs {:>2}",
-        1, 4, size_of::<A1>(), size_of::<A4Small>(), align_of::<A1>(), align_of::<A4Small>()
+        1,
+        4,
+        size_of::<A1>(),
+        size_of::<A4Small>(),
+        align_of::<A1>(),
+        align_of::<A4Small>()
     );
 
     println!();
