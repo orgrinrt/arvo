@@ -413,9 +413,10 @@ mod tests {
 /// A second reduction shape over `bitpack-plan-shared`'s group decode.
 ///
 /// The committed SIMD arm (`sum_simd`) loses to the scalar `sum_windowed` by
-/// 29 percent at n = 262144 (`bitpack-decoder-shape_n262144_findings.md`:
-/// 55824 ns against 43388 ns), which is the wrong way round for a vector
-/// kernel and is a mechanism worth attacking rather than reporting.
+/// 26 percent at n = 262144 (`bitpack-decoder-shape_n262144_findings.md`,
+/// medians from its bootstrap-CI table: 55191 ns against 43779 ns; 29 percent
+/// if that file's means are read instead). A vector kernel losing to a scalar
+/// one is a defect, not a law, so it was disassembled rather than accepted.
 ///
 /// Disassembling it says where the time goes. The inner loop is sixteen
 /// instructions per group of eight values, and only seven of them decode:

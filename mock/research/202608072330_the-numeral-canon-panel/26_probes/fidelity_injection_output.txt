@@ -1,0 +1,11 @@
+  Validating 6 variants × 100 seeds...
+  MISMATCH seed=17010672633609114990 (#0):
+    bitpack-carrier-packed vs bitpack-carrier-d32
+    first diff at byte 0: 234 vs 235
+  MISMATCH seed=5867342029917480607 (#1):
+    bitpack-carrier-packed vs bitpack-carrier-d32
+    first diff at byte 0: 206 vs 207
+  MISMATCH seed=12789492305975170398 (#2):
+    bitpack-carrier-packed vs bitpack-carrier-d32
+    first diff at byte 0: 187 vs 188
+error: bench `bitpack-carrier-width` n=16384 failed validation, refusing to report timings for arms that do not agree: validation failed for variant bitpack-carrier-d32: 100 mismatches across 100 seeds; first: byte mismatch vs bitpack-carrier-packed
