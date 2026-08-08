@@ -5,17 +5,37 @@ This is angles opened, routes closed, and questions sharpened, presented for op 
 
 Read this first; it points at the files. Each entry says what changed and what it cost to find out.
 
-## Where the night landed, in one paragraph
+## Where the night landed, in one paragraph, corrected
 
-The design's width surface is a const, which forces a table, and the table cannot be closed because
-the algebra outgrows it. That was found tonight and it is new. A nat-keyed surface removes the
-ceiling while meeting your ergonomics bar character for character, which was assumed impossible and
-is not. **Two experts derived that independently, in the correct order, and the second said so.**
-What remains is a choice between compiled costs, and it is yours.
+The design's width surface is a const, which forces a table, and **the table cannot be closed because
+the algebra outgrows it**. That is new and it is the night's most consequential finding. A nat-keyed
+surface removes the ceiling while meeting your ergonomics bar character for character, which was
+assumed impossible and is not, and **that clears three independent instances** rather than the two
+this file previously claimed.
 
-**This is the one claim of the night at TWO EXPERTS.** `13` read the establishing text and the
-constraints, then stopped, derived, built, and wrote its answer down before opening `12`. It states
-the order it worked in. Everything else tonight is one expert, however many files agree.
+**But what the stretch built is a type-level skeleton, not a design.** An earlier version of this
+paragraph told you what remained was a choice between compiled costs. That was wrong, and the second
+checkpoint caught it. What the four files say about themselves:
+
+- **Nobody has added two numbers through any of these arrangements.** `13` says its probes "carry
+  shapes and sizes, not addition on the values"; `12` says the strategy is an inert marker in every
+  probe it built.
+- **No signed case, no zero width, no `Cold`, no wide-rung alignment**, in any candidate.
+- **Every ladder built this stretch maps width to container.** Your own words require
+  `(strategy, width, sign)` to container, since the strategy guides the selection and not the user.
+  **This document did not contain the word "strategy" anywhere in 468 lines** until this correction.
+- **The table survives every candidate.** `12` states it plainly: the choice is not between a design
+  with a table and one without, since all of them have one except the candidate that fails the bar.
+  What changes is the table's **domain**, which is the real finding and is not the same as removal.
+
+**And the two stretches collide in a place nobody joined.** The first stretch found that negative
+integer width has a caller, at 15 of 6561 pairs. Every width encoding built in the second stretch is
+a binary natural, which cannot go below zero. Grepping all four files of the second stretch for
+"negative width" returns **nothing**. One probe settles whether this is fatal to the arrangements or
+a corner they can carry.
+
+So the honest statement is: the mechanism question moved a long way tonight, the surface question has
+a strong answer at three instances, and the design question is barely begun.
 
 ## Read these two first, in this order. The second answers the first.
 
@@ -45,7 +65,7 @@ gate-free. It overshoots by exactly eight, and closing that gap is a single divi
 further syntactic positions all terminally naming a forbidden feature. So the bridge is not blocked.
 **Its codomain is.**
 
-### Defect, or the known price? Both, and the split is the answer
+### Defect, or the known price? `11` says both; note the caveat below
 
 `11` was told to hold the comfortable conclusion to a higher standard, and did. typenum ships arvo's
 exact three declarations at **1148 rows and 4758 generated lines**, so the table genuinely is what
@@ -444,7 +464,7 @@ number above was produced by a command recorded in the probe directories.
 
 ## What is still open, and what is running
 
-**Op's one standing instruction is the one nobody took.** `01` is not a question waiting on him on
+**Op's one standing instruction had been walked past by four dispatches, and `10` then took it.** The account below is the state before `10` ran; see the section on `10` for how it resolved. `01` is not a question waiting on him on
 the container derivation; it is an order, "I said fresh eyes on it, that holds". Four dispatches ran
 and none located the attempt. There is also a live contradiction inside it: op's recollection that it
 had no enumeration and working contracts and typestate is flatly contradicted by `SETTLED.md`, which
