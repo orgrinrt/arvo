@@ -37,6 +37,70 @@ a corner they can carry.
 So the honest statement is: the mechanism question moved a long way tonight, the surface question has
 a strong answer at three instances, and the design question is barely begun.
 
+**Both gaps above were then attacked, and both closed.** `15` was dispatched on exactly them. What it
+found is below, and it changes the shape of what is left for you.
+
+## Three: the gaps closed, and the acceptance criterion has a noun nobody had used
+
+**The negative-width collision dissolves by changing coordinates, not by carrying a cost.** `15`
+reproduced the first stretch's counts with three instruments, then asked what nobody had: **the
+integer width is the only coordinate that goes negative.** Total width and fraction width never do,
+at either site with a caller. Key the numeral on total-and-fraction rather than integer-and-fraction
+and the entire corner is naturals, with no signed ladder anywhere. Compiled over the whole 81-shape
+box, 6400 plus 6561 assertions, zero features, with a negative control that refuses and prints the
+offending shape in naturals.
+
+It also settled a case the first stretch had marked untested: repeated squaring drives the integer
+width to minus thirty-one in five steps while the total width stays at one. **The corner is unbounded
+in the panel's coordinates and constant in these.**
+
+Worth noting the pattern, because it is the third time in this panel: a bound that looked like it
+needed a forbidden feature did not, once the quantity moved into the type algebra instead of a const
+argument. The workspace has a rule for exactly that shape.
+
+**The three-input map builds.** Twenty-four rung impls, two sign impls, four stride impls, and
+**zero width-keyed impls**, over the whole domain of four strategies times two signs times every
+width to two hundred, at zero features. Erasure holds: the assembler aliased the `Hot` numeral, the
+`Cold` numeral and a native machine integer to **one symbol**, and the sign axis reaches the
+sign-extending instruction rather than a mask.
+
+### The finding inside the finding
+
+**The map needs two outputs, not one.** Container and stride. That second noun is in your own
+acceptance criterion, which says the typestate derives the container **and representation**, and
+nothing in this panel had ever used it.
+
+`15` got this wrong twice in its own map and pinned both with negative controls. First stride was a
+rounding of the width, wrong at every width that rounds up a rung. Second put stride on the rung,
+still wrong, because one strategy's wide arm pads to a larger alignment. The stride belongs to the
+strategy-and-rung pair.
+
+**The generalisation is the real result: a one-output derivation checks clean against the obvious
+size test and cannot see this class of error at all.** Every candidate in the second stretch was
+one-output.
+
+**And it is `Cold` that forces it.** `Cold` and `Precise` appear **zero times** in the second
+stretch's probes, while the other two appear 648 times with no impl matching on either. Instantiated
+now with real numbers: a million small values are 625 KB at `Cold` against 1 MB at `Warm`. The wide
+rung turns out **not** to be a third gap; it falls out once the second output exists, and is
+invisible without it.
+
+### What it says is yours, and it is one question rather than a menu
+
+**Does a consumer write the integer width, or the total width?**
+
+The machinery wants total-and-fraction. The surface can keep integer-and-fraction through the door at
+zero cost. But then the numbers typed and the numbers stored differ, and every reflective surface has
+to choose which pair it shows. `15` calls that identity and taste, notes it is narrower than the
+five-way pick `13` left you, and argues it is **prior to the family question**, because it changes
+what the shape space is a space of.
+
+### A number reconciled before it could become a second contradiction
+
+`15`'s product-overshoot count is 476 where the first stretch's was 461. It reconciled them exactly,
+160 plus 301 plus 15, both correct under different conventions, and flagged that if either travels
+alone the panel acquires a second unresolved count dispute. It has one already.
+
 ## Read these two first, in this order. The second answers the first.
 
 ### One: the bridge table cannot be closed, at any size
