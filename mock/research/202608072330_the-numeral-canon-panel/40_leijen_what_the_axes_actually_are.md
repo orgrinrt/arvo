@@ -3,7 +3,7 @@
 **Date:** 2026-08-08. **Author:** the `leijen` persona. **Predecessor:** `39_op_the_strategy_set_is_not_closed.md`.
 **Probes:** `40_probes/`. **Mode:** explore, do not settle.
 
-**Status: IN PROGRESS.** Written to disk early and extended in place.
+**Status: COMPLETE.** Written to disk early and extended in place.
 
 ## 0. The answer, before the working
 
@@ -62,11 +62,13 @@ would keep three of the four names.
 
 **The two-by-two does not survive as evidence for anything.** `p1` establishes two things. Every one of
 the 24 placements of four labels into a two-by-two is "an exact bijection with every cell filled and
-none repeated", so the property is `4 = 2 × 2` restated rather than an observation about arvo. And
-under op's own stated intents the shipped placement is **not admissible**: `36` says `Precise` throws
-out cold-axis optimisations and the table gives `Precise` the bitpacked cell. Under the four
-intent-derived constraints the survivors number 2 of 24 and both put `Hot` in the packed cell, which is
-nobody's reading. The tiling is a property of the grid.
+none repeated", so the property is `4 = 2 × 2` restated rather than an observation about arvo. And the
+placement is not determined by op's stated intents: reading `36`'s "throwing out all cold or hot axis
+optimisations" as opposition, the shipped placement is **not admissible**, with 2 survivors of 24 which
+both put `Hot` in the packed cell; reading it as indifference, since layout cannot cost accuracy
+anything, the shipped placement is **one of four equally consistent choices**. Section 4.4 keeps both,
+because they agree on the part that matters: under neither is the tiling evidence about the
+decomposition. It is a property of the grid.
 
 **Four names cannot pin a point in the mechanism product, and none of them currently does.** `p2`
 counts it: with the four axes the record names, the product has 16 points, the four names denote 8
