@@ -2091,3 +2091,158 @@ variants = [
     "../target/release/bench_bitpack_carrier_d32",
     "../target/release/bench_bitpack_carrier_d64",
 ]
+
+[bench.bitpack-contention]
+title = "Packed 13-bit against u16, u32 and u64 carriers with one column split 1, 2 and 4 ways"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+# Variants spawn their own threads inside the timed run block, so the worker's
+# P-core self-pin is skipped (a spawned thread never inherits it and pinning
+# only the coordinator would skew the workload). The variant crate pins every
+# participating thread itself instead, coordinator included, so the measurement
+# is of the memory system rather than of the scheduler.
+threaded = true
+
+# n = 16,384 elements, 1 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 163841
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 16,384 elements, 2 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 163842
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 16,384 elements, 4 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 163844
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 1,048,576 elements, 1 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 10485761
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 1,048,576 elements, 2 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 10485762
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 1,048,576 elements, 4 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 10485764
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 4,194,304 elements, 1 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 41943041
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 4,194,304 elements, 2 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 41943042
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 4,194,304 elements, 4 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 41943044
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 8,388,608 elements, 1 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 83886081
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 8,388,608 elements, 2 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 83886082
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]
+
+# n = 8,388,608 elements, 4 thread(s)
+[[bench.bitpack-contention.sizes]]
+n = 83886084
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_d32",
+    "../target/release/bench_bitpack_contend_d64",
+    "../target/release/bench_bitpack_contend_packed",
+    "../target/release/bench_bitpack_contend_packed_simd",
+]

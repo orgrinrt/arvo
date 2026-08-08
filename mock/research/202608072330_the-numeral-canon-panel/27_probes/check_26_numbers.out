@@ -1,0 +1,42 @@
+warm-mode median picoseconds per element, from the committed csvs
+
+        n           d16   d16-control           d32           d64        packed   packed-simd
+    16384          84.5          85.2          82.8          80.4         128.3         120.0
+   131072          86.7          86.7          85.4          96.0         128.7         121.1
+  1048576          84.8          84.9          83.8         111.1         126.9         119.7
+  2097152          84.8          85.4          86.9         128.0         127.2         119.5
+  4194304          87.1          88.1          96.6         149.3         129.3         120.6
+  8388608          87.9          87.7          88.3         145.7         131.3         122.4
+
+warm samples per arm per size: [40]
+
+break-even carrier width, linear between the d32 and d64 points
+  n=    16384       packed: break-even = -72.78 bytes/elem
+  n=    16384  packed-simd: break-even = -58.77 bytes/elem
+  n=   131072       packed: break-even =  20.35 bytes/elem
+  n=   131072  packed-simd: break-even =  17.49 bytes/elem
+  n=  1048576       packed: break-even =  10.33 bytes/elem
+  n=  1048576  packed-simd: break-even =   9.27 bytes/elem
+  n=  2097152       packed: break-even =   7.92 bytes/elem
+  n=  2097152  packed-simd: break-even =   7.17 bytes/elem
+  n=  4194304       packed: break-even =   6.48 bytes/elem
+  n=  4194304  packed-simd: break-even =   5.82 bytes/elem
+  n=  8388608       packed: break-even =   6.99 bytes/elem
+  n=  8388608  packed-simd: break-even =   6.38 bytes/elem
+
+spread of per-element cost across the whole size sweep, per arm
+             bitpack-carrier-d16:   84.5 to   87.9 ps  (  4.1% spread)
+     bitpack-carrier-d16-control:   84.9 to   88.1 ps  (  3.8% spread)
+             bitpack-carrier-d32:   82.8 to   96.6 ps  ( 16.7% spread)
+             bitpack-carrier-d64:   80.4 to  149.3 ps  ( 85.8% spread)
+          bitpack-carrier-packed:  126.9 to  131.3 ps  (  3.5% spread)
+     bitpack-carrier-packed-simd:  119.5 to  122.4 ps  (  2.4% spread)
+
+implied single-core read bandwidth, GB/s
+        n           d16   d16-control           d32           d64        packed   packed-simd
+    16384          23.7          23.5          48.3          99.5          12.7          13.5
+   131072          23.1          23.1          46.8          83.3          12.6          13.4
+  1048576          23.6          23.6          47.7          72.0          12.8          13.6
+  2097152          23.6          23.4          46.0          62.5          12.8          13.6
+  4194304          23.0          22.7          41.4          53.6          12.6          13.5
+  8388608          22.7          22.8          45.3          54.9          12.4          13.3

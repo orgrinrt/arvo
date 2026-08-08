@@ -194,6 +194,7 @@ fn main() -> ExitCode {
 /// + spectral benches go through their per-routine bridges.
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     use bench_bitpack_carrier_shared::CarrierColumn;
+    use bench_bitpack_contend_shared::Contend;
     use bench_bitpack_footprint_shared::FootprintColumn;
     use bench_bitpack_plan_shared::{MacColumn, PlanColumn};
     use bench_bitpack_shared::Column;
@@ -457,6 +458,28 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("bitpack-carrier-width", 2097152) => routine_bridge!(CarrierColumn<2097152>),
         ("bitpack-carrier-width", 4194304) => routine_bridge!(CarrierColumn<4194304>),
         ("bitpack-carrier-width", 8388608) => routine_bridge!(CarrierColumn<8388608>),
+
+        // contention sweep (panel file 27): the carrier sweep's six arms with
+        // the column split T ways over one persistent pool. The key is
+        // N * 10 + T, because the bench macro dispatches on exactly one const
+        // parameter and the harness keys a row by its n, so the two travel
+        // together the way `warm-clamp-arity`'s W * 1000 + ... keys do.
+        ("bitpack-contention", 163841) => routine_bridge!(Contend<163841>),
+        ("bitpack-contention", 163842) => routine_bridge!(Contend<163842>),
+        ("bitpack-contention", 163844) => routine_bridge!(Contend<163844>),
+        ("bitpack-contention", 163848) => routine_bridge!(Contend<163848>),
+        ("bitpack-contention", 10485761) => routine_bridge!(Contend<10485761>),
+        ("bitpack-contention", 10485762) => routine_bridge!(Contend<10485762>),
+        ("bitpack-contention", 10485764) => routine_bridge!(Contend<10485764>),
+        ("bitpack-contention", 10485768) => routine_bridge!(Contend<10485768>),
+        ("bitpack-contention", 41943041) => routine_bridge!(Contend<41943041>),
+        ("bitpack-contention", 41943042) => routine_bridge!(Contend<41943042>),
+        ("bitpack-contention", 41943044) => routine_bridge!(Contend<41943044>),
+        ("bitpack-contention", 41943048) => routine_bridge!(Contend<41943048>),
+        ("bitpack-contention", 83886081) => routine_bridge!(Contend<83886081>),
+        ("bitpack-contention", 83886082) => routine_bridge!(Contend<83886082>),
+        ("bitpack-contention", 83886084) => routine_bridge!(Contend<83886084>),
+        ("bitpack-contention", 83886088) => routine_bridge!(Contend<83886088>),
         _ => return None,
     };
     Some(RoutineSpec {

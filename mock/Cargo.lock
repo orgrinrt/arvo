@@ -21,6 +21,7 @@ name = "arvo-benches"
 version = "0.0.0"
 dependencies = [
  "bench-bitpack-carrier-shared",
+ "bench-bitpack-contend-shared",
  "bench-bitpack-footprint-shared",
  "bench-bitpack-plan-shared",
  "bench-bitpack-shared",
@@ -255,6 +256,69 @@ dependencies = [
 name = "bench-bitpack-carrier-shared"
 version = "0.0.0"
 dependencies = [
+ "bench-bitpack-plan-shared",
+ "mockspace-bench-core",
+]
+
+[[package]]
+name = "bench-bitpack-contend-d16"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-contend-d16-control"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-contend-d32"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-contend-d64"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-contend-packed"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-contend-packed-simd"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-contend-shared"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-carrier-shared",
  "bench-bitpack-plan-shared",
  "mockspace-bench-core",
 ]
