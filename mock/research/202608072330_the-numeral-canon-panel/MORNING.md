@@ -40,6 +40,38 @@ that reaches backwards over everything else.
 After those: what your standing instruction produced, the routes closed with their diagnostics, the
 corrections files made to each other and to me, and the method notes.
 
+## The correction that matters most: the `Cold` trade is not unpriced
+
+Every file tonight, and every summary I wrote of them, says the packed-storage trade is **unpriced**
+because no bench harness has run in this panel. That is true of this panel and **false of this
+repository**, and the third checkpoint found it.
+
+`mock/benches/bitpack-sequential-sum_n16384_findings.md`, already committed, on the harness, with
+confidence intervals and significance:
+
+| arm | median | against baseline |
+|---|---|---|
+| `bitpack-native-seq` | **1667 ns** | -70.1% |
+| `bitpack-aligned-seq` | 5570 ns | baseline |
+| `bitpack-zeropad-seq` | **7679 ns** | +37.9% |
+
+I verified these myself rather than relaying them. **Spread 4.61x. Zero of forty passes won by the
+packed arm.** And at seven million elements the footprint benches put packed at 1157 microseconds
+against dense at 810, roughly 1.43x, on the same machine and pin nine minutes apart.
+
+**So the penalty turns with scale, and nobody in eighteen files said so.** No file in this panel names
+`mock/benches/` at all; one mentions a bench round in a single clause.
+
+What this does to tonight's reading of `Cold`: the storage figure stands, packed really is smaller,
+and **the walk really is several times slower at small counts and closes to under one and a half
+times at seven million.** That is the whole trade, it was measurable all along, and the panel argued
+about the half it could see.
+
+**Why it was missed, and it is my fault rather than the experts'.** The curated reading list I built
+has a slot for the panel and no slot for the repository. Every brief carried "`mock/crates` is being
+nuked", and every member read that as "the repo is not evidence". `mock/benches/` is neither nuked nor
+excluded, and nothing told them it was there.
+
 ## Where the night landed, in one paragraph, corrected
 
 The design's width surface is a const, which forces a table, and **the table cannot be closed because
@@ -252,8 +284,9 @@ storage measurement, and nobody in this panel has measured the walk.** No bench 
 - **Per-value behavioural agreement is precisely the class that came back green over an insufficient
   map.**
 
-And one number worth sitting with: **across this entire panel, four probe directories emit assembly,
-and the instrument clause four rests on is a single one of them.**
+And one number worth sitting with: **clause four rests on a single assembly-emitting instrument.**
+An earlier version of this line put a directory count beside it; the checkpoint found that number
+matched neither the source file nor any recount, so it is removed rather than repaired.
 
 ### What it says is yours
 
@@ -323,8 +356,10 @@ the embedding. That is `07`'s **refuted prediction**: only one of six rounding m
 embedding, and the others are adjoint to a cell-valued map. **That inversion is precisely how a set
 enters**, so working from my sentence would have flipped its analysis.
 
-Three briefs tonight have carried an error of mine into a dispatch. Each was caught by the expert
-rather than by me.
+**Five** briefs tonight carried an error of mine into a dispatch, three to experts and two to the
+persona. An earlier version of this line said three and misattributed one of them. Every one was
+caught by the recipient rather than by me, which is the part worth your attention when you read any
+summary of mine.
 
 ### A number reconciled before it could become a second contradiction
 
