@@ -1,0 +1,10 @@
+N = 8192 elements, 200 reps, 3 ops/element, saturating
+
+arm                                  ticks/rep      ns/rep
+lanes, counter with nomem                 0.00           0
+lanes, counter WITHOUT nomem              0.01           0
+serial, counter with nomem                0.02           1
+serial, counter WITHOUT nomem           122.86        5119
+
+lanes, Instant + black_box (ns)                       9832
+serial, Instant + black_box (ns)                     26284
