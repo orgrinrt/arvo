@@ -8,6 +8,31 @@ panel's first hundred files and named the method it runs on. This file is that m
 forward had no artifact behind it, which meant options lived in whichever file last mentioned them
 and were rediscovered rather than carried.
 
+## Provenance of this first pass, stated because it bounds what the file is worth
+
+**This register was assembled by the dispatching agent from `MORNING.md` and `28`, not from the
+member files.** `MORNING.md` is a compression, and every checkpoint that has examined it found
+defects in it: rung inflation, a doubled count, a claim spliced across two source commits, a false
+"exactly when", and zero line-level anchors against 295 numeric tokens while its sources carried 297.
+
+So this file inherits whatever that compression still gets wrong, and it was built by exactly the
+route the panel keeps identifying as the failure: reading the summary rather than the thing.
+
+**It is therefore a scaffold, and it owes an independent rebuild from the member files.** That rebuild
+is a dispatch, not a repair by its own author, because the author of a compression is the person who
+believes it entails and a self-check returns sound essentially every time.
+
+Two specific gaps already known, both from options this pass did not go and fetch:
+
+**Options proposed by members and not carried here.** `03` produced five options beyond the three it
+was given on the family question. `13` added a fifth arrangement of the width surface. `10` conceded
+the bridge is not dissolvable with thirteen routes enumerated. None of those sets is written out
+below, and each is either a live option or a droplist entry with a diagnostic.
+
+**The boundary between open and closed is unverified.** An option is listed here because the map
+reads as though it is live. Whether the panel actually closed any of them, and with what, is a
+question for the files rather than for the map.
+
 ## What this file is, and what it is not
 
 A register of **live options**: shapes the design could take, each written down in full, each still
