@@ -21,9 +21,11 @@ for them.
 3. **Does the design have a mixed-numeral addition at all?** No operation anywhere in the record adds
    values from two different numerals. If there is none, the entire inference surface collapses to
    multiplication plus the container. Section on the two cheapest questions.
-4. **What does the top of a saturating numeral denote?** Point, or absorbing everything above.
-   Identical arithmetic, opposite soundness verdicts, and your algorithm crates already behave as
-   though this were answered. Same section.
+4. **What does a datum stand for?** This is question four grown up. It began as the narrower "what
+   does the top of a saturating numeral denote", point or absorbing. Section six narrows the answer
+   again: absorbing is sound **exactly while the computation stays at the endpoint**, which additions
+   alone satisfy and subtractions do not. Two parts of the design depend on incompatible answers, and
+   `Precise` on `inexact` is the same question one level down. Sections four and six.
 5. **One family, or several?** Your original question, reframed twice tonight and no longer the
    blocker it appeared to be. Sections one through three.
 
@@ -262,6 +264,67 @@ is owed.
 Plus a caveat rather than a question: the gate has been met on one program, at one arity, in one
 optimisation band, with an oracle now known to have two false-negative regimes. And the genuinely
 proved part of clause four is proved by construction rather than by that instrument at all.
+
+## Six: the saturating-top answer is narrower than section four says
+
+`18` closed the last category, and on the way it corrected one of tonight's headline results. **Read
+this before acting on question four.**
+
+`07` established that the saturating fold is sound under the absorbing reading and unsound under the
+point reading, and I reported that to you as a clean fork. `18` read `07`'s probe rather than its
+summary and found the inner loop performs **additions only**.
+
+Extended to additions and subtractions, over a stated domain: **936 of 5184 chains are unsound under
+the absorbing reading**, at four steps. Both endpoints absorbing still fails, 840 of 5184.
+
+So the sentence that survives is narrower and sharper: **an absorbing endpoint is sound exactly while
+the computation stays at it.** The general repair is the thing the design excludes; the cheap repair
+is to write the restriction down.
+
+The other two candidates for hidden set-denotation **dissolve**, which is worth as much. Headroom is
+a *refinement*, a predicate on reachable values rather than a set-valued datum. A refusing conversion
+is *partiality*. Neither is the design quietly denoting sets.
+
+### What excluding intervals actually costs
+
+**Not erasure.** An interval addition folds to the same symbol as a raw pair addition on the pin, so
+the exclusion is not forced by the gate.
+
+It costs the **value-level total order**, decidable at 42 percent of pairs at one width and falling
+to 35 at the next, against 100 percent for point, cell and absorbing denotations. It costs
+**multiplicative associativity outright**. It costs the **additive inverse** except on degenerate
+data. Distributivity survives, weakened to containment.
+
+Since the order is a **precondition of the law layer**, admitting intervals is a canon change rather
+than a type addition. That is the honest framing and it is why the exclusion is defensible on
+grounds other than taste.
+
+Who is turned away: verified optimisation, rigorous ODE work, exact geometric predicates,
+broad-phase culling, static range analysis. **Not free.** Stochastic streams, by contrast, are a free
+exclusion. And several things `08` grouped here actually fail a different clause: affine forms,
+Taylor models, exact reals and continued fractions are excluded on **const-sizedness**, not on
+denotation.
+
+### The clause is right and its wording is wrong
+
+`18`'s reading, offered as one of three and the best supported: the denotation clause is **a statement
+about the constructor wearing the grammar of a statement about every datum**.
+
+The distinction it draws is the useful new thing: **a partitioning set denotation is free, an
+overlapping one is not.** That is why the design's own quiet cases cost nothing while intervals cost
+the order.
+
+**And `Precise` on `inexact`, your open question, is this same question one level down.**
+
+### A third brief of mine stated something backwards
+
+`18` caught it before reasoning from it. I told it `07` reports rounding sits in an adjunction with
+the embedding. That is `07`'s **refuted prediction**: only one of six rounding modes is adjoint to the
+embedding, and the others are adjoint to a cell-valued map. **That inversion is precisely how a set
+enters**, so working from my sentence would have flipped its analysis.
+
+Three briefs tonight have carried an error of mine into a dispatch. Each was caught by the expert
+rather than by me.
 
 ### A number reconciled before it could become a second contradiction
 
