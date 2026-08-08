@@ -29,6 +29,7 @@ dependencies = [
  "bench-structural-decomposition",
  "bench-warm-clamp-shared",
  "bench-warm-container-shared",
+ "bench-wide-rung-shared",
  "mockspace-bench-core",
  "mockspace-bench-harness",
 ]
@@ -563,6 +564,58 @@ name = "bench-warm-container-shared"
 version = "0.0.0"
 dependencies = [
  "mockspace-bench-core",
+]
+
+[[package]]
+name = "bench-wide-rung-align16"
+version = "0.0.0"
+dependencies = [
+ "bench-wide-rung-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-wide-rung-ragged"
+version = "0.0.0"
+dependencies = [
+ "bench-wide-rung-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-wide-rung-ragged-overread"
+version = "0.0.0"
+dependencies = [
+ "bench-wide-rung-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-wide-rung-shared"
+version = "0.0.0"
+dependencies = [
+ "mockspace-bench-core",
+]
+
+[[package]]
+name = "bench-wide-rung-wordround"
+version = "0.0.0"
+dependencies = [
+ "bench-wide-rung-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-wide-rung-wordround-alias"
+version = "0.0.0"
+dependencies = [
+ "bench-wide-rung-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
 ]
 
 [[package]]

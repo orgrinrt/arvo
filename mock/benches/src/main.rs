@@ -169,6 +169,7 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     use bench_structural_decomposition::Rcm;
     use bench_warm_clamp_shared::Case as ClampCase;
     use bench_warm_container_shared::Case;
+    use bench_wide_rung_shared::Case as WideCase;
 
     let bridge = match (name, n) {
         // hash benches: byte-array IO via ByteRoutine.
@@ -377,6 +378,24 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("bitpack-footprint-packed", 7000000) => routine_bridge!(FootprintColumn<7000000>),
         ("bitpack-footprint-packed", 33554432) => routine_bridge!(FootprintColumn<33554432>),
 
+        // the wide rung: payload shape above the native container rungs.
+        // Every key is W*1000 + NC*100 + D; see bench-wide-rung-shared.
+        ("wide-rung-width-l1", 129003) => routine_bridge!(WideCase<129003>),
+        ("wide-rung-width-l1", 160003) => routine_bridge!(WideCase<160003>),
+        ("wide-rung-width-l1", 192003) => routine_bridge!(WideCase<192003>),
+        ("wide-rung-width-l1", 200003) => routine_bridge!(WideCase<200003>),
+        ("wide-rung-width-l1", 232003) => routine_bridge!(WideCase<232003>),
+        ("wide-rung-width-l1", 256003) => routine_bridge!(WideCase<256003>),
+        ("wide-rung-width-l2", 129103) => routine_bridge!(WideCase<129103>),
+        ("wide-rung-width-l2", 160103) => routine_bridge!(WideCase<160103>),
+        ("wide-rung-width-l2", 192103) => routine_bridge!(WideCase<192103>),
+        ("wide-rung-width-l2", 200103) => routine_bridge!(WideCase<200103>),
+        ("wide-rung-width-l2", 232103) => routine_bridge!(WideCase<232103>),
+        ("wide-rung-width-l2", 256103) => routine_bridge!(WideCase<256103>),
+        ("wide-rung-density-w200", 200001) => routine_bridge!(WideCase<200001>),
+        ("wide-rung-density-w200", 200002) => routine_bridge!(WideCase<200002>),
+        ("wide-rung-density-w200", 200004) => routine_bridge!(WideCase<200004>),
+        ("wide-rung-density-w200", 200008) => routine_bridge!(WideCase<200008>),
         _ => return None,
     };
     Some(RoutineSpec {

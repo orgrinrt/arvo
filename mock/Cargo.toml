@@ -79,6 +79,12 @@ members = [
     "benches/variants/warm-clamp-accfit",
     "benches/variants/warm-clamp-accfit-dyn",
     "benches/variants/warm-clamp-min-lanes",
+    "benches/variants/wide-rung-shared",
+    "benches/variants/wide-rung-ragged",
+    "benches/variants/wide-rung-ragged-overread",
+    "benches/variants/wide-rung-wordround",
+    "benches/variants/wide-rung-wordround-alias",
+    "benches/variants/wide-rung-align16",
 ]
 
 [workspace.package]

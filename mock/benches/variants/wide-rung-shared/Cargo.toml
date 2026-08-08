@@ -1,0 +1,12 @@
+[package]
+name = "bench-wide-rung-shared"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_wide_rung_shared"
+path = "src/lib.rs"
+
+[dependencies]
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }

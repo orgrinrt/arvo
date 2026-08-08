@@ -1600,3 +1600,191 @@ variants = [
     "../target/release/bench_warm_clamp_accfit",
     "../target/release/bench_warm_clamp_accfit_dyn",
 ]
+
+# ---------------------------------------------------------------------------
+# The wide rung (panel file 22). Five arms per row, all computing the identical
+# value. `ragged` is the byte-exact payload the ratified rule assigns to Cold
+# and Precise; `ragged-overread` is the same payload read with whole-limb loads
+# that reach into the neighbour; `wordround` is the whole-64-bit-limb payload
+# the rule assigns to Hot and Warm; `wordround-alias` is the same stride from a
+# different expression, kept as a noise-floor control; `align16` is the
+# vector-aligned baseline. The size field is a key: W*1000 + NC*100 + D,
+# decoded by `bench-wide-rung-shared`'s `key_w` / `key_nc` / `key_d`. NC 0 is
+# 2048 elements, NC 1 is 458752. Every swept width is above the 128-bit native
+# rung, which no other bench in this directory reaches.
+# ---------------------------------------------------------------------------
+
+[bench.wide-rung-width-l1]
+title = "Wide rung, payload-shape sweep, cache-resident (2048 elements, 3 ops/element)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 129003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 160003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 192003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 200003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 232003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l1.sizes]]
+n = 256003
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[bench.wide-rung-width-l2]
+title = "Wide rung, payload-shape sweep, 458752 elements (3 ops/element, past L2 for the wide strides)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 129103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 160103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 192103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 200103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 232103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-width-l2.sizes]]
+n = 256103
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[bench.wide-rung-density-w200]
+title = "Wide rung at the ratified numeral (W=200), operation-count sweep, cache-resident"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-density-w200.sizes]]
+n = 200001
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-density-w200.sizes]]
+n = 200002
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-density-w200.sizes]]
+n = 200004
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-density-w200.sizes]]
+n = 200008
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
