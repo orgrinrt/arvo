@@ -1,0 +1,49 @@
+PART A: is 'an exact bijection, zero cells spare' a measurement?
+  placements of 4 distinct labels into a 2x2 grid: 24
+  of those, exact bijections with every cell filled and none repeated: 24
+  fraction: 24/24
+  -> the property holds of every placement. It is 4 = 2*2 restated,
+     not a fact about arvo. Observing it in the preset table
+     distinguishes that table from no other placement.
+
+PART B: does op's stated intent determine the placement?
+
+  C1: Cold is packed.
+      36: "Cold is optimised for cold paths and cold storage, which means, it aggressively minimises and bitpacks". Literal: the word bitpacks is op's.
+  C2: Cold is minimum headroom.
+      36: "it aggressively minimises"; 37: "it should remain small for memory or disk storage, because it's just sitting basically". Reading: minimising storage excludes carrying headroom beyond the numeral.
+  C3: Precise is not packed.
+      36: Precise is "throwing out all cold or hot axis optimisations to be accurate and precise". Two-step reading: C1 establishes in op's own words that bitpacking is Cold's mechanism, so bitpacking is a cold-axis optimisation, so Precise throws it out.
+  C4: Warm is not packed.
+      37 quoting op's standing call: Warm "should behave like native primitives in regular old rust would". Reading: a native Rust primitive is individually addressable, not bit-packed.
+
+  survivors by constraint subset (C1 always on):
+  active                 survivors  shipped survives?  if unique, which
+  C1                            12               yes  
+  C1+C2                          6               yes  
+  C1+C3                          8                NO  
+  C1+C4                          8               yes  
+  C1+C2+C3                       4                NO  
+  C1+C2+C4                       4               yes  
+  C1+C3+C4                       4                NO  
+  C1+C2+C3+C4                    2                NO  
+
+  under all four constraints: 2 survivor(s)
+    Hot=(doubled, packed), Warm=(minimum, addressable), Cold=(minimum, packed), Precise=(doubled, addressable)
+    Hot=(doubled, packed), Warm=(doubled, addressable), Cold=(minimum, packed), Precise=(minimum, addressable)
+  shipped table among them: NO
+
+  cell occupancy across the survivors of the full constraint set:
+    ('minimum', 'addressable'): ['Precise', 'Warm']
+    ('minimum', 'packed'): ['Cold']
+    ('doubled', 'addressable'): ['Precise', 'Warm']
+    ('doubled', 'packed'): ['Hot']
+
+PART C: drop the bijection requirement and ask what each name wants.
+    Hot      admissible cells: [('minimum', 'addressable'), ('minimum', 'packed'), ('doubled', 'addressable'), ('doubled', 'packed')]
+    Warm     admissible cells: [('minimum', 'addressable'), ('doubled', 'addressable')]
+    Cold     admissible cells: [('minimum', 'packed')]
+    Precise  admissible cells: [('minimum', 'addressable'), ('doubled', 'addressable')]
+    cells no name but Hot may occupy: [('doubled', 'packed')]
+  -> a bijection forces some name into a cell its intent excludes.
+     The tiling is a property of the grid, not of the intents.
