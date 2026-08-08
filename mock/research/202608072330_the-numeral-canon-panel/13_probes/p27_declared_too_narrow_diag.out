@@ -1,0 +1,35 @@
+error[E0277]: the declared output width is narrower than the product needs
+   --> p27_declared_too_narrow_diag.rs:655:24
+    |
+655 | fn _too_narrow() where Money: MulInto<Money, TooNarrow> {}
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ widen the declared output, or state the rounding explicitly
+    |
+help: the trait `IsLe` is not implemented for `Gt`
+   --> p27_declared_too_narrow_diag.rs:40:1
+    |
+ 40 | pub struct Gt;
+    | ^^^^^^^^^^^^^
+    = note: an integer part of I1+I2 and a fraction of F1+F2 is what a product occupies
+help: the following other types implement trait `IsLe`
+   --> p27_declared_too_narrow_diag.rs:628:1
+    |
+628 | impl IsLe for Lt {}
+    | ^^^^^^^^^^^^^^^^ `Lt`
+629 | impl IsLe for Eqq {}
+    | ^^^^^^^^^^^^^^^^^ `Eqq`
+note: required for `Numeral<L<13>, L<3>, Unsigned, Warm>` to implement `MulInto<Numeral<L<13>, L<3>, Unsigned, Warm>, Numeral<L<20>, L<6>, Unsigned, Warm>>`
+   --> p27_declared_too_narrow_diag.rs:633:5
+    |
+633 |     MulInto<Numeral<I2, F2, Sign, S>, Numeral<OI, OF, Sign, S>> for Numeral<I1, F1, Sign, S>
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+642 |     Ord2<Sum<ReprOf<I1>, ReprOf<I2>>, ReprOf<OI>>: IsLe,
+    |                                                    ---- unsatisfied trait bound introduced here
+help: add `#![feature(trivial_bounds)]` to the crate attributes to enable
+    |
+  8 + #![feature(trivial_bounds)]
+    |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

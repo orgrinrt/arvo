@@ -1,0 +1,6 @@
+StrHandle  UInt<5>        size=1 align=1
+Money      UFixed<13,3>   size=2 align=2
+M2         w=32           size=4
+M4         w=64           size=8
+M8         w=128          size=16
+M16        w=256          size=32

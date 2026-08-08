@@ -1,0 +1,582 @@
+error[E0277]: the trait bound `A: Add<B>` is not satisfied
+  --> p19_lazy_type_alias.rs:16:22
+   |
+16 | pub type Sum<A, B> = <A as Add<B>>::Out;
+   |                      ^^^^^^^^^^^^^^^^^^ the trait `Add<B>` is not implemented for `A`
+   |
+help: consider restricting type parameter `A` with trait `Add`
+   |
+16 | pub type Sum<A: Add<B>, B> = <A as Add<B>>::Out;
+   |               ++++++++
+
+error[E0277]: the trait bound `A: AddC<B>` is not satisfied
+  --> p19_lazy_type_alias.rs:17:23
+   |
+17 | pub type SumC<A, B> = <A as AddC<B>>::Out;
+   |                       ^^^^^^^^^^^^^^^^^^^ the trait `AddC<B>` is not implemented for `A`
+   |
+help: consider restricting type parameter `A` with trait `AddC`
+   |
+17 | pub type SumC<A: AddC<B>, B> = <A as AddC<B>>::Out;
+   |                +++++++++
+
+error[E0277]: the trait bound `A: Cmp<B>` is not satisfied
+  --> p19_lazy_type_alias.rs:55:23
+   |
+55 | pub type Ord2<A, B> = <A as Cmp<B>>::Out;
+   |                       ^^^^^^^^^^^^^^^^^^ the trait `Cmp<B>` is not implemented for `A`
+   |
+help: consider restricting type parameter `A` with trait `Cmp`
+   |
+55 | pub type Ord2<A: Cmp<B>, B> = <A as Cmp<B>>::Out;
+   |                ++++++++
+
+error[E0277]: the trait bound `A: CeilHalf` is not satisfied
+  --> p19_lazy_type_alias.rs:71:18
+   |
+71 | pub type CH<A> = <A as CeilHalf>::Out;
+   |                  ^^^^^^^^^^^^^^^^^^^^ the trait `CeilHalf` is not implemented for `A`
+   |
+help: consider restricting type parameter `A` with trait `CeilHalf`
+   |
+71 | pub type CH<A: CeilHalf> = <A as CeilHalf>::Out;
+   |              ++++++++++
+
+error[E0277]: the trait bound `W: CeilHalf` is not satisfied
+  --> p19_lazy_type_alias.rs:76:24
+   |
+76 | pub type Bytes<W> = CH<CH<CH<W>>>;
+   |                        ^^^^^^^^^ the trait `CeilHalf` is not implemented for `W`
+   |
+help: consider restricting type parameter `W` with trait `CeilHalf`
+   |
+76 | pub type Bytes<W: CeilHalf> = CH<CH<CH<W>>>;
+   |                 ++++++++++
+
+error[E0277]: the trait bound `A: Buf` is not satisfied
+  --> p19_lazy_type_alias.rs:84:21
+   |
+84 | pub type BufOf<A> = <A as Buf>::Out;
+   |                     ^^^^^^^^^^^^^^^ the trait `Buf` is not implemented for `A`
+   |
+help: consider restricting type parameter `A` with trait `Buf`
+   |
+84 | pub type BufOf<A: Buf> = <A as Buf>::Out;
+   |                 +++++
+
+error[E0277]: the trait bound `W: Cmp<Bound>` is not satisfied
+  --> p19_lazy_type_alias.rs:90:41
+   |
+90 | pub type Rung<W, Bound, Narrow, Wide> = <Ord2<W, Bound> as IfLe<Narrow, Wide>>::Out;
+   |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Cmp<Bound>` is not implemented for `W`
+   |
+help: consider restricting type parameter `W` with trait `Cmp`
+   |
+90 | pub type Rung<W: Cmp<Bound>, Bound, Narrow, Wide> = <Ord2<W, Bound> as IfLe<Narrow, Wide>>::Out;
+   |                ++++++++++++
+
+error[E0277]: the trait bound `W: Cmp<E<E<E<O<Z>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:226:1
+    |
+226 | pub type Container<W> = Rung<W, N8, u8,
+    | ^^^^^^^^^^^^^^^^^^^^^ the trait `Cmp<E<E<E<O<Z>>>>>` is not implemented for `W`
+    |
+help: consider restricting type parameter `W` with trait `Cmp`
+    |
+226 | pub type Container<W: Cmp<E<E<E<O<Z>>>>>> = Rung<W, N8, u8,
+    |                     ++++++++++++++++++++
+
+error[E0277]: the trait bound `W: Cmp<E<E<E<E<O<Z>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:226:25
+    |
+226 |   pub type Container<W> = Rung<W, N8, u8,
+    |  _________________________^
+227 | |                        Rung<W, N16, u16,
+228 | |                        Rung<W, N32, u32,
+229 | |                        Rung<W, N64, u64,
+230 | |                        Rung<W, N128, u128,
+231 | |                        BufOf<Bytes<W>>>>>>>;
+    | |___________________________________________^ the trait `Cmp<E<E<E<E<O<Z>>>>>>` is not implemented for `W`
+    |
+help: consider restricting type parameter `W` with trait `Cmp`
+    |
+226 | pub type Container<W: Cmp<E<E<E<E<O<Z>>>>>>> = Rung<W, N8, u8,
+    |                     +++++++++++++++++++++++
+
+error[E0277]: the trait bound `W: Cmp<E<E<E<E<E<O<Z>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:227:24
+    |
+227 | /                        Rung<W, N16, u16,
+228 | |                        Rung<W, N32, u32,
+229 | |                        Rung<W, N64, u64,
+230 | |                        Rung<W, N128, u128,
+231 | |                        BufOf<Bytes<W>>>>>>>;
+    | |__________________________________________^ the trait `Cmp<E<E<E<E<E<O<Z>>>>>>>` is not implemented for `W`
+    |
+help: consider restricting type parameter `W` with trait `Cmp`
+    |
+226 | pub type Container<W: Cmp<E<E<E<E<E<O<Z>>>>>>>> = Rung<W, N8, u8,
+    |                     ++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `W: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:228:24
+    |
+228 | /                        Rung<W, N32, u32,
+229 | |                        Rung<W, N64, u64,
+230 | |                        Rung<W, N128, u128,
+231 | |                        BufOf<Bytes<W>>>>>>>;
+    | |_________________________________________^ the trait `Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not implemented for `W`
+    |
+help: consider restricting type parameter `W` with trait `Cmp`
+    |
+226 | pub type Container<W: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>> = Rung<W, N8, u8,
+    |                     +++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `W: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:229:24
+    |
+229 | /                        Rung<W, N64, u64,
+230 | |                        Rung<W, N128, u128,
+231 | |                        BufOf<Bytes<W>>>>>>>;
+    | |________________________________________^ the trait `Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not implemented for `W`
+    |
+help: consider restricting type parameter `W` with trait `Cmp`
+    |
+226 | pub type Container<W: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>> = Rung<W, N8, u8,
+    |                     ++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `W: CeilHalf` is not satisfied
+   --> p19_lazy_type_alias.rs:231:24
+    |
+231 |                        BufOf<Bytes<W>>>>>>>;
+    |                        ^^^^^^^^^^^^^^^ the trait `CeilHalf` is not implemented for `W`
+    |
+help: consider restricting type parameter `W` with trait `CeilHalf`
+    |
+226 | pub type Container<W: CeilHalf> = Rung<W, N8, u8,
+    |                     ++++++++++
+
+error[E0277]: the trait bound `<W as CeilHalf>::Out: CeilHalf` is not satisfied
+   --> p19_lazy_type_alias.rs:236:1
+    |
+236 | pub fn size_of_buf<W>() -> usize where W: CeilHalf, CH<W>: CeilHalf, CH<CH<W>>: CeilHalf, Bytes<W>: Buf {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `CeilHalf` is not implemented for `<W as CeilHalf>::Out`
+    |
+help: consider further restricting the associated type
+    |
+236 | pub fn size_of_buf<W>() -> usize where W: CeilHalf, CH<W>: CeilHalf, CH<CH<W>>: CeilHalf, Bytes<W>: Buf, <W as CeilHalf>::Out: CeilHalf {
+    |                                                                                                        ++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<W as CeilHalf>::Out: CeilHalf` is not satisfied
+   --> p19_lazy_type_alias.rs:236:60
+    |
+236 | pub fn size_of_buf<W>() -> usize where W: CeilHalf, CH<W>: CeilHalf, CH<CH<W>>: CeilHalf, Bytes<W>: Buf {
+    |                                                            ^^^^^^^^ the trait `CeilHalf` is not implemented for `<W as CeilHalf>::Out`
+    |
+help: consider further restricting the associated type
+    |
+236 | pub fn size_of_buf<W>() -> usize where W: CeilHalf, CH<W>: CeilHalf, CH<CH<W>>: CeilHalf, Bytes<W>: Buf, <W as CeilHalf>::Out: CeilHalf {
+    |                                                                                                        ++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<O<Z>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:521:1
+    |
+521 | / impl<I, F> Shape for Pair<I, F>
+522 | | where
+523 | |     I: Add<F>,
+524 | |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+...   |
+532 | |     Ord2<Sum<I, F>, N16>: IfLe<u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>,
+533 | |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>,
+    | |_________________________________________________________________________________________________________________________________________________________________________^ the trait `Cmp<E<E<E<O<Z>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<O<Z>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<O<Z>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:521:1
+    |
+521 | / impl<I, F> Shape for Pair<I, F>
+522 | | where
+523 | |     I: Add<F>,
+524 | |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+...   |
+532 | |     Ord2<Sum<I, F>, N16>: IfLe<u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>,
+533 | |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>,
+    | |_________________________________________________________________________________________________________________________________________________________________________^ the trait `Cmp<E<E<E<E<O<Z>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<O<Z>>>>>>
+    |                                                                                                                                                                           +++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<O<Z>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:521:1
+    |
+521 | / impl<I, F> Shape for Pair<I, F>
+522 | | where
+523 | |     I: Add<F>,
+524 | |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+...   |
+532 | |     Ord2<Sum<I, F>, N16>: IfLe<u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>,
+533 | |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>,
+    | |_________________________________________________________________________________________________________________________________________________________________________^ the trait `Cmp<E<E<E<E<E<O<Z>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<O<Z>>>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:521:1
+    |
+521 | / impl<I, F> Shape for Pair<I, F>
+522 | | where
+523 | |     I: Add<F>,
+524 | |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+...   |
+532 | |     Ord2<Sum<I, F>, N16>: IfLe<u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>,
+533 | |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>,
+    | |_________________________________________________________________________________________________________________________________________________________________________^ the trait `Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>
+    |                                                                                                                                                                           +++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:521:1
+    |
+521 | / impl<I, F> Shape for Pair<I, F>
+522 | | where
+523 | |     I: Add<F>,
+524 | |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+...   |
+532 | |     Ord2<Sum<I, F>, N16>: IfLe<u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>,
+533 | |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>,
+    | |_________________________________________________________________________________________________________________________________________________________________________^ the trait `Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: CeilHalf` is not satisfied
+   --> p19_lazy_type_alias.rs:521:1
+    |
+521 | / impl<I, F> Shape for Pair<I, F>
+522 | | where
+523 | |     I: Add<F>,
+524 | |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+...   |
+532 | |     Ord2<Sum<I, F>, N16>: IfLe<u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>,
+533 | |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>,
+    | |_________________________________________________________________________________________________________________________________________________________________________^ the trait `CeilHalf` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: CeilHalf
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<O<Z>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:5
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |     ^^^^^^^^^ the trait `Cmp<E<E<E<O<Z>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<O<Z>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<O<Z>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:5
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |     ^^^^^^^^^ the trait `Cmp<E<E<E<E<O<Z>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<O<Z>>>>>>
+    |                                                                                                                                                                           +++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<O<Z>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:5
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |     ^^^^^^^^^ the trait `Cmp<E<E<E<E<E<O<Z>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<O<Z>>>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:5
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |     ^^^^^^^^^ the trait `Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>
+    |                                                                                                                                                                           +++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:5
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |     ^^^^^^^^^ the trait `Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: CeilHalf` is not satisfied
+   --> p19_lazy_type_alias.rs:535:5
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |     ^^^^^^^^^ the trait `CeilHalf` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: CeilHalf
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<O<Z>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:17
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |                 ^^^^^^^^^^^^^^^^^^^^ the trait `Cmp<E<E<E<O<Z>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<O<Z>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<O<Z>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:17
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |                 ^^^^^^^^^^^^^^^^^^^^ the trait `Cmp<E<E<E<E<O<Z>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<O<Z>>>>>>
+    |                                                                                                                                                                           +++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<O<Z>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:17
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |                 ^^^^^^^^^^^^^^^^^^^^ the trait `Cmp<E<E<E<E<E<O<Z>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<O<Z>>>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:17
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |                 ^^^^^^^^^^^^^^^^^^^^ the trait `Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>
+    |                                                                                                                                                                           +++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:535:17
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |                 ^^^^^^^^^^^^^^^^^^^^ the trait `Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: CeilHalf` is not satisfied
+   --> p19_lazy_type_alias.rs:535:17
+    |
+535 |     type Cont = Container<Sum<I, F>>;
+    |                 ^^^^^^^^^^^^^^^^^^^^ the trait `CeilHalf` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: CeilHalf
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<O<Z>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:524:16
+    |
+524 |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+    |                ^^^^^^^ the trait `Cmp<E<E<E<O<Z>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<O<Z>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<O<Z>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:524:26
+    |
+524 |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+    |                          ^^^^^^^^ the trait `Cmp<E<E<E<E<O<Z>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<O<Z>>>>>>
+    |                                                                                                                                                                           +++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<O<Z>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:524:37
+    |
+524 |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+    |                                     ^^^^^^^^ the trait `Cmp<E<E<E<E<E<O<Z>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<O<Z>>>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:524:48
+    |
+524 |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+    |                                                ^^^^^^^^ the trait `Cmp<E<E<E<E<E<E<O<Z>>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<E<O<Z>>>>>>>>
+    |                                                                                                                                                                           +++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not satisfied
+   --> p19_lazy_type_alias.rs:524:59
+    |
+524 |     Sum<I, F>: Cmp<N8> + Cmp<N16> + Cmp<N32> + Cmp<N64> + Cmp<N128>,
+    |                                                           ^^^^^^^^^ the trait `Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: Cmp<E<E<E<E<E<E<E<O<Z>>>>>>>>>
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `<I as Add<F>>::Out: CeilHalf` is not satisfied
+   --> p19_lazy_type_alias.rs:525:16
+    |
+525 |     Sum<I, F>: CeilHalf,
+    |                ^^^^^^^^ the trait `CeilHalf` is not implemented for `<I as Add<F>>::Out`
+    |
+help: consider further restricting the associated type
+    |
+533 |     Ord2<Sum<I, F>, N8>: IfLe<u8, Rung<Sum<I, F>, N16, u16, Rung<Sum<I, F>, N32, u32, Rung<Sum<I, F>, N64, u64, Rung<Sum<I, F>, N128, u128, BufOf<Bytes<Sum<I, F>>>>>>>>, <I as Add<F>>::Out: CeilHalf
+    |                                                                                                                                                                           ++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `L<I>: Lit` is not satisfied
+   --> p19_lazy_type_alias.rs:542:13
+    |
+542 |     Numeral<<L<I> as Lit>::N, <L<F> as Lit>::N, Unsigned, S>;
+    |             ^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Lit` is not implemented for `L<I>`
+   --> p19_lazy_type_alias.rs:511:1
+    |
+511 | pub struct L<const K: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `Lit`:
+              L<0>
+              L<10>
+              L<11>
+              L<12>
+              L<13>
+              L<14>
+              L<15>
+              L<16>
+            and 57 others
+
+error[E0277]: the trait bound `L<F>: Lit` is not satisfied
+   --> p19_lazy_type_alias.rs:542:31
+    |
+542 |     Numeral<<L<I> as Lit>::N, <L<F> as Lit>::N, Unsigned, S>;
+    |                               ^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Lit` is not implemented for `L<F>`
+   --> p19_lazy_type_alias.rs:511:1
+    |
+511 | pub struct L<const K: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `Lit`:
+              L<0>
+              L<10>
+              L<11>
+              L<12>
+              L<13>
+              L<14>
+              L<15>
+              L<16>
+            and 57 others
+
+error[E0277]: the trait bound `L<N>: Lit` is not satisfied
+   --> p19_lazy_type_alias.rs:543:1
+    |
+543 | pub type UInt<const N: u32, S = Warm> = UFixed<N, 0, S>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Lit` is not implemented for `L<N>`
+   --> p19_lazy_type_alias.rs:511:1
+    |
+511 | pub struct L<const K: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `Lit`:
+              L<0>
+              L<10>
+              L<11>
+              L<12>
+              L<13>
+              L<14>
+              L<15>
+              L<16>
+            and 57 others
+
+error[E0277]: the trait bound `L<100>: Lit` is not satisfied
+   --> p19_lazy_type_alias.rs:627:1
+    |
+627 | pub type Wide = UInt<100>;
+    | ^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Lit` is not implemented for `L<100>`
+   --> p19_lazy_type_alias.rs:511:1
+    |
+511 | pub struct L<const K: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `Lit`:
+              L<0>
+              L<10>
+              L<11>
+              L<12>
+              L<13>
+              L<14>
+              L<15>
+              L<16>
+            and 57 others
+
+error[E0277]: the trait bound `<W as CeilHalf>::Out: CeilHalf` is not satisfied
+   --> p19_lazy_type_alias.rs:237:32
+    |
+237 |     core::mem::size_of::<BufOf<Bytes<W>>>()
+    |                                ^^^^^^^^ the trait `CeilHalf` is not implemented for `<W as CeilHalf>::Out`
+    |
+help: consider further restricting the associated type
+    |
+236 | pub fn size_of_buf<W>() -> usize where W: CeilHalf, CH<W>: CeilHalf, CH<CH<W>>: CeilHalf, Bytes<W>: Buf, <W as CeilHalf>::Out: CeilHalf {
+    |                                                                                                        ++++++++++++++++++++++++++++++++
+
+error: aborting due to 44 previous errors
+
+For more information about this error, try `rustc --explain E0277`.

@@ -1,0 +1,19 @@
+error[E0277]: the trait bound `E<O<E<O<O<Z>>>>>: Same<E<E<E<E<E<O<Z>>>>>>>` is not satisfied
+  --> p08_negative_control.rs:63:5
+   |
+63 |     Sum<N13, N13>: Same<N32>,
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+   |
+help: the trait `Same<E<E<E<E<E<O<Z>>>>>>>` is not implemented for `E<O<E<O<O<Z>>>>>`
+  --> p08_negative_control.rs:11:1
+   |
+11 | pub struct E<N>(N);    // 2n, with n != 0 so the form stays canonical
+   | ^^^^^^^^^^^^^^^
+help: add `#![feature(trivial_bounds)]` to the crate attributes to enable
+   |
+ 9 + #![feature(trivial_bounds)]
+   |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.
