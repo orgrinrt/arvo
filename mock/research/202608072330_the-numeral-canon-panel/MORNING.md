@@ -95,6 +95,53 @@ to choose which pair it shows. `15` calls that identity and taste, notes it is n
 five-way pick `13` left you, and argues it is **prior to the family question**, because it changes
 what the shape space is a space of.
 
+### Four: the check that certified your gate is blind to half of it
+
+`16` second-read `15` under the derive-first shape and found something that reaches back to the
+ratified criterion itself.
+
+**The erasure and codegen-equality check, the instrument your fourth clause was certified by, is
+per-value by construction.** Its method is comparing one operation against one native instruction, so
+there is no array in it and there cannot be one. `16` ran that check over a deliberately
+one-output derivation whose storage is **23.1 percent over**, and it came back **four of four
+green**. `15` runs the same check as its own evidence and does not notice it would be equally green
+over the map it just proved insufficient.
+
+**And there is a second blindness underneath it, which is the part I did not expect.** The failure is
+data-dependent: a too-narrow load is correct whenever the truncated bits happened to be zero. Same
+probe: **zero of sixty-four wrong with small values, thirty-two of sixty-four with data filling the
+width.** So adopting the right check is not sufficient. **The data has to be chosen too**, and a
+suite that looks thorough while feeding small values proves nothing.
+
+That is the sharpest methodological finding of the night, and it is about how this design gets
+verified rather than about what it is.
+
+**What it says is yours**: the gate was certified on one of its two nouns, by an instrument
+structurally incapable of seeing the other. Whether that reopens anything is your call, and `16`
+explicitly declines to add a question of its own on top of `15`'s.
+
+### An honest self-report worth reading
+
+`16` **declared its own contamination**. Its first orientation command was a commit log, and one
+subject line carried `15`'s headline conclusion, so the *count* was in front of it before it derived
+anything. It downgraded its own agreement on the count to one expert and kept the independence claim
+only for what it derived before reading: the identity of the two outputs, what the second is keyed
+on, and the blind check.
+
+It also corrected one of its own citations in the way it was criticising others, and reported that
+`15` is **tighter than its own first derivation** rather than defending its version.
+
+`RULES.md` now forbids reading the panel's commit log before an independence answer is on disk.
+Informative commit subjects are correct for every other reader and are exactly what leaks here.
+
+### Where the two-output finding now stands
+
+The **count** is one expert, by `16`'s own downgrade. The **identity** of the two, the **keying** of
+the second, and the **blindness** of the certifying check were derived independently and stand at
+two. `16` also adds that the carrier is the wrong load type at **28 of 64 widths**, which is the trap
+an implementer building from `15` would fall into, and resolves a doubt `15` left open about
+alignment.
+
 ### A number reconciled before it could become a second contradiction
 
 `15`'s product-overshoot count is 476 where the first stretch's was 461. It reconciled them exactly,

@@ -190,6 +190,16 @@ rather than ignorance of the panel.
 A dispatch that does not say this produces a ONE EXPERT result no matter how many files agree, and
 the dispatcher records it as such.
 
+**And the dispatch must forbid reading the panel's commit log before the answer is written.** Found
+the hard way: an independence dispatch ran `git log --oneline` as its first orientation command, and
+one subject line carried the predecessor's headline conclusion. Everything downstream of the number
+in that subject was contaminated before a line of derivation existed. The expert declared it and
+downgraded its own agreement, which is the right handling, and the cheaper fix is to say up front
+that the log is off limits until the answer is on disk.
+
+Commit subjects in this panel are written to be informative, which is correct for every other reader
+and is exactly what makes them a leak here.
+
 **Native personas**, whose definitions withhold the Agent tool, so a member cannot nest and lose its
 work underneath.
 
