@@ -5,6 +5,21 @@ This is angles opened, routes closed, and questions sharpened, presented for op 
 
 Read this first; it points at the files. Each entry says what changed and what it cost to find out.
 
+## All eight were answered on 2026-08-08, and none of them is a lock
+
+**Read `28_op_answers_two.md` before acting on anything below.** The eight questions this file
+reserved for op were put to him and he answered all of them. He settled one, as a conjunction rather
+than a choice, and explicitly declined to settle the other seven, naming the method he wants instead:
+options stay written down and open, each new question is reflected over every one of them, and the
+path appears when one shape turns out to serve the rest of arvo best.
+
+He then extended the no-settlements mode from one night to roughly the panel's first hundred files.
+
+So the framing below, that these are questions waiting to be cleared, is **wrong as of that date**.
+They are the shape of the work rather than a backlog, they now live as live options in `OPTIONS.md`,
+and each entry below is kept because its evidence and its argument are still what the options rest
+on. Where a section says a question is "yours", read it as naming what is open, not as a request.
+
 ## What is yours, in the order it matters
 
 Eight questions, each small, each collapsing something large. Everything else in this file is context
