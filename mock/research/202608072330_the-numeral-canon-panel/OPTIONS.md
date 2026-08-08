@@ -756,6 +756,40 @@ arrival). Consequence for how a canon states the two-output design: "the derivat
 container and a stride" invites reading them as two coordinates of one answer; "the derivation answers
 a per-value question and a per-aggregate question" states why they are not (`16` section 12).
 
+> **File four (`47`) dissolved the one-versus-two fork, and corrected this entry's filing.**
+>
+> **One richer output suffices if and only if it is a type.** Both spellings were built. Type-valued
+> (`47_probes/p1`) compiles gate-free and repairs `16:126-141`'s collapse: the eight `Cold` widths 9
+> through 16 that share one carrier get eight distinct single outputs, with a negative control refusing
+> three false type equalities. Value-valued (`47_probes/p2`) is **compiled-refused six times across
+> three syntactic positions, each naming the forbidden `generic_const_exprs`**.
+>
+> **So the wall was never information loss. It was the kind boundary**, and one-versus-two was never a
+> fork: once the single output is a type with named projections, it **is** the pair wearing one name.
+> What is forced is the count of facts that must be available **as types**, which is not the count of
+> facts.
+>
+> **The proposed permanent sentence, arity-free and surviving a third projection:** *the derivation's
+> result must make available, as types, every fact a lowering site cannot recompute from a const.*
+>
+> **Correction to this entry.** The wide-rung alignment collision was filed here under sufficiency. It
+> is about **reducibility**: `45_probes/p1_wide_rung_collision.rs:1` states its own subject as whether
+> the width-and-stride pair determines the carrier. With a type-valued carrier the pair does separate
+> the two strategies at `45`'s own W=256 witness. That filing error is the dispatching agent's.
+>
+> **And under one reading, two is already insufficient**, which nobody had stated. `Warm` and `Precise`
+> at the same width share carrier and stride and differ only in compute (`47_probes/p5`, with the
+> equality included as a must-not-refuse control that produces no error). So a compute carrier would not
+> be an addition to a sufficient pair; it would be the **repair of an insufficient one**.
+>
+> **What `16` got right, kept.** The access width is not a third output; it is a function of the width.
+> What it costs is a second rung partition, which `16` did not name: the native and access partitions of
+> widths 1 to 128 share **zero** jump points (`47_probes/p6`), so one ladder cannot key both, and the
+> ladder is precisely the part the design has already refused to enumerate.
+>
+> **Independence declared honestly:** `47` read `45` and `46` before deriving, so its support for the
+> converged claim is a third **read**, not a third independent instance.
+
 > **Converged after an exchange, `44` to `45` to `46` to `45` again. This is the panel's first
 > TWO EXPERTS result on a substantive claim, and it is narrower than `45` first stated.**
 >
