@@ -674,7 +674,7 @@ Instantiated on this host, for a 13-bit field, with the best kernel available on
 
 **The `u16` row is superseded by section 15 and section 10.4 states what replaces it.** It read as a
 tie because the largest column available at the time put both arms only 1.3 and 1.1 times past the
-cache; measured with both several times past it, packing wins by 14 to 16 per cent. The rest of this
+cache; measured with both several times past it, packing wins by 9 to 16 per cent. The rest of this
 table stands as measured. Nothing else in sections 7 through 10 changes.
 
 And the break-even carrier width, which is the form the dispatch asked for:
@@ -696,9 +696,9 @@ this section could not control. Where the two touch, **section 15 stands and thi
 does not.**
 
 Concretely: this section reports the `u16` comparison at four cores as a tie inside the noise floor,
-at -2.4 to -2.5 per cent against a floor of 2 to 3. Section 15 reports it at **-14.1 per cent warm and
--15.9 cold against a 2.4 per cent floor**, on a column 2.7 times past the cache instead of 1.3, and
-with `d16` carrying the better of its two kernels. The two are not in conflict about any measurement.
+at -2.4 to -2.5 per cent against a floor of 2 to 3. Section 15 reports it at **-8.9 to -15.9 per cent** across the two sizes
+where both columns are properly past the cache, at 2.7 and 5.3 times it instead of 1.3, and with
+`d16` carrying the better of its two kernels. The two are not in conflict about any measurement.
 They are the same effect at two distances from the cache, and the earlier one was taken too close to
 it to resolve.
 
@@ -892,7 +892,7 @@ said this and it is still unpriced.
 
 **A larger `MAX_N`, so both arms are comfortably past L2.** ~~This is the cheapest remaining
 improvement to the result and I would take it first.~~ **Taken.** Section 15 is that bench, and it
-turned the `u16` tie into a 14 to 16 per cent win for packing, which is the single largest change to
+turned the `u16` tie into a 9 to 16 per cent win for packing, which is the single largest change to
 the answer any part of this file produced. The entry is struck rather than deleted because a list of
 routes not taken is worth more when a reader can see which ones paid.
 
@@ -956,6 +956,26 @@ Warm-mode tenth percentiles, picoseconds per element:
 | 8,388,608 | 4 | 31.9 | 31.0 | 28.0 | 28.7 |
 | 16,777,216 | 1 | 89.0 | 89.8 | 38.9 | 75.7 |
 | 16,777,216 | 4 | 33.8 | 34.6 | 34.1 | 29.1 |
+| 33,554,432 | 1 | 85.7 | 86.4 | 33.3 | 71.2 |
+| 33,554,432 | 4 | 35.8 | 34.7 | 33.7 | 30.7 |
+
+The packed arm against the better of the two dense arms, and what the dense attack bought, on every
+four-thread row in both modes:
+
+| n | mode | control gap | `d16-padal` over `d16` | `pipe4` vs best `u16` |
+|---|---|---|---|---|
+| 8,388,608 | warm | -2.77% | -12.3% | +2.4% |
+| 8,388,608 | cold | -0.22% | -12.4% | -4.0% |
+| 16,777,216 | warm | +2.42% | **+0.7%** | **-14.1%** |
+| 16,777,216 | cold | -10.72% | -15.4% | -15.9% |
+| 33,554,432 | warm | -3.13% | -6.0% | **-8.9%** |
+| 33,554,432 | cold | -0.36% | -4.7% | **-11.2%** |
+
+Three sizes, and the sign is the same from 16,777,216 upward in both modes. The 8,388,608 row is the
+one where the two columns are only 1.3 and 1.1 times past the cache, and it is the one that comes out
+a tie, which is the point of having built this section. The magnitude ranges from 8.9 to 15.9 per cent
+across the four rows that are properly past it, against a floor inside 3.2 per cent on three of them
+and 10.7 on the fourth.
 
 ### 15.1 The row that settles it
 
@@ -977,7 +997,12 @@ statement available that a dense carrier's cost under contention is a property o
 its kernel.
 
 **All four arms converge on 56 to 59 GB/s**, which is the same ceiling three unrelated arms found in
-section 7.2, now found by four more with a different layout and a different allocation.
+section 7.2, now found by four more with a different layout and a different allocation. At
+`n = 33,554,432` the same four land at 53 to 59.
+
+And the sharpest form of the point is `d16-padal`'s own scaling at that largest size, which the
+16,777,216 row understates: **0.99 warm and 1.06 cold against its own single-core row.** The best
+dense kernel in the directory, given four times the cores, returns the time one core took.
 
 **Packing beats the tightest native carrier a 13-bit field can have, by 14.1 per cent**, against that
 carrier's best kernel, on the arm's own terms, with a 2.4 per cent floor under it. Cold mode at the
@@ -998,7 +1023,7 @@ Section 10's table has one row that has to change.
 |---|---|---|
 | `u64` (8 bytes) | wins by 5 to 9% | wins by 67 to 71% |
 | `u32` (4 bytes) | loses by 3 to 10% warm, wins by 10 to 18% cold | wins by 48 to 60% |
-| `u16` (2 bytes) | loses by 94 to 116% | **wins by 14 to 16%** |
+| `u16` (2 bytes) | loses by 94 to 116% | **wins by 9 to 16%** |
 
 **The break-even carrier width under contention is below two bytes.** Not straddling it, below it. On
 this host, at four cores, on a column the cache cannot hold, packing a 13-bit field pays against every

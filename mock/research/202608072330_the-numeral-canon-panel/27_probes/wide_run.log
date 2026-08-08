@@ -89,4 +89,8 @@
   pass 1/4 cd=0ms... done (575s elapsed, ~1725s left)
   pass 2/4 cd=0ms... done (1149s elapsed, ~1149s left)
   pass 3/4 cd=0ms... done (1725s elapsed, ~575s left)
-  pass 4/4 cd=0ms...
+  pass 4/4 cd=0ms... done (2319s elapsed, ~0s left)
+  Total: 2318.5s
+  CSV: bitpack-wide_n335544324.csv (320 rows)
+  Meta: bitpack-wide_n335544324.meta.json
+  wrote bitpack-wide_n335544324.csv + bitpack-wide_n335544324_findings.md
