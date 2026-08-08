@@ -68,8 +68,26 @@ implicated.
 
 ## What is owed
 
-**A sweep for other arms in the same shape.** One was found by someone looking at something else. The
-predicate is cheap: an arm whose mean is orders off the field in its own file.
+**The sweep is done, and the answer bounds the damage.** Predicate: an arm whose mean `algo_ns` is at
+least 50x below the next best in its own file. Across all 214 CSVs it fires **6 times**, and all six
+are the same family and the same arm:
+
+| ratio | file | arm |
+|---|---|---|
+| 844x | `precise-container-width-l1_n130103` | `warm-container-kernel` 9.7 ns vs 8,226.7 |
+| 839x | `precise-container-width-l1_n80103` | 12.7 ns vs 10,689.4 |
+| 688x | `precise-container-width-l1_n320103` | 7.9 ns vs 5,434.6 |
+| 607x | `precise-container-width-l1_n160103` | 13.5 ns vs 8,168.2 |
+| 566x | `precise-container-width-l1_n640103` | 9.7 ns vs 5,473.8 |
+| 318x | `precise-container-width-l1_n600103` | 25.8 ns vs 8,196.7 |
+
+**And the control is decisive.** The identical arm in the sibling family `warm-container-width-l1` sits
+in the pack at 946.7 ns, third of six, against a field of 420 to 8,690. So the arm is not inherently
+broken and the harness is not systematically wrong: **one variant, under one configuration, stopped
+doing its work**, and nothing in the corpus could tell.
+
+That is the honest size of it. The corpus cannot certify itself, which is the finding; the corpus is
+not riddled with dead arms, which is worth saying with the same emphasis.
 
 **The upstream fix**, which is the same one `22` named and which has not moved:
 `mockspace-bench-core`'s orchestrator never calls validate and `run_worker_validate` is not
