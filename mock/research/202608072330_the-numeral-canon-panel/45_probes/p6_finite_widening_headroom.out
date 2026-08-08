@@ -1,0 +1,18 @@
+F=4: 732 disagreement witnesses (k=0 stepwise vs once-truncated)
+  k=0 (no headroom) disagrees with the once-truncated reference on 732 of 732 witnesses
+  k=4 (full doubling) fails to recover on 0 of 732 witnesses (must be 0 if the lossless argument is correct)
+  minimum headroom k needed, distribution across 732 witnesses: {1: 587, 2: 105, 3: 33, 4: 7}
+  first witness: x1=8/16 x2=9/16 a=1/16 b=15/16, minimum headroom = 3 bits (of 4 available)
+
+F=5: 7354 disagreement witnesses (k=0 stepwise vs once-truncated)
+  k=0 (no headroom) disagrees with the once-truncated reference on 7354 of 7354 witnesses
+  k=5 (full doubling) fails to recover on 0 of 7354 witnesses (must be 0 if the lossless argument is correct)
+  minimum headroom k needed, distribution across 7354 witnesses: {1: 5751, 2: 1199, 3: 279, 4: 95, 5: 30}
+  first witness: x1=16/32 x2=17/32 a=1/32 b=31/32, minimum headroom = 4 bits (of 5 available)
+
+F=6: 73461 disagreement witnesses (k=0 stepwise vs once-truncated)
+  k=0 (no headroom) disagrees with the once-truncated reference on 73461 of 73461 witnesses
+  k=6 (full doubling) fails to recover on 0 of 73461 witnesses (must be 0 if the lossless argument is correct)
+  minimum headroom k needed, distribution across 73461 witnesses: {1: 57679, 2: 11971, 3: 2788, 4: 695, 5: 243, 6: 85}
+  first witness: x1=32/64 x2=33/64 a=1/64 b=63/64, minimum headroom = 5 bits (of 6 available)
+

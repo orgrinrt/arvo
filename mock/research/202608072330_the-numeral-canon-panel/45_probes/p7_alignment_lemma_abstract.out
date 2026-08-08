@@ -1,0 +1,17 @@
+the abstract lemma: for any two distinct alignments a1 != a2, and any byte
+count n that is a common multiple of both, a size-n type at align a1 and a
+size-n type at align a2 have equal size and unequal alignment, hence are
+different types. checked at three pairs, none matching arvo's 1-and-16.
+
+pair 1: align(4,8) size  8 vs  8  align  4 vs  8
+pair 2: align(2,32) size 32 vs 32  align  2 vs 32
+pair 3: align(1,4) size  4 vs  4  align  1 vs  4
+
+all three pairs compile and const-check: equal size, unequal alignment, at
+byte counts and alignments that share nothing with arvo's WideBits<BYTES> /
+AlignedWideBits16<BYTES> shape. the mechanism is general.
+
+what this probe does NOT establish: that arvo's four strategies actually pick
+two different alignments anywhere. that is a design choice, not a fact about
+type systems, and per 15:418-429 and 15:553-556 it is stated as an open,
+replaceable assumption in this panel's own source, not as settled design.

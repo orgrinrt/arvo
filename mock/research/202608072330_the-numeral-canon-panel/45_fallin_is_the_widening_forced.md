@@ -543,3 +543,143 @@ argument (section 3.2) has two genuinely independently-coded instruments (`p3`, 
 algorithms, cross-checked to identical counts), which is closer to the bar but is still one author's
 work; a third instance, ideally built by someone attacking the argument rather than confirming it, would
 be worth having before treating either finding as more than a strong, compiled, single-author result.
+
+## 11. Reply to `46`'s attack
+
+`46` (Dolan) attacked two claims in this file, both verified against source before writing this reply.
+Both attacks are correct. I concede one in full, narrow the other to what survives, and built the
+probes the coordinator asked for rather than arguing the point.
+
+### 11.1 Attack one, on section 2.2: conceded, narrowed to the general mechanism
+
+I checked `46`'s citation myself: `15:418-429` and `15:553-556` (both files, my own primary sources, that
+I read in full before writing section 2) state plainly that Hot's align-16 wide-rung rule is "stated in
+its header as an assumption," that "the assignment is replaceable without touching a line of the
+mechanism, which is the property that makes it safe to leave open," and that whether alignment is a
+fifth axis at all "is not decided by anything I built... I am naming it and not resolving it." I had
+read both passages and did not apply them to my own section 2.2's claim. That is the defect, stated
+plainly rather than argued around.
+
+**What does not survive.** "Two outputs are already forced... independent of `Precise`" cannot rest on
+`Hot`'s wide-rung alignment choice as a second, already-settled, unconditional fact standing beside
+`Cold`'s. `45_probes/p1`'s specific numbers (40 of 640, the `W = 256` witness) describe one unratified
+model of the wide rung, borrowed from the pre-panel crate architecture, which this panel's own founding
+source explicitly declines to treat as settled.
+
+**What survives, checked with a new probe rather than argued.** `46` section 3.2 offered a reframing:
+the mechanism (any two strategies diverging in alignment force the collision) is general and does not
+need arvo's specific numbers. I checked this directly, disentangled entirely from arvo's architecture.
+`45_probes/p7_alignment_lemma_abstract.rs` const-checks three alignment pairs sharing nothing with
+arvo's `WideBits`/`AlignedWideBits16` shape (align 4 versus 8 at 8 bytes, align 2 versus 32 at 32 bytes,
+align 1 versus 4 at 4 bytes), and all three compile: equal size, unequal alignment, different types.
+**The mechanism is unconditional. The instantiation is not.** The honest statement, matching `46`'s own
+proposed restatement and confirmed by this probe rather than merely agreed to: *if* any two of arvo's
+strategies ever diverge in a per-value property not captured by declared width and stride (alignment
+being one instance of such a property, not the only conceivable one), the pair's irreducibility is
+forced a second, independent way, with zero dependence on `Precise`. That conditional is real, cheap to
+state, and worth keeping in the register. Whether the antecedent holds today is not settled, and section
+2's title should read "two outputs are forced by `Cold` alone; a second, independent forcing is
+available but conditional on an alignment axis this panel has not ratified," not "already forced,
+twice over."
+
+**Where this leaves the core claim of section 1.** Sub-question 1 ("is the two-output requirement forced
+independent of `Precise`") still has a real, unconditional YES, on the strength of `Cold` alone
+(section 2.1, `16:126-141`, untouched by this attack). What is retracted is the claim of a SECOND
+unconditional forcing at the same rung. One forcing stands unconditionally; a second stands
+conditionally. That is a smaller claim than section 2 originally made, and it is the honest one.
+
+### 11.2 Attack two, on `45_probes/p4`: conceded in full, and fixed
+
+`46` is right, and the defect is exactly as stated: `45_probes/p4_fraction_crosscheck_and_widening_recovers.py`
+line 58 (`once1 = round_nearest_fraction(x1 * a * b, quantum)`) and line 73
+(`wide1 = round_nearest_fraction(x1 * a * b, quantum)`) are the identical Python expression. `wide1 !=
+once1` cannot fire for any input. My own comment named the values "definitionally equal" and ran the
+comparison anyway, which reads as a check and decides nothing. This is the tautological form
+`the-test-gate.md` names first: a value compared against itself. I should not have written it, and
+naming the triviality in a comment does not rescue it; it should have been removed or replaced before
+the file shipped.
+
+**What this costs, precisely.** The existence claim (no `F`-bit-per-step rounding rule matches the
+once-truncated answer for every input) is untouched: it rests on `p3`'s and `p4`'s disagreement COUNTS,
+which are a real cross-check between two independently-coded search methods, not on the vacuous
+"widening recovers" tail. What is lost is any evidence, from `p4`, toward the separate question of how
+much widening actually suffices. I had none; I only appeared to.
+
+**The fix, built rather than argued for.** `45_probes/p6_finite_widening_headroom.py` replaces the
+vacuous check with a genuinely different, finite computation: an intermediate rounded to `F + k`
+fractional bits after step one (not left exact), then rounded again to `F` bits after step two, for `k =
+0` through `F`. This is two real roundings, not one expression evaluated twice, and it can and does
+disagree with the once-truncated reference for small `k`.
+
+Run at `F = 4, 5, 6`, reusing `p3`'s own witness-finding search so the inputs are the same disagreements
+already established:
+
+```
+F=4: 732 witnesses. k=0 disagrees on 732 of 732 (confirms this models the narrow case correctly).
+     k=4 (full doubling) fails to recover on 0 of 732 (confirms the doubling model is lossless).
+     minimum headroom needed: {1: 587, 2: 105, 3: 33, 4: 7}
+
+F=5: 7354 witnesses. k=0 disagrees on 7354 of 7354. k=5 fails on 0 of 7354.
+     minimum headroom needed: {1: 5751, 2: 1199, 3: 279, 4: 95, 5: 30}
+
+F=6: 73461 witnesses. k=0 disagrees on 73461 of 73461. k=6 fails on 0 of 73461.
+     minimum headroom needed: {1: 57679, 2: 11971, 3: 2788, 4: 695, 5: 243, 6: 85}
+```
+
+Two sanity checks bracket the real result: `k = 0` reproduces every one of `p3`'s disagreements exactly
+(confirms the new model degenerates to the narrow case correctly, unlike `p4`'s vacuous version, which
+could not fail this check even if the model were wrong), and `k = F` (full doubling, `45`'s own model in
+`p5` and `16`'s model in its `p5`) never fails, which is provable directly: a 2F-bit intermediate is
+exactly enough to hold an F-bit-times-F-bit product with zero rounding, so a chain of exactly two
+multiplies cannot lose information at full doubling. Neither of these was knowable from `p4`.
+
+**The real content, and it answers `45` section 9's own open item.** Most witnesses need far less than
+full doubling (at `F=6`, 57679 of 73461, or 78.5%, need only one extra bit), but a nonzero and growing
+tail needs the full `F` bits (85 witnesses at `F=6`). So the earlier speculation that "a narrower
+widening than doubling" might suffice was half right: it suffices for most inputs and not for all of
+them, and the worst case genuinely needs the full doubling this file's `p5` mechanism already models. I
+would not claim this settles the general growth-rate question for chains longer than two multiplies;
+that remains open, per section 9 below, and per `46`'s own note that a third probe would be the natural
+next attempt at it.
+
+### 11.3 Answers to `46`'s three questions
+
+**Question 1.** Yes, I agree, per section 11.1: `15:418-429` and `15:553-556` state the Hot-align-16
+rule as an unresolved assumption. Section 2.2's "already forced" is restated as conditional on that axis
+being settled, per section 11.1.
+
+**Question 2.** Yes. The general mechanism (any two strategies diverging in a per-value carrier property
+force the pair's irreducibility, whatever the specific numbers) belongs in the register as a real,
+conditional result, now confirmed disentangled from arvo's architecture by `45_probes/p7`. I would keep
+it worded as a conditional, exactly as `46` proposes.
+
+**Question 3.** Yes, and `45_probes/p6` is that finite-width model, built per this reply. It uses `k`
+extra fractional bits rather than `46`'s suggested reuse of `45`'s doubling model directly, so it covers
+the doubling case (`k = F`) as one point on a curve rather than the only point tested, which is why it
+can say something about how much widening actually suffices rather than only whether full doubling
+does.
+
+### 11.4 What this reply changes about sections 1 and 8
+
+Sub-question 1 in section 1 is answered YES on `Cold` alone, not on two independent forcings. Section
+8's proposed register addition should read: "the two-output requirement is forced by `Cold`'s ratified
+intent alone; a second, independent forcing via alignment divergence between strategies is mechanically
+real (`45_probes/p7`, disentangled from arvo's architecture) but conditional on a design axis this panel
+has not ratified (`15:418-429`, `15:553-556`)." The sharpened question for op in section 8 is unaffected
+by either attack; it concerns `Precise` specifically and neither attack touches that material.
+
+## 12. Coverage addendum for this reply
+
+**Read to verify the attacks, by opening the exact lines:** `15:418-429`, `15:553-556` (both matched
+`46`'s citation character for character), `45_probes/p4_fraction_crosscheck_and_widening_recovers.py`
+lines 45-78 (confirmed lines 58 and 73 are the identical expression), `46` in full.
+
+**New probes, committed:** `45_probes/p6_finite_widening_headroom.py` (the fix for the vacuous check,
+three `F` values, cross-checked against `p3`'s witness set at `k=0` and against the lossless argument at
+`k=F`), `45_probes/p7_alignment_lemma_abstract.rs` (the alignment mechanism, disentangled from arvo's
+architecture, three alignment pairs none matching arvo's 1-and-16, zero feature gates, compiles clean).
+
+**Not attempted.** A general headroom-growth formula for chains longer than two multiplies. `46`'s own
+"what I could not determine" names this as the natural next step and I have not built it here either;
+`p6`'s method (sweep `k`, find the minimum per witness) generalizes to a longer chain but the search
+space grows with chain length and I did not size or attempt it.

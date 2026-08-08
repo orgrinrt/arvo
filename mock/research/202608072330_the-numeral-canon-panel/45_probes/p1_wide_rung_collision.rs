@@ -67,7 +67,10 @@ fn main() {
         println!("first witness: W = {w}, byte count = {bytes} for both Hot and Warm");
         println!();
         println!("at this W, both declarations have IDENTICAL (W, stride):");
-        println!("  W = {w}, stride = {} bits, for BOTH Hot and Warm", bytes * 8);
+        println!(
+            "  W = {w}, stride = {} bits, for BOTH Hot and Warm",
+            bytes * 8
+        );
     }
 
     // Concrete witness, checked with const assertions so the compiler proves the sizes and
@@ -104,15 +107,9 @@ fn main() {
     println!(
         "so the pair (W, stride) does NOT determine carrier, at {collisions} of {total} wide-rung"
     );
-    println!(
-        "widths in this sweep, with ZERO dependence on Precise and ZERO dependence on sign."
-    );
-    println!(
-        "this collision arises purely from Hot's align-16 wide-rung padding coinciding with"
-    );
-    println!(
-        "Warm's align-1 unpadded byte count at widths where the byte count already happens"
-    );
+    println!("widths in this sweep, with ZERO dependence on Precise and ZERO dependence on sign.");
+    println!("this collision arises purely from Hot's align-16 wide-rung padding coinciding with");
+    println!("Warm's align-1 unpadded byte count at widths where the byte count already happens");
     println!("to be a multiple of 16.");
 
     println!();

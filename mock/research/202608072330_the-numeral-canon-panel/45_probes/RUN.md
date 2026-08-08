@@ -70,3 +70,31 @@ impl block.
 rustc +nightly-2026-05-28 --edition 2021 -O p5_third_output_is_mechanically_free.rs -o bin/p5_notwiden && ./bin/p5_notwiden
 rustc +nightly-2026-05-28 --edition 2021 --cfg precise_widens -O p5_third_output_is_mechanically_free.rs -o bin/p5_widens && ./bin/p5_widens
 ```
+
+## p6_finite_widening_headroom.py
+
+The fix for `p4`'s vacuous "widening recovers" check (attacked by `46`, conceded, fixed in
+`45`'s reply, section 11.2). Models a genuinely finite intermediate at `F + k` fractional
+bits (`k = 0..F`), rounded twice (once after the first multiply, once at the very end),
+rather than `p4`'s single expression evaluated twice. Reuses `p3`'s witness-finding search
+so results are directly comparable. Confirms `k=0` reproduces every disagreement `p3` found
+(732, 7354, 73461 at F=4,5,6), confirms `k=F` (full doubling) never fails, and reports the
+minimum headroom each witness actually needs, showing most need far less than full doubling
+while a nonzero tail needs exactly the full amount.
+
+```
+python3 p6_finite_widening_headroom.py
+```
+
+## p7_alignment_lemma_abstract.rs
+
+The general form of `p1`'s alignment collision, disentangled entirely from arvo's pre-panel
+`WideBits`/`AlignedWideBits16` architecture, per `46`'s attack on `p1` (conceded, narrowed in
+`45`'s reply, section 11.1). Three alignment pairs, none matching arvo's 1-and-16, all
+const-checked: equal size, unequal alignment, different types. Establishes the mechanism is
+general and unconditional while the instantiation (whether arvo's own strategies actually
+diverge in alignment) remains open, per `15:418-429` and `15:553-556`.
+
+```
+rustc +nightly-2026-05-28 --edition 2021 -O p7_alignment_lemma_abstract.rs -o bin/p7 && ./bin/p7
+```

@@ -100,17 +100,9 @@ fn main() {
     println!(
         "0 versus 40 on the identical (W, strategy) domain is not a disagreement about facts;"
     );
-    println!(
-        "it is p5's own carrier representation being unable to express the fact that would"
-    );
-    println!(
-        "refute its claim. this is the same blindness `16` itself diagnosed in section 5"
-    );
-    println!(
-        "for the erasure-and-codegen-equality check (\"its instrument is a scalar... a"
-    );
-    println!(
-        "carrier-only derivation passes it at full marks\"), now found in `16`'s OWN"
-    );
+    println!("it is p5's own carrier representation being unable to express the fact that would");
+    println!("refute its claim. this is the same blindness `16` itself diagnosed in section 5");
+    println!("for the erasure-and-codegen-equality check (\"its instrument is a scalar... a");
+    println!("carrier-only derivation passes it at full marks\"), now found in `16`'s OWN");
     println!("instrument for the pair's irreducibility claim, in the same file.");
 }
