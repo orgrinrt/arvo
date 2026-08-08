@@ -1,0 +1,587 @@
+06_kiselyov_where_a_numeral_is_inferred.md:19:## What this file found, stated before the argument
+06_kiselyov_where_a_numeral_is_inferred.md:59:## 0. Gates
+06_kiselyov_where_a_numeral_is_inferred.md:61:### 0.1 The canon gate
+06_kiselyov_where_a_numeral_is_inferred.md:74:### 0.2 The test gate
+06_kiselyov_where_a_numeral_is_inferred.md:95:### 0.3 The brief's cheap factual claims, and one of `03`'s
+06_kiselyov_where_a_numeral_is_inferred.md:128:## 1. The carve I would use, and why not the brief's
+06_kiselyov_where_a_numeral_is_inferred.md:159:### 1.1 Why D3 cannot be inhabited, which is the load-bearing point
+06_kiselyov_where_a_numeral_is_inferred.md:195:### 1.2 The same compiler fact, twice, and the second use is not the first
+06_kiselyov_where_a_numeral_is_inferred.md:208:## 2. The sites: every place a numeral appears that the consumer did not spell
+06_kiselyov_where_a_numeral_is_inferred.md:245:### 2.1 The eight that are not sites, and why that is the useful half
+06_kiselyov_where_a_numeral_is_inferred.md:268:### 2.2 Site sixteen is the gap, and naming it is most of what this section is for
+06_kiselyov_where_a_numeral_is_inferred.md:290:### 2.3 Site one, which is the largest and is not usually counted
+06_kiselyov_where_a_numeral_is_inferred.md:312:### 2.4 The second pass: unary operations, scaling, and one site that does not exist
+06_kiselyov_where_a_numeral_is_inferred.md:339:## 3. Classification, and the one thing every class shares
+06_kiselyov_where_a_numeral_is_inferred.md:361:## 4. Does any site need an order?
+06_kiselyov_where_a_numeral_is_inferred.md:366:### 4.1 The three candidates that looked like they might, checked
+06_kiselyov_where_a_numeral_is_inferred.md:389:### 4.2 What this does to the open structure question
+06_kiselyov_where_a_numeral_is_inferred.md:415:### 4.3 What the classification costs when a family is added, which is the permanence test
+06_kiselyov_where_a_numeral_is_inferred.md:448:### 4.4 The register on that, kept honest
+06_kiselyov_where_a_numeral_is_inferred.md:454:## 5. What an order buys where it has no caller
+06_kiselyov_where_a_numeral_is_inferred.md:460:### 5.1 Two genuine callers, neither of them a lattice operation
+06_kiselyov_where_a_numeral_is_inferred.md:479:### 5.2 Four uses that are not callers
+06_kiselyov_where_a_numeral_is_inferred.md:501:### 5.3 The shape of the answer, in one sentence
+06_kiselyov_where_a_numeral_is_inferred.md:508:## 6. Does option H survive?
+06_kiselyov_where_a_numeral_is_inferred.md:535:### 6.1 An honest note on convergence
+06_kiselyov_where_a_numeral_is_inferred.md:543:## 7. Two things nobody asked for, found while checking
+06_kiselyov_where_a_numeral_is_inferred.md:548:### 7.1 The sum-of-widths product form wastes a bit, and the region is exact
+06_kiselyov_where_a_numeral_is_inferred.md:591:### 7.2 Negative integer width has a caller, and it is not the meet
+06_kiselyov_where_a_numeral_is_inferred.md:619:### 7.3 The tight form is realisable, so this is a proposal rather than a complaint
+06_kiselyov_where_a_numeral_is_inferred.md:640:## 8. Routes closed, each with the thing that closed it
+06_kiselyov_where_a_numeral_is_inferred.md:672:## 9. Coverage, stated honestly
+06_kiselyov_where_a_numeral_is_inferred.md:713:## 10. What appears to be op's, and in what order
+03_lamport_the_family_question_and_its_consequences.md:15:## What this file found, stated before the argument
+03_lamport_the_family_question_and_its_consequences.md:58:## 0. Gates
+03_lamport_the_family_question_and_its_consequences.md:60:### 0.1 The canon gate
+03_lamport_the_family_question_and_its_consequences.md:72:### 0.2 The test gate
+03_lamport_the_family_question_and_its_consequences.md:88:### 0.3 Which rows bearing on this question are acks
+03_lamport_the_family_question_and_its_consequences.md:112:### 0.4 The brief's cheap factual claims, checked before reasoning from them
+03_lamport_the_family_question_and_its_consequences.md:125:## 1. What the question is a question about
+03_lamport_the_family_question_and_its_consequences.md:152:### 1.1 Two operations, and only one of them has a caller
+03_lamport_the_family_question_and_its_consequences.md:171:### 1.2 Three failure modes, which "partial" hides
+03_lamport_the_family_question_and_its_consequences.md:191:## 2. The geometry, stated once
+03_lamport_the_family_question_and_its_consequences.md:221:## 3. Reading A: one family, closed shape space
+03_lamport_the_family_question_and_its_consequences.md:227:### 3.1 What becomes derivable, and what the measurements say instead
+03_lamport_the_family_question_and_its_consequences.md:259:### 3.2 Where the reading's promise stops, and this is the part that matters
+03_lamport_the_family_question_and_its_consequences.md:307:### 3.3 What has to be named under reading A
+03_lamport_the_family_question_and_its_consequences.md:336:### 3.4 What it costs a consumer
+03_lamport_the_family_question_and_its_consequences.md:355:## 4. Reading B: one family, shape space not closed
+03_lamport_the_family_question_and_its_consequences.md:359:### 4.1 What becomes derivable
+03_lamport_the_family_question_and_its_consequences.md:373:### 4.2 What has to be named
+03_lamport_the_family_question_and_its_consequences.md:390:### 4.3 What it costs a consumer
+03_lamport_the_family_question_and_its_consequences.md:401:### 4.4 The thing that makes reading B larger than it looks
+03_lamport_the_family_question_and_its_consequences.md:411:## 5. Reading C: several families
+03_lamport_the_family_question_and_its_consequences.md:416:### 5.1 What becomes derivable
+03_lamport_the_family_question_and_its_consequences.md:427:### 5.2 The seam is not where the reading puts it
+03_lamport_the_family_question_and_its_consequences.md:463:### 5.3 What has to be named under reading C
+03_lamport_the_family_question_and_its_consequences.md:477:### 5.4 What it costs a consumer
+03_lamport_the_family_question_and_its_consequences.md:491:## 6. The predicate-amendment claim, checked
+03_lamport_the_family_question_and_its_consequences.md:522:### 6.1 Where the amendment lands in the consequence lists
+03_lamport_the_family_question_and_its_consequences.md:551:## 7. The categories the three readings do not cover
+03_lamport_the_family_question_and_its_consequences.md:557:### 7.1 D: the tie-break reading, and it survives
+03_lamport_the_family_question_and_its_consequences.md:593:### 7.2 E: the seam is the step set, and it survives
+03_lamport_the_family_question_and_its_consequences.md:617:### 7.3 H: neither operation may have a caller, and this one narrows everything
+03_lamport_the_family_question_and_its_consequences.md:654:### 7.4 F: the ambient-and-realisation decomposition, which is not a fourth answer
+03_lamport_the_family_question_and_its_consequences.md:675:### 7.5 G: order the numerals by something other than inclusion, and this route is closed
+03_lamport_the_family_question_and_its_consequences.md:692:## 8. What each reading looks like in one table
+03_lamport_the_family_question_and_its_consequences.md:714:## 9. Coverage, stated honestly, and what I could not settle
+03_lamport_the_family_question_and_its_consequences.md:761:## 10. What appears to be op's, and in what order
+07_orchard_the_adjunction_frame.md:18:## Verdict, before the argument
+07_orchard_the_adjunction_frame.md:100:## 0. Gates
+07_orchard_the_adjunction_frame.md:102:### 0.1 The canon gate
+07_orchard_the_adjunction_frame.md:123:### 0.2 The test gate
+07_orchard_the_adjunction_frame.md:140:### 0.3 The brief's cheap factual claims
+07_orchard_the_adjunction_frame.md:172:## 1. Setting the two sides up, and why there are two of them
+07_orchard_the_adjunction_frame.md:178:### 1.1 The definitions, once
+07_orchard_the_adjunction_frame.md:197:### 1.2 Level one: the fibre
+07_orchard_the_adjunction_frame.md:211:### 1.3 Level two: the index
+07_orchard_the_adjunction_frame.md:228:### 1.4 The two levels are not the same question and the design splits along them
+07_orchard_the_adjunction_frame.md:247:### 1.5 The fibred picture, and the one thing it asks that nobody has
+07_orchard_the_adjunction_frame.md:264:## 2. The round-trip laws, per rounding mode
+07_orchard_the_adjunction_frame.md:266:### 2.1 The prediction, and where it was wrong
+07_orchard_the_adjunction_frame.md:295:### 2.2 Overflow is outside the adjunction, measured
+07_orchard_the_adjunction_frame.md:309:### 2.3 What each mode is actually adjoint to, which refuted my prediction
+07_orchard_the_adjunction_frame.md:341:### 2.4 Composition, the prediction that over-fired, and the claim that survived
+07_orchard_the_adjunction_frame.md:386:## 3. What becomes a corollary
+07_orchard_the_adjunction_frame.md:391:### 3.1 The two admissions are the codomain of one formula
+07_orchard_the_adjunction_frame.md:432:### 3.2 The join and the product numeral are the same function
+07_orchard_the_adjunction_frame.md:455:### 3.3 `06`'s corrected product form is that mechanism, arrived at independently
+07_orchard_the_adjunction_frame.md:477:### 3.4 `03`'s three failure modes are three named conditions
+07_orchard_the_adjunction_frame.md:496:### 3.5 The quotient is the insertion condition
+07_orchard_the_adjunction_frame.md:509:### 3.6 The container's tie-break is a D2 site because no best abstraction exists there
+07_orchard_the_adjunction_frame.md:521:### 3.7 Monotonicity is a precondition, and its absence explains a droplist entry
+07_orchard_the_adjunction_frame.md:545:## 4. What it predicts that the panel does not have
+07_orchard_the_adjunction_frame.md:549:### 4.1 The fold's sufficiency check is one inequality, on the fraction width
+07_orchard_the_adjunction_frame.md:586:### 4.2 Saturation's soundness is a concretisation choice, and the design has not made it
+07_orchard_the_adjunction_frame.md:617:### 4.3 The cross-kind case is priced, not closed
+07_orchard_the_adjunction_frame.md:658:### 4.4 Soundness against bestness, which sharpens `06`'s third question to op
+07_orchard_the_adjunction_frame.md:691:### 4.5 The whole of it compiles as a bound and erases
+07_orchard_the_adjunction_frame.md:732:## 5. What it costs the canon
+07_orchard_the_adjunction_frame.md:737:### 5.1 Every result, without the frame
+07_orchard_the_adjunction_frame.md:759:### 5.2 So what is the frame for
+07_orchard_the_adjunction_frame.md:772:### 5.3 The risk the frame carries, named
+07_orchard_the_adjunction_frame.md:787:## 6. Neighbouring framings, and where each lands
+07_orchard_the_adjunction_frame.md:794:### 6.1 The closure operator, which is the same content and reads better
+07_orchard_the_adjunction_frame.md:804:### 6.2 The insertion, which is where the quotient lands
+07_orchard_the_adjunction_frame.md:810:### 6.3 Monad and comonad, which degenerate, and that is the result
+07_orchard_the_adjunction_frame.md:822:### 6.4 The graded reading, honestly
+07_orchard_the_adjunction_frame.md:839:### 6.5 The congruence-times-interval reduced product, flagged as unverified
+07_orchard_the_adjunction_frame.md:855:### 6.6 The concretisation-only reading, which is the real alternative for F2
+07_orchard_the_adjunction_frame.md:868:## 7. Routes closed, each with the thing that closed it
+07_orchard_the_adjunction_frame.md:905:## 8. Coverage, stated honestly
+07_orchard_the_adjunction_frame.md:949:## 9. What appears to be op's, and in what order
+08_knuth_what_the_one_format_concept_covers.md:19:## Verdict, before the argument
+08_knuth_what_the_one_format_concept_covers.md:99:## 0. Gates
+08_knuth_what_the_one_format_concept_covers.md:101:### 0.1 The canon gate
+08_knuth_what_the_one_format_concept_covers.md:123:### 0.2 The test gate
+08_knuth_what_the_one_format_concept_covers.md:138:### 0.3 The brief's cheap factual claims
+08_knuth_what_the_one_format_concept_covers.md:168:## 1. The premise, restated precisely enough to be wrong
+08_knuth_what_the_one_format_concept_covers.md:173:### 1.1 What the record's value map actually says
+08_knuth_what_the_one_format_concept_covers.md:188:### 1.2 The parameter that carries the difference has a name in the literature and a shape in the design
+08_knuth_what_the_one_format_concept_covers.md:206:### 1.3 The concept was named by a ratified call and never given a home
+08_knuth_what_the_one_format_concept_covers.md:220:### 1.4 What is testable, and it is one predicate
+08_knuth_what_the_one_format_concept_covers.md:235:## 2. The axes the survey needs
+08_knuth_what_the_one_format_concept_covers.md:239:### 2.1 The value set
+08_knuth_what_the_one_format_concept_covers.md:253:### 2.2 The encoding
+08_knuth_what_the_one_format_concept_covers.md:278:### 2.3 The locus
+08_knuth_what_the_one_format_concept_covers.md:296:## 3. The survey
+08_knuth_what_the_one_format_concept_covers.md:301:### 3.1 The classification, in one table
+08_knuth_what_the_one_format_concept_covers.md:333:### 3.2 Where the counts come from
+08_knuth_what_the_one_format_concept_covers.md:344:### 3.3 Posits, which are the case the survey exists for
+08_knuth_what_the_one_format_concept_covers.md:362:### 3.4 The five that differ only in the encoding
+08_knuth_what_the_one_format_concept_covers.md:377:### 3.5 What the survey did not find, and it is a result
+08_knuth_what_the_one_format_concept_covers.md:386:## 4. What admitting each would cost, and what excluding each costs
+08_knuth_what_the_one_format_concept_covers.md:390:### 4.1 The canonical exponent as a function: the largest question here
+08_knuth_what_the_one_format_concept_covers.md:420:### 4.2 Gradual underflow, which the design already pays for
+08_knuth_what_the_one_format_concept_covers.md:436:### 4.3 The join shape, which is the mirror and has no name
+08_knuth_what_the_one_format_concept_covers.md:451:### 4.4 The encoding axis
+08_knuth_what_the_one_format_concept_covers.md:472:### 4.5 Interval and affine forms
+08_knuth_what_the_one_format_concept_covers.md:496:### 4.6 The rational formats
+08_knuth_what_the_one_format_concept_covers.md:510:### 4.7 The storage-layer encodings, which are the ones arvo's own workload uses
+08_knuth_what_the_one_format_concept_covers.md:524:### 4.8 The number systems above the rationals
+08_knuth_what_the_one_format_concept_covers.md:540:### 4.9 The measurement that would change the ranking, and I did not take it
+08_knuth_what_the_one_format_concept_covers.md:552:## 5. The boundary
+08_knuth_what_the_one_format_concept_covers.md:580:### 5.1 What the boundary does not decide
+08_knuth_what_the_one_format_concept_covers.md:586:## 6. Does the premise survive
+08_knuth_what_the_one_format_concept_covers.md:612:### 6.1 Where the premise is doing less work than it appears to
+08_knuth_what_the_one_format_concept_covers.md:619:## 7. Routes closed, each with the thing that closed it
+08_knuth_what_the_one_format_concept_covers.md:662:## 8. Coverage, stated honestly
+08_knuth_what_the_one_format_concept_covers.md:705:## 9. What appears to be op's, and in what order
+10_lattner_fresh_eyes_on_the_container_derivation.md:11:## What this dispatch is
+10_lattner_fresh_eyes_on_the_container_derivation.md:34:## The short answer, before the working
+10_lattner_fresh_eyes_on_the_container_derivation.md:56:## 1. Locating the attempt, and a correction to the brief
+10_lattner_fresh_eyes_on_the_container_derivation.md:84:## 2. Does it still stand on the pin
+10_lattner_fresh_eyes_on_the_container_derivation.md:114:## 3. Op's four properties, one at a time
+10_lattner_fresh_eyes_on_the_container_derivation.md:116:### 3.1 "without forbidden features": **holds**, and it is stronger than he says
+10_lattner_fresh_eyes_on_the_container_derivation.md:135:### 3.2 "had the contracts and typestate work fully": **holds**
+10_lattner_fresh_eyes_on_the_container_derivation.md:155:### 3.3 "did not contain any enumeration": **holds of the ladder, fails of the bridge**
+10_lattner_fresh_eyes_on_the_container_derivation.md:186:### 3.4 "within its framework, some things might've changed later": **one thing did**
+10_lattner_fresh_eyes_on_the_container_derivation.md:200:## 4. The contradiction, resolved
+10_lattner_fresh_eyes_on_the_container_derivation.md:231:## 5. Improving it, four ways, without moving the mechanism
+10_lattner_fresh_eyes_on_the_container_derivation.md:240:### 5.1 The law-relation diagnostic, which was the readable half of `SETTLED.md`'s complaint
+10_lattner_fresh_eyes_on_the_container_derivation.md:285:### 5.2 The unshipped-width diagnostic, and a leak nobody has named
+10_lattner_fresh_eyes_on_the_container_derivation.md:325:### 5.3 The where-clause soup, which the record does not price at all
+10_lattner_fresh_eyes_on_the_container_derivation.md:354:### 5.4 Codegen is untouched, which is the point
+10_lattner_fresh_eyes_on_the_container_derivation.md:370:## 6. Attacking the bridge, and every route that closed
+10_lattner_fresh_eyes_on_the_container_derivation.md:448:## 7. Two findings about the bridge that change what op is being asked
+10_lattner_fresh_eyes_on_the_container_derivation.md:452:### 7.1 The table is already lazy, which is what op asked for at `127b`
+10_lattner_fresh_eyes_on_the_container_derivation.md:472:### 7.2 The table has no practical ceiling, and this is a residue, not a proposal
+10_lattner_fresh_eyes_on_the_container_derivation.md:494:## 8. The concession: the bridge, and the routes I could not open
+10_lattner_fresh_eyes_on_the_container_derivation.md:541:## 9. What I did not cover
+10_lattner_fresh_eyes_on_the_container_derivation.md:557:## 10. What is op's
+11_chlipala_prior_art_on_typed_widths.md:11:## Canon gate
+11_chlipala_prior_art_on_typed_widths.md:20:## The short answer, before the working
+11_chlipala_prior_art_on_typed_widths.md:80:## 1. The wall, restated more precisely than the record states it
+11_chlipala_prior_art_on_typed_widths.md:109:## 2. What each system was asked
+11_chlipala_prior_art_on_typed_widths.md:122:## 3. The survey
+11_chlipala_prior_art_on_typed_widths.md:124:### 3.1 C++, non-type template parameters. **No bridge problem.** Checked, compiled.
+11_chlipala_prior_art_on_typed_widths.md:159:### 3.2 Zig, comptime. **No bridge problem.** Checked, compiled. And it is the strongest case.
+11_chlipala_prior_art_on_typed_widths.md:190:### 3.3 Haskell and GHC's `Nat`. **No bridge problem for literals.** Checked against the docs, not compiled.
+11_chlipala_prior_art_on_typed_widths.md:225:### 3.4 Bluespec. **No bridge problem.** Checked against the source, not compiled.
+11_chlipala_prior_art_on_typed_widths.md:239:### 3.5 VHDL and SystemC. **No bridge problem.** Recollection, not checked. Flagged.
+11_chlipala_prior_art_on_typed_widths.md:260:### 3.6 Chisel. **No bridge problem, because there is no type-level width.** Recollection, flagged.
+11_chlipala_prior_art_on_typed_widths.md:278:### 3.7 Ada. **No bridge problem, because the width is never generic.** Recollection, flagged.
+11_chlipala_prior_art_on_typed_widths.md:310:### 3.8 Refinement types: Liquid Haskell, F\*. **Different problem, and the difference is the finding.** Recollection, flagged.
+11_chlipala_prior_art_on_typed_widths.md:333:### 3.9 Dependently typed languages: Idris, Agda, Coq. **No bridge, and the cleanest statement of why.** Recollection, flagged.
+11_chlipala_prior_art_on_typed_widths.md:362:### 3.10 The Rust ecosystem. **It built arvo's bridge and shipped it.** Checked against vendored source.
+11_chlipala_prior_art_on_typed_widths.md:441:## 4. The property that removes the bridge, named four ways
+11_chlipala_prior_art_on_typed_widths.md:473:## 5. What each system pays instead, which is the part the record needs
+11_chlipala_prior_art_on_typed_widths.md:499:## 6. Where I stopped surveying and started attacking
+11_chlipala_prior_art_on_typed_widths.md:514:## 7. The table is not a wart. It is a ceiling on the law algebra
+11_chlipala_prior_art_on_typed_widths.md:516:### 7.1 The first octave. Compiled.
+11_chlipala_prior_art_on_typed_widths.md:559:### 7.2 Adding the row does not fix it. Compiled.
+11_chlipala_prior_art_on_typed_widths.md:602:### 7.3 The ceiling belongs to the const surface, not to the bridge. Compiled.
+11_chlipala_prior_art_on_typed_widths.md:644:### 7.4 The workspace has already made this exact migration, on a different axis
+11_chlipala_prior_art_on_typed_widths.md:691:## 8. A correction to `10`: the improved diagnostic prints a false sentence
+11_chlipala_prior_art_on_typed_widths.md:732:## 9. A second read of `SETTLED.md:105`, across a real crate boundary
+11_chlipala_prior_art_on_typed_widths.md:787:## 10. Is there a fourteenth route
+11_chlipala_prior_art_on_typed_widths.md:796:### 10.1 Route 14: obtain Ada's property by generating the table from declaration sites
+11_chlipala_prior_art_on_typed_widths.md:830:### 10.2 Route 15: carry the size as a bare const parameter
+11_chlipala_prior_art_on_typed_widths.md:887:### 10.3 Not a route: the bridge is not blocked, its codomain is
+11_chlipala_prior_art_on_typed_widths.md:963:### 10.4 What `10.3` means against op's actual criterion, which is narrower than the record uses it
+11_chlipala_prior_art_on_typed_widths.md:999:## 11. Is the bridge a defect, or the price everyone pays
+11_chlipala_prior_art_on_typed_widths.md:1041:## 12. Coverage, stated honestly
+11_chlipala_prior_art_on_typed_widths.md:1083:## 13. What appears to be op's, and in what order
+12_muratori_can_the_surface_meet_the_bar.md:8:## 0. The canon gate
+12_muratori_can_the_surface_meet_the_bar.md:30:## 1. The bar, exactly
+12_muratori_can_the_surface_meet_the_bar.md:51:### What each demands
+12_muratori_can_the_surface_meet_the_bar.md:62:### Three things the bar does not say, which is where the answer lives
+12_muratori_can_the_surface_meet_the_bar.md:79:## 2. What is actually on the table
+12_muratori_can_the_surface_meet_the_bar.md:108:## 3. Five candidate surfaces, and what a consumer types
+12_muratori_can_the_surface_meet_the_bar.md:130:### What each costs to type
+12_muratori_can_the_surface_meet_the_bar.md:159:### The ceiling, checked rather than assumed
+12_muratori_can_the_surface_meet_the_bar.md:170:### And the erasure holds through the door
+12_muratori_can_the_surface_meet_the_bar.md:185:## 4. Nat canonicity, which everything above rests on and nobody had asked
+12_muratori_can_the_surface_meet_the_bar.md:203:## 5. What a consumer reads, which is where the answer stops being clean
+12_muratori_can_the_surface_meet_the_bar.md:208:### The ordinary mistake
+12_muratori_can_the_surface_meet_the_bar.md:233:### Attacking that, route one: put the consts back where rustc prints first
+12_muratori_can_the_surface_meet_the_bar.md:252:### The residue, and four more refusals
+12_muratori_can_the_surface_meet_the_bar.md:278:### Does the p06 shape keep the ceiling?
+12_muratori_can_the_surface_meet_the_bar.md:292:### Attacking that, route two: make the tower legible
+12_muratori_can_the_surface_meet_the_bar.md:335:## 6. The enumeration question, which none of the five escapes
+12_muratori_can_the_surface_meet_the_bar.md:362:## 7. What a consumer reads at the alias site, which is worse than anyone thought
+12_muratori_can_the_surface_meet_the_bar.md:398:### Attacking that
+12_muratori_can_the_surface_meet_the_bar.md:422:## 8. The composition
+12_muratori_can_the_surface_meet_the_bar.md:459:## 9. Was the bar priced with the ceiling visible
+12_muratori_can_the_surface_meet_the_bar.md:482:## 10. What I did not cover
+13_dolan_second_read_on_the_width_surface.md:6:## The order I actually worked in
+13_dolan_second_read_on_the_width_surface.md:32:## Reading the bar from the establishing text, not from the compression
+13_dolan_second_read_on_the_width_surface.md:60:## The question, restated so it can be answered
+13_dolan_second_read_on_the_width_surface.md:76:## The derivation, before any predecessor was read
+13_dolan_second_read_on_the_width_surface.md:78:### Step 1: which direction is free
+13_dolan_second_read_on_the_width_surface.md:90:### Step 2: the codomain of the container map is finite, and that does not help
+13_dolan_second_read_on_the_width_surface.md:96:### Step 3: what the type-level ladder actually buys
+13_dolan_second_read_on_the_width_surface.md:106:### Step 4: therefore the candidate answer
+13_dolan_second_read_on_the_width_surface.md:120:## The wall, located exactly, in four compiled refusals
+13_dolan_second_read_on_the_width_surface.md:181:## What is free, and it is more than I expected
+13_dolan_second_read_on_the_width_surface.md:214:## The bound avalanche is real, and it collapses to one name
+13_dolan_second_read_on_the_width_surface.md:232:## Arrangement A: structural width types. The algebra never asks the table anything
+13_dolan_second_read_on_the_width_surface.md:279:## Arrangement A's cost, and it is severe
+13_dolan_second_read_on_the_width_surface.md:338:## Arrangement B: the width type is the literal. Readable, and the ceiling is real
+13_dolan_second_read_on_the_width_surface.md:377:## Arrangement D: declare the output width, and get both
+13_dolan_second_read_on_the_width_surface.md:413:## The composition
+13_dolan_second_read_on_the_width_surface.md:424:## Routes I opened and closed, so nobody spends the effort again
+13_dolan_second_read_on_the_width_surface.md:463:## On the first clause of the erasure gate
+13_dolan_second_read_on_the_width_surface.md:480:## What I did not cover
+13_dolan_second_read_on_the_width_surface.md:499:## Extending the bridge does not require spelling a digit tower
+13_dolan_second_read_on_the_width_surface.md:526:## Every probe, and one command that runs them
+13_dolan_second_read_on_the_width_surface.md:540:## What `12` says and where I stand
+13_dolan_second_read_on_the_width_surface.md:545:### Where we agree, and it was reached separately
+13_dolan_second_read_on_the_width_surface.md:577:### Where I was wrong and `12` is right
+13_dolan_second_read_on_the_width_surface.md:586:### Where I go further than `12`
+13_dolan_second_read_on_the_width_surface.md:636:### One caution about how `12` will be read
+13_dolan_second_read_on_the_width_surface.md:648:## What appears to hold, in the register the night allows
+13_dolan_second_read_on_the_width_surface.md:666:## What is op's
+15_giesen_the_axes_the_ladders_left_out.md:11:## 0. Gates
+15_giesen_the_axes_the_ladders_left_out.md:13:### 0.1 The canon gate
+15_giesen_the_axes_the_ladders_left_out.md:29:### 0.2 The test gate
+15_giesen_the_axes_the_ladders_left_out.md:35:### 0.3 Breaking my own brief before reasoning from it
+15_giesen_the_axes_the_ladders_left_out.md:57:## 1. Gap two first, and the brief's summary of `06` is one clause short
+15_giesen_the_axes_the_ladders_left_out.md:71:### 1.1 I reproduced the count with my own instrument, and the region is exact
+15_giesen_the_axes_the_ladders_left_out.md:96:### 1.2 The thing nobody asked, and it is the answer
+15_giesen_the_axes_the_ladders_left_out.md:133:### 1.3 Both shape rules survive the change of coordinates, and one gets shorter
+15_giesen_the_axes_the_ladders_left_out.md:160:### 1.4 An unlicensed finding: addition's rule overshoots too, and nobody had measured it
+15_giesen_the_axes_the_ladders_left_out.md:181:### 1.5 A count of mine disagreed with `06`, and it reconciles exactly
+15_giesen_the_axes_the_ladders_left_out.md:206:## 2. Gap two, compiled
+15_giesen_the_axes_the_ladders_left_out.md:253:## 3. Gap one. The three-input map builds, and it needs two outputs rather than one
+15_giesen_the_axes_the_ladders_left_out.md:255:### 3.1 First, the brief's claim, checked
+15_giesen_the_axes_the_ladders_left_out.md:272:### 3.2 The map, built
+15_giesen_the_axes_the_ladders_left_out.md:309:### 3.3 The second output, which is the acceptance criterion's second noun
+15_giesen_the_axes_the_ladders_left_out.md:341:### 3.4 My map was wrong twice, in the same way, and measuring is what found it
+15_giesen_the_axes_the_ladders_left_out.md:381:### 3.5 The bound avalanche, and a way through it that is not naming
+15_giesen_the_axes_the_ladders_left_out.md:400:### 3.6 Erasure survives all three inputs
+15_giesen_the_axes_the_ladders_left_out.md:418:### 3.7 What the strategy semantics are is NOT settled here, deliberately
+15_giesen_the_axes_the_ladders_left_out.md:430:## 4. What the (W, F) keying costs, and an attack on it that works
+15_giesen_the_axes_the_ladders_left_out.md:470:### 4.1 The tag's one defect, found by attacking it
+15_giesen_the_axes_the_ladders_left_out.md:491:### 4.2 Arrangement D dissolves it rather than tolerating it
+15_giesen_the_axes_the_ladders_left_out.md:528:## 5. The wide rung and alignment: not a third gap, and it has a bench in it
+15_giesen_the_axes_the_ladders_left_out.md:558:## 6. Where I agree with the second stretch, where I do not, and where I read `14` differently
+15_giesen_the_axes_the_ladders_left_out.md:562:### 6.1 Kept, with my own reasoning behind it
+15_giesen_the_axes_the_ladders_left_out.md:584:### 6.2 Where I go further than `12` and `13`
+15_giesen_the_axes_the_ladders_left_out.md:594:### 6.3 Where I read `14` differently, and it matters
+15_giesen_the_axes_the_ladders_left_out.md:609:### 6.4 The route I did not take, and why, so the next expert does not repeat the reasoning
+15_giesen_the_axes_the_ladders_left_out.md:620:## 7. What appears to hold, in the register the night allows
+15_giesen_the_axes_the_ladders_left_out.md:654:## 8. What I did not cover
+15_giesen_the_axes_the_ladders_left_out.md:692:## 9. What is op's, and it is one thing rather than a menu
+15_giesen_the_axes_the_ladders_left_out.md:717:## 10. Every probe, and one command that runs them
+15_giesen_the_axes_the_ladders_left_out.md:753:## 11. Two things for whoever runs the panel
+16_aaltonen_second_read_on_the_two_outputs.md:6:## The order I actually worked in, and one contamination I have to declare first
+16_aaltonen_second_read_on_the_two_outputs.md:47:## The criterion, in op's own words, and the noun the compressions drop
+16_aaltonen_second_read_on_the_two_outputs.md:86:## 1. What I take the question to be
+16_aaltonen_second_read_on_the_two_outputs.md:108:## 2. The derivation for four strategies and both signs, done by hand first
+16_aaltonen_second_read_on_the_two_outputs.md:126:### The collapse, stated as a failure of injectivity
+16_aaltonen_second_read_on_the_two_outputs.md:143:## 3. So the second output, named, and what it is keyed on
+16_aaltonen_second_read_on_the_two_outputs.md:173:## 4. Is a third output needed? I looked for one and it is recoverable
+16_aaltonen_second_read_on_the_two_outputs.md:199:## 5. The check that is blind, which is the part worth the most
+16_aaltonen_second_read_on_the_two_outputs.md:253:## 6. Why both must be emitted even where one is computable from the other
+16_aaltonen_second_read_on_the_two_outputs.md:284:## 7. What goes wrong, in numbers, each with the command that produced it
+16_aaltonen_second_read_on_the_two_outputs.md:293:### How much the carrier alone loses
+16_aaltonen_second_read_on_the_two_outputs.md:312:### What the collapse costs, as bytes
+16_aaltonen_second_read_on_the_two_outputs.md:337:### That an array cannot express the packed form
+16_aaltonen_second_read_on_the_two_outputs.md:351:### The suite that is green and blind
+16_aaltonen_second_read_on_the_two_outputs.md:376:### The access width, and why it is not a third output
+16_aaltonen_second_read_on_the_two_outputs.md:401:### A second-order blindness I did not expect
+16_aaltonen_second_read_on_the_two_outputs.md:423:### Whether the pair is irreducible in both directions
+16_aaltonen_second_read_on_the_two_outputs.md:436:### That "recoverable by arithmetic" is not "available at the type level"
+16_aaltonen_second_read_on_the_two_outputs.md:461:### Attacking that refusal instead of reporting it
+16_aaltonen_second_read_on_the_two_outputs.md:502:## 8. Where I land, before reading anything else
+16_aaltonen_second_read_on_the_two_outputs.md:530:## 9. Coverage before the read, and what I did not do
+16_aaltonen_second_read_on_the_two_outputs.md:553:## 10. Having now read `15`: where I land, corrected
+16_aaltonen_second_read_on_the_two_outputs.md:564:### 10.1 My own criterion refutes my third component
+16_aaltonen_second_read_on_the_two_outputs.md:589:### 10.2 Where my derivation confirms `15` on something specific rather than on the count
+16_aaltonen_second_read_on_the_two_outputs.md:623:## 11. What I have that `15` does not, and it is the part I would put in front of op first
+16_aaltonen_second_read_on_the_two_outputs.md:628:### 11.1 The certifying check is blind, and `15` runs it as evidence
+16_aaltonen_second_read_on_the_two_outputs.md:650:### 11.2 The catching check has a blindness underneath it, which is the finding I did not expect
+16_aaltonen_second_read_on_the_two_outputs.md:664:### 11.3 The access width, and the trap of reaching for the carrier
+16_aaltonen_second_read_on_the_two_outputs.md:682:## 12. Where I read the material differently from `15`
+16_aaltonen_second_read_on_the_two_outputs.md:717:## 13. Attacks I made on my own answer that did not land, recorded so nobody repeats them
+16_aaltonen_second_read_on_the_two_outputs.md:744:## 14. Coverage, corrected after the read
+17_leroy_what_would_actually_certify_this.md:10:## The distinction this file is about
+17_leroy_what_would_actually_certify_this.md:28:## 0. The premises I was handed, checked before I reasoned from them
+17_leroy_what_would_actually_certify_this.md:81:## 1. The criterion, restated as four quantified statements
+17_leroy_what_would_actually_certify_this.md:116:## 2. The proved, validated and trusted split, clause by clause
+17_leroy_what_would_actually_certify_this.md:130:### C1, and the half of it nobody has instrumented
+17_leroy_what_would_actually_certify_this.md:152:### C2, where the existing evidence is consistency rather than correctness
+17_leroy_what_would_actually_certify_this.md:173:### C3, which is the least instrumented clause and is also ambiguous
+17_leroy_what_would_actually_certify_this.md:221:### C4, which decomposes into three parts with three different rungs
+17_leroy_what_would_actually_certify_this.md:247:## 3. The instrument that is missing, and what I built of it
+17_leroy_what_would_actually_certify_this.md:258:### 3.1 A layout conformance oracle, and why its shape is forced
+17_leroy_what_would_actually_certify_this.md:330:### 3.2 The four adversarial requirements, three of which are new
+17_leroy_what_would_actually_certify_this.md:380:### 3.3 A validation oracle, and the two directions
+17_leroy_what_would_actually_certify_this.md:408:### 3.4 The C1 perimeter instrument, built
+17_leroy_what_would_actually_certify_this.md:461:## 4. Two regimes in which the certifying instrument is wrong, not merely narrow
+17_leroy_what_would_actually_certify_this.md:471:### 4.1 At the aggregate arity, symbol identity reports erasure failing where it holds
+17_leroy_what_would_actually_certify_this.md:510:### 4.2 Below `-O2` the instrument fails, and the design does not
+17_leroy_what_would_actually_certify_this.md:538:### 4.3 What is stable, which is a result worth keeping
+17_leroy_what_would_actually_certify_this.md:552:### 4.4 The finding I did not go looking for: packing blocks vectorisation
+17_leroy_what_would_actually_certify_this.md:578:## 5. What cannot be certified by measurement at all
+17_leroy_what_would_actually_certify_this.md:607:## 6. The trusted base, as a written list
+17_leroy_what_would_actually_certify_this.md:632:## 7. Applying it backwards: which of the panel's claims survive an adequate instrument
+17_leroy_what_would_actually_certify_this.md:705:## 8. What is op's, and what is not
+17_leroy_what_would_actually_certify_this.md:725:## 9. Attacks on my own answer that did not land
+17_leroy_what_would_actually_certify_this.md:756:## 10. Coverage, and what I did not do
+18_jhala_the_denotation_clause.md:18:## 0. Gates, and the brief's cheap factual claims
+18_jhala_the_denotation_clause.md:20:### 0.1 The canon gate
+18_jhala_the_denotation_clause.md:34:### 0.2 The test gate
+18_jhala_the_denotation_clause.md:59:### 0.3 The brief's cheap factual claims
+18_jhala_the_denotation_clause.md:89:## 1. What the clause excludes, and who loses
+18_jhala_the_denotation_clause.md:98:### 1.1 The one that is not free: rigorous interval arithmetic
+18_jhala_the_denotation_clause.md:131:### 1.2 Free, and recorded as free: stochastic streams
+18_jhala_the_denotation_clause.md:146:### 1.3 Free to exclude and worth a sentence: the storage-layer encodings
+18_jhala_the_denotation_clause.md:155:### 1.4 Not excluded by this clause at all, and the brief says otherwise
+18_jhala_the_denotation_clause.md:174:## 2. What admitting intervals would cost
+18_jhala_the_denotation_clause.md:180:### 2.1 The order, which is where it breaks
+18_jhala_the_denotation_clause.md:217:### 2.2 The laws, and one of them is not weakened but gone
+18_jhala_the_denotation_clause.md:264:### 2.3 The shape space, the meet and the join
+18_jhala_the_denotation_clause.md:280:### 2.4 The container derivation and erasure, which cost the least
+18_jhala_the_denotation_clause.md:329:### 2.5 So what admitting intervals would actually cost
+18_jhala_the_denotation_clause.md:343:## 3. Whether the design already denotes sets
+18_jhala_the_denotation_clause.md:349:### 3.1 The saturating top does denote a set, and the design depends on it
+18_jhala_the_denotation_clause.md:422:### 3.2 The rounding preimage denotes a set, and it is the benign kind
+18_jhala_the_denotation_clause.md:438:### 3.3 Two things that look like set denotations and are not
+18_jhala_the_denotation_clause.md:471:### 3.4 The connection nobody has drawn: `Precise` on `inexact` is this question
+18_jhala_the_denotation_clause.md:509:## 4. Is the clause in the right place
+18_jhala_the_denotation_clause.md:513:### 4.1 The clause is in the right place and its wording is wrong
+18_jhala_the_denotation_clause.md:530:### 4.2 The clause is doing two jobs and should be split
+18_jhala_the_denotation_clause.md:542:### 4.3 The clause is load-bearing for less than it appears
+18_jhala_the_denotation_clause.md:554:## 5. Alternatives I did not take, described so the next angle starts from here
+18_jhala_the_denotation_clause.md:581:## 6. Routes closed, each with what closed it
+18_jhala_the_denotation_clause.md:611:## 7. Coverage, stated honestly
+18_jhala_the_denotation_clause.md:646:## 8. What is op's, and what is not
+20_fog_what_the_benches_already_know.md:17:## Zero: the brief's own claims, checked before reasoning from them
+20_fog_what_the_benches_already_know.md:36:## What I read, and what I did not
+20_fog_what_the_benches_already_know.md:56:## One: the audit of the headroom bench body
+20_fog_what_the_benches_already_know.md:65:### 1.1 The arms are competitors
+20_fog_what_the_benches_already_know.md:86:### 1.2 The headline survives, and the mechanism is not the one that was reported
+20_fog_what_the_benches_already_know.md:138:### 1.3 The one cell the arm set does not fill
+20_fog_what_the_benches_already_know.md:152:### 1.4 The semantics the bench implements may not be the semantics `Warm` has
+20_fog_what_the_benches_already_know.md:186:### 1.5 The clamp family, which is the other instrument, and what it says
+20_fog_what_the_benches_already_know.md:223:### 1.6 Verdict on op's instruction
+20_fog_what_the_benches_already_know.md:234:## Two: where the existing benches mislead
+20_fog_what_the_benches_already_know.md:239:### 2.1 Six committed cells are physically impossible, and the harness recommends them
+20_fog_what_the_benches_already_know.md:334:### 2.2 The counter's aarch64 read is not a barrier
+20_fog_what_the_benches_already_know.md:363:### 2.3 The fidelity checks did not run, in any of the 147
+20_fog_what_the_benches_already_know.md:379:### 2.4 `e2e` is not an independent measurement
+20_fog_what_the_benches_already_know.md:396:### 2.5 The `Cold` correction in `MORNING.md` is a splice, not a measurement
+20_fog_what_the_benches_already_know.md:451:### 2.6 One provenance fact that bears on all of the above
+20_fog_what_the_benches_already_know.md:467:## Three: what the repository knows that the panel does not
+20_fog_what_the_benches_already_know.md:472:### 3.1 The largest measured effect in the directory is a law arvo holds and LLVM cannot
+20_fog_what_the_benches_already_know.md:503:### 3.2 A typestate theorem priced, with the width band where it stops applying
+20_fog_what_the_benches_already_know.md:531:### 3.3 Knowing a fold's arity at compile time, priced in isolation
+20_fog_what_the_benches_already_know.md:552:### 3.4 The strategy axis has a ratified cell that no harness run touches
+20_fog_what_the_benches_already_know.md:564:### 3.5 What the packed layouts are actually priced at, and one arm that is dominated
+20_fog_what_the_benches_already_know.md:589:## Four: what is not measured that should be
+20_fog_what_the_benches_already_know.md:630:## Five: what is op's, and what is not
+20_fog_what_the_benches_already_know.md:649:## Coverage, and what I could not close
+20_fog_what_the_benches_already_know.md:677:## Probes
+20_fog_what_the_benches_already_know.md:693:## Addendum: the bench tree and git disagree, found while committing this file
+22_xu_the_bench_that_was_missing.md:20:## What is here
+22_xu_the_bench_that_was_missing.md:32:## Zero: the brief's claims, and one of them is wrong
+22_xu_the_bench_that_was_missing.md:73:## One: what was built
+22_xu_the_bench_that_was_missing.md:94:### The control is a control, established by disassembly rather than by argument
+22_xu_the_bench_that_was_missing.md:114:### Why the answer cannot be deleted
+22_xu_the_bench_that_was_missing.md:136:## Two: the numbers, cache-resident
+22_xu_the_bench_that_was_missing.md:176:## Three: provenance, and a correction to `20` section 2.6
+22_xu_the_bench_that_was_missing.md:205:## Four: the instruction half of the ratified claim, in its own units
+22_xu_the_bench_that_was_missing.md:245:### The mechanism, and it is a closed form
+22_xu_the_bench_that_was_missing.md:278:## Five: the footprint half, past L2, and why it does not pay either
+22_xu_the_bench_that_was_missing.md:301:### Why, established rather than asserted
+22_xu_the_bench_that_was_missing.md:329:## Six: attacking the mechanism, and where it led
+22_xu_the_bench_that_was_missing.md:353:### Ruling out the confound first
+22_xu_the_bench_that_was_missing.md:377:### The discriminator, and it kills the footprint reading
+22_xu_the_bench_that_was_missing.md:406:### What I could not close
+22_xu_the_bench_that_was_missing.md:427:## Seven: the fidelity check, and I was wrong in section zero
+22_xu_the_bench_that_was_missing.md:433:### What I claimed, and why it was wrong
+22_xu_the_bench_that_was_missing.md:447:### Demonstrated, not argued
+22_xu_the_bench_that_was_missing.md:475:### Fixed, in the consumer, and demonstrated firing
+22_xu_the_bench_that_was_missing.md:522:### What this costs the existing directory
+22_xu_the_bench_that_was_missing.md:536:## Eight: the final validated numbers
+22_xu_the_bench_that_was_missing.md:561:## Nine: what this settles, and what it does not
+22_xu_the_bench_that_was_missing.md:602:## Ten: what I had to decide that the design does not specify
+22_xu_the_bench_that_was_missing.md:630:## Eleven: what is op's, and what is not
+22_xu_the_bench_that_was_missing.md:654:## Twelve: coverage, and what I did not do
+24_amin_the_seam_between_two_vocabularies.md:32:## Verdict, before the working
+24_amin_the_seam_between_two_vocabularies.md:80:## 0. Gates
+24_amin_the_seam_between_two_vocabularies.md:82:### 0.1 Canon gate
+24_amin_the_seam_between_two_vocabularies.md:109:### 0.2 Test gate
+24_amin_the_seam_between_two_vocabularies.md:122:### 0.3 The brief's checkable claims
+24_amin_the_seam_between_two_vocabularies.md:177:### 0.4 The bridge already exists, and the instrument that looked for it could not see it
+24_amin_the_seam_between_two_vocabularies.md:253:## 1. The two vocabularies, from their own sources
+24_amin_the_seam_between_two_vocabularies.md:255:### 1.1 Vocabulary A, the concept
+24_amin_the_seam_between_two_vocabularies.md:287:### 1.2 Vocabulary B, the widths
+24_amin_the_seam_between_two_vocabularies.md:299:### 1.3 The asymmetry, stated before the map
+24_amin_the_seam_between_two_vocabularies.md:314:## 2. The map
+24_amin_the_seam_between_two_vocabularies.md:316:### 2.1 From a width pair to a concept numeral
+24_amin_the_seam_between_two_vocabularies.md:345:### 2.2 Is it total, injective
+24_amin_the_seam_between_two_vocabularies.md:392:### 2.3 What this does to `23`'s open questions
+24_amin_the_seam_between_two_vocabularies.md:415:## 3. What compiled
+24_amin_the_seam_between_two_vocabularies.md:417:### 3.1 s1: the two readings denote the same sets
+24_amin_the_seam_between_two_vocabularies.md:461:### 3.2 s3: one definition, four projections, gate-free
+24_amin_the_seam_between_two_vocabularies.md:525:### 3.3 s4: the word both vocabularies already share
+24_amin_the_seam_between_two_vocabularies.md:539:### 3.4 I wrote a probe that could not fail, and repairing it found a defect
+24_amin_the_seam_between_two_vocabularies.md:573:### 3.5 s5: the knee needs two integers, not a list
+24_amin_the_seam_between_two_vocabularies.md:664:### 3.6 s6, and a probe that reported zero because it was broken
+24_amin_the_seam_between_two_vocabularies.md:684:## 4. The phase collision, which has to be settled before a canon is written
+24_amin_the_seam_between_two_vocabularies.md:728:## 5. Which vocabulary the canon should carry
+24_amin_the_seam_between_two_vocabularies.md:734:### 5.1 The argument
+24_amin_the_seam_between_two_vocabularies.md:761:### 5.2 What it costs, honestly
+24_amin_the_seam_between_two_vocabularies.md:788:### 5.3 The alternatives I did not take, described so the next expert starts from them
+24_amin_the_seam_between_two_vocabularies.md:814:## 6. Is this an incompatibility
+24_amin_the_seam_between_two_vocabularies.md:852:### 6.1 The commit log, read after the verdict was on disk
+24_amin_the_seam_between_two_vocabularies.md:877:## 7. Where I would go next, in order
+24_amin_the_seam_between_two_vocabularies.md:909:## 8. What I did not cover
+24_amin_the_seam_between_two_vocabularies.md:974:## 9. What is op's
+25_torvalds_what_a_strategy_is.md:8:## 0. The answer, before the working
+25_torvalds_what_a_strategy_is.md:53:## 1. The canon gate
+25_torvalds_what_a_strategy_is.md:68:## 2. Checking the brief's own numbers
+25_torvalds_what_a_strategy_is.md:111:## 3. What the record treats a strategy as
+25_torvalds_what_a_strategy_is.md:115:### 3.1 The preset table, which is the whole of the by-example introduction
+25_torvalds_what_a_strategy_is.md:148:### 3.2 Where it is consulted, which the panel disagrees about
+25_torvalds_what_a_strategy_is.md:164:### 3.3 The six settled rows, which are the part I had to conform to rather than derive
+25_torvalds_what_a_strategy_is.md:215:## 4. One axis or several
+25_torvalds_what_a_strategy_is.md:219:### 4.1 The four names are the complete two-by-two of two storage axes
+25_torvalds_what_a_strategy_is.md:261:### 4.2 The arithmetic column is two axes, and each preset answers only one of them
+25_torvalds_what_a_strategy_is.md:289:### 4.3 Why the table cannot settle how many axes there are, and what follows
+25_torvalds_what_a_strategy_is.md:330:### 4.4 A strategy assigns functions, not values, and that is op's intent
+25_torvalds_what_a_strategy_is.md:357:## 5. What it is not
+25_torvalds_what_a_strategy_is.md:362:### 5.1 It is not notko's profile tier
+25_torvalds_what_a_strategy_is.md:392:### 5.2 It is not the substrate deciding for the consumer
+25_torvalds_what_a_strategy_is.md:414:### 5.3 It is not the numeral, and it does not change what the numeral denotes
+25_torvalds_what_a_strategy_is.md:432:## 6. Does it survive the bench evidence
+25_torvalds_what_a_strategy_is.md:437:### 6.1 What `20` and `22` already measured
+25_torvalds_what_a_strategy_is.md:472:### 6.2 The family nobody in the panel has cited, and it settles the independence question
+25_torvalds_what_a_strategy_is.md:522:## 7. The sentences
+25_torvalds_what_a_strategy_is.md:561:## 8. What is op's
+25_torvalds_what_a_strategy_is.md:609:## 9. What I did not cover
+26_aaltonen_does_packing_pay.md:13:## 0. Gate and orientation, before any work
+26_aaltonen_does_packing_pay.md:35:## 1. The brief's central factual claim, checked before reasoning from it
+26_aaltonen_does_packing_pay.md:65:### 1.1 What the six families actually cover
+26_aaltonen_does_packing_pay.md:82:### 1.2 The head-to-head that exists cannot answer the question, by construction
+26_aaltonen_does_packing_pay.md:111:### 1.3 The comparison was one bench.toml edit away
+26_aaltonen_does_packing_pay.md:136:## 2. Back of envelope, before measuring anything
+26_aaltonen_does_packing_pay.md:180:## 3. The head-to-head, run
+26_aaltonen_does_packing_pay.md:227:### 3.1 What the surcharge is, mechanically
+26_aaltonen_does_packing_pay.md:247:## 4. Why this table cannot answer the dispatch, and what does
+26_aaltonen_does_packing_pay.md:284:## 5. The crossing row, and the mechanism it exposes
+26_aaltonen_does_packing_pay.md:306:### 5.1 The number that matters is not the delta, it is the flatness
+26_aaltonen_does_packing_pay.md:329:### 5.2 Neither arm is bandwidth-bound, so the saving buys nothing
+26_aaltonen_does_packing_pay.md:346:### 5.3 Which tells you exactly what would change the answer
+26_aaltonen_does_packing_pay.md:365:## 6. The carrier-width sweep
+26_aaltonen_does_packing_pay.md:401:### 6.1 Fidelity, checked rather than assumed
+26_aaltonen_does_packing_pay.md:417:### 6.2 The noise floor is verified, not asserted
+26_aaltonen_does_packing_pay.md:436:## 7. The carrier sweep, run
+26_aaltonen_does_packing_pay.md:481:### 7.1 What the columns say
+26_aaltonen_does_packing_pay.md:501:### 7.2 The crossing, and where it is
+26_aaltonen_does_packing_pay.md:529:### 7.3 The noise floor across the sweep
+26_aaltonen_does_packing_pay.md:540:## 8. The mechanism attack: the SIMD decoder that was losing
+26_aaltonen_does_packing_pay.md:592:### 8.1 What was not achieved
+26_aaltonen_does_packing_pay.md:602:## 9. Fidelity and deletion, demonstrated rather than asserted
+26_aaltonen_does_packing_pay.md:652:## 10. The answer
+26_aaltonen_does_packing_pay.md:684:### 10.1 What this does not say
+26_aaltonen_does_packing_pay.md:703:## 11. What I had to decide, and which of it the numbers turn on
+26_aaltonen_does_packing_pay.md:731:### 11.1 What is op's
+26_aaltonen_does_packing_pay.md:748:## 12. What I did not cover
+26_aaltonen_does_packing_pay.md:784:## 13. Alternatives I did not take, for whoever picks this up
+23_spj_the_sentences_a_canon_could_carry.md:18:## The answer, before the working
+23_spj_the_sentences_a_canon_could_carry.md:41:## Canon gate
+23_spj_the_sentences_a_canon_could_carry.md:74:## Checking the brief, before reasoning from it
+23_spj_the_sentences_a_canon_could_carry.md:114:## What I counted as a carryable sentence, and how I rated it
+23_spj_the_sentences_a_canon_could_carry.md:152:## The inventory
+23_spj_the_sentences_a_canon_could_carry.md:158:### Cluster A: what a numeral is
+23_spj_the_sentences_a_canon_could_carry.md:163:#### S1. The boundary of the format concept
+23_spj_the_sentences_a_canon_could_carry.md:203:#### S2. The failing clause names the layer
+23_spj_the_sentences_a_canon_could_carry.md:225:#### S3. A partitioning set denotation is free; an overlapping one is not
+23_spj_the_sentences_a_canon_could_carry.md:250:#### S4. The sign domain determines nothing on its own
+23_spj_the_sentences_a_canon_could_carry.md:277:#### S5. BLOCKED. What an absorbing endpoint denotes
+23_spj_the_sentences_a_canon_could_carry.md:297:### Cluster B: the order, and where a numeral is inferred
+23_spj_the_sentences_a_canon_could_carry.md:299:#### S6. The order is infrastructure; the lattice is a theorem about it
+23_spj_the_sentences_a_canon_could_carry.md:315:#### S7. There is no site where nothing determines the numeral
+23_spj_the_sentences_a_canon_could_carry.md:342:#### S8. The natural product form is not the tightest honest answer
+23_spj_the_sentences_a_canon_could_carry.md:367:#### S9. BLOCKED. What the tightest numeral computation admits
+23_spj_the_sentences_a_canon_could_carry.md:397:#### S10. The named shapes are meet-closed and not join-closed
+23_spj_the_sentences_a_canon_could_carry.md:418:#### S11. BLOCKED, and offered as a shape rather than an answer. The ambient decomposition
+23_spj_the_sentences_a_canon_could_carry.md:446:### Cluster C: the width surface
+23_spj_the_sentences_a_canon_could_carry.md:451:#### S12. No finite table is closed under the design's own law algebra
+23_spj_the_sentences_a_canon_could_carry.md:473:#### S13. The ceiling belongs to the const surface, not to the bridge
+23_spj_the_sentences_a_canon_could_carry.md:498:#### S13b. The consumer's written form is not the compiler's parameter form
+23_spj_the_sentences_a_canon_could_carry.md:528:#### S14. Cross once, at literals, in one direction
+23_spj_the_sentences_a_canon_could_carry.md:546:#### S15. What Rust's position costs, and that every system pays something
+23_spj_the_sentences_a_canon_could_carry.md:571:#### S16. BLOCKED. The surface diagnoses at the site the consumer wrote
+23_spj_the_sentences_a_canon_could_carry.md:595:### Cluster D: the derivation
+23_spj_the_sentences_a_canon_could_carry.md:597:#### S17. The numeral is keyed on total width and fraction width
+23_spj_the_sentences_a_canon_could_carry.md:625:#### S18. The derivation has two outputs
+23_spj_the_sentences_a_canon_could_carry.md:651:#### S19. `Cold` is a statement about composition, not about a value
+23_spj_the_sentences_a_canon_could_carry.md:674:#### S20. The load type is not the carrier
+23_spj_the_sentences_a_canon_could_carry.md:697:#### S21. BLOCKED. What the ladder's inputs are
+23_spj_the_sentences_a_canon_could_carry.md:717:#### S22. BLOCKED. Whether the two outputs are forced by arithmetic
+23_spj_the_sentences_a_canon_could_carry.md:730:### Cluster E: erasure and what is certified
+23_spj_the_sentences_a_canon_could_carry.md:732:#### S23. The erasure guarantee decomposes into three parts with three different standards of proof
+23_spj_the_sentences_a_canon_could_carry.md:755:#### S24. The prohibition list is part of the trusted base
+23_spj_the_sentences_a_canon_could_carry.md:782:#### S25. A packed run's allocation is not the naive product
+23_spj_the_sentences_a_canon_could_carry.md:797:### Cluster F: what the strategy axis carries
+23_spj_the_sentences_a_canon_could_carry.md:802:#### S26. BLOCKED. What the wide-rung trade is
+23_spj_the_sentences_a_canon_could_carry.md:836:#### S27. What a headroom rule costs, stated as a mechanism
+23_spj_the_sentences_a_canon_could_carry.md:861:### Two rows I am listing to refuse them
+23_spj_the_sentences_a_canon_could_carry.md:866:#### S28. REFUSED as canon. The adjunction frame
+23_spj_the_sentences_a_canon_could_carry.md:881:#### S29. REFUSED as canon. Every instrument finding tonight
+23_spj_the_sentences_a_canon_could_carry.md:899:## Counting
+23_spj_the_sentences_a_canon_could_carry.md:936:## Do they cohere?
+23_spj_the_sentences_a_canon_could_carry.md:1014:## What is missing
+23_spj_the_sentences_a_canon_could_carry.md:1066:## Is the checkpoint's verdict right?
+23_spj_the_sentences_a_canon_could_carry.md:1128:## Coverage, stated as a bound
+27_fog_packing_under_contention.md:12:## 0. Gate and orientation, recorded before any work
+27_fog_packing_under_contention.md:56:## 1. The brief's factual claims, and `26`'s numbers, checked before reasoning from them
+27_fog_packing_under_contention.md:112:### 1.1 The number the brief does not state, and which decides whether the host can show the effect
+27_fog_packing_under_contention.md:134:## 2. The prediction, written before the bench exists
+27_fog_packing_under_contention.md:180:## 3. What "contention" was made to mean, and what that choice biases
+27_fog_packing_under_contention.md:214:## 4. The harness already has a threading contract, which changes the plan `26` set aside
+27_fog_packing_under_contention.md:241:## 5. Building it: the blockers, in the order they were hit
+27_fog_packing_under_contention.md:250:### 5.1 The blocker that would have made the whole thing a thread-spawn benchmark
+27_fog_packing_under_contention.md:274:### 5.2 Eight tests, and what each is for
+27_fog_packing_under_contention.md:298:## 6. The first run, and the two things it said before it said anything about packing
+27_fog_packing_under_contention.md:310:### 6.1 The `T = 1` rows reproduce the single-core sweep, which is the cross-check that matters
+27_fog_packing_under_contention.md:335:### 6.2 The median is the wrong statistic for a threaded arm, and the control says so
+27_fog_packing_under_contention.md:356:## 7. The result
+27_fog_packing_under_contention.md:381:### 7.1 The sharpest prediction was the right one, and it holds exactly
+27_fog_packing_under_contention.md:403:### 7.2 The host's ceiling, measured rather than quoted
+27_fog_packing_under_contention.md:422:### 7.3 The break-even carrier width, which is what the dispatch asked for
+27_fog_packing_under_contention.md:453:### 7.4 Warm is the optimistic mode, and the realistic one moves the answer further
+27_fog_packing_under_contention.md:487:### 7.5 What the controls say, so the deltas above are readable
+27_fog_packing_under_contention.md:499:## 8. The mechanism attack: the packed decode was carrying a dependency it did not need
+27_fog_packing_under_contention.md:546:### 8.1 Why the win is larger than the instruction count predicts
+27_fog_packing_under_contention.md:568:### 8.2 And that immediately raises the question the result cannot dodge
+27_fog_packing_under_contention.md:578:## 9. Attacking the dense side with the same instrument, which is where the answer settles
+27_fog_packing_under_contention.md:595:### 9.1 The controlled experiment this bench turned into
+27_fog_packing_under_contention.md:617:### 9.2 The answer with both sides attacked
+27_fog_packing_under_contention.md:653:## 10. The answer
+27_fog_packing_under_contention.md:692:### 10.4 Which of section 10 and section 15 stands, stated rather than left to a reader
+27_fog_packing_under_contention.md:710:### 10.1 What does not change, which is the more consequential half
+27_fog_packing_under_contention.md:726:### 10.2 What the host cannot tell you
+27_fog_packing_under_contention.md:753:### 10.3 What is op's
+27_fog_packing_under_contention.md:771:## 11. Fidelity, demonstrated rather than asserted
+27_fog_packing_under_contention.md:816:## 12. What I had to decide, and which of it the numbers turn on
+27_fog_packing_under_contention.md:853:## 13. What I did not cover
+27_fog_packing_under_contention.md:891:## 14. Alternatives I did not take, for whoever picks this up
+27_fog_packing_under_contention.md:920:## 15. The tie was an artifact of the column being only just past the cache
+27_fog_packing_under_contention.md:980:### 15.1 The row that settles it
+27_fog_packing_under_contention.md:1018:### 15.2 What this does to the answer
