@@ -49,7 +49,8 @@ criterion turned out to have a second noun. Section **four** is the check that c
 being blind to half of it. Section **five** is what the panel's evidence is worth, and it is the one
 that reaches backwards over everything else.
 
-Section **nine** is what all of it amounts to **in canon terms**: thirty candidate sentences, how
+Section **ten** joins the panel's two vocabularies in one sentence and corrects the claim that they
+had never met. Section **nine** is what all of it amounts to **in canon terms**: thirty candidate sentences, how
 many are carryable, and the seam between two vocabularies that nobody crossed. Read it if you want
 the answer to "did this night produce a canon or a method".
 
@@ -97,6 +98,11 @@ stretches split along exactly that seam and no dispatch was ever aimed at it.**
 
 That is one sentence's worth of missing, and it is the first thing the next night should attack.
 
+**Corrected by `24`, which was sent at it.** The separation was measured over one range of files
+only. Measured both directions over both stretches, the concept side uses the width vocabulary
+eleven times, and one file puts both in a single sentence. The sentence was written; see section ten.
+The gap was a compression failure rather than an absence.
+
 ### What else is missing, and one of these is startling
 
 **No row anywhere says what a strategy is.** Eight rows mention the axis, three name it inside their
@@ -131,6 +137,85 @@ from this file. Go to the named file.** The Sources lines exist for that.
 
 `23` also caught this document overstating a count: I wrote that a later check found four more rung
 errors, when `21` found four **in total** of which three were already flagged. One new. Corrected.
+
+## Ten: the seam has a sentence, and the gap was never a gap
+
+*Sources: `24`, with `24_probes/RUN.sh` reproducing all six probes from clean.*
+
+`23` said the panel's two vocabularies had never appeared in one sentence and called it the first
+thing to attack. `24` was dispatched at it and wrote the sentence:
+
+> **A numeral is a grid cut down to a reach.**
+
+The grid is the set of denotable magnitudes: a radix, an adjustment, a bias, a phase, and a canonical
+exponent assigning each binade its step. The reach is which of those magnitudes the numeral covers.
+Then the join, which is the part that matters:
+
+**The fraction width names the grid. The total width names the reach, measured in steps of that
+grid. The integer width is their difference**, naming the binade the reach stops at, **which is why
+it is a view and why it goes negative exactly when the reach lies wholly below one.**
+
+That last clause explains what `15` measured and could not explain: the total width counts steps, so
+squaring a purely fractional numeral moves the fraction width and leaves the total width alone.
+
+### The map, and one consequence worth carrying
+
+Width pair to concept is **total and injective**. Concept to width pair is **partial, four of
+fourteen**, with six named causes. Three of those six are already inside the design: floats, ranged
+numerals whose count is not a power of the radix, and the bias axis.
+
+**So the two-output derivation does not apply to a float.** That answers a question `23` left open,
+and it is the kind of consequence a joining sentence is supposed to produce.
+
+### The brief I wrote for it was wrong, and the correction is the better finding
+
+`23` measured the vocabulary separation over one range of files. `24` measured **both directions over
+both stretches** and found the concept side uses the width vocabulary **eleven times**, almost all in
+two files I had described as not containing it. I re-ran that grep myself: eight and two. One of
+those files sweeps a float family "with the fixed-point box held at total width 5", **which is the
+two vocabularies in one sentence, written days before anyone said they had never met.**
+
+And it goes further. `06` states **five of the six restriction conditions** `24` derived, about
+itself, as its own largest acknowledged hole.
+
+**So the qualifier was never missing from the panel. It was stated twice in one file and dropped by
+everything built on it.** That is a compression failure rather than a gap, the remedy is restoration
+from the establishing source, and it is far cheaper than the derivation I sent `24` to do.
+
+This is the same lesson as the `Cold` trade and the harness validation, arriving a third time: **the
+panel's largest apparent holes keep turning out to be things it already knew and stopped carrying.**
+
+### What it built, and what fell out
+
+One definition, four projections, compiled gate-free on the pin. The general form recovers the
+constant case across a twelve-row box with compile-time assertions, and the same walk gives correct
+counts for a float, a knee and a taper, with set equality at 121 of 121 in exact rationals.
+
+It attacked its own largest stated cost rather than reporting it. The knee is not affine, which
+looked fatal; every canonical exponent the design names turns out to be one of a single two-integer
+form. Meet closure is then an algebraic identity at 6561 of 6561. Join leaves the family at 2592 of
+6561, which **explains an asymmetry `08` had only measured**. The join of a fixed shape and a float
+reproduces `08`'s mirror shape independently, and the join of two knees is four segments, so `08`'s
+proposed single extra named point does not suffice. **This removes a separately nested axis the
+design was carrying.**
+
+### Two defects in its own probes, found and reported
+
+A **tautological arm** that reported 121 of 121 while asking whether the arithmetic worked. Repairing
+it with a reject pool then exposed a **real defect in its own predicate**, which accepted decimal at
+radix two because it never checked the step was a power of the radix. And a shell change that broke
+glob expansion so a second probe reported zero for every term, including one it had already measured
+at thirty.
+
+### Its verdict on the vocabularies
+
+**Carry both, in a stated relation.** The canon defines a numeral once as grid and reach, and
+**derives** the width pair as its naming in the constant case. **Keeping the width pair is the
+result**; `15`'s argument survives and this derivation explains it. What changes is its status, from
+definition to projection.
+
+**What is yours, and it is one thing:** whether the design admits numerals its coordinates cannot
+name. Everything else in that file wants a second expert rather than you.
 
 ## The correction that matters most: the `Cold` trade is not unpriced
 
