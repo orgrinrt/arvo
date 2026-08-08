@@ -831,3 +831,54 @@ logs. `p1` (compiled refutation, 8 arms), `p2` and `p2b` (exhaustive law sweeps,
 `p6` (generic accumulator, 6 arms), `p7` (capacity-derived accumulator), `p8` plus its scale check
 (table-free `ceil(log2)` with a mutation check), `p9` (the refutation of my own proposed shape), `p10` (the
 downstream EMA prediction with two controls). All on `nightly-2026-05-28`, no feature gates.
+
+## 10. Addendum: four op files landed while this was being written
+
+`36`, `37`, `38` and `39` were committed after this file's probes and before its final commit. They did
+not exist when the work was done, so this file did not read them while deriving; I read all four before
+committing, and this section is what they do to it. **Nothing above is refuted.** The section is placed
+last, and the file above is left as it was written, so the order stays honest.
+
+**`39` widens the option space I proposed into.** Op: "the strategy set is not closed at exactly four.
+These are the ones the last panel settled with... it's entirely open to discussion and exploration". My
+Q12 option "make the reduction shape part of the strategy" was written assuming four names to fit into.
+It does not have to fit: a strategy characterised by **which laws it guarantees**, which is the axis I
+proposed under Q5, is admissible as a strategy in its own right rather than only as an axis over the
+existing four. That is a cheaper shape than I costed it at.
+
+**`36` gives `Precise` a content that is exactly this file's subject.** Op: `Precise` "sacrifices as much
+performance and efficiency as makes sense, to be the most precise possible answer, **especially within
+chains and ops, not only alone**". Precision *within chains* is the fold, the reassociation and the
+rewrite question, and nothing else. So 3.6 and 3.7 give that intent a mechanical reading: `Precise` is the
+strategy that may not trade the law layer, and the measurements say what refusing that trade costs. It
+also sharpens 16's blocked question, which I listed in section 8 as undetermined: a strategy whose intent
+is accuracy across chains is one with a reason to widen compute past storage, which is the fork `16` could
+not settle. Still undetermined; now with a stated intent pointing at one arm.
+
+**`37` states my second finding in op's own words, independently.** Op: "strategies are the variables that
+change what the 'correct' answer is for what we choose as the path." That is 3.6 and 3.7 as a sentence,
+arrived at from his side while I was arriving at it from measurements. I record it as convergence and not
+as corroboration: he is describing an intent and I am counting law failures, and the two agreeing is
+worth noting precisely because neither derived it from the other.
+
+**`38` supplies the mechanism my Q6 section said it would rather name than resolve.** I flagged a genuine
+conflict between op's restated intent that `Warm` behave like native Rust (which wraps) and the algorithm
+layer's need for an absorbing top and a monotone addition. `38` does not settle it and does something
+better: op says `Warm`'s "intuitive part demands it mimics, but it does not make it absolutely required,
+if mimicking is consistently just worse choice", and that "All of them should be decided by measurement,
+just measuring different things, and, this is I think the mental unlock: They weigh different measurements
+differently."
+
+So the conflict is not a conflict to escalate. It is evidence to weigh, and `38` says the weighing is per
+strategy over different measurements. This file is a measurement of a different thing from every other
+measurement the panel holds: not cycles or bytes, but how often the answer is wrong, and 48.9% of
+in-range min-plus instances is the number `Warm` would have to weigh against whatever the mimicry buys.
+Whether that clears op's "consistently just worse" bar is his call and not mine, and I would rather hand
+him the number than the verdict.
+
+**One thing `38` corrects in how I wrote section 5.** Op: "You should not write these as clear cut and
+settled." My Q6 entry says the algorithm layer's interest is "asymmetric and points at clamping", which is
+one measurement's weight and reads more settled than it should. The accurate form is: on the measurement
+this file took, clamping wins for min-plus by a total margin and wrapping wins for retraction by a total
+margin, no consumer downstream currently needs the second (3.9), and neither of those facts is the whole
+weighing.
