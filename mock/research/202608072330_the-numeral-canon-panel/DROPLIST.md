@@ -444,3 +444,19 @@ the same reason; and a first test-gate run whose green result came from a pipeli
 from `cargo`, caught and re-run to a log within the same file.
 ---
 
+
+
+## Closed by the numeral canon panel, 2026-08-08
+
+**The const-generic spelling of a width comparison in a `where` clause, at a generic definition site.**
+Closed by `35_probes/p6` arm A3: rustc refuses with "generic parameters may not be used in const
+operations" and terminally names `generic_const_exprs`, which is forbidden. **Reopened by:**
+`min_generic_const_args` reaching the point where a comparison of two const parameters is expressible
+in a bound. Restating it as a relation is a different mechanism rather than a repair of this one.
+
+**A numeral wrapping in its interior with a reserved absorbing top.** Proposed and closed in `35`, by
+its own probe `p9`. It absorbs correctly, at 0 of 16 failures, matching saturation. It still gets DAG
+shortest path wrong on **12.6% of 622 million in-range instances**, because interior wrapping destroys
+monotonicity (560 of 2176) and min-plus needs absorption and monotonicity both. **Reopened by:** a use
+case needing the absorbing top and the additive inverse but not monotonicity, which its author could
+not construct and does not believe exists among the tropical algorithms.

@@ -796,6 +796,63 @@ to the predecessor panel's own open question rather than being separate.
 
 `03` asked explicitly for a second read on this and no second read has run.
 
+## Q11. What does the numeral guarantee to a fold, and what does a composition supply?
+
+**Added from `35`, which calls it the most valuable single item it found.** Q1 through Q10 are without
+exception about a single value or a single binary operation. **None is about arity-n or about laws
+under reassociation**, and the algorithm crates are the thing op names as the selling point. That is a
+gap in the register rather than a wrong ordering.
+
+The finding underneath it: a fold's accumulator is loop-carried, so it has one type, and a widening
+binary operation gives it another. Four formulations refused, with four negative controls locating the
+boundary at the **runtime trip count** rather than at the widening, which composes fine in expressions
+and over static-length lists (`35` section 3, `35_probes/p1`).
+
+- **The numeral carries nothing extra; a fold is the consumer's problem.** Cheapest. Costs the
+  algorithm crates the ability to state their preconditions, so each re-derives sufficiency by hand and
+  the wrong-answer classes are undetectable at compile time.
+- **The numeral names its algebraic structure**, so a contract keys on "an ordered monoid with an
+  absorbing top" rather than on a numeral. Makes a numeral with no representable one fail to typecheck
+  as a product fold's carrier rather than annihilate at runtime. Costs a vocabulary of structures the
+  canon must name and keep.
+- **The numeral names its accumulator relation**, keyed on a capacity. Since capacity is a type, the
+  accumulator is derivable as the width plus the log of the capacity, compiled gate-free (`35_probes/p7`,
+  `p8`). Costs a second input to a derivation that currently takes only numerals, which `06`'s
+  D0/D1/D2/D3 taxonomy has no cell for.
+- **Both**, which is what `p7` compiles: the structure names what a fold may do, the capacity how wide
+  the result is.
+- **The composition supplies everything and the numeral stays a value type.** The mirror image. Puts the
+  accumulator relation in tensor-shaped code rather than in the numeral, at the cost of every
+  composition re-deriving it.
+
+## Q12. Is the reduction order specified, or is associativity required?
+
+**Added from `35`.** A genuinely different shape from anything else in the register, and it decides
+whether the layer above may split, thread or algebraically rewrite a reduction at all.
+
+Measured exhaustively at n=8 over 16.7M vectors, the fraction whose fold answer depends on the split
+(`35_probes/p3`): unsigned wrapping **0**, unsigned saturating **0**, signed wrapping **0**, signed
+saturating **70.1%**, and f32 55.4% on a sample. **Three of four sign-and-policy combinations are
+exactly reassociable, which float never is, and nobody in the panel had said so.**
+
+- **Require associativity.** A fold may be split only where the operation is associative. Signed
+  saturating folds then run in one lane, or run under the strategy that permits a soundness trade.
+- **Specify the reduction shape**, as a fixed tree over the index range, independent of detected lane
+  and core count. The answer becomes a function of the input and the numeral alone, deterministic at
+  any thread count, which unblocks the adaptation intent for every strategy. Costs the sentence that a
+  fold is a left fold, and costs a single-core implementation a tree it does not need.
+- **Make the reduction shape part of the strategy**, so the performance-first strategy splits freely and
+  takes what it gets while the others take the specified shape. Fits the per-strategy framing exactly,
+  and costs an axis.
+- **Say nothing**, and let the answer depend on the core count. Recorded so the space is not silently
+  three-sided. Under the soundness condition this is a sacrifice for every strategy except the one
+  whose purpose is to make it.
+
+**A candidate reframing rather than an option, spanning Q5 and Q6.** State per strategy **which
+properties the arithmetic has** (does the top absorb, is addition monotone, associative, invertible,
+does it distribute) rather than which policy it takes. The argument is that the policy names one thing
+while the consumer needs two, and a hybrid buying one of the two is measurably not enough.
+
 ## Questions with live options that op has not been asked
 
 Kept separate because the eight (now nine, with Q9 above) carry his direction where he has spoken and
