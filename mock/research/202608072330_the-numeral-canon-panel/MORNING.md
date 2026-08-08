@@ -22,12 +22,18 @@ for them.
    values from two different numerals. If there is none, the entire inference surface collapses to
    multiplication plus the container. Section on the two cheapest questions.
 4. **What does a datum stand for?** This is question four grown up. It began as the narrower "what
-   does the top of a saturating numeral denote", point or absorbing. Section six narrows the answer
-   again: absorbing is sound **exactly while the computation stays at the endpoint**, which additions
-   alone satisfy and subtractions do not. Two parts of the design depend on incompatible answers, and
-   `Precise` on `inexact` is the same question one level down. Sections four and six.
+   does the top of a saturating numeral denote", point or absorbing. Section six narrows it: absorbing
+   is sound for additions and unsound once subtraction enters, at 936 of 5184 chains.
+   **An earlier version of this line stated that as an "exactly when" and the converse half is
+   false**: `18`'s own committed output has multiply-by-zero decreasing the reach with absorbing
+   sound at 0 of 512. The sufficient condition is not yet known, `18` asked for it to be second-read,
+   and no second read has run. Two parts of the design depend on incompatible answers, and `Precise`
+   on `inexact` is the same question one level down. Sections four and six.
 5. **Does `Warm` wrap, or clamp?** New, and the sharpest kind of question: **two committed bench
-   families implement the two readings and disagree in direction.** Under wrapping, headroom loses.
+   families implement the two readings and disagree in direction**, and `20` says plainly that the
+   record currently supports both. Note also that `20` declared the section these numbers come from
+   **contaminated by a commit subject line and owed an independent read**; that disclosure belongs
+   beside them. Under wrapping, headroom loses.
    Under clamping, headroom goes from 2.2x worse at fold arity two to **44x better at arity 256**,
    with the crossover landing exactly where its own safety predicate says. The ratified preset table
    gives `Warm` the clamp and gives wrapping to `Hot` alone, and you have already declared that cell
@@ -656,8 +662,9 @@ as a proposal.
 lattice join: the product sits at the sum of the widths, the join sits at the pairwise maxima, and
 arithmetic calls the first. `06` was dispatched to test that head-on and enumerated **twenty
 candidate sites**, of which **eight turned out to be determined by the consumer after all**. That
-eight is `06`'s headline rather than a footnote: **the design's actual inference surface is ten
-sites, not twenty.**
+eight is `06`'s headline rather than a footnote. The remaining surface is smaller than twenty; an
+earlier version of this line put it at ten, which is my own subtraction and disagrees with the table
+below, because `06` classifies one site twice. Read the table, not the subtraction.
 
 It replaced the carve it was given. The useful axis is not formula-versus-extremum, because **an
 extremum here is always a formula**; coordinatewise maximum is a total function of four declared
@@ -862,12 +869,14 @@ rather than independent**, which is the distinction this panel's provenance ladd
 
 ## Method notes worth your attention
 
-**All four experts kept a broken instrument** rather than deleting it, which is the main reason to
-believe the numbers. `03`'s first reported zero
+**Every expert who hit one kept a broken instrument** rather than deleting it, which is the main
+reason to believe the numbers. `03`'s first instrument reported zero
 disagreements through setup that helped; `06` killed two for cost and kept them as controls. Every
 number above was produced by a command recorded in the probe directories.
 
-**Everything is unpriced.** No bench harness run bears on any of it, and no file claims otherwise.
+**Everything produced inside this panel is unpriced**, and no file in it claims otherwise. That is
+not the same as unpriced in the repository: see the opening section, where committed harness runs
+measure the packed trade, and `20`, which audits them.
 
 ## What is still open, and what is running
 
