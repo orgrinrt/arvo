@@ -170,6 +170,13 @@ Listed so that absence from the tables above is never read as an oversight.
   the identification (the Kleene equation is not the claimed pair whenever the specials set is
   populated). Op declared prior calls stale over it at `137b`, and it was never resolved. The
   mechanism survives; this one identification inside it does not.
+- **Op's second standing instruction, which this file had lost entirely.** He treated the whole
+  harness bench body behind Warm's headroom rule as "one instance of evidence, completely unaudited
+  by a second expert set of eyes", which is the same grammar as the fresh-eyes instruction that `10`
+  discharged. The compression into this file dropped the thread: a search for "headroom" here
+  returned nothing until this entry. `seed/SETTLED_container.md` carries it correctly. **This is the
+  third compression defect found in this file in one night and the first that lost an instruction
+  rather than a qualifier.**
 - **`Precise` on `inexact`**, open since `145`.
 - **The `Ranged` model**, disputed between `146` and `148`.
 - **Whether `Embed` ships beside `From`**, or the `From` alone.
