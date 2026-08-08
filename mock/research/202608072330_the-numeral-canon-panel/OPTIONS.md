@@ -365,6 +365,34 @@ lacks); other hosts (a different core-count-to-bandwidth ratio, a different last
 multi-socket or asymmetric-core topology, would all move every crossing named above) (`27` sections
 10.2, 13).
 
+### Op answered the regime question on 2026-08-08 (`32`), and it dissolves rather than selects
+
+The question `27` returned was: is the claim about one core, or about the declared parallel workload?
+Both are dead as readings, because the canon does not name a regime at all.
+
+> We will run in threads = 1, threads = 2, threads = n where n can be any finite. We don't take stances
+> on these. If it gives juice and proves more efficient than the alternatives, we should do that, when
+> we can detect we have several cores available. When we don't, we do what is the most efficient thing
+> in a single-threaded realm.
+
+The inequality option above is closer and still not it: that option is regime-**free**, and this is
+regime-**sensitive**, resolved wherever the core count becomes knowable.
+
+**The option this puts in their place:** the claim is about **whichever regime is detected**, with at
+least two arms behind that detection, and the carrier the claim holds against differs per arm. `27`'s
+one-core and four-core break-even bands are then both correct, as the two arms rather than as rivals.
+
+Four separable parts, none assumed beyond his words. Adaptation is conditional on **two** proofs,
+performance and soundness, and the soundness one is what an optimisation pass will be tempted to trade
+against. The core count is **detected**, and whether that detection is build-time, runtime or
+consumer-supplied is not stated. The thread count is **unbounded and unranked**, so one core is neither
+the default with parallelism as an extension nor the reverse. And "most efficient in each different
+situation" is the general form, of which this carrier question is one instance.
+
+**He marks it a ratifiable intent, which is not ratified.** Per his own correction, an opinion given
+before the experts converge is an ack. It is not in the canon and may not be cited as settled. Full
+text with the options it chose among: `32`.
+
 ## Q8. One numeral family, or several?
 
 **Op's instinct is one.** He said so and said explicitly not to act on it, because acting on an
