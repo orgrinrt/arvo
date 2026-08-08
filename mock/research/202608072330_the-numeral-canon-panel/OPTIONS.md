@@ -221,6 +221,21 @@ refuses on inexact is the strategy that demands its data keep a point denotation
 demand is measured (100% exact for add/sub, falling to 4.60% of in-range divisions admitted at
 `U<4,4>` under a point-only strategy) (`18` section 3.4).
 
+> **The strategy set is OPEN, and Q5 and Q6 both read as though it were four.** Op, 2026-08-08 (`39`):
+> "the strategy set is not closed at exactly four. These are the ones the last panel settled with, and
+> what my amateur ass had written for arvo that we are now redesigning ... so it's entirely open to
+> discussion and exploration." The number, the names and the decomposition are all open, and this
+> panel has never examined the four **as a decomposition**; they were the ground everything stood on.
+>
+> That reframes `25`'s finding rather than weakening it. Under a closed set of four, "the four names
+> are an exact bijection with a two-by-two of headroom against layout, zero cells spare" reads as a
+> tidy coincidence to be explained. Under an open set it is evidence about **what the axes actually
+> are**, with the four presets as one sampling of a space rather than its partition.
+>
+> The counterweight is op's too: a prior design can name the parts well and go wrong in the execution,
+> and where a name survives scrutiny it is kept and the keeping is a result. Open is a licence to
+> question the decomposition, not an instruction to replace it.
+
 ## Q5. Is the arithmetic column one axis or two?
 
 **Two axes.** Overflow policy and intermediate precision are independent, and every strategy needs a
