@@ -7,7 +7,7 @@ Read this first; it points at the files. Each entry says what changed and what i
 
 ## What is yours, in the order it matters
 
-Seven questions, each small, each collapsing something large. Everything else in this file is context
+Eight questions, each small, each collapsing something large. Everything else in this file is context
 for them.
 
 1. **Which reading of "then validate" did you mean?** Your criterion's third clause has three
@@ -42,7 +42,11 @@ for them.
    with the crossover landing exactly where its own safety predicate says. The ratified preset table
    gives `Warm` the clamp and gives wrapping to `Hot` alone, and you have already declared that cell
    stale. Section seven.
-7. **One family, or several?** Your original question, reframed twice and no longer the blocker it
+7. **Which carrier is the packing claim about?** New from `26`, and it decides whether the canon's
+   doability sentence is true. Against an eight-byte carrier packing wins past two million records;
+   against a two-byte carrier it loses by forty percent. **The claim's meaning decides its truth.**
+   Section twelve.
+8. **One family, or several?** Your original question, reframed twice and no longer the blocker it
    appeared to be. Sections one through three.
 
 ## How to read the rest
@@ -283,6 +287,92 @@ after.
 
 **That tooling did not exist in either panel, despite five recorded instances of this exact failure.**
 It exists now, in `25_probes/`.
+
+## Twelve: does packing pay, measured at last, and the answer has a condition
+
+*Sources: `26`, with artifacts at `mock/benches/bitpack-footprint-headtohead_n*` and
+`mock/benches/bitpack-carrier-width_n*`.*
+
+This is the claim the canon cannot be written without, and it now has numbers.
+
+### First, the fourth instance of the same pattern
+
+My brief said nobody had measured this workload. **False, and the truth is worse.** Six bitpack bench
+families are committed. But one compares dense against **dense**, and another compares packed against
+**packed**, in two separate bench tables. **All four arms were already declared against the same
+routine, the same six sizes, and one shared input builder.**
+
+**The decisive comparison was a configuration edit nobody made**, while this panel reported the trade
+unpriced.
+
+And the one head-to-head that did exist caps at sixteen thousand elements: a 32 KB working set inside
+a 128 KB first-level cache, **which is the single regime where packing's only benefit is worth
+nothing.**
+
+### The numbers
+
+Head-to-head across five sizes to seven million: **packed loses by 46.8 to 50.7 percent at every
+size.** And the reason is not what anyone assumed. **Dense throughput is flat within 4.4 percent
+across a 427-fold range that crosses both cache boundaries.** No knee at the first level, none at the
+second, none past it. Prefetch hides capacity, so **column size is not the variable.**
+
+The carrier is. A new six-arm sweep over one input, per element:
+
+| against | result |
+|---|---|
+| a two-byte carrier | packing **loses** by 38 to 41 percent |
+| a four-byte carrier | packing **loses** by 27 to 39 percent |
+| an eight-byte carrier | packing **wins** by 13 to 21 percent past two million records |
+
+**Break-even carrier is 5.8 to 7.0 bytes.** The crossing sits exactly where the eight-byte column
+stops fitting the second-level cache and the packed one still does.
+
+### The claim, stated as a canon would have to
+
+**Packing pays when the bytes saved per element divided by available bandwidth exceeds the decode cost
+added per element.** The condition is the carrier it displaces, not the record count.
+
+Two things that does not say. It does not say the packed strategy should be deprioritised: it
+**prices the choice**, which is what arvo's own toolbox rule asks for. And it does not price the
+footprint benefit at all: eight bytes to 1.625 is a **five-fold cut in resident memory** whether or
+not a loop gets faster.
+
+### It attacked the mechanism rather than reporting it
+
+The committed vector arm loses to the scalar one by 26 percent. Disassembly: sixteen instructions per
+group, **six of them the widening reduction, 46 percent of the loop.** Its first hypothesis, that the
+table loads were not hoisted, was wrong and is recorded as wrong.
+
+Replaced with a single pairwise-accumulate instruction plus a periodic drain bounded by the
+accumulator's headroom. Result: **5 to 7 percent faster than scalar, a 32-point swing**, which nearly
+doubles the margin at the crossing.
+
+### What it says is yours
+
+**Which carrier is the substrate's claim about?** Against an eight-byte carrier it measures true.
+Against a two-byte carrier it measures false. **The claim's meaning decides its truth**, and that is
+not a measurement dispute.
+
+Secondarily: whether the canon carries a threshold at all. Its own reading is that the inequality is
+permanent and "5.8 bytes on this machine" is not, but it marks that as a reading.
+
+### The gap it names as largest, and it points the other way
+
+**Concurrency.** Four cores each pulling at full rate exceeds this host's total bandwidth, so
+contention makes bytes bind where a single core never does. Everything measured here is
+single-threaded, **and that shifts the answer in packing's favour.** Also uncovered: writes, random
+access beyond the first level, other field widths, other hosts.
+
+### Checks it ran on itself
+
+Noise floor byte-identical at 50,496 instructions. Fidelity injection refused across a hundred seeds
+with no output written. **Its citation checker caught four of ten line references wrong and two means
+quoted as medians**, all corrected. And when the roofline guard failed, it established that **the
+guard was wrong rather than the data**, since a cache-resident arm legitimately exceeds a memory
+ceiling, and fixed the guard rather than raising the threshold.
+
+It also found nine files belonging to another dispatch in the working tree and **left all nine
+untouched**, staging only its own paths.
 
 ## The correction that matters most: the `Cold` trade is not unpriced
 
