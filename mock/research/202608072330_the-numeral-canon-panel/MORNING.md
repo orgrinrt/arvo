@@ -142,6 +142,94 @@ two. `16` also adds that the carrier is the wrong load type at **28 of 64 widths
 an implementer building from `15` would fall into, and resolves a doubt `15` left open about
 alignment.
 
+## Five: what the panel's evidence is actually worth
+
+`17` was sent to separate what is proved from what is trusted, after `16` found the certifying
+instrument blind. It corrected its own premise on the way in, which is the right instinct: `16`'s
+demonstration probe is a runtime value comparison rather than a codegen one, and says so itself, so
+`17` went and ran the real instrument instead.
+
+**The real instrument's green result is worse than blindness.** It reports that the `Hot` numeral and
+the `Cold` numeral are the same function, which is exactly what a carrier-only derivation produces.
+The oracle is not failing to see the difference; it is asserting there is none.
+
+### Your criterion, clause by clause
+
+**Clause four decomposes into three parts with three different rungs**, and this is the structural
+result I would most want you to carry away. Layout erasure is proved **by construction**, via the
+transparent representation. Dispatch erasure is proved **by construction**, via the bans on dynamic
+dispatch and type identity. Only operation erasure needs inspection at all. **That moves most of
+clause four off the measured pile and onto the proved one**, which is a stronger position than the
+panel thought it had.
+
+**Clause three is not merely under-instrumented, it is ambiguous.** "Then validate" has three
+readings. The panel has substantial evidence for one of them and none for another, and **has never
+recorded which one it is answering.**
+
+**Clause two is validated against itself.** Every layout check in the panel compares the derivation
+against its own consistency condition, never against a rule written independently from the intent.
+
+**Clause one splits**, with expressibility permanently trusted, which is correct and unavoidable, and
+a decidable half that was simply never instrumented until `17` built it.
+
+### The finding it was not sent for
+
+**Pointed at what it cannot see, the oracle does not go quiet. It reports failure.** A typed packed
+walk and its hand-written twin come out at 66 instructions each with **identical opcode multisets**,
+differing only in register allocation and scheduling, and the instrument says NOT ERASED. Below full
+optimisation the same false negative appears, because the symbol folding the instrument depends on is
+itself an optimisation pass, while erasure actually holds at every level including zero.
+
+**So the instrument cannot be repaired by pointing it at bigger programs.** That is a different and
+harder problem than the one `16` found.
+
+Going the other way, one result in the panel's favour that it did not previously have: the
+instrument's answer is **stable across three toolchains spanning three months**.
+
+### Instruments built, and one requirement nobody had
+
+A defect matrix that catches every observable seeded defect where the naive suite catches **174 of
+420**. Out of it came three adversarial requirements beyond `16`'s, and the sharpest is one nobody
+had stated: **the write procedure has to be adversarial, not just the data.** A writer spilling one
+bit into the next element is invisible to an ascending whole-run write, because the next write
+repairs the damage before anything reads it.
+
+It also built the perimeter instrument for clause one that it had first named as a gap and left
+alone, then went back for. Three of three seeded leaks, zero false positives, and it turned its own
+stated weakness into a demonstrated failure and closed it, keeping the failing variant.
+
+### A qualification on the `Cold` story from earlier tonight
+
+The control arm showed the byte-aligned walk **vectorising** while the packed walk does not. No number
+is attached and none should be.
+
+So the storage figure quoted above is one half of a trade. **"Packed saves 23.1 percent" is a
+storage measurement, and nobody in this panel has measured the walk.** No bench harness has run.
+
+### The panel's claims, classified rather than re-audited
+
+- **Compile refusals survive**, and are the panel's strongest evidence. `17`'s read is that the panel
+  is currently **underconfident** about them.
+- **Existence claims survive**, as existence claims only.
+- **Counts are the most fragile class**, and the fragility is never the arithmetic. It is the
+  **unstated domain**. Both count disputes this panel has seen were exactly this.
+- **Layout assertions split down the middle**, and the two halves are indistinguishable on the page.
+- **Per-value behavioural agreement is precisely the class that came back green over an insufficient
+  map.**
+
+And one number worth sitting with: **across this entire panel, four probe directories emit assembly,
+and the instrument clause four rests on is a single one of them.**
+
+### What it says is yours
+
+One small question. **Which reading of "then validate" did you mean?** No expert convergence can
+settle it, because it is a question about what you meant, and one sentence decides which instrument
+is owed.
+
+Plus a caveat rather than a question: the gate has been met on one program, at one arity, in one
+optimisation band, with an oracle now known to have two false-negative regimes. And the genuinely
+proved part of clause four is proved by construction rather than by that instrument at all.
+
 ### A number reconciled before it could become a second contradiction
 
 `15`'s product-overshoot count is 476 where the first stretch's was 461. It reconciled them exactly,
