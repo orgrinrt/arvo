@@ -1,0 +1,63 @@
+t1. which test procedure observes which packed-layout defect
+CATCH means the procedure observed the defect. A dot means it did not.
+The oracle is a bit-at-a-time reference; the thing under test is a word load.
+
+declaration: W = 13, unsigned
+procedure \ defect                      access     spill    stride   signext     phase      tail   catches
+----------------------------------------------------------------------------------------------------------
+P1 carrier round trip                        .         .         .       n/a         .         .         0
+P2 size_of vs ladder                         .         .         .       n/a         .         .         0
+P3 run, ascending, small values              .         .         .       n/a     CATCH     CATCH         2
+P4 run, ascending, width-filling         CATCH         .         .       n/a     CATCH     CATCH         3
+P5 one write into poisoned buffer            .     CATCH         .       n/a         .         .         1
+P6 aggregate extent N*W                      .         .     CATCH       n/a         .         .         1
+P7 values spanning the sign domain           .         .         .       n/a         .         .         0
+P8 tail element of an exact run              .         .         .       n/a     CATCH     CATCH         2
+
+declaration: W = 13, signed
+procedure \ defect                      access     spill    stride   signext     phase      tail   catches
+----------------------------------------------------------------------------------------------------------
+P1 carrier round trip                        .         .         .         .         .         .         0
+P2 size_of vs ladder                         .         .         .         .         .         .         0
+P3 run, ascending, small values              .         .         .         .     CATCH     CATCH         2
+P4 run, ascending, width-filling         CATCH         .         .     CATCH     CATCH     CATCH         4
+P5 one write into poisoned buffer            .     CATCH         .         .         .         .         1
+P6 aggregate extent N*W                      .         .     CATCH         .         .         .         1
+P7 values spanning the sign domain       CATCH         .         .     CATCH     CATCH     CATCH         4
+P8 tail element of an exact run              .         .         .     CATCH     CATCH     CATCH         3
+
+declaration: W = 5, signed
+procedure \ defect                      access     spill    stride   signext     phase      tail   catches
+----------------------------------------------------------------------------------------------------------
+P1 carrier round trip                        .         .         .         .         .         .         0
+P2 size_of vs ladder                         .         .         .         .         .         .         0
+P3 run, ascending, small values          CATCH         .         .         .     CATCH     CATCH         3
+P4 run, ascending, width-filling         CATCH         .         .     CATCH     CATCH     CATCH         4
+P5 one write into poisoned buffer            .     CATCH         .         .         .         .         1
+P6 aggregate extent N*W                      .         .     CATCH         .         .         .         1
+P7 values spanning the sign domain       CATCH         .         .     CATCH     CATCH     CATCH         4
+P8 tail element of an exact run              .         .         .     CATCH     CATCH     CATCH         3
+
+sweep: how many of the five defects each procedure catches, summed over
+every declaration W = 1..=48 in both sign domains
+
+procedure                               caught of possible
+----------------------------------------------------------
+P1 carrier round trip                        0         528
+P2 size_of vs ladder                         0         528
+P3 run, ascending, small values            174         528
+P4 run, ascending, width-filling           236         528
+P5 one write into poisoned buffer           96         528
+P6 aggregate extent N*W                     84         528
+P7 values spanning the sign domain         144         528
+P8 tail element of an exact run            216         528
+
+union of P1+P2+P3, the suite written without believing in a second output: 174 of 528
+union of all eight procedures: 420 of 528
+
+residual: of the defect instances the full eight-procedure suite does not
+observe, how many were observable at all?
+  total defect instances          : 528
+  observed by the suite           : 420
+  vacuous at that declaration     : 108
+  OBSERVABLE AND MISSED           : 0

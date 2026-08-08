@@ -1,0 +1,82 @@
+### variant: leaky (three seeded leaks)
+t5. the C1 perimeter: every public observation, and which admit a container
+    crate JSON : json/t5_perimeter.json
+    containers the derivation may pick: i128 i16 i32 i64 i8 u128 u16 u32 u64 u8
+
+    public positions enumerated : 13
+      fn-arg       6
+      fn-ret       6
+      pub-field    1
+
+    HOLES IN CLAUSE ONE: 3
+
+      kind            position                          container
+      ----------------------------------------------------------
+      fn argument     from(v)                           u32
+      fn argument     from_container(raw)               u16
+      public field    backing[N]                        u16
+
+    type aliases resolved: 0
+
+    known gaps in this instrument, printed rather than assumed:
+      - associated-type projections are not resolved, so a container reached
+        through <T as Trait>::Assoc is a false negative
+      - Deref targets are not followed transitively
+      - trait impls from other crates are excluded by the crate_id filter,
+        which is right for authorship and wrong for reachability
+
+    So a clean report from this instrument is necessary and not sufficient.
+    A dirty one is decisive: every row above is a position a consumer can
+    reach, holding a type the criterion says a consumer never writes.
+
+### variant: control (no leaks)
+t5. the C1 perimeter: every public observation, and which admit a container
+    crate JSON : ctl/json/t5_perimeter_control.json
+    containers the derivation may pick: i128 i16 i32 i64 i8 u128 u16 u32 u64 u8
+
+    public positions enumerated : 8
+      fn-arg       4
+      fn-ret       4
+
+    no public position admits a container.
+
+    type aliases resolved: 0
+
+    known gaps in this instrument, printed rather than assumed:
+      - associated-type projections are not resolved, so a container reached
+        through <T as Trait>::Assoc is a false negative
+      - Deref targets are not followed transitively
+      - trait impls from other crates are excluded by the crate_id filter,
+        which is right for authorship and wrong for reachability
+
+    So a clean report from this instrument is necessary and not sufficient.
+    A dirty one is decisive: every row above is a position a consumer can
+    reach, holding a type the criterion says a consumer never writes.
+
+### variant: alias (one leak behind a type alias)
+t5. the C1 perimeter: every public observation, and which admit a container
+    crate JSON : alias/json/t5_perimeter_alias.json
+    containers the derivation may pick: i128 i16 i32 i64 i8 u128 u16 u32 u64 u8
+
+    public positions enumerated : 10
+      fn-arg       5
+      fn-ret       5
+
+    HOLES IN CLAUSE ONE: 1
+
+      kind            position                          container
+      ----------------------------------------------------------
+      fn argument     from_storage(raw via alias Storage)u16
+
+    type aliases resolved: 1
+
+    known gaps in this instrument, printed rather than assumed:
+      - associated-type projections are not resolved, so a container reached
+        through <T as Trait>::Assoc is a false negative
+      - Deref targets are not followed transitively
+      - trait impls from other crates are excluded by the crate_id filter,
+        which is right for authorship and wrong for reachability
+
+    So a clean report from this instrument is necessary and not sufficient.
+    A dirty one is decisive: every row above is a position a consumer can
+    reach, holding a type the criterion says a consumer never writes.

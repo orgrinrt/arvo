@@ -1,0 +1,67 @@
+t3. erasure oracles compared, on the assembly t2 emitted
+    source: asm/t2_aggregate_erasure.s
+    bodies with their own code: 5
+    symbols aliased by the assembler: 2
+      _t2_scalar_typed = _t2_scalar_native
+      _t2_typed_sum_warm = _t2_typed_sum_aligned_access3
+
+--- oracle A: symbol identity, which is the panel's instrument ---
+    t2_scalar_typed        vs t2_scalar_native       -> ERASED
+    t2_typed_sum           vs t2_handwritten_sum     -> reports NOT ERASED
+
+--- oracle B: opcode multiset ---
+
+  t2_scalar_typed vs t2_scalar_native
+    folded by the assembler, so there is one body and they are identical
+
+  t2_typed_sum  vs  t2_handwritten_sum
+    instructions      : 66 vs 66
+    distinct opcodes  : 14 vs 14
+    opcode multiset   : IDENTICAL
+
+--- the control: does the second output reach codegen at all? ---
+    (t2_typed_sum_warm was folded into t2_typed_sum_aligned_access3, so the access width
+     is not what distinguishes the arms; the stride is)
+
+  t2_typed_sum_cold_400 (stride 13)  vs  t2_typed_sum_aligned_access3 (stride 16)
+    instructions      : 51 vs 92
+    distinct opcodes  : 13 vs 23
+    opcode multiset   : DIFFERS
+    where they differ:
+      add          12 vs    2
+      add.2d        0 vs   15
+      addp.2d       0 vs    1
+      and           8 vs    0
+      and.16b       0 vs    8
+      cmp           0 vs    1
+      dup.2d        0 vs    1
+      ext.16b       0 vs    4
+      fmov          0 vs    1
+      ld2.16b       0 vs    1
+      ldrb          4 vs    0
+      ldrh          4 vs    0
+      lsr           4 vs    0
+      mov           7 vs    2
+      movi.2d       0 vs    8
+      orr           4 vs    0
+      orr.16b       0 vs    8
+      shl.2s        0 vs    8
+      sub           3 vs    0
+      subs          1 vs    0
+      ushll.2d      0 vs   12
+      ushll.4s      0 vs    4
+      ushll.8h      0 vs    2
+      ushll2.2d     0 vs    4
+      ushll2.4s     0 vs    4
+      ushll2.8h     0 vs    2
+
+reading:
+  scalar pair, symbol identity  : agrees with opcode multiset
+  aggregate pair, symbol identity: reports NOT ERASED
+  aggregate pair, opcode multiset: reports ERASED
+
+  So the two oracles DISAGREE at the aggregate, and the disagreement is not
+  a tie. The bodies compute the same thing with the same instructions in the
+  same quantity; only register allocation, scheduling and label names differ,
+  and a compiler is free to choose all three. Symbol identity is measuring
+  something the criterion does not ask about.
