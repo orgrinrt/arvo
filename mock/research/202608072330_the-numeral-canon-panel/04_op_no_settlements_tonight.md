@@ -1,7 +1,14 @@
 # 04. Tonight is a breadth pass. Nothing settles.
 
-**Date:** 2026-08-07, as op goes to sleep. **Status:** standing for the night. Required reading for
-every dispatch until op returns.
+**Date:** 2026-08-07, as op goes to sleep. **Status:** its terms still stand; its **scope was
+extended** on 2026-08-08 from one night to roughly the panel's first hundred files. Required reading
+for every dispatch.
+
+**Scope note, added 2026-08-08.** This file was written for one night. Op has since extended it:
+"We will adopt the very same 'explore, don't settle' angle for the first 100 expert stretches I
+think." So everything below is the panel's standing mode rather than an overnight exception, and the
+sentences about op returning in the morning are about the night this was written, not about when the
+instruction lapses. See `00_brief.md` and `28_op_answers_two.md`.
 
 ## Op's instruction
 

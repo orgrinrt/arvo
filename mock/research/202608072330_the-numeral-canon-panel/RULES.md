@@ -132,6 +132,38 @@ wrote it. The prior
 panel propagated two floating numbers nobody could reproduce, and one expert's headline counts turned
 out to be an artifact of its own enumeration bound.
 
+## The mode: explore, do not settle
+
+Standing for roughly the panel's first hundred files, on op's instruction. Full statement in
+`00_brief.md`; his own words and the eight open questions are in `28_op_answers_two.md`.
+
+**A file that closes a question on its own authority has misread the assignment.** One that opens
+three well-argued directions and says what would distinguish them has read it correctly.
+
+**Every option is carried in `OPTIONS.md`, written out in full.** Your file says which options your
+finding fits well, which it fits badly, and which it kills. All three are results, and fitting badly
+is not killing: the difference is whether the option survives at a cost or does not survive.
+
+**Killing an option is still allowed and still valuable.** Not settling means not choosing among live
+options, never carrying dead ones. A closed route moves to `DROPLIST.md` with its diagnostic and with
+what would have to be overturned to reopen it. The option space shrinks from the bottom the whole way
+while nothing is chosen at the top.
+
+**Adding an option is the most valuable single act available.** An option set is never a boundary. Op,
+widening one of the eight: "don't even restrict the panel to these three. Free reign to converge by
+theory and logic to the best one that serves all other parts of arvo best." That last clause is the
+selection criterion, and it is why every option has to stay visible at once: an option's value is
+partly a fact about the others.
+
+**Exploring is not declining to conclude.** A file still owes findings with citations, probes that
+establish or refute, and a plain statement of what its evidence supports. The line is between "the
+evidence closes this route, here is the diagnostic" and "therefore the design should be X".
+
+**Op's statements are direction unless he names them locked**, and he has said he will name the
+locks. His recorded instinct that there is one numeral family is exactly this case: it is an instinct,
+he said so, and he said not to act on it. Treating a preference of his as a ruling is the previous
+panel's failure committed with his words instead of the panel's own.
+
 ## Writing it down
 
 **Record the options beside any answer that picks among them**, or inline them into the quote as
