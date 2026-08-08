@@ -1,0 +1,11 @@
+error: generic parameters may not be used in const operations
+  --> p07a_pin_const_to_nat_nogate.rs:32:23
+   |
+32 | impl<W: Nat> NatIs<{ <W as Nat>::V }> for W {}
+   |                       ^ cannot perform const operation using `W`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: aborting due to 1 previous error
+

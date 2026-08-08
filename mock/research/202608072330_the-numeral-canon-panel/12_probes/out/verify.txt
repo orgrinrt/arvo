@@ -1,0 +1,24 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+target:    aarch64-apple-darwin
+
+     EXPECT GOT    FILE
+---  ------ ------ ----
+ok   PASS   PASS   p01_nat_canonicity.rs
+ok   PASS   PASS   p02_const_door_alias.rs
+ok   PASS   PASS   p03_hybrid_door_closed_algebra.rs
+ok   PASS   PASS   p04_five_spellings.rs
+ok   FAIL   FAIL   p05_diag_mismatch.rs
+ok   FAIL   FAIL   p06_default_param_elision.rs
+ok   FAIL   FAIL   p07a_pin_const_to_nat_nogate.rs
+ok   FAIL   FAIL   p07b_pin_const_to_nat_min_gca.rs
+ok   FAIL   FAIL   p07c_pin_const_to_nat_type_const.rs
+ok   FAIL   FAIL   p07d_pin_const_block.rs
+ok   PASS   PASS   p08_does_p06_shape_keep_the_ceiling.rs
+ok   PASS   PASS   p09_decimal_ladder.rs
+ok   PASS   PASS   p10_decimal_container.rs
+ok   FAIL   FAIL   p11_diag_battery.rs
+ok   FAIL   FAIL   p12_first_day_errors.rs
+ok   FAIL   FAIL   p13_where_the_door_error_lands.rs
+ok   FAIL   FAIL   p14_lazy_type_alias.rs
+ok   PASS   PASS   p15_markers_do_not_partition.rs
+ok   FAIL   FAIL   p14b_lazy_over_full_ladder.rs

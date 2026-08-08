@@ -1,0 +1,23 @@
+SITE                   LINE   TYPE    SPELLING
+----                   ----   ----    --------
+SITE-C0-alias          29     7       pub type StrHandle = UInt<5>;
+SITE-C0-alias          36     18      pub type Coord = UFixed<13, 3, Hot>;
+SITE-C0-explicit       66     66      pub fn explicit(x: UFixed<13, 3, Hot>) -> UFixed<13, 3, Hot> { x }
+SITE-C0-derived        38     18      pub type Product = UFixed<26, 6, Hot>;
+SITE-C1-alias          57     35      pub type StrHandle = Fixed<D1<D0<D1<Term>>>, Term, Warm>;
+SITE-C1-alias          64     46      pub type Coord = Fixed<D1<D0<D1<D1<Term>>>>, D1<D1<Term>>, Hot>;
+SITE-C1-explicit       122    122     pub fn explicit(x: Fixed<D1<D0<D1<D1<Term>>>>, D1<D1<Term>>, Hot>) -> Fixed<D1<D0<D1<D1<Term>>>>, D1<D1<Term>>, Hot> { x }
+SITE-C1-derived        74     54      pub type Product = Fixed<D0<D1<D0<D1<D1<Term>>>>>, D0<D1<D1<Term>>>, Hot>;
+SITE-C2-alias          30     8       pub type StrHandle = UInt<N5>;
+SITE-C2-alias          38     20      pub type Coord = UFixed<N13, N3, Hot>;
+SITE-C2-explicit       70     70      pub fn explicit(x: UFixed<N13, N3, Hot>) -> UFixed<N13, N3, Hot> { x }
+SITE-C2-derived        40     20      pub type Product = UFixed<N26, N6, Hot>;
+SITE-C3-decl           68     53      widths! { W0 = T0, W3 = T3, W5 = T5, W6 = T6, W13 = T13, W26 = T26 }
+SITE-C3-alias          30     8       pub type StrHandle = UInt<W5>;
+SITE-C3-alias          38     20      pub type Coord = UFixed<W13, W3, Hot>;
+SITE-C3-explicit       70     70      pub fn explicit(x: UFixed<W13, W3, Hot>) -> UFixed<W13, W3, Hot> { x }
+SITE-C3-derived        40     20      pub type Product = UFixed<W26, W6, Hot>;
+SITE-C4-alias          29     7       pub type StrHandle = UInt<5>;
+SITE-C4-alias          36     18      pub type Coord = UFixed<13, 3, Hot>;
+SITE-C4-explicit       66     66      pub fn explicit(x: UFixed<13, 3, Hot>) -> UFixed<13, 3, Hot> { x }
+SITE-C4-derived        38     18      pub type Product = UFixed<26, 6, Hot>;

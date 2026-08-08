@@ -1,0 +1,18 @@
+error: generic parameters may not be used in const operations
+  --> p07d_pin_const_block.rs:34:37
+   |
+34 |     type const V: u32 = const { 2 * T::V };
+   |                                     ^
+   |
+   = help: add `#![feature(generic_const_args)]` to allow generic expressions as the RHS of const items
+
+error: generic parameters may not be used in const operations
+  --> p07d_pin_const_block.rs:37:37
+   |
+37 |     type const V: u32 = const { 2 * T::V + 1 };
+   |                                     ^
+   |
+   = help: add `#![feature(generic_const_args)]` to allow generic expressions as the RHS of const items
+
+error: aborting due to 2 previous errors
+

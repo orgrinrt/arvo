@@ -1,0 +1,29 @@
+error[E0277]: no width literal `Idx<7>` is declared in this program
+  --> p14_lazy_type_alias.rs:59:1
+   |
+59 | pub type PacketTag = UInt<7>;
+   | ^^^^^^^^^^^^^^^^^^ this literal width is not declared
+   |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<7>`
+  --> p14_lazy_type_alias.rs:32:1
+   |
+32 | pub struct Idx<const N: u32>;
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: a literal width is declared once, in one line
+help: the following other types implement trait `ToNat<M>`
+  --> p14_lazy_type_alias.rs:43:1
+   |
+43 | impl ToNat<Arvo> for Idx<5> {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<5>`
+...
+46 | impl ToNat<Arvo> for Idx<13> {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<13>`
+note: required by a bound on the type alias `UInt`
+  --> p14_lazy_type_alias.rs:52:67
+   |
+52 | pub type UInt<const N: u32> = Fixed<NatOf<N>, Warm> where Idx<N>: ToNat<Arvo>;
+   |                                                                   ^^^^^^^^^^^ required by this bound
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

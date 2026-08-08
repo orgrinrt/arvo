@@ -1,0 +1,58 @@
+error[E0308]: mismatched types
+  --> p11_diag_battery.rs:34:9
+   |
+33 |     pub fn mistake(x: Product) -> Coord {
+   |                                   ----- expected `k0::Fixed<13, 3, Hot>` because of return type
+34 |         x
+   |         ^ expected `13`, found `26`
+   |
+   = note: expected struct `k0::Fixed<13, 3, _>`
+              found struct `k0::Fixed<26, 6, _>`
+
+error[E0308]: mismatched types
+  --> p11_diag_battery.rs:52:9
+   |
+51 |     pub fn mistake(x: Product) -> Coord {
+   |                                   ----- expected `k1::Fixed<D1<D0<D1<D1<Term>>>>, D1<D1<Term>>, Hot>` because of return type
+52 |         x
+   |         ^ expected `Fixed<D1<D0<D1<D1<Term>>>>, ..., ...>`, found `Fixed<D0<D1<D0<D1<D1<...>>>>>, ..., ...>`
+   |
+   = note: expected struct `k1::Fixed<D1<D0<D1<D1<Term>>>>, D1<_>, _>`
+              found struct `k1::Fixed<D0<D1<D0<D1<D1<Term>>>>>, D0<D1<_>>, _>`
+
+error[E0308]: mismatched types
+  --> p11_diag_battery.rs:73:9
+   |
+72 |     pub fn mistake(x: Product) -> Coord {
+   |                                   ----- expected `k2::Fixed<13, 3, Hot, D1<D0<D1<D1<Term>>>>, D1<D1<Term>>>` because of return type
+73 |         x
+   |         ^ expected `13`, found `26`
+   |
+   = note: expected struct `k2::Fixed<13, 3, _, D1<D0<D1<D1<Term>>>>, D1<_>>`
+              found struct `k2::Fixed<26, 6, _, D0<D1<D0<D1<D1<Term>>>>>, D0<D1<_>>>`
+
+error[E0308]: mismatched types
+  --> p11_diag_battery.rs:94:9
+   |
+93 |     pub fn mistake(x: Product) -> Coord {
+   |                                   ----- expected `k3::Fixed<T<N3, T<N1, E>>, T<N3, E>, Hot>` because of return type
+94 |         x
+   |         ^ expected `Fixed<T<N3, T<N1, E>>, T<N3, E>, Hot>`, found `Fixed<T<N6, T<N2, E>>, T<N6, E>, Hot>`
+   |
+   = note: expected struct `k3::Fixed<T<N3, T<N1, _>>, T<N3, _>, _>`
+              found struct `k3::Fixed<T<N6, T<N2, _>>, T<N6, _>, _>`
+
+error[E0308]: mismatched types
+   --> p11_diag_battery.rs:115:9
+    |
+114 |     pub fn mistake(x: Product) -> Coord {
+    |                                   ----- expected `k4::Fixed<13, 3, Hot, T<N3, T<N1, E>>, T<N3, E>>` because of return type
+115 |         x
+    |         ^ expected `13`, found `26`
+    |
+    = note: expected struct `k4::Fixed<13, 3, _, T<N3, T<N1, _>>, T<N3, _>>`
+               found struct `k4::Fixed<26, 6, _, T<N6, T<N2, _>>, T<N6, _>>`
+
+error: aborting due to 5 previous errors
+
+For more information about this error, try `rustc --explain E0308`.
