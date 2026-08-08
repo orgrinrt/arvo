@@ -7,273 +7,277 @@ Baseline: **wide-rung-align16**
 
 Baseline for all deltas below: **wide-rung-align16**. (Deltas are paired `variant - baseline` medians; `*` marks a CI that excludes zero.)
 
-### wide-rung-ragged shows warm-up / thermal drift (autocorr +0.77)
+### Top two (wide-rung-ragged-overread, wide-rung-wordround) are a dead heat (<1%)
 
-wide-rung-ragged's per-pass series has lag-1 autocorrelation +0.77, indicating warm-up / thermal drift. Its timing may not be at steady state.
+wide-rung-ragged-overread (5.45 us) and wide-rung-wordround (5.46 us) differ by 0.24%, inside the noise, even though the wider field spreads 8.3%.
+
+_Why it matters:_ Do not over-fit to the nominal leader when the runner-up is within measurement noise; either is a fine pick.
+
+### wide-rung-ragged shows warm-up / thermal drift (autocorr +0.65)
+
+wide-rung-ragged's per-pass series has lag-1 autocorrelation +0.65, indicating warm-up / thermal drift. Its timing may not be at steady state.
 
 _Why it matters:_ Autocorrelated samples violate the independence the CIs assume; the interval is optimistic until the drift is warmed out or cooled down.
 
-### wide-rung-wordround-alias's edge over baseline is significant but tiny (4 ns, 0.08%)
+### wide-rung-wordround's edge over baseline is significant but tiny (-48 ns, 0.87%)
 
-wide-rung-wordround-alias differs from baseline wide-rung-align16 by 4 ns (0.08%) - statistically real (CI excludes zero) but small enough to be practically irrelevant.
+wide-rung-wordround differs from baseline wide-rung-align16 by -48 ns (0.87%) - statistically real (CI excludes zero) but small enough to be practically irrelevant.
 
 _Why it matters:_ Statistical significance is not practical significance: a measurable-but-tiny gap should not drive a decision.
 
 ## Key findings
 
-- **Fastest: wide-rung-ragged-overread** at 5325.2 ns median (-2.4% vs baseline)
-- 2 variants significantly slower than baseline
-- Spread: 1.09x (fastest 5325.2 ns, slowest 5806.6 ns)
+- **Fastest: wide-rung-ragged-overread** at 5447.1 ns median (-0.3% vs baseline)
+- 1 variant significantly slower than baseline
+- Spread: 1.08x (fastest 5447.1 ns, slowest 5900.8 ns)
 
 ## End-to-end (all cooldowns combined)
 
 | Variant | mean | median | best 20% | mid 60% | worst 20% | Δ mean |
 |---|---|---|---|---|---|---|
-| wide-rung-align16 | 5506ns | 5522ns | 5369ns | 5480ns | 5720ns | base |
-| wide-rung-ragged | 5893ns | 5867ns | 5760ns | 5872ns | 6091ns | +7.04% |
-| wide-rung-ragged-overread | 5452ns | 5386ns | 5372ns | 5414ns | 5642ns | -0.99% |
-| wide-rung-wordround | 5483ns | 5478ns | 5371ns | 5491ns | 5571ns | -0.42% |
-| wide-rung-wordround-alias | 5561ns | 5560ns | 5371ns | 5552ns | 5780ns | +1.01% |
+| wide-rung-align16 | 5553ns | 5526ns | 5473ns | 5525ns | 5718ns | base |
+| wide-rung-ragged | 5961ns | 5966ns | 5869ns | 5948ns | 6093ns | +7.35% |
+| wide-rung-ragged-overread | 5536ns | 5520ns | 5475ns | 5524ns | 5630ns | -0.32% |
+| wide-rung-wordround | 5544ns | 5526ns | 5475ns | 5531ns | 5651ns | -0.17% |
+| wide-rung-wordround-alias | 5542ns | 5527ns | 5474ns | 5534ns | 5635ns | -0.21% |
 
 ## Function-under-test only (all cooldowns combined)
 
 | Variant | mean | best 20% | worst 20% | Δ mean | throughput (Gops/s) |
 |---|---|---|---|---|---|
-| wide-rung-align16 | 5440ns | 5307ns | 5650ns | base | 1.506 |
-| wide-rung-ragged | 5828ns | 5698ns | 6021ns | +7.13% | 1.406 |
-| wide-rung-ragged-overread | 5388ns | 5310ns | 5577ns | -0.96% | 1.520 |
-| wide-rung-wordround | 5419ns | 5309ns | 5508ns | -0.38% | 1.512 |
-| wide-rung-wordround-alias | 5495ns | 5309ns | 5706ns | +1.01% | 1.491 |
+| wide-rung-align16 | 5488ns | 5409ns | 5647ns | base | 1.493 |
+| wide-rung-ragged | 5893ns | 5805ns | 6015ns | +7.39% | 1.390 |
+| wide-rung-ragged-overread | 5469ns | 5411ns | 5559ns | -0.35% | 1.498 |
+| wide-rung-wordround | 5476ns | 5410ns | 5579ns | -0.22% | 1.496 |
+| wide-rung-wordround-alias | 5474ns | 5411ns | 5565ns | -0.25% | 1.497 |
 
 ## Performance model
 
-- Peak throughput: **1.544 Gops/s** (wide-rung-align16; best 20% batches)
+- Peak throughput: **1.515 Gops/s** (wide-rung-align16; best 20% batches)
 - Ops per call: 8192
 
 | Variant | Gops/s (median) | % of peak |
 |---|---|---|
-| wide-rung-align16 | 1.501 | 97.2% |
-| wide-rung-ragged | 1.411 | 91.4% |
-| wide-rung-ragged-overread | 1.538 | 99.7% |
-| wide-rung-wordround | 1.513 | 98.0% |
-| wide-rung-wordround-alias | 1.490 | 96.5% |
+| wide-rung-align16 | 1.500 | 99.0% |
+| wide-rung-ragged | 1.388 | 91.7% |
+| wide-rung-ragged-overread | 1.504 | 99.3% |
+| wide-rung-wordround | 1.500 | 99.1% |
+| wide-rung-wordround-alias | 1.500 | 99.0% |
 
 ## Per-cooldown breakdown (e2e mean)
 
 | Variant | 0ms | avg | Δ avg |
 |---|---|---|---|
-| wide-rung-align16 | 5506ns | 5506ns | base |
-| wide-rung-ragged | 5893ns | 5893ns | +7.04% |
-| wide-rung-ragged-overread | 5452ns | 5452ns | -0.99% |
-| wide-rung-wordround | 5483ns | 5483ns | -0.42% |
-| wide-rung-wordround-alias | 5561ns | 5561ns | +1.01% |
+| wide-rung-align16 | 5553ns | 5553ns | base |
+| wide-rung-ragged | 5961ns | 5961ns | +7.35% |
+| wide-rung-ragged-overread | 5536ns | 5536ns | -0.32% |
+| wide-rung-wordround | 5544ns | 5544ns | -0.17% |
+| wide-rung-wordround-alias | 5542ns | 5542ns | -0.21% |
 
 ## Statistical comparison (algo, 95% bootstrap CI)
 
 | Variant | median | Δ median | Δ CI | 95% CI | sig? | adj. p | sign p | ties |
 |---|---|---|---|---|---|---|---|---|
-| wide-rung-align16 | 5458ns | base | --- | [5311, 5496] | --- | --- | --- | --- |
-| wide-rung-ragged | 5807ns | +399.8ns (+7.3%) | [+382, +451]ns | [5747, 5885] | YES | 0.0000 | 0.0000 | 0 |
-| wide-rung-ragged-overread | 5325ns | no significant difference | [-127, +5]ns | [5314, 5373] | no | 1.0000 | 1.0000 | 0 |
-| wide-rung-wordround | 5414ns | no significant difference | [-84, +40]ns | [5409, 5493] | no | 0.8478 | 0.6358 | 0 |
-| wide-rung-wordround-alias | 5498ns | +10.7ns (+0.2%) | [+1, +100]ns | [5449, 5533] | YES (adj: no) | 0.0770 | 0.0385 | 0 |
+| wide-rung-align16 | 5461ns | base | --- | [5417, 5506] | --- | --- | --- | --- |
+| wide-rung-ragged | 5901ns | +397.3ns (+7.3%) | [+388, +405]ns | [5849, 5910] | YES | 0.0000 | 0.0000 | 0 |
+| wide-rung-ragged-overread | 5447ns | no significant difference | [-7, +6]ns | [5418, 5504] | no | 0.6965 | 0.5224 | 1 |
+| wide-rung-wordround | 5460ns | no significant difference | [-6, +9]ns | [5421, 5499] | no | 0.7493 | 0.7493 | 1 |
+| wide-rung-wordround-alias | 5461ns | no significant difference | [-1, +8]ns | [5427, 5510] | no | 0.3077 | 0.1539 | 0 |
 
 ## Per-pass consistency (nonstop e2e, Δ vs baseline)
 
 | Pass | wide-rung-align16 | wide-rung-ragged | wide-rung-ragged-overread | wide-rung-wordround | wide-rung-wordround-alias |
 |---|---|---|---|---|---|
-| 1 | 5310ns | +10.2% | +2.8% | +3.5% | +0.0% |
-| 2 | 5544ns | +2.9% | -4.2% | -0.9% | -4.2% |
-| 3 | 5426ns | +4.9% | -1.1% | +1.3% | -2.2% |
-| 4 | 5315ns | +7.3% | +2.4% | +3.4% | -0.1% |
-| 5 | 5311ns | +7.3% | +1.3% | +5.1% | -0.0% |
-| 6 | 5308ns | +8.6% | +0.1% | +3.4% | +0.1% |
-| 7 | 5308ns | +7.4% | +0.9% | +3.5% | +0.0% |
-| 8 | 5312ns | +7.3% | +0.0% | +2.7% | -0.0% |
-| 9 | 5310ns | +7.3% | -0.0% | +0.0% | +0.0% |
-| 10 | 5306ns | +9.8% | +0.1% | +0.1% | +0.0% |
-| 11 | 5495ns | +7.4% | -0.0% | -1.5% | +0.6% |
-| 12 | 5494ns | +7.5% | +0.0% | -1.4% | +0.3% |
-| 13 | 5493ns | +7.5% | +0.1% | -1.4% | +0.1% |
-| 14 | 5491ns | +7.4% | +0.1% | -1.5% | +0.1% |
-| 15 | 5499ns | +4.7% | -0.1% | -1.5% | +1.3% |
-| 16 | 5519ns | +3.4% | -0.5% | -2.0% | -0.4% |
-| 17 | 5653ns | +1.0% | -3.3% | -3.9% | -2.9% |
-| 18 | 5388ns | +5.8% | -1.4% | +0.4% | +1.9% |
-| 19 | 5501ns | +3.6% | -3.5% | -1.6% | -3.3% |
-| 20 | 5600ns | +1.8% | -5.2% | -3.9% | -5.2% |
-| 21 | 5308ns | +9.4% | +7.3% | +3.5% | +7.3% |
-| 22 | 5306ns | +10.7% | +12.2% | +3.6% | +5.8% |
-| 23 | 5310ns | +9.4% | +2.7% | +3.6% | +5.3% |
-| 24 | 5310ns | +9.4% | +0.3% | +3.5% | +6.4% |
-| 25 | 5305ns | +9.5% | +0.3% | +3.5% | +4.4% |
-| 26 | 5308ns | +9.3% | +0.1% | +3.5% | +3.6% |
-| 27 | 5309ns | +9.3% | +0.0% | +1.1% | +3.5% |
-| 28 | 5311ns | +8.1% | +0.5% | -0.0% | +3.4% |
-| 29 | 5308ns | +7.3% | +0.1% | -0.0% | +1.9% |
-| 30 | 5310ns | +8.4% | +1.3% | -0.0% | +1.8% |
-| 31 | 5496ns | +10.8% | -3.3% | +0.0% | +5.0% |
-| 32 | 5750ns | +3.5% | -7.6% | -4.5% | -0.2% |
-| 33 | 5655ns | +6.3% | -6.0% | -2.8% | +1.8% |
-| 34 | 5724ns | +6.3% | -7.2% | -5.5% | -1.6% |
-| 35 | 5494ns | +10.7% | -3.2% | -3.3% | +3.8% |
-| 36 | 5496ns | +10.2% | -3.4% | -3.3% | +0.3% |
-| 37 | 5620ns | +5.3% | -5.0% | -5.5% | -2.1% |
-| 38 | 5507ns | +8.5% | -3.4% | -3.7% | +2.7% |
-| 39 | 5538ns | +6.8% | -4.1% | -3.9% | +2.5% |
-| 40 | 5654ns | +4.5% | -5.5% | -6.0% | -0.1% |
+| 1 | 5408ns | +13.0% | +0.1% | +2.6% | +0.0% |
+| 2 | 5413ns | +12.9% | +0.5% | +5.1% | +1.3% |
+| 3 | 5476ns | +11.2% | -0.9% | +0.9% | -0.9% |
+| 4 | 5498ns | +7.8% | -1.5% | -0.0% | -0.8% |
+| 5 | 5841ns | +1.4% | -6.3% | -6.0% | -7.3% |
+| 6 | 5597ns | +5.8% | -3.2% | -1.3% | -2.3% |
+| 7 | 5980ns | -0.9% | -9.5% | -9.0% | -7.8% |
+| 8 | 5438ns | +10.4% | +0.3% | -0.5% | +2.2% |
+| 9 | 5410ns | +9.4% | +0.1% | +0.3% | +2.8% |
+| 10 | 5537ns | +7.3% | -2.1% | -2.3% | -0.8% |
+| 11 | 5511ns | +7.3% | -0.1% | +0.2% | +0.1% |
+| 12 | 5507ns | +7.3% | -0.0% | +0.2% | +0.1% |
+| 13 | 5518ns | +7.0% | -0.1% | +0.1% | -0.1% |
+| 14 | 5511ns | +7.1% | -0.2% | +0.1% | -0.0% |
+| 15 | 5505ns | +7.2% | +0.1% | +0.3% | +0.2% |
+| 16 | 5506ns | +7.2% | +0.1% | -0.1% | +0.3% |
+| 17 | 5513ns | +6.9% | +0.6% | -0.2% | +0.3% |
+| 18 | 5510ns | +7.1% | +0.0% | -0.3% | +0.0% |
+| 19 | 5506ns | +7.3% | +0.0% | +0.0% | +1.4% |
+| 20 | 5505ns | +7.4% | +0.2% | -0.1% | +0.1% |
+| 21 | 5411ns | +9.0% | +6.2% | +1.4% | +0.4% |
+| 22 | 5414ns | +11.1% | +2.9% | -0.1% | +0.0% |
+| 23 | 5472ns | +6.1% | +1.1% | -1.1% | -1.1% |
+| 24 | 5412ns | +8.0% | +1.7% | +0.7% | +1.1% |
+| 25 | 5442ns | +6.7% | +1.2% | +3.5% | +0.9% |
+| 26 | 5429ns | +6.9% | -0.2% | +4.4% | -0.3% |
+| 27 | 5416ns | +7.2% | +1.4% | +0.4% | +0.0% |
+| 28 | 5410ns | +7.9% | +0.1% | +0.0% | +0.5% |
+| 29 | 5537ns | +5.7% | -2.3% | -2.2% | -1.6% |
+| 30 | 5654ns | +2.7% | -4.2% | -4.3% | -4.3% |
+| 31 | 5408ns | +7.4% | +0.1% | +0.0% | +4.9% |
+| 32 | 5410ns | +9.5% | +2.2% | +0.1% | +0.1% |
+| 33 | 5418ns | +7.2% | -0.2% | +1.0% | +0.1% |
+| 34 | 5419ns | +7.1% | -0.0% | -0.1% | +2.7% |
+| 35 | 5408ns | +8.2% | +0.0% | +0.2% | +0.0% |
+| 36 | 5408ns | +8.5% | +1.2% | +0.5% | +0.0% |
+| 37 | 5450ns | +6.6% | -0.6% | -0.5% | -0.0% |
+| 38 | 5410ns | +7.3% | +0.0% | -0.0% | -0.0% |
+| 39 | 5408ns | +7.4% | +0.1% | +0.1% | +0.0% |
+| 40 | 5476ns | +6.6% | -1.1% | -1.1% | -1.2% |
 
 **Autocorrelation (lag-1) per-pass series:**
 
 | Variant | r₁ | note |
 |---|---|---|
-| wide-rung-align16 | 0.606 | HIGH+ (drift/warm-up) |
-| wide-rung-ragged | 0.769 | HIGH+ (drift/warm-up) |
+| wide-rung-align16 | 0.266 | moderate+ |
+| wide-rung-ragged | 0.645 | HIGH+ (drift/warm-up) |
 | wide-rung-ragged-overread | 0.519 | HIGH+ (drift/warm-up) |
-| wide-rung-wordround | 0.692 | HIGH+ (drift/warm-up) |
-| wide-rung-wordround-alias | 0.685 | HIGH+ (drift/warm-up) |
+| wide-rung-wordround | 0.541 | HIGH+ (drift/warm-up) |
+| wide-rung-wordround-alias | 0.201 | moderate+ |
 
 **Consistency summary:**
 
-- **wide-rung-ragged**: won 0/40, lost 40/40
-- **wide-rung-ragged-overread**: won 18/40, lost 14/40
-- **wide-rung-wordround**: won 19/40, lost 15/40
-- **wide-rung-wordround-alias**: won 11/40, lost 22/40
+- **wide-rung-ragged**: won 1/40, lost 39/40
+- **wide-rung-ragged-overread**: won 14/40, lost 14/40
+- **wide-rung-wordround**: won 15/40, lost 16/40
+- **wide-rung-wordround-alias**: won 12/40, lost 17/40
 
 ## Bridge overhead per variant
 
 | Variant | mean bridge | algo mean | bridge % | flag |
 |---|---|---|---|---|
-| wide-rung-align16 | 2.2ns | 5440.0ns | 0.0% |  |
-| wide-rung-ragged | 2.0ns | 5827.7ns | 0.0% |  |
-| wide-rung-ragged-overread | 2.3ns | 5387.9ns | 0.0% |  |
-| wide-rung-wordround | 2.2ns | 5419.5ns | 0.0% |  |
-| wide-rung-wordround-alias | 2.5ns | 5494.8ns | 0.0% |  |
+| wide-rung-align16 | 2.3ns | 5487.6ns | 0.0% |  |
+| wide-rung-ragged | 1.9ns | 5893.0ns | 0.0% |  |
+| wide-rung-ragged-overread | 2.3ns | 5468.5ns | 0.0% |  |
+| wide-rung-wordround | 1.9ns | 5475.8ns | 0.0% |  |
+| wide-rung-wordround-alias | 1.9ns | 5473.8ns | 0.0% |  |
 
 ## Distribution (algo ns)
 
 ```
-wide-rung-align16 (n=40, range 5307.0-5649.9 ns)
-   5307.0 |########################################
-   5324.1 |
-   5341.3 |
-   5358.4 |
-   5375.5 |##
-   5392.7 |
-   5409.8 |##
-   5427.0 |
-   5444.1 |
-   5461.3 |
-   5478.4 |#############
-   5495.6 |#############
-   5512.7 |##
-   5529.8 |#####
-   5547.0 |
-   5564.1 |
-   5581.3 |
-   5598.4 |##
-   5615.6 |##
-   5632.7 |
-  (3 below, 5 above range)
+wide-rung-align16 (n=40, range 5408.8-5647.2 ns)
+   5408.8 |########################################
+   5420.8 |###
+   5432.7 |#######
+   5444.6 |###
+   5456.5 |
+   5468.4 |##########
+   5480.4 |
+   5492.3 |###
+   5504.2 |################################
+   5516.1 |###
+   5528.0 |#######
+   5540.0 |
+   5551.9 |
+   5563.8 |
+   5575.7 |
+   5587.6 |###
+   5599.6 |
+   5611.5 |
+   5623.4 |
+   5635.3 |
+  (5 below, 3 above range)
 
-wide-rung-ragged (n=40, range 5698.1-6020.6 ns)
-   5698.1 |########################################
-   5714.2 |
-   5730.3 |####
-   5746.5 |########
-   5762.6 |####
-   5778.7 |
-   5794.8 |########################
-   5811.0 |
-   5827.1 |####
-   5843.2 |####
-   5859.4 |####
-   5875.5 |
-   5891.6 |################
-   5907.7 |############
-   5923.9 |
-   5940.0 |####
-   5956.1 |
-   5972.2 |####
-   5988.4 |
-   6004.5 |####
+wide-rung-ragged (n=40, range 5805.3-6015.2 ns)
+   5805.3 |########################################
+   5815.8 |
+   5826.3 |
+   5836.8 |###############
+   5847.3 |##########
+   5857.8 |#####
+   5868.3 |
+   5878.8 |
+   5889.3 |#####
+   5899.8 |###################################
+   5910.3 |####################
+   5920.8 |#########################
+   5931.3 |#####
+   5941.8 |
+   5952.3 |
+   5962.8 |
+   5973.3 |
+   5983.8 |
+   5994.2 |#####
+   6004.7 |
   (3 below, 4 above range)
 
-wide-rung-ragged-overread (n=40, range 5309.8-5577.1 ns)
-   5309.8 |########################################
-   5323.2 |#####
-   5336.6 |#######
-   5349.9 |##
-   5363.3 |##
-   5376.6 |#####
-   5390.0 |
-   5403.4 |
-   5416.7 |
-   5430.1 |##
-   5443.5 |##
-   5456.8 |#####
-   5470.2 |
-   5483.5 |############
-   5496.9 |##
-   5510.3 |
-   5523.6 |
-   5537.0 |
-   5550.4 |
-   5563.7 |
-  (3 below, 2 above range)
+wide-rung-ragged-overread (n=40, range 5411.3-5558.7 ns)
+   5411.3 |########################################
+   5418.7 |######
+   5426.0 |###
+   5433.4 |###
+   5440.8 |
+   5448.1 |###
+   5455.5 |
+   5462.9 |
+   5470.2 |######
+   5477.6 |
+   5485.0 |
+   5492.4 |###
+   5499.7 |#############
+   5507.1 |####################
+   5514.5 |###
+   5521.8 |
+   5529.2 |######
+   5536.6 |
+   5543.9 |###
+   5551.3 |
+  (4 below, 2 above range)
 
-wide-rung-wordround (n=40, range 5309.1-5507.7 ns)
-   5309.1 |######################
-   5319.0 |##
-   5328.9 |
-   5338.9 |
-   5348.8 |
-   5358.7 |##
-   5368.7 |
-   5378.6 |##
-   5388.5 |
-   5398.5 |
-   5408.4 |#########################
-   5418.3 |
-   5428.3 |##
-   5438.2 |
-   5448.1 |##
-   5458.1 |
-   5468.0 |
+wide-rung-wordround (n=40, range 5410.3-5579.1 ns)
+   5410.3 |########################################
+   5418.8 |#######
+   5427.2 |###
+   5435.7 |###
+   5444.1 |#######
+   5452.5 |
+   5461.0 |
+   5469.4 |###
    5477.9 |
-   5487.8 |########################################
-   5497.8 |##
-  (2 below, 1 above range)
+   5486.3 |#######
+   5494.7 |##################
+   5503.2 |###
+   5511.6 |#######
+   5520.0 |##################
+   5528.5 |
+   5536.9 |
+   5545.4 |###
+   5553.8 |
+   5562.2 |
+   5570.7 |
+  (3 below, 3 above range)
 
-wide-rung-wordround-alias (n=40, range 5309.3-5705.6 ns)
-   5309.3 |###################################
-   5329.1 |
-   5348.9 |
-   5368.7 |
-   5388.5 |########
-   5408.4 |
-   5428.2 |
-   5448.0 |
-   5467.8 |
-   5487.6 |########################################
-   5507.4 |########
-   5527.3 |########
-   5547.1 |
-   5566.9 |####
-   5586.7 |####
-   5606.5 |####
-   5626.3 |####
-   5646.2 |#############
-   5666.0 |####
-   5685.8 |########
-  (4 below, 3 above range)
+wide-rung-wordround-alias (n=40, range 5410.7-5564.8 ns)
+   5410.7 |########################################
+   5418.4 |#####
+   5426.1 |#####
+   5433.8 |##########
+   5441.5 |##########
+   5449.2 |#####
+   5456.9 |
+   5464.6 |#####
+   5472.3 |#####
+   5480.0 |#####
+   5487.7 |##########
+   5495.4 |
+   5503.1 |###############
+   5510.9 |####################
+   5518.6 |##########
+   5526.3 |#####
+   5534.0 |
+   5541.7 |
+   5549.4 |#####
+   5557.1 |#####
+  (5 below, 3 above range)
 
 ```
 
 ## Diagnostics
 
-- **wide-rung-align16**: autocorrelation=0.61 (measurement drift or warm-up artifact)
-- **wide-rung-ragged**: autocorrelation=0.77 (measurement drift or warm-up artifact)
+- **wide-rung-ragged**: autocorrelation=0.65 (measurement drift or warm-up artifact)
 - **wide-rung-ragged-overread**: autocorrelation=0.52 (measurement drift or warm-up artifact)
-- **wide-rung-wordround**: autocorrelation=0.69 (measurement drift or warm-up artifact)
-- **wide-rung-wordround-alias**: autocorrelation=0.69 (measurement drift or warm-up artifact)
+- **wide-rung-wordround**: autocorrelation=0.54 (measurement drift or warm-up artifact)

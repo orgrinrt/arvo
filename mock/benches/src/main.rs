@@ -131,6 +131,39 @@ fn main() -> ExitCode {
                 }
                 eprintln!("  regenerated {report_path}");
             } else {
+                // Cross-check the arms before timing them.
+                //
+                // `harness::run` does NOT do this: `run_orchestrator` never
+                // calls `validation::validate`, so without this call a variant
+                // computing a different answer from its peers is timed and
+                // reported like any other. Demonstrated: a one-character
+                // off-by-one in a loader's tail assembly produced 400 rows of
+                // ordinary-looking numbers and exit 0. The `digest` and `score`
+                // columns are zero for every plain `timed!` variant, so they
+                // catch nothing either, which leaves the variant crate's own
+                // unit tests as the only fidelity check in the system.
+                let variant_strings: Vec<String> = config
+                    .variant_paths
+                    .iter()
+                    .map(|p| p.display().to_string())
+                    .collect();
+                if variant_strings.len() >= 2
+                    && let Err(e) = harness::validate(
+                        &routine,
+                        &variant_strings,
+                        config.n,
+                        &config.bench_name,
+                        None,
+                        None,
+                    )
+                {
+                    eprintln!(
+                        "error: bench `{bench_name}` n={} failed validation, refusing to \
+                         report timings for arms that do not agree: {e}",
+                        config.n
+                    );
+                    return ExitCode::FAILURE;
+                }
                 let result = match harness::run(&config, &routine, &workload) {
                     Ok(r) => r,
                     Err(e) => {
@@ -453,6 +486,23 @@ fn run_worker(args: &[String]) -> ExitCode {
             return ExitCode::FAILURE;
         }
     };
+
+    // The validation pass spawns its workers with `--mode validate` and a
+    // comma-separated `--seeds` list, and expects `VOUT` lines back. Routing
+    // that through `harness::run_worker` produces no output, which the
+    // orchestrator reads as "returned 0 of 100 outputs" and then reports
+    // "Validation OK: all 0 variants produce identical output" before timing
+    // every variant anyway. Dispatch it to the worker that answers it.
+    if mode == "validate" {
+        let seeds: Vec<u64> = get("--seeds")
+            .unwrap_or_default()
+            .split(',')
+            .filter(|s| !s.is_empty())
+            .filter_map(|s| s.parse().ok())
+            .collect();
+        mockspace_bench_harness::harness::run_worker_validate(&routine, &dylib_path, &seeds, n, threaded);
+        return ExitCode::SUCCESS;
+    }
 
     let mut workload = Workload::new();
     workload.program("default", |b| {
