@@ -63,14 +63,14 @@ bar.
 
 **Admissibility.** The typestate refuses declarations it cannot serve, in both directions: it does
 not admit a declaration it cannot honour, and it does not refuse one it could. Instrument owed: a
-two-directional sweep. Panel evidence: none (`17` section 2.2's own count: fifteen expected-to-fail
+two-directional sweep. Panel evidence: none (`17` clause C3's own count: fifteen expected-to-fail
 probes exist across the panel and not one is about whether a *declaration* is admissible). Over-refusal
 is the direction with no natural author, since a consumer who never wrote the shape never files a bug
-(`17` section 2.2).
+(`17` clause C3).
 
 **Usage.** The typestate refuses operations that violate the declared invariants, with a diagnostic a
 consumer can read. Instrument: a diagnostic battery. Panel evidence: real and substantial, and all
-fifteen expected-to-fail probes in the panel are of this kind (`17` section 2.2, `12_probes/p11`,
+fifteen expected-to-fail probes in the panel are of this kind (`17` clause C3, `12_probes/p11`,
 `12_probes/p12`, `15_probes/q10`).
 
 **Self-validation.** The derived container actually holds the declared range, checked at derivation
@@ -137,7 +137,7 @@ numeral would be silent about the design's own float family, `Ranged` member, an
 the design admits numerals its coordinates cannot name is stated by `24` as op's own question (`24`
 section 9), separate from and prior to which surface pair a consumer writes.
 
-Argued to be **prior to Q8**, because it changes what the shape space is a space of (`15` section 9;
+Argued to be **prior to Q8**, because it changes what the shape space is a space of (`15` section 8;
 `23` S9/S17 collision, dissolved by the grid-and-reach reading per `24` section 2.3).
 
 ## Q3. Is there a mixed-numeral addition?
@@ -710,7 +710,7 @@ only on the const-to-type argument (a type cannot be recovered from a const with
 forbidden-feature wall, `16_probes/p5b`). If `Precise` *does* widen compute past storage, 64 of 251
 extents map to two distinct carriers, and the pair is irreducible as a matter of arithmetic, full stop
 (`16` sections 10.2, 12). Nobody has built `Precise` as anything but the default strategy under a
-different name in any probe in this panel (`15` section 9, `16` section 12), so this is genuinely
+different name in any probe in this panel (`15` section 8, `16` section 12), so this is genuinely
 undetermined rather than merely unmeasured.
 
 **A separate, standing disagreement never addressed by either file directly: is the strategy an
@@ -722,6 +722,51 @@ sign)` (`15` section 3.2), which is strategy-as-a-key. Both compile. The observa
 whether the crossover is a property of the ladder or a property of the caller, which bears on what a
 diagnostic can say (`23` names this S21, blocked, and states plainly that neither file addresses the
 other).
+
+## Q10. Is the inclusion order's own predicate amended to identify shapes denoting the same value set?
+
+**Restored 2026-08-08 after `31`'s coverage check found it absent.** `02:49-51` names exactly two things
+as "genuinely undetermined, and is op's", and only the first (whether `Precision` counts the sign digit)
+reached the register. This is the second. It is recorded here from `02` and `03` directly rather than
+from any summary.
+
+The question: the order's four-condition predicate reads a numeral's **declared** grid and phase. On a
+numeral carrying fewer than two values it reads something the order cannot see, because a singleton lies
+on every grid and in every phase, so its declared step is not recoverable from its value set. The four
+conditions are therefore sufficient for inclusion always, and necessary only where the source carries at
+least two values (`03` section 6, checking `02_carried` section 1.6).
+
+**`03` checked it with three independent instruments and it holds.** Python over 1936 ordered pairs at
+radices 2 and 3 with the integer width from minus three to three, so singletons at fine declared grids are
+present: 188 disagreements between the predicate and true set inclusion, **188 attributed to a source
+carrying fewer than two values, 0 unexplained**. Rust over 484 ordered pairs with a different containment
+algorithm: 28 disagreements, 28 same cause, 0 unexplained. Witness in both: a numeral denoting only zero at
+a declared step of one eighth is genuinely included in one at a step of one quarter, and the predicate says
+no because one quarter does not divide one eighth.
+
+**And the instrument that got it wrong is kept**, which is the part worth carrying. `03`'s first Python
+instrument reported zero disagreements over 1024 pairs, which would have refuted the claim. Its shape list
+held exactly one numeral carrying fewer than two values, and that one had the coarsest declared step in the
+box, so the predicate was never offered the case that breaks it. That is a setup that helps, left unfixed
+and named in its own header.
+
+**Why it is not a corner.** `03` reports the amendment **cross-cuts every reading of the family question**,
+so it is a precondition for that question rather than a detail inside one of its answers. It also connects
+to the predecessor panel's own open question rather than being separate.
+
+**The live options**, which are `03`'s two named candidates plus the do-nothing:
+
+- **Amend the predicate to identify shapes that denote the same value set**, so inclusion is decided on
+  denotation rather than on declaration. Removes all 188 disagreements by construction, and changes what
+  "the same numeral" means everywhere the order is used as a two-place relation.
+- **Restrict the predicate's necessity claim** to sources carrying at least two values, and state the
+  singleton case as a documented exception rather than repairing the predicate. Cheaper, and leaves a
+  predicate whose necessity half is conditional.
+- **Leave it**, on the argument that a numeral carrying fewer than two values is not a case any consumer
+  reaches. Nobody has tested that argument, and `03` did not offer it; it is listed so the option space is
+  not silently three-sided.
+
+`03` asked explicitly for a second read on this and no second read has run.
 
 ## Questions with live options that op has not been asked
 
