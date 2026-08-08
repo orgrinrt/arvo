@@ -15,21 +15,23 @@ written down now, in `RULES.md`, instead of being rediscovered.
 
 ## What you read, and in what order
 
-Six files, and none of them is long except the last.
+Seven files, and none of them is long except the last.
 
-1. **`RULES.md`.** How this panel works. Provenance, what a canon may contain, dispatch conduct,
+1. **`INTENTS.md`.** Op's stated intents for arvo, quoted with provenance. This is the material that
+   graduates into the canon; everything else here is working towards it. Read it first, every time.
+2. **`RULES.md`.** How this panel works. Provenance, what a canon may contain, dispatch conduct,
    evidence, consolidation. Read it once before your first file.
-2. **`01_op_answers.md`.** Op's founding input, including the correction to what ratification means.
+3. **`01_op_answers.md`.** Op's founding input, including the correction to what ratification means.
    Section 0 changes how every other document here is read, so it is not optional.
-3. **`OPTIONS.md`.** The live option register: every shape still admissible, written out in full. This
+4. **`OPTIONS.md`.** The live option register: every shape still admissible, written out in full. This
    is the working surface of the explore-do-not-settle mode. Your file is evaluated against every live
    option in it, and says which its finding fits, which it fits badly, and which it kills.
-4. **`SETTLED.md`.** The index of what the predecessor established, with provenance per row, the open
+5. **`SETTLED.md`.** The index of what the predecessor established, with provenance per row, the open
    questions by name, and a header stating why its top rung is now wrong.
-5. **`DROPLIST.md`.** What was tried and dropped, cumulative, plus same-stretch reversals kept under
+6. **`DROPLIST.md`.** What was tried and dropped, cumulative, plus same-stretch reversals kept under
    a separate name. Read it before proposing anything, so a dead route is not walked twice. An option
    you kill in `OPTIONS.md` lands here, with its diagnostic and with what would reopen it.
-6. **`CANON_CANDIDATE.md`.** The predecessor's twelfth consolidation, carried whole, with its known
+7. **`CANON_CANDIDATE.md`.** The predecessor's twelfth consolidation, carried whole, with its known
    stale sections listed at the top. A starting text to re-derive from, never a citation.
 
 `seed/` holds the four survivor sweeps of the predecessor's full history, by theme, each with its
@@ -40,7 +42,7 @@ relying on a `SETTLED.md` row it covers.
 carried and its citations point into the old panel.
 
 **Do not read the predecessor's tree.** It is 320 files and roughly 210,000 tokens of markdown.
-Everything that survived it is in the six files above. If you believe something is missing, say so
+Everything that survived it is in the seven files above. If you believe something is missing, say so
 rather than going to fetch it.
 
 ## The method: keep options open, and never ratify early
