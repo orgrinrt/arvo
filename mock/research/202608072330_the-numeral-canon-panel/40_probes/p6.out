@@ -5,21 +5,22 @@ ok    25:275-277 four cells covering two axes
 ok    25:277-279 Cold has no stated overflow policy
 ok    25:341-349 the relation form
 ok    25:351-355 the strategy axis is the wrong phrase
-ok    25:396-399 toolbox-not-policer quote
 ok    25:429-430 does not change which values
 ok    25:528-537 the proposed canon sentence
 ok    34:16-18 Hot may sacrifice soundness
 ok    35:52 three of four reassociable
 ok    35:201-202 absorption 63 of 63 against 0 of 63
 ok    35:222-223 min-plus wrong at 48.9%
-ok    35:728-731 the properties reframing
+ok    36:42-43 Precise throws out cold-axis optimisations
 ok    36:42-45 Precise throws out both
+ok    36:44-45 within chains and ops
 ok    37:43-44 the call kept failing to stick
 ok    37:106-107 Cold is for cold paths
 ok    37:109-110 throughput is for Hot
 ok    38:16-17 they weigh different measurements differently
+ok    39:58-62 the two-by-two carried forward
 ok    39:60-62 evidence about what the axes actually are
 ok    RULES.md:79-83 the permanence test
 ok    RULES.md:224-228 mock/benches is the evidence
 
-citations checked: 23, failures: 0
+citations checked: 24, failures: 0
