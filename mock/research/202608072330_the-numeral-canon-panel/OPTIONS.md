@@ -756,8 +756,33 @@ arrival). Consequence for how a canon states the two-output design: "the derivat
 container and a stride" invites reading them as two coordinates of one answer; "the derivation answers
 a per-value question and a per-aggregate question" states why they are not (`16` section 12).
 
-**Whether the two-output shape is forced by arithmetic or only by the type system, blocked on the
-`Precise` strategy's undecided semantics.** If `Precise` does not widen compute past storage, zero of
+> **Corrected by `45`: this is not blocked on `Precise`, and the two-output shape is already forced.**
+> `45_probes/p1` compiles a witness at W=256 where `Warm` takes a carrier of size 32 align 1 and `Hot`
+> takes one of size 32 align 16: same width, same stride, same byte count, **different carrier type**,
+> at 40 of 640 wide-rung widths, with zero dependence on `Precise` or on sign, and a negative control at
+> W=240 where the byte counts differ and no collision occurs. So (width, stride) does not determine the
+> carrier on grounds unrelated to `Precise`.
+>
+> `45_probes/p2` reproduces `16`'s own carrier representation on that identical domain and gets **0
+> against 40**, because it is a bare bit count and cannot express the distinguishing fact. That is the
+> same instrument blindness `16` diagnosed for a different check in its own section 5, now found in its
+> own instrument for this claim.
+>
+> **What genuinely turns on `Precise` is narrower**: whether a *third* output is needed, a compute
+> carrier distinct from the storage carrier. `45_probes/p5` shows that is mechanically expressible
+> gate-free under either reading, so even it is blocked on op's intent rather than on the type system.
+>
+> **And one reading is settled by information content.** If `Precise` means matching the exact
+> once-truncated chain answer for every input, widening the intermediate is **forced by pigeonhole**,
+> proved exhaustively at F=3..6 by two independently coded instruments cross-checking to identical
+> counts (`45_probes/p3`, `p4`). That generalises `35`'s empirical fold result into a proof.
+>
+> **The honest label is "forced by semantics", not "forced by arithmetic".** `45` argues `16`'s
+> type-system-only branch exhibits one refused syntactic form rather than showing reduction is
+> impossible, and that `16`'s own trait mechanism already reduces it.
+
+**Whether the two-output shape is forced by arithmetic or only by the type system, previously framed as
+blocked on the `Precise` strategy's undecided semantics.** If `Precise` does not widen compute past storage, zero of
 251 swept extents map to more than one carrier in the box measured, and the pair's irreducibility rests
 only on the const-to-type argument (a type cannot be recovered from a const without re-entering the
 forbidden-feature wall, `16_probes/p5b`). If `Precise` *does* widen compute past storage, 64 of 251
