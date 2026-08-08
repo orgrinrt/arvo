@@ -172,6 +172,30 @@ holding a complete investigation in a single final write.
 predecessor, and op's files. The prior panel reached 210,000 tokens of markdown, at which point
 telling a member to read the panel was telling it to exhaust its context before starting.
 
+### The reading list needs a slot for the repository, and did not have one
+
+Found at the third checkpoint of this panel's first night, and it cost eighteen files.
+
+Every brief carried the line that `mock/crates` is being nuked. Every member read that as **the
+repository is not evidence**, which is not what it says and not what is meant. The consequence:
+eighteen files reported the packed-storage trade as **unpriced**, while `mock/benches/` held a
+committed harness run measuring exactly it, with confidence intervals and significance. No file in
+the panel named that directory. The panel argued for a night about the half of a trade it could see.
+
+So a brief says explicitly what in the repository **is** evidence and where it lives:
+
+- **`mock/benches/`** is committed harness output and is the only thing in this workspace that can
+  price anything. A claim that something is unpriced is a claim about that directory, and it is
+  checkable in one command.
+- **`mock/research/`**, including closed panels, is the audit trail. Reachable when a specific
+  artifact is needed, named as such.
+- **`mock/crates`** is the dead tree: readable for what was done and what not to do, never cited as
+  evidence about what is correct.
+
+The general lesson is worth more than the fix. **A negative claim about evidence is a claim about a
+place**, and it can only be made by someone who was told where to look. "Unpriced" said by a member
+who does not know the bench directory exists is not a finding, it is a description of the brief.
+
 ### Cumulative reading makes the TWO EXPERTS rung unreachable unless the dispatch says otherwise
 
 Noticed at the first checkpoint of this panel, and it is a defect in these rules rather than in any
