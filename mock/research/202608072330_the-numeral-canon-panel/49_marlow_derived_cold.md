@@ -226,3 +226,168 @@ derivation was not asked to settle) and it does not attempt more than one strate
 storage/operand divergence (Cold, Precise). The schema-uniformity claim (six facts, same shape, per
 strategy) is supported by every cell I filled agreeing on shape and none refusing to fit; it is not
 proven for cells I did not fill.
+
+---
+
+## Phase two: reading the panel
+
+Read after the section above was committed (commit `2430fad`): `15`, `16`, `44`, `45` (including its
+sections 11-12 reply to `46`), `46`, `47`, `48`, and the "derivation's outputs" section of `OPTIONS.md`
+(lines 703-870). This section reconciles; phase one above is untouched.
+
+### The panel is the same question, four files ahead, and checkpoint 48 dispatched exactly this file
+
+`48` (the checkpoint immediately before this dispatch) named "derive it cold, with the reading order
+inverted, and forbid the panel until the answer is on disk" as the single highest-value remaining act on
+this topic, and specified giving the expert only `INTENTS.md`, `RULES.md`, `00_brief.md` and the question
+(`48:436-456`). That is this dispatch, word for word. So phase one above is the artifact `48` asked for,
+and this section reports where it lands against the unit `48` was auditing.
+
+### Where phase one stands, corrected in the panel's favour
+
+**The two required outputs (my facts 3 and the packing-model question, fact 6) match the panel's carrier
+and stride, and my hedge on fact 6 was well-placed but under-resolved by me and over-resolved by the
+panel's later files.** `15` and `16` establish, independently and by different routes (`15` by fixing two
+bugs in a stride formula, `16` by an injectivity argument on `Cold`), that a derivation needs (a) the
+machine type an operation lowers to and (b) the bit distance between consecutive elements of an aggregate,
+and that neither is recoverable from the other. My phase-one fact 3 (storage representation) is their
+carrier. My phase-one fact 6 (packing model) is a strictly *weaker* encoding of their stride: I asked only
+whether a sequence packs (`PACKED: bool`), where the panel's stride is the exact bit count. My own probe
+already computed the exact number in one place (`storage_byte_size`) and I did not go the last step to
+name it as a first-class fact; the panel did, and it is the more complete answer. I concede this
+straightforwardly: **stride, not a packed/unpacked flag, is the correct form of my fact 6.**
+
+**My fact 5 (alignment) is not a separate fact and I over-counted it.** `16` establishes `align_of` is a
+property of a type (`16:605-613`, confirmed independently by `47:299-302`), so it rides on the carrier
+(my fact 3, Storage) and needs no independent associated const. My probe's `const ALIGN: usize` was
+redundant with `core::mem::align_of::<Self::Storage>()`, and I should have recomputed it rather than
+stored it. This directly narrows my six-fact enumeration to closer to what the panel converged on: width
+and sign as inputs the type already carries, plus carrier and stride as the two required derivation
+outputs, plus a possible third (operand/compute carrier) contingent on unsettled strategy semantics.
+
+### Where phase one is wrong, and the panel's evidence is better than mine
+
+**My Cold `Storage` diverging from Warm's `Storage` (`[u8; 2]` versus `u16` at N=13) does not match the
+panel's doubly-corroborated finding, and I think the panel is right and I was wrong.** `15:317-319`: "a
+lone `UFixed<13,3>` is a `u16` whatever strategy you asked for." `16` reaches the identical conclusion
+independently, from the opposite direction (a lone packed value has to have a size, so `Cold` cannot be a
+statement about the standalone type at all, `16` section 2). `OPTIONS.md` records this as "TWO EXPERTS,
+both self-report independent arrival" (`OPTIONS.md:750-757`). My own probe's own compile-time assertion
+(`p1_fact_schema.rs`: `storage_byte_size::<Hot, Unsigned, 13>() == storage_byte_size::<Cold, Unsigned,
+13>()`) already established the *sizes* agree, and I stopped short of asking whether the *types* should
+too. They should, on the panel's evidence: a `[u8; 2]` standing alone buys nothing over a `u16` standing
+alone (same two bytes, no packing possible until there is a second element to pack against), so giving
+Cold a distinct standalone `Storage` type is cosmetic where I intended it to be substantive. The real
+saving is entirely a fact about the aggregate (stride), never about the lone value, and I built a
+type-level distinction to carry a fact that only exists once you have more than one value. I would redo
+my probe with `Storage` identical across `Hot`/`Warm`/`Cold` at a shared width and sign, and carry the
+packing fact on stride alone.
+
+**The consequence for my Storage/Operand split, derived from I6, is narrower than I wrote it.** I derived
+the split from "Cold... can use the same paths Hot uses" (I6), reading it as requiring a distinct Operand
+type for Cold, wider than its Storage. Once Cold's Storage is corrected to equal Hot's and Warm's (previous
+paragraph), I6's quote is satisfied trivially and without a separate Operand slot: Cold already computes in
+the same type Hot does, because it is the same standalone carrier. So my own motivating textual evidence
+(I6) does not, on reflection, force what I built it to force. **The genuine Storage/Operand divergence
+question in this design is `Precise`'s alone**, exactly where the panel has spent four files
+(`16` section 6, `44` section 6, `45` sections 1-4, `46` section 5, `47` sections 4 and 9) and has not
+settled it. My probe's `Precise: Storage = u16, Operand = u32` happens to instantiate the "Precise widens"
+reading the panel debates, but I chose it because it fit I7's prose intuitively, not because I derived it
+from anything as rigorous as `45`'s pigeonhole argument (an information-theoretic proof that no
+fixed-width intermediate, under any rounding rule, can match the once-truncated exact chain answer for a
+two-step multiply chain, `45` section 3.2). My phase-one probe is a compatible instance, not independent
+corroboration of the widening reading; I want to be precise about that rather than let agreement read as
+more than it is.
+
+### What phase one got right, that the panel had not sharpened the same way
+
+**The schema-is-uniform, values-differ-per-strategy shape directly answers one of `48`'s named open
+items for the next dispatch, independently.** `48` section 7.2 names "is the fact set closed under `I1`"
+(the open strategy set) as an unaddressed, cheap, expert-level question: "a fact set that is a list of
+four answers does not survive a fifth strategy; one that is a set of questions does." My phase-one section
+"Does the answer change with strategy" answers exactly this, arrived at before I had read `48` or seen the
+question posed: the schema (which facts exist, and in what form) is strategy-independent; only the values
+filling it vary per strategy, which is precisely the shape that survives `I1`'s open strategy set, because
+a new strategy adds impl bodies rather than new fact-slots. I did not use `48`'s vocabulary and did not
+know the question had been named; I offer this as one instance toward it rather than as a settled answer,
+since `48` is explicit that this item wants an expert dispatch of its own, and one persona checkpoint's
+redirect plus one independent cold answer is not that dispatch.
+
+**The trait-decomposition mechanism (name the schema as a trait, fill it per `(Strategy, Sign, N)` impl,
+never inline the arithmetic in a bound) is exactly what the panel converged on independently, and my
+compiled evidence adds a small, real thing theirs does not: validation as a missing-impl refusal.**
+`16_probes/p6_trait_form_recovers_both.rs`, `45_probes/p5_third_output_is_mechanically_free.rs`, and
+`47_probes/p1_single_type_output.rs` all use the same shape I used in `49_probes/p1_fact_schema.rs`,
+independently arrived at four separate times now (theirs, and mine before I had read theirs). My own
+contribution the panel had not stated explicitly: `49_probes/p2_validation_is_a_missing_impl.rs` shows
+that asking for a fact at an unimplemented `(Strategy, Sign, N)` combination is refused by ordinary trait
+resolution (`E0277`, not a panicking const-eval, not a runtime check), which is the acceptance criterion's
+"it validates" clause falling out of the mechanism for free. Nobody in `15`, `16`, `44`, `45`, `46`, `47`,
+or `48` states this explicitly as a distinct clause of the acceptance criterion answered; they are
+occupied with the derivation's outputs (the "container and numeral representations" clause) rather than
+its validation clause. I did not find this contradicted anywhere and I did not find it stated either.
+
+### Where my own evidence has exactly the blindness the panel names, and I did not catch it myself
+
+**My erasure probe (`49_probes/p3_erasure_check.rs`) is a scalar check, and `16` and `17` (cited by `16`)
+establish precisely that a scalar check is structurally blind to whether the second output (stride,
+packing) actually holds.** `16:518-521`: "the erasure and codegen-equality check... its method is
+comparing one operation against one native instruction, so its instrument is a scalar and it has no array
+in it and cannot have one." My `p3` does exactly this: three functions, each moving one value between two
+representations, checked at `-O3` against emitted assembly. It genuinely establishes that per-value
+conversions between my Storage and Operand forms erase to bare masks and moves, which is real and I stand
+by it as far as it goes. It establishes nothing about whether an *aggregate* of Cold-strategy values
+actually achieves the packed stride I claimed for it, because (per the correction two sections up) my
+probe never built a sequence at all. Had I read `16` first, I would have known to build a second, array-
+level check (`16`'s own `p3_blind_suite.rs` is exactly the shape: a packed round-trip at a nonzero bit
+phase, with data that fills the declared width rather than small counter values, since `16` section 7 also
+found the array-level check itself is blind on small test data). I did not build one, and I am naming the
+gap rather than filling it now, since filling it would mean re-deriving `16`'s own probe rather than adding
+anything.
+
+### The kind boundary (type versus const) is the sharper form of a distinction I used but did not name
+
+`47` names precisely why the trait-decomposition mechanism (used by all of us) works and why the naive
+"recover one fact from another via inline const arithmetic" route does not: a `type -> const` projection
+is total and gate-free (any associated type can yield a `size_of`/`align_of` for free), while a
+`const -> type` projection is refused, because reaching a type from an arithmetic expression on a generic
+is exactly what `generic_const_exprs` gates, and that feature is forbidden (`47` section 2.2-2.3, six
+independent compiled refusals across `47`, `45`, and `16`'s probes, all naming the same forbidden feature
+from different starting points). My own phase-one derivation used this distinction implicitly (I put
+`Storage`/`Operand` as associated types and `ALIGN`/`WIDTH`/`PACKED` as associated consts, which is exactly
+sorting facts by which side of the kind boundary they belong on) but never stated the boundary as the
+reason. `47`'s naming of it, and `48`'s further sharpening (a fact belongs in the result when a downstream
+site would otherwise have to re-derive the strategy's own rule, not merely when it happens to be
+unrecoverable in principle, `48` section 5) is a better statement of what I was doing by instinct than
+anything I wrote in phase one. I would adopt `48`'s "re-derivation" test over my own "consumer did not
+write it / machine needs it / cannot be recovered" criterion (borrowed unknowingly from `16:100-101`,
+which I never read until phase two, since I derived a nearly identical three-clause test independently:
+compare my phase-one "A quantity earns a place... when getting its value requires consulting the strategy
+as an actual decision... and when an entity other than the numeral itself... needs the answer and cannot
+safely re-derive it" against `16:100-101`'s "the consumer did not write it, the machine needs it, and a
+downstream site... cannot recover it." These are close enough in shape that `48`'s critique of `16`'s
+criterion, that it is applied two different ways in the same file and one of those ways kills the finding
+(`48` section 5), likely applies to mine as well, and I did not catch it any more than `16` did.
+
+### Did reading the panel change my answer
+
+**Yes, in the specific places named above, and the change is a narrowing, not a reversal.** The count goes
+from six facts to closer to the panel's two-required-plus-one-contingent (carrier/storage, stride, and a
+contingent compute/operand carrier), with width and sign correctly kept as inputs the type already carries
+rather than derivation outputs, matching `16`'s own self-correction (`16` section 10.1) that I arrived at
+independently and then, on reading, found already made. My alignment fact was over-counted and recomputes
+from the carrier. My packing-model fact was under-specified (a boolean where a bit count is the real
+answer) and the panel's stride is the correct form of it. My Cold-diverges-from-Warm-in-Storage-type claim
+does not survive contact with two independently-arrived-at panel findings and I would redo the probe.
+
+What did not change: the underlying mechanism (name the schema as a trait, fill values per strategy
+through ordinary impls, let validation fall out of missing-impl refusal, let erasure fall out of
+monomorphisation), the observation that the schema's shape is strategy-independent while the values are
+not (which answers, independently, one of `48`'s named open items for the next dispatch), and the
+compiled evidence that this is expressible with zero forbidden features throughout. That the six-fact
+enumeration and the Cold-storage-divergence claim needed correcting, while the mechanism did not, is
+itself informative: a cold derivation from the intent statements alone gets the *shape of the answer*
+right and gets *specific instantiations* wrong in exactly the places where only compiled, cross-checked,
+multiply-attacked evidence (four files' worth, on this narrow a question) settles it. That is the result
+this dispatch exists to produce, and it argues for the panel's own standing discipline (derive, then
+attack, then attack the attack) over any single pass, cold or not.
