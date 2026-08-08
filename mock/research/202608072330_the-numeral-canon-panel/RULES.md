@@ -147,35 +147,55 @@ State the exposure the way `43` did, by name: which file you leaned on, which yo
 which of your sections would move if the account were wrong. A coverage bound naming the specific risk
 is worth more than a claim of completeness, which this workspace has repeatedly caught being unmeasured.
 
-## The cadence, and why running it as a survey defeats the rungs
+## The cadence: one 4-4-1 is one topic, end to end
 
-**Four experts, checkpoint, four experts, consolidation. Repeating.** The consolidation is the canon
-candidate. This is in `00_brief.md` and it is not optional.
+**Four experts on the topic, op's checkpoint, four more experts on the same topic, then the
+consolidation. Nine files. Then the next 4-4-1 takes the next topic.**
 
-**It was followed to `19` and then abandoned for twenty-five files.** No consolidation has ever been
-written in this panel. That is the mechanism by which evidence becomes canon text, and its absence is
-why forty-four files produced no candidate. The explore-do-not-settle mode forbids **settling**; it
-never forbade consolidating, and treating the two as the same thing is how the absence got explained
-away as compliance.
+Op stated it plainly on 2026-08-08 after finding the panel doing something else:
 
-**Several experts on one question, not one expert per question.** Op, 2026-08-08:
+> The intended way is that the 4-4-1 is one topic, the whole thing. Then the next 4-4-1 picks up the
+> next one. Then the next 4-4-1 too, etc.
 
-> You are making one expert do a round, then immediately kind of shift focus with the next one, even
-> if a bit related sometimes. What if you had a few experts talk through a single thing first?
+**The consolidation is that topic's canon candidate.** This is the answer to "when does the canon get
+written": it does not arrive at the end of the panel. **It accretes one topic at a time**, and each
+completed 4-4-1 produces the candidate for its own subject.
 
-A dispatch per topic is a survey. It reads like a panel because each file cites its predecessors, and
-it cannot do what a panel is for.
+### What the panel did instead, and it was never right
 
-The reason is mechanical rather than stylistic. **TWO EXPERTS requires two independent derivations of
-the same claim**, and ratification requires convergence, meaning the experts have stopped disagreeing.
-One expert per question makes both unreachable by construction: every finding lands at ONE EXPERT and
-stays there, however strong it is, and nothing can ever be brought to op as converged.
+Not once. The stretches that looked compliant were four experts on **four different subjects** with a
+checkpoint after: `03` the family question, `06` where a numeral is inferred, `07` the adjunction
+frame, `08` alternative number systems. A checkpoint every four files is not the cadence; it is the
+punctuation of the cadence without its content.
 
-So a question gets successive experts until they either agree or have located exactly what they
-disagree about. Disagreement that survives several passes is itself a result and goes to op as one; a
-question answered once and left is not.
+After `19` even that stopped, and **no consolidation has ever been written here**. So the mechanism
+that produces canon text was never run, and the dispatching agent read the resulting absence as the
+explore-do-not-settle mode working. The mode forbids **settling**. It never forbade consolidating, and
+conflating the two turned a missed cadence into an excuse.
 
-**A question is finished when a later expert adds nothing, not when a file exists about it.**
+### Why one topic per unit, rather than one topic per expert
+
+A dispatch per subject is a survey. It reads like a panel, because every file cites its predecessors,
+and it cannot do what a panel exists for.
+
+**TWO EXPERTS requires two independent derivations of the same claim. Ratification requires the experts
+to have stopped disagreeing.** One expert per subject makes both unreachable by construction: every
+finding lands at ONE EXPERT and stays there however strong it is, and nothing can ever be brought to op
+as converged. That is a fact about the shape, not about the evidence.
+
+Eight experts on one subject can converge, and can locate exactly where they do not. **Disagreement
+surviving eight passes is itself a result** and goes to op as one.
+
+### Consequences for how a topic runs
+
+**A topic is finished when a later expert adds nothing**, not when a file exists about it.
+
+**The checkpoint sits in the middle for a reason.** Four files in, op can redirect the second half
+while it still costs four files rather than nine.
+
+**The consolidation is standalone and versioned, never a delta**: a section that did not change has its
+content written out anyway. And it is checked by someone who did not write it, working from the member
+files forward, because the author of a compression is the person who believes it entails.
 
 ## The mode: explore, do not settle
 
