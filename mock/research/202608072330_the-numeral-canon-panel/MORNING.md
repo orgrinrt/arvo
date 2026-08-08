@@ -5,6 +5,18 @@ This is angles opened, routes closed, and questions sharpened, presented for op 
 
 Read this first; it points at the files. Each entry says what changed and what it cost to find out.
 
+## Where the night landed, in one paragraph
+
+The design's width surface is a const, which forces a table, and the table cannot be closed because
+the algebra outgrows it. That was found tonight and it is new. A nat-keyed surface removes the
+ceiling while meeting your ergonomics bar character for character, which was assumed impossible and
+is not. **Two experts derived that independently, in the correct order, and the second said so.**
+What remains is a choice between compiled costs, and it is yours.
+
+**This is the one claim of the night at TWO EXPERTS.** `13` read the establishing text and the
+constraints, then stopped, derived, built, and wrote its answer down before opening `12`. It states
+the order it worked in. Everything else tonight is one expert, however many files agree.
+
 ## Read these two first, in this order. The second answers the first.
 
 ### One: the bridge table cannot be closed, at any size
@@ -120,6 +132,46 @@ establishing text is `seed/SETTLED_surface.md`. The row now says so and points t
 
 That is the second time tonight a compression of mine misled an expert, and both times the theme
 sweep underneath had it right.
+
+### Three: the independent second read, and what it added
+
+`13` was dispatched under the corrected shape: derive first, build, write it down, and only then read
+`12`. It confirms `12` on every point that matters and adds four things `12` did not have.
+
+**The ceiling and the reverse wall are one fact.** `11` localised the ceiling to the const surface.
+`12` separately closed the reverse crossing. **Neither joined them**, and they are the same refusal:
+an output width can only be *named* by crossing from nat back to const, which is the wall. `13`
+compiled the ceiling firing exactly as a missing reverse-table row. The rule it draws is short enough
+to be a canon sentence: **cross once, at literals, in one direction.**
+
+**A fifth arrangement nobody had.** Width type is a nat wrapper, outputs are *declared* and checked
+wide-enough by type-level comparison. No reverse table, no ceiling, no second head constructor, no
+base-ten rewrite. The diagnostic is cleaner than any other candidate's, printing `expected 13, found
+12` with no towers at all. Its cost is real and stated: product sites must state their output shape,
+and tier-one inference is unworked. Offered explicitly as a residue for the next expert to attack
+rather than as a proposal.
+
+**Extending the bridge costs one readable line**, verified against the algebra. That prices the
+consumer-extension property in `SETTLED.md`, which nobody had priced, and which you refused the
+bridge on when its cost was stated as "one line". It turns out to be one line, but a different one
+than anyone meant.
+
+**Exhaustive where the record had samples.** Type-level addition normalising over the whole
+4225-pair matrix, with a negative control proving the instrument bites, against three sampled points
+previously.
+
+**And it withdrew one of its own findings** after reading `12`. It had called an alias-site repair
+closed; `12` had already written the bounds that make it work. Withdrawn in the file rather than
+quietly dropped.
+
+**One hazard it flags in `12`**: `12`'s headline reads stronger than `12`'s own table two sections
+above it. Worth knowing before you read that file.
+
+### A question it raises about your own gate
+
+The acceptance criterion says the consumer expresses usage **in bits and bytes**. `13` asks whether
+that names two units the surface should actually offer, since it built and checked the machinery for
+both. Nobody had read the clause that way. It may be nothing; it is your sentence.
 
 ## Your standing instruction, taken at last, and it went well
 
