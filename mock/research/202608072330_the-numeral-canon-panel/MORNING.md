@@ -52,8 +52,22 @@ that reaches backwards over everything else.
 After those: what your standing instruction produced, the routes closed with their diagnostics, the
 corrections files made to each other and to me, and the method notes.
 
+**On checking anything here.** An independent entailment check (`21`) measured this file against its
+sources and found the sources carry **297 line-level anchors across 119 unique targets while this
+file carried zero**, against 295 numeric tokens. Nothing in it was checkable without opening every
+panel file and guessing.
+
+Every major section now opens with a *Sources* line naming the files and probe directories its
+claims come from. That is a repair at file granularity rather than line granularity, which is the
+honest limit of what I can add without re-verifying 295 numbers by hand and risking a fresh error in
+the act of fixing one. **If a number here matters to a decision, open the named probe directory
+rather than trusting this file.** `21` checked 51 of them and 50 reproduced exactly, so the
+arithmetic underneath is sound; the failures it found were all in my compression of it.
+
 ## The correction that matters most: the `Cold` trade is not unpriced
 
+
+*Sources: `19` found it, `20` audited it, and the harness output is `mock/benches/bitpack-sequential-sum_n16384_findings.md`. The retraction below is `20`'s.*
 Every file tonight, and every summary I wrote of them, says the packed-storage trade is **unpriced**
 because no bench harness has run in this panel. That is true of this panel and **false of this
 repository**, and the third checkpoint found it.
@@ -97,6 +111,8 @@ excluded, and nothing told them it was there.
 
 ## Where the night landed, in one paragraph, corrected
 
+
+*Sources: `03`, `06`, `12`, `13` for the claims; `14` for the corrections to an earlier version of this paragraph.*
 The design's width surface is a const, which forces a table, and **the table cannot be closed because
 the algebra outgrows it**. That is new and it is the night's most consequential finding. A nat-keyed
 surface removes the ceiling while meeting your ergonomics bar character for character, which was
@@ -132,6 +148,8 @@ found is below, and it changes the shape of what is left for you.
 
 ## Three: the gaps closed, and the acceptance criterion has a noun nobody had used
 
+
+*Sources: `15` throughout, with `15_probes/` carrying every number. `06` for the negative-width result it reproduces.*
 **The negative-width collision dissolves by changing coordinates, not by carrying a cost.** `15`
 reproduced the first stretch's counts with three instruments, then asked what nobody had: **the
 integer width is the only coordinate that goes negative.** Total width and fraction width never do,
@@ -234,6 +252,8 @@ alignment.
 
 ## Five: what the panel's evidence is actually worth
 
+
+*Sources: `17` throughout, with `17_probes/`. It re-runs `15_probes/q12_erasure_asm.rs` as the real instrument.*
 `17` was sent to separate what is proved from what is trusted, after `16` found the certifying
 instrument blind. It corrected its own premise on the way in, which is the right instinct: `16`'s
 demonstration probe is a runtime value comparison rather than a codegen one, and says so itself, so
@@ -324,6 +344,8 @@ proved part of clause four is proved by construction rather than by that instrum
 
 ## Six: the saturating-top answer is narrower than section four says
 
+
+*Sources: `18` throughout, with `18_probes/`. It corrects `07`, whose probe is `07_probes/p5_postfixpoint_accumulator.py`.*
 `18` closed the last category, and on the way it corrected one of tonight's headline results. **Read
 this before acting on question four.**
 
@@ -387,6 +409,8 @@ summary of mine.
 
 ## Seven: your second standing instruction, discharged, and what the repository knew
 
+
+*Sources: `20` throughout, with `20_probes/`. The bench corpus is `mock/benches/`; the instruction is quoted in `seed/SETTLED_container.md`.*
 You said the headroom bench body was "one instance of evidence, completely unaudited by a second
 expert set of eyes". `20` is that second set of eyes. It read the harness rather than the summaries.
 
@@ -455,6 +479,8 @@ alone the panel acquires a second unresolved count dispute. It has one already.
 
 ### One: the bridge table cannot be closed, at any size
 
+
+*Sources: `11`, probes `b01`, `b02`, `b03`, `e01` in `11_probes/`.*
 `11` went looking outside the project for a route past the bridge that `10` conceded. It did not find
 one. It found something worse and more useful.
 
@@ -517,6 +543,8 @@ because Ada carries the one property that is actually available here.
 
 ### Two: the assumption underneath all of it is false
 
+
+*Sources: `12`, probes `p02`, `p03`, `p12`, `p13`, `p14` in `12_probes/`, counted by its own `count.sh`.*
 `11` left the design facing a choice between a const width surface with an uncloseable table and a
 nat surface nobody believed could be written. `12` tested that belief. **It does not hold.**
 
@@ -569,6 +597,8 @@ sweep underneath had it right.
 
 ### Three: the independent second read, and what it added
 
+
+*Sources: `13`, probes `p01` through `p29` in `13_probes/`, with `verify.sh` reporting zero unexpected outcomes.*
 `13` was dispatched under the corrected shape: derive first, build, write it down, and only then read
 `12`. It confirms `12` on every point that matters and adds four things `12` did not have.
 
@@ -609,6 +639,8 @@ both. Nobody had read the clause that way. It may be nothing; it is your sentenc
 
 ## Your standing instruction, taken at last, and it went well
 
+
+*Sources: `10`, with `10_probes/`. The attempt it audits is the closed panel's `137` and `137_probes/`.*
 Nobody had taken it for four dispatches. `10` did, and the answer is better than the record suggested.
 
 **The mechanism is built, it works, and it stands on the pin.** The attempt is the closed panel's
