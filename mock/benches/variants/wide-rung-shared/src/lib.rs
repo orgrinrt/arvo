@@ -252,6 +252,10 @@ pub const ALL_KEYS: &[usize] = &[
     // issue-bound on the limb arithmetic and every arm runs at the same
     // limb-op rate regardless of how many bytes it touched.
     129100, 160100, 192100, 200100, 232100, 256100,
+    // the same bare walk cache-resident, as the discriminator between a
+    // memory-system effect and a core one: if the width pattern in the l2
+    // walk survives at 2048 elements it is not about memory at all.
+    129000, 160000, 192000, 200000, 232000, 256000,
 ];
 
 #[cfg(test)]

@@ -402,6 +402,12 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("wide-rung-walk-l2", 200100) => routine_bridge!(WideCase<200100>),
         ("wide-rung-walk-l2", 232100) => routine_bridge!(WideCase<232100>),
         ("wide-rung-walk-l2", 256100) => routine_bridge!(WideCase<256100>),
+        ("wide-rung-walk-l1", 129000) => routine_bridge!(WideCase<129000>),
+        ("wide-rung-walk-l1", 160000) => routine_bridge!(WideCase<160000>),
+        ("wide-rung-walk-l1", 192000) => routine_bridge!(WideCase<192000>),
+        ("wide-rung-walk-l1", 200000) => routine_bridge!(WideCase<200000>),
+        ("wide-rung-walk-l1", 232000) => routine_bridge!(WideCase<232000>),
+        ("wide-rung-walk-l1", 256000) => routine_bridge!(WideCase<256000>),
         _ => return None,
     };
     Some(RoutineSpec {

@@ -1863,3 +1863,77 @@ variants = [
     "../target/release/bench_wide_rung_wordround_alias",
     "../target/release/bench_wide_rung_align16",
 ]
+
+# ---------------------------------------------------------------------------
+# The bare column walk, cache-resident (panel file 22, section 6). Same six
+# widths and same one-operation transform as wide-rung-walk-l2, at 2048
+# elements so every arm fits L1. It is the discriminator: the l2 walk shows a
+# reproducible width-dependent baseline that instruction count, run order and
+# loaded-byte contiguity all fail to explain, and if that pattern survives in
+# cache it is not a memory-system effect at all.
+# ---------------------------------------------------------------------------
+
+[bench.wide-rung-walk-l1]
+title = "Wide rung, bare column walk, 2048 elements (1 wide op/element, cache-resident)"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 129000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 160000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 192000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 200000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 232000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]
+
+[[bench.wide-rung-walk-l1.sizes]]
+n = 256000
+variants = [
+    "../target/release/bench_wide_rung_ragged",
+    "../target/release/bench_wide_rung_ragged_overread",
+    "../target/release/bench_wide_rung_wordround",
+    "../target/release/bench_wide_rung_wordround_alias",
+    "../target/release/bench_wide_rung_align16",
+]

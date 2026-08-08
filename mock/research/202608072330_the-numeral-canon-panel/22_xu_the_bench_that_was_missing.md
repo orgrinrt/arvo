@@ -311,3 +311,93 @@ constraint. Saving 41 percent of a resource that is 85 percent idle is not a sav
 That is a mechanism rather than a result, and a mechanism is something to attack. Section six is the
 attack.
 
+## Six: attacking the mechanism, and where it led
+
+Issue-bound is a mechanism, and a mechanism is something to attack rather than report. The attack is to
+raise the byte-to-work ratio: `wide-rung-walk-l2` is the same six widths and the same column at
+**one** wide operation per element, the highest ratio the transform reaches. That required adding `D = 0`
+to the dispatch table, and the thirty tests still pass with the new keys in `ALL_KEYS`, including
+`the_answer_moves_when_any_single_element_moves`.
+
+| W | rag MB | wr MB | ragged | rag-over | wordround | CONTROL | align16 | wr/rag | control gap |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 129 | 7.8 | 11.0 | 446842 | 589180 | 611601 | 607986 | 606402 | **1.369** | 0.59% |
+| 160 | 9.2 | 11.0 | 424634 | 423150 | 431240 | 430135 | 428286 | 1.016 | 0.26% |
+| 192 | 11.0 | 11.0 | 289570 | 291208 | 299113 | 289669 | 308644 | 1.033 | 3.16% |
+| 200 | 11.5 | 14.7 | 495629 | 495129 | 492482 | 489989 | 488071 | 0.994 | 0.51% |
+| 232 | 13.3 | 14.7 | 496389 | 498510 | 487011 | 489548 | 487952 | 0.981 | 0.52% |
+| 256 | 14.7 | 14.7 | 496060 | 495269 | 496934 | 497752 | 495174 | 1.002 | 0.16% |
+
+A 37 percent win for ragged at `W = 129`, and nothing anywhere else. That looked like the footprint effect
+finally appearing, since 129 is the width where the strides differ most (17 against 24, a ratio of 1.41
+against a measured 1.37).
+
+**It is not, and the check that shows it is not is the most useful thing in this file.**
+
+### Ruling out the confound first
+
+Three rows in the 11.0 MB group varied by 2x while the three in the 14.7 MB group were flat within one
+percent, and the variation tracked the order the rows ran in. That is a thermal or warm-up confound if it
+is anything, so the section was run a second time, unchanged, and compared against the first:
+
+| W | order | ragged r1 | ragged r2 | ragged delta | wordround r1 | wordround r2 | wordround delta |
+|---|---|---|---|---|---|---|---|
+| 129 | 1 | 446842 | 450311 | +0.8% | 611601 | 611592 | -0.0% |
+| 160 | 2 | 424634 | 424299 | -0.1% | 431240 | 429519 | -0.4% |
+| 192 | 3 | 289570 | 289887 | +0.1% | 299113 | 289688 | -3.2% |
+| 200 | 4 | 495629 | 496440 | +0.2% | 492482 | 489784 | -0.5% |
+| 232 | 5 | 496389 | 497430 | +0.2% | 487011 | 486145 | -0.2% |
+| 256 | 6 | 496060 | 490560 | -1.1% | 496934 | 493685 | -0.7% |
+
+Everything within 3.2 percent and most within one. The pattern follows the **width**, not the order.
+Run one is committed at `22_probes/run-order/` and run two is the committed artifact.
+
+### The discriminator, and it kills the footprint reading
+
+`wide-rung-walk-l1` is the identical transform at 2048 elements, where the whole column is 34 to 64 KB
+and sits in L1. If the pattern is about memory it must collapse there. In nanoseconds per element, so the
+two sizes are directly comparable:
+
+| W | L1 ragged | L1 wordround | L1 wr/rag | L2 ragged | L2 wordround | L2 wr/rag |
+|---|---|---|---|---|---|---|
+| 129 | 1.0040 | 1.2859 | **1.281** | 0.9816 | 1.3332 | **1.358** |
+| 160 | 0.8970 | 0.9574 | 1.067 | 0.9249 | 0.9363 | 1.012 |
+| 192 | 0.6688 | 0.6428 | 0.961 | 0.6319 | 0.6315 | 0.999 |
+| 200 | 1.0616 | 1.0463 | 0.986 | 1.0822 | 1.0676 | 0.987 |
+| 232 | 1.0578 | 0.9922 | 0.938 | 1.0843 | 1.0597 | 0.977 |
+| 256 | 1.0523 | 1.0176 | 0.967 | 1.0693 | 1.0761 | 1.006 |
+
+**The per-element cost barely moves between a 64 KB working set and a 15 MB one.** Every width is within
+about seven percent of itself across a working set that grew by more than two hundred times and crossed
+both cache levels.
+
+So the walk is core-bound at every size measured, and the `W = 129` advantage is present at 1.281 in L1
+where footprint cannot matter at all. **It is not a footprint effect.** Whatever it is, it is a property
+of the two loaders in the core at that width, and the bytes are not doing the work.
+
+That is the negative result the whole exercise was for. On this host and this workload the seven bytes per
+value the ratified rule trades away are a **memory-footprint quantity and not a throughput quantity**. A
+consumer with millions of wide numerals still saves the bytes, and that saving is real and is what
+`arvo-toolbox-not-policer.md` describes; it simply does not arrive as speed.
+
+### What I could not close
+
+The width-dependent baseline itself. At three limbs the per-element cost is 0.63 ns at `W = 192` and
+1.33 ns at `W = 129`, a factor of 2.1 for the same stride, the same byte count, the same element count,
+and loops that differ by one `and` instruction. Ruled out, each with the evidence that ruled it out:
+
+- **Instruction count.** The two loops are 7 and 8 instructions
+  (`22_probes/loop-shape/walk_loop_output.txt`). One instruction cannot be 2.1x.
+- **Run order and thermal state.** Reproduced to within 3.2 percent on a second run of the same section.
+- **Loaded-byte contiguity.** The hypothesis was that the word-rounded arm leaves a four-byte hole per
+  element at 129, 160 and 200 and reads contiguously at 192, 232 and 256. It separates the three-limb
+  group and fails on the four-limb group, where 200 is non-contiguous and 232 and 256 are contiguous and
+  all three land within 1.5 percent of each other (`22_probes/loop-shape/contiguity_output.txt`).
+- **The memory system.** Killed by the L1 discriminator above.
+
+I have not found the mechanism and I am not going to invent one. It is a core-side, width-dependent
+effect in multi-limb wrapping addition, it is worth two point one times on this host, and it is a better
+lead for the next expert than anything I could speculate here. What would move it is a hardware
+performance counter, which this host does not give the harness: `instructions` and `cycles` are zero in
+every committed row.
+

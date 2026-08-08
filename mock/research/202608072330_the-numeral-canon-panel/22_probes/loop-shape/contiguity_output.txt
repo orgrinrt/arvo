@@ -1,0 +1,19 @@
+Bare column walk (D=0). Bytes the loop actually loads, against the stride.
+A gap between them is a hole the streaming prefetcher has to step over.
+
+   W  limbs |  wr stride  wr loaded  gap  contig |  rag stride  rag loaded  gap  contig
+ 129      3 |         24         20    4      NO |          17          17    0     yes
+ 160      3 |         24         20    4      NO |          20          20    0     yes
+ 192      3 |         24         24    0     yes |          24          24    0     yes
+ 200      4 |         32         28    4      NO |          25          25    0     yes
+ 232      4 |         32         32    0     yes |          29          29    0     yes
+ 256      4 |         32         32    0     yes |          32          32    0     yes
+
+Measured ns per element from the harness, beside contiguity:
+   W |  wr ns/el  wr contig |  rag ns/el  rag contig
+ 129 |     1.333         NO |      0.982         yes
+ 160 |     0.936         NO |      0.925         yes
+ 192 |     0.631        yes |      0.632         yes
+ 200 |     1.068         NO |      1.082         yes
+ 232 |     1.060        yes |      1.084         yes
+ 256 |     1.076        yes |      1.069         yes
