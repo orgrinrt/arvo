@@ -3,35 +3,19 @@
 **Opened 2026-08-08**, when op extended the explore-do-not-settle mode from one night to roughly the
 panel's first hundred files and named the method it runs on. This file is that method's instrument.
 
+**Rebuilt 2026-08-08**, from the member files `02` through `27` directly, after the first pass was
+found to have been assembled from `MORNING.md`, a compression every checkpoint that examined it found
+defective (rung inflation, a doubled count, a claim spliced across two source commits, a false "exactly
+when", 295 numeric tokens against zero line-level anchors while the sources carried 297; see `21`'s
+citation audit and `19`'s and `23`'s checkpoints). This rebuild reads only the member files and cites
+only them; `MORNING.md` and the prior version of this file were used, where used at all, to locate which
+files to open, never as a source for what an option is. The rebuild's own coverage and known gaps are
+recorded in `30_willsey_rebuilding_the_option_register.md`.
+
 `SETTLED.md` holds what the predecessor established. `DROPLIST.md` holds what closed and why.
 **Neither holds what is open**, and until this file existed the instruction to carry every option
 forward had no artifact behind it, which meant options lived in whichever file last mentioned them
 and were rediscovered rather than carried.
-
-## Provenance of this first pass, stated because it bounds what the file is worth
-
-**This register was assembled by the dispatching agent from `MORNING.md` and `28`, not from the
-member files.** `MORNING.md` is a compression, and every checkpoint that has examined it found
-defects in it: rung inflation, a doubled count, a claim spliced across two source commits, a false
-"exactly when", and zero line-level anchors against 295 numeric tokens while its sources carried 297.
-
-So this file inherits whatever that compression still gets wrong, and it was built by exactly the
-route the panel keeps identifying as the failure: reading the summary rather than the thing.
-
-**It is therefore a scaffold, and it owes an independent rebuild from the member files.** That rebuild
-is a dispatch, not a repair by its own author, because the author of a compression is the person who
-believes it entails and a self-check returns sound essentially every time.
-
-Two specific gaps already known, both from options this pass did not go and fetch:
-
-**Options proposed by members and not carried here.** `03` produced five options beyond the three it
-was given on the family question. `13` added a fifth arrangement of the width surface. `10` conceded
-the bridge is not dissolvable with thirteen routes enumerated. None of those sets is written out
-below, and each is either a live option or a droplist entry with a diagnostic.
-
-**The boundary between open and closed is unverified.** An option is listed here because the map
-reads as though it is live. Whether the panel actually closed any of them, and with what, is a
-question for the files rather than for the map.
 
 ## What this file is, and what it is not
 
@@ -72,50 +56,97 @@ other entries, which is exactly why they all have to be visible at once.
 
 ## Q1. What does "then validate" require?
 
-**Op's answer is all three**, which makes this a conjunction rather than a choice. Recorded here
-because the three parts remain separable, each owes a different instrument, and he named a challenge
-route: a member may argue a part is **truly not worth it**, and that phrase is the bar.
+**Op's answer is all three**, which makes this a conjunction rather than a choice (`28`, batch one,
+Q1). Recorded here because the three parts remain separable, each owes a different instrument, and he
+named a challenge route: a member may argue a part is **truly not worth it**, and that phrase is the
+bar.
 
 **Admissibility.** The typestate refuses declarations it cannot serve, in both directions: it does
 not admit a declaration it cannot honour, and it does not refuse one it could. Instrument owed: a
-two-directional sweep. Panel evidence: none. Over-refusal is the direction with no natural author,
-since a consumer who never wrote the shape never files a bug.
+two-directional sweep. Panel evidence: none (`17` section 2.2's own count: fifteen expected-to-fail
+probes exist across the panel and not one is about whether a *declaration* is admissible). Over-refusal
+is the direction with no natural author, since a consumer who never wrote the shape never files a bug
+(`17` section 2.2).
 
 **Usage.** The typestate refuses operations that violate the declared invariants, with a diagnostic a
 consumer can read. Instrument: a diagnostic battery. Panel evidence: real and substantial, and all
-fifteen expected-to-fail probes in the panel are of this kind.
+fifteen expected-to-fail probes in the panel are of this kind (`17` section 2.2, `12_probes/p11`,
+`12_probes/p12`, `15_probes/q10`).
 
 **Self-validation.** The derived container actually holds the declared range, checked at derivation
 time rather than assumed. Instrument owed: a range assertion per declaration. Panel evidence:
 incidental.
+
+Additional structure from `17`: the criterion's own phrase "no caveats left" makes it a claim about the
+absence of a residue, which no instrument can close; the honest form is an enumerated, explicit trusted
+base rather than a verdict (`17` section 1, section 6, nine items). And clause four of the same
+criterion (erasure) decomposes into three parts with three different standards of proof: layout erasure
+holds by construction (`repr(transparent)` is a language guarantee), dispatch erasure holds by
+construction conditional on the ban on `dyn`/`TypeId`/unrestricted `specialization` holding, and only
+operation erasure has actually been measured, at one program, one arity, one optimisation-level band,
+by an oracle later found to have two false-negative regimes (`17` sections 2, 4; see the container
+derivation entries below).
 
 ## Q2. Which coordinates does a consumer write?
 
 **Total and fraction.** The pair the machinery wants. Integer width is the only coordinate that goes
 negative, so keying here makes the whole negative-width corner naturals with no signed ladder.
 Repeated squaring drives integer width to minus thirty-one in five steps while total width stays at
-one: unbounded in one coordinate system and constant in this one.
+one: unbounded in one coordinate system and constant in this one (`06` section 7.2; `15` sections 1.2,
+1.3, compiled over the whole 81-shape box with a negative control; `16` sections 10.1, corroborating).
 
 **Integer and fraction.** The familiar pair, kept at the surface, converted at the door at zero cost.
 The price is that the numbers typed and the numbers stored differ, so every reflective surface
-(diagnostics, rendering, documentation, error text) has to choose which pair it shows.
+(diagnostics, rendering, documentation, error text) has to choose which pair it shows. `15` built a
+door plus a const-generic "tag" that carries the consumer's own numbers into the diagnostic for free
+at runtime, which repairs the diagnostic cost without touching the machinery (`15` sections 4, 4.1).
 
 **Both, with the surface declaring which.** Consumers write integer and fraction; the machinery and
 any low-level surface speak total and fraction; each reflective surface states which it shows. Keeps
 both audiences at the cost of making the dual vocabulary permanent rather than a door-level
 conversion.
 
-**Open:** whether a fourth coordinate system serves better than any of these. Nobody has proposed
-one, and the fact that the first reframing dissolved a corner nobody could close is a reason to
-think the space was not exhausted.
+**A fourth reading: the numeral is defined once, as a grid cut down to a reach, and the width pair is
+what that definition is called in the constant-canonical-exponent case rather than a second
+definition.** `24` derives this from the record's own affine value map (`seed/SETTLED_laws.md:274`)
+and compiles it gate-free: the fraction width names the grid (the negated canonical exponent), the
+total width names the reach measured in the grid's own units, and the integer width is their
+difference, which is why it is a view and why it goes negative exactly when the reach lies wholly
+below one (`24` sections 2.1, 3.1, 3.2, probes `s1` through `s5`, set equality 121 of 121 in exact
+rational arithmetic). Under this reading Q2 is not a fork between two definitions but a question about
+what a **consumer-facing projection** of one definition should be, and the width-pair-versus-derived-
+view choice this entry is about survives unchanged as the surface question. `24` also names three
+sibling framings it did not take and describes why: carry only the width pair and scope floats out
+(cheapest, fails equivalence: two teams would build fixed point and float as unrelated types); carry
+only the concept and derive widths at use (purest, but a canon that never names what a consumer
+actually writes has described the machine and not the tool); carry both as co-equal with a stated
+translation (rejected: a translation between two definitions is itself a thing that drifts, which is
+the failure this reading exists to prevent); make the reach the primitive and the grid derived,
+keying on `(EMIN, EMAX, count)` (rejected: the count of magnitudes in a reach is a sum over binades
+under a general canonical exponent, so it is the reach that needs the grid to compute, not the other
+way round) (`24` section 5.3).
 
-Argued to be **prior to Q8**, because it changes what the shape space is a space of.
+**Open, connecting to the fourth reading:** the concept-side vocabulary (radix, adjustment, bias,
+phase, canonical exponent) and the width-pair vocabulary are not translatable in both directions. From
+a width pair to a concept numeral the map is total and injective; from a concept numeral to a width
+pair it is partial, presentable at only 4 of 14 representative shapes in `08`'s own classification,
+with the misses grouped into six named causes of which three (non-constant canonical exponent, i.e.
+floats; a reach count that is not a power of the radix; nonzero phase) are already inside the design
+rather than exotic (`24` section 2.2). So a canon carrying the width pair as *the* definition of a
+numeral would be silent about the design's own float family, `Ranged` member, and `Bias` axis. Whether
+the design admits numerals its coordinates cannot name is stated by `24` as op's own question (`24`
+section 9), separate from and prior to which surface pair a consumer writes.
+
+Argued to be **prior to Q8**, because it changes what the shape space is a space of (`15` section 9;
+`23` S9/S17 collision, dissolved by the grid-and-reach reading per `24` section 2.3).
 
 ## Q3. Is there a mixed-numeral addition?
 
 **None exists.** No operation anywhere in the record adds values from two different numerals. If that
 is the design rather than an accident, addition joins the consumer-determined block and the entire
-inference surface collapses to multiplication plus the container.
+inference surface collapses to multiplication plus the container (`06` section 2.2, its "site 16",
+searched across `SETTLED.md`, `seed/SETTLED_laws.md`, `DROPLIST.md`, `02_carried` and `03` and not
+found).
 
 **It exists and is inferred.** Mixed-numeral addition is intended, and its result numeral is derived.
 Keeps the join in the inference surface and keeps the negative-integer-width corner live at its
@@ -126,77 +157,149 @@ operand into the other's numeral first, and the conversion is where the lossless
 fires. Collapses the inference surface the same way the first option does while keeping the operation
 reachable.
 
+Still open as of the last file to touch it (`23`, "what is missing": "If the answer is no, a large
+part of Cluster B has no caller. One sentence from op collapses it.").
+
 ## Q4. What does a datum stand for?
 
-Op explicitly refused to bound this set. **These four are what has been written down, not what is
+Op explicitly refused to bound this set. **These are what has been written down, not what is
 admissible.**
 
 **A point.** A datum is one value. Saturation's absorbing behaviour is then not a denotation at all
 but a documented restriction on where a fold is sound. Under this reading saturating is exactly as
-unsound as wrapping at the measured rate.
+unsound as wrapping at the measured rate (`07` section 4.2: 512 of 1024 point-reading failures at n=5,
+identical arithmetic to the absorbing reading below).
 
-**An absorbing top.** The top denotes everything above it. Sound exactly while the computation stays
-at it, which is the corrected and narrower form: extended to additions and subtractions, a
-substantial fraction of chains are unsound. Both endpoints absorbing still fails.
+**An absorbing top.** The top denotes everything above it. **Sufficient but not necessary for
+soundness while the computation stays at it**, and the "exactly" qualifier the panel first wrote is
+false: `18`'s own committed probe output has an operation set that decreases (multiply by zero) with
+absorbing sound at 0 of 512 failures, so "stays at the endpoint" is not a necessary condition (`18`
+section 3.1, `18_probes/p2.out` section B; `21` section 1.1 and `19` independently reproduced this from
+the same table). Extended to additions and subtractions over a stated domain, 936 of 5184 chains are
+unsound under the absorbing reading at four steps; both endpoints absorbing still fails at 840 of 5184
+(`18` section 3.1). What is known: the reading holds while the computation stays at the endpoint
+(sufficient); what is not known: the exact necessary condition. A candidate exists ("every operation
+must map the absorbed set onto a set the numeral denotes exactly", offered by `19` and named in `23` as
+S5, blocked) and has not been built or second-read (`23` S5).
 
 **A constructor-level clause.** The denotation clause is a statement about the **constructor** wearing
 the grammar of a statement about every datum. The distinction it draws is that a **partitioning** set
 denotation is free while an **overlapping** one is not, which is why the design's own quiet cases cost
-nothing while intervals cost the order.
+nothing while intervals cost the order (`18` section 4.1, section 2.1: rounding cells and the
+absorbing top are both partitioning and keep the order total at 120 of 120 pairs; intervals overlap and
+decidability falls to 42.05% at `U<2,2>`, 35.45% at `U<3,3>`). Two sub-readings of "the clause is in the
+right place": (a) the wording is wrong, since it reads as a per-datum property when it is a
+per-constructor one, fixable in one sentence with no mechanism; (b) the clause is doing two jobs
+(membership, and which denotation the laws quantify over) and should split, at the cost of the boundary
+no longer being one sentence (`18` sections 4.1, 4.2).
 
 **A set, admitted generally.** Intervals and set-valued data are first class. This is a canon change
 rather than a type addition, because the value-level total order is a precondition of the law layer.
-It costs the total order, multiplicative associativity outright, and the additive inverse except on
-degenerate data, with distributivity surviving weakened to containment. It buys back verified
-optimisation, rigorous ODE work, exact geometric predicates, broad-phase culling and static range
-analysis.
+It costs the total order, multiplicative associativity outright (measured: 1818 of some pairs at one
+width, 9524 at another, where neither association contains the other), and the additive inverse except
+on degenerate data (only 16 of 136 interval data satisfy `A - A == 0`), with distributivity surviving
+weakened to containment (100% of failures have the left side contained in the right) (`18` section 2.2,
+probes `p3b`, `p3c`). It buys back verified optimisation, rigorous ODE work, exact geometric predicates,
+broad-phase culling and static range analysis. **Not free**, contra an earlier reading: the construction
+(a pair of numerals with both directed rounding modes reachable per operation) costs nothing to erase
+and nothing to derive a container for, but it costs the entire order-and-law layer the design was never
+going to supply, which the consumer then has to write themselves (`18` section 1.1).
 
-Note that `Precise` on `inexact` is argued to be this same question one level down, so an answer here
-is probably an answer there.
+**A live sub-fork inside every reading above: soundness or bestness.** `07` (section 4.4) shows the
+"is this the tightest honest answer" question is a separate, cheaper claim from "is this a sound
+answer at all". **Soundness** ("the derived numeral holds every value the operation can produce") is
+always true of every formula in the design already, including the un-tightened sum-of-widths product
+form, and needs no admissions. **Bestness** ("...and no numeral smaller does") is a strictly stronger
+claim, requires the tight product form, and requires admitting both the origin shape and negative
+integer width (see Q9-adjacent material below on the tight form). Stating soundness alone is cheap and
+correct; stating bestness is a further, priced commitment. `07` recommends this fork explicitly as a
+sharper replacement for "should the canon claim tightness" (`06`'s framing), not as a rival denotation
+reading; it composes with all four denotation options above.
+
+Note that `Precise` on `inexact` is argued to be this same question one level down: a strategy that
+refuses on inexact is the strategy that demands its data keep a point denotation, and the size of that
+demand is measured (100% exact for add/sub, falling to 4.60% of in-range divisions admitted at
+`U<4,4>` under a point-only strategy) (`18` section 3.4).
 
 ## Q5. Is the arithmetic column one axis or two?
 
 **Two axes.** Overflow policy and intermediate precision are independent, and every strategy needs a
 value on both. The evidence is that three presets state an overflow policy and say nothing about
-intermediate precision while the fourth does the reverse, and widening then narrowing is not an
-answer to the question wrapping and saturating answer.
+intermediate precision while the fourth (`Cold`, "widen-op-narrow") does the reverse, answering a
+different question ("what precision does the intermediate carry") than the one wrapping and saturating
+answer ("what happens when a result does not fit") (`25` section 4.2). Widening then narrowing is not
+an answer to the question wrapping and saturating answer. Independently corroborated four ways: arvo's
+own preset table decomposes into an exact two-by-two of headroom against layout with zero cells to
+spare (`25` section 4.1, `25_probes/p2`); four industrial fixed-point systems (SystemC `sc_fixed`, AMD
+Vitis `ap_fixed`, Siemens `ac_fixed`, MATLAB `fi`/`fimath`) independently decompose the same way from
+outside arvo entirely (the `arvo-strategy-is-a-preset` memory, cited at `25` section 4.1); and a
+committed 34-run bench family, `warm-clamp-arity-*`, holds strategy, overflow and layout fixed and
+varies the accumulator (intermediate precision) against the container (headroom) with three different
+winning arms across 34 runs and no arm winning everywhere, which is the independence the preset table
+itself structurally cannot show (`25` section 6.2, `25_probes/p4`).
 
 **One axis.** The four names are values of a single arithmetic-policy axis and the asymmetry is a
 wording problem in the preset table rather than a missing axis. Keeps the four-name bijection with
-the two-by-two of headroom against layout intact with no new degrees of freedom.
+the two-by-two of headroom against layout intact with no new degrees of freedom. Under this reading
+widen-op-narrow is a legitimate fourth value alongside wrapping and saturating, on an axis better
+named "evaluation policy" than "overflow policy" (`25` section 8, stated as the genuine alternative op
+is choosing between, not as refuted).
 
 **A product of several axes.** The arithmetic column is a product of however many policy axes exist,
 with the four presets being named sections over it rather than a partition of it. This is the shape
-the written strategy definition implies, and it means the preset table is a sample of the space.
+the written strategy definition implies, and it means the preset table is a sample of the space. This
+reading is now the one a fuller derivation of what a strategy *is* converges on: a strategy is "a
+consumer-written name for one coherent policy" that "assigns one value on every axis," where each
+assignment is a function of the build condition (a constant being one case), so named strategies are
+**sections over a product of axes** rather than values of a single axis at all (`25` section 0, the
+canon sentence proposed; permanence and equivalence both argued to pass). Under this reading the
+axis list itself is open past the two contested here: SIMD lane count is argued to be derived (a
+function of container width and target vector width) rather than a fifth axis, but this is not
+verified (`25` section 4.3, section 9); rounding is a candidate fifth axis absent from arvo entirely
+per the cited prior-art memory (`25` section 9).
 
 Prior to Q6, because it decides what a wrap-or-clamp answer would be an answer **about**.
 
 ## Q6. Does `Warm` wrap, or clamp?
 
 **Clamp.** Matches the ratified preset table, which gives `Warm` the clamp and gives wrapping to
-`Hot` alone. Makes the committed wrapping bench family measure a different strategy than the one it
-names. Under clamping, headroom goes from substantially worse at low fold arity to substantially
-better at high arity, crossing over exactly where its own interior safety predicate says it should.
+`Hot` alone. Makes the committed wrapping bench family (`warm-container-*`) measure a different
+strategy than the one it names (`20` section 1.4, quoting `warm-clamp-shared`'s own doc). Under
+clamping, headroom goes from 2.2x worse at fold arity two to 44x better at arity 256, crossing over
+exactly where its own interior-safety predicate (`W + ceil(log2 n) <= width(accumulator)`) says it
+should, to the row (`20` section 1.5, `warm-clamp-arity-w13`, 6 arity rows).
 
-**Wrap.** Matches the committed bench family as implemented. Makes the ratified preset table's `Warm`
-cell wrong, and op has already declared that cell stale. Under wrapping a lazy headroom arm provably
-cannot win.
+**Wrap.** Matches the committed bench family as implemented (`warm-container-*`). Makes the ratified
+preset table's `Warm` cell wrong, and op has already declared that cell stale under his restated
+intent that Warm behave "like native primitives in regular old rust would" (`20` section 1.4, quoting
+`seed/SETTLED_container.md:405-408`). Under wrapping a lazy headroom arm provably cannot win, because
+reduction modulo `2^W` factors through reduction modulo `2^C` for any `C >= W` (`20` section 1.3).
 
 **The question dissolves under Q5's two-axis answer**, because then `Warm` states a value on the
 overflow axis and a value on the intermediate-precision axis separately, and the two bench families
-may be measuring two different axes rather than disagreeing about one.
+may be measuring two different axes rather than disagreeing about one (`20` section 1.4, `25` section
+6.1: `22`'s and `20`'s two results read as a single-axis refutation under one framing and as two
+separate, non-contradictory axis measurements under the two-axis framing).
 
-Standing caveat on the evidence: the section these numbers come from was declared contaminated by a
-commit subject line and is owed an independent read that has not run.
+Standing caveat on the evidence: `20`'s own section 1.5, the clamp-family arity crossover, was written
+after reading a commit subject line carrying its own conclusion and is self-flagged as contaminated,
+"owed an independent read that has not run" (`20:188-191`, `20:674`; `21` section 2.3 found the map had
+dropped this disclosure while carrying the numbers, which reproduce exactly and are not themselves
+disputed, only the ordering of when they were derived).
+
+**Directly connects to and is measured by Q7 (the carrier question) and the wide-rung bench (`22`)**:
+`22`'s wide-rung bench measures under wrapping only, deliberately, because saturation was what produced
+six void cells earlier in the panel (`20` section 2.1); if the wide rung is supposed to clamp, `22`'s
+numbers measure the wrong semantics (`22` section 10, section 11).
 
 ## Q7. Which carrier is the packing claim about?
 
-**The contention run has landed (`27`) and it moved the answer.** Op's "explore, wait for Fog" is
-discharged. The question is not closed, but its shape changed: **the carrier the claim is about now
-depends on how many cores are running**, so a claim naming a carrier without naming a regime is
-underspecified twice over.
+**The contention run has landed (`27`) and it moved the answer.** Op's "explore, wait for Fog" (`28`
+batch two, Q7) is discharged. The question is not closed, but its shape changed: **the carrier the
+claim is about now depends on how many cores are running**, so a claim naming a carrier without naming
+a regime is underspecified twice over.
 
-Break-even carrier, one core against four:
+Break-even carrier, one core against four (`27` section 10):
 
 | | one core | four cores |
 |---|---|---|
@@ -204,43 +307,63 @@ Break-even carrier, one core against four:
 | committed kernels, cold | 5.6 to 6.2 bytes | 1.8 to 2.1 bytes |
 | best kernel each side, warm | above 8 bytes | about 1.7 bytes |
 
-Against real carriers with the best kernel on each side, past last-level cache: `u64` goes from
-+5-9% to +67-71%, **`u32` changes sign** from -3-10% to +48-60%, and `u16`, which packing had never
-beaten anywhere, goes from -94-116% to +9-16%.
+Against real carriers with the best kernel on each side, past last-level cache (`27` section 10, as
+corrected by section 15/10.4): `u64` goes from +5-9% to +67-71%, **`u32` changes sign** from -3-10% to
++48-60%, and `u16`, which packing had never beaten anywhere in the single-core sweep, goes from
+-59-111% (`27` section 10's original table) to +9-16% once measured properly past the cache rather
+than only 1.1 to 1.3 times past it (`27` section 15, which supersedes section 10's `u16` row
+explicitly, section 10.4).
 
 **The mechanism, as a controlled experiment rather than an argument.** The identical `UADALP` change
-is worth 23-25% on `d32` at one core and **+0.9%** at four. At 33.5M records the best dense kernel in
-the directory returns **0.99** from four cores: four times the cores, the time one core took. Under
-contention a dense column's cost stops being a property of its kernel and becomes a property of its
-width.
+(a vectorised pairwise-accumulate reduction replacing a scalar one) is worth 23-25% on `d32` at one
+core and **+0.9%** at four (`27` section 9, attacking the dense side with the same instrument that
+attacked the packed side in `26` section 8, which is the reversal that destroyed `27`'s own first
+result; see below). At 33.5M records the best dense kernel in the directory returns **0.99** from four
+cores: four times the cores, the time one core took (`27` section 9.2). Under contention a dense
+column's cost stops being a property of its kernel and becomes a property of its width.
 
-**A new option this creates, and it is now the live one.** *The claim is about the declared workload,
-which is concurrent, and therefore about a break-even near two to three bytes rather than near
-seven.* That is a different sentence from any option below and it inverts which carriers the claim is
-true against.
-
-**What `27` says is op's**: whether the canon's claim is about one core or the declared parallel
-workload, since they differ **in sign** against `u32`.
+**It attacked and destroyed its own first result, and that is part of the finding rather than a
+footnote.** Attacking only the packed decode gave packing a clean 12-20% win. Attacking the **dense**
+side with the identical instrument destroyed that result; the 40% decode win from the isolated attack
+is real and kept, but the conclusion it appeared to support was an artifact of an unattacked competitor
+(`27` section 9).
 
 Host bound, stated because it limits every number above: one M1, four performance cores, 12 MB L2,
 roughly 60 GB/s aggregate. One core already pulls 53-55 of that, so contention arrives at two cores
 here and would arrive elsewhere on a different core-to-bandwidth ratio. Reads only, sequential only.
-Every warm-against-cold disagreement in `27` is a statement about that 12 MB.
+Every warm-against-cold disagreement is a statement about that 12 MB (`27` section 10.2).
 
 **An eight-byte carrier.** The claim is about displacing a machine word, and against one it measures
 true past a threshold record count, with the crossing where the eight-byte column stops fitting the
-second-level cache and the packed one still does.
+second-level cache and the packed one still does (`26` section 10, single-core baseline; still holds
+under `27`'s four-core regime, strengthened).
 
-**A two-byte or four-byte carrier.** Against either it measures false by a wide margin, so a claim
-stated without naming its carrier is false as often as it is true.
+**A two-byte or four-byte carrier.** Against `u32` the single-core answer is false and the four-core
+answer is true (sign change); against `u16` the single-core answer is false and the four-core answer,
+measured properly, is also true. A claim stated without naming its carrier and its core count is false
+as often as it is true, and the direction of the error depends on both variables (`26` section 10;
+`27` sections 10, 15).
 
 **The inequality, with no fixed carrier and no threshold.** Packing pays when the bytes saved per
-element divided by available bandwidth exceeds the decode cost added per element. The inequality is
-argued to be permanent while any particular break-even figure is a fact about one machine.
+element divided by available bandwidth exceeds the decode cost added per element (`26` section 10).
+Under contention the "available bandwidth" term is per-thread aggregate bandwidth divided among
+contending cores, so the inequality's right-hand side is unchanged and its left-hand denominator
+shrinks with thread count (`27` section 10, the stated formula: packing pays when `T · w / c` exceeds
+aggregate bandwidth). The inequality is argued to be permanent while any particular break-even figure
+is a fact about one machine (`26` section 11.1, `27` section 10.3).
 
 **Footprint rather than throughput.** The claim is about resident memory and never was about loop
-speed. The multi-fold cut in resident bytes holds whether or not a loop gets faster, and this benefit
-has not been priced at all.
+speed. The multi-fold cut in resident bytes holds whether or not a loop gets faster (`26` section
+10.1), and this benefit has not been priced at all by any file in the panel (both `26` and `27` name
+this explicitly as uncovered).
+
+**What is unmeasured and would move the answer further, named by `27` itself:** writes (every arm in
+both files reads only; an encode surcharge on the write side is unpriced); random or strided access
+(the prefetcher-hiding mechanism this whole thread turns on is specific to sequential access; under a
+pattern the prefetcher cannot follow, the footprint argument would have a mechanism it currently
+lacks); other hosts (a different core-count-to-bandwidth ratio, a different last-level cache size, a
+multi-socket or asymmetric-core topology, would all move every crossing named above) (`27` sections
+10.2, 13).
 
 ## Q8. One numeral family, or several?
 
@@ -251,42 +374,453 @@ instinct is how the last panel locked itself into a shape that did not fit.
 attached to this holds within one radix, zero bias, and a closed shape space, and the option as
 originally put carried only the third condition. Dropping bias produces pairs with disjoint value
 sets, needing an empty numeral the option never names. Dropping single-radix produces structurally
-unreachable cross-radix joins.
+unreachable cross-radix joins. `03`'s verdict, stated precisely: "reading A appears to be reading C
+wearing A's clothes" (`03` section 3.2), because across kinds (fixed point against float) the join is
+not delivered by the two named admissions at all: 220 pairs with upper bounds and none least at box 4,
+rising to 302 at box 5, with the witness `U<0,1>` against `U<2,0>` having two incomparable minimal
+upper bounds and no least one (`03` sections 3.2, 3.2's table).
 
 **Several families.** Numerals are partitioned into families and cross-family relationships are named
 rather than computed. The standing analysis is that the one-family reading, once its three conditions
 are stated, appears to be this option wearing the other one's clothes.
 
-**The question is not load-bearing where it was thought to be.** A site where nothing determines the
-numeral turns out to be empty and argued to be uninhabitable, because declaring both honest readings
-of a cross-family join is a coherence error. So the type system accepts any cross-family formula and
-holds no opinion on which is right, which moves the question off the inference surface and onto
-identity and taste.
+**The question is not load-bearing where it was thought to be, in a sharper and now-compiled form.**
+`06` tested this head-on with a classification of every site in the design where a numeral appears
+that the consumer did not spell, into D0 (consumer determines it, 8 sites), D1 (operands determine it
+by a total function, 8 sites), D2 (a named rule over a small closed set, 3 sites), and D3 (nothing
+determines it). **D3 is empty, and coherence says it must be**: an associated type names exactly one
+type, and declaring both honest readings of a cross-family join side by side is refused at `E0119`
+(`06` section 1.1, `06_probes/p4_arm3.out`, "conflicting implementations of trait `JoinNum<...>`").
+So a design that infers a cross-family target is picking in one impl, not computing a least upper
+bound, whatever the order says. Two genuine callers of the order exist, both as a two-place predicate
+rather than as an extremum-fetch: the lossless-conversion predicate and the accumulator sufficiency
+check (`06` section 5.1). The lattice's meet and join have no caller found anywhere in the record after
+two independent looks, though "no caller found" is a weak negative and `06` says so (`06` sections 1.1,
+4.1). What the order **is** for: it is called as a relation, and the extrema are quoted at proof time
+to justify that every D1 formula's answer is correct (the formula's answer contains every value the
+operation can produce), which is invisible in a caller census but is real work (`06` section 5.2).
+Restated by `06` itself: the family question stops being "do the numerals form a lattice" and becomes
+"is the admitted shape space closed under the clamp of every formula's answer", which is narrower and
+testable, and one instance of it (the tight product form) is measured **not** closed, at 15 of 6561
+pairs, exactly where negative integer width is needed (`06` section 4.2).
 
-**A route to one family that survives all three conditions.** Nobody has proposed one. If it exists it
-would resolve op's instinct and the standing analysis at once, which makes it the highest-value
-single thing a member could find here.
+**A route to one family that survives all three conditions.** Nobody has proposed one that survives.
+If it exists it would resolve op's instinct and the standing analysis at once.
+
+**D. A tie-break reading, which survives and was not among op's original three.** Stop requiring a
+unique least upper bound; return the set of minimal upper bounds (nonempty whenever any upper bound
+exists) and name a stated rule that picks one. Totality is bought with a policy instead of with
+closure. Not exotic: it is what C's usual arithmetic conversions do, and it is the shape the design
+already uses on a neighbouring axis, since the container axis already has incomparable elements at
+equal width (two coordinates, bytes and alignment) and the design already answers with a named rule
+keyed on the strategy, with no lattice anywhere (`03` section 7.1; `06` section 2.3, `07` section 3.6,
+both independently identifying this as F2 and observing the design's existing precedent already
+answers exactly this shape of question). The antichain this needs to resolve is measured at width
+**2** across three box sizes with the shape count growing (`03` section 7.1, `03_probes/i5.out`).
+What has to be named: the rule, and whether the design exposes the antichain to the consumer or only
+its choice. Bounded: width 2 is measured over one float family and one fixed-point family at moderate
+sizes; adding decimal numerals or several float radices could widen it, untested (`03` section 7.1).
+
+**E. The seam is the step set, a relation computed from the members rather than a declared label,
+which survives and was not among op's original three.** Two numerals are in one family exactly when
+their admitted step sets are nested, computed rather than declared. Strongest measured support of any
+non-original reading: radix 2 with radix 4 behaves as one family with zero structural failures; radix
+2 with radix 3 fails as F1 (no bound at all) in 96 pairs; radix 2 with radix 6 fails as F2 in 3 pairs
+and F1 in 52, and the three outcomes track step-set nesting exactly (`03` section 7.2, probes `i4.out`
+Q17, `i5.out` Q21). Buys: the family relation stops being an unchecked declaration and becomes a fact
+the order itself can see; explains the fixed-point-against-float failure with the same mechanism as
+the radix-6 case rather than a separate one. What has to be named: whether the relation is transitive
+(untested; nesting is not obviously transitive across the shapes measured, so "same family" may have
+to stay a relation on pairs rather than a partition); whether it is expressible in the typestate under
+the forbidden-feature set (owed a probe, never written) (`03` section 7.2; `06` section 4.3 argues this
+reading is the strongest cost escape, since D1 sites otherwise cost quadratically per family added
+while a computed relation writes the formula once against the relation).
+
+**H, reframed and largely answered: does either operation have a caller at all?** `03` raised this and
+`06` tested it directly (see the "not load-bearing" entry above, into which this has now merged). What
+survives as distinctively `03`'s: the meet specifically still has no located caller after two
+independent looks (`03` section 1.1, `06` section 4.1), which bears directly on whether the negative-
+integer-width admission is "pure cost". It is not pure cost even under this reading, because `06`
+separately locates a caller for negative integer width at multiplication's tight product form (`06`
+section 7.2), which is not the meet.
+
+**A fork upstream of the whole family question, from `08`: is the canonical exponent a member of the
+design, or are its two currently-named values (fixed point, float) the design?** The design has
+ratified a name for a general concept, `canonical_exponent`, and carries only two instances of it plus
+a third point (gradual underflow) nested under a different name; `08` shows the general concept is a
+function over binades and the design's `ExponentForm` axis is a two-point sample of that function space
+(`08` sections 1.2, 1.3, 4.1). If the answer is that the two (or three) named values are the design by
+fiat, the family question across kinds is settled by that fiat and only the tie-break (D) and the
+step-set-seam (E) readings, or refusal (the "several families" reading), remain live for the cross-kind
+case, because the join across kinds is then simply not something the design tries to make total (`08`
+section 9, Q1). If the answer is the general function, the cross-kind join becomes total (measured: 108
+of 108 cross-kind pairs sweep to a join containing both operands once the general concept is admitted,
+`08` section headline and probes `i2.out` Q1, Q2), the antichain `03` measured (`U<0,1>` against
+`U<2,0>`) dissolves because its true join is a segmented shape strictly inside both of the two minimal
+upper bounds `03` found (`08` section headline, `i2.out` Q2b), and posits and tapered formats come in
+for free since they classify inside the general concept with a canonical exponent of no currently-named
+shape (`08` sections 3.3, headline). The cost of the general reading is a type-level function
+(compiled gate-free and shown to erase in `08`'s `p3_segmented_typestate.rs`) that collides in *spirit*
+with the ratified "no enumeration, ever" rule and needs `08`'s own defence that it is inductive rather
+than enumerated (`08` section 4.1). This entire fork is separately narrowed by `24`'s later finding
+that every canonical exponent shape the design currently names (constant, slope one, gradual underflow)
+is expressible as `max(K, e + I)` for two integers rather than as a list, so the "general function"
+reading's cost is one more integer, not a list, for everything the design has today; the meet closure
+falls out as an algebraic identity on those two integers at 6561 of 6561 pairs (`24` section 3.5,
+probes `s5`). What is not yet reached by the two-integer form: the join of two "knee" shapes is worse
+than the join `08` measured for fixed-point-against-float (four segments rather than the mirror shape),
+and posits (slope two) still need a third piece or a different form (`24` section 3.5).
+
+**Closed, and belongs in `DROPLIST.md` rather than here: ordering the numerals by something other than
+inclusion.** Refinement alone and reach alone are each total orders per family and each lattices, but
+neither is the relation any operation needs, because it ignores range or grid respectively. Inclusion-
+up-to-rounding is not an order at all in the direction wanted, because rounding is not injective and
+antisymmetry fails (`03` section 7.5).
+
+**Not a fourth answer, offered as a technique rather than a shape: the ambient-and-realisation
+decomposition.** Define meet and join in the ambient lattice of finite rational sets (total and free
+there for free), define a partial `realise` from a value set to a numeral, make every operation the
+composite. Changes what a canon sentence quantifies over (adding a family later adds a theorem about
+where realisability holds, rather than invalidating a totality claim), which is a genuinely different
+permanence profile from readings A through E, but it does not decide whether the singleton is
+realisable, which is op's question in different words (`03` section 7.4, `03:667-669` explicit that
+this is not a fourth answer). `07` (section 3.2) and `08` (section 6) both independently arrive at the
+same content with substance attached: every derived numeral is the tightest numeral containing the
+operation's exact result set, one mechanism rather than several, which makes the ambient-realisation
+framing's content available without its vocabulary. `09`'s persona checkpoint recommends dropping the
+framing itself as a live option while keeping this content; noted here for completeness since it is
+technically still `03`'s own proposal and has never been formally struck.
+
+## Q9. What should the crossing at the width surface be, between a consumer's written number and the
+type system's representation of it?
+
+New topic, absent from the register's first pass, discovered in the material behind op's own standing
+instruction ("fresh eyes on the container derivation", `01` section 2) as pursued in `10`, `11`, `12`,
+`13`, `15`. The container-derivation *mechanism* itself (width to container, given a nat) is
+established: it is total, gate-free, and erases (`10`, confirming the closed panel's `137`). What is
+open is a separate, upstream question: how does a consumer's written const literal become the
+type-level natural the derivation and the law algebra actually operate on. Every route below was
+compiled and is a real arm; none is proposed as *the* answer.
+
+**C0. The design as it stands: keyed on const generics directly, with a per-width bridge (`impl
+ToNat<Arvo> for Idx<N>`, one row per written width).** Meets the ergonomics bar exactly (`UInt<5>`,
+`UFixed<13, 3, Hot>`, identical character counts to every other candidate below). **Closed on
+structural grounds, not merely refused on ergonomics grounds as the record previously had it**: no
+finite bridge table is closed under the design's own law algebra, at any size, because multiplication
+doubles widths and the table can never contain the widths the algebra produces (`11` sections 7.1, 7.2,
+compiled: a failure at 48 from two tabled inputs, the row added by hand and the failure reappearing at
+96 and 32). This is the same structural objection that already killed the fixed-width carrier, one
+level up (`11` section 7.2, citing `seed/SETTLED_container.md:157-169`). The Rust ecosystem's own
+`typenum` crate independently reaches the same shape (same carrier struct, same one-method trait, same
+one-impl-per-value bridge) at 1148 rows and 4758 generated lines, still capped at 1024 dense, which is
+strong evidence this is the shape Rust forces rather than a shape anyone chose (`11` section 3.10), but
+`typenum`'s consumer (`generic-array`) crosses the bridge once at entry and stays in type-land, which
+arvo's ergonomics bar (a decimal const at the surface, repeatedly) does not allow (`11` section 3.10).
+
+**C1. A raw nat surface, no const bridge at all: a consumer spells the width as a hand-written binary
+digit tower directly.** Closed on ergonomics: fails the bar under both op's own narrower reading and
+the panel's wider one (`12` section 3, measured at 35 characters against 7 for `C0`/`C4`'s `UInt<5>`).
+
+**C2. A nat surface with a shipped alias layer (`N0`, `N3`, `N5`, ... shipped as names for the
+towers).** One character over the bar (`UInt<N5>` against `UInt<5>`) and fails on the panel's added
+disqualifier, a type-level magnitude at the alias site (`12` section 3). Also refused on its face: a
+shipped `N0..N64` table is the width table `SETTLED.md:110` refuses ("no enumeration, ever, if it can
+be helped") (`12` section 6).
+
+**C3. A nat surface with a consumer-side declaration macro minting the names it wants.** Same one-
+character-over-the-bar cost as C2, and refused on its face as the macro escape `SETTLED.md:110` also
+names (`12` section 6). Worth noting precisely: op's own stated disqualifiers (precision in the
+spelling, container types) do not by themselves disqualify a macro; the "no macro call" disqualifier is
+the panel's addition to op's sentence, and `12` and `13` both independently declined to lean on it, for
+different reasons (`12` section 9; `13` "A macro at the alias site", declined on a mechanism ground
+rather than op's wording: the macro would move the type-level crossing to a stage the type system is
+not watching, so the validation clause of the erasure gate would be enforced by the macro rather than
+the typestate, which is a different design).
+
+**C4, equivalently derived independently as arrangement A. The hybrid: a consumer-facing type alias
+carries the const parameter; the numeral itself is keyed on nats; the bridge fires once, at the alias,
+and the ceiling never re-fires because the algebra never re-enters the bridge.** `pub type UInt<const
+N: u32> = Fixed<NatOf<N>, T0, Warm>;`. Byte-for-byte identical to C0 at every consumer site (`12`
+section 3, measured off compiling text). Independently derived twice, by `12` (deriving it as "the bar
+never said the width must be a const generic parameter") and by `13` (deriving it, with `12` unread,
+by asking "which direction of the crossing is free", per `13`'s stated and probe-timestamp-verified
+working order; `14` audited the independence claim and found it holds, with one section flagged
+inherited by `13` itself). The table's domain shrinks from unbounded (every width the algebra can
+produce) to the finite set of literals a consumer actually writes: three octaves of multiply compile
+past a six-to-sixty-five-row table containing none of the produced widths (`12_probes/p03`; `13`
+section "Arrangement A", `13_probes/p14`, four multiplies to 256 bits past a 65-row table; `15_probes/
+q15`, six-row table, none of the produced widths present). **Still pays the table `SETTLED.md:110`
+refuses**, just a bounded one rather than an unbounded one (`12` section 6, table): "the choice is not
+between a design with a table and one without... What differs is how much the table has to cover."
+**Cost: the diagnostic degrades to an unreadable binary digit tower** at a width mismatch, e.g.
+`expected 'Fixed<D1<D0<D1<D1<Term>>>>, ..., ...>', found '...'`, not repairable by `#[diagnostic::
+on_unimplemented]` because that attribute does not reach `E0308` (`13` section "Arrangement A's cost";
+`12` section 5, its K1). Two independent, composable repairs exist and each costs something: (a) carry
+the consumer's own const numbers as a defaulted, otherwise-unused type parameter so `E0308`'s primary
+label uses them (`12`'s `p06`; `15`'s "tag", zero runtime cost, one defect: a computed product's tag
+does not match a hand-written alias with the same numbers unless deliberately unified, `15` section
+4.1, closed by pairing with arrangement D); (b) rebuild the nat ladder in base ten instead of base two
+so the (still-present) tower is at least readable and untruncated, costing roughly sixty additional
+impls, all tables of digits (`12`'s `p09`, `p10`). **A separate, independently found defect belongs to
+this design as it stands and to every candidate below except D: a Rust type alias does not check its
+own bounds, so an undeclared width at the alias-*definition* site (the exact site the ergonomics bar
+governs) produces no error at all; it surfaces at first use, possibly in another file, naming an
+internal type the consumer has never seen** (`12` section 7, two independent instances: `13` section
+"What a consumer reads", `15_probes/q15`'s `c2`). One repair is known and it needs an unvetted feature:
+`lazy_type_alias` (not on the workspace's vetted-feature list) makes an alias eagerly bound-checked,
+closing the silence completely, but costs fifteen library-side bounds across the ladder's own helper
+aliases and, more seriously, is a **consumer-side** feature gate that a library cannot itself turn on
+for its consumers (`12` section 7, `13` section "What `12` says", which found its own first-pass
+verdict of "closed route" wrong and withdrew it after reading `12`).
+
+**B. A named arrangement, distinct from C4/A: the width type visible to a consumer is the literal
+itself (an `L<K>` construction), with the structural nat demoted to a hidden `Repr` projection.**
+Readable diagnostic recovered with **zero** repair cost (`expected 13, found 12`, with no digit tower
+anywhere), because the type printed is the consumer's own number. **The real ceiling is real here**,
+and it is what establishes precisely *why* C4/A has none: naming an operation's *output* requires
+crossing back from a computed nat to a named literal type, which is the reverse of the one-way crossing
+C4/A uses, and the reverse crossing needs a reverse table that must cover every width any operation
+*produces* rather than every width a consumer *writes* (`13` section "Arrangement B", the worst message
+in the whole set: a digit tower is reported as `Named` unsatisfied, with eight more towers offered as
+"help"). This is the sharpest single finding of the width-surface thread: **the ceiling was never a
+property of the bridge or of the const surface generically. It is the price of crossing back, and a
+table is the only known implementation of either direction of crossing** (`13` section "Where I go
+further than `12`", independently corroborated by `14` and `16`). The design rule this yields, offered
+as the canon-shaped sentence most likely to survive: **cross once, at literals, in one direction**
+(`13`, `14` names this "the sentence most likely to survive into a canon" and `16` reports every
+mechanism it built obeying it without aiming at it).
+
+**D. Declare the output width explicitly; check it is wide enough by a free type-level comparison; no
+reverse table exists because no output is ever named computationally.** `let out: UFixed<26, 6, Hot> =
+a.mul_into(b);` with the trait checking `26 >= I1+I2, 6 >= F1+F2` rather than computing them. **No
+ceiling, best diagnostics of any arrangement** (headline error carries the consumer's own numbers
+directly, no tower, no repair needed) (`13` section "Arrangement D"; `15_probes/q14` corroborates,
+pairing D with the const-generic tag to also carry a name-consistency guarantee). **Real, stated cost:
+`let c = a * b;` no longer infers a result type; a product site states its output shape**, which for a
+fixed-point library may be the honest shape (somebody has to decide where the point goes in a product)
+but is a genuine, un-costed change to what a consumer writes at every arithmetic call site rather than
+only at an alias-definition site, which is outside where the ratified bar was written to govern (`13`
+sections "Arrangement D", "What is op's"). **Explicitly not worked out by any file: what this does to
+tier one, whose entire premise is `T: Add` with no typestate at all**, which `13` names as "the tier
+with the most consumers" and "the first thing I would attack next", unattacked (`13` section "Where I
+go further"; `14` flags this as the largest single unresolved gap in the whole thread). D and C4/A are
+shown to coexist in one crate without coherence trouble (`13_probes/p28`), so a design could compute
+outputs where the table covers them and require a declaration past that; whether that composition is
+better than either alone is explicitly not decided by anyone.
+
+**Closed and belonging in `DROPLIST.md`: a bare byte-count carrier (`[u8; B]`, B written directly by
+the consumer).** No bridge, no table, arbitrary widths with no declaration, and it erases and
+vectorises identically to the native form, refuting two of `11`'s own predictions in the process
+(`11` section 10.2). Dies not on ergonomics but directly on the ratified acceptance criterion: the
+consumer is now naming the container in thin disguise (computing `ceil(bits/8)` themselves), which op
+refused explicitly and directly ("Container naming is explicitly wrong. The entire idea of arvo is that
+the strategy guides container selection, not the user," quoted at `11:871-873`). Independently
+reproduced as C4's sibling failure by `12`'s finding that no candidate escapes the "how many bits are
+declared" question cleanly.
+
+**Closed: a macro-generated bridge table reading only the widths syntactically present in a module.**
+Not among `10`'s thirteen originally-enumerated routes; attacked directly by `11` and closed
+structurally rather than by refusal. It changes *who writes* the table, not that the result is a
+table, and it is strictly worse than a hand-written one because it can only see widths that are
+syntactically present in source, while the widths a law produces (e.g. `11`'s `b01`'s failing width 48)
+appear in no source text at all, being computed by rustc (`11` section 10.1).
+
+**Named, not proposed, and structurally established rather than merely surveyed: the bridge is not
+blocked; only its codomain is.** A total, uncapped, enumeration-free const-to-type bridge is compiled
+in one blanket impl with no literal anywhere in the crate (`impl<const N: usize, M> ToNat<M> for
+Idx<N> { type N = [u8; N]; }`), and it fails only because the codomain overshoots by a factor of eight
+(bytes needed is `N`, not `ceil(N/8)`), with the closing division refused in four independent syntactic
+positions, all terminally naming `generic_const_args` (forbidden) (`11` section 10.3). This does not
+open a route; it replaces "impossible" with a single nameable, permanent reason ("one division by
+eight, refused in every position that could compute it"), which is offered as the more honest and more
+canon-appropriate sentence.
+
+**Cross-cutting, unresolved, and load-bearing for every candidate above except C4/A once keyed on
+`(W, F)`: does any of these arrangements need to represent a negative integer width, and if so can
+it?** Every ladder built in this thread (`10`, `11`, `12`, `13` before `15`) encodes widths as binary
+or decimal naturals, unable to spell a negative integer width. `06` (Q8/Q9-adjacent material)
+established negative integer width has a real caller at multiplication's tight product form (15 of
+6561 pairs). `15` dissolved this collision, but only for a design keyed on total-and-fraction width
+(see Q2): under that keying the corner is carried by the encodings at zero cost in the mechanism,
+compiled over the whole 81-shape box with a negative control (`15` sections 1.1-1.3). Under a design
+keyed on integer-and-fraction width, the collision is unresolved for any arrangement in this section,
+and `15` reports a signed structural integer was considered and deliberately not built, because it is
+trivially constructible but the downstream cost (signed addition, signed comparison, a proof-of-
+naturalness gate ahead of the container-rung ladder) is large for a corner the coordinate change
+removes entirely (`15` section 6.4). This corner comes back into play if the meet turns out to have a
+caller after all (unsettled, see Q8), since the meet is the one place `(W, F)` itself can go negative
+(`15` section 1.3).
+
+## The derivation's outputs
+
+**How many outputs does the container derivation have, and what is each one for?** Independently
+derived twice, in the corrected-order dispatch shape (`16` derived before reading `15`, contamination
+on the *count* only, self-declared): **two**, not one. The **carrier** (called "container" by `15`),
+the machine type an operation lowers to, and the **stride** (called "extent" by `16`, corrected to
+"stride" after comparing against `15`'s account, since the raw extent turned out to be the declared
+width the consumer already wrote rather than a genuine second output; `16` section 10.1). Rung: TWO
+EXPERTS on the identity of the two outputs and on what the second is keyed on; ONE EXPERT on the exact
+count, by `16`'s own downgrade after finding a commit-subject leak (`16` section 0, `21` section 2.2
+confirms this rung split survives audit).
+
+**Why a one-output derivation is a real, silent, structural failure and not a theoretical one.** A
+carrier-only derivation of `UFixed<13,0,Cold>` occupies 23.1% more memory than the strategy promises,
+because the map from `(width, strategy)` to carrier is not injective: 1024 declarations behind ten
+carriers in one swept box, averaging 102.4 declarations per carrier (`16` section 7). **The panel's own
+certifying instrument for the erasure gate's fourth clause is structurally blind to this class of
+error**: its method compares one operation's emitted code against one native instruction, so it has no
+array in it and cannot have one; a carrier-only derivation passes it at full marks, for every strategy,
+including `Cold` (`16` section 5, section 7's `p3_blind_suite.rs`, four of four green including a
+tautological `size_of` check the probe's own author flags). Pointed at the cases it cannot see, the
+instrument does not go quiet: it reports the `Hot` and `Cold` numerals as the *same function*, which
+is the assertion a carrier-only derivation would produce (`17` section 0). The check that *would*
+catch it (a packed round trip at a nonzero bit-phase) has a second-order blindness: it is data-
+dependent, and returns the correct answer whenever the bits it truncated happened to be zero, so a
+hand-written test using small counter values (0..64) observes zero of the class where a test filling
+the declared width observes 32 of 64 (`16` section 7, `17` sections 3.2, "D1"). And the load type used
+to read one element out of a packed run is **neither of the two outputs**: it is a third, derivable
+quantity (`floor((W+6)/8)+1` bytes rounded up), and reaching for the carrier as the load type (the
+nearest thing to hand) reads too few bits at 28 of 64 widths, wrong exactly when the truncated bits
+were nonzero (`16` sections 4, 7).
+
+**What the second output is keyed on, and two negative controls that pinned it there.** Not the width
+alone: at `W=24` a first attempt (`8 * ceil(W/8)`) gave three bytes for a `u32` container that is
+actually four (`15` section 3.4). Not the rung alone either: `Hot`'s wide-rung arm pads to align 16,
+so at `W=200` the byte payload is 25 bytes but the container-and-therefore-stride is 32, which a
+rung-only keying misses (`15` section 3.4, `16` section 10.2 independently confirms with an
+adversarial same-size-same-stride-different-alignment pair). The stride is keyed on the
+**strategy-and-rung pair**. Alignment specifically is **not** a third output: it rides on the carrier
+(a property of a type, via `align_of`), confirmed by an adversarial construction where two wide
+payloads have identical size and identical stride but different alignment (`16` section 10.2,
+`16_probes/p7`).
+
+**`Cold` is not a container choice with a field attached; it is a statement about how a run of values
+composes, and this is why it has no standalone value form at all.** Independently reached from both
+directions: `15` finds a lone `Cold` value has the identical carrier to `Warm` at the same width; `16`
+finds a lone packed value has to have a size, so packing cannot be a statement about the standalone
+type in the first place (`16` section 10.2, section 12; TWO EXPERTS, both self-report independent
+arrival). Consequence for how a canon states the two-output design: "the derivation produces a
+container and a stride" invites reading them as two coordinates of one answer; "the derivation answers
+a per-value question and a per-aggregate question" states why they are not (`16` section 12).
+
+**Whether the two-output shape is forced by arithmetic or only by the type system, blocked on the
+`Precise` strategy's undecided semantics.** If `Precise` does not widen compute past storage, zero of
+251 swept extents map to more than one carrier in the box measured, and the pair's irreducibility rests
+only on the const-to-type argument (a type cannot be recovered from a const without re-entering the
+forbidden-feature wall, `16_probes/p5b`). If `Precise` *does* widen compute past storage, 64 of 251
+extents map to two distinct carriers, and the pair is irreducible as a matter of arithmetic, full stop
+(`16` sections 10.2, 12). Nobody has built `Precise` as anything but the default strategy under a
+different name in any probe in this panel (`15` section 9, `16` section 12), so this is genuinely
+undetermined rather than merely unmeasured.
+
+**A separate, standing disagreement never addressed by either file directly: is the strategy an
+upstream selector the ladder never sees, or a key of the ladder itself?** `10` (predates `15`, not
+cited by it on this point): "the ladder does not know what a strategy is; it maps a width to a
+container. Where the strategy puts the crossover is an input to it" (`10` section 3.4), which reads as
+strategy-upstream-of-the-ladder. `15` builds a three-input map keyed directly on `(strategy, width,
+sign)` (`15` section 3.2), which is strategy-as-a-key. Both compile. The observable difference is
+whether the crossover is a property of the ladder or a property of the caller, which bears on what a
+diagnostic can say (`23` names this S21, blocked, and states plainly that neither file addresses the
+other).
 
 ## Questions with live options that op has not been asked
 
-Kept separate because the eight above carry his direction and these do not.
+Kept separate because the eight (now nine, with Q9 above) carry his direction where he has spoken and
+these do not.
 
 **Does the canon carry a numeric threshold at all**, or only the inequality that generates one? The
-reading on offer is that an inequality is permanent while a figure is a fact about a machine, and it
-is marked as a reading rather than a result.
+reading on offer is that an inequality is permanent while a figure is a fact about a machine
+(explicit in `26` section 11.1 and `27` section 10.3), and it is marked as a reading rather than a
+result by both files that state it.
 
 **Is the derived numeral required to be the tightest honest answer?** The sum-of-widths product form
-is not tight: it wastes exactly one bit on a characterised minority of pairs, where an operand
-denotes only zero or the narrower operand's total width is one. A tight form exists and its predicate
-reduces to a one-line condition. So a canon sentence claiming tightness would be false as the design
-stands, and the options are to derive the tight form, to state the looser guarantee honestly, or to
-say nothing about tightness at all.
+is not tight: it wastes exactly one bit on a characterised minority of pairs (476 in one box, exactly
+reconciled against an earlier count of 461 by `15` as two different, both-correct conventions:
+461 = the 160 zero-only pairs plus the 301 narrow-operand-total-width-1 pairs; 476 = that plus the 15
+negative-integer-width pairs the clamp otherwise hides, `15` section 1.5), where an operand denotes
+only zero, or the narrower operand's total width is one. A tight form exists and its predicate reduces
+to a one-line condition, compiled with a negative control (`06` section 7.1, section 7.3). So a canon
+sentence claiming tightness would be false as the design stands, and (per the soundness/bestness fork
+under Q4) the options are to state only soundness (cheap, always true, no admissions needed), to derive
+the tight form and state bestness (requires admitting the origin and negative integer width, per Q8's
+tie between the two closure conditions and this tight form's own residual, which `07` shows are
+disjoint regions of one formula's codomain rather than two independent repairs: needed by 1 input and
+5,487 inputs respectively, with **0** inputs needing both, `07` section 3.1), or to say nothing about
+tightness at all.
 
-**How many outputs does the container derivation have?** The map needs container **and** stride, and
-that second noun is in op's own acceptance criterion while nothing in the panel had used it. A
-one-output derivation checks clean against the obvious size test and cannot see the error class at
-all. Live sub-options for where stride belongs: on the width, on the rung, or on the
-strategy-and-rung pair.
+**How many outputs does the container derivation have?** See the dedicated section above; this line is
+kept as a pointer since it was the entry point into that material.
+
+**What a strategy *is*, as a definition rather than a table.** Proposed, not yet second-read: "a
+consumer-written name for one coherent policy over how a numeral is represented and how its arithmetic
+behaves... a strategy assigns one value on every axis, and each assignment is a function of the build
+condition, a constant assignment being one case of that. Strategies are therefore named sections over
+a product of axes rather than values of a single axis" (`25` section 7, the canon sentence proposed).
+Grounded in op's own ratified intent that "everything varies granularly, and a constant is a function"
+(`143b:10-12`, quoted and verified at `25` section 3.3) and in his ruling that arvo's strategy axis and
+notko's profile pipeline are "not one mechanism" but share "synergy, nothing more" (`144b`, quoted at
+`25` section 5.1, voiding an adjacent unratified claim in `142c` that would have identified them). The
+definition is offered as ONE EXPERT and explicitly wants a second, order-inverted read on the specific
+claim that it is sections-over-a-product rather than values-of-an-axis (`25` section 9). This is the
+answer proposed to (and does not resolve, since it holds under either answer to) Q5's one-axis-or-
+several fork; it is a separate finding from Q5 in that it is a *definition* of the concept rather than
+a count of its axes.
+
+**What the necessary condition for a sound absorbing-top denotation is.** See Q4. A sufficient
+condition is known (stays at the endpoint); the necessary one is not, is named as the "single thing" one
+member "would most want checked by someone else" (`18:403-404`), and has been checked twice by
+independent readers of the same probe table without being resolved, only refuted in its over-strong
+"exactly" form (`19`, `21` section 1.1). This blocks both a canon sentence about saturation and the
+`Precise`-on-`inexact` question (`23` S5, "the cheapest unblocking item in the inventory").
+
+**Whether `Precision` counts the sign digit.** The record answers both ways on adjacent rows of one
+family table (`IFixed<I,F>` counts it, `FastFloat<P,...>` does not), and no checkpoint rules on it
+(`02` section 1.4). It decides: what the sign domain moves (both endpoints, or the floor alone);
+whether the three sign domains at equal precision form a chain or leave `NonNegative` incomparable;
+whether `Symmetric` at precision one denotes exactly the zero set (bearing on whether a zero-width
+numeral already exists under one reading without needing to be separately admitted, `02` section 1.5);
+and whether two of the three sign domains collapse at an odd radix. All four consequences computed
+under both readings so nothing in `02`'s own derivation depends on the answer, but the answer itself is
+not decided by mathematics.
+
+**Does the design want narrowing to compose?** Two narrowings equal one narrowing exactly when the
+rounding mode's direction switches only at points the coarser numeral's own grid holds; round to
+nearest never satisfies this, the directed modes and round-toward-zero always do (`07` section 2.4,
+tested decisively by moving a pivot on and off the coarser grid: 0 failures on-grid, 7 off-grid, across
+several trials). If composable narrowing is wanted, this is a constraint on which rounding modes a
+numeral may carry that nothing in the record currently states. If not, the canon owes the sentence that
+narrowing twice is not narrowing once.
+
+**Is the cross-kind join closed, or merely priced?** `03` establishes no admission from the original
+three repairs it. `07` measures that closing the shape space under intersection anyway (the standard
+"no best abstraction" response from abstract interpretation) costs a third family of segmented numerals,
+sized at roughly 16 to 34 percent more shapes than the two named families contain, with every added
+shape new and unnamed by either (`07` section 4.3). `08` sharpens this: the closure buys the "glue"
+shapes but specifically does **not** reach tapered (posit-shaped) formats, because intersection takes
+the pointwise maximum of canonical-exponent slopes and every posit measured has slope two somewhere
+while every measured intersection tops out at slope one (`08` section 3.3). Nobody is proposing the
+Moore closure as the design (`03`'s reading D and E are both cheaper and reading D has a design
+precedent, per Q8), and it is explicitly marked dropped by `09`'s and `14`'s persona checkpoints as "the
+direction most likely to eat a week and produce nothing", though this is persona judgement carrying no
+authority (`09` section 6, `14` section 9).
+
+**The seam sentence between the two vocabularies of "numeral" the panel used.** See Q2's fourth
+reading, drawn out in full there. Restated here as its own open item because it is prior to, and cuts
+across, several of the entries above: it is what makes S9 (Q8's tightest-answer material) and S17 (this
+register's Q2 "total and fraction" entry) describe the same object rather than appearing to
+contradict, and it is what makes the container-derivation's two-output finding scoped correctly to the
+constant-canonical-exponent case rather than misread as a general claim about every numeral including
+floats (`24` sections 2.3, 6).
+
+**Should the panel's own "phase" collide across the two vocabularies it uses?** Mechanical, cheap, and
+found by measurement rather than by intuition: the concept-side "phase" (a property of a grid, one
+number per numeral, inside `08`'s own membership predicate) and the storage-side "phase" (`16`'s bit
+offset within a byte for one element of a packed run, cycling through residues) are independent, all
+four combinations occur, and both readings are load-bearing in their own files (`24` section 4,
+`24_probes/s4`). `24` proposes, as a suggestion rather than a call, keeping "phase" for the value-space
+sense (the one with literature behind it and inside the predicate) and renaming the storage-space one
+to "bit offset" or "alignment residue", noting `16`'s own prose already half-reaches for "bit-phase" as
+a compound without naming the collision (`24` section 4).
 
 ## Standing
 
@@ -296,3 +830,9 @@ An entry leaving for `DROPLIST.md` needs a diagnostic and a statement of what wo
 entry arriving needs to be written out in full and distinguished from its neighbours. An entry
 sitting here needs nothing, and may sit for the whole hundred files, which is the intended behaviour
 rather than a stall.
+
+**On this rebuild specifically:** this file was rebuilt from files `02` through `27`. Files `28` and
+`29` are op's own answers and a dispatcher's note respectively and contain no new options of their own
+to carry (`28` restates and re-scopes the eight questions above; `29` is process commentary). Whatever
+member file comes after this one should extend this register in place, per the method it documents,
+rather than reading a compression of it.
