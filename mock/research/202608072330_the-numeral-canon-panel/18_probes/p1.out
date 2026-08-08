@@ -1,0 +1,24 @@
+# base numeral U<2,2>: 16 values, adjustment 1/4, range [0, 15/4]
+
+# comparability of the value-level (separation) order, per denotation
+point        data=   16  pairs=    120  comparable=    120  (100.00%)
+cell         data=   16  pairs=    120  comparable=    120  (100.00%)
+absorbing    data=   16  pairs=    120  comparable=    120  (100.00%)
+interval     data=  136  pairs=   9180  comparable=   3860  (42.05%)
+
+# does datum equality agree with denotation equality
+point        data=   16  distinct denotations=   16  injective
+cell         data=   16  distinct denotations=   16  injective
+absorbing    data=   16  distinct denotations=   16  injective
+interval     data=  136  distinct denotations=  136  injective
+
+# are the denotations pairwise disjoint (a partition of what they cover)
+point        overlapping pairs=      0
+cell         overlapping pairs=     15
+absorbing    overlapping pairs=      0
+interval     overlapping pairs=   6120
+
+# the same comparability question at three widths, to check 16 is not the artifact
+U<1,1>  base values=  4  interval data=   10  comparable=68.89%
+U<2,2>  base values= 16  interval data=  136  comparable=42.05%
+U<3,3>  base values= 64  interval data= 2080  comparable=35.45%
