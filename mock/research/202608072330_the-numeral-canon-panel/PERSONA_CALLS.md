@@ -110,3 +110,78 @@ paraphrased, are:
 `MORNING.md` edits are recommendations and were not applied by the persona.
 
 **Status:** persona-decided. Not ratified. Nothing in `14` settles anything, per `04`.
+
+### 2026-08-08 Checkpoint on the third stretch (`15`, `16`, `17`, `18`)
+
+**Asked:** to stand in for op at the third checkpoint slot, read `15` through `18` in order, test
+whether the stretch's self-corrections are real or self-serving (specifically `17`'s false-failure
+claim, `18`'s narrowing of `07`, and `16`'s contamination downgrade), count the dispatcher's brief
+errors, find the next `MORNING.md` defects, and say whether the panel is converging on a canon or on a
+methodology for evaluating canons.
+
+**The persona said:** the full text is `19_persona_checkpoint_three.md`. Its calls, quoted rather than
+paraphrased, are:
+
+- The three things for op are none of what `MORNING.md` leads with. First, **op gave a second standing
+  instruction and eighteen files have walked past it**: `seed/SETTLED_container.md:410-420` records op
+  treating the whole `141`/`142` harness bench body as "one instance of evidence, completely unaudited
+  by a second expert set of eyes" (`142b:60-64`), and the compression into `SETTLED.md` dropped the
+  entire thread, so the panel cannot see it. That is the third `SETTLED.md` compression defect of the
+  night and the first that loses an instruction rather than a qualifier. Second, **the `Cold` trade
+  four files call unpriced is priced in this repository**: `mock/benches/bitpack-sequential-sum` puts
+  the packed walk at 4.6x the native walk at n=16384 with committed CSV, meta and findings, and the
+  footprint benches put packed at roughly 1.43x dense at 7M elements, so the penalty turns with scale
+  and nobody has said so. No file in the panel names `mock/benches/`. Third, **`17` enumerated what the
+  design trusts without checking and omitted the one item op personally named as trusted without
+  checking.**
+- The self-corrections are real. `17`'s aggregate false negative was checked harder than `17` checked
+  it, by comparing both bodies of `t2_aggregate_erasure.s` at the operand level and finding every
+  immediate identical, which closes the operand-insensitivity weakness `17:726-732` conceded of its own
+  oracle. The optimisation-level table reproduced exactly on independent runs. `18`'s 936 of 5184
+  reproduced exactly. "The tilt is not in the experts. It is in the compression": in all three cases
+  the expert's own hedge is present in the expert file and absent or weakened in `MORNING.md`.
+- `16`'s downgrade **does not go far enough on the second contamination**, because `q13_cold_packed`
+  telegraphed the site and `16` keeps independence for "what fails without it", which is that site.
+  And `MORNING.md:174-176`'s two-expert rung on the blindness finding is inflated: `16:628-648` says
+  twice that `15` does not have it, so it is one expert plus one checked reproduction. Third rung
+  inflation in three stretches.
+- Seven `MORNING.md` defects, the largest being that `:668` still merges the two-expert rung with the
+  three-instance bar after `09` and `14` both flagged it; that the anchor repair was applied to the
+  second-stretch text only, leaving sixty numbers in the third-stretch sections with zero probe names
+  and zero `file:line` anchors; that `:255-256` states "four probe directories emit assembly", which
+  matches neither `17`'s printed two, nor the four files its printed command actually returns at
+  `17`'s own commit, nor today's three directories, nor the eight holding committed assembly; and that
+  `:326-327` counts three dispatcher brief errors where there were five, one of which it reattributes
+  to the expert who caught it.
+- **`18`'s proposed repair is refuted by `18`'s own committed table.** "The reading holds while the
+  operation set cannot decrease" would refuse `{add, multiply by zero}`, which decreases and is sound
+  at 0 of 512 in `p2.out`. The persona's replacement, offered as unbuilt and wanting a real second
+  read: an absorbing endpoint is sound exactly while every operation maps the absorbed set onto a set
+  the numeral can denote exactly.
+- On canon or methodology: "converging on a methodology for the mechanism, and not yet on a canon,
+  because the doability the canon has to assert is a workload claim and the panel has not made one."
+  Five canon-shaped sentences came out of this stretch, more than either predecessor. The next dispatch
+  should be the second read op asked for on `141`/`142` plus one `bench.toml` entry, not a nineteenth
+  expert.
+- Five refusals: the five-question lead going to op in its current form, since three of the five are
+  unactionable and the one actionable thing is op's own untaken instruction; "no bench harness has run"
+  as a statement about the question rather than about the panel; the two-expert rung on the blindness;
+  `MORNING.md:419`'s "all five candidate surfaces" after `14` refused it; and the 81-versus-zero
+  discrepancy sitting for a fourth stretch.
+- Named as genuinely good: `15` changing coordinates rather than paying for the corner and correcting
+  `14`'s own enumeration in the direction that costs less; `16` refuting its own third component
+  against its own criterion in the paragraph after conceding the count; `17` going back for the
+  instrument it had named and left, then building the variant that exercised its own stated weakness;
+  `18` recording a defect in its own probe rather than fixing it quietly, and `18:640-644` being the
+  most honest coverage sentence in the panel.
+- **A correction to the entry above.** That entry says of `14` "What was done with it: nothing at the
+  time of writing ... were not applied by the persona." Commits `30fef51` (04:47:40) and `60ff1e3`
+  (04:49:39) applied eight of `14`'s thirteen findings within three minutes of `14` landing at 04:47:00.
+  The added clause "by the persona" makes the sentence true and leaves the picture unchanged, one
+  stretch after the identical wrong picture was pointed out in this same file. Entries are left as
+  written, per the panel's treatment of records as paper trail, and corrected here.
+
+**What was done with it:** unknown at the time of writing. Delivered for op's morning. The recommended
+`MORNING.md` edits are recommendations, and the persona applied nothing and committed nothing.
+
+**Status:** persona-decided. Not ratified. Nothing in `19` settles anything, per `04`.
