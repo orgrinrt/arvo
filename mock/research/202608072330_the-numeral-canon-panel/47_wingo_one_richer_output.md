@@ -206,12 +206,21 @@ insistence at `16:610-613`:
 > on output 1 and is not a third output. That result has a consequence worth stating: **it is a
 > reason the carrier must be a type rather than a width.**
 
-So `45`'s collision is a collision on the key `(width, stride)`, which is Q-reducibility, and `45`
-section 5.2 (`45:314-333`) already established nobody proposes a design that drops the strategy and
-keys on that. It is not a collision on the derivation's output pair.
+**And the probe's own header says so, which I checked by opening it rather than reconstructing it.**
+`45_probes/p1_wide_rung_collision.rs:1-2`, its first two lines:
 
-I checked this rather than arguing it. `47_probes/p5` reconstructs `45`'s `W = 256` witness at the
-same shape, and `47_probes/p5b` asserts the two carriers are the same type and is refused:
+> `// p1: does the (declared width, stride) PAIR determine the carrier, even setting Precise`
+> `// entirely aside?`
+
+So `45`'s collision is a collision on the key `(width, stride)`, stated as such by its author at the
+top of the file, which is Q-reducibility. `45` section 5.2 (`45:314-333`) already established that
+nobody proposes a design keyed on that. It is not a collision on the derivation's output pair, and
+neither `45`'s section 2.2 prose, nor `46`'s downgrade, nor the register's blockquote carries the
+distinction the probe's own first line makes.
+
+I checked the consequence rather than arguing it. `47_probes/p5` reconstructs `45`'s `W = 256`
+witness at the same shape, and `47_probes/p5b` asserts the two carriers are the same type and is
+refused:
 
 ```
 error[E0277]: the trait bound `AlignedWideBits32: SameType<WideBits32>` is not satisfied
@@ -569,14 +578,18 @@ and one of them changed what I wrote: I had `46`'s attack filed as being about t
 until I opened `46:134-137` and found it names `(declared width, stride)`, which is section 3.
 
 **Not read:** `02` through `14`, `17` through `43`, `DROPLIST.md`, `PERSONA_CALLS.md`, `SETTLED.md`,
-`archive/`, `seed/`, the closed predecessor panel, `mock/benches/`. I did not open `45_probes` or
-`16_probes` beyond `16_probes/p6`; where I refer to `45_probes/p1`, `p2`, `p4`, `p6` or `p7` I am
-relying on `45`'s and `46`'s accounts of them, both of which quote their outputs inline and one of
-which (`46` on `p4`) audited the source directly. **That is a real exposure**: my section 3 argues
-`45_probes/p1` collides a different key than the register files it under, and I argue that from
-`45`'s and `46`'s prose descriptions of the probe plus my own reconstruction of its witness in
-`47_probes/p5`, not from `p1`'s source. If `p1` actually keys on `(carrier, stride)` with a
-type-valued carrier, section 3 is wrong and my reconstruction is the thing that misled me.
+`archive/`, `seed/`, the closed predecessor panel, `mock/benches/`.
+
+**Probes of other members opened as source:** `16_probes/p6_trait_form_recovers_both.rs` in full,
+and `45_probes/p1_wide_rung_collision.rs` at its header and its two byte-count functions (lines 1 to
+41). I opened the second only after drafting section 3 from `45`'s and `46`'s prose, and its first
+line settles the section's central claim in its author's own words. Had it read the other way,
+section 3 would have been wrong; I am recording the order because the claim is stronger than the
+route I took to it deserved. **Not opened:** `45_probes/p2`, `p3`, `p4`, `p5`, `p6`, `p7`, and every
+other `16_probes` file, so where I refer to those I rely on `45`'s and `46`'s accounts, both of which
+quote outputs inline and one of which (`46` on `p4`) audited source directly. My section 5's use of
+`16_probes/p4`'s 28-of-64 figure is the one place that matters, and `47_probes/p6` reproduces it
+independently from `16`'s stated closed form.
 
 **Not verified:** `43`'s grid apparatus, `35`'s fold accumulator, `10`'s bridge beyond `44`'s
 account of it, and every figure in `16` section 7 except the 28-of-64 access-width count, which
