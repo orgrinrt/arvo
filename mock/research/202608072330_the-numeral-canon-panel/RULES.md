@@ -121,7 +121,14 @@ that. Living in `benches/` is not the test; using the harness is, with real comp
 than a strawman. Where nothing has been measured on the harness, the magnitude is **unpriced**, and
 that word is used rather than reaching for a number.
 
-**Counts are measurements.** Produce every number with a command and say which command. The prior
+**Counts are measurements.** Produce every number with a command and say which command.
+
+**Check your own citations before shipping, by opening them.** A reference that resolves is not a
+reference that says what you claim. One member found **seven of its own citations wrong** this way and
+built a probe that opens every `file:line` and tests its content rather than its resolution; forty-one
+citations, zero failures after. That probe lives in `25_probes/` and is the cheapest correctness tool
+this panel has. Five separate instances of this failure were recorded across two panels before anyone
+wrote it. The prior
 panel propagated two floating numbers nobody could reproduce, and one expert's headline counts turned
 out to be an artifact of its own enumeration bound.
 

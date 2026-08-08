@@ -7,7 +7,7 @@ Read this first; it points at the files. Each entry says what changed and what i
 
 ## What is yours, in the order it matters
 
-Six questions, each small, each collapsing something large. Everything else in this file is context
+Seven questions, each small, each collapsing something large. Everything else in this file is context
 for them.
 
 1. **Which reading of "then validate" did you mean?** Your criterion's third clause has three
@@ -29,7 +29,11 @@ for them.
    sound at 0 of 512. The sufficient condition is not yet known, `18` asked for it to be second-read,
    and no second read has run. Two parts of the design depend on incompatible answers, and `Precise`
    on `inexact` is the same question one level down. Sections four and six.
-5. **Does `Warm` wrap, or clamp?** New, and the sharpest kind of question: **two committed bench
+5. **Is the arithmetic column one axis or two?** New from `25`, and **prior to the wrap-or-clamp
+   question below**, because it decides what a wrap-or-clamp answer would be an answer *about*.
+   Three presets state an overflow policy and no intermediate precision; the fourth states an
+   intermediate precision and no overflow policy. Section eleven.
+6. **Does `Warm` wrap, or clamp?** The sharpest kind of question: **two committed bench
    families implement the two readings and disagree in direction**, and `20` says plainly that the
    record currently supports both. Note also that `20` declared the section these numbers come from
    **contaminated by a commit subject line and owed an independent read**; that disclosure belongs
@@ -38,8 +42,8 @@ for them.
    with the crossover landing exactly where its own safety predicate says. The ratified preset table
    gives `Warm` the clamp and gives wrapping to `Hot` alone, and you have already declared that cell
    stale. Section seven.
-6. **One family, or several?** Your original question, reframed twice tonight and no longer the
-   blocker it appeared to be. Sections one through three.
+7. **One family, or several?** Your original question, reframed twice and no longer the blocker it
+   appeared to be. Sections one through three.
 
 ## How to read the rest
 
@@ -216,6 +220,69 @@ definition to projection.
 
 **What is yours, and it is one thing:** whether the design admits numerals its coordinates cannot
 name. Everything else in that file wants a second expert rather than you.
+
+## Eleven: a strategy has a definition, and the four names are a filled two-by-two
+
+*Sources: `25`, with `25_probes/` carrying four rerunnable scripts.*
+
+`23` found that eight sentences mention the strategy axis, three name it inside their canon sentence,
+and **none defines it**. `25` checked that and found it holds more widely than reported: fifteen
+mentions, zero definitions, across two panels.
+
+The definition it wrote:
+
+> A **strategy** is a consumer-written name for one coherent policy over how a numeral is represented
+> and how its arithmetic behaves. The policies it fixes are independent of one another, and each is an
+> axis. A strategy assigns one value on every axis, and each assignment is a function of the build
+> condition, a constant assignment being one case of that. **Strategies are named sections over a
+> product of axes rather than values of a single axis.** A strategy never derives: it is the one input
+> a consumer supplies that the substrate cannot compute. It changes which functions a numeral's
+> operations denote, not which values it denotes.
+
+With the discriminating test asked for: a proposal **is** a strategy when it is an assignment on
+existing axes, and **is not** when it needs a new axis, because then every existing strategy needs a
+value on that axis too.
+
+### The four names are a bijection with a two-by-two
+
+Not close to one axis. Parsing the table out of the repository's own rules shows the four names are
+an **exact bijection with the two-by-two of headroom against layout**, with zero cells spare. Four
+names filling a two-by-two exactly is not four values of one axis.
+
+**And the arithmetic column turns out to be two axes, with each preset answering only one.** Three of
+the four state an overflow policy and say nothing about intermediate precision; the fourth states an
+intermediate precision and says nothing about overflow. Widening then narrowing is not an answer to
+the question that wrapping and saturating answer.
+
+**That conflation is the mechanism that hid the definition for two panels.**
+
+### The bench family nobody in this panel had cited
+
+`25` found `warm-clamp-arity`, **thirty-four committed runs**, holding strategy, overflow and layout
+fixed while varying headroom against accumulator width. That is exactly the independence arvo's own
+preset table **structurally cannot show**, since four presets filling four cells leave no degrees of
+freedom. Three different arms win and none wins everywhere.
+
+**So "everything varies granularly and a constant is a function" is now confirmed empirically rather
+than held as intent.** It was your call; the repository has been carrying its evidence.
+
+Flagged outside its scope, and it belongs to the headroom thread: **the shipped doubled container
+wins zero of thirty-four, with every delta negative.** That has now sat uncited through three panels.
+
+### What it says is yours
+
+**Is the arithmetic column one axis or two?** It decides whether the packed strategy has an overflow
+policy at all, and it is **prior to your question five**, because it decides what a wrap-or-clamp
+answer would be an answer about. Not a measurement dispute, so it does not go back to the panel.
+
+### A tool this panel should have had
+
+`25` found **seven of its own citations wrong before checking them**, and built a probe that opens
+every reference and tests its content rather than its resolution. Forty-one citations, zero failures
+after.
+
+**That tooling did not exist in either panel, despite five recorded instances of this exact failure.**
+It exists now, in `25_probes/`.
 
 ## The correction that matters most: the `Cold` trade is not unpriced
 
