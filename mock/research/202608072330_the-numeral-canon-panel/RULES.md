@@ -147,6 +147,36 @@ State the exposure the way `43` did, by name: which file you leaned on, which yo
 which of your sections would move if the account were wrong. A coverage bound naming the specific risk
 is worth more than a claim of completeness, which this workspace has repeatedly caught being unmeasured.
 
+## The cadence, and why running it as a survey defeats the rungs
+
+**Four experts, checkpoint, four experts, consolidation. Repeating.** The consolidation is the canon
+candidate. This is in `00_brief.md` and it is not optional.
+
+**It was followed to `19` and then abandoned for twenty-five files.** No consolidation has ever been
+written in this panel. That is the mechanism by which evidence becomes canon text, and its absence is
+why forty-four files produced no candidate. The explore-do-not-settle mode forbids **settling**; it
+never forbade consolidating, and treating the two as the same thing is how the absence got explained
+away as compliance.
+
+**Several experts on one question, not one expert per question.** Op, 2026-08-08:
+
+> You are making one expert do a round, then immediately kind of shift focus with the next one, even
+> if a bit related sometimes. What if you had a few experts talk through a single thing first?
+
+A dispatch per topic is a survey. It reads like a panel because each file cites its predecessors, and
+it cannot do what a panel is for.
+
+The reason is mechanical rather than stylistic. **TWO EXPERTS requires two independent derivations of
+the same claim**, and ratification requires convergence, meaning the experts have stopped disagreeing.
+One expert per question makes both unreachable by construction: every finding lands at ONE EXPERT and
+stays there, however strong it is, and nothing can ever be brought to op as converged.
+
+So a question gets successive experts until they either agree or have located exactly what they
+disagree about. Disagreement that survives several passes is itself a result and goes to op as one; a
+question answered once and left is not.
+
+**A question is finished when a later expert adds nothing, not when a file exists about it.**
+
 ## The mode: explore, do not settle
 
 Standing for roughly the panel's first hundred files, on op's instruction. Full statement in
