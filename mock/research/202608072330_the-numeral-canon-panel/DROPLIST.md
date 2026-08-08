@@ -460,3 +460,10 @@ shortest path wrong on **12.6% of 622 million in-range instances**, because inte
 monotonicity (560 of 2176) and min-plus needs absorption and monotonicity both. **Reopened by:** a use
 case needing the absorbing top and the additive inverse but not monotonicity, which its author could
 not construct and does not believe exists among the tropical algorithms.
+
+**The two-by-two of headroom against layout, as evidence about the decomposition.** Closed by
+`40_probes/p1`: all 24 placements of four labels onto a two-by-two are exact bijections, so the
+property carries no information about arvo specifically. Under four constraints read off op's own
+intent statements, the shipped placement is not among the two survivors, with one constraint alone
+sufficient to exclude it. **Reopened by:** an independent determination of the placement, from
+something other than the table, that agrees with the table.

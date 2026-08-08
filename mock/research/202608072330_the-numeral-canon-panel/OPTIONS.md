@@ -238,6 +238,12 @@ demand is measured (100% exact for add/sub, falling to 4.60% of in-range divisio
 
 ## Q5. Is the arithmetic column one axis or two?
 
+> **Two corrections from `40`.** The axis list should carry the **observable-or-not** classification
+> beside each axis, since that is what decides how the axis may be governed and it is not derivable
+> from the name. And this entry's corroboration count should read **three, not four**: one of the four
+> cited corroborations is about a different column from the claim it supports.
+
+
 **Two axes.** Overflow policy and intermediate precision are independent, and every strategy needs a
 value on both. The evidence is that three presets state an overflow policy and say nothing about
 intermediate precision while the fourth (`Cold`, "widen-op-narrow") does the reverse, answering a
@@ -867,6 +873,58 @@ exactly reassociable, which float never is, and nobody in the panel had said so.
 properties the arithmetic has** (does the top absorb, is addition monotone, associative, invertible,
 does it distribute) rather than which policy it takes. The argument is that the policy names one thing
 while the consumer needs two, and a hybrid buying one of the two is measurably not enough.
+
+## Q13. Which axes may a build arm move?
+
+**Added from `40`, which ranks it first among its own findings.** The axes split into **observable**,
+where moving them changes the answer a program computes (overflow policy, intermediate precision,
+rounding, reduction shape, sign), and **unobservable**, where moving them changes only cost (headroom,
+layout, container, lane count). That split is not derivable from an axis's name and decides how the
+axis may be governed.
+
+- **Any axis.** An arm resolves everything, including overflow policy and intermediate precision. The
+  design has then adopted Rust's debug-and-release semantic split for every numeral, which is coherent
+  and is what the imitation intent points at. Costs: the same source computes different answers under
+  different arms, and a downstream bound holding in one arm fails in another, which `40_probes/p3`
+  compiles.
+- **Unobservable axes only.** Arms resolve headroom, layout, container and lane count freely; every
+  observable axis is fixed across arms. Buys a program whose answers do not depend on how it was built.
+  Costs the imitation intent on the one axis where Rust's own behaviour is arm-dependent.
+- **Unobservable always, observable for the performance-first strategy only.** The per-strategy form.
+  It may move an observable axis per arm against a provable meaningful gain, the rest may not.
+  Inherits the unset "meaningful" threshold.
+- **No classification; state per axis whether it is arm-resolvable.** Cheapest to state, and it does not
+  say why, so a new axis has no rule to classify it by.
+
+## Q14. At what exchange rate does a strategy's preference yield?
+
+**Added from `40`.** It is op's own question and it is **unset in two of his sentences at once**: the
+"provable meaningful gains" that bound a soundness trade, and "if mimicking is consistently just worse
+choice". `40` argues these are one hole rather than two, and that naming the rate once answers both.
+
+The options are a shape rather than a number: **a stated rate per objective**; **a lexicographic
+ordering with no rate at all**, which is what every objective except the performance-first one already
+has; **a rate supplied by the consumer**; or **silence**, with the consequence that "meaningful" is
+decided case by case by whoever writes the arm.
+
+## Q15. Are the axes independently resolvable, and in what order?
+
+**Added from `40`.** Distinct from Q5, which asks whether they are independently **stateable**. This
+asks whether they can be **settled** one at a time.
+
+Measured on two matched committed families nobody had cited: the set of containers in contention
+**differs between wrapping and saturating at 5 of 6 widths** (`40_probes/p7`). So the axes are
+independently stateable and not independently resolvable.
+
+- **Independently resolvable.** A strategy's assignment is a product of per-axis argmins. Cheapest by
+  far, and contradicted at a majority of widths on both matched pairs.
+- **Resolvable in a stated order**, earlier coordinates fixed before later ones are measured. Coherent
+  with the observable split if observable axes come first. Costs the ordering, which the canon must
+  then justify rather than assert.
+- **Jointly resolvable only.** Resolution ranges over the product. Most faithful to the measurement and
+  most expensive, since the matrix is the product rather than the sum.
+- **Per axis with interactions named as exceptions.** The pragmatic form. Costs a list that grows by
+  discovery with no rule behind it.
 
 ## Questions with live options that op has not been asked
 
