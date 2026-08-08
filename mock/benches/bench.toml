@@ -2246,3 +2246,75 @@ variants = [
     "../target/release/bench_bitpack_contend_packed",
     "../target/release/bench_bitpack_contend_packed_simd",
 ]
+
+[bench.bitpack-contend-decode]
+title = "The packed decode with one, two and four accumulators, against the u16 carrier, at one and four threads"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+threaded = true
+
+# n = 16,384 elements, 1 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 163841
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 16,384 elements, 4 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 163844
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 4,194,304 elements, 1 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 41943041
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 4,194,304 elements, 4 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 41943044
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 8,388,608 elements, 1 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 83886081
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]
+
+# n = 8,388,608 elements, 4 thread(s)
+[[bench.bitpack-contend-decode.sizes]]
+n = 83886084
+variants = [
+    "../target/release/bench_bitpack_contend_d16",
+    "../target/release/bench_bitpack_contend_d16_control",
+    "../target/release/bench_bitpack_contend_packed_simd",
+    "../target/release/bench_bitpack_contend_pipe2",
+    "../target/release/bench_bitpack_contend_pipe4",
+]

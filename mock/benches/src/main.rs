@@ -480,6 +480,17 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("bitpack-contention", 83886082) => routine_bridge!(Contend<83886082>),
         ("bitpack-contention", 83886084) => routine_bridge!(Contend<83886084>),
         ("bitpack-contention", 83886088) => routine_bridge!(Contend<83886088>),
+
+        // the decode attack (panel file 27 section 8): the same rows with two
+        // unrolled packed decoders added, run as their own section so the
+        // twelve committed contention rows are not rewritten to answer a
+        // question about one arm.
+        ("bitpack-contend-decode", 163841) => routine_bridge!(Contend<163841>),
+        ("bitpack-contend-decode", 163844) => routine_bridge!(Contend<163844>),
+        ("bitpack-contend-decode", 41943041) => routine_bridge!(Contend<41943041>),
+        ("bitpack-contend-decode", 41943044) => routine_bridge!(Contend<41943044>),
+        ("bitpack-contend-decode", 83886081) => routine_bridge!(Contend<83886081>),
+        ("bitpack-contend-decode", 83886084) => routine_bridge!(Contend<83886084>),
         _ => return None,
     };
     Some(RoutineSpec {

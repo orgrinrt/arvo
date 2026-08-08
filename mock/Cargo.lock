@@ -315,6 +315,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "bench-bitpack-contend-pipe2"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
+name = "bench-bitpack-contend-pipe4"
+version = "0.0.0"
+dependencies = [
+ "bench-bitpack-contend-shared",
+ "mockspace-bench-core",
+ "mockspace-bench-macro",
+]
+
+[[package]]
 name = "bench-bitpack-contend-shared"
 version = "0.0.0"
 dependencies = [
