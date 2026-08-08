@@ -25,6 +25,12 @@ must not appear in this file.
 ## How to read an entry
 
 **RATIFIED** means it sits on the record as ratified with op in the loop, with the provenance shown.
+**No entry currently holds this rung.** The three that did were imported from the prior panel's
+`SETTLED.md` classification, which `01` section 0 and the panel's own continuation state had already
+established was made under the old reading of ratification and is not to be trusted. Op demoted the
+first of them within hours (`39`); the other two were rewritten to rest on his current word instead.
+**Do not import that rung again.** An entry earns RATIFIED here only from a convergence brought to op
+and blessed, which has not happened for anything.
 
 **STATED** means op has said it and marked it canon-bound, and it has not been through the convergence
 that ratification requires. Under his own correction, an opinion given before the experts converge is
@@ -35,16 +41,24 @@ clear cut and settled. The intent is clear I think, but nothing about them is ab
 
 ---
 
-## I1. The strategy set is closed at exactly four
+## I1. ~~The strategy set is closed at exactly four~~ DEMOTED TO OPEN
 
-**RATIFIED.** `seed/SETTLED_strategy.md` section 1, carried from the prior panel.
+**OPEN.** Demoted 2026-08-08 on op's direct word, hours after this file opened. Kept rather than
+deleted so the demotion is legible. Full statement: `39`.
 
-`Hot`, `Cold`, `Warm`, `Precise`, and nothing else.
+> the strategy set is not closed at exactly four. These are the ones the last panel settled with, and
+> what my amateur ass had written for arvo that we are now redesigning (infer from that what you
+> will..), so it's entirely open to discussion and exploration
+
+`Hot`, `Cold`, `Warm`, `Precise` are **a prior attempt at the intent, not the intent**. The number, the
+names and the decomposition are all open.
 
 ## I2. Each preset names a stated intent, not a derived rule
 
-**RATIFIED.** Op's own words, quoted at `seed/SETTLED_strategy.md` section 2, from the prior panel at
-`70:106-109` and requoted at `124:2578-2580`.
+**STATED, and its enumeration is OPEN.** The shape of this claim survives, because op spent 2026-08-08
+stating intents rather than deriving them (`34`, `36`, `37`, `38`). The list of four it enumerates does
+not, per I1. Quoted at `seed/SETTLED_strategy.md` section 2, from the prior panel at `70:106-109` and
+requoted at `124:2578-2580`.
 
 > `Hot` is as fast as possible, `Cold` stores as small as possible, `Precise` is the most precise at
 > the price of both storage and compute, `Warm` is the compromise that suits most default cases and
@@ -52,7 +66,10 @@ clear cut and settled. The intent is clear I think, but nothing about them is ab
 
 ## I3. Warm behaves as a native Rust primitive would
 
-**RATIFIED.** Op's own words at `140b:16-21`, carried at `seed/SETTLED_strategy.md` section 3.
+**STATED, on op's current word rather than on the carried rung.** He restated it on 2026-08-08 and
+refined it at `38`, so its authority does not depend on the prior panel's classification. Whether a
+strategy named `Warm` exists in the final decomposition is open, per I1. Originally at `140b:16-21`,
+carried at `seed/SETTLED_strategy.md` section 3.
 
 > My standing call is "It should behave like native primitives in regular old rust would"... The
 > intent, here, is what matters. The mechanisms and theory may live freely and shift under and around
