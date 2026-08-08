@@ -186,6 +186,37 @@ as converged. That is a fact about the shape, not about the evidence.
 Eight experts on one subject can converge, and can locate exactly where they do not. **Disagreement
 surviving eight passes is itself a result** and goes to op as one.
 
+### The eight are an argument, not a relay
+
+Op, immediately after stating the cadence:
+
+> The experts have to have time to argue, support, fight each other, then converge over several back
+> and forths
+
+**So a topic is not eight people speaking once each in order.** That is a relay, and a relay converges
+only by luck: the eighth file inherits seven framings and agrees with them, which is the shared-drift
+failure wearing the cadence's clothes.
+
+What is wanted is an exchange. An expert states a position. A later one **attacks** it, or **supports**
+it with its own derivation, and the first is **brought back to answer**. Positions move, or they harden
+with the reason for hardening now on the record. Convergence is what happens when the attacks stop
+landing, and it is **reached rather than scheduled**.
+
+Three things follow for how dispatches are made.
+
+**An expert is resumed, not replaced.** A background dispatch continues from its own transcript with a
+message, so the expert that made a claim is the one that answers the objection to it, with everything
+it derived still in context. Re-dispatching fresh loses the position and the reasoning behind it, and
+produces a new opinion rather than a reply.
+
+**Support counts as much as attack.** An expert that independently derives a predecessor's claim and
+says so has produced the TWO EXPERTS rung, which is the whole point of the rung and cannot be reached
+any other way. Agreement arrived at independently is a result; agreement inherited by reading is not.
+
+**Several rounds, not one.** A single attack and a single reply is not convergence, it is one exchange.
+The topic runs until a pass adds nothing, and if that has not happened by the eighth file, the honest
+output is the located disagreement rather than a manufactured settlement.
+
 ### Consequences for how a topic runs
 
 **A topic is finished when a later expert adds nothing**, not when a file exists about it.
