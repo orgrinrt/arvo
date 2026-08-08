@@ -1,0 +1,63 @@
+## bitpack-contention
+  t=1, n from 16384 to 8388608 (512x larger column)
+             d16: per-element   84.0 ->   86.6 ps (x1.03), total time x   528  ok
+     d16-control: per-element   88.5 ->   86.9 ps (x0.98), total time x   503  ok
+             d32: per-element   81.2 ->   86.2 ps (x1.06), total time x   544  ok
+             d64: per-element   84.5 ->  128.7 ps (x1.52), total time x   780  ok
+          packed: per-element  126.8 ->  130.5 ps (x1.03), total time x   527  ok
+     packed-simd: per-element  119.5 ->  122.1 ps (x1.02), total time x   523  ok
+  t=2, n from 16384 to 8388608 (512x larger column)
+             d16: per-element   50.3 ->   48.2 ps (x0.96), total time x   491  ok
+     d16-control: per-element   50.3 ->   45.3 ps (x0.90), total time x   461  ok
+             d32: per-element   48.3 ->   66.5 ps (x1.38), total time x   705  ok
+             d64: per-element   46.7 ->  129.6 ps (x2.78), total time x  1421  ok
+          packed: per-element   70.6 ->   66.8 ps (x0.95), total time x   484  ok
+     packed-simd: per-element   67.3 ->   66.1 ps (x0.98), total time x   503  ok
+  t=4, n from 16384 to 8388608 (512x larger column)
+             d16: per-element   31.1 ->   33.5 ps (x1.08), total time x   551  ok
+     d16-control: per-element   31.0 ->   34.2 ps (x1.10), total time x   565  ok
+             d32: per-element   31.8 ->   66.6 ps (x2.09), total time x  1070  ok
+             d64: per-element   29.7 ->  134.7 ps (x4.53), total time x  2320  ok
+          packed: per-element   42.3 ->   47.3 ps (x1.12), total time x   571  ok
+     packed-simd: per-element   41.1 ->   43.5 ps (x1.06), total time x   542  ok
+
+  roofline, arms whose working set exceeds this host's 12 MB L2
+    24 arm-rows past L2, highest 68.2 GB/s (n=4194304 t=4 d32), ceiling 92.5
+
+## bitpack-contend-decode
+  t=1, n from 16384 to 8388608 (512x larger column)
+             d16: per-element   84.0 ->   87.3 ps (x1.04), total time x   532  ok
+     d16-control: per-element   83.9 ->   87.6 ps (x1.04), total time x   535  ok
+     packed-simd: per-element  117.6 ->  122.3 ps (x1.04), total time x   532  ok
+           pipe2: per-element   70.1 ->   74.5 ps (x1.06), total time x   544  ok
+           pipe4: per-element   70.1 ->   73.5 ps (x1.05), total time x   536  ok
+  t=4, n from 16384 to 8388608 (512x larger column)
+             d16: per-element   31.0 ->   33.5 ps (x1.08), total time x   553  ok
+     d16-control: per-element   31.0 ->   33.4 ps (x1.08), total time x   553  ok
+     packed-simd: per-element   41.0 ->   40.5 ps (x0.99), total time x   505  ok
+           pipe2: per-element   27.4 ->   26.6 ps (x0.97), total time x   498  ok
+           pipe4: per-element   27.2 ->   27.1 ps (x1.00), total time x   510  ok
+
+  roofline, arms whose working set exceeds this host's 12 MB L2
+    10 arm-rows past L2, highest 61.0 GB/s (n=8388608 t=4 pipe2), ceiling 92.5
+
+## bitpack-contend-best
+  t=1, n from 4194304 to 8388608 (2x larger column)
+             d16: per-element   85.7 ->   86.9 ps (x1.01), total time x     2  ok
+       d16-padal: per-element   32.5 ->   34.8 ps (x1.07), total time x     2  ok
+             d32: per-element   88.5 ->   88.7 ps (x1.00), total time x     2  ok
+       d32-padal: per-element   68.0 ->   66.8 ps (x0.98), total time x     2  ok
+     packed-simd: per-element  119.8 ->  122.2 ps (x1.02), total time x     2  ok
+           pipe4: per-element   70.2 ->   73.3 ps (x1.04), total time x     2  ok
+  t=4, n from 4194304 to 8388608 (2x larger column)
+             d16: per-element   28.3 ->   32.5 ps (x1.15), total time x     2  ok
+       d16-padal: per-element   10.6 ->   27.1 ps (x2.55), total time x     5  ok
+             d32: per-element   58.0 ->   66.4 ps (x1.14), total time x     2  ok
+       d32-padal: per-element   56.6 ->   66.9 ps (x1.18), total time x     2  ok
+     packed-simd: per-element   37.9 ->   42.3 ps (x1.12), total time x     2  ok
+           pipe4: per-element   23.8 ->   26.4 ps (x1.11), total time x     2  ok
+
+  roofline, arms whose working set exceeds this host's 12 MB L2
+    16 arm-rows past L2, highest 73.9 GB/s (n=8388608 t=4 d16-padal), ceiling 92.5
+
+all rows pass: no loop was deleted and no arm exceeds the machine
