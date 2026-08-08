@@ -1,0 +1,61 @@
+error[E0308]: mismatched types
+  --> q10_diag_tag.rs:61:15
+   |
+61 |         takes(x);
+   |         ----- ^ expected `Numeral<E<E<E<E<O<Z>>>>>, O<O<Z>>>`, found `Numeral<E<E<E<E<O<Z>>>>>, E<E<O<Z>>>>`
+   |         |
+   |         arguments to this function are incorrect
+   |
+   = note: expected struct `a::Numeral<_, O<O<Z>>>`
+              found struct `a::Numeral<_, E<E<O<Z>>>>`
+note: function defined here
+  --> q10_diag_tag.rs:59:12
+   |
+59 |     pub fn takes(_: UFixed<13, 3>) {}
+   |            ^^^^^ ----------------
+
+error[E0308]: mismatched types
+  --> q10_diag_tag.rs:79:15
+   |
+79 |         takes(x);
+   |         ----- ^ expected `Numeral<E<E<E<E<O<Z>>>>>, O<O<Z>>, ...>`, found `Numeral<E<E<E<E<O<Z>>>>>, E<...>, ...>`
+   |         |
+   |         arguments to this function are incorrect
+   |
+   = note: expected struct `b::Numeral<_, O<O<Z>>, Tag<13, 3>>`
+              found struct `b::Numeral<_, E<E<O<Z>>>, Tag<12, 4>>`
+note: function defined here
+  --> q10_diag_tag.rs:77:12
+   |
+77 |     pub fn takes(_: UFixed<13, 3>) {}
+   |            ^^^^^ ----------------
+
+error[E0277]: this numeral is not the width the operation expects
+   --> q10_diag_tag.rs:110:15
+    |
+110 |         takes(x);
+    |         ----- ^ the two numerals must have the same integer and fraction widths
+    |         |
+    |         required by a bound introduced by this call
+    |
+    = note: the expected and found `Tag<I, F>` in the note below carry the two widths as written
+help: the trait `SameShape<c::Numeral<_, O<O<Z>>, Tag<13, 3>>>` is not implemented for `c::Numeral<E<E<E<E<O<Z>>>>>, E<E<O<Z>>>, Tag<12, 4>>`
+      but trait `SameShape<c::Numeral<_, E<E<O<Z>>>, Tag<12, 4>>>` is implemented for it
+   --> q10_diag_tag.rs:102:5
+    |
+102 |     impl<W, F, T> SameShape<Numeral<W, F, T>> for Numeral<W, F, T> {}
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: for that trait implementation, expected `E<E<O<Z>>>`, found `O<O<Z>>`
+note: required by a bound in `c::takes`
+   --> q10_diag_tag.rs:106:12
+    |
+104 |     pub fn takes<X>(_: X)
+    |            ----- required by a bound in this function
+105 |     where
+106 |         X: SameShape<UFixed<13, 3>>,
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `takes`
+
+error: aborting due to 3 previous errors
+
+Some errors have detailed explanations: E0277, E0308.
+For more information about an error, try `rustc --explain E0277`.

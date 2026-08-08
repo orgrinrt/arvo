@@ -1,0 +1,4 @@
+error[E0277]: the trait bound `Shape<O<Z>, E<O<Z>>>: Same<Shape<E<O<Z>>, E<O<Z>>>>` is not satisfied
+   --> q06_negctl.rs:443:42
+    |
+443 |     Shape<N1, N1>: ProdS<Shape<N1, N1>>, Prod<Shape<N1, N1>, Shape<N1, N1>>: Same<Shape<N2, N2>>,

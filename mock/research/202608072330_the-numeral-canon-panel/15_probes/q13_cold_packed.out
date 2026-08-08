@@ -1,0 +1,24 @@
+one million elements, per strategy and width:
+
+UFixed<3,0,U,Cold>           stride=   3 bits   1000000 elements =    375000 bytes
+UFixed<3,0,U,Warm>           stride=   8 bits   1000000 elements =   1000000 bytes
+UFixed<5,0,U,Cold>           stride=   5 bits   1000000 elements =    625000 bytes
+UFixed<5,0,U,Warm>           stride=   8 bits   1000000 elements =   1000000 bytes
+UFixed<13,3,U,Cold>          stride=  16 bits   1000000 elements =   2000000 bytes
+UFixed<13,3,U,Warm>          stride=  16 bits   1000000 elements =   2000000 bytes
+UFixed<20,4,U,Cold>          stride=  24 bits   1000000 elements =   3000000 bytes
+UFixed<20,4,U,Warm>          stride=  32 bits   1000000 elements =   4000000 bytes
+UFixed<200,40,U,Cold>        stride= 240 bits   1000000 elements =  30000000 bytes
+UFixed<200,40,U,Warm>        stride= 240 bits   1000000 elements =  30000000 bytes
+UFixed<200,40,U,Hot>         stride= 256 bits   1000000 elements =  32000000 bytes
+
+the standalone container is the same for Cold and Warm at 13.3: 2 vs 2 bytes
+
+the derived stride against the container's real size, in bits:
+  UFixed<20,4,U,Warm>      derived=  32   8*size_of(container)=  32
+  UFixed<20,4,U,Cold>      derived=  24   8*size_of(container)=  32
+  UFixed<200,40,U,Warm>    derived= 240   8*size_of(container)= 240
+  UFixed<200,40,U,Hot>     derived= 256   8*size_of(container)= 256
+  UFixed<200,40,U,Cold>    derived= 240   8*size_of(container)= 240
+  UFixed<5,0,U,Warm>       derived=   8   8*size_of(container)=   8
+  UFixed<5,0,U,Cold>       derived=   5   8*size_of(container)=   8

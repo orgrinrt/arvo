@@ -1,0 +1,26 @@
+=== c1 only: does the ceiling stay absent ===
+exit 0
+
+=== c2: an undeclared width at the alias-definition site ===
+error[E0277]: the trait bound `L<999>: Lit` is not satisfied
+   --> q15_ceiling_and_alias_site.rs:107:20
+    |
+107 | fn c2_first_use(_: Undeclared) {}
+    |                    ^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Lit` is not implemented for `L<999>`
+   --> q15_ceiling_and_alias_site.rs:31:1
+    |
+ 31 | pub struct L<const K: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `Lit`:
+              L<0>
+              L<13>
+              L<16>
+              L<3>
+              L<40>
+              L<5>
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

@@ -1,0 +1,6 @@
+error[E0277]: the trait bound `O<E<O<Z>>>: Same<E<E<E<O<Z>>>>>` is not satisfied
+   --> q08_negctl.rs:833:77
+    |
+833 |     Cold: Realise<Unsigned, N5>, ContainerOf<Cold, Unsigned, N5>: Same<u8>, StrideBits<Cold, Unsigned, N5>: Same<N8>,
+    |                                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
