@@ -9,7 +9,14 @@ Toolchain `rustc 1.98.0-nightly (57d06900f 2026-05-27)`, `opt-level = 3`, fat LT
 Each exported function is exactly one arm at one width and one operation count, so a count is not a
 mixture of thirty inlined monomorphisations the way the bench's own arm functions are.
 
-Sources: `src/lib.rs` (regenerated per sweep). Raw output: `raw_output.txt`, `tail_sweep_output.txt`.
+Sources: `gen.py`, which emits `src/lib.rs` for each of the four sweeps this file reports. The crate was
+regenerated per sweep rather than carrying all four at once, so the committed `src/lib.rs` is whichever
+ran last (`gen.py walk`); the generator is what makes the other three reproducible rather than merely
+asserted. Checked: `python3 gen.py walk > src/lib.rs && cargo build --release` reproduces the committed
+`walk_loop_output.txt` loop lengths at all six widths, 8/8, 7/7, 7/7, 11/11, 18/14 and 13/13.
+
+Raw output: `raw_output.txt` (width and density sweeps), `tail_sweep_output.txt` (the residue class),
+`walk_loop_output.txt` and `contiguity_output.txt` (the bare walk).
 
 ## The claim
 
