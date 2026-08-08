@@ -689,3 +689,37 @@ only its result.
 `p3_dylib_probe/` calls the shipped cdylibs through `dlopen` the way the harness does.
 
 `p4_absorbing_fixpoint.rs` is the mechanism, with the three predictions stated before the run.
+
+## Addendum: the bench tree and git disagree, found while committing this file
+
+Noticed at commit time rather than during the audit, and it belongs in the record because it bears on
+every number anyone reads out of that directory.
+
+`git status mock/benches/` returns nine entries. Three files of `warm-clamp-arity-l2_n321040` are
+**modified** against `HEAD`, and two entire runs, `warm-clamp-arity-l2_n601040` and
+`warm-clamp-arity-l2_n641040`, are **untracked**. Their mtimes are 2026-08-07 16:44 and 16:47, so they
+predate this dispatch by roughly fifteen hours and are not mine.
+
+The modification is a re-run rather than a correction. Comparing the committed CSV against the working one
+by median:
+
+| arm | committed | working | ratio |
+|---|---|---|---|
+| acc64      | 59828  | 59354  | 0.99 |
+| accfit     | 56469  | 58646  | 1.04 |
+| accfit-dyn | 112252 | 112915 | 1.01 |
+| head       | 120505 | 119086 | 0.99 |
+| min-lanes  | 243039 | 240844 | 0.99 |
+| minimum    | 272465 | 269137 | 0.99 |
+
+Everything inside four percent, so no conclusion moves. What moves is the trail: **two committed runs of
+that family exist only on disk, and a third gives a different number depending on whether you read the tree
+or `git show`.** Under this workspace's own rule an uncommitted measurement does not exist, so those two
+sizes of the `l2` sweep are not evidence today, however real the numbers are.
+
+Nothing in this file depends on them. My section 1.5 table is `warm-clamp-arity-w13`, which is committed and
+clean; I did read the `l2` working-tree numbers while surveying the family and did not carry any of them
+into a claim.
+
+The remedy is one commit by whoever produced them. I have not made it, because I cannot vouch for how a run
+I did not take was produced, and committing it under this file would launder its provenance into mine.
