@@ -756,6 +756,48 @@ arrival). Consequence for how a canon states the two-output design: "the derivat
 container and a stride" invites reading them as two coordinates of one answer; "the derivation answers
 a per-value question and a per-aggregate question" states why they are not (`16` section 12).
 
+> **`50` found the criterion is not a definition, and the unit's answer is one of seven.**
+>
+> `16:100-101` puts the set being defined on both sides of its own third clause, making it a **fixpoint
+> equation** rather than a definition, and its operator is **non-monotone**: adding a fact makes another
+> derivable and removes it, so neither a least nor a greatest fixpoint is available as a tie-break.
+> `50_probes/p1` solves it exhaustively across three parameters the sentence never names (site model,
+> strategy set, kind regime) and finds **seven distinct criterion-consistent answers, of sizes 0, 2, 3
+> and 4**: `{}`, `{access, carrier}`, `{carrier, stride}`, `{access, carrier, compute}`, `{access,
+> carrier, stride}`, `{carrier, compute, stride}`, and all four.
+>
+> **The unit's `{carrier, stride}` is produced by exactly one cell of sixteen**, and that cell reads the
+> strategy set as **closed**, contradicting op's ruling that it is not, and the kind boundary as
+> **absent**, contradicting twelve compiled refusals in this panel. So the converged answer rests on two
+> assumptions the panel has already rejected elsewhere.
+>
+> **It also corrects `48` and me.** Reading A is not a reading but unsound: its first clause excludes the
+> declared width and a site cannot recover it for **389 of 512 declarations**. Reading B does not give
+> one, it gives **zero**, or `{access, carrier}` once the kind boundary is honoured, which is the unit's
+> arity with a different member. And `48` cited a probe for a collapse that projects a stride an impl
+> wrote down rather than recomputing one; `50` built the construction the claim actually needs, and the
+> collapse is real.
+>
+> **The ladder result reverses, and both prior files were computing from an over-estimating closed
+> form.** `47` reported zero shared jump points between the native and access ladders. From the closed
+> form the access jumps are `[2, 10, 26, 58, 122]`, sharing none with native `[9, 17, 33, 65]`. From the
+> **phases a packed run actually reaches**, the access jumps contain all four native ones, so the access
+> partition **refines** the native one. A packed run reaches all eight bit phases only when the stride is
+> odd, and `16`'s "carrier is the wrong load type at 28 of 64 widths" becomes **16 of 64**.
+>
+> **The `Precise` fork is not a fork.** Per-step and end-of-chain refusal admit exactly the same chains
+> once zero operands are excluded, with refusal admitting 0.000018% of three-multiply chains at F=8
+> (`50_probes/p6`). What survives is whether the wide product a fixed-point multiply forms is **carried**
+> between operations. Op should not be asked the question as three files have posed it.
+>
+> **The fact set is not closed under an open strategy set.** One plausible fifth strategy makes the
+> derived verdict silently wrong, the repair relocates the fact onto the strategy, and a sixth breaks the
+> repair. `49` reached the same shape cold.
+>
+> **And a magnitude three files called unpriced is now measured**, on the harness with the dense carrier
+> as competitor: a runtime-derived access plan costs **3.04x to 3.12x** a compile-time one
+> (`mock/benches/bitpack-decoder-shape`, four sizes, committed).
+
 > **A cold derivation (`49`) landed as an independent instance, and corrected itself against the
 > panel.** Dispatched under an inverted reading order: it saw only op's intents, the acceptance
 > criterion and the workspace rules, derived its answer, committed it, and only then read the panel and
