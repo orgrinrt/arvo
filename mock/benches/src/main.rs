@@ -193,6 +193,7 @@ fn main() -> ExitCode {
 /// name + input size. Hash benches go through `ByteRoutine`; graph
 /// + spectral benches go through their per-routine bridges.
 fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
+    use bench_bitpack_carrier_shared::CarrierColumn;
     use bench_bitpack_footprint_shared::FootprintColumn;
     use bench_bitpack_plan_shared::{MacColumn, PlanColumn};
     use bench_bitpack_shared::Column;
@@ -441,6 +442,21 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("wide-rung-walk-l1", 200000) => routine_bridge!(WideCase<200000>),
         ("wide-rung-walk-l1", 232000) => routine_bridge!(WideCase<232000>),
         ("wide-rung-walk-l1", 256000) => routine_bridge!(WideCase<256000>),
+        // the same four arms as the two sections above, run together so a
+        // packed-against-dense delta exists at all (panel file 26).
+        ("bitpack-footprint-headtohead", 16384) => routine_bridge!(FootprintColumn<16384>),
+        ("bitpack-footprint-headtohead", 65536) => routine_bridge!(FootprintColumn<65536>),
+        ("bitpack-footprint-headtohead", 1048576) => routine_bridge!(FootprintColumn<1048576>),
+        ("bitpack-footprint-headtohead", 4194304) => routine_bridge!(FootprintColumn<4194304>),
+        ("bitpack-footprint-headtohead", 7000000) => routine_bridge!(FootprintColumn<7000000>),
+        // carrier-width sweep (panel file 26): one Routine per size, five
+        // arms per row resolved from bench.toml rather than from here.
+        ("bitpack-carrier-width", 16384) => routine_bridge!(CarrierColumn<16384>),
+        ("bitpack-carrier-width", 131072) => routine_bridge!(CarrierColumn<131072>),
+        ("bitpack-carrier-width", 1048576) => routine_bridge!(CarrierColumn<1048576>),
+        ("bitpack-carrier-width", 2097152) => routine_bridge!(CarrierColumn<2097152>),
+        ("bitpack-carrier-width", 4194304) => routine_bridge!(CarrierColumn<4194304>),
+        ("bitpack-carrier-width", 8388608) => routine_bridge!(CarrierColumn<8388608>),
         _ => return None,
     };
     Some(RoutineSpec {

@@ -1937,3 +1937,157 @@ variants = [
     "../target/release/bench_wide_rung_wordround_alias",
     "../target/release/bench_wide_rung_align16",
 ]
+
+
+# ---------------------------------------------------------------------------
+# The head-to-head the footprint pair never ran (panel file 26).
+#
+# `bitpack-footprint-dense` and `bitpack-footprint-packed` are two separate
+# sections above, so dense is only ever compared to dense and packed only to
+# packed, and no packed-against-dense delta exists at any size past L1. All
+# four arms are declared against the same `FootprintColumn` Routine with the
+# same size list and share one `build_input_bytes`, so they were always
+# directly comparable. This section runs them together. No variant code
+# changes; the arms are byte-identical to the ones the two sections above
+# already time.
+# ---------------------------------------------------------------------------
+[bench.bitpack-footprint-headtohead]
+title = "Bitpacked against Dense over one column, swept from L1 to past a 12 MB L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 65536
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 1048576
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 4194304
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+[[bench.bitpack-footprint-headtohead.sizes]]
+n = 7000000
+variants = [
+    "../target/release/bench_bitpack_footprint_dense",
+    "../target/release/bench_bitpack_footprint_dense_alt",
+    "../target/release/bench_bitpack_footprint_packed",
+    "../target/release/bench_bitpack_footprint_packed_naive",
+]
+
+
+# ---------------------------------------------------------------------------
+# The carrier-width sweep (panel file 26).
+#
+# Every prior bitpack bench in this file compares packed 13-bit against a
+# `u16` dense column, which is the tightest native carrier a 13-bit value can
+# have and therefore the least favourable footprint ratio packing can be given
+# (0.375 bytes saved per element). The variable nobody swept is how wide the
+# alternative is. Four arms read the identical logical column out of four
+# carriers in one shared input: u64 (8 B/elem), u32 (4), u16 (2), packed
+# (1.625). A fifth arm is a noise floor, calling the identical u16 transform
+# so any gap between the two is this workload's measurement resolution.
+#
+# Sizes bracket both cache boundaries on this host (128 KB L1D, 12 MB L2) for
+# each carrier separately, because each crosses at a different n. At
+# n = 4194304 the packed column is 6.8 MB and the u16 is 8 MB, both inside a
+# 12 MB L2, while u32 at 16 MB and u64 at 32 MB are outside it. That row is
+# the one where "a smaller column fits where a larger one does not" is
+# literally true, which is the substrate's own stated case.
+# ---------------------------------------------------------------------------
+[bench.bitpack-carrier-width]
+title = "Packed 13-bit against u16, u32 and u64 dense carriers, swept from L1 to past a 12 MB L2"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 16384
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 131072
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 1048576
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 2097152
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 4194304
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]
+
+[[bench.bitpack-carrier-width.sizes]]
+n = 8388608
+variants = [
+    "../target/release/bench_bitpack_carrier_packed",
+    "../target/release/bench_bitpack_carrier_packed_simd",
+    "../target/release/bench_bitpack_carrier_d16",
+    "../target/release/bench_bitpack_carrier_d16_control",
+    "../target/release/bench_bitpack_carrier_d32",
+    "../target/release/bench_bitpack_carrier_d64",
+]

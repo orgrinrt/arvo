@@ -482,7 +482,11 @@ pub const fn simd_width_fits(w: usize) -> bool {
 }
 
 #[cfg(target_arch = "aarch64")]
-mod neon {
+/// Made `pub` by panel file 26 so a second reduction shape can be built over
+/// the identical group decode rather than duplicating the gather, shift and
+/// mask arithmetic. Additive: no existing item changed, so every bench already
+/// timed against this crate is unaffected.
+pub mod neon {
     use core::arch::aarch64::*;
 
     use super::{tbl_indices, tbl_shifts, Packing};
