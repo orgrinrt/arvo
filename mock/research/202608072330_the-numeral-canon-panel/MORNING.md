@@ -7,7 +7,7 @@ Read this first; it points at the files. Each entry says what changed and what i
 
 ## What is yours, in the order it matters
 
-Five questions, each small, each collapsing something large. Everything else in this file is context
+Six questions, each small, each collapsing something large. Everything else in this file is context
 for them.
 
 1. **Which reading of "then validate" did you mean?** Your criterion's third clause has three
@@ -26,7 +26,13 @@ for them.
    again: absorbing is sound **exactly while the computation stays at the endpoint**, which additions
    alone satisfy and subtractions do not. Two parts of the design depend on incompatible answers, and
    `Precise` on `inexact` is the same question one level down. Sections four and six.
-5. **One family, or several?** Your original question, reframed twice tonight and no longer the
+5. **Does `Warm` wrap, or clamp?** New, and the sharpest kind of question: **two committed bench
+   families implement the two readings and disagree in direction.** Under wrapping, headroom loses.
+   Under clamping, headroom goes from 2.2x worse at fold arity two to **44x better at arity 256**,
+   with the crossover landing exactly where its own safety predicate says. The ratified preset table
+   gives `Warm` the clamp and gives wrapping to `Hot` alone, and you have already declared that cell
+   stale. Section seven.
+6. **One family, or several?** Your original question, reframed twice tonight and no longer the
    blocker it appeared to be. Sections one through three.
 
 ## How to read the rest
@@ -56,16 +62,27 @@ confidence intervals and significance:
 | `bitpack-zeropad-seq` | **7679 ns** | +37.9% |
 
 I verified these myself rather than relaying them. **Spread 4.61x. Zero of forty passes won by the
-packed arm.** And at seven million elements the footprint benches put packed at 1157 microseconds
-against dense at 810, roughly 1.43x, on the same machine and pin nine minutes apart.
+packed arm.** No file in this panel names `mock/benches/` at all; one mentions a bench round in a
+single clause.
 
-**So the penalty turns with scale, and nobody in eighteen files said so.** No file in this panel names
-`mock/benches/` at all; one mentions a bench round in a single clause.
+### And then I got the second half wrong, in the act of correcting the first
 
-What this does to tonight's reading of `Cold`: the storage figure stands, packed really is smaller,
-and **the walk really is several times slower at small counts and closes to under one and a half
-times at seven million.** That is the whole trade, it was measurable all along, and the panel argued
-about the half it could see.
+An earlier version of this section said the penalty **turns with scale**, quoting packed at 1157
+microseconds against dense at 810 at seven million elements. `20` audited that and it does not stand.
+
+**It is a splice.** No committed run contains both a packed and a dense arm, and the two runs I
+subtracted were taken **at different source commits**. The family that does carry real arms in one
+file says the penalty **falls** with n and stays large: **4.10x down to 3.34x**, not 1.43x, and not a
+crossover.
+
+So the honest statement is: **packed is smaller and several times slower, and the gap narrows with
+scale without closing.** The direction I claimed was manufactured by comparing two runs that were
+never comparable, which is the same defect the panel spent the night finding in other people's
+numbers.
+
+That is my error, made while correcting an error, and caught by the first member with real harness
+data. The lesson holds in both directions: the trade was measurable all along, and reading two
+findings files is not the same as reading a comparison.
 
 **Why it was missed, and it is my fault rather than the experts'.** The curated reading list I built
 has a slot for the panel and no slot for the repository. Every brief carried "`mock/crates` is being
