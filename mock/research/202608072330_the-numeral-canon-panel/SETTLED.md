@@ -106,7 +106,7 @@ A later checkpoint records the gate as met, and how it was met as itself load-be
 | The alias-reach question is closed and out of scope. | `144c:16` | RATIFIED |
 | Both diagnostics ship, belts and suspenders. | `130b:69` | RATIFIED |
 | The coherence overlap between a by-reference `From` and `core`'s reflexive impl fails at the head constructor, above where substitution happens, so it is structurally impossible rather than untriggered. | `146`, `148` | TWO EXPERTS |
-| Three consumer tiers, with a hard ergonomics bar of `UInt<5>` at the alias-definition tier. This disqualifies a container parameter, a type-level magnitude and a macro call at that one site, on ergonomics grounds alone, independent of whatever computes the container underneath. | `142c` | RATIFIED |
+| Three consumer tiers, with a hard ergonomics bar of `UInt<5>` at the alias-definition tier. **This row is a lossy compression; go to `seed/SETTLED_surface.md:135-159` for the establishing text.** It loses two things. Op's own words demand "easy and intuitive to write" for someone who does not know the plumbing and name two disqualifiers; the four further demands and two further disqualifiers are the panel's paragraph over him, not his. And the qualifier **"disqualified at that site specifically"** is dropped, which widens the bar past what was ratified. `12` lost an hour to this compression. | `142c` | RATIFIED, see the source |
 | No enumeration, ever, if it can be helped. Refused three separate times against three different proposals: a width table, a per-width bridge population line, and a macro escape. | `127b`, `137b:28`, `139b`, `145b` | RATIFIED, four times |
 
 ## Laws, algebra and conversion

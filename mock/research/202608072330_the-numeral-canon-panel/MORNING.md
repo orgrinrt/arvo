@@ -5,7 +5,61 @@ This is angles opened, routes closed, and questions sharpened, presented for op 
 
 Read this first; it points at the files. Each entry says what changed and what it cost to find out.
 
-## Read this one first: the bridge table cannot be closed, at any size
+## Read these two first, in this order. The second answers the first.
+
+### Two: the assumption underneath all of it is false
+
+`11` left the design facing a choice between a const width surface with an uncloseable table and a
+nat surface nobody believed could be written. `12` tested that belief. **It does not hold.**
+
+**The bar never said the width must be a const generic parameter.** It says `UInt<5>` must be what
+the writer types. A type alias with a const parameter decouples what a consumer types from what the
+compiler receives, and that compiles. Measured off compiling text: the alias sites are `UInt<5>` at
+seven characters and `UFixed<13, 3, Hot>` at eighteen, **identical to the current surface at every
+one of the three tiers.**
+
+And it runs three multiply octaves against a **six-row** door containing none of 48, 96 or 192, which
+is precisely the case `11` compiled and could not write.
+
+### The resolution of the trade, and it is cleaner than a trade
+
+`12` was asked whether the bar was priced before the ceiling was visible. It was not, the bar is from
+the closed panel and the ceiling was found tonight. **But the two are not in conflict**, so there was
+no trade to be offered.
+
+All five candidate surfaces carry a table except the one that fails the bar. What differs is the
+**domain**. The current surface's table must cover every width **the algebra produces**, which is
+unbounded. The hybrid's needs only every width **a human writes**, which is bounded by the source
+text. That is the whole distinction, and it is the answer to "defect or known price".
+
+### Where it does fail, and it is not where anyone was looking
+
+**The reading side, which the bar never covered.** Five keyings against one ordinary mistake: the
+const keying prints "expected 13, found 26"; a binary nat keying prints a **truncated digit tower**
+that cannot be acted on. Two independent repairs, both built, and one turned up a fact nobody had
+recorded: a type parameter default may be a projection off a const parameter.
+
+**And a defect that belongs to the design as it stands, under either surface.** An undeclared width
+written at the alias-definition site produces **no error at all**, because a Rust type alias does not
+check its bounds. It surfaces sixteen lines later at the first use, spanning a name the consumer did
+not mistype and citing an internal type. **This is the exact tier the ratified bar was written for,
+and nobody had ever compiled it.** A fix exists at the alias's own line but needs an unvetted
+feature and fifteen library-side bounds.
+
+One unlooked-for result: the same door **dissolves the crate-partition problem** `11` found. Three
+markers, three crates, one type, plus a 4711-bit numeral declared by one of them.
+
+### Another compression defect of mine
+
+`12` spent an hour on it. My `SETTLED.md` row for the ergonomics bar dropped the qualifier
+"disqualified at that site specifically", which widened the bar past what was ratified, and it
+flattened op's own two disqualifiers together with four more the panel added over him. The
+establishing text is `seed/SETTLED_surface.md`. The row now says so and points there.
+
+That is the second time tonight a compression of mine misled an expert, and both times the theme
+sweep underneath had it right.
+
+### One: the bridge table cannot be closed, at any size
 
 `11` went looking outside the project for a route past the bridge that `10` conceded. It did not find
 one. It found something worse and more useful.
