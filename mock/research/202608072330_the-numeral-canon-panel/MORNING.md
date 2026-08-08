@@ -47,11 +47,11 @@ one. It found something worse and more useful.
 **`10`'s own multiply demands a bridge row for the *output* width.** Two inputs both in the table
 produce an output that is not, and adding that row by hand fails again one octave up. Multiplication
 doubles widths, so **no finite table is closed under the design's own law algebra**. Not at 1148
-rows, not at 8193, not at any size.
+rows, not at 8193, not at any size. (`11`, probes `b01`/`b02`.)
 
 Compiled, in three steps: a failure at 48 from two tabled inputs; the row added by hand and the
 failure reappearing at 96 and 32; and then the same ladder keyed on **nat types instead of consts**
-compiling three octaves plus a 1636-bit numeral at 208 bytes, **with no bridge anywhere**.
+compiling three octaves plus a 1636-bit numeral at 208 bytes, **with no bridge anywhere**. (`11`, probe `b03`.)
 
 Two things make this matter more than another route closed.
 
@@ -62,13 +62,13 @@ to the law algebra, and that **it appears nowhere in the record**.
 **And it locates the cost precisely.** The ceiling is not the bridge; it belongs to the const surface.
 `11` wrote a total, uncapped, enumeration-free const-to-type bridge in **one blanket impl**,
 gate-free. It overshoots by exactly eight, and closing that gap is a single division, refused in four
-further syntactic positions all terminally naming a forbidden feature. So the bridge is not blocked.
+further syntactic positions all terminally naming a forbidden feature. (`11`, probe `e01`.) So the bridge is not blocked.
 **Its codomain is.**
 
 ### Defect, or the known price? `11` says both; note the caveat below
 
 `11` was told to hold the comfortable conclusion to a higher standard, and did. typenum ships arvo's
-exact three declarations at **1148 rows and 4758 generated lines**, so the table genuinely is what
+exact three declarations at **1148 rows and 4758 generated lines** (`11` section 6; counts re-run and confirmed exact at the `14` checkpoint), so the table genuinely is what
 Rust's position costs, and calling it a defect alone would be wrong.
 
 But: **a price is paid once, and this one is charged unboundedly against a ratified property.** That
@@ -110,10 +110,10 @@ nat surface nobody believed could be written. `12` tested that belief. **It does
 the writer types. A type alias with a const parameter decouples what a consumer types from what the
 compiler receives, and that compiles. Measured off compiling text: the alias sites are `UInt<5>` at
 seven characters and `UFixed<13, 3, Hot>` at eighteen, **identical to the current surface at every
-one of the three tiers.**
+one of the three tiers.** (`12`, probe `p02`, counted by its `count.sh`.)
 
 And it runs three multiply octaves against a **six-row** door containing none of 48, 96 or 192, which
-is precisely the case `11` compiled and could not write.
+is precisely the case `11` compiled and could not write. (`12`, probe `p03`.)
 
 ### The resolution of the trade, and it is cleaner than a trade
 
@@ -136,7 +136,7 @@ recorded: a type parameter default may be a projection off a const parameter.
 **And a defect that belongs to the design as it stands, under either surface.** An undeclared width
 written at the alias-definition site produces **no error at all**, because a Rust type alias does not
 check its bounds. It surfaces sixteen lines later at the first use, spanning a name the consumer did
-not mistype and citing an internal type. **This is the exact tier the ratified bar was written for,
+not mistype and citing an internal type. (`12`, probes `p12`/`p13`; the repair is `p14`.) **This is the exact tier the ratified bar was written for,
 and nobody had ever compiled it.** A fix exists at the alias's own line but needs an unvetted
 feature and fifteen library-side bounds.
 
@@ -161,7 +161,7 @@ sweep underneath had it right.
 **The ceiling and the reverse wall are one fact.** `11` localised the ceiling to the const surface.
 `12` separately closed the reverse crossing. **Neither joined them**, and they are the same refusal:
 an output width can only be *named* by crossing from nat back to const, which is the wall. `13`
-compiled the ceiling firing exactly as a missing reverse-table row. The rule it draws is short enough
+compiled the ceiling firing exactly as a missing reverse-table row. (`13`, probes `p23`/`p24`.) The rule it draws is short enough
 to be a canon sentence: **cross once, at literals, in one direction.**
 
 **A fifth arrangement nobody had.** Width type is a nat wrapper, outputs are *declared* and checked
@@ -178,7 +178,7 @@ than anyone meant.
 
 **Exhaustive where the record had samples.** Type-level addition normalising over the whole
 4225-pair matrix, with a negative control proving the instrument bites, against three sampled points
-previously.
+previously. (`13`, probes `p07`/`p08`.)
 
 **And it withdrew one of its own findings** after reading `12`. It had called an alias-site repair
 closed; `12` had already written the bounds that make it work. Withdrawn in the file rather than
