@@ -756,6 +756,33 @@ arrival). Consequence for how a canon states the two-output design: "the derivat
 container and a stride" invites reading them as two coordinates of one answer; "the derivation answers
 a per-value question and a per-aggregate question" states why they are not (`16` section 12).
 
+> **A cold derivation (`49`) landed as an independent instance, and corrected itself against the
+> panel.** Dispatched under an inverted reading order: it saw only op's intents, the acceptance
+> criterion and the workspace rules, derived its answer, committed it, and only then read the panel and
+> appended a reconciliation without rewriting phase one.
+>
+> **It arrived at the same mechanism shape blind**: a trait schema, per-strategy impls, a
+> strategy-independent fact schema, and validation falling out of refusal. That is the first agreement
+> in this unit that is not a read.
+>
+> **And it conceded three things to better-established panel evidence**, which is what makes it worth
+> having: alignment is recomputable from the carrier rather than a separate fact; its packing flag
+> under-specifies what stride captures; and its claim that `Cold`'s storage type diverges from `Warm`'s
+> does not survive `15` and `16`'s doubly-independent finding that the standalone carrier is identical
+> across strategies at a shared width, with only stride differing.
+>
+> **One thing it added that the panel had not stated.** Validation can fall out of a plain missing-impl
+> refusal (`49_probes/p2`), which is a different and cheaper mechanism than the kind boundary the unit
+> spent most of its effort on.
+>
+> **And the gap it caught in its own work is the unit's sharpest open item.** Its erasure probe is
+> scalar-only, which is exactly the blindness `16` and `17` warn about. Checked against the whole panel:
+> of 178 probe files, 23 build arrays and 19 loop, so sequences are not absent. But **the only probe
+> combining a packed sequence with an assembly-level erasure check is `16_probes/p3_blind_suite.rs`**,
+> which is `16`'s own suite, the one it found came back green over a 23.1%-oversized map. So the entire
+> packing-and-stride argument rests on erasure evidence that is either scalar or known-blind, and
+> nobody has built the arm that would settle it.
+
 > **File four (`47`) dissolved the one-versus-two fork, and corrected this entry's filing.**
 >
 > **One richer output suffices if and only if it is a type.** Both spellings were built. Type-valued
