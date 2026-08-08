@@ -15,7 +15,8 @@ written down now, in `RULES.md`, instead of being rediscovered.
 
 ## What you read, and in what order
 
-Seven files, and none of them is long except the last.
+Five files, and each answers a different question you will actually have: what op said, how to
+work here, what he founded the panel with, what is open, and what is closed.
 
 1. **`INTENTS.md`.** Op's stated intents for arvo, quoted with provenance. This is the material that
    graduates into the canon; everything else here is working towards it. Read it first, every time.
@@ -26,23 +27,23 @@ Seven files, and none of them is long except the last.
 4. **`OPTIONS.md`.** The live option register: every shape still admissible, written out in full. This
    is the working surface of the explore-do-not-settle mode. Your file is evaluated against every live
    option in it, and says which its finding fits, which it fits badly, and which it kills.
-5. **`SETTLED.md`.** The index of what the predecessor established, with provenance per row, the open
-   questions by name, and a header stating why its top rung is now wrong.
-6. **`DROPLIST.md`.** What was tried and dropped, cumulative, plus same-stretch reversals kept under
+5. **`DROPLIST.md`.** What was tried and dropped, cumulative, plus same-stretch reversals kept under
    a separate name. Read it before proposing anything, so a dead route is not walked twice. An option
    you kill in `OPTIONS.md` lands here, with its diagnostic and with what would reopen it.
-7. **`CANON_CANDIDATE.md`.** The predecessor's twelfth consolidation, carried whole, with its known
-   stale sections listed at the top. A starting text to re-derive from, never a citation.
 
 `seed/` holds the four survivor sweeps of the predecessor's full history, by theme, each with its
-own casualty list and its own honest coverage bound. Consult the one covering your question before
-relying on a `SETTLED.md` row it covers.
+own casualty list and its own honest coverage bound. Consult the one covering your question.
+
+`archive/` holds what is carried and not live: the predecessor's `SETTLED.md` index (whose own header
+says its top rung is wrong), its 7,115-line `CANON_CANDIDATE.md` consolidation (its own header: "never
+a citation"), and `MORNING.md`, the map written for one morning that has since passed. Greppable,
+never citable. `archive/README.md` says why each moved.
 
 `02_carried_*` is the predecessor's last file, delivered after this panel opened. It is marked as
 carried and its citations point into the old panel.
 
 **Do not read the predecessor's tree.** It is 320 files and roughly 210,000 tokens of markdown.
-Everything that survived it is in the seven files above. If you believe something is missing, say so
+Everything that survived it is in the five files above. If you believe something is missing, say so
 rather than going to fetch it.
 
 ## The method: keep options open, and never ratify early
