@@ -1,0 +1,44 @@
+s5: expressing every named canonical exponent as max(K, e + I)
+window: binades -40..40
+
+Q1: the design's named shapes in the two-integer form
+   ok  fixed point, f == -F, F=8              K=-8      I=-1000   -> constant
+   ok  fixed point, f == -F, F=0              K=0       I=-1000   -> constant
+   ok  float, p=24, f(e)=e-23                 K=-10000  I=-23     -> slope one
+   ok  float, p=53, f(e)=e-52                 K=-10000  I=-52     -> slope one
+   ok  gradual underflow, p=24, emin=-14      K=-37     I=-23     -> knee
+   ok  gradual underflow, p=11, emin=-14      K=-24     I=-10     -> knee
+   -> 6/6
+
+Q2/Q3: closure over a pool of 81 grids, 6561 ordered pairs
+   meet (pointwise max) stays in the family : 6561/6561
+   the closed form max(max(K1,K2), e+max(I1,I2)) holds : True
+   join (pointwise min) stays in the family : 3969/6561
+   join leaves the family                   : 2592/6561
+
+Q4: what the join lands in, for the two cases that differ
+
+   A. join of a pure fixed shape (f == -8) and a pure float (f == e-23)
+      slope runs: [(1, 55), (0, 25)]
+      in the family max(K, e+I)? False
+      slope one at the bottom then slope zero above, which is 08:436-440's
+      mirror shape. It is min(K, e+I), one flip of the same two integers.
+
+   B. join of two knees, (-12, -10) and (-10, -12)
+      slope runs: [(0, 38), (1, 2), (0, 2), (1, 38)]
+      in the family max(K, e+I)? False
+      four segments, so it is not the mirror shape either. The join of two
+      knees is strictly worse than the join 08 measured, and this is the
+      case 08 did not have because its pool's join question was asked
+      across kinds rather than within the knee family.
+
+Reading:
+  The knee needs two integers, not a list. The design's whole admitted set is
+  the two-integer form, so the enumeration collision 08:392-396 names does not
+  arise for the shapes the design actually has.
+  Meet-closure is an algebraic identity on those two integers rather than a
+  survey result, and non-closure under the join is the same identity failing
+  in the other direction. 08 measured both; this says why.
+  A design wanting the join total needs at least min-of-max-of-affine, and the
+  segment count grows with each join, which is where the function-space
+  question actually starts. Refusing the join keeps the shape at two integers.
