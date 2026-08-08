@@ -5,6 +5,39 @@ This is angles opened, routes closed, and questions sharpened, presented for op 
 
 Read this first; it points at the files. Each entry says what changed and what it cost to find out.
 
+## What is yours, in the order it matters
+
+Five questions, each small, each collapsing something large. Everything else in this file is context
+for them.
+
+1. **Which reading of "then validate" did you mean?** Your criterion's third clause has three
+   readings. The panel has substantial evidence for one and none for another, and has never recorded
+   which it is answering. One sentence decides which instrument is owed, and no amount of expert
+   convergence can settle it because it is a question about what you meant. Section five.
+2. **Does a consumer write the integer width, or the total width?** The machinery wants one, the
+   surface can keep the other at zero cost, but then the numbers typed and the numbers stored differ.
+   Argued to be **prior to the family question**, because it changes what the shape space is a space
+   of. Section three.
+3. **Does the design have a mixed-numeral addition at all?** No operation anywhere in the record adds
+   values from two different numerals. If there is none, the entire inference surface collapses to
+   multiplication plus the container. Section on the two cheapest questions.
+4. **What does the top of a saturating numeral denote?** Point, or absorbing everything above.
+   Identical arithmetic, opposite soundness verdicts, and your algorithm crates already behave as
+   though this were answered. Same section.
+5. **One family, or several?** Your original question, reframed twice tonight and no longer the
+   blocker it appeared to be. Sections one through three.
+
+## How to read the rest
+
+Sections **one** and **two** are the pair that moved the design: the table cannot be closed, and the
+assumption that forced the table is false. Section **three** is where both gaps closed and your
+criterion turned out to have a second noun. Section **four** is the check that certified your gate
+being blind to half of it. Section **five** is what the panel's evidence is worth, and it is the one
+that reaches backwards over everything else.
+
+After those: what your standing instruction produced, the routes closed with their diagnostics, the
+corrections files made to each other and to me, and the method notes.
+
 ## Where the night landed, in one paragraph, corrected
 
 The design's width surface is a const, which forces a table, and **the table cannot be closed because
