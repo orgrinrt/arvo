@@ -41,6 +41,70 @@ for them.
 6. **One family, or several?** Your original question, reframed twice tonight and no longer the
    blocker it appeared to be. Sections one through three.
 
+## Nine: what the night produced in canon terms, and the seam nobody crossed
+
+*Sources: `23`, with `23_probes/RUN.out` carrying every count's command.*
+
+`19` judged this panel to be converging on a methodology rather than a canon. `23` tested that by
+collecting every sentence the night produced that a canon could actually carry.
+
+**Thirty candidates. Twenty-one carryable now, seven blocked on a named open question, two refused
+as canon with reasons.** On the ladder: **zero ratified, five at two experts, twenty at one.**
+
+The five is higher than I had reported, and the correction is instructive: `23` rated the rungs
+against the source files rather than against this document, and found two further claims that `13`
+derived with `12` unread. My account had them lower.
+
+### They do not cohere, and the seam is measurable
+
+Six groups. The two covering what a numeral is and how numerals are ordered **join genuinely in both
+directions** and are the closest thing to a spine. The other three **do not join them at all.**
+
+The evidence is a grep, and I ran it myself: the concept vocabulary from the first stretch appears in
+**none** of the surface and derivation files of the second and third. Zero of seven.
+
+**One object, two vocabularies, never put in one sentence.** One stretch says a numeral is a radix, an
+exponent form, a phase and a value set. The other says it is keyed on a total width and a fraction
+width. Both are right and nobody has written the sentence that joins them, **because the panel's
+stretches split along exactly that seam and no dispatch was ever aimed at it.**
+
+That is one sentence's worth of missing, and it is the first thing the next night should attack.
+
+### What else is missing, and one of these is startling
+
+**No row anywhere says what a strategy is.** Eight rows mention the axis, three name it inside their
+canon sentence, and none defines it. Also absent: anything on conversion between numerals, anything
+on what an operation is, and almost anything on the consumer's experience, where `12` and `13` did
+real work that produced a **blocked** row rather than a sentence.
+
+### The verdict, corrected
+
+**Right when written, half-answered since, and what survives is sharper.**
+
+`19`'s stated reason was that a canon must assert doability and for arvo that is a workload claim
+nobody had made. `20` and `22` then made it, so that reason no longer holds as given.
+
+It survives for a harder reason. **The workload claims that landed point against the sentence the
+canon needs.** The repository's own measurement makes packed storage smaller and several times
+slower, narrowing without closing. The canon has to assert that packing pays at the scale arvo's
+consumers actually run at, and **nothing measures that.**
+
+A claim pointing the wrong way is more actionable than an absent one. That is a better position than
+`19` described and a considerably more uncomfortable one.
+
+### This document contaminated an expert, and that is a defect in it
+
+`23` read `21`'s citation audit in full, then **made a fifth rung error of exactly the kind `21`
+audits**, by rating a rung off this document instead of off the source. It caught itself, went to the
+file, and corrected upward.
+
+So `MORNING.md` is now demonstrably a **contamination source**. It is a summary, it is written by one
+hand, and it has been wrong in some specific way at every checkpoint. **Do not rate, cite, or reason
+from this file. Go to the named file.** The Sources lines exist for that.
+
+`23` also caught this document overstating a count: I wrote that a later check found four more rung
+errors, when `21` found four **in total** of which three were already flagged. One new. Corrected.
+
 ## How to read the rest
 
 Sections **one** and **two** are the pair that moved the design: the table cannot be closed, and the
@@ -610,6 +674,10 @@ Also yours: whether the closure argument above holds; and whether the bridge's r
 refusal you made when its cost was stated as "one line".
 
 ### Two corrections it made to its predecessor and to me
+
+**A count in this file was overstated and is now corrected**: `21` found four rung errors in total,
+three of which earlier checkpoints had already flagged, so one was new. An earlier line here read as
+four new.
 
 **`10`'s improved diagnostic prints a false sentence.** On a missing row it emits "width 48 is not the
 sum of widths 24 and 24", which is arithmetically wrong and would mislead a consumer badly. The
