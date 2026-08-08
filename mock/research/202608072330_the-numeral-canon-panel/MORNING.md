@@ -68,8 +68,8 @@ confidence intervals and significance:
 | `bitpack-zeropad-seq` | **7679 ns** | +37.9% |
 
 I verified these myself rather than relaying them. **Spread 4.61x. Zero of forty passes won by the
-packed arm.** No file in this panel names `mock/benches/` at all; one mentions a bench round in a
-single clause.
+packed arm.** When this section was written, no file in this panel named `mock/benches/` at all. Two
+files written after it do, and nine of thirteen expert files contain the word bench somewhere.
 
 ### And then I got the second half wrong, in the act of correcting the first
 
@@ -247,8 +247,9 @@ The oracle is not failing to see the difference; it is asserting there is none.
 
 **Clause four decomposes into three parts with three different rungs**, and this is the structural
 result I would most want you to carry away. Layout erasure is proved **by construction**, via the
-transparent representation. Dispatch erasure is proved **by construction**, via the bans on dynamic
-dispatch and type identity. Only operation erasure needs inspection at all. **That moves most of
+transparent representation. Dispatch erasure is proved **by construction** via the bans on dynamic
+dispatch and type identity, **conditional on that ban list holding**, which `17` states and an
+earlier version of this line dropped. Only operation erasure needs inspection at all. **That moves most of
 clause four off the measured pile and onto the proved one**, which is a stronger position than the
 panel thought it had.
 
@@ -784,7 +785,8 @@ same function at different arguments, so formula-versus-lattice was never a real
 
 **And `06`'s tight product form now has independent corroboration.** Computing the least containing
 numeral from the value set directly agrees with it at 400 of 400 operand pairs, by a derivation that
-never uses `06`'s inequality. That is two instances arrived at differently, which is the bar.
+never uses `06`'s inequality. That is two instances arrived at differently. `RULES.md` sets the bar at **three**, so this is short of it,
+and three checkpoints flagged the wording before it was fixed.
 
 ### What the frame predicts that the panel did not have
 
