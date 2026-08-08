@@ -1,0 +1,14 @@
+=== reading B: Precise does NOT widen the compute type past storage ===
+  distinct extents: 251
+  extents mapping to more than one carrier: 0
+  -> extent -> carrier IS a function under this reading.
+     so the objection survives the arithmetic, and only part (b) answers it.
+
+=== reading A: Precise DOES widen the compute type past storage ===
+  distinct extents: 251
+  extents mapping to more than one carrier: 64
+  witness: extent (W=1, stride=8) is shared by [Hot, Warm, Precise], which need carriers [8, 16]
+  -> extent -> carrier is NOT a function. the pair is irreducible both ways.
+
+part (b) is in p5b_const_to_type.rs, which does not compile on purpose.
+see p5b_const_to_type.err for the diagnostic.

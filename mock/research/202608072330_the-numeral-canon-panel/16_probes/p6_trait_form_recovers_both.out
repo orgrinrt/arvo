@@ -1,0 +1,18 @@
+one trait, two associated items, no feature gates.
+
+declaration          carrier  extent  stride  access  bytes/1e6   phase of elem 3
+UFixed<5,0,Warm>     u8      5       8       2       1000000     0
+UFixed<5,0,Cold>     u8      5       5       2       625000      7
+UFixed<8,0,Cold>     u8      8       8       2       1000000     0
+UFixed<13,0,Warm>    u16     13      16      3       2000000     0
+UFixed<13,0,Cold>    u16     13      13      3       1625000     7
+UFixed<16,0,Cold>    u16     16      16      3       2000000     0
+UFixed<31,0,Cold>    u32     31      31      5       3875000     5
+UFixed<47,0,Cold>    u64     47      47      7       5875000     5
+
+the 13-bit Warm row and the 13-bit Cold row share a carrier and differ in stride.
+the 13-bit Cold row and the 16-bit Cold row share a carrier and differ in stride.
+a derivation returning only the first column cannot tell any of them apart.
+
+every remaining column is computed from the pair by a plain const fn, so no
+third component is needed for the layout quantities I was able to name.

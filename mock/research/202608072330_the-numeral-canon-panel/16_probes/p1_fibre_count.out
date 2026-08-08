@@ -1,0 +1,28 @@
+widths 1..=128, 2 signs, 4 strategies
+  distinct declarations      : 1024
+  distinct carriers          : 10
+  distinct (carrier, stride) : 256
+  declarations per carrier   : 102.4 average
+
+unsigned Cold, grouped by carrier; every row inside a group shares a carrier
+  carrier u8   <- 8 widths, strides 1..=8 (8 distinct layouts collapsed to 1)
+  carrier u16  <- 8 widths, strides 9..=16 (8 distinct layouts collapsed to 1)
+  carrier u32  <- 16 widths, strides 17..=32 (16 distinct layouts collapsed to 1)
+  carrier u64  <- 32 widths, strides 33..=64 (32 distinct layouts collapsed to 1)
+  carrier u128 <- 64 widths, strides 65..=128 (64 distinct layouts collapsed to 1)
+
+contiguous run of N = 1_000_000 values, unsigned Cold
+  W    carrier-only bytes   two-output bytes   carrier-only overhead
+  3               1000000             375000    166.7%
+  5               1000000             625000     60.0%
+  9               2000000            1125000     77.8%
+  11              2000000            1375000     45.5%
+  13              2000000            1625000     23.1%
+  17              4000000            2125000     88.2%
+  23              4000000            2875000     39.1%
+  27              4000000            3375000     18.5%
+  31              4000000            3875000      3.2%
+  47              8000000            5875000     36.2%
+  63              8000000            7875000      1.6%
+
+worst ratio in 1..=128: W = 1, carrier-only is 8.00x the packed size

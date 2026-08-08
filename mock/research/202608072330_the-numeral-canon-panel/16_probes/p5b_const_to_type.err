@@ -1,0 +1,38 @@
+error: generic parameters may not be used in const operations
+  --> p5b_const_to_type.rs:24:50
+   |
+24 | pub fn carrier_of<const W: u32>() -> [u8; native(W) as usize / 8] {
+   |                                                  ^ cannot perform const operation using `W`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `W`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p5b_const_to_type.rs:25:18
+   |
+25 |     [0u8; native(W) as usize / 8]
+   |                  ^ cannot perform const operation using `W`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `W`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p5b_const_to_type.rs:29:51
+   |
+29 | pub type CarrierBytes<const W: u32> = [u8; native(W) as usize / 8];
+   |                                                   ^ cannot perform const operation using `W`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `W`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p5b_const_to_type.rs:35:17
+   |
+35 |     [(); native(W) as usize / 8]:,
+   |                 ^ cannot perform const operation using `W`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `W`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: aborting due to 4 previous errors
+
