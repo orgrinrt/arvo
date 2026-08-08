@@ -736,9 +736,13 @@ were nonzero (`16` sections 4, 7).
 alone: at `W=24` a first attempt (`8 * ceil(W/8)`) gave three bytes for a `u32` container that is
 actually four (`15` section 3.4). Not the rung alone either: `Hot`'s wide-rung arm pads to align 16,
 so at `W=200` the byte payload is 25 bytes but the container-and-therefore-stride is 32, which a
-rung-only keying misses (`15` section 3.4, `16` section 10.2 independently confirms with an
-adversarial same-size-same-stride-different-alignment pair). The stride is keyed on the
-**strategy-and-rung pair**. Alignment specifically is **not** a third output: it rides on the carrier
+rung-only keying misses (`15` section 3.4). **This sub-claim is ONE EXPERT and the register previously
+said otherwise.** It cited `16` section 10.2 as independently confirming it; `16:739-742` disclaims
+exactly that: "I did not build a wide rung so I cannot confirm or contest it. My `p7` touches the
+alignment half of it and not the stride half." Corrected by `44`, which read `16` rather than this
+account of it. The stride is keyed on the **strategy-and-rung pair**, on `15`'s evidence alone at the
+wide rung; the general keying claim, that stride follows the carrier's size rather than the value's
+rounded bytes, **is** carried by both files. Alignment specifically is **not** a third output: it rides on the carrier
 (a property of a type, via `align_of`), confirmed by an adversarial construction where two wide
 payloads have identical size and identical stride but different alignment (`16` section 10.2,
 `16_probes/p7`).

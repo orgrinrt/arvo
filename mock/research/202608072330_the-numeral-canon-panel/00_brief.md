@@ -142,8 +142,15 @@ The list is short, and it got shorter on 2026-08-08.
 that `28` adds nothing to this list: all eight of the questions it answers are open.
 
 **The acceptance criterion**, which is op's erasure gate: the consumer expresses usage in bits and
-bytes, the typestate derives the matching container and representation, it validates, and it erases
-on lowering. All four at once, no caveats. Every mechanism proposal answers to this.
+bytes, the typestate derives the matching container and numeral **representations**, it validates, and
+it erases on lowering. All four at once, no caveats. Every mechanism proposal answers to this.
+
+The plural and the word "numeral" are op's own, quoted at `seed/SETTLED_container.md:33-35`: "have the
+typestate derive the matching container and numeral representations, then validate, and erase". They
+had been lost through **four** generations of restatement, including in this brief, which every member
+is told is required reading and part of what is fixed. `44` found it by reading the source rather than
+any account of it. **How many outputs the derivation has is exactly what `15`, `16` and `44` are
+about**, so a criterion that silently reads singular was prejudicing the question it exists to pose.
 
 **The workspace discipline**: `#![no_std]`, no `alloc`, no `dyn`, no `TypeId`, sizes const, no bare
 primitives at public positions, harness the type system, the writing style.
