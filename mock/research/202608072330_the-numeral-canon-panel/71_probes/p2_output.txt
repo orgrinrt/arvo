@@ -1,0 +1,47 @@
+==============================================================================
+PAIRS OF COORDINATES: does the composite crossing depend on the order?
+==============================================================================
+pair              orders  distinct functions    agreeing source values
+{q, rho}          2       2                     30/256
+{q, enc}          2       1                     256/256
+{q, offset}       2       1                     256/256
+{rho, enc}        2       1                     256/256
+{rho, offset}     2       1                     256/256
+{enc, offset}     2       1                     256/256
+
+Divergent pairs: [('q', 'rho')]
+
+------------------------------------------------------------------------------
+THE DIVERGENT PAIR ('q', 'rho'), in detail
+------------------------------------------------------------------------------
+  order ('q', 'rho') : the q-move happens under the SOURCE's other
+  order ('rho', 'q') : the q-move happens under the TARGET's other
+  agreement 30/256 source values, 226 divergent
+  first three witnesses (source value, route 1, route 2):
+    v =  -128   ->     0   against    -8
+    v =  -127   ->     1   against    -8
+    v =  -126   ->     2   against    -8
+  witnesses whose source value is already inside the target's set: 0
+
+==============================================================================
+THREE COORDINATES AT ONCE: {q, rho, enc}
+==============================================================================
+  orders                  6
+  distinct functions      2
+  class 1: 3 orders, e.g. ('q', 'rho', 'enc')
+          q-move precedes rho-move in all of them: True; in none: False
+  class 2: 3 orders, e.g. ('rho', 'q', 'enc')
+          q-move precedes rho-move in all of them: False; in none: True
+
+==============================================================================
+VERDICT
+==============================================================================
+PREDICTION HELD in both halves.
+
+Reading. Every single-coordinate crossing is canonical, because the coordinate not
+moving is shared and so nothing is chosen inside a step. The composite is not: a
+crossing that both narrows the representable set and changes the selected reduction
+computes a different function depending on which move happens first, and the two
+answers are exactly 'the source's reduction governs the loss' and 'the target's does'.
+So the endpoints do not determine the crossing, and 'the crossing from A to B' is not
+a well-formed phrase unless the systems differ at one coordinate, or an order is named.
