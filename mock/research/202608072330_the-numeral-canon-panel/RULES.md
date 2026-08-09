@@ -476,9 +476,15 @@ of them achieves.
 > implicitly mean not true
 
 So there is no vocabulary for doubt in a predicate; doubt is expressed by omission. An unstated dimension
-is one the finding makes no claim about, and unclaimed defaults to not true. `any` on a dimension is a
-strong claim that the finding was established across it. This panel's corpus is single-threaded, so almost
-nothing has earned `threads any`, and the correct predicate omits threads entirely rather than hedging.
+is one the finding makes no claim about, and unclaimed defaults to not true.
+
+**But a condition the work was performed under is proven and is listed.** A finding measured on one thread
+holds at one thread: the predicate says `threads = 1`, never `threads any` which was not shown, and never
+omits threads which would discard a region that was. Omission is for a dimension nothing established;
+it is not for a dimension held fixed while the work was done, because that value is a result.
+
+So this panel's single-threaded corpus is **a body of `threads = 1` arms**, not a pile of claims awaiting
+rescue, and `threads = 1` is exactly the region I10 names for when no additional cores are available.
 
 **A law failing in most of its space is a finding about where it holds.** The useful output of
 "distributivity fails at `F > 0`" is the predicate `F = 0` and an arm gated on it. Look for the predicate
