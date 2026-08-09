@@ -64,9 +64,16 @@ representable set, encoding and container, with only the adaptation moved). This
 the unit has produced about where strategy sits, and it fills the gap `68` section 7 names as carrying
 zero probe instances anywhere in the panel.
 
-**No crossing between systems preserves operations** (`67`, p2, exhaustive at 4 bits). Every crossing is
-total and preserves values or patterns at 100%, and not one preserves operations at 100%. The file keeps
-a prediction its own output refuted, with the corrected closed form beside it.
+**~~No crossing between systems preserves operations~~** (`67`, p2, exhaustive at 4 bits).
+**RETRACTED by `71`, verified at the source by the coordinator.** `67:252` states the universal "No
+crossing preserves operations at 100%" while measuring only three of the five coordinates its own section
+2 names. `71`'s p1 measures all five: it reproduces every one of `67`'s eight numbers exactly (192, 111,
+136, 80, 192, 101, 108, 1) and finds the two unmeasured indices, re-encoding and re-housing, preserve the
+value-level operation at **256/256** (`71_probes/p1_output.txt:66-68`).
+
+`67`'s own K4 survives; the universal at `67:252` and the register line at `67:566` do not. The repair is
+two words. This checkpoint repeated the universal without checking its quantifier, which is the same
+failure `67` section 1 catalogues three prior instances of, and this is the fourth.
 
 **`63`'s C2 separates shared parameters from per-element ones** (`67`, p3), which is not what it appears
 to say. Applied mechanically, block floating point yields 8 distinct representable sets and fails; a
