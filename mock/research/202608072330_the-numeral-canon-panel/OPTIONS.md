@@ -1336,6 +1336,38 @@ microkernelling shape the workspace already names.
 > exactness predicate. The general spelling of the width algebra is refused without a forbidden feature,
 > with the compiler error committed; the trait-contract spelling compiles on the pin.
 
+> **`62` measured the empty signed cell, and found the panel's first design-actionable lever.**
+>
+> **The signed cell is broken where the unsigned story was a theorem.** Signed two's-complement
+> saturating multiplication fails associativity **at zero fraction**, at 28, 160, 780 and 3516 triples
+> across widths 3 to 6. Hand witness at width 4: `(7*7)*-1 = -7` against `7*(7*-1) = -8`.
+>
+> **The mechanism is the range's asymmetry under negation**, not the clamp as such: the negation of the
+> ceiling is interior while the negation of anything past it falls beyond the floor. And the lever
+> follows directly: **a symmetric clamp restores exact multiplicative associativity at every width, zero
+> failures**, where the asymmetric range gives 98 at width 5. **One code point is the whole difference.**
+>
+> That is the first thing this panel has produced that a consumer would feel, and it is a live option
+> rather than a recommendation: giving up one representable value buys back an algebraic law.
+>
+> **At nonzero fraction everything multiplicative dies anyway**, both policies, both rescale spellings,
+> 54 of 54 rows. But the coarsening attribution transfers only as **sufficiency**: coarsening alone
+> breaks signed associativity with no reduction present, while the unsigned converse that the clamp is
+> clean does **not** hold. The signed cell has **two independent mechanisms**, and at the widest fraction
+> the two policies fail on the **identical set** of 380 triples.
+>
+> **The additive half is policy-split in the signed domain**, unlike unsigned where both policies keep
+> it: wrapping stays a full group at every fraction width, saturation is dead with counts exactly
+> fraction-invariant.
+>
+> **And the rescale is two different maps on signed data.** Truncation and arithmetic shift move every
+> count, zero none, and split the accumulator grade: the shift gives an exactly-F saving at fold lengths
+> 3, 4 and 5, while truncation gives an irregular 4, 3, 5, against the unsigned 3, 3, 4. That is direct
+> evidence for a rounding axis the register does not currently carry.
+>
+> Its own probe discipline fired: its first mutant was not a mutant, the run printed FAILS, and the bad
+> run is kept on disk beside the corrected one.
+
 ## Q17. Where does the fraction boundary fall, and which results are integer-only?
 
 **Added from `58`, unit two, and it splits the unit's strongest candidate in two.** Arvo is a
