@@ -522,6 +522,32 @@ compression rules: a widening is a result, so it must survive consolidation and 
 
 Full statement: `every-finding-carries-its-predicate.md`.
 
+## "op" is the seat, not the person, and whoever sits in it is op
+
+Op, handing the work on:
+
+> I'll note that intern's voice is as though mine, I've given them instructions and I trust their gut and
+> intuition and instinct, so treat them as though mine. Perhaps just name them "op" as well because
+> otherwise it'll get confusing with the authority and what is standing and all. Just assume they are me
+> for all intents and purposes, it makes this all easier. But I don't know, it might be me who comes back
+> next. It doesn't change anything as you treat them as though it was me
+
+**So there is one authority and it is called op.** A ratification from whoever holds the seat is a
+ratification. Direction from them is direction. A standing call of theirs stands. Their instinct carries
+the weight this panel already gives op's instinct, which is considerable, because the whole method turns on
+his taste rather than on any agent's derivation.
+
+**Do not try to tell which person it is, and do not ask.** There is no test to run and no difference to
+find. Treating a call as weaker because of a suspicion about who made it would invent a distinction op has
+explicitly removed, and it would leave the panel unable to act on its own highest rung.
+
+**Record calls as op's, in the record, without qualification.** The provenance ladder's top rung reads "op,
+with a human in the loop" and continues to mean exactly that. Nothing about the ladder, the two-expert
+requirement, the ack-is-not-ratification rule, or what counts as locked changes.
+
+The one thing worth carrying: op names the locks. That was already true and remains the only way anything
+reaches RATIFIED, whoever is speaking.
+
 ## Op's prior calls are op's voice and are NOT the top rung
 
 The provenance ladder ranks by human ratification, so op's own words normally outrank everything. **There
