@@ -1,0 +1,8 @@
+M=15 F=3; count = tuples over [0,15]^n; full_w = (n-1)*F; 58's pattern: min_w = full_w - F
+Trunc n=3: divergence by w [(0, 697), (1, 286), (2, 66), (3, 0), (4, 0), (5, 0), (6, 0)]; min_w=3, full_w=6, saving=3 bits
+Trunc n=4: divergence by w [(0, 17318), (1, 9169), (2, 3082), (3, 776), (4, 173), (5, 12), (6, 0), (7, 0), (8, 0), (9, 0)]; min_w=6, full_w=9, saving=3 bits
+Trunc n=5: divergence by w [(0, 311324), (1, 196450), (2, 83927), (3, 29155), (4, 9433), (5, 2337), (6, 412), (7, 84), (8, 0), (9, 0), (10, 0), (11, 0), (12, 0)]; min_w=8, full_w=12, saving=4 bits
+Rne n=3: divergence by w [(0, 594), (1, 506), (2, 373), (3, 141), (4, 45), (5, 15), (6, 0)]; min_w=6, full_w=6, saving=0 bits
+Rne n=4: divergence by w [(0, 12868), (1, 9801), (2, 6629), (3, 3218), (4, 1512), (5, 694), (6, 198), (7, 36), (8, 36), (9, 0)]; min_w=9, full_w=9, saving=0 bits
+Rne n=5: divergence by w [(0, 220113), (1, 161097), (2, 105603), (3, 50714), (4, 23446), (5, 10783), (6, 3662), (7, 924), (8, 904), (9, 0), (10, 0), (11, 0), (12, 0)]; min_w=9, full_w=12, saving=3 bits
+OUTCOME: see counts; hypothesis is judged in 60's phase two, not here
