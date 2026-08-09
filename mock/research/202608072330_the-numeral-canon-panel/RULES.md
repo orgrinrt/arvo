@@ -469,37 +469,28 @@ asking for one asks the design to stop being what it is. **The work is the arms.
 region and nowhere else, and "everywhere is optimal" is what they add up to rather than something any one
 of them achieves.
 
-**A predicate lists only what is known to hold, and silence means not true.** Op:
+**A predicate lists only what holds, and each dimension has exactly three states.** Op:
 
 > unmeasured or unknown does not list in the predicate. It's not known, it's assumed not true until proven
-> true. No adding "unsure" into the predicate. Unsure or unmeasured etc explicitly go unstated and
-> implicitly mean not true
+> true. No adding "unsure" into the predicate.
 
-So there is no vocabulary for doubt in a predicate; doubt is expressed by omission. An unstated dimension
-is one the finding makes no claim about, and unclaimed defaults to not true.
+> Threads is NOT omitted if it's written and proved on a single thread. It should predicate on single
+> thread, not omit
 
-**But a condition the work was performed under is proven and is listed.** A finding measured on one thread
-holds at one thread: the predicate says `threads = 1`, never `threads any` which was not shown, and never
-omits threads which would discard a region that was. **Omission is for a dimension that is not a parameter of the claim.** Op: "If it's a theory that does not
-apply to any thread setup, then it can omit." A structural result about what a type contract decides has no
-thread dimension, and naming threads there is noise rather than rigour.
+> threads don't matter is a statement for adding threads any. So it's actually that if threads are not even
+> listed, then it can not run in any situation that involves threads
 
-The test is the one the rule opens with: a predicate covers every dimension **that could move the result**.
-Could move it, so it is listed at whatever was established, fixed value or swept range. Could not move it,
-so it does not appear. **And omitting is itself a claim, so state it.** Op: "But then it's only true where threads do not exist or
-don't matter at all, and that is itself important to understand. Hence, being explicit and accurate."
-Dropping a dimension asserts the finding holds only where it does not exist or does not matter, which is
-narrower than it looks and is checkable, so write `threads irrelevant` rather than nothing. **A silent
-omission and an unexamined dimension look identical on the page**, and keeping those apart is the whole
-point. Omission never means "we did not check": a dimension that could move the result and went unexamined
-leaves the finding unestablished on that axis rather than tidily silent.
+**Listed with a range or `any`**: established across it, and `threads any` is the form for "thread count
+does not affect this". **Listed with a fixed value**: established there and only there, so work done on one
+thread proves `threads = 1`, a real region something can be gated on. **Absent**: the finding does not hold
+in any situation involving that dimension at all.
 
-So this panel's single-threaded corpus is **a body of `threads = 1` arms**, not a pile of claims awaiting
-rescue, and `threads = 1` is exactly the region I10 names for when no additional cores are available.
+**Absence is the strongest negative statement in the notation.** It is not "not considered" and not
+"beside the point". A dimension is dropped only when that severity is meant.
 
-**A law failing in most of its space is a finding about where it holds.** The useful output of
-"distributivity fails at `F > 0`" is the predicate `F = 0` and an arm gated on it. Look for the predicate
-before writing the prohibition; a prohibition is what a finding becomes when nobody looked for its region.
+So this panel's single-threaded corpus is **a body of `threads = 1` findings**, not silence about threads,
+and `threads = 1` is exactly the region I10 names for when no additional cores are available. Whether any
+of them extends to `threads any` is a separate question only measurement answers.
 
 **A predicate is never widened in place.** Op:
 
