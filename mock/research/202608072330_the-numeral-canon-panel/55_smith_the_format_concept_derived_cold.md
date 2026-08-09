@@ -328,3 +328,185 @@ acceptance criterion's plural names, in the order Q then E then container.
 Three probes, independent in what they attack (membership, adaptation, encoding) and sharing no
 model beyond exact integer arithmetic. That meets the three-instances bar for the claims they
 cover and does not extend it to the claims they do not.
+
+---
+
+# Phase two: reconciliation, written after reading the panel
+
+**Marked and appended per the dispatch. Phase one above is untouched.** Read for this phase, in
+order: `08` in full, then `32`, `34`, `36`, `37`, `38`, `39`, then `OPTIONS.md` in full. Nothing
+else: not `RULES.md` beyond what phase one permitted, not the seed, not `DROPLIST.md`, not any
+other numbered file, so every claim below about "the panel" is bounded to that set.
+
+## The verdict first
+
+**The core of phase one survives contact with the panel unchanged**: the format concept is one
+parameterization; its identity is value-level; membership is one predicate through a slot
+function; the encoding is a second, ordered, behaviourally observable axis; and arithmetic is
+statable as exact-in-an-ambient-domain composed with a total adaptation. Reading the panel did
+not move any of that, and saying so is the result this dispatch exists to produce.
+
+**Three things in phase one are wrong or too narrow**, conceded below with what corrects them.
+**One claim in `08` gets a refinement** from my probe 3. **And one question my phase one raises
+is genuinely absent from the register**, written out in full at the end.
+
+## 1. Where I converge with `08`, and how independent the convergence really is
+
+`08`'s central object is the canonical exponent: the value map `Adjustment * radix^exponent * k +
+Bias` (`08:179-186`), with the family named by the shape of the exponent function over binades,
+and `ExponentForm`'s two instances exposed as a two-point sample of a function space
+(`08:194-204`). My phase-one Q is the same object: the slot function phi, membership stated once
+as `x / 2^phi(x)` integral plus bounds, with fixed, integer and float as instances (`p1`, 47 of
+47 float values, both mutants detected).
+
+**The independence of that agreement is limited, and I bound it rather than bank it.** Both of us
+derive from Flocq's `generic_format`; I named it as prior art in phase one before reading anything,
+and `08` names it too. So this is two independent *instruments* (my membership predicate against
+`08`'s classifier `i1b`) reconstructing one shared piece of literature at model scale. Under the
+panel's own independence discipline that is worth more than a read and less than two cold
+derivations from nothing: the instruments are independent, the idea is not. Where the
+convergence IS fully independent: I derived "the concept is the function, the named shapes are
+points on it" from the one-concept test (generic statements provable once) with no access to
+`ExponentForm`, and `08` derived it from surveying the design's axes. Same sentence, two
+directions.
+
+`08` then goes far past anything I built: the taper and segmented shapes, the meet and join
+closure results, the boundary's three clauses (`08:554-560`), and the gate-free segmented
+typestate probe. None of that conflicts with phase one; my concept's Q as a general slot
+function is exactly the "canonical exponent as a member" reading `08` puts to op as its question
+one (`08:709-715`), and I note that my phase one landed on the general-function side by
+derivation rather than by preference, for what one more arrival is worth.
+
+## 2. What phase one got wrong or too narrow
+
+**2a. Phase. Conceded.** My slot-function Q bakes in phase zero: membership as "x over the
+quantum is an integer" cannot say a grid is offset by half a step. The record's value map is
+affine, with `Bias` a separate parameter, and `08` measured that a half-unit-biased format is
+inside the design's concept and outside plain `generic_format`, a distinction its own first
+instrument got wrong in exactly the way mine would have (`08:630-634`). So the concept is
+**strictly wider than my phase-one Q in the phase coordinate**: Q needs the phase parameter, and
+my "two formats with the same Q are the same format" claim survives only with phase inside Q.
+My probe 1 remains correct for what it tested and tested a phase-zero slice.
+
+**2b. Non-finites. Phase one's option (a) collides with a carried two-expert result.** I offered
+"extend D to the affine extension and let Q include infinities" as one of two placements. The
+record carries a scoping theorem, quoted at `08:113-117`: every arvo value is `m * r^q`, so every
+arvo value set is a finite set of rationals. Under that, infinities and NaNs cannot be elements
+of any Q, and only my second placement (non-finites as encoding-level escape codes with stated
+propagation, outside the value set) remains live inside the record's boundary. I flag rather than
+concede fully: the scoping theorem is carried at TWO EXPERTS and predates op's explore mode, and
+I have not read its derivation, so I state the collision and its resolution direction without
+treating the theorem as beyond question.
+
+**2c. My "one concept" test was right but under-instrumented next to `08`'s.** I proposed
+"generic statements provable once" and probed membership only. `08` ran the concept against
+twenty-one representations with a mechanical classifier and found no rival parameterisation
+(`08:377-384`), which is the strong form of the test I stated: not only are the named instances
+one concept, nothing surveyed needs a second one. My phase one's derived-but-unprobed list
+(adaptation, quantum, order, conversion each statable once) stays derived-but-unprobed; nothing
+in the panel discharges it either, and it is still owed.
+
+## 3. One refinement to `08`, from probe 3
+
+`08` section 2.2 reports, from its `i3` instrument: "plain unsigned is the only one of the eight
+integer-keyed encodings where [raw-order agreement] holds" (`08:263-266`). My `p3` measured
+offset binary (excess-8) at 4 bits: **bijective onto the same value set as two's complement, and
+raw-order agreement holds** (`p3_output.txt`: "raw compare matches value order: offset true").
+So "only plain unsigned" is a fact about `08`'s pool, which apparently does not contain the
+excess-K encodings, not a fact about encodings. The general statement is that raw-order
+agreement holds for exactly the monotone encodings, and excess-K is the classical monotone
+signed encoding; it is why IEEE 754 biases its exponent field, so that floats compare as
+integers. This matters to the design because it means the operational property "sortable by raw
+compare" is *purchasable by encoding choice* for signed value sets, not forfeited by signedness:
+a strategy that wants memcmp-sortable columns can have them at the cost of the two's-complement
+convention. Offered as a refinement, one probe, one width, and `08`'s claim corrected only in
+its quantifier.
+
+## 4. Fits and kills against the register, per its method
+
+**Q4, what a datum stands for.** My framework fits the **point** reading plus adaptation-error
+semantics: saturation stays an adaptation map with a point denotation and an error unbounded
+above the bound, which is consistent with `18`'s measured result (absorbing sound only while the
+computation stays at the endpoint) without needing the absorbing denotation at all: the
+unsoundness `18` counts is, in my terms, adaptation error being consumed as if it were zero. It
+fits the **set-admitted-generally** reading as a composition rather than a format instance
+(phase one 3c), which agrees with the register's own note that intervals cost the order-and-law
+layer. It kills nothing in Q4.
+
+**Q5, one axis or two, and Q12's candidate reframing.** Probe 2 bears here and it is my main
+non-`08` contribution. Wrap and saturate are not two values of one kind of axis: saturate is an
+adaptation map (retraction, distance-minimising, monotone), wrap is exact arithmetic in a
+different ambient ring and fails every adaptation property (`p2`, exhaustive at 4 bits). This
+**fits well** the product-of-axes reading of Q5 and fits the axis-heterogeneity evidence `25`
+already found (widen-op-narrow answering a different question than wrap and clamp). And it fits
+Q12's closing reframing ("state per strategy which properties the arithmetic has") better than
+any policy-label framing: under wrap the laws are exact group laws, under saturate they are
+conditional on trajectory, and `42`'s reachability mechanism (associativity survives exactly
+when the trajectory cannot reach both clamped endpoints) is independently corroborated by my
+probe's honest flip side, unsigned add-only saturation exactly associative because its floor is
+unreachable. Two instruments, two authors, same conditional, arrived at separately: that one is
+a genuine independent convergence, not a read.
+
+**Q10, the singleton-grid amendment.** My phase-one identity claim, format equality is denotation
+equality (two formats with the same Q are one format), lands on the same side as Q10's first
+option (decide inclusion on denotation rather than declaration) by derivation rather than by
+examining `03`'s predicate. That is a second voice for the direction, not the second read `03`
+asked for; the predicate itself I have not examined.
+
+**Q16, which sense of composition.** Phase one used sense two throughout section 3c (pairs,
+intervals, complex as compositions over numerals) without knowing the collision existed. The
+brief's sentence uses sense one. My material is unaffected by which name wins, and I note that
+3c needs the sense-two word whatever it ends up being.
+
+**Q11 and the fold layer.** My section 5's requirement 3 (the quantum metric as the unit in
+which accuracy claims are statable) is what Q11's "numeral names its algebraic structure" and
+Q12's per-strategy law statements both consume. Fits; adds nothing new.
+
+## 5. The absent question, written in full for the register
+
+**Where does wrapping live: adaptation, ambient domain, or a third thing?** Proposed by this
+file, from `55_probes/p2_saturate_is_adaptation_wrap_is_domain.rs`, exhaustive at 4 bits with a
+validated instrument.
+
+The register's Q5, Q6 and Q12 all treat wrap as a value of an overflow-policy axis beside
+saturate. The probe establishes that the two have different mathematical kinds: saturate is a
+monotone, distance-minimising retraction onto the representable set (an adaptation, the same
+kind as a rounding), while wrap is neither distance-minimising nor monotone over the integers
+and is instead exact ring arithmetic in Z/2^N (hom property and associativity exhaustive, zero
+failures). Three options, none settled:
+
+- **Wrap is an adaptation-slot value anyway.** The current implied filing. Keeps one axis
+  vocabulary. Costs: the axis's shared properties (monotone, error-bounded-per-step, law
+  transport with error terms) hold for every value except one, so every generic sentence over
+  the axis carries a wrap exception, and the error metric is meaningless for wrap.
+- **Wrap is a change of ambient domain.** A wrapping numeral denotes residues, its arithmetic is
+  exact, its laws are group laws with no error term, and it has no meaningful order or quantum.
+  Buys: law statements become exact where they are exact (which `35`'s measured 0% divergence
+  for wrapping folds already shows operationally) and conditional only where adaptation exists.
+  Costs: collides with the scoping theorem's "every arvo value is a rational" unless a residue
+  is read as denoting a rational representative, and makes conversion out of a wrapped numeral
+  visibly policy-laden (no ring embedding of Z/2^N into Z exists; a section must be chosen),
+  which is honest but is a new sentence the canon must carry.
+- **Wrap is a composite operation, not a format property at all.** "Add then reduce" as one
+  named operation on an integer-denoting numeral, with reduction a stated non-adaptation map.
+  Keeps the value set rational and the format concept clean. Costs: the exactness of wrapped
+  chains is then a theorem about a composite rather than a law of a domain, and the strategy
+  layer needs a way to say "this strategy's add is the composite" per `34`'s Hot licence.
+
+What would distinguish them: whether the canon wants `35`'s and `42`'s associativity results
+stated as laws of a domain (option two), exceptions on an axis (option one), or theorems about a
+named composite (option three); and what the ordering and conversion story for wrapped values
+must be in each. The distinction is consequential for Q12's reduction-order options, because
+"exactly reassociable" is a domain fact under option two and a per-policy measurement under
+option one.
+
+## 6. Coverage of this phase, bounded
+
+I read the files the dispatch named and nothing else, so: I have not verified `08`'s probes
+beyond reading its claims; I have not read `03`, `18`, `25`, `35`, `42`, `43` or any other
+numbered file except through `OPTIONS.md`'s and `08`'s accounts of them, and every fit/kill
+statement above that touches those files is made against the register's account, not the
+source. The two-expert rule applies to everything here: my convergences with `08` are first-plus-
+instrument, my Q10 voice is not a second read, and the new option is ONE EXPERT until someone
+attacks the probe. Reading the panel changed phase one in the two conceded places and the one
+flagged collision, and nowhere else.
