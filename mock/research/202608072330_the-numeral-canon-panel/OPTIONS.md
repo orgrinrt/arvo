@@ -1112,7 +1112,17 @@ exactly reassociable, which float never is, and nobody in the panel had said so.
 saturating folds diverge at 70.1% while unsigned saturating diverge at 0, which reads as a fact about
 sign or about clamp count. It is neither. `42_probes/p3` refutes "one clamp associates, two do not" and
 establishes the real condition: **associativity survives exactly when the fold's actual trajectory
-cannot reach both clamped endpoints.** Verified on plain integers, independent of any fixed-point
+cannot reach both clamped endpoints.**
+**CONTESTED, and the quoted form is refuted by `55b_probes/p5`.** Exhaustive over signed-clamp triples:
+952 divergences, **448 ceiling-only, 504 floor-only, and ZERO involving both bounds**, zero without a
+clamp, zero with same-sign operands. Every divergence is a **one-bound** clamp-then-pullback event, with
+witness (7, 7, -1) diverging on the ceiling alone at 6 against 7. If divergence never involves both
+bounds, "cannot reach both" cannot be the condition that prevents it.
+Two bounds on that refutation, stated by its author: it targets **the form quoted in this register**,
+since `55b` did not open `42` itself, and a second read of `42` against `p5` is **owed**. The dispatching
+agent wrote the quoted form into this register from a summary, which is how it came to be stated more
+strongly than its source may support. Original wording follows.
+ Verified on plain integers, independent of any fixed-point
 representation: two clamps with an unreachable floor give 0 failures over 2,197 to 15,625 triples,
 while a *reachable* floor gives 48 and 450. Unsigned saturating addition never reaches its floor, which
 is why it associates; the sign domain is a proxy for reachability rather than the cause. The refuted
