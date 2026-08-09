@@ -1,0 +1,10 @@
+w,n,sign,policy,vectors_with_disagreement,total_vectors,pct
+4,4,unsigned,wrap,0,65536,0.0000
+4,4,unsigned,saturate,0,65536,0.0000
+4,4,signed,wrap,0,65536,0.0000
+4,4,signed,saturate,28336,65536,43.2373
+3,8,unsigned,wrap,0,16777216,0.0000
+3,8,unsigned,saturate,0,16777216,0.0000
+3,8,signed,wrap,0,16777216,0.0000
+3,8,signed,saturate,11760675,16777216,70.0991
+f32,8,float,ieee_sample,554034,1000000,55.4034
