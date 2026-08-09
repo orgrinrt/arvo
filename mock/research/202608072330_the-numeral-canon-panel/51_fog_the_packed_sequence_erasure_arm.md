@@ -20,6 +20,11 @@ independent accumulators to one element per iteration on one, so the loop-carrie
 element roughly triples. Two attacks recover it, one of them at every width in the matrix, and
 neither changes a character of what the consumer writes.
 
+The collapse holds at 15 or 16 of 36 widths under `-O2`, `-O3` and `target-cpu=native`, at 64, 1000
+and 4096 elements. It is one host and one target, so it is a shape rather than a price, and every
+number below is a count read off emitted assembly. **Nothing here is timed, no bench harness has run,
+and what the collapse costs is unpriced.**
+
 ## 0. Gates
 
 ### 0.1 Canon gate
@@ -80,7 +85,7 @@ fn check_codegen_equality() -> Result<String, String> {
     // and reports that LLVM folds the two into one.
 ```
 
-`16_probes/p3_blind_suite.rs:98-100`. The function then compares two `u32` values and one
+`16_probes/p3_blind_suite.rs:89-92`. The function then compares two `u32` values and one
 `size_of`. No assembly is emitted anywhere in that file. So the probe my brief names as the panel's
 only packed-sequence erasure check is not one, and citing it as the panel's erasure evidence
 overstates what it claims about itself.
@@ -332,6 +337,51 @@ dependent instructions per element, 6.00 against 2.00. It is not a cycle ratio a
 measured one. What it supports is a qualitative existence claim: the typed arm's reduction is serial
 and the hand arm's is not.
 
+### 4.1 The erasure verdict is the wrong headline, and the sweep is what showed me that
+
+I nearly reported "erases at 18 of 36 widths" as the finding. It is the wrong number, and the
+robustness sweep caught it.
+
+**A difference is not a regression.** At 4096 elements the typed arm also "fails" at W = 11, 13, 15
+and 17. Opening those:
+
+```
+--- W=13 n=4096 ---
+w13_typed     42 loop instrs   8 loads   6 accumulators
+w13_hand      43 loop instrs   9 loads   6 accumulators
+```
+
+The typed arm differs from hand by emitting one instruction and one load **fewer**, on the same six
+accumulators. The oracle correctly reports "not identical", and a reader who takes that as a defect
+has been misled by my summary statistic rather than by the instrument.
+
+**The metric that survives is the accumulator collapse**, because it names a regression rather than a
+difference. Across every configuration in `51_probes/robustness.out`, counting widths where the
+reduction serialised onto one accumulator:
+
+| configuration | typed | gather | wide |
+|---|---|---|---|
+| `-C opt-level=2`, n=1000 | 15 | 2 | 0 |
+| `-C opt-level=3`, n=1000 | 15 | 3 | 3 |
+| `-C opt-level=3 -C target-cpu=native`, n=1000 | 15 | 3 | 3 |
+| `-C opt-level=3`, n=64 | 16 | 4 | 7 |
+| `-C opt-level=3`, n=4096 | 16 | 4 | 3 |
+| `-C opt-level=s`, n=1000 | 33 | 36 | 36 |
+
+**The loop-form gather serialises the reduction at 15 or 16 of 36 widths in every configuration
+tested except `-Os`, and the trait-form gather at 2 to 4.** That is stable across two optimisation
+levels, a 64-fold range of element counts, and `target-cpu=native`, which is as much robustness as an
+assembly inspection on one host can offer.
+
+**`-Os` is degenerate and is reported separately for that reason.** At `-Os` nothing unrolls, so every
+arm has one accumulator and the comparison cannot distinguish them: `gather` reads as 36 of 36 there
+purely because both sides are equally rolled. A number that goes green because the measurement
+stopped working is exactly the failure `the-test-gate.md` names first, and it is the same failure
+`17` found in the panel's earlier instrument below full optimisation, recorded in the "panel's
+instrument across optimisation levels" step of `17_probes/verify.sh`. Two instruments, two
+optimisation-level artifacts, one lesson: **an erasure oracle that depends on an optimisation pass
+reports erasure most confidently where the optimiser did least.**
+
 ## 5. The mechanism, and the control that refuted my first attribution
 
 Two things move together at W = 17 to 18. The declared width crosses 17, and the number of live
@@ -347,6 +397,10 @@ ACC  loop-form           flat-form           verdict
 4    43i/5acc/4e         34i/5acc/4e         NOT ERASED
 8    43i/5acc/4e         34i/5acc/4e         NOT ERASED
 ```
+
+The instruction counts here are **loop-block** counts, which is the quantity that matters for a walk.
+`verify.sh` step 5a prints the same three rows as whole-function counts, 51 against 51 and 51 against
+41, because the oracle's terse mode counts the whole symbol. Same artifacts, two denominators.
 
 The loop form's code is **identical for every access count from 3 to 8**, which is the tell. At W =
 13 the mask is `0x1FFF`, so bytes past the third contribute nothing, LLVM proves those loads dead and
@@ -452,8 +506,8 @@ reduction accumulators identified, against the packed arms' 34 to 43 with five. 
 comparable on instruction count because they touch different amounts of memory, which is the entire
 trade. **The shape is visible here and the magnitude is not.** Pricing packing against not packing
 needs the bench harness with both as arms, and `50` has just shown that is reachable
-(`50_lamport_which_criterion_is_in_use.md:24-27` reports a harness run at 3.04x to 3.12x on an
-adjacent question). Until that runs, the packing trade at these widths is **unpriced** and I use the
+(`50_lamport_which_criterion_is_in_use.md:483-489` reads 3.04x to 3.12x off the committed CSVs on
+an adjacent question, against the dense carrier as competitor). Until that runs, the packing trade at these widths is **unpriced** and I use the
 word rather than reaching for a number.
 
 ## 7. Three smaller things I checked because they were cheap
@@ -492,13 +546,48 @@ and to say which command, and a census that cannot be reproduced from its own de
 be the thing a dispatch is reprioritised on. Mine are above; disagree with the regex if you like, but
 disagree with a command.
 
-**The oracle found a bug in itself first.** My first O5 returned a recurrence of 1 for a 58-instruction
-loop, because I ran the dependency analysis on register names that a previous normalisation pass had
-already rewritten. My first O4 reported a difference between two bodies a plain `diff` showed to be a
-reschedule, because I seeded live-in registers by first-use order and the two bodies use theirs in a
-different order. Both are recorded here rather than quietly fixed, because an instrument that has
-been wrong twice in one session is an instrument whose remaining output deserves the reader's
-suspicion, including mine.
+**Three of my own citations pointed at the wrong lines.** `RULES.md:126-133` records a member
+finding seven of its own wrong this way and says a reference that resolves is not a reference that
+says what you claim, so I wrote `51_probes/check_citations.py`, which opens every `file:line` in this
+document and prints what is actually there. It caught a citation to `16_probes/p3_blind_suite.rs`
+that was eleven lines off, one to `50` that pointed at a paragraph about something else, and one to
+`47` that pointed at its subject statement rather than its result. All three are corrected above and
+`citations.out` records the pass: **39 citations resolved and opened, 0 naming a file that does not
+exist, 0 naming a line past end of file.** Whether each line supports the claim beside it is still a
+reading job and I have done that reading; the tool only makes it possible.
+
+**My instrument was wrong three times before it was right, and I am recording all three.** O5 first
+returned a recurrence of 1 for a 58-instruction loop, because the dependency analysis ran on register
+names a previous normalisation pass had already rewritten. O4 first reported a difference between two
+bodies a plain `diff` showed to be a reschedule, because live-in registers were seeded by first-use
+order and the two bodies use theirs in a different order. And O4's value numbering built each key by
+substituting its operands' keys inline, which grows exponentially in dependency-chain depth: on a
+fully unrolled 64-element reduction it consumed the machine's memory and the process was killed with
+SIGKILL, twice, before I stopped blaming rustc and read my own code. Interning the value numbers into
+integers fixed it, and sharing one intern table between the two bodies fixed the regression that
+introduced.
+
+An instrument that has been wrong three times in one session is one whose remaining output deserves
+suspicion, including mine. The specific residual risk: O4 is sound in the direction that matters, it
+cannot call two different bodies equal, but nothing I did proves the recurrence in O5 is computed
+correctly for every instruction form on this target. My `defs_uses` split is a hand-written table
+covering the aarch64 subset these probes emit, and a mnemonic outside it is silently mis-attributed.
+
+**The autofix rewrote my sources after I measured them.** The pre-commit hook ran rustfmt over 118
+staged files and re-staged 254, which is exactly the case
+`cl-claim-sketch-discipline.md` names: a verification that passed can be false in the commit it was
+meant to certify. rustfmt reflowed every generated gather expression across several lines. I
+recompiled the reformatted sources and diffed the assembly against what I had measured from:
+
+```
+rustfmt'd vs raw: 6 identical, 0 differ
+w13: matches asm3
+w19: matches asm3
+```
+
+Whitespace, and the claims stand. But they stand because I checked after the hook rather than before
+it, and `verify.sh` regenerates from the committed generators so a later reader gets the same answer
+either way.
 
 ## 8. Bounded coverage, stated as specifically as I can
 
@@ -531,6 +620,10 @@ properties without collapsing.
 of the matrix rows show `?` there, and the `chain-per-element` column is only trustworthy where it
 resolved. The accumulator count is robust and is what I leaned on.
 
+**One optimisation level is degenerate and I could not sweep a second host.** `-Os` cannot
+distinguish the arms at all, for the reason in section 4.1, so the robustness table rests on `-O2`,
+`-O3` and `target-cpu=native`, all on the same machine.
+
 **One reduction, one operation.** Every arm sums. A reduction is the case where the loop-carried
 chain dominates, which is why it exposes this, and it is also the friendliest case for
 accumulator-splitting. A map, a filter, a scatter, or a walk with a loop-carried value that is not
@@ -557,8 +650,8 @@ constants. What would reopen it: a demonstration that the collapse is a defect i
 rather than a property of the shape, or the same sweep on x86-64 coming out flat.
 
 **Fits well: `47`'s result that one richer output suffices if and only if it is a type.**
-`47_wingo_one_richer_output.md:8-11` gets there from six compiled refusals of the value-valued
-spelling. I get to a compatible place from the other end and by a different route: the value-valued
+`47_wingo_one_richer_output.md:120-121` gets there from a value-valued spelling "refused, six times,
+in three syntactic positions". I get to a compatible place from the other end and by a different route: the value-valued
 spelling that *does* compile lowers worse, at half the widths in the matrix. Two independent routes to
 "it has to be a type" is worth more than either, and I derived mine from assembly rather than from
 `47`, though I read `47` first and say so.
@@ -603,14 +696,19 @@ Files, all committed beside this one:
 
 | file | what it is |
 |---|---|
-| `oracle.py` | the five erasure oracles, with each one's blindness stated |
+| `oracle.py` | the five erasure oracles, with each one's blindness stated in the file |
 | `loopshape.py` | loop-carried structure: accumulators, recurrence, induction step |
-| `gen_width_matrix.py`, `run_width_matrix.py` | the rigged two-arm harness, kept because the fold is the finding |
-| `gen_v2.py`, `run_v2.py` | three arms, where the arms are different code |
+| `gen_width_matrix.py`, `run_width_matrix.py` | the rigged two-arm harness, kept because the fold is the finding about it |
+| `gen_v2.py`, `run_v2.py` | three arms, where the arms are genuinely different code |
 | `gen_v3.py`, `run_v3.py` | five arms, adding both attacks |
-| `gen_check3.py`, `check3.rs` | the cross-check that calls the emitted symbols |
+| `gen_check3.py`, `check3.rs` | the cross-check that links and calls the emitted symbols |
 | `gen_access_control.py` | the control that failed, and why it could not have worked |
 | `gen_fixed_gather.py` | the control that separates the gather shape from the width |
-| `robustness.py` | opt levels, element counts and target-cpu |
+| `robustness.py` | optimisation levels, element counts and `target-cpu` |
+| `check_citations.py` | opens every `file:line` this document cites and prints what is there |
 | `repro/`, `asm2_*/`, `asm3/`, `asm_acc/`, `asm_fix/` | emitted assembly for every claim above |
-| `*.out` | the raw output of every run cited |
+| `widths2/`, `widths3/`, `acc_ctl/`, `fixgather/` | the generated sources, regenerable from the generators |
+| `*.out` | the raw output of every run cited, including `citations.out` |
+
+One thing is deliberately not committed: the 405 MB of static archives the calling cross-check links
+against. `verify.sh` builds and deletes them inside step 3.
