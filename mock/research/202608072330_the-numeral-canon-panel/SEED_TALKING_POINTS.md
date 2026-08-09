@@ -293,7 +293,7 @@ The acceptance criterion the current panel's Q1 decomposes is the same sentence 
 under (ratified there at `135b:12-16`, quoted at `SETTLED_container.md:33-37`). Two archive facts bear
 on what "validate" meant in practice there. First, the panel's own reading was operational: "it
 validates (the laws and refusals actually run)" (`SETTLED_container.md:29-31`). Second, a later op
-checkpoint recorded the gate as **met**, "and how it was met matters" (`137b:10-26`, read at `SETTLED_container.md:60-66`), where the
+checkpoint recorded the gate as **met**, "and how it was met matters" (`137b:10-26`, read at `SETTLED_container.md:58-62`), where the
 how-it-was-met was a derived property (the payload-is-one-limb condition) rather than a discipline,
 which op had predicted at `135b:65-68`, per the same sweep passage. Neither fact answers which verb op now means; both are
 context he may want in front of him when he answers. **No position is taken here.**
