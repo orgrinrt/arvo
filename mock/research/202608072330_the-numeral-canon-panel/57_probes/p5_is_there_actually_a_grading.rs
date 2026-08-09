@@ -5,10 +5,18 @@
 //! algebraic strength: a partial order on theories, ordered by which axioms
 //! hold. It is a real and useful classification and it is not a grading. A
 //! grading needs an index set with a COMPOSITION law, so that the index of a
-//! composite is computed from the indices of its parts. A ladder has no such
-//! law: nothing tells you the rung of a composite from the rungs of its
-//! factors, and `p4` section 1 already exhibits a composite whose rung is worse
-//! than both of its factors' would suggest.
+//! composite is computed from the indices of its parts.
+//!
+//! CORRECTION, WRITTEN AFTER THIS PROBE RAN. The sentence that stood here
+//! predicted that the ladder has no such law and pointed at `p4` section 1 for
+//! a composite whose rung is worse than its factors' would suggest. Section 1
+//! below REFUTED that prediction: the meet was respected in all twelve rows,
+//! and in every row the composite's law set equalled the meet of its factors'
+//! exactly. So the ladder was not shown to be non-compositional, and the
+//! honest statement of what section 1 establishes is the weaker one printed in
+//! its own output. The prediction is left visible here rather than edited out,
+//! because a probe whose hypothesis was refuted is more informative with the
+//! hypothesis still attached.
 //!
 //! So this probe asks two things, and they are independent:
 //!
@@ -196,11 +204,18 @@ fn main() {
         saw_composite_strictly_worse
     );
     println!();
-    println!("  Reading: the ladder is at best an UPPER BOUND on a composite's laws.");
-    println!("  Even where the meet holds, nothing computes the composite's rung FROM");
-    println!("  the factors' rungs, because the meet is an inequality and not a law of");
-    println!("  composition. A ladder of algebraic strength is a partial order on");
-    println!("  theories, which is a real classification and is not a grading.");
+    println!("  Reading, stated to match what the rows actually show. The prediction");
+    println!("  this probe was built on was that a composite would fail a law both its");
+    println!("  factors satisfy, which would have killed compositionality outright. It");
+    println!("  did not happen: the meet held in every row, and in every row the");
+    println!("  composite's law set EQUALLED the meet rather than merely containing it.");
+    println!("  So over this matrix the ladder is compositional, which is a stronger");
+    println!("  position than the one it was dispatched to test, arrived at by failing");
+    println!("  to refute it. That is one instrument over twelve configurations of one");
+    println!("  factorisation, and it is first-read. What it does NOT establish is that");
+    println!("  the meet is the composition law in general: a lattice meet is defined on");
+    println!("  law sets whatever the operations are, so agreeing with it here is");
+    println!("  consistent with there being no relation at all in a case not measured.");
 
     println!();
     println!("=== 2a. is the additive width rule a monoid operation ===");

@@ -22,18 +22,11 @@
   meet respected in every row: true
   a composite strictly worse than one of its factors on distributivity: true
 
-  Reading, stated to match what the rows actually show. The prediction
-  this probe was built on was that a composite would fail a law both its
-  factors satisfy, which would have killed compositionality outright. It
-  did not happen: the meet held in every row, and in every row the
-  composite's law set EQUALLED the meet rather than merely containing it.
-  So over this matrix the ladder is compositional, which is a stronger
-  position than the one it was dispatched to test, arrived at by failing
-  to refute it. That is one instrument over twelve configurations of one
-  factorisation, and it is first-read. What it does NOT establish is that
-  the meet is the composition law in general: a lattice meet is defined on
-  law sets whatever the operations are, so agreeing with it here is
-  consistent with there being no relation at all in a case not measured.
+  Reading: the ladder is at best an UPPER BOUND on a composite's laws.
+  Even where the meet holds, nothing computes the composite's rung FROM
+  the factors' rungs, because the meet is an inequality and not a law of
+  composition. A ladder of algebraic strength is a partial order on
+  theories, which is a real classification and is not a grading.
 
 === 2a. is the additive width rule a monoid operation ===
 
