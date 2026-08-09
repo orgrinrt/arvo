@@ -1255,6 +1255,39 @@ bounds-check failure paths and the largest body of any arm. One clamp at the loo
 zero. That is the typestate holding at the type level and not reaching the backend, which is the
 microkernelling shape the workspace already names.
 
+> **CAUTION on the absorption result, from `59`, and it lands on the dispatching agent's own entry.**
+> The identification of absorption with the coherence law is **argued in one paragraph and never
+> measured**, and three files now rest on it. The two instruments are not the same: `56`'s reduces
+> **both** arguments over the ambient window, while `57`'s reduces **only the left** and draws its second
+> operand from a box that is not inside the representable set. `57`'s bridging step assumes the second
+> operand is already representable, which its own sweep does not enforce. **Measuring absorption against
+> coherence is the cheapest outstanding item in this unit by a distance**, and until it is done the
+> identification is a conjecture with three dependents.
+>
+> **And the "4248 configurations" figure is mostly not numerals.** The format-shaped count anywhere in
+> unit two is **100**. State what a count counts.
+>
+> **`57`'s refutation of `42` is real and was overstated twice.** `42` published the refuting row itself
+> and its own probe names the surviving hypothesis, so `57` correctly calls the defect a vocabulary slip
+> and then leads with a much larger headline. **The dispatching agent's brief compressed it further**,
+> dropping both the slip framing and the fact that `42` refuted itself. That is the fourth time in this
+> panel the agent has amplified a claim past its author's own framing.
+>
+> **The fraction result reaches further than `58` took it.** Of the unit's probe sources, most carry no
+> scale token at all. In particular `35_probes/p3`, which carries the reduction-order divergence table,
+> is same-scale additive, so **that table is fraction-independent rather than awaiting a fractional
+> check**.
+>
+> **But it rests on a premise no file in the unit read.** Q3, whether a mixed-numeral addition exists,
+> is open, and under its second option addition aligns scales, alignment is a shift, and a shift is
+> exactly the coarsening that kills multiplication. **The unit's one unconditional result is conditional
+> on an open register question**, and none of the five files cites Q3.
+>
+> **Against arvo's real domain**, the cells stand as: unsigned addition good at every fraction width;
+> unsigned multiplication at nonzero fraction dead; signed addition 70.1 percent divergent; and **signed
+> multiplication at nonzero fraction entirely unmeasured**, which is the cell the default strategy would
+> occupy.
+
 ## Q17. Where does the fraction boundary fall, and which results are integer-only?
 
 **Added from `58`, unit two, and it splits the unit's strongest candidate in two.** Arvo is a
