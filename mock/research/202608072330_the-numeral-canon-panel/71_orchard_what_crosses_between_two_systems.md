@@ -258,8 +258,17 @@ things at once: it tells a consumer which coordinates they must agree on for a c
 anything, and it tells an implementer which coordinates decide whether the crossing is free.
 
 It also gives the "what must be exposed" question a bounded answer instead of an open list. The
-exposure is prefix 3, on both sides. Nothing at indices 4 and 5 is owed for the crossing to be
-well defined, and nothing outside the telescope is owed at all.
+exposure is prefix 3, on both sides, and nothing outside the telescope is owed at all.
+
+**One correction to that, forced by my own later probe and stated rather than smoothed away.**
+An earlier draft of this section said nothing at indices 4 and 5 is owed for a crossing to be
+well defined. `p8` refutes it. Where either encoding is redundant, the pattern relation is not a
+function and the crossing is well defined only once a section is named (section 2). So the
+correct statement has two clauses and the second is narrow: **prefix 3 on both sides decides what
+a crossing computes on values, and where an encoding is redundant a named section is additionally
+owed before the crossing is a function on patterns.** Indices 4 and 5 still cannot change what a
+crossing computes, which is what `p1`'s two 256 of 256 rows say; what they can do is leave it
+undetermined at the pattern level, which is a different failure from computing something else.
 
 **And one dependency nobody has stated.** Deciding clause 2, whether the source's set is
 contained in the target's, is exactly the inclusion predicate of `OPTIONS.md` Q10
@@ -665,8 +674,9 @@ every other sentence here is scoped by it.
 
 **X3, what a system exposes.** *A system exposes, for the purpose of crossing, exactly its
 ambient domain, its representable set, and its selected reduction with that reduction's two law
-verdicts. It owes nothing else, and a system that cannot exhibit those three cannot be crossed
-into and composes with nothing.* Permanence: passes. Equivalence: passes. Rests on: sections 3
+verdicts. Those three decide what a crossing computes on values. A redundant encoding owes one
+thing more, a named section, without which the crossing is not a function on patterns. A system
+that cannot exhibit the three cannot be crossed into and composes with nothing.* Permanence: passes. Equivalence: passes. Rests on: sections 3
 and 7, and I11 for the composition clause. ONE EXPERT, and it coincides with the admission
 contract `65` section 7 and `63` section 7 reach by other routes, which is worth saying and is
 not corroboration, since I read both.
