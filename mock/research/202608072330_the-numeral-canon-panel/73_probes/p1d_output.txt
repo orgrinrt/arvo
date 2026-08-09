@@ -1,0 +1,47 @@
+================================================================================================
+p1d. admission clauses against every shape, honest and collapsed
+================================================================================================
+
+declaration                  total  retract   monotone  coherent  amb-assoc | IND-ASSOC
+---------------------------------------------------------------------------------------
+i4 saturate                  True   True      True      False     True      | False    
+i4 wrap                      True   True      False     True      True      | True     
+u4 saturate                  True   True      True      True      True      | True     
+u4 wrap                      True   True      False     True      True      | True     
+gf(2)^4 xor                  True   True      True      True      True      | True     
+u4 constant zero             True   False     True      True      True      | True     
+i4 opposite bound            True   True      False     False     True      | False    
+i4 parity scramble           True   False     False     False     True      | False    
+i4 saturate [collapsed]      True   True      True      True      False     | False    
+i4 wrap [collapsed]          True   True      True      True      True      | True     
+u4 saturate [collapsed]      True   True      True      True      True      | True     
+u4 wrap [collapsed]          True   True      True      True      True      | True     
+gf(2)^4 xor [collapsed]      True   True      True      True      True      | True     
+u4 constant zero [collapsed] True   True      True      True      True      | True     
+i4 opposite bound [collapsed] True   True      True      True      False     | False    
+i4 parity scramble [collapsed] True   True      True      True      False     | False    
+
+------------------------------------------------------------------------------------------------
+ASSERTIONS
+------------------------------------------------------------------------------------------------
+  ok  H1a: a reduction adapting every value to zero passes BOTH proposed
+           verdicts (monotone, coherent) and fails the retraction clause
+  ok  H1b: and a shape exists that passes retraction and fails the verdicts
+           (`56`'s opposite-bound mutant), so the clause is independent
+
+  ok  H2: induced associativity == (ambient associativity AND coherence)
+          in 16 of 16 cells, with both sides observed true and false
+  ok  neither conjunct alone predicts it: ambient-only disagrees on 3 rows,
+      coherence-only disagrees on 3 rows
+  ok  every collapsed row is coherent; 5 keep ambient associativity and 3
+      lose it, so the collapse is a laundering only where the induced
+      algebra was already broken. Kept: i4 wrap, u4 saturate, u4 wrap, gf(2)^4 xor, u4 constant zero
+
+READING. The exposure list needs one item it does not have: the ambient
+domain's OWN law inventory. With it, a collapsed declaration is harmless,
+because it reports its ambient's laws honestly and the conjunction returns
+the right answer. Without it, a reduction's verdicts are a fact about which
+ambient domain was named. And the list needs the retraction clause, which
+neither verdict implies and which is what excludes a numeral that computes
+nothing while satisfying every law asked of it.
+EXIT=0
