@@ -13,8 +13,13 @@ member files to use it. It is a **canon candidate, not canon**: op's explore-do-
 in force, nothing here ratifies anything, and this file goes to op. Where the unit disagreed, the
 disagreement is stated with what would settle it. Every claim carries its rung, and the rungs below
 were re-derived from the member files rather than inherited from any account of them, because this
-unit's rung was inflated twice before this file was written, once by a member (`44:380-383` against
-its own report at `44:72-79`) and once by a dispatching brief (`48:49-79`).
+unit's rung has been inflated three times: twice before this file was written, once by a member
+(`44:380-383` against its own report at `44:72-79`) and once by a dispatching brief (`48:49-79`),
+and a third time downstream of it, in the register entry written from `52`, which carried the
+unit's convergence as "three authors, three methods, one destination" while dropping `52`'s own
+hedge that this was the part of its verdict most likely to move (`52:402-408`). The third was
+found by `54`'s entailment check and acknowledged by the dispatching agent; this file's section
+4.2 quotes the hedge rather than dropping it, and `54` confirmed that treatment.
 
 A note on my own position. I wrote `17` in this panel. Two artifacts of mine are load-bearing in
 this unit: `17_probes/t2_aggregate_erasure.rs`, which `51` found after a brief claimed no such arm
@@ -445,9 +450,13 @@ the acceptance criterion's "erase on lowering". Status: a design commitment awai
 **S2, the ownership clause.** *The derivation is where a strategy's rules are applied, once. Its
 result carries every fact whose production applies a rule the strategy owns; a fact that is a pure
 function of what every site already holds is recomputed at the site, not carried.* Permanence:
-passes. Equivalence: the strongest evidence in the unit is exactly an equivalence trial, one
-implementer deriving the clause cold and converging with the panel's formalisation (`49`, `50`).
-Rests on: section 4.2's provenance, honestly disaggregated. The known boundary: a strategy
+passes. Equivalence: **provisionally passes.** The unit's best evidence is exactly an equivalence
+trial, one implementer deriving the clause cold and converging with the panel's formalisation
+(`49`, `50`), but the base is one cold derivation, one in-file precedent, one formalisation and
+one second read, which sits below the workspace's preference for three independent instances, and
+independence counts as much as the count. The verdict firms up only when a third independent
+instance exists, and S2 is the sentence most likely to be built on, so the provisional marking is
+load-bearing rather than a hedge. Rests on: section 4.2's provenance, honestly disaggregated. The known boundary: a strategy
 introducing a new question rather than a new answer changes the schema, and the clause's
 decidability there is open.
 
@@ -531,6 +540,25 @@ quotable and least checked numbers in the unit (`48:574-576`, `50:801-802`, and 
 Attack the kind boundary's shared assumption through `10`'s bridge. And the `21`-style entailment
 audit of `OPTIONS.md` against its sources, named as valuable at `44:447-451` and still not run.
 
+**And one connection several members named and none verified, carried here so its omission cannot
+be read as a rejection: `35`'s fold-accumulator reach. UNVERIFIED.** An earlier draft of this
+consolidation dropped it entirely; `54`'s entailment check restored it. What `35` established, per
+the register's Q11 entry (phrases verified by grep, per my brief): "a fold's accumulator is
+loop-carried, so it has one type, and a widening" operation gives it another, with the refusals
+locating the boundary at the runtime trip count, and the escape being capacity as a type, from
+which "the accumulator is derivable as the width plus the log of the capacity, compiled gate-free"
+(`35_probes/p7`, `p8`). The members' connections to this topic, each declined by its own author:
+`45:425-430` reads the accumulator's width as a further instance of the compute-needs pattern
+behind S6 and explicitly does not claim the mechanisms unify, deferring to `35`'s own refusal to;
+`47:469-472` places the reach on the type side of the kind boundary and says at `47:547-549` that
+it did not check; `50:701-704` hands it the ownership clause as a test and names the connection
+rather than claiming it. `44:333-346` additionally carries `43`'s compiled result that the fold
+accumulator reach is grid-invariant, relied on by `45:527` without opening `43`. **Nobody in this
+unit opened `35`.** The open question is precise: is the accumulator relation a further fact the
+ownership clause selects (a rule some strategy owns), or the composition's own fact that merely
+consults the numeral? It is exactly the class of case S2's known boundary needs, and settling it
+requires reading `35` and applying the clause, which no dispatch has done.
+
 **This file's own check.** Per `RULES.md:309-319`, the entailment check on this consolidation is
 run by someone who did not write it, from the member files forward, counting and diffing the
 citation sets on both sides. I have deliberately kept every `file:line` I rely on in the body
@@ -540,9 +568,11 @@ sentence.
 ## 10. Process record, for the audit trail
 
 Kept short because the member files carry the detail, and recorded because each item changed how
-this unit's claims should be read. The rung was inflated twice by restatement, once inside a
-member's own summary section and once in a dispatching brief, and the honest rung had to be
-re-derived from the files both times (`48` section 1; this file section 3.1). The register
+this unit's claims should be read. The rung was inflated three times by restatement, once inside a
+member's own summary section, once in a dispatching brief, and once, downstream of this file, in
+the register entry written from `52`, which dropped the hedge its source attached; the honest
+rung had to be re-derived from the files each time (`48` section 1; this file sections 3.1 and
+4.2; the third instance found by `54`'s check and acknowledged by the dispatching agent). The register
 absorbed corrections mid-unit, before their second reads, and a document in "what is fixed" was
 edited while two frozen files' greps of it stood, converting two honest citations into apparent
 falsehoods until the brief gained its explanatory note (`46:41-48`, `48:264-287`,
