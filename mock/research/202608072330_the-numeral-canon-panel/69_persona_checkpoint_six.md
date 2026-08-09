@@ -202,3 +202,26 @@ questions rather than one.
 
 And `72` refuted its own biconditional with its own probe, keeping it with a closed form for the fourteen
 exceptions.
+
+
+## A third miscitation, traced to its vector, with the arithmetic checked
+
+`73` reports that `66:455-457` attributes **952** associativity failures to signed saturating
+**multiplication**. Traced by the coordinator:
+
+- `62_carmack_the_signed_cell.md:73` measures signed two's-complement saturating **multiplication**
+  failing associativity at **28, 160, 780 and 3516** triples for widths 3, 4, 5 and 6. So multiplication
+  at width 4 is **160**, not 952.
+- The **952** is a different measurement entirely, from `55b:94-101` and `55_probes/p4`, over Q itself,
+  and it is **addition**.
+- `63:230` cites the 952 **without naming the operation**. That is the vector: `66` read the unnamed
+  number in the consolidation and supplied the wrong operation when restating it.
+
+**The panel's headline signed result is unaffected and stands as measured.** `62:91` records that under a
+symmetric clamp the same sweep measures multiplicative associativity at **exactly zero failures at every
+width**. That result was Carmack's, on multiplication, and is not the number `66` misattributed.
+
+The lesson is about the consolidation rather than about `66`: **a number cited without its operation is a
+number waiting to be attached to the wrong one.** A consolidation that drops the operand of a measurement
+has removed exactly the field a later reader needs and cannot recover. `63:230` should name it, and any
+consolidation carrying a count should carry what was counted.
