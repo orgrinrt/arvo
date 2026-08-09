@@ -383,9 +383,12 @@ each of them "are you a number system" gets "no" and throws away the answer that
 **Each of them is a choice at a coordinate of the same chain**, and the telescope already names
 which:
 
-- Gray code, two's complement, offset binary, signed-digit: **coordinate 4**, the encoding.
-  `71`'s p1 index-4 row says a change there preserves the value-level operation at 256 of 256 and
-  destroys the pattern-level one at 0 of 256.
+- Gray code, two's complement, offset binary, signed-digit: **coordinate 4**, the encoding. A
+  change there preserves the value-level operation and destroys the pattern-level one, which is
+  `71`'s p1 index-4 row. **Cited as `72` section 2 requires rather than as `71` presented it:** the
+  value half of that row is true by construction and not a measurement, since the system's own
+  operation reads no coordinate past the third, and `72_probes/p1` demonstrates it by mutation. The
+  pattern half is a measurement, and `72`'s own table is the better one for it.
 - `Cold`'s stride, alignment, a wider housing: **coordinate 5**, the container, with `70`'s
   ownership key set to the aggregate.
 - Wrapping against saturating over one window: **coordinate 3**.
@@ -426,7 +429,7 @@ applied to this question: a sentence beginning "every number system" means somet
 under each cut, and the location procedure makes the cut explicit at the point of admission rather
 than leaving it to be inferred.
 
-## 8. Q20, and one asymmetry between the two tests that nobody has stated
+## 8. Q20, and the bound the membership test actually carries
 
 **The inventory is open, and the openness costs nothing, because both tests are non-enumerating.**
 The membership test is a location on a five-coordinate chain plus the corrected exposure list of
@@ -435,8 +438,8 @@ by name, so the canon can say what it covers without listing what it covers, whi
 `OPTIONS.md:1608-1609` asks for as the thing that would distinguish the open reading from the
 closed one.
 
-**The asymmetry, which I have not seen stated anywhere.** The two tests are not decidable in the
-same sense, and the difference is not a detail.
+**An asymmetry I have not seen stated anywhere, which I then had to narrow.** The two tests are
+not decidable in the same sense. The first form of this, before I attacked it, was:
 
 - **Hosting is decidable at any width.** "Is the ingest predicate writable as a pure function of
   (type parameters, bits)" is a typing question. The compiler answers it, at real widths, with no
@@ -448,13 +451,13 @@ same sense, and the difference is not a detail.
   through `68:211` re-established inside this panel that rustc refuses the 9-bit exhaustive const
   check under `deny(long_running_const_eval)`.
 
-So **the membership test inherits the transfer proviso and the hosting test does not.** A canon
-sentence saying "a system is a member when it exhibits the following" is, at real widths, a
-sentence whose antecedent is assumed uniform rather than checked, and `DROPLIST.md`'s two-mechanism
-entry already carries a compiled counterexample of a property true at eight bits and false at nine
-with no forbidden feature. That says which of the two tests belongs on `68` section 3's
-trusted-base list, and it is the mathematical one, which is the opposite of where instinct puts
-it.
+which gave the draft conclusion that **the membership test inherits the transfer proviso and the
+hosting test does not.** A canon sentence saying "a system is a member when it exhibits the
+following" would then be, at real widths, a sentence whose antecedent is assumed uniform rather
+than checked, and `DROPLIST.md`'s two-mechanism entry already carries a compiled counterexample of
+a property true at eight bits and false at nine with no forbidden feature. That would put the
+mathematical test on `68` section 3's trusted-base list, which is the opposite of where instinct
+puts it.
 
 **And then I attacked it, because a reported asymmetry is not a deliverable, and it is narrower
 than it reads.** The ceiling is a property of a verdict rather than of the test. `63` C6
