@@ -1,0 +1,33 @@
+==========================================================================================
+INDEX 2, THE WIDENING CROSSING: value level against pattern level
+Convention: each side's pattern operation is addition modulo its own container width.
+==========================================================================================
+encoding            policy      VALUE ops       PATTERN ops     levels agree
+twos_complement     wrap        192/256         192/256         yes
+twos_complement     saturate    192/256         192/256         yes
+excess_K            wrap        192/256         0/256           NO
+excess_K            saturate    192/256         0/256           NO
+
+READING
+------------------------------------------------------------------------------------------
+  The blank cell has a value: 192/256 under two's complement, 0/256 under
+  excess-K, and it is the same under either policy in both encodings.
+
+  PART (c) OF THE PREDICTION IS REFUTED, and this is why the cell was worth filling.
+  The pattern-level number is IDENTICAL across wrap and saturate for a fixed encoding,
+  asserted above rather than eyeballed. The container's own operation is modular
+  addition whatever the type says, so the pattern level CANNOT SEE THE REDUCTION.
+
+  That is the same fact p1's index-3 row reports from the other side: restrategising
+  preserves the pattern-level operation at 256/256 precisely because the pattern level
+  is blind to the coordinate being moved. Two instruments, one structural fact.
+
+  PARTS (a) AND (b) HELD. Under two's complement the levels coincide at 192/256
+  against 192/256; under excess-K they part at 192/256 against 0/256.
+  Nothing about the crossing changed between those two rows. The ENCODING did, and the
+  encoding is a coordinate this crossing does not move.
+
+  So the correction to p1's table is not one number. The PATTERN column is not
+  determined by the index at all: it is determined by the coordinates both sides carry,
+  and it is blind to the reduction. p1's table read as though the index fixed both
+  columns, and it fixes only the first.
