@@ -1255,6 +1255,41 @@ bounds-check failure paths and the largest body of any arm. One clamp at the loo
 zero. That is the typestate holding at the type level and not reaching the backend, which is the
 microkernelling shape the workspace already names.
 
+## Q17. Where does the fraction boundary fall, and which results are integer-only?
+
+**Added from `58`, unit two, and it splits the unit's strongest candidate in two.** Arvo is a
+fixed-point substrate; almost everything unit two measured was at zero fraction width, which is
+integers.
+
+**The additive half needs no boundary at all, and is stronger than it was claimed to be.** The addition
+used in `57_probes/p3` and `55_probes/p4` never reads the scale parameter: addition never rescales, at
+any fraction width. So the absorption result for addition is **unconditional**, rather than merely swept
+clean at three widths as its author reported.
+
+**The multiplicative half was tested entirely at zero fraction, and nobody noticed.**
+`57_probes/p2`'s multiply is bare `a * b` with no rescale, and `55_probes/p4` has the identical gap.
+Verified directly: the same file's `p3` does use `(a * b) / scale`, so this is specific to the probes
+carrying the theorem rather than a habit.
+
+**And `58` argues the gap is not fixable in that form.** No fixed-width eager multiply at nonzero
+fraction can supply the exactly-associative ambient operation the sufficiency proof needs, because
+rescaling is baked into every pairwise step rather than being optional. Hand-checked witness at F=2 with
+operands 3, 5, 7. It also finds `57`'s "clamp only" ablation arm is zero-fraction relabelled rather than
+a genuine ablation, since its branch never reads the scale, and that no such ablation is definable
+because coarsening **is** what nonzero-fraction multiplication does.
+
+**A measurement nobody had taken.** The multiplicative fold's accumulator saves exactly one rescale's
+width below full precision, constant in fold length, and needs the rest regardless of chain length:
+**linear growth with no closed form**, against addition's logarithmic width-plus-log-of-capacity. That
+directly undercuts Q11's accumulator-derivation option as an **additive-only** mechanism, and bears on
+op's stated intent that the accuracy strategy holds within chains.
+
+**And rounding mode is not the lever.** Round-to-nearest against truncation changes violation
+**magnitude** and never **existence**, which answers a question `57` had flagged as open.
+
+`58`'s first run carried a real bug that turned out to reveal a second independent additive mechanism,
+kept on disk beside the corrected run.
+
 ## Questions with live options that op has not been asked
 
 Kept separate because the eight (now nine, with Q9 above) carry his direction where he has spoken and
