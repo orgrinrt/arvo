@@ -42,20 +42,29 @@ recorded human decision. Presume it wrong where it conflicts with op,
 and treat agreement between two unratified files as shared drift rather
 than corroboration.
 
-## What survives the redesign
+## Long-standing constraints, and their provenance, which is not what it looks like
 
-These hold regardless of what shape the canon settles on, because they
-are op's intents rather than consequences of the old layout:
+These have governed arvo since before the canon work and are operative discipline now:
 
 - `#![no_std]` everywhere. No `alloc`, no `Vec`, no `String`, no `Box`.
-- Sizes are const. No runtime growth: no `.push(`, `.resize(`,
-  `.extend(`.
-- Monomorphisation is the dispatch. No `dyn`, no `TypeId`, no
-  `std::any`.
-- No platform dependency: no `std::thread`, `std::time`, `std::fs`,
-  `std::net`.
+- Sizes are const. No runtime growth: no `.push(`, `.resize(`, `.extend(`.
+- Monomorphisation is the dispatch. No `dyn`, no `TypeId`, no `std::any`.
+- No platform dependency: no `std::thread`, `std::time`, `std::fs`, `std::net`.
 - Public API positions use the stack's own primitives rather than bare
   `u8`..`u128` / `i8`..`i128` / `f32` / `f64` / `bool` / `usize`.
+
+**None of them appears in `INTENTS.md`**, which holds op's ratified intents I1 through I12. They are
+asserted in agent-authored places: the workspace rules, and this file's own predecessor. An earlier
+version of this section called them op's intents. That was wrong, and it was written during the very
+edit that was fixing this file for the same class of error.
+
+Follow them. They are long-standing and nothing has overturned them. But do not cite them as ratified,
+do not build a canon sentence on them without saying where they actually come from, and treat any
+argument that depends on one of them as resting on unratified ground until op says otherwise.
+
+This is load-bearing right now rather than pedantic: the erasure half of op's acceptance criterion is
+argued, across several panel files, from the absence of `dyn` and `TypeId`. That argument is only as
+settled as the constraint under it.
 
 ## What is open, including things that used to read as settled
 
