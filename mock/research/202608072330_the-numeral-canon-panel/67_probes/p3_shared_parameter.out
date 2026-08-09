@@ -1,8 +1,8 @@
 p3. shared parameters over a run: two shapes, one decidable test
 ========================================================================
 
-TEST (from `63` C2): "the representable set is a constant of the type;
- a value set that depends on other data is not a format but storage."
+TEST (from `63` C2): "the representable set is a constant of the type: a value
+ set that depends on other data is not a format but storage."
 
 CASE A: block floating point. 4-bit mantissa per element, one 3-bit
         exponent shared by the block. value(m) = m * 2^(e-3).

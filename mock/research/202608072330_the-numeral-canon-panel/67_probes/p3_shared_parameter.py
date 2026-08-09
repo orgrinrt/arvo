@@ -51,8 +51,8 @@ def say(s=""):
 say("p3. shared parameters over a run: two shapes, one decidable test")
 say("=" * 72)
 say()
-say('TEST (from `63` C2): "the representable set is a constant of the type;')
-say(' a value set that depends on other data is not a format but storage."')
+say('TEST (from `63` C2): "the representable set is a constant of the type: a value')
+say(' set that depends on other data is not a format but storage."')
 
 # ---------------------------------------------------------------------------
 # Case A: block floating point. 4-bit unsigned mantissa, one 3-bit exponent
