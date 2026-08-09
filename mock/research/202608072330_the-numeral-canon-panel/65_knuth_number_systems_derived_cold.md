@@ -545,3 +545,244 @@ consolidation, not as settlements.
    pipeline claim stands on width-as-marker. Whether the canon should even speak of
    arbitrary-const-width demands, or leave width families to design, interacts with the
    forbidden-features boundary and deserves its own evidence.
+
+---
+
+# Phase two: reconciliation against the panel
+
+Written after phase one's commit (`4c4353a1`), reading the panel for the first time. Phase one
+above is untouched; where it is wrong, the correction is here and only here.
+
+**Reading order and coverage, stated per the panel's convention.** Read end to end: `63` (the
+format-concept consolidation, both pages), `53` (the container-derivation consolidation), `66`
+(the parallel cold derivation on this same question, phase one; its phase two is a stub at this
+writing), `OPTIONS.md` Q1 through Q17 plus the unasked-questions section and the wrapping entry,
+the droplist's panel-closed section, `08`'s verdict and gates (my own persona's earlier file), and
+`55`'s section 3c at the source. Read by grep for specific claims: the `m * r^q` scoping theorem's
+carriers, the tropical entry in `DROPLIST.md`, and the absence of any prior report on the stale
+agent instructions. Not read: the remaining member files; every statement below about `55` through
+`62` is sourced to `63` and marked so, and if `63` misread a member, the corresponding row here
+inherits the error. I re-ran no panel instrument; `63` section 1 reports all thirty-two of unit
+two's re-run byte-identically and I rely on that report.
+
+**Independence bookkeeping for this file and `66`.** Both cold derivations answer the same
+dispatch from the same premises. Mine committed at `4c4353a1`, `66`'s phase one at `4a856b0c`,
+after mine; neither read the other (both blind by protocol, ordering checkable in the history, the
+same verification `63` section 1 ran for `55` and `60`). So where we agree, that is two
+independent instruments over one shared premise set: worth more than a read, less than two
+arrivals from nothing, the same discount `63` applies to `55`/`60`'s shared literature. I apply it
+to every agreement claimed below.
+
+## 1. Where the panel and phase one converge, rung by rung
+
+**The three-level split is the panel's split, in different words, and now has three independent
+arrivals.** My system / representation / format triple, `66`'s five-level hierarchy (number,
+system, scheme, format, container), and unit two's identity-and-realisation decomposition
+(`63` sections 3.2, 3.5) cut the same space. The mapping, stated so a consolidator can merge
+rather than adjudicate:
+
+| this file | `66` | unit two (`63`) |
+|---|---|---|
+| carrier + operations + laws + correctness | number system (levels 1-2) | ambient domain D + selected adaptation + law layer |
+| representation (validity, canonicity, coverage, cost) | scheme (level 3) | representable set Q + encoding E |
+| format (pinned to container) | format + container (levels 4-5) | realisation onto the container |
+
+The cuts are not identical and section 2 below carries the one real difference. But the shared
+content is now at the strongest rung anything in this question holds: the number/numeral
+distinction, the strategy attaching at the correctness relation (my candidate 3, `66`'s identity
+result, C4's I9 attachment), and the derive/validate/erase pipeline being expressible gate-free on
+the pin (my probe, `66`'s `derive_validate_erase_pipeline.rs`, and the unit's five builds listed
+at `53` section 8) all have at least two blind instruments plus the unit's converged text.
+
+**"The format does not determine the system" survives and sharpens.** My probe's same-numeral
+three-policy result is the small edition of what the unit measured at scale: `55_probes/p4`'s
+induced-algebra ladder and `56_probes/q1`'s four inhabited law-role cells (both per `63` section
+3.4). My specific cells reproduce theirs: signed saturating addition non-associative (my pinned
+witness; their 952 divergent triples at w = 4), unsigned saturating addition associative (their
+commutative-monoid row), wrapping associative (their ring row at F = 0). And my "the law outcome
+flips with the window's signedness alone" is a special case of `57b`'s closed form as `63` section
+4.2 states it: additive congruence iff the range is sign-confined. A blind third instrument
+agreeing with a measured theorem-shaped result is exactly what that result wanted; I claim no more
+for it than that.
+
+**Role-keyed plural representations converge from three directions.** My storage/compute/
+interchange roles, `66`'s working-against-storage representation split, and the container
+derivation's own outputs: S3's per-value and per-aggregate questions, and S6's contingent
+compute-form fact ("a strategy entitled to diverge what an operation computes in from what a value
+occupies at rest forces a further carried fact", `53` section 7). S6 is my compute role arriving
+from the derivation side. The convergence matters for op's `Precise` question in `53` section 3.4:
+my phase-one reading of I7 (the chain has its own compute representation, distinct from the
+endpoints' storage representation) is the same reading `60`'s window mechanism formalises (`63`
+section 5), and it lands on the same open op question: does the wide product get carried between
+operations, and does `Precise` pay its I2 price at rest.
+
+**The chain material.** My section 4's paragraph on expression extents is `60`'s derivation in
+miniature, and theirs is far deeper (schedules as part of the function's meaning, the exactness
+grades, the window with derivable capacity, the statability argument that a concept closing its
+ops over the format cannot express I7 at all). Nothing in my paragraph adds to C9; I fold mine
+into it and note that my phase one, blind, landed on the D-B direction's content without
+considering D-A or D-C, which slightly strengthens D-B's claim to be the natural reading and
+proves nothing about the other two, which remain live per `63` section 5.
+
+**Laws as compile-time contract.** My marker-trait probe (with the committed E0277) is a third
+instance beside `35_probes/p7` and `42_probes/p2` (per Q11's "both" option), and Q11's second
+option ("the numeral names its algebraic structure") is my candidate 11 already in the register.
+The droplist's tropical entry (`35`'s interior-wrapping min-plus failure at 12.6% of 622M
+instances) is a measured instance of my section 9 claim that algorithms bound on laws rather than
+types, made before I read it.
+
+## 2. The one substantive difference, located precisely
+
+My phase-one definition folds the correctness relation into the system's identity: wrap and
+saturate over one window are two systems. Unit two's converged position (C2, argued by attack and
+concession per `63` section 3.2) puts adaptation choice outside identity: a format is (D, Q), the
+adaptation space is derived, and a strategy selects a member per operation. `66` hit the identical
+fork blind and carried it open (its first carried-forward item: shape alone, or shape jointly with
+strategy).
+
+Having now read the unit's argument, I think the difference is **mostly nominal and worth one
+sentence of care rather than a fight**. Every arvo type carries its strategy, so on *type*
+identity the two cuts agree; they differ on which layer the word "format" (or "system") names.
+The unit's cut earns its keep at Q10 (format equality decided on (D, Q), with the wrapping
+sections' observational-equivalence argument behind it), and mine earns its keep at the law layer
+(the induced algebra is a property of the pair, format plus selected member, which is what an
+algorithm's bound actually consumes). Both facts survive under either vocabulary. What I would
+change in phase one: state the definition as the pair explicitly, "a number system in this file's
+sense is a format together with a selected adaptation member per operation", which makes it a
+*view* over the unit's decomposition rather than a rival to it. The fork `66` and I both carried
+then dissolves into vocabulary, except for one residue that is genuinely op's: whether the
+canon's own word "numeral" names the (D, Q) identity or the pair. That is a naming call, it is
+cheap, and it belongs on the pile with `53` section 9's "are the criterion's nouns canon
+vocabulary" question.
+
+Second correction of the same kind: my phase-one candidate 2 says the law inventory is
+"declared". The unit's H1/H2 frame (`63` section 4.2) derives it: congruence verdicts per
+operation, computed from range geometry, with the twenty-four-cell prediction at zero residue. A
+derived inventory is strictly better than a declared one, for exactly the reason my own candidate
+11 wanted validation to be computation. C6 supersedes my candidate 2's "declares" verb; the rest
+of the candidate (an inventory owing bounded failures, not a textbook structure) survives intact.
+
+Third, a scope correction my phase one could not have known: my candidate 7 ("redundancy is
+forbidden at rest") would foreclose the register's open redundant-encoding question (`63` section
+3.5: redundant encodings are wholly unexamined and could conceivably buy raw order and the raw
+adder together, the hole `59`'s untested theorem sketch would close). Weaken it to a default: at
+rest and at interchange, canonical unless a stated normalisation and equality discipline is
+supplied. The compute-role half of the candidate stands and gains the unit's own pullback
+mechanism as company.
+
+## 3. Where the scoping theorem meets my open ring
+
+The panel carries a theorem my premises did not contain: every arvo value is `m * r^q` (TWO
+EXPERTS in the predecessor record, carried but flagged unrederived by `63` section 3.6). That
+boundary sorts my phase-one section 6 cleanly, and mostly into homes that already exist:
+
+- **RNS**: inside by value set, per `08`'s own classifier (an integer interval; only the datum map
+  differs). My phase-one filing of it as a compute-role representation of Z/M is compatible and,
+  I would now say, the correct slot: the scoping theorem constrains carriers, not compute-role
+  encodings. The wrap-is-single-modulus-RNS unification survives untouched.
+- **Carry-save, signed-digit, mixed radix**: same, inside by value set, encoding-axis citizens,
+  which is where my phase one put them (compute role). `08` and my phase one agree from opposite
+  directions: it classified them by value set; I filed them by role.
+- **LNS**: genuinely outside `m * r^q`, which `08` measured (8 of 64 rational). My open-ring entry
+  stands but its admission cost is now concrete: it is not a new format, it is an amendment to a
+  carried theorem, which is op-tier and should be priced as such.
+- **Stored-pair rationals, intervals, error-carrying pairs**: the panel files them as compositions
+  over formats, not format instances (`55` section 3c, read at source; uncontested through seven
+  files per `63` section 3.6). That answers my carried open question 1 (set-valued carriers)
+  better than either of my phase-one alternatives: the concept stays small, the molecules get a
+  home, and the composition layer owes its own laws. I adopt that filing and withdraw my open
+  question 1 in its phase-one form; what remains of it is Q4's measured fourth option, already
+  priced (order lost, 42.05% comparability at `U<2,2>`, per the register), and Q16's word for
+  sense two.
+- **Decimal**: my "container radix is a premise, representation radix a parameter" matches the
+  concept's radix parameter (the slot function is per-radix; `55` section 3c's arbitrary-rational
+  quantum widening covers currency-style scales). Nothing to change.
+- **Posits**: already classified inside the general concept and outside every named shape
+  (`08`), stronger than my open-ring entry; mine defers to it.
+- **Factoradic, combinadic, Gray, and packing-as-mixed-radix**: nowhere in the panel. These
+  survive as this file's contribution; see section 5.
+
+## 4. On `66`, plainly, per the standing instruction
+
+`66`'s phase one is good work and its convergence with mine is the real kind. One defect must be
+named without softening, because it is the exact failure the mutation order exists to prevent:
+`66:60-68` uses arvo's `.claude/CLAUDE.md` crate table (`Bits` in `arvo-storage`, `UFixed` over
+it) as a "genuine cross-check" that its five-level hierarchy "predicts the layering the existing
+crate table already describes". That crate table describes the nuked tree. It is a design-tier
+document for code that was deleted precisely so canon work would not consult it
+(`mock/Cargo.toml`'s own header; `canon-design-code-chain.md`, "an agent that consults a live
+dependent design or its shipped source while editing the canon... is reattaching a tier that had
+to be detached"). The generated instructions were in our premise list, which explains the reach
+and does not license the use: they are the one premise that is *stale by declaration*, and my
+phase-one gate report flagged them as exactly this trap before reading `66`. The cross-check
+paragraph should be struck or reframed as "consistent with the prior attempt", carrying no
+evidential weight. `66`'s hierarchy does not need it; it stands on op's wording alone.
+
+The same goes for `66`'s uses of `arvo-bridge-home-rule.md` and the cross-strategy resolution
+sketch in `arvo-toolbox-not-policer.md` as "prior design attempts offered as evidence of a
+workable shape": `66` marks them correctly as evidence-not-adoption, which is the right register,
+and a consolidator should keep that marking, because both describe the dead tree's designs.
+
+And the report stands for the dispatching layer, sharpened: **nobody before files 65 and 66 had
+flagged that the repo's generated agent instructions contradict `INTENTS.md` I1 in the present
+tense.** Two blind derivations both tripped over the same stale premise within hours, one
+reporting it and one building a cross-check on it. That is the measured cost of leaving them
+unregenerated, and it will be paid again by every future dispatch into this repo until they are
+regenerated or carry a demotion notice.
+
+## 5. What this file contributes that the panel does not already hold
+
+Stated so the next consolidation can take or refuse each by name, with rungs:
+
+1. **The format-does-not-determine-the-system sentence** (phase one, section 1), as an explicit
+   canon-candidate line: one container hosts Z/2^n, the checked window, the bounded chain,
+   GF(2)^n and the Boolean lattice at once. The unit has the arithmetic three; nobody states the
+   principle, and nobody puts the GF(2)/lattice systems inside the same concept. `66`
+   independently raises the Bool/mask scope question and carries it open; my phase one answers it
+   (broad reading: the concept is carrier-plus-ops-plus-laws and does not require magnitude),
+   `66` declines to answer, so this is ONE EXPERT plus an independent posing of the question.
+   The mask and hash layers are real consumers (I11); a canon silent on what algebra they compute
+   in has a gap the first mask contract will expose.
+2. **Bounded naturals as a named system** (finite ordinals with the bound in the type), distinct
+   from Z/2^n and from checked windows: indices never wrap meaningfully. ONE EXPERT; the panel is
+   silent; `Cap`/`USize` in the dead tree gesture at it and are not evidence.
+3. **Packing is mixed-radix positional representation**, unifying bitfield packing, tight
+   non-power-of-two windows, and combinatorial ranking (factoradic, combinadic) under one concept
+   the canon can state in a sentence. ONE EXPERT, no probe, and it composes with rather than
+   competes against the container derivation's stride work: stride is the aggregate-repetition
+   question, mixed radix is the within-container field question. A cheap probe (rank/unrank round
+   trip at model sizes, const-evaluated) would move it; not written here.
+4. **The RNS-is-wrap-with-one-modulus observation**, which costs one sentence and buys the
+   general-RNS door staying visibly open without any new mechanism.
+5. **A third blind instrument** on the cells named in section 1, and the carry-save 3:2
+   normalisation law checked exhaustively in const context, which no panel probe carries (`08`
+   classified carry-save by value set only; nobody checked its law).
+6. **The Gray-code point**: a representation may exist to serve a non-arithmetic property, which
+   the cost-profile axis should be worded to admit. One sentence, ONE EXPERT.
+
+And one contribution withdrawn: my phase-one open question 5 (the general width-to-container
+projection) is not open; it is the container-derivation unit's settled ground (the kind boundary,
+`53` section 3.3, four probe files), and my deliberate non-probing of it was the right call for
+the wrong reason. The refused direction is const-to-type; my width-as-marker probe sits on the
+accepted side of exactly that boundary, which I now cite instead of hedging around.
+
+## 6. What I would change in phase one, summarised
+
+Nothing is edited above; this is the change list a successor should apply when consuming it.
+Candidate 2: "declares its laws" becomes "derives its laws, and declares which failures are
+bounded and how" (C6 supersedes). Candidate 3: survives, now TWO-plus arrivals, and should be
+stated as C4 states it (selection per operation, in the derived space). Candidate 7: weaken the
+at-rest half to a default with a stated escape (the redundant-encoding hole is open). Candidates
+1, 4, 5, 10, 12: survive; 5's role set gains `66`'s working/storage vocabulary as a candidate
+naming and `53`'s S6 as its derivation-side twin. Candidate 8 (packing as mixed radix): survives
+as a proposal owing a probe. Candidate 9: the fixed/float one-family sentence is `55`/`08`'s
+ground with better instruments; mine defers to theirs, and `66`'s Reading B (law-set separation)
+should ride along as the carried alternative. Open question 1: withdrawn in favour of the
+composition filing. Open question 2 (the role set): still open, now with three vocabularies to
+reconcile. Open question 4 (how the law inventory is named): partially answered by the unit,
+marker-contracts and derived verdicts are not rivals; the verdicts compute what the contracts
+assert, and the probe evidence for their composition exists (`42_probes/p2` per Q11).
+
+**Nothing here settles anything.** The mode is explore; this file and `66` go to the same
+consolidation, and the located disagreement in section 2 plus the contribution list in section 5
+are what that consolidation should argue about.
