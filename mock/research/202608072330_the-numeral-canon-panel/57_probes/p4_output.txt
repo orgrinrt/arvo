@@ -1,0 +1,78 @@
+=== 1. which factor of the reduction breaks the semiring ===
+
+  clamp-only  = range clamping, exact grid   (F is not applied)
+  coarsen-only= grid coarsening by >> F, no range bound at all
+  composite   = what arvo performs at F > 0
+
+        factor     M    F    +assoc    *assoc   distrib
+    clamp-only    15    1         0         0         0
+  coarsen-only    15    1         0      1160       512
+     composite    15    1         0       398       168
+
+    clamp-only    15    2         0         0         0
+  coarsen-only    15    2         0      1400      1024
+     composite    15    2         0       878       518
+
+    clamp-only    31    1         0         0         0
+  coarsen-only    31    1         0     10768      4096
+     composite    31    1         0      1892       709
+
+    clamp-only    31    2         0         0         0
+  coarsen-only    31    2         0     16128      8192
+     composite    31    2         0      5352      2309
+
+  clamp-only clean at every row measured:   true
+  coarsen-only broke something:             true
+
+  Reading: if the clamp is clean and the coarsening is not, then the
+  fractional collapse `p3` section 3 measured is a ROUNDING fact, not a
+  saturation fact, and coherence does not compose: each factor can be
+  individually well behaved with the composite still not being.
+
+=== 2. what coherence buys: eager reduction versus one reduction at the end ===
+
+  A coherent reduction is a homomorphism, so reducing at every step must
+  agree with computing exactly and reducing once, at EVERY fold length.
+  An incoherent one must not. This is the property that decides whether an
+  implementation needs a wider accumulator.
+
+   n         policy       tuples  eager != once   fraction
+   2           wrap          256              0      0.00%
+   2   unsigned sat          256              0      0.00%
+   2     signed sat          256              0      0.00%
+
+   3           wrap         4096              0      0.00%
+   3   unsigned sat         4096              0      0.00%
+   3     signed sat         4096            476     11.62%
+
+   4           wrap        65536              0      0.00%
+   4   unsigned sat        65536              0      0.00%
+   4     signed sat        65536          14721     22.46%
+
+   5           wrap      1048576              0      0.00%
+   5   unsigned sat      1048576              0      0.00%
+   5     signed sat      1048576         333900     31.84%
+
+   6           wrap     16777216              0      0.00%
+   6   unsigned sat     16777216              0      0.00%
+   6     signed sat     16777216        6634292     39.54%
+
+  coherent policies at zero divergence for every n from 2 to 6: true
+  signed saturation's divergence fraction strictly increasing in n: true
+  fractions by n: [0.0, 11.62, 22.46, 31.84, 39.54]
+
+  This answers `55b`'s stated open edge ('whether the pullback mechanism
+  survives fold lengths past three') for the coherence half: the split is
+  not a length-three artifact, and the incoherent policy gets worse with n
+  while the coherent ones stay exactly at zero.
+
+=== 3. instrument validation ===
+
+  same checker, same code path, opposite verdicts on the same fold length:
+    n=2: wrap 0 divergences, signed saturation 0 divergences
+    n=3: wrap 0 divergences, signed saturation 476 divergences
+    n=4: wrap 0 divergences, signed saturation 14721 divergences
+    n=6: wrap 0 divergences, signed saturation 6634292 divergences
+  factor checkers disagreed with each other rather than agreeing: true
+
+P4 WORKS

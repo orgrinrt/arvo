@@ -33,3 +33,13 @@ rustc +nightly-2026-05-28 -O --edition 2021 -o r56q1 ../../56_probes/q1_two_law_
 - **p2** sweeps 4248 configurations per ambient operation to test absorption as a biconditional
   rather than sampling it, reporting sufficiency and necessity violations separately.
 - **p2b** characterises p2's 153 multiplication necessity violations.
+- **p3** second-reads `55_probes/p4`'s unsigned-saturation semiring at nine widths, gives the
+  congruence argument that covers all widths at once, and measures what fractional bits do to it.
+- **p4** attributes the fractional collapse to a named factor by running the grid coarsening and the
+  range clamping separately, and measures what coherence buys at fold lengths 2 through 6.
+- **p5** separates a ladder of algebraic strength from a grading, and measures the precision grading.
+- **p6** chases the one-bit gap p5 opened between the predicted and the measured accumulator grade.
+
+`p4_output.v1_failed_assertion.txt` is p4's first run, kept. It reported FAILS because the probe
+asserted a divergence at fold length two, where there is only one association order and nothing can
+diverge. The measurement was right and the assertion was wrong; both are on disk.

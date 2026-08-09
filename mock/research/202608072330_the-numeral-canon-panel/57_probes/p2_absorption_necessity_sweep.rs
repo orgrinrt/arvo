@@ -16,8 +16,10 @@
 //!     operand box [blo, bhi] with blo in [-5, 0], bhi in [0, 5]
 //!
 //! that is well formed (floor <= ceiling when both present, and the box
-//! non-empty), which is 1170 configurations, each measured exhaustively over
-//! its box cubed. For each: measured associativity, the absorption predicate,
+//! non-empty), which the run reports as 4248 configurations per ambient
+//! operation, each measured exhaustively over its box cubed. The count is
+//! printed rather than asserted here, because an asserted count in a comment is
+//! the kind of number that goes stale silently. For each: measured associativity, the absorption predicate,
 //! and the two readings of `42:315-316`. Any configuration where absorption
 //! and associativity disagree is printed in full, in either direction.
 //!
