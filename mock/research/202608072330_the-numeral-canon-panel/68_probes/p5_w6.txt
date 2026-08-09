@@ -1,0 +1,2 @@
+rustup run nightly-2026-05-28 rustc --edition 2024 --crate-type lib --cfg 'w6  3.10s user 0.03s system 94% cpu 3.293 total
+W6_EXIT=0
