@@ -218,7 +218,11 @@ Of six coordinate pairs crossed in both orders, exactly one diverges, the repres
 against the reduction move, two distinct functions agreeing on 30 of 256 source values; the
 three-coordinate case collapses to the same two classes (`71:287-320`, the table at
 `71:301-308`). Both composites are well typed, so the typestate cannot break the tie
-(`71:339-344`). `72` then bounded it: a widening gives one function at 16 of 16, an in-range
+(`71:339-344`). `71` states why that is worth flagging beyond the fact, and the check found this
+file had dropped it (`75` section 2c), so it is restored from the source: this is the one recorded
+place in the unit where the workspace's standing reflex, pushing an invariant into the types until
+the wrong program is unwritable, does not reach, because both programs are right programs and the
+question is a naming choice rather than a type error (`71:339-344`). `72` then bounded it: a widening gives one function at 16 of 16, an in-range
 narrowing gives one function at 16 of 16, every divergent value is lossy, and the fourteen lossy
 values that agree anyway have an exact closed form (`72:150-186`). **So an order is owed exactly
 where a crossing is lossy and nowhere else** (`72:188-195`), and the widening composites the panel
@@ -346,7 +350,9 @@ summary at `69:87-104`):
   validation suite; the guarantee is carried by round-trips through the executable maps, never by
   declarations checked against declarations (`68:136-151`; `69:94-96`).
 - **Erase** decomposes into layout, dispatch and operation erasure, and the unit's evidence
-  touches layout only, which is close to a language guarantee; operation erasure is per-instance,
+  touches layout only, which `68` calls nearly a language tautology: the layout identity is already
+  a matter of Rust semantics, so the assertion is a regression pin establishing almost nothing new
+  (`68:158-160`); operation erasure is per-instance,
   demonstrated at a trivial instance and refuted at a nontrivial one elsewhere in the panel
   (`68:153-195`). `66`'s erase arm establishes nothing about erasure and its doability sentence
   over-covers it (`68:162-177`; verified at the source by the checkpoint, `69:87-92`).
@@ -521,7 +527,11 @@ whose order it is remains op's, section 6.
 values from disagreeing systems are one obligation at two arities: both name a common ambient
 domain, a target representable set, and which reduction governs the loss, and both are schedules,
 the number and position of adaptation points being part of what the expression means.* Permanence
-and equivalence: pass (`71:702-708`). ONE EXPERT.
+and equivalence: pass (`71:702-708`). The split itself, and its correct half, that resolution
+needs a rule rather than a conversion function, was posed by `66` (`66:310-345`, the rule clause
+at `66:329-331`) and credited by `71` under "What `66` got right and I would keep" (`71:399-401`);
+the two-arity unification and the schedule content are `71`'s. ONE EXPERT on the unification,
+restored to this shape per `75` section 2b under this file's own merge policy.
 
 **N10, membership and hosting are two questions.** *Whether something is a number system and
 whether this implementation can carry one are different questions. The first is about structure
@@ -902,7 +912,12 @@ lossy crossing without an explicit narrowing already in view.
 unchanged from the register**: Q3 gained the measurement that its explicit-conversion option is a
 different function from its inferred option except where the result system's reduction is
 coherent (`71:606-614`); Q10 gained a consumer, the losslessness clause of the conversion
-contract, and its requested second read has still not run (`71:602-604`, `OPTIONS.md:1053`);
+contract, and what its one measurement found travels with the open question rather than being
+summarised away (restored per `75`): the four-condition predicate is sufficient for inclusion
+always and necessary only where the source carries at least two values, with 188 disagreements
+over 1936 pairs at radices 2 and 3, all attributed to that cause and none unexplained
+(`OPTIONS.md:1020-1029`); its requested second read has still not run (`71:602-604`,
+`OPTIONS.md:1053`);
 Q16's sense two gained O-B's split; the derivation's-outputs section gained the corroboration
 that both new hierarchies undercount its two-question bottom tier (`68:408-410`).
 
@@ -954,6 +969,17 @@ member file, because a consolidation does not edit the files it compresses.
     of what each number counts. Resolved by the two-instrument reading, three being a segmentation
     of five for one purpose, and the resolution must be written wherever either sentence is
     carried (`70:279-282`). N1 above carries the five-component form only.
+12. **`65`'s change-test misfiles its own chain, which is why its candidate 1 is absent from
+    section 4.** Applied literally, the test classifies only the container move cleanly, leaves an
+    encoding move unclassified (its representation clause demands that named values change, and an
+    encoding swap changes none), and files a representable-set move under system while `65`'s own
+    property list files coverage under representation (`65:168-171`), an internal tension forced by
+    the dependency rather than a drafting slip (`70:117-127`). `70`'s disposition, adopted here:
+    the instrument survives as a crossing and compatibility classifier, which is the
+    preserved-observables half of N15, and "the change-test as the concept's boundary" does not
+    enter a consolidation in that form (`70:284-289`). This item exists because the check found the
+    candidate silently absent (`75` section 2a), and a silently omitted candidate is
+    indistinguishable from an overlooked one.
 
 ## 8. Evidence state, and what the unit did not do
 
@@ -982,7 +1008,7 @@ citation checkers over their own anchors and both found and fixed real defects d
 (`71:602-604`); the order-and-adder exclusivity hypothesis against a redundant encoding, now
 askable in the crossing vocabulary and still unasked (`71:806-810`); the H1/H2 law frame's
 attack, out of this unit's scope, partially discharged by `73`'s C6 attack which failed to break
-it (`73:220-229`); a second derivation, order-inverted, for N6, N11, N15 and the Q19 resolution,
+it (`73:220-229`); a second derivation, order-inverted, for N1, N6, N11, N15 and the Q19 resolution,
 each of which its author names as the sentence most wanting attack; an ingest door for a packed
 boundary, argued mandatory and built by nobody (`68:459-461`); a correct geometric predicate for
 clamped multiplication (`73:826-829`); and the ambient-family fork, which one file's evidence
@@ -1029,6 +1055,13 @@ is routed through a member file's account with the member cited. I built no inst
 therefore add no evidence; where I state a reconciliation (the five-instance count, the
 constructional licensing, the roles composition), it is bookkeeping over the members' committed
 numbers, and the members' numbers are the authority.
+
+After the independent check landed, `75` was read in full and its section-2 findings were restored
+into this file at the points marked "per `75`", each taken back from its establishing source
+rather than from this file's own summary. No rung, no candidate's substance and no located
+disagreement moved in that repair. `75`'s citations into this file by line number predate the
+repair and resolve against the pre-repair text; per the panel's own convention a consolidation is
+cited by section, not by line, for exactly this reason.
 
 ## 12. Where this compression is least certain
 
