@@ -1727,6 +1727,46 @@ kernel item (`73_probes/p2`). What remains of Q21 is `67:440-446`'s question, wh
 operation family is fixed at (+, x) or is a parameter, and the two entries should be read as one.
 **The instance count is unchanged: still one leaning broad, still `65`'s.**
 
+### Q32. The doability claims are workload claims, and no workload evidence exists above one thread
+
+Not an option between alternatives. An evidence gap, recorded here because it is the sharpest open problem
+the canon faces and nothing in three units has touched it.
+
+**A canon must say which things are doable**, and an intent not established as achievable is a wish. For
+arvo the doability claims are **workload claims** as much as type-system ones: a shape is doable if it
+serves the workload, and the workload is what I10 says it is.
+
+I10, op's own words, `32`, 2026-08-08:
+
+> We will run in threads = 1, threads = 2, threads = n where n can be any finite. We don't take stances on
+> these. If it gives juice and proves more efficient than the alternatives, we should do that, when we can
+> detect we have several cores available. When we don't, we do what is the most efficient thing in a
+> single-threaded realm.
+
+**Every instrument this panel has built runs on one thread.** The exhaustive sweeps, the compile checks,
+the assembly readings, the const-eval ceilings, the crossing tables. All of them measure a single-threaded
+realm, which I10 names as one case of several rather than as the case.
+
+What follows, and it is uncomfortable:
+
+- A shape shown to erase to a symbol alias at one thread has been shown that at one thread. Whether the
+  same erasure survives contention, false sharing, or a packed representation straddling a cache line
+  between two writers is unmeasured.
+- **Cold's intent is the one most exposed.** Aggressive bitpacking for cold storage is a memory-density
+  argument, and memory density interacts with concurrent access in ways a single-threaded sweep cannot
+  see. A sub-byte packed field shared between threads is a read-modify-write on a byte two threads both
+  want.
+- The strategies "weigh different measurements differently" (I8). Nothing has yet measured any of them
+  under the axis I10 names, so the weighting has been reasoned about and not observed.
+
+**What would close it:** benches on the harness, per
+`bench-in-bench-harness-never-sketches.md`, with thread count as an arm rather than a footnote, and with
+real competitor arms rather than a worse version of the same thing. An ad-hoc timing loop cannot touch
+this and is not called a bench.
+
+**What would reopen it if someone declares it closed:** any doability claim in the canon whose supporting
+evidence is single-threaded, where the shape it licenses would be reached from more than one thread.
+
 ## Standing
 
 Nothing in this file is evidence, and nothing in it is a decision. It is the working set.
