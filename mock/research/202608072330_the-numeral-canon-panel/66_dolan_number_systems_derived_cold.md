@@ -101,6 +101,12 @@ within its own system, with neither one being a degraded approximation of the ot
 what I9 states in its own words, arrived at here from an exhaustive arithmetic check rather than from
 reading it.
 
+**Phase two revises the flat version of this claim; see below.** The claim that overflow policy is
+identity-determining survives phase two intact, but the panel's format-consolidation work shows it is
+identity-determining for a level above the one this section names "number system" flatly, not for the
+value-set-plus-domain layer beneath it. The correction is a refinement of where the line sits, not a
+reversal of the finding.
+
 ## What op's pipeline actually asks the canon to specify
 
 Putting the hierarchy and the identity result together, op's acceptance criterion decodes into a
@@ -125,6 +131,9 @@ this file does not resolve. Op's own I9 leans toward the first reading. Both are
 because the dispatch's explore-do-not-settle instruction applies here directly, and because nothing in
 the premises forces a choice between them; either can be made to work mechanically, as the Rust probe
 below demonstrates for the joint reading.
+
+**Phase two finds this fork was the right question and the wrong shape of answer; see below for the
+layered resolution the panel's own format work already established with much stronger evidence.**
 
 ## What erasure requires of an admissible system
 
@@ -195,6 +204,9 @@ not a defect to be designed out of the system. It is one of the tools the strate
 with, and ruling it out a priori would foreclose the mechanism Precise's stated intent most plausibly
 needs.
 
+**Phase two: the panel already has a sharper, three-way version of this split (storage, compute,
+interchange) rather than my two-way one; see below.**
+
 ## Fixed point and floating point: one scheme or two
 
 `66_probes/fixed_vs_float_generic_format.py` encodes the same four target values (0.1, 3.75, 1000.25,
@@ -241,6 +253,10 @@ Which reading the canon adopts changes how much of the type-level machinery a fi
 can share (Reading A argues for one parametrised family; Reading B argues for two families that
 happen to share a formalization but not a law set) without changing anything about how either scheme
 is encoded. Nothing in the premises forces a choice, and this file does not make one.
+
+**Phase two: both readings turn out true at once, at two different levels, once the panel's
+format/system layering is imported. See below; this is the single largest correction phase two
+makes.**
 
 ## Is the set of number systems open or closed
 
@@ -290,6 +306,9 @@ narrow reading keeps "number system" intuitive at the cost of needing a second t
 uses the identical mechanism; the broad reading keeps one term for one mechanism at the cost of
 stretching "number" to cover things nobody would call numbers. Carried forward as open.
 
+**Phase two: op's other cold-derived expert reached the broad reading independently; see below. Still
+genuinely open, not settled by that agreement.**
+
 ## Platform-width types
 
 `USize` and `Cap`, named in arvo's own crate table, resolve their width from the target rather than
@@ -306,6 +325,9 @@ same shape family (an implicit width parameter fixed by `cfg(target_pointer_widt
 by the consumer), or is better treated as a genuinely separate axis because the abstract value set is
 not knowable statically without knowing the target, is not settled by anything in the premises. Both
 are workable; carried forward as open.
+
+**Phase two: the panel's format work has a candidate answer to this, from a different angle than
+either option above; see below.**
 
 ## Interoperation: conversion is not the same question as resolution
 
@@ -412,5 +434,202 @@ impose.
 
 ## Phase two: reconciliation against the panel
 
-*(Written after the phase-one commit, reading the panel files, the option register, and the droplist
-for the first time.)*
+Read after committing phase one, in this order: `00_brief.md`, `65_knuth_number_systems_derived_cold.md`
+(the panel's other cold derivation on this exact question, dispatched in parallel, unread by me until
+now), `63_spj_consolidation_the_format_concept.md` (the running consolidation of the immediately prior
+topic, "what is the one format concept"), `64_ringer_entailment_check_on_the_format_consolidation.md`
+(the independent check on 63), and targeted greps of `OPTIONS.md` and `DROPLIST.md` for the terms this
+file's own open questions turn on (`number system`, `GF(2)`, `residue number`, `USize`, `platform.width`,
+`posit`, `interval`, `numeral system`). I did not read the ten member files (`55` through `62`) that
+`63` consolidates, or the four seed survivor sweeps, or the archive. What follows is checked against
+`63` and `64` as the panel's own strongest, most-verified statement of the adjacent topic, not against
+the full 55-through-62 evidence base those files carry.
+
+### The one correction that matters most: format and number system are not one layer, they are two
+
+Phase one flattened a distinction the panel had already spent an entire nine-file unit establishing
+with heavy, independently re-run, entailment-checked evidence, and getting this straight changes how
+several of phase one's open forks should be read, though it overturns none of phase one's actual
+findings.
+
+The panel's unit two (`55` through `62`, consolidated in `63`) converged, at a rung the entailment
+check in `64` confirms holds for every claim it sampled, on this identity: **a format is (D, Q), an
+ambient domain and a representable set, and nothing else.** The space of total reductions onto Q (the
+overflow and rounding policies) is a *derived* mathematical object that a format's identity does not
+select from. What selects a member of that space, per operation, is the strategy layer, and `63`
+states this is exactly where I9 attaches: "the strategy changes what the correct answer is" is the
+strategy choosing a member of the derived reduction space, not the strategy choosing among named
+formats. Each such choice, once made, computes exactly in what `63` calls an **induced algebra**: wrap
+induces the ring Z/2^N, unsigned saturation induces a commutative semiring, signed two's-complement
+saturation induces a magma that fails to even be a semigroup, at 952 measured associativity failures at
+width 4 (`63` section 3.4, section 4.2).
+
+Phase one's "identity is the value set together with the operations and their laws" is not wrong, but
+it names the wrong layer as "number system." What phase one calls a number system (a value set plus a
+fixed, chosen law set, such as "unsigned dyadic rationals under wrapping addition") is, in the panel's
+terms, a **format plus one member of its derived adaptation space**, which is exactly what `63` calls
+the **induced algebra**. The panel's "format" (D, Q alone, strategy-independent) sits one level below
+that, and it is this narrower layer, not the fuller one, for which the panel's evidence shows encoding
+and law-set are both *not* identity-determining. Both claims are compatible once the layer each is
+about is named: format identity is strategy-independent (the panel's TWO EXPERTS-rung C2, entailment-
+checked); the induced algebra a computation actually runs in is strategy-dependent (also the panel's,
+also entailment-checked, and it is exactly phase one's associativity finding, replicated by the panel
+at a much larger scale: my probe found 1,152 of 4,913 triples failing associativity for signed
+saturating addition on a small range; the panel's measured 952 of a comparable space for signed
+saturating multiplication at width 4, plus the sharper follow-on result that unsigned saturating
+addition is associative while signed is not, and that a symmetric range restores associativity for
+signed saturating multiplication at F = 0, none of which my single small probe was built to find).
+
+So the fork phase one carried open, "is the number system fixed by shape alone with strategy choosing
+among law-sets, or determined jointly by shape and strategy," dissolves rather than needing to be
+picked. Both readings are true, at two different, now-named layers: **format** is fixed by shape alone
+and is strategy-independent (the panel's finding, TWO EXPERTS with the shared-Flocq-literature
+discount they state explicitly, matching phase one's own citation of Flocq below); the fuller
+**induced algebra**, which is what "number system" most naturally names when someone asks "what laws
+govern this computation," is strategy-dependent and is a different structure per strategy even on one
+shared format. I read this as the strongest single finding phase two can add, and I did not derive it
+myself; the panel's much larger, much more heavily probed unit did, and phase one's smaller, cold, and
+independently-arrived-at result is best read as a small corroborating instance of the same underlying
+fact rather than as a competing claim.
+
+### The same correction dissolves the fixed/float fork, cleanly
+
+Phase one's Reading A (fixed and float are one unified scheme) and Reading B (they are genuinely
+separate systems because their laws differ) were posed as mutually exclusive. Under the two-layer
+correction above, they are not. Reading A is a claim about **format**: `63`'s C3, "membership is one
+predicate over one parameterisation: an affine slot function, a quantum per magnitude and a phase, of
+which integers, fixed point, scaled integers and floats are points," rests on a TWO EXPERTS rung with
+the same Flocq discount phase one cites, and is independently backed by a real probe (`55_probes/p1`)
+matching textbook enumerations exactly (16, 16, and 47 values) with detected mutants. Reading B is a
+claim about **induced algebra**: floating point's rounding relation and fixed point's wrapping or
+saturating relation are different members of different formats' derived reduction spaces, with
+different law inventories, and the panel's own K3 (in `65`, the parallel cold derivation, discussed
+below) makes exactly this point: "what is genuinely new in [floating point] is only the correctness
+relation and the law inventory... the static/dynamic split of the scale factor is the only structural
+difference between fixed and floating point" at the format level, while the systems they induce still
+differ.
+
+So: one format family (now corroborated by three independent derivations arrived at differently: this
+file's own Flocq-based probe, Knuth's K3 in `65`, and the panel's much larger `55`/`56` measurement
+with mutant detection, which is exactly the "three or more independent instances" bar this workspace's
+own evidence discipline prefers), and potentially many induced algebras on top of it, one per strategy
+choice. Op's own recorded instinct, quoted at `00_brief.md`, is "one family," stated explicitly as an
+instinct rather than a ruling (`28_op_answers_two.md`: "My instinct says one. But I'm not a
+mathematician"). The three independent format-level derivations converging on unification are real
+evidence in that direction, at the layer his instinct is most naturally read as being about; nothing
+here promotes his instinct to a ruling, and nothing here resolves whether the induced-algebra layer
+should also be described as "one family" in some further, not-yet-derived sense.
+
+### Convergence with the parallel cold derivation (`65`)
+
+Knuth's file, dispatched under the same protocol on the same question, independently reaches nearly
+the identical structural skeleton: number versus numeral versus system versus representation versus
+format (section 1), an admissibility contract closed while the inventory of instances stays open
+(section 7, matching this file's I1-based argument almost sentence for sentence), a kernel of systems
+demanded by the quoted intents versus an open ring admitted but not required (sections 5 and 6, more
+systematically worked than this file's own scattered treatment of the same idea), and the same Flocq-
+shaped fixed/float unification (K3). Treated as one instance meeting another rather than as
+confirmation, per the protocol's own instruction, but the overlap is real and specific enough (both
+files independently land on op's I9 as the reason strategy is law-selecting rather than merely
+performance-tuning, both independently reach for the number/numeral classical distinction as the
+starting point, both independently derive that encoding does not fix identity) that it is worth naming
+plainly rather than hedging around.
+
+Three places Knuth's file is sharper than this one, adopted here rather than re-argued:
+
+**The three-role model for redundancy**, storage, compute, and interchange, replacing this file's
+two-role (working versus storage) split. Knuth ties each role to a specific intent (Cold to storage,
+Hot to compute, Precise to compute-across-an-extent) and the panel's own `63` section 8 independently
+states the same shape more sharply still: "canonical at storage and interchange, a tool at compute,
+with the normalisation law validated." Two independent sources landing on a three-way split this file
+only found two of the three roles for is a real refinement to adopt, not merely note.
+
+**"Wrap is already a residue number system with a single modulus 2^n."** Knuth's section 6 makes this
+unification explicitly; this file's own redundant-representation section discussed RNS as a distinct
+open-ring option without connecting it back to K1's wrapping arithmetic as the degenerate case. Worth
+adopting as a small but genuine "one rule subsumes a case already in the kernel" observation.
+
+**Algorithms bound on laws, and a law loss is a refused composition.** Knuth's section 9 and the
+panel's `63` section 5 both develop, mechanically, what this file's own I11 discussion only gestured at
+in the abstract ("interoperation... needs a rule"). An algorithm generic over, say, an associative
+operation refuses to compile against a type whose derived induced algebra lost associativity, and this
+is presented, correctly, as "validate" reaching all the way up into the composition layer rather than
+stopping at the primitive boundary. This is a sharper, more concrete mechanical claim than anything
+phase one derived on its own, and it is corroborated by the panel's own probes (an `E0277` diagnostic
+committed as a negative-case artifact in `60_probes/p_c2.stderr`, referenced in `63` section 11).
+
+One place this file adds something the other two do not appear to: an explicit **container** level,
+separate from format and from encoding, named as physical storage (width, alignment, SIMD-lane
+padding) distinct from the format's logical numeral meaning. Neither `65` nor the parts of `63` and
+`64` read here name this as its own level; `63`'s vocabulary folds container-shaped concerns into
+"encoding" (which it calls a realisation axis, ordered after Q) without separating "which bits" from
+"which physical bytes those bits occupy." Op's own acceptance criterion names "container" as its own
+word, distinct from "numeral representations," which is some support for keeping it separate. This is
+offered as a small addition rather than a correction, and it is hedged appropriately: I read the
+consolidation and its check, not the ten member files behind them, so it is possible the container/
+encoding split is already made somewhere in `55` through `62` that I have not opened.
+
+### What phase two leaves standing, unchanged
+
+The core findings of phase one, checked against the deepest, most-verified material available in the
+panel:
+
+Encoding does not determine identity: matches `63` C2 and C5 (encoding is realisation, ordered after
+identity) exactly, at the format layer.
+
+Redundancy is a role-dependent tool rather than a defect: matches `63` section 8 and Knuth's section 8,
+refined from two roles to three as noted above, otherwise unchanged in substance.
+
+Overflow and rounding policy changes the algebraic laws that hold: matches `63` section 3.4 and 4.2 at
+much greater scale and rigor, at the induced-algebra layer once that layer is properly named.
+
+The derive-validate-erase pipeline is buildable today under the forbidden-feature constraints: matches
+`63` section 11's own doability claim (a width algebra statable as trait contracts, "gate-free," with
+the general one-impl-for-all-widths spelling refused on record with the `generic_const_exprs`
+diagnostic as the negative control) and Knuth's section 10, both independently, with a different toy
+sketch than mine and a different set of properties checked.
+
+The set of admissible systems is open, the admission contract is closed: matches `63` section 7's own
+framing nearly word for word ("the concept is closed; the inventory is open") and Knuth's section 7.
+Three independent derivations landing on identical phrasing for this specific claim is itself notable.
+
+### What remains open even after this reading, and why
+
+**Bool, masks, and the scope of "number system."** Knuth's file explicitly takes the broad reading:
+"the two-element Boolean algebra and the vector space GF(2)^n... are number systems that are not about
+magnitude at all" (section 1). I did not find the format consolidation (`63`) taking a position on this
+either way in the sections I read; its own worked example of one format hosting several systems (Z/256
+wrapping, a checked window, a bounded chain, and by clear extension a GF(2)^n reading of the identical
+bit pattern) is consistent with the broad reading without asserting it. So this is one cold derivation
+(Knuth's) leaning broad, against my own phase one carrying it open, and the panel's format work neither
+confirming nor denying. Genuinely still open; one instance is not three.
+
+**Platform-width types.** `63`'s C2 states plainly: "a value set that depends on other data has no Q
+and is not a format but storage." Read literally, this places `USize` and `Cap` outside "format" by
+the panel's own narrow sense, in a sibling concept the panel calls "storage" without, in the sections I
+read, developing what that concept covers beyond the one negative statement. This is a real, useful
+data point against phase one's carried fork (fold into the shape family versus treat as a separate
+axis): it suggests a third option, that platform-width types are neither a degenerate instance of the
+shape family nor an orthogonal number-system axis, but a different KIND of thing (storage rather than
+format) that the format/number-system concept this whole topic is building does not need to account for
+directly. I flag this as a candidate answer worth the next member's attention rather than treating it
+as settled; "storage" is named once, in passing, in a file about a different topic.
+
+**Interoperation, resolution versus conversion.** Nothing in `63`, `64`, or `65` that I read addresses
+this directly; the closest material is `63`'s Q3 discussion of mixed-numeral addition (open, explicitly
+op's to answer, and load-bearing for the format unit's own strongest unconditional result per section
+4.4), which is adjacent to but not the same question as which strategy's laws govern a cross-strategy
+operation. Genuinely still open.
+
+### A grep-checked negative result worth recording
+
+`grep -n -i "number system" DROPLIST.md` returns no hits, and the same grep against `OPTIONS.md`
+returns no hits naming "number system" as a term under discussion. Nothing in either file kills, or
+even directly names, the concept this file and `65` were dispatched to define. This is consistent with
+`00_brief.md`'s own framing of the number-systems topic as the next unit after the format consolidation
+this reconciliation checked against, rather than a topic the panel has already worked through and
+reduced to droplist entries. I read this as confirmation that this topic is genuinely at its start, not
+as evidence that nothing here matters; the format unit's evidence base is exactly what this topic
+should be built on top of, and phase two's job was to check that phase one's independently-derived
+skeleton is compatible with it, which, once the format/induced-algebra layers are properly separated,
+it is.
