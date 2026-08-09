@@ -1867,6 +1867,90 @@ class and not another (at least two do, per the independences), and whether any 
 lossy crossing without an explicit narrowing already in view.
 
 
+## Unit four: the derived-algebraic-laws topic
+
+Added by `80`. The register was last extended for unit three, so unit four's options lived only in
+member files until now, which is the loss mechanism `RULES.md:189-210` records three times.
+
+`79`'s own additions are listed in its section 10 and are **not transcribed here**: they are fits
+against existing entries (Q11, Q12, Q25) plus one candidate canon sentence, rather than new option
+sets. Its candidate sentence is at `79:348-352` and should be read from there rather than from any
+summary of it.
+
+### Q38. Where a law verdict's truth is established
+
+Added by `80`, from the const-eval frontier it measured (`80_probes/p2_frontier.py`,
+`80_probes/p2b_swept_verdict_at_shipped_width.rs`).
+
+**(a) In the compiler, per instantiation, exhaustively.** The shape both cold derivations built
+(`76`'s probe 2, `77`'s probe 2). Cost: bounded by the frontier, which is a curve in (width, arity)
+and reaches width 5 at arity 3, width 3 at arity 5, width 1 at arity 8, all by default refusal under
+`long_running_const_eval`; and at a shipped width it produces only NEGATIVE verdicts, because a false
+law exits early and a true one must exhaust. The verdict that licenses an arm is the positive one.
+Buys: no trusted-base item at all, since nothing is asserted.
+
+**(b) Offline, at a model width, cited in the compiler.** The verdict is established in the audit
+trail and the typestate carries a declaration of it. Cost: `68:145-148`'s paper-checking-paper hole in
+full, plus the model-width transfer proviso. Buys: any width, any arity, constant compile cost.
+
+**(c) Offline as a closed form, cross-checked in the compiler against the sweep over a stated model
+band.** Built at `80_probes/p2c_closed_form_checked_on_a_model.rs`: the closed form is what an arm
+gates on, the agreement between it and the swept verdict over widths 2 to 5 is a compile-time
+assertion, and a perturbation of one entry is refused. Cost: the model band is a compile budget spent
+per law and is nearly exhausted at four widths and one law on one host; the transfer proviso survives
+as a single named residue. Buys: the declaration is checked against the maps everywhere it can be.
+
+**What would distinguish them:** whether the canon is willing to carry a named trusted-base item for
+law verdicts at all. (a) needs none and reaches almost nothing. (b) and (c) differ only in whether the
+item is auditable.
+
+### Q39. Whether an arm's predicate may read data
+
+Added by `80`, from the observation that the panel is producing two kinds of law region and calling
+both predicates: typestate predicates (`F == 0`, sign domain, policy, representable-set shape), known
+at monomorphisation, and trajectory predicates (no clamp event occurred, an operand is zero, the
+running accumulator did not reach an endpoint), known only at runtime. `79`'s P4 (`79:72-74`) is the
+second kind; `42`'s reachability condition over a fold's **declared** operand range
+(`OPTIONS.md:1113-1115`) is the first, and the word "declared" is what moves it.
+
+**(a) Typestate only**, which is I13 read literally, since it says const predicates. Cost: every
+trajectory predicate this panel has measured is a characterisation rather than an arm, until somebody
+lifts its value conditions into declarations, and nobody has tried to construct such a lifting.
+
+**(b) Typestate or data**, with a value-gated arm permitted where it pays. Cost: measured at
+`80_probes/p3_asm_report.txt`, a value-gated selection materialises BOTH arms and picks with a `csel`,
+13 instructions against 6 and 3 for the two const-gated arms, so it is worse than the unlicensed form
+rather than worse than the better one. And the erase clause acquires an exception.
+
+**(c) Typestate only for selection, data permitted at a declared ingest boundary**, so a trajectory
+condition is checked once where values enter and is a typestate fact afterwards. Cost: a door, plus the
+per-datum residue `68:179-195` measured for the runtime reading.
+
+**What would distinguish them:** whether any trajectory predicate this panel has measured has a lifting
+into a declaration a consumer would actually write. This is also where Q-A stops being a cost question,
+because (b) is only available under the runtime reading of "validate".
+
+### Q40. Which route a law verdict takes to its closed form
+
+Added by `80` (`80_probes/p6_which_chain_laws_reduce_to_arity_three.rs`), which found that the
+frontier's arity axis does not bite uniformly.
+
+**(a) A proof, lifting a lower-arity verdict.** Grouping-type chain laws take this route: associativity
+at arity 3 gives every parenthesisation at every arity by the generalized associative law, measured to
+be what happens for both policies at arities 2 to 5. Cost: the proof is audit-trail work and the canon
+must name the theorem, because a wrong lifting is invisible at every instantiation.
+
+**(b) A structural argument about the representation.** Wrapping's verdict takes this route: it is a
+fact about the encoding realising a group rather than about a lower arity.
+
+**(c) No route, and the verdict stays swept.** Schedule-conditional chain facts are here: stepwise
+rounding against one rounding at the end is vacuously clean at arity 2 and a fresh statement at every
+higher arity, with no lower-arity statement implying it. This is the kind I7 is stated over.
+
+**What would distinguish them for a given law:** whether the law is a consequence of a lower-arity law,
+which is decidable by inspection rather than by measurement, and no file in this panel has asked it of
+any law it measured.
+
 ## Standing
 
 Nothing in this file is evidence, and nothing in it is a decision. It is the working set.

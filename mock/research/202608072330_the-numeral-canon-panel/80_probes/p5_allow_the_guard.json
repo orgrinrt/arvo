@@ -1,0 +1,58 @@
+[
+ {
+  "policy": "wrap",
+  "width": 6,
+  "tuples": "2^18",
+  "status": "accept",
+  "seconds": 5.85
+ },
+ {
+  "policy": "wrap",
+  "width": 7,
+  "tuples": "2^21",
+  "status": "accept",
+  "seconds": 49.06
+ },
+ {
+  "policy": "wrap",
+  "width": 8,
+  "tuples": "2^24",
+  "status": "accept",
+  "seconds": 370.95
+ },
+ {
+  "policy": "wrap",
+  "width": 9,
+  "tuples": "2^27",
+  "status": "timeout>900s",
+  "seconds": 900.06
+ },
+ {
+  "policy": "sat",
+  "width": 6,
+  "tuples": "2^18",
+  "status": "accept",
+  "seconds": 3.8
+ },
+ {
+  "policy": "sat",
+  "width": 7,
+  "tuples": "2^21",
+  "status": "accept",
+  "seconds": 29.73
+ },
+ {
+  "policy": "sat",
+  "width": 8,
+  "tuples": "2^24",
+  "status": "accept",
+  "seconds": 254.85
+ },
+ {
+  "policy": "sat",
+  "width": 9,
+  "tuples": "2^27",
+  "status": "timeout>900s",
+  "seconds": 900.06
+ }
+]
