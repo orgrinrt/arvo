@@ -25,7 +25,8 @@ must not appear in this file.
 ## How to read an entry
 
 **RATIFIED** means it sits on the record as ratified with op in the loop, with the provenance shown.
-**No entry currently holds this rung.** The three that did were imported from the prior panel's
+**One entry holds this rung: I13**, ratified by op in the sitting that produced it, in the words recorded
+there. The three that previously held it were imported from the prior panel's
 `SETTLED.md` classification, which `01` section 0 and the panel's own continuation state had already
 established was made under the old reading of ratification and is not to be trusted. Op demoted the
 first of them within hours (`39`); the other two were rewritten to rest on his current word instead.
@@ -171,6 +172,35 @@ Read with I5: the soundness condition in the fuller quote at `32` is not uniform
 > opinions as anything other than "yeah checks out, direction is good" acks.
 
 ---
+
+
+## I13. The work is predicated arms composed, and a universal solution is rejected
+
+**RATIFIED.** Op, 2026-08-09, ratifying his own two statements in the sitting that produced them, with the
+instruction that the entry mean **no more than he said** and not extend beyond it. His words, both
+statements, verbatim:
+
+> Even if "mostly doesn't hold in arvo", it means that still "sometimes holds in arvo" which means, there's
+> a nameable predicate for the sometimes which allows choosing the more optimal lowering and arm for that
+> specific case. We have to all remember that we are not writing a generalization, rather a bunch of arms
+> with const predicates that optimize each little "sometimes" so that all "sometimes" apply on that
+> sometimes and nowhere else, thus "everywhere" is optimal by construction as a composition of those
+> sometimes
+
+> Add that predicated arm for small wins that compound together as the heart of the work the experts are
+> doing. We explicitly reject a universal solution. That is ass. The strategies themselves as a concept
+> make a universal solution impossible by premise. We collect and compound answers to specific regions
+> where a predicate holds and write the expression where it holds, and the most optimal things that hold
+> true there. We should add a rule where all findings have to be predicated, even "universal" ones, so that
+> they are exact; currently universal would then probably mean something like "where n is numeral and
+> strategy is any and hardware features are any and threads are any" etc. that forces clearly saying where
+> a finding is known to hold instead of assuming an ambiguous "universal" that shifts constantly and is by
+> design, rejected and unstable
+
+**The scope of this entry is those two paragraphs.** Op ratified the call and said explicitly that it means
+no more than he said. Anything further, including the dimension list, the `any` against `unmeasured`
+distinction, and the exactness bar for a predicate, is elaboration in
+`every-finding-carries-its-predicate.md` and is **not** part of what was ratified.
 
 ## What this file is not
 
