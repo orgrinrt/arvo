@@ -352,4 +352,199 @@ a standing rule independent of whether `no_std` itself is ratified, not on the r
 
 ## Phase two: reconciliation
 
-*(To be appended after this file is committed and I have read the panel.)*
+**Coverage.** After committing phase one, I read `76_willsey_derived_laws_derived_cold.md` in full
+(the parallel cold derivation named in the dispatch), `42_willsey_the_law_layer.md` in full (the
+earlier, non-cold, exhaustively-probed file specifically on this topic), `61_absorption_against_coherence.md`
+section 1 and its opening apparatus (adjacent topic, format-concept unit, not this unit), and grepped
+`OPTIONS.md` and `DROPLIST.md` for `resolve`/`resolution`/`cross-strategy`, reading the surrounding
+context at `OPTIONS.md` Q27 and `DROPLIST.md` lines 85 to 100. I did not read `35`, `40`, or `18`
+directly; everything I say about them below is sourced through `42`'s citations of them, and I mark it
+as such rather than pretending to a firsthand read I did not do. That is a real risk: if `42`'s account
+of `35`/`40`/`18` is wrong anywhere, this section inherits the error, the same caveat `42` itself states
+about its own reliance on `35`'s and `40`'s paraphrase of files it did not open.
+
+### Against `76`: one instance meeting another, not confirmation
+
+`76` and this file were dispatched cold in parallel on the same question, and per the protocol I treat
+agreement between us as one independent instance meeting another rather than as corroboration of a
+single claim. On that basis, several things converged without either of us reading the other:
+
+Both files land on the same answer to "type, operation, pair, or context": a law belongs to a strategy's
+semantics composed with a set of operations, not to a type or an operation alone. I called this a
+judgment between chains under a strategy, drawing on logical relations; `76` called it a congruence
+closed under the strategy's exposed operations, drawing on equality saturation. These are two different
+formal traditions (denotational semantics and term rewriting) landing on the same structural object, a
+relation compatible with composition, which is worth more as a data point than either framing alone,
+precisely because neither of us was importing the other's vocabulary.
+
+Both files independently reach for "derive, validate, erase" as a mechanism for a law and not only for a
+container, using the identical concrete example (`UFixed<0, F>::ONE`, or `Fixed<0, F>` in my own probe's
+naming) and the identical mechanism, a `const fn` body with an internal `assert!`, refusing at
+compile time with no forbidden feature. `76`'s probe 2 goes one step further than mine: it inspected the
+emitted assembly for a validated call site (`mov w0, #16 ; ret` on aarch64) and confirmed nothing about
+the check survives, where I only confirmed the program compiled and ran. That is a real gap in my own
+phase one, now closed by an independent instance rather than by my own further work, and I want to be
+explicit that `76`'s codegen check is strictly stronger evidence for the erase half of the claim than
+anything I built.
+
+Both files independently propose the same two-reading structure for "derived" (mine: proof versus
+generation; `76`'s: entailment versus per-instance generation) and independently converge on the same
+subordination claim: the generative reading is only sound because the entailment reading holds
+underneath it, an unentailed "derivation" per instance is an unverified fact wearing a computed one's
+clothes. Two independent derivations of the same subordination claim, on the same day, from the same
+premises, without either reading the other, is the kind of corroboration the panel's own bar
+(`RULES.md`, cited by `42` at lines 116-118 and by `76` implicitly) asks for and rarely gets handed for
+free.
+
+`76` goes further than I did on one front I had not attempted: an exhaustive (not sampled) check of
+which small laws hold under wrapping versus saturating addition over the entire `u8` and `i8` domains.
+The finding that unsigned saturating addition is universally associative, against `76`'s own stated
+working assumption that saturation breaks associativity, is a genuinely useful correction to a piece of
+folk intuition I was carrying too (I had not stated it in phase one, but I would have been wrong to
+state it if asked). `42` (below) explains the mechanism behind exactly this asymmetry, which neither
+`76` nor I had access to during our cold passes, and which sharpens both of our findings considerably.
+
+### Against `42`: the file this unit should have been dispatched to read, and largely was not
+
+`42` predates this unit by a wide margin and did exhaustive, multiply-corroborated work directly on this
+question, under names (`35`, `40`, `18`) I had no access to during phase one and only partial access to
+now. Several of my phase-one claims survive contact with it; several are subsumed by something sharper;
+one needs an explicit retraction of emphasis rather than of substance.
+
+**What survives, sharpened.** My "closure" observation in the chain-error section, that fixed-point
+addition needs no widening because sums of already-quantized values are exact while products do, is the
+same fact `42` states more generally and more usefully at section 3.3: "closure (the operation does not
+widen) is not a law in the algebraic sense; it is the precondition every other law is stated relative
+to," backed by `35_probes/p1`'s compiled refusal of four independent formulations of a widening fold. I
+arrived at the specific instance; `42` states the general principle it is an instance of, and I would
+defer to that framing over my own were this file being rewritten rather than appended to.
+
+**What is subsumed and sharper than what I had.** My subset-law discussion (a law restricted to `I >=
+1` is a real law exactly when the restriction is type-enforced) is correct as far as it goes and is
+considerably less sharp than `42` section 5.2's reachability mechanism. `42` shows, by refuting its own
+first hypothesis on the record rather than hiding it, that associativity of a clamped operation does not
+depend on how many clamps are coded, it depends on how many of them a *specific fold's declared operand
+range* can reach: an unsigned saturating add has two clamps coded and one reachable, because the
+non-negative domain structurally cannot trigger the floor, and that is the entire mechanism behind the
+asymmetry `76` measured independently and I did not test at all. My own chain-error probe found a
+related but distinct fact (multiplication chains need a widened accumulator because the exact product
+does not fit the narrower container, a closure argument, not a reachability argument), and I want to be
+precise that these are two different mechanisms producing superficially similar-looking "chains behave
+worse than single ops" findings. `42`'s reachability condition is a fact about which boundary values a
+computation's trajectory can touch; mine is a fact about whether an operation's exact result fits its
+own operand type. A canon that named only one of these two mechanisms under a single heading
+("chain-level laws need extra care") would be flattening two genuinely different reasons into one
+folk generalisation, and I did not see that risk clearly enough in phase one.
+
+**Where phase one needs a correction of emphasis, not of substance.** I framed "derivation as generation"
+(my Reading B) around a single mechanism, the `const fn` plus `assert!` pattern, without distinguishing
+it from the alternative `42` and its citation of `35`/`40` (Q9) already established: a trait-relation
+bound on the axis *value*'s own marker traits (`S::Overflow: AbsorbingTop + MonotoneAdd`, stated on
+`Saturate` or `Wrap` directly, not on a preset name), rather than a post-monomorphisation const
+assertion. `42` reports, citing `35` section 3, that the trait-relation form composes upward through a
+generic call site cleanly while the const-assertion form does not, and `42`'s own probe 2 demonstrates
+the composed case directly: a fold's accumulator-width bound and a fold's law bound refuse
+independently, at the same call site, entirely in the trait-relation form. My probe 2 (the identity
+example) and probe 3 (the resolution-lattice example) both leaned on the const-assertion form because
+that is the shape that gives the best local diagnostic, which is real and is exactly what `42` reports
+Q9 already settled it is good for. But I did not build, or even attempt, the trait-relation form for
+either claim, and a reader taking my phase one alone would come away thinking the const-assertion
+mechanism is *the* answer to "derived, mechanically," when the panel's own established answer is that
+both forms are needed for different jobs and neither subsumes the other. I would want any consolidation
+drawing on this file to state both mechanisms, not the one I happened to reach for.
+
+**A genuine safety gap I did not know to look for, and now think belongs in the derived-laws unit
+directly.** `42` section 6.1 makes an argument I had no way to reach cold, because it depends on reading
+`arvo-always-optimal-internals.md` together with a measurement I had not seen: that rule licenses arvo's
+own internals to perform algebraic rewrites (a fused kernel exploiting distributivity, for instance)
+freely, and `35` measured that a distributivity-licensed rewrite changes the answer at up to 70.5 percent
+of triples once the fractional width is nonzero. I cited `arvo-always-optimal-internals.md` in my own
+phase-one file as settled background discipline, in the section on the two ideals a law can approximate,
+without noticing that the rule as written has an unstated soundness precondition that the law layer this
+unit is discussing is precisely what would close. I want to flag this plainly rather than let it pass:
+the derived-laws unit is not only answering an abstract question about what a law is, it is closing a
+concrete gap in an already-ratified-by-workspace-discipline (if not by op) rule that currently licenses a
+class of internal rewrite without checking whether the axis assignment it runs under actually carries
+the property the rewrite depends on.
+
+**Where I would push back, gently, on `42`'s framing.** Section 6.4 refuses, correctly and for reasons I
+agree with (`arvo-toolbox-not-policer.md`'s facts-versus-decisions line), a rewriting or
+equality-saturation *engine* living inside arvo. I want to be careful that my own "generator of laws"
+language from phase one is not read as proposing exactly that engine, because on a plain reading it
+could be. What I meant, and what I think `76`'s "reading two" also meant, is a generator of *facts*, a
+procedure that answers "does this shape, strategy, and operation satisfy this named property" for a
+given instantiation, which is precisely what probe 2 and probe 3 both build and precisely what `42`'s
+canon-shaped sentence in section 6.4 already licenses ("the design states which algebraic properties...
+in a form a downstream consumer can require and have checked"). It is not a procedure that decides
+whether to *apply* a rewrite using those facts, and I did not build anything that decides that, but the
+word "generator" is close enough to "engine" that I want the distinction stated explicitly rather than
+left for a later reader to assume the more dangerous reading. `42`'s sentence is the better one to carry
+forward; mine needed this correction to mean the same thing.
+
+**One thing `42` and `76` both establish that changes how I would state my own "what does a consumer get
+from an unchecked law" section.** I framed this as a trust-boundary question with a design fork
+(defect/benefit as a queryable type-level fact, or as prose-and-bench-only). `76`'s congruence-closure
+framing sharpens the failure mode: an unsound law does not fail loudly, it silently merges two
+computations that were not equal, and the failure surfaces later with no local trace back to which law
+produced it. `42` section 5 gives the concrete, measured version of exactly this: `18` found an
+absorbing-top reading sound "exactly while the computation stays at it," failing at 936 of 5184 chains
+the instant an operation moved off the endpoint, and `35`'s `p9` found the same shape for a different
+pair of properties (absorption without monotonicity, 12.6 percent of shortest paths wrong). Both of
+these are precise, quantified, silent-failure-until-you-look results that make the trust-boundary
+question I raised in the abstract into a question with actual numbers attached, which is exactly the
+kind of grounding my own phase one lacked.
+
+### What I found that neither `76` nor `42` addresses, and is not a duplicate
+
+My probe 3, the strategy-resolution product lattice, checks laws about how *two different strategies'*
+axis assignments resolve when a single expression composes operands under both of them (the
+`arvo-toolbox-not-policer.md` "Hot wrapping + Precise saturating -> Precise" case). `42`'s vocabulary is
+about which properties a single axis *value* carries within one strategy's fold; it does not address what
+happens when two different strategies meet in one expression. I checked this deliberately, before
+reading the panel, and after reading it I found `OPTIONS.md` Q27 states plainly: "Which strategy's laws
+govern a cross-strategy operation is adjacent to that and not the same question," and that `66` found
+nothing in `63`, `64`, or `65` addressing it directly. I have not read `63` through `66` in full (they are
+the number-systems unit, a different topic), so I cannot say with certainty that nothing anywhere in the
+panel has touched this, only that Q27's own author, working from the number-systems side, reports the gap
+as open on that side too. Probe 3's contribution, then, is a first mechanically-checked instance on a
+question the panel's own register already flags as unaddressed, not a duplicate of `42`'s per-axis-value
+work: commutativity, idempotence, and associativity of the resolve operator itself, checked over a
+genuine two-axis product order rather than a single ranking, with a negative control proving the check
+bites when the resolve rule is not a true join. I would want this named as a candidate item for
+`OPTIONS.md` Q27 rather than folded silently into the law-layer vocabulary `42` already built, because it
+answers a different question that vocabulary was not built to answer.
+
+### What I would now say differently if I were rewriting phase one rather than appending to it
+
+I would not claim the two-ideal framing (mathematical-reals ideal versus native-Rust-semantics ideal) is
+mine alone; `42`'s group-theoretic collapse of wrapping addition into "addition in the cyclic group
+Z/2^W" is exactly what makes the Warm ideal precise and checkable rather than merely gestured at, and I
+would cite it directly rather than leaving Warm's ideal as an unstructured "whatever native Rust does." I
+would also narrow my "chain error is not monotone, it spikes" finding to name it correctly as a closure
+phenomenon (the operation's exact result outgrowing its own container) rather than let it read as
+adjacent to `42`'s reachability phenomenon (a clamp being reachable or not by a fold's declared range),
+since a reader who conflated the two would be conflating two mechanisms this unit's own record now shows
+are genuinely distinct.
+
+### What I would keep exactly as stated
+
+The three open directions in phase one (per-operation lemmas plus a combinator versus bounded-length
+enumeration; single ranking versus multi-axis lattice for the strategy space; type-level versus
+canon-and-bench-level defect claims) survive contact with both `42` and `76` unresolved, and I think they
+should stay open rather than be resolved by this reconciliation. `42`'s section 5.3 gives the second and
+third of these a concrete grounding I did not have: the "exchange rate" `34` and `38` leave unset for Hot
+and Warm respectively is, per `40`'s reading which `42` adopts, one unset quantity rather than two, and
+every failure percentage `35`, `18`, and `42` itself measured (70.1, 12.6, 82.7, 70.5, and others) is a
+candidate input to that rate once op sets it. This does not resolve my third open direction; it makes
+clear the direction is not hypothetical, the panel already has the numbers such a decision would be made
+against and is missing only the rate.
+
+### What op's intents still do not license, restated after reading the panel
+
+Both flags from phase one stand. On the first, the provenance of the dispatcher's acceptance-criterion
+quote, neither `42` nor `76` traces it to a file:line either; `42` cites op's nine files by number
+(`01`, `04`, `28`, `32`, `34`, `36`, `37`, `38`, `39`) as its fixed set and does not quote the
+derive/validate/erase sentence verbatim from any of them. I still have not verified it myself. On the
+second, `76` independently reports the identical finding about `no_std`/`dyn`/`TypeId` not appearing in
+`INTENTS.md`, from a completely independent read, which is itself a small additional instance of the
+same finding rather than a new one.
