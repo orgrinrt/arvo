@@ -1,0 +1,6 @@
+int4:    predicate 16 values, enumeration 16 values, equal: true
+fix2.2:  predicate 16 values, enumeration 16 values, equal: true
+float:   predicate 47 values, enumeration 47 values, equal: true
+mutant A (no emin clamp) detected: true
+mutant B (mantissa overflow in enumeration) detected: true
+P1 WORKS
