@@ -13,7 +13,7 @@ was written. Pinned `nightly-2026-05-28` (`71_probes/p0_toolchain.txt`), zero fe
 **The assigned question.** What must two number systems expose for a value to cross between
 them, and is that crossing one relation or several.
 
-**The answer in one line, before the argument.** It is several, it is at least four independent
+**The answer in one line, before the argument.** It is several, it is at least five independent
 things, and the split that matters is not the one the unit has been drawing: **the meaning of a
 crossing is decided by the telescope's first three coordinates on both sides, and its cost by
 the last two, and those two depths are exactly the ones the panel has been treating as one
@@ -154,7 +154,7 @@ the register line at `67:566` that carries it. The repair is two words and no ev
 
 ## 2. A crossing is not one relation, and it is not three either
 
-Four independences, each measured, and together they are the answer to "one relation or
+Five independences, each measured, and together they are the answer to "one relation or
 several".
 
 **The value relation and the pattern relation are independent** (`p1`, section 1's table). Index
