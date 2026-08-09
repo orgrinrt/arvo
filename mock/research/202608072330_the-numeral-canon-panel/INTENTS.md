@@ -197,6 +197,17 @@ statements, verbatim:
 > a finding is known to hold instead of assuming an ambiguous "universal" that shifts constantly and is by
 > design, rejected and unstable
 
+**Op further specified the mechanism**, in the same sitting, correcting an elaboration of the
+coordinator's rather than adding to the intent:
+
+> unmeasured or unknown does not list in the predicate. It's not known, it's assumed not true until proven
+> true. No adding "unsure" into the predicate. Unsure or unmeasured etc explicitly go unstated and
+> implicitly mean not true
+
+He did not mark that separately as ratified, so it is recorded here as his instruction and is not claimed
+for the RATIFIED rung. It replaced a proposal of the coordinator's that a predicate should write
+`unmeasured` on a dimension nobody checked. It should write nothing there.
+
 **The scope of this entry is those two paragraphs.** Op ratified the call and said explicitly that it means
 no more than he said. Anything further, including the dimension list, the `any` against `unmeasured`
 distinction, and the exactness bar for a predicate, is elaboration in

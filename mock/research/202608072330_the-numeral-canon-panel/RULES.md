@@ -469,9 +469,16 @@ asking for one asks the design to stop being what it is. **The work is the arms.
 region and nowhere else, and "everywhere is optimal" is what they add up to rather than something any one
 of them achieves.
 
-**`any` is a claim, and `unmeasured` is a different word.** Most of this panel's corpus is single-threaded,
-so `threads any` is almost always false where `threads unmeasured` is true. They look similar and mean
-opposite things.
+**A predicate lists only what is known to hold, and silence means not true.** Op:
+
+> unmeasured or unknown does not list in the predicate. It's not known, it's assumed not true until proven
+> true. No adding "unsure" into the predicate. Unsure or unmeasured etc explicitly go unstated and
+> implicitly mean not true
+
+So there is no vocabulary for doubt in a predicate; doubt is expressed by omission. An unstated dimension
+is one the finding makes no claim about, and unclaimed defaults to not true. `any` on a dimension is a
+strong claim that the finding was established across it. This panel's corpus is single-threaded, so almost
+nothing has earned `threads any`, and the correct predicate omits threads entirely rather than hedging.
 
 **A law failing in most of its space is a finding about where it holds.** The useful output of
 "distributivity fails at `F > 0`" is the predicate `F = 0` and an arm gated on it. Look for the predicate
