@@ -186,6 +186,24 @@ paraphrased, are:
 
 **Status:** persona-decided. Not ratified. Nothing in `19` settles anything, per `04`.
 
+### 2026-08-08 Checkpoint four, mid-unit-one on the container derivation (`44`-`47`)
+
+**Recorded late, on 2026-08-09, after `59` found the entry missing.** The file is
+`48_persona_checkpoint_four.md` and its calls have been persona-decided since it was written; the gap
+was in this register rather than in the file, so its calls sat unmarked while unit one's second half was
+dispatched against them.
+
+**Entered as a pointer rather than a summary, deliberately.** `59` declined to paraphrase another
+file's steer into this register, and that is right: a persona call restated by a different author is a
+second call wearing the first one's name. Read `48` for what it decided.
+
+What it did, without restating the decisions: it audited the unit's first four files, gave a verdict on
+the candidate permanent sentence, redirected the second four in priority order, and split what was op's
+from what the experts could settle. Its first redirection, a cold derivation, produced the only genuine
+independent instance unit one obtained.
+
+**No authority**, as with every entry here.
+
 ### 2026-08-09 Checkpoint five, mid-unit-two on the format concept (`55`, `56`, `55b`, `57`, `58`)
 
 **Asked:** audit the unit's five files, say what survives the fraction boundary, redirect the second
