@@ -1575,6 +1575,93 @@ under every filing equally and therefore not a distinguisher: a wrapped numeral 
 arithmetic-compatible order (a finite cyclic group admits none), so the canon owes one sentence
 saying which order comparison means there.
 
+## Unit three: the number-system topic
+
+Added by the coordinator from `65` and `66`, the unit's two blind cold derivations, each sourced. **The
+register was rebuilt from files `02` through `27` and had not been extended since**, so unit two's
+options live only in `63` and unit three's lived nowhere until this section. That is the exact failure
+`RULES.md` records twice: an unresolved option has no result attached, so nothing grips it and it falls
+out. These are written out before the unit's consolidation rather than after it.
+
+### Q18. Does a system's selected adaptation belong to its identity or to its realisation
+
+Three positions, not two, and whether the disagreement is substantive or nominal is itself disputed.
+`65` folds the adaptation into system identity. `63`'s C2 puts it in realisation. `66` argues the format
+unit's two-layer split (format, then the strategy-selected induced algebra) dissolves the question
+rather than answering it. **What would distinguish them:** whether two strategies over one format are
+one system with two realisations or two systems, and whether anything downstream reads the difference.
+`65` and `66` both note that arvo's types carry the strategy either way, so type identity agrees under
+all three and the residue may be naming.
+
+### Q19. Are the proposed level hierarchies the same cut or different ones
+
+`65` proposes three levels (system, representation, format) with a change-test attached. `66` proposes
+five (number, system, representation scheme, format, container). **What would distinguish them:** apply
+each one's own change-test to the other's levels and see which collapse. If they collapse cleanly, one
+cut is a refinement of the other and the question is granularity. If they do not, they disagree about
+what a level is.
+
+### Q20. Is the inventory of number systems open or closed
+
+Both files reach this and neither closes it (`65` sections 6 and 7, `66`'s own section on it). A closed
+set is checkable and a canon can enumerate it. An open ring anticipates systems nobody has named, at
+the cost of the canon being unable to say what it covers. **What would distinguish them:** whether the
+concept has a membership test that does not enumerate.
+
+### Q21. Is "number system" broad enough to include things that are not about magnitude
+
+`65` takes the broad reading explicitly, naming the two-element Boolean algebra and the vector space
+GF(2)^n as number systems "not about magnitude at all" (`65` section 1). `66` carries it open and
+records that `63` takes no position either way, while `63`'s own worked example of one format hosting
+several systems is consistent with the broad reading without asserting it. **One cold derivation leaning
+broad is one instance, and one instance decides nothing.**
+
+### Q22. Are set-valued carriers admitted or scoped out
+
+Intervals, and any future error-tracking pair, make the carrier a set of sets (`65` carried-open 1).
+Admitting them generalises the concept cleanly. Scoping them out keeps it smaller. **What would
+distinguish them:** whether certified accuracy should be expressible inside the system concept or beside
+it.
+
+### Q23. Is the role set closed
+
+Storage, compute, interchange, and possibly chain-extent as a fourth (`65` carried-open 2). Closed is
+checkable; open anticipates roles nobody has named. `65` leans closed-with-amendment and holds it open.
+This one matters because op's plural in "numeral representations" is what the role set explains.
+
+### Q24. Does the canon speak about cost at all
+
+An axis in the canon with the numbers on the harness, against the canon staying silent on cost entirely
+(`65` carried-open 3). `65` proposes the first and calls the second defensible and smaller.
+
+### Q25. How is the law inventory named
+
+Marker contracts per law, a structured declaration the derivation reads, or both (`65` carried-open 4).
+Expressibility of the simplest form is established by `65`'s probe. Which form the canon should
+**describe**, without spelling an implementation, is the open part.
+
+### Q26. What kind of thing is a platform-width type
+
+`63`'s C2 states that a value set depending on other data "has no Q and is not a format but storage",
+which read literally places `USize` and `Cap` outside format in the panel's own narrow sense. `66` reads
+this as a third option beyond its own carried fork: not a degenerate instance of the shape family and
+not an orthogonal axis, but a different kind of thing the format concept need not account for.
+**Weight it accordingly:** "storage" is named once, in passing, in a file about a different topic.
+
+### Q27. Is interoperation conversion, resolution, or neither
+
+`66` finds nothing in `63`, `64` or `65` addressing it directly. The nearest material is `63`'s Q3 on
+mixed-numeral addition, which is open, explicitly op's, and load-bearing for the format unit's strongest
+unconditional result. Which strategy's laws govern a cross-strategy operation is adjacent to that and
+not the same question.
+
+### Q28. Should the canon speak of arbitrary-width demands at all
+
+`65` deliberately did not probe the general width-to-container projection and rests its pipeline claim
+on width-as-marker (`65` carried-open 5). Whether the canon should speak of arbitrary const-width
+demands or leave width families to design interacts with the forbidden-features boundary and needs its
+own evidence.
+
 ## Standing
 
 Nothing in this file is evidence, and nothing in it is a decision. It is the working set.
