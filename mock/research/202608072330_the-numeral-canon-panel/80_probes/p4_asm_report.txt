@@ -1,0 +1,151 @@
+p4 asm report: aarch64-apple-darwin, rustc nightly-2026-05-28, -O, --crate-type=lib
+Instruction counts are read off emitted assembly. This is an ad-hoc quick spike
+with no substance for any how-much question. Nothing is timed and no bench ran.
+What it can establish is qualitative: which instructions the backend reached for.
+
+sat_sum_seq
+    whole function: 11 instructions, 0 touching vector regs, 0 uqadd, 0 calls
+    loop LBB0_2: 6 instructions (0 vector)
+        ldrb	w10, [x0], #1
+        add	w8, w10, w8, uxtb
+        cmp	w8, #255
+        csel	w8, w8, w9, lo
+        subs	x1, x1, #1
+        b.ne	LBB0_2
+
+sat_sum_lanes
+    whole function: 90 instructions, 0 touching vector regs, 0 uqadd, 4 calls
+    loop LBB2_3: 34 instructions (0 vector)
+        cmp	x8, x1
+        b.hs	LBB2_15
+        add	x9, x14, x8
+        ldurb	w9, [x9, #-1]
+        add	w9, w9, w13, uxtb
+        cmp	w9, #255
+        csel	w13, w9, w15, lo
+        add	x9, x8, #1
+        cmp	x9, x1
+        b.hs	LBB2_14
+        ldrb	w9, [x14, x8]
+        add	w9, w9, w12, uxtb
+        cmp	w9, #255
+        csel	w12, w9, w15, lo
+        add	x9, x8, #2
+        cmp	x9, x1
+        b.hs	LBB2_13
+        add	x9, x8, #3
+        cmp	x9, x1
+        b.hs	LBB2_12
+        add	x9, x14, x8
+        ldrb	w16, [x9, #1]
+        add	w11, w16, w11, uxtb
+        cmp	w11, #255
+        csel	w11, w11, w15, lo
+        ldrb	w9, [x9, #2]
+        add	w9, w9, w10, uxtb
+        cmp	w9, #255
+        csel	w10, w9, w15, lo
+        add	x9, x8, #4
+        add	x16, x8, #8
+        mov	x8, x9
+        cmp	x16, x1
+        b.ls	LBB2_3
+    loop LBB2_10: 6 instructions (0 vector)
+        ldrb	w12, [x9], #1
+        add	w8, w12, w8, uxtb
+        cmp	w8, #255
+        csel	w8, w8, w11, lo
+        subs	x10, x10, #1
+        b.ne	LBB2_10
+
+sat_sum_lanes16
+    whole function: 87 instructions, 19 touching vector regs, 1 uqadd, 0 calls
+    loop LBB3_2: 4 instructions (2 vector)
+        ldr	q1, [x11], #16
+        uqadd.16b	v0, v0, v1
+        adds	x8, x8, #16
+        b.ne	LBB3_2
+    loop LBB3_6: 6 instructions (0 vector)
+        ldrb	w12, [x10], #1
+        add	w8, w12, w8, uxtb
+        cmp	w8, #255
+        csel	w8, w8, w11, lo
+        subs	x9, x9, #1
+        b.ne	LBB3_6
+
+sat_sum_lanes64
+    whole function: 234 instructions, 78 touching vector regs, 7 uqadd, 0 calls
+    loop LBB4_2: 9 instructions (6 vector)
+        ldp	q4, q5, [x11]
+        uqadd.16b	v3, v3, v4
+        uqadd.16b	v2, v2, v5
+        ldp	q4, q5, [x11, #32]
+        uqadd.16b	v1, v1, v4
+        uqadd.16b	v0, v0, v5
+        add	x11, x11, #64
+        adds	x8, x8, #64
+        b.ne	LBB4_2
+    loop LBB4_7: 6 instructions (0 vector)
+        ldrb	w12, [x10], #1
+        add	w8, w12, w8, uxtb
+        cmp	w8, #255
+        csel	w8, w8, w11, lo
+        subs	x9, x9, #1
+        b.ne	LBB4_7
+
+wrap_sum_seq
+    whole function: 61 instructions, 18 touching vector regs, 0 uqadd, 0 calls
+    loop LBB1_7: 8 instructions (6 vector)
+        ldp	q4, q5, [x8, #-32]
+        ldp	q6, q7, [x8], #64
+        add.16b	v0, v4, v0
+        add.16b	v1, v5, v1
+        add.16b	v2, v6, v2
+        add.16b	v3, v7, v3
+        subs	x11, x11, #64
+        b.ne	LBB1_7
+    loop LBB1_11: 4 instructions (1 vector)
+        ldr	d1, [x9], #8
+        add.8b	v0, v1, v0
+        adds	x8, x8, #8
+        b.ne	LBB1_11
+    loop LBB1_14: 4 instructions (0 vector)
+        ldrb	w11, [x10], #1
+        add	w8, w11, w8
+        cmp	x10, x9
+        b.ne	LBB1_14
+    loop LBB1_13: 9 instructions (0 vector)
+        add	x9, x0, x1
+        ldrb	w11, [x10], #1
+        add	w8, w11, w8
+        cmp	x10, x9
+        b.ne	LBB1_14
+        mov	x0, x8
+        ret
+        add	x10, x0, x9
+        b	LBB1_13
+
+
+=== derived: inner-loop instruction density, from the loop bodies above ===
+
+  arm                inner-loop instrs   elements/iter   instrs/element   vector uqadd
+  sat_sum_seq                        6               1          6.000            no
+  sat_sum_lanes                     34               4          8.500            no
+  sat_sum_lanes16                    4              16          0.250           yes
+  sat_sum_lanes64                    9              64          0.141           yes
+  wrap_sum_seq (control)             8              64          0.125          n/a
+
+  sat_sum_seq is the fold a consumer writes and is what the backend emits when it
+  is told nothing. sat_sum_lanes is the same law used badly: the reassociation is
+  legal and the indexed access defeats it, giving 8.50 against 6.00, worse than not
+  having the law. sat_sum_lanes16 and sat_sum_lanes64 are the same law with the
+  bounds proof supplied, and they are the only arms in which uqadd appears at all.
+  wrap_sum_seq is the control: wrapping addition is associative unconditionally, the
+  backend knows it, and it reaches 0.125 with no help, which is the density the
+  law-licensed saturating arm gets to within 13%.
+
+  Instructions per element is not time. Nothing here is timed and no bench ran, so
+  every ratio above is an ad-hoc quick spike with no substance for a how-much
+  question. What is established is qualitative and is a compile fact: the vector
+  saturating-add instruction appears only where the law licensed the regrouping,
+  and never in the arm the backend produced on its own.

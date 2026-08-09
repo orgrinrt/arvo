@@ -1,0 +1,9 @@
+p2c: closed-form verdict, cross-checked against the sweep on a model band
+  model band: widths 2..=5
+  agreement over the band, evaluated at compile time: true
+  closed_verdict(wrap, w = 64) = true   (constant time, no enumeration)
+  closed_verdict(sat,  w = 64) = false
+  reassociating_consumer::<Policy<0>>() = licensed
+
+What is still unchecked, and it is now exactly one named thing:
+  the transfer of the agreement from widths 2..=5 to width 64.

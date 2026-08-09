@@ -1,0 +1,78 @@
+p3 asm report: aarch64-apple-darwin, rustc nightly-2026-05-28, -O
+
+__RINvCs9VZ2pobYgZo_19p3_select_and_erase10sel_staticKm0_EB2_
+    instructions: 3   conditional branches: 0   csel-family: 0
+      add	x8, x2, x1
+      mul	x0, x8, x0
+      ret
+
+__RINvCs9VZ2pobYgZo_19p3_select_and_erase10sel_staticKm8_EB2_
+    instructions: 6   conditional branches: 0   csel-family: 0
+      mov	x8, #128
+      madd	x9, x1, x0, x8
+      madd	x8, x2, x0, x8
+      asr	x8, x8, #8
+      add	x0, x8, x9, asr #8
+      ret
+
+__RNvCs9VZ2pobYgZo_19p3_select_and_erase11sel_dynamic
+    instructions: 13   conditional branches: 0   csel-family: 1
+      sub	w8, w3, #1
+      mov	w9, #1
+      lsl	x8, x9, x8
+      madd	x9, x1, x0, x8
+      asr	x9, x9, x3
+      madd	x8, x2, x0, x8
+      asr	x8, x8, x3
+      add	x8, x9, x8
+      add	x9, x2, x1
+      mul	x9, x9, x0
+      cmp	w3, #0
+      csel	x0, x8, x9, ne
+      ret
+
+__RNvCs9VZ2pobYgZo_19p3_select_and_erase13sel_static_f0
+    instructions: 1   conditional branches: 1   csel-family: 0
+      b	__RINvCs9VZ2pobYgZo_19p3_select_and_erase10sel_staticKm0_EB2_
+
+__RNvCs9VZ2pobYgZo_19p3_select_and_erase13sel_static_f8
+    instructions: 1   conditional branches: 1   csel-family: 0
+      b	__RINvCs9VZ2pobYgZo_19p3_select_and_erase10sel_staticKm8_EB2_
+
+
+=== same file compiled as --crate-type=lib, so the control arms survive DCE ===
+
+10sel_staticKm0_EB2_           instructions: 3   csel-family: 0
+      add	x8, x2, x1
+      mul	x0, x8, x0
+      ret
+
+10sel_staticKm8_EB2_           instructions: 6   csel-family: 0
+      mov	x8, #128
+      madd	x9, x1, x0, x8
+      madd	x8, x2, x0, x8
+      asr	x8, x8, #8
+      add	x0, x8, x9, asr #8
+      ret
+
+11sel_dynamic                  instructions: 13  csel-family: 1
+      sub	w8, w3, #1
+      mov	w9, #1
+      lsl	x8, x9, x8
+      madd	x9, x1, x0, x8
+      asr	x9, x9, x3
+      madd	x8, x2, x0, x8
+      asr	x8, x8, x3
+      add	x8, x9, x8
+      add	x9, x2, x1
+      mul	x9, x9, x0
+      cmp	w3, #0
+      csel	x0, x8, x9, ne
+      ret
+
+13sel_static_f0                instructions: 1   csel-family: 0
+      b	__RINvCs27aTlh8mbtI_19p3_select_and_erase10sel_staticKm0_EB2_
+
+13sel_static_f8                instructions: 1   csel-family: 0
+      b	__RINvCs27aTlh8mbtI_19p3_select_and_erase10sel_staticKm8_EB2_
+

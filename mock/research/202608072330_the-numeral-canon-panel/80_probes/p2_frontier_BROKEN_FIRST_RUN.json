@@ -1,0 +1,659 @@
+[
+ {
+  "arity": 2,
+  "width": 1,
+  "tuples": 4,
+  "log2_tuples": 2,
+  "status": "accept",
+  "seconds": 0.63,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 2,
+  "tuples": 16,
+  "log2_tuples": 4,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 3,
+  "tuples": 64,
+  "log2_tuples": 6,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 4,
+  "tuples": 256,
+  "log2_tuples": 8,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 5,
+  "tuples": 1024,
+  "log2_tuples": 10,
+  "status": "accept",
+  "seconds": 0.11,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 6,
+  "tuples": 4096,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.17,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 7,
+  "tuples": 16384,
+  "log2_tuples": 14,
+  "status": "accept",
+  "seconds": 0.39,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 8,
+  "tuples": 65536,
+  "log2_tuples": 16,
+  "status": "accept",
+  "seconds": 1.3,
+  "note": ""
+ },
+ {
+  "arity": 2,
+  "width": 9,
+  "tuples": 262144,
+  "log2_tuples": 18,
+  "status": "refuse-long-running",
+  "seconds": 4.17,
+  "note": "error: constant evaluation is taking a long time"
+ },
+ {
+  "arity": 3,
+  "width": 1,
+  "tuples": 8,
+  "log2_tuples": 3,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 2,
+  "tuples": 64,
+  "log2_tuples": 6,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 3,
+  "tuples": 512,
+  "log2_tuples": 9,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 4,
+  "tuples": 4096,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 5,
+  "tuples": 32768,
+  "log2_tuples": 15,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 6,
+  "tuples": 262144,
+  "log2_tuples": 18,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 7,
+  "tuples": 2097152,
+  "log2_tuples": 21,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 8,
+  "tuples": 16777216,
+  "log2_tuples": 24,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 9,
+  "tuples": 134217728,
+  "log2_tuples": 27,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 10,
+  "tuples": 1073741824,
+  "log2_tuples": 30,
+  "status": "accept",
+  "seconds": 0.22,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 11,
+  "tuples": 8589934592,
+  "log2_tuples": 33,
+  "status": "accept",
+  "seconds": 0.12,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 12,
+  "tuples": 68719476736,
+  "log2_tuples": 36,
+  "status": "accept",
+  "seconds": 0.15,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 13,
+  "tuples": 549755813888,
+  "log2_tuples": 39,
+  "status": "accept",
+  "seconds": 0.2,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 14,
+  "tuples": 4398046511104,
+  "log2_tuples": 42,
+  "status": "accept",
+  "seconds": 0.32,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 15,
+  "tuples": 35184372088832,
+  "log2_tuples": 45,
+  "status": "accept",
+  "seconds": 0.54,
+  "note": ""
+ },
+ {
+  "arity": 3,
+  "width": 16,
+  "tuples": 281474976710656,
+  "log2_tuples": 48,
+  "status": "accept",
+  "seconds": 1.0,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 1,
+  "tuples": 16,
+  "log2_tuples": 4,
+  "status": "accept",
+  "seconds": 0.21,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 2,
+  "tuples": 256,
+  "log2_tuples": 8,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 3,
+  "tuples": 4096,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 4,
+  "tuples": 65536,
+  "log2_tuples": 16,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 5,
+  "tuples": 1048576,
+  "log2_tuples": 20,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 6,
+  "tuples": 16777216,
+  "log2_tuples": 24,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 7,
+  "tuples": 268435456,
+  "log2_tuples": 28,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 8,
+  "tuples": 4294967296,
+  "log2_tuples": 32,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 9,
+  "tuples": 68719476736,
+  "log2_tuples": 36,
+  "status": "accept",
+  "seconds": 0.11,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 10,
+  "tuples": 1099511627776,
+  "log2_tuples": 40,
+  "status": "accept",
+  "seconds": 0.12,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 11,
+  "tuples": 17592186044416,
+  "log2_tuples": 44,
+  "status": "accept",
+  "seconds": 0.14,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 12,
+  "tuples": 281474976710656,
+  "log2_tuples": 48,
+  "status": "accept",
+  "seconds": 0.17,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 13,
+  "tuples": 4503599627370496,
+  "log2_tuples": 52,
+  "status": "accept",
+  "seconds": 0.25,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 14,
+  "tuples": 72057594037927936,
+  "log2_tuples": 56,
+  "status": "accept",
+  "seconds": 0.4,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 15,
+  "tuples": 1152921504606846976,
+  "log2_tuples": 60,
+  "status": "accept",
+  "seconds": 0.71,
+  "note": ""
+ },
+ {
+  "arity": 4,
+  "width": 16,
+  "tuples": 18446744073709551616,
+  "log2_tuples": 64,
+  "status": "error",
+  "seconds": 0.03,
+  "note": "error: literal out of range for `u64`\n  --> /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel/80_probes/p2_generated/gen_w16_k4.rs:31:22\n   |\n31 |     let total: u64 = 18446744073709551616;\n   |                      ^^^^^^^^^^^^^^^^^^^^\n   |\n   = note: the literal `18446744073709551616` does not fit into the type `u64` whose range is `0..=18446744073709551615`\n"
+ },
+ {
+  "arity": 5,
+  "width": 1,
+  "tuples": 32,
+  "log2_tuples": 5,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 2,
+  "tuples": 1024,
+  "log2_tuples": 10,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 3,
+  "tuples": 32768,
+  "log2_tuples": 15,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 4,
+  "tuples": 1048576,
+  "log2_tuples": 20,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 5,
+  "tuples": 33554432,
+  "log2_tuples": 25,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 6,
+  "tuples": 1073741824,
+  "log2_tuples": 30,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 7,
+  "tuples": 34359738368,
+  "log2_tuples": 35,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 8,
+  "tuples": 1099511627776,
+  "log2_tuples": 40,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 9,
+  "tuples": 35184372088832,
+  "log2_tuples": 45,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 10,
+  "tuples": 1125899906842624,
+  "log2_tuples": 50,
+  "status": "accept",
+  "seconds": 0.12,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 11,
+  "tuples": 36028797018963968,
+  "log2_tuples": 55,
+  "status": "accept",
+  "seconds": 0.14,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 12,
+  "tuples": 1152921504606846976,
+  "log2_tuples": 60,
+  "status": "accept",
+  "seconds": 0.19,
+  "note": ""
+ },
+ {
+  "arity": 5,
+  "width": 13,
+  "tuples": 36893488147419103232,
+  "log2_tuples": 65,
+  "status": "error",
+  "seconds": 0.03,
+  "note": "error: literal out of range for `u64`\n  --> /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel/80_probes/p2_generated/gen_w13_k5.rs:31:22\n   |\n31 |     let total: u64 = 36893488147419103232;\n   |                      ^^^^^^^^^^^^^^^^^^^^\n   |\n   = note: the literal `36893488147419103232` does not fit into the type `u64` whose range is `0..=18446744073709551615`\n"
+ },
+ {
+  "arity": 6,
+  "width": 1,
+  "tuples": 64,
+  "log2_tuples": 6,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 2,
+  "tuples": 4096,
+  "log2_tuples": 12,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 3,
+  "tuples": 262144,
+  "log2_tuples": 18,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 4,
+  "tuples": 16777216,
+  "log2_tuples": 24,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 5,
+  "tuples": 1073741824,
+  "log2_tuples": 30,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 6,
+  "tuples": 68719476736,
+  "log2_tuples": 36,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 7,
+  "tuples": 4398046511104,
+  "log2_tuples": 42,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 8,
+  "tuples": 281474976710656,
+  "log2_tuples": 48,
+  "status": "accept",
+  "seconds": 0.11,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 9,
+  "tuples": 18014398509481984,
+  "log2_tuples": 54,
+  "status": "accept",
+  "seconds": 0.11,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 10,
+  "tuples": 1152921504606846976,
+  "log2_tuples": 60,
+  "status": "accept",
+  "seconds": 0.12,
+  "note": ""
+ },
+ {
+  "arity": 6,
+  "width": 11,
+  "tuples": 73786976294838206464,
+  "log2_tuples": 66,
+  "status": "error",
+  "seconds": 0.03,
+  "note": "error: literal out of range for `u64`\n  --> /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel/80_probes/p2_generated/gen_w11_k6.rs:31:22\n   |\n31 |     let total: u64 = 73786976294838206464;\n   |                      ^^^^^^^^^^^^^^^^^^^^\n   |\n   = note: the literal `73786976294838206464` does not fit into the type `u64` whose range is `0..=18446744073709551615`\n"
+ },
+ {
+  "arity": 8,
+  "width": 1,
+  "tuples": 256,
+  "log2_tuples": 8,
+  "status": "accept",
+  "seconds": 0.11,
+  "note": ""
+ },
+ {
+  "arity": 8,
+  "width": 2,
+  "tuples": 65536,
+  "log2_tuples": 16,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 8,
+  "width": 3,
+  "tuples": 16777216,
+  "log2_tuples": 24,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 8,
+  "width": 4,
+  "tuples": 4294967296,
+  "log2_tuples": 32,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 8,
+  "width": 5,
+  "tuples": 1099511627776,
+  "log2_tuples": 40,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 8,
+  "width": 6,
+  "tuples": 281474976710656,
+  "log2_tuples": 48,
+  "status": "accept",
+  "seconds": 0.09,
+  "note": ""
+ },
+ {
+  "arity": 8,
+  "width": 7,
+  "tuples": 72057594037927936,
+  "log2_tuples": 56,
+  "status": "accept",
+  "seconds": 0.1,
+  "note": ""
+ },
+ {
+  "arity": 8,
+  "width": 8,
+  "tuples": 18446744073709551616,
+  "log2_tuples": 64,
+  "status": "error",
+  "seconds": 0.03,
+  "note": "error: literal out of range for `u64`\n  --> /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel/80_probes/p2_generated/gen_w8_k8.rs:31:22\n   |\n31 |     let total: u64 = 18446744073709551616;\n   |                      ^^^^^^^^^^^^^^^^^^^^\n   |\n   = note: the literal `18446744073709551616` does not fit into the type `u64` whose range is `0..=18446744073709551615`\n "
+ }
+]

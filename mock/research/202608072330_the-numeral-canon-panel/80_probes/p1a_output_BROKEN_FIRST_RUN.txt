@@ -1,0 +1,11 @@
+p1a: a declared law that nothing checks
+model window Q = [-8, 7], fold arity 4
+
+      Wrap  declares AssocAdd: yes   vectors: 65536   left-fold != tree-fold: 65536
+            first witness [-8, -8, -8, -8]: left=0 tree=-8
+ SatSigned  declares AssocAdd: yes   vectors: 65536   left-fold != tree-fold: 16268
+            first witness [-8, -8, -8, 1]: left=-7 tree=-8
+
+Both types satisfy the bound `P: AssocAdd`. The compiler raised nothing.
+One of the two declarations is false and the consumer of the law is wrong
+on every vector counted above, with no local signal at the failure site.
