@@ -1767,6 +1767,80 @@ this and is not called a bench.
 **What would reopen it if someone declares it closed:** any doability claim in the canon whose supporting
 evidence is single-threaded, where the shape it licenses would be reached from more than one thread.
 
+### Q33 to Q37. Five options that lived only in member files until the unit's consolidation
+
+**These existed nowhere but the member files that raised them, and reached this register only because a
+consolidation went looking.** That is the third appearance of the loss mechanism `RULES.md` records: an
+unresolved option carries no result, so nothing grips it, and the options most likely to be lost are the
+ones the panel most needs. The first two instances were found by the check after the drop. This one was
+caught before it, which is the requirement working.
+
+Carried verbatim from `74` section 6, with their distinguishers intact, mapped: **Q33 = O-A**, **Q34 =
+O-B**, **Q35 = O-C**, **Q36 = O-D**, **Q37 = O-E**. The `O-` labels are `74`'s own and are kept so the
+consolidation and the register can be read against each other.
+
+**O-A. Is the ambient domain's operation family fixed at addition and multiplication, or a
+parameter?** (`67:571-584`; merged with Q21 by the amendment.) **Fixed**: the concept describes
+one arithmetic; the law layer's entire evidence base is correctly scoped as it stands; the
+tropical semiring the algorithm crates compute in is described by the algorithm crates. Cost: the
+named selling point computes in something the canon does not cover, and the one law those
+algorithms need, addition distributing over min, is quantified over a pair of operations from two
+families, which no instrument in the panel measures. **A parameter**: one representable set
+carries several ambient domains; the Boolean and GF(2) structures and the tropical semiring
+become ordinary members; the index-1 crossing becomes something the concept can talk about.
+Cost: every law sentence acquires a scope it did not need, prefix-1 equality becomes a relation
+somebody must define, and the reduction space varies along an unenumerated axis. Distinguisher:
+whether any consumer needs one generic algorithm spanning both families, or naming two families
+separately costs nothing because no code spans them.
+
+**O-B. Two shapes of composition, not one.** (`67:586-598`.) The aggregate sense of "composition"
+contains two structurally different things. **Point compositions**: a datum is a tuple of
+numerals travelling together (stored-pair rationals, intervals, error-carrying pairs), owing its
+own laws at the composition layer. **Shared-parameter aggregates**: many data plus one parameter
+participating in each datum; arvo ships one at the realisation layer (the packed stride, which
+leaves the representable set constant) and excludes one at the identity layer (a block exponent,
+which moves it, eight distinct sets over eight exponents). Distinguisher of treatment: whether
+the shared parameter participates in the arithmetic; if not, the aggregate is a layout fact and
+the element remains a format; if so, the element has no representable set of its own and the
+concept currently has no home for it.
+
+**O-C. The ownership key as a structural axis.** (`70:333-345`.) **Adopt the key**: every chain
+component carries an owner and a resolution time (type, aggregate, target, runtime datum;
+monomorphisation or runtime), subsuming the per-value and per-aggregate bottom tier, the
+two-layer shared parameters, and the platform-width case. Cost: every per-value canon sentence
+acquires an implicit whose-components rider, and aggregate-owned cases need a per-aggregate
+quantifier, which is new surface. **The alternative**: treat aggregate cases as compositions with
+no key on the base concept, keeping the base smaller and forcing every shared-parameter case into
+the composition layer, including the platform-width case, where that filing has no obvious
+content. Distinguisher: whether any consumer writes one contract generic over ownership, or
+naming the cases separately costs nothing because no code spans them.
+
+**O-D. Whose reduction governs a lossy crossing?** (`71:626-637`.) **The source's**: a value
+finishes being a value of its system before it becomes one of another; cost, the target's
+declared policy does not govern values entering it, which reads badly at an ingest boundary.
+**The target's**: the crossing is the target's business; cost, a value can be adapted by a policy
+its own system never selected, and this is the route on which a wide wrapping value saturates.
+**A third named at the crossing site**: the most expressive, the choice visible where made; cost,
+one more thing at every crossing site and no default for a consumer who writes nothing.
+Distinguisher: whether any consumer writes a crossing whose correct answer differs from both
+endpoints' own selections; the observable difference between the first two is 226 of 256 source
+values in the measured cell. Scoped by `72`: the question exists only at lossy crossings.
+
+**O-E. Does the canon name crossing classes at all, and when is an order owed?** (`71:639-650`,
+`72:289-299`, two entries with one subject, consolidated with both authors' options intact.)
+On naming: **name all five classes**, so a crossing states which coordinate it moves and the law
+obligation attaches to the class; cost, five names plus a rule that a composite names its
+intermediate. **Name none**, one crossing relation with a declared preservation set; cost, the
+classes still exist and get respelled in every sentence needing them. **Name two**, values and
+patterns; cheapest, and cannot state the order problem, which is about coordinates. On the order:
+**always**, for every multi-coordinate crossing; cost, ceremony with no content at lossless
+crossings. **Only where lossy**; stated conservatively on terms (does the target's set contain
+the source's). **Never, one global order fixed by the canon**; cost, wrong for one of the two
+readings at every lossy site. Distinguishers: whether any canon sentence quantifies over one
+class and not another (at least two do, per the independences), and whether any consumer writes a
+lossy crossing without an explicit narrowing already in view.
+
+
 ## Standing
 
 Nothing in this file is evidence, and nothing in it is a decision. It is the working set.
