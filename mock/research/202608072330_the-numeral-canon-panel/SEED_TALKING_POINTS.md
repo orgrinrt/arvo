@@ -736,3 +736,210 @@ two further layers; and the FZ16 hole that showed the receipt list had no negati
 (`124:3949-3998`). **Register mark: new.**
 
 ---
+
+## 4. Refuted or dropped, beyond what the carried droplist already holds
+
+`DROPLIST.md` carries the archive's cumulative droplist verbatim (its sections 6 and 7), so the bulk
+of the closed routes are already in front of the current panel with their diagnostics. What follows
+is only what that carry-over does NOT show.
+
+**T43. Ratified-then-reversed is a category, and the droplist under-represents it.** The droplist
+records removals; it does not flag which removals had been *ratified* first. Four had: canonicity
+(`127b` ratified, `130b` withdrawn by op, later structurally confirmed dead by the antichain);
+the width enumeration (converged with two expert agreements and three compiled refutations of
+alternatives, overturned by op the same day it would have entered the base); the `70b` `Warm` clamp
+cell (declared stale under op's own restated intent at `142b`); and `Warm`'s headroom rule
+(condemned at `139b`, its deletion benched at `141`/`142` and **left unratified at close**, so the
+archive ends with the ratified table's `StoredWidth = doubled` cell and a committed bench trail
+recommending its deletion standing unreconciled). A re-tester importing any preset-table cell from
+the seed should know which cells sat in this category. Sources: `SETTLED_container.md:385-420`,
+`SETTLED_strategy.md` casualties.
+
+**T44. Claims that died of provenance rather than content.** File `130` cited five probe files that
+existed nowhere (the incident behind the workspace's evidence rule); the probes were later recovered
+in a bulk pass (fourteen directories, 361 files, recorded at `140b` per
+`SETTLED_surface.md:449-458`), and the claim had by then been independently redone. File `146`'s
+`From` compile carried `#![feature(generic_const_args)]` plus `-Znext-solver=globally`, both
+disallowed, and was voided as evidence while its coherence argument survived on the permitted
+solver (`SETTLED_laws.md:448-459`). File `59`'s strategy-door table was voided whole for
+`tree-meaning` grounding (justifying design rows from shipped doc comments), the incident behind the
+archive's forbidden-ground rule. The lesson content for the current panel duplicates `RULES.md`'s
+evidence section; the instances are listed because re-testers will encounter these files' claims
+quoted elsewhere in the archive.
+
+**T45. The benches that had never been committed.** The archive discovered mid-run that
+`mock/benches/.gitignore` had been discarding every bench artifact the panel produced, which forced
+a re-measurement and softened a ratified figure (13-to-17x becoming 10-to-17x) and is the origin of
+the workspace's committed-artifact discipline (`124:2804-2816`). Anyone comparing archive-era
+numbers against the current committed trails should know the era boundary exists.
+
+**T46. Refutations of the archive's own instruments, kept because instruments get rebuilt.** The
+erasure oracle's two false-negative regimes (the current Q1 entry carries this); the carrier-only
+derivation passing the erasure certifier at full marks while occupying 23.1% more memory than the
+strategy promises, because the instrument compares one operation against one instruction and has no
+array in it (`OPTIONS.md`'s derivation-outputs section carries this from the current panel's side);
+the packed round-trip check that returns correct answers whenever the truncated bits happened to be
+zero (data-dependent blindness); and the model-inadequacy asymmetry: a model that undercounts
+refusals fails loudly, **a model too narrow to see a value disagreement returns a quietly wrong
+number, and no mechanical guard for the second case was ever found** (`124:3821-3829`). That last
+sentence is a standing hazard for every model-width sweep the current panel runs.
+
+## 5. Theorised and abandoned inside the archive, with the reasons
+
+An abandoned idea plus its reason outranks either alone. These are ideas the archive itself gave up,
+distinct from droplist refutations in that the current droplist's terse entries do not convey the
+arc.
+
+**T47. The three-relation ladder (weak, Kleene, graded) as the law vocabulary.** Imported from
+partial-algebra literature, then replaced outright by the nine-point view lattice because the named
+relations turned out to be three points of a larger non-chain space, and the question "which
+relation" dissolved into "which finest view" (`SETTLED_laws.md:75-101`). Abandoned with it: op's
+adopted name "partial associativity" (see 1.12). If the current format unit's law layer ever
+reaches for the literature's relation names, this arc is the warning that the archive tried it and
+found the space bigger than the names.
+
+**T48. `Growth` and `Widening` as axes.** Both ratified into the ten-axis table, both later ratified
+out at `39b`: `Widening`'s three instances decompose into which primitive is named, what numeral its
+return type is, and that numeral's own storage; `Growth` left the law key and then `Policy` entirely
+after a compiled structural theorem (no operation expressible in the dispatch discipline can have
+policy-dependent growth, coherence refusing the two-impl shape outright) (`124:1627-1702`). The
+current panel's Q5 axis debate should know the archive both added and removed axes, and what the
+removal argument looked like.
+
+**T49. `LogicalWidth` as a primitive axis, and the ten-axis table itself.** D69's table was
+overturned at `30b` (identity parameterised in mathematical coordinates; precision primitive, total
+width derived), and the surviving members were reshaped continuously. The archive's final position:
+no replacement count asserted, because the trait-table members and D69's axes are different
+populations and an uncheckable count is the shape the discipline refuses (`124:1651-1658`).
+
+**T50. The single `Sign` axis.** Split into `SignDomain` (a value fact) and `SignIndexing` (a datum
+fact) after one cell (`SC_SAT_SYM` versus `SC_SAT`: the identical clamp delivering -8 under
+`AsymmetricLow` and -7 under `Symmetric`) showed the single axis under-determined the set; the split
+is what makes SystemC's own pair expressible, the standards test passing (`124:986-991`).
+**Register mark: sharpens** the current panel's sign-digit question (the `Precision` counts-the-sign
+open item in `OPTIONS.md`), which is the same territory from the coordinate side.
+
+**T51. The step-A/step-B seam as a neutral comparison frame.** True of the const-keyed route,
+dissolving entirely under structural keying, and flagged as a mistake when used as a comparison
+table for every candidate (`SETTLED_surface.md:462-469`). A warning label for Q9 work: the seam
+vocabulary is route-relative.
+
+**T52. The ambient-and-realisation decomposition.** Offered as a technique (meet and join in the
+ambient lattice of finite rational sets, a partial `realise` back), never as a fourth answer to the
+family question; its content (every derived numeral is the tightest numeral containing the exact
+result set) was independently re-derived twice and kept while the framing was dropped. The current
+Q8 already carries this from the current panel's own `03`/`07`/`08`; the archive's parallel arrival
+is corroboration-shaped history, not corroboration.
+
+## 6. Blind spots: questions the archive asked and left, or never asked
+
+**T53. The 29-item queue addressed to op at close.** `124` section 2 ends with a ranked list of
+twenty-nine op-owed items, and the panel closed with nearly all of them unanswered (the panel was
+closed, not finished). The list itself (`124:5075-5174`) is the densest single inventory of
+unresolved design calls in the archive: the array-grammar fork, the truth-contract reductions, the
+`S` bound confirmation, the contract split's one-line ratification, the D68 supersession, the
+register's grid marker, `W_MAX`, the platform crate's name, three token collisions, `Bool`'s
+surviving door, the rotation benches, division's grading axis, `Hot`'s default float environment,
+the sampling spec, the perimeter-rule clause, the taxonomy rows, `FromConstant`, the four
+`unstable-features.md` edits, transcendental packaging, the digest history split, membership
+scoping, preset divergence, the cadence discrepancy, the seventeen unreconciled round rows, the
+tautology checklist, construction one's status, `Folded`'s witness, the container projection's home,
+and the `TotalOrd` one-or-two-traits question. Every one is a candidate talking point when its
+subject area reopens; they are indexed here once rather than duplicated per section.
+
+**T54. The owed-artifact list at close.** `124` section 5's owed items each name a closing artifact
+and none was produced: the Boolean-algebra law suite (the largest: no law is asserted anywhere over
+any truth type, and 672 green tests say nothing about the variety membership the truth-contract
+argument rests on); the bitfield overlap tests (both directions); the IEEE primary-source reads
+(verbatim, position-cited: clauses 5, 7, 7.6, 9.2, §4.3.1, §5.12) and the ISA bundle (ARM DDI 0487,
+Intel SDM, RISC-V, LLVM LangRef), everything having been cited secondary; the nine-bit `u16`-class
+companion model for the container-class transfer coordinate; the `foldnum` compile against the real
+contract; statement 0 against `quantize` and `roundToIntegralExact`; the saturating-reduction
+vector kernels (`uqadd`, `paddus*`), a real unpriced cost landing on arvo; the multi-limb
+carry-chain codegen test (a dependency on an optimiser heuristic with no fallback intrinsic on
+aarch64); the round-to-odd `W >= F + 2` const bound; the `notko-hlist` binding-time sentence
+(flagged by six members independently, never opened); and the uniform-sampling question in
+`arvo-pseudorand` (uniform over values or over data, divergent the moment the grid is non-uniform).
+A re-tester picking any archive topic should check this list first, because the gap it names is
+usually the cheapest attack on the topic's carried conclusion.
+
+**T55. The three instruments named and never run.** A sweep of the ninety-nine member files and
+probe directories for material no consolidation absorbed; the register diff against the
+inherited-state topic file (fifty-two decisions, never diffed against anything); and a restoration
+ledger keyed on establishing sources (`124:5564-5575`). The first two find material; this file is
+not any of them (it swept consolidations, sweeps, op files and the late stretch, not the ninety-nine
+member files individually).
+
+**T56. Thread A, B, C: op explicitly kept all three open with instructions to keep iterating.**
+Thread A, the consumer-facing diagnostic surface ("Option 1 but not just price, iterate on; there
+might be ergonomics to be won"), whose strongest measured result was nominal constructors plus
+per-axis modifier types rendering every axis for free in errors, with three unresolved costs.
+Thread B, fallible arithmetic ("what does the best possible form unlock"), whose sharpest reframe
+was that **delivery of a refusal (sum type, absorbing bottom in a spare pattern, sticky flag) is a
+`Lowering`-level choice by the axis-sorting test**, with three real unresolved costs including the
+IEEE-2008 min/max selection defect reappearing in a shipped algorithm crate, and the finding that
+`ConstantTime` was keyed on data that does not decide it. Thread C, leaf truth ("find a shape where
+the check IS the typestate rather than sitting beside it"), never achieved. (`124:5586-5696`.)
+**Register mark: new**, all three; Thread B touches Q4's `Precise`-on-`inexact` material and I5.
+
+**T57. Questions the archive never asked.** Noted while sweeping, as absences: nothing in 320 files
+priced compile cost for a real consumer crate (named as open repeatedly, never done); nothing
+measured any strategy on any target other than one Apple M1 (every silicon fact is one host plus
+cross-compiled assembly reads); random and strided access patterns were never measured for any
+layout (both lineages name it); the write side of packing was never priced (the current Q7 carries
+the same gap); and no file ever asked what the canon's own document structure should be, which the
+current panel now owns via the canon rules. These are gaps in both panels' evidence, stated so the
+overlap is visible.
+
+## 7. What re-testing costs, and where the instruments stand
+
+**The probe corpus largely survives on disk.** 117 probe directories in the archive, recovered
+where they had been scratch-only (the `140b` recovery pass; `128_probes/`, `129_probes/` and
+kin exist). The two re-runs performed for this file each cost under a second of compile time; the
+pattern (copy the probe beside this file, compile under the pin, commit source and log) is the
+route by which any archive claim becomes current evidence. Claims resting on **exhaustive sweeps**
+(the 41M-operation quantiser check, the 509M-instance symmetry check, the 65,536-value digest
+sweeps) are minutes of compute; claims resting on **the bench harness** are already current where
+their artifacts are committed in `mock/benches/`, and re-interpretation rather than re-measurement
+is what those need.
+
+**Priority order, if the current panel wants one instrument re-established per live question.** Q5
+and Q6: the exponent-form preset key probes (archive files 119/122) and the `warm-clamp-*` trails
+already committed. Q8: the within-family closure conditions and the 81-versus-zero discrepancy
+(T24), which poisons any imported count until resolved. Q9: the total ladder (re-run done), the
+33.4-second emission defect, and the `W_MAX` pricing curve. Q11 and Q12: the interior-safety
+accumulator forms and the signed-fold material. The peripheral topics (T35 through T42) each carry
+their own probe directories and none is blocked on anything.
+
+## 8. Coverage, bounded honestly
+
+**Read closely:** the archive's final consolidation `124_consolidation_twelve.md` in full except
+parts of sections 3, 4, and 6 through 10 (its droplist section 6 is carried verbatim in the current
+`DROPLIST.md` and was read there); `112_the_op_material_sweep.md` in full; `SETTLED.md` and all
+four `SETTLED_*.md` sweeps in full (identical to the seed copies, diffed to confirm);
+`13c_op_the_standard_and_the_mode.md` at the quoted ranges; the decision-register talk file at the
+D54, D56 and D67 ranges; the openings of `125`, `126`, `128`, `129`, `141`, `142`;
+`137_probes/p5_total_ladder.rs` and `76_probes/b1_structural_array.rs` (compiled). On the current
+panel's side: `INTENTS.md`, `RULES.md`, `OPTIONS.md`, `DROPLIST.md` in full, and
+`63_spj_consolidation_the_format_concept.md` sections 6 and 7.
+
+**Skimmed via structure and cross-reference only:** the remaining op checkpoints (their content
+reached through `124` section 2 and `112`, both of which quote them at line ranges; headline quotes
+verified at source where they lead a section above); the post-124 files `130` through `151` beyond
+what the four sweeps carry (the sweeps' own coverage statements were used as the map, and they
+declare exactly what they read).
+
+**Not opened:** the ninety-nine numbered member files `01` through `108` individually (reached only
+through the consolidations and sweeps, which is the same exposure the archive's own instruments
+warned about); the probe directories' contents beyond the two compiled and the listings checked;
+`110_consolidation_eleven.md` (superseded by `124` on its own terms); `109`, `111`, `113` through
+`123` (reached through `124`'s citations of them). **A talking point sourced only from `124` or a
+sweep inherits those documents' compressions**, and the archive's own history says compressions
+drop live options; the member-file sweep (T55, first instrument) is the corrective this file does
+not perform.
+
+**What this file would most mislead a reader about if read carelessly:** it is organised to look
+like a map of established results. It is a map of claims. The archive's most instructive property,
+demonstrated a dozen times above, is that its confident, compiled, consolidated claims kept being
+overturned by the next instrument pointed at them. That property should be assumed to hold of
+everything in this file, including the parts that look most settled.
