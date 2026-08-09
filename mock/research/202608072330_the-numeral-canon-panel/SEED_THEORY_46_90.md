@@ -22,7 +22,7 @@ which I read in full for 49, 58, and 78, and which name every checkpoint's conte
 citations.
 
 I opened probe directories for the files this document leans on most (46, 50, 51, 57, 59, 62, 70,
-80, 84), read `OUTCOMES.md` in each, and in three cases (46-adjacent `08_probes/`, 57's bench, 59's
+80, 84), read `OUTCOMES.md` in each, and in three cases (46-adjacent `OLD_08_probes/`, 57's bench, 59's
 `.gitignore`) went further and independently reproduced or spot-checked the claim myself against the
 live repository state, described in the section "What I checked myself" below. I did not re-run any
 other probe. I read `INTENTS.md`, `RULES.md`, and `DROPLIST.md`'s section-6 entry list in full, and
@@ -157,7 +157,7 @@ selection; the 2019 revision replaced them with propagating `minimum`/`maximum` 
 reason. The design lesson drawn: a value-returning failure home for a kind-2 failure (division by
 zero, say) owes a propagating selection contract, not an ordinary total-order derivation, because a
 plain running-maximum silently discards the bottom exactly the way the deprecated IEEE functions did
-(checked in const position at `84_probes/probe_4`).
+(checked in const position at `OLD_84_probes/probe_4`).
 
 ### Flocq, the formal floating-point library, and the design's own founding identity
 
@@ -306,7 +306,7 @@ The dispatch brief asks that this category name the instrument, because a re-tes
 on disk. The single most important instance in my slice is that a claimed-missing instrument turned
 out not to be missing at all, covered separately below because it is itself the finding.
 
-**File 50's central claim, exhaustively checked against real silicon**: `50_probes/probe_1_model_vs_
+**File 50's central claim, exhaustively checked against real silicon**: `OLD_50_probes/probe_1_model_vs_
 silicon.rs`, a model implementing round-first quantisation with no knowledge of IEEE beyond the format
 parameters, agrees with binary32 hardware on 41,380,159 operations, zero mismatches, including 1,255
 overflows-to-infinity and 884 subnormal results (so gradual underflow is genuinely exercised). The
@@ -317,14 +317,14 @@ representable value. Nothing about the source looked wrong; the hardware disagre
 it. This is the archive's strongest single piece of evidence and it is fully reproducible, per the
 probe directory's own `OUTCOMES.md`, with the exact build commands.
 
-**The overflow band's closed form**, `50_probes/probe_2_band.rs` and `probe_2b_band_closed_form.rs`:
+**The overflow band's closed form**, `OLD_50_probes/probe_2_band.rs` and `probe_2b_band_closed_form.rs`:
 a naive candidate closed form (`q_result <= 2 * lattice`) was built and then refuted by exhaustive
 enumeration (753/1000 for addition, 639/1000 for multiplication, both directions of error). The
 corrected two-clause form (a lattice clause, decidable by one Euclidean division; a reachability
 clause, which is not decidable in general) was then measured over 5,184 quantum triples with zero
 under-predictions in both directions, the useful property for a build layer to act on.
 
-**The exponent-as-type wall, compiled shut in both directions**: `50_probes/probe_3_exponent_as_
+**The exponent-as-type wall, compiled shut in both directions**: `OLD_50_probes/probe_3_exponent_as_
 type.rs` (compiles, zero unstable features) and `probe_3b_exponent_as_const_refused.rs` (the negative
 control: `generic_const_exprs` forbidden, `min_generic_const_args` refuses with a different error,
 the `const {}` block escape needs `generic_const_args` which needs `-Znext-solver=globally`,
@@ -413,7 +413,7 @@ failed**: the archive's own citation-verification discipline (two independent re
 compiled builds on a claim) converged twice, independently, on the conclusion that file 57's claim
 "file 8's five-shape table cannot be reproduced by anyone from what is committed" was **false**. Files
 62 and 80, working independently, each rebuilt the material and found the reproduction recipe had
-been sitting in the same probe directory the entire time (`08_probes/README.md:8-11`, committed
+been sitting in the same probe directory the entire time (`OLD_08_probes/README.md:8-11`, committed
 alongside file 8 itself). This is genuine independent convergence on a correction, and it is also
 exactly the failure mode this dispatch's own standing constraints warn about: a universal negative
 ("nobody can rebuild this") is the single most expensive kind of claim to be wrong about and the
@@ -528,7 +528,7 @@ such.
 
 **The "unreproducible" claim, independently re-confirmed false, a third time.** Before discovering
 that files 62 and 80 had already done this, I independently set up the exact crate layout
-`08_probes/README.md` specifies (`a_union.rs` as `src/lib.rs`, `b_spare_pattern_decides_delivery.rs`
+`OLD_08_probes/README.md` specifies (`a_union.rs` as `src/lib.rs`, `b_spare_pattern_decides_delivery.rs`
 as `src/spare.rs`, `c_split_does_not_bind.rs` as `src/fusion.rs`) under the pinned
 `nightly-2026-05-28` toolchain, confirmed present on this machine as an installed rustup toolchain.
 It compiles clean, both `cargo build` and `cargo build --bin e_codegen --release` (the source for the

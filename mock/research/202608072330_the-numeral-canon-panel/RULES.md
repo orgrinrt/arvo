@@ -419,31 +419,35 @@ and hand the call back rather than resolving it.
 **An early return is a successful dispatch**, and the most valuable thing a dispatch can produce. It
 is never re-dispatched with a softer brief until someone answers, because reframing until you get an
 answer converts a refusal into permission.
-## A bare file number is ambiguous across two panels, and 77 of them collide
+## Dead files carry an `OLD_` prefix, and that is what makes a bare number safe
 
-Found by the theory-mining pass over the closed panel, confirmed by the coordinator with `comm`.
+**Everything not live is prefixed `OLD_`.** The closed formalization panel, this panel's `archive/`, and
+this panel's `seed/`: 328 files. **Nothing in this panel's root is prefixed, because everything in it is
+live**, and that was verified rather than assumed when the convention landed.
 
-**The closed formalization panel and this one both number their members from `00`, and 77 numbers exist in
-both.** The worst case is not hypothetical and not rare:
+The prefix does one specific job. Before it, 77 file numbers existed in both panels, and the worst case was
+not rare: `63_consolidation_six.md` in the archive against `63_spj_consolidation_the_format_concept.md`
+here, **two consolidations, overlapping subject matter, identical citation**. `42` collided the same way and
+bit a real dispatch within an hour of the hazard being written down.
 
-- `63_consolidation_six.md` is the archive's sixth consolidation.
-- `63_spj_consolidation_the_format_concept.md` is this panel's format-concept canon candidate.
+Now `ls 63_*` and a glob or grep on a bare number reach the live file only. A dead one cannot be picked up
+by accident, because reaching it requires typing `OLD_`, which is a deliberate act.
 
-**Both are consolidations.** A citation reading "63 says" is ambiguous between two documents of the same
-kind on the same subject matter, which is the shape most likely to be misread and least likely to look
-wrong. The same holds for 76 other numbers.
+**So a bare number in this panel means this panel.** That is what the prefix buys, and it is why the
+convention is worth more than a warning would have been: the earlier version of this section asked readers
+to qualify every citation, which is a rule people forget. This is a rule the filesystem keeps.
 
-**So a citation carries its panel.** Either the full path, or a prefix naming which panel, in any file that
-touches both. That is now most of them: `SEED_TALKING_POINTS.md`, `PRIOR_CALLS.md` and the `SEED_THEORY_*`
-files all quote across the boundary by construction, and any member reading them inherits both numbering
-spaces at once.
+**Citing dead material stays legal and stays visible.** `OLD_109_the_consolidation_drop_audit.md` reads as
+what it is at every glance, in prose, in a grep result, and in a diff. The 105 archive citations already
+written into `SEED_TALKING_POINTS.md`, the three `SEED_THEORY_*` files and `PRIOR_CALLS.md` were repointed
+when the rename landed, checked both directions: no unprefixed archive citation remains, and no `OLD_`
+citation names a file that does not exist.
 
-**A bare number is only safe inside a file that cites nothing from the archive.** That was every file up to
-the archaeology and is no file after it.
+**When something in root dies, prefix it then.** The root's non-prefixed state is a claim that everything in
+it is live, and that claim is only true if it is maintained.
 
-This is the same failure as a bare D-number, which collides three ways inside the archive's own decision
-register, and the same as a count carried without its operand. All three are an identifier that was unique
-in the context where it was written and stopped being unique when the context widened.
+**The D-number space is not fixed by this** and still collides three ways inside the archive's own decision
+register. Round-qualify those.
 
 ## Op's prior calls are op's voice and are NOT the top rung
 

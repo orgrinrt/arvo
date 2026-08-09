@@ -45,7 +45,7 @@ re-tester how much work to expect, not because it transfers); the register mark;
 what would settle it now.
 
 **Citation discipline.** Every `file:line` below was opened during this pass. Where an op quote was
-read through the archive's final consolidation (`124_consolidation_twelve.md`, cited as `124:<line>`)
+read through the archive's final consolidation (`OLD_124_consolidation_twelve.md`, cited as `124:<line>`)
 rather than at its source checkpoint, the citation names the place actually read and the source it
 quotes. Two op files (`13c`) and the decision-register talk file were opened at source to verify the
 headline quotes. Paths of the form `NN_probes/...` are relative to the archive directory.
@@ -56,7 +56,7 @@ headline quotes. Paths of the form `NN_probes/...` are relative to the archive d
 
 `INTENTS.md` holds I1 through I12 and closes with: "Anything op has said that is not quoted above is
 missing rather than excluded, and the remedy is to add it." The archive holds twenty-three files of
-op's own words plus his numbered decision register, and the sweep at `112_the_op_material_sweep.md`
+op's own words plus his numbered decision register, and the sweep at `OLD_112_the_op_material_sweep.md`
 built the definitive roster. The entries below are op sentences, in his own words, that appear nowhere
 in `INTENTS.md`. Each is a talking point of the highest order: not because the old panel carried it,
 but because op said it and the current panel's binding file does not know it. **Whether any of these
@@ -65,7 +65,7 @@ may be things he now considers part of the mess; the flag is for him, not for th
 
 ### 1.1 The standard: optimal, representative of the mathematics, capable of representing the established systems
 
-Op, verified at source (`13c_op_the_standard_and_the_mode.md:12-14`):
+Op, verified at source (`OLD_13c_op_the_standard_and_the_mode.md:12-14`):
 
 > This isn't my call. Already the instruction is clear: Optimal, ideal, representative of the math,
 > and also, the principle that arvo has to be able to represent mathlab, ieee standard 754, systemc
@@ -185,15 +185,15 @@ its seed carries D48 by effect, but none of the four decisions is quoted in any 
 
 Op refused a per-width enumeration **four separate times** on the same ground (a width table, a
 per-width bridge population line, a macro-call surface, a blanket-`From` dodge; recorded with quotes at
-`SETTLED_surface.md:57-82`): "No enumerations, if we can help it; and I think we have much to explore
+`OLD_SETTLED_surface.md:57-82`): "No enumerations, if we can help it; and I think we have much to explore
 to actually be able to help it", with the panel-end state being that **no gate-free zero-enumeration
 mechanism for the width-to-container derivation was ever found and ratified**, and op's last word: "the
 answer still evades us, and finding it is the job, *not* settling for a solution we've already ruled
-out" (`139b`, quoted at `SETTLED_container.md:153-155`). And the container ruling (`130b:41-44`,
-quoted at `SETTLED_surface.md:25-29`): "Container naming is explicitly wrong. The entire idea of arvo
+out" (`139b`, quoted at `OLD_SETTLED_container.md:153-155`). And the container ruling (`130b:41-44`,
+quoted at `OLD_SETTLED_surface.md:25-29`): "Container naming is explicitly wrong. The entire idea of arvo
 is that the strategy guides container selection, not the user." **Register mark: sharpens Q9**
 (several of whose arms are tables of exactly the refused kind, a tension the register already notes
-via `SETTLED.md:110` but without op's fourth instance or his "finding it is the job" instruction).
+via `OLD_SETTLED.md:110` but without op's fourth instance or his "finding it is the job" instruction).
 
 ### 1.11 Op's numbered decision register, D1 through D75, has never been fully diffed against anything
 
@@ -271,9 +271,9 @@ clause**; whether the current panel wants the full statement re-ratified is open
 
 Recorded because I12 descends from exactly this history, and the instances are its evidence:
 **canonicity** was ratified at `127b` and withdrawn by op himself at `130b` three files later
-(`SETTLED_surface.md:423-430`); the **width enumeration** was converged-then-overturned by op the same
-day (`SETTLED_container.md:397-403`); the **`Warm` clamp cell** of a table ratified in full at `70b`
-was declared stale by op's own restated intent at `142b` (`SETTLED_container.md:405-408`); and the
+(`OLD_SETTLED_surface.md:423-430`); the **width enumeration** was converged-then-overturned by op the same
+day (`OLD_SETTLED_container.md:397-403`); the **`Warm` clamp cell** of a table ratified in full at `70b`
+was declared stale by op's own restated intent at `142b` (`OLD_SETTLED_container.md:405-408`); and the
 **GCE greenlight** recorded in `unstable-features.md` was later superseded by op outright. A reader
 calibrating how much weight an op ack deserves before convergence has, in this archive, a measured
 answer: substantial, and reversible within days when the evidence moves. **Register mark: duplicates
@@ -290,10 +290,10 @@ precisely because whoever handles his answers should know this material exists.
 ### 2.1 The verb "validate"
 
 The acceptance criterion the current panel's Q1 decomposes is the same sentence the old panel lived
-under (ratified there at `135b:12-16`, quoted at `SETTLED_container.md:33-37`). Two archive facts bear
+under (ratified there at `135b:12-16`, quoted at `OLD_SETTLED_container.md:33-37`). Two archive facts bear
 on what "validate" meant in practice there. First, the panel's own reading was operational: "it
-validates (the laws and refusals actually run)" (`SETTLED_container.md:29-31`). Second, a later op
-checkpoint recorded the gate as **met**, "and how it was met matters" (`137b:10-26`, read at `SETTLED_container.md:58-62`), where the
+validates (the laws and refusals actually run)" (`OLD_SETTLED_container.md:29-31`). Second, a later op
+checkpoint recorded the gate as **met**, "and how it was met matters" (`137b:10-26`, read at `OLD_SETTLED_container.md:58-62`), where the
 how-it-was-met was a derived property (the payload-is-one-limb condition) rather than a discipline,
 which op had predicted at `135b:65-68`, per the same sweep passage. Neither fact answers which verb op now means; both are
 context he may want in front of him when he answers. **No position is taken here.**
@@ -330,16 +330,16 @@ re-runs performed for this file; the rest carry none.**
 the magnitude as a little-endian binary type (`Term`/`D0<T>`/`D1<T>`) makes the whole width-to-
 container derivation expressible with no feature gate and no ceiling, native rungs by trait case
 split, wide rung by a word cons whose size falls out of construction, no width enumerated anywhere.
-Instrument: `137_probes/p5_total_ladder.rs`. **Re-run 2026-08-09: compiles, exit 0, under the pin;
+Instrument: `OLD_137_probes/p5_total_ladder.rs`. **Re-run 2026-08-09: compiles, exit 0, under the pin;
 log at `SEED_TALKING_POINTS_probes/p5_total_ladder.rerun.log`. That specific fact is current
 evidence.** The old panel's status: the outcome op-checkpointed (`137b`), the chain beneath it
-cumulative (one-expert, per `SETTLED_container.md:91-100`). **Register mark: sharpens Q9**, where the
+cumulative (one-expert, per `OLD_SETTLED_container.md:91-100`). **Register mark: sharpens Q9**, where the
 current panel's C0 through D arrangements all wrestle with the const-to-type crossing; the structural
 keying is a different route than any current arm and its diagnostic cost (digit towers) is already
 priced in Q9's entries.
 
 **T2. A backing array can be derived structurally from the numeral, no const arithmetic in type
-position, layout-identical to `[T; N]`.** Instrument: `76_probes/b1_structural_array.rs` (with
+position, layout-identical to `[T; N]`.** Instrument: `OLD_76_probes/b1_structural_array.rs` (with
 negative controls `b1b`, `b1c` beside it). **Re-run 2026-08-09: compiles, exit 0, under the pin; log
 at `SEED_TALKING_POINTS_probes/b1_structural_array.rerun.log`. Current evidence for the compile
 fact.** The archive's fuller story: re-derived independently thirty-one files later (`107`), swept at
@@ -372,7 +372,7 @@ not disappear when the const does, because the table is where decimal notation c
 position**, one impl, any width, no cap, no enumeration, 0.04 s, with the price being canonicity and
 type-from-width selection, which the table was actually paying for. `129` closed the loop: **make
 the precision the const parameter and never compute it in type position**, canonicity by
-construction, no feature gates (its capstone `q13` recorded in `129_probes/`), and refuted GCA's
+construction, no feature gates (its capstone `q13` recorded in `OLD_129_probes/`), and refuted GCA's
 usefulness for canonicity along the way (`(A + B) + C` and `A + (B + C)` are distinct types under a
 generic parameter). Op then withdrew canonicity as a requirement entirely (`130b`), which reframes
 all three. **Register mark: sharpens Q9** (the C0-through-D space maps onto this thread but lacks the
@@ -380,7 +380,7 @@ binding-time split and the `Capacity` precedent route), **and bears on Q2** (wha
 
 **T5. The `generic_const_args` vetting.** `128` vetted the feature to WATCH (allowed, sound, named
 rough edges), with the `-Znext-solver=globally` flag it hard-requires flagged as a separate exposure
-whose tier is op's call. Probes recorded as recovered into `128_probes/` and `128a_probes/`. The
+whose tier is op's call. Probes recorded as recovered into `OLD_128_probes/` and `OLD_128a_probes/`. The
 current workspace forbids probing with it, so this is record rather than an invitation. **Register
 mark: duplicates** the droplist's structural refusals in part; the flag-tier question is **new** and
 open.
@@ -390,14 +390,14 @@ expressed as a trait bound (`E0277`) rather than a type equality (`E0308`), the 
 free, and `#[diagnostic::on_unimplemented]` reaches neither `E0308` nor solver overflow (`E0275`)
 (`124:2406-2440`). Independently found three times there. The decoder-ring "confirmed ceiling" on
 alias expansion was itself overturned late by a base-ten digit encoding that compiles gate-free with
-readable towers (`SETTLED_container.md:436-445`). **Register mark: sharpens Q9's diagnostic-cost
+readable towers (`OLD_SETTLED_container.md:436-445`). **Register mark: sharpens Q9's diagnostic-cost
 entries**, which currently price repairs (tags, base-ten ladders) without the bound-versus-equality
 lever.
 
 **T7. Erasure above the native widths has an honest comparison target.** The erasure claim was
 re-based from "byte-identical to the native primitive" (meaningless above 128 bits) to "within 0 to 2
 instructions of what a competent author writes by hand", measured at 192 through 1024 bits, with the
-payload-is-one-limb condition as a derived property (`SETTLED_container.md:45-72`). **Register mark:
+payload-is-one-limb condition as a derived property (`OLD_SETTLED_container.md:45-72`). **Register mark:
 sharpens Q1's erasure clause**, whose current evidence is one-program-one-arity per `17`'s own
 caveats.
 
@@ -419,7 +419,7 @@ of "which product").
 **T9. The headroom thread: benched, attacked, reframed, and left unsettled.** Sequence: `139b`
 condemned `Warm`'s 65-bit crossover on an instruction-count measurement (originally misreported
 1600-vs-81, corrected 339-vs-81, ruling unchanged); `140` proposed deleting headroom for every
-strategy; op held pending harness benches (`140b:69-71`, per `SETTLED_container.md:410-420`); `141`
+strategy; op held pending harness benches (`140b:69-71`, per `OLD_SETTLED_container.md:410-420`); `141`
 built the benches (committed: `mock/benches/warm-container-*`, 57 CSV+meta+findings triples) and
 found headroom loses everywhere measured honestly (45.3x at 8 bits down to 2.4x at 64 on a wrapping
 reduction), with the mechanism being **the projection to `W` becoming a real instruction** rather
@@ -430,7 +430,7 @@ interior safety, already served by the derived `W + ceil(log2 n)` accumulator ru
 "a fixed, always-paid, per-value approximation of a derived, per-fold, frequently-free quantity"
 (`142_giesen...md`, opening; benches committed at `mock/benches/warm-clamp-*`). Op's last recorded
 word treated the whole body as one instance of evidence, unaudited (`142b:60-64` per
-`SETTLED_container.md:416-419`). **The bench artifacts are current evidence; the interpretation is
+`OLD_SETTLED_container.md:416-419`). **The bench artifacts are current evidence; the interpretation is
 not.** **Register mark: sharpens Q5 and Q6 heavily** (the current register cites these bench families
 already but not `141`'s mechanism attribution or `142`'s interior-safety reframe), **and connects to
 Q11** (the accumulator options).
@@ -476,11 +476,11 @@ bands), though it slots under the format unit's adaptation work.
 **T15. The finest-view mechanism, and the one identification inside it that is refuted and
 unrepaired.** The grade-monoid/view-homomorphism construction with a unique finest view per law,
 compiled exhaustively over nine views and 81 view pairs, with the nine-point lattice not a chain
-(`SETTLED_laws.md:75-101`). Inside it, the Kleene-equation-at-(Presence, Ignore) identification was
+(`OLD_SETTLED_laws.md:75-101`). Inside it, the Kleene-equation-at-(Presence, Ignore) identification was
 compile-refuted wherever `Specials` is populated, because definedness is not recoverable from the
 cause component; the probe that made it look safe had set its own definedness flag from its own
 cause counter, "the model made the invariant true rather than testing it", which is why twenty-four
-files carried it (`SETTLED_laws.md:374-405`). Three repair shapes were offered and none chosen; op
+files carried it (`OLD_SETTLED_laws.md:374-405`). Three repair shapes were offered and none chosen; op
 declared the resting calls stale and asked for a re-evaluation that never ran. **Register mark:
 sharpens** the format unit's law layer (whose induced-algebra grading at `63` C4/C6 is a cousin
 construction), and the unrepaired middle identification is a **blind spot** the current panel should
@@ -490,7 +490,7 @@ know exists before it reinvents a three-relation vocabulary.
 The shipped bit-comparator is IEEE `totalOrder` under the wrong name (`-0.0 < 0.0` under it); a
 `const` assertion that same-value data compare `Equal` refuses to compile against it and compiles
 clean against canonicalise-then-compare; and under the shipped order the distributivity
-biconditional's two sides quantify over different objects (`SETTLED_laws.md:103-133`). Two-experts
+biconditional's two sides quantify over different objects (`OLD_SETTLED_laws.md:103-133`). Two-experts
 there; the workspace rule `what-you-can-observe-is-what-you-guaranteed.md` descends from the same
 pass. **Register mark: new** for the current register (no live question covers order or comparison
 vocabulary; `63` section 6 notes "the comparison vocabulary no unit has touched").
@@ -498,7 +498,7 @@ vocabulary; `63` section 6 notes "the comparison vocabulary no unit has touched"
 **T17. The closure laws: addition iff `bias/adjustment` is an integer; narrowed multiplication iff
 adjustment and bias are integers and adjustment divides `bias² - bias`.** Compiled exhaustively both
 directions, with the derived consequence that multiplication needs `mul_full` and addition does not
-(`SETTLED_laws.md:138-160`). Plus the correction that travels with it: no `AddClosed` gate ever
+(`OLD_SETTLED_laws.md:138-160`). Plus the correction that travels with it: no `AddClosed` gate ever
 shipped; the "shipped" wording was the drift. **Register mark: sharpens** the format unit's C3
 (affine slot function) with exact closure conditions its current statement lacks.
 
@@ -544,7 +544,7 @@ mark: new.**
 
 **T22. The inclusion order needs four conditions; two are unsound.** Grid refinement, phase
 alignment, both endpoints; the two-condition form produced 17,037 false positives on its own sweep,
-invisible because every numeral in the establishing sweep had bias zero (`SETTLED_laws.md:254-276`).
+invisible because every numeral in the establishing sweep had bias zero (`OLD_SETTLED_laws.md:254-276`).
 Two-experts there, derived independently. **Register mark: sharpens Q10** (the singleton amendment
 question presupposes the predicate; the archive's four-condition form is the predicate's fuller
 lineage) **and Q8** (every lattice claim rests on it).
@@ -552,25 +552,25 @@ lineage) **and Q8** (every lattice claim rests on it).
 **T23. The cardinality antichain.** Equal finite cardinality plus inclusion implies equality, for
 every bias, adjustment, radix, sign domain, in every family including unwritten ones; compiled at
 254,016 ordered pairs; **the coordinate-restricted "equal precision is an antichain" form is false
-for float-shaped numerals**, where precision and cardinality come apart (`SETTLED_laws.md:315-334`,
+for float-shaped numerals**, where precision and cardinality come apart (`OLD_SETTLED_laws.md:315-334`,
 417-431). **Register mark: sharpens Q8.**
 
 **T24. The within-family/cross-family lattice dissolution, and a live numeric discrepancy.** Three
 files gave three incompatible lattice answers; the final read dissolved it (each was answering a true
 statement about a different shape space: within one family both operations total under two closure
 conditions, across families joins fail and adding floats removed joins that had existed), one-expert,
-unratified, with the panel ending on it (`SETTLED_laws.md:471-498`). And the discrepancy: one file
+unratified, with the panel ending on it (`OLD_SETTLED_laws.md:471-498`). And the discrepancy: one file
 reports 81 decided join failures in the unbiased radix-two slice, two instruments in another find
 zero there, a third instrument owed, "it will poison a consolidation that quotes either number"
-(`SETTLED.md:130-133`). **Register mark: sharpens Q8 directly** (the current one-family-or-several
+(`OLD_SETTLED.md:130-133`). **Register mark: sharpens Q8 directly** (the current one-family-or-several
 options, the tie-break reading D and step-set reading E, would all be tested against this material),
 and the discrepancy is a standing hazard for anyone importing counts from either lineage.
 
 **T25. Conversion needs an adjudicating-strategy key the schema lacks.** 33% disagreement across
 lossy conversions depending on which of the two strategies' rows is consulted, with the no-new-key
-claim shown undetectable from its own test setup (`SETTLED_laws.md:355-370`). Narrowing itself is the
+claim shown undetectable from its own test setup (`OLD_SETTLED_laws.md:355-370`). Narrowing itself is the
 quantiser with the operation set to identity, resolved by the target strategy's row, and `Hot`'s
-narrowing is not monotone (`SETTLED_laws.md:336-353`). **Register mark: sharpens Q27** (which
+narrowing is not monotone (`OLD_SETTLED_laws.md:336-353`). **Register mark: sharpens Q27** (which
 strategy's laws govern a cross-strategy operation is exactly this question's sibling; the current
 entry notes nothing addresses it directly).
 
@@ -579,7 +579,7 @@ entry notes nothing addresses it directly).
 `TryFrom` cannot coexist beside it and the design does not want it to; a compliant gate-free
 spelling carries the inclusion order as a trait bound rather than a computed const (one-expert,
 second read owed); and op refused the "therefore no `From`" inference by name, his eighth refusal of
-that shape (`SETTLED_surface.md:322-394`). **Register mark: new** (conversion surface is untouched by
+that shape (`OLD_SETTLED_surface.md:322-394`). **Register mark: new** (conversion surface is untouched by
 the current register beyond Q3's existence question).
 
 **T27. Membership: every arvo value is `m · r^q`, the finest inhabited system is unique on the
@@ -752,16 +752,16 @@ cell (declared stale under op's own restated intent at `142b`); and `Warm`'s hea
 (condemned at `139b`, its deletion benched at `141`/`142` and **left unratified at close**, so the
 archive ends with the ratified table's `StoredWidth = doubled` cell and a committed bench trail
 recommending its deletion standing unreconciled). A re-tester importing any preset-table cell from
-the seed should know which cells sat in this category. Sources: `SETTLED_container.md:385-420`,
-`SETTLED_strategy.md` casualties.
+the seed should know which cells sat in this category. Sources: `OLD_SETTLED_container.md:385-420`,
+`OLD_SETTLED_strategy.md` casualties.
 
 **T44. Claims that died of provenance rather than content.** File `130` cited five probe files that
 existed nowhere (the incident behind the workspace's evidence rule); the probes were later recovered
 in a bulk pass (fourteen directories, 361 files, recorded at `140b` per
-`SETTLED_surface.md:449-458`), and the claim had by then been independently redone. File `146`'s
+`OLD_SETTLED_surface.md:449-458`), and the claim had by then been independently redone. File `146`'s
 `From` compile carried `#![feature(generic_const_args)]` plus `-Znext-solver=globally`, both
 disallowed, and was voided as evidence while its coherence argument survived on the permitted
-solver (`SETTLED_laws.md:448-459`). File `59`'s strategy-door table was voided whole for
+solver (`OLD_SETTLED_laws.md:448-459`). File `59`'s strategy-door table was voided whole for
 `tree-meaning` grounding (justifying design rows from shipped doc comments), the incident behind the
 archive's forbidden-ground rule. The lesson content for the current panel duplicates `RULES.md`'s
 evidence section; the instances are listed because re-testers will encounter these files' claims
@@ -793,7 +793,7 @@ arc.
 **T47. The three-relation ladder (weak, Kleene, graded) as the law vocabulary.** Imported from
 partial-algebra literature, then replaced outright by the nine-point view lattice because the named
 relations turned out to be three points of a larger non-chain space, and the question "which
-relation" dissolved into "which finest view" (`SETTLED_laws.md:75-101`). Abandoned with it: op's
+relation" dissolved into "which finest view" (`OLD_SETTLED_laws.md:75-101`). Abandoned with it: op's
 adopted name "partial associativity" (see 1.12). If the current format unit's law layer ever
 reaches for the literature's relation names, this arc is the warning that the archive tried it and
 found the space bigger than the names.
@@ -821,7 +821,7 @@ open item in `OPTIONS.md`), which is the same territory from the coordinate side
 
 **T51. The step-A/step-B seam as a neutral comparison frame.** True of the const-keyed route,
 dissolving entirely under structural keying, and flagged as a mistake when used as a comparison
-table for every candidate (`SETTLED_surface.md:462-469`). A warning label for Q9 work: the seam
+table for every candidate (`OLD_SETTLED_surface.md:462-469`). A warning label for Q9 work: the seam
 vocabulary is route-relative.
 
 **T52. The ambient-and-realisation decomposition.** Offered as a technique (meet and join in the
@@ -894,7 +894,7 @@ overlap is visible.
 ## 7. What re-testing costs, and where the instruments stand
 
 **The probe corpus largely survives on disk.** 117 probe directories in the archive, recovered
-where they had been scratch-only (the `140b` recovery pass; `128_probes/`, `129_probes/` and
+where they had been scratch-only (the `140b` recovery pass; `OLD_128_probes/`, `OLD_129_probes/` and
 kin exist). The two re-runs performed for this file each cost under a second of compile time; the
 pattern (copy the probe beside this file, compile under the pin, commit source and log) is the
 route by which any archive claim becomes current evidence. Claims resting on **exhaustive sweeps**
@@ -913,13 +913,13 @@ their own probe directories and none is blocked on anything.
 
 ## 8. Coverage, bounded honestly
 
-**Read closely:** the archive's final consolidation `124_consolidation_twelve.md` in full except
+**Read closely:** the archive's final consolidation `OLD_124_consolidation_twelve.md` in full except
 parts of sections 3, 4, and 6 through 10 (its droplist section 6 is carried verbatim in the current
-`DROPLIST.md` and was read there); `112_the_op_material_sweep.md` in full; `SETTLED.md` and all
+`DROPLIST.md` and was read there); `OLD_112_the_op_material_sweep.md` in full; `OLD_SETTLED.md` and all
 four `SETTLED_*.md` sweeps in full (identical to the seed copies, diffed to confirm);
-`13c_op_the_standard_and_the_mode.md` at the quoted ranges; the decision-register talk file at the
+`OLD_13c_op_the_standard_and_the_mode.md` at the quoted ranges; the decision-register talk file at the
 D54, D56 and D67 ranges; the openings of `125`, `126`, `128`, `129`, `141`, `142`;
-`137_probes/p5_total_ladder.rs` and `76_probes/b1_structural_array.rs` (compiled). On the current
+`OLD_137_probes/p5_total_ladder.rs` and `OLD_76_probes/b1_structural_array.rs` (compiled). On the current
 panel's side: `INTENTS.md`, `RULES.md`, `OPTIONS.md`, `DROPLIST.md` in full, and
 `63_spj_consolidation_the_format_concept.md` sections 6 and 7.
 
@@ -932,7 +932,7 @@ declare exactly what they read).
 **Not opened:** the ninety-nine numbered member files `01` through `108` individually (reached only
 through the consolidations and sweeps, which is the same exposure the archive's own instruments
 warned about); the probe directories' contents beyond the two compiled and the listings checked;
-`110_consolidation_eleven.md` (superseded by `124` on its own terms); `109`, `111`, `113` through
+`OLD_110_consolidation_eleven.md` (superseded by `124` on its own terms); `109`, `111`, `113` through
 `123` (reached through `124`'s citations of them). **A talking point sourced only from `124` or a
 sweep inherits those documents' compressions**, and the archive's own history says compressions
 drop live options; the member-file sweep (T55, first instrument) is the corrective this file does

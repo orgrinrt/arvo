@@ -50,7 +50,7 @@ Warm-without-widening, headroom-composition, profile-axis-second-read, order-and
 second-read-on-the-order, and dispatcher-checkpoint files of the conversion-story and profile-axis
 4-4-1s).
 
-**Not opened at all:** the 128a_probes, 134c_probes, 135b_probes, 147_probes and 151_probes directories'
+**Not opened at all:** the OLD_128a_probes, OLD_134c_probes, OLD_135b_probes, OLD_147_probes and OLD_151_probes directories'
 own contents beyond what the citing member files quote; the full body of every `b`-checkpoint file
 (95b through 145c) beyond the passages the surrounding member files quote verbatim, which is most of
 their load-bearing content since these checkpoints are short and the later member files habitually
@@ -201,12 +201,12 @@ either alone.
 
 **LLVM `sdiv`/`udiv` are UB on a zero divisor** (`93:150-166`, compiled and silicon-read). Cited as LLVM
 LangRef fact, confirmed by compiling and observing the optimizer delete a zero-divisor check placed after
-a division on both aarch64 and x86-64 targets (`93_probes/probe_3`). This is a real, checkable fact about
+a division on both aarch64 and x86-64 targets (`OLD_93_probes/probe_3`). This is a real, checkable fact about
 LLVM's IR semantics.
 
 **ARM `sdiv`/`udiv` return 0 for every dividend at a zero divisor, including at a zero dividend** (`93`,
 compiled and executed, aarch64). **x86 `idiv`/`div` trap (#DE, SIGFPE) at a zero divisor**, compiled and
-executed under Rosetta 2 on the panel's own host (`93_probes/probe_2`). **RISC-V `DIV`/`DIVU` by zero
+executed under Rosetta 2 on the panel's own host (`OLD_93_probes/probe_2`). **RISC-V `DIV`/`DIVU` by zero
 return all-bits-set, `REM` by zero returns the dividend** (external, cited from the unprivileged ISA
 spec, not executed). These three facts, taken together, are what refuted the "the target's own divide
 instruction defines the answer" design instinct (`90b`'s division-by-zero placement): three targets, three
@@ -302,7 +302,7 @@ container" question from a different angle) established, and file `137` (the era
 file) confirmed by direct compile, that the container is derivable gate-free from the four ratified
 `Numeral` members (`Radix`, `Precision`, `Exponent`, `Domain`) via a `Lowering<N>` projection, reusing
 `137`'s own `ladder.rs` derivation. This is a real, working, gate-free (`#![no_std]`, zero
-`#![feature(...)]`) Rust construction, reproduced independently at `138_probes/a_one_contract.rs`.
+`#![feature(...)]`) Rust construction, reproduced independently at `OLD_138_probes/a_one_contract.rs`.
 
 **X7: the stored width is derivable at every shipped IEEE and non-IEEE format from a single radix-general
 expression, `W_S = sign + ceil(log2(R^(P-h) * span))`** (`138` section 3.1, compiled over eleven formats
@@ -384,7 +384,7 @@ Two instances found, and the brief specifically primed me to look for this patte
 
 **File 37's original view-lattice probe made the finest-view theorem's `(Presence, Ignore) = Kleene`
 identification true by construction, invisibly.** Its `resolve` function returns `def: false` exactly
-when a cause exists and `def: true` exactly when none does (`37_probes/probe_1_the_ladder_is_a_view_lattice.rs:129-166`),
+when a cause exists and `def: true` exactly when none does (`OLD_37_probes/probe_1_the_ladder_is_a_view_lattice.rs:129-166`),
 so in that model a cause and undefinedness are logically coupled by fiat, and no sweep over that model
 could ever have found the coupling false. It took file 136, sixty files later, comparing the model's
 behavior against the design's own later-written division chapter (`110:1988-1997`, where `divideByZero`
@@ -416,13 +416,13 @@ conclusion did not survive a later, more careful model.
 
 **File 130's section 10 cites five probe files by name** (`h1_four_interpretations.rs`,
 `e1_capstone.rs`, `a3_surface.rs`, `f1_arity3.rs`, `e2_scale.rs`) **and none of them exists anywhere in
-the repository, nor does a `130_probes/` directory** (`138:760-764`, checked and reported by file 138,
+the repository, nor does a `OLD_130_probes/` directory** (`138:760-764`, checked and reported by file 138,
 which had to redo the work rather than verify it). This is exactly the failure mode the brief and the
 current panel's `RULES.md` both name as the cheapest correctness tool this workspace has, and it is
 already caught and documented inside the archive itself, so I am not reporting it as a fresh finding, but
 it is load-bearing: **any claim in file 130 whose only support is "compiled, gate-free" and one of those
 five filenames is void**, per the evidence rule, and file 138's redo (`a_one_contract.rs`,
-`137_probes/ladder.rs` reused) is the actual current-standing derivation.
+`OLD_137_probes/ladder.rs` reused) is the actual current-standing derivation.
 
 ---
 
@@ -641,7 +641,7 @@ it. No probe was re-run for this pass (the "re-run performed for this file" exce
 archaeology pass used does not appear here; everything above is reported as archive claim, to be
 re-tested, per the rule that nothing in the closed panel is current evidence merely by having been
 compiled once there). The single highest-value next act, if the current panel wants to spend an
-instrument budget on my slice specifically, is re-running `150_probes/` and `151_probes/` (the order/
+instrument budget on my slice specifically, is re-running `OLD_150_probes/` and `OLD_151_probes/` (the order/
 lattice/sign-domain instruments) fresh, since they bear directly on Q8 and Q10, and re-running
-`136_probes/` (the view-homomorphism and V4 refutation), since it is a genuine compiled bug in a design
+`OLD_136_probes/` (the view-homomorphism and V4 refutation), since it is a genuine compiled bug in a design
 that no test ever caught.

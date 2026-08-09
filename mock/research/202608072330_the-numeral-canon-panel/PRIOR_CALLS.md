@@ -121,7 +121,7 @@ reversals (section 6).
 
 **Era four, 2026-07-30 to 2026-08-05: the closed formalization panel**
 (`mock/research/202607301300_formalization-spec-panel/`). Twenty-three files record op directly
-(census: `112_the_op_material_sweep.md` section 1); nine more are persona stand-ins he later walked
+(census: `OLD_112_the_op_material_sweep.md` section 1); nine more are persona stand-ins he later walked
 individually. Op's material here divides into design ratifications (checkpoints seven onward) and
 posture, standard and process statements (the eleven earlier files), and the panel's own audit found
 the second kind was systematically the kind that dropped out of circulation.
@@ -167,7 +167,7 @@ spread across six axes, every pair differing in at least two cells; D70 (`:1648`
 `Deterministic` a derived marker over the composition. The panel then found two of D71's four rows
 were justified from shipped doc comments rather than from the design; op voided them ("we are fully
 free to restructure the strategies and their meanings",
-`68b_op_checkpoint_sixteen.md`) and stated Warm and Cold fresh:
+`OLD_68b_op_checkpoint_sixteen.md`) and stated Warm and Cold fresh:
 
 > For warm, I think we should assume that it'll work the same as writing regular old floats would
 > work. ... The intuition is that it works and behaves as f32 and f64 etc in rust today without any
@@ -176,7 +176,7 @@ free to restructure the strategies and their meanings",
 > It should be something between warm and precise. Cold also tells us it's seldom computed or used,
 > it's on a cold path. It can take more cost than warm, but shouldn't just be precise in disguise.
 
-The re-derived tables were ratified at `70b_op_checkpoint_seventeen.md` (fixed-point and float
+The re-derived tables were ratified at `OLD_70b_op_checkpoint_seventeen.md` (fixed-point and float
 separately, the float table newly derived, `Warm`'s stored width diverging between the two kinds of
 number).
 **Answering:** what does each preset concretely mean, cell by cell. The question assumed a closed set
@@ -196,7 +196,7 @@ refusing such a numeral at declaration, was declined with teeth: it would forbid
 **Answering:** what do Warm and Cold do out of range on a float numeral whose specials carry no
 infinity. Op gave an instinct first ("Option 2 as my instinct, stress tested and evaluated by an
 expert still, before locking", `70b`), and the instinct survived its stress test and generalised.
-**Provenance:** op decision, `74b_op_checkpoint_eighteen.md`.
+**Provenance:** op decision, `OLD_74b_op_checkpoint_eighteen.md`.
 **Register:** touches nothing the panel currently asks by number; the instinct-then-stress-test
 shape feeds section 8.
 
@@ -308,7 +308,7 @@ already said so and the walk had undone it without noticing).
 
 **The call, and the reversal.** D69 (talk `:1621`) ratified ten axes across three contracts with
 `LogicalWidth` primitive on `Numeral`, marked at source "overturnable if the reasoning does not
-hold". It did not hold: at `30b_op_checkpoint_seven.md` the identity contract was re-parameterised in
+hold". It did not hold: at `OLD_30b_op_checkpoint_seven.md` the identity contract was re-parameterised in
 **mathematical coordinates** (precision and exponent bounds primitive; total width, hidden bit and
 encoding derived), on two independent readings, with the recorded moral that "the off-by-one against
 real hardware formats was never a gap to patch. It was the parameterisation reporting that it was
@@ -330,8 +330,8 @@ priced. Division was held at `44b` and confirmed at `108b` in the three-clause e
 with `Hot`'s cell going to the consumer because three independent inventions existed with no
 derivation among them.
 **Answering:** whether the axis table survives its own redundancies.
-**Provenance:** op calls, `39b_op_checkpoint_nine.md`, `44b_op_checkpoint_ten.md`,
-`108b_op_checkpoint_twentysix.md`.
+**Provenance:** op calls, `OLD_39b_op_checkpoint_nine.md`, `OLD_44b_op_checkpoint_ten.md`,
+`OLD_108b_op_checkpoint_twentysix.md`.
 **Register:** Q5, Q15; the gating question and the intent check feed section 8.
 
 ---
@@ -439,7 +439,7 @@ time. Adopted as the fourth design rule, and one file later it produced the bitp
 correction.
 **Answering:** whether compile-time cost may decide a design fork (the audit found it had not in
 substance, only in wording).
-**Provenance:** op verbatim, `77b_op_checkpoint_nineteen.md`.
+**Provenance:** op verbatim, `OLD_77b_op_checkpoint_nineteen.md`.
 **Register:** Q24 (does the canon speak about cost), Q32 (what workload evidence prices anything);
 also section 9, second question.
 
@@ -472,9 +472,9 @@ every rung sketched and benched (D47, `202607292300`). `Combine<Op>` is `Magma<O
 is named in full, declaring free because mathematics fixed the vocabulary, implementing gated by
 D47's obligation (talk D75 `:1802`). Against this, the panel's algebra dive found the ladder was
 not the algebra arvo needs (max-plus recurrences, distributivity over maximum,
-`13b_op_checkpoint_five.md`), and partial associativity was adopted by name at `17b` and later
+`OLD_13b_op_checkpoint_five.md`), and partial associativity was adopted by name at `17b` and later
 superseded in substance by the view lattice with its disposition never recorded
-(`112_the_op_material_sweep.md` section 3.10).
+(`OLD_112_the_op_material_sweep.md` section 3.10).
 **Answering:** how deep to name structure ahead of use. Note the tension the corpus never resolved:
 D47's "as deep as theory" and the panel's finding that the theory's own ladder was the wrong shape
 for the actual workloads. Both are prior; neither governs.
@@ -490,7 +490,7 @@ users would seek for that in arvo too and make use of it, without having to pull
 File 13 then independently removed the argument for moving it: the regrouping pays at a single
 thread, inside the unrolled accumulator, so the law belongs where the reordering happens.
 **Answering:** file 12's proposal to relocate associativity to the engine layer.
-**Provenance:** op verbatim, `13b_op_checkpoint_five.md`.
+**Provenance:** op verbatim, `OLD_13b_op_checkpoint_five.md`.
 **Register:** Q11, Q12 (what a numeral guarantees a fold is this question re-posed inside the new
 panel's vocabulary).
 
@@ -678,7 +678,7 @@ Three prior statements show what validation has meant to him operationally, in h
 - **Run both and compare.** The parity-suite mandate: "actual tests where we run same stuff in our
   api and then on matlab/sysc/etc APIs, and assert that both actually return the same ... on a wide
   selection of different usages", macro-driven for volume
-  (`79b_op_the_verification_mandate.md`).
+  (`OLD_79b_op_the_verification_mandate.md`).
 - **Both directions, including refusal.** "things that should express and manifest in a certain way,
   do so, and those that should simply be inexpressible in our typestate and contracts, actually do
   fail to compile ... we'll have to start from a huge enormous amount of red tests, TDD style"
@@ -747,7 +747,7 @@ record: the PGA-fork correction at D41 was itself retracted the same day
 **Read in full at source:** the two D-register topic files
 (`202608082157/202607301100_topic.the-formalization-talk.md`, all 1848 lines;
 `202608082157/202607301000_topic.inherited-state-from-the-formalization-round.md`, all 2284 lines);
-all 23 op-authored files of the closed panel as censused by its `112_the_op_material_sweep.md`
+all 23 op-authored files of the closed panel as censused by its `OLD_112_the_op_material_sweep.md`
 (`04b`, `06b`, `08b`, `12b`, `13b`, `13c`, `16b`, `16c`, `16d`, `17b`, `24b`, `30b`, `34b`, `39b`,
 `44b`, `68b`, `70b`, `74b`, `77b`, `79b`, `82b`, `86b`, `108b`); `112` itself in full; this panel's
 `INTENTS.md` in full; the relevant sections of `OPTIONS.md` (the per-question gists, Q1 through

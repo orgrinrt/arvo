@@ -1,11 +1,11 @@
 # Theory mining, files 00-45: the formalization-spec-panel archive
 
 Coverage statement first, because it governs how to read everything below. I read all 45 member
-files in my assigned range (`00_context.md` through `45_leroy_what_each_claim_rests_on.md`,
+files in my assigned range (`OLD_00_context.md` through `OLD_45_leroy_what_each_claim_rests_on.md`,
 including the lettered checkpoints `04b`/`06b`/`08b`/`13c`/`16b`-`16d`/`17b`/`24b`/`30b`/`34b`/`39b`/
-`44b` and the two full consolidations `26_consolidation_two.md` and `40_consolidation_three.md`)
+`44b` and the two full consolidations `OLD_26_consolidation_two.md` and `OLD_40_consolidation_three.md`)
 end to end, in full, not skimmed. I opened the probe directory listings for every member file in
-range (`02_probes/` through `45_probes/` inclusive) and spot-read probe source for the files whose
+range (`OLD_02_probes/` through `45_probes/` inclusive) and spot-read probe source for the files whose
 claims this document leans on most (02, 05, 08, 10, 13, 17, 19, 20, 23, 25, 33, 34, 35, 36, 37, 38,
 41, 42, 43, 44), rather than compiling any myself. I did not re-run any probe. Everything below that
 is stated as a fact about a probe is a claim I am relaying from the member file that ran it, one
@@ -44,9 +44,9 @@ the theory the members reached for, which the consolidations compress out along 
 The arc: files 01-11 review a one-day-old draft spec (numeral/policy/lowering, ten axes) by
 compiling against it (11 is a design-round document restating the shape, not a persona file, written
 by whoever ran the round rather than a panellist). Files 12-26 are a second review focused on the
-algebraic-laws question, ending in `26_consolidation_two.md`. Files 27-40 rebuild the *identity*
+algebraic-laws question, ending in `OLD_26_consolidation_two.md`. Files 27-40 rebuild the *identity*
 half of the design from first principles (what a number is, radix, precision, exponent form,
-encoding) and re-derive the laws against it, ending in `40_consolidation_three.md`. Files 41-45
+encoding) and re-derive the laws against it, ending in `OLD_40_consolidation_three.md`. Files 41-45
 harden two loose ends of that consolidation: the rational `Bias` encoding's perimeter (41, 42),
 division (43), and a provenance-tracking discipline for the review's own claims (44, 45), gated by
 op's tenth checkpoint (`44b`).
@@ -55,7 +55,7 @@ op's tenth checkpoint (`44b`).
 itself repeatedly and worth restating because it is exactly what this dispatch's brief warned
 about**: a claim that "compiles" or "was checked" is worthless without knowing *what it was checked
 against*, because the design's own coordinates moved underneath several claims and the claims did
-not notice. File 44 (`44_ringer_what_the_overturn_left_behind.md`) is an explicit audit for this
+not notice. File 44 (`OLD_44_ringer_what_the_overturn_left_behind.md`) is an explicit audit for this
 failure mode and finds three real instances plus one near-miss; file 45 proposes and executes a
 fix (a `grounded on: <slug>` provenance field). This is not incidental to the theory-mining task,
 it is a warning shot for how this document should itself be read: a finding cited below as
@@ -329,12 +329,12 @@ these have I re-run; they are relayed at one remove, as the panel's own conventi
 
 ### 2.1 The torsion-group/clamp dichotomy, compiled at small models
 
-Files 13 and 14. `13_probes/01_stability_vs_associativity.rs` enumerates all 65536 total
+Files 13 and 14. `OLD_13_probes/01_stability_vs_associativity.rs` enumerates all 65536 total
 recovery maps fixing a signed `[-2, 1]` representable set over an exact domain `[-6, 5]`: exactly
 1 monotone map (the whole monotone family is `clamp`), exactly 1 translation-stable map (wrap),
 1024 fold-associative maps, 1023 associative-but-not-stable (fine for a fold, refused by the
 draft's over-strict criterion), and **0 stable-but-not-associative** (the soundness check for
-the criterion). `14_probes/02_monotone_equals_stable.rs` and `03_unsigned_saturate_both.rs`
+the criterion). `OLD_14_probes/02_monotone_equals_stable.rs` and `03_unsigned_saturate_both.rs`
 independently reproduce the same disjointness across four signed/unsigned model widths, and
 confirm the theorem (1.5 above) generalises: unsigned saturating addition is *both* associative
 *and* order-monotone (no conflict for a one-sided clamp), while signed wrapping is associative
@@ -342,14 +342,14 @@ but not monotone at any width tested.
 
 ### 2.2 The multiplicative half's exact-product mechanism, and its measured cost
 
-Files 24, 25, 34, 35, 36. `25_probes/03_typelevel_binary_addwidth.rs` builds a type-level
+Files 24, 25, 34, 35, 36. `OLD_25_probes/03_typelevel_binary_addwidth.rs` builds a type-level
 binary width adder (`UTerm`/`UInt<Hi, Lo>`) with no unstable feature, exhaustive at a 2-bit
 model (16 pairs, all compile-time asserted) and checked at realistic scale (13+7=20, 3+2=5,
-the exact widths a `UFixed<13,3>` * `UFixed<7,2>` product needs). `25_probes/05_composed_exact_
+the exact widths a `UFixed<13,3>` * `UFixed<7,2>` product needs). `OLD_25_probes/05_composed_exact_
 product.rs` disassembles a concrete `mul_full` instantiation to exactly four instructions
 (the standard `umulh`/`madd`/`madd`/`mul` widening-multiply sequence), with zero symbols
 referencing the phantom width types anywhere in the emitted output. File 24's own probe 01
-(`24_probes/01_the_mac_discipline.rs`) measures a per-operation-quantised fold's grouping
+(`OLD_24_probes/01_the_mac_discipline.rs`) measures a per-operation-quantised fold's grouping
 diameter reaching 15 raw units on a 16-value range by a five-element fold (per-op discipline)
 against a wide-accumulator fold's diameter of 0 at every arity by construction. File 35's probes
 1 and 3 re-run the same three-way fold (direct wrapping multiply / composite `mul_full`-then-
@@ -364,7 +364,7 @@ control) pays a real, non-folded cost (24 lines against 7).
 
 Files 36, 41, 42. The core result: under Coq's `positive`/`N` encoding sealed with a private
 supertrait, uniqueness holds by induction with **no normalisation operator anywhere in the
-design**, because there is nothing for one to do (`36_probes/vu_nat.rs`, `probe_2`/`2b`/`5`/`5b`).
+design**, because there is nothing for one to do (`OLD_36_probes/vu_nat.rs`, `probe_2`/`2b`/`5`/`5b`).
 Priced (`--emit=metadata`, min-of-3, 400 compositions, 16-bit operands): the gcd (Stein's, on
 this encoding) costs 5.08 ms/composition against `typenum`'s own measured 15.55 ms, a 3.06x
 win decomposed into 1.65x from algorithm formulation and 1.87x from the encoding itself; full
@@ -389,7 +389,7 @@ archive**: file 41 built `Bias`, sealed it correctly, and *believed* the fix for
 missing seal (which it also found) was the whole story. File 42 (a different persona, same
 brief-required rebuild-fresh discipline) went one layer further and found that `Bias`'s own
 blanket impl composes with **unsealed** `Pos`/`Nat` -- the seal that "exists" lives only in a
-standalone demonstration file (`36_probes/probe_5_sealed_perimeter_lib.rs`) that nothing else in
+standalone demonstration file (`OLD_36_probes/probe_5_sealed_perimeter_lib.rs`) that nothing else in
 the review actually imports; the tower everyone composes with is an unsynced, unsealed copy.
 File 42 compiled the attack (a fabricated `Pos` type with a `Gcd` impl that claims unconditional
 coprimality with no computation performed, constructing an unreduced `BPos<Fabricated, D4>`
@@ -403,7 +403,7 @@ against 15.407, well inside noise).
 
 ### 2.4 The finest-view lattice, compiled
 
-File 37 (`37_probes/probe_1_the_ladder_is_a_view_lattice.rs`). A signed three-bit numeral, a
+File 37 (`OLD_37_probes/probe_1_the_ladder_is_a_view_lattice.rs`). A signed three-bit numeral, a
 resolution per range end, a four-element fold over all five groupings, all pairs, all 4096
 inputs, at nine views (three detail levels for each of two generator classes), roughly 65
 seconds of const evaluation: both closure properties asserted directly rather than argued
@@ -431,7 +431,7 @@ the blanket claim **false**: empty for same-precision division at every precisio
 bits tested, inhabited only once operand and result precisions decouple (as the ratified MATLAB
 `SpecifyPrecision` requirement makes first-class). File 44, dispatched specifically to hunt for
 this failure pattern, compiled the third member (mixed-format addition,
-`44_probes/probe_1_the_overflow_band_for_mixed_format_addition.rs`): the band **can** be
+`OLD_44_probes/probe_1_the_overflow_band_for_mixed_format_addition.rs`): the band **can** be
 inhabited (two independently-shaped witnesses), but is **not unconditional** (a 40-triple sweep
 splits 36 inhabited / 4 empty, with the 4 empty cases structurally distinct: one operand's
 quantum divides the other, collapsing the "mixed-format" pair into disguised single-quantum
@@ -442,7 +442,7 @@ it is not a claim."
 
 ### 2.6 The quantiser's round-first amendment against IEEE 754-2019 clause 7, directly
 
-Files 28, 30, 31, 39. File 30's `30_probes/probe_2_ieee_overflow_falls_out_of_round_first.rs`
+Files 28, 30, 31, 39. File 30's `OLD_30_probes/probe_2_ieee_overflow_falls_out_of_round_first.rs`
 checks, at a model float (radix 2, precision 3, emax 2), exhaustive agreement over reals 1
 through 9 against three oracles written **independently from the standard's own text, not from
 the design's pipeline**: `roundTiesToEven`, `roundTowardZero`, `roundTowardPositive`. All three
@@ -520,7 +520,7 @@ build shape a consumer actually ships.
 
 ### 2.10 Division's finite accumulator, tested and found to overturn a prior prediction on its own coordinates
 
-File 43. `43_probes/01` tests the consolidation's own carried prediction ("no finite accumulator
+File 43. `OLD_43_probes/01` tests the consolidation's own carried prediction ("no finite accumulator
 solution exists for division at all") directly, and finds it **true in the coordinates it was
 originally stated in** (dyadic-only adjustments, where 2^F is never divisible by 3, checked by
 residue iteration to F=1000) and **false in the ratified coordinates** (rational adjustments): a
@@ -643,7 +643,7 @@ Several of these are directly relevant to the current panel's live options and a
 - **A three-parameter split of the composition type (`Number<N, P, L>` instead of the fused
   `Number<N, S>`)**, tried to make "a law may not read `Lowering`" a typing fact. Compiled and
   refuted: an eleven-line counterexample types a law naming the `Lowering` member cleanly under
-  the split (`08_probes`), and the split cost roughly 1.8x rendered type length in diagnostics
+  the split (`OLD_08_probes`), and the split cost roughly 1.8x rendered type length in diagnostics
   with no delivered typing guarantee, since the invariant it was meant to secure was later closed
   a different way entirely (a phantom carrier with no `Lowering` bound at all, independent of any
   parameter-count choice). **Relevant to any live option about the composition's arity.**
@@ -825,7 +825,7 @@ own multi-core / contention material, if any, would be in files outside my range
 currently framed in OPTIONS.md, concerns the current panel's own dive (files 10-16 of the
 *current* panel, not the archive), and none of the archive's own files 00-45 discuss a "width
 surface crossing" or a bridge table between consumer literals and type-level nats in these
-terms. The closest archive material is file 25's `25_probes/03_typelevel_binary_addwidth.rs`
+terms. The closest archive material is file 25's `OLD_25_probes/03_typelevel_binary_addwidth.rs`
 (2.2 above), which builds and exercises a type-level binary width adder without hitting the
 bridge-table ceiling Q9 describes, because file 25's construction never needed to cross back
 from a computed width to a consumer-facing literal (Q9's arrangement B/D distinction). This is
