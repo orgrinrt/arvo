@@ -1,0 +1,65 @@
+toolchain : rustc 1.98.0-nightly (57d06900f 2026-05-27)
+host: aarch64-apple-darwin
+opt-level : 3   elements: 1000   codegen-units: rustc default
+feature gates in generated sources (expected 0): 0
+
+  W acc |             typed vs hand: erasure             |      typed vs native: packing shape     
+        |  t/h instr     rec verdict                    |  t/n instr     rec    loads t/n
+--------------------------------------------------------------------------------------------------------------------
+  1   1 |  128/128    13/13  ERASED: same sequence, different registers |  128/76     13/17      3/11    
+  2   2 |  112/112    13/13  ERASED: same dataflow, rescheduled, same recurrence |  112/78     13/17      5/11    
+  3   2 |   37/37      8/8   ERASED: same dataflow, rescheduled, same recurrence |   37/78      8/17      3/11    
+  4   2 |   56/56     12/12  ERASED: same dataflow, rescheduled, same recurrence |   56/78     12/17      4/11    
+  5   2 |   41/41      8/8   ERASED: same dataflow, rescheduled, same recurrence |   41/78      8/17      4/11    
+  6   2 |   24/24      6/6   ERASED: folded to one body |   24/78      6/17      3/11    
+  7   2 |   41/41      8/8   ERASED: same dataflow, rescheduled, same recurrence |   41/78      8/17      4/11    
+  8   2 |   62/62     16/16  ERASED: folded to one body |   62/62     16/16     11/11    
+  9   2 |   41/41      8/8   ERASED: same dataflow, rescheduled, same recurrence |   41/55      8/16      4/3     
+ 10   3 |   28/28      7/7   ERASED: folded to one body |   28/55      7/16      5/3     
+ 11   3 |   51/51      9/9   ERASED: same dataflow, rescheduled, same recurrence |   51/55      9/16      9/3     
+ 12   3 |   27/27      5/5   ERASED: folded to one body |   27/55      5/16      6/3     
+ 13   3 |   51/51      9/9   ERASED: same dataflow, rescheduled, same recurrence |   51/55      9/16      9/3     
+ 14   3 |   32/32      7/7   ERASED: same sequence, different registers |   32/55      7/16      7/3     
+ 15   3 |   51/51      9/9   ERASED: same dataflow, rescheduled, same recurrence |   51/55      9/16      9/3     
+ 16   3 |   95/95     18/18  ERASED: folded to one body |   95/50     18/16      2/3     
+ 17   3 |   51/51      9/9   ERASED: same dataflow, rescheduled, same recurrence |   51/41      9/14      9/4     
+ 18   4 |   34/20      8/8   NOT ERASED                 |   34/41      8/14      8/4     
+ 19   4 |   14/41      6/8   NOT ERASED                 |   14/41      6/14      1/4     
+ 20   4 |   31/24      6/5   NOT ERASED                 |   31/41      6/14      8/4     
+ 21   4 |   14/41      6/8   NOT ERASED                 |   14/41      6/14      1/4     
+ 22   4 |   14/25      6/5   NOT ERASED                 |   14/41      6/14      1/4     
+ 23   4 |   14/41      6/8   NOT ERASED                 |   14/41      6/14      1/4     
+ 24   4 |  132/132    20/20  SAME BAG, DIFFERENT DATAFLOW |  132/39     20/13      4/4     
+ 25   4 |   14/41      6/8   NOT ERASED                 |   14/39      6/13      1/4     
+ 26   5 |   14/24      6/5   NOT ERASED                 |   14/39      6/13      1/4     
+ 27   5 |   16/51      7/9   NOT ERASED                 |   16/39      7/13      2/4     
+ 28   5 |   14/22      6/5   NOT ERASED                 |   14/39      6/13      1/4     
+ 29   5 |   16/51      7/9   NOT ERASED                 |   16/39      7/13      2/4     
+ 30   5 |   16/26      7/6   NOT ERASED                 |   16/39      7/13      2/4     
+ 31   5 |   16/51      7/9   NOT ERASED                 |   16/39      7/13      2/4     
+ 32   5 |  169/33     20/13  NOT ERASED                 |  169/33     20/13      6/4     
+ 33   5 |   16/51      7/9   NOT ERASED                 |   16/26      7/8       2/2     
+ 40   6 |   12/29      3/5   NOT ERASED                 |   12/25      3/8       2/2     
+ 47   7 |   20/20      9/9   ERASED: same dataflow, rescheduled, same recurrence |   20/26      9/8       4/2     
+ 48   7 |   14/37      4/6   NOT ERASED                 |   14/25      4/8       3/2     
+
+typed vs hand: 18 widths did not report ERASED
+    W=18: NOT ERASED
+    W=19: NOT ERASED
+    W=20: NOT ERASED
+    W=21: NOT ERASED
+    W=22: NOT ERASED
+    W=23: NOT ERASED
+    W=24: SAME BAG, DIFFERENT DATAFLOW
+    W=25: NOT ERASED
+    W=26: NOT ERASED
+    W=27: NOT ERASED
+    W=28: NOT ERASED
+    W=29: NOT ERASED
+    W=30: NOT ERASED
+    W=31: NOT ERASED
+    W=32: NOT ERASED
+    W=33: NOT ERASED
+    W=40: NOT ERASED
+    W=48: NOT ERASED
+recurrence differs (typed, hand): [(19, 6, 8), (20, 6, 5), (21, 6, 8), (22, 6, 5), (23, 6, 8), (25, 6, 8), (26, 6, 5), (27, 7, 9), (28, 6, 5), (29, 7, 9), (30, 7, 6), (31, 7, 9), (32, 20, 13), (33, 7, 9), (40, 3, 5), (48, 4, 6)]

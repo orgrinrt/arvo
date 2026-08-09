@@ -1,0 +1,31 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+host: aarch64-apple-darwin
+36 widths per configuration. Counts off emitted assembly; nothing timed.
+
+'single-accumulator at N widths' is the robust metric: it counts widths where the
+reduction serialised onto one accumulator. The ERASED count is a difference count and
+a difference is not always a regression: at n=4096 the typed arm 'differs' from hand at
+W=11,13,15,17 by emitting 42 instructions and 8 loads against hand's 43 and 9, which is
+the typed arm winning by one load.
+
+  opt=2  n=1000  cpu=default  typed   ERASED 18/36   single-accumulator at 15 widths   not-erased: [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 40, 48]
+  opt=2  n=1000  cpu=default  gather  ERASED 36/36   single-accumulator at  2 widths
+  opt=2  n=1000  cpu=default  wide    ERASED  4/36   single-accumulator at  0 widths
+  opt=3  n=1000  cpu=default  typed   ERASED 18/36   single-accumulator at 15 widths   not-erased: [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 40, 48]
+  opt=3  n=1000  cpu=default  gather  ERASED 36/36   single-accumulator at  3 widths
+  opt=3  n=1000  cpu=default  wide    ERASED  4/36   single-accumulator at  3 widths
+  opt=3  n=1000  cpu=native   typed   ERASED 18/36   single-accumulator at 15 widths   not-erased: [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 40, 48]
+  opt=3  n=1000  cpu=native   gather  ERASED 36/36   single-accumulator at  3 widths
+  opt=3  n=1000  cpu=native   wide    ERASED  4/36   single-accumulator at  3 widths
+  opt=3  n=4096  cpu=default  typed   ERASED 14/36   single-accumulator at 16 widths   not-erased: [11, 13, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 40, 48]
+  opt=3  n=4096  cpu=default  gather  ERASED 28/36   single-accumulator at  4 widths   not-erased: [11, 13, 15, 17, 27, 29, 31, 33]
+  opt=3  n=4096  cpu=default  wide    ERASED  4/36   single-accumulator at  3 widths
+  opt=3  n=64    cpu=default  typed   ERASED 18/36   single-accumulator at 16 widths
+  opt=3  n=64    cpu=default  gather  ERASED 35/36   single-accumulator at  4 widths
+  opt=3  n=64    cpu=default  wide    ERASED  4/36   single-accumulator at  7 widths
+
+  -Os is reported last because it is degenerate: it unrolls nothing, so every arm has one
+  accumulator and the comparison cannot distinguish them. Included for completeness only.
+  opt=s  n=1000  cpu=default  typed   ERASED  1/36   single-accumulator at 33 widths   not-erased: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 40, 47, 48]
+  opt=s  n=1000  cpu=default  gather  ERASED 36/36   single-accumulator at 36 widths
+  opt=s  n=1000  cpu=default  wide    ERASED  9/36   single-accumulator at 36 widths
