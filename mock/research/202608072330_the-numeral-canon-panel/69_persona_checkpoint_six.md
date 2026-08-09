@@ -148,3 +148,38 @@ recovered by rerun by `68` and all counts reproduce, so nothing is void.
 
 `66`'s Python probe also hardcodes its headline count as a print literal, and two of its four Rust tests
 are tautologies under `the-test-gate.md`.
+
+
+## Update after `71` and `72`: the fork put to op is smaller than it first read
+
+`71` found that the endpoints do not determine a crossing: exactly two functions keyed on ordering, both
+well typed, so only a canon sentence can break the tie. Stated that way it sounds like op owes an ordering
+rule for every multi-coordinate crossing.
+
+`72` measured the boundary and it is much narrower. Reproducing `71`'s control exactly (2 distinct
+functions, 30/256 agreement), it then finds **widening gives 1 distinct function at 16/16**, and
+**narrowing restricted to in-range values gives 1 function at 16/16**. Every divergent value is lossy
+(`72_probes/p2_order_dependence_is_confined_to_loss.out:6-22`, verified by the coordinator).
+
+**So the obligation is "name an order for every lossy crossing", not for every multi-coordinate one.** The
+widening composites the panel actually relies on, accumulator entry, promotion, and `60`'s window, need no
+sentence from op at all.
+
+`72` also strengthened `71`'s own result rather than only conceding to it. `71`'s two refuting rows are
+**constructional, not empirical**: the operation reads neither the encoding nor the housing, so at those
+indices it compares a computation with itself. `72` proved it by mutation, giving the target an encoding
+that maps all sixteen values onto pattern zero and still reading 256/256
+(`72_probes/p1_the_refuting_rows_are_constructional.out:6-8`). That licenses the word **never** in `71`'s
+X2, which a 4-bit sweep alone could not, and retires a number from circulation.
+
+`72` accepts the two-word repair to `67:252` and proposes a stronger true universal in its place: **a
+crossing preserves the value-level operation exactly when it moves no coordinate that operation reads,
+which is at the encoding and at the container and nowhere earlier.**
+
+It locates one place `71` over-reads, with citations: `71:415-417` says the three roles differ at indices
+4 and 5 "and nowhere else", against `OPTIONS.md:991-994` carrying an undetermined index-2 difference and
+`65:188-192` filing Precise's compute role as already carrying extent. The criterion survives; it is three
+questions rather than one.
+
+And `72` refuted its own biconditional with its own probe, keeping it with a closed form for the fourteen
+exceptions.
