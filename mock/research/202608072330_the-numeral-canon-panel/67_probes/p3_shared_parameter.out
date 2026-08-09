@@ -1,0 +1,68 @@
+p3. shared parameters over a run: two shapes, one decidable test
+========================================================================
+
+TEST (from `63` C2): "the representable set is a constant of the type;
+ a value set that depends on other data is not a format but storage."
+
+CASE A: block floating point. 4-bit mantissa per element, one 3-bit
+        exponent shared by the block. value(m) = m * 2^(e-3).
+
+  block exponents enumerated: 8
+  distinct representable sets over the element type: 8
+    e=0: |Q|=16  range [0, 15/8]  step 1/8
+    e=1: |Q|=16  range [0, 15/4]  step 1/4
+    e=2: |Q|=16  range [0, 15/2]  step 1/2
+    e=3: |Q|=16  range [0, 15]  step 1
+    e=4: |Q|=16  range [0, 30]  step 2
+    e=5: |Q|=16  range [0, 60]  step 4
+    e=6: |Q|=16  range [0, 120]  step 8
+    e=7: |Q|=16  range [0, 240]  step 16
+
+  Q is a constant of the element type: False
+  VERDICT: FAILS the test. A BFP element has no Q of its own, so it is not
+  a format under the panel's own identity condition. It is not 'storage'
+  either, in any sense the panel has developed: the parameter it depends on
+  is arithmetic-bearing, not a layout fact.
+
+CASE B: a packed run. 4-bit unsigned elements, stride varying over
+        {4, 5, 8, 16} bits (the shared parameter is where the next element
+        starts, not what any element means).
+
+  strides enumerated: 4
+  distinct representable sets over the element type: 1
+    stride= 4: |Q|=16  range [0, 15]  bit offsets of the first eight elements [0, 4, 0, 4, 0, 4, 0, 4]
+    stride= 5: |Q|=16  range [0, 15]  bit offsets of the first eight elements [0, 5, 2, 7, 4, 1, 6, 3]
+    stride= 8: |Q|=16  range [0, 15]  bit offsets of the first eight elements [0, 0, 0, 0, 0, 0, 0, 0]
+    stride=16: |Q|=16  range [0, 15]  bit offsets of the first eight elements [0, 0, 0, 0, 0, 0, 0, 0]
+
+  Q is a constant of the element type: True
+  VERDICT: PASSES the test. The shared parameter moves the bit offsets and
+  moves no value. It is a realisation-layer shared parameter.
+
+CASE C (control): a self-contained float, 4-bit mantissa AND 3-bit exponent
+        per element. Same arithmetic as case A, exponent not shared.
+
+  distinct representable sets over the element type: 1 (by construction, the type has no free parameter left)
+  |Q| = 72  range [0, 240]
+  VERDICT: PASSES. So the test separates SHARED from PER-ELEMENT, not
+  'has a scale factor' from 'does not'. Cases A and C encode the same
+  arithmetic and land on opposite sides.
+
+========================================================================
+SUMMARY
+  A (block floating point):  Q constant = False  -> not a format
+  B (packed run, stride):    Q constant = True   -> a format, shared
+                                                     parameter at realisation
+  C (self-contained float):  Q constant = True   -> a format
+
+  So arvo already ships one shared-parameter aggregate (`Cold`'s run) and
+  excludes another (block floating point) with the same sentence, and the
+  sentence does not distinguish them: it distinguishes WHICH LAYER the
+  shared parameter sits at. A concept with one word for 'composition' cannot
+  say that, because point compositions and shared-parameter aggregates differ
+  in exactly this.
+
+  What this does not establish: whether BFP should be admitted, what it
+  would cost, or anything about magnitudes. It establishes only that the
+  panel's own test files it outside `format` and that `Cold` is inside, and
+  that the two are the same structural shape at two different depths.

@@ -1,0 +1,64 @@
+p4. two law families, two consumer classes, exhaustive at 4 bits
+============================================================================
+
+Per cell. 'mono' is violations of monotonicity over the reachable set for
+addition; 'trop' is violations of + distributing over min; 'add' and 'mul'
+are violations of associativity of the induced operation. All over Q^3.
+
+window           policy                   mono    trop     add     mul
+----------------------------------------------------------------------
+unsigned [0,15]  wrap                      120    1360       0       0
+unsigned [0,15]  saturate                    0       0       0       0
+unsigned [0,15]  opposite-bound mutant     225    1360    2240       0
+signed [-8,7]    wrap                      232    1360       0       0
+signed [-8,7]    saturate                    0       0     952     160
+signed [-8,7]    opposite-bound mutant     281    1360    1386     604
+
+min is closed on Q in every cell (adaptations needed for min over Q^2): wrap/unsi=0, satu/unsi=0, oppo/unsi=0, wrap/sign=0, satu/sign=0, oppo/sign=0
+
+============================================================================
+THE DERIVED CLAIM, checked rather than asserted:
+  tropical distributivity holds  <==>  the reduction is monotone
+
+  biconditional over all 6 cells: True
+    unsigned [0,15]  wrap                   monotone=False distributes=False
+    unsigned [0,15]  saturate               monotone=True  distributes=True 
+    unsigned [0,15]  opposite-bound mutant  monotone=False distributes=False
+    signed [-8,7]    wrap                   monotone=False distributes=False
+    signed [-8,7]    saturate               monotone=True  distributes=True 
+    signed [-8,7]    opposite-bound mutant  monotone=False distributes=False
+
+  and the two hypotheses observed both true and false across the cells, so
+  the biconditional is not holding by accident:
+    monotone true in 2 of 6 cells, false in 4
+
+============================================================================
+THE TWO CONSUMERS, per cell.
+  TROPICAL consumer  (shortest path, min-plus, widest-path, any semiring
+                      computation whose additive operation is the order):
+                      needs the ADAPTATION laws. Coherence is irrelevant.
+  REASSOCIATING fold (splitting, threading, algebraic rewriting):
+                      needs COHERENCE. Monotonicity is irrelevant.
+
+window           policy                  tropical ok   fold ok   both
+---------------------------------------------------------------------
+unsigned [0,15]  wrap                          False      True  False
+unsigned [0,15]  saturate                       True      True   True
+unsigned [0,15]  opposite-bound mutant         False     False  False
+signed [-8,7]    wrap                          False      True  False
+signed [-8,7]    saturate                       True     False  False
+signed [-8,7]    opposite-bound mutant         False     False  False
+
+  cells serving BOTH consumers for addition: 1 of 6
+    unsigned [0,15], saturate
+
+  This reproduces `63` section 3.4's inhabited two-by-two from the consumer
+  side: the cell holding both law families is unsigned saturation over a
+  nonnegative window, and that is exactly the workload shape of nonnegative
+  shortest path. The default the imitation intent points at (I3, signed) is
+  in a cell that serves one consumer or the other and never both.
+
+  What this does not establish: anything about multiplication under the
+  tropical reading (the tropical product is the numeral's add, already
+  covered by the 'add' column); anything at nonzero fraction width; any
+  magnitude whatsoever. One model width, exhaustive within it.

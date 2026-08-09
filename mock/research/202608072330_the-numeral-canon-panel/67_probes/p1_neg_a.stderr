@@ -1,0 +1,47 @@
+error[E0271]: type mismatch resolving `<TwosComplement<Id<RingZ, U4>> as Encoding>::Of == Id<RingZ, S4>`
+   --> p1_neg_a.rs:27:12
+    |
+ 27 |     let x: Mismatched = Num(0, PhantomData);
+    |            ^^^^^^^^^^ type mismatch resolving `<TwosComplement<Id<RingZ, U4>> as Encoding>::Of == Id<RingZ, S4>`
+    |
+note: expected this to be `tele::Id<tele::RingZ, tele::S4>`
+   --> p1_telescope.rs:136:15
+    |
+136 |     type Of = I;
+    |               ^
+    = note: expected struct `tele::Id<_, tele::S4>`
+               found struct `tele::Id<_, tele::U4>`
+note: required by a bound in `tele::Num`
+   --> p1_telescope.rs:171:39
+    |
+167 | pub struct Num<A, C>(pub <C as Container>::Store, pub PhantomData<A>)
+    |            --- required by a bound in this struct
+...
+171 |     <C as Container>::Holds: Encoding<Of = <A as Adaptation>::At>;
+    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `Num`
+
+error[E0271]: type mismatch resolving `<TwosComplement<Id<RingZ, U4>> as Encoding>::Of == Id<RingZ, S4>`
+   --> p1_neg_a.rs:27:25
+    |
+ 27 |     let x: Mismatched = Num(0, PhantomData);
+    |                         ^^^^^^^^^^^^^^^^^^^ type mismatch resolving `<TwosComplement<Id<RingZ, U4>> as Encoding>::Of == Id<RingZ, S4>`
+    |
+note: expected this to be `tele::Id<tele::RingZ, tele::S4>`
+   --> p1_telescope.rs:136:15
+    |
+136 |     type Of = I;
+    |               ^
+    = note: expected struct `tele::Id<_, tele::S4>`
+               found struct `tele::Id<_, tele::U4>`
+note: required by a bound in `tele::Num`
+   --> p1_telescope.rs:171:39
+    |
+167 | pub struct Num<A, C>(pub <C as Container>::Store, pub PhantomData<A>)
+    |            --- required by a bound in this tuple struct
+...
+171 |     <C as Container>::Holds: Encoding<Of = <A as Adaptation>::At>;
+    |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `Num`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0271`.
