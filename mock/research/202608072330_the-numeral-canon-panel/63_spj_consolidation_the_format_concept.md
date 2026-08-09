@@ -165,6 +165,18 @@ arithmetic diverges at F > 0 is the identity doing its job. What it corrects is 
 is exact at F = 0 and the declaration becomes arithmetic-bearing at F > 0 (`62:259-264`). The
 register's wrapping entry does not yet carry that scope sentence.
 
+**`55`'s labelled alternatives, dispositioned by name so nobody goes looking for them.**
+Phase one named three rival decompositions and none is silently dropped: **Alternative B**, the
+format as Q alone with D, R and E outside (`55:282-288`), is superseded by the (D, Q) refinement,
+because one representative set under two ambient algebras is two formats and B cannot say so,
+which is the wrapping question itself; its stated cost (arithmetic not statable from the format
+alone) recurs in this file as the statability argument. **Alternative C**, encoding-first
+identity (`55:290-298`), is refuted by the same probe-3 evidence this section's identity sentence
+rests on, since it would make two's complement and offset binary different formats.
+**Alternative A-wide**, wrap filed among the adaptations with a permanent exception list
+(`55:300-303`), is the surviving option one of the register's wrapping entry and is carried
+there, alive, not here.
+
 ### 3.3 The representable set: one affine membership predicate
 
 **The claim.** Membership of Q is one predicate over one parameterisation: a slot function giving
@@ -562,9 +574,27 @@ format, adaptation fused invisibly into each op, can state stepwise correctness 
 above it, so I7's chain clause ("especially within chains and ops, not only alone",
 grep-verified in INTENTS I7) has no expressible form against it** (`60:206-214`). That converts
 op's accuracy-in-chains intent from an optimisation request into a constraint on the concept's
-shape. ONE EXPERT, cold, reconciled against the unit without contradiction, and unattacked; the
-D-A direction (chains entirely elsewhere) survives only under a reading of I7 that its quoted
-words do not favour, which only op can rule on (`60:243-251`).
+shape. ONE EXPERT, cold, reconciled against the unit without contradiction, and unattacked.
+
+**The live directions on the chain's home, all three carried, because this unit killed none of
+them** (`60` section 9). **D-B, the three-carrier concept**: width algebra, named adaptation and
+exactness predicate in the format concept, with terms, schedules, windows and error sums in the
+layers above. It is where `60`'s derivation lands and it is what this section has stated.
+**D-A, closed ops with chains entirely elsewhere**: survives only under a reading of I7 that its
+quoted words do not favour, which only op can rule on, and `60` declines to kill it on its own
+authority (`60:244-251`). **D-C, the chain as a first-class typed object**: expression templates,
+the term itself a type with the schedule chosen at evaluation; everything monomorphises with no
+alloc or dyn needed, and it may be what I11's "contracts for things that compose to bigger units
+than just numerals alone" gestures at. Its costs are real and stated by its author: type sizes
+grow with expression size, the API surface grows a second vocabulary, and arvo drifts from
+numerals toward computation graphs. Its discriminator against D-B is stated too: whether any
+consumer needs to abstract over schedules at compile time rather than pick one per call site,
+and if none does, D-C is D-B with ceremony (`60:260-266`). **D-C is live, unkilled, and ONE
+EXPERT**, touched by no later member; this consolidation's first draft dropped it entirely,
+`64`'s entailment check caught the drop, and it is restored here with nothing about it resolved.
+Open under every direction: whether schedules are strategy-implied defaults or consumer-visible
+knobs, and whether the storage-against-compute format distinction `60` section 8 derives from
+the cold-storage intent is a format-concept axis or a strategy property (`60:268-272`).
 
 **Order and threads fall out rather than being added.** A parallel reduction is a reordering, so
 I10 (no stance on cores) and I7 jointly push whichever strategy claims chain precision toward
@@ -632,9 +662,15 @@ set and the reduction's kernel is a congruence for it. The congruence half is de
 range's geometry per operation, mirror symmetry for multiplication and sign confinement for
 addition, and is repairable by choosing the representable set. The ambient half fails wherever a
 fixed-width rescale is part of the operation itself, for every policy, and nothing downstream
-repairs it.* Permanence: passes. Equivalence: passes on the cube: twenty-four cells predicted in
-both directions with zero residue. Rests on: 4.2, ONE EXPERT on the frame with every ingredient
-separately multi-instrumented, and it is the claim this file most wants attacked next.
+repairs it.* Permanence: passes. Equivalence: **provisionally passes.** The twenty-four-cell
+prediction with zero residue is an equivalence trial passed, but the frame itself is ONE EXPERT
+and unattacked, so the verdict is the measurement's rather than a converged reading's: nobody has
+tried to break the frame the way `57` broke `42`'s condition or `61` broke the unrestricted
+coherence law, and equivalence for a sentence this general is a question about the frame's
+completeness, not only about the cells measured so far. The verdict firms when the frame survives
+an independent attack, which is the attack this file most wants made next, and the provisional
+marking is load-bearing rather than a hedge, exactly as unit one's consolidation marked its
+ownership clause. Rests on: 4.2, with every ingredient separately multi-instrumented.
 
 **C7, the scale asymmetry.** *Addition at a common scale never rescales, so an additive verdict,
 survival and breakage alike, is independent of the fraction width. No multiplicative structure
@@ -660,7 +696,13 @@ windows, bounded subterms evaluated exactly and adapted once, whose capacity is 
 same typestate that derives the container. A concept that hides the adaptation inside each
 operation cannot state the chain-accuracy intent at all.* Permanence: passes. Equivalence:
 passes; the grades and the window are implementation-neutral. Rests on: section 5, ONE EXPERT
-cold plus reconciliation, unattacked.
+cold plus reconciliation, unattacked. **C9 assumes the D-B direction**, which is where `60`'s
+derivation lands and whose content section 5 states; D-A and D-C remain live per section 5's
+directions paragraph, so C9 is a candidate under D-B and adopting it must not be read as closing
+the direction question. Under D-A it has no home by construction. Under D-C the wording shifts in
+kind rather than in content: the chain becomes a typed term **denoting** the ops-and-schedule
+composition rather than being it, a reading `64`'s check stated and I adopt as the honest form of
+the compatibility claim, one reader's each.
 
 **C10, what the concept carries upward.** *The format concept supplies the layers above with the
 width algebra of exact results, the named adaptation carrying its rounding rule, its overflow
@@ -875,6 +917,18 @@ with their cores intact, which is the protocol doing what it was designed for. T
 resumptions (`55b`, `57b`) each conceded real ground and each delivered a stronger replacement
 than the position it gave up, which is what `RULES.md:221-243`'s argue-then-converge shape looks
 like when it works.
+
+And one defect of this file itself, kept on the record because it is the second of its kind: the
+first draft of this consolidation dropped `60`'s D-C direction, a live, unkilled option stated in
+full in its source, exactly as unit one's consolidation dropped a thrice-flagged unverified
+connection, and both were caught only by the independent entailment check afterwards (`54` there,
+`64` here). The mechanism is structural rather than careless: a compressor grips results, an
+unresolved option leaves none, so the statements the mode most needs carried are the ones
+compression discards first. The panel rules now carry the guard ("A consolidation loses live
+options, structurally, and both of them have", `RULES.md`, grep-verifiable heading): a
+consolidation runs an explicit pass over live options, separate from its pass over results, and
+the check that follows diffs the option sets, not only the claims. Unit three's consolidator
+should run that pass before compressing anything.
 
 ## 13. Coverage, bounded honestly
 
