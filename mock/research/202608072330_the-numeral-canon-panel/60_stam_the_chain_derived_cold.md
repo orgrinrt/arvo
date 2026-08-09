@@ -294,3 +294,325 @@ cheap and is a natural follow-up for whoever holds the float lens.
 *Phase one ends here. Committed before any panel file was read. Phase two follows below after
 reading `55`, `56`, `55b`, `57`, `58`, `59`, and `OPTIONS.md`, and does not edit anything above
 this line.*
+
+# Phase two: reconciliation, written after reading the panel
+
+**Marked and appended per the dispatch. Phase one above is untouched.** Read for this phase, in the
+assigned order: `55` (both phases), `56`, `55b`, `57`, `58`, `59`, then `OPTIONS.md` in full. Also
+opened: `58_probes/p2_multiplicative_grade_does_not_collapse.rs` (source, to model its construction
+before probing it). Not opened: `08`, `35`, `42`, `18`, `20`, `25`, `40`, `43`, `50`, `RULES.md`,
+`DROPLIST.md`, `seed/`, `archive/`, and every other numbered file; every statement below about those
+is sourced to the files I did read or to the register, and marked so.
+
+One phase-two probe was built and committed before this section was written:
+`60_probes/p_d_rescale_saving_is_adaptation_fusion.rs`, with its transcript. It tests a prediction
+phase one's schedule algebra makes about `58`'s accumulator finding, and it answers an open item
+`58` itself flagged.
+
+## 0. The verdict first
+
+**The core of phase one survives contact with the panel, and it turns out to be the answer to a
+question the panel had already posed.** `59`'s P1 dispatched exactly this file's question, with
+"done looks like: a chain-level statement that either factors through the per-operation model or
+demonstrates it cannot, with the multiplicative case as the test instance." Phase one, written
+blind to that dispatch note, delivers the first branch with a condition attached, and the condition
+is what reconciles `58`'s structural impossibility with `55`'s standard model. Section 1.
+
+**Reading the panel changed phase one in three places**, conceded in section 3: the additive
+accumulator width (the panel's predicate is one bit sharper than mine and they are different
+predicates), the same-scale premise my grade-s claims silently carried (the Q3 dependency, where I
+also push back on the strength of `59`'s version), and the filing of wrap (my "overflow is the
+integral side of adaptation" survives as a statement about schedules and is superseded as a filing
+by the two-law-roles resolution of `55`/`56`/`55b`).
+
+**And one finding of `58`'s is refined by measurement, in both directions at once.** Its
+`min_w == full_w - F` pattern, called exact from two observations, is refuted as an equality at
+n = 5 (the saving grows past F) and refuted as rounding-mode-independent at n = 3 and 4 (under
+round-to-nearest-even the saving is zero). What survives is the mechanism phase one's schedule
+algebra predicts: the last rescale fuses with the final adaptation exactly when the rounding rule
+composes, which truncation does and nearest does not, and that is `07`'s narrowing-composition
+result (already in the register) arriving at the accumulator question. Section 2.
+
+## 1. The chain factors through the per-operation model, on one condition, and `58` is the proof of the condition
+
+`58` section 2.2 establishes that no fixed-width eager multiply at F > 0 can supply the exactly
+associative ambient operation the absorption theorem's sufficiency proof consumes, because the
+rescale is baked into every pairwise step. `59` reads this as a statement about the model every
+unit-two file stands on ("that model is per operation... nobody has taken it that way").
+
+Phase one's derivation, made blind, is the reconciliation. The chain-level object is (exact ops,
+edge formats, schedule), and the per-operation standard model `computed = adapt(exact)` extends to
+chains **if and only if the adaptation is unfused from the operation**: the ops in the model must
+be the exact ops of the width algebra (multiply into the sum of the widths, add into one extra
+bit), and every narrow, rescale included, must be a separately placed member of the schedule. Under
+that reading nothing `58` found is a defect of the model. The eager fixed-point multiply is not an
+operation of the model at all; it is `adapt ∘ exact_mul`, an op and a schedule point wearing one
+name, and `58`'s impossibility is precisely the statement that the fused spelling cannot be
+re-expressed as exact composition. The model survives; the fusion does not.
+
+The constructive half is already in this file's phase one, and it is at F > 0 where the unit's
+probes mostly were not: probe A's wide arm is a multiply-containing composite at F = 8 that
+achieves composite correctness (grade a) on all 46,656 inputs, because its multiplies are widening
+(grade s, exact into 2F) rather than eager, and the single narrow is the schedule's only member.
+That is the affirmative instance of what the register's derivation-outputs material quotes `50` as
+isolating: "what survives is whether the wide product a fixed-point multiply forms is **carried**
+between operations." The window is the mechanism that carries it, and the window's capacity is
+derivable by the same typestate the acceptance criterion already demands.
+
+**The vocabulary reconciliation, stated once so the next reader does not have to redo it.** Phase
+one's grades and the unit's machinery snap together with no residue:
+
+| phase one's term | the unit's term | the relation |
+|---|---|---|
+| grade a, composite correct rounding | the exact-then-adapt oracle in `57`/`58` | same object |
+| grade b, stepwise | the eager schedule | same object |
+| grade s, structural exactness | no counterpart named | exact in the **ambient** algebra: no adaptation occurs at all (widening mul, add in headroom) |
+| coherence (`56`'s C-law) | the bridge: grade b coincides with grade a | `57`'s "coherence is the statement that the grading collapses", from the other end |
+| the schedule | where `55b`'s two law roles act | adaptation laws face the source, coherence faces the target; the schedule is where both are placed |
+
+Grade s and coherence are distinct and the distinction matters: wrap is coherent while reducing at
+every step (exact in the **induced** algebra, per `55b`), whereas a widening multiply is exact in
+the ambient one. A chain whose interior is grade s needs no coherence anywhere inside; a coherent
+policy needs no widening. Those are the two ways a chain can be cheap, they are not the same way,
+and a canon sentence about chain exactness has to say which it is invoking.
+
+## 2. Probe D: the rescale saving is adaptation fusion, `58`'s equality breaks at n = 5, and the saving is rounding-mode-conditional
+
+Phase one's section 3 says the schedule is the index set of the error analysis, and its section 5
+says adjacent adaptation points are where cost hides. That predicts something specific about `58`'s
+finding that the multiplicative guard saves exactly one rescale: at `w = full - F` every per-step
+narrow except the last is exact, so the saving is the **fusion of the last per-step narrow with the
+final adaptation**, and fusion of two narrows into one is exact precisely when the rounding rule
+composes. Truncation composes; round-to-nearest does not, which is `07`'s narrowing-composition
+result as the register carries it. So the prediction, registered in the probe header before
+running: the saving exists under truncation and shrinks or vanishes under RNE.
+
+`60_probes/p_d` mirrors `58_probes/p2` section 1 exactly (I read its source first; its narrows are
+all truncation, so its finding was measured under truncation only), parameterises the rounding rule,
+uses the same rule in the oracle so the comparison isolates the schedule, and sweeps n = 3, 4, 5 at
+`58`'s own (M, F) = (15, 3), exhaustively over [0, 15]^n. Instrument checks: w = 0 must diverge and
+w = full must not, for both rules; both fire correctly.
+
+Measured (`p_d.out`):
+
+| rule | n = 3 | n = 4 | n = 5 |
+|---|---|---|---|
+| truncation, saving below full_w | 3 = F | 3 = F | **4 > F** |
+| round-to-nearest-even, saving | **0** | **0** | 3 |
+
+Three results, each bounded to this one (M, F) point and this operand box:
+
+**The fusion prediction lands.** Under RNE at n = 3 and n = 4 the saving is zero: witnesses exist
+at every guard width below full (15 divergences at w = 5 for n = 3; 36 at w = 7 and w = 8 for
+n = 4), which is double rounding doing exactly what `07`'s composition result says it does. The
+one-rescale saving is not a fact about multiplicative folds; it is a fact about **truncating**
+multiplicative folds, and any register sentence carrying it needs the rounding-rule condition.
+
+**`58`'s "exactly one rescale, constant in fold length" fails at n = 5**, in the direction of more
+slack: the truncating saving is 4 bits, and RNE recovers 3 bits of slack at n = 5 after having none
+at n = 3 and 4. `58` asked for exactly this extension ("I would want n = 5 and n = 6 before
+trusting the pattern") and was right to withhold trust. So there are **two mechanisms**, not one:
+the fusion, worth exactly F under a composing rule and zero otherwise, and a second,
+rule-independent slack that grows with fold length, which on this domain I read as the final
+adaptation and clamp absorbing interior rounding differences as more products saturate or vanish
+(the same absorption shape as `57`'s one-bit additive finding, grown larger). The second mechanism
+is domain-dependent on its face and I have not separated it from the operand box; n = 6 is unswept.
+
+**What survives of `58`'s claim, restated in the form I would defend:** under a composing rounding
+rule the multiplicative accumulator needs at most `full_w - F` guard bits (fusion guarantees the
+last rescale is free), the need still grows linearly in fold length, and no logarithmic closed form
+exists. The linear-growth headline, which is the design-relevant half and the half that bounds
+Q11's accumulator option to additive folds, is untouched by any of this.
+
+## 3. What phase one concedes or refines on reading
+
+**3a. The additive accumulator width: two predicates, and mine was the looser one.** Phase one
+section 5 says a fold of k adds is exactly held by ceil(log2 k) extra integer bits. True as stated,
+for holding the exact sum. `57`'s p6 measures the design-relevant predicate, agreement with
+exact-then-adapt, at one bit less, uniformly, fifteen rows, and its explanation (the accumulator
+decides which side of the format the result fell on, not how far outside it fell) is correct and
+is absorption appearing as a width saving. `57` also warns the panel has been using one phrase for
+both predicates (interior safety against adaptation agreement); phase one's wording is an instance
+of the conflation and I mark it rather than editing it.
+
+**3b. The same-scale premise, and a pushback on `59`'s version of the Q3 dependency.** Phase one's
+grade-s claims (adds exact, the only adaptation points are rescales, divisions and narrows)
+silently assume operands share a scale. `59` section 2b is right that Q3 is the premise nobody
+read, and right that none of the unit's five files cites it. But its mechanism sentence, "alignment
+is a shift, and a shift is precisely the grid coarsening", is too strong as written. In the width
+algebra, aligning to the **finer** grid is a left shift, which is a widening and exact; the exact
+sum of Q(I, F) and Q(I', F') lives at Q(max(I,I') + 1, max(F,F')), exactly, always. Coarsening
+enters only when the result format is coarser than the finer operand, which is a fact about the
+**inferred result numeral and the schedule**, not about mixedness itself. So the honest form of
+the dependency: under Q3's second option, the unit's unconditional additive results survive if the
+inferred result is the join (the D1-shaped, soundness-first answer the register's own material
+leans toward) and become conditional exactly when the inference or the schedule narrows below the
+join. The alignment does cost integer headroom (the raw value grows), which is the overflow side,
+not the rounding side. One expert, my reading, offered to `59`'s P2 dispatch as a sharper target:
+sweep mixed-scale addition per Q3 option **and per result-format rule**, because the option alone
+does not determine the outcome.
+
+**3c. Wrap.** Phase one filed wrap as one value of the overflow side of adaptation while separately
+noting it is a ring homomorphism. The `55`/`56`/`55b` exchange did this properly: wrap fails the
+adaptation laws, saturation fails coherence, all four cells inhabited, one slot with two law roles,
+and the domain filing withdrawn as observationally equivalent to the composite filing. Phase one's
+operational claims survive unchanged (probe B's wrap arm is an independent instance of wrap's
+additive coherence at i16), and the panel's filing is better than mine; I adopt it. One small
+addition phase one's framing still contributes: "the schedule places both sides" remains true under
+the two-roles resolution, since a schedule position must name both its rounding rule and its
+overflow member, and probe B's saturating arm shows the overflow side alone makes schedules
+semantically distinct.
+
+**3d. Independence bookkeeping, per `55`'s own discipline.** My standard-model derivation shares
+literature with `55` (Wilkinson, IEEE, the exact-then-adapt factoring), so that convergence is two
+instruments over one literature, worth more than a read and less than two cold arrivals. What is
+genuinely independent: probe A is a composite-exactness instrument at F = 8 with a
+property-checking oracle (the unit's oracles recompute; mine verifies the defining property without
+rounding, so shared-bug agreement is structurally excluded), and probe B is a new width (i16) and a
+new witness family for claims the unit measured at 4 bits. My cold witness (30000, 10000, -25000)
+is a **ceiling-only, clamp-then-pullback** divergence, which independently corroborates the
+pullback mechanism `55b` proposed and `57` adjudicated, at a different width, from a blind start:
+the ceiling saturates, the negative operand pulls the sum back into the interior, and no floor is
+ever touched. I did not know that mechanism existed when I built it, which is what makes it worth
+one instance.
+
+## 4. Fits against the register, per its method
+
+**Q3.** Fits, and sharpens per 3b: the entry should record that the threat to the unit's additive
+results runs through the inferred result format and the schedule, not through mixedness alone.
+Kills nothing.
+
+**Q5.** Phase one's decomposition of the strategy axis through the chain lens (per-op rounding rule
+by schedule policy by intermediate width policy) fits the product-of-axes reading and fits `25`'s
+"intermediate precision is a separate axis" evidence as the register carries it: my schedule axis
+is that axis with its chain-level semantics (order dependence, coherence) made explicit rather
+than only its precision. Fits badly with the one-axis reading for the same reason `25`'s material
+does. Kills nothing.
+
+**Q11.** Three fits. The statability argument (phase one section 7: a concept closing ops over the
+format cannot state grade a, so I7's chain clause has no expressible form against it) is an
+argument the register does not carry for **why** the exact-result width algebra must be nameable,
+and it lands beside `47`'s proposed sentence as quoted in the register: the exact-result format of
+an op is precisely a fact a lowering site cannot recompute from a const once the chain layer needs
+it. The accumulator option's additive-only qualification (`58`, `59`) is confirmed from an
+independent derivation (phase one section 5's linear-versus-logarithmic asymmetry, derived blind).
+And probe D adds the rounding-rule condition to any accumulator sentence: the multiplicative
+guard's headline is rule-conditional in the fusion term.
+
+**Q12.** Fits the specify-the-shape and per-strategy options; phase one's I10-plus-I7 derivation
+(a parallel reduction is a reorder, so chain precision plus core-agnosticism jointly force
+order-independent schedules for whichever strategy claims both) is the argument form of what the
+entry's second option gestures at ("deterministic at any thread count, which unblocks the
+adaptation intent"). Probe B contributes independent instances at i16: saturating order dependence,
+wrap invariance, wide-then-adapt invariance, and the f64 arm as the float instance of the same
+taxonomy. Kills nothing.
+
+**Q14.** Fits `58`'s candidate input and gives it vocabulary: the choice for the accuracy strategy
+on product chains is between grade a per window with a stated bound across windows, and an
+unbounded accumulator. Phase one's window framing is the form in which that choice can be put to op
+without asking him a measurement question.
+
+**Q16.** The chain, the window and the schedule are sense-two objects (aggregates over numerals,
+binding-time material per `43`'s finding as the register carries it). Whatever word wins sense two
+needs to be usable for "a subterm evaluated in the width algebra and adapted once", because that is
+the unit the error analysis and the accumulator derivation both index on.
+
+**Q17.** Two contributions. Probe A is a composite-exactness result **at F = 8** for a
+multiply-containing window, the constructive complement of `58`'s negative result about eager
+multiplication: at F > 0 the safe multiplicative shape is the widening window, and it is exactly as
+composite-exact as the additive one. And probe D refines the entry's accumulator row as in section
+2: saving at least F under truncation with the equality failing at n = 5, zero saving under RNE at
+small n, linear growth untouched.
+
+**The wrapping entry.** Fits as amended; probe B adds an i16 instance of wrap's additive coherence.
+Nothing killed.
+
+**The derivation's outputs.** The window mechanism is the operational content of "the wide product
+is carried between operations" (`50` as quoted in the register), and the storage-against-compute
+format distinction phase one derived from Cold's chain story (section 8) converges with the
+compute-carrier material already there (`47`'s Warm-against-Precise compute difference, as the
+register carries it). Mine is another arrival, not a second read.
+
+**Kills nothing anywhere.** No option in the register is closed by anything in this file.
+
+## 5. What I put to the others, for the resumption
+
+**To `58`.** Probe D confirms your linear-growth headline and your withheld trust in your own
+two-point pattern, refutes the "exactly F, constant" form at n = 5, and makes the saving
+rule-conditional: zero under RNE at n = 3 and 4. Two questions. Would you restate the finding as
+"under a composing rounding rule, at most `full_w - F`; under nearest, no fusion term at all", with
+the second slack mechanism (final-adaptation absorption, growing with n) named separately? And your
+open question about whether the statistical-error-bound alternative is expressible in the typestate:
+phase one's window framing suggests the *statable* form is per-window exactness plus a per-window
+error count (the schedule is the index set of the error sum), which is a counting contract rather
+than a probabilistic one; does that meet what you meant, or is the DSP-style expected-error bound
+genuinely what I7 needs?
+
+**To `57`.** Your "coherence is the statement that the grading collapses" and phase one's "the
+schedule is part of the function's meaning" are one frame from two ends; the table in section 1 is
+my proposed joint statement. Does the grade-s row (ambient exactness, no adaptation at all) earn a
+place in your grading as the degenerate case where the question of collapse does not arise, or do
+you fold it into coherence and lose the distinction between wrap's induced-algebra exactness and a
+widening op's ambient exactness?
+
+**To `59` (the persona) and whoever dispatches P2.** Per 3b: the Q3 sweep should vary the result
+format rule, not only the Q3 option, because alignment to the join is exact and the coarsening
+threat enters only below the join.
+
+## 6. What the register should gain
+
+Reported; I have edited neither `OPTIONS.md` nor `INTENTS.md`.
+
+**Q17's multiplicative accumulator row** gains probe D's counts: the one-rescale saving is a fusion
+term, present under truncation (and by the fusion argument any composing rule), absent under
+round-to-nearest at n = 3 and 4, exceeded at n = 5 by a second growing slack; `58`'s equality form
+should not be carried unconditioned. Cross-link to the narrowing-composition entry ("does the
+design want narrowing to compose"), which now has an operational consequence in the accumulator
+material rather than only a conversion-layer one.
+
+**Q17** also gains probe A as an F > 0 composite-exactness instance for the widening
+multiplicative window, the constructive complement to `58`'s eager impossibility.
+
+**Q3** gains the sharpening of 3b: what depends on it is conditional on the inferred result format
+and the schedule, not on mixedness alone.
+
+**A candidate line for the chain question `59` P1 posed**, offered as one cold derivation plus this
+reconciliation, one expert: the per-operation model extends to chains exactly when adaptation is
+unfused from the ops; a chain is (exact ops, edge formats, schedule); the schedule is the index set
+of both the error analysis and the strategy divergence; chains factor into windows whose capacity
+the existing typestate derivation already determines; and a format concept that hides the
+adaptation inside each op cannot state I7's chain clause at all.
+
+## 7. Coverage, bounded honestly
+
+**Read in full:** the six files and the register, as listed at the top. **Read at source:**
+`58_probes/p2` (construction and narrows). **Not re-run:** any panel probe; probe D re-derives
+`58`'s truncation rows independently rather than diffing its outputs, and its n = 3 and n = 4
+truncation savings agree with `58`'s reported pattern, which is a cross-check though not a byte
+diff. **Built this phase:** one probe, exhaustive within its stated domain, instrument-validated
+both ways, committed with its transcript.
+
+**Bounds on probe D:** one (M, F) point, unsigned operands, left fold, no intermediate clamp
+(deliberately mirroring `58` section 1), n up to 5, two rounding rules. The two-mechanism reading
+of the n = 5 excess is an interpretation; separating the absorption slack from the operand box
+needs a sweep over M and the box that I did not run. The claim that any composing rule fuses
+(directed modes, not only truncation) is argued from `07`'s result as the register carries it, not
+measured here.
+
+**First-read here, owed seconds:** the unfused-model reconciliation (section 1, including the
+grade table); the fusion reading of `58`'s saving with probe D's counts; the Q3 sharpening (3b);
+the ceiling-only reading of probe B's witness as a pullback instance (3d). **Seconded by me, from
+independent instruments:** the pullback mechanism (probe B, i16, blind); wrap's additive coherence
+(probe B); the exact-then-adapt fold's order invariance (probe B); the additive-only bound on
+Q11's accumulator option (phase one section 5, derived blind, agreeing with `58`).
+
+**Did reading the panel change the answer?** The core, no: a chain is composition plus a schedule
+of adaptation points, the schedule is semantics, exactness has grades, chains factor into windows,
+and the format concept owes the width algebra, the named adaptation and the exactness predicate.
+That was written blind and it stands, and saying so is the result this dispatch exists to produce.
+The refinements, yes, and they are real: one bit off the additive accumulator, a premise named on
+the same-scale claims, a better filing for wrap, and a sharper, measured form of the multiplicative
+saving than either phase one or `58` had alone.
+
+**Nothing here settles anything.** The mode is explore, there is no canon, and every first-read
+item above is one expert until attacked.
