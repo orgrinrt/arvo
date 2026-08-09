@@ -1331,6 +1331,38 @@ sense (the one with literature behind it and inside the predicate) and renaming 
 to "bit offset" or "alignment residue", noting `16`'s own prose already half-reaches for "bit-phase" as
 a compound without naming the collision (`24` section 4).
 
+**Where does wrapping live: adaptation, ambient domain, or a named composite?** Added from `55`,
+which established exhaustively at 4 bits (with a validated instrument, `55_probes/p2`) that wrap and
+saturate have different mathematical kinds: saturation is a monotone, distance-minimising retraction
+onto the representable set, the same kind of map as a rounding, while wrapping is neither
+distance-minimising (107 witnesses in the probe window) nor monotone, and is instead exact ring
+arithmetic in Z/2^N (homomorphism property and associativity exhaustive, zero failures). Q5, Q6 and
+Q12 currently file wrap as a value of an overflow-policy axis beside saturate; the probe says the two
+values are not the same kind of thing. Three options, none settled:
+
+- **Wrap stays an adaptation-slot value.** The current implied filing; keeps one axis vocabulary.
+  Costs: every generic sentence over the axis (monotone, error-bounded-per-step, law transport with an
+  error term) holds for every value except wrap, so the axis carries a permanent exception, and the
+  error metric is meaningless for it.
+- **Wrap is a change of ambient domain.** A wrapping numeral denotes residues; its arithmetic is exact,
+  its laws are group laws with no error term, and it has no arithmetic-compatible order or quantum.
+  Buys: `35`'s measured 0% reassociation divergence for wrapping folds becomes a law of the domain
+  rather than a per-policy measurement. Costs: collides with the carried scoping theorem ("every arvo
+  value is `m * r^q`", quoted at `08:113-117`) unless a residue is read through a chosen rational
+  representative, and makes conversion out of a wrapped numeral visibly policy-laden (Z/2^N has no
+  ring embedding into Z; a section must be chosen), which is honest and is a new canon sentence.
+- **Wrap is a named composite operation.** "Add then reduce" on an integer-denoting numeral, with the
+  reduction a stated non-adaptation map. Keeps the value set rational and the adaptation slot clean.
+  Costs: wrapped-chain exactness becomes a theorem about a composite rather than a law, and the
+  strategy layer needs a way to name the composite per `34`'s Hot licence.
+
+What distinguishes them: whether `35`'s and `42`'s associativity results are stated as domain laws,
+axis exceptions, or composite theorems, and what the ordering and conversion story for wrapped values
+is in each. Consequential for Q12, because "exactly reassociable" is a domain fact under the second
+option and a per-policy measurement under the first. ONE EXPERT, one probe, one width; the probe's
+honest flip side (unsigned add-only saturation exactly associative, floor unreachable) independently
+corroborates `42_probes/p3`'s reachability mechanism from a second instrument.
+
 ## Standing
 
 Nothing in this file is evidence, and nothing in it is a decision. It is the working set.
