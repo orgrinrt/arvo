@@ -1118,6 +1118,19 @@ while a *reachable* floor gives 48 and 450. Unsigned saturating addition never r
 is why it associates; the sign domain is a proxy for reachability rather than the cause. The refuted
 first hypothesis is kept on the record.
 
+> **Caution on the mechanism paragraph above, from `55b` (`55_probes/p5`), ONE EXPERT.** Against
+> the condition as quoted here and at `56:203-205` ("at most one of its clamps can be triggered by
+> any association order"), an exhaustive sweep of signed-clamp triples over Q = [-8, 7] finds 952
+> divergent triples of which 448 are ceiling-only and 504 floor-only, with **zero** involving both
+> bounds and zero without a clamp event: every divergence in the box is a one-bound event, so the
+> quoted two-bound form is wrong about all of them (witness: (7, 7, -1), ceiling only, associations
+> 6 against 7). The counts support a pullback mechanism instead: divergence needs a clamp event
+> followed by an operand moving the partial sum back toward the interior, and zero divergent
+> triples have all-same-sign operands, which is why the sign split in the table above tracks the
+> divergence. `55b` has not opened `42`; the refutation targets the quoted form, `42`'s own finer
+> per-trajectory statement may already carry the pullback reading, and a second read of `42`
+> against `55_probes/p5` is owed before this paragraph is rewritten.
+
 **A drafting note rather than an option.** Wrapping's four separately-measured properties
 (associativity, commutativity, identity, inverse) are **one theorem**, that the representation realises
 the cyclic group of its width, rather than four independent facts. Whoever writes the law-layer prose
@@ -1331,37 +1344,46 @@ sense (the one with literature behind it and inside the predicate) and renaming 
 to "bit offset" or "alignment residue", noting `16`'s own prose already half-reaches for "bit-phase" as
 a compound without naming the collision (`24` section 4).
 
-**Where does wrapping live: adaptation, ambient domain, or a named composite?** Added from `55`,
-which established exhaustively at 4 bits (with a validated instrument, `55_probes/p2`) that wrap and
-saturate have different mathematical kinds: saturation is a monotone, distance-minimising retraction
-onto the representable set, the same kind of map as a rounding, while wrapping is neither
-distance-minimising (107 witnesses in the probe window) nor monotone, and is instead exact ring
-arithmetic in Z/2^N (homomorphism property and associativity exhaustive, zero failures). Q5, Q6 and
-Q12 currently file wrap as a value of an overflow-policy axis beside saturate; the probe says the two
-values are not the same kind of thing. Three options, none settled:
+**Where does wrapping live, restated after `56`'s attack and `55b`'s reply: one reduction slot,
+two law roles, and the domain filing withdrawn.** Proposed by `55` (`55_probes/p2`), attacked by
+`56` (`56_probes/q1`, re-run by `55b`), amended by `55b` (`55_probes/p4`). The original entry's
+three options are now two, and the mechanism is measured rather than argued.
 
-- **Wrap stays an adaptation-slot value.** The current implied filing; keeps one axis vocabulary.
-  Costs: every generic sentence over the axis (monotone, error-bounded-per-step, law transport with an
-  error term) holds for every value except wrap, so the axis carries a permanent exception, and the
-  error metric is meaningless for it.
-- **Wrap is a change of ambient domain.** A wrapping numeral denotes residues; its arithmetic is exact,
-  its laws are group laws with no error term, and it has no arithmetic-compatible order or quantum.
-  Buys: `35`'s measured 0% reassociation divergence for wrapping folds becomes a law of the domain
-  rather than a per-policy measurement. Costs: collides with the carried scoping theorem ("every arvo
-  value is `m * r^q`", quoted at `08:113-117`) unless a residue is read through a chosen rational
-  representative, and makes conversion out of a wrapped numeral visibly policy-laden (Z/2^N has no
-  ring embedding into Z; a section must be chosen), which is honest and is a new canon sentence.
-- **Wrap is a named composite operation.** "Add then reduce" on an integer-denoting numeral, with the
-  reduction a stated non-adaptation map. Keeps the value set rational and the adaptation slot clean.
-  Costs: wrapped-chain exactness becomes a theorem about a composite rather than a law, and the
-  strategy layer needs a way to name the composite per `34`'s Hot licence.
+The measured structure (exhaustive at 4 bits, both instruments): a total retraction onto Q can
+hold two independent law families, the adaptation laws (monotone, distance-minimising; what lets
+order and error transport, which accuracy claims consume) and the coherence law (rho(a op b) =
+rho(rho(a) op rho(b)); what makes chains exact). All four cells are inhabited: signed saturation
+holds adaptation and fails coherence (476 chain-divergent triples); wrap holds coherence for
+addition and multiplication and fails both adaptation laws; unsigned add-only saturation over a
+nonnegative window holds both; the opposite-bound mutant holds neither (`56_probes/q1_output.txt`).
+Coherence is definitionally a homomorphism onto the induced operation a # b = rho(a op b), so each
+coherent policy computes exactly in an induced algebra, and the algebras grade (`55_probes/
+p4_output.txt`): wrap induces the ring Z/16; unsigned saturation induces a commutative semiring
+(distributivity at zero failures, no additive inverses); signed saturation induces a unital
+commutative magma that is not a semigroup (952 associativity failures on Q itself). The licensed
+rewrites follow from the grade: a group licenses reassociation and cancellation, a monoid or
+semiring reassociation only, a magma neither. ONE EXPERT on the grading; the semiring row is the
+part most wanting a second read, and width transfer past 4 bits is argued, not measured.
 
-What distinguishes them: whether `35`'s and `42`'s associativity results are stated as domain laws,
-axis exceptions, or composite theorems, and what the ordering and conversion story for wrapped values
-is in each. Consequential for Q12, because "exactly reassociable" is a domain fact under the second
-option and a per-policy measurement under the first. ONE EXPERT, one probe, one width; the probe's
-honest flip side (unsigned add-only saturation exactly associative, floor unreachable) independently
-corroborates `42_probes/p3`'s reachability mechanism from a second instrument.
+The live options:
+
+- **One slot, members classified along the two law roles.** Every generic sentence over the slot
+  quantifies over the family that carries it; no member is an exception to anything; the induced-
+  algebra grade is the content the law layer states per policy. This is the shape both `56` and
+  `55b` now defend, from opposite starting points.
+- **Wrap stays an axis value with a permanent exception list.** The original option one. Its cost
+  was undercounted in the first version of this entry: chain-exactness sentences carry a
+  saturation exception in the mirror direction, so the exception list runs both ways.
+
+Folded, on `56`'s observational-equivalence argument (accepted by `55b`): the previous options two
+(wrap as a change of ambient domain) and three (wrap as a named composite) are one semantics with
+two drafts. Once a numeral's Q is declared, the section out of Z/2^N is fixed by the declaration,
+as `u8` against `i8`; no probe, bench or consumer program distinguishes them; the choice is
+drafting economy and must not be dispatched as an empirical question. The conversion-out cost the
+first version of this entry carried is withdrawn on the same argument. What replaces it, owed
+under every filing equally and therefore not a distinguisher: a wrapped numeral has no
+arithmetic-compatible order (a finite cyclic group admits none), so the canon owes one sentence
+saying which order comparison means there.
 
 ## Standing
 
