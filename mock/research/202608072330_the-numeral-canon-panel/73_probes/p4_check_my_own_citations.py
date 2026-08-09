@@ -84,6 +84,11 @@ ROWS = [
     ("OPTIONS:1611-1617", "OPTIONS", 1611, 1617, "not about magnitude at all"),
     ("OPTIONS:991-994", "OPTIONS", 991, 994, "widen compute past storage"),
     ("DROPLIST:106-108", "DROPLIST", 106, 108, "section-retraction triple"),
+    # op's own words, quoted in sections 4, 5 and 12
+    ("INTENTS I11", "INTENTS", 154, 160,
+     "our main selling point are the algo crates that hilavitkutin, vehje, pretty much"),
+    ("INTENTS I3", "INTENTS", 67, 77,
+     "It should behave like native primitives in regular old rust would"),
     # outside the panel directory, for section 9's second report
     ("cookbook.md:136-137", "REPO:.claude/rules/cookbook.md", 136, 137,
      "arvo-spectral::Laplacian"),
@@ -93,6 +98,12 @@ ROWS = [
 
 
 def norm(s):
+    # strip leading blockquote markers before collapsing whitespace. Without this
+    # a quotation of op's own words fails whenever the quote wraps a line, because
+    # the "> " of the next line lands inside the substring. That is the second
+    # defect this instrument found in its own author's citations and, like the
+    # first, it was a defect in the checker rather than in the citation.
+    s = re.sub(r"(?m)^[ \t]*>[ \t]?", "", s)
     return re.sub(r"\s+", " ", s).strip()
 
 
