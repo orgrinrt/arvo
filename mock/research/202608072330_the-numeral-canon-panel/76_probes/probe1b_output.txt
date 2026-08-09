@@ -1,0 +1,6 @@
+i8 saturating_add associativity, exhaustive (16,777,216 triples):
+  FAILS. counterexample a=-128 b=-128 c=1 -> (a+b)+c=-127 a+(b+c)=-128, total failures=4177792
+u8 saturating (a+b)-c == a+(b-c), exhaustive (16,777,216 triples):
+  FAILS. counterexample a=1 b=0 c=1 -> (a+b)-c=0 a+(b-c)=1, total failures=13882880 (82.7484% of domain)
+u8 wrapping (a+b)-c == a+(b-c), exhaustive (16,777,216 triples):
+  HOLDS UNIVERSALLY (ring: Z/256Z, no exceptions).

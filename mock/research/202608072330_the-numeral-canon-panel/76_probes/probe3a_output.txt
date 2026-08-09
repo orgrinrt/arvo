@@ -1,0 +1,1 @@
+wrapping: associativity holds on the narrow ring domain, confirmed at compile time (const-eval, not sampled)
