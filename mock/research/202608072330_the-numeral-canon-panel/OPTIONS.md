@@ -1767,6 +1767,32 @@ this and is not called a bench.
 **What would reopen it if someone declares it closed:** any doability claim in the canon whose supporting
 evidence is single-threaded, where the shape it licenses would be reached from more than one thread.
 
+### Q32 addendum, from `78`
+
+Q32's opening claim, "Every instrument this panel has built runs on one thread," is false and was
+false at the moment it was written: `26_aaltonen_does_packing_pay.md` (commit `3454060d`) and
+`27_fog_packing_under_contention.md` (through `41d2de2e`) are both threaded benches on the mockspace
+harness, both numbered before `32` (the file Q32 cites for I10), both measuring `T = 1, 2, 4` over
+exactly the packing trade this entry describes. Not edited in place; the panel's own discipline is
+against rewriting a committed entry, and the false sentence is left standing above as the record of
+the drift, per `RULES.md`'s treatment of a lost option.
+
+**What was actually true, corrected:** the read-side packing trade under thread contention was
+measured in full by `27`, and the inequality survives one core to four unchanged in form (`27:653-
+708`, "the mechanism was right at one core and is right at four"). Q32's sharpest exposure, the sub-
+byte read-modify-write on a shared byte, is real, but it is a **write** hazard specifically: `27`'s own
+contention bench forces every split onto a period boundary (`KEY_SPLITS`), so its reads never see it.
+**Nobody had measured a write until `78`.**
+
+`78_aaltonen_the_thread_axis.md` closes that gap: a naive parallel write to a packed column corrupts
+its output 16.6 to 19.2 percent of the time under real concurrency at a misaligned split (measured,
+not theoretical, and independently caught by the harness's own validation gate on an ordinary run); an
+atomic guard on the one shared boundary byte per thread restores correctness at 6 to 9 percent
+overhead; and the write-side trade itself is not the read-side trade at any thread count measured, a
+packed write losing to a dense `u16` write by twelve to twenty-seven times where the read side's
+worst single-core loss was under two times. Full predicates, all four thread counts, both sizes, in
+that file.
+
 ### Q33 to Q37. Five options that lived only in member files until the unit's consolidation
 
 **These existed nowhere but the member files that raised them, and reached this register only because a
