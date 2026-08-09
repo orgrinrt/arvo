@@ -484,6 +484,20 @@ nothing has earned `threads any`, and the correct predicate omits threads entire
 "distributivity fails at `F > 0`" is the predicate `F = 0` and an arm gated on it. Look for the predicate
 before writing the prohibition; a prohibition is what a finding becomes when nobody looked for its region.
 
+**A predicate is never widened in place.** Op:
+
+> The predicate may only list things that hold for sure. If a later expert finds another dimension having
+> some predicate, be it any or an actual predicate, they then correct in their deliverable and it ends up
+> in consolidation. The original does not get updated, because at that time, there was and is no proof that
+> the newer has, so it can't claim it
+
+The later expert states the widening in **its own file**, and the consolidation carries it. The original
+stands untouched, and it is not wrong: it claimed what its evidence supported. Editing it to absorb later
+evidence would make it claim, retroactively, something it never established.
+
+This is the same shape as a cold derivation's phase one, and it puts widened predicates under the
+compression rules: a widening is a result, so it must survive consolidation and the check verifies it did.
+
 Full statement: `every-finding-carries-its-predicate.md`.
 
 ## Op's prior calls are op's voice and are NOT the top rung
