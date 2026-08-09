@@ -1,0 +1,7 @@
+section 1: reproduced independently. holds=2894336 fails=13882880 (82.7484%) total=16777216
+P0 no_elementary_clamp: sufficiency_violations=0 (first=None) necessity_violations=65280 (first=Some((0, 0, 1)))
+P1 exact_result_in_range: sufficiency_violations=8355840 (first=Some((1, 0, 1))) necessity_violations=65280 (first=Some((0, 0, 1)))
+P2 no_ceiling_pullback: sufficiency_violations=5559680 (first=Some((1, 0, 1))) necessity_violations=0 (first=None)
+P3 no_ceiling_pullback_and_no_underflow: sufficiency_violations=0 (first=None) necessity_violations=32640 (first=Some((0, 0, 1)))
+P4 case_split: sufficiency_violations=0 (first=None) necessity_violations=0 (first=None)
+section 3: 'add associates universally' as a predicate for the composed law: 13882880 mispredictions of 16777216 (82.7484%)
