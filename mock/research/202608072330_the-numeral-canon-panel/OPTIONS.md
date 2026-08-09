@@ -1288,6 +1288,23 @@ microkernelling shape the workspace already names.
 > multiplication at nonzero fraction entirely unmeasured**, which is the cell the default strategy would
 > occupy.
 
+> **`60` reconciled `58`'s impossibility with `55`'s model, deriving it cold.** The per-operation model
+> **extends to chains if and only if adaptation is unfused from the operations.** `58` showed a chain of
+> eager fixed-point multiplies cannot be written in the per-operation model because the rescale is baked
+> into every pairwise step; `55`'s model is the standard one. Both hold, and the fusion is what separates
+> them.
+>
+> Its derived object: a chain is **a composition of exact operations together with a schedule of
+> adaptation points**, and the schedule is part of the function's meaning rather than an implementation
+> choice. Exactness then grades: composite correct rounding, stepwise, bounded drift, and the structural
+> exactness fixed point already possesses. Measured: saturating folds are order-dependent while wrapping
+> and widen-then-adapt are invariant.
+>
+> **A format concept whose operations close over the format cannot state op's chain intent at all.** What
+> it must carry is small: the exact-result width algebra, adaptation as a first-class named map, and the
+> exactness predicate. The general spelling of the width algebra is refused without a forbidden feature,
+> with the compiler error committed; the trait-contract spelling compiles on the pin.
+
 ## Q17. Where does the fraction boundary fall, and which results are integer-only?
 
 **Added from `58`, unit two, and it splits the unit's strongest candidate in two.** Arvo is a
@@ -1311,9 +1328,15 @@ operands 3, 5, 7. It also finds `57`'s "clamp only" ablation arm is zero-fractio
 a genuine ablation, since its branch never reads the scale, and that no such ablation is definable
 because coarsening **is** what nonzero-fraction multiplication does.
 
-**A measurement nobody had taken.** The multiplicative fold's accumulator saves exactly one rescale's
-width below full precision, constant in fold length, and needs the rest regardless of chain length:
-**linear growth with no closed form**, against addition's logarithmic width-plus-log-of-capacity. That
+**A measurement nobody had taken, and `60` then corrected it.** `58` reported the multiplicative fold's
+accumulator saving exactly one rescale's width below full precision, constant in fold length. `60`'s
+probe D shows that is **adaptation fusion, and therefore rounding-conditional and not constant**: under
+truncation the saving is 3 bits at fold length 3 and 4, then **4 bits at 5**; under round-to-nearest-even
+it is **zero** at 3 and 4, and 3 at 5. So the equality form breaks at n=5 and vanishes entirely under a
+different rounding mode, answering the open item `58` itself flagged.
+
+What survives is the shape rather than the constant: the multiplicative fold needs **linear growth with
+no closed form**, against addition's logarithmic width-plus-log-of-capacity. That
 directly undercuts Q11's accumulator-derivation option as an **additive-only** mechanism, and bears on
 op's stated intent that the accuracy strategy holds within chains.
 
