@@ -419,3 +419,45 @@ and hand the call back rather than resolving it.
 **An early return is a successful dispatch**, and the most valuable thing a dispatch can produce. It
 is never re-dispatched with a softer brief until someone answers, because reframing until you get an
 answer converts a refusal into permission.
+## Op's prior calls are op's voice and are NOT the top rung
+
+The provenance ladder ranks by human ratification, so op's own words normally outrank everything. **There
+is one body of op's words where that is reversed, by op**, and an expert meeting it will rank it top by
+reflex unless it knows otherwise.
+
+`PRIOR_CALLS.md` collects op's decisions from arvo's earlier history, including the 21 explicitly attributed
+"Decision (op, ...)" in the formalization talk. **They are not calls, not ratified intents, and not canon.**
+Op's own framing:
+
+> all my prior calls can be mined and should be collected for reference, but not as calls, not as ratified
+> intents, but as historical log of my calls, explicitly connected to a *failure* which means they aren't
+> "canon" so to say. All of them I've made in earnest, all of them made sense at the time, but none of them
+> relate to this new panel or its convergence or settled intents, and should not act as if it did.
+
+And on how much of it to believe:
+
+> none of it absolute. The answers are likely wrong, and the questions they answer, are also probably
+> wrong. So substance itself is only good as extra stuff to consider or explore, nothing more.
+
+**The only ratified material remains `INTENTS.md`, I1 through I12.** A sentence in `PRIOR_CALLS.md`
+attributed to op does not outrank a panel finding, does not settle an option, and does not close a
+question. It cannot be cited to support a claim.
+
+What it is for, and both uses are real:
+
+**Things to test.** The useful question about a prior call is never "was this right" but **"why did he
+reach for that, and does the reason hold here?"** A call often encodes a genuine constraint or worry even
+where its conclusion is wrong, and the question it was answering is as suspect as the answer. Where a call
+is cheaply re-testable against the current shape, testing it is legitimate work and the result of that test
+**is** current evidence.
+
+**Inferred taste.** The corpus shows which way op jumps when two options are balanced, what he reliably
+objects to, what vocabulary he rejects, and what he finds distasteful independent of whether it works. That
+inference feeds the `orgrinrt` persona and feeds what is worth exploring. It is inference and is labelled
+as such, grounded in at least two instances per pattern.
+
+**The failure mode to watch for** is the same laundering the canon-defence rules exist to stop, arriving
+from an unexpected direction. An agent that cannot support a position finds a prior op call agreeing with
+it and cites that. The citation is real, the attribution is correct, and the conclusion is still
+unsupported, because op removed that material's authority himself.
+
