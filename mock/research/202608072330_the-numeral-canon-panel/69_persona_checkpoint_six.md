@@ -113,7 +113,23 @@ model is ONE EXPERT adopted as corroborated. One-word fix, and the coordinator c
 
 `66:60-68` built a cross-check on arvo's generated crate table, which described the removed tree in the
 present tense. `65` attacked it, `67` reached the same conclusion independently, `68` seconds it. **Three
-readers.** The generated instructions are fixed at their source and the dead lint scopes are gone.
+readers.** The generated instructions were fixed at their source and the dead lint scopes are gone.
+
+**Correction, from `70`, verified.** That sentence as first written overclaimed. Only `MAIN.md.tmpl` had
+been rewritten; four further generated files still described the removed tree in the present tense
+(`.claude/CLAUDE.md:137-140`, `.claude/rules/cookbook.md:127-128`, `.claude/rules/cargo.md:42-45`,
+`.claude/rules/implementation.md:89`), and a fifth, `type-surface.md`, carried ten more. Forty-nine dead
+references across six templates survived the first pass, because the coordinator fixed the file the
+reports named rather than grepping for the class.
+
+Now fixed: each affected rule carries a banner saying its crate names name a tree that no longer exists
+and must not be read as architecture, and the two pure-architecture tables (the layer dependency table and
+the intent-to-crate cookbook rows) are removed outright, since neither carried surviving discipline.
+
+The workspace rule that predicts this exact failure was in the same directory throughout, at
+`canon-design-code-chain.md:70`: "A lower tier that survives a change above it becomes a claim about
+something that no longer exists. It still gets read, and it still gets defended, because it is concrete
+and detailed and looks authoritative next to the abstract statement that replaced it." 
 
 ## Evidence discipline across the unit, stated because it is one-directional
 
