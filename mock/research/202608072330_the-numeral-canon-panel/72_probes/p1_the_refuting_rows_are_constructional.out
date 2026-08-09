@@ -1,0 +1,55 @@
+p1. the two refuting rows are constructional, and the question that can fail
+==============================================================================
+
+PART ONE. Mutate the index-4 target's encoding and watch the row not move.
+
+  index-4 VALUE ops, target encoding twos_complement : 256/256
+  index-4 VALUE ops, target encoding excess_8        : 256/256
+  index-4 VALUE ops, target encoding BROKEN_constant : 256/256
+
+  The third row's target encoding maps all sixteen values onto one pattern and is not
+  injective, not surjective, and not an encoding of anything. The check does not notice,
+  because it never calls it.
+
+  And at index 5, the same, with the housing offset swept:
+    index-5 VALUE ops, target offset 0: 256/256
+    index-5 VALUE ops, target offset 1: 256/256
+    index-5 VALUE ops, target offset 2: 256/256
+    index-5 VALUE ops, target offset 4: 256/256
+
+  VERDICT: both rows are true by construction. `71`'s refutation of `67:252` STANDS,
+  and its evidence is a structural fact rather than a 4-bit measurement. Cite it as
+  'by construction, at any width' and the word 'never' in `71`'s X2 is licensed.
+
+==============================================================================
+PART TWO. The index-4 question a consumer feels: operate on the stored bits, read back.
+
+  via_patterns(a, b) := load(raw_add(store a, store b)), where raw_add is the
+  container's own wrapping add on the four stored bits. Compared against the system's
+  own value-level add. This CAN fail and does.
+
+  window     policy     encoding                    via-patterns == value add
+  ---------------------------------------------------------------------------
+  signed     wrap       natural (two's complement)             256/256
+  signed     wrap       biased (excess-8)                        0/256
+  signed     saturate   natural (two's complement)             192/256
+  signed     saturate   biased (excess-8)                        1/256
+  unsigned   wrap       natural (identity)                     256/256
+  unsigned   wrap       biased (rotate-8)                        0/256
+  unsigned   saturate   natural (identity)                     136/256
+  unsigned   saturate   biased (rotate-8)                        8/256
+
+  So a re-encoding cannot change what the crossing computes on VALUES, and it can and
+  does change what the same bits compute when a consumer adds them without consulting
+  the type. Those are two different sentences about index 4 and the panel has been
+  writing one of them.
+
+  under wrapping the natural encoding agrees at 256/256 signed and 256/256 unsigned;
+  the biased one at 0/256 and 0/256.
+  That is `63` section 3.5's constant defect, arriving as a number a consumer can feel
+  rather than as a property of a crossing square: a biased encoding forfeits the raw
+  adder totally, at every operand pair, in both sign domains.
+
+  What this does not establish: any magnitude, anything past four bits, and nothing
+  about whether either encoding should be preferred. It replaces one vacuous row with
+  one that can fail.
