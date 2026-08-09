@@ -1,0 +1,24 @@
+error[E0599]: the associated function or constant `SET_STEP` exists for struct `Step<Sys<RingZ, U6, WrapK, Twos, Plain>, Sys<RingZ, U4, SatK, Twos, Plain>, PreservesOrder>`, but its trait bounds were not satisfied
+   --> p4_n3.rs:251:62
+    |
+ 99 | pub struct Sys<D, Q, R, E, C>(PhantomData<(D, Q, R, E, C)>);
+    | ----------------------------- doesn't satisfy `<_ as System>::Red = WrapK`
+...
+142 | pub struct Step<A, B, P>(PhantomData<(A, B, P)>);
+    | ------------------------ associated function or constant `SET_STEP` not found for this struct
+...
+251 |     <Step<NonNegWideWrap, NonNegNarrowSat, PreservesOrder>>::SET_STEP;
+    |                                                              ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+    |
+note: trait bound `<Sys<RingZ, U4, SatK, Twos, Plain> as System>::Red = WrapK` was not satisfied
+   --> p4_n3.rs:153:29
+    |
+150 | impl<A, B> Step<A, B, PreservesOrder>
+    |            --------------------------
+...
+153 |     B: System<Dom = A::Dom, Red = A::Red, Enc = A::Enc, Con = A::Con>,
+    |                             ^^^^^^^^^^^^ unsatisfied trait bound introduced here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0599`.

@@ -1,0 +1,29 @@
+error[E0599]: the associated function or constant `SET_STEP` exists for struct `Step<Sys<RingZ, U6, WrapK, Twos, Plain>, Sys<RingZ, U4, WrapK, Twos, Plain>, PreservesOrder>`, but its trait bounds were not satisfied
+   --> p4_n1.rs:242:63
+    |
+120 | pub struct At<R, Q>(PhantomData<(R, Q)>);
+    | ------------------- doesn't satisfy `At<WrapK, U4>: Monotone`
+...
+142 | pub struct Step<A, B, P>(PhantomData<(A, B, P)>);
+    | ------------------------ associated function or constant `SET_STEP` not found for this struct
+...
+242 |     <Step<NonNegWideWrap, NonNegNarrowWrap, PreservesOrder>>::SET_STEP;
+    |                                                               ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+    |
+note: trait bound `At<WrapK, U4>: Monotone` was not satisfied
+   --> p4_n1.rs:154:25
+    |
+150 | impl<A, B> Step<A, B, PreservesOrder>
+    |            --------------------------
+...
+154 |     At<B::Red, B::Set>: Monotone,
+    |                         ^^^^^^^^ unsatisfied trait bound introduced here
+note: the trait `Monotone` must be implemented
+   --> p4_n1.rs:123:1
+    |
+123 | pub trait Monotone {}
+    | ^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0599`.

@@ -1,0 +1,70 @@
+n1 EXIT=1
+n2 EXIT=1
+n3 EXIT=1
+
+===== p4_n1.stderr =====
+error[E0599]: the associated function or constant `SET_STEP` exists for struct `Step<Sys<RingZ, U6, WrapK, Twos, Plain>, Sys<RingZ, U4, WrapK, Twos, Plain>, PreservesOrder>`, but its trait bounds were not satisfied
+   --> p4_n1.rs:242:63
+    |
+120 | pub struct At<R, Q>(PhantomData<(R, Q)>);
+    | ------------------- doesn't satisfy `At<WrapK, U4>: Monotone`
+...
+142 | pub struct Step<A, B, P>(PhantomData<(A, B, P)>);
+    | ------------------------ associated function or constant `SET_STEP` not found for this struct
+...
+242 |     <Step<NonNegWideWrap, NonNegNarrowWrap, PreservesOrder>>::SET_STEP;
+    |                                                               ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+    |
+note: trait bound `At<WrapK, U4>: Monotone` was not satisfied
+   --> p4_n1.rs:154:25
+    |
+150 | impl<A, B> Step<A, B, PreservesOrder>
+    |            --------------------------
+...
+154 |     At<B::Red, B::Set>: Monotone,
+    |                         ^^^^^^^^ unsatisfied trait bound introduced here
+
+===== p4_n2.stderr =====
+error[E0599]: the associated function or constant `SET_STEP` exists for struct `Step<Sys<RingZ, S6, SatK, Twos, Plain>, Sys<RingZ, S4, SatK, Twos, Plain>, PreservesOps>`, but its trait bounds were not satisfied
+   --> p4_n2.rs:246:56
+    |
+120 | pub struct At<R, Q>(PhantomData<(R, Q)>);
+    | ------------------- doesn't satisfy `At<SatK, S4>: Coherent`
+...
+142 | pub struct Step<A, B, P>(PhantomData<(A, B, P)>);
+    | ------------------------ associated function or constant `SET_STEP` not found for this struct
+...
+246 |     <Step<SignedWide, SignedNarrowSat, PreservesOps>>::SET_STEP;
+    |                                                        ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+    |
+note: trait bound `At<SatK, S4>: Coherent` was not satisfied
+   --> p4_n2.rs:163:25
+    |
+159 | impl<A, B> Step<A, B, PreservesOps>
+    |            ------------------------
+...
+163 |     At<B::Red, B::Set>: Coherent,
+    |                         ^^^^^^^^ unsatisfied trait bound introduced here
+
+===== p4_n3.stderr =====
+error[E0599]: the associated function or constant `SET_STEP` exists for struct `Step<Sys<RingZ, U6, WrapK, Twos, Plain>, Sys<RingZ, U4, SatK, Twos, Plain>, PreservesOrder>`, but its trait bounds were not satisfied
+   --> p4_n3.rs:251:62
+    |
+ 99 | pub struct Sys<D, Q, R, E, C>(PhantomData<(D, Q, R, E, C)>);
+    | ----------------------------- doesn't satisfy `<_ as System>::Red = WrapK`
+...
+142 | pub struct Step<A, B, P>(PhantomData<(A, B, P)>);
+    | ------------------------ associated function or constant `SET_STEP` not found for this struct
+...
+251 |     <Step<NonNegWideWrap, NonNegNarrowSat, PreservesOrder>>::SET_STEP;
+    |                                                              ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+    |
+note: trait bound `<Sys<RingZ, U4, SatK, Twos, Plain> as System>::Red = WrapK` was not satisfied
+   --> p4_n3.rs:153:29
+    |
+150 | impl<A, B> Step<A, B, PreservesOrder>
+    |            --------------------------
+...
+153 |     B: System<Dom = A::Dom, Red = A::Red, Enc = A::Enc, Con = A::Con>,
+    |                             ^^^^^^^^^^^^ unsatisfied trait bound introduced here
+
