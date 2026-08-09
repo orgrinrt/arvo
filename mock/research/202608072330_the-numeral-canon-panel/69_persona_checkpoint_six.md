@@ -130,8 +130,27 @@ references across six templates survived the first pass, because the coordinator
 reports named rather than grepping for the class.
 
 Now fixed: each affected rule carries a banner saying its crate names name a tree that no longer exists
-and must not be read as architecture, and the two pure-architecture tables (the layer dependency table and
-the intent-to-crate cookbook rows) are removed outright, since neither carried surviving discipline.
+and must not be read as architecture.
+
+**Second correction, from `73`, verified. This is the third overclaim about the same repair, and the
+second sat inside the correction of the first.** The sentence here previously said the two
+pure-architecture tables were "removed outright". Only the layer dependency table was. The
+intent-to-crate cookbook rows were still present at `.claude/rules/cookbook.md:136-137` and
+`mock/agent/rules/cookbook.md.tmpl:119` when `73` checked.
+
+Now actually done, with the count rather than an adjective, which is what the previous two claims
+lacked: **five dead table rows dropped** from the cookbook template, and a grep across all five affected
+generated files returns `CLAUDE.md` 0, `cargo.md` 0, `cookbook.md` 5, `implementation.md` 15,
+`type-surface.md` 10.
+
+**Thirty references therefore remain, deliberately.** They sit inside prose carrying discipline that
+survives the redesign (trait-first thinking, exact-width thinking, the ban on bare primitives at API
+positions), and deleting them would remove the rule along with the dead names. The banner is the
+mitigation for those; removal was only ever right for the two tables that carried nothing else.
+
+The workspace rule written after the first overclaim says: fix the class, then run the grep that would
+have found every instance, and put the count in the fix. The second overclaim was written without running
+it. The count above is that grep.
 
 The workspace rule that predicts this exact failure was in the same directory throughout, at
 `canon-design-code-chain.md:70`: "A lower tier that survives a change above it becomes a claim about
