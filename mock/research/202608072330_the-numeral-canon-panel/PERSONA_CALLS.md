@@ -185,3 +185,42 @@ paraphrased, are:
 `MORNING.md` edits are recommendations, and the persona applied nothing and committed nothing.
 
 **Status:** persona-decided. Not ratified. Nothing in `19` settles anything, per `04`.
+
+### 2026-08-09 Checkpoint five, mid-unit-two on the format concept (`55`, `56`, `55b`, `57`, `58`)
+
+**Asked:** audit the unit's five files, say what survives the fraction boundary, redirect the second
+four in priority order, and split what is op's from what the experts can settle. Written as `59`.
+
+**The persona said**, in the file, and these are the calls rather than the findings:
+
+- The redirection, in order: **P1** a cold derivation of the **chain** question, because every file in
+  the unit inherits `55`'s per-operation model and `58` found a chain of eager multiplies at nonzero
+  fraction cannot be written in that shape, while op's I7 is a chain intent. **P2** `OPTIONS.md`'s Q3,
+  because `58`'s F-independence argument covers same-scale addition only and no file in the unit
+  mentions Q3. **P3** measure absorption against `56`'s C-law rather than arguing them equal, since the
+  two probes quantify differently and three files now rest on the identification. **P4** the signed
+  case, which is arvo's default and where three of four cells are bad and one is unmeasured.
+- Op's, and the persona declined to answer any: **Q3**, which is now load-bearing for the unit's
+  strongest result. **What I7 means for product chains**, given that exact reassociation there costs an
+  accumulator growing linearly in fold length. And **whether the signed default is acceptable**, which
+  is not ready for him until P4 fills the empty cells.
+- On I7 specifically, offered as nothing more than the persona's: "the error-bound reading is the one
+  that survives contact with fixed-width hardware, and the exactness reading is the one that matches
+  the words he used, and that tension is exactly why it is his."
+- Against its own dispatch brief: the brief's compression of `57`'s refutation of `42` dropped both the
+  vocabulary-slip framing and the fact that `42` had itself published the refuting row and named the
+  surviving hypothesis. Named as the panel's recorded compression failure recurring at the dispatching
+  layer.
+- Six register recommendations, all reported and none applied, in `59` section 6.
+
+**A defect in this file itself, reported rather than repaired.** Checkpoint four (`48`) recorded no
+entry here, so its calls sit in a numbered file with no persona marker, against `RULES.md`'s statement
+that a persona call always lands here. The persona did not write `48` and will not paraphrase another
+file's calls into this register, because a compression of someone else's steer is exactly what this
+register exists to prevent. Whoever holds the repair should have `48`'s author supply it, or record
+that it cannot be supplied.
+
+**What was done with it:** unknown at the time of writing. The persona applied no register edit and
+made no change to `OPTIONS.md` or `INTENTS.md`.
+
+**Status:** persona-decided. Not ratified. Nothing in `59` settles anything, per `04`.
