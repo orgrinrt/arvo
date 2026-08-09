@@ -101,12 +101,6 @@ within its own system, with neither one being a degraded approximation of the ot
 what I9 states in its own words, arrived at here from an exhaustive arithmetic check rather than from
 reading it.
 
-**Phase two revises the flat version of this claim; see below.** The claim that overflow policy is
-identity-determining survives phase two intact, but the panel's format-consolidation work shows it is
-identity-determining for a level above the one this section names "number system" flatly, not for the
-value-set-plus-domain layer beneath it. The correction is a refinement of where the line sits, not a
-reversal of the finding.
-
 ## What op's pipeline actually asks the canon to specify
 
 Putting the hierarchy and the identity result together, op's acceptance criterion decodes into a
@@ -131,9 +125,6 @@ this file does not resolve. Op's own I9 leans toward the first reading. Both are
 because the dispatch's explore-do-not-settle instruction applies here directly, and because nothing in
 the premises forces a choice between them; either can be made to work mechanically, as the Rust probe
 below demonstrates for the joint reading.
-
-**Phase two finds this fork was the right question and the wrong shape of answer; see below for the
-layered resolution the panel's own format work already established with much stronger evidence.**
 
 ## What erasure requires of an admissible system
 
@@ -204,9 +195,6 @@ not a defect to be designed out of the system. It is one of the tools the strate
 with, and ruling it out a priori would foreclose the mechanism Precise's stated intent most plausibly
 needs.
 
-**Phase two: the panel already has a sharper, three-way version of this split (storage, compute,
-interchange) rather than my two-way one; see below.**
-
 ## Fixed point and floating point: one scheme or two
 
 `66_probes/fixed_vs_float_generic_format.py` encodes the same four target values (0.1, 3.75, 1000.25,
@@ -253,10 +241,6 @@ Which reading the canon adopts changes how much of the type-level machinery a fi
 can share (Reading A argues for one parametrised family; Reading B argues for two families that
 happen to share a formalization but not a law set) without changing anything about how either scheme
 is encoded. Nothing in the premises forces a choice, and this file does not make one.
-
-**Phase two: both readings turn out true at once, at two different levels, once the panel's
-format/system layering is imported. See below; this is the single largest correction phase two
-makes.**
 
 ## Is the set of number systems open or closed
 
@@ -306,9 +290,6 @@ narrow reading keeps "number system" intuitive at the cost of needing a second t
 uses the identical mechanism; the broad reading keeps one term for one mechanism at the cost of
 stretching "number" to cover things nobody would call numbers. Carried forward as open.
 
-**Phase two: op's other cold-derived expert reached the broad reading independently; see below. Still
-genuinely open, not settled by that agreement.**
-
 ## Platform-width types
 
 `USize` and `Cap`, named in arvo's own crate table, resolve their width from the target rather than
@@ -325,9 +306,6 @@ same shape family (an implicit width parameter fixed by `cfg(target_pointer_widt
 by the consumer), or is better treated as a genuinely separate axis because the abstract value set is
 not knowable statically without knowing the target, is not settled by anything in the premises. Both
 are workable; carried forward as open.
-
-**Phase two: the panel's format work has a candidate answer to this, from a different angle than
-either option above; see below.**
 
 ## Interoperation: conversion is not the same question as resolution
 
