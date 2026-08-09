@@ -1,0 +1,23 @@
+error[E0053]: method `adapt` has an incompatible type for trait
+   --> p3_n2.rs:321:17
+    |
+321 |     fn adapt(e: i16) -> u8 {
+    |                 ^^^ expected `u8`, found `i16`
+    |
+note: type in trait
+   --> p3_n2.rs:150:17
+    |
+150 |     fn adapt(e: <<Self::Over as Reach>::Amb as Ambient>::Exact) -> u8;
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: expected signature `fn(u8) -> _`
+               found signature `fn(i16) -> _`
+help: change the parameter type to match the trait
+    |
+321 -     fn adapt(e: i16) -> u8 {
+321 +     fn adapt(e: u8) -> u8 {
+    |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0053`.
+n2 EXIT=1
