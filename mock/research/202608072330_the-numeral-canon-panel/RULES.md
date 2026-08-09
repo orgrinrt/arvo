@@ -449,6 +449,36 @@ it is live, and that claim is only true if it is maintained.
 **The D-number space is not fixed by this** and still collides three ways inside the archive's own decision
 register. Round-qualify those.
 
+## Every finding carries its predicate, and a universal answer is rejected by premise
+
+**No finding in this panel states a result without stating the region it holds in**, as an explicit
+predicate over every dimension that could move it. That includes findings believed to hold everywhere: a
+universal claim is written out as `N any numeral, S any strategy, target features any, threads any, F = 0`
+rather than asserted as universal, so it is checkable and cannot quietly narrow while everyone keeps citing
+it.
+
+Op, stating why the goal itself is not a universal answer:
+
+> We explicitly reject a universal solution. That is ass. The strategies themselves as a concept make a
+> universal solution impossible by premise. We collect and compound answers to specific regions where a
+> predicate holds and write the expression where it holds, and the most optimal things that hold true
+> there.
+
+If `Hot` and `Precise` weigh measurements differently (I8), no single expression is best for both, so
+asking for one asks the design to stop being what it is. **The work is the arms.** Each applies on its own
+region and nowhere else, and "everywhere is optimal" is what they add up to rather than something any one
+of them achieves.
+
+**`any` is a claim, and `unmeasured` is a different word.** Most of this panel's corpus is single-threaded,
+so `threads any` is almost always false where `threads unmeasured` is true. They look similar and mean
+opposite things.
+
+**A law failing in most of its space is a finding about where it holds.** The useful output of
+"distributivity fails at `F > 0`" is the predicate `F = 0` and an arm gated on it. Look for the predicate
+before writing the prohibition; a prohibition is what a finding becomes when nobody looked for its region.
+
+Full statement: `every-finding-carries-its-predicate.md`.
+
 ## Op's prior calls are op's voice and are NOT the top rung
 
 The provenance ladder ranks by human ratification, so op's own words normally outrank everything. **There
