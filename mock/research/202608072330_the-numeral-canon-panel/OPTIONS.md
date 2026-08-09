@@ -1255,6 +1255,37 @@ bounds-check failure paths and the largest body of any arm. One clamp at the loo
 zero. That is the typestate holding at the type level and not reaching the backend, which is the
 microkernelling shape the workspace already names.
 
+> **MEASURED by `61`, and the conjecture resolves with a domain attached.** Absorption and the
+> coherence law **are the same law exactly where every operand lies inside the representable set, and
+> differ outside it.** Over `57`'s own sweep plus a deliberately widened one: **zero** disagreements
+> whenever the operand box is a subset of the representable set, in both sweeps and both operations, and
+> 206 disagreements where it is not.
+>
+> **So `57`'s one-paragraph identification is correct on the domain that matters and false as an
+> unrestricted statement.** Every operand of a real fold is already format-typed, so it is inside the set
+> by construction; the identification holds there and may not be stated without that restriction.
+>
+> **One correction to how this was reported to op.** The summary said absorption never mispredicts. On
+> the widened sweep it does, 150 times, against coherence-ext's 356 and coherence-direct's 587.
+> Absorption is the **best** predictor of measured associativity by a wide margin and is not a perfect
+> one off-domain. Hand-built witness in the file, traced by hand and matching the sweep.
+>
+> **And the wrap ring does not survive nonzero fraction either.** `61`'s second probe extended the
+> machinery, which already existed but had only ever been driven at zero fraction. Wrapping induces a
+> ring **only at zero fraction**; at every nonzero configuration measured, nine of nine, it fails
+> multiplicative associativity and distributivity through the **same shared coarsening code** that broke
+> saturation's semiring, and it does not even reach semiring status. Its additive half survives as a full
+> **abelian group at every fraction width**, and structurally rather than by sweep, because its addition
+> never reads the scale.
+>
+> **Both results are independent of Q3**: neither probe performs a mixed-numeral operation, stated
+> explicitly rather than assumed.
+>
+> **So the picture across arvo's real domain is now uniform.** At nonzero fraction, multiplication is
+> broken for **both** wrapping and saturation by one mechanism, coarsening, while addition survives for
+> both. The multiplicative failure is a property of fixed-point multiplication rather than of any
+> overflow policy.
+
 > **CAUTION on the absorption result, from `59`, and it lands on the dispatching agent's own entry.**
 > The identification of absorption with the coherence law is **argued in one paragraph and never
 > measured**, and three files now rest on it. The two instruments are not the same: `56`'s reduces
