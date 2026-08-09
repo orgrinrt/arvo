@@ -485,8 +485,22 @@ does not affect this". **Listed with a fixed value**: established there and only
 thread proves `threads = 1`, a real region something can be gated on. **Absent**: the finding does not hold
 in any situation involving that dimension at all.
 
-**Absence is the strongest negative statement in the notation.** It is not "not considered" and not
-"beside the point". A dimension is dropped only when that severity is meant.
+**Absence is the strongest negative statement in the notation**, and it follows from the base rule rather
+than being a convention. Op:
+
+> Threads don't matter needs to be stated explicitly, which translates to threads any. Omission means not
+> true, which means no threads are true in any amount, hence threads are incompatible with the finding and
+> only apply where threads do not exist.
+
+The derivation, for a finding not mentioning threads: unlisted means unclaimed, unclaimed means not true,
+so "holds at `threads = 1`" is not true, nor at 2, nor at any n. There is no thread count at which it
+holds. A finding holding at no thread count cannot be used anywhere threads exist, so it applies only where
+threads do not exist at all.
+
+The opposite claim is a different sentence. "Thread count does not affect this" is a positive universal
+over the dimension, written `threads any`, and **it has to be written**, because nothing infers it.
+`threads any` is the widest claim on that axis and absence is the narrowest; the notation gives no middle
+ground where a hedge could sit, and silence hands you the wrong end.
 
 So this panel's single-threaded corpus is **a body of `threads = 1` findings**, not silence about threads,
 and `threads = 1` is exactly the region I10 names for when no additional cores are available. Whether any
