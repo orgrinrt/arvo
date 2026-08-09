@@ -186,6 +186,29 @@ as converged. That is a fact about the shape, not about the evidence.
 Eight experts on one subject can converge, and can locate exactly where they do not. **Disagreement
 surviving eight passes is itself a result** and goes to op as one.
 
+### A consolidation loses live options, structurally, and both of them have
+
+**Two consolidations, two dropped live options**, each found only by the independent check afterwards.
+
+Unit one's dropped a connection **three separate members** had flagged as real-but-unverified; it
+appeared in the consolidation zero times. Unit two's dropped an alternative its source states in full
+with its own discriminator against the option that survived; it appeared zero times while its sibling
+appeared once.
+
+**The mechanism is worth understanding, because it is not carelessness.** A consolidation compresses
+what the unit *established*. An option that no member resolved has no result attached, so there is
+nothing for a compressor to grip, and it falls out precisely because it is still open. **The options
+most likely to be lost are the ones the panel most needs carried**, since a settled question does not
+need the register and an open one does.
+
+That is also how this project permanently lost a settled answer once already: the options lived only in
+a place nobody kept.
+
+**So a consolidation carries an explicit pass over live options**, separate from its pass over results,
+and lists each with its costs and with whatever would distinguish it from its neighbours. The check that
+follows diffs the option sets, not only the claims, because a claim-by-claim entailment check scores a
+dropped option clean: nothing it asserts is contradicted.
+
 ### A rung needs someone who derived before reading, and that gets harder every file
 
 Every agreement in the panel's first proper unit turned out to be a **read**. Four files agreed, and not
