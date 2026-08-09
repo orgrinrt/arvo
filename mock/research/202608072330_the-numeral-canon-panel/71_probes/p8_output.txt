@@ -1,0 +1,59 @@
+========================================================================================
+THE REDUNDANT ENCODING ITSELF
+========================================================================================
+  digit strings                     81
+  distinct values                   31  (range -15 to 15)
+  values with more than one string  22
+  maximum multiplicity              5  at value [-5, -3, 3, 5]
+  `66` reports 81 strings onto 31 values for this shape; reproduced: 81 onto 31
+
+========================================================================================
+THE CROSSING INTO IT, index 4, from a bijective encoding of Q
+========================================================================================
+  source values (all of Q)              16
+  target patterns they reach            54
+  source values with exactly one image  2 of 16
+  so the pattern relation is a function: False
+  multiplicity by value: {-8: 1, -7: 4, -6: 3, -5: 5, -4: 2, -3: 5, -2: 3, -1: 4, 0: 1, 1: 4, 2: 3, 3: 5, 4: 2, 5: 5, 6: 3, 7: 4}
+
+========================================================================================
+THE CROSSING BACK, index 4, into the bijective encoding
+========================================================================================
+  digit strings whose value lies outside Q   27 of 81
+  so the crossing back is PARTIAL: it is a function exactly on the preimage of Q,
+  and on the rest it needs a reduction, which is a coordinate this crossing does not move
+  retraction property, every image of v decodes to v: True
+    checked over 54 strings, exhaustive
+  section then retraction is the identity on Q:   True
+  retraction then section is the identity on the encoding: 16 of 54 strings fixed
+  So the two crossings are a SECTION and a RETRACTION, not a bijection, which is the
+  shape `DROPLIST.md:106-108` already records the panel adopting for the encode and
+  decode crossing after two round-trip identities were refuted.
+
+========================================================================================
+THE TARGET'S OWN PATTERN-LEVEL OPERATION
+========================================================================================
+  ordered pairs of digit strings                     6561
+  pairs whose digitwise sum stays in the digit set   2401
+  fraction closed                                    0.3660
+  A redundant encoding's container operation is not closed in its own digit set, so it
+  has no pattern-level operation to preserve without a wider intermediate. That is the
+  mechanism behind carry-save rather than a defect of this model.
+
+========================================================================================
+VERDICT
+========================================================================================
+  HYPOTHESIS ONE (into is a relation, back is a function, the pair is a section-retraction): HELD
+  HYPOTHESIS TWO (the target's container operation is not closed): HELD
+
+  What this adds to the crossing question. p1 showed the value relation and the pattern
+  relation are different MAPS. This shows they can be different KINDS: the value relation
+  is a total function and the pattern relation is a relation with no canonical function
+  inside it, so a crossing into a redundant encoding is only a function once a section is
+  named, and naming one is a choice the two systems do not make between them. That is the
+  same shape as the choice p2 found for a lossy crossing, at a different coordinate:
+  the crossing needs something neither endpoint supplies.
+
+  And it bounds a canon sentence. 'A crossing preserves values' is true here and says
+  nothing about whether the crossing is well defined, because the pattern relation is
+  where the ambiguity lives and the value relation cannot see it.
