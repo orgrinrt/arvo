@@ -1662,6 +1662,71 @@ on width-as-marker (`65` carried-open 5). Whether the canon should speak of arbi
 demands or leave width families to design interacts with the forbidden-features boundary and needs its
 own evidence.
 
+### Q29. What does the admission contract ask a candidate to expose
+
+Added by `73`, which attacked the standing answer and found its sufficient direction refuted.
+**(1) Prefix 3 with the reduction's two law verdicts**, which is `71` X3 (`71:675-679`) and which
+`72:227` accepts. Cost: refuted as a sufficient condition twice over. Every system has a second
+declaration of itself in which it names its own computed algebra as its ambient domain; that term
+satisfies the list verbatim, computes the identical function, and reports both law families clean
+(`73_probes/p1`), and a mutation set including a reduction that adapts every value to zero cannot
+make the collapsed verdict fail in four of four attempts (`73_probes/p1c`). Separately, that same
+zero reduction passes both verdicts under its **honest** declaration while computing nothing. The
+necessary direction of X3 is untouched and survives.
+**(2) The same, plus the ambient domain's own law inventory, plus a third verdict, the
+retraction.** Cost: one more item, one more verdict, and the ambient inventory is a law check that
+carries the transfer proviso for the operations with no closed form. Buys: the collapse becomes
+harmless rather than forbidden, so the closed-operation systems keep their only honest declaration;
+the useful facts are conjunctions, measured as `induced associates iff (ambient associates and the
+reduction is coherent)` in 16 of 16 cells with neither conjunct alone predicting (`73_probes/p1d`);
+and the conjunction is expressible as a blanket implication, with the weaker design compiling in
+the same file so the difference is a compile outcome rather than an argument (`73_probes/p3`).
+**(3) Admission relative to a consumer-supplied ambient domain**, the system exposing only its
+representable set and its reduction. Buys: the collapse is unstateable rather than caught. Cost: a
+candidate does not determine its own identity until a frame is chosen. It does **not** contradict
+`63` C2, which says a format is identified by (D, Q) and which (3) keeps; what (3) denies is that a
+candidate supplies every component of its own identity.
+**What would distinguish (2) from (3):** whether any canon sentence must be true of a system with
+no ambient domain named. The ingest door was proposed as that case and is not one: `68:335-337`
+makes the ingest predicate a function of (type parameters, bits), which is a coordinate-2 and
+coordinate-4 question and needs no ambient domain.
+
+### Q30. Is admission a predicate or a location
+
+Added by `73`. **A predicate**, returning member or not. Cost: it discards the coordinate, which is
+the part a consumer needs, and makes every mislocated member read as a non-member, which is most of
+the disputed cases (a Gray code, two's complement and a stride are coordinate-4 and coordinate-5
+choices rather than rejections). **A location**, returning which coordinate the candidate fixes and
+whose it is under `70` L3's ownership key. Cost: an output type rather than a truth value, and it
+presumes a coordinate count that `70` L2 argues the canon should not commit to. **A location for
+membership and a predicate for hosting**, which is the shape Q31's split falls into. Cost: two
+procedures where a reader expects one. **What would distinguish them:** whether any canon sentence
+needs to quantify over non-members.
+
+### Q31. Does the canon use one word or two for "is a number system" and "can arvo carry it"
+
+Added by `73`, which argues the two questions have different answers, different decidability and an
+inhabited two-by-two. **One word**, folding `68` section 5's residue clauses into the concept.
+Cost: the concept then excludes unbounded exact rationals as a matter of mathematics, which is
+false, and every hosting clause becomes conditional on the unratified `no_std` and no-`dyn`
+constraints inside a sentence about arithmetic. **Two words.** Cost: two admission passages and a
+reader told which is which at every use. **Two words with the second scoped to a target**,
+composing with `70` L4's target-indexed families. Cost: the same, plus a quantifier over
+compilations. **What would distinguish them:** whether the canon ever says something true of a
+system arvo cannot host, and it already does, since the bounded windows it admits are defined as
+bounded windows **of** systems it cannot host.
+
+### Q21 amendment, from `73`
+
+The entry's stated discriminator is measured not to cut. Every total order on the carrier was
+enumerated at widths 2 and 3, and wrapping addition (kernel K1, from I3 per `65:258-259`) and xor
+over GF(2)^n admit **zero** compatible total orders each, for the same structural reason, while
+saturating addition and min admit some; so an order-or-magnitude reading groups a kernel item with
+the candidate the narrow reading exists to exclude, and splits wrapping from saturating inside one
+kernel item (`73_probes/p2`). What remains of Q21 is `67:440-446`'s question, whether the ambient
+operation family is fixed at (+, x) or is a parameter, and the two entries should be read as one.
+**The instance count is unchanged: still one leaning broad, still `65`'s.**
+
 ## Standing
 
 Nothing in this file is evidence, and nothing in it is a decision. It is the working set.
