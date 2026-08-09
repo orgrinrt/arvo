@@ -1,0 +1,103 @@
+=== 1. the congruence condition, swept over every interval Q containing 0 ===
+
+  Prediction under test, per operation:
+    multiplication: congruence iff mirror-symmetric (lo == -hi) or sign confined
+    addition:       congruence iff sign confined (lo == 0 or hi == 0)
+
+--- multiplication ---
+  intervals swept:                                  100
+    relation is a congruence:                       10
+    induced operation associative:                  28
+  PREDICTOR mismatches (congruence vs predicted):   18
+     Q=[-9,0]  congruence=false  predicted=true
+     Q=[-8,0]  congruence=false  predicted=true
+     Q=[-7,0]  congruence=false  predicted=true
+     Q=[-6,0]  congruence=false  predicted=true
+     Q=[-5,0]  congruence=false  predicted=true
+     Q=[-4,0]  congruence=false  predicted=true
+     Q=[-3,0]  congruence=false  predicted=true
+     Q=[-2,0]  congruence=false  predicted=true
+  SUFFICIENCY violations (congruent, not assoc):    0
+  NECESSITY violations   (assoc, not congruent):    18
+     of which the induced operation is CONSTANT:    9
+     residue: Q=[0,1]  assoc-failures=0, not constant
+     residue: Q=[0,2]  assoc-failures=0, not constant
+     residue: Q=[0,3]  assoc-failures=0, not constant
+     residue: Q=[0,4]  assoc-failures=0, not constant
+     residue: Q=[0,5]  assoc-failures=0, not constant
+     residue: Q=[0,6]  assoc-failures=0, not constant
+     residue: Q=[0,7]  assoc-failures=0, not constant
+     residue: Q=[0,8]  assoc-failures=0, not constant
+  instrument: congruence checker saw both values true, associativity checker saw both true
+
+--- addition ---
+  intervals swept:                                  100
+    relation is a congruence:                       1
+    induced operation associative:                  19
+  PREDICTOR mismatches (congruence vs predicted):   18
+     Q=[-9,0]  congruence=false  predicted=true
+     Q=[-8,0]  congruence=false  predicted=true
+     Q=[-7,0]  congruence=false  predicted=true
+     Q=[-6,0]  congruence=false  predicted=true
+     Q=[-5,0]  congruence=false  predicted=true
+     Q=[-4,0]  congruence=false  predicted=true
+     Q=[-3,0]  congruence=false  predicted=true
+     Q=[-2,0]  congruence=false  predicted=true
+  SUFFICIENCY violations (congruent, not assoc):    0
+  NECESSITY violations   (assoc, not congruent):    18
+     of which the induced operation is CONSTANT:    0
+     residue: Q=[-9,0]  assoc-failures=0, not constant
+     residue: Q=[-8,0]  assoc-failures=0, not constant
+     residue: Q=[-7,0]  assoc-failures=0, not constant
+     residue: Q=[-6,0]  assoc-failures=0, not constant
+     residue: Q=[-5,0]  assoc-failures=0, not constant
+     residue: Q=[-4,0]  assoc-failures=0, not constant
+     residue: Q=[-3,0]  assoc-failures=0, not constant
+     residue: Q=[-2,0]  assoc-failures=0, not constant
+  instrument: congruence checker saw both values true, associativity checker saw both true
+
+=== 2. the two's-complement against symmetric comparison, at width ===
+
+  Two ranges per width: the two's-complement range [-2^(w-1), 2^(w-1)-1] and the
+  symmetric range [-(2^(w-1)-1), 2^(w-1)-1]. `62` measured associativity at four
+  widths; this adds the congruence verdict beside it, which is the thing that
+  makes it a theorem shape rather than a table.
+
+   w       2c range      2c cong    2c *assoc      sym range     sym cong   sym *assoc
+   3         [-4,3]        false           28         [-3,3]         true            0
+   4         [-8,7]        false          160         [-7,7]         true            0
+   5       [-16,15]        false          780       [-15,15]         true            0
+   6       [-32,31]        false         3516       [-31,31]         true            0
+   7       [-64,63]        false        15036       [-63,63]         true            0
+
+  two's complement non-congruent AND non-associative at every width: true
+  symmetric congruent AND exactly associative at every width:        true
+
+  `62`'s w = 3..6 associativity counts are reproduced in the 2c column from an
+  independent instrument, and the congruence column is what turns its measured
+  table into the quotient argument it asked for.
+
+=== 3. the witness, by hand, at Q = [-8, 7] ===
+
+  sat(7) = 7 and sat(8) = 7, so 7 ~ 8 (same high-tail class).
+  Multiply both by -1:
+    sat(7 * -1)  = sat(-7) = -7
+    sat(8 * -1)  = sat(-8) = -8
+  -7 != -8, so the class pair (high tail, -1) has two images and `~` is not a
+  multiplicative congruence. Under the symmetric range [-7, 7] the same pair gives
+    sat(7 * -1) = -7 and sat(8 * -1) = -7
+  which are equal, and the class pair has one image.
+
+  asymmetric range splits the class:  true
+  symmetric range does not:           true
+
+=== 4. instrument validation: a mutant range the prediction must fail ===
+
+  A range that is neither mirror-symmetric nor sign confined must be predicted
+  non-congruent and measured non-associative under multiplication.
+    Q=[-5,3]  congruence=false  *assoc-failures=44  witness=Some((-1, 3, -1, 4))
+    Q=[-2,9]  congruence=false  *assoc-failures=76  witness=Some((-52, -1, -8, -1))
+    Q=[-9,4]  congruence=false  *assoc-failures=290  witness=Some((-2, 4, -2, 5))
+  every mutant range non-congruent and non-associative: true
+
+P7 FAILS

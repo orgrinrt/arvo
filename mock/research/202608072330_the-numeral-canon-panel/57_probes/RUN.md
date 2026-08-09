@@ -43,3 +43,23 @@ rustc +nightly-2026-05-28 -O --edition 2021 -o r56q1 ../../56_probes/q1_two_law_
 `p4_output.v1_failed_assertion.txt` is p4's first run, kept. It reported FAILS because the probe
 asserted a divergence at fold length two, where there is only one association order and nothing can
 diverge. The measurement was right and the assertion was wrong; both are on disk.
+
+## Added at the resumption (files 58 through 62 had landed)
+
+```
+rustc +nightly-2026-05-28 -O --edition 2021 -o p7 p7_the_congruence_condition_per_operation.rs && ./p7
+rustc +nightly-2026-05-28 -O --edition 2021 -o p8 p8_the_150_are_the_same_class_as_the_153.rs && ./p8
+```
+
+- **p7** answers `62:361-365`'s named open question: the congruence condition, stated per operation,
+  which turns `62`'s measured symmetric-range table into a quotient argument. Two earlier runs kept:
+  `p7_output.v1_overquantified_ambient.txt` (quantified the congruence over all of the integers
+  rather than the reachable ambient, and correctly reported FAILS) and
+  `p7_output.v2_predictor_too_broad.txt` (predicted "sign confined" for multiplication, which is
+  wrong because only the non-negative half-line is closed under it).
+- **p8** checks whether `61`'s widened-sweep count of 150 absorption mispredictions is the same
+  collapsed-operation class `p2b` characterised, reproducing `61`'s sweep parameters from its source.
+
+`rerun2/` holds `61_probes/q1`, `61_probes/q2` and `62_probes/p1` rebuilt on the pin and diffed
+against their committed outputs before any of their counts were argued with. All three
+byte-identical.
