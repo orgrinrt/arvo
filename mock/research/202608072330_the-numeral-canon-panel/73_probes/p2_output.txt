@@ -1,0 +1,65 @@
+==============================================================================
+p2. every total order, enumerated, against each candidate operation
+==============================================================================
+
+--- width 2, carrier of 4 elements, all 24 total orders enumerated ---
+operation                    compatible orders  one witness
+-----------------------------------------------------------
+wrap add  (Z/2^n)            0 of 24            
+xor       (GF(2)^n)          0 of 24            
+and       (lattice meet)     0 of 24            
+or        (lattice join)     0 of 24            
+min       (tropical add)     8 of 24            (0, 1, 2, 3)
+sat add   (bounded chain)    2 of 24            (0, 1, 2, 3)
+
+--- width 3, carrier of 8 elements, all 40320 total orders enumerated ---
+operation                    compatible orders  one witness
+-----------------------------------------------------------
+wrap add  (Z/2^n)            0 of 40320         
+xor       (GF(2)^n)          0 of 40320         
+and       (lattice meet)     0 of 40320         
+or        (lattice join)     0 of 40320         
+min       (tropical add)     128 of 40320       (0, 1, 2, 3, 4, 5, 6, 7)
+sat add   (bounded chain)    2 of 40320         (0, 1, 2, 3, 4, 5, 6, 7)
+
+--- width 4, the natural (unsigned representative) order only ---
+operation                    natural-order monotonicity failures
+----------------------------------------------------------------
+wrap add  (Z/2^n)            680
+xor       (GF(2)^n)          960
+and       (lattice meet)     220
+or        (lattice join)     220
+min       (tropical add)     0
+sat add   (bounded chain)    0
+
+--- the structural witness for the two group operations ---
+w=2 wrap add  (Z/2^n)            every non-identity element has finite order: True (max 4)
+w=2 xor       (GF(2)^n)          every non-identity element has finite order: True (max 2)
+w=3 wrap add  (Z/2^n)            every non-identity element has finite order: True (max 8)
+w=3 xor       (GF(2)^n)          every non-identity element has finite order: True (max 2)
+w=4 wrap add  (Z/2^n)            every non-identity element has finite order: True (max 16)
+w=4 xor       (GF(2)^n)          every non-identity element has finite order: True (max 2)
+
+A translation-invariant total order on a group forces a > e to give
+a^k > e for every k. Finite order makes some a^k = e, a contradiction.
+So the two rows above have no compatible total order at ANY width, and
+the enumerations at widths 2 and 3 are that argument checked, not a sample.
+
+------------------------------------------------------------------------------
+ASSERTIONS
+------------------------------------------------------------------------------
+  ok  wrap add and xor admit ZERO compatible total orders at widths 2 and 3
+  ok  min and saturating add admit at least one, at widths 2 and 3
+  ok  at width 4 the natural order agrees with the same split
+  ok  the kernel item (wrap, K1, demanded by I3) and the candidate the
+      narrow reading excludes (xor, GF(2)^n) receive the SAME verdict
+      from every order-based test run here
+  ok  and the same test SEPARATES two members of one kernel item:
+      wrapping and saturating over the same window land on opposite sides
+
+READING. An order-or-magnitude discriminator groups a kernel item with
+the thing it was introduced to exclude, and splits a kernel item down
+the middle. It is not a boundary of the concept; it is a property some
+reductions have and others do not, which is `63` C4's adaptation-law
+family under a different name.
+EXIT=0
