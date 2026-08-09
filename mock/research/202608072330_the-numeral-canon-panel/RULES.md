@@ -486,8 +486,13 @@ thread dimension, and naming threads there is noise rather than rigour.
 
 The test is the one the rule opens with: a predicate covers every dimension **that could move the result**.
 Could move it, so it is listed at whatever was established, fixed value or swept range. Could not move it,
-so it does not appear. Omission never means "we did not check": a dimension that could move the result and
-went unexamined leaves the finding unestablished on that axis rather than tidily silent.
+so it does not appear. **And omitting is itself a claim, so state it.** Op: "But then it's only true where threads do not exist or
+don't matter at all, and that is itself important to understand. Hence, being explicit and accurate."
+Dropping a dimension asserts the finding holds only where it does not exist or does not matter, which is
+narrower than it looks and is checkable, so write `threads irrelevant` rather than nothing. **A silent
+omission and an unexamined dimension look identical on the page**, and keeping those apart is the whole
+point. Omission never means "we did not check": a dimension that could move the result and went unexamined
+leaves the finding unestablished on that axis rather than tidily silent.
 
 So this panel's single-threaded corpus is **a body of `threads = 1` arms**, not a pile of claims awaiting
 rescue, and `threads = 1` is exactly the region I10 names for when no additional cores are available.
