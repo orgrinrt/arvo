@@ -1,0 +1,31 @@
+$ python3 --version
+Python 3.14.6
+
+$ python3 p3_component_effect_table.py
+dD  (+ -> min): V=0 M=0 (configs differing: 0/16) O=1 (pairs differing: 255/256) L=0   [rho re-derived onto Q; never fires, min is closed on Q]
+dQ  ([0,15] -> [0,31]): V=1 M=0 (configs differing: 0/16) O=1 (pairs differing: 120/256) L=0   [E re-instantiated at 5 bits, rho re-derived mod 32: forced by the dependency]
+drho (wrap -> saturate): V=0 M=0 (configs differing: 0/16) O=1 (pairs differing: 120/256) L=0
+dE  (binary -> bit-reversed nibble): V=0 M=1 (configs differing: 12/16) O=0 (pairs differing: 0/256) L=0
+dC  (8-bit -> 16-bit container): V=0 M=0 (configs differing: 0/16) O=0 (pairs differing: 0/256) L=1
+
+prediction dD: CONFIRMED
+prediction dQ: REFUTED, predicted (1, 1, 1, 0) measured (1, 0, 1, 0)
+prediction drho: CONFIRMED
+prediction dE: CONFIRMED
+prediction dC: CONFIRMED
+
+distinct effect signatures: 4
+  (0, 0, 1, 0): dD, drho
+  (1, 0, 1, 0): dQ
+  (0, 1, 0, 0): dE
+  (0, 0, 0, 1): dC
+
+65's change-test applied to each single-component move:
+  dD: system (what operations mean changed)
+  dQ: system (what operations mean changed)
+  drho: system (what operations mean changed)
+  dE: UNCLASSIFIED by the test's three clauses
+  dC: format (container moved, no named value changed)
+
+AT LEAST ONE PREDICTION REFUTED, kept above
+EXIT=0

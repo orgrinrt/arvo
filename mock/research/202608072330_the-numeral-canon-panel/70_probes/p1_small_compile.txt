@@ -1,0 +1,5 @@
+$ rustc --version
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+$ rustc --edition 2024 --crate-type lib --cfg q_small p1_target_owned_q.rs -o p1_small.rlib
+EXIT=0

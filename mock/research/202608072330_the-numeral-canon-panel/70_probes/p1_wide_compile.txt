@@ -1,0 +1,6 @@
+$ rustc --version
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+$ time rustc --edition 2024 --crate-type lib --cfg q_wide p1_target_owned_q.rs -o p1_wide.rlib
+rustc --edition 2024 --crate-type lib --cfg q_wide p1_target_owned_q.rs -o   2.56s user 0.03s system 93% cpu 2.774 total
+EXIT=0
