@@ -1,0 +1,65 @@
+============================================================================================
+THREE ROUTES THROUGH ONE MIXED EXPRESSION, a + b with a in A, b in B, result in C
+A = [-32,31]   B = [-16,15]   C = [-8,7]   operand pairs = 2048
+============================================================================================
+rho_A       rho_C       UNFUSED=CONVERT     UNFUSED=VIA_A       CONVERT=VIA_A       all three
+wrap        wrap        2048/2048          2048/2048          2048/2048          2048/2048
+wrap        saturate    1200/2048          1792/2048          944/2048          944/2048
+saturate    wrap        2048/2048          1793/2048          1793/2048          1793/2048
+saturate    saturate    1200/2048          2048/2048          1200/2048          1200/2048
+
+Cells where the three routes do NOT all coincide: 3 of 4
+Cells where at least two routes coincide totally: [('wrap', 'wrap'), ('saturate', 'wrap'), ('saturate', 'saturate')]
+
+PREDICTION REFUTED in its strong form, and the refutation is the better result.
+The three routes coincide totally in exactly the cells named above, and those are
+the cells where the reductions carry the laws that make a schedule invisible. So
+the correct statement is not 'the routes always differ' but: A CONVERSION FIXES THE
+MEANING OF A MIXED OPERATION EXACTLY WHEN THE REDUCTIONS INVOLVED ARE COHERENT AND
+NESTED-ABSORBING, AND OTHERWISE THE SCHEDULE HAS TO BE NAMED.
+
+--------------------------------------------------------------------------------------------
+WHICH COINCIDENCES OCCUR, WITH THE REASON MEASURED RATHER THAN ASSERTED
+--------------------------------------------------------------------------------------------
+Three facts are computed per cell, none of them read off the agreement counts:
+  FIRES     does rho_A act on any reachable exact value
+  ABSORBED  is rho_C(rho_A(x)) == rho_C(x) for every reachable exact value
+  COHERENT  is rho_C(a + b) == rho_C(rho_C(a) + rho_C(b)) over the operand box
+
+  rho_A=wrap      rho_C=wrap      FIRES=True   ABSORBED=True   COHERENT=True     UNFUSED=CONVERT True, UNFUSED=VIA_A True
+  rho_A=wrap      rho_C=saturate  FIRES=True   ABSORBED=False  COHERENT=False    UNFUSED=CONVERT False, UNFUSED=VIA_A False
+  rho_A=saturate  rho_C=wrap      FIRES=True   ABSORBED=False  COHERENT=True     UNFUSED=CONVERT True, UNFUSED=VIA_A False
+  rho_A=saturate  rho_C=saturate  FIRES=True   ABSORBED=True   COHERENT=False    UNFUSED=CONVERT False, UNFUSED=VIA_A True
+
+  Both implications hold in every cell, asserted in the probe rather than eyeballed:
+  CONVERT coincides with UNFUSED exactly when rho_C is coherent, and VIA_A coincides
+  with UNFUSED exactly when the source's reduction is absorbed by the target's. The
+  second is why saturation into a nested window shows no double rounding: clamping to
+  [-32,31] and then to [-8,7] is clamping to [-8,7]. Nesting, not absence of firing.
+
+  Operand pairs, over all four cells, at which all three routes give three different
+  answers: 0 of 8192. The routes differ pairwise and never
+  three ways at once, which is a structural fact and not a search that came up empty.
+
+--------------------------------------------------------------------------------------------
+HAND WITNESSES: one operand pair per cell where two routes disagree
+--------------------------------------------------------------------------------------------
+  rho_A=wrap      rho_C=wrap      every operand pair agrees on all three routes: the schedule is invisible here
+  rho_A=wrap      rho_C=saturate  a= -32 b= -16 exact= -48  UNFUSED= -8  CONVERT= -8  VIA_A=  7
+  rho_A=saturate  rho_C=wrap      a= -32 b= -15 exact= -47  UNFUSED=  1  CONVERT=  1  VIA_A=  0
+  rho_A=saturate  rho_C=saturate  a= -32 b=   1 exact= -31  UNFUSED= -8  CONVERT= -7  VIA_A= -8
+
+============================================================================================
+READING
+============================================================================================
+A conversion function does not by itself determine a mixed operation, and the cells
+above say exactly when it does. What determines the operation is how many adaptation
+points the schedule contains and where they sit, which is `63` C9's statement that the
+schedule is part of the function's meaning, arriving at the place two systems meet.
+
+So `66`'s two questions are one obligation asked at two arities: a conversion is the
+unary case with the target declared, a resolution the n-ary case with the target
+derived, and both owe the same three things, a common ambient domain, a target
+representable set, and which reduction governs the loss. Only the third is a choice,
+neither operand's own system is privileged to make it, and the choice stops being
+observable exactly in the cells where coherence and nested absorption both hold.
