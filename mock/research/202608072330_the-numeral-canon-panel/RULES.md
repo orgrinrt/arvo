@@ -419,6 +419,32 @@ and hand the call back rather than resolving it.
 **An early return is a successful dispatch**, and the most valuable thing a dispatch can produce. It
 is never re-dispatched with a softer brief until someone answers, because reframing until you get an
 answer converts a refusal into permission.
+## A bare file number is ambiguous across two panels, and 77 of them collide
+
+Found by the theory-mining pass over the closed panel, confirmed by the coordinator with `comm`.
+
+**The closed formalization panel and this one both number their members from `00`, and 77 numbers exist in
+both.** The worst case is not hypothetical and not rare:
+
+- `63_consolidation_six.md` is the archive's sixth consolidation.
+- `63_spj_consolidation_the_format_concept.md` is this panel's format-concept canon candidate.
+
+**Both are consolidations.** A citation reading "63 says" is ambiguous between two documents of the same
+kind on the same subject matter, which is the shape most likely to be misread and least likely to look
+wrong. The same holds for 76 other numbers.
+
+**So a citation carries its panel.** Either the full path, or a prefix naming which panel, in any file that
+touches both. That is now most of them: `SEED_TALKING_POINTS.md`, `PRIOR_CALLS.md` and the `SEED_THEORY_*`
+files all quote across the boundary by construction, and any member reading them inherits both numbering
+spaces at once.
+
+**A bare number is only safe inside a file that cites nothing from the archive.** That was every file up to
+the archaeology and is no file after it.
+
+This is the same failure as a bare D-number, which collides three ways inside the archive's own decision
+register, and the same as a count carried without its operand. All three are an identifier that was unique
+in the context where it was written and stopped being unique when the context widened.
+
 ## Op's prior calls are op's voice and are NOT the top rung
 
 The provenance ladder ranks by human ratification, so op's own words normally outrank everything. **There
