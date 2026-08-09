@@ -17,6 +17,19 @@
 [workspace]
 resolver = "2"
 members = []
+# `benches` (and every crate under `benches/variants/`) is excluded rather than
+# listed as a member. The deletion commit that emptied `members` above (929c46ed)
+# dropped every `benches*` entry along with the crate list, even though its own
+# message says the bench tree stays and its artifacts are committed evidence the
+# panel cites. Without an exclude entry, every crate under `benches/` has no
+# `[workspace]` table of its own, so cargo walks up, finds this now-empty
+# workspace, and refuses to build ("current package believes it's in a
+# workspace when it's not"), which silently broke every bench in this repository,
+# including ones the panel had already run and cited, from that commit forward.
+# `exclude` keeps bench crates buildable as their own free-standing tree without
+# re-listing them as workspace members, which would be the wrong fix: they are
+# not governed by the canon/design/code chain the empty member list protects.
+exclude = ["benches"]
 
 [workspace.package]
 version = "0.1.0"

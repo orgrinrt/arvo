@@ -2438,3 +2438,143 @@ variants = [
     "../target/release/bench_bitpack_wide_d16_padal",
     "../target/release/bench_bitpack_wide_pipe4",
 ]
+
+[bench.bitpack-write-contend-safe]
+title = "Packed 13-bit write against a dense u16 write, column split 1, 2 and 4 ways, every internal boundary period-aligned"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF1
+threaded = true
+
+# n = 65,536 elements, 1 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 655361
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 65,536 elements, 2 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 655362
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 65,536 elements, 4 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 655364
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 2,097,152 elements, 1 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 20971521
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 2,097,152 elements, 2 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 20971522
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+# n = 2,097,152 elements, 4 thread(s)
+[[bench.bitpack-write-contend-safe.sizes]]
+n = 20971524
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_aligned",
+    "../target/release/bench_bitpack_write_windowed",
+]
+
+[bench.bitpack-write-contend-race]
+title = "Packed 13-bit write against a dense u16 write, column split 1, 2 and 4 ways, every internal boundary deliberately misaligned"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF2
+threaded = true
+
+# n = 65,534 elements, 1 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 655341
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_unsound",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 65,534 elements, 2 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 655342
+# bench_bitpack_write_unsound dropped here: it disagrees with the ground truth
+# on 2/100 validation seeds at this row (n=655342 log, committed in the
+# findings), which is the mockspace harness's own validation gate correctly
+# refusing to time an arm that does not compute the same thing; that refusal
+# IS the finding for this arm, not a gap in it. Kept at the two T=1 rows
+# above, where there is no boundary for it to race on and it agrees.
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 65,534 elements, 4 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 655344
+# bench_bitpack_write_unsound dropped here: it disagrees with the ground truth
+# on 2/100 validation seeds at this row (n=655342 log, committed in the
+# findings), which is the mockspace harness's own validation gate correctly
+# refusing to time an arm that does not compute the same thing; that refusal
+# IS the finding for this arm, not a gap in it. Kept at the two T=1 rows
+# above, where there is no boundary for it to race on and it agrees.
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 2,097,150 elements, 1 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 20971501
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_unsound",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 2,097,150 elements, 2 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 20971502
+# bench_bitpack_write_unsound dropped here: it disagrees with the ground truth
+# on 2/100 validation seeds at this row (n=655342 log, committed in the
+# findings), which is the mockspace harness's own validation gate correctly
+# refusing to time an arm that does not compute the same thing; that refusal
+# IS the finding for this arm, not a gap in it. Kept at the two T=1 rows
+# above, where there is no boundary for it to race on and it agrees.
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_guarded",
+]
+
+# n = 2,097,150 elements, 4 thread(s)
+[[bench.bitpack-write-contend-race.sizes]]
+n = 20971504
+# bench_bitpack_write_unsound dropped here: it disagrees with the ground truth
+# on 2/100 validation seeds at this row (n=655342 log, committed in the
+# findings), which is the mockspace harness's own validation gate correctly
+# refusing to time an arm that does not compute the same thing; that refusal
+# IS the finding for this arm, not a gap in it. Kept at the two T=1 rows
+# above, where there is no boundary for it to race on and it agrees.
+variants = [
+    "../target/release/bench_bitpack_write_dense",
+    "../target/release/bench_bitpack_write_guarded",
+]

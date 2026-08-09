@@ -196,13 +196,18 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     use bench_bitpack_carrier_shared::CarrierColumn;
     use bench_bitpack_contend_shared::Contend;
     use bench_bitpack_wide_shared::Wide;
+    use bench_bitpack_write_contend_shared::WriteContend;
     use bench_bitpack_footprint_shared::FootprintColumn;
     use bench_bitpack_plan_shared::{MacColumn, PlanColumn};
     use bench_bitpack_shared::Column;
     use bench_quantiser_fadd_shared::AddSweep;
     use bench_quantiser_radix_shared::RadixAdd;
-    use bench_spectral_bisection::Fiedler;
-    use bench_structural_decomposition::Rcm;
+    // `Fiedler` (spectral-bisection) and `Rcm` (structural-decomposition) are
+    // not imported: both crates depend on the real `arvo` crate, which the
+    // canon-work deletion round removed, and `mock/benches/Cargo.toml` no
+    // longer lists either as a dependency of this binary for exactly that
+    // reason (see the comment there). Restore both once a canon-derived
+    // `arvo` crate exists.
     use bench_warm_clamp_shared::Case as ClampCase;
     use bench_warm_container_shared::Case;
     use bench_wide_rung_shared::Case as WideCase;
@@ -215,15 +220,13 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("fnv1a-vs-xxhash3", 4096) => routine_bridge!(ByteRoutine<4096, 8, true>),
 
         // graph bench: RCM over BitMatrix-shaped input.
-        ("structural-decomposition", 16) => routine_bridge!(Rcm<16>),
-        ("structural-decomposition", 32) => routine_bridge!(Rcm<32>),
-        ("structural-decomposition", 64) => routine_bridge!(Rcm<64>),
+        // ("structural-decomposition", 16 | 32 | 64) => routine_bridge!(Rcm<N>),
+        // disabled: see the comment above and in Cargo.toml.
 
         // spectral bench: Fiedler vector + sign-cut partition over
         // dense Laplacian-weighted input.
-        ("spectral-bisection", 16) => routine_bridge!(Fiedler<16>),
-        ("spectral-bisection", 32) => routine_bridge!(Fiedler<32>),
-        ("spectral-bisection", 64) => routine_bridge!(Fiedler<64>),
+        // ("spectral-bisection", 16 | 32 | 64) => routine_bridge!(Fiedler<N>),
+        // disabled: see the comment above and in Cargo.toml.
 
         // quantiser-vs-fadd bench: AddSweep<PCT> dispatched per swept
         // subnormal-fraction percentage PCT. Both variants (software
@@ -498,6 +501,28 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         // than between an attacked one and whichever was committed first.
         ("bitpack-contend-best", 41943041) => routine_bridge!(Contend<41943041>),
         ("bitpack-contend-best", 41943044) => routine_bridge!(Contend<41943044>),
+
+        // write-contention (panel file 78): does the packing trade change
+        // shape when the column is written rather than read. KEY = N*10+T,
+        // same idiom. "safe" sizes land every internal boundary on the packed
+        // period; "race" sizes deliberately do not, pinned by
+        // bitpack-write-contend-shared's own test suite rather than trusted
+        // by hand arithmetic. Both sections share one Routine, so one match
+        // arm per (section, key) covers whichever variants that section's
+        // bench.toml entry lists.
+        ("bitpack-write-contend-safe", 655361) => routine_bridge!(WriteContend<655361>),
+        ("bitpack-write-contend-safe", 655362) => routine_bridge!(WriteContend<655362>),
+        ("bitpack-write-contend-safe", 655364) => routine_bridge!(WriteContend<655364>),
+        ("bitpack-write-contend-safe", 20971521) => routine_bridge!(WriteContend<20971521>),
+        ("bitpack-write-contend-safe", 20971522) => routine_bridge!(WriteContend<20971522>),
+        ("bitpack-write-contend-safe", 20971524) => routine_bridge!(WriteContend<20971524>),
+
+        ("bitpack-write-contend-race", 655341) => routine_bridge!(WriteContend<655341>),
+        ("bitpack-write-contend-race", 655342) => routine_bridge!(WriteContend<655342>),
+        ("bitpack-write-contend-race", 655344) => routine_bridge!(WriteContend<655344>),
+        ("bitpack-write-contend-race", 20971501) => routine_bridge!(WriteContend<20971501>),
+        ("bitpack-write-contend-race", 20971502) => routine_bridge!(WriteContend<20971502>),
+        ("bitpack-write-contend-race", 20971504) => routine_bridge!(WriteContend<20971504>),
         ("bitpack-contend-best", 83886081) => routine_bridge!(Contend<83886081>),
         ("bitpack-contend-best", 83886084) => routine_bridge!(Contend<83886084>),
 
