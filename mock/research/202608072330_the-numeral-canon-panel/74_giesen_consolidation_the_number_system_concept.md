@@ -28,8 +28,9 @@ either carries both branches.
 ## 0. Gates, and coverage
 
 **Canon gate: passes, situation two.** `mock/canon/` does not exist, `mock/crates/` is empty by the
-declared mutation order, and this panel is writing the first canon. Nothing binds but op's intents
-in `INTENTS.md`, which I re-read in full before writing. This file is the mechanism that produces
+declared mutation order, and this panel is writing the first canon. Nothing here is RATIFIED and
+nothing binds as a ruling: op's intents in `INTENTS.md` are STATED direction under that file's own
+reading instructions (`INTENTS.md:35-40`), and I re-read them in full before writing. This file is the mechanism that produces
 canon text, run for the first time in this panel, and running it is what the cadence requires
 (`RULES.md:160-174`).
 
@@ -53,6 +54,16 @@ cost-flavoured sentence below means "does work a machine performs", never how mu
 
 Rungs per `RULES.md:9-47`. **RATIFIED** does not occur below: nothing in this unit was brought to
 op converged, and `INTENTS.md` currently holds no RATIFIED entry at all (`INTENTS.md:27-33`).
+Mid-dispatch, the coordinator relayed op's own demotion of his voice to exactly this reading: he
+frames almost nothing as absolute, and the two instances he recalls are abstract intents rather
+than concrete calls. `INTENTS.md` already carries the same instruction verbatim, *"You should not
+write these as clear cut and settled. The intent is clear I think, but nothing about them is
+absolute otherwise"* (`INTENTS.md:39-40`). **So every sentence below that rests on an intent
+inherits STATED status: aligned with op's stated direction, not thereby settled**, and the highest
+rung available to anything in this file is TWO EXPERTS. Treating a preference of his as a ruling
+is the previous panel's named failure (`RULES.md:305-309`), and where the unit's own files wrote
+"demands", "guaranteed" or "not negotiable" against an intent, this file carries the corrected
+status at each such point.
 **TWO EXPERTS** requires the second to have derived before reading the first; this unit's blind
 protocol produced some, and section 3.9 states the discounts. **ONE EXPERT** is a queue entry
 asking for a second read, not a doubt. Claims marked with a member file are that member's; claims
@@ -264,7 +275,8 @@ not a proof and the provisional marking stays, now with the record that an attac
 each, for the same structural reason (finite groups admit no translation-invariant total order,
 an argument holding at every width), while saturating addition and min admit some
 (`73:249-291`, the table at `73:264-272`). So an order-or-magnitude boundary groups a kernel item
-op's I3 demands (the derivation at `65:258-259`) with the candidate the narrow reading exists to exclude, and splits wrapping from
+derived from op's I3 (STATED; the derivation at `65:258-259`) with the candidate the narrow
+reading exists to exclude, and splits wrapping from
 saturating inside one kernel item. What remains of Q21 is the ambient-family question
 (`73:293-317`), and the two register entries should be read as one (`OPTIONS.md:1719-1728`).
 
@@ -367,8 +379,9 @@ single committed instrument.
 
 ### 3.7 The kernel, the ring, and the concept's closure
 
-`65`'s kernel stands as the unit's statement of what the intents make obligatory, each item
-derived from a quoted intent (`65:252-315`): the windowed integers in their three policy systems
+`65`'s kernel stands as the unit's statement of what the stated intents ask for, each item
+derived from a quoted intent and inheriting that intent's STATED status per section 1
+(`65:252-315`): the windowed integers in their three policy systems
 over one numeral; fixed point as a value map over integer numerals; IEEE-shaped floating point as
 the same family with a dynamic scale; finite ordinals as a named system distinct from wrapping and
 from checked windows; the Boolean and GF(2) structures; and redundant compute intermediates. `67`
@@ -536,8 +549,9 @@ that reason rather than in spite of it.* Permanence and equivalence: pass (`73:6
 and not a magnitude: order-compatibility is a property of the selected reduction, varies within a
 single family the design must contain, and groups a wrapped integer with a bit vector. A wrapped
 numeral satisfies fewer of the properties a numeral is expected to satisfy than almost anything
-else the concept contains and is not negotiable, so any clause proposed as a boundary of the
-concept is checked against wrapping before anything else.* Permanence and equivalence: pass
+else the concept contains, and it sits in the kernel on op's four-times-restated I3, which is
+STATED direction; so any clause proposed as a boundary of the concept is checked against wrapping
+before anything else.* Permanence and equivalence: pass
 (`73:697-703`, `73:723-733`). ONE EXPERT; the order half is exhaustive over every total order at
 two widths with a structural argument covering all widths.
 
@@ -590,9 +604,12 @@ ONE EXPERT with a third blind instrument on the arithmetic cells.
 **N20, the concept is closed and the inventory is open.** *The canon defines once what a number
 system is and what admission requires; the set of admitted instances is open, and a new one earns
 admission by supplying the concept's obligations rather than by amending the canon. The kernel
-the stated intents demand is guaranteed; everything else is admitted by contract and decided by
-measurement.* Permanence and equivalence: pass (`65:519-521`, `66:255-270`). Two instruments over
-one premise set plus the format unit's prior text; the obligations list is N11's.
+derived from the stated intents is carried as guaranteed; everything else is admitted by contract
+and decided by measurement.* Permanence and equivalence: pass (`65:519-521`, `66:255-270`). Two
+instruments over one premise set plus the format unit's prior text; the obligations list is
+N11's. The guarantee clause inherits the intents' STATED status per section 1: it is aligned with
+op's stated direction, is not settled by it, and firms only when the intents it derives from are
+ratified.
 
 **N21, the roles, stated with their open condition.** *A demand derives representations, plural,
 keyed by role; the roles named so far differ in who re-establishes the invariant. A role that
@@ -711,7 +728,7 @@ bound either way: membership verdicts split into computed (closed-form, any widt
 concept is carrier plus operations plus laws, no order required; GF(2)^n and the Boolean lattice
 are members. **Narrow**: ordered, magnitude-bearing sets, with a sibling term for the rest. The
 amendment stands and is now measured twice over: the order-or-magnitude discriminator groups
-wrapping (kernel, from I3) with GF(2)^n (the candidate narrow exists to exclude) at zero
+wrapping (kernel, derived from I3, STATED) with GF(2)^n (the candidate narrow exists to exclude) at zero
 compatible total orders each, and splits wrapping from saturating inside one kernel item
 (`73:264-291`; `OPTIONS.md:1719-1728`). The instance count on the broad conclusion is unchanged:
 one cold derivation leaning broad, still `65`'s (`65:65-66`); `71` supplies an argument, not an
