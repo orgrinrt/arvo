@@ -9,10 +9,13 @@ A reference that resolves is not a reference that says what is claimed, so every
 a location with the text the claim depends on.
 """
 
+import os
 import re
 import sys
 
-PANEL = ".."
+# Resolve relative to this file rather than the caller's working directory, so the check gives
+# the same answer wherever it is run from. It did not, and reported all 37 citations missing.
+PANEL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 
 
 def norm(s):

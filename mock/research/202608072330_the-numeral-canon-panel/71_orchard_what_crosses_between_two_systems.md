@@ -6,8 +6,8 @@ decides whether two features interact coherently before a typing rule is written
 **Position:** fifth file of the number-systems unit, first of its second half, after `65` and
 `66` (the two blind cold derivations), `67`, `68`, and the checkpoint `69`. `70` is being
 written concurrently on a different question and did not exist when my probes were designed.
-**Probes:** `71_probes/`, six instruments, each committed with its output before this file was
-written. Pinned `nightly-2026-05-28` (`71_probes/p0_toolchain.txt`), zero feature gates, no
+**Probes:** `71_probes/`, eight instruments, each committed with its output before this file
+was written. Pinned `nightly-2026-05-28` (`71_probes/p0_toolchain.txt`), zero feature gates, no
 `dyn`, no `TypeId`, no `alloc`.
 
 **The assigned question.** What must two number systems expose for a value to cross between
@@ -28,7 +28,7 @@ defend and nothing binds but op's intents. I re-read `INTENTS.md` in full before
 Nothing below settles anything.
 
 **Test gate: no suite exists.** `mock/crates/` holds nothing, so there is nothing to run. The
-substitute is the probe discipline, and I applied it to my own six instruments: each carries a
+substitute is the probe discipline, and I applied it to my own eight instruments: each carries a
 stated hypothesis written before the run, each has its output committed beside it, **one carries
 a prediction its own output refuted and keeps both the prediction and the corrected form**
 (`p5`), and one had a wrong explanatory note attached to a correct measurement, which I found by
@@ -91,12 +91,32 @@ what a consumer gets by operating on the bits without consulting the type. That 
 | telescope index | value map | pattern map | VALUE ops | PATTERN ops |
 |---|---|---|---|---|
 | 1, ambient domain | not typed | identity | 108/256 against xor, 1/256 against min | not typed |
-| 2, representable set | inclusion | sign-extend | 192/256 add, 101/256 mul | not measured |
+| 2, representable set | inclusion | sign-extend | 192/256 add, 101/256 mul | 192/256 two's complement, 0/256 excess-K |
 | 3, adaptation | identity | identity | 192/256 add, 111/256 mul | **256/256** |
 | 4, encoding | identity | bijection, 0 of 16 fixed | **256/256** | **0/256** |
 | 5, container | identity | shift | **256/256** | **256/256** |
 
-Two things about this table, and the second is the one worth having.
+**A caveat on the second column, measured after the table was drawn** (`71_probes/p7`). `p1`
+left the index-2 pattern cell blank because a widening changes the container width, so "the
+container's own operation" is a different function on each side and the comparison needs a
+convention. That was a reason to state a convention, not to leave a hole. Taking it (each side
+operates with its own container's modular addition, which is what a consumer gets from the bits
+without consulting the type) fills the cell at 192 of 256 under two's complement and 0 of 256
+under excess-K, **and at the same numbers under wrapping and under saturation**, which the probe
+asserts rather than invites the reader to notice.
+
+Two consequences, and my own prediction was refuted in getting to them. I predicted the two
+levels would part under saturation because saturation has no raw-adder realisation; they do not,
+because **the pattern level is blind to the reduction**. The container's operation is modular
+addition whatever the type says. That is the same structural fact index 3's 256 of 256 reports
+from the other side, and it is the mechanical form of section 3's claim that meaning lives at
+prefix 3: the pattern level cannot see the coordinate where meaning is decided.
+
+And the pattern column turns out to depend on a coordinate the index-2 crossing does not move.
+**So the PATTERN column is not determined by the index at all**: it is determined by what both
+sides carry. `p1`'s table read as though the index fixed both columns and it fixes only the first.
+
+Two further things about the table, and the second is the one worth having.
 
 **First, the control held.** All eight of `67`'s numbers reproduce exactly in an instrument
 written from its prose rather than its code: 192 and 111 signed, 136 and 80 unsigned at index 3;
@@ -174,8 +194,39 @@ arriving at the crossing layer, and it is double rounding under its own name.
 endpoints** (`71_probes/p2`). Section 4 is that finding, and it is the one that changes what a
 canon sentence may say.
 
-So: at least four relations, or rather one relation on values, one on patterns, one verdict per
-law family, and one choice that belongs to neither system. Not one arrow.
+**The pattern relation need not be a function at all** (`71_probes/p8`). Every crossing above
+has a pattern map: an identity, a bijection, a shift, a sign-extension. Cross into a redundant
+encoding and it stops being one, and `63:258-262` records redundant encodings as wholly
+unexamined, so nobody had looked. Signed-digit binary over four digits from {-1, 0, 1} gives 81
+strings onto 31 values, which reproduces `66`'s count in a third independent instrument. The
+sixteen values of the signed four-bit window reach 54 of those strings; **only 2 of the 16 have a
+unique image**, and the maximum multiplicity is 5. The crossing back is a function and is
+**partial**: 27 of the 81 strings decode outside the window and need a reduction, which is a
+coordinate this crossing does not move. The retraction property holds exhaustively over all 54
+strings, section-then-retraction is the identity on values, and retraction-then-section fixes
+only 16 of 54 strings.
+
+**That is a section and a retraction, not a bijection.** It is the shape `DROPLIST.md:106-108`
+already records the panel adopting once, where two round-trip identities were refuted and
+replaced by "the section-retraction triple", arriving here at a different crossing and for a
+different reason.
+
+So the value relation and the pattern relation are not merely different maps. They can be
+different **kinds**: a total function beside a relation with no canonical function inside it. A
+crossing into a redundant encoding is well defined only once a section is named, and naming one
+is a choice neither endpoint makes, which is section 4's problem appearing at a second
+coordinate.
+
+One further measured fact from the same probe, because it bounds what "preserves the
+pattern-level operation" can mean at all: a redundant encoding's own container operation is **not
+closed in its digit set**, at 2401 of 6561 ordered digit-string pairs. The target has no
+pattern-level operation to preserve without a wider intermediate, which is the mechanism behind
+carry-save rather than a defect of the model, and it is why `65` section 8's compute-role
+redundancy argument is about intermediates rather than about storage.
+
+So: at least five relations, or rather one relation on values, one on patterns which may not be a
+function, one verdict per law family, and one choice that belongs to neither system. Not one
+arrow.
 
 ## 3. What must be exposed: meaning at prefix three, cost at prefix five
 
@@ -519,8 +570,11 @@ telescope coordinate, measured in `p1`. Two independent relations inside each cr
 values and on patterns, with each coordinate deciding which is the identity. Two independent
 preservation properties, which are `63` C4's two law families one each, measured in `p3`. And
 conversion and resolution as one obligation at two arities rather than two questions, measured
-in `p5`. The entry's current line, that none preserves operations, should be replaced by the
-table in section 1.
+in `p5`. And a fifth relation the entry does not contemplate: where either encoding is
+redundant the pattern relation is not a function, and the crossing is a section and a retraction
+(`p8`). The entry's current line, that none preserves operations, should be replaced by the
+table in section 1, with the caveat that the table's pattern column is not determined by the
+index (`p7`).
 
 **Q23 (is the role set closed) gains a criterion and an attack.** Three of the four proposed
 roles differ at telescope indices 4 and 5 only and therefore preserve the value-level operation
@@ -549,6 +603,16 @@ system's reduction is coherent and otherwise differ on 848 of 2048 operand pairs
 cell. **So the third option is not a cheaper spelling of the second. It is a different
 function**, and `63:778-784` already flags Q3 as load-bearing for the format unit's strongest
 unconditional result. This is the sharpening the entry asks for, and the question stays op's.
+
+**`63` section 3.5's redundant-encoding hole is partly filled, and only partly.** That section
+records redundant encodings as "wholly unexamined" and carries `59`'s untested hypothesis that
+the order-and-adder exclusivity is the no-translation-invariant-order theorem in disguise
+(`63:258-262`). `p8` does not touch that hypothesis and I say so plainly. What it does establish
+is the **shape** a redundant encoding gives a crossing: a section and a retraction, with the
+back direction partial, and no closed container operation in the digit set. So the hole is now
+two holes rather than one, and the smaller one is closed: whatever a redundant encoding buys, it
+buys it inside a crossing that is not a bijection, and the canon's crossing vocabulary has to
+admit that before the exclusivity question can be asked in it.
 
 **A new option, written out in full: whose reduction governs a lossy crossing.** Three readings,
 all coherent, none forced by anything measured. **The source's**: a value finishes being a value
@@ -583,11 +647,13 @@ true and useful after a from-scratch rewrite in another language in another deca
 equivalence (three independent implementations behave the same). Rungs stated honestly.
 
 **X1, what a crossing is.** *A value crosses between two numeral systems along the coordinates
-at which they differ. A crossing is not one relation: it carries a relation on values, a
-relation on patterns, and a verdict for each of the two law families, and none of the four
-determines another.* Permanence: passes, no mechanism named. Equivalence: passes, since three
-implementations disagreeing on the independences would disagree on which crossings are
-admissible. Rests on: sections 1 and 2, `p1` and `p3`. ONE EXPERT.
+at which they differ. A crossing is not one relation: it carries a relation on values, a relation
+on patterns, and a verdict for each of the two law families, and none of the four determines
+another. The two relations need not even be the same kind of thing: one may be a total function
+while the other is a relation with no canonical function inside it.* Permanence: passes, no
+mechanism named. Equivalence: passes, since three implementations disagreeing on the
+independences would disagree on which crossings are admissible. Rests on: sections 1 and 2, `p1`,
+`p3`, `p7` and `p8`. ONE EXPERT.
 
 **X2, the two depths.** *What a crossing means is decided by the ambient domain, the
 representable set and the selected reduction on both sides. What a crossing costs is decided by
@@ -631,6 +697,16 @@ means. The schedule stops being observable exactly where the reductions involved
 and absorb one another.* Permanence: passes. Equivalence: passes. Rests on: section 5, `p5`,
 `63` C1 and C9. ONE EXPERT.
 
+**X7, redundancy makes a crossing a section and a retraction.** *Where an encoding names one
+value with several patterns, the crossing into it is a relation and the crossing back is a
+partial function, and the pair is a section and a retraction rather than a bijection. Such a
+crossing is well defined only once a section is named, and which section is not decided by either
+system. A redundant encoding has no operation of its own on patterns, because its container
+operation is not closed in its digit set.* Permanence: passes. Equivalence: passes; two
+implementations differing on the section compute different patterns for the same value.
+Rests on: section 2 and `p8`, and it is the same shape `DROPLIST.md:106-108` records the panel
+adopting once already. ONE EXPERT.
+
 **Deliberately not offered as sentences:** any ruling on whose reduction governs a lossy
 crossing, because section 4 establishes that the choice exists and `RULES.md` puts naming calls
 with op; any name for a crossing class, because `67` declined to coin one for a good reason and
@@ -640,17 +716,17 @@ question is currently asked over a set with two kinds of member in it.
 
 ## 12. What I could not settle
 
-**Whether the index-2 crossing has a pattern-level story.** `p1` leaves the pattern-level
-operation at index 2 unmeasured, because a widening's pattern map changes width and the
-container's own operation is not the same function on both sides, so the comparison needs a
-convention I did not want to invent inside a probe. It is the one blank cell in section 1's
-table and I state it rather than filling it plausibly.
+**Settled after this file's first draft, and recorded because both were listed here as open
+before I attacked them.** The index-2 pattern cell was blank because a convention was needed;
+stating the convention filled it and produced the better finding that the pattern column is not
+determined by the index at all (`p7`). And whether a crossing can be a non-function on patterns
+while total on values was listed here as "the cheapest thing the unit's remaining files could
+add"; leaving it for someone else was the wrong output and `p8` closes it. Neither is open.
 
-**Whether a crossing can be lossy in the pattern relation while total in the value relation.**
-Every crossing I measured is total on values or has no value relation. A redundant encoding
-would be the case to look at, and `63:258-262` records redundant encodings as wholly unexamined
-with `59`'s untested hypothesis attached. I did not build it, and it is the single cheapest
-thing the unit's remaining files could add to this question.
+**Whether the order-and-adder exclusivity survives a redundant encoding.** `63:258-262` and
+`59` section 3's untested hypothesis. `p8` establishes the crossing's shape and says nothing
+about the exclusivity, which needs a different instrument and is the largest cheap item left in
+this area.
 
 **Whose reduction governs, section 4's choice.** Not mine, and I decline to lean.
 
@@ -685,7 +761,9 @@ sixteen in regime two, each exhaustive over its source window's 4096 ordered ope
 partitioned between the regimes by whether the source's reduction fires), `p4` (the typestate
 contract, one positive compile and three generated negatives with transcripts), `p5` (three
 routes over 2048 operand pairs in four cells, with two implications asserted rather than
-eyeballed), `p6` (the citation checker below).
+eyeballed), `p6` (the citation checker below), `p7` (the index-2 pattern cell, four
+encoding-and-policy combinations with the policy-independence asserted), `p8` (the redundant
+encoding, exhaustive over 81 digit strings and 6561 ordered pairs).
 
 **Citations checked mechanically:** `71_probes/p6_check_my_own_citations.py` opens every
 `file:line` this document cites and tests that the target contains the text the claim depends
@@ -698,14 +776,24 @@ it was made.
 **Verified at the source rather than remembered:** every `file:line` in this document was opened
 before it was cited. The eight numbers I attribute to `67` were reproduced rather than copied.
 
+**Predictions that failed, listed so the record carries them rather than the corrected forms
+alone.** `p5`'s strong form (that three routes through a mixed expression always differ) is false
+in the cell where both reductions wrap, and the corrected statement is sharper than the
+prediction was. `p7`'s third part (that the two levels part under saturation) is false, and the
+reason is the better finding. `p4`'s diagnostic prediction (E0277) is wrong in the code, right in
+the substance, and the transcripts carry E0599 with the unsatisfied bound named. Three misses in
+eight instruments.
+
 **Not done:** no bench, so nothing is priced and every cost-flavoured word here means "does work"
 rather than "costs this much". No instrument for Q10's predicate. No re-run of any other member's
 probe. No attack on `63`'s H1/H2 frame, which `63:665-673` still names as the thing it most wants
-attacked and which is out of this unit's scope. No pattern-level measurement at index 2. Nothing
-at nonzero fraction width, which matters more than it may look: `63` C7 (`63:676-681`) records
+attacked and which is out of this unit's scope. No test of `59`'s order-and-adder hypothesis
+against redundancy. Nothing at nonzero fraction width, which matters more than it may look: `63` C7 (`63:676-681`) records
 that no multiplicative structure survives a nonzero fraction width for any policy, so every
 multiplicative row above is at F = 0 and says nothing about F > 0.
 
-**Nothing here settles anything.** The mode is explore. Sections 1, 4 and 5 are what I would most
-want the unit's remaining files to attack, and section 1's repair is two words in `67` and one
-line in the register.
+**Nothing here settles anything.** The mode is explore. Sections 1, 4 and 5 are what I would
+most want the unit's remaining files to attack, and section 1's repair is two words in `67` and
+one line in the register. The single cheapest constructive item left in this area is `59`'s
+untested order-and-adder hypothesis against a redundant encoding, which `p8` has now given a
+crossing vocabulary to be asked in and has not asked.
