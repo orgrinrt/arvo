@@ -756,6 +756,34 @@ arrival). Consequence for how a canon states the two-output design: "the derivat
 container and a stride" invites reading them as two coordinates of one answer; "the derivation answers
 a per-value question and a per-aggregate question" states why they are not (`16` section 12).
 
+> **`51` found the real hole, and it is worth more than the invented one: the existing erasure arm is
+> quantified over ONE width.** Swept across 36 widths, the typestate walk **stops matching its
+> hand-written twin at W >= 18**.
+>
+> **And the failure is not extra instructions.** At W=19 the typed arm emits **11** loop instructions
+> against the hand-written **34**, and is the **worse** code, because it collapses to one accumulator and
+> one element per iteration where the hand-written keeps five and four. Loop-carried dependent work per
+> element goes from 2.00 to 6.00. An instrument counting instructions would have scored the typed arm
+> the winner.
+>
+> **The collapse is a conjunction**, isolated by a control that fixes the gather shape and sweeps only
+> width: the gather written as a loop over an associated const, **and** W >= 18. Neither alone.
+>
+> **Two repairs land, and neither changes a character of what a consumer writes.** Moving the gather
+> from a loop bound to an associated type with a flat impl per access width erases at **36 of 36**
+> widths. A fixed eight-byte load also recovers it, beats the hand-written arm at most widths, and at
+> W=47 recovers a split **the hand-written arm cannot**. The first is the shape the workspace rule about
+> a refused bound wanting a trait already names.
+>
+> **Bounds, stated by its author.** One host, one toolchain, **no cycles anywhere**: nothing is timed, no
+> bench ran, and what the collapse costs is **unpriced**. Stable at 15 to 16 of 36 widths across three
+> optimisation levels and three element counts; one level is degenerate and reported as such. The LLVM
+> mechanism is a reading rather than a proof, and three widths recover under nothing.
+>
+> **It also refuted its own first attribution and kept it**: live access bytes is a function of width, so
+> width and access window cannot be varied independently by any experiment inside this design. And its
+> first harness produced 36 of 36 green and **could not have failed**, both arms folding to one symbol.
+
 > **`50` found the criterion is not a definition, and the unit's answer is one of seven.**
 >
 > `16:100-101` puts the set being defined on both sides of its own third clause, making it a **fixpoint
