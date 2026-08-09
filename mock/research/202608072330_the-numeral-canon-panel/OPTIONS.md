@@ -1265,10 +1265,12 @@ microkernelling shape the workspace already names.
 > unrestricted statement.** Every operand of a real fold is already format-typed, so it is inside the set
 > by construction; the identification holds there and may not be stated without that restriction.
 >
-> **One correction to how this was reported to op.** The summary said absorption never mispredicts. On
-> the widened sweep it does, 150 times, against coherence-ext's 356 and coherence-direct's 587.
-> Absorption is the **best** predictor of measured associativity by a wide margin and is not a perfect
-> one off-domain. Hand-built witness in the file, traced by hand and matching the sweep.
+> **A correction, and then its narrowing, both recorded.** The dispatching agent reported that absorption
+> mispredicts 150 times off-domain, against 356 and 587 for the two coherence readings. `57b` narrowed
+> that correctly: the 150 is the **multiplication** row alone, **addition reads zero on both sweeps**,
+> and its own probe reproduces the 150 exactly from the source parameters with **residue zero**, showing
+> they are the single collapsed class already isolated elsewhere. So it is a fully accounted structural
+> case rather than an unexplained failure mode, and the agent's correction was itself too broad.
 >
 > **And the wrap ring does not survive nonzero fraction either.** `61`'s second probe extended the
 > machinery, which already existed but had only ever been driven at zero fraction. Wrapping induces a
@@ -1367,6 +1369,30 @@ microkernelling shape the workspace already names.
 >
 > Its own probe discipline fired: its first mutant was not a mutant, the run printed FAILS, and the bad
 > run is kept on disk beside the corrected one.
+
+> **`57b` withdrew its own shared theorem and replaced it with two hypotheses that predict every cell
+> the unit measured.** This is unit two's synthesis and its strongest canon material.
+>
+> **H1: the ambient operation is associative. H2: the reduction's kernel is a congruence.**
+>
+> Evaluated mechanically over the signed cube at two scales: **24 cells, zero sufficiency violations,
+> zero cells associative without both hypotheses, zero residue.** Every cell predicted in both
+> directions, with the instrument validated by observing each hypothesis both true and false, so it
+> cannot be predicting by accident.
+>
+> **And the two fail differently, which is the design content.** H2 fails by **range geometry and is
+> fixable**, which is why a symmetric range restores signed multiplication at zero fraction. H1 fails by
+> **the rescale and is not fixable**, because there is no associativity left to inherit. It therefore
+> predicts, without measuring the cell, that a symmetric clamp **buys nothing at nonzero fraction**.
+>
+> **It collapses several of the unit's separate findings into one frame.** Addition's H1 always holds, so
+> additive verdicts are fraction-invariant. Wrapping's H2 always holds, so its verdicts turn on H1 alone.
+> Nothing multiplicative survives nonzero fraction anywhere, because H1 fails there.
+>
+> **And it conceded the `42` framing in full**, keeping only the narrow propagation point that three
+> later artifacts reasoned from the slip. Its own probe failed twice first, by **the same
+> over-quantification** one file had just caught in another, made after reading that correction. Both
+> failed runs are on disk with their hypotheses attached.
 
 ## Q17. Where does the fraction boundary fall, and which results are integer-only?
 
