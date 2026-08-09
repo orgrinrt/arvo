@@ -13,7 +13,7 @@ _add_bare:
 	add	w0, w9, w8
 	ret
 
-== add_runtime_validated: the runtime-validate branch residue (tst + csel) ==
+== add_runtime_validated: the runtime-validate residue (orr, tst, csel) ==
 _add_runtime_validated:
 	.cfi_startproc
 	orr	w8, w1, w0

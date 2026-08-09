@@ -15,5 +15,4 @@ help: the constant being evaluated
 
 error: aborting due to 1 previous error
 
-perl -e 'alarm 420; exec @ARGV' rustup run nightly-2026-05-28 rustc --edition  4.74s user 0.03s system 99% cpu 4.778 total
-W9_EXIT=1
+W9_EXIT=1 (refused in 4.7s on prior run; rerun for line-number fidelity)
