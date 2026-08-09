@@ -817,13 +817,21 @@ a per-value question and a per-aggregate question" states why they are not (`16`
 > refusal (`49_probes/p2`), which is a different and cheaper mechanism than the kind boundary the unit
 > spent most of its effort on.
 >
-> **And the gap it caught in its own work is the unit's sharpest open item.** Its erasure probe is
-> scalar-only, which is exactly the blindness `16` and `17` warn about. Checked against the whole panel:
-> of 178 probe files, 23 build arrays and 19 loop, so sequences are not absent. But **the only probe
-> combining a packed sequence with an assembly-level erasure check is `16_probes/p3_blind_suite.rs`**,
-> which is `16`'s own suite, the one it found came back green over a 23.1%-oversized map. So the entire
-> packing-and-stride argument rests on erasure evidence that is either scalar or known-blind, and
-> nobody has built the arm that would settle it.
+> **Its erasure probe is scalar-only, which is exactly the blindness `16` and `17` warn about.** That
+> part stands.
+>
+> **The dispatching agent's generalisation from it was false, and `51` refuted it in one command.** The
+> register previously said no probe combined a packed sequence with an assembly-level erasure check, and
+> named `16_probes/p3_blind_suite.rs` as the nearest thing. Both halves are wrong. The arm exists:
+> `17_probes/t2_aggregate_erasure.rs` builds a packed column, walks it through a generic carrier, walks
+> the same bytes through a hand-written twin, and emits assembly for both, with its result on disk and
+> reproducing byte for byte. And `p3_blind_suite` says the opposite about itself in its own comments:
+> "this is a weak stand-in... There is no array in it and there cannot be."
+>
+> The supporting census was also wrong: it counted 183 top-level probe files while the corpus holds 350,
+> because the grep never descended into subdirectories. **A negative claim about evidence is a claim
+> about a place and is checkable in one command**, and this is the sixth instance in this panel of
+> something being called missing while the repository held it.
 
 > **File four (`47`) dissolved the one-versus-two fork, and corrected this entry's filing.**
 >
