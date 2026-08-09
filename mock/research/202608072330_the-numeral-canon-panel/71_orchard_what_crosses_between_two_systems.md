@@ -750,8 +750,9 @@ of construction does not by itself carry the transfer, with the droplist's compi
 counterexample of a property true at eight bits and false at nine. My results inherit that
 proviso in full, and the two that would worry me most under it are `p2`'s divergence count and
 `p5`'s cell table, both of which are counts rather than existence claims. The existence claims
-(that the pairs diverge at all, that three routes are three functions in three of four cells) are
-witnessed by named operand pairs and do not depend on the width.
+(that the pairs diverge at all, that at least two of the three routes differ in three of the four
+cells and that all three differ in one of them) are witnessed by named operand pairs and do not
+depend on the width.
 
 **Whether "crossing" is even the right word**, given that `OPTIONS.md` Q9 already uses it for
 something else entirely: the crossing at the width surface, between a consumer's written const
@@ -763,7 +764,7 @@ propose and expensive to get wrong.
 
 ## 13. Coverage, bounded honestly
 
-**Built and committed:** five instruments in `71_probes/`, each with its output or refusal
+**Built and committed:** eight instruments in `71_probes/`, each with its output or refusal
 transcript, all committed before this file was written. `p1` (five crossing classes, exhaustive
 at 4 bits, reproducing all eight of `67`'s numbers), `p2` (six coordinate pairs plus the
 three-coordinate case, exhaustive over 256 source values), `p3` (twelve law cells in regime one and
