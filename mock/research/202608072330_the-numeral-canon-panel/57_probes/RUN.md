@@ -63,3 +63,6 @@ rustc +nightly-2026-05-28 -O --edition 2021 -o p8 p8_the_150_are_the_same_class_
 `rerun2/` holds `61_probes/q1`, `61_probes/q2` and `62_probes/p1` rebuilt on the pin and diffed
 against their committed outputs before any of their counts were argued with. All three
 byte-identical.
+- **p9** evaluates the two hypotheses of `57`'s sufficiency argument mechanically against every cell
+  of `62` section 2's cube, at two scales, to test whether the unit's findings are one frame rather
+  than a table.
