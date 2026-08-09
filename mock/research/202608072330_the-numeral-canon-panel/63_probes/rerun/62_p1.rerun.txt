@@ -1,0 +1,56 @@
+=== section 1: instrument reproduction (unsigned rows must match 57_probes/p3) ===
+
+                    format           Q  +assoc  +comm   +id  *assoc  *comm   *id  distrib  0-annih  no-inv
+         unsigned sat M=15 [   0,  15]       0      0     0       0      0     0        0        0      15
+  matches 57_probes/p3's F=0 semiring row (all-zero laws, 15 without inverse): true
+     MUTANT opp-bound M=15 [   0,  15]    2240      0     0       0      0     0      684        0       0
+  mutant fails at least one law (checker can fail): true
+
+=== section 2: signed saturation at F = 0, two's-complement asymmetric clamp ===
+
+                    format           Q  +assoc  +comm   +id  *assoc  *comm   *id  distrib  0-annih  no-inv
+         signed sat 2c w=3 [  -4,   3]     108      0     0      28      0     0      120        0       1
+         signed sat 2c w=4 [  -8,   7]     952      0     0     160      0     0     1414        0       1
+         signed sat 2c w=5 [ -16,  15]    7920      0     0     780      0     0    13594        0       1
+         signed sat 2c w=6 [ -32,  31]   64480      0     0    3516      0     0   119422        0       1
+
+  every width fails multiplicative associativity: true
+  every width fails additive associativity too (pullback, known from 55b/35): true
+  hand witness w=4: (7*7)*-1 = -7  vs  7*(7*-1) = -8   (predicted -7 vs -8)
+
+=== section 3: signed saturation at F = 0, SYMMETRIC clamp [-h, h] ===
+
+                    format           Q  +assoc  +comm   +id  *assoc  *comm   *id  distrib  0-annih  no-inv
+        signed sat sym w=3 [  -3,   3]      72      0     0       0      0     0       48        0       0
+        signed sat sym w=4 [  -7,   7]     784      0     0       0      0     0      976        0       0
+        signed sat sym w=5 [ -15,  15]    7200      0     0       0      0     0    11448        0       0
+        signed sat sym w=6 [ -31,  31]   61504      0     0       0      0     0   109872        0       0
+
+  multiplicative associativity EXACT at every width under the symmetric clamp: true
+  distributivity still fails at every width (routes through broken addition): true
+
+=== section 4: the mechanism, as multiplicative coherence over an ambient window ===
+
+  sat(x*y) == sat(sat(x)*sat(y)) over [-win, win]; at F = 0 the ambient multiply is
+  exactly associative, so coherence here implies induced associativity (57's theorem
+  with its precondition actually met).
+
+  w=3  win=[-16,16]  asymmetric [-4,3]: 26 violations (first witness Some((-1, 4)));  symmetric [-3,3]: 0 violations
+  w=4  win=[-32,32]  asymmetric [-8,7]: 50 violations (first witness Some((-1, 8)));  symmetric [-7,7]: 0 violations
+  w=5  win=[-64,64]  asymmetric [-16,15]: 98 violations (first witness Some((-1, 16)));  symmetric [-15,15]: 0 violations
+
+  asymmetric clamp multiplicatively incoherent at every width: true
+  symmetric clamp multiplicatively coherent at every width:    true
+
+=== section 5: signed wrap at F = 0, signed representative section ===
+
+                    format           Q  +assoc  +comm   +id  *assoc  *comm   *id  distrib  0-annih  no-inv
+           signed wrap w=3 [  -4,   3]       0      0     0       0      0     0        0        0       0
+           signed wrap w=4 [  -8,   7]       0      0     0       0      0     0        0        0       0
+           signed wrap w=5 [ -16,  15]       0      0     0       0      0     0        0        0       0
+           signed wrap w=6 [ -32,  31]       0      0     0       0      0     0        0        0       0
+
+  signed-section wrap is the full ring Z/2^w at every width (as the unsigned
+  section is; at F = 0 the section is a relabelling): true
+
+P1 WORKS

@@ -1,0 +1,81 @@
+=== section 1: instrument reproduction against p1's committed F = 0 counts ===
+
+  signed sat 2c  w=4 F=0: mul_assoc 160 (want 160), add_assoc 952 (want 952)
+  signed sat sym w=4 F=0: mul_assoc 0 (want 0)
+  signed wrap    w=4 F=0: mul_assoc 0 add_assoc 0 distrib 0 (want all 0)
+  reproduction: true
+
+=== section 2: the signed cell at F > 0, all policies, both spellings ===
+
+                format  F  spell   +assoc   *assoc  distrib    *comm  no-inv
+     signed sat 2c w=4  1  trunc      952      704     1290        0       1
+     signed sat 2c w=4  1  floor      952      816     1336        0       1
+    signed sat sym w=4  1  trunc      784      512      924        0       0
+    signed sat sym w=4  1  floor      784      604      948        0       0
+       signed wrap w=4  1  trunc        0     1460      896        0       0
+       signed wrap w=4  1  floor        0     1672      896        0       0
+     signed sat 2c w=4  2  trunc      952      708     1246        0       1
+     signed sat 2c w=4  2  floor      952     1320     1368        0       1
+    signed sat sym w=4  2  trunc      784      384      972        0       0
+    signed sat sym w=4  2  floor      784     1006     1062        0       0
+       signed wrap w=4  2  trunc        0     1064     1536        0       0
+       signed wrap w=4  2  floor        0     1772     1536        0       0
+     signed sat 2c w=4  3  trunc      952      380     1632        0       1
+     signed sat 2c w=4  3  floor      952     1206     1794        0       1
+    signed sat sym w=4  3  trunc      784      352     1264        0       0
+    signed sat sym w=4  3  floor      784      840     1530        0       0
+       signed wrap w=4  3  trunc        0      380     1868        0       0
+       signed wrap w=4  3  floor        0     1220     1952        0       0
+     signed sat 2c w=5  1  trunc     7920     4080    13078        0       1
+     signed sat 2c w=5  1  floor     7920     4304    13100        0       1
+    signed sat sym w=5  1  trunc     7200     3184    11152        0       0
+    signed sat sym w=5  1  floor     7200     3410    11124        0       0
+       signed wrap w=5  1  trunc        0    15132     7168        0       0
+       signed wrap w=5  1  floor        0    15920     7168        0       0
+     signed sat 2c w=5  2  trunc     7920     8176    12610        0       1
+     signed sat 2c w=5  2  floor     7920     9880    12808        0       1
+    signed sat sym w=5  2  trunc     7200     7024    10912        0       0
+    signed sat sym w=5  2  floor     7200     8738    11142        0       0
+       signed wrap w=5  2  trunc        0    18232    12288        0       0
+       signed wrap w=5  2  floor        0    20950    12288        0       0
+     signed sat 2c w=5  3  trunc     7920     8632    12728        0       1
+     signed sat 2c w=5  3  floor     7920    13574    13359        0       1
+    signed sat sym w=5  3  trunc     7200     7072    11320        0       0
+    signed sat sym w=5  3  floor     7200    12002    12018        0       0
+       signed wrap w=5  3  trunc        0    12192    15616        0       0
+       signed wrap w=5  3  floor        0    17624    15616        0       0
+     signed sat 2c w=6  1  trunc    64480    18752   116850        0       1
+     signed sat 2c w=6  1  floor    64480    19246   117080        0       1
+    signed sat sym w=6  1  trunc    61504    15136   107868        0       0
+    signed sat sym w=6  1  floor    61504    15628   107972        0       0
+       signed wrap w=6  1  trunc        0   135468    57344        0       0
+       signed wrap w=6  1  floor        0   136672    57344        0       0
+     signed sat 2c w=6  2  trunc    64480    46856   114578        0       1
+     signed sat 2c w=6  2  floor    64480    50440   115226        0       1
+    signed sat sym w=6  2  trunc    61504    42816   106412        0       0
+    signed sat sym w=6  2  floor    61504    46438   106806        0       0
+       signed wrap w=6  2  trunc        0   184192    98304        0       0
+       signed wrap w=6  2  floor        0   194784    98304        0       0
+     signed sat 2c w=6  3  trunc    64480    81120   113108        0       1
+     signed sat 2c w=6  3  floor    64480    95760   114907        0       1
+    signed sat sym w=6  3  trunc    61504    76176   105996        0       0
+    signed sat sym w=6  3  floor    61504    90604   107642        0       0
+       signed wrap w=6  3  trunc        0   176392   124928        0       0
+       signed wrap w=6  3  floor        0   198000   124928        0       0
+
+  every F > 0 configuration fails *assoc and distrib, both policies, both spellings: true
+  the symmetric-clamp rescue does NOT survive the fraction axis: true
+  additive counts identical to the family's own F = 0 row at every F (scale-blind): true
+  the spelling moved at least one count: true   and zeroed none: true
+
+=== section 3: coarsening alone, signed operands, no reduction map anywhere ===
+
+  box [-15,15]^3  F=1  trunc: 9280 assoc failures, witness Some((-15, -15, -14, -784, -787))
+  box [-15,15]^3  F=1  floor: 10256 assoc failures, witness Some((-15, -15, -14, -784, -788))
+  box [-15,15]^3  F=2  trunc: 11200 assoc failures, witness Some((-15, -15, -14, -196, -195))
+  box [-15,15]^3  F=2  floor: 14880 assoc failures, witness Some((-15, -15, -14, -196, -195))
+
+  coarsening is sufficient to break signed *assoc with no clamp and no wrap present: true
+  spelling witness F=1 (a,b,c)=(-3,5,7): trunc gives -24 vs -25, floor gives -28 vs -26
+
+P2 WORKS

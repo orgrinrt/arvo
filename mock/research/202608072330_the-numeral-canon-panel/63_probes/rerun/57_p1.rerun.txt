@@ -1,0 +1,54 @@
+=== section 1: the configuration matrix ===
+
+configuration                                          triples   diverge flr-only ceil-only    both     A     B     C     D
+42 row1  ceiling only, operands both signs (top=3)        3375       904       0     904       0    XX    XX    ok    ok
+42 row2  ceiling only, operands 0..12 (top=3)             2197         0       0       0       0    ok    ok    ok    ok
+42 row3  floor 0 + ceiling, operands 0..12 (top=3)        2197         0       0       0       0    ok    ok    ok    ok
+42 row4  floor 2 + ceiling 10, operands 0..14             3375        48      46       0       2    XX    ok    ok    ok
+55b p5   signed clamp Q=[-8,7], operands = Q              4096       952     504     448       0    XX    ok    ok    ok
+         unsigned clamp Q=[0,15], operands = Q            4096         0       0       0       0    ok    ok    ok    ok
+         non-positive clamp Q=[-15,0], operands = Q       4096         0       0       0       0    ok    ok    ok    ok
+         floor only (lo=-3), operands both signs          3375       904     904       0       0    XX    XX    ok    ok
+         floor only (lo=-3), operands -12..0              2197         0       0       0       0    ok    ok    ok    ok
+         ceiling 100 unreachable, operands 0..6            343         0       0       0       0    ok    ok    ok    ok
+MUTANT   opposite-bound Q=[-8,7], operands = Q            4096      1386     336     224     826    XX    ok    ok    ok
+MUTANT   opposite-bound Q=[0,15], operands = Q            4096      2240       0    2240       0    XX    XX    ok    XX
+
+A = per-fold bound count (42:315-316 as worded, over one triple)
+B = per-domain bound count (the same sentence read over the box)
+C = absorption: rho(rho(x)+y) == rho(x+y) over the box
+D = sign confinement of the box against the reachable faces
+'XX' marks a predictor disagreeing with the measured truth.
+
+predictor A: divergent triples it predicts cannot diverge = 5606
+predictor B: configurations mispredicted                   = 3
+predictor C: configurations mispredicted                   = 0
+predictor D: configurations mispredicted                   = 1
+
+=== section 2: 42 row 4's divergences are floor events, as C predicts ===
+
+Row 4 has BOTH faces coded and both reachable, so B and the 'both bounds'
+reading expect two-face divergences. C says the ceiling is absorbing there
+(every operand is non-negative) and only the floor is not, so every
+divergence should involve the floor and none should be ceiling-only.
+
+  lo=2   hi=10  operands 0..14   diverge=48    floor-only=46    ceil-only=0     both=2
+  lo=5   hi=20  operands 0..26   diverge=450   floor-only=410   ceil-only=0     both=40
+
+=== section 3: every interval numeral system Q = [lo,hi] with 0 in Q ===
+
+Operands drawn from Q, which is the case 42's rows 1 and 4 are not.
+Claim under test: saturating addition on Q is associative iff Q is
+sign confined, that is iff lo == 0 or hi == 0.
+
+  intervals swept = 100   associative = 19   mismatches against 'lo==0 or hi==0' = 0
+
+=== section 4: instrument validation ===
+
+  associativity counter reported zero somewhere: true
+  associativity counter reported nonzero somewhere: true
+  absorption predicate returned true somewhere: true
+  absorption predicate returned false somewhere: true
+  no divergence anywhere occurred with zero faces triggered: true
+
+P1 WORKS
