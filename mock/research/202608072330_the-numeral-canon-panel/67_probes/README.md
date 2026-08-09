@@ -66,6 +66,22 @@ consumer classes.
 identical figure in four cells and a repeated number is the shape of a counting
 bug. It is not one; the collision reproduces and is recorded unexplained.
 
+## p5, a strategy selecting a reduction member
+
+```
+rustc --edition 2024 --crate-type lib p5_strategy_selects_the_member.rs   # compiles clean
+rustc --edition 2024 --crate-type lib p5_neg.rs                           # refused, E0277
+```
+
+Built after `68` landed, to fill the gap `68` section 7 names as carrying zero
+probe instances: a strategy parameter selecting among reduction members over one
+fixed identity, with an algorithm bound refusing when the selected member loses
+the law. Adds one thing `68`'s request did not ask for: the same strategy is
+accepted at one identity and refused at another, so the law is a fact about the
+pair and not about either coordinate.
+
+The law rows it implements are `p4`'s measured verdicts rather than assumptions.
+
 ## What none of these establish
 
 Any magnitude. Nothing here is a bench, nothing was timed, and every
