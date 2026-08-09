@@ -267,3 +267,181 @@ probes never needed `alloc`, `dyn`, or `TypeId` to establish any of the above, w
 with those constraints being compatible with a laws-as-entailments design; it is not evidence that op has
 ratified them, and I have kept that distinction visible everywhere I depended on the const-generic,
 const-fn, no-runtime-dispatch style those constraints already assume.
+
+---
+
+## Phase two: reconciliation
+
+Written after reading the panel. Phase one above is untouched; everything below is new. I read `RULES.md`
+in full, `OPTIONS.md` in full (both halves), `DROPLIST.md` in full, `PERSONA_CALLS.md` in full,
+`PRIOR_CALLS.md` in full, my own prior file `42_willsey_the_law_layer.md` in full, checkpoint `69` in full,
+and `77_amin_derived_laws_derived_cold.md`, the parallel cold derivation on this same question, in full. I
+did not read `56`, `57`, `57b`, `58`, `60`, `61`, `62`, `63`, `64`, `65`, `66`, `67`, `70` to `75` end to
+end; where I cite them below it is through `OPTIONS.md`'s or `69`'s account, named as such.
+
+### The most important thing phase two surfaces: I already did this work, in a different session, and I
+had forgotten it
+
+File `42`, dated the day before this dispatch, is mine, under this same persona. I wrote it cold against
+`35`, `40`, and `18` rather than against a blank premise set, so it is not a second instance of the cold
+protocol, but its conclusion is the same conclusion I reached in phase one, reached the same way both
+times: a law lives at the operation-times-strategy pair (`I9`), a law's failure is precise and separable
+rather than a blanket unsoundness, and the substrate owns the *vocabulary* of which properties an axis
+assignment carries while refusing to own an engine that *acts* on that vocabulary. Section 6.4 of `42`
+states the refusal in almost the words I used in this file's own congruence-closure section: "the cost
+function and the extraction strategy... is a domain decision, not a substrate decision." That sentence is
+mine in both files, written a day apart, without the second writing having access to the first when it
+was produced. I record this because it is a form of corroboration this panel's rules do not have a name
+for (not TWO EXPERTS, since it is one author; not a read, since phase one genuinely did not have it), and
+because a persona that reliably re-derives its own settled positions from first principles is itself a
+small piece of evidence that the position is not an accident of framing.
+
+`42` also settles something phase one left as candidate synthesis: whether a rewriting engine belongs in
+arvo. It does not, on two independent grounds phase one did not have (`DROPLIST.md:19-22`, op refusing the
+relocation to hilavitkutin directly, corroborated by measurement that the regrouping already pays inside
+arvo's own licensed internals before any scheduler exists to relocate to) plus the existing
+`arvo-toolbox-not-policer.md` rule. I adopt `42`'s locus finding into this file rather than re-derive it:
+**the FACTS belong in arvo because only arvo knows its own axis values; the DECISIONS about whether to act
+on a fact belong to whoever performs the rewrite (arvo's own internals under `arvo-always-optimal-
+internals.md`, hilavitkutin's scheduler, vehje's compiler backend).** This directly answers the
+existence-and-locus half of the dispatch's question, which phase one did not address at all: yes, arvo's
+canon owes algebraic laws, and it owes them as a vocabulary of checkable facts, never as a mechanism that
+exploits them.
+
+### Real, independently-reached agreement with `77`, and one shared blind spot
+
+`77` (Amin) ran the identical cold protocol on the identical question, in parallel, with no access to this
+file while writing its own phase one. Four things converge without either file having read the other:
+
+1. **The mechanism.** Amin's `probe2_works_validate_erase.rs` and my `probe2_derive_validate_erase.rs` are,
+   independently, the same construction: an associated fact about representability of a numeral's "one",
+   computed in a `const fn`, validated by an `assert!` that fires per instantiation, refused for `I = 0`
+   with a named compile error, erasing to a bare constant once it passes. Amin's negative probe
+   (`probe2_fail_inline_const_expr.rs`) independently hit the same wall I would have hit had I tried the
+   naive inline-expression spelling first, and named the same rule this workspace already has for it
+   (`a-refused-bound-wants-a-trait-not-a-feature.md`).
+2. **A law is a fact about a pair, not a bare type**, both derived directly from `I9`, in near-identical
+   language.
+3. **A subset law is honest exactly when its domain is type-enforced rather than merely tested.** Both
+   files reach this from the same historical failure shape.
+4. **The canon states the mechanism and the intent, never a concrete table of which laws hold for which
+   strategy**, both citing `the-canon-is-intent-not-implementation.md` independently.
+
+**One of these four is not as independent as it looks, and I want to flag it rather than let it pass as
+clean corroboration.** Both files test the representability mechanism against the identical historical
+case, `UFixed<0, 8, Hot>::ONE` holding raw `0`. I disclosed in my own phase one that this specific incident
+sits in my ambient session memory rather than something I derived fresh; Amin's file cites it too, as
+"the project's own memory records." That means the *choice of example* was contaminated identically in
+both files, and the mechanism-level agreement (item 1) is only as independent as the part that was not
+memorized: the actual trait-and-const-fn construction, which both of us built and compiled separately
+rather than copied. I would treat the mechanism agreement as genuine (it required real, separately-run
+compilation to land) and the choice-of-motivating-bug agreement as shared drift from one memorized fact
+wearing two hats, not a fifth independent point.
+
+**The shared blind spot is more important than the agreement.** Checkpoint `69` records that two earlier
+cold derivations on an adjacent topic (`65`, `66`) read op's "validate" verb two genuinely different ways,
+with measured, different machine cost: compile-time-and-per-type (the typed operation symbol-aliases to
+the bare one, effectively free) against runtime-and-per-datum (the shape carries `tst`/`csel` residue that
+does not erase). Neither `77` nor this file considered the runtime reading at all. Both of us built only
+the compile-time mechanism and reported it as though it settled what "validate" means for a law, when the
+panel's own adjacent unit had already found that op's own sentence supports a second, materially different,
+non-free reading that neither of us tested. This is a real gap in both cold derivations, not a
+disagreement to resolve: whether a law's validation is checked once, at the typestate boundary, or checked
+again per incoming value at runtime, is exactly the same open question `69`'s Q-A puts to op for the
+container case, and it applies to a law with identical force. I did not build the runtime-reading probe in
+phase one and I do not have one to add now without breaking the phase-one/phase-two boundary; I record the
+gap rather than pretend to close it.
+
+### Where `77` genuinely goes further than I did, and I adopt it
+
+**The chain question.** My treatment of composition stayed at the level of the congruence-closure argument
+(a law belongs to a set of operations closed under a strategy) and the associativity-under-clamping
+mechanism from probes 1 and 1b. I never built anything that measures what actually happens to error across
+a chain of a *specific* operation. Amin's `probe1_chain_error.py` did, and the result is sharper than
+anything in my own file: fixed-point **addition** needs no chain machinery at all, because the sum of two
+already-quantized values is exact whenever it does not overflow, so there is no rounding step for error to
+accumulate at. Fixed-point **multiplication** does need it, because the exact product needs `2F` bits and a
+naive per-step round-back genuinely discards information every step, while a widened accumulator pays
+exactly one rounding cost regardless of chain length. And the naive failure is not simple growth: for a
+decaying input the error plateaus, for an input near one raised to increasing powers it is non-monotonic
+and can spike sharply once the represented magnitude approaches the quantum (0, 4, 0, 2, 4, 2, 2, then 130
+rounding steps at `n = 4096` in Amin's own table). This refines my own "the unit is (strategy, {operations
+composed})" claim into something more specific and more useful: **whether an operation needs chain-level
+machinery is a fact about whether that operation's rounding step is closed under the algebraic structure
+its own outputs feed back into**, addition's outputs stay in the same additive coset of quantized values,
+multiplication's do not stay in the same multiplicative structure without widening. I adopt this as a
+correction to my own framing rather than restate my weaker version.
+
+**Human legibility as a second obligation, separate from machine-checkability.** I argued the canon should
+state the mechanism (derive, validate exhaustively, erase) rather than a table of concrete laws. Amin
+sharpens this in a way I had not considered: a mechanism that is only checkable by running the compiler
+against a specific instantiation is not, by itself, legible to a human reader of the canon, or to a
+consumer reading generated documentation, who wants to know **which shapes a law covers without trying
+every one.** So the canon owes two things, not one: the mechanism (which discharges the obligation
+per-instantiation), and, wherever a domain restriction is real, a closed-form statement of that domain in
+the canon's own prose (`ONE_RAW` representable exactly when `I >= 1`, stated as intent, not as `assert!`
+syntax). I had conflated these into a single mechanism-only obligation in phase one; they are two, and a
+canon that ships only the mechanism has bought machine-checkability at the price of a reader ever being
+able to look at the canon and know the law's reach without compiling something.
+
+**The defect/benefit pair for `I5`-licensed refusals.** My "explicitly refused laws" tier said Hot's
+refusal of a law should be stated with the gain that justified it, in prose. Amin's reading is sharper and
+is worth adopting over mine: read together with `I8`'s measurement-weighting framing, a law under Hot is
+not simply absent where Precise would have it; it is a **paired, ideally provable, claim**, "this law fails
+by at most `d`, purchasing a gain of at least `g`, measured however Hot weighs gains." That is a stronger
+and more falsifiable sentence than "the refusal is stated." Amin is honest that the premises do not settle
+whether the pair should be an inspectable type-level fact or a canon-and-bench-level fact only, and I agree
+that is genuinely open; I would not resolve it here either, and I note it strengthens rather than replaces
+the tier I proposed.
+
+### Where the panel's own record, outside either cold derivation, strengthens my answer
+
+**The two-value-map-based question in `OPTIONS.md`'s Q11 and Q12 is the same question this dispatch asks,
+asked from the fold layer rather than from the law layer, and the answer converges from both directions.**
+`35`'s finding (via `OPTIONS.md` and my own `42`) that a fold's accumulator needs both a width-sufficiency
+bound and a law-satisfaction bound, refusing independently for independent reasons at one call site, is the
+concrete worked instance of the entailment/derivation distinction I argued for in phase one: the width
+bound is a container derivation (op's own acceptance criterion, read literally), and the law bound is
+exactly the same mechanism applied to an algebraic fact instead of a container fact. Nothing about the
+mechanism differs; the object being derived, validated, and erased does.
+
+**The `56`/`57`/`61` thread on absorption and a "coherence law", read through `OPTIONS.md`'s account, is
+independent, panel-level corroboration of my "laws that hold only on a subset" section**, from a completely
+different investigative angle than either cold derivation. `61` measured that an absorbing-top reading and
+a separately-argued coherence law are **the same law exactly where every operand lies inside the
+representable set, and differ outside it**, zero disagreements inside, 206 outside. That is precisely the
+shape I argued for from the `UFixed<0, 8>::ONE` case: a conditional law is a real law when its domain is
+established and stated, and a real hazard when it is not. Here the domain that rescues the identification
+is "every operand of a real fold is already format-typed, so it is inside the set by construction" (`61`'s
+own framing per `OPTIONS.md`), which is exactly the type-enforced-domain condition both cold derivations
+independently required.
+
+**`DROPLIST.md`'s carried entry on gating algorithm crates by a single associativity flag** ("refused by
+measurement, since it admits the one preset whose recurrences return wrong answers... and refuses the two
+that compute correctly") is the sharpest available evidence against a flat, un-parameterized law vocabulary
+and for the per-property, per-axis-value granularity both cold derivations converged on independently. A
+`Sound` marker bundling several properties would be wrong in both directions at once for some presets; `42`
+section 4.3 already measured what per-property granularity costs (one impl per satisfying combination,
+since `specialization` and `negative_impls` are both forbidden) and found the cost real but not a reason to
+bundle, because bundling had already been refused on correctness grounds rather than ergonomics grounds.
+
+### Revised answer
+
+Op's canon owes algebraic laws as a vocabulary, never as a rewriting mechanism, on grounds independent of
+each other (a direct prior refusal of relocation, a ratified workspace rule that already assumes the
+vocabulary exists, and this panel's own algorithm-crate soundness gap). "Derived" carries two senses that
+compose rather than compete: a law is derived in the sense of being a theorem of the format's own
+denotation rule and the strategy's semantics (never an independently asserted fact), and it is derived in
+the operational sense of being computed, per instantiation, by the same three-verb mechanism op names for
+containers, with the compile-time reading of "validate" being the one both cold derivations built and the
+runtime-per-datum reading being a live, unaddressed alternative the panel's adjacent unit has already
+priced. A law belongs to the pair of an operation and a strategy's axis assignment, not to a bare type or a
+bare operation, and under composition it belongs more specifically to whichever algebraic structure that
+operation's outputs are actually closed under, which is why addition and multiplication need different
+answers to the identical chain question. A subset law is a real law exactly when its domain is enforced by
+the type rather than sampled by a test suite, and the canon owes that domain in closed, human-legible form
+in addition to the mechanism that enforces it. A strategy's licensed refusal of a law (`I5`) is not an
+absence; it is a paired, quantifiable claim about what the law loses and what it buys, and whether that
+pair lives in the type or only in prose and bench evidence is genuinely open. None of this closes the
+question the dispatch opened with explore-do-not-settle in force; it narrows where the remaining forks are,
+and names the one both parallel cold derivations missed.
