@@ -480,8 +480,14 @@ is one the finding makes no claim about, and unclaimed defaults to not true.
 
 **But a condition the work was performed under is proven and is listed.** A finding measured on one thread
 holds at one thread: the predicate says `threads = 1`, never `threads any` which was not shown, and never
-omits threads which would discard a region that was. Omission is for a dimension nothing established;
-it is not for a dimension held fixed while the work was done, because that value is a result.
+omits threads which would discard a region that was. **Omission is for a dimension that is not a parameter of the claim.** Op: "If it's a theory that does not
+apply to any thread setup, then it can omit." A structural result about what a type contract decides has no
+thread dimension, and naming threads there is noise rather than rigour.
+
+The test is the one the rule opens with: a predicate covers every dimension **that could move the result**.
+Could move it, so it is listed at whatever was established, fixed value or swept range. Could not move it,
+so it does not appear. Omission never means "we did not check": a dimension that could move the result and
+went unexamined leaves the finding unestablished on that axis rather than tidily silent.
 
 So this panel's single-threaded corpus is **a body of `threads = 1` arms**, not a pile of claims awaiting
 rescue, and `threads = 1` is exactly the region I10 names for when no additional cores are available.
