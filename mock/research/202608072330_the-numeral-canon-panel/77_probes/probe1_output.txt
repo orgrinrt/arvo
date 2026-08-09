@@ -1,0 +1,25 @@
+F_BITS=8  quantum=0.003906  input v_rounded=0.601562 (exact 0.6, input repr. error=-1.562500e-03)
+one rounding step bound = quantum/2 = 1.953125e-03
+
+     n |    naive extra err |   naive / one-step |   wide extra err |  wide / one-step
+     1 |       0.000000e+00 |              0.000 |     0.000000e+00 |            0.000
+     2 |       0.000000e+00 |              0.000 |     0.000000e+00 |            0.000
+     4 |       0.000000e+00 |              0.000 |     0.000000e+00 |            0.000
+     8 |       0.000000e+00 |              0.000 |     0.000000e+00 |            0.000
+    16 |       3.906250e-03 |              2.000 |     0.000000e+00 |            0.000
+    32 |       3.906250e-03 |              2.000 |     0.000000e+00 |            0.000
+    64 |       3.906250e-03 |              2.000 |     0.000000e+00 |            0.000
+   128 |       3.906250e-03 |              2.000 |     0.000000e+00 |            0.000
+   256 |       3.906250e-03 |              2.000 |     0.000000e+00 |            0.000
+
+growth check: naive_ratio[n] / naive_ratio[n/2] for successive doublings of chain length (a value that keeps climbing shows the naive strategy's error is not merely bounded noise; a value that plateaus shows it saturates at the container's range instead of growing without bound):
+  n=   1 -> n=   2: naive_ratio    0.000 ->    0.000  (factor nan)
+  n=   2 -> n=   4: naive_ratio    0.000 ->    0.000  (factor nan)
+  n=   4 -> n=   8: naive_ratio    0.000 ->    0.000  (factor nan)
+  n=   8 -> n=  16: naive_ratio    0.000 ->    2.000  (factor nan)
+  n=  16 -> n=  32: naive_ratio    2.000 ->    2.000  (factor 1.000)
+  n=  32 -> n=  64: naive_ratio    2.000 ->    2.000  (factor 1.000)
+  n=  64 -> n= 128: naive_ratio    2.000 ->    2.000  (factor 1.000)
+  n= 128 -> n= 256: naive_ratio    2.000 ->    2.000  (factor 1.000)
+
+wide strategy: extra error is 0 for every n by construction. it pays exactly one rounding step, at the end, which is the same one-time cost the naive strategy pays on its very first step too; every additional step the naive strategy takes pays another rounding cost the wide strategy does not.

@@ -1,0 +1,21 @@
+error[E0080]: evaluation panicked: shape has no representable multiplicative identity: I=0 means the container has no integer bits to hold a 1
+  --> probe2_bad_case_refused.rs:12:9
+   |
+12 | ...   assert!(Self::I >= 1, "shape has no representable multiplicative identity: I=0 means the container has no integer bits to hold a 1");
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `<Fixed<0, 8> as Shape>::ONE_RAW` failed here
+
+note: erroneous constant encountered
+  --> probe2_bad_case_refused.rs:25:5
+   |
+25 |     S::ONE_RAW
+   |     ^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn one_of::<Fixed<0, 8>>`
+  --> probe2_bad_case_refused.rs:31:15
+   |
+31 |     let bad = one_of::<Fixed<0, 8>>();
+   |               ^^^^^^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
