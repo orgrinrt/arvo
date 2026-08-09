@@ -225,3 +225,36 @@ The lesson is about the consolidation rather than about `66`: **a number cited w
 number waiting to be attached to the wrong one.** A consolidation that drops the operand of a measurement
 has removed exactly the field a later reader needs and cannot recover. `63:230` should name it, and any
 consolidation carrying a count should carry what was counted.
+
+
+## Q-B gains a provenance trail, traced to source
+
+`PRIOR_CALLS.md` reports a careful universal negative: across everything it read, **no op-verbatim mandate
+of `no_std`, no `alloc`, const sizes, no `dyn` or no `TypeId` appears anywhere**, only the reasoning family
+they serve. It bounded that claim by naming its own weakest coverage, arvo's earliest era, swept by
+marker-grep alone.
+
+The coordinator tested it there, in the era it flagged, and the earliest hits do exist:
+`design_rounds/202604201005/202604201000_topic.arvo-identity-fixed-point-first.md:32`, `:59` and `:64`
+carry `#![no_std]`, no alloc and const-generic sizing in blockquotes.
+
+**They are not op's voice.** They sit under a heading reading "What the originals say (receipts)", and are
+quotations from a different repository. Traced to source: `~/Dev/polka-dots/mock/crates/arvo/DESIGN.md.tmpl`
+lines 1 to 7, which states "Cross-project numeric primitive library. Used by hilavitkutin, polka, saalis,
+loimu. `#![no_std]`, no alloc, const-generic sizing, same LLVM optimisation discipline as the execution
+engine." Git records that file's commits on 2026-03-24 authored by orgrinrt.
+
+**So the constraints have a real lineage, and it is a design document rather than a decision.** They enter
+arvo as inherited receipts from op's own earlier project, predating this repository, and are carried
+forward from there. The universal negative survives its own strongest test: what exists is an authored
+design statement, not a recorded call.
+
+Two caveats, both load-bearing:
+
+- **Git authorship does not establish authorship of a sentence.** The workspace byline policy puts op's
+  name on agent-assisted work by design, so "committed by orgrinrt" is consistent with either hand.
+- **This is provenance, not intent.** It answers where the constraints came from. Whether op still intends
+  them, and whether they should bind the canon, remains Q-B and remains his.
+
+The erasure argument this unit builds on still rests on `dyn` and `TypeId` being absent, and neither
+appears in the polka-dots statement at all, which is the older half of the two.
