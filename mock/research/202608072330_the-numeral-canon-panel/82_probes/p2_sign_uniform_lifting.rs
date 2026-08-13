@@ -193,16 +193,22 @@ fn main() {
     // -----------------------------------------------------------------------
     println!("\nsection 1b: negative control, weakened predicates over widths 2..=5");
     let mutants: [(&str, fn(i64, i64) -> bool); 4] = [
-        ("M1: LO >= -1 || HI <= 0   (allow one negative)", |lo, hi| {
-            lo >= -1 || hi <= 0
-        }),
-        ("M2: LO >= 0 || HI <= 1    (allow one positive)", |lo, hi| {
-            lo >= 0 || hi <= 1
-        }),
-        ("M3: LO >= 0               (drop the non-positive arm)", |lo, _hi| lo >= 0),
-        ("M4: HI - LO <= 1          (narrow interval, any sign)", |lo, hi| {
-            hi - lo <= 1
-        }),
+        (
+            "M1: LO >= -1 || HI <= 0   (allow one negative)",
+            |lo, hi| lo >= -1 || hi <= 0,
+        ),
+        (
+            "M2: LO >= 0 || HI <= 1    (allow one positive)",
+            |lo, hi| lo >= 0 || hi <= 1,
+        ),
+        (
+            "M3: LO >= 0               (drop the non-positive arm)",
+            |lo, _hi| lo >= 0,
+        ),
+        (
+            "M4: HI - LO <= 1          (narrow interval, any sign)",
+            |lo, hi| hi - lo <= 1,
+        ),
     ];
     for (name, mutant) in mutants.iter() {
         let mut suff: u64 = 0;
@@ -287,7 +293,9 @@ fn main() {
     // a shipped width, sampled, comparing a left fold against a balanced tree,
     // for the full declared range and for the non-negative declared range.
     // -----------------------------------------------------------------------
-    println!("\nsection 3: length-8 fold, left against balanced tree, width 8 signed, 4,000,000 samples");
+    println!(
+        "\nsection 3: length-8 fold, left against balanced tree, width 8 signed, 4,000,000 samples"
+    );
     let maxv: i64 = 127;
     let minv: i64 = -128;
     let mut state: u64 = 0x243F6A8885A308D3;

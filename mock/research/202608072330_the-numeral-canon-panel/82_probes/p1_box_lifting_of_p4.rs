@@ -34,10 +34,18 @@
 
 fn sat_add(x: u32, y: u32, maxv: u32) -> u32 {
     let s = x + y;
-    if s > maxv { maxv } else { s }
+    if s > maxv {
+        maxv
+    } else {
+        s
+    }
 }
 fn sat_sub(x: u32, y: u32) -> u32 {
-    if y > x { 0 } else { x - y }
+    if y > x {
+        0
+    } else {
+        x - y
+    }
 }
 fn law_holds(a: u32, b: u32, c: u32, maxv: u32) -> bool {
     sat_sub(sat_add(a, b, maxv), c) == sat_add(a, sat_sub(b, c), maxv)
@@ -63,18 +71,14 @@ fn floor_fires(a: u32, b: u32, c: u32) -> bool {
 //   (iii) Lc == 0 AND Hc == 0                 "c is identically zero"
 // ---------------------------------------------------------------------------
 
-fn closed_form_box_holds(
-    la: u32, ha: u32, lb: u32, hb: u32, lc: u32, hc: u32, maxv: u32,
-) -> bool {
+fn closed_form_box_holds(la: u32, ha: u32, lb: u32, hb: u32, lc: u32, hc: u32, maxv: u32) -> bool {
     let no_clamp_possible = ha + hb <= maxv && lb >= hc;
     let a_is_zero = la == 0 && ha == 0;
     let c_is_zero = lc == 0 && hc == 0;
     no_clamp_possible || a_is_zero || c_is_zero
 }
 
-fn brute_force_box_holds(
-    la: u32, ha: u32, lb: u32, hb: u32, lc: u32, hc: u32, maxv: u32,
-) -> bool {
+fn brute_force_box_holds(la: u32, ha: u32, lb: u32, hb: u32, lc: u32, hc: u32, maxv: u32) -> bool {
     for a in la..=ha {
         for b in lb..=hb {
             for c in lc..=hc {
@@ -88,9 +92,7 @@ fn brute_force_box_holds(
 }
 
 // Does ANY clamp fire anywhere inside a box?
-fn box_has_a_clamp(
-    la: u32, ha: u32, lb: u32, hb: u32, lc: u32, hc: u32, maxv: u32,
-) -> bool {
+fn box_has_a_clamp(la: u32, ha: u32, lb: u32, hb: u32, lc: u32, hc: u32, maxv: u32) -> bool {
     for a in la..=ha {
         for b in lb..=hb {
             for c in lc..=hc {
@@ -205,8 +207,7 @@ fn main() {
                         for hb in lb..n {
                             for lc in 0..n {
                                 for hc in lc..n {
-                                    let bf =
-                                        brute_force_box_holds(la, ha, lb, hb, lc, hc, maxv);
+                                    let bf = brute_force_box_holds(la, ha, lb, hb, lc, hc, maxv);
                                     let m = mutant(la, ha, lb, hb, lc, hc, maxv);
                                     if bf != m {
                                         total_disagreements += 1;
@@ -218,7 +219,10 @@ fn main() {
                 }
             }
         }
-        println!("  {} -> {} disagreements over widths 2..=4", name, total_disagreements);
+        println!(
+            "  {} -> {} disagreements over widths 2..=4",
+            name, total_disagreements
+        );
     }
 
     // -----------------------------------------------------------------------
@@ -319,8 +323,14 @@ fn main() {
             }
         }
     }
-    println!("  clause (ii) box a == 0: any clamp fires = {} (law reads b-c == b-c)", clamp_ii);
-    println!("  clause (iii) box c == 0: any clamp fires = {} (law reads a+b == a+b)", clamp_iii);
+    println!(
+        "  clause (ii) box a == 0: any clamp fires = {} (law reads b-c == b-c)",
+        clamp_ii
+    );
+    println!(
+        "  clause (iii) box c == 0: any clamp fires = {} (law reads a+b == a+b)",
+        clamp_iii
+    );
 
     // -----------------------------------------------------------------------
     // Section 4: the declaration a consumer would REACH FOR first, checked.
@@ -377,7 +387,10 @@ fn main() {
         "  boxes satisfying it over widths 2..=4: {}, of which the law FAILS somewhere inside: {}",
         boxes_where_natural_decl_holds, boxes_where_it_lies
     );
-    println!("  first lying box (w, La, Ha, Lb, Hb, Lc, Hc, and a failing a,b): {:?}", witness);
+    println!(
+        "  first lying box (w, La, Ha, Lb, Hb, Lc, Hc, and a failing a,b): {:?}",
+        witness
+    );
 
     // And the same declaration at the value level, at width 8, which is 79's P1.
     let mut p1_suff: u64 = 0;

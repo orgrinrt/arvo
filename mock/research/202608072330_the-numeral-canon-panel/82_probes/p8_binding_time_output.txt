@@ -1,0 +1,32 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+host:      aarch64-apple-darwin
+
+RUNG 1. Structural trait bound. Sign uniformity is carried by which
+        declaration shape was written; a straddling window simply does not
+        implement the permission. (p3d)
+  type check only, straddling in dead code       REFUSED  error[E0277]
+       the declared operand window 
+  full codegen, straddling in dead code          REFUSED  error[E0277]
+       the declared operand window 
+  type check only, licensed declarations         ACCEPTED
+
+RUNG 2. Inline const block in a NON-GENERIC function, reading a module
+        const that lives outside any type. (p7)
+  type check only, straddling const, dead code present ACCEPTED
+  full codegen, straddling const                 REFUSED  error[E0080]
+       evaluation panicked: the ledger's declared cost window straddles zero, so the reassociated fold may not be used for it
+  full codegen, licensed const                   ACCEPTED
+
+RUNG 3. Const assert in an associated const of a GENERIC function, which
+        is what both cold derivations built and what p3a reproduces.
+  type check only, straddling in dead code       ACCEPTED
+  full codegen, straddling in UNREACHED pub fn   ACCEPTED
+  full codegen, straddling in a REACHED no_mangle fn REFUSED  error[E0080]
+       evaluation panicked: the declared operand window straddles zero, so signed saturating addition is not associative on the values a fold over it can reach, and a reassociating consumer may not be instantiated at it
+
+RUNG 0, for comparison. The crate-level const carrying the model-band
+        cross-check, which is not attached to any function at all.
+  type check only, perturbed closed form (p3d)   REFUSED  error[E0080]
+       evaluation panicked: the closed-form sign-uniformity verdict disagrees with the swept verdict somewhere in the model band, so no arm may be gated on the shape split below
+  type check only, perturbed closed form (p7)    REFUSED  error[E0080]
+       evaluation panicked: the closed-form verdict disagrees with the swept verdict in the model band

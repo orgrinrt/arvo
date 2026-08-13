@@ -1,0 +1,303 @@
+Full body of every backward-branching loop, so the stride is auditable.
+Strides below are read BY HAND from these bodies, not inferred by a script.
+
+--- __RINvCshtEs8sf6Dux_30p4_what_the_lifted_arm_unlocks14lanes4_indexedINtB2_6NonNegKh0_Kh7f_EEB2_  loop LBB0_3  (8 instructions) ---
+    ldrsb	w14, [x9], #1
+    add	w11, w14, w11, sxtb
+    cmp	w11, #127
+    csel	w11, w11, w12, lt
+    cmn	w11, #128
+    csel	w11, w11, w13, gt
+    subs	x10, x10, #1
+    b.ne	LBB0_3
+
+--- __RINvCshtEs8sf6Dux_30p4_what_the_lifted_arm_unlocks14lanes4_indexedINtB2_6NonNegKh0_Kh7f_EEB2_  loop LBB0_6  (37 instructions) ---
+    cmp	x8, x1
+    b.hs	LBB0_16
+    ldrsb	w9, [x0, x8]
+    add	w9, w9, w11, sxtb
+    cmp	w9, #127
+    csel	w9, w9, w12, lt
+    cmn	w9, #128
+    csel	w11, w9, w13, gt
+    add	x9, x8, #1
+    cmp	x9, x1
+    b.hs	LBB0_15
+    add	x9, x0, x8
+    ldrsb	w9, [x9, #1]
+    add	w9, w9, w10, sxtb
+    cmp	w9, #127
+    csel	w9, w9, w12, lt
+    cmn	w9, #128
+    csel	w10, w9, w13, gt
+    add	x9, x8, #2
+    cmp	x9, x1
+    b.hs	LBB0_14
+    add	x9, x8, #3
+    cmp	x9, x1
+    b.hs	LBB0_13
+    add	x9, x0, x8
+    ldr	h1, [x9, #2]
+    ushll.8h	v1, v1, #0
+    ushll.4s	v1, v1, #0
+    shl.2s	v1, v1, #24
+    shl.2s	v0, v0, #24
+    sqadd.2s	v0, v0, v1
+    sshr.2s	v0, v0, #24
+    add	x9, x8, #4
+    add	x14, x8, #8
+    mov	x8, x9
+    cmp	x14, x1
+    b.ls	LBB0_6
+
+--- __RINvCshtEs8sf6Dux_30p4_what_the_lifted_arm_unlocks14lanes4_indexedINtB2_6NonNegKh0_Kh7f_EEB2_  loop LBB0_2  (87 instructions) ---
+    mov	w11, #0
+    add	x9, x0, x9
+    mov	w12, #127
+    mov	w13, #-128
+    ldrsb	w14, [x9], #1
+    add	w11, w14, w11, sxtb
+    cmp	w11, #127
+    csel	w11, w11, w12, lt
+    cmn	w11, #128
+    csel	w11, w11, w13, gt
+    subs	x10, x10, #1
+    b.ne	LBB0_3
+    sxtb	w8, w8
+    add	w8, w8, w11, sxtb
+    mov	w9, #127
+    cmp	w8, #127
+    csel	w8, w8, w9, lt
+    cmn	w8, #128
+    mov	w9, #-128
+    csel	w0, w8, w9, gt
+    ldp	x29, x30, [sp], #16
+    ret
+    mov	x8, #0
+    mov	w10, #0
+    mov	w11, #0
+    movi.2d	v0, #0000000000000000
+    mov	w12, #127
+    mov	w13, #-128
+    cmp	x8, x1
+    b.hs	LBB0_16
+    ldrsb	w9, [x0, x8]
+    add	w9, w9, w11, sxtb
+    cmp	w9, #127
+    csel	w9, w9, w12, lt
+    cmn	w9, #128
+    csel	w11, w9, w13, gt
+    add	x9, x8, #1
+    cmp	x9, x1
+    b.hs	LBB0_15
+    add	x9, x0, x8
+    ldrsb	w9, [x9, #1]
+    add	w9, w9, w10, sxtb
+    cmp	w9, #127
+    csel	w9, w9, w12, lt
+    cmn	w9, #128
+    csel	w10, w9, w13, gt
+    add	x9, x8, #2
+    cmp	x9, x1
+    b.hs	LBB0_14
+    add	x9, x8, #3
+    cmp	x9, x1
+    b.hs	LBB0_13
+    add	x9, x0, x8
+    ldr	h1, [x9, #2]
+    ushll.8h	v1, v1, #0
+    ushll.4s	v1, v1, #0
+    shl.2s	v1, v1, #24
+    shl.2s	v0, v0, #24
+    sqadd.2s	v0, v0, v1
+    sshr.2s	v0, v0, #24
+    add	x9, x8, #4
+    add	x14, x8, #8
+    mov	x8, x9
+    cmp	x14, x1
+    b.ls	LBB0_6
+    sxtb	w8, w11
+    add	w8, w8, w10, sxtb
+    mov	w10, #127
+    cmp	w8, #127
+    csel	w8, w8, w10, lt
+    cmn	w8, #128
+    mov	w11, #-128
+    csel	w8, w8, w11, gt
+    fmov	w12, s0
+    mov.s	w13, v0[1]
+    add	w12, w12, w13
+    cmp	w12, #127
+    csel	w12, w12, w10, lt
+    cmn	w12, #128
+    csel	w12, w12, w11, gt
+    add	w8, w8, w12
+    cmp	w8, #127
+    csel	w8, w8, w10, lt
+    cmn	w8, #128
+    csel	w8, w8, w11, gt
+    subs	x10, x1, x9
+    b.hi	LBB0_2
+
+--- __RINvCshtEs8sf6Dux_30p4_what_the_lifted_arm_unlocks15lanes16_chunkedINtB2_6NonNegKh0_Kh7f_EEB2_  loop LBB1_2  (4 instructions) ---
+    ldr	q1, [x11], #16
+    sqadd.16b	v0, v0, v1
+    adds	x9, x9, #16
+    b.ne	LBB1_2
+
+--- __RINvCshtEs8sf6Dux_30p4_what_the_lifted_arm_unlocks15lanes16_chunkedINtB2_6NonNegKh0_Kh7f_EEB2_  loop LBB1_6  (8 instructions) ---
+    ldrsb	w14, [x10], #1
+    add	w11, w14, w11, sxtb
+    cmp	w11, #127
+    csel	w11, w11, w12, lt
+    cmn	w11, #128
+    csel	w11, w11, w13, gt
+    subs	x8, x8, #1
+    b.ne	LBB1_6
+
+--- __RNvCske4UNIzLImn_7___rustc17rust_begin_unwind  loop LBB2_1  (1 instructions) ---
+    b	LBB2_1
+
+--- _sat_sum_seq  loop LBB5_2  (8 instructions) ---
+    ldrsb	w11, [x0], #1
+    add	w8, w11, w8, sxtb
+    cmp	w8, #127
+    csel	w8, w8, w9, lt
+    cmn	w8, #128
+    csel	w8, w8, w10, gt
+    subs	x1, x1, #1
+    b.ne	LBB5_2
+
+--- _sat_sum_seq_chunked_no_law  loop LBB6_2  (99 instructions) ---
+    ldrsb	w15, [x13]
+    add	w14, w15, w14, sxtb
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #1]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #2]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #3]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #4]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #5]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #6]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #7]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #8]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #9]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #10]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #11]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #12]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #13]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #14]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    ldrsb	w15, [x13, #15]
+    add	w14, w14, w15
+    cmp	w14, #127
+    csel	w14, w14, w11, lt
+    cmn	w14, #128
+    csel	w14, w14, w12, gt
+    add	x13, x13, #16
+    adds	x10, x10, #16
+    b.ne	LBB6_2
+
+--- _sat_sum_seq_chunked_no_law  loop LBB6_5  (8 instructions) ---
+    ldrsb	w12, [x9], #1
+    add	w12, w12, w14, sxtb
+    cmp	w12, #127
+    csel	w12, w12, w10, lt
+    cmn	w12, #128
+    csel	w14, w12, w11, gt
+    subs	x8, x8, #1
+    b.ne	LBB6_5
+
+--- _wrap_sum_seq  loop LBB7_7  (8 instructions) ---
+    ldp	q4, q5, [x9, #-32]
+    ldp	q6, q7, [x9], #64
+    add.16b	v0, v4, v0
+    add.16b	v1, v5, v1
+    add.16b	v2, v6, v2
+    add.16b	v3, v7, v3
+    subs	x11, x11, #64
+    b.ne	LBB7_7
+
+--- _wrap_sum_seq  loop LBB7_11  (4 instructions) ---
+    ldr	d1, [x10], #8
+    add.8b	v0, v1, v0
+    adds	x9, x9, #8
+    b.ne	LBB7_11
+
+--- _wrap_sum_seq  loop LBB7_14  (4 instructions) ---
+    ldrb	w11, [x8], #1
+    add	w9, w11, w9
+    subs	x10, x10, #1
+    b.ne	LBB7_14
+

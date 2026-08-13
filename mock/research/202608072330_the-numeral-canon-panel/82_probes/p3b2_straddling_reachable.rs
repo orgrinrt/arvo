@@ -247,7 +247,8 @@ impl<W: Window> ReassociableFold for W {
              the model band, so the closed form is wrong and no arm may be gated on it"
         );
         assert!(
-            CROSS_CHECK_POPULATION > 0 && CROSS_CHECK_YES > 0
+            CROSS_CHECK_POPULATION > 0
+                && CROSS_CHECK_YES > 0
                 && CROSS_CHECK_YES < CROSS_CHECK_POPULATION,
             "the cross-check is vacuous: it visited no intervals, or the closed form \
              answered the same way on every one of them"

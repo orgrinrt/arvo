@@ -19,10 +19,18 @@
 
 fn sat_add(x: u32, y: u32, maxv: u32) -> u32 {
     let s = x + y;
-    if s > maxv { maxv } else { s }
+    if s > maxv {
+        maxv
+    } else {
+        s
+    }
 }
 fn sat_sub(x: u32, y: u32) -> u32 {
-    if y > x { 0 } else { x - y }
+    if y > x {
+        0
+    } else {
+        x - y
+    }
 }
 fn law_holds(a: u32, b: u32, c: u32, maxv: u32) -> bool {
     sat_sub(sat_add(a, b, maxv), c) == sat_add(a, sat_sub(b, c), maxv)
@@ -108,7 +116,10 @@ fn main() {
             any_box_with_clamp
         );
         if let Some(wt) = witness {
-            println!("      WITNESS non-degenerate holding box with a clamp: {:?}", wt);
+            println!(
+                "      WITNESS non-degenerate holding box with a clamp: {:?}",
+                wt
+            );
         }
     }
 

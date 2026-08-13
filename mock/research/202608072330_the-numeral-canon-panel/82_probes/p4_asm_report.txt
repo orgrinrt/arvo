@@ -1,0 +1,45 @@
+=== symbol aliases (declaration erasure check) ===
+
+  label: 308:_sat_sum_seq:
+  label: 328:_sat_sum_seq_chunked_no_law:
+  label: 458:_wrap_sum_seq:
+
+=== per-symbol instruction counts and inner-loop bodies ===
+  __RINvCshtEs8sf6Dux_30p4_what_the_lifted_arm_unlocks14lanes4_indexedINtB2_6NonNegKh0_Kh7f_EEB2_
+     total emitted instructions: 114
+     last loop body: 6 instr: Lloh6: ; adrp	x2, l_anon.73a000eae2a2070bd5bfc3d33ee39a13.1@PAGE ; Lloh7: ; add	x2, x2, l_anon.73a000eae2a2070bd5bfc3d33ee39a13.1@PAGEOFF ; mov	x0, x8 ; bl	__RNvNtCs5dyeT9KiOLK_4core9panicking18panic_bounds_check
+     vector saturating-add instructions in body: 1
+
+  __RINvCshtEs8sf6Dux_30p4_what_the_lifted_arm_unlocks15lanes16_chunkedINtB2_6NonNegKh0_Kh7f_EEB2_
+     total emitted instructions: 131
+     last loop body: 94 instr: umov.b	w8, v0[1] ; sxtb	w9, w9 ; add	w9, w9, w8, sxtb ; mov	w8, #127 ; cmp	w9, #127 ; csel	w10, w9, w8, lt ; cmn	w10, #128 ; mov	w9, #-128 ; csel	w10, w10, w9, gt ; umov.b	w11, v0[2] ; add	w10, w10, w11, sxtb ; cmp	w10, #127 ; csel	w10, w10, w8, lt ; cmn	w10, #128
+     vector saturating-add instructions in body: 1
+
+  __RNvCske4UNIzLImn_7___rustc17rust_begin_unwind
+     total emitted instructions: 1
+     last loop body: 1 instr: b	LBB2_1
+     vector saturating-add instructions in body: 0
+
+  _sat_sum_lanes16_nonneg
+     total emitted instructions: 6
+     vector saturating-add instructions in body: 0
+
+  _sat_sum_lanes4_nonneg
+     total emitted instructions: 6
+     vector saturating-add instructions in body: 0
+
+  _sat_sum_seq
+     total emitted instructions: 14
+     last loop body: 2 instr: sxtb	w0, w8 ; ret
+     vector saturating-add instructions in body: 0
+
+  _sat_sum_seq_chunked_no_law
+     total emitted instructions: 122
+     last loop body: 2 instr: sxtb	w0, w14 ; ret
+     vector saturating-add instructions in body: 0
+
+  _wrap_sum_seq
+     total emitted instructions: 62
+     last loop body: 9 instr: sxtb	w0, w9 ; ret ; l_anon.73a000eae2a2070bd5bfc3d33ee39a13.0: ; l_anon.73a000eae2a2070bd5bfc3d33ee39a13.1: ; l_anon.73a000eae2a2070bd5bfc3d33ee39a13.2: ; l_anon.73a000eae2a2070bd5bfc3d33ee39a13.3: ; l_anon.73a000eae2a2070bd5bfc3d33ee39a13.4: ; _sat_sum_lanes16_nonpos = _sat_sum_lanes16_nonneg ; _sat_sum_lanes16_smallgain = _sat_sum_lanes16_nonneg
+     vector saturating-add instructions in body: 0
+

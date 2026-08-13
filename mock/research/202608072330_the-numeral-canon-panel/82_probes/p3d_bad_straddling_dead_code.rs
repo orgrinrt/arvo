@@ -288,7 +288,6 @@ pub type Magnitude = NonNeg<0, 127>;
 /// A narrower non-negative window, licensed for the same reason.
 pub type SmallGain = NonNeg<3, 40>;
 
-
 /// A straddling window, used only from a plain `pub fn` that nothing reaches.
 /// Under the const-assert construction this compiled clean (p3b). Under the
 /// structural construction it must not.
