@@ -56,7 +56,11 @@ impl S {
             Pol::Wrap => {
                 let m = 1i128 << self.w;
                 let r = x.rem_euclid(m);
-                if r > self.max() { r - m } else { r }
+                if r > self.max() {
+                    r - m
+                } else {
+                    r
+                }
             }
         }
     }
@@ -80,7 +84,12 @@ struct L {
 
 impl L {
     fn new(n: &'static str) -> Self {
-        L { name: n, fail: 0, total: 0, wit: None }
+        L {
+            name: n,
+            fail: 0,
+            total: 0,
+            wit: None,
+        }
     }
     fn note(&mut self, ok: bool, a: i128, b: i128, c: i128, l: i128, r: i128) {
         self.total += 1;
