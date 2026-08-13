@@ -21,8 +21,14 @@ thing, and both versions are on disk.
 **Canon gate: passes, situation two.** No canon exists. `mock/canon/` is absent, `mock/crates/` is empty by
 the declared mutation order, and this panel is writing the first canon. `INTENTS.md` holds one RATIFIED
 entry, I13, ratified narrowly on op's own instruction that it means no more than he said
-(`INTENTS.md:211-214`). The other eleven are STATED under the standing instruction that nothing about them
+(`INTENTS.md:180`). The other eleven are STATED under the standing instruction that nothing about them
 is absolute (`INTENTS.md:40-41`). Nothing below settles anything.
+
+A note on that first citation, because it is an instance of a hazard this panel has already been bitten by.
+`INTENTS.md` **moved while I was writing**: op's `83` statement was folded into it, and my original
+citation, taken from a read early in this dispatch, resolved to lines that now hold the new text. I caught
+it by opening every citation in this file before shipping rather than by remembering, which is the check
+`RULES.md:126-133` exists for, and it is the only citation in this file that had gone stale.
 
 **Test gate: no suite exists.** The mock workspace has no members. The substitute is the probe discipline,
 applied to my own instruments first. Two of mine failed their first run in ways that would have produced a
@@ -546,3 +552,258 @@ that **counts** violations rather than returning early, so the domain is visited
 Results and reading in section 11.1 below.
 
 ---
+
+## 12. The criterion, stated as the thing I would put to the next expert
+
+Across the three routes the same discriminator decides the outcome every time, and it is not a fact about
+types, values, or const-availability. It is a fact about the **region**.
+
+> A condition over a computation's trajectory has a const-available form exactly when the region it names is
+> closed under the operations the law is about. Where it is closed, a declaration constrains the entry point
+> and the region maintains itself, so one condition checked once is a fact for the whole computation. Where
+> it is not closed, any declaration implying it must forbid the operations from leaving it, which forbids
+> the behaviour the law was about.
+
+The three routes instantiate it:
+
+- **P4's region is not closed** under saturating add and sub, so the declared-range route lands only where
+  no clamp can fire or an operand is the identity (sections 2 and 4), and the const-operand route lands on
+  the same two places by a different mechanism (section 6).
+- **The sign-uniform region is closed** under saturating add, so it lifts exactly, at every width in the
+  band, in both directions, and survives arity (section 7).
+- **The bounded-length region is closed only up to the bound**, which is why a length-aware predicate
+  licenses more and needs the length at const time (section 10).
+
+Two properties of this criterion are worth the next expert's attack rather than my confidence. It is
+**decidable by inspection** rather than by measurement, in the same sense `80`'s O-H says a lifting question
+is: you ask whether the region's closure escapes it, and that is a question about the operation's algebra.
+And it is **the same criterion two other files reached for the chain-machinery question**, which either
+means it is doing real work at more than one layer or means three files have inherited one framing; I
+reached it from `p1`'s box characterisation before reading `76` or `77` and can say the ordering, which is
+not the same as being able to say it is independent.
+
+**What the criterion does not say**, and I am not extending it: nothing here bears on whether a condition
+that is genuinely not const-available may gate an arm. `83` says his words do not reach that, and neither do
+mine.
+
+### The consequence for op's Q39 option (c), which nobody had costed
+
+`OPTIONS.md:1925-1927` carries O-G(c): typestate only for selection, data permitted at a declared ingest
+boundary, so a trajectory condition is checked once where values enter and is a typestate fact afterwards.
+Its stated cost is "a door, plus the per-datum residue".
+
+**Closure is the property that decides whether (c) is available at all**, and the register does not say so.
+A condition checked once at ingest stays true only if the region is closed under what happens next. Where it
+is closed, (c) costs one check at the boundary and nothing thereafter, which is what `p3d`'s `InWindow`
+constructor is. Where it is not, (c) silently degrades into (b), because the condition has to be re-checked
+after every operation that could leave the region, and (b) is the option `80` measured as worse than the
+unlicensed form.
+
+So the three options in Q39 are not three independent choices with three costs. Which of them is even on
+offer is decided by a property of the region, per law.
+
+---
+
+## 13. Findings, in the required predicate notation
+
+Each names only what was established. Absence of a dimension is the strongest negative claim in this
+notation and is meant everywhere it appears.
+
+**F1. A declared-range lifting of `79`'s P4 is characterised by three clauses, cross-checked.** `N in
+{2,3,4,5} for the cross-check, N = 8 for the maximisation, sign = unsigned, policy = saturate, op pair =
+{saturating_add, saturating_sub} composed as (a+b)-c against a+(b-c), F = 0, threads = 1, features any`. A
+box is fully holding exactly when no clamp can fire in it, or `a` is identically zero, or `c` is identically
+zero. Zero disagreements against brute force over 147,197,952 boxes at width 5; three perturbations of the
+closed form disagree on 483,302, 268,997 and 15,651 boxes over widths 2 to 4. Features are `any` because
+`u8::saturating_add` and `saturating_sub` are pure value functions with language-specified semantics;
+threads is `1` because the instrument ran on one and nothing about concurrency was checked.
+
+**F2. The maximal declared-range box reaches 636,056 of 2,894,336 holding triples, 21.98%.** Same predicate
+as F1 at `N = 8`. The maximum is `a in [0,85]`, `b in [85,170]`, `c in [0,85]`, and the two degenerate
+clauses reach 65,536 each.
+
+**F3. Every non-degenerate fully-holding box is clamp-free.** `N in {2,3,4,5}, sign = unsigned, policy =
+saturate, op pair as F1, F = 0, threads = 1, features any`. Zero residue at every width, against a control
+of up to 144,873,168 boxes in which a clamp fires.
+
+**F4. The declaration "the exact result lands in range" does not imply the law.** `N = 8, sign = unsigned,
+policy = saturate, op pair as F1, F = 0, threads = 1, features any`. True and the law false on 8,355,840
+triples, 49.80% of the domain. At the box level over `N in {2,3,4}`, 391,767 of 447,831 satisfying boxes
+contain a failing triple.
+
+**F5. Const-available operands decide P4 only at `a = 0` and `c = 0`, reaching 4.52% at best.** `N = 8, sign
+= unsigned, policy = saturate, op pair as F1, F = 0, threads = 1, features any`. Exhaustive over all eight
+operand subsets and every const assignment. The `{a,c}` subset additionally yields 32,640 configurations on
+which the law is provably false for every free operand.
+
+**F6. For signed saturating addition, `LO >= 0 || HI <= 0` on a declared operand window matches
+associativity on that window's generated closure exactly.** `N in {2,3,4,5,6}, sign = signed, policy =
+saturate, op = add, arity = 3 for the closure check and arity in {2,3,4,5} for the parenthesisation check,
+F = 0, threads = 1, features any`. Zero sufficiency violations and zero necessity violations over every
+interval at every width in the band. Four weakened predicates break it in one direction or the other.
+
+**F7. A length-8 signed fold over a sign-uniform declared window shows no reassociation divergence in a
+four-million sample; the straddling window shows 63.62%.** `N = 8, sign = signed, policy = saturate, op =
+add, arity = 8, F = 0, threads = 1, features any, sampling = 4,000,000 uniform draws per window from one
+seeded xorshift`. Sampled, not exhaustive, and stated as such.
+
+**F8. A const predicate's refusal has four distinct binding times, and they are not interchangeable.**
+`toolchain = nightly-2026-05-28, host = aarch64-apple-darwin, threads = 1`. A crate-level const and a
+structural trait bound refuse under `--emit=metadata` on dead code; an inline const block in a non-generic
+function refuses at codegen on dead code but not at type check; a const assert in a generic function's
+associated const refuses only where the generic is instantiated in codegen, so a wrong declaration in an
+unreached `pub fn` compiles clean at every setting.
+
+**F9. The predicate cannot be lifted into a bound without a forbidden feature.** `toolchain =
+nightly-2026-05-28, host = aarch64-apple-darwin, threads = 1`. Both spellings give "generic parameters may
+not be used in const operations" with rustc naming `generic_const_exprs`, which the workspace forbids.
+
+**F10. A law-licensed reassociation of a signed saturating reduction reaches the vector saturating-add
+instruction, and the bounds proof alone does not.** `toolchain = nightly-2026-05-28, host =
+aarch64-apple-darwin, target = aarch64 baseline NEON, opt = -O, N = 8, sign = signed, policy = saturate, op
+= add, arity = fold over a runtime-length slice, F = 0, threads = 1`. Inner-loop instructions per element
+8.000 unlicensed, 9.250 licensed without a bounds proof, 0.250 licensed with one, 6.188 for the bounds proof
+without the law, against a wrapping control at 0.125. `sqadd.16b` appears only in the law-licensed arms.
+**Unpriced:** no bench ran and instructions per element is not time.
+
+**F11. The declaration erases.** Same predicate as F10. Three distinct licensed windows assemble to one
+symbol, established by assembler symbol aliasing rather than by comparing bodies.
+
+**F12. The licensed arms agree with the fold as written on their declared windows, and disagree off them.**
+`N = 8, sign = signed, policy = saturate, op = add, F = 0, threads = 1, features any, lengths 0 to 199,
+200,000 vectors per window`. Zero disagreements on the three licensed windows; 167,875 and 1,588 on the two
+refused ones.
+
+**F13. A statically-bounded fold length licenses strictly more than the closure predicate.** `N in {4,5,6},
+sign = signed, policy = saturate, op = add, F = 0, threads = 1, features any, arity walked from 2 up to the
+probe's 30-million-tuple bound`. Straddling windows exist whose first divergent arity is 4, 6 or 7, and
+narrow straddling windows exist with no divergence up to the bound.
+
+**F14, carried and not re-measured.** `35`'s 70.1% at n = 8 and `55b`'s 952-triple decomposition are cited
+from `OPTIONS.md`'s account, at whatever predicate their own sources state. My section 7 does not rest on
+either number; it rests on `p2`, which is mine.
+
+---
+
+## 14. Fits against the register
+
+**Kills nothing.** No option in `OPTIONS.md` closes and nothing moves to `DROPLIST.md`.
+
+**Q39 / O-G, where the whole file lands.** The entry's own discriminator is "whether any trajectory
+predicate this panel has measured has a lifting into a declaration a consumer would actually write", with
+the note that nobody had tried. Two answers, and they differ per region rather than in general: `79`'s P4
+does not lift past its degenerate sub-cases (F1 through F5), and the signed fold's associativity region
+lifts exactly (F6, F7), with a construction that compiles, refuses, erases and unlocks (F8 through F12).
+Section 12 adds that closure is what decides which, and that it also decides whether option (c) is on offer
+at all.
+
+**Q38, where a law verdict's truth is established.** Option (c), the closed form cross-checked against a
+sweep on a model band, is what `p3a`, `p3d` and `p7` all build, so this file is a second and third instance
+of `80`'s mechanism at a different law. Section 11 bears on option (a)'s stated cost.
+
+**Q12, the reduction-order options.** Its "require associativity" option currently reads as excluding signed
+saturating folds outright: `OPTIONS.md:1097-1099` offers them "one lane, or the strategy that permits a
+soundness trade". F6 and F7 say a third door exists, gated on a declaration rather than on a strategy, and
+that it needs no soundness trade. Whether the design wants that door is not mine to say; that it exists is
+measured.
+
+**The wrapping/saturation grading entry at `OPTIONS.md:1550-1556`.** It records that signed saturation
+"induces a unital commutative magma that is not a semigroup (952 associativity failures on Q itself)" and
+that "a group licenses reassociation and cancellation, a monoid or semiring reassociation only, a magma
+neither". F6 says the grade is **not a property of the policy alone**. Signed saturating addition restricted
+to a sign-uniform declared window is a commutative monoid, identity zero, and licenses reassociation. So the
+grading wants a further coordinate, the declared operand window, which is neither the representable set `Q`
+nor any strategy axis. I state this as a fit rather than a correction: the entry is right about `Q` itself,
+and `Q` is not the only set a fold's operands can be declared to live in.
+
+**`79` section 5's dimension list.** It argues `(operation, strategy)` is necessary and not sufficient and
+proposes operation, sign domain, overflow policy, fraction width, representable-set shape, and whatever a
+strategy resolves to. F6 adds one more that none of those covers: the **declared operand window**, which is
+a restriction on the inputs rather than a fact about the type's own representable set. `63`'s cube separates
+two rows on representable-set symmetry with sign, operation and policy fixed; F6 separates two verdicts with
+all six of `79`'s coordinates fixed, including the representable set, and only the declared window moved.
+
+**`76`'s unsigned-associativity surprise.** F6 subsumes it. An unsigned type's whole representable set is
+sign-uniform, so `76:51-53`'s "saturating add on unsigned turned out to be universally associative" is the
+same theorem with the sign domain moved from the container into the declaration. Offered as an explanation
+of a result, not as a correction to it.
+
+**One option I would add, written out in full so it is not lost.**
+
+**O-I. Where a fold's operand window comes from.** A sign-uniform window is a declaration, and a declaration
+has to be established somewhere or it is `68:145-148`'s paper checking paper. Four sources, with different
+costs and different trust bases. **(a) Structural, from the declaration's own shape**, which is `p3d`'s
+`NonNeg` and `NonPos`: the bounds are unsigned const parameters so a straddling window is unspellable, and
+the refusal is a trait bound at type check. Cost: the consumer picks a shape rather than writing an
+interval, and a window that is sign-uniform but written as a general interval gets no permission.
+**(b) From a const outside the typestate**, which is `p7`: an ordinary module const or a const function's
+result, read by an inline const block. Cost: refuses at codegen rather than type check (F8), and the const
+is asserted by the author rather than derived from anything. **(c) Checked once at an ingest boundary**,
+which is O-G(c) and which `p3d`'s `InWindow` constructor is: a runtime check where values enter, after which
+the window is a fact because the region is closed. Cost: one branch per incoming value, and the whole thing
+is only available where closure holds, per section 12. **(d) Derived from the container's own sign domain**,
+which is the unsigned case and costs nothing because it is already true. **What would distinguish them:**
+whether a consumer's operands are non-negative for a reason the type already records (then (d)), for a
+reason the author knows and can state (then (a) or (b)), or for a reason only the data knows (then (c) or
+nothing).
+
+---
+
+## 15. Where this file is least certain, as a floor for whoever attacks it
+
+1. **The width transfer for F6 is a proof I have not mechanised.** The cross-check runs at widths 2 through
+   6 and `p3a`'s compile-time band is 2 through 4, so the claim at 8 and 64 rests on the argument that a
+   sign-uniform window's only reachable clamp is absorbing, which makes the restricted operation
+   `min(sum, MAX)` and therefore associative at any width. That argument is `80`'s O-H route (b), a
+   structural claim about the representation, and I state it as prose rather than as anything checked.
+   Section 11 measures how far the sweep itself reaches.
+2. **The sign-uniform predicate is exact for ADDITION and I checked nothing else.** Multiplication, mixed
+   operation pairs, and any operation whose clamp is not absorbing are untested, and `63`'s cube is direct
+   evidence that multiplicative cells behave differently. Do not read F6 as a statement about saturating
+   arithmetic.
+3. **`F = 0` throughout.** Every probe in this file is integer, and `63` measured that nothing multiplicative
+   survives `F > 0` anywhere. Whether the sign-uniform result survives a fraction width is untested and
+   therefore, in this notation, not claimed.
+4. **The consumer plausibility argument is an argument.** F6's practical value depends on a consumer having a
+   signed type whose operands are sign-uniform. The strongest case I can make is that the non-positive half
+   has no unsigned substitute, so costs, drawdowns and penalties in a signed container are a real shape with
+   no cheaper alternative; the weakest point is that a non-negative signed operand often should have been
+   unsigned, and I have not surveyed any consumer to find out which is more common.
+5. **Section 12's criterion is my synthesis.** It is drawn from three measured instances and two files that
+   reached the same criterion for a different question. Three instances is the panel's bar for a claim, and
+   these three are not fully independent: they share one author and one framing.
+6. **Everything about `35`, `42`, `55b`, `57b`, `63` and `74` is second hand**, through `OPTIONS.md`, `79`
+   or `80`. I did not open any of those files. Section 7's motivation leans on two of them at once, and if
+   `OPTIONS.md`'s account of `55b` is wrong my choice of hypothesis was lucky rather than reasoned, though
+   `p2` would still stand because it measured the hypothesis rather than inheriting it.
+
+### Coverage, bounded honestly
+
+**Read end to end:** `INTENTS.md`, `RULES.md`, `83`, `79`, `80`, `81`, `76` (both phases), `77` (both
+phases), and this file's own probe outputs.
+
+**Read at the source, in specific ranges:** `79_probes/p1_compositional_predicate_search.rs` in full and
+re-executed; `OPTIONS.md` Q38, Q39 and Q40 in full (lines 1870 to 1953), the Q12 reduction-order entry and
+the `42`/`55b` reachability material (lines 1088 to 1160), and the wrapping-grading entry (lines 1537 to
+1559); `63_spj_consolidation_the_format_concept.md` lines 380 to 400 and 445 to 470 for the cube and the
+H1/H2 frame.
+
+**Not read at all:** every file numbered `01` through `78` except the ranges above, every probe directory
+other than `79_probes/`, `DROPLIST.md`, `PRIOR_CALLS.md`, `PERSONA_CALLS.md`, and the three
+`SEED_THEORY_*` files. Everything I say about `35`, `42`, `55b`, `56`, `57b`, `60`, `62`, `68`, `74` is
+routed through `OPTIONS.md`, `79`, `80` or `63`'s account of it, named at each point, and inherits their
+errors.
+
+**Built:** eleven instruments in `82_probes/`, committed with sources and transcripts before this file, plus
+two shell scripts and one Python walker that generate the variants and the reports so every derived file's
+difference from its parent is auditable rather than asserted.
+
+**Not done, and what it leaves open.** No construction of the length-aware predicate section 10 shows is
+strictly larger, which is now the cheapest next instance and which decides how much a statically-sized fold
+buys. No test of the sign-uniform predicate at `F > 0`, at any multiplicative operation, or at any mixed
+operation pair, which is the widest gap in this file. No attack on `80` section 4.3's cross-check mechanism,
+which `80` names as the piece it most wants broken and which `p3a`, `p3d` and `p7` all now depend on. No
+bench: every magnitude here is unpriced, and section 9's table in particular is an ad-hoc quick spike with
+no substance for any how-much question.
+
+**Nothing here settles anything.** The mode is explore. This file goes to whoever attacks next.
