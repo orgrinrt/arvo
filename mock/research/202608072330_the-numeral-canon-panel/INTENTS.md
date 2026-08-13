@@ -299,6 +299,28 @@ reaches one lowered path. Which construction gets it there is case by case, and 
 the constructions or mandate one. This is `arvo-toolbox-not-policer.md` at the law layer, and the question
 was asking the canon to do the policing that rule forbids.
 
+## I17. Cold is not to be deprioritised, and that is independent of how many strategies there are
+
+**STATED.** Op, 2026-08-13, asked to resolve a conflict between `arvo-toolbox-not-policer.md`, which is
+written throughout in terms of four named markers and says Cold storage "is the reason arvo exists", and
+I1, which is demoted to open and says the set is not closed at four:
+
+> The intent governs, BUT in intent alone, not in any arbitrary amount that made sense back when it was
+> written. The intent is that cold isn't to be depriorised. Whether the strategies are four or seventeen
+> or a billion is besides the point of the intent. Reword it if need be. But the intent survives and
+> should be written down in the intents here too, if it's not obvious
+
+So the intent and the vehicle come apart, and only the intent binds. **The intent is that the
+storage-minimising, aggressively bitpacked path is not deprioritised**, and that arguments for dropping
+or downgrading it are not entertained. The count of strategies, and the name of the one that currently
+carries this, are the vehicle and are open.
+
+This is distinct from I6, which says what Cold is *for*. I17 says it does not get traded away, and it
+survives the strategy set being reshaped, renamed, or resized.
+
+`arvo-toolbox-not-policer.md` is reworded on this instruction, keeping its content and dropping its
+dependence on there being exactly four markers.
+
 ## What this file is not
 
 Not a canon. A canon states intent in its own voice, having established that what it intends is
