@@ -130,7 +130,12 @@ fn main() {
     println!("exhaustive over every subset of the representable set:\n");
     println!(
         "{:>5} {:>10} {:>14} {:>14} {:>22} {:>18}",
-        "width", "subsets", "straddling", "assoc-closed", "STRADDLING AND ASSOC", "sign-unif & !assoc"
+        "width",
+        "subsets",
+        "straddling",
+        "assoc-closed",
+        "STRADDLING AND ASSOC",
+        "sign-unif & !assoc"
     );
 
     for w in 2u32..=4 {
@@ -172,7 +177,10 @@ fn main() {
             suff
         );
         if let Some(ws) = witness {
-            println!("      WITNESS straddling AND associative on its closure: {}", ws);
+            println!(
+                "      WITNESS straddling AND associative on its closure: {}",
+                ws
+            );
         }
     }
 

@@ -1,0 +1,258 @@
+[
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": false,
+  "width": 3,
+  "accepted": true,
+  "seconds": 0.07,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": false,
+  "width": 4,
+  "accepted": true,
+  "seconds": 0.08,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": false,
+  "width": 5,
+  "accepted": true,
+  "seconds": 0.38,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": false,
+  "width": 6,
+  "accepted": true,
+  "seconds": 2.74,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": false,
+  "width": 7,
+  "accepted": false,
+  "seconds": 4.21,
+  "diagnostic": "error: constant evaluation is taking a long time"
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": true,
+  "width": 3,
+  "accepted": true,
+  "seconds": 0.05,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": true,
+  "width": 4,
+  "accepted": true,
+  "seconds": 0.08,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": true,
+  "width": 5,
+  "accepted": true,
+  "seconds": 0.38,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": true,
+  "width": 6,
+  "accepted": true,
+  "seconds": 2.77,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": true,
+  "width": 7,
+  "accepted": true,
+  "seconds": 21.73,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": true,
+  "width": 8,
+  "accepted": true,
+  "seconds": 173.19,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "inline (p9's shape)",
+  "allow_guard": true,
+  "width": 9,
+  "accepted": false,
+  "seconds": 300.0,
+  "diagnostic": "TIMEOUT at the probe cap"
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": false,
+  "width": 3,
+  "accepted": true,
+  "seconds": 0.08,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": false,
+  "width": 4,
+  "accepted": true,
+  "seconds": 0.13,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": false,
+  "width": 5,
+  "accepted": true,
+  "seconds": 0.73,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": false,
+  "width": 6,
+  "accepted": false,
+  "seconds": 3.92,
+  "diagnostic": "error: constant evaluation is taking a long time"
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": true,
+  "width": 3,
+  "accepted": true,
+  "seconds": 0.05,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": true,
+  "width": 4,
+  "accepted": true,
+  "seconds": 0.13,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": true,
+  "width": 5,
+  "accepted": true,
+  "seconds": 0.73,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": true,
+  "width": 6,
+  "accepted": true,
+  "seconds": 5.63,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": true,
+  "width": 7,
+  "accepted": true,
+  "seconds": 44.66,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + two folds (80's shape)",
+  "allow_guard": true,
+  "width": 8,
+  "accepted": false,
+  "seconds": 300.0,
+  "diagnostic": "TIMEOUT at the probe cap"
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": false,
+  "width": 3,
+  "accepted": true,
+  "seconds": 0.08,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": false,
+  "width": 4,
+  "accepted": true,
+  "seconds": 0.15,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": false,
+  "width": 5,
+  "accepted": true,
+  "seconds": 0.91,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": false,
+  "width": 6,
+  "accepted": false,
+  "seconds": 3.84,
+  "diagnostic": "error: constant evaluation is taking a long time"
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": true,
+  "width": 3,
+  "accepted": true,
+  "seconds": 0.05,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": true,
+  "width": 4,
+  "accepted": true,
+  "seconds": 0.15,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": true,
+  "width": 5,
+  "accepted": true,
+  "seconds": 0.91,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": true,
+  "width": 6,
+  "accepted": true,
+  "seconds": 7.04,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": true,
+  "width": 7,
+  "accepted": true,
+  "seconds": 55.66,
+  "diagnostic": ""
+ },
+ {
+  "encoding": "array + copy + two folds",
+  "allow_guard": true,
+  "width": 8,
+  "accepted": false,
+  "seconds": 300.0,
+  "diagnostic": "TIMEOUT at the probe cap"
+ }
+]

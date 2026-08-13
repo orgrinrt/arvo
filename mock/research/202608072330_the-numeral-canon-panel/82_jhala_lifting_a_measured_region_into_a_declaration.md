@@ -10,9 +10,10 @@ reports nobody has attempted: take a trajectory predicate this panel has measure
 there is a declaration a consumer would actually write that turns it into a fact known before the program
 runs.
 
-**Probes:** eleven instruments in `82_probes/`, committed with their sources, transcripts and emitted
-assembly as they ran, before this file. Two were rewritten after their first version measured the wrong
-thing, and both versions are on disk.
+**Probes:** twenty-six committed sources in `82_probes/` (thirteen instruments plus the refusal variants
+each generates), with twenty-five transcripts, emitted assembly and machine-readable output beside them,
+committed as they ran rather than at the end. Two were rewritten after their first version measured the
+wrong thing, and both versions are on disk.
 
 ---
 
@@ -313,6 +314,34 @@ generators from different constructions, and I do not treat the gap as a disagre
 What reproduces exactly is the arity-3 count at width 4: 952 tuples, matching `80`'s p6 and the count `74`
 corrected onto the right operation.
 
+### The attack that would have weakened it most: is the interval the limit
+
+`p2` measures the predicate over **intervals**, and an interval is only one shape a declared operand set can
+take. Op's steer says a predicate may read any const-available data, so a design could offer set-valued
+declarations, and the obvious attack is whether some straddling set of another shape is associative on its
+closure. If one existed, `p2`'s predicate would be exact for intervals and too narrow in general.
+
+`82_probes/p10_is_the_interval_the_limit.rs` searches **every subset** of the representable set:
+
+| width | subsets | straddling | associative on closure | straddling AND associative | sign-uniform AND not associative |
+|---|---|---|---|---|---|
+| 2 | 15 | 6 | 9 | **0** | **0** |
+| 3 | 255 | 210 | 45 | **0** | **0** |
+| 4 | 65,535 | 64,770 | 765 | **0** | **0** |
+
+Zero in both residue columns, exhaustively, at every width the subset lattice can be walked. A seeded sample
+of 400,000 straddling sets at each of widths 5 and 6 finds none either.
+
+**So sign uniformity is necessary and sufficient for every declared operand set whatsoever, not only for
+intervals**, and a richer declaration language buys nothing on this law. Named controls confirm the
+instrument discriminates: `[0,7]` and `[-7,0]` are associative, and `[-1,1]`, `{-4,0,4}` and the sparse
+`{-8,7}` all straddle and all fail, each closing to the whole range.
+
+One honesty note on the sampled rows. Their control column, associative sets found among all draws, is 22 at
+width 5 and 0 at width 6, which is near-vacuous: a set drawn by independent coin flips over 32 or 64 values
+is sign-uniform with vanishing probability, so the sample is almost entirely straddling by construction. The
+sampled rows therefore carry the negative direction only. The exhaustive rows carry both.
+
 ### Why this one lifts and P4 does not
 
 The probe's section 4 makes it mechanical. The closure of `[0, 7]` at width 6 is `[0, 31]`, still
@@ -549,7 +578,88 @@ matters.
 
 `82_probes/p9_positive_verdict_at_a_shipped_width.py` walks it, emitting each check as a top-level `const`
 that **counts** violations rather than returning early, so the domain is visited whatever the verdict is.
-Results and reading in section 11.1 below.
+Each combination of operand set and guard setting stops at its first refusal, because the domain grows
+monotonically with width and nothing wider can accept once a narrower one has been refused. The per-compile
+cap is 300 seconds, recorded as part of the result rather than hidden.
+
+### 11.1 It buys one bit, and one bit is enough to cross `i8`
+
+| operand set | widest accepted, default guard | widest accepted, guard allowed |
+|---|---|---|
+| full representable set | 6 | 8 |
+| non-negative half | **7** | **9** |
+| non-positive half | **7** | **9** |
+
+**The restriction buys exactly one bit, at both guard settings.** That is what the arithmetic predicts,
+since a half is one bit narrower per operand and the sweep is `2^(3(W-1))` rather than `2^(3W)`, and it is
+worth measuring rather than deriving because the guard is a time budget rather than a domain-size budget and
+nothing guarantees the two line up.
+
+One bit is small, and on this law it lands in a useful place. With the guard allowed, the non-negative half
+accepts the **positive** verdict at width 9, past `i8`, in 173.52 seconds. The full set at width 9 did not
+finish inside the 300-second cap. So for a shipped 8-bit signed type, a sign-uniform declaration is the
+difference between a positive verdict the compiler will produce and one it will not.
+
+That is a genuine, narrow dent in `80` section 4.2's asymmetry. It does not overturn it: the asymmetry is
+real, the wall is still `2^(W·k)`, and one bit against an eightfold-per-bit growth is a rounding error
+against a 64-bit width. What it changes is the reading for **one law at one arity in one region**, and
+Q38(a)'s cost line in the register currently reads as though the negative-verdict-only result is uniform.
+
+### 11.2 And the frontier disagrees with `80` by one bit, which turns out to be a finding
+
+`80` section 4.1's table puts the arity-3 frontier at width 5, first refused at 6, on this host and this
+toolchain. `p9` measures the same law at the same arity accepting at width 6 and first refused at 7.
+
+That is a one-bit disagreement between two probes with the same law, the same arity, the same guard, the
+same host and the same toolchain, and it has to be resolved rather than noted.
+
+Reading both instruments at the source gives a candidate: they spend different work **per tuple**. `80`'s
+`p2_frontier.py` builds a `[i32; K]` array for each tuple and calls `left_fold` and `right_fold`, each
+running a `while` loop with indexing. `p9`'s template writes the arity-3 comparison inline as two `sat_add`
+calls per side, with no array and no loop. `long_running_const_eval` is a budget on evaluation work, not on
+domain size, so a heavier per-tuple encoding should hit it at a lower width.
+
+`82_probes/p11_the_frontier_reads_the_encoding.py` holds the law, the domain, the arity, the guard, the host
+and the toolchain fixed and varies **only the spelling of the check**, across three encodings, with an
+agreement check first so the three are known to compute the same verdict rather than assumed to. Results in
+section 11.3.
+
+### 11.3 What the encoding costs, measured
+
+Three encodings of the identical arity-3 check, compiled at increasing widths until each refuses. The
+agreement check runs first: all three report **952 violations at width 4**, so they compute the same verdict
+and the comparison is about spelling and nothing else.
+
+| encoding | guard | widest accepted | first refused |
+|---|---|---|---|
+| inline, `p9`'s shape | default | 6 | 7 |
+| inline, `p9`'s shape | allowed | 8 | 9 |
+| array plus two folds, `80`'s shape | default | **5** | **6** |
+| array plus two folds, `80`'s shape | allowed | **7** | **8** |
+| array plus a copy plus two folds | default | 5 | 6 |
+| array plus a copy plus two folds | allowed | 7 | 8 |
+
+**The mechanism is confirmed.** `80`'s shape refuses exactly one bit earlier than mine, at both guard
+settings, with the law, the domain, the arity, the guard, the host and the toolchain held fixed. `80`'s
+table is right about `80`'s instrument and `p9`'s is right about `p9`'s, and **neither is the frontier**.
+
+The third arm keeps the finding honest. A deliberately padded encoding, copying the tuple through a second
+array before use, lands on the same frontier as the array-and-fold form rather than one lower. So the effect
+is not per-instruction and not monotone at fine grain: a bit of width is an eightfold change in total work at
+arity 3, and the spread between these encodings is somewhere between one and eight, which moves the boundary
+once and then stops.
+
+**The consequence for how a frontier may be quoted.** `80` corrected `unstable-features.md` for stating a
+per-bit growth rate without stating the arity it was counted at, and put the lesson as `74:942-943`'s: a
+number carries what was counted. This is the same defect one level further down and it is in `80`'s own
+table. **A const-eval frontier is a function of the domain size multiplied by the per-tuple evaluation cost**,
+so quoting it as a width, or even as a curve in width and arity, still omits a factor that moved it by a bit
+here. Anything citing a frontier owes the encoding alongside the arity.
+
+I want to be precise about what this does and does not touch in `80`. It does not touch the shape of its
+result, which is that the frontier is a curve collapsing fastest along arity, and `p11` reproduces the
+collapse. It does not touch section 4.2's asymmetry, section 4.4's guard measurement, or the `2^(W·k)` wall.
+It touches one row's absolute position and the general question of what a frontier number is a number about.
 
 ---
 
@@ -679,6 +789,37 @@ sign = signed, policy = saturate, op = add, F = 0, threads = 1, features any, ar
 probe's 30-million-tuple bound`. Straddling windows exist whose first divergent arity is 4, 6 or 7, and
 narrow straddling windows exist with no divergence up to the bound.
 
+**F15. Sign uniformity is necessary and sufficient for every declared operand set, not only for
+intervals.** `N in {2,3,4} exhaustive over all 2^(2^N) - 1 non-empty subsets, N in {5,6} over 400,000
+straddling samples each, sign = signed, policy = saturate, op = add, arity = 3 over the generated closure,
+F = 0, threads = 1, features any`. Zero sets are both straddling and associative on their closure, and zero
+sign-uniform sets fail. Named controls discriminate: `{-4,0,4}` and `{-8,7}` both straddle sparsely and both
+fail, each closing to the whole range. The sampled rows carry the negative direction only, because a set
+drawn by independent coin flips is sign-uniform with vanishing probability at those widths.
+
+**F16. A sign-uniform restriction buys exactly one bit of width on the compile-time positive verdict, and
+that bit crosses `i8`.** `toolchain = nightly-2026-05-28, host = aarch64-apple-darwin, sign = signed, policy
+= saturate, op = add, arity = 3, F = 0, threads = 1, per-compile cap = 300s`. Widest width at which the
+positive verdict is accepted: full set 6 by default and 8 with the guard allowed; either sign-uniform half 7
+by default and 9 with the guard allowed. At width 9 with the guard allowed the non-negative half accepts in
+173.52s while the full set does not finish inside the cap. Wall-clock figures are an ad-hoc quick spike with
+no substance; the accept and refuse outcomes are the result.
+
+**F17. The const-eval frontier moves with the per-tuple encoding, and `80`'s table and mine differ by
+exactly that.** `toolchain = nightly-2026-05-28, host = aarch64-apple-darwin, sign = signed, policy =
+saturate, op = add, arity = 3, F = 0, threads = 1, per-compile cap = 300s`. Three encodings agreeing on 952
+violations at width 4 reach widths 6, 5 and 5 by default and 8, 7 and 7 with the guard allowed. The
+difference between `80`'s reported frontier and `p9`'s is fully accounted for by the encoding.
+
+**F18. On a sign-uniform half, both parenthesisations equal one closed form, checked far wider than the
+agreement was.** `sign = signed, policy = saturate, op = add, F = 0, threads = 1, features any`. The identity
+`sat_add(x, y) == min(x + y, MAX)` holds on the non-negative half and its mirror on the non-positive half
+with zero failures at every width from 4 to **16**, 1,073,741,824 pairs per half at the widest, against a
+control on the full set failing at every width. Both parenthesisations equal `min(a + b + c, MAX)` with zero
+failures at every width from 4 to **12**, 8,589,934,592 triples at the widest, against a control failing at
+every width where it was affordable. Every parenthesisation at arities 4 and 5 equals the same closed form at
+width 6, zero failures over 33,554,432 tuples at arity 5.
+
 **F14, carried and not re-measured.** `35`'s 70.1% at n = 8 and `55b`'s 952-triple decomposition are cited
 from `OPTIONS.md`'s account, at whatever predicate their own sources state. My section 7 does not rest on
 either number; it rests on `p2`, which is mine.
@@ -751,12 +892,15 @@ nothing).
 
 ## 15. Where this file is least certain, as a floor for whoever attacks it
 
-1. **The width transfer for F6 is a proof I have not mechanised.** The cross-check runs at widths 2 through
-   6 and `p3a`'s compile-time band is 2 through 4, so the claim at 8 and 64 rests on the argument that a
-   sign-uniform window's only reachable clamp is absorbing, which makes the restricted operation
-   `min(sum, MAX)` and therefore associative at any width. That argument is `80`'s O-H route (b), a
-   structural claim about the representation, and I state it as prose rather than as anything checked.
-   Section 11 measures how far the sweep itself reaches.
+1. **The width transfer is smaller than it was and it is not closed.** This was the weakest point in the
+   file until `p12`, which split it in two and pushed both pieces much wider than the agreement check
+   reached. The identity that makes the closed form correct is checked to width 16 over pairs; the closed
+   form itself is checked to width 12 over triples, and at arities 4 and 5 as well, which is what makes the
+   result arity-independent rather than an arity-3 fact. What is left unchecked is the step from width 12 to
+   32 and 64, which is one named sentence rather than the whole verdict, and it is the same kind of residue
+   `68:213-219`'s transfer proviso names. The argument that closes it is three lines about `min` and `+`
+   over the integers and is not width-dependent, but I have not mechanised it and I do not claim it as
+   checked.
 2. **The sign-uniform predicate is exact for ADDITION and I checked nothing else.** Multiplication, mixed
    operation pairs, and any operation whose clamp is not absorbing are untested, and `63`'s cube is direct
    evidence that multiplicative cells behave differently. Do not read F6 as a statement about saturating
@@ -794,16 +938,33 @@ other than `79_probes/`, `DROPLIST.md`, `PRIOR_CALLS.md`, `PERSONA_CALLS.md`, an
 routed through `OPTIONS.md`, `79`, `80` or `63`'s account of it, named at each point, and inherits their
 errors.
 
-**Built:** eleven instruments in `82_probes/`, committed with sources and transcripts before this file, plus
-two shell scripts and one Python walker that generate the variants and the reports so every derived file's
-difference from its parent is auditable rather than asserted.
+**Built:** thirteen instruments in `82_probes/`, twenty-six committed sources counting the refusal variants,
+twenty-five transcripts and reports beside them. The variants are generated by a committed script and their
+diff against the parent is printed into `p3_variants_diff.txt`, so the single edit separating a compiling
+case from a refused one is auditable rather than described. Every probe was committed as it ran, before this
+file cited it.
 
-**Not done, and what it leaves open.** No construction of the length-aware predicate section 10 shows is
-strictly larger, which is now the cheapest next instance and which decides how much a statically-sized fold
-buys. No test of the sign-uniform predicate at `F > 0`, at any multiplicative operation, or at any mixed
-operation pair, which is the widest gap in this file. No attack on `80` section 4.3's cross-check mechanism,
-which `80` names as the piece it most wants broken and which `p3a`, `p3d` and `p7` all now depend on. No
-bench: every magnitude here is unpriced, and section 9's table in particular is an ad-hoc quick spike with
-no substance for any how-much question.
+**Not done, and what it leaves open.**
+
+**The widest gap is the fraction axis and the operation axis.** Every probe here is `F = 0` and every one is
+addition. `63`'s cube is direct evidence that multiplicative cells behave differently and that nothing
+multiplicative survives `F > 0` anywhere, so F6 must not be read as a statement about saturating arithmetic
+or about anything at a nonzero fraction width. Whoever attacks this next should point the same instrument at
+multiplication and at `F > 0` before anything else, because if the criterion in section 12 is right it
+predicts specific answers there and if it is wrong that is where it breaks.
+
+**The length-aware predicate is unbuilt.** Section 10 shows it licenses strictly more and that it needs the
+length at const time. Constructing it is now the cheapest next instance, and it decides how much a
+statically-sized fold buys over a runtime-length one.
+
+**No attack on `80` section 4.3's cross-check mechanism**, which `80` names as the piece it most wants
+broken and which `p3a`, `p3d` and `p7` all now depend on. I extended its use rather than testing it.
+
+**The last step of the width transfer is prose**, per section 15 item 1.
+
+**No bench.** Every magnitude here is unpriced. Section 9's instruction counts and every wall-clock figure in
+sections 11 and 11.3 are ad-hoc quick spikes with no substance for any how-much question, and the only
+things they carry are the qualitative facts: which instruction appears in which arm, and which compile
+accepts.
 
 **Nothing here settles anything.** The mode is explore. This file goes to whoever attacks next.

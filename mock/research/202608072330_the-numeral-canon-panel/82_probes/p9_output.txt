@@ -1,0 +1,60 @@
+p9: does restricting to a sign-uniform half move the POSITIVE verdict
+    from refused to accepted at a shipped width
+
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+host:      aarch64-apple-darwin
+
+The walk stops each (operand set, guard) combination at its first refusal,
+because the domain grows monotonically with width and nothing wider can
+accept once a narrower one has been refused. Per-compile cap is 300s: a
+mechanism that needs longer than that per law is not a mechanism, and the
+cap is recorded as part of the result rather than hidden.
+
+width  operand set        triples    guard    outcome    wall s  diagnostic
+    4         full           4096  default     accept      0.34  
+    4         full           4096  allowed     accept      0.09  
+    4       nonneg            512  default     accept      0.04  
+    4       nonneg            512  allowed     accept      0.05  
+    4       nonpos            729  default     accept      0.05  
+    4       nonpos            729  allowed     accept      0.05  
+    5         full          32768  default     accept      0.42  
+    5         full          32768  allowed     accept      0.41  
+    5       nonneg           4096  default     accept      0.09  
+    5       nonneg           4096  allowed     accept      0.09  
+    5       nonpos           4913  default     accept      0.10  
+    5       nonpos           4913  allowed     accept      0.10  
+    6         full         262144  default     accept      3.02  
+    6         full         262144  allowed     accept      3.03  
+    6       nonneg          32768  default     accept      0.38  
+    6       nonneg          32768  allowed     accept      0.38  
+    6       nonpos          35937  default     accept      0.44  
+    6       nonpos          35937  allowed     accept      0.45  
+    7         full        2097152  default     REFUSE      4.58  error: constant evaluation is taking a long time
+    7         full        2097152  allowed     accept     23.57  
+    7       nonneg         262144  default     accept      2.74  
+    7       nonneg         262144  allowed     accept      2.71  
+    7       nonpos         274625  default     accept      3.13  
+    7       nonpos         274625  allowed     accept      3.16  
+    8         full       16777216  allowed     accept    188.50  
+    8       nonneg        2097152  default     REFUSE      4.35  error: constant evaluation is taking a long time
+    8       nonneg        2097152  allowed     accept     21.59  
+    8       nonpos        2146689  default     REFUSE      4.56  error: constant evaluation is taking a long time
+    8       nonpos        2146689  allowed     accept     24.25  
+    9         full      134217728  allowed     REFUSE    300.00  TIMEOUT at the probe cap
+    9       nonneg       16777216  allowed     accept    173.52  
+    9       nonpos       16974593  allowed     accept    198.57  
+   10       nonneg      134217728  allowed     REFUSE    300.00  TIMEOUT at the probe cap
+   10       nonpos      134217728  allowed     REFUSE    300.00  TIMEOUT at the probe cap
+
+machine-readable at p9_output.json
+
+widest width at which the POSITIVE verdict is accepted:
+ operand set   default guard   guard allowed
+        full               6               8
+      nonneg               7               9
+      nonpos               7               9
+
+the sign-uniform restriction moved the default-guard frontier from width 6 to width 7, which is 1 bit(s).
+
+Seconds here are an ad-hoc quick spike with no substance for any how-much
+question. The accept/refuse frontier is the result.
