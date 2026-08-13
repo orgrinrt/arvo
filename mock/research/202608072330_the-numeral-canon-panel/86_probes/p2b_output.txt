@@ -1,0 +1,3 @@
+k = 13  grid   8192  default guard: ACCEPT  1.4s
+k = 14  grid  16384  default guard: ACCEPT  2.0s
+k = 15  grid  32768  default guard: REFUSE(long_running_const_eval)  2.7s
