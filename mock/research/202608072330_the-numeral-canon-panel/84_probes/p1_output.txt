@@ -1,0 +1,28 @@
+p1: the threshold family L_k, theory against exhaustive sweep
+
+two spellings of v2(k!) (Legendre sum vs k - s2(k)), k = 2..=128: 0 disagreements
+
+   k W* = v2(k!)  true widths  first false W    witness  witness embeds to
+   2          1        1..=1              2          2           22 (cap)
+   3          1        1..=1              2          3           22 (cap)
+   4          3        1..=3              4          4           22 (cap)
+   5          3        1..=3              4          5           22 (cap)
+   6          4        1..=4              5          6           22 (cap)
+   7          4        1..=4              5          7           22 (cap)
+   8          7        1..=7              8          8           22 (cap)
+  12         10       1..=10             11         12           22 (cap)
+  16         15       1..=15             16         16           22 (cap)
+
+theory defects (segment shape, threshold value, witness identity): 0
+
+k = 64: wrapping product at x = 64, width 64 = 0x8000000000000000 (expected 0x8000000000000000)
+k = 64: exhaustive sweep at widths 1..=18: 0 false widths (theory: 0, true through 63)
+
+signed vs unsigned wrapping add/sub/mul, width 8, all pairs: 0 bit differences
+
+INV3 law ((x*3)*INV3 == x): false widths in 1..=18: 0 (theory: 0)
+3 * INV3 as an integer = 0x20000000000000001 (= 2^65 + 1, so the law is FALSE mod 2^128: witness x = 1 gives 0x20000000000000001)
+
+control: asserting the WRONG threshold k-1 for k = 6 (claims true at width 5): sweep REFUTES it (correct)
+
+all checks passed
