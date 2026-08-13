@@ -60,9 +60,21 @@ fn decide(mask: u8, av: u8, bv: u8, cv: u8) -> (Verdict, u64) {
     let mut seen_true = false;
     let mut seen_false = false;
     let mut volume: u64 = 0;
-    let a_range: (u16, u16) = if a_const { (av as u16, av as u16) } else { (0, 255) };
-    let b_range: (u16, u16) = if b_const { (bv as u16, bv as u16) } else { (0, 255) };
-    let c_range: (u16, u16) = if c_const { (cv as u16, cv as u16) } else { (0, 255) };
+    let a_range: (u16, u16) = if a_const {
+        (av as u16, av as u16)
+    } else {
+        (0, 255)
+    };
+    let b_range: (u16, u16) = if b_const {
+        (bv as u16, bv as u16)
+    } else {
+        (0, 255)
+    };
+    let c_range: (u16, u16) = if c_const {
+        (cv as u16, cv as u16)
+    } else {
+        (0, 255)
+    };
     for a in a_range.0..=a_range.1 {
         for b in b_range.0..=b_range.1 {
             for c in c_range.0..=c_range.1 {
@@ -214,9 +226,21 @@ fn main() {
                 for &cv in &c_set {
                     let mut st = false;
                     let mut sf = false;
-                    let ar: Vec<i32> = if mask & 1 != 0 { vec![av] } else { vals.clone() };
-                    let br: Vec<i32> = if mask & 2 != 0 { vec![bv] } else { vals.clone() };
-                    let cr: Vec<i32> = if mask & 4 != 0 { vec![cv] } else { vals.clone() };
+                    let ar: Vec<i32> = if mask & 1 != 0 {
+                        vec![av]
+                    } else {
+                        vals.clone()
+                    };
+                    let br: Vec<i32> = if mask & 2 != 0 {
+                        vec![bv]
+                    } else {
+                        vals.clone()
+                    };
+                    let cr: Vec<i32> = if mask & 4 != 0 {
+                        vec![cv]
+                    } else {
+                        vals.clone()
+                    };
                     'inner: for &a in &ar {
                         for &b in &br {
                             for &c in &cr {
@@ -255,7 +279,11 @@ fn main() {
     println!("table above would be meaningless, and if it could not return Refused the");
     println!("admissibility half would be untested. Both appear above with non-zero");
     println!("counts, and here is a witness of each for P4:\n");
-    for (m, av, bv, cv) in [(1u8, 0u8, 0u8, 0u8), (1u8, 1u8, 0u8, 0u8), (4u8, 0u8, 0u8, 200u8)] {
+    for (m, av, bv, cv) in [
+        (1u8, 0u8, 0u8, 0u8),
+        (1u8, 1u8, 0u8, 0u8),
+        (4u8, 0u8, 0u8, 200u8),
+    ] {
         let (v, vol) = decide(m, av, bv, cv);
         println!(
             "  const {} with a={} b={} c={} -> {:?} (volume {})",
