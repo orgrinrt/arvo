@@ -1,0 +1,23 @@
+p0: rerun of the five 84_probes instruments this file cites, on the pinned
+nightly-2026-05-28 (rustc 1.98.0-nightly 57d06900f), aarch64-apple-darwin.
+
+Method: rustc -O <src>, run, strip trailing whitespace, diff against the
+committed transcript. The committed transcripts are composites (honest build
+plus refusal variants concatenated with headers); each section was reproduced
+by its own invocation and diffed against its portion.
+
+  p1_threshold_family.rs        runtime output byte-identical.
+  p4_difference_certificate.rs  runtime output byte-identical.
+  p2_defeat_the_cross_check.rs  honest run byte-identical to its section;
+                                --cfg audit refuses with E0080 naming
+                                "the licensed law is FALSE at the gated width".
+  p2b_no_band_can_catch_it.rs   honest run byte-identical to its section;
+                                --cfg audit refuses with E0080 naming the
+                                1 << 63 residue at x = 64.
+  p4b_certificate_gate.rs       default run byte-identical to its section;
+                                --cfg use_l16 and --cfg use_l64 both refuse
+                                with E0080 "FALSE at width 64, decided at
+                                width 64 by the difference criterion".
+
+Every instrument of 84 that this file leans on reproduces. Nothing here is
+priced; accept and refuse are the outcomes.
