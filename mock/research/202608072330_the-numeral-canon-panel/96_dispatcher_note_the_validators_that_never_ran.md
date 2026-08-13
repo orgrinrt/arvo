@@ -117,6 +117,27 @@ Not fixed in PR #18, deliberately, because it is a separate change with a much l
 turning validation on for every consumer at once will surface whatever it surfaces. It wants its own
 PR, and it wants a real arvo bench run against it before merging rather than after.
 
+## Two further observations about the instrument, neither fixed
+
+**mockspace's own self-bench does not run.** `mockspace/benches`, the bench whose `bench.toml` says it
+exists to validate "the full mockspace bench harness pipeline ... against a real consumer codebase:
+mockspace itself", produces zero rows. Every variant reports `<load-fail>`, including with both
+variant cdylibs freshly built and present at the manifest's paths. Not diagnosed further; it is not on
+the panel's path.
+
+**A variant that fails to load is reported as a timeout and then crashes the run.** The load failures
+above print as `TIMEOUT  <load-fail>  warm  0` rows, the run completes and writes a zero-row CSV, and
+then `analysis.rs:313` panics with `index out of bounds: the len is 0 but the index is 0`. So the one
+condition that is unambiguous, the dylib did not open, is reported as the one that is ambiguous, it
+was too slow, and the run ends in a crash rather than a message naming the file that would not load.
+
+Both are the same shape as the finding above and as `41`'s: **the harness's failure modes are quiet or
+misleading rather than loud.** Neither is fixed here. Neither bears on any number the panel holds,
+because no panel measurement came through this bench.
+
+Attribution, so this is not read as a regression: the load failure and the panic both reproduce on a
+path that never calls `validation::validate`, which is the only function PR #18 touches.
+
 ## Predicate
 
 Everything above holds for: `mockspace-bench-harness` at `084e780` and at `dev`; arvo at
