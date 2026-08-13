@@ -1,0 +1,30 @@
+P7. the criterion against `35`'s committed law table
+35's box is w 2..7; this diff runs w 2..7 because the retraction check
+is quadratic in the multiply's image and the point is the agreement rate,
+not reach in w. Rows above the cap are counted as skipped, not as passing.
+
+conservative        unsigned w=2 f=1 saturate mul_assoc        35 failures=0/64
+
+per law and signedness, over the diffed rows
+law                signedness    agree   conservative    SOUNDNESS
+add_assoc          signed           66              0            0
+add_assoc          unsigned         66              0            0
+additive_inverse   signed           66              0            0
+additive_inverse   unsigned         66              0            0
+distributivity     signed           66              0            0
+distributivity     unsigned         66              0            0
+monotonicity_add   signed           66              0            0
+monotonicity_add   unsigned         66              0            0
+mul_assoc          signed           66              0            0
+mul_assoc          unsigned         65              1            0
+
+rows diffed                        : 660
+rows skipped above the width cap   : 0
+agree                              : 659
+conservative (safe, predicted fail): 1
+SOUNDNESS mismatches (refute)      : 0
+
+`35`'s table, written independently and months of files earlier, contains
+no row the criterion predicts to hold and which fails. So the criterion
+reaches a third instance, on data it did not generate, and `93`'s and
+`40`'s reliance on `35` is consistent with it rather than in tension.

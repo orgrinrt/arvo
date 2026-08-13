@@ -62,6 +62,12 @@ def make_pi(W, F, signed, policy, rounding, nonneg_window):
 
     def quantise(e):
         # e is value * 2^(3F); the raw grid value is e / 2^(2F).
+        if rounding == "floor":
+            # arithmetic shift right, which floors rather than truncating toward
+            # zero. Added so P7 can diff against `35`, whose signed probe names
+            # this as its rounding choice. Not in this file's own config list, so
+            # this file's committed output is unchanged by its presence.
+            return e // shift
         if rounding == "truncate":
             # toward zero
             if e >= 0:
