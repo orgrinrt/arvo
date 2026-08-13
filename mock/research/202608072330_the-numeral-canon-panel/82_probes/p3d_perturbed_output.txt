@@ -1,0 +1,13 @@
+error[E0080]: evaluation panicked: the closed-form sign-uniformity verdict disagrees with the swept verdict somewhere in the model band, so no arm may be gated on the shape split below
+   --> p3d_perturbed_verdict.rs:162:5
+    |
+162 | /     assert!(
+163 | |         CROSS_CHECK.1,
+164 | |         "the closed-form sign-uniformity verdict disagrees with the swept verdict \
+165 | |          somewhere in the model band, so no arm may be gated on the shape split below"
+166 | |     );
+    | |_____^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

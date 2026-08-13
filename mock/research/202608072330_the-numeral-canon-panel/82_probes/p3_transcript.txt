@@ -1,0 +1,47 @@
+TRANSCRIPT: the two constructions, and the four refusals
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27), host: host: aarch64-apple-darwin
+
+### 1. p3a  const-assert permission, sign-uniform declarations         EXPECT ACCEPT
+   -> exit , symbols emitted:
+0000000000000000 T __RNvCske4UNIzLImn_7___rustc17rust_begin_unwind
+0000000000000004 T _agreement_check
+---------------- T __RINvNtNtNtCs8l4xFanoUBY_17compiler_builtins5float4conv12int_to_float6signedlC4f128NvB2_16u32_to_f128_bitsEB8_
+---------------- T __RINvNtNtNtCs8l4xFanoUBY_17compiler_builtins5float4conv12int_to_float6signedldNvB2_15u32_to_f64_bitsEB8_
+---------------- T __RINvNtNtNtCs8l4xFanoUBY_17compiler_builtins5float4conv12int_to_float6signedlfNvB2_15u32_to_f32_bitsEB8_
+
+### 2. p3b  const-assert, STRADDLING window in an unreached pub fn      EXPECT REFUSAL, GOT ACCEPT
+   -> exit . symbols emitted:
+0000000000000000 T __RNvCske4UNIzLImn_7___rustc17rust_begin_unwind
+0000000000000004 T _agreement_check
+---------------- T __RINvNtNtNtCs8l4xFanoUBY_17compiler_builtins5float4conv12int_to_float6signedlC4f128NvB2_16u32_to_f128_bitsEB8_
+---------------- T __RINvNtNtNtCs8l4xFanoUBY_17compiler_builtins5float4conv12int_to_float6signedldNvB2_15u32_to_f64_bitsEB8_
+---------------- T __RINvNtNtNtCs8l4xFanoUBY_17compiler_builtins5float4conv12int_to_float6signedlfNvB2_15u32_to_f32_bitsEB8_
+   the straddling consumer was never codegen'd, so its proof was never evaluated
+
+### 3. p3b2 same, but the consumer is #[no_mangle] so it is reached      EXPECT REFUSAL
+error[E0080]: evaluation panicked: the declared operand window straddles zero, so signed saturating addition is not associative on the values a fold over it can reach, and a reassociating consumer may not be instantiated at it
+error: aborting due to 1 previous error; 1 warning emitted
+
+### 4. p3c  const-assert, PERTURBED closed form                          EXPECT REFUSAL
+error[E0080]: evaluation panicked: the closed-form law verdict disagrees with the swept verdict somewhere in the model band, so the closed form is wrong and no arm may be gated on it
+error[E0080]: evaluation panicked: the closed-form law verdict disagrees with the swept verdict somewhere in the model band, so the closed form is wrong and no arm may be gated on it
+
+### 5. p3e  the predicate lifted into a BOUND                            EXPECT REFUSAL
+error: generic parameters may not be used in const operations
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+error: generic parameters may not be used in const operations
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+error: generic parameters may not be used in const operations
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+### 6. p3d  STRUCTURAL permission, sign-uniform declarations             EXPECT ACCEPT
+   -> exit 
+
+### 7. p3d_bad STRUCTURAL, straddling window in DEAD CODE, TYPE CHECK ONLY  EXPECT REFUSAL
+error[E0277]: the declared operand window `Win<-128, 127>` may straddle zero
+help: the trait `ReassociableFold` is not implemented for `Win<-128, 127>`
+error: aborting due to 1 previous error
+
+### 8. p3d_perturbed STRUCTURAL, perturbed closed form, TYPE CHECK ONLY     EXPECT REFUSAL
+error[E0080]: evaluation panicked: the closed-form sign-uniformity verdict disagrees with the swept verdict somewhere in the model band, so no arm may be gated on the shape split below
+error: aborting due to 1 previous error
