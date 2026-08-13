@@ -1,0 +1,25 @@
+P3. Product lattice in the type system
+======================================
+
+Compiled on the pinned nightly with:
+  no generic_const_exprs, no dyn, no TypeId, no std::any, no_std core.
+The only gate is const_trait_impl, which is on the allowed list.
+
+A. 81 of 81 ordered pairs: the type-level join equals the const-fn
+   join on tags. Each is a `const _: () = assert!(..)`, so this line
+   printing at all means every one of them passed at compile time.
+
+B. exhaustive laws on the const-fn join, computed now:
+   idempotence  : 0 failures of 9
+   commutativity: 0 failures of 81
+   associativity: 0 failures of 729
+
+A and B compose: the type-level join is the const-fn join, and the
+const-fn join is a semilattice, so the type-level join is one, without
+expanding a macro over every triple.
+
+What this does NOT establish: that these are the right axes, that
+three points per axis is the right granularity, or that the two roles
+named here are the only ones. It establishes that the SHAPE compiles
+and is lawful, which is the question a canon has to answer before it
+can write the intent down.

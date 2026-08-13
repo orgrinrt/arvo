@@ -1,0 +1,106 @@
+P2b. Which axis moves the algebra
+=================================
+
+Exhaustive over every triple in the domain, per configuration.
+W is total stored bits, F is fraction bits.
+
+--- overflow = wrap      rounding = truncate  W = 6 ---
+  F = 0
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     HOLDS  (0/262144)
+      a*(b+c) == a*b+a*c     HOLDS  (0/262144)
+  F = 1
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  137472/262144 =  52.4%   first: a=1,b=1,c=4 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  80384/262144 =  30.7%   first: a=1,b=1,c=1 -> 1 vs 0
+  F = 2
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  197394/262144 =  75.3%   first: a=1,b=1,c=16 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  128512/262144 =  49.0%   first: a=1,b=1,c=3 -> 1 vs 0
+  F = 3
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  208686/262144 =  79.6%   first: a=1,b=2,c=32 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  156544/262144 =  59.7%   first: a=1,b=1,c=7 -> 1 vs 0
+  F = 4
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  187704/262144 =  71.6%   first: a=1,b=5,c=52 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  172544/262144 =  65.8%   first: a=1,b=1,c=15 -> 1 vs 0
+
+--- overflow = wrap      rounding = nearest   W = 6 ---
+  F = 0
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     HOLDS  (0/262144)
+      a*(b+c) == a*b+a*c     HOLDS  (0/262144)
+  F = 1
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  137484/262144 =  52.4%   first: a=1,b=1,c=3 -> 2 vs 1
+      a*(b+c) == a*b+a*c     FAILS  80384/262144 =  30.7%   first: a=1,b=1,c=1 -> 1 vs 2
+  F = 2
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  198710/262144 =  75.8%   first: a=1,b=1,c=6 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  120832/262144 =  46.1%   first: a=1,b=1,c=1 -> 1 vs 0
+  F = 3
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  210278/262144 =  80.2%   first: a=1,b=1,c=28 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  141184/262144 =  53.9%   first: a=1,b=1,c=3 -> 1 vs 0
+  F = 4
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  187350/262144 =  71.5%   first: a=1,b=2,c=60 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  151424/262144 =  57.8%   first: a=1,b=1,c=7 -> 1 vs 0
+
+--- overflow = saturate  rounding = truncate  W = 6 ---
+  F = 0
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     HOLDS  (0/262144)
+      a*(b+c) == a*b+a*c     HOLDS  (0/262144)
+  F = 1
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  8054/262144 =   3.1%   first: a=1,b=1,c=4 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  2946/262144 =   1.1%   first: a=1,b=1,c=1 -> 1 vs 0
+  F = 2
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  24350/262144 =   9.3%   first: a=1,b=1,c=16 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  9704/262144 =   3.7%   first: a=1,b=1,c=3 -> 1 vs 0
+  F = 3
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  53032/262144 =  20.2%   first: a=1,b=2,c=32 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  23706/262144 =   9.0%   first: a=1,b=1,c=7 -> 1 vs 0
+  F = 4
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  88038/262144 =  33.6%   first: a=1,b=5,c=52 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  50991/262144 =  19.5%   first: a=1,b=1,c=15 -> 1 vs 0
+
+--- overflow = saturate  rounding = nearest   W = 6 ---
+  F = 0
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     HOLDS  (0/262144)
+      a*(b+c) == a*b+a*c     HOLDS  (0/262144)
+  F = 1
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  7966/262144 =   3.0%   first: a=1,b=1,c=3 -> 2 vs 1
+      a*(b+c) == a*b+a*c     FAILS  2906/262144 =   1.1%   first: a=1,b=1,c=1 -> 1 vs 2
+  F = 2
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  24532/262144 =   9.4%   first: a=1,b=1,c=6 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  8738/262144 =   3.3%   first: a=1,b=1,c=1 -> 1 vs 0
+  F = 3
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  53648/262144 =  20.5%   first: a=1,b=1,c=28 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  20135/262144 =   7.7%   first: a=1,b=1,c=3 -> 1 vs 0
+  F = 4
+      (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+      (a*b)*c == a*(b*c)     FAILS  87784/262144 =  33.5%   first: a=1,b=2,c=60 -> 0 vs 1
+      a*(b+c) == a*b+a*c     FAILS  42117/262144 =  16.1%   first: a=1,b=1,c=7 -> 1 vs 0
+
+Reading:
+
+Additive associativity is insensitive to every axis varied here.
+Multiplicative associativity and distributivity are insensitive to
+the OVERFLOW axis and sensitive to the FRACTION axis, breaking as
+soon as F > 0 and never at F = 0.
+
+So 'the strategy changes what the correct answer is' is true, and it
+is true through one specific axis rather than through the marker as a
+whole. A strategy that fixes rounding fixes which rewrites are legal.
+A strategy that fixes overflow does not touch that question at all.
+Two things wearing one name, distinguished by a measurement.

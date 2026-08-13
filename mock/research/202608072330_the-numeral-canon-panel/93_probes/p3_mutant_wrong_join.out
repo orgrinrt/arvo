@@ -1,0 +1,25 @@
+error[E0080]: evaluation panicked: assertion failed: <Join<S01, S02>>::TAG == tag_join(<S01>::TAG, <S02>::TAG)
+   --> p3_mutant_wrong_join.rs:137:17
+    |
+137 | /                 assert!(
+138 | |                     <Join<$a, $b>>::TAG
+139 | |                         == tag_join(<$a>::TAG, <$b>::TAG)
+140 | |                 );
+    | |_________________^ evaluation of `_` failed here
+...
+158 | / agree! {
+159 | |     S00,S00; S00,S01; S00,S02; S00,S10; S00,S11; S00,S12; S00,S20; S00,S21; S00,S22;
+160 | |     S01,S00; S01,S01; S01,S02; S01,S10; S01,S11; S01,S12; S01,S20; S01,S21; S01,S22;
+161 | |     S02,S00; S02,S01; S02,S02; S02,S10; S02,S11; S02,S12; S02,S20; S02,S21; S02,S22;
+...   |
+167 | |     S22,S00; S22,S01; S22,S02; S22,S10; S22,S11; S22,S12; S22,S20; S22,S21; S22,S22;
+168 | | }
+    | |_- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `agree` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: <Join<S01, S12>>::TAG == tag_join(<S01>::TAG, <S12>::TAG)
+   --> p3_mutant_wrong_join.rs:137:17
+    |
+137 | /                 assert!(
+138 | |                     <Join<$a, $b>>::TAG
