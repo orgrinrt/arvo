@@ -38,3 +38,4 @@ bench-bitpack-write-contend-shared = { path = "variants/bitpack-write-contend-sh
 bench-warm-container-shared = { path = "variants/warm-container-shared" }
 bench-warm-clamp-shared = { path = "variants/warm-clamp-shared" }
 bench-wide-rung-shared = { path = "variants/wide-rung-shared" }
+bench-satfold-shared = { path = "variants/satfold-shared" }

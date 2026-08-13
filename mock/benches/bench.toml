@@ -2578,3 +2578,441 @@ variants = [
     "../target/release/bench_bitpack_write_dense",
     "../target/release/bench_bitpack_write_guarded",
 ]
+
+
+[bench.satfold-length-l1]
+title = "Saturating fold reassociation, reduction length swept, 32 KiB column: the fold as written against the idiomatic iterator form, against the licensed arm whose bounds are unprovable, against the licensed arm with the bounds proof, against the 64-element unroll with a tree combine, against the bounds proof with no law, against hand-written NEON, against the licensed arm with the length known at compile time"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 8, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 1000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 15, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 2000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 16, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 3000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 17, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 4000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 32, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 5000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 63, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 6000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 64, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 7000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 65, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 8000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 128, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 9000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 256, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 10000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 1024, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 11000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 4096, column 32 KiB, L1-resident, aligned, saturating
+[[bench.satfold-length-l1.sizes]]
+n = 12000
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-length-l1-wrap]
+title = "The identical arms over wrapping addition, which the backend may reassociate with no help from any typestate: the ceiling every saturating arm is measured against"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 8, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 1001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 16, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 3001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 64, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 7001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 256, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 10001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 4096, column 32 KiB, L1-resident, aligned, wrapping
+[[bench.satfold-length-l1-wrap.sizes]]
+n = 12001
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_neon8",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-align-l1]
+title = "The same arms with the column start offset by one byte from a 64-byte boundary: what the licensed vector arms cost when the load stream is not aligned"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 16, column 32 KiB, L1-resident, offset by one byte, saturating
+[[bench.satfold-align-l1.sizes]]
+n = 3010
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 64, column 32 KiB, L1-resident, offset by one byte, saturating
+[[bench.satfold-align-l1.sizes]]
+n = 7010
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 256, column 32 KiB, L1-resident, offset by one byte, saturating
+[[bench.satfold-align-l1.sizes]]
+n = 10010
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 4096, column 32 KiB, L1-resident, offset by one byte, saturating
+[[bench.satfold-align-l1.sizes]]
+n = 12010
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-length-dram]
+title = "The same arms over a 16 MiB column, past every cache level on this host: what the reassociation is worth once the load stream is the binding constraint"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 16, column 16 MiB, past L2, aligned, saturating
+[[bench.satfold-length-dram.sizes]]
+n = 3100
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+# L = 64, column 16 MiB, past L2, aligned, saturating
+[[bench.satfold-length-dram.sizes]]
+n = 7100
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-length-dram-long]
+title = "The same arms at the longest reduction length over a 16 MiB column: the row where the hand-written arm reaches the load-bandwidth ceiling on the small column, so it is the row where a working set past every cache level can cap it"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 4096, column 16 MiB, past L2, aligned, saturating
+[[bench.satfold-length-dram-long.sizes]]
+n = 12100
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-length-dram-wrap]
+title = "The wrapping ceiling over the same 16 MiB column"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+
+
+# L = 4096, column 16 MiB, past L2, aligned, wrapping
+[[bench.satfold-length-dram-wrap.sizes]]
+n = 12101
+variants = [
+    "../target/release/bench_satfold_seq",
+    "../target/release/bench_satfold_iterfold",
+    "../target/release/bench_satfold_lanes4_idx",
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes64",
+    "../target/release/bench_satfold_nolaw",
+    "../target/release/bench_satfold_neon",
+    "../target/release/bench_satfold_lanes16_constl",
+]
+
+[bench.satfold-const-gate]
+title = "Does a const gate erase in time: the licensed arm reached directly, the same arm reached through a const verdict computed by an exhaustive sweep in a const fn, and the same gate over a law that is false so it selects the fallback"
+workload = "default"
+master_seed = 0x1234_5678_9ABC_DEF0
+
+# L = 64, column 32 KiB L1-resident, aligned, saturating
+[[bench.satfold-const-gate.sizes]]
+n = 7000
+variants = [
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes16_3",
+    "../target/release/bench_satfold_gate_true",
+    "../target/release/bench_satfold_gate_false",
+    "../target/release/bench_satfold_seq",
+]
+
+# L = 256, column 32 KiB L1-resident, aligned, saturating
+[[bench.satfold-const-gate.sizes]]
+n = 10000
+variants = [
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes16_3",
+    "../target/release/bench_satfold_gate_true",
+    "../target/release/bench_satfold_gate_false",
+    "../target/release/bench_satfold_seq",
+]
+
+# L = 4096, column 32 KiB L1-resident, aligned, saturating
+[[bench.satfold-const-gate.sizes]]
+n = 12000
+variants = [
+    "../target/release/bench_satfold_lanes16",
+    "../target/release/bench_satfold_lanes16_3",
+    "../target/release/bench_satfold_gate_true",
+    "../target/release/bench_satfold_gate_false",
+    "../target/release/bench_satfold_seq",
+]

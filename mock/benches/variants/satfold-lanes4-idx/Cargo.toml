@@ -1,0 +1,15 @@
+[package]
+name = "bench-satfold-lanes4-idx"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_satfold_lanes4_idx"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+bench-satfold-shared = { path = "../satfold-shared" }
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }

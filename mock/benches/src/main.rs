@@ -147,6 +147,17 @@ fn main() -> ExitCode {
                     .iter()
                     .map(|p| p.display().to_string())
                     .collect();
+                // The harness ships an automatic disassembly comparison across
+                // the variant dylibs and exports it as `check_disasm_duplicates`.
+                // Nothing in this driver ever called it, so no bench in this
+                // repository has ever been told that two of its arms compile to
+                // the same machine code, which is the one condition under which a
+                // timing difference between them is definitionally noise. The
+                // `benchmarking` skill lists it as one of the reasons to use the
+                // framework rather than a timing loop. Wired here (file 92).
+                if variant_strings.len() >= 2 {
+                    harness::check_disasm_duplicates(&variant_strings);
+                }
                 if variant_strings.len() >= 2
                     && let Err(e) = harness::validate(
                         &routine,
@@ -210,6 +221,7 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
     // `arvo` crate exists.
     use bench_warm_clamp_shared::Case as ClampCase;
     use bench_warm_container_shared::Case;
+    use bench_satfold_shared::Case as SatFoldCase;
     use bench_wide_rung_shared::Case as WideCase;
 
     let bridge = match (name, n) {
@@ -390,6 +402,44 @@ fn routine_for_n(name: &str, n: usize) -> Option<RoutineSpec> {
         ("warm-affine-density-w13", 130404) => routine_bridge!(Case<130404>),
         ("warm-affine-density-w13", 130408) => routine_bridge!(Case<130408>),
         ("warm-affine-density-w13", 130416) => routine_bridge!(Case<130416>),
+
+
+        // saturating-fold reassociation (file 92): prices `80` section 5.3's and
+        // `82` section 9's instructions-per-element ratios as time. One
+        // SatFoldCase<KEY> bridge per row; the eight arms come from bench.toml's
+        // `variants` list, not from this table. KEY = (LI+1)*1000 + NC*100 +
+        // AL*10 + OP; see `bench-satfold-shared` for the encoding.
+        ("satfold-length-l1", 1000) => routine_bridge!(SatFoldCase<1000>),
+        ("satfold-length-l1", 2000) => routine_bridge!(SatFoldCase<2000>),
+        ("satfold-length-l1", 3000) => routine_bridge!(SatFoldCase<3000>),
+        ("satfold-length-l1", 4000) => routine_bridge!(SatFoldCase<4000>),
+        ("satfold-length-l1", 5000) => routine_bridge!(SatFoldCase<5000>),
+        ("satfold-length-l1", 6000) => routine_bridge!(SatFoldCase<6000>),
+        ("satfold-length-l1", 7000) => routine_bridge!(SatFoldCase<7000>),
+        ("satfold-length-l1", 8000) => routine_bridge!(SatFoldCase<8000>),
+        ("satfold-length-l1", 9000) => routine_bridge!(SatFoldCase<9000>),
+        ("satfold-length-l1", 10000) => routine_bridge!(SatFoldCase<10000>),
+        ("satfold-length-l1", 11000) => routine_bridge!(SatFoldCase<11000>),
+        ("satfold-length-l1", 12000) => routine_bridge!(SatFoldCase<12000>),
+        ("satfold-length-l1-wrap", 1001) => routine_bridge!(SatFoldCase<1001>),
+        ("satfold-length-l1-wrap", 3001) => routine_bridge!(SatFoldCase<3001>),
+        ("satfold-length-l1-wrap", 7001) => routine_bridge!(SatFoldCase<7001>),
+        ("satfold-length-l1-wrap", 10001) => routine_bridge!(SatFoldCase<10001>),
+        ("satfold-length-l1-wrap", 12001) => routine_bridge!(SatFoldCase<12001>),
+        ("satfold-align-l1", 3010) => routine_bridge!(SatFoldCase<3010>),
+        ("satfold-align-l1", 7010) => routine_bridge!(SatFoldCase<7010>),
+        ("satfold-align-l1", 10010) => routine_bridge!(SatFoldCase<10010>),
+        ("satfold-align-l1", 12010) => routine_bridge!(SatFoldCase<12010>),
+        ("satfold-length-dram", 3100) => routine_bridge!(SatFoldCase<3100>),
+        ("satfold-length-dram", 7100) => routine_bridge!(SatFoldCase<7100>),
+        ("satfold-length-dram-long", 12100) => routine_bridge!(SatFoldCase<12100>),
+        ("satfold-length-dram-wrap", 3101) => routine_bridge!(SatFoldCase<3101>),
+        ("satfold-length-dram-wrap", 7101) => routine_bridge!(SatFoldCase<7101>),
+        ("satfold-length-dram-wrap", 12101) => routine_bridge!(SatFoldCase<12101>),
+
+        ("satfold-const-gate", 7000) => routine_bridge!(SatFoldCase<7000>),
+        ("satfold-const-gate", 10000) => routine_bridge!(SatFoldCase<10000>),
+        ("satfold-const-gate", 12000) => routine_bridge!(SatFoldCase<12000>),
 
         // footprint bench: prices Cold's own intent (a smaller column fits
         // where a larger one does not) rather than decode cost at

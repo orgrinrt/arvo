@@ -1,0 +1,28 @@
+arm                        instrs    uqadd     addv      ldr    calls
+------------------------ -------- -------- -------- -------- --------
+seq                          1476        0       84        3        2
+iterfold                     1476        0       84        3        2
+nolaw                        2274        0       21        3        2
+lanes4_idx                   2480        0      300       25        2
+lanes16                      2312      115      199        6        2
+lanes16_3                     289       19       19        1        2
+lanes16_constl               2265      115      199        6        2
+lanes64                      4564      100      400        5        2
+neon                         1202      204      297        8        2
+neon8                         813      149      198        5        2
+gate_true                     289       19       19        1        2
+gate_false                    183        0        0        0        2
+
+non-panic call targets inside bench_entry, per arm (empty is the wanted result):
+
+the const-gate erasure question, as instruction-stream hashes:
+  addresses, encodings and objdump's own filename banner stripped, because
+  the banner prints the dylib's name and would make every arm differ.
+  lanes16_3 is the size-matched control: the same kernel with no gate,
+  declaring exactly the three sizes the gated arm declares, so the
+  comparison is not about how many monomorphisations each dylib carries.
+  lanes16          dd2e4e7b40ad8136d0c0c7da8d190f17fe0b4423
+  lanes16_3        58ba8128fad06b30aa0bda07b9fc167b8fe2c91c
+  gate_true        58ba8128fad06b30aa0bda07b9fc167b8fe2c91c
+  gate_false       f336e41478f345636a5b7376307c79ea95956863
+  seq              4a5e9a45f3e9aabe817f31a4a3c0a86af55b4f44
