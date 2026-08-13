@@ -1,0 +1,46 @@
+=== toolchain ===
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+=== gates and forbidden constructs ===
+feature( : 0
+dyn / TypeId / std:: : 0
+
+=== build ===
+exit=0
+
+=== comparison ===
+P8. does a selector on a COMPUTED demand set cost anything
+
+entry                instrs     resolves to
+entry_speed          1          (own body)
+entry_residency      1          (own body)
+entry_joined         1          (own body)
+entry_handwritten    1          __RNvXs6_CsCIv0FqhWFy_31p8_does_a_computed_demand_eraseINtB5_7DemandsNtB5_7PresentB13_ENtB5_7Resolve3run
+entry_different      1          __RNvXs5_CsCIv0FqhWFy_31p8_does_a_computed_demand_eraseINtB5_7DemandsNtB5_6AbsentNtB5_7PresentENtB5_7Resolve3run
+
+entry_joined vs entry_handwritten        identical body   the computed demand against a hand-written call to the arm it resolves to
+entry_joined vs entry_speed              different        NEGATIVE CONTROL: the join must not collapse onto its first operand
+entry_joined vs entry_residency          different        NEGATIVE CONTROL: nor onto its second
+entry_joined vs entry_different          different        NEGATIVE CONTROL: nor onto an unrelated arm
+
+VERDICT: the computed demand costs nothing and resolves correctly
+
+=== emitted entry bodies ===
+_entry_joined:
+	b	__RNvCsCIv0FqhWFy_31p8_does_a_computed_demand_erase8arm_both
+_entry_speed:
+	b	__RNvCsCIv0FqhWFy_31p8_does_a_computed_demand_erase12arm_pairwise
+
+=== mutant: the join drops a demand ===
+error[E0080]: evaluation panicked: the join did not reach the both-demands point, so the comparison below is vacuous
+   --> p8_mutant_join_collapses.rs:228:15
+    |
+228 |   const _: () = assert!(
+    |  _______________^
+229 | |     <JoinOf<Speed, Residency> as Tag>::T == 3,
+230 | |     "the join did not reach the both-demands point, so the comparison below is vacuous"
+231 | | );
+    | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
