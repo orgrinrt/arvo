@@ -3,8 +3,6 @@
 <div align="center" style="text-align: center;">
 
 [![GitHub Stars](https://img.shields.io/github/stars/orgrinrt/arvo.svg)](https://github.com/orgrinrt/arvo/stargazers)
-[![Crates.io](https://img.shields.io/crates/v/arvo)](https://crates.io/crates/arvo)
-[![docs.rs](https://img.shields.io/docsrs/arvo)](https://docs.rs/arvo)
 [![GitHub Issues](https://img.shields.io/github/issues/orgrinrt/arvo.svg)](https://github.com/orgrinrt/arvo/issues)
 ![License](https://img.shields.io/github/license/orgrinrt/arvo?color=%23009689)
 
