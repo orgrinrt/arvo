@@ -238,19 +238,26 @@ operands not in the subset. Three outcomes: **licensed** (constant true, an arm 
 Three things in that table.
 
 **Partial const-availability of operands reaches 4.52% at best**, against the declared range's 21.98%. Both
-are const-available and both are therefore admissible under `83`; they differ by a factor of five in reach.
+are const-available and both are therefore admissible under `83`; they differ by nearly a factor of five in
+reach.
 
 **The single-operand licensed values are exactly `a = 0` and `c = 0`**, printed explicitly in section 2 of
 the probe's output. So this route lands on the same two degenerate regions the declared-range route landed
 on, arrived at by a completely different mechanism. Knowing `b` licenses nothing at any value.
 
-**The `{a,c}` row has 32,640 refused configurations**, and that is the first time this panel has
-instrumented the **admissibility** cell. `80` section 1.2 reports that of the three-by-two grid formed by
-op's three validated things and the two binding times, the panel's law-layer evidence occupies one cell, and
-that nothing anywhere has instrumented admissibility of a law declaration. These 32,640 configurations are
-exactly that: a const expression that proves the arm is wrong for every runtime `b`, and can refuse it
-rather than fall back. The count is checkable by hand: it is the pairs with `a >= 1`, `c >= 1` and
-`a + c > 255`, which is `255 * 256 / 2 = 32,640`.
+**The `{a,c}` row has 32,640 refused configurations**, which is a kind of result nothing else in this file
+produces and which I have not seen elsewhere in what I read. They are configurations where a const
+expression proves the arm is wrong for **every** runtime `b`, so the right response is to refuse the arm
+rather than to fall back to the general one. The count is checkable by hand: the pairs with `a >= 1`,
+`c >= 1` and `a + c > 255`, which is `255 * 256 / 2 = 32,640`.
+
+That is admissibility-shaped, and I want to be careful about the label rather than claim the cell.
+`80` section 1.2 reports that of the three-by-two grid formed by op's three validated things and the two
+binding times, this unit's law-layer evidence occupies one cell, usage at compile time, and that nothing in
+the unit has instrumented admissibility of a law declaration. What `p6` produces is a compile-time refusal
+of an **arm** at a declaration, which is adjacent to op's admissibility ("the typestate refuses declarations
+it cannot serve") without obviously being it. I read a fraction of this panel, so "nobody has instrumented
+this" is `80`'s claim about its unit rather than mine about the panel, and I do not extend it.
 
 Section 3 of the probe runs the same lattice for signed saturating associativity at width 4 and finds one
 const operand licenses 1 configuration of 16, two license 80 or 144 of 256, and **no partial assignment ever
@@ -665,32 +672,46 @@ It touches one row's absolute position and the general question of what a fronti
 
 ## 12. The criterion, stated as the thing I would put to the next expert
 
-Across the three routes the same discriminator decides the outcome every time, and it is not a fact about
-types, values, or const-availability. It is a fact about the **region**.
+Two distinct routes to a const-available predicate appeared in this file, and only one of them has a
+discriminator. Keeping them apart is what the section is for, because I conflated them for the first four
+sections and the conflation is what made P4 look like a general result.
 
-> A condition over a computation's trajectory has a const-available form exactly when the region it names is
-> closed under the operations the law is about. Where it is closed, a declaration constrains the entry point
-> and the region maintains itself, so one condition checked once is a fact for the whole computation. Where
-> it is not closed, any declaration implying it must forbid the operations from leaving it, which forbids
-> the behaviour the law was about.
+**Route A, const operands.** The predicate reads the operand values, and they happen to be const at this
+call site. Nothing is lifted and nothing needs to be closed; the condition is whatever it always was,
+evaluated early. Its reach is measured in section 6 and it is small: 4.52% of P4's holding set at best, and
+1 configuration in 16 for the signed fold.
 
-The three routes instantiate it:
+**Route B, a declaration over the set the operands are drawn from.** This is the lifting proper, and it is
+the one with a discriminator. Offered as a candidate rather than a settlement, since the mode is explore:
 
-- **P4's region is not closed** under saturating add and sub, so the declared-range route lands only where
-  no clamp can fire or an operand is the identity (sections 2 and 4), and the const-operand route lands on
-  the same two places by a different mechanism (section 6).
-- **The sign-uniform region is closed** under saturating add, so it lifts exactly, at every width in the
-  band, in both directions, and survives arity (section 7).
-- **The bounded-length region is closed only up to the bound**, which is why a length-aware predicate
-  licenses more and needs the length at const time (section 10).
+> A trajectory condition lifts into a declaration over the operand set when the condition still holds on
+> that set's **closure** under the operations the law is about. Where it does, one check at the entry point
+> is a fact for the whole computation, because the operations cannot carry a value anywhere the condition
+> fails. Where it does not, any declaration implying the condition has to forbid the operations from leaving
+> the set, which forbids the behaviour the law was about.
 
-Two properties of this criterion are worth the next expert's attack rather than my confidence. It is
-**decidable by inspection** rather than by measurement, in the same sense `80`'s O-H says a lifting question
-is: you ask whether the region's closure escapes it, and that is a question about the operation's algebra.
-And it is **the same criterion two other files reached for the chain-machinery question**, which either
-means it is doing real work at more than one layer or means three files have inherited one framing; I
-reached it from `p1`'s box characterisation before reading `76` or `77` and can say the ordering, which is
-not the same as being able to say it is independent.
+The three instances in this file:
+
+- **P4's condition does not survive closure.** It is a statement about clamp events, and the closure of a
+  clamp-free box under saturating addition is not clamp-free, since `a + b` leaves the box by construction.
+  So the declared-range route lands only where no clamp can fire or an operand is the identity (sections 2
+  and 4), and route A independently lands on the same two places (section 6).
+- **Sign uniformity survives closure.** The closure of `[0, H]` is `[0, MAX]`, still sign-uniform; the
+  closure of `[-H, 0]` is `[MIN, 0]`, still sign-uniform. Measured directly in `p2` section 4 rather than
+  argued, and the lifting is then exact in both directions over every operand set of any shape (sections 7
+  and the `p10` attack).
+- **A bounded length survives closure only up to the bound**, which is why a length-aware predicate licenses
+  strictly more and needs the length at const time (section 10).
+
+**Three properties of this criterion are worth attacking rather than believing.** It is stated as a
+one-directional sufficient condition above, deliberately, because I have measured both directions on
+addition only and one direction on one composition; "exactly when" is what I would like to write and is not
+what I established. It is **decidable by inspection** rather than by measurement, in the same sense `80`'s
+O-H says a lifting question is, and that makes it cheap to test on the next law rather than expensive. And
+it is **the same criterion two other files reached for the chain-machinery question**, `77:250` and
+`76:370-372`, which either means closure is doing real work at more than one layer or means three files have
+inherited one framing. I reached it from `p1`'s box characterisation before reading either file and can
+state that ordering, which is not the same as being able to claim independence.
 
 **What the criterion does not say**, and I am not extending it: nothing here bears on whether a condition
 that is genuinely not const-available may gate an arm. `83` says his words do not reach that, and neither do
@@ -839,8 +860,22 @@ Section 12 adds that closure is what decides which, and that it also decides whe
 at all.
 
 **Q38, where a law verdict's truth is established.** Option (c), the closed form cross-checked against a
-sweep on a model band, is what `p3a`, `p3d` and `p7` all build, so this file is a second and third instance
-of `80`'s mechanism at a different law. Section 11 bears on option (a)'s stated cost.
+sweep on a model band, is what `p3a`, `p3d` and `p7` all build, so this file is a second, third and fourth
+instance of `80`'s mechanism at a different law than the one it was built for.
+
+Option (a)'s stated cost moves in two places. Its clause that the compiler produces "only NEGATIVE verdicts"
+at a shipped width is right in general and **not right inside a sign-uniform region**: F16 measures the
+positive verdict accepted at width 9 with the guard allowed, past `i8`, where the full set does not finish.
+And the (width, arity) frontier the cost line rests on turns out to read a third input nobody had named,
+per F17, so the entry's numbers are numbers about a particular encoding as well as a particular arity.
+
+**A correction owed to `80`'s section 4.1 table, and it is a correction to a number rather than to a
+result.** `p11` shows the table's absolute positions are one bit lower than the same law measured with a
+lighter per-tuple encoding, with the law, domain, arity, guard, host and toolchain all held fixed and the
+three encodings agreeing on the verdict. Per `RULES.md:509-518` a predicate is never widened in place and a
+later expert states the correction in its own file, which is what F17 is. `80`'s file stands as written and
+its shape result, that the frontier is a curve collapsing fastest along arity, is reproduced rather than
+disturbed.
 
 **Q12, the reduction-order options.** Its "require associativity" option currently reads as excluding signed
 saturating folds outright: `OPTIONS.md:1097-1099` offers them "one lane, or the strategy that permits a
