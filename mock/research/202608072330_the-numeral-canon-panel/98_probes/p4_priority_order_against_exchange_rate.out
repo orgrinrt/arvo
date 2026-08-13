@@ -1,0 +1,45 @@
+1. a priority is always realisable as an exchange rate
+   1200 lexicographic sections over 200 random 4x5x3 models, one per coordinate permutation
+   realisable by a strictly positive weighting: 1200 of 1200
+   no failures. So a canon that states which measurement outranks
+   which has said something a weighting can implement, and the two
+   formalisms are not rivals at that level.
+
+2. the converse fails, on the real carrier table
+   coordinate permutations: 6, distinct sections they produce: 4
+   sections realisable by a strictly positive weighting (p2, L4): 58
+   of the priority sections, in L4: 4 of 4
+   sections a weighting reaches and NO priority order reaches: 54
+   So naming which measurement outranks which fixes at most a handful
+   of the available behaviours. The rest need an actual rate.
+
+   the priority sections, named
+     time > bytes > spread        -> ['d32', 'd32', 'd16', 'd16', 'd16', 'd16-control']
+     time > spread > bytes        -> ['d32', 'd32', 'd16', 'd16', 'd16', 'd16-control']
+     bytes > time > spread        -> ['packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+     bytes > spread > time        -> ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']
+     spread > time > bytes        -> ['d16-control', 'd32', 'packed', 'packed', 'packed', 'packed-simd']
+     spread > bytes > time        -> ['d16-control', 'd32', 'packed', 'packed', 'packed', 'packed-simd']
+
+3. three sections a weighting reaches that no priority does
+     ['d16-control', 'd16', 'd16-control', 'd16-control', 'd16-control', 'd16-control']
+     ['d16-control', 'd16', 'd16-control', 'packed-simd', 'd16-control', 'd16-control']
+     ['d16-control', 'd16', 'packed', 'packed', 'd16-control', 'd16-control']
+
+   and one of them, with a weight that realises it, to show the rate
+     section ['d16-control', 'd16', 'd16-control', 'd16-control', 'd16-control', 'd16-control']
+     realised by w = (632652750726840498046808184358179504921288462279128458437552756038472908509877615991897542390958031886090240/129596888071243600131351415941227052800468183212587584997608369044561133438602086960586955074250559896348806569, 285933337207686281787129485050226384546351426191902673416735509796273351329684965811174600439104602245738313013/302392738832901733639819970529529789867759094162704364994419527770642644690071536241369561839917973091480548661, 44949635620558472071743799147402959429773984676451175523989184630838569721590567978641601405703406314024075264/907178216498705200919459911588589369603277282488113094983258583311927934070214608724108685519753919274441645983) on (time, bytes, spread)
+     check, by recomputing the argmin under that weight: True
+
+4. a threshold rule has no weighting at all
+   alternatives, on (primary, bounded): A = (0, 4), B = (10, 0), C = (5, 3)
+   rule: minimise the primary subject to the bounded coordinate <= 3
+   admitted by the bound: ['B', 'C'], of which the rule picks C
+   choosing A: realisable by a weighting? positive
+   choosing B: realisable by a weighting? positive
+   choosing C: realisable by a weighting? no
+   the rule's choice C is not realisable, so a strategy stated as
+   a hard bound on a measurement is outside the weighting model, and a
+   canon saying 'a strategy is a weighting' has thereby said that no
+   strategy is a hard bound. That is a real consequence and it should
+   be said out loud rather than discovered later.
