@@ -1,0 +1,23 @@
+# probe G output
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2024 -O -C panic=abort, aarch64-apple-darwin
+
+## the three sites, body only, verbatim
+--- site_const_long ---
+	mov	w1, #64
+	b	__RNvCsbh3xbCK06wH_20g_const_availability9arm_lanes
+
+--- site_const_short ---
+	mov	w1, #4
+	b	__RNvCsbh3xbCK06wH_20g_const_availability7arm_seq
+
+--- site_runtime ---
+	cmp	x1, #15
+	b.ls	LBB4_2
+	b	__RNvCsbh3xbCK06wH_20g_const_availability9arm_lanes
+LBB4_2:
+	b	__RNvCsbh3xbCK06wH_20g_const_availability7arm_seq
+
+## conditional / compare instructions in each site body
+site_const_long: 0
+site_const_short: 0
+site_runtime: 2

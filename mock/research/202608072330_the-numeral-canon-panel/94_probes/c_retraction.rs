@@ -95,10 +95,18 @@ fn part1() {
     println!("   {}", "region where it retracts");
 
     for p in [Policy::Saturate, Policy::Wrap] {
-        let pname = if p == Policy::Saturate { "saturate" } else { "wrap" };
+        let pname = if p == Policy::Saturate {
+            "saturate"
+        } else {
+            "wrap"
+        };
         for op1 in [Op::Add, Op::Sub, Op::Mul] {
             for op2 in [Op::Add, Op::Sub, Op::Mul] {
-                print!("{:<10} {:<10}", pname, format!("{}>{}", op1.name(), op2.name()));
+                print!(
+                    "{:<10} {:<10}",
+                    pname,
+                    format!("{}>{}", op1.name(), op2.name())
+                );
                 let mut holds: Vec<u32> = Vec::new();
                 for w in WIDTHS {
                     let n: i128 = 1 << w;
@@ -158,7 +166,11 @@ fn part2() {
                 let half: u128 = if f == 0 { 0 } else { 1 << (f - 1) };
                 let half2: u128 = if f == 0 { 0 } else { 1 << (2 * f - 1) };
                 let qf = |x: u128| -> u128 {
-                    if nearest { (x + half) >> f } else { x >> f }
+                    if nearest {
+                        (x + half) >> f
+                    } else {
+                        x >> f
+                    }
                 };
                 let mut differ: u64 = 0;
                 let mut total: u64 = 0;
@@ -194,7 +206,11 @@ fn part2() {
                     differ,
                     100.0 * differ as f64 / total as f64,
                     worst,
-                    if differ == 0 { "RETRACTS" } else { "does not retract" }
+                    if differ == 0 {
+                        "RETRACTS"
+                    } else {
+                        "does not retract"
+                    }
                 );
             }
         }
@@ -220,7 +236,11 @@ fn part3() {
     println!("   {}", "region where it associates");
 
     for p in [Policy::Saturate, Policy::Wrap] {
-        let pname = if p == Policy::Saturate { "saturate" } else { "wrap" };
+        let pname = if p == Policy::Saturate {
+            "saturate"
+        } else {
+            "wrap"
+        };
         for op in [Op::Add, Op::Sub, Op::Mul] {
             print!("{:<10} {:<6}", pname, op.name());
             let mut holds: Vec<u32> = Vec::new();

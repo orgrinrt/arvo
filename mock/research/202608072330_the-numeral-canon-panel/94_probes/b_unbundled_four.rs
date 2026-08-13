@@ -177,7 +177,10 @@ pub fn arm_lanes_wrap(v: &[u32]) -> u32 {
         a[2] = a[2].wrapping_add(v[i * 4 + 2]);
         a[3] = a[3].wrapping_add(v[i * 4 + 3]);
     }
-    let mut acc = a[0].wrapping_add(a[1]).wrapping_add(a[2]).wrapping_add(a[3]);
+    let mut acc = a[0]
+        .wrapping_add(a[1])
+        .wrapping_add(a[2])
+        .wrapping_add(a[3]);
     let mut i = c * 4;
     while i < v.len() {
         acc = acc.wrapping_add(v[i]);
@@ -201,7 +204,11 @@ pub fn arm_wide_sat(v: &[u32], limit: u32) -> u32 {
     for &x in v {
         a += x as u64;
     }
-    if a > limit as u64 { limit } else { a as u32 }
+    if a > limit as u64 {
+        limit
+    } else {
+        a as u32
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -252,4 +259,3 @@ pub fn p_cold(v: &[u32], l: u32) -> u32 {
 pub fn p_precise(v: &[u32], l: u32) -> u32 {
     fold::<Precise, 13, 64>(v, l)
 }
-

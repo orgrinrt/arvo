@@ -44,7 +44,11 @@ pub fn arm_accfit(vals: &[u32], limit: u32) -> u32 {
     for &v in vals {
         acc += v as u64;
     }
-    if acc > limit as u64 { limit } else { acc as u32 }
+    if acc > limit as u64 {
+        limit
+    } else {
+        acc as u32
+    }
 }
 
 /// Arm 2: the same deferred fold, split into four independent partial sums so
@@ -66,7 +70,11 @@ pub fn arm_accfit_lanes(vals: &[u32], limit: u32) -> u32 {
         acc += vals[i] as u64;
         i += 1;
     }
-    if acc > limit as u64 { limit } else { acc as u32 }
+    if acc > limit as u64 {
+        limit
+    } else {
+        acc as u32
+    }
 }
 
 // ---------------------------------------------------------------------------
