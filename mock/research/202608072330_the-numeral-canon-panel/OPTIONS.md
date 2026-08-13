@@ -1989,6 +1989,46 @@ axis assignments exist rather than about four names.
 **Where this belongs.** It is a strategy-axis question, and op has named the strategy axis as the next
 unit (`87` section 3). It goes into that unit's inbox.
 
+### Q42. Which reassociated arm a law licenses, keyed on reduction length
+
+Added by `92`, the unit's only bench and the only priced thing in it. Every entry above that reasons
+about a law-licensed reduction was reasoning from instructions per element read off emitted assembly,
+which is not time. This entry is where the regions actually are.
+
+**Each vectorised arm is at parity with the fold as written below its own lane count, and first pays
+above it.** Measured crossovers: the 16-lane arm first pays at `L = 32` (1.66x), the 64-lane arm at
+`L = 64` (3.71x), hand-written NEON at `L = 16` (6.77x). Below the lane count the vector path is never
+entered, and at exactly the lane count the horizontal combine costs what it replaced. **That is a
+predicate an arm can be gated on**, and it is the shape this whole unit exists to produce.
+
+**The arm `80` called worse than doing nothing is faster at every length measured.** `lanes4-idx`, which
+`80` priced at 8.500 instructions per element against 6.000 and reported as a licensed arm that lost, is
+faster at all twelve lengths, from 1.08x up to **14.51x** at `L = 64`, while emitting no vector
+instruction at all. The mechanism: the fold as written is latency-bound in its reduction chain, with
+nanoseconds per element climbing from 0.244 at `L = 8` to 1.273 at `L = 4096` while its instruction count
+stays constant. Four dependency chains beat one and the extra instructions are free. **So an instruction
+count is not a cost model here**, and `80`'s ordering survives only at the one length it measured.
+
+**The saturating operator is not the ceiling; the compiler's refusal to reassociate is.** `80:490`
+reported a law-licensed arm landing within 13% of the wrapping form. Priced, the 64-lane arm costs
+**2.90x** wrapping at `L = 4096`. Eight hand-written accumulators reach **1.000x**, and 0.873x at
+`L = 256`, so parity with wrapping is reachable and the gap `80` measured was the arm's shape rather
+than saturation.
+
+**The const gate erases as an identity**, not merely cheaply: the gated timed region is byte-identical to
+a size-matched ungated control, and the false-verdict gate selects the fallback and times at 1.00x of it.
+
+**What would distinguish the arms for a given consumer:** the reduction length distribution, which is a
+consumer fact and not a substrate one, so the substrate ships the arms and the predicate rather than
+picking. Alignment and whether the length is a multiple of the lane count were swept and are in the
+committed artifact trail.
+
+**Predicate:** `N = 8, sign = unsigned, policy = saturate, op = add, F = 0, threads = 1, host = one M1,
+toolchain = nightly-2026-05-28`. **No dimension for strategy is listed**, so under the ratified notation
+none of this may be read as a statement about any named strategy. Not measured: signed, fractional, any
+other width, multiplication, more than one thread. The harness's between-dylib noise floor on this host
+measured 4.9% with disjoint intervals, which bounds every small claim above.
+
 ## Standing
 
 Nothing in this file is evidence, and nothing in it is a decision. It is the working set.
