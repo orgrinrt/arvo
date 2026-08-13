@@ -1,7 +1,7 @@
 # 97. The strategy space attacked
 
 **Predecessors:** `93_orchard_the_strategy_axis_derived_cold.md` and
-`94_wingo_the_strategy_axis_derived_cold.md`, the unit's cold pair. **Probes:** `97_probes/`, eight of
+`94_wingo_the_strategy_axis_derived_cold.md`, the unit's cold pair. **Probes:** `97_probes/`, nine of
 them, each committed as it ran.
 
 This is an attacker file in the second half of a 4-4-1, so op's `95` governs its shape: attack is the
@@ -92,8 +92,11 @@ And a fifth, from the algebra half, which is the one I would most like carried:
 at every arity, and it is not a new measurement.** If the realisation map respects an operation, the
 representable set is a quotient of exact arithmetic and inherits every identity exact arithmetic has.
 P2 tests that prediction against exhaustive sweeps across **552 cells** and finds **zero soundness
-mismatches and zero conservative mismatches**. So the law table is derivable rather than measurable, and
-two of the panel's law findings are consequences rather than independent facts. Section 6.
+mismatches and zero conservative mismatches**. P7 then tests it against `35`'s **660 committed law rows**,
+generated independently and months of files earlier by somebody answering a different question, and finds
+**659 agreements, one conservative row, and zero soundness mismatches**. So the law table is derivable
+rather than measurable, and two of the panel's law findings are consequences rather than independent
+facts. Section 6.
 
 ## 2. Attack one: is `25` section 7 the same proposition the cold pair reached
 
@@ -728,6 +731,80 @@ Evidence: same probe. This was a prediction of the criterion made before running
 one-sided clamp is a congruence and a two-sided one is not, and it independently retrodicts `82`'s
 declared-window result, which I have not read.
 
+### 6.4 The diff against `35`, which `93` named as work it was leaving undone
+
+`93` phase two says plainly: "The largest thing I did not do: I did not read `35_mcsherry`, which `40`'s
+observable-axis table cites for six of its eight rows and which is the panel's existing measurement of
+exactly the laws my P2b, P2c, P7 and P8 measure... Somebody should diff them, and that is a real piece of
+work I am leaving undone."
+
+`97_probes/p7_diff_the_criterion_against_35.py` is that diff, and it is a better test than another sweep
+of mine would have been. `35`'s model was written independently, long before this unit, by somebody
+answering a different question, and its probes emit machine-readable CSV: `35_probes/p2.out` unsigned and
+`35_probes/p2b.out` signed, both over `w` in 2 to 7 and `f` in 0 to `w`, both policies, five laws.
+
+The criterion needed one extension to reach `35`'s battery, because `35` measures an order law and P2 did
+not. It is the same move rather than a second rule: a quotient by a congruence inherits identities, and a
+**monotone** quotient inherits order facts. So an identity holds iff the map respects the nestings, and an
+order law holds iff the map is monotone. Wrapping is not monotone and saturating is, which is what
+`35`'s monotonicity column says at every row.
+
+```
+law                signedness    agree   conservative    SOUNDNESS
+add_assoc          signed           66              0            0
+add_assoc          unsigned         66              0            0
+additive_inverse   signed           66              0            0
+additive_inverse   unsigned         66              0            0
+distributivity     signed           66              0            0
+distributivity     unsigned         66              0            0
+monotonicity_add   signed           66              0            0
+monotonicity_add   unsigned         66              0            0
+mul_assoc          signed           66              0            0
+mul_assoc          unsigned         65              1            0
+
+rows diffed                        : 660
+agree                              : 659
+conservative (safe, predicted fail): 1
+SOUNDNESS mismatches (refute)      : 0
+```
+
+The single conservative row is unsigned, `w = 2`, `f = 1`, saturating, multiplicative associativity: the
+criterion predicts it fails and `35` measures zero failures in 64 triples. A four-element domain is small
+enough for an identity to survive a map that does not respect it by coincidence, and a criterion that is
+sound without being complete is exactly what is wanted for gating an arm, because it never licenses a
+rewrite that is wrong.
+
+**And the two model mismatches I hit on the way are worth more than the agreement, because both were mine
+and both were diagnosable.**
+
+The first revision put the truncating shift inside the *exact* multiply rather than inside the realisation
+map, which left the map with nothing to round and produced **twelve soundness mismatches, every one of
+them `mul_assoc` at `f == w`**. At `f == w` the product never leaves the range, so the boundary policy
+never fires and only the rounding can break anything, and a model that has already rounded before the map
+runs cannot see it. That is the criterion being tested against a model that had smuggled the quantisation
+into the wrong side, and the fix was to import P2's construction rather than re-derive it, so the two
+files cannot drift.
+
+The second revision still carried **four soundness mismatches, all signed `mul_assoc`**, and the cause is
+named in `35`'s own source: `35_probes/p2b_laws_signed.rs:72-74` says its signed multiply uses "Arithmetic
+shift right, which floors rather than truncating toward zero. Named because it is a rounding choice and a
+different one would move the multiplicative counts." My prediction was computed with truncation toward
+zero. Rounding the same way `35` rounds took the four to zero.
+
+Both are the same lesson and it is the one worth carrying: **a disagreement between two models is a
+question about the models before it is a result about the thing.** The four mismatches would have read as
+a refutation of the criterion, in a file with a sound argument and an exhaustive sweep behind them, and
+the refutation would have been of a rounding choice.
+
+**F-K. Over `35`'s whole committed box, 660 rows generated independently of this unit, the criterion
+predicts no law to hold which fails.**
+`holds for: w in 2..7, f in 0..w, signedness in {unsigned, signed}, overflow in {wrap, saturate},
+rounding = arithmetic shift right, laws {add_assoc, mul_assoc, distributivity, additive_inverse,
+monotonicity_add}, arity 2 and 3, values exhaustive over the representable domain, threads = 1, target
+features any`
+Evidence: `97_probes/p7_diff_the_criterion_against_35.py` against `35_probes/p2.out` and
+`35_probes/p2b.out`. One row of 660 is conservative and none is unsound.
+
 ## 7. What I keep, and why keeping it is the result
 
 **`25` section 7's sentence, at the design tier, with the objective named above it.** It is right about
@@ -788,9 +865,10 @@ puts on that table is that it be **explicable by one statement of what matters**
 must account for every row at once. That constraint is what makes a name predictive at a region nobody
 has measured, and it is checkable offline at no compile-time cost.
 
-Which **laws** a configuration honours is **computed, not chosen, and not measured law by law**: it is
-decided by whether the realisation map respects each ordered nesting of operations, which is a finite
-table that settles an infinite family of identities at every arity.
+Which **laws** a configuration honours is **computed, not chosen, and not measured law by law**. An
+identity of exact arithmetic holds exactly where the realisation map respects the nestings that identity
+contains, and an order law holds exactly where that map is monotone. Both are finite tables, and between
+them they settle an infinite family of laws at every arity.
 
 A preference weighing a **chain** rather than an operation is a different shape and is served by not
 quantising in the interior, at a width cost linear in the chain length. `93`'s F7 and `94`'s W7 agree on
@@ -885,10 +963,9 @@ directories I opened `93_probes/p1b_demands_and_closure.out` and
 `93_probes/p8_q41_do_the_honoured_law_sets_nest.out` in full, because section 4.1 and section 4.3 rest on
 what those two actually contain rather than on their files' accounts of them. I did not open `40_probes/`
 at all, so my three citations into `40` sections 5.4, 6.2 and 6.4 are through `40`'s own account of its
-probes, and if that account is wrong those three paragraphs move. `35`, which `40`'s observable table
-cites for six of its eight rows and which measures the same law families I do, I did not read, so I
-cannot say whether F-F reproduces or contradicts it. Somebody should diff them; `93` left the same work
-undone and named it.
+probes, and if that account is wrong those three paragraphs move. Of `35` I read its two law probes'
+sources and their committed CSVs in full, because section 6.4 is a diff against them, and I did not read
+`35`'s prose beyond its section index.
 
 **I could not settle whether the rationalisability constraint is one the design wants.** I have shown it
 is the checkable content of op's "little bit of option 3", that it is decidable, and that it is what makes
@@ -911,10 +988,10 @@ that, op's `83` explicitly left it open, and nothing here touches it.
 Every `file:line` in this document is opened and its content tested by
 `97_probes/p5_verify_my_citations.py`, which is `25` section 9's instrument applied rather than admired:
 a citation landing two lines from its content still resolves, and only reading the target and testing for
-an expected word catches it. Eighteen citations, and the current state is committed:
+an expected word catches it. Nineteen citations, and the current state is committed:
 
 ```
-citations checked: 18   ok: 18   failed: 0
+citations checked: 19   ok: 19   failed: 0
 ```
 
 **It was not seventeen of seventeen on the first run, and the failure was mine.** The file cited
