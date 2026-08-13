@@ -1,0 +1,28 @@
+# probe B output
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2024 -O -C panic=abort, aarch64-apple-darwin
+# feature gates in source: 0
+
+## five strategy points, three axes each; emitted entry bodies
+_p_cold:
+	b	__RNvCs3nZAw5m35K3_11b_unbundled11arm_seq_sat
+
+_p_hot:
+	b	__RNvCs3nZAw5m35K3_11b_unbundled14arm_lanes_wrap
+
+_p_precise:
+	b	__RNvCs3nZAw5m35K3_11b_unbundled12arm_wide_sat
+
+_p_cold_exact = _p_cold
+	.globl	_p_warm
+_p_warm = _p_hot
+.subsections_via_symbols
+
+## affordability: does opening the axes cost object size?
+four named points  :     3232 bytes, 9 text symbols
+plus one unnamed   :     3240 bytes, 10 text symbols
+
+## distinct arm bodies actually emitted
+__RNvCs3nZAw5m35K3_11b_unbundled11arm_seq_sat
+__RNvCs3nZAw5m35K3_11b_unbundled12arm_seq_wrap
+__RNvCs3nZAw5m35K3_11b_unbundled12arm_wide_sat
+__RNvCs3nZAw5m35K3_11b_unbundled14arm_lanes_wrap
