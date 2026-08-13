@@ -1,7 +1,7 @@
 # 97. The strategy space attacked
 
 **Predecessors:** `93_orchard_the_strategy_axis_derived_cold.md` and
-`94_wingo_the_strategy_axis_derived_cold.md`, the unit's cold pair. **Probes:** `97_probes/`, nine of
+`94_wingo_the_strategy_axis_derived_cold.md`, the unit's cold pair. **Probes:** `97_probes/`, eleven of
 them, each committed as it ran.
 
 This is an attacker file in the second half of a 4-4-1, so op's `95` governs its shape: attack is the
@@ -59,8 +59,8 @@ Three claims, in the order they matter.
 **One. `25` section 7's sentence and the cold pair's definitions are not the same proposition, and the
 gap is measurable.** A section is any assignment of a mechanism to each region. An argmin under a
 weighting is a section that some single weighting explains at every region at once. On committed harness
-output, **9 of 15625 sections are rationalisable** by a weighting over the two cost axes that family is
-about, and the gap is not a fact about that family: it is polynomial against exponential in the number
+output, **72 of 15625 sections are rationalisable** by a weighting over the two cost axes that family is
+about, counting generously so that a tie admits either arm, and the gap is not a fact about that family: it is polynomial against exponential in the number
 of regions. So `94` phase two's move of the claim to TWO EXPERTS is moving two different claims under
 one name. What replaces it is in section 2, and it is better than either: the section is the design-tier
 artifact, the weighting is the canon-tier justification, and **rationalisability is exactly the "little
@@ -153,7 +153,30 @@ those are perfectly nameable mechanisms a section may assign. Under the cold pai
 unreachable. That is a second, structurally different way the definitions come apart, and it needs no
 direction sweep, so it does not inherit the thin-band fragility of the count above.
 
-And the count is robust. Several of the nine bands are razor thin, which is why the probe carries a
+**Nine is the strict count and it is not the number to quote.** P1 asks which sections arise as *the*
+argmin under some direction, breaking ties deterministically. The honest question is which are *an*
+argmin, because where two arms cost the same under a weighting the design genuinely may take either.
+`97_probes/p9_the_decider.py` answers that one exactly, and gets **72**.
+
+The two reconcile completely, which is worth more than either number alone. `packed` and `packed-simd`
+carry the same 13 bits, so a weighting that ignores time cannot tell them apart, and every one of the
+`2^6 = 64` mixtures of the two across six regions is weakly admissible. Nine strict sections, one of
+which is already in that 64. The union is 72, and the probe checks that the union **is** the decider's
+set rather than merely matching its size:
+
+```
+  mixtures of those across 6 regions       : 2^6 = 64
+  strict sections, recomputed here         : 9
+  in both sets                             : 1
+  union                                    : 72
+  decider's count                          : 72
+  the union IS the decider's set           : True
+```
+
+**So the figure to carry is 72 of 15625, which is 0.461%.** It is the conservative one and it is still
+three orders below the section count.
+
+And the count is robust. Several of the nine strict bands are razor thin, which is why P1 carries a
 sensitivity pass:
 
 ```
@@ -215,9 +238,20 @@ written, and every new region is a fresh decision with nothing to derive it from
 
 **Nothing currently checks this, and nothing in the panel has named it.** `94`'s W1 bakes the winner per
 region as an associated const, which is what a table of measured results naturally becomes, and a
-hand-written table of that shape is free to be irrational in the technical sense. P1's method is the
-check: a linear feasibility test over the weight vector, which is an offline design-tier act costing
-nothing at compile time.
+hand-written table of that shape is free to be irrational in the technical sense.
+
+**And the check is a decision procedure rather than a nice idea**, which is what
+`97_probes/p9_the_decider.py` establishes. The question is homogeneous linear feasibility: is there a
+non-negative non-zero `w` with `w . cost(chosen, e) <= w . cost(a, e)` for every region and every arm.
+The feasible set sits inside the non-negative orthant so it is pointed, so it is non-trivial exactly when
+it has an extreme ray, and every extreme ray lies on `k - 1` independent tight constraints. The decider
+enumerates those in exact rational arithmetic, with no sampling, no tolerance and no floating point
+comparison, at any number of cost dimensions rather than only at two. It answers four constructed
+three-dimensional cases correctly, including one whose expected answer was mine and wrong.
+
+It runs **where a table is written**, once, offline. Not at compile time and not at run time. That is the
+whole cost of keeping it, which is the bound `small-wins-compound-into-the-program.md` puts on taking a
+win.
 
 **And it is cheap to keep**, which is the bound `small-wins-compound-into-the-program.md` puts on taking
 a win. The check runs where the table is written, not where it is used, so it costs no instruction and
@@ -234,12 +268,19 @@ family where it has been counted.
 
 **F-A. `25` section 7's "named sections over a product of axes" and the cold pair's argmin definitions
 are different propositions, and the set of sections a weighting can produce is a vanishing fraction of
-the sections.**
+the sections: 72 of 15625 counting ties generously, 9 counting strictly.**
 `holds for: regions = 6, arms = 5, cost dimensions = 2, cost source = committed
 bitpack-carrier-width_n* medians and declared bits per element, tolerance in {0, 1, 2, 5, 10}%,
 threads = 1, target features any`
-Evidence: `97_probes/p1_rationalisable_sections.py`, exact enumeration by direction sweep rather than
-sampling.
+Evidence: `97_probes/p1_rationalisable_sections.py` by exact direction sweep and
+`97_probes/p9_the_decider.py` by exact cone feasibility, two methods sharing only their input, reconciled
+as a set identity rather than as a matching count.
+
+**F-A2. Rationalisability is decidable exactly, at any number of cost dimensions, by enumerating the
+extreme rays of a pointed cone in rational arithmetic.**
+`holds for: cost dimensions in {2, 3}, arms in {3, 5}, regions in {2, 6}, arithmetic exact rational`
+Evidence: `97_probes/p9_the_decider.py`, agreeing with the independent sweep on the committed data and
+answering four constructed cases correctly.
 
 **F-B. The gap is polynomial against exponential in the number of regions, so it is a property of what
 a weighting is rather than of any dataset.**
@@ -387,6 +428,31 @@ what `the-test-gate.md` names, so it was replaced with the whole table. The muta
 assertions can fail: dropping one coordinate of the union gives `error[E0080]: evaluation panicked: the
 join of two demand sets is not their union`.
 
+**And a computed demand costs nothing at the point of use, which is the half `93`'s and `94`'s erasure
+probes do not cover.** Every one of them selects on a demand or a region written literally at the site.
+The whole of this section proposes that the demand set a mixed expression carries is the **output** of a
+join rather than a name anybody wrote, so if reading a computed type costs anything the solver cannot
+fold, the generated lattice has a price at every mixed site.
+
+`97_probes/p8_does_a_computed_demand_erase.rs` compares five entry points at `-O` on
+aarch64-apple-darwin, with the both-demands point given its own distinct arm so a join that collapsed
+onto a generator would land on a different symbol:
+
+```
+entry_joined vs entry_handwritten    identical body   computed demand against a direct call
+entry_joined vs entry_speed          different        must not collapse onto its first operand
+entry_joined vs entry_residency      different        nor onto its second
+entry_joined vs entry_different      different        nor onto an unrelated arm
+
+_entry_joined:
+	b	...arm_both
+```
+
+One instruction. The computed demand reaches its arm exactly as a hand-written call does, and differs
+from all three negative controls. A compile-time assertion pins that the join really lands on the
+both-demands point, and a mutant that makes the join drop a coordinate fails that assertion with
+`error[E0080]` rather than silently making the comparison vacuous.
+
 **Two things this buys that the flat set cannot.**
 
 *Silence is a first-class element.* `40`'s p2 finds that every one of the four named strategies is silent
@@ -400,6 +466,15 @@ is `40` section 6.3's reading made structural instead of interpretive.
 everybody pays" (`93:354-357`). Under the demand lattice, the join of a speed demand and a residency
 demand is the element demanding both, and P4 asserts at compile time that it is not the accuracy demand
 and has lost neither operand's. Nobody asks and nobody pays.
+
+**F-L. A selector reading a demand set computed by the type-level join emits one tail branch, identical
+to a hand-written call to the arm it resolves to, and distinct from the arms either operand resolves to.**
+`holds for: coordinates = 2, arms = 4, target = aarch64-apple-darwin, rustc 1.98.0-nightly (57d06900f),
+edition 2024, opt-level 3, panic = abort, feature gates = 0, no_std, threads any (a compile-time
+artifact), target features baseline`
+Evidence: `97_probes/p8_does_a_computed_demand_erase.rs` with `97_probes/p8_mutant_join_collapses.rs` as
+the negative control. This is a shape, not a price: the compile-time cost of the lattice is unpriced and
+is said to be unpriced.
 
 **F-D. The closure `93` prices as a cost is the free join semilattice on its own generators, so it is
 generated rather than enumerated: `d` names, `2^d - 1` elements, zero unresolvable pairs, and a total
@@ -939,11 +1014,13 @@ else produced. My own probes are exhaustive arithmetic sweeps, compile-time asse
 enumeration over committed medians. Where nothing has been measured I have said unpriced rather than
 reaching for a number.
 
-**I did not price the demand lattice.** P4 establishes that it compiles with no feature gate and that the
-join is total and lawful. It says nothing about what it costs in monomorphisation, in compile time, or in
-emitted code. `94`'s W3 prices the closely related unbundling at eight bytes and one symbol for a fifth
-point, and I did not reproduce that, so the cost of my section 4.1 rests on `94`'s measurement of a
-different encoding. That is a real gap and it is the first thing I would extend.
+**I did not price the demand lattice, and P8 narrows rather than closes that.** P4 establishes that it
+compiles with no feature gate and that the join is total and lawful, and P8 establishes that a computed
+demand reaches its arm in one instruction. Neither says what the lattice costs in **compile time** or in
+monomorphisation breadth, which are how-much questions and belong on the harness. `94`'s W3 prices the
+closely related unbundling at eight bytes and one symbol for a fifth point and I did not reproduce it.
+So the emitted-code side of section 4.1 is established and the build-time side is unpriced, and that word
+is used deliberately.
 
 **Everything in P2 and P3 is a model width.** `W in {4, 5, 6}`, because arity-3 exhaustive sweeps are
 `2^(3W)` and the wall arrives within a couple of bits. The criterion in F-F is a structural argument that
