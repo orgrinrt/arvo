@@ -124,6 +124,14 @@ const fn tree_fold8() -> Term {
     t
 }
 
+const fn three(a: i128, b: i128, c: i128) -> [i128; NV] {
+    let mut xs = [0i128; NV];
+    xs[0] = a;
+    xs[1] = b;
+    xs[2] = c;
+    xs
+}
+
 const fn smin(w: u32) -> i128 {
     -(1i128 << (w - 1))
 }
@@ -227,7 +235,7 @@ const IMPL_CHECK: bool = {
             while x1 <= hi {
                 let mut x2: i128 = 0;
                 while x2 <= hi {
-                    let xs = [x0, x1, x2, 0, 0, 0, 0, 0];
+                    let xs = three(x0, x1, x2);
                     if eval(&a, &xs, w) != eval(&b, &xs, w) {
                         brute = false;
                     }
@@ -252,7 +260,7 @@ const IMPL_CHECK: bool = {
             while y1 <= hi {
                 let mut y2: i128 = lo2;
                 while y2 <= hi {
-                    let ys = [y0, y1, y2, 0, 0, 0, 0, 0];
+                    let ys = three(y0, y1, y2);
                     if eval(&a, &ys, w) != eval(&b, &ys, w) {
                         brute2 = false;
                     }
@@ -277,7 +285,7 @@ const _: () = assert!(IMPL_CHECK, "the box criterion disagreed with brute force 
 /// the law is false at width 64 on the straddling window, witnessed, computed
 /// independently of the criterion
 const STRADDLE_WITNESS_FALSIFIES: bool = {
-    let xs = [smax(W), smax(W), smin(W), 0, 0, 0, 0, 0];
+    let xs = three(smax(W), smax(W), smin(W));
     eval(&left_fold(3), &xs, W) != eval(&right_fold(3), &xs, W)
 };
 const _: () = assert!(

@@ -3,25 +3,13 @@ rustc 1.98.0-nightly (57d06900f 2026-05-27)
 host: aarch64-apple-darwin
 
 === default: declared window [0, MAX], admissible, n = 8 ===
-ACCEPT (rustc exit 0) in 0.46s
+ACCEPT (rustc exit 0) in 0.50s
 
 === --cfg straddle: declared window [MIN, MAX] ===
-REFUSE (rustc exit 1) in 0.36s
+REFUSE (rustc exit 1) in 0.41s
 error[E0080]: evaluation panicked: the declared operand window straddles zero, so both clamps are reachable and the box criterion has no hypothesis
 error: aborting due to 1 previous error
 
 === --cfg unchecked_straddle: admissibility check removed (negative control) ===
-ACCEPT (rustc exit 0) in 0.45s
+ACCEPT (rustc exit 0) in 0.47s
 
-Reading of the last one. It ACCEPTS, and accepting is the finding: with the
-window hypothesis removed, the box criterion LICENSES fold reassociation on a
-straddling window, and the same file asserts at compile time that the law is
-false at width 64 with witness (MAX, MAX, MIN). That is 82's straddling
-divergence reproduced as a compiled consequence of dropping the hypothesis.
-
-The rung-0 check additionally asserts, at compile time, that on a straddling
-window at widths 2 to 4 brute force says FALSE while the criterion says TRUE,
-so the control cannot silently stop controlling.
-
-Seconds are an ad-hoc quick spike with no substance. Accept and refuse are the
-results.
