@@ -1,4 +1,4 @@
-# Dispatcher note: twelve validators that were written and never run, and a correction to `41`
+# Dispatcher note: fourteen validators that were written and never run, and a correction to `41`
 
 **Position:** after `95`, during the strategy-axis unit's cold pair. **Author:** the dispatching agent.
 **Standing:** a measurement and a fix, not a design finding. Carries no authority over any open
@@ -12,8 +12,15 @@ the facts support.
 
 `92` reported, incidentally to its own question, that thirteen bench variant crates define a
 `validate_output` the harness never calls, because the harness only calls it when a variant declares
-`outputs_may_differ`, and exactly one does. That is correct, and the mechanism is now established
-precisely.
+`outputs_may_differ`, and exactly one does. The mechanism is correct and is now established precisely.
+**The count was low, in `92` and in the first version of this note, and both were low the same way.**
+
+`grep -l "fn validate_output" */src/lib.rs` returns thirteen. Grepping for the property rather than for
+one filename returns **fifteen crates**: `bitpack-contend-shared` and `bitpack-write-contend-shared`
+keep their `Routine` in `src/routine.rs`, so a `lib.rs`-scoped search cannot see them. Exactly one
+crate, `satfold-shared`, declares `outputs_may_differ`. **So fourteen crates have a validator that has
+never run, not twelve.** Found by an independent reviewer of the upstream fix, which is the second time
+in this panel a count taken from one filename pattern has been low.
 
 `mockspace-bench-harness` at the pinned revision `084e780`, `bench-harness/src/validation.rs:105-113`:
 
@@ -40,9 +47,9 @@ comparison unless `outputs_may_differ` is true", and `bench-core/src/lib.rs:111-
 sentences describe two checks that run independently. The harness gated one on the other.
 
 Consequence: a routine that declares a validator **and** expects its arms to agree byte-for-byte gets
-the validator silently dropped. That is the common case, and it is the case all twelve are in.
+the validator silently dropped. That is the common case, and it is the case all fourteen are in.
 
-## The twelve are not decorative
+## The fourteen are not decorative
 
 They are the strongest fidelity checks in this repository, and none of them has ever executed:
 
@@ -54,12 +61,17 @@ They are the strongest fidelity checks in this repository, and none of them has 
 - `quantiser-radix-shared` bounds every significand by the format range and names a carry-out or
   alignment defect when one escapes.
 
-The full list, by `grep -l "fn validate_output" */src/lib.rs` in `mock/benches/variants`:
+The full list, by `grep -rl "fn validate_output"` under `mock/benches`, one line per crate:
 `bitpack-carrier-shared`, `bitpack-footprint-shared`, `bitpack-plan-shared`, `bitpack-shared`,
 `bitpack-wide-shared`, `quantiser-fadd-shared`, `quantiser-radix-shared`, `satfold-shared`,
 `structural-decomposition`, `spectral-bisection`, `warm-clamp-shared`, `warm-container-shared`,
-`wide-rung-shared`. Thirteen; `satfold-shared` is `92`'s own and is the one that declares
+`wide-rung-shared`, and the two a `lib.rs` grep misses, `bitpack-contend-shared` and
+`bitpack-write-contend-shared`. Fifteen; `satfold-shared` is `92`'s own and is the one that declares
 `outputs_may_differ`, so it is the one that ran.
+
+**Several of them do exercise their validator from their own in-crate unit tests** (for instance
+`bitpack-contend-shared/src/tests.rs:167`), so the logic is not untested. It is uninvoked by the
+harness, which is a different and narrower claim than "never checked".
 
 ## The fix, upstream
 
@@ -76,7 +88,7 @@ assertion failed: validation_plan(false, None).per_variant
 test result: FAILED. 6 passed; 1 failed
 ```
 
-**Expect red on the first run of any of the twelve.** A validator that fires is reporting a defect that
+**Expect red on the first run of any of the fourteen.** A validator that fires is reporting a defect that
 was already there and was invisible, not a regression introduced by turning it on.
 
 ## The correction to `41`
