@@ -1011,9 +1011,10 @@ above it. I used a different family and did not depend on it.
 ## 11. What I did not do, and what I could not settle
 
 **I ran no benchmark.** Every timing figure in this file is read from committed harness output somebody
-else produced. My own probes are exhaustive arithmetic sweeps, compile-time assertions, and one
-enumeration over committed medians. Where nothing has been measured I have said unpriced rather than
-reaching for a number.
+else produced, in two families: `bitpack-carrier-width_n*` for sections 2 and 10, and
+`warm-clamp-arity-w13_n*` for section 5. My own probes are exhaustive arithmetic sweeps, compile-time
+assertions, one emitted-assembly comparison, and an exact decider. Where nothing has been measured I have
+said unpriced rather than reaching for a number.
 
 **I did not price the demand lattice, and P8 narrows rather than closes that.** P4 establishes that it
 compiles with no feature gate and that the join is total and lawful, and P8 establishes that a computed
@@ -1023,9 +1024,11 @@ closely related unbundling at eight bytes and one symbol for a fifth point and I
 So the emitted-code side of section 4.1 is established and the build-time side is unpriced, and that word
 is used deliberately.
 
-**Everything in P2 and P3 is a model width.** `W in {4, 5, 6}`, because arity-3 exhaustive sweeps are
-`2^(3W)` and the wall arrives within a couple of bits. The criterion in F-F is a structural argument that
-would extend, and I claim it only where I swept it, per I13. The one place I state a closed form (P2b) I
+**Everything in P2 and P3 is a model width.** P2 at `W in {4, 5, 6}` and P3 at `W in {5, 6}`, because
+arity-3 exhaustive sweeps are `2^(3W)` and the wall arrives within a couple of bits. P7 reaches `w = 7`
+only because it predicts against somebody else's already-computed rows rather than sweeping them again.
+The criterion in F-F is a structural argument that would extend, and I claim it only where I swept it,
+per I13. The one place I state a closed form (P2b) I
 checked it at a width I did not otherwise use.
 
 **On the bench corpus specifically.** I read `bitpack-carrier-width_n*` and `warm-clamp-arity-w13_n*`
