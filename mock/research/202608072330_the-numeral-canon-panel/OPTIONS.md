@@ -1951,6 +1951,44 @@ higher arity, with no lower-arity statement implying it. This is the kind I7 is 
 which is decidable by inspection rather than by measurement, and no file in this panel has asked it of
 any law it measured.
 
+### Q41. Whether the strategies are partially ordered by how many chain-level laws they honour
+
+Offered by `76:200-210` as an explicit, falsifiable candidate, and **never engaged by any later member
+of the derived-laws unit**. The unit's consolidation `90` dropped it, and `91`'s independent check found
+it missing, which is how it got here. Restored from `76` directly rather than from any account of it.
+
+`76`'s own words: one candidate shape is that "Precise's congruence is, in the cases where the underlying
+arithmetic actually agrees, a refinement of (at least as strong as) Hot's, because Precise is defined to
+preserve chain-level facts Hot is explicitly licensed to give up. That would make 'how many chain-level
+laws are honored' a genuine partial order with Precise at the top and Hot's honored set a subset of it
+wherever they overlap."
+
+`76` marks it as its own synthesis, states plainly that it is "not stated anywhere in the premises", and
+says it is "offered as a candidate the panel might want to test the same way I tested the associativity
+claims, not as a result." It is carried here at exactly that weight.
+
+**(a) The order is real and is a refinement order.** Testable the way `76` tested its associativity
+claims: measure which chain-level laws each axis assignment honours and check whether the honoured sets
+nest. If they do, the design gains a genuine partial order and a strategy's position in it is a derived
+fact rather than a stated one.
+
+**(b) The order is real but is not a refinement order**, because the honoured sets overlap without
+nesting. Then there is a structure and it is not a ladder, which is a different and possibly more useful
+answer than either pole.
+
+**(c) There is no order.** The honoured sets are unrelated, and each axis assignment's law set is its own
+thing. Consistent with a reading where the axes are genuinely independent.
+
+**Two things a later reader needs, and neither weakens the candidate.** `76` motivated it partly from
+I8's second half, which op has since said was "filler noise I mused on the spot" and which is no longer
+part of that intent (`88` section 2). **The candidate does not rest on it**: it rests on I7 and I5, that
+the accuracy-first intent preserves chain-level facts the speed-first intent is licensed to give up, and
+both of those stand. And `76` names the presets, which are open per I1, so the question is about whatever
+axis assignments exist rather than about four names.
+
+**Where this belongs.** It is a strategy-axis question, and op has named the strategy axis as the next
+unit (`87` section 3). It goes into that unit's inbox.
+
 ## Standing
 
 Nothing in this file is evidence, and nothing in it is a decision. It is the working set.

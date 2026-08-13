@@ -343,9 +343,20 @@ the grade is not a property of the policy alone, the declared window is a furthe
 `82`'s assigned question was `80`'s cheapest-next-instance: can a measured trajectory region become a
 declaration. The answer is per region, and the discriminator is **closure**: a trajectory condition
 lifts into a declaration over the operand set exactly when the condition survives the set's closure
-under the operations the law is about (`82` section 12, stated as one-directional sufficiency, with the
-member's own honesty note that its three instances, `77:250`, `76:370-372` and its own box
-characterisation, share an author and a framing). The distinction itself predates the unit: the register's reachability entry describes `42`'s condition
+under the operations the law is about (`82` section 12, stated as one-directional sufficiency).
+
+**Repaired after `91`, and the original sentence is in the commit that landed this file.** It said `82`'s
+"three instances, `77:250`, `76:370-372` and its own box characterisation, share an author and a framing",
+which inverts the epistemic picture and is false on its face, since those name three different personas.
+Restored from `82` directly: its own honesty note at `82:951-953` says **its own three measured instances**
+are the ones sharing one author and one framing, and it separately reports at `82:184-192` that `77:250`
+and `76:370-372` reached the same criterion for a different question, and that it reached its box
+characterisation before reading either, which is why it claims to be a third instance rather than
+agreement with them. So the cross-persona convergence is real and the shared-author caveat attaches to a
+different set. R8 stays low confidence for its own reasons and nothing downstream cites it for an
+independence count.
+
+The distinction itself predates the unit: the register's reachability entry describes `42`'s condition
 over a fold's **declared** operand range, and "declared" is the word that moves a trajectory fact across
 the binding-time boundary (`OPTIONS.md:1113-1115`, read by `80` section 6). P4's condition does
 not survive closure, so its declared-range lifting reaches only the degenerate sub-cases: the maximal
@@ -573,6 +584,28 @@ Per `RULES.md:189-210`, the options no member resolved are the ones a compressio
 so this pass is separate from the results and lists each with its costs and discriminators. The
 register's unit-four entries are at `OPTIONS.md:1870-1953`.
 
+**Added after `91`, which found this pass had lost one. The original section is in the commit that
+landed this file, and this entry is restored from `76` directly rather than from any account of it.**
+
+**Q41, whether the strategies are partially ordered by how many chain-level laws they honour.** Offered
+by `76:200-210` as an explicit falsifiable candidate and **engaged by no later member of this unit**.
+`76`'s shape: the accuracy-first congruence is, where the underlying arithmetic agrees, a refinement of
+the speed-first one, because the first preserves chain-level facts the second is licensed to give up,
+which would make "how many chain-level laws are honoured" a genuine partial order with the honoured sets
+nesting. `76` marks it as its own synthesis, not stated in the premises, and offers it explicitly as a
+candidate to be tested the way it tested its associativity claims. Alternatives: the order is real and
+nests; the order is real and the sets overlap without nesting, which is a structure and not a ladder;
+there is no order at all. What would distinguish them: measure which chain-level laws each axis
+assignment honours and check whether the sets nest, which is a sweep of the kind this unit has run
+repeatedly.
+
+Two things a later reader needs and neither weakens it. `76` motivated it partly from I8's second half,
+which op has since said was musing and is no longer part of that intent (`88` section 2); **the candidate
+does not rest on that**, it rests on I7 and I5, which stand. And `76` names the presets, which are open
+per I1, so it is a question about whatever axis assignments exist rather than about four names. It is a
+strategy-axis question and op has named the strategy axis as the next unit (`87` section 3), so it belongs
+in that unit's inbox, and it is now carried at `OPTIONS.md` Q41 so it does not depend on this file alone.
+
 **Q38, where a law verdict's truth is established** (`OPTIONS.md:1880-1906`). Route (a), exhaustive in
 the compiler, stands with its frontier restated per R4: reaches model widths, produces the licensing
 verdict at shipped widths only inside restricted regions, and its cost lines are facts about a
@@ -656,6 +689,15 @@ predicated on overflow policy as a law dimension rather than on a marker name (R
 hands the strategy unit: the resolve-operator laws (`77` probe 3), I13's arms as the mechanism a
 strategy's weighting would select among, and the observation that `(operation, strategy)` was already
 too coarse before the axis was even settled (R1).
+
+**Two additions after `91`, both restored from source.** The handoff must also carry **Q41**, `76`'s
+untested candidate that the strategies are partially ordered by how many chain-level laws they honour,
+which is section 5's added entry and which this unit raised and never engaged. And it must carry op's
+own structural answer at `88` section 1, which this file had cited only for its methodological lesson:
+a strategy is **a preset naming a point in an axis space, with a weighting-over-measurements reading
+mixed in**, both rather than either, and op flagged his own difficulty wording it. That is the strategy
+unit's starting shape and it came from op rather than from any member, so it outranks everything else in
+this paragraph.
 
 **The format-concept topic.** This unit instantiated and bounded that topic's law frame: C6's H1
 became a const predicate over a declaration (`82` section 7 on `79:112-121`), C6's scope boundary was
