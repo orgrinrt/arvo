@@ -208,6 +208,21 @@ He did not mark that separately as ratified, so it is recorded here as his instr
 for the RATIFIED rung. It replaced a proposal of the coordinator's that a predicate should write
 `unmeasured` on a dimension nobody checked. It should write nothing there.
 
+**Op further specified what "const predicates" reaches**, on 2026-08-13, answering a question about the
+phrase in his own entry. Verbatim, and recorded in full with its context at
+`83_op_the_predicate_is_whatever_is_const.md`:
+
+> Let me just add there that the above collapses to whatever is available at const time: Making the
+> predicates const expressions for example, allows using const functions and pipe in some data that is
+> outside the typestate. However, being const time expressions, typestate is usable there too
+
+He did not mark this separately as ratified either, so it too is his instruction rather than a second entry
+on the rung. What it settles: the admissible category is **whatever is available at const time**, which is
+wider than the typestate and reaches const functions and const data from outside it, with the typestate
+usable inside a const expression rather than being the only source. It was answering a two-way fork the
+panel had built, typestate against values flowing through, and it rejected the fork rather than picking a
+side. What it does not settle is what happens to a condition that is genuinely not const-available.
+
 **The scope of this entry is those two paragraphs.** Op ratified the call and said explicitly that it means
 no more than he said. Anything further, including the dimension list, the `any` against `unmeasured`
 distinction, and the exactness bar for a predicate, is elaboration in
