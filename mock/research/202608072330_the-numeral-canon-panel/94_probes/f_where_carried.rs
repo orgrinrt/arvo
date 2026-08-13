@@ -61,7 +61,11 @@ impl<const W: u32, P: Policy> Num<W, P> {
         self.0
     }
     pub const fn limit() -> u32 {
-        if W >= 32 { u32::MAX } else { (1u32 << W) - 1 }
+        if W >= 32 {
+            u32::MAX
+        } else {
+            (1u32 << W) - 1
+        }
     }
 }
 
@@ -119,7 +123,11 @@ pub fn arm_wide_sat(v: &[u32], limit: u32) -> u32 {
     for &x in v {
         a += x as u64;
     }
-    if a > limit as u64 { limit } else { a as u32 }
+    if a > limit as u64 {
+        limit
+    } else {
+        a as u32
+    }
 }
 #[inline(never)]
 pub fn arm_wide_wrap(v: &[u32], limit: u32) -> u32 {
@@ -145,7 +153,11 @@ pub fn arm_lanes_sat(v: &[u32], limit: u32) -> u32 {
         a += v[i] as u64;
         i += 1;
     }
-    if a > limit as u64 { limit } else { a as u32 }
+    if a > limit as u64 {
+        limit
+    } else {
+        a as u32
+    }
 }
 #[inline(never)]
 pub fn arm_lanes_wrap(v: &[u32], limit: u32) -> u32 {

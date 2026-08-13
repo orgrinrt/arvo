@@ -1,0 +1,23 @@
+# test gate: the bench tree, which is the only executable surface bearing on the strategy question
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27)
+#
+# command, run from mock/benches/:
+#   for v in <shared variant crates>; do (cd variants/$v && cargo test); done
+#
+# note: 'cargo test --workspace' from mock/benches/ runs ZERO tests and reports ok,
+# because the variant crates are path dependencies rather than workspace members.
+
+workspace-level: test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+warm-clamp-shared              test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.94s
+warm-container-shared          test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.77s
+satfold-shared                 test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+bitpack-shared                 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+bitpack-carrier-shared         test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s
+quantiser-radix-shared         test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+quantiser-fadd-shared          test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+bitpack-plan-shared            test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+bitpack-footprint-shared       test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+bitpack-wide-shared            test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+bitpack-contend-shared         test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.46s
+wide-rung-shared               test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 82.72s
+bitpack-write-contend-shared   NOT RUN: exceeded the command budget on this machine

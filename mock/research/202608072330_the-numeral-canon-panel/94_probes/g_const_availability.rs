@@ -49,13 +49,21 @@ pub fn arm_lanes(v: &[u32]) -> u32 {
 /// selection is a monomorphisation-time constant.
 #[inline(always)]
 pub fn fold_const<const ARITY: usize>(v: &[u32; ARITY]) -> u32 {
-    if ARITY >= 16 { arm_lanes(v) } else { arm_seq(v) }
+    if ARITY >= 16 {
+        arm_lanes(v)
+    } else {
+        arm_seq(v)
+    }
 }
 
 /// The arity is a runtime fact. Same selection rule, same arms.
 #[inline(always)]
 pub fn fold_runtime(v: &[u32]) -> u32 {
-    if v.len() >= 16 { arm_lanes(v) } else { arm_seq(v) }
+    if v.len() >= 16 {
+        arm_lanes(v)
+    } else {
+        arm_seq(v)
+    }
 }
 
 #[unsafe(no_mangle)]
