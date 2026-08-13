@@ -1,0 +1,129 @@
+committed harness output read, not measured
+source: mock/benches/bitpack-carrier-width_n*.csv
+
+cost table: (ns per element, bits per element)
+region n                             d16                         d32                         d64                      packed                 packed-simd
+16384                   0.0855 ns / 16 b            0.0843 ns / 32 b            0.1204 ns / 64 b            0.1292 ns / 13 b            0.1200 ns / 13 b
+131072                  0.0858 ns / 16 b            0.0848 ns / 32 b            0.0969 ns / 64 b            0.1285 ns / 13 b            0.1204 ns / 13 b
+1048576                 0.0861 ns / 16 b            0.0864 ns / 32 b            0.1617 ns / 64 b            0.1272 ns / 13 b            0.1200 ns / 13 b
+2097152                 0.0874 ns / 16 b            0.0939 ns / 32 b            0.1873 ns / 64 b            0.1280 ns / 13 b            0.1201 ns / 13 b
+4194304                 0.0887 ns / 16 b            0.1030 ns / 32 b            0.1701 ns / 64 b            0.1307 ns / 13 b            0.1223 ns / 13 b
+8388608                 0.0877 ns / 16 b            0.0917 ns / 32 b            0.1493 ns / 64 b            0.1306 ns / 13 b            0.1217 ns / 13 b
+
+regions            : 6
+arms per region    : 5
+SECTIONS, all      : 5^6 = 15625
+tie directions     : 29
+SECTIONS, rationalisable by a non-negative weighting : 9
+ratio              : 9 / 15625 = 0.057600%
+
+the rationalisable sections, with the direction band each holds on
+(theta = 0 is a pure time objective, theta = pi/2 a pure residency one)
+  theta in [0.0000, 0.0000] rad
+      n=16384      -> d32
+      n=131072     -> d32
+      n=1048576    -> d16
+      n=2097152    -> d16
+      n=4194304    -> d16
+      n=8388608    -> d16
+  theta in [0.0001, 0.0001] rad
+      n=16384      -> d32
+      n=131072     -> d16
+      n=1048576    -> d16
+      n=2097152    -> d16
+      n=4194304    -> d16
+      n=8388608    -> d16
+  theta in [0.0001, 0.0066] rad
+      n=16384      -> d16
+      n=131072     -> d16
+      n=1048576    -> d16
+      n=2097152    -> d16
+      n=4194304    -> d16
+      n=8388608    -> d16
+  theta in [0.0111, 0.0111] rad
+      n=16384      -> d16
+      n=131072     -> d16
+      n=1048576    -> d16
+      n=2097152    -> packed-simd
+      n=4194304    -> d16
+      n=8388608    -> d16
+  theta in [0.0113, 0.0113] rad
+      n=16384      -> d16
+      n=131072     -> d16
+      n=1048576    -> d16
+      n=2097152    -> packed-simd
+      n=4194304    -> packed-simd
+      n=8388608    -> d16
+  theta in [0.0113, 0.0113] rad
+      n=16384      -> d16
+      n=131072     -> d16
+      n=1048576    -> packed-simd
+      n=2097152    -> packed-simd
+      n=4194304    -> packed-simd
+      n=8388608    -> d16
+  theta in [0.0114, 0.0114] rad
+      n=16384      -> d16
+      n=131072     -> d16
+      n=1048576    -> packed-simd
+      n=2097152    -> packed-simd
+      n=4194304    -> packed-simd
+      n=8388608    -> packed-simd
+  theta in [0.0115, 0.0115] rad
+      n=16384      -> packed-simd
+      n=131072     -> d16
+      n=1048576    -> packed-simd
+      n=2097152    -> packed-simd
+      n=4194304    -> packed-simd
+      n=8388608    -> packed-simd
+  theta in [0.0125, 0.7927] rad
+      n=16384      -> packed-simd
+      n=131072     -> packed-simd
+      n=1048576    -> packed-simd
+      n=2097152    -> packed-simd
+      n=4194304    -> packed-simd
+      n=8388608    -> packed-simd
+
+arms selected by SOME weighting somewhere : 3 of 5
+   d16, d32, packed-simd
+arms selected by NO weighting anywhere    : 2
+   d64, packed
+
+per region, how many arms any weighting can reach:
+  n=16384      3 of 5 : d16, d32, packed-simd
+  n=131072     3 of 5 : d16, d32, packed-simd
+  n=1048576    2 of 5 : d16, packed-simd
+  n=2097152    2 of 5 : d16, packed-simd
+  n=4194304    2 of 5 : d16, packed-simd
+  n=8388608    2 of 5 : d16, packed-simd
+
+upper bound if the regions were independent : 144
+actual rationalisable count                 : 9
+the gap is the consistency the weighting imposes ACROSS regions:
+  a section may pick a reachable arm in every region and still not be
+  the argmin of any single weighting, because the direction that
+  justifies one region's pick can contradict another's.
+
+======================================================================
+SENSITIVITY
+======================================================================
+
+pass one: Pareto dominance per region (no direction sweep involved)
+  n=16384      dominated: d64, packed
+  n=131072     dominated: d64, packed
+  n=1048576    dominated: d32, d64, packed
+  n=2097152    dominated: d32, d64, packed
+  n=4194304    dominated: d32, d64, packed
+  n=8388608    dominated: d32, d64, packed
+  dominated in EVERY region: d64, packed
+  such an arm is unreachable under the weighting definition and
+  perfectly nameable under the section definition.
+
+pass two: rationalisable within a tolerance
+  tolerance   0.0%  rationalisable sections:      9 of 15625  (0.0576%)
+  tolerance   1.0%  rationalisable sections:    134 of 15625  (0.8576%)
+  tolerance   2.0%  rationalisable sections:    134 of 15625  (0.8576%)
+  tolerance   5.0%  rationalisable sections:    744 of 15625  (4.7616%)
+  tolerance  10.0%  rationalisable sections:    760 of 15625  (4.8640%)
+
+even at a 10%% tolerance, which is far past any noise floor in this
+family, the admissible sections remain a small fraction of all sections.
