@@ -474,3 +474,22 @@ extractors. Nothing here is priced; no bench ran.
 **Nothing here settles anything.** The mode is explore. The first thing worth attacking is item 2, and
 the second is the O-J' framing in section 9, which is one file's reading of what two data points make a
 pattern.
+
+## 11. Addendum: op's `87`, read after everything above was committed
+
+Op's `87` landed in the tree between this file's commit and this addendum; nothing above is rewritten, and
+its own closing line already records the timeline: `86` was dispatched before he spoke and "nothing here
+bears on its assigned question, so it has not been interrupted" (`87:121-122`). Every probe and every
+section above was built and committed before `87` existed. Three notes for the record:
+
+- **Section 1 of `87` (the canon is written once at the end) changes what my section 9 feeds.** The
+  corrections and the O-J' framing reach the register through the topic's consolidation as before, and
+  that consolidation is now input to one final writing rather than a canon candidate in miniature. Nothing
+  in this file needs restating under that shape; the predicate-carried findings are exactly the form the
+  final writing wants.
+- **Section 3 of `87` names the strategy axis as the likely next unit** and observes that no file has
+  tested whether four is right. Nothing in this file presumes any strategy set: every finding is
+  predicated on `policy = wrap` or `policy = saturate` as an overflow-policy fact, which is a dimension of
+  the law, not a marker name, and survives any reshaping of the strategy set.
+- **Section 2 of `87` (no PR until the canon exists)** matches this dispatch's conduct: everything here is
+  committed to `feat/arvo-shape-topic` and nothing was PR'd.
