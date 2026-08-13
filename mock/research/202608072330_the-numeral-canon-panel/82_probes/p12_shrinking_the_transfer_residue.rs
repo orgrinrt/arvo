@@ -140,7 +140,11 @@ fn main() {
             (maxv + 1) * (maxv + 1) * (maxv + 1),
             lf,
             rf,
-            if ctl < 0 { "not run".to_string() } else { ctl.to_string() }
+            if ctl < 0 {
+                "not run".to_string()
+            } else {
+                ctl.to_string()
+            }
         );
     }
 
