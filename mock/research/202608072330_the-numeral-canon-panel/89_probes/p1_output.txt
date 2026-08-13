@@ -1,0 +1,39 @@
+p1: the min-form lemma and the degree criterion for monotone unsigned saturating laws
+
+battery: 731 term pairs x widths 1..=13
+
+THEOREM A (min-form), checked at every point of every domain:
+  (term, x, width) evaluations compared: 23950484
+  sat(t,x,w) != min(exact,MAX):          0
+
+THEOREM B (degree criterion) against exhaustive sweeps:
+  (pair, width) verdicts:                9503
+  true 3887, false 5616
+  criterion vs sweep mismatches:         0
+  returned witnesses that fail:          0
+  cases exercising proof branch 1 (no clamp at D): 1439
+  cases exercising proof branch 2 (clamp at D):    8064
+
+  THE FALSIFICATION TEST: a first witness strictly above D would
+  refute Theorem B outright.
+  false cases whose sweep-first-witness  >  D: 0
+  false cases whose sweep-first-witness ==  D: 507
+  max (first witness / D) observed:            1.0000
+
+MUTATION CONTROLS (the battery must notice a weakened criterion):
+  control: 0..=D                   mismatches: 0
+  0..D (one short)                 mismatches: 533
+  1..=D+1 (skip zero)              mismatches: 1647
+  D+1 points spread over domain    mismatches: 685
+  0..=D/2                          mismatches: 377
+
+width-64 verdicts by the degree criterion (evaluations = 2*(D+1)):
+  E_63  x^63 == x^64                 FALSE  witness Some(2)   D = 64, term-node ops ~ 8125
+  E_64  x^64 == x^65                 TRUE   witness None   D = 65, term-node ops ~ 8382
+  C-mem x*C == x*(C+1), C = 2^63-1   FALSE  witness Some(1)   D = 1, term-node ops ~ 6
+
+86's p5 spent 516,033 / 616,999 counted evaluation steps on E_63 / E_64 at width 64.
+The degree criterion spends 2*(D+1) term evaluations: 130 evaluations of a 63-op term
+and 130 of a 64-op term, ~8.2k node operations, for the identical verdicts.
+
+all checks passed
