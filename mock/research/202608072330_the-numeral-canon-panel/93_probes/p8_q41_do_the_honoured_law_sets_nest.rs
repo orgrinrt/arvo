@@ -86,7 +86,11 @@ impl Cfg {
             Pol::Wrap => {
                 let m = 1i128 << self.w;
                 let r = x.rem_euclid(m);
-                if r > self.hi() { r - m } else { r }
+                if r > self.hi() {
+                    r - m
+                } else {
+                    r
+                }
             }
         }
     }
@@ -98,7 +102,11 @@ impl Cfg {
     /// failure rate and not the boundary.
     fn mul(&self, a: i128, b: i128) -> i128 {
         let p = a * b;
-        let s = if p >= 0 { p >> self.f } else { -((-p) >> self.f) };
+        let s = if p >= 0 {
+            p >> self.f
+        } else {
+            -((-p) >> self.f)
+        };
         self.fit(s)
     }
     /// The representation of one, which is what a multiplicative identity has
@@ -216,7 +224,10 @@ fn main() {
     println!();
     print!("{:<22}", "");
     for (l, _) in &sets {
-        print!(" {:>10}", l.split('/').take(2).collect::<Vec<_>>().join("/"));
+        print!(
+            " {:>10}",
+            l.split('/').take(2).collect::<Vec<_>>().join("/")
+        );
     }
     println!();
     let mut all_comparable = true;
@@ -278,7 +289,11 @@ fn main() {
             } else {
                 "neither contains the other"
             };
-            println!("  {sg:<8} F={f}: {rel}  ({} against {})", wrap.len(), sat.len());
+            println!(
+                "  {sg:<8} F={f}: {rel}  ({} against {})",
+                wrap.len(),
+                sat.len()
+            );
         }
     }
     println!();
