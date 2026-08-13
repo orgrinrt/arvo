@@ -49,6 +49,12 @@ produces mismatches. `p5` asserts the inadmissible-window control still breaks t
 control cannot silently stop controlling. `p6` puts that same assertion **inside the const gate**, so a
 compile is evidence the control is live.
 
+Every probe was rebuilt from its **committed, formatter-touched** source after the last commit and
+re-run: the five runtime instruments run and every assert in them passes, and the two const gates
+reproduce all eight accept and refuse outcomes. That order matters, because the pre-commit autofix runs
+rustfmt on staged sources and a check performed before it certifies a file that is not the one that
+landed (`cl-claim-sketch-discipline.md`).
+
 **Read end to end:** `INTENTS.md`, `RULES.md`, `83`, `85`, `87`, `88`, `86` in full, `84` in full,
 `OPTIONS.md` Q38 through Q40 (`OPTIONS.md:1880-1953`), `DROPLIST.md:205-260`. **Read at the source in
 named ranges:** `82` sections 7, 8.5, 9 heads (`82:269-380`, `82:455-480`), `79` section 2
@@ -489,14 +495,15 @@ one that does not (89 section 1).
 
 **F3. The criterion holds at every arity, over any admissible domain, with the degree box as the test
 set.** `policy = saturate (unsigned), F = 0, ops = {sat add, sat mul}, constants nonnegative
-clamp-embedded, arity = 2 and 3 measured (per-variable degree 1..=4), widths = 1..=5 (arity 2) and
-1..=4 (arity 3) exhaustive, threads = 1, features any`. 3,006 verdicts, zero mismatches; box-shrinking
-mutation controls produce 691 and 345 mismatches; 1,142 and 575 cases exercise the clamped-set branch.
-Direct falsification searches: 770,006 term pairs at depth 2, widths 2 and 3 (`p4`); and at depth 3
-arity 2 plus depth 2 arity 3, per-variable degree <= 6, widths 2..=4, 75,725 pair-width cases of which
-5,451 agree on the box and every one of those has a clamped box point (`p10`). Zero true on the box and
-false in the domain in either. The arity-any extent is the theorem's claim, an argument rather than a measurement, stated
-as such, with the proof in section 5. **This removes the univariate perimeter of `86`'s F7.**
+clamp-embedded, arity = 2 and 3 measured, per-variable degree 1..=6, widths = 1..=5 (arity 2) and
+1..=4 (arity 3) exhaustive, threads = 1, features any`. 3,006 verdicts against exhaustive sweeps, zero
+mismatches; box-shrinking mutation controls produce 691 and 345 mismatches; 1,142 and 575 cases
+exercise the clamped-set branch. Direct falsification searches: 770,006 term pairs at depth 2, widths 2
+and 3 (`p4`); and 117,780 pair-width cases at depth 3 arity 2 and depth 2 arity 3, of which 5,451 agree
+on the box with every one of those carrying a clamped box point (`p10`). Zero true on the box and false
+in the domain in either. The arity-any extent is the theorem's claim, an argument rather than a
+measurement, stated as such, with the proof in section 5. **This removes the univariate perimeter of
+`86`'s F7.**
 
 **F4. The saturating verdict is a const gate on the pinned toolchain, with fragment membership checked
 rather than claimed, and violating it inverts the verdict rather than degrading it.** `toolchain =
@@ -512,14 +519,17 @@ checker cost exponential in the band.** `toolchain = nightly-2026-05-28, host = 
 encoding as F4, gated width = 64, threads = 1`. Verdict: default accepts through degree 512 (about 1.05
 million node steps), refuses at degree 1024 under `long_running_const_eval`, accepts through degree 4096
 with the allow. Checker: default accepts 16,384 sweep points and refuses 65,536; with the allow, 524,288
-accepted. Seconds are an ad-hoc quick spike with no substance.
+accepted at four laws and 262,144 at one law, with 1,048,576 exceeding the probe's own 400 s cap.
+Seconds are an ad-hoc quick spike with no substance.
 
-**F6. The arity frontier of the box gate is 16,384 box points by default and at least 65,536 with the
-allow, on a fragment and law shape different from `86`'s F3 and with a cheaper per-point cost.**
+**F6. The arity frontier of the box gate is 16,384 box points by default and 262,144 with the allow.**
 `toolchain = nightly-2026-05-28, host = aarch64-apple-darwin, encoding as F4, policy = saturate
 (signed), F = 0, ops = {sat add}, window = [0, MAX] declared, law = fold reassociation, gated width =
-64, threads = 1`. Accept at n = 14, refuse-guard at n = 15, accept with the allow at n = 16. Matching
-`86`'s F3 boundary point for point is evidence the budget is a step count rather than a per-point cost.
+64, threads = 1`. Accept at n = 14 (16,384 points), refuse-guard at n = 15, accept with the allow at
+n = 16 and n = 18, exceeding the probe's own 400 s cap at n = 20. The default-guard boundary coincides
+with `86`'s F3 boundary on the ring fragment, at the same box size; off the guard the two diverge, `86`
+reporting 1,048,576 points accepted in 171.8 s where mine exceeds 400 s. **The mechanism behind the
+coincidence is unestablished** and section 4 names the one-instrument experiment that would settle it.
 
 **F7. Sign uniformity of a declared operand window is the box criterion's own hypothesis, and the
 criterion is wrong outside it.** `policy = saturate (signed), F = 0, ops = {sat add, sat mul} for
