@@ -1,0 +1,19 @@
+P2b. the subtraction control, closed form against exhaustive sweep
+
+  W       predicted        measured  verdict
+  3       75.00000%       75.00000%  exact
+  4       87.50000%       87.50000%  exact
+  5       93.75000%       93.75000%  exact
+  6       96.87500%       96.87500%  exact
+  7       98.43750%       98.43750%  exact
+  8       99.21875%       99.21875%  exact
+
+largest gap over the swept widths: 0.000e+00
+
+`94` section 4.2 reports 99.22%% at W = 8 for wrapping subtraction.
+The closed form gives 1 - 2^-7 = 99.21875%, which is that number.
+
+So the cell `94` cites as evidence that two permissions are independent is
+a fact about subtraction in the integers. Wrapping contributes only the two
+coincidences where 2c vanishes modulo the width. Nothing in it is about the
+overflow policy, and nothing in it needs a permission bit.
