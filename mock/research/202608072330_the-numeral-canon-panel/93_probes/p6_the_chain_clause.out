@@ -1,0 +1,55 @@
+P6. The chain clause
+====================
+
+Model: unsigned fixed point, W = 8 total bits, F = 4 fraction bits.
+Exhaustive over the whole domain for chain length 2 and 3; uniformly
+stepped for 4 and 5, and the step is stated rather than hidden.
+
+PART A. Per-operation rounding against one rounding at the end
+--------------------------------------------------------------
+
+    len        chains      differ    % differ   max abs err
+      2         65536           0        0.0%             0
+      3      16777216     1364059        8.1%           238
+      4     268435456    17908021        6.7%           236
+       (stepped by 2)
+      5    1073741824    53355204        5.0%           239
+       (stepped by 4)
+
+PART B. What the intermediate has to hold
+-----------------------------------------
+
+For the round-once arm to be exact, the intermediate after k
+multiplies is scaled by 2^(k*F) and its integer part can reach the
+product of k values each below 2^(W-F).
+
+    len   intermediate bits     input type bits    fits the input type?
+      2                  16                   8                      no
+      3                  24                   8                      no
+      4                  32                   8                      no
+      5                  40                   8                      no
+      6                  48                   8                      no
+      7                  56                   8                      no
+      8                  64                   8                      no
+
+Reading, and it is the structural point:
+
+The required intermediate width grows LINEARLY in chain length, so
+no fixed input type can hold it past length one. A preset whose
+objective is chain accuracy therefore cannot be implemented by an
+operator that is closed over its operand type. Its multiply must
+return something wider than what it consumed, and a collapse back to
+the declared format has to be a separate, explicit step.
+
+So the strategy is not only choosing a lowering for a fixed operator
+surface. It is choosing WHICH OPERATOR SURFACE EXISTS: closed for a
+preset that rounds per operation, opening into a widening tower for a
+preset that does not. Two presets, two different algebraic objects,
+and the difference shows up in the signature rather than in the
+generated code.
+
+That is a consequence a marker attached to a VALUE cannot carry on
+its own, because the decision is about an EXPRESSION. Something has
+to see the chain: either the operator's result type opens and the
+collapse is written by the consumer, or a staging layer sees the
+whole expression. Both are real designs and they are not the same.
