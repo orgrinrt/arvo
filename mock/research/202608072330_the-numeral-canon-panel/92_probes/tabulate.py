@@ -38,6 +38,22 @@ ARMS = [
     "satfold-gate-false",
 ]
 
+# The arms present in every section a cross-table compares, in the order the
+# findings quote them. `lanes16-3` and the gate arms exist only in the const-gate
+# section, so naming the set explicitly keeps a cross-table from silently losing
+# a column when the main list grows.
+CROSS_ARMS = [
+    "satfold-seq",
+    "satfold-iterfold",
+    "satfold-nolaw",
+    "satfold-lanes4-idx",
+    "satfold-lanes16",
+    "satfold-lanes16-constl",
+    "satfold-lanes64",
+    "satfold-neon",
+    "satfold-neon8",
+]
+
 ROW = re.compile(
     r"\| (satfold-[a-z0-9-]+) \| ([0-9.]+)\s*(ns|us|ms) \| ([^|]*)\| ([^|]*)\| \[([^\]]*)\] \| ([^|]*)\|"
 )
@@ -186,7 +202,7 @@ def main():
         "satfold-length-l1",
         [(i + 1) * 1000 for i in (2, 6, 9, 11)],
         "offset start divided by aligned start, same reduction length",
-        ARMS[:9],
+        CROSS_ARMS,
     )
     cross(
         "satfold-length-l1",
@@ -194,7 +210,7 @@ def main():
         "satfold-length-l1-wrap",
         wrap,
         "saturating divided by wrapping, same arm and reduction length",
-        ARMS[:9],
+        CROSS_ARMS,
     )
 
 
