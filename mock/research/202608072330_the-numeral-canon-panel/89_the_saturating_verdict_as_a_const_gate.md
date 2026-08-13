@@ -13,7 +13,7 @@ const gate, under the pinned toolchain, with no forbidden feature, cheap enough 
 usable to select an arm that erases. Then, in order, whether it extends to signed and to more than one
 variable.
 
-**Probes:** ten committed artifacts in `89_probes/`, each committed with its transcript as it ran and
+**Probes:** eleven committed artifacts in `89_probes/`, each committed with its transcript as it ran and
 before this file. Every gate-shaped construction is `#![no_std]`, const fn, flat const arrays, no
 `alloc`, no `Vec`, no `Box`, no `dyn`, no `TypeId`, no feature gates. The analysis instruments use
 `std`, `Vec` and boxed trees as spike scaffolding, which is instrument plumbing and not design shape,
@@ -235,6 +235,7 @@ it validates the checker, and the checker is one piece of code
 | 8 | 14 | 131,072 | refuse | accept 89.3 s |
 | 16 | 12 | 65,536 | refuse | accept 45.4 s |
 | 1 | 18 | 262,144 | refuse | accept 186.5 s |
+| 1 | 20 | 1,048,576 | refuse | exceeded the probe's own 400 s cap |
 
 **That table's first version measured nothing, and the defect is committed rather than deleted**
 (`89_probes/NOTE_p3_checker_half_first_run.md`). The original swept `E_d` for small `d` at widths above
@@ -255,14 +256,20 @@ transcript that does not.
 | 15 | 32,768 | **refuse** | accept 11.6 s |
 | 16 | 65,536 | refuse | accept 24.8 s |
 | 18 | 262,144 | refuse | accept 103.7 s |
+| 20 | 1,048,576 | refuse | exceeded the probe's own 400 s cap |
 
-**That is `86`'s F3 boundary to the point**, on a different fragment, a different law shape and a
-cheaper per-point cost: default accepts through 16,384 box points and refuses at 32,768, and the allow
-buys the same order it bought there. `86`'s least-certain item 5 says its box budget is "one law shape
-on one host" and that a cheaper law buys a bigger box (`86:459-461`). A cheaper law bought the **same**
-box, which sharpens item 5 in the direction of the budget being a step count rather than a per-point
-cost, and is one more instance of the observation the droplist already carries about the nine-bit wall
-(`DROPLIST.md:234-235`).
+**The default-guard boundary lands on `86`'s F3 boundary exactly**, on a different fragment and a
+different law shape: accept at 16,384 box points, refuse at 32,768. `86`'s least-certain item 5 says its
+box budget is "one law shape on one host" and predicts that a cheaper law buys a bigger box
+(`86:459-461`). At the default guard it did not: the boundary is the same box size. Off the guard the two
+diverge, since `86` reports 1,048,576 points accepted in 171.8 s and mine exceeds a 400 s cap at the same
+size, which is per-point cost behaving as item 5 predicts.
+
+So the coincidence at the guard is a data point and not a demonstration. **The mechanism is
+unestablished and I did not establish it**, and naming it would be the third instance in this panel of a
+budget claim outrunning its measurement, after the nine-bit wall the droplist already carries
+(`DROPLIST.md:234-235`). What would settle it is one instrument varying per-point cost at a fixed box
+size and reading where the guard fires, which is cheap and which I did not run.
 
 ## 5. Theorem C: the criterion holds at every arity, and `86`'s univariate perimeter comes off
 
@@ -305,6 +312,22 @@ role: a condition preserved along the coordinatewise order.
 The structured members include the pair my hand analysis suggested was the dangerous shape, `x*y + y`
 against `x*x*y + y` at width 2, where the difference is supported precisely on the corner's up-set. It
 holds, and the proof says why it must.
+
+**A wider search, run against my own least-certain item rather than against `86`'s**
+(`89_probes/p10_wider_falsification.rs`, `p10_output.txt`). Terms enumerated to depth 3 at `k = 2` and
+depth 2 at `k = 3`, deduped by value table so the population is of functions rather than spellings:
+
+| | pairs, per width | agree on the box | of those, with a clamped box point | counterexamples |
+|---|---|---|---|---|
+| `k = 2`, width 2 | 33,670 | 4,467 | 4,467 | **0** |
+| `k = 2`, width 3 | 33,670 | 664 | 664 | **0** |
+| `k = 3`, width 2 | 8,385 | 320 | 320 | **0** |
+
+Every pair that agrees on the box has a clamped box point, so the search is entirely inside the
+non-trivial branch: with no clamping the theorem is the interpolation lemma and proves itself. At the
+dedup width the same populations give a **contrapositive** test at full strength, because dedup makes
+every pair differ somewhere in the domain, so the theorem predicts every pair differs on the box: 33,670
+pairs at `k = 2` width 4 and 8,385 at `k = 3` width 3, with **zero** agreeing on the box.
 
 ## 6. Signed: the reach is the window, and sign uniformity is the criterion's own hypothesis
 
@@ -469,8 +492,10 @@ set.** `policy = saturate (unsigned), F = 0, ops = {sat add, sat mul}, constants
 clamp-embedded, arity = 2 and 3 measured (per-variable degree 1..=4), widths = 1..=5 (arity 2) and
 1..=4 (arity 3) exhaustive, threads = 1, features any`. 3,006 verdicts, zero mismatches; box-shrinking
 mutation controls produce 691 and 345 mismatches; 1,142 and 575 cases exercise the clamped-set branch.
-Direct falsification search over 770,006 term pairs at widths 2 and 3: zero true on the box and false in
-the domain. The arity-any extent is the theorem's claim, an argument rather than a measurement, stated
+Direct falsification searches: 770,006 term pairs at depth 2, widths 2 and 3 (`p4`); and at depth 3
+arity 2 plus depth 2 arity 3, per-variable degree <= 6, widths 2..=4, 75,725 pair-width cases of which
+5,451 agree on the box and every one of those has a clamped box point (`p10`). Zero true on the box and
+false in the domain in either. The arity-any extent is the theorem's claim, an argument rather than a measurement, stated
 as such, with the proof in section 5. **This removes the univariate perimeter of `86`'s F7.**
 
 **F4. The saturating verdict is a const gate on the pinned toolchain, with fragment membership checked
@@ -612,11 +637,13 @@ live options structurally, twice observed. The items below are the ones with not
 
 ## 12. Where this file is least certain, as a floor for whoever attacks it
 
-1. **Theorem C's arity-any claim is a proof, measured at arities 2 and 3.** The falsification search is
-   large but it is at two widths, arity 2, depth 2. A wrong generalisation would surface first at higher
-   per-variable degree with a large clamped set, which the 770,006-pair search reaches only partly. This
-   is the same shape as `84`'s least-certain item 2 and `86`'s correction of it, and I flag it in the
-   same terms rather than hoping the pattern breaks here.
+1. **Theorem C's arity-any claim is a proof, measured at arities 2 and 3.** After `p10` the search
+   reaches depth 3 at arity 2 and depth 2 at arity 3, with per-variable degree capped at 6 and widths at
+   4, and every box-agreeing pair inside the clamped branch. **Arity 4 and above is untouched by
+   measurement**, and so is per-variable degree above 6. A wrong generalisation would surface first
+   where the clamped set is a wide up-set with several incomparable minimal elements, which arity 2
+   reaches only weakly. This is the same shape as `84`'s least-certain item 2 and `86`'s correction of
+   it, and I flag it in the same terms rather than hoping the pattern breaks here.
 2. **The min-form lemma's `HUGE` guard.** `p1`'s exact evaluation saturates at `u128::MAX`, sound for
    comparison against `MAX_W` because the fragment is nonnegative and monotone. That soundness is an
    argument, not a measurement, and a term whose exact value first exceeds `u128::MAX` and is then
@@ -638,7 +665,8 @@ live options structurally, twice observed. The items below are the ones with not
 
 **Not done, and cheapest next.** Point the criterion at a real expression form once a design exists,
 where the only new machinery is the degree extractor and the fragment checker. Build the arity-4 and
-higher falsification search for Theorem C, which is the cheapest attack on item 1. And run the shape
+higher falsification search for Theorem C, which is the cheapest attack on item 1, and the one-instrument
+per-point-cost experiment section 4 names as what would settle the guard's mechanism. And run the shape
 catalogue at depth 3 signed, which `86`'s own least-certain item 4 also names.
 
 **Nothing here settles anything.** The mode is explore. The first thing worth attacking is item 1, and

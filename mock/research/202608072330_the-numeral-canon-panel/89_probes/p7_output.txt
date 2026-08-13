@@ -8,3 +8,6 @@ box = 2^n points. Verdict TRUE, so nothing exits early.
   15        32768  refuse-guard 8.2s       accept 11.6s  
   16        65536  refuse-guard 9.0s       accept 24.8s  
   18       262144  refuse-guard 9.8s      accept 103.7s  
+  20      1048576  refuse-guard 8.4s         cap 400.0s  
+
+Seconds are an ad-hoc quick spike with no substance. Accept and refuse are the results.
