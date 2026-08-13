@@ -560,3 +560,31 @@ which stands.
 reachability-dependent rung has not actually worked, and not a ranking of constructions. The canon does
 not police shapes; the picker checks that the chosen shape reaches one lowered path for the claim it
 carries.
+
+### Where the steer arrived, in this file's own timeline, and what it changed
+
+For the record the coordinator asked for, since a steer's position in the work decides what it could have
+influenced. Sections 0 through 11 were built and committed before `85` existed in the tree; the addendum
+above was written against `85` as an uncommitted file; the coordinator's message and the commit carrying
+`85` plus the `INTENTS.md` entries arrived after that. I re-verified my three `85` citations against the
+committed text, unchanged, and read I14 (`INTENTS.md:237-267`), I15 (`INTENTS.md:268-285`) and I16
+(`INTENTS.md:286-303`) at the source. No probe and no section was built under the steer's influence, and
+nothing in it invalidates an artifact or reopens a closed route: every instrument stays on disk as
+committed.
+
+Two additions the committed form carries beyond what the addendum above already recorded.
+
+**I15 makes the defeat heavier, not lighter.** With the runtime column gone, a compile-time verdict
+mechanism is not one route among several: it is the only kind there is. My brief's framing survives op's
+answer in sharpened form, and the consequence should be said plainly: had the band's transfer been left as
+"a single named residue" and consolidated, the design would have carried a false soundness story on its
+**only** validation path, with no runtime door to catch what the band missed, because I15 forbids one
+existing. The verdict-table architecture of section 6, witness rows, procedure rows, named-argument rows,
+is compatible with I15 as stated: every row is a const fact and the unused arm is cleared at lowering.
+
+**I14 and this file's instruments.** The runtime probes in `84_probes/` use `std`, `Vec` and boxed
+closures as scaffolding; they are spikes under the panel's own probe rule and are not design shape. The
+design-shaped constructions, `p2`'s and `p2b`'s gates and `p4b`'s criterion gate, are const fns with no
+`dyn`, no `TypeId`, no allocation and no feature gates, and conform to I14 as entered. My section 10
+sentence that nothing here depends on the constraints in either direction stands, now with the hedge's
+direction reversed by I14: they are in force, and this file never questioned them.
