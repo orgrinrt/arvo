@@ -155,3 +155,35 @@ path that never calls `validation::validate`, which is the only function PR #18 
 Everything above holds for: `mockspace-bench-harness` at `084e780` and at `dev`; arvo at
 `feat/arvo-shape-topic`; `nightly-2026-05-28`; the thirteen variant crates named. It says nothing about
 any other consumer of the harness, none of which was examined.
+
+## Addendum: the surviving dead tier, and the line offset it cost
+
+Reported independently by both cold derivations of the strategy-axis unit, `93` and `94`, each outside
+its assigned question and neither having read the other at the time. Two experts, and verified at
+source before acting.
+
+`mock/DESIGN.md.tmpl` and `mock/PRINCIPLES.md.tmpl` survived the crate-tree removal unbannered, and
+were being read as current: both cold derivations read them and reasoned from them. They assert as
+settled two things that are not. The four-marker strategy set, which I1 demoted to open. And
+`feature(generic_const_exprs)`, which `unstable-features.md` forbids on op's own call
+(`mock/PRINCIPLES.md.tmpl:32-38` as those files stood). `93` adds that they describe a sixteen-crate
+topology that does not exist.
+
+This is exactly what `the-canon-design-code-chain.md` names: a lower tier that survives a change above
+it becomes a claim about a document that no longer exists, and it gets read and defended because it is
+concrete and detailed next to an abstract statement.
+
+**Both are now bannered as superseded rather than deleted**, because `docs/DESIGN.md` is generated from
+the first and deleting a public-facing document is not this run's call. The banner is written to the
+public-surface rules: it names what is open without naming the panel, the intent catalogue, or any
+`mock/` path, because it renders into a document strangers read.
+
+**The offset, recorded because it is the cost of the fix.** The banner is **8 lines** at the top of
+each file. `93` and `94` between them carry **19 line citations** into these two documents, written
+before the banner. Every one of those is now low by exactly 8: a citation to
+`PRINCIPLES.md.tmpl:288-292` resolves at `:296-300` today. Member files are the historical record and
+are not rewritten, so the offset is recorded here instead.
+
+The general lesson, and it is the second time this panel has paid it: **a line citation into a document
+that is still alive is fragile by construction.** A heading anchor fails loudly when the heading moves;
+a line number resolves to the wrong text in silence.
