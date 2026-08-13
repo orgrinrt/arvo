@@ -1,0 +1,15 @@
+p5: the piecewise decision procedure for monotone univariate saturating laws
+
+battery: 309 monotone term pairs x widths 1..=12
+  (pair, width) verdicts checked against sweeps: 3708
+  true verdicts: 467, false verdicts: 3241
+  procedure vs sweep mismatches:                 0
+  returned witnesses that fail to witness:       0
+
+width-64 verdicts by the piecewise procedure (no sweep, no band, no transfer):
+  E_63 (x^63 == x^64):  false  witness Some(2)  in 516033 evaluations
+  E_64 (x^64 == x^65):  true  witness None  in 616999 evaluations
+  C-member at 64:       false  witness Some(1)  in 206 evaluations
+  C-member at 40:       true  (both constants embed to MAX)  in 142 evaluations
+
+all checks passed
