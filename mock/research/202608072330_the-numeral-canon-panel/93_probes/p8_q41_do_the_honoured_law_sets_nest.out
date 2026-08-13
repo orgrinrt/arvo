@@ -1,0 +1,101 @@
+P8. Q41: do the honoured-law sets nest
+======================================
+
+Exhaustive over the whole domain at W = 5, every pair and triple.
+Law inventory, 11 laws, two families:
+  algebraic : add-comm add-assoc add-ident mul-comm mul-assoc
+              mul-ident mul-zero distrib retract-add
+  order     : monotone-add absorb-top
+
+configuration            n  honoured
+unsigned/wrap/F=0        9  add-comm add-assoc add-ident mul-comm mul-assoc mul-ident mul-zero distrib retract-add
+unsigned/wrap/F=1        7  add-comm add-assoc add-ident mul-comm mul-ident mul-zero retract-add
+unsigned/saturate/F=0   11  add-comm add-assoc add-ident mul-comm mul-assoc mul-ident mul-zero distrib retract-add monotone-add absorb-top
+unsigned/saturate/F=1    9  add-comm add-assoc add-ident mul-comm mul-ident mul-zero retract-add monotone-add absorb-top
+signed/wrap/F=0          9  add-comm add-assoc add-ident mul-comm mul-assoc mul-ident mul-zero distrib retract-add
+signed/wrap/F=1          7  add-comm add-assoc add-ident mul-comm mul-ident mul-zero retract-add
+signed/saturate/F=0      7  add-comm add-ident mul-comm mul-ident mul-zero monotone-add absorb-top
+signed/saturate/F=1      7  add-comm add-ident mul-comm mul-ident mul-zero monotone-add absorb-top
+
+Pairwise containment. `<` means the row's set is a strict subset of
+the column's, so the column honours strictly more.
+
+                       unsigned/wrap unsigned/wrap unsigned/saturate unsigned/saturate signed/wrap signed/wrap signed/saturate signed/saturate
+unsigned/wrap/F=0               =          >          <          X          =          >          X          X
+unsigned/wrap/F=1               <          =          <          <          <          =          X          X
+unsigned/saturate/F=0           >          >          =          >          >          >          >          >
+unsigned/saturate/F=1           X          >          <          =          X          >          >          >
+signed/wrap/F=0                 =          >          <          X          =          >          X          X
+signed/wrap/F=1                 <          =          <          <          <          =          X          X
+signed/saturate/F=0             X          X          <          <          X          X          =          =
+signed/saturate/F=1             X          X          <          <          X          X          =          =
+
+NOT every pair is comparable. Q41's option (b) holds over this
+inventory: there is a partial order and it is not a ladder.
+Incomparable pairs, which are the whole content of that answer:
+  unsigned/saturate/F=1  vs  unsigned/wrap/F=0
+      only in the first : absorb-top monotone-add
+      only in the second: distrib mul-assoc
+  signed/wrap/F=0  vs  unsigned/saturate/F=1
+      only in the first : distrib mul-assoc
+      only in the second: absorb-top monotone-add
+  signed/saturate/F=0  vs  unsigned/wrap/F=0
+      only in the first : absorb-top monotone-add
+      only in the second: add-assoc distrib mul-assoc retract-add
+  signed/saturate/F=0  vs  unsigned/wrap/F=1
+      only in the first : absorb-top monotone-add
+      only in the second: add-assoc retract-add
+  signed/saturate/F=0  vs  signed/wrap/F=0
+      only in the first : absorb-top monotone-add
+      only in the second: add-assoc distrib mul-assoc retract-add
+  signed/saturate/F=0  vs  signed/wrap/F=1
+      only in the first : absorb-top monotone-add
+      only in the second: add-assoc retract-add
+  signed/saturate/F=1  vs  unsigned/wrap/F=0
+      only in the first : absorb-top monotone-add
+      only in the second: add-assoc distrib mul-assoc retract-add
+  signed/saturate/F=1  vs  unsigned/wrap/F=1
+      only in the first : absorb-top monotone-add
+      only in the second: add-assoc retract-add
+  signed/saturate/F=1  vs  signed/wrap/F=0
+      only in the first : absorb-top monotone-add
+      only in the second: add-assoc distrib mul-assoc retract-add
+  signed/saturate/F=1  vs  signed/wrap/F=1
+      only in the first : absorb-top monotone-add
+      only in the second: add-assoc retract-add
+
+The direction, which is the part that answers 76's conjecture:
+
+  unsigned F=0: SATURATING honours strictly more  (9 against 11)
+  signed   F=0: neither contains the other  (9 against 7)
+  unsigned F=1: SATURATING honours strictly more  (7 against 9)
+  signed   F=1: neither contains the other  (7 against 7)
+
+76's candidate put the accuracy-first intent at the TOP and the
+speed-first intent's honoured set inside it. The measurement above
+says that is RIGHT for unsigned and WRONG for signed, and that
+signedness is the dimension deciding which of Q41's options holds.
+
+UNSIGNED. Saturating honours everything wrapping does and two laws
+more, monotone-add and absorb-top, which wrapping loses because a
+wrap carries a large value back past a small one. So the sets nest,
+saturating is on top, and Q41's option (a) holds. That is 76's
+direction, established rather than conjectured.
+
+SIGNED. The sets stop nesting. Saturating still gains monotone-add
+and absorb-top, and it now LOSES add-assoc, mul-assoc, distrib and
+retract-add, because a two-sided clamp is not a semiring congruence
+while a one-sided clamp is (see p7). So the two families pull apart
+and Q41's option (b) holds: a real partial order that is not a ladder.
+
+So Q41's three options are not competing answers. They are the
+answers on different regions, and the predicate separating them is
+the signedness. A single ordering over 'the strategies' does not
+exist, and the reason is nameable rather than a shrug: the algebraic
+family and the order family agree on unsigned and conflict on signed.
+
+What this does not reach: 76's own phrase was chain-level ACCURACY
+facts, which are a third family not in this inventory and which order
+these configurations by how little they lose rather than by which
+identities they satisfy. Nothing here measures that family, so by the
+notation nothing here claims anything about it.
