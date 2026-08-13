@@ -42,9 +42,10 @@ recorded human decision. Presume it wrong where it conflicts with op,
 and treat agreement between two unratified files as shared drift rather
 than corroboration.
 
-## Long-standing constraints, and their provenance, which is not what it looks like
+## The constraints that are not open, and are not to be questioned
 
-These have governed arvo since before the canon work and are operative discipline now:
+These govern arvo. They are op's intents and they are rules, they are enforced by this repo's own
+mockspace lint configuration and by the workspace rules, and they are in force right now:
 
 - `#![no_std]` everywhere. No `alloc`, no `Vec`, no `String`, no `Box`.
 - Sizes are const. No runtime growth: no `.push(`, `.resize(`, `.extend(`.
@@ -53,18 +54,20 @@ These have governed arvo since before the canon work and are operative disciplin
 - Public API positions use the stack's own primitives rather than bare
   `u8`..`u128` / `i8`..`i128` / `f32` / `f64` / `bool` / `usize`.
 
-**None of them appears in `INTENTS.md`**, which holds op's ratified intents I1 through I12. They are
-asserted in agent-authored places: the workspace rules, and this file's own predecessor. An earlier
-version of this section called them op's intents. That was wrong, and it was written during the very
-edit that was fixing this file for the same class of error.
+**And no runtime checks, ever.** Invalids are caught at compile time. Branching is const-time, erased by
+monomorphisation and const solving, with unused paths cleared at lowering, so everything reaches one
+lowered path. Runtime code exists, obviously; runtime *validation* does not.
 
-Follow them. They are long-standing and nothing has overturned them. But do not cite them as ratified,
-do not build a canon sentence on them without saying where they actually come from, and treat any
-argument that depends on one of them as resting on unratified ground until op says otherwise.
+A previous version of this section said none of these appears in `INTENTS.md`, that they were
+agent-authored, and that any argument depending on one of them rested on unratified ground. **That was
+wrong**, and it was wrong in the direction that does the most damage, because it invited every agent
+reading this file to treat a live rule as a soft convention. The reasoning behind it was a provenance
+hunt that found an older copy of these sentences in a different repository and concluded the rule was
+inherited rather than intended. Finding an older copy of a rule does not demote the rule, and the
+authority was this workspace's rules and this repo's own mockspace configuration the whole time, both
+live and both enforced.
 
-This is load-bearing right now rather than pedantic: the erasure half of op's acceptance criterion is
-argued, across several panel files, from the absence of `dyn` and `TypeId`. That argument is only as
-settled as the constraint under it.
+Cite them freely. Build on them. They are in `INTENTS.md`.
 
 ## What is open, including things that used to read as settled
 
@@ -121,11 +124,12 @@ commit time.
 - Do not reason from the removed crate tree, or restore any part of it because a
   document mentions it. Several generated rule files still name it; they carry a
   banner saying so.
-- Do not add `alloc`, `std`, `Vec`, `String`, `Box`, `dyn`, or `TypeId` anywhere,
-  noting the provenance caveat above: these are long-standing and not in op's
-  ratified intents.
+- Do not add `alloc`, `std`, `Vec`, `String`, `Box`, `dyn`, or `TypeId` anywhere.
 - Do not add platform calls (`std::thread`, `std::time`, `std::fs`, `std::net`).
 - Do not grow collections at runtime. All sizes are const.
+- Do not write a runtime check where a compile-time refusal belongs. Never a
+  runtime check, ever: catch invalids at compile time and let the unused paths
+  clear at lowering.
 - Do not edit files under `.claude/`, `.github/copilot-instructions.md`,
   `.github/instructions/`, `.github/skills/`, or `.github/hooks/`. They
   regenerate from `mock/agent/` on every `cargo mock`.

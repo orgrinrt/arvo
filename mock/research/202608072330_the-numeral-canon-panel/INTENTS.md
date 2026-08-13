@@ -37,6 +37,12 @@ and blessed, which has not happened for anything.
 that ratification requires. Under his own correction, an opinion given before the experts converge is
 an ack meaning the direction checks out. A STATED entry is his intent and is not yet a settled answer.
 
+**IN FORCE** means op has stated it and it is **enforced outside this panel**, by arvo's own mockspace
+lint configuration and by the workspace rules. One entry holds it: I14. It is neither of the two above,
+because it is not a convergence op blessed and it is not an open direction either. It is a rule already
+operating, which op has confirmed is also his intent. The marker is the coordinator's bookkeeping; the
+force comes from the lints and from his word that it is "not to be questioned".
+
 **A standing instruction applies to every entry below**, and it is his: *"You should not write these as
 clear cut and settled. The intent is clear I think, but nothing about them is absolute otherwise."*
 
@@ -227,6 +233,71 @@ side. What it does not settle is what happens to a condition that is genuinely n
 no more than he said. Anything further, including the dimension list, the `any` against `unmeasured`
 distinction, and the exactness bar for a predicate, is elaboration in
 `every-finding-carries-its-predicate.md` and is **not** part of what was ratified.
+
+## I14. The operating constraints, which are rules as much as intents
+
+**IN FORCE.** A third marker, and it is the coordinator's bookkeeping rather than op's word: it means op
+has stated it, it is **enforced outside this panel** by arvo's own mockspace lint configuration and by the
+workspace rules, and it is not open. It is not RATIFIED, because that rung is earned only by a convergence
+brought to op and blessed. It is not STATED either, because STATED carries "not yet a settled answer" and
+these are settled and enforced. Op, 2026-08-13, asked whether these were his intents at all:
+
+> They are very explicitly also arvo intents and rules. The mockspace already contains the lints it wants
+> and the workspace and repo's own rules all direct this work. No std, no alloc, all that is explicitly
+> already in place and not to be questioned. You can write them as intents though, since they are also
+> that, but it should've been clear. It doesn't trace to polka-dots, it traces to this fucking workspace
+> and its rules... and this very mockspace of arvo's own...
+
+The constraints, entered here on that direction:
+
+- `#![no_std]` everywhere. No `alloc`, no `Vec`, no `String`, no `Box`.
+- Sizes are const. No runtime growth.
+- Monomorphisation is the dispatch. No `dyn`, no `TypeId`, no `std::any`.
+- No platform dependency: no `std::thread`, `std::time`, `std::fs`, `std::net`.
+- Public API positions use the stack's own primitives rather than bare integers, floats, `bool` or
+  `usize`.
+
+**The panel was wrong about these and the error propagated.** Checkpoint `69` raised their status as a
+question for op; `76`, `77`, `79`, `80` and `81` each carried some version of "the erasure argument rests
+on unratified ground"; and arvo's generated agent instructions were edited to say they are not op's intents
+and must not be cited as ratified. The cause was a provenance hunt that found an older copy of these
+sentences in a different repository and read that as evidence the constraints were inherited rather than
+intended. **Finding an older copy of a rule does not demote the rule.** Nothing built on them needs
+redoing; what was wrong was the hedge attached to it. Full record at `85`.
+
+## I15. Never a runtime check, and everything reaches one lowered path
+
+**STATED.** Op, 2026-08-13, choosing compile-time-only validation over two alternatives that would have
+admitted a runtime check at an ingest boundary, and sharpening past the option as written:
+
+> Option 1, but I should be clear on this: Runtime code can exist, it's only that the branching of it
+> should be done as much as possible, with const-time ifs that get erased via monomorphisation and just
+> const time solving and ultimately llvm. Never any runtime checks, ever. We catch invalids on compile
+> time, and unused paths we clear out when lowered. Period.
+
+Two strengths in one sentence, and they are different. "As much as possible" governs the **branching**.
+"Never, ever" governs the **checks**. Runtime code exists; runtime validation does not.
+
+This closes the panel's Q-A. The runtime column of the binding-time grid does not exist, so `68`'s
+argument that an ingest-boundary check is forced for a representation is refused as a design option, and
+`80` section 5.1's value-gated arm, which materialises both lowerings and selects with a `csel`, is out on
+principle rather than on its measured cost.
+
+## I16. The canon does not police what shape a law takes
+
+**STATED.** Op, 2026-08-13, asked which of four const-time constructions a law permission must use, after
+`82` measured that they give four different guarantees:
+
+> I do not think I get the framing. Monomorphisation and const solving should lead everything to go through
+> one lowered path, that's it. So if a law is a law, it should be expressed so that it actually works, be
+> it typestate or const expressions or whatever. We shouldn't police what kind of laws there are or what
+> shapes they take. The law is defined as makes sense and is applicable in each situation on a case by case
+> basis.
+
+The requirement on a law's expression is **functional, not structural**: it must actually work, meaning it
+reaches one lowered path. Which construction gets it there is case by case, and the canon does not rank
+the constructions or mandate one. This is `arvo-toolbox-not-policer.md` at the law layer, and the question
+was asking the canon to do the policing that rule forbids.
 
 ## What this file is not
 
