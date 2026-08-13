@@ -820,6 +820,308 @@ Until next time, happy hacking.
 
 ## Phase two: reconciliation
 
-Appended after reading the panel. Phase one above is unedited.
+Appended after reading the panel. Phase one above is unedited, including the parts I now think are
+wrong.
 
-**Not yet written.** This section is the second commit.
+**What I read for this section.** `93_orchard_the_strategy_axis_derived_cold.md` in full, which is the
+twin cold derivation of the same question. `95_op_the_panel_runs_to_ratification_and_units_must_converge.md`
+in full. `OPTIONS.md` sections Q3, Q13, Q14, Q15, Q27, Q41 and the "questions with live options that op
+has not been asked" section. `25_torvalds_what_a_strategy_is.md` section 7 and its heading index.
+`DROPLIST.md` heading index plus every line matching strategy, resolve, preset or marker.
+`40_probes/p7.out` in full, because two of my corrections rest on it and `RULES.md` says the next
+dispatch depending on an unread source reads the source rather than the register's account of it.
+
+**What I did not read**, so this reconciliation is bounded: every other panel file, every other probe
+directory, the three `SEED_THEORY_*` files, `PRIOR_CALLS.md`, `PERSONA_CALLS.md`, and the archive. I
+have therefore reconciled against the twin, the register and op, and not against the panel.
+
+Op's `95` asks the second half of a unit to converge rather than only to attack, so this section is
+ordered accordingly: agreement first, then what I withdraw, then the one disagreement that survives,
+then what I am adding, then a converged statement offered for the consolidation to take or leave.
+
+### 1. Where the two cold derivations agree, independently
+
+`93` and this file were written blind of each other from the same premises. Nine claims match, and by
+`RULES.md`'s definition that is the TWO EXPERTS rung rather than inherited agreement. Listing them
+because a rung reached and not recorded is a rung lost.
+
+**A strategy is a preference over measurements, resolved as an argmin over candidate implementations at
+compile time.** `93` section 2 derives it from I8 and I9 read together as a definition; I derive it from
+the same two intents at my section 3.1. The wording differs and the content does not.
+
+**The container, the codegen choice and the overflow rule are effects of one cause, not three
+components of a marker**, and `mock/PRINCIPLES.md.tmpl:288-292` lists them where the cause belongs.
+`93` section 1 states this exactly; I say the shipped design fuses them at my section 4.1.
+
+**The preference leaves no residue in the emitted body.** `93`'s P4 compares a const-fn argmin over a
+three-arm cost table against the hand-written arm and gets nine instructions each, identical after label
+normalisation, with the unselected arms absent. My probes A, B and F read entry bodies and find a single
+tail branch with zero conditionals. Different instruments, different questions, same answer, and `93`
+adds a third line I did not have: `mock/benches/satfold-const-gate_n10000_findings.md` is committed
+harness output showing the gated and ungated forms inside overlapping confidence intervals. That is the
+priced version of a claim I could only shape.
+
+**The chain clause of I7 cannot be served by an operator closed over its operand type, and the required
+intermediate width grows linearly in chain length.** `93` section 5 and its F7 measure it at `W = 8,
+F = 4`; I measure it at `W = 16, F = 8` in probe E and derive the growth rule in closed form. `93` says
+"no fixed input type holds it past length one"; I say the multiply chain runs out linearly and give the
+availability table. Same finding, two parameter settings, two authors.
+
+**The set of named strategies is a set of points in a product, and the flat four is a slice through it.**
+`93` reaches it from the resolution side, by counting: its F3 shows 12 of 16 ordered pairs unresolvable
+under a demand model and the closure at 15 elements. I reach it from the component side, by separating
+what varies and measuring that a fifth unnamed point costs one alias symbol. Two disjoint arguments.
+
+**And this one is not two experts, it is three, and the third preceded us both.** `25` section 7 already
+proposes the canon sentence "Strategies are therefore named sections over a product of axes rather than
+values of a single axis", and `OPTIONS.md:1466-1470` records it as "proposed, not yet second-read".
+Neither `93` nor I read it. So the second read it was waiting for arrived twice, independently, on the
+same night. I want that recorded plainly because it is the strongest provenance available to this panel
+and it was produced by the protocol working rather than by anyone being clever.
+
+**A refused bound wants a trait.** `93`'s P3 carries a per-axis join as an associated type rather than
+as arithmetic in a const argument; my probe A puts the region in the trait's own const parameters. Both
+avoid `generic_const_exprs`, both compile on the pin, and neither of us hit the wall first and then
+worked around it.
+
+**Multiplicative laws hold at `F = 0` and fail at `F > 0`.** `93`'s F1 measures multiplicative
+associativity and distributivity; my probe C part 2 measures rounding retraction and part 3 measures
+associativity of the policy. My part 2's "retracts exactly at `F = 0`, at every swept `W`, for both
+rounding modes" is an independent instance of the same boundary from a different law.
+
+**`mock/PRINCIPLES.md.tmpl:33` names a forbidden feature, and both root design documents are a
+surviving dead tier.** Both files report both, with the same citations, independently.
+
+### 2. What I withdraw
+
+Three things, and the first two are corrections I would not have found alone.
+
+**I withdraw the claim that licence is a third co-equal axis.** My section 4.1 presents cost, policy and
+licence as three components a strategy chooses. `93` section 3 splits the same material two ways, into a
+policy layer that changes the answer and a lowering layer that does not, and argues the two are
+**ordered**: policy must be decided first because it defines the space the lowering optimises within.
+
+That ordering is right and my own probe C is evidence for it that I failed to read correctly. Retraction
+and associativity are not chosen; they are **computed** from the policy, the operation, the chain shape,
+`W` and `F`. A consumer never picks whether saturating subtraction associates. So licence is a derived
+fact about a region, not an axis of the strategy, and the only genuinely free bit near it is I5's
+permission to invoke a rewrite whose law does not hold, which is not a separate axis either: it is what
+"weighs the answer at zero" cashes out as, and it belongs to the preference.
+
+So the corrected structure is `93`'s, refined: **policy is chosen, the licence is computed from the
+policy and the region, and the preference then selects among the arms the licence leaves standing.**
+Three stages, two of them chosen. Probe B implemented licence as a free axis, which per the spike rule
+is scaffolding chosen to reach the check rather than a decision, and I am saying so explicitly because
+the file's shape would otherwise read as a proposal.
+
+What survives from my section 4.2 is the narrower and still useful part: **the licence is a vector
+rather than a bit**, because retraction and associativity have different regions and `wrap`/`sub`
+retracts while failing to associate. A design carrying one "may I be clever" flag would take the
+conjunction and lose the arm that needs only the weaker permission.
+
+**I withdraw the unqualified claim that cost belongs at the site.** My section 7 and W9 split the three
+components across two carriers and put cost wholly at the site. That is wrong for one half of it, and
+`93` section 4 response (c) is where I saw why: "`Cold` names what a value costs at rest; `Hot` names
+what an operation costs in flight."
+
+A value's container is its layout, and layout has to be on the value. So the cost axis splits, and the
+split is the same one `93` found from the resolution side:
+
+**Storage-at-rest**, which is on the value because the bits live somewhere and every consumer of that
+value has to agree where. **Computation-in-flight**, which is on the site because only the site knows
+the arity, the access pattern and the target.
+
+W9's measurement stands exactly as taken: a plan supplied at the site reaches one lowered path with no
+conditional and no cast, and one value type folds three ways at three sites. What I withdraw is the
+inference from it that cost as a whole moves off the value. And the corrected version is sharper than
+either half: **the reason `Hot` and `Cold` resolve badly against each other is that one is a
+compute-role name and the other is a storage-role name, and a flat set forces two roles through one
+slot.** `93`'s F3 counting result is the proof of that in the resolution setting, and the role split is
+the diagnosis.
+
+**I withdraw the componentwise-resolution reading of W3, on measurement I had not seen.** `OPTIONS.md`
+Q15 cites `40_probes/p7`, and I opened it rather than taking the register's account. It compares two
+matched committed bench families, wrapping against saturating, and asks which containers are within
+tolerance of the fastest at each declared width:
+
+```
+ARMS IN CONTENTION, tolerance 2% of the fastest
+ width  under wrapping                    under saturating                same?
+     8  kernel, minimum, native           minimum                          NO
+    13  minimum, native                   minimum, native, plusone         NO
+    16  kernel, minimum, native           kernel, minimum, native          yes
+    32  kernel, native                    kernel, minimum, native          NO
+    60  kernel, minimum, native, plusone  minimum, native, plusone         NO
+    64  native                            kernel, minimum, native          NO
+```
+
+Five of six differ at 2% tolerance. At 5% tolerance three of six differ, so the effect weakens and does
+not vanish, and I am quoting both because quoting only the stronger number would be picking the
+tolerance that suits me.
+
+So the container the time objective prefers **depends on the overflow policy**. The axes are
+independently **stateable** and not independently **resolvable**, which is exactly Q15's finding and
+exactly `93`'s stratification. My W3 as written survives, because it claims expressibility and cost and
+neither is touched. The reading it invites, that a strategy is a componentwise argmin over independent
+axes, is refuted, and I would have carried it if I had not opened that file.
+
+Three independent sources now say the same thing about ordering: `93` from the algebra, `40_probes/p7`
+from the harness, and my probe C from the law regions. That is a convergence rather than three restatements.
+
+### 3. The disagreement that survives, stated precisely
+
+`93` section 5 holds that the type parameter names the preference and that the preference stays on the
+value. After the storage correction above, the gap between us is one axis wide, and I still hold it.
+
+**Intermediate precision does not belong on either operand.** It is the width an accumulator carries
+through a fold, and it is a property of the fold: the same column of values feeds a two-term sum in one
+place and a thousand-term reduction in another, and the accumulator that is right for one is wrong for
+the other. `warm-clamp-shared`'s entire arm set is that question, and its `accfit` arm derives the
+accumulator from the arity, which is a property of the reduction and not of any value in it.
+
+`25` section 7 lists intermediate precision as one of four axes a strategy fixes, and its own
+justification cuts the other way: "the knowledge it stands for is about the consumer's workload rather
+than about the numeral". Headroom, packing and overflow behaviour are about the numeral. Intermediate
+precision is about the workload. On `25`'s own criterion, three of its four axes belong on the value and
+the fourth does not, and probe F is the evidence that moving it costs nothing: zero conditionals, zero
+casts, and the policy still travelling with the value while the plan varies per site.
+
+**What would distinguish us.** Whether any consumer wants two different accumulator widths over the same
+stored column. If yes, the axis cannot be on the value, because a cast would be required to express a
+choice that changes no value. If no, `93` is right and the simpler carrier wins. That is a grep over
+hilavitkutin and vehje, and `93` declined to run it on the ground that both are pinned to a dead tier. I
+think the question survives the tier being dead, because it is about what a consumer wants rather than
+about what the old code did, but I did not run it either and I am not claiming the answer.
+
+**And one smaller disagreement that dissolves rather than persists.** `93` section 4 response (b)
+proposes refusing a mixed-strategy operation and requiring the consumer to name the result, reading a
+refusal that names a genuine conflict as the diagnostic `arvo-toolbox-not-policer.md` wants rather than
+the policing it forbids. My section 6 declined to propose it because the rule names "refuse to compile
+cross-strategy ops 'for safety'" as an incorrect shape.
+
+We are both treating it as one policy over a category, which `never-ask-which-single-rule-governs.md`
+says is the wrong shape of question. It is two arms. Where the two demands have a join in the space, the
+operation resolves and there is nothing to report. Where they do not, which `93`'s F3 says is 12 of 16
+ordered pairs on the flat set, there is no result to produce and the refusal is a report of a real
+conflict rather than a safety rail. The rule forbids the second dressed as the first, not the first.
+That is a convergence and I am recording it as one rather than as a win for either reading.
+
+### 4. What I am adding that the panel did not hold
+
+**To Q41, the question of whether the strategies are partially ordered by how many chain-level laws they
+honour.** `76` offered it with "Precise at the top and Hot's honored set a subset of it". On the two laws
+I measured, over the overflow axis, the order runs the **other way**. Wrapping retracts on all nine chain
+shapes and saturation on six of them, and saturation's six are a subset of wrapping's nine. Both honour
+associativity on `add` and `mul` and neither on `sub`, so the associativity sets are equal. Taking the
+union of the two laws, saturation's honoured set is a proper subset of wrapping's.
+
+The reason is not surprising once seen: wrapping is a ring homomorphism, so it commutes with everything,
+while saturation is only a monotone retraction and survives only where the chain cannot cross back over
+the boundary it clamped at. The semantically more careful policy honours strictly fewer algebraic laws.
+
+So there is a nesting on this axis and its orientation is the opposite of the one `76` proposed. That
+is evidence for Q41(a)'s **shape** and against its **direction**, and it is a fact about the overflow
+axis rather than about whole strategies, which matters because a whole strategy also carries a rounding
+choice and my probe C part 2 says rounding's law set collapses to `F = 0` regardless of overflow.
+*Holds for:* `W in {2,3,4,5,6,8}, F = 0, signedness unsigned, policy in {saturate, wrap}, operations in
+{add, sub, mul}, laws in {retraction over a two-operation chain, associativity at arity 3}, values
+exhaustive over the declared domain, threads any (numeric identity).`
+
+**To the cross-strategy question `OPTIONS.md:1655-1656` names as adjacent and unaddressed.** W8 kills a
+value-level accuracy lattice, by a different argument from `93`'s F3. F3 is a counting result about
+demands on a flat set, and it is repaired by carrying the closure. W8 is about accuracy bounds and is
+**not** repaired by carrying the closure: an operand's error is scaled by the other operand under
+multiplication, so no finite set of markers can carry a claim that composes, whatever the set's size.
+The two results kill two different readings of what the marker is for, and together they say the marker
+is operational or it is nothing. That is the ground under my option R3 and I now hold it more firmly
+than I did in phase one, while still not calling it settled: it needs the same consumer question as
+section 3 above, and one probe is one instance.
+
+**To `25` section 7, the leading definition.** Two precise amendments, both keeping the sentence.
+
+Its "each assignment is a function of the build condition" is narrower than op's own addendum at
+`INTENTS.md:238-240`, which says the predicate collapses to whatever is available at const time. Probe A
+shows the assignment moving with the **region** at a fixed build condition: `entry_speed` and
+`entry_speed_short` are one strategy at one build, at arities 64 and 4, and they select different arms,
+with the short one aliasing a different strategy's symbol entirely. So the assignment is a function of
+whatever is const, of which the build condition is one input among several.
+
+And its axis list places intermediate precision on the numeral, which section 3 above argues against on
+the sentence's own criterion.
+
+**And one thing I have not seen named anywhere, offered rather than claimed.** A correctness predicate
+must be const and a profitability predicate merely wants to be. Choosing a reassociated arm where the
+law does not hold is wrong at every length; choosing it where the run is too short is slow and right. So
+where a region fact is not const-available, the second kind of predicate can be resolved pessimistically
+without lying, and the first cannot be resolved at all. W2 is the emitted-code half of it. I think this
+is the honest form of "what happens when the fact is not const", which op's addendum explicitly left
+open (`INTENTS.md:246-247`).
+
+### 5. A converged statement, offered
+
+Op's `95` asks a unit to end in agreement with at least something. This is what I believe `93` and this
+file jointly support, written so the consolidation can take it, argue with it, or leave it. It is not a
+ruling and nothing here is settled.
+
+A strategy is a **consumer-supplied preference**, and the preference is over measurements rather than
+over implementations. It does not name an implementation and it does not own one.
+
+It resolves, at compile time, into an **assignment on a product of axes**, and the assignment is a
+function of whatever is available at const time rather than of the marker alone. Named strategies are
+named sections over that product, so the count is not a design parameter and a new name costs one
+symbol when it duplicates an existing selection.
+
+The axes are **stateable independently and resolvable only in order**. The axes that change the answer
+are settled first, because they decide which rewrites are legal and therefore which arms exist. The axes
+that change only cost are settled second, over what is left.
+
+The **licence is computed rather than chosen**: which laws hold is a function of the answer-changing
+axes and the region, and it is a vector of separate permissions with separate regions rather than one
+bit. The one free choice near it is whether to take a rewrite whose law does not hold, which belongs to
+the preference.
+
+The assignment splits across **two carriers**. What must travel with the value is what a later consumer
+cannot supply: the observable boundary semantics, and the storage layout. What belongs to the site is
+what only the site knows: which arm this operation should take, and how wide its intermediate is. Both
+reach one lowered path and neither requires a cast.
+
+A preference weighing a **chain** rather than an operation is a different shape and is served by not
+quantising in the interior, at a width cost linear in the chain length, which is itself a const
+predicate the arm is gated on.
+
+Two strategies are related by an order on the **answer-changing axes**, which exists. They are not
+related by an order on their preferences, which do not order, nor by an order on accuracy, which does
+not compose.
+
+### 6. What is still located disagreement, and goes forward as that
+
+Whether intermediate precision sits on the value or at the site. `93` says value, I say site, the
+discriminator is whether a consumer ever wants two accumulator widths over one stored column, and
+neither of us ran it.
+
+Whether a mixed-strategy operation whose demands have no join should refuse or escalate. We converged on
+it being two arms rather than one policy, and which arm applies where still needs the closure question
+answered, which is `93`'s F3 and is a design choice rather than a measurement.
+
+Whether the marker is read by any consumer as a numeric property of a value. Everything in my section 6
+turns on it and arvo cannot answer it from inside itself.
+
+### 7. What this file got wrong that nobody caught for me
+
+Recorded because a cold derivation's value is partly in its errors being visible.
+
+I put licence on the same footing as policy and cost, and my own probe C's output contains the
+refutation: a verdict computed from the policy and the region is not a thing anyone chooses. I read my
+own table as an axis because I had built the axis first.
+
+I generalised "cost belongs to the site" from a fold, which is the case where it is most obviously true,
+without checking it against storage, which is the case where it is obviously false. One counterexample
+would have caught it and I did not look for one.
+
+Both errors have the same shape, and it is worth naming since it is the shape a cold derivation is most
+prone to: I had a clean model early and then tested it against the cases it explained rather than
+against the ones that would break it. That is the same defect as the homogeneous-chain sweep in probe
+C part 1, committed twice more at the level of the argument rather than the probe.
+
+Until next time, happy hacking.
+
