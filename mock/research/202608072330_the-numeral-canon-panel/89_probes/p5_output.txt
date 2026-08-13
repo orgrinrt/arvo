@@ -1,0 +1,32 @@
+p5: how far the box criterion reaches into signed saturating laws
+
+k = 2, every declared window [lo,hi] of the representable set, widths 2..=5,
+box criterion against brute force over the window:
+ width    windows   admissible   mismatch   straddling straddle-mismatch
+     2         10          424          0          806               10
+     3         36         1384          0         3044               88
+     4        136         4912          0        11816              564
+     5        528        18400          0        46544             3146
+
+  admissible windows:  25120 checks, 0 mismatches
+  inadmissible windows: 62210 checks, 3808 mismatches  <- the criterion is WRONG here,
+     which is what makes the window predicate load-bearing rather than decorative
+
+86's F6 gapped members over the FULL signed domain, which straddles zero:
+  x == x^3                     w1:F? w2:T? w3:F? w4:F? w5:F? w6:F?   (T/F = brute force; '!' = criterion WRONG and window inadmissible, '?' = criterion happens to agree but has no warrant)
+  sat(2x*xy) == sat(2y*x^2)    w1:T? w2:F? w3:T? w4:T? w5:T? w6:T?   (T/F = brute force; '!' = criterion WRONG and window inadmissible, '?' = criterion happens to agree but has no warrant)
+
+82's law by the box criterion, at the shipped width, no band and no transfer:
+  law: left fold of signed saturating add == balanced tree == right fold
+  declared window [0, MAX] (non-negative, hence admissible)
+    n = 2  box =     4 points   left==tree: true   left==right: true
+    n = 3  box =     8 points   left==tree: true   left==right: true
+    n = 4  box =    16 points   left==tree: true   left==right: true
+    n = 8  box =   256 points   left==tree: true   left==right: true
+    straddling window at width 5, n = 3: criterion says true, brute force says false
+    window_admissible = false
+
+  The box for a sat_add fold is 2^n, because sat_add has per-variable degree 1.
+  That is the same 2^k box 86's F3 priced for multilinear ring chain laws.
+
+all checks passed
