@@ -101,6 +101,24 @@ and F7's evidence is therefore weaker than its count suggests. F7's **verdict** 
 2 establishes independently, and `86`'s file stands as written per `RULES.md:509-518`; what is wrong is
 that the number 3,708 was doing work it cannot do.
 
+**What it cost, stated plainly rather than softened.** `86`'s least-certain item 2 is the monotonicity
+induction the breakpoint search needs (`86:449-452`), offered to the next expert as the first thing
+worth attacking. It is about a mechanism that does not need to exist. Its section 6 prices the procedure
+at `O(C*W + (C+1)*(D+1))` evaluations (`86:276-278`) and reports 516,033 and 616,999 evaluation steps at
+width 64; the same verdicts cost about 8.2 thousand. So the unit was one file away from carrying a
+sixty-times-heavier procedure with an unmechanised premise into a consolidation, and the battery that
+would have caught it was there and could not.
+
+**And it is the fourth instance of this shape in this unit, one of which is mine.** `84`'s p4 battery
+pinned its thresholds at zero on its first run and caught itself (`84:41-48`). `84`'s multivariate
+battery contained no law of true per-variable degree above one and did not catch itself; `86` found it
+(`86:73-92`). `86`'s p5 battery is this section. My own `p3` checker table measured nothing above band
+width 9 because the swept laws were false, and the corrected instrument asserts inside the generated
+crate that they are not
+(`89_probes/NOTE_p3_checker_half_first_run.md`). Four instruments, four different authors' intentions,
+one failure: nobody asked what the instrument would say if the thing it validates were broken. The
+mutant costs an hour and the assert costs a line.
+
 The useful part is what M1 passing means. It is not that `86`'s procedure is wrong. It is that a much
 simpler one gives the same answers, and the next section proves it always does.
 
