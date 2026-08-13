@@ -1,7 +1,7 @@
 # 97. The strategy space attacked
 
 **Predecessors:** `93_orchard_the_strategy_axis_derived_cold.md` and
-`94_wingo_the_strategy_axis_derived_cold.md`, the unit's cold pair. **Probes:** `97_probes/`, eleven of
+`94_wingo_the_strategy_axis_derived_cold.md`, the unit's cold pair. **Probes:** `97_probes/`, twelve of
 them, each committed as it ran.
 
 This is an attacker file in the second half of a 4-4-1, so op's `95` governs its shape: attack is the
@@ -54,14 +54,14 @@ is not a check.
 
 ## 1. The answer, before the working
 
-Three claims, in the order they matter.
+Four claims, in the order they matter, and then a fifth from the algebra half.
 
 **One. `25` section 7's sentence and the cold pair's definitions are not the same proposition, and the
 gap is measurable.** A section is any assignment of a mechanism to each region. An argmin under a
 weighting is a section that some single weighting explains at every region at once. On committed harness
 output, **72 of 15625 sections are rationalisable** by a weighting over the two cost axes that family is
-about, counting generously so that a tie admits either arm, and the gap is not a fact about that family: it is polynomial against exponential in the number
-of regions. So `94` phase two's move of the claim to TWO EXPERTS is moving two different claims under
+about, counting generously so that a tie admits either arm. The gap is not a fact about that family: it
+is polynomial against exponential in the number of regions. So `94` phase two's move of the claim to TWO EXPERTS is moving two different claims under
 one name. What replaces it is in section 2, and it is better than either: the section is the design-tier
 artifact, the weighting is the canon-tier justification, and **rationalisability is exactly the "little
 bit of option 3" op mixed into his answer**, made checkable.
@@ -467,7 +467,7 @@ everybody pays" (`93:354-357`). Under the demand lattice, the join of a speed de
 demand is the element demanding both, and P4 asserts at compile time that it is not the accuracy demand
 and has lost neither operand's. Nobody asks and nobody pays.
 
-**F-L. A selector reading a demand set computed by the type-level join emits one tail branch, identical
+**F-D2. A selector reading a demand set computed by the type-level join emits one tail branch, identical
 to a hand-written call to the arm it resolves to, and distinct from the arms either operand resolves to.**
 `holds for: coordinates = 2, arms = 4, target = aarch64-apple-darwin, rustc 1.98.0-nightly (57d06900f),
 edition 2024, opt-level 3, panic = abort, feature gates = 0, no_std, threads any (a compile-time
@@ -896,9 +896,10 @@ step further into polarity. `40` got there first and got the harder half.
 rather than what was chosen. Section 3.2 is that discipline restated as a variance rule, which is why it
 holds rather than being good taste.
 
-**`94`'s W9 measurement**, that policy on the value with the plan at the site reaches one lowered path
-with no conditional and no cast. Nothing here touches it and it is the only priced thing either cold
-derivation produced about carriers.
+**`94`'s W9**, that policy on the value with the plan at the site reaches one lowered path with no
+conditional and no cast, and that one value type folds three ways at three sites. Nothing here touches
+it, and section 5 supplies the price W9 could not: `94` section 10 says plainly that everything about
+cost in its file is unpriced, and the arity family prices the const-availability half of it.
 
 **`arvo-toolbox-not-policer.md`'s diagnostic-not-directive posture.** Everything in section 4.2 that looks
 like a refusal is a report of a conflict that exists, which is what that rule asks for and not what it
