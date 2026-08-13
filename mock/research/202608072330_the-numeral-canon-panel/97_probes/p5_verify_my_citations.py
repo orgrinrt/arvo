@@ -45,6 +45,10 @@ CITES = [
     (WS, "arvo-always-optimal-internals.md", (55, 56), "hold\nexactly at `F == 0`"),
     (ARVO, "mock/benches/variants/warm-clamp-shared/src/lib.rs", (83, 83),
      "KEY = W * 10000 + NC * 1000 + LOG2A * 10 + OP"),
+    (PANEL, "40_probes/p3_axes_presets_properties.rs", (270, 270),
+     "pub fn armswap_consumer_observable"),
+    (PANEL, "40_probes/p3_axes_presets_properties.rs", (274, 274),
+     "pub fn armswap_consumer_unobservable"),
     (PANEL, "35_probes/p2b_laws_signed.rs", (72, 74),
      "Arithmetic shift right, which floors rather than truncating toward"),
 ]

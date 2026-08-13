@@ -1038,9 +1038,17 @@ phases, `83`, `85`, `87`, `88`, `95`, `96`, `25` sections 0, 4, 5, 7, 8 and 9, `
 and 6, `OPTIONS.md` Q5, Q41 and the unasked-questions section, `DROPLIST.md` by grep. Of the probe
 directories I opened `93_probes/p1b_demands_and_closure.out` and
 `93_probes/p8_q41_do_the_honoured_law_sets_nest.out` in full, because section 4.1 and section 4.3 rest on
-what those two actually contain rather than on their files' accounts of them. I did not open `40_probes/`
-at all, so my three citations into `40` sections 5.4, 6.2 and 6.4 are through `40`'s own account of its
-probes, and if that account is wrong those three paragraphs move. Of `35` I read its two law probes'
+what those two actually contain rather than on their files' accounts of them. I also opened
+`40_probes/p3.out` and `40_probes/p3_axes_presets_properties.rs`, because sections 3.1, 3.2 and 9 lean on
+`40`'s armswap compile and `RULES.md` says the next dispatch depending on an unread source reads the
+source rather than the register's account of it. **Its substance holds exactly and its line numbers
+drift.** `40` section 3.2 reports both errors landing at line 279 with line 283 compiling in both arms;
+in the committed source `armswap_consumer_observable` is at line 270 with its refused call at 271, and
+`armswap_consumer_unobservable` is at 274. The base arm compiles clean, the release arm is refused at two
+bounds, `AbsorbingTop` and `MonotoneAdd`, and the consumer whose bound touches only unobservable
+coordinates compiles under both. That is the claim I depend on, and it is confirmed at nine lines off
+from where `40` says it is. I did not open `40_probes/p7`, which `94` read directly and reported from, so
+my one citation to `40` section 6.4 is through `94`'s reading rather than mine. Of `35` I read its two law probes'
 sources and their committed CSVs in full, because section 6.4 is a diff against them, and I did not read
 `35`'s prose beyond its section index.
 
@@ -1065,10 +1073,10 @@ that, op's `83` explicitly left it open, and nothing here touches it.
 Every `file:line` in this document is opened and its content tested by
 `97_probes/p5_verify_my_citations.py`, which is `25` section 9's instrument applied rather than admired:
 a citation landing two lines from its content still resolves, and only reading the target and testing for
-an expected word catches it. Nineteen citations, and the current state is committed:
+an expected word catches it. Twenty-one citations, and the current state is committed:
 
 ```
-citations checked: 19   ok: 19   failed: 0
+citations checked: 21   ok: 21   failed: 0
 ```
 
 **It was not seventeen of seventeen on the first run, and the failure was mine.** The file cited

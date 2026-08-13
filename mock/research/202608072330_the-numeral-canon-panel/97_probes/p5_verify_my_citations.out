@@ -16,6 +16,8 @@ ok    mock/DESIGN.md.tmpl:43-43                                  Resolve<S1, S2>
 ok    arvo-toolbox-not-policer.md:76-76                          Hot wrapping + Precise saturating
 ok    arvo-always-optimal-internals.md:55-56                     hold exactly at `F == 0`
 ok    mock/benches/variants/warm-clamp-shared/src/lib.rs:83-83   KEY = W * 10000 + NC * 1000 + LOG2A * 10 + O
+ok    40_probes/p3_axes_presets_properties.rs:270-270            pub fn armswap_consumer_observable
+ok    40_probes/p3_axes_presets_properties.rs:274-274            pub fn armswap_consumer_unobservable
 ok    35_probes/p2b_laws_signed.rs:72-74                         Arithmetic shift right, which floors rather 
 
-citations checked: 19   ok: 19   failed: 0
+citations checked: 21   ok: 21   failed: 0
