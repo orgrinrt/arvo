@@ -99,7 +99,12 @@ struct Law {
 
 impl Law {
     fn new(name: &'static str) -> Self {
-        Law { name, fail: 0, total: 0, witness: None }
+        Law {
+            name,
+            fail: 0,
+            total: 0,
+            witness: None,
+        }
     }
     fn note(&mut self, ok: bool, a: u128, b: u128, c: u128, l: u128, r: u128) {
         self.total += 1;
@@ -167,7 +172,11 @@ fn main() {
     let w = 6u32;
     for o in [Over::Wrap, Over::Sat] {
         for r in [Round::Trunc, Round::Nearest] {
-            println!("--- overflow = {:<9} rounding = {:<9} W = {w} ---", o.name(), r.name());
+            println!(
+                "--- overflow = {:<9} rounding = {:<9} W = {w} ---",
+                o.name(),
+                r.name()
+            );
             for f in 0..=4u32 {
                 let fmt = Fmt { w, f, o, r };
                 let (aa, ma, di) = run(fmt);

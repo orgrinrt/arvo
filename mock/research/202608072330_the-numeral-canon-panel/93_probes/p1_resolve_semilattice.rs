@@ -161,7 +161,10 @@ fn print_report(
     println!();
     println!("What K1-satisfying semilattices are FORCED to decide for Hot v Cold:");
     for i in 0..N {
-        println!("  Hot v Cold = {:<8} : {} of {}", NAMES[i], hotcold_hist[i], k1);
+        println!(
+            "  Hot v Cold = {:<8} : {} of {}",
+            NAMES[i], hotcold_hist[i], k1
+        );
     }
     println!();
     if survivors.is_empty() {

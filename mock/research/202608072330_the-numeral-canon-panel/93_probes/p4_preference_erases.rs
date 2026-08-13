@@ -184,7 +184,10 @@ fn main() {
     println!("The cost model, resolved now at runtime for reporting only. The");
     println!("emitted code resolved it at compile time; see the asm comparison.");
     println!();
-    println!("  {:<16} {:>6} {:>6} {:>6}   ", "arm", "time", "space", "error");
+    println!(
+        "  {:<16} {:>6} {:>6} {:>6}   ",
+        "arm", "time", "space", "error"
+    );
     for i in 0..ARMS {
         println!(
             "  {:<16} {:>6} {:>6} {:>6}",
@@ -206,7 +209,10 @@ fn main() {
             })
             .collect::<Vec<_>>()
             .join("  ");
-        println!("  {:<16} weights {:?} -> {:<9} [{}]", n, w, ARM_NAME[picked], scores);
+        println!(
+            "  {:<16} weights {:?} -> {:<9} [{}]",
+            n, w, ARM_NAME[picked], scores
+        );
     }
     println!();
     println!("Three preferences, three different arms, from one table. The");

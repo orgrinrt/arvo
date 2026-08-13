@@ -99,11 +99,31 @@ impl LawResult {
 }
 
 fn check(n: &Num) -> Vec<LawResult> {
-    let mut add_comm = LawResult { name: "a+b == b+a", total: 0, fail: 0 };
-    let mut add_assoc = LawResult { name: "(a+b)+c == a+(b+c)", total: 0, fail: 0 };
-    let mut mul_assoc = LawResult { name: "(a*b)*c == a*(b*c)", total: 0, fail: 0 };
-    let mut distrib = LawResult { name: "a*(b+c) == a*b + a*c", total: 0, fail: 0 };
-    let mut ident = LawResult { name: "a+0 == a", total: 0, fail: 0 };
+    let mut add_comm = LawResult {
+        name: "a+b == b+a",
+        total: 0,
+        fail: 0,
+    };
+    let mut add_assoc = LawResult {
+        name: "(a+b)+c == a+(b+c)",
+        total: 0,
+        fail: 0,
+    };
+    let mut mul_assoc = LawResult {
+        name: "(a*b)*c == a*(b*c)",
+        total: 0,
+        fail: 0,
+    };
+    let mut distrib = LawResult {
+        name: "a*(b+c) == a*b + a*c",
+        total: 0,
+        fail: 0,
+    };
+    let mut ident = LawResult {
+        name: "a+0 == a",
+        total: 0,
+        fail: 0,
+    };
 
     for a in n.domain() {
         ident.total += 1;

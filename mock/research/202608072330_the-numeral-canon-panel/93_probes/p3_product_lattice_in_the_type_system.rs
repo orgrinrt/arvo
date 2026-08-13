@@ -77,15 +77,33 @@ pub trait JoinWith<R> {
 
 macro_rules! join3 {
     ($lo:ty, $mid:ty, $hi:ty) => {
-        impl JoinWith<$lo> for $lo { type Out = $lo; }
-        impl JoinWith<$mid> for $lo { type Out = $mid; }
-        impl JoinWith<$hi> for $lo { type Out = $hi; }
-        impl JoinWith<$lo> for $mid { type Out = $mid; }
-        impl JoinWith<$mid> for $mid { type Out = $mid; }
-        impl JoinWith<$hi> for $mid { type Out = $hi; }
-        impl JoinWith<$lo> for $hi { type Out = $hi; }
-        impl JoinWith<$mid> for $hi { type Out = $hi; }
-        impl JoinWith<$hi> for $hi { type Out = $hi; }
+        impl JoinWith<$lo> for $lo {
+            type Out = $lo;
+        }
+        impl JoinWith<$mid> for $lo {
+            type Out = $mid;
+        }
+        impl JoinWith<$hi> for $lo {
+            type Out = $hi;
+        }
+        impl JoinWith<$lo> for $mid {
+            type Out = $mid;
+        }
+        impl JoinWith<$mid> for $mid {
+            type Out = $mid;
+        }
+        impl JoinWith<$hi> for $mid {
+            type Out = $hi;
+        }
+        impl JoinWith<$lo> for $hi {
+            type Out = $hi;
+        }
+        impl JoinWith<$mid> for $hi {
+            type Out = $hi;
+        }
+        impl JoinWith<$hi> for $hi {
+            type Out = $hi;
+        }
     };
 }
 join3!(Wrap, Sat, Widen);

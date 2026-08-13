@@ -124,13 +124,21 @@ fn part_a() {
     println!("PART A. Flat four-marker set under the full constraint list");
     println!("===========================================================");
     println!();
-    println!("join semilattices on 4 labelled elements : {}", semilattices.len());
+    println!(
+        "join semilattices on 4 labelled elements : {}",
+        semilattices.len()
+    );
     println!();
     // Cumulative survival, in order.
     let mut live: Vec<&[[usize; N]; N]> = semilattices.iter().collect();
     for c in CONSTRAINTS.iter() {
         live.retain(|t| (c.holds)(t));
-        println!("  after {:<36} : {:>3} survive   ({})", c.name, live.len(), c.why);
+        println!(
+            "  after {:<36} : {:>3} survive   ({})",
+            c.name,
+            live.len(),
+            c.why
+        );
     }
     println!();
     if live.is_empty() {
@@ -142,9 +150,15 @@ fn part_a() {
     } else {
         println!("RESULT: {} table(s) survive all six:", live.len());
         for t in live {
-            println!("  HvC={} HvW={} CvW={} CvP={} WvP={} HvP={}",
-                NAMES[t[HOT][COLD]], NAMES[t[HOT][WARM]], NAMES[t[COLD][WARM]],
-                NAMES[t[COLD][PRECISE]], NAMES[t[WARM][PRECISE]], NAMES[t[HOT][PRECISE]]);
+            println!(
+                "  HvC={} HvW={} CvW={} CvP={} WvP={} HvP={}",
+                NAMES[t[HOT][COLD]],
+                NAMES[t[HOT][WARM]],
+                NAMES[t[COLD][WARM]],
+                NAMES[t[COLD][PRECISE]],
+                NAMES[t[WARM][PRECISE]],
+                NAMES[t[HOT][PRECISE]]
+            );
         }
     }
     // Isolate which single constraint pair is unsatisfiable, so the finding is
@@ -158,7 +172,10 @@ fn part_a() {
                 .filter(|t| (CONSTRAINTS[a].holds)(t) && (CONSTRAINTS[b].holds)(t))
                 .count();
             if n == 0 {
-                println!("  UNSAT already at {{{}, {}}}", CONSTRAINTS[a].name, CONSTRAINTS[b].name);
+                println!(
+                    "  UNSAT already at {{{}, {}}}",
+                    CONSTRAINTS[a].name, CONSTRAINTS[b].name
+                );
             }
         }
     }
@@ -177,11 +194,23 @@ const D_ALL: u8 = D_SPEED | D_SPACE | D_ACCURACY | D_FAMILIARITY;
 
 fn demand_names(d: u8) -> String {
     let mut v: Vec<&str> = Vec::new();
-    if d & D_SPEED != 0 { v.push("speed"); }
-    if d & D_SPACE != 0 { v.push("space"); }
-    if d & D_ACCURACY != 0 { v.push("accuracy"); }
-    if d & D_FAMILIARITY != 0 { v.push("familiarity"); }
-    if v.is_empty() { "{}".to_string() } else { format!("{{{}}}", v.join(",")) }
+    if d & D_SPEED != 0 {
+        v.push("speed");
+    }
+    if d & D_SPACE != 0 {
+        v.push("space");
+    }
+    if d & D_ACCURACY != 0 {
+        v.push("accuracy");
+    }
+    if d & D_FAMILIARITY != 0 {
+        v.push("familiarity");
+    }
+    if v.is_empty() {
+        "{}".to_string()
+    } else {
+        format!("{{{}}}", v.join(","))
+    }
 }
 
 /// A set is closed under demand-union when for every pair of members, the
@@ -196,9 +225,16 @@ fn closure_report(label: &str, set: &[(String, u8)]) {
             }
         }
     }
-    println!("  {label}: {} members, {} unresolvable pairs", set.len(), missing.len());
+    println!(
+        "  {label}: {} members, {} unresolvable pairs",
+        set.len(),
+        missing.len()
+    );
     for (a, b, u) in missing.iter().take(6) {
-        println!("      {a} v {b} needs {} and no member carries it", demand_names(*u));
+        println!(
+            "      {a} v {b} needs {} and no member carries it",
+            demand_names(*u)
+        );
     }
     if missing.len() > 6 {
         println!("      ... and {} more", missing.len() - 6);
@@ -256,7 +292,10 @@ fn part_b() {
     }
     println!();
     println!("So closing the four presets under their own resolution generates");
-    println!("{} strategies. Either the design carries them, or resolution is not", closed.len());
+    println!(
+        "{} strategies. Either the design carries them, or resolution is not",
+        closed.len()
+    );
     println!("a join and has to be something else.");
 }
 
