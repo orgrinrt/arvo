@@ -1,0 +1,124 @@
+# Dispatcher note: twelve validators that were written and never run, and a correction to `41`
+
+**Position:** after `95`, during the strategy-axis unit's cold pair. **Author:** the dispatching agent.
+**Standing:** a measurement and a fix, not a design finding. Carries no authority over any open
+question.
+
+Recorded separately because it bears on the instrument every number in this panel comes from, and
+because it corrects a claim in `41` that currently qualifies the whole bench corpus more broadly than
+the facts support.
+
+## What `92` found, and what it turned out to be
+
+`92` reported, incidentally to its own question, that thirteen bench variant crates define a
+`validate_output` the harness never calls, because the harness only calls it when a variant declares
+`outputs_may_differ`, and exactly one does. That is correct, and the mechanism is now established
+precisely.
+
+`mockspace-bench-harness` at the pinned revision `084e780`, `bench-harness/src/validation.rs:105-113`:
+
+```rust
+// The validator is only meaningful when the Routine actually
+// declared one; we cannot tell from the bridge alone, so use
+// outputs_may_differ as the consent signal.
+let validator: Option<fn(&[u8], &[u8]) -> Result<(), String>> =
+    if routine.bridge.outputs_may_differ {
+        Some(routine.bridge.validator)
+    } else {
+        None
+    };
+```
+
+and the three checks below it were an exclusive `if / else if / else` chain, so selecting the
+per-variant validator also **deselected** cross-variant comparison. The two were entangled in both
+directions.
+
+**The trait documents them as independent, in its own words.** `bench-core/src/lib.rs:91-93` says
+`validate_output`'s default is "no structural check; the harness **still** does cross-variant byte
+comparison unless `outputs_may_differ` is true", and `bench-core/src/lib.rs:111-112` says
+`outputs_may_differ = false` means the harness "**also** does cross-variant byte comparison". Both
+sentences describe two checks that run independently. The harness gated one on the other.
+
+Consequence: a routine that declares a validator **and** expects its arms to agree byte-for-byte gets
+the validator silently dropped. That is the common case, and it is the case all twelve are in.
+
+## The twelve are not decorative
+
+They are the strongest fidelity checks in this repository, and none of them has ever executed:
+
+- `bitpack-shared` recomputes the column sum from `input.logical` as ground truth and refuses if the
+  extraction path produced a different value stream.
+- `warm-clamp-shared` first checks that both carrier regions hold the same logical column, so the arms
+  were fed the same input at all, then compares the output against an independent `u128` reference
+  implementation of the declared clamping semantics.
+- `quantiser-radix-shared` bounds every significand by the format range and names a carry-out or
+  alignment defect when one escapes.
+
+The full list, by `grep -l "fn validate_output" */src/lib.rs` in `mock/benches/variants`:
+`bitpack-carrier-shared`, `bitpack-footprint-shared`, `bitpack-plan-shared`, `bitpack-shared`,
+`bitpack-wide-shared`, `quantiser-fadd-shared`, `quantiser-radix-shared`, `satfold-shared`,
+`structural-decomposition`, `spectral-bisection`, `warm-clamp-shared`, `warm-container-shared`,
+`wide-rung-shared`. Thirteen; `satfold-shared` is `92`'s own and is the one that declares
+`outputs_may_differ`, so it is the one that ran.
+
+## The fix, upstream
+
+`hiisi-digital/mockspace` PR #18, on `fix/bench-validator-runs-independently`. It splits the decision
+into the two questions the contract asks: the per-variant validator runs always, and cross-variant
+comparison is a separate choice skipped only when the routine consents to variants differing. Running
+the validator unconditionally costs nothing for a routine that declared none, because the trait's
+default returns `Ok(())`.
+
+The check came first and failed against the pre-fix code, which is the record that the defect was real:
+
+```
+assertion failed: validation_plan(false, None).per_variant
+test result: FAILED. 6 passed; 1 failed
+```
+
+**Expect red on the first run of any of the twelve.** A validator that fires is reporting a defect that
+was already there and was invisible, not a regression introduced by turning it on.
+
+## The correction to `41`
+
+`41` closes with: "`mockspace-bench-core`'s orchestrator never calls validate and `run_worker_validate`
+is not re-exported, so no consumer can reach it. Verified in a clean clone."
+
+**The first half is true and the second half is false**, and `41` contradicts the file it cites on the
+second half.
+
+- `run_orchestrator` (`bench-harness/src/harness.rs:508`) still does not call validate. True today,
+  upstream, unfixed.
+- `run_worker_validate` **is** reachable. `harness` is a `pub mod` and `harness::run_worker_validate`
+  resolves. `22:498` says exactly this and reached it, which is how `22` wired validation into arvo's
+  own bench driver at all.
+- A second entry point, `driver/mod.rs:392`, has called `validation::validate` since 2026-07-19, and
+  the pinned revision `084e780` contains that call. So the harness is not uniformly unvalidating; it
+  depends which entry point a consumer took.
+
+**What this does not change about `41`.** Its measurement stands: 214 CSVs, 82,960 rows, digest zero in
+every one, and the pre-`22` corpus was never cross-checked. Its 50x sweep and the six hits stand. The
+`warm-container-kernel` finding stands.
+
+**What it does change.** arvo's bench driver has called `harness::validate` itself since `22`
+(`mock/benches/src/main.rs:160-170`), so runs after that point **were** cross-variant validated. `41`'s
+"no committed bench in this repository has ever cross-checked that its variants agree" is true of the
+corpus `41` measured and is not true of runs since. And the per-variant validators still did not run,
+for the different reason above, which is what PR #18 fixes.
+
+## What is still owed upstream
+
+**`run_orchestrator` does not validate, so every consumer must hand-roll it.** arvo did, in `22`, and
+again for `check_disasm_duplicates` in `92`. Any other consumer gets neither guard and is not told.
+This is the same shape twice: the harness ships a correctness guard that its main entry point never
+invokes, so whether a bench is checked depends on whether its author knew to call the checker.
+
+Not fixed in PR #18, deliberately, because it is a separate change with a much larger blast radius:
+turning validation on for every consumer at once will surface whatever it surfaces. It wants its own
+PR, and it wants a real arvo bench run against it before merging rather than after.
+
+## Predicate
+
+Everything above holds for: `mockspace-bench-harness` at `084e780` and at `dev`; arvo at
+`feat/arvo-shape-topic`; `nightly-2026-05-28`; the thirteen variant crates named. It says nothing about
+any other consumer of the harness, none of which was examined.
