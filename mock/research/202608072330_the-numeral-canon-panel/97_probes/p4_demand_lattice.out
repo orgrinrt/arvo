@@ -1,12 +1,16 @@
 === toolchain ===
 rustc 1.98.0-nightly (57d06900f 2026-05-27)
 
+=== assertion counts ===
+ordered pairs asserted: 256
+ordered triples asserted: 4096
+
+=== forbidden-feature check ===
+feature( gates: 0
+dyn / TypeId / std:: : 0
+
 === p4_demand_lattice.rs ===
 exit=0
-
-=== forbidden feature check ===
-0
-0
 
 === mutant: one Or impl drops a demand ===
 error[E0080]: evaluation panicked: the join of two demand sets is not their union
@@ -23,14 +27,3 @@ error[E0080]: evaluation panicked: the join of two demand sets is not their unio
   2 | / union_is_the_join!(
   3 | |     0 0 0 0 | 0 0 0 0,
   4 | |     0 0 0 0 | 1 0 0 0,
-  5 | |     0 0 0 0 | 0 1 0 0,
-...   |
-258 | |     1 1 1 1 | 1 1 1 1,
-259 | | );
-    | |_- in this macro invocation
-    |
-    = note: this error originates in the macro `$crate::panic::panic_2021` which comes from the expansion of the macro `union_is_the_join` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-error[E0080]: evaluation panicked: the join of two demand sets is not their union
-   --> p4_mutant_dropped_demand.rs:139:17
-    |

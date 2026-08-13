@@ -99,12 +99,8 @@ where
     A1: Or<A2>,
     I1: Or<I2>,
 {
-    type Out = Demands<
-        <S1 as Or<S2>>::Out,
-        <R1 as Or<R2>>::Out,
-        <A1 as Or<A2>>::Out,
-        <I1 as Or<I2>>::Out,
-    >;
+    type Out =
+        Demands<<S1 as Or<S2>>::Out, <R1 as Or<R2>>::Out, <A1 as Or<A2>>::Out, <I1 as Or<I2>>::Out>;
 }
 
 // ---------------------------------------------------------------- generators
@@ -123,8 +119,12 @@ pub type JoinOf<X, Y> = <X as Join<Y>>::Out;
 // ---------------------------------------------------------------- checks
 
 macro_rules! d {
-    (0) => { Absent };
-    (1) => { Present };
+    (0) => {
+        Absent
+    };
+    (1) => {
+        Present
+    };
 }
 
 /// One row of the 16 x 16 table: the join's demand set is the union of the two.
@@ -182,31 +182,29 @@ idem_and_bottom!(
     1 1 0 0, 1 1 0 1, 1 1 1 0, 1 1 1 1,
 );
 
-// Associativity over all 4096 ordered triples would be a large amount of generated
-// code for no extra information: the mask of a join is the union of the masks, which
-// the 256 assertions above establish, and the mask determines the type here because
-// the encoding is a bijection onto the sixteen bit patterns. Union is associative, so
-// the join is. A sample of triples is asserted anyway as a guard against that
-// argument being wrong about THIS encoding rather than about unions.
-macro_rules! assoc_sample {
-    ($($a:ty, $b:ty, $c:ty);* $(;)?) => {
+// Associativity over the whole 16 x 16 x 16 table. An earlier revision of this file
+// asserted a sample of five triples and reasoned that the mask identity above implied
+// the rest. The reasoning is sound and the sample is still the thing `the-test-gate.md`
+// names: a law asserted over a subset of the shapes it is claimed for. Choosing which
+// triples to include is choosing what not to find out, so all 4096 are written out.
+macro_rules! join_is_associative {
+    ($($a:tt $b:tt $c:tt $e:tt | $p:tt $q:tt $r:tt $s:tt | $w:tt $x:tt $y:tt $z:tt),* $(,)?) => {
         $(
-            const _: () = assert!(
-                <JoinOf<JoinOf<$a, $b>, $c> as Mask>::M
-                    == <JoinOf<$a, JoinOf<$b, $c>> as Mask>::M,
-                "the join is not associative"
-            );
+            const _: () = {
+                type A = Demands<d!($a), d!($b), d!($c), d!($e)>;
+                type B = Demands<d!($p), d!($q), d!($r), d!($s)>;
+                type C = Demands<d!($w), d!($x), d!($y), d!($z)>;
+                assert!(
+                    <JoinOf<JoinOf<A, B>, C> as Mask>::M
+                        == <JoinOf<A, JoinOf<B, C>> as Mask>::M,
+                    "the join is not associative"
+                );
+            };
         )*
     };
 }
 
-assoc_sample!(
-    Speed, Residency, Accuracy;
-    Accuracy, Speed, Residency;
-    Familiarity, Familiarity, Speed;
-    Nothing, Speed, Accuracy;
-    JoinOf<Speed, Residency>, Accuracy, Familiarity;
-);
+include!("p4_triples.inc");
 
 // ---------------------------------------------------------------- the payoff
 
@@ -239,7 +237,10 @@ const _: () = {
 // being named: everything that demands residency and accuracy at once.
 const _: () = {
     type ColdExact = JoinOf<Residency, Accuracy>;
-    assert!(<ColdExact as Mask>::M == 0b0110, "the unnamed point is not reachable");
+    assert!(
+        <ColdExact as Mask>::M == 0b0110,
+        "the unnamed point is not reachable"
+    );
 };
 
 // A public function taking a strategy by its DEMANDS rather than by a name. The
