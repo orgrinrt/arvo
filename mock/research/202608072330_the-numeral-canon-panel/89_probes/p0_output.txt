@@ -1,0 +1,15 @@
+p0: is 86's p5 battery capable of failing?
+
+battery shape: 309 pairs x widths 1..=12 = 3708 cases
+  cases with at least one interior breakpoint: 3601
+  max breakpoints in any case:                 12
+
+M0 control (86's procedure)    mismatches vs sweep:     0   (true 467, false 3241)
+M1 no breakpoints              mismatches vs sweep:     0   (true 467, false 3241)
+M2 one sample per piece        mismatches vs sweep:    66   (true 533, false 3175)
+M3 D samples not D+1           mismatches vs sweep:    14   (true 481, false 3227)
+M4 linear scan capped at 64    mismatches vs sweep:     0   (true 467, false 3241)
+
+width-64 verdicts per mutant on the E_d family:
+  E_63: F F F F F  (M0 M1 M2 M3 M4)
+  E_64: T T T T T  (M0 M1 M2 M3 M4)
