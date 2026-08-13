@@ -539,3 +539,24 @@ which `82`'s structural argument is the only defence standing. Nothing here is p
 
 **Nothing here settles anything.** The mode is explore. This file goes to whoever attacks next, and the
 first thing worth attacking is item 2 of section 11.
+
+## 12. Addendum: op's `85`, read after everything above was committed
+
+Op's `85` landed in the tree after this file's sections 0 through 11 were committed; nothing above is
+rewritten, and this section records where the file sits under it.
+
+**Q-A is closed at option one, "never any runtime checks, ever" (`85:20-25`), and this file needs no
+repair under it.** Every instrument and every proposed row of section 6's verdict table is a compile-time
+constant: witnesses for falsity, the difference procedure for fragment truth, named structural arguments
+for the rest. The closure is a strengthening of the file's direction, not a correction to it.
+
+**Q-B is closed the other way from the panel's hedge (`85:78-94`): the long-standing constraints are op's
+intents and rules, in force, not to be questioned.** This file carried no version of the "unratified
+ground" hedge; its Q-B paragraph stated only that nothing here depends on the bans in either direction,
+which stands.
+
+**Section 7 should be read functionally, per `85:49-59`.** Its sentence "a library claim must sit at rung
+0" is the conclusion of op's own test applied to one use, a library-wide claim expressed at a
+reachability-dependent rung has not actually worked, and not a ranking of constructions. The canon does
+not police shapes; the picker checks that the chosen shape reaches one lowered path for the claim it
+carries.
