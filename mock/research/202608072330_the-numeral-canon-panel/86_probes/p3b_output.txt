@@ -1,0 +1,22 @@
+p3b: hash-free verification of the non-monotone signed truth sets
+
+  x  ==  smul(x, smul(x, x))
+    truth set widths 1..=11: fTfffffffff   (interior run)
+  x  ==  smul(smul(x, x), x)
+    truth set widths 1..=11: fTfffffffff   (interior run)
+  y  ==  smul(y, smul(y, y))
+    truth set widths 1..=11: fTfffffffff   (interior run)
+  y  ==  smul(smul(y, y), y)
+    truth set widths 1..=11: fTfffffffff   (interior run)
+  smul(sadd(x, x), smul(x, y))  ==  smul(sadd(y, y), smul(x, x))
+    truth set widths 1..=11: TfTTTTTTTTT   (gapped)
+  smul(sadd(x, x), smul(x, y))  ==  smul(smul(x, x), sadd(y, y))
+    truth set widths 1..=11: TfTTTTTTTTT   (gapped)
+  smul(sadd(x, x), smul(y, x))  ==  smul(sadd(y, y), smul(x, x))
+    truth set widths 1..=11: TfTTTTTTTTT   (gapped)
+  smul(sadd(x, x), smul(y, x))  ==  smul(smul(x, x), sadd(y, y))
+    truth set widths 1..=11: TfTTTTTTTTT   (gapped)
+
+  direct-comparison totals over widths 1..=8: gapped 16, interior runs 24
+
+all checks passed
