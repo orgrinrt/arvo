@@ -1,0 +1,54 @@
+regions 6, arms 6, coordinates 3 ('time', 'bytes', 'spread')
+coordinate scale factors applied (feasibility-invariant): ['4398046511104', '8', '4398046511104']
+distinct cost vectors 36, strict Pareto edges among them 383
+L0 (all sections): 46656
+
+counts
+  L0 any section                          46656   100.000%
+  L1 Pareto-admissible                      2048     4.390%
+  L2 order-rationalisable                   2048     4.390%
+  L3 linear, w >= 0                          117     0.251%
+  L4 linear, w > 0                            58     0.124%
+  L5 linear, w > 0, unique argmin             58     0.124%
+
+containments observed (a failure here means a classifier is wrong)
+  L5 subset of L4: True
+  L4 subset of L3: True
+  L4 subset of L2: True
+  L4 subset of L1: True
+  L2 subset of L1: True
+  L5 subset of L1: True
+  L3 subset of L1: False   (48 exceptions, expected: a zero weight can hide a dominated pick)
+
+witnesses separating the rungs
+  L1 \ L2 is empty on this table
+  in L2 but not L4: a consistent preference order exists, but no linear weighting realises it
+    n=   16384 -> bitpack-carrier-d16-control    scaled cost (6161663162056704, 16, 110390967428709)
+    n=  131072 -> bitpack-carrier-d16            scaled cost (49480662077826656, 16, 1089176218474896)
+    n= 1048576 -> bitpack-carrier-d16            scaled cost (396842113864355072, 16, 10209405268551296)
+    n= 2097152 -> bitpack-carrier-d16            scaled cost (806054613150492160, 16, 31860878291553408)
+    n= 4194304 -> bitpack-carrier-d16            scaled cost (1636391060991115264, 16, 54573270084196864)
+    n= 8388608 -> bitpack-carrier-d16-control    scaled cost (3225174587913483264, 16, 54961947444615168)
+  in L3 but not L4: rationalisable only by zeroing a coordinate, so it is a strategy that does not weigh one of the measurements
+    n=   16384 -> bitpack-carrier-packed         scaled cost (9307146026798284, 13, 224520274391858)
+    n=  131072 -> bitpack-carrier-packed         scaled cost (74069480414432464, 13, 3875998390235968)
+    n= 1048576 -> bitpack-carrier-packed         scaled cost (586761856841731328, 13, 3879186973956608)
+    n= 2097152 -> bitpack-carrier-packed         scaled cost (1180917489575604992, 13, 13264728179814912)
+    n= 4194304 -> bitpack-carrier-packed         scaled cost (2411285734512761344, 13, 40842898730018304)
+    n= 8388608 -> bitpack-carrier-packed         scaled cost (4817684139840058368, 13, 82735391259913216)
+  L4 \ L5 is empty on this table
+
+L1 predicted from per-region Pareto fronts: 2048, measured 2048, agree: True
+
+cross-check: cone.py against Fourier-Motzkin on a random sample
+  nonneg    (L3): 300/300 agree
+  positive  (L4): 300/300 agree
+  strict    (L5): 300/300 agree
+
+ratios
+  L1 / L0 = 2048/46656 = 0.043896
+  L4 / L1 = 58/2048 = 0.028320
+  L4 / L0 = 58/46656 = 0.001243
+  L5 / L0 = 58/46656 = 0.001243
+
+written: p2_rungs.json
