@@ -130,13 +130,30 @@ And the bound on that leeway, `38`:
 
 **STATED.** `38`, 2026-08-08. Op calls this the mental unlock.
 
+**The intent is the first sentence.** All strategies are decided by measurement, they measure different
+things, and **they weigh different measurements differently**. That is the entry.
+
 > All of them should be decided by measurement, just measuring different things, and, this is I think
 > the mental unlock: They weigh different measurements differently. For the most part, they probably
 > agree, because in general, the best answer fits all, because it fights none of their intent. But
 > perhaps my instinct is wrong there, and all truly differ for the most part.
 
-The second half is part of the intent rather than a hedge on it: whether the weightings usually agree
-is **open**, and he says so.
+The rest of the quotation is kept for provenance and **is not part of the intent.** Op, 2026-08-13, asked
+whether he still held the agreement instinct:
+
+> It doesn't matter. The important part is whatever came before "for the most part, they probably
+> agree...". That's just filler noise I mused on the spot. What it is speculating on ("probably",
+> "perhaps") is the important part, not the small talk speculation itself.
+
+An earlier version of this entry said the second half "is part of the intent rather than a hedge on it"
+and recorded whether the weightings usually agree as an open question of op's. **That was wrong**, and it
+is the exact failure the split between intent and concretes exists to prevent: a verbatim transcript was
+recorded, correctly, and then every clause of it was treated as load-bearing. Quoting verbatim is for
+provenance. Naming the intent inside the quotation is a second act, and skipping it turns thinking-aloud
+into doctrine and then hands it back to op as a question he has to answer.
+
+Nothing is open here. Whether the weightings agree in practice is an ordinary empirical question about
+arvo, answerable by measurement like any other, and it is not an intent op owes.
 
 ## I9. The strategy is what makes an answer correct
 
