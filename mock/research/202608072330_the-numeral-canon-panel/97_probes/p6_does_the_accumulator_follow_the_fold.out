@@ -1,0 +1,91 @@
+P6. does the winning accumulator arm move with the fold's arity
+source: mock/benches/warm-clamp-arity-w13_n*.csv, committed harness output
+read, not measured: this probe runs no benchmark
+
+declared width held : 13
+element count held  : 8192
+fold arity varied   : 2, 4, 8, 16, 64, 256
+
+medians in ns, by fold arity
+   arity                 acc64                accfit            accfit-dyn                  head             min-lanes               minimum
+       2                 854.4                 285.2                4350.2                 539.0                 320.0                 276.9
+       4                 734.4                 294.6                1937.7                 565.4                 410.6                 314.6
+       8                 612.3                 547.3                1171.2                 540.0                1127.3                 542.5
+      16                 566.5                 293.4                 762.5                 332.9                1099.8                1091.9
+      64                 542.3                 217.5                 286.4                 255.6                 622.0                7081.5
+     256                 535.2                 202.1                 208.3                 231.1                 454.4                9781.0
+
+arms in contention at tolerance 0% of the fastest
+  arity    2 : minimum
+  arity    4 : accfit
+  arity    8 : head
+  arity   16 : accfit
+  arity   64 : accfit
+  arity  256 : accfit
+  distinct contending sets across the six arities: 3
+  the winner MOVES with arity: yes
+
+arms in contention at tolerance 2% of the fastest
+  arity    2 : minimum
+  arity    4 : accfit
+  arity    8 : accfit, head, minimum
+  arity   16 : accfit
+  arity   64 : accfit
+  arity  256 : accfit
+  distinct contending sets across the six arities: 3
+  the winner MOVES with arity: yes
+
+arms in contention at tolerance 5% of the fastest
+  arity    2 : accfit, minimum
+  arity    4 : accfit
+  arity    8 : accfit, head, minimum
+  arity   16 : accfit
+  arity   64 : accfit
+  arity  256 : accfit, accfit-dyn
+  distinct contending sets across the six arities: 4
+  the winner MOVES with arity: yes
+
+the two arms whose difference is the question
+  warm-clamp-accfit : accumulator derived from the fold's arity
+  warm-clamp-acc64 : a fixed accumulator that ignores it
+
+   arity  arity-sensitive      arity-blind        ratio which is faster
+       2            285.2            854.4        0.334 arity-sensitive
+       4            294.6            734.4        0.401 arity-sensitive
+       8            547.3            612.3        0.894 arity-sensitive
+      16            293.4            566.5        0.518 arity-sensitive
+      64            217.5            542.3        0.401 arity-sensitive
+     256            202.1            535.2        0.378 arity-sensitive
+
+sign changes across the sweep: 0
+
+and the const-availability contrast, which is a second question in the
+same table: the same accumulator rule with the arity known at compile time
+against the arity passed as a runtime value.
+
+   arity      arity const    arity runtime        ratio
+       2            285.2           4350.2       15.25x
+       4            294.6           1937.7        6.58x
+       8            547.3           1171.2        2.14x
+      16            293.4            762.5        2.60x
+      64            217.5            286.4        1.32x
+     256            202.1            208.3        1.03x
+
+VERDICT. Which arm is right at 13 declared bits changes with the
+fold's arity, on committed harness output, with the stored column held
+constant, at every tolerance tried. So the accumulator's width is not
+recoverable from the stored value, and a design carrying it on the value
+cannot fold one column two ways without a cast that changes no value.
+
+Note which comparison answers this and which does not. The head-to-head
+between the arity-derived accumulator and the fixed one has NO sign
+change: the arity-derived arm wins at every arity. That is a finding
+about those two arms and it does not answer the carrier question. What
+answers it is the field: the best arm is the minimum container at arity
+2 and the arity-derived accumulator from arity 4 upward, so the right
+intermediate width for one stored column is two different things.
+
+What this does NOT establish. It is one family, one declared width, one
+element count, one transform, and one machine. It says the accumulator
+question is answered by the fold in this region. Whether some other region
+makes the stored value the right carrier is not touched.

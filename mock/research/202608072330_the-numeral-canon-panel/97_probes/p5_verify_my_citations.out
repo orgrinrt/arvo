@@ -1,0 +1,19 @@
+ok    INTENTS.md:56-56                                           not closed at exactly four
+ok    INTENTS.md:327-327                                         besides the point of the intent
+ok    88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md:20-21 Mostly option 1
+ok    25_torvalds_what_a_strategy_is.md:528-537                  sections over a product of axes
+ok    40_leijen_what_the_axes_actually_are.md:23-28              resolve
+ok    40_leijen_what_the_axes_actually_are.md:209-211            objective is the primitive
+ok    40_leijen_what_the_axes_actually_are.md:398-398            observable
+ok    40_leijen_what_the_axes_actually_are.md:486-492            reachable-determinate
+ok    93_orchard_the_strategy_axis_derived_cold.md:354-357       Nobody asked and everybody pays
+ok    93_orchard_the_strategy_axis_derived_cold.md:384-386       the space is larger than four
+ok    93_orchard_the_strategy_axis_derived_cold.md:632-633       componentwise join over the **policy
+ok    93_orchard_the_strategy_axis_derived_cold.md:1042-1044     established rather than conjectured
+ok    93_orchard_the_strategy_axis_derived_cold.md:1178-1180     law inventory
+ok    94_wingo_the_strategy_axis_derived_cold.md:420-421         independent permissions
+ok    mock/DESIGN.md.tmpl:43-43                                  Resolve<S1, S2>
+ok    arvo-toolbox-not-policer.md:76-76                          Hot wrapping + Precise saturating
+ok    arvo-always-optimal-internals.md:55-56                     hold exactly at `F == 0`
+
+citations checked: 17   ok: 17   failed: 0
