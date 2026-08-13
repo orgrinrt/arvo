@@ -1,0 +1,14 @@
+CHECKER COST, corrected. L laws (E_d, d = WB..WB+L-1), all TRUE at widths 1..=WB,
+so every sweep runs to completion. Cost model: L * 2^WB * (term size).
+This is the rung-0 implementation check, paid ONCE for a library, not per law.
+   L   WB   sweep points            default         with allow
+   4    8           1024        accept 0.9s                  -
+   4   10           4096        accept 1.8s                  -
+   4   12          16384        accept 7.9s                  -
+   4   14          65536  refuse-guard 8.1s       accept 36.3s
+   4   15         131072  refuse-guard 8.0s       accept 75.5s
+   4   16         262144  refuse-guard 8.0s      accept 160.5s
+   4   17         524288  refuse-guard 8.0s      accept 356.0s
+   8   14         131072  refuse-guard 9.1s       accept 89.3s
+  16   12          65536  refuse-guard 8.1s       accept 45.4s
+   1   18         262144  refuse-guard 8.1s      accept 186.5s

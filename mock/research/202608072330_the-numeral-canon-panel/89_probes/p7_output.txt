@@ -1,0 +1,10 @@
+ARITY FRONTIER of the signed window gate. law = left fold == right fold of
+signed saturating add over a declared non-negative window, gated width 64,
+box = 2^n points. Verdict TRUE, so nothing exits early.
+   n   box points            default         with allow
+   8          256        accept 0.4s                  -  
+  12         4096        accept 1.3s                  -  
+  14        16384        accept 4.8s                  -  
+  15        32768  refuse-guard 8.2s       accept 11.6s  
+  16        65536  refuse-guard 9.0s       accept 24.8s  
+  18       262144  refuse-guard 9.8s      accept 103.7s  
