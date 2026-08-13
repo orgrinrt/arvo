@@ -15,5 +15,6 @@ ok    94_wingo_the_strategy_axis_derived_cold.md:420-421         independent per
 ok    mock/DESIGN.md.tmpl:43-43                                  Resolve<S1, S2>
 ok    arvo-toolbox-not-policer.md:76-76                          Hot wrapping + Precise saturating
 ok    arvo-always-optimal-internals.md:55-56                     hold exactly at `F == 0`
+ok    mock/benches/variants/warm-clamp-shared/src/lib.rs:83-83   KEY = W * 10000 + NC * 1000 + LOG2A * 10 + O
 
-citations checked: 17   ok: 17   failed: 0
+citations checked: 18   ok: 18   failed: 0

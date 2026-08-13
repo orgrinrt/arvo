@@ -43,6 +43,8 @@ CITES = [
     (ARVO, "mock/DESIGN.md.tmpl", (43, 43), "Resolve<S1, S2>"),
     (WS, "arvo-toolbox-not-policer.md", (76, 76), "Hot wrapping + Precise saturating"),
     (WS, "arvo-always-optimal-internals.md", (55, 56), "hold\nexactly at `F == 0`"),
+    (ARVO, "mock/benches/variants/warm-clamp-shared/src/lib.rs", (83, 83),
+     "KEY = W * 10000 + NC * 1000 + LOG2A * 10 + OP"),
 ]
 
 
