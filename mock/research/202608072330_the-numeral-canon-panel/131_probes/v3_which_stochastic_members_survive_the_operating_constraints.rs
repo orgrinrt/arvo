@@ -139,7 +139,10 @@ pub const DECISION_AT_POSITION_8: bool = rounds_up(HALF, 8);
 
 // The assertions are the finding, and they are checked at compile time. A wrong
 // one is a build failure rather than a printed number nobody reads.
-const _: () = assert!(DISTINCT_AT_40 == 2, "P3: a repeated value must receive both decisions");
+const _: () = assert!(
+    DISTINCT_AT_40 == 2,
+    "P3: a repeated value must receive both decisions"
+);
 const _: () = assert!(DISTINCT_AT_256 == 2, "P3 at a longer pass");
 const _: () = assert!(
     DISTINCT_DEGENERATE_AT_40 == 1,
