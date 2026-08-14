@@ -1,0 +1,189 @@
+p1. What `98`'s section instability is actually made of.
+
+`98`'s F-98-10 reports that a fixed weighting produces 30, 8 and 77 distinct
+sections across 2000 bootstrap resamples of the committed carrier run, and that
+for one weighting the committed section is not the modal one. `98` section 3
+draws from that: "a section is not stable enough to be the object a check is
+applied to", and proposes generating the table from the weighting instead.
+
+The finding reproduces. The inference is what this probe tests, by asking a
+question `98` did not: WHICH comparisons are moving, and does moving cost
+anything.
+
+Three measurements, all on the same committed samples `98` used, with an
+independently written extraction and bootstrap:
+
+  1. Per-region flip rate, and the identity of the arms that trade places.
+  2. REGRET of holding the committed section instead of each resample's own
+     argmin, as a fraction of the region's achievable objective RANGE. A region
+     where two arms score a hair apart flips constantly and costs a hair when it
+     flips, and a statistic that counts that identically to a real reversal is
+     measuring the wrong thing.
+  3. The same, with `bitpack-carrier-d16-control` dropped. That arm is a
+     NOISE-FLOOR CONTROL: its own doc comment says it "calls the identical
+     `sum_d16` on the identical region with the identical arguments as
+     `bitpack-carrier-d16`, so the two arms differ only in the exported symbol
+     name and must compile to the same machine code. Any measured gap between
+     them is the harness's own resolution on this workload."
+     (`mock/benches/variants/bitpack-carrier-d16-control/src/lib.rs:1-8`)
+
+Point 3 is the one that decides the reading. If the section's instability is
+carried by an arm the bench declares to be a duplicate, then the instability is
+the harness's declared noise floor appearing in the argmin, not a property of
+the table.
+
+WHICH REGRET STATISTIC, AND A DEFECT IN THE FIRST VERSION OF THIS PROBE.
+
+The first run reported regret as (held - best) / best on the min-max normalised
+objective. That is meaningless and its output is kept at
+`p1_v1_relative_regret_is_meaningless.out` rather than deleted. Min-max
+normalisation maps the global minimum of each coordinate to zero, so the
+objective's ORIGIN is an artifact of the arm set: a region whose best arm scores
+near zero produces a near-zero denominator and a regret in the thousands of
+percent, which is a fact about the normalisation and not about the choice. The
+run reported a maximum regret of 5773% for exactly that reason.
+
+What replaces it is invariant to the origin. `w . c` under min-max normalisation
+is affine in the raw costs, so differences of objective values are meaningful
+and levels are not. Regret is therefore reported as
+
+    (held - best) / (worst - best)
+
+at that region: 0 means the held arm is the best available, 1 means it is the
+worst. The contending band is defined the same way, as a fraction of the
+region's achievable range, which is what makes it comparable across regions and
+across weightings. `97` section 5 used a contending set at a tolerance on raw
+times for the same reason, on the ground that "at arity 8 three arms sit within
+two percent of each other and a strict argmin there measures the noise"; that
+instrument was never turned on this question.
+
+This is an uncertainty estimate over a committed artifact. It is NOT a bench,
+no measurement was taken, and no number here prices anything.
+
+regions: 6   samples per arm per region: 80
+resamples: 2000, seed 20260814
+
+==============================================================================
+ARM SET: all six, as 98 p10 used  (6 arms)
+==============================================================================
+
+speed-first
+  committed section : ['packed-simd', 'd16-control', 'd16', 'd16', 'd16', 'd16-control']
+  distinct sections : 31
+  modal appears     : 545/2000 (27.2%)  == committed
+  per region:  regret = (held - best) / (worst - best), 0 is best
+    n=   16384  flip   0.0%  regret mean 0.00000  p95 0.00000   [packed-simd:2000]
+    n=  131072  flip  24.1%  regret mean 0.00019  p95 0.00129   [d16-control:1518, d16:482]
+    n= 1048576  flip  16.2%  regret mean 0.00029  p95 0.00208   [d16:1675, d16-control:325]
+    n= 2097152  flip  37.1%  regret mean 0.00141  p95 0.00822   [d16:1259, d16-control:741]
+    n= 4194304  flip  27.5%  regret mean 0.00080  p95 0.00479   [d16:1450, d16-control:550]
+    n= 8388608  flip   8.0%  regret mean 0.00016  p95 0.00107   [d16-control:1840, d16:160]
+  regret of holding the committed section, over every region and resample: mean 0.00048, max 0.01825
+  contending set within  0.0% of the range:   31 distinct, modal 545/2000 (27.2%)
+  contending set within  2.0% of the range:    3 distinct, modal 1977/2000 (98.8%)
+  contending set within  5.0% of the range:    1 distinct, modal 2000/2000 (100.0%)
+  contending set within 10.0% of the range:   13 distinct, modal 468/2000 (23.4%)
+
+storage-first
+  committed section : ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+  distinct sections : 8
+  modal appears     : 896/2000 (44.8%)  == committed
+  per region:  regret = (held - best) / (worst - best), 0 is best
+    n=   16384  flip  41.1%  regret mean 0.00000  p95 0.00001   [packed:1177, packed-simd:823]
+    n=  131072  flip   0.0%  regret mean 0.00000  p95 0.00000   [packed-simd:2000]
+    n= 1048576  flip  10.7%  regret mean 0.00000  p95 0.00003   [packed-simd:1786, packed:214]
+    n= 2097152  flip   0.0%  regret mean 0.00000  p95 0.00000   [packed-simd:2000]
+    n= 4194304  flip  15.0%  regret mean 0.00003  p95 0.00025   [packed-simd:1699, packed:301]
+    n= 8388608  flip   0.0%  regret mean 0.00000  p95 0.00000   [packed-simd:2000]
+  regret of holding the committed section, over every region and resample: mean 0.00001, max 0.00077
+  contending set within  0.0% of the range:    8 distinct, modal 896/2000 (44.8%)
+  contending set within  2.0% of the range:    1 distinct, modal 2000/2000 (100.0%)
+  contending set within  5.0% of the range:    4 distinct, modal 1123/2000 (56.1%)
+  contending set within 10.0% of the range:    1 distinct, modal 2000/2000 (100.0%)
+
+tail-first
+  committed section : ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']
+  distinct sections : 83
+  modal appears     : 248/2000 (12.4%)  != committed
+  per region:  regret = (held - best) / (worst - best), 0 is best
+    n=   16384  flip  19.2%  regret mean 0.00055  p95 0.00375   [packed:1616, packed-simd:384]
+    n=  131072  flip   0.1%  regret mean 0.00001  p95 0.00000   [packed-simd:1998, d16:1, packed:1]
+    n= 1048576  flip  14.5%  regret mean 0.00020  p95 0.00164   [packed:1710, packed-simd:288, d16-control:2]
+    n= 2097152  flip  30.1%  regret mean 0.00308  p95 0.00923   [packed-simd:1397, packed:603]
+    n= 4194304  flip  45.2%  regret mean 0.00514  p95 0.02316   [packed:1095, d16-control:678, d16:152, packed-simd:75]
+    n= 8388608  flip  50.6%  regret mean 0.00872  p95 0.03052   [packed-simd:989, d16-control:901, d16:110]
+  regret of holding the committed section, over every region and resample: mean 0.00295, max 0.07786
+  contending set within  0.0% of the range:   83 distinct, modal 248/2000 (12.4%)
+  contending set within  2.0% of the range:  323 distinct, modal 146/2000 (7.3%)
+  contending set within  5.0% of the range:  196 distinct, modal 262/2000 (13.1%)
+  contending set within 10.0% of the range:   13 distinct, modal 1109/2000 (55.5%)
+
+==============================================================================
+ARM SET: five, noise-floor control dropped  (5 arms)
+==============================================================================
+
+speed-first
+  committed section : ['packed-simd', 'd16', 'd16', 'd16', 'd16', 'd16']
+  distinct sections : 1
+  modal appears     : 2000/2000 (100.0%)  == committed
+  per region:  regret = (held - best) / (worst - best), 0 is best
+    n=   16384  flip   0.0%  regret mean 0.00000  p95 0.00000   [packed-simd:2000]
+    n=  131072  flip   0.0%  regret mean 0.00000  p95 0.00000   [d16:2000]
+    n= 1048576  flip   0.0%  regret mean 0.00000  p95 0.00000   [d16:2000]
+    n= 2097152  flip   0.0%  regret mean 0.00000  p95 0.00000   [d16:2000]
+    n= 4194304  flip   0.0%  regret mean 0.00000  p95 0.00000   [d16:2000]
+    n= 8388608  flip   0.0%  regret mean 0.00000  p95 0.00000   [d16:2000]
+  regret of holding the committed section, over every region and resample: mean 0.00000, max 0.00000
+  contending set within  0.0% of the range:    1 distinct, modal 2000/2000 (100.0%)
+  contending set within  2.0% of the range:    1 distinct, modal 2000/2000 (100.0%)
+  contending set within  5.0% of the range:    1 distinct, modal 2000/2000 (100.0%)
+  contending set within 10.0% of the range:   14 distinct, modal 436/2000 (21.8%)
+
+storage-first
+  committed section : ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+  distinct sections : 9
+  modal appears     : 945/2000 (47.2%)  == committed
+  per region:  regret = (held - best) / (worst - best), 0 is best
+    n=   16384  flip  37.6%  regret mean 0.00000  p95 0.00001   [packed:1247, packed-simd:753]
+    n=  131072  flip   0.0%  regret mean 0.00000  p95 0.00000   [packed-simd:1999, packed:1]
+    n= 1048576  flip   9.3%  regret mean 0.00000  p95 0.00003   [packed-simd:1815, packed:185]
+    n= 2097152  flip   0.0%  regret mean 0.00000  p95 0.00000   [packed-simd:2000]
+    n= 4194304  flip  15.2%  regret mean 0.00003  p95 0.00023   [packed-simd:1695, packed:305]
+    n= 8388608  flip   0.0%  regret mean 0.00000  p95 0.00000   [packed-simd:2000]
+  regret of holding the committed section, over every region and resample: mean 0.00001, max 0.00094
+  contending set within  0.0% of the range:    9 distinct, modal 945/2000 (47.2%)
+  contending set within  2.0% of the range:    1 distinct, modal 2000/2000 (100.0%)
+  contending set within  5.0% of the range:    2 distinct, modal 1839/2000 (92.0%)
+  contending set within 10.0% of the range:    1 distinct, modal 2000/2000 (100.0%)
+
+tail-first
+  committed section : ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']
+  distinct sections : 40
+  modal appears     : 710/2000 (35.5%)  != committed
+  per region:  regret = (held - best) / (worst - best), 0 is best
+    n=   16384  flip  16.6%  regret mean 0.00049  p95 0.00357   [packed:1668, packed-simd:332]
+    n=  131072  flip   0.0%  regret mean 0.00001  p95 0.00000   [packed-simd:1999, packed:1]
+    n= 1048576  flip  12.8%  regret mean 0.00018  p95 0.00139   [packed:1743, packed-simd:257]
+    n= 2097152  flip  29.2%  regret mean 0.00316  p95 0.00993   [packed-simd:1416, packed:584]
+    n= 4194304  flip  22.8%  regret mean 0.00208  p95 0.01395   [packed:1545, d16:289, packed-simd:166]
+    n= 8388608  flip  11.1%  regret mean 0.00118  p95 0.01009   [packed-simd:1778, d16:222]
+  regret of holding the committed section, over every region and resample: mean 0.00118, max 0.04464
+  contending set within  0.0% of the range:   40 distinct, modal 710/2000 (35.5%)
+  contending set within  2.0% of the range:   77 distinct, modal 433/2000 (21.6%)
+  contending set within  5.0% of the range:   87 distinct, modal 288/2000 (14.4%)
+  contending set within 10.0% of the range:   10 distinct, modal 1170/2000 (58.5%)
+
+==============================================================================
+READING
+==============================================================================
+
+The distinct-section count is a product over regions. If each of six regions
+holds its pick with probability p independently, the whole section reproduces
+with probability p^6: p = 0.95 gives 0.74, p = 0.80 gives 0.26. So a 26.6%
+modal rate is what roughly 80% per-region stability looks like, and the
+statistic compounds the region count into what reads as a statement about the
+table.
+
+Regret says whether a flip matters. The control arm says whether it is even a
+comparison between two things.
+

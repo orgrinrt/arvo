@@ -1,0 +1,172 @@
+p1. What `98`'s section instability is actually made of.
+
+`98`'s F-98-10 reports that a fixed weighting produces 30, 8 and 77 distinct
+sections across 2000 bootstrap resamples of the committed carrier run, and that
+for one weighting the committed section is not the modal one. `98` section 3
+draws from that: "a section is not stable enough to be the object a check is
+applied to", and proposes generating the table from the weighting instead.
+
+The finding reproduces. The inference is what this probe tests, by asking a
+question `98` did not: WHICH comparisons are moving, and does moving cost
+anything.
+
+Four measurements, all on the same committed samples `98` used, with an
+independently written extraction and bootstrap:
+
+  1. Per-region flip rate, and for each flipping region, the identity of the
+     two arms that trade places.
+  2. REGRET. Taking the committed section instead of each resample's own argmin,
+     how much objective value is lost, in percent of the objective. A section
+     that "moves" between two arms that score within 0.2% of each other has not
+     cost anything, and a stability statistic that counts it identically to a
+     real reversal is measuring the wrong thing.
+  3. The stability of the TOLERANCE-CONTENDING SET rather than of the strict
+     argmin. `97` section 5 already used contending sets at a tolerance, on the
+     explicit ground that "at arity 8 three arms sit within two percent of each
+     other and a strict argmin there measures the noise". That instrument was
+     never turned on this question.
+  4. The same, with `bitpack-carrier-d16-control` dropped. That arm is a
+     NOISE-FLOOR CONTROL: its own doc comment says it "calls the identical
+     `sum_d16` on the identical region with the identical arguments as
+     `bitpack-carrier-d16`, so the two arms differ only in the exported symbol
+     name and must compile to the same machine code. Any measured gap between
+     them is the harness's own resolution on this workload."
+
+Point 4 is the one that decides the reading. If the section's instability is
+carried by an arm the bench declares to be a duplicate, then the instability is
+the harness's declared noise floor appearing in the argmin, not a property of
+the table.
+
+This is an uncertainty estimate over a committed artifact. It is NOT a bench,
+no measurement was taken, and no number here prices anything.
+
+regions: 6   samples per arm per region: 80
+resamples: 2000, seed 20260814
+
+==============================================================================
+ARM SET: all six, as 98 p10 used  (6 arms)
+==============================================================================
+
+speed-first
+  committed section : ['packed-simd', 'd16-control', 'd16', 'd16', 'd16', 'd16-control']
+  distinct sections : 31
+  modal appears     : 545/2000 (27.2%)  == committed
+  per region:
+    n=   16384  flip   0.0%  regret mean  0.000%  p95  0.000%   [packed-simd:2000]
+    n=  131072  flip  24.1%  regret mean  0.062%  p95  0.410%   [d16-control:1518, d16:482]
+    n= 1048576  flip  16.2%  regret mean  0.041%  p95  0.329%   [d16:1675, d16-control:325]
+    n= 2097152  flip  37.1%  regret mean  0.202%  p95  1.207%   [d16:1259, d16-control:741]
+    n= 4194304  flip  27.5%  regret mean  0.087%  p95  0.508%   [d16:1450, d16-control:550]
+    n= 8388608  flip   8.0%  regret mean  0.013%  p95  0.084%   [d16-control:1840, d16:160]
+  regret of holding the committed section, over every region and resample: mean 0.0673%, max 2.2552%
+  contending set at  0.0%:  31 distinct, modal 545/2000 (27.2%)
+  contending set at  2.0%:   4 distinct, modal 1815/2000 (90.8%)
+  contending set at  5.0%:   1 distinct, modal 2000/2000 (100.0%)
+
+storage-first
+  committed section : ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+  distinct sections : 8
+  modal appears     : 896/2000 (44.8%)  == committed
+  per region:
+    n=   16384  flip  41.1%  regret mean  9.261%  p95 43.946%   [packed:1177, packed-simd:823]
+    n=  131072  flip   0.0%  regret mean  0.000%  p95  0.000%   [packed-simd:2000]
+    n= 1048576  flip  10.7%  regret mean  0.143%  p95  1.012%   [packed-simd:1786, packed:214]
+    n= 2097152  flip   0.0%  regret mean  0.000%  p95  0.000%   [packed-simd:2000]
+    n= 4194304  flip  15.0%  regret mean  0.212%  p95  1.713%   [packed-simd:1699, packed:301]
+    n= 8388608  flip   0.0%  regret mean  0.000%  p95  0.000%   [packed-simd:2000]
+  regret of holding the committed section, over every region and resample: mean 1.6026%, max 136.5282%
+  contending set at  0.0%:   8 distinct, modal 896/2000 (44.8%)
+  contending set at  2.0%:  27 distinct, modal 441/2000 (22.1%)
+  contending set at  5.0%:  30 distinct, modal 580/2000 (29.0%)
+
+tail-first
+  committed section : ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']
+  distinct sections : 83
+  modal appears     : 248/2000 (12.4%)  != committed
+  per region:
+    n=   16384  flip  19.2%  regret mean 35.265%  p95 151.523%   [packed:1616, packed-simd:384]
+    n=  131072  flip   0.1%  regret mean  0.020%  p95  0.000%   [packed-simd:1998, d16:1, packed:1]
+    n= 1048576  flip  14.5%  regret mean  1.456%  p95 11.727%   [packed:1710, packed-simd:288, d16-control:2]
+    n= 2097152  flip  30.1%  regret mean 12.798%  p95 40.747%   [packed-simd:1397, packed:603]
+    n= 4194304  flip  45.2%  regret mean  6.773%  p95 32.597%   [packed:1095, d16-control:678, d16:152, packed-simd:75]
+    n= 8388608  flip  50.6%  regret mean 11.367%  p95 40.381%   [packed-simd:989, d16-control:901, d16:110]
+  regret of holding the committed section, over every region and resample: mean 11.2798%, max 2315.6285%
+  contending set at  0.0%:  83 distinct, modal 248/2000 (12.4%)
+  contending set at  2.0%: 241 distinct, modal 192/2000 (9.6%)
+  contending set at  5.0%: 387 distinct, modal 123/2000 (6.2%)
+
+==============================================================================
+ARM SET: five, noise-floor control dropped  (5 arms)
+==============================================================================
+
+speed-first
+  committed section : ['packed-simd', 'd16', 'd16', 'd16', 'd16', 'd16']
+  distinct sections : 1
+  modal appears     : 2000/2000 (100.0%)  == committed
+  per region:
+    n=   16384  flip   0.0%  regret mean  0.000%  p95  0.000%   [packed-simd:2000]
+    n=  131072  flip   0.0%  regret mean  0.000%  p95  0.000%   [d16:2000]
+    n= 1048576  flip   0.0%  regret mean  0.000%  p95  0.000%   [d16:2000]
+    n= 2097152  flip   0.0%  regret mean  0.000%  p95  0.000%   [d16:2000]
+    n= 4194304  flip   0.0%  regret mean  0.000%  p95  0.000%   [d16:2000]
+    n= 8388608  flip   0.0%  regret mean  0.000%  p95  0.000%   [d16:2000]
+  regret of holding the committed section, over every region and resample: mean 0.0000%, max 0.0000%
+  contending set at  0.0%:   1 distinct, modal 2000/2000 (100.0%)
+  contending set at  2.0%:   1 distinct, modal 2000/2000 (100.0%)
+  contending set at  5.0%:   1 distinct, modal 2000/2000 (100.0%)
+
+storage-first
+  committed section : ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+  distinct sections : 9
+  modal appears     : 945/2000 (47.2%)  == committed
+  per region:
+    n=   16384  flip  37.6%  regret mean  8.996%  p95 47.888%   [packed:1247, packed-simd:753]
+    n=  131072  flip   0.0%  regret mean  0.000%  p95  0.000%   [packed-simd:1999, packed:1]
+    n= 1048576  flip   9.3%  regret mean  0.140%  p95  0.844%   [packed-simd:1815, packed:185]
+    n= 2097152  flip   0.0%  regret mean  0.000%  p95  0.000%   [packed-simd:2000]
+    n= 4194304  flip  15.2%  regret mean  0.198%  p95  1.566%   [packed-simd:1695, packed:305]
+    n= 8388608  flip   0.0%  regret mean  0.000%  p95  0.000%   [packed-simd:2000]
+  regret of holding the committed section, over every region and resample: mean 1.5556%, max 206.9381%
+  contending set at  0.0%:   9 distinct, modal 945/2000 (47.2%)
+  contending set at  2.0%:  25 distinct, modal 472/2000 (23.6%)
+  contending set at  5.0%:  30 distinct, modal 639/2000 (31.9%)
+
+tail-first
+  committed section : ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']
+  distinct sections : 40
+  modal appears     : 710/2000 (35.5%)  != committed
+  per region:
+    n=   16384  flip  16.6%  regret mean 64.331%  p95 408.270%   [packed:1668, packed-simd:332]
+    n=  131072  flip   0.0%  regret mean  0.025%  p95  0.000%   [packed-simd:1999, packed:1]
+    n= 1048576  flip  12.8%  regret mean  1.312%  p95 10.110%   [packed:1743, packed-simd:257]
+    n= 2097152  flip  29.2%  regret mean 13.109%  p95 43.059%   [packed-simd:1416, packed:584]
+    n= 4194304  flip  22.8%  regret mean  2.512%  p95 17.175%   [packed:1545, d16:289, packed-simd:166]
+    n= 8388608  flip  11.1%  regret mean  1.426%  p95 11.689%   [packed-simd:1778, d16:222]
+  regret of holding the committed section, over every region and resample: mean 13.7858%, max 5773.4456%
+  contending set at  0.0%:  40 distinct, modal 710/2000 (35.5%)
+  contending set at  2.0%: 120 distinct, modal 607/2000 (30.4%)
+  contending set at  5.0%: 162 distinct, modal 486/2000 (24.3%)
+
+==============================================================================
+READING
+==============================================================================
+
+The distinct-section count is a product over regions. If each of six regions
+holds its pick with probability p independently, the whole section reproduces
+with probability p^6: p = 0.95 gives 0.74, p = 0.80 gives 0.26. So a 26.6%
+modal rate is what ~80% per-region stability looks like, and the statistic
+compounds region count into what reads as a statement about the table.
+
+Regret is the statistic that says whether a flip matters. A region where two
+arms score within a fraction of a percent flips constantly and costs that
+fraction of a percent when it flips.
+
+The control arm is the load-bearing comparison. `bitpack-carrier-d16-control`
+is byte-identical to `bitpack-carrier-d16` by construction and by the bench's
+own documented intent, so every flip between those two is the harness's
+declared noise floor appearing inside an argmin. Compare the two arm sets
+above: what survives when it is dropped is the instability that is about the
+table rather than about the instrument.
+
+None of this is a bench and no measurement was taken.
+
