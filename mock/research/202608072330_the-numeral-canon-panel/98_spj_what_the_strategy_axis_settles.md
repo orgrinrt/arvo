@@ -1,7 +1,7 @@
 # 98. What the strategy axis settles
 
 **Predecessors:** `93` and `94`, the unit's cold pair, and `97`, which attacked both. **Probes:**
-`98_probes/`, eleven of them, each committed as it ran.
+`98_probes/`, thirteen of them, each committed as it ran.
 
 This is the fourth file of the unit and the last before the checkpoint that goes to op, so `95`
 governs its shape more sharply than it governed `97`'s: attack is still available and a fifth
@@ -12,7 +12,8 @@ decides; nothing here settles anything.
 
 I should say at the outset that I found the predecessors' work good, and that the two places where I
 disagree with `97` are places where its own evidence pointed further than its prose went. That is the
-happiest kind of disagreement to have.
+happiest kind of disagreement to have. **And the sharpest correction in this file is to me**: probe 12
+refutes a finding probes 1b and 9 rest on, and section 11 is where that lands.
 
 ## 0. The gates
 
@@ -84,13 +85,12 @@ have checked is checked instead by the crates' own tests, which I read.
 
 ## 1. The answer, before the working
 
-Five claims, in the order they matter.
+Six claims, in the order they matter.
 
-**One. `97`'s rationalisability criterion holds, I derived it independently before reading its
-argument, and it is a rung on a ladder rather than a property.** Between "any table" and "one weighting"
-there are at least five distinct conditions, and the two that matter are far apart: on the committed
-carrier data, of 46656 sections, **2048 are Pareto-admissible and 58 are realisable by a strictly
-positive weighting**. Section 2.
+**One. `97`'s rationalisability criterion holds, and it is a rung on a ladder rather than a property.**
+Between "any table" and "one weighting" there are at least five distinct conditions. On the committed
+carrier data over the two coordinates that survive scrutiny, of 46656 sections, **144 are
+Pareto-admissible and 9 are realisable by a strictly positive weighting**. Section 2.
 
 **Two. `97`'s headline number and `97`'s own dominance finding are about different rungs, and 63 of its
 72 sections select an arm it says no weighting can select.** I reproduced its model exactly and got 72
@@ -119,6 +119,12 @@ correctly, which means no family carries a column for how wrong an arm is or how
 reference semantics. And the shipped rule the imitation intent produced is Pareto-dominated on both
 machine coordinates in **18 of 22 committed runs** of the family built to test it. Section 5.
 
+**Six, and it is a correction to me rather than to anyone else.** I added a third cost coordinate, the
+sample spread, and reported that it rescued an arm from being dominated everywhere. Tested against zero,
+**all four of the comparisons that rescue depends on have bootstrap intervals crossing zero**, so the
+rescue is an artifact of an estimate and `97` section 10's two-arm finding stands unqualified. Section
+11.
+
 ## 2. Second read on rationalisability
 
 `97`'s section 2.4 is the most consequential proposal in this unit, it is offered as canon-tier content
@@ -129,7 +135,8 @@ section design-tier and weighting canon-tier. So I cannot claim to have started 
 What I could still do, and did, was derive the criterion and its structure from op's intents and from
 the mathematics before opening `97`, build my instruments from scratch, and run them on data I chose
 myself. Probes p1 through p5 were written, run and **committed before I read `97`**, which the commit
-order shows. p6 and after were written afterwards and are second reads in the ordinary sense.
+order shows and is the only evidence for even that much. p6 onward were written afterwards and are
+second reads in the ordinary sense.
 
 ### 2.1 What the criterion is, derived rather than restated
 
@@ -166,44 +173,46 @@ answer by naming only one rung.
 
 ### 2.2 The ladder measured, exactly, on committed data
 
-`98_probes/p2_the_rationalisability_ladder.py`, over the cost table `98_probes/p1_extract_the_cost_table.py`
-builds from the six committed `bitpack-carrier-width_n*` runs. Six regions, six arms, three coordinates:
-median `algo_ns`, bytes per element (a declared property of the arm, not a measurement), and the
-interquartile range of the per-batch samples, which the harness's own findings file for that family
-raises as a decision axis in those words ("Speed leader bitpack-carrier-d64 vs stability leader
-bitpack-carrier-d32 (+3% speed for 4.1x steadier)").
-
-Exact rational arithmetic throughout, by convex polygon clipping on the weight simplex
-(`98_probes/cone.py`), cross-checked against an independently written Fourier-Motzkin implementation
-(`98_probes/lp.py`) on 300 sampled sections per rung, agreeing 300 of 300 in all three.
+`98_probes/p13_the_ladder_on_the_coordinates_that_survive.py` computes it over the six committed
+`bitpack-carrier-width_n*` runs, six regions, six arms, and the two coordinates that survive section
+11's scrutiny: median `algo_ns`, and bytes per element, which is a declared property of the arm rather
+than a measurement.
 
 ```
-  L0 any section                          46656   100.000%
-  L1 Pareto-admissible                      2048     4.390%
-  L2 order-rationalisable                   2048     4.390%
-  L3 linear, w >= 0                          117     0.251%
-  L4 linear, w > 0                            58     0.124%
-  L5 linear, w > 0, unique argmin             58     0.124%
+  L0 any section                      46656   100.000%
+  L1 Pareto-admissible                   144     0.309%
+  L3 linear, w >= 0                       72     0.154%
+  L4 linear, w > 0                         9     0.019%
+  L5 linear, w > 0, unique argmin          9     0.019%
 ```
 
-Four things in that table and three of them surprised me.
+`98_probes/p2_the_rationalisability_ladder.py` computes the same ladder over three coordinates, adding
+the interquartile range of the per-batch samples, and gets 2048, 2048, 117, 58, 58. Both are correct for
+the coordinate sets they name and under I13's notation neither claims anything about the other. I lead
+with the two-coordinate figures because section 11 withdraws a claim that rested on the third, and I
+keep the three-coordinate run because its L2 row is the only measurement of the middle rung anybody has.
 
-**L1 = L2 exactly.** Order-rationalisability adds nothing to admissibility here. The middle of the
-ladder is empty on this data.
+Exact rational arithmetic in both, by convex polygon clipping on the weight simplex
+(`98_probes/cone.py`) for the three-coordinate case, cross-checked against an independently written
+Fourier-Motzkin implementation (`98_probes/lp.py`) on 300 sampled sections per rung, agreeing 300 of 300
+in all three; and by interval arithmetic on the one-dimensional simplex for the two-coordinate case.
 
-**L4 = L5 exactly.** A weighting that permits a section on this table also forces it. Permission and
-determination coincide.
+Four things in those tables and three of them surprised me.
 
-**L3 is not contained in L1**, with 48 exceptions. That is not a bug in the classifier, it is the whole
-content of the difference between `w ≥ 0` and `w > 0`, and section 2.3 is what it does to `97`'s
-numbers. A weight of zero on a coordinate means the strategy is indifferent along it, and indifference
-is what admits an arm that is strictly worse there and no better anywhere else.
+**L1 = L2 exactly**, on the three-coordinate run. Order-rationalisability adds nothing to admissibility
+there. The middle of the ladder is empty on this data.
 
-**The big gap is L1 to L4: 2048 down to 58, a factor of 35.** That is the price of demanding a weighting
-rather than merely demanding coherence.
+**L4 = L5 exactly**, in both. A weighting that permits a section on this table also forces it.
+Permission and determination coincide.
 
-**And one arm is Pareto-dominated in every region**, `bitpack-carrier-d64`, so no monotone rule reaches
-it anywhere.
+**L3 is not contained in L1**, with 48 exceptions in the three-coordinate run and 63 of 72 in the
+two-coordinate one. That is not a bug in the classifier, it is the whole content of the difference
+between `w ≥ 0` and `w > 0`, and section 2.3 is what it does to `97`'s numbers. A weight of zero on a
+coordinate means the strategy is indifferent along it, and indifference is what admits an arm that is
+strictly worse there and no better anywhere else.
+
+**The big gap is L1 to L4**: 144 down to 9 on two coordinates, 2048 down to 58 on three. That is the
+price of demanding a weighting rather than merely demanding coherence.
 
 #### The order rung is real in general and empty here, and I chased the mechanism
 
@@ -243,11 +252,12 @@ The same probe measures the L4/L1 ratio across all 180 models: minimum 0.021, me
 1.000, a spread of **47x**. In some tiered models every admissible section is linearly rationalisable
 and the gap vanishes entirely.
 
-So no particular value of that ratio says anything about arvo. What survives across every generator is
-the **ordering**: a weighting admits far fewer sections than admissibility does, and both admit far
-fewer than the section count. `97`'s F-B makes the same point by a counting bound on hyperplane
-arrangements, which is a better argument than mine and reaches further; this is a second instance of it
-from a different direction, and I record it as corroboration rather than as news.
+So no particular value of that ratio says anything about arvo. What survives across every generator,
+and across all three real-data models in this probe set, is the **ordering**: a weighting admits far
+fewer sections than admissibility does, and both admit far fewer than the section count. `97`'s F-B
+makes the same point by a counting bound on hyperplane arrangements, which is a better argument than
+mine and reaches further; this is a second instance of it from a different direction, and I record it as
+corroboration rather than as news.
 
 ### 2.3 Reproducing `97`'s numbers exactly, and where its two sentences part company
 
@@ -272,6 +282,8 @@ rather than `97`'s extreme-ray enumeration, so the implementations share only th
 
 **Both of `97`'s numbers reproduce exactly, from an independent implementation.** That is the strongest
 corroboration available and it should be recorded as such: the arithmetic in `97` section 2 is right.
+p13 adds that they are insensitive to the arm count: including the control arm takes L0 from 15625 to
+46656 and leaves L1, L3 and L4 at 144, 72 and 9 unchanged.
 
 And then:
 
@@ -451,13 +463,13 @@ over 200 random models, one per coordinate permutation, and **1200 of 1200** are
 strictly positive weight vector. So a canon stating which measurement outranks which has said something
 a weighting can implement, and the two formalisms are not rivals.
 
-**The converse fails by a wide margin.** On the real table, the six coordinate permutations produce
-**4 distinct sections**, against **58** realisable by a weighting. So 54 of 58 behaviours need an actual
-rate and no priority order can express them. The probe exhibits three of the 54, and one with an exact
-weight vector that realises it, checked by recomputing the argmin.
+**The converse fails by a wide margin.** On the three-coordinate table, the six coordinate permutations
+produce **4 distinct sections**, against **58** realisable by a weighting. So 54 of 58 behaviours need
+an actual rate and no priority order can express them. The probe exhibits three of the 54, and one with
+an exact weight vector that realises it, checked by recomputing the argmin.
 
 **So op's four refusals have exact operational content**: they are the difference between 4 available
-behaviours and 58, on this table. That is what "not absolutely required" buys.
+behaviours and 58, on that table. That is what "not absolutely required" buys.
 
 **This is `40` section 5.3's reading, arrived at independently.** `40` derives from I5 and `34` that
 "accuracy is lexicographically prior for every objective except `Hot`, and finitely weighted for `Hot`",
@@ -573,14 +585,14 @@ and reports no such column; nothing joins the two. Until something does, half of
 unpriceable by construction, and any claim that two strategies differ is a claim about time and bytes
 whatever it says it is about.
 
-**And a coordinate nobody named produces a section nobody else produces.**
-`98_probes/p9_the_proposal_instantiated.py` section 4 instantiates three weightings on the real table:
-speed-first, storage-first, and one that weighs the interquartile spread. All three give **distinct**
-sections and none selects a dominated arm. The third is a finding rather than an illustration: the
-spread coordinate is named by none of op's four intents, the harness's own findings file raises it as a
-decision axis, and a strategy weighing it behaves differently from all the others. Either it belongs in
-the coordinate set and no intent names it, or it is noise and should be excluded, and nothing so far
-decides which.
+**And a coordinate nobody named produces a section nobody else produces, with a caveat section 11
+supplies.** `98_probes/p9_the_proposal_instantiated.py` section 4 instantiates three weightings on the
+three-coordinate table: speed-first, storage-first, and one weighing the interquartile spread. All three
+give **distinct** sections and none selects a dominated arm. Section 11 then finds that the spread
+differences separating the specific arms that mattered are not distinguishable from zero, and p10 finds
+the spread-weighing section the least stable of the three by a wide margin. The honest reading is that
+the spread coordinate separates most arm pairs measurably and not the ones that would have changed a
+verdict, so it is a candidate coordinate whose standing is weaker than I first reported.
 
 ## 6. A converged statement, offered
 
@@ -636,9 +648,13 @@ Section 4.1 is that reading derived independently and extended from one intent t
 first, from op's four intent statements, before op spoke at `88`.
 
 **`97`'s rationalisability criterion, at the strictly-positive rung.** It holds, it is decidable, its
-arithmetic reproduces exactly from an independent implementation, and it is the right formal content for
-`88:20-21`. My corrections are to which rung it names and to whether it is checked or generated, not to
-whether it is right.
+arithmetic reproduces exactly from an independent implementation and is insensitive to the arm count,
+and it is the right formal content for `88:20-21`. My corrections are to which rung it names and to
+whether it is checked or generated, not to whether it is right.
+
+**`97`'s two-arm dominance finding, unqualified.** Section 11 withdraws my own qualification of it. Both
+`bitpack-carrier-d64` and `bitpack-carrier-packed` are dominated in every region on the two coordinates
+that survive scrutiny, and no strictly positive weighting reaches either anywhere.
 
 **`97`'s three-layer polarity reading.** I did not attack it and I have no evidence bearing on it. I
 note that section 3's generation story depends on it: generating a section per build is licensed exactly
@@ -672,9 +688,11 @@ table, which is a question about whether the coordinates are commensurable at al
 the four intents currently have no coordinate, so the answer today is no for half of them, and that is
 an argument for `97`'s check as the interim shape and mine as the target.
 
-**With nobody in particular, on the spread coordinate.** It is in the harness's own findings prose, it
-is absent from every panel file I read, and it changes which arms are on the Pareto front in 4 of 6
-regions. I do not know whether it is a coordinate or noise, and I did not find anything that decides it.
+**With myself, on the spread coordinate, and this is now partly answered rather than open.** p1b said it
+rescues an arm; p12 says the rescue is not measurable; p12 also says 58 of 90 arm pairs across all
+regions have IQR differences that exclude zero, so the coordinate is not noise in general. What is
+unsettled is whether tail behaviour is a thing a consumer should weigh at all, which is a design
+question no probe of mine touches.
 
 ## 9. For op, separately
 
@@ -707,33 +725,41 @@ fixed value means established there only, and absent means the finding does not 
 dimension is present.
 
 **F-98-1. Between "any section" and "one weighting" there are at least four distinct conditions, and on
-committed harness output they are far apart: 46656 sections, 2048 Pareto-admissible, 2048
-order-rationalisable, 117 rationalisable at non-negative weights, 58 at strictly positive weights, 58
-forced.**
+committed harness output they are far apart: over 46656 sections, 144 Pareto-admissible, 72
+rationalisable at non-negative weights, 9 at strictly positive weights, 9 forced.**
+`holds for: regions = 6, arms = 6, cost coordinates = 2 (median algo_ns, declared bytes per element),
+cost source = committed bitpack-carrier-width_n* CSVs, arithmetic exact rational, threads = 1, target
+features any`
+Evidence: `98_probes/p13_the_ladder_on_the_coordinates_that_survive.py`.
+
+**F-98-1b. The same ladder over three coordinates gives 46656, 2048, 2048, 117, 58, 58, and the middle
+rung is the only measurement of order-rationalisability anybody has taken.**
 `holds for: regions = 6, arms = 6, cost coordinates = 3 (median algo_ns, declared bytes per element,
-interquartile range of the samples), cost source = committed bitpack-carrier-width_n* CSVs, arithmetic
-exact rational, threads = 1, target features any`
+interquartile range of the samples), cost source as above, arithmetic exact rational, threads = 1,
+target features any`
 Evidence: `98_probes/p2_the_rationalisability_ladder.py`, by exact polygon clipping on the weight
 simplex, cross-checked against Fourier-Motzkin in `98_probes/lp.py` on 300 sections per rung with 300 of
-300 agreeing.
+300 agreeing. The third coordinate's standing is qualified by F-98-12.
 
 **F-98-2. A strictly positive weighting cannot select a Pareto-dominated arm. A non-negative one can,
 and whether it does is a property of the table.**
 `holds for: cost coordinates any, arms any, regions any, arithmetic exact rational` for the positive
 half, which is a theorem rather than a measurement.
-`holds for: the F-98-1 predicate` for the negative half, where 48 of 117 non-negative sections select a
-dominated arm.
-Evidence: `98_probes/p2_the_rationalisability_ladder.py` for the count,
-`98_probes/p9_the_proposal_instantiated.py` for the exhibited failure and for two zero-weight cases that
-do not fail.
+`holds for: the F-98-1 and F-98-1b predicates` for the negative half, where 63 of 72 sections at two
+coordinates and 48 of 117 at three select a dominated arm.
+Evidence: `98_probes/p13_the_ladder_on_the_coordinates_that_survive.py`,
+`98_probes/p2_the_rationalisability_ladder.py`, `98_probes/p6_reproduce_the_predecessors_count_and_rung_it.py`,
+and `98_probes/p9_the_proposal_instantiated.py` for the exhibited failure and for two zero-weight cases
+that do not fail.
 
-**F-98-3. `97` section 2.2's two figures reproduce exactly from an independent implementation, and 63 of
-its 72 select an arm `97` section 10 says no weighting can select. The figure carrying the property is 9,
-not 72.**
-`holds for: regions = 6, arms = 5, cost coordinates = 2 (median algo_ns per record, declared bits per
-element), cost source = committed bitpack-carrier-width_n* CSVs, arithmetic exact rational, threads = 1,
-target features any`
-Evidence: `98_probes/p6_reproduce_the_predecessors_count_and_rung_it.py`, by interval arithmetic on the
+**F-98-3. `97` section 2.2's two figures reproduce exactly from an independent implementation, are
+insensitive to whether the control arm is included, and 63 of its 72 select an arm `97` section 10 says
+no weighting can select. The figure carrying the property is 9, not 72.**
+`holds for: regions = 6, arms in {5, 6}, cost coordinates = 2 (median algo_ns per record for the
+five-arm model and per batch for the six-arm one, declared bits or bytes per element), cost source =
+committed bitpack-carrier-width_n* CSVs, arithmetic exact rational, threads = 1, target features any`
+Evidence: `98_probes/p6_reproduce_the_predecessors_count_and_rung_it.py` and
+`98_probes/p13_the_ladder_on_the_coordinates_that_survive.py`, by interval arithmetic on the
 one-dimensional weight simplex, against `97`'s extreme-ray enumeration, sharing only their input.
 
 **F-98-4. Order-rationalisability is a distinct condition from Pareto-admissibility in general and
@@ -742,8 +768,8 @@ coincidence.**
 `holds for: regions = 5, arms = 5, cost coordinates = 3, cost tables from three generators (independent
 uniform, region-scaled, tiered), 60 models each, arithmetic exact rational` for the separation, which
 occurs in 42 of 60 uniform models and 0 of 120 structured ones.
-`holds for: the same, plus the committed carrier table` for the criterion, which was exact in 120 of 120
-models and correct on the real table.
+`holds for: the same, plus the committed carrier table at three coordinates` for the criterion, which
+was exact in 120 of 120 models and correct on the real table.
 Evidence: `98_probes/p3_a_rung_count_is_a_fact_about_one_table.py`,
 `98_probes/p3b_why_the_order_rung_is_empty_on_real_data.py`. Sufficiency is proved; necessity is
 empirical over 120 models and is claimed as that.
@@ -757,11 +783,12 @@ maximum 1.000.
 
 **F-98-6. A lexicographic priority over coordinates is realisable by a strictly positive weighting on a
 finite model, including when combined with finite weights on the remaining coordinates. The converse
-fails: on the committed carrier table the six priority orders reach 4 sections and weightings reach 58.**
+fails: on the three-coordinate carrier table the six priority orders reach 4 sections and weightings
+reach 58.**
 `holds for: regions = 4, arms = 5, cost coordinates = 3, 200 random models for the pure priority case
 (1200 of 1200 realisable) and 150 for the priority-plus-finite case (450 of 450), arithmetic exact
 rational` for the realisability half.
-`holds for: the F-98-1 predicate` for the counting half.
+`holds for: the F-98-1b predicate` for the counting half.
 Evidence: `98_probes/p4_priority_order_against_exchange_rate.py`,
 `98_probes/p9_the_proposal_instantiated.py`.
 
@@ -799,25 +826,73 @@ Evidence: `98_probes/p10_is_the_table_stable_enough_to_be_an_object.py`. This is
 over a committed artifact and not a bench; no measurement was taken.
 
 **F-98-11. Three weightings over the three measured coordinates give three distinct sections on the
-committed carrier table, none selecting a dominated arm, and the one weighing sample spread is named by
-no stated intent.**
-`holds for: the F-98-1 predicate, weightings as instantiated in the probe`
+committed carrier table, none selecting a dominated arm.**
+`holds for: the F-98-1b predicate, weightings as instantiated in the probe`
 Evidence: `98_probes/p9_the_proposal_instantiated.py`. The weight numbers are scaffolding chosen to
-reach the check and are not proposals.
+reach the check and are not proposals. Read with F-98-10, which finds the spread-weighing section the
+least stable of the three.
 
-## 11. Reported outside my question
+**F-98-12. The interquartile-range differences that would rescue `bitpack-carrier-packed` from being
+dominated in every region are not distinguishable from zero, at all four regions where the rescue
+occurs. Across all arm pairs the same coordinate does separate 58 of 90 pairs measurably.**
+`holds for: regions = 6, arms = 6, 80 samples per arm per region, 4000 bootstrap resamples, seed
+20260814, cost source = committed bitpack-carrier-width_n* CSVs, host = the one those runs were taken
+on, threads = 1`
+Evidence: `98_probes/p12_is_the_spread_coordinate_real.py`. This refutes the rescue reported by
+`98_probes/p1b_domination_is_relative_to_the_coordinate_set.py`, which is retained rather than deleted.
+
+## 11. What probe 12 did to probes 1b and 9, and to `97` section 10
+
+This is the correction I am most glad to have found, because it is to me.
+
+`98_probes/p1b_domination_is_relative_to_the_coordinate_set.py` reported that adding the sample-spread
+coordinate rescues `bitpack-carrier-packed` from being dominated in every region, returning it to the
+Pareto front at 4 of 6 regions, and concluded that "the everywhere-dominated verdict on these arms was a
+property of the two-coordinate model, not of the arms". That reads as a qualification of `97` section
+10's finding, and I wrote it as one.
+
+**It does not survive its own test.** `98_probes/p12_is_the_spread_coordinate_real.py` asks, at each of
+the four regions where the rescue happens, whether the interquartile-range difference between `packed`
+and the arm that dominates it under (time, bytes) is distinguishable from zero. Four bootstrap intervals
+over the committed samples, and **all four cross zero**:
+
+```
+n =   16384  IQR difference    29.5 ns   CI [ -32.0,  177.3]   NOT measurable
+n = 1048576  IQR difference   593.6 ns   CI [-175.8, 1306.0]   NOT measurable
+n = 2097152  IQR difference   120.5 ns   CI [-1530.1, 658.6]   NOT measurable
+n = 4194304  IQR difference  2212.1 ns   CI [-1331.0, 6326.7]  NOT measurable
+```
+
+For scale, the *median* differences at the same regions are measurable and large: 150 ns, 7583 ns, 16586
+ns and 35095 ns, every interval excluding zero. So the arms differ in time by an amount the harness can
+resolve, and in spread by an amount it cannot, at exactly the comparisons the rescue rested on.
+
+**So `97` section 10 stands unqualified**, and I withdraw my qualification of it. Both
+`bitpack-carrier-d64` and `bitpack-carrier-packed` are dominated in every region under the coordinates
+that survive, and no strictly positive weighting reaches either anywhere.
+
+**What survives of p1b, and it is worth keeping.** Its general observation is definitionally true and
+does not depend on the instance: a domination verdict is always relative to a coordinate set, and "this
+arm is dominated everywhere" is a licence to drop it only if the measured coordinates are the whole of
+what any strategy weighs. Section 5 shows they are not, since two of op's four intents have no
+coordinate in the corpus at all. So the caution is real and the instance I used to illustrate it is not.
+
+**And what survives of the coordinate.** p12 also asks the question of every arm pair rather than the
+four that mattered: **58 of 90 pairs have IQR differences excluding zero**, so the spread coordinate is
+not noise in general. It separates most pairs measurably and fails to separate the one pair that would
+have changed a verdict, which is the least convenient possible answer and the one the data gives.
+
+**The lesson I would carry rather than the correction.** A coordinate added to a model changes verdicts,
+and a verdict changed by a coordinate is only as good as the coordinate's resolution at the comparison
+that changed. I added the coordinate, watched a verdict flip, and reported the flip; the check that
+would have caught it is one bootstrap and I did not run it until I went looking for something else. p10
+gave the first hint, in that the spread-weighing section was by far the least stable of the three, and I
+did not read that as a warning about p1b until p12 made it explicit.
+
+## 12. Reported outside my question
 
 **Every timing figure in this file is read from committed harness output.** I ran no benchmark. Where
 nothing has been measured I have said unpriced.
-
-**Adding a coordinate rescued an arm from a domination verdict.** Under (time, bytes),
-`bitpack-carrier-packed` is dominated in every region, which is `97` section 10's second arm. Adding the
-sample spread coordinate, which the harness's own findings file for that family names as a decision axis,
-puts it back on the front in 4 of 6 regions (`98_probes/p1b_domination_is_relative_to_the_coordinate_set.py`).
-So "dominated everywhere" is a claim about the coordinate set as much as about the arm, and the honest
-form of `97`'s report is that two arms are unreachable **under the two coordinates it measured**. Its
-first arm, `d64`, stays dominated under all three, and even that is only a licence to drop it if three
-coordinates are the whole of what any strategy weighs, which nothing has established.
 
 **One test name reads more narrowly than its body.** `warm-container-shared`'s
 `the_shipped_rule_widens_every_width_to_64` parses at first glance as a claim about a 64-bit container;
@@ -828,18 +903,22 @@ name misled me, and I am recording that it is fine rather than leaving a reader 
 **The two root templates now carry a superseded banner**, per `97` section 10, so citations into them in
 `93` and `94` are low by eight lines. I made no citation into either.
 
-## 12. What I did not do, and what I could not settle
+**A harness gap that is not `96`'s.** The corpus reports timing and nothing else that a weighting could
+read. Adding an accuracy column to a bench family, with arms allowed to differ and the difference
+measured against an exact reference, is what would let half of op's stated intents be priced at all. It
+is inside the goal by `95`'s own exception and nobody has proposed it.
+
+## 13. What I did not do, and what I could not settle
 
 **I did not derive blind.** My brief carried `97`'s headline, so my independence is bounded to the
 criterion's structure and my own instruments, and the commit order is the only evidence for even that.
 p1 through p5 were committed before I opened `97`; p6 onward were not.
 
 **I read a small part of the panel.** In full: `INTENTS.md`, `RULES.md`, `93` and `94` including both
-phases, `97` and its section headings' claims, `83`, `85`, `87`, `88`, `95`. Partially: `25` section 7,
-`40` sections 0, 5.3, 5.4, 6.1 and 6.2, `OPTIONS.md` Q5 and Q41. Not read: every other member file,
-every consolidation, `DROPLIST.md`, `PERSONA_CALLS.md`, `PRIOR_CALLS.md`, the `SEED_*` files, the
-archive, and every probe directory other than my own. So where any of this restates something, I do not
-know it.
+phases, `97`, `83`, `85`, `87`, `88`, `95`. Partially: `25` section 7, `40` sections 0, 5.3, 5.4, 6.1 and
+6.2, `OPTIONS.md` Q5 and Q41. Not read: every other member file, every consolidation, `DROPLIST.md`,
+`PERSONA_CALLS.md`, `PRIOR_CALLS.md`, the `SEED_*` files, the archive, and every probe directory other
+than my own. So where any of this restates something, I do not know it.
 
 **I did not open `97`'s probes.** I reproduced its model from the same CSVs rather than reading its
 implementation, deliberately, so that p6 is an independent instance rather than a review. The cost is
@@ -849,10 +928,10 @@ mine on this input.
 **Everything is single-threaded and one host.** Every finding above is a `threads = 1` finding, which is
 a region rather than a silence, and every timing is from runs taken on one machine.
 
-**I could not settle whether the spread coordinate belongs in the coordinate set.** It changes the
-Pareto front in 4 of 6 regions, it produces a section no other weighting produces, and no intent names
-it. Distinguishing "real decision axis" from "measurement noise the harness surfaced" needs repeated
-runs on different hosts, which do not exist.
+**I could not settle whether tail behaviour belongs in the coordinate set.** p12 answers the narrower
+question of whether the arms differ on it measurably, and mostly they do. Whether a consumer should
+weigh it is a design question, and distinguishing a decision axis from a property of the harness would
+need repeated runs on different hosts, which do not exist.
 
 **I could not settle whether the generation order is affordable.** Section 3 argues the table should be
 derived from a stated weighting rather than checked against one, and that requires the coordinates to be
@@ -864,8 +943,19 @@ check is the interim, and I did not establish how far off the target is.
 where the resolution answer sits and I have no evidence bearing on it. `93`'s F7 and `94`'s W7 own the
 chain question and I add nothing.
 
-## 13. Coverage of the citations
+## 14. Coverage of the citations
 
 Every `file:line` in this document was opened and its content tested rather than merely resolved, by
 `98_probes/p11_verify_my_citations.py`, which is `25` section 9's instrument applied rather than
-admired. The count and the current state are in that probe's committed output.
+admired: a citation landing two lines from its content still resolves, and only reading the target and
+testing for an expected word catches it.
+
+```
+citations checked: 14   ok: 14   failed: 0
+```
+
+**It was not fourteen of fourteen on the first run.** The file cited `25:534-537` for the sentence
+"named sections over a product of axes rather than values of a single axis". The word "named" is on line
+533, so the citation resolved, printed something that looked right, and omitted the first word of the
+phrase I was quoting. Corrected against the file rather than from memory. That is the eighth recorded
+instance of this failure class across two panels, and the number is reported rather than quietly fixed.

@@ -48,6 +48,14 @@ SOURCE_CITATIONS = [
 ]
 
 
+# One citation-shaped string in 98 is deliberately NOT checked: section 14
+# quotes `25:534-537` as the wrong citation it corrected, so a checker that
+# tested it would fail on a string whose whole purpose is to be wrong. Named
+# here so a later reader can see it was excluded on purpose rather than missed.
+EXCLUDED = ["25_torvalds_what_a_strategy_is.md:534-537 (quoted in section 14 as the "
+            "citation that was corrected)"]
+
+
 def check(root, path, lo, hi, expect):
     full = os.path.join(root, path)
     if not os.path.exists(full):
@@ -79,6 +87,9 @@ def main():
         ok += good
         bad += not good
 
+    print("\ndeliberately excluded")
+    for e in EXCLUDED:
+        print(f"  {e}")
     print(f"\ncitations checked: {ok + bad}   ok: {ok}   failed: {bad}")
     return 0 if bad == 0 else 1
 

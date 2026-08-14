@@ -18,4 +18,7 @@ repository citations
   ok    mock/benches/variants/warm-container-shared/src/lib.rs:1356            
   ok    mock/benches/variants/bitpack-write-contend-shared/src/stress.rs:68    
 
+deliberately excluded
+  25_torvalds_what_a_strategy_is.md:534-537 (quoted in section 14 as the citation that was corrected)
+
 citations checked: 14   ok: 14   failed: 0
