@@ -60,7 +60,7 @@ pub struct Acc {
 /// in u64 for these sizes. The reference the score is measured against.
 fn exact(t: &Terms) -> u64 {
     let mut s = 0u64;
-    for i in 0 .. K {
+    for i in 0..K {
         s += (t.a[i] as u64) * (t.b[i] as u64);
     }
     s
@@ -84,7 +84,7 @@ impl Routine for FixedPointSum {
         };
         let mut a = [0u32; K];
         let mut b = [0u32; K];
-        for i in 0 .. K {
+        for i in 0..K {
             a[i] = next();
             b[i] = next();
         }
@@ -104,7 +104,7 @@ impl Routine for FixedPointSum {
     fn validate_output(input: &Terms, out: &Acc) -> Result<(), &'static str> {
         let e = exact(input);
         let got = out.raw * SCALE; // raw is in 2^-F, exact is in 2^-2F
-        let diff = if got > e { got - e } else { e - got };
+        let diff = got.abs_diff(e);
         if diff > (K as u64) * SCALE * ULP {
             return Err("accumulated error exceeds K ulps: this is not the same computation");
         }
@@ -141,7 +141,7 @@ impl Routine for Unscored {
 /// Arm one: truncate each partial sum onto the declared grid.
 fn arm_truncating(t: &Terms) -> Acc {
     let mut acc = 0u64; // raw at 2^-F
-    for i in 0 .. K {
+    for i in 0..K {
         let prod = (t.a[i] as u64) * (t.b[i] as u64); // at 2^-2F
         acc += prod / SCALE; // truncation toward zero
     }
@@ -151,7 +151,7 @@ fn arm_truncating(t: &Terms) -> Acc {
 /// Arm two: round each partial sum to nearest on the declared grid.
 fn arm_rounding(t: &Terms) -> Acc {
     let mut acc = 0u64;
-    for i in 0 .. K {
+    for i in 0..K {
         let prod = (t.a[i] as u64) * (t.b[i] as u64);
         acc += (prod + SCALE / 2) / SCALE;
     }
@@ -163,20 +163,41 @@ fn main() {
     let unscored = routine_bridge!(Unscored);
 
     println!("1. THE DESCRIPTOR THE HARNESS READS");
-    println!("   score_label, scored routine   : {:?}", bridge.score_label);
-    println!("   score_label, control routine  : {:?}", unscored.score_label);
-    println!("   outputs_may_differ, scored    : {}", bridge.outputs_may_differ);
-    println!("   outputs_may_differ, control   : {}", unscored.outputs_may_differ);
-    assert!(bridge.score_label.is_some(), "the scored routine must carry a label");
+    println!(
+        "   score_label, scored routine   : {:?}",
+        bridge.score_label
+    );
+    println!(
+        "   score_label, control routine  : {:?}",
+        unscored.score_label
+    );
+    println!(
+        "   outputs_may_differ, scored    : {}",
+        bridge.outputs_may_differ
+    );
+    println!(
+        "   outputs_may_differ, control   : {}",
+        unscored.outputs_may_differ
+    );
+    assert!(
+        bridge.score_label.is_some(),
+        "the scored routine must carry a label"
+    );
     assert!(unscored.score_label.is_none(), "the control must not");
-    assert!(bridge.outputs_may_differ, "two roundings cannot be compared byte for byte");
+    assert!(
+        bridge.outputs_may_differ,
+        "two roundings cannot be compared byte for byte"
+    );
 
     println!();
     println!("2. THE SCORER, THROUGH THE BYTE BRIDGE THE HARNESS ACTUALLY CALLS");
-    println!("   {:>12} {:>16} {:>16}   {}", "seed", "truncating", "rounding", "closer to exact");
+    println!(
+        "   {:>12} {:>16} {:>16}   closer to exact",
+        "seed", "truncating", "rounding"
+    );
     let mut wins_rounding = 0;
     let mut seeds = 0;
-    for seed in 1u64 ..= 8 {
+    for seed in 1u64..=8 {
         let t = <FixedPointSum as Routine>::build_input(seed);
         let ib = <FixedPointSum as Routine>::build_input_bytes(seed);
         let ta = arm_truncating(&t);
@@ -208,7 +229,10 @@ fn main() {
         "   rounding closer on {wins_rounding} of {seeds} seeds, which is p6's k = 1 prediction:"
     );
     println!("   an unbiased rounding beats truncation at the same grid at every chain length.");
-    assert_eq!(wins_rounding, seeds, "the fidelity coordinate must separate the arms");
+    assert_eq!(
+        wins_rounding, seeds,
+        "the fidelity coordinate must separate the arms"
+    );
 
     println!();
     println!("3. WHAT THIS ESTABLISHES");
