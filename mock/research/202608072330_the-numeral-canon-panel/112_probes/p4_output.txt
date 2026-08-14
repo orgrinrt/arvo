@@ -1,0 +1,36 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+command: rustc --edition 2021 -O p4_where_a_missed_merge_actually_costs_something.rs -o p4_bin
+feature gates in this file: 0
+
+build exit: 0
+
+p4. Where a missed merge actually costs something
+==========================================================================
+
+S1. Monomorphic sites
+  sum over the radix-2 spelling  : 7
+  sum over the radix-10 spelling : 7
+  neither call mentions the other spelling, so the cost is zero
+
+S2. One function over both spellings, by abstracting the parameter
+  sum_any_radix is ONE generic function and both arrays above went through it
+  sum_any_policy likewise accepts Obs<Sat> and Obs<Wrap>: 15 and 2
+  so a missed merge is repairable at a FUNCTION boundary, for a spurious axis and for an observable one alike
+
+S3. The storage boundary, which the abstraction does not reach
+  a homogeneous container is one type by construction, so no generic signature lets
+  Spur<2> and Spur<10> share one array, one slice or one column. The compile-fail arm
+  is `p4b`, whose diagnostic is recorded in `p4b_expected_failure.txt`.
+
+THE DIRECTION COUNT, checked against what the operations do
+
+  spurious (radix): the cast commutes with add on 65536/65536 pairs, both directions exist
+  observable (policy): the cast commutes with add on 136/256 pairs, so it is a REINTERPRETATION and not a map of the algebra
+  refinement (bound): widening is the identity on 101/101 representations, and the tightening is refused before the program exists (`p4c`)
+
+THE LICENSED ARM, inside and outside the declared bound
+  inside the declared bound : 0/10201 disagree
+  outside it                : 32640/55335 disagree
+
+Declared bound sums: BSum<Lit<100>, Lit<100>>::HI = 200
+                     BSum<Lit<200>, Lit<100>>::HI = 255

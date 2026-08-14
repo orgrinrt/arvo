@@ -1,0 +1,32 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+=== p4b: the storage boundary (expected failure) ===
+error[E0308]: mismatched types
+  --> p4b_the_storage_boundary_is_the_wall.rs:37:48
+   |
+37 |     let _column: [Spur<2>; 2] = [Spur::<2>(1), Spur::<10>(2)];
+   |                                                ^^^^^^^^^^^^^ expected `2`, found `10`
+   |
+   = note: expected struct `Spur<2>`
+              found struct `Spur<10>`
+
+error[E0308]: mismatched types
+  --> p4b_the_storage_boundary_is_the_wall.rs:43:60
+   |
+43 |     let _mixed: [Ref<Lit<100>>; 2] = [Ref(1, PhantomData), Ref::<Lit<200>>(2, PhantomData)];
+   |                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `100`, found `200`
+   |
+   = note: expected struct `Ref<Lit<100>>`
+              found struct `Ref<Lit<200>>`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0308`.
+exit: 1
+
+=== p4c: a tightening (expected failure) ===
+error: couldn't create a temp dir: Operation not permitted (os error 1) at path "/dev/rmetaP99uhx"
+
+error: aborting due to 1 previous error
+
+exit: 1

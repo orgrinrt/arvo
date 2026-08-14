@@ -1,0 +1,95 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+target: host: aarch64-apple-darwin
+opt: -O, target features = host default
+
+=== widen_100_to_200 ===
+
+=== widen_7_to_255 ===
+
+=== plain_identity ===
+
+=== cast_radix_2_to_10 ===
+
+=== cast_radix_10_to_2 ===
+_cast_radix_10_to_2:
+	.cfi_startproc
+	ret
+	.cfi_endproc
+
+	.globl	_main
+	.p2align	2
+_main:
+	.cfi_startproc
+	sub	sp, sp, #32
+	stp	x29, x30, [sp, #16]
+	add	x29, sp, #16
+
+=== add_licensed_100_100 ===
+_add_licensed_100_100:
+	.cfi_startproc
+	add	w0, w1, w0
+	ret
+	.cfi_endproc
+
+	.globl	_cast_radix_10_to_2
+	.p2align	2
+_cast_radix_10_to_2:
+	.cfi_startproc
+	ret
+	.cfi_endproc
+
+=== add_general_u8 ===
+_add_general_u8:
+	.cfi_startproc
+	and	w8, w0, #0xff
+	add	w8, w8, w1, uxtb
+	mov	w9, #255
+	cmp	w8, #255
+	csel	w0, w8, w9, lo
+	ret
+	.cfi_endproc
+
+	.globl	_add_licensed_100_100
+	.p2align	2
+
+
+=== the aliases, which is where the answer is ===
+The extraction above found five of the seven symbols empty because rustc
+emitted them as aliases of one body.  `grep '\.set \|= _' p4_asm.s`:
+
+	.globl	_cast_radix_10_to_2
+_cast_radix_10_to_2:
+	.cfi_startproc
+	ret
+	.cfi_endproc
+	.globl	_cast_radix_2_to_10
+_cast_radix_2_to_10 = _cast_radix_10_to_2
+	.globl	_plain_identity
+_plain_identity = _cast_radix_10_to_2
+	.globl	_widen_100_to_200
+_widen_100_to_200 = _cast_radix_10_to_2
+	.globl	_widen_7_to_255
+_widen_7_to_255 = _cast_radix_10_to_2
+
+So FIVE symbols are one body and that body is `ret`:
+  - both directions of the spurious cast (radix 2 <-> radix 10),
+  - both refinement widenings (100 -> 200 and 7 -> 255),
+  - and `plain_identity`, which is the control and is what makes the other
+    four an observation rather than a coincidence.
+
+And the licensed arm against the general one:
+
+  _add_licensed_100_100:  add w0, w1, w0 ; ret          (2 instructions)
+  _add_general_u8:        and / add / mov / cmp / csel  (5 instructions)
+
+WHAT THIS PRICES, AND WHAT IT DOES NOT
+An instruction count off one body on one target is an ad-hoc quick spike as
+far as magnitude goes.  It prices nothing and no bench harness ran.  What it
+establishes structurally is which BODIES exist: the clamp is absent from the
+licensed arm and present in the general one, and every coercion in this file
+compiled to nothing at all.
+
+The last part is the one that bears on `110`'s contradiction.  A spurious
+split's cast is FREE at runtime, so what a missed merge costs is never
+instructions.  It costs writing the cast, and at a storage boundary it costs
+the program, because there is no cast to write.
