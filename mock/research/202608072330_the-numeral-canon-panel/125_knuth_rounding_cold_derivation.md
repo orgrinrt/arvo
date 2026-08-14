@@ -397,13 +397,86 @@ boundary case one did not think of). If either falls, the falling is the finding
 
 ## 10. Results
 
-*Pending. This section is filled in only after the probes in `125_probes/` have actually run, each
-committed with its output as it runs, per the evidence rules. Nothing above this line is edited when
-the results land; a prediction refuted is reported here as refuted.*
+*Written after the probes ran. Nothing above this line was edited when the results landed; the
+refutation below is reported here, against the prediction as committed, per the discipline that a
+phase-one derivation is never rewritten.*
+
+**One prediction was refuted, and it was one of the two I named riskiest.** Everything else was
+confirmed, every negative control failed as required, and two instrument bugs were caught by their own
+expectations before any number was believed (both defective runs are preserved beside the corrected
+outputs).
+
+**The refutation (P3, wrap commutation).** I predicted zero mismatches for ceil, half_up and half_even
+against wrap. Run 1 measured 60, 32 and 32 at W = 3 through 5. The error in the proof: wrap on exact
+values is a **piecewise** translation, and my argument silently treated it as a single translation. A
+mode that can round upward maps the top cell of the half-open representative window one past its top,
+so the two composites differ by exactly one span at boundary cells. The corrected statement, tested in
+the same probe's second pass and confirmed at zero mismatches across W ∈ {3, 4, 5} and both
+signednesses: **for floor, ceil, half_up and half_even the composites agree in the quotient group
+ℤ/spanℤ**, which is where wrap actually lives, **and floor alone agrees at the representative level**,
+because floor is the one mode that never rounds upward out of the half-open window. toward_zero fails
+even in the quotient (240/480/960 quotient mismatches at W = 3/4/5, identical to its representative
+counts, so its failure is structural rather than a boundary artifact). Three consequences:
+
+- **F7 is corrected as follows**, superseding its wording above: the axes still decompose, but the
+  commuting pairings hold **mod span**, not at the representative level; only floor × wrap commutes
+  representative-exactly; toward_zero × wrap fails at both levels. The saturate column of F7 stands
+  unchanged at the representative level (zero mismatches, all five modes, control failed at 15).
+  For a design whose wrap semantics is the quotient semantics, mod-span agreement is the meaningful
+  equality and the practical content of F7 survives; for any observer of representatives before
+  reduction, only floor commutes.
+- **The floor-wrap affinity in section 8 strengthens**: floor is not merely the free mode on two's
+  complement, it is the unique deterministic mode whose composition with wrap is unobservable at
+  every level.
+- The prediction's failure mode, a boundary case in a proof over a half-open window, is recorded as
+  exactly the class I flagged in section 9's last paragraph.
+
+**P1** (committed with output): five modes monotone over u ∈ [-2000, 2000] subunits at 16 subquanta
+per quantum; parity control not monotone (1750 adjacent inversions). Additivity violations of 14884
+sampled pairs: floor 6516, ceil 7344, toward_zero 7143, half_up 3770, half_even 3802; one-signed
+restriction: 1665, 1800, 1665, 912, 920; on-grid pairs: zero for every mode. T1 and T1b both have
+their empirical face: the additive law fails off-grid on the negation-closed window **and** on the
+one-signed restriction, which is the point the dispatcher's brief correction made worth checking.
+
+**P2** (committed with both outputs): run 1 carried a units bug, converting add/sub results as if
+they scaled like products; its false "refutation" of F4 was caught by the must-be-0 expectation and
+the defective output is preserved. Corrected run: ops {+, -} at F ∈ {0, 2} and × at F = 0, both
+signednesses, W = 5 exhaustive: **zero mode-differing cells** in every case (F4 confirmed, including
+add/sub at F > 0). Controls: ÷ at F = 0 signed differs between floor and toward_zero on 386 of 992
+pairs (F5); × at F = 2 differs across modes on 512 of 1024 cells. F6's v₂ predicate: 24576 cells over
+F ∈ {0, 2, 3}, W = 6, both signednesses, **zero mismatches in either direction**.
+
+**P4** (committed with output): adjunction laws exact over 4001 points × 281 grid values, both laws,
+zero failures. Staged narrowing (fine → quarters → integers versus direct): floor, ceil, toward_zero
+zero mismatches; half_up 500, half_even 500 of 4001 (the double-rounding controls, failing as they
+must). One instrument bug (integer division producing a float) crashed before producing a number and
+was fixed; it could not have corrupted a result.
+
+**P5** (committed with output): bit-drop equals floor exhaustively at W = 8 for F ∈ {1, 3, 5}, signed
+and unsigned; bit-drop differs from toward_zero on 64/112/124 signed values respectively and on zero
+unsigned values (F9). Stochastic expectation exact over 4001 points under exact rational arithmetic,
+zero deviations; the inversion pair x = q/5 < y = 4q/5 realises Q(x) = 1 > Q(y) = 0 with probability
+1/25; all five deterministic modes show zero inversions on the same sweep (F8).
 
 ### The test gate's result
 
-*Pending with the same commit; the per-crate runs were in flight while this derivation was written.*
+Run per crate by `--manifest-path`, as the brief instructs. Twelve of the thirteen `*-shared` crates
+under `mock/benches/variants/` completed green in the foreground and background runs; the totals per
+crate and the thirteenth (`bitpack-write-contend-shared`, the long-running contention crate) are
+recorded in the reconciliation commit, since its run was still in flight when this section was
+written; the final counts appear below, appended before this file's phase-one close.
+
+I read the test bodies of the two crates nearest my subject, `quantiser-fadd-shared` and
+`quantiser-radix-shared`, in full. They are real instruments: the radix-two test compares against
+silicon bit-exactly with counted totals asserted; the radix-ten test checks the delivered significand
+against the definition (nearest grid point, ties to even) using an independent exact-integer oracle,
+explicitly not a second call to the rounding code under test. One redundancy (a duplicated parity
+assertion in the odd-radix test), nothing tautological. Two observations that touch this file's
+subject: that suite pins **ties-to-even** as the checked mode for its decimal path, while the
+preceding topic pins trunc, which is consistent with rounding being per-realisation rather than
+global; and its odd-radix test proves that **tie-breaking distinctions are an even-radix phenomenon**,
+which bounds my half_even analysis to radix 2 (where arvo lives) and is named in the coverage bound.
+I did not read the other eleven crates' 100-odd bodies; they do not touch rounding.
 
 ### Coverage bound
 
