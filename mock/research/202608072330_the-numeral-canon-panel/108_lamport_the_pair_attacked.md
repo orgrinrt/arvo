@@ -23,9 +23,23 @@ compile, or a suite run.
 
 ## 1. The answer, before the working
 
-The pair survives as a two-component object and **three of its eight clauses are false or
-under-specified as written**. Each has a replacement, every replacement is drawn from material the unit
-already holds, and none of them costs the structure.
+The pair survives as a two-component object and **five of its eight clauses need repair**: two are
+false as written, one is under-specified, one is inconsistent as a mechanism, and one is arithmetically
+wrong. Two are kept unchanged and one is kept with a refinement offered. Each repair has a replacement,
+every replacement is drawn from material the unit already holds, and none of them costs the structure.
+
+The scoreboard, so the ratio is checkable rather than asserted:
+
+| clause | verdict | section |
+|---|---|---|
+| 1, a strategy is a pair | kept, with a dependent-sum refinement offered | 3.6, 6 |
+| 2, the observable axes | **under-specified**, and its qualifier is gone | 3.1 |
+| 3, arms that produce the answer component one fixed | **false** | 3.2 |
+| 4, different carriers, and a name binds one point in each | first two sentences kept, **third inconsistent** | 3.3 |
+| 5, measured or computed | kept, and made non-vacuous by the clause-three repair | 3.6 |
+| 6, region against cost vector | kept unchanged | 3.6 |
+| 7, nothing relates two second components | **false, because one word names two objects** | 3.4 |
+| 8, the ceiling | **undercounts, by the size of the other component** | 3.5 |
 
 **Clause three is false, and it is the one that matters.** Component two is defined as ranging over
 "the arms that produce the answer the first component fixed". In that region a fidelity coordinate
