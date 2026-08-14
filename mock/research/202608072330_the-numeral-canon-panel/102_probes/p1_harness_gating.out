@@ -1,0 +1,68 @@
+p1 addendum: where the harness enforces answer-equivalence, at the pin
+
+pin from mock/benches/Cargo.lock: bce17f6c7653573e35dfe64a2e08a11a85cfeeab
+read with: git -C ~/.cargo/git/db/mockspace-d2db2c8fb6d9e932 show bce17f6c:<path>
+
+--- bench-harness/src/validation.rs:75-95 ---
+pub(crate) fn validation_plan(outputs_may_differ: bool, approx_eps: Option<f64>) -> ValidationPlan {
+    ValidationPlan {
+        // Always. The bridge cannot report whether the routine overrode
+        // `validate_output`, and it does not need to: the trait's default
+        // returns `Ok(())`, so a routine that declared nothing pays a no-op and
+        // one that declared a validator gets it run. Gating this on
+        // `outputs_may_differ` instead is what silently disabled every
+        // validator written by a routine that also wanted byte-identical
+        // output.
+        per_variant:   true,
+        cross_variant: if outputs_may_differ {
+            None
+        } else if let Some(eps) = approx_eps {
+            Some(CrossVariant::Approx(eps))
+        } else {
+            Some(CrossVariant::ByteExact)
+        },
+    }
+}
+
+/// Run the routine's per-variant structural check over one seed's outputs.
+
+--- bench-core/src/lib.rs:88-126 ---
+    fn build_input(seed: u64) -> Self::Input;
+
+    /// Validate that an output is structurally correct (not just
+    /// consistent across variants). Default: no structural check; the
+    /// harness still does cross-variant byte comparison unless
+    /// `outputs_may_differ` is true.
+    fn validate_output(_input: &Self::Input, _output: &Self::Output) -> Result<(), &'static str> {
+        Ok(())
+    }
+
+    /// Score an output for quality comparison across variants.
+    /// Lower = better. None means "no quality metric for this routine".
+    /// Examples: number of colours (graph colouring), bandwidth (RCM).
+    fn score_output(_input: &Self::Input, _output: &Self::Output) -> Option<f64> {
+        None
+    }
+
+    /// Label for the quality metric (for instance "colours", "bandwidth").
+    fn score_label() -> Option<&'static str> {
+        None
+    }
+
+    /// Whether different variants may produce different valid outputs.
+    /// false (default): harness also does cross-variant byte comparison.
+    /// true: only `validate_output` is checked (for instance graph colouring).
+    fn outputs_may_differ() -> bool {
+        false
+    }
+
+    /// Maximum relative error for cross-variant comparison of
+    /// floating-point outputs. When `Some(eps)`, validation compares
+    /// outputs element-wise using relative error instead of byte-exact
+    /// equality. Each f64 pair `(a, b)` passes if
+    /// `|a - b| <= eps * max(|a|, |b|, 1e-15)`.
+    ///
+    /// When None (default): byte-exact comparison (or no cross-variant
+    /// comparison if `outputs_may_differ` is true).
+    fn max_relative_error() -> Option<f64> {
+        None

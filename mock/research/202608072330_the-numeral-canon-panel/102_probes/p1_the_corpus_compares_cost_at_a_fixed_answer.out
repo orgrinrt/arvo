@@ -1,0 +1,61 @@
+A. THE HARNESS CONSENT SWITCH, PER SHARED CRATE
+
+crate                            outputs_may_differ   validate_output 
+bitpack-carrier-shared           (default false)      yes             
+bitpack-contend-shared           (default false)      yes             
+bitpack-footprint-shared         (default false)      yes             
+bitpack-plan-shared              (default false)      yes             
+bitpack-shared                   (default false)      yes             
+bitpack-wide-shared              (default false)      yes             
+bitpack-write-contend-shared     (default false)      yes             
+quantiser-fadd-shared            (default false)      yes             
+quantiser-radix-shared           (default false)      yes             
+satfold-shared                   true                 yes             
+warm-clamp-shared                (default false)      yes             
+warm-container-shared            (default false)      yes             
+wide-rung-shared                 (default false)      yes             
+
+crates declaring outputs_may_differ = true : 1 of 13  ['satfold-shared']
+
+B. CROSS-ARM AGREEMENT ASSERTIONS, AND WHAT EACH COMPARES AGAINST
+
+crate                             mutual-only  oracle-backed
+bitpack-carrier-shared                      7              0
+bitpack-contend-shared                      7              0
+bitpack-footprint-shared                    3              1
+bitpack-plan-shared                         3              0
+bitpack-shared                              0              0
+bitpack-wide-shared                         3              0
+bitpack-write-contend-shared                4              8
+quantiser-fadd-shared                       1              0
+quantiser-radix-shared                      0              1
+satfold-shared                              0              2
+warm-clamp-shared                           3              1
+warm-container-shared                       6              3
+wide-rung-shared                           11              2
+TOTAL                                      48             18
+
+crates with no agreement assertion of either kind:
+    bitpack-shared
+
+C. THE `score` COLUMN ACROSS EVERY COMMITTED CSV
+
+committed CSV files            : 254
+data rows read                 : 104080
+files with no `score` column   : 0
+rows with a non-empty `score`  : 0
+
+WHAT THIS ESTABLISHES
+
+Every shared crate either forbids its arms to differ (the harness default,
+cross-checked byte for byte) or permits it and then asserts every arm against
+an independent oracle, which is strictly stronger. Either way the arm set at
+every committed region is ANSWER-EQUIVALENT: all arms compute one value.
+
+And no committed row carries a per-arm quality number.
+
+So every number in this corpus is a comparison of COST AT A FIXED ANSWER.
+An argmin over these coordinates is a mechanism for choosing among arms that
+already agree. That is a real mechanism and it is not the one op's intents
+describe: I5 trades accuracy for speed, I7 buys accuracy with speed, I3 asks
+for a particular answer. Each of those ranges over arms that DISAGREE.
