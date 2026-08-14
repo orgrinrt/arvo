@@ -1,0 +1,63 @@
+==============================================================================
+p3. Where the propagated grade stops being exact
+==============================================================================
+
+CONTROL: independent leaves, one operation, left-nested
+(the shape every sweep in `111` and in my p2b has)
+
+  x + y, unsigned sat W=4                        unsound    0  conservative    0  exact  256  of  256 extents, 11356 tuples
+  x + y, unsigned wrap W=4                       unsound    0  conservative    0  exact  256  of  256 extents, 11356 tuples
+  (x + y) + z, unsigned sat W=4                  unsound    0  conservative    0  exact 4096  of 4096 extents, 375496 tuples
+  x * y, unsigned sat W=4                        unsound    0  conservative    0  exact  256  of  256 extents, 6819 tuples
+
+THE DEPENDENCY PROBLEM: a leaf mentioned twice
+
+  x - x, SIGNED sat W=4                          unsound    0  conservative    0  exact    8  of    8 extents, 36 tuples
+  (x + y) - x, SIGNED sat W=4                    unsound    0  conservative    0  exact   64  of   64 extents, 918 tuples
+  (x + y) - y, unsigned sat W=4                  unsound    0  conservative  120  exact  136  of  256 extents, 11356 tuples
+  x * (y - y), SIGNED sat W=4                    unsound    0  conservative   33  exact   31  of   64 extents, 1296 tuples
+
+MIXED OPERATIONS with independent leaves, to separate the two causes
+
+  (x + y) - z, SIGNED sat W=4                    unsound    0  conservative    0  exact  512  of  512 extents, 32264 tuples
+  (x + y) * z, unsigned sat W=4                  unsound    0  conservative  120  exact 3976  of 4096 extents, 161936 tuples
+
+THE ORACLE: what a reachable-set rule would license instead
+
+  x - x, SIGNED sat W=4          corner licenses    8/8, reachable-set licenses    8/8
+  (x + y) - x, SIGNED sat W=4    corner licenses   36/64, reachable-set licenses   36/64
+
+INSTRUMENT CHECK
+
+  control repeated for the check                 unsound    0  conservative    0  exact  256  of  256 extents, 11356 tuples
+  the control's conservative counter is 0, which is the claim under test
+  dependency case for the check                  unsound    0  conservative    0  exact    8  of    8 extents, 36 tuples
+  the same counter on a repeated leaf is 0
+  so the counter is live and the control's zero is a result: False
+
+-----------------------------------------------------------------------------
+TWO DEFECTS IN THIS RUN'S CHOICE OF WITNESS, FOUND BY ITS AUTHOR
+-----------------------------------------------------------------------------
+The numbers above are correct.  Two of the sections chose witnesses that make
+them say less than they were built to say, and both are repaired in `p3b`.
+
+1. The INSTRUMENT CHECK compares the control's conservative counter against
+   `x - x`, and `x - x` has conservative 0 as well, so it prints
+   "the counter is live: False" and reads as a failed check.  The counter IS
+   live: `(x + y) - y` in the same run reports 120.  `x - x` was a bad choice
+   of witness because its declared extents (0..7 at signed W=4) all propagate
+   to [-b, b], which fits the container, so the rule discharges and there is
+   nothing to be conservative about.  My prediction P2 said a repeated leaf
+   gives conservative > 0 and that is wrong as stated: a repeated leaf gives
+   conservatism only where the lost correlation crosses a container edge.
+
+2. The ORACLE section runs on the two cases whose conservatism is 0, so it
+   compares two rules on a region where they cannot differ, and reports 8/8
+   against 8/8 and 36/64 against 36/64.  That is a true statement about a
+   region chosen so that it could not be informative.  Repaired in `p3b` by
+   running the oracle on `(x + y) - y` and `x * (y - y)`, where the corner
+   rule is measured conservative.
+
+Neither defect touches the unsound column, which is 0 on every shape here and
+in `p3b`, nor the finding that conservatism is non-zero on some shapes, which
+is what bounds `111` F111-9.
