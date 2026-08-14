@@ -1,0 +1,74 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+feature gates: 0
+
+build exit: 0
+
+p8c. The per-node discharge check, recursing over the grade type
+======================================================================
+
+  container: [0, 15]
+
+  WIDE declaration, x and y in 0..=14
+    x + y            -> [  0,  28]   root-only false   per-node false
+    (x + y) - y      -> [  0,  14]   root-only true   per-node false
+    corner, same term-> [-14,  28]   licenses  false
+
+    p8b licensed this term. The per-node check refuses it, correctly,
+    because the intermediate x + y reaches 28 and the range stops at 15.
+
+  NARROW declaration, x and y in 0..=6
+    x + y            -> [  0,  12]   per-node true
+    (x + y) - y      -> [  0,   6]   per-node true   radius 3
+    corner, same term-> [ -6,  12]   licenses  false
+
+    the affine advantage survives the per-node discipline: the affine
+    root cancels y and lands in [0, 6]; the corner root keeps both y
+    occurrences and lands in [-6, 12], whose lower bound is outside.
+
+  a deeper composition at the narrow declaration, ((x+y)+x) - (x+y):
+    affine           -> [  0,   6]   per-node false   vector length 2
+    (the exact value of that term is x, so [0, 6] is the tight answer)
+
+  BEHAVIOUR at the narrow declaration, on the declared term with c = b:
+    affine-gated arm differs from exact on 0/49
+    corner-gated arm differs from exact on 0/49
+    (both are 0: the corner arm is correct too, it is just slower,
+     because it refused the licence and took the saturating path)
+target: aarch64-apple-darwin, opt -O, host default target features
+
+=== affine_gated_diff ===
+_affine_gated_diff:
+	.cfi_startproc
+	add	w8, w1, w0
+	sub	w0, w8, w2
+	ret
+
+=== corner_gated_diff ===
+_corner_gated_diff:
+	.cfi_startproc
+	and	w8, w0, #0xff
+	add	w8, w8, w1, uxtb
+	mov	w9, #255
+	cmp	w8, #255
+	csel	w8, w8, w9, lo
+	subs	w8, w8, w2, uxtb
+	csel	w0, wzr, w8, lo
+	ret
+
+=== aliases ===
+_general_diff = _corner_gated_diff
+_bare_diff = _affine_gated_diff
+
+WHAT THE TWO CONTROLS ESTABLISH
+The two aliases are what make this a comparison rather than a demonstration.
+`bare_diff` is written as `(a + b) - c` with no gate at all, and `general_diff`
+is written as the saturating chain with no gate at all.  The licensed arm
+aliases the first and the refused arm aliases the second, so the const gate is
+fully erased in BOTH directions and neither body carries any trace of the
+predicate that selected it.  Without the controls, the clean two-instruction
+body would be equally consistent with the optimiser having done something
+unrelated.
+
+Two instructions against seven is an ad-hoc quick spike as far as magnitude
+goes.  It prices nothing, no bench harness ran, and nobody should read a speed
+claim out of it.  What it establishes structurally is which bodies exist.
