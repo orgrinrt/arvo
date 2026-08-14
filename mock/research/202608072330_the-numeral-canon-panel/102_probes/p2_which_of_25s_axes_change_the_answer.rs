@@ -60,14 +60,20 @@ fn column(seed: u64, n: usize) -> Vec<u64> {
 fn headroom_min_ring(v: &[u64]) -> u64 {
     let mut a: u16 = 1;
     for &x in v {
-        a = a.wrapping_mul(x as u16).wrapping_add(x as u16).wrapping_sub(7);
+        a = a
+            .wrapping_mul(x as u16)
+            .wrapping_add(x as u16)
+            .wrapping_sub(7);
     }
     (a as u64) & MAX_W
 }
 fn headroom_up_ring(v: &[u64]) -> u64 {
     let mut a: u32 = 1;
     for &x in v {
-        a = a.wrapping_mul(x as u32).wrapping_add(x as u32).wrapping_sub(7);
+        a = a
+            .wrapping_mul(x as u32)
+            .wrapping_add(x as u32)
+            .wrapping_sub(7);
     }
     (a as u64) & MAX_W
 }
@@ -232,7 +238,11 @@ fn main() {
     row(
         "4 intermediate precision",
         sweep(intermediate_narrow_ring, intermediate_wide_ring, &lens),
-        sweep(intermediate_narrow_nonring, intermediate_wide_nonring, &lens),
+        sweep(
+            intermediate_narrow_nonring,
+            intermediate_wide_nonring,
+            &lens,
+        ),
     );
 
     println!();

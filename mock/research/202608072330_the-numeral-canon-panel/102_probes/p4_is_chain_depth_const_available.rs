@@ -78,7 +78,10 @@ pub struct Fx<const FRAC: u32, const SWITCH: usize, D: Depth> {
 impl<const FRAC: u32, const SWITCH: usize, D: Depth> Fx<FRAC, SWITCH, D> {
     #[inline(always)]
     pub const fn from_raw(raw: i64) -> Self {
-        Self { raw, _d: PhantomData }
+        Self {
+            raw,
+            _d: PhantomData,
+        }
     }
 
     #[inline(always)]

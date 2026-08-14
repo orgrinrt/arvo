@@ -177,7 +177,11 @@ fn sweep(
     }
     println!(
         "{label:<26} {differ:>6} of {total:>6} inputs disagree   {}",
-        if differ == 0 { "SAME ANSWER" } else { "DIFFERENT ANSWER" }
+        if differ == 0 {
+            "SAME ANSWER"
+        } else {
+            "DIFFERENT ANSWER"
+        }
     );
     (total, differ, first)
 }
@@ -188,14 +192,14 @@ fn main() {
     println!();
     println!("AXIS                        DISAGREEMENT                       VERDICT");
 
-    let r1 = sweep(
-        "1 headroom",
-        headroom_minimum,
-        headroom_one_rung_up,
+    let r1 = sweep("1 headroom", headroom_minimum, headroom_one_rung_up, &lens);
+    let r2 = sweep("2 packing", packing_dense, packing_bitpacked, &lens);
+    let r3 = sweep(
+        "3 overflow policy",
+        overflow_wrapping,
+        overflow_saturating,
         &lens,
     );
-    let r2 = sweep("2 packing", packing_dense, packing_bitpacked, &lens);
-    let r3 = sweep("3 overflow policy", overflow_wrapping, overflow_saturating, &lens);
     let r4 = sweep(
         "4 intermediate precision",
         intermediate_at_declared_width,
@@ -215,7 +219,7 @@ fn main() {
             None => println!("  {name:<26} none"),
             Some((n, seed, x, y)) => {
                 println!("  {name:<26} n={n} seed={seed}: {x} against {y}")
-            },
+            }
         }
     }
 
