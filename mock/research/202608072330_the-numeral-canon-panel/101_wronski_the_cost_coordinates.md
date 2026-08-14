@@ -130,7 +130,11 @@ spread}` reaches 6, `{time, size, spread}` reaches 42. The instrument reproduces
 before anything rests on it. Section 4.
 
 **Seven. An estimator choice is a coordinate choice, and `100`'s replacement of the interquartile range by
-the 95th percentile changes which coordinate is being weighed.** Section 5.
+the 95th percentile changes which coordinate is being weighed.** On the carrier family `{median, p95}`
+reaches one section, which is what no second coordinate at all reaches, and the 95th percentile correlates
+with the median at 0.978 to 0.998 across four families. And the two admissibility tests anti-correlate at
+-0.64 to -0.71 across three, which makes the criterion position-dependent: separation for the first
+coordinate, expressiveness for every later one. Section 5.
 
 **Eight. Q44's guarantee comes from either of two knobs and the register only turns one.** Requiring the
 named arm to be the unique argmin buys exactly what requiring strictly positive weights buys, 9 sections and
@@ -572,9 +576,62 @@ the design cannot separate them. Two admissibility tests, both measured from the
 - **Independence**, section 5.3: does the estimator add reachable sections? There the excess forms beat the
   levels everywhere and the levels collapse to nothing on carrier.
 
-Neither test alone is the answer and I decline to rank them. **The answer is per family and per coordinate,
-and both numbers come from the corpus, so a design can gate on them rather than argue about them.** That is
-what makes this a predicate rather than a preference.
+### 5.4 And the two tests are not independent, which turns the composition into something better
+
+That is where I would have left it, and leaving it there would have been the weaker answer. Two criteria
+that disagree are worth measuring against each other, and `100`'s p8 already contains the statistic to do
+it with: the fraction of arm pairs whose bootstrap interval for the difference excludes zero, which is a
+better separation measure than section 5.1's dynamic range and is the one thing I had recorded as unsettled.
+
+`101_probes/p11_separation_against_expressiveness.py` puts all three numbers in one table.
+
+```
+  bitpack-carrier-width   arms=5 regions=6 pairs=60
+    estimator            floor %    separated  sections
+    median                  1.16     57 of 60          1
+    mean                    1.45     59 of 60          1
+    iqr  (spread)          48.28     43 of 60          6
+    idr  (spread)          52.15     47 of 60          7
+    mad  (spread)          60.81     37 of 60          8
+    p95  (level)            5.66     54 of 60          1
+    p99  (level)            7.36     54 of 60          1
+    p95-med (excess)      101.18     38 of 60          3
+    p99-med (excess)      149.05     39 of 60          2
+    correlation between separation and sections, over the 9 candidates: -0.641
+```
+
+```
+  bitpack-contend-decode   correlation: -0.705
+  bitpack-wide             correlation: -0.673
+```
+
+**The two tests anti-correlate, at -0.64, -0.71 and -0.67 across 3 of 3 enumerable families.** The best
+separators add the fewest sections and the worst separators add the most, and once seen the mechanism is
+not subtle: **an estimator separates the arms well exactly when it agrees with coordinate one, and agreeing
+with coordinate one is what makes it add nothing.**
+
+So the composition is not "two criteria to be balanced". It is **position-dependent**, and that is a
+sharper answer than the one section 5.3 was heading for:
+
+- **For the first coordinate, separation is the criterion.** A coordinate that cannot tell the arms apart
+  cannot order them, and the median separates 57 of 60 on the carrier family.
+- **For every coordinate after the first, high separation is evidence against.** What a later coordinate is
+  for is disagreement between strategies, and the measure of that is how many sections it makes reachable.
+  A candidate that separates like the first coordinate is the first coordinate wearing a different name.
+- **The floor applies at every position**, because an estimator whose own noise exceeds the differences it
+  must resolve cannot support either job. It is what rules out the excess forms on
+  `bitpack-contend-decode`, at floors of 272% and 405%.
+
+**This is where `100`'s p8 goes wrong and it is a subtle place to go wrong.** Separation is the right
+statistic and it was applied at the wrong coordinate position. The 95th percentile separating 54 of 60 where
+the interquartile range separates 43 of 60 is not evidence that it is the better third coordinate; on this
+family it is the reason it is not a third coordinate at all, and the section count says so exactly: 1
+against 6.
+
+**What I decline to do is rank the estimators.** The floor and the section count are both per family and
+both come from the corpus, so a design gates on them rather than arguing about them, and the answer for a
+family with an unresolvable spread is not the same as for one with a clean one. That is a predicate rather
+than a preference.
 
 ## 6. What the corpus fails to measure, against what op actually said
 
@@ -928,11 +985,12 @@ contention, decode or wide families carries a predicate naming a region the find
 is mechanical rather than a judgement, and it is cheap to correct in each author's own file, which is where
 `RULES.md` says a widened or corrected predicate belongs.
 
-**With myself, on whether the interquartile range is admissible.** Section 5.1's signal statistic is a
-dynamic range and one extreme arm can carry it, so the row reporting the interquartile range at 74 times its
-floor is weaker evidence than it looks. I did not rebuild it as a pairwise separation count, which is what
-`100` p8 uses and what would settle it. The claim I rest on is the exact section count, and I flag that the
-two criteria in section 5 are not equally well measured.
+**With myself, on whether the interquartile range is admissible: opened and closed.** Section 5.1's signal
+statistic is a dynamic range and one extreme arm can carry it, so I rebuilt it as `100` p8's pairwise
+separation count. Section 5.4. The rebuild did not settle the question I asked it: it dissolved it, by
+measuring that separation and expressiveness anti-correlate, so the two tests are not two opinions about one
+property. What remains open is whether the anti-correlation holds on a family with more than five arms,
+which the enumeration cannot reach.
 
 ## 11. For op, and it is nothing
 
@@ -1060,6 +1118,18 @@ differently cannot both be run.**
 features any`
 Evidence: `101_probes/p7_a_fidelity_coordinate/`.
 
+**F-101-12. Across the three enumerable control-bearing families, an estimator's arm-pair separation and the
+number of sections it makes reachable as a second coordinate are negatively correlated, at -0.641, -0.705 and
+-0.673 over nine candidates. On the carrier family the median separates 57 of 60 pairs and reaches 1 section,
+while the median absolute deviation separates 37 of 60 and reaches 8.**
+`holds for: families {bitpack-carrier-width, bitpack-contend-decode, bitpack-wide}, regions = 6, arms in
+{3, 4, 5} with the control dropped, estimators = the nine at NAMES in the probe, 80 samples per arm per
+region, 1000 bootstrap resamples, seed 20260814, separation = a 95% percentile interval excluding zero,
+expressiveness = the exact count reachable by a strictly positive weighting on {median, candidate}, cost
+source = the committed CSVs, threads in {1, 4}, host = the one those runs were taken on`
+Evidence: `101_probes/p11_separation_against_expressiveness.py`. `bitpack-contention` is excluded from the
+correlation: 5 arms over 12 regions is 244 million sections and the count is exact rather than sampled.
+
 **F-101-11. On `97`'s two-coordinate carrier model, rationalisability has two independent knobs and either
 one alone collapses the count from 72 to 9 with no section selecting a dominated arm: allowing a zero weight
 while requiring the named arm to be the unique argmin gives 9, and requiring strictly positive weights while
@@ -1097,8 +1167,11 @@ I could have measured, the instruction count, needs a privileged run on a shared
 
 **Compile time stays unpriced**, and I add nothing to `100`'s account of why.
 
-**I could not settle whether the excess estimator is admissible.** Section 5's two criteria disagree about
-it and I did not build the pairwise separation statistic that would break the tie.
+**The excess estimator is not settled and the shape of the question changed.** Section 5.4 measures that
+separation and expressiveness pull opposite ways by construction, so the excess forms scoring badly on
+separation is expected rather than disqualifying. What would settle it is their floor, and on
+`bitpack-contend-decode` that floor is 272% and 405%, which rules them out there and says nothing about a
+family with a cleaner instrument.
 
 **I could not settle what the storage coordinate should be for a layout nobody has declared.** Bytes per
 element is exact for a declared layout. For a strategy that chooses a layout, the storage coordinate is a
