@@ -61,18 +61,34 @@ READING
 ==============================================================================
 
 The strictly-positive rung is a detector for exactly one event: the section
-selects an arm that is Pareto-dominated on the full coordinate set. It is not a
-detector for a generator reading the wrong thing, and p2's prediction that it
-would be was wrong.
+selects an arm that is Pareto-dominated on the full coordinate set. The two
+columns measuring those are identical in every family above, 0 and 0 three times
+and 230 and 230 in the fourth, which is what "detector for exactly one event"
+looks like when it is true rather than asserted.
 
-Whether that event occurs at all is a property of the ARM SET, not of the
-weighting. Arms drawn independently are almost never exactly tied, so a zero
-weight moves the argmin without ever reaching a dominated arm, and the rung fires
-on nothing. Arms sharing a coordinate exactly, which is the shape the committed
-carrier table has twice over, are where the theorem earns its keep.
+It is NOT a detector for a generator reading the wrong thing, and p2's prediction
+that it would be was wrong. A zero weight sits on the boundary of the weight
+simplex, not on the boundary of the admitting cone, so as long as every
+difference-vector inequality holds strictly the section stays strictly
+rationalisable and the rung sees nothing.
 
-So `98`'s constraint stands and its predicate is narrower than the general
-statement suggests: strict positivity buys the no-dominated-arm guarantee, the
-guarantee is only reachable where two arms agree exactly on a coordinate, and it
-buys nothing whatever against a generator computing the wrong argmin.
+Whether the event is reachable at all is a property of the ARM SET rather than of
+the weighting, and the predicate is exact: it needs a pair of arms that tie on
+every coordinate the effective weighting reads and differ on one it does not.
+Arms drawn independently never satisfy it, 0 of 230. Arms sharing one coordinate
+while differing on the rest do not satisfy it either, 0 of 241, which refutes the
+looser form of the hypothesis this probe opened with. Two arms identical
+everywhere do not satisfy it, 0 of 234, because identical arms do not dominate
+each other. Only the exact shape satisfies it, 230 of 285.
+
+That exact shape is what the committed carrier table has. `bitpack-carrier-packed`
+and `-packed-simd` carry the same 13 bits per element and differ in time, so a
+zero weight on TIME reaches the slower of the two, which is `98` section 2.3's 63
+of 72 rather than an abstract possibility.
+
+So `98`'s constraint stands and its predicate is sharper than the general
+statement suggests. Strict positivity buys the no-dominated-arm guarantee; the
+guarantee is reachable exactly where the arm set contains such a pair, which is a
+property of the arm set checkable directly and once; and it buys nothing whatever
+against a generator computing the wrong argmin.
 
