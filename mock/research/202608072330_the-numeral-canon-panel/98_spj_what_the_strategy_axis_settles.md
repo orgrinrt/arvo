@@ -1,7 +1,7 @@
 # 98. What the strategy axis settles
 
 **Predecessors:** `93` and `94`, the unit's cold pair, and `97`, which attacked both. **Probes:**
-`98_probes/`, thirteen of them, each committed as it ran.
+`98_probes/`, fourteen of them, each committed as it ran.
 
 This is the fourth file of the unit and the last before the checkpoint that goes to op, so `95`
 governs its shape more sharply than it governed `97`'s: attack is still available and a fifth
@@ -438,6 +438,35 @@ cost-table encoding that neither `93` nor `94` had, and it is the kind of thing 
 to make findable. **I would add the fork to `OPTIONS.md` with p10 attached to it**, and I say that as a
 recommendation about the register rather than as a decision about the design.
 
+### 3.2 And a generator can do better than a person reading a findings file
+
+A small win falls out of the inversion and it is worth taking, because it is free where it does not
+apply and it is real where it does.
+
+A hand-written table records a winner somebody read off a findings file, and a findings file reports
+medians. A **generator holds the samples**, so it can pick the section that most resamples agree on
+rather than the section this run's medians happen to give.
+`98_probes/p14_generating_from_a_robust_summary.py` compares the two rules:
+
+```
+speed-first     point and modal agree            531/2000 (26.6%)
+storage-first   point and modal agree            881/2000 (44.0%)
+tail-first      point 114/2000 (5.7%)  modal 243/2000 (12.2%)   differ at 1 of 6 regions
+```
+
+For two of the three weightings the point estimate was already the most reproducible section, so the
+rule costs nothing there. For the third it differs at exactly one region and the modal section is
+reproduced **2.1 times more often**, which is the sense in which a section can be right at all when the
+underlying quantity is an estimate.
+
+**It is cheap to keep**, which is the bound the workspace puts on taking a win: the generator already
+has the samples, the extra cost is one offline resampling pass at the moment the table is written, and
+it costs nothing at compile time and nothing at run time.
+
+**And it does not make the section stable**, which is the honest bound. The modal section for the least
+stable weighting is still reproduced by a minority of resamples. Choosing the modal one makes the
+shipped answer the most likely one; it does not make it likely.
+
 **One clarification, because the proposal is easy to over-read.** Generating does not mean measuring at
 build time. `94` section 3.2 is right that a const function cannot measure anything, so the measurement
 is still offline and the cost table is still checked in. Regenerating per build from fresh measurements
@@ -868,6 +897,15 @@ committed carrier table, none selecting a dominated arm.**
 Evidence: `98_probes/p9_the_proposal_instantiated.py`. The weight numbers are scaffolding chosen to
 reach the check and are not proposals. Read with F-98-10, which finds the spread-weighing section the
 least stable of the three.
+
+**F-98-13. Selecting a section by resample agreement rather than from the point estimate changes the
+answer for 1 of 3 weightings, and where it changes it the selected section is reproduced 2.1 times more
+often.**
+`holds for: regions = 6, arms = 6, cost coordinates = 3, 80 samples per arm per region, 2000 bootstrap
+resamples, seed 20260814, cost source = committed bitpack-carrier-width_n* CSVs, weightings as
+instantiated in the probe, host = the one those runs were taken on, threads = 1`
+Evidence: `98_probes/p14_generating_from_a_robust_summary.py`. Point and modal agree for two of the
+three weightings, so the rule is free where it does not apply.
 
 **F-98-12. The interquartile-range differences that would rescue `bitpack-carrier-packed` from being
 dominated in every region are not distinguishable from zero, at all four regions where the rescue
