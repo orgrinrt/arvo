@@ -151,3 +151,238 @@ is `98`'s finding and `101`'s, stated one rung lower than `102` put it.
 
 And `102`'s own p5 constraint, which I was asked to test, turns out to be **sound and currently vacuous**,
 for a reason nobody has stated. Section 7.
+
+## 2. What my instrument did differently, since that is the whole point of a second read
+
+`RULES.md` is explicit that agreement inherited by reading is not corroboration, and that the second read
+has to derive before it reads. So the order I worked in, stated so it can be checked against the commit
+log: I read `INTENTS.md`, `RULES.md`, `99` and my brief, then went to `mock/benches/` and built p1 through
+p4 **before opening `102` or its probes**. p1 through p4 are committed at
+`9d35fa13`, `100c62aa`, `5e48163c`, `e0191571`, and the commit that first reads `102`'s script is after
+all four. That is the independence claim and it is checkable rather than asserted.
+
+Four differences, and each of them is where a finding came from.
+
+### 2.1 I asked the committed data first, and it answers
+
+`102`'s instrument reads variant **source**. Mine started with the **CSV corpus**, because the claim is
+about the corpus and because the schema has a column for exactly this question. `p1` is one pass over all
+254 files and 104080 rows, reporting per-column cardinality.
+
+```
+digest         CARRIES NOTHING (single value '0' in all 104080 rows)
+score          CARRIES NOTHING (single value '' in all 104080 rows)
+input_tag      CARRIES NOTHING (single value '' in all 104080 rows)
+instructions   distinct=     1 CONSTANT  top=[('0', 104080)]
+cycles         distinct=     1 CONSTANT  top=[('0', 104080)]
+setup_ns       distinct=     1 CONSTANT  top=[('0.0', 104080)]
+first_ns       distinct=     1 CONSTANT  top=[('0.0', 104080)]
+```
+
+**The committed corpus records no answer.** There is a `digest` slot and it is zero in every row, so
+answer-equivalence is not a property the data attests in either direction. That is not a refutation on its
+own and I did not treat it as one; what it establishes is that any claim about the corpus's answers is a
+claim about the **code that produced it**, and must be argued there. Both `102` and I then argue it there,
+which is correct, and it is worth having the reason stated rather than assumed.
+
+This is a re-derivation rather than a discovery, and I want that on the record: `mock/benches/src/main.rs`
+already says it, in the comment beside the validation call, "The `digest` and `score` columns are zero for
+every plain `timed!` variant, so they catch nothing either". `101`'s Q48 entry reports the same eight dead
+columns from a third direction. Three independent instances of one fact, which is the bar `RULES.md` asks
+for, and I found mine before reading either of the others.
+
+### 2.2 I classified what each validator asserts, not whether one exists
+
+The load-bearing difference. `102`'s classifier is a presence test:
+
+```python
+has_validate = "yes" if re.search(r"fn\s+validate_output", src) else "no"
+```
+
+Presence is not pinning. p5 opens every `validate_output` body in the corpus and separates two shapes: a
+comparison of an output field against a reference the validator computed from the input, versus a bound or
+a shape test on the output alone. The evidence fragment for each classification is printed beside it so a
+reader checks the classifier rather than trusting it:
+
+```
+bitpack-carrier-shared         ANSWER-PINNING           'output.value != e'
+satfold-shared                 ANSWER-PINNING           'if rep.value != output.value'
+wide-rung-shared               ANSWER-PINNING           'd) != output.limbs'
+quantiser-fadd-shared          PROPERTY-PINNING ONLY    'output.s[i].is_nan()'
+quantiser-radix-shared         PROPERTY-PINNING ONLY    'output.mag[i] >='
+```
+
+Eleven pin a value. Two pin a property. I cross-checked all thirteen against the hand dump of every
+validator body before trusting the regex, and they agree; the probe is a spike and I treated it as one.
+
+### 2.3 I used the region as the unit, because that is what the claim quantifies over
+
+The claim is "every committed **region**". A region is one committed CSV: one bench name at one size, with
+the arms that ran against each other. `102` enumerates shared crates, which is a different set and not a
+covering one.
+
+p6 joins the CSVs, `bench.toml` and the driver's own `routine_for_n` table, and asks per region which
+bridge it uses and what that bridge pins. That is how `fnv1a-vs-xxhash3` appears: it has no shared crate,
+its bridge is declared inline, and its `MAY_DIFFER` const is `true`.
+
+p6 also caught **my own** first classification being wrong, in `102`'s favour, and I am recording that
+rather than quietly fixing it. My first version let the consent flag override the oracle, which labelled
+all 28 `satfold` regions as consenting-to-differ and produced a headline of 48 non-pinned regions. That is
+wrong: `satfold-shared` both declares `outputs_may_differ = true` **and** pins every arm to an independent
+`u64` oracle, so it is answer-equivalent for the second reason regardless of the first, exactly as `102`
+says and exactly as its own doc comment claims. The two questions are independent and folding one into the
+other is what produced the error. The committed probe reports them in separate columns and says so in its
+header. The corrected number is 20, not 48.
+
+### 2.4 I ran the arms, and then I ran the harness's gate over them
+
+`102`'s p1 is a static reading throughout. Mine executes. p2 and p3 call the two committed radix kernels
+directly and diff their outputs in exact rational arithmetic. p4 goes further and reproduces the harness's
+own acceptance criterion, on the harness's own seed sequence, and applies it to a committed region.
+
+That last one is the difference between "I think these arms differ" and "the mechanism cited as
+guaranteeing they agree refuses them". A control arm is what makes it a measurement rather than an
+assertion, and p4 carries one: `quantiser-fadd`, which takes the identical two bridge defaults and passes
+at every size on every seed.
+
+## 3. The refutation, in the order I found it
+
+### 3.1 The corpus has an arithmetic family whose two arms are two different number formats
+
+`quantiser-radix-shared`'s own header states the position plainly, and it is worth quoting because it
+means the family is not hiding anything:
+
+> The confound that remains, stated rather than hidden: the two real formats have different precisions
+> (binary32's twenty-four binary digits against decimal32's seven decimal digits) because that is what the
+> standards say, so the ratio is "decimal32 against binary32", not "radix ten against radix two at fixed
+> precision".
+
+Two formats with different precisions cannot round one exact sum to one answer except by coincidence. The
+`validate_output` for the family reflects that: it is radix-neutral by design, and its comment says so.
+
+**p2**, on the family's own committed input at all four committed sizes, eight seeds each, 2048 lanes per
+size:
+
+```
+SPREAD = 0    denoted value DIFFERENT : 1989 of 2048  (97.12%)
+SPREAD = 2    denoted value DIFFERENT : 2032 of 2048  (99.22%)
+SPREAD = 8    denoted value DIFFERENT : 2043 of 2048  (99.76%)
+SPREAD = 20   denoted value DIFFERENT : 2047 of 2048  (99.95%)
+undecidable (overflow) : 0 at every size
+```
+
+I report representation identity separately and discount it, because two radices spelling one quantity
+with different digits proves nothing. The number above is the **denoted value**, `mag * R^exp` compared as
+an exact rational.
+
+### 3.2 The deflationary reading, and why it does not survive
+
+There is an honest objection to p2 and I went looking for it before anyone else could. The family draws
+its exponent as a **grid step**, not an absolute magnitude, which its header also states: "a pair `SPREAD`
+apart is `SPREAD` grid steps apart in whichever radix reads it". So the same triple denotes a different
+real under each radix, and the arms are not being handed the same value. On that reading they disagree
+because their inputs disagree, which is a weaker and less interesting fact.
+
+The sample rows make the objection visible rather than hiding it: at lane 0 the two arms return
+`49545344` and `3870730000000`, which is a factor of 78000 and obviously not a rounding difference.
+
+**p3 removes the confound entirely.** Feed both arms operands at `exp = 0`, with `mag` drawn from the
+family's own `[10^6, 10^7)` band. At `exp = 0` the triple denotes the integer `mag` under **either**
+radix, so both arms receive the identical pair of exact integers and the exact sum they must round is the
+same integer. Everything that differs after that is rounding.
+
+```
+trials                        : 200000
+answers IDENTICAL             : 92556  (46.2780%)
+answers DIFFERENT             : 107444 (53.7220%)
+
+  binary32 exact              : 193747 (96.8735%)
+  decimal32 exact             : 91329  (45.6645%)
+  binary32 strictly closer    : 106167
+  decimal32 strictly closer   : 0
+  equal error                 : 93833
+```
+
+with worked rows, so the reader can check one by hand:
+
+```
+5315940 + 8535628 = 13851568 exactly;  binary32 -> (13851568, 0),  decimal32 -> (1385157, 1)
+```
+
+`13851568` against `13851570`. One arm is exact and the other is two off, on an input both formats
+represent exactly. **That is an accuracy difference between two committed arms of one committed region**,
+and it is the shape I5 and I7 are about.
+
+The predicate on p3 is narrower than the predicate on p2 and I am not going to blur them. p2 holds on the
+family's **committed** input distribution. p3 holds on a **controlled** band that the committed
+distribution contains as its `exp = 0` slice but is not equal to. Both are real; only p2 is a statement
+about what the corpus ran.
+
+### 3.3 And then the harness's own gate refuses the family
+
+The strongest form available, because it takes nothing on my judgement. From the pinned harness at
+`bce17f6`, which is what `mock/benches/Cargo.lock` pins:
+
+```rust
+pub(crate) fn validation_plan(outputs_may_differ: bool, approx_eps: Option<f64>) -> ValidationPlan {
+    ValidationPlan {
+        per_variant:   true,
+        cross_variant: if outputs_may_differ {
+            None
+        } else if let Some(eps) = approx_eps {
+            Some(CrossVariant::Approx(eps))
+        } else {
+            Some(CrossVariant::ByteExact)
+        },
+    }
+}
+```
+
+`quantiser-radix-shared` declares neither flag, so it takes both defaults and its plan is byte-exact
+cross-variant comparison. `CrossVariant::ByteExact` compares each variant's raw output buffer against a
+baseline's and refuses on any mismatch. Its two arms are recorded together, as the two arms of one run, in
+all four committed CSVs.
+
+**p4** runs that comparison, on `Rng::new(0xCAFE_BABE_DEAD_BEEF)` iterated 100 times, which is
+`VALIDATION_ROOT_SEED` and `DEFAULT_VALIDATION_SEEDS`:
+
+```
+SUBJECT: quantiser-radix, arms quantiser-radix2 and quantiser-radix10
+  SPREAD=0   seeds=100  byte-mismatched seeds=100   gate: REFUSE
+  SPREAD=2   seeds=100  byte-mismatched seeds=100   gate: REFUSE
+  SPREAD=8   seeds=100  byte-mismatched seeds=100   gate: REFUSE
+  SPREAD=20  seeds=100  byte-mismatched seeds=100   gate: REFUSE
+
+CONTROL: quantiser-fadd, arms quantiser-fadd-hardware and quantiser-fadd-software
+  PCT=0..100 seeds=100  byte-mismatched seeds=0     gate: ACCEPT   (all six sizes)
+```
+
+400 of 400 seed-size pairs refused on the subject; 600 of 600 accepted on the control. There is no reading
+of this on which the committed CSVs for that region passed the criterion `102` cites.
+
+### 3.4 The second refuting region, which belongs to no shared crate and says so out loud
+
+`fnv1a-vs-xxhash3`, four committed CSVs, each holding both arms:
+
+```
+fnv1a-vs-xxhash3_n64.csv   arms: fnv1a xxhash3
+fnv1a-vs-xxhash3_n256.csv  arms: fnv1a xxhash3
+fnv1a-vs-xxhash3_n1024.csv arms: fnv1a xxhash3
+fnv1a-vs-xxhash3_n4096.csv arms: fnv1a xxhash3
+```
+
+Its routine is registered at `mock/benches/src/main.rs:229-232` as `ByteRoutine<N, 8, true>`. The third
+const parameter is `MAY_DIFFER`, and it is `true`. So the region **declares that its arms may differ**,
+the harness skips cross-variant comparison for it entirely, and `ByteRoutine` has no `validate_output` of
+its own. Nothing anywhere in this repository requires `fnv1a` and `xxhash3` to compute the same value, and
+nothing checks whether they do.
+
+I did not run these two arms and I am not going to claim I did. Both variant crates import `arvo::Hot`,
+`arvo::strategy::Unsigned` and `arvo_hash::{ConstHash, Fnv1a}` from the deleted crate tree, so they do not
+build, and the algorithms are recoverable from git only by reattaching a tier the mutation order requires
+to stay detached. What the region establishes without running anything is the weaker and sufficient claim:
+it is a committed region whose arms are two different hash functions, over which the corpus asserts
+nothing. FNV-1a and XXH3 agreeing on every input would be the extraordinary claim, not the ordinary one.
+
+`102` never mentions this region. That is not carelessness; it is the census unit. A sweep over
+`variants/*-shared/` cannot reach a routine declared in the driver.
