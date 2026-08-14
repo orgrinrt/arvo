@@ -638,9 +638,36 @@ one of it and the named strategies' compile-time assertions are its conformance 
 weighting goes through the same function the shipped strategies already assert against. **One definition,
 every artifact derived from it, and the derivation tested by the artifacts that have a known answer.**
 
+### 6.1 The same thing as arms with predicates, which is the form I13 asks for
+
+Written as one recommendation it reads like a single answer, which is the shape op has rejected. It is
+four arms with four predicates, and each applies on its own region and nowhere else.
+
+**Arm A, generate and assert.** Ship the weighting, the cost table and the generated winner table, with a
+const assertion that the third is the argmin of the first over the second. `holds where every coordinate
+the strategy weighs has a measurable value in the corpus, and the arms competing at each region are
+separated by more than the harness's own resolution there`. That predicate is checkable before the arm is
+built, against the control pair, per section 7.1.
+
+**Arm B, check without generating.** Ship the table and check it offline. `holds where a coordinate the
+strategy weighs has no measurable value, so no weight vector can be written`. That is `98`'s own reason for
+calling its proposal the target and `97`'s the interim, and section 5 of `98` says two of op's four intents
+are in exactly this region today.
+
+**Arm C, the band rather than the equality.** State the differential with a tolerance. `holds where the
+region's competing arms are separated by less than the coordinate's resolution but more than zero`, which
+is the near-tie case section 7 measures, and the band's floor is the control pair's gap.
+
+**Arm D, no differential at all.** `holds where the coordinate's resolution does not separate the arms it
+must distinguish`, which section 7.3 shows is a property of the estimator rather than of the coordinate,
+and which therefore usually calls for changing the statistic before accepting the arm.
+
+The four compose because their predicates are disjoint and each is a const-checkable property of the
+corpus, not a judgement.
+
 This is what I would offer the consolidation, as a suggestion.
 
-## 7. The cost of that assertion, which is real and is a located tension
+## 7. The cost of that assertion, which looked like a tension and was an estimator
 
 Stated as **equality**, the assertion has a defect section 4 predicts: at a region where two arms sit a
 hair apart, the argmin moves under the run's own noise, so regenerating the table from a fresh measurement
