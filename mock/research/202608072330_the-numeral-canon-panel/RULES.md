@@ -568,7 +568,18 @@ And on how much of it to believe:
 > none of it absolute. The answers are likely wrong, and the questions they answer, are also probably
 > wrong. So substance itself is only good as extra stuff to consider or explore, nothing more.
 
-**The only ratified material remains `INTENTS.md`, I1 through I12.** A sentence in `PRIOR_CALLS.md`
+**`INTENTS.md` is the only ratified material, and its own "How to read an entry" section is normative
+about which entries hold which rung. Read it there rather than trusting any range quoted here.** At the
+time of writing, exactly one entry holds RATIFIED (I13); most are STATED, meaning direction rather than
+a ruling; I14 is IN FORCE because lints enforce it outside this panel; and I18 is explicitly a rule of
+thumb rather than a gate.
+
+**This sentence previously read "I1 through I12" and was wrong twice over**, found by `109`. It named a
+range where the catalogue names one entry, and the range **included I1, the entry op personally demoted
+to open**, which is the entry saying the strategy set is not closed at four. A member reading the
+provenance ladder to learn what provenance means would have defended a closed strategy set as ratified,
+which is the opposite of op's word. The lesson generalises: a summary of the catalogue drifts from the
+catalogue, so the catalogue is read rather than summarised.** A sentence in `PRIOR_CALLS.md`
 attributed to op does not outrank a panel finding, does not settle an option, and does not close a
 question. It cannot be cited to support a claim.
 
