@@ -849,21 +849,30 @@ control fire. The dominated set is now computed from the model in use, and the p
 what happened. That is the same class as `97`'s F11 correction: a finding whose predicate names two
 coordinates being applied at three.
 
+**And the remedy is tested rather than asserted, which is the third block in that probe.** With the
+normalisation range **frozen as declared constants** instead of read off the arm set, dropping the
+dominated arm and adding the unselectable one both leave every section untouched, **6 of 6**, exactly as
+the raw control does. The mechanism is why: a fixed affine transform per coordinate turns the weighted sum
+into a fixed positively-weighted linear functional of the raw costs, and an argmin of that cannot be moved
+by an alternative that is never the minimum.
+
 **Two consequences, and neither is small.**
 
 A design shipping normalised costs has to state the normalisation range as **declared constants**, because
-it is part of the semantics rather than a presentation detail. Freezing it restores independence; reading
-it off the arm set does not.
+it is part of the semantics rather than a presentation detail. What that costs is a number somebody has to
+get right once, and a range far from the data's makes the weights mean something other than intended. What
+it buys is independence, measured above.
 
 And a bench arm added as a negative control, which is measurement hygiene and exactly what
 `bitpack-carrier-d16-control` is for, could then change what every strategy selects. **That is a coupling
 between the instrument and the answer**, and it is worth knowing before anything is built on a normalised
 cost table.
 
-**F-100-6. Under min-max normalisation of the cost coordinates, adding an arm that is strictly dominated
-at every region and therefore selectable by no weighting changes the section at up to 6 of 6 regions, and
-dropping the arm dominated in every region changes it for 2 of 3 weightings. Under raw coordinates neither
-changes anything, in 6 of 6 controls.**
+**F-100-6. Under min-max normalisation whose range is read off the arm set, adding an arm that is
+strictly dominated at every region and therefore selectable by no weighting changes the section at up to
+6 of 6 regions, and dropping the arm dominated in every region changes it for 2 of 3 weightings. Under raw
+coordinates neither changes anything, in 6 of 6 controls, and under normalisation with the range frozen as
+declared constants neither changes anything, in 6 of 6.**
 `holds for: regions = 6, arms in {4, 5, 6}, cost coordinates = 3, cost source = committed
 bitpack-carrier-width_n* CSVs with the noise-floor control excluded, synthetic arm extremity factors in
 {1.01, 1.5, 2, 4, 8, 32, 128}, weightings as instantiated in the probe, threads = 1, target features any`

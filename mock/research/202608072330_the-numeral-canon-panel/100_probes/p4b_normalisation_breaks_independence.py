@@ -34,7 +34,10 @@ FOUR EXPERIMENTS.
      on one coordinate, the shape of a bench arm added as a negative control, and
      see whether the section moves.
   C. The same two, under raw coordinates, where the prediction is that nothing
-     moves and a move would refute the reasoning above rather than confirm it.
+     moves and a move would refute the reasoning above rather than confirm it,
+     and under a normalisation whose range is FROZEN as declared constants rather
+     than read off the arm set, which is the remedy this probe proposes and
+     therefore has to test rather than assert.
   D. How far the effect can be pushed: sweep the synthetic arm's extremity and
      count how many regions change their pick.
 
@@ -89,12 +92,23 @@ def base_table():
     return t
 
 
-def prep(t, arms, normalised):
+# A frozen normalisation range, declared once rather than read off whichever arms
+# happen to be in the table. The numbers are the ranges the full five-arm table
+# happens to span, rounded outward, and they are scaffolding: what matters is
+# that they are CONSTANTS rather than a function of the arm set.
+FROZEN = ((0.0, 1_000_000.0), (0.0, 16.0), (0.0, 100_000.0))
+
+
+def prep(t, arms, normalised, frozen=False):
     if not normalised:
         return t
     rs = sorted(t)
-    lo = [min(t[r][a][k] for r in rs for a in arms) for k in range(3)]
-    hi = [max(t[r][a][k] for r in rs for a in arms) for k in range(3)]
+    if frozen:
+        lo = [FROZEN[k][0] for k in range(3)]
+        hi = [FROZEN[k][1] for k in range(3)]
+    else:
+        lo = [min(t[r][a][k] for r in rs for a in arms) for k in range(3)]
+        hi = [max(t[r][a][k] for r in rs for a in arms) for k in range(3)]
     return {
         r: {
             a: tuple(
@@ -107,8 +121,8 @@ def prep(t, arms, normalised):
     }
 
 
-def section(t, arms, w, normalised):
-    nt = prep(t, arms, normalised)
+def section(t, arms, w, normalised, frozen=False):
+    nt = prep(t, arms, normalised, frozen)
     out = []
     for r in sorted(t):
         v = {a: sum(wi * ci for wi, ci in zip(w, nt[r][a])) for a in arms}
@@ -167,18 +181,21 @@ def main():
     dominated = [a for a in arms if dominated_everywhere(t, arms, a)]
     kept = [a for a in arms if a not in dominated]
 
-    for normalised in (True, False):
-        label = "MIN-MAX NORMALISED" if normalised else "RAW COORDINATES"
+    for normalised, frozen, label in (
+        (True, False, "MIN-MAX NORMALISED, range read off the arm set"),
+        (False, False, "RAW COORDINATES"),
+        (True, True, "NORMALISED, range FROZEN as declared constants"),
+    ):
         print("=" * 78)
         print(label)
         print("=" * 78)
         for name, w in WEIGHTINGS:
-            full = section(t, arms, w, normalised)
-            # A. drop the two arms that are dominated everywhere
-            dropped = section(t, kept, w, normalised)
+            full = section(t, arms, w, normalised, frozen)
+            # A. drop every arm dominated in every region
+            dropped = section(t, kept, w, normalised, frozen)
             # B. add a synthetic arm nothing can select
             t2, arms2 = with_synthetic(t, arms, 4.0)
-            added = section(t2, arms2, w, normalised)
+            added = section(t2, arms2, w, normalised, frozen)
             print(f"\n  {name}")
             print(f"    all {len(arms)} arms                : {short(full)}")
             print(
