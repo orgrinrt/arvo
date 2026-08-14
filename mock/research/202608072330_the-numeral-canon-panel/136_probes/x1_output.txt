@@ -1,0 +1,62 @@
+============================================================================================
+PART A. Is a deterministic quantisation monotone exactly when it is a threshold rule?
+Reproducing 133 D2 across several cells at once, on a fixed-point grid.
+============================================================================================
+  F_fine=2 cells=2: 64 local retractions, 16 globally monotone, 16 all-cells-suffix, agree on 64/64; expected (sub+1)^cells = 16  -> OK
+  F_fine=2 cells=3: 512 local retractions, 64 globally monotone, 64 all-cells-suffix, agree on 512/512; expected (sub+1)^cells = 64  -> OK
+  F_fine=3 cells=2: 16384 local retractions, 64 globally monotone, 64 all-cells-suffix, agree on 16384/16384; expected (sub+1)^cells = 64  -> OK
+
+  A1 (across-cell monotonicity adds no constraint beyond per-cell): CONFIRMED
+
+  A2 parity keying (1, 0, 1, 0, 1, 0): monotone=False (must be False), suffix=False (must be False)  -> CONFIRMED
+     It is a deterministic grid-fixing retraction, so candidate 5.2's unscoped
+     'every deterministic member is order-preserving' is false with a committed witness.
+
+  A3 a monotone NON-local grid-fixing retraction exists: False (PREDICTED True, so this prediction is REFUTED), witness=None
+     The refutation is the stronger result and I keep it rather than repair the prediction.
+     A grid-fixing map pins k and k+1; a subpoint strictly between them must land in
+     [k, k+1] to stay monotone, which IS locality. So monotone implies local, and the
+     characterisation holds over ALL grid-fixing retractions, not only the local ones.
+     That is wider than 133's s2 established and wider than I predicted.
+
+============================================================================================
+PART B. The law overlap, on concrete fixed-point widths.
+Reproducing 133 D3. 133 evaluated on rationals; this sweeps actual (W, F) grids.
+============================================================================================
+
+  at W=9, F=4, staged narrowing F_exact=4 -> F_mid=2 -> F_final=0
+  member       order bound   staged comp   negation sym  count 
+  floor        True          True          False         2     
+  ceil         True          True          False         2     
+  toward_zero  False         True          True          2     
+  half_up      False         False         False         0     
+  half_even    False         False         True          1     
+
+  composition sweep detail (a True over zero candidates would be the defect above):
+    floor         swept  512 values, no failing value in sweep
+    ceil          swept  512 values, no failing value in sweep
+    toward_zero   swept  512 values, no failing value in sweep
+    half_up       swept  512 values, first failing value -125/8 direct=-16 staged=-15
+    half_even     swept  512 values, first failing value -247/16 direct=-15 staged=-16
+
+  B1 floor carries order bound AND composition: True (predicted True)
+     -> this alone refutes candidate 5.3's 'no member carries more than one of the first three'
+  B2 toward_zero carries composition AND negation: True (predicted True)
+  B3 half_even carries negation symmetry: True (predicted True; 5.3 gives it to toward_zero alone)
+  B4 the true exclusivity, order bound never with negation symmetry: True (predicted True)
+  B5 control, half_up carries none: True (predicted True; if False my encodings are wrong)
+
+============================================================================================
+VERDICT
+============================================================================================
+  both of 133's dissents reproduce: True (predicted True)
+  my own A3 prediction: REFUTED (found_monotone_nonlocal=False),
+    and the refutation widens the characterisation rather than weakening it.
+  one earlier defect in THIS probe, recorded rather than repaired silently: the first
+    run swept W=7,F=3 with a 3->2->1 staging and reported half_even carrying exact
+    composition, contradicting 133 and 125's P4. The window held no tie at the
+    intermediate stage, so the failing path was never entered. Widened, half_even now
+    fails at -247/16 and the witness is printed above.
+  133's D2 and D3 both reproduce on an instrument built differently from its own.
+  D2 additionally lifts: monotonicity across cells is free for local maps, so the
+  per-cell characterisation is the whole characterisation for the axis's members.
