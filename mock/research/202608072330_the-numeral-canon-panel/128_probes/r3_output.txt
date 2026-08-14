@@ -1,0 +1,17 @@
+--- 1. variance of the summed error, n same-cell elements at frac f ---
+n=1: comonotone Var=2/9 (formula n^2 f(1-f)=2/9, match=True); independent Var=2/9 (formula n f(1-f)=2/9, match=True)  <- control: identical at n=1
+n=2: comonotone Var=8/9 (formula n^2 f(1-f)=8/9, match=True); independent Var=4/9 (formula n f(1-f)=4/9, match=True)
+n=4: comonotone Var=32/9 (formula n^2 f(1-f)=32/9, match=True); independent Var=8/9 (formula n f(1-f)=8/9, match=True)
+n=8: comonotone Var=128/9 (formula n^2 f(1-f)=128/9, match=True); independent Var=16/9 (formula n f(1-f)=16/9, match=True)
+n=10: comonotone Var=200/9 (formula n^2 f(1-f)=200/9, match=True); independent Var=20/9 (formula n f(1-f)=20/9, match=True)
+--- 2. the per-cell threshold member on a multi-cell window ---
+monotonicity: 0 violations across 243 threshold tuples x 79 adjacent pairs (must be 0)
+unbiased: E[e_a]=0, E[e_c]=0 (must be 0, 0)
+within-cell covariance E[e_a e_b] = 25/256 (must be > 0: forced coherence)
+cross-cell covariance = 0 (must be 0: the freedom the per-cell member buys)
+--- 3. the price: translation equivariance and wrap compatibility are lost ---
+translation: Q(x+q)=1, Q(x)+q=2 (must differ for this tuple)
+wrap mod-span mismatches for the same tuple: 0 of 384 (must be > 0)
+--- 3b. wrap commutation is exactly span-periodicity of the threshold table ---
+aperiodic table (th[0]=1/5, th[8]=9/10, same residue class): 11 mod-span mismatches of 384 (must be > 0)
+residue-keyed table (constant on classes mod span): 0 mismatches (must be 0)
