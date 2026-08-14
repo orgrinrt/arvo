@@ -222,3 +222,282 @@ the middle rung.
 
 So: **one instance, `110`'s, at ONE EXPERT, with `109` withdrawing rather than corroborating.** Whoever
 holds the register should not record it as two.
+
+---
+
+## 4. `109`'s blocker is real and its conclusion is too strong, and the repo already contains the counterexample
+
+`109` section 4 records rustc refusing four times:
+
+```
+error: function pointer calls are not allowed in constant functions
+```
+
+and concludes: "**a law cannot be computed at const time about an operation supplied as a value; the
+operation has to be a type.** That is not a detail of my probe, it is a constraint on any design that
+wants derived rather than declared laws."
+
+**The wall is real. The conclusion does not follow, and the counterexample is in this repository.**
+
+### 4.1 Reproduced, then routed around three ways
+
+`111_probes/p1a_fn_pointer_in_const_fn.rs` reproduces the refusal verbatim rather than taking it on
+report, output in `p1a_output.txt`. Then:
+
+**Route two, the operation as a const generic value.**
+`111_probes/p1b_const_generic_tag_and_match.rs` carries the completion as a `const OP: u8` dispatched by
+a `match` inside the const fn. It compiles with **no feature gate at all**, and the census it computes
+reproduces `109`'s own numbers exactly:
+
+```
+op              assoc-failures  escapes-from-set
+sat-both                   952                 0
+wrap                         0                 0
+sat-top-only               448                36
+```
+
+952 and 448 and 36 are `109` section 4's three figures, arrived at with the operation as a **value**,
+which is the thing its conclusion says cannot be done.
+
+**Route three, the operation as macro syntax.** `111_probes/p1c_macro_carried_operation.rs` expands the
+operation into the const fn's body. Neither a type nor a value. Same three numbers, asserted against
+route two inside the probe so the agreement is checked rather than eyeballed.
+
+**Route four, already shipped, and this is the one that matters.**
+`mock/benches/variants/satfold-shared/src/lib.rs:519` and `:547` are two const fns computing exactly
+this census over two different operations, with the operation written inline and the two versions
+written out twice. No type, no value, no feature gate, and they have been in the tree gating a real bench
+arm the whole time. `109` derived a constraint on the design while the design's own committed code was
+violating it.
+
+### 4.2 The right statement, and why it changes nothing about the design
+
+> **A law computed at const time needs the operation to be statically resolved. It does not need the
+> operation to be a type.** At least four carriers work: a const trait, a const generic value with a
+> match, macro expansion, and duplication.
+
+And then the question that actually bears on the design, which `109` did not ask: does the carrier
+choice buy anything? **No.** `111_probes/p1d_the_carrier_choice_does_not_repair_the_split.rs` carries a
+completion as a type and gets the same `E0308` `110` F8 gets from a const generic value:
+
+```
+error[E0308]: mismatched types
+   = note: expected `Fx<SatBoth>`
+              found `Fx<Wrap>`
+```
+
+So the two carriers are equivalent on the hazard `110` prices, and the wall `109` hit is a fact about
+one spelling rather than a constraint on the design. **What decides whether an axis may appear in the
+type at all is `110`'s read-test, not the form the axis takes**, and section 9 is where that lands.
+
+I would drop `109`'s sentence rather than qualify it, per `no-legacy-shims-pre-1.0.md`'s posture toward
+a shape that has been replaced. What survives is the observation that the operation must be resolved
+before the census runs, which is true, cheap and uncontroversial.
+
+---
+
+## 5. The signature claim, tested: right, monotone by construction, and it saturates at the literal
+
+`110` F4 counts 84 primitives under `{add}` and 186 under `{add, mul}` over the same 288 configurations
+and concludes that "how many primitives are there" is not well posed until somebody fixes the signature,
+and that a canon enumerating axes without fixing one has not defined the thing it is enumerating axes
+of. The dispatch asks me to test it. Three results, and the third is the one that changes what the
+design owes.
+
+### 5.1 The direction is by construction; only the magnitude is measured
+
+Adding an operation refines the partition, because a term that separated two primitives is still a term
+after the signature grows. So the count is non-decreasing in the signature whatever the arithmetic does,
+and "the count more than doubles" measures the magnitude and never the direction.
+`111_probes/p3_the_signature_saturates_at_the_literal.py` checks monotonicity holds in its own data as
+an instrument check rather than reporting it as a finding: `60 <= 60 <= 126 <= 142 <= 148`.
+
+Independent reconstruction over my own 216-configuration sweep, different widths, different rounding
+set, radix in `{2, 3}`:
+
+```
+signature                                  primitives
+{add}                                              60
+{add,sub}                                          60
+{add,mul}                                         126
+{add,sub,mul,neg}                                 126
+{add,sub,mul,neg,half}                            142
+{add,sub,mul,neg,half,recip,fma}                  148
+```
+
+The shape reproduces: `{add}` and `{add,sub}` agree, `mul` roughly doubles, `half` and the rest add a
+little. **So F4's phenomenon is at two instances, and mine is not independent, because I read `110`
+before building it.**
+
+### 5.2 The bound, which nobody has looked for
+
+Two primitives with the same value set are separated by some term exactly when their realisation maps
+differ somewhere a term can reach. Every term's argument to `R` is a rational. So **no signature can
+separate more than "R differs somewhere on Q"**, and a signature containing a constant injection over Q
+reaches that bound at depth one.
+
+Measured, with the prediction recorded in the probe header before running:
+
+```
+{literal}                                       165
+{literal,add}                                   165
+{literal, everything}                           165
+adding every operation to the literal splits nothing: True
+and the partitions are identical, not merely equinumerous: True
+finest signature without a literal reaches               148
+the literal alone reaches                                165
+```
+
+**The identity relation saturates at the literal.** One nullary operation is strictly finer than the
+richest operation-only signature swept, and adding `add`, `sub`, `mul`, `neg`, `half`, `recip` and `fma`
+to it splits nothing, with the partitions identical rather than merely the same size.
+
+### 5.3 What that does to the design obligation
+
+F4's practical bite, as `110` states it, is that a canon must fix the signature or identity is a moving
+target, and that P4's collapse classes break "the day somebody adds `half`". Under 5.2 that concern has a
+much smaller domain than it looks:
+
+> **A design that can write a literal is already at the finest identity its realisation map supports, so
+> it does not have to declare a closed operation set to have stable identity. It has to have a
+> constructor, which it cannot avoid having.**
+
+And arvo cannot avoid it. I3, as `104` settles it, is about the experience of using the type; a type a
+consumer cannot write a literal into is not unsurprising, it is unusable. `35:63-65` records that the
+old tree's algorithm crates bounded their scalars on `FromConstant`, and I do not count that, for the
+same reason `35` did not: it is one dead artifact. The argument does not need it. An algebra with no
+nullary operation has no closed terms at all, so a signature without a constructor is a signature in
+which **nothing** is reachable and every axis is vacuously reachability-degenerate.
+
+### 5.4 And the brief's worry has no victims
+
+The dispatch says "every count in this panel that ranged over primitives was taken under an unstated
+signature". I checked:
+
+```
+grep -rn 'distinct primitive\|distinct numeral\|how many primitives\|number of primitives' \
+  --include='*.md' . | grep -v '^./archive'
+```
+
+returns hits in `110` and in `109`'s account of `110`, and nothing else in the live panel. Everything
+else this panel counts is **configurations**, not equivalence classes: `63`'s cube, `79`'s coordinate
+list, `82`'s windows, `98`'s sections. A count of configurations is not signature-relative, because it
+does not quotient. So the signature-relativity affects exactly one file's counts and that file is the
+one that discovered it. Nothing needs re-doing.
+
+---
+
+## 6. The two degeneracies are one notion at two extents, and constant injection collapses them
+
+`110` F5 and F6 distinguish an axis that has left the definition of `R` from one the current signature
+merely fails to reach, and conclude that only the first may be canonicalised away. `110` section 16.4
+says a grep suggests the distinction is new, and my own grep for `nullary`, `ground term` and
+`constant injection` across the live panel agrees that nothing else carries it.
+
+**I think the conclusion is right and the distinction as drawn is an artifact of the signatures it was
+measured over.**
+
+`110_probes/p5_definitional_versus_reachability_degeneracy.py:99-106` declares its three signatures:
+
+```python
+SIG_CLOSED = ["add", "sub", "mul", "neg"]
+SIG_OPEN   = ["add", "sub", "mul", "neg", "half"]
+SIG_WIDE   = ["add", "sub", "mul", "neg", "half", "recip", "fma"]
+```
+
+**None of them contains a nullary operation.** So "reachable" there means reachable from carrier
+elements taken as free variables, which is a legitimate reading and is not arvo's, per section 5.3.
+
+`111_probes/p4_constant_injection_collapses_the_two_degeneracies.py` reruns the question with the
+constants put back, at `F = 0`:
+
+```
+axis varied: radix   (108 configuration pairs)
+  grid-closed {add,sub,mul,neg}                   0/108
+  + constants restricted to the grid              0/108
+  + constants over a dense rational sample        0/108
+  R differs somewhere on the rational line        0/108
+
+axis varied: rounding (36 configuration pairs)
+  grid-closed {add,sub,mul,neg}                   0/36
+  + constants restricted to the grid              0/36
+  + constants over a dense rational sample       33/36
+  R differs somewhere on the rational line       33/36
+```
+
+and then the coincidence, cell by cell rather than as two totals, because two totals agreeing is weaker
+than every cell agreeing:
+
+```
+reachable under {ops + rational constants} vs R differs on the rational line:
+  agree 144, disagree 0
+under GRID-RESTRICTED constants:
+  agree 111, disagree 33
+```
+
+So:
+
+> **Definitional degeneracy is reachability degeneracy evaluated at the largest signature the design
+> will ever admit.** The two are one notion at two extents, and they coincide exactly when the
+> constants cover the ambient domain. They come apart only where a design restricts its own literals to
+> the grid.
+
+That is a better reason for `110`'s soundness conclusion than `110` gives, and it is cheaper. "Only
+canonicalise a definitional degeneracy" is not a rule about two kinds of thing that need distinguishing
+by a special test. It is the ordinary conservative choice of quantifying over every signature instead of
+the current one, and the test for it is the one `110` already built: probe `R` over the whole line.
+
+**Which also means that in arvo, F6's example is not an example.** Rounding at `F = 0` is observable the
+moment a consumer writes a literal that is not a grid point, and a consumer can always write one. The
+practical residue of the distinction is `110`'s radix case and, on this sweep, nothing else.
+
+### 6.1 And the residue is not a per-axis fact, which is a defect in the unit of analysis
+
+Three of the 36 rounding pairs stay unobservable even with rational constants, and they are named in the
+probe output rather than left inside a ratio:
+
+```
+W=2 unsigned sat: trunc vs floor
+W=3 unsigned sat: trunc vs floor
+W=4 unsigned sat: trunc vs floor
+```
+
+The overflow policy erases the disagreement: over an unsigned set every negative argument clamps to the
+same endpoint under saturation, and truncation and floor differ only on negatives. Under wrapping they
+separate.
+
+**So "is this axis degenerate" has no answer.** It is a joint fact about the axis, the signedness and
+the overflow policy at least, and a per-axis verdict is the wrong unit. This is I13's shape appearing
+inside the identity question: the verdict is a region, and the region is over more than one coordinate.
+
+---
+
+## 7. `110` contradicts itself about what a split costs, and its own F9 is the resolution
+
+Two sentences, in one file, about the same act.
+
+`110:281-282`:
+
+> A canonicalisation that **splits** where it could have merged costs names and nothing else.
+
+`110:357` and `110:370`:
+
+> Two names for one thing is not a convenience, it is a missed merge, and in a nominally typed language
+> a missed merge is a wall rather than a slow path. [...] **And there is no repair.**
+
+A canonicalisation that splits where it could have merged **is** a missed merge. So the file prices the
+same act at zero in the section arguing for the conservative rule and at an unrepairable compile error
+in the section arguing for the parameterisation. `110:540` half-notices, saying the "costs names and
+nothing else" line is a soundness statement rather than a cost statement and that the compile-time cost
+is unmeasured, but that repair does not reach far enough: F8's cost is not an unmeasured compile-time
+figure, it is a hard consumer-visible refusal with no in-language fix, in the same file, compiled.
+
+**The union-find conclusion is what has to give, and `110` supplies its own replacement.** "I would ship
+the conservative one" is only free where the two rules are both available and one is safer. Here the
+conservative rule ships F8's wall to every consumer who later wants one function over both spellings.
+F9 is the answer: parameterise by what `R` reads, and the second spelling never exists, so the choice
+between a sound rule and an exact one never has to be made.
+
+That is not a small edit. It moves the design decision from **which canonicalisation to run** to **which
+parameters to have**, which is decided once and cannot be revisited, and it is the point at which the
+adequacy condition in the next section becomes the load-bearing obligation.
