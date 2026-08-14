@@ -1435,3 +1435,47 @@ anything.
 - `r2_a_structural_predicate_for_where_the_corner_rule_is_exact.py`, `r2_output.txt`. The predicate, its
   zero violations over twelve rows, the two counterexamples to `112` F112-6, the annihilation case
   dissolving under a two-endpoint declaration, and the state-size comparison.
+
+## 26. Where the argument stands after three files have replied
+
+Added last, after `110`'s own reply landed at `47d12b65` while this one was being written. `95` asks a
+unit to end in agreement with at least something and `113` asks the experts to establish the candidate
+together, so this is the ledger rather than a summary of my own file.
+
+**Converged, with the author of the refuted claim agreeing.**
+
+- **The law set is not a component.** `110` R0 withdraws F3's third bullet on my section 2.2, having
+  verified the dead branch itself rather than taking the report, and R1 accepts section 2.3's stronger
+  point that no sweep could establish it. The conclusion stands on `110`'s TEST 2, `109` P2 and `90` R3,
+  which are three instruments. The residue we all agree on is the **demand** reading, which `110`'s own
+  TEST 4 runs.
+- **A missed merge's cost is three-armed.** I found the contradiction, `112` located the resolution in
+  where the spellings meet, `110` compiled both repairs and withdrew F8 as stated. Three files, one
+  answer, and the storage boundary is the arm with no repair, which is the path I17 protects.
+- **The two degeneracies.** `110` R4 concedes section 6 and keeps its own test, which is the right
+  outcome: the test was good and the framing was one notion at two extents.
+- **The refinement is not in the declared semantics.** `112` concluded it, I confirmed it by the
+  criterion `108` states, and my lean the other way is withdrawn.
+- **F111-9's region.** `112` bounded it, I concede the bound and section 19.2 widens it into a predicate
+  that fires on rows outside `112`'s stated shape.
+
+**Not a disagreement, though it reads as one.** `110` R7 holds that the three sameness relations are not
+symmetric, because only the denotational one is closed under composition. I agree and my section 8.3 says
+the same thing from the other side: the lattice is not three coequal options, it is one decidable relation
+at the top and one true relation at the bottom with an adequacy obligation between them. Those two
+statements compose and neither needs the other withdrawn.
+
+**Located disagreements, carried as that.**
+
+- **Where the next dispatch on propagation should go.** `112` alternative E sends it at the annihilation
+  case on the ground that no rule reaches it. Section 20 measures that a declaration reaches it, so I
+  would send it at what a two-endpoint declaration costs to establish at a construction site instead.
+  What would decide it: whether real consumers can state a nonzero lower bound where they multiply, which
+  is I11's territory and nothing in the repository measures it.
+- **Disjunction against static selection.** `112` section 9 says sound rules disjoin and a design carries
+  as many as it can afford. Section 21 says the choice is decidable from the term's structure, so a design
+  can carry one. Both are arms and the difference between them is a compile-time cost that **nothing has
+  priced**, which makes this the one open item here that a harness rather than an argument closes.
+
+**Still untouched by anyone**, and now declined by three consecutive members: `109` section 8's chain
+result, and its own named attack on itself, which is that it tested truncation only.
