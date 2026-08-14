@@ -130,9 +130,7 @@ pub trait Primitive {
 /// says the value set and R read: the range, the step, the rounding and the
 /// overflow policy. There is no radix parameter and no fraction-width
 /// parameter, because neither is read except through the step.
-pub struct Fx<const LO: i128, const HI: i128, S, R, P>(
-    core::marker::PhantomData<(S, R, P)>,
-);
+pub struct Fx<const LO: i128, const HI: i128, S, R, P>(core::marker::PhantomData<(S, R, P)>);
 
 impl<const LO: i128, const HI: i128, S: Step, R: Rounding, P: Policy> Primitive
     for Fx<LO, HI, S, R, P>

@@ -15,7 +15,12 @@ fn main() {
     // Q2: the two spellings of the degenerate primitive unify, and the
     // arithmetic goes through one path.
     let v = canonical_by_construction();
-    check("canonical_by_construction saturates at 255", v, 255, &mut failures);
+    check(
+        "canonical_by_construction saturates at 255",
+        v,
+        255,
+        &mut failures,
+    );
 
     // overflow policy is identity-bearing: same width, same step, same
     // rounding, different answers.
@@ -30,7 +35,12 @@ fn main() {
     // step is identity-bearing: 1.0 * 1.0 in each primitive's own grid units.
     let (b, d) = distinct_primitives_are_distinct_types();
     check("binary  Q8: 1.0 * 1.0 in grid units", b, 256, &mut failures);
-    check("decimal Q3: 1.0 * 1.0 in grid units", d, 1000, &mut failures);
+    check(
+        "decimal Q3: 1.0 * 1.0 in grid units",
+        d,
+        1000,
+        &mut failures,
+    );
 
     // the reachability degeneracy: identical over {add, mul}, separated by half.
     let (hx, hy) = reachability_degeneracy_is_not_merged();

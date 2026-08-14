@@ -33,14 +33,9 @@ impl Policy for Sat {}
 
 /// The axis-carrying parameterisation: radix and fraction width are separate
 /// const parameters, exactly as the four-part decomposition suggests.
-pub struct FxAxes<
-    const LO: i128,
-    const HI: i128,
-    const RADIX: u32,
-    const F: u32,
-    R,
-    P,
->(core::marker::PhantomData<(R, P)>);
+pub struct FxAxes<const LO: i128, const HI: i128, const RADIX: u32, const F: u32, R, P>(
+    core::marker::PhantomData<(R, P)>,
+);
 
 #[repr(transparent)]
 pub struct Num<T>(pub i128, pub core::marker::PhantomData<T>);
