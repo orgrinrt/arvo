@@ -1,0 +1,62 @@
+### 1. The definition, at its earliest appearance in this panel
+
+48:An axis is **observable** when moving it changes the value the program computes, and **unobservable**
+398:An axis is **observable** when moving it changes the value the program computes, and **unobservable**
+
+### 2. The qualifier 40 attaches to it, in its own section 5.2
+
+### 5.2 Headroom is unobservable only because of a convention, and the convention is load-bearing
+
+Headroom is on the unobservable side **only if** the overflow policy is applied at the logical width
+rather than at the container width. If a doubled container wraps at the container width, then two
+numerals differing only in headroom compute different answers, and headroom becomes observable.
+
+The record has the argument in the other direction already. `OPTIONS.md` Q6 records `20` section 1.3:
+under wrapping a lazy headroom arm provably cannot win, "because reduction modulo `2^W` factors through
+reduction modulo `2^C` for any `C >= W`". That factoring is exactly the statement that wrapping at the
+logical width is stable under widening the container, which is what keeps headroom free.
+
+So the convention "the policy applies at the declared width" is what puts headroom on the cheap side of
+the cut, and it is a canon-shaped sentence nobody has written. Without it, half the mechanism space
+moves to the expensive side.
+
+### 5.3 The two classes are governed differently, and `34` falls out
+
+### 3. Who cites 40 in the strategy-axis unit, by count
+
+ 18  93_orchard_the_strategy_axis_derived_cold.md
+  0  94_wingo_the_strategy_axis_derived_cold.md
+ 22  97_dolan_the_strategy_space_attacked.md
+ 12  98_spj_what_the_strategy_axis_settles.md
+  1  100_xu_generating_the_table_attacked.md
+  0  101_wronski_the_cost_coordinates.md
+  0  102_torvalds_does_the_mechanism_serve_the_intents.md
+  0  103_mcsherry_what_the_corpus_can_and_cannot_show.md
+  4  106_giesen_consolidation_the_strategy_axis.md
+  5  107_arntzen_entailment_check_on_the_strategy_consolidation.md
+
+### 4. 97 credits 40 for the definition, explicitly
+
+308:policy coordinate is observable, meaning moving it changes the value the program computes (`40:398`),
+375:This is a derivation from `40:398`'s definition and `40` section 5.4's compile, not a measurement, and
+
+### 5. Does the qualifier survive? grep for the convention it depends on
+    (the policy applying at the logical width rather than the container width)
+
+  0 logical-width    0 convention   97_dolan_the_strategy_space_attacked.md
+  0 logical-width    0 convention   98_spj_what_the_strategy_axis_settles.md
+  0 logical-width    0 convention   100_xu_generating_the_table_attacked.md
+  0 logical-width    0 convention   101_wronski_the_cost_coordinates.md
+  0 logical-width    1 convention   102_torvalds_does_the_mechanism_serve_the_intents.md
+  0 logical-width    5 convention   103_mcsherry_what_the_corpus_can_and_cannot_show.md
+  0 logical-width    0 convention   106_giesen_consolidation_the_strategy_axis.md
+  0 logical-width    0 convention   107_arntzen_entailment_check_on_the_strategy_consolidation.md
+
+### 6. What 106 attributes the definition to
+
+892:a mechanism.** `97` defines an observable coordinate as one whose movement **changes the value the program
+
+### 7. 40's own claim about novelty, and 97's honest correction of the record
+
+394:This is the piece I think is new, and everything in section 6 rests on it.
+47:**And the axes divide into two classes with different governance**, which is the piece I think is new.
