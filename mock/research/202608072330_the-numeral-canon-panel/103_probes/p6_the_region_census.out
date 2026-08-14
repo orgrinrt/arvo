@@ -1,0 +1,87 @@
+p6. census over committed regions
+
+driver: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/src/main.rs
+routine_for_n entries parsed: 256
+
+region                                                  n  arms bridge           verdict            consent flag
+------------------------------------------------------------------------------------------------------------------------
+decimal-quantiser-radix-sweep                           0     2 RadixAdd         UNPINNED           must agree
+decimal-quantiser-radix-sweep                           2     2 RadixAdd         UNPINNED           must agree
+decimal-quantiser-radix-sweep                          20     2 RadixAdd         UNPINNED           must agree
+decimal-quantiser-radix-sweep                           8     2 RadixAdd         UNPINNED           must agree
+fnv1a-vs-xxhash3                                     1024     2 ByteRoutine      NO ORACLE AT ALL   may differ
+fnv1a-vs-xxhash3                                      256     2 ByteRoutine      NO ORACLE AT ALL   may differ
+fnv1a-vs-xxhash3                                     4096     2 ByteRoutine      NO ORACLE AT ALL   may differ
+fnv1a-vs-xxhash3                                       64     2 ByteRoutine      NO ORACLE AT ALL   may differ
+quantiser-vs-fadd-subnormal-sweep                       0     2 AddSweep         UNPINNED           must agree
+quantiser-vs-fadd-subnormal-sweep                      10     2 AddSweep         UNPINNED           must agree
+quantiser-vs-fadd-subnormal-sweep                     100     2 AddSweep         UNPINNED           must agree
+quantiser-vs-fadd-subnormal-sweep                      25     2 AddSweep         UNPINNED           must agree
+quantiser-vs-fadd-subnormal-sweep                      50     2 AddSweep         UNPINNED           must agree
+quantiser-vs-fadd-subnormal-sweep                      75     2 AddSweep         UNPINNED           must agree
+spectral-bisection                                     16     1 -                NO BRIDGE          -
+spectral-bisection                                     32     1 -                NO BRIDGE          -
+spectral-bisection                                     64     1 -                NO BRIDGE          -
+structural-decomposition                               16     1 -                NO BRIDGE          -
+structural-decomposition                               32     1 -                NO BRIDGE          -
+structural-decomposition                               64     1 -                NO BRIDGE          -
+
+(regions with verdict PINNED are omitted from the listing above)
+
+TOTALS OVER COMMITTED REGIONS
+  PINNED                  234 of 254
+  UNPINNED                 10 of 254
+  NO ORACLE AT ALL          4 of 254
+  NO BRIDGE                 6 of 254
+  (consent flag: may differ)   32 of 254
+    of which also PINNED   28   <- answer-equivalent by oracle despite the flag
+
+EVERY REGION NOT PINNED, WITH ITS ARMS
+  [UNPINNED] decimal-quantiser-radix-sweep n=0  consent=must agree
+      arms: ['quantiser-radix10', 'quantiser-radix2']
+  [UNPINNED] decimal-quantiser-radix-sweep n=2  consent=must agree
+      arms: ['quantiser-radix10', 'quantiser-radix2']
+  [UNPINNED] decimal-quantiser-radix-sweep n=20  consent=must agree
+      arms: ['quantiser-radix10', 'quantiser-radix2']
+  [UNPINNED] decimal-quantiser-radix-sweep n=8  consent=must agree
+      arms: ['quantiser-radix10', 'quantiser-radix2']
+  [UNPINNED] quantiser-vs-fadd-subnormal-sweep n=0  consent=must agree
+      arms: ['quantiser-hardware', 'quantiser-software']
+  [UNPINNED] quantiser-vs-fadd-subnormal-sweep n=10  consent=must agree
+      arms: ['quantiser-hardware', 'quantiser-software']
+  [UNPINNED] quantiser-vs-fadd-subnormal-sweep n=100  consent=must agree
+      arms: ['quantiser-hardware', 'quantiser-software']
+  [UNPINNED] quantiser-vs-fadd-subnormal-sweep n=25  consent=must agree
+      arms: ['quantiser-hardware', 'quantiser-software']
+  [UNPINNED] quantiser-vs-fadd-subnormal-sweep n=50  consent=must agree
+      arms: ['quantiser-hardware', 'quantiser-software']
+  [UNPINNED] quantiser-vs-fadd-subnormal-sweep n=75  consent=must agree
+      arms: ['quantiser-hardware', 'quantiser-software']
+  [NO ORACLE AT ALL] fnv1a-vs-xxhash3 n=1024  consent=may differ
+      arms: ['fnv1a', 'xxhash3']
+  [NO ORACLE AT ALL] fnv1a-vs-xxhash3 n=256  consent=may differ
+      arms: ['fnv1a', 'xxhash3']
+  [NO ORACLE AT ALL] fnv1a-vs-xxhash3 n=4096  consent=may differ
+      arms: ['fnv1a', 'xxhash3']
+  [NO ORACLE AT ALL] fnv1a-vs-xxhash3 n=64  consent=may differ
+      arms: ['fnv1a', 'xxhash3']
+  [NO BRIDGE] spectral-bisection n=16  consent=-
+      arms: ['fiedler-bisect-dense']
+  [NO BRIDGE] spectral-bisection n=32  consent=-
+      arms: ['fiedler-bisect-dense']
+  [NO BRIDGE] spectral-bisection n=64  consent=-
+      arms: ['fiedler-bisect-dense']
+  [NO BRIDGE] structural-decomposition n=16  consent=-
+      arms: ['rcm-bits64']
+  [NO BRIDGE] structural-decomposition n=32  consent=-
+      arms: ['rcm-bits64']
+  [NO BRIDGE] structural-decomposition n=64  consent=-
+      arms: ['rcm-bits64']
+
+READING
+  PINNED is the only verdict that supports 'this region compares cost
+  at a fixed answer' from the region's own code. The consent flag is
+  orthogonal: satfold consents AND pins, so it is answer-equivalent.
+  UNPINNED and NO ORACLE AT ALL regions have arms whose agreement is
+  asserted nowhere in this repository. Whether they in fact agree is a
+  separate measurement, taken for two of them in p2, p3 and p4.
