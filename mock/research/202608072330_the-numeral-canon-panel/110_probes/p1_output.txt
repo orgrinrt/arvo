@@ -1,0 +1,43 @@
+P1. identity as denotation-preserving isomorphism
+==============================================================================
+axis varied                            full signature   {add} only    
+------------------------------------------------------------------------------
+1. total width W                       different        different     
+2. fraction width F at fixed W         different        different     
+3. signedness                          different        different     
+4. overflow policy                     different        different     
+5. radix 2 vs 10                       different        different     
+5b. radix 2 vs 3                       different        different     
+6a. encoding: offset                   SAME             SAME          
+6b. encoding: gray                     SAME             SAME          
+6c. encoding: reversed                 SAME             SAME          
+6d. encoding: arbitrary bijection      SAME             SAME          
+7. rounding mode at F>0                different        SAME          
+7b. rounding mode at F=0               SAME             SAME          
+
+why each separation happened, under the full signature:
+  1. total width W                       value sets differ
+  2. fraction width F at fixed W         value sets differ
+  3. signedness                          value sets differ
+  4. overflow policy                     add separates them at (1/2, 15/2): 15/2 vs 0
+  5. radix 2 vs 10                       value sets differ
+  5b. radix 2 vs 3                       value sets differ
+  7. rounding mode at F>0                mul separates them at (1/2, 3/2): 1 vs 1/2
+
+axes where the SMALLER signature merges what the full one separates:
+  7. rounding mode at F>0                merged under {add}, separated by: mul separates them at (1/2, 3/2): 1 vs 1/2
+
+identity-bearing under the full signature (7): 
+    1. total width W
+    2. fraction width F at fixed W
+    3. signedness
+    4. overflow policy
+    5. radix 2 vs 10
+    5b. radix 2 vs 3
+    7. rounding mode at F>0
+presentation under the full signature (5): 
+    6a. encoding: offset
+    6b. encoding: gray
+    6c. encoding: reversed
+    6d. encoding: arbitrary bijection
+    7b. rounding mode at F=0
