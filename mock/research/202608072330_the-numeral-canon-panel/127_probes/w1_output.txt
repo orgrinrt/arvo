@@ -1,0 +1,47 @@
+=== Part 1: monotonicity, exhaustive over a fine grid, for many fixed U ===
+  U=1/7: 0 monotonicity violations over 769 consecutive pairs (must be 0)
+  U=1/3: 0 monotonicity violations over 769 consecutive pairs (must be 0)
+  U=1/2: 0 monotonicity violations over 769 consecutive pairs (must be 0)
+  U=2/3: 0 monotonicity violations over 769 consecutive pairs (must be 0)
+  U=6/7: 0 monotonicity violations over 769 consecutive pairs (must be 0)
+  U=1/1000: 0 monotonicity violations over 769 consecutive pairs (must be 0)
+  U=999/1000: 0 monotonicity violations over 769 consecutive pairs (must be 0)
+
+=== Part 1 control: independent per-element draw (both files' construction) DOES violate ===
+  independent draws: 194 of 20000 trials show x<y with Q(x)>Q(y) (control: must be > 0, reproduces 125 P5 / 126 Finding 4's construction)
+
+=== Part 2: unbiasedness of the shared-threshold construction, exact and Monte Carlo ===
+  x=1/4 (k=0, f=1/4): exact E_U[Q_U(x)] = 1/4, matches x: True
+  x=3/8 (k=0, f=3/8): exact E_U[Q_U(x)] = 3/8, matches x: True
+  x=-5/3 (k=-2, f=1/3): exact E_U[Q_U(x)] = -5/3, matches x: True
+  x=0 (k=0, f=0): exact E_U[Q_U(x)] = 0, matches x: True
+  x=7/2 (k=3, f=1/2): exact E_U[Q_U(x)] = 7/2, matches x: True
+  x=1/4: Monte Carlo mean over 500000 draws = 0.24950, exact target = 0.25000, diff = 0.00050 (must be small, sampling noise only)
+  x=3/8: Monte Carlo mean over 500000 draws = 0.37404, exact target = 0.37500, diff = 0.00096 (must be small, sampling noise only)
+  x=-5/3: Monte Carlo mean over 500000 draws = -1.66690, exact target = -1.66667, diff = 0.00024 (must be small, sampling noise only)
+  x=0: Monte Carlo mean over 500000 draws = 0.00000, exact target = 0.00000, diff = 0.00000 (must be small, sampling noise only)
+  x=7/2: Monte Carlo mean over 500000 draws = 3.49997, exact target = 3.50000, diff = 0.00003 (must be small, sampling noise only)
+
+=== Part 3 control: Q_U for a fixed U is not additive off-grid (T1 still holds; unbiasedness ===
+=== is a property of the distribution over U, never of a single realisation)             ===
+  U=1/3: additivity violations 30 of 1000 sampled pairs (control: must be > 0, confirms Q_U is an ordinary deterministic rounding mode, consistent with T1/Finding 2, not a loophole in it)
+
+=== Part 4: does composing with saturate eject Q_U from the monotone family? ===
+=== (125 F8's second half claims stochastic-composed-with-saturate is ejected  ===
+=== from the monotone family; check whether that holds for THIS construction) ===
+  U=1/7: saturate(Q_U(.)) monotonicity violations = 0 of 1536 (must be 0)
+  U=1/3: saturate(Q_U(.)) monotonicity violations = 0 of 1536 (must be 0)
+  U=1/2: saturate(Q_U(.)) monotonicity violations = 0 of 1536 (must be 0)
+  U=2/3: saturate(Q_U(.)) monotonicity violations = 0 of 1536 (must be 0)
+  U=6/7: saturate(Q_U(.)) monotonicity violations = 0 of 1536 (must be 0)
+  U=1/1000: saturate(Q_U(.)) monotonicity violations = 0 of 1536 (must be 0)
+  U=999/1000: saturate(Q_U(.)) monotonicity violations = 0 of 1536 (must be 0)
+  total: 0 (predicted 0; every realisation of saturate(Q_U) stays monotone,
+  because Q_U is monotone for every fixed U and composition of monotone maps is monotone,
+  the same T6/Finding-6 composition argument both files already use for the other five modes)
+
+=== Summary ===
+  total monotonicity violations across all tested U: 0 (predicted 0)
+  If 0 monotonicity violations and unbiasedness confirmed both exact and by Monte Carlo,
+  the shared-threshold construction is BOTH monotone (every realisation) AND unbiased
+  (over the draw), which the claimed fork (125 F8, 126 Finding 4) says cannot happen.
