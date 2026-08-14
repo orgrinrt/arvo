@@ -1,0 +1,36 @@
+T1. F118-1 reproduced on 115's own instrument
+==============================================================================
+terms: 96 (the enumeration s1 built)
+
+T1a and T1b. at wrap, with the policy-selected check (root)
+
+  primitive   fires (a)+(b)  fires (a)  declined  of those EXACT  CONSERVATIVE
+  uW3/wrap             6336       9408      3072            3072             0
+  iW3/wrap              816       1200       384             384             0
+
+  every declined cell is exact: True
+  (a single conservative one would refute F118-1's 'already exact',
+   and would mean condition (a) alone certifies a conservative cell)
+
+  the same rows' violation counts, so the soundness claim is visible:
+  primitive    viol (a)+(b)  viol (a) alone
+  uW3/wrap                0               0
+  iW3/wrap                0               0
+
+------------------------------------------------------------------------------
+T1c. THE CASE THAT MUST FAIL: at sat, is condition (b) load-bearing?
+
+  primitive   fires (a)+(b)   viol  fires (a) only   viol
+  uW3/sat              6336      0            9408    234
+  iW3/sat               816      0            1200     20
+
+  dropping condition (b) at saturation produces violations: True
+  so (b) is load-bearing where the map is not a homomorphism, and
+  the counter that reports zero at wrap is the same counter
+
+------------------------------------------------------------------------------
+verdict on F118-1, computed rather than asserted:
+  decline counts at the two wrapping bases : [3072, 384]
+  all declined cells already exact          : True
+  condition (b) load-bearing at saturation  : True
+  => F118-1 holds on this instrument        : True
