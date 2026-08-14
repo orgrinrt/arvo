@@ -499,3 +499,145 @@ maximum's) beyond noting that T6's proof only needs the endpoints to be grid poi
 stochastic × wrap commutation-in-distribution is stated nowhere above because I could not settle in
 what sense expectation survives the quotient, and I chose to leave it absent rather than hedge, which
 per the predicate discipline means it holds nowhere until someone establishes it.
+
+
+---
+
+## 11. Phase two: reconciliation against `122`, `119` section 5, and `116` section 7
+
+*Appended after the phase-one commits, having now read the three files the brief names, and nothing
+else of the panel beyond the probe implementations cited below, which I opened to answer the
+vocabulary question. Phase one above is unedited.*
+
+### 11.1 The question was asked in the sitting, and my answer lands where `116` guessed
+
+`116` section 7 names rounding as "the first place I would look" for a second character-selecting
+axis, on the ground that its own section 6.1 shows the mode "owns a region of the map with its own
+algebraic character". `119` section 5 records the question as unsettled and says 4.4 pins rounding at
+a fixed value for exactly that reason. My phase one, derived blind, answers: the guess's premise is
+confirmed and made precise (rounding owns the off-grid in-range region, section 6 above), and the
+conjectured conclusion is refined rather than confirmed. Rounding is **not** a second licence-family
+selector in the sitting's sense: the deterministic mode choice cannot move a map between the deferral
+and order families (T8), because the additive laws those families rest on never invoke rounding. What
+it selects among is a different set of exact laws (adjunction, negation symmetry, staged-narrowing
+composition, T3 through T5), and the one place it crosses the sitting's family line is the
+deterministic/stochastic boundary, where a saturating map loses pointwise monotonicity (F8).
+
+### 11.2 Where my blind derivation agrees, and the rungs that creates
+
+Stating what I carry forward unchanged, from whom, with the count: **four things, and two of them now
+have independent instances.**
+
+1. **The vacuity argument is a convergence.** `122` 4.4 widens the wrapping map's add and sub half to
+   any fraction width "on the argument that the grid is closed under those operations so they never
+   enter the rounding region", with `121` section 5 agreeing for the same reason. My F4 is that
+   argument, derived and committed before I had read either file, with an exhaustive probe (P2)
+   behind it. Under `RULES.md`'s ordering requirement my phase-one commit precedes my reading, so the
+   claim now has at least two independent derivations plus an exhaustive verification at W = 5, and
+   the consolidation can record the rung accordingly.
+2. **The region decomposition is a convergence.** `122` 4.6's locality rule (a reduction's grid part
+   fires where an exact result can leave the grid; its range part where the map is not a
+   homomorphism) is the operational form of my F7's domain decomposition (rounding governs off-grid
+   in-range, overflow governs out-of-range). Independently derived, same structure, no conflict.
+3. **The fixed-value pins were the right caution.** `119` pinning rounding rather than writing
+   `rounding any` was correct discipline under I13, and my F4 now says exactly which of those pins
+   can widen: any finding whose operations lie in {+, -, min} at any F, or additionally x at F = 0,
+   holds under every mode, because rounding never fires there. Findings involving x at F > 0, or
+   division, do not widen. The widening is stated here and in phase one, per the
+   never-widen-in-place rule; the originals stand.
+4. **The stochastic aside in 4.3's vocabulary.** The deferral licence has an expectation-level
+   sibling: under stochastic rounding, deferring quantisation across additions is exact in
+   expectation (F8's identity). I did not measure anything about it beyond the identity and leave it
+   as an opening.
+
+### 11.3 The sharpest cross-result: the sitting's domain dimension does not act on my axis
+
+`122`'s central repair is that the overflow impossibility is domain-conditional: closed under
+negation, exclusive; one-signed, saturation collects both characters. The dispatcher forwarded this
+correction mid-derivation, and T1b (proved, then verified empirically in P1's one-signed column) is
+its counterpart on my axis: **the rounding impossibility has no one-signed refuge.** The obstruction
+is divisibility, not order against negation, so the homomorphic class of deterministic modes is empty
+on one-signed and negation-closed domains alike. The dimension the sitting just learned to carry in
+every predicate is provably inert for this one question, and that inertness is itself the predicate
+discipline working: my F1 lists `domain ∈ {ℚ, ℚ≥0}` because both are proved, not because the
+dimension does not matter.
+
+### 11.4 What my derivation adds to `122`'s clauses, stated as suggestions
+
+**4.4's wrapping-mul condition has an exact form.** `122` 4.4 licenses multiplication "only where the
+fraction width is zero or the operands are declared on the unit grid". That is a sufficient syntactic
+condition, and `122` 4.7 itself distinguishes such conditions from the condition itself. F6 supplies
+the exact one: multiplication is roundless, hence mode-invariant and grid-part-free, precisely on
+`v2(k_x) + v2(k_y) >= F` (2-adic valuations of the scaled integers; unit-grid declaration is the
+special case `v2 >= F` on one operand). The exact condition is per-value; the declared forms of it
+that a type system can carry (unit grid, or a declared trailing-zero budget) are the const-checkable
+arms. Verified both directions on 24576 cells (P2).
+
+**The grid part's deferral region is mode-invariant, and the residue is not.** Where every
+intermediate satisfies F6's condition, deferring the grid part is exact under every mode; outside
+that region it is inexact under every mode, with per-mode magnitudes I did not count. So `122` 4.6
+needs no mode dimension for the soundness of its locality rule, and would need one for any future
+claim about error sizes.
+
+**The pinned mode is the structurally worst partner for wrapping, and the sitting should know it.**
+The probes implement `trunc` as genuine toward-zero (`118_probes/q3` at its `q_of`, with `floor` as a
+labelled alternative; `118_probes/q5` at its `quantise`), so the 35 pins name my `toward_zero`. My P3
+measures that toward-zero is the unique deterministic mode that fails to commute with wrap **even in
+the quotient group** (240 to 960 quotient mismatches per width against zero for floor, ceil, half_up,
+half_even), while floor commutes at every level and costs nothing on two's complement (F9). Two
+consequences offered as suggestions: any canon clause pairing wrap with toward-zero must state the
+quantise-then-reduce order, because it is observable there and only there (the sitting's probes do
+use the canonical order, `q3`'s `R_of` quantising before reducing); and the wrap-family arm may
+simply prefer floor, which dissolves the caveat and is the free mode in hardware.
+
+**The vocabulary matter, now answerable with evidence.** The brief asked that `trunc` versus
+`truncation` be settled. Phase one found the deeper hazard (F9: on signed domains the word is
+ambiguous between bit-drop, which is floor, and toward-zero); phase two resolves which one the
+sitting means: toward-zero, per the probe sources cited above. My suggestion stands as in section 7:
+retire both spellings for `toward_zero` (with `floor`, `ceil`, `half_up`, `half_even`, `stochastic`
+as the mode vocabulary), and note beside it that bit truncation of two's complement is floor, so
+nobody reads the hardware operation into the word. If the panel prefers to keep one existing
+spelling, it should define it as toward-zero in one place and expect the floor confusion to recur.
+
+### 11.5 What I got wrong, per the brief's required confession
+
+**In phase one, one prediction**: representative-level wrap commutation for ceil, half_up and
+half_even, refuted by my own P3 and corrected to quotient-level in section 10. Phase two adds
+nothing to that list: none of the three files contradicts a claim of mine, and the one premise I was
+handed wrong (the unconditional overflow impossibility) was corrected by the dispatcher mid-phase and
+is recorded in the preamble. I note for the record that `122` reached me only in phase two, so my
+sections 2 and 3 were derived against the corrected premise as relayed by the dispatcher, not against
+`122`'s own text; having now read `122` sections 1.5 and 4.2, the relay was faithful.
+
+**One near-miss worth confessing**: my section 5 wrote "the additive structure, which is the
+structure the overflow dichotomy's proofs live on", with the finite-ascending-chain argument in mind.
+`122` 4.2's replacement predicate shows the proof also needs the domain's closure under negation,
+which my sentence did not carry. Nothing in my file rests on the overflow theorem's proof, so no
+claim moves, but the sentence as I wrote it repeats the sitting's superseded framing and should be
+read with `122` 4.2's predicate instead.
+
+### 11.6 Suggested consolidation shape for the rounding axis
+
+For whoever writes this topic's candidate, the shape my findings suggest, all of it suggestion:
+
+- Rounding is an independent axis, not a sub-case of overflow: own impossibility theorem
+  (unconditional where overflow's is domain-conditional), own surviving-law classification, own
+  operation-selectivity (it exists only where an exact result leaves the grid).
+- The axes decompose with a compatibility table: saturate composes invisibly with every deterministic
+  mode; wrap composes invisibly (mod span) with the translation-equivariant modes and floor alone at
+  the representative level; wrap with toward-zero requires an order clause; stochastic with saturate
+  forfeits the monotone character.
+- Per I13, the arms: `{+, -, min}` any F and `{x, F = 0}` carry `rounding any`; `{x, F > 0}` splits
+  on F6's valuation predicate (roundless arm, mode-free) against the rounding region (mode named per
+  arm); division carries a mode always, F = 0 included; certified-enclosure arms require the directed
+  pair; wrap arms prefer floor or state the order.
+
+### 11.7 Coverage of this reconciliation, bounded
+
+Read in full: `122`, `119` section 5, `116` section 7. Read in part: `116` sections 6 through 7
+headings for context; `118_probes/q3` at its `quantise`, `q_of` and `R_of`, and `118_probes/q5` at
+its `quantise`, opened for the vocabulary question only. Not read: everything else in the panel,
+including `114`, `115`, `120`, `121`, the registers, and the consolidations; my account of the
+sitting is `122`'s account, which is exactly the single-point-of-failure shape `RULES.md` warns
+about, so where this reconciliation attributes a position to `120` or `121` it is `122`'s report of
+them, not my reading.
