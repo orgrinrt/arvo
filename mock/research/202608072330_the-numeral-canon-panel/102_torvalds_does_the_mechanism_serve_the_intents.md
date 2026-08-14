@@ -898,6 +898,50 @@ Evidence: the per-crate run recorded in section 0.2;
 
 ---
 
+## 9b. What this does to the register's live options
+
+Written here rather than into `OPTIONS.md`, because the register is the coordinator's and members of this
+panel have already had citations broken by a file growing underneath them while they read it.
+
+**Q43, the composition.** Survives whole, with one arm's predicate corrected. Section 4.2 adds `and
+compute the same value` to Arm C's predicate and observes that the same clause *widens* Arm A: over
+answer-differing arms ranked by computed coordinates, Arm A's separation condition is vacuous because a
+computed coordinate has no resolution to be separated by. So the equality assertion is exactly right
+where the band is inadmissible, which is a better story for Q43 than it had.
+
+**Q44, strict positivity against non-negativity.** Untouched by anything here. My work is about what the
+weighting ranges over rather than about the sign of its entries. `101`'s fourth option, requiring a
+unique argmin, is unaffected either way.
+
+**Q45, arms no weighting can ever select.** Weakly affected, in favour of its option (b). `101` reports
+(b) as measured and currently unsupported, because the third coordinate `98` tried did not survive its
+own significance test. Section 3.4 exhibits a coordinate that would un-dominate arms, error against an
+exact reference, and it is exact rather than measured so it has no confidence interval to cross zero.
+That does not resurrect the specific arms `97` found dominated; it says the option's mechanism is real.
+
+**Q47, the two I3 questions.** Untouched and still op's. Section 3.5 moves I3 into the policy component,
+which changes nothing about either question: which reading is meant at a non-native width, and whether
+the imitation covers the panic I15 forbids, are both about what op meant rather than about where the
+intent sits in the mechanism.
+
+**Q48, the coordinates.** Reframed rather than answered. Its three options (add the coordinates, use the
+region instead, declare the ceiling) are all still live and section 3.7 changes which intents they have
+to cover: two of op's four are not weighting-shaped, so the ceiling does not bound them. And section 4
+adds a dimension the entry does not have: the coordinates split into measured and computed before they
+split into present and absent, and the split decides where a weighting may be used at all.
+
+**One option nobody has entered**, offered as a candidate rather than a proposal, and it is section 2.4:
+**a strategy is a pair**, an assignment on the observable policy axes together with a weighting over cost
+coordinates. Its rivals are the three definitions the unit has been ranking against each other, and what
+distinguishes it from all three is that it claims they were describing different components rather than
+competing. What would kill it: a fourth axis of `25`'s kind that is neither observable nor a cost
+coordinate, or op saying at section 10 that he meant one object.
+
+**And one option `101` opened that I could not close**, so it stays open with a note. The harness's
+`max_relative_error` regime admits arms that disagree by a bounded amount, which is the shape op's
+intents have and which `98` section 4.2 proves a weighting cannot express. Zero arvo variants use it. I
+do not know whether it is a cost coordinate or a validation gate and section 7 says why.
+
 ## 10. For op, and it is one thing
 
 Not a category-wide policy fork, and I have checked it against the shape he has now rejected three times.
