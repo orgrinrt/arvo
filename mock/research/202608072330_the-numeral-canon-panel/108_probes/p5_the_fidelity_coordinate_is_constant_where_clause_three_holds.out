@@ -1,0 +1,52 @@
+p5. Where clause three holds, the accuracy coordinate is a constant.
+
+read 14 (family, arm, exact error) triples from 103_probes/p7_errors.out
+
+=== the two cells, from the committed error coordinates ===
+
+family                                        arms       spread   verdict
+decimal-quantiser-radix-sweep                    2      66.139x   varies: a weighting on it selects
+quantiser-vs-fadd-subnormal-sweep-n0             2       1.000x   constant: a weighting on it learns nothing
+quantiser-vs-fadd-subnormal-sweep-n10            2       1.000x   constant: a weighting on it learns nothing
+quantiser-vs-fadd-subnormal-sweep-n100           2       1.000x   constant: a weighting on it learns nothing
+quantiser-vs-fadd-subnormal-sweep-n25            2       1.000x   constant: a weighting on it learns nothing
+quantiser-vs-fadd-subnormal-sweep-n50            2       1.000x   constant: a weighting on it learns nothing
+quantiser-vs-fadd-subnormal-sweep-n75            2       1.000x   constant: a weighting on it learns nothing
+
+families whose arms share one exact error (clause three's region): 6
+families whose arms do not (the region clause three excludes):     1
+
+=== and the corpus records the coordinate nowhere ===
+
+committed CSVs scanned:           254
+  declaring a `score` column:     254
+  data rows:                      104080
+  rows with a non-empty `score`:  0
+
+variant crates with a src/ tree:  94
+  implementing `score_output`:    0
+
+(`target/` is excluded from every walk above. `106` section 0.2 and
+ `107` section 3 both record that a grep over `variants/` after a suite
+ run returns build artifacts: `score_output` reads 84 on a contaminated
+ tree against 0 on a clean one.)
+
+=== what this shows ===
+
+The corpus holds one family whose arms share an exact error to twelve
+printed digits and one whose arms differ by two orders of magnitude.
+Clause three admits the first and excludes the second. In the first, a
+fidelity coordinate is a constant, so a weighting that reads it cannot
+distinguish anything, which is `106` section 8's own sentence. So under
+the pair as written, op's accuracy intent is not expressible in either
+component: not in component one, which fixes an answer rather than
+ranking approximations to it, and not in component two, whose region
+makes the coordinate constant.
+
+The repair is one word in clause three and it is instantiated already:
+component one fixes the DENOTED answer, the declared semantics, rather
+than the computed one. Arms realise it exactly or approximately, the
+fidelity coordinate is the distance from the declaration, and it varies.
+`103`'s per-arm-oracle shape is that discipline stated as validation:
+each arm against its own declared semantics rather than against another
+arm. The two halves fit because they are the same idea.
