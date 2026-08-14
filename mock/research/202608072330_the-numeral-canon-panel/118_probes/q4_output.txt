@@ -1,0 +1,80 @@
+================================================================================================
+q4. Two witnesses for why the cut needs both halves
+================================================================================================
+
+  primitive uW4F1/wrap, 52 terms containing a multiplication,
+  32 of them with no subtraction (P4's space)
+
+------------------------------------------------------------------------------------------------
+P1. Are the two failing sets different?
+
+    cells where both arms agree with the general arm : 3718
+    cells where only cut@operands fails              : 660
+    cells where only cut@result   fails              : 648
+    cells where both fail                            : 0
+
+    P1 holds when the two 'only' counts are both nonzero, which is what
+    'each half is needed' means and what nothing had checked.
+
+------------------------------------------------------------------------------------------------
+P2 and P3. The witnesses, with every intermediate printed.
+
+  P4 asked whether both witnesses exist without a subtraction. Both
+  spaces are searched, the subtraction-free one first, so the answer is
+  visible rather than assumed.
+
+  [no subtraction] no cell found where only cut@operands fails
+
+  [all terms] only cut@operands fails, so the RESULT reduction is needed:
+    term (x - (x * x))   declared x in [0, 1/2]
+    values x = 1/2
+    container [0, 15/2], grid step 1/2
+    reduce at every node   -> 1/2
+        (x * x)          1/2 , 1/2  ->  0
+        (x - (x * x))    1/2 , 0  ->  1/2
+    cut at the mul's operands  -> 0  DIFFERS
+        (x * x)          1/2 , 1/2  ->  1/4
+        (x - (x * x))    1/2 , 1/4  ->  1/4
+    cut at the mul's result    -> 1/2  AGREES
+        (x * x)          1/2 , 1/2  ->  0
+        (x - (x * x))    1/2 , 0  ->  1/2
+    cut at the mul's both      -> 1/2  AGREES
+        (x * x)          1/2 , 1/2  ->  0
+        (x - (x * x))    1/2 , 0  ->  1/2
+
+  [no subtraction] no cell found where only cut@result fails
+
+  [all terms] only cut@result fails, so the OPERAND reduction is needed:
+    term (x * (x - y))   declared x in [0, 1/2], y in [0, 1]
+    values x = 1/2, y = 1
+    container [0, 15/2], grid step 1/2
+    reduce at every node   -> 7/2
+        (x - y)          1/2 , 1  ->  15/2
+        (x * (x - y))    1/2 , 15/2  ->  7/2
+    cut at the mul's operands  -> 7/2  AGREES
+        (x - y)          1/2 , 1  ->  -1/2   <- out of range
+        (x * (x - y))    1/2 , 15/2  ->  15/4
+    cut at the mul's result    -> 0  DIFFERS
+        (x - y)          1/2 , 1  ->  -1/2   <- out of range
+        (x * (x - y))    1/2 , -1/2  ->  0
+    cut at the mul's both      -> 7/2  AGREES
+        (x - y)          1/2 , 1  ->  -1/2   <- out of range
+        (x * (x - y))    1/2 , 15/2  ->  7/2
+
+  C3. A cell where all three arms agree exists: (x * x) declared [0, 0]
+
+------------------------------------------------------------------------------------------------
+C1. At F = 0 no cut is needed at all.
+
+    uW4F0/wrap: 2080 cells, cut@operands fails on 0, cut@result fails on 0
+
+================================================================================================
+
+  WHAT TO READ OFF THE WITNESSES
+
+  The intermediates are printed for the general arm and for all three cut
+  arrangements, with out-of-range values flagged. The mechanism is whatever
+  differs between the arm that agrees and the arm that does not, and it is meant
+  to be read rather than asserted, because three asserted mechanisms have already
+  been wrong on this question.
+

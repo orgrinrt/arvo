@@ -1,0 +1,126 @@
+==========================================================================================================
+q3. The fraction width splits arm W0 and the cut rule the same way
+==========================================================================================================
+
+P1, C1 and C2. The homomorphism, per operation, per fraction width.
+
+  primitive                 add            sub            mul    monotone
+  uW4F0/wrap          0/2304         0/2304         0/2304          False
+  uW4F1/wrap          0/2304         0/2304      1152/2304          False
+  uW4F2/wrap          0/2304         0/2304      1600/2304          False
+  iW4F2/wrap          0/2304         0/2304      1600/2304          False
+  uW4F0/sat         720/2304       720/2304       256/2304           True
+  uW4F1/sat         720/2304       720/2304       287/2304           True
+  uW4F2/sat         720/2304       720/2304       347/2304           True
+
+  C1 is the F0 wrap row: zero on all three. C2 is the sat rows: nonzero
+  at every F including zero, so the failure is the map and not the grid.
+
+P2. The monotone column is False on every wrap row. With q2's result that
+  ADDITION ALONE forces the trade, a map that keeps the homomorphism only
+  for add and sub still cannot be monotone, so the two licence families
+  stay disjoint at every fraction width rather than only at F = 0.
+
+----------------------------------------------------------------------------------------------------------
+P3, P4, P5. Arm W0 and the cut rule at a nonzero fraction width.
+The cut set is the operations for which the map is NOT a homomorphism
+here, which is empty at F = 0 over the ring and {mul} at F > 0.
+
+  terms: 96 total, 44 without a multiplication, 52 with one
+
+  primitive      class      cutset    cells  root out  W0 differs  cut@operands  cut@result  cut@both
+  uW4F0/wrap     no-mul     {}          132        73           0             0           0         0
+  uW4F0/wrap     with-mul   {}          156       121           0             0           0         0
+  uW4F1/wrap     no-mul     {mul}       132        73           0             0           0         0
+  uW4F1/wrap     with-mul   {mul}       156       106          72            25          26         0
+  uW4F2/wrap     no-mul     {mul}       132        73           0             0           0         0
+  uW4F2/wrap     with-mul   {mul}       156        88          69            25          26         0
+  iW3F2/wrap     no-mul     {mul}       132        43           0             0           0         0
+  iW3F2/wrap     with-mul   {mul}       156        21          35            21          12         0
+  uW4F1/sat      no-mul     {mul}       132        73          25            25          25        25
+  uW4F1/sat      with-mul   {mul}       156       106          46            23           5         0
+
+  C4 is the 'root out' column: nonzero means the sweep contains cells
+  where the exact result leaves the range, so a zero in 'W0 differs' is
+  a result rather than a region where nothing could differ.
+
+  C3 is 'cut@result' against 'cut@operands'. If both are zero the
+  placement is not what makes the cut work.
+
+----------------------------------------------------------------------------------------------------------
+P7. Which HALF of the map has to be applied at the node.
+`112` F112-4 splits the map into a grid part and a range part. The
+range part is modular and stays a homomorphism at any F, per the add
+and sub rows above. So the prediction is that only the GRID part has
+to be local, and the range part may be deferred to the root.
+
+  primitive      class       cells  root out  W0 differs [C5]  quantise-at-mul  cut@both
+  uW4F1/wrap     with-mul      156       106               72               41         0
+  uW4F1/wrap     no-mul        132        73                0                0         0
+  uW4F2/wrap     with-mul      156        88               69               36         0
+  uW4F2/wrap     no-mul        132        73                0                0         0
+  iW3F2/wrap     with-mul      156        21               49               15         0
+  iW3F2/wrap     no-mul        132        48                0                0         0
+
+  P7 holds when 'quantise-at-mul' is zero on the with-mul rows while
+  'W0 differs' is nonzero on the same rows, which is C5: deferring the
+  grid part too must break it, or the grid part is not what is local.
+
+----------------------------------------------------------------------------------------------------------
+P8. The deferral licence is a fact about the ROUNDING MODE.
+Two refutations in a row point here: R is quantise-then-reduce, and
+the range part can only be deferred past an addition if the grid part
+commutes with adding an on-grid value. Truncation toward zero does not
+commute; floor does.
+
+  with-mul terms: 52, of which without a subtraction: 32
+
+  primitive      rounding  class           cells  root out  W0 differs  quantise-at-mul
+  uW4F1/wrap     trunc     with-mul          156       106          72               41
+  uW4F1/wrap     trunc     mul, no sub [C6]     96        62          30               25
+  uW4F1/wrap     floor     with-mul          156       106          59               41
+  uW4F1/wrap     floor     mul, no sub [C6]     96        62          30               25
+  uW4F2/wrap     trunc     with-mul          156        88          69               36
+  uW4F2/wrap     trunc     mul, no sub [C6]     96        45          27               19
+  uW4F2/wrap     floor     with-mul          156        88          56               36
+  uW4F2/wrap     floor     mul, no sub [C6]     96        45          27               19
+  iW3F2/wrap     trunc     with-mul          156        21          49               15
+  iW3F2/wrap     trunc     mul, no sub [C6]     96        14          27               11
+  iW3F2/wrap     floor     with-mul          156        21          43               15
+  iW3F2/wrap     floor     mul, no sub [C6]     96        14          24               11
+
+  P8 holds when 'quantise-at-mul' is zero on the floor rows and nonzero
+  on the trunc rows, with 'W0 differs' nonzero on both so the cells are
+  live. C6 is the no-subtraction rows, where the two modes should agree
+  on an unsigned base because nothing reaches a negative value.
+
+----------------------------------------------------------------------------------------------------------
+P6. F116-9 reproduced: which grid restores the multiplicative
+homomorphism, and which merely avoids requantisation.
+
+   grid step   hom failures    products already on the fine grid
+         1/4   1600/2304                                   False
+         1/2    256/576                                     True
+           1      0/144                                     True
+           2      0/36                                      True
+
+  `116` predicted the homomorphism would return once products needed no
+  requantisation, and its own step-1/2 row refuted that. This reproduces
+  the refutation: the step-1/2 row has every product on the fine grid and
+  the homomorphism still fails. The unit grid is the condition.
+
+==========================================================================================================
+
+  READING IT
+
+  P3 holds when 'W0 differs' is zero on every no-mul row at every F and nonzero
+  on the with-mul rows at F > 0. That is arm W0 splitting exactly as arm W1 does,
+  which nobody had checked.
+
+  P4 holds when 'cut@operands' is zero on the with-mul rows at F > 0, because
+  that is the cut rule with the generalised cut set doing the job the ring
+  version did at F = 0.
+
+  P5 and C3 hold when 'cut@result' is nonzero there. If it is zero the cut could
+  be placed anywhere near the multiply and the rule is weaker than stated.
+
