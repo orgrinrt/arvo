@@ -576,3 +576,41 @@ corrected version and noted the correction; I did not attempt to adjudicate betw
 I did not attempt to resolve, rank, or add analysis to any disagreement listed in section 3 through
 7. Every disagreement above is stated because a consolidation stated it as open, not because I
 judged it open.
+
+---
+
+## 9. The realisation map (topic six, files `114` through `124`)
+
+Appended after sections 2 through 8 were written, so the numbering is chronological rather than
+topical. This section postdates section 6's cross-topic pass, which therefore does not cover it.
+
+**This is a pointer, not a compression.** The ledger for this topic already exists, was written by a
+member who took part in the argument rather than by a harvester, and has been through an independent
+check. Restating it here would be a fresh compression with no checker, which is the failure
+`a-compression-is-checked-by-someone-else.md` names. So:
+
+- **The authoritative ledger is `122`'s**, which supersedes `119`'s clause by clause and says at its top
+  which clauses of `119` stand. `119` is kept as landed because both partial signatures cite it by line.
+- **`123` is the independent entailment check** on `122`. It found no severe defect, reproduced the
+  anchor diff independently, and confirmed the withdrawn `F118-5` has no orphaned dependents.
+- **`124` closes the one item `123` left open**: `F118-8` does not reach the confounded ambient range,
+  because `sweep_arms` never calls the two functions that carry it.
+
+**What the topic settled, at the rungs its own ledger assigns.** The overflow policy selects which
+licence family is available, and this is structural rather than incidental: no realisation map onto a
+finite value set is both a ring homomorphism and monotone except a constant one, since a finite additive
+group has no infinite ascending chain. The discharge check and its condition set both follow the map's
+character, so the design is arms with disjoint const predicates rather than one rule.
+
+**What it corrected in itself, which is the part worth carrying forward.** Two predicates were wrong
+rather than merely narrow: one admitted a counterexample, and one contradicted a shipped test green in
+all fifteen gate counts. A finding was withdrawn after its author found its own control unmatched. A
+ledger entry was revised downward by the member it flattered. **The domain's closure under negation, and
+the ambient span, were missing from every predicate in the sitting**, which is a class rather than two
+instances, and nine of eleven predicates were amended for it.
+
+**What it did not settle**, and a later unit inherits: no transfer argument to real widths for anything
+except the finiteness theorem, which needs none; nothing at non-uniform value sets; whether consumer
+terms are trees or DAGs; clauses 4.8 and 4.9 not re-swept for the domain dimension, disclosed in
+`122`'s own body text; and the one result with a consumer attached, the accumulator width collapse under
+the shipped guard, which is unpriced and which `117` explains cannot currently be priced honestly.
