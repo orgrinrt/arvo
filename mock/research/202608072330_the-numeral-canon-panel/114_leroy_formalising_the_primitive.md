@@ -50,8 +50,9 @@ rather than by assertion. `112` F112-2 (`112:1002-1005`) counts **zero** directi
 denotation-preserving map for it, which under `112` section 9's own classification (`112:937`) is what
 "part of the declared semantics" means; and `112` F112-3 (`112:1009`) finds two assignments of it
 computing 120 of 256 answers differently. Both offered statements' observable-axis clause
-(`106:172`, `108:822`) is the definition those measurements are read against. So it is supplied by the consumer, known
-statically, and admissible in a const predicate under op's instruction at `INTENTS.md:252-254` that
+(`106:172`, `108:822`) is the definition those measurements are read against. So it is supplied by the
+consumer, known statically, and admissible in a const predicate under op's instruction at
+`INTENTS.md:252-254` that
 "the above collapses to whatever is available at const time". Nothing here needs a call op has not
 already made.
 
@@ -81,8 +82,8 @@ prefix the directory names do not; the workspace-versus-package trap is the same
 beside it.
 
 **I read bodies rather than counting names**, in the two crates my own argument leans on. `111` section
-21 claims the fold is the shape `satfold-shared` and `warm-clamp-shared` are built around, and section
-5 of this file rests on that. It checks out at source:
+21 claims the fold is the shape `satfold-shared` and `warm-clamp-shared` are built around, and sections
+6.2 and 6.4 of this file rest on that. It checks out at source:
 `warm-clamp-shared/src/lib.rs:296-300` is `let mut acc = A::ZERO; for &x in chunk { acc =
 acc.wadd(...) }`, a left-nested chain of one operation over distinct leaves, which is exactly condition
 (a) of the structural predicate holding by construction.
