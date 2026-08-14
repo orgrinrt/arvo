@@ -111,3 +111,13 @@ keeps the same id, so one row addresses the member across every turn it took.
 | 111 | `111_jhala_the_primitive_attacked.md` | `ab628b869fa0a40f5` |
 | 112 | `112_leijen_where_the_refinement_lives.md` | `a603679a67bf830a9` |
 | 114 | `114_leroy_formalising_the_primitive.md` | `a3e13d0c5aaf88649` |
+
+## Topic seven, the rounding axis, dispatched cold
+
+Added when dispatched rather than when their files landed, which is the point of the rule: a handle
+recorded after the fact is a handle that was unavailable during the window it was needed.
+
+| Number | Persona | Task id |
+|---|---|---|
+| 125 | knuth | `ae29eb7ef0e38550c` |
+| 126 | wronski | `a540e3f7db5be940d` |
