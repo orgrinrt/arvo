@@ -1,0 +1,71 @@
+====================================================================================================
+u4. `119` 4.5's 'only mechanism' is false, and the sweep for the class
+====================================================================================================
+
+P1, P2, P3. Which characters each map has, on each domain.
+'deferral' is arm W0's identity over the operation set named.
+
+  container [0, 7]
+
+  policy   domain                     ops               order-preserving   deferral holds   failures
+  sat      one-signed 0..7            {add, mul}                    True             True    0/2176 
+  sat      one-signed 0..7            {add, sub, mul}               True            False  623/4800 
+  sat      closed under negation -7..7 {add, mul}                    True            False 3500/13950
+  sat      closed under negation -7..7 {add, sub, mul}               True            False 8176/31050
+  wrap     one-signed 0..7            {add, mul}                   False             True    0/2176 
+  wrap     one-signed 0..7            {add, sub, mul}              False             True    0/4800 
+  wrap     closed under negation -7..7 {add, mul}                   False             True    0/13950
+  wrap     closed under negation -7..7 {add, sub, mul}              False             True    0/31050
+
+  P1 holds when the saturating one-signed `{add, mul}` row is True in
+  BOTH character columns. That is both licence families at once with no
+  declaration, which `119` 4.5 says only a declaration can buy.
+
+  C1 is the two controls: the closed-under-negation row must lose the
+  deferral column, and the wrapping rows must lose the order column on
+  both domains.
+
+----------------------------------------------------------------------------------------------------
+P4. Every predicate in `119`, checked for a dimension naming the domain.
+
+  predicates found: 11
+
+  NAMES  4.2 The characters are mutually exclusive, and that    domain
+  none   4.3 Each character licenses a family, and the famili  
+  none   4.4 The character is a joint fact about the behaviou  
+  none   4.5 A declaration restores what a behaviour forfeits  
+  none   4.5 A declaration restores what a behaviour forfeits  
+  none   4.6 A reduction has two parts and each has its own l  
+  none   4.7 The discharge check and its certificate both fol  
+  none   4.7 The discharge check and its certificate both fol  
+  none   4.8 Propagation rules are not unique and compose by   
+  none   4.9 A construction carries its own transformer, and   
+  none   4.10 A rule's cost is paid where its carrier is inst  
+
+  predicates naming a domain-ish dimension : 1
+  predicates naming none                   : 10
+
+  C2 is the nonzero 'NAMES' count: 4.2 states two domain conditions, so
+  an extractor reporting zero everywhere would be blind rather than
+  reporting an absence.
+
+C3. The extractor on a predicate with no domain dimension, and the check
+    that it does not fire on the word 'declarations'.
+
+    no domain dimension      -> none
+    'declarations' only      -> none
+    a real one               -> ['domain', 'ambient', 'closed under negation', 'non-negative']
+
+====================================================================================================
+
+  READING IT
+
+  P1 is the correction to 4.5. If a one-signed domain buys both families with no
+  declaration, then "only mechanism" is false and there are two escapes: a
+  declared restriction, and a domain the map cannot carry a value out of the
+  sign of.
+
+  P4 is the sweep. The two clauses the signatories caught are the two where the
+  omission produced a visible contradiction; the count above is how many others
+  carry the same silence.
+
