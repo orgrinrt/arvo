@@ -1,0 +1,35 @@
+====================================================================================
+p6. Citation check
+====================================================================================
+
+  ok    112_leijen_where_the_refinement_lives.md:928  "Checking only the derivation's result rather than ev"
+  ok    112_leijen_where_the_refinement_lives.md:1116  'overflow policy = sat'
+  ok    112_leijen_where_the_refinement_lives.md:1113  'A root-only range check is unsound'
+  ok    112_leijen_where_the_refinement_lives.md:1127  'dominates both the interval rule'
+  ok    112_leijen_where_the_refinement_lives.md:1142  'Every declared extent in every sweep of this file is'
+  ok    112_leijen_where_the_refinement_lives.md:1080  'The smallest sound transformer differs per construct'
+  ok    112_leijen_where_the_refinement_lives.md:1016  'switches off the completion and not the rounding'
+  ok    112_leijen_where_the_refinement_lives.md:1067  "discharges the interval construction's base predicat"
+  ok    114_leroy_formalising_the_primitive.md:1010  'A wrapping realisation map is a ring homomorphism'
+  ok    114_leroy_formalising_the_primitive.md:283  "Checking only the derivation's result rather than ev"
+  ok    114_leroy_formalising_the_primitive.md:288  'own finding is correctly predicated'
+  ok    114_leroy_formalising_the_primitive.md:558  'domination is a fact about one-sided declarations'
+  ok    114_leroy_formalising_the_primitive.md:654  'it is a formula rather than a table'
+  ok    114_leroy_formalising_the_primitive.md:663  'L1 norm'
+  ok    114_leroy_formalising_the_primitive.md:343  'Under a homomorphism, check the root'
+  ok    114_leroy_formalising_the_primitive.md:588  'changes the propagation question qualitatively'
+  ok    114_leroy_formalising_the_primitive.md:702  'This covers **bilinear** constructions'
+  ok    110_willsey_the_primitive_derived_cold.md:523  'closed exactly on monotone bases'
+  FAIL  115_jhala_the_check_the_policy_selects.md:62  'aim the predicate at the check the overflow policy s' not within +/-2 lines
+  ok    113_op_steer_them_and_make_them_build_it_together.md:1  'make them build it together rather than stopping at '
+  ok    INTENTS.md:214  'predicated arms composed'
+  ok    INTENTS.md:299  'Never a runtime check'
+
+  22 citations checked, 1 failing
+
+MUTATIONS (each must add exactly one failure)
+  wrong line number : 2 (expected 2)
+  wrong substring   : 2 (expected 2)
+  wrong file        : 2 (expected 2)
+
+  the instrument fails when it should: True
