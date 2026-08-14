@@ -1,0 +1,57 @@
+$ rustc --version
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+$ ./p7b
+declared logical range 0..=200, container u8
+proved   (operands <= 100, propagated 200 <= 200):
+  sat and wrap agree on 10201 of 10201 pairs
+unproved (operands <= 200, propagated 400 >  200):
+  sat and wrap differ on 20100 of 40401 pairs
+witnesses:
+  proved_sat(100,100)    = 200
+  proved_wrap(100,100)   = 200
+  unproved_sat(150,150)  = 200
+  unproved_wrap(150,150) = 99
+
+$ symbol definitions and aliases in p7b_asm.s
+318:_proved_sat:
+326:_ungated_sat:
+338:_ungated_wrap:
+428:_unproved_wrap = _ungated_wrap
+430:_proved_wrap = _proved_sat
+432:_unproved_sat = _ungated_sat
+
+three distinct bodies, on aarch64-apple-darwin at -O:
+
+_proved_sat:
+	.cfi_startproc
+	add	w0, w1, w0
+	ret
+
+_ungated_sat:
+	.cfi_startproc
+	and	w8, w1, #0xff
+	add	w8, w8, w0, uxtb
+	mov	w9, #200
+	cmp	w8, #200
+	csel	w0, w8, w9, lo
+	ret
+
+_ungated_wrap:
+	.cfi_startproc
+	and	w8, w1, #0xff
+	add	w8, w8, w0, uxtb
+	mov	w9, #653
+	mul	w9, w8, w9
+	lsr	w9, w9, #17
+	mov	w10, #201
+	msub	w0, w9, w10, w8
+	ret
+
+predictions, all four recorded in the probe header before running:
+  proved_sat   == proved_wrap    CONFIRMED (_proved_wrap = _proved_sat)
+  unproved_sat != unproved_wrap  CONFIRMED (distinct bodies)
+  unproved_sat == ungated_sat    CONFIRMED (_unproved_sat = _ungated_sat)
+  unproved_wrap == ungated_wrap  CONFIRMED (_unproved_wrap = _ungated_wrap)
+
+feature gates in the source: 0
