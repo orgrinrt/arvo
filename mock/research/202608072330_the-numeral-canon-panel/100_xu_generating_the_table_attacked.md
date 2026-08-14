@@ -1146,6 +1146,14 @@ of the three rather than the worst. What remains open is whether the same holds 
 which I did not test, and whether a tail quantile is the statistic a consumer weighing tail behaviour
 actually wants, which is a design question no probe of mine touches.
 
+**A state change in the tree that I may have caused, reported rather than left.** At the start of this
+dispatch `git status` showed `mock/benches/Cargo.lock` modified against HEAD. It is now clean. I did not
+edit it; running the variant crates' suites and the mockspace pre-commit validation are the two things
+that touched anything in that directory, and one of them evidently regenerated it back to the committed
+content. Nothing is lost relative to what is committed, and whatever the uncommitted difference was is not
+recoverable because it was never recorded. `a-shared-clone-is-someone-elses-desk.md` says to say so rather
+than to notice quietly, so I am saying so.
+
 **A report rather than a disagreement.** `bitpack-write-contend-shared` needs `--test-threads=1`, per
 section 0. Both `98`'s account and mine are correct about their own runs and the variable is the test
 runner's parallelism against the crate's shared thread pool. Recorded there rather than here because it
