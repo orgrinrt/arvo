@@ -1,0 +1,111 @@
+============================================================================================
+HOLE A. The vocabulary: is 'truncation' one mode or two?
+============================================================================================
+
+    W  F signedness   values  bit-drop != floor  bit-drop != toward_zero
+    4  1 signed           16                  0                        4
+    4  1 unsigned         16                  0                        0
+    4  2 signed           16                  0                        6
+    4  2 unsigned         16                  0                        0
+    6  1 signed           64                  0                       16
+    6  1 unsigned         64                  0                        0
+    6  2 signed           64                  0                       24
+    6  2 unsigned         64                  0                        0
+    8  1 signed          256                  0                       64
+    8  1 unsigned        256                  0                        0
+    8  2 signed          256                  0                       96
+    8  2 unsigned        256                  0                        0
+
+  P1 holds when the 'bit-drop != floor' column is zero everywhere.
+  C1 holds when the last column is zero on every unsigned row.
+
+  The dispatch cites 21,204 of 32,768 at W = 8. Checked against the
+  sweep that could produce a count of that size:
+
+    W = 8, op = integer division over all nonzero-divisor pairs: 31231 of 65280 differ
+    W = 8, op = integer division over all nonzero-divisor pairs: 31231 of 65280 differ
+    W = 8, op = integer division over all nonzero-divisor pairs: 31231 of 65280 differ
+
+    and over single values at each fraction width:
+      W = 8, F = 1: 64 of 256 values differ
+      W = 8, F = 2: 96 of 256 values differ
+      W = 8, F = 4: 120 of 256 values differ
+      W = 8, F = 7: 127 of 256 values differ
+
+============================================================================================
+HOLE B. Which equality does double rounding threaten?
+============================================================================================
+
+CASE A, the control. One grid for the whole chain, which is the
+setting `122` 4.6 is stated in. The two arms must agree.
+
+  mode         F     cells  left the grid  arms differ
+  floor        1       256             64            0
+  floor        2       256            128            0
+  ceil         1       256             64            0
+  ceil         2       256            128            0
+  toward_zero  1       256             64            0
+  toward_zero  2       256            128            0
+  half_up      1       256             64            0
+  half_up      2       256            128            0
+  half_even    1       256             64            0
+  half_even    2       256            128            0
+
+CASE B. The grid coarsens between nodes, one container throughout.
+`122` 4.6 says 'the grid part must be applied at the result of every
+node whose exact result can leave the grid'. With two grids in play
+the phrase does not say WHICH grid, and the two readings differ.
+
+  mode         F chain     cells  read as each node grid  read as final grid
+  floor        2->1          256                      92                 170
+  floor        3->1          256                      32                 137
+  ceil         2->1          256                      94                 167
+  ceil         3->1          256                      35                 163
+  toward_zero  2->1          256                      92                 170
+  toward_zero  3->1          256                      32                 137
+  half_up      2->1          256                      94                 167
+  half_up      3->1          256                      34                 143
+  half_even    2->1          256                      94                 166
+  half_even    3->1          256                      34                 124
+
+  The two columns are the two readings of one sentence. Where they
+  differ, the sentence is ambiguous rather than wrong, and the
+  ambiguity is exactly what `126` names as unaddressed.
+
+--------------------------------------------------------------------------------------------
+P4 and C3. Staged narrowing against direct narrowing, which is a
+different equality and is the one `126` Finding 5 measures.
+
+  mode         F_exact -> F_acc -> F_final   cells  staged != direct
+  floor        4 -> 3 -> 1                     129                 0
+  floor        4 -> 2 -> 1                     129                 0
+  floor        5 -> 3 -> 2                     129                 0
+  ceil         4 -> 3 -> 1                     129                 0
+  ceil         4 -> 2 -> 1                     129                 0
+  ceil         5 -> 3 -> 2                     129                 0
+  toward_zero  4 -> 3 -> 1                     129                 0
+  toward_zero  4 -> 2 -> 1                     129                 0
+  toward_zero  5 -> 3 -> 2                     129                 0
+  half_up      4 -> 3 -> 1                     129                16
+  half_up      4 -> 2 -> 1                     129                32
+  half_up      5 -> 3 -> 2                     129                32
+  half_even    4 -> 3 -> 1                     129                16
+  half_even    4 -> 2 -> 1                     129                16
+  half_even    5 -> 3 -> 2                     129                16
+
+  P4 holds when the directed modes read zero and the nearest modes do
+  not, which is C3.
+
+============================================================================================
+
+  READING IT
+
+  Hole A is settled by the second and third columns of the first table. If
+  bit-drop is floor everywhere and differs from toward-zero on signed rows only,
+  then "truncation" names two different operations on signed domains and a
+  predicate spelled with it does not name a mode. That is a fact about the
+  operations rather than a preference between spellings.
+
+  Hole B is settled by comparing P3's column to P4's. They are two different
+  equalities and only one of them is at risk.
+
