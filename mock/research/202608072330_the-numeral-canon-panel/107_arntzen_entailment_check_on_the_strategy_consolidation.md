@@ -1,7 +1,7 @@
 # 107. Entailment check on the strategy-axis consolidation
 
 **Position:** the independent check on `106`, the strategy-axis unit's canon candidate. **Author:** the
-`arntzen` persona. **Probes:** `107_probes/`, eleven of them, each committed as it ran.
+`arntzen` persona. **Probes:** `107_probes/`, thirteen of them, each committed with its output as it ran.
 
 **Standing:** nothing here settles anything. Op decides. Where I say `106` is wrong I mean it and I have
 put a `file:line` and a reproduction under it; where I say it is right I mean that too, and saying so is
