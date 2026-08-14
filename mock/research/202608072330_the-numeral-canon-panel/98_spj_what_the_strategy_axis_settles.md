@@ -779,8 +779,18 @@ provide. Somebody has to say which reading is meant before a divergence coordina
 that is a statement about intent rather than a measurement.
 
 I would put it to him as: **at a declared width Rust has no primitive for, does the imitation follow the
-declared width or the container the value happens to sit in?** `93` states its own reading (declared
-width) and marks it as a reading rather than a finding, which is right.
+declared width or the container the value happens to sit in?** `93` states its own reading, that the
+declared width governs, and marks it as a reading rather than a finding, which is right. I agree with it
+and my agreement is **inherited rather than independent**, because I read `93` before forming one, so
+this does not have two readings on the record and should not be counted as though it did.
+
+**And it is smaller than it looks, which is `93`'s own refinement and worth repeating so op is not asked
+twice.** `93` phase two says T2 "survives and is now smaller than I thought" (`93:1151-1158`), because `40` section 6.3
+supplies a reading it did not have: a preset is silent on an axis exactly where its objective is
+indifferent to it, and the imitation intent's silence on intermediate precision is one of the four
+silences `40` checks. So this is a live instance of a pattern the register already tracks, and it may be
+cheaper to ask it as part of that than on its own. I am naming it here because the corpus question in
+section 5 cannot proceed without it, not because I think it needs its own sitting.
 
 Everything else I found is the panel's to work out.
 
@@ -1026,7 +1036,7 @@ admired: a citation landing two lines from its content still resolves, and only 
 testing for an expected word catches it.
 
 ```
-citations checked: 15   ok: 15   failed: 0
+citations checked: 16   ok: 16   failed: 0
 ```
 
 **It was not clean on the first run.** The file cited `25:534-537` for the sentence
