@@ -412,6 +412,41 @@ numerically, and the section is regenerated whenever the measurements are refres
 unchanged: objective canon, table design. What changes is the direction of the arrow between them, from
 *check* to *generate*, and the reason is that the thing being checked moves under its own noise.
 
+### 3.1 The mechanism already exists and `93` already named the fork
+
+I want to be concrete about what "generate" means mechanically, because stated abstractly it sounds like
+architecture and it is not: it is a fork somebody has already compiled both sides of.
+
+`93` names it in its own phase-two withdrawal, and says the register does not carry it (`93:966-973`):
+
+> Two encodings exist and they are not equivalent in what they let a consumer do. `94`'s W1 bakes the
+> *winner* per region as an associated const, which is simple and is what a table of measured results
+> naturally becomes. My P4 bakes the *cost table* and computes an argmin at const time, which also
+> erases completely. The difference is what a consumer can bring: under the second, a weighting nobody
+> named selects an arm nobody tabulated for it... Neither is obviously right and the register does not
+> carry the fork.
+
+**Those two encodings are exactly check-and-generate.** Baking the winner is the artifact `97` proposes
+constraining. Baking the cost table and computing the argmin from a weighting is the generation order,
+and `93`'s P4 establishes that it compiles on the pin and leaves no residue in the emitted body, so
+neither side of the fork is speculative.
+
+So my section 3 is not a new mechanism. It is `93`'s unregistered fork with a discriminator attached,
+and the discriminator is p10: the winner moves under the noise of the run that produced it and the
+weighting does not, because a weighting is stated rather than measured. That is a reason to prefer the
+cost-table encoding that neither `93` nor `94` had, and it is the kind of thing a register entry exists
+to make findable. **I would add the fork to `OPTIONS.md` with p10 attached to it**, and I say that as a
+recommendation about the register rather than as a decision about the design.
+
+**One clarification, because the proposal is easy to over-read.** Generating does not mean measuring at
+build time. `94` section 3.2 is right that a const function cannot measure anything, so the measurement
+is still offline and the cost table is still checked in. Regenerating per build from fresh measurements
+would make the build nondeterministic, which is `93`'s axis 6 again and is worse than what it fixes. The
+generation happens once, by a tool, from a stated weighting and a committed cost table, and its output is
+committed beside them. What that buys over a hand-written winner table is that the weighting is on the
+record, one artifact explains every row by construction, and a refreshed measurement produces a
+refreshed table by rerunning a tool rather than by somebody re-deciding six rows.
+
 **Two costs of the inversion, stated rather than hidden.** Generating the section from a weighting means
 the emitted arm selection can change between builds even with identical source. For an **unobservable**
 coordinate that is licensed: `40` section 5.3 says an arm may resolve those however it likes and a later
@@ -681,12 +716,14 @@ than open: p6 reproduces both of its numbers and shows 63 of the 72 select an ar
 can select. But `97` should answer rather than have me record a win, and it should be **resumed** rather
 than re-dispatched, because a reply needs the context that produced the claim.
 
-**With `97`, on check against generate.** This one I think is genuinely open. My case rests on p10, and
-p10 measures resampling noise on one bench family on one host, which is one instance. What would
-distinguish us: whether a stated weighting can actually be written down precisely enough to generate a
-table, which is a question about whether the coordinates are commensurable at all. Section 5 says two of
-the four intents currently have no coordinate, so the answer today is no for half of them, and that is
-an argument for `97`'s check as the interim shape and mine as the target.
+**With `97`, on check against generate.** This one I think is genuinely open, and it is older than
+either of us: section 3.1 shows it is `93`'s unregistered fork between baking the winner and baking the
+cost table, with both sides already compiled. My case for the second rests on p10, which measures
+resampling noise on one bench family on one host, so it is one instance. What would distinguish us:
+whether a stated weighting can actually be written down precisely enough to generate a table, which is a
+question about whether the coordinates are commensurable at all. Section 5 says two of the four intents
+currently have no coordinate, so the answer today is no for half of them, and that is an argument for
+`97`'s check as the interim shape and mine as the target.
 
 **With myself, on the spread coordinate, and this is now partly answered rather than open.** p1b said it
 rescues an arm; p12 says the rescue is not measurable; p12 also says 58 of 90 arm pairs across all
@@ -951,10 +988,10 @@ admired: a citation landing two lines from its content still resolves, and only 
 testing for an expected word catches it.
 
 ```
-citations checked: 14   ok: 14   failed: 0
+citations checked: 15   ok: 15   failed: 0
 ```
 
-**It was not fourteen of fourteen on the first run.** The file cited `25:534-537` for the sentence
+**It was not clean on the first run.** The file cited `25:534-537` for the sentence
 "named sections over a product of axes rather than values of a single axis". The word "named" is on line
 533, so the citation resolved, printed something that looked right, and omitted the first word of the
 phrase I was quoting. Corrected against the file rather than from memory. That is the eighth recorded

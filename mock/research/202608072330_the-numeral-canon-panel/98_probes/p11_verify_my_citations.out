@@ -11,6 +11,7 @@ panel citations
   ok    25_torvalds_what_a_strategy_is.md:533-534                              
   ok    93_orchard_the_strategy_axis_derived_cold.md:172-176                   
   ok    93_orchard_the_strategy_axis_derived_cold.md:180-188                   
+  ok    93_orchard_the_strategy_axis_derived_cold.md:966-973                   
 
 repository citations
 
@@ -21,4 +22,4 @@ repository citations
 deliberately excluded
   25_torvalds_what_a_strategy_is.md:534-537 (quoted in section 14 as the citation that was corrected)
 
-citations checked: 14   ok: 14   failed: 0
+citations checked: 15   ok: 15   failed: 0

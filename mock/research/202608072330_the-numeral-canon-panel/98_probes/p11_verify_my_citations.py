@@ -36,6 +36,8 @@ CITATIONS = [
      "Divergence from a reference semantics"),
     ("93_orchard_the_strategy_axis_derived_cold.md", 180, 188,
      "Reproducibility across targets and builds"),
+    ("93_orchard_the_strategy_axis_derived_cold.md", 966, 973,
+     "the register does not carry the fork"),
 ]
 
 SOURCE_CITATIONS = [
