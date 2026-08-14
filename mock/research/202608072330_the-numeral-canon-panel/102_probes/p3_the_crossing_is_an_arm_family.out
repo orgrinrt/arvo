@@ -1,0 +1,157 @@
+declared grid 2^-8, fine grid 2^-9, chain a <- a*1 + x
+512 seeds per point, error in declared ulp, reference exact rational
+
+1. DOES THE CROSSING REPRODUCE
+
+A = fine grid, truncation everywhere   (biased, no rne steps)
+B = declared grid, round-to-nearest    (unbiased, k rne steps, coarser grid)
+
+    k      A err      B err  leader
+    1    0.24999    0.25003  A
+    2    0.49845    0.33581  B
+    3    0.74839    0.40526  B
+    4    0.99814    0.46313  B
+    6    1.49979    0.57407  B
+    8    2.00006    0.64091  B
+   12    3.00160    0.76362  B
+   16    4.00521    0.89106  B
+   24    6.01240    1.10251  B
+   32    8.01140    1.25157  B
+   48   12.00927    1.63581  B
+   64   16.03592    1.79268  B
+   96   24.03824    2.32906  B
+  128   31.97163    2.59990  B
+
+CROSSING at k in [2]: the ranking of A and B is not a per-arm fact.
+
+2. THE ARM FAMILY AT EACH DEPTH, AND WHAT A WEIGHTING SELECTS
+
+Arm D(d): fine grid, truncate for the first d steps, round to nearest after.
+Coordinates: (mean error in declared ulp, rne steps performed).
+The second is declared and exact, not measured.
+
+  k = 4
+       d        err  rne steps  note                      
+       0    0.24161          5   (round everywhere)       
+       1    0.24161          4  on the Pareto front       
+       2    0.31299          3  on the Pareto front       
+       3    0.51042          2  on the Pareto front       
+       4    0.75012          1  on the Pareto front       
+       5    0.99814          0  on the Pareto front (truncate everywhere = A)
+    Pareto front size: 5 of 6 arms
+    distinct arms selected across 40 exchange rates: 3 -> [1, 2, 5]
+
+  k = 16
+       d        err  rne steps  note                      
+       0    0.48948         17   (round everywhere)       
+       1    0.48948         16  on the Pareto front       
+       2    0.53599         15  on the Pareto front       
+       3    0.64924         14  on the Pareto front       
+       4    0.82263         13  on the Pareto front       
+       5    1.02983         12  on the Pareto front       
+       6    1.25932         11  on the Pareto front       
+       7    1.50680         10  on the Pareto front       
+       8    1.75680          9  on the Pareto front       
+       9    2.00131          8  on the Pareto front       
+      10    2.25228          7  on the Pareto front       
+      11    2.50326          6  on the Pareto front       
+      12    2.75131          5  on the Pareto front       
+      13    2.99642          4  on the Pareto front       
+      14    3.24740          3  on the Pareto front       
+      15    3.49838          2  on the Pareto front       
+      16    3.75033          1  on the Pareto front       
+      17    4.00521          0  on the Pareto front (truncate everywhere = A)
+    Pareto front size: 17 of 18 arms
+    distinct arms selected across 40 exchange rates: 5 -> [1, 2, 3, 13, 17]
+
+  k = 64
+       d        err  rne steps  note                      
+       0    0.97457         65   (round everywhere)       
+       1    0.97457         64  on the Pareto front       
+       2    0.98532         63  on the Pareto front       
+       3    1.02597         62  on the Pareto front       
+       4    1.12102         61  on the Pareto front       
+       5    1.23156         60  on the Pareto front       
+       6    1.35831         59  on the Pareto front       
+       7    1.53598         58  on the Pareto front       
+       8    1.74723         57  on the Pareto front       
+       9    1.96309         56  on the Pareto front       
+      10    2.20236         55  on the Pareto front       
+      11    2.44884         54  on the Pareto front       
+      12    2.69501         53  on the Pareto front       
+      13    2.93845         52  on the Pareto front       
+      14    3.18845         51  on the Pareto front       
+      15    3.44022         50  on the Pareto front       
+      16    3.69120         49  on the Pareto front       
+      17    3.94608         48  on the Pareto front       
+      18    4.19706         47  on the Pareto front       
+      19    4.44803         46  on the Pareto front       
+      20    4.69999         45  on the Pareto front       
+      21    4.96756         44  on the Pareto front       
+      22    5.21366         43  on the Pareto front       
+      23    5.46561         42  on the Pareto front       
+      24    5.71756         41  on the Pareto front       
+      25    5.96952         40  on the Pareto front       
+      26    6.21952         39  on the Pareto front       
+      27    6.47049         38  on the Pareto front       
+      28    6.71854         37  on the Pareto front       
+      29    6.96952         36  on the Pareto front       
+      30    7.22049         35  on the Pareto front       
+      31    7.47049         34  on the Pareto front       
+      32    7.72049         33  on the Pareto front       
+      33    7.96854         32  on the Pareto front       
+      34    8.21756         31  on the Pareto front       
+      35    8.46561         30  on the Pareto front       
+      36    8.71561         29  on the Pareto front       
+      37    8.96366         28  on the Pareto front       
+      38    9.21170         27  on the Pareto front       
+      39    9.46561         26  on the Pareto front       
+      40    9.71268         25  on the Pareto front       
+      41    9.96170         24  on the Pareto front       
+      42   10.21268         23  on the Pareto front       
+      43   10.46073         22  on the Pareto front       
+      44   10.70975         21  on the Pareto front       
+      45   10.96854         20  on the Pareto front       
+      46   11.21756         19  on the Pareto front       
+      47   11.46854         18  on the Pareto front       
+      48   11.71952         17  on the Pareto front       
+      49   11.96952         16  on the Pareto front       
+      50   12.21952         15  on the Pareto front       
+      51   12.46756         14  on the Pareto front       
+      52   12.77323         13  on the Pareto front       
+      53   13.02420         12  on the Pareto front       
+      54   13.27518         11  on the Pareto front       
+      55   13.52518         10  on the Pareto front       
+      56   13.77909          9  on the Pareto front       
+      57   14.02909          8  on the Pareto front       
+      58   14.27713          7  on the Pareto front       
+      59   14.52616          6  on the Pareto front       
+      60   14.77518          5  on the Pareto front       
+      61   15.03006          4  on the Pareto front       
+      62   15.28006          3  on the Pareto front       
+      63   15.53104          2  on the Pareto front       
+      64   15.78299          1  on the Pareto front       
+      65   16.03592          0  on the Pareto front (truncate everywhere = A)
+    Pareto front size: 65 of 66 arms
+    distinct arms selected across 40 exchange rates: 6 -> [1, 2, 3, 5, 13, 65]
+
+WHAT THIS ESTABLISHES
+
+ONE. The crossing reproduces on a chain built independently of `101`'s, and
+only on a non-contracting one. So `101`'s finding is real and it carries a
+predicate its own statement does not: the chain's gain. Inside a contraction
+there is nothing to weigh, because old error is damped rather than accumulated.
+
+TWO. The two arms are the two ends of a family with k+2 members, and the
+interior members are on the Pareto front. Reading the crossing as `pick A
+below it and B above` takes two points from a front that has more.
+
+THREE. And that is the converged mechanism working, not failing. Once accuracy
+is a coordinate and chain depth is in the region, a weighting over (error, rne
+steps) selects an interior arm, and different weightings select different ones.
+This is the first instance in this unit of a strategy weighing something other
+than time and bytes, and it behaves exactly as `98` section 4 says a weighting
+should: op's four intents each name a primary concern and refuse to make it
+absolute, and the interior of this front is where a finite rate lands.
+
+FOUR. What it costs is that the switch depth has to be const, which p4 tests.
