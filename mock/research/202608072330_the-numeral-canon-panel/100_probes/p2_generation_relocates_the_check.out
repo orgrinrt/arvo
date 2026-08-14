@@ -1,0 +1,131 @@
+p2. Does generating the table from the weighting eliminate the check.
+
+`98` section 3 proposes generating the region-to-arm table from a stated
+weighting rather than writing it and checking it, and says of the result:
+"rationalisability is TRUE BY CONSTRUCTION rather than a property to be
+verified, so there is NOTHING TO CHECK and nothing to police".
+
+The first clause is right and the second does not follow, and this probe is
+built to establish the gap rather than to argue it.
+
+THE CLAIM UNDER TEST. Generating replaces a human writing a table with a tool
+computing one. It removes every defect a human writing a table can introduce and
+it introduces a defect class a human cannot: the tool computes the wrong argmin.
+A tool's wrong argmin is, in general, the RIGHT argmin of something else, so it
+is still rationalisable, and rationalisability cannot see it. So the check does
+not vanish; it relocates onto the generator, and the question is what detects it
+there.
+
+THE EXPERIMENT. Take a cost table, a stated weighting `w`, and the section a
+correct generator emits. Then run four generators carrying defects that are
+ordinary rather than exotic, each one a mistake somebody makes reading a CSV:
+
+  G1  unit          one coordinate read in the wrong unit (scaled by 1000)
+  G2  swap          two coordinates read in the wrong order
+  G3  tiebreak      ties broken by the last arm rather than the first
+  G4  offbyone      row r's costs attributed to region r+1, cyclically
+  G5  dropped       one coordinate never read at all
+
+and three detectors:
+
+  D1  rationalisable  is the emitted section an argmin of SOME weighting
+  D2  cone membership is the STATED `w` one of the weightings that explain it
+  D3  recomputation   does an independent argmin under `w` agree, arm for arm
+
+PREDICTIONS, WRITTEN BEFORE RUNNING, so a surprise is visible as one.
+
+  D1 passes on G1 and G2, because a rescaled or permuted read is the exact
+     argmin of the correspondingly rescaled or permuted weighting. It passes on
+     G3, because a tie admits either arm weakly. On G4 it may go either way,
+     since a permuted assignment need not be any weighting's argmin. G5 is the
+     interesting one: a dropped coordinate is a ZERO WEIGHT, so D1 at `w >= 0`
+     passes by construction and D1 at `w > 0` should catch it. That is the one
+     place `98`'s strict-positivity rung has detection power against a
+     generator, and it is worth separating from the guarantee that rung was
+     proposed for.
+  D2 catches G1, G2 and G4, and does NOT catch G3, because both tie-breaks are
+     weak argmins under the stated `w`.
+  D3 catches all four, and reports G3 as a defect when it is not one, because
+     the two tie-break policies disagree about a choice the weighting does not
+     make.
+
+If those hold, the ordering is exact: D1 is nearly vacuous on generated output,
+D3 is sound but not tie-break invariant, and D2 is the differential a generated
+table actually wants. D2 is `97`'s decider, unchanged, in a different role: it
+stops being a constraint on a human's table and becomes the acceptance test on a
+tool's output.
+
+Two models, because one instance decides nothing: the committed carrier table
+converted to exact rationals, and 400 random models across three generators.
+
+Exact rational arithmetic throughout. No measurement is taken and this is not a
+bench.
+
+==============================================================================
+PART 1. The committed carrier table, as exact rationals
+==============================================================================
+regions 6, arms 5, coordinates 3
+cost coordinates: (median algo_ns, declared bytes per element, IQR)
+
+weighting: speed-first
+  stated weighting w = ['32', '1', '1']
+  generator      D1 rat>=0  D1 rat>0  D2 w in cone  D3 recompute   verdict
+  G0 correct          True      True          True          True   identical to correct
+  G1 unit             True      True         False         False   DIFFERS from correct
+  G2 swap             True      True         False         False   DIFFERS from correct
+  G3 tiebreak         True      True          True          True   identical to correct
+  G4 offbyone        False     False         False         False   DIFFERS from correct
+  G5 dropped          True      True          True          True   identical to correct
+
+weighting: storage-first
+  stated weighting w = ['1', '32', '1']
+  generator      D1 rat>=0  D1 rat>0  D2 w in cone  D3 recompute   verdict
+  G0 correct          True      True          True          True   identical to correct
+  G1 unit             True      True         False         False   DIFFERS from correct
+  G2 swap             True      True         False         False   DIFFERS from correct
+  G3 tiebreak         True      True          True          True   identical to correct
+  G4 offbyone        False     False         False         False   DIFFERS from correct
+  G5 dropped          True      True          True          True   identical to correct
+
+==============================================================================
+PART 2. Random models, so no verdict rests on one table
+==============================================================================
+
+generic models, ties improbable: 200 models
+  generator       differs  D1 caught  D1s caught  D2 caught  D3 caught
+  G0 correct            0    0   (n/a)    0   (n/a)    0   (n/a)    0   (n/a)
+  G1 unit             190    0 (  0.0%)    0 (  0.0%)  190 (100.0%)  190 (100.0%)
+  G2 swap             147    0 (  0.0%)    0 (  0.0%)  147 (100.0%)  147 (100.0%)
+  G3 tiebreak           0    0   (n/a)    0   (n/a)    0   (n/a)    0   (n/a)
+  G4 offbyone         200  200 (100.0%)  200 (100.0%)  200 (100.0%)  200 (100.0%)
+  G5 dropped          152    0 (  0.0%)    0 (  0.0%)  152 (100.0%)  152 (100.0%)
+
+models carrying a deliberate tie at one region: 200 models
+  generator       differs  D1 caught  D1s caught  D2 caught  D3 caught
+  G0 correct            0    0   (n/a)    0   (n/a)    0   (n/a)    0   (n/a)
+  G1 unit             191    0 (  0.0%)    0 (  0.0%)  191 (100.0%)  191 (100.0%)
+  G2 swap             137    0 (  0.0%)    0 (  0.0%)  137 (100.0%)  137 (100.0%)
+  G3 tiebreak          48    0 (  0.0%)    0 (  0.0%)    0 (  0.0%)   48 (100.0%)
+  G4 offbyone         200  197 ( 98.5%)  197 ( 98.5%)  200 (100.0%)  200 (100.0%)
+  G5 dropped          160    0 (  0.0%)    0 (  0.0%)  160 (100.0%)  160 (100.0%)
+
+==============================================================================
+READING
+==============================================================================
+
+A detector "catches" a generator when the generator's section differs from the
+correct one AND the detector reports it. The `differs` column is the number of
+models where there was anything to catch.
+
+What the numbers are expected to say, and the check on this probe is whether
+they say it: rationalisability is close to blind on generated output, because a
+generator's mistake produces the correct answer to a different question and a
+different question still has a weighting. Cone membership of the STATED
+weighting is the discriminating test, and it is invariant to how ties are
+broken, which direct recomputation is not.
+
+The consequence for `98` section 3 is narrow and it does not overturn the
+proposal. Generating removes one class of defect and admits another, so the
+check relocates onto the generator rather than disappearing. What it relocates
+to is the decider `97` already built.
+
