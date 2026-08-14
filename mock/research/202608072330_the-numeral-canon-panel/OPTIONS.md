@@ -2271,14 +2271,45 @@ instead, as `101` proposes for chain length and as the corpus already does for t
 ceiling and state in the canon which intents the coordinate set can and cannot distinguish, so the limit
 is declared rather than discovered. Each is right somewhere and the shapes compose.
 
-### Q49. The corpus compares cost at a fixed answer, and most of op's intents range over arms that disagree
+### Q49. Why the corpus cannot exhibit I5, I7 and I9, and it is not the reason first proposed
 
-`102`, and it is the deepest structural finding of the strategy-axis unit. **ONE EXPERT**, one
-corpus-wide instrument, and it wants an independent verification before the consolidation rests on it.
+**`102` proposed a cause, `103` verified it independently and refuted it, and the conclusion survived
+the refutation with its rung moved.** Both halves are the entry; neither is deleted, because the
+refuted version is what the correction is against.
 
-**The measurement.** Across **254 committed CSV files and 104080 data rows**, every committed region is
-answer-equivalent: all arms compute one value. So every number this repository holds compares **cost at
-a fixed answer**. Evidence: `102_probes/p1_the_corpus_compares_cost_at_a_fixed_answer.out`.
+**What `102` claimed.** Across 254 committed CSV files and 104080 data rows, **every** committed region
+is answer-equivalent, all arms computing one value, so every number this repository holds compares cost
+at a fixed answer. Evidence: `102_probes/p1_the_corpus_compares_cost_at_a_fixed_answer.out`.
+
+**What `103` measured, on an instrument it built before opening `102`'s file, with the commit order
+showing it.** Over the right unit, which is a committed CSV rather than a shared crate: **234 of 254
+regions pin their arms to one value by an exact-value oracle. Twenty do not**, and eight of those hold
+arms measured to differ, or two different algorithms by construction. Three independent refutations,
+each sufficient alone:
+
+- The two `decimal-quantiser-radix-sweep` arms emit different denoted values on **97.12% to 99.95% of
+  lanes** at all four committed sizes, by exact rational comparison, with zero undecidable.
+- Controlling the input so both arms see identical exact integers, they still differ on **53.72% of
+  200000 trials**, with `binary32` strictly closer on 106167 and `decimal32` on **zero**. That is an
+  accuracy difference, not an input artefact.
+- The harness's own byte-exact gate, on the harness's own 100 seeds, **refuses that family 400 of 400**
+  while **accepting** the `quantiser-fadd` control **600 of 600**.
+
+**Two mechanical causes, both citable.** `102`'s census enumerates `variants/*-shared/`
+(`102_probes/p1_the_corpus_compares_cost_at_a_fixed_answer.py:41`), which structurally cannot see
+`fnv1a-vs-xxhash3`, whose bridge is declared `ByteRoutine<N, 8, true>` at `mock/benches/src/main.rs:229-232`
+with `MAY_DIFFER = true`. And it treats the presence of a `validate_output` as answer-pinning (same
+file, line 55), where two of the thirteen validators check a **property** rather than a value.
+
+**And a finding neither of them was looking for.** The harness gate `102` leans on **was not running for
+175 of 254 regions**. arvo's driver gained its `harness::validate` call on 2026-08-08 in `9db33f8c`;
+175 regions predate it, and **all twenty non-pinned regions sit in that set**. Verified at
+`103_probes/p8`. This is the same defect family as `96` and as `41`, measured from the data side.
+
+**What survives, and this is the load-bearing part.** `102`'s conclusion holds: the corpus cannot
+exhibit I5, I7 or I9. But **the barrier is the absent coordinate, not the arm sets**, which puts the
+finding on `98`'s and `101`'s rung rather than upstream of them. `score` is empty in all 104080 rows and
+**0 of 94 crates implement `score_output`**.
 
 **Why that is a problem rather than a property.** Op's I5, I7, I3 and especially **I9** range over arms
 that *disagree*. I9 is his sentence that "strategies are the variables that change what the 'correct'
@@ -2306,6 +2337,11 @@ computed, and a weighting may include a measured one only where every arm comput
 Otherwise a bench rerun changes the program's output. This adds a missing clause to `100` section 6.1's
 Arm C predicate and widens its Arm A.
 
+**`103` tested that constraint on real arms rather than `102`'s synthetic table and found it sound and
+currently vacuous.** `radix2` is 1.18x to 1.64x faster **and** 66x more accurate, so it dominates, and
+the argmin is stable at 2000 of 2000 resamples across eleven exchange rates. **The constraint gains a
+predicate: the hazard needs the two orderings to conflict, not merely the arms to differ.**
+
 **Two further results carried here so they are not lost.** Headroom and intermediate precision are
 **invisible across any composition of `+ - *`**, because reduction mod `2^W` is a ring homomorphism, and
 become visible at the first non-ring step. And `101`'s accuracy crossing is **not a two-way fork**: it is
@@ -2327,3 +2363,15 @@ policy half while the weighting half changes nothing observable.
 Not a category-wide policy fork. It is a question about which of two things op's own sentence refers to,
 and the answer decides whether the weighting half is part of what he called a strategy or is an
 implementation of it.
+
+### Q48 addendum: the mechanism already exists in one crate, and the missing piece is one hook
+
+`103`, constructive, and it narrows Q48's option (a) from "add the missing coordinates" to something
+much smaller. **`quantiser-radix-shared` already carries the mechanism the corpus is said to lack**: two
+oracles, one per arm, each checking against its own declared semantics rather than against the other
+arm, 32768 checks each with the count itself asserted.
+
+So the accuracy coordinate does not need designing. **The missing piece is `score_output`**, which
+0 of 94 variant crates implement, and which is the hook by which a per-arm quality number would reach
+the CSV at all. That is a smaller and much better-specified piece of work than "add the missing
+coordinates to the corpus".
