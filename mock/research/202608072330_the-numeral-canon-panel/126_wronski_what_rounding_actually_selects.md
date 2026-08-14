@@ -387,3 +387,167 @@ paragraph. I did not test signed arithmetic (everything above is unsigned), and 
 interaction between rounding and the strategy markers themselves (`Hot`/`Warm`/`Cold`/`Precise`),
 since I13/I17 leave the strategy set open and nothing in my brief asked me to presume a
 decomposition. Both are gaps a reconciliation pass should weigh.
+
+---
+
+## Phase two. Reconciliation against `122`, `119` section 5, and `116` section 7.
+
+Read after phase one was committed and not before. Phase one above is unedited from this point.
+
+### The question was already asked, and left explicitly open
+
+`119:598` states it almost verbatim: "Whether the rounding mode has the same character-selecting
+role as the overflow behaviour. `116` section 7 names it as the first place it would look. Nothing
+measured it, and section 4.4 lists rounding at a fixed value everywhere for that reason." `116:486`
+is the pointer: "I would look at the rounding mode first, because section 6.1 shows it owns a
+region of the map with its own algebraic character." I have not read section 6.1; my brief did not
+assign it and I am flagging the gap rather than reading past my dispatch. Whatever "its own
+algebraic character" names there, I cannot say whether my findings already cover it or add to it.
+
+### Where my brief's background was the superseded framing, not the current one
+
+My brief told me, as given background: "A wrapping map is a ring homomorphism and is not monotone.
+A saturating map is monotone on a suitable domain and is not a ring homomorphism. No map onto a
+finite value set is both, except a constant one." Reading `122` now, this is `119`'s **original**
+4.2 and 4.4, both explicitly `[REPLACED]` rather than `[STANDS]`. The corrected statement, forced by
+`121`'s counterexample and reproduced at `122` F122-2 and F122-4: the mutual exclusion holds **only
+on a domain closed under negation**. On a one-signed domain, a saturating map is a homomorphism for
+addition and multiplication (not subtraction) **and** remains monotone, at once, with no
+declaration needed. The brief's "monotone on a suitable domain" phrase already gestured at
+domain-sensitivity on the monotone side; it did not carry the same hedge on the homomorphism side,
+and that is exactly the half `122` corrected. I record this as a fact about which version of the
+finding reached my brief, not as an error to relitigate; `122` is the panel's own current, two-way
+dissented-and-reconciled state and outranks what I was handed as background.
+
+This matters directly for how my own findings should be read, because it sharpens rather than
+weakens them.
+
+### My grid was already one-signed, and rounding still fails there
+
+`122`'s central discovery is that the domain-and-operation-set pair `(one-signed, {add, mul})` is
+exactly where saturating overflow escapes the exclusion and gets both licences at once. My probe's
+grid function (`126_probes/p1_rounding_character.py`, `grid(F, kmax)`) generates `k/2^F` for
+`k` in `range(0, kmax+1)`, which is non-negative only. **Finding 2's counterexamples to associativity
+and distributivity of rounded multiplication were already measured on a one-signed domain, using
+exactly the operation set `{+, x}` that rescues overflow's homomorphism.** Rounding is not rescued
+there. `a=1/2, b=1/2, c=2` at `F=1` under `round_half_even`, all three values non-negative, still
+gives `(a[X]b)[X]c != a[X](b[X]c)`.
+
+So the sharper, corrected version of my answer to the brief's question is not merely "no rounding
+mode is a homomorphism at `F>=1`" (which is what phase one said); it is: **the specific
+domain-conditional escape that rescues overflow's homomorphism does not exist for rounding's.**
+Rounding fails to license deferral for multiplication in the exact region where overflow succeeds.
+This is a stronger and more precisely targeted claim than phase one made, and it is the direct,
+corrected answer to `119:598` and `116:486`.
+
+```
+holds for: F >= 1, operation = multiplication, domain = one-signed (non-negative), the domain
+region where saturating overflow is a homomorphism per 122 F122-4, rounding mode = any of
+{floor, ceil, trunc, round_half_up, round_half_even}, width = swept exhaustively at kmax=6.
+property = NOT a homomorphism, no domain restriction found (or looked for beyond one-signed)
+that rescues it.
+```
+
+I have not tested whether some **narrower** domain restriction (a bound tighter than "non-negative",
+analogous to `122` 4.5's "declare a restriction" mechanism, which discharges by making the map the
+identity on the restricted range) rescues rounding's homomorphism. That is a real and different
+question from the one-signed test above: `122` 4.5 says a restriction where the map does not move at
+all (the identity there) trivially has both characters, for **any** behaviour, rounding included,
+since an identity map is trivially homomorphic and monotone. Whether that is the *only* way to
+rescue rounding (paralleling `122`'s finding that a declared restriction is not overflow's only
+mechanism, since the one-signed domain is a second) is open and I did not chase it.
+
+### `122` 4.6's "grid part must always be applied" is the same claim as my Finding 2, stated as a rule rather than measured as a sweep
+
+`122` 4.6, unchanged from `119`, splits a reduction into a **grid part** (applied at the result of
+every node whose exact result can leave the grid, meaning: rounding) and a **range part** (applied
+at the operands of every node the map is not a homomorphism for, meaning: overflow discharge, which
+`122` section 2 shows can be deferred to the root under the domain-conditional escape). The clause
+states the grid part **must** be applied at every such node, with no exemption listed anywhere in
+section 4, in contrast to the range part, which gets an explicit domain-conditional exemption in
+4.5 and 4.7.
+
+I read this as the same claim my Finding 2 makes, in the panel's vocabulary rather than mine, and
+asserted rather than measured the way I measured it. My probes give it independent, exhaustive
+small-grid evidence from a direction nobody in the `114`-through-`122` chain built: not a
+term-shape sweep over declared bounds and discharge certificates, but a bare associativity and
+distributivity check on the rounded operation itself, with the domain deliberately matched to the
+region where the range part's exemption is at its widest. I record this as **independent agreement
+with 4.6's grid-part rule**, arrived at before I read it, on a different instrument (my own
+exhaustive multiply sweep versus whatever established 4.6, which I have not read and do not cite).
+Whether this is enough for a TWO EXPERTS rung on 4.6's grid-part clause specifically is not mine to
+call; I flag the instrument and the independence and leave the rung to whoever consolidates.
+
+### Where my Finding 1 independently reproduces `119`'s C2 exemption
+
+`122` 4.4 (carrying `119`'s unchanged C2 answer forward): "the wrapping map's addition and
+subtraction half holds at **any** fraction width, on the argument that the grid is closed under
+those operations so they never enter the rounding region." This is exactly my Finding 1, derived
+independently, before reading either file: addition and subtraction of grid points never need
+rounding at any `F`, because the sum (or difference) of two grid points is always itself a grid
+point. I built this from first principles about how a fixed-point grid is closed under `+`/`-`; C2
+states the identical fact as the reason a different clause (the wrapping homomorphism's fraction-
+width independence) is exempt from needing a width sweep. Two different investigations landing on
+one fact, from different directions, is the shape `RULES.md` asks a reconciliation to name plainly
+rather than bury: this is a genuine second, independent derivation of the same underlying grid
+closure fact, not a citation of one by the other.
+
+### The order-licence family is never at risk from rounding, for any deterministic mode, at any width or domain: worth stating more strongly than phase one did
+
+`116`'s order-preserving licence family (`8`, third bullet: "any construction or rewrite resting on
+the map preserving order, which includes comparison-carrying composites, min and max folds, and
+clamping reassociation") is exactly what my Finding 3's monotonicity result protects. Having now
+read that this licence family is treated in the panel's framework as something a design can lose
+(by choosing wrapping) or gain conditionally (saturation, domain-dependent per `122`), I want to
+restate Finding 3 more sharply than phase one did: **rounding never threatens this licence family,
+for any deterministic mode, at any `F`, at any domain, at any width.** Every deterministic mode is
+monotone unconditionally (Finding 3's sweep found no violation and my argument for why is
+structural, not domain-dependent: a nearest-or-directed rule is weakly increasing by construction).
+This is the one place where rounding is strictly *safer* than overflow with respect to a licence
+family the panel already cares about: overflow's order licence has to be earned (saturating, and
+even then only unconditionally; wrapping never has it), while rounding's is free by default and
+only lost by choosing stochastic rounding.
+
+### Double rounding is a hazard the panel's carrier/discharge apparatus has not yet named, as far as I have read
+
+`122` 4.6's grid-part rule, and `119`/`122` section 4.10's carrier-cost accounting (recursion depth,
+associated-const cells, per-node state), are both framed around a **single** target width per
+derivation. My Finding 5/6 (double rounding: `round_half_up` and `round_half_even` disagree between
+"round at accumulator width, then round again at final width" and "round directly at final width",
+zero disagreements for `floor`/`ceil`/`trunc`, confirmed with overflow bounds entirely removed to
+isolate the effect) is about what happens when a derivation's carrier changes width partway through,
+which is exactly the situation arvo's own strategy markers create routinely (a wider accumulator
+narrowing into a typed result). I did not find this named in 119 section 5, `122`, or `116` section
+7, and I do not know whether it is covered by material I was not assigned (`116` section 6.1 in
+particular, or the carrier-cost sections 4.10/8 of `119`/`122`, which I read only in the reproduced
+form 122 carries and not at their `114`/`115` sources). I flag it as new rather than claim novelty I
+cannot check: **a carrier that changes fraction width partway through a derivation is a second place
+the grid part's "must always apply" rule needs a qualifier, and the qualifier is mode-dependent
+(directed modes are safe under width-chaining; nearest-family modes are not), which is a genuinely
+different axis from the domain-sign qualifier `122` found for the range part.**
+
+### What I am carrying forward, and what remains genuinely open after this reconciliation
+
+**Carried forward unchanged from phase one, now with tighter grounding:** Findings 1, 3, 4, 5, and
+6 all stand as measured; nothing in `122`/`119` section 5/`116` section 7 contradicts any of them.
+Finding 2 is sharpened (see above) rather than corrected.
+
+**Refuted nothing of a predecessor's**, since the material I was assigned to read agrees with
+everything I derived and, where it overlaps at all, states the same facts in a different vocabulary
+(4.6's grid part, C2's width exemption) that I reached independently first.
+
+**Genuinely open, now including what the assigned reading surfaces on top of phase one's list:**
+
+7. Whether `116` section 6.1's "region of the map with its own algebraic character" for rounding is
+   the same territory my findings cover, a subset, or something I have not touched. Unread by me
+   under this dispatch's scope.
+8. Whether a restriction narrower than "one-signed" (paralleling `122` 4.5's non-domain mechanism)
+   rescues rounding's homomorphism for multiplication anywhere short of the trivial identity case.
+9. Whether double rounding across a chained-width carrier belongs in `122` 4.6's grid-part rule as
+   a stated qualifier, or is a separate clause entirely, and whether it interacts with the
+   recursion-depth carrier-cost accounting in section 4.10 the way the domain-sign condition
+   interacts with the discharge-check certificate in 4.7.
+10. Whether my brief's background statement of the overflow disjointness theorem (pre-`122`, no
+    domain qualifier on the homomorphism half) reaching me as "given" rather than as the panel's
+    current state is a pattern worth a standing note for how backgrounds get written into future
+    dispatch briefs on this topic; not mine to fix, only mine to have hit and to say so.
