@@ -122,3 +122,4 @@ recorded after the fact is a handle that was unavailable during the window it wa
 | 125 | knuth | `ae29eb7ef0e38550c` |
 | 126 | wronski | `a540e3f7db5be940d` |
 | 127 | dolan | `ab1474a17441b7508` |
+| 137 | arntzen (independent check) | `a1c87d5f39bda9e8b` |

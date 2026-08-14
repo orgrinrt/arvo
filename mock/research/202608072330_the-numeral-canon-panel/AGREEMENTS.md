@@ -614,3 +614,44 @@ except the finiteness theorem, which needs none; nothing at non-uniform value se
 terms are trees or DAGs; clauses 4.8 and 4.9 not re-swept for the domain dimension, disclosed in
 `122`'s own body text; and the one result with a consumer attached, the accumulator width collapse under
 the shipped guard, which is unpriced and which `117` explains cannot currently be priced honestly.
+
+---
+
+## 10. The rounding axis (topic seven, files `125` through `138`)
+
+A pointer, on the same reasoning as section 9: the ledger exists, was written by a member who took part
+in the argument, and has been through three signatures and an independent check. Re-compressing it here
+would be a fresh compression with no checker.
+
+- **The authoritative ledger is `136`'s**, restored by `138`, which lists the lines it supersedes. `132`
+  is kept as landed because the three signatures cite it by line.
+- **`137` is the independent check.** Its verdict is that the compression is sound and that every
+  correction `136` made to `132` is right. What it found wrong was one construction and four bookkeeping
+  defects, all repaired in `138` after being reproduced at source rather than accepted.
+
+**What the topic settled.** Rounding is not a second overflow axis: the homomorphic class is empty for
+deterministic modes off-grid, unconditionally and at every domain including one-signed, and monotonicity
+is free for all of them, so the property pair that decides character for the overflow policy degenerates
+here. Rounding has its own obstruction, from divisibility rather than from closure under negation, which
+is why it has no one-signed refuge.
+
+**The fork is not where either cold derivation put it.** Both placed it at the deterministic-stochastic
+boundary; that was refuted by construction. It is one axis, correlation in the coupling against
+per-realisation monotonicity, admitting two independent keyings, value and position, which coincide only
+where value and position move together. Within a cell the realisation-monotone unbiased law is unique.
+Across cells the coupling is the whole design space, and it is priced: summed-error variance `n²f(1-f)`
+comonotone against `nf(1-f)` independent.
+
+**And the entropy constraint decides the arms.** I14's no-platform-dependency clause, not I15, means arvo
+cannot source a draw and a const seed makes a member deterministic. The position-keyed dither escapes the
+disjunction entirely, and it compiles `#![no_std]` with its findings as `const assert!` items.
+
+**What it did not settle.** The double-rounding mechanism, open after three wrong constructions, with
+`122` 4.6 shown not to be at risk and staged-versus-direct narrowing shown to be what is; the four
+predicates carrying no domain dimension, named as obligations rather than filled; and whether the
+position-keyed arm's guarantees survive a keying axis that is not one-dimensional, which is unmeasured.
+
+**Two provenance notes worth carrying.** The blind-convergence union is **six**, reconciled rather than
+merged, and the entry a merge would have lost is the topic's headline answer. And two figures in this
+topic came from report messages rather than artifacts, both relayed by the coordinator; the committed
+work was correct in both cases and both were caught by members reading the files.
