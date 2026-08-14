@@ -137,9 +137,12 @@ componentwise rule applied to complex multiplication is **unsound on 26 of 81 pa
 the design would otherwise walk into.
 
 **And the propagation rule is not one rule.** The interval rule and an affine rule each recover what the
-other loses, neither dominates, and their disjunction is sound and **reaches an enumerating oracle on ten
-of ten term shapes swept**. Both are const-computable, both are compiled here with no feature gate, and
-that is I13's arm structure appearing inside a mechanism rather than across one.
+other loses, neither dominates, and their disjunction is sound and reaches an enumerating oracle on ten of
+ten term shapes swept. Both are const-computable and both are compiled here with no feature gate. Then,
+attacking the mechanism behind the affine rule's losses rather than accepting the union, a form over
+one-signed symbols with a corner cross-term bound **dominates both and reaches the oracle on all thirteen
+rows swept, beaten on none**. That is I13's arm structure appearing inside a mechanism rather than across
+one, and it is what going one level past the composition bought.
 
 The rest of this file is that taken apart. Sections 3 to 8 are the working, section 9 is the statement
 offered, and sections 10 onward are bookkeeping.
@@ -686,6 +689,56 @@ two-endpoint windows as untested and strictly more expressive, and `82` F6's sig
 uses them. `p7c` builds its witness with a two-endpoint extent for exactly that reason, and it is the only
 place in my probes where one appears.
 
+### 6b.3 Attacking the affine rule's own weakness, which turns the union into one arm
+
+A union of two rules is an honest answer and it is not the end of the work, because section 6b named the
+mechanism behind the affine rule's losses and naming a mechanism is an invitation to attack it. The
+mechanism: an affine form centres `[0, b]` at `b/2` with radius `b/2`, so its residual range is symmetric
+by construction, and the product of two symmetric residuals carries a negative lower bound that the
+interval rule never had.
+
+**The symmetry is a convention, not a requirement.** Take the noise symbols over `[0, 1]` with a constant
+term instead of over `[-1, 1]` with a centre, and bound a product's cross term by the corners of the two
+residual ranges rather than by the symmetric product of their radii. `p9` measures the result against both
+predecessors and against the oracle, per node throughout:
+
+```
+  x + y                   corner   136 symAff   136 ONESIDED   136 oracle   136 of   256
+  x * y                   corner    76 symAff    31 ONESIDED    76 oracle    76 of   256
+  (x + y) - y             corner    16 symAff   136 ONESIDED   136 oracle   136 of   256
+  (x + y) * z             corner   385 symAff   151 ONESIDED   385 oracle   385 of  4096
+  (x+y) * (z+w)           corner   212 symAff    31 ONESIDED   212 oracle   212 of   256
+  (x + y) - y  WRAP       corner    16 symAff   136 ONESIDED   136 oracle   136 of   256
+  x * (y - y)  SIGNED     corner    31 symAff    64 ONESIDED    64 oracle    64 of    64
+  (x - y) + y  SIGNED     corner    36 symAff    64 ONESIDED    64 oracle    64 of    64
+  (x + y) - y, leaves -4  corner    50 symAff   116 ONESIDED   116 oracle   116 of   144
+```
+
+**Thirteen rows, zero unsound, and the one-sided form reaches the oracle on all thirteen while being
+beaten on none.** It matches the interval rule wherever the interval rule wins, matches the affine rule
+wherever the affine rule wins, and the union of section 6b collapses to a single arm on this evidence. The
+correlation-breaking mutation still moves it back to 16 of 256, so the win is the mechanism rather than a
+looser check.
+
+**One prediction of mine was wrong here and its refutation is the useful part.** I expected the form to
+fail on leaves straddling zero, on the ground that a one-sided symbol cannot express one. It does not
+fail: the constant term absorbs the offset, so a leaf declared `[-4, b]` is `-4 + (b + 4) * e` and costs
+nothing. The three straddling rows are among the thirteen.
+
+**And I was wrong about which of the two changes wins.** `p9b` keeps the centre-and-radius basis and
+changes only the cross-term bound, and it recovers nothing: 31 against 31 on `x * y`, 151 against 151 on
+`(x + y) * z`. The reason is visible once measured. In the centre-and-radius basis the residual range is
+`[-r, r]`, symmetric by construction, so its corners are exactly the symmetric bound and the corner rule
+reduces to what it was replacing. **The tighter cross term is what wins and the basis is what makes it
+available; the win is the pair and neither half is the answer alone.** A design taking "use a corner cross
+term" from `p9` without the basis would get the old numbers back and not know why.
+
+**What this does and does not settle.** It does not make the composition framing wrong. Domination over
+thirteen term shapes at `W <= 4` is not domination, the annihilation case is still out of reach for every
+rule here, and section 9's sentence stays as written: sound rules disjoin, and a design carries as many as
+it can afford. What it does is give the disjunction a much better first member, and it says the way to
+find the next one is to name the mechanism behind a loss and go at it rather than to accept the union.
+
 ---
 
 ## 7. `110`'s contradiction, priced by where the two spellings meet
@@ -1071,6 +1124,21 @@ gate is absent in both directions. `toolchain = nightly-2026-05-28, edition 2021
 target = aarch64-apple-darwin, target features = host default, opt level = 3, container = u8, declared
 extents in {0..=6, 0..=14}, term = (x + y) - y, threads any`. `p8c_output.txt`, `p8c_asm.s`.
 
+**F112-24. A form over one-signed symbols with a corner cross-term bound dominates both the interval rule
+and the standard affine rule, and reaches the enumerating oracle on every term shape swept.** Thirteen
+rows, zero unsound, thirteen of thirteen reaching the oracle, beaten on none, and beating the interval
+rule on five and the standard affine rule on three. `W = 4, F = 0, signedness in {unsigned, signed},
+overflow policy in {sat, wrap}, rounding = trunc, radix = 2, operations in {add, sub, mul}, term shapes as
+enumerated in the probe, arity in {2, 3, 4}, declared leaf lower bounds in {0, -4}, threads = 1, target
+features any`. `p9_output.txt`.
+
+**F112-25. The win is the pair of the basis and the cross-term bound, and neither half alone recovers
+it.** Keeping the centre-and-radius basis and changing only the cross-term bound recovers nothing: 31
+against 31 on `x * y` and 151 against 151 on `(x + y) * z`, because in that basis the residual range is
+symmetric by construction and the corner bound reduces to the symmetric one. Same predicate as F112-24
+over the six rows enumerated in `p9b`. `p9b_output.txt`. This **refutes a prediction of mine** recorded in
+that probe's header before it ran.
+
 **F112-23. Every declared extent in every sweep of this file is one-sided, and that makes one instrument
 check vacuous.** With every lower bound pinned at zero, the root of an addition chain over a non-negative
 domain is the widest node, so a root-only check and a per-node check agree by construction and `p7b`'s
@@ -1150,6 +1218,10 @@ F112-22. This is the arm structure I13 describes, arriving inside a mechanism ra
 **Added, as a hazard rather than a win.** A root-only discharge check is unsound and I wrote one myself
 after building the witness that refutes it. F112-21.
 
+**Added, and it supersedes the union as a first choice without replacing the framing.** A propagation
+rule over one-signed symbols with a corner cross-term bound, dominating both predecessors on every
+shape swept. F112-24, F112-25.
+
 ---
 
 ## 12. Alternatives I considered and did not take
@@ -1182,10 +1254,12 @@ restriction.
 **E. A correlation-tracking propagation rule. Taken rather than left**, and section 6b is the result: an
 affine grade recovers all 136 licences, is expressible with no feature gate, and composes with the corner
 rule into a union that reaches the oracle on every shape swept. What is left of the alternative is
-narrower and still open. A symbolic residual rather than an affine form would recover the multiplication
-cases the affine form loses, and I did not try one. Nor did I try re-centring an affine form on a
-non-negative domain, which is the obvious repair for its multiplication weakness and which I would attack
-first.
+narrower and still open. The re-centring I named as the thing to attack first was attacked, in section
+6b.3, and it dominates. What is left: a symbolic residual rather than a linear form, which would reach
+terms where the dependence is not linear; and the annihilation case, which no rule here touches because it
+is about the term's result not depending on a node rather than about any node's range. The second is where
+I would send the next dispatch, because the shape it fixes is a masked or predicated lane, which is
+ordinary in the consumers I11 names.
 
 **F. Whether the refinement needs to be in the type at all.** `111` alternative A raises it and rejects it
 on the ground that a per-site bound cannot survive being stored. My section 3.4 is the same argument from
@@ -1272,6 +1346,10 @@ bullet and which I wrote a condition-can-fire warning about in that probe's own 
 "the counter is live: False" and read as a failed check when the counter was live at 120 on a different
 term in the same run. Repairs are `p2b` and `p3b`.
 
+**One prediction of mine was refuted by my own probe and the refutation is recorded in that probe's
+output**: `p9b`'s header predicts the cross-term bound alone wins and it recovers nothing, which is how
+the mechanism in section 6b.3 got stated correctly rather than as a bundle.
+
 **Three of my own probes were defective beyond the two named above**, and all three are committed with
 the defect written into their own output rather than overwritten: `p7b`'s mutation could not fire
 because every extent I sweep is one-sided; `p8` half-applied the refused-bound reflex and landed on the
@@ -1325,6 +1403,10 @@ All under `112_probes/`, each committed as it ran, before this file was written.
   zero feature gates, **with its own root-only gate named as a defect**.
 - `p8c_the_per_node_discharge_check.rs`, `p8c_output.txt`, `p8c_asm.s`. The per-node check compiled, the
   affine advantage surviving it, and both arms aliasing their ungated controls.
+- `p9_a_one_sided_form_attacks_the_affine_rules_weakness.py`, `p9_output.txt`. Thirteen rows against
+  both predecessors and the oracle, with the correlation-breaking mutation.
+- `p9b_isolating_which_change_won.py`, `p9b_output.txt`. **My refuted prediction**, and the mechanism
+  statement it forced.
 - `p6_check_my_own_citations.py`, `p6_output.txt`. Thirty-four citations opened and their content tested,
   three of them wrong on the first run, with three mutations confirming the instrument fails when it
   should.
