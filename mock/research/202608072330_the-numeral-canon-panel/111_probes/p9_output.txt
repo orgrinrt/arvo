@@ -1,4 +1,4 @@
-$ python3 p9_check_my_own_citations.py
+$ python3 p9_check_my_own_citations.py   (extended with the reply's citations)
 ok    110_willsey_the_primitive_derived_cold.md                 :282    110 prices a split at nothing
 ok    110_willsey_the_primitive_derived_cold.md                 :357    110 prices the same act as a wall
 ok    110_willsey_the_primitive_derived_cold.md                 :370    110 says the wall has no in-language repair
@@ -17,13 +17,20 @@ ok    lib.rs                                                    :1116   a test a
 ok    lib.rs                                                    :370    the first of the two redundant assertions
 ok    lib.rs                                                    :372    the second, which restates it
 ok    stress.rs                                                 :68     the doc-comment occurrence that made two counts read 124
+ok    108_lamport_the_pair_attacked.md                          :825    108's membership criterion, the sentence after the one 111 and 112 used
+ok    108_lamport_the_pair_attacked.md                          :824    the middle sentence, whose reason 111 used and whose consequence 112 used
+ok    112_leijen_where_the_refinement_lives.md                  :110    112's agreement claim, which p2b's table does not measure
+ok    112_leijen_where_the_refinement_lives.md                  :1029   F112-6's 'only', refuted by its own p3b output
+ok    112_leijen_where_the_refinement_lives.md                  :1039   F112-7's unreachability claim, bounded by R2 to one-sided declarations
+ok    112_leijen_where_the_refinement_lives.md                  :1042   F112-8, the half of the correction 112 did not carry into F112-6
+ok    112_leijen_where_the_refinement_lives.md                  :1142   F112-23, which R2 connects to F112-7
+ok    p3b_output.txt                                            :21     the mixed-operation row that is exact
+ok    p3b_output.txt                                            :16     the repeated-leaf row that is exact
 
-18 citations checked, 0 failing
+27 citations checked, 0 failing
 
-MUTATION TEST of the instrument itself, because it came out green.
-Three mutations, each of which a working checker must catch:
-
-  wrong line number  (110:282 -> 110:182)            -> exit 1, 18 citations checked, 1 failing
-  wrong substring    (satfold 519 needle changed)    -> exit 1, 18 citations checked, 1 failing
-  wrong file         (82 -> 18 at line 770)          -> exit 1, 18 citations checked, 1 failing
-  unmutated                                          -> exit 0, 18 citations checked, 0 failing
+MUTATION TEST, rerun after the extension:
+  wrong line number  (108:825 -> 108:725)          -> exit 1, 27 citations checked, 1 failing
+  wrong substring    (112:1029 needle changed)     -> exit 1, 27 citations checked, 1 failing
+  wrong file         (112 -> 111 at line 1142)     -> exit 1, 27 citations checked, 1 failing
+  unmutated                                        -> exit 0, 27 citations checked, 0 failing
