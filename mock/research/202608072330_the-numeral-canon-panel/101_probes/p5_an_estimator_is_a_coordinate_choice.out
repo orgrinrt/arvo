@@ -1,0 +1,156 @@
+==============================================================================
+A. EACH ESTIMATOR'S RESOLUTION, CALIBRATED BY THE BYTE-IDENTICAL PAIR
+==============================================================================
+floor = 95% half-width of the resampled relative difference between two
+arms that compile to the same machine code, in percent of the estimate.
+signal = (max - min) / min of the estimate across the arms that differ.
+An estimator whose signal does not clear its own floor decides nothing.
+
+  bitpack-carrier-width   pair = bitpack-carrier-d16 / bitpack-carrier-d16-control
+    estimator            floor %   signal %  signal/floor
+    median                  1.18      78.15          66.4
+    mean                    1.48      74.63          50.5
+    iqr  (spread)          47.95    3552.33          74.1
+    idr  (spread)          51.86    2373.95          45.8
+    mad  (spread)          59.31    3253.03          54.8
+    p95  (level)            5.65      99.57          17.6
+    p99  (level)            7.34     113.74          15.5
+    p95-med (excess)      101.39    1331.80          13.1
+    p99-med (excess)      146.71    1363.08           9.3
+
+  bitpack-contend-decode   pair = bitpack-contend-d16 / bitpack-contend-d16-control
+    estimator            floor %   signal %  signal/floor
+    median                 18.36      53.44           2.9
+    mean                   40.22      61.64           1.5
+    iqr  (spread)         132.19      93.85           0.7
+    idr  (spread)         143.81      53.60           0.4
+    mad  (spread)         113.99     116.24           1.0
+    p95  (level)          143.19      54.75           0.4
+    p99  (level)          113.74      84.99           0.7
+    p95-med (excess)      399.96      94.78           0.2
+    p99-med (excess)      289.76     197.65           0.7
+
+  bitpack-contention   pair = bitpack-contend-d16 / bitpack-contend-d16-control
+    estimator            floor %   signal %  signal/floor
+    median                  7.41     141.63          19.1
+    mean                   66.10     398.11           6.0
+    iqr  (spread)          93.23    2729.02          29.3
+    idr  (spread)          86.63    5724.72          66.1
+    mad  (spread)         111.77    2866.02          25.6
+    p95  (level)           73.86    1324.69          17.9
+    p99  (level)          221.82     475.40           2.1
+    p95-med (excess)      220.10    3040.57          13.8
+    p99-med (excess)      395.04    1312.45           3.3
+
+  bitpack-wide   pair = bitpack-wide-d16 / bitpack-wide-d16-control
+    estimator            floor %   signal %  signal/floor
+    median                  7.82      65.83           8.4
+    mean                    8.69      65.79           7.6
+    iqr  (spread)          75.13     183.22           2.4
+    idr  (spread)          51.68     127.01           2.5
+    mad  (spread)          70.47     150.04           2.1
+    p95  (level)           26.95      57.99           2.2
+    p99  (level)           42.29      65.99           1.6
+    p95-med (excess)      118.93     113.34           1.0
+    p99-med (excess)      133.57     160.26           1.2
+
+==============================================================================
+B. IS THE CANDIDATE AN INDEPENDENT AXIS, OR THE MEDIAN AGAIN
+==============================================================================
+Pearson correlation against the median across every (arm, region) cell,
+and the same after the median is subtracted out of the candidate.
+
+  bitpack-carrier-width
+    estimator            corr with median
+    median                         1.0000
+    mean                           0.9997
+    iqr  (spread)                  0.5184
+    idr  (spread)                  0.6210
+    mad  (spread)                  0.5847
+    p95  (level)                   0.9978
+    p99  (level)                   0.9940
+    p95-med (excess)               0.7317
+    p99-med (excess)               0.7262
+
+  bitpack-contend-decode
+    estimator            corr with median
+    median                         1.0000
+    mean                           0.9990
+    iqr  (spread)                  0.2756
+    idr  (spread)                  0.3436
+    mad  (spread)                  0.2259
+    p95  (level)                   0.9780
+    p99  (level)                   0.7354
+    p95-med (excess)               0.2911
+    p99-med (excess)               0.0759
+
+  bitpack-contention
+    estimator            corr with median
+    median                         1.0000
+    mean                           0.9995
+    iqr  (spread)                  0.5199
+    idr  (spread)                  0.6123
+    mad  (spread)                  0.5227
+    p95  (level)                   0.9866
+    p99  (level)                   0.9458
+    p95-med (excess)               0.4200
+    p99-med (excess)               0.3703
+
+  bitpack-wide
+    estimator            corr with median
+    median                         1.0000
+    mean                           0.9992
+    iqr  (spread)                  0.3682
+    idr  (spread)                  0.5323
+    mad  (spread)                  0.2469
+    p95  (level)                   0.9892
+    p99  (level)                   0.9091
+    p95-med (excess)               0.6762
+    p99-med (excess)               0.5038
+
+==============================================================================
+C. WHAT EACH CANDIDATE ADDS AS A SECOND COORDINATE
+==============================================================================
+Exact count of sections a strictly positive weighting can reach on
+{median algo_ns, candidate}, by the instrument p4 calibrates against
+`97`'s published 72 and 9. One means the candidate changes nothing: no
+two strategies can disagree on it.
+
+  bitpack-carrier-width   5 arms, control dropped, 6 regions
+    estimator           sections reachable
+    median                               1
+    mean                                 1
+    iqr  (spread)                        6
+    idr  (spread)                        7
+    mad  (spread)                        8
+    p95  (level)                         1
+    p99  (level)                         1
+    p95-med (excess)                     3
+    p99-med (excess)                     2
+
+  bitpack-contend-decode   4 arms, control dropped, 6 regions
+    estimator           sections reachable
+    median                               1
+    mean                                 5
+    iqr  (spread)                        7
+    idr  (spread)                        6
+    mad  (spread)                        7
+    p95  (level)                         7
+    p99  (level)                         5
+    p95-med (excess)                     9
+    p99-med (excess)                     8
+
+  bitpack-contention   SKIPPED: 5^12 = 244140625 sections is beyond exhaustive enumeration
+
+  bitpack-wide   3 arms, control dropped, 6 regions
+    estimator           sections reachable
+    median                               1
+    mean                                 2
+    iqr  (spread)                        8
+    idr  (spread)                        5
+    mad  (spread)                        8
+    p95  (level)                         3
+    p99  (level)                         2
+    p95-med (excess)                     5
+    p99-med (excess)                     5
+
