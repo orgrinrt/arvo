@@ -1,0 +1,34 @@
+==============================================================================
+p9b. Isolating which change won
+==============================================================================
+
+  x * y                          symAff    31 CORNER-XTERM    31 ONESIDED    76 oracle    76 of   256  unsound(b)=0
+  (x + y) * z                    symAff   151 CORNER-XTERM   151 ONESIDED   385 oracle   385 of  4096  unsound(b)=0
+  (x+y) * (z+w)                  symAff    31 CORNER-XTERM    31 ONESIDED   212 oracle   212 of   256  unsound(b)=0
+  (x + y) - y                    symAff   136 CORNER-XTERM   136 ONESIDED   136 oracle   136 of   256  unsound(b)=0
+  x * (y - y) SIGNED             symAff    64 CORNER-XTERM    64 ONESIDED    64 oracle    64 of    64  unsound(b)=0
+  x * y, leaves -4..=b           symAff     0 CORNER-XTERM     0 ONESIDED     0 oracle     0 of   144  unsound(b)=0
+
+  rows where the corner cross term matches the one-sided form: 3/6
+  rows where the corner cross term alone reaches the oracle  : 3/6
+
+  So the two changes each contribute and neither alone is the answer.
+
+-----------------------------------------------------------------------------
+THE PREDICTION WAS WRONG, AND THE REFUTATION IS THE MECHANISM STATEMENT
+-----------------------------------------------------------------------------
+I predicted the corner cross-term bound alone would recover the whole win and
+that the [0, 1] basis would turn out incidental.  It does not, and the reason
+is visible once measured: in the centre-and-radius basis the residual range is
+[-r, r], SYMMETRIC BY CONSTRUCTION, so its corners are exactly -r*r and +r*r
+and the corner bound reduces to the standard symmetric bound.  The corner rule
+can only be tighter where a residual is one-signed, and only the [0, 1] basis
+ever produces a one-signed residual.
+
+So the two changes are NOT separable and neither is the answer alone.  The
+correct statement is that the tighter cross term is what wins, and the basis is
+what makes it available: the win is the pair.
+
+This is worth more than the confirmation would have been.  A design taking
+"use a corner cross term" from p9 without also taking the basis would get the
+symmetric answer back and would not know why.
