@@ -1,0 +1,61 @@
+================================================================================================
+p4. Arm W1 at a nonzero fraction width
+================================================================================================
+
+P1/P2/P3. Is the map a homomorphism, per operation, per fraction width
+
+  primitive                   add          sub          mul
+  uW4F0/wrap               0/2116       0/2116       0/2116
+  uW4F1/wrap               0/2116       0/2116     608/2116
+  uW4F2/wrap               0/2116       0/2116    1234/2116
+  iW4F0/wrap               0/2116       0/2116       0/2116
+  iW4F2/wrap               0/2116       0/2116    1451/2116
+  uW4F0/sat                0/2116     885/2116       0/2116
+  uW4F2/sat                0/2116     885/2116     180/2116
+
+  a witness for the F > 0 multiplication failure under wrap:
+    a = 1/4, b = 4: R(R(a)*R(b)) = 0, R(a*b) = 1
+    a = 1/4, b = 17/4: R(R(a)*R(b)) = 0, R(a*b) = 1
+
+P4. The root-only check at F > 0 under wrap, split by term shape
+
+  uW4F0/wrap                         no-mul: 16896 cells,    0 unsound,    0 checks-differ   |   with-mul: 20736 cells,    0 unsound,  540 checks-differ
+  uW4F1/wrap                         no-mul: 16896 cells,    0 unsound,    0 checks-differ   |   with-mul: 20736 cells, 1984 unsound,  674 checks-differ
+  uW4F2/wrap                         no-mul: 16896 cells,    0 unsound,    0 checks-differ   |   with-mul: 20736 cells, 4251 unsound,  935 checks-differ
+  iW4F2/wrap                         no-mul: 16896 cells,    0 unsound,    0 checks-differ   |   with-mul: 20736 cells, 12020 unsound, 1091 checks-differ
+
+P5. Restricting the operands to a coarse grid, which is `112` F112-4's
+    grid part of the declaration
+
+  operands declared on a grid of step 1/4: hom fails on 0/256, every product already on the fine grid: False
+  operands declared on a grid of step 1/2: hom fails on 0/64, every product already on the fine grid: True
+  operands declared on a grid of step 1: hom fails on 0/16, every product already on the fine grid: True
+
+  so the grid part of a declaration is what restores the homomorphism
+  at F > 0, exactly as the magnitude part restores the completion.
+
+INSTRUMENT CHECK
+
+  F = 0 mul under wrap: 0/2116   (this is the control, must be 0)
+  F = 2 mul under wrap: 1234/2116
+  the check separates the two fraction widths: True
+
+-----------------------------------------------------------------------------
+TWO SECTIONS OF THIS RUN ARE VACUOUS, FOUND BY ITS AUTHOR
+-----------------------------------------------------------------------------
+1. P4's "no-mul" rows report 0 unsound over 0 checks-differ.  With every
+   declaration one-sided from zero, the root of an add/sub chain over a
+   one-signed domain is the widest node, so the root-only and per-node checks
+   are the same predicate by construction and the zero says nothing about arm
+   W1.  That is `112` F112-23 biting a probe of mine for the third time.
+
+   The mul rows are NOT affected: 540 to 1091 checks-differ, and 1984 to 12020
+   unsound at F > 0 against 0 at F = 0.  Those rows carry the finding.
+
+2. P5 draws its operands from `P.values()`, which are all already in range, so
+   `R(a) = a` and the homomorphism identity is trivially satisfied whatever the
+   grid is.  Reporting 0/256 at the FINE grid, where the P1 table reports
+   1234/2116 over a wider ambient span, is the tell.  It measures nothing.
+
+Both repaired in `p4b`: two-endpoint declarations for P4, and an ambient span
+wider than the container for P5.
