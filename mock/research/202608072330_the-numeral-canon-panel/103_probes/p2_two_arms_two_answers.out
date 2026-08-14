@@ -1,0 +1,62 @@
+p2. do the quantiser-radix arms compute one value?
+
+arms   : quantiser-radix2 (run_binary32) and quantiser-radix10 (run_decimal32)
+input  : RadixAdd::<SPREAD>::build_input(seed), the family's own Routine
+sizes  : 0, 2, 8, 20, the four committed in bench.toml for this family
+compare: exact rational, i128 num/den, no float in the comparison path
+
+--- SPREAD = 0 (a committed size for this family) ---
+  lanes compared            : 2048
+  representation identical  : 183 of 2048
+  denoted value identical   : 59 of 2048
+  denoted value DIFFERENT   : 1989 of 2048  (97.12%)
+  undecidable (overflow)    : 0
+  flag words differing      : 496
+    seed 11400714819323198485 lane 0: binary32 (12386336, 2) = 49545344/1   decimal32 (3870730, 6) = 3870730000000/1
+    seed 11400714819323198485 lane 1: binary32 (13843502, 0) = 13843502/1   decimal32 (6921751, 1) = 69217510/1
+    seed 11400714819323198485 lane 2: binary32 (13369306, -10) = 6684653/512   decimal32 (1336931, -9) = 1336931/1000000000
+    seed 11400714819323198485 lane 3: binary32 (11787565, -7) = 11787565/128   decimal32 (1178756, -6) = 294689/250000
+
+--- SPREAD = 2 (a committed size for this family) ---
+  lanes compared            : 2048
+  representation identical  : 45 of 2048
+  denoted value identical   : 16 of 2048
+  denoted value DIFFERENT   : 2032 of 2048  (99.22%)
+  undecidable (overflow)    : 0
+  flag words differing      : 1122
+    seed 11400714819323198485 lane 0: binary32 (12386336, 2) = 49545344/1   decimal32 (3870730, 6) = 3870730000000/1
+    seed 11400714819323198485 lane 1: binary32 (8493168, 3) = 67945344/1   decimal32 (8996022, 3) = 8996022000/1
+    seed 11400714819323198485 lane 2: binary32 (14294801, -9) = 14294801/512   decimal32 (5156391, -8) = 5156391/100000000
+    seed 11400714819323198485 lane 3: binary32 (15394214, -7) = 7697107/64   decimal32 (4424741, -6) = 4424741/1000000
+
+--- SPREAD = 8 (a committed size for this family) ---
+  lanes compared            : 2048
+  representation identical  : 17 of 2048
+  denoted value identical   : 5 of 2048
+  denoted value DIFFERENT   : 2043 of 2048  (99.76%)
+  undecidable (overflow)    : 0
+  flag words differing      : 563
+    seed 11400714819323198485 lane 0: binary32 (12386336, 2) = 49545344/1   decimal32 (3870730, 6) = 3870730000000/1
+    seed 11400714819323198485 lane 1: binary32 (8493168, 3) = 67945344/1   decimal32 (8996022, 3) = 8996022000/1
+    seed 11400714819323198485 lane 2: binary32 (10211676, -3) = 2552919/2   decimal32 (5073432, -2) = 1268358/25
+    seed 11400714819323198485 lane 3: binary32 (16471825, -5) = 16471825/32   decimal32 (3607467, -3) = 3607467/1000
+
+--- SPREAD = 20 (a committed size for this family) ---
+  lanes compared            : 2048
+  representation identical  : 9 of 2048
+  denoted value identical   : 1 of 2048
+  denoted value DIFFERENT   : 2047 of 2048  (99.95%)
+  undecidable (overflow)    : 0
+  flag words differing      : 217
+    seed 11400714819323198485 lane 0: binary32 (9358285, 7) = 1197860480/1   decimal32 (1390415, 10) = 13904150000000000/1
+    seed 11400714819323198485 lane 1: binary32 (8951498, 6) = 572895872/1   decimal32 (9016953, 6) = 9016953000000/1
+    seed 11400714819323198485 lane 2: binary32 (10211676, -3) = 2552919/2   decimal32 (5073432, -2) = 1268358/25
+    seed 11400714819323198485 lane 3: binary32 (14430591, 4) = 230889456/1   decimal32 (3606649, 6) = 3606649000000/1
+
+READING
+  Representation identity failing proves nothing: two radices spell
+  the same quantity with different digits.
+  Denoted-value identity is the question. A nonzero DIFFERENT count
+  means the two committed arms of this family round the same exact
+  sum to different results, so the family compares cost at TWO
+  answers rather than at a fixed one.

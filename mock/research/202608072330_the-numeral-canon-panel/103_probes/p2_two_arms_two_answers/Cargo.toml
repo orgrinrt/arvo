@@ -1,0 +1,15 @@
+[package]
+name = "p2-two-arms-two-answers"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "p2"
+path = "src/main.rs"
+
+[dependencies]
+bench-quantiser-radix-shared = { path = "../../../../benches/variants/quantiser-radix-shared" }
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+
+[workspace]
