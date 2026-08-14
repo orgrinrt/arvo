@@ -1,0 +1,41 @@
+the arm whose verdict the third coordinate changes: bitpack-carrier-packed
+resamples 4000, seed 20260814, two-sided 95% bootstrap intervals
+
+n =    16384  rescued by spread
+    its (time, bytes) dominator: bitpack-carrier-packed-simd
+      IQR difference (dominator minus packed):       29.5 ns   CI [-32.0, 177.3]   NOT measurable
+      median difference for scale:                      -149.9 ns   CI [-157.5, -139.6]
+n =   131072  dominated under both
+n =  1048576  rescued by spread
+    its (time, bytes) dominator: bitpack-carrier-packed-simd
+      IQR difference (dominator minus packed):      593.6 ns   CI [-175.8, 1306.0]   NOT measurable
+      median difference for scale:                     -7583.2 ns   CI [-7860.3, -7172.4]
+n =  2097152  rescued by spread
+    its (time, bytes) dominator: bitpack-carrier-packed-simd
+      IQR difference (dominator minus packed):      120.5 ns   CI [-1530.1, 658.6]   NOT measurable
+      median difference for scale:                    -16586.0 ns   CI [-17197.3, -15591.6]
+n =  4194304  rescued by spread
+    its (time, bytes) dominator: bitpack-carrier-packed-simd
+      IQR difference (dominator minus packed):     2212.1 ns   CI [-1331.0, 6326.7]   NOT measurable
+      median difference for scale:                    -35095.0 ns   CI [-38955.0, -32684.1]
+n =  8388608  dominated under both
+
+regions where the third coordinate does the rescuing: 4
+of those, comparisons whose spread difference is measurable: 0
+
+and the same question asked of every arm pair, so the answer is not
+about one arm
+  arm pairs across all regions: 90
+  pairs whose IQR difference excludes zero: 58 (64.4%)
+
+reading
+  None of the comparisons the rescue depends on has a measurable
+  spread difference, so the rescue is an artifact of an estimate and
+  the third coordinate should be dropped. `97` section 10's two-arm
+  finding then stands unqualified and p1b's rescue is withdrawn.
+
+  What this does NOT establish: that the spread of a bench arm is a
+  thing a consumer should weigh. It establishes only that the arms
+  differ on it by more than the estimate's own noise. Whether tail
+  behaviour belongs in the coordinate set is a design question and this
+  probe does not touch it.
