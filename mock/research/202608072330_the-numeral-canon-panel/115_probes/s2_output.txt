@@ -1,0 +1,34 @@
+S2. where a selection between two propagation rules can live
+==============================================================================
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+recursion_limit lowered to 32 so the walls arrive at small fold lengths;
+114's absolute lengths are not being reproduced, its ordering is.
+
+  variant            2     4     6     8    12    16    24
+  neither           ok    ok    ok    ok    ok    ok    ok
+  cheap             ok    ok    ok    ok    ok    ok    ok
+  expensive         ok    ok    ok    ok    ok  FAIL  FAIL
+  const_if          ok    ok    ok    ok    ok  FAIL  FAIL
+  impl_only         ok    ok    ok    ok    ok  FAIL  FAIL
+  types_only        ok    ok    ok    ok    ok    ok    ok
+  select_proj       ok    ok    ok    ok    ok  FAIL  FAIL
+  early_cheap       ok    ok    ok    ok    ok    ok    ok
+
+first refusal, with the diagnostic:
+  neither        compiles at every length swept
+  cheap          compiles at every length swept
+  expensive      L = 16   error[E0275]: overflow evaluating the requirement `Cons<K<0>, Nil>: Vek`
+  const_if       L = 16   error[E0275]: overflow evaluating the requirement `Cons<K<0>, Nil>: Vek`
+  impl_only      L = 16   error[E0275]: overflow evaluating the requirement `Cons<K<0>, Nil>: Vek`
+  types_only     compiles at every length swept
+  select_proj    L = 16   error[E0275]: overflow evaluating the requirement `Cons<K<0>, Nil>: Vek`
+  early_cheap    compiles at every length swept
+
+------------------------------------------------------------------------------
+predictions, checked:
+  P1 neither compiles everywhere              CONFIRMED
+  P2 cheap outlasts expensive                 CONFIRMED
+  P3 const_if and impl_only refuse with expensive  CONFIRMED
+  P4 types_only matches cheap                 CONFIRMED
+  P5 select_proj refuses with expensive       CONFIRMED
+  P6 early_cheap matches cheap                CONFIRMED
