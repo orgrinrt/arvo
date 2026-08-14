@@ -276,10 +276,44 @@ while it still costs four files rather than nine.
 content written out anyway. And it is checked by someone who did not write it, working from the member
 files forward, because the author of a compression is the person who believes it entails.
 
-## The mode: explore, do not settle
+## The mode: explore to reach an answer, and do not settle prematurely
 
 Standing for roughly the panel's first hundred files, on op's instruction. Full statement in
 `00_brief.md`; his own words and the eight open questions are in `28_op_answers_two.md`.
+
+**Past that span now, and the emphasis has moved.** Op, after reading a unit that closed three
+questions and opened thirty-nine:
+
+> The exploration stops being the purpose, and instead a means to an end. Exploration suits the attacks
+> as well as the solutions, but isn't itself a purpose.
+
+Nothing below is retracted. The coordinator still never closes a question on its own authority, an
+option is still carried in full, and a route is still killed only with its diagnostic. What changes is
+what a **unit** owes when it finishes: an agreement on something, or a disagreement located precisely
+enough that a later unit can decide it. A unit that ends having refuted four things and settled none
+has produced a shorter option register and nothing else.
+
+**Attack is the middle of a unit and cannot be its end.** Refuting a predecessor is necessary and is
+half the work. The other half is addressed to the party refuted: **several replacements**, offered so
+the author of the refuted thing has material to rebuild from and can see which one unlocks something.
+An attacker that refutes and proposes nothing has done half a dispatch.
+
+**A refuted claim comes back to its author.** Members are resumed rather than replaced, so the expert
+that made a claim answers with everything it derived still in context. Concede, hold with a stated
+reason, or synthesise; all three are results, and holding with a reason is as good an outcome as
+conceding. What is forbidden is stopping at the refutation.
+
+**Carrying something forward unchanged is a result, and your file says so with a count.** Name what you
+are keeping and from whom. Agreement reached independently is the only way the two-expert rung is ever
+earned; agreement inherited by reading is not, and your file says which yours is.
+
+**An option you open states what would close it.** An option with no decision procedure attached is a
+question mark that accretes rather than a fork anyone can resolve.
+
+**Neither failure mode is the safe one.** Op: "so it doesn't rush too quickly into agreements or
+convergence, but also won't stall forever before it starts snowballing." A settlement manufactured to
+fit a budget is worse than an open question, because it looks decided. A corpus that explores forever
+accretes nothing. Do not force a convergence that is not forming; where one is forming, feed it.
 
 **A file that closes a question on its own authority has misread the assignment.** One that opens
 three well-argued directions and says what would distinguish them has read it correctly.
