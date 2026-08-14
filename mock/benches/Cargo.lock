@@ -169,12 +169,12 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "mockspace-bench-core"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#084e780c729a33ec21ea7e7a3157cdbd86022cf2"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#bce17f6c7653573e35dfe64a2e08a11a85cfeeab"
 
 [[package]]
 name = "mockspace-bench-harness"
 version = "0.1.0"
-source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#084e780c729a33ec21ea7e7a3157cdbd86022cf2"
+source = "git+ssh://git@github.com/hiisi-digital/mockspace.git?branch=dev#bce17f6c7653573e35dfe64a2e08a11a85cfeeab"
 dependencies = [
  "libloading",
  "mockspace-bench-core",
