@@ -562,3 +562,200 @@ forever for a distinction the existing one already expresses.
 ### 6.3 `102`'s p5 constraint: sound, and currently vacuous
 
 Section 7, because it needed its own measurement.
+
+## 7. `102`'s p5 constraint, tested on real arms instead of synthetic ones
+
+The constraint, verbatim from `102_probes/p5_a_measured_coordinate_over_answer_differing_arms.out`:
+
+> A weighting may include a MEASURED coordinate only where every arm it ranges over computes the same
+> answer. Where the arms disagree, every coordinate in the weighting must be computed or declared, because
+> otherwise the program's output is a function of a benchmark's noise.
+
+Its demonstration is explicitly synthetic on the time column, and its probe says why:
+
+> The time column is SYNTHETIC, because no committed family has arms that disagree. That absence is the
+> finding, not a gap in this probe.
+
+**The absence is not real**, which is sections 3.1 through 3.4. So the constraint can be tested against
+real committed arms, which is a strictly stronger test of the same claim and is the natural thing to do
+with a refuted premise: use it to improve the thing that rested on it rather than to discard it.
+
+**p7** does that with nothing synthetic in it. The error coordinate is exact, computed in rational
+arithmetic over the two committed radix kernels. The time coordinate is the committed `algo_ns` samples,
+resampled with replacement 2000 times per exchange rate, so the noise is the corpus's own measured floor
+rather than a chosen sigma. The cost is `rate * (time / time_min) + (error / error_min)`, swept from pure
+accuracy at `rate = 0` to effectively pure speed at `rate = 100`.
+
+The exact error coordinates first, from p7 part one, 200000 trials on the controlled band:
+
+```
+decimal-quantiser-radix-sweep   quantiser-radix2     1.755491785840e-9
+decimal-quantiser-radix-sweep   quantiser-radix10    1.161072102296e-7
+```
+
+and the control, at every committed subnormal fraction:
+
+```
+quantiser-vs-fadd-subnormal-sweep-n0    quantiser-hardware   1.927733123277e-8
+quantiser-vs-fadd-subnormal-sweep-n0    quantiser-software   1.927733123277e-8
+...
+quantiser-vs-fadd-subnormal-sweep-n100  quantiser-hardware   0.000000000000e0
+quantiser-vs-fadd-subnormal-sweep-n100  quantiser-software   0.000000000000e0
+```
+
+**Identical to all twelve printed digits at every one of the six sizes.** That is a third independent
+confirmation of the bit-exactness claim in `quantiser-fadd-shared`'s header, after its own 98304-check
+test and after p4's control, and it is worth having because that claim previously pointed at a closed
+panel file for its evidence. Also worth noting for its own sake: at 100% subnormal the error is exactly
+zero, since two subnormals share an exponent and their significands add without rounding.
+
+Now the bootstrap:
+
+```
+  decimal-quantiser-radix-sweep_n0.csv
+    quantiser-radix10   mean_ns= 8749.66  rel_time= 1.180  rel_error= 66.1394
+    quantiser-radix2    mean_ns= 7412.21  rel_time= 1.000  rel_error=  1.0000
+        rate  winners  errors   error spread  modal winner
+         0.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+         ...
+       100.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+```
+
+and the same at `n2`, `n8` and `n20`, where `rel_time` for `radix10` is 1.507, 1.553 and 1.640. The
+control reports zero spread at every rate too, which it must, since its arms agree.
+
+**The hazard has zero real instances in this corpus, and the reason is not the weighting.** `radix2` is
+**1.18x to 1.64x faster and 66x more accurate** at every committed size. It **dominates** on both
+coordinates, so no non-negative weighting selects `radix10` and no resampling of the timings can change
+that, at any exchange rate. The argmin is `radix2` at 2000 of 2000 resamples, eleven rates, four regions.
+
+So the constraint stands as a principle and gains a predicate it did not carry:
+
+> A measured coordinate over answer-differing arms makes the program's output a function of benchmark
+> noise **where the cost ordering and the answer ordering disagree**. Where one arm dominates on both, the
+> argmin is stable under the corpus's own noise and the hazard does not arise.
+
+That is not a weakening. It is the difference between a rule that fires on a condition anyone can check
+(do the orderings conflict) and one that fires on a condition that turns out to be insufficient (do the
+arms differ). And it means the constraint is currently a **guard for a case the corpus does not yet
+contain**, which is a fine thing for a canon to carry as long as it is labelled as one rather than
+presented as a live hazard.
+
+**The predicate on p7 itself, stated because it is narrower than I would like.** The error coordinate is
+computed on the controlled `exp = 0` band, not on the family's own committed band, because on the
+committed band the two arms are handed triples denoting different reals and a cross-arm error is not
+defined there at all. The time coordinate is from the committed band. So p7 mixes two input distributions,
+deliberately and with no way around it that I found, and its conclusion is about the arms rather than
+about the committed run. A reader who wants the committed-band version needs a fidelity coordinate to
+exist, which is the whole point.
+
+## 8. What I tried that did not work, with what closed each
+
+The dead routes, because the enumeration is usually worth more than the conclusion.
+
+**Reading the answer off the committed CSVs.** The schema has a `digest` column and the obvious instrument
+is to group by region and diff it across arms. Closed by p1 in one pass: zero in all 104080 rows. Also
+`score`, `input_tag`, `instructions`, `cycles`, `setup_ns` and `first_ns`, all constant. The corpus cannot
+answer a question about answers.
+
+**Running the four standalone arms.** `fnv1a`, `xxhash3`, `spectral-bisection` and `structural-decomposition`
+all import from the deleted `mock/crates/` tree and do not build. Recoverable from git, and I stopped:
+`the-canon-design-code-chain.md` says consulting the dead tier during canon work reattaches a tier that had
+to be detached, and while a verification is not canon authoring, building against it would have made every
+downstream number rest on a tree the project has declared dead. The weaker claim, that nothing requires
+those arms to agree, needed no build.
+
+**Getting the committed-band error coordinate for the radix family.** Blocked by the family's own grid-step
+exponent convention: on that band the two arms denote different reals, so "distance from the exact answer"
+has two different exact answers. I tried three framings (per-arm error against each arm's own denoted
+input; error of the pair against a common rational; error after renormalising the exponents to a shared
+scale) and every one of them either measures the input convention rather than the arms, or silently
+re-imposes the controlled band. p3's controlled band is the honest version and I stated its narrowness
+rather than dressing it as the committed one.
+
+**Finding a region where the accuracy and cost orderings conflict.** This is the one I most wanted, because
+it would have given `102`'s p5 hazard a real instance. There is none. `radix2` dominates `radix10` on both
+coordinates at all four sizes, and the fadd arms have identical error so their 15x to 18x time gap ranks
+them without any conflict. Searched over all 254 regions via p6: the only regions with a possible accuracy
+ordering are the two quantiser families, and neither conflicts. Closed by measurement, in p7.
+
+**Establishing which harness version produced the pre-wiring CSVs.** I wanted to say what
+`validation_plan` looked like at `25f736b` so the story would be complete. `mock/benches/Cargo.lock` pins
+one revision now and the lock at that commit pins another, and reconstructing the harness's behaviour at
+each of the 24 producing commits is a git archaeology exercise with a small payoff, because p8 already
+settles the question that matters: the driver did not call validation at all, so what the harness would
+have done is moot. Left undone deliberately, and named here so nobody assumes it was checked.
+
+## 9. Findings, each with its predicate
+
+Predicate notation per I13 and `RULES.md`: a dimension listed with a range or `any` was established across
+it, a dimension listed with a fixed value was established there only, and a dimension absent means the
+finding does not hold anywhere that dimension is present.
+
+**F-103-1. The committed CSV corpus records no per-arm answer and no per-arm quality number.**
+`digest`, `score`, `input_tag`, `instructions`, `cycles`, `setup_ns` and `first_ns` each hold a single
+value across all 104080 rows in all 254 files.
+*holds for: the committed corpus at HEAD of `feat/arvo-shape-topic`, files 254, rows 104080, columns all
+17, threads = 1.* Evidence: `103_probes/p1_what_the_committed_data_records.out`.
+
+**F-103-2. Twenty of 254 committed regions are not pinned to one answer by their own routine.**
+Ten pin a property only, four have no oracle at all and consent to differ, six are single-arm.
+*holds for: the committed corpus at HEAD, regions 254, routines all 256 registered in `routine_for_n`,
+threads = 1.* Evidence: `103_probes/p6_the_region_census.out`,
+`103_probes/p5_census_what_each_family_pins.out`.
+
+**F-103-3. The two arms of `decimal-quantiser-radix-sweep` compute different values on its own committed
+input distribution.** 97.12% to 99.95% of lanes across the four committed sizes, exact rational
+comparison, zero undecidable.
+*holds for: bench `decimal-quantiser-radix-sweep`, SPREAD in {0, 2, 8, 20} which is all four committed,
+seeds 8 per size, lanes 2048 per size, threads = 1.* Evidence:
+`103_probes/p2_two_arms_two_answers.out`.
+
+**F-103-4. Those two arms differ in accuracy on identical exact input, with a strict ordering.**
+53.72% of 200000 trials answer differently; `binary32` strictly closer on 106167 and `decimal32` strictly
+closer on 0.
+*holds for: the two committed kernels at `<R=2,P=24,EMIN=-126,EMAX=127>` and `<R=10,P=7,EMIN=-95,EMAX=96>`,
+operands both non-negative with `mag` in `[10^6, 10^7)` and `exp = 0`, trials 200000, threads = 1.*
+Evidence: `103_probes/p3_same_input_two_answers.out`.
+
+**F-103-5. The harness's own byte-exact cross-variant gate refuses that region and accepts the fadd
+control.** 400 of 400 subject seed-size pairs refused, 600 of 600 control pairs accepted.
+*holds for: harness `bce17f6` as pinned by `mock/benches/Cargo.lock`, `validation_plan(false, None)`,
+seeds the harness's own 100 from `Rng::new(0xCAFE_BABE_DEAD_BEEF)`, subject sizes all four committed,
+control sizes all six committed, threads = 1.* Evidence:
+`103_probes/p4_the_harness_gate_refuses_a_committed_family.out`.
+
+**F-103-6. 175 of 254 committed regions were produced before the driver ever called cross-variant
+validation.** The call landed in `9db33f8c` on 2026-08-08, verified present at that commit and absent at
+its parent. Every one of the 20 non-pinned regions is in the pre-wiring set.
+*holds for: the committed corpus at HEAD, regions 254, producing commits all 24 and all resolvable,
+threads = 1.* Evidence: `103_probes/p8_when_the_gate_was_actually_running.out`.
+
+**F-103-7. `quantiser-fadd`'s two committed arms are bit-exact, confirmed three independent ways.**
+Its own test over 98304 checks, p4's gate accepting on 600 of 600, and p7's exact error coordinates
+matching to all twelve printed digits at all six committed sizes.
+*holds for: bench `quantiser-vs-fadd-subnormal-sweep`, PCT in {0, 10, 25, 50, 75, 100} which is all six
+committed, the family's own `build_input` distribution, seeds 64 per PCT in the test and 100 per size in
+p4, threads = 1.* Evidence: `103_probes/p4...out`, `103_probes/p7_errors.out`.
+
+**F-103-8. `102`'s measured-coordinate hazard has no instance in the committed corpus, because the
+accuracy winner is also the speed winner.** `radix2` is 1.18x to 1.64x faster and 66x more accurate;
+argmin stable at 2000 of 2000 bootstrap resamples across eleven exchange rates and four regions, error
+spread exactly zero throughout.
+*holds for: bench `decimal-quantiser-radix-sweep` at all four committed sizes with `quantiser-vs-fadd-subnormal-sweep`
+at four sizes as control, time from the committed `algo_ns` samples 80 per arm per region, error from the
+controlled `exp = 0` band, resamples 2000 per rate, rates 11 spanning `[0, 100]`, threads = 1.* Evidence:
+`103_probes/p7_the_constraint_on_real_arms.out`.
+
+**F-103-9. One committed family already validates answer-differing arms correctly, arm by arm against
+each arm's own declared semantics.** `quantiser-radix-shared`, two oracles, 32768 checks each, with the
+check count itself asserted so a shortened sweep fails.
+*holds for: crate `quantiser-radix-shared` at HEAD, SPREAD in {0, 2, 8, 20} which is all four committed,
+seeds 32 per size, threads = 1.* Evidence: the two `#[test]` bodies read in full, and the suite run in
+section 0.2.
+
+**F-103-10. The suite is 123 tests across 13 crates, all passing, with one redundant assertion and no
+tautological, sampled or assertion-free test in the surface examined.**
+*holds for: the thirteen bench shared crates at HEAD, tests all 123, surface examined being every
+`validate_output` body and every cross-arm assertion and both quantiser families in full, threads = 1
+for the last seven crates and default for the first six.*
