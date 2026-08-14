@@ -1,0 +1,37 @@
+--- 1. per-realisation monotonicity, window [-7q, 7q] closed under negation ---
+U=1/5: 0 violations of 448 adjacent pairs (must be 0)
+U=1/3: 0 violations of 448 adjacent pairs (must be 0)
+U=1/2: 0 violations of 448 adjacent pairs (must be 0)
+U=17/32: 0 violations of 448 adjacent pairs (must be 0)
+U=4/5: 0 violations of 448 adjacent pairs (must be 0)
+U=1/97: 0 violations of 448 adjacent pairs (must be 0)
+U=96/97: 0 violations of 448 adjacent pairs (must be 0)
+--- 2. exact expectation as U-interval measure ---
+x=-13/32: E=-13/32, exact=YES (must be YES)
+x=7/32: E=7/32, exact=YES (must be YES)
+x=1/2: E=1/2, exact=YES (must be YES)
+x=3: E=3, exact=YES (must be YES)
+x=-27/8: E=-27/8, exact=YES (must be YES)
+--- 3. saturate . Q_U on asymmetric signed range [-8, 7] ---
+U=1/5: 0 violations of 736 (must be 0)
+U=1/3: 0 violations of 736 (must be 0)
+U=1/2: 0 violations of 736 (must be 0)
+U=17/32: 0 violations of 736 (must be 0)
+U=4/5: 0 violations of 736 (must be 0)
+U=1/97: 0 violations of 736 (must be 0)
+U=96/97: 0 violations of 736 (must be 0)
+--- 4. wrap commutation per realisation, mod span and representative level ---
+W=3 signed U=1/3: 0 quotient mismatches (must be 0); 105 representative mismatches (expected > 0 at top cells)
+W=3 signed U=96/97: 0 quotient mismatches (must be 0); 0 representative mismatches (expected > 0 at top cells)
+W=3 unsigned U=1/3: 0 quotient mismatches (must be 0); 105 representative mismatches (expected > 0 at top cells)
+W=3 unsigned U=96/97: 0 quotient mismatches (must be 0); 0 representative mismatches (expected > 0 at top cells)
+W=4 signed U=1/3: 0 quotient mismatches (must be 0); 105 representative mismatches (expected > 0 at top cells)
+W=4 signed U=96/97: 0 quotient mismatches (must be 0); 0 representative mismatches (expected > 0 at top cells)
+W=4 unsigned U=1/3: 0 quotient mismatches (must be 0); 105 representative mismatches (expected > 0 at top cells)
+W=4 unsigned U=96/97: 0 quotient mismatches (must be 0); 0 representative mismatches (expected > 0 at top cells)
+--- 5. the midpoint of the family is half_down at ties, not half_up ---
+at 8 tie points: Q_(1/2) == half_down on 8 (must be 8); == half_up on 0 (must be 0)
+on 435 non-tie points: Q_(1/2) == half_up on 435 (must be 435)
+--- 6. control: the couplings differ, computed exactly ---
+P[inversion] independent coupling: 1/25 (must be > 0)
+P[inversion] shared threshold:     0 (must be 0)
