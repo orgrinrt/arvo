@@ -64,7 +64,11 @@ census_over!(wrap, |a, b| ((a + b - LO).rem_euclid(HI - LO + 1)) + LO);
 
 census_over!(sat_top_only, |a, b| {
     let s = a + b;
-    if s > HI { HI } else { s }
+    if s > HI {
+        HI
+    } else {
+        s
+    }
 });
 
 const SAT_BOTH: (u32, u32) = sat_both();

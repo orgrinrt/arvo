@@ -48,7 +48,11 @@ pub struct Sat;
 impl Completion for Sat {
     #[inline(always)]
     fn repair(x: u32) -> u8 {
-        if x > 255 { 255 } else { x as u8 }
+        if x > 255 {
+            255
+        } else {
+            x as u8
+        }
     }
 }
 
@@ -86,10 +90,7 @@ pub const fn discharged<B: Bound>() -> bool {
 /// The one addition. The gate is const and selects between the bare instruction
 /// and the completion; nothing branches at runtime.
 #[inline(always)]
-pub fn add<A: Bound, B: Bound, C: Completion>(
-    a: Fx<A, C>,
-    b: Fx<B, C>,
-) -> Fx<BSum<A, B>, C> {
+pub fn add<A: Bound, B: Bound, C: Completion>(a: Fx<A, C>, b: Fx<B, C>) -> Fx<BSum<A, B>, C> {
     let exact = a.get() as u32 + b.get() as u32;
     let v = if const { <BSum<A, B> as Bound>::HI <= 255 } {
         exact as u8

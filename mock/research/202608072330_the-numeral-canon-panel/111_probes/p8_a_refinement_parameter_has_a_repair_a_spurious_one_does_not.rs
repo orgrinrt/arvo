@@ -106,5 +106,8 @@ fn main() {
     println!("widening is the identity on all {ok} of 256 representations");
     println!("widen_7_to_15(7)      = {}", widen_7_to_15(7));
     println!("widen_derived(100)    = {}", widen_derived(100));
-    println!("BSum<Lit<40>,Lit<60>>::HI = {}", <BSum<Lit<40>, Lit<60>> as Bound>::HI);
+    println!(
+        "BSum<Lit<40>,Lit<60>>::HI = {}",
+        <BSum<Lit<40>, Lit<60>> as Bound>::HI
+    );
 }

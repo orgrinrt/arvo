@@ -47,7 +47,11 @@ pub struct Sat;
 impl Completion for Sat {
     #[inline(always)]
     fn repair(x: u32) -> u8 {
-        if x > LOGICAL_HI { LOGICAL_HI as u8 } else { x as u8 }
+        if x > LOGICAL_HI {
+            LOGICAL_HI as u8
+        } else {
+            x as u8
+        }
     }
 }
 
@@ -74,10 +78,7 @@ impl<B: Bound, C: Completion> Fx<B, C> {
 }
 
 #[inline(always)]
-pub fn add<A: Bound, B: Bound, C: Completion>(
-    a: Fx<A, C>,
-    b: Fx<B, C>,
-) -> Fx<BSum<A, B>, C> {
+pub fn add<A: Bound, B: Bound, C: Completion>(a: Fx<A, C>, b: Fx<B, C>) -> Fx<BSum<A, B>, C> {
     let exact = a.get() as u32 + b.get() as u32;
     let v = if const { <BSum<A, B> as Bound>::HI <= LOGICAL_HI } {
         exact as u8
