@@ -1,0 +1,74 @@
+p2c. A sound, conservative, const-checkable predicate for the headroom axis.
+
+Soundness here means: never predict UNOBSERVABLE where measurement finds
+the axis observable. That is the direction a resolver acts on, so it is
+the only direction whose error rate may be zero rather than small.
+
+--- setting one: W = 4, containers 4 against 12, chain length 3
+
+op         congruent   contracting   container-read 
+wadd       true        false         false          
+wsub       true        false         false          
+wmul       true        false         false          
+shr        false       true          false          
+div        false       true          false          
+sat_at_W   false       true          false          
+sat_at_C   false       false         true           
+min        false       true          false          
+cmp        false       true          false          
+
+chains swept: 729, each exhaustive over 65536 value tuples
+  exact:                        701
+  conservative (safe direction): 28
+  UNSOUND (unsafe direction):    0
+
+--- setting two, one operation longer: W = 4, containers 4 against 12, chain length 4
+
+op         congruent   contracting   container-read 
+wadd       true        false         false          
+wsub       true        false         false          
+wmul       true        false         false          
+shr        false       true          false          
+div        false       true          false          
+sat_at_W   false       true          false          
+sat_at_C   false       false         true           
+min        false       true          false          
+cmp        false       true          false          
+
+chains swept: 6561, each exhaustive over 1048576 value tuples
+  exact:                        6301
+  conservative (safe direction): 260
+  UNSOUND (unsafe direction):    0
+
+--- setting three, a different width and container: W = 5, containers 5 against 13, chain length 3
+
+op         congruent   contracting   container-read 
+wadd       true        false         false          
+wsub       true        false         false          
+wmul       true        false         false          
+shr        false       true          false          
+div        false       true          false          
+sat_at_W   false       true          false          
+sat_at_C   false       false         true           
+min        false       true          false          
+cmp        false       true          false          
+
+chains swept: 729, each exhaustive over 1048576 value tuples
+  exact:                        701
+  conservative (safe direction): 28
+  UNSOUND (unsafe direction):    0
+
+=== verdict ===
+
+total unsound predictions across three settings: 0
+
+The predicate consumes three bits per operation, every one of them a
+compile-time property of the operation rather than a measurement of a
+machine, and a three-state scan of the chain. Nothing in it needs the
+values, so it is available wherever the chain is written.
+
+What it does NOT deliver is exactness, and the residue is structural:
+an operation that clamps at the declared width re-synchronises two arms
+that had already diverged, and no fixed set of per-operation bits sees
+that, because it is a fact about the relationship the accumulators are
+in rather than about the next operation.

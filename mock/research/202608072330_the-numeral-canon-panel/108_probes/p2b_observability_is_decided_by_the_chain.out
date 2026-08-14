@@ -1,0 +1,82 @@
+p2b. The observable set is a function of the chain, and it is decidable.
+
+declared width W = 4; headroom axis = container 4 against container 12
+
+=== per-operation static properties, measured exhaustively ===
+
+op         congruent    contracting    contracting   
+           (at c_wide)  (at c_min)     (at c_wide)   
+wadd       true         true           false         
+wsub       true         true           false         
+wmul       true         true           false         
+shr        false        true           true          
+div        false        true           true          
+sat_at_W   false        true           true          
+sat_at_C   false        true           false         
+min        false        true           true          
+cmp        false        true           true          
+
+=== the automaton against measurement ===
+
+every one of 729 operation sequences of length 3 over the 9-operation
+alphabet, each swept exhaustively over all 65536 value tuples
+
+predicted OBSERVABLE:   408 chains
+predicted UNOBSERVABLE: 321 chains
+mismatches against exhaustive measurement: 77
+
+the mismatching chains, up to 40:
+  sat_at_C -> wadd -> wadd           predicted=unobservable measured=observable   30720/65536
+  sat_at_C -> wsub -> wadd           predicted=unobservable measured=observable   30720/65536
+  sat_at_C -> wmul -> wadd           predicted=unobservable measured=observable   26624/65536
+  sat_at_C -> sat_at_W -> wadd       predicted=observable   measured=unobservable 0/65536
+  shr -> sat_at_C -> wadd            predicted=unobservable measured=observable   13312/65536
+  div -> sat_at_C -> wadd            predicted=unobservable measured=observable   6400/65536
+  sat_at_W -> sat_at_C -> wadd       predicted=unobservable measured=observable   50560/65536
+  min -> sat_at_C -> wadd            predicted=unobservable measured=observable   19840/65536
+  cmp -> sat_at_C -> wadd            predicted=unobservable measured=observable   21760/65536
+  sat_at_C -> min -> wadd            predicted=observable   measured=unobservable 0/65536
+  sat_at_C -> wadd -> wsub           predicted=unobservable measured=observable   30720/65536
+  sat_at_C -> wsub -> wsub           predicted=unobservable measured=observable   30720/65536
+  sat_at_C -> wmul -> wsub           predicted=unobservable measured=observable   26624/65536
+  sat_at_C -> sat_at_W -> wsub       predicted=observable   measured=unobservable 0/65536
+  shr -> sat_at_C -> wsub            predicted=unobservable measured=observable   13312/65536
+  div -> sat_at_C -> wsub            predicted=unobservable measured=observable   6400/65536
+  sat_at_W -> sat_at_C -> wsub       predicted=unobservable measured=observable   50560/65536
+  min -> sat_at_C -> wsub            predicted=unobservable measured=observable   19840/65536
+  cmp -> sat_at_C -> wsub            predicted=unobservable measured=observable   21760/65536
+  sat_at_C -> min -> wsub            predicted=observable   measured=unobservable 0/65536
+  sat_at_C -> wadd -> wmul           predicted=unobservable measured=observable   26624/65536
+  sat_at_C -> wsub -> wmul           predicted=unobservable measured=observable   26624/65536
+  sat_at_C -> wmul -> wmul           predicted=unobservable measured=observable   21504/65536
+  sat_at_C -> sat_at_W -> wmul       predicted=observable   measured=unobservable 0/65536
+  shr -> sat_at_C -> wmul            predicted=unobservable measured=observable   11744/65536
+  div -> sat_at_C -> wmul            predicted=unobservable measured=observable   5668/65536
+  sat_at_W -> sat_at_C -> wmul       predicted=unobservable measured=observable   43748/65536
+  min -> sat_at_C -> wmul            predicted=unobservable measured=observable   17336/65536
+  cmp -> sat_at_C -> wmul            predicted=unobservable measured=observable   19000/65536
+  sat_at_C -> min -> wmul            predicted=observable   measured=unobservable 0/65536
+  sat_at_C -> sat_at_W -> shr        predicted=observable   measured=unobservable 0/65536
+  sat_at_C -> min -> shr             predicted=observable   measured=unobservable 0/65536
+  sat_at_C -> sat_at_W -> div        predicted=observable   measured=unobservable 0/65536
+  sat_at_C -> min -> div             predicted=observable   measured=unobservable 0/65536
+  sat_at_C -> sat_at_W -> sat_at_W   predicted=observable   measured=unobservable 0/65536
+  shr -> sat_at_C -> sat_at_W        predicted=observable   measured=unobservable 0/65536
+  div -> sat_at_C -> sat_at_W        predicted=observable   measured=unobservable 0/65536
+  sat_at_W -> sat_at_C -> sat_at_W   predicted=observable   measured=unobservable 0/65536
+  sat_at_C -> sat_at_C -> sat_at_W   predicted=observable   measured=unobservable 0/65536
+  min -> sat_at_C -> sat_at_W        predicted=observable   measured=unobservable 0/65536
+
+=== the same axis, two chains, opposite classes ===
+
+  pure ring                    wadd -> wmul -> wadd             0/65536     0.000%   unobservable
+  ring then a shift            wadd -> wmul -> shr          32484/65536    49.567%   OBSERVABLE
+  policy at declared width     sat_at_W -> sat_at_W -> sat_at_W       0/65536     0.000%   unobservable
+  policy at container width    sat_at_C -> sat_at_C -> sat_at_C   58380/65536    89.081%   OBSERVABLE
+
+The last two rows are the same assignment on the overflow-policy axis
+(saturate) and the same assignment on every other axis. They differ only
+in the width the limit is read at, which is `40` section 5.2's convention,
+and they put the headroom axis on opposite sides of the cut. `40` argued
+that from `20`'s factoring result and called it a canon-shaped sentence
+nobody has written. No file in the strategy-axis unit carries it.
