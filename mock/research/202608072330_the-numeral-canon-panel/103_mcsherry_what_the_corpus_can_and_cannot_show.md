@@ -759,3 +759,181 @@ tautological, sampled or assertion-free test in the surface examined.**
 *holds for: the thirteen bench shared crates at HEAD, tests all 123, surface examined being every
 `validate_output` body and every cross-arm assertion and both quantiser families in full, threads = 1
 for the last seven crates and default for the first six.*
+
+## 10. Closure: what the strategy-axis unit established
+
+I am the eighth and last, and `95` says a unit ends in agreement or it has not ended, with attack the
+middle rather than the end. So this section is written to be taken almost verbatim by the consolidation,
+and each claim carries the rung it actually sits on rather than the rung its file count suggests.
+
+### 10.1 Settled at TWO EXPERTS or better
+
+**A strategy is not one thing, and the layers are distinguished by polarity rather than by count.** An
+observable coordinate is an input to the resolver and changes the value the program computes; an
+unobservable one is the resolver's output and changes only cost. `97` produced the distinction, `98` did
+not reopen it, `102` ran the polarity test on `25` section 7's own axis list and found three of four axes
+observable. Derived independently by the cold pair in a different vocabulary.
+
+**A strategy is a compile-time selection among candidate arms decided by measurement, and that is not the
+same claim as `25` section 7's "a named section over a product of axes".** A section is any
+region-to-mechanism function; an argmin is one a single weighting explains at once. Not every section is
+an argmin and the shortfall is the content. Two cold derivations plus `97`'s discriminator.
+
+**Rationalisability is checkable and the counts reproduce.** 72 of 15625 sections rationalisable at a
+non-negative weighting, 9 at a strictly positive one, with 63 of the 72 selecting an arm no weighting can
+select. `97` built it, `98` reimplemented it independently on the same committed data and reproduced both
+counts exactly. This is the unit's cleanest TWO EXPERTS result.
+
+**A canon wanting the no-dominated-arm guarantee must require strict positivity.** It cannot get it from
+non-negativity plus a hope about the table. `98`, one measurement, and nothing has contested it.
+
+**The suite is 123 tests across 13 crates.** Four independent counts now: `98`, `100`, `102`, and this
+file. The earlier 108 and 96 are superseded and `98` explains both.
+
+### 10.2 Established here, at ONE EXPERT and owed a second read
+
+**Twenty of 254 committed regions are not pinned to one answer**, eight of them with arms measured to
+differ or two different algorithms by construction. F-103-2 through F-103-5.
+
+**175 of 254 regions were produced before the driver called cross-variant validation at all.** F-103-6.
+This is the one I would most want re-derived, because it changes what may be cited about the whole corpus
+and it rests on a join between `*.meta.json` and `git log -S` that a second reader should redo rather
+than trust.
+
+**The measured-coordinate hazard has no instance in the corpus, because the accurate arm also wins on
+time.** F-103-8.
+
+**One committed family already validates answer-differing arms correctly, arm by arm.** F-103-9, and
+section 5 is the shape it suggests.
+
+### 10.3 The corrected form of the unit's deepest structural claim
+
+`102`'s Q49 entry should not go into the consolidation as written. The corrected sentence, which keeps
+everything that survives and drops what does not:
+
+> **The committed corpus records cost and records no answer.** 234 of its 254 regions pin their arms to
+> one value by an exact-value oracle and compare cost at a fixed answer; twenty do not, and eight of those
+> hold arms that genuinely disagree. But no committed row carries a per-arm quality number in any region,
+> answer-pinned or not: `score` is empty in all 104080 rows and 0 of 94 variant crates implement
+> `score_output`. So op's I5, I7 and I9, which range over arms that disagree, cannot be exhibited by this
+> corpus. **The barrier is the absent coordinate, not the arm sets**, which puts this finding on the same
+> rung as `98`'s and `101`'s rather than upstream of them.
+
+That is a smaller claim than `102`'s and it is the one the evidence supports. It also has a better
+consequence attached: an absent coordinate is something you can go and add, and section 6.1 says what it
+would take, whereas "the corpus is structurally unable to hold such arms" reads as a property to design
+around.
+
+### 10.4 What the unit has NOT established, stated plainly because I am last
+
+**Whether the pair proposal is right.** `102`'s replacement, a strategy as an observable policy assignment
+plus a weighting over cost coordinates, has one expert. `93`'s two-layer split and `97`'s three-layer split
+are adjacent to it and were derived before it. Nobody has attacked the pair, because it arrived in the
+seventh file. It goes to the consolidation as the unit's strongest candidate carrying ONE EXPERT, and it
+should say so.
+
+**Whether the table is generated from the weighting or checked against one.** `98`'s proposal, flagged at
+the checkpoint as the thing the second four should attack first. `100` attacked the surrounding
+machinery and `102` attacked the coordinate split. **Nobody attacked the fork itself.** It is still one
+expert plus `93`'s unregistered fork, which is what `99` said four files ago, and four files later it is
+unchanged. That is the unit's largest unclosed item and the consolidation should not present it as
+narrowed.
+
+**Which reading of I3 is meant at a width Rust has no primitive for**, and **I3 against I15's no-runtime-checks**.
+Both are `99`'s two items for op and both are untouched by the second four. They are questions about op's
+own words that no measurement answers, and they are still owed.
+
+**Whether the weightings usually agree.** I8's second half is filler per `88` section 2 and is not an
+intent. It is also an ordinary empirical question that nobody in this unit measured, and the corpus cannot
+answer it while `score` is empty.
+
+**Anything about threads.** Every finding in this unit, mine included, is `threads = 1`. Under the
+predicate rules that is a real region and not a silence, and the consolidation should carry it as
+`threads = 1` rather than omitting the dimension, which would mean something much narrower.
+
+## 11. What this does to the live options
+
+**Q49 is refuted as written and its conclusion survives.** The measurement it rests on is wrong by twenty
+regions and its census unit cannot see four of them. Section 10.3 is the replacement sentence. The entry
+should be rewritten rather than deleted, because its downstream reasoning about I5, I7 and I9 is
+undamaged.
+
+**Q48 is strengthened.** `101`'s finding that an intent with no coordinate is inexpressible becomes the
+load-bearing one rather than a consequence of Q49's. Its option (a), add the missing coordinates, gains a
+concrete and much cheaper shape than "work in the harness and in 94 variant crates": the harness already
+has `score_output`, `outputs_may_differ` and `max_relative_error`, and one family already writes the
+per-arm oracles. What is missing is the coordinate, in the families that would use it, not a mechanism.
+
+**Q48's option (c) gains a second reading.** "Accept the ceiling and state in the canon which intents the
+coordinate set can and cannot distinguish" is currently a statement about a limit. Under section 6.2 it
+becomes a statement with two regions in it: cost-only is complete where the arms agree and incomplete
+where they do not, and the canon can say both rather than declaring one ceiling.
+
+**Q50 is untouched.** Whether I9 describes the pair or only its policy half is a question about op's
+sentence, and nothing I measured bears on it.
+
+**Q43 and Q44 are untouched and Q43 is where the unit is thinnest.** Neither the generate-against-check
+fork nor the strict-positivity constraint received a second read in the second four. Recorded here rather
+than left to the consolidation to notice.
+
+**One option added.** Under Q48, and it is the smallest of the three already there:
+
+> **(d) Add the fidelity coordinate only in the regions whose arms differ, gated on the region's own
+> `outputs_may_differ` or `max_relative_error` declaration.** Where the arms are answer-pinned the column
+> would be constant and is not worth the row width; where they differ it is the only thing that
+> distinguishes them. This is `arvo-toolbox-not-policer.md` at the bench layer: the family declares what
+> its arms are allowed to do, and the instrument records what it declared rather than one policy for all
+> regions. Cost: `score_output` in the two or three families that would use it, plus wiring the column the
+> harness already reserves. It composes with (a), (b) and (c) rather than competing.
+
+## 12. For op, and it is one thing, which is not a decision
+
+Nothing in this file needs a ruling and I am not asking for one. `RULES.md` is explicit that a contested
+measurement is not escalated and that a converged thing is what gets brought to him.
+
+The one thing worth his attention is a **report**, because it touches something `95` already put inside
+the goal. He named "thirteen bench variant crates defining a `validate_output` the harness never calls" as
+a pricing gap that the run should fix. The gap is one layer wider than that: **the driver did not call
+cross-variant validation at all until 2026-08-08, and 175 of the 254 committed regions predate it**. The
+families' own unit tests are what stood behind those numbers, and they are real tests that pass. But if
+anyone intends to cite the harness's cross-variant guarantee as evidence for the corpus, that citation is
+good for 79 regions and not for 175, and it is better to know that before the canon is written from these
+consolidations than after.
+
+No action is implied for him. The remedy is a rerun, which is the panel's work rather than his.
+
+## 13. Coverage, bounded and honest
+
+**Read in full:** `INTENTS.md`, `RULES.md`, `99`, op's `83`, `87`, `88` and `95`, `OPTIONS.md` entries
+Q43, Q44, Q48, Q49 and Q50, `102` sections 3.1 and its `p1` and `p5` probe outputs and its `p1` script,
+every `validate_output` body in `mock/benches/variants/`, both quantiser families' test modules, the
+`fnv1a` and `xxhash3` variant sources, `mock/benches/src/main.rs`'s `routine_for_n` and its validation
+call site, and the pinned harness's `validation.rs` `validation_plan`, `check_each_variant` and
+`CrossVariant::ByteExact` paths with their tests.
+
+**Read partially:** `102` outside section 3.1, by heading and by targeted grep. `85` through `INTENTS.md`'s
+I15 and I16 entries rather than in full.
+
+**Not read at all, and this is the exposure to state by name:** `100` and `101` in full. I relied on
+`OPTIONS.md`'s Q48 account of both, and on `99`'s account of `98`. Three sections would move if that
+account were wrong: section 10.1's rationalisability counts, section 10.3's claim that the barrier lands
+on `101`'s rung, and section 11's reading of Q48's options. My own findings F-103-1 through F-103-10 do
+not depend on any of them, since every one is measured directly against committed artifacts.
+`RULES.md` says the next dispatch depending on a shared unread source reads that source; the
+consolidation depends on `100` and `101` far more than I do, and should.
+
+**Not verified:** whether the 155 pre-wiring answer-pinning regions in fact hold agreeing arms. Their
+families' tests assert it and pass, which is why I believe it, and I did not independently re-run the arms
+for any of them. A rerun under the now-wired driver would settle it, and that is a bench job rather than
+an analysis one.
+
+**Not attempted:** running the `fnv1a` and `xxhash3` arms, for the reason in section 8.
+
+**Citations checked by opening them.** Every `file:line` and every heading citation in this file was
+opened or grepped after writing, not from memory. Two were wrong on the first pass and are corrected:
+`bitpack-shared`'s validator is at `fn validate_output` in its `src/lib.rs` and I had first written a line
+number from a different file, and the `ByteRoutine` registrations are at `mock/benches/src/main.rs:229-232`
+which I confirmed by grep rather than by recall.
+
+**Every number in this file was produced by a committed probe in `103_probes/`, each committed as it ran,
+before this file was written.**
