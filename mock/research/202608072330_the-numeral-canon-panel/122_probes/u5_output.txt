@@ -1,0 +1,71 @@
+================================================================================================
+u5. The anchor count, on `119`'s patterns, before and after
+================================================================================================
+
+C2. The extractor on prose with no anchors: finding 0, probe_stem 0, line_panel_norm 0
+
+------------------------------------------------------------------------------------------------
+119 as landed, measured against the four it compressed
+
+  class               in the union  in the doc  incl. accounting  not carried
+  finding                       68          65                69            4
+  probe_stem                    29          25                25            7
+  line_panel_norm               34          18                18           24
+
+  C1, the stripper: FIRED  (finding +4, probe_stem +0, line_panel_norm +0)
+
+------------------------------------------------------------------------------------------------
+122, this revision, measured against the seven it revises across
+
+  class               in the union  in the doc  incl. accounting  not carried
+  finding                       76          45                45           39
+  probe_stem                    32           6                 6           26
+  line_panel_norm               55           5                 6           51
+
+  C1, the stripper: FIRED  (finding +0, probe_stem +0, line_panel_norm +1)
+
+------------------------------------------------------------------------------------------------
+What `122` carries that `119` did not, and what it lets go.
+
+  finding: 45 in 122 against 65 in 119
+    added (12):
+      F121-1                F121-2                F121-4                F121-5                F122-1                F122-2              
+      F122-3                F122-4                F122-5                F122-6                F122-7                F122-8              
+    not restated (32):
+      F111-15               F111-18               F112-12               F112-14               F112-2                F112-22             
+      F112-23               F112-3                F112-4                F114-13               F114-14               F114-15             
+      F114-16               F114-2                F114-20               F114-3                F114-8                F114-9              
+      F115-2                F115-3                F115-6                F116-1                F116-2                F118-10             
+      F118-14               F118-15               F118-16               F118-2                F118-8                F118-9              
+      F12                   F3                  
+
+  probe_stem: 6 in 122 against 25 in 119
+    added (0):
+    not restated (19):
+      p1                    p11                   p2                    p3                    p4b                   p5                  
+      p5b                   p6                    p7                    p7c                   p8                    q1                  
+      q4                    q5                    q6                    r0                    r2                    s2                  
+      s3                  
+
+  line_panel_norm: 5 in 122 against 18 in 119
+    added (5):
+      115:322               116:247               119:308               119:559               119:566             
+    not restated (18):
+      108:825               112:1002              112:1009              112:1116              112:928               115:120             
+      115:182               115:409               116:141               116:200               116:274               116:315             
+      116:320               116:359               116:455               116:462               117:26                117:35              
+
+================================================================================================
+
+  READING IT
+
+  The 'not carried' column against the seven-file union is the honest headline
+  and it is larger than `119`'s was, because the union grew by three files while
+  the document shrank: `122` restates only the clauses it changes and carries the
+  rest of `119` by reference.
+
+  So the number to read is 'not restated' in the last block, which is what this
+  revision dropped from a document it supersedes in part. Every entry there
+  belongs to a clause marked [STANDS], where `119`'s text is the text and this
+  file deliberately does not repeat its anchors.
+
