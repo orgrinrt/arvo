@@ -197,7 +197,7 @@ coordinate two of op's intents need.
 
 **`score`** is a value the routine computes about its own output: `Routine::score_output` returns an
 `Option<f64>` where "lower = better" and `Routine::score_dimensions` returns a vector of labelled
-dimensions for "Pareto analysis" (`bench-core/src/lib.rs:99-110`, `bench-core/src/lib.rs:182-193`). The
+dimensions for "Pareto analysis" (`bench-core/src/lib.rs:98-107`, `bench-core/src/lib.rs:182-193`). The
 census counts **0 of 94 variant crates implementing either**, against 15 implementing `validate_output`
 and 1 mentioning `outputs_may_differ`.
 
@@ -252,7 +252,7 @@ inert in it. That is a small strengthening of `100` section 4 rather than a corr
 `100` section 8 is the sharpest thing the unit has found by accident, and its remedy is stated as a cost:
 a design shipping normalised costs "has to state the normalisation range as **declared constants**, because
 it is part of the semantics rather than a presentation detail. What that costs is a number somebody has to
-get right once" (`100:895-897`).
+get right once" (`100:925-927`).
 
 **The algebra says there is no cost, because there is no second thing to state.** A fixed per-coordinate
 affine map is a reparameterisation of the weighting and nothing else.
@@ -327,7 +327,7 @@ for 961 of 2000 weightings.** That is not a corner case; under min-max it is clo
 ### 3.3 The corollary, and it bites `100`'s own mechanism
 
 `100` section 6 proposes a compile-time differential and section 7 measures that it wants a tolerance band,
-stated throughout as a percentage "of the region's achievable objective range" (`100:836`). That denominator
+stated throughout as a percentage "of the region's achievable objective range" (`100:866`). That denominator
 is `worst - best` over the arm set at the region, which is data-dependent in exactly the way section 3.2 is
 about.
 
@@ -358,7 +358,7 @@ and it is the natural floor because it is the instrument's own resolution. So th
 `100` built the calibration and then expressed the band in a different currency.
 
 That also disposes of `100`'s shape 8, "a per-coordinate tolerance band rather than one global band", which
-it lists as live and untested (`100:1072-1074`). It is not a refinement; a single band across coordinates in
+it lists as live and untested (`100:1102-1104`). It is not a refinement; a single band across coordinates in
 different units is not expressible without a normalisation, and the normalisation is a weighting, so a
 global band is a band whose width depends on the weighting it was supposed to be independent of.
 
@@ -473,9 +473,9 @@ than qualifying it.
 
 `100` section 7.3 swaps the interquartile range for the 95th percentile as the estimator of its third
 coordinate and reports it strictly better on both axes it measures: 3 distinct sections against 161 under
-resampling, 54 of 60 arm pairs separated against 43 of 60 (`100:774-783`). It concludes that three separate
+resampling, 54 of 60 arm pairs separated against 43 of 60 (`100:803-812`). It concludes that three separate
 negative findings about that coordinate "was a fact about the interquartile range and not about tail
-behaviour" (`100:811`).
+behaviour" (`100:841`).
 
 **The measurement is right and the conclusion needs one more test, which reverses part of it.**
 
@@ -680,3 +680,363 @@ every variant over 1000 deterministic seeds and reports the mean, min, max and m
 variant, and `Routine::score_dimensions` returns a labelled vector of quality dimensions described in its
 own doc comment as being "for Pareto analysis" (`bench-core/src/lib.rs:182-193`). **A multi-coordinate
 quality surface with its own estimator already exists in the instrument, and arvo has never called it.**
+
+## 7. The region set, and a predicate this unit has been getting wrong
+
+Section 6.1 concludes that chain length belongs in the region rather than the coordinate vector. Checking
+whether the corpus already does that for anything turned up a defect in the unit's own predicates.
+
+**Three of the four control-bearing families are threaded benches, and their thread count is the last digit
+of the region key.** `mock/benches/bench.toml` declares `threaded = true` on six sections, and the
+contention crate documents the encoding in its own source: "One row of the sweep: `KEY = N * 10 + T`", with
+`N` the elements and `T` the "threads walking it"
+(`mock/benches/variants/bitpack-contend-shared/src/routine.rs:11-24`).
+`mock/benches/variants/bitpack-wide-shared/src/lib.rs:102` says it carries "the contention crate's
+encoding unchanged".
+
+`101_probes/p8_the_region_key_carries_the_thread_count.py` decodes every committed key:
+
+```
+  family                        regions   element counts   thread counts
+  bitpack-contend-best                4                2   [1, 4]
+  bitpack-contend-decode              6                3   [1, 4]
+  bitpack-contention                 12                4   [1, 2, 4]
+  bitpack-wide                        6                3   [1, 4]
+  bitpack-write-contend-race          6                2   [1, 2, 4]
+  bitpack-write-contend-safe          6                2   [1, 2, 4]
+```
+
+**So `100`'s F-100-3b carries `threads = 1` (`100:520`) for a finding computed over three families whose
+regions span 1, 2 and 4 threads.** That is not conservatism. A section over `bitpack-contention`'s twelve
+regions is a vector with entries measured at three different thread counts, and it cannot be reproduced from
+single-threaded data at all, so `threads = 1` names a region the finding does not live in. `RULES.md` is
+explicit that a fixed value means established there and only there.
+
+I do not think this changes any conclusion `100` draws, and I say so plainly: the mechanism it establishes,
+that a control arm trades places wherever one exists, is if anything better supported by spanning three
+thread counts than by one. What changes is the region, which under I13 is what makes a finding usable by an
+arm. My own findings in section 12 carry the decoded sets.
+
+**And the shape is worth having for its own sake.** The thread count is a **region dimension** in this
+corpus and not a coordinate: it indexes which measurement you are reading rather than being a number an arm
+is scored on. That is exactly the answer section 6.1 reaches for chain length, arrived at from the opposite
+direction. The corpus already does it for threads; nothing does it for chains; and both belong on the same
+side of the line.
+
+The general form, which is the piece of the object my question was really about:
+
+> A quantity belongs in the **region** when a strategy's answer may differ across it, and in the **cost
+> vector** when a strategy's answer is scored on it. Element count, width, arity, thread count and chain
+> length are the first kind. Time, size, spread and fidelity are the second. Putting one on the wrong side
+> is not a modelling preference: a region dimension in the cost vector makes the table lie by averaging, and
+> a coordinate in the region key makes it unable to trade at all.
+
+## 8. What I keep
+
+**`97`'s and `98`'s counts, at a third independent instance.** 72 and 9 reproduce exactly from an instrument
+written from interval and polygon clipping without reading either predecessor's. `RULES.md` puts the bar at
+three independent instances and those two numbers now clear it. I add only the reading: 9 is a fact about a
+two-coordinate model, and is the first measurement in this unit of how many strategies a coordinate set can
+distinguish.
+
+**`98`'s F-98-9, that no committed family carries a column for accuracy or divergence.** My census crosses
+the same corpus from the schema side and from the variant side and finds nothing that changes it. What I add
+is where the gap is: not the column, which exists, but a routine nobody wrote and a default nobody turned
+off.
+
+**`100`'s F-100-6, the independence failure under min-max normalisation.** Corroborated by a second
+instrument on three further families, with the mechanism unchanged. What I add is that the remedy costs
+nothing, because declared-range normalisation is not a second model.
+
+**`100`'s F-100-3 and F-100-3b, the control arm carrying the section's instability.** Corroborated from a
+different direction: exact interval arithmetic on the point estimates, no resampling, finds the control arm
+in the argmin in eight of the nine cells of the carrier family's exchange-rate axis. The predicate wants the
+decoded thread counts, per section 7, and the mechanism stands.
+
+**`100` section 7.1's use of the control pair as a calibration.** This is the best instrument the unit has
+found and section 5 generalises it from one statistic to any: every estimator has a floor and the corpus
+measures it. Keeping it and extending it is the result.
+
+**`97`'s three-layer polarity reading and `94`'s W9.** Untouched, and I have no evidence bearing on either.
+
+**The cost table's shape.** Section 6.1 could have been an argument for a richer cell and is not: the table
+survives, with chain length moved into the region where the corpus already puts thread count.
+
+## 9. Shapes found and not taken
+
+**1. Measure the storage coordinate rather than declaring it.** Rejected on the reasoning, not deferred: the
+bytes per element of a declared layout is exactly known, and measuring it would replace an exact number with
+an estimate. What follows instead is that the coordinate set is **mixed**, and a tolerance band derived from
+measurement uncertainty must not be applied to a declared coordinate. Section 2.3.
+
+**2. Drop the spread coordinate entirely.** `98` p12 finds its differences not distinguishable from zero at
+the comparisons that mattered, and `100` reads that as a fact about the interquartile range. Section 5.3
+kills the drop: on the carrier family the spread coordinate is the only one of the three that adds any
+reachable section, so dropping it leaves a design with one axis and one strategy.
+
+**3. Use the 95th percentile as `100` proposes.** Closed by section 5.3 on the family it was measured on: it
+reaches one section, which is what no second coordinate at all reaches.
+
+**4. A tail excess, `p95 - median`, as the third coordinate.** **Live and the best candidate I found.** It
+adds 3, 9 and 5 sections on the three enumerable families, beating the level it is built from in 3 of 3, and
+it is the shape a tail-weighing intent actually asks for. Its floor is worse than the interquartile range's,
+so section 5's two criteria disagree about it, and I state that rather than resolving it.
+
+**5. Turn on `--perf-counters` and add an instruction-count coordinate.** **Live and unbuilt.** It needs
+`sudo` on the Apple-Silicon host the corpus already ran on, and it is the only candidate coordinate that
+does not move with machine load. I did not run it: taking a privileged bench run on a shared clone is not
+mine to do, and the PMU claim is exclusive while it is held
+(`bench-harness/src/perf.rs:16-21`).
+
+**6. Add a fidelity coordinate to a real bench family.** **Live and unbuilt, and p7 is the feasibility half
+of it done.** What remains is a routine, a second arm that rounds differently, `outputs_may_differ`, a
+`bench.toml` section and a run. I did not do it because adding a family to the shipped corpus is a design
+act this unit has not agreed on, and because `95` scopes harness work to what the panel's continuation
+needs. That scope call is mine and is attackable.
+
+**7. Use `setup_ns` and the breakeven the harness derives from it.** **Live and unbuilt.** The harness
+states `k* = (S_b - S_a) / (I_a - I_b)` as computable directly from a matrix run
+(`bench-core/src/lib.rs:427-429`). That is a region boundary derived from measurement rather than declared,
+which is the shape every predicate in this panel is reaching for by hand.
+
+**8. Report a strategy's margin rather than its weights.** **Live and untested as a mechanism.** Section 4.3
+computes it; nothing has built it into a design or priced its const-time cost.
+
+**9. Per-region normalisation.** `100` lists it as untested (`100:1090-1092`). Section 3.1 closes it on the
+algebra: any transform whose scale is read off the data breaks independence, and reading it off a region's
+arms rather than the whole table narrows the reach without changing the mechanism. The frozen transform
+already costs nothing, so there is nothing to gain by a partial fix.
+
+**10. Weight the coordinates on a log scale rather than linearly.** Not tested. A weighted sum of logarithms
+is a weighted geometric mean, which is scale-invariant per coordinate and would make the units question
+disappear rather than answering it. It is a different objective with different laws, and every count in
+section 4 would have to be recomputed under it. I name it because the unit has assumed a linear objective
+throughout without anyone saying so, including me.
+
+## 10. Located disagreement
+
+**With `100`, on the tail estimator: I break part of it and keep the method.** Its F-100-7 says estimating
+the tail coordinate by the 95th percentile rather than the interquartile range is "strictly better on both
+axes" (`100:812`). Both axes it measures are resolution axes. On the third axis, whether the coordinate
+still exists, the 95th percentile reaches one section on the carrier family, the same as having no second
+coordinate. So the swap buys stability by deleting the axis, and the constructive replacement is the excess
+form.
+
+What I do not dispute: the interquartile range is a noisy estimator, the resolution measurements are right,
+and the general move of asking which statistic a coordinate is estimated by is the most useful thing in that
+section. `100` should answer, and should be **resumed** rather than re-dispatched.
+
+**With `100`, on the tolerance band: the mechanism is right and its currency is wrong.** Section 3.3. A band
+stated as a fraction of the achievable objective range inherits the independence failure `100` itself found.
+The fix is `100`'s own control-pair calibration, expressed per coordinate.
+
+**With the unit as a whole, on `threads = 1`.** Section 7. Every finding in this unit computed over the
+contention, decode or wide families carries a predicate naming a region the finding does not live in. This
+is mechanical rather than a judgement, and it is cheap to correct in each author's own file, which is where
+`RULES.md` says a widened or corrected predicate belongs.
+
+**With myself, on whether the interquartile range is admissible.** Section 5.1's signal statistic is a
+dynamic range and one extreme arm can carry it, so the row reporting the interquartile range at 74 times its
+floor is weaker evidence than it looks. I did not rebuild it as a pairwise separation count, which is what
+`100` p8 uses and what would settle it. The claim I rest on is the exact section count, and I flag that the
+two criteria in section 5 are not equally well measured.
+
+## 11. For op, and it is nothing
+
+Deliberately, and there are three things I considered putting up.
+
+**Which estimator a coordinate should use** is the shape op has rejected four times. Section 5 answers it as
+two measured criteria with a per-family answer.
+
+**Whether the weightings agree in practice** is answered in `INTENTS.md:155-156` as an ordinary empirical
+question that is not an intent he owes. Section 4 measures the ceiling that bears on it and reports it as a
+measurement.
+
+**Whether arvo should measure accuracy at all** looks like a question for him and is not. I5 already
+requires it: "should not lose it for nothing, instead, provable meaningful gains" (`INTENTS.md:102-103`) is a
+constraint over two quantities and the corpus carries one. So the accuracy coordinate is not a new intent
+somebody has to want; it is the missing half of an intent op has already stated.
+
+The two items `99` carries for op, both about I3, are untouched by anything here.
+
+## 12. Findings, each with its predicate
+
+Notation per I13 and `RULES.md`: a dimension listed with a range or `any` was established across it, listed
+with a fixed value was established there only, and absent means the finding does not hold anywhere that
+dimension is present.
+
+**F-101-1. Of the harness CSV's seventeen columns, nine carry information across the committed corpus and
+exactly three of those vary between arms at a fixed region: `e2e_ns`, `algo_ns` and `bridge_ns`. Eight are
+identically empty or zero in every row: `cooldown_ms`, `score`, `input_tag`, `instructions`, `cycles`,
+`setup_ns`, `first_ns`, `digest`.**
+`holds for: files = the 254 committed mock/benches/*.csv, rows = 104080, groups tested = 248 (family,
+region) pairs, schema = the seventeen columns at bench-harness/src/harness.rs:752 in the pinned checkout,
+threads any, target features any, host any (a census of committed files)`
+Evidence: `101_probes/p1_the_coordinate_census.py`. A census of committed artifacts, not a bench.
+
+**F-101-2. Of 94 variant crates, 0 implement `score_output`, `score_label` or `score_dimensions`, 15
+implement `validate_output`, and 1 mentions `outputs_may_differ`. All 82 measured call sites use the
+`timed!` constructor and none uses any other, which is why `setup_ns`, `first_ns` and `digest` are zero.**
+`holds for: variant crates = 94, source files scanned = 114, at the committed tree, threads any, target
+features any, host any`
+Evidence: `101_probes/p1_the_coordinate_census.py`.
+
+**F-101-3. Two of the three declared byte-identical control pairs are instruction-identical after
+normalising the path header, absolute addresses, `adrp` page numbers, the exported symbol names and the
+literal-pool comment; the third, `bitpack-wide-d16` against its control, differs at three sites in the
+addressing form of a constant-pool vector load, at equal instruction counts of 55513.**
+`holds for: pairs = {bitpack-carrier-d16, bitpack-contend-d16, bitpack-wide-d16} each against its declared
+control, target = aarch64-apple-darwin, rustc 1.98.0-nightly (57d06900f), release profile as each crate
+declares it, threads any (a compile-time artifact), target features baseline`
+Evidence: `101_probes/p0_control_identity_on_every_pair.sh`.
+
+**F-101-4. A per-coordinate affine transform with a range frozen as declared constants produces the same
+section as raw coordinates under the reparameterised weighting, for 2000 of 2000 random weightings on each
+of four families. Under min-max normalisation whose range is read off the arm set, dropping an arm dominated
+at every region moves the section for 961 of 2000 weightings on the carrier family and 252 of 2000 on
+contention, and adding an arm strictly worse everywhere moves it for 1, 2, 0 and 176 of 2000; under raw and
+under frozen coordinates both perturbations move nothing, 0 of 2000, in 4 of 4 families.**
+`holds for: families {bitpack-carrier-width, bitpack-contend-decode, bitpack-contention, bitpack-wide},
+regions in {6, 12}, arms in {4, 5, 6, 7}, cost coordinates = 2 (median algo_ns, interquartile range of
+algo_ns), draws = 2000, seed 20260814, declared range = (0.5 * min, 3 * max) per coordinate, synthetic arm
+factor = 32, cost source = the committed CSVs, threads in {1, 2, 4} (per the region keys decoded in
+F-101-8), host = the one those runs were taken on`
+Evidence: `101_probes/p2_normalisation_is_a_change_of_basis.py`.
+
+**F-101-5. A tolerance stated as a percentage of the region's achievable objective range grows by a factor
+of 59.1 to 185.0 when an arm that no weighting can select is added to the table.**
+`holds for: families {bitpack-carrier-width, bitpack-contend-decode}, regions = 6 each, arms in {5, 6, 7},
+cost coordinates = 2, weighting = speed only so the objective is a time in nanoseconds, synthetic arm factor
+= 32, cost source = the committed CSVs, threads in {1, 4}, host = the one those runs were taken on`
+Evidence: `101_probes/p2_normalisation_is_a_change_of_basis.py` block C.
+
+**F-101-6. The number of sections a strictly positive weighting can reach on the committed carrier table is
+1 for one coordinate, 9 for two, and 42 for three, with the control arm dropped; 1, 9 and 58 with it kept.
+The instrument reproduces `97`'s published 72 at non-negative weights and 9 at strictly positive weights
+exactly.**
+`holds for: family = bitpack-carrier-width, regions = 6, arms in {5, 6}, coordinate sets {median algo_ns},
+{median algo_ns, bits per element}, {median algo_ns, interquartile range}, {median algo_ns, bits per element,
+interquartile range}, cost source = the committed CSVs with bits per element declared as 16, 32, 64, 13, 13,
+exact rational arithmetic, threads = 1, host = the one those runs were taken on`
+Evidence: `101_probes/p4_what_a_coordinate_buys.py`, cross-checked by
+`101_probes/p3_the_exchange_rate_and_its_cells.py`, which computes the two-coordinate count as an interval
+count rather than a feasibility count and also reports 9.
+
+**F-101-7. On `{median algo_ns, candidate}` over the committed carrier table with the control dropped, the
+95th and 99th percentiles reach 1 section, which is what the median alone reaches, while the interquartile
+range reaches 6, the median absolute deviation 8, and `p95 - median` 3. The 95th percentile correlates with
+the median at 0.978 to 0.998 across four families. Each estimator's resolution against its family's
+byte-identical control pair ranges from 1.18% for the median on the carrier family to 400% for `p95 - median`
+on `bitpack-contend-decode`.**
+`holds for: families {bitpack-carrier-width, bitpack-contend-decode, bitpack-wide} for the section counts and
+{those three, bitpack-contention} for the correlations and floors, regions = 6 (12 for contention), arms in
+{3, 4, 5, 6}, estimators {median, mean, P75-P25, P90-P10, median absolute deviation, P95, P99, P95 minus
+median, P99 minus median}, 80 samples per arm per region, 2000 bootstrap resamples, seed 20260814, cost
+source = the committed CSVs, threads in {1, 2, 4}, host = the one those runs were taken on`
+Evidence: `101_probes/p5_an_estimator_is_a_coordinate_choice.py`. The `bitpack-contention` section count is
+not reported: 5 arms over 12 regions is 244 million sections and the enumeration is exact rather than
+sampled.
+
+**F-101-8. Six of the 49 committed families are declared `threaded = true`, and every one of them encodes
+its thread count in the last digit of its region key. `bitpack-contention` spans threads 1, 2 and 4;
+`bitpack-contend-decode`, `bitpack-wide` and `bitpack-contend-best` span 1 and 4; `bitpack-carrier-width` is
+not threaded.**
+`holds for: families = all 49 committed, keys = every committed region key, encoding = KEY = N * 10 + T per
+bitpack-contend-shared/src/routine.rs:11-24, threads any, target features any, host any (a census of
+committed files)`
+Evidence: `101_probes/p8_the_region_key_carries_the_thread_count.py`.
+
+**F-101-9. For two fixed-point arms, one on a grid four times finer with truncation and one on the declared
+grid with round-to-nearest, the mean absolute error ranking against exact arithmetic reverses at chain length
+4: the finer truncating arm is twice as accurate at one operation and four times worse at sixty-four. The
+control pair, the same grid with truncation against round-to-nearest, does not cross at any length up to 96.**
+`holds for: model = accumulation of quantised products, fractional bits F = 8, grids {2^-10 truncating,
+2^-8 round-half-to-even}, chain lengths 1 through 96, streams = 4000, seed 20260814, inputs uniform on the
+declared grid excluding zero, reference = exact rational arithmetic, threads any, target features any, host
+any (a computation over a model, not a measurement)`
+Evidence: `101_probes/p6_accuracy_is_not_a_per_arm_scalar.py`.
+
+**F-101-10. A `Routine` carrying a fidelity metric compiles against the pinned `mockspace-bench-core` with no
+feature gate and no fork; the descriptor `routine_bridge!` builds carries a working scorer through the byte
+bridge and a `Some` label, which is the signal `bench-harness/src/harness.rs:228-231` tests before writing
+the `score` column; an otherwise identical routine declaring no label produces `None`; and the scored routine
+sets `outputs_may_differ`, without which the harness compares the arms byte for byte and two arms that round
+differently cannot both be run.**
+`holds for: mockspace-bench-core at the pin in mock/benches/Cargo.lock (bce17f6c), rustc 1.98.0-nightly
+(57d06900f), edition 2024, target = aarch64-apple-darwin, feature gates = 0, seeds = 8, threads any, target
+features any`
+Evidence: `101_probes/p7_a_fidelity_coordinate/`.
+
+## 13. What I did not do, and what I could not settle
+
+**I did not derive blind.** My brief carried `100`'s three headline findings, so nothing here claims
+independence except where the instrument is genuinely different: p4's feasibility geometry, written without
+opening either predecessor's decider, and p3's interval arithmetic, which answers the same question by a
+route neither used. Section 5's collinearity and section-count tests are new questions rather than second
+reads.
+
+**I read a small part of the panel.** In full: `INTENTS.md`, `RULES.md`, `99`, `100`, `96`. In part: `98`
+via its p6 output and `p6_model97.json`, `97` via `98`'s reproduction of it and via `99` and `100`'s
+accounts, `93` and `94` only through those accounts. **Not read:** every other member file, `OPTIONS.md`
+beyond what `100` quotes of Q43, `DROPLIST.md`, `PERSONA_CALLS.md`, `PRIOR_CALLS.md`, the `SEED_*` files,
+the archive. So where any of this restates something, I do not know it. In particular **I did not read
+`97`'s own file**, only `98`'s reproduction of its model and its published counts, which is exactly the
+single-point-of-failure `RULES.md` names; my section 4.1 rests on `98`'s account of `97`'s model being
+right, and if it is wrong my calibration is calibrated against the wrong thing. The counts agreeing at both
+rungs is weak evidence that it is not.
+
+**I did not run a bench.** Nothing here is a measurement. Every number is a computation over committed
+artifacts, a compile-time fact, or arithmetic over a model, and each finding says which. The one coordinate
+I could have measured, the instruction count, needs a privileged run on a shared clone.
+
+**Compile time stays unpriced**, and I add nothing to `100`'s account of why.
+
+**I could not settle whether the excess estimator is admissible.** Section 5's two criteria disagree about
+it and I did not build the pairwise separation statistic that would break the tie.
+
+**I could not settle what the storage coordinate should be for a layout nobody has declared.** Bytes per
+element is exact for a declared layout. For a strategy that chooses a layout, the storage coordinate is a
+function of the choice, which makes it an output of the section rather than an input to it. I noticed this
+late, did not test it, and name it as an open shape rather than a finding.
+
+**I did not attempt the axis set, the three-layer split, or the chain question as `99` frames it.**
+
+## 14. Coverage of the citations, and a panel-mechanics report
+
+Every `file:line` in this document was opened and its content tested rather than merely resolved, by
+`101_probes/p9_verify_my_citations.py`. Each row carries the phrase the citation is for, so a citation that
+drifts onto a neighbouring line fails rather than passing on a coincidence.
+
+```
+citations checked: 37   ok: 37   failed: 0
+```
+
+**Fourteen of the thirty-seven failed on the first run and every one was mine.** The first output is kept at
+`101_probes/p9_first_run_fourteen_of_mine_failed.out`. Four kinds:
+
+- **Eight were line citations into `100`, which moved under me while I read it.** Its author is still
+  committing to this branch: the file was 1254 lines when I read it and is 1300 now, having gained 46 lines
+  above the sections I cite, so every line number I took shifted by twenty to thirty. The numbers in this
+  file are pinned to `100` at commit `cad7a505`.
+- **Four were a phrase spanning a line break**, which the checker joins with a newline and therefore misses.
+  A defect in my expected phrases rather than in the citation, and worth naming because it fails in the safe
+  direction.
+- **One named a file that does not exist**, `bitpack-wide-shared/src/routine.rs`, for a doc comment that
+  lives in that crate's `lib.rs`. I had inferred the path from the sibling crate's layout rather than
+  listing the directory, which is the same class of error as citing from memory.
+- **One cited a doc comment two lines below where it starts.**
+
+That is the ninth through twenty-second recorded instance of this class across two panels, and the count is
+reported rather than quietly fixed, per `RULES.md`.
+
+**The moving-file half is a panel-mechanics report rather than a finding about the work.**
+`how-to-run-a-panel.md` says never to edit a document a member is reading, and to prefer a heading anchor
+over a line number for anything still growing. Both were live here in a way the rule does not quite cover:
+`100` is not a consolidation and not the intent catalogue, it is a finished member file, and finished member
+files are exactly what a later member cites by line. The cheap remedy for whoever coordinates the rest of
+this unit is to treat a member file as frozen once the next dispatch opens, or to say in the brief that it
+is not.
+
+**Everything else in this file was verified the same way and the count is the count.** What the instrument
+does not check is whether a cited passage supports the argument I put on it, which no probe can do and which
+is what a second reader is for.
