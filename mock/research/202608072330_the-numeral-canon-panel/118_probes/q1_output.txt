@@ -1,0 +1,64 @@
+============================================================================================
+q1. The condition set follows the character too
+============================================================================================
+
+terms enumerated: 96  (2 leaf slots: 6, 3 leaf slots: 90)
+
+P1, P2, P3. Every certificate against the check the policy selects.
+
+  primitive  check      cells  consv  unsnd             (a) and (b)               (a) alone               (b) alone             always [C1]  (a) and (b:=true) [C2]
+                                                 fires / violations      fires / violations      fires / violations      fires / violations      fires / violations
+  uW3/sat    per-node   13032    703      0        6336 / 0                 9408 / 234               8760 / 307              13032 / 703               9408 / 234       
+  iW3/sat    per-node    2148     93      0         816 / 0                 1200 / 20                1452 / 49                2148 / 93                1200 / 20        
+  uW3/wrap   root       13032    645      0        6336 / 0                 9408 / 0                 8760 / 529              13032 / 645               9408 / 0         
+  iW3/wrap   root        2148     95      0         816 / 0                 1200 / 0                 1452 / 79                2148 / 95                1200 / 0         
+
+P3's mirror image, stated on its own because it is the asymmetry:
+
+  primitive  check       (a) alone: fires   violations
+  uW3/sat    per-node                9408          234   <- (b) IS load-bearing here
+  iW3/sat    per-node                1200           20   <- (b) IS load-bearing here
+  uW3/wrap   root                    9408            0   <- (b) is not load-bearing here
+  iW3/wrap   root                    1200            0   <- (b) is not load-bearing here
+
+--------------------------------------------------------------------------------------------
+P4 and P5. What `115`'s conjunction declines at wrap, and whether
+the decline costs anything.
+
+  primitive   (a)+(b) fires   (a) fires   declined   of those, root check exact   root check conservative
+  uW3/wrap             6336        9408       3072                         3072                         0
+  iW3/wrap              816        1200        384                          384                         0
+
+  'root check exact' means the check's verdict already equals the arms'
+  verdict on that cell, so declining to certify it loses a licence and
+  buys nothing. 'root check conservative' is the opposite and would mean
+  the conjunction is paying for something there.
+
+--------------------------------------------------------------------------------------------
+C3. The two checks, each against the other's policy.
+
+  primitive    per-node unsound   root unsound
+  uW3/sat                     0             38
+  iW3/sat                     0             34
+  uW3/wrap                    0              0
+  iW3/wrap                    0              0
+
+============================================================================================
+
+  READING IT
+
+  P1 holds when the '(a) and (b)' violation figure is zero on all four rows.
+  That is `115` F115-1 reproduced, and if it fails I have mis-read the repair.
+
+  P2 and P3 together are the finding. `115` measured only the wrap half and
+  `114` only the sat half. If (a) alone is clean at wrap and dirty at sat, the
+  condition set is a function of the character rather than a constant, and the
+  minimal certificate differs per policy.
+
+  P4 and P5 price `115`'s formulation. A declined cell where the check was
+  already exact is a licence lost for nothing.
+
+  C1 must equal the conservative count. C2 must reproduce the (a)-only column
+  exactly. C3 must show the root check unsound at sat and the per-node check
+  unsound nowhere.
+

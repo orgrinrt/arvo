@@ -1,0 +1,83 @@
+======================================================================================================================
+q2. The duality checked on a different search, and its hypotheses ablated
+======================================================================================================================
+
+P1 and P5. Realisation-shaped maps (R fixes V pointwise), monotone
+under SOME total order on V rather than only the natural one.
+
+  {+, *}                                   |V|=2 win= 13 maps     2048  hom      1  monotone       1  both     0  both AND non-constant    0
+  {+, *}                                   |V|=2 win= 17 maps    32768  hom      1  monotone       1  both     0  both AND non-constant    0
+  {+, *}                                   |V|=2 win= 21 maps   524288  hom      1  monotone       1  both     0  both AND non-constant    0
+  {+, *}                                   |V|=3 win= 13 maps    59049  hom      1  monotone       1  both     0  both AND non-constant    0
+
+C2 cannot fire in the space above: a map fixing V pointwise cannot be
+constant when |V| >= 2, so the exception the theorem names is excluded
+by construction. These rows drop that restriction, which is `116`'s own
+space, so the constants appear and its figures can be compared directly.
+
+  {+, *}, free maps, SOME order            |V|=2 win=  9 maps      512  hom      3  monotone      18  both     2  both AND non-constant    0
+  {+, *}, free maps, SOME order            |V|=3 win= 13 maps  1594323  hom      6  monotone     471  both     3  both AND non-constant    0
+  {+, *}, free maps, natural order         |V|=2 win=  9 maps      512  hom      3  monotone      10  both     2  both AND non-constant    0
+  {+, *}, free maps, natural order         |V|=3 win= 13 maps  1594323  hom      6  monotone     105  both     3  both AND non-constant    0
+
+The same rows with monotonicity under the NATURAL order only, which is
+`116`'s test. P5 holds if the SOME-order rows find at least as many
+monotone maps and still no non-constant map passing both.
+
+  {+, *}, natural order                    |V|=2 win= 13 maps     2048  hom      1  monotone       1  both     0  both AND non-constant    0
+  {+, *}, natural order                    |V|=3 win= 13 maps    59049  hom      1  monotone       1  both     0  both AND non-constant    0
+
+----------------------------------------------------------------------------------------------------------------------
+P2. Is multiplication load-bearing? Drop it.
+
+  {+} alone                                |V|=2 win= 13 maps     2048  hom      1  monotone       1  both     0  both AND non-constant    0
+  {+} alone                                |V|=2 win= 21 maps   524288  hom      1  monotone       1  both     0  both AND non-constant    0
+  {+} alone                                |V|=3 win= 13 maps    59049  hom      1  monotone       1  both     0  both AND non-constant    0
+
+----------------------------------------------------------------------------------------------------------------------
+P3. Is addition load-bearing? Drop it instead. This one is a control:
+if nothing passes both here either, the search cannot produce a
+witness at all and every zero above is a dead branch.
+
+  {*} alone, window straddles zero         |V|=2 win= 13 maps     2048  hom      8  monotone       1  both     0  both AND non-constant    0
+  {*} alone, window straddles zero         |V|=3 win= 13 maps    59049  hom     36  monotone       1  both     0  both AND non-constant    0
+  {*} alone, window non-negative           |V|=2 win=  9 maps      128  hom     16  monotone       1  both     1  both AND non-constant    1
+      witness: 0->0, 1->1, 2->1, 3->1, 4->1, 5->1, 6->1, 7->1, 8->1
+  {*} alone, window non-negative           |V|=3 win= 11 maps     6561  hom     81  monotone       1  both     1  both AND non-constant    1
+      witness: 0->0, 1->1, 2->2, 3->2, 4->2, 5->2, 6->2, 7->2, 8->2, 9->2, 10->2
+
+----------------------------------------------------------------------------------------------------------------------
+P4. Is the window's width load-bearing? Narrow it below |V|.
+
+  {+, *}, window = V exactly               |V|=3 win=  3 maps        1  hom      1  monotone       1  both     1  both AND non-constant    1
+      witness: 0->0, 1->1, 2->2
+  {+, *}, window = V exactly               |V|=4 win=  4 maps        1  hom      1  monotone       1  both     1  both AND non-constant    1
+      witness: 0->0, 1->1, 2->2, 3->3
+  {+, *}, window = V plus one              |V|=3 win=  4 maps        3  hom      3  monotone       1  both     1  both AND non-constant    1
+      witness: 0->0, 1->1, 2->2, 3->2
+  {+, *}, window = V plus one              |V|=4 win=  5 maps        4  hom      4  monotone       1  both     1  both AND non-constant    1
+      witness: 0->0, 1->1, 2->2, 3->3, 4->3
+
+======================================================================================================================
+
+  READING IT
+
+  P1 holds when 'both AND non-constant' is zero on every {+, *} row with a
+  window wide enough to contain [0, |V|], and 'both' is nonzero, which is C2:
+  the constants are found, so the search is looking where the theorem points.
+
+  C1 is the 'hom' and 'monotone' columns: each must be nonzero on its own.
+
+  P2 holding means the theorem is really about the additive group and
+  multiplication is decoration in the hypothesis. That is a widening of
+  `116` F116-4 rather than a correction to it.
+
+  P3 is the control that makes every zero meaningful. A witness there is a map
+  that is a multiplicative homomorphism and monotone and not constant, which
+  the theorem permits precisely because it assumes addition.
+
+  P4 pins the scope. A window narrower than |V| cannot see the periodicity, so a
+  probe built that way would report the theorem false. A realisation map is
+  defined on all of Z, so the hypothesis holds in the design, but a later probe
+  measuring on a narrow window would be measuring nothing.
+
