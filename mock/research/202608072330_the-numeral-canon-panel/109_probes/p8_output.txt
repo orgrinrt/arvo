@@ -1,0 +1,16 @@
+
+running 5 tests
+encoding                     raw-order disagreements   raw-adder correct
+two's complement                     128/256             256/256
+offset binary                          0/256               0/256
+gray over two's complement           184/256              62/256
+arbitrary bijection 7i+3             112/256               0/256
+test tests::denotation_defined_operations_cannot_see_the_encoding ... ok
+test tests::every_encoding_is_a_bijection ... ok
+test tests::no_encoding_here_has_both_pattern_level_properties ... ok
+test tests::representation_defined_operations_do_see_the_encoding ... ok
+re-run at W=4: twos adder-correct 256/256, order-agreeing 128/256; offset adder-correct 0/256, order-agreeing 256/256, defect set {8}
+test tests::the_reported_figures_reproduce ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
