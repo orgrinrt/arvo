@@ -1,0 +1,124 @@
+p4. How wide the compile-time differential's tolerance has to be, and what
+normalising the cost coordinates does to the defects that can occur.
+
+`p3` puts the check between a generated winner table and the weighting that
+generated it into a compile-time assertion, and shows it refuses a generator bug
+at build time for no runtime cost. Stated as EQUALITY, that assertion has a
+suspected defect: at a region where two arms sit a hair apart, the argmin moves
+under the noise of the run, so regenerating the table from a fresh measurement
+changes the committed winner and the assertion fires on a design nobody changed.
+
+This probe measures whether that suspicion is true, over every combination of the
+three weightings and the two arm sets `p1` distinguishes, rather than over the one
+configuration that happens to be stable. The first version of this file ran
+speed-first on the five-arm set only, got a 0% false alarm rate, and would have
+reported the suspicion refuted on a setup that could not have shown it. That is
+`the-test-gate.md`'s "setup that helps" and the fix is the whole matrix.
+
+FOUR THINGS MEASURED.
+
+  1. THE INSTRUMENT'S OWN RESOLUTION. `bitpack-carrier-d16-control` is
+     byte-identical to `bitpack-carrier-d16` by construction, and its doc comment
+     says "any measured gap between them is the harness's own resolution on this
+     workload" (`variants/bitpack-carrier-d16-control/src/lib.rs:1-8`). The gap
+     between those two medians is therefore a MEASURED calibration of how much
+     apparent difference means nothing, sitting in the committed CSVs of every
+     run. It is the natural floor for the differential's band.
+
+  2. FALSE ALARM RATE over 2000 bootstrap resamples, standing in for somebody
+     rerunning the bench and regenerating, at six band widths, over all six
+     weighting-by-arm-set combinations.
+
+  3. DETECTION: whether the same bands still refuse `p2`'s generator defects.
+
+  4. NORMALISATION. `98`'s p10 and this panel's `p1` both min-max normalise each
+     coordinate before weighting. Min-max normalisation is SCALE INVARIANT, so a
+     generator that reads a coordinate in the wrong unit emits the identical
+     table under it and a different one without it. Both sides are run here
+     rather than one being picked, because the difference is a representation
+     choice nobody has named and it changes which defects can even occur.
+
+Not a bench. No measurement was taken; this reads committed harness output and
+resamples it.
+
+==============================================================================
+1. THE INSTRUMENT'S OWN RESOLUTION, from the noise-floor control pair
+==============================================================================
+     region    d16 median  control median        gap
+      16384        1401.5          1401.0     0.032%
+     131072       11250.6         11221.5     0.260%
+    1048576       90231.5         90632.1     0.444%
+    2097152      183275.6        183746.0     0.257%
+    4194304      372072.2        374096.7     0.544%
+    8388608      735425.2        733319.8     0.287%
+
+  apparent difference between two byte-identical arms: median 0.273%, max 0.544%
+
+==============================================================================
+2. FALSE ALARM RATE, all six weighting-by-arm-set combinations
+==============================================================================
+  min-max normalised, which is what `98` p10 and `p1` both do
+
+  arm set: six arms
+    weighting         0.0%    0.5%    1.0%    2.0%    5.0%   10.0%
+    speed-first      72.8%   16.8%    3.5%    0.0%    0.0%    0.0%
+    storage-first    55.2%    0.0%    0.0%    0.0%    0.0%    0.0%
+    tail-first       93.8%   71.5%   52.1%   25.2%    0.5%    0.0%
+
+  arm set: five, control dropped
+    weighting         0.0%    0.5%    1.0%    2.0%    5.0%   10.0%
+    speed-first       0.0%    0.0%    0.0%    0.0%    0.0%    0.0%
+    storage-first    52.8%    0.0%    0.0%    0.0%    0.0%    0.0%
+    tail-first       85.5%   43.1%   17.9%    3.0%    0.0%    0.0%
+
+==============================================================================
+3. DETECTION, and 4. WHAT NORMALISATION DOES TO IT
+==============================================================================
+
+  min-max normalised
+    speed-first     G1 unit       emits the CORRECT table, so nothing can catch it
+    speed-first     G2 swap       refused up to band 10.0%
+    speed-first     G4 offbyone   refused up to band 10.0%
+    storage-first   G1 unit       emits the CORRECT table, so nothing can catch it
+    storage-first   G2 swap       refused up to band 5.0%
+    storage-first   G4 offbyone   refused up to band 0.0%
+    tail-first      G1 unit       emits the CORRECT table, so nothing can catch it
+    tail-first      G2 swap       emits the CORRECT table, so nothing can catch it
+    tail-first      G4 offbyone   refused up to band 5.0%
+
+  raw coordinates
+    speed-first     G1 unit       refused up to band 2.0%
+    speed-first     G2 swap       refused up to band 2.0%
+    speed-first     G4 offbyone   refused up to band 5.0%
+    storage-first   G1 unit       refused up to band 10.0%
+    storage-first   G2 swap       refused up to band 1.0%
+    storage-first   G4 offbyone   refused up to band 1.0%
+    tail-first      G1 unit       refused up to band 2.0%
+    tail-first      G2 swap       emits the CORRECT table, so nothing can catch it
+    tail-first      G4 offbyone   refused up to band 10.0%
+
+==============================================================================
+READING
+==============================================================================
+
+Section 2's band 0.0% column is the equality form `p3` compiles, and its number
+is the probability that regenerating the table from a rerun refuses a design
+nobody changed. Read it per row: the configurations `p1` shows are stable have
+nothing to absorb, and the ones it shows are not are where a band earns its keep.
+
+Section 4 is a correction to this probe's own framing, kept because the mistake
+is instructive. Min-max normalisation is scale invariant by construction, so a
+generator reading a coordinate in the wrong unit produces the identical
+normalised table, the identical section and the identical shipped code. The first
+version of this reading called that "invisible to every instrument", which is
+wrong in the way that matters: the defect is NEUTRALISED, not concealed. There is
+nothing downstream that differs, and a check that cannot see a difference which
+does not exist has lost nothing.
+
+What normalisation does cost is elsewhere, and `p4b` measures it: the weights
+read normalised units whose scale depends on which arms are present, so the
+section stops being independent of arms nobody selects.
+
+The detection rows above stand as written for the defects that do change the
+answer, G2 and G4, and those are what the band has to keep refusing.
+
