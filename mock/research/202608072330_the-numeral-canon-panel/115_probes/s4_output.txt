@@ -1,0 +1,28 @@
+ok    lib.rs                                    :288   the shipped chunked fold
+ok    lib.rs                                    :291   the const predicate selecting the two arms
+ok    lib.rs                                    :296   the wrapping branch
+ok    lib.rs                                    :301   reduced once at the end of the chunk
+ok    lib.rs                                    :158   the predicate 114 identifies as the corner rule at a fold's root
+ok    lib.rs                                    :159   and its body
+ok    114_leroy_formalising_the_primitive.md    :916   114's central mechanism, which s2 reproduces
+ok    114_leroy_formalising_the_primitive.md    :921   114's corrected form of my section 21
+ok    114_leroy_formalising_the_primitive.md    :1021  the finding against me
+ok    114_leroy_formalising_the_primitive.md    :1043  the arm whose figures my repair reproduces
+ok    114_leroy_formalising_the_primitive.md    :1121  the compile-time refutation
+ok    114_leroy_formalising_the_primitive.md    :1132  the state-count correction
+ok    114_leroy_formalising_the_primitive.md    :1107  114's own compiled predicate claim
+ok    114_leroy_formalising_the_primitive.md    :1010  the mechanism the repair rests on
+ok    114_leroy_formalising_the_primitive.md    :1069  the bound on 112's rule, which I keep untested
+ok    114_leroy_formalising_the_primitive.md    :276   the repair 114 offers and I decline
+ok    114_leroy_formalising_the_primitive.md    :594   114's least-comfortable assumption, which my section 8 leans on
+ok    114_leroy_formalising_the_primitive.md    :1237  what 114 says it most wants a second read on
+ok    112_leijen_where_the_refinement_lives.md  :1002  where the overflow policy is placed by measurement
+ok    112_leijen_where_the_refinement_lives.md  :1113  the finding whose own predicate lists sat
+ok    111_jhala_the_primitive_attacked.md       :1383  F111-15, the finding refuted at wrap
+ok    111_jhala_the_primitive_attacked.md       :1386  and the dimension its predicate fixes
+ok    111_jhala_the_primitive_attacked.md       :1402  the finding whose figure is corrected
+FAIL  114_leroy_formalising_the_primitive.md    :100   CONTROL: right substring, wrong line
+FAIL  111_jhala_the_primitive_attacked.md       :1383  CONTROL: right line, substring that is not there
+
+23 real citations checked, 0 failing
+2 controls included, 2 of them failed as they must
