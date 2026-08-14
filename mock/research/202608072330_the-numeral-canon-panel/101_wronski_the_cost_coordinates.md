@@ -525,7 +525,10 @@ estimator rather than per family.
 
 **A bound on this statistic, stated because it matters.** The signal is a dynamic range, `(max - min)/min`
 across arms, so one extreme arm can carry it. I do not rest the claim that the interquartile range is usable
-on this row alone; the claim I do rest is 5.3's, which is exact.
+on this row alone; the claim I do rest is 5.3's, which is exact. Section 5.4 replaces the signal half with
+a pairwise separation count and keeps the floor half, which recomputes at 1000 resamples on shared draws and
+lands within 0.03 percentage points of the figures above on every carrier row, so the floor is not sensitive
+to how it was drawn.
 
 ### 5.2 The 95th percentile is the median again
 
@@ -840,10 +843,14 @@ reachable section, so dropping it leaves a design with one axis and one strategy
 **3. Use the 95th percentile as `100` proposes.** Closed by section 5.3 on the family it was measured on: it
 reaches one section, which is what no second coordinate at all reaches.
 
-**4. A tail excess, `p95 - median`, as the third coordinate.** **Live and the best candidate I found.** It
-adds 3, 9 and 5 sections on the three enumerable families, beating the level it is built from in 3 of 3, and
-it is the shape a tail-weighing intent actually asks for. Its floor is worse than the interquartile range's,
-so section 5's two criteria disagree about it, and I state that rather than resolving it.
+**4. A tail excess, `p95 - median`, as the third coordinate.** **Live, and the candidate whose case
+changed most while I measured it.** It adds 3, 9 and 5 sections on the three enumerable families, beating the
+level it is built from in 3 of 3, and it is the shape a tail-weighing intent actually asks for. Section 5.4
+then measured that its poor separation is expected of any real second coordinate rather than evidence
+against it, so the case against it rests entirely on its floor: 101% on carrier and 405% on
+`bitpack-contend-decode`, against the interquartile range's 48% and 135%. **On a family whose instrument
+resolves it, it is the better third coordinate; on this corpus it is not resolved.** That is a predicate, and
+it is measurable before anything is built.
 
 **5. Turn on `--perf-counters` and add an instruction-count coordinate.** **Live and unbuilt.** It needs
 `sudo` on the Apple-Silicon host the corpus already ran on, and it is the only candidate coordinate that
