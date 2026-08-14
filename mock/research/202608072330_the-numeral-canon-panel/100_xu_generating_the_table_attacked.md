@@ -1004,6 +1004,54 @@ yet gone wrong.
 
 I offer that as an option to add to the register rather than as a proposal, and I have not built it.
 
+## 10b. Nine shapes found and not taken, with what closed each
+
+A dispatch that found several shapes and shipped one has thrown away most of its value, so these are
+listed with what closed them rather than left implicit. Several are still live and are marked as such.
+
+**1. Ship only the winner table and check it offline.** `97`'s shape as proposed. Not taken as the target
+because the check is a step somebody runs rather than something the build enforces, and p2 shows the
+property it checks is the one a generator preserves. **Still right as the interim**, and `98` says so
+itself: where two of op's four intents have no measurable coordinate, no weight vector can be written for
+them, so there is nothing to generate from and a checked table is what exists.
+
+**2. Ship only the cost table, with no winner table and no assertion.** One artifact instead of three,
+and the consumer's weighting becomes the only path. **Closed by p2**: with nothing to compare the const
+argmin's output against, there is no differential at all, and the whole defect class p2 measures becomes
+undetectable. The winner table's remaining job is to be the thing the assertion checks.
+
+**3. Check by independent recomputation rather than by cone membership.** Much simpler to write: run a
+second argmin and diff. **Closed by p2's G3 column**: recomputation flags a tie-break disagreement as a
+defect 48 of 48 times, and a tie is exactly where the weighting declines to choose. Cone membership is the
+tie-break-invariant form and costs no more.
+
+**4. Make the section a tolerance-contending SET rather than a point.** `97` section 5's instrument,
+which I expected to make the section a stable object. **Closed by p1's own measurement**: set stability is
+non-monotone in the tolerance, because the membership boundary is as noisy as the argmin whenever the band
+lands near an arm. It helps where a band brackets a gap and not otherwise, which is not a general fix.
+
+**5. Normalise per region rather than globally.** Would narrow section 8's independence failure to the
+arms present at that region. **Not tested**, and it does not remove the failure, only its reach. The
+frozen-range remedy removes it outright and was tested instead.
+
+**6. Generate the region grid, arm registry and key encoding from one declaration.** Section 10's
+proposal. **Live and unbuilt.** It is the join underneath the one this unit is arguing about, and it is
+the one a member of this unit already had to repair by hand.
+
+**7. Build a compile-time arm in the bench harness.** The only thing that would price section 9's one
+remaining cost. **Live and unbuilt**, on a scope call of mine that is attackable: it is upstream work in
+mockspace and nothing is blocked on it today.
+
+**8. A per-coordinate tolerance band rather than one global band.** p8 finds that different estimators of
+one coordinate differ by two orders of magnitude in resolution, so a single band width across coordinates
+is asserting they are alike when they are not. **Live and untested.**
+
+**9. Select the section by resample agreement rather than from the point estimate.** `98`'s p14 rule,
+which it measures as changing the answer for one of three weightings and reproducing 2.1 times more often
+where it does. **Not re-tested here.** p1's regret result suggests it buys little on the carrier family
+because the point estimate is already within a fraction of a percent of optimal, but that is an inference
+from a different measurement and not a test of the rule.
+
 ## 11. What I keep, and why keeping it is the result
 
 **`98`'s inversion.** Generating rather than checking is right, for reasons that survive section 2 having
