@@ -1,0 +1,80 @@
+========================================================================================
+Q1. The closed form for the bit-drop / toward-zero difference, on my own sweep
+========================================================================================
+    W   F   measured    2^(W-1)-2^(W-1-F)   match  off-by-one ctrl
+    4   1          4                    4    True            False
+    4   2          6                    6    True            False
+    4   3          7                    7    True            False
+    6   1         16                   16    True            False
+    6   2         24                   24    True            False
+    6   3         28                   28    True            False
+    6   4         30                   30    True            False
+    6   5         31                   31    True            False
+    8   1         64                   64    True            False
+    8   2         96                   96    True            False
+    8   3        112                  112    True            False
+    8   4        120                  120    True            False
+    8   5        124                  124    True            False
+   10   1        256                  256    True            False
+   10   2        384                  384    True            False
+   10   3        448                  448    True            False
+   10   4        480                  480    True            False
+   10   5        496                  496    True            False
+
+  Q1 closed form holds at every cell: True
+  control (off-by-one form) matched anywhere: False (must be False)
+
+========================================================================================
+Q2. Can any sweep over 32,768 values report 21,204 differences?
+========================================================================================
+  32,768 = 2^15, so W = 15 and the complete set of reportable counts is:
+    [0, 8192, 12288, 14336, 15360, 15872, 16128, 16256, 16320, 16352, 16368, 16376, 16380, 16382, 16383]
+  maximum reportable at this width: 16383 = 2^14 - 1
+  21204 in the set: False
+  21204 exceeds the maximum: True
+
+  Q2: the figure is not merely absent from the set, it is larger than any count the
+      sweep can produce at the only width its own denominator admits. It cannot be a
+      cell of the sweep it was reported as, under any fraction width.
+
+  control on the reading of '32,768': if it names the half-range rather than the whole
+      domain, W = 16 and the set is [0, 16384, 24576, 28672, 30720] ... [32766, 32767]
+      21204 in that set: False (so the figure fails under both readings)
+
+========================================================================================
+Q3 through Q6. Provenance, at source
+========================================================================================
+  Q3 '21204' in 125 or 125_probes: 0 hit(s) (predicted 0)
+
+  Q4a 125's own recorded gate result: 2 hit(s) (predicted >= 1)
+     125_knuth_rounding_cold_derivation.md:463:Run per crate by `--manifest-path`, as the brief instructs. **Twelve of the th
+     125_knuth_rounding_cold_derivation.md:464:crates completed green: 108 tests, 0 failures** (carrier 9, contend 12, footpr
+  Q4b '123 across 13' in 125: 0 hit(s) (predicted 0)
+  Q4c the completed count, in 122's own artifact: 1 hit(s) (predicted 1)
+     122_probes/u0_test_gate_run.txt:22:TOTAL PASSED: 123
+  Q4d files carrying the wrong attribution forward: 5 hit(s)
+     131_leroy_formalising_the_rounding_axis.md:48
+     131_leroy_formalising_the_rounding_axis.md:52
+     132_leroy_the_canon_candidate_for_the_rounding_axis.md:43
+     134_wronski_cosign_with_one_addendum_on_the_dither.md:13
+     135_dolan_signature_in_part.md:10
+
+  Q5a the exclusivity sentence in either source file: 0 hit(s) (predicted 0)
+  Q5b where it does appear: 2 hit(s) (predicted >= 1, both mine)
+     131_leroy_formalising_the_rounding_axis.md:428
+     132_leroy_the_canon_candidate_for_the_rounding_axis.md:322
+
+  Q6 'T9' in 125: 1 reference(s), 0 of them a definition
+     125_knuth_rounding_cold_derivation.md:116:compensation is T9 in section 6.
+      (every other theorem in 125 is introduced as '**Tn (...)**'; T9 is not, so the
+       label is a dangling forward reference and 132's citation of it resolves to nothing)
+
+========================================================================================
+VERDICT
+========================================================================================
+  The figure cannot be a cell of the sweep it was attributed to, by a route independent
+  of 133's: it exceeds the maximum count that sweep can report at either reading of its
+  own denominator. It appears nowhere in 125 or its probes. 125 records a gate result
+  that contradicts what three later files attribute to it, and the completed count those
+  files mean is in 122's committed artifact. The exclusivity sentence entered at 131.
+  Every one of these is a coordinator relay, and 131 and 132 are mine.
