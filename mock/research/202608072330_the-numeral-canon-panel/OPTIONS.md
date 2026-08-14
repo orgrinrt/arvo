@@ -2524,3 +2524,60 @@ wall with no repair), whose resolution `111` locates in `110`'s own F9.
 
 **Retired:** the claim that `wide-rung-shared` takes 107s. Three measurements now put it at 4.05s,
 4.25s and under 5s. **Dropped rather than carried as contested.**
+
+### Register brought current to `124`
+
+The entries above stop at `111`. Files `112` through `124` are the rest of the realisation-map topic and
+its checks, and the topic **converged**, so most of what it raised was settled inside it rather than
+left here. `122`'s ledger is the record of what was settled and at which rung, `123` is the independent
+check on it, and `124` closes that check's one open item. What follows is only what the topic left open,
+each with what would close it, per the register's own standing requirement.
+
+### Q53. Whether anything but the finiteness theorem transfers from a model width to a real one
+
+The topic's structural result quantifies over **finiteness** rather than over size, so it needs no
+transfer argument and carries none. Every other claim in the topic was established by sweeping small
+widths, and `unstable-features.md` states plainly that closing the `specialization` and `TypeId` doors
+is necessary for model-width transfer and **not sufficient**: uniform monomorphisation is a claim about
+implementations, transfer is a claim about properties, and the first does not imply the second.
+
+**What would close it.** Per width-dependent claim, one of the three honest transfer arguments named
+there: a symmetry making the property invariant under the width, a saturation point past which nothing
+changes, or an induction on the width. Naming which one, per claim. The default answer is that there is
+none, in which case a claim swept at `W = 3` is a claim about `W = 3` and its predicate should say so.
+
+**What would not close it.** Another sweep at another small width. Two model widths agreeing is two
+model-width results, not a transfer.
+
+### Q54. Whether a consumer's terms are trees or DAGs
+
+Every condition set in the topic reads leaf identity, and the whole condition (a) family is about a leaf
+occurring at most once. That is a property of a **tree**. If consumer terms are DAGs, a shared subterm is
+one leaf or several depending on how the front end hands it over, and the conditions bind differently
+without any of them changing.
+
+**What would close it.** A statement of what the consumer-facing term type is, which is a design
+question at the tier above this topic rather than a measurement. Failing that, a measurement of whether
+the two readings ever disagree on the conditions, which would bound how much it matters.
+
+### Q55. What the accumulator width collapse actually costs
+
+Under the shipped `warm-clamp` guard the accumulator's overflow policy is free, and with a saturating
+accumulator the required width collapses from `W + ceil_log2(arity)` to `W`, which at `W = 2` and arity
+32 is 2 bits against 7. Whether that is **faster** is unpriced, and it is the one result in the topic
+with a consumer attached.
+
+**What would close it.** A harness run, and only that: this is a how-much question, so an ad-hoc spike
+cannot answer it. `117` records why such a run cannot currently be trusted, and that has to be fixed
+first or the number will be taken under an undocumented profile.
+
+### Q56. Whether the domain dimension and the ambient span are missing anywhere else in the panel
+
+They were missing from **every predicate in the realisation-map topic**, caught only when a
+counterexample and a shipped test forced them out, and nine of eleven predicates were amended. That is a
+class, and the class was found in one topic because one topic was being checked closely.
+
+**What would close it.** A sweep of the earlier topics' findings for predicates that quantify over a
+value domain without saying whether it straddles zero, and over a realisation without naming the ambient
+range the map was measured on. Cheap to run, and the topic that produced it is evidence the yield is not
+zero.
