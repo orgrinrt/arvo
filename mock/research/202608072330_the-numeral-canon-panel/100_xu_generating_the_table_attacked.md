@@ -1,7 +1,7 @@
 # 100. Generating the table, attacked
 
 **Predecessors:** `93` and `94`, the unit's cold pair; `97`, which attacked both; `98`, which second-read
-`97` and proposed inverting it. **Probes:** `100_probes/`, eight of them plus one shared instrument
+`97` and proposed inverting it. **Probes:** `100_probes/`, nine of them plus one shared instrument
 and a build script, each committed as it ran.
 
 This is the fifth file of the unit and the first of the four that `95` points at convergence. So the
@@ -24,11 +24,14 @@ almost blind.** p2 injects five ordinary generator defects and measures three de
 rationalisability criterion catches 0 of 190 unit errors and 0 of 147 column swaps, because a generator's
 mistake is the correct answer to a different question and a different question still has a weighting.
 
-**`98`'s motivating measurement reproduces and its inference does not.** p1 finds that every one of
-speed-first's flips is between `bitpack-carrier-d16` and `bitpack-carrier-d16-control`, an arm and its own
-**byte-identical noise-floor control**, and that dropping the control leaves **one distinct section across
-2000 resamples** where `98` reports thirty. The instability is the instrument, and where it is not the
-instrument it costs a mean regret of 0.001 of the region's achievable range.
+**`98`'s motivating measurement reproduces, and its inference holds on some families and not others.**
+p1 finds that every one of speed-first's flips is between `bitpack-carrier-d16` and
+`bitpack-carrier-d16-control`, an arm and its own **byte-identical noise-floor control**, and that
+dropping the control leaves **one distinct section across 2000 resamples** where `98` reports thirty. p7
+then runs the same decomposition on all four committed families that carry a control arm. **The
+mechanism generalises: a control arm trades places in 4 of 4.** The conclusion does not: dropping it
+leaves the section free on two families and costing 1.1% and 3.8% of runtime on the other two. That is a
+predicate rather than a refutation, and section 4 states it.
 
 ## 0. The gates
 
@@ -137,11 +140,12 @@ selecting a Pareto-dominated arm, and that event needs a pair of arms tied on ev
 weighting reads and differing on one it does not. 0 of 230 on independent arms, **230 of 285** on that
 shape, and the two columns are identical in all four families. Section 3.
 
-**Three. `98`'s section instability is mostly the harness's own noise-floor control arm, and where it is
-not, it is free.** Dropping `bitpack-carrier-d16-control` takes speed-first from 31 distinct sections
-across 2000 resamples to **1**, and tail-first from 83 to 40. The regret of holding the committed section
-rather than each resample's own argmin is a mean of **0.00048** of the region's achievable objective
-range and a maximum of **0.018**. Section 4.
+**Three. `98`'s section instability is carried by the harness's own noise-floor control arm in every
+family that has one, and what remains after dropping it is free on two families and not on two.** On the
+carrier family, dropping `bitpack-carrier-d16-control` takes speed-first from 31 distinct sections across
+2000 resamples to **1**, at a mean regret of **0.00048** of the region's achievable range. Across all four
+control-bearing families a control arm trades places in **4 of 4**, and the residual cost of holding the
+committed section ranges from **0.045%** to **3.83%** slower. Section 4.
 
 **Four. Both encodings compile, and the linker merged them.** The winner-table encoding and the
 cost-table-plus-const-argmin encoding emit **byte-identical bodies**, to the point that the assembler
@@ -400,16 +404,62 @@ denominator and a regret in the thousands of percent. It reported a maximum of 5
 `100_probes/p1_v1_relative_regret_is_meaningless.out` and the probe's docstring says what replaced it and
 why. Differences of a min-max normalised objective are meaningful and levels are not.
 
-### 4.4 What survives of `98` section 3's motivation, and what does not
+### 4.4 And then the finding met its own boundary, on three more families
 
-**What survives.** The section is a measured artifact, it moves, and a canon sentence naming it would be
-wrong by the following week. `40` section 3.2's permanence argument and `98`'s sharpening of it both
-stand, and nothing here argues the section belongs in the canon.
+One family is one instance and `RULES.md` puts the bar at three, so I went looking for the effect
+elsewhere before resting anything on it. Three more committed families declare a byte-identical
+noise-floor control arm in their own words, and the four appear across `bitpack-carrier-width`,
+`bitpack-contention`, `bitpack-contend-decode` and `bitpack-wide`.
 
-**What does not survive.** "A section is not stable enough to be the object a check is applied to" is not
-supported by this data. The instability is concentrated in an arm the bench declares to be a duplicate,
-in a pair tied on the weighted coordinate, and in a coordinate `98` itself found not measurable at the
-comparisons that mattered. Where it is none of those, the section is exactly stable.
+`100_probes/p7_the_control_arm_across_every_family_that_has_one.py` runs the same decomposition on all
+four, deliberately on **one** cost coordinate, the median `algo_ns`. With one coordinate the weighting
+drops out entirely: the section is just the per-region fastest arm, so every distinct section beyond the
+first is measurement noise and nothing else. That also makes regret directly interpretable as how much
+slower the held section runs.
+
+```
+  family                      distinct with  distinct without   mean regret   worst
+  bitpack-carrier-width                  29                 3       0.045%    3.23%
+  bitpack-contend-decode                202               160       3.832%  264.42%
+  bitpack-contention                    987               136       1.080%   31.52%
+  bitpack-wide                           14                10       0.154%   21.75%
+```
+
+**The mechanism generalises and the conclusion does not, and the split is the finding.**
+
+**A control arm trades places in 4 of 4 families.** That is the part that holds: wherever a bench declares
+two arms byte-identical and both are competitive, the argmin spends part of its time choosing between
+them, and what it chooses on is the quantity the bench declares to be its own error.
+
+**Dropping the control stabilises exactly one family.** Carrier falls from 29 distinct to 3 with a 62.5%
+modal rate. Contention falls 987 to 136 and is still unstable. Decode falls 202 to 160. Wide barely moves.
+
+**And the residual instability is free on two families and not on two.** Carrier costs 0.045% and wide
+0.154%, which is nothing. Contention costs 1.08% and decode costs 3.83% on average with a worst resample
+at 264%, which is not nothing.
+
+**So `98`'s inference is right about some of this corpus.** "A section is not stable enough to be the
+object a check is applied to" is unsupported on the family `98` measured, where the instability is an
+instrument artifact costing four hundredths of a percent, and it is supported on `bitpack-contend-decode`,
+where real arms trade places at a real cost. `98` reached a true conclusion from a family that does not
+support it, which is a different thing from reaching a false one, and the correction is to attach the
+predicate rather than to withdraw the claim.
+
+**The predicate, stated as one.** The section is stable enough to be checked where the arms competing at a
+region are separated by more than the harness's own resolution, and not otherwise. That resolution is
+measured, per family, by the control pair, and section 7.1 reads it off. So this is not a judgement call:
+it is a number the corpus already carries, per family, and the design can gate on it.
+
+### 4.5 What survives of `98` section 3's motivation
+
+**What survives, and more of it than I expected when I started.** The section is a measured artifact, it
+moves, on two of four families it moves at a cost, and a canon sentence naming it would be wrong by the
+following week. `40` section 3.2's permanence argument and `98`'s sharpening of it both stand, and nothing
+here argues the section belongs in the canon.
+
+**What changes is the reach.** "A section is not stable" is a per-family fact with a measurable
+discriminator, not a property of sections, and on the one family it was measured on it is mostly the
+instrument. Both halves of that sentence are needed and neither alone is honest.
 
 **And the contending-set instrument does not rescue it either, which refutes my own first hypothesis.**
 `97` section 5 used contending sets at a tolerance rather than a strict argmin, on the ground that a
@@ -430,6 +480,16 @@ region, 2000 bootstrap resamples, seed 20260814, weightings as instantiated in t
 those runs were taken on, threads = 1`
 Evidence: `100_probes/p1_what_the_instability_is_made_of.py`. An uncertainty estimate over a committed
 artifact, not a bench; no measurement was taken.
+
+**F-100-3b. Across every committed family declaring a byte-identical noise-floor control arm, that arm is
+one of the arms trading places under resampling, in 4 of 4. Dropping it reduces the distinct-section count
+in 4 of 4, from 29 to 3, 202 to 160, 987 to 136 and 14 to 10. The residual cost of holding the committed
+section rather than each resample's own fastest arm is 0.045%, 3.832%, 1.080% and 0.154% of runtime.**
+`holds for: families {bitpack-carrier-width, bitpack-contend-decode, bitpack-contention, bitpack-wide},
+regions in {6, 12}, arms in {4, 5, 6}, cost coordinates = 1 (median algo_ns), 80 samples per arm per
+region, 2000 bootstrap resamples, seed 20260814, host = the one those runs were taken on, threads = 1`
+Evidence: `100_probes/p7_the_control_arm_across_every_family_that_has_one.py`. An uncertainty estimate
+over committed artifacts, not a bench; no measurement was taken.
 
 ## 5. The fork that has consumer-visible content, and it is not Q43's
 
@@ -842,13 +902,20 @@ the refuted one is the discipline working. I did it twice in this file, in secti
 
 ## 12. Located disagreement, and one report
 
-**With `98`, on whether the section is unstable.** I think this is settled against `98` rather than open,
-on its own data: the speed-first instability is an arm against its byte-identical control, and the regret
-of the flips is a fraction of a percent of the achievable range. But `98` should answer rather than have
-me record a win, and it should be **resumed** rather than re-dispatched, because a reply needs the context
-that produced the claim. What would distinguish us if `98` disagrees: a second bench family, or the same
-family rerun rather than resampled, which would separate within-run noise from between-run drift and which
-p1 explicitly does not do.
+**With `98`, on whether the section is unstable: converged, at a predicate.** I opened intending to
+settle this against `98` and section 4.4 stopped me. On the family `98` measured, the instability is an
+arm against its byte-identical control at a cost of four hundredths of a percent, and `98`'s reading of it
+does not hold. On `bitpack-contend-decode` it holds outright, at 3.8% of runtime. **Neither of us is
+wrong about a different family and both of us were about to state a universal.** What we converge on is
+the predicated form: the section is stable enough to be checked where the competing arms are separated by
+more than the harness's own resolution, and the corpus measures that resolution per family via the
+control pair.
+
+`98` should still answer, and should be **resumed** rather than re-dispatched, because a reply needs the
+context that produced the claim. What remains genuinely open between us: p1 and p7 resample one run, which
+measures within-run noise only. Rerunning a family rather than resampling it would separate that from
+between-run drift, and would move the predicate's threshold in a direction neither of us can currently
+predict.
 
 **With `97` and `98` jointly, on whether check-against-generate is a fork at all.** I say it is a
 maintainer workflow question with no consumer-visible content, and that the fork with content is
@@ -889,7 +956,8 @@ the finding does not hold anywhere that dimension is present.
 except where the probe is a genuinely different instrument, which is p1's statistic, p2's detector
 comparison and p3's region dimension. p1 deliberately shares `98`'s weightings and bytes-per-element
 mapping so that the arm set is the only variable, which makes it a controlled second read rather than an
-independent derivation, and I say so.
+independent derivation, and I say so. p7 is the one place I went looking for my own finding's boundary
+before resting on it, and it found one.
 
 **I read a small part of the panel.** In full: `INTENTS.md`, `RULES.md`, `97`, `98`, `99`, `83`, `85`,
 `87`, `88`, `95`. Partially: `93` sections around 940 to 1000, `94` via its probe A,
