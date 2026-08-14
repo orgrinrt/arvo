@@ -1,0 +1,90 @@
+==============================================================================
+p5. A declared extent discharges a construction's base predicate
+==============================================================================
+
+P1. Ungraded: interval closure against the monotonicity predicate
+
+  base          monotone   ill-ordered pairs   agree
+  uW2F0sat          True               0/100    True
+  uW2F0wrap        False              35/100    True
+  sW2F0sat          True               0/100    True
+  sW2F0wrap        False              35/100    True
+  uW2F1sat          True               0/100    True
+  uW2F1wrap        False              35/100    True
+  sW2F1sat          True               0/100    True
+  sW2F1wrap        False              35/100    True
+  uW3F0sat          True              0/1296    True
+  uW3F0wrap        False            546/1296    True
+  sW3F0sat          True              0/1296    True
+  sW3F0wrap        False            546/1296    True
+  uW3F1sat          True              0/1296    True
+  uW3F1wrap        False            546/1296    True
+  sW3F1sat          True              0/1296    True
+  sW3F1wrap        False            546/1296    True
+
+  monotonicity predicts closure on 16/16 bases
+  the no-precondition hypothesis (always closed) agrees on 8/16
+
+P2. Graded: interval closure over a WRAPPING base under a declared extent
+
+  base         extent        propagated fits  monotone on it  ill-ordered
+  uW2F0wrap    <= 1                     True            True          0/9
+  uW2F0wrap    <= 2                    False           False         7/36
+  sW2F0wrap    <= -1                   False           False          3/9
+  sW2F0wrap    <= 0                    False           False        15/36
+  uW2F1wrap    <= 1/2                   True            True          0/9
+  uW2F1wrap    <= 1                    False           False         7/36
+  sW2F1wrap    <= -1/2                 False           False          3/9
+  sW2F1wrap    <= 0                    False           False        15/36
+  uW3F0wrap    <= 1                     True            True          0/9
+  uW3F0wrap    <= 2                     True            True         0/36
+  uW3F0wrap    <= 3                     True            True        0/100
+  uW3F0wrap    <= 4                    False           False       23/225
+  sW3F0wrap    <= -3                   False            True          0/9
+  sW3F0wrap    <= -2                   False           False         8/36
+  sW3F0wrap    <= 0                    False           False      119/225
+  uW3F1wrap    <= 1/2                   True            True          0/9
+  uW3F1wrap    <= 1                     True            True         0/36
+  uW3F1wrap    <= 2                    False           False       23/225
+  sW3F1wrap    <= -3/2                 False            True          0/9
+  sW3F1wrap    <= -1                   False           False         8/36
+  sW3F1wrap    <= 0                    False           False      119/225
+
+  over wrapping bases: 8 of 40 declared extents give a closed interval construction
+
+  Does the propagated bound predict interval closure, in both directions
+    unsound 0, conservative 2, exact 38, total 40
+
+P3/P4. Does the grade lift through a construction, and by which rule
+
+  product2   extent <= 1: grade says discharge, componentwise-add unsound 0/16
+  complex    extent <= 1: grade says discharge, componentwise-add unsound 0/16
+  dual       extent <= 1: grade says discharge, componentwise-add unsound 0/16
+  interval   extent <= 1: grade says discharge, componentwise-add unsound 0/16
+
+  product2   extent <= 3: grade says discharge, componentwise-add unsound 0/256
+  complex    extent <= 3: grade says discharge, componentwise-add unsound 0/256
+  dual       extent <= 3: grade says discharge, componentwise-add unsound 0/256
+  interval   extent <= 3: grade says discharge, componentwise-add unsound 0/256
+
+  product2   extent <= 7: grade says refuse   , componentwise-add unsound 0/4096
+  complex    extent <= 7: grade says refuse   , componentwise-add unsound 0/4096
+  dual       extent <= 7: grade says refuse   , componentwise-add unsound 0/4096
+  interval   extent <= 7: grade says refuse   , componentwise-add unsound 0/4096
+
+  Multiplication, where the componentwise lift is NOT the rule:
+    product2   extent <= 1: pairwise rule says discharge, unsound 0/16
+    complex    extent <= 1: pairwise rule says discharge, unsound 3/16
+    dual       extent <= 1: pairwise rule says discharge, unsound 0/16
+    product2   extent <= 2: pairwise rule says discharge, unsound 0/81
+    complex    extent <= 2: pairwise rule says discharge, unsound 26/81
+    dual       extent <= 2: pairwise rule says discharge, unsound 1/81
+    product2   extent <= 3: pairwise rule says refuse   , unsound 0/256
+    complex    extent <= 3: pairwise rule says refuse   , unsound 0/256
+    dual       extent <= 3: pairwise rule says refuse   , unsound 0/256
+
+INSTRUMENT CHECK
+
+  wrapping base, full carrier : 546/1296 ill-ordered
+  saturating base, full carrier: 0/1296 ill-ordered
+  the closure test can fail and can pass: True
