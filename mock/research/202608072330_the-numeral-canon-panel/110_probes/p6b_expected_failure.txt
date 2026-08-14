@@ -1,0 +1,19 @@
+error[E0308]: mismatched types
+  --> p6_noncanonical_wall.rs:66:18
+   |
+66 |     takes_binary(d)
+   |     ------------ ^ expected `2`, found `10`
+   |     |
+   |     arguments to this function are incorrect
+   |
+   = note: expected struct `Num<FxAxes<_, _, 2, _, _, _>>`
+              found struct `Num<FxAxes<_, _, 10, _, _, _>>`
+note: function defined here
+  --> p6_noncanonical_wall.rs:59:8
+   |
+59 | pub fn takes_binary(x: Num<U8Binary>) -> i128 {
+   |        ^^^^^^^^^^^^ ----------------
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.
