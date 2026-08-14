@@ -2421,3 +2421,39 @@ disambiguating, he answered:
 The name `Strategy` belongs to arvo's concept. The canon may rely on it meaning arvo's concept without
 qualification. Naming notko's replacement is notko's business and not this panel's, and this is not a
 licence for the panel to edit notko.
+
+### Q51. What a strategy is, after the pair was attacked
+
+The strategy-axis unit's answer, and the one entry a later reader should start from. **Consolidated at
+`106`, checked at `107`, and the pair itself attacked at `108`, whose section 7 carries the converged
+statement with all repairs applied.** That statement supersedes `106` section 4's rendering.
+
+**It survives as a two-component object.** An assignment on observable policy axes plus a weighting over
+cost coordinates. Five of the eight clauses stating it needed repair, each replaced from material the
+unit already held rather than from anything new.
+
+**The repair that reaches furthest: component one fixes the denoted answer, not the computed one.** As
+first written, component two ranged over the arms producing the answer component one had fixed, and in
+that region a fidelity column measures a constant (`106` section 8), so op's accuracy intent was
+expressible in neither component while `102:125` claimed the mechanism serves it. Fixing the denoted
+answer restores the region where an accuracy coordinate can vary at all.
+
+**Observability is a property of the chain, not of the axis**, and the definition in play was `40`'s
+with a condition no file carried: 0% against 89.081% depending on whether the limit is read at the
+declared width or the container width. Replaced by a conservative closure plus a per-chain licence, with
+a sound const-checkable predicate and zero unsound predictions over 8019 exhaustively swept chains.
+
+**Two second components are related by union on supports and not by anything on rates**: supports join
+canonically 9 of 9, while six rate combinations disagree on 71.4% of 42 rate pairs. One word had been
+naming two objects.
+
+**The rungs, corrected.** The two-level structure is **`40`'s at TWO EXPERTS** (`40` plus `93`'s blind
+phase one), which `106` recorded at no rung; `93`'s own claim of three instances overcounts. What is
+`102`'s is narrower and should be cited as such: **the relocation of the observable assignment into the
+strategy.** And the polarity result that dissolved the `25`-versus-cold-pair question stands at **ONE
+EXPERT**: `102:260` says of itself that a second reader deriving polarity independently "would earn the
+rung. I did not."
+
+**Op's `88` sentence has five incompatible readings across this panel**, and he flagged his own
+difficulty wording it. `106` section 4's leg (a), which read it as licensing the pair, is void on that
+ground. It is not a question for him: `104` records him returning this class to the panel.
