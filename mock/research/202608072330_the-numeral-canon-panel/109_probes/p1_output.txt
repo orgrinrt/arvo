@@ -1,0 +1,11 @@
+
+running 5 tests
+test tests::the_two_realisations_have_different_footprints ... ok
+test tests::the_dense_realisation_is_not_independently_addressable ... ok
+test tests::the_two_value_sets_denote_different_rationals ... ok
+test tests::same_value_set_two_realisations_agree_on_every_answer ... ok
+B: 64714 of 65536 pairs disagree between I=8,F=0 and I=4,F=4
+test tests::same_realisation_two_value_sets_disagree ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
