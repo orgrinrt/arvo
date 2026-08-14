@@ -1,0 +1,17 @@
+
+running 6 tests
+closure escapes: signed saturate-both-ends 0/256, signed saturate-top-only 36/256, unsigned saturate-top-only 0/256, unsigned saturate-both-ends 0/256, signed wrap 0/256
+associativity failures: unsigned-top 0, unsigned-both 0, signed-both 952, of 4096 triples each
+declared ADD_ASSOCIATIVE = true, computed failures = 952 of 4096 triples
+signed both-vs-wrap differ on 64 of 256 pairs
+computed associativity: signed saturate-both-ends 952/4096, signed saturate-top-only 448/4096, unsigned saturate-top-only 0/4096, unsigned saturate-both-ends 0/4096, signed wrap 0/4096
+rewrite changed 952 of 4096 answers; witness a=-8 b=-8 c=1 reference=-7 rewritten=-8
+test tests::closure_is_prior_to_any_law ... ok
+test tests::among_closed_completions_the_clamp_count_decides_associativity ... ok
+test tests::a_false_law_declaration_compiles_and_the_computed_law_refutes_it ... ok
+test tests::the_completions_are_actually_different_functions ... ok
+test tests::the_law_is_computable_at_const_time_from_the_completion ... ok
+test tests::the_rewrite_licensed_by_the_declaration_changes_answers ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
