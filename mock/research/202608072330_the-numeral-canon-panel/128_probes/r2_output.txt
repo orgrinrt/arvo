@@ -1,0 +1,11 @@
+--- 1. same-cell pair: inversion probability across the whole Frechet interval ---
+f_x=1/5, f_y=4/5: inversion=0 at 1 of 13 sweep points, at p11=[Fraction(1, 5)] (must be exactly [min(f_x,f_y)]=[Fraction(1, 5)]); independent coupling inversion=1/25 (must be > 0)
+f_x=1/3, f_y=1/2: inversion=0 at 1 of 13 sweep points, at p11=[Fraction(1, 3)] (must be exactly [min(f_x,f_y)]=[Fraction(1, 3)]); independent coupling inversion=1/6 (must be > 0)
+f_x=3/7, f_y=6/7: inversion=0 at 1 of 13 sweep points, at p11=[Fraction(3, 7)] (must be exactly [min(f_x,f_y)]=[Fraction(3, 7)]); independent coupling inversion=3/49 (must be > 0)
+f_x=9/10, f_y=19/20: inversion=0 at 1 of 13 sweep points, at p11=[Fraction(9, 10)] (must be exactly [min(f_x,f_y)]=[Fraction(9, 10)]); independent coupling inversion=9/200 (must be > 0)
+--- 2. cross-cell pair: inversion impossible at every coupling ---
+cross-cell (cells 0,1): 0 positive-probability inversions across 13 Frechet points x 4 outcomes (must be 0)
+--- 3. uniqueness within a cell: suffix + forced marginals => uniform threshold ---
+m=8: solved threshold distribution = 1/8 each x 8 (uniform: True, must be True)
+control A: non-suffix up-set {4} realisation has 1 inversions (must be > 0)
+control B: perturbed distribution gives P[up at frac 1/8] = 3/16, required 1/8 (must differ)
