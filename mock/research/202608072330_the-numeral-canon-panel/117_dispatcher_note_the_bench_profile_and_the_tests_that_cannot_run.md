@@ -1,4 +1,4 @@
-# 117. Dispatcher note: the bench profile that was never set, and the variant tests that cannot run
+# 117. Dispatcher note: the bench profile that was never set, and the workspace command that reports a false green
 
 `114`'s test gate reported, in passing, that `cargo test --release --workspace` from `mock/benches`
 runs zero tests. Chasing that reported one defect and found a second, larger one underneath it. Both
@@ -20,10 +20,28 @@ $ cargo metadata --no-deps --format-version 1 | jq '.workspace_members | length'
 1
 ```
 
-Twenty-three variant source files carry `#[test]` or `#[cfg(test)]`. None of them has ever run under a
-workspace-wide test command, because no workspace-wide test command reaches them. Under
-`the-test-gate.md` that is the shape called worse than absent: the files read as coverage while being
-structurally incapable of failing anything.
+Twenty-three variant source files, across thirteen crates, carry `#[test]` or `#[cfg(test)]`. No
+workspace-wide test command reaches any of them.
+
+**Corrected, an hour after this note was first written.** The paragraph here originally went on to call
+that the shape `the-test-gate.md` names worse than absent, on the reasoning that the tests read as
+coverage while never running. **That was wrong, and it was wrong in the direction that overstates.**
+The tests run. Every member of this sitting has run them, per crate, by iterating
+`--manifest-path`, which works precisely because each variant is its own workspace root. `115`'s
+`s0_test_gate_run.txt` is the tenth such count: thirteen crates, 123 passed, zero failed, zero ignored,
+and an attribute count of 123 agreeing with the run.
+
+So the real defect is smaller and differently shaped. It is not an untested surface. It is that the
+obvious command returns a **false green**: `cargo test --workspace` from `mock/benches` compiles the
+bench binary, runs zero tests, and exits 0. Anyone who trusts the workspace-wide form, rather than
+knowing to iterate manifests, is told everything passes by a command that examined nothing. That is a
+trap for whoever comes next rather than a hole in what exists today, and the ten counts on record are
+the evidence that this sitting's members did not fall into it.
+
+The error is left visible rather than edited away, because a dispatcher note claiming an untested
+surface, in a panel whose members had tested it ten times, is exactly the kind of claim the provenance
+discipline exists to catch, and it was caught by reading a member's own probe output rather than by
+anything I did.
 
 ## The second defect, which is the serious one: the documented profile is not set anywhere
 
@@ -97,8 +115,8 @@ So the change was reverted. The tree is as it was.
 3. Run the harness before and after on one unchanged bench, and keep both artifact sets, so the
    profile change's effect on the numbers is measured rather than assumed. A profile change that moves
    results is not a problem; a profile change whose effect is unknown is.
-4. Then run the twenty-three files' worth of tests for the first time and read what they actually
-   assert, per `the-test-gate.md`, since a test that has never run has never been checked either.
+4. Confirm the 123 still pass under the workspace-wide form once it reaches them, so the two ways of
+   running the suite agree rather than only the per-manifest one being known good.
 
 ## The upstream half
 
