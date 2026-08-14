@@ -164,7 +164,11 @@ fn arm2<P: Policy>(col: &[u64], wmax: u64) -> u64 {
 fn combine<P: Policy>(a: u64, x: u64, wmax: u64) -> u64 {
     let s = a.wrapping_add(x);
     if P::SATURATES {
-        if s > wmax { wmax } else { s }
+        if s > wmax {
+            wmax
+        } else {
+            s
+        }
     } else {
         s & wmax
     }
@@ -195,7 +199,10 @@ pub struct Column<'a, const W: u32, P: Policy> {
 
 impl<'a, const W: u32, P: Policy> Column<'a, W, P> {
     pub const fn new(raw: &'a [u64]) -> Self {
-        Self { raw, _p: core::marker::PhantomData }
+        Self {
+            raw,
+            _p: core::marker::PhantomData,
+        }
     }
 }
 
@@ -225,7 +232,10 @@ pub fn a_size_first(raw: &[u64]) -> u64 {
 /// The two really do reach different arms. A const assertion, so the comparison
 /// cannot go vacuous the way an equal-output comparison silently can.
 const _: () = {
-    assert!(argmin(3, TimeFirst::W_TIME, TimeFirst::W_SIZE) != argmin(3, SizeFirst::W_TIME, SizeFirst::W_SIZE));
+    assert!(
+        argmin(3, TimeFirst::W_TIME, TimeFirst::W_SIZE)
+            != argmin(3, SizeFirst::W_TIME, SizeFirst::W_SIZE)
+    );
 };
 
 // ---------------------------------------------------------------------------
@@ -259,7 +269,10 @@ pub struct ColumnB<'a, const W: u32, S: Strategy> {
 
 impl<'a, const W: u32, S: Strategy> ColumnB<'a, W, S> {
     pub const fn new(raw: &'a [u64]) -> Self {
-        Self { raw, _s: core::marker::PhantomData }
+        Self {
+            raw,
+            _s: core::marker::PhantomData,
+        }
     }
 
     /// THE COST. To fold this column under a different weighting, the value's
@@ -268,7 +281,10 @@ impl<'a, const W: u32, S: Strategy> ColumnB<'a, W, S> {
     /// needed.
     #[inline(always)]
     pub const fn reinterpret<T: Strategy>(self) -> ColumnB<'a, W, T> {
-        ColumnB { raw: self.raw, _s: core::marker::PhantomData }
+        ColumnB {
+            raw: self.raw,
+            _s: core::marker::PhantomData,
+        }
     }
 }
 
@@ -310,7 +326,10 @@ pub struct ColumnC<'a, const W: u32, S: Strategy> {
 
 impl<'a, const W: u32, S: Strategy> ColumnC<'a, W, S> {
     pub const fn new(raw: &'a [u64]) -> Self {
-        Self { raw, _s: core::marker::PhantomData }
+        Self {
+            raw,
+            _s: core::marker::PhantomData,
+        }
     }
 }
 
@@ -350,8 +369,13 @@ pub fn c_overridden(raw: &[u64]) -> u64 {
 /// component one fails the build.
 const _: () = {
     // the override reaches a different arm than the name's default
-    assert!(argmin(3, <Fast as Strategy>::W::W_TIME, <Fast as Strategy>::W::W_SIZE)
-        != argmin(3, SizeFirst::W_TIME, SizeFirst::W_SIZE));
+    assert!(
+        argmin(
+            3,
+            <Fast as Strategy>::W::W_TIME,
+            <Fast as Strategy>::W::W_SIZE
+        ) != argmin(3, SizeFirst::W_TIME, SizeFirst::W_SIZE)
+    );
     // and both folds read the same component one
     assert!(<<Fast as Strategy>::P as Policy>::SATURATES == <Saturating as Policy>::SATURATES);
 };
@@ -365,8 +389,12 @@ const _: () = {
     assert!(argmin(3, SizeFirst::W_TIME, SizeFirst::W_SIZE) == 0);
     // `97` section 5's shape: at a fixed declared width and a fixed policy, the
     // best arm moves with the region alone.
-    assert!(argmin(0, SizeFirst::W_TIME, SizeFirst::W_SIZE)
-        == argmin(3, SizeFirst::W_TIME, SizeFirst::W_SIZE));
-    assert!(argmin(0, TimeFirst::W_TIME, TimeFirst::W_SIZE)
-        != argmin(3, TimeFirst::W_TIME, TimeFirst::W_SIZE));
+    assert!(
+        argmin(0, SizeFirst::W_TIME, SizeFirst::W_SIZE)
+            == argmin(3, SizeFirst::W_TIME, SizeFirst::W_SIZE)
+    );
+    assert!(
+        argmin(0, TimeFirst::W_TIME, TimeFirst::W_SIZE)
+            != argmin(3, TimeFirst::W_TIME, TimeFirst::W_SIZE)
+    );
 };

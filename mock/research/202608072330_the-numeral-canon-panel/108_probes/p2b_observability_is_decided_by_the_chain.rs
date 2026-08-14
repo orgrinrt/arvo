@@ -98,17 +98,33 @@ impl Op {
             Op::Div => a / (x | 1),
             Op::SatAtW => {
                 let s = a.wrapping_add(x);
-                if s > wmax { wmax } else { s }
+                if s > wmax {
+                    wmax
+                } else {
+                    s
+                }
             }
             Op::SatAtC => {
                 let s = a.wrapping_add(x);
-                if s > cmask { cmask } else { s }
+                if s > cmask {
+                    cmask
+                } else {
+                    s
+                }
             }
             Op::Min => {
-                if a < x { a } else { x }
+                if a < x {
+                    a
+                } else {
+                    x
+                }
             }
             Op::Cmp => {
-                if a > x { a - x } else { x - a }
+                if a > x {
+                    a - x
+                } else {
+                    x - a
+                }
             }
         }
     }
@@ -120,7 +136,11 @@ impl Op {
 }
 
 fn mask(c: u32) -> u64 {
-    if c >= 64 { u64::MAX } else { (1u64 << c) - 1 }
+    if c >= 64 {
+        u64::MAX
+    } else {
+        (1u64 << c) - 1
+    }
 }
 
 /// Measured, not asserted. Does reduction to `w` bits descend through this
@@ -165,7 +185,12 @@ fn measure_contracting(op: Op, w: u32, c: u32) -> bool {
 }
 
 /// The automaton. Consumes only the two static bits per operation.
-fn predict_observable(chain: &[Op], congruent: &[bool], contracting: &[bool], idx: &dyn Fn(Op) -> usize) -> bool {
+fn predict_observable(
+    chain: &[Op],
+    congruent: &[bool],
+    contracting: &[bool],
+    idx: &dyn Fn(Op) -> usize,
+) -> bool {
     let mut escaped = false;
     for &op in chain {
         let i = idx(op);
@@ -236,7 +261,9 @@ fn main() {
 
     println!("p2b. The observable set is a function of the chain, and it is decidable.");
     println!();
-    println!("declared width W = {w}; headroom axis = container {c_min} against container {c_wide}");
+    println!(
+        "declared width W = {w}; headroom axis = container {c_min} against container {c_wide}"
+    );
     println!();
 
     // --- the two static bits, measured ---
@@ -312,7 +339,10 @@ fn main() {
 
     println!("predicted OBSERVABLE:   {n_obs} chains");
     println!("predicted UNOBSERVABLE: {n_unobs} chains");
-    println!("mismatches against exhaustive measurement: {}", mismatches.len());
+    println!(
+        "mismatches against exhaustive measurement: {}",
+        mismatches.len()
+    );
     println!();
     if !mismatches.is_empty() {
         println!("the mismatching chains, up to 40:");
@@ -336,8 +366,14 @@ fn main() {
     let cases: [(&str, [Op; 3]); 4] = [
         ("pure ring", [Op::WAdd, Op::WMul, Op::WAdd]),
         ("ring then a shift", [Op::WAdd, Op::WMul, Op::Shr]),
-        ("policy at declared width", [Op::SatAtW, Op::SatAtW, Op::SatAtW]),
-        ("policy at container width", [Op::SatAtC, Op::SatAtC, Op::SatAtC]),
+        (
+            "policy at declared width",
+            [Op::SatAtW, Op::SatAtW, Op::SatAtW],
+        ),
+        (
+            "policy at container width",
+            [Op::SatAtC, Op::SatAtC, Op::SatAtC],
+        ),
     ];
     for (label, chain) in cases.iter() {
         let (d, t) = measure_observable(chain, w, c_min, c_wide);

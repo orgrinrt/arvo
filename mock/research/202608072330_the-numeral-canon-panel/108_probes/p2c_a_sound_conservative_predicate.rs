@@ -101,14 +101,34 @@ impl Op {
             Op::Div => a / (x | 1),
             Op::SatAtW => {
                 let s = a.wrapping_add(x);
-                if s > wmax { wmax } else { s }
+                if s > wmax {
+                    wmax
+                } else {
+                    s
+                }
             }
             Op::SatAtC => {
                 let s = a.wrapping_add(x);
-                if s > cmask { cmask } else { s }
+                if s > cmask {
+                    cmask
+                } else {
+                    s
+                }
             }
-            Op::Min => if a < x { a } else { x },
-            Op::Cmp => if a > x { a - x } else { x - a },
+            Op::Min => {
+                if a < x {
+                    a
+                } else {
+                    x
+                }
+            }
+            Op::Cmp => {
+                if a > x {
+                    a - x
+                } else {
+                    x - a
+                }
+            }
         }
     }
     fn step(self, a: u64, x: u64, w: u32, c: u32) -> u64 {
@@ -118,7 +138,11 @@ impl Op {
 }
 
 fn mask(c: u32) -> u64 {
-    if c >= 64 { u64::MAX } else { (1u64 << c) - 1 }
+    if c >= 64 {
+        u64::MAX
+    } else {
+        (1u64 << c) - 1
+    }
 }
 fn idx_of(o: Op) -> usize {
     ALL.iter().position(|&p| p == o).unwrap()
@@ -230,7 +254,10 @@ fn measure_observable(chain: &[Op], w: u32, c_min: u32, c_wide: u32) -> u64 {
 
 fn sweep(w: u32, c_min: u32, c_wide: u32, chain_len: usize, label: &str) -> (u32, u32, u32) {
     let n = ALL.len();
-    let congruent: Vec<bool> = ALL.iter().map(|&o| measure_congruent(o, w, c_wide)).collect();
+    let congruent: Vec<bool> = ALL
+        .iter()
+        .map(|&o| measure_congruent(o, w, c_wide))
+        .collect();
     let contracting: Vec<bool> = ALL
         .iter()
         .map(|&o| measure_contracting(o, w, c_min) && measure_contracting(o, w, c_wide))
@@ -242,7 +269,10 @@ fn sweep(w: u32, c_min: u32, c_wide: u32, chain_len: usize, label: &str) -> (u32
 
     println!("--- {label}: W = {w}, containers {c_min} against {c_wide}, chain length {chain_len}");
     println!();
-    println!("{:<10} {:<11} {:<13} {:<15}", "op", "congruent", "contracting", "container-read");
+    println!(
+        "{:<10} {:<11} {:<13} {:<15}",
+        "op", "congruent", "contracting", "container-read"
+    );
     for (i, &op) in ALL.iter().enumerate() {
         println!(
             "{:<10} {:<11} {:<13} {:<15}",
@@ -280,7 +310,10 @@ fn sweep(w: u32, c_min: u32, c_wide: u32, chain_len: usize, label: &str) -> (u32
             conservative += 1;
         }
     }
-    println!("chains swept: {total}, each exhaustive over {} value tuples", (1u64 << w).pow(chain_len as u32 + 1));
+    println!(
+        "chains swept: {total}, each exhaustive over {} value tuples",
+        (1u64 << w).pow(chain_len as u32 + 1)
+    );
     println!("  exact:                        {exact}");
     println!("  conservative (safe direction): {conservative}");
     println!("  UNSOUND (unsafe direction):    {unsound}");
@@ -304,11 +337,20 @@ fn main() {
 
     let (_e1, _c1, u1) = sweep(4, 4, 12, 3, "setting one");
     let (_e2, _c2, u2) = sweep(4, 4, 12, 4, "setting two, one operation longer");
-    let (_e3, _c3, u3) = sweep(5, 5, 13, 3, "setting three, a different width and container");
+    let (_e3, _c3, u3) = sweep(
+        5,
+        5,
+        13,
+        3,
+        "setting three, a different width and container",
+    );
 
     println!("=== verdict ===");
     println!();
-    println!("total unsound predictions across three settings: {}", u1 + u2 + u3);
+    println!(
+        "total unsound predictions across three settings: {}",
+        u1 + u2 + u3
+    );
     println!();
     println!("The predicate consumes three bits per operation, every one of them a");
     println!("compile-time property of the operation rather than a measurement of a");

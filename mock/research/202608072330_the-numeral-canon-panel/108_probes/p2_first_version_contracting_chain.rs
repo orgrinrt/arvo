@@ -122,19 +122,31 @@ impl Op {
             // limit is the DECLARED width, whatever the container is
             Op::SatAtW => {
                 let s = acc.wrapping_add(x);
-                if s > wmax { wmax } else { s }
+                if s > wmax {
+                    wmax
+                } else {
+                    s
+                }
             }
             // limit is the CONTAINER width, so it moves with the arm
             Op::SatAtC => {
                 let s = acc.wrapping_add(x);
-                if s > cmask { cmask } else { s & cmask }
+                if s > cmask {
+                    cmask
+                } else {
+                    s & cmask
+                }
             }
             Op::Min => {
                 let m = if acc < x { acc } else { x };
                 m & cmask
             }
             Op::Cmp => {
-                let v = if acc > x { acc.wrapping_sub(x) } else { x.wrapping_sub(acc) };
+                let v = if acc > x {
+                    acc.wrapping_sub(x)
+                } else {
+                    x.wrapping_sub(acc)
+                };
                 v & cmask
             }
         }
@@ -239,7 +251,11 @@ fn main() {
                 op.name(),
                 d,
                 pct,
-                if predicted_inv { "invisible" } else { "visible" },
+                if predicted_inv {
+                    "invisible"
+                } else {
+                    "visible"
+                },
                 if measured_inv { "invisible" } else { "visible" },
                 if agree { "yes" } else { "NO  <<<<" }
             );
