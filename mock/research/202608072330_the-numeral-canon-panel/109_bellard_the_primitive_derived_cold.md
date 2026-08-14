@@ -727,3 +727,292 @@ All under `109_probes/`, all committed with their output, each committed as it r
   worse over 3200 chains, with nothing about the operand type differing.
 - `p7_grep_does_not_reach_the_generated_agent_tree.txt`. A controlled test that a recursive grep from
   the repository root misses `.claude/` and `.github/`.
+
+---
+
+# Phase two: reconciliation
+
+Appended after the phase-one commit, which is untouched above. What I read for this: `110`
+(the parallel cold derivation on the same question) in full, `106` sections 0, 1, 2 and 11, `63`
+section 3.5, `90`'s result headings, `74`'s headings, and targeted greps across the live panel for
+carried ranges, declared operand windows and completion elimination. I did **not** read `OPTIONS.md`,
+`DROPLIST.md`, `PRIOR_CALLS.md`, the `SEED_*` files, the archive, or the bulk of the member files. That
+bound matters and I state it rather than implying coverage: where I say "nobody has done X", read it as
+"nothing I read did X", and the grep that backs it is named.
+
+One phase-two probe, `p8_when_an_encoding_is_observable.rs`, built to test a reconciliation rather than
+to derive anything. It is marked as phase two in its own header.
+
+## 16. What survives, what I withdraw, and what was already known
+
+### 16.1 Already established, so my file is a second or third instance rather than a finding
+
+**The law set is not a component.** `90` R3 has it: "A law stated as an author-written marker is a
+declaration checked by nothing." `110`'s F3 has it three ways at once, and its census is stronger than
+mine: 48 configurations, 40 algebras, 7 law sets, and **0 configurations in which the law set can be
+varied with the other coordinates held fixed**. A coordinate you cannot vary is not a coordinate, which
+is a cleaner kill than my argument.
+
+My P2 is a **third independent instance by a different method**, and I claim only that. What it adds
+that neither has: the declaration is not merely unchecked, it is **load-bearing and wrong**, priced at
+952 of 4096 answers changed by a rewrite that trusts it, with the witness `(-8, -8, 1)`; and the
+constructive half, that the law computes at const time parameterised by the completion, with the
+`function pointer calls are not allowed in constant functions` wall recorded as the reason the
+completion has to be a **type** rather than a value for anything to be computable about it.
+
+**Chain accuracy is not served by an operator closed over its operand type.** `106` section 11 has this
+from `93`'s P6 and `94`'s probe E, both cold, both with more measurement than mine: 8.1% of triples at
+`W = 8, F = 4`, a maximum absolute error of 238 raw units in a domain of 256, closed-form width growth,
+and **11,922,158 ulps** divergence at a five-multiply chain where the widening construction stays at 1.
+
+My P6 is a **third independent instance**. What it adds is the controlled framing: the two routes were
+compared with **every per-value component held fixed**, so the result is specifically that no component
+of the operand type moved, which is the form the answer to "is this part of a primitive" needs. And a
+different shape of result: deferred was **never worse** on any of 3200 chains at lengths 1 to 8.
+
+**And `106` carries a correction I did not have and could not have had.** `101` found that accuracy
+rankings **cross**: a finer grid with truncation is twice as accurate at one operation and four times
+worse at sixty-four, because bias accumulates linearly and unbiased error as a random walk, crossing at
+`k = 4`. My "never worse" is at truncation, one grid, length at most 8. I named rounding-to-nearest as
+the obvious attack on it in section 14; `101` has run something in that neighbourhood and the honest
+reading is that my result is a narrower claim than it sounds, and that `101`'s region framing (chain
+length as a **region dimension**, like thread count) supersedes any per-arm scalar reading of mine.
+
+**The trait-instead-of-a-feature move for a const quantity.** `102_probes/p4_is_chain_depth_const_available.rs`
+carries chain depth as a type with the number as an associated const, no feature gates, `E0080` on a
+wrong depth. That is the identical mechanism as my P5, applied to a different quantity. So the mechanism
+is not mine and is already at two instances before me; **what P5 adds is the target**, which is ranges
+rather than depth, and the consequence, which is elimination of the completion rather than selection of
+a policy.
+
+### 16.2 Where I was wrong, and `106` is why
+
+**I withdraw section 5's recommendation that the strategy marker be carried in the type as the
+request.**
+
+`106` section 1 states the object as a **pair**: a first component that is an assignment on the axes a
+consumer can observe, "supplied and never derived, because a consumer of a value cannot recover it from
+the bits", which **travels with the value**; and a second component that is a weighting over cost
+coordinates, "resolved and never observed", supplied where the operation happens. Two components, two
+carriers.
+
+That is a better answer than mine and it dissolves the tension I posed rather than trading it off. My
+section 5 treated the strategy as one thing and asked whether to carry it, and both answers had a real
+cost: carry it and pay P3b's unrepairable nominal split, drop it and lose the intent. The pair says the
+question was malformed. **Only the answer-fixing half has to travel**, because only it is unrecoverable
+from the bits. The cost half never enters the type, so it can never split it.
+
+And my own evidence lands on the pair's side rather than mine. In P3, `Speed` and `Space` resolve to the
+identical realisation and completion; they differ only in what `106` would call the second component.
+P3b then shows what putting that second component in the type costs:
+
+```
+error[E0308]: mismatched types
+   = note: expected struct `WithMarker<_, _, _, Speed>`
+              found struct `WithMarker<_, _, _, Space>`
+```
+
+**So P3b is a compiled demonstration of the failure mode the pair exists to avoid**, and it is
+independent support for `102`'s object rather than an objection to it. That is the shape I would want it
+recorded in. `110`'s F8 is the same wall arrived at from the canonicalisation side with a different
+parameter, which makes three independent instances of "a nominal split that nothing in-language can
+repair", from three different causes.
+
+**I also withdraw the worry that motivated section 5.** I wrote that discarding the request means "the
+consumer's source does not change and the consumer's meaning does". That is wrong under the pair, and it
+is wrong under my own P3. If the resolution changes, the resolved type changes, and every downstream
+signature naming the old resolution stops compiling, at exactly the sites that need review. The failure
+is loud, not silent. I reasoned about it and did not check it, which is the error, and the check was
+available in the file I had already written.
+
+### 16.3 Where `110` and I agree, independently, and where I concede to it
+
+Neither of us read the other. On my side that is the protocol; `110` declares the same and declares one
+contamination of its own from an auto-loaded workspace rule.
+
+**Agreed, three times over, that the law set is not a component.** By three different methods: `110`'s
+coordinate census, my declaration-and-rewrite census, and `90` R3's earlier statement.
+
+**Agreed that the operation set is part of the definition, arrived at from opposite directions.** `110`
+names it the **signature** and prices it: 84 distinct primitives under `{add}`, 186 under `{add, mul}`,
+over the same 288 configurations, so "how many primitives are there" is not well posed until somebody
+fixes the signature. I arrived at the same place in section 8 from the chain result, concluding that a
+primitive is not definable one at a time because the operators land in other primitives, so what can be
+named is a family closed under the operations. Same claim, two vocabularies, two routes, neither having
+read the other. **`110`'s is the better form**, because "declare the signature" is actionable and "it is
+a family" is a description, and because it comes with a count.
+
+**Agreed that a criterion beats a list.** `110`: "a list has to be relitigated every time somebody
+invents an axis, and a criterion does not", demonstrated by feeding its criterion an axis nobody listed.
+Mine is section 11's const-availability test. These are **different criteria at different levels** and I
+do not think they compete: `110`'s decides *identity* (are these two the same primitive), mine decides
+*membership* (does this property belong in the primitive at all). A design wants both, and I would not
+merge them.
+
+**Agreed that overflow and rounding are one map.** `110` argues it explicitly, `R : Q -> V`, rounding
+between grid points and saturation outside the range being two regions of one mechanism. I called it one
+component with internal structure and gave it one name. Same position, and `110`'s reason for insisting
+is better than my reason for assuming: a design carrying them as two axes will be asked which one a
+behaviour belongs to, and that question has no answer.
+
+**Conceded: `110`'s treatment of "number system" is sharper than mine.** I said it is a name for a
+package, one level up. `110` splits it: the radix is identity-bearing at `F > 0`, and the encoding is
+presentation. That is a cut where I offered a category. Take theirs.
+
+**Conceded, and this is the substantive one: I called the realisation a component of the primitive and
+should not have.** `110`'s P1 puts four encodings including a structureless bijection through its
+identity criterion and every one comes back the same primitive, and its reason is the one that matters:
+a definition admitting the encoding into identity makes every representational choice semantic, "and
+then no lowering can ever be substituted for another".
+
+My P1 established that the value set and the realisation vary independently, which is true and which I
+over-read. Independence is not identity-bearing-ness. **The realisation is a component of the
+resolution and is not part of denotational identity**, and my own section 10 already says exactly that
+and I failed to apply it to my own section 2. The correction is one word: format is two things, one
+identity-bearing and one selectable, rather than two components of identity.
+
+**And the realisation still has to be selectable, which is where I would push back on `110`'s wording.**
+Its section 1 says the encoding and layout "are not the primitive and must not be, or nothing can ever
+be rewritten". The rewriting argument is right. But I6 and I17 require a consumer to be able to *ask*
+for the storage-minimising realisation, and I17 is explicit that this is not to be deprioritised. So
+"not part of identity" must not slide into "not part of the surface". The three-relation lattice in my
+section 10 is the vocabulary that keeps those apart, and I think it is the useful thing my file has to
+offer here: **denotational sameness quotients the realisation out and licenses rewriting;
+representational sameness does not and licenses reinterpreting memory.**
+
+### 16.4 A conflict that is not one, tested rather than argued
+
+`63` section 3.5 says the encoding "is not part of identity **and it is observable**", citing raw-order
+agreement and raw-adder correctness. `110`'s F2 says every pure code assignment is presentation and
+quotients four of them out. A reader could file those as a contradiction between a consolidation and a
+cold derivation, and it would take a while to unpick.
+
+They do not contradict, and the discriminator is testable. **An encoding is observable through an
+operation exactly when that operation is defined on the representation rather than on the denotation.**
+P8, `p8_when_an_encoding_is_observable.rs`:
+
+```
+encoding                     raw-order disagreements   raw-adder correct
+two's complement                     128/256                256/256
+offset binary                          0/256                  0/256
+gray over two's complement           184/256                 62/256
+arbitrary bijection 7i+3             112/256                  0/256
+```
+
+Under **denotation-defined** addition and comparison, all four encodings agree on **all 256 pairs**,
+across four encoding pairs, zero differences. Under **representation-defined** raw comparison and raw
+pattern addition they separate immediately, as above. So `110`'s quotient is a consequence of its
+signature containing only denotation-defined operations, and `63`'s observability is a consequence of
+naming two representation-defined ones. Both are right about their own level and neither needs
+correcting.
+
+**And `63`'s reported figures reproduce independently.** It reports, from `56_probes/q3`, "two's
+complement 256 of 256 adder-correct and order-disagreeing, offset binary order-agreeing and 0 of 256
+adder-correct with constant defect 8". At `W = 4` I get two's complement adder-correct 256 of 256 and
+order-disagreeing on 128 of 256; offset binary order-agreeing 256 of 256, adder-correct 0 of 256, and
+the defect set is **exactly `{8}`**, a single element, which is the constant-defect claim rather than a
+paraphrase of it. `63` records that row at ONE EXPERT. This is a second, and it was run without reading
+`56`.
+
+**One number nobody I read has reported.** Gray code is adder-correct on **62 of 256** pairs: neither 0
+nor 256. The exclusivity `63` states is about having *both* properties, and Gray has neither fully, so
+this does not disturb it. It is on the record in case the redundant-encoding hole `63` flags as "wholly
+unexamined" gets picked up, since a partial adder property is the kind of thing that hole would turn on.
+
+**Predicate.** An encoding is invisible to denotation-defined operations and visible to
+representation-defined ones: `W = 4, I = 4, F = 0, signedness = signed, overflow policy = saturate for
+the denotation-defined arm and wrap for the representation-defined arm, operation ∈ {add, le}, arity =
+2, chain length = 1, encoding ∈ {two's complement, offset binary, gray, 7i+3}, S any, target features
+any, threads any` (purity). Four bijections, not all of them; `63`'s uniqueness argument is for
+bijections and nothing here widens it.
+
+### 16.5 What of mine I think still stands and is not duplicated
+
+Stated conservatively, since three of my seven phase-one sections turned out to be second or third
+instances.
+
+**P5's completion elimination.** File `82` already has the region concept, "no clamp can fire", at
+21.98% of one box, and uses it to license a **law lifting**. My P5 uses a carried range for a different
+end: to establish that the completion is **absent from the emitted code**, with the compile-time refusal
+when the range does not fit (`E0080`, naming the exact composition
+`Ranged::<RSum<Lit<0,200>, Lit<0,100>>>::FITS`), and with the range rule checked for **tightness as well
+as soundness**, which is the property a declaration would conflate. I found no file claiming the
+elimination on the emitted-code side; the grep was `no clamp|clamp is gone|eliminat.*completion|
+overflow check.*absent|removes the clamp|csel` across the live panel, and `82:494` is the nearest hit,
+which shows the clamp chain **intact** on the unproved side.
+
+**P4's I18 erasure.** `106` section 9.2 says I18 is new and that reading it against the object finds a
+gap; I have not read that section. What P4 establishes is narrow and mechanical: both of I18's bounds
+erase, the build bound in release and **the concern bound even in a debug build**, with an ungated
+control that keeps the branch in both so the result is a comparison rather than a demonstration. If
+`106`'s gap is about something else, this stands beside it; if it is about the same thing, this is a
+second instance.
+
+**The three-relation lattice.** Section 10, and section 16.3 is the case for it: it is the vocabulary
+that keeps `110`'s quotient and `63`'s observability from reading as a conflict, and it names which
+operation each relation licenses.
+
+**Section 11's membership criterion.** Different question from `110`'s identity criterion, as argued
+above.
+
+**And the two misalignments in section 12**, which are about the panel's own governing files rather than
+about primitives, and which nothing I read addresses.
+
+### 16.6 One count where three independent measurements now disagree with a locked consolidation
+
+`106` section 0.2 records the test gate "at 123 tests across 13 crates". `110` counts **124** across 13
+and says so explicitly, by a different command from mine. I count **124** across 13. Two independent
+counts, taken without either of us reading the other, against the consolidation's 123 and against the
+brief's claim that six members counted 123.
+
+Neither of us can say from inside a phase-one dispatch whether a test was added since, because that
+means reading the log. It is one annotation and it is load-bearing for nothing. It is worth a line only
+because `RULES.md` says counts are measurements and that six agreeing measurements are exactly the
+shared-drift shape to be suspicious of. Whoever holds the register should re-run it rather than pick a
+side.
+
+### 16.7 What I would hand to whoever writes the canon text on this topic
+
+Three sentences, offered as suggestions, none settling anything.
+
+**A primitive is an algebra over a declared signature.** `110`'s form, not mine, because it comes with a
+count showing the signature changes the answer. My contribution to it is that the family, not the
+individual, is the unit of definition, which is the same claim.
+
+**What is in the primitive is what must be const-available to decide validity or select a lowering; what
+is identity-bearing is narrower still, being only what the value set and the realisation map read.**
+Two criteria, two questions, both needed, and `110`'s section 5 rule ("an axis that the value set and
+the realisation map do not read must not be a type parameter") is the sharp end of the second.
+
+**Sameness is three relations, not one, and each licenses a different operation.** Denotational for
+rewriting, representational for reinterpreting memory, nominal for assignment. Collapsing them is what
+makes `63` and `110` look like they disagree when they do not.
+
+And one thing I would put in the canon that is not about primitives at all: **closure is prior to every
+law.** My P2 asked whether an operation associated before asking whether it stayed inside its own value
+set, and the answer to the second question made the first meaningless. `110` hit the same wall from the
+other side, its interval construction returning `(1, 0)` over a wrapping base, and resolved it as a
+predicate on the base. Two instances, two directions, one statement.
+
+## 17. Coverage of phase two, bounded
+
+I read `110` in full, `106` sections 0 through 2 and 11, `63` section 3.5, and the result headings of
+`90` and `74`. I read **none** of: `OPTIONS.md`, `DROPLIST.md`, `PERSONA_CALLS.md`, `PRIOR_CALLS.md`,
+the `SEED_*` files, the archive, `108` (which is the immediate predecessor and is titled "the pair
+attacked", so it bears directly on section 16.2 and I do not know what it says), or the ninety-odd
+member files I did not name.
+
+So section 16.5's claims of non-duplication are claims about a grep and about what I read, not about the
+panel. Each names its grep. Anyone who knows a file that already has one of them should say so, and the
+right handling is that my instance drops to a second rather than that anything of mine is defended.
+
+I did not re-run anyone else's probe except through P8's independent reconstruction of `63`'s two
+figures, and I did not verify `110`'s counts, `93`'s, `94`'s, `101`'s or `102`'s. Where I quote them
+above I am quoting a file, not corroborating it.
+
+## 18. Probe index, phase two addition
+
+- `p8_when_an_encoding_is_observable.rs` and `p8_output.txt`. An encoding is invisible to
+  denotation-defined operations and visible to representation-defined ones, over four bijections
+  including a structureless one; and `63` section 3.5's two figures reproduce independently at `W = 4`,
+  with the offset-binary defect set having exactly one element, `{8}`.
