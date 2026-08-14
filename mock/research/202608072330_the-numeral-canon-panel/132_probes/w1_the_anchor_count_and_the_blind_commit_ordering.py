@@ -70,10 +70,30 @@ CLASSES = ("finding", "probe_stem", "line_panel_norm", "theorem")
 import re as _re
 _RE_THM = _re.compile(r"\bT\d{1,2}\b")
 
+# `r1`'s probe pattern also predates this stretch of the panel: it matches stems
+# beginning p, q, r or s, and the probes here are named v and w. Counting on it
+# alone reported zero probe references in a file that cites four, which is the
+# same class of silent drop the theorem gap is. Widened to the whole letter
+# range the panel has used.
+_RE_PROBE = _re.compile(
+    r"\b(?:\d+_probes/)?[a-z]\d+[a-z]?_[A-Za-z0-9_]*\.(?:py|txt|rs|s)\b"
+    r"|\b\d+_probes/[a-z]\d+[a-z]?\b"
+)
+
+
+def _stems(refs):
+    out = set()
+    for r in refs:
+        r = r.split("/")[-1]
+        m = _re.match(r"([a-z]\d+[a-z]?)_", r)
+        out.add(m.group(1) if m else r)
+    return out
+
 
 def anchors(text):
     a = dict(r1.anchors(text))
     a["theorem"] = set(_RE_THM.findall(text))
+    a["probe_stem"] = _stems(set(_RE_PROBE.findall(text)))
     return a
 
 

@@ -9,15 +9,37 @@ PART ONE. Anchors, on `119_probes/r1`'s patterns.
   source                                                findings  probes  lines theorems
   125_knuth_rounding_cold_derivation.md                        9       2      0        9
   126_wronski_what_rounding_actually_selects.md                2       4      2        0
-  127_dolan_attacking_the_convergence.md                       9       4      1        6
-  128_knuth_reply_the_boundary_moves_to_the_coupling.md        13       3      0        4
-  129_wronski_reply_the_fork_is_decorrelation_not_determinism.md         5       0      0        5
-  130_dolan_reply_one_axis_two_keyings.md                      8       2      0        2
-  131_leroy_formalising_the_rounding_axis.md                   9       0      4        2
+  127_dolan_attacking_the_convergence.md                       9       5      1        6
+  128_knuth_reply_the_boundary_moves_to_the_coupling.md        13       4      0        4
+  129_wronski_reply_the_fork_is_decorrelation_not_determinism.md         5       2      0        5
+  130_dolan_reply_one_axis_two_keyings.md                      8       4      0        2
+  131_leroy_formalising_the_rounding_axis.md                   9       3      4        2
 
-  UNION across the seven                                      28       9      7        9
+  UNION across the seven                                      28      15      7        9
 
-  132_leroy_the_canon_candidate_for_the_rounding_axis.md does not exist yet. Inventory pass only; rerun after.
+  class               in the union   in 132  incl. accounting  not carried
+  finding                       28       25                28            3
+  probe_stem                    15       13                13            2
+  line_panel_norm                7        7                10            3
+  theorem                        9        9                 9            0
+
+  C2, the stripper: FIRED  (finding +3, probe_stem +0, line_panel_norm +3, theorem +0)
+
+  finding: 25 carried, 3 not
+    not carried:
+      F122-2                F122-4                F122-5              
+
+  probe_stem: 13 carried, 2 not
+    not carried:
+      q3                    q5                  
+
+  line_panel_norm: 4 carried, 3 not
+    not carried:
+      116:486               119:598               122:642             
+
+  theorem: 9 carried, 0 not
+    not carried:
+
 --------------------------------------------------------------------------------------------
 PART TWO. The commit ordering `128` cites as the audit trail.
 
