@@ -1,0 +1,45 @@
+============================================================================================
+r1. The anchor inventory, and what the candidate carries
+============================================================================================
+
+  source                                                      findings  probes  lines
+  114_leroy_formalising_the_primitive.md                            34      29     22
+  115_jhala_the_check_the_policy_selects.md                         18      13      3
+  116_leijen_reply_what_the_homomorphism_opens.md                   24      18      5
+  118_leroy_reply_one_mechanism_and_the_condition_set.md            41      23     23
+
+  UNION across the four                                             68      73     47
+    (finding ids of the F<n>-<n> shape only)                        66
+    (probes counted by stem, so source and output are one)                  29
+    (line anchors into panel files only, not into source)                          36
+
+--------------------------------------------------------------------------------------------
+P1. Against the counts the dispatch states.
+
+  distinct finding ids                     counted   68   stated   66   differs
+  distinct finding ids, F<n>-<n> only      counted   66   stated   66   MATCHES
+  distinct probe-file references           counted   73   stated   52   differs
+  distinct probes counted by stem          counted   29   stated   52   differs
+  line anchors, any target                 counted   47   stated   11   differs
+  line anchors into panel files only       counted   36   stated   11   differs
+
+  Where a count differs the pattern is the thing to read, not the
+  number. Both are printed above so a reader can decide which counting
+  the dispatch meant, and the set difference below is unaffected by
+  which of the two is preferred: it is computed per class on my own
+  patterns, consistently on both sides.
+
+--------------------------------------------------------------------------------------------
+C1. The extractor on a file with no anchors, and on each panel file.
+
+    prose with no anchors: findings 0, probes 0, lines 0
+    each panel file above is nonzero in at least one class
+
+C2. Mangled anchors must not be extracted.
+
+    mangled text: findings [], probes [], lines []
+    (any of these being nonempty means the pattern is too loose)
+
+--------------------------------------------------------------------------------------------
+  119_leroy_the_canon_candidate_for_the_realisation_map.md does not exist yet, so P2 is not run.
+  This is the inventory pass. Rerun after the candidate is written.
