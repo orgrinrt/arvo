@@ -1,0 +1,4 @@
+x=1/10 (frac=0.1, u=0.01) -> 1
+y=9/10 (frac=0.9, u=0.95) -> 0
+x < y: True
+round(x) > round(y): True   <-- monotonicity VIOLATED if True
