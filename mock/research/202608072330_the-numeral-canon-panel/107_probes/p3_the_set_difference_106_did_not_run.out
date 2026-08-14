@@ -1,0 +1,220 @@
+union=207  carried=34  dropped=177
+
+=== anchors 106 dropped that its OWN section 15 then names (would defeat a diff run without exclusion) ===
+a-compression-is-checked-by-someone-else.md
+how-to-run-a-panel.md
+mock/DESIGN.md.tmpl
+mock/PRINCIPLES.md.tmpl
+mock/WORKFLOW.md.tmpl
+
+=== DROPPED, by class ===
+-- superseded tier (.tmpl): correct to drop, must NOT be restored --
+.md.tmpl
+mock/DESIGN.md.tmpl
+mock/PRINCIPLES.md.tmpl
+mock/WORKFLOW.md.tmpl
+
+-- workspace rules dropped --
+a-compression-is-checked-by-someone-else.md
+a-shared-clone-is-someone-elses-desk.md
+arvo-always-optimal-internals.md
+arvo-compile-time-last.md
+cite-the-canon-before-claiming-what-the-design-says.md
+how-to-run-a-panel.md
+small-wins-compound-into-the-program.md
+the-canon-design-code-chain.md
+the-test-gate.md
+unstable-features.md
+
+-- live bench tree dropped --
+bench-harness/src/env.rs
+bench-harness/src/harness.rs
+bench-harness/src/perf.rs
+bench-harness/src/quality.rs
+bench-harness/src/validation.rs
+mock/benches/Cargo.toml
+mock/benches/bench.toml
+mock/benches/variants/bitpack-carrier-d16-control/src/lib.rs
+mock/benches/variants/bitpack-carrier-shared/src/lib.rs
+mock/benches/variants/bitpack-contend-shared/src/routine.rs
+mock/benches/variants/bitpack-wide-shared/src/lib.rs
+mock/benches/variants/bitpack-write-contend-shared/src/stress.rs
+mock/benches/variants/satfold-gate-true/src/lib.rs
+mock/benches/variants/warm-clamp-shared/src/lib.rs
+mock/benches/variants/warm-container-shared/src/lib.rs
+mock/benches/variants/wide-rung-shared/src/tests.rs
+variants/warm-clamp-shared/src/lib.rs
+
+-- probe anchors dropped: count only, listed in full below --
+113
+
+-- everything else dropped --
+.../src/lib.rs
+101_wronski_the_cost_coordinates.md
+25_torvalds_what_a_strategy_is.md
+40_leijen_what_the_axes_actually_are.md
+87_op_the_canon_is_written_once_at_the_end.md
+88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md
+93_orchard_the_strategy_axis_derived_cold.md
+94_wingo_the_strategy_axis_derived_cold.md
+95_op_the_panel_runs_to_ratification_and_units_must_converge.md
+bench-core/src/lib.rs
+bitpack-contend-shared/src/routine.rs
+bitpack-shared/src/lib.rs
+bitpack-wide-shared/src/routine.rs
+bitpack-write-contend-shared/src/stress.rs
+decimal-quantiser-radix-sweep_n0.csv
+fnv1a-vs-xxhash3_n1024.csv
+fnv1a-vs-xxhash3_n256.csv
+fnv1a-vs-xxhash3_n4096.csv
+fnv1a-vs-xxhash3_n64.csv
+lib.rs
+notko/notko-macros-core/src/tiers.rs
+notko/notko-macros/src/lib.rs
+notko/src/lib.rs
+output.s
+p1_v1_relative_regret_is_meaningless.out
+p3_mutant_generator_bug.rs
+p4_emitted.s
+p4_is_chain_depth_const_available.out
+p6_model97.json
+quantiser-radix-shared/src/lib.rs
+re.s
+src/lib.rs
+validation.rs
+
+=== FULL DROPPED PROBE LIST ===
+100_probes/cone.py
+100_probes/p10_the_slow_crate_is_serial_only.out
+100_probes/p1_v1_relative_regret_is_meaningless.out
+100_probes/p1_what_the_instability_is_made_of.py
+100_probes/p2b_why_the_strict_rung_caught_nothing.py
+100_probes/p3_mutant_generator_bug.rs
+100_probes/p3_run.sh
+100_probes/p3b_const_eval_scaling.py
+100_probes/p4_the_differential_wants_a_band.py
+100_probes/p4b_normalisation_breaks_independence.py
+100_probes/p5_the_region_is_written_down_twice.py
+100_probes/p6_verify_my_citations.py
+100_probes/p7_the_control_arm_across_every_family_that_has_one.py
+100_probes/p8_the_tail_coordinate_is_the_wrong_statistic.py
+101_probes/p0_before_the_adrp_normalisation.out
+101_probes/p0_control_identity_on_every_pair.sh
+101_probes/p10_first_version_used_strict_domination.out
+101_probes/p11_separation_against_expressiveness.py
+101_probes/p1_the_coordinate_census.py
+101_probes/p2_normalisation_is_a_change_of_basis.py
+101_probes/p3_the_exchange_rate_and_its_cells.py
+101_probes/p4_first_version_conflated_two_knobs.out
+101_probes/p5_an_estimator_is_a_coordinate_choice.py
+101_probes/p6_accuracy_is_not_a_per_arm_scalar.py
+101_probes/p8_the_region_key_carries_the_thread_count.py
+101_probes/p9_first_run_fourteen_of_mine_failed.out
+101_probes/p9_verify_my_citations.py
+102_probes/p1...py
+102_probes/p1_harness_gating.out
+102_probes/p1_the_corpus_compares_cost_at_a_fixed_answer.out
+102_probes/p1_the_corpus_compares_cost_at_a_fixed_answer.py
+102_probes/p2_first_version_setup_that_helped.out
+102_probes/p3_first_version_contractive_chain_no_crossing.py
+102_probes/p3_the_crossing_is_an_arm_family.out
+102_probes/p3_the_crossing_is_an_arm_family.py
+102_probes/p4_emitted.s
+102_probes/p5_a_measured_coordinate_over_answer_differing_arms.out
+102_probes/p5_a_measured_coordinate_over_answer_differing_arms.py
+102_probes/p6_check_my_own_citations.py
+103_probes/p1_what_the_committed_data_records.out
+103_probes/p2_two_arms_two_answers.out
+103_probes/p3_same_input_two_answers.out
+103_probes/p4...out
+103_probes/p4_the_harness_gate_refuses_a_committed_family.out
+103_probes/p5_census_what_each_family_pins.out
+103_probes/p6_the_region_census.out
+103_probes/p7_errors.out
+103_probes/p7_the_constraint_on_real_arms.out
+103_probes/p8_when_the_gate_was_actually_running.out
+103_probes/p9_check_my_own_citations.py
+26_probes/control_identity.sh
+35_probes/p2.out
+35_probes/p2b.out
+35_probes/p2b_laws_signed.rs
+40_probes/p3.out
+40_probes/p3_axes_presets_properties.rs
+40_probes/p7.out
+93_probes/p1_resolve_semilattice.out
+93_probes/p1b_demands_and_closure.out
+93_probes/p2_policy_selects_the_algebra.out
+93_probes/p2b_where_the_algebra_actually_varies.out
+93_probes/p2c_the_boundary_across_widths.out
+93_probes/p3_mutant_wrong_join.out
+93_probes/p3_product_lattice_in_the_type_system.out
+93_probes/p4_asm_comparison.out
+93_probes/p4_preference_erases.out
+93_probes/p4_preference_erases.rs
+93_probes/p5_mutant_const_overflow.out
+93_probes/p5_what_warm_imitates.out
+93_probes/p6_the_chain_clause.out
+93_probes/p7_signedness_breaks_the_congruence.out
+93_probes/p8_q41_do_the_honoured_law_sets_nest.out
+94_probes/a_choice_function.out
+94_probes/a_choice_function.rs
+94_probes/b_unbundled.out
+94_probes/c_retraction.out
+94_probes/c_retraction.rs
+94_probes/d_resolution.out
+94_probes/e_chain_exactness.out
+94_probes/f_where_carried.out
+94_probes/g_const_availability.out
+94_probes/test_gate.out
+97_probes/p1_rationalisable_sections.out
+97_probes/p1_rationalisable_sections.py
+97_probes/p1b_the_gap_is_structural.py
+97_probes/p2_congruence_predicts_the_laws.py
+97_probes/p2b_the_subtraction_control_is_arithmetic.py
+97_probes/p4_demand_lattice.out
+97_probes/p4_mutant_dropped_demand.rs
+97_probes/p5_verify_my_citations.py
+97_probes/p6_does_the_accumulator_follow_the_fold.py
+97_probes/p7_diff_the_criterion_against_35.py
+97_probes/p8_does_a_computed_demand_erase.rs
+97_probes/p8_mutant_join_collapses.rs
+97_probes/test_gate.out
+98_probes/cone.py
+98_probes/lp.py
+98_probes/p10_is_the_table_stable_enough_to_be_an_object.out
+98_probes/p10_is_the_table_stable_enough_to_be_an_object.py
+98_probes/p11_verify_my_citations.py
+98_probes/p12_is_the_spread_coordinate_real.py
+98_probes/p13_the_ladder_on_the_coordinates_that_survive.py
+98_probes/p14_generating_from_a_robust_summary.py
+98_probes/p1b_domination_is_relative_to_the_coordinate_set.py
+98_probes/p2_the_rationalisability_ladder.py
+98_probes/p3_a_rung_count_is_a_fact_about_one_table.py
+98_probes/p3b_why_the_order_rung_is_empty_on_real_data.py
+98_probes/p4_priority_order_against_exchange_rate.py
+98_probes/p5_the_reference_coordinate_is_not_a_machine_cost.py
+98_probes/p6_model97.json
+98_probes/p7_does_rationalisability_predict.py
+98_probes/p8_which_intents_the_corpus_can_weigh.py
+98_probes/p9_the_proposal_instantiated.py
+
+=== which member probe dirs are represented in what 106 carried ===
+   3 100_probes
+   2 101_probes
+   2 102_probes
+   4 106_probes
+   4 97_probes
+   1 98_probes
+
+=== which member probe dirs the union has ===
+  17 100_probes
+  15 101_probes
+  14 102_probes
+  11 103_probes
+   1 26_probes
+   3 35_probes
+   3 40_probes
+  15 93_probes
+  10 94_probes
+  17 97_probes
+  19 98_probes
