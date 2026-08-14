@@ -1,7 +1,7 @@
 # 100. Generating the table, attacked
 
 **Predecessors:** `93` and `94`, the unit's cold pair; `97`, which attacked both; `98`, which second-read
-`97` and proposed inverting it. **Probes:** `100_probes/`, nine of them plus one shared instrument
+`97` and proposed inverting it. **Probes:** `100_probes/`, ten of them plus one shared instrument
 and a build script, each committed as it ran.
 
 This is the fifth file of the unit and the first of the four that `95` points at convergence. So the
@@ -159,10 +159,13 @@ mechanical, which is `97`'s; it catches the generator defects rationalisability 
 at runtime and refuses at build time, which is I15's shape. A mutant with one table entry changed fails to
 compile with `E0080`. Section 6.
 
-**Six, and it is a cost of that assertion rather than a win.** Stated as equality it false-alarms on a
-rerun in five of six configurations, up to 93.8%. Stated as a band it does not, and the bench measures the
-band's floor itself: the apparent gap between two byte-identical arms is a median of 0.273%. The band and
-the detection window do not both fit for one of the three weightings, and that is a located cost.
+**Six, and it started as a cost of that assertion and ended as a defect in an estimator.** Stated as
+equality the assertion false-alarms on a rerun in five of six configurations, up to 93.8%, so it wants a
+band, and the bench measures the band's floor itself: the apparent gap between two byte-identical arms is
+a median of 0.273%. For one weighting no band both absorbed the noise and refused the defects, which I was
+going to report as a located cost. **It is not a cost, it is the interquartile range.** Estimating the
+tail by the 99th percentile instead takes that weighting's section from 161 distinct to 2, its separated
+arm pairs from 43 of 60 to 54 of 60, and its usable band window from empty to 0.5% through 10%.
 Section 7.
 
 **Seven, outside the question and the sharpest thing I found by accident.** Min-max normalising the cost
@@ -711,6 +714,84 @@ resolution is finer than the separation between the arms it must distinguish.** 
 checkable before anything is built, against the control pair, which is the same instrument that sets the
 band.
 
+### 7.3 And then the tension turned out to be the estimator, not the coordinate
+
+That is where I would have left it, and leaving it there would have been wrong. The predicate above is
+about a coordinate's resolution, and a coordinate's resolution is a property of the **statistic used to
+estimate it**, which nobody in this unit had varied.
+
+Every negative finding about the tail coordinate in this unit is measured on one estimator: the
+**interquartile range** of the per-batch samples. `98` p10 finds the tail-weighing section the least
+stable of three; `98`'s F-98-12 finds its differences not distinguishable from zero at the comparisons
+that mattered; section 7.2 above finds no workable band. Three findings, one statistic.
+
+**The interquartile range is the spread of the middle fifty percent. It is, by construction, the
+statistic with both tails removed.** A strategy weighing tail behaviour and reading the IQR is reading the
+middle. It is also a *difference* of two order statistics, so its sampling variance is roughly the sum of
+theirs while its magnitude is the gap between them: high noise, small signal, both from the same
+construction.
+
+`100_probes/p8_the_tail_coordinate_is_the_wrong_statistic.py` runs six estimators of the same intent on
+the same committed samples.
+
+```
+  estimator   distinct            modal    arm pairs separated
+  iqr              161     270/2000 ( 13.5%)           43 of 60     ( 71.7%)
+  idr               51     389/2000 ( 19.4%)           48 of 60     ( 80.0%)
+  mad              264     139/2000 (  7.0%)           36 of 60     ( 60.0%)
+  p95                3    1980/2000 ( 99.0%)           54 of 60     ( 90.0%)
+  p99                2    1781/2000 ( 89.0%)           54 of 60     ( 90.0%)
+  trimsd            46     798/2000 ( 39.9%)           49 of 60     ( 81.7%)
+```
+
+**The 95th percentile gives 3 distinct sections against the interquartile range's 161, and separates more
+arm pairs while doing it: 54 of 60 against 43 of 60.** Not a trade. Strictly better on both axes, from
+reading the tail instead of the middle.
+
+And the band tension does not survive the swap. Section 7.2's false alarm sweep, rerun with each
+statistic in the third coordinate:
+
+```
+    tail statistic     0.0%    0.5%    1.0%    2.0%    5.0%   10.0%
+    iqr               65.1%   22.9%   13.2%    3.0%    0.1%    0.0%
+    p95               15.8%    0.0%    0.0%    0.0%    0.0%    0.0%
+    p99                0.5%    0.0%    0.0%    0.0%    0.0%    0.0%
+
+  DETECTION: widest band at which each defect is still refused
+    tail statistic      G1 unit    G2 swap   G4 offbyone
+    iqr               no change  no change          5.0%
+    p95               no change  no change         10.0%
+    p99               no change  no change         10.0%
+```
+
+**Under the interquartile range the window is empty**: 5% is needed before the false alarms stop and 5% is
+where detection stops. **Under the 99th percentile the window runs from 0.5% to 10%**, and the equality
+form itself false-alarms on only 0.5% of regenerations.
+
+**A bound on that detection column, stated because it is real.** G1 and G2 read "no change" for every
+estimator because the table is min-max normalised and section 8 explains why: normalisation is scale
+invariant, so a unit error emits the identical table. So the detection half here is exercised by the
+off-by-one alone, and the unit and swap defects are exercised in section 7.2's raw-coordinate run rather
+than in this one.
+
+**So section 7.2's tension was a fact about the interquartile range and not about tail behaviour**, and
+`98`'s F-98-12 wants re-reading the same way: the corpus does resolve the tail, at 54 of 60 arm pairs. It
+does not resolve the IQR. That is the difference between a coordinate a design cannot have and a
+coordinate somebody estimated with the wrong statistic, and I would not have found it if section 7.2 had
+been allowed to stand as a cost.
+
+**F-100-7. On the committed carrier samples, estimating the tail coordinate by the 95th or 99th percentile
+rather than by the interquartile range reduces the section's distinct-section count from 161 to 3 or 2
+across 2000 resamples, raises the fraction of arm pairs separated by a bootstrap interval excluding zero
+from 43 of 60 to 54 of 60, and takes the differential's false alarm rate at a 0.5% band from 22.9% to
+0.0% while widening the band at which the off-by-one defect is still refused from 5% to 10%.**
+`holds for: regions = 6, arms = 5, cost coordinates in {1, 3}, estimators {P75-P25, P90-P10, median
+absolute deviation, P95, P99, 10% trimmed standard deviation}, cost source = committed
+bitpack-carrier-width_n* CSVs, 80 samples per arm per region, 2000 bootstrap resamples, 2000 CI resamples,
+seed 20260814, noise-floor control excluded, host = the one those runs were taken on, threads = 1`
+Evidence: `100_probes/p8_the_tail_coordinate_is_the_wrong_statistic.py`. An uncertainty estimate over a
+committed artifact, not a bench; no measurement was taken.
+
 **F-100-5. The compile-time differential stated as equality refuses a design nobody changed on 5 of 6
 weighting-by-arm-set combinations, up to 93.8% of regenerations. Stated as a band it does not, and the
 band that gives a 0% false alarm rate still refuses every measured generator defect for two of the three
@@ -924,10 +1005,13 @@ supplying a weighting is a use case the design wants at all, which is a question
 a measurement, and which section 13 does not put to op because `arvo-toolbox-not-policer.md` already
 answers it.
 
-**With myself, on the tolerance band.** Section 7 finds a configuration where no band both absorbs the
-noise and refuses the defects. I do not think that kills the mechanism, because the configuration is the
-one whose coordinate `98` already found unresolvable, but I did not establish that the tension disappears
-whenever the coordinate is resolvable, and one family is one instance.
+**With myself, on the tolerance band: resolved rather than carried.** Section 7.2 found a configuration
+where no band worked and I was going to carry it as a located cost. Section 7.3 dissolves it: the
+configuration is the tail-weighing one, every negative finding about that coordinate in this unit is
+measured on the interquartile range, and swapping to a tail quantile makes it the best-behaved coordinate
+of the three rather than the worst. What remains open is whether the same holds on another bench family,
+which I did not test, and whether a tail quantile is the statistic a consumer weighing tail behaviour
+actually wants, which is a design question no probe of mine touches.
 
 **A report rather than a disagreement.** `bitpack-write-contend-shared` needs `--test-threads=1`, per
 section 0. Both `98`'s account and mine are correct about their own runs and the variable is the test
