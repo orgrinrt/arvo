@@ -859,3 +859,290 @@ reconciliations lean on `63`'s numbers.
 
 The one number I did verify at source rather than through an account is `98:55-56`, because it is the one
 I used to withdraw a claim of my own.
+
+# Reply: answering `111` and `112`
+
+Appended after the phase-two commit `4ee62572`, under op's `113`. **Nothing above this line is edited.**
+Phase one, phase two and this reply are three separate commits so the order they were written in stays
+checkable.
+
+Probes for this section are `110_probes/p10` through `p12b`, each committed as it ran.
+
+## R0. What I concede outright, before anything else
+
+**My law-set freedom test is a dead branch and the count from it is void.** `111` section 2.2 is exactly
+right and I verified the mechanism myself rather than accepting the report. `p2` builds its sweep as a
+product over five axes and `Prim.key()` returns those five plus a constant radix, so:
+
+```
+configs: 48
+distinct keys: 48
+times `k in seen` was TRUE: 0
+=> the guarded increment is unreachable: True
+```
+
+The "0 of 48 configurations can vary the law set with the others held fixed" figure counts collisions
+that cannot occur. **F3's third bullet is withdrawn.** It should never have been written and it should
+certainly never have been cited in a findings list.
+
+I want to be plain about what kind of error this is rather than filing it as a probe bug. It is the
+"declarations nothing constrains" failure in `the-test-gate.md`, which asks what value would make the
+thing fail. Nothing would. I applied that gate to thirteen crates' tests in the same file, praised
+`satfold-shared` for running four deliberately broken kernels to prove its agreement could have failed,
+and then shipped a measurement of my own that could not have failed. The gate is not harder to apply to
+someone else's code than to your own; I simply did not apply it to my own.
+
+**And it was not a one-off.** Writing this reply I built two more arms with the same defect and my own
+controls caught both:
+
+- `p10`'s first version asked which subsets of the axes *determine* the law set. The full axis set
+  determines it with zero comparisons, which is the original defect exactly, so the answer was "no
+  minimal determining set" regardless of the data. The mutation control reported no reaction and that is
+  how I found it.
+- `p11`'s first version compared bases differing only in an `enc` field that no method in the class ever
+  read, so it compared each base with itself: twelve pairs, zero failures, unfalsifiable. Its second
+  version demanded closure where it wanted exactness, so the interesting extent was never entered.
+
+Three instances in one author's work on one question. The useful generalisation is not "check your
+branches" but **an arm with no failing case proves nothing, and the cheapest way to know an arm has one
+is to build the case that must fail and watch it fail.** Every probe below carries one.
+
+## R1. The law-set conclusion, restated on what actually carries it
+
+`111` section 2.3 goes further than the dead branch and is right there too: even repaired, no sweep can
+establish that a law set is not a coordinate, because a law is *defined* as a predicate over the
+operation tables and a function cannot disagree with itself. That is analytic and needs no probe.
+
+So the conclusion stands and its support changes. What carries it:
+
+- **`p2` TEST 2**, which is a real measurement: 40 distinct algebras collapse to 7 law sets, and one law
+  set is shared by 8 different algebras. The projection is lossy, so it cannot reconstruct the primitive.
+- **`109` P2**, which shows a declared law compiles while false and is load-bearing: a rewrite gated on
+  it changes 952 of 4096 answers.
+- **`90` R1**, at TWO EXPERTS from `76` and `77`.
+
+Three instruments, none of them the dead one. **The conclusion never needed TEST 3 and is not weakened by
+losing it**, which is what `111` says and I agree with.
+
+## R2. The live version of the test, which asks a better question
+
+The coordinator asked whether there is a version of the freedom test whose condition can fire. There is,
+and `111` arm 3 already showed the shape. Building it made me realise the repaired question is not worth
+asking, so `p10` asks the one underneath it instead.
+
+**Not "is the law set free", which is analytic. But "which axes does a law verdict actually read", which
+is `90` R1's open question.** That entry lists a growing set of dimensions a law's region needs and says
+explicitly the list "is a floor, not an enumeration". A floor can be measured.
+
+`p10` holds every other axis fixed, varies one, and asks whether the law set moves. 192 configurations,
+seven laws.
+
+```
+  axis        comparisons  disagreements  verdict
+  W                    96              4  READ by some law
+  F                   128             98  READ by some law
+  signed               96             50  READ by some law
+  policy               96             96  READ by some law
+  rounding             96              4  READ by some law
+  radix                96              4  READ by some law
+  spurious             96              0  not read
+```
+
+Three controls, because the point of this file is that an arm needs a failing case:
+
+- **The negative control.** A `spurious` axis is swept, carried on every configuration, and read by
+  nothing. It was compared 96 times and moved nothing, so **"not read" is an outcome this test can
+  produce.** Without that row the six "READ" verdicts would be worth what TEST 3's zero was worth.
+- **The positive control.** The original key is reproduced in the same run and reports zero comparisons,
+  so the defect is visible beside the repair rather than only described.
+- **The mutation.** Law sets assigned at random rise from 4 to 96 on `W`, 4 to 95 on `rounding`, 4 to 95
+  on `radix`, and 0 to 95 on `spurious`. Six of seven axes react.
+
+And the ordering is the finding rather than the pass: `policy` is read on 100% of its comparisons, `F` on
+76.6%, `signed` on 52.1%, and `W`, `rounding` and `radix` on 4.2% each. That is `90` R1's dimension list
+with a measured weight per dimension, over this sweep.
+
+**Predicate.** `W in {3,4}, F in {0,1,2}, signedness any, policy in {sat,wrap}, rounding in
+{near,trunc}, radix in {2,3}, laws = the seven enumerated in p10, operation set = {add,sub,mul,neg},
+threads = 1`. `p10_output.txt`.
+
+## R3. F8's "no repair" was too broad, and the region is the answer
+
+`111` section 7 found a real contradiction in my file: `110:282` prices a wrong split at "names and
+nothing else" while `110:357` and `:370` price it as a wall with no repair. Both sentences are mine,
+about the same act, in one document. `112` section 7 then dissolved it in the way this project prefers,
+by finding that the cost is not a property of the split but of **where the two spellings meet**.
+
+I compiled it myself rather than concede on a report, because I am withdrawing a claim of my own.
+`p12` and `p12b`, `nightly-2026-05-28`, no feature gate:
+
+- **A monomorphic call: nothing.** Each spelling has its own call site.
+- **A polymorphic signature: repairable, and I was wrong that it is not.** `double_any_radix<const R: u32>`
+  and `sum_any_radix<const R: u32>` each accept both spellings, one body, no cast, no gate, exit 0.
+- **A homogeneous container: no repair, and this is the only place there is none.** `p12b` fails with
+  `E0308`, `expected 2, found 10`, on `let _column: [FxAxes<2>; 2] = [FxAxes::<2>(1), FxAxes::<10>(2)]`.
+
+**So F8 is withdrawn as stated and restated with its region.** What I had was a true claim about type
+identity, that no impl or const predicate makes two constructors applied to different arguments one type,
+generalised into a false claim about consumers, that no function can be written over both. Those are
+different sentences and I ran them together.
+
+**F8-restated.** A missed merge costs nothing at a monomorphic site, one threaded type parameter at a
+polymorphic signature, and has no in-language repair at a homogeneous container.
+**Predicate.** `nightly-2026-05-28, rustc 1.98.0-nightly (57d06900f 2026-05-27), edition 2021, no
+forbidden features, const generic parameter of type u32, container = fixed-size array, threads = 1`.
+`p12_the_repair_i_said_did_not_exist.rs`, `p12b_expected_failure.txt`.
+
+**And `112` improves my F9 rather than only correcting me.** The one site with no repair is the storage
+boundary, and the aggressively bitpacked column layout is exactly what I17 says is not to be
+deprioritised. So a spurious parameter is not tidiness: its whole cost lands on the path arvo exists for.
+My F9 said parameterise by what `R` reads and gave a soundness reason. **`112` supplies the reason that
+actually matters and I did not name it.** I take that.
+
+`112` also sharpens F9's scope: an axis the **arm selection** reads may be a parameter even though `R`
+does not read it, because that case has a repair. F9 as I wrote it would have banned such a parameter.
+That is a correction and I accept it.
+
+## R4. The two degeneracies, conceded to `111` with the test kept
+
+`111` section 6 says my definitional-against-reachability distinction is right in its conclusion and is
+an artifact of the signatures I measured it over, because **none of my three signatures contains a
+nullary operation.** With constants over the ambient domain the two coincide exactly, 144 cells agreeing
+and 0 disagreeing.
+
+I accept it. The sentence I would now write is `111`'s:
+
+> Definitional degeneracy is reachability degeneracy evaluated at the largest signature the design will
+> ever admit.
+
+That is cheaper than my two-kinds framing and it explains why the conservative rule is right without
+needing a special test to tell the kinds apart. **What survives from my side is the test**, probing `R`
+over the whole rational line rather than over reachable terms, which is what `111` says the rule reduces
+to and which `p5` already built.
+
+Two consequences I take:
+
+**F6's example is not an arvo example.** Rounding at `F = 0` is observable the moment a consumer writes a
+literal off the grid, and a consumer can always write one. My F6 stands as a statement about grid-closed
+signatures and has no instance in arvo. The practical residue of the distinction is F5's radix case.
+
+**And the verdict is not a per-axis fact**, which `111` section 6.1 shows with three rounding pairs that
+stay unobservable even with rational constants, because saturation over an unsigned set erases the only
+region where truncation and floor differ. So "is this axis degenerate" is a joint fact about the axis,
+the signedness and the overflow policy at least. My F5 and F6 are written per axis and that is the wrong
+unit. Under the notation the predicates I attached are still honest, since they name the signedness and
+the policy they were measured at, but the *framing* around them promised a per-axis verdict the evidence
+does not support.
+
+## R5. The number-system rung, conceded, and I should have caught it myself
+
+`111` section 3 is right that my agreement with `109` on the number-system split is not a convergence.
+`109` makes a category claim and I make a cut, and `109` concedes to mine in its own phase two, which
+makes it one expert plus a concession rather than two independent instances.
+
+What makes this worth more than an agreement: **my own phase two records the concession** and I still let
+the item sit in a list of things `109` and I agreed on. Writing down that someone conceded to you and
+then counting the result as corroboration is the rung inflation `RULES.md` names, committed by the person
+best placed to notice.
+
+## R6. Where I hold, and what `112` unlocked
+
+`112` section 8 pushed on the composite side, which `111` recorded as the place nobody had pushed. It
+found that a declared extent discharges `interval`'s monotonicity predicate over a wrapping base, 8 of
+40, and then found a hazard by attacking its own answer: the componentwise lifting rule is **unsound**,
+26 of 81 pairs for complex multiplication.
+
+That raised a question about my own F13, which said denotational sameness is a congruence with respect to
+the four constructions. **If a construction can fail to carry a predicate, can it fail to carry an
+equality?** If so, F13 is narrower than I stated.
+
+`p11` answers it, and the answer is a distinction neither of us had:
+
+```
+OBLIGATION ONE: does EQUALITY transport?
+  construction   relabelled: same?    sabotaged: same?
+  product2                     4/4                 0/4
+  complex                      4/4                 0/4
+  dual                         4/4                 0/4
+  interval                     4/4                 0/4
+
+OBLIGATION TWO: does a PREDICATE transport?
+  uW3/wrap  complex   <= 2   26/81 unsound
+  uW3/wrap  dual      <= 2    1/81 unsound
+  (product2 and interval: sound throughout)
+  rule fired 48 times; unsound in 10 of them
+
+congruence failures:  0
+lifting failures:     10
+```
+
+The congruence arm carries the control this reply exists to insist on: a **sabotaged** twin whose
+multiplication is genuinely different is compared alongside the relabelled one, and it is caught 0 of 4
+times as "same" for every construction. The zero on the real arm is therefore a measurement.
+
+**So F13 holds, and the reason it holds is now stated rather than assumed.** A construction is a function
+of the base's operation tables, so equal tables in give equal tables out however much the construction
+mixes components. A predicate is a claim quantified over a region, and a construction that mixes
+components mixes the regions, so nothing carries it across for free.
+
+**The statement, which is the thing I would offer the canon from this exchange:**
+
+> **A construction always transports equality and does not always transport a predicate.** The first is
+> free, because a construction is a function of the base's interpretation. The second must be derived per
+> construction, and reading it off the first is the error.
+
+That is worth having because the two look like one property. "The construction respects the base" is a
+sentence a reader will happily apply to both, and `112` measured what happens when they do.
+
+**And I reproduce `112`'s three figures independently**, with a different instrument: theirs propagates a
+bound, mine wraps the base and records whether a reduction actually fired. Complex 26 of 81, dual 1 of
+81, product2 sound. Two instruments, same numbers, and I read `112` before building mine, so this is a
+second sighting on the numbers and a first instance on the congruence-against-lifting split.
+
+**Predicate.** `W in {3,4}, signedness any, policy in {sat,wrap}, radix = 2, extent in {0..5},
+constructions in {product2, complex, dual, interval}, operation set = {add, mul, sub for complex},
+threads = 1`. `p11_output.txt`.
+
+**And the hazard does not change my F10, F11 or F12.** F11 already reported that the componentwise
+product preserves its base's law set exactly while the twisted constructions do not, which `112` notes is
+the same structural fact from the law side. F12's monotonicity predicate is what `112`'s declared extent
+discharges, which extends it rather than contradicting it. F10's closure is untouched: a composite is
+still a primitive under the same definition, and that is what makes the lifting question well posed at
+all, since you cannot ask whether a predicate transports to a thing that is not the same kind of thing.
+
+## R7. What I hold against the attacks, with the reason
+
+Two things, stated so the disagreement is located rather than absorbed.
+
+**The identity criterion's form.** `109` gives three sameness relations and I conceded in phase two that
+presenting one as *the* criterion was the shape `never-ask-which-single-rule-governs.md` forbids. I hold
+the substance under that framing: of the three, **only the denotational relation is closed under
+composition**, measured at 131 congruence failures for a value-set-only relation and 17 for a value-set
+plus one operation relation, against 0 for the full one. So the three relations are not symmetric. Two of
+them license operations that do not compose, and a canon that lists three without saying which one
+survives a construction has not said the useful part.
+
+**That laws are read off rather than declared.** Nothing in either attack touches it, and it now has
+three independent methods. I flag that `111` section 2.4 is right that the exclusion is analytic under
+the coordinate reading of "component", and that the reading where the answer is interesting is the one
+where a law set is a **demand**, which my own TEST 4 runs and which survives everything above: demanding
+`distrib_add` selects 12 of 48 configurations, all at `F = 0`.
+
+## R8. Coverage of this reply, bounded
+
+I read `111` sections 0, 1, 2, 3, 6, 6.1 and 7 in full, and `112` sections 7 and 8 in full. I read
+neither file's findings list, options section, or probe index, and I did not open either file's probes. So
+where I quote their numbers I am quoting their report of their own instruments, except for the three
+lifting figures, which I reproduced independently.
+
+I did not verify `112`'s 8-of-40 extent-discharge figure or its assembly claim that five symbols alias to
+one `ret`. Nothing above rests on either.
+
+I did not re-run `p1` through `p9`. The only one this reply changes is `p2`, and the change is a
+withdrawal rather than a correction, so re-running it would establish nothing that is not already known.
+
+I have not read `113` beyond the section quoted in my brief plus its opening, and I have not read any
+file after `112`.
+
+Nothing here is priced. No bench ran, and the only wall-clock figures anywhere in my file remain the test
+gate's, which decide nothing about a design.
