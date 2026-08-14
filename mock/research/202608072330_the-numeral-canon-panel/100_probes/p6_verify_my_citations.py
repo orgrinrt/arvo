@@ -32,8 +32,12 @@ CITATIONS = [
     ("mock/research/202608072330_the-numeral-canon-panel/INTENTS.md", (290, 292),
      "Never any runtime checks"),
     # the register
-    ("mock/research/202608072330_the-numeral-canon-panel/OPTIONS.md", (2059, 2063),
-     "Generate the table from the weighting"),
+    ("mock/research/202608072330_the-numeral-canon-panel/OPTIONS.md", (2059, 2060),
+     "written as a binary and that was the dispatcher's error"),
+    ("mock/research/202608072330_the-numeral-canon-panel/OPTIONS.md", (2089, 2089),
+     "The measurement that motivates (b)"),
+    ("mock/research/202608072330_the-numeral-canon-panel/OPTIONS.md", (2096, 2096),
+     "Standing: ONE EXPERT"),
     # predecessors
     ("mock/research/202608072330_the-numeral-canon-panel/93_orchard_the_strategy_axis_derived_cold.md",
      (966, 973), "Two encodings exist"),
@@ -61,6 +65,10 @@ CITATIONS = [
      "validate_output_rejects_a_wrong_sum"),
     ("mock/benches/variants/bitpack-write-contend-shared/src/stress.rs", (68, 68),
      "#[test]"),
+    ("mock/benches/variants/bitpack-write-contend-shared/src/stress.rs", (66, 72),
+     "must\n/// agree on one thread count"),
+    ("mock/research/202608072330_the-numeral-canon-panel/100_probes/p10_the_slow_crate_is_serial_only.out",
+     None, "has been running for over 60 seconds"),
     ("mock/benches/variants/warm-clamp-shared/src/lib.rs", (83, 83),
      "W * 10000 + NC * 1000"),
     # the pinned bench harness checkout, resolved from arvo's own lockfile

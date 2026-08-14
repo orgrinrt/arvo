@@ -41,18 +41,31 @@ Checked against `INTENTS.md` I1 through I17. The assigned question is licensed b
 op's own words (`INTENTS.md:56`), and by I13's arms-with-predicates framing. Nothing in the intents
 forecloses asking how a strategy's table is produced.
 
-The finding: **Q43 is written in `OPTIONS.md` as a two-way fork over a whole category**, "(a) Check a
-table against a weighting" against "(b) Generate the table from the weighting"
-(`OPTIONS.md:2059-2063`). That is the shape op has now rejected three times in one sitting: at `88`
-section 4 ("we don't need to settle for one universal solution, it's the anti-pattern I've already
-named"), at `85` section 2 declining to rank four const-time constructions, and at `83` rejecting the
-typestate-against-values fork outright. `never-ask-which-single-rule-governs.md` names it.
+The finding, **stated in the tense I found it in, because it has since been corrected**: Q43 *was*
+written in `OPTIONS.md` as a two-way fork over a whole category, "(a) check a table against a weighting"
+against "(b) generate the table from the weighting". That is the shape op has now rejected three times in
+one sitting: at `88` section 4 ("we don't need to settle for one universal solution, it's the
+anti-pattern I've already named"), at `85` section 2 declining to rank four const-time constructions, and
+at `83` rejecting the typestate-against-values fork outright.
+`never-ask-which-single-rule-governs.md` names it.
 
-I did not return early on it, and the reasoning is offered so somebody can disagree. The question has a
-non-policy reading, which is "what does each production order cost and where does each hold", and that
-reading is answerable and is what the brief asks for. Answering it as **arms with predicates** rather than
-as a winner is what sections 1 through 5 do. I flag it because if the register carries Q43 forward as a
-binary into the consolidation, the consolidation inherits the shape rather than the answer.
+**The dispatcher rewrote the entry while this file was being written**, and the register now opens the
+entry with "This entry was written as a binary and that was the dispatcher's error, corrected here by
+`100`'s canon gate" (`OPTIONS.md:2059-2060`), preserving the original wording inside the correction. So
+the gate finding was acted on rather than filed, which is the right handling, and the original text is
+still citable from within the entry rather than only from git.
+
+I record the sequence rather than quietly citing the corrected text, for two reasons. My prose would
+otherwise describe a document that no longer says what I say it says, which is the failure
+`cite-the-canon-before-claiming-what-the-design-says.md` exists to catch and which my own citation probe
+caught here. And `how-to-run-a-panel.md` names editing a document a live member is reading as a hazard
+precisely because line numbers move underneath citations; this is a benign instance of it and it is worth
+having on the record as one.
+
+I did not return early on the gate, and the reasoning is offered so somebody can disagree. The question
+has a non-policy reading, which is "what does each production order cost and where does each hold", and
+that reading is answerable and is what the brief asks for. Answering it as **arms with predicates** rather
+than as a winner is what sections 1 through 5 do.
 
 **A second and smaller one, on I16.** `98` section 0 records the same worry about `97`'s
 canon-level constraint on table shape and resolves it by saying section 3 removes the sharp edge, because
@@ -1179,6 +1192,18 @@ of the three rather than the worst. What remains open is whether the same holds 
 which I did not test, and whether a tail quantile is the statistic a consumer weighing tail behaviour
 actually wants, which is a design question no probe of mine touches.
 
+**Two stale paragraphs in the rewritten Q43, which the consolidation would otherwise inherit.** The
+corrected entry ends with the two paragraphs the correction was supposed to supersede, and they now
+contradict the text above them. `OPTIONS.md:2089` still asserts "a section is not stable across a rerun of
+the same bench on the same afternoon, which makes it a poor object to apply a check to", which section 4
+of this file establishes is largely the noise-floor control arm on the family it was measured on and holds
+on two of four families rather than as stated. And `OPTIONS.md:2096` still reads "Standing: ONE EXPERT
+plus a predecessor's unregistered fork... It wants an independent attack before anything rests on it",
+which the same entry's own body now shows has happened. Neither is mine to edit, and I am naming them
+rather than fixing them: a register entry asserting a claim and its correction without reconciling them is
+the compression failure `a-compression-is-checked-by-someone-else.md` describes, arriving inside a single
+document.
+
 **A state change in the tree that I may have caused, reported rather than left.** At the start of this
 dispatch `git status` showed `mock/benches/Cargo.lock` modified against HEAD. It is now clean. I did not
 edit it; running the variant crates' suites and the mockspace pre-commit validation are the two things
@@ -1255,10 +1280,10 @@ each row carries the phrase the citation is FOR, so a citation drifting onto a n
 rather than passing on a coincidence.
 
 ```
-citations checked: 20   ok: 20   failed: 0
+citations checked: 24   ok: 24   failed: 0
 ```
 
-**It was not clean on the first run and both failures were mine.** The file cited `98:475-477` for "the
+**It was not clean on the first run, two failures were mine, and a later one was not.** The file cited `98:475-477` for "the
 generation happens once, by a tool"; the sentence starts at line 474 and the span I wrote missed its first
 line while still resolving to text that looked right. And a citation into
 `arvo-toolbox-not-policer.md` expected "ships sharp tools" where the rule says "ship sharp tools", which
@@ -1268,3 +1293,8 @@ against the files rather than from memory.
 That is the ninth and tenth recorded instance of this failure class across two panels, and the number is
 reported rather than quietly fixed, because `RULES.md` records that five instances went by before anybody
 counted.
+
+**And a third failure, on a rerun, was not a mistake of mine at all**: the citation into `OPTIONS.md` Q43
+stopped resolving because the entry was rewritten while this file was being written. That is the instrument
+doing a job nobody built it for, catching a document moving underneath a live citation rather than a
+transcription error, and section 0 records what changed and when.
