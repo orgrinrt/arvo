@@ -1,0 +1,45 @@
+==============================================================================
+A. THE MANIFEST'S OWN THREADED FLAG
+==============================================================================
+  threaded = true   bitpack-contend-best
+  threaded = true   bitpack-contend-decode
+  threaded = true   bitpack-contention
+  threaded = true   bitpack-wide
+  threaded = true   bitpack-write-contend-race
+  threaded = true   bitpack-write-contend-safe
+
+  6 of 49 committed families are threaded benches.
+
+==============================================================================
+B. DECODING THE REGION KEY OF EVERY THREADED FAMILY
+==============================================================================
+  KEY = N * 10 + T, per bitpack-contend-shared/src/routine.rs:11-24.
+
+  family                        regions   element counts   thread counts
+  bitpack-contend-best                4                2   [1, 4]
+  bitpack-contend-decode              6                3   [1, 4]
+  bitpack-contention                 12                4   [1, 2, 4]
+  bitpack-wide                        6                3   [1, 4]
+  bitpack-write-contend-race          6                2   [1, 2, 4]
+  bitpack-write-contend-safe          6                2   [1, 2, 4]
+
+==============================================================================
+C. THE FAMILIES THE UNIT'S FINDINGS ACTUALLY COVER
+==============================================================================
+  The four families carrying a byte-identical noise-floor control arm,
+  which is the set `100`'s F-100-3b and this file's sections 3 and 5 use.
+
+  bitpack-carrier-width      not threaded, threads = 1
+  bitpack-contend-decode     threaded, threads in [1, 4]
+  bitpack-contention         threaded, threads in [1, 2, 4]
+  bitpack-wide               threaded, threads in [1, 4]
+
+  A section over bitpack-contention's twelve regions spans three thread
+  counts, so it is not a threads = 1 object and cannot be rebuilt from
+  single-threaded data. The correct predicate lists the set.
+
+  And the shape is worth naming for its own sake: the thread count is a
+  REGION dimension in this corpus, not a coordinate. That is the same
+  answer p6 reaches for chain length, arrived at from the opposite
+  direction: the corpus already does it for threads and does not yet for
+  chains.
