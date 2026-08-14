@@ -937,3 +937,57 @@ which I confirmed by grep rather than by recall.
 
 **Every number in this file was produced by a committed probe in `103_probes/`, each committed as it ran,
 before this file was written.**
+
+### 13.1 The citation check, run as a probe rather than by eye
+
+`RULES.md` names the citation probe in `25_probes/` as the cheapest correctness tool this panel has, so I
+built my own rather than checking by reading. `103_probes/p9_check_my_own_citations.py` holds **35
+citations**, each as a triple of what my file claims, where, and a substring that must be present at the
+target. It opens each and tests the content rather than the resolution.
+
+```
+citations checked : 35
+passing           : 35
+failing           : 0
+```
+
+**Two rounds of the instrument being wrong, recorded because they are the point.** The first run reported
+five failures. All five were accurate quotations that span a line break in wrapped markdown, so an exact
+substring test rejected them for a reason unrelated to accuracy. Normalising whitespace fixed three. The
+remaining two were quotations of op inside a blockquote, where markdown puts a `>` at the start of every
+continuation line, so the quoted text in the source contains a character he did not say. Stripping the
+blockquote marker fixed both. Neither repair can make an absent phrase appear, and both are documented in
+the probe's own header.
+
+The useful lesson is small and general: **a citation checker that has never failed has not been tested
+either.** Mine failed twice, on itself, before it passed, and I would trust it less if it had come out
+green on the first run.
+
+## 14. What I would hand the next expert, if there is one
+
+There should not be one on this unit; I am the eighth and the consolidation is next. But `95` says the run
+continues past this unit, and three things here are worth carrying rather than leaving in a closed file.
+
+**The instrument generalises and is cheap.** p6's join of the CSVs, `bench.toml` and the driver's
+`routine_for_n` table is thirty lines and answers "what does this region actually assert about its arms"
+for every region at once. Any later question of the form "is property P true of the corpus" should be
+asked over that unit rather than over `variants/*-shared/`, which is not a covering set and which cost
+`102` its headline claim. p8's join of `*.meta.json` against `git log -S` is smaller still and answers
+"was mechanism M running when this number was produced", which is a question nobody had asked and which
+turns out to matter for 175 of 254 regions.
+
+**The corpus is more capable than the unit has been treating it.** Three declarations that already exist
+and are unused: `outputs_may_differ` set by one crate of thirteen, `max_relative_error` set by none, and
+`score_output` implemented by none of 94. The instrument was built to hold answer-differing arms and to
+score them, and arvo has never asked it to. That is a much cheaper route to op's I5 and I7 than anything
+the unit has proposed, and section 6.1 costs it out at one declaration, one test and one hook per family.
+
+**And the question I could not answer, stated as a wall rather than as a gap.** On the family's own
+committed input, the two radix arms are not comparable at all: their inputs denote different reals, so
+there is no single exact answer to measure either against. I tried three framings and every one either
+measured the input convention or silently re-imposed the controlled band. The controlled band gives a real
+answer to a slightly different question, and I said so rather than blurring the two. What would move it is
+a fidelity coordinate defined per arm against **that arm's own** declared semantics, which is exactly what
+`quantiser-radix-shared`'s two tests already compute and throw away. Someone should wire that into
+`score_output` and rerun the family. That is a bench job, it is inside `95`'s named exception, and it would
+turn the corpus's one accuracy comparison from something I had to reconstruct into something committed.
