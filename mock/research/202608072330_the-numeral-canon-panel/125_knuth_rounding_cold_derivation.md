@@ -460,11 +460,21 @@ zero deviations; the inversion pair x = q/5 < y = 4q/5 realises Q(x) = 1 > Q(y) 
 
 ### The test gate's result
 
-Run per crate by `--manifest-path`, as the brief instructs. Twelve of the thirteen `*-shared` crates
-under `mock/benches/variants/` completed green in the foreground and background runs; the totals per
-crate and the thirteenth (`bitpack-write-contend-shared`, the long-running contention crate) are
-recorded in the reconciliation commit, since its run was still in flight when this section was
-written; the final counts appear below, appended before this file's phase-one close.
+Run per crate by `--manifest-path`, as the brief instructs. **Twelve of the thirteen `*-shared`
+crates completed green: 108 tests, 0 failures** (carrier 9, contend 12, footprint 6, plan 5, bitpack
+3, wide 6, quantiser-fadd 1, quantiser-radix 3, satfold 11, warm-clamp 7, warm-container 15,
+wide-rung 30; wide-rung alone took 202 seconds). **The thirteenth, `bitpack-write-contend-shared`,
+did not complete**: my run consumed 88 CPU-minutes without producing a single test result before I
+stopped it, and, more telling, a pre-existing sibling process (another member's run of the same test
+binary from a different target directory) stood at **910 CPU-minutes, above fifteen CPU-hours,
+still running** when I looked, alongside a stale `cargo test --workspace --no-fail-fast` process,
+which is the false-green invocation the brief warns about, still alive on this machine. A test that
+cannot finish is not a green test, and three concurrent instances of a core-pinning contention suite
+fighting for the same P-cores may be why none of them finishes; I stopped only my own processes and
+left the other member's untouched. The crate holds 16 `#[test]` functions by
+`grep -c '#[test]' src/*.rs` (2 + 9 + 5 across input.rs, kernels.rs, stress.rs), which against my
+108 green accounts for the brief's advertised 123 to within one; both counts are stated with their
+commands and the discrepancy of one is left as a discrepancy rather than reconciled by guesswork.
 
 I read the test bodies of the two crates nearest my subject, `quantiser-fadd-shared` and
 `quantiser-radix-shared`, in full. They are real instruments: the radix-two test compares against
