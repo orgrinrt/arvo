@@ -1400,3 +1400,48 @@ be re-compressing rather than restoring:
 - **The census script computes no set difference** despite section 15 saying it does. The set difference
   `107` ran is the one that found the four items above, which is the argument for the instrument
   belonging to the checker rather than the author.
+
+## 18. The pair attacked, and what it is after `108`
+
+This consolidation named one thing it had not done: nobody had attacked the pair. `108` did, against
+section 4's separation of it into independent claims. **The pair survives as a two-component object and
+five of its eight clauses need repair**, each with a replacement drawn from material this unit already
+held. Its section 7 carries the converged statement with all five applied, and that statement supersedes
+section 4's rendering of the pair. Whoever writes the canon takes it from there rather than from here.
+
+**Clause three was false, and it is the one that mattered.** Component two was defined as ranging over
+"the arms that produce the answer the first component fixed". Section 8 of this file states that in that
+region a fidelity column **would measure a constant**. So op's accuracy intent is expressible in neither
+component, while `102:125` says the mechanism "serves I5 and I7". Both cannot hold, and `102` states the
+two halves a page apart. **The repair: component one fixes the denoted answer, not the computed one.**
+That single change restores the region in which an accuracy coordinate can vary at all, and it is why
+this correction reaches further than the other four.
+
+**Clause two had lost a qualifier**, the same failure class `107` found in the law bullet. "Observable"
+as used here is `40`'s definition rather than `97`'s, and `40` attached a condition no file in this unit
+carries. `108` measured it: same overflow-policy assignment, limit read at the declared width against
+the container width, **0% against 89.081%**. And observability is a property of the **chain**, not of
+the axis. The repair is a conservative closure plus a per-chain licence, with a sound const-checkable
+predicate and **zero unsound predictions over 8019 exhaustively swept chains**.
+
+**Clause seven was false because one word named two objects.** It said nothing relates two second
+components; section 5 of this file says the join is union and free. `108` separates them: **supports
+join canonically, 9 of 9; rates do not**, with six combinations disagreeing on **71.4% of 42 rate
+pairs**.
+
+**Clause four's third sentence was inconsistent and the fix is free** (three encodings compile to two
+symbols, four of six being aliases), and **clause eight undercounts** by the size of component one.
+
+**Section 4's leg (a) is void.** Op's `88` sentence has **five incompatible readings** across this
+panel, he flagged his own difficulty wording it, and `104` supplies the test it fails. Leg (b) is right
+about I3 and wrong about I5 once clause three is repaired, which restores `40` section 5.3's reading.
+
+**A rung this consolidation failed to record.** The two-level structure is **`40`'s, at TWO EXPERTS**,
+being `40` plus `93`'s blind phase one, and it appears here at no rung at all. `93`'s own claim of three
+instances overcounts. What is genuinely `102`'s contribution is narrower and should be stated as such:
+**the relocation of the observable assignment into the strategy.**
+
+**A methodological finding worth carrying past this unit.** `108`'s citation probe tests **both
+directions**, which no predecessor's did, and the reverse direction caught three misquotes in its own
+draft, every one of them inheriting a later file's rendering of an earlier file's words. That is the
+same mechanism as the qualifier losses `107` found, caught by an instrument rather than by a reader.
