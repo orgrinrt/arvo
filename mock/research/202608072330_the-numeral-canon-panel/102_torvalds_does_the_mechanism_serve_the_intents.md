@@ -862,8 +862,8 @@ Evidence: `102_probes/p3_the_crossing_is_an_arm_family.out`.
 
 **F-102-6. A chain's depth is const-available with no forbidden feature, and a depth-indexed rounding
 policy lowers to one path with zero conditional branches.**
-`holds for: rustc nightly-2026-05-28, target aarch64-apple-darwin, opt-level 3, `#![no_std]`, chain length
-4, switch depths in {0, 2, 99}, FRAC = 8`
+`holds for: rustc nightly-2026-05-28, target aarch64-apple-darwin, opt-level 3, no_std, chain length 4,
+switch depths in {0, 2, 99}, FRAC = 8`
 Evidence: `102_probes/p4_is_chain_depth_const_available.rs`, `p4_emitted.s`,
 `p4_is_chain_depth_const_available.out`, with the negative control's `E0080` recorded.
 
