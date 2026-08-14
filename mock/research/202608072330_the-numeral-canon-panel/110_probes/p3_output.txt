@@ -1,0 +1,56 @@
+P3. naming a composition, and whether the naming is canonical
+==============================================================================
+names in the swept product space: 288
+  W in {2,3,4}, F in 0..=W, signed in {no,yes}, policy in {sat,wrap},
+  rounding in {near,trunc,floor}, radix in {2,3}
+
+how many DISTINCT primitives those names denote, per signature:
+  signature                 primitives   names  second names
+  {add}                             84     288           204
+  {add,sub}                         84     288           204
+  {add,mul}                        186     288           102
+  {add,sub,mul,neg}                186     288           102
+  {add,sub,mul,neg,le}             186     288           102
+
+  the number of primitives is not a property of the axes alone.
+  it moves with the signature, so 'how many primitives are there'
+  is not well posed until the operation set is fixed.
+
+collapse classes under the full signature: 54
+axes that vary freely inside some collapse class:
+  radix      over ['2', '3']
+  rounding   over ['floor', 'near', 'trunc']
+axes that NEVER vary inside a class: W, F, signed, policy
+  those are unconditionally identity-bearing over this sweep.
+
+collapse classes entirely at F = 0: 12 of 54
+collapse classes with F > 0:         42
+  counterexample to the F=0-only rule: ['uW2F1r2/sat/trunc', 'uW2F1r2/sat/floor']
+  counterexample to the F=0-only rule: ['uW2F1r3/sat/trunc', 'uW2F1r3/sat/floor']
+  counterexample to the F=0-only rule: ['uW2F1r2/wrap/trunc', 'uW2F1r2/wrap/floor']
+
+scoring the two candidate canonicalisations on the FITTING sweep:
+  v1 (F=0 only)          unsound merges:    0   conservative splits:   42
+      SPLITS one primitive in two: uW2F1r2/sat/trunc vs uW2F1r2/sat/floor
+      SPLITS one primitive in two: uW2F1r3/sat/trunc vs uW2F1r3/sat/floor
+      SPLITS one primitive in two: uW2F1r2/wrap/trunc vs uW2F1r2/wrap/floor
+  v2 (+ unsigned down)   unsound merges:    0   conservative splits:    6
+      SPLITS one primitive in two: iW2F1r2/sat/near vs iW2F1r2/sat/trunc
+      SPLITS one primitive in two: iW2F1r2/wrap/near vs iW2F1r2/wrap/trunc
+      SPLITS one primitive in two: iW2F2r2/sat/near vs iW2F2r2/sat/trunc
+
+validating on a DISJOINT held-out sweep (W = 5, radix in {2,3,5}):
+  held-out names: 216, distinct primitives: 148, pairs checked: 23220
+  v1 (F=0 only)          merges:    0  splits:   38   verdict: sound, conservative
+      SPLITS one primitive in two: uW5F1r2/sat/trunc vs uW5F1r2/sat/floor
+      SPLITS one primitive in two: uW5F1r3/sat/trunc vs uW5F1r3/sat/floor
+      SPLITS one primitive in two: uW5F1r5/sat/trunc vs uW5F1r5/sat/floor
+  v2 (+ unsigned down)   merges:    0  splits:    8   verdict: sound, conservative
+      SPLITS one primitive in two: iW5F4r5/sat/near vs iW5F4r5/sat/trunc
+      SPLITS one primitive in two: iW5F4r5/wrap/near vs iW5F4r5/wrap/trunc
+      SPLITS one primitive in two: uW5F5r5/sat/near vs uW5F5r5/sat/trunc
+
+  a canonicalisation that SPLITS is safe and wastes names.
+  a canonicalisation that MERGES is unsound: it hands one name to two
+  primitives that compute different answers, and every consumer that
+  substitutes along that name gets a wrong value rather than a slow one.
