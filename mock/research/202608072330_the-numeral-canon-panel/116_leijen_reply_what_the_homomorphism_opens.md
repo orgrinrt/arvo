@@ -49,6 +49,14 @@ I re-ran rather than cited because the gate is not waivable and a cited gate is 
 re-audit the test bodies; `112` section 0.2 records what I read then and nothing in this file touches a
 new crate.
 
+**`117` landed after this run and bears on it, so the command matters.** That note records that
+`cargo test --workspace` from `mock/benches` compiles the bench binary, runs zero tests and exits 0,
+because the ninety-four variant crates are path dependencies rather than workspace members. My gate did
+not use that command. It selects each variant package explicitly and runs it on its own, which reaches
+the tests, and the per-crate counts summing to 123 against an attribute count of 123 is the check that it
+did. `112` section 0.2 records the related trap that the package names carry a `bench-` prefix the
+directory names do not, which is what makes the explicit form easy to get wrong and silently empty.
+
 ---
 
 ## 1. What this reply concludes, stated first
