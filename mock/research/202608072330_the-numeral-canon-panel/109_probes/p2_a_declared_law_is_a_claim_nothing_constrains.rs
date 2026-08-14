@@ -61,7 +61,7 @@ const trait Completion {
 
 /// Two-sided saturation: clamps at both ends of the value set.
 struct SatBoth;
-impl const Completion for SatBoth {
+const impl Completion for SatBoth {
     const NAME: &'static str = "signed saturate-both-ends";
     const LO: i32 = MIN;
     const HI: i32 = MAX;
@@ -82,33 +82,41 @@ impl const Completion for SatBoth {
 /// and it is not a completion at all, as the closure census shows: the sum
 /// can leave the value set through the bottom, which nothing clamps.
 struct SatTopSigned;
-impl const Completion for SatTopSigned {
+const impl Completion for SatTopSigned {
     const NAME: &'static str = "signed saturate-top-only";
     const LO: i32 = MIN;
     const HI: i32 = MAX;
     fn add(a: i32, b: i32) -> i32 {
         let e = a + b;
-        if e > MAX { MAX } else { e }
+        if e > MAX {
+            MAX
+        } else {
+            e
+        }
     }
 }
 
 /// One-sided saturation over the UNSIGNED value set 0..=15, where the bottom
 /// is unreachable by addition, so a top clamp alone IS a completion.
 struct SatTopUnsigned;
-impl const Completion for SatTopUnsigned {
+const impl Completion for SatTopUnsigned {
     const NAME: &'static str = "unsigned saturate-top-only";
     const LO: i32 = 0;
     const HI: i32 = UMAX;
     fn add(a: i32, b: i32) -> i32 {
         let e = a + b;
-        if e > UMAX { UMAX } else { e }
+        if e > UMAX {
+            UMAX
+        } else {
+            e
+        }
     }
 }
 
 /// Two-sided saturation over the same UNSIGNED set, for the controlled
 /// comparison: only the clamp count differs between this and the row above.
 struct SatBothUnsigned;
-impl const Completion for SatBothUnsigned {
+const impl Completion for SatBothUnsigned {
     const NAME: &'static str = "unsigned saturate-both-ends";
     const LO: i32 = 0;
     const HI: i32 = UMAX;
@@ -126,7 +134,7 @@ impl const Completion for SatBothUnsigned {
 
 /// Wrapping: a group operation on the value set.
 struct Wrap;
-impl const Completion for Wrap {
+const impl Completion for Wrap {
     const NAME: &'static str = "signed wrap";
     const LO: i32 = MIN;
     const HI: i32 = MAX;
@@ -321,7 +329,10 @@ mod tests {
                 }
             }
         }
-        assert_eq!(wrong_wrap, 0, "the rewrite itself is sound where the law holds");
+        assert_eq!(
+            wrong_wrap, 0,
+            "the rewrite itself is sound where the law holds"
+        );
     }
 
     /// Question 3. The law computes at const time, parameterised by the
@@ -341,11 +352,21 @@ mod tests {
         assert_eq!(WRAP_ASSOC.0, 0);
         println!(
             "computed associativity: {} {}/{}, {} {}/{}, {} {}/{}, {} {}/{}, {} {}/{}",
-            <SatBoth as Completion>::NAME, SAT_BOTH_ASSOC.0, SAT_BOTH_ASSOC.1,
-            <SatTopSigned as Completion>::NAME, SAT_TOP_S_ASSOC.0, SAT_TOP_S_ASSOC.1,
-            <SatTopUnsigned as Completion>::NAME, SAT_TOP_U_ASSOC.0, SAT_TOP_U_ASSOC.1,
-            <SatBothUnsigned as Completion>::NAME, SAT_BOTH_U_ASSOC.0, SAT_BOTH_U_ASSOC.1,
-            <Wrap as Completion>::NAME, WRAP_ASSOC.0, WRAP_ASSOC.1
+            <SatBoth as Completion>::NAME,
+            SAT_BOTH_ASSOC.0,
+            SAT_BOTH_ASSOC.1,
+            <SatTopSigned as Completion>::NAME,
+            SAT_TOP_S_ASSOC.0,
+            SAT_TOP_S_ASSOC.1,
+            <SatTopUnsigned as Completion>::NAME,
+            SAT_TOP_U_ASSOC.0,
+            SAT_TOP_U_ASSOC.1,
+            <SatBothUnsigned as Completion>::NAME,
+            SAT_BOTH_U_ASSOC.0,
+            SAT_BOTH_U_ASSOC.1,
+            <Wrap as Completion>::NAME,
+            WRAP_ASSOC.0,
+            WRAP_ASSOC.1
         );
     }
 
@@ -369,11 +390,21 @@ mod tests {
         );
         println!(
             "closure escapes: {} {}/{}, {} {}/{}, {} {}/{}, {} {}/{}, {} {}/{}",
-            <SatBoth as Completion>::NAME, SAT_BOTH_CLOSED.0, SAT_BOTH_CLOSED.1,
-            <SatTopSigned as Completion>::NAME, SAT_TOP_S_CLOSED.0, SAT_TOP_S_CLOSED.1,
-            <SatTopUnsigned as Completion>::NAME, SAT_TOP_U_CLOSED.0, SAT_TOP_U_CLOSED.1,
-            <SatBothUnsigned as Completion>::NAME, SAT_BOTH_U_CLOSED.0, SAT_BOTH_U_CLOSED.1,
-            <Wrap as Completion>::NAME, WRAP_CLOSED.0, WRAP_CLOSED.1
+            <SatBoth as Completion>::NAME,
+            SAT_BOTH_CLOSED.0,
+            SAT_BOTH_CLOSED.1,
+            <SatTopSigned as Completion>::NAME,
+            SAT_TOP_S_CLOSED.0,
+            SAT_TOP_S_CLOSED.1,
+            <SatTopUnsigned as Completion>::NAME,
+            SAT_TOP_U_CLOSED.0,
+            SAT_TOP_U_CLOSED.1,
+            <SatBothUnsigned as Completion>::NAME,
+            SAT_BOTH_U_CLOSED.0,
+            SAT_BOTH_U_CLOSED.1,
+            <Wrap as Completion>::NAME,
+            WRAP_CLOSED.0,
+            WRAP_CLOSED.1
         );
     }
 
@@ -434,6 +465,9 @@ mod tests {
         // between them is an instruction nobody executes.
         assert_eq!(u_top_vs_u_both, 0);
         assert_eq!(CARD, 16);
-        println!("signed both-vs-wrap differ on {both_vs_wrap} of {} pairs", CARD * CARD);
+        println!(
+            "signed both-vs-wrap differ on {both_vs_wrap} of {} pairs",
+            CARD * CARD
+        );
     }
 }

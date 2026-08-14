@@ -13,7 +13,7 @@ const trait Op {
     fn ap(a: i32, b: i32) -> i32;
 }
 struct S;
-impl const Op for S {
+const impl Op for S {
     fn ap(a: i32, b: i32) -> i32 {
         a + b
     }

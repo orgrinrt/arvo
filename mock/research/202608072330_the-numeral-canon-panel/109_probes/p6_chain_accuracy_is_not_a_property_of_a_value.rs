@@ -210,9 +210,8 @@ mod tests {
                 }
             }
         }
-        let (ws, wn, a, b) = witness.expect(
-            "the routes must differ somewhere, or there is nothing to explain",
-        );
+        let (ws, wn, a, b) =
+            witness.expect("the routes must differ somewhere, or there is nothing to explain");
         assert_ne!(a, b);
         println!("witness: seed {ws}, chain length {wn}, per-step {a}, deferred {b}");
 

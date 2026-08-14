@@ -62,7 +62,11 @@ impl Encoding for TwosComplement {
     }
     fn decode(p: u32) -> i32 {
         let p = p as i32;
-        if p >= K { p - CARD } else { p }
+        if p >= K {
+            p - CARD
+        } else {
+            p
+        }
     }
 }
 
@@ -265,9 +269,7 @@ mod tests {
         let gr_add = raw_adder_correct::<Gray>();
         let ar_add = raw_adder_correct::<Arbitrary>();
 
-        println!(
-            "encoding                     raw-order disagreements   raw-adder correct"
-        );
+        println!("encoding                     raw-order disagreements   raw-adder correct");
         for (n, o, a) in [
             (TwosComplement::NAME, tc_order, tc_add),
             (OffsetBinary::NAME, ob_order, ob_add),
@@ -319,9 +321,7 @@ mod tests {
                 if ob_got == ob_want {
                     ob_add_ok += 1;
                 }
-                ob_defects.insert(
-                    (ob_got as i32 - ob_want as i32).rem_euclid(CARD),
-                );
+                ob_defects.insert((ob_got as i32 - ob_want as i32).rem_euclid(CARD));
                 if le_raw(OffsetBinary::encode(a), OffsetBinary::encode(b)) == (a <= b) {
                     ob_order_ok += 1;
                 }
@@ -333,9 +333,18 @@ mod tests {
              order-agreeing {ob_order_ok}/256, defect set {:?}",
             ob_defects
         );
-        assert_eq!(tc_add_ok, 256, "two's complement: adder-correct on all pairs");
-        assert!(tc_order_ok < 256, "two's complement: must disagree on order somewhere");
-        assert_eq!(ob_order_ok, 256, "offset binary: order-agreeing on all pairs");
+        assert_eq!(
+            tc_add_ok, 256,
+            "two's complement: adder-correct on all pairs"
+        );
+        assert!(
+            tc_order_ok < 256,
+            "two's complement: must disagree on order somewhere"
+        );
+        assert_eq!(
+            ob_order_ok, 256,
+            "offset binary: order-agreeing on all pairs"
+        );
         assert_eq!(ob_add_ok, 0, "offset binary: adder-correct on no pair");
         assert_eq!(
             ob_defects.len(),

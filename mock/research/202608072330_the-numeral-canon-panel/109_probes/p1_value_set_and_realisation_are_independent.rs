@@ -76,7 +76,10 @@ impl<const N: usize> PackedRest<N> {
     const BITS_PER_ELEM: u32 = V13_BITS;
 
     const fn new() -> Self {
-        PackedRest { words: [0u64; 64], len: 0 }
+        PackedRest {
+            words: [0u64; 64],
+            len: 0,
+        }
     }
 
     fn set(&mut self, i: usize, v: u32) {
@@ -122,7 +125,11 @@ impl<const N: usize> PackedRest<N> {
 /// The completion policy, held FIXED across A1 and A2 so that only the
 /// realisation varies: saturating at the top of the 13-bit value set.
 const fn complete_sat(exact: u32) -> u32 {
-    if exact > V13_MAX { V13_MAX } else { exact }
+    if exact > V13_MAX {
+        V13_MAX
+    } else {
+        exact
+    }
 }
 
 // ---------------------------------------------------------------------------

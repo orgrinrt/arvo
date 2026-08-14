@@ -13,13 +13,21 @@
 #![allow(dead_code)]
 use core::marker::PhantomData;
 
-trait Realisation { const CONTAINER_BITS: u32; }
-trait Completion { const KIND: u8; }
+trait Realisation {
+    const CONTAINER_BITS: u32;
+}
+trait Completion {
+    const KIND: u8;
+}
 struct V8_0;
 struct ByteRest;
-impl Realisation for ByteRest { const CONTAINER_BITS: u32 = 8; }
+impl Realisation for ByteRest {
+    const CONTAINER_BITS: u32 = 8;
+}
 struct Wrap;
-impl Completion for Wrap { const KIND: u8 = 0; }
+impl Completion for Wrap {
+    const KIND: u8 = 0;
+}
 
 #[repr(transparent)]
 #[derive(Copy, Clone)]
@@ -36,5 +44,8 @@ fn main() {
     // Same value set, same realisation, same completion, same bits, same
     // layout. Different marker.
     let c: Sp = b;
-    println!("if this line runs, the marker is not part of the identity: {}", c.0);
+    println!(
+        "if this line runs, the marker is not part of the identity: {}",
+        c.0
+    );
 }
