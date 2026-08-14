@@ -1,0 +1,38 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+target:    aarch64-apple-darwin
+
+=== p3_three_encodings.rs: must compile ===
+compiles, zero feature gates
+
+feature gates in the source: 0
+dyn / TypeId / generic_const_exprs in CODE (comments stripped): 0
+
+=== the four entry bodies, verbatim from the emitted assembly ===
+_e1_named:
+	b	__RNvCs7jv63BkYSe1_18p3_three_encodings4arm0
+
+	.globl	_e3_direct
+	.p2align	2
+_e3_direct:
+	b	__RNvCs7jv63BkYSe1_18p3_three_encodings4arm4
+
+	.globl	_e4_consumer
+	.p2align	2
+_e4_consumer:
+	b	__RNvCs7jv63BkYSe1_18p3_three_encodings4arm4
+
+	.globl	_e2_weighted
+_e2_weighted = _e1_named
+.subsections_via_symbols
+
+=== which arm each entry reaches ===
+  e1_named -> arm0
+  e2_weighted -> _e2_weighted = _e1_named   (identical body, merged by the linker)
+  e3_direct -> arm4
+  e4_consumer -> arm4
+
+=== p3_mutant_generator_bug.rs: must NOT compile ===
+refused, as required:
+error[E0080]: evaluation panicked: the committed winner table disagrees with the argmin of the weighting that is supposed to have generated it
+   --> p3_mutant_generator_bug.rs:169:9
+    |

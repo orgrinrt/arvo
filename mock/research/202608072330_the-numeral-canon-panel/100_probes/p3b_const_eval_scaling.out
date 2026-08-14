@@ -1,0 +1,59 @@
+p3b. Does the cost-table encoding still compile at table sizes a real design
+would carry, and where does const evaluation stop.
+
+`p3` compiles the region-indexed cost table plus const argmin at 6 regions, 5
+arms and 2 coordinates, which is the committed carrier family's shape. A design
+carrying every region a strategy is defined over is larger than that, and the
+question a canon needs answered before it can even name the encoding as
+available is whether const evaluation reaches those sizes at all.
+
+This is an EXISTENCE question, which an ad-hoc spike is licensed to answer: does
+it compile, yes or no, and where does it stop. It is NOT a how-much question.
+No compile-time figure is reported here and none should be inferred; the
+compile-time COST of this encoding is UNPRICED, and pricing it needs the
+mockspace bench harness, which measures runtime variants and has no compile-time
+arm today.
+
+Two distinct const-evaluation loads, and they scale differently, which is the
+part worth having:
+
+  PER CALL SITE   `resolve(S::W, I)` inside an inline `const { }` block runs
+                  once per monomorphisation and costs A * D steps. It does not
+                  depend on R.
+  ONCE PER CRATE  the `AGREEMENT` differential runs R * A * D steps, once.
+
+So a design with many regions pays the region dimension once at the check and
+never at a call site, which is the opposite of what "the cost table is bigger"
+suggests.
+
+     R     A    D     cells  agreement steps  src bytes  result
+     6     5    2        60               60       1685  compiles
+     6     5    4       120              120       2044  compiles
+    16     8    3       384              384       3847  compiles
+    64    16    4      4096             4096      27812  compiles
+   128    32    4     16384            16384     106856  compiles
+   256    64    4     65536            65536     422183  compiles
+   512    64    4    131072           131072     843112  compiles
+  1024    64    4    262144           262144    1684993  compiles
+
+largest shape that compiles on this pin: (1024, 64, 4)
+
+
+READING
+
+The const-evaluation step limit is the wall this encoding would hit, and where
+it sits is a fact about the toolchain rather than about the design. Two things
+follow whatever the number turns out to be.
+
+The per-call-site load does not carry the region dimension. `resolve(S::W, I)`
+runs over the arms and coordinates only, so adding regions costs nothing at any
+call site and costs one linear pass at the crate-level differential.
+
+And `long_running_const_eval` is a default refusal rather than an absolute one
+(`unstable-features.md`), so a design that did hit the limit has a documented
+lever before it has a redesign. Reaching for it is a separate decision and this
+probe does not propose it.
+
+The compile-time COST of any shape above is UNPRICED. This says which shapes
+exist, not what they cost.
+
