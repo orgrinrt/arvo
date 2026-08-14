@@ -386,3 +386,179 @@ nothing. FNV-1a and XXH3 agreeing on every input would be the extraordinary clai
 
 `102` never mentions this region. That is not carelessness; it is the census unit. A sweep over
 `variants/*-shared/` cannot reach a routine declared in the driver.
+
+### 3.5 And the mechanism was not running for most of the corpus
+
+This is the finding I did not expect and it is the deepest one, because it does not depend on any family
+being unusual.
+
+`102`'s argument for the twelve non-`satfold` crates is one sentence: "Twelve crates take the harness
+default, which is byte-exact cross-variant comparison." That is a claim about a mechanism running.
+`mock/benches/src/main.rs` states, in the comment beside the call it added, that it does not run by
+itself:
+
+> `harness::run` does NOT do this: `run_orchestrator` never calls `validation::validate`, so without this
+> call a variant computing a different answer from its peers is timed and reported like any other.
+> Demonstrated: a one-character off-by-one in a loader's tail assembly produced 400 rows of
+> ordinary-looking numbers and exit 0. The `digest` and `score` columns are zero for every plain `timed!`
+> variant, so they catch nothing either, which leaves the variant crate's own unit tests as the only
+> fidelity check in the system.
+
+So the gate exists only where the driver calls it, and the driver gained that call on **2026-08-08** in
+`9db33f8c`, "bench: make the driver validate its arms, and re-run every wide-rung section". Every
+`*.meta.json` records the `git_commit` that produced it, so this is countable with no inference at all.
+
+**p8**, verifying rather than assuming that the call is present at that commit and absent at its parent:
+
+```
+  present at that commit      : True
+  present at its parent       : False
+
+REGIONS BY WHETHER THE GATE EXISTED WHEN THEY RAN
+  produced BEFORE the wiring :  175 of 254
+  produced AFTER  the wiring :   79 of 254
+
+SPLIT BY WHETHER THE REGION'S OWN ROUTINE PINS AN ANSWER
+  before wiring, answer-pinning routine     :  155
+  before wiring, NOT answer-pinning         :   20
+  after  wiring, answer-pinning routine     :   79
+  after  wiring, NOT answer-pinning         :    0
+```
+
+**175 of 254 committed regions were produced by a driver that never called cross-variant validation.** For
+those 175, the mechanism `102` cites is not evidence in either direction. And the split is not random:
+every one of the 20 non-pinned regions is in the pre-wiring set, all produced at one commit, `25f736b`;
+and every region produced after the wiring has an answer-pinning routine, which is what you would expect
+if the gate has been doing its job since it was wired.
+
+**This does not make the 155 wrong.** They belong to families whose own tests assert cross-arm agreement
+against an independent oracle, and all 123 of those tests pass. The point is narrower and it is about
+provenance rather than truth: **the artifact the belief rests on is the family's unit tests, not the
+harness mechanism.** The driver's comment says exactly that, and it is the more honest citation for
+anything the consolidation writes about answer-equivalence.
+
+## 4. What survives of `102`, stated as support rather than as concession
+
+`RULES.md` says support counts as much as attack and that independent derivation before reading beats
+agreement after. Four things of `102`'s I derived or confirmed independently, and I want them on the
+record at that strength.
+
+**Its conclusion is right.** The corpus cannot exhibit I5, I7 or I9. I reached that from the other
+direction: the corpus **does** contain answer-differing arms, it contains one region with a strict
+accuracy ordering between them, and it records **nothing about that ordering anywhere**. p1 finds `score`
+empty in all 104080 rows; p7 has to compute the error coordinate from scratch because no committed column
+carries it. So the conclusion holds and its reason changes: the barrier is not the arm sets, it is the
+absent coordinate. That relocates the finding one rung down, onto `98`'s and `101`'s, rather than upstream
+of them.
+
+**`satfold` is answer-equivalent and its doc comment is right about why.** I labelled it wrong first and
+the correction went my way, not `102`'s. Consenting to differ and pinning to an oracle are independent,
+and pinning is the stronger of the two.
+
+**The `max_relative_error` observation is right and I confirmed the count.** `102` reports that the
+harness has a third cross-variant regime, `CrossVariant::Approx(eps)`, that no arvo variant sets. p5 reads
+every shared crate's `fn max_relative_error` and finds `None (default)` in thirteen of thirteen. That
+regime is exactly the shape an accuracy-differing family needs and it has never been used. Section 6.2 is
+about what I would do with it.
+
+**And the measured-versus-computed split is a real distinction and worth keeping**, independently of
+whether its hazard fires. Section 7.
+
+## 5. The corpus already contains the mechanism `102` says it lacks, in one family, working
+
+This is the constructive half and it is the part I would most want a consolidation to carry.
+
+`102`'s pair proposal needs a way to hold arms that produce different answers while still knowing each one
+is correct. It treats that as something to be designed. **One committed family already does it**, and the
+shape is worth naming because it was arrived at by someone solving the concrete problem rather than by
+anyone theorising about it.
+
+`quantiser-radix-shared` has **two oracles, one per arm**, and no oracle across arms:
+
+- `radix_two_instantiation_matches_the_silicon` checks the radix-two arm against native `f32`
+  bit-for-bit, over the family's own input distribution at all four committed sizes, 32 seeds each:
+  `4 * 32 * 256 = 32768` checks, asserted as `assert_eq!(checked, 4 * 32 * N as u64)` so a silently
+  shortened sweep fails rather than passes.
+- `radix_ten_delivers_the_nearest_grid_point_ties_to_even` checks the radix-ten arm against the
+  **definition** rather than against the other arm, because no silicon exists to check it against on any
+  pinned target: the delivered significand must be the nearest decimal32 grid point, both neighbours
+  tested in exact integer arithmetic, with ties-to-even checked separately. Same 32768 checks, same
+  assertion on the count. Its own comment says why this is an independent oracle rather than a second call
+  to the same rounding code.
+
+That is the general shape, and it generalises past this family:
+
+> **A region whose arms may produce different answers is validated arm by arm, each against its own
+> declared semantics, rather than arm against arm.** Cross-arm agreement is then a consequence where the
+> semantics coincide, and its absence is not a defect where they do not.
+
+The harness already has the switch for it (`outputs_may_differ`), already has the intermediate regime for
+the bounded-disagreement case (`max_relative_error`), and one family already writes the per-arm oracles.
+What is missing is not a mechanism. It is a **coordinate** recording how far each arm's answer is from its
+reference, and a `Routine::score_output` hook that `101` reports zero of 94 variant crates implement.
+
+So the honest statement of the gap is much smaller than "the corpus is structurally unable to exhibit
+those intents". It is: **the corpus can hold answer-differing arms, validates them correctly where it
+does, and does not write down the difference.**
+
+## 6. The three judgements my brief asked for
+
+### 6.1 Is answer-equivalence a property of the corpus, the harness, or the convention
+
+**All three, in different regions, and the split is exactly what makes the claim slippery.**
+
+- **Of the harness**, for the 79 regions produced after `9db33f8c`, where the driver calls `validate` and
+  the byte-exact comparison genuinely runs. There it is enforced.
+- **Of the convention**, for the 155 pre-wiring regions with answer-pinning routines. The oracle is in the
+  code and the tests exercise it, so the arms agree because the people who wrote the families made them
+  agree and checked it. The harness had nothing to do with it during those runs.
+- **Of neither**, for the 20 remaining. Nothing required it and nothing checked it.
+
+**What it would take to build a family that is not answer-equivalent** is the more useful half of the
+question, and the answer is that almost nothing is missing, which I did not expect before p5:
+
+1. Declare `outputs_may_differ = true`, or `max_relative_error = Some(eps)` for the bounded case. One
+   method each, both already in `Routine`.
+2. Give each arm its own oracle, the way `quantiser-radix-shared` already does. No new mechanism.
+3. Implement `score_output`, which exists in the trait and which zero of 94 variants implement, so the
+   difference between the arms lands in a committed column instead of nowhere.
+
+Step 3 is the only one that is real work, and it is the one nobody has done. Steps 1 and 2 are a
+declaration and a test.
+
+### 6.2 Is a cost-only corpus a defect or the correct scope
+
+**Neither, and the question as posed asks for a single verdict over a category, which is the shape
+`never-ask-which-single-rule-governs.md` refuses.** There are two regions and they want different answers.
+
+**Where the arms compute one value, a cost-only corpus is exactly the right scope and is not a defect.**
+`warm-container-shared`'s own doc comment gives the reason better than I would: without the agreement
+requirement the fast arm is fast because it is doing less. Pinning the answer is what makes the timing
+mean anything, and 234 regions do it. Adding a fidelity column there would measure a constant.
+
+**Where the arms compute different values, a cost-only corpus is not a defect in the corpus either. It is
+an incomplete instrument.** The bench is correct about what it measures; it simply does not measure the
+other axis, and the other axis is the one op's I5 and I7 are about. A committed CSV row that records
+`algo_ns` for `quantiser-radix2` and `quantiser-radix10` is a true and useful comparison of the two
+formats' cost, and it says nothing about the thing that separates them.
+
+So the composed answer, which is what I13 asks for rather than a ruling:
+
+| region | verdict |
+|---|---|
+| arms answer-equivalent | cost-only is correct and complete; a fidelity column would be constant |
+| arms answer-differing, no fidelity column | cost-only is correct and incomplete; the missing column is `score_output` |
+| arms answer-differing, no per-arm oracle | not a scope question at all; the region is unvalidated |
+
+The third row is the only one that is a defect, and it has four instances: `fnv1a-vs-xxhash3` at four
+sizes.
+
+**And the intent-carrying comparison does not belong to a different instrument.** That was my first guess
+and p5 killed it. The harness already has the consent switch, the approximate-comparison regime and the
+scoring hook; `quantiser-radix-shared` already writes per-arm oracles inside the ordinary bench crate
+shape. A separate instrument would be a second index over the same data, which is a rebuild cost paid
+forever for a distinction the existing one already expresses.
+
+### 6.3 `102`'s p5 constraint: sound, and currently vacuous
+
+Section 7, because it needed its own measurement.
