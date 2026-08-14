@@ -1,0 +1,36 @@
+regions 6, arms 6, coordinates 2 (median algo_ns, declared bytes per element)
+L0 = 6^6 = 46656
+
+counts
+  L0 any section                      46656   100.000%
+  L1 Pareto-admissible                   144     0.309%
+  L3 linear, w >= 0                       72     0.154%
+  L4 linear, w > 0                         9     0.019%
+  L5 linear, w > 0, unique argmin          9     0.019%
+
+dominated in every region, under two coordinates
+  bitpack-carrier-d64
+  bitpack-carrier-packed
+
+the sections at the strictly-positive rung
+  ['d16-control', 'd16-control', 'd16', 'd16', 'd16', 'd16-control']
+  ['d16-control', 'd32', 'd16', 'd16', 'd16', 'd16-control']
+  ['d32', 'd32', 'd16', 'd16', 'd16', 'd16-control']
+  ['packed-simd', 'd16-control', 'd16', 'd16', 'd16', 'd16-control']
+  ['packed-simd', 'packed-simd', 'd16', 'd16', 'd16', 'd16-control']
+  ['packed-simd', 'packed-simd', 'packed-simd', 'd16', 'd16', 'd16-control']
+  ['packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'd16', 'd16-control']
+  ['packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'd16-control']
+  ['packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+
+comparison across the three models measured in this probe set
+  model                                                L0     L1    L3    L4
+  p2:  6 arms, 3 coords (time, bytes, spread)       46656   2048   117    58
+  p6:  5 arms, 2 coords (time, bytes)               15625    144    72     9
+  p13: 6 arms, 2 coords (time, bytes)               46656    144    72     9
+
+  What is stable across all three: L4 is a small fraction of L1, which
+  is a small fraction of L0, and the gap between the non-negative and
+  the strictly-positive rungs is large. What is not stable: any
+  particular number, which is p3's finding restated on real data rather
+  than on random models.
