@@ -553,3 +553,29 @@ carry visibly open obligations. That is section 10 of `136` and it is his.
 What I did **not** sweep is `125` through `130`'s own findings blocks, where the same split mechanism
 could have operated one tier further down, and `128` F128-1 in particular carries a compound predicate of
 exactly the shape that lost dimensions when `132` split it.
+
+---
+
+## 12. Coverage of my own citations
+
+Every `file:line` above was opened and its **content** tested rather than merely resolved, by
+`137_probes/g9_check_my_own_citations.py`. Whitespace is normalised and blockquote and doc-comment
+markers stripped on both sides, because a quotation wrapped across lines is still verbatim, and neither
+normalisation can make an absent phrase appear.
+
+```
+citations checked: 34   ok: 34   failed: 0
+```
+
+**It passed first time, which is the weaker of the two things to say about it**, so it is mutation-tested
+three ways and each mutant is caught: a phrase op did not say, a real phrase at the wrong span, and a real
+phrase in the wrong file.
+
+**Nine probes, each committed with its output as it ran**, at 72K total: the gate run, the two coordinator
+errors, the completeness of the attribution class, the predicate extraction and the hedge token, the
+dependents trace, the anchor diff on my own patterns, the absence claims and the rungs, the residual
+checks, `131`'s arms, and this.
+
+**What no probe of mine checks**, and it is most of sections 2 through 9: whether a cited passage supports
+the argument put on it. No instrument crosses that, which is why this file exists and why it should not be
+the last word on `136` either.
