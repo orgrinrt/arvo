@@ -1,0 +1,11 @@
+variant crates                       : 94
+score_output impls                   : 0
+score_dimensions impls               : 0
+max_relative_error impls             : 0
+crates defining validate_output      : 15
+files mentioning outputs_may_differ  : 1
+committed CSVs                       : 254
+committed meta files                 : 254
+
+--- the contamination, shown rather than asserted ---
+without --exclude-dir=target, outputs_may_differ : 133

@@ -1,0 +1,14 @@
+union across the eight members : 207
+  of which probe files          : 125
+  of which live bench tree      : 15
+  of which workspace rules      : 13
+  of which SUPERSEDED tier      : 4
+
+carried by 106 (excl. its accounting section) : 34
+  superseded-tier anchors carried             : 0   <- must be 0
+
+--- superseded-tier anchors, dropped on purpose ---
+.md.tmpl
+mock/DESIGN.md.tmpl
+mock/PRINCIPLES.md.tmpl
+mock/WORKFLOW.md.tmpl

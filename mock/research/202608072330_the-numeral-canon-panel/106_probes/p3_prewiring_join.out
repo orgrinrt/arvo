@@ -1,0 +1,16 @@
+commit that added harness::validate to the driver:
+    9db33f8c bench: make the driver validate its arms, and re-run every wide-rung section
+    present at 9db33f8c      : True
+    present at 9db33f8c~1    : False
+
+meta files                      : 254
+produced BEFORE the wiring      : 175
+produced AFTER  the wiring      : 79
+unresolvable                    : 0
+distinct producing commits      : 23
+
+git_commit values ending -dirty : 253
+git_commit values clean         : 1
+
+NAIVE join, not stripping -dirty (what a later reader gets without 22's fact):
+    unresolvable                : 253 of 254

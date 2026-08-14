@@ -1,0 +1,10 @@
+
+citations checked: 49   ok: 49   failed: 0
+
+--- the instrument was mutation-tested, because a checker that has never failed
+--- has not been tested either (103 section 13.1)
+CAUGHT  mutant: a phrase op did not say, substituted for one he did
+CAUGHT  mutant: a real phrase attributed to the wrong file
+CAUGHT  mutant: a near-miss on a real quotation ("...ever" -> "...ever, anywhere")
+All three fail the run. The 49/49 above is therefore a measurement rather than
+a property of a check that cannot fail.
