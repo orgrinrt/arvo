@@ -773,3 +773,257 @@ obligation is checkable at model widths and I have not made the transfer argumen
 magnitude and a fraction width; whether every axis of `R` has a propagable quantity is untested and I
 would expect the signedness not to. And nothing here prices anything: the word for every magnitude in
 this file is unpriced.
+
+---
+
+## 10. Findings, each with its predicate
+
+Per I13 and `RULES.md`. Two conventions stated once rather than repeated.
+
+**Threads.** Everything enumerative below ran on one thread and is predicated `threads = 1`. Two
+findings carry `threads any`, and both are compile-time structural results where the argument is
+stateable rather than assumed: what rustc accepts, and which symbols it emits for a given source, are
+not functions of a runtime thread count.
+
+**Target features.** The model sweeps are exact rational arithmetic whose results no instruction
+selection can move, so they carry `target features any` with that as the argument. The two assembly
+findings carry the host default explicitly, because there the feature set is the thing being read.
+
+**Model width.** Every enumerative finding is at `W <= 6`. I have made **no transfer argument** to any
+real width, and `unstable-features.md` is explicit that a model-width check needs one and that the
+enumeration of routes by which behaviour can vary per instantiation is not exhaustive. Every predicate
+below therefore lists its width as a fixed set.
+
+**F111-1. A law computed at const time needs the operation statically resolved, not reified as a type.**
+Three carriers agree on all three censuses: a const generic value with a match, macro expansion, and
+(committed, shipped) two hand-duplicated const fns. `toolchain = nightly-2026-05-28, rustc 1.98.0-nightly
+(57d06900f 2026-05-27), edition 2021, feature gates = none, W = 4, I = 4, F = 0, signedness = signed,
+overflow policy in {saturate-both, wrap, saturate-top-only}, operation = add, arity = 2, chain length =
+3, threads any, target features any`. `p1a_output.txt`, `p1b_output.txt`, `p1c_output.txt`, and
+`mock/benches/variants/satfold-shared/src/lib.rs:519` and `:547`.
+
+**F111-2. The carrier choice does not repair a nominal split.** A completion carried as a type produces
+the same `E0308` as `110` F8's const generic value. Same toolchain predicate as F111-1, `threads any`,
+`target features any`. `p1d_output.txt`.
+
+**F111-3. `110` F3's third bullet is a dead branch, and a mutation does not move its verdict.** Zero key
+collisions, zero law-set comparisons performed, and a freely declared law set over the same 48
+configurations still reports DETERMINED. `sweep = the 48 configurations of 110_probes/p2 lines 190-194,
+key = that file's lines 51-52, threads = 1, target features any`. `p2_output.txt`.
+
+**F111-4. Constant injection collapses definitional and reachability degeneracy, and grid-restricted
+constants separate them.** Cell by cell, 144 agree and 0 disagree with rational constants; 111 agree and
+33 disagree with grid-restricted constants. `W in {2,3,4}, F = 0, signedness any, overflow policy in
+{sat,wrap}, rounding in {near,trunc,floor}, radix in {2,3,5}, signature in {grid-closed, +grid
+constants, +rational constants}, threads = 1, target features any`. `p4_output.txt`.
+
+**F111-5. Rounding at `F = 0` is observable under any signature containing a rational literal, and
+unobservable under one restricted to grid constants.** 33 of 36 pairs, with the three exceptions named.
+Same predicate as F111-4. `p4_output.txt`.
+
+**F111-6. Observability of the rounding mode is a joint fact with the signedness and the overflow
+policy, not a per-axis one.** Truncate and floor stay unobservable at unsigned saturating and separate
+at unsigned wrapping. `W in {2,3,4}, F = 0, signedness = unsigned, overflow policy in {sat,wrap},
+rounding in {trunc,floor}, radix = 2, signature = +rational constants, threads = 1, target features
+any`. `p4_output.txt`.
+
+**F111-7. The identity relation saturates at the literal.** `{literal}` and `{literal, add, sub, mul,
+neg, half, recip, fma}` induce the identical partition, 165 classes, against 148 for the richest
+operation-only signature swept. `W in {2,3,4}, F in 0..=2 with F <= W, signedness any, overflow policy
+in {sat,wrap}, rounding in {near,trunc,floor}, radix in {2,3}, threads = 1, target features any`.
+`p3_output.txt`. The bound half is structural rather than enumerative: every term's argument to `R` is a
+rational, so no signature separates more than `R` differing on Q, which is an argument and not a sweep.
+
+**F111-8. The extent on which two completions merge and the extent closed under the operations are
+almost disjoint.** At `W = 4` under `{add}`, every bound from 1 to 7 merges and none is closed; the only
+closed extents are `{0}` and the whole carrier, on which nothing merges. `W = 4, F = 0, signedness =
+unsigned, overflow policy in {sat,wrap}, operation in {add}, {add,mul}, arity = 2, radix = 2, threads =
+1, target features any`. `p5_output.txt`. This is a **falsification of my own hypothesis** and it stands
+as recorded.
+
+**F111-9. The propagated bound predicts the completion merge boundary exactly, in both directions.**
+Zero unsound and zero conservative predictions over every cell of three sweeps. `W in {4,5}, F = 0,
+signedness = unsigned, overflow policy in {sat,wrap}, operation in {add},{mul}, arity in {2,3,4},
+operand bound in 0..=2^W-1, association = left-nested, threads = 1, target features any`.
+`p6_output.txt`.
+
+**F111-10. The same holds one axis over, with the propagated quantity being the fraction width rather
+than the magnitude.** Zero unsound and zero conservative. `W = 6, F = 2, signedness = unsigned, overflow
+policy = sat, rounding in {trunc,near}, operation = mul, arity in {2,3}, operand grid = multiples of
+2^-c for c in {0,1,2}, radix = 2, threads = 1, target features any`. `p6_output.txt`.
+
+**F111-11. Where the bound discharges, two completions compile to one body; where it does not, they
+compile to three.** `_proved_wrap = _proved_sat`, `_unproved_sat = _ungated_sat`, `_unproved_wrap =
+_ungated_wrap`. `toolchain = nightly-2026-05-28, edition 2021, feature gates = none, target =
+aarch64-apple-darwin, target features = host default, opt level = 3, container = u8, declared logical
+range = 0..=200, operand bounds in {100, 200}, operation = add, arity = 2, threads any`.
+`p7b_output.txt`, `p7b_asm.s`.
+
+**F111-12. A widening of a carried bound is the identity in the emitted code, and a tightening is a
+build failure naming the instantiation.** Three widenings alias `_plain_identity`; the tightening is
+`E0080` at `widen::<Lit<200>, Lit<100>>`. Same toolchain and target predicate as F111-11, `threads any`.
+`p8_output.txt`.
+
+**F111-13. The suite is 123 across 13 and all of it passes, and `wide-rung-shared` takes 4.25s.**
+`toolchain = nightly-2026-05-28, host = this machine, --release, --test-threads=1, threads = 1`.
+`p0_test_gate_run.txt`. The serial flag is load-bearing: `110` F14's hang under the default runner is
+not re-measured here and I took its workaround rather than reproducing its defect.
+
+**Unpriced.** Everything about cost. I ran no bench, took no timing that decides anything, and made no
+claim depending on a magnitude. The symbol counts in F111-11 and F111-12 are structural observations
+about which bodies exist, not measurements of anything, and two instructions against six decides
+nothing.
+
+---
+
+## 11. Options: what this fits, fits badly, kills, and adds
+
+**Fits well.** `OPTIONS.md` Q16's third way out, that the two senses of composition are one concept at
+two scales, gains support it did not have: under section 9.6 a refined primitive and a composite are
+both carriers with an interpretation, so `110`'s fourth option (sense one is configuration, only sense
+two is composition, and the concept is closed under it) survives my derivation and I would keep it.
+
+**Fits well.** Q51's converged strategy statement, where it says an axis belongs to the observable
+assignment "if there is **any** reachable chain on which moving it is observable; where a particular
+chain cannot observe it, that is a licence the resolver may take under a predicate over the chain, not a
+reclassification of the axis". That is section 6's conclusion arriving from the strategy unit, and `108`
+got there first. **My section 6 is a second instance of that shape on a different object**, and it is
+not independent, because I read `108` section 7 before writing.
+
+**Fits badly, at a nameable cost.** Any option that carries the completion as a type parameter and
+nothing else. It survives, and it pays F111-8's price: the merge that a declared range licenses is
+invisible to it, so every consumer whose operands are bounded pays for a clamp that cannot fire. The
+cost is a lost optimisation rather than a wrong answer, so this is fitting badly and not being killed.
+
+**Killed, with the diagnostic.** Any option under which "identity relative to a declared extent" is
+established by finding an extent closed under the operations. F111-8: the merge region and the closed
+region are almost disjoint, and the largest sound closed bound at `W = 4` under `{add}` is 0.
+
+**Killed, with the diagnostic.** Any option that treats "the operation must be a type for a law to be
+computable" as a design constraint. F111-1, three carriers, one of them already shipped in this
+repository.
+
+**Not killed but withdrawn as a measurement.** `110` F3's third bullet. The conclusion it supports
+stands on `110`'s TEST 2 and on `109` P2 and `90` R3; the count should not be cited.
+
+**Added.** A refinement is a coordinate of a primitive, and it is the coordinate the four-part
+assumption omits while including its mirror image. `82` F6 is the measurement, this file is the
+connection, and the two are the same persona so this is one instance and not two.
+
+**Added.** The adequacy condition of section 8: the type owes the denotation soundness and completeness,
+and `110` F9 is what discharges both by construction.
+
+---
+
+## 12. Alternatives I considered and did not take
+
+For the next expert attacking from a different angle, so the list is the starting point rather than
+nothing.
+
+**A. Making the refinement a value rather than a type.** `109`'s section on the request-and-resolution
+pair, and `83`'s const-availability widening, both point at a refinement supplied as a const expression
+from outside the typestate. That would make the bound per-call-site rather than per-value and would
+avoid every extra type. I did not take it because a per-site bound cannot survive being stored: a value
+written into a column loses the declaration, and the next read has to re-establish it. Worth attacking:
+whether the storage boundary is the only place the type form is needed, in which case both forms ship
+with a predicate each.
+
+**B. Making the refinement an interval rather than an upper bound.** Everything I built carries one
+endpoint. `82`'s window carries two and its sign-uniformity predicate needs both. Two endpoints is
+strictly more expressive and strictly more to establish at a construction site, and I did not measure
+the difference. `109` section 14 flags the same gap from the range side, that its product rule takes the
+corners and is correct only for non-negative ranges.
+
+**C. Refining the realisation map rather than the carrier.** Instead of "which values may this hold",
+"which region of `R` may fire". These are interderivable in the cases I measured and they are not the
+same statement in general, because a policy can be unreachable for reasons other than the operand range,
+which is what section 6.1's saturation-hides-rounding cell is. I did not develop it and I think it is
+the more general form.
+
+**D. Dropping the completion from the type entirely and making every primitive total by refinement.**
+The most aggressive reading of I15 available, and `109` section 13's option C names it too. Under it a
+primitive has no completion at all and an operation whose range is not proved simply does not typecheck.
+It is coherent, it is what a refinement type system normally does, and I did not take it because it puts
+an obligation at every construction site including the ones fed by a C ABI, which `88` section 3 says
+is the consumer's boundary rather than arvo's. Whether the obligation is bearable is a question about
+hilavitkutin and vehje, not about arvo, which is exactly what `109` says about the same option.
+
+**E. Asking whether the refinement is a strategy.** `106` section 1's first component is "an assignment
+on the axes a consumer can observe, supplied and never derived", which is what a declared range is. If
+the refinement is one of those axes, then the strategy pair already contains it and section 9's
+coordinate is not new, it is a member of a component the previous unit named. I could not settle it and
+it is the sharpest attack on section 9 available. What would decide it: whether a declared range is
+recoverable from the bits. It is not, which is the pair's own criterion for component one, so **I lean
+toward it being one of those axes** and say so rather than claiming a new coordinate. Stated as a
+located uncertainty rather than resolved.
+
+**F. Whether the law-as-demand surface is a solver.** `110`'s TEST 4 runs a demand as a query and gets a
+subspace back. That is one step from a consumer writing `where Self: DistributesOverAdd` and the design
+solving for a configuration, which is the refinement idea applied to the configuration space rather than
+to the carrier. I did not build it. The obstacle I expect is that the solution set is not a single point,
+so the design would have to pick, which is policy rather than toolbox and `arvo-toolbox-not-policer.md`
+would bite.
+
+---
+
+## 13. Coverage, bounded
+
+**Read in full:** `INTENTS.md`, `RULES.md`, `109` and `110` both phases, op's `88`, `95`, `104`, `105`.
+**Read in part:** `106` sections 1, 11, 16, 17, 18; `108` section 7 and sections 8 to 10; `OPTIONS.md`
+Q16 and Q51; `18` section 3.1 and its surrounds; `82` F6, F7 and section "what this fits";
+`110_probes/p2` and `p5` in the source; `satfold-shared`, `quantiser-radix-shared` and
+`quantiser-fadd-shared` test bodies.
+
+**Not read:** `OPTIONS.md` outside two entries, `DROPLIST.md`, `PERSONA_CALLS.md`, `PRIOR_CALLS.md`, the
+`SEED_*` files, the archive, `63`, `74`, `90`, `93`, `94`, `97`, `98`, `100`, `101`, `102`, `103`, `107`,
+and the ninety-odd files I have not named. Where I cite one of those, I am citing `106`'s or `109`'s or
+`110`'s account of it and I say so at the citation. In particular **`90` R3 and `63` C1 reach me only
+through `109` and `110`**, and `97` F-H reaches me only through `106` section 16.
+
+**Verified at source rather than through an account:** `110_probes/p2`'s sweep and key, quoted with line
+numbers; `110_probes/p5`'s three signatures, quoted with line numbers; `110`'s two contradicting
+sentences, opened; `82` F6 and `82:897-900`, opened; `18:363`, opened; `satfold-shared`'s two const
+census functions, opened; the test count, re-run.
+
+**Not verified:** every number I quote from `109`, `110`, `106`, `108` or `82` that I did not reproduce.
+Where I reproduced one I say so: `109`'s 952, 448 and 36 (reproduced in `p1b`), `109`'s 32640 (reproduced
+incidentally in `p7`), `110`'s 0-of-108 radix result (cross-checked in `p3` at 0 of 72 pairs, agreeing).
+
+**The largest thing I did not do.** I did not attack `109`'s section 8 chain result or `110`'s P7 and
+P8 composite results at all. `106` section 11 already carries the chain material at three instances and
+`110`'s composite work is untouched by anything I built. If one dispatch follows this one, the composite
+side is where nobody has pushed back.
+
+**And I did not resolve section 12's alternative E**, which is whether the refinement is a new
+coordinate or a member of the strategy pair's first component. I lean toward the second and could not
+settle it, and it is the attack I would most want run against section 9.
+
+---
+
+## 14. Probe index
+
+All under `111_probes/`, each committed as it ran, before this file was written.
+
+- `p0_test_gate_run.txt`. Every test-bearing variant crate, per crate, serially. 123 pass.
+- `p1a_fn_pointer_in_const_fn.rs`, `p1a_output.txt`. `109`'s wall reproduced verbatim.
+- `p1b_const_generic_tag_and_match.rs`, `p1b_output.txt`. The operation as a const generic value, no
+  feature gate, reproducing `109`'s 952, 448 and 36.
+- `p1c_macro_carried_operation.rs`, `p1c_output.txt`. The operation as macro syntax, agreeing with p1b
+  inside the probe.
+- `p1d_the_carrier_choice_does_not_repair_the_split.rs`, `p1d_output.txt`. Expected failure. A type
+  carrier splits the same way a value carrier does.
+- `p2_the_law_set_freedom_test_is_a_dead_branch.py`, `p2_output.txt`. Zero comparisons performed, and a
+  mutation that should move the verdict does not.
+- `p3_the_signature_saturates_at_the_literal.py`, `p3_output.txt`. Nine signatures, the saturation
+  result, the monotonicity instrument check, and the cross-check against `110` F5.
+- `p4_constant_injection_collapses_the_two_degeneracies.py`, `p4_output.txt`. The coincidence cell by
+  cell, and the three named exceptions.
+- `p5_identity_is_relative_to_a_refinement.py`, `p5_output.txt`. **My falsified hypothesis**, kept.
+- `p6_the_refinement_propagates_and_that_is_the_congruence.py`, `p6_output.txt`. The repair, exact in
+  both directions on four sweeps.
+- `p7_the_merge_is_visible_in_the_emitted_symbols.rs`, `p7_output.txt`, `p7_asm.s`. The under-controlled
+  first version, with its defect named in its own output.
+- `p7b_a_declared_range_inside_the_container.rs`, `p7b_output.txt`, `p7b_asm.s`. The repaired control,
+  four predictions recorded before running and all four confirmed.
+- `p8_a_refinement_parameter_has_a_repair_a_spurious_one_does_not.rs`, `p8_output.txt`, `p8_asm.s`, with
+  `p8b_a_tightening_is_refused_at_build_time.rs`. Weakening is the identity; tightening is `E0080`.
