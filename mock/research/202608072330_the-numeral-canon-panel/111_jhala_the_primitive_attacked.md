@@ -501,3 +501,275 @@ between a sound rule and an exact one never has to be made.
 That is not a small edit. It moves the design decision from **which canonicalisation to run** to **which
 parameters to have**, which is decided once and cannot be revisited, and it is the point at which the
 adequacy condition in the next section becomes the load-bearing obligation.
+
+---
+
+## 8. "Compile-time half" and "finite algebra over a signature" answer two different questions, and the third question between them is the one that decides the design
+
+The dispatch asks whether the two answers are rivals, one answer in two vocabularies, or answers to two
+different questions. **Two different questions**, and both files say so in phase two:
+`109` section 16.3 and `110` section 16.3 independently reach the same split, that `109`'s criterion
+decides **membership** (does a property belong in the primitive at all) and `110`'s decides **identity**
+(are these two the same primitive).
+
+That is right and it is not the end of it, because the split leaves a gap between them that neither
+file names and that everything else in this unit rests on.
+
+### 8.1 One is a semantics and the other is a decision procedure, and nothing states what they owe each other
+
+`110`'s identity criterion is a denotation-preserving isomorphism over a declared signature. **It is
+undecidable at real widths**, and `110` says so in its own words: exhaustive at `W <= 5`, "an exhaustive
+check at a model width transfers to a real width only with an argument. I have not made one." Nothing
+in a compiler will ever compute it for `W = 64`.
+
+`109`'s criterion is about what must be const-available. **That one is decidable and is what the
+compiler actually runs**: type constructor applied to type arguments, structural, trivial.
+
+So a design has a semantic identity it cannot compute and a syntactic identity it computes for free, and
+the whole question of whether the design is right is whether the second is a good decision procedure for
+the first. That is a two-sided obligation and both sides have a cost:
+
+> **Soundness.** Syntactic equality never merges two different denotations. Violating this substitutes a
+> wrong answer along a name.
+> **Completeness.** Syntactic inequality never splits one denotation into two names. Violating this is
+> `110` F8's compile error with no repair.
+
+`110` has both halves and never puts them together: P4 prices the unsound direction at 6 of 42 collapse
+classes breaking, and F8 prices the incomplete direction at `E0308`. Its union-find paragraph then
+weighs them as if only one had a cost, which is section 7's contradiction.
+
+**And the adequacy condition is what F9 achieves.** "Parameterise by what the value set and the
+realisation map read" is not a tidiness rule. It is the statement that makes syntactic identity **sound
+and complete by construction** for denotational identity, which is the only way to have both when one
+side is undecidable. That is the sentence I would want in a canon, and `110` writes it as a rule of
+thumb about type parameters.
+
+### 8.2 So the three-layer statement, which is what I would hand a canon writer
+
+- **Denotation.** A value set and one realisation map, over a declared operation set. `110`, `63` C1,
+  and my section 5 for the operation set's bound.
+- **Type.** What must be const-available to decide validity or select a lowering. `109`.
+- **Adequacy.** The type is a sound and complete decision procedure for denotational identity. Nobody's
+  yet, and it is the obligation the other two are pointless without.
+
+Adequacy is checkable the way `110` checks a congruence: at model widths, exhaustively, with the
+transfer argument named rather than assumed. It is the thing a canon can demand and a design can be
+audited against, and it is stated once instead of relitigated per axis.
+
+### 8.3 And it gives `109`'s three-relation lattice the property it was missing
+
+`109` section 10 gives three sameness relations, nominal implying representational implying
+denotational, each licensing a different operation. `110` section 16.2 concedes to that framing and adds
+that the denotational one is the relation closed under composition, with 131 and 17 failures for the two
+weaker ones.
+
+The adequacy condition adds the fourth fact, and it is about the top of the lattice rather than the
+bottom: **nominal sameness is the only one a compiler decides, so a design is exactly as good as the gap
+between nominal and denotational.** The lattice is not three coequal options to pick from per question.
+It is one decidable relation at the top, one true relation at the bottom, and a design obligation to
+close the distance between them.
+
+---
+
+## 9. What a primitive is: the refinement is the missing coordinate, and the law set is its mirror image
+
+Now the constructive half. `95` asks a unit to end in agreement with at least something, and this is
+what I believe `109`, `110`, `82` and `18` jointly support, with the corrections above applied.
+
+### 9.1 The assumption has the law set and the refinement exactly backwards
+
+The freedom test the panel applied to the law set has already been applied, in this panel, to another
+candidate, and it came back the other way.
+
+`82` F6, `82:768-774`: for signed saturating addition, a sign-uniform declared operand window matches
+associativity on that window's generated closure exactly, zero sufficiency and zero necessity violations
+over every interval at every width in `W in {2..6}`. And `82:897-900` states the structural consequence
+directly:
+
+> F6 adds one more that none of those covers: the **declared operand window**, which is a restriction on
+> the inputs rather than a fact about the type's own representable set. [...] F6 separates two verdicts
+> with all six of `79`'s coordinates fixed, including the representable set, and only the declared
+> window moved.
+
+**That is the freedom test, passed.** A coordinate that separates verdicts with everything else held
+fixed is a coordinate, which is precisely the property `110` F3 looked for in the law set and did not
+find. So:
+
+> The working assumption lists the **law set**, which is a lossy projection of the algebra and cannot be
+> varied with the others fixed, and omits the **refinement**, which is a restriction on the inputs and
+> separates verdicts with everything else fixed. The one it names is a reading; the one it omits is a
+> coordinate.
+
+**This is not an independent instance and I will not have it recorded as one.** `82` is this persona.
+What is new here is the connection, that the thing the assumption omits is the thing that passes the
+test the thing it includes fails, and the connection is mine rather than `82`'s.
+
+### 9.2 The refinement is also what makes the three degeneracies one thing
+
+Section 6 shows definitional and reachability degeneracy are one notion at two extents. There is a third
+extent and it is the consumer's:
+
+- **trivial extent**, the whole carrier and every rational argument to `R`: `110`'s definitional.
+- **the term algebra's image**: `110`'s reachability.
+- **a declared extent**: `109` P5's carried range, `82`'s operand window.
+
+`111_probes/p5_identity_is_relative_to_a_refinement.py` was built to establish that and **it broke.**
+The obvious form of the claim, that identity relative to a declared extent is a congruence, needs the
+extent to be closed under the operations, and the measurement says the merge region and the closed
+region are almost disjoint:
+
+```
+completion axis: saturate against wrap, W = 4, F = 0, signature {add}
+  operands <= 0   extent 1   disagreements 0    closed? yes   <== merged, and a congruence
+  operands <= 7   extent 8   disagreements 0    closed? no    <== merged, but NOT closed
+  operands <= 15  extent 16  disagreements 120  closed? yes
+  largest sound declared bound: 0
+```
+
+Every bound from 1 to 7 merges and none of them is closed; the only closed extents are the trivial one
+and the whole carrier, on which nothing merges. So the naive form is dead and its own table killed it.
+
+### 9.3 The repair, and it is the result rather than the repair
+
+The diagnosis is that a closed extent is what you need when the operation's result type is its operand
+type. That is the endomorphism assumption `109` section 8 already refuted from the chain side, one level
+up: `mul : P x P -> P` is what forces the quantisation, and the moment the result may be a different
+primitive the problem changes shape.
+
+The same move fixes the extent. An operation does not preserve a refinement, it **transforms** one:
+
+```
+add : {v <= a} x {v <= b} -> {v <= a + b}
+```
+
+which is `109` P5's `RSum` stated as a typing rather than as a bound. Then there is no invariant extent
+to look for. Each node of a derivation carries its own extent and the merge is checked against that
+node's, and composition works because the extent propagates rather than because it is preserved.
+
+`111_probes/p6_the_refinement_propagates_and_that_is_the_congruence.py` measures whether the propagated
+bound predicts the merge boundary, exhaustively, in **both** directions, because a rule that only
+over-approximates is sound and useless:
+
+```
+W = 4, F = 0, unsigned, signature {add}, saturate against wrap
+  unsound predictions (rule says merge, answers differ): 0
+  conservative        (rule refuses, answers agree)    : 0
+W = 4, F = 0, unsigned, signature {mul}
+  unsound: 0, conservative: 0
+W = 5, F = 0, unsigned, signature {add}
+  unsound: 0, conservative: 0
+
+rounding axis, W = 6, F = 2, signature {mul}, truncate against nearest
+  unsound: 0, conservative: 0
+```
+
+**Exact in every cell of three completion sweeps and one rounding sweep**, at arities 2, 3 and 4. And
+the propagated quantity is different per axis, magnitude for the completion and fraction width for the
+rounding, so this is two arms with two predicates rather than one mechanism wearing two names.
+
+### 9.4 It reaches the compiler, and the merge is visible in the emitted symbols
+
+A model result about merging is worth little if the merge is invisible to the thing that lowers the
+code. `109` P5 established the neighbouring half, that a carried range removes the completion from the
+emitted code. What was missing is the merge itself: do two functions differing only in which completion
+they name become **one body**.
+
+`111_probes/p7_the_merge_is_visible_in_the_emitted_symbols.rs` did it with an under-controlled arm and I
+kept that version rather than fixing it in place, because wrapping at the container width is the bare
+add, so three of its four symbols aliased for a reason having nothing to do with the bound. The defect
+is recorded in `p7_output.txt`.
+
+`p7b_a_declared_range_inside_the_container.rs` repairs the control by declaring a logical range strictly
+inside the container, saturating at 200 and wrapping modulo 201, so neither completion is free. Four
+predictions were written into the probe header before running and all four hold:
+
+```
+_proved_wrap  = _proved_sat        one body, `add w0, w1, w0`, bound discharged
+_unproved_sat = _ungated_sat       a second body, the clamp
+_unproved_wrap = _ungated_wrap     a third body, the modulus
+```
+
+with behaviour checked alongside, 10201 of 10201 pairs agreeing inside the proved bound and 20100 of
+40401 differing outside it. No feature gate. **Three distinct bodies where the semantics says three,
+one where it says one.**
+
+### 9.5 The obvious objection to my own answer, tested, and it does not land
+
+A refinement in the type means more types. A design worried about extra names has just acquired a lot of
+them, and `110` F8 prices extra names at a compile error with no repair. So does my answer import the
+hazard it was supposed to help with?
+
+**No, and the reason has a name.** A **spurious** parameter is one `R` does not read: two types
+differing only in it denote the same thing, so what is wanted is equality, and Rust gives no way to make
+two type constructors applied to different arguments equal. A **refinement** parameter is read, by the
+arm selection rather than by `R`: two types differing only in it denote different sets, one contained in
+the other, so what is wanted is not equality but **weakening**, and weakening is a total function that
+is the identity on the representation.
+
+`111_probes/p8_a_refinement_parameter_has_a_repair_a_spurious_one_does_not.rs`, three predictions
+recorded before running:
+
+```
+widening is the identity on all 256 of 256 representations
+_widen_100_to_200 = _plain_identity
+_widen_7_to_15    = _plain_identity
+_widen_derived    = _plain_identity
+```
+
+and the wrong direction is refused at build time rather than at runtime, which is what I15 requires:
+
+```
+error[E0080]: evaluation panicked: widening must not tighten the bound
+   evaluation of `widen::<Lit<200>, Lit<100>>::{constant#0}` failed here
+```
+
+naming the exact instantiation. No feature gate on either file.
+
+> **An axis nothing reads has no repair. An axis the arm selection reads has one, it is weakening, it is
+> free at runtime, and its violation is a build failure.** So the cost `110` F8 measures is a cost of
+> spurious parameters specifically, and does not transfer to refinement parameters.
+
+### 9.6 The statement, offered
+
+Suggestions. Op decides, and per I12 an opinion before the experts converge is an ack.
+
+> A **primitive** is a value set, one realisation map taking an exact result back into it, and a
+> **refinement** naming which values the primitive is declared to hold. Its **denotation** is the term
+> algebra these induce over a declared operation set, restricted to the refinement's extent.
+>
+> Its **identity** is denotational sameness of that restricted algebra. The refinement is part of it:
+> two primitives differing only in the realisation map's behaviour outside the refinement's extent are
+> the same primitive, and that is what licenses substituting one arm for another.
+>
+> A **law** is read off the algebra and never declared. Read as a **demand** it is a predicate over the
+> configuration space, which is a surface a consumer may use and not a field a consumer may set.
+>
+> An **axis is degenerate relative to an extent**, and the three extents that matter are the whole
+> ambient domain, the image of the operation set, and the consumer's declaration. Only degeneracy at the
+> first may be canonicalised away, because it is the only one that quantifies over every operation set
+> the design will ever have.
+>
+> A **refinement is transformed by an operation rather than preserved by it**, so composition is a
+> derivation rather than an invariant, and each node's licence is checked against its own extent.
+>
+> The **type** carries whatever must be const-available to decide validity or select a lowering, and it
+> owes the denotation both **soundness** and **completeness**: never one name for two denotations, never
+> two names for one. An axis the realisation map does not read must not be a parameter, because its
+> presence breaks completeness and nothing in the language repairs it. An axis the arm selection reads
+> may be a parameter, because weakening repairs it and weakening is free.
+
+**Permanence.** Every sentence survives a rewrite in another language or decade. None names a container,
+a width, a marker, a type parameter, a crate, or a count.
+
+**Equivalence.** Three teams implementing this produce units that behave the same on what matters: a
+consumer declares a range and gets the cheap arm where the range proves it, an invalid declaration is a
+build failure rather than a runtime one, no law is writable by hand, and two spellings of one denotation
+do not exist because the parameter list was chosen so they cannot. They differ on how the refinement is
+spelled, whether weakening is a method or a coercion, and how many named primitives ship.
+
+**Where it is weaker than I would like, stated rather than hidden.** The soundness-and-completeness
+obligation is checkable at model widths and I have not made the transfer argument to real widths, and
+`unstable-features.md` is explicit that one is owed. The refinement in section 9.3 is an upper bound on
+magnitude and a fraction width; whether every axis of `R` has a propagable quantity is untested and I
+would expect the signedness not to. And nothing here prices anything: the word for every magnitude in
+this file is unpriced.
