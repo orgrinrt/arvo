@@ -1,0 +1,9 @@
+$ rustc --edition 2021 -O p1c_macro_carried_operation.rs && ./p1c
+operation carried as MACRO SYNTAX, neither a type nor a value
+
+op              assoc-failures  escapes-from-set
+sat-both                   952                 0
+wrap                         0                 0
+sat-top-only               448                36
+
+agrees with p1b (const generic value carrier): true
