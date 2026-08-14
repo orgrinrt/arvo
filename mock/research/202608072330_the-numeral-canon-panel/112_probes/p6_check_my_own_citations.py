@@ -77,6 +77,22 @@ CITES = [
     ),
     ("108_lamport_the_pair_attacked.md", 442, "fails"),
     ("108_lamport_the_pair_attacked.md", 298, "| 729 | 65536 | 701 | 28 |"),
+    (
+        "108_lamport_the_pair_attacked.md",
+        869,
+        "nothing that changes a denoted answer is",
+    ),
+    # 40, my own persona's two-by-two result, which section 3.3 has to clear
+    (
+        "40_probes/p1.out",
+        3,
+        "exact bijections with every cell filled and none repeated: 24",
+    ),
+    (
+        "40_probes/p1_the_two_by_two_carries_no_information.py",
+        13,
+        "This probe tests that reading two ways",
+    ),
     # 106, the pair as consolidated
     (
         "106_giesen_consolidation_the_strategy_axis.md",

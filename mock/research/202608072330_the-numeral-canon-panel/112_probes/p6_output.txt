@@ -21,6 +21,9 @@ p6. Citation check
   ok    108_lamport_the_pair_attacked.md:827  'not a reclassification of the axis'
   ok    108_lamport_the_pair_attacked.md:442  'fails'
   ok    108_lamport_the_pair_attacked.md:298  '| 729 | 65536 | 701 | 28 |'
+  ok    108_lamport_the_pair_attacked.md:869  'nothing that changes a denoted answer is'
+  ok    40_probes/p1.out:3  'exact bijections with every cell filled and none r'
+  ok    40_probes/p1_the_two_by_two_carries_no_information.py:13  'This probe tests that reading two ways'
   ok    106_giesen_consolidation_the_strategy_axis.md:174  'cannot recover it from the bits'
   ok    109_bellard_the_primitive_derived_cold.md:376  'perimeter is the construction site'
   ok    109_bellard_the_primitive_derived_cold.md:424  'is not an endomorphism'
@@ -34,7 +37,7 @@ p6. Citation check
   ok    ../../benches/variants/satfold-shared/src/lib.rs:519  'saturating_add_is_associative_at'
   ok    ../../benches/variants/satfold-shared/src/lib.rs:547  'saturating_sub_is_associative_at'
 
-  31 citations checked, 0 failing
+  34 citations checked, 0 failing
 
 MUTATIONS (each must produce exactly one failure)
 
