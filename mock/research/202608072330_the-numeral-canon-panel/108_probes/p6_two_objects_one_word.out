@@ -1,0 +1,76 @@
+p6. Two objects, one word.
+
+committed carrier files read: 6
+regions: ['16384', '131072', '1048576', '2097152', '4194304', '8388608']
+arms:    ['bitpack-carrier-d16', 'bitpack-carrier-d32', 'bitpack-carrier-d64', 'bitpack-carrier-packed', 'bitpack-carrier-packed-simd']
+
+=== object one: the SUPPORT, a set of demanded coordinates ===
+
+generators: ['time', 'size']
+non-empty subsets (the carrier of the free join semilattice): 3
+ordered pairs: 9
+pairs with a unique least upper bound under union: 9
+join is total and canonical: True
+
+So `106` section 5 is right ABOUT THIS OBJECT. Two strategies demanding
+different coordinates combine into the one demanding both, uniquely.
+
+=== object two: the RATE, a ray in the positive orthant ===
+
+Two strategies with the SAME support {time, size} and different rates.
+Four ordinary ways to combine two rays, all of them defensible, and the
+section each selects on the committed table:
+
+  arithmetic mean                              -> ('bitpack-carrier-d32', 'bitpack-carrier-d32', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16')
+  componentwise max                            -> ('bitpack-carrier-d32', 'bitpack-carrier-d32', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16')
+  componentwise min                            -> ('bitpack-carrier-d32', 'bitpack-carrier-d32', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16')
+  geometric mean (squared, order preserving)   -> ('bitpack-carrier-d32', 'bitpack-carrier-d32', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16')
+  first operand                                -> ('bitpack-carrier-d32', 'bitpack-carrier-d32', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16')
+  second operand                               -> ('bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16', 'bitpack-carrier-d16')
+
+distinct sections reached by six defensible combinations: 2
+
+So `106` section 1 clause seven is right ABOUT THIS OBJECT. There is no
+canonical combination of two rates: the ordinary candidates disagree on
+the committed table, so a design that picks one has made a choice rather
+than computed a join.
+
+=== the same question over a grid of rate pairs ===
+
+One pair refutes a canonical join. A rate of disagreement makes the
+finding usable, so the six combinations are compared over every ordered
+pair drawn from a log-spaced grid of exchange rates.
+
+  ordered rate pairs swept:                       42
+  pairs where the six combinations DISAGREE:      30 (71.4%)
+  most distinct sections reached by one pair:     3
+
+  holds for: regions = 6, arms = 5, cost coordinates = 2 (median algo_ns
+  per record, declared bits per element as 16/32/64/13/13), cost source =
+  the committed bitpack-carrier-width_n* CSVs, arithmetic exact rational,
+  threads = 1, target features any
+
+=== what the collision costs ===
+
+The canon candidate's definition says two strategies are related by
+nothing on their second component. Its own section 5 says the join on the
+second component is union and free. A reader who takes the first cannot
+build `97`'s demand lattice; a reader who takes the second will try to
+join two exchange rates and find no least upper bound.
+
+The repair is to split the word rather than to choose a side:
+
+  component two = a SUPPORT (which coordinates are demanded) together
+                  with a RATE (the exchange among them).
+
+  supports join, uniquely and totally, by union. That is `97`'s lattice,
+  it is compiled, and it is what makes silence a first-class element.
+
+  rates do not join, and nothing should ask them to. Where two rates meet,
+  either the site names one or the operation reports, exactly as clause
+  seven says for the first component.
+
+That also explains a result the unit has and does not connect: `93`'s four
+markers leaving 12 of 16 ordered pairs unresolvable. The supports resolve
+in all 16. What does not resolve is the rate, and a flat marker set was
+carrying both in one slot, which is `94`'s own diagnosis of the flat set.
