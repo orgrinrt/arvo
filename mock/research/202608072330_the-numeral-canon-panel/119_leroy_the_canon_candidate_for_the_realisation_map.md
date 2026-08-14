@@ -495,11 +495,21 @@ non-homomorphic operations, which `118` F118-13 counts per shape.
 >
 > So neither the check nor its certificate is chosen. Both are consequences of the character.
 
-*holds for: W in {2, 3}, F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping,
-saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at
-2 and 3 leaf slots with every leaf identification and 120 of 2025 sampled at 4, arity in {2, 3, 4},
-declarations = one-sided exhaustive and two-endpoint exhaustive at arity 2 and sampled at arity 3,
-threads = 1, target features any.*
+**The clause is two claims measured over different regions, so it carries two predicates rather than one
+widened to cover both.** Folding them would claim the character split at a width where only half of it
+was measured, which is the quiet widening this notation exists to prevent.
+
+*The character split, that which check and which conditions apply follows the map, holds for: W = 3,
+F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding =
+truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots with
+every leaf identification, arity in {2, 3}, declarations = one-sided exhaustive, discharge check = root
+under a homomorphism and per node otherwise, threads = 1, target features any.*
+
+*The non-homomorphic half alone, that the two conditions certify the per-node check, holds for: W in
+{2, 3}, F = 0, signedness in {unsigned, signed}, overflow behaviour = saturating, rounding = truncation,
+radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots with every leaf
+identification and 120 of 2025 sampled at 4, arity in {2, 3, 4}, declarations = one-sided exhaustive and
+two-endpoint exhaustive at arity 2 and sampled at arity 3, threads = 1, target features any.*
 
 The certificate is **sufficient and not necessary**, and it is so by necessity rather than by choice: an
 exact condition would quantify over the whole declaration box, whose size grows with the width, so it

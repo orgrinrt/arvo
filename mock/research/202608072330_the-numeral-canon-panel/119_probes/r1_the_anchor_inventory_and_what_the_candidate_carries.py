@@ -240,13 +240,20 @@ def main():
     print(f"  the body does not, which is exactly the disabling this guards.")
 
     print()
+    def fmt(d):
+        """A normalised line anchor is a (target, line) pair rather than a
+        string, so it needs rendering before it can be padded. The first
+        version of this printer crashed here, after the counts had printed,
+        which truncated the carried lists out of the output entirely."""
+        return f"{d[0]}:{d[1]}" if isinstance(d, tuple) else str(d)
+
     print("  Dropped, per class, listed so the drop is visible rather than silent:")
     for k in ("finding", "probe_stem", "line_panel_norm"):
         drop = sorted(union[k] - a[k])
         print()
         print(f"    {k} ({len(drop)} dropped):")
         for i in range(0, len(drop), 6):
-            print("      " + "  ".join(f"{d:<22}" for d in drop[i:i + 6]))
+            print("      " + "  ".join(f"{fmt(d):<22}" for d in drop[i:i + 6]))
 
     print()
     print("  Carried, per class:")
@@ -255,13 +262,13 @@ def main():
         print()
         print(f"    {k} ({len(keep)} carried):")
         for i in range(0, len(keep), 6):
-            print("      " + "  ".join(f"{d:<22}" for d in keep[i:i + 6]))
+            print("      " + "  ".join(f"{fmt(d):<22}" for d in keep[i:i + 6]))
 
     new = sorted(a["finding"] - union["finding"])
     if new:
         print()
         print(f"  Finding ids appearing in 119 and in none of the four ({len(new)}):")
-        print("      " + "  ".join(new))
+        print("      " + "  ".join(fmt(x) for x in new))
     return 0
 
 
