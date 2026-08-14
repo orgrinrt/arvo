@@ -1,0 +1,60 @@
+S1. the wrap violation reproduced, and the predicate re-aimed
+==============================================================================
+terms enumerated: 96 (2 leaf slots: 6, 3 leaf slots: 90)
+
+P1. the witness 114 p2 prints, on r2's own implementation
+  uW3/wrap   term (x - (y - z)) declared [(0, 0), (0, 0), (0, 1)]
+    inner (y - z) propagates to (-1, 0), container [0, 7]
+    per-node licenses : False
+    root      licenses: True
+    arms agree        : True
+    condition (a)     : True
+    condition (b)     : True
+    => conservative under the per-node check: True
+    => predicate fires: True   VIOLATION: True
+  uW3/sat    term (x - (y - z)) declared [(0, 0), (0, 0), (0, 1)]
+    inner (y - z) propagates to (-1, 0), container [0, 7]
+    per-node licenses : False
+    root      licenses: True
+    arms agree        : False
+    condition (a)     : True
+    condition (b)     : True
+    => conservative under the per-node check: False
+    => predicate fires: True   VIOLATION: False
+
+P2 and P3. violations against the per-node check and against the
+check the overflow policy selects (root under wrap, per-node at sat)
+
+  primitive     cells   consv   fires  viol/per-node  viol/policy  unsound/policy
+  uW3/sat       13032     703    6336              0            0               0
+  iW3/sat        2148      93     816              0            0               0
+  uW3/wrap      13032     963    6336             28            0               0
+  iW3/wrap       2148     157     816             16            0               0
+
+P4. is condition (b) load-bearing under wrap with the root check?
+
+  primitive    fires (a)+(b)   viol  fires (a) only   viol
+  uW3/wrap              6336      0            9408      0
+  iW3/wrap               816      0            1200      0
+
+CONTROLS
+
+C2. a predicate that always fires must produce violations equal to
+    the conservative count, or the violation counter is not counting
+  primitive     consv  viol (always-fire)
+  uW3/sat         703                 703
+  iW3/sat          93                  93
+  uW3/wrap        645                 645
+  iW3/wrap         95                  95
+
+C3. the root check must be UNSOUND at sat, or selecting the check by
+    policy would be a preference rather than a requirement
+  primitive    unsound (root check)
+  uW3/sat                        38
+  iW3/sat                        34
+
+------------------------------------------------------------------------------
+reading: the predicate did not need changing. What was wrong was the
+check it was pointed at, and which check is right is a property of
+the overflow policy, which 114 F114-1 establishes and which is known
+before any value exists.
