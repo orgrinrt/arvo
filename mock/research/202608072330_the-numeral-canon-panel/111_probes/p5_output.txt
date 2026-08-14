@@ -1,0 +1,70 @@
+P5. identity relative to a refinement
+==============================================================================
+
+completion axis: saturate against wrap, W = 4, F = 0, signature {add}
+  declared operand bound  extent  disagreements  of  closed?
+  operands <= 0               1              0     1  yes   <== merged, and the merge is a congruence
+  operands <= 1               2              0     4  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 2               3              0     9  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 3               4              0    16  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 4               5              0    25  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 5               6              0    36  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 6               7              0    49  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 7               8              0    64  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 8               9              1    81  no  
+  operands <= 9              10              6   100  no  
+  operands <= 10             11             15   121  no  
+  operands <= 11             12             28   144  no  
+  operands <= 12             13             45   169  no  
+  operands <= 13             14             66   196  no  
+  operands <= 14             15             91   225  no  
+  operands <= 15             16            120   256  yes 
+  largest sound declared bound: 0
+  on the full carrier the two differ on 120 of 256 applications, so nothing merges there
+
+completion axis: saturate against wrap, W = 4, F = 0, signature {add, mul}
+  declared operand bound  extent  disagreements  of  closed?
+  operands <= 0               1              0     2  yes   <== merged, and the merge is a congruence
+  operands <= 1               2              0     8  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 2               3              0    18  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 3               4              0    32  no    <== merged, but NOT closed: the merge licenses nothing
+  operands <= 4               5              1    50  no  
+  operands <= 5               6              4    72  no  
+  operands <= 6               7             11    98  no  
+  operands <= 7               8             20   128  no  
+  operands <= 8               9             34   162  no  
+  operands <= 9              10             52   200  no  
+  operands <= 10             11             78   242  no  
+  operands <= 11             12            110   288  no  
+  operands <= 12             13            148   338  no  
+  operands <= 13             14            190   392  no  
+  operands <= 14             15            240   450  no  
+  operands <= 15             16            296   512  yes 
+  largest sound declared bound: 0
+  on the full carrier the two differ on 296 of 512 applications, so nothing merges there
+
+------------------------------------------------------------------------------
+rounding axis: truncate against nearest, W = 6, F = 2, signature {mul}
+  operand grid 2^-c   extent  disagreements  of  closed?
+  c = 0                  16              0   256  no    <== merged
+  c = 1                  32              0  1024  no    <== merged
+  c = 2                  64            236  4096  yes 
+  the rounding mode is unreachable exactly where the product of two
+  operands is already on the grid, which is a declared refinement and
+  not a property of the signature or of the definition
+
+------------------------------------------------------------------------------
+what this says about the three notions:
+  definitional   degenerate at the trivial refinement (the whole
+                 carrier, and every rational argument to R)
+  reachability   degenerate on the image of the term algebra
+  declared       degenerate on a consumer-supplied extent
+  All three are the same predicate over different extents. What
+  differs is who supplies the extent and when it is known.
+
+and the condition that makes a merge usable:
+  the extent must be closed under the signature, or the merged
+  identity is not a congruence and substitution walks out of the
+  region the licence was granted on. That is one condition covering
+  109's 'closure is prior to every law' and 110's P8 congruence
+  check, and it is what a const predicate on an arm has to assert.
