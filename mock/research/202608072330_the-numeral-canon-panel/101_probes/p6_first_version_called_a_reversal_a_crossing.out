@@ -1,0 +1,62 @@
+==============================================================================
+A. FINER GRID WITH TRUNCATION AGAINST DECLARED GRID WITH ROUND-TO-NEAREST
+==============================================================================
+  errors in units of the declared ulp = 2^-8
+     chain k     fine+trunc     coarse+rne   winner
+           1         0.1188         0.2498   fine+trunc
+           2         0.2378         0.3362   fine+trunc
+           3         0.3533         0.4100   fine+trunc
+           4         0.4711         0.4675   coarse+rne
+           5         0.5886         0.5255   coarse+rne
+           6         0.7067         0.5705   coarse+rne
+           8         0.9450         0.6629   coarse+rne
+          12         1.4202         0.7962   coarse+rne
+          16         1.8930         0.9261   coarse+rne
+          24         2.8435         1.1467   coarse+rne
+          32         3.7854         1.3272   coarse+rne
+          48         5.6769         1.6383   coarse+rne
+          64         7.5643         1.8805   coarse+rne
+          96        11.3380         2.2763   coarse+rne
+
+  ranking flips at chain length k = 4: fine+trunc is more accurate for k < 4, coarse+rne for k >= 4
+
+==============================================================================
+B. CONTROL: SAME GRID, TRUNCATION AGAINST ROUND-TO-NEAREST
+==============================================================================
+  errors in units of the declared ulp = 2^-8
+     chain k   coarse+trunc     coarse+rne   winner
+           1         0.4956         0.2498   coarse+rne
+           2         0.9842         0.3362   coarse+rne
+           3         1.4688         0.4100   coarse+rne
+           4         1.9625         0.4675   coarse+rne
+           5         2.4525         0.5255   coarse+rne
+           6         2.9472         0.5705   coarse+rne
+           8         3.9346         0.6629   coarse+rne
+          12         5.9300         0.7962   coarse+rne
+          16         7.9156         0.9261   coarse+rne
+          24        11.8748         1.1467   coarse+rne
+          32        15.8231         1.3272   coarse+rne
+          48        23.7347         1.6383   coarse+rne
+          64        31.6256         1.8805   coarse+rne
+          96        47.4627         2.2763   coarse+rne
+
+  ranking flips at chain length k = 1: coarse+trunc is more accurate for k < 1, coarse+rne for k >= 1
+
+==============================================================================
+C. WHAT THIS SAYS ABOUT THE TABLE SHAPE
+==============================================================================
+  In A the per-operation ranking is reversed at k >= 4. A cost table
+  cell holding one accuracy number per arm therefore names an arm that is
+  wrong for every chain longer than that, and nothing in the cell says so.
+
+
+  The constructive reading: chain length is a REGION dimension, not a
+  coordinate. Indexed that way the table holds, each cell is a scalar
+  again, and the strategy that weighs accuracy selects a different arm at
+  a different chain length, which is what op's intent says it should do.
+
+  The corpus already half-does this. `warm-clamp-shared`'s key encoding is
+  KEY = W * 10000 + NC * 1000 + LOG2A * 10 + OP, where LOG2A is the fold
+  arity and OP selects between a chunked fold and 'an elementwise clamping
+  chain of four steps' (warm-clamp-shared/src/lib.rs:83-89). Chain shape is
+  in the region key there, and the cost vector stays a scalar per arm.
