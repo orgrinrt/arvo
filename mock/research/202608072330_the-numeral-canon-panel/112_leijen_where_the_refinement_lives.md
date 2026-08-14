@@ -117,7 +117,7 @@ same three crates.
 > exists. The refinement is that predicate given a home on the value, which is the one place it can
 > survive a storage boundary.
 
-Four further results, each of which breaks something and replaces it.
+Five further results, each of which breaks something and replaces it.
 
 **`110` F8's "no repair" is wrong at a function boundary and right at a storage boundary**, compiled both
 ways, and that is what dissolves `110`'s internal contradiction without either sentence having to lose.
@@ -135,6 +135,11 @@ two different propagated quantities.
 `110`'s untouched composite results and `111`'s refinement. And the lifting rule is per construction: the
 componentwise rule applied to complex multiplication is **unsound on 26 of 81 pairs**, which is a hazard
 the design would otherwise walk into.
+
+**And the propagation rule is not one rule.** The interval rule and an affine rule each recover what the
+other loses, neither dominates, and their disjunction is sound and **reaches an enumerating oracle on ten
+of ten term shapes swept**. Both are const-computable, both are compiled here with no feature gate, and
+that is I13's arm structure appearing inside a mechanism rather than across one.
 
 The rest of this file is that taken apart. Sections 3 to 8 are the working, section 9 is the statement
 offered, and sections 10 onward are bookkeeping.
@@ -534,6 +539,155 @@ bound is good news for the design: the shape on which the rule is exact is the f
 
 ---
 
+## 6b. Attacking that blocker: the correlation loss is recoverable, and the two rules compose
+
+Naming a blocker and leaving it is not a deliverable, so this section is the attack on section 6's
+result. The question: is a correlation-tracking rule expressible under the operating constraints, and does
+it recover what the corner rule loses?
+
+**The candidate is an affine grade.** Carry a linear form `c0 + sum ci * ei` with one noise symbol per
+declared leaf, rather than an interval. Addition and subtraction are exact on that representation because
+they are linear, so two occurrences of one leaf carry the same symbol and cancel. Multiplication of two
+non-constant forms is not linear and contributes a fresh symbol, which is the standard affine-arithmetic
+treatment and is sound rather than exact. The interval is recovered by summing the absolute coefficients,
+so the discharge test is unchanged.
+
+`p7` measures it against the corner rule and against the enumerating oracle, per node in both cases:
+
+```
+CONTROL: shapes where the corner rule is already exact
+  x + y                 corner   136/256    affine   136/256   oracle   136/256   unsound c=0 a=0
+  (x + y) + z           corner   816/4096   affine   816/4096  oracle   816/4096  unsound c=0 a=0
+  x * y                 corner    76/256    affine    31/256   oracle    76/256   unsound c=0 a=0
+
+THE CASES THE CORNER RULE LOSES
+  (x + y) - y           corner    16/256    affine   136/256   oracle   136/256   unsound c=0 a=0
+  x * (y - y)  SIGNED   corner    31/64     affine    64/64    oracle    64/64    unsound c=0 a=0
+  (x + y) * z           corner   385/4096   affine   151/4096  oracle   385/4096  unsound c=0 a=0
+
+WHERE THE AFFINE RULE IS ITSELF CONSERVATIVE
+  (x+y) * (z+w)         corner   212/256    affine    31/256   oracle   212/256   unsound c=0 a=0
+```
+
+**The affine rule recovers the correlation loss completely and loses badly on multiplication.** On
+`(x + y) - y` it goes from 16 to 136, which is the oracle exactly. On `x * (y - y)` it goes from 31 to 64,
+again the oracle. And on plain `x * y` it drops from 76 to 31, and on `(x+y) * (z+w)` from 212 to 31.
+
+**The mechanism for the losses, named rather than left as a number**, because a design has to know when
+not to reach for it. An affine form centres `[0, b]` at `b/2` with radius `b/2`, so it is symmetric about
+its centre, and the product of two symmetric forms carries a negative lower bound the interval rule never
+had. Affine arithmetic trades sign information for correlation information, and on a non-negative domain
+that is a bad trade whenever a multiply is present and a good one whenever a leaf repeats. A mutation
+confirms the mechanism: giving the two occurrences of `y` different symbols drops the affine rule back to
+16 of 256, matching the corner rule exactly.
+
+**So neither rule dominates, and the deliverable is the composition rather than a winner.** Both rules are
+sound on every row, so their disjunction is sound, and `p7b` measures it:
+
+```
+  rows swept                                     : 10
+  rows where the union is unsound                : 0
+  rows where the union reaches the oracle        : 10/10
+  rows where affine licenses what corner refuses : 4/10
+```
+
+**Two const-computable rules, disjoined, match an enumerating oracle on every one of ten term shapes**,
+including a wrapping base and two signed ones. The union never exceeds the larger of the two counts, which
+says the licence sets are nested per row rather than complementary within a row, so a design could equally
+select per term shape. Disjoining is the cheaper arm because it needs no shape analysis: evaluate both
+const predicates and take either.
+
+**And the residue is the annihilation case**, checked directly since section 6 predicted it. On
+`(x + y) * z` with `z` declared zero, the union licenses 136 of 256 while the arms agree on all 256, short
+by 120. Neither rule reaches it and no node-wise rule can, because the fact is that the term's result does
+not depend on the node rather than that the node's range is small.
+
+### 6b.1 It compiles, and the wall on the way there is the one the workspace already names
+
+An expressibility claim nobody compiled is exactly what this panel has been burned by, so `p8` builds it.
+The obvious spelling puts the coefficient vector in an associated const array whose length is another
+associated const, which needs arithmetic in type position and therefore the forbidden feature.
+
+I reached for a type-level list, which is the right move, and then **put the coefficient in a const
+argument**, so `Cons<{ A + B }, ..>` asked for `generic_const_exprs` anyway:
+
+```
+error: generic parameters may not be used in const operations
+   |     type Out = Cons<{ A + B }, <S as AddC<T>>::Out>;
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+```
+
+That failure is committed rather than deleted, because half-applying the reflex is easy and lands on the
+forbidden feature with a clean conscience. The repair is to stop making the coefficient a const argument
+at all: **a coefficient is a type carrying an associated const**, so every arithmetic operation happens in
+an impl body where arbitrary const expressions are legal, and nothing arithmetic appears in type position.
+That is exactly the construction `109` P5 uses for a scalar bound, applied to a vector.
+
+`p8b` compiles that with **zero feature gates**, and cancels in the type: `(x + y) - y` composed through
+the grade types resolves to a radius of 7 where `x` alone has radius 7, against the corner rule's
+`[-14, 28]`.
+
+**And `p8b`'s gate was wrong, which `p7c` had already established.** Its `Discharges` tests one interval,
+the root's, and `p7c` builds a hand witness where a root-only test licenses an arm that computes the wrong
+answer: over unsigned saturating `W = 4` with `x` in `[8, 10]`, `y` in `[8, 10]` and `z` pinned at 15, the
+root propagates to `[1, 5]` and fits while the intermediate `x + y` propagates to `[16, 20]` and does not,
+and the two arms disagree on **9 of 9** tuples inside the declaration.
+
+`p8c` recurses the check over every node, which is expressible for a reason worth stating on its own:
+**a composed grade is a composed type, so the structure the check has to walk is the structure the type
+already has.**
+
+```
+  WIDE declaration, x and y in 0..=14
+    x + y            -> [  0,  28]   root-only false   per-node false
+    (x + y) - y      -> [  0,  14]   root-only true    per-node false
+    corner, same term-> [-14,  28]   licenses  false
+
+  NARROW declaration, x and y in 0..=6
+    x + y            -> [  0,  12]   per-node true
+    (x + y) - y      -> [  0,   6]   per-node true   radius 3
+    corner, same term-> [ -6,  12]   licenses  false
+```
+
+The wide row is `p8b`'s defect caught by the fix. The narrow row is the point: **the affine advantage
+survives the per-node discipline**, because the corner root keeps both occurrences of `y` and lands at
+`[-6, 12]`, whose lower bound is outside the container, while the affine root cancels them and lands at
+`[0, 6]`.
+
+And the licence costs nothing at runtime, with both controls aliasing:
+
+```
+_affine_gated_diff:                _corner_gated_diff:
+	add	w8, w1, w0                     and	w8, w0, #0xff
+	sub	w0, w8, w2                     add	w8, w8, w1, uxtb
+	ret                                mov	w9, #255
+                                       cmp	w8, #255
+_bare_diff       = _affine_gated_diff  csel	w8, w8, w9, lo
+_general_diff    = _corner_gated_diff  subs	w8, w8, w2, uxtb
+                                       csel	w0, wzr, w8, lo
+                                       ret
+```
+
+The two aliases are what make this a comparison. `bare_diff` is the ungated `(a + b) - c` and
+`general_diff` is the ungated saturating chain, and the licensed arm is the first while the refused arm is
+the second, so the const gate erases in both directions. Two instructions against seven is an ad-hoc quick
+spike as far as magnitude goes and prices nothing.
+
+### 6b.2 One limitation this exposed, which applies to every sweep in this file
+
+`p7b`'s mutation, which asked whether a root-only check is as good as a per-node one, measured **0 unsound
+over 4096 extents** and read as the per-node discipline being unnecessary. It could not fire. Every
+declared extent in every probe here has the form `[0, b]`, and with every lower bound pinned at zero the
+root of an addition chain over a non-negative domain is the widest node, so a root that fits implies every
+node fits and the two checks are equivalent by construction.
+
+**So every count in this file is predicated on one-sided extents.** `111` section 12 alternative B names
+two-endpoint windows as untested and strictly more expressive, and `82` F6's sign-uniform window actually
+uses them. `p7c` builds its witness with a two-endpoint extent for exactly that reason, and it is the only
+place in my probes where one appears.
+
+---
+
 ## 7. `110`'s contradiction, priced by where the two spellings meet
 
 `110` says both of these about one act:
@@ -714,6 +868,12 @@ and it is written to compose with `108` section 7 rather than to replace it.
 > region whose trigger it bounds and no other. A bound on magnitude switches off the behaviour outside
 > the range; a bound on the grid switches off the behaviour between grid points.
 >
+> **How a refinement is propagated is not part of what it is.** A propagation rule is sound when it
+> over-approximates the reachable set at every node of the derivation, and no sound rule is uniquely best:
+> one loses where a leaf repeats, another loses where quantities multiply. Sound rules **disjoin into a
+> sound rule**, so a design carries as many as it can afford to evaluate and licenses when any of them
+> licenses. Checking only the derivation's result rather than every node is unsound.
+>
 > What a refinement licenses is the **substitution of one arm for another on a term**, never the
 > identification of two primitives. Two assignments of an observable axis stay two primitives whatever is
 > declared about the values flowing through them.
@@ -735,7 +895,7 @@ and it is written to compose with `108` section 7 rather than to replace it.
 a width, a marker, a type parameter, a crate, or a count.
 
 **Equivalence.** Three teams implementing this produce units that behave the same on what matters: a
-consumer declares a restriction and gets the cheap arm exactly where the restriction proves it; an
+consumer declares a restriction and gets the cheap arm wherever some sound rule they carry proves it; an
 undischargeable declaration is a build failure and never a runtime one; a consumer may always under-claim
 and never over-claim; no axis nothing reads appears as a parameter; two spellings of one denotation do
 not exist; and a composite refuses a lift its own transformer does not license. They differ on how the
@@ -871,6 +1031,52 @@ signedness in {unsigned, signed}, overflow policy = sat, radix = 2, construction
 complex}, rules as enumerated in the probe, operation = mul, arity = 2, extents in {1, 2, 3}, threads =
 1, target features any`. `p5b_output.txt`.
 
+**F112-17. An affine grade recovers the corner rule's correlation loss completely and loses on
+multiplication of non-centred quantities.** On `(x + y) - y` it licenses 136 of 256 against the corner
+rule's 16, matching the oracle; on `x * (y - y)` 64 of 64 against 31; and on `x * y` 31 of 256 against 76,
+and on `(x+y) * (z+w)` 31 of 256 against 212. Zero unsound for both rules on every row. `W = 4, F = 0,
+signedness in {unsigned, signed}, overflow policy in {sat, wrap}, rounding = trunc, radix = 2, operations
+in {add, sub, mul}, term shapes as enumerated in the probe, arity in {2, 3, 4}, extents = one-sided upper
+bounds over every tuple, threads = 1, target features any`. `p7_output.txt`.
+
+**F112-18. The two rules disjoin into a sound predicate that reaches the enumerating oracle on every term
+shape swept.** Ten rows, zero unsound, ten of ten reaching the oracle, and four of ten where the affine
+rule licenses something the corner rule refuses. Same predicate as F112-17 with the shapes as enumerated
+in `p7b`. `p7b_output.txt`.
+
+**F112-19. The residue the union does not reach is the annihilation case, and it is about the term's
+dependence rather than any node's range.** On `(x + y) * z` with `z` declared zero, the union licenses 136
+of 256 while the arms agree on 256 of 256. Same predicate as F112-17. `p7b_output.txt`.
+
+**F112-20. An affine grade is expressible under the operating constraints, and cancels in the type.**
+Coefficients carried as types with associated consts rather than as const arguments; `(x + y) - y`
+composed through the grade types resolves to a radius equal to `x`'s alone against the corner rule's
+`[-14, 28]`; the vector's length is (leaves + non-constant multiplications), both static properties of the
+term. `toolchain = nightly-2026-05-28, rustc 1.98.0-nightly (57d06900f 2026-05-27), edition 2021, feature
+gates = none, no dyn, no TypeId, threads any, target features any`. `p8b_output.txt`, `p8c_output.txt`.
+The naive spelling, with the coefficient as a const argument, is refused for `generic_const_exprs` and
+that refusal is committed at `p8_output.txt`.
+
+**F112-21. A root-only range check is unsound and the per-node check is load-bearing.** Over unsigned
+saturating `W = 4` with `x` in `[8, 10]`, `y` in `[8, 10]`, `z` pinned at 15, the root propagates to
+`[1, 5]` and fits, the intermediate to `[16, 20]` and does not, and the two arms disagree on 9 of 9 tuples
+inside the declaration. `W = 4, F = 0, signedness = unsigned, overflow policy = sat, rounding = trunc,
+radix = 2, term = (x + y) - z, arity = 2, extents = two-endpoint, threads = 1, target features any`.
+`p7c_output.txt`.
+
+**F112-22. The per-node check is expressible because a composed grade is a composed type, and the licensed
+arm erases.** `AllOk` recurses over the grade's own structure with no feature gate; the licensed arm
+aliases an ungated `(a + b) - c` and the refused arm aliases an ungated saturating chain, so the const
+gate is absent in both directions. `toolchain = nightly-2026-05-28, edition 2021, feature gates = none,
+target = aarch64-apple-darwin, target features = host default, opt level = 3, container = u8, declared
+extents in {0..=6, 0..=14}, term = (x + y) - y, threads any`. `p8c_output.txt`, `p8c_asm.s`.
+
+**F112-23. Every declared extent in every sweep of this file is one-sided, and that makes one instrument
+check vacuous.** With every lower bound pinned at zero, the root of an addition chain over a non-negative
+domain is the widest node, so a root-only check and a per-node check agree by construction and `p7b`'s
+mutation measured 0 of 4096. `p7b_output.txt` carries the defect, `p7c_output.txt` carries the witness a
+two-endpoint extent produces.
+
 **F112-15. The suite is 123 across 13 and all of it passes, and `wide-rung-shared` takes 4.38s of test
 time.** `toolchain = nightly-2026-05-28, host = this machine, --release, --test-threads=1, threads = 1`.
 `p0_test_gate_run.txt`. The serial flag is load-bearing and I took `110` F14's workaround rather than
@@ -937,6 +1143,13 @@ layer and the arm layer one mechanism rather than two. F112-12.
 **Added.** The cost of a missed merge is a three-armed fact about where the spellings meet, and its one
 unrepairable arm is the storage boundary that I17 protects. F112-9, F112-10.
 
+**Added.** Two grade rules that neither dominates, disjoining into one that reaches an enumerating
+oracle on every term shape swept, both const-computable and both compiled. F112-17, F112-18, F112-20,
+F112-22. This is the arm structure I13 describes, arriving inside a mechanism rather than across one.
+
+**Added, as a hazard rather than a win.** A root-only discharge check is unsound and I wrote one myself
+after building the witness that refutes it. F112-21.
+
 ---
 
 ## 12. Alternatives I considered and did not take
@@ -966,12 +1179,13 @@ which region of `R` can fire, and the carrier bound is one way to say so. Someon
 directly, because the grid part of my grade is already closer to a region restriction than to a carrier
 restriction.
 
-**E. A correlation-tracking propagation rule.** F112-7 measures that a reachable-set oracle recovers all
-136 of the licences the corner rule loses on `(x + y) - y`, and the oracle enumerates, so it is not
-const-computable at a real width. The middle ground is the standard one, affine forms or a symbolic
-residual, and I did not test whether either is const-expressible. This is the single highest-value
-follow-up I can name, because the shape it fixes is a dot product with a shared operand, which is a shape
-consumers write constantly.
+**E. A correlation-tracking propagation rule. Taken rather than left**, and section 6b is the result: an
+affine grade recovers all 136 licences, is expressible with no feature gate, and composes with the corner
+rule into a union that reaches the oracle on every shape swept. What is left of the alternative is
+narrower and still open. A symbolic residual rather than an affine form would recover the multiplication
+cases the affine form loses, and I did not try one. Nor did I try re-centring an affine form on a
+non-negative domain, which is the obvious repair for its multiplication weakness and which I would attack
+first.
 
 **F. Whether the refinement needs to be in the type at all.** `111` alternative A raises it and rejects it
 on the ground that a per-site bound cannot survive being stored. My section 3.4 is the same argument from
@@ -1058,6 +1272,12 @@ bullet and which I wrote a condition-can-fire warning about in that probe's own 
 "the counter is live: False" and read as a failed check when the counter was live at 120 on a different
 term in the same run. Repairs are `p2b` and `p3b`.
 
+**Three of my own probes were defective beyond the two named above**, and all three are committed with
+the defect written into their own output rather than overwritten: `p7b`'s mutation could not fire
+because every extent I sweep is one-sided; `p8` half-applied the refused-bound reflex and landed on the
+forbidden feature; and `p8b` wired a root-only gate to a rule whose measured numbers are per-node, after
+`p7c` had already built the witness showing root-only is unsound. Repairs are `p7c`, `p8b` and `p8c`.
+
 **The largest thing I did not do.** I did not attack `109` section 8's chain result, which is now
 untouched by two consecutive members, and I did not attack `110`'s P8 congruence result, only its P7
 composite closure. I also did not price anything, so every magnitude in this unit remains unpriced.
@@ -1093,6 +1313,18 @@ All under `112_probes/`, each committed as it ran, before this file was written.
   reproduced, the extent discharging it over a wrapping base, and the unsound componentwise lift.
 - `p5b_the_lifting_rule_is_per_construction.py`, `p5b_output.txt`. The repair: the smallest sound rule
   per construction, and the unsigned complex case where none of the three fires.
+- `p7_an_affine_grade_recovers_the_lost_licences.py`, `p7_output.txt`. The affine grade against the
+  corner grade and the oracle, six term shapes, with the correlation-breaking mutation.
+- `p7b_the_two_rules_compose_and_the_union_is_the_answer.py`, `p7b_output.txt`. The union over ten
+  shapes, and **my mutation that could not fire**, with the reason written into its own output.
+- `p7c_the_per_node_check_is_load_bearing.py`, `p7c_output.txt`. The two-endpoint witness that mutation
+  could not reach.
+- `p8_the_affine_grade_compiles_as_a_type_level_list.rs`, `p8_output.txt`. **Expected failure, kept**:
+  the refused-bound reflex half-applied, landing on `generic_const_exprs`.
+- `p8b_the_affine_grade_with_no_arithmetic_in_type_position.rs`, `p8b_output.txt`. The repair, compiled,
+  zero feature gates, **with its own root-only gate named as a defect**.
+- `p8c_the_per_node_discharge_check.rs`, `p8c_output.txt`, `p8c_asm.s`. The per-node check compiled, the
+  affine advantage surviving it, and both arms aliasing their ungated controls.
 - `p6_check_my_own_citations.py`, `p6_output.txt`. Thirty-four citations opened and their content tested,
   three of them wrong on the first run, with three mutations confirming the instrument fails when it
   should.
