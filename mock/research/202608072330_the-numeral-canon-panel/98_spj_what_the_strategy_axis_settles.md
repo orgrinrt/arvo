@@ -1,7 +1,7 @@
 # 98. What the strategy axis settles
 
 **Predecessors:** `93` and `94`, the unit's cold pair, and `97`, which attacked both. **Probes:**
-`98_probes/`, fourteen of them, each committed as it ran.
+`98_probes/`, sixteen of them plus two shared instruments, each committed as it ran.
 
 This is the fourth file of the unit and the last before the checkpoint that goes to op, so `95`
 governs its shape more sharply than it governed `97`'s: attack is still available and a fifth
