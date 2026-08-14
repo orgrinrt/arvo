@@ -630,3 +630,232 @@ member to run the suite will otherwise lose the same forty-five minutes, and bec
 by hand and left as prose is a check that has to be redone.
 
 ---
+
+# Phase two: reconciliation
+
+Appended after the phase-one commit `eadbc1cc`. **Nothing above this line is edited.** Its value is that
+it was written blind, and the blind version is the thing being checked.
+
+## What I read, bounded
+
+`109` in full, which is the parallel cold derivation on the same question; `99`, the checkpoint;
+`63`, the format-concept consolidation, sections 0 through 9 as far as line 796; `90`, the derived-laws
+consolidation, sections 0 through 2; `98` at the lines that bear on the test count; `OPTIONS.md` Q16 and
+its heading index; `DROPLIST.md` grepped rather than read; `SEED_THEORY_91_UP.md` grepped only.
+
+**Not read:** `43` itself (I have it only through Q16's account of it), `53`, `74`, `106`, the members
+of any unit, the `SEED_*` files beyond one grep, `PRIOR_CALLS.md`, `PERSONA_CALLS.md`, the archive. So
+where I say something is new below, the claim is bounded by those greps and not by a reading, and I say
+which grep.
+
+## 16.1 Where my file is a second or third instance rather than a finding
+
+Three of my headline results were already established, and finding that out is what phase two is for.
+
+**The realisation map is not new, it is `63`'s C1 and it has two prior cold arrivals.** My "a value set
+and one map `R`" is the panel's `computed = adapt(exact)`, derived cold by `55` and again by `60` at the
+chain level, and stated as a candidate canon sentence at `63` C1. Mine is a **third independent
+instance**, arrived at from the identity question rather than from error analysis, and it should be
+counted as corroboration of an existing claim rather than as a contribution.
+
+**Encoding is not part of identity: `63` C2 already says it**, and says it in almost my words: "Adaptation
+choice and encoding are realisation, observable in computed values and in pattern-level properties
+respectively, and not part of identity." Their witness is two's complement against offset binary on the
+same sixteen values. Mine adds two encodings theirs did not use, a Gray code and a structureless
+bijection, which widens the instance without changing the claim.
+
+**The law set is not a component, and it now has three independent methods behind it.** `90` R1 states
+that a law is a fact about an operation composed under a fixed arithmetic semantics, at TWO EXPERTS from
+`76` and `77`. `109` establishes it by showing a false declaration compiles and is load-bearing, changing
+952 of 4096 answers through a rewrite gated on it. I establish it by testing it as a coordinate: it cannot
+be varied with the others held fixed, 0 of 48. **Three different attacks, one conclusion, none of us
+having read the others on it.** That is the strongest form this panel's rungs can carry, and the useful
+observation is that the three are genuinely independent: a declaration census, a provenance argument and a
+coordinate census have almost nothing in common as instruments.
+
+**"Composition" is overloaded, and `OPTIONS.md` Q16 already carries it** from `43`, with the two senses
+named exactly as I found them: sense one, the founding sentence's "primitives become named compositions
+over one format concept", and sense two, op's "contracts for things that compose to bigger units than
+just numerals alone". My section 4 rediscovers Q16. What I add to it is in 16.4.
+
+**And the componentwise-product law preservation is a classical theorem the seed already cites.**
+`SEED_THEORY_91_UP.md:137-139` names Birkhoff and varieties being closed under direct products. My F11 is
+a measured instance of that at four bases, not a discovery, and I should have recognised it while writing
+it. It is still worth having as a measurement, because the fixed-point operations are not obviously a
+variety in the relevant sense once the reduction is in play, but the credit is Birkhoff's.
+
+## 16.2 Where I was wrong, over-stated, or slid a word
+
+**My test count was wrong and I raised it as a possible drift signal.** I counted 124, said so, and
+suggested six agreeing measurements were the shape to be suspicious of. `98:55-56` had already found the
+answer and names the same file and the same line I eventually found: the literal `#[test]` inside the doc
+comment at `bitpack-write-contend-shared/src/stress.rs:68`. **123 is correct.** My contribution is a
+second independent arrival at an explanation that already existed, which is worth something and is not
+what I presented it as.
+
+This also **closes `109` section 16.6**, which records that two independent phase-one counts returned 124
+against the consolidation's 123 and asks whoever holds the register to re-run rather than pick a side. It
+is re-run: the naive pattern returns 124, the attribute-only pattern
+`grep -rnE '^[[:space:]]*#\[test\][[:space:]]*$'` returns 123, and the set difference is exactly that one
+doc-comment line. No test was added; the consolidation is right and both of us were counting a comment.
+
+**I asked for a single sameness relation, which is the shape this workspace has a rule against.** My
+section 3 presents denotation-preserving isomorphism as *the* identity criterion. `109` section 10 gives
+three relations, nominal, representational and denotational, strictly nested, each licensing a different
+operation: assignment without a cast, reinterpreting memory, and rewriting respectively. That is better
+factored than mine and it is what `never-ask-which-single-rule-governs.md` says to produce.
+
+**I concede the framing and keep the result, and the two fit together cleanly.** My criterion is `109`'s
+denotational relation. What P8 adds is that **that relation, and not the weaker ones, is the one closed
+under composition**: over 202 pairs merged by a value-set-only relation, 131 fail to survive a
+construction. So the three-relation lattice gains a property on its bottom rung, which is the reason the
+bottom rung is the one that may license a rewrite. Stated as one arm rather than as a policy: *the
+denotational relation licenses substitution, including inside a composite; the weaker relations do not,
+and the count of where they break is 131 and 17.*
+
+**My F2's wording is right and its reach is narrower than it sounds.** I wrote that every pure code
+assignment is presentation. `63` section 3.5 says the encoding is not part of identity **and is
+observable**, through raw-order agreement and raw-adder correctness. `109` section 16.4 then tested the
+apparent conflict rather than arguing it and found the discriminator: an encoding is observable through an
+operation exactly when that operation is defined on the representation rather than on the denotation, with
+all four encodings agreeing on all 256 pairs under denotation-defined operations and separating
+immediately under representation-defined ones.
+
+My predicate listed only value-level signatures, so under the notation's own rules F2 claims nothing about
+representation-defined operations and is not wrong. But the sharper sentence is theirs, and I would rather
+have written it. This is my own signature-relativity finding applying to a case I did not think to
+instantiate, which is a good demonstration that the criterion is more general than its author.
+
+**And one word of mine slid, which `109` caught.** I wrote that the encoding and layout "are not the
+primitive and must not be, or nothing can ever be rewritten". The rewriting half is right. The wording
+slides from *not part of identity* to *not part of the surface*, and I6 and I17 require a consumer to be
+able to **ask** for the storage-minimising realisation, with I17 explicit that this is not to be
+deprioritised. The correction is accepted in full: the realisation is quotiented out of denotational
+identity and is emphatically part of what a consumer selects.
+
+## 16.3 Where `109` and I agree, having each derived blind
+
+Recorded because independent agreement is the only thing that reaches the middle rung, and because `109`
+wrote its own version of this section without either of us having read the other at derivation time.
+
+We agree that the law set is not a component; that the operation set is part of the definition, which
+`109` reached from the chain result and I reached by counting; that overflow and rounding are one map;
+and that a criterion beats an enumeration.
+
+Two places where we differ usefully rather than conflicting:
+
+**Our criteria are at different levels and should both survive.** `109` says so first and I agree on
+reading it. Its const-availability test decides **membership**, whether a property belongs in the
+primitive at all. Mine decides **identity**, whether two primitives are the same. A design wants both, and
+merging them would lose the question each answers.
+
+**`109` concedes the realisation point to me and I concede the sameness framing to it.** Both concessions
+are in the same direction, which is that identity is thinner than the specification: the primitive's
+identity is the denotation, and the specification carries more than the identity does.
+
+## 16.4 What of mine appears to be new, bounded by grep rather than by reading
+
+**The definitional against reachability distinction.** `grep -rli "definitional degenerac"` across the
+live panel returns nothing outside my file, and I found no member drawing the line between an axis that
+has left the definition and one the current signature merely fails to reach. It is the result I would most
+want attacked, because it was my own falsified hypothesis that produced it: P4 broke the version I
+believed, and the corrected version is the one that survives adding operations. Its practical form is a
+test anybody can run in five minutes: probe the realisation map over the whole rational line rather than
+over the terms the signature reaches.
+
+**The congruence check on the sameness relation.** `grep -rin "congruence.*construction\|substitut.*composite"`
+returns nothing outside my file. "Congruence" is used widely in the panel, but in `57b`'s sense of the
+reduction's kernel being a congruence for an ambient operation, which is a different object. What P8 asks
+is whether the *sameness relation between primitives* survives the constructions, which is the soundness
+condition on the relation itself rather than on any reduction.
+
+**The naming wall, and its remedy.** `grep -rli "canonicalis"` finds only an unrelated use in
+`DROPLIST.md`. The result is that two spellings of one primitive cannot be merged after the fact under the
+forbidden-feature list, compiled as `E0308` in `p6b_expected_failure.txt`, and the remedy is to
+parameterise by what the realisation map reads so the second spelling never exists. This composes with
+`109`'s naming result rather than competing: `109` finds that naming is interesting when it is **partial**,
+because a name then becomes an existence claim and the naming function is the validator. Mine finds that
+naming is dangerous when it is **non-injective**. A design wants the naming function to be partial and
+injective, and neither of us had both halves.
+
+**And a gap in Q16 that I can fill, from the wrong direction.** Q16 lists three ways out, ending with "to
+find that they are the same concept at two scales, **which nobody has argued**". I did not argue that
+either, and what I have is a fourth option Q16 does not list:
+
+> **Sense one is not composition at all.** Choosing a format, a system and a strategy is **configuration**:
+> filling in a record, with nothing composed. Only sense two is composition, in the ordinary algebraic
+> meaning of a construction taking an algebra to an algebra. And composites are **primitives by the same
+> definition**, so the concept is closed under sense two and the canon needs one concept rather than two.
+
+P7 is the evidence for the closure half: the componentwise product, complex, dual and interval
+constructions all return a carrier with a total interpretation of the signature. If that holds, "primitive"
+and "composite" are one concept and every contract written for one applies to the other, which is a
+stronger statement than either of Q16's first two options and cheaper than the third.
+
+## 16.5 A conflict that dissolves, and it sharpens both sides
+
+`63` C10 says: "Compositions over formats, stored pairs, intervals, error-carrying values, are not format
+instances; they consume these three things and owe their own laws." My P7 says a composite **is** a
+primitive under the same definition. Read side by side those look opposed, and a later reader would spend
+real time on it.
+
+They are not opposed, and the resolution is that **format and primitive are different concepts and the
+panel has been careful about one of them.** A format is `(D, Q)`, an ambient domain and a representable
+set of numbers. An interval over a format has a carrier of *pairs*, which is not a set of rationals, so it
+is not a format and `63` is right. It is still a carrier with a total interpretation of the signature, so
+it is a primitive and P7 is right.
+
+What falls out is a containment rather than a conflict: **every format induces a primitive, and not every
+primitive comes from a format.** That is worth having explicitly, because the working assumption puts
+"format" inside "primitive" as a component and the containment says something different and more useful
+about how the two relate.
+
+## 16.6 One of my findings was already explained, and the explanation is better than my measurement
+
+P7b measures that the interval construction is closed exactly on monotone bases, 16 of 16, and reports
+that wrapping is not monotone. `63` section 3.6 carries the reason: **a wrapped numeral has no
+arithmetic-compatible order, because a finite cyclic group admits no translation-invariant total order.**
+
+So my empirical predicate has a structural explanation sitting in a consolidation I had not read, and the
+finding upgrades from "monotone, 16 of 16 at `W in {2,3}`" to a statement that needs no width predicate at
+all on the wrapping side, because the group-theoretic fact does not depend on the width. I do not restate
+the predicate on my phase-one finding, per the rule that a predicate is never widened in place; the
+widening is claimed here, in my own words, and it rests on `63`'s citation rather than on my sweep.
+
+That is also the cleanest example in my file of why phase two exists. The measurement was right, the
+region was right, and the reason was available and better.
+
+## 16.7 What I would hand whoever writes the canon text on this topic
+
+Suggestions, settling nothing, and each one carries what it rests on.
+
+**One.** A primitive is a carrier with a total interpretation of a **declared signature**, and the
+signature is part of the definition rather than context for it. Rests on my F4 and `109`'s section 8,
+independently.
+
+**Two.** Identity is **denotational**, and denotational sameness is the relation that licenses rewriting,
+including inside a composite. The other two relations in `109`'s lattice license other operations and are
+not competitors. Rests on `63` C2, my P1 and P8, and `109` section 10.
+
+**Three.** An axis belongs to identity when the value set or the realisation map **reads** it, and the
+test is over the whole domain of the map rather than over the terms the current signature reaches. Rests
+on my P5, with the falsified version in P4 kept as the reason the wording is what it is.
+
+**Four.** A law is read off, never declared. Three independent methods, `90` R1, `109` P2 and my P2.
+
+**Five.** The concept is **closed under composition**, and configuration is not composition. Rests on P7
+and P7b, and it fills the option Q16 names as unargued with a fourth shape rather than the third.
+
+## 16.8 Coverage of phase two, bounded
+
+I did not read `43`, `53`, `74` or `106`, so my statements about the composition senses come through
+Q16's account of `43` rather than from `43`, and my statement that the definitional-degeneracy distinction
+is absent rests on a grep of the live panel rather than on having read those four files. `109` section
+16.5 flags that `106` section 9.2 bears on I18; I did not read it and nothing of mine turns on I18.
+
+I did not re-run any other member's instrument. `63` re-ran thirty-two of them and reports all diffs
+empty; I take that on its report and did not verify it, which is a dependency worth naming since two of my
+reconciliations lean on `63`'s numbers.
+
+The one number I did verify at source rather than through an account is `98:55-56`, because it is the one
+I used to withdraw a claim of my own.
