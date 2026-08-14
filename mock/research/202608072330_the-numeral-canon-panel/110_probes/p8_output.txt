@@ -1,0 +1,54 @@
+P8. is the identity criterion a congruence with respect to composition?
+==============================================================================
+population: 70 primitives, rounding varied over {near, trunc} so the criteria can come apart
+
+  criterion                           pairs called same   congruence failures
+  --------------------------------------------------------------------------
+  weak (value set only)                             202                   131
+  medium (value set + add)                           88                    17
+  full (denotation-preserving iso)                   71                     0
+
+  weak (value set only) breaks at, for instance:
+    product2   distinguishes
+               uW2F0r2/sat/near/ident
+               uW2F0r2/wrap/near/ident
+    product2   distinguishes
+               uW2F0r2/sat/near/ident
+               uW2F0r2/wrap/trunc/ident
+    product2   distinguishes
+               uW2F0r2/sat/near/ident
+               uW2F0r3/wrap/near/ident
+    product2   distinguishes
+               uW2F0r2/sat/near/ident
+               uW2F0r3/wrap/trunc/ident
+
+  medium (value set + add) breaks at, for instance:
+    product2   distinguishes
+               uW2F1r2/sat/near/ident
+               uW2F1r2/sat/trunc/ident
+    product2   distinguishes
+               uW2F1r2/sat/trunc/ident
+               uW2F1r2/sat/near/offset
+    product2   distinguishes
+               uW2F1r2/sat/trunc/ident
+               uW2F1r2/sat/near/gray
+    product2   distinguishes
+               uW2F1r2/sat/trunc/ident
+               uW2F1r2/sat/near/shuffled
+
+  control: encoding-differing pairs the full criterion merges: 21
+  control: of those, congruence failures:                      0
+
+reading:
+  a criterion with a congruence failure licenses substituting one
+  primitive for another inside a composite and getting different
+  behaviour out. nothing at the site of the substitution can detect
+  it, because at that level the two really are interchangeable by
+  the criterion that was applied.
+
+  the weak criterion is what a reader reaches for when a primitive
+  is thought of as a set of representable values. the medium one is
+  what checking one operation buys, and it fails precisely where P1
+  said it would: on a rounding mode that add cannot see and mul can.
+  only the full criterion survives, and the encoding control shows
+  it is not surviving by refusing to merge anything.
