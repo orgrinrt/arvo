@@ -1,0 +1,39 @@
+==============================================================================
+p7. An affine grade against the corner grade and the oracle
+==============================================================================
+
+CONTROL: shapes where the corner rule is already exact
+
+  x + y, unsigned sat W=4            corner   136/256   affine   136/256   oracle   136/256   unsound c=0 a=0
+  (x + y) + z, unsigned sat W=4      corner   816/4096  affine   816/4096  oracle   816/4096  unsound c=0 a=0
+  x * y, unsigned sat W=4            corner    76/256   affine    31/256   oracle    76/256   unsound c=0 a=0
+
+THE CASES THE CORNER RULE LOSES
+
+  (x + y) - y, unsigned sat W=4      corner    16/256   affine   136/256   oracle   136/256   unsound c=0 a=0
+  x * (y - y), SIGNED sat W=4        corner    31/64    affine    64/64    oracle    64/64    unsound c=0 a=0
+  (x + y) * z, unsigned sat W=4      corner   385/4096  affine   151/4096  oracle   385/4096  unsound c=0 a=0
+
+WHERE THE AFFINE RULE IS ITSELF CONSERVATIVE
+
+  (x+y) * (z+w), unsigned sat W=4    corner   212/256   affine    31/256   oracle   212/256   unsound c=0 a=0
+  x*y - x*y, SIGNED sat W=4          corner    15/16    affine    15/16    oracle    15/16    unsound c=0 a=0
+
+THE COEFFICIENT VECTOR'S LENGTH, which decides whether it is const-shaped
+
+  ((x add y) sub y)                            leaves 2, symbols in the result 2, fresh symbols added 0
+  ((x add y) mul (z add w))                    leaves 4, symbols in the result 5, fresh symbols added 1
+  (((a add b) mul (c add d)) mul (e add f))    leaves 6, symbols in the result 8, fresh symbols added 2
+
+  So the vector's length is (leaves + non-constant multiplications), both
+  of which are properties of the TERM and are therefore statically known.
+
+INSTRUMENT CHECK
+
+  the headline case, repeated        corner    16/256   affine   136/256   oracle   136/256   unsound c=0 a=0
+  affine beats corner here: True (136 against 16)
+  the control, repeated              corner   136/256   affine   136/256   oracle   136/256   unsound c=0 a=0
+  and does NOT beat it where the corner rule is exact: True
+
+  MUTATION: give the two occurrences of y different symbols
+    with the correlation broken, the affine rule licenses 16/256, which should match the corner rule's 16
