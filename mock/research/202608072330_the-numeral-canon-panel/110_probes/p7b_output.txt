@@ -1,0 +1,55 @@
+P7b. does each construction carry a predicate on its base?
+==============================================================================
+bases swept: 16  (W in {2,3}, F in {0,1}, signed in {no,yes}, policy in {sat,wrap})
+
+base properties, and whether each construction is closed over it:
+  base            monotone   ring       product2     complex    interval
+  uW2F0/sat            yes    yes         closed      closed      closed
+  uW2F0/wrap            no    yes         closed      closed         NOT
+  iW2F0/sat            yes     no         closed      closed      closed
+  iW2F0/wrap            no    yes         closed      closed         NOT
+  uW2F1/sat            yes     no         closed      closed      closed
+  uW2F1/wrap            no     no         closed      closed         NOT
+  iW2F1/sat            yes     no         closed      closed      closed
+  iW2F1/wrap            no     no         closed      closed         NOT
+  uW3F0/sat            yes    yes         closed      closed      closed
+  uW3F0/wrap            no    yes         closed      closed         NOT
+  iW3F0/sat            yes     no         closed      closed      closed
+  iW3F0/wrap            no    yes         closed      closed         NOT
+  uW3F1/sat            yes     no         closed      closed      closed
+  uW3F1/wrap            no     no         closed      closed         NOT
+  iW3F1/sat            yes     no         closed      closed      closed
+  iW3F1/wrap            no     no         closed      closed         NOT
+
+testing the predicted predicate for each construction:
+  product2   vs predicate 'monotone                ' agrees on 8/16 bases
+  product2   vs predicate 'ring                    ' agrees on 6/16 bases
+  product2   vs predicate 'always (no precondition)' agrees on 16/16 bases  <== exact
+
+  complex    vs predicate 'monotone                ' agrees on 8/16 bases
+  complex    vs predicate 'ring                    ' agrees on 6/16 bases
+  complex    vs predicate 'always (no precondition)' agrees on 16/16 bases  <== exact
+
+  interval   vs predicate 'monotone                ' agrees on 16/16 bases  <== exact
+  interval   vs predicate 'ring                    ' agrees on 6/16 bases
+  interval   vs predicate 'always (no precondition)' agrees on 8/16 bases
+
+counterexamples, where a construction failed:
+  interval over uW2F0/wrap: add at ((Fraction(0, 1), Fraction(1, 1)),(Fraction(1, 1), Fraction(3, 1))) -> (Fraction(1, 1), Fraction(0, 1))
+  interval over iW2F0/wrap: add at ((Fraction(-2, 1), Fraction(-2, 1)),(Fraction(-2, 1), Fraction(0, 1))) -> (Fraction(0, 1), Fraction(-2, 1))
+  interval over uW2F1/wrap: add at ((Fraction(0, 1), Fraction(1, 2)),(Fraction(1, 2), Fraction(3, 2))) -> (Fraction(1, 2), Fraction(0, 1))
+  interval over iW2F1/wrap: add at ((Fraction(-1, 1), Fraction(-1, 1)),(Fraction(-1, 1), Fraction(0, 1))) -> (Fraction(0, 1), Fraction(-1, 1))
+  interval over uW3F0/wrap: add at ((Fraction(0, 1), Fraction(1, 1)),(Fraction(1, 1), Fraction(7, 1))) -> (Fraction(1, 1), Fraction(0, 1))
+  interval over iW3F0/wrap: add at ((Fraction(-4, 1), Fraction(-4, 1)),(Fraction(-4, 1), Fraction(0, 1))) -> (Fraction(0, 1), Fraction(-4, 1))
+
+reading:
+  product2 has no precondition. componentwise construction preserves
+  every equation the base satisfies, so it is total on primitives and
+  a lane-wise composite is licensed for exactly the rewrites its
+  scalar was, with no separate measurement.
+
+  interval is PARTIAL. it computes on endpoints and needs the base's
+  operations to preserve order, and a wrapping base does not, so the
+  result is not even a carrier: an ordered pair comes back inverted.
+  that is a construction carrying a const predicate on its base,
+  which is the same shape as every other arm in this design.

@@ -1,0 +1,56 @@
+P7. composing primitives, and whether the result is a primitive
+==============================================================================
+C1. closure: is a composite itself a carrier with a total
+    interpretation of the signature?
+    product2   over uW2F0/sat    closed  (|carrier| = 16)
+    complex    over uW2F0/sat    closed  (|carrier| = 16)
+    dual       over uW2F0/sat    closed  (|carrier| = 16)
+    interval   over uW2F0/sat    closed  (|carrier| = 10)
+    product2   over uW2F0/wrap   closed  (|carrier| = 16)
+    complex    over uW2F0/wrap   closed  (|carrier| = 16)
+    dual       over uW2F0/wrap   closed  (|carrier| = 16)
+    interval   over uW2F0/wrap   NOT CLOSED: add escaped the carrier at ((Fraction(0, 1), Fraction(1, 1)), (Fraction(1, 1), Fraction(3, 1))) -> (Fraction(1, 1), Fraction(0, 1))  (|carrier| = 10)
+    verdict: CLOSURE FAILS
+
+C2. how the law set transforms under each construction:
+    base           construction   add_comm   mul_comm  add_assoc  mul_assoc    distrib
+    ----------------------------------------------------------------------------------
+    uW2F0/sat      (base)              yes        yes        yes        yes        yes
+                   product2            yes        yes        yes        yes        yes
+                   complex             yes        yes        yes          .          .
+                   dual                yes        yes        yes        yes        yes
+                   interval            yes        yes        yes        yes        yes
+
+    uW2F0/wrap     (base)              yes        yes        yes        yes        yes
+                   product2            yes        yes        yes        yes        yes
+                   complex             yes        yes        yes        yes        yes
+                   dual                yes        yes        yes        yes        yes
+                   interval            yes        yes        yes          .          .
+
+    uW2F1/sat      (base)              yes        yes        yes          .          .
+                   product2            yes        yes        yes          .          .
+                   complex             yes        yes        yes          .          .
+                   dual                yes        yes        yes          .          .
+                   interval            yes        yes        yes          .          .
+
+    iW2F0/wrap     (base)              yes        yes        yes        yes        yes
+                   product2            yes        yes        yes        yes        yes
+                   complex             yes        yes        yes        yes        yes
+                   dual                yes        yes        yes        yes        yes
+                   interval            yes        yes        yes          .          .
+
+C2 read out: which constructions preserve which laws, over these bases
+    product2   breaks: nothing the base had
+    complex    breaks: ['distrib', 'mul_assoc']
+    dual       breaks: nothing the base had
+    interval   breaks: ['distrib', 'mul_assoc']
+
+the componentwise construction is the interesting control:
+    product2 reproduces the base's law set exactly, on every base.
+    that is the classical fact that equational theories survive
+    products, and it means a lane-wise composite inherits every
+    rewrite the scalar was licensed for, with no new measurement.
+
+    the twisted constructions do not, so the law set of a composite
+    is a function of the base's laws AND the constructor, and is
+    read off rather than chosen, exactly as P2 found for the base.
