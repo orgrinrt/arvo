@@ -17,6 +17,18 @@ appears below, with the interval of r that produces it.
             376255         766780     0.31  simd,simd,simd,simd,simd,control
             766780            inf      inf  simd,simd,simd,simd,simd,simd
 
+  bitpack-carrier-width   coordinate 2 = declared bytes/elem, control dropped   arms=5 regions=6
+            r from           r to  decades  section
+                 0          9.775      inf  d32,d32,d16,d16,d16,d16
+             9.775             65     0.82  d16,d32,d16,d16,d16,d16
+                65        1506.13     1.36  d16,d16,d16,d16,d16,d16
+           1506.13          12080     0.90  simd,d16,d16,d16,d16,d16
+             12080        94932.3     0.90  simd,simd,d16,d16,d16,d16
+           94932.3         183061     0.29  simd,simd,simd,d16,d16,d16
+            183061         376255     0.31  simd,simd,simd,simd,d16,d16
+            376255         761166     0.31  simd,simd,simd,simd,simd,d16
+            761166            inf      inf  simd,simd,simd,simd,simd,simd
+
   bitpack-carrier-width   coordinate 2 = IQR of algo_ns   arms=6 regions=6
             r from           r to  decades  section
                  0       0.790423      inf  d32,d32,d16,d16,d16,control
@@ -73,6 +85,7 @@ B. HOW MANY ANSWERS THE COORDINATE PAIR CAN SUPPORT
 ==============================================================================
   family                   coordinate 2            cells  widest cell (decades)
   bitpack-carrier-width    declared bytes/elem         9                    inf
+  bitpack-carrier-width    declared bytes/elem, control dropped      9                    inf
   bitpack-carrier-width    IQR of algo_ns             10                    inf
   bitpack-contend-decode   IQR of algo_ns              9                    inf
   bitpack-contention       IQR of algo_ns             12                    inf

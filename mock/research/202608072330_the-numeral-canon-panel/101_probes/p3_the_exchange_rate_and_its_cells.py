@@ -154,6 +154,7 @@ def main():
 
     setups = [
         ("bitpack-carrier-width", "declared bytes/elem", declared_bytes),
+        ("bitpack-carrier-width", "declared bytes/elem, control dropped", declared_bytes),
         ("bitpack-carrier-width", "IQR of algo_ns", iqr),
         ("bitpack-contend-decode", "IQR of algo_ns", iqr),
         ("bitpack-contention", "IQR of algo_ns", iqr),
@@ -164,6 +165,8 @@ def main():
     for fam, label, second in setups:
         per = samples(fam)
         arms = sorted(set.intersection(*[set(p) for p in per.values()]))
+        if "control dropped" in label:
+            arms = [a for a in arms if not a.endswith("-control")]
         t = table_time_and(second)(per, arms)
         cs = cells(t, arms)
         print(f"  {fam}   coordinate 2 = {label}   arms={len(arms)} regions={len(t)}")

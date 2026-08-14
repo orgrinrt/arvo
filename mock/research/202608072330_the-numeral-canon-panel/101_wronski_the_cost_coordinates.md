@@ -472,6 +472,20 @@ And this is `97`'s cone in coordinates. Cone membership of a stated weighting an
 the cell whose section is the shipped table" are the same test. What the cell adds is a width, which the
 cone did not report.
 
+**And the control arm changes the answer everywhere without changing how many answers there are.** Running
+the same computation with the control dropped gives **nine cells again**, with the same boundaries to three
+figures and `d16` standing where `control` stood in eight of them:
+
+```
+  arms=6:  0 -> 9.55     d32,d32,d16,d16,d16,control
+  arms=5:  0 -> 9.775    d32,d32,d16,d16,d16,d16
+```
+
+An arm the bench declares to be a copy of another relabels the section in 8 of 9 cells and leaves the number
+of distinguishable strategies at 9. That is the exact complement of `100`'s instability result: the control
+is what the argmin spends its time choosing about, and it is not what the coordinate set can express. Both
+statements are about the same arm and neither implies the other.
+
 **The control arm is in the section at almost every exchange rate**, which is `100`'s F-100-3 arriving from
 a completely different instrument. `100` found it by bootstrap resampling; this finds it by exact interval
 arithmetic on the point estimates, with no resampling anywhere. The byte-identical twin is not merely
