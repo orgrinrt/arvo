@@ -1,0 +1,66 @@
+==============================================================================
+A. FROZEN-RANGE NORMALISATION AND RAW COORDINATES ARE THE SAME MODEL
+==============================================================================
+For each family and each of 2000 random weightings w' drawn on the
+simplex, the section under frozen normalisation with w' must equal the
+section under raw coordinates with w_i = w'_i / (hi_i - lo_i).
+
+  bitpack-carrier-width    regions=  6 arms=6  identical sections: 2000/2000
+  bitpack-contend-decode   regions=  6 arms=5  identical sections: 2000/2000
+  bitpack-contention       regions= 12 arms=6  identical sections: 2000/2000
+  bitpack-wide             regions=  6 arms=4  identical sections: 2000/2000
+
+==============================================================================
+B. INDEPENDENCE OF IRRELEVANT ALTERNATIVES, PER TRANSFORM
+==============================================================================
+Two perturbations that no weighting can rationally respond to:
+  A. drop an arm that is dominated at every region (never selectable)
+  B. add an arm strictly worse than every real arm on every coordinate
+A transform under which either changes a section is reading the arm set.
+
+  bitpack-carrier-width    raw                      dominated=1 A moved     0/2000   B moved     0/2000   (B ever selected the added arm: 0)
+  bitpack-carrier-width    min-max (arm-set range)  dominated=1 A moved   961/2000   B moved     1/2000   (B ever selected the added arm: 0)
+  bitpack-carrier-width    frozen (declared range)  dominated=1 A moved     0/2000   B moved     0/2000   (B ever selected the added arm: 0)
+
+  bitpack-contend-decode   raw                      dominated=0 A moved     0/2000   B moved     0/2000   (B ever selected the added arm: 0)
+  bitpack-contend-decode   min-max (arm-set range)  dominated=0 A moved     0/2000   B moved     2/2000   (B ever selected the added arm: 0)
+  bitpack-contend-decode   frozen (declared range)  dominated=0 A moved     0/2000   B moved     0/2000   (B ever selected the added arm: 0)
+
+  bitpack-contention       raw                      dominated=1 A moved     0/2000   B moved     0/2000   (B ever selected the added arm: 0)
+  bitpack-contention       min-max (arm-set range)  dominated=1 A moved   252/2000   B moved     0/2000   (B ever selected the added arm: 0)
+  bitpack-contention       frozen (declared range)  dominated=1 A moved     0/2000   B moved     0/2000   (B ever selected the added arm: 0)
+
+  bitpack-wide             raw                      dominated=0 A moved     0/2000   B moved     0/2000   (B ever selected the added arm: 0)
+  bitpack-wide             min-max (arm-set range)  dominated=0 A moved     0/2000   B moved   176/2000   (B ever selected the added arm: 0)
+  bitpack-wide             frozen (declared range)  dominated=0 A moved     0/2000   B moved     0/2000   (B ever selected the added arm: 0)
+
+==============================================================================
+C. A BAND STATED AS A FRACTION OF THE ACHIEVABLE RANGE IS DATA-DEPENDENT
+==============================================================================
+`100` section 7 states its tolerance as a percentage of (worst - best)
+at the region. That denominator is a function of the arm set, so the
+same perturbation B moves the band's width. Reported in the objective's
+own units, per region, with and without the unselectable arm.
+
+  bitpack-carrier-width
+        region   range without    range with   band 1% grows by
+         16384           734.3       66336.5              90.3x
+        131072          5720.9      527805.8              92.3x
+       1048576         79328.8     5335695.0              67.3x
+       2097152        209588.4    12388370.8              59.1x
+       4194304        341449.2    22460614.1              65.8x
+       8388608        519025.8    39341739.4              75.8x
+
+  bitpack-contend-decode
+        region   range without    range with   band 1% grows by
+        163841           777.9       62435.3              80.3x
+        163844           535.8       37297.2              69.6x
+      41943041        199663.8    16253156.3              81.4x
+      41943044         70651.8     7820515.4             110.7x
+      83886081        414489.3    32813260.5              79.2x
+      83886084         74120.0    13710231.1             185.0x
+
+A band stated in the coordinate's own units, or as a fraction of the
+region's own best arm, has no such denominator. `100` section 7.1 already
+measures the floor that way: the control pair's apparent gap as a
+percentage of runtime, which is per region and independent of the arm set.
