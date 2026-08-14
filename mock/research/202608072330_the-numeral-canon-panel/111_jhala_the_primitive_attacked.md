@@ -1027,3 +1027,65 @@ All under `111_probes/`, each committed as it ran, before this file was written.
   four predictions recorded before running and all four confirmed.
 - `p8_a_refinement_parameter_has_a_repair_a_spurious_one_does_not.rs`, `p8_output.txt`, `p8_asm.s`, with
   `p8b_a_tightening_is_refused_at_build_time.rs`. Weakening is the identity; tightening is `E0080`.
+
+---
+
+## 15. Two additions found after the file was drafted, one of which earns a rung
+
+### 15.1 F111-9 is `97`'s congruence criterion arriving from the identity side, and I did not read `97` first
+
+`97:706-707` states, before running its own probe:
+
+> a law holds in the representable set **iff** it is an identity of exact arithmetic **and** `pi`
+> respects every ordered nesting of operations the law contains.
+
+My F111-9 says two completions agree on a term exactly when the propagated bound discharges at every
+node. Those are the same condition. Where `pi` never fires, `pi` is the identity on that node's result,
+so it trivially respects that nesting; and the propagated bound discharging at every node is precisely
+"`pi` respects every ordered nesting". **One criterion, two questions**: `97` asks which laws hold, I ask
+which primitives are the same, and the answer is the same predicate over the same object.
+
+**And this one is independent, which almost nothing else in this file is.** p6 was built and committed
+at `c2c8382b` before I opened `97`; the ordering is checkable in `git log`, since the grep that surfaced
+`97` to me runs several commits later. I did not have the criterion and derived its shape from a
+falsified hypothesis of my own. So this is a second instance in the sense the middle rung wants, on a
+claim `97` states and `arvo-always-optimal-internals.md` already carries.
+
+The extension is small and I state it as an extension rather than as a finding: `97`'s criterion is
+about a **law** holding, and the same predicate decides an **identity** merging. A canon that states it
+once covers both, and stating it twice would be two statements of one fact.
+
+### 15.2 The narrower form of section 5.4's negative claim
+
+Section 5.4 says no other panel file counts primitives up to identity. Two greps back it, and a negative
+claim about evidence is a claim about a place, so both are named:
+
+```
+grep -rn 'distinct primitive\|distinct numeral\|how many primitives\|number of primitives' \
+  --include='*.md' . | grep -v '^./archive'
+grep -rn 'equivalence class\|up to isomorphism\|distinct algebra\|quotient' \
+  --include='*.md' . | grep -v '^./archive'
+```
+
+The first returns `109`, `110` and nothing else live. The second returns quotient material in `97`,
+`07`, `65` and `DROPLIST.md`, all of it about laws and orders rather than about counting classes.
+**Neither grep reaches `.claude/` or `.github/`**, per `109` section 12.3's finding that the shimmed
+`grep` skips dot directories from a bare `.`; I did not name those trees because no panel count lives in
+them, which is an assumption rather than a check.
+
+### 15.3 Citations, opened
+
+`111_probes/p9_check_my_own_citations.py` opens every `file:line` this file leans on and tests the
+substring the claim depends on, against the cited line and its two neighbours. **18 checked, 0 failing.**
+
+Because it came out green, it is mutation-tested rather than trusted: a wrong line number, a wrong
+substring and a wrong file each produce exactly one failure and a non-zero exit, recorded in
+`p9_output.txt`. What it does not cover is every number I quote from another file without reproducing,
+which section 13 lists separately.
+
+---
+
+## 16. Probe index, addition
+
+- `p9_check_my_own_citations.py`, `p9_output.txt`. Eighteen citations opened and their content tested,
+  with three mutations confirming the instrument fails when it should.
