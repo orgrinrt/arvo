@@ -2410,3 +2410,14 @@ category-wide policy fork that `never-ask-which-single-rule-governs.md` names. I
 **which component of a decomposition his own word attaches to**, where the decomposition is the panel's
 invention. The test that would have caught it: **if both answers leave the intent intact and differ only
 in what the panel calls things, it is not his.**
+
+### Q46 CLOSED: notko renames
+
+Op, 2026-08-14, full record at `105`. Offered arvo renaming, notko renaming, or neither with the canon
+disambiguating, he answered:
+
+> notko renames
+
+The name `Strategy` belongs to arvo's concept. The canon may rely on it meaning arvo's concept without
+qualification. Naming notko's replacement is notko's business and not this panel's, and this is not a
+licence for the panel to edit notko.
