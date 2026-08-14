@@ -16,7 +16,9 @@ than passing on a coincidence.
 Run:  python3 p6_verify_my_citations.py
 """
 
+import glob
 import os
+import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -61,16 +63,44 @@ CITATIONS = [
      "#[test]"),
     ("mock/benches/variants/warm-clamp-shared/src/lib.rs", (83, 83),
      "W * 10000 + NC * 1000"),
+    # the pinned bench harness checkout, resolved from arvo's own lockfile
+    ("@HARNESS@/bench-harness/src/harness.rs", (752, 752), "algo_ns,bridge_ns"),
+    ("@HARNESS@/bench-harness/src/env.rs", (105, 106), "rustc"),
     # workspace rules
     (".claude/rules/arvo-toolbox-not-policer.md", None, "ship sharp tools"),
     (".claude/rules/arvo-compile-time-last.md", None, "compile time last"),
 ]
 
 
+def harness_dir():
+    """The pinned mockspace checkout, read from arvo's own bench lockfile so the
+    citation cannot drift onto a different revision."""
+    lock = os.path.join(ARVO, "mock", "benches", "Cargo.lock")
+    rev = None
+    with open(lock) as fh:
+        txt = fh.read()
+    m = re.search(r'name = "mockspace-bench-harness".*?#([0-9a-f]{40})', txt, re.S)
+    if m:
+        rev = m.group(1)[:7]
+    if not rev:
+        return None
+    base = os.path.expanduser("~/.cargo/git/checkouts")
+    for d in glob.glob(os.path.join(base, "mockspace-*", rev)):
+        return d
+    return None
+
+
 def main():
     ok = failed = 0
+    hd = harness_dir()
     for rel, span, want in CITATIONS:
-        path = os.path.join(ARVO, rel)
+        if rel.startswith("@HARNESS@"):
+            if hd is None:
+                print(f"  FAIL  {rel}  <- pinned harness checkout not resolvable")
+                failed += 1
+                continue
+            rel = rel.replace("@HARNESS@", hd)
+        path = rel if os.path.isabs(rel) else os.path.join(ARVO, rel)
         if not os.path.exists(path):
             # workspace rules live above the repo
             alt = os.path.normpath(os.path.join(ARVO, "..", rel))

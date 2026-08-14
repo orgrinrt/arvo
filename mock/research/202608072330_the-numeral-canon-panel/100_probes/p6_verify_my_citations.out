@@ -14,7 +14,9 @@
   ok    mock/benches/variants/bitpack-carrier-shared/src/lib.rs:394-411
   ok    mock/benches/variants/bitpack-write-contend-shared/src/stress.rs:68
   ok    mock/benches/variants/warm-clamp-shared/src/lib.rs:83
+  ok    /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/bce17f6/bench-harness/src/harness.rs:752
+  ok    /Users/orgrinrt/.cargo/git/checkouts/mockspace-d2db2c8fb6d9e932/bce17f6/bench-harness/src/env.rs:105-106
   ok    .claude/rules/arvo-toolbox-not-policer.md:(whole file)
   ok    .claude/rules/arvo-compile-time-last.md:(whole file)
 
-citations checked: 18   ok: 18   failed: 0
+citations checked: 20   ok: 20   failed: 0

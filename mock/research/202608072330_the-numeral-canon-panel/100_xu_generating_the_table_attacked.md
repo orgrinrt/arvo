@@ -171,7 +171,14 @@ Section 7.
 **Seven, outside the question and the sharpest thing I found by accident.** Min-max normalising the cost
 coordinates, which `98`'s p10 and my own p1 both do, breaks independence of irrelevant alternatives:
 **an arm no weighting can ever select changes what every weighting selects**, at up to 6 of 6 regions.
-Under raw coordinates it cannot, in 6 of 6 controls. Section 8.
+Under raw coordinates it cannot, in 6 of 6 controls, and freezing the normalisation range as declared
+constants restores it, also 6 of 6. Section 8.
+
+**Eight. The one cost the encoding has is compile time, and it is unpriced because the instrument does
+not exist.** The harness's CSV schema is entirely runtime measurements of an already-loaded cdylib and its
+only interaction with the compiler is recording `rustc --version`; I checked rather than assumed. On the
+two axes a spike can reach it costs nothing: identical emitted instructions, and **zero bytes**, with a
+control showing the exact 240 bytes the cost table would occupy if it were not const-consumed. Section 9.
 
 ## 2. Attack one: does generating eliminate the check
 
@@ -1081,7 +1088,7 @@ them.
 
 ## 14. Findings, each with its predicate
 
-Stated above at F-100-1 through F-100-6. Notation per I13 and `RULES.md`: a dimension listed with a range
+Stated above at F-100-1, F-100-2, F-100-3, F-100-3b, F-100-4, F-100-5, F-100-6, F-100-7 and F-100-8. Notation per I13 and `RULES.md`: a dimension listed with a range
 or `any` was established across it, listed with a fixed value was established there only, and absent means
 the finding does not hold anywhere that dimension is present.
 
@@ -1132,7 +1139,7 @@ each row carries the phrase the citation is FOR, so a citation drifting onto a n
 rather than passing on a coincidence.
 
 ```
-citations checked: 18   ok: 18   failed: 0
+citations checked: 20   ok: 20   failed: 0
 ```
 
 **It was not clean on the first run and both failures were mine.** The file cited `98:475-477` for "the
