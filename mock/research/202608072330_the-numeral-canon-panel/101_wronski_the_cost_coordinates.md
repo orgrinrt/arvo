@@ -132,7 +132,13 @@ before anything rests on it. Section 4.
 **Seven. An estimator choice is a coordinate choice, and `100`'s replacement of the interquartile range by
 the 95th percentile changes which coordinate is being weighed.** Section 5.
 
-**Eight. Two of op's four stated strategy intents name a quantity the table shape cannot hold, and one of
+**Eight. Q44's guarantee comes from either of two knobs and the register only turns one.** Requiring the
+named arm to be the unique argmin buys exactly what requiring strictly positive weights buys, 9 sections and
+0 selecting a dominated arm, without forbidding a zero weight. And the 72-against-9 gap is one tie: two arms
+declare the same 13 bits, so a pure-size weighting ties them at all six regions and `2^6` sections become
+weakly rationalisable. Section 9b.
+
+**Nine. Two of op's four stated strategy intents name a quantity the table shape cannot hold, and one of
 them cannot be a per-arm scalar at all.** Precise's intent is accuracy "especially within chains and ops,
 not only alone" (`INTENTS.md:126-127`), and a chain's error is not a function of its arms' per-operation
 errors: the per-operation ranking and the chain ranking cross at a computable length. The constructive
@@ -813,6 +819,93 @@ disappear rather than answering it. It is a different objective with different l
 section 4 would have to be recomputed under it. I name it because the unit has assumed a linear objective
 throughout without anyone saying so, including me.
 
+## 9b. What this does to the register's live options
+
+`RULES.md` asks each file to say which options its findings fit, which they fit badly, and which they kill.
+I read `OPTIONS.md` Q14, Q15, Q43, Q44 and Q45 and nothing else in that file, so this covers those five.
+
+**Q14, the exchange rate at which a strategy's preference yields. Fits well, and the cost of one option
+drops.** Q14's options are a stated rate per objective, a lexicographic ordering with no rate, a
+consumer-supplied rate, or silence. Section 4.3 measures the object those options range over: the rate axis
+is partitioned into 8 to 12 cells per family and the interior cells are 0.29 to 1.48 decades wide, so **a
+stated rate has to be right to within a factor of a few, not right.** That is the cheapest of the four
+options getting considerably cheaper, and it also gives the consumer-supplied variant a well-defined
+acceptance test: does the consumer's rate land in a cell, and how far is it from the edge.
+
+It also names what a lexicographic ordering is in these terms: the limit as one rate goes to zero or
+infinity, which is the outermost cell at either end. So the lexicographic option is not a different kind of
+answer, it is the two unbounded cells of the same axis, and section 9b's Q44 entry below is about exactly
+those two cells.
+
+**Q15, whether the axes are independently resolvable. Fits badly, and I add a mechanism rather than a
+verdict.** Q15 is about resolving the strategy's per-axis assignment. Section 4.2 measures the adjacent
+thing: with one coordinate every weighting agrees, so a per-axis argmin is not merely cheaper than a joint
+resolution, it is a different object that cannot express disagreement at all. That does not settle Q15 and
+it does say what the cheapest option costs.
+
+**Q43, checked against generated. Fits, and I add nothing to the fork.** I agree with `100` that the fork
+has no consumer-visible content and that the composition is what replaces it. What I add sits underneath:
+section 3.3 says the differential's tolerance must be stated per coordinate in the coordinate's own units
+rather than as a fraction of the achievable range, because the second form inherits the independence failure
+the same composition is trying to avoid.
+
+**Q44, strictly positive against non-negative. A fourth option, measured, and it costs nothing the other
+three cost.** Q44 records (a) require strict positivity, costing "the ability to express a strategy that
+genuinely does not care about a coordinate"; (b) allow non-negativity and lose the guarantee; (c) allow it
+and carry the dominated-arm check separately.
+
+The property has **two independent knobs and the register's options only turn one of them.**
+`101_probes/p10_the_two_knobs_are_separable.py` runs all four cells on `97`'s model:
+
+```
+     weights     minima  sections   selecting a dominated arm
+      w >= 0       weak        72   63
+      w >= 0     unique         9    0
+       w > 0       weak         9    0
+       w > 0     unique         9    0
+```
+
+**Requiring the named arm to be the unique argmin buys exactly what requiring strict positivity buys, and
+it does not forbid a zero weight.** That is a fourth option: **(d) allow non-negative weights and require a
+unique argmin.** It keeps the guarantee, keeps the ability to zero a coordinate, and asks the design for
+something it should want anyway, since a strategy whose table names an arm that merely ties is a strategy
+whose table does not determine its own answer.
+
+**And the 63 has an exact mechanism, which nobody had named.** Block B: `bitpack-carrier-packed` and
+`bitpack-carrier-packed-simd` both carry 13 bits, so at a pure-size weighting they tie at all six regions.
+That is `2^6 = 64` sections made weakly rationalisable by one tie, of which 63 name `packed` somewhere and
+one is the all-simd section already reachable. **The whole 72-against-9 gap is one tie between two arms with
+the same declared size.** `98`'s account of it, that a zero weight admits an arm the weighting is
+indifferent about, is right and this is the arithmetic under it.
+
+Block B also measures the other half of (a)'s stated cost. At two coordinates a zero weight is the limit of
+positive ones, and the section at `r = 0` is reproduced at `r = 1e-1` through `r = 1e-12`. So under (a) a
+strategy that does not care about a coordinate is expressible **to any tolerance**, just not exactly. What
+(a) actually forbids is not indifference; it is admitting an arm that only ties.
+
+**My own probe got this wrong first and the error is the interesting part.** Its first version used strict
+Pareto domination, found one dominated arm where `97` and `98` name two, and reported 0 in the dominated-arm
+column of all four cells, silently losing the predecessors' 63. `bitpack-carrier-packed` is dominated only
+if equality on a coordinate counts, and it must: if `b <= a` everywhere and `b < a` somewhere then
+`<w, a - b> > 0` for every `w > 0`. The output is kept at
+`101_probes/p10_first_version_used_strict_domination.out`.
+
+**Q45, what to do about arms no weighting can select. I add a discriminator that separates (a) from (c).**
+Q45 offers (a) drop them as measurement spend with no decision attached, (b) they indicate a missing
+coordinate, (c) keep them as a documented negative control.
+
+Section 3.2 measures what keeping them costs, and the answer is conditional: **under raw or frozen
+coordinates a dominated arm changes nothing, 0 of 2000 weightings in 4 of 4 families; under min-max
+normalisation against the arm set, dropping one changes the answer for 961 of 2000 weightings on the carrier
+family.** So (c) is safe exactly when the coordinates are not normalised against the arm set, and unsafe
+otherwise. That is a predicate rather than a preference, and it means Q45 and the normalisation question are
+the same question asked twice.
+
+And (b) gains an instance rather than losing one. `98` tested whether a third coordinate un-dominates an arm
+and withdrew the rescue. Section 4.2 measures the general version: a third coordinate takes the reachable
+section count from 9 to 42, so the coordinate set does change which arms are selectable, and `98`'s specific
+rescue failing is a fact about that coordinate rather than about the mechanism.
+
 ## 10. Located disagreement
 
 **With `100`, on the tail estimator: I break part of it and keep the method.** Its F-100-7 says estimating
@@ -967,6 +1060,19 @@ differently cannot both be run.**
 features any`
 Evidence: `101_probes/p7_a_fidelity_coordinate/`.
 
+**F-101-11. On `97`'s two-coordinate carrier model, rationalisability has two independent knobs and either
+one alone collapses the count from 72 to 9 with no section selecting a dominated arm: allowing a zero weight
+while requiring the named arm to be the unique argmin gives 9, and requiring strictly positive weights while
+allowing ties gives 9. The 63-section gap is produced by a single tie: `bitpack-carrier-packed` and
+`bitpack-carrier-packed-simd` both declare 13 bits, so a pure-size weighting ties them at all six regions,
+making `2^6` sections weakly rationalisable of which 63 name the dominated arm. The section a zero weight on
+size selects is reproduced by strictly positive exchange rates from `1e-1` down to `1e-12`.**
+`holds for: family = bitpack-carrier-width, regions = 6, arms = 5 (control dropped), cost coordinates = 2
+(median algo_ns, bits per element declared as 16, 32, 64, 13, 13), domination = weak Pareto at every region,
+exact rational arithmetic, cost source = the committed CSVs, threads = 1, host = the one those runs were
+taken on`
+Evidence: `101_probes/p10_the_two_knobs_are_separable.py`.
+
 ## 13. What I did not do, and what I could not settle
 
 **I did not derive blind.** My brief carried `100`'s three headline findings, so nothing here claims
@@ -977,8 +1083,8 @@ reads.
 
 **I read a small part of the panel.** In full: `INTENTS.md`, `RULES.md`, `99`, `100`, `96`. In part: `98`
 via its p6 output and `p6_model97.json`, `97` via `98`'s reproduction of it and via `99` and `100`'s
-accounts, `93` and `94` only through those accounts. **Not read:** every other member file, `OPTIONS.md`
-beyond what `100` quotes of Q43, `DROPLIST.md`, `PERSONA_CALLS.md`, `PRIOR_CALLS.md`, the `SEED_*` files,
+accounts, `93` and `94` only through those accounts, and `OPTIONS.md` entries Q14, Q15, Q43, Q44 and Q45 in
+full. **Not read:** every other member file, the rest of `OPTIONS.md`, `DROPLIST.md`, `PERSONA_CALLS.md`, `PRIOR_CALLS.md`, the `SEED_*` files,
 the archive. So where any of this restates something, I do not know it. In particular **I did not read
 `97`'s own file**, only `98`'s reproduction of its model and its published counts, which is exactly the
 single-point-of-failure `RULES.md` names; my section 4.1 rests on `98`'s account of `97`'s model being
