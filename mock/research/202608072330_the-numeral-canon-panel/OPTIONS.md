@@ -2086,16 +2086,34 @@ generated winner table, and assert at const time that the third is the argmin of
 second. A mutant refuses with `E0080`. `100` section 6.1 states it as four arms with disjoint
 const-checkable predicates, which is the form I13 asks for.
 
-**The measurement that motivates (b), and it is one instance.** Bootstrapping the committed bench
-samples, a fixed weighting produces **30, 8 and 77 distinct sections** across three families, and on one
-family the committed section is not the modal one. So a section is not stable across a rerun of the same
-bench on the same afternoon, which makes it a poor object to apply a check to.
+**The measurement that originally motivated generating, and what happened to it.** `98` bootstrapped the
+committed bench samples and reported a fixed weighting producing **30, 8 and 77 distinct sections**
+across three families, with the committed section not modal on one, concluding a section is not stable
+enough to be an object a check applies to.
 Evidence: `98_probes/p10_is_the_table_stable_enough_to_be_an_object.out`,
 `98_probes/p14_generating_from_a_robust_summary.out`.
 
-**Standing: ONE EXPERT plus a predecessor's unregistered fork, which is not two independent instances.**
-`98` proposes it and `93` had reached the fork without choosing. It wants an independent attack before
-anything rests on it.
+**That motivation is largely instrument, and it was the register entry's own author who left this
+paragraph standing after the correction arrived.** `100` section 4 finds every speed-first flip in it
+came from one family measured against its byte-identical noise-floor control, and that dropping that
+control takes 31 distinct sections to 1. `100` then bounded its own result rather than overclaiming: the
+mechanism generalises across 4 of 4 control-bearing families, the "it is free" conclusion across 2 of 4.
+
+**And the control premise is itself not uniformly true.** `101`'s test gate checked the byte-identity
+that three module headers assert and only one checks: **`bitpack-wide-d16-control` is not byte-identical**,
+differing at three constant-pool load offsets. So "measured against an identical control" holds per
+family and has to be checked per family rather than assumed from the naming convention.
+
+**Standing, corrected.** The entry previously read "ONE EXPERT ... wants an independent attack before
+anything rests on it". That attack has happened: `100` on the proposal itself and `101` on its
+motivating measurement. What survives is not the original proposal but the composition above, and the
+justification for it is not instability of sections. It is that a check on a generated table catches
+none of five injected generator defect classes while the same check on the stated weighting catches all
+of them.
+
+**A correction to `100`'s own predicate, from `101`.** Three of the four control-bearing families are
+threaded benches whose region key encodes thread count in its last digit, so `100:520`'s `threads = 1`
+names a region that finding does not live in.
 
 ### Q44. Whether a canon-level weighting must be strictly positive or may be non-negative
 
@@ -2199,3 +2217,56 @@ conclusion drawn from it does not survive adding one subtraction law. And `93`'s
 priced as a cost.
 
 Q41 is therefore engaged, not closed, and what replaces the single-order reading is `97` section 4.4.
+
+### Q44 addendum: a fourth option, and the gap turns out to be one tie
+
+`101` reports an option none of (a), (b), (c) covers. **Require a unique argmin.** It buys the same
+no-dominated-arm guarantee as strict positivity without forbidding a zero weight, so a strategy may
+still declare it does not care about a coordinate.
+
+And the gap the whole entry is about is smaller than it reads: **the entire 72-against-9 difference is
+one tie, between two arms that both declare 13 bits.** A rule about ties therefore settles it, where a
+rule about the sign of every weight settles it by forbidding something nobody wanted to forbid.
+
+Evidence in `101_probes/`. This makes **three independent instances** reproducing `97`'s 72 and 9:
+`97`, `98` and now `101`, each from its own implementation on the same committed data.
+
+### Q48. What the cost coordinates are, and what the corpus cannot express
+
+Raised by `101`, which is the first member to examine the coordinates rather than the weighting over
+them. It is the load-bearing object once the unit settles that a strategy is a weighting plus a cost
+table, and until this file nobody had looked.
+
+**The corpus measures one coordinate.** Across **17 CSV columns, 254 files and 104080 rows**, 9 carry
+any information and **3 vary between arms**. Eight columns are dead, and six of those are *reachable*
+rather than structurally absent: **0 of 94 variant crates implement `score_output` or
+`score_dimensions`**, and **all 82 measured call sites use `timed!`**, which leaves `setup_ns`,
+`first_ns` and `digest` zero by construction.
+
+**A coordinate set is a countable ceiling on how many strategies can exist**, and `101` counts it:
+**1, then 9, then 42** as coordinates are added. This changes the standing of `98`'s finding that two of
+op's four stated strategy intents have no coordinate. **An intent with no coordinate is not unmeasured.
+It is inexpressible**: no weighting over the coordinates that exist can produce a strategy that
+distinguishes on it.
+
+**Accuracy cannot be a per-arm scalar.** The per-operation and chain rankings **cross at k = 4**, so a
+single accuracy number per arm cannot order the arms consistently. `101`'s proposal: **chain length is a
+region dimension**, which is the shape the corpus already uses for thread count rather than a new
+mechanism.
+
+**Normalisation is a change of basis on the weighting, not a decision about the costs.** Frozen-range
+and raw are one model: **2000 of 2000 identical sections across 4 of 4 families**. So `100`'s remedy for
+the independence-of-irrelevant-alternatives failure costs nothing, which is the useful half. The
+corollary bites `100`'s own band: stated as a fraction of the achievable range it grows **59x to 185x**
+when an unselectable arm is added.
+
+**And `100`'s estimator swap deletes the coordinate it was fixing.** `{median, p95}` reaches one section
+on the carrier family where `{median, IQR}` reaches six. Separation and expressiveness **anti-correlate
+at -0.64, -0.71 and -0.67 across three families**, so the criterion is position-dependent rather than a
+tie to be broken once.
+
+**The options, and they are not exclusive.** (a) Add the missing coordinates to the corpus, which is
+work in the harness and in 94 variant crates. (b) Treat what cannot be expressed as a region dimension
+instead, as `101` proposes for chain length and as the corpus already does for threads. (c) Accept the
+ceiling and state in the canon which intents the coordinate set can and cannot distinguish, so the limit
+is declared rather than discovered. Each is right somewhere and the shapes compose.
