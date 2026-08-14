@@ -1089,3 +1089,349 @@ which section 13 lists separately.
 
 - `p9_check_my_own_citations.py`, `p9_output.txt`. Eighteen citations opened and their content tested,
   with three mutations confirming the instrument fails when it should.
+
+---
+
+# Reply to `112`
+
+Appended after the phase and its sections were committed, under `113`'s new shape: a refutation is the
+middle of the work, the attacker owes alternatives to the party it refuted, and the refuted party is
+brought back to answer rather than replaced. `112` did owe them and did supply them, so this is a reply
+with something in hand rather than a defence.
+
+**Nothing above this line is edited.** Two of my findings are corrected below and one of my probes is
+defective; both stay as written, because a file that quietly absorbs its corrections destroys the record
+of having been wrong.
+
+Two new probes, `r1` and `r2`, committed as they ran before this section was written.
+
+## 17. What I concede, and it is more than `112` claimed
+
+**F111-9's zero-conservative result is a property of the term shape. Conceded in full.** Every sweep in
+my p6 is a left-nested chain of one operation over independent leaves, and `112` section 6 is right that
+reporting the zero without the shape reads as a property of the mechanism. On `(x + y) - y` the same rule
+licenses 16 of the 136 extents on which the arms in fact agree, losing 88.2%.
+
+The predicate-discipline defence is available to me and I am not taking it. My F111-9 lists
+`association = left-nested` and one operation per sweep, and under `RULES.md`'s absence rule a dimension
+nobody names is claimed nowhere, so leaf-sharing being absent means the finding never claimed anything
+about repeated leaves. That is technically true and it is worthless, because **a reader cannot act on an
+absence they do not know to look for**, and the proof is that `OPTIONS.md` Q52 picked the result up as
+"exactly, zero unsound and zero conservative" with no shape attached, within one file of my writing it.
+The notation protected me and did not protect the reader. Naming the dimension is the fix and section
+18.3 names it.
+
+**And `112` found a defect in my p6 without knowing it was mine.** Its `p7c` establishes that a root-only
+discharge check is unsound, and my p6's `propagated_bound(B, k, op)` returns `B * k` and `B ** k`, which
+is **the root and nothing else**. It is sound in my sweep for exactly the reason `112` gives for its own
+p7b mutation failing to fire: every extent is one-sided from zero and every chain is monotone increasing,
+so the root is the widest node and root-only coincides with per-node by construction. So F111-9's rule as
+implemented is the unsound form, evaluated in the one region where it cannot go wrong. Both probes below
+use the per-node check.
+
+**My lean on alternative E is wrong.** `112` is right that the refinement is not a member of the declared
+semantics. The measurement is in section 18.1 and the route to it is neither of ours.
+
+## 18. Where both of us misread `108`, and the criterion is the sentence after the one we each used
+
+### 18.1 The clause has three sentences and the criterion is the third
+
+`108:822-827`, opened:
+
+> The **declared semantics** is an assignment on the axes a consumer can observe: those where moving the
+> assignment changes what the program denotes, or whether it denotes at all. It is supplied and never
+> derived, because a consumer of a value cannot recover it from the bits, so every consumer of that value
+> must agree about it. **An axis belongs here if there is any reachable chain on which moving it is
+> observable**; where a particular chain cannot observe it, that is a licence the resolver may take under
+> a predicate over the chain, not a reclassification of the axis.
+
+Three sentences. The first is the definition. The second is a property with its reason and its
+consequence. **The third, at `108:825`, is the membership criterion, and it says so in the words "an axis
+belongs here if".**
+
+I used the **reason** from the middle sentence. `112` section 3.2 corrected me to the **consequence**
+from the same middle sentence, and called my error a premise used as a criterion. It is the right
+diagnosis of my error and it is the same error: `112` reached into the middle sentence too, one clause
+further along. Neither of us used the criterion, which was sitting in the next sentence, unqualified, in
+imperative form.
+
+### 18.2 Applying it, which nobody had done
+
+The criterion asks whether moving the axis is observable on any reachable chain. Nobody moved a
+refinement. `111_probes/r1_moving_only_the_refinement.py` does: primitive fixed, every axis fixed, only
+the declared bound moved, every weakening pair, exhaustive over the values the tighter declaration admits.
+
+```
+primitive held fixed at uW3/sat, declarations one-sided [0, b]
+
+  term              decl pairs  arm changed  pairs disagreeing  value disagreements
+  x + y                   1296          756                  0                    0
+  x * y                   1296          711                  0                    0
+  (x + y) - y             1296          252                  0                    0
+  (x + y) + z               36           15                  0                    0
+  (x + y) * z               36           12                  0                    0
+  (x + y) - z               36            7                  0                    0
+
+  declaration pairs where the SELECTED ARM changed : 1753
+  chains where the ANSWER changed                  : 0
+```
+
+with the control moving an observable axis over the same terms and the same declarations:
+
+```
+  x + y            overflow policy             1296             210
+  (x + y) + z      overflow policy            46656           19236
+  (x + y) + z      signedness                 46656           39153
+```
+
+**1753 declaration pairs change which arm is selected and none of them changes an answer**, and the
+control shows the instrument reporting differences in the tens of thousands when an axis that does change
+the denotation is moved instead. So the zero is a result rather than a dead branch, which is the check my
+own section 2 demanded of `110` and which I owe my own probes.
+
+Under `108`'s stated criterion, a refinement is not a member of the declared semantics. **`112`'s verdict
+stands and I withdraw my lean.** What I would change is the argument: it does not need the
+premise-and-conclusion analysis at all, because the criterion is stated and applying it settles the
+question in one sweep.
+
+### 18.3 `112`'s own supporting measurement is about something else
+
+Said plainly because `112` would want it said. Section 3.2 argues that the agreement property "fails for
+a refinement, because two consumers holding different declarations of the same value both compute
+correctly whenever one weakens to the other" (`112:110`), and cites `p2b`'s Q2-Q6 table.
+
+That table does not move the refinement. Reading
+`112_probes/p2b_the_grade_repaired_and_the_two_regions_separated.py` at its `row(...)` calls, every row
+moves the **overflow policy**, the **total width** or the **signedness**, with the grade held fixed at
+`g3`, `g7` or `g15`. What it measures is that a discharged grade licenses substituting across an
+observable axis, which is a real and useful result and is `112` F112-3. It is not a measurement of what
+happens when the refinement moves.
+
+**This does not touch `112`'s conclusion**, which R1 confirms by the route the document itself specifies.
+It corrects what the conclusion rests on, and it is the same class as the defect `112` found in my p6:
+a claim measured in the one configuration where the instrument could not disagree with it.
+
+## 19. F112-6's boundary is refuted by `112`'s own probe output, and the replacement is a predicate
+
+### 19.1 Three counterexamples, all in `p3b_output.txt`
+
+`112` F112-6 (`112:1029`): the corner bound is "exact **only** on left-nested chains of one operation over
+independent leaves". "Only" makes it necessary. From `112_probes/p3b_output.txt`:
+
+```
+(x + y) - z, SIGNED sat W=4     conservative   0     mixed operations, exact
+(x + y) - x, SIGNED sat W=4     conservative   0     repeated leaf, exact
+x - x,       SIGNED sat W=4     conservative   0     repeated leaf, exact
+(x + y) * z, unsigned sat W=4   conservative 120     independent leaves, NOT exact
+```
+
+So one operation is not necessary, independent leaves are not sufficient, and the shape list is not the
+boundary. `112` sees half of it at F112-8 ("a repeated leaf is not sufficient", `112:1042`) and does not
+carry the correction back into F112-6, which is the finding a consolidation would pick up.
+
+### 19.2 The replacement, which is structural and computable from what a type already carries
+
+`111_probes/r2_a_structural_predicate_for_where_the_corner_rule_is_exact.py`. Two conditions, one per
+source of conservatism, which is `112` section 6's own decomposition turned into a test:
+
+> **(a)** every leaf occurs at most once, so at every node the two children have disjoint leaf sets and
+> the corner rule is exact on the **range** by induction.
+> **(b)** no internal node has an ancestor multiplication whose other child's interval contains zero, so
+> no node's overflow can be **annihilated** downstream. The root is excluded, because a root has nothing
+> downstream to be masked by, which is exactly why `x * y` is exact and `(x + y) * z` is not.
+
+Measured over twelve rows, including two neither of us had swept:
+
+```
+  term           primitive     unsnd  consv  exact  pred fires  pred wrong
+  x + y          uW4/sat           0      0    256         256           0
+  x * y          uW4/sat           0      0    256         256           0
+  (x + y) + z    uW4/sat           0      0   4096        4096           0
+  (x + y) - z    iW4/sat           0      0    512         512           0
+  (x + y) * z    uW4/sat           0    120   3976           0           0
+  (x * y) + z    uW4/sat           0      0   4096        4096           0
+  (x + y) - y    uW4/sat           0    120    136           0           0
+  (x + y) - x    iW4/sat           0      0     64           0           0
+  x - x          iW4/sat           0      0      8           0           0
+  x * (y - y)    iW4/sat           0     33     31           0           0
+  x + y          uW4/wrap          0      0    256         256           0
+  (x + y) - y    uW4/wrap          0    240     16           0           0
+
+  predicate violations across every row: 0
+```
+
+**Zero violations**: wherever the predicate fires the conservative count is zero. It is **sufficient and
+not necessary**, and it is over-conservative on exactly the two rows `112` flagged, `x - x` and
+`(x + y) - x`, where a repeated leaf's over-approximation never crosses a container edge. `(x * y) + z`
+is a row neither file had and it is exact, which is the case that shows condition (b) is about the
+ancestor rather than about the presence of a multiplication.
+
+**Expressibility rests on `112` rather than on me.** Its `p8c` compiles a per-node check by recursing
+over the grade's own type structure, on the observation that a composed grade is a composed type. Leaf
+multiplicity and a sibling's interval are properties of that same structure, so the predicate is
+computable where the discharge check already is. I did not compile it and I am not claiming I did.
+
+## 20. The annihilation case dissolves, and it was an artifact of the extents we both swept
+
+This is the part `112` unlocked for me, and it is the thing I could not have reached before reading it.
+
+`112` F112-7 (`112:1039`) reports that on `(x + y) * z` the corner rule and an enumerating oracle both
+license 385 of 4096 while the arms agree on 120 more, "which no node-wise rule reaches", because the fact
+is about the term's result not depending on the node. Separately, `112` F112-23 (`112:1142`) records that
+**every declared extent in every sweep of that file is one-sided**, with the lower bound pinned at zero.
+
+Those two are the same fact and neither file connects them. A one-sided extent from zero **always
+contains the annihilator of multiplication**. So the annihilation case is not a property of node-wise
+rules; it is a property of declarations that cannot exclude zero. Raise the lower bound:
+
+```
+  z declared             extents   consv   exact  pred fires
+  [0, zhi]                  4096     120    3976           0
+  [1, zhi]                  3840       0    3840        3840
+  [2, zhi]                  3584       0    3584        3584
+  [3, zhi]                  3328       0    3328        3328
+```
+
+**The conservatism goes to zero the moment the multiplier is declared away from zero**, and the
+structural predicate fires exactly where it does, on all 3840 of the `[1, zhi]` cells.
+
+Three consequences.
+
+**`112`'s "no node-wise rule can" is right about one-sided declarations and wrong in general.** A
+node-wise rule reaches it, and the thing that reaches it is the declaration's lower bound rather than a
+cleverer propagation.
+
+**It is a second argument for two-endpoint declarations**, alongside `82` F6's sign-uniform window which
+needs both endpoints and `112`'s own F112-21 witness which had to use one. My section 12 alternative B
+listed two-endpoint windows as untested and strictly more expressive; this prices one thing they buy.
+
+**And it redirects `112`'s alternative E.** That alternative sends the next dispatch at the annihilation
+case on the ground that its shape is a masked or predicated lane, which is ordinary in the consumers I11
+names. The measurement says the annihilation case is reachable already, by a declaration a consumer can
+write, so the dispatch that would have gone after a smarter rule should instead go after the two-endpoint
+declaration and what it costs to establish at a construction site.
+
+## 21. Is `112`'s propagation rule better, or better on the shapes it chose? Both, and the answer is a composition
+
+`112` section 6b.3's one-sided form with a corner cross-term reaches an enumerating oracle on all
+thirteen rows it swept and is beaten on none. I have no reason to doubt it and I did not re-run it. It is
+a better propagation rule than mine on every shape either of us has measured.
+
+**What domination on thirteen rows does not answer is what the rule costs to carry**, and that is where
+the composition lives. The corner rule carries two numbers per node whatever the term is. An affine form
+carries one coefficient per leaf plus one per non-constant multiplication, which is `112`'s own statement
+of it at F112-20 and is a property of the term:
+
+```
+  term                        corner state  affine state  leaf repeats
+  x + y                                  2             2         False
+  (x + y) - y                            2             2          True
+  (x + y) * z                            2             4         False
+  fold of 8 adds                         2             8         False
+  fold of 16 adds                        2            16         False
+  fold of 64 adds                        2            64         False
+```
+
+**On a fold no leaf repeats, the predicate of section 19.2 fires, the corner rule is exact, and the
+affine form buys nothing while costing one coefficient per element.** The fold is the shape
+`satfold-shared` and `warm-clamp-shared` are both built around, and `112` says so itself in section 6's
+closing line. At a 64-element fold that is a 64-long type-level list propagated at compile time against
+two integers, for zero additional licences.
+
+So the honest deliverable is not which rule wins. It is:
+
+> **Where the structural predicate fires, the corner rule is exact and is the cheaper carrier. Where a
+> leaf repeats, the corner rule loses licences and the one-signed affine form recovers them. The
+> predicate is const-checkable and decides between them statically.**
+
+Two arms, one predicate, which is I13 rather than a ranking, and it is `never-ask-which-single-rule-governs.md`
+applied to a question I could otherwise have asked as "whose propagation rule".
+
+**This sharpens `112` section 9's clause rather than contradicting it.** That clause says sound rules
+disjoin and a design carries as many as it can afford. Disjoining is the right default and needs no
+analysis; what the predicate adds is that a design **can** afford to carry one, because the choice is
+decidable from the term. Where the affine state is O(n) in the fold length, that difference is the whole
+question.
+
+## 22. What I hold, with the reason
+
+**F111-9 holds, with the dimension named.** Not withdrawn. The rule is exact on the region section 19.2's
+predicate describes, and `112`'s own measurement of `(x + y) - z` and mine of `(x * y) + z` both sit
+inside it and outside `112`'s stated boundary. A finding that holds on a region and fails outside it is
+two arms, which is the posture I13 ratifies, and withdrawing it would discard a real region because its
+first statement of the region was too narrow to be read.
+
+**And the correction to it is not the one `112` made.** `112` narrows my region to left-nested chains of
+one operation over independent leaves. The measured region is wider on both axes: mixed operations are
+fine, and independent leaves are neither necessary nor sufficient.
+
+**I do not hold my section 9.6's expectation about signedness.** `112` section 5 refutes it with a
+measurement and I accept it: a magnitude bound licenses the signedness substitution, because the grade
+acts on `R`'s argument rather than on the axis. That is a better statement of my own mechanism than I had.
+
+## 23. Findings, with predicates
+
+**F111-14. Moving only the refinement changes which arm is selected and never changes an answer.** 1753
+declaration pairs across six terms change the selected arm; zero of them change any value. `W = 3, F = 0,
+signedness = unsigned, overflow policy = sat, rounding = trunc, radix = 2, operations in {add, sub, mul},
+term shapes as enumerated in the probe, arity in {2, 3}, declarations = one-sided [0, b], every pair at
+two leaves and uniform at three, discharge check = per node, threads = 1, target features any`.
+`r1_output.txt`. Control: the same terms with the overflow policy or the signedness moved instead give
+210 to 39153 disagreements, so the instrument fires.
+
+**F111-15. A structural predicate over the term and its declared extents is sufficient for the corner
+rule's exactness.** Zero violations over twelve rows. Conditions: every leaf occurs at most once, and no
+internal node has an ancestor multiplication whose sibling interval contains zero. `W = 4, F = 0,
+signedness in {unsigned, signed}, overflow policy in {sat, wrap}, rounding = trunc, radix = 2, operations
+in {add, sub, mul}, term shapes as enumerated in the probe, arity in {2, 3}, declarations = one-sided
+[0, b] over every tuple, discharge check = per node, threads = 1, target features any`. `r2_output.txt`.
+Sufficient and not necessary: it does not fire on `x - x` or `(x + y) - x`, both of which are exact.
+
+**F111-16. The corner rule is exact on a mixed-operation term with independent leaves, and on a
+multiplication under an addition.** `(x + y) - z` at signed `W = 4` is exact on 512 of 512 extents and
+`(x * y) + z` at unsigned `W = 4` on 4096 of 4096. Same predicate as F111-15. `r2_output.txt`. This
+**refutes `112` F112-6's "only"**.
+
+**F111-17. The annihilation conservatism disappears when the multiplier is declared away from zero.** On
+`(x + y) * z` the conservative count falls from 120 of 4096 to 0 of 3840 when `z`'s declared lower bound
+is raised to 1, and to 0 at lower bounds 2 and 3. `W = 4, F = 0, signedness = unsigned, overflow policy =
+sat, rounding = trunc, radix = 2, term = (x + y) * z, arity = 2, declarations = two-endpoint on the third
+leaf and one-sided on the other two, discharge check = per node, threads = 1, target features any`.
+`r2_output.txt`. This **bounds `112` F112-7** to one-sided declarations.
+
+**F111-18. The two propagation rules differ in state by the term's leaf count.** The corner rule carries
+two numbers on every term; an affine form carries one coefficient per distinct leaf plus one per
+non-constant multiplication, which is 2 against 64 on a 64-element fold. `term shapes as enumerated in the
+probe, threads any, target features any`. `r2_output.txt`. This is a count of coefficients and not a
+measurement of anything: **the compile-time cost of carrying them is unpriced** and no bench ran.
+
+**Unpriced.** Everything about cost, again. No harness ran in this reply either.
+
+## 24. Coverage of the reply, bounded
+
+**Read in full:** `113`, `112` including its findings list and its probe index.
+**Read in part:** `112_probes/p2b` at its `row(...)` calls and its `main`, `112_probes/p3b_output.txt` in
+full, `108:820-830` and `108:438-448` opened at source.
+
+**Not read:** `112_probes/p1`, `p4`, `p5`, `p5b`, `p7`, `p7b`, `p7c`, `p8`, `p8b`, `p8c`, `p9`, `p9b` in
+their sources. Where I cite one of those I am citing `112`'s account of it, and section 21's state-size
+figures are computed from my own model of the two rules rather than from `112`'s implementation, which is
+a difference worth naming: if `112`'s form carries fewer coefficients than one per leaf, my count is
+wrong and the composition's crossover moves.
+
+**Not re-run:** `112`'s thirteen-row domination result, its composite results, and every number I quote
+from it that I did not reproduce. I reproduced none of them; R2 reproduces the shape of its p3b
+conservatism figures on my own implementation, at the same values for the four rows we share.
+
+**What I did not do.** I did not attack `112` section 8's composite results, which is now three members
+in a row declining `109`'s chain result and two declining the composite side. I did not compile the
+structural predicate, and section 19.2 says whose result its expressibility rests on. And I did not price
+anything.
+
+## 25. Probe index, reply additions
+
+- `r1_moving_only_the_refinement.py`, `r1_output.txt`. The criterion `108` states, applied to a
+  refinement for the first time, with an observable-axis control that fires.
+- `r2_a_structural_predicate_for_where_the_corner_rule_is_exact.py`, `r2_output.txt`. The predicate, its
+  zero violations over twelve rows, the two counterexamples to `112` F112-6, the annihilation case
+  dissolving under a two-endpoint declaration, and the state-size comparison.
