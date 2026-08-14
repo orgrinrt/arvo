@@ -1,0 +1,207 @@
+==============================================================================
+p1. The structural predicate over every term, and its incompleteness
+==============================================================================
+
+------------------------------------------------------------------------------
+EXHAUSTIVE  96 terms at 2 and 3 leaf slots, one-sided [0,b]   primitive uW3/sat
+  cells 13032   corner licenses 2247   arms agree 2950
+  corner rule: unsound 0   conservative 703   exact 12329
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                  6336           0                     5993
+  (a) only  [C1]               9408         234                     3155
+  (b) only  [C2]               8760         307                     3876
+  always    [C3]              13032         703                        0
+  licenses or (a and b)        7631           0                     4698
+
+  honest-refusal check: 5384 cells where (a) and (b) hold and the rule refuses;
+    an enumerating oracle also refuses on all but 0 of them
+
+  C4 mutation, root-only discharge: unsound on 38 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+EXHAUSTIVE  96 terms at 2 and 3 leaf slots, one-sided [0,b]   primitive iW3/sat
+  cells 2148   corner licenses 1245   arms agree 1338
+  corner rule: unsound 0   conservative 93   exact 2055
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                   816           0                     1239
+  (a) only  [C1]               1200          20                      875
+  (b) only  [C2]               1452          49                      652
+  always    [C3]               2148          93                        0
+  licenses or (a and b)        1561           0                      494
+
+  honest-refusal check: 316 cells where (a) and (b) hold and the rule refuses;
+    an enumerating oracle also refuses on all but 0 of them
+
+  C4 mutation, root-only discharge: unsound on 34 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+EXHAUSTIVE  96 terms at 2 and 3 leaf slots, one-sided [0,b]   primitive uW3/wrap
+  cells 13032   corner licenses 2247   arms agree 3210
+  corner rule: unsound 0   conservative 963   exact 12069
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                  6336          28                     5761
+  (a) only  [C1]               9408         262                     2923
+  (b) only  [C2]               8760         567                     3876
+  always    [C3]              13032         963                        0
+  licenses or (a and b)        7631          28                     4466
+
+  honest-refusal check: 5384 cells where (a) and (b) hold and the rule refuses;
+    an enumerating oracle also refuses on all but 0 of them
+
+  C4 mutation, root-only discharge: unsound on 0 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+EXHAUSTIVE  96 terms at 2 and 3 leaf slots, one-sided [0,b]   primitive iW3/wrap
+  cells 2148   corner licenses 1245   arms agree 1402
+  corner rule: unsound 0   conservative 157   exact 1991
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                   816          16                     1191
+  (a) only  [C1]               1200          36                      827
+  (b) only  [C2]               1452         113                      652
+  always    [C3]               2148         157                        0
+  licenses or (a and b)        1561          16                      446
+
+  honest-refusal check: 316 cells where (a) and (b) hold and the rule refuses;
+    an enumerating oracle also refuses on all but 0 of them
+
+  C4 mutation, root-only discharge: unsound on 0 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+EXHAUSTIVE  6 terms at 2 leaf slots, TWO-ENDPOINT [lo,hi]   primitive uW3/sat
+  cells 3996   corner licenses 924   arms agree 952
+  corner rule: unsound 0   conservative 28   exact 3968
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                  3888           0                       80
+  (a) only  [C1]               3888           0                       80
+  (b) only  [C2]               3996          28                        0
+  always    [C3]               3996          28                        0
+  licenses or (a and b)        3912           0                       56
+
+  honest-refusal check: 2988 cells where (a) and (b) hold and the rule refuses;
+    an enumerating oracle also refuses on all but 0 of them
+
+  C4 mutation, root-only discharge: unsound on 0 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+EXHAUSTIVE  6 terms at 2 leaf slots, TWO-ENDPOINT [lo,hi]   primitive iW3/sat
+  cells 3996   corner licenses 1522   arms agree 1532
+  corner rule: unsound 0   conservative 10   exact 3986
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                  3888           0                       98
+  (a) only  [C1]               3888           0                       98
+  (b) only  [C2]               3996          10                        0
+  always    [C3]               3996          10                        0
+  licenses or (a and b)        3930           0                       56
+
+  honest-refusal check: 2408 cells where (a) and (b) hold and the rule refuses;
+    an enumerating oracle also refuses on all but 0 of them
+
+  C4 mutation, root-only discharge: unsound on 0 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+EXHAUSTIVE  6 terms at 2 leaf slots, TWO-ENDPOINT [lo,hi]   primitive iW3/wrap
+  cells 3996   corner licenses 1522   arms agree 1532
+  corner rule: unsound 0   conservative 10   exact 3986
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                  3888           0                       98
+  (a) only  [C1]               3888           0                       98
+  (b) only  [C2]               3996          10                        0
+  always    [C3]               3996          10                        0
+  licenses or (a and b)        3930           0                       56
+
+  honest-refusal check: 2408 cells where (a) and (b) hold and the rule refuses;
+    an enumerating oracle also refuses on all but 0 of them
+
+  C4 mutation, root-only discharge: unsound on 0 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+SAMPLED  90 terms at 3 leaf slots, TWO-ENDPOINT, 4000 declarations each   primitive uW3/sat
+  cells 360000   corner licenses 34404   arms agree 71033
+  corner rule: unsound 0   conservative 36629   exact 323371
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                 66661           0                   256710
+  (a) only  [C1]              72000         534                   251905
+  (b) only  [C2]             333427       32343                    22287
+  always    [C3]             360000       36629                        0
+  licenses or (a and b)       97441           0                   225930
+
+  honest-refusal check: 63037 cells where (a) and (b) hold and the rule refuses;
+    an enumerating oracle also refuses on all but 0 of them
+
+  C4 mutation, root-only discharge: unsound on 10064 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+SAMPLED  90 terms at 3 leaf slots, TWO-ENDPOINT, 4000 declarations each   primitive iW3/sat
+  cells 360000   corner licenses 70718   arms agree 105757
+  corner rule: unsound 0   conservative 35039   exact 324961
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                 58555           0                   266406
+  (a) only  [C1]              72000         385                   253346
+  (b) only  [C2]             293289       27258                    58930
+  always    [C3]             360000       35039                        0
+  licenses or (a and b)      120976           0                   203985
+
+  honest-refusal check: 50258 cells where (a) and (b) hold and the rule refuses;
+    an enumerating oracle also refuses on all but 0 of them
+
+  C4 mutation, root-only discharge: unsound on 10774 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+SAMPLED  120 of 2025 terms at 4 leaf slots, one-sided, 300 declarations each   primitive uW2/sat
+  cells 5964   corner licenses 1166   arms agree 1741
+  corner rule: unsound 0   conservative 575   exact 5389
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                  1024           0                     4365
+  (a) only  [C1]               2048         172                     3513
+  (b) only  [C2]               2844         106                     2651
+  always    [C3]               5964         575                        0
+  licenses or (a and b)        2086           0                     3303
+
+  C4 mutation, root-only discharge: unsound on 45 cells (0 would mean the check cannot fire here)
+
+------------------------------------------------------------------------------
+SAMPLED  120 of 2025 terms at 4 leaf slots, one-sided, 300 declarations each   primitive uW3/sat
+  cells 22516   corner licenses 2218   arms agree 4061
+  corner rule: unsound 0   conservative 1843   exact 20673
+
+  predicate                   fires  violations   declines an exact cell
+  (a) and (b)                  1500           0                    19173
+  (a) only  [C1]               2400          69                    18342
+  (b) only  [C2]              11112         379                     9940
+  always    [C3]              22516        1843                        0
+  licenses or (a and b)        3573           0                    17100
+
+  C4 mutation, root-only discharge: unsound on 58 cells (0 would mean the check cannot fire here)
+
+==============================================================================
+READING THE CONTROLS
+==============================================================================
+
+  C1 and C2 fire when the '(a) only' and '(b) only' rows show violations. A
+  violation is the predicate claiming exactness on a cell where the corner rule
+  is in fact conservative, which is the only way the predicate can be wrong.
+  If either control shows zero, that condition is carrying no weight in this
+  region and the finding must say so.
+
+  C3, the always-fires row, must show violations equal to the conservative count.
+  If it shows zero the sweep contains no conservative cell at all and every
+  other row's zero is a dead branch rather than a result.
+
+  C4 fires when the root-only mutation shows a nonzero unsound count, which is
+  `112` F112-21 reproduced on this instrument.
+
+  The 'declines an exact cell' column is the predicate's INCOMPLETENESS: cells
+  where the corner rule is not conservative and the predicate refuses to say so.
+  Lower is better and zero is unreachable, because the predicate is structural
+  and exactness is not.
+
