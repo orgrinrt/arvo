@@ -1,0 +1,29 @@
+$ python3 p9_check_my_own_citations.py
+ok    110_willsey_the_primitive_derived_cold.md                 :282    110 prices a split at nothing
+ok    110_willsey_the_primitive_derived_cold.md                 :357    110 prices the same act as a wall
+ok    110_willsey_the_primitive_derived_cold.md                 :370    110 says the wall has no in-language repair
+ok    110_willsey_the_primitive_derived_cold.md                 :540    110 half-notices the tension itself
+ok    p2_laws_are_a_projection_not_a_coordinate.py              :192    the sweep is a product over exactly five axes
+ok    p2_laws_are_a_projection_not_a_coordinate.py              :52     the key is those five plus a constant radix
+ok    p5_definitional_versus_reachability_degeneracy.py         :99     110's grid-closed signature has no nullary operation
+ok    p5_definitional_versus_reachability_degeneracy.py         :102    nor does its widest one
+ok    82_jhala_lifting_a_measured_region_into_a_declaration.md  :770    82 F6 is about a declared operand window
+ok    82_jhala_lifting_a_measured_region_into_a_declaration.md  :899    82 says the window separates verdicts with everything else fixed
+ok    18_jhala_the_denotation_clause.md                         :363    18 states soundness is quantified over an operation set
+ok    35_mcsherry_what_the_layers_above_need_from_the_numeral.md:63     35 records the old tree's algorithm crates bounding on FromConstant
+ok    lib.rs                                                    :519    a shipped const fn computing a law with the operation inline
+ok    lib.rs                                                    :547    and its negative control, written out a second time
+ok    lib.rs                                                    :1116   a test asserting its own suite's sensitivity boundary
+ok    lib.rs                                                    :370    the first of the two redundant assertions
+ok    lib.rs                                                    :372    the second, which restates it
+ok    stress.rs                                                 :68     the doc-comment occurrence that made two counts read 124
+
+18 citations checked, 0 failing
+
+MUTATION TEST of the instrument itself, because it came out green.
+Three mutations, each of which a working checker must catch:
+
+  wrong line number  (110:282 -> 110:182)            -> exit 1, 18 citations checked, 1 failing
+  wrong substring    (satfold 519 needle changed)    -> exit 1, 18 citations checked, 1 failing
+  wrong file         (82 -> 18 at line 770)          -> exit 1, 18 citations checked, 1 failing
+  unmutated                                          -> exit 0, 18 citations checked, 0 failing
