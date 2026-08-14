@@ -2457,3 +2457,70 @@ rung. I did not."
 **Op's `88` sentence has five incompatible readings across this panel**, and he flagged his own
 difficulty wording it. `106` section 4's leg (a), which read it as licensing the pair, is void on that
 ground. It is not a question for him: `104` records him returning this class to the panel.
+
+### Q52. What a primitive is, and two convergences that did not survive being checked
+
+Topic five's live entry. Cold pair `109` and `110`, attacked by `111`.
+
+**The four-part working assumption (format, number system, law set, strategy) has two elements
+backwards.** It lists the **law set**, which cannot vary with the others held fixed, and omits the
+**refinement**, which `82`'s F6 already measured *does* separate verdicts with all other coordinates
+fixed. That is `111`'s answer and it is one expert.
+
+**The law-set conclusion holds and the count cited for it is dead.** `110`'s "0 of 48 configurations can
+vary the law set with the others fixed" is **vacuous**: its `key()` returns exactly the five swept axes
+plus a constant, so every key is distinct by construction and the collision test never fires. `111`
+proved it mechanically and mutation-tested it, making the law set genuinely free, and **the verdict did
+not move**, which is the condition the test existed to detect.
+Evidence: `111_probes/p2_the_law_set_freedom_test_is_a_dead_branch.py`.
+**The conclusion survives on three independent instruments** (`110` TEST 2, `109` P2, `90` R3). **Do not
+cite the 0-of-48 count.**
+
+**The "number system" convergence is not one.** `109` makes a category claim and `110` makes a cut, and
+`109` concedes to `110` in its own phase two. **ONE EXPERT**, not two.
+
+**`109`'s const-eval blocker is real and its conclusion is false.** "The operation has to be a type"
+does not follow from `function pointer calls are not allowed in constant functions`. Three carriers
+work: a const generic value with a `match` (no feature gate, reproducing `109`'s own 952/448/36
+exactly), macro syntax, and duplication, which
+`mock/benches/variants/satfold-shared/src/lib.rs:519` and `:547` **already ship** to gate a live bench
+arm. And the carrier is not a design lever: a type carrier produces the same `E0308` as the value one.
+
+**The signature claim is right, and it saturates at the literal.** Adding an operation can only refine
+the partition, so only magnitude is at stake. No signature separates more than "R differs somewhere on
+Q", and **one nullary operation reaches that bound**: `{literal}` gives 165 classes and
+`{literal, everything}` gives 165, **identical partitions**, against 148 for the richest
+operation-only signature. **So a design that can write a literal needs no closed operation set for
+stable identity.** And the worry that panel counts were taken under an unstated signature has no
+victims: no panel file other than `110` counts primitives up to identity.
+
+**The definitional-versus-reachability degeneracy collapses under constant injection.** `110`'s three
+signatures declare no nullary operation. With constants restored, the two notions agree **144 cells to
+0** with rational constants and disagree **33** with grid-restricted ones. So they are one notion at two
+extents, and "definitional" is the value it takes at the largest signature the design will ever admit.
+`110`'s conclusion is right and its reason gets cheaper; its F6 example stops being an example in arvo,
+since rounding at `F = 0` is observable the moment anyone writes a non-grid literal.
+
+**`111`'s constructive result, and its own hypothesis failed first.** The merge extent and the closed
+extent are almost disjoint (largest sound closed bound at `W = 4` under `{add}` is **0**), and the
+repair is that a refinement is **transformed** by an operation rather than preserved, which is `109`
+section 8's non-endomorphism move one level down. The propagated bound predicts the merge boundary
+**exactly, zero unsound and zero conservative**, over four sweeps, and reaches the compiler with three
+distinct emitted bodies where the semantics says three and one where it says one. A refinement parameter
+**weakens for free** while a spurious one has no repair.
+
+**This earns a rung on independence.** `111`'s `p6` was committed at `c2c8382b` **before** it opened
+`97`, and it turns out to be `97:706-707`'s congruence criterion arriving from the identity side rather
+than the law side.
+
+**What nobody has settled, and `111` says so rather than claiming a coordinate.** Whether the refinement
+is a **new coordinate** or already a member of `106` section 1's first component, the observable
+assignment. A declared range is not recoverable from the bits, which is that component's own criterion,
+so `111` leans toward the latter and could not settle it.
+
+**Also open:** `110`'s composite results P7 and P8, which nobody has touched, and `110`'s internal
+contradiction on what a split costs (`110:282` says names and nothing else; `110:357` and `:370` say a
+wall with no repair), whose resolution `111` locates in `110`'s own F9.
+
+**Retired:** the claim that `wide-rung-shared` takes 107s. Three measurements now put it at 4.05s,
+4.25s and under 5s. **Dropped rather than carried as contested.**
