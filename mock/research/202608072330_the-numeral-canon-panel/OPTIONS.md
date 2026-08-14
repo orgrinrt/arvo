@@ -2581,3 +2581,62 @@ class, and the class was found in one topic because one topic was being checked 
 value domain without saying whether it straddles zero, and over a realisation without naming the ambient
 range the map was measured on. Cheap to run, and the topic that produced it is evidence the yield is not
 zero.
+
+### Register brought current to `138`
+
+The rounding topic ran as `125` through `138` and converged, so most of what it raised was settled inside
+it. `136` restored by `138` is the ledger, `137` is the independent check. Below is only what it left
+open, each with what would close it.
+
+### Q57. What the double-rounding mechanism actually is
+
+`122` 4.6 turned out **not** to be at risk: both its arms round at every node and measure zero
+differences for every mode. What is at risk is staged-versus-direct narrowing, which no clause states.
+And once grids chain, 4.6's "the grid" is genuinely ambiguous, with the two readings differing on 32 to
+94 and on 124 to 170 cells, and neither reproducing its own arm.
+
+**What would close it.** A construction that reproduces one arm under one reading. Three were tried and
+all three were wrong, and they are committed in `131_probes/v2` rather than repaired away, so a fourth
+attempt starts from the three dead routes rather than from nothing.
+
+### Q58. The four predicates that carry no domain dimension
+
+Four of eleven clauses in the candidate name no domain. Under I13 read literally that is not an omission
+but a vacuity, and the candidate names them as obligations rather than filling them, which is correct:
+filling a predicate with a value nobody measured is what the notation exists to prevent.
+
+**What would close it.** A measurement per clause. Three of the four have none anywhere in the topic.
+
+**And the mechanism is worth recording separately**, because it is a class and it is not the one first
+proposed. Three of the four absences were manufactured when a compound predicate was split and its
+shared leading clause was not redistributed to the parts. **Splitting a compound predicate distributes
+its dimensions to every part, and a split that does not is how a dimension disappears without anyone
+deleting it.** A check that reads the neighbouring clause will not find these, because the dimension was
+never in a neighbour; it was one tier up, in the document the compression replaced.
+
+### Q59. Whether the position-keyed arm survives a keying axis that is not one-dimensional
+
+The position-keyed dither is the one decorrelating member that needs no entropy source, which under I14
+is what makes it viable at all. Its distinct-output witness is necessary but not sufficient for what
+dithering is chosen for, which is spectral flatness. A one-dimensional low-discrepancy sequence applied
+to a flattened two-dimensional index risks visible structure the measurement does not capture; along a
+genuine 1D axis it is well matched.
+
+**What would close it.** A spectral measurement over a two-dimensional keying, against the 1D case as
+control. Until then the arm's predicate wants a dimension naming the keying axis's dimensionality, and
+the 2D case is unmeasured rather than established.
+
+### Q60. Whether the extractor class costs more than it has so far
+
+Three extractors in three consecutive files were defeated by markdown inside the span they were reading,
+each returning a confident number that a line count in the same file contradicted. One reported zero
+predicates carrying a token it had just found three times; one matched the substring `in` inside the word
+`domain` and returned zero on the exact question it existed to answer; one missed the theorem class
+entirely, nine anchors of the most load-bearing kind in that topic.
+
+Every instance was caught, and caught by a control. But all three produced **plausible** numbers, which
+is the argument for the set difference over the count and the reason the anchor discipline computes both.
+
+**What would close it.** Nothing, in the sense of a measurement. It is a standing hazard of reading a
+formatted document with a pattern, and the mitigation already exists: state the pattern, print it, and
+diff the sets rather than comparing counts.
