@@ -234,9 +234,7 @@ fn main() {
         CORNER_LO >= CLO && CORNER_HI <= CHI
     );
     println!();
-    println!(
-        "  so the affine rule licenses what the corner rule refuses, and the"
-    );
+    println!("  so the affine rule licenses what the corner rule refuses, and the");
     println!("  cancellation happened in the type rather than at runtime.");
 
     // behaviour, checked rather than asserted
@@ -245,9 +243,7 @@ fn main() {
     for a in 0u8..=14 {
         for b in 0u8..=14 {
             for c in 0u8..=14 {
-                if (a as i32 + b as i32 - c as i32) < 0
-                    || (a as i32 + b as i32 - c as i32) > 15
-                {
+                if (a as i32 + b as i32 - c as i32) < 0 || (a as i32 + b as i32 - c as i32) > 15 {
                     continue;
                 }
                 if c != b {

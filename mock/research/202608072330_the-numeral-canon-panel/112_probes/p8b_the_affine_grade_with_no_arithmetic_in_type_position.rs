@@ -270,9 +270,7 @@ fn main() {
         <GDeep as Discharges>::OK,
         <<GDeep as Grade>::Vec as Coeffs>::LEN
     );
-    println!(
-        "    (the exact value of that term is x, so [0, 14] is the tight answer)"
-    );
+    println!("    (the exact value of that term is x, so [0, 14] is the tight answer)");
 
     println!();
     println!("  BEHAVIOUR, on the declared term with c = b:");
