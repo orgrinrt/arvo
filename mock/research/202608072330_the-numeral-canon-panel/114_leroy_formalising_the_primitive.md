@@ -104,6 +104,11 @@ assertion-free smoke test and no sampled law in what I read.
 > **unconditionally** equal to reducing at every node. No declaration is needed and none is read. This
 > is a licence nothing in the panel has named, and it is the cheapest thing in this file.
 >
+> **Arm W0 does not stop at the first clamp.** It extends across a non-ring operation by **cutting**:
+> reduce the operands of every non-ring node and the root, and nowhere else. That equals reducing at
+> every node on every wrapping cell I swept, and it is what licenses the shipped `warm-clamp` kernel's
+> actual shape rather than only the inside of one of its chunks.
+>
 > **Arm W1.** Under the same map, licensing an arm that does not reduce **at all**, so the result is
 > handed on as a wider value, needs the **root's** interval and nothing else. Checking every node there
 > is conservative rather than load-bearing: it forgoes 7% to 30% of the available licences across my
@@ -764,6 +769,56 @@ harness already built to price the replacement.
 
 ---
 
+### 6.5 Arm W0 extends past the clamp, by cutting rather than by weakening
+
+Section 6.4 leaves arm W0 with its boundary in the wrong place for the one consumer it has: read
+literally it licenses the interior of one chunk and stops at the `min_with`. I listed the fix as
+sketched and dropped, and then did it, because a route named and left is not a deliverable.
+
+**The rule.** A term over a mixed signature decomposes into maximal segments of ring operations
+separated by non-ring nodes. Inside a segment the homomorphism holds. At a non-ring node it does not,
+and that node's operands have to be reduced before it can be applied at all, because a comparison reads
+representatives rather than residues. So:
+
+> Reduce the operands of every non-ring operation, and reduce at the root. Reduce nowhere else.
+
+**It equals reducing at every node, under a wrapping map, with no declaration read.** `p11_output.txt`,
+over every term at two and three leaf slots over `{add, sub, mul, min}`, 168 terms of which 72 contain
+a `min`, at 20 sampled declarations each:
+
+```
+  WRAPPING                            cells   CUT differs  root-only differs  [C2 wrong-cut differs]
+  all terms, logical width 3           3360             0                294                     294
+  terms WITH a min, width 3            1440             0                288                     288
+  all terms, logical width 4           3360             0                353                     353
+  terms WITH a min, width 4            1440             0                349                     349
+  ring-only terms, width 3             1920             0                  0                       0
+  ring-only terms, width 4             1920             0                  0                       0
+```
+
+**The cut is necessary rather than decorative**, which the root-only column says: reducing at the root
+alone differs on 288 to 353 cells of the mixed terms, because a comparison against an unreduced operand
+compares the wrong thing. **And the cut has to be in the right place**, which the mutation column says:
+cutting at the ring nodes instead differs by the same counts. **And on ring-only terms the rule
+degenerates to arm W0 exactly**, 0 and 0, which is the third control.
+
+**What it buys, as a count.** On the shipped kernel's shape, one chunk of `n` wrapping additions
+terminated by a clamp, the general arm performs `n + 1` reductions and the cut rule performs 3: the
+clamp's two operands and the root. At `n = 6` that is 6 against 3, and the ratio grows with the chunk.
+`p11_output.txt`. It is a count of reductions and not a timing, and **what a reduction costs is
+unpriced**.
+
+**One control did not discriminate and I am not going to dress that up.** Under saturation the cut rule
+differs on 244 and 277 cells of the full sweep, and on **zero** of the 2880 mixed-term cells, at five
+times the sample that first showed it. So the saturating differences all come from the ring-only terms,
+where the rule degenerates to arm W0 and is already known to fail. **The cut rule's behaviour under
+saturation on mixed terms is therefore not established either way by this probe.** I do not have the
+mechanism, I suspect it is monotonicity of the operations between the cut and the clamp over a
+non-negative domain, and suspecting is not measuring. What I claim is the wrapping result, which every
+control supports.
+
+---
+
 ## 7. The compile-time question, answered without a clock, and the answer refutes a shape
 
 `111` section 26 carries this as the one open item "that a harness rather than an argument closes":
@@ -900,9 +955,11 @@ clauses this file corrects rewritten and nothing else touched. Suggestions.
 > reducing once at the end give the same result. Wrapping is one for the ring operations. Saturating,
 > clamping and rounding are not.
 >
-> Where the map is a homomorphism for every operation in a term, **the intermediate reductions carry no
-> information and may be dropped with no declaration at all**, and licensing an arm that does not
-> reduce at all depends on the **root** alone. Where it is not, every node of the derivation must be
+> Where the map is a homomorphism for the operations in a **segment** of a term, **that segment's
+> intermediate reductions carry no information and may be dropped with no declaration at all**. A term
+> over a mixed signature cuts into such segments at its non-ring nodes, whose operands are reduced
+> because a comparison reads representatives rather than residues, and the licence applies inside each
+> segment independently. Licensing an arm that does not reduce at all depends on the **root** alone. Where it is not, every node of the derivation must be
 > checked, and checking only the result is unsound. **Which of the two applies is a property of the
 > declared semantics and is therefore known before any value exists.**
 >
@@ -1078,6 +1135,22 @@ nor the declaration in it, so `term shapes = a left-nested fold, fold length any
 features any`. `p9_output.txt`. It corrects how `111` F111-18's "2 against 64" will be read: 64 is the
 state at one node.
 
+**F114-19. Arm W0 extends across a non-ring operation by cutting rather than by weakening.** Reducing
+the operands of every non-ring node and the root, and nowhere else, equals reducing at every node on 0
+differing cells of 3360 and 1440 at each of two logical widths. `W = 3 logical and 4 logical, F = 0,
+signedness = unsigned, overflow policy = wrap, rounding = trunc, radix = 2, operations in {add, sub,
+mul, min}, term shapes = every term at 2 and 3 leaf slots over that signature, arity in {2, 3},
+declarations = one-sided [0, b] sampled 20 per term, threads = 1, target features any`.
+`p11_output.txt`. Three controls fire: reducing only at the root differs on 288 to 353 cells, cutting at
+the ring nodes instead differs by the same counts, and on ring-only terms the rule degenerates to arm W0
+and agrees. **The behaviour under saturation on mixed terms is not established**, because the saturating
+control differs on 244 and 277 cells of the full sweep and on zero of the 2880 mixed-term cells.
+
+**F114-20. The cut rule performs one reduction per non-ring node plus one, against one per node.** On a
+chunk of `n` wrapping additions terminated by a clamp, 3 against `n + 1`. `term shapes = a left-nested
+fold terminated by one non-ring node, fold length any, threads any, target features any`.
+`p11_output.txt`. A count of reductions and not a timing; what a reduction costs is unpriced.
+
 **Unpriced.** Every duration, for every arm, at every length. No bench ran, none could, and no claim in
 this file depends on a magnitude.
 
@@ -1130,10 +1203,9 @@ which is impossible, or reach cells neither reaches, which for the annihilation 
 about the whole term rather than any node. That is the direction I would send the next dispatch.
 
 **Extending arm W0 to a non-ring signature by identifying which operations preserve the residue.**
-Sketched and dropped: `min`, `max`, division and shifts all break it, and the interesting question is
-not which break it but whether a **chain** can be cut at the non-ring operations and the ring segments
-licensed separately. That is a real proposal and I did not build it. It would make arm W0 apply to a
-clamping kernel's arithmetic between its clamps, which is exactly the shape `warm-clamp-shared` has.
+Listed here as dropped in the first draft, then built, because section 6.4 showed the boundary landing
+in the wrong place for the only consumer arm W0 has. It is section 6.5 and F114-19. What remains
+genuinely undone is the saturating side, where my control could not discriminate on mixed terms.
 
 **A compile-time mode for the bench harness.** The only thing that would actually price section 7's
 duration. It is mockspace's tree, not arvo's, and I did not touch it.
@@ -1238,5 +1310,7 @@ All committed, each with its output beside it, each carrying the case that must 
 - `p9_pricing_the_two_spellings_without_a_clock.py`, `p9_output.txt`. The counts, the compile wall,
   eleven variants including four added after the first run, and the control that caught my generator
   defect.
+- `p11_cutting_the_chain_at_the_non_ring_operations.py`, `p11_output.txt`. Arm W0 across a mixed
+  signature, three controls that fire and one that did not discriminate, said so.
 - `p10_check_my_own_citations.py`, `p10_output.txt`. Every `file:line` in this file, opened, with the
   substring the claim depends on.
