@@ -320,7 +320,30 @@ the assembler emitted `_e2_weighted = _e1_named`, a symbol alias; and the commit
 any for the compile-time artifacts`
 This is the single best-supported claim in the unit and it is the one the whole mechanism rests on.
 
-**Multiplicative associativity and distributivity hold at `F = 0` and fail at `F > 0`.** `93`'s F1 measured
+**Multiplicative associativity and distributivity hold at `F = 0` and fail at `F > 0`, for unsigned
+types.** `holds for: W in 3..8, F in 0..2, signedness = unsigned, overflow in {wrap, saturate},
+operations {add, sub, mul}, arity 2 and 3, values exhaustive over the representable domain, threads = 1,
+target features any`
+
+**`F = 0` is necessary and it is not sufficient, and the unqualified form of this sentence is false.**
+Restored on `107`'s check, from `93`'s F1 directly, which carries `signedness = unsigned` in its own
+predicate. At **signed** saturating, `F = 0`, two independently written models measure the law failing:
+`93_probes/p7` gives distributivity failing **47.72%** of triples at `W = 7`, and `97_probes/p2` gives
+**34.52%** at `W = 6`. A one-sided clamp is a congruence and a two-sided one is not. `97` section 6.3
+adds a second qualifier inside the surviving region: at unsigned `F = 0` saturating, distributivity over
+**addition** holds while distributivity over **subtraction** fails at 45.79% of triples, so a law
+permission names the operations it covers and not only the fraction width.
+
+**This is the third time this sentence has lost its qualifier**, and the compression lost it again after
+the loss had already been diagnosed twice in the same unit. It appears unqualified at `35:311`, where it
+originated, and at `94:887`. Those are member files and are the historical record, so they stay as
+written; whoever writes the canon must not take the sentence from either of them. It also appeared
+unqualified in the workspace rule `arvo-always-optimal-internals.md`, which `97` found and which was
+corrected during this unit precisely because it was a live licence to emit a wrong rewrite. `97`'s
+criterion is cited below as support, and `97` section 6.3 built that criterion **to find this hazard**,
+which makes citing it without the qualifier the sharpest form of the error.
+
+The supporting measurements, which are correct and were never in question: `93`'s F1 measured
 it exhaustively over every triple at `W` in 3 to 8; `94`'s probe C part 2 measured that rounding retraction
 retracts exactly at `F = 0` over `W` in {4, 6, 8} and `F` in 0 to `W`, both rounding modes; `97`'s
 criterion predicts every verdict in 552 cells with zero mismatches in either direction; and `97`'s p7
@@ -1314,3 +1337,66 @@ for it: attacking it requires an expert who has not read it, and by the time thi
 such expert in the unit. Section 4 does the next best thing, which is to separate the three claims inside it
 so they can fail independently, and to say which parts of the structure are older and better supported than
 the packaging. **If one dispatch follows this consolidation, that is what it should be.**
+
+---
+
+## 16. Droplist repairs, restored on `107`'s check
+
+`107` found four one-file results absent from section 13.2's droplist, whose whole purpose is catching
+exactly that class. Each is restored here from its establishing file rather than from the check's
+description of it, because a repair that copies the checker has compressed the compression again.
+
+**`97`'s F-H: a declared non-negative operand window recovers three laws.** The unit's only positive law
+result, and its cleanest I13-shaped arm: a region where something that generally fails does hold, which
+is what a predicated arm is made of.
+
+> **F-H. Restricting a signed saturating type to a declared non-negative operand window recovers
+> additive associativity, multiplicative associativity and distributivity over addition, all of which
+> two-sided saturation loses.**
+> `holds for: W in {4, 5, 6}, F = 0, signedness = signed, overflow = saturate, operand window =
+> declared non-negative, operations {add, mul}, arity 3, values exhaustive, threads = 1, target
+> features any`
+
+`97` records that this was a **prediction of the criterion made before running**, on the ground that a
+one-sided clamp is a congruence and a two-sided one is not, and that it independently retrodicts `82`'s
+declared-window result, which `97` had not read. That makes it a prediction, a confirmation, and a
+cross-file convergence at once, and dropping it lost all three.
+
+**`97`'s F-B with `98`'s F-98-5: the 72-and-9 counts are a property of one table, and the bound is not.**
+F-B states the gap between sections and argmins is **polynomial against exponential in the number of
+regions**, which is what generalises the counts beyond the table they were measured on. F-98-5 states
+the ratio of weighting-realisable sections to Pareto-admissible ones **varies by a factor of 47**. The
+two belong together: the bound is structural and transfers, the ratio is not and does not, and a reader
+given only the counts will take a number for a law.
+
+**The exchange-rate reading of op's four intents, three-instance across `40`, `98` and `102`.** Each
+intent names a concern and then declines to make it absolute, and that declining is the difference
+between a lexicographic priority and a finite exchange rate. `98` measures the consequence: 4 available
+behaviours under a priority reading against 58 on the real table. With it goes **`98`'s F-98-7**, that a
+selection rule of the form "minimise one coordinate subject to a bound on another" is **not** expressible
+as a weighting, which is the boundary of the whole weighting mechanism and was in one file.
+
+**`98`'s five-rung ladder, including the 144 Pareto-admissible rung.** Of 46656 sections over the two
+coordinates that survive scrutiny, **144 are Pareto-admissible** and 9 survive a strictly positive
+weighting. `98` states that the Pareto rung is the only reading on which op's "a little bit of option 3"
+carries content, so dropping it drops the interpretation that makes his own answer mean something.
+
+**Why these four and not others.** Each exists in exactly one member file, none is reachable from any
+other carried claim, and the canon is written from the consolidations. A one-file result dropped here is
+gone at that point, which is what makes this class severe rather than untidy.
+
+## 17. What the check found that is not repaired here, and why
+
+`107` reports three further defects that stand as recorded rather than fixed, because fixing them would
+be re-compressing rather than restoring:
+
+- **The defence of the 177 dropped anchors quotes half its own source.** `87:26-29` says a dropped
+  finding is recoverable, *"which is why ... a dropped item is a defect rather than a closed question"*,
+  and section 15 carries the first clause only. The omitted clause is the one that makes the drop a
+  defect. Left as written, with the full quotation recorded here.
+- **`93_probes`, `94_probes` and `103_probes` are at zero anchors carried**, and 302 of 347 member
+  citations point at whole files rather than at locations. That is a real loss of checkability and it is
+  not repairable by editing this file; it is a fact about how this consolidation was written.
+- **The census script computes no set difference** despite section 15 saying it does. The set difference
+  `107` ran is the one that found the four items above, which is the argument for the instrument
+  belonging to the checker rather than the author.
