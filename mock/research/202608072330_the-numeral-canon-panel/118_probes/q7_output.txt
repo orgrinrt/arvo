@@ -1,0 +1,12 @@
+q7. Every citation in `118`, opened
+==============================================================================
+
+
+  citations checked : 39
+  passing           : 39
+  failing           : 0
+  controls that correctly failed : 2 of 2
+  controls that wrongly passed   : 0
+
+  Every citation opens and says what the claim depends on, and both
+  deliberately wrong entries were caught.
