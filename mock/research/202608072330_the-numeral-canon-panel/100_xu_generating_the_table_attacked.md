@@ -1,8 +1,8 @@
 # 100. Generating the table, attacked
 
 **Predecessors:** `93` and `94`, the unit's cold pair; `97`, which attacked both; `98`, which second-read
-`97` and proposed inverting it. **Probes:** `100_probes/`, ten of them plus one shared instrument
-and a build script, each committed as it ran.
+`97` and proposed inverting it. **Probes:** `100_probes/`, eleven of them plus one shared instrument
+and two build scripts, each committed as it ran.
 
 This is the fifth file of the unit and the first of the four that `95` points at convergence. So the
 shape is fixed before the content is: where I break something I say what replaces it, where a proposal
@@ -914,10 +914,52 @@ documented lever nobody has had to reach for.
 
 **The compile-time cost of any of those shapes is UNPRICED and I use that word deliberately.** A
 compile-time figure taken outside `mock/benches/` is an ad-hoc quick spike with no substance for a
-how-much question, and the harness measures runtime variants and has no compile-time arm today. What
-would price it is a harness arm that compiles each variant and reports build time, which does not exist
-and which I did not build because `95` scopes harness work to what the panel's continuation needs and this
-does not block anything today.
+how-much question, and I checked rather than assumed that the harness cannot price it: its CSV schema is
+`run,pass,cooldown_ms,mode,variant,batch_idx,e2e_ns,algo_ns,bridge_ns,batch_count,score,input_tag,instructions,cycles,setup_ns,first_ns,digest`
+(`bench-harness/src/harness.rs:752` in the pinned checkout), every field of which is a runtime measurement
+of an already-loaded cdylib, and the only thing it does with the compiler is record `rustc --version` as
+provenance (`bench-harness/src/env.rs:105`). **There is no compile-time arm to run.** Building one is
+upstream work in mockspace, `95` scopes harness work to what the panel's continuation needs, and nothing is
+blocked on this today, so I did not build it. That scope call is mine and is attackable.
+
+### 9.1 What I could settle instead: the encoding costs zero bytes
+
+Compile time is a timing and needs the harness. **Binary size is a static fact about an emitted object**,
+which an ad-hoc spike may settle, and it is an axis nobody in the unit has looked at. It matters here
+because the cost table is `|R| * |A| * |D|` numbers against the winner table's `|R|`, so if it survived
+into the artifact the encoding would carry a per-crate size cost that scales with the arm count. A
+substrate whose consumers bitpack columns to save bytes would notice.
+
+`100_probes/p9_does_the_cost_table_survive_into_the_binary.sh` compiles `p3` to an object and reads its
+sections, with a control that adds one runtime read of the same table so it cannot be const-consumed.
+
+```
+the real file: cost table read only at const time
+  Section (__TEXT, __text): 848
+  Section (__LD, __compact_unwind): 32
+  symbols mentioning COST or WINNER: none
+
+the control: same table, one runtime read
+  Section (__TEXT, __text): 928
+  Section (__TEXT, __const): 240
+```
+
+**Zero bytes.** No constant-data section at all, and no symbol for either table. The control shows exactly
+240 bytes of `__const`, which is `6 * 5 * 2 * 4`, the cost table to the byte, so the absence in the real
+object is const consumption rather than an artifact of nothing referencing it. **The control is the
+finding; without it the empty section proves nothing.**
+
+So on the two axes an ad-hoc spike can reach, emitted instructions and emitted bytes, the cost-table
+encoding costs nothing over the winner table. The one axis that remains is compile time, and it remains
+unpriced.
+
+**F-100-8. A region-indexed cost table and its winner table, consumed by a const argmin, leave no
+constant-data section and no symbol in the emitted object. A control adding one runtime read of the same
+table emits 240 bytes of `__const`, which is the table exactly.**
+`holds for: regions = 6, arms = 5, cost coordinates = 2, target = aarch64-apple-darwin, rustc
+1.98.0-nightly (57d06900f), edition 2024, opt-level 3, panic = abort, emit obj, no_std, feature gates = 0,
+threads any (a compile-time artifact), target features baseline`
+Evidence: `100_probes/p9_does_the_cost_table_survive_into_the_binary.sh` with its runtime-read control.
 
 ## 10. The region set is written down three times, which is the join underneath the one being argued about
 
