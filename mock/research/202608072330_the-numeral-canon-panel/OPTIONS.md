@@ -2375,3 +2375,38 @@ So the accuracy coordinate does not need designing. **The missing piece is `scor
 0 of 94 variant crates implement, and which is the hook by which a per-arm quality number would reach
 the CSV at all. That is a smaller and much better-specified piece of work than "add the missing
 coordinates to the corpus".
+
+### Q47 CLOSED, and part one rested on a premise nobody had checked
+
+Op, 2026-08-14, full record at `104`.
+
+**Part one, which reading of I3 applies at a width Rust has no primitive for, is dissolved rather than
+answered.** Offered the declared width or the container, he took neither: *"Neither, it's ergonomics"*.
+I3 is about the experience of using the type, not about where arithmetic boundaries land. Both readings
+the panel built were outside the intent, so the fork was never a fork about I3. `93`'s F8 measurement of
+the two readings disagreeing at fourteen non-native widths stands and is about something else.
+
+**Part two, whether the imitation covers the native debug-overflow panic, is answered and is now I18.**
+Permitted, with I15 bending for it, bounded to dev and debug builds and to the concern where imitating
+the native primitive is the point rather than where cost is. Held as a rule of thumb, not a gate.
+
+### Q50 CLOSED as not op's, and returned to the panel
+
+Op, 2026-08-14, declining to pick between I9 describing the strategy pair or only its policy half:
+
+> I think the intent is clear and this is impl detail that already had answer: optimal and converged to
+> by experts (plural, iterative)
+
+**The decline is the answer.** I9's intent is clear as stated; which half the word attaches to is an
+implementation decomposition, and the mechanism for settling it exists already. The experts converge on
+it, plural and iteratively, and the answer is whichever is optimal.
+
+So it stays live as an implementation question with a decision procedure attached, and `102` already
+states both readings and says it can build either. It is not waiting on op and must not be put to him
+again.
+
+**The dispatcher's lesson, recorded because it is checkable.** This is a different shape from the
+category-wide policy fork that `never-ask-which-single-rule-governs.md` names. It asks op to adjudicate
+**which component of a decomposition his own word attaches to**, where the decomposition is the panel's
+invention. The test that would have caught it: **if both answers leave the intent intact and differ only
+in what the panel calls things, it is not his.**

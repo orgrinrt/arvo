@@ -85,6 +85,20 @@ carried at `seed/SETTLED_strategy.md` section 3.
 The seed records that this call was re-stated twice in two days because it kept failing to stick, and
 op restated it again on 2026-08-08. Four statements of the same call.
 
+**What the imitation is about, settled 2026-08-14.** Asked whether, at a declared width Rust has no
+primitive for, the imitation targets the **declared width** or the **container**, op took neither:
+
+> Neither, it's ergonomics
+
+So **I3 is not a statement about where arithmetic boundaries land.** It is about the experience of using
+the type: that it is unsurprising, that it does the expected thing, that a reader who knows Rust's
+primitives is not caught out. Where the boundaries land is answered by the width and the overflow
+policy, not by I3.
+
+The panel had built a two-way fork between the two arithmetic readings and measured that they disagree
+at all fourteen non-native widths swept (`93`'s F8). That measurement is correct and is about something
+I3 does not range over. Full record at `104`.
+
 ## I4. Warm's objective is the intuitive best choice, and imitation serves it rather than defines it
 
 **STATED.** `38`, 2026-08-08.
@@ -315,6 +329,36 @@ The requirement on a law's expression is **functional, not structural**: it must
 reaches one lowered path. Which construction gets it there is case by case, and the canon does not rank
 the constructions or mandate one. This is `arvo-toolbox-not-policer.md` at the law layer, and the question
 was asking the canon to do the policing that rule forbids.
+
+## I18. The native overflow panic is permitted, bounded by build and by concern
+
+**STATED, and explicitly held as a rule of thumb rather than an absolute.** Op, 2026-08-14, asked
+whether I3's imitation covers the debug-mode overflow panic that Rust's native primitives raise, given
+I15's "never any runtime checks, ever". He answered, then corrected himself; both are his and the
+second is what fixes the first:
+
+> Option 3 but strategy bound and never on release outside of warm. As a rule of thumb, not an
+> absolute, more of an intent
+
+> Q2 might be never on hot outside of dev/debug. It's the intent inferrable
+
+**The marker names are not load-bearing and he says so.** The first bounds the panic by naming the
+imitate-the-native-primitive concern, the second by naming the speed-first concern, and the second adds
+that the intent is the inferrable thing rather than the wording. Per I1 the set is open and per I17 a
+marker name is vehicle. They name concerns.
+
+**The intent.** A native-primitive-style overflow panic is permitted, and I15 bends for it, bounded on
+two axes:
+
+- **By build.** Dev and debug only. It does not survive into a release artifact. Both statements carry
+  this bound.
+- **By concern.** It belongs where imitating the native primitive is the point, and not where cost is
+  the point. A path chosen for speed does not carry a check that exists for familiarity.
+
+**And it is a rule of thumb.** It is not a gate, and an arm that cannot honour it is not thereby wrong.
+
+**I15 is unchanged.** This is a declared, bounded exception inside it rather than a hole in it, and the
+build bound is why: a shipped program still contains no runtime validation. Full record at `104`.
 
 ## I17. Cold is not to be deprioritised, and that is independent of how many strategies there are
 
