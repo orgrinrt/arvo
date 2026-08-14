@@ -111,7 +111,11 @@ impl<A: Bound, B: Bound> Bound for BSum<A, B> {
         let a = A::HI as u16;
         let b = B::HI as u16;
         let s = a + b;
-        if s > 255 { 255 } else { s as u8 }
+        if s > 255 {
+            255
+        } else {
+            s as u8
+        }
     };
 }
 
@@ -185,7 +189,11 @@ struct Sat;
 struct Wrap;
 impl Policy for Sat {
     fn complete(exact: u16, hi: u8) -> u8 {
-        if exact > hi as u16 { hi } else { exact as u8 }
+        if exact > hi as u16 {
+            hi
+        } else {
+            exact as u8
+        }
     }
 }
 impl Policy for Wrap {
@@ -341,10 +349,9 @@ fn main() {
         for y in 0u8..=255 {
             spur_n += 1;
             let l = Spur::<2>::new(x).add(Spur::<2>::new(y)).raw();
-            let r = spur_10_to_2(
-                spur_2_to_10(Spur::<2>::new(x)).add(spur_2_to_10(Spur::<2>::new(y))),
-            )
-            .raw();
+            let r =
+                spur_10_to_2(spur_2_to_10(Spur::<2>::new(x)).add(spur_2_to_10(Spur::<2>::new(y))))
+                    .raw();
             if l != r {
                 spur_bad += 1;
             }
@@ -434,6 +441,12 @@ fn main() {
     );
 
     println!();
-    println!("Declared bound sums: BSum<Lit<100>, Lit<100>>::HI = {}", <BSum<Lit<100>, Lit<100>> as Bound>::HI);
-    println!("                     BSum<Lit<200>, Lit<100>>::HI = {}", <BSum<Lit<200>, Lit<100>> as Bound>::HI);
+    println!(
+        "Declared bound sums: BSum<Lit<100>, Lit<100>>::HI = {}",
+        <BSum<Lit<100>, Lit<100>> as Bound>::HI
+    );
+    println!(
+        "                     BSum<Lit<200>, Lit<100>>::HI = {}",
+        <BSum<Lit<200>, Lit<100>> as Bound>::HI
+    );
 }
