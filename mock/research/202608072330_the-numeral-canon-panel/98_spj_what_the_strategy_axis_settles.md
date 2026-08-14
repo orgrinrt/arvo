@@ -108,9 +108,9 @@ artifact for a property is worth less than deriving it from a stable one. Sectio
 **Four. Every one of op's four strategy intents states a primary concern and then explicitly refuses to
 make it absolute, and that refusal has exact operational content.** A priority order over coordinates is
 realisable as a weighting on any finite model, in 1200 of 1200 checks, and it carries strictly less
-information: on the real table the six priority orders reach **4 sections and weightings reach 58**. So
-op's four refusals are the difference between a lexicographic order and a finite exchange rate, and they
-are measurable. Section 4. This is `40` section 5.3's reading, derived independently and now with the
+information: on the three-coordinate carrier table the six priority orders reach **4 sections and
+weightings reach 58**. So op's four refusals are the difference between a lexicographic order and a
+finite exchange rate, and they are measurable. Section 4. This is `40` section 5.3's reading, derived independently and now with the
 gap counted.
 
 **Five. Two of op's four intents have no coordinate to weigh in the committed corpus, and one of them is
