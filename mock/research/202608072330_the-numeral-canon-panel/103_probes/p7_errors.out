@@ -1,0 +1,23 @@
+# p7 part one: exact error coordinates for the answer-differing arms
+# format: REGION<TAB>ARM<TAB>mean_relative_error
+
+# decimal-quantiser-radix-sweep
+# controlled band: both operands (mag in [10^6,10^7), exp = 0), so
+# both radices denote the identical real. 200000 trials, exact rational.
+decimal-quantiser-radix-sweep	quantiser-radix2	1.755491785840e-9
+decimal-quantiser-radix-sweep	quantiser-radix10	1.161072102296e-7
+
+# quantiser-vs-fadd-subnormal-sweep
+# the family's own committed input distribution, 64 seeds per PCT.
+quantiser-vs-fadd-subnormal-sweep-n0	quantiser-hardware	1.927733123277e-8
+quantiser-vs-fadd-subnormal-sweep-n0	quantiser-software	1.927733123277e-8
+quantiser-vs-fadd-subnormal-sweep-n10	quantiser-hardware	1.737776063645e-8
+quantiser-vs-fadd-subnormal-sweep-n10	quantiser-software	1.737776063645e-8
+quantiser-vs-fadd-subnormal-sweep-n25	quantiser-hardware	1.445989105354e-8
+quantiser-vs-fadd-subnormal-sweep-n25	quantiser-software	1.445989105354e-8
+quantiser-vs-fadd-subnormal-sweep-n50	quantiser-hardware	9.753158544221e-9
+quantiser-vs-fadd-subnormal-sweep-n50	quantiser-software	9.753158544221e-9
+quantiser-vs-fadd-subnormal-sweep-n75	quantiser-hardware	4.879343014886e-9
+quantiser-vs-fadd-subnormal-sweep-n75	quantiser-software	4.879343014886e-9
+quantiser-vs-fadd-subnormal-sweep-n100	quantiser-hardware	0.000000000000e0
+quantiser-vs-fadd-subnormal-sweep-n100	quantiser-software	0.000000000000e0

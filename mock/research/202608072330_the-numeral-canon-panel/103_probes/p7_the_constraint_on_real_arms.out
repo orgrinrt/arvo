@@ -1,0 +1,148 @@
+p7 part two. does 102's p5 hazard have a real instance in this corpus?
+
+bootstrap resamples per rate : 2000
+time coordinate              : committed algo_ns samples, resampled
+error coordinate             : exact, from p7 part one
+cost                         : rate * (time/time_min) + (error/error_min)
+                               rate 0 is pure accuracy, large rate pure speed
+
+SUBJECT: the answer-differing region
+  decimal-quantiser-radix-sweep_n0.csv
+    quantiser-radix10        samples=80   mean_ns=  8749.66 rel_time= 1.180  rel_error=     66.1394
+    quantiser-radix2         samples=80   mean_ns=  7412.21 rel_time= 1.000  rel_error=      1.0000
+        rate  winners  errors   error spread  modal winner
+         0.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.01        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.02        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.05        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.1        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.2        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.5        1       1       0.000000  quantiser-radix2 at 2000/2000
+         1.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+         2.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+        10.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+       100.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+
+  decimal-quantiser-radix-sweep_n2.csv
+    quantiser-radix10        samples=80   mean_ns= 11179.43 rel_time= 1.507  rel_error=     66.1394
+    quantiser-radix2         samples=80   mean_ns=  7417.11 rel_time= 1.000  rel_error=      1.0000
+        rate  winners  errors   error spread  modal winner
+         0.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.01        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.02        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.05        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.1        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.2        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.5        1       1       0.000000  quantiser-radix2 at 2000/2000
+         1.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+         2.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+        10.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+       100.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+
+  decimal-quantiser-radix-sweep_n8.csv
+    quantiser-radix10        samples=80   mean_ns= 12508.19 rel_time= 1.553  rel_error=     66.1394
+    quantiser-radix2         samples=80   mean_ns=  8052.19 rel_time= 1.000  rel_error=      1.0000
+        rate  winners  errors   error spread  modal winner
+         0.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.01        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.02        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.05        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.1        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.2        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.5        1       1       0.000000  quantiser-radix2 at 2000/2000
+         1.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+         2.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+        10.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+       100.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+
+  decimal-quantiser-radix-sweep_n20.csv
+    quantiser-radix10        samples=80   mean_ns= 13757.85 rel_time= 1.640  rel_error=     66.1394
+    quantiser-radix2         samples=80   mean_ns=  8389.73 rel_time= 1.000  rel_error=      1.0000
+        rate  winners  errors   error spread  modal winner
+         0.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.01        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.02        1       1       0.000000  quantiser-radix2 at 2000/2000
+        0.05        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.1        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.2        1       1       0.000000  quantiser-radix2 at 2000/2000
+         0.5        1       1       0.000000  quantiser-radix2 at 2000/2000
+         1.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+         2.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+        10.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+       100.0        1       1       0.000000  quantiser-radix2 at 2000/2000
+
+CONTROL: the answer-equivalent region with a large time gap
+  quantiser-vs-fadd-subnormal-sweep_n0.csv
+    quantiser-hardware       samples=80   mean_ns=   346.83 rel_time= 1.000  rel_error=      1.0000
+    quantiser-software       samples=80   mean_ns=  6205.92 rel_time=17.893  rel_error=      1.0000
+        rate  winners  errors   error spread  modal winner
+         0.0        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.01        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.02        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.05        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.1        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.2        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.5        1       1       0.000000  quantiser-hardware at 2000/2000
+         1.0        1       1       0.000000  quantiser-hardware at 2000/2000
+         2.0        1       1       0.000000  quantiser-hardware at 2000/2000
+        10.0        1       1       0.000000  quantiser-hardware at 2000/2000
+       100.0        1       1       0.000000  quantiser-hardware at 2000/2000
+
+  quantiser-vs-fadd-subnormal-sweep_n25.csv
+    quantiser-hardware       samples=80   mean_ns=   320.49 rel_time= 1.000  rel_error=      1.0000
+    quantiser-software       samples=80   mean_ns=  5485.07 rel_time=17.115  rel_error=      1.0000
+        rate  winners  errors   error spread  modal winner
+         0.0        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.01        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.02        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.05        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.1        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.2        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.5        1       1       0.000000  quantiser-hardware at 2000/2000
+         1.0        1       1       0.000000  quantiser-hardware at 2000/2000
+         2.0        1       1       0.000000  quantiser-hardware at 2000/2000
+        10.0        1       1       0.000000  quantiser-hardware at 2000/2000
+       100.0        1       1       0.000000  quantiser-hardware at 2000/2000
+
+  quantiser-vs-fadd-subnormal-sweep_n50.csv
+    quantiser-hardware       samples=80   mean_ns=   324.39 rel_time= 1.000  rel_error=      1.0000
+    quantiser-software       samples=80   mean_ns=  4938.96 rel_time=15.225  rel_error=      1.0000
+        rate  winners  errors   error spread  modal winner
+         0.0        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.01        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.02        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.05        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.1        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.2        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.5        1       1       0.000000  quantiser-hardware at 2000/2000
+         1.0        1       1       0.000000  quantiser-hardware at 2000/2000
+         2.0        1       1       0.000000  quantiser-hardware at 2000/2000
+        10.0        1       1       0.000000  quantiser-hardware at 2000/2000
+       100.0        1       1       0.000000  quantiser-hardware at 2000/2000
+
+  quantiser-vs-fadd-subnormal-sweep_n100.csv
+    quantiser-hardware       samples=80   mean_ns=   334.58 rel_time= 1.000  rel_error=         nan
+    quantiser-software       samples=80   mean_ns=  4390.67 rel_time=13.123  rel_error=         nan
+        rate  winners  errors   error spread  modal winner
+         0.0        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.01        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.02        1       1       0.000000  quantiser-hardware at 2000/2000
+        0.05        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.1        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.2        1       1       0.000000  quantiser-hardware at 2000/2000
+         0.5        1       1       0.000000  quantiser-hardware at 2000/2000
+         1.0        1       1       0.000000  quantiser-hardware at 2000/2000
+         2.0        1       1       0.000000  quantiser-hardware at 2000/2000
+        10.0        1       1       0.000000  quantiser-hardware at 2000/2000
+       100.0        1       1       0.000000  quantiser-hardware at 2000/2000
+
+READING
+  `error spread` is the quantity that matters, in units of the region's
+  own best error. Non-zero means the bootstrap picked arms with
+  different errors at that exchange rate, so a rerun of the bench would
+  change the numeric answer the shipped program produces. Zero means the
+  hazard does not fire at that rate, whatever the time column did.
+
+  The control must report zero spread at every rate: its two arms agree
+  to twelve printed digits, so no flip between them can change an answer.
+  A non-zero spread there would mean this probe is measuring wrong.
