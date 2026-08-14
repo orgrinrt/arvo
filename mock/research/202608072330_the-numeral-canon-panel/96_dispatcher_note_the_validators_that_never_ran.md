@@ -187,3 +187,36 @@ are not rewritten, so the offset is recorded here instead.
 The general lesson, and it is the second time this panel has paid it: **a line citation into a document
 that is still alive is fragile by construction.** A heading anchor fails loudly when the heading moves;
 a line number resolves to the wrong text in silence.
+
+## Addendum two: the fix is in arvo now, and two more instrument defects on the way to proving it
+
+**The lockfile is bumped.** `mock/benches/Cargo.lock` moved `mockspace-bench-core` and
+`mockspace-bench-harness` from `084e780c` to `bce17f6c`, which is the merge carrying the fix. The bench
+crates track `branch = "dev"` rather than a pinned rev, so the pin was always the lockfile and no
+manifest needed editing. From this commit on, a bench run in arvo executes the per-variant validators
+that fourteen crates define and that had never run.
+
+**Not yet demonstrated end to end, and that is stated rather than implied.** Two things blocked a
+confirming run, both defects in the instrument rather than in the fix, and neither worth chasing on the
+panel's time:
+
+**`cargo mock bench run` cannot find arvo's bench binary.** It looks for a target named `benches` or
+`benches.exe` and arvo's is `arvo-benches`, so it exits with `no bench binary found in
+mock/benches/target/release`. The harness hardcodes a binary name the consumer is free to choose. So
+the documented entry point has never worked in this repository, which is consistent with `22` having
+had to wire the validation call by hand in arvo's own driver.
+
+**The driver ignores a bench name passed as an argument.** Invoked directly as
+`./target/release/arvo-benches bitpack-sequential-sum` it began running `wide-rung-width-l1` instead,
+and failed there because that family's variant cdylibs are not built in this tree. So selecting one
+bench needs a different invocation than the obvious one, and running any bench needs its whole variant
+set built first.
+
+Both are the same shape as everything else in this note: **the harness's failure modes are quiet,
+misleading, or in the wrong place**, and each one costs whoever hits it a detour. Recorded, not fixed.
+The fix that matters is landed and the pin is bumped; a bench run under it will happen when a member
+needs a number rather than as a demonstration.
+
+**Predicate.** The lockfile claim holds for arvo at `feat/arvo-shape-topic` from commit `e8dd5d81`. The
+two defects were observed on this host, on that commit, with the variant set as currently built. Neither
+was investigated further.
