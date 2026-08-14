@@ -1,0 +1,21 @@
+arms found in 131 section 3: 7   (131 states six: R0..R5 plus R6)
+
+arm   domain   W    F    signedness  predicate head
+----------------------------------------------------------------------------------------------------
+R0    yes      yes  yes  yes         F = 0 with operations in {add, sub, mul, min}, and F
+R1    yes      yes  yes  yes         W any; F any; signedness any; domain closed under ne
+R2    yes      yes  yes  yes         the composition claim, rounding in {floor, ceil, tow
+R3    yes      yes  yes  yes         the commutations, rounding in {floor, ceil, toward_z
+R4    yes      yes  yes  yes         W any, F any, signedness any, domain any, operation 
+R5    yes      yes  yes  yes         the uniqueness and the Fréchet impossibility, F any,
+R6    NO       NO   NO   NO          toolchain = the pinned nightly, edition 2021, crate 
+
+arms with NO domain dimension: 1 -> ['R6']
+
+CONTROL: R0 must show domain=yes, since 131 writes 'domain any' in it.
+  R0 predicate contains 'domain any': True  (must be True)
+
+Mapping to 132 section 5, which compresses these:
+  131 R3 (commutation)  -> 132 5.4   both predicates present in 131? see above
+  131 R5 (coupling)     -> 132 5.6 and 5.7
+  131 R6 (entropy-free) -> 132 5.8
