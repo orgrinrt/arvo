@@ -50,7 +50,11 @@ fn gcd(mut a: i128, mut b: i128) -> i128 {
         a = b;
         b = t;
     }
-    if a == 0 { 1 } else { a }
+    if a == 0 {
+        1
+    } else {
+        a
+    }
 }
 
 impl Q {
@@ -149,7 +153,14 @@ struct Report {
     undecidable: usize,
     flags_differ: usize,
     #[allow(clippy::type_complexity)]
-    samples: Vec<(u64, usize, (u64, i32), (u64, i32), (i128, i128), (i128, i128))>,
+    samples: Vec<(
+        u64,
+        usize,
+        (u64, i32),
+        (u64, i32),
+        (i128, i128),
+        (i128, i128),
+    )>,
 }
 
 fn report<const SPREAD: usize>(seeds: &[u64]) {
@@ -190,7 +201,9 @@ fn main() {
     println!("compare: exact rational, i128 num/den, no float in the comparison path");
     println!();
 
-    let seeds: Vec<u64> = (1u64..=8).map(|k| k.wrapping_mul(0x9E37_79B9_7F4A_7C15)).collect();
+    let seeds: Vec<u64> = (1u64..=8)
+        .map(|k| k.wrapping_mul(0x9E37_79B9_7F4A_7C15))
+        .collect();
 
     report::<0>(&seeds);
     report::<2>(&seeds);

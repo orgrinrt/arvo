@@ -43,7 +43,11 @@ fn gcd(mut a: i128, mut b: i128) -> i128 {
         a = b;
         b = t;
     }
-    if a == 0 { 1 } else { a }
+    if a == 0 {
+        1
+    } else {
+        a
+    }
 }
 
 /// Exact rational `num/den`, reduced, `den > 0`.
@@ -88,7 +92,8 @@ impl Q {
 
     fn sub(self, o: Q) -> Q {
         Q::new(
-            self.num.checked_mul(o.den).expect("sub overflow") - o.num.checked_mul(self.den).expect("sub overflow"),
+            self.num.checked_mul(o.den).expect("sub overflow")
+                - o.num.checked_mul(self.den).expect("sub overflow"),
             self.den.checked_mul(o.den).expect("sub overflow"),
         )
     }
@@ -102,7 +107,8 @@ impl Q {
 
     /// self > o, by cross-multiplication. Both denominators are positive.
     fn gt(self, o: Q) -> bool {
-        self.num.checked_mul(o.den).expect("cmp overflow") > o.num.checked_mul(self.den).expect("cmp overflow")
+        self.num.checked_mul(o.den).expect("cmp overflow")
+            > o.num.checked_mul(self.den).expect("cmp overflow")
     }
 }
 

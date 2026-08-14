@@ -116,7 +116,7 @@ fn gate_fadd<const PCT: usize>(seeds: &[u64]) {
         let input = AddSweep::<PCT>::build_input(seed);
         let mut hw = <AddSweep<PCT> as Routine>::Output::default();
         let mut sw = <AddSweep<PCT> as Routine>::Output::default();
-        for i in 0 .. bench_quantiser_fadd_shared::N {
+        for i in 0..bench_quantiser_fadd_shared::N {
             hw.s[i] = hardware_add(input.a[i], input.b[i]);
             sw.s[i] = software_add(input.a[i], input.b[i]);
         }
@@ -147,14 +147,18 @@ fn main() {
     println!("gate    : validation_plan(outputs_may_differ=false, max_relative_error=None)");
     println!("          => cross_variant = Some(ByteExact), per_variant = true");
     println!("          ByteExact compares each variant's raw output bytes to a baseline");
-    println!("seeds   : Rng::new(0xCAFEBABEDEADBEEF) x {DEFAULT_VALIDATION_SEEDS}, the harness's own");
+    println!(
+        "seeds   : Rng::new(0xCAFEBABEDEADBEEF) x {DEFAULT_VALIDATION_SEEDS}, the harness's own"
+    );
     println!();
 
     let mut rng = Rng::new(VALIDATION_ROOT_SEED);
-    let seeds: Vec<u64> = (0 .. DEFAULT_VALIDATION_SEEDS).map(|_| rng.next()).collect();
+    let seeds: Vec<u64> = (0..DEFAULT_VALIDATION_SEEDS).map(|_| rng.next()).collect();
 
     println!("SUBJECT: quantiser-radix, arms quantiser-radix2 and quantiser-radix10");
-    println!("  declared flags: outputs_may_differ DEFAULT(false), max_relative_error DEFAULT(None)");
+    println!(
+        "  declared flags: outputs_may_differ DEFAULT(false), max_relative_error DEFAULT(None)"
+    );
     println!("  committed together in decimal-quantiser-radix-sweep_n{{0,2,8,20}}.csv");
     gate_radix::<0>(&seeds);
     gate_radix::<2>(&seeds);
@@ -163,7 +167,9 @@ fn main() {
     println!();
 
     println!("CONTROL: quantiser-fadd, arms quantiser-fadd-hardware and quantiser-fadd-software");
-    println!("  declared flags: outputs_may_differ DEFAULT(false), max_relative_error DEFAULT(None)");
+    println!(
+        "  declared flags: outputs_may_differ DEFAULT(false), max_relative_error DEFAULT(None)"
+    );
     println!("  committed together in quantiser-vs-fadd-subnormal-sweep_n*.csv");
     println!("  the shared crate claims the software model is bit-exact against silicon");
     gate_fadd::<0>(&seeds);

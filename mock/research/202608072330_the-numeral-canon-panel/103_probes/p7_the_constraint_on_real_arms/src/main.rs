@@ -37,10 +37,10 @@
 
 use bench_quantiser_fadd_shared::{hardware_add, software_add, AddSweep, N as FN};
 use bench_quantiser_radix_shared::rmodel::Scaled;
-use mockspace_bench_core::Routine;
 use bench_quantiser_radix_shared::{
     quantised_add, BIN_EMAX, BIN_EMIN, BIN_P, BIN_R, DEC_EMAX, DEC_EMIN, DEC_P, DEC_R,
 };
+use mockspace_bench_core::Routine;
 
 struct SplitMix64(u64);
 impl SplitMix64 {
@@ -61,7 +61,11 @@ fn gcd(mut a: i128, mut b: i128) -> i128 {
         a = b;
         b = t;
     }
-    if a == 0 { 1 } else { a }
+    if a == 0 {
+        1
+    } else {
+        a
+    }
 }
 
 /// `|mag * r^exp - exact| / exact`, computed as an exact rational and returned
@@ -72,13 +76,13 @@ fn rel_err(mag: u64, exp: i32, r: i128, exact: i128) -> (i128, i128) {
     let m = mag as i128;
     let (vn, vd) = if exp >= 0 {
         let mut acc: i128 = 1;
-        for _ in 0 .. exp {
+        for _ in 0..exp {
             acc = acc.checked_mul(r).expect("overflow");
         }
         (m.checked_mul(acc).expect("overflow"), 1i128)
     } else {
         let mut acc: i128 = 1;
-        for _ in 0 .. (-exp) {
+        for _ in 0..(-exp) {
             acc = acc.checked_mul(r).expect("overflow");
         }
         (m, acc)
@@ -95,17 +99,17 @@ fn radix_errors(trials: usize) -> (f64, f64) {
     let mut sum_b = 0.0f64;
     let mut sum_d = 0.0f64;
 
-    for _ in 0 .. trials {
+    for _ in 0..trials {
         let ma = 1_000_000 + (rng.next() % 9_000_000);
         let mb = 1_000_000 + (rng.next() % 9_000_000);
         let a = Scaled {
             neg: false,
-            mag:  ma as u128,
+            mag: ma as u128,
             scale: 0,
         };
         let b = Scaled {
             neg: false,
-            mag:  mb as u128,
+            mag: mb as u128,
             scale: 0,
         };
         let exact = ma as i128 + mb as i128;
@@ -125,9 +129,9 @@ fn fadd_errors<const PCT: usize>(seeds: u64) -> (f64, f64) {
     let mut sum_h = 0.0f64;
     let mut sum_s = 0.0f64;
     let mut counted = 0u64;
-    for seed in 0 .. seeds {
+    for seed in 0..seeds {
         let input = AddSweep::<PCT>::build_input(seed);
-        for i in 0 .. FN {
+        for i in 0..FN {
             let (a, b) = (input.a[i], input.b[i]);
             // exact: the sum of two f32 values fits a f64 significand exactly
             // for every band this Routine generates.
@@ -163,8 +167,14 @@ fn main() {
     macro_rules! fadd {
         ($p:literal) => {{
             let (h, s) = fadd_errors::<$p>(64);
-            println!("quantiser-vs-fadd-subnormal-sweep-n{}\tquantiser-hardware\t{h:.12e}", $p);
-            println!("quantiser-vs-fadd-subnormal-sweep-n{}\tquantiser-software\t{s:.12e}", $p);
+            println!(
+                "quantiser-vs-fadd-subnormal-sweep-n{}\tquantiser-hardware\t{h:.12e}",
+                $p
+            );
+            println!(
+                "quantiser-vs-fadd-subnormal-sweep-n{}\tquantiser-software\t{s:.12e}",
+                $p
+            );
         }};
     }
     fadd!(0);
