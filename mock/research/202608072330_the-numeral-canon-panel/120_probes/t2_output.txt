@@ -1,0 +1,57 @@
+T2. predicates diffed dimension by dimension, and one absence claim
+==============================================================================
+
+PART ONE. my predicates against the candidate's
+
+  F115-1 -> 119 4.7 first predicate
+    dimensions mine 13, candidate 13
+    DROPPED (in mine, absent from the candidate): none
+    added   (in the candidate, absent from mine): none
+    value differs on 'declarations': mine `one-sided [0, b] exhaustive` candidate `one-sided exhaustive`
+    value differs on 'discharge check': mine `root under wrap and per node under sat` candidate `root under a homomorphism and per node otherwise`
+    value differs on 'overflow policy': mine `{wrap, sat}` candidate `{wrapping, saturating}`
+
+  F115-4 -> 119 4.10
+    dimensions mine 10, candidate 8
+    DROPPED (in mine, absent from the candidate): ['recursion limit']
+    added   (in the candidate, absent from mine): none
+    (parse note, not a dimension: ['(continuation) rustc 1.98.0-nightly (57d06900f 2026-05-27)'])
+    value differs on 'crate type': mine `lib` candidate `library`
+    value differs on 'fold length': mine `{2, 4, 6, 8, 12, 16, 24}` candidate `{2, 8, 16, 24, 32, 48, 64, 96, 128}`
+    value differs on 'term': mine `a left-nested fold of adds` candidate `a left-nested fold`
+    value differs on 'toolchain': mine `nightly-2026-05-28` candidate `the pinned nightly`
+
+  CONTROL: the same comparison with one dimension deleted and one
+  value altered on the candidate side, which must be reported
+
+  CONTROL mutated candidate predicate
+    dimensions mine 13, candidate 12
+    DROPPED (in mine, absent from the candidate): ['threads']
+    added   (in the candidate, absent from mine): none
+    value differs on 'declarations': mine `one-sided [0, b] exhaustive` candidate `one-sided exhaustive`
+    value differs on 'discharge check': mine `root under wrap and per node under sat` candidate `root under a homomorphism and per node otherwise`
+    value differs on 'overflow policy': mine `{wrap, sat}` candidate `{wrapping, saturating}`
+    value differs on 'w': mine `3` candidate `5`
+
+  control fired: True
+
+------------------------------------------------------------------------------
+PART TWO. the absence claim in F115-4, checked against the place
+
+  present  trait Pick                   a selector trait
+  present  type Arm                     an associated type carrying the chosen arm
+  present  impl Pick for Cond<true>     the true branch
+  present  impl Pick for Cond<false>    the false branch
+  present  as Pick>::Arm                reading the const through the projection
+  present  selection-assoc              and the variant is named
+  ABSENT   trait PickNothingLikeThis    CONTROL, must be absent
+
+  markers found: 6 of 6
+  so 114_probes/p9 does contain a trait-projection variant: True
+  => F115-4's clause that the route was untried is WRONG, and
+     F118-16 and 119 section 1.3 are right to retire it.
+
+------------------------------------------------------------------------------
+part one: pairs with a dropped dimension or a changed value: 2
+part one control fired: True
+part two: the absence claim is refuted: True
