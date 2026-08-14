@@ -243,7 +243,6 @@ type Y = Leaf<1, 0, 1>;
 type Z0 = Leaf<2, 0, 3>; // can be zero
 type Z1 = Leaf<2, 1, 3>; // declared away from zero, P3's term
 
-
 type TAdd3 = Add<Add<X, Y>, Z0>; // predicate should fire
 type TMulAdd = Add<Mul<X, Y>, Z0>; // predicate should fire: no masking ancestor
 type TRepeat = Sub<Add<X, Y>, Y>; // (a) fails: leaf repeat
@@ -329,14 +328,16 @@ pub fn sat_gated(a: u8, b: u8, c: u8) -> u8 {
     if const { <TW as Selected<L5Sat>>::OK } {
         a.wrapping_sub(b.wrapping_sub(c))
     } else {
-        a.min(MASK).saturating_sub(b.min(MASK).saturating_sub(c.min(MASK)))
+        a.min(MASK)
+            .saturating_sub(b.min(MASK).saturating_sub(c.min(MASK)))
     }
 }
 
 #[inline(never)]
 #[no_mangle]
 pub fn general_saturating(a: u8, b: u8, c: u8) -> u8 {
-    a.min(MASK).saturating_sub(b.min(MASK).saturating_sub(c.min(MASK)))
+    a.min(MASK)
+        .saturating_sub(b.min(MASK).saturating_sub(c.min(MASK)))
 }
 
 fn row<T, C>(name: &str)
