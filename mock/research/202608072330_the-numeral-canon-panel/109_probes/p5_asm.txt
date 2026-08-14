@@ -1,0 +1,50 @@
+P5, question 5. Does the carried-range proof survive lowering?
+
+Command (from inside the repo, so rust-toolchain.toml pins nightly-2026-05-28,
+rustc 1.98.0-nightly 57d06900f, host aarch64-apple-darwin):
+
+  rustc --edition 2021 -O --crate-type=lib --emit asm \
+        p5_a_carried_range_eliminates_the_completion.rs -o p5_full.s
+
+Extracted bodies, comment directives stripped:
+
+_proved_add:
+	add	w8, w1, w0
+	and	w0, w8, #0xff
+	ret
+
+_unproved_add_saturating = _unproved_add_checked      <- see note 2
+
+_unproved_add_checked:
+	add	w8, w0, w1
+	mov	w9, #255
+	cmp	w8, #255
+	csel	w0, w8, w9, lo
+	ret
+
+WHAT THIS IS. A compile-and-inspect check. It establishes an EXISTENCE claim,
+that the completion is absent from the emitted code for the proved path, and a
+NEGATIVE claim, that it is present for the unproved one. It is an ad-hoc quick
+spike with no substance as far as magnitude goes: it prices nothing, it is not
+a bench, it did not run on the mockspace bench harness, and nobody should read
+a speed claim out of it. Two instructions against four is an instruction count
+off one emitted body on one target, not a measurement.
+
+Note 1. The `and w0, w8, #0xff` in the proved body is the u8 truncation of the
+return value, an artifact of the container, not a completion. No compare, no
+select, no branch: the clamp is gone.
+
+Note 2. LLVM folded `unproved_add_saturating` into `unproved_add_checked` as
+an alias. That is correct rather than a defect: `u8::saturating_add` and
+`checked_add(..).unwrap_or(255)` are the same function on u8, so identical
+code folding merged them. It also means the comparison has two arms and not
+three.
+
+Note 3, and it is the one that bounds the result. `proved_add` takes raw `u8`
+parameters and builds `Ranged(a, PhantomData)` directly, so the range
+obligation is asserted nowhere on that path. The emitted code is what a proved
+call site lowers to; it is NOT evidence that the proof is enforced at this
+entry point. The guarantee's perimeter is the construction site, and an
+`extern "C"` entry point with primitive parameters punches straight through
+it. That is a fact about where a carried range has to be established, not a
+reason the mechanism fails.
