@@ -2056,11 +2056,35 @@ weighting over cost coordinates, and built a decider for it. `98` reimplemented 
 independently and reproduced both of `97`'s counts exactly, which is the strongest corroboration
 available here. Then it measured whether the object being checked is stable enough to be checked.
 
-**(a) Check a table against a weighting.** The design writes the region-to-arm table; a check confirms
-some weighting explains it. This is `97`'s shape as proposed.
+**This entry was written as a binary and that was the dispatcher's error, corrected here by `100`'s
+canon gate.** The original text offered "(a) check a table against a weighting" against "(b) generate
+the table from the weighting" as an exclusive fork over the whole category, which is the shape op has
+rejected three times (`88` section 4, `85` section 2, `83`). It is preserved in git rather than
+re-stated, and what replaces it is below. A register entry that carries a binary into a consolidation
+hands on the shape rather than the answer.
 
-**(b) Generate the table from the weighting.** The design writes the weighting; the table is derived, so
-rationalisability holds by construction and there is nothing to check. `98`'s proposal.
+**The fork has no consumer-visible content.** `100` establishes that checking and generating **emit the
+same artifact**; both are maintainer workflows, and neither changes anything a consumer can express.
+So there was nothing for the canon to rule on.
+
+**The axis that does change what a consumer can do is a different one, and `93` named it and nobody
+picked it up** (`93:966-973`): whether the **winner table** or the **cost table** goes into the
+compiler. `100`'s `p3` compiles both and the assembler emitted `_e2_weighted = _e1_named`, an alias, so
+the cost-table encoding costs nothing at the point of use and buys a consumer-supplied weighting that
+nobody had tabulated. `p9` adds that it occupies zero bytes, with a control showing the exact 240 bytes
+it would occupy if it were not const-consumed.
+
+**And generating relocates the check rather than removing it.** `100`'s `p2` injects five ordinary
+generator defects: rationalisability catches **0 of 190** unit errors, **0 of 147** swaps and **0 of
+152** dropped coordinates, because a generator's mistake is the correct argmin of a different question.
+Cone membership of the **stated** weighting catches all 489, and is tie-break invariant where
+recomputation is not. So `98`'s proposal survives with its justification amended, and `97`'s decider
+survives in a new role rather than being displaced.
+
+**The composition, which is what replaces the fork.** Ship the weighting, the cost table, and the
+generated winner table, and assert at const time that the third is the argmin of the first over the
+second. A mutant refuses with `E0080`. `100` section 6.1 states it as four arms with disjoint
+const-checkable predicates, which is the form I13 asks for.
 
 **The measurement that motivates (b), and it is one instance.** Bootstrapping the committed bench
 samples, a fixed weighting produces **30, 8 and 77 distinct sections** across three families, and on one
