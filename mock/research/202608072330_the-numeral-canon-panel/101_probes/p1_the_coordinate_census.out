@@ -1,0 +1,142 @@
+==============================================================================
+1. THE HARNESS SCHEMA AGAINST THE COMMITTED CORPUS
+==============================================================================
+committed CSV files: 254   data rows: 104080
+
+column          rows w/ info  files w/ any  distinct values seen
+run                   104080           254  1
+pass                  104080           254  1,2,3,4
+cooldown_ms                0             0  0
+mode                  104080           254  cold,warm
+variant               104080           254  bitpack-carrier-d16,bitpack-carrier-d16-control,bitpack-carrier-d32,bitpack-carrier-d64,...
+batch_idx              93672           254  0,1,2,3,...
+e2e_ns                104080           254  88992.5,88997.1,89355.0,89391.2,...
+algo_ns               104080           254  88786.7,88820.0,89082.1,89167.5,...
+bridge_ns             103920           254  1.2,2.1,2.5,2.9,...
+batch_count           104080           254  100
+score                      0             0  <empty>
+input_tag                  0             0  <empty>
+instructions               0             0  0
+cycles                     0             0  0
+setup_ns                   0             0  0.0
+first_ns                   0             0  0.0
+digest                     0             0  0
+
+of the columns carrying information, which VARY BETWEEN ARMS at a fixed
+region (the only ones a cost coordinate can be built from):
+    algo_ns        varies   (248 (family, region) groups tested)
+    batch_count    constant across arms   (248 (family, region) groups tested)
+    batch_idx      constant across arms   (248 (family, region) groups tested)
+    bridge_ns      varies   (248 (family, region) groups tested)
+    e2e_ns         varies   (248 (family, region) groups tested)
+    pass           constant across arms   (248 (family, region) groups tested)
+    run            constant across arms   (248 (family, region) groups tested)
+
+columns carrying information :  9  ['run', 'pass', 'mode', 'variant', 'batch_idx', 'e2e_ns', 'algo_ns', 'bridge_ns', 'batch_count']
+columns identically empty/zero:  8  ['cooldown_ms', 'score', 'input_tag', 'instructions', 'cycles', 'setup_ns', 'first_ns', 'digest']
+
+==============================================================================
+2. WHICH HOOKS THE VARIANTS IMPLEMENT
+==============================================================================
+variant crates: 94   source files scanned: 114
+
+Routine hook            crates implementing
+validate_output                          15
+score_output                              0
+score_label                               0
+score_dimensions                          0
+outputs_may_differ                        1
+compare_epsilon                           0
+
+constructor / field     occurrences   crates
+timed!                           82       82
+timed_calibrated!                 0        0
+bench_matrix                      0        0
+setup_ticks                       0        0
+first_ticks                       0        0
+digest                            0        0
+
+==============================================================================
+3. FAMILIES, ARMS, REGIONS, AND WHICH CARRY A NOISE-FLOOR CONTROL
+==============================================================================
+family                              regions  arms  control arm
+bitpack-carrier-width                     6     6  bitpack-carrier-d16-control
+bitpack-contend-best                      4     6  
+bitpack-contend-decode                    6     5  bitpack-contend-d16-control
+bitpack-contention                       12     6  bitpack-contend-d16-control
+bitpack-decoder-shape                     4     4  
+bitpack-footprint-dense                   5     2  
+bitpack-footprint-headtohead              5     4  
+bitpack-footprint-packed                  5     2  
+bitpack-kernel-amortisation               4     5  
+bitpack-random-sum                        3     3  
+bitpack-sequential-sum                    3     3  
+bitpack-wide                              6     4  bitpack-wide-d16-control
+bitpack-write-contend-race                6     3  
+bitpack-write-contend-safe                6     3  
+decimal-quantiser-radix-sweep             4     2  
+fnv1a-vs-xxhash3                          4     2  
+precise-container-width-l1                6     5  
+precise-elementwise-width-l1              6     5  
+precise-widening-theorem-l1               6     6  
+quantiser-vs-fadd-subnormal-sweep         6     2  
+satfold-align-l1                          4     8  
+satfold-const-gate                        3     5  
+satfold-length-dram                       2     8  
+satfold-length-dram-long                  1     8  
+satfold-length-dram-wrap                  1     8  
+satfold-length-l1                        12     9  
+satfold-length-l1-wrap                    5     9  
+spectral-bisection                        3     1  
+structural-decomposition                  3     1  
+warm-affine-collapse-l1                   6     6  
+warm-affine-density-w13                   5     6  
+warm-clamp-arity-l2                       6     6  
+warm-clamp-arity-w13                      6     6  
+warm-clamp-arity-w16                      6     6  
+warm-clamp-arity-w32                      6     6  
+warm-clamp-arity-w60                      6     6  
+warm-clamp-arity-w64                      6     6  
+warm-clamp-arity-w8                       4     6  
+warm-clamp-chain-l1                       6     6  
+warm-container-density-w13                5     6  
+warm-container-density-w64                5     5  
+warm-container-width-l1                   6     6  
+warm-container-width-l2                   6     4  
+warm-elementwise-width-l1                 6     5  
+wide-rung-density-w200                    4     5  
+wide-rung-walk-l1                         6     5  
+wide-rung-walk-l2                         6     5  
+wide-rung-width-l1                        6     5  
+wide-rung-width-l2                        6     5  
+
+families: 49   with a byte-identical control arm: 4
+
+==============================================================================
+4. THE THREE TIERS
+==============================================================================
+REALISED  (a coordinate can be computed from the committed corpus today):
+            run
+            pass
+            mode
+            variant
+            batch_idx
+            e2e_ns
+            algo_ns
+            bridge_ns
+            batch_count
+
+REACHABLE (the column exists, the harness fills it, no arvo variant asks):
+            setup_ns, first_ns, digest  <- the matrix scaffold constructor;
+                                           every arvo variant uses timed!
+            score                       <- Routine::score_output / score_dimensions;
+                                           implemented by 0 arvo variants
+            instructions, cycles        <- --perf-counters, needs sudo on an
+                                           Apple-Silicon host (bench-harness/src/perf.rs)
+
+ABSENT    (no column, reaching it is instrument work):
+            bytes per element           <- declared by hand in every probe that
+                                           weighs storage; no bench measures a size
+            accuracy / divergence       <- see the digest and score rows above:
+                                           a slot exists, the QUANTITY does not
+            compile time                <- schema is entirely runtime fields

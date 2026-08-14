@@ -1,0 +1,59 @@
+bitpack-carrier-d16          vs bitpack-carrier-d16-control  DIFFER      (50497 vs 50497 lines, 16 differing)
+20085c20085
+< adrp	x1, 32
+---
+> adrp	x1, 31
+29417c29417
+< adrp	x16, 21
+---
+> adrp	x16, 22
+30404c30404
+< adrp	x4, 35
+---
+> adrp	x4, 34
+30406c30406
+< adrp	x6, 35
+---
+> adrp	x6, 34
+32486c32486
+< adrp	x9, 19
+---
+> adrp	x9, 18
+bitpack-contend-d16          vs bitpack-contend-d16-control  DIFFER      (55678 vs 55678 lines, 8 differing)
+32457c32457
+< adrp	x0, 45
+---
+> adrp	x0, 44
+34030c34030
+< adrp	x9, 24
+---
+> adrp	x9, 25
+40831c40831
+< adrp	x13, 20
+---
+> adrp	x13, 19
+42893c42893
+< adrp	x0, 18
+---
+> adrp	x0, 17
+bitpack-wide-d16             vs bitpack-wide-d16-control     DIFFER      (55513 vs 55513 lines, 30 differing)
+1524c1524
+< adrp	x20, 54
+---
+> adrp	x20, 53
+22018c22018
+< adrp	x9, 34
+---
+> adrp	x9, 35
+22135c22135
+< adrp	x9, 34
+---
+> adrp	x9, 35
+22175c22175
+< adrp	x2, 38
+---
+> adrp	x2, 37
+28348c28348
+< adrp	x23, 49
+---
+> adrp	x23, 48
