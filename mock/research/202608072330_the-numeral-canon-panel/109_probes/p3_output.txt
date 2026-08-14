@@ -1,0 +1,12 @@
+
+running 6 tests
+test tests::a_strategy_selects_a_resolution_rather_than_being_one ... ok
+test tests::w1_denotationally_same_representationally_different ... ok
+wrap and saturate differ on 32640 of 65536 pairs at I=8,F=0
+test tests::the_completion_axis_is_not_redundant ... ok
+test tests::w2_without_the_marker_the_two_requests_unify ... ok
+test tests::w3_different_value_sets_differ_under_every_relation ... ok
+test tests::w2_representationally_same_nominally_different ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
