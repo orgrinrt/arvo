@@ -36,8 +36,10 @@ pub fn double_decimal(x: FxAxes<DECIMAL>) -> FxAxes<DECIMAL> {
 }
 
 pub fn monomorphic_site() -> (i128, i128) {
-    (double_binary(FxAxes::<BINARY>(21)).0,
-     double_decimal(FxAxes::<DECIMAL>(21)).0)
+    (
+        double_binary(FxAxes::<BINARY>(21)).0,
+        double_decimal(FxAxes::<DECIMAL>(21)).0,
+    )
 }
 
 // ---------------------------------------------------------------------------
@@ -56,8 +58,10 @@ pub fn double_any_radix<const R: u32>(x: FxAxes<R>) -> FxAxes<R> {
 
 pub fn polymorphic_site() -> (i128, i128) {
     // one generic function, both spellings, no cast, no feature gate
-    (double_any_radix(FxAxes::<BINARY>(21)).0,
-     double_any_radix(FxAxes::<DECIMAL>(21)).0)
+    (
+        double_any_radix(FxAxes::<BINARY>(21)).0,
+        double_any_radix(FxAxes::<DECIMAL>(21)).0,
+    )
 }
 
 /// And it composes: a caller that wants to be written once threads the parameter
