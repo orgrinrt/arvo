@@ -1,0 +1,74 @@
+=== (a) the fabricated figure, across the whole panel ===
+-- any file containing 21,204 or 21204 --
+./131_leroy_formalising_the_rounding_axis.md
+./131_probes/v2_output.txt
+./131_probes/v2_the_vocabulary_and_which_equality_double_rounding_threatens.py
+./132_leroy_the_canon_candidate_for_the_rounding_axis.md
+./133_knuth_signature_in_part_with_two_corrections.md
+./133_probes/s1_output.txt
+./133_probes/s1_the_figure_and_the_closed_form.py
+./135_dolan_signature_in_part.md
+./136_leroy_the_candidate_revised_against_three_signatures.md
+./136_probes/x3_output.txt
+./136_probes/x3_the_two_attribution_errors_and_the_impossible_figure.py
+-- in 125 and its probes specifically (136 claims zero) --
+   zero, as 136 claims
+-- and where the RETRACTIONS live (these are legitimate mentions) --
+     ./131_leroy_formalising_the_rounding_axis.md
+     ./132_leroy_the_canon_candidate_for_the_rounding_axis.md
+     ./133_knuth_signature_in_part_with_two_corrections.md
+     ./135_dolan_signature_in_part.md
+     ./136_leroy_the_candidate_revised_against_three_signatures.md
+
+=== (b) every place attributing a completed gate count to 125 ===
+-- every line mentioning '123 across 13' or '123 across thirteen' --
+103_mcsherry_what_the_corpus_can_and_cannot_show.md:50:                                         123 across 13 crates, 0 failed
+103_mcsherry_what_the_corpus_can_and_cannot_show.md:53:**123 across 13, which reproduces `98`, `100` and `102` exactly**, from a fourth count. `96`'s note holds:
+106_giesen_consolidation_the_strategy_axis.md:1306:**Verified independently rather than taken from a file:** the test suite, 123 across 13, run per crate; the
+107_arntzen_entailment_check_on_the_strategy_consolidation.md:40:### 0.2 Test gate: passed, at 123 across 13, and my own instrument produced a fifth meaningless green
+107_arntzen_entailment_check_on_the_strategy_consolidation.md:82:**Verified by running rather than by reading:** the suite, 123 across 13, per crate. The four
+111_jhala_the_primitive_attacked.md:34:### 0.2 Test gate: passed, at 123 across 13, and it is the seventh count
+111_jhala_the_primitive_attacked.md:867:**F111-13. The suite is 123 across 13 and all of it passes, and `wide-rung-shared` takes 4.25s.**
+112_leijen_where_the_refinement_lives.md:1148:**F112-15. The suite is 123 across 13 and all of it passes, and `wide-rung-shared` takes 4.38s of test
+112_leijen_where_the_refinement_lives.md:49:### 0.2 Test gate: passed, at 123 across 13, and it is the eighth count
+114_leroy_formalising_the_primitive.md:62:### 0.2 Test gate: passed, at 123 across 13, and it is the ninth independent count
+115_jhala_the_check_the_policy_selects.md:40:### 0.2 Test gate: passed, at 123 across 13, and it is the tenth count
+116_leijen_reply_what_the_homomorphism_opens.md:34:### 0.2 Test gate: passed, at 123 across 13, and it is the eleventh count
+116_leijen_reply_what_the_homomorphism_opens.md:601:**F116-11. The suite is 123 across 13 and all of it passes.** `toolchain = nightly-2026-05-28, host = this
+118_leroy_reply_one_mechanism_and_the_condition_set.md:46:### 0.2 Test gate: passed, at 123 across 13, and it is the twelfth count
+119_leroy_the_canon_candidate_for_the_realisation_map.md:49:### 0.2 Test gate: passed, at 123 across 13, and it is the thirteenth count
+120_jhala_partial_signature_on_the_candidate.md:38:### 0.2 Test gate: passed, at 123 across 13, and it is the fourteenth count
+121_leijen_partial_signature_the_domain_is_the_missing_dimension.md:26:### 0.2 Test gate: passed, at 123 across 13, and it is the fourteenth count
+121_leijen_partial_signature_the_domain_is_the_missing_dimension.md:378:**F121-7. The suite is 123 across 13 and all of it passes.** Fourteenth count. `toolchain =
+122_leroy_the_candidate_revised_against_two_partial_signatures.md:53:### 0.2 Test gate: passed, at 123 across 13, and it is the fifteenth count
+130_dolan_reply_one_axis_two_keyings.md:13:message the eleventh run of the gate already stands at 123 across 13 by `--manifest-path`, cited
+131_leroy_formalising_the_rounding_axis.md:48:### 0.2 Test gate: passed, at 123 across 13, inherited with attribution
+131_leroy_formalising_the_rounding_axis.md:52:records the eleventh run at 123 across 13 by `--manifest-path`, and I add that `122` section 0.2 is the
+132_leroy_the_canon_candidate_for_the_rounding_axis.md:43:`125` section 10 records the eleventh run at 123 across 13 by `--manifest-path`; `122` section 0.2 is
+133_knuth_signature_in_part_with_two_corrections.md:11:non-terminating**, recorded at `125` section 10; the completed count of **123 across 13** belongs to
+133_knuth_signature_in_part_with_two_corrections.md:199:123 across 13". It records the opposite: twelve of thirteen crates green at 108 tests, the
+133_knuth_signature_in_part_with_two_corrections.md:205:its `u0` record the fifteenth completed run at 123 across 13; `125` section 10 records a per-crate
+134_wronski_cosign_with_one_addendum_on_the_dither.md:13:**Test gate: inherited with attribution, unchanged.** `125` section 10's eleventh run, 123 across 13 by
+135_dolan_signature_in_part.md:10:not re-run the crate suite; `132` section 0.2 correctly inherits the eleventh run at 123 across 13,
+136_leroy_the_candidate_revised_against_three_signatures.md:20:### 0.2 Test gate: passed, at 123 across 13, inherited from an artifact I opened
+136_leroy_the_candidate_revised_against_three_signatures.md:23:records the eleventh run at 123 across 13. It records the opposite. I opened `125:463-477` for this
+98_spj_what_the_strategy_axis_settles.md:62:96 across eleven crates; the corpus is 123 across thirteen. Neither difference changes anything either
+99_persona_checkpoint_eight.md:152:twelve crates, `97` says 96 across eleven, `98` says 123 across thirteen and explains the others,
+
+-- of those, which ATTRIBUTE it to 125 --
+132_leroy_the_canon_candidate_for_the_rounding_axis.md:43:`125` section 10 records the eleventh run at 123 across 13 by `--manifest-path`; `122` section 0.2 is
+133_knuth_signature_in_part_with_two_corrections.md:11:non-terminating**, recorded at `125` section 10; the completed count of **123 across 13** belongs to
+133_knuth_signature_in_part_with_two_corrections.md:205:its `u0` record the fifteenth completed run at 123 across 13; `125` section 10 records a per-crate
+134_wronski_cosign_with_one_addendum_on_the_dither.md:13:**Test gate: inherited with attribution, unchanged.** `125` section 10's eleventh run, 123 across 13 by
+136_leroy_the_candidate_revised_against_three_signatures.md:23:records the eleventh run at 123 across 13. It records the opposite. I opened `125:463-477` for this
+
+-- what 125 section 10 actually records --
+Run per crate by `--manifest-path`, as the brief instructs. **Twelve of the thirteen `*-shared`
+crates completed green: 108 tests, 0 failures** (carrier 9, contend 12, footprint 6, plan 5, bitpack
+3, wide 6, quantiser-fadd 1, quantiser-radix 3, satfold 11, warm-clamp 7, warm-container 15,
+wide-rung 30; wide-rung alone took 202 seconds). **The thirteenth, `bitpack-write-contend-shared`,
+
+-- and 122's own artifact, which 136 says is the real source --
+The named test, run on its own:
+test tests::clamping_is_a_retraction_on_non_negative_addition_at_every_swept_width ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s

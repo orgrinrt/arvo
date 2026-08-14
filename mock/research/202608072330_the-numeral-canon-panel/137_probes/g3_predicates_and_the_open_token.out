@@ -1,0 +1,30 @@
+predicates found by my pattern in 132 section 5 : 11   (136 x4 reports 11)
+
+#   domain    W    F    signedness  first 58 chars
+--------------------------------------------------
+1   yes       yes  yes  yes         W any; F any; signedness any; domain in {closed under nega
+2   yes       yes  yes  yes         W any; F any; signedness any; domain closed under negation
+3   yes       NO   NO   NO          rounding in the nearest members; F_exact in {4, 5}; F_inte
+4   yes       yes  yes  yes         W >= 1; F any; signedness any; domain closed under negatio
+5   NO        NO   NO   yes         rounding = toward-zero; range policy = wrapping; signednes
+6   yes       yes  yes  yes         F = 0 with operations in {addition, subtraction, multiplic
+7   yes       yes  yes  yes         W any; F any; signedness any; domain any; operation = mult
+8   yes       yes  yes  yes         F any; W any; signedness any; domain closed under negation
+9   NO        NO   NO   NO          element count any; fraction = 1/3; coupling in {comonotone
+10  NO        NO   yes  yes         keying in {none, value, position}; decorrelation measured 
+11  NO        NO   NO   NO          toolchain = the pinned nightly; edition 2021; crate type =
+
+predicates with NO domain dimension: 4 -> [5, 9, 10, 11]
+136 section 5 reports four absences: 5.4 non-commutation, 5.6 variance,
+5.7 keying, 5.8 entropy.
+
+=== (2) does 136 write a hedge token INTO a predicate? ===
+  HEDGE TOKEN IN PREDICATE:
+    rounding = toward-zero; range policy = wrapping; signedness = signed, or unsigned with signed intermediates; **domain: OPEN, and the clause claims not
+  HEDGE TOKEN IN PREDICATE:
+    element count any; fraction = 1/3; coupling in {comonotone, independent}; **domain any**, same construction and same condition (`136_probes/x2` P3); t
+
+  occurrences of the token OPEN inside a predicate span in 136 sec 7: 2
+
+  and 7.5's predicate, which has no **Argument** terminator:
+     mode trivially needs no entropy and > decorrelates nothing. *holds for: everything `132` 5.8's predicate lists, unchanged, plus **keying axis = one-dimensional** (section 8), plus **domain, W, F and signedness: OPEN**.*
