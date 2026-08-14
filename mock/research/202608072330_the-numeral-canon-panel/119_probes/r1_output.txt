@@ -41,5 +41,39 @@ C2. Mangled anchors must not be extracted.
     (any of these being nonempty means the pattern is too loose)
 
 --------------------------------------------------------------------------------------------
-  119_leroy_the_canon_candidate_for_the_realisation_map.md does not exist yet, so P2 is not run.
-  This is the inventory pass. Rerun after the candidate is written.
+P2 and C3. What the candidate carries, with its own anchor accounting
+section excluded so listing a dropped anchor cannot make it present.
+
+  class             in the four   in 119  in 119 incl. accounting  dropped
+  finding                    68       65                       69        4
+  probe                      73       32                       32       66
+  probe_stem                 29       25                       25        7
+  line                       47       22                       22       38
+  line_panel                 36       18                       18       28
+  line_panel_norm            34       18                       18       24
+
+  C3 fires when the 'incl. accounting' column exceeds the 'in 119'
+  column: it means the accounting section does contain anchors that
+  the body does not, which is exactly the disabling this guards.
+
+  Dropped, per class, listed so the drop is visible rather than silent:
+
+    finding (4 dropped):
+      F111-10                 F112-16                 F116-11                 F14                   
+
+    probe_stem (7 dropped):
+      p0                      p10                     p8c                     q0                      q7                      s0                    
+      s4                    
+
+    line_panel_norm (24 dropped):
+Traceback (most recent call last):
+  File "/Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel/119_probes/r1_the_anchor_inventory_and_what_the_candidate_carries.py", line 269, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel/119_probes/r1_the_anchor_inventory_and_what_the_candidate_carries.py", line 249, in main
+    print("      " + "  ".join(f"{d:<22}" for d in drop[i:i + 6]))
+                     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel/119_probes/r1_the_anchor_inventory_and_what_the_candidate_carries.py", line 249, in <genexpr>
+    print("      " + "  ".join(f"{d:<22}" for d in drop[i:i + 6]))
+                                 ^^^^^^^
+TypeError: unsupported format string passed to tuple.__format__

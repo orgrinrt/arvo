@@ -94,6 +94,22 @@ def strip_accounting(text):
 RE_LINE_PANEL = re.compile(r"\b\d{2,3}\s*:\s*\d+(?:\s*-\s*\d+)?\b")
 
 
+def normalise_lines(refs):
+    """An anchor reduced to (target, first line), so `115:120` and `115:120-121`
+    are ONE address.
+
+    Without this the set difference over exact strings overstates the drop
+    every time a later file cites the same target with a different range, which
+    is the normal way a citation gets re-used. Both the raw and the normalised
+    difference are reported, because the raw one is what a naive check would
+    produce and the gap between them is the artifact."""
+    out = set()
+    for r in refs:
+        head, _, tail = r.partition(":")
+        out.add((head.strip(), tail.split("-")[0].strip()))
+    return out
+
+
 def probe_stems(refs):
     """A probe identified by its directory and stem rather than by filename, so
     `p3b_where....py` and `p3b_output.txt` are ONE probe. This is the reading
@@ -116,6 +132,7 @@ def anchors(text):
         "probe_stem": probe_stems(probe),
         "line": set(RE_LINE_STRICT.findall(text)),
         "line_panel": set(RE_LINE_PANEL.findall(text)),
+        "line_panel_norm": normalise_lines(set(RE_LINE_PANEL.findall(text))),
     }
 
 
@@ -130,7 +147,8 @@ def main():
     print("=" * 92)
 
     union = {k: set() for k in ("finding", "finding_full_only", "probe",
-                                "probe_stem", "line", "line_panel")}
+                                "probe_stem", "line", "line_panel",
+                                "line_panel_norm")}
     print()
     print(f"  {'source':<58} {'findings':>9} {'probes':>7} {'lines':>6}")
     for name in SOURCES:
@@ -211,7 +229,8 @@ def main():
     print()
     print(f"  {'class':<16} {'in the four':>12} {'in 119':>8} "
           f"{'in 119 incl. accounting':>24} {'dropped':>8}")
-    for k in ("finding", "probe", "probe_stem", "line", "line_panel"):
+    for k in ("finding", "probe", "probe_stem", "line", "line_panel",
+              "line_panel_norm"):
         drop = union[k] - a[k]
         print(f"  {k:<16} {len(union[k]):>12} {len(a[k]):>8} "
               f"{len(a_raw[k]):>24} {len(drop):>8}")
@@ -222,7 +241,7 @@ def main():
 
     print()
     print("  Dropped, per class, listed so the drop is visible rather than silent:")
-    for k in ("finding", "probe_stem", "line_panel"):
+    for k in ("finding", "probe_stem", "line_panel_norm"):
         drop = sorted(union[k] - a[k])
         print()
         print(f"    {k} ({len(drop)} dropped):")
@@ -231,7 +250,7 @@ def main():
 
     print()
     print("  Carried, per class:")
-    for k in ("finding", "probe_stem", "line_panel"):
+    for k in ("finding", "probe_stem", "line_panel_norm"):
         keep = sorted(union[k] & a[k])
         print()
         print(f"    {k} ({len(keep)} carried):")
