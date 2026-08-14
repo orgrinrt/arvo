@@ -86,21 +86,38 @@ fourth party from the source rather than from any file's report. The two lower f
 running the slow crate and `97` running eleven of the thirteen.
 
 **And the slow crate is slow for a reason nothing in it declares, which is a finding of its own.** `98`
-reports `bitpack-write-contend-shared` running in 4.7 seconds once built. Under `cargo test`'s default
-parallel runner it did not complete in ten minutes of wall clock on this host, twice. Run
-single-threaded it completes in **45.22 seconds, 15 passed**:
+reports `bitpack-write-contend-shared` running in 4.7 seconds once built. Three runs on this host, raw
+output kept at `100_probes/p10_the_slow_crate_is_serial_only.out`:
 
 ```
-./target/debug/deps/bench_bitpack_write_contend_shared-<hash> --test-threads=1
-test result: ok. 15 passed; 0 failed; ... finished in 45.22s
+debug,   cargo test, default parallel runner : killed at 58 minutes, no result line
+release, cargo test, default parallel runner : killed at 37 minutes
+debug,   --test-threads=1                    : 15 passed, finished in 45.22s
 ```
 
-The crate's own comment explains the mechanism without drawing the conclusion: "`cargo test` runs every
-`#[test]` in one process, so every stress test in this file shares that pool and must agree on one thread
-count" (`mock/benches/variants/bitpack-write-contend-shared/src/stress.rs:66-72`). Fifteen tests running
-concurrently against one shared four-thread pool is the contention. **The suite is effectively
-serial-only and nothing in the crate says so**, so the next person to gate this corpus will lose the same
-twenty minutes I did unless somebody writes it down. That is what I am doing here.
+**I killed the first two**, so what is established is that they had not finished at those elapsed times
+rather than that they never would. The third is a completed measurement.
+
+The release run names the mechanism, and it is why the release profile matters rather than being
+redundant: it rules out compilation as the explanation.
+
+```
+test stress::guarded_kernel_never_corrupts_under_real_concurrency has been running for over 60 seconds
+test stress::naive_kernel_corruption_rate_under_real_concurrency has been running for over 60 seconds
+test stress::naive_kernel_never_corrupts_when_the_split_is_aligned has been running for over 60 seconds
+```
+
+**Three stress tests running concurrently, each exceeding the runner's own sixty-second warning**, against
+the single per-process four-thread pool the crate declares: "`cargo test` runs every `#[test]` in one
+process, so every stress test in this file shares that pool and must agree on one thread count"
+(`mock/benches/variants/bitpack-write-contend-shared/src/stress.rs:66-72`). The comment establishes that
+they must agree on a thread count. It does not say they must not run at the same time, and that is the
+gap: serially those same three tests are part of a 45-second suite.
+
+**So the suite is effectively serial-only and nothing in the crate says so.** The next person to gate this
+corpus loses the hour I lost unless it is written down, which is what this paragraph is for. It also
+reconciles `98`'s account with mine without either being wrong: 4.7 seconds and an unfinished hour are the
+same crate under two runner configurations.
 
 **The bodies I depended on are real work.** My arguments rest on the `bitpack-carrier-width_n*` CSVs, so I
 read `bitpack-carrier-shared`'s tests in full. `all_four_transforms_agree` compares three dense arms and
