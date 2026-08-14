@@ -527,7 +527,7 @@ estimator rather than per family.
 across arms, so one extreme arm can carry it. I do not rest the claim that the interquartile range is usable
 on this row alone; the claim I do rest is 5.3's, which is exact. Section 5.4 replaces the signal half with
 a pairwise separation count and keeps the floor half, recomputed at 1000 resamples on shared draws rather
-than 2000 independent ones. The two runs agree to within 2.5% of each row's own value on the carrier family,
+than 2000 independent ones. The two runs agree to within 2.6% of each row's own value on the carrier family,
 the low-floor rows to 0.03 percentage points and the worst row by 2.3 of 149, so the floor is not sensitive
 to how it was drawn. I checked that rather than assuming it, and an earlier draft of this sentence claimed
 0.03 across the board, which was wrong on the three widest rows.
