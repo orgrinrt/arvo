@@ -2270,3 +2270,60 @@ work in the harness and in 94 variant crates. (b) Treat what cannot be expressed
 instead, as `101` proposes for chain length and as the corpus already does for threads. (c) Accept the
 ceiling and state in the canon which intents the coordinate set can and cannot distinguish, so the limit
 is declared rather than discovered. Each is right somewhere and the shapes compose.
+
+### Q49. The corpus compares cost at a fixed answer, and most of op's intents range over arms that disagree
+
+`102`, and it is the deepest structural finding of the strategy-axis unit. **ONE EXPERT**, one
+corpus-wide instrument, and it wants an independent verification before the consolidation rests on it.
+
+**The measurement.** Across **254 committed CSV files and 104080 data rows**, every committed region is
+answer-equivalent: all arms compute one value. So every number this repository holds compares **cost at
+a fixed answer**. Evidence: `102_probes/p1_the_corpus_compares_cost_at_a_fixed_answer.out`.
+
+**Why that is a problem rather than a property.** Op's I5, I7, I3 and especially **I9** range over arms
+that *disagree*. I9 is his sentence that "strategies are the variables that change what the 'correct'
+answer is". A corpus restricted to answer-equivalent arms cannot exhibit a single one of those.
+
+**This reframes `98`'s and `101`'s finding rather than contradicting it.** They found two of op's four
+stated strategy intents have no coordinate, and `101` showed an intent with no coordinate is
+inexpressible. `102` says the reason is upstream of the coordinate set: those intents were **never
+weighting-shaped**, so no coordinate would have carried them.
+
+**What `102` proposes instead: a strategy is a pair.** An **assignment on observable policy axes**,
+supplied by the consumer, which fixes the answer; plus a **weighting over cost coordinates**, which
+selects among the arms that produce that answer. It reads op's `88` "mostly option 1, a little bit of
+option 3" as a **decomposition rather than a proportion**.
+
+**And it resolves the unit's central question by polarity rather than by counting.** `102` ran `97`'s
+own polarity test on `25` section 7's axis list, which nobody had done: **three of the four axes change
+the value the program computes and one does not.** So `25` describes the **observable** layer and the
+cold pair describe the **unobservable** one. They have opposite polarity, and **no merge was available
+at any rationalisability count**. `102` concedes its own prior file `25` on that ground rather than on
+`97`'s.
+
+**A new constraint on the converged mechanism**, from `102`'s p5: **a coordinate is measured or
+computed, and a weighting may include a measured one only where every arm computes the same answer.**
+Otherwise a bench rerun changes the program's output. This adds a missing clause to `100` section 6.1's
+Arm C predicate and widens its Arm A.
+
+**Two further results carried here so they are not lost.** Headroom and intermediate precision are
+**invisible across any composition of `+ - *`**, because reduction mod `2^W` is a ring homomorphism, and
+become visible at the first non-ring step. And `101`'s accuracy crossing is **not a two-way fork**: it is
+the two ends of a `k+2` arm family whose interior is on the Pareto front, 65 of 66 arms at `k = 64`.
+`101`'s finding also carries a predicate it does not state, that **the chain must be non-contracting**.
+
+**Chain depth is const-available with no forbidden feature.** Depth as a type with the number as an
+associated const works; `Fx<{D+1}>` would need `generic_const_exprs` and the trait route does not. The
+resulting arm emits **zero conditional branches**. That is
+`a-refused-bound-wants-a-trait-not-a-feature.md` confirmed again by measurement.
+
+### Q50. Whether I9 is about a strategy as a whole or about one component of it
+
+**Op's, and `102` states both readings and can build either.** It falls straight out of Q49's pair
+proposal: if a strategy is an observable policy assignment plus a weighting, then I9's "strategies are
+the variables that change what the 'correct' answer is" either describes the pair, or describes only its
+policy half while the weighting half changes nothing observable.
+
+Not a category-wide policy fork. It is a question about which of two things op's own sentence refers to,
+and the answer decides whether the weighting half is part of what he called a strategy or is an
+implementation of it.
