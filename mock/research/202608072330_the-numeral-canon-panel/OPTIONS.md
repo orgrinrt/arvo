@@ -2043,3 +2043,135 @@ rather than a stall.
 to carry (`28` restates and re-scopes the eight questions above; `29` is process commentary). Whatever
 member file comes after this one should extend this register in place, per the method it documents,
 rather than reading a compression of it.
+
+### Q43. Whether the strategy table is checked against a weighting or generated from one
+
+Raised by `98` section 3 as the strategy-axis unit's strongest candidate, and it is **`93`'s own
+unregistered fork with a discriminator attached** (`93:966-973`, "bake the winner" against "bake the
+cost table"). `93`'s P4 compiled both sides without registering the choice, which is exactly how a live
+option gets lost, so it is entered here now.
+
+The setting: `97` proposed that a strategy's table be *rationalisable*, meaning explained by a single
+weighting over cost coordinates, and built a decider for it. `98` reimplemented that decider
+independently and reproduced both of `97`'s counts exactly, which is the strongest corroboration
+available here. Then it measured whether the object being checked is stable enough to be checked.
+
+**(a) Check a table against a weighting.** The design writes the region-to-arm table; a check confirms
+some weighting explains it. This is `97`'s shape as proposed.
+
+**(b) Generate the table from the weighting.** The design writes the weighting; the table is derived, so
+rationalisability holds by construction and there is nothing to check. `98`'s proposal.
+
+**The measurement that motivates (b), and it is one instance.** Bootstrapping the committed bench
+samples, a fixed weighting produces **30, 8 and 77 distinct sections** across three families, and on one
+family the committed section is not the modal one. So a section is not stable across a rerun of the same
+bench on the same afternoon, which makes it a poor object to apply a check to.
+Evidence: `98_probes/p10_is_the_table_stable_enough_to_be_an_object.out`,
+`98_probes/p14_generating_from_a_robust_summary.out`.
+
+**Standing: ONE EXPERT plus a predecessor's unregistered fork, which is not two independent instances.**
+`98` proposes it and `93` had reached the fork without choosing. It wants an independent attack before
+anything rests on it.
+
+### Q44. Whether a canon-level weighting must be strictly positive or may be non-negative
+
+Falls out of `98`'s second read of `97` and is a constraint on whatever Q43 settles.
+
+`97` reported 72 of 15625 sections rationalisable, 9 of them strictly, and separately that some arms are
+Pareto-dominated in every region and therefore selectable by no weighting at all. `98` measured the two
+findings against each other:
+
+- **Non-negative weighting: 72 rationalisable, of which 63 select an arm no weighting can select.** A
+  zero weight admits an arm the weighting is indifferent about, so the guarantee is not "usually holds",
+  it is unclaimed.
+- **Strictly positive weighting: 9, of which 0 do.**
+
+Both of `97`'s sentences are true and they are about different rungs.
+
+**(a) Require strict positivity.** The no-dominated-arm guarantee holds. Costs the ability to express a
+strategy that genuinely does not care about a coordinate.
+
+**(b) Allow non-negativity.** A strategy may zero out a coordinate, and the guarantee is lost rather than
+weakened: 63 of 72 is not an edge case.
+
+**(c) Allow non-negativity and carry the dominated-arm check separately**, rather than getting it free
+from the weighting's shape.
+
+Evidence: `98_probes/p6_reproduce_the_predecessors_count_and_rung_it.out`,
+`98_probes/p9_the_proposal_instantiated.out`. **ONE EXPERT**, one implementation, on one committed cost
+table.
+
+### Q45. What to do about arms no weighting can ever select
+
+`97`, outside its question: two arms in `bitpack-carrier-width` are **Pareto-dominated in every region**,
+so no weighting-defined strategy can select them under any assignment. Recorded here because it exists in
+one file and is a fact about the shipped bench corpus rather than about any proposal.
+
+**(a) They are a defect in the arm set** and should be dropped, since a bench arm nothing can select is
+measurement spend with no decision attached.
+
+**(b) They are a defect in the coordinate set**, and a coordinate the corpus does not carry would
+un-dominate them. `98` tested exactly this, added a third cost coordinate, reported it rescued an arm,
+then tested the rescue against zero and found **all four comparisons it depended on have bootstrap
+confidence intervals crossing zero**. It withdrew the rescue. So (b) is measured and currently
+unsupported, though the coordinate does separate 58 of 90 arm pairs measurably.
+
+**(c) They are correct to keep** as a documented negative control, on the ground that an arm known to be
+dominated everywhere is what makes "dominated" checkable.
+
+### Q46. The cross-repo `Strategy` name collision
+
+`93`, outside its question. **`notko` and `arvo` both export a type called `Strategy`, one dependency
+edge apart, meaning different things, and sharing three marker names.** arvo depends on notko, so both
+are reachable in one file.
+
+Not a design fork so much as a naming decision the canon has to make rather than inherit, and it is
+recorded because it currently lives in exactly one panel file.
+
+**(a) arvo renames.** The consumer-facing concept is arvo's and the canon is being written now, so it is
+the cheap moment.
+
+**(b) notko renames.** notko's is the profile-tier concept; op has ruled the two are "not one mechanism"
+but share "synergy, nothing more" (`144b`, quoted at `25` section 5.1), which is an argument that the
+shared name is actively misleading in both directions.
+
+**(c) Neither, and the canon states the disambiguation.** Cheapest in edits, and it leaves every future
+reader to rediscover the collision.
+
+### Q47. Which reading of I3 is meant at a width Rust has no primitive for, and whether I3 survives I15
+
+**Op's, both parts, and neither is answerable by measurement.** Carried here so they are not lost between
+the checkpoint and whenever the seat is next occupied. Stated in full at `99`.
+
+I3 is op's standing call that a strategy "should behave like native primitives in regular old rust
+would".
+
+**Part one, the reading.** At a declared width like 13 or 47 there is no native primitive, so the
+sentence has two readings: the **declared width**, or the **container** it is stored in. `93`'s F8
+measures that the two readings **disagree at all fourteen non-native widths swept**, so the distinction
+has consequences. `93` offers a reading and says itself it should be asked rather than assumed; `98`
+marks its own agreement as inherited rather than independent. So this stands at zero independent
+instances by the panel's own rule.
+
+**Part two, the tension with I15.** I15 is "never any runtime checks, ever". Rust's native primitives
+signal overflow with a debug-mode panic, which is a runtime check, so on that one behaviour the
+imitation I3 asks for is permanently unavailable. The question is not which intent wins generally; it is
+whether I3's imitation was ever meant to cover the panic, or whether I3 is about representable-value
+behaviour only.
+
+### Q41 addendum: the register's own question, answered and then partly overturned
+
+Q41 asked whether the strategies are partially ordered by how many chain-level laws they honour, in three
+options, and recorded that no member of the derived-laws unit engaged it.
+
+**`93`'s P8 engaged it: signedness decides which of the three options holds.**
+
+**`97` then attacked the conclusion `93` drew around it, and the attack lands.** "Conservative" names
+three orders that disagree: by laws, wrap and saturate are incomparable in 3 of 4 configurations; by
+frequency they are tied; by magnitude saturate wins. Saturate and exact are incomparable at `F = 0`, so
+the accuracy-first policy is not the law order's top. `93`'s finding stands on its own predicate; the
+conclusion drawn from it does not survive adding one subtraction law. And `93`'s "15-element closure" is
+`2^4 - 1`, the free join-semilattice on its own generators, which its own probe reported and its prose
+priced as a cost.
+
+Q41 is therefore engaged, not closed, and what replaces the single-order reading is `97` section 4.4.
