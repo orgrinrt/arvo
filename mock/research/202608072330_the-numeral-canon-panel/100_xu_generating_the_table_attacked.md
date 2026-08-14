@@ -1111,8 +1111,24 @@ reference. My p5 audit crossed the same corpus from a different angle and found 
 **The four names.** Nothing here argues for renaming anything.
 
 **And `98`'s own withdrawal in its section 11.** Correcting yourself against your own probe and keeping
-the refuted one is the discipline working. I did it twice in this file, in section 4.3 and section 8, and
-`98`'s example is why I kept the outputs rather than deleting them.
+the refuted one is the discipline working, and `98`'s example is why I kept my own refuted outputs rather
+than deleting them. **Seven of my own claims did not survive their own probes and each is corrected in
+place rather than removed:**
+
+- section 3, I predicted the strictly-positive rung would catch a dropped coordinate; 0 of 312;
+- section 4.3, my first regret statistic had an arbitrary origin and reported a maximum of 5773%, and its
+  output is kept at `p1_v1_relative_regret_is_meaningless.out`;
+- section 4.4, my headline that the instability is free held on two of four families rather than all;
+- section 7, the first version of p4 ran one configuration and would have reported the false-alarm
+  concern refuted on a setup that could not have shown it;
+- section 7.3, I was about to carry the band tension as a located cost, and it was the estimator;
+- section 8, the first version of p4b imported `97`'s two-coordinate dominated set into a
+  three-coordinate model and made its own control fire;
+- section 8 again, I wrote that normalisation makes a unit defect invisible, when it neutralises it.
+
+Plus two citations, in section 16. The instrument that caught the last two is a probe; the instrument
+that caught the other seven was building the control or widening the matrix, which is the same instrument
+`98` used on itself.
 
 ## 12. Located disagreement, and one report
 
