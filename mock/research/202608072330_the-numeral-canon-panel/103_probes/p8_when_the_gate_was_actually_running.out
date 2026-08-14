@@ -1,0 +1,82 @@
+p8. for how much of the committed corpus was the cross-variant gate running?
+
+repo  : /Users/orgrinrt/Dev/clause-dev/arvo
+
+the driver gained its cross-variant validation call in:
+  9db33f8c  2026-08-08  bench: make the driver validate its arms, and re-run every wide-rung section
+
+  present at that commit      : True
+  present at its parent       : False
+
+REGIONS BY WHETHER THE GATE EXISTED WHEN THEY RAN
+  produced BEFORE the wiring :  175 of 254
+  produced AFTER  the wiring :   79 of 254
+
+SPLIT BY WHETHER THE REGION'S OWN ROUTINE PINS AN ANSWER
+  before wiring, answer-pinning routine     :  155
+  before wiring, NOT answer-pinning         :   20
+  after  wiring, answer-pinning routine     :   79
+  after  wiring, NOT answer-pinning         :    0
+
+EVERY REGION WITH NEITHER THE GATE NOR AN ANSWER-PINNING ROUTINE
+  (nothing in the repository required these arms to compute one value,
+   and nothing checked whether they did)
+    decimal-quantiser-radix-sweep_n0             produced at 25f736b    bridge=RadixAdd
+    decimal-quantiser-radix-sweep_n2             produced at 25f736b    bridge=RadixAdd
+    decimal-quantiser-radix-sweep_n20            produced at 25f736b    bridge=RadixAdd
+    decimal-quantiser-radix-sweep_n8             produced at 25f736b    bridge=RadixAdd
+    fnv1a-vs-xxhash3_n1024                       produced at 25f736b    bridge=ByteRoutine
+    fnv1a-vs-xxhash3_n256                        produced at 25f736b    bridge=ByteRoutine
+    fnv1a-vs-xxhash3_n4096                       produced at 25f736b    bridge=ByteRoutine
+    fnv1a-vs-xxhash3_n64                         produced at 25f736b    bridge=ByteRoutine
+    quantiser-vs-fadd-subnormal-sweep_n0         produced at 25f736b    bridge=AddSweep
+    quantiser-vs-fadd-subnormal-sweep_n10        produced at 25f736b    bridge=AddSweep
+    quantiser-vs-fadd-subnormal-sweep_n100       produced at 25f736b    bridge=AddSweep
+    quantiser-vs-fadd-subnormal-sweep_n25        produced at 25f736b    bridge=AddSweep
+    quantiser-vs-fadd-subnormal-sweep_n50        produced at 25f736b    bridge=AddSweep
+    quantiser-vs-fadd-subnormal-sweep_n75        produced at 25f736b    bridge=AddSweep
+    spectral-bisection_n16                       produced at 25f736b    bridge=-
+    spectral-bisection_n32                       produced at 25f736b    bridge=-
+    spectral-bisection_n64                       produced at 25f736b    bridge=-
+    structural-decomposition_n16                 produced at 25f736b    bridge=-
+    structural-decomposition_n32                 produced at 25f736b    bridge=-
+    structural-decomposition_n64                 produced at 25f736b    bridge=-
+  count: 20
+
+No region produced after the wiring lacks an answer-pinning routine.
+
+PRODUCING COMMITS, MOST REGIONS FIRST
+    f763cb0        57 regions   (before the wiring)
+    ccf0509        43 regions   (before the wiring)
+    3a02ce5        28 regions   (before the wiring)
+    3fd5eab8       28 regions   (after the wiring)
+    25f736b        26 regions   (before the wiring)
+    3454060        12 regions   (after the wiring)
+    75710b6         9 regions   (before the wiring)
+    3d8f615         8 regions   (before the wiring)
+    fbac19c         7 regions   (after the wiring)
+    d4f404a0        7 regions   (after the wiring)
+    7da8523         6 regions   (after the wiring)
+    0988bb7         4 regions   (after the wiring)
+    f32abe4         4 regions   (after the wiring)
+    defc747         3 regions   (before the wiring)
+    41d2de2         3 regions   (after the wiring)
+    94f959ba        2 regions   (after the wiring)
+    350953f         1 regions   (before the wiring)
+    0f456bb         1 regions   (after the wiring)
+    cf8dcf0         1 regions   (after the wiring)
+    f4cd8e2         1 regions   (after the wiring)
+    49e39db2        1 regions   (after the wiring)
+    b934e87d        1 regions   (after the wiring)
+    d67fa506        1 regions   (after the wiring)
+
+READING
+  The mechanism `102` cites as guaranteeing answer-equivalence is the
+  harness's byte-exact cross-variant comparison. For every region in
+  the BEFORE set, the driver never called it, so it is not evidence
+  about those regions in either direction. What remains as evidence
+  there is the family's own unit tests, which is what the driver's own
+  comment says: the variant crate's unit tests are 'the only fidelity
+  check in the system'. For the answer-pinning families those tests
+  exist, assert agreement against an independent oracle, and pass. For
+  the regions listed above they do not exist.
