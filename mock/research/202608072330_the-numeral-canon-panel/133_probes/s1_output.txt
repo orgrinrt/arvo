@@ -1,0 +1,30 @@
+--- 1+2. exhaustive recount against the closed form and the committed sweeps ---
+W=4 F=1: recount=4, closed form=4 (match=True), off-by-one control=0 (differs=True)
+W=4 F=2: recount=6, closed form=6 (match=True), off-by-one control=4 (differs=True)
+W=4 F=3: recount=7, closed form=7 (match=True), off-by-one control=6 (differs=True)
+W=6 F=1: recount=16, closed form=16 (match=True), off-by-one control=0 (differs=True)
+W=6 F=2: recount=24, closed form=24 (match=True), off-by-one control=16 (differs=True)
+W=6 F=3: recount=28, closed form=28 (match=True), off-by-one control=24 (differs=True)
+W=6 F=4: recount=30, closed form=30 (match=True), off-by-one control=28 (differs=True)
+W=6 F=5: recount=31, closed form=31 (match=True), off-by-one control=30 (differs=True)
+W=8 F=1: recount=64, closed form=64 (match=True), off-by-one control=0 (differs=True)
+W=8 F=2: recount=96, closed form=96 (match=True), off-by-one control=64 (differs=True)
+W=8 F=3: recount=112, closed form=112 (match=True), off-by-one control=96 (differs=True)
+W=8 F=4: recount=120, closed form=120 (match=True), off-by-one control=112 (differs=True)
+W=8 F=5: recount=124, closed form=124 (match=True), off-by-one control=120 (differs=True)
+W=8 F=6: recount=126, closed form=126 (match=True), off-by-one control=124 (differs=True)
+W=8 F=7: recount=127, closed form=127 (match=True), off-by-one control=126 (differs=True)
+committed W=4 F=1: 4, closed form 4, match=True
+committed W=4 F=2: 6, closed form 6, match=True
+committed W=6 F=1: 16, closed form 16, match=True
+committed W=6 F=2: 24, closed form 24, match=True
+committed W=8 F=1: 64, closed form 64, match=True
+committed W=8 F=2: 96, closed form 96, match=True
+committed W=8 F=3: 112, closed form 112, match=True
+committed W=8 F=4: 120, closed form 120, match=True
+committed W=8 F=5: 124, closed form 124, match=True
+committed W=8 F=7: 127, closed form 127, match=True
+all matches and controls: True (must be True)
+--- 3. 21,204 fits no cell of the closed form at any width ---
+representations of 21204 as 2^b*(2^k-1) up to 2^60: [] (must be [])
+instrument sanity: representations of 112: [(4, 3)] (must be non-empty)
