@@ -6,8 +6,8 @@ motivation for a third, and it offers four arms as replacement material. This fi
 before answering it, concedes what is conceded, states the corrected predicates as new claims rather than
 as edits, and then builds the one thing `114`'s own result opens and does not take.
 
-Three probes, `s1`, `s2` and `s3`, each committed with its output as it ran and each carrying the case
-that must fail.
+Four probes, `s1` through `s4`, each committed with its output as it ran and each carrying the case that
+must fail.
 
 **Everything below is a suggestion.** Op decides, and per I12 an opinion given before the experts converge
 is an ack.
@@ -459,3 +459,5 @@ Whether an expander can compute the certificate on a DAG.
 - `s3_the_certificate_is_computable_from_the_cheap_carrier.py`, `s3_output.txt`. The certificate as
   associated consts on the interval tower, compiled and run, every verdict checked against the model,
   with two mutations each moving exactly one verdict.
+- `s4_check_my_own_citations.py`, `s4_output.txt`. All 23 `file:line` references opened and tested
+  against the substring the claim depends on, with two deliberately wrong controls that both fail.
