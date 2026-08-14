@@ -1,0 +1,63 @@
+regions 6, samples per arm per region: [80]
+resamples: 2000, seed 20260814, bootstrap with replacement over the committed samples
+
+speed-first
+  section on the committed medians: ['packed-simd', 'd16-control', 'd16', 'd16', 'd16', 'd16-control']
+  distinct sections across resamples: 30
+  modal section appears 531 of 2000 (26.6%)  and is the committed one
+  regions where the pick moves:
+    n =   131072: [('d16-control', 1560), ('d16', 440)]
+    n =  1048576: [('d16', 1657), ('d16-control', 343)]
+    n =  2097152: [('d16', 1287), ('d16-control', 713)]
+    n =  4194304: [('d16', 1446), ('d16-control', 554)]
+    n =  8388608: [('d16-control', 1803), ('d16', 197)]
+      531  ['packed-simd', 'd16-control', 'd16', 'd16', 'd16', 'd16-control']
+      306  ['packed-simd', 'd16-control', 'd16', 'd16-control', 'd16', 'd16-control']
+      219  ['packed-simd', 'd16-control', 'd16', 'd16', 'd16-control', 'd16-control']
+      143  ['packed-simd', 'd16', 'd16', 'd16', 'd16', 'd16-control']
+
+storage-first
+  section on the committed medians: ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+  distinct sections across resamples: 8
+  modal section appears 881 of 2000 (44.0%)  and is the committed one
+  regions where the pick moves:
+    n =    16384: [('packed', 1178), ('packed-simd', 822)]
+    n =  1048576: [('packed-simd', 1772), ('packed', 228)]
+    n =  4194304: [('packed-simd', 1683), ('packed', 317)]
+      881  ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+      620  ['packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+      165  ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed', 'packed-simd']
+      106  ['packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed', 'packed-simd']
+
+tail-first
+  section on the committed medians: ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']
+  distinct sections across resamples: 77
+  modal section appears 243 of 2000 (12.2%)  and is NOT the committed one
+  regions where the pick moves:
+    n =    16384: [('packed', 1617), ('packed-simd', 383)]
+    n =   131072: [('packed-simd', 1999), ('packed', 1)]
+    n =  1048576: [('packed', 1712), ('packed-simd', 286), ('d16-control', 2)]
+    n =  2097152: [('packed-simd', 1390), ('packed', 610)]
+    n =  4194304: [('packed', 1072), ('d16-control', 710), ('d16', 148), ('packed-simd', 70)]
+    n =  8388608: [('packed-simd', 977), ('d16-control', 912), ('d16', 111)]
+      243  ['packed', 'packed-simd', 'packed', 'packed-simd', 'packed', 'packed-simd']
+      220  ['packed', 'packed-simd', 'packed', 'packed-simd', 'packed', 'd16-control']
+      173  ['packed', 'packed-simd', 'packed', 'packed-simd', 'd16-control', 'packed-simd']
+      155  ['packed', 'packed-simd', 'packed', 'packed-simd', 'd16-control', 'd16-control']
+
+dominated in every region
+  on the committed medians: ['d64']
+     1996  ['d64']
+        2  ['d64', 'packed']
+        1  []
+        1  ['d16', 'd64']
+
+reading
+  Every number above comes from ONE bench run, resampled. No new
+  measurement was taken and none of this is a bench: it is an
+  uncertainty estimate over a committed artifact.
+
+  Where a section moves under this, it would move under a rerun, and
+  a canon sentence naming it would be wrong by the following week.
+  Where it does not move, this establishes only that it survives the
+  weakest perturbation available, which is not the same as permanence.
