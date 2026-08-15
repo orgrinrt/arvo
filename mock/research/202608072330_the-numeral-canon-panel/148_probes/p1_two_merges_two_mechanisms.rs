@@ -213,7 +213,10 @@ fn main() {
     let (clow, ctotal, cagree) = control_i(w);
     println!("\n=== control (i): the same two positions at unsigned SUBTRACTION ===");
     println!("low branch taken: {clow} of {ctotal} operand pairs");
-    println!("the two positions agree: {}", if cagree { "yes" } else { "no, they separate" });
+    println!(
+        "the two positions agree: {}",
+        if cagree { "yes" } else { "no, they separate" }
+    );
     if clow == 0 || cagree {
         println!("  !! CONTROL FAIL: the low branch is supposed to be reachable here and");
         println!("  the two positions are supposed to separate. the counter is not counting.");
@@ -225,7 +228,11 @@ fn main() {
 
     // ---- Part B ----
     println!("\n=== B. does the congruence proposition even apply at a single addition? ===");
-    for o in [Overflow::Wrap, Overflow::SaturateBoth, Overflow::SaturateHighOnly] {
+    for o in [
+        Overflow::Wrap,
+        Overflow::SaturateBoth,
+        Overflow::SaturateHighOnly,
+    ] {
         let d = intermediate_differs(w, Sign::Unsigned, o, false);
         println!("  single addition, {o:?}: early vs late differ at {d} triples");
     }
