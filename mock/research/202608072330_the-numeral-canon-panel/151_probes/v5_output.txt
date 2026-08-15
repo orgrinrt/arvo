@@ -1,0 +1,64 @@
+================================================================================================
+E1/E2. Does the normaliser recover a phrase wrapped in each construct?
+================================================================================================
+  ok    plain
+  ok    backticks (instance 1-4)
+  ok    bold (instance 1-4)
+  ok    italic
+  ok    blockquote (instance 6)
+  ok    heading
+  ok    list item
+  ok    nested emphasis (untested)
+  ok    link (untested)
+  ok    hard break (untested)
+  ok    blockquote + bold + tick
+
+  E1/E2: CONFIRMED (11 of 11)
+
+================================================================================================
+E3/E4. The controls that keep the normaliser from becoming a substring search
+================================================================================================
+  E3 a phrase nobody wrote stays absent under every construct: True (must be True)
+  E4 a real phrase read at the wrong span still fails: True (must be True)
+  E3/E4: CONFIRMED
+
+================================================================================================
+E5. The anchor accounting for 151
+================================================================================================
+  class             in the union   in 151  incl. accounting  not carried
+  finding                     50       33                46           17
+  line_panel                 100       14                14           88
+  option                      18        5                 5           13
+  probe_stem                  38       21                21           22
+
+  E5, the stripper: FIRED  (finding +13)
+
+  finding: 33 carried, 17 not
+      F142-1              F142-6              F144-1              F144-14             F144-17             F144-19           
+      F144-3              F144-7              F144-8              F144-9              F4                  F5                
+      F6                  F7                  F8                  F9                  F99               
+  line_panel: 12 carried, 88 not
+      139:10              139:166             139:172             139:173             139:174             139:177           
+      139:220             139:230             139:244             139:260             139:266             139:293           
+      139:3               139:338             139:347             139:356             139:400             139:403           
+      139:430             139:433             139:497             139:504             139:604             139:661           
+      139:703             139:750             139:769             139:788             139:796             140:160           
+      140:263             140:564             140:577             140:620             140:667             140:673           
+      140:702             140:819             140:862             140:878             140:921             140:926           
+      141:125             141:147             141:209             141:216             141:220             141:50            
+      141:520             141:526             141:563             141:598             141:776             141:780           
+      141:783             141:874             141:884             142:109             142:122             142:215           
+      142:225             142:264             142:581             143:169             143:194             143:296           
+      143:418             143:424             143:533             145:336             145:345             145:39            
+      146:111             146:128             146:163             146:216             146:222             146:225           
+      146:228             146:34              146:37              146:416             146:569             146:587           
+      146:589             146:632             146:729             146:89            
+  option: 5 carried, 13 not
+      O-139-A             O-139-B             O-139-D             O-139-E             O-141-A             O-141-B           
+      O-141-C             O-141-D             O-141-E             O-142-C             O-144-B             O-144-D           
+      O-144-E           
+  probe_stem: 16 carried, 22 not
+      p10                 p10b                p11                 p1b                 p3b                 p3c               
+      p5                  p5b                 p5c                 p7                  p8                  p9                
+      q1                  q4                  q5                  y2                  y3                  y4                
+      z1                  z2                  z4                  z5                
