@@ -301,8 +301,10 @@ fn with_controls(mut v: Vec<Config>) -> Vec<Config> {
 
 fn check(cls: &[Vec<usize>], cfgs: &[Config], where_: &str) -> usize {
     let find = |pred: u8| {
-        cls.iter()
-            .position(|c| c.iter().any(|&i| cfgs[i].control == pred && i >= cfgs.len() - 2))
+        cls.iter().position(|c| {
+            c.iter()
+                .any(|&i| cfgs[i].control == pred && i >= cfgs.len() - 2)
+        })
     };
     let base = cls.iter().position(|c| c.contains(&0)).unwrap();
     let d = find(1);
@@ -339,7 +341,12 @@ fn main() {
     let mut full = Vec::new();
     for &r in ROUNDS.iter() {
         for &o in OVERFLOWS.iter() {
-            for &m in [Intermediate::RoundEachStep, Intermediate::ExactThenRoundOnce].iter() {
+            for &m in [
+                Intermediate::RoundEachStep,
+                Intermediate::ExactThenRoundOnce,
+            ]
+            .iter()
+            {
                 full.push(Config {
                     round: r,
                     overflow: o,
@@ -357,11 +364,20 @@ fn main() {
     println!("rounding x overflow x intermediate (30): {n_full} classes");
     println!(
         "  agrees with p1's 24 -> {}",
-        if n_full == 24 { "YES" } else { "NO, p1 and p6 disagree" }
+        if n_full == 24 {
+            "YES"
+        } else {
+            "NO, p1 and p6 disagree"
+        }
     );
 
     // collapsed: intermediate held fixed, so only rounding x overflow varies.
-    for &m in [Intermediate::RoundEachStep, Intermediate::ExactThenRoundOnce].iter() {
+    for &m in [
+        Intermediate::RoundEachStep,
+        Intermediate::ExactThenRoundOnce,
+    ]
+    .iter()
+    {
         let mut v = Vec::new();
         for &r in ROUNDS.iter() {
             for &o in OVERFLOWS.iter() {
@@ -382,15 +398,26 @@ fn main() {
     }
     println!(
         "\nprediction A (collapsing the intermediate axis leaves fewer than 24): {}",
-        if n_full == 24 { "see the two numbers above" } else { "n/a, full count did not reproduce" }
+        if n_full == 24 {
+            "see the two numbers above"
+        } else {
+            "n/a, full count did not reproduce"
+        }
     );
 
     // ---------- QUESTION B ----------
-    println!("\n=== B. is the container observable if the limit is read at the container width? ===");
+    println!(
+        "\n=== B. is the container observable if the limit is read at the container width? ==="
+    );
     let mut wide = Vec::new();
     for &r in ROUNDS.iter() {
         for &o in OVERFLOWS.iter() {
-            for &m in [Intermediate::RoundEachStep, Intermediate::ExactThenRoundOnce].iter() {
+            for &m in [
+                Intermediate::RoundEachStep,
+                Intermediate::ExactThenRoundOnce,
+            ]
+            .iter()
+            {
                 for &k in CONTAINERS.iter() {
                     wide.push(Config {
                         round: r,
@@ -418,7 +445,11 @@ fn main() {
     println!("  limit read at the CONTAINER width: {n_cont} classes");
     println!(
         "\nprediction B (the container-width reading makes the container observable): {}",
-        if n_cont > n_decl { "CONFIRMED" } else { "REFUTED" }
+        if n_cont > n_decl {
+            "CONFIRMED"
+        } else {
+            "REFUTED"
+        }
     );
     if n_cont > n_decl {
         println!("  so p3's F3 holds only under the declared-width reading, and its");
