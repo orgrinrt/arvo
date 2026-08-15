@@ -59,8 +59,10 @@ enum Intermediate {
     RoundEachStep,
     ExactThenRoundOnce,
 }
-const INTERMEDIATES: [Intermediate; 2] =
-    [Intermediate::RoundEachStep, Intermediate::ExactThenRoundOnce];
+const INTERMEDIATES: [Intermediate; 2] = [
+    Intermediate::RoundEachStep,
+    Intermediate::ExactThenRoundOnce,
+];
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 enum Container {
@@ -123,7 +125,10 @@ impl Config {
         )
     }
     fn assignment_label(&self) -> String {
-        format!("{:?}/{:?}/{:?}", self.round, self.overflow, self.intermediate)
+        format!(
+            "{:?}/{:?}/{:?}",
+            self.round, self.overflow, self.intermediate
+        )
     }
 }
 
@@ -370,11 +375,19 @@ fn main() {
 
     println!(
         "\nCLAIM: the three lossless containers add zero classes -> {}",
-        if n_lossless == 24 { "CONFIRMED" } else { "REFUTED" }
+        if n_lossless == 24 {
+            "CONFIRMED"
+        } else {
+            "REFUTED"
+        }
     );
     println!(
         "CLAIM: no class ever splits one assignment across containers -> {}",
-        if container_never_splits { "CONFIRMED" } else { "REFUTED" }
+        if container_never_splits {
+            "CONFIRMED"
+        } else {
+            "REFUTED"
+        }
     );
 
     // the negative control: Lossy MUST be observable.

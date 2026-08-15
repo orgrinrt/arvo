@@ -64,8 +64,10 @@ enum Intermediate {
     RoundEachStep,
     ExactThenRoundOnce,
 }
-const INTERMEDIATES: [Intermediate; 2] =
-    [Intermediate::RoundEachStep, Intermediate::ExactThenRoundOnce];
+const INTERMEDIATES: [Intermediate; 2] = [
+    Intermediate::RoundEachStep,
+    Intermediate::ExactThenRoundOnce,
+];
 
 #[derive(Clone, Copy, Debug)]
 struct Assignment {
@@ -370,10 +372,8 @@ fn main() {
 
     for &(w, f) in pair_shapes.iter() {
         for op in [Op::Add, Op::Sub, Op::Mul] {
-            let vectors: Vec<Vec<i128>> = asgs
-                .iter()
-                .map(|&a| answer_vector(op, w, f, a))
-                .collect();
+            let vectors: Vec<Vec<i128>> =
+                asgs.iter().map(|&a| answer_vector(op, w, f, a)).collect();
             let classes = partition(&asgs, &vectors);
             let real_classes = count_real_classes(&classes, &asgs);
             summary.insert((w, f, op.name()), real_classes);
@@ -383,19 +383,16 @@ fn main() {
     }
 
     for &(w, f) in chain_shapes.iter() {
-      for op in [Op::Chain, Op::ChainSub] {
-        let vectors: Vec<Vec<i128>> = asgs
-            .iter()
-            .map(|&a| answer_vector(op, w, f, a))
-            .collect();
-        let classes = partition(&asgs, &vectors);
-        let real_classes = count_real_classes(&classes, &asgs);
-        summary.insert((w, f, op.name()), real_classes);
-        report(w, f, op.name(), real_count, real_classes, &classes, &asgs);
-        control_failures += check_controls(&classes, dup_idx, corrupt_idx, w, f, op.name());
-      }
+        for op in [Op::Chain, Op::ChainSub] {
+            let vectors: Vec<Vec<i128>> =
+                asgs.iter().map(|&a| answer_vector(op, w, f, a)).collect();
+            let classes = partition(&asgs, &vectors);
+            let real_classes = count_real_classes(&classes, &asgs);
+            summary.insert((w, f, op.name()), real_classes);
+            report(w, f, op.name(), real_count, real_classes, &classes, &asgs);
+            control_failures += check_controls(&classes, dup_idx, corrupt_idx, w, f, op.name());
+        }
     }
-
 
     // ---- the joint partition: the actual ceiling ----
     //
@@ -446,9 +443,7 @@ fn main() {
     }
     let j2classes = partition(&asgs, &joint2);
     let j2real = count_real_classes(&j2classes, &asgs);
-    println!(
-        "adding the subtractive chain a*b-c: {narrow_joint} classes -> {j2real} classes"
-    );
+    println!("adding the subtractive chain a*b-c: {narrow_joint} classes -> {j2real} classes");
     for cls in j2classes.iter() {
         let reals: Vec<String> = cls
             .iter()
@@ -461,7 +456,11 @@ fn main() {
     }
     println!(
         "prediction P6 (widening the witness set raises the count): {}",
-        if j2real > narrow_joint { "CONFIRMED" } else { "REFUTED" }
+        if j2real > narrow_joint {
+            "CONFIRMED"
+        } else {
+            "REFUTED"
+        }
     );
     control_failures += check_controls(&j2classes, dup_idx, corrupt_idx, 0, 0, "JOINT-WIDE");
 
@@ -476,12 +475,14 @@ fn main() {
             best_name = format!("W={w} F={f} {op}");
         }
     }
-    println!(
-        "\nbest single (shape, operation) witness: {best_name} at {best} classes."
-    );
+    println!("\nbest single (shape, operation) witness: {best_name} at {best} classes.");
     println!(
         "wide joint is {j2real}. does one witness reveal the whole structure here? {}",
-        if best >= j2real { "YES, this one does" } else { "no" }
+        if best >= j2real {
+            "YES, this one does"
+        } else {
+            "no"
+        }
     );
     println!(
         "redundant assignments under the wide witness set: {} of {}",
