@@ -655,3 +655,50 @@ position-keyed arm's guarantees survive a keying axis that is not one-dimensiona
 merged, and the entry a merge would have lost is the topic's headline answer. And two figures in this
 topic came from report messages rather than artifacts, both relayed by the coordinator; the committed
 work was correct in both cases and both were caught by members reading the files.
+
+---
+
+## 11. The strategy object (topic eight, files `139` through `152`)
+
+A pointer, on the same reasoning as sections 9 and 10.
+
+- **The authoritative ledger is `151`'s**, which supersedes `146` clause by clause and says which stand.
+  `146` is kept as landed because four signatures cite it by line.
+- **`152` is the independent check.** Verdict: sound. It derived the topic's central counterexample by
+  hand from the rounding-mode definitions **before opening any probe**, then reran the probe and got
+  byte-identical output, which is independent arrival rather than confirmation.
+
+**What the topic settled.** A strategy is a two-component object and both halves were measured for the
+first time. The count question has no answer of the kind it was asked in: `shape -> count` is a
+well-defined function, monotone in the observation set, and it saturates, so the axis-only property is
+visibility under the maximal observation set. That set is the operation set the design ships, so **the
+table waits on a decision rather than on evidence**, which is a question for op.
+
+The storage-minimising concern is a **weighting with zero policy content**, reached blind by both cold
+derivations, then rescoped: it has policy content at the accumulator in exactly one cell, signed
+saturating, confirmed on three instruments.
+
+On the weighting half, measured last and changing the picture: the Pareto claim strengthens to an exact
+rational certificate over the whole simplex; the portability worry **inverts**, because a weighting
+travels by construction while an arm does not; and the single corpus instance offered for the whole
+design was **withdrawn by its own author as noise** once the noise gate was made pairwise, leaving zero
+established instances corpus-wide.
+
+**What it corrected in itself.** A clause in the first candidate was **false**, found independently by
+two signers and reproduced on a third instrument in a third language: the unsigned half of the fusion
+arm was claimed for all six rounding positions on a closure argument covering only the reduction
+relocation, and nearest-half-even, the IEEE default, fails there. The repair is one clause, equivariance
+on the domain the cell reaches, five modes against one under unsigned.
+
+**Two provenance findings that reach beyond this topic.** The blindness evidence is weaker than it
+looks: the commit ordering runs the wrong way for one member, and **both cold derivations read the same
+auto-loaded workspace rules, one of which states a mechanism they both used**, so wherever that
+mechanism does the work they are one instance. And the intersection instrument intersected dimension
+**names** rather than values, so a dimension the instances partition vanished while appearing present.
+
+**What it did not settle.** The firewall proposition ships **unpredicated**, and both signers agree that
+is right rather than a gap: a predicate records where a claim was established and the firewall is
+imposed, so the notation would invert it. What is predicable is its enforceability condition and its
+violation predicate, and the candidate names those. The count's table waits on op. And the equivariance
+result reaches the closed rounding topic; two members independently say it does **not** require
+reopening, and one adds that a proposed option for that topic would introduce an error into it.

@@ -123,3 +123,13 @@ recorded after the fact is a handle that was unavailable during the window it wa
 | 126 | wronski | `a540e3f7db5be940d` |
 | 127 | dolan | `ab1474a17441b7508` |
 | 137 | arntzen (independent check) | `a1c87d5f39bda9e8b` |
+
+## Topic eight, the strategy set
+
+| Number | Persona | Task id |
+|---|---|---|
+| 139 | muratori | `af34f50c7b10b300f` |
+| 140 | mcsherry | `a4f2d88d0aae90877` |
+| 141 | lamport | `a07940056001e00c6` |
+| 144 | fog | `add5eb6bcca4570a4` |
+| 152 | chlipala (independent check) | `a1f48c604ae412570` |
