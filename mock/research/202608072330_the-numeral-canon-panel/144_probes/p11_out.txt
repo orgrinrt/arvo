@@ -1,4 +1,4 @@
-parsed 16 distinct citations out of 144
+parsed 17 distinct citations out of 144
 
 citation                 verdict   expected substring
 139:260-263              ok        'two builds of one program produce different results'
@@ -23,6 +23,8 @@ citation                 verdict   expected substring
 141:874-876              ok        'no linear weighting can select'
 142:581-584              ok        'largest untouched surface'
 142:581-584              ok        '44.3% mapping difference'
+143:169-184              ok        'the intersection of their dimensions, not the'
+143:169-184              ok        'reads as corroboration'
 143:194-196              ok        'matching 714 would have been a reason to distrust my'
 143:296-303              ok        'Half the count is carried by one axis'
 143:296-303              ok        'where the denotation and realisation levels are cut'
@@ -43,4 +45,4 @@ case that must fail (present in the file, outside the span): 139:1-5 claiming '8
   -> PASS, reported
 case that must fail (citation with no declared expectation): PASS, [('139', 999, 999)] would be reported
 
-distinct spans checked: 21, failures: 0
+distinct spans checked: 22, failures: 0

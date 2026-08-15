@@ -300,6 +300,33 @@ Chebyshev region need not be, and I searched 397 random two-coordinate sets at a
 without finding a split region. **H3 is unestablished and I do not use it.** The linear side of the same
 walk reported one run per arm in every set, which is the control that says the walk could have seen a split.
 
+### 3.7 What this does to the two-component object
+
+The dispatch asks for this directly, and the answer is narrower than it first looks.
+
+**The object survives. The count of components is not what is wrong.** Fifteen probes produced no candidate
+for a third component and no reason to merge the two, and section 5 is an argument for the split rather
+than against it: the whole reason a target change is harmless is that one component fixes the answer and
+the other only picks among ways of computing it.
+
+**What does not cover its own space is the selector inside component two.** As the topic states it,
+component two is a weighting over cost coordinates, and a weighting is read as a linear objective. Under
+that reading the component cannot name every arm the arm set contains: it names the vertices of the lower
+convex hull and nothing else, and `p3`'s collinear set makes the shape of the gap visible by naming two of
+five points on one straight frontier.
+
+**So the correction is one word inside component two, not a change to the pair.** Either the component is
+defined with a selector that reaches every non-dominated arm, which is O-144-A and is measured to cost
+nothing at compile time and nothing in portability; or the component keeps the linear selector and the
+design records, as part of what a weighting *is*, that it names hull vertices rather than arms. Both are
+honest. What is not honest is leaving "a weighting over cost coordinates" to be read as "any arm can be
+asked for", because that is false at roughly one non-dominated arm in nine.
+
+**And the choice between the two is not urgent, on the evidence.** `p10c` finds no established instance of
+the limit anywhere in arvo's committed corpus, so the linear selector is sufficient for every arm set the
+library has today. The design should say which of the two it is doing rather than resolve it under
+pressure, and the moment an unsupported arm appears in a real arm set the answer changes.
+
 ---
 
 ## 4. Portability: the number is a low outlier and the phenomenon is misnamed
@@ -877,6 +904,33 @@ From `142`:
 
 11. **The intermediate axis positions and the fusion arms are the same two functions.** Not retested; `p6`
     uses them as one pair on that basis and I carry the identity as `142`'s and `141`'s.
+
+**The dimensions each convergence actually varied**, because `143:169-184` establishes that two agreeing
+instruments agree about the intersection of their dimensions and not the union, and a count of instances
+that does not say what they share is the shape of a vacuous agreement.
+
+- **Item 2, the unreachable Pareto arm.** `139` varied the weight grid at 1/2000 over one edge of the
+  simplex, on one arm set, in `f64`. I varied the decision procedure, not the arm set: exact rational
+  vertex enumeration over the whole simplex, on the same three arms. **We share the arm set and differ in
+  the procedure**, so what is corroborated is the verdict about those arms and not its generality. The
+  generality is `p2`'s separate sweep over 1080 random arm sets, which shares nothing with `139`.
+- **Item 4, the 44.3%.** Same input by construction, different implementation and different arithmetic.
+  **We share everything except the code**, which is why section 2 says matching was mandatory here rather
+  than suspicious.
+- **Item 8, the shared baseline.** `140` swept scalar costs in {1..6} against baselines in {1,2,3,4,6,8,12}
+  at three arms. I swept the identical space and reproduced its counts, then moved to a space it does not
+  reach: vector costs at three coordinates with a weighting. **We share the scalar region entirely and
+  intersect nowhere else**, which is exactly why the vector result is an addition rather than a
+  contradiction.
+- **Item 9, the 42.14%.** `139` at W=6 over all F, both signednesses, both overflow positions;
+  `141` on an independent model with two truncation spellings; `142` over six rounding modes; mine at W=6,
+  F in {0,3}, signed, saturating, truncate toward zero. **The intersection of all four is signed
+  saturating truncate-toward-zero at W=6, F=0**, and that single cell is where the four-instance claim is
+  actually four instances. At F=3 it is three, and outside signed saturating it is fewer still.
+- **Item 6, the livelock.** Four reproductions on the same host and the same crate, varying only the build
+  profile and the load. **The intersection is nearly the union**, so the four instances are close to one
+  instance repeated, and I count them as evidence that the flag works rather than as evidence about the
+  mechanism, which remains `139`'s alone.
 
 **Zero positions carried from any panel file other than `139`, `140`, `141`, `142`, `143` and `OPTIONS.md`
 Q51**, which with `INTENTS.md` and `RULES.md` is my whole reading.

@@ -70,6 +70,8 @@ EXPECT = {
     ("143", 296, 303): ["Half the count is carried by one axis",
                         "where the denotation and realisation levels are cut"],
     ("143", 418, 420): ["the one nobody has touched"],
+    ("143", 169, 184): ["the intersection of their dimensions, not the",
+                        "reads as corroboration"],
     ("INTENTS.md", 51, 61): ["DEMOTED TO OPEN", "not closed at exactly four"],
     ("INTENTS.md", 214, 235): ["RATIFIED", "predicated arms composed"],
     ("INTENTS.md", 363, 383): ["cold isn't to be depriorised"],
