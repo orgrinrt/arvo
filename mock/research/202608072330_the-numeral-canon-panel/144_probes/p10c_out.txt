@@ -1,0 +1,53 @@
+==============================================================================
+EE1. the witness, against a pairwise gate
+==============================================================================
+  arm warm-clamp-accfit-dyn, deciding coordinate n=320080
+    vs warm-clamp-acc64         gap     14.4 ns, half-IQR threshold    28.8 ns, ratio  0.50 INSIDE THE SCATTER
+    vs warm-clamp-accfit        gap      3.7 ns, half-IQR threshold    39.6 ns, ratio  0.09 INSIDE THE SCATTER
+    vs warm-clamp-head          gap    106.0 ns, half-IQR threshold    56.5 ns, ratio  1.88 clears
+    vs warm-clamp-min-lanes     gap    -84.0 ns, half-IQR threshold    28.6 ns, ratio -2.94 INSIDE THE SCATTER
+    vs warm-clamp-minimum       gap   4704.4 ns, half-IQR threshold   122.0 ns, ratio 38.54 clears
+  EE1 the witness fails the pairwise gate: CONFIRMED
+  and under the optimistic-band matrix it is selectable
+
+==============================================================================
+EE2. the whole corpus, with the pairwise gate applied
+==============================================================================
+  surveyed 35 families
+  arms established as non-dominated AND linearly unreachable, with every
+  deciding gap outside the harness's own scatter: 0
+  EE2 -> CONFIRMED, none
+
+==============================================================================
+EE3. does the reordering result survive the same gate?
+==============================================================================
+    satfold-length-l1: satfold-lanes4-idx at the smallest size (by 620 ns, threshold 190), satfold-neon8 at the largest (by 14867 ns, threshold 207)
+    warm-clamp-arity-l2: warm-clamp-accfit at the smallest size (by 97464 ns, threshold 1601), warm-clamp-min-lanes at the largest (by 26284 ns, threshold 4217)
+    warm-clamp-arity-w16: warm-clamp-minimum at the smallest size (by 98 ns, threshold 20), warm-clamp-accfit at the largest (by 9544 ns, threshold 71)
+    warm-clamp-arity-w60: warm-clamp-minimum at the smallest size (by 818 ns, threshold 84), warm-clamp-min-lanes at the largest (by 8487 ns, threshold 61)
+    warm-clamp-arity-w8: warm-clamp-minimum at the smallest size (by 75 ns, threshold 19), warm-clamp-accfit at the largest (by 772 ns, threshold 43)
+    warm-container-width-l1: warm-container-native at the smallest size (by 238 ns, threshold 42), warm-container-kernel at the largest (by 180 ns, threshold 62)
+  6 of 24 reordering families survive the pairwise gate
+  EE3 -> REFUTED
+
+==============================================================================
+FF1/FF2. the gate's own controls
+==============================================================================
+  FF1 a table with huge gaps passes the gate for every arm: PASS
+  FF2 two identical arms are reported indistinguishable: PASS
+
+the corrected answer to O-139-C, and the lesson:
+  no arm set in arvo's committed bench corpus contains an established
+  Pareto-optimal arm that no linear weighting can select. The one candidate
+  rests on a gap one twentieth of the scatter around it. So the linear limit
+  is real in general, at 11.7% of Pareto arms over random sets in p2, and it
+  is NOT established anywhere in the arm sets arvo has today. O-139-C closes
+  in the direction 139 named as the alternative.
+  The lesson is about the gate rather than the arms: a family-level noise
+  check passed at 9.2 while the pairwise comparison that decided the verdict
+  sat at 0.05. Dominance and selectability are pairwise questions, so the
+  gate has to be pairwise, and mine was not until this probe.
+
+==============================================================================
+control failures: 0 []
+==============================================================================
