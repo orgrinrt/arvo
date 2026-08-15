@@ -1,0 +1,17 @@
+p3: is the container observable in the answer function?
+witness set: W=4, F in {0,1,2}, ops {add,sub,mul,a*b+c,a*b-c}
+(p1 and p2 both report 24 classes for the assignments alone)
+
+container Packed alone: 24 classes over 30 assignments
+container Minimum alone: 24 classes over 30 assignments
+container Headroom alone: 24 classes over 30 assignments
+container Lossy alone: 24 classes over 30 assignments
+
+Packed + Minimum + Headroom together: 90 configs -> 24 classes
+
+CLAIM: the three lossless containers add zero classes -> CONFIRMED
+CLAIM: no class ever splits one assignment across containers -> CONFIRMED
+
+NEGATIVE CONTROL: adding the Lossy container: 24 -> 48 classes
+  Lossy separates, so the sweep can see a container when there is
+  something to see. the lossless result above is a real negative.

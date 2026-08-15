@@ -1,0 +1,31 @@
+p4: NOT A BENCHMARK. exhaustive arithmetic over synthetic cost tuples.
+it prices nothing and times nothing.
+
+arms per comparison: 3
+cost values swept: [1, 2, 3, 4, 5, 6]
+baseline values swept: [1, 2, 3, 4, 6, 8, 12]
+
+SHARED baseline (one ruler in the box):
+  840 comparisons, 0 where the reported
+  ranking differs from the absolute-cost ranking
+  Claim A (a shared baseline never misleads about the ranking): CONFIRMED
+
+PER-ARM baselines (each arm against its own naive version):
+  35724 comparisons, 20106 where the reported
+  ranking differs from the absolute-cost ranking (56.3%)
+  of those, 1302 are the exact reverse ordering
+  and in 3222 (9.0%) the absolutely WORST arm
+  reports the BEST figure
+  Claim B (a per-arm baseline can invert the ranking): CONFIRMED
+
+a witness, spelled out:
+  arm 0: absolute cost 1, its own baseline 1, so it reports 1.00x
+  arm 1: absolute cost 2, its own baseline 1, so it reports 0.50x
+  arm 2: absolute cost 3, its own baseline 4, so it reports 1.33x
+  absolute ranking, best first: (0, 1, 2)
+  reported ranking, best first: (2, 0, 1)
+  arm 2 looks best and is the worst arm in the set.
+
+=== mutual control ===
+the two arms disagree with each other, so the counter distinguishes
+the two regimes. the zero on the shared-baseline side is a real zero.
