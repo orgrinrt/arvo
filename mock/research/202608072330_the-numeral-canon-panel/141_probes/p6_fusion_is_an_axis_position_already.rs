@@ -82,7 +82,11 @@ fn reduce(v: i128, s: Sign, o: Ovf, w: u32) -> i128 {
     }
 }
 fn shift(p: i128, f: u32) -> i128 {
-    if f == 0 { p } else { p >> f }
+    if f == 0 {
+        p
+    } else {
+        p >> f
+    }
 }
 
 /// Plain arm under the STEPWISE-intermediate assignment.
@@ -96,15 +100,7 @@ fn plain_exact(a: i128, b: i128, c: i128, s: Sign, o: Ovf, w: u32, f: u32) -> i1
 }
 /// The fused LOWERING of the stepwise assignment, which is what 139 wants a cost
 /// model to be allowed to choose.
-fn fused_lowering_of_stepwise(
-    a: i128,
-    b: i128,
-    c: i128,
-    s: Sign,
-    o: Ovf,
-    w: u32,
-    f: u32,
-) -> i128 {
+fn fused_lowering_of_stepwise(a: i128, b: i128, c: i128, s: Sign, o: Ovf, w: u32, f: u32) -> i128 {
     reduce(shift(a * b, f) + c, s, o, w)
 }
 
@@ -122,7 +118,11 @@ fn main() {
             let name = format!(
                 "{}, {}",
                 if s == Sign::U { "unsigned" } else { "signed" },
-                if o == Ovf::Wrap { "wrapping" } else { "saturating" }
+                if o == Ovf::Wrap {
+                    "wrapping"
+                } else {
+                    "saturating"
+                }
             );
             for f in 0..=5u32 {
                 let (l, h) = (lo(s, w), hi(s, w));

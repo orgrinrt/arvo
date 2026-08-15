@@ -253,7 +253,15 @@ fn build(w: u32, f: u32, s: Sign, storages: &[Storage], accs: &[Acc]) -> Vec<Cfg
         for &o in &[Ovf::Wrap, Ovf::Sat] {
             for &st in storages {
                 for &a in accs {
-                    v.push(Cfg { s, o, r, st, a, w, f });
+                    v.push(Cfg {
+                        s,
+                        o,
+                        r,
+                        st,
+                        a,
+                        w,
+                        f,
+                    });
                 }
             }
         }
@@ -264,7 +272,11 @@ fn build(w: u32, f: u32, s: Sign, storages: &[Storage], accs: &[Acc]) -> Vec<Cfg
 fn main() {
     let w = 4u32;
     let all_ops = ["add", "sub", "mul", "mac", "dot2"];
-    let lossless = [Storage::PackedAtW, Storage::MinimumRung, Storage::DoubleRung];
+    let lossless = [
+        Storage::PackedAtW,
+        Storage::MinimumRung,
+        Storage::DoubleRung,
+    ];
     let with_lossy = [
         Storage::PackedAtW,
         Storage::MinimumRung,
@@ -319,7 +331,11 @@ fn main() {
 
             // T4: split by overflow position.
             for o in [Ovf::Wrap, Ovf::Sat] {
-                let on = if o == Ovf::Wrap { "wrapping  " } else { "saturating" };
+                let on = if o == Ovf::Wrap {
+                    "wrapping  "
+                } else {
+                    "saturating"
+                };
                 let mut pin: Vec<Cfg> = acc_varied.iter().copied().filter(|c| c.o == o).collect();
                 let pinned_acc: Vec<Cfg> =
                     pin.iter().copied().filter(|c| c.a == Acc::AtW).collect();
@@ -349,7 +365,10 @@ fn main() {
             let extra = dup[0];
             dup.push(extra);
             let n_dup = classes(&dup, &all_ops);
-            let n_nodup = classes(&build(w, f, s, &[Storage::PackedAtW], &[Acc::AtW]), &all_ops);
+            let n_nodup = classes(
+                &build(w, f, s, &[Storage::PackedAtW], &[Acc::AtW]),
+                &all_ops,
+            );
             println!(
                 "  merge control: duplicate config     : {n_dup} vs {n_nodup} {}",
                 if n_dup == n_nodup {
