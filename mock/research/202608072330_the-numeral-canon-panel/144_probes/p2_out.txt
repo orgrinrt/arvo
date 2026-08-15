@@ -1,0 +1,59 @@
+==============================================================================
+E1/E2. how common is a linearly unreachable Pareto arm?
+==============================================================================
+ d   n  sets  pareto arms  linearly unreachable     rate
+ 2   4   120          237                    19     8.0%
+ 2   6   120          252                    20     7.9%
+ 2   8   120          283                    27     9.5%
+ 3   4   120          332                    22     6.6%
+ 3   6   120          429                    48    11.2%
+ 3   8   120          489                    57    11.7%
+ 4   4   120          376                    29     7.7%
+ 4   6   120          540                    62    11.5%
+ 4   8   120          638                    81    12.7%
+
+E1 at least 15% of Pareto arms unreachable at d=3, n=8: measured 11.7% -> REFUTED
+E2 the rate rises with n: CONFIRMED; with d: REFUTED
+
+==============================================================================
+E3/G1/G3. the Chebyshev certificate, checked in both directions
+==============================================================================
+  E3 Pareto arms checked 3667, reached by their own certificate 3667, missed 0 -> CONFIRMED
+  G1 dominated arms receiving a valid certificate: 0 -> PASS
+  G3 linearly selectable arms lost by Chebyshev: 0 -> PASS
+
+==============================================================================
+G2. the case that must fail: a set of pure hull vertices
+==============================================================================
+  hull-vertex set [('1', '9'), ('9', '1'), ('3', '4'), ('4', '3')]
+  linearly unreachable Pareto arms: [] -> PASS
+
+==============================================================================
+E4. plain Chebyshev selects a dominated arm; augmented Chebyshev does not
+==============================================================================
+  arms [('4', '4'), ('4', '2')], arm 1 dominates arm 0, z = ['3', '1']
+  plain Chebyshev picks the dominated arm at 11 of 41 weights
+  augmented Chebyshev (rho = 1/1000) picks it at 0 of 41
+  E4 -> CONFIRMED
+
+==============================================================================
+E5. Chebyshev win regions need not be convex; linear ones must be
+==============================================================================
+  linear    runs per arm: {1: 1, 2: 1, 0: 1}
+  Chebyshev runs per arm: {1: 1, 4: 1, 2: 1, 3: 1, 0: 1}
+  every linear region is one run (convexity): PASS
+  E5 some Chebyshev region splits into several runs: not witnessed on this set
+
+==============================================================================
+G4. duplicates must not inflate a reachable-vector count
+==============================================================================
+  without the duplicate: 3 distinct reachable cost vectors
+  with the duplicate:    2 distinct reachable cost vectors
+  G4 -> PASS
+  note: the duplicated arm loses its own certificate, exactly as in p1b, because
+  a duplicate makes strict optimality impossible for BOTH copies. That is the
+  same tie phenomenon and it is not specific to the linear selector.
+
+==============================================================================
+control failures: 0 []
+==============================================================================
