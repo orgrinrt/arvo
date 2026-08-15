@@ -1,0 +1,6 @@
+T1 the consumer-defined strategy compiles against an unchanged library: PASS
+C3 the two arms agree on 131072 of 131072 inputs, disagreements=0, nonzero results=129773
+C3 PASS: the arms are two routes to one answer, and the check is non-vacuous
+sample outputs: library=127 consumer=127 runtime=127
+
+T2 and T3 are answered by the asm scan in p5_scan.sh, not by this program.
