@@ -110,14 +110,22 @@ fn rnd(p: i128, f: u32, m: Mode) -> i128 {
         }
         Mode::AwayFromZero => {
             if p >= 0 {
-                if r == 0 { q } else { q + 1 }
+                if r == 0 {
+                    q
+                } else {
+                    q + 1
+                }
             } else {
                 q
             }
         }
         Mode::NearestHalfUp => {
             // floor(x + 1/2)
-            if 2 * r >= d { q + 1 } else { q }
+            if 2 * r >= d {
+                q + 1
+            } else {
+                q
+            }
         }
         Mode::NearestHalfEven => {
             if 2 * r > d {
@@ -144,7 +152,11 @@ fn reduce(v: i128, signed: bool, sat: bool, w: u32) -> i128 {
     } else {
         let m = 1i128 << w;
         let r = v.rem_euclid(m);
-        if signed && r >= (1i128 << (w - 1)) { r - m } else { r }
+        if signed && r >= (1i128 << (w - 1)) {
+            r - m
+        } else {
+            r
+        }
     }
 }
 
