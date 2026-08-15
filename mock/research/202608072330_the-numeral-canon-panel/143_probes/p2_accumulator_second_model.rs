@@ -228,7 +228,10 @@ fn main() {
     println!("model: a FOLD over a slice, policy applied per step at the accumulator width,");
     println!("narrowed once at the end. W={w}, slice length {len}, exhaustive over all slices.\n");
 
-    println!("{:<10} {:<10} {:<4} {:<8} {}", "sign", "overflow", "F", "kernel", "acc widths -> classes");
+    println!(
+        "{:<10} {:<10} {:<4} {:<8} {}",
+        "sign", "overflow", "F", "kernel", "acc widths -> classes"
+    );
     println!("{}", "-".repeat(78));
 
     let mut visible_cells: Vec<String> = Vec::new();
@@ -254,7 +257,10 @@ fn main() {
 
                     // duplicate control: the same width twice, must merge
                     let mut dup = real.clone();
-                    dup.push(Config { control: 1, ..real[0] });
+                    dup.push(Config {
+                        control: 1,
+                        ..real[0]
+                    });
                     let n_dup = classes(&dup, k, w, f, len).len();
                     if n_dup != n_real {
                         println!("  !! CONTROL FAIL: a duplicate accumulator width did not merge");
@@ -270,13 +276,7 @@ fn main() {
                     });
                     let n_lossy = classes(&lossy, k, w, f, len).len();
 
-                    let cell = format!(
-                        "{:?}/{:?}/F={}/{}",
-                        sign,
-                        overflow,
-                        f,
-                        k.name()
-                    );
+                    let cell = format!("{:?}/{:?}/F={}/{}", sign, overflow, f, k.name());
                     if n_real > 1 {
                         visible_cells.push(cell.clone());
                     } else {
@@ -314,10 +314,21 @@ fn main() {
         .iter()
         .any(|c| c.starts_with("Signed/Saturate"));
 
-    println!("\nP2a (visible at signed saturating): {}", if some_signed_sat_visible { "CONFIRMED" } else { "REFUTED" });
+    println!(
+        "\nP2a (visible at signed saturating): {}",
+        if some_signed_sat_visible {
+            "CONFIRMED"
+        } else {
+            "REFUTED"
+        }
+    );
     println!(
         "P2b + P2c (invisible everywhere else): {}",
-        if all_visible_are_signed_sat { "CONFIRMED" } else { "REFUTED" }
+        if all_visible_are_signed_sat {
+            "CONFIRMED"
+        } else {
+            "REFUTED"
+        }
     );
     println!(
         "\n141's cell reproduces on an independent model: {}",
@@ -330,7 +341,10 @@ fn main() {
 
     println!("\n=== controls ===");
     if !lossy_blind.is_empty() {
-        println!("!! CONTROL FAIL: a lossy accumulator was invisible in {} cells:", lossy_blind.len());
+        println!(
+            "!! CONTROL FAIL: a lossy accumulator was invisible in {} cells:",
+            lossy_blind.len()
+        );
         for c in lossy_blind.iter() {
             println!("  {c}");
         }

@@ -216,8 +216,11 @@ fn assignments() -> Vec<Assignment> {
     let mut v = Vec::new();
     for &round in ROUNDS.iter() {
         for &overflow in OVERFLOWS.iter() {
-            for &intermediate in [Intermediate::RoundEachStep, Intermediate::ExactThenRoundOnce]
-                .iter()
+            for &intermediate in [
+                Intermediate::RoundEachStep,
+                Intermediate::ExactThenRoundOnce,
+            ]
+            .iter()
             {
                 v.push(Assignment {
                     round,
@@ -288,7 +291,11 @@ fn main() {
         ROUNDS.len(),
         OVERFLOWS.len()
     );
-    println!("{} non-empty operation subsets, shapes {:?}\n", subs.len(), shapes);
+    println!(
+        "{} non-empty operation subsets, shapes {:?}\n",
+        subs.len(),
+        shapes
+    );
 
     // precompute counts per (shape, subset)
     let mut pairs_checked = 0usize;
@@ -298,10 +305,7 @@ fn main() {
     let mut first_witness: Option<String> = None;
 
     for &(w, f) in shapes.iter() {
-        let counts: Vec<usize> = subs
-            .iter()
-            .map(|s| classes(&asgs, s, w, f, None))
-            .collect();
+        let counts: Vec<usize> = subs.iter().map(|s| classes(&asgs, s, w, f, None)).collect();
 
         // monotonicity over every ordered subset pair
         for i in 0..subs.len() {
@@ -366,10 +370,16 @@ fn main() {
         }
     );
 
-    println!("\nP1b strictness: {zero_add} (shape, subset, operation) triples add exactly zero classes");
+    println!(
+        "\nP1b strictness: {zero_add} (shape, subset, operation) triples add exactly zero classes"
+    );
     println!(
         "  -> 140's F2 wording \"strictly increasing\" is {}",
-        if zero_add > 0 { "REFUTED on my own axis set too" } else { "not refuted here" }
+        if zero_add > 0 {
+            "REFUTED on my own axis set too"
+        } else {
+            "not refuted here"
+        }
     );
     if let Some(w) = &first_witness {
         println!("  first witness: {w}");
@@ -379,10 +389,18 @@ fn main() {
     for (f, n) in zero_add_by_f.iter() {
         println!("  F={f}: {n}");
     }
-    let f0 = zero_add_by_f.iter().find(|(f, _)| *f == 0).map(|(_, n)| *n).unwrap_or(0);
+    let f0 = zero_add_by_f
+        .iter()
+        .find(|(f, _)| *f == 0)
+        .map(|(_, n)| *n)
+        .unwrap_or(0);
     println!(
         "  -> P1c (they concentrate at F=0): {}",
-        if f0 > zero_add - f0 { "CONFIRMED" } else { "REFUTED" }
+        if f0 > zero_add - f0 {
+            "CONFIRMED"
+        } else {
+            "REFUTED"
+        }
     );
 
     // ---- the anti-monotone control ----
@@ -408,7 +426,9 @@ fn main() {
             }
         }
     }
-    println!("prefix-truncated comparator at W=4 F=2: {ctrl_pairs} pairs, {ctrl_violations} violations");
+    println!(
+        "prefix-truncated comparator at W=4 F=2: {ctrl_pairs} pairs, {ctrl_violations} violations"
+    );
     if ctrl_violations == 0 {
         println!("  !! CONTROL FAIL: a comparator that provably loses information produced no");
         println!("  violations, so this sweep cannot detect one. the zero above is worthless.");
