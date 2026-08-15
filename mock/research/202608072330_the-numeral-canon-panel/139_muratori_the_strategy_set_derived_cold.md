@@ -670,3 +670,206 @@ wrong in a way I cannot see from inside it. If one thing here gets attacked, it 
 `cargo test --release --manifest-path bitpack-write-contend-shared/Cargo.toml`, run in the background while
 this file was written. The result is recorded in the commit that follows this one, so that the number in
 this file is one somebody can check rather than one I remembered.
+
+---
+
+# Phase two: reconciliation against Q51
+
+Written after committing everything above and reading `OPTIONS.md` entry Q51 and nothing else. Phase one
+is untouched. What follows is where I agree, where I do not, and what I got wrong.
+
+## Correction to my own gate report, before anything about Q51
+
+**The gate section above names the wrong cause and I am leaving it standing with this correction beside
+it**, because the record of a wrong diagnosis and the evidence that closed it is worth more than a clean
+page. Phase one is not rewritten.
+
+I wrote that `bitpack-write-contend-shared` does not complete because 4500 trials each rebuild a 23.6 MB
+buffer, "on the order of a hundred gigabytes of allocation and fill". **That is wrong.** I attacked it
+rather than shipping it, and `p7_gate_diagnostic.rs`, an ad-hoc quick spike with no substance and named as
+such, times the buffer directly:
+
+```
+per-build as-is      : 723.972us
+per-build right-sized:   5.435us
+projected cost of the 4500 builds the three stress tests perform: 3.3 s
+```
+
+The buffer is oversized by 1024x and it accounts for **3.3 seconds of a sixty-minute run**. My control
+technically passed, because right-sizing is 133x cheaper, and the projection refuted the hypothesis anyway.
+A control that only asks "is A cheaper than B" cannot tell you whether A was ever the term that mattered,
+and that is a lesson about my own instrument rather than about the crate.
+
+**The real mechanism is a livelock, and it is in `pool.rs`.** The worker pool is process-global, sized on
+first use, and its workers never exit: `pool.rs:87-122` is an unbounded `loop` spinning on a `generation`
+counter. `write_pass` (`pool.rs:143-160`) drives one pass by storing the arguments, zeroing `done`, bumping
+`generation`, and then spinning until `done` reaches `threads - 1`. That protocol has exactly one
+coordinator in it.
+
+`cargo test` runs tests concurrently by default, in one process. All three stress tests call
+`pool(STRESS_THREADS)` and drive the same pool at the same time, so a second coordinator's
+`p.done.store(0)` resets a counter the first is waiting on and two `generation` bumps coalesce into one
+wakeup. The first coordinator then spins forever in `while p.done.load(..) != threads - 1`. The crate's own
+comment predicts this without quite naming it: `pool()` asserts on the thread count with the message that
+"the harness runs one thread count per worker process; a second count in the same process means that
+contract changed". The pool was built for the bench harness, where a process runs one configuration, and
+`cargo test` is not that.
+
+**The decisive experiment, and it takes one flag:**
+
+```
+cargo test --manifest-path bitpack-write-contend-shared/Cargo.toml -- --test-threads=1
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.97s
+```
+
+**Seven point nine seven seconds, in a debug build, for the suite I had twice killed after an hour.** So
+the crate is not slow, it is not badly written, and its stress tests are fine. It is serialisation-required
+and nothing says so.
+
+**The corrected gate result: all 123 tests pass, 120 under the briefed invocation and 15 more once one
+crate is given `--test-threads=1`.** The finding that stands is that the requirement is undocumented and
+presents as an unbounded hang, which is the worst possible failure shape: a reader who follows the brief
+concludes the suite is broken or that their machine is. **The brief itself is incomplete on this point.**
+It says the suite runs per crate by `--manifest-path` or `-p` and warns that the workspace-wide form
+returns a false green; it does not say that one of the thirteen additionally requires
+`-- --test-threads=1`. Every future member running this gate as briefed will hit it, and the cheapest fix
+is one clause in the brief. The next cheapest is a serialising lock in the crate, which would make the
+constraint self-enforcing rather than folklore.
+
+I spent roughly two hours of wall time on this, most of it waiting for a run that was never going to
+finish, and the whole thing would have been one flag away had the requirement been written down anywhere.
+
+
+## The one correction that reaches furthest, and it is against me
+
+Q51 says **observability is a property of the chain, not of the axis**, and reports that the definition in
+play gave 0% against 89.081% depending on whether the limit is read at **the declared width or the
+container width**.
+
+**My entire corpus is `container width = declared width`, and I never noticed.** Every probe I wrote
+reduces to the declared width after every operation. There is no container in my model at all: `p1`, `p2`,
+`p3` and `p6` all clamp or wrap to the declared range at each reduction point, and the intermediate is
+either exact-in-`i128` or reduced to the declared width, with nothing in between. The case arvo exists for,
+a 13-bit declared value living in a wider container where the extra bits change where a boundary lands, is
+absent from every measurement above.
+
+So **every predicate in phase one is missing a dimension**, and under this panel's own notation that means
+those findings do not hold anywhere a container wider than the declared width is present. Which is nearly
+everywhere in the real library. I am not editing the predicates, because a predicate is not widened or
+narrowed in place; I am stating the correction here, in my own file, which is where the rules put it:
+
+```
+every finding in phase one additionally requires:
+           container width = declared width W
+```
+
+That is a large narrowing and it is the right one. The 0% against 89.081% figure Q51 quotes is exactly the
+magnitude of the gap I did not model, so this is not a technicality.
+
+**And the framing correction lands too.** Section 3 of phase one states the membership procedure as a
+per-axis test: vary the candidate, hold everything else, sweep for an answer change. Q51 says observability
+belongs to the chain. My probes half-obey that already, since `p1`'s intermediate axis is invisible on a
+single operation and only shows up because I included a three-term chain and a multiply-add. But I wrote
+the *procedure* as per-axis, and that is the wrong granularity, and my own data was already telling me so:
+an axis with no effect at chain length 1 and a large effect at chain length 2 is not a property of the axis.
+**Conceded.** The procedure should be stated over chains, with chain length a dimension of the sweep rather
+than an incidental choice of mine.
+
+## Where the unit and I converged independently, and where the two repairs differ
+
+Q51's furthest-reaching repair is that **component one fixes the denoted answer, not the computed one**,
+because with the computed answer fixed a fidelity column measures a constant and op's accuracy intent is
+expressible in neither component.
+
+I arrived at the same *problem* from the opposite direction and produced a different *repair*. My section 4
+found that a policy pinning one computed answer forbids fusion outright, which is too strong, and proposed
+that **a policy specifies a set of acceptable answers rather than one**. Same defect, same diagnosis that
+the pair as first written is too tight on component one, two different loosenings:
+
+- **Q51's**: component one fixes the ideal, and arms differ in fidelity to it, so fidelity is a **cost
+  coordinate that can be weighed**.
+- **Mine**: component one declares a set, and arms must land inside it, so fidelity is a **bound that must
+  be satisfied**.
+
+**These are compatible and I think the composition is strictly better than either alone.** A policy
+declares a bound; inside the bound, fidelity is a coordinate the weighting may trade against time and
+space. That keeps the property my firewall exists for, which is that nothing outside the declaration can
+move an answer, and it restores the expressiveness Q51's repair exists for, which is that an accuracy-first
+intent has somewhere to live. Under Q51's repair alone the weighting can trade accuracy for speed with no
+stated floor, which is exactly the case where a program's results depend on a cost model and therefore on
+the target, and I10 makes that concrete rather than hypothetical.
+
+**And my `p3` supplies the number that makes the bound operational rather than a slogan.** The bound is
+measurable per shape, exhaustively, and it is small enough to be worth having in the region where it is
+small: 0 raw units unsigned at every `F`, 1 raw unit for signed wrapping at `F >= 1`, and 32 of 63 for
+signed saturating, which is a bound that has declared nothing. A design taking the composition can state
+that floor exactly instead of gesturing at it.
+
+## A question Q51's repair raises that I cannot answer from Q51 alone
+
+**If component one fixes the denoted answer, what separates wrapping from saturating?**
+
+Both denote something other than the exact result, deliberately, and neither is an approximation of the
+other. Two readings and both have a cost:
+
+- If "denoted" means the mathematically exact result, then the overflow axis is not in component one, which
+  contradicts it being an observable policy axis.
+- If "denoted" means the result the type specifies, then it is what I called the pinned computed answer, and
+  the fidelity column goes constant again, which is the defect the repair was made to fix.
+
+My measurement says whatever "denoted" means, it has to be finer than exact: `p1`'s control C2 held at all
+seven shapes, so wrapping and saturating never merged into one class anywhere I looked, including the shapes
+where six of the twelve labels did merge. So the separation is real and the definition has to deliver it.
+
+**The set formulation delivers both without the ambiguity.** Component one is a set of acceptable realised
+values, per operation, per input. Wrapping and saturating are different singletons, so they separate.
+A policy with declared slack is a wider set, so fidelity varies inside it and an accuracy coordinate is
+non-constant. That is the property Q51's repair was reaching for, obtained without needing "denoted" to
+carry two jobs.
+
+I am not asserting this beats the unit's converged statement, which I have not read; `108` section 7 is
+where that statement lives and I have read only Q51's summary of it. **It is offered as the thing to check
+first, and if `108` already carries it, then this paragraph is one more instance of the same reading rather
+than a correction, which is worth as much.**
+
+## What I carried forward unchanged, with a count
+
+**One: the pair.** Q51 records that the two-component object survived being attacked, and my derivation
+assumed it and found nothing that unseats it. Six probes, none of which produced a candidate for a third
+component. What I found instead is that the pair needs a **law** relating its components rather than a
+third member, which is a claim about the pair and not against it.
+
+**Zero positions carried from any member file**, because I have read none. That is the protocol working
+rather than a contribution.
+
+## What I am not touching
+
+Q51's rung corrections, the union-on-supports result, and the finding about `88` having five incompatible
+readings are all material I have not reached. The supports-and-rates result in particular describes a
+structure on component two that my `p4` never encountered, because combining two weightings never arose in
+what I measured. I have no view and am not manufacturing one.
+
+## The six probes, offered to whoever picks this up
+
+Each proves one thing once, and none of them decides anything on its own.
+
+1. `p1_policy_classes.rs`: the number of observationally distinct policy assignments is 2, 3, 8 or 12 out
+   of the same 12 syntactic points, as a function of shape alone. Mutation-controlled.
+2. `p2_firewall.rs`: two routes to one policy agree over 1,376,256 pairs; fusing the multiply-add changes
+   the answer at up to 42.14% of triples, with the full fraction-axis table. Carries the record of my own
+   setup-that-helps defect and the control that now catches it.
+3. `p3_declared_slack.rs`: the slack that admits fusion, exhaustively, per shape. 0, 1, or 32 raw units of
+   63.
+4. `p4_weight_cells.rs`: the weighting continuum quotients to five cells over seven arms; the same weight
+   vector picks a different arm at 44.3% of the simplex across two cost tables; a Pareto-optimal arm that
+   no linear weighting can select, with the control that proves the zero is the arm's and not the sweep's.
+5. `p5_open_set.rs` and `p5_scan.sh`: a consumer-defined strategy compiling against an unchanged library
+   and lowering to one unconditional branch, with the runtime-selected control that keeps both arms.
+6. `p6_packing_is_a_weighting.rs`: packing is answer-invisible across 60 configurations, so the
+   storage-minimising concern has zero policy content.
+
+The three predictions of mine that fell, which is the part worth reading: the unsigned `F = 0` class count
+(3 predicted, 2 measured), the fusion difference rate for unsigned (nonzero predicted, exactly zero
+everywhere), and the weight-cell counts across targets (different predicted, identical measured, with the
+mapping difference being the claim that survived).
+
