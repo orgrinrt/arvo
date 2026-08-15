@@ -1,0 +1,56 @@
+==============================================================================
+AA1/AA2. under relative units, is there a second operation left to place?
+==============================================================================
+  5460 (arm set, weight) cases
+  AA1 the baseline's own reported figure differs from the weight sum: 0 -> CONFIRMED
+      on the simplex the weight sum is 1, so every arm's figure is already stated
+      against the named arm and the reporting normalisation is division by one.
+  AA2 the reported ranking differs from the selection: 0 -> CONFIRMED
+
+==============================================================================
+BB1. the case that must fail: absolute units with the scalar reporting form
+==============================================================================
+  5460 cases, reported ranking differs from raw ranking: 0 -> PASS
+
+==============================================================================
+AA3/AA4/BB2/BB3/BB4. the two-by-two
+==============================================================================
+  units     baseline        pure rescale   arbitrary   identical
+  absolute  fixed                  12.0%       85.0%           0
+  absolute  per-target             12.0%       85.0%           0
+  relative  fixed                  11.6%       87.4%           0
+  relative  per-target              0.0%       83.4%           0
+
+  AA3/AA4 cells with exact invariance under a pure per-coordinate rescale: [('relative', 'per-target')]
+  AA3 the invariance needs BOTH relative units and a per-target baseline: CONFIRMED
+  BB2 relative units with a per-target baseline still move under an arbitrary target change: PASS
+  BB5 the two absolute rows are identical, as they must be since the baseline never
+      enters an absolute-units selection: PASS
+  BB3 relative units with a FIXED baseline move under a pure rescale: PASS
+
+==============================================================================
+what this settles, in the author's own words
+==============================================================================
+  My section 6 varied UNITS on one target and measured 24.6%.
+  My section 4.3 varied BASELINE PROVENANCE across two targets, and it did so while
+  holding units at baseline-relative, without naming either as a choice.
+  The two sections sit at two points of the table above and measure two different
+  axes. There is no operation that is required in one and forbidden in the other.
+
+  What IS wrong in my file is one clause. Section 6's repair reads 'a per-coordinate
+  normalisation applied before the weighting is a change of weighting, and the arm a
+  consumer asked for is not the arm they get.' The second half presumes the consumer
+  asked in absolute units, which is exactly the undeclared choice. Under relative units
+  the per-coordinate figure IS the arm they asked for, and AA1 shows the reporting
+  normalisation is then division by one, so the two operations coincide rather than
+  competing.
+
+  So the design owes two declarations rather than one: which units a weighting is in,
+  and whether the named baseline is fixed once or re-measured per target. Only the
+  conjunction buys portability, and the second declaration is what decides whether a
+  cost claim compares across targets, because a per-target baseline makes '0.8 of
+  baseline' two different absolute costs on two machines.
+
+==============================================================================
+control failures: 0 []
+==============================================================================
