@@ -1,0 +1,65 @@
+==============================================================================
+B1. grid winners against WEAK selectability, which is the right predicate
+==============================================================================
+  target 1: grid winners [0, 1, 2, 3, 4], weakly selectable [0, 1, 2, 3, 4, 6], strictly selectable [1, 2, 3, 4]
+    every grid winner weakly selectable -> PASS
+    distinct weakly-selectable COST VECTORS = 5  (139 reports 5 cells; the arm count and the vector count differ only by ties)
+  target 2: grid winners [0, 1, 2, 3, 4], weakly selectable [0, 1, 2, 3, 4, 6], strictly selectable [1, 2, 3, 4]
+    every grid winner weakly selectable -> PASS
+    distinct weakly-selectable COST VECTORS = 5  (139 reports 5 cells; the arm count and the vector count differ only by ties)
+
+==============================================================================
+B4. scalar-widened's zero is its duplicate
+==============================================================================
+  target 1: with the duplicate present min t = 0; with it deleted min t = -15  -> B4 holds
+  target 2: with the duplicate present min t = 0; with it deleted min t = -15  -> B4 holds
+
+==============================================================================
+B2. the witness in its true dimension
+==============================================================================
+  three coordinates, the third dead:
+    endpoint-A     pareto=Y  min t = -6  strictly selectable
+    endpoint-B     pareto=Y  min t = -6  strictly selectable
+    compromise-C   pareto=Y  min t = 0  ties only
+  two coordinates, the real problem:
+    endpoint-A     pareto=Y  min t = -6  strictly selectable
+    endpoint-B     pareto=Y  min t = -6  strictly selectable
+    compromise-C   pareto=Y  min t = 1  never even ties
+  B2: compromise-C in two coordinates has min t = 1, strictly positive? YES
+      so it loses by at least 1 at EVERY point of the simplex. A sweep can only
+      report that it did not win at the points sampled. This is the whole simplex.
+  D2 control: endpoint-A in the same two-coordinate set has min t = -6, PASS
+
+==============================================================================
+B3. a constant coordinate makes every arm weakly selectable
+==============================================================================
+  base set, two coordinates, no constant coordinate, no duplicate:
+    a     min t = -4  dominated=False
+    b     min t = -4  dominated=False
+    mid   min t = 0  dominated=False
+    bad   min t = 4  dominated=True
+  D1 control: at least one arm has min t > 0 -> PASS ['bad']
+  the same set with a third coordinate on which every arm carries 7:
+    a     min t = -4
+    b     min t = -4
+    mid   min t = 0
+    bad   min t = 0
+  B3: every arm weakly selectable after padding -> CONFIRMED
+      mechanism: put all the weight on the constant coordinate and every arm
+      scores the same, so the argmin is decided entirely by the tie-break rule.
+      A cost coordinate on which the arms do not differ is not a coordinate; it
+      is a direction in weight space along which the selector says nothing.
+
+==============================================================================
+D3. exact arithmetic against 139's f64 sweep
+==============================================================================
+  target 1: 139 f64 [55720, 4514, 2269, 52, 18046, 0, 0]
+           mine exact [55720, 4515, 2270, 52, 18044, 0, 0]
+    total absolute difference 4 of 80601 grid points (0.0050%), cell count agrees
+  target 2: 139 f64 [20102, 3514, 4153, 683, 52149, 0, 0]
+           mine exact [20102, 3514, 4153, 683, 52149, 0, 0]
+    total absolute difference 0 of 80601 grid points (0.0000%), cell count agrees
+
+==============================================================================
+control failures: 0 []
+==============================================================================
