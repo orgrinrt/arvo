@@ -88,20 +88,36 @@ fn rnd(p: i128, f: u32, m: Mode) -> i128 {
     match m {
         Mode::Floor => q,
         Mode::Ceiling => {
-            if r == 0 { q } else { q + 1 }
+            if r == 0 {
+                q
+            } else {
+                q + 1
+            }
         }
         Mode::TowardZero => {
-            if p >= 0 || r == 0 { q } else { q + 1 }
+            if p >= 0 || r == 0 {
+                q
+            } else {
+                q + 1
+            }
         }
         Mode::AwayFromZero => {
             if p >= 0 {
-                if r == 0 { q } else { q + 1 }
+                if r == 0 {
+                    q
+                } else {
+                    q + 1
+                }
             } else {
                 q
             }
         }
         Mode::NearestHalfUp => {
-            if 2 * r >= d { q + 1 } else { q }
+            if 2 * r >= d {
+                q + 1
+            } else {
+                q
+            }
         }
         Mode::NearestHalfEven => {
             if 2 * r > d {
@@ -128,13 +144,24 @@ fn reduce(v: i128, signed: bool, sat: bool, w: u32) -> i128 {
     } else {
         let m = 1i128 << w;
         let r = v.rem_euclid(m);
-        if signed && r >= (1i128 << (w - 1)) { r - m } else { r }
+        if signed && r >= (1i128 << (w - 1)) {
+            r - m
+        } else {
+            r
+        }
     }
 }
 
 /// Is `rnd(., f, m)` translation equivariant over the given numerator range and the
 /// given set of integer shifts? `restrict` decides which region is swept.
-fn equivariant_over(f: u32, m: Mode, num_lo: i128, num_hi: i128, shift_lo: i128, shift_hi: i128) -> bool {
+fn equivariant_over(
+    f: u32,
+    m: Mode,
+    num_lo: i128,
+    num_hi: i128,
+    shift_lo: i128,
+    shift_hi: i128,
+) -> bool {
     let d = 1i128 << f;
     for p in num_lo..=num_hi {
         for c in shift_lo..=shift_hi {
@@ -206,7 +233,9 @@ fn main() {
     );
 
     println!("\n=== Z1: does the RESTRICTED test predict the fusion table? ===");
-    println!("(wrapping, W = {w}, exhaustive; a mode is predicted zero iff restricted-equivariant)");
+    println!(
+        "(wrapping, W = {w}, exhaustive; a mode is predicted zero iff restricted-equivariant)"
+    );
     println!(
         "{:<20} {:>10} {:>12} {:>14} {:>10}",
         "mode", "signedness", "restricted", "measured max", "verdict"
