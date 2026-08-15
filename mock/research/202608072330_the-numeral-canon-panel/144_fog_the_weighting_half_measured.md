@@ -37,7 +37,7 @@ The corrected answer is that **no arm set in arvo's committed corpus contains an
 Pareto-optimal arm unreachable by a linear weighting**, and O-139-C closes in the direction `139` named as
 the alternative.
 
-Fifteen probes. Eight of my predictions were refuted, one went unwitnessed, and one was confirmed and then
+Fifteen probe entries. Eight of my predictions were refuted, one went unwitnessed, and one was confirmed and then
 withdrawn by me. The two that mattered most are the ones that killed my own findings.
 
 ---
@@ -304,7 +304,7 @@ walk reported one run per arm in every set, which is the control that says the w
 
 The dispatch asks for this directly, and the answer is narrower than it first looks.
 
-**The object survives. The count of components is not what is wrong.** Fifteen probes produced no candidate
+**The object survives. The count of components is not what is wrong.** Fifteen probe entries produced no candidate
 for a third component and no reason to merge the two, and section 5 is an argument for the split rather
 than against it: the whole reason a target change is harmless is that one component fixes the answer and
 the other only picks among ways of computing it.
@@ -1058,7 +1058,9 @@ claim about method rather than about arvo.
 
 ## Appendix: the probes
 
-Fifteen files, each committed with its output before or alongside this file, and each proving one thing once.
+Fifteen entries over seventeen source files, counted by
+`ls 144_probes/*.py 144_probes/*.rs 144_probes/*.sh | wc -l`, each committed with its output before or
+alongside this file, and each proving one thing once.
 
 1. `p1_reproduce_and_decompose.py`: `139`'s weight-cell numbers reproduced exactly on an independent
    instrument, the six-against-five gap decomposed to its duplicate arm, and two of my own controls firing.
