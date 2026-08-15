@@ -70,7 +70,11 @@ fn reduce(v: i128, signed: bool, r: Red, w: u32) -> i128 {
         Red::Wrap => {
             let m = 1i128 << w;
             let k = v.rem_euclid(m);
-            if signed && k >= (1i128 << (w - 1)) { k - m } else { k }
+            if signed && k >= (1i128 << (w - 1)) {
+                k - m
+            } else {
+                k
+            }
         }
         Red::BadFold => {
             if v >= lo && v <= hi {
@@ -183,7 +187,13 @@ fn main() {
         println!("=== reduction = {rn} ===");
         println!(
             "{:<10} {:>12} {:>10} {:>14} {:>12} {:>14} {:>10}",
-            "signedness", "congruence", "failures", "fusion diff", "reach", "acc visible", "saturated"
+            "signedness",
+            "congruence",
+            "failures",
+            "fusion diff",
+            "reach",
+            "acc visible",
+            "saturated"
         );
         for signed in [false, true] {
             let (cong, bad) = is_congruence(signed, r, w);
