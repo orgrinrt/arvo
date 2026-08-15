@@ -1,0 +1,44 @@
+p8: NOT A BENCHMARK. a compile-time question with a yes or no answer.
+utopia reference point Z = [0, 0]
+
+V1 the const selectors evaluated at compile time:
+   linear   w=(1,3) -> arm 1
+   linear   w=(1,1) -> arm 0
+   chebyshev w=(1,1) -> arm 2
+   (the file would not compile if any of these were not const, so
+    V1 is answered by the build succeeding at all)
+
+W3 linear (1,3): const 1, runtime 1 -> PASS
+W3 linear (1,1): const 0, runtime 0 -> PASS
+W3 cheb (1,1): const 2, runtime 2 -> PASS
+
+V3 over 1600 integer weights on the same cost table:
+   arms a linear selector ever picks:    [true, true, false]
+   arms a chebyshev selector ever picks: [true, true, true]
+   they disagree at 624 of 1600 weights
+   V3 -> CONFIRMED
+   so the compromise arm is unreachable linearly and reachable under
+   chebyshev, on the same arms, which is what the replacement is for.
+
+W2 the three arms return different values for the same input:
+   arm_a(7)=7000032 arm_b(7)=14000043 arm_c(7)=21000054
+   W2 -> PASS
+
+entry points return: 14000043 7000032 21000054
+runtime-selected control returns: 7000032 14000043 21000054
+
+control failures: 0
+
+=== ASM SCAN ===
+function                    lines  arm_a  arm_b  arm_c  cond-branches
+entry_linear_first              2      0      1      0              0
+entry_linear_balanced           2      1      0      0              0
+entry_cheb_compromise           2      0      0      1              0
+entry_runtime_selected         12      1      1      1              3
+
+V2: each const-selected entry is one unconditional branch to one arm.
+W1: the runtime-selected control keeps all three arms and two conditional
+    branches, so the absence of arms above is a result rather than a
+    limitation of the scan.
+
+scan failures: 0

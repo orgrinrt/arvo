@@ -1,0 +1,68 @@
+==============================================================================
+U3. does the partitioner separate?
+==============================================================================
+  wrap vs saturate differ: True
+  the dead axis's two positions merge: True
+  U3 -> PASS
+
+==============================================================================
+T1/U1/U2. does a cut move the count exactly when the axis is visible?
+==============================================================================
+     sgn  F            ops          axis  full       slices  cut moves  visible
+  unsign  0       all five  intermediate     5       [3, 3]       True     True 
+  unsign  0    binary only  intermediate     3       [3, 3]      False    False 
+  unsign  0      madd only  intermediate     2       [2, 2]      False    False 
+  unsign  0   mul and madd  intermediate     2       [2, 2]      False    False 
+  unsign  1       all five  intermediate     7       [5, 3]       True     True 
+  unsign  1    binary only  intermediate     3       [3, 3]      False    False 
+  unsign  1      madd only  intermediate     2       [2, 2]      False    False 
+  unsign  1   mul and madd  intermediate     2       [2, 2]      False    False 
+  unsign  2       all five  intermediate     7       [5, 3]       True     True 
+  unsign  2    binary only  intermediate     3       [3, 3]      False    False 
+  unsign  2      madd only  intermediate     2       [2, 2]      False    False 
+  unsign  2   mul and madd  intermediate     2       [2, 2]      False    False 
+  signed  0       all five  intermediate     5       [3, 3]       True     True 
+  signed  0    binary only  intermediate     3       [3, 3]      False    False 
+  signed  0      madd only  intermediate     5       [3, 3]       True     True 
+  signed  0   mul and madd  intermediate     5       [3, 3]       True     True 
+  signed  1       all five  intermediate    11       [6, 6]       True     True 
+  signed  1    binary only  intermediate     6       [6, 6]      False    False 
+  signed  1      madd only  intermediate    11       [6, 6]       True     True 
+  signed  1   mul and madd  intermediate    11       [6, 6]       True     True 
+  signed  2       all five  intermediate    11       [6, 6]       True     True 
+  signed  2    binary only  intermediate     6       [6, 6]      False    False 
+  signed  2      madd only  intermediate    11       [6, 6]       True     True 
+  signed  2   mul and madd  intermediate    11       [6, 6]       True     True 
+
+  T1 biconditional over every shape, operation set and axis: CONFIRMED
+  U1 the dead axis never moves a count: PASS
+  U2 intermediate-axis cells: 12 visible, 12 invisible -> PASS
+
+==============================================================================
+T2/T3. the same cut, under two observation sets
+==============================================================================
+  unsign F=0: binary-only 3 -> [3, 3] (cut moves False); all five 5 -> [3, 3] (cut moves True)
+  unsign F=1: binary-only 3 -> [3, 3] (cut moves False); all five 7 -> [5, 3] (cut moves True)
+  unsign F=2: binary-only 3 -> [3, 3] (cut moves False); all five 7 -> [5, 3] (cut moves True)
+  signed F=0: binary-only 3 -> [3, 3] (cut moves False); all five 5 -> [3, 3] (cut moves True)
+  signed F=1: binary-only 6 -> [6, 6] (cut moves False); all five 11 -> [6, 6] (cut moves True)
+  signed F=2: binary-only 6 -> [6, 6] (cut moves False); all five 11 -> [6, 6] (cut moves True)
+  T2 the same cut is a no-op under one observation set and moves the count under a larger one: CONFIRMED
+  T3 143's 24 against 12 and 14 is the right-hand case above: the intermediate
+     axis is visible under its operation set, which includes a*b-c, and that
+     is why the cut moves anything. Under an operation set that cannot see it
+     the same cut changes nothing.
+
+what this leaves of the second argument:
+  the count has one argument that moves, the observation set, plus the axis
+  set the design ships. Removing an axis from that set is a no-op wherever
+  the axis is answer-invisible, and wherever it is not, the removal puts two
+  denotations under one type. So a shape-to-count table is writable once the
+  axis set is named, and it does not additionally wait on a denotation line,
+  because the line is not free: the firewall pins every answer-visible axis
+  to component one. That last step is an argument from a proposition at two
+  experts, not a measurement, and it is marked as such.
+
+==============================================================================
+control failures: 0 []
+==============================================================================
