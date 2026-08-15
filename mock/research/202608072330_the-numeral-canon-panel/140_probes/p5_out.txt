@@ -1,7 +1,7 @@
 control failed as required: [CONTROL: substring absent]
 control failed as required: [CONTROL: right file wrong range]
 
-36 real citations checked by opening the range and testing its content.
+43 real citations checked by opening the range and testing its content.
 0 failed.
 
 === controls ===

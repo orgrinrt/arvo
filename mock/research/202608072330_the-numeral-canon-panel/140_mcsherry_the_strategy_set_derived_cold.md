@@ -719,3 +719,215 @@ I also did not answer how many named points there should be. I argue in section 
 dissolves, and I recognise that "your question dissolves" is the answer most likely to be a dodge. If a
 later expert shows the count is load-bearing for something, my section 2.1 is the first thing to discard.
 
+
+
+---
+
+# Phase two: reconciliation against `OPTIONS.md` Q51
+
+Appended after phase one was committed at `a60f1a47`. **Nothing above this line has been edited**, which is
+the whole value of it: two of my predictions were already refuted by my own probes before I read anything,
+and Q51 refutes a third thing that phase one got wrong. Leaving the wrong version standing is the point.
+
+I read `OPTIONS.md:2425-2461`, entry Q51, and nothing else. I did not read `40`, `93`, `102`, `106`, `107`
+or `108`, which Q51 cites, so everything below is a reconciliation against Q51's account of them rather
+than against them.
+
+## A. Where I agree, and one place the agreement may be worth a rung
+
+**The two-component object survives, and I derived a two-component structure blind.** Q51 records the
+two-level structure at TWO EXPERTS already (`40` plus `93`'s blind phase one). Mine is a third derivation
+arrived at without reading any of them, from I8 and I9 being two separate intents.
+
+**I am deliberately not claiming that as a third instance**, because I have not read `40` and I do not know
+whether its two levels are my two levels. "I also found two of something" is not corroboration; it is the
+shape of an agreement that later turns out to be about different objects. Someone who has read `40` can
+decide whether my section 2 is the same structure. If it is, it is a third independent instance and it was
+derived from op's intents alone.
+
+**What I do claim as mine and new:** the closure asymmetry in section 2. Q51 states the two components and
+says nothing about their closure properties. My claim is that the first is **closed and finite** because an
+axis position with no lowering cannot be supplied from outside, while the second is **open and continuous**
+because a weighting re-ranks arms that already exist. That is what makes "is the set closed" a question with
+two different answers, and it is what dissolves the count question in section 2.1.
+
+## B. Where Q51 refutes phase one, and it is the most useful thing I got from reading it
+
+**Q51's central repair lands on my section 2, and my section 2 reproduces the defect it repaired.**
+
+Q51:
+
+> **The repair that reaches furthest: component one fixes the denoted answer, not the computed one.** As
+> first written, component two ranged over the arms producing the answer component one had fixed, and in
+> that region a fidelity column measures a constant (`106` section 8), so op's accuracy intent was
+> expressible in neither component.
+
+My section 2 says component one changes "the answer" and component two "changes which lowering is chosen and
+not what it computes". That is the pre-repair reading, stated in my own words, arrived at independently. Two
+people reaching the same wrong shape from different directions is worth knowing about: it suggests the wrong
+shape is the natural one, which is presumably why it needed repairing rather than merely correcting.
+
+**And phase one contains the contradiction the repair predicts, in writing, in my own file.** Section 3.1
+lists the cost coordinates as "latency, footprint, accuracy, code size". Under my own section 2, accuracy
+cannot be a cost coordinate: if component one fixes the computed answer, every arm under one assignment
+computes the identical result and accuracy is constant across the whole of component two. I listed a
+coordinate my own scheme forbids and did not notice.
+
+**Q51's reading is better than mine and it repairs my scheme rather than replacing it.** There are two ways
+out and only one of them survives:
+
+- *Mine, patched:* drop accuracy from the coordinate list and treat every distinct fidelity as a distinct
+  assignment. This fails, and it fails against my own section 2: there are unboundedly many error bounds, so
+  the assignment space stops being finite, and the finiteness is the load-bearing half of my closure claim.
+- *Q51's:* component one fixes a **denotation**, component two ranges over **realisations** of it. The
+  denotation space stays finite, accuracy becomes a genuine coordinate, and I7's "accurate especially within
+  chains" becomes expressible.
+
+So I concede the point, and note that conceding it **strengthens** section 2 rather than weakening it: the
+finiteness claim only survives under Q51's reading.
+
+### B.1 And the repair moves half my headline number to a different question
+
+This is the consequence Q51 does not draw and my instruments can measure, so I measured it.
+
+If component one fixes a denotation and component two ranges over realisations, then an axis choosing **how**
+a chain is realised rather than **what** it denotes belongs to component two. The intermediate-width axis is
+exactly that candidate: "hold the product exact and round once" against "round at each step" reads as two
+realisations of one intended result. If it belongs in component two, then p1's 24 is a count over
+denotations and realisations mixed together, and it is not the number a design should cite when asking how
+many strategies can differ in what they mean.
+
+`140_probes/p6_phase_two_two_questions_q51_raises.rs`, output at `140_probes/p6_out.txt`:
+
+```
+rounding x overflow x intermediate (30): 24 classes
+  agrees with p1's 24 -> YES
+rounding x overflow alone, intermediate = RoundEachStep (15): 12 classes
+rounding x overflow alone, intermediate = ExactThenRoundOnce (15): 14 classes
+```
+
+**Half the count is carried by that one axis.** Twenty-four with it, twelve or fourteen without it. So the
+answer to "how many strategies are distinguishable" moves by a factor of two depending on a question Q51
+opened and nobody has closed, which is a sharper version of my F2 than F2 states: the count is relative not
+only to the witness set but to **where the denotation/realisation line is drawn**.
+
+The asymmetry between 12 and 14 is worth someone's attention. Holding the intermediate exact and rounding
+once distinguishes **more** assignments than rounding at each step does, because an intermediate clamp masks
+rounding-mode differences that a single final rounding exposes. So the two positions are not a symmetric pair
+and treating them as one axis with two settings may itself be the wrong shape.
+
+**F5 (phase two).** Under the p1 witness set, the intermediate-width axis carries 10 to 12 of the 24
+distinguishable classes.
+`holds for: W = 4, F in {0,1,2}, signedness = unsigned, rounding any of the five swept, overflow any of the
+three swept, intermediate in {round-each-step, exact-then-round-once}, operations = {add, sub, mul, a*b+c,
+a*b-c}, container = packed, overflow limit read at the declared width, threads = 1`
+
+## C. Where Q51 forces a predicate onto F3, and my own instrument confirms it
+
+Q51:
+
+> **Observability is a property of the chain, not of the axis**, and the definition in play was `40`'s with
+> a condition no file carried: 0% against 89.081% depending on whether the limit is read at the declared
+> width or the container width.
+
+**p3 never states which reading it uses, and it uses one.** It applies the range policy at the declared
+width and stores through the container. So F3's negative result was conditional on a dimension F3 does not
+list, which under I13's notation is not a small omission: an unlisted dimension claims nothing, so F3 as
+written claimed nothing about the reading it silently depended on.
+
+I tested the other reading on my own instrument rather than taking Q51's numbers, because Q51's are from a
+different model and I cannot check them:
+
+```
+90 configs (30 assignments x 3 lossless containers)
+  limit read at the DECLARED width:  24 classes
+  limit read at the CONTAINER width: 43 classes
+```
+
+**Confirmed, and independently.** Under the container-width reading the three lossless containers become
+observable, taking the count from 24 to 43. This is qualitative agreement with Q51 arrived at from a
+separate model; I make no claim about its 0% and 89.081%, which are quantities from an instrument I have not
+seen.
+
+**So F3 is restated, and the phase-one version stands above uncorrected as the record of what I claimed
+before I knew.**
+
+**F3' (phase two).** A lossless container choice contributes zero distinguishable classes when the range
+policy's limit is read at the declared width, and contributes many when it is read at the container width.
+`holds for: W = 4, F in {0,1,2}, signedness = unsigned, rounding any of the five swept, overflow any of the
+three swept, intermediate any of the two swept, containers = {packed, minimum-rung, double-rung}, limit read
+at {declared width, container width}, operations = {add, sub, mul, a*b+c, a*b-c}, threads = 1`
+`140_probes/p6_out.txt`.
+
+**And the design consequence is larger than the correction.** My section 5 says a strategy may determine the
+container and may never determine the declared width, and I offered that as a clean prohibition. It is clean
+only under the declared-width reading. Under the container-width reading, choosing a container **is**
+choosing where arithmetic clamps, so the container silently becomes an observable policy and the prohibition
+collapses. So section 5's rule needs a companion that phase one does not have: **the range policy's limit is
+read at the declared width, always, and a container is never allowed to move it.** That is what keeps the
+container on the cost side, and without it my whole component split leaks.
+
+I put that forward as the sharpest thing in this file after section 2, and it is one expert's.
+
+## D. Where I add something Q51 does not carry
+
+Q51 is about **what a strategy is**. It does not address the set: how many named points, whether the set is
+closed, what determines membership. That is consistent with my brief, and it means sections 2.1, 3, 4, 6 and
+the F1/F2/F4 findings are additive rather than conflicting. Specifically:
+
+**F2 is not in Q51 and is the finding I would most want attacked.** The number of distinguishable
+assignments rose from 15 to 24 by adding one operation to the witness set, and section B.1 above shows it
+moves by another factor of two depending on where the denotation line falls. A count that moves under both
+is not a property of the design, and a canon stating one would be stating an artifact of whatever sweep
+produced it.
+
+**The baseline argument is not in Q51 either**, and it is the piece most likely to be wrong. Its corrected
+form is in 11.4: the hazard is each strategy being justified against its own naive version rather than
+against one shared arm, which is self-certification and needs no drift to mislead.
+
+**And the shared-baseline obligation composes with Q51's repair better than with my own reading.** If
+component one fixes a denotation and component two ranges over realisations, then a strategy's cost claim is
+a claim about **realisations of a fixed denotation**, and the shared arm it must be measured against is
+simply another realisation of that same denotation. Under my phase-one reading, where the computed answer is
+fixed, there was nothing for the arms to differ in and the whole comparison was empty. So Q51's repair is
+what makes the baseline question well posed at all.
+
+## E. What I got wrong, collected
+
+Four things, three of which my own probes caught before I read anything.
+
+1. **P3 refuted by p1.** I predicted the count at `F=0` unsigned addition would equal the overflow axis
+   cardinality. It is 2, not 3: two non-negative values never sum below zero, so the low clamp is
+   unreachable and the overflow axis partly collapses too.
+2. **P5 refuted by p4.** I predicted a moving baseline can invert a ranking. It cannot: 0 of 840. The real
+   hazard is per-arm baselines, at 56.3%, which is a different failure and a worse one.
+3. **Section 2's component-one reading, refuted by Q51.** I fixed the computed answer where the panel had
+   already established the denoted answer is what must be fixed, and section 3.1 carries the contradiction
+   that mistake produces.
+4. **F3 stated without the dimension it depended on**, refuted by Q51 and confirmed on my own instrument at
+   43 classes against 24.
+
+The pattern in three of the four is the same and it is worth naming: **I stated a result without the
+dimension that moves it.** P3 omitted the reachability of the low clamp, F3 omitted the limit reading, and
+section 2 omitted the denotation/realisation level. I13's notation exists precisely to make that omission
+visible, and it did not make it visible to me, because the discipline catches a dimension you thought about
+and declined to claim, not one you never noticed. The only thing that caught all three was building an
+instrument and letting it disagree with me.
+
+## F. What a later expert should take from this file
+
+The three things I would defend, in order of how much I would stake on them:
+
+1. **The count is not a property of the design** (F2, sharpened by B.1). It moves with the witness set and
+   with the denotation line. The canon's obligation is the axes.
+2. **The storage-minimising concern is a weighting and composes with the assignments** (F3', with the
+   declared-width companion rule in section C). Op's own sentence at `INTENTS.md:131-133` says the concerns
+   are not mutually exclusive; a flat set of peer strategies cannot express that and a product can.
+3. **Every strategy's cost claim is stated against one shared arm** (11.4). One expert, mine, and the piece
+   most in need of a second read.
+
+The one I would drop first if pushed: section 6.4's original framing, already superseded by 11.4 and left
+standing only as the record.
+
+And the gap I could not close: the axis list. Three axes are not the axis list, and I said so in section 13
+before reading Q51, which mentions no axis list either.

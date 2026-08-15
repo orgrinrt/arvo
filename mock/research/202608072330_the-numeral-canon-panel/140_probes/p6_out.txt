@@ -1,0 +1,22 @@
+p6 (phase two): two questions Q51 raises against p1 and p3
+witness set throughout: W=4, F in {0,1,2}, ops {add,sub,mul,a*b+c,a*b-c}
+
+=== A. how much of the count does the intermediate axis carry? ===
+rounding x overflow x intermediate (30): 24 classes
+  agrees with p1's 24 -> YES
+rounding x overflow alone, intermediate = RoundEachStep (15): 12 classes
+rounding x overflow alone, intermediate = ExactThenRoundOnce (15): 14 classes
+
+prediction A (collapsing the intermediate axis leaves fewer than 24): see the two numbers above
+
+=== B. is the container observable if the limit is read at the container width? ===
+90 configs (30 assignments x 3 lossless containers)
+  limit read at the DECLARED width:  24 classes
+  limit read at the CONTAINER width: 43 classes
+
+prediction B (the container-width reading makes the container observable): CONFIRMED
+  so p3's F3 holds only under the declared-width reading, and its
+  predicate must say so. phase one stated it without that dimension.
+
+=== controls ===
+controls behaved in every sweep: the partitioner separates.

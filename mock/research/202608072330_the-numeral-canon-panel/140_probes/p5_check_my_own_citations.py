@@ -99,6 +99,21 @@ CITES = [
     ("warm-container both regions", f"{BENCH}/variants/warm-container-shared/src/lib.rs", 1521, 1521,
      "both_regions_hold_the_same_column", False),
 
+    ("Q51 location", f"{PANEL}/OPTIONS.md", 2425, 2461,
+     "What a strategy is, after the pair was attacked", False),
+    ("Q51 two-component", f"{PANEL}/OPTIONS.md", 2425, 2461,
+     "It survives as a two-component object", False),
+    ("Q51 denoted not computed", f"{PANEL}/OPTIONS.md", 2425, 2461,
+     "component one fixes the denoted answer, not the computed one", False),
+    ("Q51 fidelity constant", f"{PANEL}/OPTIONS.md", 2425, 2461,
+     "a fidelity column measures a constant", False),
+    ("Q51 observability of chain", f"{PANEL}/OPTIONS.md", 2425, 2461,
+     "Observability is a property of the chain, not of the axis", False),
+    ("Q51 0 vs 89.081", f"{PANEL}/OPTIONS.md", 2425, 2461,
+     "0% against 89.081% depending on whether the limit is read", False),
+    ("Q51 two-level rung", f"{PANEL}/OPTIONS.md", 2425, 2461,
+     "two-level structure is **`40`'s at TWO EXPERTS**", False),
+
     # ---- the two deliberate control failures ----
     ("CONTROL: substring absent", f"{PANEL}/INTENTS.md", 51, 61,
      "this sentence does not appear anywhere in I1", True),
