@@ -1,0 +1,71 @@
+==============================================================================
+PART A. reproduce 139's p4 headline numbers on an independent instrument
+==============================================================================
+TARGET 1 (wide multiplier, cheap wide loads)
+  arms=7  pareto-nondominated=6  grid winners (cells)=5  LP strictly selectable=4
+    scalar-widened           cost=(10,40,32)  wins=55720   pareto=Y LP-min-t=0          not selectable
+    packed                   cost=(26,90,13)  wins=4515    pareto=Y LP-min-t=-175/32    SELECTABLE
+    packed-simd              cost=(14,240,13)  wins=2270    pareto=Y LP-min-t=-24/5      SELECTABLE
+    table-lookup             cost=(8,60,512)  wins=52      pareto=Y LP-min-t=-2         SELECTABLE
+    narrow-band-compromise   cost=(31/2,55,20)  wins=18044   pareto=Y LP-min-t=-105/23    SELECTABLE
+    naive-loop               cost=(40,95,32)  wins=0       pareto=n LP-min-t=50/3       not selectable
+    scalar-widened [dup]     cost=(10,40,32)  wins=0       pareto=Y LP-min-t=0          not selectable
+  C1 dominated arms: grid wins 0, LP selectable 0 -> PASS
+  C2 narrow-band arm wins 18044 -> PASS
+  C3 duplicate arm wins 0 -> PASS
+  C6 every grid winner is LP-selectable: FAIL on [0]
+
+TARGET 2 (no wide multiplier, expensive icache)
+  arms=7  pareto-nondominated=6  grid winners (cells)=5  LP strictly selectable=4
+    scalar-widened           cost=(34,40,32)  wins=20102   pareto=Y LP-min-t=0          not selectable
+    packed                   cost=(30,90,13)  wins=3514    pareto=Y LP-min-t=-175/32    SELECTABLE
+    packed-simd              cost=(11,240,13)  wins=4153    pareto=Y LP-min-t=-266/43    SELECTABLE
+    table-lookup             cost=(9,60,512)  wins=683     pareto=Y LP-min-t=-2360/379  SELECTABLE
+    narrow-band-compromise   cost=(31/2,55,20)  wins=52149   pareto=Y LP-min-t=-332957/22487 SELECTABLE
+    naive-loop               cost=(40,95,32)  wins=0       pareto=n LP-min-t=65125/4023 not selectable
+    scalar-widened [dup]     cost=(34,40,32)  wins=0       pareto=Y LP-min-t=0          not selectable
+  C1 dominated arms: grid wins 0, LP selectable 0 -> PASS
+  C2 narrow-band arm wins 52149 -> PASS
+  C3 duplicate arm wins 0 -> PASS
+  C6 every grid winner is LP-selectable: FAIL on [0]
+
+A1 139 reports 7 arms, 6 pareto, 5 cells on both targets.
+   mine: t1 pareto=6 cells=5, t2 pareto=6 cells=5  -> REPRODUCED
+
+A2 139 reports 838 of 1891 (44.3%).
+   mine: 838 of 1891 (44.3%)  -> REPRODUCED
+
+==============================================================================
+PART B. decompose the six-versus-five gap: artifact or genuine?
+==============================================================================
+  target 1: pareto-but-never-wins = ['scalar-widened [dup]']
+    is that exactly the duplicate? YES
+    with the duplicate deleted: pareto=5 cells=5 gap=0
+    A3 holds for target 1: the gap was the duplicate, a tie-break artifact
+  target 2: pareto-but-never-wins = ['scalar-widened [dup]']
+    is that exactly the duplicate? YES
+    with the duplicate deleted: pareto=5 cells=5 gap=0
+    A3 holds for target 2: the gap was the duplicate, a tie-break artifact
+
+==============================================================================
+PART C. controls on the gap detector itself
+==============================================================================
+  C4 all-vertices set: pareto=3 cells=3 gap=0 -> PASS
+  C5 genuine-unsupported set: pareto=3 cells=2 gap=['compromise-C'] -> PASS
+
+==============================================================================
+PART D. the Pareto claim decided exactly, not swept
+==============================================================================
+  139's witness, with the exact LP rather than a 2001-point sweep:
+    endpoint-A     pareto=Y  min over the whole simplex of (its cost - the best other) = -6  SELECTABLE
+    endpoint-B     pareto=Y  min over the whole simplex of (its cost - the best other) = -6  SELECTABLE
+    compromise-C   pareto=Y  min over the whole simplex of (its cost - the best other) = 0  NEVER STRICTLY OPTIMAL
+
+  A5: min t for compromise-C is 0.
+      strictly positive? NO -> the arm is not merely unselected on a grid, it is beaten by a margin
+      of 0 at EVERY point of the simplex, which no sweep can establish.
+  139's control, the same arm pulled inside the hull to (4,4): min t = -1, SELECTABLE
+
+==============================================================================
+control failures: 3 ['C6 TARGET 1 (wide multiplier, cheap wide loads)', 'C6 TARGET 2 (no wide multiplier, expensive icache)', 'A5']
+==============================================================================
