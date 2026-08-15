@@ -118,7 +118,9 @@ fn main() {
                     }
                 }
             }
-            println!("{f:>3} {diff:>9} {nonneg_prod:>12} {exact_shift:>16} {wrong_mag:>14} {maxmag:>16}");
+            println!(
+                "{f:>3} {diff:>9} {nonneg_prod:>12} {exact_shift:>16} {wrong_mag:>14} {maxmag:>16}"
+            );
         }
         println!();
     }

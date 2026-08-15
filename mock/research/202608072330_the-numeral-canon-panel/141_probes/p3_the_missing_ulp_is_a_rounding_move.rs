@@ -111,11 +111,29 @@ fn stepwise(a: i128, b: i128, c: i128, s: Sign, o: Ovf, w: u32, f: u32, t: Trunc
     reduce(reduce(shift(a * b, f, t), s, o, w) + c, s, o, w)
 }
 /// The reduction-relocated arm: same rounding, one reduction.
-fn fused_same_rounding(a: i128, b: i128, c: i128, s: Sign, o: Ovf, w: u32, f: u32, t: Trunc) -> i128 {
+fn fused_same_rounding(
+    a: i128,
+    b: i128,
+    c: i128,
+    s: Sign,
+    o: Ovf,
+    w: u32,
+    f: u32,
+    t: Trunc,
+) -> i128 {
     reduce(shift(a * b, f, t) + c, s, o, w)
 }
 /// The rounding-relocated arm: one rounding over the whole expression.
-fn fused_one_rounding(a: i128, b: i128, c: i128, s: Sign, o: Ovf, w: u32, f: u32, t: Trunc) -> i128 {
+fn fused_one_rounding(
+    a: i128,
+    b: i128,
+    c: i128,
+    s: Sign,
+    o: Ovf,
+    w: u32,
+    f: u32,
+    t: Trunc,
+) -> i128 {
     reduce(shift(a * b + (c << f), f, t), s, o, w)
 }
 
@@ -187,7 +205,11 @@ fn main() {
                 let name = format!(
                     "{}, {}",
                     if s == Sign::U { "unsigned" } else { "signed" },
-                    if o == Ovf::Wrap { "wrapping" } else { "saturating" }
+                    if o == Ovf::Wrap {
+                        "wrapping"
+                    } else {
+                        "saturating"
+                    }
                 );
                 let mut r1 = format!("{name:<22}");
                 let mut r2 = format!("{:<22}", "  slack");
@@ -206,7 +228,9 @@ fn main() {
     }
 
     println!("=== 139 p3's slack row for signed wrapping, for comparison: 0 1 1 1 1 1 ===");
-    println!("=== 139 sec 4's rate row for signed wrapping:  0.00 1.64 5.54 12.34 22.22 33.40 ===\n");
+    println!(
+        "=== 139 sec 4's rate row for signed wrapping:  0.00 1.64 5.54 12.34 22.22 33.40 ===\n"
+    );
 
     println!("=== R6: the one-rounding arm under FLOOR against the stepwise arm ===");
     for s in [Sign::U, Sign::S] {
@@ -214,7 +238,11 @@ fn main() {
             let name = format!(
                 "{}, {}",
                 if s == Sign::U { "unsigned" } else { "signed" },
-                if o == Ovf::Wrap { "wrapping" } else { "saturating" }
+                if o == Ovf::Wrap {
+                    "wrapping"
+                } else {
+                    "saturating"
+                }
             );
             let mut row = format!("{name:<22}");
             for f in 0..=5u32 {

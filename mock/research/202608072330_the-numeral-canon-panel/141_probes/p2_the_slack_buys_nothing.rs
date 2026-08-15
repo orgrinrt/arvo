@@ -194,7 +194,8 @@ fn min_slack(s: Sign, o: Ovf, w: u32, f: u32, t: Trunc) -> Slack {
         'outer: for a in l..=h {
             for b in l..=h {
                 for c in l..=h {
-                    let d = (stepwise(a, b, c, s, o, w, f, t) - fused(a, b, c, s, o, w, f, t)).abs();
+                    let d =
+                        (stepwise(a, b, c, s, o, w, f, t) - fused(a, b, c, s, o, w, f, t)).abs();
                     if d > worst - 1 {
                         minimal = true;
                         break 'outer;
@@ -215,7 +216,14 @@ fn min_slack(s: Sign, o: Ovf, w: u32, f: u32, t: Trunc) -> Slack {
 /// For each input, the number of representable values within `slack` of the
 /// declared answer. That is how many different answers two conforming builds of
 /// the same program may produce.
-fn conforming_set_sizes(s: Sign, o: Ovf, w: u32, f: u32, t: Trunc, slack: i128) -> (f64, i128, i128) {
+fn conforming_set_sizes(
+    s: Sign,
+    o: Ovf,
+    w: u32,
+    f: u32,
+    t: Trunc,
+    slack: i128,
+) -> (f64, i128, i128) {
     let (l, h) = (lo(s, w), hi(s, w));
     let mut total = 0u128;
     let mut n = 0u128;
@@ -253,7 +261,11 @@ fn main() {
         for s in [Sign::U, Sign::S] {
             let sn = if s == Sign::U { "unsigned" } else { "signed" };
             let bad = absorption_mismatches(s, wq, true);
-            let verdict = if bad > 0 { "control FIRES" } else { "control TOOTHLESS" };
+            let verdict = if bad > 0 {
+                "control FIRES"
+            } else {
+                "control TOOTHLESS"
+            };
             println!("W={wq} {sn:<9} saturating: mismatches = {bad:<8} {verdict}");
         }
     }
@@ -265,13 +277,20 @@ fn main() {
             Trunc::Floor => "floor",
         };
         println!("-- rounding = {tn} --");
-        println!("{:<22} {:>6} {:>6} {:>6} {:>6} {:>6} {:>6}", "cell", "F=0", "F=1", "F=2", "F=3", "F=4", "F=5");
+        println!(
+            "{:<22} {:>6} {:>6} {:>6} {:>6} {:>6} {:>6}",
+            "cell", "F=0", "F=1", "F=2", "F=3", "F=4", "F=5"
+        );
         for s in [Sign::U, Sign::S] {
             for o in [Ovf::Wrap, Ovf::Sat] {
                 let name = format!(
                     "{}, {}",
                     if s == Sign::U { "unsigned" } else { "signed" },
-                    if o == Ovf::Wrap { "wrapping" } else { "saturating" }
+                    if o == Ovf::Wrap {
+                        "wrapping"
+                    } else {
+                        "saturating"
+                    }
                 );
                 let mut row = format!("{name:<22}");
                 let mut notes: Vec<String> = Vec::new();
@@ -294,10 +313,14 @@ fn main() {
     }
 
     println!("\n=== (c) how many answers the declaration permits, signed saturating, floor ===");
-    println!("(range holds {} representable values)", hi(Sign::S, w) - lo(Sign::S, w) + 1);
+    println!(
+        "(range holds {} representable values)",
+        hi(Sign::S, w) - lo(Sign::S, w) + 1
+    );
     for f in [0u32, 3, 5] {
         let sl = min_slack(Sign::S, Ovf::Sat, w, f, Trunc::Floor);
-        let (mean, mn, mx) = conforming_set_sizes(Sign::S, Ovf::Sat, w, f, Trunc::Floor, sl.required);
+        let (mean, mn, mx) =
+            conforming_set_sizes(Sign::S, Ovf::Sat, w, f, Trunc::Floor, sl.required);
         let (mean0, mn0, mx0) = conforming_set_sizes(Sign::S, Ovf::Sat, w, f, Trunc::Floor, 0);
         println!(
             "F={f}: slack {:>2} -> conforming set per input: mean {mean:.2}, min {mn}, max {mx}  ({:.1}% of range)",

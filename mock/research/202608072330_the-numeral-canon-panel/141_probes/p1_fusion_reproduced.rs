@@ -193,13 +193,20 @@ fn main() {
             Trunc::Floor => "floor (arithmetic shift right)",
         };
         println!("=== rounding = {tn} ===");
-        println!("{:<22} {:>8} {:>8} {:>8} {:>8} {:>8} {:>8}", "cell", "F=0", "F=1", "F=2", "F=3", "F=4", "F=5");
+        println!(
+            "{:<22} {:>8} {:>8} {:>8} {:>8} {:>8} {:>8}",
+            "cell", "F=0", "F=1", "F=2", "F=3", "F=4", "F=5"
+        );
         for s in [Sign::U, Sign::S] {
             for o in [Ovf::Wrap, Ovf::Sat] {
                 let name = format!(
                     "{}, {}",
                     if s == Sign::U { "unsigned" } else { "signed" },
-                    if o == Ovf::Wrap { "wrapping" } else { "saturating" }
+                    if o == Ovf::Wrap {
+                        "wrapping"
+                    } else {
+                        "saturating"
+                    }
                 );
                 let mut row = format!("{name:<22}");
                 let mut notes: Vec<String> = Vec::new();

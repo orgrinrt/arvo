@@ -137,13 +137,20 @@ fn main() {
             Trunc::Floor => "floor",
         };
         println!("=== fusion difference rate, MODEL B (reduce before shift), rounding = {tn} ===");
-        println!("{:<22} {:>8} {:>8} {:>8} {:>8} {:>8} {:>8}", "cell", "F=0", "F=1", "F=2", "F=3", "F=4", "F=5");
+        println!(
+            "{:<22} {:>8} {:>8} {:>8} {:>8} {:>8} {:>8}",
+            "cell", "F=0", "F=1", "F=2", "F=3", "F=4", "F=5"
+        );
         for s in [Sign::U, Sign::S] {
             for o in [Ovf::Wrap, Ovf::Sat] {
                 let name = format!(
                     "{}, {}",
                     if s == Sign::U { "unsigned" } else { "signed" },
-                    if o == Ovf::Wrap { "wrapping" } else { "saturating" }
+                    if o == Ovf::Wrap {
+                        "wrapping"
+                    } else {
+                        "saturating"
+                    }
                 );
                 let mut row = format!("{name:<22}");
                 for f in 0..=5u32 {
@@ -163,15 +170,32 @@ fn main() {
     }
 
     println!("=== 139's reported table, for side by side reading ===");
-    println!("{:<22} {:>8} {:>8} {:>8} {:>8} {:>8} {:>8}", "cell", "F=0", "F=1", "F=2", "F=3", "F=4", "F=5");
-    println!("{:<22} {:>7}% {:>7}% {:>7}% {:>7}% {:>7}% {:>7}%", "unsigned, wrapping", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00");
-    println!("{:<22} {:>7}% {:>7}% {:>7}% {:>7}% {:>7}% {:>7}%", "unsigned, saturating", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00");
-    println!("{:<22} {:>7}% {:>7}% {:>7}% {:>7}% {:>7}% {:>7}%", "signed, wrapping", "0.00", "1.64", "5.54", "12.34", "22.22", "33.40");
-    println!("{:<22} {:>7}% {:>7}% {:>7}% {:>7}% {:>7}% {:>7}%", "signed, saturating", "42.14", "39.10", "35.67", "31.96", "29.52", "33.41");
+    println!(
+        "{:<22} {:>8} {:>8} {:>8} {:>8} {:>8} {:>8}",
+        "cell", "F=0", "F=1", "F=2", "F=3", "F=4", "F=5"
+    );
+    println!(
+        "{:<22} {:>7}% {:>7}% {:>7}% {:>7}% {:>7}% {:>7}%",
+        "unsigned, wrapping", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00"
+    );
+    println!(
+        "{:<22} {:>7}% {:>7}% {:>7}% {:>7}% {:>7}% {:>7}%",
+        "unsigned, saturating", "0.00", "0.00", "0.00", "0.00", "0.00", "0.00"
+    );
+    println!(
+        "{:<22} {:>7}% {:>7}% {:>7}% {:>7}% {:>7}% {:>7}%",
+        "signed, wrapping", "0.00", "1.64", "5.54", "12.34", "22.22", "33.40"
+    );
+    println!(
+        "{:<22} {:>7}% {:>7}% {:>7}% {:>7}% {:>7}% {:>7}%",
+        "signed, saturating", "42.14", "39.10", "35.67", "31.96", "29.52", "33.41"
+    );
     println!();
 
     println!("=== R4 CONTROL: are models A and B distinguishable at all? ===");
-    println!("(rate at which the two STEPWISE arms disagree; zero everywhere would void this probe)");
+    println!(
+        "(rate at which the two STEPWISE arms disagree; zero everywhere would void this probe)"
+    );
     for t in [Trunc::TowardZero, Trunc::Floor] {
         let tn = match t {
             Trunc::TowardZero => "toward zero",
@@ -182,7 +206,11 @@ fn main() {
                 let name = format!(
                     "{}, {}, {tn}",
                     if s == Sign::U { "unsigned" } else { "signed" },
-                    if o == Ovf::Wrap { "wrapping" } else { "saturating" }
+                    if o == Ovf::Wrap {
+                        "wrapping"
+                    } else {
+                        "saturating"
+                    }
                 );
                 let mut row = format!("{name:<38}");
                 for f in 0..=5u32 {

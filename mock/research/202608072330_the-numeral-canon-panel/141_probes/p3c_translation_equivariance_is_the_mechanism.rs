@@ -54,7 +54,11 @@ fn wrap_s(v: i128, w: u32) -> i128 {
     }
 }
 fn tz(p: i128, f: u32) -> i128 {
-    if f == 0 { p } else { p / (1i128 << f) }
+    if f == 0 {
+        p
+    } else {
+        p / (1i128 << f)
+    }
 }
 
 fn main() {
@@ -105,7 +109,9 @@ fn main() {
                 }
             }
         }
-        println!("{f:>3} {differing:>10} {predicted:>12} {pred_but_agreed:>22} {diff_but_unpred:>24}");
+        println!(
+            "{f:>3} {differing:>10} {predicted:>12} {pred_but_agreed:>22} {diff_but_unpred:>24}"
+        );
     }
 
     println!("\nR13 holds iff both error columns are 0 at every F.");
