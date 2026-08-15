@@ -1,0 +1,41 @@
+packed against padded, one declared policy, exhaustive over the domain
+
+  W=3 F=0 off= 0: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=162 saturating=57 roundtrip failures=0
+  W=3 F=0 off= 1: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=162 saturating=57 roundtrip failures=0
+  W=3 F=0 off= 7: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=162 saturating=57 roundtrip failures=0
+  W=3 F=0 off=13: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=162 saturating=57 roundtrip failures=0
+  W=3 F=0 off=59: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=162 saturating=57 roundtrip failures=0
+  W=3 F=0 off=61: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=162 saturating=57 roundtrip failures=0
+  W=3 F=2 off= 0: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=152 saturating=33 roundtrip failures=0
+  W=3 F=2 off= 1: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=152 saturating=33 roundtrip failures=0
+  W=3 F=2 off= 7: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=152 saturating=33 roundtrip failures=0
+  W=3 F=2 off=13: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=152 saturating=33 roundtrip failures=0
+  W=3 F=2 off=59: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=152 saturating=33 roundtrip failures=0
+  W=3 F=2 off=61: ops=   192 packed-vs-padded differ=0 | one-bit-short control differs=119 | nonzero=152 saturating=33 roundtrip failures=0
+  W=5 F=0 off= 0: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=1907 | nonzero=2946 saturating=1285 roundtrip failures=0
+  W=5 F=0 off= 1: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=1907 | nonzero=2946 saturating=1285 roundtrip failures=0
+  W=5 F=0 off= 7: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=1907 | nonzero=2946 saturating=1285 roundtrip failures=0
+  W=5 F=0 off=13: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=1907 | nonzero=2946 saturating=1285 roundtrip failures=0
+  W=5 F=0 off=59: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=1907 | nonzero=2946 saturating=1285 roundtrip failures=0
+  W=5 F=0 off=61: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=1907 | nonzero=2946 saturating=1285 roundtrip failures=0
+  W=5 F=2 off= 0: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=2015 | nonzero=2936 saturating=925 roundtrip failures=0
+  W=5 F=2 off= 1: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=2015 | nonzero=2936 saturating=925 roundtrip failures=0
+  W=5 F=2 off= 7: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=2015 | nonzero=2936 saturating=925 roundtrip failures=0
+  W=5 F=2 off=13: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=2015 | nonzero=2936 saturating=925 roundtrip failures=0
+  W=5 F=2 off=59: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=2015 | nonzero=2936 saturating=925 roundtrip failures=0
+  W=5 F=2 off=61: ops=  3072 packed-vs-padded differ=0 | one-bit-short control differs=2015 | nonzero=2936 saturating=925 roundtrip failures=0
+  W=6 F=0 off= 0: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7495 | nonzero=12034 saturating=5555 roundtrip failures=0
+  W=6 F=0 off= 1: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7495 | nonzero=12034 saturating=5555 roundtrip failures=0
+  W=6 F=0 off= 7: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7495 | nonzero=12034 saturating=5555 roundtrip failures=0
+  W=6 F=0 off=13: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7495 | nonzero=12034 saturating=5555 roundtrip failures=0
+  W=6 F=0 off=59: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7495 | nonzero=12034 saturating=5555 roundtrip failures=0
+  W=6 F=0 off=61: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7495 | nonzero=12034 saturating=5555 roundtrip failures=0
+  W=6 F=2 off= 0: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7959 | nonzero=12024 saturating=4563 roundtrip failures=0
+  W=6 F=2 off= 1: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7959 | nonzero=12024 saturating=4563 roundtrip failures=0
+  W=6 F=2 off= 7: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7959 | nonzero=12024 saturating=4563 roundtrip failures=0
+  W=6 F=2 off=13: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7959 | nonzero=12024 saturating=4563 roundtrip failures=0
+  W=6 F=2 off=59: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7959 | nonzero=12024 saturating=4563 roundtrip failures=0
+  W=6 F=2 off=61: ops= 12288 packed-vs-padded differ=0 | one-bit-short control differs=7959 | nonzero=12024 saturating=4563 roundtrip failures=0
+  W=7 F=0 off= 0: ops= 49152 packed-vs-padded differ=0 | one-bit-short control differs=29503 | nonzero=48642 saturating=23217 roundtrip failures=0
+  W=7 F=0 off= 1: ops= 49152 packed-vs-padded differ=0 | one-bit-short control differs=29503 | nonzero=48642 saturating=23217 roundtrip failures=0
+  W=7 F=0 off= 7: ops= 49152 packed-vs-padded differ=0 | one-bit-short control differs=29503 | nonzero=48642 saturating=23217 roundtrip failures=0
