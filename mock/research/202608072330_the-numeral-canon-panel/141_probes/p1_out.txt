@@ -1,0 +1,24 @@
+p1: fusing a multiply-add, reproduced on an independent model
+W = 6, exhaustive over all triples per cell
+
+=== rounding = truncate toward zero (integer division) ===
+cell                        F=0      F=1      F=2      F=3      F=4      F=5
+unsigned, wrapping        0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+unsigned, saturating      0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+signed, wrapping          0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+signed, saturating       42.14%   37.46%   30.13%   19.63%    7.30%    0.01%
+
+=== rounding = floor (arithmetic shift right) ===
+cell                        F=0      F=1      F=2      F=3      F=4      F=5
+unsigned, wrapping        0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+unsigned, saturating      0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+signed, wrapping          0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+signed, saturating       42.14%   37.50%   30.22%   19.77%    7.53%    0.01%
+
+=== reach detail, signed saturating, floor ===
+F=0: diff 110476/262144 (42.14%)  product-out-of-range 224448  shift-inexact      0  wrong-arm-caught 169380
+F=1: diff  98316/262144 (37.50%)  product-out-of-range 199744  shift-inexact  65536  wrong-arm-caught 153958
+F=2: diff  79226/262144 (30.22%)  product-out-of-range 160960  shift-inexact 131072  wrong-arm-caught 129470
+F=3: diff  51820/262144 (19.77%)  product-out-of-range 105280  shift-inexact 180224  wrong-arm-caught  93750
+F=4: diff  19752/262144 (7.53%)  product-out-of-range  40128  shift-inexact 212992  wrong-arm-caught  50142
+F=5: diff     32/262144 (0.01%)  product-out-of-range     64  shift-inexact 233472  wrong-arm-caught  17630
