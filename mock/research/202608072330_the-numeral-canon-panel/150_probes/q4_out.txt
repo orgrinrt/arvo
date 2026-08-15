@@ -1,0 +1,78 @@
+================================================================================
+PART A. which simplex does F144-2 hold on?
+================================================================================
+  two coordinates, my F144-2 predicate:
+    endpoint-A     min over the simplex of (its cost minus the best other) = -6
+    endpoint-B     min over the simplex of (its cost minus the best other) = -6
+    compromise-C   min over the simplex of (its cost minus the best other) = 1
+  three coordinates, the embedding 139 swept:
+    endpoint-A     min over the simplex of (its cost minus the best other) = -6
+    endpoint-B     min over the simplex of (its cost minus the best other) = -6
+    compromise-C   min over the simplex of (its cost minus the best other) = 0
+  GG1 two coordinates give 1 and three give 0: CONFIRMED
+  HH2 both computed by the same imported solver, so the difference is the embedding.
+
+  reading: the claim is true and its truth depends on a dimension the candidate's
+  sentence does not carry. In the three-coordinate embedding the arm TIES rather than
+  losing, because every arm scores zero when all the weight goes on the constant
+  coordinate, which is my own F144-4 and which the candidate states three sections
+  later without connecting the two.
+
+================================================================================
+PART B. carried with a predicate, carried bare, or only accounted for
+================================================================================
+  finding ids declared in 144: 19
+  id         sections  only in accounting  a predicate nearby
+  F144-1            1               False               False
+  F144-2            1               False               False
+  F144-3            1               False               False
+  F144-4            1               False                True
+  F144-5            1               False                True
+  F144-6            2               False               False
+  F144-7            1               False               False
+  F144-8            1               False                True
+  F144-9            1               False               False
+  F144-10           1                True               False
+  F144-11           1               False                True
+  F144-12           1               False               False
+  F144-13           1               False               False
+  F144-14           1               False                True
+  F144-15           2               False                True
+  F144-16           1               False                True
+  F144-17           1                True               False
+  F144-18           2               False               False
+  F144-19           1               False               False
+
+  only in the accounting paragraph: ['F144-10', 'F144-17']
+  carried with a predicate in the same section: ['F144-4', 'F144-5', 'F144-8', 'F144-11', 'F144-14', 'F144-15', 'F144-16']
+  carried bare: ['F144-1', 'F144-2', 'F144-3', 'F144-6', 'F144-7', 'F144-9', 'F144-12', 'F144-13', 'F144-18', 'F144-19']
+  GG2 -> CONFIRMED
+
+  BOUND ON PART B, stated because the number above reads sharper than it is.
+  This is a proximity test: it asks whether a `holds for:` block sits in the same
+  heading-delimited section as the id. `146` deliberately separates its argument-kind
+  discussion (section 4) from its predicate blocks (section 5), so a finding discussed
+  in the first and predicated in the second reads as bare here and is not. The count is
+  a screen for where to look, not a verdict. The one case I verified by hand is F144-2,
+  in Part A, and it is bare in the strong sense: no section of 146 carries its
+  `cost coordinates = 2` dimension, and Part A shows the claim needs it.
+
+  GG4 the classifier separates: PASS
+
+================================================================================
+GG3. does the candidate reuse 44.3% as a magnitude?
+================================================================================
+  lines containing 44.3: 0
+  GG3 every occurrence is inside the accounting of its own absence: CONFIRMED
+  so the candidate creates no new hazard. What it does is drop the correction, and
+  139's 44.3% stays in 139 with nothing beside it saying it is a second-percentile
+  outlier of a distribution whose median is 90.2%.
+
+================================================================================
+HH1. the case that must fail
+================================================================================
+  F144-99 reported present: False -> PASS
+
+================================================================================
+control failures: 0 []
+================================================================================
