@@ -1,0 +1,24 @@
+p1 (143): monotonicity and strictness on 140's own axis set
+30 assignments (rounding 5 x overflow 3 x intermediate 2), unsigned
+31 non-empty operation subsets, shapes [(4, 0), (4, 1), (4, 2)]
+
+W=4 F=0: full-set classes 5, zero-add triples 50
+W=4 F=1: full-set classes 20, zero-add triples 42
+W=4 F=2: full-set classes 24, zero-add triples 42
+
+P1a monotonicity: 540 ordered subset pairs, 0 violations
+  -> zero violations, as the theorem requires
+
+P1b strictness: 134 (shape, subset, operation) triples add exactly zero classes
+  -> 140's F2 wording "strictly increasing" is REFUTED on my own axis set too
+  first witness: W=4 F=0: {add} plus mul stays at 2 classes
+
+P1c distribution of zero-add triples by fraction width:
+  F=0: 50
+  F=1: 42
+  F=2: 42
+  -> P1c (they concentrate at F=0): REFUTED
+
+=== ANTI-MONOTONE CONTROL ===
+prefix-truncated comparator at W=4 F=2: 180 pairs, 28 violations
+  control fires, so the real comparator's zero is a real zero.

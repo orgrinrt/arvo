@@ -1,0 +1,31 @@
+p3 (143): does the integer width move the class count in 140's own output?
+source: /Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel/140_probes/p1_out.txt
+rows parsed: 31
+(F, operation) groups: 18
+groups appearing at two or more widths: 13
+
+  F=0 add          W=6:2, W=8:2   agree
+  F=0 chain a*b+c  W=4:2, W=6:2   agree
+  F=0 chain a*b-c  W=4:5, W=6:5   agree
+  F=0 mul          W=6:2, W=8:2   agree
+  F=0 sub          W=6:2, W=8:2   agree
+  F=1 add          W=4:2, W=6:2   agree
+  F=1 mul          W=4:6, W=6:6   agree
+  F=1 sub          W=4:2, W=6:2   agree
+  F=2 add          W=6:2, W=8:2   agree
+  F=2 chain a*b+c  W=4:10, W=6:10   agree
+  F=2 chain a*b-c  W=4:24, W=6:24   agree
+  F=2 mul          W=6:8, W=8:8   agree
+  F=2 sub          W=6:2, W=8:2   agree
+
+groups disagreeing across W: 0
+
+=== controls ===
+non-vacuity control: 13 groups span two or more widths, so there
+was something for a disagreement to show up in.
+positive control: an injected disagreeing row IS reported, so the checker
+can detect a disagreement when one exists.
+
+VERDICT: zero disagreements. The class count does not move with W anywhere
+in 140's own swept region, and 140 did not name it. 141 is right that the
+miss was there to be caught, and it was catchable from the committed file.
