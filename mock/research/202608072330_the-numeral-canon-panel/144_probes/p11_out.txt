@@ -1,0 +1,46 @@
+parsed 16 distinct citations out of 144
+
+citation                 verdict   expected substring
+139:260-263              ok        'two builds of one program produce different results'
+139:396-396              ok        '838 of 1891 grid points, 44.3%'
+139:400-407              ok        'wins **zero** of 2001 sweep points'
+139:400-407              ok        'pulling the same arm inside'
+139:400-407              ok        'the zero is a property of the arm'
+139:403-406              ok        must NOT contain 'the zero is a property of the arm' (the off-by-one 144 records)
+139:403-406              ok        'wins **zero** of 2001 sweep points'
+139:430-431              ok        'bounded by the arm count'
+139:430-431              ok        "the design's vocabulary for it need"
+139:433-436              ok        'A coordinate exists only if'
+139:433-436              ok        'every arm carries a value on it'
+139:610-615              ok        'O-139-C'
+139:610-615              ok        'linear is enough and the limit is theoretical'
+139:625-629              ok        'O-139-E'
+140:620-624              ok        "every strategy's cost"
+140:620-624              ok        'stated against the same named arm'
+141:776-779              ok        'shared-baseline obligation'
+141:776-779              ok        'I did not build an instrument for it'
+141:874-876              ok        'I did not touch the weighting side at all'
+141:874-876              ok        'no linear weighting can select'
+142:581-584              ok        'largest untouched surface'
+142:581-584              ok        '44.3% mapping difference'
+143:194-196              ok        'matching 714 would have been a reason to distrust my'
+143:296-303              ok        'Half the count is carried by one axis'
+143:296-303              ok        'where the denotation and realisation levels are cut'
+143:418-420              ok        'the one nobody has touched'
+INTENTS.md:51-61         ok        'DEMOTED TO OPEN'
+INTENTS.md:51-61         ok        'not closed at exactly four'
+INTENTS.md:214-235       ok        'RATIFIED'
+INTENTS.md:214-235       ok        'predicated arms composed'
+INTENTS.md:299-310       ok        'Never any runtime checks, ever'
+INTENTS.md:363-383       ok        "cold isn't to be depriorised"
+RULES.md:126-133         ok        'seven of its own citations wrong'
+RULES.md:486-541         ok        'Every finding carries its predicate'
+RULES.md:486-541         ok        'Absence is the strongest negative statement'
+
+case that must fail (absent from the file): 139:1-5 claiming 'this sentence is not in 139 and must be reported'
+  -> PASS, reported
+case that must fail (present in the file, outside the span): 139:1-5 claiming '838 of 1891 grid points, 44.3%'
+  -> PASS, reported
+case that must fail (citation with no declared expectation): PASS, [('139', 999, 999)] would be reported
+
+distinct spans checked: 21, failures: 0
