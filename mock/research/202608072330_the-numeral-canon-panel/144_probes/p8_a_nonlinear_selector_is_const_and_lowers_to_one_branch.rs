@@ -46,8 +46,8 @@ const NCOORD: usize = 2;
 // The arm set from p2's witness: two endpoints and a compromise arm that is
 // Pareto-optimal and sits above the line joining them. Costs are integers.
 const COSTS: [[i64; NCOORD]; NARMS] = [
-    [1, 21], // endpoint A
-    [21, 1], // endpoint B
+    [1, 21],  // endpoint A
+    [21, 1],  // endpoint B
     [13, 13], // compromise C, unreachable by any linear weighting
 ];
 
@@ -208,7 +208,10 @@ fn rt_cheb(w: [i64; NCOORD]) -> usize {
     let mut best = 0usize;
     let mut bestv = i64::MAX;
     for i in 0..NARMS {
-        let m = (0..NCOORD).map(|k| w[k] * (COSTS[i][k] - Z[k])).max().unwrap();
+        let m = (0..NCOORD)
+            .map(|k| w[k] * (COSTS[i][k] - Z[k]))
+            .max()
+            .unwrap();
         if m < bestv {
             bestv = m;
             best = i;
@@ -239,7 +242,10 @@ fn main() {
     ];
     for (name, c, r) in checks {
         let ok = c == r;
-        println!("W3 {name}: const {c}, runtime {r} -> {}", if ok { "PASS" } else { "FAIL" });
+        println!(
+            "W3 {name}: const {c}, runtime {r} -> {}",
+            if ok { "PASS" } else { "FAIL" }
+        );
         if !ok {
             fails += 1;
         }
@@ -285,11 +291,18 @@ fn main() {
     }
 
     println!();
-    println!("entry points return: {} {} {}",
-             entry_linear_first(7), entry_linear_balanced(7), entry_cheb_compromise(7));
-    println!("runtime-selected control returns: {} {} {}",
-             entry_runtime_selected(0, 7), entry_runtime_selected(1, 7),
-             entry_runtime_selected(2, 7));
+    println!(
+        "entry points return: {} {} {}",
+        entry_linear_first(7),
+        entry_linear_balanced(7),
+        entry_cheb_compromise(7)
+    );
+    println!(
+        "runtime-selected control returns: {} {} {}",
+        entry_runtime_selected(0, 7),
+        entry_runtime_selected(1, 7),
+        entry_runtime_selected(2, 7)
+    );
 
     println!();
     println!("control failures: {fails}");
