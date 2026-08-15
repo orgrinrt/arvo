@@ -1,0 +1,40 @@
+p1 (148): are the two unsigned F=0 merges one mechanism or two?
+W=5, F=0, exhaustive.
+
+=== A. the OVERFLOW merge at unsigned addition (140's refuted P3) ===
+low branch taken: 0 of 1024 operand pairs
+SaturateBoth and SaturateHighOnly agree: yes, on every pair
+  -> mechanism is REACHABILITY: the branch that distinguishes them is never entered
+
+=== control (i): the same two positions at unsigned SUBTRACTION ===
+low branch taken: 496 of 1024 operand pairs
+the two positions agree: no, they separate
+  control fires: the counter counts and the positions can separate,
+  so A's zero is a real zero rather than a blind one.
+
+=== B. does the congruence proposition even apply at a single addition? ===
+  single addition, Wrap: early vs late differ at 0 triples
+  single addition, SaturateBoth: early vs late differ at 0 triples
+  single addition, SaturateHighOnly: early vs late differ at 0 triples
+  -> a single reduction site has nothing to relocate, so the two
+     intermediate positions coincide at EVERY overflow position,
+     including wrapping, where the congruence says nothing.
+
+=== C. where the congruence IS the mechanism: two reduction sites ===
+  multiply-add, Unsigned, SaturateBoth: early vs late differ at 0 triples
+  multiply-add, Unsigned, SaturateHighOnly: early vs late differ at 0 triples
+  multiply-add, Signed, SaturateBoth: early vs late differ at 11986 triples
+  multiply-add, Signed, SaturateHighOnly: early vs late differ at 7664 triples
+
+=== control (ii): signed two-sided saturation must NOT be a congruence ===
+  control fires: the sweep can see a congruence failure when there is one.
+
+=== verdict ===
+The two merges at unsigned F=0 are on DIFFERENT AXES with DIFFERENT
+MECHANISMS:
+  139's merge: the INTERMEDIATE axis, on an operation with two reduction
+    sites, mechanised by the one-sided-clamp congruence. That is the
+    workspace rule's sentence and 139 says so itself.
+  140's refuted P3: the OVERFLOW axis, on a single-site addition,
+    mechanised by the low branch being unreachable. The congruence is
+    not available as an explanation because there is nothing to relocate.
