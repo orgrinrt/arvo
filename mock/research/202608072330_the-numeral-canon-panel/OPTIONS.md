@@ -2640,3 +2640,54 @@ is the argument for the set difference over the count and the reason the anchor 
 **What would close it.** Nothing, in the sense of a measurement. It is a standing hazard of reading a
 formatted document with a pattern, and the mitigation already exists: state the pattern, print it, and
 diff the sets rather than comparing counts.
+
+### Register brought current to `152`
+
+The strategy-set topic ran as `139` through `152` and converged on both halves of its subject. `151`
+restored is the ledger, `152` is the independent check and its verdict is sound. Below is only what it
+left open, each with what would close it.
+
+### Q61. Which operation set the design ships
+
+The count's second argument closes as a mechanism and opens as a decision. Visibility is monotone in the
+observation set and therefore saturates, so the axis-only property a design claim needs is visibility
+under the **maximal** observation set. That set is the operation set the design ships.
+
+**What would close it.** Op naming the operation set, or a decision that it is open-ended, in which case
+the table is not writable by construction and the canon says so. No measurement can supply this: the
+topic established that the question is a decision, which is itself the finding.
+
+### Q62. Whether the firewall's unpredicated form is what the canon carries
+
+The proposition survived every round and ships with **no predicate**, and both signers who examined it
+agree that is correct rather than a gap: a predicate records where a claim was **established**, and this
+one is **imposed**, so applying the notation would say the design may violate it everywhere unmeasured.
+What is predicable is its enforceability condition and the violation predicate for candidate arms, and
+the candidate carries both.
+
+**What would close it.** Op accepting an imposed proposition in the canon alongside established ones,
+and the canon stating which kind each of its sentences is. Note the coupling one signer drew: the step
+that closes Q61 **is** the firewall, so Q61 inherits whatever is decided here. They are one decision.
+
+### Q63. Whether any real instance of the composed selector exists
+
+Zero established instances corpus-wide, once the noise gate is made pairwise. One candidate survived two
+verification procedures and was then withdrawn by its own author on a 3.8 ns gap against a 79.2 ns
+interquartile range.
+
+**What would close it.** A measurement on the harness with a pairwise noise gate, on a workload where
+the arms genuinely differ. What survives without one is stated in the ledger: the construction, the
+random-table rate, the conditional cost, and the doability. What does not survive is any claim that the
+mechanism pays on work anyone has actually written.
+
+### Q64. What a cold derivation's shared inputs cost its independence
+
+Not a question about arvo, recorded here because it is a fact about this panel's own instrument and the
+next unit inherits it. Both cold derivations read the same auto-loaded workspace rules, one of which
+states a mechanism both used, so wherever that mechanism does the work the two files are one instance.
+The contamination was scoped in three directions by the members themselves and one of the three was
+refuted outright.
+
+**What would close it.** A dispatch protocol that names the shared inputs in the brief so a member can
+report which of its conclusions ran through them. Written up in `how-to-run-a-panel.md`; the register
+entry exists so a later reader of this topic's rungs knows to discount them by it.
