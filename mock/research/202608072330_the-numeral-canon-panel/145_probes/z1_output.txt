@@ -1,0 +1,101 @@
+================================================================================================
+A5 first: do the two definitions of 'answer-visible' agree?
+================================================================================================
+  shape           obs set               axis          separation  count-change  agree
+  W4 F0 u         {add,sub,mul}         intermediate  False       False         True
+  W4 F0 u         {add,sub,mul}         dead          False       False         True
+  W4 F0 u         ALL                   intermediate  True        True          True
+  W4 F0 u         ALL                   dead          False       False         True
+  W4 F1 u         {add,sub,mul}         intermediate  False       False         True
+  W4 F1 u         {add,sub,mul}         dead          False       False         True
+  W4 F1 u         ALL                   intermediate  True        True          True
+  W4 F1 u         ALL                   dead          False       False         True
+  W4 F2 u         {add,sub,mul}         intermediate  False       False         True
+  W4 F2 u         {add,sub,mul}         dead          False       False         True
+  W4 F2 u         ALL                   intermediate  True        True          True
+  W4 F2 u         ALL                   dead          False       False         True
+  W4 F0 s         {add,sub,mul}         intermediate  False       False         True
+  W4 F0 s         {add,sub,mul}         dead          False       False         True
+  W4 F0 s         ALL                   intermediate  True        True          True
+  W4 F0 s         ALL                   dead          False       False         True
+  W4 F1 s         {add,sub,mul}         intermediate  False       False         True
+  W4 F1 s         {add,sub,mul}         dead          False       False         True
+  W4 F1 s         ALL                   intermediate  True        True          True
+  W4 F1 s         ALL                   dead          False       False         True
+  W4 F2 s         {add,sub,mul}         intermediate  False       False         True
+  W4 F2 s         {add,sub,mul}         dead          False       False         True
+  W4 F2 s         ALL                   intermediate  True        True          True
+  W4 F2 s         ALL                   dead          False       False         True
+
+  cells compared: 144, disagreements: 0
+  A5: CONFIRMED, the two definitions coincide
+
+================================================================================================
+A1. Is visibility monotone in the observation set?
+================================================================================================
+  ordered (shape, O1 subset O2, axis) triples checked: 432
+  violations (visible under the smaller, invisible under the larger): 0
+  A1: CONFIRMED
+
+================================================================================================
+A3. CONTROL: an axis invisible under a smaller O and visible under a larger one
+================================================================================================
+  instances where enlarging O makes an axis visible: 55
+    W4 F0 u      intermediate   invisible under {add}                visible under ALL
+    W4 F0 u      intermediate   invisible under {add,sub}            visible under ALL
+    W4 F0 u      intermediate   invisible under {add,sub,mul}        visible under ALL
+    W4 F0 u      intermediate   invisible under {mul,madd}           visible under ALL
+    W4 F0 u      intermediate   invisible under {add,sub,mul,madd}   visible under ALL
+  A3: CONFIRMED, the control fires so A1 is not vacuous
+
+================================================================================================
+A4. CONTROL: the dead axis is invisible everywhere, including at the maximal O
+================================================================================================
+  cells where the dead axis is visible: 0 (must be 0)
+  A4: CONFIRMED
+
+================================================================================================
+A2. Saturation, and the quantifier the design claim needs
+================================================================================================
+  shape           axis          visible under ALL   visible under some smaller O
+  W4 F0 u         rounding      False               False
+  W4 F0 u         overflow      True                True
+  W4 F0 u         intermediate  True                True
+  W4 F0 u         dead          False               False
+  W4 F1 u         rounding      True                True
+  W4 F1 u         overflow      True                True
+  W4 F1 u         intermediate  True                True
+  W4 F1 u         dead          False               False
+  W4 F2 u         rounding      True                True
+  W4 F2 u         overflow      True                True
+  W4 F2 u         intermediate  True                True
+  W4 F2 u         dead          False               False
+  W4 F0 s         rounding      False               False
+  W4 F0 s         overflow      True                True
+  W4 F0 s         intermediate  True                True
+  W4 F0 s         dead          False               False
+  W4 F1 s         rounding      True                True
+  W4 F1 s         overflow      True                True
+  W4 F1 s         intermediate  True                True
+  W4 F1 s         dead          False               False
+  W4 F2 s         rounding      True                True
+  W4 F2 s         overflow      True                True
+  W4 F2 s         intermediate  True                True
+  W4 F2 s         dead          False               False
+
+  A2 (visible under the maximal O == visible under any O): CONFIRMED
+
+================================================================================================
+VERDICT
+================================================================================================
+  144's biconditional reproduces and its 'answer-visible' is a property of an (axis,
+  observation set) pair. Visibility is monotone in that set and therefore saturates, so
+  the axis-only property the design claim needs is visibility under the MAXIMAL
+  observation set the design admits. Under that quantifier the closure holds: an axis
+  visible at the maximum is component one and cutting it is forbidden; an axis invisible
+  at the maximum is dead and cutting it is a no-op at every O.
+
+  What does NOT close, and it is a different question from the one 143 asked: the maximal
+  observation set is the set of operations the design ships, which is a design act. So the
+  count waits on the operation set rather than on a denotation line, and the two are not
+  the same open question.
