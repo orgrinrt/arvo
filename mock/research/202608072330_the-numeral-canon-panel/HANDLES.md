@@ -11,6 +11,16 @@ name copied verbatim from that agent's own completion notification minutes
 earlier; the same agent resumed on the first try when addressed by its task id.
 So the ids are written down here rather than left in a chat window.
 
+**A task id is an address inside the session that dispatched the member, and it
+does not survive a new session.** Established 2026-08-18 by trying it: a send to
+`109`'s id from a fresh coordinator session returned "No transcript found for
+agent ID", while that transcript sits readable on disk at the recovery path
+below. Readable and addressable are different properties and only the second one
+is what a resume needs. So every row under the first table belongs to session
+`dea47dac-5762-46b6-956e-0d22cc5d3832` and is a record rather than a
+correspondent; rows dispatched later are grouped under the session that owns
+them. Full statement at `153` section 1.
+
 Recovering an id that was never recorded: each member's transcript is at
 `~/.claude/projects/-Users-orgrinrt-Dev-clause-dev/<session>/subagents/agent-<task-id>.jsonl`,
 and the author of a panel file is the one agent whose transcript contains a
