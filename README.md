@@ -52,15 +52,11 @@ Each implementation is bench-driven. For a given algorithm and strategy, several
 
 ## Installation
 
-```bash
-cargo add arvo
-```
-
-Or in `Cargo.toml`:
+Not published on crates.io. The name `arvo` there belongs to an unrelated project, so `cargo add arvo` will not get you this crate. Depend on the git repository instead:
 
 ```toml
 [dependencies]
-arvo = "0.1"
+arvo = { git = "https://github.com/orgrinrt/arvo" }
 ```
 
 The `arvo` facade covers the numeric core: storage primitives, strategy markers, the fixed-point and float types, the refit traits, and the `bitfield!` macro. Masks, tensors, hashes, and the analysis crates sit above the facade; depend on `arvo-bitmask`, `arvo-tensor`, `arvo-hash`, or the relevant analysis crate directly.
