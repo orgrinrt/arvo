@@ -40,7 +40,7 @@ Bridge traits cover the std parallels for use in const contexts: `ConstEq`, `Con
 
 ## Layered structure
 
-`arvo` is split across multiple crates organised in five dependency tiers. A foundation tier carries storage and the strategy markers; a contract tier declares the `pub const` traits; an implementation tier carries the blanket impls; an L2 tier hosts the concretes (masks, tensors, hashes) plus the analysis crates; a top tier ships the spectral methods. The facade `arvo` re-exports the public surface of the crates beneath it and hosts `UFixed`, `IFixed`, the `Uint<N, S>` and `Int<N, S>` aliases, the IEEE floats, and the `bitfield!` macro. Algorithm crates depend on the facade and the L2 concretes, never reaching back into the underlying contract layer.
+`arvo` is split across multiple crates organised in five dependency tiers. A foundation tier carries storage and the strategy markers; a contract tier declares the `pub const` traits; an implementation tier carries the blanket impls; an L2 tier hosts the concretes (masks, tensors, hashes) plus the analysis crates; a top tier ships the spectral methods. The facade `arvo` re-exports the public surface of the crates beneath it and hosts `UFixed`, `IFixed`, the `Uint<N, S>` and `Int<N, S>` aliases, the IEEE floats, and the `bitfield!` macro. Algorithm crates depend on the facade and the L2 concretes, reaching past them only for the bit contracts they are generic over.
 
 ## Algorithms
 
@@ -48,7 +48,7 @@ Algorithms ship alongside the primitives because the strategy axis has nowhere t
 
 Each implementation is bench-driven. For a given algorithm and strategy, several candidate implementations sit alongside one another: textbook recursion, tight-loop iteration, SIMD-aware variants, raw asm microkernels where the target supports them. Benchmark results decide which implementation a strategy ends up with. The selection is ongoing and not finished. Bench inputs ship with the repo, and the chosen path can shift as targets, intrinsics, or evidence change.
 
-`arvo-graph`, `arvo-sparse`, `arvo-comb`, and `arvo-spectral` each ship their domain (DAG operations, sparse matrix layouts, combinatorial optimisation, spectral methods). They are independently usable and depend only on the `arvo` facade and the peer concretes (`arvo-bitmask`, `arvo-tensor`).
+`arvo-graph`, `arvo-sparse`, `arvo-comb`, and `arvo-spectral` each ship their domain (DAG operations, sparse matrix layouts, combinatorial optimisation, spectral methods). Each depends on the `arvo` facade and the peer concretes (`arvo-bitmask`, `arvo-tensor`); `arvo-graph` and `arvo-sparse` additionally take `arvo-bits-contracts` for the bit-contract bounds they are generic over, and `arvo-spectral` builds on `arvo-sparse`.
 
 ## Installation
 
