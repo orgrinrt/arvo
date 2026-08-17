@@ -68,7 +68,7 @@ The `arvo` facade covers the numeric core: storage primitives, strategy markers,
 ## Usage
 
 ```rust
-use arvo::{Bits, Bool, Cold, Hot, Identity, USize, Uint, Warm};
+use arvo::{Additive, Bits, Bool, Cold, Hot, Identity, USize, Uint, Warm};
 use arvo_bits::{BitAccess, BitSequence};
 use arvo_bitmask::Mask;
 
@@ -79,7 +79,7 @@ type Sample = Uint<23, Hot>;           // u32 container; hot wraps on overflow
 type Acc    = Uint<23, Warm>;          // u64 container; a single add cannot overflow
 
 fn integrate(samples: &[Sample]) -> Acc {
-    let mut acc: Acc = Acc::ZERO;
+    let mut acc: Acc = <Acc as Identity<Additive>>::IDENTITY;
     for s in samples {
         acc = acc + Acc::from(*s);     // hot -> warm strategy conversion, lossless
     }
@@ -116,7 +116,7 @@ fn mark_fault(f: Frame) -> Frame {
 }
 
 fn fault_count(frames: &[Frame]) -> USize {
-    let mut n = USize::ZERO;
+    let mut n = <USize as Identity<Additive>>::IDENTITY;
     for f in frames {
         if f.status().bit(FAULT).into() {
             n = n + USize(1);
