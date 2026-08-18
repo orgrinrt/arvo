@@ -797,3 +797,26 @@ I am leaving the error in rather than editing it away, because it is the third t
 that writing a count before running it produced a false one, after the 124-versus-123 test count and
 the contaminated 115.43s. **A count is a measurement** (`RULES.md:124`), and "returns nothing" is a
 count. My own probes do carry none, by the same grep, and that one I ran first.
+
+## P2.8 Reproduction, checked rather than asserted
+
+Every generated probe output was re-run after the file was written and compared to the committed copy:
+
+```
+p3_naming/gen.out                 REPRODUCES
+p4_injectivity/inj.out            REPRODUCES
+p4_injectivity/inj_container.out  REPRODUCES
+p5_signature/sig.out              REPRODUCES
+gate_scan.out                     REPRODUCES
+```
+
+byte-for-byte, `diff` returning empty on all five.
+
+One thing a later reader will trip over if nobody says it. **The committed `.rs` files the generators
+emit are the repo-rustfmt'd form, not the generators' raw emission**, because the pre-commit hook
+formats them. Re-running a generator therefore dirties the tree with pure formatting churn and no
+semantic change. The outputs above are the evidence; the generated sources are committed so the
+emission can be read, and their formatting is not part of any claim.
+
+`154_probes/citecheck.py` was re-run last: **67 citations, 0 failures**, each opened and its content
+read rather than its resolution checked.
