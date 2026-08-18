@@ -235,10 +235,14 @@ OK  111:468-470   [2 lines]
 OK  112:944-946   [2 lines]
       > the two spellings meet: nothing at a monomorphic site, one threaded parameter at a polymorphic one, and
       > the program at a homogeneous container, where no repair exists.
-OK  109:650   [1 lines]
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
       target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
-OK  109:650   [1 lines]
+      derived instead of assumed.
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
       target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
 OK  108:825   [1 lines]
       > must agree about it. An axis belongs here if there is **any** reachable chain on which moving it is
 OK  111:334-336   [3 lines]

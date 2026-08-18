@@ -19,7 +19,16 @@ the obligation reads as unpayable. It is payable. The certificate compiles, at e
 64, and the spurious-axis control fails to compile, which is the evidence
 (`157_probes/p2_const_certificate/`).
 
-**The second result, and it is about the corpus rather than about the primitive.** Across `110`, `111`,
+**Two further results follow the certificate and neither was in the brief.** The obligation is **per
+pair of shipped instantiations rather than per axis**, because an axis can be read at some
+instantiations and not at others, and `111` F111-6 says so a topic earlier without connecting it to
+adequacy (section 3.6). And **soundness cannot be enforced by a signature**, because `cfg` is in scope
+inside a `const fn` body: two builds of one source, one flag apart, make one type name denote saturation
+and wrapping, and the certificate itself answers differently in each (section 3.7). The residual
+obligation is a lint over the realisation-map call graph, and `109:649-651` already has the rule in a
+narrower form.
+
+**The last result, and it is about the corpus rather than about the primitive.** Across `110`, `111`,
 `112` and `114`, eighty-two findings carry a width predicate and **not one carries `W any`**
 (`157_probes/p3_predicate_audit.out`). Under I13's notation as op states it, an unlisted dimension
 means the finding holds nowhere that dimension exists, and a narrowly listed one means it holds only
@@ -832,9 +841,17 @@ certificate itself answers differently in the two builds. A certificate is only 
 realisation map it evaluates, so a `cfg`-reading map makes the completeness proof build-dependent
 without any of the machinery noticing. **The certificate cannot police the hole it sits inside.**
 
-**And this is exactly what `109` already forbade, which is the useful part.** `109:650` records that
-the value set, the storage and the overflow policy are "target-independent, and only `λ` may vary with
-the target", and calls it the always-optimal-internals split. `arvo-always-optimal-internals.md` says
+**And `109` has the constraint, though it reached it for a different reason and stated it narrower than
+adequacy needs.** `109:649-651`, verbatim: "**`ρ` for anything that persists must be target-independent,
+and only `λ` may vary with the target.** Which is the always-optimal-internals split derived instead of
+assumed." Its reason is I6's disk storage: a value written on one machine must be readable on another.
+
+**Adequacy needs the same clause without the persistence qualifier and over more than `ρ`.** The hazard
+above varies the overflow policy, not the storage, and nothing persists anywhere in it; the two builds
+disagree inside one process's own arithmetic. So the honest statement is that `109`'s clause is a
+special case of a wider one that nobody has written: **nothing the realisation map reads may vary with
+the build, whether or not anything is written to disk.**
+`arvo-always-optimal-internals.md` says
 internals unwrap to whatever is optimal for the specific build target and the specific `cfg`-gated
 hardware features. Put together: **the `R`/`λ` split is not tidiness, it is the soundness half of
 adequacy expressed as a rule about what may be `cfg`-gated.** `CONTROL_L` is that rule obeyed and the
@@ -852,14 +869,15 @@ parameters, because `cfg` is in scope inside the body.** Two builds of one sourc
 that does not read the build and a lowering that does are both stable across the same pair of builds.
 `W = 13, F = 0, signedness = unsigned, overflow policy in {sat, wrap}, container = u64 with u128
 intermediates, rustc = the committed pin, opt-level = 3, threads any, target features any`. Evidence:
-`157_probes/p8_soundness_is_not_enforced/factoring.rs`, `factoring_run.out`. Second statement of
-`109:650`'s target-independence clause, arriving from the adequacy side with a compiled violation
-attached.
+`157_probes/p8_soundness_is_not_enforced/factoring.rs`, `factoring_run.out`. Widens `109:649-651`'s
+target-independence clause, which is scoped to `ρ` and to what persists, to the whole realisation
+map and to non-persisting values, with a compiled violation attached.
 
-**S-21, to `109`.** Your target-independence clause is stated as a consequence of the
-always-optimal-internals split. It is more than that: it is what makes the soundness half of adequacy
-true at all, and without it two builds of one program denote different things under one name. Say it
-as an obligation rather than as an observation, and the lint above is what discharges it.
+**S-21, to `109`.** Your target-independence clause is scoped to `ρ` and to what persists, and derived
+from I6's disk storage. Drop both qualifiers and it becomes the soundness half of adequacy: nothing the
+realisation map reads may vary with the build. The hazard above breaks it on the overflow policy with
+nothing persisting, so the persistence reason is sufficient for your conclusion and is not necessary for
+it, and the wider claim is the one a canon wants because it is the one a lint can check.
 
 ---
 
@@ -1075,10 +1093,11 @@ which I fixed rather than withdrew because the reasoning survived the corrected 
 **Read in full:** `INTENTS.md`, `RULES.md`, `154` including both phases, `155` including both phases,
 `153`, `156`, `113`, `OPTIONS.md` Q52 in full, `AGREEMENTS.md` section headings.
 
-**Read in part, at the cited sections, opened rather than remembered:** `111` sections 5, 8, 9.1, 18,
-19, and its findings block around F111-7 and F111-8; `112` section 9 in full plus its weaknesses
-paragraph and its findings F112-1 to F112-3; `110` sections around its contamination declaration;
-`109`'s section on the four decisions; `108:820-830`.
+**Read in part, at the cited sections, opened rather than remembered:** `111` sections 5, 6's closing
+paragraphs, 8, 9.1, 18, 19, and its findings block around F111-5, F111-6, F111-7 and F111-8; `112`
+section 9 in full plus its weaknesses paragraph and its findings F112-1 to F112-3; `110` sections around
+its contamination declaration; `109`'s section on the four decisions and its alternatives section at
+`645-656`; `108:820-830`; `111_probes/p4_output.txt` in full.
 
 **Grepped, not read:** the rest of `109`, `110`, `111`, `112`, `114`; the whole of `115` through `152`;
 `63`, `74`, `90`, `106`, `146`, `151`; `DROPLIST.md`; `PRIOR_CALLS.md`; `PERSONA_CALLS.md`; `HANDLES.md`;
@@ -1108,6 +1127,18 @@ finished candidates `63`, `74`, `90`, `151` beyond what `153` and `156` say abou
 - **Section 0.2's soundness trace rests on my reading of the pool protocol**, not on a reproduction of
   the use-after-free. I reproduced the hang and read the code; I did not run it under a sanitiser and
   I do not claim to have observed the write through a stale pointer.
+- **Section 3.7's hazard is demonstrated on a model rather than on arvo**, because arvo's crates are
+  deleted. It shows that the language permits the hole, which is what Q157-D asked. Whether any shipped
+  arvo path would have taken it is unknown and unknowable from the current tree.
+- **Section 3.6's zero multi-axis cancellations is a negative result on three small grids** and is the
+  weakest claim in that section. The positive result, that per-axis is insufficient, does not depend on
+  it: 44 single-axis collapses establish that on their own.
+
+**Reproduction, checked rather than asserted.** Every generated probe output was re-run after the file
+was written and diffed against the committed copy: `p1_output.txt`, `p1b_literal_ties.out`,
+`p4_output.txt`, `p5_output.txt` and `p6_output.txt` all **REPRODUCE** byte for byte. The two compiled
+probes were rebuilt from their committed sources and their outputs match. `gate_release.out` is a
+timing-bearing run and is not expected to reproduce byte for byte; its pass counts do.
 
 **Citations checked by opening them.** Every `file:line` in this document was opened and its content
 read rather than its resolution confirmed. Two were wrong on the first pass and are corrected here:

@@ -34,32 +34,46 @@ const fn realise_hazard(exact: u128, w: u32) -> u64 {
     let hi = ((1u128 << w) - 1) as u64;
     #[cfg(not(alt))]
     {
-        if exact > hi as u128 { hi } else { exact as u64 }      // saturate
+        if exact > hi as u128 {
+            hi
+        } else {
+            exact as u64
+        } // saturate
     }
     #[cfg(alt)]
     {
-        (exact % (1u128 << w)) as u64                            // wrap
+        (exact % (1u128 << w)) as u64 // wrap
     }
 }
 
 // R, honest: the build cannot reach it.
 const fn realise_sound(exact: u128, w: u32) -> u64 {
     let hi = ((1u128 << w) - 1) as u64;
-    if exact > hi as u128 { hi } else { exact as u64 }
+    if exact > hi as u128 {
+        hi
+    } else {
+        exact as u64
+    }
 }
 
 // lambda, the lowering. Two shapes, cfg-selected, both computing the same function.
 // This is the thing arvo-always-optimal-internals.md licenses varying with the target.
-const fn lower_a(x: u64, w: u32) -> u64 { x & ((1u64 << w) - 1) }
+const fn lower_a(x: u64, w: u32) -> u64 {
+    x & ((1u64 << w) - 1)
+}
 const fn lower_b(x: u64, w: u32) -> u64 {
     let sh = 64 - w;
     (x << sh) >> sh
 }
 const fn lambda(x: u64, w: u32) -> u64 {
     #[cfg(not(alt))]
-    { lower_a(x, w) }
+    {
+        lower_a(x, w)
+    }
     #[cfg(alt)]
-    { lower_b(x, w) }
+    {
+        lower_b(x, w)
+    }
 }
 
 fn main() {
@@ -84,6 +98,8 @@ fn main() {
 
     // The certificate, evaluated in both builds. Under the hazard the separating
     // witness for the overflow policy is answered differently by the same source.
-    println!("CERT      build={build} separates = {}",
-             realise_hazard((MAXW as u128) + 1, W) != realise_sound((MAXW as u128) + 1, W));
+    println!(
+        "CERT      build={build} separates = {}",
+        realise_hazard((MAXW as u128) + 1, W) != realise_sound((MAXW as u128) + 1, W)
+    );
 }
