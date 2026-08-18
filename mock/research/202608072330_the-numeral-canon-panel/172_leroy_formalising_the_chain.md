@@ -55,7 +55,7 @@ there because everything else attaches to one half or the other.
 
 Provenance and status, exactly:
 
-- The route is `171` 2.1: contextual equivalence (a definition, not a principle), plus I14's bans
+- The route is `171` 2.1 (the split stated at `171:77-91`): contextual equivalence (a definition, not a principle), plus I14's bans
   (`no dyn`, no `TypeId`, no `core::any`, no `specialization`) removing every intensional
   observation mechanism, plus one **measured** premise: at `debug-assertions = off` the binding
   perimeter and the distinguishing perimeter coincide exactly, including through an opaque
@@ -63,7 +63,8 @@ Provenance and status, exactly:
   (`171_probes/perimeter/`).
 - The maximality gives uniqueness: stretches are the equivalence classes of "connected by an
   unbound intermediate", so the partition is canonical and does not depend on spelling, which is
-  what refutes the three syntactic definitions (`168` 2.2) at one stroke.
+  what refutes the three syntactic definitions (`168` 2.2; its own definition at `168:168-170`)
+  at one stroke.
 - **Bounds.** The measured premise is enumeration-bounded: six channels tested, two found (both
   governed by `debug-assertions`), four named and untested (floating-point environment,
   `#[track_caller]` location data, backtrace symbols, linker artifacts), per `171` O-171-2. And it
@@ -82,7 +83,8 @@ the argument/enumeration split `171` 5.1 named as a class.
 > does not follow from (P), and three derivation routes (from I15, from I13, from I3/I18) fail for
 > the stated reasons (`171` 2.3). It rests on the principle that obligations are bounded by the
 > observation surface, which is the auto-loaded workspace rule
-> `what-you-can-observe-is-what-you-guaranteed.md`, present in every member's context and declared
+> `what-you-can-observe-is-what-you-guaranteed.md` (line 4 of the measured set,
+> `157_probes/loaded_rules_157.txt:4`), present in every member's context and declared
 > by none of the three derivations until the attack found it.
 
 Two bounds, and both are exact:
@@ -102,7 +104,7 @@ Two bounds, and both are exact:
 **The rung, carried forward exactly as the replies left it and as the brief instructs.** The
 observation-bounded definitional convergence is **two instances, not three**: `60`'s definition is
 not observation-bounded at all (observation vocabulary at 0.27 per thousand words against 1.50 and
-1.53, defining sentences opened, `171_probes/thirdfile/`). Of the two, `170` reports dependence on
+1.53, the table at `171:249-253`, defining sentences opened, `171_probes/thirdfile/`). Of the two, `170` reports dependence on
 the rule for its whole delimiter, and `171` reports a split: rule-free for (P) with the route
 shown, dependent for (L). So the panel's record is: **(P) at two instances, one carrying a
 rule-free derivation; (L) at zero independent instances, resting on the rule**; and `60` is a
@@ -115,15 +117,15 @@ the rule removed, remains the decider and remains open.
 still has no licence to roam among them. (L) without (P) is a licence with no perimeter: nothing
 says where the roaming stops. The chain's design story needs both, they have different provenance,
 different bounds, and different failure profiles, and a canon sentence that fuses them inherits
-the weaker provenance and the tighter bound of the pair. `167` section 1 fused them, which is the
-defect `171` located; the formalised form keeps them apart.
+the weaker provenance and the tighter bound of the pair. `167` section 1 fused them in one sentence (`167:127-131`), which is the defect `171` located;
+the formalised form keeps them apart.
 
 ---
 
 ## 2. The composition with `60`, exactly
 
-`60` defines by contents: **a chain is a composition of exact operations together with a schedule
-of adaptation points**, the schedule part of the function's meaning because two schedules over the
+`60` defines by contents (`60:28-29`): **a chain is a composition of exact operations together
+with a schedule of adaptation points**, the schedule part of the function's meaning because two schedules over the
 same ops compute different functions (three schedules, three functions, `60` probe A). The unit
 defines by bounds. The two compose with no residue, and the composed statement is the one the
 candidate should carry:
@@ -590,9 +592,11 @@ profile situation in full.
 **Citations and quotations, checked by opening them.** `172_probes/citecheck.out`: every
 `file:line` anchor opened and read. `172_probes/quotecheck/`: every verbatim quotation matched
 under the unit's three-layer normalisation (whitespace, markup, case), with a planted-absent and a
-planted-present control both behaving. The layer report is stated with `171`'s caveat: this file
-copies source bytes, so a zero at L2/L3 is a quoting-style fact and not evidence the layers are
-dead.
+planted-present control both behaving. The measured layer report: four of six quotations match
+raw, one needed L1 (a wrapped line), and one needed L3 (a mid-sentence lowercased leading capital,
+which is exactly `170`'s eighth defect class biting this file and being caught by the adopted
+fix). L2 moved nothing here, and per `171` section 9 that zero is a quoting-style fact, not
+evidence the layer is dead.
 
 **What this file settled.** The deferral optimum as a theorem with its hypotheses and tie-rule
 irrelevance (O-170-1 and O-170-2 closed). The no-threshold claim as a theorem at `F any` by
