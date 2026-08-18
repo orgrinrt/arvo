@@ -123,6 +123,15 @@ that word is used rather than reaching for a number.
 
 **Counts are measurements.** Produce every number with a command and say which command.
 
+**Every timing carries the build profile it was taken under.** Established the expensive way: this
+register retired a true finding because three measurements refuting it were taken at `--release`
+while the figure they refuted came from `cargo test`, which defaults to debug. One host, back to
+back, the same crate: **109.08s debug against 3.78s release, a factor of 29** (`154`). A dimension
+that moves a result by 29x was unstated, so a later reader supplied it from context and got it
+wrong. Under this panel's own notation an unstated dimension is not a hedge, it is a claim that the
+finding holds nowhere that dimension exists, and a timing without its profile is a measurement of
+nothing.
+
 **Check your own citations before shipping, by opening them.** A reference that resolves is not a
 reference that says what you claim. One member found **seven of its own citations wrong** this way and
 built a probe that opens every `file:line` and tests its content rather than its resolution; forty-one

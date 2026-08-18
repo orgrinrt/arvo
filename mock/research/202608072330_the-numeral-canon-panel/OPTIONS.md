@@ -2522,8 +2522,21 @@ so `111` leans toward the latter and could not settle it.
 contradiction on what a split costs (`110:282` says names and nothing else; `110:357` and `:370` say a
 wall with no repair), whose resolution `111` locates in `110`'s own F9.
 
-**Retired:** the claim that `wide-rung-shared` takes 107s. Three measurements now put it at 4.05s,
-4.25s and under 5s. **Dropped rather than carried as contested.**
+**The retirement of the 107s claim is itself retired, and the original figure was right.** This entry
+previously read that the claim `wide-rung-shared` takes 107s was dropped, on three measurements of
+4.05s, 4.25s and under 5s. `154` measured the two back to back on one host and found **109.08s at
+debug against 3.78s at release, a factor of 29**. All three refuting measurements were taken at
+`--release`; `cargo test` defaults to debug. The two numbers were never in conflict and nothing needed
+retiring.
+
+**The mechanism is the one this panel ratified and then did not apply to itself.** A dimension that
+moves a result by 29x went unstated, so under I13's own notation the claim was unpredicated and a
+later reader supplied the missing dimension from context. It cost a true finding, which was then
+dropped rather than carried as contested, which is the worse of the two errors available. **Every
+timing quoted anywhere in this panel carries the build profile it was taken under**, and one that does
+not is not a measurement of anything.
+
+Correction and evidence: `154`, phase two.
 
 ### Register brought current to `124`
 
