@@ -1,0 +1,46 @@
+=== A. does a universal over width have other spellings, and does the corpus use them? ===
+file                                                    W any    I any    F any    N any
+110_willsey_the_primitive_derived_cold.md                   0        0        0        0
+111_jhala_the_primitive_attacked.md                         0        0        0        0
+112_leijen_where_the_refinement_lives.md                    0        0        0        0
+114_leroy_formalising_the_primitive.md                      0        0        0        0
+109_bellard_the_primitive_derived_cold.md                   0        2        1        0
+
+CONTROL alternative spellings fire somewhere : I any in 109 = 2 (want >= 1)
+alternative spellings across the FOUR        : 0
+
+VERDICT A: F157-10 stands as literally stated. No spelling of a width
+           universal appears in the four files. The knife does not cut.
+           BUT its instrument does not enumerate the spellings, and 109
+           uses one of them (2 times, at 109:156 and 109:381).
+           So the CONTROL that F157-10 carries -- 'threads any and
+           tfeat any are non-zero, so the zero is the corpus' -- proves
+           the word 'any' is findable, not that the width axis's
+           spellings were searched. Those are different conjuncts.
+           And 157's prose generalises to 'topic five's corpus', which
+           includes 109, where the sweeping claim is false: 109's very
+           first predicate is a universal over integer width.
+
+=== B. 154 audited on the same terms, by its author ===
+  findings stated              : 17
+  carrying `W any`             : 0
+  carrying another spelling    : 0
+  carrying `W in 1..=64`       : 3   (exhaustive over a u64 container)
+  carrying `threads any`       : 0
+  carrying `target features any`: 0
+  carrying `threads = 1` (fixed) : 13
+  predicate blocks found        : 18
+
+CONTROL the extractor can read 154's predicate blocks: 18 blocks, 13 carrying threads = 1
+
+VERDICT B: 154 carries `W any` zero times, so it is a fifth instance of
+           F157-10's pattern and 157 did not count it. Three of its
+           findings carry W in 1..=64, which is exhaustive over every
+           width a u64 container holds rather than a three-width sample.
+
+           And 154 carries NO `any` on ANY axis: not width, not threads,
+           not target features. Read literally under I13 its findings hold
+           at threads = 1, at one host's baseline features, at the widths
+           listed, and nowhere else. That is what was measured, so the
+           recording is honest; whether the notation should force a
+           measured-everywhere finding to say so is Q65 and is op's.
