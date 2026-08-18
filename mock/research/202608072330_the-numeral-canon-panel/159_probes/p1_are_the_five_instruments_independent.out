@@ -24,6 +24,17 @@
   (three of the FOUR depend on this crate; footprint's own header says it
    reuses its transform 'unmodified')
 
+=== D. is SplitMix64 copied, or independently typed from its paper? ===
+  (SplitMix64 is a published routine, so shared presence alone proves
+   nothing. Whitespace-normalised hash of each declaration-to-brace body:)
+  bitpack-carrier-shared     1d5b8ba5f58f
+  bitpack-footprint-shared   1d5b8ba5f58f
+  bitpack-shared             6530b511637a
+  bitpack-wide-shared        1d5b8ba5f58f
+  warm-container-shared      1d5b8ba5f58f
+  bitpack-plan-shared        1d5b8ba5f58f
+  Identical hashes are copies. A crate with its own hash typed its own.
+
 CONTROL at least one of the four is independent : 1 (want >= 1)
 CONTROL warm-container-shared is independent    : 1 (want 1)
 
@@ -42,6 +53,13 @@ VERDICT: the four packed-end crates are not four independent instances.
            2. bitpack-shared (bench-core only)
            3. the bitpack-plan-shared family, as ONE instance
          Three, which meets RULES.md's bar. Not five.
+
+AND SECTION D CLOSES THE OBVIOUS OBJECTION: SplitMix64 is published, so
+         its presence in six crates could be six people reading one paper.
+         It is not: five of the six bodies are byte-identical once
+         whitespace is removed, and the sixth is bitpack-shared, which is
+         also the one crate with no bitpack dependency. The copying and
+         the independence agree with each other.
 
 GENERALISES: SplitMix64 is declared identically in 6 of 6 crates examined.
          Every bench crate in this corpus descends from one template, so

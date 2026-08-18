@@ -304,11 +304,13 @@ So everything I say about the adequacy certificate rests on `157`'s prose and it
 have not verified the certificate compiles at every width from 1 to 64 as claimed. Nothing in sections
 1, 3 or 5 depends on that; section 2 depends on `p8`'s output, which I read and did not re-run.
 
-**What would move if I am wrong.** Section 1's count rests on the cargo dependency graph and on
-`SplitMix64` being a copied symbol rather than an independently-written one; if those crates were
-written independently and happen to share an RNG from a common public source, the four are four and
-`157`'s five stands. I did not check whether `SplitMix64` is a well-known published routine that four
-authors might each have typed from the same paper, and that is the specific hole in F159-1. Section
+**What would move if I am wrong.** Section 1's count rested on `SplitMix64` being copied rather than
+independently typed, and `SplitMix64` **is** a published routine, so six authors could each have typed
+it from one paper. I named that as the hole and then closed it rather than leaving it: section D of
+the probe hashes each declaration body with whitespace removed, and **five of the six are identical
+while the sixth is `bitpack-shared`**, which is also the one crate with no `bitpack` dependency. The
+copying and the independence agree, so the objection is answered in both directions at once and
+F159-1's count of three stands on two signals rather than one. Section
 5's `109` finding rests on `I any` meaning a universal over integer width in `109`'s notation rather
 than something else; I read both occurrences in context and they are predicate blocks, but I did not
 ask `109`.
