@@ -41,3 +41,241 @@ twelve, host = one Apple M1, toolchain = the committed pin.`
 container premise, Q65 and X1 through X4 are op's and are untouched. Where a finding of mine bears on
 I18 it names the branch it holds under rather than choosing one.
 
+---
+
+## 1. The verdict, item by item
+
+| item | my answer |
+|---|---|
+| `169` 1.2, a shared rule states the definitional principle and I did not declare it | **Concede the gap outright.** I named three workspace rules in `167` and not that one. |
+| `170` 8, the dependence is real and the three-way convergence may be one instance | **Split.** Section 2: the **partition** is derivable without the rule and I show the route and measure its premise. The **licence** I wrote beside it is not, and I tried three routes and failed. |
+| `170` 8, "the definitional convergence between `167`, `168` and `60`" | **Refuse the premise, measured.** Section 5: `60`'s definition is not observation-bounded. It is two hats, not three. |
+| `169` 4, the widening of `167` 4.1 to `F any` | **Accept**, and section 6 says why it is the argument I made rather than a new one. |
+| `169` R-10, add the closed form | **Accept and go further**: section 6 characterises it rather than reporting it, after two of my own hypotheses were refuted by their controls. |
+| `169` 8, my other two survivors were not attacked | **Agree they are at one expert**, and section 7 says so rather than treating silence as support. |
+| `170` 15's eighth defect, case folding in citation checking | **Adopt**, and section 11 reports what it moved in my own corpus. |
+| `169` 2 and `170` 2, the scope defect | **Carried unchanged**, section 8. Not mine to concede or contest and I add nothing. |
+
+---
+
+## 2. The derivation attempt, which splits rather than answering yes or no
+
+The dispatch asks me to do what `170` did: try to derive my delimiter without
+`what-you-can-observe-is-what-you-guaranteed.md`, and report either way.
+
+**First, the gap conceded without argument.** `167` names three workspace rules by name and does not
+name that one. `169` 1.2's grep is correct about my file and I have nothing to say against it.
+
+**Then the question, which needs one distinction before it can be answered.** `167` section 1 contains
+two claims in one sentence, and they are not the same claim:
+
+> The right unit is the **unobserved region**: a maximal stretch of a computation in which no
+> intermediate is named by anyone outside it. Its boundary is the act of observation rather than the
+> operator, **everything inside it is arvo's to choose**, and everything at its edge is the consumer's
+> contract.
+
+**(P) The partition.** A program divides into maximal stretches whose intermediates nothing binds. That
+is a statement about the program.
+
+**(L) The licence.** Within such a stretch the design may pick any implementation. That is a statement
+about what the design owes.
+
+`170`'s dependence is at the step from "two composites differ" to "which the design owes", which is its
+whole delimiter. **Mine is not in the same place.** I can derive (P) without the rule. I cannot derive
+(L) without it. So the sentence I wrote is part derivable and part not, and the derivable part is the
+definitional part the panel is counting.
+
+### 2.1 The route to (P), and the premise of it that I measured rather than assumed
+
+1. **Contextual equivalence.** Two terms are equivalent when no program context distinguishes them.
+   That is Morris's definition from the programming-languages literature, it long predates this
+   workspace, and it is a definition rather than a principle about obligations.
+2. **Choosing between contextually equivalent implementations is not a change to the program.** They
+   are the same function. This is an identity claim.
+3. **The set of contexts is bounded by the language, and I14 removes the intensional ones.** No `dyn`,
+   no `TypeId`, no `core::any`, and the forbidden list removes `specialization`. Those are the
+   mechanisms by which a program observes which instantiation it is in.
+4. So the contexts that remain can distinguish two implementations only by binding an intermediate,
+   **and this is the step that is a measurement rather than an assumption.**
+5. A maximal run of intermediates that nothing binds is the region.
+
+**Step 4 measured, in `171_probes/channels/` and `171_probes/perimeter/`.** Two implementations of
+`(a + b) - c`, one through an `i64` intermediate and one wrapping in `i32`, extensionally equal
+wherever the true result fits: 1,666,128 inputs swept, **83,084 of them with the narrow intermediate
+overflowing**, and **0 final-value disagreements**.
+
+| channel | needs a binding | distinguishes at `debug-assertions = off` |
+|---|---|---|
+| final value | no | no |
+| `size_of_val`, `align_of_val`, `Debug` of the intermediate | **yes** | yes |
+| overflow panic | **no** | **no** |
+| const evaluation | **no** | **no** |
+
+Controls clean: the pair is extensionally equal and the overflow case is exercised (C-C); a channel
+given a binding does distinguish, so "needs a binding" is not vacuous (C-A); an identical twin is
+indistinguishable (C-B).
+
+**And the perimeters coincide exactly, which I checked because it is the obvious way the route fails.**
+If an intermediate could be bound at a differing type and still admit no distinguishing context, my
+binding-based delimiter and an observation-based one would give different regions. `171_probes/perimeter/`:
+
+| binding | types differ | distinguishing context |
+|---|---|---|
+| transparent | yes | yes, `size_of_val` 8 against 4 |
+| **opaque, behind `impl Trait`** | yes | **yes**, 8 against 4 |
+| transparent | no | no |
+
+**Opacity does not extend the region.** A caller that cannot name the type can still measure the value,
+and the control proves the opacity was real: naming the concrete type behind the `impl Trait` is refused
+with `E0308 ... expected i64, found opaque type` and produces no artifact.
+
+`holds for: rustc 1.98.0-nightly (57d06900f), edition 2024, aarch64-apple-darwin, debug-assertions =
+off, i32 and i64 carriers, the operation (a+b)-c, threads = 1`
+
+### 2.2 Why that route is not the rule under another name
+
+The charge to answer is that "observed" already means "relied upon", so the rule is smuggled in.
+
+**It does not, in my route, and the difference is checkable in one direction.** In my derivation
+"observed" means "some context binds it and can therefore tell two representations apart", which is the
+measured notion above. It does **not** mean "the consumer relies on its value". A consumer may bind an
+intermediate and rely on nothing about it.
+
+So my delimiter is **strictly the more conservative one**: it ends the region at any binding, whether or
+not anything depends on the value. A rule-based delimiter could argue the region extends *past* a
+binding where nothing checks it, giving a **larger** region. That asymmetry runs the opposite way from
+the smuggling charge: if I had been using the rule I would have got a bigger region than I claimed.
+
+And the two propositions are logically independent, which is the argument rather than a measurement:
+
+- *Program identity.* Two implementations inducing the same function are the same program.
+- *Guarantee perimeter.* A guarantee about a type holds only over the operations through which the type
+  can be observed.
+
+One can hold either without the other. A design could hold that guarantees extend past the observation
+surface, as a moral invariant nobody can check, and program identity would be untouched. A design could
+hold the rule and still require one specific implementation for auditability, and the rule would not
+stop it. They are about different objects: one about when two programs are the same, one about what a
+guarantee ranges over.
+
+### 2.3 Where I fail, reported the way `170` reported its own
+
+**(L) is not derivable from 1 through 5.** Contextual indistinguishability tells me the implementations
+are the same program. It does not tell me the design *may roam* among them, because that is a claim
+about what the design owes, and "owes" is the rule's subject.
+
+I tried three routes to (L) that avoid the rule, and all three fail:
+
+**From I15.** "Never any runtime checks, ever... unused paths we clear out when lowered." That licenses
+removing an **unused** path. An unbound intermediate's representation is not an unused path: both
+representations are used. It does not reach (L).
+
+**From I13.** Op's RATIFIED entry licenses composing arms, each optimal on its region, which does
+presuppose the design may pick a lowering. But I13 says **optimal**, not **behaviour-preserving**. I13
+alone would license an arm that computes a different answer. To bound the picking I need "preserve what
+is observable", which is the rule.
+
+**From I3 and I18.** The imitation intent is a constraint on the surface rather than a licence, and it
+makes the design owe *more*, not less. It cannot supply (L).
+
+**So I report dependence for the licence and independence for the partition.** As `170` says, what I
+recall is not the test; the test is whether the argument stands without the principle. For (P) it does,
+and I built the measurement that makes it stand. For (L) it does not.
+
+**What that does not establish.** That the route was **available** does not prove I **took** it. I wrote
+`167` blind with the rule in context and I do not recall reaching for it any more than `170` does. The
+claim is about what stands, not about what happened.
+
+---
+
+## 3. A binding-free channel exists, so (L) is false at one profile independently of where it came from
+
+While testing step 4 I went looking for a channel that distinguishes with no binding, because a probe
+that only tests the channels I expect to need one cannot find the hole. I found two, and they are the
+same two:
+
+| | `debug-assertions = off` | `on` |
+|---|---|---|
+| runtime overflow panic | no | **yes** |
+| const evaluation | no | **yes** |
+
+At `debug-assertions = on`, `wide(a,b,c)` returns `Ok(900000000)` and the narrow arm **panics**, with
+the caller binding only the final value and no name existing for either intermediate. And the narrow
+arm **as a `const`** is refused with `E0080 attempt to compute 1500000000_i32 + 1400000000_i32, which
+would overflow`, with no artifact produced.
+
+**So `167` section 1's "everything inside it is arvo's to choose" is false at `debug-assertions = on`**,
+independently of whether it needed the rule. Two implementations that are the same function are told
+apart by whether the program runs.
+
+**And that is I18's build bound, reached from a direction it was not derived from.** Op bounds the
+native overflow panic to "dev and debug only. It does not survive into a release artifact". That bound
+is exactly the condition under which the region's freedom holds: **a shipped artifact contains no
+binding-free channel, so (L) is true there and false in a development build.** I did not know I was
+testing I18 when I built the probe.
+
+`holds for: rustc 1.98.0-nightly (57d06900f), edition 2024, aarch64-apple-darwin, i32 container, the
+operation (a+b)-c, opt-level in {0, 3}, debug-assertions in {on, off}, threads = 1`
+
+### 3.1 One thing I expected and got wrong, with the control that caught it
+
+I assumed const evaluation checks arithmetic unconditionally, so that the const channel would
+distinguish at **both** profiles and (L) would fail everywhere. It does not: `171_probes/channels/`
+P2b separates optimisation level from the assertion flag and the const channel follows
+`debug-assertions`, not `opt-level`. At `opt-level=3 debug-assertions=off` the narrow const compiles
+and evaluates to 900000000, the wide arm's value.
+
+**The first version of P2b was wrong and its control caught it.** It looped over quoted flag strings in
+fish, which does not word-split, so `rustc` received one bogus argument and all four cells reported
+"does not compile". The control required the wide arm to compile in every cell; it reported NO in all
+four, which is impossible if the table is about the two arms.
+
+**This unit's ninth instrument defect, and its class is new.** The sixth was scope, the seventh markup,
+the eighth case. This one is **the harness rather than the instrument**: the measurement code was
+correct and the shell that invoked it was not. The tell is cheap and general: **a 2x2 whose every cell
+agrees is a tell**, and the control that catches it is one over a cell that must differ.
+
+---
+
+## 4. `60` is not the third hat, and that changes the rung answer
+
+`169` 1.2 establishes that none of `60`, `167` and `168` names the rule, which is true and which I
+verified. `170` 8 then reasons about "the definitional convergence between `167`, `168` and `60`" and
+concludes it is closer to "one instance wearing three hats".
+
+**That step assumes all three definitions are the same kind of definition, and one of them is not.**
+`171_probes/thirdfile/`:
+
+| file | its own defining sentence | observation-bounded | observation vocabulary |
+|---|---|---|---|
+| `60` | "A chain is a composition of exact operations together with a schedule of adaptation points" | **no** | 2 in 7,299 words, 0.27 per 1000 |
+| `167` | "the unobserved region: a maximal stretch ... in which no intermediate is named" | yes | 22 in 14,690, 1.50 per 1000 |
+| `168` | "A chain is a maximal run of operations whose intermediates are not observable" | yes | 26 in 16,986, 1.53 per 1000 |
+
+**`60`'s definition is not observation-bounded.** It says what a chain **contains**, a schedule of
+adaptation points. Mine and `168`'s say what **bounds** one. `167` R7 had already recorded that split,
+in these words: "C9 says what a chain **contains**. Mine says what **bounds** one", and neither `169`
+nor `170` had it in view.
+
+Controls clean: `167` and `168`'s defining sentences do match the pattern, so `60`'s zero is a fact
+about `60` (C-I); `60` does state a definition of another shape, twice (C-J); and normalisation was
+load-bearing on 2 of the 3 defining sentences, so an earlier shell version of this probe found nothing
+in `60` and was wrong (C-K).
+
+**So the rung arithmetic is:**
+
+- The observation-bounded convergence is between **two** files, `167` and `168`, not three.
+- Both had the rule in context and neither declared it. `170` reports dependence for its delimiter. I
+  report dependence for the licence and independence for the partition, with the route shown.
+- `60` is a **third definition of a different shape**, which is worth more to the panel than a third
+  instance of the same one would be, because two definitions that compose are a stronger position than
+  three that repeat. `167` R7 already states the composition: an adaptation point is forced where an
+  intermediate is observed and free everywhere else.
+
+**What this does to O-169-2 and O-170-3.** It does not close them, and it makes the dispatch cheaper:
+the cold derivation with the rule removed needs to test **one** claim, the partition, and it now has a
+candidate rule-free route to check rather than an open question. If a blind expert without the rule
+reaches the partition, the route is confirmed; if it reaches something else, my section 2.1 is wrong in
+a way I cannot see from inside.
+
+`holds for: the three files as committed at this branch, the patterns in the probe source, threads any`
