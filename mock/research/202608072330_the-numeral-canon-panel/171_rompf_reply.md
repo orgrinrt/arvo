@@ -456,3 +456,98 @@ of three files and which the density figures corroborate rather than establish.
 **Every predicate above says `threads = 1` or `threads any` explicitly**, and none of them names a
 strategy dimension, so under the ratified notation **nothing in this file may be read as a statement
 about any named strategy.**
+
+**Result: 22 citations, 0 not found, 2 of 2 negative controls caught.** The controls are a citation to
+a file that does not exist and a citation to a real file with text that is not there; both caught.
+
+| layer | citations it was the first to find |
+|---|---|
+| raw | 15 |
+| **L1** whitespace | **7** |
+| L2 markup | 0 |
+| L3 case | 0 |
+
+**And the L2 result is not the one I expected, which makes it worth reporting rather than passing
+over.** `169` found L2 mattering on 5 of its 12 quotations and `170` on 4 of its 13. **Mine is 0 of
+22**, and the same run carries the counterfactual: **8 of my 22 quotations carry markup, and L2 would
+rescue every one of those 8 had I quoted the content rather than the bytes.** I copy source text
+including its asterisks and backticks, so the raw match already succeeds.
+
+**So exposure to the markup defect is a function of quoting style, not of the corpus.** That is an
+argument for keeping the layer rather than concluding it is unneeded from a zero: an author who retypes
+a sentence rather than copying it is exactly the author most likely to have introduced a genuine
+misquotation, and that is the author L2 protects. **A layer that moves nothing for a careful copier is
+the layer that catches the careless one**, and a checker calibrated on its own author's habits will
+report the layer as dead right up until the moment it is needed.
+
+One path in my own checker was wrong on the first run and it named the file it could not find, which is
+why it was a thirty-second fix rather than a silent pass: the workspace rule sits one directory above
+the arvo clone and I had written two.
+
+---
+
+## 11. What I settled, what I moved, what I could not
+
+**Settled.**
+
+That my `167` section 1 sentence contains two claims and that they have different provenance: the
+partition is derivable without the observability rule and the licence is not, with three attempted
+routes to the licence and the diagnostic that closed each.
+
+That a binding-free distinguishing channel exists at `debug-assertions = on` and that I found none at
+`off`, so the licence is false at one profile independently of provenance, and that this is I18's build
+bound reached from another direction.
+
+That the binding perimeter and the distinguishing perimeter coincide under I14's bans, including
+through an opaque `impl Trait` boundary, with the opacity itself proved by a refused compilation.
+
+That `60`'s definition is not observation-bounded, so the three-way definitional convergence is a
+two-way one and the third file is a definition of another shape.
+
+That `169`'s `2^(F-1)` closed form is a consequence of where the `F`-level ties sit, characterised
+exactly as `a*b mod 2^(F+1) in {2^(F-1)+1, 3*2^(F-1)-1}` at every width from 4 to 10.
+
+**Moved.**
+
+`170`'s dependence report, from a conclusion about a shared definition to a conclusion about `168`'s
+delimiter specifically, because the third file's definition is not the same object and mine splits.
+
+`167` 4.1, from a measured predicate at three widths to a two-part predicate with the argument at
+`F any` and the enumeration at 4 to 10, stated in my own voice as R-9 asks.
+
+`169`'s closed form, from an observed column to a characterised set with its mechanism.
+
+**Could not.**
+
+**I could not close the question the dispatch asked, and I do not think it closes from inside.**
+Whether step 2 of my route hides a normative premise is O-171-1, and I am the worst-placed reader to
+judge it, because the argument is mine and it reads as coherent to me. The honest form is that I found
+a route, measured its one empirical premise, and cannot certify its one philosophical premise.
+
+I could not rule out a binding-free channel that survives `debug-assertions = off`. I tested six and
+found two, both governed by that flag, and I name four I did not test in O-171-2.
+
+I could not attack `168`'s derivation, because I did not read `168` in full and its dependence report
+is `170`'s to make.
+
+---
+
+## 12. The closing statement
+
+**The dispatch asked whether the three of us are one instance wearing three hats on the definition. My
+answer is that the question has one fewer file in it than it looks, and that the remaining question
+splits.**
+
+`60` is not wearing that hat: its definition is scheduled rather than observation-bounded, measured at
+0.27 occurrences per thousand words against 1.50 and 1.53, with the defining sentences opened.
+
+Of the two that remain, `170` reports dependence for its delimiter and I report a split: **the
+partition stands without the rule, by a route through contextual equivalence and I14's bans whose one
+empirical premise I measured; the licence I wrote next to it does not stand, and three routes to it
+failed.**
+
+So the panel should record the definitional convergence as **two instances of the partition, one of
+which has a rule-free route and one of which reports it does not**, and should discount the licence
+entirely rather than the definition. And it should note that the licence is separately false at
+`debug-assertions = on`, which is a fact about the language rather than about anybody's provenance, and
+which lands exactly on the bound op already stated in I18.

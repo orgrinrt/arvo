@@ -26,7 +26,18 @@ const fn wide(a: i32, b: i32, c: i32) -> i32 {
 const WIDE: i32 = wide(A, B, C);
 
 fn main() {
-    println!("profile = {}", if cfg!(debug_assertions) { "debug" } else { "release" });
+    println!(
+        "profile = {}",
+        if cfg!(debug_assertions) {
+            "debug"
+        } else {
+            "release"
+        }
+    );
     println!("C-D  the wide arm compiles as a const: yes, WIDE = {WIDE}");
-    println!("C-E  matches the runtime value {}: {}", wide(A, B, C), WIDE == wide(A, B, C));
+    println!(
+        "C-E  matches the runtime value {}: {}",
+        wide(A, B, C),
+        WIDE == wide(A, B, C)
+    );
 }

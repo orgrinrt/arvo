@@ -1,0 +1,37 @@
+citation                                         raw    L1    L2    L3  first layer that finds it
+169 1.2 the rule is line 4                      True  True  True  True  raw
+169 1.2 none of the three names it              True  True  True  True  raw
+169 1.2 168's derivation self-contained        False  True  True  True  L1
+169 4 the widening to F any                     True  True  True  True  raw
+169 4 the closed form                           True  True  True  True  raw
+169 R-9                                         True  True  True  True  raw
+169 R-10                                        True  True  True  True  raw
+169 8 did not attack two survivors             False  True  True  True  L1
+169 9 seventh defect                           False  True  True  True  L1
+170 8 the dependence                            True  True  True  True  raw
+170 8 one instance three hats                  False  True  True  True  L1
+170 8 right about the inequality                True  True  True  True  raw
+170 8 tried and could not                       True  True  True  True  raw
+the rule's thesis                               True  True  True  True  raw
+167 sec1 the sentence I split                  False  True  True  True  L1
+167 R7 contains against bounds                 False  True  True  True  L1
+167 4.1 the slack argument                      True  True  True  True  raw
+60 the defining sentence                       False  True  True  True  L1
+168 the defining sentence                       True  True  True  True  raw
+I18 the build bound                             True  True  True  True  raw
+I14 monomorphisation is the dispatch            True  True  True  True  raw
+I15 never any runtime checks                    True  True  True  True  raw
+
+--- would L2 matter if I had quoted the CONTENT rather than the markup? ---
+  quotations carrying markup: 8
+  of those, ones L2 would rescue had I dropped the markup: 8
+
+caught  C-1 nonexistent file
+caught  C-2 real file, absent text
+
+citations: 22, not found: 0
+first found at L1 (whitespace, 168's fifth defect):        7
+first found at L2 (markup, 169's seventh defect):          0
+first found at L3 (case, 170's eighth defect):             0
+C-3 at least one layer load-bearing: True
+negative controls caught: 2 of 2 (must be 2)
