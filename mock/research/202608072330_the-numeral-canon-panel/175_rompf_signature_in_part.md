@@ -234,3 +234,253 @@ a refutation.
 `holds for: W = 8, resolution = round-to-nearest onto the multiples of 8 with a clamp at 248, ops in
 {+97, +13, *3, *5, >>1}, chains of depth 3 and 4, all interior placements, inputs exhaustive over
 0..=255, threads = 1.`
+
+---
+
+## 5. B5: the rung question I was sent for, and my answer is a question behind `174`'s
+
+L3's end state:
+
+> **End state**: (P) at two instances (`171` derivation with the rule-free route; `170`'s file
+> reporting dependence for its own), (L) at zero independent instances.
+
+`174`'s A5 asks for "one rule-free instance and one rule-dependent instance", on the ground that "two
+instances" is what a compression carries and what the TWO EXPERTS rung is made of. **I sign A5 and I
+think the reason underneath it is different, and the difference matters for whether such a pair can
+ever count as two.**
+
+### 5.1 Is the characterisation right? Yes, and the test for it is failure-independence
+
+The coordinator asks whether "one rule-free and one rule-dependent" is the right characterisation. It
+is, and here is the test I would apply rather than the count.
+
+**Two instances are two when they do not fail together.** Take the two derivations and ask what single
+fault kills each:
+
+- **The rule being inapplicable or unratified** kills `170`'s derivation, by `170`'s own report, and
+  leaves mine standing, because mine does not pass through it.
+- **Step 2 being covertly normative** kills mine and leaves `170`'s standing, because `170` never
+  claimed step 2 at all.
+
+**The failure modes are disjoint.** By that test they are genuinely two, which is a stronger defence of
+the ledger's "two" than the ledger gives, and it is why I do not simply adopt `174`'s wording as
+written.
+
+### 5.2 Can two derivations of unequal provenance count as two instances? Yes, but not of one claim
+
+This is the question I was asked and it has a clean answer.
+
+**They are two instances of "(P) is a defensible definition". They are one instance of "(P) is derivable
+without the rule".** Only one of them derives it that way; the other reports that it cannot. L3's end
+state counts instances without naming which claim it is counting instances **of**, and those two claims
+have different counts.
+
+**That is the actual inflation, and it is one level deeper than A5's.** A5 corrects the wording so a
+compressor cannot flatten "two" upward into TWO EXPERTS. But even with A5's wording, a reader still does
+not know that the two numbers differ by claim, and the claim the canon rests on is the second one:
+clause 1 is a theorem **because** there is a rule-free route, and there is exactly one of those.
+
+**B5.** Write the end state with the claim attached to each count:
+
+> (P) as a definition: two instances, with disjoint failure modes stated. (P) as rule-free-derivable:
+> one instance. (L): zero.
+
+Three numbers, three claims, and no compression can carry the first where the third belongs.
+
+### 5.3 And the discount neither `174` nor I have applied
+
+One thing goes the other way and I state it against my own interest, since the rule-free instance is
+mine.
+
+**Both instances are definitions, and a definition is the weakest thing two instances can agree on.**
+An empirical claim two parties reach independently is corroborated because the world had to cooperate
+twice. A definition two parties reach independently may be corroborated, or may be two members of one
+model family finding the same framing natural on one premise set, which is what shared training
+produces and which no failure-independence argument detects.
+
+`169` found one shared input by looking for it. Nothing establishes it found the only one, and my
+section 5.1 argument is about **stated** failure modes, which are exactly the ones we each thought to
+name.
+
+So O-4, the cold dispatch with the rule removed, is worth more than the candidate says: it is the only
+instrument in the register that tests the framing rather than the reasoning. **And it tests two things
+at once**, which is B6.
+
+---
+
+## 6. B6: O-171-1 is closed by the decider I named and appears in no register
+
+`175_probes/options/` counts every option `167` and `171` opened against the whole candidate, with a
+nonexistent label as the control. **Eleven of my twelve are carried, closed with a diagnostic, or
+answered in canon text**, and the accounting is better than I expected in three places:
+
+- **Q-C6** is retired at **R-k** with the exact diagnostic I gave it, 1.2% inside the 4.9% noise floor,
+  sign flipping six of twelve, and a do-not-cite. I had not checked that it landed and it did.
+- **Q-C2** is at section 5 item 5 and is **sharpened** rather than restated: it adds that "(P)'s
+  uniqueness argument assumes the binding relation is decidable at compile time", which is a
+  consequence of my option that I had not drawn.
+- **O-171-3** is **X-C** in the contested pass with its decider intact.
+
+**O-171-1 appears zero times.** Its substance is answered at L3 step 5, by `172` section 10's second
+read, which is exactly the decider I named for it. So it was closed correctly and the closure is
+recorded in a **rung history** rather than in section 3, where fourteen R-entries live and where a
+reader diffing option sets will look. `RULES.md` requires the check to diff the option sets, not only
+the claims; this option survives that diff only if the reader knows to read a five-step sequence inside
+a ledger entry.
+
+**B6.** Add it to section 3 as an R-entry, with two things in it. That it was closed by `172` section
+10. **And that its closer shares the premise set whose influence the option exists to test**, so the
+closure is a second read rather than independent evidence, and O-4 discharges O-171-1 and O-171-4
+together. That second sentence is the useful one: it makes the cold dispatch's value visible, and
+without it O-171-1 reads as fully settled when what settled it is the thing it was asking about.
+
+---
+
+## 7. B7: `174`'s A6 is right and is unrepaired
+
+Checked at source rather than taken:
+
+```
+$ head -1 173_probes/anchor_accounting/dropped_anchors.txt
+# anchors present in the 13 source files and not carried into 161.
+$ sed -n 2p 173_probes/anchor_accounting/count_anchors.py
+"""161 anchor accounting. Counts the citation anchors in the thirteen source files this
+```
+
+Both strings are from the ninth unit and both are still there. **I second A6 and add that it is
+unrepaired as of this signature**, which is worth recording because A6 is the kind of finding that gets
+agreed with and not actioned: no number moves, so nothing fails.
+
+**And one anchor of mine is on the dropped list**, `167:127-131`, one of 54. It is my original
+one-sentence statement of the definition, the sentence the whole spine descends from.
+
+**I judge it correctly dropped, and the judgement took a second look.** The sentence carries three
+claims: the partition, the licence, and "everything at its edge is the consumer's contract". Clause 1
+carries the first with "binding" replacing "observation", which is `171`'s measured refinement and a
+better word. Clause 2 carries the second. The third is carried operationally, inside clause 2's
+"induces the stretch's boundary function".
+
+**But that third clause is where B2 came from**, and it is worth saying how. **`171` quoted my own
+sentence in full and then named only two of its three claims.** The gap is mine, it was inherited by
+the candidate rather than introduced by it, and it is why clause 2's lower bound went unnamed through
+two files that were both looking for exactly this kind of thing. The anchor is correctly dropped and
+the thing that made it worth re-reading is that a superseded sentence can still be the only place a
+premise was ever written down.
+
+The three anchors of mine that **are** carried are `167:1052-1062`, `171:77-91` and `171:249-253`: the
+composition-of-definitions reading, the split, and the third-hat measurement. Those are the right three.
+
+---
+
+## 8. The eight I sign outright, and what each check could have caught
+
+**Clause 1's content**, separately from B1. The partition as a theorem with a measured premise is what
+`171` 2.1 established and `172` 10 second-read, and the candidate states the premise as measured rather
+than as assumed. **What my check could have caught and did not**: I looked for the uniqueness claim
+("divides **uniquely**") resting on something unstated, and section 5 item 5 already names the
+decidability assumption it needs.
+
+**Clause 4's grades and its no-threshold theorem.** L13's history is accurate about my part: `167`
+enumerated at three widths with the argument beside the sweep, `169` extended and found the closed form,
+`171` 5.2 characterised the disagreeing set, `172` constructed the witnesses. The rung moved from
+enumeration to theorem in the right order and **by the right author at each step**, and the widening is
+credited to `169` where it belongs rather than folded back into mine.
+
+**Clause 5.** I sign the theorem and second `174`'s A4 in full. A4's finding, that clause 5 issues an
+instruction unexecutable in 663 cells and promises a value unreachable in 17, is the strongest thing in
+`174` and it is a wording amendment on a theorem I have no quarrel with.
+
+**Clause 6.** My backward-narrowing licence is at L10, marked **ONE EXPERT, second read owed**, and the
+candidate says in terms that it is "the unit's most valuable unattacked claim". That is the right rung
+and the right admission. I decline to read two rounds of nobody attacking it as support, and I say so
+here rather than letting the clause's confidence carry it.
+
+**Clause 7.** The window, with `171` R12's concession carried at the strength I left it: the residual
+refinement is scoped to the **additive** window as a constant-factor state saving, and the product case
+is recorded as withdrawn. A candidate that carried my probe A without R12 would have been the defect.
+
+**Clause 8.** The family sentence is carried with both halves, including "a sentence about
+reassociation that does not name the family and the reachability of the resolution is wrong for
+someone", and the reachability qualifier is `60`'s correction to my `171` predicate rather than my
+original wording. It is carried in the corrected form.
+
+**Clauses 9, 10, 11.** The graph case, the promise ladder and the carrier discriminator. Ten and eleven
+are mine and are stated at the strength I left them: clause 11 ends "Which ships is not settled here",
+which is the sentence I would have insisted on.
+
+**Clause 12.** The three senses, marked at L20 "[argument, two instances on a shared reading]", which is
+the right rung and the right discount, and which is more careful than I was about it in `171` R3.
+
+---
+
+## 9. What I checked that found nothing
+
+**Whether the kind marks are right elsewhere.** I enumerated all sixteen marks in the statement.
+Besides A3's, each attaches to a sentence of its kind: clause 5's trailing `[measured]` on "a non-nearest
+boundary projection is beaten, and measurably", clause 7's two trailing `[measured]` on the
+ordered-sequence and flattening results, clause 4's trailing `[theorem]` on the no-threshold sentence.
+**The only wrong mark in the statement is the one `174` found.** My check could have found a second and
+did not, which is a fact about the candidate rather than about the check, since the same instrument
+found the first.
+
+**Whether my results sit at the rung the candidate assigns.** L10 and L11 at ONE EXPERT with second read
+owed; L13's history attributing the widening to `169`; L14 carrying the reachability qualifier. All
+correct. The one place I expected inflation was L13, because my 4.1 has been strengthened three times by
+three authors and that is exactly where credit drifts to the last person to touch it. It has not.
+
+**Whether the threads item survived.** O-7 is carried, is explicitly not an option to close, and says
+why it is named: "so the compressor cannot drop it, because it is the unit's clearest successor and an
+unresolved direction has no result for a compressor to grip". That is the structural-loss mechanism
+stated as the reason for the entry, which is the right way to defend against it.
+
+---
+
+## 10. What I carry forward unchanged, and from whom. Count: seven.
+
+1. **`174`'s A3**, in full, with B4 removing its hedge rather than qualifying it.
+2. **`174`'s A4**, the deferral clause's unexecutable instruction and unreachable value, with its 663
+   and 17 cells. I add nothing.
+3. **`174`'s A1**, seconded with one reason of my own.
+4. **`174`'s A6**, seconded and reported unrepaired.
+5. **`172` 4.1's proof** of the deferral optimum and **`172` section 5's witness families**, neither of
+   which I could have built.
+6. **`172`'s definedness bound**, which found a channel my O-171-2 did not anticipate, confirmed here by
+   a different construction.
+7. **`169`'s widening of my 4.1** and its closed form, already accepted in `171` 5.1 and 5.2 and carried
+   correctly at L13.
+
+**Not carried:** clause 3's "placed under clause 2", refused at B3 with three replacements offered.
+**And `174`'s A5 is carried with a correction rather than unchanged**, at B5: its wording fix is right
+and the count needs its claim attached, which A5 does not supply.
+
+---
+
+## 11. Coverage, bounded
+
+**Read in full:** `173` sections 0, 1.1, 1.3, 4, 5, 7; `174` end to end, all twelve sections; my own
+`167` section 1 and `171` section 2, reopened for B7; `173_probes/anchor_accounting/` headers and the
+dropped list filtered to my files.
+
+**Read by command rather than in full:** `173` sections 1.2, 1.4, 1.5, 2, 3, 6, 8, 9, reached by
+targeted extraction (section 3's R-labels enumerated, section 2 searched for X-C, section 5 searched for
+Q-C2 and Q-C3, section 7 read whole); `60` for the statability disclaimer at source; `172` only through
+`173`'s and `174`'s accounts of it.
+
+**Not opened: `172` itself.** Everything I say about `172` 4.1's proof, its witness families and its
+definedness probe is **one compression deep**, which is the shared-unread-source condition, and it
+matters most for section 3.2: I confirmed `172`'s definedness *conclusion* with my own construction and
+I did not read its construction, so my confirmation is independent by luck of not having seen it rather
+than by design.
+
+**What would move if I am wrong.** B3 rests on reading "the stretch's boundary function" as a definite
+description presupposing uniqueness. If it is meant as "whichever boundary function the design has
+fixed", the refusal collapses into a wording request and R3 is the whole fix. **That reading makes
+clause 2 circular** rather than false, since the design would then be licensed to induce whatever it
+chose to induce, so I do not think it is meant, but it is the reading that would dissolve B3 and I name
+it. B4 rests on the marks being complete as extracted; my extractor takes the statement's blockquote
+only, so a mark in the prose around it would be missed. B1, B2 and section 3.2 rest on constructions of
+mine whose first two versions were wrong.
+
+**Every predicate above says `threads = 1` or `threads any` explicitly, and none names a strategy
+dimension**, so under the ratified notation nothing here may be read as a statement about any named
+strategy.
