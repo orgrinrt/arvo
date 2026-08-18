@@ -1325,3 +1325,20 @@ named gap given that it is a prior dispatch of this persona on an adjacent quest
 produced it. It is a grep over the live panel root excluding my own files, it searches fifteen patterns,
 and it is the instrument that found `60`. It bounds R12's claims and nothing more: a pattern absent from
 it is absent from the filenames and bodies it searched, not from the panel.
+
+---
+
+## R14. Citations checked, by opening them
+
+`167_probes/citecheck/`. Every citation in this file, both phases, opened at the location cited and
+tested for content rather than for resolution. **27 citations, 0 failures, 2 of 2 negative controls
+caught**, the controls being a citation to a file that does not exist and a citation to a real file at a
+real line with text that is not there.
+
+Two of my own citations failed on the first run and both turned out to be accurate: the quoted phrases
+spanned a line break in `60`, so a raw substring match could not find them. The checker now normalises
+whitespace, and the negative controls were rerun after that change and still fire. A checker that reports
+false failures on wrapped quotations trains its reader to dismiss its failures, which is worse than not
+having one.
+
+Style checks on this file: zero em-dashes, zero en-dashes, zero exclamation marks in prose.

@@ -49,9 +49,32 @@ CITES = [
      "eighteen files reported the packed-storage trade as"),
     ("satfold assoc law test", f"{B}/variants/satfold-shared/src/lib.rs", None,
      "fn saturating_addition_is_associative_at_eight_bits"),
+    ("60 sec3 five things", f"{D}/60_stam_the_chain_derived_cold.md", None,
+     "What a chain needs that a single op does not"),
+    ("60 schedule is the index set", f"{D}/60_stam_the_chain_derived_cold.md", None,
+     "the schedule is also the index set of the error analysis"),
+    ("60 sec5 the window", f"{D}/60_stam_the_chain_derived_cold.md", None,
+     "The resolution is the **window**"),
+    ("60 D-C is D-B with ceremony", f"{D}/60_stam_the_chain_derived_cold.md", None,
+     "D-C is D-B with ceremony"),
+    ("60 probe B saturating fold orders", f"{D}/60_stam_the_chain_derived_cold.md", None,
+     "gives 7767 or 15000 depending on order"),
+    ("60 grade b counts", f"{D}/60_stam_the_chain_derived_cold.md", None,
+     "15,628 of 46,656 inputs wrong"),
+    ("60 chain definition", f"{D}/60_stam_the_chain_derived_cold.md", None,
+     "A chain is a composition of exact operations together with a schedule"),
+    ("OPTIONS Q42 crossovers", f"{D}/OPTIONS.md", None,
+     "the 16-lane arm first pays at `L = 32`"),
 ]
 
 WINDOW = 3
+
+def norm(t):
+    """Collapse all whitespace. A quotation is a claim about words, not about where
+    the source happened to wrap. Added after two of my own citations failed on a
+    newline inside the quoted phrase and turned out to be accurate."""
+    return " ".join(t.split())
+
 fails = 0
 for label, path, line, needle in CITES:
     full = os.path.join(ROOT, path)
@@ -61,12 +84,12 @@ for label, path, line, needle in CITES:
         continue
     text = open(full, encoding='utf-8').read()
     if line is None:
-        ok = needle in text
+        ok = norm(needle) in norm(text)
         where = "anywhere in file"
     else:
         lines = text.splitlines()
         lo, hi = max(0, line - 1 - WINDOW), min(len(lines), line + WINDOW)
-        ok = needle in "\n".join(lines[lo:hi])
+        ok = norm(needle) in norm("\n".join(lines[lo:hi]))
         where = f"lines {lo+1}..{hi}"
     print(("ok    " if ok else "FAIL  ") + f"{label}  [{where}]")
     if not ok:
@@ -87,7 +110,7 @@ for label, path, line, needle in bogus:
     else:
         lines = open(full, encoding='utf-8').read().splitlines()
         lo, hi = max(0, line - 1 - WINDOW), min(len(lines), line + WINDOW)
-        caught = needle not in "\n".join(lines[lo:hi])
+        caught = norm(needle) not in norm("\n".join(lines[lo:hi]))
     print(("caught" if caught else "MISSED") + f"  {label}")
     nc_caught += caught
 

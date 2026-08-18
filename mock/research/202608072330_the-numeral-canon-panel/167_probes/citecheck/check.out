@@ -17,9 +17,17 @@ ok    INTENTS I3 ergonomics  [lines 88..94]
 ok    INTENTS I15 never runtime checks  [lines 303..309]
 ok    RULES eighteen files unpriced  [lines 404..410]
 ok    satfold assoc law test  [anywhere in file]
+ok    60 sec3 five things  [anywhere in file]
+ok    60 schedule is the index set  [anywhere in file]
+ok    60 sec5 the window  [anywhere in file]
+ok    60 D-C is D-B with ceremony  [anywhere in file]
+ok    60 probe B saturating fold orders  [anywhere in file]
+ok    60 grade b counts  [anywhere in file]
+ok    60 chain definition  [anywhere in file]
+ok    OPTIONS Q42 crossovers  [anywhere in file]
 
 caught  NEGATIVE CONTROL: nonexistent file
 caught  NEGATIVE CONTROL: right file wrong text
 
-citations checked: 19, failures: 0
+citations checked: 27, failures: 0
 negative controls caught: 2 of 2 (must be 2, else the checker cannot fail)
