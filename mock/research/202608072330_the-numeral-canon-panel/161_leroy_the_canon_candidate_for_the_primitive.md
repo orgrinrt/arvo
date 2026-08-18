@@ -497,3 +497,222 @@ selector whose request-versus-resolution placement was settled in `106` section 
 four's ledger, pointed at), with `109`'s own recommendation to carry the marker withdrawn in its
 phase two on that ground.
 
+---
+
+## 4. The statement
+
+Offered, not settled. Op decides, and per I12 an opinion given before the experts converge is an
+ack. This is what the two sittings jointly support with every correction of sections 1 and 3
+applied, written to compose with `108` section 7 (the strategy pair) and with `122`'s ledger (the
+propagation clauses) rather than to replace either. Clauses conditional on op's premise say so
+inline. Each clause's rung is the ledger entry it compresses, cross-referenced in brackets.
+
+> **1.** A **primitive** is a value set together with **one realisation map** taking an exact
+> result back into it, over a declared operation set. Rounding between grid points and completion
+> outside the range are two regions of that one map, never two mechanisms. [L1, L2]
+>
+> **2.** Its **identity** is that structure up to denotation-preserving isomorphism, relative to
+> the declared operation set. Of the three sameness relations, nominal, representational,
+> denotational, each licensing a different operation (assignment, memory reinterpretation,
+> rewriting), only the denotational one is a congruence under composition, which is why it and
+> only it licenses substitution inside a composite. [L5]
+>
+> **3.** A **law is read off the algebra and never declared.** A declared law is a claim nothing
+> constrains, it compiles while false, and an optimisation gated on it substitutes wrong answers
+> along a name. Read as a **demand**, a law is a predicate over the configuration space, a surface
+> a consumer may query and never a field a consumer may set. Closure is prior to every law: an
+> operation that leaves its value set is not yet the function the law would be about. [L8, L9]
+>
+> **4.** The **signature is part of the definition**: how many primitives exist is not well posed
+> until the operation set is fixed, and the unit of definition is a family closed under the
+> operations rather than one carrier alone. The identity a signature induces is determined by the
+> **reach** of its terms into the realisation map's domain; it is monotone in that reach,
+> saturates when the reach is the whole domain, and a full literal reaches saturation at depth
+> one, so a design that can write a literal needs no closed operation set for stable identity.
+> This holds over signatures whose operations are functions of the value set and the realisation
+> map; an observation of the container is outside that class and splits every class it touches,
+> and **whether such an observation ships is op's open decision**, on which this clause's
+> saturation is conditional. [L6, L7; conditional on `156` item 1]
+>
+> **5.** The **realisation is a lens**: a placement of the value's bits, a carrier, an offset and
+> a width, within a carrier allocation. The lens **degenerates to an ordinary value exactly where
+> its focus is the sole logical occupant of its carrier allocation**; padding is permitted,
+> sharing is not. At a degenerate point the language supplies a standalone type and the native end
+> never mentions the lens; everywhere else the primitive is reached through its carrier and no
+> `Sized`-bounded contract ranges over it. Whether a placement has a standalone name is a property
+> of the target's addressing, never of the primitive, so this canon states the reason and no
+> arity. The lens's form is invariant under the container decision; only identity's granularity
+> moves with it. [L22, L23, L24, L25]
+>
+> **6.** The realisation is **not part of identity and is emphatically part of the surface**: a
+> consumer may ask for the storage-minimising placement, and denotational sameness is what
+> licenses the substitution underneath that choice. An axis the realisation map does not read
+> **must not** be a type parameter; an axis the arm selection reads **may** be one, because
+> weakening repairs it and weakening is free. The cost of two names for one primitive is a
+> property of where the spellings meet: nothing at a monomorphic site, one threaded parameter at
+> a polymorphic signature, and no repair at a homogeneous container, which is why a spurious
+> parameter's whole cost lands on the storage path this design protects. [L4, L26, L27]
+>
+> **7.** A **refinement** is a declared restriction on where an operation's arguments lie. It is
+> not a coordinate of the primitive, because a restricted carrier carries no algebra; it is not a
+> member of the declared semantics, because moving it changes no denoted answer and consumers
+> holding different refinements of one value are all correct. It is a **grade**: ordered by
+> weakening, transformed rather than preserved by each operation, read only by the arm selection,
+> with as many parts as the realisation map has regions. Weakening is the identity on the
+> representation and free at both ends of the declared range; tightening is a compile-time
+> refusal naming the instantiation. What a discharged refinement licenses is the substitution of
+> one arm for another on a term, never the identification of two primitives and never the
+> reinterpretation of bits. How a refinement propagates is not part of what it is, and the
+> propagation discipline is stated in the realisation-map topic's own ledger. [L11, L12, L13,
+> L14; propagation at `122`]
+>
+> **8.** The **type** carries whatever must be const-available to decide validity or select a
+> lowering, and that criterion is compelled rather than chosen: a parameter left runtime forces
+> the check the design's own intent forbids. Membership in the type and identity of the primitive
+> are two criteria answering two questions, and a design needs both. [L15]
+>
+> **9.** The type owes the denotation **adequacy**, and adequacy is two obligations of different
+> kinds plus an order. **Soundness**: the denotation factors through what the type carries, over
+> every build; it is structural, needs no enumeration, and is not enforceable by a signature nor
+> by anything that inspects one build, so its residual obligation is a restriction on what the
+> realisation-map call path may read, checkable as a property of a call graph. **Completeness, up
+> to weakening**: every pair of distinct shipped instantiations is either separated by one
+> witness, discharged at any width with nothing to transfer, or connected by a weakening in
+> exactly one direction; a pair with neither is a spurious split and is refused. The obligation
+> is **per pair of shipped instantiations**, not per axis, because an axis can be read at some
+> instantiations and not at others. The axis classification, two directions spurious, one
+> refinement, zero declared semantics, is this same obligation stated per axis. [L16, L17, L18,
+> L19, L20]
+>
+> **10.** The classification's verdicts **age differently as the signature grows**: declared
+> semantics and refinement are stable, spurious is provisional. Eliminating an axis from the
+> surface is licensed only where its two-direction verdict holds at the largest signature the
+> design will ever admit, which with a full literal is the realisation map's whole domain; at the
+> shipped signature, inertness is a licence the resolver may take under a predicate, never a
+> reclassification of the axis. [L21]
+>
+> **11.** **Naming is partial and injective, or it is broken.** A name is an existence claim:
+> the set of names is the set of supported compositions, the boundary between nameable and
+> unnameable is where compile-time validation happens, and the naming function is the validator.
+> Two names for one primitive is a missed merge whose cost clause 6 states. [L26]
+>
+> **12.** **Configuration is not composition.** Choosing a format, a system, a strategy fills in
+> a record; composition is a construction taking an algebra to an algebra; and a **composite is a
+> primitive under the same definition**, so one concept serves and every contract written for a
+> primitive applies to a composite unchanged. A construction carries two things of its own, a
+> predicate on its base and a transformer for its base's refinements; **equality transports
+> through a construction for free and a predicate never does**, and borrowing the base's rule for
+> either is the error. [L28, L29]
+>
+> **13.** **Chain accuracy lives in the operator's typing, not in the operand's type.** An
+> operator closed over its operand type forces per-step quantisation; allow the result to be a
+> different primitive and the chain story falls out of the typing with no chain policy existing
+> anywhere. A per-value primitive has no slot for chain accuracy, and adding one would be adding
+> a slot for a property that is not about the value. [L30]
+
+**Permanence.** Every sentence survives a rewrite in another language or decade. None names a
+container width, a marker, a type parameter, a crate, or a count. Clause 5 names `Sized`, which is
+the boundary the clause is about, and survives translation to any language with an addressable-
+value boundary.
+
+**Equivalence.** Two teams implementing this produce units that behave the same on what matters:
+a law is never writable by hand; a sole-occupant placement is an ordinary value and a shared one
+is reached through its carrier; a consumer declares a restriction and gets the cheap arm where a
+sound rule proves it, with an undischargeable declaration a build failure and never a runtime one;
+weakening never costs and tightening never compiles; no axis nothing reads appears as a parameter;
+no pair of shipped types is connected both ways and separated by nothing; a composite refuses a
+lift its own transformer does not license; and no axis is deleted from the surface on the evidence
+of the shipped signature alone. They differ on the lens's spelling, the sugar at the degenerate
+point, how many parts a refinement has beyond the two named, how many primitives ship, and the
+boundary shape at the wall, which is X2 and is the residue op's designers settle.
+
+**Where it is weaker than offered.** Everything enumerative in both sittings is at `W <= 6`
+except where a closed form or an argument is named, and no transfer argument to a real width
+exists for any of it (Q53's three honest forms remain unclaimed). Non-uniform value sets are
+untested anywhere in either sitting, and that is where arvo's float side lives. Clause 13's
+evidence is truncation-only. Clause 9's certificate is unpriced. Clause 4 is conditional on op.
+
+---
+
+## 5. What the topic did not settle
+
+Named as obligations inherited, not as doubts about the statement.
+
+1. **No transfer argument to real widths** for anything enumerative, in either sitting. Q53 names
+   the three honest forms (symmetry, saturation point, induction) and none has been made for any
+   topic-five claim. The exceptions that need none are the closed-form witness (a loop over every
+   width a `u64` holds), the reach argument, the size-in-bytes argument, and the analytic
+   exclusions, each marked as an argument where it appears.
+2. **Non-uniform value sets**: untested by every instrument in both sittings; `110` names it as
+   its largest gap, `112` repeats it, nothing in the ninth unit touched it.
+3. **`F > 0`** for most claims: the committed bench corpus sweeps no fraction axis at all
+   (`155`'s probe), and the model sweeps that do reach `F in {1, 2}` are the minority.
+4. **Whether consumer terms are trees or DAGs**, named by `114` as the assumption it is least
+   comfortable with; nothing measures it.
+5. **The direction count at distinct value sets** (`160` 5.4): the certificate's classification
+   half collapses to extent inclusion only where the identity map is forced; across distinct
+   value sets existence is a search nobody has built.
+6. **Every magnitude.** Nothing in either sitting priced anything on the harness; the one
+   consumer-attached item (the accumulator-width collapse under the shipped guard) is topic six's
+   and was explained unpriceable-as-things-stand by `117`.
+7. **The rounding-to-nearest attack on clause 13**, named by its own author and still unrun.
+
+## 6. What only op decides
+
+1. **`156` item 1**, the operation set the design ships, and with it whether footprint is
+   observable. Decides clause 4's saturation, X1, and whether the count of primitives is
+   container-relative. Everything else in the statement is premise-free.
+2. **Q65's marker question**: whether a proof carries a different marker from a measurement, and
+   what `W in 1..=64` means (neither a sample nor `any`: the whole domain of a container). This
+   candidate uses prose tags ([argument] via the ledger's wording, sweeps via predicates) as
+   interim practice, not as a settlement.
+3. **Ratification itself.** Nothing here is converged in the sense I12 requires until op has the
+   whole canon in front of him at the end; this candidate is the topic's input to that act.
+
+## 7. The live options, carried in their own pass
+
+Per the standing discipline: an option nobody resolved has no result attached, so it is exactly
+what a compressor drops, and the options most likely to be lost are the ones most needed. Each
+carries its cost and its discriminator. Closed options are in section 3 (R13, R14) and are not
+repeated.
+
+**O-A. Two vocabularies: primitive at the element, the packed end its own concept.** Cost: two
+vocabularies, and I17 makes the second first-class rather than a footnote. Live under the
+footprint-observable branch of X1, where it is the honest shape. Discriminator: `156` item 1,
+then, if internal, dead.
+
+**O-B, as amended by S-8. One vocabulary: the lens, with the value as its degenerate case.**
+Cost after `159`'s withdrawal of the original cost clause: none identified at the native end;
+the open cost is X2's boundary shape at the packed end. Live under the footprint-internal branch.
+Discriminator: `156` item 1, then X2's two-designer test.
+
+**O-C. Define the primitive as the saturated construction and stay silent on type-against-lens.**
+Narrowed by S-5 and `159` section 4: the wall is external and binds every implementer equally, so
+teams converge on *meeting* it; what the sentence underdetermines is the shape at it. Live,
+narrower. Discriminator: the same two-designer test as X2; if the shapes interoperate, O-C's
+silence is cheap and right, and if not, the statement needs the boundary clause the canon cannot
+carry, which is a design-tier deliverable.
+
+**O-E. Retire the word "primitive" and name the three senses separately.** `154` section 1's
+finding that the word does three jobs (substitution role, generator, what survives lowering)
+stands un-refuted through both sittings; the statement above uses the word in the denotational
+sense throughout and clause 5 covers the lowering sense. Cost: breaks the substitution table
+every consumer repo carries, and I14 is written in the substitution sense. Live. Discriminator:
+whether any canon sentence must quantify over all three senses at once; none in section 4 does,
+which is evidence the word can stay as an umbrella with the senses named beneath it, and that
+evidence is one candidate's, not a settlement.
+
+**Q157-C. Does the lens survive a consumer?** The element-facing ergonomics written over the lens,
+checked for whether the sugar is thin. Unrun. This is O-B's discriminator's practical half and
+the first thing a design round should build.
+
+**Q157-E. The certificate's cost.** Unpriced; the four harness arms are named in C5. Live until
+the harness runs.
+
+**A direction, not an option: `109` section 13's alternative C**, the refinement replacing the
+completion outright (a design where `π` exists only where the range cannot be proved), named by
+its author as the most aggressive reading of I15 available and the most interesting unexplored
+direction. Partially realised by the refinement machinery; the full replacement remains unbuilt
+and undiscussed, and its stated decider (whether ranges can be established at enough construction
+sites in real consumer code, a hilavitkutin and vehje question) is outside this panel's reach.
+
