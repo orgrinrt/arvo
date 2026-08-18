@@ -10,6 +10,10 @@ search to every placement. The control moves from 91 win-chains to 317, so the g
 than theoretical, **and the positive claim comes back at zero on both nearest-point resolutions.**
 The finding is not refuted. It is now supported at the strength it actually asserts.
 
+**And a seventh, in my own citation checker**, recorded in section 9: whitespace normalisation is
+necessary and not sufficient, because a markdown corpus wraps quotations inside blockquotes and bolds
+the numbers inside them, and both survive the fix everyone reaches for.
+
 Four further results, one per section: neither heading `168` names as word-for-word identical is
 identical; a shared auto-loaded rule states the definitional principle both cold derivations reached
 and none of the three declares it; the contest band is entailed by an inequality rather than
