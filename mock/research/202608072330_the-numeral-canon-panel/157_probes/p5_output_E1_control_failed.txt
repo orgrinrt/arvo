@@ -1,0 +1,38 @@
+SOUND LICENCE. Only the declared bound moves; the primitive is fixed.
+  W=3 sat add exhaustive                         pairs=28       arm changed=16       answer changed=0
+  W=3 sat mul exhaustive                         pairs=28       arm changed=15       answer changed=0
+  W=4 sat add exhaustive                         pairs=120      arm changed=64       answer changed=0
+  W=4 sat mul exhaustive                         pairs=120      arm changed=48       answer changed=0
+  W=5 sat add exhaustive                         pairs=496      arm changed=256      answer changed=0
+  W=5 sat mul exhaustive                         pairs=496      arm changed=156      answer changed=0
+  W=8 sat add 64 bounds x 400 values/pair        pairs=2145     arm changed=765      answer changed=0
+  W=8 sat mul 64 bounds x 400 values/pair        pairs=2145     arm changed=513      answer changed=0
+  W=12 sat add 64 bounds x 400 values/pair       pairs=2145     arm changed=189      answer changed=0
+  W=12 sat mul 64 bounds x 400 values/pair       pairs=2145     arm changed=128      answer changed=0
+  W=16 sat add 64 bounds x 400 values/pair       pairs=2145     arm changed=248      answer changed=0
+  W=16 sat mul 64 bounds x 400 values/pair       pairs=2145     arm changed=128      answer changed=0
+  W=24 sat add 64 bounds x 400 values/pair       pairs=2145     arm changed=65       answer changed=0
+  W=24 sat mul 64 bounds x 400 values/pair       pairs=2145     arm changed=65       answer changed=0
+  W=32 sat add 64 bounds x 400 values/pair       pairs=2145     arm changed=189      answer changed=0
+  W=32 sat mul 64 bounds x 400 values/pair       pairs=2145     arm changed=65       answer changed=0
+  E3 (zero survives past the model width) : PASS   total=0
+
+CONTROL E1. The same sweep under a licence that is unsound by construction.
+  W=3 sat add exhaustive                         pairs=28       arm changed=0        answer changed=0
+  W=3 sat mul exhaustive                         pairs=28       arm changed=0        answer changed=0
+  W=4 sat add exhaustive                         pairs=120      arm changed=0        answer changed=0
+  W=4 sat mul exhaustive                         pairs=120      arm changed=0        answer changed=0
+  W=5 sat add exhaustive                         pairs=496      arm changed=0        answer changed=0
+  W=5 sat mul exhaustive                         pairs=496      arm changed=0        answer changed=0
+  E1 (an unsound licence is detected)     : FAIL   total=0
+
+CONTROL E2. Move an observable axis instead, declarations held fixed.
+  overflow policy moved: 644 of 1344 argument pairs disagree
+  E2 (the instrument can report a difference) : PASS
+
+READING. The sound-licence zero is not an empirical fact about six terms. The arm
+is substituted only where its licence proves it agrees with the general arm on the
+declared box, and every value tested lies in that box, so agreement is the licence
+condition restated. The sweep therefore measures LICENCE SOUNDNESS, which E1 shows
+it can fail, and the axis classification follows from the definition of a
+refinement rather than from the count.
