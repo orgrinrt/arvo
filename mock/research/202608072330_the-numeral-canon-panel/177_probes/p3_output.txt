@@ -1,0 +1,29 @@
+amended clauses taken from 176's quoted blocks : [1, 2, 5]
+amended clauses synthesised from 176's prose    : [4]
+
+=== UNAMENDED (173) ===
+  clauses 12   clauses opening with a mark 12   terminal marks 3   intra-sentential marks 1
+    clause  4  [measured]                                   mid, sentence boundary followed by: '** The gap between the top two grades is not closabl'
+    clause  7  [measured]                                   MID-SENTENCE           followed by: "; and a nested composition's derivation consumes the"
+
+=== AS AMENDED (173 + 176) ===
+  clauses 12   clauses opening with a mark 12   terminal marks 3   intra-sentential marks 3
+    clause  4  [argument]                                   MID-SENTENCE           followed by: '** ("That is a statability argument, not a benchmark'
+    clause  5  [measured: an optimum exists in all 663 unre MID-SENTENCE           followed by: ", **and the gap is governed by clause 7's window and"
+    clause  7  [measured]                                   MID-SENTENCE           followed by: "; and a nested composition's derivation consumes the"
+
+CONTROLS
+  M1 every clause opens with a mark         : PASS  (12 of 12)
+  M2 clauses 4 and 5 have terminal marks    : PASS  [4, 5]
+  M3 the intra-sentential class exists before 176 : PASS  (1)
+
+READING
+  Clause 4's amended text is NOT quoted anywhere in 176, only described, so its mark
+  position depends on where a reader puts the quoted qualifier. My synthesis put it
+  after the mark, which makes it read intra-sentential. THAT IS MY ARTIFACT and is
+  excluded from the counts below; a finding resting on my own splice would be the
+  scope-not-mechanism class this unit named.
+  excluding clause 4: intra-sentential marks before 1, after 2.
+  intra-sentential marks before the amendment: 1; after: 3.
+  The convention as worded names two positions, opening and trailing. Every
+  mid-clause mark is a third position it does not classify.
