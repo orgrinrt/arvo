@@ -1,0 +1,33 @@
+PART 1. Reproducing 175's clause23 table, plus the wrap column 176 appeals to.
+                     chain  identity  round-to-8   wrap
+                +97 *3 +13         1           1      1
+                 *3 >>1 *5         1           4      2
+            +97 *5 >>1 +13         1           3      3
+                 *3 *3 +97         1           3      1
+
+PART 2. The two licences of clause 6, per chain and resolution.
+                     chain  resolution  algebra  range  family
+                +97 *3 +13  round-to-8    False  False       1
+                +97 *3 +13        wrap     True  False       1
+                 *3 >>1 *5  round-to-8    False  False       4
+                 *3 >>1 *5        wrap    False  False       2
+            +97 *5 >>1 +13  round-to-8    False  False       3
+            +97 *5 >>1 +13        wrap    False  False       3
+                 *3 *3 +97  round-to-8    False  False       3
+                 *3 *3 +97        wrap     True  False       1
+
+PART 3. The three directions.
+  (i)   licence holds => family = 1 : HOLDS  (no counterexample)
+  (ii)  family > 1 => licence refuses: HOLDS  (no counterexample)
+  (iii) family = 1 => licence holds  : FAILS
+        COUNTEREXAMPLE  chain='+97 *3 +13'  resolution=round-to-8  algebra=False range=False family=1
+
+CONTROLS
+  K1 the family counter can report > 1        : PASS
+  K2 identity resolution gives 1 everywhere   : PASS
+  K3 licence holds => family 1 on every such  : PASS   (2 cells where a licence holds)
+  K4 the licence predicate is not constant    : PASS
+
+READING
+  The direction the repair needs is (i)/(ii). The word 'exactly' in 176 and the word
+  'precisely' in its conclusion assert (iii) as well.
