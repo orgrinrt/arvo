@@ -702,3 +702,49 @@ imposed, so the notation would invert it. What is predicable is its enforceabili
 violation predicate, and the candidate names those. The count's table waits on op. And the equivariance
 result reaches the closed rounding topic; two members independently say it does **not** require
 reopening, and one adds that a proposed option for that topic would introduce an error into it.
+
+---
+
+## 12. The primitive (topic five, files `109` through `114`, reopened as the ninth unit, `153` through `165`)
+
+A pointer, on the same reasoning as sections 9 through 11.
+
+**This section is why the ninth unit existed.** Topic five opened the question of what a primitive is,
+produced two cold derivations, an attack, and an offered statement at `112:904-945`, and then moved to
+the refinement half without ever compressing what it had. Every other topic had a section here and this
+one did not, which is the same absence stated from the other side. Under `87` the canon is written from
+the ledgers read alongside their members, so a topic without one is a topic whose findings are reachable
+only by someone who already knows to look.
+
+- **The authoritative ledger is `164`'s**, which supersedes `161` clause by clause and states at its top
+  which clauses of `161` still govern. `161` is kept as landed because both signatures cite it by line.
+- **`165` is the independent check**, by a member that took no part in the unit. Verdict: sound. It
+  rebuilt every load-bearing repair independently rather than reading them, including the offset probe
+  bit for bit and the container-premise sweep clause by clause across all thirteen.
+- **Two repairs were applied after that check** and are recorded in `164` itself: R17's count, and R18.
+
+**What the topic settled.** A primitive is a value set with one realisation map over a declared
+operation set, with identity up to denotation-preserving isomorphism and a law read off it rather than
+declared. **Types are the degenerate case of lenses**, which is the synthesis the cold pair could not
+reach and which arrived in the reply round: it gives one vocabulary across the whole declared range
+without the cost the single-vocabulary option had carried. The discriminator is **sole occupancy of the
+carrier allocation**, padding permitted and sharing not, correct in three failure directions.
+
+**Adequacy is settled and was the obligation `111` named as nobody's.** It is two obligations and only
+one is hard: soundness is free by functionality, and completeness is a conjunction of inequalities, each
+discharged by one witness, so it is checkable at real width and only refutation needs exhaustion. Taken
+as first written it rejected every refinement parameter; the repair is **completeness up to weakening**,
+a three-outcome per-pair certificate that compiles with the spurious case failing to build.
+
+**What it corrected in itself.** A rung was refused by the member it flattered. The claim that the
+container premise was localised to one clause was wrong three times over, reaching three clauses, then
+four, then two further subordinate phrases that only a systematic sweep found. A do-not-cite entry
+carried a wrong figure through seven files. And the six-instance class is now recorded: a criterion
+tested against an instrument too thin to reach the case that breaks it, twice in consecutive sections of
+one file.
+
+**What it did not settle**, and it blocks the statement rather than sitting beside it: **the container
+premise is op's**, and one clause is refused as written because no wording is true on both branches
+until he rules. X3 is relocated into that queue rather than resolved, because a question deciding
+whether a clause can be satisfied at all is not a cross-reference. Q65's marker question is his too.
+Every magnitude in both sittings remains **unpriced**.
