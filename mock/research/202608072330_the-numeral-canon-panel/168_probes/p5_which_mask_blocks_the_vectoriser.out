@@ -1,0 +1,20 @@
+profile=default  (-Copt-level=3 -Clto=off -Ccodegen-units=16)  [cdylib, post-LTO disassembly]
+  control_plain_sum    addr=0000000000000560 lines=65   vectorised=YES  vec_operands=12   
+  control_indexed_sum  addr=0000000000000470 lines=60   vectorised=YES  vec_operands=12   
+  both_deferred        addr=000000000000032c lines=81   vectorised=YES  vec_operands=22   
+  value_eager          addr=0000000000000664 lines=87   vectorised=YES  vec_operands=29   
+  acc_eager            addr=00000000000002f8 lines=13   vectorised=no   vec_operands=0    folded_with: _both_eager 
+  both_eager           addr=00000000000002f8 lines=0    vectorised=no   vec_operands=0    folded_with: _acc_eager 
+  control fired: the projection-free reduction vectorises here, so a
+  non-vectorising arm above is a fact about that arm.
+
+profile=documented  (-Copt-level=3 -Clto=fat -Ccodegen-units=1)  [cdylib, post-LTO disassembly]
+  control_plain_sum    addr=0000000000000560 lines=65   vectorised=YES  vec_operands=12   
+  control_indexed_sum  addr=0000000000000470 lines=60   vectorised=YES  vec_operands=12   
+  both_deferred        addr=000000000000032c lines=81   vectorised=YES  vec_operands=22   
+  value_eager          addr=0000000000000664 lines=87   vectorised=YES  vec_operands=29   
+  acc_eager            addr=00000000000002f8 lines=13   vectorised=no   vec_operands=0    folded_with: _both_eager 
+  both_eager           addr=00000000000002f8 lines=0    vectorised=no   vec_operands=0    folded_with: _acc_eager 
+  control fired: the projection-free reduction vectorises here, so a
+  non-vectorising arm above is a fact about that arm.
+
