@@ -213,6 +213,21 @@ need the register and an open one does.
 That is also how this project permanently lost a settled answer once already: the options lived only in
 a place nobody kept.
 
+**And the loss is not random with respect to what a later unit will collide with.** Measured, with a
+control, by a member that depended on a consolidation and then read its source: `63` carried the window,
+the grades, the statability argument and the three directions from `60`, and dropped four things at
+**zero mentions**, including the DAG-with-sharing clause and the five-obligation enumeration. **Two of
+the four are exactly what that member re-derived blind and presented as its own contribution.**
+
+So the mechanism has a second half worth stating. A consolidation compresses what a unit *established*,
+which means an enumeration reads as scaffolding and goes first. Enumerations are also the shape a later
+derivation is most likely to arrive at independently, because they are the natural decomposition of the
+question. **The compression removes exactly the material that would have made a later omission
+survivable**, and the two failures then look independent when they are one.
+
+The practical consequence for a compressor: an enumeration that a unit established is a result, not
+scaffolding, and it is carried in full or its absence is recorded in the droplist by name.
+
 **So a consolidation carries an explicit pass over live options**, separate from its pass over results,
 and lists each with its costs and with whatever would distinguish it from its neighbours. The check that
 follows diffs the option sets, not only the claims, because a claim-by-claim entailment check scores a
