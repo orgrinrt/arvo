@@ -446,3 +446,241 @@ silent on it, which is compatible with the claim being true and simply unpriced,
 it never having been the right frame at all. I flagged this at first mention rather than
 letting it read as verified.
 
+
+---
+
+# Phase two: reconciliation
+
+Appended after the phase-one commit. Nothing above this line is edited.
+
+## What I read
+
+`AGREEMENTS.md` in full (704 lines). The full text of `109_bellard_the_primitive_derived_cold.md`
+(1018 lines, both phase one and phase two), `110_willsey_the_primitive_derived_cold.md` (1148 lines,
+phase one, phase two, and the reply chain through R8), `111_jhala_the_primitive_attacked.md` (1481
+lines, sections 0 through 26, i.e. the whole file including the reply chain through the point where
+it records where the argument stood after three files had replied), and
+`112_leijen_where_the_refinement_lives.md` (1412 lines, sections 0 through 14, stopping short of its
+probe index). `114_leroy_formalising_the_primitive.md` sections 0, 1, 2, 8, 9's opening and the
+coverage section (roughly 250 of its 1317 lines; its sections 3 through 7, the detailed mechanics of
+the discharge-check arms W0/W1/S1/S2, I read at the level of section 1's summary rather than in the
+probe-by-probe detail those sections carry). Op's seven files in full: `113`, `104`, `95`, `88`, `87`,
+`85`, `83`. `OPTIONS.md` Q16 in full (the composition-sense entry every topic-five file cites) plus its
+header index and its closing "not yet asked" section; I did not read Q1 through Q15 or Q17 in the body,
+only their headings. `DROPLIST.md` grepped for `primitive|law set|refinement`, zero topic-five-specific
+hits, so I did not read its body; both `OPTIONS.md` and `DROPLIST.md` predate topic five's own register
+entries, which have not yet been harvested into either file. `151_leroy_the_candidate_revised_against_four_signatures.md`
+sections 0 and 1 only (its opening scope statement and its first repair), roughly 110 of its 559 lines;
+the rest is topic eight's internal repair bookkeeping and I did not need it once I had `AGREEMENTS.md`
+section 11's account.
+
+**Not read**, named so the gap is visible: `63`, `74`, `90` themselves (I have them only through
+`109`'s, `110`'s, `111`'s and `AGREEMENTS.md`'s accounts of them), `106` beyond what `111` and `112`
+quote from its sections 1, 11, 16, 17, 18, `108` beyond the clauses `111` and `112` open at source
+(`108:822-827`), `115` through `124` themselves (the "realisation map" topic that `114` opens; I have
+it only through `AGREEMENTS.md` section 9's checked pointer summary), `125` through `152` themselves
+other than `151` sections 0-1 (the rounding-axis and strategy-object topics; I have them through
+`AGREEMENTS.md` sections 10 and 11), `PRIOR_CALLS.md`, `PERSONA_CALLS.md`, any `SEED_*` file,
+`archive/`, `seed/`, and every panel file not named above (roughly 140 numbered files in the 1-108 and
+113-154 ranges I did not open at all).
+
+## The single most important correction: my phase-one working assumption was thinner than the panel's
+
+Phase one asked "what does a primitive compose, out of what" against a self-derived identity/realisation
+split. The panel was handed, and is answering, a sharper and more specific question: whether the
+**four-part working assumption**, "a primitive is a named composition of a format, a number system, a
+law set and a strategy," is correct. I did not know that assumption existed, because it was not in my
+permitted premises; `109` section "The question, and the shape of the answer" states it as the panel's
+starting point. My own file arrived at a coarser two-part split (identity, realisation) that turns out
+to be a genuine sub-case of the richer structure `109` through `112` (and `114` past them) established,
+but it is coarser, and phase two's job is to say exactly how.
+
+## Where my phase-one derivation was right, restated in the panel's terms
+
+**My identity/realisation split is `109`'s `(V, ρ, π)` against `λ`, collapsed one level too far.**
+`109` section 1 derives four decisions prior to one operation lowering: which values (`V`), how a
+value is stored (`ρ`), what happens on overflow (`π`), and which instructions compute it (`λ`). My
+"identity" is `(V, ρ, π)` bundled together (declared width plus semantics); my "realisation" is `λ`
+plus part of `ρ` (which carrier holds the bits). The panel's finer cut matters and mine missed it:
+`109` section 3 shows `π` varies independently of `(V, ρ)` (wrapping and saturating disagree on 32640
+of 65536 pairs at fixed value set and fixed realisation), which my file never tested and simply
+asserted was part of "identity" without checking it was not itself decomposable. `110` section 2
+further shows `π` (overflow) and rounding are **one map with two regions** rather than two axes, which
+neither my file nor `109`'s first pass had. My file's collapse of `(V, ρ, π)` into one bucket is not
+wrong, exactly, but it hides a real internal structure the panel measured and I did not.
+
+**My "carrier choice does not change the primitive" claim is `110`'s denotational identity criterion,
+independently arrived at and much less rigorously.** I asserted this from the bench harness's
+byte-for-byte oracle agreement (section 2 of my phase-one file). `110` section 3 derives the same claim
+as a formal criterion (denotation-preserving isomorphism), tests it as a **congruence** under four
+constructions (`110` P8, 0 failures against 131 and 17 for two weaker candidate relations), and, per
+`111` section 8, gives it a companion criterion (`109`'s const-availability test) that answers a
+different question (membership, not identity) that my file conflated with it. My version is a special
+case of theirs, stated with far less evidence and no congruence check at all.
+
+**My "naming buys a compile-time existence claim" finding is `109` section 6, independently
+compatible.** I wrote that a name is what a const predicate (I13) can be written over, and that the
+set of names is the set of supported compositions. `109` section 6 states this more precisely: naming
+is interesting exactly when it is partial, a name is an existence claim, and under I15 the naming
+function is the validator. `109` P5b's compile-fail (`Ranged<0,200> + Ranged<0,100>` refused because
+300 exceeds the container) is a sharper, compiled version of what I only argued from the bench arms'
+compile-time width matching. I would defer to theirs entirely.
+
+**My "aggregation" observation (a column's shape is entirely derived from the primitive's identity and
+realisation, never independently specified) is a weak, under-derived instance of `110`'s composite work
+and `112`'s section 8 extension of it.** `110` section 4 formalises this as **composition** proper (a
+construction on primitives, distinct from **configuration**, which is what my working assumption's
+four-part list actually described), shows a composite is a primitive under the same definition (F10),
+and that constructions carry a predicate on their base (F12, `interval` requires monotonicity, 16/16).
+`112` section 8 then shows the predicate is **discharge-able by a declared extent** (a wrapping base
+restricted to a range where nothing wraps regains monotonicity, 8 of 40 declared extents) and that the
+lifting rule for a construction's grade is **not inherited from the base and can be unsound if
+borrowed** (componentwise complex multiplication is unsound on 26 of 81 pairs). My phase-one
+observation named the shape of this fact from the bench evidence (a bitpacked column and a dense
+column realise the identical logical column) but had none of this precision, and I explicitly flagged
+it as unverified past the two benches I read; the panel has since verified it much further and found a
+real hazard I had no way to find from bench evidence alone.
+
+## Where my phase-one derivation was wrong or under-derived, and where the panel supersedes it
+
+**I never found the refinement, and it is the panel's central result.** This is the single biggest gap
+between my file and the converged state. `109` section 7's carried range (`Ranged<LO, HI>`, propagated
+through associated consts, eliminating rather than choosing the completion) is the seed of it. `111`
+section 9 names it explicitly, connects it to `82`'s declared operand window, and states the working
+assumption has the law set and the refinement **exactly backwards**: it lists the law set, which
+cannot be varied with the other coordinates held fixed (a lossy projection, not a coordinate), and
+omits the refinement, which **can** be varied and separates verdicts with everything else fixed. `112`
+then settles what the refinement actually is, definitively: **neither a coordinate of the primitive nor
+a member of the declared semantics/strategy pair.** It is a **grade**, read only by arm selection,
+transformed (not preserved) by operations, ordered by weakening, with as many parts as the realisation
+map has regions. My phase-one section 6 spent real effort on "is primitive one thing or several" and
+never once considered that a declared range or bound on a value could be a distinct kind of thing from
+either the identity or the realisation. I had the raw material in front of me (`warm-clamp-shared`'s
+interior-safety predicate, which I did cite in my own section 5 as an example of "a law set that is
+quantified over the identity and available at compile time") and did not see that it was pointing at a
+fourth concept rather than an instance of the law-quantified-over-identity idea. `111` section 9.1
+identifies exactly this predicate (`82` F6's declared operand window) as the coordinate that passes the
+freedom test the law set fails, which is the connection I missed entirely.
+
+**I treated the law set as a legitimate thing to discuss ("a law set that is quantified over the
+identity") without ever asking whether it could be varied independently, which is exactly the test that
+kills it.** `109` section 4, `110` F3 (with its third bullet later withdrawn as a dead branch, but its
+first two bullets and `90` R3 standing independently), and `111` sections 2.1-2.4 all converge, from
+three different instruments, that a law set is not a coordinate: it is a lossy, non-injective function
+of the algebra (40 algebras collapse to 7 law sets in `110`'s sweep) and, more fundamentally, it is
+**analytic** that a function of the tables cannot vary while the tables are held fixed (`111` section
+2.3). My phase-one section 5 came close to this insight when discussing the interior-safety predicate
+as "a fact that is true or false as a function of the identities involved," but I never generalised it
+into "therefore a law cannot be a fourth coordinate beside the ones that determine it," and my section 6
+listed "a law set" nowhere as a candidate sense of "primitive" at all, so I neither affirmed nor denied
+the working assumption's claim about it. I should have.
+
+**My third open question ("is the bit itself a further primitive below the identity") is resolved by
+the panel's machinery, and the resolution is that the question was malformed.** Under `110`'s
+definition (a carrier with a total interpretation of a declared **signature**) and `111` section 5's
+finding that identity is relative to the operation set and **saturates at the literal** (adding a
+literal-carrying nullary operation to any signature reaches the finest identity that realisation map
+supports, with every richer operation-only signature adding nothing further), a bare bitfield with only
+bitwise operations and no arithmetic is not a layer beneath a fixed-point numeral. It is a **different
+primitive**, over a different (smaller or disjoint) signature, of possibly the same value set. There is
+no third tier; there is a family of primitives distinguished by which operation set each interprets, and
+"the bit container" is one member of that family rather than a substrate underneath the others. I record
+this as resolved by the panel's own criterion rather than as something I verified myself; I did not
+build a probe to confirm it, and it follows directly from `110` F4 and `111` section 5's own numbers
+(the identity relation partitioning identically whether a rich operation set is present or absent, once
+a literal is present), which I checked by opening `111` section 5.2 at source rather than only reading
+its prose.
+
+**My fraction/signedness composition claim was correctly flagged as inherited-and-unverified in phase
+one, and it remains exactly that after phase two.** None of `109`, `110`, `111` or `112` swept `F > 0`
+or non-uniform value sets; `110`'s own "not read" section names non-uniform spacing as its single
+largest gap, and `112`'s coverage section repeats it. So the `F == 0` necessary-but-not-sufficient
+claim I traced to `arvo-always-optimal-internals.md` in phase one is still resting on that workspace
+rule's citation of a different panel unit's (`35`'s) probes, not on anything topic five itself
+measured. I neither strengthen nor weaken it here.
+
+## Shared input, declared per the brief
+
+Both my phase-one file and 110's phase-one file (and, by its own admission, 111's) had
+`arvo-always-optimal-internals.md` auto-loaded as a workspace rule before writing anything. `110`
+declares this explicitly in its own "Contamination declared" section and downgrades its own P2 finding
+accordingly (distributivity over subtraction failing at unsigned `F = 0` saturating is not
+corroboration from `110`, because `110` had read the claim before building the probe that reproduced
+its shape). My phase-one file's fraction/signedness paragraph (section 3) rests on the same rule and
+the same underlying source, and I made the same declaration there, independently: I flagged it as
+"inherited from a permitted premise rather than as something I established" before reading any panel
+file, which turns out to match exactly the discount `110` applied to itself for the same reason.
+**This is not two independent instances of caution; it is one shared exposure, correctly flagged by
+both of us for the same underlying reason**, and I note it rather than claim it as agreement, per the
+brief's instruction to discount for shared inputs.
+
+## What I am carrying forward from the panel, and from whom, with a count
+
+From `109`: the four-decision derivation `(V, ρ, π, λ)` with `λ` excluded as derived rather than
+identity-bearing (one item); the three sameness relations, nominal/representational/denotational, each
+licensing a different operation (one item); the const-availability membership criterion (one item);
+the naming-as-partial-existence-claim finding (one item); the chain-accuracy-is-not-a-per-value-property
+result, `Mul` is not an endomorphism (one item, noted as untouched by any attacker through `114`'s own
+coverage section, which I take on report rather than having verified myself). Five items.
+
+From `110`: primitive-as-finite-algebra-over-a-declared-signature (one item); the realisation map as
+one map with two regions rather than two axes (one item, itself a reproduction of `63` C1 per `110`'s
+own phase two, so I am carrying it fourth-hand and say so); the composition-versus-configuration
+distinction, with a composite being a primitive under the same definition (one item); the direction
+count for classifying an axis, later refined by `111`/`112` into the two-versus-one-versus-zero
+directions test (I carry the refined version, credited below). Three items, one shared with `109`.
+
+From `111`: the refinement as the missing coordinate the working assumption should have carried instead
+of the law set (one item, the single most important correction to my own file); the
+denotation/type/adequacy three-layer statement, with soundness and completeness as the obligation a
+type owes a denotation it cannot compute (one item); the spurious-versus-refinement-versus-declared-semantics
+classification by direction count, two/one/zero (one item). Three items.
+
+From `112`: the definitive settlement that a refinement is neither a primitive coordinate nor a member
+of declared semantics, and is instead a grade read by arm selection (one item, superseding and
+completing `111`'s own tentative lean the other way, which `111` itself withdrew at `111` section 18);
+the finding that a missed merge's cost is a property of where two spellings meet rather than of the
+split itself, with the storage boundary the one site with no repair, connecting directly to I17 (one
+item); the finding that a construction carries its own grade transformer rather than inheriting the
+base's (one item). Three items.
+
+Fourteen items total, one double-counted between `109` and `110` and corrected for above, from four
+different authors, none of which I derived myself. **Keeping is a result and I am carrying all of it
+because I found no basis to attack any of it,** not because I checked and it survived; I checked only
+the specific citations named above and took the rest on the record of the reply chain (section 26 of
+`111`, which itself records who conceded what to whom).
+
+## What I would now write as the answer, given the full picture
+
+I defer to `112` section 9's statement, composing with `114` section 8's addition, as the best
+available answer, over my own phase-one attempt. Restated in one paragraph rather than requoted in
+full: **a primitive is a value set and one realisation map over a declared operation set, with identity
+up to denotation-preserving isomorphism; a law is read off it and never declared; a refinement is a
+declared restriction on where an operation's arguments lie, transformed rather than preserved by
+operations, read only by arm selection, ordered by weakening, with as many parts as the realisation map
+has regions; the type carries whatever must be const-available to decide validity or select a lowering,
+and owes the denotation both soundness (no two denotations share a name) and completeness (no
+denotation has two names); and a construction on primitives carries its own predicate on its base and
+its own grade transformer, neither inherited.** My own phase-one answer (the identity/realisation split
+plus the naming-buys-a-predicate-target claim) is a correct but strictly coarser fragment of this,
+missing the refinement entirely and missing the composition/configuration distinction that would have
+told me my own working four-element list ("declared width, semantics, strategy, aggregation") was
+mixing a coordinate, a selector, and two different operations under one heading, exactly the class of
+error the panel's own working assumption made and got attacked for.
+
+## What remains open even after 109 through 114
+
+Per `111` section 26, `114`'s own coverage, and my own reading: **no transfer argument to a real width
+exists anywhere in topic five**, everything enumerative is at `W <= 6`. **Non-uniform value sets are
+untested**, which is where arvo's float side lives and which `110` names as its own largest gap and
+`112` repeats. **`109` section 8's chain result (a per-value primitive has no slot for chain accuracy,
+so `Mul` should not be an endomorphism) is untouched by any attacker through three consecutive
+members**, per `111` section 26's own accounting, which I take on report. **The cost of carrying more
+than one sound propagation rule was located as an open, unpriced item by `111` section 26** (disjunction
+against static selection), and `114` section 1 and section 8 appear to close it with a design
+instruction (select the carrier before instantiation, and intersect rather than disjoin), though I have
+not read `114`'s sections 3 through 7 closely enough to independently verify the mechanism behind that
+instruction, and I flag this as taken on the summary in `114`'s own section 1 rather than checked at
+its probes. Nothing in topic five or in what I read of the topic-six ledger prices anything on the
+mockspace bench harness; every quantitative claim in both topics is a compiled or interpreted-model
+result, not a benched one, and both authors say so of their own work repeatedly.
