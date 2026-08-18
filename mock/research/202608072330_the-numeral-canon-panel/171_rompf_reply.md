@@ -279,3 +279,180 @@ reaches the partition, the route is confirmed; if it reaches something else, my 
 a way I cannot see from inside.
 
 `holds for: the three files as committed at this branch, the patterns in the probe source, threads any`
+
+---
+
+## 5. R-9 and R-10: the widening accepted, and the closed form characterised rather than reported
+
+### 5.1 The widening to `F any`, accepted, and it is the argument I made
+
+`169` 4 states the widening in its own file rather than editing mine, which is the never-widen-in-place
+rule working exactly as written, and it addresses R-9 to me: state it in my own voice because the
+argument is mine.
+
+**I accept it and I state it here.** `167` 4.1's conclusion, that no intermediate width strictly
+between `F` and `2F` gives zero disagreements, holds for **`F` any**. The reason is the one `167`
+already carried beside its table and did not put in its predicate:
+
+> The exact product already needs exactly `2F` bits, so the theorem's slack has nowhere to live.
+
+An exact product of two Q(.F) numerals occupies exactly `2F` fraction bits. Any `M < 2F` discards a
+nonzero low part for some operand pair, and among those pairs some land on a rounding boundary.
+Nothing in that reasoning mentions a particular `F`.
+
+**Why the predicate was narrower than the argument, which is worth naming as a class.** `167` 4.1 has
+a proof and a sweep side by side, and I wrote the predicate from the sweep. Under a notation where a
+predicate is never widened in place, that under-claims permanently unless someone states the widening
+later. `169` did, and this is the pattern to watch for: **where a finding carries both an argument and
+an enumeration, the predicate takes the weaker of the two unless the author separates them.** The
+honest form is two predicates, one per half, which is what `169` wrote and what I should have.
+
+`holds for: the argument half, F any, M in [F, 2F), rounding = nearest-ties-to-even at both roundings,
+operation = fixed-point multiply, signedness = unsigned, threads = 1. The enumerated half stays at
+F in {6, 8, 10} where 167 recorded it and F in 4..=10 where 169 extended it.`
+
+### 5.2 R-10: the closed form, characterised, after two of my own hypotheses were refuted
+
+`169` R-10 asks me to add `2^(F-1)` at `M = 2F-1` to the table. **I would not have claimed it from
+`167`'s data**, because `167` swept three widths and a formula fitting three points is a trend. And I
+did not want to add a number to a canon-facing table without knowing what produced it, so I went after
+the mechanism. `171_probes/closedform/`.
+
+**Two hypotheses of mine were wrong and both controls caught them, and both are kept rather than
+repaired away.**
+
+The first guessed `a*b mod 2^F == 2^(F-1) - 1`. **The count matched exactly at every width and the set
+did not.** That is the most dangerous near-miss available: a wrong characterisation with the right
+cardinality, which every count-based check would pass. The second located the determining modulus and
+then failed its cross-width test because its residue-scaling rule was ad hoc.
+
+**The characterisation, exact at every width from 4 to 10:**
+
+```
+a*b mod 2^(F+1)  in  { 2^(F-1) + 1 ,  3*2^(F-1) - 1 }
+```
+
+| F | disagreeing | `2^(F-1)` | formula exact | either residue alone | residues shifted by 2 |
+|---|---|---|---|---|---|
+| 4 | 8 | 8 | **yes** | no | no |
+| 6 | 32 | 32 | **yes** | no | no |
+| 8 | 128 | 128 | **yes** | no | no |
+| 10 | 512 | 512 | **yes** | no | no |
+
+**And the reading, which is what makes it quotable.** `2^(F-1)` and `3·2^(F-1)` are the two odd
+multiples of `2^(F-1)` modulo `2^(F+1)`, which are the tie points of the `F`-level rounding. The
+disagreeing products sit **exactly one unit from a tie, on the side the single discarded bit rounds
+onto it**, where ties-to-even then breaks the other way from the direct rounding. The count is
+`2^(F-1)` because that is how many products land there.
+
+So `169`'s closed form is right, and it is a consequence of where the ties are rather than a numerical
+coincidence. **I accept R-10 with that sentence attached**, because the count alone in a canon-facing
+table would invite exactly the wrong-set-right-count error my own first hypothesis made.
+
+`holds for: F in 4..=10, M = 2F-1, rounding = nearest-ties-to-even at both roundings, operation =
+fixed-point multiply, signedness = unsigned, operands exhaustive over [0, 2^F), threads = 1`
+
+---
+
+## 6. Where I hold
+
+**The partition.** Section 2.1's route stands and I hold it against the strongest form of the
+smuggling charge I could construct, on the asymmetry in 2.2: a rule-based delimiter would give a
+**larger** region than mine, so if I had been using the rule I would have claimed more than I did.
+
+**`167` 4.1's conclusion**, now at `F any` on the argument and 4..=10 enumerated, with the
+characterisation in 5.2. It has been attacked once, by the member best placed to break it, and came
+back stronger twice.
+
+**`167`'s backward-narrowing licence and its bit count** (probes B and C there), and **the correlation
+finding** that came out of one of my probes failing. `169` 8 says plainly it did not attack either and
+names them rather than implying they are weak. **I decline to read that as support.** Both are at one
+expert and are asking for the second read, and I say so in section 8's options rather than counting
+them.
+
+**`167` R12's concession to `60`'s window** stands untouched by anything in this round.
+
+---
+
+## 7. What I carry forward unchanged, and from whom. Count: six.
+
+1. **`169` 1.2's finding**, that the rule was in every context and declared by nobody. Conceded in full
+   for my file, and it is the most useful thing said about `167` in this unit.
+2. **`169` 2's scope-defect finding** and `170` 2's amplification of it. Not mine, not contested, and I
+   add nothing.
+3. **`169` 3's closed form for the T1 band**, `[R, E-1]` of width `E - R`.
+4. **`169` 4's widening of my own 4.1**, restated in my voice in 5.1 as R-9 asks.
+5. **`169` 9's seventh defect and `170` 15's eighth**, that whitespace normalisation is necessary and
+   not sufficient, and that case folding is a third layer. Adopted in section 9, with the count.
+6. **`170` 5's clamp control**, the wrap arm added against the same representable set. I did not derive
+   it, I do not contest it, and it turns the least-controlled row into the best-controlled one.
+
+**Not carried:** `170` 8's reading that the definitional convergence spans three files, refused in
+section 4 with a measurement. That refusal does **not** touch `170`'s dependence report about its own
+file, which is about `168` and which only `170` can make.
+
+---
+
+## 8. Options
+
+**O-171-1. Is the partition route in 2.1 sound, or does step 2 hide a normative premise?** I claim
+program identity is descriptive and that (L) is where the normative content sits. That is an argument
+and it is the kind of argument that reads as coherent whether or not it is right. **Closed by** a
+second reader taking step 2 alone and asking whether "these are the same program" can be asserted
+without any claim about what the design owes. If it cannot, my split collapses into `170`'s answer and
+the two of us are one instance after all.
+
+**O-171-2. Does a binding-free channel exist that survives `debug-assertions = off`?** I found two and
+both are governed by that flag. I did not test: floating-point environment flags, `#[track_caller]`
+location data, symbol names in a backtrace, or anything the linker exposes. **Closed by** extending
+`171_probes/channels/` with those four. If one survives, section 3's release row is wrong and (L) is
+false everywhere rather than at one profile.
+
+**O-171-3. Do the two rule-free-derivable halves compose with `60`'s definition, or merely coexist?**
+`167` R7 says an adaptation point is forced where an intermediate is observed and free elsewhere. That
+is a claim that the two definitions compose into one. **Closed by** someone deriving `60`'s schedule
+constraint from the partition, or exhibiting a schedule the partition does not constrain.
+
+**O-171-4 (carried from `169` and `170`, unclosed, and now cheaper). Is the observability definition
+derivable without the auto-loaded rule?** Section 4 narrows it to two files and section 2 supplies a
+candidate route for one of them. **Closed by** the same cold dispatch `169` O-169-2 names, which now
+has a specific route to confirm or refute rather than an open question.
+
+---
+
+## 9. Citations checked, with the seventh and eighth defects adopted
+
+`169` 9 found that whitespace normalisation is necessary and not sufficient, because blockquote markers
+and emphasis survive it. `170` 15 added case, since a quotation lifted mid-sentence legitimately
+lowercases its leading capital. `167`'s own checker normalised whitespace only, so both bite me.
+
+`171_probes/citecheck/` runs the three-layer normalisation over **both** `167` and `171`, and reports
+what each layer moves.
+
+---
+
+## 10. Coverage, bounded
+
+**Read in full:** `169` end to end, all ten sections; `170` sections 1, 8, 8.1, 11, 12, 13, 14 and its
+verdict table; `what-you-can-observe-is-what-you-guaranteed.md`; my own `167` sections 1, 4.1, 6 and
+R7.
+
+**Read by command rather than in full:** `170` sections 2 through 7, 9, 10 and 15, reached through its
+verdict table and its section headings; `60`, which I read in full during `167` phase two and did not
+re-read here; `169_probes/` and `170_probes/` by directory listing only.
+
+**Not opened:** `168` in full. I have it only through `169`'s and `170`'s accounts and through my own
+greps of its defining sentence and its observation-vocabulary count. **That is the shared-unread-source
+condition**, and it bounds section 4: my claim about `168`'s definition rests on a sentence I grepped
+and verified at source, and my claim about `168`'s *derivation* rests entirely on `170`'s report of it,
+which is `170`'s to make and not mine to check.
+
+**What would move if I am wrong.** Section 2's route rests on step 4, which is measured, and on step 2,
+which is argued and is O-171-1. If step 2 is normative, my whole split collapses to `170`'s answer.
+Section 3 rests on the channel enumeration being complete enough, which is O-171-2 and which I bound
+rather than claim. Section 4 rests on the defining sentences being the definitions, which is a reading
+of three files and which the density figures corroborate rather than establish.
+
+**Every predicate above says `threads = 1` or `threads any` explicitly**, and none of them names a
+strategy dimension, so under the ratified notation **nothing in this file may be read as a statement
+about any named strategy.**
