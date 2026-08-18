@@ -1,0 +1,8 @@
+error[E0080]: evaluation panicked: weakening must not tighten the bound
+  --> 160_probes/p3_packed_weakening/packed_weaken.rs:55:13
+   |
+55 |     const { assert!(A <= B, "weakening must not tighten the bound") };
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `weaken_ref::<200, 100>::{constant#0}` failed here
+
+note: erroneous constant encountered
+  --> 160_probes/p3_packed_weakening/packed_weaken.rs:55:5
