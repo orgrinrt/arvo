@@ -1244,3 +1244,322 @@ would be worth more than another measurement.
 **`60` read directly.** My two strongest agreements reach it only through `63`, which is a
 consolidation, and `RULES.md` names that exact shape as a single point of failure. Someone should open
 `60`.
+
+---
+
+# Pass three: against `60` and `43`, arriving after phase two
+
+Dispatched after phase two was committed, on the coordinator's correction that the curated reading list
+omitted two files on this question. Phase one and phase two are untouched. This pass is the thing my own
+coverage bound asked for in section 17 ("Someone should open `60`"), and I am the right someone because
+the two exposed items are mine.
+
+**Read for this pass, in full:** `60_stam_the_chain_derived_cold.md` phase one (sections 1 to 10) and
+its phase two verdict and sections 1 to 3, `43_rompf_what_a_composition_is.md` section 0 and section 11,
+`167` sections R1, R2 and R12. **Grepped:** `60` and `43` for every distinctive claim of mine, `63`
+against `60` section by section, and the panel for the three negative claims I made. **Not opened:**
+`60`'s sections 4 to 7 of phase two, `43`'s sections 1 to 10, `167` outside the three sections named.
+
+## 20. Three of my own negative claims, checked, and two of them do not survive
+
+The coordinator flags that `167` made a negative claim about evidence without naming a place. I made
+three. A negative claim is a claim about a search, so it carries the search or it is not checkable, and
+running them is how I found that I had been sloppier than `167` was.
+
+**The control first**, because a zero from this workspace's shimmed searcher is a claim about the
+pipeline until shown otherwise: `grep -rlE "warm-clamp-arity" --include='*.md' . | wc -l` returns **15**,
+so the instrument reaches the panel.
+
+**N1, and it is false as stated.** Section 14 F says "a grep of the panel finds no other file naming"
+`warm-affine-collapse`. The grep I ran carried `--include='*.md'`, which is narrower than the claim.
+Without it, `grep -rlE "warm-affine-collapse" .` returns three further files: `145_probes/z2_output.txt`,
+`144_probes/p10_out.txt` and `101_probes/p1_the_coordinate_census.out`. **Three census and enumeration
+probes name the family.** The substantive claim survives, because `93` remains the only prose file and it
+says in its own words that it did not read the conclusions, but the sentence I wrote asserted more than
+the search I ran. Corrected here rather than in section 14.
+
+**N2, and it is false.** Section 14 E says "nobody had read these two families against each other."
+Enumerating files naming both `warm-clamp-chain` and `warm-clamp-arity` returns `40` alongside three
+probe outputs. `40` names both, in the passage I had already quoted, and declines a comparison for a
+stated reason: "pairing works for a ranking comparison and not for the discrimination question, because
+cross-run magnitudes are not comparable."
+
+**So `40` has a standing objection to a comparison in the neighbourhood of my F12, and I owe it an
+answer rather than a withdrawal.** The objection lands on comparing magnitudes across runs. F12 does not
+do that: it compares **which arm wins inside each run**, which is a within-run ranking in both cases.
+Inside `warm-clamp-arity-w13_n130080` the widened-accumulator arm wins its own field by 63.5%; inside
+`warm-clamp-chain-l1_n130001` the same arm is that field's outlier at 2.5x the fastest. Two within-run
+signs, opposite, no cross-run magnitude asserted. F12 stands on that reading and the clause "nobody had
+read these together" is withdrawn outright.
+
+**N3 survives, and the search is named.**
+`grep -rilE "accumulator (mask|projection)|mask on the accumulator|loop-carried (mask|projection)"` over
+the panel returns only my own file. Nobody had separated the projection on the per-element value from
+the projection on the loop-carried accumulator.
+
+## 21. The ledger against `60`, result by result
+
+`60` is a cold derivation on the identical question from an earlier topic. Corroboration is the outcome
+worth having, since two blind derivations reaching one place is how the two-expert rung is earned. I
+withdraw nothing for priority.
+
+### Corroborated: `60` reached it first and I reached it blind
+
+**C1. The definition.** `60` section 1: "A chain is a composition of exact operations together with a
+schedule of adaptation points... the schedule is part of the function's meaning, not an implementation
+detail, because two schedules over the same ops compute different functions." My section 2 and my
+section 4.1. Two blind instances. `60`'s formulation says what a chain is *made of*; mine says what
+*delimits* it. `60`'s layer two already carries "the boundary format the consumer sees", so the boundary
+is present there and I made it the definition rather than a layer. That is a refinement of emphasis and I
+am not claiming more for it.
+
+**C2. Three of my five obligations are three of `60`'s five.** Its section 3 lists an intermediate
+format, a schedule, an association and order statement, a count bound, and an error bound composed per
+adaptation point. My carrier is its intermediate format; my answer is its schedule; my depth and arity
+are its count bound and my shape is its association and order statement. Three corroborated.
+
+**C3. The locus finding, and it is now five routes.** `60` section 7: "under a closed concept I7's chain
+clause has **no expressible form**... op's accuracy-in-chains intent is not an optimization request, it
+is a constraint on the shape of the format concept itself." My sections 4.5 and 7. `AGREEMENTS.md`
+records `63`, `90` and `109` as three; `167` R1 adds itself as a fourth; I am a fifth. **But the count is
+not five independent instances**, and the discount is in section 23.
+
+**C4. Both of my licences are present in `60` as instances, and it does not name them as two kinds.**
+Licence (A), range, is `60` section 7's third carrier, the **exactness predicate**: "the conditions under
+which an op or an adaptation loses nothing. Fixed point's add and multiply within the width algebra;
+widening adaptations; Sterbenz subtraction for floats; and the float error-free transformations." Every
+one of those is a range condition. Licence (B), algebra, appears in its probe B as an observation: "the
+per-step **wrapping** fold also gives 15000 in every order, because arithmetic mod 2^n is a ring
+homomorphism and therefore commutes with any association." So `60` has both and treats them as one
+subject. **Corroborated in instances; see N1 in section 22 for what is left as mine.**
+
+**C5. Existence of the schedule degeneracy.** `60`'s probe A: same ops, three schedules, three
+functions. My section 4.1's existence half. Corroborated; the count is mine.
+
+**C6. The three shapes.** `60` section 2: "a linear chain, a tree, and a fold are all special shapes of
+it." My section 5 cuts three shapes differently, by what freedom each licenses rather than by term
+structure, and my kind (3) I already restated in phase two as a term whose schedule is fully determined,
+which is `60`'s vocabulary. Corroborated with a different cut, and `60`'s is the better taxonomy of
+terms.
+
+### Dominated: `60` had it, better, and I withdraw the claim to novelty
+
+**D1. Section 6, "whether the chain is the right unit at all", is dominated outright.** `60` section 2,
+first sentence: "The right carrier is not a linear sequence. Real computation is an expression, a term
+over the operation signature, in general a DAG with sharing; a linear chain, a tree, and a fold are all
+special shapes of it." That is my section 6, stated earlier, in one sentence, more cleanly than I stated
+it. My "region between observations" adds a delimiter to it and nothing else. **I withdraw section 6's
+framing as a contribution** and keep only what section 22 N3 says survives.
+
+### Contests: one clause, with a measurement
+
+**T1. `60` dismisses the term structure and my p6 says the dismissal is wrong in a bounded band.**
+Immediately after the sentence in D1, `60` says: "But for format purposes the term structure is not the
+load-bearing part."
+
+For the **carrier** it is right, and p6's first result confirms it independently: a node's value is one
+value, so its width requirement is one number, and the join over consumers is a maximum. Measured on the
+construction, the joined requirement and the max over per-path requirements are both 20 bits.
+
+For the **schedule** it is wrong, and in `60`'s own vocabulary the statement is sharper than the one I
+made in section 18: **with sharing, a term does not factor into windows uniquely, because two consumers
+of one node induce different window boundaries at it.** Branch A's `t * t` leaves the container unless
+the window closes at `t`; branch B's `t >> 2` wants the window to extend through `t`. There is one `t`.
+Branch B loses on 203 of 256 inputs, total extra absolute error 15504, worst extra 152.
+
+**And the contest is bounded, which I measured after reading `60` rather than asserting.** The conflict
+exists only where the carrier is wide enough for the resolved branch and too narrow for the exact one:
+carrier widths **16 through 19** on this construction, against no conflict at 8 through 15 (nothing fits,
+the region is unrealisable) or 20 through 32 (both fit, the windows agree). So this is a predicated arm
+in I13's shape rather than a refutation of the window, and the window is untouched for every chain
+without sharing.
+
+**Predicate.** `W = 8, F = 0, signedness = unsigned, carrier in 8..=32 bits with the conflict at 16..=19,
+resolution = nearest-point projection onto [0, 2^W), region shape = one shared node with two consumers
+and one combiner, operations in {3x+k, t*t, t>>2, t>>1, xor}, inputs exhaustive over the whole declared
+domain, threads = 1`.
+
+### Novel: `60` does not reach these, and I checked rather than assumed
+
+Searches run over `60`, each with the `schedule` count of 58 as the positive control that the file is
+being read at all: `pointwise` 0, `optimal` 0, `vectoris` 0, `licen` 0, `monoton` 0, `fan-?out|shared
+node` 0, `DAG` 1 (the clause in T1).
+
+**N1. The two licences are independent, and neither subsumes the other.** `60` holds both as instances
+(C4) and has no place where they are two kinds. p1 exhibits each holding where the other fails, with four
+firing controls, and the separation is what makes them arms rather than a subject. **And it bears on
+`60`'s own three carriers**: its exactness predicate is licence (A) alone, so a format concept carrying
+those three things can state (A) and has nowhere to put (B). Under `60`'s own statability argument that
+is the same kind of gap it identifies for I7, one level down, and I would put it to `60` as the question
+its section 7 list does not answer.
+
+**N2. The algebraic licence is a conjunction over every step.** One `saturating_sub` swapped into an
+affine chain, endpoints and widths unchanged, revokes it. `60`'s probe B has wrapping order-independent
+and saturating order-dependent as two separate folds; it does not test a mixed one. Novel.
+
+**N3. Full deferral is pointwise optimal under a nearest-point boundary resolution, and this locates the
+property in the resolution rather than in chains.** `60` establishes grade a as the strongest claim and
+measures grade b's drift at up to 2 and 3 ulp. It does not establish that grade a is **optimal among all
+schedules**, and its own section 3 framing leaves room for it not to be: an error sum whose terms are
+weighted by suffix sensitivity does not obviously minimise at one term. My p3 closes that for
+nearest-point projections, over 3000 chains with zero counterexamples, and shows it fails for truncation
+on 91 chains and 1330 inputs. **That strengthens `60`'s grade ordering from a ranking into a theorem with
+a stated boundary**, and the boundary is the useful half: a directed rounding does not get it.
+
+This is also what survives of my section 6 after D1: the reason the region matters is that the
+**optimum is defined at its boundary**, and a term without a stated boundary has no optimum to be at.
+
+**N4. The degeneracy count, and its growth with depth.** `60` has the existence; the number is mine:
+1 for wrapping over affine steps at depth 3 and 5, 1 for clamping over monotone non-negative additions,
+3 for clamping mixed, 3 rising to 7 for rounding as depth goes 3 to 5.
+
+**N5. Everything in sections 4.4, 12 and 12b.** `60` says plainly "No magnitudes were measured anywhere;
+every cost statement in section 5 is counting (widths, adaptation points), not timing." My harness
+readings, the accumulator-versus-value projection isolation, its profile-invariance at both codegen
+profiles, and the four instrument defects are orthogonal to `60` entirely.
+
+**N6. The carrier requirement is order-dependent once the window is heterogeneous.** `60` section 5:
+"the window capacity is a **static function of the container width and the operand formats**". Reading
+`60` directly confirms my phase-two narrowing was correctly scoped and lets me state the extension
+exactly: `60`'s window is **homogeneous**, `k` multiplies at uniform `F`, where the bound is the product
+of the operand maxima and order cannot move it. `p2` shows that once a window mixes operations the
+per-step requirement is order-dependent even for genuinely commuting steps, `*3` needing 10 bits in one
+position and 11 in the other. **So the window survives and its capacity formula does not generalise past
+a homogeneous window**, and that is an extension rather than a correction.
+
+### What `60` has that I do not, which is the honest complement
+
+The two sides of adaptation, rounding for fractional excess and an overflow policy for integral excess,
+misbehaving independently. The window itself, with its cost accounting in adaptations against width. The
+grade taxonomy, and grade s as fixed point's own possession, which is a genuinely better frame than
+anything in my file for saying why a fixed-point chain inside its width algebra needs no error analysis
+at all. The order-and-threads interaction with I10. The error bound as a sum indexed by the schedule,
+which is the fifth of its five and has **no counterpart anywhere in my file**, the same gap `167` reports
+about itself. The three sub-axes decomposition of the strategy axis. The storage-versus-compute format
+distinction.
+
+## 22. What `63` lost, measured
+
+I reached `60` only through `63`, and named that as my exposure. Now that I can compare, here is the
+measurement, by term counts in each file (`grep -icE`, with `chain` at 27 in `63` as the control that the
+file is about this subject):
+
+| `60` phase-one content | mentions in `63` | mentions in `60` |
+|---|---|---|
+| the window | 12 | 31 |
+| D-A / D-B / D-C | 24 | 11 |
+| statability | 8 | 10 |
+| grade s / structural exactness | 3 | 6 |
+| order-independence, reordering, thread count | 3 | 12 |
+| **DAG, linear sequence, special shapes** | **0** | 3 |
+| **the two sides of adaptation, overflow policy** | **0** | 3 |
+| **the five things a chain needs, count bound, association and order** | **0** | 3 |
+| **three sub-axes, schedule policy, intermediate width policy** | **0** | 3 |
+
+Checked for alternate wordings rather than trusting the terms: `grep -inE "term over|expression|tree|fold
+are|sharing"` in `63` returns only D-C's "expression templates" and the string "shared bug"; `grep -inE
+"needs that a single|count bound|error sum"` returns one passing "error sums" inside the D-B description.
+
+**So `63` carried the headline and dropped the enumerations.** It preserved the definition, the grades,
+the window, the three carriers, the statability argument and the three directions, the last of these
+amplified. It dropped, at zero mentions, the DAG-with-sharing observation, the two sides of adaptation,
+the five-things list, and the strategy-axis decomposition, and it thinned the order and thread material
+by a factor of four.
+
+**The consequence for this dispatch is specific and it compounded with the brief's omission.** The two
+things I re-derived blind and then presented as contributions, my section 6 and three of my five
+obligations, are exactly two of the four items `63` dropped. Had `63` carried them, the path my brief did
+give me would have reached them. So the compression loss and the reading-list omission were not two
+independent failures: **the compression removed precisely the material that would have made the omission
+survivable.**
+
+That is a fact about what a consolidation drops rather than about `63`'s author. It compresses what a
+unit **established** and an enumeration reads as scaffolding, so the enumerations go first. They are also
+what a later derivation collides with, which is the whole reason for reading one.
+
+## 23. The three-way, and the discount it needs
+
+`167` and I are the pair opening this unit, dispatched with the same premise set, and `AGREEMENTS.md`
+already records `63`, `90` and `109` converging on the locus finding without citing each other.
+
+**Where all of `60`, `167` and I land**: the guarantee cannot live in a per-value object, and fusing
+adaptation into every operation makes I7 unstatable. **The honest count is not five.** `60`, `109` and
+`90` are three routes from three topics. `167` and I read the identical premise set, including
+`INTENTS.md`, `RULES.md`, the auto-loaded workspace rules and `mock/benches/`, and both of us name that
+in our own coverage bounds. Two files from one premise set converging is stronger than one file and
+weaker than two instances, and I would record it as **three independent routes plus a corroborating
+pair** rather than as five.
+
+**Where `167` and I converge and `60` does not have it**: that "composition" carries three jobs rather
+than two. `167` R3 and my section 15, derived separately after both of us read `110`. Two instances on a
+shared reading, which is the weakest of the three shapes and I mark it as such.
+
+**Two of our section headings are word-for-word the same** ("What is carried along a chain, and what is
+discarded at each step"; "'Chain' is at least three things"). Neither of us read the other. That is not a
+result, it is a measurement of how much of the shape a shared premise set fixes, and it argues for
+discounting our agreement further rather than less.
+
+**What `167` did that I did not, and I take the correction.** It ran a novelty grep and found `60`. I did
+not run one, and I would not have found `60` from my brief, but the brief is not why I did not run it. My
+section 17 correctly named the exposure and then handed it to someone else, and the someone else could
+have been me, at the cost of one command.
+
+## 24. `43`, against the half I could not reach
+
+`43` is on the aggregate sense of composition, which section 19 names as the half I did not attack. Three
+things in it bear on my chain results.
+
+**`43` reaches my carrier finding on a different object, and it measured the looseness.** Its answer:
+"In the aggregate sense, a composition is a binding-time distinction rather than a container. Its static
+part supplies the quantities a numeral's own type cannot carry, because they are facts about a **run**
+rather than about a **value**." That is my section 4.2's shape on an aggregate rather than a chain, and
+it cites `35:41-43` and `08:287-290` finding the same thing twice more.
+
+**And its `s3` is my O-168-6, answered, on its own object.** "Compositions nest, and the nest must be
+flattened before the derivation runs. `43_probes/s3` measures exhaustively that composing the per-level
+accumulator derivations is sound and **not tight**: one bit wide on 1201 of 4096 two-level shapes and up
+to two bits at three levels, with zero shapes where flattening is worse."
+
+My O-168-6 offered three options for a heterogeneous chain's accumulator derivation: restrict it to
+single-operation folds, take the ordered chain as input, or take a conservative bound over orderings,
+which p2 prices at 13 bits against 11. **`43` has already run the identical experiment one layer up and
+its answer is flatten before deriving**, with the compositional bound sound and one to two bits loose and
+never tighter. The two results are the same phenomenon on two objects and they point the same way, so I
+would take `43`'s answer for O-168-6 rather than leaving three options open: **the derivation consumes
+the flattened sequence, not a composition of per-part derivations.**
+
+That is a second instance on the shape and it changes my option into a near-settled one. I stop short of
+settling it because the two objects differ and because settling is not mine.
+
+**`43`'s p7 is the same instrument class as my p4 and p5, named the same way.** A run whose `len <=
+capacity` is enforced by its only constructor still emits two bounds-check failure paths; one `min` at
+the loop header takes it to zero; and `43` calls it "a qualitative assembly read and is called one".
+That is the microkernelling shape my section 3.2 uses and my p5 measures, arriving from the aggregate
+side, and the naming discipline is the same one I applied.
+
+**What `43` has no bearing on**: it mentions "chain" twice and "schedule" three times, and returns zero
+for `fan-?out|shared node|sharing` and zero for `pointwise|nearest` (control: `capacity` at 59). So
+nothing in sections 21 N1 through N6 is touched by it.
+
+## 25. What this pass settled, moved, and could not
+
+**Settled.** My section 6 is dominated by `60` section 2 and withdrawn as a contribution. Two of my
+three negative claims about evidence are wrong and are withdrawn or repaired. `63`'s drop from `60` is
+measured and named, and it is the enumerations rather than the headline. O-168-6 is answered on a
+neighbouring object by `43` and I take its answer.
+
+**Moved.** The contest with `60` is now one clause rather than a framing, it is stated in `60`'s own
+vocabulary as the non-uniqueness of a window factorisation under sharing, and it carries a measured
+carrier band of 16 to 19 bits outside which there is nothing to report. My licence split is placed
+against `60`'s three carriers, where (A) is its exactness predicate and (B) has no home. The locus
+finding's instance count is discounted from five to three plus a pair.
+
+**Could not.** I did not read `60`'s phase two sections 4 to 7, so its reconciliation against `55` to
+`59` and its register fits are unexamined and anything there bearing on my results is unreported. I did
+not read `43` sections 1 to 10, so my account of it rests on its own section 0, which is a summary by its
+author and is exactly the single-source shape this pass exists to correct; someone should read `43`'s
+body against section 24. I did not read `167` outside R1, R2 and R12, so the four results it says `60`
+does not reach are uncompared with mine. And the fifth of `60`'s five obligations, the error bound
+indexed by the schedule, is absent from my file and I have nothing to add to it; my p3 is a forward
+optimality statement and `60`'s is a backward error framing, and whether the two compose is a question I
+did not attempt.
