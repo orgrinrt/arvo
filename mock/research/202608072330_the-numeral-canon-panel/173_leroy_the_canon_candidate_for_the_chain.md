@@ -516,3 +516,211 @@ opening ground, true of units and false of the corpus: `60` and `43` existed and
 omitted them (`166` 6). Superseded by the reconciliations; kept here because the next unit's
 brief-writer is the reader who needs it.
 
+---
+
+## 4. The statement
+
+Offered, not settled. Op decides, and per I12 an opinion given before the experts converge is an
+ack. Every sentence is marked with its kind: **[theorem]**, **[measured]**, **[enumeration]**, or
+**[normative]**, because the unit's main result is that its central claim splits into a theorem
+and a licence, and a canon that states them as one kind of sentence has lost it. Whether a canon
+may carry a [normative] sentence beside established ones is coupled to `156` item 2 and is op's
+(section 6). Written to compose with the primitive candidate (`164` governing over `161`) and
+with `108` section 7; the realisation-map topic's propagation clauses stay at `122`'s ledger.
+
+> **1. [theorem]** A program divides uniquely into **maximal stretches** of operations none of
+> whose intermediate values is bound outside the stretch. Two realisations of a stretch that
+> induce the same boundary function, **on the same definedness domain**, are contextually
+> indistinguishable. The boundary is the act of binding, not the operator or the spelling; a
+> single operation is the length-one stretch; the stored-intermediate pipeline is the case where
+> every edge is a boundary.
+>
+> **2. [normative]** Within a maximal unbound stretch, the design may select any realisation that
+> induces the stretch's boundary function on its definedness domain. This licence does not follow
+> from clause 1 and is not derivable from the stated intents; it rests on the principle that
+> obligations are bounded by the observation surface. It holds in a shipped artifact and fails in
+> a development build, which is I18's build bound arriving from an independent direction; and
+> where a stretch contains a partial operation, agreement on definedness is part of the boundary
+> function at every profile, because partiality is a binding-free observation channel that no
+> assertion flag governs.
+>
+> **3. [enumeration]** A chain's content is a set of exact operations together with a **schedule
+> of adaptation points**, and the schedule is part of the function's meaning: two schedules over
+> the same operations compute different functions. An adaptation point on a bound edge is forced;
+> on an unbound edge it is free and placed under clause 2. What composition owes that a single
+> operation does not is five things, none expressible per operation: an intermediate format, a
+> schedule, an association and order statement, a count bound, and an error bound composed per
+> adaptation point, **the schedule being the index set of the error sum**, so fewer adaptation
+> points is a structurally shorter error sum.
+>
+> **4. [enumeration]** Chain exactness has grades: composite correct rounding (one adaptation on
+> the true composite), stepwise correct rounding (the only compositional grade, and its ceiling),
+> bounded drift, and **structural exactness**, which is fixed point's own: inside its width
+> algebra a fixed-point chain is the mathematics itself, drift-free by bookkeeping, with no error
+> analysis. A concept whose operations are closed over the format, adaptation fused invisibly
+> into each one, can state the stepwise grade and nothing above it, so the accuracy-in-chains
+> intent is a constraint on the shape of the concept, not an optimisation request. **[measured]**
+> The gap between the top two grades is not closable from below: no intermediate width strictly
+> between `F` and `2F` makes double rounding innocuous, at any `F`, by constructive witness.
+> **[theorem]**
+>
+> **5. [theorem]** Where the boundary resolution is any fixed selection from the nearest-point
+> correspondence onto the representable set, **deferring every interior resolution to the
+> boundary is pointwise optimal**: every placement's output lies in the representable set because
+> the boundary resolution fires last, and the deferred output attains the minimum distance by
+> definition. The tie rule is irrelevant and idempotence is a consequence. The property belongs
+> to the resolution, not to chains: a non-nearest boundary projection is beaten, and measurably.
+> **[measured]**
+>
+> **6. [measured]** Deleting an interior adaptation needs a licence, and there are two
+> independent kinds: **range** (every intermediate provably where the resolution is the identity;
+> reads widths and a bound, not the operations) and **algebra** (the resolution commutes with or
+> is absorbed by the composition; reads the operations, not any bound). The algebraic licence is
+> a **conjunction over every step**: one non-conforming operation anywhere revokes it with the
+> endpoints unchanged. Consequently the carrier of a chain's licence is composed as the chain is
+> built and must see every step; endpoint types cannot express it. The backward demand licence is
+> the same shape one level up: narrowing to the consumer's width is licensed exactly for the
+> congruences, refused for saturation, division, shift and min, and one refusing operation
+> truncates the region the licence reaches.
+>
+> **7. [enumeration]** The multiplicative intermediate grows linearly and the additive one
+> logarithmically, so a chain factors into **windows**: bounded subterms exact inside the
+> container, one adaptation at exit. A homogeneous window's capacity is a static function of the
+> container and the operand formats; a mixed window's capacity is a function of the **ordered
+> sequence** [measured]; and a nested composition's derivation consumes the **flattened**
+> sequence, the composed per-level derivation being sound and up to two bits loose, never tight
+> [measured].
+>
+> **8. [measured]** A chain adds predicate dimensions no operation has: **depth, shape and
+> arity**, each measured to flip the winning arm, plus a hardware dimension the current
+> vocabulary has no slot for. The same widening lever takes opposite signs on a fold and on an
+> elementwise chain at one width, and the mechanism is that the projection on a loop-carried
+> accumulator blocks vectorisation while the per-element projection costs nothing. In fixed
+> point, association order has exactly zero accuracy content where no additive adaptation is
+> reachable, and the reassociation win is therefore available to an accuracy-first concern at no
+> accuracy cost; in relative precision the same choice is an accuracy lever. **A sentence about
+> reassociation that does not name the family and the reachability of the resolution is wrong
+> for someone.**
+>
+> **9. [theorem + measured]** In a graph-shaped region, a shared node's carrier requirement joins
+> as a maximum and adds nothing; what sharing adds is a **schedule decision**: one node has one
+> schedule and its consumers can disagree, the disagreement forced by carrier capacity, invisible
+> to every path-shaped analysis, occupying the band from the resolved requirement to one below
+> the exact one. Under sharing a region does not factor into windows uniquely.
+>
+> **10. [enumeration]** The promise ladder follows the binding time: where a chain's structure
+> and count are compile-time facts, a **bound** is holdable; where the count is runtime, a
+> **rate**; where the trip count is data-dependent, an **invariant**; and these are three
+> different promises owed three different words. Never a runtime check discharges any of them.
+>
+> **11. [measured]** The carrier of the chain-level guarantee is discriminated by one test:
+> whether two chains agreeing up to a point and differing after it are lowered the same way at
+> that point. A value's type, a strategy marker and a forward error bound all fail it; a
+> consumer-declared accumulator carries the budget only; a combinator carries the fold shape; a
+> staged description is the only candidate reaching the backward facts, and it is established
+> doable under the operating constraints. Which ships is not settled here.
+>
+> **12. [enumeration]** "Composition" is three concepts wearing one word: configuration,
+> construction, and the chain, which produces no new primitive and is the sense the
+> accuracy-in-chains intent ranges over. A construction determines what the chain sense is
+> licensed to do inside it: a law-preserving construction transmits the reassociation licence
+> lane-wise, and a law-breaking one revokes it.
+
+**Permanence.** Every sentence survives a rewrite in another language or decade, with one named
+exception class: clause 2's profile bound names a build distinction (`debug-assertions`) that is
+Rust's; its permanent content is that development builds may carry observation channels shipped
+artifacts do not, and I18 already states the design half of that. Nothing names a container
+width, a marker, a crate, or a count.
+
+**Equivalence.** Two teams implementing this produce units that behave the same on what matters:
+stretches end at bindings and nowhere else; no interior adaptation is deleted without one of the
+two licences; deferral is chosen wherever the boundary resolution is nearest-point; a mixed
+window's capacity is computed from the ordered flattened sequence; a shared node's schedule
+conflict is surfaced rather than silently resolved; and no chain guarantee is attached to a
+value's type. They differ on the carrier's spelling, the window vocabulary, the naming of the
+region, and everything section 6 reserves.
+
+**Where it is weaker than offered.** The licence is normative and its admission into a canon is
+an open op question. `F > 0` coverage is partial (the grades and the window are established at
+`F in {8, 12}` instances; the model sweeps are mostly `F = 0`). Signed is thin (Q12 supplies the
+fold reassociation answer; the association partition is unsigned). Threads are untouched: every
+predicate in the unit says `threads = 1` or `threads any` with an argument, and the
+reassociation-is-partitioning question is a whole unit nobody has opened. And the harness
+magnitudes inherit the profile situation in full.
+
+---
+
+## 5. What the topic did not settle
+
+1. **Everything op's**, section 6.
+2. **X-A through X-F**, each with its decider, section 2.
+3. **The cost of everything**: the staged description against the direct form, the carried
+   residual's register, the certificate-shaped licence accumulation at const time (`168`'s
+   "could not"), Q55's accumulator collapse, and the two check-free traversals from `43`; all
+   **unpriced**, and the word is used deliberately. The one priced thing is the reassociation
+   family, at the amended profile.
+4. **`F > 0` beyond the named instances; signed beyond Q12; non-uniform value sets** (inherited
+   gap from the primitive topic).
+5. **The mechanical enumeration of observation** (`167` Q-C2): every way a value escapes a region
+   in a no-alloc, no-`dyn`, monomorphised setting, believed finite and decidable, unbuilt. (P)'s
+   uniqueness argument assumes the binding relation is decidable at compile time, and this
+   enumeration is what would discharge that assumption.
+6. **Threads**: partitioning a fold is a reassociation, so the association-licence table is
+   exactly what decides whether a chain may be split across cores, and nobody has asked the
+   question. It is the unit's named successor.
+
+## 6. What only op decides
+
+Unchanged from the ninth unit's candidate and extended by this topic's own:
+
+1. **The container premise** (`156` item 1), **Q65's marker question**, and **X1 through X4**,
+   exactly as `164` carries them.
+2. **The canon-form question, coupled to `156` item 2 as one decision**: whether a canon may
+   carry a proposition with no predicate, and whether it may carry a [normative] sentence beside
+   established ones. Clause 2 is the instance; this candidate marks kinds and does not answer.
+3. **Which accuracy target I7 names** (`168` O-168-3): the placement distinction is priced (15.5x
+   aggregate, 16x worst-case at depth 5) and clause 5 says which placement is distinguished, not
+   which target is meant. I7's own wording carries a second unresolved reading ("chains and ops"
+   as two things or one phrase).
+4. **Whether the observability principle becomes an arvo intent**: the ground clause 2 needs, and
+   a workspace rule is not an op ratification.
+5. **Which chain carrier ships** (Q-C1/C9's directions): the discriminator and the doability
+   evidence are in L21; the choice, and the I3 taste question inside the staged option, are op's.
+6. **The vocabulary calls**: chain against region (X-F), and the third sense of composition's
+   name (Q16, extended by L20).
+
+## 7. The live options, carried in their own pass
+
+Each with its cost and its discriminator; closed options are in section 3 and not repeated.
+
+**O-1. The carrier composition** (from `167` Q-C1, `63`'s D-A/D-B/D-C, `60`'s section 7): ship
+the named accumulator, the combinator, and the staged description as a composition covering
+different shapes, or fewer. Cost gradient: nothing new, a crate surface, a new binding-time
+surface with an I3 tension. Discriminator: the obligations table (which carrier can express which
+of the five), then op on the surface.
+
+**O-2. Q-C4, the non-const count**: typestate count (collapses the fold into the expression
+shape), rate (a different promise), or unverified precondition. Discriminator: op, since each is
+achievable and the question is what a guarantee means.
+
+**O-3. Q-C5, the hardware axis** in the predicate vocabulary. Discriminator: one non-NEON run of
+the committed family.
+
+**O-4. O-169-2, the rule-free cold dispatch** for (P). Discriminator: dispatch it; a blind expert
+without the rule either reaches the partition by the candidate route or reaches something else.
+
+**O-5. O-171-2, the four untested channels.** Discriminator: extend the channels probe; each
+survivor adds a bound to clause 2 rather than reopening it.
+
+**O-6. X-D, the error-sum/deferral composition probe.** Discriminator: one probe over the
+existing sweep shapes; if the deferred point minimises the schedule-indexed sum, clauses 3 and 5
+fuse into one statement and the candidate simplifies.
+
+**O-7. The threads unit** (section 5 item 6). Not an option to close here; named so the
+compressor cannot drop it, because it is the unit's clearest successor and an unresolved
+direction has no result for a compressor to grip.
+
+**O-8. `43`'s sparse-capacity fork** (dense extent against nonzero bound in the accumulator
+relation), and its containers-against-contracts question. Discriminators as `43` 11 states them:
+a survey of what the consumers hold, and the bench harness for the traversals.
+
