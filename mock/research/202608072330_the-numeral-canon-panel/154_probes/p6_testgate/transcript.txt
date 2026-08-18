@@ -1,0 +1,54 @@
+# P6 transcript. Commands and their output, in the order run.
+# host: aarch64-apple-darwin, hw.ncpu=8, hw.perflevel0.physicalcpu=4
+# toolchain: nightly-2026-05-28 (rust-toolchain.toml)
+# cwd for every command: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+
+$ cargo test --offline
+     Running unittests src/main.rs
+running 0 tests
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+$ grep -rn "#\[test\]" variants/ src/ | grep -v '/target/' | wc -l
+124                                  # loose: counts one occurrence inside a doc comment
+$ grep -rnE '^[[:space:]]*#\[test\][[:space:]]*$' --include='*.rs' variants/ | grep -v '/target/' | wc -l
+123                                  # attribute-only: the correct count
+$ sed -n '68p' variants/bitpack-write-contend-shared/src/stress.rs
+/// one process, so every stress test in this file shares that pool and must
+
+# --- the hang, isolated ---
+$ cargo test --offline --manifest-path variants/bitpack-write-contend-shared/Cargo.toml
+  ... 12 of 15 ok, then:
+  test stress::guarded_kernel_never_corrupts_under_real_concurrency has been running for over 60 seconds
+  test stress::naive_kernel_corruption_rate_under_real_concurrency has been running for over 60 seconds
+  test stress::naive_kernel_never_corrupts_when_the_split_is_aligned has been running for over 60 seconds
+$ ps -o pid,etime,%cpu -p <pid>
+  41110   26:11  575.7               # 26 minutes, no progress, saturating the machine
+
+$ cargo test ... -- --test-threads=1
+  test result: ok. 15 passed; 0 failed; finished in 4.68s
+
+# --- each stress test alone, default parallelism ---
+$ cargo test ... -- --exact stress::guarded_kernel_never_corrupts_under_real_concurrency
+  test result: ok. 1 passed; 14 filtered out; finished in 0.31s
+$ cargo test ... -- --exact stress::naive_kernel_corruption_rate_under_real_concurrency
+  test result: ok. 1 passed; 14 filtered out; finished in 1.86s
+$ cargo test ... -- --exact stress::naive_kernel_never_corrupts_when_the_split_is_aligned
+  test result: ok. 1 passed; 14 filtered out; finished in 0.59s
+
+# --- the three together: ARM A parallel, ARM B serial (control) ---
+$ cargo test ... -- stress::                      # ARM A
+  DID NOT COMPLETE in 180s; all three "running for over 60 seconds"; killed. Reproduced twice.
+$ cargo test ... -- stress:: --test-threads=1     # ARM B, control
+  test result: ok. 4 passed; 11 filtered out; finished in 3.12s
+
+# --- the profile question ---
+$ cargo test --offline --manifest-path variants/wide-rung-shared/Cargo.toml
+  test result: ok. 30 passed; finished in 91.36s      # debug, default parallelism, clean machine
+$ cargo test --offline --manifest-path variants/wide-rung-shared/Cargo.toml -- --test-threads=1
+  test result: ok. 30 passed; finished in 109.08s     # debug, serial
+$ cargo test --offline --release --manifest-path variants/wide-rung-shared/Cargo.toml
+  test result: ok. 30 passed; finished in 3.78s       # release
+# 109.08 / 3.78 = 28.9x. This is the whole content of the "three-way discrepancy".
+
+# withdrawn: an earlier reading of 115.43s for wide-rung-shared, taken while the hung
+# bitpack-write-contend-shared run was at 575% CPU. Contaminated; superseded by 91.36s.
