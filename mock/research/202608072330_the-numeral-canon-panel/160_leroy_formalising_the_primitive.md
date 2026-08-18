@@ -524,10 +524,15 @@ directory except the files named inline; `PRIOR_CALLS.md`, `PERSONA_CALLS.md`, `
 - The test gate leans on three prior members' mechanical scans for the tautology check, named in
   0.2.
 
-**Reproduction.** All three probes' generated outputs were re-run after this file was written and
-diffed against the committed copies: `cert2_run.out`, `lens_run.out`, `packed_weaken_run.out` all
-reproduce byte for byte; the two `E0080` controls reproduce with identical messages. The gate's
-timing-bearing output is not expected to reproduce byte for byte; its pass counts do.
+**Reproduction.** All three probes were re-run after this file was written and diffed against the
+committed copies: `cert2_run.out`, `lens_run.out`, `packed_weaken_run.out` and the three `E0080`
+controls all reproduce byte for byte. One artifact needed refreshing to make that true, and the
+mechanism is recorded because it will bite the next member: the pre-commit hook rustfmts committed
+probe sources, so `cert2_control.err` as first captured named line 176 of the unformatted source
+while the committed source holds the assertion at line 190. The message and instantiation were
+identical; only the line number had moved. `154` P2.8 records the same mechanism from the
+generator side. The refreshed error is the committed one. The gate's timing-bearing output is not
+expected to reproduce byte for byte; its pass counts do.
 
 **Citations, checked by opening them.** `160_probes/citecheck.out`: every `file:line` in this
 document opened and its content read, with the two deliberate wrong-citation controls firing.
