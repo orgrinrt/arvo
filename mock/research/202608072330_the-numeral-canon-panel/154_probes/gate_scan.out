@@ -1,0 +1,22 @@
+control: ok (2 parsed, 1 bare, no run-on)
+root: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+tests parsed: 123
+tests whose own body has no assert/panic: 18
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-carrier-shared/src/lib.rs:361  fn carrier_16384_roundtrips() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-carrier-shared/src/lib.rs:366  fn carrier_131072_roundtrips() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-carrier-shared/src/lib.rs:525  fn padal_agrees_below_one_drain() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-carrier-shared/src/lib.rs:535  fn padal_agrees_across_a_drain_boundary() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-contend-shared/src/kernels.rs:230  fn pipelined_kernels_agree_below_one_drain() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-contend-shared/src/kernels.rs:243  fn pipelined_kernels_agree_across_a_drain_boundary() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-contend-shared/src/kernels.rs:426  fn attacked_dense_kernels_agree_below_one_drain() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-contend-shared/src/kernels.rs:434  fn attacked_dense_kernels_agree_across_a_drain_boundary() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-footprint-shared/src/lib.rs:294  fn column256_agrees() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-footprint-shared/src/lib.rs:299  fn column4096_agrees() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-footprint-shared/src/lib.rs:304  fn column16384_agrees() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-plan-shared/src/lib.rs:699  fn column16384_decoders_agree() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-plan-shared/src/lib.rs:704  fn column65536_decoders_agree() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-plan-shared/src/lib.rs:709  fn column262144_decoders_agree() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-shared/src/lib.rs:293  fn column256_roundtrips() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-shared/src/lib.rs:298  fn column4096_roundtrips() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/bitpack-shared/src/lib.rs:303  fn column16384_roundtrips() {
+  /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/variants/wide-rung-shared/src/wide.rs:186  fn $name() {
