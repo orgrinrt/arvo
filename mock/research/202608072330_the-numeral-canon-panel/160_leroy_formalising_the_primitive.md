@@ -394,3 +394,162 @@ over a realistic instantiation count is a harness question with three arms alrea
 certificate, per-axis, per-pair; the two-branch scheme adds a fourth arm to that family, per-pair
 with the direction count). Nothing below depends on the magnitude.
 
+---
+
+## 5. What I could not formalise, and why each wall is where it is
+
+### 5.1 The boundary shape at the wall: O-C's residue stands, narrower, and needs a designer
+
+`159:176-185` narrowed O-C to: the sentence says enough about the wall (every implementer meets it,
+because it is a fact about the target) and not enough about **the shape at the wall**: a column type
+with index accessors and a borrowed `PackedRef<'a, W>` differ at the boundary in ways a consumer
+observes, storability, aliasing, lifetime. I attacked this and could not close it, and the reason is
+worth exact statement: the equivalence test (`RULES.md`'s two-teams form) quantifies over
+**behaviour at the consumer boundary**, and the lens formalisation deliberately says nothing about
+that boundary, because saying something would be the concrete spelling the canon may not carry. So
+the wall is not a missing formalisation; it is the line between canon and design, and the
+discriminator remains the one S-5 named and nobody has run: hand clause 2 to two designers, ask each
+for the consumer-facing shape of a 13-bit packed column and a 47-bit dense value, and compare
+behaviour. That needs a second designer, not a probe, and I concede it forward exactly as `154` and
+`159` did.
+
+### 5.2 The container premise: op's, and every dependent clause is marked
+
+Clause 7's saturation, the identity-relativity of the container, O-A against O-B, and O-D's
+dissolution all hang on `156` item 1. `159` F159-3 mapped the dependency exactly and nothing here
+extends it. What this file adds is only the invariance argument of 2.3: the premise does not reach
+clauses 1 through 6, so the candidate can compress those now and hold clause 7 conditional.
+
+### 5.3 The notation's third state: Q65 stays open, and this file names its own reading
+
+Three predicates in this file quantify `W in 1..=64` by closed form or a const loop. Under the
+notation as ratified that spelling is a fixed set; under `159`'s reading it is the whole domain of
+the container. I used the whole-domain reading and said so at each site. Whether a proof carries a
+different marker from a measurement is Q65's cheaper closing option and it is op's, not mine; the
+[argument]/[sweep] tags in section 1 are this file's interim compliance, not a proposal to settle
+the marker.
+
+### 5.4 The direction count at distinct value sets
+
+The two-branch certificate's direction count collapses to extent inclusion only where the two value
+sets coincide and the identity map is forced. Across distinct value sets (a widening pair, a radix
+pair at `F > 0`) the map is not forced and existence is a search. I did not build that search, and
+the certificate's classification half is therefore bounded to same-value-set pairs, which is where
+every pair the unit argued about lives. The general count is a real hole for whoever formalises the
+widening story, and it is named here so it is inherited as an obligation rather than rediscovered.
+
+---
+
+## 6. What I am carrying forward unchanged, and from whom, with the count
+
+**Eleven items, from six authors.**
+
+1. `112:904-906`'s first clause, the primitive as value set plus one realisation map over a declared
+   operation set. Clause 1, untouched.
+2. `112:934-937`'s classification rule, carried as the per-axis face of adequacy. Clauses 4 and 5.
+3. `157` section 3.2's soundness half, the factoring formulation. Clause 4.
+4. `157` section 3.6 / F157-11, the obligation is per pair, with region-dependence as the reason.
+   Clause 5.
+5. `157` F157-13's conclusion plus `159` F159-2's sharpening, soundness needs a lint and no
+   single-build inspection can enforce it. Clause 4 and section 4.2.
+6. `157` S-6, the arity and standalone-name question is a property of the target's addressing and
+   fails the permanence test as canon content. Clause 2's closing sentence.
+7. `157` S-10/S-11, the reach theorem with its premise, conditional exactly as stated. Clause 7.
+8. `157` S-17's witness-monotonicity argument, carried inside 4.1's first bullet.
+9. `111` F111-12, weakening as identity at the dense end. Clause 3's first half.
+10. `159` F159-1's corrected count, three instruments not five behind `154` F6, and its
+    generalisation that "N bench crates agree" is worth much less than N in this corpus; carried so
+    the candidate does not resurrect the five. And the settlement it does not touch: the
+    `Copy + 'static` bound is a proof `155`'s instrument could not reach the packed end, which is
+    stronger than any count and is what clause 2's non-degenerate half actually rests on.
+11. `110`'s definitional-versus-reachability machinery in `111` section 6's one-notion-two-extents
+    form, which 4.1 restates through the certificate rather than replaces.
+
+**Amended: 2.** S-8's degeneracy condition (section 2) and S-14's completeness clause with S-16's
+gap assertion (section 3). Both amendments are in my file, not theirs, per the rule that a predicate
+and a claim are never widened or repaired in place.
+
+**Refuted: 0. Withdrawn of my own: 0**, and I note what `157` noted in the same position: a file
+that withdraws nothing has either been lucky or has not built an instrument that could embarrass it.
+Mine embarrassed me once, at P3's declared aliasing check, which could not be performed as planned
+and is recorded as such rather than quietly replaced (section 4.3).
+
+---
+
+## 7. What only op decides, listed so the candidate inherits the list
+
+1. **`156` item 1**, the operation set the design ships, and with it whether footprint is
+   observable. Decides clause 7's saturation, O-A against O-B, and whether the primitive count is
+   container-relative. Restated by Q157-A; nothing in this unit closes it and nothing here does.
+2. **Q65's marker question**, whether a proof carries a different marker from a measurement. This
+   file's [argument]/[sweep] tags are interim practice, not a settlement.
+3. **Ratification of any of this.** Everything here is at most TWO EXPERTS on the clauses `158`
+   second-read, ONE EXPERT on the two repairs, and the candidate that compresses it is a later
+   dispatch's.
+
+---
+
+## 8. Coverage, bounded honestly
+
+**Read in full, this dispatch:** `INTENTS.md`, `RULES.md`, `154` (both phases), `155` (both
+phases), `157`, `158`, `159`, `109` (both phases), `113`, `OPTIONS.md` Q52, Q53, Q64, Q65,
+`AGREEMENTS.md` sections 6 through 9 plus its heading map, `156` item 1, and `110`, `111`, `112`,
+`114` at the sections named inline: `110` phase one in full with its findings block and R0 through
+R8; `111` sections 0 through 10, 18, 26 and its findings block; `112` sections 1 and 9 with
+F112-1's block and its section map; `114` sections 0, 1 and 8.
+
+**Not read:** `115` through `152` beyond what the above quote; `122`'s ledger itself, which is why
+the propagation clauses are pointed at rather than restated; `63`, `74`, `90`, `106`, `108` beyond
+the cited lines; everything numbered 1 through 107 except `109`'s account of it; every probe
+directory except the files named inline; `PRIOR_CALLS.md`, `PERSONA_CALLS.md`, `DROPLIST.md`,
+`HANDLES.md`, `seed/`, `archive/`.
+
+**Which sections would move if something I leaned on were wrong.**
+
+- Section 3.1's structural half rests on "a refinement pair shares `R` by definition". If the
+  design's refinement is ever allowed to change `R` (a declared bound that alters saturation
+  behaviour inside the extent, say), the no-witness-ever argument fails and the three-outcome
+  certificate loses its middle branch's stability. Nothing in the corpus proposes such a refinement,
+  and `112`'s definition ("read only by the arm selection") excludes it; the exposure is to a future
+  design change, not to a present file.
+- Section 4.1's stability argument quantifies over operation sets whose members are functions of
+  `(V, R)`. Under the footprint-observable branch of `156` item 1 the quantification is over a
+  smaller class than the shipped set, and the "declared semantics is stable" bullet would need
+  re-derivation for observation members; flagged rather than resolved, same as everything else that
+  premise touches.
+- Section 2's discriminator leans on the byte-addressed-allocation model of the target. A target
+  with sub-byte addressing would move the boundary between the degenerate and shared cases; clause
+  2's closing sentence is written so the canon text survives that, and the probe's predicate names
+  the target.
+- The test gate leans on three prior members' mechanical scans for the tautology check, named in
+  0.2.
+
+**Reproduction.** All three probes' generated outputs were re-run after this file was written and
+diffed against the committed copies: `cert2_run.out`, `lens_run.out`, `packed_weaken_run.out` all
+reproduce byte for byte; the two `E0080` controls reproduce with identical messages. The gate's
+timing-bearing output is not expected to reproduce byte for byte; its pass counts do.
+
+**Citations, checked by opening them.** `160_probes/citecheck.out`: every `file:line` in this
+document opened and its content read, with the two deliberate wrong-citation controls firing.
+
+**What I settled.** That S-8's degeneracy condition is sole occupancy, with the compiled instance
+and the refusal (F160-2). That S-14's completeness clause as written rejects every refinement
+parameter, that a witness-only certificate cannot tell a refinement from a spurious pair, and that
+the two-branch form classifies all three pair kinds at const time with the spurious case refusing
+to compile (F160-1). That weakening is free at the packed end, closing clause 3's protected-region
+gap (F160-3).
+
+**What I moved.** The certificate machinery, from unconnected to the degeneracy extents: the
+elimination licence now has its maximal-set condition and its shipped-set licence form (4.1). The
+lens, from an account in a reply to a statement with a discriminator, an invariance argument under
+op's premise, and its instances committed.
+
+**What I could not.** Sections 5.1 through 5.4: the boundary shape needs a second designer, the
+container premise is op's, the notation's marker is op's, and the direction count at distinct value
+sets is unbuilt and named as inherited work. I found no way to close any of the four from inside
+this dispatch, and each carries what would close it.
+
+**Unlicensed mechanisms.** Checked for and none found that is not already on the record: the
+untracked bench lockfiles are `110`'s report, the unfailable stress test's placement is `154`'s,
+and the write-contend soundness bug is `154`'s and `157`'s, being handled separately per the brief.
+Nothing new observed in this dispatch's surface.
