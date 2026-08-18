@@ -412,3 +412,107 @@ and reproduces their conclusions, so a probe agreeing with that crate's test sui
 saturating-add associativity is not an independent instance (`167` R1's discount, applied at
 L15).
 
+---
+
+## 2. What is contested, each with what would decide it
+
+**X-A. Whether (P)'s convergence survives the removal of the observability rule from context.**
+The residual independence question after L3's sequence. **Decided by** the cold dispatch with that
+one rule removed (O-169-2/O-171-4), now cheaper: one claim, one candidate rule-free route to
+confirm or refute. A dispatch, not a probe.
+
+**X-B. Whether a binding-free channel survives `debug-assertions = off` beyond the partiality
+one.** Four candidates named and untested: floating-point environment, `#[track_caller]` location
+data, backtrace symbols, linker artifacts (`171` O-171-2). **Decided by** extending
+`171_probes/channels/` with the four. If one survives, (L) gains a third bound alongside profile
+and definedness, and the clause structure absorbs it.
+
+**X-C. Whether the two rule-free-derivable halves compose with `60`'s schedule constraint or
+merely coexist** (`171` O-171-3). **Decided by** deriving `60`'s schedule constraint from the
+partition, or exhibiting a schedule the partition does not constrain.
+
+**X-D. Whether the fifth obligation composes with the deferral theorem** (`172` 12 item 4): the
+error sum is a backward bound indexed by the schedule; the theorem is a forward optimality
+statement about one schedule. **Decided by** one probe: compute the error sum per schedule over
+the theorem's sweep shapes and check the deferred point minimises it. The cleanest unbuilt probe
+this topic owns.
+
+**X-E. Whether the hardware axis enters the arm predicate vocabulary** (Q-C5). The `L = 16` cliff
+is one vector register on the measured host. **Decided by** one run of the committed `satfold`
+family on a host with a different vector width; no new code.
+
+**X-F. The naming call: "chain" or "region between observations"** (Q54's residue after `168` p6
+settled what is at stake: the schedule, not the carrier). A vocabulary decision for the canon
+writer with op; the path case is the easy instantiation either way, and a path-only reading gets
+the schedule silently wrong at shared nodes.
+
+---
+
+## 3. Closed or retired, including what must no longer be cited
+
+Every entry names the thing, the reason, and where the correction lives. In every entry where a
+number or a framing died, the conclusion it supported survives on stated ground; a corrected
+count that reads as a refutation is how a true finding gets retired, and this list is written
+against that.
+
+**R-a. `168`'s heading evidence for the pair's discount.** Withdrawn by its author (`170` 7):
+both quoted headings were strict prefixes quoted as identity, and the two exactly-shared headings
+are dictated by auto-loaded rules (`170` 10). The discount itself stands on the shared premise
+set. **Do not cite the headings.**
+
+**R-b. The three-way definitional convergence** (`170` 8's phrasing). Superseded by the measured
+two-hats correction (L3 steps 3 through 5). **Do not cite a three-way convergence**; cite two
+instances plus a composing third definition.
+
+**R-c. `168` section 6's region framing as a contribution.** Withdrawn by its author (`168` D1):
+dominated outright by `60` section 2's DAG-with-sharing sentence. What survives is the delimiter
+(L1) and the schedule-conflict result (L18).
+
+**R-d. `167` section 7.2's "the chain question was priced and nobody was told".** Withdrawn
+(`167` R0): `OPTIONS.md` Q42 carried the measurement, the mechanism and a better noise bound. The
+extraction table and the `nolaw` attribution survive; the negative claim does not.
+
+**R-e. The carried residual as an answer for product chains** (`167` R4 replacement one, as first
+framed). Withdrawn (`167` R12): the window strictly dominates it there; the additive-window
+state-saving refinement survives (L7).
+
+**R-f. `168` F9's attribution** (the interior projection blocking the affine collapse). Refuted
+by its own p4: the effect is present where the collapse is impossible; the mechanism is the
+accumulator projection (L16), and the bench family's own title invites the wrong reading. **Do
+not cite the collapse attribution.**
+
+**R-g. `168`'s two negative claims as stated** ("a grep of the panel finds no other file naming
+warm-affine-collapse"; "nobody had read these two families against each other"). Both false as
+stated (`168` 20); the substantive points survive narrower (one prose file; a within-run
+comparison against `40`'s stated objection).
+
+**R-h. The two-placement pointwise search as evidence for the all-placement claim.** Superseded
+three times over (L12's history); the claim survives at theorem strength. **Cite the theorem, not
+the original sweep.**
+
+**R-i. T1's "measured" for the conflict band on the original construction.** The band is
+entailed, `[R, E-1]`; "measured" became correct only for `170`'s variant construction (L18).
+
+**R-j. `167` probe F's zero as an unqualified fixed-point reassociation-safety claim.** The
+region is "no adaptation on the additive side occurs" (`167` R12 after `60`'s order-dependence);
+the relative-precision half and the Q41 consequence stand.
+
+**R-k. The static-length lever** (`lanes16-constl`). Unestablished: largest gap 1.2% inside the
+harness's measured 4.9% between-dylib noise floor (Q42), sign flipping six of twelve. **Do not
+cite it as a result in either direction**; what would reopen it is a harness whose floor is below
+the effect.
+
+**R-l. `63`'s account of `60` as a complete carrier of it.** Measured incomplete (`168` 22): four
+enumerations at zero mentions. Read `60` directly; this candidate cites `60` at source
+throughout.
+
+**R-m. `168` 4.2's phase-one lead pair** (`*3 then +200` against `+200 then *3`) as evidence of
+order-dependence. Corrected by its author (`168` 14 B): those compute different functions; the
+commuting pair (`*3`/`*5`, same function, different per-step widths) is the evidence, and it is
+what L7's heterogeneity bound rests on.
+
+**R-n. "The panel has never had a unit on chains" as a claim about the corpus.** The unit's
+opening ground, true of units and false of the corpus: `60` and `43` existed and the reading list
+omitted them (`166` 6). Superseded by the reconciliations; kept here because the next unit's
+brief-writer is the reader who needs it.
+
