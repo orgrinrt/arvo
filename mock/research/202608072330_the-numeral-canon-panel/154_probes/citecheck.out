@@ -45,14 +45,14 @@ control: ok (in-range accepted, out-of-range rejected)
   107:     // correctly, which `guarded_kernel_never_corrupts_under_real_concurrency`
   108:     // establishes as the control. The corruption count itself is read from
   ... (16 lines total)
---- 154_kiselyov_the_primitive_derived_cold.md cites bitpack-write-contend-shared/src/stress.rs:104-110 ---
-  104:     );
+--- 154_kiselyov_the_primitive_derived_cold.md cites bitpack-write-contend-shared/src/stress.rs:105-111 ---
   105:     // Not an assertion of a specific rate: the honest claim this test can
   106:     // make is that the kernel and the harness around it are exercised
   107:     // correctly, which `guarded_kernel_never_corrupts_under_real_concurrency`
   108:     // establishes as the control. The corruption count itself is read from
   109:     // stderr and reported in the findings, not gated here, because a
   110:     // scheduler-dependent rate is not a fact this test should assert a
+  111:     // threshold on.
 --- 154_kiselyov_the_primitive_derived_cold.md cites bitpack-write-contend-shared/src/stress.rs:114-127 ---
   114: /// Control: the naive kernel at the exact same thread count and real
   115: /// concurrency, but at a size whose split IS period-aligned. If the naive
@@ -227,12 +227,101 @@ control: ok (in-range accepted, out-of-range rejected)
   251:             let native = sum_native(&logical, N);
   252:             assert_eq!(native, expect, "sum_native mismatch, seed {seed} N={N}");
   ... (35 lines total)
+--- 154_kiselyov_the_primitive_derived_cold.md cites RULES.md:126-133 ---
+  126: **Check your own citations before shipping, by opening them.** A reference that resolves is not a
+  127: reference that says what you claim. One member found **seven of its own citations wrong** this way and
+  128: built a probe that opens every `file:line` and tests its content rather than its resolution; forty-one
+  129: citations, zero failures after. That probe lives in `25_probes/` and is the cheapest correctness tool
+  130: this panel has. Five separate instances of this failure were recorded across two panels before anyone
+  131: wrote it. The prior
+  132: panel propagated two floating numbers nobody could reproduce, and one expert's headline counts turned
+  133: out to be an artifact of its own enumeration bound.
 --- 154_kiselyov_the_primitive_derived_cold.md cites RULES.md:79-83 ---
   79: **Two tests decide every sentence.** *Permanence*: would this still be true and useful after the
   80: implementation is rewritten from scratch? *Equivalence*: would three teams implementing this
   81: independently produce things that behave the same? If the first fails it is describing an
   82: implementation. If the second fails the canon has said too little, and the gap is a missing intent
   83: rather than a missing snippet.
+--- 154_kiselyov_the_primitive_derived_cold.md cites RULES.md:543-556 ---
+  543: **A predicate is never widened in place.** Op:
+  544: 
+  545: > The predicate may only list things that hold for sure. If a later expert finds another dimension having
+  546: > some predicate, be it any or an actual predicate, they then correct in their deliverable and it ends up
+  547: > in consolidation. The original does not get updated, because at that time, there was and is no proof that
+  548: > the newer has, so it can't claim it
+  549: 
+  550: The later expert states the widening in **its own file**, and the consolidation carries it. The original
+  551: stands untouched, and it is not wrong: it claimed what its evidence supported. Editing it to absorb later
+  552: evidence would make it claim, retroactively, something it never established.
+  553: 
+  554: This is the same shape as a cold derivation's phase one, and it puts widened predicates under the
+  555: compression rules: a widening is a result, so it must survive consolidation and the check verifies it did.
+  ... (14 lines total)
+--- 154_kiselyov_the_primitive_derived_cold.md cites bitpack-write-contend-shared/src/stress.rs:68 ---
+  68: /// mixes thread counts within a run). `cargo test` runs every `#[test]` in
+--- 154_kiselyov_the_primitive_derived_cold.md cites bitpack-footprint-shared/src/lib.rs:92 ---
+  92: pub const LOGICAL_BITS: usize = 13;
+--- 154_kiselyov_the_primitive_derived_cold.md cites sat.s:31-39 ---
+  31: _b_unsat:
+  32: 	ldr	w8, [x0, #8]
+  33: 	mov	x9, #-1
+  34: 	lsl	x10, x9, x8
+  35: 	cmp	w8, #63
+  36: 	csinv	x8, x9, x10, hi
+  37: 	ldr	x9, [x0]
+  38: 	and	x0, x8, x9
+  39: 	ret
+--- 154_kiselyov_the_primitive_derived_cold.md cites bitpack-write-contend-shared/src/pool.rs:110-111 ---
+  110:         let vals = pool.vals.load(Ordering::Relaxed) as *const u16;
+  111:         let out = pool.out.load(Ordering::Relaxed) as *mut u8;
+--- 154_kiselyov_the_primitive_derived_cold.md cites bitpack-write-contend-shared/src/stress.rs:42-44 ---
+  42:     for trial in 0..trials {
+  43:         let mut buf = build_bytes(n, 0xC0FF_EE00 ^ trial as u64);
+  44:         let vals_ptr = buf[OFF_VALS..].as_ptr() as *const u16;
+--- 154_kiselyov_the_primitive_derived_cold.md cites RULES.md:135-148 ---
+  135: ## A shared source read by nobody is a single point of failure
+  136: 
+  137: Two files now rest on `16` without either having read it: `35` and `43` both reach it through
+  138: `OPTIONS.md`'s account, and both said so. That is the register working as intended, and it is also
+  139: exactly the condition under which one compression's error becomes two files' error and reads as
+  140: corroboration.
+  141: 
+  142: **Where two or more files depend on the same unread source, the next dispatch on that material reads
+  143: the source itself.** Not the register's account of it. The register is a working surface and its
+  144: provenance section says so; it was assembled twice and missed a flagged question both times.
+  145: 
+  146: State the exposure the way `43` did, by name: which file you leaned on, which you did not read, and
+  147: which of your sections would move if the account were wrong. A coverage bound naming the specific risk
+  ... (14 lines total)
+--- 154_kiselyov_the_primitive_derived_cold.md cites RULES.md:79-83 ---
+  79: **Two tests decide every sentence.** *Permanence*: would this still be true and useful after the
+  80: implementation is rewritten from scratch? *Equivalence*: would three teams implementing this
+  81: independently produce things that behave the same? If the first fails it is describing an
+  82: implementation. If the second fails the canon has said too little, and the gap is a missing intent
+  83: rather than a missing snippet.
+--- 154_kiselyov_the_primitive_derived_cold.md cites bitpack-write-contend-shared/src/stress.rs:96-111 ---
+  96: /// reported as one, not read as a proof of safety.
+  97: #[test]
+  98: fn naive_kernel_corruption_rate_under_real_concurrency() {
+  99:     let trials = 3000usize;
+  100:     let bad = corruption_count(STRESS_N, STRESS_THREADS, trials, kern_packed_plain);
+  101:     eprintln!(
+  102:         "naive_kernel_corruption_rate_under_real_concurrency: t={STRESS_THREADS} \
+  103:          {bad}/{trials} trials disagreed with ground truth"
+  104:     );
+  105:     // Not an assertion of a specific rate: the honest claim this test can
+  106:     // make is that the kernel and the harness around it are exercised
+  107:     // correctly, which `guarded_kernel_never_corrupts_under_real_concurrency`
+  108:     // establishes as the control. The corruption count itself is read from
+  ... (16 lines total)
+--- 154_kiselyov_the_primitive_derived_cold.md cites mock/Cargo.toml:32 ---
+  32: exclude = ["benches"]
+--- 154_kiselyov_the_primitive_derived_cold.md cites variants/spectral-bisection/src/lib.rs:21 ---
+  21: #![feature(adt_const_params)]
+--- 154_kiselyov_the_primitive_derived_cold.md cites variants/spectral-bisection/src/main.rs:20 ---
+  20: #![feature(adt_const_params)]
+--- 154_kiselyov_the_primitive_derived_cold.md cites RULES.md:124 ---
+  124: **Counts are measurements.** Produce every number with a command and say which command.
 --- FINDINGS.md cites sat.s:26 ---
   26: 	and	x0, x0, #0x7fffffffffff
 --- FINDINGS.md cites sat.s:33-35 ---
@@ -365,5 +454,5 @@ control: ok (in-range accepted, out-of-range rejected)
 --- FINDINGS.md cites INTENTS.md:286 ---
   286: - Monomorphisation is the dispatch. No `dyn`, no `TypeId`, no `std::any`.
 
-citations opened successfully: 53
+citations opened successfully: 67
 citations that FAILED to open: 0

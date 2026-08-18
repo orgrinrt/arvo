@@ -103,7 +103,7 @@ thing this workspace's rules were written because nobody did.
 **Defect one: a test that structurally cannot fail, costing minutes of wall clock on every run.**
 `bitpack-write-contend-shared/src/stress.rs:96-111`,
 `naive_kernel_corruption_rate_under_real_concurrency`, runs 3000 concurrent trials and then asserts
-nothing at all. Its own comment (`bitpack-write-contend-shared/src/stress.rs:104-110`) explains why, and the reasoning is sound: a
+nothing at all. Its own comment (`bitpack-write-contend-shared/src/stress.rs:105-111`) explains why, and the reasoning is sound: a
 scheduler-dependent corruption rate is not a threshold anybody should gate on, and the sibling control
 `naive_kernel_never_corrupts_when_the_split_is_aligned` (`bitpack-write-contend-shared/src/stress.rs:114-127`) does the gating. **The
 reasoning is right and the placement is wrong.** A `#[test]` that cannot fail is not a test, it is a
@@ -492,3 +492,308 @@ treatment-relative question rather than a countable one.
 is too weak to make two implementations interoperate; O-C records that, with the test that would
 settle it, and I did not run that test because it needs a second designer rather than a probe. That
 is the honest wall and it is where I would send the next dispatch.
+
+---
+---
+
+# Phase two: reconciliation
+
+Phase one above is unchanged and is not to be read as amended by anything below. Where phase two
+withdraws a phase-one finding, the withdrawal is here and the original stands there, per
+`RULES.md:543-556`.
+
+**Read for this phase.** `AGREEMENTS.md` sections 0 through 2.1; `109` sections 1-7, 11, 13, 16 and its
+gate; `110` in full through section 5, plus its gate and phase-two headings; `111` sections 0, 1, 2, 9.4,
+9.5; `112` and `114` headings plus `114` section 1 and `112` section 1; op's `113`, `104`, `95`, `88`,
+`87`, `85`, `83`; `OPTIONS.md` Q52 in full and its heading index; `DROPLIST.md` headings; `151` sections
+0 and 1.
+
+**Not read, and named because it bounds what I can claim:** `63`, `74` and `90` beyond what
+`AGREEMENTS.md` says about them; `106`; every file between `115` and `153` except `116`'s gate section
+reached by grep; the bodies of `112` and `114` past their stated answers; `PRIOR_CALLS.md`,
+`PERSONA_CALLS.md`, `HANDLES.md`, `seed/` and `archive/`. Any claim of mine about novelty below is
+bounded by grep over the panel root rather than by reading, and I say so at each.
+
+## P2.0 Shared inputs, and what my conclusions ran through
+
+The brief asks for this and it is the deliverable rather than a demerit.
+
+**`what-you-can-observe-is-what-you-guaranteed.md` auto-loads, and section 4's second answer runs
+straight through it.** "A name is where the perimeter is drawn" is that rule's thesis applied to
+primitives. I did not derive it; I applied it. Discount accordingly: on that point I am one instance
+of that rule, not an independent arrival.
+
+**`the-test-gate.md` auto-loads, and the withdrawn F13 ran through it.** "A declaration nothing
+constrains" is its wording, and my criterion was that sentence moved one tier up. It is withdrawn for
+other reasons (P5), but it was never independent of the rule either.
+
+**`a-refused-bound-wants-a-trait-not-a-feature.md` auto-loads, and P2's repair is its move.** When the
+element-level signature refused, I climbed to a column-level trait. That is the rule's "break the
+constraint into smaller pieces... then compose the bound out of them", and I reached for it because it
+was in context.
+
+**`every-finding-carries-its-predicate.md` auto-loads** and shapes every predicate line I wrote.
+
+**One shared input I did *not* have, which matters because `110` did.** `110` declares contamination
+from `arvo-always-optimal-internals.md`, which auto-loads into its context and already carries a claim
+about when a law holds. **That rule is not in my loaded rule set.** I checked my own context rather than
+assuming. So where `110` had to discount itself, I have no exposure, and equally I derived nothing about
+law-holding, so the difference buys nothing here beyond being worth recording: the auto-loaded rule set
+is **not identical across members**, which is a fact about this panel's independence accounting that I
+have not seen stated.
+
+**And the premises themselves.** `INTENTS.md` and `RULES.md` are shared with `109` and `110` by
+construction. My section 2's entailment runs through I15, which is a shared premise; the *entailment* and
+its assembly are mine, the premise is not.
+
+## P2.1 What I withdraw
+
+**F11, F12 and F13 are withdrawn.** Full account in `154_probes/p5_signature/FINDINGS.md`, built after
+reading `110` section 3 and committed with its output.
+
+P4 reported 128 index points naming 127 primitives, collapsing at `W = 64`, and P4b reported the
+degenerate set moving with the container. Both measurements are correct and both are facts about **my
+signature**, which was a single arity-1 operation applied to an already-in-range value. On such an input
+the realisation map is never asked about an out-of-range exact result, so the overflow policy is
+unreachable, not absent. Adding `add`:
+
+```
+widths where wrap == clamp, signature = arity-1 mask (what P4 used) : [64]
+widths where wrap == clamp, signature = arity-2 add                 : []
+widths where R itself does not read the policy (whole-line test)    : []
+```
+
+`110`'s distinction is the right one and I concede to it outright: only a **definitional** degeneracy,
+where the definition of the map stops reading the axis, may be canonicalised away; a **reachability**
+degeneracy is a fact about the operation set and evaporates when it grows. My collapse was the second
+kind at the thinnest possible signature, and there is no definitional degeneracy anywhere in the grid I
+swept.
+
+**And this is at least the fourth instance of one failure mode, which is the part worth keeping.**
+`110`'s P4 was falsified by assuming a structural degeneracy at `F = 0`. `110`'s P8 first run swept no
+rounding modes, making a weak criterion look sound. `111` section 9.4 kept an under-controlled arm
+"because wrapping at the container width is the bare add, so three of its four symbols aliased for a
+reason having nothing to do with the bound" (`111:676-679`). And P4 here. Four authors, four
+instruments, one mistake: **a criterion tested against a signature too thin to reach the case it fails
+on.** `111`'s wording of its own instance is almost exactly the mechanism of mine, which I find more
+persuasive than any of the four instances alone.
+
+**My phase-one test-gate count of 124 is withdrawn** in favour of 123. The 124th is the string
+`#[test]` inside a doc comment at `bitpack-write-contend-shared/src/stress.rs:68`. My loose
+`grep -rn "#\[test\]"` counted it; my own parser returned 123 and I reported both without reconciling
+them, which was sloppy. `110` found this first and corrected itself the same way.
+
+**My phase-one reading of 115.43s for `wide-rung-shared` is withdrawn as contaminated**: it was taken
+while the hung `bitpack-write-contend-shared` run was at 575% CPU on a four-performance-core host.
+
+## P2.2 Where I agree, having derived blind, and what rung that earns
+
+**F5, that one logical format has two shipped representations: second instance, independent.** `109`'s
+P1 direction A holds the value set fixed and realises it twice, per element in a `u16` and as a dense
+13-bit stream, and reports the footprints differing at 13 bits against 16. I reached the same
+separation from the other end: not by constructing two realisations but by reading the two that
+`bitpack-footprint-shared` already ships in one buffer, at the same `LOGICAL_BITS = 13`
+(`bitpack-footprint-shared/src/lib.rs:92`), and pricing them from the committed harness run. Different
+instrument, same conclusion, derived before reading `109`. **This is what the TWO EXPERTS rung is for**,
+and I claim it for this one claim only.
+
+**That `V` and the realisation are separable at all: agreement, and I go no further.** `109` section 2
+establishes both directions; I established one. I do not claim the second.
+
+**`109`'s const-availability criterion: I derived its ground independently and I think I strengthened
+it.** `109` section 11 offers "a property belongs in the primitive iff it must be const-available in
+order to decide whether a program is valid, or to select a lowering." My section 2 reaches the same
+place from I15, and adds what I believe `109` does not have: **a demonstration that the "must" is
+compelled rather than chosen.** `sat.s:31-39` shows a `cmp w8, #63` appearing in the emitted code the
+moment a width is left runtime, which is the check I15 forbids in as many words. Grep over the panel
+root for `runtime width`, `width in the value`, `width at runtime`, `csinv` and `variable shift`
+returns nothing outside my own file, so I believe this direction is new; that is a grep, not a reading,
+and `109`'s own probe set could contain it under other words.
+
+**`110`'s realisation map as one map with two regions: I did not derive it and I accept it.** My P4
+treated overflow policy as an axis beside the width, which is the two-mechanism shape `110` argues
+against, and P5 is what happens to somebody who does that.
+
+**Carried forward unchanged, with the count.** Four things, from three members:
+
+1. `110`'s definitional-versus-reachability distinction, and its whole-line test for it. Carried, and
+   it is what refutes my own P4.
+2. `110`'s realisation map as one map, overflow and rounding being two regions of it.
+3. `109`'s const-availability membership criterion, carried and, I claim, strengthened rather than
+   amended.
+4. `111`'s point that the law set cannot vary with the other coordinates held fixed. I did not test it
+   and I have no independent instance; I am carrying it on `111`'s and `OPTIONS.md` Q52's account, which
+   also warns not to cite `110`'s 0-of-48 count. I do not cite it.
+
+Count: **4 carried, 0 amended, 3 of my own withdrawn.**
+
+## P2.3 What of mine appears to be new, bounded by grep rather than by reading
+
+**F6: at the packed end a primitive is not a type, and the refusal compiles into evidence.** Grep for
+`no standalone size`, `not a Rust type`, `is a lens`, `Sized` across the panel root returns nothing on
+this point outside my file; `109` section 13's alternative D ("Nobody computes on 13 bits; they widen")
+is the closest and is a different claim, about the working form rather than about expressibility.
+`fibre_refuted.err` is the compile failure, and `[bool; 13]` costs 104 bits, 8x the logical width. This
+matters for exactly one reason: **a canon sentence saying a primitive is a type is false over the range
+I17 forbids trading away**, and no amount of care about the algebra fixes it, because it is a fact about
+what Rust can give a size to.
+
+**F14's soundness half.** `110` found the hang first and diagnosed it better, with a stack sample; mine
+is a second instance by isolation (each test alone: 0.31s, 1.86s, 0.59s; together: no completion in
+180s, reproduced twice). What I have not seen anywhere, and grep for `use-after-free` and `use after
+free` across the panel returns nothing: **the pool bug is not only a liveness bug.** Workers load
+`vals` and `out` as raw pointers from shared fields (`bitpack-write-contend-shared/src/pool.rs:110-111`), and under two concurrent
+coordinators a worker can write through a pointer to a per-trial buffer whose trial has already
+returned (`bitpack-write-contend-shared/src/stress.rs:42-44`). Reachable from `cargo test`. And the consequence for the suite is worse
+than slowness: the aligned-split control exists to show the observed corruption **is** the boundary
+race, and cross-test pointer mixing would defeat exactly that isolation.
+
+**F15, and it un-retires a register entry.** `OPTIONS.md` Q52 ends: *"Retired: the claim that
+`wide-rung-shared` takes 107s. Three measurements now put it at 4.05s, 4.25s and under 5s. Dropped
+rather than carried as contested."* **That retirement is wrong and should be reversed.** The three
+measurements that killed it were taken at `--release`: `110`'s transcript shows `cargo test --release`,
+and `111` F111-13 carries `--release, --test-threads=1` in its own predicate (`111:868`). Measured back
+to back on one host in one session:
+
+```
+cargo test  ... -- --test-threads=1      30 passed, finished in 109.08s   # debug, cargo's default
+cargo test --release ...                 30 passed, finished in   3.78s   # release
+```
+
+**29x.** The 107s figure was a correct debug measurement, and three correct release measurements were
+used to retire it. Nothing was contested; a dimension was missing from all four. Under I13 as op states
+it, an unlisted dimension is not a hedge, and `every-finding-carries-its-predicate.md` would have caught
+this the moment anyone wrote `profile = release` into a predicate. Nobody did, including `111`, whose
+F111-13 does carry `--release` and whose section 0.2 nonetheless calls 107s a third measurement of the
+same thing.
+
+The general form is the finding rather than the number: **`cargo test` defaults to debug, every
+measurement this panel trusted was taken at `--release`, and a bare wall-clock figure for a suite is
+meaningless without its profile.**
+
+**F16 is not new.** `114:79` and `116:54` both record that the variants are path dependencies rather
+than workspace members. Mine is a third instance and I withdraw any claim of novelty.
+
+**F4 and F8 are not new either.** `111` section 9.4 does the symbol-merge measurement, with a better
+control than mine, and records the same under-controlled-arm defect. My P1 and P3 are second and third
+instances, arrived at blind, and I claim only that.
+
+## P2.4 Where I hold against what I have read
+
+**I hold section 3's two-ends claim against `110`'s "a primitive is a finite algebra over a declared
+signature".** That answer is better than mine on identity and I concede identity to it entirely. But an
+algebra is a set with operations, and the packed end has no set of standalone values to be the carrier
+of one. `110`'s answer is a semantics; F6 says the semantics has no uniform *realisation* as a Rust
+type over the range arvo declares. Those are compatible, and a canon that states only the semantics has
+said something true and left the implementer to discover the discontinuity. `111` section 8 already
+names something close ("one is a semantics and the other is a decision procedure, and nothing states
+what they owe each other"); F6 is a third thing under that same gap, on the representation side, and I
+do not think it is covered.
+
+**I hold section 6's arity claim, tentatively.** The widest arity at which one signature covers arvo's
+declared range is the column, not the element. This is a claim about expressibility rather than about
+algebra, it follows from F6, and I have one instrument for it. It wants a second.
+
+## P2.5 What I would hand whoever writes the canon text on this topic
+
+Four sentences, offered rather than settled, each with what it rests on:
+
+1. **A primitive has exactly one runtime degree of freedom, its value; every other parameter is
+   resolved at const time.** Not a preference: I15 entails it, and a violation produces a check I15
+   forbids. Rests on P1, which is mine and blind. Strengthens `109` section 11's criterion by supplying
+   the compulsion behind its "must".
+2. **A primitive's identity is its algebra up to denotation-preserving isomorphism, relative to a
+   declared signature.** `110`'s, carried unchanged, and my P5 is a fourth instance of what goes wrong
+   without the "relative to a declared signature" clause.
+3. **An axis may be canonicalised away only where the realisation map's definition stops reading it,
+   never where the current signature merely cannot reach it.** `110`'s, carried unchanged, and it is
+   what refutes my own P4.
+4. **Where the value is a position rather than a datum, the primitive is a view over a carrier and has
+   no standalone size.** Mine, from F6, and the one I would most like attacked. If it is wrong, the
+   canon can say a primitive is a type and mean it; if it is right, any sentence that says so is false
+   over the storage-minimising path I17 protects.
+
+## P2.6 Coverage of phase two, bounded
+
+I read the curated list and stopped there. I did not read `115` through `153` except by grep, so my
+novelty claims are grep-bounded and any of them could be a rediscovery under different words; I have
+said which at each. I did not read `63`, `74`, `90` or `106` and took `AGREEMENTS.md`'s account of them,
+which means anything I say touching the format or strategy consolidations rests on a compression I did
+not check, and **`RULES.md:135-148` says the next dispatch depending on that material should read the
+source rather than the account.** I am the second file to lean on `AGREEMENTS.md` this way that I know
+of, and I name it here so the exposure is countable.
+
+The sections that would move if I am wrong about something I leaned on: P2.3's F15 is the one I am most
+confident in, because I measured both profiles myself on one host in one session and the two other
+members' own predicates name `--release`. P2.2's TWO EXPERTS claim for F5 depends on `109`'s P1 direction
+A saying what `109`'s prose says it says; I read the prose and its predicate block, not the probe
+source. P2.4's hold against `110` depends on my reading of "finite algebra" as requiring a carrier set
+of standalone values, which is standard but is my reading of its words rather than a claim `110` makes
+about representability.
+
+**What I settled in phase two:** that the 107s retirement in `OPTIONS.md` Q52 is a profile difference
+and should be reversed, with the A/B on one host.
+
+**What I moved:** the pool defect, from a liveness bug to a soundness one, with the pointer path named.
+
+**What I could not:** I still cannot produce a single account of a primitive that covers both ends of
+the declared range and passes `RULES.md:79-83`'s equivalence test. `110`'s algebra covers the semantics
+and F6 says it does not determine the realisation; my saturation definition covers both and says too
+little to make two implementations interoperate. Section 8's O-C records that with the test that would
+settle it, and the test needs a second designer rather than a probe. That is the wall, it is where I
+would send the next dispatch, and I would send it with F6 in hand as the thing to break.
+
+## P2.7 Unlicensed mechanisms, reported whether or not they fall in my question
+
+The standing instruction is to report these even outside the question asked, and not to soften them.
+What I found, and what I checked and did not find.
+
+**One register defect, and it is the sharpest thing here.** `OPTIONS.md` Q52's closing line retires a
+true measurement. It is not a judgement call that went the wrong way: three measurements taken at
+`--release` were used to retire a fourth taken at the default profile, and the two members whose
+figures did the retiring both carry `--release` in their own predicates. **The mechanism that would
+have caught it is the ratified one.** I13 requires the region a finding holds in; a profile is a
+dimension; nobody listed it; and the register then destroyed a correct finding on the strength of
+measurements of a different thing. That is the predicate discipline not being applied to the panel's
+own bookkeeping, and it cost a true claim.
+
+**One test that cannot fail, in the default run, costing thousands of threaded trials.**
+`bitpack-write-contend-shared/src/stress.rs:96-111`. Its author's reasoning for asserting nothing is
+correct and better than an arbitrary threshold; the placement is not. A `#[test]` that cannot fail is
+a diagnostic, and leaving it in the default run puts it into every coverage count that gets cited and
+makes every runner pay for a number read off stderr. One `#[ignore = "diagnostic: ..."]` fixes it.
+`110` praised this test's restraint and I agree with the praise; the restraint is right and the
+attribute is missing.
+
+**One soundness bug reachable from `cargo test`**, stated in P2.3 and in
+`154_probes/p6_testgate/FINDINGS.md`. `110` found the hang; the pointer path appears to be unreported.
+
+**Checked and not found: an intent violation in the bench tree.** The variant crates use `std`
+freely, including `std::vec::Vec`, `std::thread`, `Box::leak` and `println!`, which I14 forbids for
+arvo. **This is licensed and I want to be explicit rather than leave a reader to wonder**:
+`mock/Cargo.toml:32` excludes `benches` from the workspace with a comment saying bench crates "are not
+governed by the canon/design/code chain the empty member list protects", and a harness that measures a
+no-std library is not itself the library. I looked for a bench arm whose *measured kernel* depends on
+`std` in a way that would make the measurement inapplicable to a no-std consumer, and did not find one;
+the `std` use is in input construction, the thread pool and reporting. I did not audit all
+ninety-four, so this is bounded at the crates named in this file.
+
+**Checked, and my first statement of it was wrong.** I wrote that
+`grep -rn '^#!\[feature' mock/benches/variants/ --include='*.rs'` returns nothing, then ran it, and it
+returns **two**:
+
+```
+variants/spectral-bisection/src/lib.rs:21:#![feature(adt_const_params)]
+variants/spectral-bisection/src/main.rs:20:#![feature(adt_const_params)]
+```
+
+**Neither is a violation.** `unstable-features.md` lists `adt_const_params` (#95174) as ALLOWED,
+"largely complete", a 2026 const-generics stabilisation target, with the unsound unsized/borrow part
+split out into `unsized_const_params`. And `spectral-bisection` is one of the two crates
+`mock/benches/Cargo.toml`'s own header says are deliberately absent from the binary's dependency list
+because they need the deleted `arvo` crate, so it does not build at all in the current tree.
+
+I am leaving the error in rather than editing it away, because it is the third time in this dispatch
+that writing a count before running it produced a false one, after the 124-versus-123 test count and
+the contaminated 115.43s. **A count is a measurement** (`RULES.md:124`), and "returns nothing" is a
+count. My own probes do carry none, by the same grep, and that one I ran first.

@@ -30,8 +30,8 @@ the three together, default parallelism                     : DID NOT COMPLETE i
 **Each test alone is under two seconds. Together they never finish.** That is the mechanism stated as
 a measurement rather than as a reading of a stack.
 
-**The mechanism, from the source.** `pool.rs:132-161`'s `write_pass` is a single-coordinator protocol
-over one process-wide pool (`pool.rs:34`, `static POOL: OnceLock<PoolHandle>`). A coordinator stores
+**The mechanism, from the source.** `bitpack-write-contend-shared/src/pool.rs:132-161`'s `write_pass` is a single-coordinator protocol
+over one process-wide pool (`bitpack-write-contend-shared/src/pool.rs:34`, `static POOL: OnceLock<PoolHandle>`). A coordinator stores
 `kernel`, `vals`, `out`, `n` into shared fields with `Relaxed` stores, resets `done` to 0, bumps
 `generation` with a Release, then spins on `p.done.load(Acquire) != threads - 1`. Nothing excludes a
 second coordinator. Two concurrent callers interleave their stores into the same fields, and
@@ -40,9 +40,9 @@ forever. The wait is `std::hint::spin_loop()` with no yield, which is why a hung
 core rather than blocking.
 
 **And it is worse than a liveness bug, which I do not think has been said.** The workers read `vals`
-and `out` as raw pointers from the shared fields (`pool.rs:107-109`). Under two concurrent
+and `out` as raw pointers from the shared fields (`bitpack-write-contend-shared/src/pool.rs:110-111`). Under two concurrent
 coordinators a worker can execute one test's kernel against the **other test's buffers**. Those
-buffers are per-trial locals inside `corruption_count` (`stress.rs:41-56`), so a worker can write
+buffers are per-trial locals inside `corruption_count` (`bitpack-write-contend-shared/src/stress.rs:42-44`), so a worker can write
 through a pointer to a buffer whose trial has already returned. That is a use-after-free reachable
 from `cargo test`, not merely a wrong answer.
 
