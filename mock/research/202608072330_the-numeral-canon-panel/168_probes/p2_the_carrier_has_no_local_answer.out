@@ -1,0 +1,29 @@
+W = 8, declared domain = 0..256 (exhaustive)
+
+SAME MULTISET, TWO ORDERS
+  A: *3 then +200 steps=[MulK(3), AddK(200)]
+                 per-step widths = [10, 10], chain needs 10 bits
+  B: +200 then *3 steps=[AddK(200), MulK(3)]
+                 per-step widths = [9, 11], chain needs 11 bits
+  -> A needs 10 bits, B needs 11 bits, from the same two steps.
+
+THE SAME STEP, TWO REQUIREMENTS
+  *3 as the first step needs  10 bits
+  *3 as the second step needs 11 bits
+
+CONTROL: commuting steps must report the SAME requirement
+  C: *3 then *5  steps=[MulK(3), MulK(5)]
+                 per-step widths = [10, 12], chain needs 12 bits
+  D: *5 then *3  steps=[MulK(5), MulK(3)]
+                 per-step widths = [11, 12], chain needs 12 bits
+  -> both need 12 bits, as they must.
+
+CONTROL: the reported width must be TIGHT
+  A: fits(10) = true, fits(9) = false
+  B: fits(11) = true, fits(10) = false
+  C: fits(12) = true, fits(11) = false
+
+HOW FAR THE GAP GOES: the same step multiset, worst and best order
+  24 orderings of the same four steps: narrowest 11 bits, widest 13 bits
+
+RESULT: the carrier requirement is a property of the sequence. Both controls behaved as required.
