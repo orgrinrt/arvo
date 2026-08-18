@@ -54,20 +54,33 @@ fn main() {
     // Sole occupant: a value. Referenceable, Sized, byte-addressed with padding.
     let v = Dense13(0x1abc & 0x1fff);
     let r: &Dense13 = &v;
-    println!("dense13 size_of*8 = {} (13 logical + 3 padding)", size_of::<Dense13>() * 8);
+    println!(
+        "dense13 size_of*8 = {} (13 logical + 3 padding)",
+        size_of::<Dense13>() * 8
+    );
     println!("dense13 referenceable: {:?}", *r);
 
     // Shared occupant at position zero: not a value. The standalone form is the
     // size of a pointer, not of the focus.
     let col: [u64; 2] = [(0x0aaa) | (0x1555 << 13), 0];
     let f = First13(&col[0]);
-    println!("first13 size_of = {} bytes (pointer, not ceil(13/8) = 2)", size_of::<First13<'_>>());
+    println!(
+        "first13 size_of = {} bytes (pointer, not ceil(13/8) = 2)",
+        size_of::<First13<'_>>()
+    );
     println!("first13 focus = {:#x}", f.0 & 0x1fff);
-    println!("sibling observable through the same carrier: {:#x}", (f.0 >> 13) & 0x1fff);
+    println!(
+        "sibling observable through the same carrier: {:#x}",
+        (f.0 >> 13) & 0x1fff
+    );
 
     // The general lens over the same carrier, in-carrier instantiations.
-    let l0 = Lens64::<0, 13> { carrier: col.as_ptr() };
-    let l1 = Lens64::<13, 13> { carrier: col.as_ptr() };
+    let l0 = Lens64::<0, 13> {
+        carrier: col.as_ptr(),
+    };
+    let l1 = Lens64::<13, 13> {
+        carrier: col.as_ptr(),
+    };
     println!("lens<0,13>.get(0)  = {:#x}", l0.get(0));
     println!("lens<13,13>.get(0) = {:#x}", l1.get(0));
 
@@ -78,14 +91,21 @@ fn main() {
         let value_read = Dense13(x as u16).0 as u64 & 0x1fff;
         let word = x;
         let lens = Lens64::<0, 13> { carrier: &word };
-        if lens.get(0) != value_read { disagreements += 1; }
+        if lens.get(0) != value_read {
+            disagreements += 1;
+        }
     }
-    println!("degenerate lens against sole-occupant value, 8192 values: {} disagreements", disagreements);
+    println!(
+        "degenerate lens against sole-occupant value, 8192 values: {} disagreements",
+        disagreements
+    );
 
     #[cfg(control)]
     {
         // MUST FAIL TO COMPILE: focus leaves the carrier.
-        let bad = Lens64::<60, 13> { carrier: col.as_ptr() };
+        let bad = Lens64::<60, 13> {
+            carrier: col.as_ptr(),
+        };
         println!("{}", bad.get(0));
     }
 }

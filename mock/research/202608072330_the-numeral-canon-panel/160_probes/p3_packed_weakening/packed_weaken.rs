@@ -85,11 +85,17 @@ fn main() {
             disagreements += 1;
         }
     }
-    println!("packed weakening, {} elements: {} disagreements", N, disagreements);
-    println!("same address through the weakening: {}", std::ptr::eq(
-        &tight as *const _ as *const u8,
-        loose as *const _ as *const u8,
-    ));
+    println!(
+        "packed weakening, {} elements: {} disagreements",
+        N, disagreements
+    );
+    println!(
+        "same address through the weakening: {}",
+        std::ptr::eq(
+            &tight as *const _ as *const u8,
+            loose as *const _ as *const u8,
+        )
+    );
 
     #[cfg(control)]
     {

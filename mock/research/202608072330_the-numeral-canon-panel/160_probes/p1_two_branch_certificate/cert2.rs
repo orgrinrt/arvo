@@ -40,7 +40,11 @@ const WRAP: u8 = 0;
 const SAT: u8 = 1;
 
 const fn max_of(w: u32) -> u64 {
-    if w >= 64 { u64::MAX } else { (1u64 << w) - 1 }
+    if w >= 64 {
+        u64::MAX
+    } else {
+        (1u64 << w) - 1
+    }
 }
 
 // One realisation map, two regions (110 section 2). Rounding region is the identity
@@ -49,7 +53,13 @@ const fn max_of(w: u32) -> u64 {
 const fn realise(exact: u128, w: u32, policy: u8) -> u64 {
     let hi = max_of(w) as u128;
     match policy {
-        SAT => if exact > hi { hi as u64 } else { exact as u64 },
+        SAT => {
+            if exact > hi {
+                hi as u64
+            } else {
+                exact as u64
+            }
+        }
         _ => {
             let span = hi + 1;
             (exact % span) as u64
@@ -67,7 +77,9 @@ const fn separates_policy(w: u32) -> bool {
 const fn policy_separates_every_width() -> bool {
     let mut w = 1u32;
     while w <= 64 {
-        if !separates_policy(w) { return false; }
+        if !separates_policy(w) {
+            return false;
+        }
         w += 1;
     }
     true
@@ -86,10 +98,10 @@ const fn policy_separates_every_width() -> bool {
 
 const MODEL_W: u32 = 6;
 
-const fn maps_a_to_b(
-    bound_a: u64, policy_a: u8, bound_b: u64, policy_b: u8,
-) -> bool {
-    if bound_a > bound_b { return false; } // not total
+const fn maps_a_to_b(bound_a: u64, policy_a: u8, bound_b: u64, policy_b: u8) -> bool {
+    if bound_a > bound_b {
+        return false;
+    } // not total
     let mut x = 0u64;
     while x <= bound_a {
         let mut y = 0u64;
@@ -105,19 +117,19 @@ const fn maps_a_to_b(
     true
 }
 
-const fn direction_count(
-    bound_a: u64, policy_a: u8, bound_b: u64, policy_b: u8,
-) -> u32 {
+const fn direction_count(bound_a: u64, policy_a: u8, bound_b: u64, policy_b: u8) -> u32 {
     let mut n = 0;
-    if maps_a_to_b(bound_a, policy_a, bound_b, policy_b) { n += 1; }
-    if maps_a_to_b(bound_b, policy_b, bound_a, policy_a) { n += 1; }
+    if maps_a_to_b(bound_a, policy_a, bound_b, policy_b) {
+        n += 1;
+    }
+    if maps_a_to_b(bound_b, policy_b, bound_a, policy_a) {
+        n += 1;
+    }
     n
 }
 
 // A separating witness inside the joint extent, exhaustive at the model width.
-const fn has_witness(
-    bound_a: u64, policy_a: u8, bound_b: u64, policy_b: u8,
-) -> bool {
+const fn has_witness(bound_a: u64, policy_a: u8, bound_b: u64, policy_b: u8) -> bool {
     let joint = if bound_a < bound_b { bound_a } else { bound_b };
     let mut x = 0u64;
     while x <= joint {
@@ -143,9 +155,11 @@ const fn witness_only_accepts(ba: u64, pa: u8, bb: u64, pb: u8) -> bool {
 
 // The repaired scheme: separation, or a weakening in exactly one direction.
 const fn pair_is_admissible(ba: u64, pa: u8, bb: u64, pb: u8) -> bool {
-    if has_witness(ba, pa, bb, pb) { return true; }   // declared semantics
-    direction_count(ba, pa, bb, pb) == 1              // refinement (weakening exists,
-                                                      // tightening does not)
+    if has_witness(ba, pa, bb, pb) {
+        return true;
+    } // declared semantics
+    direction_count(ba, pa, bb, pb) == 1 // refinement (weakening exists,
+                                         // tightening does not)
 }
 
 const M: u64 = 63; // max at MODEL_W = 6
@@ -168,17 +182,29 @@ const P3_DIRS: u32 = direction_count(M, SAT, M, SAT);
 const HOLE: bool = witness_only_accepts(10, SAT, 40, SAT) == witness_only_accepts(M, SAT, M, SAT);
 
 // The repaired scheme separates all three.
-const _: () = assert!(pair_is_admissible(M, SAT, M, WRAP));   // separation branch
-const _: () = assert!(pair_is_admissible(10, SAT, 40, SAT));  // weakening branch
-const _: () = assert!(policy_separates_every_width());        // closed form, W 1..=64
+const _: () = assert!(pair_is_admissible(M, SAT, M, WRAP)); // separation branch
+const _: () = assert!(pair_is_admissible(10, SAT, 40, SAT)); // weakening branch
+const _: () = assert!(policy_separates_every_width()); // closed form, W 1..=64
 
 #[cfg(carry_spurious)]
-const _: () = assert!(pair_is_admissible(M, SAT, M, SAT));    // MUST FAIL TO COMPILE
+const _: () = assert!(pair_is_admissible(M, SAT, M, SAT)); // MUST FAIL TO COMPILE
 
 fn main() {
-    println!("P1 declared-semantics pair : witness={} directions={}", P1_WITNESS, P1_DIRS);
-    println!("P2 refinement pair         : witness={} directions={}", P2_WITNESS, P2_DIRS);
-    println!("P3 spurious pair           : witness={} directions={}", P3_WITNESS, P3_DIRS);
+    println!(
+        "P1 declared-semantics pair : witness={} directions={}",
+        P1_WITNESS, P1_DIRS
+    );
+    println!(
+        "P2 refinement pair         : witness={} directions={}",
+        P2_WITNESS, P2_DIRS
+    );
+    println!(
+        "P3 spurious pair           : witness={} directions={}",
+        P3_WITNESS, P3_DIRS
+    );
     println!("witness-only conflates P2 and P3 : {}", HOLE);
-    println!("policy_separates_every_width()   : {}", policy_separates_every_width());
+    println!(
+        "policy_separates_every_width()   : {}",
+        policy_separates_every_width()
+    );
 }
