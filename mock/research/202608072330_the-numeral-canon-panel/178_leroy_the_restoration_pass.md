@@ -167,7 +167,7 @@ anything measured supports and the first is the reason the discount is one:
 > (`175:296-299`)
 >
 > **The evidential anchor.** "`169` found one shared input by looking for it. Nothing establishes
-> it found the only one." (`175:301-302`) That sentence is what turns the discount from a general
+> it found the only one." (`175:301`) That sentence is what turns the discount from a general
 > worry into a measured fact about this unit, and it is what makes O-4 necessary rather than
 > merely valuable.
 
@@ -223,7 +223,7 @@ is the cheapest discipline this corpus has, and this is its clearest recent inst
   at `156` item 2, where both this unit's candidate and `177` couple it; section 4 repairs the
   placement and leaves the question exactly where it was.
 - **Direction (iii)'s falsity is recorded, not repaired**: nothing in the repaired text needs the
-  converse, and no替 sharper characterisation of the singleton-family region is attempted here,
+  converse, and no sharper characterisation of the singleton-family region is attempted here,
   because none is needed by any clause and inventing one would be scope creep on a licence
   question that clause 6 already governs soundly.
 - **`177`'s coverage note that clauses 6 through 12 were not re-derived**: correct and not a
@@ -240,8 +240,22 @@ is the cheapest discipline this corpus has, and this is its clearest recent inst
 the candidate, controls declared and firing, dropped list in the sibling file, output pasted:
 
 ```
-ACCOUNTING-BLOCK
+unique line anchors across the 14 sources : 82
+unique probe paths across the 14 sources  : 113
+line anchors in the candidate             : 6
+probe paths in the candidate              : 7
+candidate anchors that appear in a source : 4
+candidate anchors novel to the candidate  : 2
+    NOVEL 175:296-299
+    NOVEL 175:301
+source anchors not carried (dropped)      : 78
+probe paths carried                       : 1 of 113
 ```
+
+**The two novel anchors are `175:296-299` and `175:301`**, this pass's precise citations of the two
+restored discount components; `177` cited the same passages at slightly wider ranges, so the tight
+ranges appear in no source and are restorations from the establishing lines, each opened by the
+citation check.
 
 **Coverage.** Read in full this dispatch: `177` end to end; `176` at every superseded site; `175`
 at 5.3 and its cited lines; `174` at A4, r1's predicate and `174:384`; `168` 4.1 and 4.3 reopened

@@ -1,0 +1,9 @@
+OK L1  175_rompf_signature_in_part.md: An empirical claim two parties reach independently is corrob
+OK L0  175_rompf_signature_in_part.md: found one shared input by looking for it. Nothing establishe
+OK L1  168_mcsherry_the_chain_derived_cold.md: CONTROL  wrap, chain containing a right shift            DIS
+OK L0  177_lamport_independent_check_on_the_chain_revision.md: exactly as `164` carries them
+OK L0  174_mcsherry_signature_in_part.md: a grid-shaped `S` would change the shortfall count
+OK L1  177_lamport_independent_check_on_the_chain_revision.md: a thin base for a universal
+CONTROL absent not found : PASS
+CONTROL present found    : PASS
+VERDICT: PASS
