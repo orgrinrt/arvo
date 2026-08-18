@@ -1,31 +1,6 @@
 W = 8, domain 0..256 exhaustive, 3000 chains, depth 2..=5
+depth histogram (2..=5): [733, 766, 746, 755]   alternative placements tried: arm 1 3000, arm 2 19578 (6.53x)
 
 === ARM 1: two placements, as 168 ran it ===
 resolution                     win_chains  win_inputs  exercised
 clamp            [256 vals]             0           0       1198
-wrap  CONTROL    [256 vals]           278       13708       1152
-round to 2^3      [32 vals]             0           0       2762
-trunc CONTROL 2^3 [32 vals]            91        1330       2297
-round to 2^5       [8 vals]             0           0       2713
-trunc CONTROL 2^5  [8 vals]           242        3969       2228
-
-=== ARM 2: every placement, as the claim states it ===
-resolution                     win_chains  win_inputs  exercised
-clamp            [256 vals]             0           0       1198
-wrap  CONTROL    [256 vals]           395       21108       1152
-round to 2^3      [32 vals]             0           0       2762
-trunc CONTROL 2^3 [32 vals]           317       13527       2297
-round to 2^5       [8 vals]             0           0       2713
-trunc CONTROL 2^5  [8 vals]           443       17100       2228
-
-=== CONTROLS ===
-C1 arm 1 reproduces 168's round 0, clamp 0, trunc 91 chains / 1330 inputs : true
-C2 widening finds strictly more truncate counterexamples (91 -> 317)       : true
-C3 every non-nearest row is nonzero (wrap 395, trunc3 317, trunc5 443)        : true
-C4 every resolution is exercised on some chain                             : true
-C5 every NEAREST-POINT row is still zero over all placements               : true
-
-RESULT: the claim survives at the strength it asserts. Every nearest-point
-resolution reports zero over EVERY placement, including a grid coarse enough
-that most exact values sit far from any representable point; and each has a
-matched non-nearest partner onto the identical representable set that fires.

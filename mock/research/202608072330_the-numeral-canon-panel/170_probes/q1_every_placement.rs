@@ -108,7 +108,11 @@ fn exact(x: u128, steps: &[Step]) -> u128 {
 }
 
 fn dist(a: u128, b: u128) -> u128 {
-    if a > b { a - b } else { b - a }
+    if a > b {
+        a - b
+    } else {
+        b - a
+    }
 }
 
 /// The deferred placement is mask 0. Does ANY other placement beat it, at any
@@ -205,7 +209,29 @@ fn sweep(cs: &[Vec<Step>], p: Pi, all: bool) -> (usize, usize, usize) {
 
 fn main() {
     let cs = chains();
-    println!("W = {W}, domain 0..{DOMAIN} exhaustive, {} chains, depth 2..=5", cs.len());
+    println!(
+        "W = {W}, domain 0..{DOMAIN} exhaustive, {} chains, depth 2..=5",
+        cs.len()
+    );
+
+    // How much wider arm 2 actually is, counted rather than assumed. Arm 1
+    // tries exactly one alternative placement per chain; arm 2 tries
+    // 2^(depth-1) - 1 of them.
+    let mut hist = [0usize; 6];
+    let mut alts_narrow = 0usize;
+    let mut alts_full = 0usize;
+    for c in cs.iter() {
+        hist[c.len()] += 1;
+        alts_narrow += 1;
+        alts_full += (1usize << (c.len() - 1)) - 1;
+    }
+    println!(
+        "depth histogram (2..=5): {:?}   alternative placements tried: arm 1 {}, arm 2 {} ({:.2}x)",
+        &hist[2..=5],
+        alts_narrow,
+        alts_full,
+        alts_full as f64 / alts_narrow as f64
+    );
     println!();
 
     let rows: [(&str, Pi, bool); 6] = [
@@ -218,7 +244,10 @@ fn main() {
     ];
 
     println!("=== ARM 1: two placements, as 168 ran it ===");
-    println!("{:<30} {:>10} {:>11} {:>10}", "resolution", "win_chains", "win_inputs", "exercised");
+    println!(
+        "{:<30} {:>10} {:>11} {:>10}",
+        "resolution", "win_chains", "win_inputs", "exercised"
+    );
     let mut a1 = Vec::new();
     for (name, p, _) in rows.iter() {
         let r = sweep(&cs, *p, false);
@@ -228,7 +257,10 @@ fn main() {
     println!();
 
     println!("=== ARM 2: every placement, as the claim states it ===");
-    println!("{:<30} {:>10} {:>11} {:>10}", "resolution", "win_chains", "win_inputs", "exercised");
+    println!(
+        "{:<30} {:>10} {:>11} {:>10}",
+        "resolution", "win_chains", "win_inputs", "exercised"
+    );
     let mut a2 = Vec::new();
     for (name, p, _) in rows.iter() {
         let r = sweep(&cs, *p, true);
@@ -241,20 +273,37 @@ fn main() {
     println!("=== CONTROLS ===");
     let c1 = a1[2].0 == 0 && a1[0].0 == 0 && a1[3].0 == 91 && a1[3].1 == 1330;
     println!("C1 arm 1 reproduces 168's round 0, clamp 0, trunc 91 chains / 1330 inputs : {c1}");
-    assert!(c1, "arm 1 does not reproduce 168's published numbers, so this is a different experiment");
+    assert!(
+        c1,
+        "arm 1 does not reproduce 168's published numbers, so this is a different experiment"
+    );
 
     let c2 = a2[3].0 > a1[3].0;
-    println!("C2 widening finds strictly more truncate counterexamples ({} -> {})       : {c2}", a1[3].0, a2[3].0);
-    assert!(c2, "widening found nothing, so the scope defect was cosmetic");
+    println!(
+        "C2 widening finds strictly more truncate counterexamples ({} -> {})       : {c2}",
+        a1[3].0, a2[3].0
+    );
+    assert!(
+        c2,
+        "widening found nothing, so the scope defect was cosmetic"
+    );
 
     let c3 = a2[1].0 > 0 && a2[3].0 > 0 && a2[5].0 > 0;
-    println!("C3 every non-nearest row is nonzero (wrap {}, trunc3 {}, trunc5 {})        : {c3}",
-             a2[1].0, a2[3].0, a2[5].0);
-    assert!(c3, "a non-nearest row reported zero, so it is not a control for its partner");
+    println!(
+        "C3 every non-nearest row is nonzero (wrap {}, trunc3 {}, trunc5 {})        : {c3}",
+        a2[1].0, a2[3].0, a2[5].0
+    );
+    assert!(
+        c3,
+        "a non-nearest row reported zero, so it is not a control for its partner"
+    );
 
     let c4 = a2.iter().all(|r| r.2 > 0);
     println!("C4 every resolution is exercised on some chain                             : {c4}");
-    assert!(c4, "a resolution is never exercised, so its zero says nothing");
+    assert!(
+        c4,
+        "a resolution is never exercised, so its zero says nothing"
+    );
 
     let c5 = a2[0].0 == 0 && a2[2].0 == 0 && a2[4].0 == 0;
     println!("C5 every NEAREST-POINT row is still zero over all placements               : {c5}");
