@@ -1,0 +1,8 @@
+witness families: 65 (F, M) cells checked, ALL DISAGREE
+CONTROL A (on-tie family agrees somewhere): PASS (fires, 10 of 10 cells agree)
+CONTROL B F=4: exhaustive disagreements at M=2F-1 = 8, 2^(F-1) = 8, match
+CONTROL B F=6: exhaustive disagreements at M=2F-1 = 32, 2^(F-1) = 32, match
+CONTROL B F=8: exhaustive disagreements at M=2F-1 = 128, 2^(F-1) = 128, match
+CONTROL B F=10: exhaustive disagreements at M=2F-1 = 512, 2^(F-1) = 512, match
+cross-check (exhaustive, F 3..6, all interior M nonzero): PASS
+VERDICT: PASS
