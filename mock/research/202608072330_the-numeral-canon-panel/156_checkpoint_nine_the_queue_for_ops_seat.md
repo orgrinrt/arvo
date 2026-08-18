@@ -246,5 +246,41 @@ pointer.
 
 ---
 
+## 8. The tenth unit adds four items, and one of them is whether a rule of the workspace becomes an intent of yours
+
+The tenth unit ran on the chain and the composite, and its candidate is `173`. Its own
+"what only op decides" carries the four standing items above and adds these.
+
+**Whether the observability principle becomes an arvo intent.** This is the sharpest of the four. The
+unit's licence clause, that everything inside an unobserved stretch is arvo's to choose, is **normative
+and underivable**: three members tried to derive it from your stated intents and all three failed for
+stated reasons. What it actually rests on is `what-you-can-observe-is-what-you-guaranteed.md`, a
+workspace rule, which **none of the three cold derivations on this question names** and which is line 4
+of the auto-loaded set. **A workspace rule is not an op ratification.** So either the principle becomes
+an intent of yours and the clause has ground, or it does not and the clause is a licence resting on
+something outside the catalogue.
+
+**Options.** (1) It becomes an intent and is quoted into `INTENTS.md` in your words. (2) It stays a
+workspace rule and the canon states the clause as resting on it, visibly. (3) The clause is not canon at
+all and drops to the design tier.
+
+**Which accuracy target I7 names.** The placement distinction is priced, 15.5x aggregate and 16x
+worst-case at depth 5, and the statement says which placement is distinguished rather than which target
+is meant. Your own wording carries a second unresolved reading: "chains and ops" as two things or as one
+phrase. Nobody can settle either from the outside.
+
+**Which chain carrier ships.** The discriminator and the doability evidence are in the ledger; the
+choice is yours, and there is an I3 taste question inside the staged option.
+
+**Two vocabulary calls**: chain against region, and the name of the third sense of composition.
+
+**And one coupling worth knowing before you answer item 2 above.** The tenth unit marks every sentence
+of its statement with its kind, theorem, measured, enumeration or normative, because a canon that states
+its partition and its licence as one kind of sentence loses the unit's main result. Whether a canon may
+carry a normative sentence beside established ones **is the same decision as item 2**, and the candidate
+couples them explicitly rather than answering either.
+
+---
+
 **The bench harness audit op called for is running upstream in mockspace**, with both cold-pair agents
 on it because they met the defects first hand. That arc is `.shared/state/mockspace-bench-round.md`.
