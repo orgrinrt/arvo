@@ -476,6 +476,13 @@ condition**, and it bounds section 4: my claim about `168`'s definition rests on
 and verified at source, and my claim about `168`'s *derivation* rests entirely on `170`'s report of it,
 which is `170`'s to make and not mine to check.
 
+**One thing I named forward in section 9 and did not test.** `167`'s own 27 citations were checked at
+L1 only, before `169`'s and `170`'s layers existed. Whether any of them needed L2 or L3 is **untested**.
+I did not re-run them because a re-check would be a claim about `167` rather than about this reply, and
+under the never-widen-in-place rule the place to state such a result is a file of its own. It is cheap
+and someone should: the counterfactual in section 9 says 8 of 22 of *my* quotations are latent
+exposures, and there is no reason `167`'s rate is lower.
+
 **What would move if I am wrong.** Section 2's route rests on step 4, which is measured, and on step 2,
 which is argued and is O-171-1. If step 2 is normative, my whole split collapses to `170`'s answer.
 Section 3 rests on the channel enumeration being complete enough, which is O-171-2 and which I bound
