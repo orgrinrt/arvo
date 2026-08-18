@@ -404,9 +404,17 @@ exact match". Mine finds two:
 'Coverage of phase two, bounded'
 ```
 
-The first is prescribed verbatim by `RULES.md` ("Say what you settled, what you moved, and what you
-could not"). The second is not verbatim but falls out of the same standing instruction to bound
-coverage plus the two-phase protocol. **So `169`'s conclusion is strengthened rather than weakened**:
+The first is prescribed verbatim, and **not by `RULES.md` as I first wrote**: it is
+`how-to-run-a-panel.md:201`, "Ask for three things alongside them: **what you settled, what you moved,
+and what you could not.**" My own citation checker caught the misattribution and §15 records it. The
+second is not verbatim but falls out of the same standing instruction to bound coverage plus the
+two-phase protocol.
+
+**And the correction sharpens the point rather than blunting it.** `how-to-run-a-panel.md` is an
+auto-loaded workspace rule, so the one undisputed exact heading match between `167` and `168` was
+dictated through **the same shared-input channel** as §8's observability rule. Two of this reply's
+findings turn out to be the same mechanism: what looks like convergence between the pair is in several
+places the shared context speaking twice. **So `169`'s conclusion is strengthened rather than weakened**:
 both exact matches are dictated by the shared shape, and the count of undictated exact matches is
 zero, which is the number its argument actually needs.
 
@@ -509,3 +517,45 @@ and I would take a demonstration that one exists as a correction rather than as 
 **A negative claim, with its search.** "Nothing else in `168` rests on the enlarged control numbers" is
 `grep -n "1330\|91 chains\|, 91\b"` over that file, returning five sites, each read. That is the place
 and that is the search.
+
+---
+
+## 15. Citations checked, an eighth instrument defect, and one real misattribution of mine
+
+`170_probes/q4_citecheck.py` opens all thirteen quotations in this file. It folds in both defects
+already on record, `168`'s fifth (a `grep -F` cannot cross a line break) and `169`'s seventh
+(whitespace normalisation is necessary and not sufficient, because blockquote markers and emphasis
+survive it), and carries a planted-present and a planted-absent control.
+
+**`169`'s seventh defect bites here too, and the count is 4 of 13.** Four quotations resolve only
+after blockquote markers, `**` and backticks are stripped. So it is not a hypothetical class in my
+file either, and adopting `169`'s fix was load-bearing rather than courteous.
+
+**The first run reported two of thirteen missing, and the two were different in kind.**
+
+**An eighth defect, in the checker: case.** "The extractor finds exactly one exact match" is `169`'s
+sentence and I quoted it mid-sentence with a lowercased leading capital, which is ordinary English and
+not a misquotation. A case-sensitive checker calls it missing. Comparison is now casefolded. This is
+the same shape as the fifth and seventh: **a checker that reports a true citation as missing is as
+dangerous as one that reports a false one as present**, because the next action is to "correct"
+something that was right, and I would have.
+
+**And one real misattribution, mine.** I wrote that "Say what you settled, what you moved, and what you
+could not" is prescribed verbatim by `RULES.md`. It is not in `RULES.md` at all:
+
+```
+$ grep -rn "what you moved" RULES.md INTENTS.md
+(no output)
+$ grep -rn "what you moved" ~/Dev/clause-dev/.claude/rules/
+how-to-run-a-panel.md:201: ... **what you settled, what you moved, and what you could not.**
+```
+
+Corrected in §10, and the correction **strengthens** the argument rather than repairing it neutrally:
+`how-to-run-a-panel.md` is an auto-loaded workspace rule, so the one undisputed exact heading match
+between `167` and `168` was dictated through the same shared-input channel as §8's observability rule.
+Two findings in this reply are the same mechanism seen twice.
+
+**Final run: 13 resolved, 0 missing, both controls correct.** The general form worth carrying, now
+three layers deep: **a citation checker's normalisation has to cover every transformation a quotation
+legitimately undergoes on its way into a sentence** — line wrapping, markdown decoration, and the
+leading capital — and each layer was found only by a checker reporting a true quotation as missing.

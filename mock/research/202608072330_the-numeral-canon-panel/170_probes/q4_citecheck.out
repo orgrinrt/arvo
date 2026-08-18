@@ -1,0 +1,23 @@
+source                                          ws-only  ws+markup  quotation
+169_kiselyov_the_chain_attacked.md                 True       True  let fm = full_mask(steps.len());
+169_kiselyov_the_chain_attacked.md                 True       True  the extractor finds exactly one exact match
+169_kiselyov_the_chain_attacked.md                False       True  for 60 I have only that the rule existed
+169_kiselyov_the_chain_attacked.md                 True       True  a non-nearest projection onto the same representable set
+169_kiselyov_the_chain_attacked.md                False       True  nearest-point onto a coarser set than the operations can l
+169_kiselyov_the_chain_attacked.md                 True       True  which is where a placement might buy something
+169_kiselyov_the_chain_attacked.md                False       True  semantically self-contained: it runs on pi . g . pi . f ag
+169_kiselyov_the_chain_attacked.md                 True       True  a corrected count that reads as a refutation is how a true
+169_kiselyov_the_chain_attacked.md                 True       True  whitespace normalisation is necessary and not sufficient
+168_mcsherry_the_chain_derived_cold.md            False       True  There is no input, and no chain, on which any other placem
+168_mcsherry_the_chain_derived_cold.md             True       True  chains with a control that finds 1330 counterexamples once
+how-to-run-a-panel.md                              True       True  what you settled, what you moved, and what you could not
+what-you-can-observe-is-what-you-guaranteed.md     True       True  A guarantee about a type holds only over the operations th
+
+resolved 13/13, missing 0, needing the markup strip 4
+
+=== CONTROLS ===
+C1 planted-present found : True
+C2 planted-absent  not found : True
+C3 the markup strip was load-bearing on 4 of 13 quotations : yes
+
+RESULT: every quotation in 170 opens to the text it claims.
