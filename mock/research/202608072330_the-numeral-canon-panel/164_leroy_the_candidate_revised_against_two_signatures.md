@@ -324,13 +324,33 @@ bear on R16, being about soundness's enforceability, a different half of a diffe
 ### 5.3 R17 [NEW]: the register's literal sentence on rounding observability
 
 > **R17. `OPTIONS.md:2502`'s sentence "rounding at `F = 0` is observable the moment anyone writes
-> a non-grid literal" must no longer be cited as stated.** `157` F157-5 measured it false: four of
-> six non-grid literals separate nothing (`157_probes/p1b_literal_ties.out`), because a tie under
-> ties-to-even and truncation land on the same grid point; non-grid is necessary and not
-> sufficient. The underlying existence claim survives on `111` F111-5, whose dense rational
+> a non-grid literal" must no longer be cited as stated.** `157` F157-5 measured it false: of six
+> non-grid literals, **three separate and three do not**
+> (`157_probes/p1b_literal_ties.out`), because a tie under ties-to-even and truncation land on the
+> same grid point; non-grid is necessary and not sufficient. The underlying existence claim survives on `111` F111-5, whose dense rational
 > sample names its three exceptions, and the statement's clause 4 says "a full literal", which
 > carries none of the error. The registered compression dropped both qualifiers, and this entry
 > is the do-not-cite record F157-5 lacked in `161`.
+
+**Repaired after `165`, by the coordinator, and the shape of the error is the point.** This entry
+first read "four of six non-grid literals separate nothing". The probe it cites reports **three**
+separating and **three** not, caught by `165` and verified at the output before the repair: `3/4`,
+`2/3` and `3/2` separate; `1/2`, `1/3` and `5/2` do not. Both of that probe's controls pass.
+
+The qualitative conclusion is untouched, clause 4 never repeats the number, and `157` stands as
+landed. What makes it worth recording rather than fixing quietly is where it was found: **a
+do-not-cite entry, whose entire purpose is stopping a wrong figure from being cited, was carrying
+one**, unnoticed through seven files. A count is a measurement and is reproduced from the output
+rather than from the sentence that last quoted it.
+
+### 5.4 R18 [NEW, added after `165`]: `161`'s own accounting sentence
+
+> **R18. `161` section 8's closing sentence, "Zero novel anchors means...", must no longer be
+> cited.** It sits three lines below that section's own table reporting one novel anchor, so the
+> document contradicts itself on the page. `163` found it, `164` repaired the class in its own
+> accounting and left no entry naming the specific false sentence, and `165` recorded that gap
+> rather than escalating it. This is that entry. `161` stands as landed, because both signatures
+> cite it by line.
 
 ---
 
