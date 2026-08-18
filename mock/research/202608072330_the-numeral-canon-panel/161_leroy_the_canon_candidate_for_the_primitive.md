@@ -384,3 +384,116 @@ generalisation), because the bench corpus descends from one template.
 deliberately: nothing on `mock/benches/` measures a const-evaluation budget, and the harness arms
 are already named (no certificate, per-axis, per-pair, per-pair-with-direction-count).
 
+---
+
+## 2. What is contested, each with what would decide it
+
+**X1. O-A against O-B: one vocabulary or two across the declared range.** Not a disagreement
+between experts; a fork op's premise decides. Under footprint-observable, a packed 13-bit column
+and a dense 13-bit value differ in identity, not merely realisation, and O-A's two vocabularies is
+the honest shape; under footprint-internal, S-8's single lens vocabulary is right. `159` F159-3
+mapped the split exactly and declined to argue either branch, which is the correct posture and is
+carried. **Decided by `156` item 1.**
+
+**X2. O-C's residue: the boundary shape at the wall.** `159` narrowed `154`'s concession from "the
+sentence says too little" to "the sentence says enough about the wall and not enough about the
+shape at the wall": a column type with index accessors and a borrowed packed reference differ at
+the boundary in ways a consumer observes (storability, aliasing, lifetime). `160` 5.1 locates why
+no probe closes it: the equivalence test quantifies over behaviour at the consumer boundary, and
+the lens formulation deliberately says nothing about that boundary because saying it would be the
+concrete spelling the canon may not carry. **Decided by S-5's unrun discriminator: hand the
+statement's lens clauses to two designers, ask each for the consumer-facing shape of a 13-bit
+packed column and a 47-bit dense value, and compare behaviour.** A designer question, not a probe.
+
+**X3. Whether a strategy ever changes a computed value.** Raised inside this topic by `110`
+section 6, which declined to settle it and stated the measurable discriminator (pick a strategy
+pair, ask whether any operation at any width computes a different value) and the warning worth
+carrying: I5 licenses a cost function to change an answer, which is exactly the configuration
+where substitution-based optimisation stops being sound, so the licence has to be declared and
+scoped as a named predicate. The question's disposition belongs to topic eight's ledger (`151`,
+checked at `152`), which this candidate does not compress; recorded here as an inter-topic pointer
+so the warning is not lost with the fork.
+
+**X4. Where the next dispatch on refinement propagation goes.** `111` section 26 records the
+located disagreement (annihilation case against pricing a two-endpoint declaration at construction
+sites) and `114` section 12 records the three-way composition on disjoin/select/intersect. Topic
+six's, at `122`'s ledger; pointed at, not adjudicated here.
+
+---
+
+## 3. Closed or retired, including what must no longer be cited
+
+Each entry names the thing, the reason, and where the correction lives. A corrected count is not a
+refutation: in every entry below where a number died, the conclusion it supported survives on
+stronger ground, and `159` section 6's warning is carried verbatim: a corrected count that reads
+as a refutation is how a true finding gets retired.
+
+**R1. The 0-of-48 law-set freedom count.** Vacuous by construction: the key returned the swept
+axes, so the collision test never fired, and a mutation making the law set genuinely free did not
+move the verdict. Withdrawn by its author (`110` R0) after verifying the mechanism itself. **Do
+not cite.** The conclusion (L8) stands on three other instruments.
+
+**R2. The five-instrument count for F6.** Three, per `159` F159-1: one dependency family is one
+instance. **Do not cite the five.** The settlement of `154` against `155` stands regardless, on
+the `Copy + 'static` structural argument, which needs no count.
+
+**R3. F157-10's generalisation to "topic five states nothing about any width".** False of topic
+five, true of the four files counted; `109` spells width universals in a spelling the instrument
+did not enumerate (`159` F159-4). Cite the four-file count only.
+
+**R4. `154` F11, F12, F13** (the 127-primitive index count, the container-relative degenerate
+set, and the declaration criterion). Withdrawn by their author in `154` P2.1: the collapse was a
+reachability degeneracy at the thinnest possible signature, the fourth instance of
+criterion-tested-against-a-signature-too-thin. The distinction that refutes them (L21's machinery)
+is the thing to cite instead.
+
+**R5. `109`'s "the operation has to be a type".** The const-eval wall is real
+(`function pointer calls are not allowed in constant functions`, recorded verbatim); the
+conclusion drawn from it is false: three other carriers work, one already shipped in
+`satfold-shared` (Q52, from `111`). Cite the wall, not the conclusion.
+
+**R6. `110` F8 as stated ("no repair").** Withdrawn by its author and restated with its region:
+right about type equality, wrong about consumers; the cost is three-armed by boundary (L26).
+
+**R7. `155` section 5 requirement 1's "for the value, not the container".** Withdrawn in full by
+its author (`158` 1.2), on the ground that its own cited instrument excludes, by its bound, the
+case in dispute. S-1's lens-one-level-down is the replacement, adopted.
+
+**R8. The retirement of the 107-second figure.** Itself retired (Q52): the figure was a correct
+debug measurement, the three refuting measurements were release, and the two were never in
+conflict. Cite neither number without its profile.
+
+**R9. The number-system convergence as two instances.** `109` made a category claim, `110` made a
+cut, `109` conceded; ONE EXPERT (Q52). The cut itself (radix identity-bearing at `F > 0`,
+encoding is presentation) stands at that rung inside L2/L4.
+
+**R10. S-14's completeness clause as written, and S-16's gap assertion as written.** Superseded
+by L19's three-outcome form at one expert: as written they reject every refinement parameter, and
+the conflation is compiled at `160_probes/p1_two_branch_certificate/`. The soundness half of S-14
+is untouched and carried.
+
+**R11. S-8's degeneracy condition as worded.** Superseded by sole occupancy (L23). The lens
+formulation itself is untouched.
+
+**R12. `110:113`'s "this workspace auto-loads `arvo-always-optimal-internals.md` into every agent
+context".** False as stated (C2). Independence accounting that rests on it is unreliable in both
+directions; `155`'s "one shared exposure" sentence is conceded on exactly this ground (`158`
+section 5).
+
+**R13. O-B's cost clause** (`Bool` and `USize` become one-element columns). Withdrawn by its
+author on adopting S-8 (`159` section 4): under the lens the native end never mentions the lens,
+so the cost does not arise.
+
+**R14. O-D** (the deliberately over-counting index). Closed by the container premise **on either
+branch** (`159` F159-3): under observable the index counts correctly and O-D dissolves; under
+internal it is the live description of exactly that axis and is subsumed by L21's licence
+machinery. No further evidence is needed and it is not carried as an option.
+
+**R15. The four-part working assumption itself** (a primitive as a named composition of a format,
+a number system, a law set and a strategy). Superseded by the statement in section 4. Per element:
+format is two things, one identity-bearing and one selectable (L3, L4); number system is a
+category error resolved into the radix cut (R9); the law set is L8's exclusion; the strategy is a
+selector whose request-versus-resolution placement was settled in `106` section 1's pair (topic
+four's ledger, pointed at), with `109`'s own recommendation to carry the marker withdrawn in its
+phase two on that ground.
+
