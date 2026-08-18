@@ -1,0 +1,53 @@
+ clause  opens with a mark  total marks  non-opening marks  positions (chars into clause)
+      1               True            1                  0  [5]
+      2               True            1                  0  [5]
+      3               True            1                  0  [5]
+      4               True            3                  2  [5, 644, 844]
+      5               True            2                  1  [5, 560]
+      6               True            1                  0  [5]
+      7               True            3                  2  [5, 375, 546]
+      8               True            1                  0  [5]
+      9               True            1                  0  [5]
+     10               True            1                  0  [6]
+     11               True            1                  0  [6]
+     12               True            1                  0  [6]
+
+--- clause 4, the disputed one, with its marks located in context ---
+  mark '[enumeration]' at char 5
+    preceded by: ...**4.
+    followed by: ** Chain exactness has grades: composite correct rounding (one adaptation on the true composite), stepwise correct round...
+
+  mark '[measured]' at char 644
+    preceded by: ...the stepwise grade and nothing above it, so the accuracy-in-chains intent is a constraint on the shape of the concept, not an optimisation request. **
+    followed by: ** The gap between the top two grades is not closable from below: no intermediate width strictly between `F` and `2F` ma...
+
+  mark '[theorem]' at char 844
+    preceded by: ... not closable from below: no intermediate width strictly between `F` and `2F` makes double rounding innocuous, at any `F`, by constructive witness. **
+    followed by: **...
+
+--- C-C: does the legend state the convention? ---
+  legend text: Offered, not settled. Op decides, and per I12 an opinion given before the experts converge is an ack. Every sentence is marked with its kind: **[theorem]**, **[measured]**, **[enumeration]**, or **[normative]**, because the unit's main result is that its central claim splits into a theorem and a licence, and a canon that states them as one kind of sentence has lost it. Whether a canon may carry a 
+  legend states the convention: False
+
+C-A  clauses with a non-opening mark: 3  (must be > 0)
+C-B  clauses with an opening mark only: 9  (must be > 0)
+C-C  the legend search was run and returned: False
+
+--- P1b: is the trailing reading forced? ---
+  clause 1: last mark [theorem]       text after it: 'A program divides uniquely into maximal stretches of operati'
+  clause 2: last mark [normative]     text after it: 'Within a maximal unbound stretch, the design may select any '
+  clause 3: last mark [enumeration]   text after it: "A chain's content is a set of exact operations together with"
+  clause 4: last mark [theorem]       text after it: ''
+  clause 5: last mark [measured]      text after it: ''
+  clause 6: last mark [measured]      text after it: 'Deleting an interior adaptation needs a licence, and there a'
+  clause 7: last mark [measured]      text after it: '.'
+  clause 8: last mark [measured]      text after it: 'A chain adds predicate dimensions no operation has: depth, s'
+  clause 9: last mark [theorem + measured] text after it: "In a graph-shaped region, a shared node's carrier requiremen"
+  clause 10: last mark [enumeration]   text after it: "The promise ladder follows the binding time: where a chain's"
+  clause 11: last mark [measured]      text after it: 'The carrier of the chain-level guarantee is discriminated by'
+  clause 12: last mark [enumeration]   text after it: '"Composition" is three concepts wearing one word: configurat'
+
+  FORCED: clause 4's final mark [theorem] has NO successor sentence, so it cannot
+          be a leading mark. The convention is trailing, not inferred.
+  FORCED: clause 5's final mark [measured] has NO successor sentence, so it cannot
+          be a leading mark. The convention is trailing, not inferred.
