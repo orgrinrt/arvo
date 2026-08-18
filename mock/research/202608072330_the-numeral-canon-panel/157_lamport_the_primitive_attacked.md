@@ -115,24 +115,37 @@ artifact.
 `bitpack-write-contend-shared/src/pool.rs:110-111`. Reading the protocol around them, the mechanism is
 narrower and nastier than "two coordinators can race":
 
-- `POOL` is a process-wide `OnceLock<PoolHandle>` (`bitpack-write-contend-shared/src/pool.rs:34`), so **all tests share one pool and one
+- `POOL` is a process-wide `OnceLock<PoolHandle>` (`bitpack-write-contend-shared/src/pool.rs:34`), so
+  **all tests share one pool and one
   set of coordination fields**.
 - `write_pass` stores the caller's `vals`, `out`, `n` into those shared fields and bumps `generation`
-  (`bitpack-write-contend-shared/src/pool.rs:146-151`). Workers wake on `generation` and read whichever pointers are currently there
+  (`bitpack-write-contend-shared/src/pool.rs:146-151`). Workers wake on `generation` and read
+  whichever pointers are currently there
   (`bitpack-write-contend-shared/src/pool.rs:110-113`).
-- `write_pass` then spins until `p.done` reaches `threads - 1` (`bitpack-write-contend-shared/src/pool.rs:158-160`), and `done` is
+- `write_pass` then spins until `p.done` reaches `threads - 1`
+  (`bitpack-write-contend-shared/src/pool.rs:158-160`), and `done` is
   **also shared and is reset by every caller** (`bitpack-write-contend-shared/src/pool.rs:150`).
 
 So a second concurrent coordinator's workers can satisfy the first coordinator's `done` count. The
-first returns, its `buf` (a per-trial local in `corruption_count`, `bitpack-write-contend-shared/src/stress.rs:41-50`) is dropped on the
-next loop iteration, and a worker still holding the stale `out` pointer writes into freed memory. The
+first returns, its `buf` (a per-trial local in `corruption_count`,
+`bitpack-write-contend-shared/src/stress.rs:41-50`) is dropped on the next loop iteration, and a
+worker still holding the stale `out` pointer writes into freed memory. The
 crate's own safety comment states the contract that is being violated: `out` "is not read or written by
 anything else while this call is in flight" (`bitpack-write-contend-shared/src/pool.rs:129-131`).
 
 **And it defeats the crate's own control.** `naive_kernel_never_corrupts_when_the_split_is_aligned`
-(`bitpack-write-contend-shared/src/stress.rs:117-127`) asserts zero corruption at an aligned split, and exists to prove the observed
+(`bitpack-write-contend-shared/src/stress.rs:117-127`) asserts zero corruption at an aligned split and
+exists to prove the observed
 corruption is the boundary race rather than a harness defect. Cross-test pointer mixing can corrupt at
 an aligned split, so under the default runner that control is not a control.
+
+**What I read and what I did not, in this gate.** I ran all thirteen crates and read every test body in
+`bitpack-write-contend-shared` (15 tests) and the pool and stress modules around them. I did not read
+the other 108 bodies; `154` scanned all 123 mechanically for a missing assertion and `155` read
+`warm-container-shared`'s fifteen in full, and I am relying on those two rather than repeating them.
+That reliance is exactly the shape `RULES.md:135-148` warns about, two files leaning on one source, so I
+name it: **if either scan was wrong, my "no tautological test found beyond the one named" inherits the
+error.** What I established myself is the pass counts, the two defects and the pool trace.
 
 None of this touches my question and none is a reason to refuse. I proceed.
 
@@ -457,7 +470,8 @@ contradict either, because both were measured under signatures satisfying it.
 literal", reports 33 of 36 pairs, and says "with the three exceptions named". Its probe names them
 (`111_probes/p4_output.txt:27-30`) and its sample is dense. `OPTIONS.md` Q52 compresses all of that to
 "rounding at `F = 0` is observable the moment anyone writes a non-grid literal", dropping both the
-density and the exceptions. **The compression is what is wrong here, and `111` is not.** My first separation run used the literal `1/2`,
+density and the exceptions. **The compression is what is wrong here, and `111` is not.** My first
+separation run used the literal `1/2`,
 which is non-grid at `F = 0` and separates nothing: truncation sends it to 0 and ties-to-even sends it
 to 0. `157_probes/p1b_literal_ties.out`, eight candidate literals at `W = 3` unsigned saturating:
 

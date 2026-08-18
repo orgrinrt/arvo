@@ -40,6 +40,10 @@ OK  bitpack-write-contend-shared/src/stress.rs:117-127   [11 lines]
       /// other defect in the pool or the test harness, this must be zero.
       #[test]
       fn naive_kernel_never_corrupts_when_the_split_is_aligned() {
+OK  RULES.md:135-148   [14 lines]
+      **Check your own citations before shipping, by opening them.** A reference that resolves is not a
+      reference that says what you claim. One member found **seven of its own citations wrong** this way and
+      built a probe that opens every `file:line` and tests its content rather than its resolution; forty-one
 OK  /Users/orgrinrt/Dev/clause-dev/.claude/rules/arvo-always-optimal-internals.md:1-4   [4 lines]
       ---
       paths:
@@ -92,6 +96,10 @@ OK  111:507-573   [66 lines]
 OK  111:555-556   [2 lines]
       Adequacy is checkable the way `110` checks a congruence: at model widths, exhaustively, with the
       transfer argument named rather than assumed. It is the thing a canon can demand and a design can be
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
 OK  111:334-336   [3 lines]
       Two primitives with the same value set are separated by some term exactly when their realisation maps
       differ somewhere a term can reach. Every term's argument to `R` is a rational. So **no signature can
@@ -284,5 +292,5 @@ OK  112:904-945   [42 lines]
 UNRESOLVED  no_such_file_157.md:1
 OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
 
-citations checked: 82 plus 2 controls
+citations checked: 84 plus 2 controls
 failures: 2  (the 2 controls MUST be among them; CONTROL PASS)
