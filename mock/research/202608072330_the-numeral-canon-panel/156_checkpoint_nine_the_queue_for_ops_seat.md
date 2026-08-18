@@ -165,9 +165,12 @@ candidate. The call is the coordinator's, made under op's `87` criterion, and it
 reasoning is at `153` section 4.
 
 Topic five asked what a primitive is, got two competing cold derivations at `109` and `110`, was
-attacked at `111`, and then moved to a different question without ever converging or being compressed.
-`AGREEMENTS.md` has a section for every topic except that one, which is the same absence from the other
-side.
+attacked at `111`, and reached an offered statement at `112:904-945` that its author says the earlier
+files jointly support. The unit then moved to the refinement half, which is what `114` formalised and
+what `119` and `122` carried to a candidate and a check. **The primitive half never got any of that.**
+No signature round, no revision against dissent, no independent check, and no second derivation that
+reached it without reading it. `AGREEMENTS.md` has a section for every topic except that one, which is
+the same absence from the other side.
 
 The unit opens with a fresh blind cold pair rather than by resuming `109` and `110`, because member
 handles turn out to be addressable only from the session that dispatched them and this is a new

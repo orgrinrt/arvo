@@ -61,7 +61,8 @@ and stays that way.
 - **Topic three, derived algebraic laws.** Candidate `90`, check `91`, priced at `92`.
 - **Topic four, the strategy axis.** Candidate `106`, check `107`, attacked after the fact at `108`.
 - **Topic five, the primitive.** Cold pair `109` and `110`, attack `111`, `112`, op's steer at `113`.
-  **No candidate and no ledger.** Section 3 is about this.
+  A statement is offered at `112:904-945` and **no candidate, no ledger, no signature round and no
+  check**. Section 3 is about this.
 - **Topic six, the realisation map.** Candidate `119`, superseded clause by clause by `122`, check
   `123`, one open item closed at `124`.
 - **Topic seven, the rounding axis.** Candidate `132`, revised at `136`, check `137`, restored at
@@ -72,7 +73,7 @@ and stays that way.
 settled at `87` that nothing moves there until every topic is done and the canon is written from the
 consolidations as one act.
 
-## 3. Topic five stopped without answering the question it opened
+## 3. Topic five's answer was offered once and never put through anything
 
 `109` and `110` were dispatched blind and in parallel on one question, what a primitive is. They
 converged on two things and **differed in the shape of their answers**, which `AGREEMENTS.md` records
@@ -80,10 +81,21 @@ and which was live when the unit moved. `111` attacked both. `112` took up where
 op's `113` told the members to build it together, and `114` formalised that. From there the work
 became the realisation map, which ran to a candidate, a revision and a check as topic six.
 
-That was a reasonable move and it produced a finished topic. What it left behind is that **the
-question `109` and `110` were asked has two competing answers on the record and no third instance,
-no convergence, and no compression.** `AGREEMENTS.md` has a section for topics one through four, six,
-seven and eight, and none for five, which is the same absence stated from the other side.
+That was a reasonable move and it produced a finished topic. **This section overstated what was left
+behind in its first draft, and the correction is the useful part.** It said the question had no
+convergence at all. It has one: `112:904-945` offers a statement of what a primitive is, and its
+author says `109`, `110`, `111`, `108`, `106` and `40` jointly support it with that file's corrections
+applied. Its first clause is the answer to the question the topic opened.
+
+What that statement has never had is any of the machinery this panel uses to promote something. **No
+signature round, no revision against dissent, no independent entailment check, and no second
+derivation that reached it without reading it.** One author offered it, the unit moved to the
+refinement half, and the refinement half is what `114` formalised and what `119` and `122` carried to
+a candidate. `122` section 4 is the realisation map end to end and defines no primitive.
+
+So the gap is precise rather than total, and it is the gap that matters: the panel's central noun sits
+on one file's offer, at one expert, unchecked. `AGREEMENTS.md` has a section for topics one through
+four, six, seven and eight, and none for five, which is the same absence stated from the other side.
 
 Under op's `87` that absence is a defect rather than a closed question: the canon gets written from
 the consolidations read alongside their members, so a topic with no ledger is a topic whose findings
@@ -108,8 +120,9 @@ surfaces are, how the tree decomposes) is stated in terms of it.
 with a **fresh cold pair on the same question**, dispatched blind and in parallel on the two-phase
 protocol. That is not a repetition. `109` and `110` are two instances and the panel's bar is three
 independent ones, so a blind pair that has read neither is exactly what the question is short of, and
-whether the new pair lands on either prior shape is itself the result. The prior files are then read
-in phase two, where reconciling with them is the assignment.
+whether the new pair lands on `112`'s offered statement without having seen it is the strongest
+evidence available for or against it. The prior files are then read in phase two, where reconciling
+with them is the assignment.
 
 ## 5. Shared inputs, named up front, because Q64 says to
 
