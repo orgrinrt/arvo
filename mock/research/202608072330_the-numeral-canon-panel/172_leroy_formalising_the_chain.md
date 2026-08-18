@@ -173,14 +173,23 @@ alphabet (the divisor is an input, not an intermediate); its two realisations mu
 indistinguishable at `off` on every input including the wrap-exercising ones. If the control
 distinguishes, the instrument is detecting something other than the partiality and proves nothing.
 
-`172_probes/p3_definedness/` compiles both arms at `opt-level = 3, debug-assertions = off`:
+`172_probes/p3_definedness/` compiles both arms at `opt-level = 3, debug-assertions = off`
+(`definedness_off.out`, with the `on` head beside it):
 
-- **Partial arm**: `a / ((b + c) - d)` with the divisor an interior intermediate; narrow
-  realisation wraps the divisor to zero on constructed inputs where the wide realisation holds a
-  nonzero `i64`. The narrow build **panics** ("attempt to divide by zero") where the wide build
-  returns a value, with only the final value bound.
-- **Control arm**: same shape, divisor an input: 0 disagreements, no panic on either realisation
-  over the sweep.
+- **Partial arm**: `a / ((b + c) - d)` with the divisor an interior intermediate, at `a = 0` so
+  the witness is a **pure definedness difference**: `0 / t = 0` for every nonzero `t`, so on that
+  slice the two realisations agree on every input where both are defined and differ only in
+  **where** they are defined. At the constructed input (divisor exactly `2^32`: nonzero exact,
+  wrapped `i32` zero) the narrow realisation panics and the wide one returns a value, at
+  `debug-assertions = off`, with only the final value bound.
+- **Control arm**: same shape, divisor an input: 200,000 inputs, 0 disagreements, 0 panics on
+  either realisation. The control does not distinguish, so the instrument detects the interior
+  partiality and nothing else.
+- **And the trap the clause exists to close, demonstrated in the same run**: a value-only
+  equivalence checker that skips inputs where a side panics, which is what a `catch_unwind`
+  harness naturally does, certifies this pair from 200,000 random inputs (0 disagreements, 0
+  skipped, because a random divisor wrap is a `2^-32` event), and the constructed input refutes
+  the certificate. A licence checked by value agreement alone would ship a panic.
 
 **The formalised clause:**
 
