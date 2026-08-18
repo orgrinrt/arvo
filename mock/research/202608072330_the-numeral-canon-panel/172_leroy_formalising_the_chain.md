@@ -420,3 +420,188 @@ as its path-shaped case, a single operation as its one-node case, and the sharin
 one genuinely new obligation a DAG adds: **not a wider carrier, but a schedule decision at every
 shared node**.
 
+---
+
+## 9. The rungs, carried exactly, including the correction of the correction
+
+The brief instructs that `171`'s count correction not be undone, and it is carried here in the form
+the candidate should compress:
+
+- **The locus finding** (the guarantee cannot live in a per-value object; a closed concept makes
+  I7 unstatable): **three independent routes plus a corroborating pair.** `60`/`63`, `90` and
+  `109` are the three routes from three topics; `167` and `168` are the pair, dispatched on one
+  premise set, with both exact heading matches between them dictated through the shared context
+  (`170` 10) and the shared premise set named by both.
+- **The observation-bounded definition**: **two hats, not three.** `60`'s definition is of another
+  shape (contents, not bounds; observation vocabulary 0.27 per thousand words against 1.50 and
+  1.53, defining sentences opened at `171_probes/thirdfile/`), and it composes with the partition
+  rather than repeating it, which is worth more than a third instance would have been.
+- **Within the two**: `170` reports dependence on the observability rule for its whole delimiter;
+  `171` reports a split, rule-free for (P) with the route shown and measured, dependent for (L).
+  So **(P) carries two instances, one with a rule-free derivation; (L) carries none and rests on
+  the rule.** O-169-2/O-171-4 (the cold dispatch with the rule removed) is the decider and stays
+  open.
+- **The deferral theorem**: established as a proof here (section 4); its sweeps are `168` (two
+  placements), `169` (every placement, one instrument), `170` (every placement, second instrument,
+  second language), and this file's random-set run. Sweeps confirm; the proof carries.
+- **The no-threshold theorem**: `167` enumerated, `169` extended and found the closed form, `171`
+  characterised the mechanism, this file constructs the witnesses. One chain of work, four files,
+  and the theorem's rung is the argument's, not a count of sweeps.
+
+## 10. O-171-1, answered as the second reader it asked for
+
+`171` O-171-1 asks a second reader to take step 2 of its route alone ("choosing between
+contextually equivalent implementations is not a change to the program") and say whether it can be
+asserted without any claim about what the design owes. **My verdict, formed from the definitions
+before rereading `171`'s own defence: step 2 is descriptive, and the split stands.**
+
+The reasoning, so the agreement is checkable rather than an echo: contextual equivalence with a
+fixed observation basis is the standard extensional identification of programs, and the basis in
+`171`'s route is not chosen by the designer; it is **whatever a context can do in the language at
+the given profile**, which is a fact about the language (and is exactly why the basis shifts with
+`debug-assertions` and why partiality sits in it at every profile, sections 1.2 and 3). Where a
+normative choice could hide is in choosing the basis; here the basis is inherited, so none does.
+What step 2 cannot supply, and does not claim to, is that the design **may** choose among the
+identified implementations; that is (L), and `171` already locates the normative content there.
+
+So the two-expert state of the split: `171` proposed it and could not certify its own philosophical
+premise from inside; this file, having derived its reading from the definitions first, concurs
+with the stated reason. That is a second read in the sense the option requested, and it does not
+retire O-169-2's empirical test, which remains the stronger decider.
+
+## 11. Corpus findings, for the record the next unit inherits
+
+**C-X1. Nine instrument defects in one unit, and the last two name classes the first seven cannot
+be caught by.** Mechanical (seven: a counter that cannot return nonzero, a hardcoded label, a
+wrong-dialect regex, a pre-LTO listing, a line-break-blind `grep -F`, markup surviving whitespace
+normalisation, case sensitivity on a mid-sentence quote), **scope** (`169` 2/`170` 2: the search
+covered two placements while the claim quantified over all; no control can catch it, because a
+control tests whether an instrument measures what it points at, not whether it points at the whole
+claim; the check is reading the claim's quantifier beside the loop bound), and **harness** (`171`
+3.1: a 2x2 looped over quoted flag strings in a shell that does not word-split, every cell
+agreeing; the tell is a table whose every cell agrees, and the control is one cell that must
+differ). Both new classes were considered in this file's probes: each probe's claim quantifier is
+matched to its loop bounds in the header, and each multi-cell run carries a cell that must differ.
+
+**C-X2. Where a finding carries both an argument and an enumeration, the predicate takes the
+weaker half unless the author separates them** (`171` 5.1's class, now applied three times in this
+unit: `167` 4.1, `168` F8's placement dimension, and the profile amendment). The honest form is
+two predicates, one per half. This file writes every theorem that way and it is the interim
+practice pending Q65's marker, not a settlement of it.
+
+**C-X3. The value-only equivalence trap** (section 3): an equivalence checker that skips inputs
+where one side panics certifies pairs that differ in definedness, and 200,000 random inputs found
+zero occurrences of a `2^-32` event. The licence's checking discipline needs the definedness
+column, and a sweep's zero on a rare-event channel is a claim about the sweep.
+
+## 12. What I could not formalise, and why each wall is where it is
+
+1. **(L) itself.** It is normative and underivable; the formalisation states it as a licence
+   resting on a named principle with two exact bounds, which is the most that can be done without
+   op or a convergence. The rule it rests on is workspace canon of the presumed-wrong rung for
+   arvo's own purposes; whether the canon adopts the principle as an arvo intent is op's, and the
+   candidate should put it beside the container premise rather than absorb it.
+2. **Which accuracy target I7 names** (`168` O-168-3) and **which carrier ships** (Q-C1/C9's three
+   directions, with the doability check run for the third at `167` R10 and the backward-facts
+   discriminator separating them). Op's, and the unit's material prices the distinction without
+   deciding it.
+3. **The remaining profile-bound residue**: four untested binding-free channel candidates
+   (O-171-2). The definedness clause closes the partial-operation gap; the four remain named and
+   untested, and (P)'s predicate carries the enumeration bound.
+4. **The fifth obligation's composition with the deferral theorem**: `60`'s error sum is a
+   backward-style bound indexed by the schedule; section 4's theorem is a forward optimality
+   statement about one schedule. Whether they compose into a bound-per-schedule with the deferred
+   point as its minimum is plausible and unbuilt, and it is the cleanest next probe this topic
+   owns.
+5. **Anything priced.** No harness ran in this dispatch; every magnitude carried is the unit's,
+   at the profile named in section 7; Q-C3's cost half, Q55, and the const-time accumulability of
+   the licence conjunction (`168`'s "could not") stay open.
+
+## 13. What I am carrying forward unchanged, and from whom. Count: fourteen.
+
+1. `60`'s definition-by-contents and the schedule-is-meaning result (probe A, three schedules,
+   three functions). Clause frame, section 2.
+2. `60`'s five obligations, with `168`'s and `167`'s mapped onto them. Section 2.
+3. `60`'s grade taxonomy (a, b, c, s), with grade s as fixed point's own possession. Section 2.
+4. `60`'s window and its cost accounting, bounded by `168` N6's heterogeneity result and `43`'s
+   flatten-before-deriving answer. Section 2.
+5. `171`'s (P)/(L) split with its three failed routes to (L), formalised in section 1 rather than
+   amended.
+6. `171`'s I18 convergence (the binding-free channels at `debug-assertions = on` land on op's own
+   build bound). Section 1.2.
+7. `171`'s two-hats correction and the thirdfile measurement. Section 9, per the brief.
+8. `168`'s two-licence split and its conjunction-over-steps result, with the four firing controls.
+   Section 6.
+9. `168`'s carrier-has-no-local-answer result with its commuting control, and its p6 join-is-max
+   result. Sections 2 and 8.
+10. `169`'s closed form for the conflict band and `170`'s measured variant. Section 8.
+11. `169`'s scope-defect finding and `170`'s concession with the category statement. Section 11.
+12. `170`'s wrap control (the strongest matched pair) and its coarse-grid closure of O-169-1.
+    Section 4's boundary row.
+13. `168` 12's accumulator-projection mechanism result with its profile invariance, and 12b's
+    profile amendment. Section 7.
+14. `167`'s backward-narrowing licence and bit count, and its correlation finding, both still at
+    one expert and named as asking for their second read rather than counted as settled. Section
+    7's carriage is of the harness results; these two remain the unit's most valuable unattacked
+    claims and the next attack's first targets.
+
+**Amended in the carrying: one.** `167` 4.1 and its chain of extensions, upgraded to a theorem by
+construction (section 5), which is a widening stated in this file per the never-widen-in-place
+rule; the enumerated halves stay exactly where their files put them.
+
+## 14. What only op decides, unchanged and extended by one
+
+The container premise, Q65's marker question, and X1 through X4 stay open exactly as `164` carries
+them; nothing in this unit touches them. This topic adds to the queue rather than closing
+anything: **which accuracy target I7 names** (the placement question is now priced at 15.5x
+aggregate and 16x worst-case at depth 5, and the theorem in section 4 says which placement is
+distinguished, not which target is meant), **whether the observability principle becomes an arvo
+intent** (the ground (L) needs), and **which chain carrier ships** (the three directions, with
+doability established for the third and the backward-facts discriminator separating them).
+
+## 15. Coverage, bounded honestly
+
+**Read in full this dispatch:** `166`, `167` (both phases and R12 through R14), `168` (all three
+passes), `169`, `170`, `171`, `60` sections 1 through 8 and its phase-two verdict and section 1,
+`43` section 0, `AGREEMENTS.md` sections 6 and 12, `OPTIONS.md` Q42 and Q54, and `164` (mine,
+reread at the sections cited).
+
+**Not read:** `60` phase two sections 2 through 7 beyond the verdict; `43` sections 1 through 10
+(its section 0 is its author's summary, the single-source shape `168` pass three names, and my use
+of it is bounded to the flatten answer `168` 24 verified); `63`, `90`, `92`, `106` at source (their
+chain material reaches me through `AGREEMENTS.md` and the unit's own verifications); every panel
+file outside this unit's reading list.
+
+**Reproduced or verified rather than taken:** the deferral zeros and control counts
+(independently re-derived on a fresh instrument at wider hypotheses, section 4.2); `169`'s
+`2^(F-1)` counts (CONTROL B, exact); the unit's model conventions (CONTROL B is the check that my
+model is theirs); the definedness bound (built, both profiles). Not re-run: `171`'s channels and
+perimeter probes (their outputs are committed and my section 1 carries their predicates as
+recorded); `168`'s harness readings (carried with the 12b profile amendment).
+
+**Which sections would move if something I leaned on is wrong.** Section 1 rests on `171`'s
+measured premise as committed; if a fifth channel among the four untested ones distinguishes at
+`off`, (P)'s predicate narrows and (L)'s profile bound gains a second exception alongside
+definedness, and the clause structure absorbs both without rewriting. Section 2's window carriage
+rests on `60`'s own file at the sections read. Section 5's theorem is self-contained modulo the
+model convention, which CONTROL B pins to the unit's. Section 7's magnitudes inherit `117`'s
+profile situation in full.
+
+**Citations and quotations, checked by opening them.** `172_probes/citecheck.out`: every
+`file:line` anchor opened and read. `172_probes/quotecheck/`: every verbatim quotation matched
+under the unit's three-layer normalisation (whitespace, markup, case), with a planted-absent and a
+planted-present control both behaving. The layer report is stated with `171`'s caveat: this file
+copies source bytes, so a zero at L2/L3 is a quoting-style fact and not evidence the layers are
+dead.
+
+**What this file settled.** The deferral optimum as a theorem with its hypotheses and tie-rule
+irrelevance (O-170-1 and O-170-2 closed). The no-threshold claim as a theorem at `F any` by
+constructive witness families, verified at 65 cells with both controls firing. The licence's
+definedness clause, compiled at `debug-assertions = off` with its value-only-checker trap
+demonstrated. O-171-1's second read, delivered with independent reasoning.
+
+**What it moved.** (P) and (L) from one fused sentence to two statements with separate provenance,
+separate bounds and a stated relation; the unit's definition and `60`'s from rivals to one
+composed frame; the rung ledger to the exact form the candidate should compress.
+
+**What it could not.** Section 12's five items, each with why the wall is where it is.
