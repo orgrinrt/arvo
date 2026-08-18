@@ -1,0 +1,9 @@
+177 p1 (biconditional: (i) holds, (iii) fails; wrap column 1,2,3,1) : REPRODUCES
+177 p3 (three mark positions, intra-sentential 1 before 2 after) : REPRODUCES
+177 p2 (independent accounting reproduction) : REPRODUCES
+177 p6 (nothing reserved closed; gate list partial) : REPRODUCES
+F177-5 components: in 175 = 1,1 (want 1,1); in 176 = 0,0 (want 0,0)
+F177-7 stale docstring control : CONFIRMED PRESENT
+F177-6 gate enumerates 5 of 8 reserved names (want < 8 to confirm partial)
+CONTROL (p1 vs p3, must DIFFER):
+  control : DIFFERS
