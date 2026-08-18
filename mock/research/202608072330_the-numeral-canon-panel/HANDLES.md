@@ -154,6 +154,16 @@ Recorded at dispatch time rather than after the fact.
 | 164 | leroy (revision) | `a598133fb164a9d56` |
 | 165 | chlipala (independent check) | `a570b8f56ae817a92` |
 
+### Topic ten, the chain and the composite
+
+| 167 | rompf (cold, blind) | `addae693f3316ae61` |
+| 168 | mcsherry (cold, blind) | `a3700d11e90628fb3` |
+
+**A cold open cannot be bought from a resumed expert**, because every member of the ninth unit now
+carries the whole panel in context and a cold derivation reads only the premises. So these two are
+fresh, and the ninth unit's members stay available for the attack and reply phases where their context
+is an asset rather than a contaminant. Reuse for argument, fresh for independence.
+
 `154` and `155` have both landed their arvo files and both agents were then redirected by op to the
 mockspace bench-harness audit, so they are live on a different repository rather than spent. They
 remain resumable for this unit.
