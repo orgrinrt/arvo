@@ -75,3 +75,50 @@ That is the general shape and it is worth stating once: **reuse for argument, fr
 
 Recorded in `HANDLES.md` at dispatch time, under the session that owns them, per the correction that
 file gained this week.
+
+---
+
+## 6. The curated reading list was built from memory and it omitted the answer
+
+Added after `167` landed, because the finding is the dispatcher's rather than the member's.
+
+**`167`'s novelty grep found `60_stam_the_chain_derived_cold.md`, a full cold derivation on this
+unit's exact question, which section 4's curated reading list did not name.** A second file,
+`43_rompf_what_a_composition_is.md`, is on the same question and was also omitted, and it is by the
+same persona this unit dispatched as `167`.
+
+Both are found by one command:
+
+```
+ls -1 *.md | grep -iE 'chain|compos|fold'
+```
+
+which returns four files, two of them the ones I omitted.
+
+**The consequence, and `167` reports it against itself.** Its carried-residual mechanism for product
+chains is withdrawn outright, conceded to `60`'s window, which strictly dominates it. Three of its
+obligations demote from findings to corroboration of `60`'s five. One result narrows because `60`
+exposed a hole in it. That is a substantial fraction of a dispatch spent rediscovering, and the
+rediscovery was preventable at the cost of one command.
+
+**What survived is the part that makes the dispatch worth having anyway**, and it is worth separating
+from the loss: an intermediate-width sweep showing no threshold below `2F`, a backward-narrowing
+licence with its bit count, a correlation finding that came from one of its own probes *failing*, and
+a gate-free `#![no_std]` doability check on a direction `60` asserted and never compiled. Three of
+those four could not have been produced by reading `60`.
+
+**This is the same shape as the eighteen-file incident `RULES.md` records**, where every brief said
+the crate tree was being nuked, every member read that as "the repository is not evidence", and
+eighteen files reported a trade as unpriced while a committed harness run measuring exactly it sat in
+`mock/benches/`. There the reading list had no slot for the repository. Here it had no slot for the
+panel's own prior work on the assigned question.
+
+**The rule that follows is mechanical, which is the only kind that survives a tired coordinator.**
+Before writing a curated reading list, grep the panel root for the question's own vocabulary and read
+what comes back. A list assembled from what the dispatcher remembers is a list of what the dispatcher
+remembers, and this panel is 168 files.
+
+**One further correction, `167`'s own and stated as such.** It wrote that the chain question was
+priced and nobody had been told, then found `OPTIONS.md` Q42 already carries it with a better noise
+bound than it had derived. A negative claim about evidence is a claim about a place, and it named no
+place before making it.
