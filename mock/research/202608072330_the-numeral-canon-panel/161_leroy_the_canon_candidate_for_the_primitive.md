@@ -166,7 +166,7 @@ checker.
 
 **L10. The four-part working assumption had the law set and the refinement exactly backwards: it
 lists the coordinate that fails the freedom test and omits the one that passes it.** `111` 9.1,
-resting on `82` F6 (a declared operand window separates verdicts with every other coordinate held
+resting on `82` F6 (`82:768-774`; a declared operand window separates verdicts with every other coordinate held
 fixed); `111` and `82` are one persona and `111` says so, so this is **ONE EXPERT** and is recorded
 at that rung in Q52 as well. The connection is load-bearing for the statement's shape and nothing
 contradicts it anywhere in either sitting.
@@ -178,8 +178,8 @@ preserved by operations, read only by the arm selection.** `112` sections 1 and 
 (the restricted carrier is not closed under the operations, so there is no algebra there for a
 coordinate to be a coordinate of, which converts `111` F111-8's falsified hypothesis into the
 proof; and a discharged declaration changes no denotation, only which arms are available). `111`
-section 18 then confirmed it by the criterion `108:825` states, with r1: 1753 declaration pairs
-change the selected arm, zero change an answer, and the moved-observable-axis control reports
+section 18 then confirmed it by the criterion `108:825` states, with r1 (`111_probes/r1_moving_only_the_refinement.py`, figures at `111:1175-1176`): 1753
+declaration pairs change the selected arm, zero change an answer, and the moved-observable-axis control reports
 differences in the tens of thousands; `111` withdrew its own lean the other way. `157` F157-9
 rebuilt the zero on a second instrument at widths 3 to 32 and relocated what it rests on: the zero
 measures arm-licence soundness, and the classification follows from the definition of a refinement,
@@ -197,7 +197,8 @@ correction, accepted by `111` section 19 onward.**
 both ends of the declared range.** Three compiled instances on separately built constructions:
 `111` F111-12 (dense carried range: three widenings alias `_plain_identity`, tightening `E0080` at
 `widen::<Lit<200>, Lit<100>>`), `112` F112-11 (independent construction, same shape), `160` F160-3
-(bitpacked column with no element type anywhere in it: weakening changes no bit and no address,
+(`160_probes/p3_packed_weakening/`; a bitpacked column with no element type anywhere in it:
+weakening changes no bit and no address,
 tightening `E0080` at `weaken_ref::<200, 100>`), which closes the packed region I17 protects.
 **Rung: TWO+ INSTANCES, three instruments.**
 
@@ -222,8 +223,9 @@ because a parameter left runtime forces the `cmp` the intent forbids in as many 
 criterion blind, different routes).**
 
 **L16. Adequacy is the obligation between them: the type owes the denotation soundness (never one
-name for two denotations) and completeness (never two names for one).** Named at `111` 8.1-8.2 as
-the obligation "nobody's yet", the other two layers being pointless without it. `157` 3.4 then
+name for two denotations) and completeness (never two names for one).** Named at `111` 8.1-8.2 (`111:531-535`
+for the two halves; `111:552-553` for "nobody's yet"), the other two layers being pointless
+without it. `157` 3.4 then
 found that `112:934-937`'s classification rule **is** this obligation stated per axis, one file
 after `111` wrote it was nobody's, with neither noticing: two directions of coercion mean a
 completeness violation if carried, zero mean a soundness violation if dropped. `158` section 2
@@ -234,7 +236,8 @@ check; the halves themselves are `111`'s wording, uncontested.**
 **L17. The two halves are different kinds of obligation. Soundness is free by functionality where
 the denotation factors through the carried parameters; completeness is per pair, discharged by one
 witness at any width, and only refutation needs exhaustion.** `157` sections 3.2-3.3: the
-certificate compiles at every width 1 to 64 inside a const item, the spurious-axis control fails
+certificate (`157_probes/p2_const_certificate/`) compiles at every width 1 to 64 inside a const
+item, the spurious-axis control fails
 to compile, and the witness scheme agrees with exhaustive denotational identity on 1128 of 1128
 pairs where exhaustion is affordable (F157-6, F157-7). `158` rebuilt both the certificate and its
 control from committed source, byte-for-byte, which is verification rather than independent
@@ -249,7 +252,7 @@ TWO+ INSTANCES on the joint-fact claim; the per-pair reformulation is ONE EXPERT
 
 **L19. Completeness is owed up to weakening, and a witness-only certificate cannot tell a
 refinement from a spurious pair.** `160` sections 3.1-3.2: S-14's completeness clause as written
-rejects every refinement parameter (a refinement pair shares the realisation map, so no input
+(`157:695-701`) rejects every refinement parameter (a refinement pair shares the realisation map, so no input
 separates it, at any width, ever; measured at r1's zero); the repaired obligation is per-pair
 witness **or** weakening in exactly one direction, with the neither case refusing to compile
 (F160-1, `160_probes/p1_two_branch_certificate/`, all three pair kinds classified, the conflation
@@ -258,7 +261,8 @@ CONVERGED text and is what section 3 retires that text to.**
 
 **L20. Soundness is not enforceable by a signature, nor by anything that inspects one build; the
 residual obligation is a restriction on what the realisation-map call path may read, which is a
-lint's shape.** `157` F157-13 (two builds of one source, one `cfg` apart, one type name denoting
+lint's shape.** `157` F157-13 (`157_probes/p8_soundness_is_not_enforced/`; two builds of one source, one `cfg`
+apart, one type name denoting
 saturation and wrapping, both controls stable, and the certificate itself flipping between builds),
 rebuilt byte-for-byte by `158`; `159` F159-2 adds the independent second argument from the intent
 side (every single build satisfies I15 completely, so the property I15 buys cannot see the hazard,
@@ -497,6 +501,13 @@ selector whose request-versus-resolution placement was settled in `106` section 
 four's ledger, pointed at), with `109`'s own recommendation to carry the marker withdrawn in its
 phase two on that ground.
 
+**R16. `111`'s adequacy-checkability sentence as written** ("checkable the way `110` checks a
+congruence: at model widths, exhaustively, with the transfer argument named rather than assumed",
+`111:555-556`). Unpayable as stated: nobody in either sitting has made a transfer argument, and
+the workspace's own rule says the honest default is that none exists. Superseded by L17's
+decomposition, which is dischargeable at the widths arvo ships. The two halves it named
+(`111:531-535`) are exactly right and are carried.
+
 ---
 
 ## 4. The statement
@@ -716,3 +727,86 @@ direction. Partially realised by the refinement machinery; the full replacement 
 and undiscussed, and its stated decider (whether ranges can be established at enough construction
 sites in real consumer code, a hilavitkutin and vehje question) is outside this panel's reach.
 
+---
+
+## 8. Anchor accounting, generated rather than written
+
+Computed by `161_probes/anchor_accounting/count_anchors.py`, output committed at
+`accounting.out` in the same directory, with both controls declared in the script's header before
+the run and both firing: the positive control confirms the extractor sees a known anchor, and the
+negative control plants an anchor in a copy of this file that exists in no source and confirms it
+is reported as novel. The numbers below are pasted from that output, not drafted, because three
+consecutive candidates in this panel wrote this table from memory and one claimed 33 findings
+carried where its own instrument found 12.
+
+```
+unique line anchors across the 13 sources : 206
+unique probe paths across the 13 sources  : 91
+line anchors in the candidate             : 19
+probe paths in the candidate              : 10
+candidate anchors that appear in a source : 19
+candidate anchors novel to the candidate  : 0
+source anchors not carried (dropped)      : 187
+probe paths carried                       : 7 of 91
+```
+
+**The dropped list is in the sibling file** `161_probes/anchor_accounting/dropped_anchors.txt`,
+never in this file, because an author that prints the anchors it dropped makes them present in the
+new text and disables the set diff. The accounting section you are reading quotes only counts, so
+nothing here needs excluding from the computation.
+
+**What the drop means, read honestly.** This is a candidate over thirteen files totalling roughly
+ten thousand lines; most source anchors are the members' internal bookkeeping (their own probes,
+their own coverage sections, their citations of each other's paragraphs), and a candidate that
+carried all 206 would be the corpus again. What the ledger is obligated to carry is **the evidence
+anchor for each claim it states**, and the check after this file should test exactly that: for
+each L-entry, does the named anchor hold the claim. The 19 line anchors and 10 probe paths are
+those load-bearing addresses; every claim additionally names its file and section or finding
+number, which are greppable addresses of a coarser grain. Zero novel anchors means nothing here
+cites material outside the thirteen sources plus the governing files.
+
+---
+
+## 9. Coverage, bounded honestly
+
+**Read in full, across this dispatch and its predecessor (`160`), by this author:** `INTENTS.md`,
+`RULES.md`, `109` (both phases), `154` (both phases), `155` (both phases), `157`, `158`, `159`,
+`160`, `113`, `153`, `156`, `OPTIONS.md` Q52, Q53, Q64, Q65, `AGREEMENTS.md` sections 6 through 9
+and its heading map, `110` phase one in full with its findings block and its reply R0 through R8,
+`112` sections 1 and 9 in full plus its complete findings block (F112-1 through F112-25) and its
+section map, `111` sections 0 through 10, 18, 26 and its findings block, `114` sections 0, 1, 8,
+12 and 13.
+
+**Taken on another file's account, named per claim:** `82` F6 through `111`'s quotation
+(`82:768-774` opened at the quoted lines only); `90` R1/R3, `63` C1/C2, `93`/`94`/`101`/`106`
+through `AGREEMENTS.md` and the members' own citations; `108` at lines 820 to 830 only; `122`,
+`123`, `124` through `AGREEMENTS.md` section 9's pointer, which is why the propagation clauses
+are pointed at rather than restated; topic eight (`139` through `152`) not at all, which is why
+X3 is a pointer. `111` sections 11 through 17 and 19 through 25, `112` sections 2 through 8 and
+11 through 15, `110` phase two's sections 16.1 through 16.8, and `114` sections 2 through 7 and
+9 through 11 were read in part or by grep during `160` and are cited here only where a specific
+line was opened.
+
+**Which sections would move if an account I leaned on is wrong.** L11's third reason rests on
+`114` section 12's own statement; I did not re-derive it. L30's third-instance status rests on
+`106` section 11's account of `93` and `94`. R15's strategy disposition rests on `109` 16.2's
+account of `106` section 1. X3's pointer rests on topic eight having actually converged, which
+`AGREEMENTS.md` section 11 states and I did not verify against `151`/`152`. Each of these is one
+compression deep, flagged per the rule that the next dispatch depending on such material reads
+the source.
+
+**Citations, checked by opening them.** `161_probes/citecheck.out`: every `file:line` in this
+document opened and its content read against the claim, with the two deliberate wrong-citation
+controls firing.
+
+**What this file settled.** Topic five has a ledger: thirty entries with rungs and instrument
+forms, four contested items with deciders, sixteen retirements with the do-not-cite list, and a
+thirteen-clause statement with its conditionality localised to one clause.
+
+**What it moved.** The topic's findings from member files into a compressible shape; the
+must-not-cite list from scattered corrections into one place; the live options from four files
+into one pass.
+
+**What it could not.** Close X1 through X4, price C5, or supply any transfer argument; and it
+could not compress the propagation half without leaning on a ledger this author has not read,
+so it pointed instead, which is the honest shape and is stated as such.
