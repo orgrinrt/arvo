@@ -2721,6 +2721,19 @@ three widths.
 blocks at all**. It added three retroactively, in its own voice and marked as a partial audit, which is
 the only correct way to do it, since a predicate is never widened in place.
 
+**The count's generalisation does not stand, and `159` corrected it.** `157`'s figure is right for the
+four files it counted, and its control proves the word `any` is findable. It does not prove the width
+axis's spellings were enumerated. `109:156` writes a width universal as `I any, F any`, which is the
+integer and fraction widths quantified separately rather than a `W` the pattern can see, and it is
+excluded from the count only because its findings are marked differently. So the corpus is in better
+shape than the headline, and the mechanism the entry is about survives: a reader applying the notation
+still reaches a conclusion the authors would reject, on the findings that genuinely carry no width.
+
+**And a third state exists that the notation has no name for.** `159` reports three of its own findings
+carrying `W in 1..=64`, which is neither a sample nor `any`: it is the whole domain of a `u64`
+container, exhaustively. Whether that reads as `any` bounded by the container, or as a fixed set that
+claims nothing outside itself, is a case this question should have in front of it.
+
 **What this is not.** It is not a claim that the findings are wrong. It is a claim that the notation
 and the corpus disagree, and that a reader applying the notation as ratified reaches a conclusion every
 author would reject.
