@@ -159,6 +159,8 @@ Recorded at dispatch time rather than after the fact.
 | 167 | rompf (cold, blind) | `addae693f3316ae61` |
 | 168 | mcsherry (cold, blind) | `a3700d11e90628fb3` |
 | 169 | kiselyov (attacker) | `a473b594bc3fada7e` |
+| 170 | mcsherry (reply) | `a3700d11e90628fb3` |
+| 171 | rompf (reply) | `addae693f3316ae61` |
 
 **A cold open cannot be bought from a resumed expert**, because every member of the ninth unit now
 carries the whole panel in context and a cold derivation reads only the premises. So these two are
