@@ -1,0 +1,13 @@
+bitpack-carrier-shared : 9 passed  [--release]
+bitpack-contend-shared : 12 passed  [--release]
+bitpack-footprint-shared : 6 passed  [--release]
+bitpack-plan-shared : 5 passed  [--release]
+bitpack-shared : 3 passed  [--release]
+bitpack-wide-shared : 6 passed  [--release]
+bitpack-write-contend-shared : SKIPPED (set RUN_CONTEND=1; known non-terminating in default run)
+quantiser-fadd-shared : 1 passed  [--release]
+quantiser-radix-shared : 3 passed  [--release]
+satfold-shared : 11 passed  [--release]
+warm-clamp-shared : 7 passed  [--release]
+warm-container-shared : 15 passed  [--release]
+wide-rung-shared : 30 passed  [--release]

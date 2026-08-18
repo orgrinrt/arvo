@@ -1,0 +1,5 @@
+separates_policy(64) = true
+separates_policy(13) = true
+policy_separates_every_width() = true
+separates_rounding_at_f0(64) = false
+arity-1 mask at W=64: differing inputs in 0..100000 = 0  (154 P4's collapse)

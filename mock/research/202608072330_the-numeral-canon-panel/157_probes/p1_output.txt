@@ -1,0 +1,47 @@
+==============================================================================
+RUN 1. The honest parameterisation: carry exactly the axes the map reads.
+==============================================================================
+--- W,F,signed,policy carried; rounding fixed; F=0; sig={add,sub,mul}
+    parameters carried : ('W', 'F', 'signed', 'policy')
+    signature          : ('add', 'sub', 'mul')   literals=[]
+    SOUNDNESS          : holds
+    COMPLETENESS       : 28/28 distinct-name pairs separated
+
+==============================================================================
+RUN 2. CONTROL C1: a spurious axis. Rounding at F=0 with no literal.
+==============================================================================
+--- rounding ALSO carried as a parameter; F=0; sig={add,sub,mul}
+    parameters carried : ('W', 'F', 'signed', 'policy', 'rounding')
+    signature          : ('add', 'sub', 'mul')   literals=[]
+    SOUNDNESS          : holds
+    COMPLETENESS       : 112/120 distinct-name pairs separated   NO WITNESS for 8: [((3, 0, False, 'wrap', 'trunc'), (3, 0, False, 'wrap', 'near')), ((3, 0, False, 'sat', 'trunc'), (3, 0, False, 'sat', 'near')), ((3, 0, True, 'wrap', 'trunc'), (3, 0, True, 'wrap', 'near')), ((3, 0, True, 'sat', 'trunc'), (3, 0, True, 'sat', 'near'))]
+
+    C1 verdict: expected NO witness for every rounding-only pair -> PASS
+
+==============================================================================
+RUN 3. CONTROL C2: the same axis, signature grown a non-grid literal.
+==============================================================================
+--- rounding carried; F=0; sig={add,sub,mul,literal}, literal=3/4
+    parameters carried : ('W', 'F', 'signed', 'policy', 'rounding')
+    signature          : ('add', 'sub', 'mul', 'literal')   literals=['3/4']
+    SOUNDNESS          : holds
+    COMPLETENESS       : 120/120 distinct-name pairs separated
+
+    C2 verdict: expected the axis to BECOME separable -> PASS
+
+==============================================================================
+RUN 4. CONTROL C3: a broken parameterisation. Drop the policy from the type.
+==============================================================================
+--- policy NOT carried; F=0; sig={add,sub,mul}
+    parameters carried : ('W', 'F', 'signed')
+    signature          : ('add', 'sub', 'mul')   literals=[]
+    SOUNDNESS          : FAILS  counterexample {'W': 3, 'F': 0, 'signed': False, 'policy': 'wrap', 'rounding': 'trunc'} vs {'W': 3, 'F': 0, 'signed': False, 'policy': 'sat', 'rounding': 'trunc'}
+    COMPLETENESS       : 6/6 distinct-name pairs separated
+
+    C3 verdict: expected SOUNDNESS to FAIL -> PASS
+
+==============================================================================
+RUN 5. CONTROL C4: witness scheme against exhaustive denotational identity.
+==============================================================================
+    pairs compared: 1128   agree: 1128   disagree: 0
+    C4 verdict: PASS
