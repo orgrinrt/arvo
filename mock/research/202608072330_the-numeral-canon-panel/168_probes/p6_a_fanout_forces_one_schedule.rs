@@ -229,8 +229,11 @@ fn main() {
         "CONTROL FAILED: the conflict exists at every carrier width, which would \
          mean it is unconditional; it is not, and a claim that it is would be wrong"
     );
-    println!("  so the conflict is exactly the band [{}, {}]: wide enough for the",
-             conflict.first().unwrap(), conflict.last().unwrap());
+    println!(
+        "  so the conflict is exactly the band [{}, {}]: wide enough for the",
+        conflict.first().unwrap(),
+        conflict.last().unwrap()
+    );
     println!("  resolved branch and too narrow for the exact one. Outside it the two");
     println!("  branches' windows agree and there is nothing to report.");
     println!();
