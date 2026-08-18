@@ -1,0 +1,15 @@
+grid: 10 widths x 2 policies = 20 named primitives per family
+
+CONTROL distinct-family : 20 bodies + 0 aliases (want 20 bodies, 0 aliases)
+CONTROL identical-family: 0 bodies + 20 aliases (want 0 bodies, 20 aliases, 1 distinct target); targets = ['_d_wrap_13']
+controls: ok
+
+object file size: 1744 bytes
+asm lines       : 189
+
+READING: naming N genuinely-different primitives costs N machine bodies.
+         naming N primitives that compute what some existing body already
+         computes costs ZERO additional bodies: all N become aliases of it,
+         across family boundaries. Here 40 named primitives -> 20 bodies.
+         The cost of a name tracks what its body computes, never the name,
+         and never the number of type parameters that produced it.
