@@ -1,0 +1,22 @@
+== Backward narrowing: compute the whole chain at K instead of W ==
+   working width W = 12, consumer keeps K = 6 low bits
+   chain: t1 = op(a,b); t2 = op(t1,c); r = op(t2,a); observed = r & mask(K)
+   exhaustive over a,b,c in 0..2^12 would be 2^36 triples; this sweeps
+   a,b exhaustively at 2^12 each and c over a fixed 64-value spread.
+
+                  operator         triples   disagreements   licensed?
+                wrapping +        16777216               0         YES
+                wrapping -        16777216               0         YES
+                wrapping *        16777216               0         YES
+                         &        16777216               0         YES
+           x >> 1 then + y        16777216        14680064          no
+                   / (y|1)        16777216            8128          no
+     saturating + at width        16777216         2476720          no
+                       min        16777216        10812862          no
+
+  licensed  (4): wrapping +, wrapping -, wrapping *, &
+  unlicensed (4): x >> 1 then + y [14680064 disagreements], / (y|1) [8128 disagreements], saturating + at width [2476720 disagreements], min [10812862 disagreements]
+
+  NEGATIVE CONTROL: the unlicensed count must be nonzero. If every operator
+  were licensed, this probe could not tell a valid rewrite from an invalid one.
+  unlicensed operators found: 4  (must be > 0)

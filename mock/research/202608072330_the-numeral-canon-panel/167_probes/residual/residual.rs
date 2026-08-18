@@ -37,7 +37,10 @@ const F: u32 = 12;
 struct Lcg(u64);
 impl Lcg {
     fn next(&mut self) -> u64 {
-        self.0 = self.0.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+        self.0 = self
+            .0
+            .wrapping_mul(6364136223846793005)
+            .wrapping_add(1442695040888963407);
         let mut z = self.0;
         z = (z ^ (z >> 30)).wrapping_mul(0xBF58476D1CE4E5B9);
         z = (z ^ (z >> 27)).wrapping_mul(0x94D049BB133111EB);
@@ -173,7 +176,9 @@ fn main() {
         "n", "naive", "naive_round", "widened", "comp", "NC2 ok"
     );
     let mut nc2_bad = 0;
-    for &n in &[1usize, 4, 16, 64, 256, 1024, 4096, 16384, 65536, 262144, 1048576] {
+    for &n in &[
+        1usize, 4, 16, 64, 256, 1024, 4096, 16384, 65536, 262144, 1048576,
+    ] {
         let (a, b) = build(n, 0x1234_5678 ^ n as u64, F, false);
         let e = exact_2f(&a, &b);
         let vn = naive(&a, &b, F);

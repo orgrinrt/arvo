@@ -22,7 +22,10 @@ const CONTAINER_BITS: u32 = 64;
 struct Lcg(u64);
 impl Lcg {
     fn next(&mut self) -> u64 {
-        self.0 = self.0.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+        self.0 = self
+            .0
+            .wrapping_mul(6364136223846793005)
+            .wrapping_add(1442695040888963407);
         let mut z = self.0;
         z = (z ^ (z >> 30)).wrapping_mul(0xBF58476D1CE4E5B9);
         z = (z ^ (z >> 27)).wrapping_mul(0x94D049BB133111EB);
@@ -110,7 +113,11 @@ fn main() {
         );
         println!(
             "  NC4 {}",
-            if w == c && (w as i128) == o { "ok" } else { "FAIL" }
+            if w == c && (w as i128) == o {
+                "ok"
+            } else {
+                "FAIL"
+            }
         );
     }
 
@@ -147,5 +154,7 @@ fn main() {
     println!();
     println!("  geometries where the predicted overflow region is confirmed by the oracle: {demonstrated}");
     println!("  NC5: a row tagged COMP ONLY is one where the widened arm is wrong, which is");
-    println!("       the disagreement the demonstration needs; 0 such rows would mean nothing shown.");
+    println!(
+        "       the disagreement the demonstration needs; 0 such rows would mean nothing shown."
+    );
 }
