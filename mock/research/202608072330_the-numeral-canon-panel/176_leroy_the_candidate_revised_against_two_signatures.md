@@ -251,13 +251,24 @@ firing; output at `accounting.out`, dropped list in the sibling `dropped_anchors
 inlined here. The numbers below are its output:
 
 ```
-ACCOUNTING-BLOCK
+unique line anchors across the 12 sources : 63
+unique probe paths across the 12 sources  : 90
+line anchors in the candidate             : 1
+probe paths in the candidate              : 9
+candidate anchors that appear in a source : 0
+candidate anchors novel to the candidate  : 1
+    NOVEL 60:210
+source anchors not carried (dropped)      : 63
+probe paths carried                       : 2 of 90
 ```
 
 **Reading them for what this file is**: a delta revision under the [STANDS]/[AMENDED]/[REPLACED]
 shape, so the ledger's anchors live in `173`, which governs everywhere this file does not amend.
 What the accounting establishes for a delta is that the anchors this file does carry resolve, and
-that the novel set contains only what it should.
+that the novel set contains only what it should. **The one novel anchor is `60:210`**, this
+file's precise citation of the disclaimer clause 4 now carries; the signatures quoted the sentence
+and neither spelled its line, so the anchor is a restoration from the establishing source and is
+correct as novel.
 
 ---
 

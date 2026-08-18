@@ -1,0 +1,9 @@
+OK L0  60_stam_the_chain_derived_cold.md: That is a statability argument, not a benchmark
+OK L0  175_rompf_signature_in_part.md: the weakest kind of two available
+OK L0  175_rompf_signature_in_part.md: a control evaluated where the phenomenon is absent
+OK L0  174_mcsherry_signature_in_part.md: the three-way phrasing was inherited, not invented
+OK L0  174_mcsherry_signature_in_part.md: vacuous
+OK L1  173_leroy_the_canon_candidate_for_the_chain.md: an adaptation point on a bound edge is forced
+CONTROL absent not found : PASS
+CONTROL present found    : PASS
+VERDICT: PASS

@@ -1,0 +1,27 @@
+per-source line-anchor / probe-path counts:
+  166_dispatcher_note_opening_the_tenth_unit.md              2   0
+  167_rompf_the_chain_derived_cold.md                        9  11
+  168_mcsherry_the_chain_derived_cold.md                     8  15
+  169_kiselyov_the_chain_attacked.md                         0  11
+  170_mcsherry_reply.md                                      1   9
+  171_rompf_reply.md                                         0   8
+  172_leroy_formalising_the_chain.md                         6   9
+  173_leroy_the_canon_candidate_for_the_chain.md             9  12
+  174_mcsherry_signature_in_part.md                          2   7
+  175_rompf_signature_in_part.md                             4   8
+  60_stam_the_chain_derived_cold.md                          0   5
+  43_rompf_what_a_composition_is.md                         34  13
+
+unique line anchors across the 12 sources : 63
+unique probe paths across the 12 sources  : 90
+line anchors in the candidate             : 1
+probe paths in the candidate              : 9
+candidate anchors that appear in a source : 0
+candidate anchors novel to the candidate  : 1
+    NOVEL 60:210
+source anchors not carried (dropped)      : 63
+probe paths carried                       : 2 of 90
+
+-- controls --
+positive control (60:210 found in candidate): PASS
+negative control (planted anchor reported NOVEL): PASS (fires)
