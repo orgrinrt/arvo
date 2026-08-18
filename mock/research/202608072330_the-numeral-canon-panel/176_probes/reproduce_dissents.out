@@ -1,0 +1,10 @@
+174 r1 (finiteness, 663/17/160) : REPRODUCES
+174 r2 (profile moves definedness) : REPRODUCES
+175 marks (trailing convention forced) : REPRODUCES
+175 clause23 (boundary-function family) : REPRODUCES
+175 partial3 (split 1 in 4096, both profiles) : REPRODUCES
+175 options (O-171-1 at zero) : REPRODUCES
+A6 stale strings : CONFIRMED PRESENT
+A3 disclaimer: in 60 = 1 (want 1), in 173 = 0 (want 0)
+CONTROL (r1 vs clause23, must DIFFER):
+  control : DIFFERS
