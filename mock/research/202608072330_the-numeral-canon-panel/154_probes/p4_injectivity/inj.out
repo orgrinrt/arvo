@@ -1,0 +1,12 @@
+CONTROL predicted-distinct (13,wrap) vs (47,wrap): distinct -> ok
+CONTROL predicted-collapse (64,wrap) vs (64,clamp): same -> ok
+
+index points in the grid : 128  (widths 1..64 x 2 policies)
+distinct primitives      : 127
+index points that are NOT their own primitive: 1
+
+collapse classes: 1
+    2 indices -> one primitive : [(64, 'clamp'), (64, 'wrap')]
+
+widths at which wrap and clamp are the SAME primitive: [64]
+widths at which they differ: 63 of 64
