@@ -730,7 +730,7 @@ at `111:1140-1145` renders the whole membership clause bold. The source bolds on
 
 ---
 
-### 3.6 The certificate obligation is per pair and not per axis, and `111`'s own probe output says so
+### 3.6 The certificate obligation is per pair and not per axis, and `111` said so a topic earlier
 
 I opened this as Q157-B and said I had stopped short of it. Attacking it now.
 
