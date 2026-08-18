@@ -1117,3 +1117,73 @@ R6 answers a question nobody asked.
 **One count I verified rather than took.** I ran the thirteen bench crates' suites myself, at
 `--release`, and reconciled the 108 and 123 figures in section 0.2. Everything else numeric in phase two
 is quoted from a file I opened at the line cited.
+
+---
+
+## R10. The doability check my own section 6 owed, run rather than asserted
+
+Section 6 names three carriers and section 9's Q-C1 leaves the choice open. `RULES.md` says the canon
+must establish that a thing is doable, and I had asserted the third carrier fits I14 and I15 without
+compiling anything. That is exactly the gap between an intent and a wish, so I built it.
+
+`167_probes/staged/`. A description carrying the operator structure at the type level, computing its
+forward width as an associated const with no observation, and lowering under the consumer's demand at
+the observation point.
+
+```
+NC20  forward width computed from the description alone, no sink: 33
+NC19  work width at demand 8 = 8, at demand 63 = 33, moved = true
+NC18a congruence-only chain: narrow 221 vs wide-then-mask 221, agree = true
+NC18b with a blocking Shr node: narrow 103 vs wide-then-mask 103, agree = true
+NC18c a lowering that WRONGLY passes the demand through the shift gives 7, correct is 103, differ = true
+PASSES_DEMAND: Add true, Mul true, Shr false
+size_of description = 24 bytes, no vtable, no allocation
+```
+
+**Verified rather than asserted, by count:** zero `#![feature(...)]` attributes across all three files,
+zero `dyn`, zero `TypeId` or `core::any`, zero `Box`, `Vec` or `alloc`, and the `#![no_std]` build exits
+0 on the committed pin. The description costs 24 bytes for three `i64` leaves, which is the three values
+and nothing else.
+
+**NC18c is the control that matters.** `Shr` refuses to pass the demand to its operand; NC18c builds the
+lowering that wrongly passes it and gets 7 against the correct 103. Without that, NC18b's agreement
+would be consistent with a description that ignored the flag entirely.
+
+**So the third carrier is doable and this is the doability claim, not a design.** Its spelling is
+scaffolding. What it establishes is that section 6's structural test has a candidate that passes it under
+the operating constraints, which is what was missing when Q-C1 was written.
+
+**What it does not establish, and both matter.** Whether the description lowers to the same machine code
+as the direct form is **unpriced**, and pricing it needs the harness with the direct form as a competitor
+arm. And the ergonomic cost in section 6.1 is untouched, because it is a matter of taste about a surface
+rather than something a probe answers.
+
+*What would close Q-C1's cost half:* a bench family with two arms, the direct form and the described
+form, over the shapes in probe C, on the harness. The variant crates in `mock/benches/variants/` are the
+pattern and it needs no new machinery.
+
+---
+
+## R11. The closing statement
+
+**A chain is a maximal region of a computation in which no intermediate is observed**, and the design's
+obligations to it are three that its steps cannot add up to, plus one asset its steps destroy. `63`'s C9
+says what such a region contains, a schedule of adaptation points; this file says what bounds one, and
+the two compose: an adaptation point is forced where an intermediate is observed and optional everywhere
+else.
+
+**Four independent routes now say the guarantee cannot live in a value**, and my contribution is the
+decision procedure rather than the conclusion: ask whether two chains agreeing up to a point and
+differing after it are lowered the same way at that point.
+
+**Three findings are new here as far as a grep of the live panel shows, and each is small.** That
+association order has exactly zero accuracy content in fixed point while the same comparison in relative
+precision runs to 94.8x, which makes Q41's answer family-dependent. That the residual carried forward is
+exactly equal to the wide accumulation for an accumulate chain and only a constant factor for a product
+chain, which answers `109`'s named cost for one shape and confirms `AGREEMENTS.md:497-506` for the other.
+And that the worst-case accumulator width is a fact about correlation between terms rather than about
+length, found by a probe of mine failing, which is where `112`'s declared extent has a job nobody has
+given it.
+
+**And one correction against myself**, in R0: I claimed a place was unchecked without checking it, and
+`OPTIONS.md` Q42 had the measurement, the mechanism and a better noise bound than I derived.
