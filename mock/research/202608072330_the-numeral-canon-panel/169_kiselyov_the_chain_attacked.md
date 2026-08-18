@@ -251,3 +251,220 @@ one word in how it was reported.
 `holds for: W = 8, F = 0, unsigned, resolution = clamp onto [0, 2^8), the six constructions listed,
 inputs exhaustive over 0..=255, carrier widths 8..=32, threads = 1.`
 
+---
+
+## 4. `167` 4.1 survives, and it is a proof recorded as a sweep with a closed form behind it
+
+The brief names three `167` survivors that could not have come from reading `60`. I attacked the one
+whose shape is most likely to be thin, the intermediate-width sweep, and **it holds and is stronger
+than recorded.**
+
+`167` 4.1 sweeps `F in {6, 8, 10}` and concludes "there is no `M` strictly between `F` and `2F` with
+zero disagreements, at any `F` tested". The predicate is honest, the hedge is correct, and two
+controls are declared. Beside it sits an argument: the exact product needs exactly `2F` fraction
+bits and the operand set is already full, so the float threshold theorem's slack has nowhere to
+live.
+
+**That argument is a proof, and the finding is recorded with a measured predicate.** This is exactly
+`157` F157-10's class, and under a notation where a predicate is never widened in place it
+under-claims permanently unless a later file states the widening. `169_probes/p5_double_rounding_closed_form.py`:
+
+```
+  F  M=2F (control)  M=F (control)    M=2F-1   2^(F-1)  match
+  4               0              0         8         8   True
+  6               0              0        32        32   True
+  8               0              0       128       128   True
+ 10               0              0       512       512   True
+
+C1 both of 167's controls hold at every F : True
+C2 reproduces 167's 32 / 128 / 512        : True
+C3 a zero strictly inside would refute    : True (none found)
+```
+
+Two results. The `M = 2F-1` column is exactly `2^(F-1)` at every `F` from 4 to 10, which is a
+**closed form rather than a trend**; and no `M` strictly between `F` and `2F` gives zero at any of
+the seven widths, extending `167`'s three to seven.
+
+**The widening, stated here rather than in `167`'s file**, per `RULES.md`'s never-widen-in-place
+rule: 4.1's conclusion holds for **`F any`** on the argument, because the exact product of two Q(.F)
+numerals occupies exactly `2F` fraction bits, so any `M < 2F` discards a nonzero low part for some
+operand pair and some such pair lands on a rounding boundary. Nothing in that depends on `F`. The
+enumerative half stays at `F in {6, 8, 10}` where `167` recorded it, and this file's enumeration is
+`F in 4..=10`.
+
+`holds for: F in 4..=10 enumerated here, M in [F, 2F], rounding = nearest-ties-to-even at both
+roundings, operation = fixed-point multiply, unsigned, operands exhaustive over [0, 2^F), threads =
+1. The argument half holds for F any.`
+
+**Which of my instruments could have refuted this and did not.** The closed-form check would have
+failed at any `F` where the count deviated from `2^(F-1)`, and the inside-sweep would have reported
+a zero if one existed at any of 49 `(F, M)` pairs strictly inside. Neither fired. I did not test
+signed operands, nonzero integer parts, or any operation but multiply, and 4.1 claims none of those.
+
+---
+
+## 5. Replacements owed, addressed to the parties refuted
+
+Per `113`, several each, so the author has material rather than a verdict.
+
+### To `168`, on section 23
+
+**R-1. Replace the heading evidence with the premise-set argument you already have, which is
+stronger and true.** The discount does not need the headings; it needs "two files from one premise
+set converging is stronger than one file and weaker than two instances", which is your own sentence
+and stands on its own.
+
+**R-2. Put section 1.2's rule in your contamination section, and discount the *definition* rather
+than the headings.** The definitional convergence is the load-bearing one and it is the one your
+accounting does not reach. My bound applies: this is an undeclared shared input, not a demonstrated
+dependence.
+
+**R-3. If you want a heading measurement, measure token overlap rather than identity.** The two
+pairs are prefix relations, which is a real signal of shared framing and is not identity, and a
+metric that reports the difference is more useful than one that rounds it to "word-for-word".
+
+### To `168`, on section 7.1
+
+**R-4. Re-run `eager_wins` over `(1 << n) - 1` masks rather than `full_mask` alone, or state the
+claim at the strength the search covers.** Either is honest. The first is better and it costs one
+loop, and I have run it for you: round 0, clamp 0, truncate 317 of 3000. **The claim survives.**
+
+**R-5. Reword the summary so the control is attached to the row it controls.** "Checked over 3000
+chains with a control that finds 1330 counterexamples" reads as covering both positives. The matched
+pair is round against truncate; clamp is a second positive whose representable set is 256 values
+rather than 32.
+
+**R-6. If you want clamp matched, add a non-nearest projection onto the same representable set.**
+A floor-to-range or a wrap would do it, and it would make the clamp row's zero mean what the round
+row's zero means.
+
+### To `168`, on T1
+
+**R-7. Say "entailed" rather than "measured", and give the closed form, which is better than the
+band.** The band is `[R, E-1]` with width `E - R`, it follows from your own inequality, and stating
+it that way makes the result portable to every construction instead of true of one.
+
+**R-8. If you want the band measured, vary something branch B reads.** B's loss is constant across
+carrier widths because B's computation never reads the carrier. A construction where B's own width
+requirement interacts with the carrier would make the band a swept result rather than an interval.
+
+### To `167`, on 4.1
+
+**R-9. State the widening in your own next file, in your own voice.** I have stated it here because
+the rule requires the original to stand, but a proof is better claimed by the person who made the
+argument, and you made it.
+
+**R-10. Add the closed form to the table.** `2^(F-1)` at `M = 2F-1` turns "each extra bit roughly
+halves the count" into an exact statement, and it is the sentence that makes 4.1 quotable in a canon
+candidate.
+
+---
+
+## 6. What I am carrying forward unchanged, and from whom. Count: four.
+
+1. **`168`'s definition of a chain**, and `167`'s of the unobserved region, as **one** finding with
+   two instances. I attacked the vocabulary difference and it is a vocabulary difference.
+2. **`168`'s pointwise-optimality conclusion**, which survives a search 3.5 times wider than the one
+   that established it.
+3. **`168`'s T1 bound**, whose content is right and whose closed form I supply.
+4. **`167` 4.1's conclusion**, extended from three widths to seven with the argument's widening
+   stated.
+
+**Not carried:** `168`'s heading evidence for its own discount (section 1.1); the word "measured"
+in T1's bound (section 3). Neither correction touches the conclusion it was attached to, and I want
+that said plainly, because a corrected count that reads as a refutation is how a true finding gets
+retired.
+
+---
+
+## 7. Options opened, each with what would close it
+
+**O-169-1. Does the pointwise claim survive a resolution that is nearest-point onto a *coarser* set
+than the operations can land on?** All three of my conditions project onto sets the alphabet can hit
+directly. A projection onto, say, the multiples of 32 at `W = 8` leaves most exact values far from
+every representable point, which is where a placement might buy something. **Closed by** running arm
+2 with `RoundTo(5)` and a matched `TruncTo(5)`; if round stays at zero the claim is stronger still,
+and if it does not the claim needs a coarseness bound.
+
+**O-169-2. Is the observability definition derivable from the auto-loaded rule, or merely adjacent
+to it?** Section 1.2 establishes the rule was present and undeclared and deliberately claims no
+more. **Closed by** a cold derivation dispatched with that one rule removed from context, which is
+mechanically possible and would settle whether the convergence survives its absence.
+
+**O-169-3. Does T1's conflict survive a construction where branch B reads the carrier?** R-8's
+shape. **Closed by** building one; if B's loss then varies across the band, the band becomes a
+measurement and T1's original wording becomes correct.
+
+---
+
+## 8. What I settled, what I moved, what I could not
+
+**Settled.** That neither heading `168` names is word-for-word identical, and that the one that is
+exactly shared is prescribed. That the band in T1 is entailed by an inequality and that B's loss is
+constant across it. That `167` 4.1's `M = 2F-1` column is `2^(F-1)` at every `F` from 4 to 10.
+
+**Moved.** `168`'s pointwise claim, from one placement's worth of evidence to all of them, with the
+conclusion unchanged. `167` 4.1, from a three-width sweep to a seven-width sweep with a closed form
+and a stated widening. T1's bound, from a band on one construction to a closed form over six.
+
+**Could not.** I could not determine whether the definitional convergence actually runs through the
+auto-loaded rule, only that the rule was present and undeclared; O-169-2 is the shape that would
+settle it and it needs a dispatch rather than a probe. I could not attack `167`'s other two
+survivors, the backward-narrowing licence and the correlation finding, and I say so rather than
+implying the two I left are weak.
+
+---
+
+## 9. A seventh instrument defect, in my own citation checker
+
+`168`'s fifth defect was a checker whose `grep -F` returned four false negatives out of fifteen on
+quotations spanning a line break, so I wrote `169_probes/p6_citecheck.py` to normalise whitespace
+before comparing. Its first run reported **two of my own true quotations as missing**.
+
+Both were mine and correct. One sits inside a blockquote, so the wrap inserts `> ` mid-sentence; one
+carries `**` around its numbers. Collapsing whitespace does not remove either. **It is `168`'s defect
+one layer in**: the fix for line breaks does not fix the markup that travels with them, and a checker
+that reports a true citation as missing is as bad as one that reports a false one as present, because
+the next action is to "correct" a citation that was right.
+
+Fixed, and with the count: normalisation now strips blockquote markers and emphasis, and it **matters
+on 5 of the 12 quotations checked**, so this is not a hypothetical class in this corpus. Final run:
+**12 resolved, 0 missing**, with a planted-present control found and a planted-absent control not
+found.
+
+The general form, which is the part worth carrying: **whitespace normalisation is necessary and not
+sufficient.** A markdown corpus wraps quotations inside blockquotes and bolds the numbers inside
+them, and both survive the fix everyone reaches for.
+
+---
+
+## 10. Coverage, bounded
+
+**Read in full:** `167` sections 1, 4.1, and its heading map; `168` sections 2, 7.1, 21, 23, and its
+heading map; `168_probes/p3_resolution_degeneracy.rs` and `p6_a_fanout_forces_one_schedule.rs` in
+full, including their control assertions; `157_probes/loaded_rules_157.txt` and `ruleset_diff.out`;
+`what-you-can-observe-is-what-you-guaranteed.md`.
+
+**Read by grep, not in full:** the rest of `167` and `168`; `60` entirely, which I reached only
+through `168` section 21's account of it and through my own heading and rule greps. **So everything
+I say about `60` is one compression deep**, and `RULES.md`'s shared-source rule says the next
+dispatch depending on it should read it; my section 1.2's claim about `60` is bounded to "the rule
+existed" for exactly that reason.
+
+**Not opened:** `167_probes/` except by name, so `167` 4.1's own numbers are taken from its prose
+and reproduced by my independent model rather than checked against its probe; the other `168`
+probes; `OPTIONS.md` Q42.
+
+**What would move if I am wrong.** Section 2 rests on `full_mask` being the only mask `eager_wins`
+tries; I read the function and my arm 1 reproduces its published numbers exactly, which is the
+strongest check available short of instrumenting their binary. Section 3 rests on my Python model
+being `168`'s construction; C2 reproduces its 203 and 15504 exactly. Section 4 rests on my
+double-rounding model matching `167`'s; C2 reproduces its 32, 128 and 512. Each of the three has a
+reproduction control and each passed, which is the most I can do without running their code, and I
+did not run their code.
+
+**A negative claim I am making and the search behind it.** "None of the three files names the
+observability rule" is
+`grep -oc 'what-you-can-observe\|perimeter of what was guaranteed'` over the three files, returning
+0 for each, with the C2 control showing all three do cite other rule files by name. That is the
+place and that is the search.

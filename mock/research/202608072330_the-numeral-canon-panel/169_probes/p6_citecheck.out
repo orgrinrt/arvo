@@ -1,0 +1,20 @@
+quotation                            found in  where
+168 heading claim                           2  169_kiselyov_the_chain_attacked.md (+1)
+168 pointwise claim                         2  169_kiselyov_the_chain_attacked.md (+1)
+168 T1 bound                                2  169_kiselyov_the_chain_attacked.md (+1)
+168 T1 measured wording                     1  168_mcsherry_the_chain_derived_cold.md
+168 summary sentence                        2  169_kiselyov_the_chain_attacked.md (+1)
+167 4.1 conclusion                          1  167_rompf_the_chain_derived_cold.md
+167 definition                              2  169_kiselyov_the_chain_attacked.md (+1)
+168 definition                              2  169_kiselyov_the_chain_attacked.md (+1)
+full_mask line                              2  169_kiselyov_the_chain_attacked.md (+1)
+p6 criterion                                2  169_kiselyov_the_chain_attacked.md (+1)
+the rule's thesis                           2  169_kiselyov_the_chain_attacked.md (+1)
+CONTROL C1 planted-present                  1  168_mcsherry_the_chain_derived_cold.md
+CONTROL C2 planted-absent                   0  <none>
+
+C1 planted-present quotation found : ok
+C2 planted-absent quotation missing: ok
+C3 normalisation mattered on 5 quotation(s) (want >= 1)
+
+resolved=12 missing=0
