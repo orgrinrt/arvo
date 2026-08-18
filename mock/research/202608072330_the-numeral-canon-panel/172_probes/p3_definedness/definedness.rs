@@ -66,8 +66,11 @@ fn main() {
     // both are defined, and differ only in WHERE they are defined.
     let (a, b, c, d): (i32, i32, i32, i32) = (0, 1 << 30, 1 << 30, i32::MIN);
     let exact_t = (b as i64) + (c as i64) - (d as i64);
-    println!("constructed divisor: exact = {} (nonzero), wrapped i32 = {}",
-             exact_t, b.wrapping_add(c).wrapping_sub(d));
+    println!(
+        "constructed divisor: exact = {} (nonzero), wrapped i32 = {}",
+        exact_t,
+        b.wrapping_add(c).wrapping_sub(d)
+    );
 
     let narrow = outcome(|| partial_narrow(a, b, c, d));
     let wide = outcome(|| partial_wide(a, b, c, d));
@@ -84,7 +87,9 @@ fn main() {
     let mut x: i64 = 0x243F6A8885A308D3u64 as i64;
     for _ in 0..200_000 {
         // xorshift
-        x ^= x << 13; x ^= x >> 7; x ^= x << 17;
+        x ^= x << 13;
+        x ^= x >> 7;
+        x ^= x << 17;
         let a = (x >> 32) as i32;
         let b = (x >> 16) as i32;
         let c = (x >> 8) as i32;
@@ -107,8 +112,10 @@ fn main() {
             _ => skipped_undefined += 1,
         }
     }
-    println!("sweep: {} both-defined non-wrapping checked, {} disagreements, {} with a side undefined",
-             checked, disagreements, skipped_undefined);
+    println!(
+        "sweep: {} both-defined non-wrapping checked, {} disagreements, {} with a side undefined",
+        checked, disagreements, skipped_undefined
+    );
 
     // CONTROL: divisor is an input; must agree everywhere (e != 0), no panics.
     let mut ctl_checked = 0u32;
@@ -116,7 +123,9 @@ fn main() {
     let mut ctl_panics = 0u32;
     let mut y: i64 = 0x452821E638D01377u64 as i64;
     for _ in 0..200_000 {
-        y ^= y << 13; y ^= y >> 7; y ^= y << 17;
+        y ^= y << 13;
+        y ^= y >> 7;
+        y ^= y << 17;
         let a = (y >> 32) as i32;
         let b = (y >> 16) as i32;
         let c = (y >> 8) as i32;
@@ -125,20 +134,37 @@ fn main() {
         let n = outcome(|| control_narrow(a, b, c, d, e));
         let w = outcome(|| control_wide(a, b, c, d, e));
         match (n, w) {
-            (Ok(nv), Ok(wv)) => { ctl_checked += 1; if nv != wv { ctl_disagreements += 1; } }
+            (Ok(nv), Ok(wv)) => {
+                ctl_checked += 1;
+                if nv != wv {
+                    ctl_disagreements += 1;
+                }
+            }
             _ => ctl_panics += 1,
         }
     }
-    println!("CONTROL (divisor is an input): {} checked, {} disagreements, {} panics",
-             ctl_checked, ctl_disagreements, ctl_panics);
-    println!("CONTROL verdict: {}", if ctl_disagreements == 0 && ctl_panics == 0
-             { "PASS (control does not distinguish)" } else { "FAIL" });
+    println!(
+        "CONTROL (divisor is an input): {} checked, {} disagreements, {} panics",
+        ctl_checked, ctl_disagreements, ctl_panics
+    );
+    println!(
+        "CONTROL verdict: {}",
+        if ctl_disagreements == 0 && ctl_panics == 0 {
+            "PASS (control does not distinguish)"
+        } else {
+            "FAIL"
+        }
+    );
 
     // The trap this probe formalises: a value-only equivalence checker that skips
     // inputs where a side panics (which is what a catch_unwind harness naturally
     // does) certifies this pair from the random sweep above, and the constructed
     // input refutes the certificate. Stated as the two verdicts side by side:
-    println!("value-only checker over the random sweep : {} disagreements -> would certify",
-             disagreements);
-    println!("definedness checker at the witness       : narrow undefined, wide defined -> refuses");
+    println!(
+        "value-only checker over the random sweep : {} disagreements -> would certify",
+        disagreements
+    );
+    println!(
+        "definedness checker at the witness       : narrow undefined, wide defined -> refuses"
+    );
 }
