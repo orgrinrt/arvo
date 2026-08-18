@@ -1,0 +1,33 @@
+W = 8, S = [0,255], pi = nearest-point selection (clamp)
+600 chains of depth 3..=5, inputs exhaustive over 0..256
+
+C1 full deferral is the pointwise optimum on all 600 chains at a 120-bit carrier : true
+C2 the realisability test excludes some placement somewhere            : true
+
+cells where full deferral is NOT realisable          : 663
+  of those, some realisable placement IS the optimum : 663
+  of those, NO realisable placement is the optimum   : 0
+
+Given that an optimum exists, WHICH placement is it?
+  cells whose realisable set has >1 subset-minimal element : 370
+  cells with a unique optimum                              : 97
+  cells with several optima                                : 566
+  optima that ARE subset-minimal                           : 1154
+  optima that are NOT subset-minimal                       : 2396
+  C4 every optimum is a subset-minimal realisable placement : false
+
+Does the finite-carrier optimum attain the theorem's value pi(exact)?
+  cells where it attains it        : 646
+  cells where it falls short of it : 17
+  worst shortfall in absolute error: 160
+  witness: chain 479 at carrier 11, x=33: optimum gives 95, pi(exact) is 255
+  C5 the theorem's value is sometimes unattainable under a finite carrier : true
+
+C3 a chain and carrier exist where no realisable placement is optimal  : false
+
+RESULT: my hypothesis is REFUTED. Every cell where full deferral was
+unrealisable still had a pointwise optimum among the realisable placements,
+so finiteness does not destroy the conclusion; it only makes the named
+placement unavailable. The executable form of clause 5 under a finite
+carrier is therefore not 'defer everything' but 'resolve as little as the
+carrier allows', and C4 reports whether that rule is exactly right.
