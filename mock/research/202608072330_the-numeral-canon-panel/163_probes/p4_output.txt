@@ -1,0 +1,59 @@
+=== anchors 161 names for entries compressing 157 ===
+--- 157:358-362  (L23 cites this as S-8's synthesis)
+    **S-8. Types are the degenerate case of lenses, not the other way round.** Stated as an account rather
+    than a taxonomy: a primitive's realisation is always a lens `(carrier, position)`; where the position
+    is const-zero and the carrier is one machine word, the lens is an identity and the thing is a value.
+    That is one vocabulary over the declared range, which is what O-B wanted, and it is uniform in the
+    direction that costs nothing, since the native end never has to mention the lens.
+
+--- 157:695-701  (L19/R10 cite this as S-14's completeness clause)
+    
+    > Adequacy is two obligations. **Soundness** holds when the denotation factors through the parameters
+    > the type carries, which is a structural property of the design and needs no enumeration.
+    > **Completeness** holds when every pair of distinct parameter assignments is separated by some input,
+    > and a separating witness discharges one pair at any width. A design owes a witness **per pair of
+    > instantiations it ships**, not per axis, and a factoring argument for the whole. The certificate
+    > carries a predicate like every other claim, because an axis can be read at some instantiations and
+
+--- 111:531-535  (L16 cites this for the two halves)
+    
+    > **Soundness.** Syntactic equality never merges two different denotations. Violating this substitutes a
+    > wrong answer along a name.
+    > **Completeness.** Syntactic inequality never splits one denotation into two names. Violating this is
+    > `110` F8's compile error with no repair.
+
+--- 111:552-553  (L16 cites this for 'nobody's yet')
+    - **Adequacy.** The type is a sound and complete decision procedure for denotational identity. Nobody's
+      yet, and it is the obligation the other two are pointless without.
+
+--- 112:934-937  (L16 cites this as the classification rule)
+    > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+    > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+    > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+    > Zero means it is part of the declared semantics and must be a parameter, because nothing coerces.
+
+--- 111:555-556  (R16 retires this sentence)
+    Adequacy is checkable the way `110` checks a congruence: at model widths, exhaustively, with the
+    transfer argument named rather than assumed. It is the thing a canon can demand and a design can be
+
+--- 109:649-651  (L20 cites this as the target-independence clause)
+    derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+    target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+    derived instead of assumed.
+
+--- 111:1175-1176  (L11 cites this for r1's figures)
+      declaration pairs where the SELECTED ARM changed : 1753
+      chains where the ANSWER changed                  : 0
+
+--- 82:770-774  (L10 cites this, the one NOVEL anchor)
+    **F6. For signed saturating addition, `LO >= 0 || HI <= 0` on a declared operand window matches
+    associativity on that window's generated closure exactly.** `N in {2,3,4,5,6}, sign = signed, policy =
+    saturate, op = add, arity = 3 for the closure check and arity in {2,3,4,5} for the parenthesisation check,
+    F = 0, threads = 1, features any`. Zero sufficiency violations and zero necessity violations over every
+    interval at every width in the band. Four weakened predicates break it in one direction or the other.
+
+=== CONTROL: an anchor that should NOT support the claim asked of it ===
+--- 157:35-36  (CONTROL: asked whether it states the two-branch certificate (it does not))
+    there. So topic five's corpus, read under its own rules, says nothing whatever about any width arvo
+    ships. Several of those eighty-two are **proofs recorded as measurements**, and `111:334-336` says so
+

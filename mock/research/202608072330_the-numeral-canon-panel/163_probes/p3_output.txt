@@ -1,0 +1,13 @@
+candidate anchors, strict pattern : 19
+candidate anchors, loose pattern  : 19
+H1 (loose >= strict)              : PASS
+
+seen by the loose pattern and not the strict one: 0
+
+B. citations into files outside the thirteen sources, as the strict pattern sees them:
+    108:825              carried by some source: True   -> not novel
+    108:827              carried by some source: True   -> not novel
+    82:770-774           carried by some source: False   -> MUST BE REPORTED NOVEL
+
+strict novel set (what the instrument reports): ['82:770-774']
+B verdict: PASS, the outside citations are accounted for

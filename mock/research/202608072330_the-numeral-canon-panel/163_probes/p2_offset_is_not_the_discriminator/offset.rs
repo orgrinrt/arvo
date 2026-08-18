@@ -21,7 +21,9 @@
 
 #![allow(dead_code)]
 
-const fn fits(off: u32, w: u32, carrier: u32) -> bool { off + w <= carrier }
+const fn fits(off: u32, w: u32, carrier: u32) -> bool {
+    off + w <= carrier
+}
 
 // A sole occupant at a nonzero offset: 13 bits at offset 3 of a u16, bits 0..3 unused.
 #[repr(transparent)]
@@ -30,9 +32,16 @@ struct SoleAt3(u16);
 impl SoleAt3 {
     const OFF: u32 = 3;
     const W: u32 = 13;
-    const _CHK: () = assert!(fits(Self::OFF, Self::W, 16), "lens focus leaves the carrier");
-    const fn new(v: u16) -> Self { SoleAt3((v & 0x1FFF) << Self::OFF) }
-    const fn get(self) -> u16 { (self.0 >> Self::OFF) & 0x1FFF }
+    const _CHK: () = assert!(
+        fits(Self::OFF, Self::W, 16),
+        "lens focus leaves the carrier"
+    );
+    const fn new(v: u16) -> Self {
+        SoleAt3((v & 0x1FFF) << Self::OFF)
+    }
+    const fn get(self) -> u16 {
+        (self.0 >> Self::OFF) & 0x1FFF
+    }
 }
 
 // A shared occupant at the same nonzero offset: 13 bits at offset 3 of a u64 that also
@@ -45,8 +54,12 @@ impl SharedCarrier {
     const fn new(a: u16, b: u16) -> Self {
         SharedCarrier(((a as u64 & 0x1FFF) << Self::OFF_A) | ((b as u64 & 0x1FFF) << Self::OFF_B))
     }
-    const fn get_a(self) -> u16 { ((self.0 >> Self::OFF_A) & 0x1FFF) as u16 }
-    const fn get_b(self) -> u16 { ((self.0 >> Self::OFF_B) & 0x1FFF) as u16 }
+    const fn get_a(self) -> u16 {
+        ((self.0 >> Self::OFF_A) & 0x1FFF) as u16
+    }
+    const fn get_b(self) -> u16 {
+        ((self.0 >> Self::OFF_B) & 0x1FFF) as u16
+    }
 }
 
 #[cfg(oob)]
@@ -57,28 +70,54 @@ fn main() {
     let mut bad = 0u32;
     let mut v = 0u16;
     while v < 8192 {
-        if SoleAt3::new(v).get() != v { bad += 1; }
+        if SoleAt3::new(v).get() != v {
+            bad += 1;
+        }
         v += 1;
     }
-    println!("sole-at-offset-3 round trip over all 8192 values : {} disagreements", bad);
+    println!(
+        "sole-at-offset-3 round trip over all 8192 values : {} disagreements",
+        bad
+    );
 
     // 2. It is Sized, referenceable, and its standalone size is the carrier's, not 13 bits.
     let x = SoleAt3::new(4095);
     let r: &SoleAt3 = &x;
-    println!("sole-at-offset-3 size_of                          : {} bytes", core::mem::size_of::<SoleAt3>());
-    println!("sole-at-offset-3 reachable through a reference    : {}", r.get());
+    println!(
+        "sole-at-offset-3 size_of                          : {} bytes",
+        core::mem::size_of::<SoleAt3>()
+    );
+    println!(
+        "sole-at-offset-3 reachable through a reference    : {}",
+        r.get()
+    );
 
     // 3. S-8 as worded classifies it. Offset is 3, so S-8 says NOT a value.
-    println!("S-8's condition (offset==0 && carrier==one word)  : {}",
-             if SoleAt3::OFF == 0 { "value" } else { "NOT a value" });
-    println!("sole-occupancy condition                          : {}",
-             "value (nothing else lives in this allocation)");
+    println!(
+        "S-8's condition (offset==0 && carrier==one word)  : {}",
+        if SoleAt3::OFF == 0 {
+            "value"
+        } else {
+            "NOT a value"
+        }
+    );
+    println!(
+        "sole-occupancy condition                          : {}",
+        "value (nothing else lives in this allocation)"
+    );
 
     // 4. CONTROL: the shared occupant at the same offset.
     let s = SharedCarrier::new(4095, 777);
-    println!("shared-at-offset-3 standalone size                : {} bytes",
-             core::mem::size_of::<SharedCarrier>());
-    println!("shared-at-offset-3 sibling reachable from the SAME reference : {}", s.get_b());
-    println!("CONTROL fires (sibling observable through one reference)     : {}",
-             s.get_b() == 777);
+    println!(
+        "shared-at-offset-3 standalone size                : {} bytes",
+        core::mem::size_of::<SharedCarrier>()
+    );
+    println!(
+        "shared-at-offset-3 sibling reachable from the SAME reference : {}",
+        s.get_b()
+    );
+    println!(
+        "CONTROL fires (sibling observable through one reference)     : {}",
+        s.get_b() == 777
+    );
 }
