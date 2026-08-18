@@ -152,3 +152,245 @@ and separated by nothing; and no axis is deleted from the surface on the evidenc
 operation set alone. They differ on the lens's spelling, the sugar at the degenerate point, and the
 boundary shape at the wall, which is exactly the residue O-C still holds (section 5.1).
 
+---
+
+## 2. The lens, exactly, and S-8's condition repaired
+
+### 2.1 What S-8 says and where it under-specifies
+
+`157:358-362`, verbatim in its operative clause: "a primitive's realisation is always a lens
+`(carrier, position)`; where the position is const-zero and the carrier is one machine word, the
+lens is an identity and the thing is a value."
+
+The stated degeneracy condition, position const-zero in one machine word, is **insufficient**, and
+the counterexample is the first element of any packed column: offset zero, one machine word, and not
+a value, because thirteen sibling bits share the carrier and any reference to the element is a
+reference to an allocation the siblings live in. It is also **over-strict in the other direction**
+if "identity" is read literally: `154`'s `Dense13` is a `u16` holding 13 logical bits and 3 bits of
+padding, and it is unambiguously a value while its lens is a mask rather than an identity.
+
+Neither reading is what `157` meant, which is visible from its own S-1 ("at the native end the
+carrier is one machine word and the lens is the identity, so `Bool` stays `Bool`"), but a canon
+candidate compresses the operative sentence and not the surrounding intent, and the operative
+sentence as written admits the packed column's first element. That is precisely the class of defect
+a formalisation dispatch exists to catch before the compression happens.
+
+### 2.2 The repaired condition: sole occupancy
+
+> A lens `(carrier, offset, width)` **degenerates to a value exactly where its focus is the sole
+> logical occupant of its carrier allocation.** Padding is permitted; sharing is not. Offset zero
+> and exact fit are each neither necessary nor sufficient: a padded sole occupant is a value, and a
+> zero-offset shared occupant is not.
+
+`160_probes/p2_lens_degeneracy/lens.rs`, with its case-that-must-fail declared in the header before
+the run and firing (`lens_control.err`: `E0080` at `Lens64::<60, 13>::IN_CARRIER`, "lens focus
+leaves the carrier", naming the instantiation). What the run establishes (`lens_run.out`):
+
+- The padded sole occupant is an ordinary value: 16 bits for 13 logical, referenceable, `Sized`.
+- The zero-offset shared occupant's only standalone form carries its carrier: 8 bytes, pointer-sized,
+  not `ceil(13/8) = 2`, and the sibling's bits are observable through the same reference, which is
+  the perimeter fact that makes it not a value rather than a stylistic point.
+- The degenerate lens and the sole-occupant value agree on all 8192 thirteen-bit values,
+  0 disagreements, so the degeneracy is an equality of observations and not an analogy.
+
+**What is cited rather than redone.** That no Rust type has exactly 13 bits is `154` F6
+(`154_probes/p2_fibre/`, the committed `E0080` refusal), widened by `159:225-230` to
+`W any where W mod 8 != 0` on the size-in-bytes argument. So at every width off a byte multiple, a
+value is a *padded* sole occupant or it is not a value, which is why the discriminator has to permit
+padding to cover the declared range at all.
+
+**F160-2. The lens degenerates to a value on sole occupancy of the carrier allocation, not on
+position zero; an out-of-carrier focus is refused at compile time naming the instantiation.**
+`holds for: W = 13, carrier in {u16 sole-occupant, u64 shared}, offset in {0, 13}, F = 0,
+signedness = unsigned, toolchain = nightly-2026-05-28, edition 2021, opt-level = 3, threads = 1 for
+the run; the compile-time refusal is what rustc accepts and carries threads any on that argument;
+target features any for the size_of facts (sizes are ABI, not instruction selection)`. The
+discriminator itself is an argument over the language's addressing model, holding wherever
+allocations are byte-addressed; the probe is its instance at one width. Evidence:
+`160_probes/p2_lens_degeneracy/`.
+
+### 2.3 The lens statement is invariant under the container premise, which is why it can be stated now
+
+`159` section 3 establishes that `156` item 1 splits O-A against O-B and closes O-D. The lens
+formulation is untouched by the premise, and the argument is short enough to state exactly:
+
+The lens describes the **form** of the realisation, where the bits rest. The container premise
+decides whether that form is part of **identity**: under footprint-observable, two lenses over one
+`(V, R)` are two primitives; under footprint-internal, one. Either way every realisation is a lens
+and the degeneracy condition reads only the placement, so clause 2 holds on both branches, and only
+clause 7's saturation is conditional. That is what makes S-8 formalisable before op rules, and it is
+the reason `159` could adopt it while explicitly declining to decide O-A against O-B. [Argument;
+nothing to sweep, since the claim is about which clauses read which premise.]
+
+---
+
+## 3. Adequacy, exactly, and the hole in S-14
+
+### 3.1 The defect, located in the converged text
+
+`157:695-701`, S-14's replacement sentence, operative clause: "**Completeness** holds when every
+pair of distinct parameter assignments is separated by some input, and a separating witness
+discharges one pair at any width."
+
+Set that beside the classification rule the same file proves is the adequacy condition per axis
+(`112:934-937`): an axis with **one** direction admitting a total denotation-preserving map "is a
+refinement and **may be a parameter**, with the map as its weakening."
+
+A refinement pair is never separated by any input. Structurally: the two assignments share the
+realisation map by definition, so no term over any operation set evaluates differently under them,
+at any width, ever. Measured: `111:1175-1176`, 1753 declaration pairs changing the selected arm and
+zero changing an answer, with the moved-observable-axis control in the tens of thousands. So under
+S-14 as written, every refinement parameter fails completeness, and the certificate S-16 proposes
+("the gap is the set of carried axes with no separating witness... a design can assert it is empty")
+is an assertion no design with refinement parameters can ever pass. The realisation-map topic's
+entire mechanism is refinement parameters. **S-14 and the classification rule contradict each other
+in the two files' own words, one section apart, and neither noticed**, which is the same shape `157`
+section 3.4 found between `111` and `112` one round earlier.
+
+### 3.2 The repair: completeness up to weakening, and the certificate has three outcomes
+
+> **Completeness, up to weakening.** For every pair of distinct shipped instantiations, one of:
+>
+> - a **separating witness** exists: one input on which the two denote differently. The pair is a
+>   real semantic distinction and both names stay. Discharged in `O(1)` per pair at any width.
+> - a **weakening exists in exactly one direction**: a total map, identity on the representation,
+>   refused at compile time in the other direction. The pair is a refinement pair; two names for one
+>   restricted-and-unrestricted view of one denotation, and the order is the repair.
+> - **neither**: the pair is connected both ways and separated by nothing. Two names for one
+>   denotation with no order between them, which is the spurious split, and the certificate
+>   **refuses**.
+
+`160_probes/p1_two_branch_certificate/cert2.rs`, both controls declared in the header before the
+run. The run (`cert2_run.out`):
+
+```
+P1 declared-semantics pair : witness=true  directions=0
+P2 refinement pair         : witness=false directions=1
+P3 spurious pair           : witness=false directions=2
+witness-only conflates P2 and P3 : true
+policy_separates_every_width()   : true
+```
+
+The `witness-only conflates` line is the defect of 3.1 as a compiled fact: S-14's scheme returns the
+same verdict for the pair that must be carried and the pair that must be refused. The two-branch
+scheme separates all three, inside `const` items, and the case that must fail fails:
+`cert2_control.err` is `E0080` on `assert!(pair_is_admissible(M, SAT, M, SAT))` under
+`--cfg carry_spurious`. The closed-form witness half (add the maximum to one) closes a
+`while w <= 64` loop in one `const` item, reproducing `157` F157-6's construction on an
+independently written model.
+
+**F160-1. A witness-only completeness certificate cannot distinguish a refinement pair from a
+spurious pair, and the two-branch certificate (witness, or weakening in exactly one direction)
+classifies declared-semantics, refinement and spurious pairs correctly, at const time, with the
+spurious case a compile failure.** `holds for: model W = 6 for the direction count (exhaustive over
+the extents), W in 1..=64 for the closed-form witness (the whole domain of the u64 model; Q65's
+third state, and I use the reading "exhaustive over the container's domain" rather than any), F = 0,
+signedness = unsigned, overflow policy in {sat, wrap}, refinement = one-sided [0, b], operation =
+add, arity = 2, term depth = 1 for the commuting check, toolchain = nightly-2026-05-28, edition
+2021; the verdicts are what rustc accepts and carry threads any and target features any on the
+exact-arithmetic argument`. Evidence: `160_probes/p1_two_branch_certificate/`. The conflation half
+is structural (shared `R` admits no witness, argument); the classification half is the sweep.
+
+**Bounds on the instrument, named rather than discovered later.** The commuting check is depth one;
+this model's separation structure is depth-one-complete because its only separating witness is
+depth-one, and the probe claims nothing past that. The direction count's collapse to extent
+inclusion holds for equal value sets, where denotation preservation forces the identity map; with
+distinct value sets the map is not forced and the count must be computed as a search, which nothing
+here does. And the model collapses the unread rounding parameter into literal identity of
+assignments, which is faithful to what an unread parameter is to `R` and is the thinnest possible
+spelling of it.
+
+### 3.3 What this changes in the carried sentences, stated so the candidate can compress it
+
+- **S-14's soundness half is carried unchanged.** The factoring formulation, its per-pair scope, and
+  the predicate-on-the-certificate clause all stand.
+- **S-14's completeness clause is replaced** by 3.2's three-outcome form. The witness discharge and
+  its at-any-width property are preserved inside the first outcome.
+- **S-16 is restated**: the measurable gap between nominal and denotational identity is the set of
+  carried pairs with **neither** witness **nor** one-directional weakening, and that set being empty
+  is what a design can assert and the compiler check.
+- **S-17's monotonicity claim survives for the witness branch and gains a caveat for the scheme**:
+  growing the operation set only adds witnesses, so a separation never degrades; but a spurious
+  verdict can convert to a separation (section 4.1), so the *refusal* branch is the one that must be
+  evaluated at the maximal set. The certificate never has to be redone for pairs already separated,
+  which is what S-17 wanted.
+
+---
+
+## 4. Bounds
+
+### 4.1 The three verdicts age differently, and only spurious is provisional
+
+[Argument.] Fix a pair of instantiations and grow the operation set from `S` to `S' ⊇ S`, members
+restricted to functions of `(V, R)` per clause 7's premise.
+
+- **A witness is a term, and a term over `S` is a term over `S'`.** So separation is preserved under
+  growth: verdict "declared semantics" is stable. [This is `157` S-17's own argument, carried.]
+- **A refinement pair shares `R`.** No term over any `S` evaluates the two differently, so no growth
+  produces a witness, and the one-directional weakening is a fact about the extents, which the
+  operation set does not touch. Verdict "refinement" is stable.
+- **A spurious verdict is a statement about reach**: the two `R`s differ nowhere the current terms
+  reach. Growth extends reach, so the verdict can flip to "declared semantics", and by witness
+  preservation it can never flip back. `110` F6's rounding-at-`F = 0` case is exactly this flip, at
+  the moment a non-grid literal joins.
+
+So the certificate's refusal branch is licensed to **delete the axis from the surface** only where
+the two-direction verdict holds at the largest operation set the design will ever admit, which with
+a full literal is `R`'s whole domain, and the test for that is the one `110` P5 already built: probe
+`R` over the whole line. At the shipped set, a two-direction verdict licenses **gating**, under a
+predicate, per `108:827`'s "a licence the resolver may take under a predicate over the chain, not a
+reclassification of the axis". This connects the certificate to the degeneracy machinery, which
+neither `157` nor `112` had done, and it is the sentence that keeps the certificate from repeating
+`110` P4's canonicalisation hazard one layer up.
+
+### 4.2 Soundness's residual obligation, carried with its sharpening
+
+Carried unchanged, counted in section 6: soundness is not enforceable by a signature, because `cfg`
+is in scope inside a `const fn` body (`157` F157-13, compiled, rebuilt by `158`), and not
+enforceable by anything that inspects one build, because every single build satisfies I15 completely
+while the denotation moves between builds (`159` F159-2, which is the sharper form and arrives from
+the intent side). The residual obligation is stateable in one sentence and is a lint's shape, not a
+type's: **nothing on the realisation-map call path reads `cfg`, a module-level constant, or any
+input not in its parameter list.** `109:649-651`'s target-independence clause is this with two
+qualifiers dropped, per `157` S-21, and the attribution correction stands: the clause is `109`'s,
+not `154`'s (`159` section 2).
+
+### 4.3 Weakening is free at the packed end, which closes the one region clause 3 had no instance in
+
+`111` F111-12 compiled weakening-as-identity for a dense carried range. The packed end had no
+instance, and the packed end is the region I17 (`INTENTS.md:363-380`) forbids deprioritising, so the
+clause either needed the instance or needed its predicate to exclude the protected region. The
+instance: `160_probes/p3_packed_weakening/packed_weaken.rs`, a bitpacked column of 13-bit elements
+(no element type anywhere in it, elements are `(column, index)`) carrying a declared per-element
+bound as a const parameter.
+
+- Weakening `PackedCol<100>` to `PackedCol<200>` changes no bit and no address: 64 of 64 elements
+  read back identically through both types, and the reference survives unchanged
+  (`packed_weaken_run.out`).
+- Tightening is refused at compile time naming the instantiation:
+  `packed_weaken_control.err` is `E0080` at `weaken_ref::<200, 100>`, "weakening must not tighten
+  the bound", under `--cfg control`, declared as the case that must fail before the run.
+
+**One declared check could not be performed as planned, and I record it rather than absorb it.** The
+probe header declared a symbol-aliasing check on the emitted body. The committed assembly
+(`packed_weaken.s`) contains **no body for `weaken_ref` at all**: the optimiser folded every call
+away entirely, `#[inline(never)]` notwithstanding, which is consistent with the identity claim and
+stronger than aliasing, but is not the evidence the header promised. The run-level facts above are
+what the finding rests on, and the assembly is committed as the record of the absence.
+
+**F160-3. Weakening a declared bound on a bitpacked column is the identity on representation and
+address, and tightening is a compile-time refusal naming the instantiation.** `holds for: W = 13,
+N = 64 elements, container = [u64], declared bound one-sided [0, b] with b in {100, 200}, F = 0,
+signedness = unsigned, toolchain = nightly-2026-05-28, edition 2021, opt-level = 3, target =
+aarch64-apple-darwin host default, threads = 1 for the run; the refusal is what rustc accepts and
+carries threads any on that argument`. Evidence: `160_probes/p3_packed_weakening/`.
+
+### 4.4 What the certificate costs
+
+**Unpriced, and the word is used deliberately.** `157` Q157-E stands exactly as it left it: nothing
+on `mock/benches/` measures a const-evaluation budget, my `rustc` invocations here are ad-hoc quick
+spikes with no substance as far as magnitude goes, and the per-pair obligation's compile-time cost
+over a realistic instantiation count is a harness question with three arms already named (no
+certificate, per-axis, per-pair; the two-branch scheme adds a fourth arm to that family, per-pair
+with the direction count). Nothing below depends on the magnitude.
+
