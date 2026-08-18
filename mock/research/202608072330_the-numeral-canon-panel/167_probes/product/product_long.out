@@ -1,0 +1,15 @@
+== Product chain, F = 4, 400 chains per length, max |err| in LSBs ==
+   len      per_step      deferred    carried(F)   carried(2F)   oracle ok
+     2         0.938         0.938         0.938         0.938         yes
+     4         5.917         0.998         1.074         0.998         yes
+     8        27.657         0.996         1.390         1.012         yes
+    12        60.723         0.998         2.913         1.028         yes
+    16       121.422         0.994         8.616         1.386         yes
+    20       341.891         0.992        21.891         1.891         yes
+    24      2221.867         0.993        60.867         5.867         yes
+
+  NC16 (per_step keeps growing over the range, so the flat rows are a bound not a ceiling): ok
+  NC17 is the 'oracle ok' column: an i128/f64 magnitude cross-check per chain.
+
+  State: per_step holds F fraction bits at every length. carried(F) holds 2F.
+  carried(2F) holds 3F. deferred holds F*k, growing linearly in the chain length.
