@@ -16,10 +16,11 @@ per-source line-anchor / probe-path counts:
 unique line anchors across the 13 sources : 206
 unique probe paths across the 13 sources  : 91
 line anchors in the candidate             : 19
-probe paths in the candidate              : 10
-candidate anchors that appear in a source : 19
-candidate anchors novel to the candidate  : 0
-source anchors not carried (dropped)      : 187
+probe paths in the candidate              : 13
+candidate anchors that appear in a source : 18
+candidate anchors novel to the candidate  : 1
+    NOVEL 82:770-774
+source anchors not carried (dropped)      : 188
 probe paths carried                       : 7 of 91
 
 -- controls --

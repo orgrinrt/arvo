@@ -1,0 +1,76 @@
+OK  INTENTS.md:268-297   [30 lines]
+      ## I14. The operating constraints, which are rules as much as intents
+      
+      **IN FORCE.** A third marker, and it is the coordinator's bookkeeping rather than op's word: it means op
+OK  INTENTS.md:190-197   [8 lines]
+      ## I11. arvo is a library, and the value is what composes on top of it
+      
+      **STATED.** `32`, 2026-08-08.
+OK  INTENTS.md:214   [1 lines]
+      ## I13. The work is predicated arms composed, and a universal solution is rejected
+OK  warm-container-shared/src/lib.rs:187   [1 lines]
+      pub trait Carrier: Copy + 'static {
+OK  112:904-906   [3 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
+OK  82:770-774   [5 lines]
+      **F6. For signed saturating addition, `LO >= 0 || HI <= 0` on a declared operand window matches
+      associativity on that window's generated closure exactly.** `N in {2,3,4,5,6}, sign = signed, policy =
+      saturate, op = add, arity = 3 for the closure check and arity in {2,3,4,5} for the parenthesisation check,
+OK  108:825   [1 lines]
+      > must agree about it. An axis belongs here if there is **any** reachable chain on which moving it is
+OK  111:1175-1176   [2 lines]
+      declaration pairs where the SELECTED ARM changed : 1753
+        chains where the ANSWER changed                  : 0
+OK  111:531-535   [4 lines]
+      > **Soundness.** Syntactic equality never merges two different denotations. Violating this substitutes a
+      > wrong answer along a name.
+      > **Completeness.** Syntactic inequality never splits one denotation into two names. Violating this is
+OK  111:552-553   [2 lines]
+      - **Adequacy.** The type is a sound and complete decision procedure for denotational identity. Nobody's
+        yet, and it is the obligation the other two are pointless without.
+OK  112:934-937   [4 lines]
+      > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
+      > axis is spurious and must not be a parameter, because what is wanted there is equality and no
+      > equality exists. One means it is a refinement and may be a parameter, with the map as its weakening.
+OK  157:695-701   [6 lines]
+      > Adequacy is two obligations. **Soundness** holds when the denotation factors through the parameters
+      > the type carries, which is a structural property of the design and needs no enumeration.
+      > **Completeness** holds when every pair of distinct parameter assignments is separated by some input,
+OK  109:649-651   [3 lines]
+      derived constraint rather than only a rejection: **`ρ` for anything that persists must be
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+      derived instead of assumed.
+OK  108:827   [1 lines]
+      > predicate over the chain, not a reclassification of the axis.
+OK  157:358-362   [5 lines]
+      **S-8. Types are the degenerate case of lenses, not the other way round.** Stated as an account rather
+      than a taxonomy: a primitive's realisation is always a lens `(carrier, position)`; where the position
+      is const-zero and the carrier is one machine word, the lens is an identity and the thing is a value.
+OK  159:169-175   [7 lines]
+      **S-8 accepted, and it is the best thing in `157` for my question.** "A primitive's realisation is
+      always a lens `(carrier, position)`; where the position is const-zero and the carrier is one machine
+      word, the lens is an identity and the thing is a value." This **is** the synthesis I could not find.
+OK  109:156   [1 lines]
+      **Predicate.** `V` and `ρ` are independent components: `I any, F any, signedness = unsigned, S any,
+OK  110:113   [1 lines]
+      This workspace auto-loads `arvo-always-optimal-internals.md` into every agent context. That rule
+OK  110:113   [1 lines]
+      This workspace auto-loads `arvo-always-optimal-internals.md` into every agent context. That rule
+OK  111:555-556   [2 lines]
+      Adequacy is checkable the way `110` checks a congruence: at model widths, exhaustively, with the
+      transfer argument named rather than assumed. It is the thing a canon can demand and a design can be
+OK  111:531-535   [4 lines]
+      > **Soundness.** Syntactic equality never merges two different denotations. Violating this substitutes a
+      > wrong answer along a name.
+      > **Completeness.** Syntactic inequality never splits one denotation into two names. Violating this is
+OK  82:770-774   [5 lines]
+      **F6. For signed saturating addition, `LO >= 0 || HI <= 0` on a declared operand window matches
+      associativity on that window's generated closure exactly.** `N in {2,3,4,5,6}, sign = signed, policy =
+      saturate, op = add, arity = 3 for the closure check and arity in {2,3,4,5} for the parenthesisation check,
+UNRESOLVED  no_such_file_157.md:1
+OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
+
+citations checked: 22 plus 2 controls
+failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

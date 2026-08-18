@@ -166,7 +166,7 @@ checker.
 
 **L10. The four-part working assumption had the law set and the refinement exactly backwards: it
 lists the coordinate that fails the freedom test and omits the one that passes it.** `111` 9.1,
-resting on `82` F6 (`82:768-774`; a declared operand window separates verdicts with every other coordinate held
+resting on `82` F6 (`82:770-774`; a declared operand window separates verdicts with every other coordinate held
 fixed); `111` and `82` are one persona and `111` says so, so this is **ONE EXPERT** and is recorded
 at that rung in Q52 as well. The connection is load-bearing for the statement's shape and nothing
 contradicts it anywhere in either sitting.
@@ -743,12 +743,16 @@ carried where its own instrument found 12.
 unique line anchors across the 13 sources : 206
 unique probe paths across the 13 sources  : 91
 line anchors in the candidate             : 19
-probe paths in the candidate              : 10
-candidate anchors that appear in a source : 19
-candidate anchors novel to the candidate  : 0
-source anchors not carried (dropped)      : 187
+probe paths in the candidate              : 13
+candidate anchors that appear in a source : 18
+candidate anchors novel to the candidate  : 1
+source anchors not carried (dropped)      : 188
 probe paths carried                       : 7 of 91
 ```
+
+**The one novel anchor is `82:770-774`**, this file's correction of `111`'s `82:768-774`, which
+opens two lines above the finding it quotes. The repair restores from the establishing source
+rather than from the citation that drifted, which is why it appears in no source file.
 
 **The dropped list is in the sibling file** `161_probes/anchor_accounting/dropped_anchors.txt`,
 never in this file, because an author that prints the anchors it dropped makes them present in the
@@ -778,7 +782,7 @@ section map, `111` sections 0 through 10, 18, 26 and its findings block, `114` s
 12 and 13.
 
 **Taken on another file's account, named per claim:** `82` F6 through `111`'s quotation
-(`82:768-774` opened at the quoted lines only); `90` R1/R3, `63` C1/C2, `93`/`94`/`101`/`106`
+(`82:770-774` opened at the quoted lines only); `90` R1/R3, `63` C1/C2, `93`/`94`/`101`/`106`
 through `AGREEMENTS.md` and the members' own citations; `108` at lines 820 to 830 only; `122`,
 `123`, `124` through `AGREEMENTS.md` section 9's pointer, which is why the propagation clauses
 are pointed at rather than restated; topic eight (`139` through `152`) not at all, which is why
