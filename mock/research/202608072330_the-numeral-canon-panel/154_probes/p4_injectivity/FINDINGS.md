@@ -83,7 +83,7 @@ observable at compile time, and the region where it does is part of what the pri
 
 F11: an observation distinguishing `(64, wrap)` from `(64, clamp)` on a u64. It would have to
 distinguish two extensionally equal functions, so it needs an intensional observable, which under
-`INTENTS.md:286-288` (no `dyn`, no `TypeId`, no `std::any`) arvo has removed.
+`INTENTS.md:286` (no `dyn`, no `TypeId`, no `std::any`) arvo has removed.
 F12: a container policy under which the degenerate set is empty or is width-only. Empty requires no
 width ever to fill its container, which fails at the container's own width.
 F13: a canon that wants the index to over-count deliberately, e.g. so that a later treatment can

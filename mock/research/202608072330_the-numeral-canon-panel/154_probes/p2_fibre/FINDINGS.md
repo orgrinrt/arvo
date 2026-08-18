@@ -52,7 +52,7 @@ is the only way to reach one, and it takes the column and an index. That is a le
 This is the structural half of F5 and it is stronger than F5. F5 says the representation varies. F6
 says that at one end of the variation **the thing being represented is not a value of any type**,
 so an account of "primitive" as "a type whose values are numerals" does not cover the range arvo
-declares it covers. I17 (`INTENTS.md:374-376`) forbids trading the packed end away:
+declares it covers. I17 (`INTENTS.md:374-375`) forbids trading the packed end away:
 
 > The intent is that the storage-minimising, aggressively bitpacked path is not deprioritised
 

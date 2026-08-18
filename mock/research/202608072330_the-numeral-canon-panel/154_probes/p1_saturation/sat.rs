@@ -48,7 +48,11 @@ pub struct Unsat {
 
 #[unsafe(no_mangle)]
 pub fn b_unsat(v: &Unsat) -> u64 {
-    let mask = if v.w >= 64 { u64::MAX } else { (1u64 << v.w) - 1 };
+    let mask = if v.w >= 64 {
+        u64::MAX
+    } else {
+        (1u64 << v.w) - 1
+    };
     v.bits & mask
 }
 
@@ -83,7 +87,11 @@ impl Pol for Wrap {
 }
 impl Pol for Sat2 {
     fn apply(x: u64, mask: u64) -> u64 {
-        if x > mask { mask } else { x }
+        if x > mask {
+            mask
+        } else {
+            x
+        }
     }
 }
 

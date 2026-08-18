@@ -23,7 +23,7 @@ voids the probe.
 `b_unsat` (`sat.s:31-39`) contains `cmp w8, #63` and `csinv`. That is the source's `if v.w >= 64`
 guard surviving into the emitted code. The compiler had no choice: it cannot know `w < 64`.
 
-I15 (`INTENTS.md:305-307`) reads:
+I15 (`INTENTS.md:304-307`) reads:
 
 > Never any runtime checks, ever. We catch invalids on compile time, and unused paths we clear out
 > when lowered. Period.
@@ -41,7 +41,7 @@ target features = baseline aarch64-apple-darwin, threads = 1, opt-level = 3, F =
 #140737488355327`) and selects between them with `csel`. It is branchless and it is not one lowered
 path: both paths are present, which is the opposite of "unused paths we clear out when lowered".
 
-`INTENTS.md:313-316` records that I15 refuses `80` section 5.1's "value-gated arm, which materialises
+`INTENTS.md:312-316` records that I15 refuses `80` section 5.1's "value-gated arm, which materialises
 both lowerings and selects with a `csel`". I have not read `80`. I reproduced that exact shape from
 the assembly, cold, and it is the shape a closed-set runtime index lowers to. That is independent
 corroboration of what I15 rules out, arrived at from the machine rather than from the file.

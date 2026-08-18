@@ -28,5 +28,8 @@ fn main() {
     println!("  packed : {} bytes", (N * W) / 8);
     println!("  ratio  : {:.4}x", (N * 2) as f64 / ((N * W) / 8) as f64);
     println!();
-    println!("smallest expressible standalone value / logical width = {}x", p as f64 / W as f64);
+    println!(
+        "smallest expressible standalone value / logical width = {}x",
+        p as f64 / W as f64
+    );
 }

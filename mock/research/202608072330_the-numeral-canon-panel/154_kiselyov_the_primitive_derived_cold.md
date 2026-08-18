@@ -21,7 +21,7 @@ Phase two is appended at the end and phase one is not rewritten.
 
 Checked against `INTENTS.md` in full, including its "How to read an entry" section. The assigned
 question ("what is a primitive, in arvo?") is licensed: `INTENTS.md:190-197` (I11) makes the base and
-the contracts above it the stated purpose of the library, and `INTENTS.md:286-289` (I14) makes "public
+the contracts above it the stated purpose of the library, and `INTENTS.md:288-289` (I14) makes "public
 API positions use the stack's own primitives rather than bare integers, floats, `bool` or `usize`" an
 IN FORCE constraint, which presupposes that there is a determinate answer to what one of those is. A
 canon cannot state I14 without stating what a primitive is.
