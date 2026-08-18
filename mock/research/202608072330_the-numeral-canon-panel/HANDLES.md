@@ -134,6 +134,17 @@ recorded after the fact is a handle that was unavailable during the window it wa
 | 127 | dolan | `ab1474a17441b7508` |
 | 137 | arntzen (independent check) | `a1c87d5f39bda9e8b` |
 
+## Topic nine, the primitive as a named composition
+
+**A different session owns these**, the one opened 2026-08-18, and they are addressable only from it.
+Every row above belongs to `dea47dac-5762-46b6-956e-0d22cc5d3832` and is spent for resume purposes.
+Recorded at dispatch time rather than after the fact.
+
+| Number | Persona | Task id |
+|---|---|---|
+| 154 | kiselyov (cold, blind) | `a473b594bc3fada7e` |
+| 155 | dolan (cold, blind) | `ae90f22541d130d97` |
+
 ## Topic eight, the strategy set
 
 | Number | Persona | Task id |
