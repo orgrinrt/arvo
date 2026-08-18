@@ -1,0 +1,37 @@
+OK  warm-container-shared/src/lib.rs:5-11   [7 lines]
+      //! `arvo-strategy/src/container.rs:15-19` sizes the `Warm` and `Precise`
+      //! container at one rung above the declared width `W`: `1..=8 -> u16`,
+      //! `9..=16 -> u32`, `17..=32 -> u64`, `33..=64 -> u128`. Written as a
+OK  OPTIONS.md:2502   [1 lines]
+      since rounding at `F = 0` is observable the moment anyone writes a non-grid literal.
+OK  warm-container-shared/src/lib.rs:1356   [1 lines]
+      fn all_four_arms_agree_with_each_other_and_with_the_oracle_on_every_key() {
+OK  OPTIONS.md:2502   [1 lines]
+      since rounding at `F = 0` is observable the moment anyone writes a non-grid literal.
+OK  warm-container-shared/src/lib.rs:1356   [1 lines]
+      fn all_four_arms_agree_with_each_other_and_with_the_oracle_on_every_key() {
+OK  OPTIONS.md:2502   [1 lines]
+      since rounding at `F = 0` is observable the moment anyone writes a non-grid literal.
+OK  warm-container-shared/src/lib.rs:5-11   [7 lines]
+      //! `arvo-strategy/src/container.rs:15-19` sizes the `Warm` and `Precise`
+      //! container at one rung above the declared width `W`: `1..=8 -> u16`,
+      //! `9..=16 -> u32`, `17..=32 -> u64`, `33..=64 -> u128`. Written as a
+OK  157:699-700   [2 lines]
+      > and a separating witness discharges one pair at any width. A design owes a witness **per pair of
+      > instantiations it ships**, not per axis, and a factoring argument for the whole. The certificate
+OK  159:176-185   [9 lines]
+      **S-5 partially accepted, and the residue is real.** S-5 says O-C closes positively because the wall
+      is external and binds every implementer equally, so two teams both ship a lens at the packed end.
+      **The forcing is shared and the resolution is not.** Both teams meet the same wall, which is more than
+OK  159:225-230   [5 lines]
+      - **F6** is recorded at `W = 13` and its argument is a proof. `size_of` is denominated in bytes, so
+        every Rust type's bit size is a multiple of eight; therefore for any `W` not a multiple of eight no
+        Rust type has exactly `W` bits. The finding widens to **`W any where W mod 8 != 0`**, on that
+OK  157:699-700   [2 lines]
+      > and a separating witness discharges one pair at any width. A design owes a witness **per pair of
+      > instantiations it ships**, not per axis, and a factoring argument for the whole. The certificate
+UNRESOLVED  no_such_file_157.md:1
+OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
+
+citations checked: 11 plus 2 controls
+failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

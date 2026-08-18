@@ -304,9 +304,11 @@ explicitly unconditional; L21's maximal-set phrase gains clause 10's branch note
 ### 5.1 R10 [AMENDED]: name which half of the sentence died
 
 Per `163` section 2's amendment: S-14's **witness-only completeness outcome** and S-16's gap
-assertion are what R10 retires. The **per-pair scope in the same sentence** (`157:698-699`, "a
+assertion are what R10 retires. The **per-pair scope in the same sentence** (`157:699-700`, "a
 design owes a witness per pair of instantiations it ships, not per axis") **survived and is
-carried** at L18 and clause 9. A reader retiring the sentence wholesale would retire the half that
+carried** at L18 and clause 9. (The range is corrected from the spelling `163` used, whose start
+sits one line into the completeness clause; restored from the establishing source, the same class
+as `161`'s `82` repair.) A reader retiring the sentence wholesale would retire the half that
 is load-bearing for the surviving obligation.
 
 ### 5.2 R16 [AMENDED]: the reason is a category mismatch, not a missing discharge
@@ -367,11 +369,12 @@ same two controls declared and firing; output at `accounting.out`, dropped list 
 unique line anchors across the 16 sources : 215
 unique probe paths across the 16 sources  : 111
 line anchors in the candidate             : 7
-probe paths in the candidate              : 5
-candidate anchors that appear in a source : 6
-candidate anchors novel to the candidate  : 1
+probe paths in the candidate              : 6
+candidate anchors that appear in a source : 5
+candidate anchors novel to the candidate  : 2
+    NOVEL 157:699-700
     NOVEL warm-container-shared/src/lib.rs:1356
-source anchors not carried (dropped)      : 209
+source anchors not carried (dropped)      : 210
 probe paths carried                       : 2 of 111
 ```
 
@@ -380,10 +383,12 @@ own [STANDS]/[AMENDED]/[REPLACED] shape, so the near-total drop is the shape wor
 anchors live in `161`, which stands as landed and governs everywhere this file does not amend. What
 the accounting establishes for a delta is the two things a delta can get wrong: the three
 restorations `162` asked for are present (they are among the six carried anchors), and the novel
-set contains exactly what it should. **The measured novel set has one member**,
-`warm-container-shared/src/lib.rs:1356`, which is this file's own reproduction catch (section
-1.4's second item), cited from the shipped source directly rather than through any panel file,
-which is what novel means and is correct here. The dropped list is in the sibling
+set contains exactly what it should. **The measured novel set has two members, both
+legitimate and both explained**: `warm-container-shared/src/lib.rs:1356` is this file's own
+reproduction catch (section 1.4's second item), cited from the shipped source directly rather
+than through any panel file; and `157:699-700` is this file's correction of the range `163` used
+for the per-pair phrase, restored from the establishing source (section 5.1), which appears in no
+source file precisely because every source carried the drifted spelling. The dropped list is in the sibling
 `164_probes/anchor_accounting/dropped_anchors.txt` and is not inlined.
 
 **The wording class `163` caught is repaired in this file's own accounting**: the closing claim

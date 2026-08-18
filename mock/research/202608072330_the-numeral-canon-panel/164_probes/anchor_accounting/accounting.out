@@ -19,13 +19,14 @@ per-source line-anchor / probe-path counts:
 unique line anchors across the 16 sources : 215
 unique probe paths across the 16 sources  : 111
 line anchors in the candidate             : 7
-probe paths in the candidate              : 5
-candidate anchors that appear in a source : 6
-candidate anchors novel to the candidate  : 1
+probe paths in the candidate              : 6
+candidate anchors that appear in a source : 5
+candidate anchors novel to the candidate  : 2
+    NOVEL 157:699-700
     NOVEL warm-container-shared/src/lib.rs:1356
-source anchors not carried (dropped)      : 209
+source anchors not carried (dropped)      : 210
 probe paths carried                       : 2 of 111
 
 -- controls --
-positive control (157:698-699 found in candidate): PASS
+positive control (157:699-700 found in candidate): PASS
 negative control (planted anchor reported NOVEL): PASS (fires)

@@ -88,8 +88,8 @@ def main():
 
     # CONTROLS
     print("\n-- controls --")
-    pos = "157:698-699" in ca
-    print(f"positive control (157:698-699 found in candidate): {'PASS' if pos else 'FAIL'}")
+    pos = "157:699-700" in ca
+    print(f"positive control (157:699-700 found in candidate): {'PASS' if pos else 'FAIL'}")
     planted = cand_text + "\n`999_no_such_file.md:123`\n"
     pa = anchors(planted)
     caught = "999_no_such_file.md:123" in (pa - src_anchors)
