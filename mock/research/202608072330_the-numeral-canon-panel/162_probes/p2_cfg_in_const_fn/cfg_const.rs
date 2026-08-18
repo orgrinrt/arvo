@@ -35,7 +35,11 @@ pub const fn realise(k: u64) -> u64 {
 
 // The control: a realisation map the build cannot reach.
 pub const fn realise_stable(k: u64) -> u64 {
-    if k > MASK { MASK } else { k }
+    if k > MASK {
+        MASK
+    } else {
+        k
+    }
 }
 
 pub const HAZARD: u64 = realise(MASK + 1);
