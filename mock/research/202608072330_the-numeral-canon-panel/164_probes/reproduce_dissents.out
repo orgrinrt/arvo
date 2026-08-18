@@ -1,0 +1,9 @@
+162 p1 (premise reach) : REPRODUCES
+163 p1 (clause 9 satisfiability) : REPRODUCES
+163 p3 (accounting audit) : REPRODUCES
+162 p2 (cfg in const fn, both builds) : REPRODUCES
+163 p2 run (offset) : REPRODUCES
+163 p2 control (must show line-shift) : DIFFERS
+162 L15 grep (109 I15 occurrences) : REPRODUCES
+CONTROL (162 p1 vs 163 p1, must DIFFER):
+  control : DIFFERS
