@@ -1,0 +1,32 @@
+HONEST GRID: only axes the map reads, rounding held at one mode.
+--- rounding fixed
+    grid=24  signature=('add', 'sub', 'mul')  literals=[]
+    per-axis witness found for: W=yes, F=yes, signed=yes, policy=yes, rounding=NO
+    distinct assignments that denote the same thing : 0
+      of those, differing in >= 2 axes             : 0
+
+F1 (every carried axis has a witness) : PASS
+Q157-B verdict on this grid           : per-axis SUFFICIENT here (no multi-axis cancellation)
+
+CONTROL F2: carry a spurious axis as well.
+--- rounding carried, no literal
+    grid=72  signature=('add', 'sub', 'mul')  literals=[]
+    per-axis witness found for: W=yes, F=yes, signed=yes, policy=yes, rounding=yes
+    distinct assignments that denote the same thing : 44
+      of those, differing in >= 2 axes             : 0
+        single-axis collapse: differ in ['rounding'] at W=2 F=0 signed=False policy=wrap
+        single-axis collapse: differ in ['rounding'] at W=2 F=0 signed=False policy=wrap
+
+F2 (the per-pair check can fail)      : PASS
+    of the 44 collapses, 0 differ in >= 2 axes
+
+WIDER GRID: three rounding modes AND a separating literal, so no axis is spurious.
+--- rounding carried, literal present
+    grid=72  signature=('add', 'sub', 'mul', 'literal')  literals=['3/4', '-3/4', '3/2']
+    per-axis witness found for: W=yes, F=yes, signed=yes, policy=yes, rounding=yes
+    distinct assignments that denote the same thing : 6
+      of those, differing in >= 2 axes             : 0
+        single-axis collapse: differ in ['rounding'] at W=2 F=0 signed=False policy=sat
+        single-axis collapse: differ in ['rounding'] at W=2 F=1 signed=False policy=sat
+
+Q157-B verdict on the wider grid      : per-axis SUFFICIENT here

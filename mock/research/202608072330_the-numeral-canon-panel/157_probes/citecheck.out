@@ -73,6 +73,10 @@ OK  INTENTS.md:363-380   [18 lines]
 OK  INTENTS.md:123-124   [2 lines]
       > Cold is optimised for cold paths and cold storage, which means, it aggressively minimises and
       > bitpacks, *but* because it optimises for cold paths, it has more leeway to do things non-efficient.
+OK  111_probes/p4_output.txt:27-30   [4 lines]
+      the pairs where rounding stays unobservable under rational constants:
+        W=2 unsigned sat: trunc vs floor
+        W=3 unsigned sat: trunc vs floor
 OK  warm-container-shared/src/lib.rs:279-283   [5 lines]
       impl_carrier!(u8);
       impl_carrier!(u16);
@@ -162,6 +166,10 @@ OK  112:904-906   [3 lines]
 OK  112:904-905   [2 lines]
       > A **primitive** is a value set together with one realisation map taking an exact result back into it,
       > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+OK  111:820-822   [3 lines]
+      **F111-5. Rounding at `F = 0` is observable under any signature containing a rational literal, and
+      unobservable under one restricted to grid constants.** 33 of 36 pairs, with the three exceptions named.
+      Same predicate as F111-4. `p4_output.txt`.
 OK  112:934-937   [4 lines]
       > An axis is classified by **how many directions admit a total denotation-preserving map**. Two means the
       > axis is spurious and must not be a parameter, because what is wanted there is equality and no
@@ -212,15 +220,27 @@ OK  111:1140-1145   [5 lines]
       > derived, because a consumer of a value cannot recover it from the bits, so every consumer of that value
 OK  108:825   [1 lines]
       > must agree about it. An axis belongs here if there is **any** reachable chain on which moving it is
+OK  111:824-828   [5 lines]
+      **F111-6. Observability of the rounding mode is a joint fact with the signedness and the overflow
+      policy, not a per-axis one.** Truncate and floor stay unobservable at unsigned saturating and separate
+      at unsigned wrapping. `W in {2,3,4}, F = 0, signedness = unsigned, overflow policy in {sat,wrap},
+OK  111:468-470   [2 lines]
+      **So "is this axis degenerate" has no answer.** It is a joint fact about the axis, the signedness and
+      the overflow policy at least, and a per-axis verdict is the wrong unit. This is I13's shape appearing
+OK  111:470   [1 lines]
+      the overflow policy at least, and a per-axis verdict is the wrong unit. This is I13's shape appearing
+OK  111:468-470   [2 lines]
+      **So "is this axis degenerate" has no answer.** It is a joint fact about the axis, the signedness and
+      the overflow policy at least, and a per-axis verdict is the wrong unit. This is I13's shape appearing
+OK  112:944-946   [2 lines]
+      > the two spellings meet: nothing at a monomorphic site, one threaded parameter at a polymorphic one, and
+      > the program at a homogeneous container, where no repair exists.
 OK  108:825   [1 lines]
       > must agree about it. An axis belongs here if there is **any** reachable chain on which moving it is
 OK  111:334-336   [3 lines]
       Two primitives with the same value set are separated by some term exactly when their realisation maps
       differ somewhere a term can reach. Every term's argument to `R` is a rational. So **no signature can
       separate more than "R differs somewhere on Q"**, and a signature containing a constant injection over Q
-OK  112:944-946   [2 lines]
-      > the two spellings meet: nothing at a monomorphic site, one threaded parameter at a polymorphic one, and
-      > the program at a homogeneous container, where no repair exists.
 OK  112:904-906   [3 lines]
       > A **primitive** is a value set together with one realisation map taking an exact result back into it,
       > over a declared operation set. Its **identity** is that structure up to denotation-preserving
@@ -252,5 +272,5 @@ OK  108:820-830   [11 lines]
 UNRESOLVED  no_such_file_157.md:1
 OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
 
-citations checked: 73 plus 2 controls
+citations checked: 79 plus 2 controls
 failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

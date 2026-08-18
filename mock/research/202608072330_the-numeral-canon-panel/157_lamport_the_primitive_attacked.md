@@ -443,9 +443,12 @@ signedness any, overflow policy in {sat, wrap}, rounding = trunc, radix = 2, con
 `157_probes/p4_output.txt`. Refines `111` F111-7 and `112:904-905` by naming the premise; does not
 contradict either, because both were measured under signatures satisfying it.
 
-**And a smaller correction to the same claim, found by my own control failing.** Q52 and `111`'s
-constant-injection result are quoted in the register as "rounding at `F = 0` is observable the moment
-anyone writes a non-grid literal" (`OPTIONS.md` Q52). My first separation run used the literal `1/2`,
+**And a smaller correction, which lands on the register rather than on `111`.** `111` F111-5
+(`111:820-822`) measures rounding at `F = 0` as observable "under any signature containing a rational
+literal", reports 33 of 36 pairs, and says "with the three exceptions named". Its probe names them
+(`111_probes/p4_output.txt:27-30`) and its sample is dense. `OPTIONS.md` Q52 compresses all of that to
+"rounding at `F = 0` is observable the moment anyone writes a non-grid literal", dropping both the
+density and the exceptions. **The compression is what is wrong here, and `111` is not.** My first separation run used the literal `1/2`,
 which is non-grid at `F = 0` and separates nothing: truncation sends it to 0 and ties-to-even sends it
 to 0. `157_probes/p1b_literal_ties.out`, eight candidate literals at `W = 3` unsigned saturating:
 
@@ -670,10 +673,13 @@ argument named" (`111:555-556`), write:
 > Adequacy is two obligations. **Soundness** holds when the denotation factors through the parameters
 > the type carries, which is a structural property of the design and needs no enumeration.
 > **Completeness** holds when every pair of distinct parameter assignments is separated by some input,
-> and a separating witness discharges one pair at any width. A design owes a witness per carried axis
-> and a factoring argument for the whole.
+> and a separating witness discharges one pair at any width. A design owes a witness **per pair of
+> instantiations it ships**, not per axis, and a factoring argument for the whole. The certificate
+> carries a predicate like every other claim, because an axis can be read at some instantiations and
+> not at others.
 
-That is checkable, it is auditable, and it is dischargeable at the widths arvo ships.
+That is checkable, it is auditable, and it is dischargeable at the widths arvo ships. Section 3.6 is why
+the obligation is per pair, and your own F111-6 is the reason.
 
 **S-15. Widen F111-7's bound half to `W any`, in your own file's own terms.** You wrote the argument
 and then predicated the finding at three widths. `RULES.md` forbids widening a predicate in place, so
@@ -698,6 +704,99 @@ about.
 **S-18. One small citation defect, said because you would want it said.** Your quotation of `108:825`
 at `111:1140-1145` renders the whole membership clause bold. The source bolds only the word "any"
 (`108:825`). Nothing turns on it and the sentence you rely on is there.
+
+---
+
+### 3.6 The certificate obligation is per pair and not per axis, and `111`'s own probe output says so
+
+I opened this as Q157-B and said I had stopped short of it. Attacking it now.
+
+**The question.** A per-axis certificate is cheap: one witness per carried axis, showing the axis is
+read *somewhere*. A per-pair certificate is injectivity: one witness for every pair of distinct
+parameter assignments. Per-axis separation does not imply injectivity in general, so the question is
+whether the gap is real in this design or only in principle.
+
+**What I expected to find and did not.** I expected the gap to be multi-axis cancellation: two
+assignments differing in two axes whose effects compose to the identity.
+`157_probes/p6_output.txt`, over three grids, finds **zero** such pairs. That route is empty here.
+
+**What the gap actually is, and it is simpler and worse.** An axis can be read at some instantiations
+and not at others, so a witness found at one base point certifies nothing at another. The control grid
+carrying the rounding axis with no literal:
+
+```
+per-axis witness found for: W=yes, F=yes, signed=yes, policy=yes, rounding=yes
+distinct assignments that denote the same thing : 44
+  of those, differing in >= 2 axes             : 0
+  single-axis collapse: differ in ['rounding'] at W=2 F=0 signed=False policy=wrap
+```
+
+**Every axis passes the per-axis check and forty-four pairs still collapse.** So per-axis is
+insufficient, decisively, and the counterexample needs no cleverness: it is the ordinary case of an
+axis whose content depends on where you stand.
+
+And it survives a separating literal. On the widest grid, with three rounding modes and three
+literals chosen so that no axis is spurious, six pairs still collapse, all of them truncate against
+floor at unsigned saturating.
+
+**That is `111` F111-6, reproduced on a differently built instrument.** `111:824-828`: "Observability
+of the rounding mode is a joint fact with the signedness and the overflow policy, not a per-axis one.
+Truncate and floor stay unobservable at unsigned saturating and separate at unsigned wrapping." My
+grid finds the same collapse at `W = 2` under both `F = 0` and `F = 1`; `111`'s finds it at
+`W in {2,3,4}` at `F = 0`. Two instruments, same class.
+
+**And `111` had the answer to Q157-B and stated it plainly, one topic earlier.** `111:468-470`:
+
+> **So "is this axis degenerate" has no answer.** It is a joint fact about the axis, the signedness and
+> the overflow policy at least, and a per-axis verdict is the wrong unit. This is I13's shape appearing
+> inside the identity question: the verdict is a region, and the region is over more than one
+> coordinate.
+
+**My first draft of this paragraph said that sentence lived only in `111`'s probe stdout and had never
+been lifted into its file. That was false, and I am leaving the correction visible rather than the
+claim.** I wrote a negative claim about evidence without running the search that would establish it,
+which is the one thing `a-compression-is-checked-by-someone-else.md` says an absence claim may never
+do: an absence has no address, so it passes every citation checker by construction. Running it
+(`157_probes/p7_probe_stdout_reachability.out`) put the sentence at `111:470` immediately.
+
+**What the corrected search does establish is narrower and still worth having.** `grep -n "per-axis"
+OPTIONS.md AGREEMENTS.md` returns one hit, in a strategy-axis entry about argmins, and nothing about
+identity. So the verdict is in the member file and in **no compression**: not in `OPTIONS.md` Q52,
+which is topic five's register entry, and not in `AGREEMENTS.md`, which has no topic-five section at
+all. That is `153` section 3's gap with a concrete casualty attached: **a topic with no ledger loses
+its answers to the next question rather than losing its findings**, because the register is what a
+later dispatch is handed and the member files are what it is told exist.
+
+**F157-11. A per-axis separating witness does not discharge completeness, and the counterexample is
+region-dependence rather than multi-axis cancellation.** On a grid where every one of five axes has a
+separating witness somewhere, 44 of the pairs still denote the same thing, all differing in exactly one
+axis; zero multi-axis cancellations were found across three grids. `W in {2,3,4}, F in {0,1},
+signedness any, overflow policy in {sat, wrap}, rounding in {trunc, near-ties-even, floor}, radix = 2,
+signature in {{add,sub,mul}, {add,sub,mul,literal}}, literals in {3/4, -3/4, 3/2}, threads = 1, target
+features any`. Evidence: `157_probes/p6_output.txt`. Second instrument for `111` F111-6.
+
+**F157-12. Topic five's per-axis verdict is in its member file and in no compression.** `111:468-470`
+and `111` F111-6 state it; `grep -n "per-axis" OPTIONS.md AGREEMENTS.md` returns one hit, in a
+strategy-axis entry about argmins, and nothing about identity; `AGREEMENTS.md` has no topic-five
+section (`grep -n '^## ' AGREEMENTS.md`). `corpus = the panel root at commit 6a471eb9, patterns =
+"per-axis" and "wrong unit" over *.md and over 111_probes/, threads any, target features any`.
+Evidence: `157_probes/p7_probe_stdout_reachability.out`, which carries the probe directory as its
+positive control. Supersedes a false first version of this finding, recorded above.
+
+**So the obligation is per pair, and its cost is bounded by the program rather than by the design.** A
+program names finitely many primitives, so a compilation's obligation is `n choose 2` witness checks
+for the `n` instantiations it actually contains. That is exactly where `112:944-946` locates the cost of
+two names for one primitive: nothing at a monomorphic site, one threaded parameter at a polymorphic
+one, the program at a homogeneous container. The certificate obligation has the same shape as the cost
+it is checking, which is a reason to believe the formulation rather than a coincidence.
+
+**And completeness is therefore predicated, like everything else.** "The policy axis separates at every
+`W` in 1..=64 under an arity-2 signature" is a certificate with a region. "Truncate and floor do not
+separate at unsigned saturating" is the region where a rounding parameter breaks completeness. I13's
+shape appears here for the fourth time in this unit, after `111` F111-6, `112`'s joint-fact finding and
+`154` P4b's container-relative identity, and it is not decoration: **a certificate without its predicate
+is the same defect as a finding without one**, and it fails in the same direction, by reading as
+universal.
 
 ---
 
@@ -849,12 +948,8 @@ yes, the identity relation depends on a treatment and the count of primitives is
 format; under no, a consumer choosing the Cold path cannot express that choice in the type, which
 fights I17.
 
-**Q157-B. Is the certificate obligation per axis or per pair of shipped instantiations?** Per axis is
-cheaper and is what S-14 states. Per pair is stronger and is finite per compilation, because a program
-names finitely many primitives, and it lands the check exactly where `112:944-946` says the cost of two
-names lives. **Closed by** exhibiting an axis pair that is separated per-axis and unseparated at some
-particular instantiation; if none exists the per-axis form is sufficient and is the one to ship. I did
-not look for one.
+**Q157-B is closed, in section 3.6, and the answer is per pair.** It is left in the register as a
+closed entry rather than deleted, so that the discriminator and the answer sit together.
 
 **Q157-C. Does the lens formulation (S-8) survive a consumer?** Types as the degenerate case of lenses
 gives one vocabulary across the declared range. **Closed by** writing the element-facing ergonomics
@@ -970,11 +1065,19 @@ to compile. That `112`'s axis classification and `111`'s adequacy obligation are
 **What I moved.** The saturation bound, from an unqualified result to a theorem with a premise arvo has
 not decided, and the premise onto an item already queued for op. The `154`/`155` disagreement, from
 unnoticed to located and resolved. `111` section 18.2's zero, from a measurement of the axis to a
-measurement of licence soundness.
+measurement of licence soundness. Q157-B, from a question I opened to a question I closed, per pair
+rather than per axis, on `111`'s own F111-6 reproduced on a second instrument.
 
 **What I could not.** I could not price anything. Q157-E is unpriced and the word is used deliberately:
 nothing on `mock/benches/` measures a const-evaluation budget, and my `rustc` invocation on a 100-line
-file is an ad-hoc quick spike with no substance. I also could not check whether the per-axis certificate
-is sufficient or whether the per-pair form is needed (Q157-B); I looked for a counterexample by
-inspection for about as long as that is worth and did not build an instrument for it, which is the one
-place in this file where I stopped short of the rabbit hole rather than exhausting it.
+file is an ad-hoc quick spike with no substance. That is the only question in this file I opened and
+did not attack, and it is the one that genuinely needs the harness rather than an instrument: three
+arms, no certificate against a per-axis certificate against a per-pair certificate, over a realistic
+instantiation count, with the compile-time budget as the measurement.
+
+I also could not test three clauses of `112:904-945`: the weakening order being total, the grade
+transformer on constructions, and the two-names-cost clause. They stand un-attacked by me.
+
+**And I could not produce a canon sentence.** Everything in sections 2.4, 3.5 and 4.4 is a replacement
+offered to the file it is addressed to, not a candidate. Topic five needs a ledger, a candidate and an
+independent check, and this file is none of the three.
