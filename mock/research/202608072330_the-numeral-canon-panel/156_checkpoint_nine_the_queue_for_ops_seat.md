@@ -179,3 +179,42 @@ loss: the question had two independent instances against a bar of three, and a b
 neither is what it was short of.
 
 Nothing has moved to `mock/canon/`, which does not exist, per `87`.
+
+---
+
+## What the unit produced overnight, and two things in it reach outside the panel
+
+**The cold pair landed and did not agree**, which is the useful outcome. `155` derived an
+identity-plus-realisation split blind, then deferred to `112` section 9 and reported its own answer as
+a strictly coarser fragment that never found the refinement. `154` derived that a primitive is a
+const-saturated construction, that I15 **entails** saturation rather than preferring it (a `cmp w8, #63`
+appears in emitted assembly the instant a width is left runtime, which is the check I15 forbids in as
+many words), and that **at the packed end a primitive is a lens over a carrier rather than a type**, on
+a compile refusal showing the best standalone form of a packed 13-bit element costs 104 bits.
+
+`154` then **conceded**: it could not produce one account covering both ends of the declared range that
+passes the equivalence test, and it enumerated five options with a discriminator each rather than
+manufacturing one. `157` is dispatched at exactly that concession. It also withdrew three of its own
+findings after adding one operation to a signature destroyed them, which makes four instances across
+four authors of one failure mode: a criterion tested against a signature too thin to reach the case it
+fails on.
+
+**A register entry was false and is corrected.** Q52 retired the claim that `wide-rung-shared` takes
+107s, on three measurements of 4.05s, 4.25s and under 5s. All three were taken at `--release`; `cargo
+test` defaults to debug. Measured back to back on one host: **109.08s debug against 3.78s release, a
+factor of 29.** The figure was right, the two numbers were never in conflict, and a true finding was
+dropped rather than carried as contested, which is the worse of the two available errors because it
+looks like the discipline working. A dimension that moves a result by 29x went unstated, which is I13's
+own notation not being applied to the panel's own bookkeeping. `RULES.md` and
+`bench-in-bench-harness-never-sketches.md` both gained the general form.
+
+**A soundness bug in the bench support code, and it is arvo's to fix rather than op's to decide.**
+Workers load `vals` and `out` as raw pointers from shared fields at
+`mock/benches/variants/bitpack-write-contend-shared/src/pool.rs:110-111`, so two concurrent
+coordinators can write through a pointer to a per-trial buffer whose trial has already returned. It is
+reachable from `cargo test` and it defeats the very control that isolates the hazard the crate exists
+to measure. Found by `154`; not yet fixed, and named here because six files have inherited a gate count
+through that crate.
+
+**The bench harness audit op called for is running upstream in mockspace**, with both cold-pair agents
+on it because they met the defects first hand. That arc is `.shared/state/mockspace-bench-round.md`.
