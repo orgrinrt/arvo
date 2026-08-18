@@ -288,3 +288,242 @@ Five such geometries, with the control (a geometry where both fit must agree, an
 
 `holds for: container = 64 bits, I = 3 including sign, F in {8,16,20,24,26}, n in {2^10, 2^14, 2^18},
 operands non-cancelling, rounding = floor, signedness = signed, threads = 1`
+
+---
+
+## 4. The three obligations, each with the evidence that it does not reduce to the steps
+
+### 4.1 The endpoint contract does not compose, at any intermediate width short of exact
+
+`167_probes/doubleround/`. Take the strongest per-operation accuracy contract there is: every operation
+returns the correctly rounded result, nearest, ties to even. A Q(.F) product is exact at 2F fraction bits.
+A design that stores the intermediate at `M` fraction bits rounds twice; one that keeps the exact product
+rounds once. Exhaustive over every operand pair:
+
+| F | M = F+1 | F+2 | F+3 | ... | 2F-1 | 2F |
+|---|---|---|---|---|---|---|
+| 6 | 832 | 480 | 224 | 96 | 32 | **0** |
+| 8 | 15360 | 8064 | 3968 | 1920, 896, 384 | 128 | **0** |
+| 10 | 257024 | 130560 | 65024 | 32256 ... 1536 | 512 | **0** |
+
+**There is no `M` strictly between `F` and `2F` with zero disagreements, at any `F` tested.** Each extra
+intermediate bit roughly halves the count and it reaches zero only at exactness.
+
+The floating-point literature has a threshold theorem here: double rounding is innocuous once the
+intermediate carries enough bits, and the usual figure is `2p + 2`. **The fixed-point analogue has no
+threshold below exactness**, and it is worth being explicit that this is not the float theorem failing.
+The float theorem quantifies over values that are *sums or products of two p-bit operands*, which is a
+constrained set. Here the operand set is already the full one and the exact product already needs exactly
+2F bits, so the theorem's slack has nowhere to live.
+
+**What this settles.** A chain-level accuracy guarantee cannot be bought by strengthening the
+per-operation guarantee. It is bought only by not rounding the intermediate at all, which means either an
+exact intermediate or a carried residual, and both of those are decisions about the region rather than
+about the operation.
+
+The `M = F` column is zero because the first rounding is then the identity, which makes it a third
+control rather than a finding. Both declared controls (agreement at `M = 2F`, disagreement somewhere
+inside) are clean at every `F`.
+
+`holds for: F in {6, 8, 10}, M in [F, 2F], rounding = nearest-ties-to-even, operation = fixed-point
+multiply, unsigned, threads = 1`
+
+### 4.2 The association choice exists only above the operation, and its licence is per operator
+
+`167_probes/assoc/`. Derived independently and exhaustively over the whole domain at `W = 4, 6, 8`.
+
+**Associative at every width tested, zero disagreements:** wrapping add, saturating add unsigned,
+wrapping mul, saturating mul unsigned, min, max, bitwise or, bitwise xor.
+
+**Not associative:** saturating sub unsigned (827,484 ppm at W = 8), **fixed multiply with truncation**
+(125,033 ppm), **fixed multiply with round-to-nearest** (124,744 ppm), average with floor (984,451 ppm).
+
+Both controls clean: eight against four, so the column carries information; and a deliberately broken
+reference comparing the left-associated form to itself reports zero disagreements across all twelve
+operators, which is what shows the real comparison compares two distinct expressions.
+
+**Two things in that table are worth stating separately.**
+
+**Fixed multiply is not associative and rounding does not rescue it.** At W = 4 the rounding arm is
+slightly worse (958 against 878) and at W = 8 slightly better (2,092,854 against 2,097,706), the same
+order either way. So per-operation accuracy and chain-level algebraic licence are **independent axes**,
+and spending on the first buys nothing on the second. A design that reasons "we round better, therefore
+our chains are better behaved" is reasoning about the wrong axis.
+
+**Saturating multiply is associative**, which I did not expect and which matters because it means the
+non-associativity of saturating subtraction is not a general property of clamping. The clamp composes on
+one side of the operator set and not the other, so the licence has to be derived per operator rather than
+inferred from a family.
+
+`holds for: W in {4, 6, 8}, unsigned, F = W/2 for the fixed-multiply rows, arity 3, threads = 1, the
+twelve operators listed`
+
+### 4.3 The budget is global, and the forward rule over-provisions by half
+
+`167_probes/widths/`. A per-operation typing rule assigns an intermediate the width its operands imply,
+because at the moment it is typed nothing downstream has been seen. A region-level rule may also
+propagate the consumer's demand backward and take the smaller.
+
+First, whether the backward propagation is even sound, derived rather than assumed. `167_probes/backward/`
+sweeps a three-step chain exhaustively over 16,777,216 triples per operator, working width 12, consumer
+keeping the low 6 bits:
+
+**Licensed, zero disagreements:** wrapping add, wrapping sub, wrapping mul, bitwise and.
+**Not licensed:** right shift then add (14,680,064), division (8,128), **saturating add at the working
+width (2,476,720)**, min (10,812,862).
+
+The saturating row is the one a strategy axis has to care about. A chain of wrapping additions may be
+evaluated entirely at the consumer's width; the same chain of saturating additions may not, because
+saturation is not a congruence modulo 2^K and the clamp depends on bits the narrowed arm has thrown away.
+**The chain-level rewrite available to one strategy is unavailable to another over the identical
+expression**, which is I9 as an arithmetic fact rather than as a slogan.
+
+Then the count, using exactly that partition:
+
+| chain | forward bits | forward and backward | saved |
+|---|---|---|---|
+| MAC x4, 16-bit inputs, 16-bit sink | 228 | 112 | 116 (50.9%) |
+| the same chain, consumer keeps everything | 228 | 228 | **0** |
+| Horner degree 4, 12-bit, 12-bit sink | 352 | 96 | 256 (72.7%) |
+| Horner degree 4 with one right shift in the middle | 365 | 158 | 207 (56.7%) |
+| all-blocking chain, div and min, 8-bit sink | 72 | 56 | 16 (22.2%) |
+
+**This is a bit count and not a cost.** No timing was taken and none is claimed; what a saved bit is worth
+in cycles or in bytes is **unpriced** by me.
+
+Two sub-findings the table makes visible and which I did not anticipate when I built it. Inserting a
+single right shift into the Horner chain drops the saving from 72.7% to 56.7%: **one non-congruence
+operator anywhere truncates the region the backward rule reaches**, so the licence is a property of the
+whole path rather than of the sink. And in the all-blocking chain the entire 16-bit saving is the sink
+node alone, with nothing propagating: the sink always narrows, and what the operator partition governs is
+whether anything above it does.
+
+Both controls clean: the chain whose consumer keeps everything saves exactly zero, and the set contains
+both a chain that saves nothing and chains that save.
+
+`holds for: the five chain shapes and width rules stated in the source, threads = 1`
+
+---
+
+## 5. "Chain" is at least three things, and they have different binding times
+
+The word covers three shapes whose static content is not the same, and treating them as one is how a
+canon sentence ends up true of one and false of another.
+
+**(a) The bounded expression.** `d = (a * b + c) / e`. The operator DAG, its depth, every width and every
+strategy are compile-time objects. Nothing about its structure is deferred. Every fact in section 4 is a
+const expression over it, so every guarantee in section 4 is const-decidable and I15 is satisfied without
+argument.
+
+**(b) The fold.** One operator, one accumulator, `n` steps. The per-step contribution is const; the
+accumulated bound is a function of `n`, which is const only if `n` is. What is const regardless of `n` is
+the **rate**: whether the error grows linearly, as a square root, logarithmically, or not at all. Probe A
+is exactly a measurement of that rate for four accumulation shapes, and the rate is the thing a design can
+promise when the count is not known.
+
+**(c) The iterated map.** `x_{k+1} = f(x_k)`, trip count possibly data-dependent. Neither the count nor
+the accumulated bound is const. What can still be const is an **invariant**: that `f` is a contraction on
+the declared range, that the error does not grow, that a value is a fixed point. That is a different
+species of guarantee and it is the only one available here.
+
+**So the honest general answer to "can the design hold accuracy across a chain" is a predicate rather than
+a yes or a no.** A bound is holdable where the structure and the count are compile-time facts. Where the
+count is not, a **rate** is holdable. Where neither is, an **invariant** may be, and a bound is not. Those
+three are different promises and the canon owes different words for each.
+
+**The uncomfortable corollary, and it is a fork rather than a finding.** For shape (b) with runtime `n`,
+a statement of the form "this chain's error is below E" is a claim about a value, and I15 forbids the
+runtime check that would discharge it: "Never any runtime checks, ever. We catch invalids on compile time."
+So either the count enters the typestate and shape (b) collapses into shape (a), or the guarantee is
+stated as a rate rather than as a bound, or the obligation is pushed onto the consumer as a precondition
+the type records and does not verify. I do not settle which; it is Option Q-C4 in section 8.
+
+---
+
+## 6. Where the guarantee has to live, and why this is a locus finding
+
+Everything in sections 3 and 4 is a fact about a region. Not one of them can be attached to a value,
+because a value does not know what will be done to it next, and probes B and C are the demonstration that
+what will be done to it next changes the right answer.
+
+That gives a structural test, which is worth more than any of the individual measurements:
+
+> Take any candidate carrier for a guarantee. Ask whether two chains that agree on everything up to a
+> given point, and differ only in what happens after it, would be assigned the same lowering at that
+> point. If yes, the carrier is forward-only, and every backward fact in section 4.3 is invisible to it.
+
+A strategy marker on a value's type fails that test, by construction: it is fixed when the value is
+constructed and it cannot depend on the value's consumers. A width on a value's type fails it. An error
+bound on a value's type fails it, and this is the subtle one, because such a bound looks like exactly the
+right mechanism: it is a compile-time refinement, it composes forward correctly, and it is genuinely
+useful. It is still forward-only, so it can express "how far off is this" and cannot express "how many of
+these bits does anyone need".
+
+**Three carriers pass the test, and they are the three shapes worth having in front of op.** All three
+satisfy I14 and I15 without strain, since all three are const and all three monomorphise away.
+
+**A named accumulator.** The consumer declares the intermediate's type once and the operations write into
+it. Cheapest by a distance, entirely idiomatic, and it is exactly the `widened` arm in probe A. It carries
+the budget and nothing else: the association choice and the demanded-bits fact are still invisible, and
+the consumer does the sizing. Ships today with no new machinery.
+
+**A combinator arvo owns.** The consumer hands arvo the operator and the data, and arvo owns the
+accumulator, the association, and the residual. This is exactly I11's "contracts for things that compose
+to bigger units than just numerals alone", it is the shape the algo crates already have, and it carries
+everything in section 4 for the fold shape (b) and nothing for the expression shape (a).
+
+**A staged expression.** The operators build a compile-time description of the region rather than a value,
+and the description lowers at the point of observation, where both what produced each intermediate and
+what consumes it are in view. This is the only one of the three that carries the backward facts, because
+it is the only one where the sink is what triggers the lowering. It is also the one where I13's non-per-
+operation arms have a site: an arm becomes a const-predicated rewrite of the description, which is exactly
+the phrasing op used.
+
+### 6.1 The cost of the third, stated honestly, because it collides with an intent
+
+Under a staged expression, `let t = a * b;` binds a description and not a value. **That is a direct cost
+against I3**, which op sharpened on 2026-08-14 to be about ergonomics rather than about where arithmetic
+boundaries land: "Neither, it's ergonomics." A native Rust primitive's `let` binds a value, and a reader
+who knows Rust's primitives is caught out by one that does not.
+
+So there is a real tension between I7 and I3, and locating it precisely is worth more than resolving it.
+I do not resolve it. Three things narrow it, and I state them because a tension that is smaller than it
+looks should not be priced as though it were large.
+
+The classic failure of this technique in C++ is a description outliving the temporaries it refers to, and
+**Rust's borrow checker rejects that outright**, so the historically worst cost does not transfer.
+
+The collapse is one annotation: `let t: Q<..> = a * b;` materialises, so a consumer who wants a value
+says so, and the surprising case is the unannotated binding rather than every binding.
+
+And the tension is not total. The named accumulator and the combinator cost nothing against I3 at all;
+they simply carry less. So the fork is not "ergonomics or accuracy", it is a choice among three carriers
+with different coverage, and the third is the only one that reaches the backward facts.
+
+I have not measured the ergonomic cost and I do not know how to. It is a matter of taste about a surface,
+which is op's rather than mine.
+
+### 6.2 What LLVM does and does not recover, which decides whether any of this is needed
+
+The strongest objection to this whole file is that the backend already does it: LLVM has a demanded-bits
+analysis that narrows, and a reassociation pass that reassociates, so the region-level facts are
+recovered below arvo and arvo need not represent them.
+
+That objection is partly right and the part it is wrong about is the part that matters.
+
+A backend reassociates where it can prove the operator associative in its own model. `add nsw` it can.
+**A saturating add lowered to a compare and a select it cannot**, because the proof does not exist at that
+level: the pass would have to rediscover a property of the operator over its whole domain from the
+lowered form. Probe E establishes that unsigned saturating add is associative exhaustively at 4, 6 and 8
+bits. **That proof exists in the typestate and does not survive lowering.** Supplying it is the entire
+content of the work, and it is the shape this workspace calls microkernelling.
+
+The same holds for demanded bits: a backend narrows what it can see, and what it can see stops at the
+first operation whose lowered form it cannot prove is a congruence. Probe C's Horner row with one right
+shift in it measures exactly that boundary from the other side.
+
+So the answer is not "the backend does it" and not "the backend does nothing". It is that **the backend
+recovers the region-level facts precisely where the operator's law is visible in the lowered form, and
+arvo's operators are chosen so that theirs are not.** That is not a defect in arvo's operators. It is what
+makes the typestate worth having, and it is the reason a region has to be represented above the lowering
+rather than left to be rediscovered below it.
