@@ -426,8 +426,37 @@ has a specific route to confirm or refute rather than an open question.
 and emphasis survive it. `170` 15 added case, since a quotation lifted mid-sentence legitimately
 lowercases its leading capital. `167`'s own checker normalised whitespace only, so both bite me.
 
-`171_probes/citecheck/` runs the three-layer normalisation over **both** `167` and `171`, and reports
-what each layer moves.
+`171_probes/citecheck/` runs the three-layer normalisation over this file's 22 citations, three of
+which target `167` itself, and reports which layer was the first to find each. It does not re-check
+`167`'s own 27 citations, which `167` section R14 checked at L1 only; whether any of those needed L2 or
+L3 is untested and is named in section 10 rather than claimed either way.
+
+**Result: 22 citations, 0 not found, 2 of 2 negative controls caught.** The controls are a citation to
+a file that does not exist and a citation to a real file with text that is not there; both caught.
+
+| layer | citations it was the first to find |
+|---|---|
+| raw | 15 |
+| **L1** whitespace | **7** |
+| L2 markup | 0 |
+| L3 case | 0 |
+
+**And the L2 result is not the one I expected, which makes it worth reporting rather than passing
+over.** `169` found L2 mattering on 5 of its 12 quotations and `170` on 4 of its 13. **Mine is 0 of
+22**, and the same run carries the counterfactual: **8 of my 22 quotations carry markup, and L2 would
+rescue every one of those 8 had I quoted the content rather than the bytes.** I copy source text
+including its asterisks and backticks, so the raw match already succeeds.
+
+**So exposure to the markup defect is a function of quoting style, not of the corpus.** That is an
+argument for keeping the layer rather than concluding it is unneeded from a zero: an author who retypes
+a sentence rather than copying it is exactly the author most likely to have introduced a genuine
+misquotation, and that is the author L2 protects. **A layer that moves nothing for a careful copier is
+the layer that catches the careless one**, and a checker calibrated on its own author's habits will
+report the layer as dead right up until the moment it is needed.
+
+One path in my own checker was wrong on the first run and it named the file it could not find, which is
+why it was a thirty-second fix rather than a silent pass: the workspace rule sits one directory above
+the arvo clone and I had written two.
 
 ---
 
@@ -456,33 +485,6 @@ of three files and which the density figures corroborate rather than establish.
 **Every predicate above says `threads = 1` or `threads any` explicitly**, and none of them names a
 strategy dimension, so under the ratified notation **nothing in this file may be read as a statement
 about any named strategy.**
-
-**Result: 22 citations, 0 not found, 2 of 2 negative controls caught.** The controls are a citation to
-a file that does not exist and a citation to a real file with text that is not there; both caught.
-
-| layer | citations it was the first to find |
-|---|---|
-| raw | 15 |
-| **L1** whitespace | **7** |
-| L2 markup | 0 |
-| L3 case | 0 |
-
-**And the L2 result is not the one I expected, which makes it worth reporting rather than passing
-over.** `169` found L2 mattering on 5 of its 12 quotations and `170` on 4 of its 13. **Mine is 0 of
-22**, and the same run carries the counterfactual: **8 of my 22 quotations carry markup, and L2 would
-rescue every one of those 8 had I quoted the content rather than the bytes.** I copy source text
-including its asterisks and backticks, so the raw match already succeeds.
-
-**So exposure to the markup defect is a function of quoting style, not of the corpus.** That is an
-argument for keeping the layer rather than concluding it is unneeded from a zero: an author who retypes
-a sentence rather than copying it is exactly the author most likely to have introduced a genuine
-misquotation, and that is the author L2 protects. **A layer that moves nothing for a careful copier is
-the layer that catches the careless one**, and a checker calibrated on its own author's habits will
-report the layer as dead right up until the moment it is needed.
-
-One path in my own checker was wrong on the first run and it named the file it could not find, which is
-why it was a thirty-second fix rather than a silent pass: the workspace rule sits one directory above
-the arvo clone and I had written two.
 
 ---
 
