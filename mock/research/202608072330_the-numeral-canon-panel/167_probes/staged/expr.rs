@@ -24,7 +24,6 @@
 //        no observation. If it needed the sink, the description would not be a
 //        description.
 
-
 // ---------------------------------------------------------------------------
 // The description. Every node is a compile-time type; the values it closes over
 // are the only run-time part.
@@ -49,7 +48,11 @@ pub trait Expr: Copy {
 }
 
 const fn mask(w: u32) -> i64 {
-    if w >= 63 { i64::MAX } else { (1i64 << w) - 1 }
+    if w >= 63 {
+        i64::MAX
+    } else {
+        (1i64 << w) - 1
+    }
 }
 
 #[derive(Copy, Clone)]
@@ -68,7 +71,11 @@ impl<const W: u32> Expr for Lit<W> {
 pub struct Add<A, B>(pub A, pub B);
 
 impl<A: Expr, B: Expr> Expr for Add<A, B> {
-    const FWD_W: u32 = if A::FWD_W > B::FWD_W { A::FWD_W + 1 } else { B::FWD_W + 1 };
+    const FWD_W: u32 = if A::FWD_W > B::FWD_W {
+        A::FWD_W + 1
+    } else {
+        B::FWD_W + 1
+    };
     const PASSES_DEMAND: bool = true;
     fn eval<const D: u32>(self) -> i64 {
         let w = if D < Self::FWD_W { D } else { Self::FWD_W };
@@ -108,4 +115,3 @@ impl<A: Expr, const K: u32> Expr for Shr<A, K> {
 pub fn observe<const K: u32, E: Expr>(e: E) -> i64 {
     e.eval::<K>()
 }
-

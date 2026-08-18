@@ -1187,3 +1187,141 @@ given it.
 
 **And one correction against myself**, in R0: I claimed a place was unchecked without checking it, and
 `OPTIONS.md` Q42 had the measurement, the mechanism and a better noise bound than I derived.
+
+---
+
+## R12. `60_stam_the_chain_derived_cold.md` exists, it was not in my reading list, and it corrects me
+
+Found by running the novelty grep R11 claims to rest on, which is the only reason this section exists
+and is the argument for running such a grep rather than asserting one. **The panel already has a full
+cold derivation on this exact question**, and its title is `the chain derived cold`.
+
+**The reading list I was given did not contain it.** `166` opens this unit on the ground that the panel
+has never had a unit on chains, which is true, and the curated list that followed named `109`, `110`,
+`112`, `164`, `113`, two `AGREEMENTS.md` sections and `OPTIONS.md`. A grep of the panel root for the
+word "chain" in a filename costs one command and returns `60`. I report that plainly because the same
+shape produced `RULES.md`'s eighteen-file incident: the brief named where to look and the place that
+mattered was not on the list.
+
+### What `60` already had, so my file is a second instance rather than a finding
+
+**My three obligations are a subset of `60`'s five.** Its section 3, "What a chain needs that a single op
+does not", lists an intermediate format, a schedule, an association and order statement, a count bound,
+and an error bound composed per adaptation point. My endpoint contract, association and budget map onto
+three of those. **`60` is ahead on the other two**, and one of them is better than anything in my file:
+
+> the drift of a chain is the sum over its adaptation points of the local adaptation error, each weighted
+> by the sensitivity of the remaining suffix of the computation to a perturbation at that point... **the
+> schedule is also the index set of the error analysis. Fewer adaptation points is not merely cheaper
+> rounding; it is a structurally shorter error sum.**
+
+That is the explanation of my probe A. My four arms differ in **how many** adaptation points they have
+rather than in the quality of each, and `60` had the structure while I have the measurement. I would
+rather this had gone the other way round and it did not.
+
+**`60`'s grade taxonomy already distinguishes what my probe D measures**, as grade a (composite correct
+rounding, one adaptation on the true composite) against grade b (stepwise correct rounding, the only
+compositional grade). It measured the gap too: per-step round-to-nearest wrong on 15,628 of 46,656 and
+per-step truncation on 42,892. So my probe D's headline is a second instance.
+
+**`60` section 6 has the order-dependence result and it exposes a hole in my probe F's predicate.** Its
+probe B shows a per-step saturating fold of `{30000, 10000, -25000}` in `i16` giving 7767 or 15000 by
+order, while the wrapping fold gives 15000 in every order because arithmetic mod 2^n is a ring
+homomorphism. **My probe F measured zero difference between sequential and tree order because its adds
+were exact**: no accumulator overflow occurs at the sizes swept, so no saturation is reachable, so no
+order-dependence can arise from that side. The predicate I wrote names no overflow-policy dimension at
+all, which under this panel's notation already means the finding holds nowhere an overflow policy exists,
+so it is not false. **It reads as an oversight rather than as a claim, and it was one.** Stated here
+rather than by editing section 12, per the rule that a predicate is not widened or narrowed in place: the
+region probe F actually establishes is one where **no adaptation on the additive side occurs at all**.
+
+### The concession: `60`'s window dominates my carried residual for product chains
+
+`60` section 5 answers the multiplicative growth with the **window**: a bounded subterm whose exact
+result width fits the container, evaluated entirely in the width algebra and adapted once at its exit,
+so a chain factors into windows and pays `ceil(k/w)` adaptations rather than `k`.
+
+**That strictly dominates my probe G's carried residual for products, and I concede it outright.** A
+window of `w` factors is **exact** for those `w`. My carried form with `c` limbs is exact to `k = c + 1`
+and approximate after, at comparable state. There is no region where the carried form beats a window of
+the same width, and probe G's own table shows why: each limb buys a constant factor while the window
+buys exactness up to its capacity.
+
+**What survives from probe A, and it is smaller than I claimed.** For the **additive** window, which is
+`60`'s own construction for a dot product (products exact at 2F, sum exact with log-k headroom, one
+narrow), the carried residual reaches the identical answer with the accumulator held at scale `F` plus a
+separate `F`-bit carry, rather than at scale `2F`. That is a constant-factor saving on state inside
+`60`'s window rather than a rival to it, and probe A2's five geometries at a 64-bit container are where
+that saving decides representability. **I withdraw the framing in R4 that presents it as an answer to
+`109`'s cost** and restate it as a refinement of `60`'s window.
+
+### What I hold, and what I add to a direction `60` opened
+
+**`60`'s D-C is my third carrier, and it names the costs I name.** Its words: "Expression templates: the
+term itself is a type, the schedule chosen at evaluation. Everything monomorphizes, no alloc or dyn
+needed". **That last clause is an assertion and my probe H is the check.** Gate-free, `#![no_std]`, zero
+`dyn`, zero `TypeId`, 24 bytes for a three-leaf description, with a control showing that a lowering which
+wrongly passes the demand gives 7 against the correct 103. So D-C is established as doable rather than
+believed to be, which is the bar `RULES.md` sets before an intent may be written down.
+
+**And I contest one clause of `60`'s D-C discriminator.** It says D-C is "distinguishable from D-B by
+asking whether any consumer needs to abstract over *schedules* at compile time rather than pick one per
+call site; if none does, **D-C is D-B with ceremony**."
+
+**There is a second reason, and it is not about schedules.** D-B places the width algebra, the named
+adaptation and the exactness predicate in the format concept, all of which are computed **forward** from
+operand formats. By my section 6 structural test, none of them can see the consumer. Probes B and C
+measure what that costs: the backward demand licenses evaluating a whole congruence region at the
+consumer's width, worth 50.9% of the intermediate bits on a four-term multiply-accumulate and 72.7% on a
+Horner chain, and the licence is refused for saturation, division, right shift and min. **So even where
+no consumer abstracts over a schedule, D-C carries a fact D-B cannot express**, and "D-C is D-B with
+ceremony" holds only if the backward facts are worth nothing. They are not priced, so I do not claim they
+are worth the ceremony; I claim the conditional as written is missing a term.
+
+**And my definition still adds something to `60`'s.** Its section 2 says the schedule is "the subset of
+edges at which an adaptation is applied" and does not say what constrains that subset. The observation
+boundary is the constraint: an adaptation is **forced** on an edge whose value is observed and **free**
+everywhere else. `60`'s schedule is the design's choice; the unobserved region is the space it may choose
+in.
+
+### R11 revised
+
+R11 claimed three findings new to the live panel. Against `60` the honest list is shorter and I restate
+it rather than editing R11, so the order in which I learned things stays visible.
+
+**Stands.** The intermediate-width sweep in probe D, showing no threshold below `2F`, which sharpens
+`60`'s grade taxonomy by saying there is nothing between grade b and grade a worth buying. The
+backward-narrowing licence and its bit count, probes B and C, which the grep finds nowhere. The
+doability check on D-C, probe H. The correlation finding in section 3.2, that worst-case accumulator
+width is a fact about cancellation between terms and not about length, which `60`'s `ceil(log2 k)` states
+as the worst case without separating the realised one.
+
+**Narrowed.** Probe F's zero, which needs "no adaptation on the additive side" in its region and is
+consistent with `60` rather than in tension with it. Its relative-precision half stands unchanged and its
+consequence for Q41 stands.
+
+**Withdrawn.** Probe G's carried residual as an answer for product chains, conceded to `60`'s window.
+
+**Second instance rather than finding.** My three obligations, against `60`'s five. Probe D's headline,
+against `60`'s grade a versus grade b. Probe E's saturating-add associativity row, against `60`'s
+ring-homomorphism argument for wrapping and Q12's measured table, and already discounted in R1 for the
+`satfold` contamination.
+
+That is what a cold derivation is for. Four of my results survive contact with a file I had not read, two
+are narrowed, one is withdrawn, and three are demoted to corroboration. The corroboration is worth having
+precisely because it was derived blind, and the withdrawal is worth more than the file would have been
+without the grep.
+
+## R13. Coverage of phase two, restated after R12
+
+**Additionally read in full:** `60` sections 1 through 10 and its phase-two header. **Skimmed:** the
+outline of `43_rompf_what_a_composition_is.md`, not its body, so nothing here rests on it and it is a
+named gap given that it is a prior dispatch of this persona on an adjacent question.
+
+**Still not read:** every other numbered file, `DROPLIST.md`, `HANDLES.md`, `PRIOR_CALLS.md`,
+`PERSONA_CALLS.md`, `164`, `161`, `165`, and the whole of `63`, `74`, `90`, `92` and `106`.
+
+**The novelty grep is committed** at `167_probes/novelty/novelty.out` with the command shape that
+produced it. It is a grep over the live panel root excluding my own files, it searches fifteen patterns,
+and it is the instrument that found `60`. It bounds R12's claims and nothing more: a pattern absent from
+it is absent from the filenames and bodies it searched, not from the panel.
