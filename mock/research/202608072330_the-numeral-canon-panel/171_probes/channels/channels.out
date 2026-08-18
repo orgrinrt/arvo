@@ -1,0 +1,59 @@
+########## RELEASE
+== Probe P1, build profile = release ==
+
+C-C  inputs where the true result fits in i32: 1666128
+C-C  of those, inputs where the narrow intermediate overflows: 83084
+C-C  final-value disagreements between wide and narrow: 0   (must be 0)
+C-C  ok: the pair is extensionally equal on this domain AND the overflow case is exercised
+
+-- channels requiring a BINDING to the intermediate --
+size_of_val(intermediate):      wide 8   narrow 4   distinguishes: true
+Debug of intermediate:          wide 2900000000   narrow -1394967296   distinguishes: true
+align_of_val(intermediate):     wide 8   narrow 4   distinguishes: true
+C-A  a channel given a binding distinguishes: true   (must be true, else vacuous)
+
+-- C-B, the identical twin --
+C-B  final-value disagreements: 0   (must be 0)
+C-B  size_of_val differs: false   (must be false)
+
+-- the hunt: a channel with NO binding to any intermediate --
+input (a, b, c) = (1500000000, 1400000000, 2000000000); a + b overflows i32: true
+true result 900000000 fits in i32: true
+wide(a,b,c)           -> Ok(900000000)
+narrow_checked(a,b,c) -> Ok(900000000)
+
+BINDING-FREE CHANNEL FOUND AT profile = release: false
+  the caller binds only the FINAL value; no name exists for either intermediate,
+  and the two implementations are still told apart by whether the program panics.
+
+########## DEBUG
+== Probe P1, build profile = debug ==
+
+C-C  inputs where the true result fits in i32: 1666128
+C-C  of those, inputs where the narrow intermediate overflows: 83084
+C-C  final-value disagreements between wide and narrow: 0   (must be 0)
+C-C  ok: the pair is extensionally equal on this domain AND the overflow case is exercised
+
+-- channels requiring a BINDING to the intermediate --
+size_of_val(intermediate):      wide 8   narrow 4   distinguishes: true
+Debug of intermediate:          wide 2900000000   narrow -1394967296   distinguishes: true
+align_of_val(intermediate):     wide 8   narrow 4   distinguishes: true
+C-A  a channel given a binding distinguishes: true   (must be true, else vacuous)
+
+-- C-B, the identical twin --
+C-B  final-value disagreements: 0   (must be 0)
+C-B  size_of_val differs: false   (must be false)
+
+-- the hunt: a channel with NO binding to any intermediate --
+input (a, b, c) = (1500000000, 1400000000, 2000000000); a + b overflows i32: true
+true result 900000000 fits in i32: true
+
+thread 'main' (54458029) panicked at channels.rs:54:18:
+attempt to add with overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+wide(a,b,c)           -> Ok(900000000)
+narrow_checked(a,b,c) -> Err("PANIC")
+
+BINDING-FREE CHANNEL FOUND AT profile = debug: true
+  the caller binds only the FINAL value; no name exists for either intermediate,
+  and the two implementations are still told apart by whether the program panics.

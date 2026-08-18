@@ -1,0 +1,29 @@
+--- each file's own defining sentence, located after normalisation ---
+    60: located = True   (found in raw text without normalising = False)
+        "A chain is a composition of exact operations together with a schedule of adaptation points"
+   167: located = True   (found in raw text without normalising = False)
+        "the unobserved region: a maximal stretch of a computation in which no intermediate is named"
+   168: located = True   (found in raw text without normalising = True)
+        "A chain is a maximal run of operations whose intermediates are not observable"
+
+--- does each defining sentence itself use the observation vocabulary? ---
+    60: False
+   167: True
+   168: True
+
+--- observation vocabulary density across each whole file ---
+    60:   2 occurrences in   7299 words  (0.27 per 1000)
+   167:  22 occurrences in  14690 words  (1.50 per 1000)
+   168:  26 occurrences in  16986 words  (1.53 per 1000)
+
+--- C-J: 60 states a definition, of a different shape ---
+  'schedule of adaptation points' in 60: 2 occurrences
+  'schedule of adaptation points' in 167: 2
+  'schedule of adaptation points' in 168: 2
+
+C-I  167 and 168 defining sentences match the pattern: True   (must be True)
+C-J  60 states a definition of another shape: True   (must be True)
+C-K  normalisation was load-bearing on 2 of 3 sentences: True   (must be True)
+
+VERDICT
+  60's defining sentence is observation-bounded: False
