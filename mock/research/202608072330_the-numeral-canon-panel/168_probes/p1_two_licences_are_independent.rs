@@ -36,16 +36,30 @@
 // ---------------------------------------------------------------------------
 
 const fn wrap(v: u128, w: u32) -> u128 {
-    if w >= 128 { v } else { v & ((1u128 << w) - 1) }
+    if w >= 128 {
+        v
+    } else {
+        v & ((1u128 << w) - 1)
+    }
 }
 const fn clamp(v: u128, w: u32) -> u128 {
-    let l = if w >= 128 { u128::MAX } else { (1u128 << w) - 1 };
-    if v > l { l } else { v }
+    let l = if w >= 128 {
+        u128::MAX
+    } else {
+        (1u128 << w) - 1
+    };
+    if v > l {
+        l
+    } else {
+        v
+    }
 }
 /// Round-half-up to a grid of `2^g`, then keep the value. This is what a
 /// narrowing from F+g fraction bits to F fraction bits does.
 const fn round_grid(v: u128, g: u32) -> u128 {
-    if g == 0 { return v; }
+    if g == 0 {
+        return v;
+    }
     let step = 1u128 << g;
     let half = step >> 1;
     ((v + half) / step) * step
@@ -56,7 +70,12 @@ const fn round_grid(v: u128, g: u32) -> u128 {
 // ---------------------------------------------------------------------------
 
 #[derive(Clone, Copy, Debug)]
-enum Step { AddK(u128), WSubK(u128), SatSubK(u128), Mul3 }
+enum Step {
+    AddK(u128),
+    WSubK(u128),
+    SatSubK(u128),
+    Mul3,
+}
 
 fn apply(s: Step, v: u128) -> u128 {
     match s {
@@ -71,18 +90,24 @@ fn run<F: Fn(u128) -> u128>(x: u128, steps: &[Step], pi: F, eager: bool) -> u128
     let mut v = x;
     for &s in steps {
         v = apply(s, v);
-        if eager { v = pi(v); }
+        if eager {
+            v = pi(v);
+        }
     }
     pi(v)
 }
 
 fn disagreement<F: Fn(u128) -> u128 + Copy>(
-    steps: &[Step], pi: F, xs: &[u128],
+    steps: &[Step],
+    pi: F,
+    xs: &[u128],
 ) -> Option<(u128, u128, u128)> {
     for &x in xs {
         let e = run(x, steps, pi, true);
         let d = run(x, steps, pi, false);
-        if e != d { return Some((x, e, d)); }
+        if e != d {
+            return Some((x, e, d));
+        }
     }
     None
 }
@@ -108,7 +133,7 @@ fn main() {
     // though the retraction lemma genuinely fails for this chain. A control
     // that cannot fire is the defect this probe exists to avoid, so the case
     // is kept in its firing form and the near miss is recorded here.
-    let mixed  = [Step::AddK(k), Step::AddK(k), Step::SatSubK(l / 2)];
+    let mixed = [Step::AddK(k), Step::AddK(k), Step::SatSubK(l / 2)];
 
     println!("W = {w}, limit = {l}, k = {k}");
     println!();
@@ -116,14 +141,32 @@ fn main() {
     // ---- B holds where A fails ------------------------------------------
     // Wrapping is a ring homomorphism, so eager and deferred agree on an
     // affine chain even when every intermediate leaves [0, 2^W).
-    let over = wide.iter().filter(|&&x| {
-        let mut v = x; for &s in affine.iter() { v = apply(s, v); }
-        v > l
-    }).count();
-    assert!(over > 0, "no input overflows W, so the RANGE licence is not being denied");
+    let over = wide
+        .iter()
+        .filter(|&&x| {
+            let mut v = x;
+            for &s in affine.iter() {
+                v = apply(s, v);
+            }
+            v > l
+        })
+        .count();
+    assert!(
+        over > 0,
+        "no input overflows W, so the RANGE licence is not being denied"
+    );
     let d = disagreement(&affine, |v| wrap(v, w), &wide);
-    println!("B-holds-A-fails  wrap, affine chain, {over}/{} inputs exceed 2^W", wide.len());
-    println!("  eager vs deferred: {}", match d { None => "AGREE".to_string(), Some(t) => format!("DISAGREE {t:?}") });
+    println!(
+        "B-holds-A-fails  wrap, affine chain, {over}/{} inputs exceed 2^W",
+        wide.len()
+    );
+    println!(
+        "  eager vs deferred: {}",
+        match d {
+            None => "AGREE".to_string(),
+            Some(t) => format!("DISAGREE {t:?}"),
+        }
+    );
     assert!(d.is_none(), "wrapping is a homomorphism; this must agree");
 
     // ---- NEGATIVE CONTROL 0: one foreign step revokes the licence -------
@@ -131,7 +174,13 @@ fn main() {
     // wrapping one. Nothing about the endpoints changed.
     let d = disagreement(&one_foreign, |v| wrap(v, w), &wide);
     println!("CONTROL  wrap, same chain with ONE saturating step");
-    println!("  eager vs deferred: {}", match d { None => "AGREE".to_string(), Some(t) => format!("DISAGREE {t:?}") });
+    println!(
+        "  eager vs deferred: {}",
+        match d {
+            None => "AGREE".to_string(),
+            Some(t) => format!("DISAGREE {t:?}"),
+        }
+    );
     assert!(d.is_some(), "CONTROL FAILED: a non-homomorphic step did not revoke the licence, so the licence is not being tested");
 
     // ---- A holds where B fails ------------------------------------------
@@ -144,8 +193,17 @@ fn main() {
     let on_grid = [Step::AddK(kg), Step::Mul3, Step::AddK(kg)];
     let d = disagreement(&on_grid, |v| round_grid(v, g), &grid);
     println!("A-holds-B-fails  round to 2^{g}, every intermediate on the grid");
-    println!("  eager vs deferred: {}", match d { None => "AGREE".to_string(), Some(t) => format!("DISAGREE {t:?}") });
-    assert!(d.is_none(), "every intermediate is on the grid; rounding is the identity");
+    println!(
+        "  eager vs deferred: {}",
+        match d {
+            None => "AGREE".to_string(),
+            Some(t) => format!("DISAGREE {t:?}"),
+        }
+    );
+    assert!(
+        d.is_none(),
+        "every intermediate is on the grid; rounding is the identity"
+    );
 
     // ---- NEGATIVE CONTROL 1: rounding is not a homomorphism -------------
     // Same rounding, same chain shape, operands off the grid. If this agreed,
@@ -153,19 +211,40 @@ fn main() {
     let off_grid = [Step::AddK(kg | 1), Step::Mul3, Step::AddK(kg | 1)];
     let d = disagreement(&off_grid, |v| round_grid(v, g), &grid);
     println!("CONTROL  round to 2^{g}, operand off the grid");
-    println!("  eager vs deferred: {}", match d { None => "AGREE".to_string(), Some(t) => format!("DISAGREE {t:?}") });
-    assert!(d.is_some(), "CONTROL FAILED: rounding deletion looked safe, so this probe measures nothing");
+    println!(
+        "  eager vs deferred: {}",
+        match d {
+            None => "AGREE".to_string(),
+            Some(t) => format!("DISAGREE {t:?}"),
+        }
+    );
+    assert!(
+        d.is_some(),
+        "CONTROL FAILED: rounding deletion looked safe, so this probe measures nothing"
+    );
 
     // ---- B holds: clamping is a retraction under monotone accumulation ---
     let d = disagreement(&nonneg, |v| clamp(v, w), &wide);
     println!("B-holds  clamp, non-negative additions only");
-    println!("  eager vs deferred: {}", match d { None => "AGREE".to_string(), Some(t) => format!("DISAGREE {t:?}") });
+    println!(
+        "  eager vs deferred: {}",
+        match d {
+            None => "AGREE".to_string(),
+            Some(t) => format!("DISAGREE {t:?}"),
+        }
+    );
     assert!(d.is_none(), "the retraction lemma must hold here");
 
     // ---- NEGATIVE CONTROL 2: the retraction lemma is not general --------
     let d = disagreement(&mixed, |v| clamp(v, w), &wide);
     println!("CONTROL  clamp, mixed add/subtract chain");
-    println!("  eager vs deferred: {}", match d { None => "AGREE".to_string(), Some(t) => format!("DISAGREE {t:?}") });
+    println!(
+        "  eager vs deferred: {}",
+        match d {
+            None => "AGREE".to_string(),
+            Some(t) => format!("DISAGREE {t:?}"),
+        }
+    );
     assert!(d.is_some(), "CONTROL FAILED: clamp deletion looked safe under subtraction, so the retraction claim is untested here");
 
     // ---- Neither licence: wrapping does not survive a non-affine step ----
@@ -173,17 +252,35 @@ fn main() {
     // ((a mod 2^W) >> 1) when a has bits at or above W.
     let with_shift = |x: u128, eager: bool| -> u128 {
         let mut v = x;
-        v = v.wrapping_mul(3); if eager { v = wrap(v, w); }
-        v >>= 1;               if eager { v = wrap(v, w); }
+        v = v.wrapping_mul(3);
+        if eager {
+            v = wrap(v, w);
+        }
+        v >>= 1;
+        if eager {
+            v = wrap(v, w);
+        }
         wrap(v, w)
     };
     let mut found = None;
     for &x in wide.iter() {
-        if with_shift(x, true) != with_shift(x, false) { found = Some(x); break; }
+        if with_shift(x, true) != with_shift(x, false) {
+            found = Some(x);
+            break;
+        }
     }
     println!("CONTROL  wrap, chain containing a right shift");
-    println!("  eager vs deferred: {}", match found { None => "AGREE".to_string(), Some(x) => format!("DISAGREE at x={x}") });
-    assert!(found.is_some(), "CONTROL FAILED: wrapping looked safe past a non-affine step");
+    println!(
+        "  eager vs deferred: {}",
+        match found {
+            None => "AGREE".to_string(),
+            Some(x) => format!("DISAGREE at x={x}"),
+        }
+    );
+    assert!(
+        found.is_some(),
+        "CONTROL FAILED: wrapping looked safe past a non-affine step"
+    );
 
     println!();
     println!("RESULT: the two licences are independent, and both negative controls fired.");

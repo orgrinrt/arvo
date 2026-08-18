@@ -24,13 +24,21 @@ const W: u32 = 8;
 const DOMAIN: u128 = 1 << W;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-enum Step { AddK(u128), MulK(u128) }
-
-fn apply(s: Step, v: u128) -> u128 {
-    match s { Step::AddK(k) => v + k, Step::MulK(k) => v * k }
+enum Step {
+    AddK(u128),
+    MulK(u128),
 }
 
-fn bits_for(v: u128) -> u32 { 128 - v.leading_zeros() }
+fn apply(s: Step, v: u128) -> u128 {
+    match s {
+        Step::AddK(k) => v + k,
+        Step::MulK(k) => v * k,
+    }
+}
+
+fn bits_for(v: u128) -> u32 {
+    128 - v.leading_zeros()
+}
 
 /// The exact maximum reached at each point of the chain, and the maximum over
 /// all of them, computed by running every value in the declared domain. No
@@ -41,7 +49,9 @@ fn observed_widths(steps: &[Step]) -> (Vec<u32>, u32) {
         let mut v = x;
         for (i, &s) in steps.iter().enumerate() {
             v = apply(s, v);
-            if v > per_step[i] { per_step[i] = v; }
+            if v > per_step[i] {
+                per_step[i] = v;
+            }
         }
     }
     let widths: Vec<u32> = per_step.iter().map(|&m| bits_for(m)).collect();
@@ -52,12 +62,18 @@ fn observed_widths(steps: &[Step]) -> (Vec<u32>, u32) {
 /// Does a container of `bits` hold every intermediate of this chain, for every
 /// input in the declared domain? Observed, not derived.
 fn fits(steps: &[Step], bits: u32) -> bool {
-    let cap: u128 = if bits >= 128 { u128::MAX } else { (1u128 << bits) - 1 };
+    let cap: u128 = if bits >= 128 {
+        u128::MAX
+    } else {
+        (1u128 << bits) - 1
+    };
     for x in 0..DOMAIN {
         let mut v = x;
         for &s in steps {
             v = apply(s, v);
-            if v > cap { return false; }
+            if v > cap {
+                return false;
+            }
         }
     }
     true
@@ -66,7 +82,10 @@ fn fits(steps: &[Step], bits: u32) -> bool {
 fn report(name: &str, steps: &[Step]) -> u32 {
     let (per, peak) = observed_widths(steps);
     println!("  {name:14} steps={steps:?}");
-    println!("  {:14} per-step widths = {per:?}, chain needs {peak} bits", "");
+    println!(
+        "  {:14} per-step widths = {per:?}, chain needs {peak} bits",
+        ""
+    );
     peak
 }
 
@@ -120,7 +139,10 @@ fn main() {
     for (name, steps, want) in [("A", &a[..], wa), ("B", &b[..], wb), ("C", &c[..], wc)] {
         let ok = fits(steps, want);
         let narrower = fits(steps, want - 1);
-        println!("  {name}: fits({want}) = {ok}, fits({}) = {narrower}", want - 1);
+        println!(
+            "  {name}: fits({want}) = {ok}, fits({}) = {narrower}",
+            want - 1
+        );
         assert!(ok, "the reported width does not actually hold the chain");
         assert!(
             !narrower,
@@ -132,7 +154,12 @@ fn main() {
 
     println!("HOW FAR THE GAP GOES: the same step multiset, worst and best order");
     // Four steps, all orders, same multiset.
-    let steps = [Step::MulK(3), Step::AddK(200), Step::MulK(2), Step::AddK(250)];
+    let steps = [
+        Step::MulK(3),
+        Step::AddK(200),
+        Step::MulK(2),
+        Step::AddK(250),
+    ];
     let mut best = u32::MAX;
     let mut worst = 0u32;
     let mut idx = [0usize, 1, 2, 3];
@@ -141,8 +168,12 @@ fn main() {
     for p in perms.iter() {
         let seq: Vec<Step> = p.iter().map(|&i| steps[i]).collect();
         let (_, peak) = observed_widths(&seq);
-        if peak < best { best = peak; }
-        if peak > worst { worst = peak; }
+        if peak < best {
+            best = peak;
+        }
+        if peak > worst {
+            worst = peak;
+        }
     }
     println!("  24 orderings of the same four steps: narrowest {best} bits, widest {worst} bits");
     assert!(
@@ -151,12 +182,17 @@ fn main() {
          a dimension of the carrier requirement after all"
     );
     println!();
-    println!("RESULT: the carrier requirement is a property of the sequence. Both \
-controls behaved as required.");
+    println!(
+        "RESULT: the carrier requirement is a property of the sequence. Both \
+controls behaved as required."
+    );
 }
 
 fn permute(a: &mut [usize; 4], k: usize, out: &mut Vec<[usize; 4]>) {
-    if k == 4 { out.push(*a); return; }
+    if k == 4 {
+        out.push(*a);
+        return;
+    }
     for i in k..4 {
         a.swap(k, i);
         permute(a, k + 1, out);

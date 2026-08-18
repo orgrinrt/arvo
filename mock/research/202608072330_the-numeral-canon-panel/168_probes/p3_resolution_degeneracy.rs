@@ -33,10 +33,22 @@ const DOMAIN: u128 = 1 << W;
 const LIMIT: u128 = (1 << W) - 1;
 
 #[derive(Clone, Copy, Debug)]
-enum Step { AddK(u128), WSubK(u128), MulK(u128), SatSubK(u128), ShrK(u32), XorK(u128) }
+enum Step {
+    AddK(u128),
+    WSubK(u128),
+    MulK(u128),
+    SatSubK(u128),
+    ShrK(u32),
+    XorK(u128),
+}
 
 #[derive(Clone, Copy, Debug, PartialEq)]
-enum Pi { Wrap, Clamp, RoundTo(u32), TruncTo(u32) }
+enum Pi {
+    Wrap,
+    Clamp,
+    RoundTo(u32),
+    TruncTo(u32),
+}
 
 fn apply(s: Step, v: u128) -> u128 {
     match s {
@@ -52,14 +64,24 @@ fn apply(s: Step, v: u128) -> u128 {
 fn resolve(p: Pi, v: u128) -> u128 {
     match p {
         Pi::Wrap => v & LIMIT,
-        Pi::Clamp => if v > LIMIT { LIMIT } else { v },
+        Pi::Clamp => {
+            if v > LIMIT {
+                LIMIT
+            } else {
+                v
+            }
+        }
         Pi::RoundTo(g) => {
-            if g == 0 { return v; }
+            if g == 0 {
+                return v;
+            }
             let step = 1u128 << g;
             ((v + (step >> 1)) / step) * step
         }
         Pi::TruncTo(g) => {
-            if g == 0 { return v; }
+            if g == 0 {
+                return v;
+            }
             let step = 1u128 << g;
             (v / step) * step
         }
@@ -82,7 +104,9 @@ fn run(x: u128, steps: &[Step], p: Pi, mask: u32) -> u128 {
 /// The exact composite: no resolution anywhere, not even at the boundary.
 fn exact(x: u128, steps: &[Step]) -> u128 {
     let mut v = x;
-    for &s in steps { v = apply(s, v); }
+    for &s in steps {
+        v = apply(s, v);
+    }
     v
 }
 
@@ -91,7 +115,9 @@ fn degeneracy(steps: &[Step], p: Pi) -> (usize, Vec<(u32, Vec<u128>)>) {
     let mut seen: Vec<(u32, Vec<u128>)> = Vec::new();
     for mask in 0..(1u32 << interior) {
         let f: Vec<u128> = (0..DOMAIN).map(|x| run(x, steps, p, mask)).collect();
-        if !seen.iter().any(|(_, g)| *g == f) { seen.push((mask, f)); }
+        if !seen.iter().any(|(_, g)| *g == f) {
+            seen.push((mask, f));
+        }
     }
     (seen.len(), seen)
 }
@@ -104,12 +130,16 @@ fn errors(steps: &[Step], p: Pi, mask: u32) -> (u128, u128) {
         let want = exact(x, steps);
         let e = if got > want { got - want } else { want - got };
         total += e;
-        if e > worst { worst = e; }
+        if e > worst {
+            worst = e;
+        }
     }
     (total, worst)
 }
 
-fn full_mask(d: usize) -> u32 { (1u32 << d.saturating_sub(1)) - 1 }
+fn full_mask(d: usize) -> u32 {
+    (1u32 << d.saturating_sub(1)) - 1
+}
 
 fn line(label: &str, steps: &[Step], p: Pi) -> usize {
     let (n, _) = degeneracy(steps, p);
@@ -123,24 +153,45 @@ fn main() {
     println!();
 
     let affine3 = [Step::AddK(k), Step::MulK(3), Step::WSubK(k)];
-    let affine5 = [Step::AddK(k), Step::MulK(3), Step::WSubK(k), Step::MulK(5), Step::AddK(k)];
-    let clampy  = [Step::AddK(k), Step::AddK(k), Step::SatSubK(LIMIT / 2)];
-    let nonneg  = [Step::AddK(k), Step::AddK(k), Step::AddK(k)];
+    let affine5 = [
+        Step::AddK(k),
+        Step::MulK(3),
+        Step::WSubK(k),
+        Step::MulK(5),
+        Step::AddK(k),
+    ];
+    let clampy = [Step::AddK(k), Step::AddK(k), Step::SatSubK(LIMIT / 2)];
+    let nonneg = [Step::AddK(k), Step::AddK(k), Step::AddK(k)];
 
     println!("DEGENERACY 1 IS THE CASE WITH NOTHING TO DECIDE");
     let n = line("wrap, affine, D=3", &affine3, Pi::Wrap);
-    assert_eq!(n, 1, "wrapping over affine steps must be placement-invariant");
+    assert_eq!(
+        n, 1,
+        "wrapping over affine steps must be placement-invariant"
+    );
     let n = line("wrap, affine, D=5", &affine5, Pi::Wrap);
-    assert_eq!(n, 1, "wrapping over affine steps must be placement-invariant at any depth");
+    assert_eq!(
+        n, 1,
+        "wrapping over affine steps must be placement-invariant at any depth"
+    );
     let n = line("clamp, non-negative additions, D=3", &nonneg, Pi::Clamp);
-    assert_eq!(n, 1, "the retraction lemma must make clamping placement-invariant here");
+    assert_eq!(
+        n, 1,
+        "the retraction lemma must make clamping placement-invariant here"
+    );
     println!();
 
     println!("DEGENERACY ABOVE 1 IS THE CASE THE DESIGN MUST DECIDE");
     let n = line("clamp, mixed, D=3", &clampy, Pi::Clamp);
-    assert!(n > 1, "CONTROL FAILED: mixed clamping was placement-invariant");
+    assert!(
+        n > 1,
+        "CONTROL FAILED: mixed clamping was placement-invariant"
+    );
     let r3 = line("round to 2^3, affine, D=3", &affine3, Pi::RoundTo(3));
-    assert!(r3 > 1, "CONTROL FAILED: rounding was placement-invariant, so nothing is counted");
+    assert!(
+        r3 > 1,
+        "CONTROL FAILED: rounding was placement-invariant, so nothing is counted"
+    );
     let r5 = line("round to 2^3, affine, D=5", &affine5, Pi::RoundTo(3));
     assert!(
         r5 > r3,
@@ -155,8 +206,14 @@ fn main() {
     let (te, we) = errors(&affine5, Pi::RoundTo(3), fm);
     let (td, wd) = errors(&affine5, Pi::RoundTo(3), 0);
     println!("  fully eager  (mask {fm:#06b}): total |err| {te}, worst |err| {we}");
-    println!("  fully defer  (mask {:#06b}): total |err| {td}, worst |err| {wd}", 0);
-    assert!(td < te, "deferring did not reduce aggregate error, which the whole argument assumes");
+    println!(
+        "  fully defer  (mask {:#06b}): total |err| {td}, worst |err| {wd}",
+        0
+    );
+    assert!(
+        td < te,
+        "deferring did not reduce aggregate error, which the whole argument assumes"
+    );
     assert!(wd <= we, "deferring did not reduce worst-case error");
 
     // And is the fully deferred placement the best of ALL placements?
@@ -164,10 +221,15 @@ fn main() {
     let mut best_total = u128::MAX;
     for mask in 0..(1u32 << (affine5.len() - 1)) {
         let (t, _) = errors(&affine5, Pi::RoundTo(3), mask);
-        if t < best_total { best_total = t; best_mask = mask; }
+        if t < best_total {
+            best_total = t;
+            best_mask = mask;
+        }
     }
-    println!("  best of all {} placements: mask {best_mask:#06b}, total |err| {best_total}",
-             1u32 << (affine5.len() - 1));
+    println!(
+        "  best of all {} placements: mask {best_mask:#06b}, total |err| {best_total}",
+        1u32 << (affine5.len() - 1)
+    );
     assert_eq!(
         best_mask, 0,
         "the fully deferred placement is NOT the aggregate optimum, which would \
@@ -194,7 +256,12 @@ fn main() {
             let g2 = run(x, steps, p, 0);
             let de = if g1 > want { g1 - want } else { want - g1 };
             let dd = if g2 > want { g2 - want } else { want - g2 };
-            if de < dd { wins += 1; if ex.is_none() { ex = Some((x, de, dd)); } }
+            if de < dd {
+                wins += 1;
+                if ex.is_none() {
+                    ex = Some((x, de, dd));
+                }
+            }
         }
         (wins, ex)
     };
@@ -203,23 +270,40 @@ fn main() {
     // a contracting step and a non-monotone one, so a counterexample has room
     // to exist.
     let alphabet = [
-        Step::AddK(k), Step::MulK(3), Step::ShrK(2), Step::XorK(0b1011_0110),
-        Step::SatSubK(LIMIT / 2), Step::MulK(5), Step::ShrK(1), Step::AddK(13),
+        Step::AddK(k),
+        Step::MulK(3),
+        Step::ShrK(2),
+        Step::XorK(0b1011_0110),
+        Step::SatSubK(LIMIT / 2),
+        Step::MulK(5),
+        Step::ShrK(1),
+        Step::AddK(13),
     ];
     let mut rng: u64 = 0xA5A5_1234_DEAD_BEEF;
-    let mut next = || { rng ^= rng << 13; rng ^= rng >> 7; rng ^= rng << 17; rng };
+    let mut next = || {
+        rng ^= rng << 13;
+        rng ^= rng >> 7;
+        rng ^= rng << 17;
+        rng
+    };
     let mut chains: Vec<Vec<Step>> = Vec::new();
     for _ in 0..3000 {
         let d = 2 + (next() % 4) as usize;
         chains.push((0..d).map(|_| alphabet[(next() % 8) as usize]).collect());
     }
 
-    for (name, p) in [("nearest (round to 2^3)", Pi::RoundTo(3)), ("nearest (clamp)", Pi::Clamp)] {
+    for (name, p) in [
+        ("nearest (round to 2^3)", Pi::RoundTo(3)),
+        ("nearest (clamp)", Pi::Clamp),
+    ] {
         let mut total_wins = 0usize;
         let mut chains_with_a_win = 0usize;
         for c in chains.iter() {
             let (w, _) = eager_wins(c, p);
-            if w > 0 { chains_with_a_win += 1; total_wins += w; }
+            if w > 0 {
+                chains_with_a_win += 1;
+                total_wins += w;
+            }
         }
         println!("  {name:24} {} chains searched, {chains_with_a_win} with any eager win, {total_wins} winning inputs",
                  chains.len());
@@ -243,7 +327,11 @@ fn main() {
         if w > 0 {
             chains_with_a_win += 1;
             total_wins += w;
-            if example.is_none() { if let Some((x, de, dd)) = ex { example = Some((c.clone(), x, de, dd)); } }
+            if example.is_none() {
+                if let Some((x, de, dd)) = ex {
+                    example = Some((c.clone(), x, de, dd));
+                }
+            }
         }
     }
     println!("  {:24} {} chains searched, {chains_with_a_win} with any eager win, {total_wins} winning inputs",
