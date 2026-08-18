@@ -150,6 +150,9 @@ Recorded at dispatch time rather than after the fact.
 | 160 | leroy (formalise) | `a598133fb164a9d56` |
 | 161 | leroy (canon candidate) | `a598133fb164a9d56` |
 | 162 | kiselyov (signature) | `a473b594bc3fada7e` |
+| 163 | lamport (signature) | `ae38c2d4d2d3fb8e0` |
+| 164 | leroy (revision) | `a598133fb164a9d56` |
+| 165 | chlipala (independent check) | `a570b8f56ae817a92` |
 
 `154` and `155` have both landed their arvo files and both agents were then redirected by op to the
 mockspace bench-harness audit, so they are live on a different repository rather than spent. They
