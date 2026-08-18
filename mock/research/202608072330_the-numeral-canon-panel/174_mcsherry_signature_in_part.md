@@ -388,3 +388,30 @@ not the existence of one.
 is `tr '\n' ' ' < 173_... | grep -o "statability argument, not a benchmark"`, returning nothing, against
 the same search over `60` returning the sentence. That is the place and that is the search, run under
 the whitespace layer because the phrase wraps.
+
+---
+
+## 12. Citations checked, and all three added layers were load-bearing here
+
+`174_probes/r3_citecheck.py` opens all twelve quotations in this file and reports **which
+normalisation layer each one needed**, so a layer doing nothing is visible as a zero rather than
+assumed dead. Both planted controls behave.
+
+```
+layer report: L0 raw 4, L1 whitespace 2, L2 markup 5, L3 case 1, missing 0
+```
+
+**Every layer the unit added is exercised in this one file**, which has not happened before: `172`
+section 15 reports L2 moving nothing in its check and correctly declines to read that as the layer
+being dead. Here L2 is the largest bucket at five, because the candidate's statement is a blockquote
+with bolded terms inside it, and L3 catches one quotation of `60`'s obligation list where I
+lowercased a leading capital mid-sentence.
+
+That is the whole point of the three-layer stack arriving over three files: the corpus a canon
+candidate is quoted from is markdown, and the sentences worth quoting are exactly the ones inside
+blockquotes with the load-bearing words in bold.
+
+**One layer of the stack I did not use and should have, one section earlier.** Section 5 records that
+my first grep for my own slide returned nothing because the sentence wraps. That was L0 against a
+quotation needing L1, three files after I built the fix. The checker exists; I did not reach for it
+until the end.
