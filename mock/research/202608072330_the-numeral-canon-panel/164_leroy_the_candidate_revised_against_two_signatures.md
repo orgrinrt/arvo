@@ -364,8 +364,27 @@ same two controls declared and firing; output at `accounting.out`, dropped list 
 `dropped_anchors.txt`, never inlined here. The numbers pasted below are its output:
 
 ```
-ACCOUNTING-BLOCK
+unique line anchors across the 16 sources : 215
+unique probe paths across the 16 sources  : 111
+line anchors in the candidate             : 7
+probe paths in the candidate              : 5
+candidate anchors that appear in a source : 6
+candidate anchors novel to the candidate  : 1
+    NOVEL warm-container-shared/src/lib.rs:1356
+source anchors not carried (dropped)      : 209
+probe paths carried                       : 2 of 111
 ```
+
+**Reading the numbers for what this file is.** This is a delta revision under the coordinator's
+own [STANDS]/[AMENDED]/[REPLACED] shape, so the near-total drop is the shape working: the ledger's
+anchors live in `161`, which stands as landed and governs everywhere this file does not amend. What
+the accounting establishes for a delta is the two things a delta can get wrong: the three
+restorations `162` asked for are present (they are among the six carried anchors), and the novel
+set contains exactly what it should. **The measured novel set has one member**,
+`warm-container-shared/src/lib.rs:1356`, which is this file's own reproduction catch (section
+1.4's second item), cited from the shipped source directly rather than through any panel file,
+which is what novel means and is correct here. The dropped list is in the sibling
+`164_probes/anchor_accounting/dropped_anchors.txt` and is not inlined.
 
 **The wording class `163` caught is repaired in this file's own accounting**: the closing claim
 is stated over the measured novel set, whatever its size, rather than asserting zero three lines

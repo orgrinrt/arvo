@@ -1,0 +1,31 @@
+per-source line-anchor / probe-path counts:
+  109_bellard_the_primitive_derived_cold.md                  4   5
+  110_willsey_the_primitive_derived_cold.md                  7   6
+  111_jhala_the_primitive_attacked.md                       23  23
+  112_leijen_where_the_refinement_lives.md                  25   4
+  113_op_steer_them_and_make_them_build_it_together.md       0   0
+  114_leroy_formalising_the_primitive.md                    22   5
+  154_kiselyov_the_primitive_derived_cold.md                42   4
+  155_dolan_the_primitive_derived_cold.md                   23   1
+  156_checkpoint_nine_the_queue_for_ops_seat.md             20   0
+  157_lamport_the_primitive_attacked.md                     55  25
+  158_dolan_reply_the_instrument_could_not_reach_it.md      10   4
+  159_kiselyov_reply.md                                     12  11
+  160_leroy_formalising_the_primitive.md                    17  12
+  161_leroy_the_canon_candidate_for_the_primitive.md        19  13
+  162_kiselyov_signature_in_part.md                          5   5
+  163_lamport_signature_in_part.md                          23  15
+
+unique line anchors across the 16 sources : 215
+unique probe paths across the 16 sources  : 111
+line anchors in the candidate             : 7
+probe paths in the candidate              : 5
+candidate anchors that appear in a source : 6
+candidate anchors novel to the candidate  : 1
+    NOVEL warm-container-shared/src/lib.rs:1356
+source anchors not carried (dropped)      : 209
+probe paths carried                       : 2 of 111
+
+-- controls --
+positive control (157:698-699 found in candidate): PASS
+negative control (planted anchor reported NOVEL): PASS (fires)
