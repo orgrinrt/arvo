@@ -849,3 +849,271 @@ question here and it is a whole unit.
 
 *Phase one ends here. Phase two, the reconciliation against the panel, is appended below and phase one is
 not rewritten.*
+
+---
+
+# Phase two: reconciliation
+
+Read after phase one was committed. Curated list per the brief: `166`, `109` section 8, `110`'s P7 and
+P8 with its section 4, `112` section 8, `AGREEMENTS.md` sections 6 and 12, op's `113`, and `OPTIONS.md`.
+Phase one is not rewritten and its errors are corrected here rather than there.
+
+## R0. What I got wrong, before anything else
+
+**My section 7.2 overreaches and I withdraw its framing.** It says the chain question was priced and the
+unit was not told, and implies the panel did not know. **The panel knew.** `OPTIONS.md` Q42 is exactly
+that measurement, entered by `92`, and it is more careful than my section 7 is:
+
+> **Each vectorised arm is at parity with the fold as written below its own lane count, and first pays
+> above it.** Measured crossovers: the 16-lane arm first pays at `L = 32` (1.66x), the 64-lane arm at
+> `L = 64` (3.71x), hand-written NEON at `L = 16` (6.77x).
+
+So the crossover I present in section 7 as a reading of my own is in the register, with its mechanism
+named. What survives from my section 7 is the extraction across all twelve lengths in one table, the
+`nolaw` attribution arithmetic, and the `lanes16-constl` comparison. The claim that a place was unchecked
+is wrong and I should have grepped `OPTIONS.md` for the bench family's name before writing a sentence
+about what nobody had looked at. That is the exact failure mode `RULES.md` names: a negative claim about
+evidence is a claim about a place, and I made one without checking the place.
+
+**And Q42 corrects my section 7.1 in my favour, which is worse rather than better.** It records the
+harness's own noise floor:
+
+> The harness's between-dylib noise floor on this host measured 4.9% with disjoint intervals, which
+> bounds every small claim above.
+
+My largest `lanes16-constl` gap is 1.2%, comfortably inside 4.9%. So the right verdict was available in
+the register and I derived a weaker version of it from first principles about pairwise gating. Both
+routes reach "unestablished"; the register's is shorter and has a number.
+
+**One predicate discipline I did not apply and Q42 did.** Q42 writes: "**No dimension for strategy is
+listed**, so under the ratified notation none of this may be read as a statement about any named
+strategy." **Every predicate in my section 12 has the same absence and I did not say so.** Nothing in this
+file may be read as a statement about any named strategy. Stated here rather than by editing section 12,
+per the rule that a predicate is not widened or narrowed in place.
+
+## R1. Where I converge, and whether the instances are independent
+
+**Four independent routes now reach the same structural conclusion, and mine is the fourth.**
+
+`109` section 8, blind: chain accuracy is a fact about the operator typing rather than about any
+component of the operand type, and "a per-value primitive has no slot for it".
+
+`63` section 5, blind, via the format concept, as recorded at `AGREEMENTS.md:499`: closing operations
+over the format "so adaptation fuses invisibly into each one makes op's chain-accuracy intent (I7)
+unstatable".
+
+`90` R11, via the lifting theorem.
+
+**Mine**, via the observation boundary and the backward-dataflow argument, with probes B and C as the
+evidence that what consumes a value changes the right lowering for it.
+
+`AGREEMENTS.md:497-506` already records the first three as a cross-topic convergence in which "none of
+the three cites the prior two". I add a fourth arrived at from a fourth direction, and my route is the
+only one of the four that produces a **decision procedure** rather than a conclusion, which is section 6's
+structural test: ask whether two chains agreeing up to a point and differing after it get the same
+lowering at that point. `109` and `63` establish that the guarantee is not in the value; the test says
+what to do with any proposed carrier, including ones nobody has proposed yet.
+
+**Independence, honestly discounted.** I read none of those files before committing phase one. The
+shared inputs are `INTENTS.md`, `RULES.md`, the workspace rules and `mock/benches/`. Two of my
+conclusions ran through a shared input and I discount them:
+
+- **Section 4.2's framing** is contaminated by `satfold-shared/src/lib.rs:6`, which cites panel files
+  `80` and `82` and reproduces their conclusions. Declared in section 0.3. The specific claim that
+  unsigned saturating addition is associative was already in that file's test suite, so **my probe E is
+  not an independent instance of that one row.** What is independent in probe E is everything else in it:
+  widths 4 and 6, saturating multiply, saturating subtract, fixed multiply with and without rounding,
+  average, and the twelve-operator partition as a whole.
+- **The predicate notation and I13's arms shape** come from `RULES.md` and `INTENTS.md`, which every
+  member reads. Where my file says a result is "I13's shape", that is a shared premise rather than a
+  convergence.
+
+## R2. What I carry forward unchanged, and from whom. Count: five.
+
+1. **I7's reading** that the accuracy concern ranges over compositions. From op.
+2. **I13's shape**, arms with const predicates composed. From op.
+3. **`109`'s conclusion** that chain accuracy has no slot in a per-value primitive. Independently derived
+   before reading, so this is a second instance rather than an adoption.
+4. **`110` section 4's split** of "composition" into configuration and construction, and its consequence
+   that a composite is a primitive under the same definition. I did not derive it, I do not contest it,
+   and I extend it in R3.
+5. **`112` section 8's mechanism**, that a declared extent discharges a construction's base predicate.
+   I did not derive it and I use it in R5.
+
+Nothing I read needed changing on my account except my own section 7.2.
+
+## R3. "Composition" carries three jobs, not two
+
+`110:314` splits the word two ways: **configuration**, filling in a record of parameters, and
+**composition**, "a construction taking an algebra to an algebra" (`110:322`). Both are about carriers.
+
+**Neither is a chain.** A chain is composition **in the dataflow**: the same carrier, several operations
+in sequence, a region of a program rather than a new algebra. It produces no new primitive, it has no
+construction, and `110`'s "a composite is a primitive" says nothing about it because there is no composite.
+
+That matters for Q16, which asks which sense the canon needs. **The answer is at least three**, and the
+third is the one I7 is stated over. A canon that carries `110`'s two senses and calls the question
+settled has no word for the thing op's accuracy intent ranges over.
+
+**And the three interact rather than sitting side by side.** `110` F11 reports that the componentwise
+product reproduces its base's law set exactly while the twisted constructions do not. Read against my
+probe E, that is a statement about which **chain** rewrites survive a **construction**: a lane-wise
+composite of a base whose saturating add is associative may still be reassociated lane-wise, and a
+complex composite of the same base may not, because complex breaks `mul_assoc` over a saturating base.
+So the construction sense determines what the chain sense is licensed to do, and neither can be
+specified without the other.
+
+## R4. To `109`, per op's `113`: three replacements for the cost it named, one of which works
+
+`113` says an attacker owes several solutions addressed to the party it refuted. I am not refuting
+`109`; I am answering the cost it named against its own resolution, which is the same obligation from
+the friendly side. `109:438` states it:
+
+> **And the cost, so this is not read as a free win.** The deferred route's accumulator grows with the
+> chain: at `F = 8` and eight factors it carries 64 fraction bits before the final narrowing, which no
+> 8-bit or 16-bit container holds.
+
+**Replacement one: carry the residual instead of widening the accumulator.** For an **accumulate** chain
+this is exact and costs one extra F-bit register. Probe A: `comp == widened` on every row from n = 1 to
+n = 2^20, because `acc * 2^F + carry_n = sum(p_i)` exactly. Probe A2 finds five geometries at a 64-bit
+container where the carried form is exact and the widened one wraps. **This fully answers the cost, for
+the accumulate shape only.**
+
+**Replacement two, and I tested it and it does not work.** `109`'s own chain is a chain of
+**multiplications**, and I built probe G specifically to see whether replacement one transfers. It does
+not, and the reason is arithmetic: a product of `k` factors at `F` fraction bits needs `F*(k-1)` fraction
+bits, and a constant `c` carried limbs hold `c*F`. So the carried form reproduces the deferred answer
+exactly up to `k = c + 1` and departs after. At `F = 4`, `k = 24`, per-step is 2221.9 LSB, one carried
+limb is 60.9, two are 5.9, and deferred is 0.99. **Each limb buys a constant factor and not a change of
+growth class.** This corroborates `AGREEMENTS.md:497-506` rather than refuting it, and it is the honest
+bound on what probe A contributes.
+
+**Replacement three: bound the container by the region's declared extent rather than by its length.**
+`109` says the intermediate width "is a function of the **chain**, which no per-value type knows", which
+is right, and my section 3.2 sharpens what kind of function. The **worst-case** width `I + 2F + log2(n)`
+is reached only by non-cancelling terms; on decorrelated data the sum is a random walk and the realised
+width is smaller by up to `log2(n)/2` bits. My probe A2's first version failed for exactly this reason
+and found zero overflowing geometries at any size, which is committed as `carrier_bound_v1_FAILED.out`.
+So the accumulator width is a joint fact of the chain length **and the correlation between its terms**,
+and the second is a property of the data that arvo cannot derive and a consumer can declare. **That is
+`112`'s mechanism, applied to `109`'s cost**, and it is R5.
+
+**And a fourth thing, offered as a question rather than a replacement.** `109` draws from its table that
+"`Mul` is not an endomorphism". By my section 6 structural test, letting the operator's result type be a
+function of its operand types is still a **forward-only** carrier: it is determined by the producers and
+it cannot see the consumers. So it carries obligation three, the budget, and it does not reach the
+backward facts in probes B and C. I read `109`'s resolution as necessary and not sufficient, and I would
+rather that be attacked than adopted.
+
+## R5. `112`'s extent is the carrier for a chain fact nobody has assigned
+
+`112:850`:
+
+> **A declared extent discharges a construction's base predicate.** Eight of forty declared extents over
+> a wrapping base gain a construction the ungraded predicate refuses, and the propagated bound predicts
+> the gain with zero unsound predictions.
+
+That is stated over the **construction** sense of composition. The identical mechanism answers a chain
+question that is currently nobody's: **a declared extent on the operands discharges the worst-case
+accumulator width**, because the extent is exactly the fact that separates cancelling from
+non-cancelling terms. My section 3.2 measures the gap that the extent would close and `112` has the
+mechanism that closes it. Neither file knew about the other.
+
+I offer this as a connection to be tested rather than as a result, because `112`'s propagation rule is
+established for interval closure over a construction and I have not checked that the same propagation is
+sound for an accumulator bound over a chain. **What would close it:** run `112`'s propagated-bound
+machinery over a fold's accumulator width instead of over a construction's closure, on the same three
+outcome classes (unsound, conservative, exact). `112`'s p5 already has the shape.
+
+## R6. What my probe F contributes to Q41, which none of its three options anticipates
+
+Q41 asks whether the strategies are partially ordered by how many chain-level laws they honour, resting,
+in `76`'s words, on the accuracy-first concern preserving "chain-level facts" the speed-first concern is
+licensed to give up. Its three options are: a refinement order, a non-nesting order, no order.
+
+**Probe F says the answer is family-dependent, which is a fourth reading.** On the reassociation axis, in
+fixed point, the two concerns honour the **identical** set: the reassociated answer is bit-identical, at
+every size from 16 to 65536, so there is no chain-level fact for one to preserve and the other to give
+up. On the same axis in relative precision the sets differ by up to 94.8x. So on this axis the order is
+not a fact about the strategies at all; it is a fact about the numeral family, and the strategies inherit
+it.
+
+That is one axis and I do not generalise it. **What would close Q41 on this axis** is running probe F's
+comparison over the other chain-level laws in `110` F11's law set, per family, and checking whether the
+family-dependence recurs or whether reassociation is special.
+
+**And it has a consequence for the fixed-point family that is worth stating on its own.** The 178x
+reassociation win in section 7 is available to an accuracy-first concern **at no accuracy cost**, because
+probe F says the answer does not change. A design that gates reassociation behind a speed-first strategy
+in fixed point is giving up a large win for nothing.
+
+## R7. Where I hold, and against what
+
+**I hold that the unit is the unobserved region rather than the chain**, and `AGREEMENTS.md:206` gives me
+the thing to hold it against. C9, from `63`, is the panel's existing chain concept:
+
+> a chain is exact operations plus a schedule of adaptation points; the schedule is part of the
+> function's meaning
+
+**These are not in conflict and they are answering different questions.** C9 says what a chain
+**contains**. Mine says what **bounds** one. They compose exactly: an adaptation point is **forced**
+where an intermediate is observed and **optional** everywhere else, so the observation boundary is what
+constrains C9's schedule, and C9's schedule is what fills the region my definition delimits. I would put
+both in a canon and neither alone.
+
+C9 is marked ONE EXPERT, cold, unattacked. Mine is a second cold instance reaching a compatible
+statement from a different direction, which is the rung it is worth and no more.
+
+**And C9's three directions for where the chain's home lives** are `AGREEMENTS.md:206-211`: closed
+operations elsewhere, the three-carrier concept, or a first-class typed chain object. My section 6's
+three carriers are a different cut of what is nearly the same space, and **my contribution is the
+discriminator rather than the list**: the structural test in section 6 separates them by whether they can
+see the consumer, which puts the named accumulator and `109`'s widened operator target on one side and
+the first-class chain object on the other. C9's consolidation restored its third direction after
+dropping it in its own first draft; that third direction is the only one of the three that passes the
+test, which is worth knowing about a direction that was nearly lost twice.
+
+## R8. Options, revised against the panel
+
+**Q-C1 through Q-C6 stand as written in section 9**, with three amendments.
+
+**Q-C1 folds into Q16 and C9's three directions rather than standing alone.** Its contribution is the
+structural test, not the list of carriers. Restated: the open question is not which carrier, it is
+whether the canon accepts that a carrier must be able to see the consumer, and if so, which of the
+existing candidates can.
+
+**Q-C3 is partly answered and partly narrowed.** The residual carry's accuracy value is settled for the
+accumulate shape by probe A and refuted for the product shape by probe G. Its **cost remains unpriced**
+and that half stands.
+
+**Q-C6 is closed by Q42's noise floor**, not by me. 1.2% inside a 4.9% floor. It moves to a droplist with
+that diagnostic, and what would reopen it is a harness whose floor is below the effect.
+
+**One option I add.**
+
+**Q-C7. Whether "composition" needs a third word, and whether I7 is stated over it.** `110` splits the
+term two ways and Q16 asks which senses the canon needs. Neither sense is a chain, and I7 is stated over
+chains. *What closes it:* a decision by whoever writes the Q16 text, and it is cheap, because the
+evidence that the third sense is distinct is that `110`'s composite construction produces a new primitive
+while a chain produces none.
+
+## R9. Coverage of phase two, bounded
+
+**Read in full:** `166`, `109` section 8, `110` sections 4 and 5 and its P7/P8 material, `112` section 8,
+`AGREEMENTS.md` sections 6 and 12 and its section 2.2 entry for C9, op's `113`, `OPTIONS.md` entries Q11,
+Q12, Q16 header, Q41, Q42, Q55.
+
+**Not read:** every other numbered file, `DROPLIST.md`, `HANDLES.md`, `PRIOR_CALLS.md`,
+`PERSONA_CALLS.md`, `164` and `161` in full, `165`, and the whole of `63`, `74`, `90`, `92` and `106`.
+
+**Which of my phase-two sections would move if something I leaned on were wrong.** R1's four-route
+convergence rests on `AGREEMENTS.md:497-506`'s account of `63` and `90`, **and I did not open either
+file.** That is the shared-unread-source condition `RULES.md` names, and I state it as `43` did: if the
+consolidation's account of `63` section 5 or `90` R11 is wrong, R1 drops from four routes to two, my own
+and `109`'s, both of which I verified at source. R4's replacement three rests on `112` section 8, which I
+read. R6 rests on Q41's quotation of `76`, which I did not open; if `76`'s candidate is misquoted there,
+R6 answers a question nobody asked.
+
+**One count I verified rather than took.** I ran the thirteen bench crates' suites myself, at
+`--release`, and reconciled the 108 and 123 figures in section 0.2. Everything else numeric in phase two
+is quoted from a file I opened at the line cited.
