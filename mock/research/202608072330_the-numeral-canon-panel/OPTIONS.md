@@ -2704,3 +2704,30 @@ refuted outright.
 **What would close it.** A dispatch protocol that names the shared inputs in the brief so a member can
 report which of its conclusions ran through them. Written up in `how-to-run-a-panel.md`; the register
 entry exists so a later reader of this topic's rungs knows to discount them by it.
+
+### Q65. Whether this panel's own findings satisfy the notation it ratified
+
+Opened by the ninth unit, and it is a finding about the corpus rather than about arvo.
+
+`157` counted the predicate blocks across topic five's four files. **82 findings, and not one carries
+`W any`**, against `threads any` firing 18 times and `target features any` 39. Under I13's notation an
+absent dimension is not a hedge: it says the finding holds nowhere that dimension exists. Read
+literally, **topic five holds at no width in the library**, which is not what any of its authors meant
+and not what several of them proved. Some of those findings are proofs, recorded as measurements, and
+`111:834-835` says exactly that about its own in the sentence after the predicate that traps it at
+three widths.
+
+`158` then audited itself against that count and found a sharper case: **`155` carries no predicate
+blocks at all**. It added three retroactively, in its own voice and marked as a partial audit, which is
+the only correct way to do it, since a predicate is never widened in place.
+
+**What this is not.** It is not a claim that the findings are wrong. It is a claim that the notation
+and the corpus disagree, and that a reader applying the notation as ratified reaches a conclusion every
+author would reject.
+
+**What would close it.** Either a pass that supplies the missing dimension in each author's own voice,
+file by file, which is expensive and is the only form the never-widen-in-place rule permits; or op
+ruling that a proof carries a different marker from a measurement, so that a width-free argument is
+written as one rather than being dressed as a sweep that happened to stop at three widths. The second
+is cheaper and is the one the corpus is actually asking for, and it is a question about the notation
+rather than about any finding in it.
