@@ -43,28 +43,51 @@ const CARRIER: u32 = 16;
 const CARRIER_CAP: u64 = (1u64 << CARRIER) - 1;
 const K: u64 = 97;
 
-fn bits_for(v: u64) -> u32 { 64 - v.leading_zeros() }
+fn bits_for(v: u64) -> u32 {
+    64 - v.leading_zeros()
+}
 
 /// The resolution at the declared width: nearest-point projection onto
 /// `[0, 2^W)`, which for an out-of-range non-negative value is the clamp.
-fn pi(v: u64) -> u64 { if v > (DOMAIN - 1) { DOMAIN - 1 } else { v } }
+fn pi(v: u64) -> u64 {
+    if v > (DOMAIN - 1) {
+        DOMAIN - 1
+    } else {
+        v
+    }
+}
 
 // --- the shared node and the two branches, as exact functions ---------------
-fn node_t(x: u64) -> u64 { 3 * x + K }
-fn branch_a(t: u64) -> u64 { t * t }
-fn branch_b(t: u64) -> u64 { t >> 2 }
-fn combine(a: u64, b: u64) -> u64 { a ^ b }
+fn node_t(x: u64) -> u64 {
+    3 * x + K
+}
+fn branch_a(t: u64) -> u64 {
+    t * t
+}
+fn branch_b(t: u64) -> u64 {
+    t >> 2
+}
+fn combine(a: u64, b: u64) -> u64 {
+    a ^ b
+}
 
 /// The exact value of each intermediate, so a width requirement is observed
 /// rather than derived.
 fn observed_width(f: &dyn Fn(u64) -> u64) -> u32 {
     let mut m = 0u64;
-    for x in 0..DOMAIN { let v = f(x); if v > m { m = v; } }
+    for x in 0..DOMAIN {
+        let v = f(x);
+        if v > m {
+            m = v;
+        }
+    }
     bits_for(m)
 }
 
 fn main() {
-    println!("W = {W}, domain 0..{DOMAIN} exhaustive, carrier = {CARRIER} bits (cap {CARRIER_CAP})");
+    println!(
+        "W = {W}, domain 0..{DOMAIN} exhaustive, carrier = {CARRIER} bits (cap {CARRIER_CAP})"
+    );
     println!();
 
     // ---- Result one: the joined width requirement is a maximum ------------
@@ -80,7 +103,9 @@ fn main() {
         *[wt, wa, wout].iter().max().unwrap(),
         *[wt, wb, wout].iter().max().unwrap(),
     );
-    println!("  joined requirement {joined}, max over the two per-path requirements {max_over_branches}");
+    println!(
+        "  joined requirement {joined}, max over the two per-path requirements {max_over_branches}"
+    );
     assert_eq!(
         joined, max_over_branches,
         "the joined requirement exceeded the max over paths, which would mean a \
@@ -95,10 +120,19 @@ fn main() {
     println!("  branch A needs {wa} bits with t left exact, against a carrier of {CARRIER}:");
     let a_fits_exact = wa <= CARRIER;
     println!("    fits = {a_fits_exact}");
-    assert!(!a_fits_exact, "branch A fits with t exact, so there is no forced resolution and no conflict");
+    assert!(
+        !a_fits_exact,
+        "branch A fits with t exact, so there is no forced resolution and no conflict"
+    );
     let wa_resolved = observed_width(&|x| branch_a(pi(node_t(x))));
-    println!("  branch A needs {wa_resolved} bits with t resolved: fits = {}", wa_resolved <= CARRIER);
-    assert!(wa_resolved <= CARRIER, "resolving t does not rescue branch A either, so the construction is degenerate");
+    println!(
+        "  branch A needs {wa_resolved} bits with t resolved: fits = {}",
+        wa_resolved <= CARRIER
+    );
+    assert!(
+        wa_resolved <= CARRIER,
+        "resolving t does not rescue branch A either, so the construction is degenerate"
+    );
     println!("  so branch A FORCES t to be resolved. There is one t.");
     println!();
 
@@ -108,14 +142,18 @@ fn main() {
     let mut loss_inputs = 0usize;
     for x in 0..DOMAIN {
         let exact_b = branch_b(node_t(x));
-        let b_free = pi(branch_b(node_t(x)));            // t deferred: B's own best
-        let b_forced = pi(branch_b(pi(node_t(x))));      // t resolved for A's sake
+        let b_free = pi(branch_b(node_t(x))); // t deferred: B's own best
+        let b_forced = pi(branch_b(pi(node_t(x)))); // t resolved for A's sake
         let d_free = exact_b.abs_diff(b_free);
         let d_forced = exact_b.abs_diff(b_forced);
-        if d_forced > d_free { loss_inputs += 1; }
+        if d_forced > d_free {
+            loss_inputs += 1;
+        }
         let l = d_forced - core::cmp::min(d_forced, d_free);
         loss_total += l;
-        if l > loss_worst { loss_worst = l; }
+        if l > loss_worst {
+            loss_worst = l;
+        }
     }
     println!("  branch B, forced schedule against its own best schedule:");
     println!("    inputs made worse: {loss_inputs}/{DOMAIN}");
