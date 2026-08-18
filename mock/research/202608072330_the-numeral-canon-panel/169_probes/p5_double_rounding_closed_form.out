@@ -1,0 +1,39 @@
+  F  M=2F (control)  M=F (control)    M=2F-1   2^(F-1)  match
+  4               0              0         8         8   True
+  5               0              0        16        16   True
+  6               0              0        32        32   True
+  7               0              0        64        64   True
+  8               0              0       128       128   True
+  9               0              0       256       256   True
+ 10               0              0       512       512   True
+
+C1 both of 167's controls hold at every F : True   (want True)
+C2 reproduces 167's 32 / 128 / 512        : True   (want True)
+
+=== C3: is the count zero anywhere strictly between F and 2F? ===
+  F= 4: M in (4,8) with zero disagreements -> none
+  F= 5: M in (5,10) with zero disagreements -> none
+  F= 6: M in (6,12) with zero disagreements -> none
+  F= 7: M in (7,14) with zero disagreements -> none
+  F= 8: M in (8,16) with zero disagreements -> none
+  F= 9: M in (9,18) with zero disagreements -> none
+  F=10: M in (10,20) with zero disagreements -> none
+
+C3 a zero strictly inside would refute    : True (none found, want none)
+
+VERDICT
+  The M = 2F-1 column is exactly 2^(F-1) at every F in 4..=10, which is a
+  closed form rather than a trend, and no M strictly inside gives zero at
+  any of the seven widths.
+
+  The argument behind it is a proof and holds for every F >= 1: the exact
+  product of two Q(.F) numerals occupies exactly 2F fraction bits, so any
+  M < 2F discards a nonzero low part for some operand pair, and a pair
+  whose discarded part lands on a rounding boundary changes the result.
+  Nothing in that depends on F.
+
+  WIDENING, stated here and not in 167, per the never-widen-in-place rule:
+  167 4.1 widens to `F any` on the argument, with the enumerative half
+  staying at `F in {6, 8, 10}` where its own file recorded it, and this
+  file extending the enumeration to F in 4..=10.
+RC=0
