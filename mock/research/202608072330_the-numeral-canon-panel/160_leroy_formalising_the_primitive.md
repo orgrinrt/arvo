@@ -62,7 +62,7 @@ so I read no new test bodies; `154` scanned all 123 mechanically, `155` read
 `warm-container-shared`'s fifteen in full, and `157` read `bitpack-write-contend-shared`'s fifteen.
 Where a claim below leans on a crate's source, the lines were reread at source by `158` section 1.1
 and I reopened the two that carry weight myself: `warm-container-shared/src/lib.rs:187` (`pub trait
-Carrier: Copy + 'static`) and `:279-283` (the five native impls). That is a bounded reliance and I
+Carrier: Copy + 'static`) and `warm-container-shared/src/lib.rs:279-283` (the five native impls). That is a bounded reliance and I
 name it: if the three mechanical scans were wrong, my gate inherits the error.
 
 Proceeding.
