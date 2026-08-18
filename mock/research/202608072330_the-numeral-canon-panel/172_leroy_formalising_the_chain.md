@@ -211,3 +211,212 @@ for the control, carriers i32 narrow and i64 wide, threads = 1. The clause itsel
 over the language's definedness rules and carries: partial operations in {div, rem}, profile any,
 threads any.`
 
+---
+
+## 4. The deferral optimum, from a sweep to a theorem
+
+**The claim as the unit left it.** Full deferral is pointwise optimal where the boundary resolution
+is a nearest-point projection: zero counterexamples over every placement (after `169` widened `168`'s
+two-placement search and `170` reproduced the widening on its own instrument), with matched
+non-nearest controls firing at 317, 395 and 443 win-chains. `170` O-170-1 asks whether it is
+provable rather than swept; O-170-2 asks whether it survives adversarial tie-breaking or
+non-idempotence. **Both close, by the same proof.**
+
+### 4.1 The theorem
+
+> **Setting.** A chain of total steps `f_1 .. f_n` over exact values; a boundary format whose
+> representable set is a nonempty `S`; a boundary resolution `pi` that, for every exact `x`,
+> returns **some** element of `argmin_{s in S} |s - x|` (any fixed selection; the tie rule is
+> arbitrary). A **placement** applies resolutions at any subset of interior edges and applies `pi`
+> at the boundary; the fully deferred placement applies only the boundary one.
+>
+> **Theorem.** For every chain, every placement `m`, and every input `x`:
+> `|pi(exact(x)) - exact(x)| <= |out_m(x) - exact(x)|`.
+>
+> **Proof.** Whatever `m` does in the interior produces some value `x'` at the boundary, and
+> `out_m(x) = pi(x')` is an element of `S`, because the boundary resolution fires last in every
+> placement. The deferred output is `pi(exact(x))`, which attains `min_{s in S} |s - exact(x)|` by
+> the definition of a nearest-point selection. An arbitrary element of `S` cannot be closer than
+> the minimum. Qed.
+
+Three consequences of the proof's shape, each of which the unit's material had as an open question:
+
+- **The tie rule is irrelevant and idempotence is a consequence, not a hypothesis** (O-170-2
+  closed): the proof uses only that `pi(x)` is in the argmin, so any fixed selection qualifies,
+  adversarial ties included; and for `s in S` the argmin at `s` is `{s}`, so every such `pi` is
+  idempotent for free. What the hypothesis genuinely excludes is a resolution that is not a
+  function of its argument at the boundary, and a design that admits a history-dependent boundary
+  resolution has left the theorem's setting and every sweep's too.
+- **The boundary of the theorem is the resolution, not the chain** (`168`/`169`/`170`'s measured
+  half, carried): a non-nearest boundary projection gets nothing, and the counterexample counts
+  are already measured (truncate 317/13527, wrap 395/21108, coarse truncate 443/17100).
+- **Interior resolutions are unconstrained by the theorem**: it compares outputs at the boundary
+  and says nothing about which interior placement is cheapest, which is where the harness's
+  crossover results live and remain.
+
+### 4.2 The theorem checked at the generality of its hypotheses
+
+The unit's sweeps drew `S` as grids and ranges. `172_probes/p1_deferral_theorem/` draws `S` as
+**random subsets** (sizes 2 to 64 of a 256-value space) with **adversarial fixed tie-breaking**
+(a per-set hash selection), random chains of depth 2 to 5 over the unit's alphabet, every
+placement, every input. The case that must fail was declared before the run: a downward projection
+onto the same random sets must produce placement wins, or the harness cannot see one.
+
+```
+nearest (random S, adversarial ties): 0 win-chains, 0 win-inputs, 320 exercised of 400
+CONTROL down-projection onto same S : 145 win-chains, 15304 win-inputs
+C1 PASS   C2 PASS (control fires)   C3 PASS (placements move outputs)
+```
+
+With the proof in 4.1, this run and the unit's three are **confirmations of a theorem rather than
+evidence for a generalisation**, which is the reclassification O-170-1 asked for.
+
+`holds for: (theorem) S any nonempty finite set, pi any fixed nearest-point selection, chains any
+composition of total steps, placements any, inputs any, F any, W any, family any, threads any; an
+argument, marked as such per Q65's open distinction. (confirmation runs) the predicates already
+recorded at 168 7.1, 169 2, 170 3, and this probe's header.`
+
+---
+
+## 5. The no-threshold double-rounding claim, from three widths to a theorem
+
+**As the unit left it.** `167` 4.1: no intermediate width `M` strictly between `F` and `2F` gives
+zero double-rounding disagreements, enumerated at `F in {6, 8, 10}`; `169` extended to `F in
+4..=10` and found the closed form `2^(F-1)` at `M = 2F-1`; `171` 5.2 characterised the disagreeing
+set exactly (tie-adjacency: `a*b mod 2^(F+1) in {2^(F-1)+1, 3*2^(F-1)-1}`) and named the class:
+where a finding carries an argument and an enumeration, the predicate takes the weaker half unless
+the author separates them. The argument half was stated at `F any` and its "some such pair lands on
+a rounding boundary" clause was asserted rather than constructed.
+
+**The construction, which discharges the clause.** Three explicit witness families, one per band
+of `M`:
+
+> - `M = 2F-1`: the pair `(1, 2^(F-1)+1)`. The product is odd and tie-adjacent: the first rounding
+>   (grain 2) ties and goes to `2^(F-1)` by ties-to-even (its neighbour `2^(F-1)` is divisible by
+>   4 for `F >= 3`); the second rounding ties at exactly half of `2^F` and goes to `0`; the single
+>   rounding of `2^(F-1)+1` goes to `2^F`. `0 != 2^F`, for every `F >= 3`.
+> - `M = F+1`: the pair `(1, 3*2^(F-2)-1)`. The product sits just below the midpoint between
+>   `2^(F-1)` and `2^F`; the first rounding (grain `2^(F-1)`) pulls it down to `2^(F-1)`, the
+>   second ties to `0`; the single rounding goes to `2^F`.
+> - `F+2 <= M <= 2F-2`: the pair `(2^(2F-M-1), 2^(M-F)+1)`, product `2^(F-1) + g/2` with
+>   `g = 2^(2F-M)` the first grain: exactly on a first-level tie whose even side is `2^(F-1)`
+>   (even because `M >= F+2`), which then ties to `0` at the second rounding, against `2^F` for
+>   the single rounding. Operands in range for `M <= 2F-2`.
+
+**Verified rather than trusted** (`172_probes/p2_witness_families/`): all 65 `(F, M)` cells for
+`F in 3..=12` disagree; CONTROL A, the on-tie family `(1, 2^(F-1))`, declared before the run as
+the case that must fail, agrees on 10 of 10 cells, so the checker can tell a witness from a
+non-witness; CONTROL B reproduces `169`'s exhaustive `2^(F-1)` counts at `F in {4,6,8,10}`
+exactly, so this model is the unit's model; and a full enumeration at `F in 3..=6` confirms every
+interior `M` nonzero.
+
+> **Theorem.** For every `F >= 3` and every `M` with `F < M < 2F`, per-operation correct rounding
+> at intermediate width `M` does not compose into chain-level correct rounding: a two-operand
+> product exists whose double rounding differs from its single rounding. **There is no threshold
+> below exactness.**
+
+`holds for: F >= 3 any (constructive witnesses, verified at F in 3..=12 and exhaustively at F in
+3..=6), M any with F < M < 2F, rounding = nearest-ties-even at both roundings, operation =
+fixed-point multiply, signedness = unsigned, threads any; the theorem half is an argument, the
+verification runs carry the enumerations named. F in {1, 2} have empty or degenerate interior
+ranges and are outside the claim.`
+
+This is what `167` 4.1's sentence "a chain-level accuracy guarantee cannot be bought by
+strengthening the per-operation guarantee" rests on, now at the width the design ships rather than
+at three model widths, and `171` 5.2's tie-adjacency characterisation at `M = 2F-1` stands beside
+it untouched.
+
+---
+
+## 6. The two deletion licences, exactly
+
+Deleting an interior resolution is a rewrite and needs a proof. The unit established two kinds and
+their independence (`168` 4.3, four firing controls), and the formalised statements are:
+
+> **(A) The range licence.** Every intermediate provably lies where the resolution is the
+> identity, so each interior application is a no-op. Premises: widths and a static bound. Reads
+> nothing about which operations compose. This is the licence `109` P5's carried range, `82`'s
+> operand window, the interior-safety predicate and `60`'s exactness predicate all instantiate,
+> and it is the half `109`'s not-an-endomorphism proposal mechanises.
+>
+> **(B) The algebra licence.** The resolution commutes with, or is absorbed by, the composition,
+> so interior applications may be deleted whatever the values are. Premises: the operations and
+> the resolution. Reads no bound. Wrapping over ring-affine steps is the standing instance.
+>
+> **Independence**: each holds where the other fails (an affine wrap chain with 3637 of 4096
+> inputs out of range; a rounding resolution with every intermediate on the grid), so they are two
+> arms with two predicates and neither subsumes the other.
+>
+> **(B) is a conjunction over every step.** One `saturating_sub` swapped into an affine chain
+> revokes it with endpoints, widths and depth unchanged. Consequently **whatever carries a chain's
+> licence must see every step and be composed as the chain is built**; a carrier computed from the
+> endpoint types cannot express it. This is the structural twin of the primitive topic's
+> per-construction transformer result (`164` clause 12's "neither is inherited"), and the twin
+> relation is stated as a shape, not claimed as an instance.
+
+And the licence taxonomy connects to `60`'s carriers exactly as `168` N1 put it: `60`'s exactness
+predicate is licence (A) alone, so a format concept carrying `60`'s three things can state (A) and
+has nowhere to put (B). That gap is the same statability shape `60` established for I7, one level
+down, and it is what the candidate's carrier clause must answer.
+
+---
+
+## 7. The predicate dimensions and the harness results, carried with their profile
+
+A chain adds **depth, shape and arity** to the predicate dimensions a single operation has, and
+each is measured to flip the winning arm on the committed harness: the reassociation family's
+crossover at the lane count (parity below, 6.85x at it, 177.8x at depth 1024); the fold and the
+elementwise chain taking opposite signs on the same widening lever at the same width; the arity
+sweep moving winner and spread continuously, gated by width where no rung exists below `u128`.
+The mechanism behind the fold's side is isolated and profile-invariant: **the projection on the
+loop-carried accumulator is what blocks vectorisation, and the projection on the per-element value
+costs nothing** (`168` 12, byte-identical disassembly at both codegen profiles).
+
+Three carriage notes, each already established and each binding on the candidate:
+
+1. **Every harness figure in this unit carries the profile amendment of `168` 12b**: `codegen
+   profile = cargo default release: opt-level = 3, lto = false, codegen-units = 16`, not the
+   documented fat-LTO profile, and no committed number in that directory is reproducible by
+   construction until `117`'s before-and-after run exists. The mechanism results are established
+   at both profiles; the magnitudes are established at the default one.
+2. **The attribution**: of the 178x reassociation win, the bounds proof alone accounts for at most
+   1.30x and the reassociation for the rest (`nolaw` arm), which is why the associativity proof is
+   worth carrying in a typestate at all.
+3. **The hardware axis**: the cliff at `L = 16` is one vector register on the measured host, a
+   predicate dimension the width/strategy/signedness list has no place for (Q-C5, open, closed by
+   one run on non-NEON hardware).
+
+And the family axis: **in fixed point, association order has exactly zero accuracy content**
+(bit-identical reassociation at every size swept) **and is a speed lever worth up to 178x; in
+relative precision it is an accuracy lever worth up to 94.8x** (`167` section 8, with the
+overflow-policy dimension of its zero named by `60`'s order-dependence result and recorded in
+`167` R12: the fixed-point zero's region is "no adaptation on the additive side occurs", since a
+saturating fold is order-dependent where saturation is reachable). A canon sentence about
+reassociation that does not name the family and the reachability of the resolution is wrong for
+someone.
+
+---
+
+## 8. The graph case, exactly
+
+- **The carrier joins with no excess**: a shared node's value is one value, so its width
+  requirement is one number and the join over consumers is a maximum (`168` p6, closing its own
+  O-168-1's carrier half negatively).
+- **The schedule does not join**: a shared node has one schedule and its consumers can disagree,
+  the disagreement forced by carrier capacity; no path-shaped analysis reports the loss, because
+  along each path the chosen schedule is the best available to that path. In `60`'s vocabulary:
+  **under sharing, a term does not factor into windows uniquely** (`168` T1).
+- **The conflict band has a closed form**: `[R, E-1]` of width `E - R`, where `E` is the losing
+  branch's exact requirement and `R` its requirement with the shared node resolved; entailed, not
+  swept, generic over constructions (band appears iff `E > R`), and it becomes a measured curve
+  exactly when the losing branch's own width interacts with the carrier (`169` 3, `170` 9).
+- **The residue is three resolutions, all costing something**: materialise twice, resolve and let
+  one branch lose, or refuse the region and make the consumer split it; which ships is a design
+  call and the third is the one that keeps the loss visible (`168` 18's residue, carried as a
+  residue).
+
+So the candidate's delimiter vocabulary should be the region between observations, with the chain
+as its path-shaped case, a single operation as its one-node case, and the sharing conflict as the
+one genuinely new obligation a DAG adds: **not a wider carrier, but a schedule decision at every
+shared node**.
+
