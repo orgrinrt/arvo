@@ -145,6 +145,7 @@ Recorded at dispatch time rather than after the fact.
 | 154 | kiselyov (cold, blind) | `a473b594bc3fada7e` |
 | 155 | dolan (cold, blind) | `ae90f22541d130d97` |
 | 157 | lamport (attacker) | `ae38c2d4d2d3fb8e0` |
+| 158 | dolan (reply to `157`) | `ae90f22541d130d97` |
 
 `154` and `155` have both landed their arvo files and both agents were then redirected by op to the
 mockspace bench-harness audit, so they are live on a different repository rather than spent. They
