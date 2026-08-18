@@ -746,13 +746,16 @@ line anchors in the candidate             : 19
 probe paths in the candidate              : 13
 candidate anchors that appear in a source : 18
 candidate anchors novel to the candidate  : 1
+    NOVEL 82:770-774
 source anchors not carried (dropped)      : 188
 probe paths carried                       : 7 of 91
 ```
 
-**The one novel anchor is `82:770-774`**, this file's correction of `111`'s `82:768-774`, which
-opens two lines above the finding it quotes. The repair restores from the establishing source
-rather than from the citation that drifted, which is why it appears in no source file.
+**The one novel anchor is `82:770-774`**, this file's correction of the range `111` cites for the
+same finding, whose start sits two lines above the finding it quotes. The repair restores from the
+establishing source rather than from the citation that drifted, which is why the corrected range
+appears in no source file; the drifted range is deliberately not spelled in anchor form here, so
+it stays in the dropped set the diff reports.
 
 **The dropped list is in the sibling file** `161_probes/anchor_accounting/dropped_anchors.txt`,
 never in this file, because an author that prints the anchors it dropped makes them present in the
@@ -764,8 +767,8 @@ ten thousand lines; most source anchors are the members' internal bookkeeping (t
 their own coverage sections, their citations of each other's paragraphs), and a candidate that
 carried all 206 would be the corpus again. What the ledger is obligated to carry is **the evidence
 anchor for each claim it states**, and the check after this file should test exactly that: for
-each L-entry, does the named anchor hold the claim. The 19 line anchors and 10 probe paths are
-those load-bearing addresses; every claim additionally names its file and section or finding
+each L-entry, does the named anchor hold the claim. The 19 line anchors, and the carried probe paths among the 13 (the rest
+being this file's own instruments), are those load-bearing addresses; every claim additionally names its file and section or finding
 number, which are greppable addresses of a coarser grain. Zero novel anchors means nothing here
 cites material outside the thirteen sources plus the governing files.
 

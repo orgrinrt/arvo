@@ -69,8 +69,12 @@ OK  82:770-774   [5 lines]
       **F6. For signed saturating addition, `LO >= 0 || HI <= 0` on a declared operand window matches
       associativity on that window's generated closure exactly.** `N in {2,3,4,5,6}, sign = signed, policy =
       saturate, op = add, arity = 3 for the closure check and arity in {2,3,4,5} for the parenthesisation check,
+OK  82:770-774   [5 lines]
+      **F6. For signed saturating addition, `LO >= 0 || HI <= 0` on a declared operand window matches
+      associativity on that window's generated closure exactly.** `N in {2,3,4,5,6}, sign = signed, policy =
+      saturate, op = add, arity = 3 for the closure check and arity in {2,3,4,5} for the parenthesisation check,
 UNRESOLVED  no_such_file_157.md:1
 OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
 
-citations checked: 22 plus 2 controls
+citations checked: 23 plus 2 controls
 failures: 2  (the 2 controls MUST be among them; CONTROL PASS)
