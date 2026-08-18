@@ -27,31 +27,55 @@
 use std::panic;
 
 fn profile() -> &'static str {
-    if cfg!(debug_assertions) { "debug-assertions=on" } else { "debug-assertions=off" }
+    if cfg!(debug_assertions) {
+        "debug-assertions=on"
+    } else {
+        "debug-assertions=off"
+    }
 }
 
 // A: the interior as written. Undefined at x = 0.
 #[inline(never)]
-fn simp_a(x: u32) -> u32 { (x.wrapping_mul(x)) / x }
+fn simp_a(x: u32) -> u32 {
+    (x.wrapping_mul(x)) / x
+}
 // B: the interior simplified. Total.
 #[inline(never)]
-fn simp_b(x: u32) -> u32 { x }
+fn simp_b(x: u32) -> u32 {
+    x
+}
 
 // C-D, the two refuted pairs.
 #[inline(never)]
-fn v1_a(x: u32) -> u32 { let d = x % 7; 255 / d }
+fn v1_a(x: u32) -> u32 {
+    let d = x % 7;
+    255 / d
+}
 #[inline(never)]
-fn v1_b(x: u32) -> u32 { let d = (x % 7) as u8 as u32; 255 / d }
+fn v1_b(x: u32) -> u32 {
+    let d = (x % 7) as u8 as u32;
+    255 / d
+}
 #[inline(never)]
-fn v2_a(x: u32) -> u32 { let d = (x as u8).wrapping_mul(37).wrapping_sub(60); 255 / (d as u32) }
+fn v2_a(x: u32) -> u32 {
+    let d = (x as u8).wrapping_mul(37).wrapping_sub(60);
+    255 / (d as u32)
+}
 #[inline(never)]
-fn v2_b(x: u32) -> u32 { let d = ((x.wrapping_mul(37).wrapping_sub(60)) & 0xFF) as u8; 255 / (d as u32) }
+fn v2_b(x: u32) -> u32 {
+    let d = ((x.wrapping_mul(37).wrapping_sub(60)) & 0xFF) as u8;
+    255 / (d as u32)
+}
 
 // C-B, no partial operation anywhere.
 #[inline(never)]
-fn tot_a(x: u32) -> u32 { x.wrapping_mul(x).wrapping_add(1) }
+fn tot_a(x: u32) -> u32 {
+    x.wrapping_mul(x).wrapping_add(1)
+}
 #[inline(never)]
-fn tot_b(x: u32) -> u32 { (x.wrapping_mul(x)).wrapping_add(1) }
+fn tot_b(x: u32) -> u32 {
+    (x.wrapping_mul(x)).wrapping_add(1)
+}
 
 fn sweep(a: fn(u32) -> u32, b: fn(u32) -> u32, n: u32) -> (u32, u32, u32, u32) {
     let (mut ok, mut bad, mut split, mut dis) = (0, 0, 0, 0);
@@ -59,7 +83,12 @@ fn sweep(a: fn(u32) -> u32, b: fn(u32) -> u32, n: u32) -> (u32, u32, u32, u32) {
         let ra = panic::catch_unwind(|| a(x));
         let rb = panic::catch_unwind(|| b(x));
         match (ra, rb) {
-            (Ok(va), Ok(vb)) => { ok += 1; if va != vb { dis += 1; } }
+            (Ok(va), Ok(vb)) => {
+                ok += 1;
+                if va != vb {
+                    dis += 1;
+                }
+            }
             (Err(_), Err(_)) => bad += 1,
             _ => split += 1,
         }
@@ -71,13 +100,32 @@ fn main() {
     panic::set_hook(Box::new(|_| {}));
     const N: u32 = 4096;
     println!("== P2c, profile = {}, inputs 0..{} ==", profile(), N);
-    println!("{:>38} {:>8} {:>9} {:>7} {:>10}", "pair", "both ok", "both bad", "SPLIT", "value dis");
+    println!(
+        "{:>38} {:>8} {:>9} {:>7} {:>10}",
+        "pair", "both ok", "both bad", "SPLIT", "value dis"
+    );
     let mut r = std::collections::HashMap::new();
     for (name, a, b) in [
-        ("constructed: (x*x)/x against x", simp_a as fn(u32) -> u32, simp_b as fn(u32) -> u32),
-        ("C-D  v1, shared divisor", v1_a as fn(u32) -> u32, v1_b as fn(u32) -> u32),
-        ("C-D  v2, no-op widening", v2_a as fn(u32) -> u32, v2_b as fn(u32) -> u32),
-        ("C-B  no partial operation", tot_a as fn(u32) -> u32, tot_b as fn(u32) -> u32),
+        (
+            "constructed: (x*x)/x against x",
+            simp_a as fn(u32) -> u32,
+            simp_b as fn(u32) -> u32,
+        ),
+        (
+            "C-D  v1, shared divisor",
+            v1_a as fn(u32) -> u32,
+            v1_b as fn(u32) -> u32,
+        ),
+        (
+            "C-D  v2, no-op widening",
+            v2_a as fn(u32) -> u32,
+            v2_b as fn(u32) -> u32,
+        ),
+        (
+            "C-B  no partial operation",
+            tot_a as fn(u32) -> u32,
+            tot_b as fn(u32) -> u32,
+        ),
     ] {
         let t = sweep(a, b, N);
         println!("{name:>38} {:>8} {:>9} {:>7} {:>10}", t.0, t.1, t.2, t.3);
@@ -90,22 +138,37 @@ fn main() {
         let ra = panic::catch_unwind(|| simp_a(x));
         let rb = panic::catch_unwind(|| simp_b(x));
         if let (Ok(va), Ok(vb)) = (ra, rb) {
-            if va != vb { certified = false; }
+            if va != vb {
+                certified = false;
+            }
         }
         // inputs where either is undefined are SKIPPED, which is the defect
     }
 
     let c = r["constructed: (x*x)/x against x"];
     println!();
-    println!("C-A  value disagreements where both defined: {}   (must be 0)", c.3);
-    println!("C-B  no-partial control splits: {}, disagreements: {}   (both must be 0)",
-        r["C-B  no partial operation"].2, r["C-B  no partial operation"].3);
+    println!(
+        "C-A  value disagreements where both defined: {}   (must be 0)",
+        c.3
+    );
+    println!(
+        "C-B  no-partial control splits: {}, disagreements: {}   (both must be 0)",
+        r["C-B  no partial operation"].2, r["C-B  no partial operation"].3
+    );
     println!("C-C  constructed splits: {}   (must be > 0)", c.2);
-    println!("C-D  refuted constructions still at zero splits: v1 {}, v2 {}   (both must be 0)",
-        r["C-D  v1, shared divisor"].2, r["C-D  v2, no-op widening"].2);
+    println!(
+        "C-D  refuted constructions still at zero splits: v1 {}, v2 {}   (both must be 0)",
+        r["C-D  v1, shared divisor"].2, r["C-D  v2, no-op widening"].2
+    );
     println!("C-E  a value-only check skipping undefined inputs CERTIFIES the pair: {certified}");
     println!("     (must be true: that is the check clause 1 refuses)");
     println!();
-    println!("VERDICT at {}: a partial interior gives a binding-free definedness", profile());
-    println!("  channel with full value agreement: {}", c.2 > 0 && c.3 == 0 && certified);
+    println!(
+        "VERDICT at {}: a partial interior gives a binding-free definedness",
+        profile()
+    );
+    println!(
+        "  channel with full value agreement: {}",
+        c.2 > 0 && c.3 == 0 && certified
+    );
 }

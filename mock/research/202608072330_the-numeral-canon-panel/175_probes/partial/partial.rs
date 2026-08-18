@@ -24,18 +24,22 @@
 //        actually hit the zero divisor. A zero count means nothing was shown.
 
 fn profile() -> &'static str {
-    if cfg!(debug_assertions) { "debug-assertions=on" } else { "debug-assertions=off" }
+    if cfg!(debug_assertions) {
+        "debug-assertions=on"
+    } else {
+        "debug-assertions=off"
+    }
 }
 
 // --- the PARTIAL pair. Interior: 255 / (x % k), which divides by zero for some x.
 #[inline(never)]
 fn partial_a(x: u8, k: u8) -> u8 {
-    let d = x % k;           // interior, unbound
+    let d = x % k; // interior, unbound
     (255u8 / d).wrapping_add(1)
 }
 #[inline(never)]
 fn partial_b(x: u8, k: u8) -> u8 {
-    let d = (x as u32) % (k as u32);   // same interior, wider carrier
+    let d = (x as u32) % (k as u32); // same interior, wider carrier
     ((255u32 / d) as u8).wrapping_add(1)
 }
 
@@ -62,18 +66,28 @@ fn main() {
     let mut zero_divisor = 0u32;
 
     for x in 0..=255u8 {
-        if x % K == 0 { zero_divisor += 1; }
+        if x % K == 0 {
+            zero_divisor += 1;
+        }
         let ra = std::panic::catch_unwind(|| partial_a(x, K));
         let rb = std::panic::catch_unwind(|| partial_b(x, K));
         match (ra, rb) {
-            (Ok(va), Ok(vb)) => { agree += 1; if va != vb { value_disagree += 1; } }
+            (Ok(va), Ok(vb)) => {
+                agree += 1;
+                if va != vb {
+                    value_disagree += 1;
+                }
+            }
             (Err(_), Err(_)) => both_panic += 1,
             _ => split += 1,
         }
     }
     println!("PARTIAL interior (255 / (x % {K})):");
     println!("  inputs hitting a zero divisor          : {zero_divisor}   (C-C, must be > 0)");
-    println!("  both defined and equal                 : {}", agree - value_disagree);
+    println!(
+        "  both defined and equal                 : {}",
+        agree - value_disagree
+    );
     println!("  both defined and DISAGREEING on value  : {value_disagree}   (C-A, must be 0)");
     println!("  both undefined (both panic)            : {both_panic}");
     println!("  DEFINEDNESS SPLIT (one panics, one not): {split}");
@@ -84,7 +98,11 @@ fn main() {
         let ra = std::panic::catch_unwind(|| total_a(x, K));
         let rb = std::panic::catch_unwind(|| total_b(x, K));
         match (ra, rb) {
-            (Ok(va), Ok(vb)) => { if va != vb { tdis += 1; } }
+            (Ok(va), Ok(vb)) => {
+                if va != vb {
+                    tdis += 1;
+                }
+            }
             (Err(_), Err(_)) => {}
             _ => tsplit += 1,
         }
@@ -93,8 +111,14 @@ fn main() {
     println!("  definedness splits                     : {tsplit}");
     println!("  value disagreements                    : {tdis}");
     println!();
-    println!("VERDICT at {}: a partial interior makes the pair distinguishable", profile());
-    println!("  by definedness alone, with NO binding to the interior: {}", both_panic > 0 || split > 0);
+    println!(
+        "VERDICT at {}: a partial interior makes the pair distinguishable",
+        profile()
+    );
+    println!(
+        "  by definedness alone, with NO binding to the interior: {}",
+        both_panic > 0 || split > 0
+    );
     println!("  (both-undefined counts too: a caller binding only the final value still sees");
     println!("   the program abort, and the wider realisation would not have aborted had the");
     println!("   division been the only difference; see the total control for the contrast.)");

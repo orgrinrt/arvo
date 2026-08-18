@@ -24,13 +24,17 @@
 use std::panic;
 
 fn profile() -> &'static str {
-    if cfg!(debug_assertions) { "debug-assertions=on" } else { "debug-assertions=off" }
+    if cfg!(debug_assertions) {
+        "debug-assertions=on"
+    } else {
+        "debug-assertions=off"
+    }
 }
 
 // A: divisor computed at the declared width, where the multiply wraps.
 #[inline(never)]
 fn split_a(x: u8) -> u8 {
-    let d = x.wrapping_mul(37).wrapping_sub(60);   // unbound interior
+    let d = x.wrapping_mul(37).wrapping_sub(60); // unbound interior
     255u8 / d
 }
 // B: same divisor computed wider, narrowed once. Same boundary function wherever
@@ -43,15 +47,25 @@ fn split_b(x: u8) -> u8 {
 
 // v1's pair, kept as C-D: same divisor in both, so no split is possible.
 #[inline(never)]
-fn same_a(x: u8) -> u8 { let d = x % 7; 255u8 / d }
+fn same_a(x: u8) -> u8 {
+    let d = x % 7;
+    255u8 / d
+}
 #[inline(never)]
-fn same_b(x: u8) -> u8 { let d = ((x as u32) % 7) as u8; 255u8 / d }
+fn same_b(x: u8) -> u8 {
+    let d = ((x as u32) % 7) as u8;
+    255u8 / d
+}
 
 // C-B: total interior.
 #[inline(never)]
-fn tot_a(x: u8) -> u8 { x.wrapping_mul(37).wrapping_sub(60).wrapping_add(1) }
+fn tot_a(x: u8) -> u8 {
+    x.wrapping_mul(37).wrapping_sub(60).wrapping_add(1)
+}
 #[inline(never)]
-fn tot_b(x: u8) -> u8 { ((((x as u32) * 37).wrapping_sub(60) & 0xFF) as u8).wrapping_add(1) }
+fn tot_b(x: u8) -> u8 {
+    ((((x as u32) * 37).wrapping_sub(60) & 0xFF) as u8).wrapping_add(1)
+}
 
 fn sweep(a: fn(u8) -> u8, b: fn(u8) -> u8) -> (u32, u32, u32, u32) {
     let (mut both_ok, mut both_bad, mut split, mut dis) = (0, 0, 0, 0);
@@ -59,7 +73,12 @@ fn sweep(a: fn(u8) -> u8, b: fn(u8) -> u8) -> (u32, u32, u32, u32) {
         let ra = panic::catch_unwind(|| a(x));
         let rb = panic::catch_unwind(|| b(x));
         match (ra, rb) {
-            (Ok(va), Ok(vb)) => { both_ok += 1; if va != vb { dis += 1; } }
+            (Ok(va), Ok(vb)) => {
+                both_ok += 1;
+                if va != vb {
+                    dis += 1;
+                }
+            }
             (Err(_), Err(_)) => both_bad += 1,
             _ => split += 1,
         }
@@ -68,13 +87,28 @@ fn sweep(a: fn(u8) -> u8, b: fn(u8) -> u8) -> (u32, u32, u32, u32) {
 }
 
 fn main() {
-    panic::set_hook(Box::new(|_| {}));   // the panics are the measurement, not the output
+    panic::set_hook(Box::new(|_| {})); // the panics are the measurement, not the output
     println!("== P2b, profile = {} ==", profile());
-    println!("{:>34} {:>9} {:>10} {:>7} {:>12}", "pair", "both ok", "both bad", "SPLIT", "value dis");
+    println!(
+        "{:>34} {:>9} {:>10} {:>7} {:>12}",
+        "pair", "both ok", "both bad", "SPLIT", "value dis"
+    );
     for (name, a, b) in [
-        ("constructed: divisor widened", split_a as fn(u8) -> u8, split_b as fn(u8) -> u8),
-        ("C-D  v1's shared divisor", same_a as fn(u8) -> u8, same_b as fn(u8) -> u8),
-        ("C-B  total interior", tot_a as fn(u8) -> u8, tot_b as fn(u8) -> u8),
+        (
+            "constructed: divisor widened",
+            split_a as fn(u8) -> u8,
+            split_b as fn(u8) -> u8,
+        ),
+        (
+            "C-D  v1's shared divisor",
+            same_a as fn(u8) -> u8,
+            same_b as fn(u8) -> u8,
+        ),
+        (
+            "C-B  total interior",
+            tot_a as fn(u8) -> u8,
+            tot_b as fn(u8) -> u8,
+        ),
     ] {
         let (ok, bad, sp, dis) = sweep(a, b);
         println!("{name:>34} {ok:>9} {bad:>10} {sp:>7} {dis:>12}");
@@ -88,6 +122,9 @@ fn main() {
     println!("C-C  constructed splits: {sp}   (must be > 0)");
     println!("C-D  v1's shared-divisor splits: {sp_same}   (must be 0)");
     println!();
-    println!("VERDICT at {}: a partial interior gives a binding-free definedness", profile());
+    println!(
+        "VERDICT at {}: a partial interior gives a binding-free definedness",
+        profile()
+    );
     println!("  channel: {}", sp > 0);
 }
