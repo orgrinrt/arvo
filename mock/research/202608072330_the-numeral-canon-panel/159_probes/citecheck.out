@@ -1,0 +1,17 @@
+157:288  ->  **F157-3. At the packed end the bench corpus names a column and never an ele
+109:649  ->  derived constraint rather than only a rejection: **`ρ` for anything that per
+109:649  ->  derived constraint rather than only a rejection: **`ρ` for anything that per
+157:858  ->  **And `109` has the constraint, though it reached it for a different reason 
+109:649  ->  derived constraint rather than only a rejection: **`ρ` for anything that per
+109:156  ->  **Predicate.** `V` and `ρ` are independent components: `I any, F any, signed
+157:35  ->  there. So topic five's corpus, read under its own rules, says nothing whatev
+157:1011  ->  situation involving that dimension, and a fixed listing means it holds there
+RULES.md:116  ->  **One instance of evidence is never enough.** Three independent ones is the 
+bitpack-footprint-shared/src/lib.rs:9  ->  //! Reuses `bench-bitpack-plan-shared`'s transform, unmodified: `Pack<W>` fo
+warm-container-shared/src/lib.rs:187  ->  pub trait Carrier: Copy + 'static {
+154_probes/p1_saturation/sat.s:31  ->  _b_unsat:
+RULES.md:79  ->  **Two tests decide every sentence.** *Permanence*: would this still be true 
+RULES.md:552  ->  **A predicate is never widened in place.** Op:
+RULES.md:79  ->  **Two tests decide every sentence.** *Permanence*: would this still be true 
+
+resolved=15 failed=0
