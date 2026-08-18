@@ -196,6 +196,45 @@ fn main() {
     );
     println!();
 
+    // ---- The bound on when the conflict exists at all -------------------
+    // Added after reading `60`, whose window model this contests. The conflict
+    // is not unconditional: if the carrier can hold branch A's exact form there
+    // is no forced resolution and the two branches' windows agree. So the
+    // honest statement carries the carrier range, and the range is measured
+    // rather than asserted.
+    println!("BOUND. At which carrier widths does the conflict exist?");
+    let mut conflict = Vec::new();
+    let mut no_conflict = Vec::new();
+    for c in 8u32..=32 {
+        let cap_bits = c;
+        // branch A forced iff its exact form does not fit but its resolved form does
+        let a_exact_fits = wa <= cap_bits;
+        let a_resolved_fits = wa_resolved <= cap_bits;
+        // branch B strictly prefers t exact, always, by the nearest-point argument
+        if !a_exact_fits && a_resolved_fits {
+            conflict.push(c);
+        } else {
+            no_conflict.push(c);
+        }
+    }
+    println!("  branch A needs {wa} bits exact, {wa_resolved} bits with t resolved");
+    println!("  conflict at carrier widths: {:?}", conflict);
+    println!("  no conflict at:             {:?}", no_conflict);
+    assert!(
+        !conflict.is_empty(),
+        "no carrier width produces the conflict, so RESULT 2 is an artifact"
+    );
+    assert!(
+        !no_conflict.is_empty(),
+        "CONTROL FAILED: the conflict exists at every carrier width, which would \
+         mean it is unconditional; it is not, and a claim that it is would be wrong"
+    );
+    println!("  so the conflict is exactly the band [{}, {}]: wide enough for the",
+             conflict.first().unwrap(), conflict.last().unwrap());
+    println!("  resolved branch and too narrow for the exact one. Outside it the two");
+    println!("  branches' windows agree and there is nothing to report.");
+    println!();
+
     println!("RESULT: a fan-out region's CARRIER reduces to a maximum over its paths");
     println!("and its SCHEDULE does not. One branch can force a resolution that the");
     println!("other strictly loses by, and no path-shaped analysis reports that loss,");

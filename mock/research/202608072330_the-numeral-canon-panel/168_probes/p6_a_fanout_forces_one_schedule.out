@@ -25,6 +25,14 @@ CONTROL. A DAG whose two branches both want t deferred must show zero loss.
    and here nothing forces it, so the region may leave t exact.)
   is any control branch forced to resolve t? false
 
+BOUND. At which carrier widths does the conflict exist?
+  branch A needs 20 bits exact, 16 bits with t resolved
+  conflict at carrier widths: [16, 17, 18, 19]
+  no conflict at:             [8, 9, 10, 11, 12, 13, 14, 15, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+  so the conflict is exactly the band [16, 19]: wide enough for the
+  resolved branch and too narrow for the exact one. Outside it the two
+  branches' windows agree and there is nothing to report.
+
 RESULT: a fan-out region's CARRIER reduces to a maximum over its paths
 and its SCHEDULE does not. One branch can force a resolution that the
 other strictly loses by, and no path-shaped analysis reports that loss,
