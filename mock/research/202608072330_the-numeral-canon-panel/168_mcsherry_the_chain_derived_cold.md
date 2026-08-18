@@ -779,3 +779,383 @@ F9 through F14 are read off committed harness artifacts in `mock/benches/`; I di
 harness and I claim nothing beyond what those files record. F2 through F8 are from
 `168_probes/`, committed with their output before this file cited them, and they are
 spikes: they establish and refute, and **they price nothing**.
+
+---
+
+# Phase two: reconciliation
+
+Written after reading the curated list. Phase one above is unedited and its four citation line
+numbers, which I corrected by opening them, were corrected before it was committed.
+
+**Read in phase two, in full:** `166`, `109` section 8, `110` sections 3 to 5 (its P7 and P8 material),
+`112` section 8, `164` sections 1 to 4, `113`, `AGREEMENTS.md` sections 6 and 12, `117`, `63` section 5
+(reached because `AGREEMENTS.md` section 6 attributes the panel's chain result to it and the register
+pointed at `60` through it), and `OPTIONS.md` entries Q11, Q12, Q16, Q42, Q54, Q55. **Grepped:** the
+panel for every bench family I cite, to find who had read each first. **Did not open:** everything
+else, which is most of the panel.
+
+## 12. The largest thing I found, and it changes one of my own findings
+
+`117` records that **every number in `mock/benches/` was taken at cargo's default release profile**,
+`lto = false` and `codegen-units = 16`, not the fat-LTO one-codegen-unit profile the harness documents,
+and says plainly: "Anyone about to cite a bench number from this directory should establish that
+first." I cite six of them. So I established it, and attacking that blocker produced the best result in
+this file.
+
+I confirmed `117`'s premise independently: `grep -n '\[profile' mock/benches/Cargo.toml
+mock/benches/variants/*/Cargo.toml | wc -l` returns **0**, and `mock/benches/.cargo` does not exist.
+
+**First correction, to my own phase one.** F9 says "deleting the interior projection of a wrapping
+affine chain is worth 23.95x" and section 4.4 attributes it to the interior projection blocking the
+algebraic collapse of the affine chain. `168_probes/p4` refutes that attribution. I built a chain whose
+interposed right shift makes the affine collapse *impossible*, expecting it to show no difference
+between the eager and deferred forms. **It shows the same difference**, at both profiles:
+
+```
+  affine_deferred      vectorised=YES  vec_operands=22
+  affine_eager         vectorised=no   vec_operands=0
+  blocked_deferred     vectorised=YES  vec_operands=32
+  blocked_eager        vectorised=no   vec_operands=0
+```
+
+So the mechanism is not the collapse, because the effect is present where the collapse cannot happen.
+The bench family's own title ("what the interior projection prevents the optimiser from doing") invites
+the reading I took, and it is the wrong one.
+
+**Second, the mechanism isolated.** `168_probes/p5` separates the projection on the per-element *value*
+from the projection on the loop-carried *accumulator*, at `W = 13` in a `u16` container, matching the
+`minimum` arm whose eager and deferred forms are that family's 9380 ns and 405 ns rows. Read post-LTO
+out of a linked cdylib, which is what the harness builds:
+
+```
+  control_plain_sum    vectorised=YES   (no projection anywhere)
+  control_indexed_sum  vectorised=YES
+  both_deferred        vectorised=YES
+  value_eager          vectorised=YES   projection on the value only
+  acc_eager            vectorised=no    projection on the accumulator only
+  both_eager           vectorised=no    folded with acc_eager, same address
+```
+
+**The projection on the loop-carried accumulator is what blocks vectorisation. The projection on the
+per-element value costs nothing at all**, and `acc_eager` and `both_eager` land at the identical
+address, so once the accumulator projection is present the value projections contribute literally
+nothing. LLVM eliminates them itself by the same homomorphism arvo would use.
+
+**Third, and this is what discharges `117` for my citations: the result is identical at both codegen
+profiles.** Byte-for-byte the same disassembly at `lto=off, codegen-units=16` and at `lto=fat,
+codegen-units=1`. So the *mechanism* behind the family is profile-invariant. The *magnitude* is not
+established at the documented profile and I do not claim it is; that needs `117`'s before-and-after
+harness run and nothing else.
+
+**Fourth, three instrument defects, each caught by a control and each recorded in the probe rather than
+edited away.** They are worth listing because all three produced a confident wrong number and none was
+visible without the control:
+
+1. Counting `mul`-class instructions returned **zero on every arm**, because LLVM strength-reduces `*3`
+   and `*5` into shift-adds. A counter that cannot return a nonzero is not an instrument.
+2. Hardcoding the loop label `LBB*_2` reported a zero-instruction loop for two arms, because LLVM
+   numbers labels differently per profile.
+3. Matching vector registers as `v[0-9]+\.` matched **nothing**, because that is ARM's assembler syntax
+   and Apple's puts the element form on the mnemonic (`add.8h v0, v4, v0`). This reported a fully
+   vectorised function as scalar, and it is the one that would have shipped a false finding: I had
+   already written down "neither form vectorises" before the positive control fired.
+
+And a fourth, about method rather than about a pattern: **`--emit asm` under `-Clto=fat` reports the
+pre-LTO module**, in which nothing is vectorised including the control. An earlier run of p5 concluded
+from that "the documented profile suppresses vectorisation entirely", which is a statement about the
+instrument. Disassembling the linked image is what fixed it.
+
+**Predicate for the p4 and p5 results.** `W = 13, F = 0, signedness = unsigned, container = u16,
+resolution = reduce mod 2^W, chain depth = 3 (p4 affine) and 5 (p4 blocked) and 3 (p5), operations in
+{+k, *3, -k, >>1}, host = Apple M1, rustc 1.98.0-nightly (57d06900f 2026-05-27), codegen profiles both
+of {opt-level=3 lto=off codegen-units=16} and {opt-level=3 lto=fat codegen-units=1}, crate-type cdylib,
+threads = 1`. This is an **ad-hoc quick spike** for any question of magnitude and it prices nothing; it
+establishes presence and absence of vector code and nothing else.
+
+### 12b. The predicate amendment F9 through F14 need
+
+Phase one's predicate for the harness findings says `build profile = release`. That is true and it is
+not exact, and this panel retired a true finding once already because a profile dimension was stated at
+the wrong granularity. The exact form, established by the two commands above and by `117`:
+
+> `codegen profile = cargo default release: opt-level = 3, lto = false, codegen-units = 16`
+
+Phase one is not edited, per the rule that a predicate is never rewritten in place. **The amendment
+lives here and the consolidation carries it**, and it is a narrowing rather than a widening: F9 through
+F14 hold in a smaller region than "release" names, not a larger one.
+
+One consequence worth stating, because `117` names it and it is not about speed.
+`codegen-units = 16` partitions non-deterministically across builds, so two runs of the same unchanged
+variant can differ in inlining and layout. That is the contamination the harness's per-variant cdylib
+isolation exists to prevent, arriving through a door nobody was watching. It does not make any
+committed number wrong; it means no committed number in that directory is reproducible by construction,
+and a re-run is the only way to find out whether a given one is.
+
+## 13. Where I agree, and what that does to each rung
+
+I derived phase one blind, so where I land on a prior claim it is a genuine second instance rather than
+a read, with two exceptions I name below. **Carrying forward unchanged, ten items:**
+
+**1. `63` section 5, via `60`: "a chain is a composition of exact operations together with a schedule of
+adaptation points, and the schedule is part of the function's meaning, because two schedules over the
+same ops compute different functions."** This is my section 4.1 arrived at independently, and its
+vocabulary is better than mine. **I adopt "schedule" over my "placement"** and I keep their sentence.
+`60_probes/p_a` shows three schedules giving three functions; my `p3` gives the same fact a **count**,
+the resolution degeneracy, exhaustive over the declared domain: 1 for wrapping over affine steps at
+depth 3 and 5, 1 for clamping over monotone non-negative additions, 3 for clamping mixed, and 3 rising
+to 7 for rounding as depth goes 3 to 5. Two independent instances, and mine adds the quantity.
+
+**2. `63` section 5: "a concept that closes its operations over the format, adaptation fused invisibly
+into each op, can state stepwise correctness and nothing above it, so I7's chain clause has no
+expressible form against it."** This is my sections 4.5 and 7 exactly, derived independently, and it is
+the sharpest sentence on chains in the panel. Second instance, carried unchanged. `63` marks it ONE
+EXPERT, cold, unattacked; on my derivation it is TWO EXPERTS, both cold, neither having read the other.
+
+**3. `109` section 8: "the intermediate width is a function of the chain, which no per-value type
+knows."** My section 4.2, derived independently, exhaustively, with a tightness control. Second
+instance.
+
+**4. `109` section 8: the deferred route is never worse than the per-step route.** Measured there over
+3200 multiplicative chains at `F = 8`. Second instance from me, and see section 14 for the
+strengthening.
+
+**5. `20` section 3.2 on `precise-widening-theorem-l1`: "the theorem does not make the loop cheaper, it
+changes which loop is compiled."** `20` read that family before me and I did not know. My F10 is
+therefore a **re-read of the same artifacts, not a second instance**, and I say so; `20`'s per-arm
+ratios (32.3x at W=8, 1.00x at W=60) and my spread figures (33.13x, 1.00x) are the same numbers cut
+differently. What p5 adds is a **second instrument** on the mechanism sentence, which `20` took from
+the bench's own doc comment: I show it by disassembly, with a positive control, at both codegen
+profiles, and for the *masking* accumulator rather than the saturating one.
+
+**6. `112` section 8 and `110` P7/P8: a construction's soundness under composition is not
+componentwise**, and only the denotational sameness relation is a congruence (`164` clause 2). This is
+the structural twin of my F5, that the algebraic licence is a conjunction over every step rather than a
+property of the endpoints. Different objects, same shape, and I read `112` after deriving F5. Carried
+unchanged.
+
+**7. `92` and Q42: each vectorised arm is at parity with the fold as written below its own lane count
+and first pays above it.** My F11 reads the same committed `satfold-length-l1` artifacts, so it is a
+**re-read, not a second instance**, and Q42's crossover figures are the authoritative ones. My reading
+agrees. Q42 also corrects something I would have got wrong: `lanes4-idx`, which emits no vector
+instruction at all, is faster at every length by up to 14.51x, so "vectorised or not" is not the whole
+cost model even for this family.
+
+**8. `110` section 4: "composition" carries two jobs, and configuration is not composition.** Carried
+unchanged and extended in section 15.
+
+**9. Q12, from `35`: unsigned wrapping, unsigned saturating and signed wrapping folds are exactly
+reassociable, and signed saturating folds are not, with 70.1% of vectors at n=8 depending on the
+split.** This fills my "could not: signed" honestly and I carry it unchanged.
+
+**10. `117`, in full.** Carried unchanged and acted on rather than reported.
+
+## 14. Where I add something, or disagree
+
+**A. `109` names its own most obvious attack and my p3 closes it, in the strengthening direction.**
+`109` section 8 says its result "does not extend to rounding-to-nearest, which I did not test and where
+the per-step errors would partly cancel; that is the most obvious attack on this result and I am naming
+it rather than waiting for someone else to."
+
+They do not cancel, and the reason is one line. **Every placement ends with the same boundary
+resolution, so every output is a representable point; where that resolution is a nearest-point
+projection, the deferred form outputs the nearest representable point to the exact value by definition,
+and nothing can be strictly closer.** So deferral is not merely never worse in aggregate, it is
+**pointwise optimal**, and rounding-to-nearest is the case where that is easiest to see rather than the
+case that breaks it.
+
+Checked rather than argued, over 3000 randomly generated chains of depth 2 to 5 over an alphabet
+including a contracting step and a non-monotone one:
+
+```
+  nearest (round to 2^3)   3000 chains, 0 with any eager win, 0 winning inputs
+  nearest (clamp)          3000 chains, 0 with any eager win, 0 winning inputs
+  NOT nearest (truncate)   3000 chains, 91 with any eager win, 1330 winning inputs
+```
+
+The truncation row is the control and it is load-bearing: without it "found no counterexample" and
+"cannot find counterexamples" are the same output. **And it locates where the theorem stops**: the
+property belongs to the resolution being a nearest-point projection, not to chains. A truncating or
+directed rounding does not get it.
+
+**B. A narrowing of `63`/`60` and of Q11's third option, and I overstated it before checking.**
+`63` section 5 says the multiplicative window's "capacity a static function of container width and
+operand formats". Q11's third option says "since capacity is a type, the accumulator is derivable as
+the width plus the log of the capacity".
+
+**Both are correct for what they are about**, and I want that said first because my phase one implies
+otherwise. `63`'s window is a chain of multiplications, where the bound is the product of the operand
+maxima and the order genuinely does not move it. Q11's is a fold of one associative operation, where
+`W + ceil(log2 n)` is exactly right and is what `warm-clamp-shared`'s `accfit` implements. Neither is
+refuted by anything I have.
+
+**What I establish is that the formula does not extend to a heterogeneous chain**, and the load-bearing
+evidence is not the one I led with. `168_probes/p2`, exhaustive over the whole declared domain at
+`W = 8`:
+
+```
+  C: *3 then *5   per-step widths = [10, 12], chain needs 12 bits
+  D: *5 then *3   per-step widths = [11, 12], chain needs 12 bits
+```
+
+`C` and `D` compute the **same function**, `15x`, from the same multiset of genuinely commuting steps,
+and need the same **chain** width. Their **per-step** requirements differ, `[10,12]` against `[11,12]`.
+So even in the most favourable case available, there is no width that belongs to `*3`: it needs 10 bits
+in one position and 11 in the other, and no rule keyed on the operation and its operand formats can
+produce both.
+
+The pair I led with in phase one, `*3 then +200` needing 10 bits against `+200 then *3` needing 11, is
+weaker than I made it sound, and I am correcting my own phase one rather than letting it stand: those
+two are **different functions**, `3x+200` and `3x+600`, so it is unsurprising that they need different
+containers. It is evidence that the requirement is not a function of the step multiset, and it is not
+evidence that order alone moves it. The commuting pair is.
+
+And the spread is real rather than a two-bit curiosity: all 24 orderings of one four-step multiset span
+11 to 13 bits, with tightness verified in both directions (`fits(w)` true, `fits(w-1)` false).
+
+So the capacity is a static function of **the ordered sequence**. It is still static, so nothing about
+I15 or I13 changes and Q11's third option survives for the case it names; what does not survive is
+using that parameter list for a chain of mixed operations.
+
+**And this is a different claim from `60_probes/p_b`, which I checked before writing it.** That probe
+establishes that the **value** of a per-step saturating fold depends on the order, which is the
+schedule-is-semantics result. Mine establishes that the **width required to stay exact** depends on the
+order, on chains where no resolution fires at all. Two different order-dependences; neither implies the
+other.
+
+**C. The two-licence split, which I do not find anywhere in what I read.** Deleting an interior
+resolution needs a proof, and there are at least two independent kinds: **range** (the intermediate
+provably stays where the resolution is the identity; width-dependent, operation-independent) and
+**algebra** (the resolution commutes with or is absorbed by the composition; operation-dependent,
+range-independent). `168_probes/p1` exhibits each holding where the other fails, with four firing
+controls.
+
+This bears directly on `109`'s proposed resolution. `109` proposes that `Mul` stop being an
+endomorphism, so "the chain story falls out of the typing without any chain policy existing anywhere".
+**That handles the range licence and not the algebraic one.** Widening the result type is exactly a
+range argument. It does nothing for the case where the resolution's algebra is what licenses the
+deletion, and nothing for the case where **no wider type exists**, which is measured:
+`warm-clamp-arity-w64` has no native rung between the minimum container and `u128`, so the widening arm
+loses and the reassociating arm wins at -51.4% and -59.7%. A typing-only story has no arm there.
+
+So I would keep `109`'s proposal and say it is half of the mechanism rather than all of it.
+
+**D. The algebraic licence is a conjunction over every step.** `168_probes/p1`'s first control: the
+identical affine chain with a single `saturating_sub` in place of the `wrapping_sub`, same endpoints,
+same width, same depth, and the licence is gone. So whatever carries a chain's licence must see every
+step and be composed as the chain is built. A derivation that asks "what are the two ends" cannot
+compute it. I found this by writing the probe wrong and having the assertion fire.
+
+**E. The fold and the elementwise chain take opposite answers to the same design lever, measured.**
+Widening the intermediate carrier pays on a fold (`warm-clamp-arity-w13_n130080`, accfit at -63.5%,
+spread 51.52x) and loses on an elementwise chain of four steps at the same width and resolution
+(`warm-clamp-chain-l1_n130001`, accfit at a 374 ns median against minimum at 151 ns). `40` cites
+`warm-clamp-chain-l1` only to say the instrument for its own question does not exist; nobody had read
+these two families against each other. Under p5's mechanism the reason is now clear: the fold has a
+loop-carried value whose projection blocks vectorisation, and the elementwise chain has none, so
+widening buys nothing there and costs the lane count.
+
+**F. `warm-affine-collapse-l1` had not been read at all.** `93` names the family and says explicitly
+"I have not read whatever concluded from that bench" (`93:534`); a grep of the panel finds no other
+file naming it. So section 4.4's figures for it are a first reading, and section 12's mechanism
+correction is a correction to the family's own title rather than to any member.
+
+## 15. "Composition" is now three words wearing one, and the register should say so
+
+`110` section 4 separates two senses, **configuration** (choosing a point in a parameter product) and
+**composition of algebras** (a construction taking a base primitive to a composite: product, complex,
+dual, interval). Q16 records the same overload from `43` and calls it op's to settle.
+
+**Neither of those is the sense this unit's question uses.** "What does composing operations owe" is
+composition of *operations* into a chain, which is a third object: it produces no new primitive, it has
+a depth and a shape and an arity, and its obligations are the five in section 4.
+
+That matters for the consolidation, because the tenth unit is briefed as "the chain and the composite"
+and those are two different senses under one brief. A canon sentence about "composition" will be true
+of at most one of the three. I am not proposing names, per I17's separation of intent from vehicle and
+because Q16 is already op's; I am saying the count is three rather than two and that Q16's option list
+is missing one.
+
+## 16. What this does to my open options
+
+**O-168-1 (chain or region) is Q54, arrived at from a different direction.** Q54 asks whether consumer
+terms are trees or DAGs, reached from leaf-occurrence conditions in the realisation-map topic. I
+reached it from carrier joins over a fan-out node. Independent arrivals on the same question, which
+raises its priority, and my route supplies a **cheaper closing procedure** than Q54's current one:
+Q54 says it needs "a statement of what the consumer-facing term type is, which is a design question at
+the tier above". A carrier-join probe does not: exhibit a fan-out region whose joined carrier
+requirement strictly exceeds the maximum over per-path requirements, or show it never can. That is one
+small exhaustive probe and it settles the modelling question without settling the design question.
+
+**O-168-2 (does the design name the chain, or does it fall out) is `63`'s D-A / D-B / D-C, which that
+unit killed none of.** D-C, "the chain as a first-class typed object", is my shape (a); D-A, "closed ops
+with chains entirely elsewhere", is close to my shape (b). I withdraw O-168-2 as a new option and
+restate my contribution to it: **the const-time delimiter question is the discriminator between them**,
+and it is a compiled-refutation question rather than a taste one.
+
+**O-168-3 (which accuracy target I7 means) survives and is sharper.** It is `63`'s note that D-A
+"survives only under a reading of I7 that its quoted words do not favour, which only op can rule on".
+My p3 adds the price of the distinction: 15.5x in aggregate error and 16x in worst case at depth 5
+between the two placements, so it is not a distinction without a difference. And section 0.1's
+observation about I7's own wording ("chains and ops" as two things or as one phrase) is a second
+unresolved reading in the same sentence.
+
+**O-168-4 (depth as a first-class predicate dimension) is answered better than I asked it.** Q42
+already carries the measured crossovers with predicates, `106` already states "chain length is a region
+dimension", and `every-finding-carries-its-predicate.md` already lists chain length among the nameable
+dimensions. I withdraw the option and carry the answer.
+
+**O-168-5 (are the three kinds three, or two plus a non-chain) survives**, and `63`'s vocabulary
+improves it: my kind (3), the pipeline whose intermediates are stored, is **a chain whose schedule is
+fully determined**. That is better than calling it a third kind, and it makes the definition in
+section 2.1 and `63`'s definition the same definition.
+
+**One new option, from section 14 B.**
+
+**O-168-6. What the accumulator derivation's parameter list is, once the chain is heterogeneous.**
+Q11's third option and `63`'s window each derive the intermediate capacity from widths, formats and a
+capacity, and each is correct for the shape it is about: one associative fold, and a chain of
+multiplications. `p2` shows the parameter list is insufficient once the chain mixes operations, because
+the per-step requirement is then order-dependent even for genuinely commuting steps. The
+options are: restrict the derivation to single-operation folds and say so; take the ordered chain as
+the derivation's input; or take a conservative bound over all orderings, which `p2` prices at 13 bits
+against 11 for the four-step multiset it swept, a two-bit over-allocation that at some widths crosses a
+container rung.
+*Closes:* whichever of the three the design takes is a canon-level call, but the **cost** of the third
+is a measurement, and it is the cheapest of the three to establish: sweep orderings across the width
+range and report where the conservative bound crosses a rung.
+
+## 17. Coverage of phase two, bounded
+
+**What would move if I am wrong about something I leaned on.** Section 12 rests on `117`'s account of
+the profile, which I re-derived with two commands rather than taking on trust, and on my own probes.
+Section 13 items 5 and 7 rest on `20` and `92` having read the artifacts I re-read; if their readings
+are wrong, mine agrees with them and is wrong the same way, which is the shared-drift risk and it is
+why I marked both as re-reads rather than instances. Section 14 B **narrows** a sentence in `63` and a sentence in
+Q11 rather than contradicting them, and it says so only because I checked `60_probes/p_b` before
+writing it and found my first framing overstated: the pair I had led with computes two different
+functions, so it could not carry the claim I hung on it. The commuting pair carries it and the
+overstatement is recorded in place rather than edited away. If the two sources intend only the shapes
+they name, which on my reading they do, then B is a boundary on their scope and not a defect in them.
+
+**What I did not do.** I did not read `60` itself, only `63`'s account of it, which is exactly the
+single-point-of-failure shape `RULES.md` names: my items 1 and 2 both reach `60` through `63`. `63` is
+a consolidation and consolidations lose things. Someone should read `60` directly against those two
+items. I did not read `35`, `43`, `92` or `20` beyond the passages quoted. I did not run the harness. I
+did not attack the composite sense of composition at all, which is half of this unit's brief.
+
+**Shared inputs with `167`, the other cold deriver of this pair.** We both read `INTENTS.md`,
+`RULES.md`, arvo's `.claude/` rules, the auto-loaded workspace rules and `mock/benches/`. Two of those
+bear on my conclusions and I discount for them: `every-finding-carries-its-predicate.md` supplies both
+the notation and the phrase "chain length" as a nameable dimension, so section 4.4's framing of depth
+as a predicate dimension arrived partly from a shared document rather than from my derivation; and
+`small-wins-compound-into-the-program.md` states the proof-does-not-survive-lowering mechanism that
+section 3.2 uses and that p5 then measures. Where `167` and I agree on those two, we are one instance
+in two hats. I have not read `167` and am not counting any agreement with it.
+
+**The leak I declared in section 10 stands.** The bench variant crates' doc comments quote prior panel
+conclusions, and reading them was permitted and unavoidable. Having now read the panel, I can be
+specific about what it cost: `warm-clamp-shared`'s header told me a prior file had benched a container
+fork and that a prior saturating fold was constant-folded, and `warm-container-shared`'s header told me
+the affine-collapse story including its conclusion. **That last one is the leak that mattered**, and it
+is also the claim section 12 refutes, so the leak handed me a wrong conclusion which my own probe then
+overturned. I would rather report that than claim the channel was harmless.
