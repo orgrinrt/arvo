@@ -484,3 +484,88 @@ mine whose first two versions were wrong.
 **Every predicate above says `threads = 1` or `threads any` explicitly, and none names a strategy
 dimension**, so under the ratified notation nothing here may be read as a statement about any named
 strategy.
+
+---
+
+## 12. Citations checked, all four layers, each counted
+
+`175_probes/citecheck/`. **23 citations, 0 not found, 2 of 2 negative controls caught**, the controls
+being a citation to a file that does not exist and a citation to a real file with text that is not there.
+
+| layer | citations it was the first to find |
+|---|---|
+| L0 raw | 16 |
+| L1 whitespace | 5 |
+| **L2 markup** | **2** |
+| L3 case | 0 |
+
+**L2 is load-bearing here for the first time in my own corpus.** `171`'s check reported L2 at zero and
+`171` predicted why: exposure is a function of quoting style, not of the corpus. This file quotes from
+`173`'s statement, which is a blockquote with bolded terms inside it, so the prediction holds and the
+mechanism is the one `174` reports for its own file, reproduced from another seat.
+
+**L3 is zero here and was 1 in `174`.** That is not evidence the layer is dead, and the reason is the
+same one: it fires when an author lifts a quotation mid-sentence and lowercases its leading capital,
+and I quote from sentence starts. A zero on a layer is a fact about the quoting author.
+
+---
+
+## 13. What I settled, what I moved, what I could not
+
+**Settled.**
+
+That the candidate's marking convention is **trailing and forced**, not inferred, because two clauses
+end with a mark that has no successor sentence, which discharges the conditional `174` left on A3.
+
+That a partial interior gives a binding-free definedness channel at both profiles, confirmed from a
+construction `172` did not use, with a value-only check certifying the pair that clause 1 refuses; and
+that **the channel was in neither my tested six nor my named four**, so O-5 must not be read as though
+the four I named were the residue.
+
+That on a stretch with a free interior adaptation point, "the stretch's boundary function" has no unique
+referent: three of four chains carry more than one, the witness four, two of its placements differing at
+the boundary on 30 of 256 inputs.
+
+That eleven of my twelve options are carried, closed with a diagnostic, or answered in canon text, and
+that three of them are recorded better than I left them.
+
+**Moved.**
+
+`174`'s A3, from conditional to unconditional. `174`'s A5, from a wording fix to a wording fix plus the
+claim each count belongs to. My own `167` sentence, from two named claims to three, which is where B2
+came from and which is a gap in `171` rather than in the candidate.
+
+**Could not.**
+
+**I could not decide B3 from inside.** Whether "the stretch's boundary function" presupposes uniqueness
+or names whatever the design fixed is a reading, and one of the two readings makes the refusal a wording
+request. I state both and prefer R2, which removes the question rather than answering it.
+
+I could not test whether the shared premise set contains further undeclared inputs beyond the one `169`
+found, which is the discount in 5.3 and which no probe of mine reaches.
+
+I could not read `172`, so my confirmation of its definedness bound is independent by not having seen
+its construction rather than by design.
+
+---
+
+## 14. The closing statement
+
+**I sign eight clauses outright, three with amendments, and refuse one clause of one sentence.**
+
+The candidate is faithful to my material in every place I checked it, including three where it is more
+careful than I was: Q-C2 is sharpened rather than restated, clause 12 carries a discount I did not
+apply, and L13 credits the widening of my own result to `169` where credit would ordinarily drift to
+the last author to touch it.
+
+**The refusal is a cross-reference, not a result.** Clause 3 sends the schedule choice to the clause
+whose invariant the schedule choice breaks. Everything both clauses assert is established; one pointer
+points at the wrong governor, and R2 fixes it and B2 together by making the declared grade the invariant
+clause 2 quantifies over.
+
+**And the rung question I was sent for has a three-line answer.** The two derivations of (P) do not fail
+together, so they are two. They are two instances of the definition and one instance of its
+rule-freeness, and the ledger counts without saying which. And both are definitions agreed by two
+members of one model family on one premise set, which is the weakest kind of two available, so the cold
+dispatch is the only instrument that tests the framing rather than the reasoning, and it discharges
+O-171-1 and O-171-4 at once.
