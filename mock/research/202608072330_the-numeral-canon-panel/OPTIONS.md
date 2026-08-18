@@ -2705,6 +2705,28 @@ refuted outright.
 report which of its conclusions ran through them. Written up in `how-to-run-a-panel.md`; the register
 entry exists so a later reader of this topic's rungs knows to discount them by it.
 
+**The protocol shipped and it is not sufficient, found by the tenth unit.** Both members of that unit's
+cold pair were handed the shared premise set in their briefs and both reported against it, which is the
+fix working. `169` then found a shared input **none of the three cold derivations on that question
+names**: `what-you-can-observe-is-what-you-guaranteed.md` is line 4 of the auto-loaded set, and its
+thesis is the observability perimeter, which is what all three definitions turn on.
+
+`169` bounds it hard rather than claiming dependence: one derivation is self-contained and does not need
+that rule, so what is established is **a gap in three contamination sections**, not a demonstration that
+the convergence runs through it. That distinction is the finding.
+
+**So naming the shared inputs in the brief does not close this.** A member reports on the inputs it was
+told about, and the dangerous one is the input nobody thought to name. What would close it is a brief
+that hands over the **enumerated** auto-loaded set rather than a description of it, so a member can check
+its own conclusions against the list rather than against its memory of what loaded.
+
+**And one piece of evidence for the discount was wrong.** `168` discounted its agreement with `167` on
+the ground that two section headings were word-for-word identical. `169` checked: **neither is**, both
+are strict prefixes with `168` quoting its own shorter form, and the one heading that is exactly shared
+is prescribed by the standing rules, so it is zero evidence. The discount survives on its real ground,
+the shared premise set. The evidence offered for it does not, which is worth recording because a
+discount resting on a false observation invites the next reader to dismiss the discount.
+
 ### Q65. Whether this panel's own findings satisfy the notation it ratified
 
 Opened by the ninth unit, and it is a finding about the corpus rather than about arvo.
