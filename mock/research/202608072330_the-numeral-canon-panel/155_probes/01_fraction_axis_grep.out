@@ -1,0 +1,17 @@
+=== control: width axis (key_w) must be found ===
+       3
+=== target: any fraction-width axis (key_f / frac_bits / FRAC) ===
+       0
+=== target detail (if any) ===
+(none found)
+=== signedness axis: is signed vs unsigned ever a swept KEY field? ===
+mock/benches/variants/wide-rung-shared/src/load.rs:10://! would actually write given the payload shape the design assigned:
+Binary file mock/benches/variants/bitpack-write-contend-shared/target/debug/incremental/bench_bitpack_write_contend_shared-3jht6iwf6brv1/s-hlg2xf30ht-0laqhdh-95dm33rqe1hhjf7lz42lntbcn/8s2g1qojg4fz5qmh33dd92pfy.o matches
+Binary file mock/benches/variants/bitpack-write-contend-shared/target/debug/incremental/bench_bitpack_write_contend_shared-1sal4x08us26g/s-hlg2xf2p7n-0ha9uvs-75l2rhjt1ppl5q7oda5qkzsjr/2lo3i1c3dtvo9hs34nswc41v6.o matches
+Binary file mock/benches/variants/bitpack-write-contend-shared/target/debug/deps/libbench_bitpack_write_contend_shared-d980ec9ec21c37cc.rlib matches
+Binary file mock/benches/variants/bitpack-write-contend-shared/target/debug/deps/bench_bitpack_write_contend_shared-c0d2c54a9c79d759.8s2g1qojg4fz5qmh33dd92pfy.09xar85.rcgu.o matches
+Binary file mock/benches/variants/bitpack-write-contend-shared/target/debug/deps/bench_bitpack_write_contend_shared-d980ec9ec21c37cc.2lo3i1c3dtvo9hs34nswc41v6.1rr2f29.rcgu.o matches
+=== does any variant crate depend on a real arvo crate (I,F,S generic type)? ===
+mock/benches/variants/warm-container-headroom/src/lib.rs
+mock/benches/variants/warm-container-minimum/src/lib.rs
+mock/benches/variants/warm-container-shared/src/lib.rs
