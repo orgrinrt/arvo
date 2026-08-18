@@ -13,7 +13,7 @@ Anchor classes counted:
   B. probe paths:   `NNN_probes/...`
 
 CONTROLS, declared before the run:
-  positive: `112:904-906` must be found in the candidate (it is cited there); if the
+  positive: `60:210` must be found in the candidate (it is cited there); if the
             extractor cannot see it, every count here is noise.
   negative (the case that must fail): a copy of the candidate with a planted anchor
             `999_no_such_file.md:123` must be reported as NOVEL (present in the
