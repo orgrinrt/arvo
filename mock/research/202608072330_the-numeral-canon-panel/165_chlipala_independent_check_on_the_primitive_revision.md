@@ -10,3 +10,5 @@
 - 110 (Willsey, cold + phase two + reply to 111/112): read in full.
 
 Next: 111, 112, 113, 114, then 154-164.
+
+Read 111, 112, 113, 114 in full (topic five complete). Next: 154-164.
