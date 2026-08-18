@@ -148,6 +148,8 @@ Recorded at dispatch time rather than after the fact.
 | 158 | dolan (reply to `157`) | `ae90f22541d130d97` |
 | 159 | kiselyov (reply to `157`) | `a473b594bc3fada7e` |
 | 160 | leroy (formalise) | `a598133fb164a9d56` |
+| 161 | leroy (canon candidate) | `a598133fb164a9d56` |
+| 162 | kiselyov (signature) | `a473b594bc3fada7e` |
 
 `154` and `155` have both landed their arvo files and both agents were then redirected by op to the
 mockspace bench-harness audit, so they are live on a different repository rather than spent. They
