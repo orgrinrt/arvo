@@ -87,11 +87,20 @@ fn main() {
     }
 
     println!("  inputs where the two agree in value : {agree}/256");
-    println!("  inputs where realisation A panicked : {}", a_panicked.len());
-    println!("  inputs where the values differ      : {}", value_disagree.len());
+    println!(
+        "  inputs where realisation A panicked : {}",
+        a_panicked.len()
+    );
+    println!(
+        "  inputs where the values differ      : {}",
+        value_disagree.len()
+    );
     if let Some(&x) = a_panicked.first() {
         println!("  first distinguishing input          : x = {x}");
-        println!("  realisation B at that input         : {}", realisation_b(x));
+        println!(
+            "  realisation B at that input         : {}",
+            realisation_b(x)
+        );
     }
     println!();
 
@@ -123,7 +132,10 @@ fn main() {
             "C3 FAILED: the two disagree in value where both return, so this is an \
              observation about values rather than about definedness"
         );
-        println!("C2 PASS: at on, realisation A diverges on {} of 256 inputs while B is total.", a_panicked.len());
+        println!(
+            "C2 PASS: at on, realisation A diverges on {} of 256 inputs while B is total.",
+            a_panicked.len()
+        );
         println!("C3 PASS: on the {agree} inputs where A returns, the two still agree in value.");
         println!();
         println!("SO: realisation A is total at off and partial at on. The pair satisfies");

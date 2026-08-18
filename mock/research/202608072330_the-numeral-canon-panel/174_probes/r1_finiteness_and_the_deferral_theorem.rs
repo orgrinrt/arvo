@@ -56,7 +56,11 @@ fn apply(s: Step, v: u128) -> u128 {
 
 /// The boundary resolution: nearest-point selection onto [0, 2^W).
 fn pi(v: u128) -> u128 {
-    if v > LIMIT { LIMIT } else { v }
+    if v > LIMIT {
+        LIMIT
+    } else {
+        v
+    }
 }
 
 fn exact(x: u128, steps: &[Step]) -> u128 {
@@ -70,7 +74,11 @@ fn exact(x: u128, steps: &[Step]) -> u128 {
 /// Run a placement. Returns None when some intermediate leaves the carrier,
 /// which is what "not realisable at this carrier" means.
 fn run(x: u128, steps: &[Step], mask: u32, carrier: u32) -> Option<u128> {
-    let cap: u128 = if carrier >= 127 { u128::MAX } else { (1u128 << carrier) - 1 };
+    let cap: u128 = if carrier >= 127 {
+        u128::MAX
+    } else {
+        (1u128 << carrier) - 1
+    };
     let mut v = x;
     for (i, &s) in steps.iter().enumerate() {
         v = apply(s, v);
@@ -89,7 +97,11 @@ fn realisable(steps: &[Step], mask: u32, carrier: u32) -> bool {
 }
 
 fn dist(a: u128, b: u128) -> u128 {
-    if a > b { a - b } else { b - a }
+    if a > b {
+        a - b
+    } else {
+        b - a
+    }
 }
 
 /// Is `m` pointwise no worse than every other realisable placement?
@@ -139,7 +151,10 @@ fn chains() -> Vec<Vec<Step>> {
 fn main() {
     let cs = chains();
     println!("W = {W}, S = [0,{LIMIT}], pi = nearest-point selection (clamp)");
-    println!("{} chains of depth 3..=5, inputs exhaustive over 0..{DOMAIN}", cs.len());
+    println!(
+        "{} chains of depth 3..=5, inputs exhaustive over 0..{DOMAIN}",
+        cs.len()
+    );
     println!();
 
     // ---- C1: at a carrier where full deferral is realisable, it must win ----
@@ -150,7 +165,10 @@ fn main() {
         let all: Vec<u32> = (0..(1u32 << interior))
             .filter(|&m| realisable(c, m, wide))
             .collect();
-        assert!(all.contains(&0), "full deferral not realisable at a 120-bit carrier");
+        assert!(
+            all.contains(&0),
+            "full deferral not realisable at a 120-bit carrier"
+        );
         assert!(
             is_pointwise_optimal(c, 0, wide, &all),
             "full deferral is not the pointwise optimum at a wide carrier, so this \
@@ -195,11 +213,17 @@ fn main() {
     }
 
     println!("C2 the realisability test excludes some placement somewhere            : {excluded_somewhere}");
-    assert!(excluded_somewhere, "realisable is doing no work, so the question is empty");
+    assert!(
+        excluded_somewhere,
+        "realisable is doing no work, so the question is empty"
+    );
     println!();
     println!("cells where full deferral is NOT realisable          : {defer_unrealisable}");
     println!("  of those, some realisable placement IS the optimum : {had_optimum_but_not_defer}");
-    println!("  of those, NO realisable placement is the optimum   : {}", no_optimum.len());
+    println!(
+        "  of those, NO realisable placement is the optimum   : {}",
+        no_optimum.len()
+    );
     println!();
 
     // ---- the refutation sent me here: if an optimum always exists when full
@@ -235,9 +259,17 @@ fn main() {
                 .copied()
                 .filter(|&m| is_pointwise_optimal(c, m, carrier, &realis))
                 .collect();
-            if opt.len() == 1 { opt_unique += 1; } else if opt.len() > 1 { opt_multiple += 1; }
+            if opt.len() == 1 {
+                opt_unique += 1;
+            } else if opt.len() > 1 {
+                opt_multiple += 1;
+            }
             for &o in opt.iter() {
-                if minimal.contains(&o) { opt_is_minimal += 1; } else { opt_not_minimal += 1; }
+                if minimal.contains(&o) {
+                    opt_is_minimal += 1;
+                } else {
+                    opt_not_minimal += 1;
+                }
             }
         }
     }
@@ -290,7 +322,11 @@ fn main() {
                     }
                 }
             }
-            if short { falls_short += 1; } else { attains += 1; }
+            if short {
+                falls_short += 1;
+            } else {
+                attains += 1;
+            }
         }
     }
     println!("Does the finite-carrier optimum attain the theorem's value pi(exact)?");
@@ -309,7 +345,9 @@ fn main() {
     if let Some(&(ci, carrier, n)) = no_optimum.first() {
         println!();
         println!("witness: chain {ci} = {:?}", cs[ci]);
-        println!("         carrier {carrier} bits, {n} realisable placements, none pointwise optimal");
+        println!(
+            "         carrier {carrier} bits, {n} realisable placements, none pointwise optimal"
+        );
         let c = &cs[ci];
         let top = 1u32 << (c.len() - 1);
         let realis: Vec<u32> = (0..top).filter(|&m| realisable(c, m, carrier)).collect();
@@ -335,8 +373,14 @@ fn main() {
                 }
                 if let (Some(aw), Some(bw)) = (a_wins, b_wins) {
                     println!("         placements {a:#06b} and {b:#06b} are incomparable:");
-                    println!("           at x={} placement {a:#06b} is closer ({} vs {})", aw.0, aw.1, aw.2);
-                    println!("           at x={} placement {b:#06b} is closer ({} vs {})", bw.0, bw.1, bw.2);
+                    println!(
+                        "           at x={} placement {a:#06b} is closer ({} vs {})",
+                        aw.0, aw.1, aw.2
+                    );
+                    println!(
+                        "           at x={} placement {b:#06b} is closer ({} vs {})",
+                        bw.0, bw.1, bw.2
+                    );
                     break 'outer;
                 }
             }
