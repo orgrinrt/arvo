@@ -112,7 +112,7 @@ cold derivations until the attack found it (`169` 1.2). Two exact bounds:
    `171_probes/thirdfile/`). **Two hats, not three**, and `60` is a definition of another shape
    that composes rather than repeats.
 4. `171` 2 [author's own split]: of the two observation-bounded definitions, `171`'s own splits:
-   (P) is rule-free-derivable with the route shown, (L) is not.
+   (P) is rule-free-derivable with the route shown, (L) is not (`171:77-91`).
 5. `172` 10 [second read]: the split confirmed, with independent reasoning: the observation basis
    in the route is inherited from the language, not chosen, so step 2 is descriptive and the
    normative content sits in (L) exactly where `171` put it.
@@ -132,14 +132,14 @@ place under (L).** The pipeline whose intermediates are all stored is the degene
 case, and a single operation is the length-one stretch with an empty interior schedule (`168`
 2.3), so one concept serves and no operation/chain relation has to be legislated separately.
 Formalised at `172` section 2; the composition-of-definitions reading was first stated at `167` R7
-("C9 says what a chain contains. Mine says what bounds one") before `171` measured why it holds.
+(`167:1052-1057`, "C9 says what a chain **contains**. Mine says what **bounds** one") before `171` measured why it holds.
 
 ### 1.2 The obligations, the grades and the window
 
 **L5. What composition owes that a single operation does not: five things, none expressible per
 operation.** [enumeration, carried in full per the discipline this unit itself measured]
 
-From `60` section 3, with `168`'s five and `167`'s three mapped onto it (three shared, mapping at
+From `60` section 3 (`60:69-84`), with `168`'s five and `167`'s three mapped onto it (three shared, mapping at
 `168` C2):
 
 1. **An intermediate format** wider than the boundary format, or nothing exists between
@@ -154,7 +154,7 @@ From `60` section 3, with `168`'s five and `167`'s three mapped onto it (three s
    typestate-shaped.
 5. **An error bound composed per adaptation point**: the drift of a chain is the sum over its
    adaptation points of the local adaptation error, each weighted by the sensitivity of the
-   remaining suffix; **the schedule is the index set of the error analysis**, so fewer adaptation
+   remaining suffix; **the schedule is the index set of the error analysis** (`60:83-84`), so fewer adaptation
    points is a structurally shorter error sum, not merely cheaper rounding.
 
 The fifth has no counterpart in either of the tenth unit's cold files and both said so; it is
@@ -219,7 +219,7 @@ conjunction over every step.** [measured, with four firing controls]
 width-dependent, operation-independent) and **(B) algebra** (the resolution commutes with or is
 absorbed by the composition; operation-dependent, bound-independent), each holding where the other
 fails. One `saturating_sub` swapped into an affine chain revokes (B) with endpoints, widths and
-depth unchanged, so **whatever carries a chain's licence must see every step and be composed as
+depth unchanged (`168:362-368`), so **whatever carries a chain's licence must see every step and be composed as
 the chain is built**; a carrier computed from endpoint types cannot express it. `60` holds both
 licences as instances without separating them (`168` C4: its exactness predicate is (A); its
 wrapping-fold observation is (B)), so the separation is the tenth unit's and the instances are
@@ -334,7 +334,7 @@ that fuses adaptation into every operation makes I7 unstatable.** [argument + me
 unit's most-converged claim]
 **Three independent routes plus a corroborating pair**: `63`/`60` via the adaptation schedule
 (`60` section 7: grade a quantifies over an intermediate a closed concept cannot name, so I7's
-chain clause has no expressible form against it, "a constraint on the shape of the format concept
+chain clause has no expressible form against it (`60:209-210`), "a constraint on the shape of the format concept
 itself"); `90` via the lifting theorem; `109` via the operator typing (deferred never worse,
 per-value primitive has no slot). The pair is `167` and `168`, dispatched on one premise set, with
 the discount measured rather than asserted (`169` 1.1, `170` 7 and 10: the heading evidence
@@ -724,3 +724,96 @@ direction has no result for a compressor to grip.
 relation), and its containers-against-contracts question. Discriminators as `43` 11 states them:
 a survey of what the consumers hold, and the bench harness for the traversals.
 
+---
+
+## 8. Anchor accounting, generated rather than drafted
+
+Computed by `173_probes/anchor_accounting/count_anchors.py` over the nine source files and this
+candidate, output committed at `accounting.out` beside it, both controls declared in the script's
+header and firing (the positive control confirms a known anchor is seen; the negative control
+plants an anchor absent from every source and confirms it is reported novel). The numbers below
+are pasted from the output:
+
+```
+unique line anchors across the 9 sources : 58
+unique probe paths across the 9 sources  : 72
+line anchors in the candidate             : 9
+probe paths in the candidate              : 7
+candidate anchors that appear in a source : 4
+candidate anchors novel to the candidate  : 5
+    NOVEL 167:1052-1057
+    NOVEL 168:362-368
+    NOVEL 60:209-210
+    NOVEL 60:69-84
+    NOVEL 60:83-84
+source anchors not carried (dropped)      : 54
+probe paths carried                       : 5 of 72
+```
+
+**The dropped list is in the sibling file** `173_probes/anchor_accounting/dropped_anchors.txt`,
+never inlined here, because printing dropped anchors inside the file being diffed makes them
+present and disables the check.
+
+**Reading the numbers.** The five novel anchors are this candidate's own fresh citations into the
+establishing sources at ranges no panel file had spelled (`60`'s five-obligations block, its
+error-sum sentence, its statability sentence; `168`'s revocation control; `167`'s
+contains-against-bounds sentence), which is the restore-from-the-establishing-source rule working
+rather than a leak: each was opened and read by the citation check below. The drop of 54 source
+anchors is the expected shape for a candidate over nine files whose members' anchors are mostly
+their own probe bookkeeping; what the ledger owes is the evidence anchor for each claim it
+carries, and each L-entry names its file, section or finding number, with line anchors at the
+load-bearing quotations. The enumerations themselves are carried **in full in the text** (L5, the
+grades, the witness families), because this unit measured that enumerations are exactly what a
+compression drops (C3), and an enumeration carried by pointer would repeat the failure this
+candidate exists to record.
+
+---
+
+## 9. Coverage, bounded honestly
+
+**Read in full across this arc, by this author:** `166` through `172` (each end to end, `167` and
+`168` including all phases and passes), `60` phase one entire and phase two sections 0 through 6,
+`43` sections 0 and 11, `AGREEMENTS.md` sections 6 and 12, `OPTIONS.md` Q42 and Q54, `INTENTS.md`
+and `RULES.md` in full, and `164` (mine) at the sections composed with.
+
+**Not read, named:** `43` sections 1 through 10 (its section 0 is its author's summary; my use is
+bounded to the flatten answer `168` 24 verified at `43_probes/s3` and the open items its section
+11 states in its own voice); `60` phase two section 7 and its probe sources beyond the outputs
+quoted; `63`, `90`, `92`, `106`, `109`, `110`, `112` at source this dispatch (their chain-bearing
+material reaches this candidate through the unit's own verifications and through `164`'s ledger,
+each one compression deep and named at the point of use); every panel file outside the scope.
+
+**Verified rather than taken, this arc:** the deferral zeros and controls (fresh instrument at
+wider hypotheses, `172` p1); `169`'s closed-form counts (CONTROL B exact, which pins the model);
+the definedness bound (built, both profiles); the witness families (65 cells, both controls); the
+`60` quotations and the five novel anchors (opened, section 8); the dissent instruments of the
+ninth unit where this candidate touches them (via `164`). Not re-run: `171`'s channels and
+perimeter probes (outputs committed, predicates carried as recorded); the harness families
+(carried at the amended profile with `117`'s situation named).
+
+**Which entries would move if an account I leaned on is wrong.** L5's fifth obligation and L6's
+grades rest on `60` at the lines cited, single-sitting; a defect there moves both and nothing
+else, and X-D is the probe that would exercise the fifth. L22 rests on `43`'s own summary plus
+the one probe `168` verified. L16's magnitudes rest wholly on the committed harness artifacts at
+the amended profile. L3's step 2 is `170`'s own dependence report, which only `170` can make;
+step 3 is measured and was reproduced by `172`'s reading of the table.
+
+**Citations and quotations, checked by opening them.** `173_probes/citecheck.out`: every
+`file:line` anchor opened and its content read against the claim, with the two wrong-citation
+controls firing. `173_probes/quotecheck/`: every verbatim quotation matched under the three-layer
+normalisation (whitespace, markup, case) with planted-present and planted-absent controls
+behaving; the layer report is stated in the output, and a zero on a layer is a quoting-style
+fact, not a dead layer.
+
+**What this candidate settled.** Topic ten has a ledger: twenty-two entries plus five corpus
+findings, with the forms of independence stated and the rung history of the definitional
+convergence carried as a sequence; six contested items with deciders; fourteen retirements; a
+twelve-clause statement with every sentence's kind marked; and the canon-form question coupled to
+`156` item 2 as one op decision.
+
+**What it moved.** The unit's spine from prose into a kinds-marked statement; the enumerations
+from pointer-shaped to carried in full; `60` and `43` from omitted prerequisites to cited
+establishing sources.
+
+**What it could not.** Close anything in sections 2, 5 or 6; price anything; or supply the second
+reads L10 and L11 are still owed.
