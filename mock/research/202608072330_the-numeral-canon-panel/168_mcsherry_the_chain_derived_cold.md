@@ -1159,3 +1159,88 @@ fork and that a prior saturating fold was constant-folded, and `warm-container-s
 the affine-collapse story including its conclusion. **That last one is the leak that mattered**, and it
 is also the claim section 12 refutes, so the leak handed me a wrong conclusion which my own probe then
 overturned. I would rather report that than claim the channel was harmless.
+
+---
+
+## 18. O-168-1 attacked rather than left, and phase one guessed the wrong quantity
+
+Phase one opened O-168-1, said it needed one small exhaustive probe, and did not build it. `RULES.md`
+is explicit that a blocker reported and left is not a deliverable, so I built it:
+`168_probes/p6_a_fanout_forces_one_schedule.rs`, exhaustive over the whole declared domain at `W = 8`.
+
+**Result one, and it closes the question I actually asked, negatively.** I asked whether a fan-out
+node's joined carrier requirement can strictly exceed the maximum over its per-path requirements. **It
+cannot, and the reason is trivial once stated: a node's value is one value, so its width requirement is
+one number, and a join over consumers of one number is a maximum.** Measured rather than argued, on the
+construction below: `t` needs 10 bits, branch A 20, branch B 8, the output 20, joined requirement 20,
+max over the two per-path requirements 20. Equal, as it must be.
+
+So my phase one guessed the wrong quantity, and Q54's carrier reading, insofar as my section 6 supplied
+one, is closed with nothing in it.
+
+**Result two, which is what is actually there.** A shared node has exactly one **schedule**, because it
+is one value, and its consumers may want different ones. The construction:
+
+```
+    t   = 3x + k        the shared node
+    a   = t * t         branch A: squaring, so it needs t narrow
+    b   = t >> 2        branch B: contracting, so it wants t wide and exact
+    out = a xor b       the boundary
+```
+
+At a 16-bit carrier, branch A needs 20 bits with `t` left exact and 16 with `t` resolved, so **branch A
+forces the resolution**: the region is not realisable at all otherwise. Branch B is strictly worse for
+it, on **203 of 256 inputs**, total extra absolute error 15504 and worst extra 152 against the schedule
+it would pick alone.
+
+**And no path-shaped analysis reports that loss**, because along each path in isolation the schedule
+chosen is the best one available to that path. The cost appears only where the paths meet, which is
+exactly the object a chain does not have.
+
+**The control.** A second DAG whose branches are `t >> 1` and `t >> 2`, both fitting the carrier with
+`t` exact, so neither forces a resolution and the region may leave `t` alone. Asserted, and it holds. I
+kept the control's own numbers visible and labelled them as not the finding: resolving `t` hurts any
+branch, and the finding is that in the first DAG nothing else could be done.
+
+**What this does to O-168-1 and to Q54.** It does not settle whether the canon says "chain" or "region",
+which is a naming call and not mine. It settles what is at stake in the answer, and the stake is not
+the one I named:
+
+- A design that models only paths gets the **carrier** right for a DAG by construction, since the max
+  is the join.
+- It gets the **schedule** wrong, silently, whenever two consumers of one intermediate disagree, and
+  the disagreement is forced by carrier capacity rather than by anything either consumer says.
+
+**Predicate.** `W = 8, F = 0, signedness = unsigned, carrier = 16 bits, resolution = nearest-point
+projection onto [0, 2^W) (the clamp), region shape = one shared node with two consumers and one
+combiner, operations in {3x+k, t*t, t>>2, t>>1, xor}, inputs exhaustive over the whole declared domain,
+threads = 1`.
+
+**And a residue I am marking as a residue rather than a proposal.** The conflict has exactly three
+resolutions and all three cost something: materialise `t` twice in two carriers, paying the recompute
+or the storage; resolve `t` and let branch B lose what p6 measures; or refuse the region and make the
+consumer split it. Which one a design takes is a call I am not making, and I note only that the third
+is the one that keeps the loss visible, which is the property `strict-by-design-quality-pressure.md`
+values and the reason I would not want the first two chosen silently.
+
+## 19. What is left that I could not attack
+
+**The composite sense of composition**, which is half this unit's brief. I read `110` P7/P8 and `112`
+section 8 and have nothing to add to them. Everything in this file is about composition of operations.
+
+**`F > 0` and signed, still.** p1 and p3 model rounding as projection onto a `2^g` grid, which is the
+right shape for a fixed-point narrowing and is not the same object, and every probe here is unsigned.
+Q12 supplies the signed fold answer from `35` and I carry it; nothing else here extends.
+
+**The magnitude of anything at the documented codegen profile.** Section 12 establishes the mechanism is
+profile-invariant and explicitly does not establish that any number is. `117`'s before-and-after harness
+run is the only thing that does, and it is a workspace-level fix rather than a panel dispatch.
+
+**Whether a chain's licence can be accumulated at const time as the chain is built**, which section 14 D
+makes necessary and which I did not attempt. I13's "whatever is available at const time" says the
+category is right. Nothing here shows the construction exists, and a compiled refutation either way
+would be worth more than another measurement.
+
+**`60` read directly.** My two strongest agreements reach it only through `63`, which is a
+consolidation, and `RULES.md` names that exact shape as a single point of failure. Someone should open
+`60`.
