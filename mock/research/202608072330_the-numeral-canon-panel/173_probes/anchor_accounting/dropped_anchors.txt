@@ -1,4 +1,4 @@
-# anchors present in the 13 source files and not carried into 161.
+# anchors present in the 9 source files and not carried into 173.
 # sibling file by design: printing these inside the candidate would
 # make them present in it and disable the set diff.
 00_brief.md:8

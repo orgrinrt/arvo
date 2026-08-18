@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""161 anchor accounting. Counts the citation anchors in the thirteen source files this
+"""173 anchor accounting. Counts the citation anchors in the nine source files this
 candidate compresses and in the candidate itself, and diffs the SETS, because a rising
 total is not reassurance: a prior round's count rose from 100 to 120 while nine unique
 targets vanished underneath the additions.
@@ -72,7 +72,7 @@ def main():
     for n in sorted(novel): print(f"    NOVEL {n}")
     print(f"source anchors not carried (dropped)      : {len(dropped)}")
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dropped_anchors.txt"), "w") as f:
-        f.write("# anchors present in the 13 source files and not carried into 161.\n")
+        f.write("# anchors present in the 9 source files and not carried into 173.\n")
         f.write("# sibling file by design: printing these inside the candidate would\n")
         f.write("# make them present in it and disable the set diff.\n")
         for d_ in sorted(dropped): f.write(d_ + "\n")
