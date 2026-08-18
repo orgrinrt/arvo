@@ -1563,3 +1563,23 @@ does not reach are uncompared with mine. And the fifth of `60`'s five obligation
 indexed by the schedule, is absent from my file and I have nothing to add to it; my p3 is a forward
 optimality statement and `60`'s is a backward error framing, and whether the two compose is a question I
 did not attempt.
+
+## 26. Citations checked, and a fifth instrument defect found in the checker
+
+Fifteen quotations in this pass were checked by opening the source, not by remembering it. Four came
+back **not found** and all four were false negatives: `grep -F` on a quotation that spans a line break in
+the source cannot match, because the source carries a newline where the quotation carries a space.
+Normalising whitespace first (`tr '\n' ' ' | tr -s ' '`) resolves all four.
+
+That is the fifth instrument defect in this dispatch and it is the same class as the other four: a
+checker returning a zero it was structurally incapable of not returning. It is worth naming because this
+one sits on the **citation checker itself**, which is the tool `RULES.md` calls the cheapest correctness
+tool the panel has. A citation check that reports four wrong quotations, when all four are right, would
+have had me withdrawing correct attributions.
+
+**So a citation checker normalises whitespace before matching, and it carries a control**: a fragment
+known to be present must match, or the checker is not reading the file. `chain` at 27 in `63` and
+`capacity` at 59 in `43` are the two I used here.
+
+Numeric quotations verified the same way: `43`'s "1201 of 4096", and `60`'s "up to 2 ulp (per-step
+round-to-nearest, 15,628 of 46,656 inputs wrong)" and "up to 3 ulp (per-step truncation, 42,892 wrong)".
