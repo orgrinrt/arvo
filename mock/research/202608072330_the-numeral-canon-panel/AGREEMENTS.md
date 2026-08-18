@@ -748,3 +748,51 @@ premise is op's**, and one clause is refused as written because no wording is tr
 until he rules. X3 is relocated into that queue rather than resolved, because a question deciding
 whether a clause can be satisfied at all is not a cross-reference. Q65's marker question is his too.
 Every magnitude in both sittings remains **unpriced**.
+
+---
+
+## 13. The chain and the composite (topic ten, files `166` through `178`)
+
+A pointer, on the same reasoning as sections 9 through 12.
+
+- **The authoritative ledger is `176`'s**, superseded in seven places by `178`, which lists exactly what
+  it supersedes. `173` is kept as landed because both signatures cite it by line.
+- **`177` is the independent check**, by a member that took no part in the unit. Verdict: sound.
+- **`178` is the restoration pass**, each repair restored from its establishing source.
+
+**What the topic settled.** The unit is delimited by **observation rather than by the operator**: a
+maximal stretch whose intermediates are not observable, with a single operation as the length-one case.
+Composition owes obligations no per-operation surface can answer. There are **two independent licences**
+for deleting an interior resolution, range and algebra, neither subsuming the other, and the algebraic
+one is a **conjunction over every step**. Deferral is **pointwise optimal** wherever the boundary
+resolution is a nearest-point projection.
+
+**The result that shapes the canon rather than the design.** The unit's central claim splits by
+provenance and the candidate marks every sentence with its kind. **(P), the partition, is a theorem**,
+derivable without the observability rule, by contextual equivalence plus I14's ban on `dyn`, `TypeId`
+and `core::any`, with its one empirical premise measured. **(L), the licence, is normative and
+underivable**: three members tried to derive it from op's stated intents and all three failed for stated
+reasons. It has two exact bounds, a build-profile bound that **converges with I18 from a direction I18
+was never derived from**, and the definedness bound, which quantifies it over the boundary function
+*with its definedness domain*.
+
+**Two sweeps became theorems**: the deferral optimum, whose proof makes the tie rule irrelevant and
+idempotence a consequence, and the no-threshold double-rounding claim, constructive at `F any`.
+
+**What it corrected in itself.** A rung claim was made, over-generalised to three files, and cut back to
+two by measurement. An argument was marked as a measurement, on `60`'s own central result, with `60`'s
+disclaimer carried nowhere. A clause was refused on a real contradiction and repaired by composition
+rather than patch. A biconditional was claimed and one direction fails. **Nine instrument defects**, two
+naming new classes: **scope rather than mechanism**, where no control can catch it because a control
+tests whether an instrument measures what it points at and not whether it points at the whole claim; and
+**the harness rather than the instrument**. Members refuted **eleven of their own hypotheses** and kept
+every run.
+
+**A coordinator failure is recorded at `166` section 6**: the curated reading list omitted `60` and `43`,
+both on this unit's question, and the compression that had preceded it dropped exactly the material that
+would have made the omission survivable. The two failures were not independent.
+
+**What it did not settle**, and all of it is op's: whether the observability principle becomes an arvo
+intent, which is what (L) rests on and a workspace rule is not a ratification; which accuracy target I7
+names; which chain carrier ships; two vocabulary calls; and the canon-form question, coupled to `156`
+item 2 as one decision. **Every magnitude is unpriced** except what `OPTIONS.md` Q42 already carries.
