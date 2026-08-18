@@ -235,6 +235,10 @@ OK  111:468-470   [2 lines]
 OK  112:944-946   [2 lines]
       > the two spellings meet: nothing at a monomorphic site, one threaded parameter at a polymorphic one, and
       > the program at a homogeneous container, where no repair exists.
+OK  109:650   [1 lines]
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
+OK  109:650   [1 lines]
+      target-independent, and only `λ` may vary with the target.** Which is the always-optimal-internals split
 OK  108:825   [1 lines]
       > must agree about it. An axis belongs here if there is **any** reachable chain on which moving it is
 OK  111:334-336   [3 lines]
@@ -269,8 +273,12 @@ OK  108:820-830   [11 lines]
       > than independent.
       >
       > The **declared semantics** is an assignment on the axes a consumer can observe: those where moving the
+OK  112:904-945   [42 lines]
+      > A **primitive** is a value set together with one realisation map taking an exact result back into it,
+      > over a declared operation set. Its **identity** is that structure up to denotation-preserving
+      > isomorphism. A **law** is read off it and never declared.
 UNRESOLVED  no_such_file_157.md:1
 OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
 
-citations checked: 79 plus 2 controls
+citations checked: 82 plus 2 controls
 failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

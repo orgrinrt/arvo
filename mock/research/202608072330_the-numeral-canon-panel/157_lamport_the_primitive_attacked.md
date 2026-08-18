@@ -800,6 +800,69 @@ universal.
 
 ---
 
+### 3.7 Soundness is not enforceable by a signature, and `109`'s target-independence clause is what stands between the design and the hole
+
+Q157-D, opened in this file and attacked here rather than left.
+
+**The obvious mechanisation.** Make the realisation map a `const fn` whose arguments are exactly the
+parameters the type carries. Then it cannot read anything else, the denotation factors by construction,
+and soundness is enforced by the compiler rather than audited by a reviewer.
+
+**It is not sufficient, and the gap is `cfg`.** A `const fn` body may read `cfg` and module-level
+constants without naming either in its signature. So a realisation map can read the **build** while
+presenting a signature that says it reads only the type. Compiled, both ways, from one source:
+`157_probes/p8_soundness_is_not_enforced/factoring.rs`, output at `factoring_run.out`:
+
+```
+=== build base ===                    === build alt ===
+HAZARD    R(MAX+1) = 8191             HAZARD    R(MAX+1) = 0
+CONTROL_R R(MAX+1) = 8191             CONTROL_R R(MAX+1) = 8191
+CONTROL_L sum(lambda) = 160348640     CONTROL_L sum(lambda) = 160348640
+CERT      separates = false           CERT      separates = true
+```
+
+Two builds of one file, differing only in `--cfg alt`. The hazard line is one type name denoting
+saturation in one build and wrapping in the other, which is a soundness violation in `111`'s own terms:
+syntactic equality merging two different denotations. Both controls hold: `CONTROL_R`, a realisation
+map the build cannot reach, is stable; `CONTROL_L`, where only the lowering is `cfg`-selected between
+a mask and a shift pair, is byte-identical across builds.
+
+**The `CERT` line is the part that matters most and I did not anticipate it.** The separation
+certificate itself answers differently in the two builds. A certificate is only as sound as the
+realisation map it evaluates, so a `cfg`-reading map makes the completeness proof build-dependent
+without any of the machinery noticing. **The certificate cannot police the hole it sits inside.**
+
+**And this is exactly what `109` already forbade, which is the useful part.** `109:650` records that
+the value set, the storage and the overflow policy are "target-independent, and only `λ` may vary with
+the target", and calls it the always-optimal-internals split. `arvo-always-optimal-internals.md` says
+internals unwrap to whatever is optimal for the specific build target and the specific `cfg`-gated
+hardware features. Put together: **the `R`/`λ` split is not tidiness, it is the soundness half of
+adequacy expressed as a rule about what may be `cfg`-gated.** `CONTROL_L` is that rule obeyed and the
+hazard line is that rule broken, in one file, one flag apart.
+
+**So the answer to Q157-D is: not by a signature, and the residual obligation is a lint rather than a
+type.** What a lint would check is stateable in one sentence: no function on the realisation-map path
+reads `cfg`, a module-level constant, or any input not in its parameter list. That is a syntactic
+property of a call graph, which is the kind of thing a lint decides, and it is the kind of thing no
+type system in scope here decides.
+
+**F157-13. Soundness is not enforceable by making the realisation map a function of the type's
+parameters, because `cfg` is in scope inside the body.** Two builds of one source, differing only in
+`--cfg`, produce one type name denoting saturation and wrapping respectively, while a realisation map
+that does not read the build and a lowering that does are both stable across the same pair of builds.
+`W = 13, F = 0, signedness = unsigned, overflow policy in {sat, wrap}, container = u64 with u128
+intermediates, rustc = the committed pin, opt-level = 3, threads any, target features any`. Evidence:
+`157_probes/p8_soundness_is_not_enforced/factoring.rs`, `factoring_run.out`. Second statement of
+`109:650`'s target-independence clause, arriving from the adequacy side with a compiled violation
+attached.
+
+**S-21, to `109`.** Your target-independence clause is stated as a consequence of the
+always-optimal-internals split. It is more than that: it is what makes the soundness half of adequacy
+true at all, and without it two builds of one program denote different things under one name. Say it
+as an obligation rather than as an observation, and the lint above is what discharges it.
+
+---
+
 ## 4. Q52's open item, `111` section 18, and whether the predicate covers what the conclusion needs
 
 ### 4.1 What was asked and what was measured
@@ -956,11 +1019,12 @@ gives one vocabulary across the declared range. **Closed by** writing the elemen
 over the lens and checking whether the sugar is thin, which is `154` O-B's own discriminator applied to
 a different carrier. If the sugar is thick, `154` O-A's two vocabularies is the honest answer.
 
-**Q157-D. Is soundness's factoring obligation checkable mechanically, or only by inspection?** The
-argument is structural, so a lint could plausibly check that no realisation-map input is absent from
-the type. **Closed by** attempting it against a real shape; I did not, and until someone does, the
-soundness half is an audit obligation rather than a gate, which is weaker than the completeness half and
-should be said rather than glossed.
+**Q157-D is closed, in section 3.7.** Not by a signature, because `cfg` is in scope inside a `const fn`
+body and a `cfg`-reading realisation map makes one type name denote two things in two builds, with the
+certificate itself answering differently in each. The residual obligation is a lint over the
+realisation-map call graph, and it is stateable: no function on that path reads `cfg`, a module-level
+constant, or anything outside its parameter list. Left in the register as a closed entry so the
+discriminator and the answer sit together.
 
 **Q157-E. What is the certificate's cost in compile time?** The witness check is `O(1)` per pair
 evaluated at const time, and const evaluation is not free. **Unpriced.** Nothing on `mock/benches/` has
@@ -1066,7 +1130,9 @@ to compile. That `112`'s axis classification and `111`'s adequacy obligation are
 not decided, and the premise onto an item already queued for op. The `154`/`155` disagreement, from
 unnoticed to located and resolved. `111` section 18.2's zero, from a measurement of the axis to a
 measurement of licence soundness. Q157-B, from a question I opened to a question I closed, per pair
-rather than per axis, on `111`'s own F111-6 reproduced on a second instrument.
+rather than per axis, on `111`'s own F111-6 reproduced on a second instrument. Q157-D likewise, from
+open to closed with a compiled violation, and `109`'s target-independence clause from an observation to
+the obligation that carries the soundness half of adequacy.
 
 **What I could not.** I could not price anything. Q157-E is unpriced and the word is used deliberately:
 nothing on `mock/benches/` measures a const-evaluation budget, and my `rustc` invocation on a 100-line

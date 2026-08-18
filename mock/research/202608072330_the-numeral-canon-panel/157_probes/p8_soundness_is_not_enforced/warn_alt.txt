@@ -1,0 +1,10 @@
+warning: unused variable: `hi`
+  --> factoring.rs:34:9
+   |
+34 |     let hi = ((1u128 << w) - 1) as u64;
+   |         ^^ help: if this is intentional, prefix it with an underscore: `_hi`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: 1 warning emitted
+
