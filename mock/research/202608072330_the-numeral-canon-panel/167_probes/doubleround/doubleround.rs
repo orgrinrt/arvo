@@ -91,7 +91,10 @@ fn main() {
             .map(|(m, _, _)| *m)
             .min()
             .unwrap();
-        println!("  smallest M with zero disagreements: {first_clean}  (2F = {})", 2 * f);
+        println!(
+            "  smallest M with zero disagreements: {first_clean}  (2F = {})",
+            2 * f
+        );
         println!();
     }
 }

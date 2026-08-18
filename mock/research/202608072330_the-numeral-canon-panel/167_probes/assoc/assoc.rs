@@ -161,7 +161,11 @@ fn main() {
     println!("  NC8: associative operators found = {n_assoc}, non-associative = {n_not}");
     println!(
         "       (both must be > 0): {}",
-        if n_assoc > 0 && n_not > 0 { "ok" } else { "FAIL" }
+        if n_assoc > 0 && n_not > 0 {
+            "ok"
+        } else {
+            "FAIL"
+        }
     );
 
     let liar_bad: u64 = ops.iter().map(|&o| assoc_liar(o, 4)).sum();

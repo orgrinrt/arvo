@@ -1,0 +1,18 @@
+Committed harness output, satfold-length-l1, 32 KiB column, aligned, saturating add.
+profile = release (harness loads variants from target/release); host per the meta.json.
+
+     L          seq     iterfold        nolaw   lanes4-idx      lanes16 lanes16-constl      lanes64         neon        neon8          winner  seq/win
+     8         8003         7913         8075         7378         7901         7942         7998         7991         7946      lanes4-idx     1.1x
+    15        10241        10152        10159         8024        10304        10360        10255        10123        10492      lanes4-idx     1.3x
+    16        10411        10473        10422         7869        10499        10435        10469         1537         1533           neon8     6.8x
+    17        10699        10740        10732         7842        10788        10662        10766         1651         1667            neon     6.5x
+    32        15128        15125        14636         8815         9103         9037        14639          886          873           neon8    17.3x
+    63        26827        26736        21166         2455        10315        10257        26799         3932         4082      lanes4-idx    10.9x
+    64        28746        28495        21983         1981         4080         4181         7749          518          537            neon    55.5x
+    65        28276        27175        21845         2004         4533         4458         7633          542          539           neon8    52.5x
+   128        35216        35064        26921         2534         2239         2255         5121          342          339           neon8   103.9x
+   256        38368        38496        29419         7115         1436         1439         2782          284          274           neon8   140.0x
+  1024        41341        41170        31626        13075          834          836         1098          310          232           neon8   178.2x
+  4096        41713        41596        31997        14989         1528         1525          670          362          255           neon8   163.6x
+
+lanes16-constl (fold length as a const generic) is faster at 6 of 12 lengths.

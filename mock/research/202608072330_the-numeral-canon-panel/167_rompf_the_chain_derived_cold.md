@@ -527,3 +527,90 @@ recovers the region-level facts precisely where the operator's law is visible in
 arvo's operators are chosen so that theirs are not.** That is not a defect in arvo's operators. It is what
 makes the typestate worth having, and it is the reason a region has to be represented above the lowering
 rather than left to be rediscovered below it.
+
+---
+
+## 7. The chain question is already priced, in this repository, and nobody in this unit was told
+
+`mock/benches/` is the only thing in this workspace that can price anything, and it holds a committed
+harness family whose subject **is** a chain: `satfold`, twelve reduction lengths, nine arms per length,
+40 samples per arm. Its meta records `Apple M1`, `Darwin 25.5.0`, `rustc 1.98.0-nightly (57d06900f)`, and
+the harness loads its variants from `target/release`, so **profile = release** throughout.
+
+I did not run it. The numbers below are read out of the committed `_findings.md` files by the script in
+`167_probes/satfold_read/`, and the extraction is worth the paragraph it costs, because my first version
+of it was wrong: splitting on the section heading without stopping at the next one let the bridge-overhead
+table overwrite the medians, and the whole table came out as single-digit nanoseconds. Reported here
+because a plausible table is what that error produces.
+
+**Median nanoseconds of the algo, 32 KiB column, aligned, saturating add. `L` is the reduction length the
+reassociation is applied over.**
+
+| L | seq | iterfold | nolaw | lanes4-idx | lanes16 | lanes64 | neon | neon8 | winner | seq/winner |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 8 | 8003 | 7913 | 8075 | 7378 | 7901 | 7998 | 7991 | 7946 | lanes4-idx | 1.1x |
+| 15 | 10241 | 10152 | 10159 | 8024 | 10304 | 10255 | 10123 | 10492 | lanes4-idx | 1.3x |
+| 16 | 10411 | 10473 | 10422 | 7869 | 10499 | 10469 | 1537 | 1533 | neon8 | 6.8x |
+| 17 | 10699 | 10740 | 10732 | 7842 | 10788 | 10766 | 1651 | 1667 | neon | 6.5x |
+| 32 | 15128 | 15125 | 14636 | 8815 | 9103 | 14639 | 886 | 873 | neon8 | 17.3x |
+| 63 | 26827 | 26736 | 21166 | 2455 | 10315 | 26799 | 3932 | 4082 | lanes4-idx | 10.9x |
+| 64 | 28746 | 28495 | 21983 | 1981 | 4080 | 7749 | 518 | 537 | neon | 55.5x |
+| 65 | 28276 | 27175 | 21845 | 2004 | 4533 | 7633 | 542 | 539 | neon8 | 52.5x |
+| 128 | 35216 | 35064 | 26921 | 2534 | 2239 | 5121 | 342 | 339 | neon8 | 103.9x |
+| 256 | 38368 | 38496 | 29419 | 7115 | 1436 | 2782 | 284 | 274 | neon8 | 140.0x |
+| 1024 | 41341 | 41170 | 31626 | 13075 | 834 | 1098 | 310 | 232 | neon8 | 178.2x |
+| 4096 | 41713 | 41596 | 31997 | 14989 | 1528 | 670 | 362 | 255 | neon8 | 163.6x |
+
+**Four readings, and every one of them is about the region rather than the operation.**
+
+**The chain-level rewrite is worth between 1.1x and 178x, and the governing dimension is the chain
+length.** At `L = 8` the findings file reports **seven of eight arms with no significant difference from
+the baseline**; the whole family of chain rewrites is worth nothing there. At `L = 1024` the same family
+is worth 178x. There is no single answer and the dimension that decides it, the length of the region, is
+not a property any operation in the region has.
+
+**The winner changes with `L`**, and it changes back: `lanes4-idx` at 8, 15 and 63, `neon` at 17 and 64,
+`neon8` at 16, 32, 128, 256, 1024 and 4096. That is I13's composition of predicated arms, measured, in a
+committed artifact rather than as a proposal.
+
+**The law is the lever, not the bounds proof.** `nolaw` supplies the identical bounds proof with the
+accumulation left strictly serial. It tracks the sequential arm to `L = 32` and separates to at most
+1.30x at `L = 4096` (41713 against 31997). So of a 178x win, the bounds proof accounts for roughly 1.3x
+and reassociation for the rest. **That is an attribution and it is the reason the associativity proof in
+probe E is worth carrying in a typestate**: it is where nearly all of the win lives.
+
+**The cliff at `L = 15` to `L = 16` is a mechanism boundary, not a gradient.** `neon` goes from 10123 to
+1537, 6.6x, for one extra element. Sixteen bytes is one vector register on this host: below it the
+hand-written kernel cannot fill one and pays the prologue for nothing. **The predicate that selects the
+arm is `L >= 16`, and it is a hardware fact rather than a numeric one**, which is worth saying because a
+canon that predicates arms only on width and strategy has no place to write it down.
+
+### 7.1 One static lever that did not pay, and one caution about how these files are read
+
+`lanes16-constl` is `lanes16` with the fold length lifted from a runtime value to a const generic:
+exactly one static lever, everything else held. Across the twelve lengths it is faster at **six** and
+slower at **six**, and the largest gap anywhere is 126 ns out of 10662, or 1.2%.
+
+By the artifact's own per-variant confidence intervals the two do not overlap at `L = 17`
+(`[10762, 11133]` against `[10657, 10709]`). **I do not read that as a result**, and the reason is
+methodological and applies to anyone else reading these CSVs. Those intervals are computed for each
+variant against a common baseline. `lanes16` against `lanes16-constl` is a **pairwise** comparison between
+two non-baseline arms, and nothing in the artifact gates it. A significance figure computed at one
+granularity does not license a verdict taken at a finer one.
+
+So: **the static-length lever is unestablished in this arm shape**, not measured to be zero. What is
+established is that the effect, if any, is under 1.2% and its sign flips half the time, which is a real
+bound on how much anyone should expect from it. Deciding it needs a pairwise gate the artifact does not
+carry, and that is what would close it.
+
+### 7.2 What this section is evidence of, beyond the numbers
+
+`RULES.md` records that eighteen files of this panel reported a trade as unpriced while
+`mock/benches/` held the measurement, because no brief named the directory. **The same thing was about to
+happen to this unit.** The brief for `166` opens the chain topic on the ground that the panel has never
+had one, which is true of the panel's files and not true of its repository: the largest chain-level result
+in the tree, an entire committed family sweeping the reassociation question across twelve region lengths,
+was already there.
+
+A negative claim about evidence is a claim about a place. This one is checkable in one command, and it
+comes out the other way.

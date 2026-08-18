@@ -23,7 +23,11 @@
 // Exhaustive over the full input domain at the stated widths. No timing.
 
 fn mask(k: u32) -> u64 {
-    if k >= 64 { u64::MAX } else { (1u64 << k) - 1 }
+    if k >= 64 {
+        u64::MAX
+    } else {
+        (1u64 << k) - 1
+    }
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -83,7 +87,10 @@ fn main() {
     println!("== Backward narrowing: compute the whole chain at K instead of W ==");
     println!("   working width W = {W}, consumer keeps K = {K} low bits");
     println!("   chain: t1 = op(a,b); t2 = op(t1,c); r = op(t2,a); observed = r & mask(K)");
-    println!("   exhaustive over a,b,c in 0..2^{W} would be 2^{} triples; this sweeps", 3 * W);
+    println!(
+        "   exhaustive over a,b,c in 0..2^{W} would be 2^{} triples; this sweeps",
+        3 * W
+    );
     println!("   a,b exhaustively at 2^{W} each and c over a fixed 64-value spread.\n");
 
     println!(

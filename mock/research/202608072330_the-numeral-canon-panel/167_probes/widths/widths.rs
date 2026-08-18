@@ -39,7 +39,10 @@ impl Op {
     /// bits on each operand? Established empirically by probe B for the first
     /// group and refuted there for the second.
     fn passes_demand(self) -> bool {
-        matches!(self, Op::Add(..) | Op::Mul(..) | Op::And(..) | Op::Shl(..) | Op::Leaf(_))
+        matches!(
+            self,
+            Op::Add(..) | Op::Mul(..) | Op::And(..) | Op::Shl(..) | Op::Leaf(_)
+        )
     }
     fn operands(self) -> Vec<usize> {
         match self {
@@ -108,9 +111,21 @@ fn main() {
         Chain {
             name: "MAC x4, 16-bit inputs, 16-bit sink",
             nodes: vec![
-                Leaf(16), Leaf(16), Leaf(16), Leaf(16), Leaf(16), Leaf(16), Leaf(16), Leaf(16),
-                Mul(0, 1), Mul(2, 3), Mul(4, 5), Mul(6, 7),
-                Add(8, 9), Add(10, 11), Add(12, 13),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Mul(0, 1),
+                Mul(2, 3),
+                Mul(4, 5),
+                Mul(6, 7),
+                Add(8, 9),
+                Add(10, 11),
+                Add(12, 13),
             ],
             sink: 14,
             keeps: Some(16),
@@ -119,9 +134,21 @@ fn main() {
         Chain {
             name: "MAC x4, same chain, consumer keeps everything (NC10)",
             nodes: vec![
-                Leaf(16), Leaf(16), Leaf(16), Leaf(16), Leaf(16), Leaf(16), Leaf(16), Leaf(16),
-                Mul(0, 1), Mul(2, 3), Mul(4, 5), Mul(6, 7),
-                Add(8, 9), Add(10, 11), Add(12, 13),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Leaf(16),
+                Mul(0, 1),
+                Mul(2, 3),
+                Mul(4, 5),
+                Mul(6, 7),
+                Add(8, 9),
+                Add(10, 11),
+                Add(12, 13),
             ],
             sink: 14,
             keeps: None,
@@ -131,11 +158,20 @@ fn main() {
         Chain {
             name: "Horner degree 4, 12-bit, 12-bit sink",
             nodes: vec![
-                Leaf(12), Leaf(12), Leaf(12), Leaf(12), Leaf(12), Leaf(12),
-                Mul(0, 1), Add(6, 2),
-                Mul(7, 1), Add(8, 3),
-                Mul(9, 1), Add(10, 4),
-                Mul(11, 1), Add(12, 5),
+                Leaf(12),
+                Leaf(12),
+                Leaf(12),
+                Leaf(12),
+                Leaf(12),
+                Leaf(12),
+                Mul(0, 1),
+                Add(6, 2),
+                Mul(7, 1),
+                Add(8, 3),
+                Mul(9, 1),
+                Add(10, 4),
+                Mul(11, 1),
+                Add(12, 5),
             ],
             sink: 13,
             keeps: Some(12),
@@ -145,11 +181,21 @@ fn main() {
         Chain {
             name: "Horner degree 4 with a shift in the middle, 12-bit sink",
             nodes: vec![
-                Leaf(12), Leaf(12), Leaf(12), Leaf(12), Leaf(12), Leaf(12),
-                Mul(0, 1), Add(6, 2),
-                Mul(7, 1), Shr(8, 4), Add(9, 3),
-                Mul(10, 1), Add(11, 4),
-                Mul(12, 1), Add(13, 5),
+                Leaf(12),
+                Leaf(12),
+                Leaf(12),
+                Leaf(12),
+                Leaf(12),
+                Leaf(12),
+                Mul(0, 1),
+                Add(6, 2),
+                Mul(7, 1),
+                Shr(8, 4),
+                Add(9, 3),
+                Mul(10, 1),
+                Add(11, 4),
+                Mul(12, 1),
+                Add(13, 5),
             ],
             sink: 14,
             keeps: Some(12),
@@ -158,8 +204,12 @@ fn main() {
         Chain {
             name: "all-blocking chain (div and min), 8-bit sink",
             nodes: vec![
-                Leaf(24), Leaf(24), Leaf(24),
-                Div(0, 1), Min(3, 2), Div(4, 1),
+                Leaf(24),
+                Leaf(24),
+                Leaf(24),
+                Div(0, 1),
+                Min(3, 2),
+                Div(4, 1),
             ],
             sink: 5,
             keeps: Some(8),
