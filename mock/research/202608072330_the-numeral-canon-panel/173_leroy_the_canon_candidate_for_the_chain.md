@@ -132,7 +132,7 @@ place under (L).** The pipeline whose intermediates are all stored is the degene
 case, and a single operation is the length-one stretch with an empty interior schedule (`168`
 2.3), so one concept serves and no operation/chain relation has to be legislated separately.
 Formalised at `172` section 2; the composition-of-definitions reading was first stated at `167` R7
-(`167:1052-1057`, "C9 says what a chain **contains**. Mine says what **bounds** one") before `171` measured why it holds.
+(`167:1052-1062`, "C9 says what a chain **contains**. Mine says what **bounds** one") before `171` measured why it holds.
 
 ### 1.2 The obligations, the grades and the window
 
@@ -738,16 +738,16 @@ are pasted from the output:
 unique line anchors across the 9 sources : 58
 unique probe paths across the 9 sources  : 72
 line anchors in the candidate             : 9
-probe paths in the candidate              : 7
+probe paths in the candidate              : 12
 candidate anchors that appear in a source : 4
 candidate anchors novel to the candidate  : 5
-    NOVEL 167:1052-1057
+    NOVEL 167:1052-1062
     NOVEL 168:362-368
     NOVEL 60:209-210
     NOVEL 60:69-84
     NOVEL 60:83-84
 source anchors not carried (dropped)      : 54
-probe paths carried                       : 5 of 72
+probe paths carried                       : 6 of 72
 ```
 
 **The dropped list is in the sibling file** `173_probes/anchor_accounting/dropped_anchors.txt`,
