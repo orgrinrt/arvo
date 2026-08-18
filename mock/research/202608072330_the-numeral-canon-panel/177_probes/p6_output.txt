@@ -1,0 +1,60 @@
+=== 173 section 6, what only op decides ===
+  ## 6. What only op decides
+  
+  Unchanged from the ninth unit's candidate and extended by this topic's own:
+  
+  1. **The container premise** (`156` item 1), **Q65's marker question**, and **X1 through X4**,
+     exactly as `164` carries them.
+  2. **The canon-form question, coupled to `156` item 2 as one decision**: whether a canon may
+     carry a proposition with no predicate, and whether it may carry a [normative] sentence beside
+     established ones. Clause 2 is the instance; this candidate marks kinds and does not answer.
+  3. **Which accuracy target I7 names** (`168` O-168-3): the placement distinction is priced (15.5x
+     aggregate, 16x worst-case at depth 5) and clause 5 says which placement is distinguished, not
+     which target is meant. I7's own wording carries a second unresolved reading ("chains and ops"
+     as two things or one phrase).
+  4. **Whether the observability principle becomes an arvo intent**: the ground clause 2 needs, and
+     a workspace rule is not an op ratification.
+  5. **Which chain carrier ships** (Q-C1/C9's directions): the discriminator and the doability
+     evidence are in L21; the choice, and the I3 taste question inside the staged option, are op's.
+  6. **The vocabulary calls**: chain against region (X-F), and the third sense of composition's
+     name (Q16, extended by L20).
+  
+  ## 7. The live options, carried in their own pass
+
+=== 176's own statement of what stays reserved ===
+  ## 0. The two gates
+  
+  **Canon gate: passed.** Nothing below closes anything reserved: the container premise, Q65, X1
+  through X4, the canon-form question coupled to `156` item 2, and whether the observability
+  principle becomes an arvo intent all stay op's. The B3 repair adopted in section 2 changes which
+  clause governs the schedule choice; it does not touch any reserved question, and `175` section 0
+  states the same of the refusal itself.
+  
+  **Test gate: passed, at 123 across 13**, crate by crate at `--release`,
+  `bitpack-write-contend-shared` serialised (15 passed; this run is the **fourth** confirmation that
+  it terminates, after `174`'s first from that seat, `175`'s, and `172`'s).
+  `176_probes/run_test_gate.sh`, output `176_probes/gate_release.out`, control firing.
+  
+  ---
+  
+  ## 1. The dissents, reproduced
+
+=== does 176 contain any verb of closure applied to a reserved item? ===
+  container premise        occurrences in 176: 1
+  Q65                      occurrences in 176: 1
+  X1                       occurrences in 176: 2
+  X-A                      occurrences in 176: 0
+  X-B                      occurrences in 176: 0
+  X-C                      occurrences in 176: 0
+  X-D                      occurrences in 176: 0
+  X-E                      occurrences in 176: 0
+  X-F                      occurrences in 176: 0
+  156 item 2               occurrences in 176: 0
+  observability principle  occurrences in 176: 0
+
+  lines in 176 mentioning a reserved item, printed for reading:
+    22:**Canon gate: passed.** Nothing below closes anything reserved: the container premise, Q65, X1
+
+=== CONTROLS ===
+  Q-A "Q65" present in 173: 2  (must be > 0)
+  Q-B "Q99-not-real" in 176: 0  (must be 0)
