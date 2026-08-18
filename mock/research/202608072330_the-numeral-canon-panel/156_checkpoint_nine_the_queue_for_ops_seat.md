@@ -216,5 +216,35 @@ reachable from `cargo test` and it defeats the very control that isolates the ha
 to measure. Found by `154`; not yet fixed, and named here because six files have inherited a gate count
 through that crate.
 
+## 7. The container premise now blocks a clause of the candidate, not just an option
+
+**This item was item 1's smaller sibling this morning and it has grown into the thing the ninth unit
+cannot finish without.** Whether footprint is observable decides whether identity saturates at the
+literal. `157` measured that a container observation splits every class, 32 to 64.
+
+The candidate's preamble claimed the premise was localised to one clause. Two signatures refuted that
+independently. `162` built its own instrument, four controls passing, and found it reaches **three**:
+clause 2's extension moves, and **clause 6's truth value moves**, since under footprint-observable the
+carrier is identity-bearing and "the realisation is not part of identity" is simply false on that
+branch. `163` made it **four**, and its addition is the strongest: **clause 9's satisfiability moves.**
+The shipped rule at `warm-container-shared/src/lib.rs:5-11` puts two markers over one value set with
+two carriers, and under footprint-internal that pair is connected both ways and separated by nothing,
+which is clause 9's own definition of a spurious split, so its certificate refuses.
+
+**`163` refuses clause 6 as written**, and it is not a wording complaint: no wording is true on both
+branches until this is ruled. It names three readings and chooses none, and two of the three are yours.
+
+**The options.** (1) Footprint is observable, and clause 6 is false as written and is rewritten on that
+branch. (2) A strategy changes a computed value, which is X3 and which the panel has treated as an
+inter-topic pointer rather than a live fork. (3) Two markers over one value set and one realisation map
+must not be two types, which contradicts the shipped rule rather than the candidate.
+
+**What it unblocks.** The statement of what a primitive is, which is the panel's central noun and which
+four topics have deferred to. `163`'s conclusion is that X3 stops being a cross-reference and belongs
+beside this item, because a question deciding whether a clause can be satisfied at all is not a
+pointer.
+
+---
+
 **The bench harness audit op called for is running upstream in mockspace**, with both cold-pair agents
 on it because they met the defects first hand. That arc is `.shared/state/mockspace-bench-round.md`.
