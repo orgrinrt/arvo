@@ -165,6 +165,8 @@ Recorded at dispatch time rather than after the fact.
 | 173 | leroy (canon candidate) | `a598133fb164a9d56` |
 | 174 | mcsherry (signature) | `a3700d11e90628fb3` |
 | 175 | rompf (signature) | `addae693f3316ae61` |
+| 176 | leroy (revision) | `a598133fb164a9d56` |
+| 177 | lamport (independent check) | `ae38c2d4d2d3fb8e0` |
 
 **A cold open cannot be bought from a resumed expert**, because every member of the ninth unit now
 carries the whole panel in context and a cold derivation reads only the premises. So these two are
