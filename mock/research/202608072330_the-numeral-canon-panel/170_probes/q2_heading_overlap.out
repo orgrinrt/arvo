@@ -1,0 +1,43 @@
+168 headings: 27   167 headings: 28
+
+Top matches by token overlap (168 heading -> best 167 heading):
+  jac 1.00  cont 1.00 EXACT   What I settled, what I moved, what I could not | What I settled, what I moved, what I could not
+  jac 1.00  cont 1.00 EXACT   Coverage of phase two, bounded                 | Coverage of phase two, bounded
+  jac 0.80  cont 0.80         Every finding with its predicate, in one place | Every predicate in one place
+  jac 0.67  cont 1.00 PREFIX  What is carried along a chain, and what is dis | What is carried along a chain, and what is dis
+  jac 0.60  cont 0.75         What this pass settled, moved, and could not   | What I settled, what I moved, what I could not
+  jac 0.57  cont 0.80         Options opened, each with what would close it  | Options this file opens, each with what would 
+  jac 0.50  cont 1.00         Coverage bound                                 | The two gates, and the coverage bound
+  jac 0.44  cont 1.00 PREFIX  "Chain" is at least three things               | "Chain" is at least three things, and they hav
+
+exact matches: 2
+  'What I settled, what I moved, what I could not'
+  'Coverage of phase two, bounded'
+strict prefix relations: 2
+  168: 'What is carried along a chain, and what is discarded'
+  167: 'What is carried along a chain, and what is discarded at each step'
+  168: '"Chain" is at least three things'
+  167: '"Chain" is at least three things, and they have different binding times'
+
+overlap >= 0.50: 7 of 27   0.25-0.50: 4   below: 16
+mean best-match overlap: 0.327
+
+null (random re-pairing, 200 draws): mean 0.024
+
+=== CONTROLS ===
+C1a Jaccard sees both prefix pairs at >= 0.50                   : False   <-- FIRES, and correctly: 0.44 on the second pair
+C1b containment sees both prefix pairs at 1.00                  : True
+C2 real pairing beats random re-pairing by more than 2x         : True (0.327 vs 0.024)
+C3 every exact match is a heading the standing shape dictates   : True
+
+The metric lesson, which the control produced rather than the analysis:
+a SYMMETRIC similarity reports a subsumption as a partial match, so it is the
+wrong instrument for a prefix relation. Containment is the right one and it
+returns 1.00 on both pairs. Jaccard is kept beside it because it is the honest
+answer to 'how similar are these two headings' and containment is the honest
+answer to 'did one file's framing arrive inside the other's'.
+
+RESULT: identity finds 2 matches and all are dictated; overlap finds
+7 pairs at or above 0.50 including the two prefix relations, against a
+null of 0.024. The shared premise set fixes a measurable amount of the
+shape, and the number to quote is the overlap rather than an identity count.
