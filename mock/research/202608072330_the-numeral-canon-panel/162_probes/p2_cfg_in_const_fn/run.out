@@ -1,0 +1,27 @@
+=== build base ===
+  HAZARD          R(MAX+1) = 8191
+  CONTROL_STABLE  R(MAX+1) = 8191
+  lowered() emitted body: .cfi_startproc movw8, #8191 cmpx0, x8 cselx0, x0, x8, lo ret 
+  branch on a build value: none
+=== build alt ===
+  HAZARD          R(MAX+1) = 0
+  CONTROL_STABLE  R(MAX+1) = 8191
+  lowered() emitted body: .cfi_startproc andx0, x0, #0x1fff ret 
+  branch on a build value: none
+
+CONTROL HAZARD differs between builds  : 8191 vs 0        (want differ)
+CONTROL CONTROL_STABLE identical       : 8191 vs 8191     (want identical)
+CONTROL no branch on a build value     : none in either   (want none)
+
+VERDICT: a const fn does read cfg, so F159-2's premise is verified
+         independently of 157's probe and the finding stands on its own
+         evidence rather than on 157's.
+
+         One sharpening of F159-2's own wording, from this run. The base
+         build's lowered body is 'cmp; csel', which is check-SHAPED. It
+         is not a validity check: it is the saturating semantics the type
+         declares, which is arithmetic and is what I15 permits. The claim
+         F159-2 needs is the narrower one this probe measures: neither
+         build branches on the build, and each emits one path. I15's
+         property holds in both builds while the denotation differs
+         between them, which is a relation no single build can witness.
