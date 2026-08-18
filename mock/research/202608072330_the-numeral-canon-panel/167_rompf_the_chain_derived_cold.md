@@ -614,3 +614,238 @@ was already there.
 
 A negative claim about evidence is a claim about a place. This one is checkable in one command, and it
 comes out the other way.
+
+---
+
+## 8. Association order is a speed lever in fixed point and an accuracy lever in relative precision
+
+`167_probes/order/`. This one I built expecting the opposite answer, and it is the finding I would most
+like a second derivation of.
+
+The reflex imported from numerical analysis says pairwise summation beats sequential summation, and the
+argument is about **relative** precision: a float's absolute rounding error scales with the magnitude of
+the running sum, so keeping partial magnitudes balanced keeps errors small. A fixed-point accumulator has
+a fixed absolute LSB.
+
+**Fixed point, Q(.12) multiply-accumulate, error in LSBs, worst of 32 seeds:**
+
+| n | sequential | pairwise tree | difference |
+|---|---|---|---|
+| 16 | 9.985 | 9.985 | **0.000** |
+| 1024 | 536.403 | 536.403 | **0.000** |
+| 65536 | 32922.755 | 32922.755 | **0.000** |
+
+Zero sizes where either order is strictly better, at every size from 16 to 65536.
+
+**The control, the identical comparison on a relative-precision accumulator:**
+
+| n | sequential | tree | seq/tree |
+|---|---|---|---|
+| 16 | 1.20e-6 | 6.11e-7 | 1.96 |
+| 4096 | 4.17e-3 | 2.38e-4 | 17.56 |
+| 65536 | 2.43e-1 | 2.56e-3 | **94.80** |
+
+The tree wins at 7 of 7 sizes, so the instrument detects an ordering effect where one exists. The other
+control, that both orders perform the identical number of truncations, is clean at every size.
+
+**What this settles.** In fixed point, association order is **purely a speed lever with exactly zero
+accuracy content**. In relative precision it is both, and by two orders of magnitude at large `n`.
+
+**Two consequences, and the second is a warning about how a canon gets written.**
+
+The apparent conflict between speed and accuracy over reassociation does not exist for the fixed-point
+family. A strategy that spends everything on accuracy loses nothing by taking the 178x reassociation win
+in section 7, because probe F says the reassociated answer is bit-identical. That is an empirical answer
+to whether two strategy concerns agree on this one axis, arrived at by measurement, which is the only way
+op has said such a question is answerable.
+
+And **a canon sentence about reassociation that does not name the numeral family is wrong for one of
+them.** "Reassociation trades accuracy for speed" is false in fixed point and true in relative precision;
+"reassociation is free" is true in fixed point and false in relative precision. This is a dimension the
+predicate notation would have caught if anyone had written the finding down with a family axis, and it is
+the reason I state the family in every predicate below.
+
+`holds for: fixed rows F = 12, I = 3, n in {16 .. 65536}, operands uniform in [-4,4), truncation = floor,
+signedness = signed, tree arity = 2, threads = 1. relative-precision rows: f32, operands uniform in
+[0,1), all positive, so catastrophic cancellation is absent by construction and the tree's advantage is
+not claimed for mixed-sign data.`
+
+---
+
+## 9. Options this file opens, each with what would close it
+
+Nothing here is settled and I close nothing. Each option below states the decision procedure that would
+resolve it, because an option without one accretes rather than forks.
+
+**Q-C1. Which carrier holds the region-level guarantee.** Three candidates in section 6: a named
+accumulator, a combinator arvo owns, a staged expression that lowers at the observation point. They are
+not exclusive and the honest expectation is that all three ship, covering different shapes.
+
+*What closes it:* a structural test rather than a measurement. For each candidate, write the four
+obligations of section 1 and mark which it can express. The named accumulator carries the budget only;
+the combinator carries everything for the fold shape and nothing for the expression shape; the staged
+expression is the only one reaching the backward facts. If that table is agreed, the answer is a
+composition and the remaining question is only which shapes each covers.
+
+**Q-C2. What the observation boundary is, mechanically.** Section 1 defines a region by what is observed.
+That definition is only as good as the decision procedure for "observed". Under I14 there is no heap, no
+`dyn` and no aliasing through a trait object, which makes the question far easier here than in general.
+
+*What closes it:* a worked enumeration of every way a value escapes a region in a no-alloc,
+no-`dyn`, monomorphised setting: a store to a column, a return across a public boundary, a reference taken,
+an inclusion in an aggregate that escapes, an FFI crossing. If that list is finite and each case is
+decidable at compile time, the definition is mechanical. I believe it is and I have not built it.
+
+**Q-C3. Whether the residual carry is worth its register.** Probe A shows it recovers the exact
+one-rounding guarantee for one extra F-bit register, and section 3.2 shows a region where it is the only
+form that fits a 64-bit container.
+
+*What closes it:* a bench with real competitor arms. The arms are the four in probe A plus a hardware
+fused multiply-accumulate where one exists, over a length sweep like `satfold`'s. **Its cost is entirely
+unpriced by me**, and the accuracy result says nothing about it.
+
+**Q-C4. What a chain-level guarantee says when the count is not const.** Section 5 shape (b). Three
+shapes: put the count in the typestate, which collapses it into shape (a) and costs the consumer a const;
+state a rate rather than a bound; or record a precondition the type carries and does not verify. I15
+forbids the fourth, a runtime check.
+
+*What closes it:* op, or a convergence. It is a question about what a guarantee **means**, not about what
+is achievable, and each of the three is achievable.
+
+**Q-C5. Whether the arm predicate needs a hardware axis.** Section 7's cliff at `L = 15` to `L = 16` is a
+vector register width, not a numeric property. If arms are predicated only over width, strategy and
+signedness, that predicate has no place to be written.
+
+*What closes it:* checking whether the same cliff sits at 16 on a host with a different vector width. One
+run of the existing `satfold` family on non-NEON hardware answers it and needs no new code.
+
+**Q-C6. Whether the static-length lever ever pays.** Section 7.1: six of twelve, under 1.2% either way,
+and the artifact does not carry a gate at the granularity the comparison needs.
+
+*What closes it:* a pairwise noise gate over the two arms specifically, on the existing artifact. No new
+bench, one analysis.
+
+---
+
+## 10. Existence and locus, challenged as the brief invites
+
+**The unit should exist and the intent for it is stronger than the brief said.** The brief names I7. I11
+is at least as load-bearing: "the contracts for things that compose to bigger units than just numerals
+alone" is a sentence about compositions being the product, in op's own words, and a unit on compositions
+that cites only I7 has understated its own warrant.
+
+**The locus challenge, and it is the finding rather than a caveat.** If a guarantee about accuracy is
+placed on a numeral's type, it is on the wrong side of a boundary, and section 6's structural test is how
+to see that without arguing about mechanisms: a carrier fixed when a value is constructed cannot depend
+on what consumes the value, and probes B and C are the measurement that what consumes the value changes
+the right answer. This is conditional, because **I have not read the panel and do not know what it has
+built.** If the panel has already put the strategy or the guarantee somewhere above the value, this
+challenge is already answered and I would rather find that in phase two than have it be true.
+
+**A second locus observation, offered as a question rather than a finding.** Nine topics have produced
+candidates and the first unit on compositions is file 167. If the composition contract is the product per
+I11, and the per-value primitive is the input to it, then the ordering has built the input first and the
+product last. That is a defensible order and it is also the order in which a boundary error is cheapest to
+make and most expensive to find, because every candidate written so far has been free to assume the
+operation is the unit without anything contradicting it.
+
+**One mechanism I noticed that nothing in the intents licenses, outside my question, reported because the
+standing instruction says to report it.** `mock/benches/variants/satfold-shared/src/lib.rs` documents
+itself by citing panel files by number and reproducing their conclusions. That is excellent practice for
+a bench and it is a **contamination channel for exactly this protocol**: the blind list forbids panel
+files and permits bench crates, and the bench crates quote the panel files. It contaminated section 4.2's
+framing for me and I have declared it in section 0.3. Nothing needs deleting; the blind list needs a line.
+
+---
+
+## 11. What I settled, what I moved, what I could not
+
+**Settled, with evidence and controls.**
+
+1. Per-operation correct rounding does not compose into chain-level correct rounding, and no intermediate
+   width short of exact makes it. Exhaustive, three widths, both controls clean.
+2. Association licence is per operator, not per family: saturating add composes, saturating subtract does
+   not, saturating multiply does, fixed multiply does not. Exhaustive at three widths, both controls clean.
+3. Rounding better does not buy associativity. Same order of violation with truncation and with
+   round-to-nearest.
+4. Backward narrowing is licensed exactly for the congruences and refused for saturation, division, right
+   shift and min. Exhaustive, 16.7M triples per operator.
+5. The residual carried forward is exactly equal to accumulating in the wide type, and it turns an error
+   linear in chain length into one bounded below one LSB. Three controls clean.
+6. In fixed point, association order has exactly zero accuracy content, while the same comparison on a
+   relative-precision accumulator shows the tree ahead by up to 94.8x. Both controls clean.
+
+**Moved.**
+
+The unit from the chain to the unobserved region, on the ground that the region's boundary is what bounds
+the design's freedom and the operator structure is not.
+
+The framing of I13 and I7 from two intents to one mechanism: some of I13's arms are rewrites of a region,
+and under a per-operation-only surface they have no site.
+
+The status of the chain topic from unpriced to priced, by naming a committed harness family that sweeps
+exactly it across twelve region lengths.
+
+**Carried forward unchanged, and from whom. Count: two, both from op.** I7's reading that the accuracy
+concern ranges over compositions rather than over isolated operations, and I13's shape, that the output is
+predicated arms composed rather than one universal answer. I did not modify either and section 7's
+crossover table is the strongest instance of I13 I have seen, because it is a measured composition rather
+than a proposed one. From the panel: **nothing**, since I read none of it.
+
+**What I could not do.**
+
+**I could not price any of it.** Every probe here is exact arithmetic. What a saved bit, a carried
+residual or a licensed rewrite is worth in time is **unpriced** by me, except where section 7 reads a
+committed artifact, and that artifact covers one operator on one host.
+
+**I could not settle Q-C2**, the mechanical definition of observation. I believe it is decidable under
+I14 and I did not build the enumeration, so the definition in section 1 is a definition with a hole in it
+and the hole is named.
+
+**I could not measure the ergonomic cost in section 6.1**, and I do not know how. It is taste about a
+surface, which is op's.
+
+**I could not test the hardware axis in Q-C5.** I have one host.
+
+---
+
+## 12. Every predicate in one place
+
+- **Per-operation correct rounding does not compose.** `holds for: F in {6, 8, 10}, M in [F, 2F], rounding
+  = nearest-ties-to-even, operation = fixed-point multiply, signedness = unsigned, family = fixed point,
+  threads = 1`
+- **Association licence, the twelve-operator partition.** `holds for: W in {4, 6, 8}, arity = 3, signedness
+  = unsigned, F = W/2 for the fixed-multiply rows, family = fixed point, threads = 1`
+- **Backward narrowing licence.** `holds for: W = 12, K = 6, chain length = 3, signedness = unsigned,
+  family = fixed point, threads = 1`
+- **The residual recovers the one-rounding guarantee.** `holds for: F = 12, I = 3 including sign, n in
+  {1 .. 2^20}, operands uniform in [-4,4), signedness = signed, family = fixed point, rounding in {floor,
+  nearest}, threads = 1, profile = rustc -O`
+- **The residual fits where the widened accumulator does not.** `holds for: container = 64 bits, I = 3
+  including sign, F in {8,16,20,24,26}, n in {2^10, 2^14, 2^18}, operands non-cancelling, rounding =
+  floor, signedness = signed, family = fixed point, threads = 1`
+- **Forward-only width assignment over-provisions.** `holds for: the five chain shapes and width rules in
+  the probe source, family = fixed point, threads = 1`
+- **Association order has zero accuracy content in fixed point.** `holds for: F = 12, I = 3, n in {16 ..
+  65536}, operands uniform in [-4,4), truncation = floor, signedness = signed, tree arity = 2, family =
+  fixed point, threads = 1`
+- **The tree beats sequential in relative precision.** `holds for: f32, n in {16 .. 65536}, operands
+  uniform in [0,1) all positive, family = relative precision, threads = 1`
+- **The reassociation win ranges 1.1x to 178x governed by region length.** `holds for: L in {8 .. 4096},
+  operator = saturating add, element width = 8 bits, signedness = unsigned, column = 32768 elements
+  aligned, host = Apple M1 with NEON, profile = release, threads = 1, family = fixed point`
+- **The bounds proof alone accounts for at most 1.30x of that.** Same predicate.
+- **The arm cliff at L = 16.** Same predicate, and it is a claim about `target features = NEON` in
+  particular rather than about target features any.
+
+**Every predicate above says `threads = 1`**, which under this panel's notation is a region and not a
+hedge. Nothing here was established on more than one thread and I claim nothing there. It is also the
+place where the whole file is most likely to be incomplete: a region evaluated concurrently has a
+partitioning question, and partitioning a fold is a reassociation, so section 4.2's licence table is
+exactly what would decide whether a given chain may be split across threads at all. Nobody has asked that
+question here and it is a whole unit.
+
+---
+
+*Phase one ends here. Phase two, the reconciliation against the panel, is appended below and phase one is
+not rewritten.*
