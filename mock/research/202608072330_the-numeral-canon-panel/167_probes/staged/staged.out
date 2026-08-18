@@ -1,0 +1,7 @@
+NC20  forward width computed from the description alone, no sink: 33
+NC19  work width at demand 8 = 8, at demand 63 = 33, moved = true
+NC18a congruence-only chain: narrow 221 vs wide-then-mask 221, agree = true
+NC18b with a blocking Shr node: narrow 103 vs wide-then-mask 103, agree = true
+NC18c a lowering that WRONGLY passes the demand through the shift gives 7, correct is 103, differ = true
+PASSES_DEMAND: Add true, Mul true, Shr false
+size_of description = 24 bytes, no vtable, no allocation

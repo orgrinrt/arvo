@@ -1,0 +1,15 @@
+warning: unnecessary braces around const expression
+   --> expr.rs:102:24
+    |
+102 |         (self.0.eval::<{ 64 }>() >> K) & mask(w)
+    |                        ^^  ^^
+    |
+    = note: `#[warn(unused_braces)]` (part of `#[warn(unused)]`) on by default
+help: remove these braces
+    |
+102 -         (self.0.eval::<{ 64 }>() >> K) & mask(w)
+102 +         (self.0.eval::<64>() >> K) & mask(w)
+    |
+
+warning: 1 warning emitted
+

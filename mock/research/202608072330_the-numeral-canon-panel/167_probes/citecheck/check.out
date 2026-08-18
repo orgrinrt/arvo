@@ -1,0 +1,25 @@
+ok    109:438 the deferred cost  [lines 435..441]
+ok    109 sec8 header  [lines 386..392]
+ok    109:424 Mul not endomorphism  [lines 421..427]
+ok    110:314 what composing means  [lines 311..317]
+ok    110:322 construction algebra to algebra  [lines 319..325]
+ok    112:850 declared extent discharges  [lines 847..853]
+ok    AGREEMENTS:206 C9 chain concept  [lines 203..209]
+ok    AGREEMENTS:497 cross-topic chain  [lines 494..500]
+ok    AGREEMENTS:499 63 sec5 unstatable  [lines 496..502]
+ok    OPTIONS Q42 noise floor  [lines 2026..2032]
+ok    OPTIONS Q42 no strategy dimension  [lines 2024..2030]
+ok    OPTIONS Q12 70.1 pct  [lines 1092..1098]
+ok    satfold lib cites panel 80/82  [lines 3..9]
+ok    INTENTS I7  [lines 132..138]
+ok    INTENTS I11 compose quote  [lines 193..199]
+ok    INTENTS I3 ergonomics  [lines 88..94]
+ok    INTENTS I15 never runtime checks  [lines 303..309]
+ok    RULES eighteen files unpriced  [lines 404..410]
+ok    satfold assoc law test  [anywhere in file]
+
+caught  NEGATIVE CONTROL: nonexistent file
+caught  NEGATIVE CONTROL: right file wrong text
+
+citations checked: 19, failures: 0
+negative controls caught: 2 of 2 (must be 2, else the checker cannot fail)

@@ -29,7 +29,10 @@ const F: u32 = 8;
 struct Lcg(u64);
 impl Lcg {
     fn next(&mut self) -> u64 {
-        self.0 = self.0.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+        self.0 = self
+            .0
+            .wrapping_mul(6364136223846793005)
+            .wrapping_add(1442695040888963407);
         let mut z = self.0;
         z = (z ^ (z >> 30)).wrapping_mul(0xBF58476D1CE4E5B9);
         z = (z ^ (z >> 27)).wrapping_mul(0x94D049BB133111EB);
@@ -88,7 +91,9 @@ fn err(v: i128, f: &[i128]) -> f64 {
 }
 
 fn main() {
-    println!("== Product chain, F = {F}, factors in (0, 2], error in LSBs, 400 chains per length ==");
+    println!(
+        "== Product chain, F = {F}, factors in (0, 2], error in LSBs, 400 chains per length =="
+    );
     println!(
         "{:>6}  {:>16}  {:>16}  {:>16}  {:>22}",
         "len", "per_step max", "deferred max", "carried max", "carried == deferred?"
@@ -128,7 +133,10 @@ fn main() {
         );
     }
     println!();
-    println!("  NC14 (all three identical at length 1): {}", if nc14 { "ok" } else { "FAIL" });
+    println!(
+        "  NC14 (all three identical at length 1): {}",
+        if nc14 { "ok" } else { "FAIL" }
+    );
     println!(
         "  NC15 (deferred differs from per_step somewhere, so the probe has resolution): {}",
         if nc15 { "ok" } else { "FAIL, nothing shown" }
