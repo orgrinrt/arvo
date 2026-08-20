@@ -3,6 +3,7 @@ name = "arvo"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+description = "Numeric and analysis primitives with strategy tags dictating speed, precision and layout per call site. no_std, no alloc, no platform deps."
 
 [dependencies]
 notko.workspace = true
