@@ -780,3 +780,384 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::497",
 ]
 keywords = ["control", "mutant", "instrument", "non-degeneracy", "first run", "reproduction", "toolchain", "R13"]
+
+# --- the strategy axis, from `106` and its superseding repairs -------------
+#
+# This topic's central measurements are stated over bench parameters rather
+# than over design axes: how many regions a table has, how many arms compete,
+# how many cost coordinates were read, which committed CSV supplied the costs.
+# Those belong on a `probe` row, so stripping them leaves several rows below
+# with a predicate carrying almost none of the claim's real scope. Each such row
+# says so, and `182` lists them together.
+
+[[proposal]]
+id = "a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_strategy_object"
+says = "A strategy is a pair. Its first component is an assignment on the axes a consumer can observe, supplied and never derived. Its second is a weighting over cost coordinates which selects among the arms that produce the answer the first component fixed, resolved and never observed. The two have different carriers: the first travels with the value, the second is supplied where the operation happens. The number of strategies is not a design parameter."
+because = "A consumer of a value cannot recover the observable assignment from the bits, so every consumer of that value must agree about it, which forces it onto the value. Only the site knows the arity, the access pattern and the target, which forces the weighting to the site. Nothing a consumer can see depends on which cost-equivalent arm was taken, which is why the second component erases."
+note = "**Superseded.** Its own consolidation records that a later attack found five of its eight clauses needing repair, and says in terms that whoever writes the canon takes the statement from the attack rather than from here. It is kept because the superseding row is a repair of it rather than a replacement, and because a reader meeting the pair in the register or the checkpoint needs to know which version they have. One expert, arrived seventh in its unit, and nobody attacked it before the consolidation shipped."
+gap = "Clause three is false and it is the one that mattered: component two was defined as ranging over the arms that produce the answer the first component fixed, and in that region a fidelity column would measure a constant, so op's accuracy intent is expressible in neither component while the same file claims the mechanism serves it."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::167",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::1404",
+]
+keywords = ["strategy", "pair", "observable", "weighting", "carrier", "superseded", "clause three"]
+
+[[proposal]]
+id = "a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_strategy_object"
+says = "A strategy is a declared semantics together with a weighting over the cost coordinates of the arms that realise it, the second chosen from a set the first determines. The declared semantics is an assignment on the axes a consumer can observe, and an axis belongs there if there is any reachable chain on which moving it is observable; where a particular chain cannot observe it, that is a licence the resolver may take under a predicate over the chain, not a reclassification of the axis. An arm realises the declared semantics exactly or approximately, and the distance from the declaration is a cost coordinate like any other, which is what lets a strategy weigh accuracy at all. The weighting is a support, the set of coordinates demanded, together with a rate, the exchange among them: supports join uniquely and totally by union, rates do not join, and where two rates meet the site names one or the operation reports."
+because = "Component one fixing the **denoted** answer rather than the computed one is the single change that restores the region in which an accuracy coordinate can vary, and without it the accuracy intent has nowhere to live. Observability is a property of the chain rather than of the axis, measured at 0% against 89.081% for the same overflow-policy assignment read at the declared width against the container width, and the repair is a conservative closure plus a per-chain licence with zero unsound predictions over 8,019 exhaustively swept chains. Supports and rates are two objects and one word had been naming both: supports join canonically at nine of nine, rates disagree on 71.4% of 42 pairs."
+supersedes = ["a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting"]
+note = "This is the version the superseded row's own consolidation directs a canon writer to, and it comes from the attack rather than from any of the four consolidations this pass was sent to port. It is one expert's converged statement over ten files, offered as a suggestion with op deciding, and it is not a rung above the row it repairs. Its author states where it is weaker than wanted: the chain licence is measured on one axis at two widths on one operation alphabet, whether it extends to intermediate precision is untested, and the whole statement inherits an open question about whether the axis list is complete."
+gap = "Whether the observable-axis list is complete. Nothing in the unit closes it."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::108_lamport_the_pair_attacked::818",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::1404",
+]
+keywords = ["strategy", "declared semantics", "weighting", "support", "rate", "arm", "fidelity", "denoted", "repaired"]
+
+[[proposal]]
+id = "a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body"
+kind = "finding"
+sentence_kind = "measured"
+standing = "three_or_more"
+topic = "the_strategy_axis"
+says = "A strategy resolved at compile time leaves no residue in the emitted body."
+because = "Four instruments across three files agree. A const-function argmin over a cost table against the hand-written arm gives nine instructions each, identical after label normalisation. Three probes reading entry bodies find a single tail branch with zero conditionals. Compiling both encodings makes the assembler emit one as a symbol alias of the other. And a committed harness run puts the arm reached through a const verdict at 1438 ns median against 1456 ns reached directly, intervals overlapping, with the false-verdict gate at 38391 ns."
+predicate = [
+  "target_features: target aarch64-apple-darwin, rustc 1.98.0-nightly (57d06900f), edition 2024, opt-level 3, panic = abort",
+  "build_profile: no_std, feature gates = 0, opt level = 3",
+  "threads: threads = 1 for the timed instance and threads any for the compile-time artifacts",
+]
+note = "The source calls this the single best-supported claim in its unit and the one the whole mechanism rests on. `evidence` is empty and the measured-implies-evidence check is red on this row. The `arms in {2, 3, 4, 5}` entry from the source's own predicate is a bench parameter rather than a design axis and is not carried here; it belongs on the probe row. The thread entry is the source's own and is the only split-valued one in the corpus: the timing holds at one thread and the compile-time artifacts hold at any."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::310",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::318",
+]
+keywords = ["selection", "erases", "residue", "argmin", "symbol alias", "const verdict", "1438", "compile time"]
+
+[[proposal]]
+id = "chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type"
+kind = "finding"
+sentence_kind = "measured"
+standing = "cross_topic"
+topic = "the_chain"
+says = "Chain accuracy cannot be served by an operator closed over its operand type, and the intermediate width required grows linearly in chain length with no logarithmic closed form."
+because = "Two authors reached it blind and in parallel at two different parameter settings, one deriving the growth rule in closed form with an availability table against a 128-bit widest rung. The same structural conclusion was then reached independently in two further topics without any of the three citing the other two: the format topic reaches it as a chain being exact operations plus a schedule of adaptation points, so that closing operations over the format makes the accuracy intent unstatable; the derived-laws topic reaches it as multiplicative chains needing width linear in fold length, with the schedule kind being what the accuracy intent is stated over."
+predicate = [
+  "total_width: W in {8, 16}",
+  "fraction_width: F in {4, 8}",
+  "operation: operation = mul",
+  "chain_length: chain length any",
+]
+note = "`evidence` is empty and the measured-implies-evidence check is red on this row. `cross_topic` rather than `two_experts` because three separately dispatched topics computed it independently and none cites the prior two, which is the strongest standing this panel produces. The width and fraction entries are the two blind derivations' own parameter settings; `chain length any` is the growth rule's own quantifier rather than a swept range. The strategy topic later sharpened it into chain length being a region dimension and the crossing point where one accuracy arm overtakes another being itself decided by a weighting."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::360",
+  "panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#6-cross-topic-agreements",
+]
+keywords = ["chain", "accuracy", "closed operator", "intermediate width", "linear growth", "fold length", "cross topic", "I7"]
+
+[[proposal]]
+id = "no_total_join_exists_over_the_observable_axes_so_the_operation_reports"
+kind = "refusal"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_strategy_axis"
+says = "A total silent join over the observable axes, resolving toward the more conservative side, is the wrong mechanism, because there is no referent for `more conservative`. Three candidate orders computed exhaustively over the whole representable domain disagree: by honoured laws wrapping and saturating are incomparable in three of four configurations, by how often the answer is wrong they are exactly tied, and by worst-case magnitude saturating is above wrapping. Two of the three do not give an order at all."
+because = "Two of the three candidate orders are not orders, and the third disagrees with them, so the phrase has no fixed meaning until somebody says which is intended. A fourth result in the same probe kills a related reading outright: saturating and exact-in-a-wider-rung are incomparable at zero fraction width under both signednesses and both widths, because the absorbing top is a law only a lossy policy has, so an accuracy-first policy is not the top of the law order and no choice of inventory rescues it."
+predicate = [
+  "total_width: W in {5, 6}",
+  "fraction_width: F in {0, 1}",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy in {wrap, saturate, exact}",
+  "operation: operations {add, sub, mul}",
+  "arity: arity = 3 for the algebraic family and 2 for the order family",
+  "threads: threads = 1",
+  "target_features: target features any",
+]
+instead = "The operation reports that two operands demand different computed answers and the site says which. The predicate separating the reporting arm from the resolving one is not where the demands happen to have a join; it is the far simpler question of whether the coordinate is observable, which is static."
+note = "The source calls this the unit's clearest refutation of a shipped shape. `evidence` is empty and the measured-implies-evidence check is red on this row. The predicate is the source's own, verbatim, minus the clause naming which laws the probe enumerated, which is an instrument parameter."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::523",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::530",
+]
+keywords = ["join", "conservative", "resolution", "cross-strategy", "incomparable", "report", "observable", "Q41"]
+
+[[proposal]]
+id = "the_join_over_demands_is_union_and_it_is_free"
+kind = "answer"
+sentence_kind = "theorem"
+standing = "two_experts"
+topic = "the_strategy_object"
+says = "The closure of `d` one-demand generators under union is the free join semilattice on `d` generators, whose carrier is the non-empty subsets. It is generated rather than enumerated, so a design writes down `d` names and gets the rest, and the fifteen-element closure that had been priced as a cost is two to the fourth less one."
+because = "An independent enumeration reproduces both of the numbers that had been read as a cost and identifies the object, and a compiled instance asserts on the pinned toolchain that the join is the union and commutes over all 256 ordered pairs, that it associates over all 4096 triples, and that all 16 elements are idempotent, with a mutant dropping one coordinate failing to compile. Two things fall out that a flat set cannot give: silence becomes a first-class element, so the absence of a demand says the consumer asked nothing there and the resolver is free, rather than being a cell somebody has to fill; and the escalation pathology disappears, where every join semilattice satisfying the intent-derived constraints on a flat marker set makes the accuracy-first preset the top and escalates every mixed expression to it."
+predicate = [
+  "build_profile: no_std, zero feature gates, on the pinned toolchain",
+  "arity: arity in {2, 3} for the asserted join laws",
+]
+note = "The establishing file's own probe output already said this and its prose priced the closure as a cost anyway, so the option register inherited the prose. That is a compression loss inside one file, between its probe and its own text, at the smallest possible scale, and it is the same failure a consolidation exists to prevent. Two instances: the enumeration and the compiled assertion, by two authors."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::499",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::516",
+]
+keywords = ["demand lattice", "join", "union", "free", "semilattice", "silence", "escalation", "preset"]
+
+[[proposal]]
+id = "headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_strategy_axis"
+says = "Headroom and intermediate precision are invisible across any composition of addition, subtraction and multiplication, and become visible at the first step that is not a ring operation: a shift, a division, a saturation, a comparison. Inside a pure ring region those two axes are the resolver's to choose and a strategy need not fix them."
+because = "Reduction modulo two to the width is a ring homomorphism, so any composition of the three ring operations gives the same low bits whatever width it was computed at. Running the observability test one axis at a time with the others held gives headroom at 0 of 640 within ring chains and 500 of 640 past a non-ring step, intermediate precision at 0 of 640 and 570 of 640, packing unobservable everywhere swept, and overflow policy observable in both regimes at 511 of 640."
+predicate = [
+  "total_width: W = 13",
+  "signedness: signedness = unsigned",
+  "operation: operations {+, -, *, >>}",
+  "chain_length: column lengths in {1, 2, 3, 4, 8, 16, 32, 64, 128, 1024}",
+  "threads: threads = 1",
+  "target_features: host aarch64-apple-darwin, rustc nightly-2026-05-28",
+]
+note = "The probe's first version is worth more than its result: it swept only additive chains ending in a mask and reported both axes unobservable at 0 of 640, and those zeros were the sweep proving the ring homomorphism it stood on rather than testing the axis. Both versions are committed. The region is large, it is const-visible wherever the chain is written, and it is exactly the arm-with-a-predicate shape I13 asks for. It is unpriced and unbuilt and the source carries it as a live option rather than as a recommendation. `evidence` is empty and the measured-implies-evidence check is red on this row."
+gap = "Unpriced and unbuilt. Nobody has measured what taking the licence saves, and nobody has built the const predicate that would gate it."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::460",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::476",
+]
+keywords = ["headroom", "intermediate precision", "observable", "ring", "homomorphism", "licence", "arm", "predicate", "640"]
+
+[[proposal]]
+id = "the_rationalisability_counts_on_the_committed_carrier_table"
+kind = "finding"
+sentence_kind = "measured"
+standing = "three_or_more"
+topic = "the_strategy_axis"
+says = "On the committed carrier-width table, of 15625 sections, 72 are rationalisable by a non-negative weighting and 9 by a strictly positive one, and 63 of the 72 select an arm no weighting can select. The whole gap between 72 and 9 is one tie: two arms declare the same size, so a pure-size weighting ties them at all six regions, making 64 sections weakly rationalisable of which 63 name the dominated arm."
+because = "Three independent implementations from three different geometries agree: extreme-ray enumeration of a pointed cone, interval arithmetic on the one-dimensional weight simplex, and polygon clipping written without opening either predecessor. The tie reduction turns a constraint about the sign of every weight into a rule about ties."
+predicate = [
+  "threads: threads = 1",
+  "target_features: target features any",
+]
+note = "**The predicate carries almost none of this claim's scope, and that is the finding rather than an oversight.** The source's own region is `regions = 6, arms = 5, cost coordinates = 2, cost source = the committed carrier-width CSVs, arithmetic exact rational`, every one of which is a bench parameter rather than a design axis: an arm can be gated on a fraction width and cannot be gated on `arms = 5`. Stripped to declared axes, what remains is a thread count and a target-feature entry, so the row is findable and its region is nearly empty. `evidence` is empty and the measured-implies-evidence check is red on this row; the instruments are `97_probes/p9_the_decider.py`, `98_probes/p6`, `101_probes/p4` and `p10`, all committed."
+gap = "Whether the counts transfer to any other table is unestablished, and the ratio of weighting-realisable sections to Pareto-admissible ones varies by a factor of 47, so the counts are a property of one table while the underlying bound, polynomial against exponential in the number of regions, is structural and does transfer."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::289",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::299",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::1372",
+]
+keywords = ["rationalisability", "72", "9", "63", "weighting", "cone", "tie", "dominated arm", "Pareto"]
+
+[[proposal]]
+id = "generation_relocates_the_check_rather_than_removing_it"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_strategy_axis"
+says = "Generating a winner table from a stated weighting removes every defect a human writing the table can introduce and admits one a human cannot: the tool computes the wrong argmin. A tool's wrong argmin is in general the right argmin of something else, so the output stays rationalisable and the rationalisability criterion is looking for exactly the property those defects preserve. Rationalisability catches 0 of 190 unit errors, 0 of 147 column swaps and 0 of 152 dropped coordinates at either rung; cone membership of the stated weighting catches all 489."
+because = "A coordinate read in the wrong unit is the exact argmin of the rescaled weighting, and a column swap is the exact argmin of the permuted one, so the defect is invisible to a test for the property it preserves. Cone membership is invariant to tie-break policy where independent recomputation is not, recomputation flagging a tie as a defect 48 of 48 times when a tie is precisely where the weighting declines to choose. The two proposals then compose into an assertion neither author saw: the committed winner table equals the argmin of the stated weighting over the committed cost table at every region, compiled as a const item, costing one const evaluation, nothing at runtime, and refusing at build time."
+predicate = [
+  "threads: threads = 1",
+  "target_features: target features any",
+]
+instead = "Generate, and check cone membership of the stated weighting rather than rationalisability of the output."
+note = "**The predicate carries almost none of this claim's scope**, for the same reason as the rationalisability row: the source's region is `regions = 5, arms = 5, cost coordinates = 3, 400 random models across two families, plus the committed carrier table, defect classes {unit scale, coordinate swap, tie-break policy, region off-by-one, dropped coordinate}`, all bench parameters. `evidence` is empty and the measured-implies-evidence check is red on this row. The const assertion has been seen to fail twice, once as a mutant and once accidentally when the first hand-written winner table was wrong, which is the control this row rests on."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::578",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::596",
+]
+keywords = ["generation", "check", "argmin", "cone membership", "rationalisability", "defect class", "489", "const assertion"]
+
+[[proposal]]
+id = "the_corpus_cannot_exhibit_the_accuracy_intents_because_a_coordinate_is_absent"
+kind = "finding"
+sentence_kind = "measured"
+standing = "two_experts"
+topic = "the_strategy_axis"
+says = "The committed corpus cannot exhibit the accuracy intents, and the barrier is the absent coordinate rather than the arm sets. The corpus does contain answer-differing arms, and one region with a strict accuracy ordering between them, and it records nothing about that ordering anywhere. Of 254 committed regions, 234 are pinned to one value by an exact-value oracle, 10 only to a property, 4 have no oracle at all, and 6 are single-arm."
+because = "One file claimed in bold that every committed region is answer-equivalent; a second was dispatched to verify it, built its own instrument before opening the first, and refuted it with three independently sufficient measurements. Twenty regions are not answer-pinned and eight of those have arms measured to differ or are two different algorithms by construction. But the conclusion survived the refutation one rung lower and better: an absent coordinate is something somebody can go and add, whereas a structural inability to hold such arms reads as a property to design around."
+predicate = [
+  "threads: threads = 1",
+]
+instead = "Add the scoring hook. The harness already has the consent switch, already has an intermediate bounded-disagreement regime that no variant uses, and one family already writes per-arm oracles, so the missing piece is one hook rather than a set of missing coordinates."
+note = "**The predicate carries almost none of this claim's scope**: its coordinates are the committed corpus at a named commit, 254 files, 104080 rows, 94 variant crates, none of which is a declared axis. `evidence` is empty and the measured-implies-evidence check is red on this row. Two mechanical causes of the original overclaim are worth keeping: the census unit could not structurally see one crate whose bridge is declared inline, and it treated the presence of an output validator as answer-pinning where two of fifteen validators check a property rather than a value."
+gap = "The cost-only question is refused rather than answered, because it asks for one verdict over a category. Where arms are answer-equivalent, cost-only is correct and complete and a fidelity column would measure a constant. Where they differ with no fidelity column, cost-only is correct and incomplete. Where they differ with no per-arm oracle, the region is unvalidated, which is the only defect and it has four instances in one family."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::796",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::769",
+]
+keywords = ["answer pinned", "oracle", "score_output", "fidelity", "254", "coordinate", "I5", "I7", "I9"]
+
+[[proposal]]
+id = "a_region_whose_arms_may_differ_is_validated_arm_by_arm_against_its_own_semantics"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "validation"
+says = "A region whose arms may produce different answers is validated arm by arm, each against its own declared semantics, rather than arm against arm. Cross-arm agreement is then a consequence where the semantics coincide, and its absence is not a defect where they do not."
+because = "One family in the corpus already carries the mechanism: two oracles, one per arm, and none across arms, with one arm checked against native hardware bit for bit and the other checked against the **definition** rather than against the other arm, because no silicon exists to check it against. Both neighbours are tested in exact integer arithmetic, ties are checked separately, and the check count itself is asserted so a shortened sweep fails rather than passes."
+note = "One expert. `normative` because it states how validation is to be done rather than reporting a measurement; the measurement that motivates it is the previous row."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::812",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::806",
+]
+keywords = ["validation", "oracle", "per arm", "declared semantics", "cross-arm", "agreement", "radix"]
+
+[[proposal]]
+id = "what_ships_is_four_arms_with_disjoint_predicates_over_one_generated_artifact_set"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_strategy_axis"
+says = "Ship the weighting, the cost table, and the winner table generated from them, with a const assertion that the third is the argmin of the first over the second at every region. Four arms then apply on disjoint regions: generate and assert equality where every weighed coordinate has an expressible value, the competing arms are separated by more than the instrument's resolution, and the arms compute the same value; check without generating where a weighed coordinate has no expressible value at all, so no weight vector can be written; use a band rather than an equality where the arms are separated by less than the coordinate's resolution but more than zero and compute the same value; and where the resolution does not separate the arms it must distinguish, change the statistic rather than accept the arm."
+because = "Written as one recommendation it reads as a single answer, which is the shape op has rejected four separate times. Each of the four predicates is a const-checkable property of the corpus rather than a judgement, so the composition is arms with regions rather than a policy. Two of op's four intents sit in the second region today, which is why that arm is the interim rather than the target."
+note = "`normative` because it is what the topic recommends shipping rather than a measurement. The fourth arm's condition was subsequently shown to be usually a property of the estimator rather than of the coordinate, which is why its action is to change the statistic. The four predicates are stated over corpus properties rather than over declared axes, so they are not writable as a `predicate` here and are in the `says` instead."
+gap = "The generate-against-check fork is the unit's largest unclosed item: named by the checkpoint as the first thing later members should attack, attacked around its edges twice, and never attacked at its core. Separately, the fork with consumer-visible content is a different one nobody picked up, whether the compiler is handed a winner table or a cost table."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::552",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::615",
+]
+keywords = ["four arms", "disjoint predicates", "winner table", "cost table", "weighting", "const assertion", "I13", "fork"]
+
+[[proposal]]
+id = "a_coordinate_set_is_a_countable_ceiling_on_how_many_strategies_can_exist"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_strategy_object"
+says = "A coordinate set is a countable ceiling on how many strategies can exist, exactly rather than approximately. On the committed carrier table with the control dropped, at strictly positive weights, one coordinate reaches 1 section, two reach 9 and three reach 42. With one coordinate the weighting cancels and exactly one section is reachable, by algebra rather than by the arms happening to be similar."
+because = "The corpus measures one coordinate and no more: of seventeen columns across 254 files and 104080 rows, nine carry information and exactly three vary between arms at a fixed region, and those three are one timing and its decomposition. Eight are identically empty or zero. Independently confirmed on the reachable surface: no variant crate implements a scoring hook or a dimension hook, none implements a relative-error bound, fifteen define an output validator and one mentions a may-differ flag."
+predicate = [
+  "threads: threads = 1",
+]
+note = "**The predicate carries almost none of this claim's scope.** Its real coordinates are the committed table, the number of arms and the coordinate count, all bench parameters. `evidence` is empty and the measured-implies-evidence check is red on this row. The degenerate case is the one a design falls into without noticing: with one coordinate the count is one, and it is one by algebra, so a design that ships a single cost coordinate has exactly one strategy however many names it gives them."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::687",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::695",
+]
+keywords = ["ceiling", "coordinate", "countable", "sections", "1", "9", "42", "degenerate", "cancels"]
+
+# --- cross-topic, from `AGREEMENTS` section 6 -------------------------------
+#
+# Claims two or more independently-dispatched topics converge on without either
+# citing the other as its source. Each consolidation warns this is the class
+# easiest to lose, because no single topic's compressor has both halves in view,
+# and the ledger that found them says none of the four names any of these as a
+# convergence: they are visible only by reading all four together.
+#
+# `cross_topic` is the strongest standing available here and it is claimed only
+# where the ledger states the independence explicitly. Where a convergence rests
+# on a shared premise the two topics both inherited, the row says so, because
+# two instruments over one premise agree about the premise.
+
+[[proposal]]
+id = "a_predicate_carries_every_dimension_it_depends_on_and_the_fraction_width_is_the_one_that_keeps_going"
+kind = "answer"
+sentence_kind = "normative"
+standing = "cross_topic"
+topic = "the_predicate_notation"
+says = "A predicate carries every dimension the claim depends on, and the fraction width is the dimension this panel has repeatedly dropped. Dropping one does not weaken a sentence, it converts it into a claim about a region nobody established."
+because = "All four topics reach it, as content and as method, and none of them names it as a convergence. The format topic establishes the cube showing unsigned multiplicative structure holding at zero fraction width and dying above it, with the signed cell broken even at zero under clamping. The derived-laws topic restates the same boundary as its dimension list and treats a frontier number quoted without all three factors it depends on as a defect class in its own right. The strategy topic re-measures the signed failure with two new instruments and records that this is the **third** time the qualifier has been lost from one sentence in the panel's own history, once inside a standing workspace rule that was a live licence to emit a wrong rewrite until it was corrected. The number-system topic contributes the structural half, that a sentence stated at the wrong depth of the choice sequence becomes false."
+law = ["distributivity_of_multiplication_over_addition"]
+note = "`normative` because it is the discipline; the measurements are the law rows it points at. The three losses are not one author being careless: each happened in a different unit, to a different writer, and the third happened **after** the loss had been diagnosed twice in the same unit, in a compression whose whole purpose was catching that class."
+provenance = ["panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#6-cross-topic-agreements"]
+keywords = ["predicate", "dimension", "F = 0", "qualifier", "dropped", "cross topic", "method", "I13"]
+
+[[proposal]]
+id = "arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached"
+kind = "answer"
+sentence_kind = "normative"
+standing = "cross_topic"
+topic = "the_predicate_notation"
+says = "The work is arms with const predicates over the regions where something holds, composed, rather than a single answer over a category. This is independently the organising principle of the later topics and the shape the earlier one reached before the rule that would require it existed."
+because = "The derived-laws topic names I13 as the one ratified entry at its gate and structures its whole result set as region-scoped arms. The strategy topic records op rejecting a category-wide policy question four separate times across the panel, three of them inside these two topics, and composes its own recommendation explicitly as four arms with disjoint predicates. The format topic, written before I13 existed, arrives at a structurally identical shape independently: its absorption criterion and the sign-confinement closed form are carried as corollary and criterion rather than merged, which is the same region-scoped posture stated before the rule."
+note = "`normative` and it restates a ratified intent rather than establishing one, so its standing is about the convergence rather than about the intent. The format topic's instance is the interesting one, because it predates the rule and therefore cannot have been copied from it."
+provenance = ["panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#6-cross-topic-agreements"]
+keywords = ["arms", "const predicate", "region", "composition", "universal", "I13", "cross topic", "anti-pattern"]
+
+[[proposal]]
+id = "the_law_frame_was_attacked_from_another_topic_and_held"
+kind = "finding"
+sentence_kind = "argument"
+standing = "cross_topic"
+topic = "algebraic_laws"
+says = "The format topic's law frame, marked provisionally passing and named by its own author as the thing most wanting attack, was attacked from a different topic, from a direction it was not built to face, and held. The number-system topic built the attack as a self-collapsed system naming its own computed algebra as its ambient domain; the derived-laws topic then extended the frame's ambient-associativity hypothesis into a const predicate over a declaration rather than re-testing it."
+because = "A single-expert claim from one topic being independently pressure-tested by a different topic and coming out intact is stronger evidence than either topic states alone, and neither topic states it. The attacker calls it a failed refutation rather than a proof, and the provisional marking stays."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F in {0, one unnamed value above 0}",
+  "signedness: three sign domains, unsigned and signed two's complement and signed symmetric range",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operations {add, mul}",
+]
+note = "The predicate is the frame's own region, carried from the row it is about, because an attack that fails establishes nothing outside the region the thing was stated in. A failed refutation is not a second instance of the frame, so the frame itself stays at one expert; what is `cross_topic` is the fact that the attack happened and failed."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#6-cross-topic-agreements",
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::273",
+]
+keywords = ["law frame", "attack", "failed refutation", "provisional", "self-collapsed", "H1", "cross topic"]
+
+[[proposal]]
+id = "three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder"
+kind = "finding"
+sentence_kind = "argument"
+standing = "cross_topic"
+topic = "the_strategy_axis"
+says = "Three separately dispatched topics each terminate on the strategy axis as the open coordinate everything else defers to. The format topic's adaptation slot names whatever a strategy resolves to as an open dimension; the number-system topic's crossing and pipeline sections defer the same question; the derived-laws topic's dimension list for a law's region ends in the identical phrase."
+because = "The three arrived at it separately, and op then named the strategy axis as the next unit **for that reason**, which makes this the one cross-topic convergence stated by the ratifying human rather than observed by a consolidator afterwards."
+predicate = [
+  "operation: operation any",
+  "overflow_policy: overflow policy any",
+  "rounding: rounding any",
+]
+note = "The predicate names the three axes the placeholder was reached from in the three topics, each quantified because each topic reached the dead end whatever value it held. It is the weakest kind of region in this file and it is written rather than omitted because omitting all three would say the convergence holds nowhere any of them exists, which is the opposite of what three topics found. A reader wanting a defensible region should treat this row as a pointer to the three sources rather than as a gate."
+provenance = ["panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#6-cross-topic-agreements"]
+keywords = ["strategy axis", "placeholder", "dead end", "deferral", "unit ordering", "cross topic", "op"]
+
+[[proposal]]
+id = "one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both"
+kind = "finding"
+sentence_kind = "argument"
+standing = "cross_topic"
+topic = "panel_conduct"
+says = "One measured count, 952 divergent triples, was independently mis-attributed to the wrong operation in two different topics and corrected in both. Its true owner is signed saturating addition, measured directly at 4096 triples, and not signed saturating multiplication."
+because = "The number-system topic corrected one member file's attribution of it to multiplication; the strategy topic later cites the corrected figure as a load-bearing count in its own rationalisability work and separately establishes that this exact number is the whole gap between two rationalisability counts, reducing to a single tie between two arms. It is one number, correctly re-derived and re-used across two topics after being wrong in between, and a reader meeting it in only one consolidation would not see that it was ever wrong."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F any",
+  "signedness: signedness = signed",
+  "overflow_policy: overflow policy = saturate",
+  "operation: operation = add",
+  "arity: arity = 3",
+]
+law = ["additive_associativity_under_saturation"]
+note = "Carried because the correction is the finding rather than the count. A count cited without its operation is the same defect class the derived-laws topic named for a frontier number cited without its three factors, arrived at independently in a different topic."
+provenance = ["panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#6-cross-topic-agreements"]
+keywords = ["952", "attribution", "operation", "addition", "multiplication", "correction", "cross topic", "4096"]
+
+[[proposal]]
+id = "the_four_consolidations_contradict_each_other_nowhere"
+kind = "finding"
+sentence_kind = "enumeration"
+standing = "one_expert"
+topic = "panel_conduct"
+says = "No contradiction was found among the four consolidations' candidate canon text or stated findings. The closest thing to one is internal to a single topic rather than between topics, and two pairs of measurements are close enough in shape to invite conflation without contradicting."
+because = "The internal case is the strategy topic's own section claiming a weighting component ranges over answer-equivalent arms, against its own later section finding a fidelity coordinate entirely absent from the corpus; the same file's later repair resolves it by fixing the first claim rather than the second. The conflatable pair is the format topic's signed saturating **multiplication** associativity counts, 28, 160, 780 and 3516 triples at widths 3 through 6, against the strategy topic's signed saturating **distributivity** counts, 47.72% at width 7 and 34.52% at width 6: two different laws, two different instrument sets, two different points in the panel's timeline. Neither supersedes the other and **neither was checked against the other by either consolidation**, because they are not the same claim."
+predicate = [
+  "total_width: W in 3..=7",
+  "fraction_width: F = 0",
+  "signedness: signedness = signed",
+  "overflow_policy: overflow policy = saturate",
+  "operation: operations {add, mul}",
+  "arity: arity = 3",
+]
+law = ["multiplicative_associativity_under_saturation", "distributivity_of_multiplication_over_addition"]
+note = "The predicate is the union of the two conflatable measurements' regions, which is the region a reader has to be careful in. One expert: the ledger's author read the four consolidations end to end and opened no member file, no probe directory and no register, so every rung and every characterisation in it is the consolidation's own rather than one the ledger derived. It states that limit itself."
+provenance = ["panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#7-contradictions-between-consolidations"]
+keywords = ["contradiction", "conflation", "952", "47.72", "34.52", "distributivity", "associativity", "ledger"]
