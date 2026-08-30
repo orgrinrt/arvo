@@ -89,7 +89,11 @@ fn both_arms_fire_on_a_planted_tree() {
 
     let unprefixed = corpus::unprefixed_archive_citations_in_living_ledgers(&tmp);
     assert_eq!(unprefixed.len(), 1, "{unprefixed:#?}");
-    assert!(unprefixed[0].at.starts_with("INTENTS.md:1"), "{}", unprefixed[0].at);
+    assert!(
+        unprefixed[0].at.starts_with("INTENTS.md:1"),
+        "{}",
+        unprefixed[0].at
+    );
     assert!(
         unprefixed[0].says.contains("seed/OLD_SETTLED_strategy.md"),
         "the report names the file to write instead: {}",
@@ -103,7 +107,11 @@ fn both_arms_fire_on_a_planted_tree() {
         "`OLD_SETTLED_container.md` is absent and `OLD_SETTLED_laws.md` is present, so \
          exactly one is dangling: {dangling:#?}"
     );
-    assert!(dangling[0].says.contains("container"), "{}", dangling[0].says);
+    assert!(
+        dangling[0].says.contains("container"),
+        "{}",
+        dangling[0].says
+    );
 
     fs::remove_dir_all(&tmp).ok();
 }

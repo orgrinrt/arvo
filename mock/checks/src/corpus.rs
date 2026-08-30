@@ -32,7 +32,7 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use crate::{Finding, repo};
+use crate::{repo, Finding};
 
 /// The panel whose corpus these arms walk.
 const PANEL: &str = "mock/research/202608072330_the-numeral-canon-panel";
@@ -141,19 +141,19 @@ fn seed_citations(line: &str) -> Vec<String> {
     let mut out = Vec::new();
     let bytes = line.as_bytes();
     let mut i = 0;
-    while let Some(at) = line[i ..].find("seed/") {
+    while let Some(at) = line[i..].find("seed/") {
         let start = i + at;
         // A `seed/` that is part of a longer word is somebody else's path.
         if start > 0 && (bytes[start - 1].is_ascii_alphanumeric() || bytes[start - 1] == b'/') {
             i = start + 5;
             continue;
         }
-        let rest = &line[start ..];
+        let rest = &line[start..];
         let end = rest
             .find(".md")
             .map(|e| e + 3)
             .unwrap_or_else(|| rest.find(|c: char| c.is_whitespace()).unwrap_or(rest.len()));
-        let cite = rest[.. end].to_string();
+        let cite = rest[..end].to_string();
         if cite.ends_with(".md") {
             out.push(cite);
         }

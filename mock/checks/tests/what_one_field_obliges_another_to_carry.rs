@@ -90,7 +90,11 @@ says = "he took the third option"
     );
     let found = shape::rulings_with_no_verbatim(&reg);
     assert_eq!(found.len(), 1, "{found:#?}");
-    assert!(found[0].at.contains("somebody_elses_words"), "{}", found[0].at);
+    assert!(
+        found[0].at.contains("somebody_elses_words"),
+        "{}",
+        found[0].at
+    );
     assert_eq!(found[0].kind, "ruling-carries-no-verbatim");
 }
 
