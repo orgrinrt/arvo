@@ -1,0 +1,65 @@
+=== mockspace.toml, the ranges 182 names ===
+mockspace.toml:304                 # Reference roots
+mockspace.toml:324                 [ref.roots.panel]
+mockspace.toml:327                 internal = true
+mockspace.toml:658                 key = "law"
+mockspace.toml:737                 key = "probe"
+mockspace.toml:803                 [[registry.namespace]]
+mockspace.toml:806                 description = "A claim that must not be cited again, in the words it was written in, with wh
+mockspace.toml:1000                # the mark governs the sentence it is on.
+mockspace.toml:1012                key = "proposal"
+mockspace.toml:1119                required = false
+
+=== 63, the lines and range endpoints 182 names ===
+63:184                             fixed point, scaled integers and floats are points of the parameterisation; subnormals fall 
+63:190                             contains neither zero nor one (`56_probes/q2_output.txt`, re-run here). So phase decides whe
+63:217                             (monotone, distance-minimising: what error transport and order transport consume) and the
+63:223                             (`56:160-171`, `56_probes/q1`, re-run here). So neither family subsumes the other, expelling
+63:364                             (`62:82-95`). **A symmetric clamp restores it exactly**: zero associativity failures and zer
+63:368                             
+63:370                             request for the theorem shape: the reduction's kernel is a multiplicative congruence iff the
+63:380                             
+63:413                             **The boundary is structural, not swept-so-far.** At F > 0 a representable-width multiply
+63:496                             ### 4.5 Accumulators: the grading that is real, and its two shapes
+63:515                             **Multiplication: linear, with a rounding-conditional constant.** The exact guard grows line
+63:534                             bench harness has run on any of it, and every member says so.
+63:535                             
+63:683                             **C8, accumulators.** *A coherent reduction needs no accumulator: the format's own width
+63:691                             
+63:731                             wrong. The cube's twenty-four cells are cells of a three-by-two-by-two-by-two design at 4-bi
+
+=== 74 ===
+74:654                             ## 5. Located disagreements, standing
+74:698                             
+
+=== 90 ===
+90:105                             The dimension list a law's region needs grew all unit and is not closed. `79` section 5, fro
+90:115                             shape op rejected three times in one sitting (`88:118-123`).
+90:307                             ### R7. Sign uniformity of a declared operand window is exact for signed saturating fold rea
+90:339                             (`82` F6 against `OPTIONS.md:1550-1556`).
+90:341                             ### R8. What a lifting is, and the closure criterion that decides it
+90:378                             operand (`82_probes/p6_const_availability_lattice.rs`, F5).
+90:415                             ### R10. Where a law pays is strictly narrower than where it is true, and the win is the mic
+90:443                             (`85:20-25`, which names `80` section 5.1 explicitly).
+90:464                             ### R12. A law verdict is invariant under change of encoding and container
+90:475                             
+90:476                             ### R13. The unit's own instruments failed in one repeated way, and the record of it is a re
+90:503                             ---
+90:564                             `84`'s multivariate predicate: established at the degree fed to the instrument, not the degr
+
+=== 106 ===
+106:63                             `mock/crates/` is empty by design, so `cargo test --manifest-path mock/Cargo.toml` errors wi
+106:394                            the checkpoint read as though the observable-versus-unobservable split is settled, and `102`
+106:400                            option beside it.
+106:1352                           
+106:1358                           > features any`
+106:1360                           `97` records that this was a **prediction of the criterion made before running**, on the gro
+106:1385                           other carried claim, and the canon is written from the consolidations. A one-file result dro
+
+=== arithmetic 182 states, recomputed ===
+lines in the four consolidations:      965 +     1090 +      831 +     1447 = 4333   (182 section 1 says 4,333)
+rows across both files this pass wrote: 68 + 14 = 82   (182 section 13 says 82)
+predicate entries summed: 246   (182 section 2 says 246)
+
+=== NEGATIVE CONTROL: a line past the end of a real file must print nothing ===
+expect an empty value after the colon: []

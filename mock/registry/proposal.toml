@@ -1,6 +1,6 @@
 # What the four topic consolidations established, as rows op has not seen.
 #
-# Nothing here is canon. A row in this namespace carries no rung by
+# Nothing here is canon. A row in this namespace carries no standing by
 # construction: being here is the whole of its provenance claim, and it becomes
 # canon only when a `ruling` names it under `ratifies`. Nothing does.
 #
@@ -41,7 +41,7 @@ topic = "the_format"
 says = "Arithmetic on a format is an exact operation in an ambient domain composed with a named, total adaptation onto the representable set. The adaptation is a first-class object with its own laws; an operation that fuses one invisibly is an operation and an adaptation point wearing one name, and the model's statements apply to it only when the two are separated."
 because = "The factoring is what makes error analysis possible: the error of a computation is the composition of adaptation errors, and the adaptation error is a property the format can state. Two authors derived it cold, one at the per-operation level and one at the chain level, each committing phase one before reading the other. The negative case completes it rather than qualifying it: eager fixed-point multiplication at nonzero fraction cannot supply an exactly associative ambient operation, because the rescale is baked into every pairwise step, and the fused spelling is precisely what cannot be re-expressed as exact composition."
 law = ["multiplicative_associativity_under_wrapping"]
-note = "The rung carries a discount its own authors stated: both derivations draw on one numerical-analysis literature, so this is two independent instruments over one shared premise rather than two arrivals from nothing. The consolidation's own bound is that it is worth more than a read and less than two arrivals, and there is no rung between the two that the schema can express. The negative case is a structural argument from two authors rather than a proven theorem, and its author says so."
+note = "The standing carries a discount its own authors stated: both derivations draw on one numerical-analysis literature, so this is two independent instruments over one shared premise rather than two arrivals from nothing. The consolidation's own bound is that it is worth more than a read and less than two arrivals, and there is no tier between the two that the schema can express. The negative case is a structural argument from two authors rather than a proven theorem, and its author says so."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::616",
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::116",
@@ -56,7 +56,7 @@ standing = "two_experts"
 topic = "the_format"
 says = "A format is identified by its ambient domain and its representable set. The representable set is a constant of the type: a value set that depends on other data is not a format but storage. Adaptation choice and encoding are realisation, observable in computed values and in pattern-level properties respectively, and not part of identity."
 because = "Not the representable set alone, because the same representative set under two ambient algebras is two formats, which is precisely what the wrapping question is about. Not the full four-tuple, because two's complement and offset binary denote the same sixteen values through different pattern maps and are one format filed two ways. The consequence it absorbs for free is that at a nonzero fraction width the two wrap sections compute different products, 96 of 256 class pairs at `w = 4, F = 1` rising to 168 of 256 at `F = 3`, which under this identity is the section being the representable set rather than a complication."
-note = "The rung is disaggregated in the source and the parts do not share it. The value-level half, that identity is denotation rather than encoding, is two experts with the same shared-literature discount as the standard model, and one of the two was read through intermediaries rather than opened by the consolidator. The refinement from the representable set alone to the pair, the dissolution of the reduction into derived structure, and the locus rider are **converged by attack and concession** rather than independently derived, which the source marks explicitly as weaker than two experts because the conceding file read rather than derived. A reader wanting the stronger half must take the value-level clause alone."
+note = "The standing is disaggregated in the source and the parts do not share it. The value-level half, that identity is denotation rather than encoding, is two experts with the same shared-literature discount as the standard model, and one of the two was read through intermediaries rather than opened by the consolidator. The refinement from the representable set alone to the pair, the dissolution of the reduction into derived structure, and the locus rider are **converged by attack and concession** rather than independently derived, which the source marks explicitly as weaker than two experts because the conceding file read rather than derived. A reader wanting the stronger half must take the value-level clause alone."
 gap = "It makes the declaration arithmetic-bearing at a nonzero fraction width, which narrows an earlier deflation sentence saying the section is chosen at declaration and no cast consults a policy. That sentence is exact at `F = 0` only, and the register's wrapping entry does not yet carry the scope."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::625",
@@ -72,7 +72,7 @@ standing = "two_experts"
 topic = "the_format"
 says = "Membership is one predicate over one parameterisation: an affine slot function, a quantum per magnitude and a phase, of which integers, fixed point, scaled integers and floats are points. The phase is stated explicitly: a nonzero phase decides whether the identity adaptation ever occurs and whether the set carries an additive identity at all."
 because = "The unification was checked against textbook enumerations at 16, 16 and 47 values with both mutants detected, and subnormals fall out of a maximum with no special case. The phase is not a passive parameter: a half-step-biased grid is not closed under exact addition, no exact sum lands on it, every one sits exactly half a step away, and the grid contains neither zero nor one, so phase promotes the tie rule from a corner case to the policy deciding every sum and produces a numeral that is not even a monoid carrier."
-note = "The one-predicate unification carries the shared-literature discount. The necessity of the phase term does not: it is one expert's measurement, plus a concession, plus a constructive repair, and the consolidation offers it as an argument for stating phase explicitly rather than as a two-expert rung. Its evidence is that two independent instruments erred at the phase coordinate **in opposite directions**, which is a reason to name the coordinate rather than a second derivation of the claim."
+note = "The one-predicate unification carries the shared-literature discount. The necessity of the phase term does not: it is one expert's measurement, plus a concession, plus a constructive repair, and the consolidation offers it as an argument for stating phase explicitly rather than as a two-expert standing. Its evidence is that two independent instruments erred at the phase coordinate **in opposite directions**, which is a reason to name the coordinate rather than a second derivation of the claim."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::633",
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::182",
@@ -242,7 +242,7 @@ keywords = ["width algebra", "exactness predicate", "granularity", "composition"
 # consequence of a stipulation is part of the stipulation. That reading is the
 # porter's call, it is marked on each row it decides, and `182` lists them.
 #
-# The consolidation states the highest rung available to anything in the file
+# The consolidation states the highest standing available to anything in the file
 # is two experts, because every claim resting on an intent inherits that
 # intent's STATED status, and almost everything here is one expert.
 
@@ -555,7 +555,7 @@ sentence_kind = "normative"
 standing = "one_expert"
 topic = "arvo_identity"
 says = "arvo owes algebraic laws as a vocabulary of checkable facts, never as a rewriting engine that acts on them."
-because = "The facts belong in arvo because only arvo knows its own axis values. The decision to act on a fact belongs to whoever performs the rewrite, and a substrate that acts on its own facts has made a policy choice on the consumer's behalf."
+because = "The facts belong in arvo because only arvo knows its own axis values. The decision to act on a fact belongs to whoever performs the rewrite, and a foundation layer that acts on its own facts has made a policy choice on the consumer's behalf."
 instead = "arvo states the verdict and the region it holds in; the consumer, the build layer or the code generator decides whether to rewrite on it."
 note = "Reached inside the topic's own existence-and-locus half. Op refused the engine relocation directly, and that refusal is recorded in the droplist rather than here; this row is the panel's statement of the same shape and does not carry his authority."
 provenance = ["panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::117"]
@@ -695,7 +695,7 @@ sentence_kind = "enumeration"
 standing = "one_expert"
 topic = "binding_time"
 says = "Const-available is not one moment. Four constructions bind at four times: a crate-level const and a structural trait bound refuse on dead code under metadata-only emission; an inline const in a non-generic function refuses at code generation; and a const assertion in a generic's associated const refuses only where the instantiation is reached, so a wrong declaration in an unreached public function compiles clean at every setting."
-because = "Each construction was built and run at each setting, and the four outcomes are distinct rather than shades of one. The reachability-dependent construction is the one that matters: it is not a banned category, it is a construction that fails the functional test when it is used for a library-wide claim, and the specification that makes the split safe is one sentence, that a reachability-conditioned permission quantifies over reached instantiations while a library claim must sit at the unconditional rung."
+because = "Each construction was built and run at each setting, and the four outcomes are distinct rather than shades of one. The reachability-dependent construction is the one that matters: it is not a banned category, it is a construction that fails the functional test when it is used for a library-wide claim, and the specification that makes the split safe is one sentence, that a reachability-conditioned permission quantifies over reached instantiations while a library claim must sit at the unconditional level."
 predicate = [
   "build_profile: emission in {metadata only, full codegen}, debug-assertions any",
   "target_features: target features any",
@@ -815,7 +815,7 @@ topic = "the_strategy_object"
 says = "A strategy is a declared semantics together with a weighting over the cost coordinates of the arms that realise it, the second chosen from a set the first determines. The declared semantics is an assignment on the axes a consumer can observe, and an axis belongs there if there is any reachable chain on which moving it is observable; where a particular chain cannot observe it, that is a licence the resolver may take under a predicate over the chain, not a reclassification of the axis. An arm realises the declared semantics exactly or approximately, and the distance from the declaration is a cost coordinate like any other, which is what lets a strategy weigh accuracy at all. The weighting is a support, the set of coordinates demanded, together with a rate, the exchange among them: supports join uniquely and totally by union, rates do not join, and where two rates meet the site names one or the operation reports."
 because = "Component one fixing the **denoted** answer rather than the computed one is the single change that restores the region in which an accuracy coordinate can vary, and without it the accuracy intent has nowhere to live. Observability is a property of the chain rather than of the axis, measured at 0% against 89.081% for the same overflow-policy assignment read at the declared width against the container width, and the repair is a conservative closure plus a per-chain licence with zero unsound predictions over 8,019 exhaustively swept chains. Supports and rates are two objects and one word had been naming both: supports join canonically at nine of nine, rates disagree on 71.4% of 42 pairs."
 supersedes = ["a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting"]
-note = "This is the version the superseded row's own consolidation directs a canon writer to, and it comes from the attack rather than from any of the four consolidations this pass was sent to port. It is one expert's converged statement over ten files, offered as a suggestion with op deciding, and it is not a rung above the row it repairs. Its author states where it is weaker than wanted: the chain licence is measured on one axis at two widths on one operation alphabet, whether it extends to intermediate precision is untested, and the whole statement inherits an open question about whether the axis list is complete."
+note = "This is the version the superseded row's own consolidation directs a canon writer to, and it comes from the attack rather than from any of the four consolidations this pass was sent to port. It is one expert's converged statement over ten files, offered as a suggestion with op deciding, and it is not a tier above the row it repairs. Its author states where it is weaker than wanted: the chain licence is measured on one axis at two widths on one operation alphabet, whether it extends to intermediate precision is untested, and the whole statement inherits an open question about whether the axis list is complete."
 gap = "Whether the observable-axis list is complete. Nothing in the unit closes it."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::108_lamport_the_pair_attacked::818",
@@ -850,7 +850,7 @@ sentence_kind = "measured"
 standing = "cross_topic"
 topic = "the_chain"
 says = "Chain accuracy cannot be served by an operator closed over its operand type, and the intermediate width required grows linearly in chain length with no logarithmic closed form."
-because = "Two authors reached it blind and in parallel at two different parameter settings, one deriving the growth rule in closed form with an availability table against a 128-bit widest rung. The same structural conclusion was then reached independently in two further topics without any of the three citing the other two: the format topic reaches it as a chain being exact operations plus a schedule of adaptation points, so that closing operations over the format makes the accuracy intent unstatable; the derived-laws topic reaches it as multiplicative chains needing width linear in fold length, with the schedule kind being what the accuracy intent is stated over."
+because = "Two authors reached it blind and in parallel at two different parameter settings, one deriving the growth rule in closed form with an availability table against a 128-bit widest tier. The same structural conclusion was then reached independently in two further topics without any of the three citing the other two: the format topic reaches it as a chain being exact operations plus a schedule of adaptation points, so that closing operations over the format makes the accuracy intent unstatable; the derived-laws topic reaches it as multiplicative chains needing width linear in fold length, with the schedule kind being what the accuracy intent is stated over."
 predicate = [
   "total_width: W in {8, 16}",
   "fraction_width: F in {4, 8}",
@@ -871,7 +871,7 @@ sentence_kind = "measured"
 standing = "one_expert"
 topic = "the_strategy_axis"
 says = "A total silent join over the observable axes, resolving toward the more conservative side, is the wrong mechanism, because there is no referent for `more conservative`. Three candidate orders computed exhaustively over the whole representable domain disagree: by honoured laws wrapping and saturating are incomparable in three of four configurations, by how often the answer is wrong they are exactly tied, and by worst-case magnitude saturating is above wrapping. Two of the three do not give an order at all."
-because = "Two of the three candidate orders are not orders, and the third disagrees with them, so the phrase has no fixed meaning until somebody says which is intended. A fourth result in the same probe kills a related reading outright: saturating and exact-in-a-wider-rung are incomparable at zero fraction width under both signednesses and both widths, because the absorbing top is a law only a lossy policy has, so an accuracy-first policy is not the top of the law order and no choice of inventory rescues it."
+because = "Two of the three candidate orders are not orders, and the third disagrees with them, so the phrase has no fixed meaning until somebody says which is intended. A fourth result in the same probe kills a related reading outright: saturating and exact-in-a-wider-tier are incomparable at zero fraction width under both signednesses and both widths, because the absorbing top is a law only a lossy policy has, so an accuracy-first policy is not the top of the law order and no choice of inventory rescues it."
 predicate = [
   "total_width: W in {5, 6}",
   "fraction_width: F in {0, 1}",
@@ -960,7 +960,7 @@ kind = "finding"
 sentence_kind = "measured"
 standing = "one_expert"
 topic = "the_strategy_axis"
-says = "Generating a winner table from a stated weighting removes every defect a human writing the table can introduce and admits one a human cannot: the tool computes the wrong argmin. A tool's wrong argmin is in general the right argmin of something else, so the output stays rationalisable and the rationalisability criterion is looking for exactly the property those defects preserve. Rationalisability catches 0 of 190 unit errors, 0 of 147 column swaps and 0 of 152 dropped coordinates at either rung; cone membership of the stated weighting catches all 489."
+says = "Generating a winner table from a stated weighting removes every defect a human writing the table can introduce and admits one a human cannot: the tool computes the wrong argmin. A tool's wrong argmin is in general the right argmin of something else, so the output stays rationalisable and the rationalisability criterion is looking for exactly the property those defects preserve. Rationalisability catches 0 of 190 unit errors, 0 of 147 column swaps and 0 of 152 dropped coordinates at either the non-negative or the strictly positive setting; cone membership of the stated weighting catches all 489."
 because = "A coordinate read in the wrong unit is the exact argmin of the rescaled weighting, and a column swap is the exact argmin of the permuted one, so the defect is invisible to a test for the property it preserves. Cone membership is invariant to tie-break policy where independent recomputation is not, recomputation flagging a tie as a defect 48 of 48 times when a tie is precisely where the weighting declines to choose. The two proposals then compose into an assertion neither author saw: the committed winner table equals the argmin of the stated weighting over the committed cost table at every region, compiled as a const item, costing one const evaluation, nothing at runtime, and refusing at build time."
 predicate = [
   "threads: threads = 1",
@@ -981,7 +981,7 @@ sentence_kind = "measured"
 standing = "two_experts"
 topic = "the_strategy_axis"
 says = "The committed corpus cannot exhibit the accuracy intents, and the barrier is the absent coordinate rather than the arm sets. The corpus does contain answer-differing arms, and one region with a strict accuracy ordering between them, and it records nothing about that ordering anywhere. Of 254 committed regions, 234 are pinned to one value by an exact-value oracle, 10 only to a property, 4 have no oracle at all, and 6 are single-arm."
-because = "One file claimed in bold that every committed region is answer-equivalent; a second was dispatched to verify it, built its own instrument before opening the first, and refuted it with three independently sufficient measurements. Twenty regions are not answer-pinned and eight of those have arms measured to differ or are two different algorithms by construction. But the conclusion survived the refutation one rung lower and better: an absent coordinate is something somebody can go and add, whereas a structural inability to hold such arms reads as a property to design around."
+because = "One file claimed in bold that every committed region is answer-equivalent; a second was dispatched to verify it, built its own instrument before opening the first, and refuted it with three independently sufficient measurements. Twenty regions are not answer-pinned and eight of those have arms measured to differ or are two different algorithms by construction. But the conclusion survived the refutation one tier lower and better: an absent coordinate is something somebody can go and add, whereas a structural inability to hold such arms reads as a property to design around."
 predicate = [
   "threads: threads = 1",
 ]
@@ -1158,7 +1158,7 @@ predicate = [
   "arity: arity = 3",
 ]
 law = ["multiplicative_associativity_under_saturation", "distributivity_of_multiplication_over_addition"]
-note = "The predicate is the union of the two conflatable measurements' regions, which is the region a reader has to be careful in. One expert: the ledger's author read the four consolidations end to end and opened no member file, no probe directory and no register, so every rung and every characterisation in it is the consolidation's own rather than one the ledger derived. It states that limit itself."
+note = "The predicate is the union of the two conflatable measurements' regions, which is the region a reader has to be careful in. One expert: the ledger's author read the four consolidations end to end and opened no member file, no probe directory and no register, so every standing and every characterisation in it is the consolidation's own rather than one the ledger derived. It states that limit itself."
 provenance = ["panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#7-contradictions-between-consolidations"]
 keywords = ["contradiction", "conflation", "952", "47.72", "34.52", "distributivity", "associativity", "ledger"]
 
@@ -1170,7 +1170,7 @@ standing = "two_experts"
 topic = "the_strategy_axis"
 says = "A strategy is a preference over measurements, resolved as an argmin over candidate arms at compile time. The container, the codegen choice and the overflow rule are effects of that one cause rather than three components of a marker."
 because = "Two authors reached it blind and in parallel from different premises, one from a partial order on cost vectors and one from two of op's intents read together. Both then corrected themselves against their own evidence: one withdrew licence as a co-equal axis on the ground that which laws hold is **computed** from the policy and the region rather than chosen, with its own probe as the evidence it had misread; the other withdrew a claim about where the preference sits, conceding the better evidence and noting that its own earlier probe had already put the preference at the call site without its author noticing."
-note = "Nine claims matched across the two blind derivations, which is the two-expert rung by the panel's own definition rather than by file count. Four of the unit's eight files corrected a claim of their own against their own evidence and kept the refuted output committed."
+note = "Nine claims matched across the two blind derivations, which is the two-expert standing by the panel's own definition rather than by file count. Four of the unit's eight files corrected a claim of their own against their own evidence and kept the refuted output committed."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::355",
   "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::239",
