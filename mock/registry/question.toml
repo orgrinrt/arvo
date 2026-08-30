@@ -234,7 +234,7 @@ options = [
 decider = "panel"
 topic = "the_chain"
 unblocks = "Whether the layer above may split, thread or algebraically rewrite a reduction at all."
-note = "The mechanism behind the measured sign asymmetry is contested inside the register. `42` established a reachability condition, the register quoted it in a two-bound form, and `55b` refutes the quoted form exhaustively: of 952 divergent signed-clamp triples, 448 are ceiling-only, 504 floor-only and zero involve both bounds. `55b` states its own bound: it targets the form quoted in the register rather than `42` itself, and a second read of `42` against that probe is owed. A drafting note the register carries rather than an option: wrapping's four separately-measured properties are one theorem, that the representation realises the cyclic group of its width. And a standing caution: no entry here should acquire a rewriting or equality-saturation engine, which is a domain and extraction-strategy decision the substrate may not make for a consumer."
+note = "The mechanism behind the measured sign asymmetry is contested inside the register. `42` established a reachability condition, the register quoted it in a two-bound form, and `55b` refutes the quoted form exhaustively: of 952 divergent signed-clamp triples, 448 are ceiling-only, 504 floor-only and zero involve both bounds. `55b` states its own bound: it targets the form quoted in the register rather than `42` itself, and a second read of `42` against that probe is owed. A drafting note the register carries rather than an option: wrapping's four separately-measured properties are one theorem, that the representation realises the cyclic group of its width. And a standing caution: no entry here should acquire a rewriting or equality-saturation engine, which is a domain and extraction-strategy decision arvo may not make for a consumer."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q12-is-the-reduction-order-specified-or-is-associativity-required"]
 keywords = ["reduction order", "associativity", "reassociation", "fold", "split", "tree", "saturating", "wrapping", "clamp", "commutativity", "determinism", "threads"]
 
@@ -705,7 +705,7 @@ options = [
 ]
 decider = "panel"
 topic = "algebraic_laws"
-note = "What would distinguish them: whether the canon is willing to carry a named trusted-base item for law verdicts at all. The first needs none and reaches almost nothing; the second and third differ only in whether the item is auditable."
+note = "What would distinguish them: whether the canon is willing to carry a named trusted-base item for law verdicts at all. The first needs none and reaches almost nothing; the second and third differ only in whether the item is auditable. That distinguisher is itself a canon-form question and is coupled to the coordinator's item 2, which asks what kind of sentence the canon may carry; this row is not answerable while that one is open. And the entry asks one question over the whole category of law verdicts, which is the shape op has rejected three times in this panel; it survives here because what it turns on is a single canon-level willingness rather than the shape any individual law takes, which is the thing he said the canon must not police."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q38-where-a-law-verdict-s-truth-is-established"]
 keywords = ["law verdict", "const eval", "frontier", "model width", "transfer", "closed form", "trusted base", "compile budget", "declaration"]
 
@@ -720,7 +720,7 @@ options = [
 ]
 decider = "panel"
 topic = "the_predicate_notation"
-note = "The panel is producing two kinds of law region and calling both predicates: typestate predicates known at monomorphisation, and trajectory predicates known only at runtime. What would distinguish them: whether any trajectory predicate this panel has measured has a lifting into a declaration a consumer would actually write."
+note = "The panel is producing two kinds of law region and calling both predicates: typestate predicates known at monomorphisation, and trajectory predicates known only at runtime. What would distinguish them: whether any trajectory predicate this panel has measured has a lifting into a declaration a consumer would actually write. Op has already been put this fork and declined to pick a side, on 2026-08-13, saying the axis is const-availability and that the admissible category is whatever is available at const time, which reaches const functions and const data from outside the typestate and leaves the typestate usable inside a const expression rather than being the only source. His own later file counting the rejections of this shape names this one as the third of three. The entry was added by a file numbered before that answer and has never been amended, so option (a)'s description of itself as the predicate intent read literally is stale: the intent was sharpened past the literal reading. What the answer explicitly does not settle, and what keeps a question here at all, is what happens to a condition that is genuinely not const-available, which is the trajectory case the entry is about."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q39-whether-an-arm-s-predicate-may-read-data"]
 keywords = ["predicate", "arm", "typestate", "trajectory", "runtime", "const", "monomorphisation", "ingest boundary", "csel", "erasure"]
 
@@ -772,7 +772,7 @@ options = [
 decider = "measurement"
 topic = "algebraic_laws"
 unblocks = "Whether an instruction count may be used as a cost model anywhere in this corpus, which this entry measures it cannot be."
-note = "The only priced entry in its unit and the only bench. Recorded as answered in shape rather than in choice: what would distinguish the arms for a given consumer is the reduction length distribution, which is a consumer fact and not a substrate one, so the substrate ships the arms and the predicate rather than picking. The entry's own predicate names no dimension for strategy, so under the ratified notation none of it may be read as a statement about any named strategy. Not measured: signed, fractional, any other width, multiplication, more than one thread. The harness's between-dylib noise floor on that host measured 4.9 percent, which bounds every small claim in it."
+note = "The only priced entry in its unit and the only bench. Recorded as answered in shape rather than in choice: what would distinguish the arms for a given consumer is the reduction length distribution, which is a consumer fact and not arvo's, so arvo ships the arms and the predicate rather than picking. The entry's own predicate names no dimension for strategy, so under the ratified notation none of it may be read as a statement about any named strategy. Not measured: signed, fractional, any other width, multiplication, more than one thread. The harness's between-dylib noise floor on that host measured 4.9 percent, which bounds every small claim in it."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q42-which-reassociated-arm-a-law-licenses-keyed-on-reduction-length"]
 keywords = ["reassociation", "arm", "lane count", "crossover", "NEON", "vectorisation", "accumulator", "latency", "instruction count", "noise floor", "predicate"]
 
@@ -1186,7 +1186,7 @@ options = [
 ]
 decider = "coordinator"
 topic = "rounding"
-note = "Handed to op by a candidate on the ground that the answer depends on what position means in a consumer and arvo does not know its consumers' access patterns, and answered in his stead by the coordinator at `156` as derivable; the answer is not written here. The call carries no authority and is recorded as overturnable in a sentence. The reasoning offered for it: the toolbox rule says the substrate ships the choice and documents the tradeoff rather than deciding on the consumer's behalf, and not knowing the consumer's access pattern is that rule's own stated reason for shipping a knob rather than a reason for withholding one."
+note = "Handed to op by a candidate on the ground that the answer depends on what position means in a consumer and arvo does not know its consumers' access patterns, and answered in his stead by the coordinator at `156` as derivable; the answer is not written here. The call carries no authority and is recorded as overturnable in a sentence. The reasoning offered for it: the toolbox rule says arvo ships the choice and documents the tradeoff rather than deciding on the consumer's behalf, and not knowing the consumer's access pattern is that rule's own stated reason for shipping a knob rather than a reason for withholding one."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#what-i-answered-myself-as-coordinator-attackable-in-a-sentence-each"]
 keywords = ["dither", "position keyed", "arm", "ships", "toolbox", "policer", "access pattern", "knob", "coordinator call"]
 

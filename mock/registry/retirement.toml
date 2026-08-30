@@ -678,7 +678,7 @@ keywords = ["facade", "migration", "route X", "const keyed", "projection", "comp
 [[retirement]]
 id = "dl_facade_migration_route_y"
 claim = "Route Y for the facade migration."
-why = "Fails guarantee parity three separate ways, each a compiler diagnostic rather than an argument. The two-dimensional impl table refuses correctly at type-check but is priced on a ceiling the toolbox rule forbids the substrate to set below what it dispatches through, failing outright below width 64 and costing thirty seconds at a 256 ceiling, roughly quartic. A host-staged witness compiles clean and fast and is caught only at link emission rather than at metadata emission, which is the command a consumer's editor actually runs, silently re-opening the identity-at-zero-integer-width defect. A consumer-emitted per-declaration impl is refused by the orphan rule, with the compiler's own diagnostic naming route Z's shape as the remedy."
+why = "Fails guarantee parity three separate ways, each a compiler diagnostic rather than an argument. The two-dimensional impl table refuses correctly at type-check but is priced on a ceiling the toolbox rule forbids arvo to set below what it dispatches through, failing outright below width 64 and costing thirty seconds at a 256 ceiling, roughly quartic. A host-staged witness compiles clean and fast and is caught only at link emission rather than at metadata emission, which is the command a consumer's editor actually runs, silently re-opening the identity-at-zero-integer-width defect. A consumer-emitted per-declaration impl is refused by the orphan rule, with the compiler's own diagnostic naming route Z's shape as the remedy."
 kind = "unpayable"
 replacement = "Route Z, which the compiler's own diagnostic names."
 provenance = [
@@ -1682,7 +1682,7 @@ keywords = ["107 seconds", "wide-rung", "debug", "release", "build profile", "re
 [[retirement]]
 id = "r161_r9_the_number_system_convergence_as_two_instances"
 claim = "The number-system convergence, as two instances."
-why = "One file made a category claim, the other made a cut, and the first conceded: one expert rather than two. The cut itself stands at that rung inside the candidate's ledger."
+why = "One file made a category claim, the other made a cut, and the first conceded: one expert rather than two. The cut itself stands at that tier inside the candidate's ledger."
 kind = "wrong"
 replacement = "One expert, on the cut."
 topic = "the_primitive"
