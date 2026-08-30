@@ -1,0 +1,29 @@
+### registry: /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/registry
+### source:   35_mcsherry_what_the_layers_above_need_from_the_numeral.md
+
+######## 3.4  absorption: the top absorbs under saturation, never under wrapping
+  finding   ABSENT   63 of 63       registry=0   (in 35: 3)  saturation absorbs at every cell
+  finding   ABSENT   0 of 63        registry=0   (in 35: 3)  wrapping absorbs at no cell
+
+######## 3.5  monotonicity, the other half min-plus needs
+  finding   ABSENT   33 of 33       registry=0   (in 35: 8)  holds every cell under saturation
+  finding   ABSENT   33.07          registry=0   (in 35: 1)  worst-case triples under wrapping
+
+######## 3.5  the end-to-end DAG run, with its in-range control
+  finding   ABSENT   5,414,255      registry=0   (in 35: 1)  shortest path wrong, w=3 wrapping
+  finding   ABSENT   407,293,133    registry=0   (in 35: 1)  shortest path wrong, w=4 wrapping
+  finding   ABSENT   736,300,800    registry=0   (in 35: 1)  in-range instances, longest w=4
+  finding   ABSENT   832,398,764    registry=0   (in 35: 2)  in-range instances, shortest w=4
+  finding   ABSENT   45.4           registry=0   (in 35: 1)  percent wrong, w=3
+  finding   ABSENT   48.9           registry=0   (in 35: 4)  percent wrong, w=4
+
+######## 3.5a the shape 35 proposed and killed
+  CTRL+B    present  12.6           registry=1   (in 35: 4)  reserved top, percent still wrong
+  finding   present  560 of 2176    registry=1   (in 35: 2)  reserved top, monotonicity failures
+  finding   ABSENT   680 of 2176    registry=0   (in 35: 1)  wrapping monotonicity failures
+  finding   ABSENT   78.2           registry=0   (in 35: 1)  reserved top, instances
+
+######## controls
+  CTRL+A    present  476            registry=4   (in 35: 0)  coherence law witness, signed sat
+  CTRL+A    present  897            registry=2   (in 35: 0)  coherence law witness, mutant
+  CTRL-N    ABSENT   999999999      registry=0   (in 35: 0)  a figure in neither document
