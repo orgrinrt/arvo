@@ -33,9 +33,20 @@ than the names, and the two that govern what I was about to write, `every_predic
 declared_axis.rs` and `what_one_field_obliges_another_to_carry.rs`, are real: every arm has both
 directions planted, the positive case that must be reported and the neighbouring case that must
 not, and the file says in its own header why an arm with only the first half is useless. I found
-nothing tautological, nothing sampled, and one thing worth saying in the suite's favour: the
-arm that pins the four verbatim-less rulings by name, rather than asserting an empty list,
-is the right shape for a known hole and is the only instance of it I have seen done properly.
+nothing tautological and nothing sampled, and two things worth saying in the suite's favour.
+The arm that pins the four verbatim-less rulings **by name**, rather than asserting an empty
+list, is the right shape for a known hole: a red nobody can fix would be ignored and an ignored
+arm would stop reporting a fifth. And `no_new_unprefixed_archive_citation_is_written` keeps its
+number in the test with the reason written beside it, that the first repair put the count in
+prose and it was stale within the hour, twice, because the paragraph announcing the count then
+contained the string it was counting.
+
+**One edge in that arm, since I am the next file it touches.** It excludes three files by name,
+being the ones that discuss the citation spelling rather than using it, and the two of them that
+are prior port reports are excluded for exactly the reason this report would need to be. This
+file does not contain the string, so nothing fires, and the next port report that quotes an
+archive citation will raise a ceiling rather than report a defect. The list wants to be a
+property rather than three names.
 
 **I did not trust a passing suite.** I planted rows and made three separate arms fail on purpose
 before writing anything real. Section 10.
