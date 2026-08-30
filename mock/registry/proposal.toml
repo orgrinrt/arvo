@@ -1,0 +1,231 @@
+# What the four topic consolidations established, as rows op has not seen.
+#
+# Nothing here is canon. A row in this namespace carries no rung by
+# construction: being here is the whole of its provenance claim, and it becomes
+# canon only when a `ruling` names it under `ratifies`. Nothing does.
+#
+# Four things a reader has to know before quoting any row.
+#
+# **`sentence_kind` is what established the claim, not what the sentence sounds
+# like.** A definitional canon candidate that stipulates what a word means is
+# `normative` and carries no region, because a region on an imposed proposition
+# would say the design may violate it everywhere unmeasured. A claim that could
+# be measured false is not `normative` however definitional its grammar, and it
+# carries the region it was established in or it is not here at all.
+#
+# **A region is transcribed, never supplied.** Where a consolidation stated one
+# it is carried verbatim; where it stated none but named its instrument's
+# parameters, the region is those parameters. Where neither was available the
+# row was not written, and the claim is enumerated in `182` instead. That list
+# is longer than this file.
+#
+# **`threads` and `target_features` appear on exactly the rows whose source
+# wrote them.** Under I13 an absent axis says the claim holds in no situation
+# where that axis exists, so several rows below are narrower than their authors
+# meant. The narrowing is faithful to the notation and is an artefact of who was
+# writing, and `182` names every instance.
+#
+# **The `measured` rows carry no `evidence` and the check for that is red on
+# purpose.** `probe.toml` does not exist yet, so there is no row for a
+# `measured` proposal to point at, and the alternative was to relabel
+# measurements as arguments to make a suite line up. `182` names every red row.
+
+# --- the format concept, from `63` -----------------------------------------
+
+[[proposal]]
+id = "arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_format"
+says = "Arithmetic on a format is an exact operation in an ambient domain composed with a named, total adaptation onto the representable set. The adaptation is a first-class object with its own laws; an operation that fuses one invisibly is an operation and an adaptation point wearing one name, and the model's statements apply to it only when the two are separated."
+because = "The factoring is what makes error analysis possible: the error of a computation is the composition of adaptation errors, and the adaptation error is a property the format can state. Two authors derived it cold, one at the per-operation level and one at the chain level, each committing phase one before reading the other. The negative case completes it rather than qualifying it: eager fixed-point multiplication at nonzero fraction cannot supply an exactly associative ambient operation, because the rescale is baked into every pairwise step, and the fused spelling is precisely what cannot be re-expressed as exact composition."
+law = ["multiplicative_associativity_under_wrapping"]
+note = "The rung carries a discount its own authors stated: both derivations draw on one numerical-analysis literature, so this is two independent instruments over one shared premise rather than two arrivals from nothing. The consolidation's own bound is that it is worth more than a read and less than two arrivals, and there is no rung between the two that the schema can express. The negative case is a structural argument from two authors rather than a proven theorem, and its author says so."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::616",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::116",
+]
+keywords = ["standard model", "adapt", "exact", "ambient", "adaptation", "fused", "error analysis", "unfused", "C1"]
+
+[[proposal]]
+id = "a_format_is_identified_by_its_ambient_domain_and_its_representable_set"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_format"
+says = "A format is identified by its ambient domain and its representable set. The representable set is a constant of the type: a value set that depends on other data is not a format but storage. Adaptation choice and encoding are realisation, observable in computed values and in pattern-level properties respectively, and not part of identity."
+because = "Not the representable set alone, because the same representative set under two ambient algebras is two formats, which is precisely what the wrapping question is about. Not the full four-tuple, because two's complement and offset binary denote the same sixteen values through different pattern maps and are one format filed two ways. The consequence it absorbs for free is that at a nonzero fraction width the two wrap sections compute different products, 96 of 256 class pairs at `w = 4, F = 1` rising to 168 of 256 at `F = 3`, which under this identity is the section being the representable set rather than a complication."
+note = "The rung is disaggregated in the source and the parts do not share it. The value-level half, that identity is denotation rather than encoding, is two experts with the same shared-literature discount as the standard model, and one of the two was read through intermediaries rather than opened by the consolidator. The refinement from the representable set alone to the pair, the dissolution of the reduction into derived structure, and the locus rider are **converged by attack and concession** rather than independently derived, which the source marks explicitly as weaker than two experts because the conceding file read rather than derived. A reader wanting the stronger half must take the value-level clause alone."
+gap = "It makes the declaration arithmetic-bearing at a nonzero fraction width, which narrows an earlier deflation sentence saying the section is chosen at declaration and no cast consults a policy. That sentence is exact at `F = 0` only, and the register's wrapping entry does not yet carry the scope."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::625",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::141",
+]
+keywords = ["identity", "ambient domain", "representable set", "D and Q", "denotation", "encoding", "storage", "locus", "C2"]
+
+[[proposal]]
+id = "membership_of_the_representable_set_is_one_affine_predicate"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_format"
+says = "Membership is one predicate over one parameterisation: an affine slot function, a quantum per magnitude and a phase, of which integers, fixed point, scaled integers and floats are points. The phase is stated explicitly: a nonzero phase decides whether the identity adaptation ever occurs and whether the set carries an additive identity at all."
+because = "The unification was checked against textbook enumerations at 16, 16 and 47 values with both mutants detected, and subnormals fall out of a maximum with no special case. The phase is not a passive parameter: a half-step-biased grid is not closed under exact addition, no exact sum lands on it, every one sits exactly half a step away, and the grid contains neither zero nor one, so phase promotes the tie rule from a corner case to the policy deciding every sum and produces a numeral that is not even a monoid carrier."
+note = "The one-predicate unification carries the shared-literature discount. The necessity of the phase term does not: it is one expert's measurement, plus a concession, plus a constructive repair, and the consolidation offers it as an argument for stating phase explicitly rather than as a two-expert rung. Its evidence is that two independent instruments erred at the phase coordinate **in opposite directions**, which is a reason to name the coordinate rather than a second derivation of the claim."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::633",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::182",
+]
+keywords = ["representable set", "affine", "slot function", "quantum", "phase", "subnormal", "membership", "grid", "C3"]
+
+[[proposal]]
+id = "the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_format"
+says = "Given the identity, the space of total reductions onto the representable set is derived, not chosen; a strategy selects a member per operation, which is where the strategies changing what the correct answer is attaches. Members classify along two independent law roles: the adaptation laws face the source and are what error and order transport consume; coherence faces the target and decides whether the member computes exactly in an induced algebra. All four combinations occur."
+because = "The space of total reductions is a derived mathematical object the way the ulp function is derived, and nothing about a format selects members of it. What selects a member per operation is the strategy layer, which is op's own I9 landing at the position he put it. Neither law family subsumes the other, so expelling wrapping while retaining saturation has no criterion that does not empty the slot, and the domain filing of wrapping was withdrawn by its own proposer."
+law = ["coherence_of_a_reduction_onto_its_induced_operation"]
+note = "The slot-is-derived claim is one author's. The two-family inhabitation beneath it is a separate measurement by a different author with an independent instrument, and it is carried as the law row this points at. Nothing presumes a strategy count, which is what I1 requires."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::640",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::207",
+]
+keywords = ["adaptation slot", "reduction", "derived", "strategy", "law roles", "coherence", "ulp", "I9", "C4"]
+
+[[proposal]]
+id = "absorption_decides_associativity_of_a_clamped_reduction"
+kind = "answer"
+sentence_kind = "measured"
+standing = "two_experts"
+topic = "algebraic_laws"
+says = "Whether a reduction's induced operation is associative is decided by absorption, quantified over the values the format can hold: reducing a reachable exact value before combining it with a stored operand must not change the adapted result. For clamped addition this is exactly associativity; for clamped multiplication, exactly modulo operations the clamp has collapsed to a constant. Stated over ambient values beyond the format it is a different and stronger predicate, and the stronger form is the one that gets real folds wrong."
+because = "A reduction is absorbing over an operand set when reducing before combining agrees with reducing after, for every reachable exact value and every operand. For clamped addition, absorption and associativity of the induced operation agree with zero sufficiency and zero necessity violations over 4248 configurations and again over a widened 7744-configuration sweep. For clamped multiplication the exceptions, 153 on the first sweep and 150 on the widened one, are all constant-collapsed, residue zero. The quantification bound was measured after being assumed: absorption and the coherence law are the identical predicate exactly when the operand box is a subset of the representable set, and off it coherence is the one that gets associativity wrong, never absorption. The restriction is not a caveat on the law but the statement of the law's subject, because every stored value of a numeral type is already an element of the representable set."
+predicate = [
+  "total_width: W in 3..=7",
+  "fraction_width: F = 0",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy in {saturate, clamp}",
+  "operation: operations {add, mul}",
+  "arity: arity = 3",
+  "container: interval numerals containing zero, 100 of them",
+]
+law = ["additive_associativity_under_saturation", "multiplicative_associativity_under_saturation"]
+note = "`evidence` is empty and the measured-implies-evidence check is red on this row, because `probe.toml` does not exist. The instruments are `57_probes/p2`, `p2b`, `p8` and `p1`, `61_probes/q1`, all committed in the panel and all re-run byte-identically by the consolidator. The width entry is the cube's own width instances, which the counts section names as the format-shaped part of the sweep; the raw 4248 and 7744 figures count clamp-and-operand-box combinations, most of which are no format at all, and a reader quoting 4248 as a count of formats checked would be wrong. The sign-confinement closed form is a corollary and never the criterion: the opposite-bound mutant is sign-confined with a reachable ceiling, the closed form predicts associativity, and it diverges 2240 times while absorption predicts the failure."
+gap = "The pullback mechanism underneath has exactly one genuinely independent arrival, a blind phase-one witness at `i16` built with no knowledge the mechanism existed. Everything else about the mechanism is one author's, kept by a second as the dynamic description."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::649",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::312",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::727",
+]
+keywords = ["absorption", "criterion", "associativity", "clamp", "biconditional", "4248", "coherence", "quantifier", "C5"]
+
+[[proposal]]
+id = "the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy"
+kind = "answer"
+sentence_kind = "theorem"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "The laws of a format's operations are derived, not enumerated per policy. The induced operation is associative when the ambient operation is associative on the reachable set and the reduction's kernel is a congruence for it. The congruence half is decided by the range's geometry per operation, mirror symmetry for multiplication and sign confinement for addition, and is repairable by choosing the representable set. The ambient half fails wherever a fixed-width rescale is part of the operation itself, for every policy, and nothing downstream repairs it."
+because = "Both hypotheses hold and the induced operation on the representable set is associative, because that set is the quotient. Evaluated mechanically over the unit's cube: zero sufficiency violations, zero cells associative without both hypotheses, zero residue, with each hypothesis and the measured truth observed both true and false across the cube. Read through it the unit's table rows become derivations rather than observations: addition's ambient is always associative so additive verdicts are decided by the congruence half alone and are scale-blind; wrapping's kernel is always a ring congruence so wrapping is decided by the ambient half alone; saturation's kernel is a congruence only under the stated geometry; and no multiplicative cell survives a nonzero fraction width anywhere. The closed forms are exact: the kernel is a multiplicative congruence iff the range is mirror-symmetric or nonnegative, and an additive congruence iff the range is sign-confined, with the predictor mismatching nothing over all 100 zero-containing intervals."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F in {0, one unnamed value above 0}",
+  "signedness: three sign domains, unsigned and signed two's complement and signed symmetric range",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operations {add, mul}",
+]
+law = ["multiplicative_associativity_under_saturation", "additive_associativity_under_saturation"]
+note = "The consolidation marks its equivalence **provisionally passes** and says so in load-bearing terms rather than as a hedge: the twenty-four-cell prediction with zero residue is an equivalence trial passed, but the frame itself is one expert and unattacked, and nobody has tried to break it the way two earlier claims in the same unit were broken. It names this as the thing it most wants attacked next. It was subsequently attacked from the number-system topic, from a direction it was not built to face, and it held, which the attacker states as a failed refutation rather than a proof. The fraction entry names the cube's two columns and one of them is genuinely unnamed: the source says two scales and never says which nonzero one. The sign entry conflates the range's geometry into the signedness axis because no `dimension` row declares the geometry, and the geometry is exactly what the congruence half turns on."
+gap = "The frame is stated over associativity. Whether it derives the other laws the design cares about is not established, and nobody has tried."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::659",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::385",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::370",
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::273",
+]
+keywords = ["law frame", "H1", "H2", "congruence", "quotient", "derived", "cube", "provisional", "C6"]
+
+[[proposal]]
+id = "no_multiplicative_structure_survives_a_nonzero_fraction_width"
+kind = "finding"
+sentence_kind = "theorem"
+standing = "three_or_more"
+topic = "algebraic_laws"
+says = "No multiplicative structure survives a nonzero fraction width for any policy, sign domain, range or rescale spelling, because the rescale destroys ambient associativity before any reduction acts."
+because = "At a nonzero fraction width a representable-width multiply discards F bits at every pairwise step before any clamp is consulted, so the failure is in the ambient operation and no choice of reduction reaches it. The rounding rule moves failure magnitudes and never their existence, measured on two separate rounding axes: truncation against round-half-up moves counts in both directions with no row reaching zero, and truncation against arithmetic shift on signed operands has the same shape. The only escape, never narrowing until the end, abandons fixed width at a cost linear in fold length. Three instruments converge with a structural argument: nine of nine fractional configurations fail, wrapping's ring collapses identically at nine of nine, and 54 of 54 signed rows fail under both spellings."
+predicate = [
+  "total_width: W in 3..=7",
+  "fraction_width: F > 0",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "rounding: rounding any",
+  "operation: operation = mul",
+]
+law = ["multiplicative_associativity_under_wrapping", "multiplicative_associativity_under_saturation"]
+note = "`rounding any` is the source's own and rests on the structural argument that the rounding rule cannot reach the mechanism, not on a sweep over modes; two modes were measured on each of two axes. The attribution was corrected twice before it stabilised: the first reading blamed grid coarsening and reported the clamp factor clean, the second showed that no `F > 0` clamp ablation can exist because coarsening **is** what `F > 0` multiplication is, and the third showed the clamp-is-clean converse is unsigned-only, so signed multiplication above zero fraction has two independent sufficient mechanisms that converge at deep fraction where the two policies' failure sets coincide exactly."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::675",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::413",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::425",
+]
+keywords = ["fraction width", "F > 0", "multiplicative", "rescale", "coarsening", "ambient", "scale asymmetry", "C7"]
+
+[[proposal]]
+id = "an_additive_verdict_is_independent_of_the_fraction_width"
+kind = "finding"
+sentence_kind = "argument"
+standing = "three_or_more"
+topic = "algebraic_laws"
+says = "Addition at a common scale never rescales, so an additive verdict, survival and breakage alike, is independent of the fraction width."
+because = "Addition of two values at a common scale never reads the scale, and the instruments are scale-blind by construction, so an additive result at `F = 0` transfers verbatim to every `F` by inspection rather than by sweep. What is independent of the fraction width is the **verdict**, not survival: the broken counts transfer too, 952 at `w = 4` for every measured fraction width. Three separately built instruments converge, and a fourth generated months earlier outside the unit folds in: a divergence table reading unsigned wrapping zero, signed wrapping zero, unsigned saturating zero and signed saturating 70.1 percent is a same-scale clipped add, so it is fraction-independent by the same argument."
+predicate = [
+  "total_width: W any",
+  "fraction_width: F any",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operation = add",
+  "arity: arity = 2",
+]
+law = ["additive_associativity_under_wrapping", "additive_associativity_under_saturation"]
+note = "`W any` is derived from the route rather than from a sweep: the argument is that the operation does not read the scale, which does not vary with width, and the source calls it inspection rather than measurement. `threads` and `target_features` are absent because the source names neither, so under I13 this holds in no situation where threads exist. That is the strongest unconditional result the format unit has, and transcribed faithfully it is unavailable to any threaded program. The neighbouring composed-operation law carries `threads any` for a claim of the same kind because its own source wrote the axis."
+gap = "The premise is same-scale addition throughout, and nobody in the first five files of the unit had named it. Whether a mixed-scale addition exists and what result format it infers is an open question the whole additive column depends on, and the sweep that would settle it, varying both the mixedness option and the result-format rule, has not run. Aligning two scales to the join is a widening and is exact always; the threat is the result-format rule and the schedule, not mixedness itself."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::675",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::473",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::485",
+]
+keywords = ["additive", "scale", "fraction width", "F-independent", "same-scale", "952", "70.1", "Q3", "C7"]
+
+[[proposal]]
+id = "a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_chain"
+says = "A chain is a composition of exact operations together with a schedule of adaptation points, and the schedule is part of the function's meaning. The per-operation model extends to chains exactly when adaptation is unfused from the operations. Chains factor into windows, bounded subterms evaluated exactly and adapted once, whose capacity is derived by the same typestate that derives the container. A concept that hides the adaptation inside each operation cannot state the chain-accuracy intent at all."
+because = "The last clause is the load-bearing one and it is why the concept is shaped this way: closing operations over the format so that adaptation fuses invisibly into each one makes op's chain-accuracy intent unstatable, not merely harder to serve. One cold derivation reached it, reconciled without contradiction, and nobody in the unit attacked it."
+note = "One expert, cold, unattacked. It assumes one of three live directions for where a chain lives, and adopting it must not be read as closing that question: under the first direction it has no home by construction, and under the third the wording shifts in kind rather than in content, the chain becoming a typed term denoting the composition rather than being it. The consolidation restored the third direction after its own first draft dropped it, catching the loss only through the independent entailment check that followed."
+gap = "Where the chain lives is a three-way fork none of which is killed. The third carries named costs: a second vocabulary, type sizes growing with expression size, and drift toward a computation-graph framing."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::692",
+  "panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#2-2-single-expert-claims-carried-as-if-settled-flagged",
+]
+keywords = ["chain", "schedule", "adaptation points", "window", "unfused", "I7", "chain accuracy", "C9"]
+
+[[proposal]]
+id = "the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_format"
+says = "The format concept supplies the layers above with the width algebra of exact results, the named adaptation carrying its rounding rule, its overflow member and its granularity function, and the exactness predicate naming the conditions under which nothing is lost. Compositions over formats, stored pairs, intervals, error-carrying values, are not format instances; they consume these three things and owe their own laws."
+because = "The list is not optional because of the statability argument: a layer that is not handed the width algebra, the named adaptation and the exactness predicate cannot state its own error behaviour at all. Stored-pair rationals, intervals, error-carrying pairs and complexes are compositions over formats rather than format instances, uncontested through seven subsequent files of the unit."
+note = "One expert, uncontested rather than corroborated. Absence of contest is not a second instance, and the consolidation does not claim it is."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::707",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::280",
+]
+keywords = ["width algebra", "exactness predicate", "granularity", "composition", "interval", "rational", "complex", "C10"]
