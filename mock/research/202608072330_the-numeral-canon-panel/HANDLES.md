@@ -207,6 +207,11 @@ rather than for the seat.
 | 180 | kiselyov (the register and the droplist into `question.toml` and `retirement.toml`) | `port-questions`, reaped | `adc45b989117f6c1d` |
 | 182 | orchard (the four consolidations into `proposal.toml` and `law.toml`) | `port-proposals`, reaped | `a2637fbd6061d2c5d` |
 | 187 | mcsherry (the cross-namespace edges, in the rows four seats could not wire) | `port-questions`, reused | `ad7879c741cc5063f` |
+| 188 | ringer (entailment check on the consolidation port, four instruments) | `notation`, reused | `aa5dce80fcb11aa7a` |
+
+`188` exists because `182`'s own author asked for it: that file is a compression of four
+compressions and an author cannot be their own checker. Dispatched at opus rather than the persona's
+own tier, because what it is checking is four compressions deep.
 | 183 | rompf (the five candidates into `proposal-the-later-topics.toml` and its law file) | `port-candidates`, reaped | `a7b95978b2b0bc397` |
 | 185 | fog (the instruments into `probe.toml`) | `port-probes` | `ad42bbfee02bb6d38` |
 | 186 | spj (second reader on five notation calls, blind first) | `notation` | `a41322c442397fdfa` |
