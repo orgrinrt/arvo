@@ -288,18 +288,35 @@ pub fn stamps_from_an_unratified_ruling(reg: &Registry) -> Vec<Finding> {
 /// disagreement, in which case somebody has to resolve it. Sitting side by
 /// side, both are cited and each reader gets whichever they found.
 pub fn a_term_defined_twice(reg: &Registry) -> Vec<Finding> {
+    let definitions: Vec<&Row> = reg
+        .of("proposal")
+        .filter(|row| row.get("sentence_kind") == Some("definition"))
+        .collect();
+
     let mut seen: BTreeMap<&str, Vec<&Row>> = BTreeMap::new();
-    for row in reg.of("proposal") {
-        if row.get("sentence_kind") != Some("definition") {
+    for row in &definitions {
+        let Some(term) = row.get("defines") else {
+            continue; // reported by the arm below
+        };
+        // A supersession is one definition replacing another, and only where
+        // the row it replaces defines the same term.
+        //
+        // **The first version skipped any row carrying a `supersedes` at all**,
+        // which is the whole edge in one word: a definition that supersedes
+        // something unrelated stopped being a definition for this arm's
+        // purposes, so a genuine rival pair vanished. Found by a check whose
+        // own case-that-had-to-fail refused to fire, which is the better half
+        // of the story: the arm was green over a selection this line had
+        // emptied.
+        let replaces_a_rival = row.list("supersedes").iter().any(|slug| {
+            definitions
+                .iter()
+                .any(|other| &other.id == slug && other.get("defines") == Some(term))
+        });
+        if replaces_a_rival {
             continue;
         }
-        // A supersession is one definition replacing another, not two live ones.
-        if !row.list("supersedes").is_empty() {
-            continue;
-        }
-        if let Some(term) = row.get("defines") {
-            seen.entry(term).or_default().push(row);
-        }
+        seen.entry(term).or_default().push(row);
     }
     seen.into_iter()
         .filter(|(_, rows)| rows.len() > 1)
