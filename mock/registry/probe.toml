@@ -612,3 +612,84 @@ control = "Recorded in a control-runs file of its own rather than inline, which 
 defect = "The BSD sed arm above, and it is the class worth carrying: a GNU extension used on a host whose sed does not have it mutates nothing, exits zero, and a checker downstream then compares two identical files and reports agreement. Both the mutation and the check succeed, and neither did anything."
 standing = "sound"
 keywords = ["verbatim", "droplist", "transcription", "sed", "BSD", "GNU extension", "mutation", "silent no-op", "control run"]
+
+# --- instruments that withdrew or narrowed their own author's finding -------
+
+[[probe]]
+id = "the_pareto_arm_that_rests_on_one_size_point"
+establishes = "Nothing about a Pareto-optimal arm, and that is the result. One arm reported as unreachable by any linear weighting is dominated the moment the largest size point is dropped, and at that point its margin is 3.8 nanoseconds against a within-arm interquartile range of 79.2 nanoseconds on the arm it has to beat, in the same run."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::144_probes::p10c_the_witness_was_noise_and_the_gate_was_at_the_wrong_granularity.py::1",
+  "panel::202608072330_the-numeral-canon-panel::144_probes::p10c_out.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::144_probes::p10b_verifying_the_one_real_witness.py::1",
+  "panel::202608072330_the-numeral-canon-panel::144_probes::p10b_out.txt::1",
+]
+control = "The successor is the control on its predecessor, and it fired against its own author: an intermediate version found the verdict rests entirely on the largest size point, and this one prices the margin against the harness's own scatter. The comparison of a claimed effect to the instrument's noise on the same arm in the same run is the arm every one of these should carry."
+standing = "withdrawn"
+note = "Its own header says NOT A BENCH RUN and that it reads committed harness CSVs and does exact arithmetic, which is the correct labelling. The withdrawal is the useful output: a finding one twentieth the size of the measurement scatter is not a finding, and the gate that should have caught it was at the wrong granularity."
+keywords = ["pareto", "withdrawn", "noise", "interquartile", "size point", "margin", "scatter", "linear weighting", "granularity", "harness csv"]
+
+[[probe]]
+id = "the_tail_coordinate_is_the_wrong_statistic"
+establishes = "Three separate negative findings about one cost coordinate were all measured on one estimator of it, the interquartile range of the per-batch samples, so they are findings about that estimator rather than about the coordinate."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::100_probes::p8_the_tail_coordinate_is_the_wrong_statistic.py::1",
+  "panel::202608072330_the-numeral-canon-panel::100_probes::p8_the_tail_coordinate_is_the_wrong_statistic.out::1",
+]
+control = "The construction is the control: a different estimator of the same intent is built and run over the same data, so the two disagree or they do not, and a disagreement locates the problem in the estimator rather than in the coordinate."
+standing = "sound"
+note = "The class is worth more than the result. Three independent negative findings that share an estimator are one finding, in the same way that three probes sharing a model are one instance wearing three hats, and nothing in a count of three says which."
+keywords = ["estimator", "tail", "coordinate", "interquartile", "independence", "three findings one instrument", "cost model", "noise"]
+
+[[probe]]
+id = "a_mutant_the_encoding_must_reject"
+establishes = "Whether a product-of-axes structure closed under a join is expressible on the pinned nightly without `generic_const_exprs`, as a trait with an associated type rather than a const expression in type position."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::93_probes::p3_mutant_wrong_join.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::93_probes::p3_mutant_wrong_join.out::1",
+]
+control = "The file is the control. It is a mutant carrying a deliberately wrong join, committed beside the correct encoding so the check is that the compiler separates them rather than that the correct one builds. A probe establishing only that its intended shape compiles has not established that a wrong shape does not."
+standing = "sound"
+note = "A mutant kept as its own committed file is the shape a refusal should take, and it is rare in this corpus. Most compile checks here record that the intended construction built and nothing about what the compiler would have refused."
+keywords = ["mutant", "join", "product of axes", "generic_const_exprs", "associated type", "compile", "refusal", "pinned nightly", "expressible"]
+
+# --- the remaining instruments a live claim leans on ------------------------
+
+[[probe]]
+id = "double_rounding_disagreement_has_a_closed_form"
+establishes = "The disagreement count for a double rounding across an intermediate width is a formula in the fraction width and the intermediate width, rather than a result read off a sweep of three widths."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p5_double_rounding_closed_form.py::1",
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p5_double_rounding_closed_form.out::1",
+]
+control = "The swept widths are the control on the closed form: a formula that does not reproduce the counts the earlier sweep measured at each of its widths is the wrong formula, and the sweep is what it has to agree with before it may replace it."
+standing = "sound"
+note = "Built for a reason worth stating: the earlier result was a proof recorded with a measured predicate, which under-claims in a notation where a predicate is never widened in place. A closed form turns the sweep into a theorem and lets the widening be stated rather than hedged to the widths tested."
+keywords = ["double rounding", "closed form", "intermediate width", "fraction width", "predicate", "widening", "theorem", "sweep", "disagreement count"]
+
+[[probe]]
+id = "every_placement_rebuilt_in_the_other_language"
+establishes = "The pointwise-optimality claim over every interior placement, re-run on an instrument written independently in Rust rather than read off the Python that first widened it, together with a matched non-nearest partner for the clamp row: wrap projects onto the same 256 in-range values and is not nearest."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q1_every_placement.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q1_every_placement.out::1",
+]
+control = "The matched pair is the control the clamp row previously lacked: a projection onto the identical value set that is not nearest, so a clamp result cannot be attributed to the value set rather than to nearestness."
+standing = "sound"
+reproduced = "This IS the reproduction, and its author says why it is a rewrite rather than a reading: agreement between a Rust instrument and a Python one is two instruments, and agreement reached by reading the other's code is one."
+note = "Worth more than the numbers it reports. Two implementations in two languages by two authors agreeing is the strongest form of corroboration in this corpus, and it appears here and in the fusion repair and almost nowhere else."
+keywords = ["placement", "reproduction", "rust", "python", "independent", "clamp", "matched control", "nearest", "pointwise optimal"]
+
+[[probe]]
+id = "translation_equivariance_partitions_the_rounding_axis"
+establishes = "Translation equivariance partitions the six rounding positions rather than distinguishing the two that were tested, and the partition is the arm's predicate."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::142_probes::q2_equivariance_partitions_the_rounding_axis.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::142_probes::q2_out.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::142_probes::q3_an_independent_accumulator_model.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::142_probes::q3_out.txt::1",
+]
+control = "The derivation is written out in the header from scratch before the measurement, so the sweep either matches the derivation or refutes it. The companion instrument is a second accumulator model built independently, which is the control on the first one's model rather than on its arithmetic."
+standing = "sound"
+note = "Its author states the rung it does not earn, which is the part to keep: the mechanism was re-derived after reading the earlier file's prose claim but before reading its probe code, so this is a re-derivation and a re-measurement rather than a blind instance. A later value-level intersection then found this partition stated over the whole rational line while an arm needs it on the domain the cell reaches, which is a quantifier the partition alone does not carry."
+keywords = ["equivariance", "partition", "rounding axis", "six modes", "re-derivation", "rung", "accumulator", "independent model", "predicate"]
