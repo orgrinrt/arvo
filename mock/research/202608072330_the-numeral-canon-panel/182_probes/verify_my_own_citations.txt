@@ -58,8 +58,8 @@ mockspace.toml:1119                required = false
 
 === arithmetic 182 states, recomputed ===
 lines in the four consolidations:      965 +     1090 +      831 +     1447 = 4333   (182 section 1 says 4,333)
-rows across both files this pass wrote: 73 + 14 = 87   (182 section 13 says 87)
-predicate entries summed: 276   (182 section 2 says 276)
+rows across both files this pass wrote: 74 + 14 = 88   (182 section 13 says 88)
+predicate entries summed: 282   (182 section 2 says 282)
 
 === NEGATIVE CONTROL: a line past the end of a real file must print nothing ===
 expect an empty value after the colon: []

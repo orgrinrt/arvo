@@ -2,15 +2,15 @@
 CONTROL 0. Baseline, unmutated.
 ==============================================================
 --- registry ---
-  456 rows across 8 namespaces
+  457 rows across 8 namespaces
   schema check passed
   all lints passed
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
 test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
 test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
-test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
-test result: FAILED. 15 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+test result: FAILED. 15 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
 (one arvo-checks binary is expected FAILED at baseline: the twelve
  measured proposals carry no evidence because probe.toml does not exist.)
 
@@ -20,21 +20,21 @@ CONTROL 1. A predicate naming an axis no dimension row declares.
 substitutions applied: 3
 --- cargo mock --lint-only ---
 --- registry ---
-  456 rows across 8 namespaces
+  457 rows across 8 namespaces
   schema check passed
   all lints passed
 --- arvo-checks, axis arm ---
         kind: "predicate-names-an-undeclared-dimension",
         kind: "predicate-names-an-undeclared-dimension",
         kind: "predicate-names-an-undeclared-dimension",
-test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+test result: FAILED. 7 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
 
 ==============================================================
 CONTROL 2. A provenance citation naming a file that does not exist.
 ==============================================================
 substitutions applied: 15
 --- registry ---
-  456 rows across 8 namespaces
+  457 rows across 8 namespaces
   ERROR [unresolvable-provenance]: law::additive_associativity_under_saturation: `panel::202608072330_the-numeral-canon-panel::63_NO_SUCH_FILE::443` matches no file under root `panel`.
   ERROR [unresolvable-provenance]: law::additive_associativity_under_saturation: `panel::202608072330_the-numeral-canon-panel::63_NO_SUCH_FILE::352` matches no file under root `panel`.
   ERROR [unresolvable-provenance]: law::additive_associativity_under_saturation: `panel::202608072330_the-numeral-canon-panel::63_NO_SUCH_FILE::300` matches no file under root `panel`.
@@ -58,7 +58,7 @@ CONTROL 3. A line citation past the end of a real panel file.
 ==============================================================
 substitutions applied: 1
 --- registry ---
-  456 rows across 8 namespaces
+  457 rows across 8 namespaces
   ERROR [unresolvable-provenance]: law::additive_associativity_under_wrapping: `panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::99999` points past the end of 202608072330_the-numeral-canon-panel/63_spj_consolidation_the_format_concept (99999 requested). Line citations only stay true in a root that does not change; declare the root frozen or cite a heading.
   schema check passed
 registry check failed: 1 error(s)
@@ -69,7 +69,7 @@ CONTROL 4. A line citation into a living ledger, refused by name.
 substitutions applied: 6
 --- cargo mock --lint-only ---
 --- registry ---
-  456 rows across 8 namespaces
+  457 rows across 8 namespaces
   schema check passed
   all lints passed
 --- arvo-checks, living-ledger arm ---
@@ -86,7 +86,7 @@ CONTROL 5. A heading anchor naming no heading.
 ==============================================================
 substitutions applied: 6
 --- registry ---
-  456 rows across 8 namespaces
+  457 rows across 8 namespaces
   ERROR [unresolvable-heading]: proposal::a_predicate_carries_every_dimension_it_depends_on_and_the_fraction_width_is_the_one_that_keeps_going: `panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#6-cross-topic-agreements-BROKEN` names heading `6-cross-topic-agreements-BROKEN`, which 202608072330_the-numeral-canon-panel/AGREEMENTS does not contain. A renamed heading fails here rather than silently pointing elsewhere, which is why headings are preferred over line numbers.
   ERROR [unresolvable-heading]: proposal::arms_with_const_predicates_are_the_organising_shape_all_four_topics_reached: `panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#6-cross-topic-agreements-BROKEN` names heading `6-cross-topic-agreements-BROKEN`, which 202608072330_the-numeral-canon-panel/AGREEMENTS does not contain. A renamed heading fails here rather than silently pointing elsewhere, which is why headings are preferred over line numbers.
   ERROR [unresolvable-heading]: proposal::chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type: `panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#6-cross-topic-agreements-BROKEN` names heading `6-cross-topic-agreements-BROKEN`, which 202608072330_the-numeral-canon-panel/AGREEMENTS does not contain. A renamed heading fails here rather than silently pointing elsewhere, which is why headings are preferred over line numbers.
@@ -154,18 +154,18 @@ theorem rows before: 5   after: 0   substitutions applied: 5
         kind: "an-imposed-proposition-carries-a-region",
         kind: "an-imposed-proposition-carries-a-region",
         kind: "an-imposed-proposition-carries-a-region",
-test result: FAILED. 14 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+test result: FAILED. 14 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
 
 ==============================================================
 CONTROL 8. Restored. Back to the baseline exactly.
 ==============================================================
 --- registry ---
-  456 rows across 8 namespaces
+  457 rows across 8 namespaces
   schema check passed
   all lints passed
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
-test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
 test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
-test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
-test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
-test result: FAILED. 15 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+test result: FAILED. 15 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s

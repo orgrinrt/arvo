@@ -1,7 +1,7 @@
 === rows per namespace, whole registry ===
 dimension      16
 law            14
-proposal       73
+proposal       74
 question       78
 retirement     176
 ruling         75
@@ -9,17 +9,17 @@ strategy       4
 topic          20
 
 === proposal rows written by this pass ===
-73
+74
 
 === proposals by sentence_kind ===
   43 sentence_kind = "normative"
-  17 sentence_kind = "measured"
+  18 sentence_kind = "measured"
    6 sentence_kind = "argument"
    5 sentence_kind = "theorem"
    2 sentence_kind = "enumeration"
 
 === proposals by standing ===
-  48 standing = "one_expert"
+  49 standing = "one_expert"
   15 standing = "two_experts"
    6 standing = "cross_topic"
    4 standing = "three_or_more"
@@ -27,10 +27,10 @@ topic          20
 === proposals by kind ===
   47 kind = "answer"
   23 kind = "finding"
-   3 kind = "refusal"
+   4 kind = "refusal"
 
 === proposals by topic ===
-  18 topic = "the_number_system"
+  19 topic = "the_number_system"
   12 topic = "algebraic_laws"
    9 topic = "the_strategy_axis"
    6 topic = "the_format"
@@ -45,19 +45,19 @@ topic          20
    1 topic = "arvo_identity"
 
 === predicate carried, against not carried ===
-rows with a predicate:    30
+rows with a predicate:    31
 rows without a predicate: 43
 (every row without one is normative; the check enforces the biconditional,
  so these two numbers are the normative and non-normative counts as well.)
 normative rows: 43
 
 === predicate entries, by axis, across proposal and law ===
-  45 operation
-  41 total_width
-  40 fraction_width
-  39 signedness
-  39 overflow_policy
-  31 arity
+  46 operation
+  42 total_width
+  41 fraction_width
+  40 signedness
+  40 overflow_policy
+  32 arity
   12 threads
   10 target_features
    6 rounding
@@ -86,6 +86,7 @@ proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing
 proposal::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity
 proposal::a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure
 proposal::absorption_decides_associativity_of_a_clamped_reduction
+proposal::an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing
 proposal::an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit
 proposal::chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type
 proposal::generation_relocates_the_check_rather_than_removing_it
@@ -98,12 +99,12 @@ proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_f
 proposal::the_rationalisability_counts_on_the_committed_carrier_table
 
 === citations, by shape ===
-line citations into numbered panel files: 149
+line citations into numbered panel files: 151
 heading anchors into living ledgers:      8
 distinct source files cited:              6
     46 63_spj_consolidation_the_format_concept
     38 90_giesen_consolidation_derived_algebraic_laws
     38 106_giesen_consolidation_the_strategy_axis
-    26 74_giesen_consolidation_the_number_system_concept
+    28 74_giesen_consolidation_the_number_system_concept
      8 AGREEMENTS
      1 108_lamport_the_pair_attacked

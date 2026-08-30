@@ -377,7 +377,7 @@ standing = "one_expert"
 topic = "the_number_system"
 says = "A system exposes its ambient domain together with that domain's own law inventory, its representable set, and its selected reduction with that reduction's verdicts, including that the reduction moves no value already representable. The reduction's verdicts carry no information alone: the properties a consumer relies on are conjunctions of an ambient law and a reduction verdict, and a system that names its own computed algebra as its ambient domain satisfies every verdict while voiding every conclusion."
 because = "The self-collapsed system is the counterexample that forced the ambient law inventory into the exposure list: it passes a verdict-only test while computing nothing, because with the computed algebra as its own ambient every reduction verdict is trivially true. So a verdict is only worth anything conjoined with the ambient law it is a verdict about."
-note = "One expert. It supersedes the sufficient direction of an earlier exposure test while keeping that test's necessary direction whole. The refutation itself is not a row here: it is a construction with no region over any declared axis, and `182` lists it among the claims the notation cannot hold."
+note = "One expert. It supersedes the sufficient direction of an earlier exposure test while keeping that test's necessary direction whole. The refutation that forced it is a row of its own, `an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing`, and it carries the region its instrument states."
 provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::543"]
 keywords = ["exposure", "admission test", "ambient laws", "verdict", "self-collapsed", "refuted", "sufficient", "N11"]
 
@@ -1338,3 +1338,27 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::372",
 ]
 keywords = ["lifting", "closure", "trajectory", "declaration", "declared range", "degenerate", "box", "21.98", "R8"]
+
+[[proposal]]
+id = "an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing"
+kind = "refusal"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_number_system"
+says = "A test that asks a candidate only for its reduction's verdicts is satisfied by a system that names its own computed algebra as its ambient domain. Such a system reports coherence and monotonicity holding everywhere while computing nothing, and it does so even where the honest declaration of the same arithmetic reports 322 coherence failures and 952 associativity failures. The sufficient direction of the exposure test is refuted; the necessary direction survives untouched."
+because = "Collapsing the ambient domain onto the computed algebra makes every reduction verdict trivially true, because there is nothing left for the reduction to be a homomorphism away from. Measured against the honest declaration on four reductions at once: the collapsed form reports zero coherence failures and zero monotonicity failures on all four, including the signed saturating one whose honest form fails coherence on 322 of 961 pairs, and it agrees with the honest form as a function in every case, so nothing about the computed answers distinguishes them. The control is what makes the refutation a refutation rather than an observation: a separate instrument asks whether the collapsed verdict can be made to fail at all, and it cannot."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F = 0",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operation = add",
+  "arity: arity = 3",
+]
+instead = "A system exposes its ambient domain together with that domain's own law inventory, so that the properties a consumer relies on are conjunctions of an ambient law and a reduction verdict rather than verdicts alone."
+note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instruments are `73_probes/p1_collapse.py` and `p1c_collapse_cannot_fail.py`, committed with their output. This row was in `182` section 5.1's first draft as a construction with no region over any declared axis, on the strength of the consolidation stating none. The instrument states `W = 4` in its second line and enumerates its four reductions in its table, which is the sixth recovery of the second pass."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::543",
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::251",
+]
+keywords = ["admission", "exposure test", "self-collapsed", "ambient domain", "refuted", "sufficient", "322", "952", "N11"]
