@@ -260,7 +260,22 @@ unstably across builds**, so two runs of the same unchanged variant can differ i
 which is exactly the contamination the per-variant cdylib isolation exists to prevent. `117` says
 plainly that anyone citing a bench number should establish what that means for their citation first,
 and records that the pass identifying which findings rest on a harness artifact has not been done.
-**It still has not.** Row: `the_bench_tree_was_built_at_the_undocumented_profile`.
+
+**It still has not, and here is the search rather than the assertion**, because an absence claim names
+no place and passes every citation check by construction:
+
+```
+$ grep -rlniE 'which findings rest on a harness|rest on a harness artifact|bench profile' *.md
+117_dispatcher_note_the_bench_profile_and_the_tests_that_cannot_run.md
+119_leroy_the_canon_candidate_for_the_realisation_map.md
+185_fog_the_instruments_and_what_each_could_have_shown.md
+$ grep -rniE '(did|done|completed|discharged).{0,40}(harness artifact|bench profile)' *.md
+(no output)
+```
+
+Two files besides this one, one of which is `117` itself. Run at the panel root over the numbered
+member files and the living ledgers; it does not reach the probe tree or the seed archive, so the
+claim is bounded to the panel's prose. Row: `the_bench_tree_was_built_at_the_undocumented_profile`.
 
 **`141_probes/p5b`'s width invariance.** Its own successor says the zero is unearned and the honest
 reading is unestablished rather than confirmed. Row: `the_width_invariance_control_was_toothless`,
