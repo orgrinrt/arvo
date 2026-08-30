@@ -236,6 +236,49 @@ supersedes = ["an_older_reading_of_something_else"]
     assert!(found[0].at.contains("a_rival_reading"), "{}", found[0].at);
 }
 
+/// A supersession of something unrelated does not excuse a rival definition.
+///
+/// The first version of this arm skipped any row carrying a `supersedes` at
+/// all, so a definition that replaced some unrelated claim stopped counting as
+/// a definition and its rival vanished with it. The arm then read green over a
+/// selection that one line had emptied, which is the shape a checker cannot
+/// see from inside: it reports nothing and nothing is what a clean corpus
+/// reports too.
+///
+/// It was caught by a control that refused to fire, which is worth more than
+/// one that fires.
+#[test]
+fn superseding_something_unrelated_does_not_hide_a_rival_definition() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[proposal]]
+id = "the_first_reading"
+sentence_kind = "definition"
+defines = "strategy"
+
+[[proposal]]
+id = "a_rival_that_replaced_something_else"
+sentence_kind = "definition"
+defines = "strategy"
+supersedes = ["an_unrelated_claim"]
+
+[[proposal]]
+id = "an_unrelated_claim"
+sentence_kind = "definition"
+defines = "container"
+"#,
+    );
+    let found = shape::a_term_defined_twice(&reg);
+    assert_eq!(
+        found.len(),
+        1,
+        "`strategy` has two live readings and the second replaces a definition of something \
+         else entirely, which excuses nothing: {found:#?}"
+    );
+    assert!(found[0].says.contains("strategy"), "{}", found[0].says);
+}
+
 #[test]
 fn a_definition_that_says_nothing_about_what_it_defines_is_reported() {
     let reg = parse(

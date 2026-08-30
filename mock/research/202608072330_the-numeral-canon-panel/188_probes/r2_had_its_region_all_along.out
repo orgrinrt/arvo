@@ -1,0 +1,58 @@
+### PART ONE: the row carries no predicate and is exempt
+  id = "a_composed_expressions_region_is_never_inherited_from_its_parts"
+  sentence_kind = "normative"
+  law = ["associativity_of_a_composed_saturating_add_and_subtract"]
+  predicate field present: NO
+
+### PART TWO: the source states a region, on seven declared axes
+  136:`79_probes/p1_negative_control.rs`, `79_probes/p1_negative_output.txt`). Predicate as `79` stated it:
+  137-`N = 8, sign = unsigned, policy = saturate, op pair = {+, -} composed, F = 0, threads any, features any`
+
+  SOURCE SPELLING            REGISTRY AXIS            DECLARED
+  N = 8                      total_width              yes
+  sign = unsigned            signedness               yes
+  policy = saturate          overflow_policy          yes
+  op pair = {+, -}           operation                yes
+  F = 0                      fraction_width           yes
+  threads any                threads                  yes
+  features any               target_features          yes
+
+  CONTROL: an axis the corpus names that is not declared, which must read NO
+  operand window             declared_operand_window  NO
+
+### PART THREE: the check that withdrew the finding
+  the row's own note, which gives a different defence than 182 section 6.1:
+    note = "`normative` because the sentence is a rule about how a region may be derived rather 
+    than a claim an instrument could refute; the instrument's own claim is the law row it points 
+    at, which carries the region. Both later attackers re-ran the establishing probe and it 
+    reproduced to the digit."
+
+  the law row it points at:
+    id = "associativity_of_a_composed_saturating_add_and_subtract"
+    fails = [
+      "total_width: W = 8",
+      "fraction_width: F = 0",
+      "signedness: signedness = unsigned",
+      "overflow_policy: overflow policy = saturate",
+      "operation: op pair {add, sub} composed",
+      "threads: threads any",
+      "target_features: target features any",
+    provenance = [
+      "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::131",
+      "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::137",
+
+### VERDICT: withdrawn
+  The seven axes are all present, in the same order and the same values, on the
+  law row's `fails` list. Its provenance cites `90:137`, which is the predicate
+  line itself. The proposal row wires to it with `law = [...]` and its note says
+  in terms that the measured claim is the law row and this row is the rule drawn
+  off it.
+
+  So the region was not lost, the split was executed, and the commit message that
+  landed these rows says exactly what it did: "splitting each measurement from the
+  rule drawn off it".
+
+  What survives is much smaller and is about 182 rather than about the rows:
+  section 6.1's stated defence for the label is weaker than the one the row
+  itself carries, and a reader working from 182 alone would conclude the region
+  was unavailable when it is one field away.

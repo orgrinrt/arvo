@@ -1,0 +1,17 @@
+=== the four axes 182 section 5.1 says nothing declares ===
+AXIS                               DECLARED
+declared_operand_window            no
+representable_range_geometry       no
+encoding                           no
+constant_embedding_convention      no
+
+=== CONTROL: four ids the axis pass did declare, which must all read yes ===
+AXIS                               DECLARED
+ambient_domain                     yes
+radix                              yes
+accumulator_width                  yes
+toolchain                          yes
+
+=== every declared axis, for the record ===
+access_pattern accumulator_width alignment ambient_domain arity build_profile chain_length container fraction_width integer_width operation overflow_policy radix rounding signedness strategy target_features threads toolchain total_width 
+count: 20

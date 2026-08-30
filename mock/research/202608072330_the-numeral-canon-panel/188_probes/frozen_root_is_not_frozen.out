@@ -1,0 +1,47 @@
+=== commits touching each consolidation, and the line delta of every one after the first ===
+
+63_spj_consolidation_the_format_concept.md               2 commit(s)
+   30341f61  +61    -7      first line touched: 165     net shift below it: +54
+      panel: 63 repaired per 64, d-c carried, c6 and c9 verdicts match their rungs
+
+74_giesen_consolidation_the_number_system_concept.md     3 commit(s)
+   ab7e3957  +28    -11     first line touched: 28      net shift below it: +17
+      docs: demote intent-backed claims to stated direction in 74
+   df98f2e1  +38    -5      first line touched: 218     net shift below it: +33
+      docs: restore three drops the entailment check found in 74
+
+90_giesen_consolidation_derived_algebraic_laws.md        2 commit(s)
+   3fd5eab8  +45    -3      first line touched: 343     net shift below it: +42
+      panel: repair the consolidation on 91's two findings, and restore the dropped option
+
+106_giesen_consolidation_the_strategy_axis.md            3 commit(s)
+   f556641e  +87    -1      first line touched: 320     net shift below it: +86
+      panel: repair 106 on the check, restore the law predicate and four dropped results
+   f214eb39  +45    -0      first line touched: 1400    net shift below it: +45
+      panel: 106 section 18, the pair after 108's attack and the rung it missed
+
+=== what the config says ===
+326:frozen = true
+# Frozen, because a numbered panel file is written once and never edited, and
+# that is what makes a line citation into it honest rather than a hazard. The
+# living ledgers in the same tree (`AGREEMENTS.md`, `OPTIONS.md`, `DROPLIST.md`
+
+=== CONTROL: a panel file with exactly one commit must report never edited ===
+91_ringer_entailment_check_on_the_derived_laws_consolidation.md 1 commit(s)
+107_arntzen_entailment_check_on_the_strategy_consolidation.md  2 commit(s)
+
+=== the consequence, on one citation, demonstrated ===
+91:85 cites 90:346-348 and quotes:
+    > `82` section 12, stated as one-directional sufficiency, with the member's own honesty note that its
+    > three instances, `77:250`, `76:370-372` and its own box characterisation, share an author and a
+    > framing
+90:346-348 said, at the commit 91 was written against (98237e5b):
+    under the operations the law is about (`82` section 12, stated as one-directional sufficiency, with the
+    member's own honesty note that its three instances, `77:250`, `76:370-372` and its own box
+90:346-348 says today:
+    under the operations the law is about (`82` section 12, stated as one-directional sufficiency).
+    
+    **Repaired after `91`, and the original sentence is in the commit that landed this file.** It said `82`'s
+
+The citation still resolves. The linter passes it. It now points at the
+announcement of the repair rather than at the defect it was reporting.
