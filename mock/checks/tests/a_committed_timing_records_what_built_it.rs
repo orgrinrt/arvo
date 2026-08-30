@@ -61,13 +61,19 @@ fn no_new_timing_lands_without_its_build_profile() {
     const WITHOUT_A_PROFILE: usize = 254;
 
     let all = metas();
-    assert!(!all.is_empty(), "control: the bench tree holds artifacts to check");
+    assert!(
+        !all.is_empty(),
+        "control: the bench tree holds artifacts to check"
+    );
     let bare: Vec<String> = all
         .iter()
-        .filter(|p| {
-            fs::read_to_string(p).is_ok_and(|t| !t.contains("\"build_profile\""))
+        .filter(|p| fs::read_to_string(p).is_ok_and(|t| !t.contains("\"build_profile\"")))
+        .map(|p| {
+            p.file_name()
+                .unwrap_or_default()
+                .to_string_lossy()
+                .to_string()
         })
-        .map(|p| p.file_name().unwrap_or_default().to_string_lossy().to_string())
         .collect();
     assert!(
         bare.len() <= WITHOUT_A_PROFILE,
@@ -86,11 +92,19 @@ fn no_new_timing_lands_from_a_dirty_tree() {
     const FROM_A_DIRTY_TREE: usize = 253;
 
     let all = metas();
-    assert!(!all.is_empty(), "control: the bench tree holds artifacts to check");
+    assert!(
+        !all.is_empty(),
+        "control: the bench tree holds artifacts to check"
+    );
     let dirty: Vec<String> = all
         .iter()
         .filter(|p| fs::read_to_string(p).is_ok_and(|t| t.contains("-dirty")))
-        .map(|p| p.file_name().unwrap_or_default().to_string_lossy().to_string())
+        .map(|p| {
+            p.file_name()
+                .unwrap_or_default()
+                .to_string_lossy()
+                .to_string()
+        })
         .collect();
     assert!(
         dirty.len() <= FROM_A_DIRTY_TREE,
@@ -110,7 +124,8 @@ fn no_new_timing_lands_from_a_dirty_tree() {
 /// neither, are classified apart.
 #[test]
 fn the_two_properties_are_read_apart_on_planted_artifacts() {
-    let complete = r#"{"cpu":"x","git_commit":"abc1234","build_profile":"opt-level=3,lto=\"fat\""}"#;
+    let complete =
+        r#"{"cpu":"x","git_commit":"abc1234","build_profile":"opt-level=3,lto=\"fat\""}"#;
     let bare = r#"{"cpu":"x","git_commit":"abc1234-dirty"}"#;
 
     assert!(complete.contains("\"build_profile\""));
