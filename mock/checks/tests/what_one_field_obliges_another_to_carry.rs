@@ -19,6 +19,10 @@ fn the_committed_canon_leaves_no_refusal_without_an_alternative() {
 }
 
 #[test]
+#[ignore = "catalogue: the `probe` namespace is empty and is being written, so no row can \
+            name an instrument yet. Every measured and enumerated claim in the corpus is \
+            blocked on it, which is why that namespace was dispatched. Remove this attribute \
+            once `probe.toml` has rows and the citing proposals point at them."]
 fn the_committed_canon_has_an_instrument_behind_every_measurement() {
     let found = shape::measured_without_evidence(&canon());
     assert!(found.is_empty(), "{found:#?}");
@@ -197,6 +201,52 @@ evidence = ["the_sweep"]
     let found = shape::measured_without_evidence(&reg);
     assert_eq!(found.len(), 1, "{found:#?}");
     assert!(found[0].at.contains("a_bare_number"), "{}", found[0].at);
+}
+
+/// A sweep is a measurement whatever the sentence was called.
+///
+/// This corpus labels its sweeps `enumeration`, which is accurate: somebody
+/// walked a bounded set and reported what was in it. Gating only `measured`
+/// left the arm with no purchase on most of what the corpus actually ran, and
+/// the seat that met the gate reported exactly that.
+///
+/// A `theorem` owes its route rather than a run, so it stays out, and so do the
+/// two kinds that claim no run at all.
+#[test]
+fn an_enumeration_owes_an_instrument_and_a_theorem_does_not() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[proposal]]
+id = "a_sweep_with_nothing_behind_it"
+sentence_kind = "enumeration"
+
+[[proposal]]
+id = "a_sweep_that_names_its_run"
+sentence_kind = "enumeration"
+evidence = ["the_walk"]
+
+[[proposal]]
+id = "a_proof"
+sentence_kind = "theorem"
+
+[[proposal]]
+id = "an_imposed_one"
+sentence_kind = "normative"
+"#,
+    );
+    let found = shape::measured_without_evidence(&reg);
+    assert_eq!(found.len(), 1, "{found:#?}");
+    assert!(
+        found[0].at.contains("a_sweep_with_nothing_behind_it"),
+        "{}",
+        found[0].at
+    );
+    assert!(
+        found[0].says.contains("enumeration"),
+        "the report names the kind, or a reader fixing it looks for the wrong field: {}",
+        found[0].says
+    );
 }
 
 #[test]

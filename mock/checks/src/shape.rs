@@ -77,7 +77,21 @@ pub fn refusals_without_an_instead(reg: &Registry) -> Vec<Finding> {
     out
 }
 
-/// A claim marked as measured with no instrument behind it.
+/// The sentence kinds that ran an instrument, and therefore owe one.
+///
+/// `measured` is obvious. **`enumeration` is here because this corpus calls its
+/// sweeps enumerations**, which is what they are: somebody walked a bounded set
+/// and reported what was in it. A walk over 4096 triples is an instrument
+/// however its author labelled the sentence, and gating only `measured` left
+/// the check reaching almost nothing the corpus actually ran. Reported by the
+/// seat that met it, which found the gate had no purchase on its material.
+///
+/// `theorem` is not here: a proof owes its route, not a run. Neither is
+/// `argument`, which claims no run, nor `normative`, which claims nothing at
+/// all.
+const RAN_SOMETHING: &[&str] = &["measured", "enumeration"];
+
+/// A claim that ran something, with no instrument behind it.
 ///
 /// The mark is what a later reader trusts. A row saying `measured` and citing
 /// no probe is asking for a measurement's authority on an argument's evidence,
@@ -85,16 +99,19 @@ pub fn refusals_without_an_instead(reg: &Registry) -> Vec<Finding> {
 /// theorem and a measurement in one voice loses the distinction.
 pub fn measured_without_evidence(reg: &Registry) -> Vec<Finding> {
     reg.of("proposal")
-        .filter(|row| row.get("sentence_kind") == Some("measured"))
+        .filter(|row| row.get("sentence_kind").is_some_and(|k| RAN_SOMETHING.contains(&k)))
         .filter(|row| row.list("evidence").is_empty())
         .map(|row| {
+            let kind = row.get("sentence_kind").unwrap_or("measured");
             Finding::new(
                 "measured-claim-cites-no-probe",
                 row.addr(),
-                "`sentence_kind` is `measured` and `evidence` is empty. Name the committed \
-                 instrument, or mark the sentence as the argument it is. A measurement with \
-                 no instrument is an argument wearing a number."
-                    .to_string(),
+                format!(
+                    "`sentence_kind` is `{kind}` and `evidence` is empty. Name the committed \
+                     instrument, or mark the sentence as the argument it is. A measurement \
+                     with no instrument is an argument wearing a number, and a sweep is a \
+                     measurement whatever its author called the sentence."
+                ),
             )
         })
         .collect()
