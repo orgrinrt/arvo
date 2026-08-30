@@ -1,0 +1,70 @@
+#	Every statement clause of the five later topics, and whether it could be written as a registry row.
+#	file	line	clause	verdict	why
+#	PORTED means a row exists in mock/registry/{proposal,law}-the-later-topics.toml.
+#	NO-AXIS means its region names an axis no `dimension` row declares.
+#	NO-REGION means the source states no region at all and the kind is not `normative`.
+#	REFUSED means a signature refused it and no wording is true until op rules.
+161	521	1. a primitive is a value set with one realisation map	PORTED	proposal a_primitive_is_a_value_set_with_one_realisation_map
+161	521	1b. the map is one map with two regions, not two mechanisms	PORTED	proposal the_realisation_map_is_one_map_with_two_regions
+161	525	2. identity up to denotation-preserving isomorphism	FOLDED	into clause 1's row; extension conditional on the container premise
+161	531	3. a law is read off the algebra and never declared	PORTED	proposal a_law_is_read_off_the_algebra_and_never_declared
+161	537	4. the signature is part of the definition; reach and saturation	NO-REGION	descriptive, no predicate anywhere in the topic; saturation also conditional on op
+161	548	5. the realisation is a lens; sole occupancy	PORTED	proposal the_lens_degenerates_to_an_ordinary_value_at_sole_occupancy
+161	558	6a. the realisation is not part of identity	REFUSED	no wording is true on both branches of the container premise until op rules
+161	558	6b. an axis the map does not read must not be a parameter	PORTED	proposal an_axis_the_realisation_map_does_not_read_is_not_a_type_parameter
+161	567	7. a refinement is a grade, not a coordinate	NO-REGION	descriptive, no predicate
+161	580	8. the type carries what must be const-available	NO-REGION	descriptive, no predicate
+161	585	9. adequacy is soundness plus completeness up to weakening	NO-REGION	descriptive, no predicate; admissibility also conditional on op and on X3
+161	598	10. the verdicts age as the signature grows	NO-REGION	descriptive, no predicate; one phrase conditional on the container premise
+161	605	11. naming is partial and injective	PORTED	proposal naming_is_partial_and_injective_or_it_is_broken
+161	610	12. configuration is not composition	PORTED	proposal configuration_is_not_composition_and_a_composite_is_a_primitive
+161	618	13. chain accuracy lives in the operator's typing	NO-REGION	descriptive, no predicate
+173	531	1. the partition into maximal stretches	NO-REGION	marked [theorem]; no predicate on any chain clause
+173	538	2. the licence	PORTED	proposal within_an_unbound_stretch_the_design_may_select_any_realisation
+173	547	3. a chain's content, the schedule, the five obligations	NO-REGION	marked [enumeration]; no predicate
+173	556	4a. the four grades of chain exactness	NO-REGION	marked [enumeration]; no predicate
+173	556	4b. no intermediate width between F and 2F is innocuous	PORTED	law double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f
+173	567	5. deferral to the boundary is pointwise optimal	NO-REGION	marked [theorem]; the counts moved to a ledger note whose region names six undeclared axes
+173	575	6a. two independent deletion licences, range and algebra	NO-REGION	marked [measured]; no predicate
+173	575	6b. a licence holds implies the family is a singleton	PORTED	law a_deletion_licence_holds_exactly_where_the_boundary_function_family_is_a_singleton
+173	586	7. a chain factors into windows	NO-REGION	marked [enumeration]; no predicate
+173	594	8. depth, shape and arity flip the winning arm	NO-REGION	marked [measured]; no predicate
+173	605	9. a shared node's carrier joins as a maximum	NO-REGION	marked [theorem + measured]; no predicate
+173	611	10. the promise ladder follows the binding time	NO-REGION	marked [enumeration]; no predicate
+173	616	11. the carrier of the chain guarantee, one test	NO-REGION	marked [measured]; no predicate
+173	623	12. composition is three concepts wearing one word	NO-REGION	marked [enumeration]; no predicate; overlaps a ported primitive clause
+119	379	4.1 the map and its character	PORTED	proposal the_realisation_map_has_an_algebraic_character
+122	351	4.2 the characters are mutually exclusive	NO-AXIS	ambient domain closed under negation; finite value set
+122	376	4.3 each character licenses a family	NO-AXIS	ambient domain; radix; construction
+122	397	4.4 the character is a joint fact	NO-AXIS	ambient domain; radix
+122	425	4.5 two mechanisms restore what a behaviour forfeits	NO-AXIS	ambient domain; radix; restrictions
+122	447	4.6 a reduction has two parts, each with a locality condition	NO-AXIS	ambient domain; radix; term shapes; declarations
+122	471	4.7 the discharge check and its certificate follow the character	NO-AXIS	ambient domain; radix; term shapes; declarations; discharge check
+119	519	4.8 propagation rules compose by intersection	NO-AXIS	radix; term shapes; declarations
+119	534	4.9 a bilinear construction's transformer is a formula	NO-AXIS	radix; dimension; structure constants; declarations
+122	526	4.10 a rule's cost is paid where its carrier is instantiated	NO-AXIS	edition; feature gates; term; recursion limit
+132	292	5.1 the map factors into two axes	PORTED	proposal the_realisation_map_factors_into_quantisation_and_range_policy
+136	320	5.2 no quantisation is additive off the grid; monotonicity	NO-AXIS	domain
+132	320	5.3 which exact law survives, four laws	NO-AXIS	domain; staged narrowing widths
+136	355	5.4a the family invariance and the commutations	NO-AXIS	domain
+138	49	5.4b the non-commutation of toward-zero with wrapping	PORTED	law quantise_then_reduce_commutes, as its failing region
+132	362	5.5 where the axis does not act at all	NO-AXIS	domain; stochastic members
+132	384	5.6 unbiasedness fixes the marginals; the variance law	NO-AXIS	domain; coupling; element count; fraction; predicate restored at 138:53
+132	407	5.7 the tension is keyed	NO-AXIS	keying; decorrelation measure; input shape
+138	57	5.8 randomness comes from outside, or the member is deterministic	NO-AXIS	keying axis; float types; feature gates; threshold; positions
+146	314	5.1 the strategy object	PORTED	proposal a_strategy_is_an_assignment_and_a_weighting
+146	330	5.2 the membership test	NO-AXIS	assignment set; observation sets; overflow limit read at the declared width
+146	350	5.3 the count and its monotonicity	NO-AXIS	assignment sets; observation sets; accumulator width
+146	386	5.4a the firewall	PORTED	proposal no_cost_model_may_move_an_answer
+146	386	5.4b the enforceability condition and the consequence	NO-AXIS	assignment set; arm set; conforming pair; cost coordinates; selector
+151	92	5.5a fusing a multiply-add is free at translation equivariance	PORTED	proposal fusing_a_multiply_add_is_free_exactly_at_translation_equivariance
+146	434	5.5b where fusion changes the answer it is not a lowering	PORTED	proposal where_fusion_changes_the_answer_it_is_not_a_lowering
+146	444	5.5c a lossless storage container adds no answer function	NO-AXIS	overflow limit read at the declared width
+146	452	5.5d narrowing an accumulator is a cost choice except at signed saturating	NO-AXIS	accumulator width
+151	367	6. a relocation is free where the thing relocated commutes	NO-AXIS	accumulator width; the operation set spelling
+146	467	5.6 the selector and the hull	NO-AXIS	cost coordinates; arms; selector; weight grid resolution; baseline
+146	500	5.7 the baseline, and what travels	NO-AXIS	cost coordinates; arms; baseline; reference point; augmentation coefficient
+146	534	5.8 what the canon owes a consumer picking one	PORTED	proposal pick_the_policy_before_the_weighting
+151	45	5.5f fusion preserves the answer under unsigned, the measured table at 151:53	PORTED	law fusing_a_multiply_add_preserves_the_answer_under_unsigned
+151	45	5.5g fusion preserves the answer under signed wrapping, measured at 151:58	PORTED	law fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping
+146	434	5.5h the fused and the stepwise multiply-add denote one function	PORTED	law the_fused_and_the_stepwise_multiply_add_denote_one_function
