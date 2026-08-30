@@ -529,3 +529,254 @@ because = "It is offered as a composition of four earlier sentences in the same 
 note = "**The consolidator's own contribution, marked as such by its author and offered for attack rather than adoption.** On the provenance ladder that is the most suspect tier available: an agent's own call with no human and no second derivation. It is a composition rather than a claim, so if any of the four sentences it composes falls, it falls with them."
 provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::638"]
 keywords = ["address", "coordinate", "owner", "composition", "consolidator", "attack", "N23"]
+
+# --- derived algebraic laws, from `90` --------------------------------------
+
+[[proposal]]
+id = "a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "algebraic_laws"
+says = "A law is a fact about an operation composed under a fixed arithmetic semantics, never about a type or an operation alone."
+because = "Two authors derived it cold, in parallel, blind to each other, from I9, in two different formal traditions: one as a congruence closed under a strategy's exposed operations, the other as a judgment between expression forms of arbitrary finite length. Two traditions reaching one shape is the strongest thing the topic produced."
+note = "The unit's only two-expert claim, and the count was corrected downward during the unit: a third file's attempt to count an earlier same-author instance as further corroboration was reduced to two independent instances plus one earlier same-author instance at lesser weight. The dimension list a law's region needs grew all unit and is not closed; treating any snapshot of it as closed is the shape op rejected three times in one sitting."
+gap = "The dimension list is a floor rather than an enumeration. Named so far and not all declared as `dimension` rows: operation, sign domain, overflow policy, fraction width, representable-set shape, the declared operand window, the schedule, the rounding rule, the constant-embedding convention, the width-indexing of a law family, and a placeholder reading whatever named axis a strategy resolves to."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::96",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::105",
+]
+keywords = ["law", "fact", "operation", "arithmetic semantics", "congruence", "judgment", "dimension list", "R1"]
+
+[[proposal]]
+id = "arvo_owes_laws_as_checkable_facts_and_not_as_a_rewriting_engine"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "arvo_identity"
+says = "arvo owes algebraic laws as a vocabulary of checkable facts, never as a rewriting engine that acts on them."
+because = "The facts belong in arvo because only arvo knows its own axis values. The decision to act on a fact belongs to whoever performs the rewrite, and a substrate that acts on its own facts has made a policy choice on the consumer's behalf."
+instead = "arvo states the verdict and the region it holds in; the consumer, the build layer or the code generator decides whether to rewrite on it."
+note = "Reached inside the topic's own existence-and-locus half. Op refused the engine relocation directly, and that refusal is recorded in the droplist rather than here; this row is the panel's statement of the same shape and does not carry his authority."
+provenance = ["panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::117"]
+keywords = ["locus", "rewriting engine", "vocabulary", "checkable facts", "toolbox", "policer", "R1"]
+
+[[proposal]]
+id = "a_composed_expressions_region_is_never_inherited_from_its_parts"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "A composed expression's region is never inherited from its parts. Even where a component operation's own hypotheses hold unconditionally, the composition needs its own derivation."
+because = "The counterexample is exact rather than illustrative: unsigned saturating addition associates on every triple at eight bits, and the composition of that addition with the matching subtraction fails on 82.7484% of triples at the same coordinates. Nothing about the components predicts it, and the exact holding region turns out to be a four-way case split on the two clamp events plus a residual operand condition."
+law = ["associativity_of_a_composed_saturating_add_and_subtract"]
+note = "`normative` because the sentence is a rule about how a region may be derived rather than a claim an instrument could refute; the instrument's own claim is the law row it points at, which carries the region. Both later attackers re-ran the establishing probe and it reproduced to the digit."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::127",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::140",
+]
+keywords = ["composition", "region", "inheritance", "derivation", "hypotheses", "R2"]
+
+[[proposal]]
+id = "a_law_stated_as_an_author_written_marker_is_checked_by_nothing"
+kind = "finding"
+sentence_kind = "measured"
+standing = "two_experts"
+topic = "validation"
+says = "A law stated as an author-written marker is a declaration checked by nothing. Two overflow policies declare one associativity marker over a four-bit signed window, one declaration is false, the compiler raises nothing, and the licensed reassociating consumer returns a different answer on 16,268 of 65,536 vectors."
+because = "The marker is a name the author writes and no path ties it to the policy's own map, so a false declaration is indistinguishable from a true one at every stage of compilation. The repair works: computing the permission from the policy's own map makes the false instantiation a const-evaluation error. A second author built the same mechanism independently, including the refused inline-const spelling that the compiler answers by naming a forbidden feature."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F = 0",
+  "signedness: signedness = signed",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operation = add",
+  "arity: arity = 4",
+  "threads: threads = 1",
+  "target_features: target features any",
+]
+note = "The predicate is the source's own, verbatim, and it is one of only two in the whole derived-laws consolidation. `evidence` is empty and the measured-implies-evidence check is red on this row: the instruments are `80_probes/p1a_declared_law_lies.rs` and `p1b_computed_law_refuses.rs`, both committed, and `probe.toml` does not exist for them to be named in. The 24.8% figure has a zero arity-2 control, so the number is not an artefact of the sweep."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::147",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::153",
+]
+keywords = ["marker", "declaration", "checked by nothing", "16268", "24.8", "E0080", "computed permission", "R3"]
+
+[[proposal]]
+id = "a_const_eval_frontier_is_a_fact_about_the_procedure_rather_than_about_the_law"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "binding_time"
+says = "A const-eval frontier is a function of domain size times per-tuple cost times procedure, and a frontier cited without all three is a defect."
+because = "Three factors were discovered separately and never stated together before this unit. Domain size: the wall is a total-step budget rather than a width ceiling, so the frontier collapses along arity. Per-tuple cost: three spellings of one identical check, agreeing on the same violation count, reach three different widths, so a table's rows are a bit low for a lighter spelling. Procedure: inside a fragment with a complete test set the positive verdict at the shipped width costs a degree box rather than an exponential enumeration, so the wall is the price of semantic ignorance about the law rather than the price of a positive verdict."
+note = "`normative` because it is a rule about how a frontier number may be quoted, not a measurement. The measurements behind it are a separate row. A live workspace rule had quoted a per-bit rate without its arity, which the unit corrected: the rate is two to the power of the arity, and there is no such thing as the rate."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::164",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::203",
+]
+keywords = ["const eval", "frontier", "domain size", "per-tuple cost", "procedure", "arity", "guard", "R4"]
+
+[[proposal]]
+id = "the_const_eval_frontier_collapses_along_arity_and_buys_three_bits_from_the_guard"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "binding_time"
+says = "The widest exhaustively evaluable width is 19 at arity 1, 9 at arity 2, 5 at arity 3, 3 at arity 5 and 1 at arity 8, every refusal being the long-running-const-eval guard. Allowing the guard buys three bits and no more: widths 6, 7 and 8 accept at 5.85, 49.06 and 370.95 seconds, a per-bit ratio of about eight, and width 9 did not finish."
+because = "The refusals are all the same guard, so the frontier is a step budget rather than a width ceiling, and the per-bit ratio is the enumeration's own factor of eight at arity three. The asymmetry at a shipped width is the part that matters for a design: a false verdict exits at its first counterexample in half a second, while the true verdict, which is the one that licenses an arm, is refused after four and a half."
+predicate = [
+  "arity: arity in {1, 2, 3, 5, 8}",
+  "total_width: W in 1..=19, the widest evaluable width per arity",
+  "build_profile: default const-eval guard, and guard-allowed for the three-bit measurement",
+  "operation: operations {add, sub, mul}",
+]
+note = "`evidence` is empty and the measured-implies-evidence check is red on this row. The instruments are `80_probes/p2_frontier.py`, `p2b_swept_verdict_at_shipped_width.rs` and `p5_allow_the_guard.py`, all committed. The table's rows are one bit low for a lighter per-tuple spelling, established later in the same unit, and one bit of sign-uniform operand restriction crosses eight bits: the positive verdict accepts at width 9 guard-allowed where the full set does not finish. Neither host nor toolchain is named where the consolidation carries these numbers, so the predicate has no `target_features` entry and the figures are not transferable to another machine."
+gap = "No host, no toolchain pin and no optimisation level, so every timing here is a fact about one unnamed machine."
+provenance = ["panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::171"]
+keywords = ["frontier", "const eval", "arity", "guard", "long_running_const_eval", "width 19", "asymmetry", "R4"]
+
+[[proposal]]
+id = "the_model_band_transfer_is_defeated_in_both_fragments"
+kind = "refusal"
+sentence_kind = "theorem"
+standing = "two_experts"
+topic = "algebraic_laws"
+says = "Agreement between a law's verdicts over a band of model widths and its verdict at the shipped width carries nothing. Two independently constructed families place a law's truth flip exactly at the shipped width, where no model band, at any guard setting, on any host, could have disagreed."
+because = "In the wrapping ring fragment, the product of `k` consecutive integers vanishes modulo two to the width up to a threshold given by Legendre's formula and not above it, so the family member indexed at the shipped width is true at every width below it and false at it. In the unsigned saturating fragment the exponent-absorbing identity has the same shape for a different reason. Both were run through the band construction end to end: band agreement green, perturbation control still refusing, arm licensed at the shipped width, law false at the shipped width. The family is not exotic, because magic constants have exactly this downward-correct, upward-false shape."
+predicate = [
+  "total_width: W any",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operation = mul",
+  "arity: arity = 1",
+]
+instead = "Compute the verdict at the shipped width inside a fragment that has a complete test set, which is a degree box rather than an exhaustive enumeration. Outside such a fragment there is no established route, and the narrower use of a band, validating a checker's own implementation, survives."
+law = ["the_falling_factorial_family_vanishes_modulo_two_to_the_width", "the_saturating_exponent_absorbing_identity"]
+note = "Two authors, two fragments, one structural shape, which is the strongest multi-instance result in the topic. `W any` is the claim's own: the defeat is by construction and works at whatever the shipped width is. The proviso a band mechanism had relied on, that no law-relevant path dispatches on width, is satisfied by the defeating family and is therefore not sufficient either. Composed with I15 the weight doubles: with the runtime column gone, the compile-time verdict mechanism is the only validation path there is, so a false soundness story there has no catch anywhere."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::207",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::214",
+]
+keywords = ["band transfer", "model width", "shipped width", "threshold family", "defeat", "polarity", "R5"]
+
+[[proposal]]
+id = "inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width"
+kind = "answer"
+sentence_kind = "theorem"
+standing = "two_experts"
+topic = "algebraic_laws"
+says = "Inside a fragment with a complete test set, a law's verdict is computed at the shipped width, and two fragments now have one. For the wrapping ring fragment, agreement on the degree grid decides the whole domain, a false law has a witness inside its own degree box, and equation truth sets are initial segments at every arity. For the monotone unsigned saturating fragment, saturating evaluation equals the exact integer polynomial clamped once, and agreement on the degree box decides any width at any arity."
+because = "For the wrapping fragment: a law vanishes identically on the ring to the power of the arity exactly when two to the width divides every mixed forward difference at the origin, which by classical results and a complete tensor proof reduces to evaluation on the degree grid. Measured at genuine degree, 1,975 pairs with zero mismatches and 25 tensor members matching the Legendre prediction exactly. For the saturating fragment: saturating arithmetic is exact integer arithmetic composed with clamps rather than modular arithmetic, verified at 23,950,484 evaluations with zero disagreements, and the same falling-factorial triangularity carries the box theorem through 9,503 univariate and 3,006 multivariate verdicts with zero mismatches, with 507 cases attaining the bound exactly so it is not slack."
+predicate = [
+  "total_width: W in 1..=65",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operations {add, sub, mul, neg} with integer constants for the wrapping fragment, and {saturating add, saturating mul} with nonnegative clamp-embedded constants for the saturating one",
+  "arity: arity any",
+  "build_profile: const gates on the pinned toolchain, no_std, no feature gates",
+]
+law = ["equation_truth_sets_are_initial_segments_in_the_width"]
+note = "Both gates are const gates on the pinned toolchain with no feature gates, no dynamic dispatch, no type identity and no allocation. The controls are the load-bearing part rather than the counts: a perturbation build refuses at the implementation check, a non-fragment build refuses at the fragment check, and two unchecked builds **accept while the same crate proves the licensed law false at the shipped width**. Violating a hypothesis does not degrade the verdict, it inverts it. Width-64 instances at genuine degree include one pair true at width 64 and false at 65, which is the sharpest available reminder that a verdict is per width."
+gap = "`F = 0` is a hard boundary of the criterion, with a two-point witness true on its box and false in the domain, and 82,002 of 417,384 shift-carrying pairs true-on-box-false-in-domain. General signed with both clamps reachable has no procedure at all: the cheap saturation-radius route is closed by a non-constant tail and the expensive route is named and unbuilt. **The transfer is not on the trusted base list, because there is none.** The one item on that list with no mechanical check is the encoding of the law into the term array."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::252",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::268",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::280",
+]
+keywords = ["degree box", "degree grid", "test set", "fragment", "shipped width", "const gate", "Theorem A", "trusted base", "R6"]
+
+[[proposal]]
+id = "the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times"
+kind = "finding"
+sentence_kind = "enumeration"
+standing = "one_expert"
+topic = "binding_time"
+says = "Const-available is not one moment. Four constructions bind at four times: a crate-level const and a structural trait bound refuse on dead code under metadata-only emission; an inline const in a non-generic function refuses at code generation; and a const assertion in a generic's associated const refuses only where the instantiation is reached, so a wrong declaration in an unreached public function compiles clean at every setting."
+because = "Each construction was built and run at each setting, and the four outcomes are distinct rather than shades of one. The reachability-dependent construction is the one that matters: it is not a banned category, it is a construction that fails the functional test when it is used for a library-wide claim, and the specification that makes the split safe is one sentence, that a reachability-conditioned permission quantifies over reached instantiations while a library claim must sit at the unconditional rung."
+predicate = [
+  "build_profile: emission in {metadata only, full codegen}, debug-assertions any",
+  "target_features: target features any",
+]
+note = "Op dissolved the axis this was originally stated over, from typestate-against-trajectory to const-available-against-not, and separately refused the ranking question as policing: the requirement on a law's expression is functional, it must reach one lowered path through monomorphisation and const solving, and which construction gets it there is case by case. So this row is an enumeration of what each construction does and is **not** a ranking, and reading it as one would reinstate exactly what he refused. The bound-position spelling is refused by the compiler naming a forbidden feature, which is a fifth outcome of a different kind. What his words do not reach, and this unit did not extend them to, is whether a genuinely non-const condition may gate anything."
+gap = "Whether a genuinely non-const condition may gate anything. Op's words do not reach it and the unit did not extend them."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::380",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::395",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::405",
+]
+keywords = ["const available", "binding time", "reachability", "metadata", "codegen", "associated const", "rung 0", "I16", "R9"]
+
+[[proposal]]
+id = "a_law_layer_answers_whether_a_law_reaches_a_lowering_the_backend_cannot_prove"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "The question a law layer answers is not whether the law holds but whether it reaches a lowering the backend could not prove for itself. Where a law pays is strictly narrower than where it is true."
+because = "The probe that established it refuted its own thesis: at zero fraction width the emitted assembly aliases the fused and general forms to one symbol, so the backend performed the distributive rewrite unaided and the arm bought nothing in exactly the region where the law holds. Where it does pay is the case a backend structurally cannot reassociate, a saturating reduction, and there the control decides the attribution: the bounds proof **without** the law gets an unrolled loop with the serial clamp chain intact and no vector instruction, so the law is load-bearing and the bounds proof is not."
+note = "`normative` because it is a rule about what a law layer is for. Every instruction count behind it is read off emitted assembly and the source calls them **an ad-hoc quick spike, unpriced**, carried for which instruction appears where and nothing else, so the numbers are not a row here and are listed in `182` as unportable. The value-gated alternative was measured worse than either static arm and then closed on principle by I15 regardless of its cost."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::415",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::426",
+]
+keywords = ["microkernelling", "lowering", "backend", "vectorisation", "symbol alias", "pays", "unpriced", "R10"]
+
+[[proposal]]
+id = "chain_laws_split_by_whether_a_lifting_theorem_exists"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "the_chain"
+says = "Chain laws split into two kinds. Grouping questions lift from arity three by the generalised associative law, so the const-eval frontier's arity axis never touches them. Schedule questions, stepwise rounding against rounding once, are vacuous at arity two and a fresh statement at every higher arity, with no lower-arity statement implying them. The schedule kind carries rounding, sits outside both fragments with a test set, and is the kind op's accuracy intent is stated over."
+because = "Measured as wrapping showing zero divergence from arity two through five and saturation showing nonzero divergence from three, which is the signature of grouping lifting and schedule not lifting. A schedule question at arity n says something no arity below n can express, because the number and position of the adaptation points is what varies."
+predicate = [
+  "chain_length: chain length in 2..=5",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operations {add, mul}",
+  "arity: arity = 3 for the grouping kind, and arity in 2..=5 for the schedule kind",
+]
+note = "One expert, correcting its own earlier section. The consequence for the box procedure was priced by a second author: a multilinear chain law must reach length 15 before the default guard notices, so the residual exposure is high-arity non-liftable ring laws, of which the unit exhibited none."
+gap = "The schedule kind sits outside both fragments that have a test set, so nothing established in this topic decides a schedule question at the shipped width, and that is the kind op's accuracy intent is stated over."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::445",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::451",
+]
+keywords = ["chain", "grouping", "schedule", "lifting", "generalized associative law", "rounding", "I7", "R11"]
+
+[[proposal]]
+id = "a_law_verdict_is_invariant_under_change_of_encoding_and_container"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "the_realisation_map"
+says = "A law contract is decided at the pair of identity and selected adaptation. It reads neither the encoding nor the container, and the same identity with only the adaptation moved flips a bound from accepted to refused. So the law layer's compile-time computation is keyed on strictly less than the container derivation's, and a verdict can be computed once per identity-and-adaptation pair and reused across every container realising it."
+because = "Carried from the number-system topic and read at source rather than through a summary. If a verdict read the container, moving the container would move the verdict, and it does not; moving the adaptation does. The reuse consequence had not been stated by anyone before, and it follows immediately from the keying."
+predicate = [
+  "container: container any",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+]
+note = "The claim's other half is invariance under change of **encoding**, and no `dimension` row declares an encoding axis, so the predicate above cannot state it. An undeclared axis is invisible to the notation rather than absent from it, so the omission is a blind spot rather than a negative claim, and a reader must take the encoding half from the source. This keying is also why every finding in the topic is predicated on the overflow policy rather than on any marker name, which is what lets the whole topic survive the strategy set being reshaped."
+gap = "Whether the reuse matters is unpriced. Nobody has measured what a per-identity-and-adaptation verdict cache saves."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::464",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::470",
+]
+keywords = ["verdict", "encoding", "container", "invariant", "keying", "adaptation", "marker name", "R12"]
+
+[[proposal]]
+id = "an_instrument_is_mutated_and_the_battery_is_made_to_notice"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "panel_conduct"
+says = "Mutate the validated thing and demand the battery notice. Assert the battery's own non-degeneracy inside the instrument. Commit first runs with notes rather than replacing them."
+because = "Four instruments in one unit failed in one repeated way and nobody's intention was at fault: none of the four authors asked what the instrument would say if the thing it validates were broken. One battery contained no law of true per-variable degree above one, so the interesting branch of its criterion had zero instances. Another could not distinguish the procedure it tested from one with the entire breakpoint apparatus deleted, which a later mutant established by changing not one verdict. A third measured nothing on its first run because every swept law was false and both sides exited early. Beside all of it the reproduction chain never broke and every rerun matched to the digit, so **every defect found in this unit was in what an instrument could not see, never in whether it reproduced.**"
+note = "`normative` because it is the discipline rather than the observation; the four instances are enumerated in `182` as a finding with no region over any declared axis. One further hazard is worth carrying verbatim: the toolchain resolves from the working directory, so a probe run in a scratch directory silently uses the wrong toolchain and nothing in the transcript says so."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::476",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::497",
+]
+keywords = ["control", "mutant", "instrument", "non-degeneracy", "first run", "reproduction", "toolchain", "R13"]
