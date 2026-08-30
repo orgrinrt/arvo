@@ -1,0 +1,116 @@
+189. Control runs, before any row was written.
+
+Both gates were run clean first, then made to fail on purpose, then run clean
+again. A gate nobody has watched fail is a gate nobody has tested.
+
+
+## Baseline, before anything was planted
+
+  $ cargo mock --lint-only
+  --- registry ---
+    generated 1 schema files
+    543 rows across 10 namespaces
+    warning [unknown-config-key]: the config declares `lint-crates` at its root,
+      which mockspace does not read. It is discarded silently.
+    schema check passed
+    all lints passed
+
+  $ cargo test -p arvo-checks
+  59 passed, 1 ignored, across nine test binaries.
+
+
+## Control 1 and 2, planted together as one row
+
+Appended to `mock/registry/proposal.toml`:
+
+  [[proposal]]
+  id = "control_row_planted_by_189_delete_me"
+  kind = "finding"
+  sentence_kind = "measured"
+  standing = "one_expert"
+  topic = "panel_conduct"
+  says = "A planted control row, to establish that the two gates 189 relies on
+          can report a breach."
+  because = "It cites a probe whose standing is defective and names an axis no
+             dimension row declares."
+  predicate = ["moon_phase: moon phase any"]
+  evidence = ["the_width_invariance_control_was_toothless"]
+  provenance = ["panel::...::187_mcsherry_wiring_the_edges::1"]
+  keywords = ["control", "planted"]
+
+`the_width_invariance_control_was_toothless` carries `standing = "defective"`.
+`moon_phase` is declared by no `dimension` row.
+
+
+### What `cargo mock --lint-only` printed
+
+  --- registry ---
+    544 rows across 10 namespaces
+    warning [unknown-config-key]: ...
+    schema check passed
+    all lints passed
+
+**Nothing. The lint passed the planted row.** That is worth stating plainly
+rather than burying: the engine's schema check enforces field presence, types
+and reference resolution, and it enforces none of the three rules this dispatch
+was told to respect. The whole of that enforcement is in `arvo-checks`, so
+`cargo mock --lint-only` alone is not a gate on a proposal row's substance and
+must not be reported as one.
+
+
+### What `cargo test -p arvo-checks` printed
+
+  test the_committed_canon_names_only_declared_axes ... FAILED
+    kind: "predicate-names-an-undeclared-dimension"
+    says: "`predicate` names the axis `moon_phase`, which no `dimension` row
+           declares. Declare it, or use the slug of the axis that already means
+           this. An undeclared axis cannot be absent from any other predicate,
+           so admitting one here weakens every predicate in the canon."
+
+  test the_committed_canon_rests_no_measurement_on_an_unusable_instrument ... FAILED
+    at:   "proposal::control_row_planted_by_189_delete_me"
+    kind: "measurement-rests-on-an-unusable-instrument"
+    says: "`evidence` names `probe::the_width_invariance_control_was_toothless`,
+           whose `standing` is `defective`. Its figures are not to be used, so a
+           claim resting on it is not a measurement. Cite a sound instrument, or
+           mark the sentence as the argument it now is."
+
+Both fired, each naming the planted row by address.
+
+
+## Restored
+
+  $ cp /tmp/proposal.bak mock/registry/proposal.toml
+  $ git diff --stat        # empty
+  $ cargo test -p arvo-checks
+  59 passed, 1 ignored.
+
+
+## Control 3, the worklist probe
+
+`189_probes/open_panel_questions.sh` prints the 32 rows that `coverage.sh`
+counts in its `panel / open` cell. Run with `--control` it plants an edge at
+`which_width_coordinates_a_consumer_writes` and that row must vanish:
+
+  $ bash 189_probes/open_panel_questions.sh | wc -l
+  32
+  $ bash 189_probes/open_panel_questions.sh --control | head -2
+    [control] planted an edge at which_width_coordinates_a_consumer_writes;
+      it must vanish below
+  Q4       what_a_datum_stands_for
+
+It vanished. Transcripts in `open_panel_questions.out` and
+`open_panel_questions_control.out`.
+
+
+## A fourth thing the controls found, which nobody planted
+
+`cargo test -p arvo-checks -- --ignored` runs
+`the_committed_canon_has_an_instrument_behind_every_measurement` and it FAILS,
+naming 21 existing `measured` and `enumeration` rows that cite no probe at all.
+Its `#[ignore]` reason reads "the `probe` namespace is empty and is being
+written, so no row can name an instrument yet ... Remove this attribute once
+`probe.toml` has rows and the citing proposals point at them." `probe.toml`
+now carries 48 rows, so the stated blocker is gone and the reason is false.
+The test is not this dispatch's to edit. The 21 rows are listed in the
+deliverable.
