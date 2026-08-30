@@ -206,7 +206,13 @@ rather than for the seat.
 | 179 | lamport (op's rulings into `ruling.toml`) | `port-rulings`, reaped | `afe5cfa1d438060cd` |
 | 180 | kiselyov (the register and the droplist into `question.toml` and `retirement.toml`) | `port-questions`, reaped | `adc45b989117f6c1d` |
 | 182 | orchard (the four consolidations into `proposal.toml` and `law.toml`) | `port-proposals` | `a2637fbd6061d2c5d` |
-| 183 | rompf (the five candidates into `proposal-the-later-topics.toml` and its law file) | `port-candidates` | `a7b95978b2b0bc397` |
+| 183 | rompf (the five candidates into `proposal-the-later-topics.toml` and its law file) | `port-candidates`, reaped | `a7b95978b2b0bc397` |
+| 185 | fog (the instruments into `probe.toml`) | `port-probes` | `ad42bbfee02bb6d38` |
+| 186 | spj (second reader on five notation calls, blind first) | `notation` | `a41322c442397fdfa` |
+
+`186` is the fable-tier seat and the only one this panel runs at a time. It is spent on the notation
+because those calls decide the shape of every row the canon will hold, and a wrong one is a migration
+rather than an edit. It writes no registry row: its output is a reading, and the rows follow from it.
 
 `179` and `180` are complete and merged into `research/canon-registry`; their worktrees and branches
 are gone and the ids stay addressable while this session lives. **`179` is owed a second reader** on
