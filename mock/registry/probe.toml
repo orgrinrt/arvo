@@ -1,0 +1,695 @@
+# The instruments, and the case each one had to fail.
+#
+# A row is one instrument that establishes one thing. That is not one directory:
+# `141_probes` holds seven instruments and `168_probes/p4` and `p5` are two
+# attempts at one question, the second built because the first refuted its own
+# hypothesis.
+#
+# `establishes` is written as narrowly as the instrument actually shows it,
+# because a `proposal` or a `law` citing the row inherits the scope. A probe
+# proves what it was built to check, at the widths and shapes it checked, on the
+# toolchain it ran on, and nothing else.
+#
+# `control` is the field this namespace exists for, and most of this corpus has
+# no control. Where none was run the field says so, and `standing` is then a
+# judgement rather than a reading: an instrument whose failure mode was never
+# tested is not automatically `defective`, and the difference matters. Nothing
+# here invents a control that was not run, and "the assertions would have
+# failed" is not one, because that is what every instrument says about itself.
+#
+# `lives` carries a terminal `::1` on every artifact. A probe is a file rather
+# than a passage in one, the citation grammar has no form for a whole file, and
+# a citation whose last segment is a bare filename is refused as
+# `malformed-provenance`. Measured, both arms, in
+# `panel::202608072330_the-numeral-canon-panel::185_probes::p1_lives_citation_controls.out::1`.
+#
+# The extension is always written out. Most probe directories hold a source and
+# an output sharing a stem, and the resolver treats two matches as an error
+# rather than guessing.
+#
+# --- what this file does NOT cover ----------------------------------------
+#
+# The panel holds far more instruments than are written here, and the selection
+# is stated rather than implied: the instruments a live registry claim needs,
+# and every instrument whose defect the corpus itself records. A probe nobody
+# cites and nobody found a defect in is absent from this file, which says
+# nothing against it. `185_fog_the_instruments_and_what_each_could_have_shown`
+# carries the coverage bound and the census behind it.
+
+# --- the chain unit, files 166 to 178 ---------------------------------------
+#
+# The unit that recorded nine instrument defects in itself, two of them in
+# classes the other seven cannot be caught by. Its probes are the best in the
+# corpus and are the reason: several state the required outcome in the header
+# before the run, in capitals, and three found their own defects that way.
+
+[[probe]]
+id = "chain_resolution_degeneracy"
+establishes = "For a depth-D chain over an 8-bit domain swept exhaustively, wrapping over ring-affine steps has resolution degeneracy exactly 1, so every interior placement computes one function; rounding has degeneracy above 1 and rising with depth, so the placements disagree and the design must name which one is the answer."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p3_resolution_degeneracy.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p3_resolution_degeneracy.out::1",
+]
+control = "Three cases stated in the header before the run and all three fired. Wrapping over ring-affine steps had to report degeneracy exactly 1, or the homomorphism claim p1 rests on would be false. Rounding had to report above 1 and rising, or the probe counts nothing. And at least one input had to exist on which the fully eager placement is closer to exact than the fully deferred one, because error cancels; had none existed, deferring everything would be pointwise optimal and the aggregate framing unnecessary."
+defect = "Scope, and no control could have caught it. The pointwise-optimality search `eager_wins` opens with `let fm = full_mask(steps.len())`, so it compares fully eager against fully deferred: two placements of up to sixteen, while the claim it supported quantified over all 2^(D-1). Found by `169` section 2 reading the claim's quantifier beside the loop bound. A control tests whether an instrument measures what it points at and cannot test whether it points at the whole claim."
+standing = "sound"
+reproduced = "Widened and reproduced by `chain_every_placement_widened`, which regenerates this probe's own chains from its xorshift seed and alphabet, reproduces its published 0 / 0 / 91 and 1330 winning inputs exactly at two placements, and then runs every placement. The degeneracy result stands; the pointwise-optimality search was thin by 71 percent of the counterexamples it could reach."
+note = "The claim survived the scope defect. Round and clamp come back at zero win-chains over every placement, so `168` was right and right for the reason it gave. What it had was one placement's worth of evidence for a statement about sixteen."
+keywords = ["degeneracy", "chain", "resolution", "placement", "deferral", "interior", "eager", "exhaustive", "2^(n-1)", "wrapping", "rounding"]
+
+[[probe]]
+id = "chain_every_placement_widened"
+establishes = "Over `168`'s own chains, regenerated from its seed, widening the search from two placements to all of them takes the truncate row from 91 win-chains to 317 and from 1330 winning inputs to 13527, and leaves nearest-round and clamp at zero win-chains under both searches."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p3_is_the_clamp_row_exercised.py::1",
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p3_is_the_clamp_row_exercised.out::1",
+]
+control = "Three, all fired and all printed with their required verdict. C1: arm one had to reproduce `168`'s published 0 / 0 / 91, which is what says this is their experiment and not a neighbouring one. C2: truncate had to win in both arms. C3: the widened arm had to find strictly more than the narrow one, or the widening bought nothing and the scope defect would have been cosmetic."
+standing = "sound"
+note = "C1 is the arm worth copying. An instrument built to widen somebody else's search proves it is the same search by reproducing their number first, and without that arm a disagreement is unattributable between the widening and a different setup."
+keywords = ["placement", "widened", "reproduction", "clamp", "truncate", "scope defect", "win-chains", "deferral", "pointwise optimal"]
+
+[[probe]]
+id = "chain_affine_collapse_under_both_profiles"
+establishes = "For a per-element affine chain at 13-bit width in a `u16` container, both deferred arms vectorise and both eager arms do not, at cargo's default release profile and at the documented fat-LTO one-codegen-unit profile alike, including in a chain where the affine collapse is impossible."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p4_the_collapse_survives_the_profile.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p4_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p4_the_collapse_survives_the_profile.out::1",
+]
+control = "Stated in the header before the run and it fired in the wrong direction, which is the useful outcome. The prediction was that `affine_deferred` would differ from `affine_eager` while `blocked_deferred` and `blocked_eager` would not, because the interposed right shift is not affine over the ring. Both deferred arms vectorised and both eager arms did not, `blocked` included, so the difference is not the affine collapse. Its author records the refutation of the hypothesis rather than the confirmation, and built `chain_which_projection_blocks_the_vectoriser` to find the real mechanism."
+standing = "sound"
+note = "Its own header calls it an ad-hoc quick spike with no substance as a measurement, correctly: no timing appears in it and it prices nothing. What it establishes is qualitative, that the shape is the same under both profiles, and that is exactly the qualitative claim an ad-hoc spike may carry."
+keywords = ["affine collapse", "vectorise", "profile", "lto", "codegen-units", "deferred", "eager", "assembly", "refuted prediction", "qualitative"]
+
+[[probe]]
+id = "chain_which_projection_blocks_the_vectoriser"
+establishes = "In a chained reduction at 13-bit width in a `u16` cdylib on Apple silicon, the projection on the loop-carried accumulator is what the backend reacts to and the projection on the per-element value is not, at cargo's default release profile and at the documented fat-LTO one-codegen-unit profile alike."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_which_mask_blocks_the_vectoriser.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_which_mask_blocks_the_vectoriser.out::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_default_linked.s::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_documented_linked.s::1",
+]
+control = "Two projection-free reductions, `control_plain_sum` and `control_indexed_sum`, which must vectorise; if they do not, the setup is what suppresses vectorisation and nothing in the run may be read as a fact about the arms. The runner prints CONTROL FAILED and says do not read this run. It fired, and a second case was stated too: at least one pair of arms must differ in whether the loop vectorises, or the probe has isolated nothing."
+defect = "Three, all in earlier versions of this instrument, all found by adding the control and none visible from reading the code. A staticlib was tried first, in which every object file starts at address zero, so the identical-code-folding check compared addresses across objects and reported a hundred unrelated symbols as folded. `--emit asm` under fat LTO reports the pre-LTO module in which nothing vectorises including the positive control, and an earlier version concluded from that that the documented profile suppresses vectorisation entirely, which is a statement about the instrument. And the vector-register pattern required `v0.`, which is ARM's syntax; Apple's puts the element form on the mnemonic, so the pattern matched nothing and reported a fully vectorised function as scalar."
+standing = "sound"
+note = "The three defects are kept in the runner's own header rather than in a report, which is why they are recoverable. The wrong-dialect regex is the class the corpus names third of its nine, and it is the one that produced a false negative reading as a real result."
+keywords = ["vectorisation", "accumulator", "projection", "mask", "assembly", "dialect", "lto", "pre-LTO", "identical code folding", "cdylib", "otool", "aarch64"]
+
+[[probe]]
+id = "chain_two_realisations_definedness_is_profile_dependent"
+establishes = "For one pair of realisations over a 256-input domain, realisation A is total at `debug-assertions = off` and partial at `on`, failing on 203 of 256 inputs, while realisation B is total at both. So whether two realisations share a definedness domain is a function of the build profile rather than of the realisations alone."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::174_probes::r2_clause1_needs_the_profile_bound.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::174_probes::r2_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::174_probes::r2_clause1_needs_the_profile_bound.out::1",
+]
+control = "The hypothesis was the control and it refused. Its author set out to show a candidate clause false at `debug-assertions = on` and the measurements do not show it: at `on` the two realisations no longer share a definedness domain, so the clause's hypothesis fails and it is vacuous rather than false. Recorded in the header as the third of that dispatch's own refuted hypotheses rather than deleted."
+standing = "sound"
+note = "The reason to keep this row is the axis rather than the number. `build_profile` is a declared dimension and this is the instrument showing that a claim can range over it without saying so, which is what an absent dimension means under the predicate rule."
+keywords = ["definedness", "profile", "debug-assertions", "partial", "total", "vacuous", "overflow panic", "realisation", "build_profile"]
+
+[[probe]]
+id = "chain_const_channel_follows_debug_assertions"
+establishes = "Const evaluation does not check arithmetic unconditionally: separating optimisation level from the assertion flag, the const channel follows `debug-assertions` and not `opt-level`, and at `opt-level=3 debug-assertions=off` the narrow const compiles and evaluates to the wide arm's value."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::171_probes::channels::const_channel.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::channels::const_channel_p2b.out::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::channels::const_channel_narrow_MUST_NOT_COMPILE.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::channels::README.md::1",
+]
+control = "The wide arm had to compile in every cell of the 2x2, and it reported NO in all four, which is impossible if the table is about the two arms. That is the control firing."
+defect = "The harness rather than the instrument, and the corpus names it as the ninth defect of its unit and a new class. The first version looped over quoted flag strings in fish, which does not word-split, so `rustc` received one bogus argument and every cell reported does-not-compile. The measurement code was correct and the shell that invoked it was not. The tell is cheap and general: a 2x2 whose every cell agrees, and the control is one cell that must differ."
+standing = "sound"
+note = "A separate file in the same directory is named `const_channel_narrow_MUST_NOT_COMPILE.rs`, which is the refusal kept as an artifact rather than described. That is the right shape and it is rare here."
+keywords = ["const", "channel", "debug-assertions", "opt-level", "word-split", "fish", "harness defect", "2x2", "compile", "profile"]
+
+[[probe]]
+id = "chain_the_third_definition_is_not_observation_bounded"
+establishes = "Of three files whose definitions of a chain were counted as one convergence, one is not observation-bounded: it carries 2 observation-vocabulary occurrences in 7,299 words against 22 in 14,690 and 26 in 16,986 for the other two, and its defining sentence says what a chain contains rather than what bounds one."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::171_probes::thirdfile::is_60_observation_bounded.py::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::thirdfile::is_60_observation_bounded.out::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::thirdfile::README.md::1",
+]
+control = "None stated in the material read. The instrument counts vocabulary occurrences and normalises per thousand words, and the separation it reports is between 0.27 and 1.50 per thousand, which is wide. What no arm tests is whether the vocabulary count tracks the property: a file could be observation-bounded and say so once. The qualitative half, that the defining sentence says contains rather than bounds, is read rather than counted and is what carries the finding."
+standing = "sound"
+note = "Marked sound rather than defective on a judgement, and the judgement is that the counted half is corroboration for a claim the quoted sentences establish on their own. A reader who thinks a word-frequency count needs a control before it may be printed beside a definition should read this row as `defective`; the finding does not move either way, because the two definitions are quoted in full beside the counts."
+keywords = ["chain", "definition", "observation", "vocabulary", "word frequency", "convergence", "three hats", "independence", "bounded"]
+
+[[probe]]
+id = "chain_heading_overlap_against_a_null"
+establishes = "Over 27 headings against 28, best match per heading, mean containment overlap is 0.327 against a random re-pairing null of 0.024 over 200 draws, and 7 of 27 headings reach overlap of at least 0.50."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q2_heading_overlap.py::1",
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q2_heading_overlap.out::1",
+]
+control = "C1 required the two known prefix pairs to score at least 0.50 under Jaccard, and it fired: the second scores 0.44, because the longer heading carries five extra tokens and a symmetric similarity penalises the longer side. So Jaccard reports a subsumption as a partial match, which is the relation the instrument existed to measure. Containment returns 1.00 on both pairs. Both metrics are kept and reported."
+standing = "sound"
+note = "The control did not find a bug in the code. It found that the chosen metric answers a different question from the one asked, which is the rarer and more useful kind of control failure. The null is what makes the 0.327 mean anything; without it a mean overlap is a number with no scale."
+keywords = ["heading", "overlap", "jaccard", "containment", "null", "random re-pairing", "metric", "convergence", "shared framing"]
+
+[[probe]]
+id = "citation_checker_normalising_whitespace"
+establishes = "A citation checker matching with `grep -F` returns false negatives on any quotation spanning a line break in the source, because the source carries a newline where the quotation carries a space. Four of fifteen quotations in one pass, all four true, all four resolved by normalising whitespace first."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::168_mcsherry_the_chain_derived_cold::1570",
+]
+control = "Added after the defect and stated as the fix's own requirement: a fragment known to be present must match, or the checker is not reading the file. Two were used, named in the source file by document and line."
+defect = "This row IS the defect. The instrument is the checker and the finding is about checkers, so it is filed here rather than as a repair note. The class matters more than the count: a checker that reports a true citation as missing is as dangerous as one reporting a false one as present, because the next action is to correct something that was right."
+standing = "defective"
+note = "No script for this run is committed under a probe directory; the account and the counts live in the member file, which is what `lives` cites. So the figures cannot be re-derived, only re-read. The two successors below are committed and are what to build on."
+keywords = ["citation", "checker", "grep -F", "line break", "whitespace", "false negative", "quotation", "normalisation"]
+
+[[probe]]
+id = "citation_checker_stripping_markup"
+establishes = "Whitespace normalisation is necessary and not sufficient for citation checking in a markdown corpus: blockquote markers and emphasis survive it, and stripping them additionally mattered on 5 of 12 quotations in one file and 4 of 13 in another."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p6_citecheck.py::1",
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p6_citecheck.out::1",
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q4_citecheck.py::1",
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q4_citecheck.out::1",
+]
+control = "Both carry a planted-present and a planted-absent fragment, and the run is reported only with the first found and the second not found. That is the pair: a checker that finds the planted-absent one matches too much, and one that misses the planted-present one is not reading the file."
+defect = "Three, and the third was not found by the panel. Two are in successive layers of the same tool, each found by the fix for the previous one: the first run of the whitespace-normalising version reported two of its author's own true quotations missing, one inside a blockquote where the wrap inserts a marker mid-sentence and one carrying emphasis around its numbers; the next layer was case, since a quotation taken mid-sentence with a lowercased leading capital is ordinary English and a case-sensitive checker calls it missing. The third is that both copies hardcode an absolute path to a different clone of this repository, so run from any other checkout they verify that tree rather than the one they are committed beside, and on a host where that path exists they succeed and report OK. Counted in `panel::202608072330_the-numeral-canon-panel::185_probes::p6_absolute_paths.out::1`, where twenty citation checkers in this corpus carry it."
+standing = "sound"
+reproduced = "Two files, two authors, same tool lineage. The second adopted the first's fix and found the markup class biting in its own file at 4 of 13, which is what says the class is real in this corpus rather than one author's habit."
+note = "Three defects in one small tool, in three layers, each surfaced only by fixing the one above it. The general form worth carrying is that a text matcher over a markdown corpus is defeated by the markup the corpus wraps its quotations in, and every fix for that is partial until a planted-present control says otherwise."
+keywords = ["citation", "checker", "markup", "blockquote", "emphasis", "casefold", "whitespace", "planted control", "false negative", "quotation"]
+
+# --- the ports into this registry, files 179 to 183 -------------------------
+
+[[probe]]
+id = "the_heading_anchor_slug_rule"
+establishes = "The reference resolver's heading anchor rule is not the one the reference documentation implies. Every run of non-alphanumeric characters collapses to a single hyphen and leading and trailing hyphens are dropped, so an apostrophe becomes a hyphen rather than being deleted: `## Op's instruction` is `#op-s-instruction`, and both `#op's-instruction` and `#opsinstruction` are refused."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::180_probes::slugs.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::slugs.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::179_lamport_porting_ops_rulings_into_the_registry::#4-the-anchor-slug-rule-which-is-not-the-one-the-reference-syntax-implies",
+]
+control = "Established by control run rather than read off a spec, which is what the emitter's own header says. Three candidate spellings of one heading were put through a lint run and two were refused, so the rule is the surviving spelling rather than a reading of the documentation. The refused spellings are the control: had all three resolved, the run would have said nothing about which rule is in force."
+standing = "sound"
+reproduced = "Reused unchanged by the next port, which is a rerun of the same code rather than an independent rebuild and is worth less. Both copies are committed."
+note = "Eleven of one port's first citations failed and every failure contained an apostrophe, which is how the rule was found. It is not written into the generated reference documentation, which still says punctuation is dropped, and that file is generated so neither port could fix it."
+keywords = ["anchor", "slug", "heading", "apostrophe", "citation", "reference", "resolver", "hyphen", "punctuation"]
+
+[[probe]]
+id = "a_measured_proposal_is_refused_without_a_probe_row"
+establishes = "The committed checks refuse a `measured` proposal that names no evidence, with `measured-claim-cites-no-probe`, and refuse an `evidence` entry naming a probe row with `unknown-row-reference` reporting that the `probe` namespace has no rows at all. So no measured claim could be written into this registry until this namespace existed."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::183_probes::measured_needs_a_probe_row.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::measured_needs_a_probe_row.out::1",
+]
+control = "The negative arm is the one that matters and it is present: an `argument` row carrying no evidence is silent. One reported row, not three. Without that arm the two positive arms would be satisfied by a checker that reports every row."
+standing = "sound"
+note = "The row is kept after the blocker it names is gone, because it is the evidence for why five topics' measured claims were unwritable, and the next reader meeting that gap in the audit trail needs to get from the gap to the instrument that measured it."
+keywords = ["measured", "evidence", "probe", "gate", "blocked", "registry", "check", "sentence_kind", "unknown-row-reference"]
+
+[[probe]]
+id = "the_registrys_citation_guards_fire"
+establishes = "In the committed checks, a citation naming no file is reported, a heading anchor naming no heading is reported, a line citation into a living ledger is reported by `no_line_citation_into_a_living_ledger`, and a line citation into a numbered member file passes."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::183_probes::citation_controls.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::citation_controls.out::1",
+]
+control = "The fourth arm is the control and its author says so: the other three would fire on an instrument that reports everything, and only the passing arm distinguishes a checker from a shouter."
+standing = "sound"
+reproduced = "Independently rebuilt over the `lives` field rather than `provenance` by `probe_lives_citation_controls`, which adds the two arms this one does not have: what happens when the terminal segment is a bare filename, and what happens at a line past the end of a real file."
+keywords = ["citation", "control", "living ledger", "line number", "anchor", "checker", "guard", "provenance"]
+
+[[probe]]
+id = "probe_lives_citation_controls"
+establishes = "A probe row's `lives` field is resolved and guarded: a path matching no file is reported as `unresolvable-provenance`, a line past the end of a real file is reported, a bare root is reported as `malformed-provenance`, a terminal segment that is a bare filename with no line or anchor is refused as malformed, a real file at a real line is silent, and a line citation into a living ledger fails `the_committed_canon_cites_no_moving_line`."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::185_probes::p1_lives_citation_controls.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::185_probes::p1_lives_citation_controls.out::1",
+]
+control = "Arm B is the control: a real committed artifact at a real line must be silent, and it is. The other five arms would all fire on a checker that reports everything."
+defect = "Two of my own, both in earlier runs and both kept in the script's header. Run one used capital letters in the planted row's id, so every arm failed on the id regex rather than on the citation, and the existence arm and the control arm produced identical output. Run two ran the ledger half of the suite after the loop had already overwritten the plant with a different arm, so eight greens were printed against material that was never a ledger citation and the arm established nothing while looking complete."
+standing = "sound"
+note = "The terminal-anchor arm is the one that changed how every row in this file is written. There is no citation form for a whole file, so a probe artifact is cited at line 1, which is a line number that means the file."
+keywords = ["lives", "citation", "control", "malformed-provenance", "unresolvable-provenance", "living ledger", "terminal anchor", "line 1"]
+
+# --- the rounding axis, files 122 to 138 ------------------------------------
+
+[[probe]]
+id = "rounding_is_vacuous_at_zero_fraction_width"
+establishes = "Over scaled-integer operands at W = 5, with the rounding mode varied over floor, ceiling, toward-zero, half-up and half-even and no overflow policy applied, the choice of mode changes no answer for addition, subtraction and multiplication at F = 0, and none for addition and subtraction at any F. Division is the residue at F = 0."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::125_probes::p2_vacuity_and_v2_predicate.py::1",
+  "panel::202608072330_the-numeral-canon-panel::125_probes::p2_output.txt::1",
+]
+control = "Two, both stated in the output line beside the figure they qualify, and both fired. Multiplication at F = 2, W = 5 must show mode-differing cells or the sweep cannot see a rounding difference at all: 512 of 1024, signed and unsigned. And division at F = 0 must differ between floor and toward-zero, which is the must-fail arm: 386 of 992 pairs."
+standing = "sound"
+note = "The overflow axis is deliberately outside this instrument: no overflow policy is applied, because the claim is about the quantisation step alone. A reader taking this as a statement about a range-limited type is taking it past what it swept."
+keywords = ["rounding", "vacuous", "fraction width", "F=0", "quantisation", "division", "mode", "scaled integer", "exhaustive"]
+
+[[probe]]
+id = "rounding_commutes_with_the_overflow_policies"
+establishes = "At W in {3, 4, 5} over exact points at sixteen subquanta per quantum, wrapping commutes with floor, ceiling, half-up and half-even and fails to commute with toward-zero, and saturating commutes with all five deterministic modes."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::125_probes::p3_commutation_with_overflow.py::1",
+  "panel::202608072330_the-numeral-canon-panel::125_probes::p3_output.txt::1",
+]
+control = "Two must-fail arms, both fired and both printed with the count. Wrapping against toward-zero had to mismatch, and does, at 240 of 625 at W = 3 rising with width. And for saturating, an artificial boundary-violating mode that maps off-grid values just under the maximum to above the range had to mismatch, and does, at 15 of 497. Without the second arm the saturating result would be a row of zeroes from a sweep that might not reach the boundary at all."
+standing = "sound"
+defect = "A first run is kept beside the corrected one as `p3_output_run1_representative_level.txt`, so the correction is recoverable rather than described."
+note = "The artificial mode is the shape worth copying. Where a policy is expected to commute with everything real, the control has to be an unreal member constructed to break it, or the sweep's zero is unfalsifiable."
+keywords = ["commutation", "overflow", "wrap", "saturate", "rounding", "toward zero", "boundary", "must-fail control", "subquanta"]
+
+[[probe]]
+id = "the_two_toward_zero_spellings_differ_and_by_how_much"
+establishes = "Bit-drop and toward-zero are different operations on signed domains, and the size of the difference at W = 8 is 64 of 256 values at F = 1, 96 at F = 2, 120 at F = 4 and 127 at F = 7, with integer division over all nonzero-divisor pairs differing on 31,231 of 65,280."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::131_probes::v2_the_vocabulary_and_which_equality_double_rounding_threatens.py::1",
+  "panel::202608072330_the-numeral-canon-panel::131_probes::v2_output.txt::1",
+]
+control = "A control on the neighbouring question in the same instrument: one grid for the whole chain, the setting the claim under test is stated in, where the two arms must agree. It is the case in which a difference would mean the harness is wrong rather than the claim."
+standing = "sound"
+note = "This instrument is also what refutes a figure that had entered the corpus. A dispatch cited `21,204 of 32,768` at W = 8 for this difference; the sweep that could produce a count of that size produces 31,231 of 65,280, and the per-fraction-width sweeps produce 64, 96, 120 and 127 of 256. The figure matches nothing this instrument can compute. It was checked here rather than repeated, which is the whole reason the row is worth keeping: the quoted number existed in no committed output."
+keywords = ["toward zero", "bit-drop", "truncation", "vocabulary", "signed", "division", "21204", "fabricated figure", "sweep", "W=8"]
+
+[[probe]]
+id = "staged_narrowing_depends_on_its_staging"
+establishes = "At W = 9, F = 4 with a four-to-two-to-zero staging, half-even does not carry exact staged composition: it fails first at -247/16, where the direct result is -15 and the staged result is -16."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::136_probes::x1_the_two_dissents_on_a_fixed_point_instrument.py::1",
+  "panel::202608072330_the-numeral-canon-panel::136_probes::x1_output.txt::1",
+]
+control = "The corrected instrument prints the first failing value per member, so a True cannot mean an empty sweep. That is the repair rather than a widening: the defect was an empty region and the fix makes emptiness visible."
+defect = "The first run swept a window that could not enter the failing path. At W = 7, F = 3 with a three-to-two-to-one staging it reported half-even carrying exact staged composition, contradicting two other instruments, because the window held no value whose intermediate stage lands on a tie. A sweep reporting a clean result over a region containing no instance of the phenomenon is the class, and it is the one an author is least likely to see, because the output is exactly what a true claim looks like."
+standing = "sound"
+reproduced = "Three witnesses agree on the corrected result: this instrument, one earlier probe's P4 at 500 half-even mismatches of 4001, and a signature's own s2. The agreement is what closed it, not the correction alone."
+note = "Traced by an independent check that asked whether anything downstream still rests on the defective first run, and found nothing did."
+keywords = ["staged narrowing", "half-even", "composition", "empty sweep", "witness", "tie", "fixed point", "W=9", "F=4"]
+
+[[probe]]
+id = "a_domain_widening_with_a_control_that_can_fire"
+establishes = "Under a truncating cell coordinate, where the fractional part is the value minus its truncation, a construction claimed to hold over any ambient domain is sign-dependent at both m = 5 and m = 8, and the negative cell produces a distribution containing a negative mass."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::136_probes::x2_the_domain_widening_with_a_control_that_can_fire.py::1",
+  "panel::202608072330_the-numeral-canon-panel::136_probes::x2_output.txt::1",
+]
+control = "The replacement controls fire and the output shows them firing rather than asserting they would, printing CONFIRMED for the threshold arm and a difference at k = -4 against k = +4 for the variance arm."
+defect = "The first version's two controls were structurally incapable of firing, in a probe written to criticise a probe with no control. The threshold control reversed the subpoint list for negative k and then sorted that list by value, making the reversal a no-op. The variance control mapped f to 1 - f, and f(1 - f) is invariant under exactly that map. Both reported no difference, and both would have reported no difference under any hypothesis, at any width, forever."
+standing = "sound"
+note = "The honest form of the widened claim is not a bare `any` on the ambient domain but `any` given a floor-based cell coordinate. That was found by building the control the criticised probe had not built, which is the argument for controls stated as well as anything in this corpus."
+keywords = ["domain", "widening", "control", "invariant under the map", "no-op", "sign dependence", "negative mass", "truncating", "cell coordinate"]
+
+[[probe]]
+id = "the_predicate_sweep_for_inherited_dimensions"
+establishes = "Across one candidate's clauses the predicate count is eleven rather than the nine a first extraction reported, and four predicates are vacuous, which no signature had reported."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::136_probes::x4_the_predicate_sweep_for_inherited_dimensions.py::1",
+  "panel::202608072330_the-numeral-canon-panel::136_probes::x4_output.txt::1",
+]
+control = "The corrected run carries its own control line in the output, that `domain` is not split at the `in` inside it, printed with `(must be True)` beside it. Independently reproduced by a later extraction that agrees with the corrected count."
+defect = "Four failure modes in one instrument in one sitting. The dimension key pattern matched the `in` inside the word `domain`, so every domain dimension parsed as a key named `doma` and the sweep reported zero domain flags, a confident False on the exact question the probe existed to answer. The verdict block then printed True for the control because the author had written the literal rather than the variable, so the instrument reported itself sound while failing. The fixed version still missed a predicate, because the span pattern required the literal `holds for:` and one clause reads `hold for:` with a plural subject, and the missing one was the single predicate a dissent was about. And the inheritance fingerprint compared only against the immediately preceding clause, which cannot reach a clause inheriting from three above."
+standing = "sound"
+note = "The fourth mode is the general one: a matching heuristic applied to a question about absence is blind to absence by construction. The absence table exists because of it, and it is what found the four vacuous predicates."
+keywords = ["predicate", "extraction", "delimiter in content", "vacuous", "inheritance", "holds for", "verdict prints a literal", "absence"]
+
+[[probe]]
+id = "no_dependent_survives_the_rounding_units_defects"
+establishes = "Of the four instrument defects recorded in one unit, none has a surviving dependent claim: each was traced to what cites it and every citing clause either states the corrected result or does not reach the defective one."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::137_probes::g4_do_dependents_survive_the_defects.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::137_probes::g4_do_dependents_survive_the_defects.out::1",
+  "panel::202608072330_the-numeral-canon-panel::137_probes::g7_the_five_two_gap_and_x1s_sweep.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::137_probes::g7_the_five_two_gap_and_x1s_sweep.out::1",
+]
+control = "None stated as a must-fail arm. What stands in its place is that the check is a trace rather than a count: each of the four is followed to the clauses that cite it and each clause is opened and read, and the companion instrument checks the surviving predicate against the sweep header the corrected run actually printed rather than against what the clause claims it swept."
+standing = "sound"
+note = "Marked sound on a judgement. A trace over four named defects has no obvious failing case to plant, since the population is enumerated rather than sampled and the verdict per item is a reading. What would make it defective is if the four were not the whole population, and the count of four comes from the unit's own record rather than from an independent sweep."
+keywords = ["defect", "dependent", "trace", "survives", "half-even", "corrected", "citation", "audit"]
+
+# --- the strategy object and the fusion question, files 139 to 152 ----------
+
+[[probe]]
+id = "packing_is_a_weighting_not_a_policy"
+establishes = "At W in {3, 5, 6, 7, 11} and F in {0, 2}, over bit offsets {0, 1, 7, 13, 59, 61}, a value packed at an arbitrary bit offset and the same value padded into the next native slot agree on every operation over the whole domain, with zero roundtrip failures."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::139_probes::p6_packing_is_a_weighting.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::139_probes::p6_out.txt::1",
+]
+control = "A third representation packed one bit short, which must differ, and does: 119 differing operations of 192 at W = 3 and 7,364,931 of 12,582,912 at W = 11. It runs in every cell beside the two real arms, so a cell reporting zero difference between packed and padded is reporting it from a sweep shown to be able to see a difference. Control failures: 0."
+standing = "sound"
+note = "The swept width set is the one to carry: {3, 5, 6, 7, 11}. A later value-level intersection found this instrument and the two it was grouped with share no width at all, because the other two swept 4, so a convergence stated over all three holds at no width."
+keywords = ["packing", "weighting", "policy", "bit offset", "padded", "one bit short", "container", "answer-visible", "roundtrip"]
+
+[[probe]]
+id = "the_container_is_not_observable_at_the_column"
+establishes = "Extending an assignment tuple with a container choice over three lossless containers, packed, minimum whole-byte rung and twice that rung, leaves the joint partition at 24 classes over 30 assignments, the same count the assignments alone produce, and 90 configurations collapse to those same 24."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::140_probes::p3_container_is_not_observable.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::140_probes::p3_out.txt::1",
+]
+control = "A fourth container storing W - 1 bits, the negative control, which must separate. It does: adding it takes the count from 24 to 48. The output says in its own words that the lossy container separates, so the sweep can see a container when there is something to see."
+standing = "sound"
+note = "The negative control is what makes the zero mean anything. Three containers adding zero classes is the shape a broken partition produces too, and only the fourth distinguishes them."
+keywords = ["container", "observable", "partition", "classes", "assignment", "lossy", "negative control", "column", "packed"]
+
+[[probe]]
+id = "fusion_under_unsigned_over_six_rounding_modes"
+establishes = "On an unsigned domain, at both wrapping and saturating overflow, the six rounding modes floor, ceiling, toward-zero, away-from-zero, nearest-half-up and nearest-half-even give a zero fusion difference for the first five, and nearest-half-even does not. Separately, the shared one-sided-clamp congruence does not reach the wrapping half: under wrapping the zero comes from reduction being a ring homomorphism, and only under saturating can it come from the clamp being one-sided."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::147_probes::r1_the_unsigned_row_and_the_congruence_isolated.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::147_probes::r1_out.txt::1",
+]
+control = "C1: the signed wrapping rows must reproduce an earlier instrument's published table, and they do, with control failures: 0. Predictions were written into the header before the first run, itemised A1 through A3, so the run could disagree with its author."
+standing = "sound"
+note = "Built because the candidate's unsigned row was wider than anything measured: one earlier instrument swept unsigned at toward-zero only, and another swept six modes but pinned signed wrapping. The gap was found by reading two sweeps' scopes against one clause's quantifier, which is the check no control performs."
+keywords = ["fusion", "unsigned", "rounding modes", "clamp", "congruence", "wrapping", "saturating", "multiply-add", "ring homomorphism"]
+
+[[probe]]
+id = "equivariance_is_domain_restricted"
+establishes = "Fusion is answer-preserving where the rounding position is translation equivariant on the domain the cell actually reaches, rather than on the whole rational line. Over six modes at W = 6 under wrapping, exhaustively, the domain-restricted test mispredicts 0 of 12 cells and the unrestricted test mispredicts 2, both of them unsigned toward-zero and unsigned away-from-zero."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::149_probes::y2_equivariance_is_domain_restricted.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::149_probes::y2_out.txt::1",
+]
+control = "C1: the two tests must disagree on more than zero modes, or the refinement is empty and the instrument has distinguished nothing. They disagree on 2. Predictions were recorded in the header before the run."
+standing = "sound"
+reproduced = "Independently rebuilt in a different language by `the_false_unsigned_fusion_clause_and_its_repair`, which reproduces 0 against 2 mispredictions of 12 and reaches the same two cells."
+note = "The finding is a quantifier rather than a value. The earlier partition of the six modes three against three by equivariance is over the whole line; under unsigned the effective partition is five against one, because on non-negative arguments toward-zero is floor and away-from-zero is ceiling."
+keywords = ["equivariance", "translation", "domain restricted", "fusion", "rounding", "quantifier", "unsigned", "half-even", "misprediction"]
+
+[[probe]]
+id = "the_false_unsigned_fusion_clause_and_its_repair"
+establishes = "A candidate clause claiming the whole rounding axis free under unsigned is false, and the domain-restricted repair predicts the measured table where the unrestricted form does not: 0 mispredictions against 2, over six modes, four denominators and eighty-one numerators, with zero disagreements on the arm that must agree."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::151_probes::v1_the_false_clause_and_the_domain_restricted_repair.py::1",
+  "panel::202608072330_the-numeral-canon-panel::151_probes::v1_output.txt::1",
+]
+control = "A7: the signed wrapping rows must reproduce the earlier published table, which is what says this is the same experiment. Plus a must-be-zero arm over six modes, four denominators and eighty-one numerators, and two further arms A5 and A6 reported in the output."
+standing = "sound"
+reproduced = "This is itself the independent reproduction, in Python, of a result first reached in Rust. Both arms match, which is worth more than a rerun of one implementation."
+note = "The clause it replaces was never written into `retirement`, so a reader of the registry alone can see the corrected clause and cannot see that the earlier one claiming the whole axis free was found false. That is a hole in the record and it is named here because this row is the instrument that found it."
+keywords = ["fusion", "unsigned", "false clause", "repair", "domain restricted", "reproduction", "misprediction", "rounding axis"]
+
+[[probe]]
+id = "the_convergence_intersections_are_empty_by_value"
+establishes = "Intersecting four convergence rows over the values their instruments swept rather than over the dimension names they mention, three of the four have at least one dimension whose value intersection is empty: the container row on width and on rounding, the accumulator row on rounding, and the class-count row on assignments and on witness sets."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::151_probes::v2_the_ledger_corrections_and_the_instrument_fix.py::1",
+  "panel::202608072330_the-numeral-canon-panel::151_probes::v2_output.txt::1",
+]
+control = "The fourth row, fusion, must come back with no empty dimension, and does. A version reporting every row empty would be reporting its own parser."
+defect = "The instrument this one replaces intersected over dimension names, so a dimension every instance lists with disjoint values vanished from the report while looking present in every input. It was named by a signature that checked one row and said it had not checked the others; checking them found the defect reaches three of four."
+standing = "sound"
+note = "The predicted carrier was wrong and the author says so. At the container row the empty dimensions are not signedness, which one instrument omits entirely so the name-level check had already dropped it, but width, where the three instruments swept {3,5,6,7,11}, {4} and {4}, and rounding, where one swept truncate and another floor and toward-zero. The mechanism was diagnosed correctly by somebody who identified the wrong carrier."
+keywords = ["intersection", "convergence", "dimension", "values not names", "empty", "two experts", "partition", "signedness", "width", "rounding"]
+
+# --- the chain candidate's signatures, files 174 to 178 ---------------------
+
+[[probe]]
+id = "a_free_adaptation_point_gives_a_boundary_function_family"
+establishes = "Over inputs exhaustive on 0 to 255, a stretch with a free interior adaptation point has more than one distinct boundary function on three of four chains under a round-to-8 resolution: four on one chain and three on two others. So a definite description naming the stretch's boundary function has no unique referent there."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::175_probes::clause23::clause23.py::1",
+  "panel::202608072330_the-numeral-canon-panel::175_probes::clause23::clause23.out::1",
+  "panel::202608072330_the-numeral-canon-panel::175_probes::clause23::README.md::1",
+]
+control = "Three, all reported with their required verdict. C-A: an identity resolution must give exactly one distinct boundary function on every chain, or the enumeration is counting placements rather than functions. C-C: more than zero chains must show a family. C-D: more than zero inputs must actually differ at the boundary, or the families differ nowhere anybody can observe, at 30 of 256."
+defect = "The first run is kept as `clause23_v1_CONTROLS_FAILED.out` and C-A failed in it: the identity resolution reported two distinct boundary functions on one chain where it must report one. The number that run printed for the round-to-8 column is the same as the corrected run's, which is exactly why the control is the thing that decides whether to read it."
+standing = "sound"
+note = "The naming convention is the part to copy. A run whose control failed is kept under a filename saying so, which makes a defective run greppable rather than described in prose somewhere else."
+keywords = ["boundary function", "family", "adaptation point", "definite description", "clause 2", "clause 3", "identity control", "degeneracy", "exhaustive"]
+
+[[probe]]
+id = "the_licence_family_biconditional_fails_in_one_direction"
+establishes = "Of the three directions a claimed biconditional decomposes into, two hold with no counterexample and one fails: a licence holding implies the boundary-function family has one member, a family above one implies the licence refuses, and a family of one does NOT imply a licence holds. The counterexample is the chain `+97 *3 +13` under round-to-8, where both the algebra licence and the range licence refuse and the family has one member."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::177_probes::p1_licence_family_biconditional.py::1",
+  "panel::202608072330_the-numeral-canon-panel::177_probes::p1_output.txt::1",
+]
+control = "K3: on every cell where a licence holds the family must be one, which passes over the two such cells. Without it the failing direction would be unattributable between a real asymmetry and an instrument that reports refusals everywhere."
+standing = "sound"
+note = "The failing direction is the one the repair does not need, which is why this is an amendment to two words rather than a refutation. The words are `exactly` and `precisely`, and the instrument exists because somebody decomposed a sentence into its three implications before believing any of them."
+keywords = ["biconditional", "licence", "family", "counterexample", "converse", "deletion", "algebra licence", "range licence", "exactly"]
+
+# --- the instruments about this repository's own instruments ---------------
+#
+# Four rows that are not about numerals at all. They are about the harness, the
+# test gate and the checkers, and they are here because a `measured` claim
+# citing anything in `mock/benches/` inherits every one of them.
+
+[[probe]]
+id = "the_bench_tree_was_built_at_the_undocumented_profile"
+establishes = "The bench harness builds every variant and the bench binary with a plain release build and no profile flags, none of the variant manifests declares a profile, the bench root declares none, and no cargo config supplies one. So the whole bench directory was built at cargo's default release profile, `lto = false` and `codegen-units = 16`, rather than the fat-LTO one-codegen-unit profile the harness's own scaffolding documents."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::117_dispatcher_note_the_bench_profile_and_the_tests_that_cannot_run::#the-second-defect-which-is-the-serious-one-the-documented-profile-is-not-set-anywhere",
+]
+control = "None run, and the shape does not admit an obvious one: the finding is three greps returning zero and a fourth returning the documented values from the scaffolding, so the failing case is a profile declaration existing somewhere unlooked-at. What stands in its place is that the zero-returning greps are printed with their commands and the file paths they searched, so a reader re-runs them rather than trusting the count."
+standing = "sound"
+defect = "None in the instrument. Its own containing note carries a correction to a neighbouring claim, made an hour after first writing and left visible: it had called the variant test surface untested, in a panel whose members had run those tests ten times, and the real defect is smaller and differently shaped."
+note = "The consequence for this namespace is direct. `codegen-units = 16` partitions unstably across builds, so two runs of the same unchanged variant can differ in inlining and layout, which is the contamination the per-variant isolation exists to prevent. It does not say any particular finding is wrong. It says every number in that directory was taken under a profile nobody recorded, and which findings rest on a harness artifact is a pass nobody has done."
+keywords = ["bench", "profile", "lto", "codegen-units", "release", "harness", "variants", "reproducibility", "documented profile"]
+
+[[probe]]
+id = "no_bench_artifact_records_its_build_profile"
+establishes = "Of the meta files beside the committed bench results, none records an optimisation level, an LTO setting, a codegen-unit count or a cargo profile. Each carries cpu, os, rustc, git_commit, timestamp, counter_freq and framework, and all but one record a git commit marked dirty."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::185_probes::p5_build_profile.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::185_probes::p5_build_profile.out::1",
+]
+control = "C4: a synthetic meta carrying a `profile` field is planted and the same grep must find it, or a zero over the real files is a fact about the grep. It is found. Plus C3, which plants six command lines and checks that `-O` and `opt-level` count as naming a profile while `--emit asm`, `cargo test`, `--crate-type` and `nm -g` do not."
+standing = "sound"
+note = "This is the mechanical half of the row above. That one establishes what profile the tree was actually built at; this one establishes that the artifacts cannot say. `build_profile` is a declared axis, and under the absence rule a result that cannot name it holds at no profile at all. The dirty-tree count is the second half of the same problem: a result whose commit is dirty cannot be tied to a tree either."
+keywords = ["bench", "meta", "profile", "dirty", "git commit", "provenance", "build_profile", "artifact", "unrecorded"]
+
+[[probe]]
+id = "the_debug_release_gap_that_retired_a_true_finding"
+establishes = "On one host in one session, back to back, the same crate's test suite finishes in 109.08s under `cargo test` and 3.78s under `cargo test --release`, a factor of 29."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::154_kiselyov_the_primitive_derived_cold::655",
+]
+control = "None, and none is needed for what it establishes: it is two runs of one command differing in one flag, on one host, back to back, and both numbers are printed with the command that produced them. The back-to-back-on-one-host part is what a control would otherwise have to buy."
+standing = "sound"
+note = "The reason this row exists is what the gap cost rather than the gap itself. A true finding was retired as unreproducible because the figure came from `cargo test`, which defaults to debug, and the three measurements refuting it were taken at `--release`. Nothing was contested and nobody was wrong; a dimension was missing from all four. This instrument is the one that priced it, and the rule that every timing carries its build profile is downstream of exactly this number."
+keywords = ["debug", "release", "profile", "29x", "compile time", "retired", "unreproducible", "cargo test", "predicate", "missing dimension"]
+
+[[probe]]
+id = "six_ways_this_corpus_produces_a_meaningless_green"
+establishes = "Six distinct ways a test-gate runner over the bench variant crates exits zero having examined nothing, all six observed in this corpus. Among them: `cargo test --workspace` from the bench root compiles the bench binary, runs zero tests and exits 0, because the variant crates are path dependencies rather than workspace members; a runner piping through a `timeout` binary not installed on the host produces no output and exits 0 for every crate; and a batch runner under a two-minute cap silently reports twelve of thirteen, because one crate alone takes 107 seconds."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::107_probes::p0_test_gate.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::107_probes::p0_test_gate.out::1",
+  "panel::202608072330_the-numeral-canon-panel::107_probes::p4_the_four_meaningless_greens.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::107_probes::p4_the_four_meaningless_greens.out::1",
+]
+control = "The count itself is the control and it fired against its own author: the runner that produced the fifth green was this instrument's own first version, caught because the gate demands running the suite rather than citing it. The positive case is the per-crate count, reproduced independently and matching every per-crate figure exactly."
+defect = "It hardcodes an absolute path to a different clone of this repository, so run from any other checkout it examines that tree. That is the seventh way, and it is not in the list of six."
+standing = "sound"
+note = "The population is stated as six and is not established as complete. Two were found by one member, one by the next, one by this instrument against itself, and the seventh above by a later census, so the honest reading is that the count rises whenever somebody looks."
+keywords = ["test gate", "meaningless green", "exit zero", "workspace", "timeout", "false green", "variants", "per-crate", "bench"]
+
+# --- the fusion mechanism, files 141 to 143 ---------------------------------
+
+[[probe]]
+id = "translation_equivariance_is_the_fusion_mechanism"
+establishes = "Writing the exact rational x for a multiply scaled by 2^F and an integer addend c, the stepwise form round(x) + c and the one-round form round(x + c) agree for every x and c exactly when the rounding position is translation equivariant over the integers. Floor is, and confirms at zero differing inputs in every cell; toward-zero is not, and its failure is fully characterised by where the argument is negative and non-integral."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p3_the_missing_ulp_is_a_rounding_move.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p3b_the_mechanism_control_corrected.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p3c_translation_equivariance_is_the_mechanism.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p3c_out.txt::1",
+]
+control = "Two earlier mechanism guesses were refuted by this instrument's own controls, which is why there are three versions and all three are kept. The final one does not guess: it derives the equivalence condition and then checks the derivation, so the arms are a proof and its verification rather than two hypotheses raced against each other."
+standing = "sound"
+note = "The lineage is the point and is why all three files are cited rather than only the last. A reader who takes only `p3c` gets the answer and not the two refutations that produced it, and the refutations are what say the answer was derived rather than landed on."
+keywords = ["equivariance", "translation", "fusion", "multiply-add", "stepwise", "one-round", "floor", "toward zero", "mechanism", "refuted guess"]
+
+[[probe]]
+id = "the_width_invariance_control_was_toothless"
+establishes = "Nothing usable about width invariance. A sweep over three axes, rounding, overflow and intermediate placement, reports the observability count unchanged between widths, and its sensitivity control at a degenerate width of 2 fails to move it: 0 of 31 subsets disagree between W = 2 and W = 3."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p5b_the_shape_dependence_is_not_in_w.py::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p5c_w_invariance_with_a_control_that_fires.py::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p5c_out.txt::1",
+]
+control = "The control came out toothless and its author says so in the successor's own docstring: a check reporting that the count does not move with width, which cannot be made to move with width at all, is indistinguishable from a check blind to width. What was missing is an axis position whose observability genuinely depends on the integer width, and the three swept axes do not have one."
+standing = "defective"
+note = "Marked `defective` rather than `sound` on the author's own reading, which downgraded the result from confirmed to unestablished. The zero is not wrong, it is unearned, and the honest residue is narrower: if there is a finding here it is a finding about those three axes rather than about width. The row exists so nobody cites the zero."
+keywords = ["width", "invariance", "toothless control", "unearned zero", "unestablished", "sensitivity", "degenerate", "blind", "observability"]
+
+[[probe]]
+id = "a_partial_interior_operation_distinguishes_at_every_profile"
+establishes = "Two realisations of one stretch that agree on final values wherever both are defined are distinguishable at `opt-level = 3, debug-assertions = off` when an interior intermediate is the divisor of a division: on a wrapped zero the narrow realisation panics and the wide one returns a value. Division by zero is not governed by `debug-assertions`, so the channel is open at both profiles rather than only at `on`."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::172_probes::p3_definedness::definedness.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::172_probes::p3_definedness::definedness_off.out::1",
+  "panel::202608072330_the-numeral-canon-panel::172_probes::p3_definedness::definedness_on_head.out::1",
+]
+control = "Declared in the header before the run: a control arm of the same shape with the divisor an input rather than an interior intermediate, whose two realisations must agree on every swept input at `off` with no panic on either side. Over 200,000 inputs it gives 0 disagreements and 0 panics, so the instrument detects the interior partiality rather than something about the shape."
+standing = "sound"
+note = "The build flags are in the header rather than only in the runner, which is what lets this row state the profile. It is one of the few instruments in the corpus that treats `debug-assertions` as an axis to sweep rather than as an ambient condition."
+keywords = ["definedness", "partial", "division by zero", "interior", "intermediate", "debug-assertions", "profile", "distinguishing channel", "realisation"]
+
+[[probe]]
+id = "an_equivalence_checker_that_skips_panics_certifies_a_definedness_difference"
+establishes = "An equivalence checker that skips inputs where one side panics certifies pairs differing in definedness rather than in value, and in this corpus 200,000 random inputs found zero occurrences of an event whose probability is about 2^-32."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::172_leroy_formalising_the_chain::#11-corpus-findings-for-the-record-the-next-unit-inherits",
+]
+control = "None. It is a structural argument about what `catch_unwind` around a comparison does, plus one arithmetic observation about how many samples a 2^-32 event needs, and neither has a failing case to plant."
+standing = "sound"
+note = "Recorded as a row because it is the class rather than a result, and because it is the second half of a pair with the row above: one shows the channel exists, this one shows why a random sweep will not find it. The general form is that a sweep's zero on a rare-event channel is a claim about the sweep, and the repair is a definedness column rather than more samples."
+keywords = ["equivalence", "definedness", "panic", "catch_unwind", "rare event", "sampling", "2^-32", "zero", "trap", "value-only"]
+
+# --- instruments that swept the build profile as an axis --------------------
+
+[[probe]]
+id = "operation_erasure_holds_at_every_optimisation_level"
+establishes = "For one typed body against its native equivalent, the opcode multiset is identical at all six optimisation levels 0, 1, 2, 3, s and z, at three instructions from level 1 upward and fourteen at level 0. Symbol identity reports not-erased at levels 0 and 1 and erased from 2 upward."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::17_probes::t3_opcode_oracle.py::1",
+  "panel::202608072330_the-numeral-canon-panel::17_probes::t3_opcode_oracle.out::1",
+  "panel::202608072330_the-numeral-canon-panel::17_probes::verify.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::17_leroy_what_would_actually_certify_this::#4-2-below-o2-the-instrument-fails-and-the-design-does-not",
+]
+control = "The two oracles disagree with each other across the sweep, which is the arm: symbol folding is an identical-code-folding pass that does not run below `-O2`, so a certification resting on symbol identity alone answers a question about the build setting. Running both across all six levels is what separates the instrument's failure from the design's."
+standing = "sound"
+note = "The result is in the design's favour and nobody had it: erasure survives more build settings than the certification claimed, including level zero. What fails below `-O2` is the oracle. This is the corpus's cleanest treatment of `build_profile` as an axis, and it is the one to copy: sweep the level rather than pick one and hope."
+keywords = ["erasure", "opcode", "symbol folding", "identical code folding", "opt-level", "oracle", "certification", "profile", "sweep", "assembly"]
+
+# --- the ports' own instruments, files 179 to 183 ---------------------------
+
+[[probe]]
+id = "the_axis_census_over_the_governing_files"
+establishes = "Across twelve governing files there are 64 predicate spans naming 115 distinct keys, of which 19 map onto a declared axis and 96 do not, leaving 5 spans writable as a registry predicate and 59 blocked."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::183_probes::axis_census.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::axis_census.out::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::span_verdicts.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::span_verdicts.out::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::split_predicate.awk::1",
+]
+control = "C2: `radix`, a four-letter key present in fourteen spans, must appear in the extracted key list. It fired twice before passing."
+defect = "Two, both in the span boundary and both caught by C2. Version one cut each span at the end of the flattened file rather than at the end of its paragraph, so every key list came back full of swallowed sentences and `radix` was absent; the run is kept as `axis_census_first_attempt.out`. Version two split on semicolons only, and one topic writes its predicates comma-separated, so eleven spans became one phrase each and `radix` was still missing. Fixed with an awk splitter that cuts on either at brace depth zero. Its author records that four extractors in this panel have now been defeated by the same boundary."
+standing = "sound"
+note = "One classifier line is wrong and its author names it rather than adjusting the total: the key `S` is mapped to strategy, which is right in two topics and wrong in one, where `S = [0,255]` is the representable set. It moves no total because that span was already blocked on five other phrases, and the stated consequence is that the per-span reason lists are not exhaustive."
+keywords = ["axis", "census", "predicate", "span", "dimension", "blocked", "radix", "boundary", "extractor", "semicolon", "comma"]
+
+[[probe]]
+id = "the_ranking_of_what_a_missing_axis_blocks"
+establishes = "Grouping the undeclared predicate keys by the axis family each is a spelling of, ten families account for the blocked spans, and the largest are the term and declaration shape at 27, the ambient domain at 26, the cost-model population at 25 and the stochastic-coupling parameters at 19."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::183_probes::unblock_value.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::unblock_value.out::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::u2_negative_control.out::1",
+]
+control = "U2, and the first version could not fail. It summed a column inside a pipeline, so the loop ran in a subshell and the total came back zero whatever the data said; it printed PASS against any input. The total is now computed from a file the loop writes, and the negative control is kept as its own artifact: the arm fed an impossible total, failing."
+standing = "sound"
+note = "The subshell class is the one worth carrying out of this row. A shell loop feeding a counter inside a pipeline loses the counter, the arm reports the initial value, and the initial value is usually the one that passes."
+keywords = ["ranking", "unblock", "axis family", "ambient domain", "subshell", "pipeline", "counter", "negative control", "blocked spans"]
+
+[[probe]]
+id = "the_inventory_of_clauses_that_could_not_be_written"
+establishes = "Across five topics' 65 statement clauses, 24 could not be written because their region names an axis no dimension row declares, 16 because the source states no region and the kind is not normative, 23 were written, one was refused by a signature and one folded into another row."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::183_probes::blocked_inventory.tsv::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::check_inventory.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::check_inventory.out::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::blocked_inventory_control.tsv::1",
+]
+control = "A deliberately broken table, kept as its own artifact, on which the checker must report two problems where it reports zero on the real one. Every cited line is opened and confirmed to be a clause opening rather than prose, and every slug named is confirmed to exist in the registry."
+defect = "The wrong-line arm could not fail in the first version. It accepted any heading followed by a digit and a period as a clause opening, which matches the file's own title, since a title numbered 161 contains the string `1.`, so the control cited a prose line and passed. It now requires a blockquote item, a heading or an emphasis run, and the control fires."
+standing = "sound"
+note = "The two counts this instrument produces and the census's 64 are different sets rather than nearly the same one, and its author says so: the census counts predicate spans, of which two topics contribute none, and the inventory counts statement clauses, of which the same two contribute thirty. They were both 64 before one clause was split, which is the coincidence that nearly fused them in prose."
+keywords = ["inventory", "blocked", "clause", "no-axis", "no-region", "refused", "checker", "control table", "clause opening", "port"]
+
+[[probe]]
+id = "the_droplist_entries_are_verbatim"
+establishes = "The entries transcribed into the droplist register reproduce their sources word for word rather than in paraphrase."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::180_probes::droplist_is_verbatim.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::180_probes::control_runs.txt::1",
+]
+control = "Recorded in a control-runs file of its own rather than inline, which is why this row can state what fired. One arm used a `sed` range substitution that BSD sed does not support: it changed nothing, and the run reported success. Caught because the control's required outcome was written down first and the run did not produce it."
+defect = "The BSD sed arm above, and it is the class worth carrying: a GNU extension used on a host whose sed does not have it mutates nothing, exits zero, and a checker downstream then compares two identical files and reports agreement. Both the mutation and the check succeed, and neither did anything."
+standing = "sound"
+keywords = ["verbatim", "droplist", "transcription", "sed", "BSD", "GNU extension", "mutation", "silent no-op", "control run"]
+
+# --- instruments that withdrew or narrowed their own author's finding -------
+
+[[probe]]
+id = "the_pareto_arm_that_rests_on_one_size_point"
+establishes = "Nothing about a Pareto-optimal arm, and that is the result. One arm reported as unreachable by any linear weighting is dominated the moment the largest size point is dropped, and at that point its margin is 3.8 nanoseconds against a within-arm interquartile range of 79.2 nanoseconds on the arm it has to beat, in the same run."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::144_probes::p10c_the_witness_was_noise_and_the_gate_was_at_the_wrong_granularity.py::1",
+  "panel::202608072330_the-numeral-canon-panel::144_probes::p10c_out.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::144_probes::p10b_verifying_the_one_real_witness.py::1",
+  "panel::202608072330_the-numeral-canon-panel::144_probes::p10b_out.txt::1",
+]
+control = "The successor is the control on its predecessor, and it fired against its own author: an intermediate version found the verdict rests entirely on the largest size point, and this one prices the margin against the harness's own scatter. The comparison of a claimed effect to the instrument's noise on the same arm in the same run is the arm every one of these should carry."
+standing = "withdrawn"
+note = "Its own header says NOT A BENCH RUN and that it reads committed harness CSVs and does exact arithmetic, which is the correct labelling. The withdrawal is the useful output: a finding one twentieth the size of the measurement scatter is not a finding, and the gate that should have caught it was at the wrong granularity."
+keywords = ["pareto", "withdrawn", "noise", "interquartile", "size point", "margin", "scatter", "linear weighting", "granularity", "harness csv"]
+
+[[probe]]
+id = "the_tail_coordinate_is_the_wrong_statistic"
+establishes = "Three separate negative findings about one cost coordinate were all measured on one estimator of it, the interquartile range of the per-batch samples, so they are findings about that estimator rather than about the coordinate."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::100_probes::p8_the_tail_coordinate_is_the_wrong_statistic.py::1",
+  "panel::202608072330_the-numeral-canon-panel::100_probes::p8_the_tail_coordinate_is_the_wrong_statistic.out::1",
+]
+control = "The construction is the control: a different estimator of the same intent is built and run over the same data, so the two disagree or they do not, and a disagreement locates the problem in the estimator rather than in the coordinate."
+standing = "sound"
+note = "The class is worth more than the result. Three independent negative findings that share an estimator are one finding, in the same way that three probes sharing a model are one instance wearing three hats, and nothing in a count of three says which."
+keywords = ["estimator", "tail", "coordinate", "interquartile", "independence", "three findings one instrument", "cost model", "noise"]
+
+[[probe]]
+id = "a_mutant_the_encoding_must_reject"
+establishes = "Whether a product-of-axes structure closed under a join is expressible on the pinned nightly without `generic_const_exprs`, as a trait with an associated type rather than a const expression in type position."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::93_probes::p3_mutant_wrong_join.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::93_probes::p3_mutant_wrong_join.out::1",
+]
+control = "The file is the control. It is a mutant carrying a deliberately wrong join, committed beside the correct encoding so the check is that the compiler separates them rather than that the correct one builds. A probe establishing only that its intended shape compiles has not established that a wrong shape does not."
+standing = "sound"
+note = "A mutant kept as its own committed file is the shape a refusal should take, and it is rare in this corpus. Most compile checks here record that the intended construction built and nothing about what the compiler would have refused."
+keywords = ["mutant", "join", "product of axes", "generic_const_exprs", "associated type", "compile", "refusal", "pinned nightly", "expressible"]
+
+# --- the remaining instruments a live claim leans on ------------------------
+
+[[probe]]
+id = "double_rounding_disagreement_has_a_closed_form"
+establishes = "The disagreement count for a double rounding across an intermediate width is a formula in the fraction width and the intermediate width, rather than a result read off a sweep of three widths."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p5_double_rounding_closed_form.py::1",
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p5_double_rounding_closed_form.out::1",
+]
+control = "The swept widths are the control on the closed form: a formula that does not reproduce the counts the earlier sweep measured at each of its widths is the wrong formula, and the sweep is what it has to agree with before it may replace it."
+standing = "sound"
+note = "Built for a reason worth stating: the earlier result was a proof recorded with a measured predicate, which under-claims in a notation where a predicate is never widened in place. A closed form turns the sweep into a theorem and lets the widening be stated rather than hedged to the widths tested."
+keywords = ["double rounding", "closed form", "intermediate width", "fraction width", "predicate", "widening", "theorem", "sweep", "disagreement count"]
+
+[[probe]]
+id = "every_placement_rebuilt_in_the_other_language"
+establishes = "The pointwise-optimality claim over every interior placement, re-run on an instrument written independently in Rust rather than read off the Python that first widened it, together with a matched non-nearest partner for the clamp row: wrap projects onto the same 256 in-range values and is not nearest."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q1_every_placement.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q1_every_placement.out::1",
+]
+control = "The matched pair is the control the clamp row previously lacked: a projection onto the identical value set that is not nearest, so a clamp result cannot be attributed to the value set rather than to nearestness."
+standing = "sound"
+reproduced = "This IS the reproduction, and its author says why it is a rewrite rather than a reading: agreement between a Rust instrument and a Python one is two instruments, and agreement reached by reading the other's code is one."
+note = "Worth more than the numbers it reports. Two implementations in two languages by two authors agreeing is the strongest form of corroboration in this corpus, and it appears here and in the fusion repair and almost nowhere else."
+keywords = ["placement", "reproduction", "rust", "python", "independent", "clamp", "matched control", "nearest", "pointwise optimal"]
+
+[[probe]]
+id = "translation_equivariance_partitions_the_rounding_axis"
+establishes = "Translation equivariance partitions the six rounding positions rather than distinguishing the two that were tested, and the partition is the arm's predicate."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::142_probes::q2_equivariance_partitions_the_rounding_axis.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::142_probes::q2_out.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::142_probes::q3_an_independent_accumulator_model.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::142_probes::q3_out.txt::1",
+]
+control = "The derivation is written out in the header from scratch before the measurement, so the sweep either matches the derivation or refutes it. The companion instrument is a second accumulator model built independently, which is the control on the first one's model rather than on its arithmetic."
+standing = "sound"
+note = "Its author states the rung it does not earn, which is the part to keep: the mechanism was re-derived after reading the earlier file's prose claim but before reading its probe code, so this is a re-derivation and a re-measurement rather than a blind instance. A later value-level intersection then found this partition stated over the whole rational line while an arm needs it on the domain the cell reaches, which is a quantifier the partition alone does not carry."
+keywords = ["equivariance", "partition", "rounding axis", "six modes", "re-derivation", "rung", "accumulator", "independent model", "predicate"]

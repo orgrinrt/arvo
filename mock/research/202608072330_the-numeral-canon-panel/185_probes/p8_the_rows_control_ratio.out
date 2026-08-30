@@ -1,0 +1,50 @@
+=== p8 the control ratio over the committed probe rows, 2026-08-30T23:03:53Z
+
+## the ratio
+rows:                                          48
+carrying a control field (schema requires it): 48
+whose control field opens with None:           5
+naming a case that was run:                    43
+share naming a run case: 90%
+
+## C1: the classes must partition
+C1 PASS: 43 + 5 = 48, and every row carries the field
+
+## C2: both classes non-empty
+C2 PASS
+
+## C3: standing, over the three schema values and no fourth
+   2 "defective"
+  45 "sound"
+   1 "withdrawn"
+C3 PASS: no value outside the declared enum
+
+## rows carrying a recorded defect
+rows with a `defect` field: 17
+rows with a `reproduced` field: 8
+
+## the rows whose control field opens with None
+  id = "chain_the_third_definition_is_not_observation_bounded"
+  id = "no_dependent_survives_the_rounding_units_defects"
+  id = "the_bench_tree_was_built_at_the_undocumented_profile"
+  id = "the_debug_release_gap_that_retired_a_true_finding"
+  id = "an_equivalence_checker_that_skips_panics_certifies_a_definedness_difference"
+
+## is 90 percent a fact about the corpus or about the selection
+Almost certainly the selection: the rows here were chosen as the
+instruments a live claim needs plus every instrument whose defect the
+corpus records, and both populations are files whose authors were
+paying attention. Checked rather than assumed, by splitting p4 own
+per-file classification on whether the directory has a row here.
+
+not_represented   282 of  941 state a control  (30.0%)
+represented       144 of  192 state a control  (75.0%)
+
+C4: the two groups must both be non-empty and must sum to p4 total,
+or the split is dropping files.
+p4 files: 1133
+
+WHAT THIS DOES NOT SAY. It counts what the field claims, not what the
+instrument did. A row saying a control fired is only as good as the
+reading behind it, and four defects in this corpus were controls that
+could not fail and would be counted here as fired.
