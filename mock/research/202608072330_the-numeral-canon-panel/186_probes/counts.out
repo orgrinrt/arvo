@@ -1,0 +1,26 @@
+### controls, both must be 0 or every figure below is void
+C1 nonexistent id                    0
+C2 sentence_kind definition (today)  0
+
+### the predicated surface committed today
+proposal rows                        17
+proposal predicate fields            2
+law rows                             6
+law holds fields                     3
+law fails fields                     5
+
+### sentence_kind distribution
+   1 sentence_kind = "enumeration"
+  15 sentence_kind = "normative"
+   1 sentence_kind = "theorem"
+
+### the committed enumeration row names no instrument (expect 0 evidence lines in its table)
+0
+
+### the q4 withdrawal rows exist (expect 1 each)
+prior_calls_are_a_historical_log     1
+his_voice_is_demoted                 1
+
+### the q5 premise question exists with the call op's (expect 1 and 1)
+question the_container_premise       1
+its decider = op                     1
