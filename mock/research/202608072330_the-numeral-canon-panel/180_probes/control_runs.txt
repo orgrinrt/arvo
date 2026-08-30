@@ -1,0 +1,32 @@
+Control runs for the citation checker, so a pass can be believed.
+
+Both mutate exactly one citation in mock/registry/retirement.toml, run
+`cargo mock --lint-only`, and restore. The mutation count is printed before each
+run, because the first attempt at control one used `sed -i '0,/re/s//../'`, which
+BSD sed does not support: it changed nothing, the run reported "all lints passed",
+and that reads exactly like the checker being silent about a broken anchor. The
+instrument was broken and the control caught it. Every run below therefore states
+how many substitutions actually landed.
+
+CONTROL 1. A heading anchor naming no heading.
+  retirement::dl_relocate_the_law_machinery_downstream
+  panel::...::DROPLIST::#6-the-droplist-cumulative
+    -> panel::...::DROPLIST::#6-the-droplist-cumulative-BROKEN
+  substitutions applied: 1
+  ERROR [unresolvable-heading]: retirement::dl_relocate_the_law_machinery_downstream: `panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative-BROKEN` names heading `6-the-droplist-cumulative-BROKEN`, which 202608072330_the-numeral-canon-panel/DROPLIST does not contain. A renamed heading fails here rather than silently pointing elsewhere, which is why headings are preferred over line numbers.
+registry check failed: 1 error(s)
+
+CONTROL 2. A citation naming no file.
+  retirement::dl_relocate_the_law_machinery_downstream
+  panel::...::DROPLIST::#6-the-droplist-cumulative
+    -> panel::...::DROPLIST_NO_SUCH_FILE::#6-the-droplist-cumulative
+  substitutions applied: 1
+  ERROR [unresolvable-provenance]: retirement::dl_relocate_the_law_machinery_downstream: `panel::202608072330_the-numeral-canon-panel::DROPLIST_NO_SUCH_FILE::#6-the-droplist-cumulative` matches no file under root `panel`.
+registry check failed: 1 error(s)
+
+NOT CHECKED BY ANYTHING, and it should be.
+  mockspace.toml:316 says a line citation into a living ledger is "checked rather
+  than declared: `mock/checks` refuses a line citation into a living ledger by
+  name". `mock/checks/` does not exist in this repository. A row citing
+  panel::...::OPTIONS::57, a line number into a living ledger, passes clean.
+  Verified by putting exactly that row in and running the linter.
