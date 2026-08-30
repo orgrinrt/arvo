@@ -118,7 +118,7 @@ the check enforces and which is why there are only two of them.
 
 **Two counts in this file are both 64 and they are different sets.** The census counts
 `holds for:` predicate spans, of which topics five and ten contribute zero. The inventory counts
-statement clauses across all five topics, of which topics five and ten contribute 28. The
+statement clauses across all five topics, of which topics five and ten contribute 29. The
 coincidence is a coincidence and I nearly wrote a sentence that fused them.
 
 ## 3. The finding: the corpus predicates over a vocabulary the registry does not have
