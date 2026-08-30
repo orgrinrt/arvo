@@ -1,0 +1,61 @@
+############ INSTANCE 1
+
+--- additive_associativity_under_wrapping ---
+holds = [
+  "total_width: W in {4, 8}",
+  "fraction_width: F any",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy = wrap",
+  "operation: operation = add",
+note = "Two instruments at two widths: the format unit's cube at four-bit widths, and `76`'s exhaustive sweep over `u8`. `F any` is licensed by the format unit's own scale-blindness argument, that addition at a
+
+  the product the `holds` conjunction claims:
+    {W=4, W=8} x {unsigned, signed} x {F any} x wrap x add x arity 3   = 4 width/sign cells
+  what the cited instruments cover:
+    63's cube (`63:443-447`)      signed|add|wrap = "abelian group / group, every F", at four-bit widths
+    76 (`90:122`)                 "wrapping addition associates universally over `u8`" -- UNSIGNED, W=8
+    93 F10 (`93:1005-1006`)       signedness = signed, overflow in {wrap, saturate}, W in 3..7
+  the cell nobody reached:        signed, W = 8, wrap
+############ INSTANCE 2
+
+--- multiplicative_associativity_under_wrapping ---
+holds = [
+  "total_width: W in 3..=8",
+  "fraction_width: F = 0",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy = wrap",
+  "operation: operation = mul",
+fails = [
+  "total_width: W in 3..=7",
+  "fraction_width: F > 0",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy = wrap",
+  "operation: operation = mul",
+note = "The `F = 0` holds region combines two instrument sets at different widths: the format unit's cube at four-bit widths with the `w = 3 through 7` width instances, and the strategy unit's `93` F1 sweep at 
+
+  the product the `holds` conjunction claims:
+    {W in 3..=8} x {unsigned, signed} x F=0 x wrap x mul x arity{2,3}
+  what the cited instruments cover:
+    93 F1  (`93:544`)   "signedness = unsigned", W in 3..8
+    93 F1a (`93:551`)   "signedness = unsigned", W any, by proof
+    93 F10 (`93:1005`)  signedness = signed, W in 3..7
+    63's cube           signed|mul|wrap = "ring" at four-bit widths
+  the cell nobody reached:        signed, W = 8, wrap
+  and the row's own note names the gap in prose: it says the 93 F1 sweep is
+  "for the unsigned case". The note is prose. The predicate is what a gate reads.
+
+############ CONTROL 1: the identical argument on a cell the instruments DO cover
+  cell:  unsigned, W = 8, wrap, add
+  90:122 states 76's exhaustive probe: wrapping addition associates universally
+  over `u8`. That is unsigned at W = 8 exactly. The argument above, applied here,
+  finds the cell covered, so it discriminates rather than rejecting every cell.
+124:associates universally over `u8`, signed `i8` saturating addition fails on 4,177,792 of 16,777,216
+
+############ CONTROL 2: a narrowing, which is the opposite direction and is honest
+  93 F1a proves the unsigned F=0 multiplicative half at `W any`, by a congruence
+  argument rather than a sweep. The row writes `W in 3..=8`, which claims LESS
+  than the source. That is honest under the notation and is recorded here only
+  so the two directions are not confused: instance 2 is a widening, this is not.
+**F1a. The F = 0 half extends to any width, by proof rather than by sweep.**
+`holds for: W any, F = 0, signedness = unsigned, overflow in {wrap, saturate}, operations {mul, add},
+arity 3, threads = 1, target features any`
