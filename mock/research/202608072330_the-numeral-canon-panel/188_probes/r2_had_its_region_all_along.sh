@@ -1,49 +1,71 @@
 #!/usr/bin/env bash
-# `a_composed_expressions_region_is_never_inherited_from_its_parts` is marked
-# `normative`, which is the one sentence_kind the region check exempts. 182
-# section 6.1 flags the row itself and gives this defence:
+# WITHDRAWN. Read the verdict at the bottom before the body.
 #
-#   "The honest alternative is `theorem` with no region, which the checker
-#    refuses, so the row would not exist."
+# The hypothesis was that `a_composed_expressions_region_is_never_inherited_from_
+# its_parts` escapes the region check as `normative` while its region sat two
+# lines below the sentence its `because` quotes, at `90:136-137`, on seven axes
+# every one of which is declared. 182 section 6.1's stated defence for the label
+# is "the honest alternative is `theorem` with no region, which the checker
+# refuses, so the row would not exist", and that defence would then be false.
 #
-# This tests that defence. If the region is in the source, the defence is false
-# and the row is an established claim wearing the exempt mark.
-#
-# CASE THAT MUST FAIL: control 1 runs the same axis-mapping over a row that is
-# a genuine stipulation, where no source predicate should be found. Control 2
-# checks each mapped axis against `dimension.toml`, so a claim that an axis is
-# writable is checked rather than asserted.
+# Every fact above is true and the conclusion drawn from them is wrong. The
+# region was carried, complete and verbatim, into the law row the proposal row
+# points at. Part three is the check that found this, run because a severe
+# finding is verified before it is reported.
 set -uo pipefail
-cd "$(dirname "$0")/.."
-D=../../registry/dimension.toml
+ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
+PANEL="$ROOT/mock/research/202608072330_the-numeral-canon-panel"
+D="$ROOT/mock/registry/dimension.toml"
+P="$ROOT/mock/registry/proposal.toml"
+L="$ROOT/mock/registry/law.toml"
 
-echo "=== the row, as committed ==="
+echo "### PART ONE: the row carries no predicate and is exempt"
 awk '$0=="id = \"a_composed_expressions_region_is_never_inherited_from_its_parts\""{f=1}
-     f{print} f&&/^keywords/{exit}' ../../registry/proposal.toml | grep -E '^(id|sentence_kind|standing|predicate|because)' | cut -c1-200
-echo "  predicate field present: $(awk '$0=="id = \"a_composed_expressions_region_is_never_inherited_from_its_parts\""{f=1} f&&/^predicate/{print "YES";exit} f&&/^keywords/{print "NO";exit}' ../../registry/proposal.toml)"
+     f{print} f&&/^keywords/{exit}' "$P" | grep -E '^(id|sentence_kind|law)' | sed 's/^/  /'
+echo "  predicate field present: $(awk '$0=="id = \"a_composed_expressions_region_is_never_inherited_from_its_parts\""{f=1} f&&/^predicate/{print "YES";exit} f&&/^keywords/{print "NO";exit}' "$P")"
 
 echo
-echo "=== the source, two lines below the sentence the row's because quotes ==="
-grep -n 'Predicate as `79` stated it' -A1 90_giesen_consolidation_derived_algebraic_laws.md
+echo "### PART TWO: the source states a region, on seven declared axes"
+grep -n 'Predicate as `79` stated it' -A1 "$PANEL/90_giesen_consolidation_derived_algebraic_laws.md" | sed 's/^/  /'
+echo
+printf '  %-26s %-24s %s\n' 'SOURCE SPELLING' 'REGISTRY AXIS' 'DECLARED'
+m() { printf '  %-26s %-24s %s\n' "$1" "$2" "$(grep -qE "^id = \"$2\"\$" "$D" && echo yes || echo NO)"; }
+m 'N = 8'             total_width
+m 'sign = unsigned'   signedness
+m 'policy = saturate' overflow_policy
+m 'op pair = {+, -}'  operation
+m 'F = 0'             fraction_width
+m 'threads any'       threads
+m 'features any'      target_features
+echo
+echo "  CONTROL: an axis the corpus names that is not declared, which must read NO"
+m 'operand window'    declared_operand_window
 
 echo
-echo "=== every axis that predicate names, mapped, and checked against dimension.toml ==="
-printf '%-26s %-34s %s\n' 'SOURCE SPELLING' 'REGISTRY AXIS' 'DECLARED'
-map() { d=$(grep -cE "^id = \"$2\"\$" "$D"); printf '%-26s %-34s %s\n' "$1" "$2" "$( [ "$d" -gt 0 ] && echo yes || echo NO )"; }
-map 'N = 8'                  total_width
-map 'sign = unsigned'        signedness
-map 'policy = saturate'      overflow_policy
-map 'op pair = {+, -}'       operation
-map 'F = 0'                  fraction_width
-map 'threads any'            threads
-map 'features any'           target_features
+echo "### PART THREE: the check that withdrew the finding"
+echo "  the row's own note, which gives a different defence than 182 section 6.1:"
+awk '$0=="id = \"a_composed_expressions_region_is_never_inherited_from_its_parts\""{f=1}
+     f&&/^note = /{print;exit}' "$P" | fold -s -w 96 | sed 's/^/    /'
+echo
+echo "  the law row it points at:"
+awk '$0=="id = \"associativity_of_a_composed_saturating_add_and_subtract\""{f=1}
+     f{print} f&&/^keywords/{exit}' "$L" | grep -E '^(id|fails|  "|provenance|  "panel)' | sed 's/^/    /'
 
 echo
-echo "=== CONTROL 1: an axis the corpus names that is NOT declared, which must read NO ==="
-map 'operand window'         declared_operand_window
+echo "### VERDICT: withdrawn"
+cat <<'T'
+  The seven axes are all present, in the same order and the same values, on the
+  law row's `fails` list. Its provenance cites `90:137`, which is the predicate
+  line itself. The proposal row wires to it with `law = [...]` and its note says
+  in terms that the measured claim is the law row and this row is the rule drawn
+  off it.
 
-echo
-echo "=== CONTROL 2: the same search for a source predicate on a genuine stipulation ==="
-echo "row: one_container_hosts_many_systems_so_the_canon_types_the_system"
-echo "hits for a predicate line near its source in 74:"
-grep -cE '^`holds for:|^Predicate as' 74_giesen_consolidation_the_number_system_concept.md || true
+  So the region was not lost, the split was executed, and the commit message that
+  landed these rows says exactly what it did: "splitting each measurement from the
+  rule drawn off it".
+
+  What survives is much smaller and is about 182 rather than about the rows:
+  section 6.1's stated defence for the label is weaker than the one the row
+  itself carries, and a reader working from 182 alone would conclude the region
+  was unavailable when it is one field away.
+T
