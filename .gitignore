@@ -26,6 +26,11 @@ mock/research/sketches/*/*.rmeta
 __pycache__/
 *.pyc
 
+# The marker that keeps a worktree out of the desktop indexer. Every seat gets
+# one on creation, and an unmarked build tree costs the indexer a few thousand
+# files per run.
+.metadata_never_index
+
 # === mockspace-managed build artifacts (do not edit) ===
 # Catch-all: every cargo build dir, including nested ones under benches/,
 # tests/, and research sketches. A leading-slash /target would miss those.

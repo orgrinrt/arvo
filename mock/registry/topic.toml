@@ -1,0 +1,93 @@
+# What a canon row is about.
+#
+# A subject, never a sitting. The panel's units are one source of these and are
+# not the same thing: a unit name says when something was argued, which is a
+# fact about the panel and not about arvo. Several units reach one topic and one
+# unit reaches several.
+#
+# `unit` records the file range anyway, held rather than rendered, because it is
+# how somebody gets from a row back to the argument behind it.
+
+[[topic]]
+id = "the_format"
+what = "What a numeral's format is: the widths it declares, its signedness, and how a declared format relates to the container underneath it."
+unit = "panel unit two, consolidated at 63"
+keywords = ["format", "width", "declared width", "integer width", "fraction width", "signedness", "container", "fixed point", "numeral shape"]
+
+[[topic]]
+id = "the_number_system"
+what = "What counts as a number system arvo can carry, and what a candidate has to expose to be admitted as one."
+unit = "panel unit three, consolidated at 74"
+keywords = ["number system", "admission", "admission contract", "carrier", "role", "interoperation", "magnitude", "inventory"]
+
+[[topic]]
+id = "algebraic_laws"
+what = "Which algebraic laws hold over arvo's arithmetic, in which regions, and how a law's verdict is established and expressed."
+unit = "panel unit four, consolidated at 90"
+keywords = ["law", "laws", "associativity", "distributivity", "commutativity", "identity", "absorption", "derived law", "verdict", "reassociation", "algebra"]
+
+[[topic]]
+id = "the_strategy_axis"
+what = "The axis a consumer selects along: what a strategy is, what it selects between, and what makes it the thing that decides which answer is correct."
+unit = "panel unit five, consolidated at 106"
+keywords = ["strategy", "strategy axis", "Hot", "Cold", "Warm", "Precise", "preset", "policy", "consumer choice", "selection"]
+
+[[topic]]
+id = "the_strategy_object"
+what = "The strategy as a thing with internal structure: how many components it has, what each ranges over, and whether the count is answerable at all."
+unit = "panel unit eight, files 139 to 152"
+keywords = ["strategy object", "component", "shape to count", "observation set", "operation set", "fidelity coordinate", "axis count", "firewall"]
+
+[[topic]]
+id = "the_primitive"
+what = "What a primitive is: a value set with a realisation map over a declared operation set, and what makes two of them the same primitive."
+unit = "panel unit five's first sitting (109 to 114) and the ninth unit that reopened it (153 to 165)"
+keywords = ["primitive", "value set", "identity", "denotation", "isomorphism", "lens", "type", "adequacy", "soundness", "completeness", "refinement"]
+
+[[topic]]
+id = "the_realisation_map"
+what = "How a declared numeral is realised onto machine storage and machine operations, and what the map is free to choose."
+unit = "panel unit six, files 114 to 124"
+keywords = ["realisation", "realisation map", "lowering", "storage", "carrier", "packing", "bitpack", "overflow policy", "licence family"]
+
+[[topic]]
+id = "rounding"
+what = "The rounding axis: which modes exist, what each licenses, and what a design pays for choosing one as its default."
+unit = "panel unit seven, files 125 to 138"
+keywords = ["rounding", "round", "round to nearest", "ties to even", "truncate", "IEEE default", "double rounding", "deferral", "rounding mode"]
+
+[[topic]]
+id = "the_chain"
+what = "Composition beyond a single operation: what a chain is, where it is bounded, and what a composition owes that no per-operation surface can answer."
+unit = "panel unit ten, files 166 to 178"
+keywords = ["chain", "composite", "composition", "fold", "reduction", "intermediate", "unobserved region", "stretch", "schedule", "adaptation point", "accuracy across chains"]
+
+[[topic]]
+id = "overflow_policy"
+what = "What happens at the edge of a numeral's range: which policies exist, which are selectable, and what selecting one licenses elsewhere."
+unit = "reached inside the realisation map and rounding units"
+keywords = ["overflow", "wrap", "clamp", "saturate", "saturating", "panic", "overflow policy", "edge", "range"]
+
+[[topic]]
+id = "the_container_premise"
+what = "Whether a declared numeral's behaviour is stated over its declared width or over the container that carries it. Blocking: no wording of several downstream clauses is true on both branches."
+unit = "raised across units six to nine, put to op at 156 item 7"
+keywords = ["container", "container premise", "declared width", "carrier", "backing", "widening", "which width", "blocking premise"]
+
+[[topic]]
+id = "the_predicate_notation"
+what = "How a finding states the region it holds in, what an absent dimension means, and whether the canon may carry a sentence with no region at all."
+unit = "in force from I13 onward; sharpened at 156 item 2"
+keywords = ["predicate", "region", "dimension", "holds for", "any", "unmeasured", "notation", "imposed", "established", "unpredicated"]
+
+[[topic]]
+id = "canon_form"
+what = "What a canon sentence may be: which kinds of statement it carries, where the line between canon and design falls, and what each sentence has to declare about itself."
+unit = "put to op at 156 items 2 and 3; the marking convention is 173's"
+keywords = ["canon", "canon form", "sentence kind", "theorem", "measured", "normative", "argument", "canon or design", "tier", "marking"]
+
+[[topic]]
+id = "panel_conduct"
+what = "How this panel is run and how its output is to be read. Not a claim about arvo."
+unit = "op's own process files: 01, 04, 28, 87, 88, 95, 113"
+keywords = ["panel", "conduct", "process", "ack", "ratification", "convergence", "consolidation", "unit", "rung", "provenance"]
