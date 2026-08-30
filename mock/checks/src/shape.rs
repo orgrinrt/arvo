@@ -194,9 +194,15 @@ pub fn measurements_resting_on_an_unusable_instrument(reg: &Registry) -> Vec<Fin
 /// describing a control that did.
 fn names_no_control(control: &str) -> bool {
     let c = control.to_ascii_lowercase();
-    ["no control", "none was run", "none run", "nothing was run", "no case"]
-        .iter()
-        .any(|phrase| c.contains(phrase))
+    [
+        "no control",
+        "none was run",
+        "none run",
+        "nothing was run",
+        "no case",
+    ]
+    .iter()
+    .any(|phrase| c.contains(phrase))
 }
 
 /// A region on an imposed proposition inverts it, and its absence anywhere else

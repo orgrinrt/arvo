@@ -10,24 +10,28 @@
 //! a member file cites the ledger it was written against, the ledger's headings
 //! move, and the citation keeps reading as a citation.
 //!
-//! Two arms, both narrow, both about the seed archive.
+//! Three arms. Two are about the seed archive and the third is about what a
+//! probe reads.
 //!
 //! The seed directory was renamed so every dead file carries an `OLD_` prefix
 //! and reads as dead at a glance. The pass that landed it repointed five files
 //! and wrote into `RULES.md` that no unprefixed archive citation remained,
-//! which was a claim over the tree made from a check over five files. Measured:
-//! **45 files, 118 citations**, two of them in the intent catalogue every
+//! which was a claim over the whole tree made from a check over five files.
+//! Dozens of files still carried one, two of them in the intent catalogue every
 //! dispatch reads first, where the provenance of two of op's intents resolved
-//! to nothing.
+//! to nothing. So the first two arms are the two halves that sentence promised:
+//! nothing unprefixed in a file still being written, and no `OLD_` citation
+//! naming a file that is not there.
 //!
-//! So the arms are the two halves that sentence promised: nothing unprefixed in
-//! a file still being written, and no `OLD_` citation naming a file that is not
-//! there.
+//! **The landed member files are out of scope on purpose.** Nearly all of the
+//! remaining citations are in numbered files, which are written once and are
+//! the record. Repointing them would be editing history to make a checker
+//! green, and the reading rule is one sentence: prepend `OLD_`.
 //!
-//! **The landed member files are out of scope on purpose.** 116 of the 118 are
-//! in numbered files, which are written once and are the record. Repointing
-//! them would be editing history to make a checker green, and the reading rule
-//! is one sentence: prepend `OLD_`.
+//! **No count appears in this comment.** The first repair put one here and it
+//! was stale within the hour, twice over: the repair itself removed citations,
+//! and the paragraph announcing the count then contained the string it was
+//! counting. The numbers live in the tests, which measure them.
 
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -168,7 +172,7 @@ pub fn probes_reading_another_tree(dir: &Path) -> Vec<Finding> {
             let Some(at) = line.find("/Users/") else {
                 continue;
             };
-            let rest = &line[at ..];
+            let rest = &line[at..];
             let cited: String = rest
                 .chars()
                 .take_while(|c| !c.is_whitespace() && *c != '"' && *c != '\'' && *c != ')')

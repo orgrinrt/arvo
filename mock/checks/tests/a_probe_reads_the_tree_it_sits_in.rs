@@ -90,7 +90,9 @@ fn the_arm_fires_on_a_planted_script_and_not_on_a_clean_one() {
         found[0].at
     );
     assert!(
-        found[0].says.contains("/Users/somebody/Dev/other-clone/arvo"),
+        found[0]
+            .says
+            .contains("/Users/somebody/Dev/other-clone/arvo"),
         "the report names the path so it can be fixed without opening the file: {}",
         found[0].says
     );
