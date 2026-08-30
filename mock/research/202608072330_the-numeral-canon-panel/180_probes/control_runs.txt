@@ -30,3 +30,20 @@ NOT CHECKED BY ANYTHING, and it should be.
   name". `mock/checks/` does not exist in this repository. A row citing
   panel::...::OPTIONS::57, a line number into a living ledger, passes clean.
   Verified by putting exactly that row in and running the linter.
+
+CONTROL 3. The verbatim-extract check, and its own negative control.
+  180_probes/droplist_is_verbatim.sh, run from mock/research/.
+
+  lines: extract=420 source=420
+  extract: 0c1c26883f885f465862f8ebf3eb3f01
+  source:  0c1c26883f885f465862f8ebf3eb3f01
+  bold-opening paragraphs: 96 (94 entries plus 2 preamble paragraphs)
+  PASS
+
+  Negative control, because two md5s agreeing proves nothing if the extraction
+  is producing the same thing both times. Section 6 against section 7 of the
+  same file:
+    section 6 md5: 0c1c26883f885f465862f8ebf3eb3f01
+    section 7 md5: c1a4907271b62909f05c5960b3d5a6f4
+  They differ, so the PASS above is a real match rather than an artefact of the
+  awk range collapsing.

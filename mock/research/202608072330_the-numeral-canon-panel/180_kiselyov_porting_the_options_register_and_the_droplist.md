@@ -292,10 +292,16 @@ The row carries the corrected attribution and both impossibility arguments. I pu
 and only its provenance sentence is wrong; the class of error is the one `161` R8 names, where a
 correction that reads as a refutation retires a true finding.
 
-**Four other retirements I checked at source and found accurate**, so the ledger is not generally
-unreliable and I do not want this report read as saying it is:
+**Thirteen other retirements I checked at source and found accurate**, so the ledger is not generally
+unreliable and I do not want this report read as saying it is. Each was chosen for carrying something
+mechanically checkable, a figure or a quoted sentence, because a claim that cannot be checked cheaply
+tells you nothing about the ledger's reliability either way:
 
-- `161` R1's "0 of 48". `110` line 420 and line 560 both carry it, in the form the retirement quotes.
+- `161` R1's "0 of 48". `110` lines 420 and 560 both carry it, in the form the retirement quotes.
+- `161` R2's "three, not five". `159` F159-1 states the four packed-end crates are one dependency
+  family.
+- `161` R4's "127-primitive index count". `154` line 285 reports 127 distinct primitives, and line 554
+  records the withdrawal.
 - `161` R12's quoted sentence. `110` line 113 reads, verbatim, "This workspace auto-loads
   `arvo-always-optimal-internals.md` into every agent context." The retirement calls it false as
   stated. I can add one independent instance from this seat: that file exists at the workspace root's
@@ -305,8 +311,42 @@ unreliable and I do not want this report read as saying it is:
 - `164` R17's "three separate and three do not". `157_probes/p1b_literal_ties.out` shows six non-grid
   literals, three marked SEPARATES and three not, with both controls passing, and the tie case named in
   the output's own closing paragraph.
-- `161` R2's "three, not five". `159` F159-1 states the four packed-end crates are one dependency
-  family.
+- `119`'s first entry, that a soundness predicate is false at wrapping. `114` line 129 gives 28
+  violations at one shape and 16 at another, both at wrapping.
+- `146`'s slack-repair entry and its "mean of 41.74 answers of 64". `141` line 333's table and line 349
+  both carry it.
+- `146`'s "strictly increasing" entry, at 714 counterexamples and 134. `141` line 596 gives the first
+  and `143` lines 9, 204 and 208 give the second on its own independent axis set.
+- `146`'s arithmetic-shift entry and its "up to 44.53% of multiply answers". `142` line 25 and the table
+  at line 212 both carry it, and the table shows it is the endpoint of a monotone row rather than an
+  isolated figure.
+- `151`'s clause 5.5 entry. `151`'s own table reproduces at 12.50, 12.50, 9.38, 6.25 and 3.91 percent
+  under wrapping and 0.93 to 2.18 under saturating, exhaustive over 262144 triples per cell at width
+  six.
+- `173` R-k's "1.2% inside 4.9%". Line 501 carries both, and `OPTIONS.md` Q42 independently records the
+  4.9 percent noise floor with disjoint intervals.
+- `178`'s biconditional entry and its counterexample chain. `177` line 134's table row for that chain,
+  and `178` lines 41 and 60.
+- `53`'s adjudicating-criterion entry, at "one cell of sixteen". `50` line 197 states exactly that, and
+  line 180 shows the sixteen.
+
+**And one check that mattered more than any single row: `DROPLIST.md` is the verbatim extract it says it
+is.** Its own claim is that section 6 was "extracted verbatim" from the predecessor panel's twelfth
+consolidation, and that claim is the ground under 94 of the 176 rows, so it is worth more than any one
+entry.
+
+```
+$ awk '/^## 6\. The droplist, cumulative/,/^## 7\. Reversals/' \
+    202608072330_the-numeral-canon-panel/DROPLIST.md > /tmp/a6.txt
+$ awk '/^## 6\. The droplist, cumulative/,/^## 7\. Reversals/' \
+    202607301300_formalization-spec-panel/OLD_124_consolidation_twelve.md > /tmp/b6.txt
+$ md5 -q /tmp/a6.txt /tmp/b6.txt
+0c1c26883f885f465862f8ebf3eb3f01
+0c1c26883f885f465862f8ebf3eb3f01
+```
+
+Byte-identical, 420 lines each. The 96 that `grep -c '^\*\*'` returns over that range is 94 entries plus
+the two preamble paragraphs that also open bold, which reconciles against the 94 in section 2.
 
 **And one stale citation, which is not a retirement defect but is in the same file.** `DROPLIST.md`
 line 3 says it was extracted from `202607301300_formalization-spec-panel/124_consolidation_twelve.md`.
@@ -482,8 +522,16 @@ prior panel, which I did not do. If a later reader finds a retirement whose `cla
 they were looking at, that is the class, and the repair is to widen the claim from the establishing
 source rather than to doubt the retirement.
 
-I also state plainly that I did not verify 171 of the 176 retirements against their sources. I checked
-five, found one wrong, and that ratio is not reassuring. A one-in-five error rate on a must-not-cite
-list would be serious, and one-in-five is what a sample of five gives you with one hit; the honest
-reading is that the sample is too small to say anything except that the class exists and is not
-hypothetical.
+I checked fourteen of the 176 retirements against their sources and found one wrong, and I verified the
+extraction claim under 94 more, which is a different and stronger kind of check because it covers those
+94 at once. What is not covered is whether each of those 94 is true of the *prior* panel it came from,
+which would mean reading that panel, and I did not. So the honest statement of coverage is: the
+current-panel retirements are sampled at fourteen with one defect found, the droplist's transcription
+is verified exactly, and the droplist's substance is verified not at all.
+
+One in fourteen is not a comfortable rate for a must-not-cite list and it is not an alarming one either.
+What makes it worth carrying forward is which one failed: not a figure, not a verdict, but a
+*provenance sentence*, in the entry whose entire subject was a figure with a bad provenance. Every
+number in that entry is right. The only thing wrong with it is where it says the number came from, and
+that is the part a reader follows. If there is a class here, that is its shape, and the cheap check for
+it is to open the file a retirement blames rather than the claim it retires.
