@@ -173,7 +173,11 @@ rung = "stated"
     );
     let found = shape::stamps_from_an_unratified_ruling(&reg);
     assert_eq!(found.len(), 1, "{found:#?}");
-    assert!(found[0].at.contains("an_ack_that_stamps"), "{}", found[0].at);
+    assert!(
+        found[0].at.contains("an_ack_that_stamps"),
+        "{}",
+        found[0].at
+    );
     assert!(found[0].says.contains("stated"), "{}", found[0].says);
 }
 

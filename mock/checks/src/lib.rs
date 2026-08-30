@@ -125,7 +125,7 @@ pub fn repo() -> PathBuf {
         .map(PathBuf::from)
         .unwrap_or_else(|| std::env::current_dir().expect("a working directory"));
     // `<repo>/mock/checks` is where cargo puts us.
-    for _ in 0 .. 2 {
+    for _ in 0..2 {
         p.pop();
     }
     p
@@ -144,7 +144,8 @@ pub fn canon() -> Registry {
 pub fn load(dir: &Path) -> std::io::Result<Registry> {
     let mut reg = Registry::default();
     walk(dir, &mut reg)?;
-    reg.rows.sort_by(|a, b| (&a.namespace, &a.id).cmp(&(&b.namespace, &b.id)));
+    reg.rows
+        .sort_by(|a, b| (&a.namespace, &a.id).cmp(&(&b.namespace, &b.id)));
     Ok(reg)
 }
 
@@ -191,21 +192,21 @@ fn absorb(file: &Path, text: &str, reg: &mut Registry) {
                 match value {
                     Item::Value(Value::String(s)) => {
                         strings.insert(name.to_string(), s.value().to_string());
-                    },
+                    }
                     Item::Value(Value::Integer(i)) => {
                         strings.insert(name.to_string(), i.value().to_string());
-                    },
+                    }
                     Item::Value(Value::Boolean(b)) => {
                         strings.insert(name.to_string(), b.value().to_string());
-                    },
+                    }
                     Item::Value(Value::Array(a)) => {
                         let entries: Vec<String> = a
                             .iter()
                             .filter_map(|v| v.as_str().map(str::to_string))
                             .collect();
                         lists.insert(name.to_string(), entries);
-                    },
-                    _ => {},
+                    }
+                    _ => {}
                 }
             }
             let Some(id) = strings.get("id").cloned() else {

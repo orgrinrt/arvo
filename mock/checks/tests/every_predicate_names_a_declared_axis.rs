@@ -49,7 +49,11 @@ predicate = ["fraction_width: 0", "phase_of_the_moon: waxing"]
     let found = predicate::undeclared_dimensions(&reg);
     assert_eq!(found.len(), 1, "{found:#?}");
     assert_eq!(found[0].kind, "predicate-names-an-undeclared-dimension");
-    assert!(found[0].says.contains("phase_of_the_moon"), "{}", found[0].says);
+    assert!(
+        found[0].says.contains("phase_of_the_moon"),
+        "{}",
+        found[0].says
+    );
 }
 
 #[test]

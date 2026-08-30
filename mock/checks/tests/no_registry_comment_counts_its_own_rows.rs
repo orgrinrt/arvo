@@ -32,7 +32,11 @@ what = "an axis"
     let found = comments::comments_counting_their_own_rows(&reg);
     assert_eq!(found.len(), 1, "{found:#?}");
     assert_eq!(found[0].kind, "a-comment-counts-its-own-rows");
-    assert!(found[0].at.ends_with(":2"), "the report names the line: {}", found[0].at);
+    assert!(
+        found[0].at.ends_with(":2"),
+        "the report names the line: {}",
+        found[0].at
+    );
 }
 
 #[test]
