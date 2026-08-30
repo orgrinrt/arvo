@@ -7,10 +7,13 @@
 //! checked five files.
 //!
 //! It read "no unprefixed archive citation remains, and no `OLD_` citation
-//! names a file that does not exist". Measured across the panel when somebody
-//! finally looked: 45 files, 118 unprefixed citations, two of them in the
-//! intent catalogue. The five files the pass actually repointed were clean, and
-//! they were the whole of what had been checked.
+//! names a file that does not exist". The five files that pass repointed were
+//! clean, and they were the whole of what had been checked. Dozens more were
+//! not, two of them in the intent catalogue every dispatch reads first.
+//!
+//! The count is in `no_new_unprefixed_archive_citation_is_written` and nowhere
+//! else, for the reason written there: the first repair put it in prose and it
+//! was stale within the hour.
 
 use std::fs;
 
@@ -67,7 +70,11 @@ fn no_new_unprefixed_archive_citation_is_written() {
     let mut total = 0usize;
     let mut worst: Vec<String> = Vec::new();
     for entry in walk(&dir) {
-        let name = entry.file_name().unwrap_or_default().to_string_lossy().to_string();
+        let name = entry
+            .file_name()
+            .unwrap_or_default()
+            .to_string_lossy()
+            .to_string();
         if ABOUT_THE_CLASS.contains(&name.as_str()) {
             continue;
         }
