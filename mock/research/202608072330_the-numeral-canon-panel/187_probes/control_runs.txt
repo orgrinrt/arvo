@@ -1,0 +1,22 @@
+=== POSITIVE: a row that is there ===
+[[ruling]]
+id = "validate_means_all_three_readings"
+kind = "ruling"
+rung = "stated"
+topic = "validation"
+says = "Validation covers usage, admissibility and self-validation together, all that makes sense, rather than one of the three. It is not a strict call and may be challenged where a reading is truly not worth it."
+quote = '''
+Usage, Admissibility, Self-validation, All that makes sense. Again, since this
+is the new panel, we learnt from last night, this isn't a strict call, so it
+can be challenged if truly not worth it, but my instinct is that the more
+robust it is, the better it'll serve us.
+'''
+note = "The three readings were: admissibility, where the typestate refuses declarations it cannot serve; usage, where the typestate refuses operations violating the declared invariants with a readable diagnostic; and self-validation, where the derived container is checked at derivation time to hold the declared range. The challenge bar is his phrase \"truly not worth it\" rather than mere cost. \"My instinct is that the more robust it is, the better it'll serve us\" is his stated prior and not part of the call. When was covered separately and later, by the never-a-runtime-check intent."
+provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q1-which-reading-of-then-validate-did-you-mean"]
+keywords = ["validate", "validation", "admissibility", "usage", "self-validation", "typestate", "refuse", "diagnostic", "challenge"]
+
+# --- where he marked material canon-bound --------------------------------------
+
+=== NEGATIVE CONTROL: a slug that is not ===
+no row ruling::no_such_row_at_all
+exit=1
