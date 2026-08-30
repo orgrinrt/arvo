@@ -483,3 +483,270 @@ are corroboration and which are verification.
   condition 3 needs.
 - **Which spans the middle of the unblock ranking actually sit in**, for the axis-against-apparatus
   sort of keys like "assignment and observation sets"; I declined to classify them unread.
+
+---
+
+# Phase two. The reconciliation, appended after the phase-one commit
+
+Phase one above is commit `a4428d99`, landed before any of the following was opened. What I then
+read, list built by `ls` and grep rather than memory: `179` in full section map with sections 1,
+2, 3, 5, 12 through 18 read closely; `183` sections 0 through 6 and 10 through 12; `181` in full,
+being an op file the phase-one list had not named; `183_probes/` (the census script and both
+attempt outputs, the span verdicts, the inventory checkers, `unblock_value` and its three
+controls); `mock/registry/proposal-the-later-topics.toml`, `question.toml`, `ruling.toml` and
+`law-the-later-topics.toml` in the parts my questions touch; `mock/checks/src/shape.rs` in full;
+the bodies of the tests named for the two shape checks; `162` and `163` at the clause 6 passages.
+My own counts are `186_probes/counts.sh` and `counts.out`, controls first, committed as they ran.
+
+**One correction to phase one's premises before the questions.** Phase one treated the brief's
+"a bounded walk over 4096 triples" as the size class; the committed enumeration row's walk is
+6,356,992 triples (`183` section 6's table). Nothing in my derivation depended on the magnitude,
+and the bigger number cuts the same way, harder.
+
+## Q1. Declare. The disagreement with `183` is located, narrow, and does not block the act
+
+**What I had right, now verified.** The blast radius is what phase one argued from the brief's
+figures: measured, the whole predicated surface committed today is **2 proposal predicate fields
+and 6 law rows carrying 3 `holds` and 5 `fails` arrays** (`186_probes/counts.out`, controls C1
+and C2 zero first). Against that, 59 to 60 blocked spans, and `183` section 3's finding that the
+axis set "was read off a file written before the axis was discovered, and nothing reported that."
+The ambient domain is not a candidate axis somebody fancies; it is the axis topic six's entire
+revision existed to add, with nine of eleven predicates amended for it.
+
+**What phase one did not have, and it strengthens the case.** `183` 3.1's actual reasoning has a
+second ground the brief's summary flattened: "it is not mine to make while another seat is
+writing into the same namespace." That is a concurrency courtesy, it is correct conduct, and it
+is orthogonal to the semantic claim. The seat was not asserting the declaration must never
+happen; it conditioned explicitly ("if the answer is that the axis should be declared, four
+blocked spans become writable immediately") and asked for the second read. This is that read.
+
+**Where I disagree, precisely.** `183` 3.1's sentence "adding an axis retroactively widens the
+negative space of every predicate already committed" and the `dimension.toml` header's "makes
+every predicate already committed silently say less" are both wrong about the mechanism, in the
+way phase one section 1.1 derives: under op's world-quantified omission semantics the committed
+rows never held along the undiscovered axis, so the declaration reveals a narrowness that was
+always there rather than creating one. The distinction is not pedantry, because the "rewrite"
+framing is exactly what would license per-axis softened absence as the humane fix, and one
+instance of that fix is already sitting in `dimension.toml` (finding 6.1). On the *act*, though,
+the seat, the header, and I all land in the same place: the append-only rule governs, the
+original rows stand untouched, the widenings arrive as later claims.
+
+**Corroboration or verification.** My "declare" is corroboration: derived and committed before
+opening `179`, `183` or the registry rows, grounded in op's I13-sitting paragraph ("If a later
+expert finds another dimension...", quoted in `RULES.md` and the workspace rule). My refutation
+of the "rewrite" framing was formed against the brief's summary of the seat's reasoning, which is
+as blind as this dispatch allowed; I read the seat's fuller version afterwards and it moved
+nothing. My situatedness test (1.3) was derived cold; `183`'s NO-AXIS against NO-REGION split
+(section 4) then confirmed its usefulness from the other side: sixteen blocked clauses need no
+axis at all, they need regions written, which is authoring work no declaration fixes and which I
+under-weighted in phase one. The declaration unblocks the 24 NO-AXIS clauses' families, not the
+sixty.
+
+**The decision, actionable.** Declare `ambient_domain` now, with `radix` beside it and the
+compilation environment either declared or folded into the two declared neighbours it overlaps.
+Route the instrument families (`the cost-model population`, `arms`, `selector`, `baseline`, the
+stochastic-coupling parameters) to `probe` rows, which is where the schema already says they
+live. Two readings agree on the act, each grounded in the quoted ratified mechanism; the residual
+disagreement is about the semantics of what declaration does to old rows, it changes no behaviour
+of any check, and it goes in the record rather than to the human. Add one enforcement while
+declaring: `dimension` rows are append-only as a checked property (no rename, no delete), because
+that act, unlike declaration, genuinely rewrites committed meaning.
+
+## Q2. The gate extension stands. Two readings, one of them cold, and the code already knows the boundary
+
+**What I had right.** Everything phase one argued, and the implementation turns out to have
+derived the same boundary from the other end: `shape.rs`'s comment on `RAN_SOMETHING` reads
+"`theorem` is not here: a proof owes its route, not a run", which is my theorem-by-exhaustion
+line in four words. Since my phase one was committed before I opened the file, that agreement is
+corroboration in the direction that counts: the edit was one expert's implementation of the gap
+`183` 5.2 reported ("the gate as written reaches almost none of this corpus's measurements...
+exploitable without anybody noticing"), and my cold derivation is the independent second on the
+same question, grounded in the probe namespace's own control discipline and the enumeration-bound
+scar in `RULES.md`.
+
+**The test bodies keep their names' claims.** I read them, per the gate I deferred in phase one.
+`an_enumeration_owes_an_instrument_and_a_theorem_does_not` plants four rows: an evidence-free
+enumeration (must fire), an evidenced one, a theorem, a normative (all three must not), asserts
+exactly one finding, at the right row, and that the report names the kind so a reader fixing it
+looks at the right field. Positive and negative arms both present, nothing tautological. The
+committed corpus's own arm, `the_committed_canon_has_an_instrument_behind_every_measurement`, is
+an honest catalogue-ignore naming the empty `probe` namespace as the reason and the condition for
+lifting it. And the committed enumeration row (`where_fusion_changes_the_answer...`, the 6.35M
+walk) carries no `evidence` today, measured in `counts.out`, so lifting the ignore without
+populating `probe` will correctly go red on the corpus's flagship enumeration. That is the gate
+doing its job in the right order.
+
+**What I had slightly wrong.** Phase one called the schema comment on `proposal.evidence` one
+sentence of drift; confirmed at `mockspace.toml:1066`, it says "Required in spirit for a
+`measured` row" and should now say for a row whose kind claims a run. One sentence, alongside the
+declaration batch.
+
+**The decision.** Keep the extension; the call is made on two independent grounds. Record the
+theorem-by-exhaustion boundary as reviewer guidance where the sentence kinds are documented: a
+walk whose full list is printed in the row or its cited prose is a `theorem` by exhaustion; a
+walk performed by code owes the walker as a committed probe with a control, and the natural
+control is the planted last member or the closed-form cardinality check.
+
+## Q3. Add `definition`, and the check impact is two branches and three planted rows, nothing vacuous
+
+**What I had right.** `183` 5.2 is the first expert instance of the gap ("thirteen of my fifteen
+rows are `normative` and about half of those are definitions... the label is wrong and a reader
+will read thirteen normative rows as thirteen impositions. Every one says so in `note`"), and
+section 6's own table shows the misfit at work: two rows whose source says "Definitional; no
+predicate" were marked `normative` with "the schema has no definitional kind" as the stated
+reason. My phase-one design was derived cold against that gap as the brief summarised it; the
+violability test, the no-predicate rule, and the two-definitions-of-one-term uniqueness owe
+nothing to `183`'s text and turn out to fit its rows exactly.
+
+**The dodge worry, answered with the code open.** `predicate_disagrees_with_the_sentence_kind`
+already exempts exactly one kind from the region requirement, `normative`, and fires the
+inversion arm on normative-with-region. `definition` joins both branches: exempt from the region
+requirement, reported when it carries one. `measured_without_evidence` is untouched, since a
+definition claims no run. So the schema change is: one value added to the `values` list at
+`mockspace.toml`, one `defines` field if the uniqueness check is wanted mechanical, two branches
+in `shape.rs`, and planted rows in three tests (`an_imposed_proposition_carrying_a_region...`,
+`an_established_claim_with_no_region...`, `the_two_correct_shapes_are_both_silent`). **No check
+becomes vacuous**, and the hiding space shrinks rather than grows, because the violability test
+gives a reviewer a question the undifferentiated `normative` pile cannot be asked. Control C2 in
+`counts.out` pins the pre-state: zero `definition` rows exist today, so the re-marking pass has
+a measured baseline.
+
+**The decision.** Panel-tier, per `181`: op handed the registry's shaping over ("port... shape
+the registry, its meta, so it works"). Two instances agree the gap is real (`183` first, this
+file second and cold). The specific field design (violability as the border, `defines` and its
+uniqueness, region-in-the-definiendum) is one expert's and wants its ordinary second read in the
+dispatch that edits the schema; the re-marking of the fifteen is the row author's pass, not a
+re-arguing.
+
+## Q4. The refusal is confirmed, `retirement` is refused twice independently, and section 17's three counter-arguments each have an answer now
+
+**The convergence, and it is the real kind.** My phase-one section 4, committed unread, derived:
+one `ruling` row recording the withdrawal itself, no rows for the withdrawn corpus, re-entry by
+fresh proposal per claim. `179` section 5, which I then opened, had already built almost exactly
+that: the refusal, plus **two** committed rows carrying op's current voice about the corpus
+(`prior_calls_are_a_historical_log_not_calls`, `his_voice_is_demoted_except_where_he_frames_it_absolute`,
+both verified present in `counts.out`). Two readers, each deriving the disposal before seeing the
+other's, landing on the same shape from different grounds: Lamport from the `rung` enumeration
+having no honest value, I from the namespace description making presence itself the authority
+claim. That is the two-expert tier reached properly, and the call is made: **no substantive prior
+call enters `ruling`, and no sixth `rung` value is created.**
+
+**`retirement` is refused on two independent grounds as well.** Lamport 17.5: it withdraws a use
+op licensed. Phase one, cold: that, and the `kind` enumeration cannot say what happened, since
+"likely wrong" is a withdrawal of warranty rather than a determination of wrongness. Both
+readings also note the same asymmetry: a retirement over-reads him in exactly the opposite
+direction from a ruling row.
+
+**Section 17.3's three arguments, met rather than filed.**
+
+One, "he asked for the material to be added as a reference layer, and the registry is replacing
+the prose ledgers." The registry has a home for a reference layer that carries no authority
+semantics at all: the builtin `reference` namespace, "work this project rests on", cited by
+however many things use it. One `reference` row naming `PRIOR_CALLS.md` as the historical corpus,
+its description quoting his framing, satisfies "added as an extra layer of reference" in his own
+verb, inside the registry, without a rung, without a `ruling` row, and without retiring anything.
+That is the reading 17.6 asked for: one that survives the registry becoming the only layer there
+is. It is one expert's suggestion, mine, and it is cheap to decline.
+
+Two, "the namespace is built to hold material that does not bind, since superseded rows stay."
+Supersession is an in-namespace edge: a superseded row was live authority when it entered and a
+later **row** demoted it, visibly, via `supersedes`. An imported prior call would enter already
+dead with no superseding row pointing at it, and would therefore read as live `stated` direction
+to every query forever. The retention argument describes the audit trail of course changes, not a
+licence to import material born without standing.
+
+Three, the pricing pillar, "the single best argument against me and I have no clean answer to
+it." I think there is a clean answer. The `in_force` rung is earned by **current enforcement plus
+op's current word**, which is exactly how I14 earned it: the lints enforce it today and op said,
+on 2026-08-13, that these are arvo's intents and rules. The pricing pillar's enforcement is the
+live workspace rule `arvo-compile-time-last.md` (verified present at the workspace root), and its
+current-word half is substantially I15's "we catch invalids on compile time... amortized fully at
+compile". So the row that deserves to exist is grounded in the live rule and the live statements,
+with `PRIOR_CALLS.md` at most a provenance entry for where the sentence was first said. Nothing
+is ported *from* the withdrawn corpus; a live rule is recorded *as* live. The elided-quotation
+problem in 17.4 then evaporates, because the quote comes from the live material. The apparent
+inconsistency Lamport could not discharge dissolves: the test "enforced outside the panel" gives
+the same answer in both cases, and in neither case is the nuked lineage what carries the rung.
+
+**Corroboration or verification.** The core refusal: corroboration, both derivations committed
+blind to each other. The `reference` row and the 17.3-three dissolution: mine alone, formed after
+reading section 17, so they are a reply, not a second instance; the next dispatch on the porting
+question should treat them as one expert's.
+
+## Q5. Not refused whole. All three of my conditions checked out at source, one small repair owed
+
+**Condition 1, severability: met, and better than I asked.** The severing was not the porting
+seat's construction; it was the refusing signature's own act. `163` at clause 6: "Refuse as
+written; sign the amended form... Its second and third parts are untouched by the premise and I
+sign them: the must-not/may parameterisation rule (L27) and the three-armed cost of a missed
+merge (L26)." `162` section 2 found the branch-falsity first; `163` verified it at source. Both
+signatures endorse the parts as standalone statements with their own labels.
+
+**Condition 2, branch-independence: met.** The refused first sentence stated the fact one branch
+of the container premise negates; the surviving parts are the parameterisation rule and the
+measured three-armed cost, neither of which mentions the footprint question, and the refusing
+signature says in terms that the premise does not reach them. The row's `standing = one_expert`
+with the demotion argued in `note` is separately honest: the panel's CONVERGED was inherited
+sharpening, not independent arrival, and the seat said so rather than claiming the rung.
+
+**Condition 3, the visible gap: substantially met, one repair.** The row's `note` names the
+excluded sentence and the premise. The premise exists as `question::the_container_premise`,
+`decider = "op"`, verified in `counts.out`. What is missing is the linkage in the field built for
+it: the row's `gap` should carry the one sentence "the clause's first sentence awaits
+`question::the_container_premise`", so the wait is where a reader of gaps looks rather than
+inside a standing-demotion note. A one-field repair for the next dispatch that may write rows,
+which this one may not.
+
+**The decision.** A refusal's scope is what its ground reaches; a partially-signed refused clause
+yields a proposal for exactly the signed, premise-independent remainder, with the excluded
+sentence named and the premise question linked. The seat's call stands on two readings: its own,
+and mine derived cold with the three conditions written down before the sources were opened and
+then found satisfied in them. No new question for op is needed; the one op call in this territory
+already has its row, its options, and its decider.
+
+## The findings, after phase two
+
+**6.1 stands and gained urgency.** The `access_pattern` note's per-axis softened absence is the
+same move `183` 3.1's "rewrite" framing would license corpus-wide, and 6.1 is the live instance
+of it. Repair alongside the declaration batch: the row's `moves` states the axis moves cost only;
+the omission-semantics gloss goes; a correctness claim untouched by the axis writes
+`access pattern: any` with its structural argument.
+
+**6.2 stands.** The header's "comes straight from I13" against I13's own scope disclaimer
+(`INTENTS.md`: "Anything further, including the dimension list... is elaboration... and is not
+part of what was ratified"). The header should attribute the test to the seat that proposed it
+and let it stand on its argument, which after 1.3's amendment is the situatedness form.
+
+**6.3 stands, sharpened.** Nothing in `mock/checks` parses grammar prose, so `S any` and
+`operation any` remain writable-and-forbidden with only a note between them and a green check.
+Either the two grammars drop `any` while their sets are open, or the predicate check learns the
+two named exceptions.
+
+**6.4 confirmed** at `mockspace.toml:1066`, one sentence, batch it with Q2's decision.
+
+**And one not mine: `183` 5.2's "`standing` has no value for zero instances"** is real, was
+raised by the seat that met it, and should ride the same schema batch as `definition` rather
+than waiting for a third dispatch to trip on it.
+
+## The decision list, in one place
+
+1. **Q1: declare.** `ambient_domain`, `radix`, and the compilation environment (declared or
+   folded). Instrument families go to `probe` rows. Dimension rows become checked append-only.
+   Call made, two independent readings, both grounded in the ratified widening mechanism. The
+   located disagreement (revelation against rewrite) is recorded above and blocks nothing.
+2. **Q2: keep the enumeration gate.** Call made, two instances (`183`'s report, this file's cold
+   derivation), the implementation's tests real and read. Add the theorem-by-exhaustion boundary
+   as guidance and fix the one drifted sentence.
+3. **Q3: add `definition`.** Gap confirmed twice; my field design is one expert's and takes its
+   second read inside the schema-editing dispatch. Impact on the 43 checks: two branches, three
+   planted rows, nothing vacuous, baseline pinned at zero by C2.
+4. **Q4: refusal upheld, call made.** No port, no sixth rung, no retirement, twice independently.
+   The withdrawal rows exist. My additions (one `reference` row for the corpus; the pricing
+   pillar re-grounded in the live rule rather than the dead ledger) are one expert's answers to
+   17.3 and 17.6, offered to the porting dispatch.
+5. **Q5: the row stands.** Conditions verified at source; one `gap`-field repair owed by a
+   future row-writing dispatch. Nothing new goes to op; `the_container_premise` already sits in
+   `question.toml` with the right decider.
+
+Nothing in the five questions turned out to be op's to answer. The one human call in their
+territory was already filed, which is the registry doing what it was built for.
