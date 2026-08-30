@@ -1,11 +1,11 @@
 # 183. Porting the later five topics, and the notation gap that stopped most of it
 
-The deliverable is 15 `proposal` rows and 6 `law` rows, in
+The deliverable is 17 `proposal` rows and 6 `law` rows, in
 `mock/registry/proposal-the-later-topics.toml` and
 `mock/registry/law-the-later-topics.toml`. That is a small port from a large corpus and the
-reason is not editorial. **Of the 64 clauses these five topics put forward, 22 are carried into
-the registry and 42 are not, and 24 of the 42 fail for one mechanical reason: their region names
-an axis no `dimension` row declares.** Seventeen more fail because two of the five topics write
+reason is not editorial. **Of the 65 clauses these five topics put forward, 24 are carried into
+the registry and 41 are not, and 24 of the 41 fail for one mechanical reason: their region names
+an axis no `dimension` row declares.** Sixteen more fail because two of the five topics write
 no region on any clause at all, and the last one is refused outright by its own signature until
 op rules.
 
@@ -73,53 +73,54 @@ row first.
 From `mock/registry/`:
 
 ```
-$ grep -c '^\[\[proposal\]\]' proposal-the-later-topics.toml
-15
-$ grep -c '^\[\[law\]\]' law-the-later-topics.toml
+$ grep -c "^\[\[proposal\]\]" proposal-the-later-topics.toml
+17
+$ grep -c "^\[\[law\]\]" law-the-later-topics.toml
 6
 
-$ grep '^sentence_kind = ' proposal-the-later-topics.toml | sort | uniq -c | sort -rn
-  13 sentence_kind = "normative"
+$ grep "^sentence_kind = " proposal-the-later-topics.toml | sort | uniq -c | sort -rn
+  15 sentence_kind = "normative"
    1 sentence_kind = "theorem"
    1 sentence_kind = "enumeration"
 
-$ grep '^standing = ' proposal-the-later-topics.toml | sort | uniq -c | sort -rn
-  11 standing = "one_expert"
-   3 standing = "two_experts"
+$ grep "^standing = " proposal-the-later-topics.toml | sort | uniq -c | sort -rn
+  12 standing = "one_expert"
+   4 standing = "two_experts"
    1 standing = "three_or_more"
 
-$ grep '^kind = ' proposal-the-later-topics.toml | sort | uniq -c | sort -rn
-  12 kind = "answer"
+$ grep "^kind = " proposal-the-later-topics.toml | sort | uniq -c | sort -rn
+  14 kind = "answer"
    3 kind = "refusal"
 
-$ grep '^topic = ' proposal-the-later-topics.toml law-the-later-topics.toml \
-    | sed 's/.*= //' | sort | uniq -c | sort -rn
+$ grep "^topic = " proposal-the-later-topics.toml law-the-later-topics.toml | sed "s/.*= //" | sort | uniq -c | sort -rn
    8 "the_strategy_object"
-   5 "the_primitive"
+   6 "the_primitive"
    3 "rounding"
    2 "the_chain"
    1 "the_realisation_map"
    1 "naming"
+   1 "binding_time"
    1 "algebraic_laws"
 
-$ grep -c '^predicate = \[' proposal-the-later-topics.toml
+$ grep -c "^predicate = \[" proposal-the-later-topics.toml
 2
-$ grep -c '^holds = \[\|^fails = \[' law-the-later-topics.toml
+$ grep -c "^holds = \[\|^fails = \[" law-the-later-topics.toml
 8
-$ grep -c '^gap = ' proposal-the-later-topics.toml law-the-later-topics.toml
-proposal-the-later-topics.toml:7
+$ grep -c "^gap = " proposal-the-later-topics.toml law-the-later-topics.toml
 law-the-later-topics.toml:6
+proposal-the-later-topics.toml:8
 ```
 
-**How many carry a predicate against how many do not: 2 of 15.** The other 13 are `normative`
+**How many carry a predicate against how many do not: 2 of 17.** The other 15 are `normative`
 and carry none by construction, because a region on an imposed proposition says the design may
 violate it everywhere unmeasured. **Not one non-normative row in this file lacks a region**, which
 the check enforces and which is why there are only two of them.
 
-**Two counts in this file are both 64 and they are different sets.** The census counts
+**The census counts 64 predicate spans and the inventory counts 65 statement clauses, and
+they are different sets rather than nearly the same one.** The census counts
 `holds for:` predicate spans, of which topics five and ten contribute zero. The inventory counts
-statement clauses across all five topics, of which topics five and ten contribute 29. The
-coincidence is a coincidence and I nearly wrote a sentence that fused them.
+statement clauses across all five topics, of which topics five and ten contribute 30. Before I
+split one clause the two numbers were both 64, and I nearly wrote a sentence that fused them.
 
 ## 3. The finding: the corpus predicates over a vocabulary the registry does not have
 
@@ -201,13 +202,13 @@ the real table and two on a deliberately broken one.
 
 ```
   24 NO-AXIS     its region names an axis no dimension row declares
-  21 PORTED      a row exists
-  17 NO-REGION   the source states no region and the kind is not normative
+  23 PORTED      a row exists
+  16 NO-REGION   the source states no region and the kind is not normative
    1 REFUSED     a signature refused it and no wording is true until op rules
    1 FOLDED      carried inside another row
 ```
 
-**The NO-REGION seventeen are the more interesting group**, because nothing is missing from the
+**The NO-REGION sixteen are the more interesting group**, because nothing is missing from the
 registry for them. The source simply does not state where its claims hold. Topic ten's twelve
 clauses carry kind marks and its ledger carries bounds in prose ("six channels tested, four
 named untested", "at `debug-assertions = off`"), and none of it is written as a region a check
@@ -219,7 +220,7 @@ names the marker question as op's.
 writes regions for it, and that is a real piece of work rather than a transcription pass.** It
 is also the work that would most improve the canon, because the clauses in question include the
 partition theorem, the deferral optimum, the two deletion licences, the window factorisation,
-the promise ladder, adequacy, the refinement grade and the type's const-availability criterion.
+the promise ladder, adequacy and the refinement grade.
 
 **Four claims I want named individually**, because each is a headline result of its topic and
 each is currently unwritable:
@@ -289,8 +290,10 @@ case. Every instance is listed.
 | `within_an_unbound_stretch_the_design_may_select_any_realisation` | `[normative]` | `normative` | unchanged |
 | `fusing_a_multiply_add_is_free_exactly_at_translation_equivariance` | `equivariance` | `theorem` | an equivariance argument is a proof |
 | `where_fusion_changes_the_answer_it_is_not_a_lowering` | `extensional identity`, over 6,356,992 triples | `enumeration` | a bounded list somebody walked |
+| `the_type_carries_whatever_must_be_const_available` | none | `normative` | tells the design what the type must carry |
+| `membership_in_the_type_and_identity_are_two_criteria` | none | `normative` | a criterion the design is told to apply |
 
-**Twelve of the fifteen are marked in a way the source does not state**, because the source
+**Fourteen of the seventeen are marked in a way the source does not state**, because the source
 states no `sentence_kind` for them, only an argument kind or nothing. That is a lot of judgement
 and it is all in one place so it can be overturned in one pass.
 
@@ -488,7 +491,7 @@ tabulation in section 8 is one dispatch away from being those rows.
 As it stands the gate reaches almost nothing this corpus measured, because the corpus calls its
 sweeps enumerations, which is what they are.
 
-**Four. The seventeen clauses with no region**, section 4. That is topics five and ten almost
+**Four. The sixteen clauses with no region**, section 4. That is topics five and ten almost
 entire and it is the largest body of settled work the canon currently cannot carry. Somebody has
 to go back to the ledgers and write regions, and the ledgers do carry the bounds in prose, so
 the material exists.
@@ -497,5 +500,5 @@ the material exists.
 them as a row while leaving the refused first sentence out. If that is wrong the row goes and
 nothing else moves.
 
-**Six. Thirteen rows marked `normative`**, section 6, about half of them definitions. If the
+**Six. Fifteen rows marked `normative`**, section 6, about half of them definitions. If the
 schema gains a definitional kind they all move, and the `note` on each says which it is.

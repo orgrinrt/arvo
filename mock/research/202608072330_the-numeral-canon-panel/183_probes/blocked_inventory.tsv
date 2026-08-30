@@ -13,7 +13,8 @@
 161	558	6a. the realisation is not part of identity	REFUSED	no wording is true on both branches of the container premise until op rules
 161	558	6b. an axis the map does not read must not be a parameter	PORTED	proposal an_axis_the_realisation_map_does_not_read_is_not_a_type_parameter
 161	567	7. a refinement is a grade, not a coordinate	NO-REGION	descriptive, no predicate
-161	580	8. the type carries what must be const-available	NO-REGION	descriptive, no predicate
+161	580	8a. the type carries what must be const-available	PORTED	proposal the_type_carries_whatever_must_be_const_available
+161	580	8b. membership and identity are two criteria	PORTED	proposal membership_in_the_type_and_identity_are_two_criteria
 161	585	9. adequacy is soundness plus completeness up to weakening	NO-REGION	descriptive, no predicate; admissibility also conditional on op and on X3
 161	598	10. the verdicts age as the signature grows	NO-REGION	descriptive, no predicate; one phrase conditional on the container premise
 161	605	11. naming is partial and injective	PORTED	proposal naming_is_partial_and_injective_or_it_is_broken

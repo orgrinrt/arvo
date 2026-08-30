@@ -4,16 +4,16 @@
   control: 2 problem(s), 2 ported rows referenced
 
 ### I2, the real inventory, which must be clean
-  inventory: 0 problem(s), 21 ported rows referenced
+  inventory: 0 problem(s), 23 ported rows referenced
 
 ### I3, ported rows in the inventory against rows in the registry
-  inventory PORTED lines: 21
-  registry rows:          21
+  inventory PORTED lines: 23
+  registry rows:          23
   PASS, every registry row is reachable from a clause (some clauses share a row)
 
 ### the verdict tally
     24 NO-AXIS
-    21 PORTED
-    17 NO-REGION
+    23 PORTED
+    16 NO-REGION
      1 REFUSED
      1 FOLDED

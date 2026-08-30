@@ -486,3 +486,60 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::80",
 ]
 keywords = ["licence", "normative", "unbound stretch", "boundary function", "declared grade", "definedness domain", "observability perimeter", "underivable", "build profile", "debug-assertions", "partial operation", "composite correct rounding", "structural exactness"]
+
+[[proposal]]
+id = "the_type_carries_whatever_must_be_const_available"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "binding_time"
+says = "The type carries whatever must be const-available to decide validity or to select a lowering, and that criterion is compelled rather than chosen: a parameter left to runtime forces the check the design's own intent forbids."
+because = "The compulsion is read off emitted code rather than argued: where the parameter is const, one path is emitted and nothing branches on it, and where it is not, the check the intent forbids is what stands in its place."
+instead = "An axis that decides neither validity nor a lowering is not a member of the type on this criterion, and belongs wherever the identity criterion puts it."
+note = """
+**The entailment behind this is one expert's and is explicitly asking for a \
+second read.** The panel's first ledger entry claimed two instances; the author \
+of the second refused that rung on its own row, a signature concurred after \
+verifying at source, and the corrected entry puts the entailment at one \
+instance. Nothing about it is weakened by that, and the row carries the request \
+rather than burying it.
+
+The wording the correction also fixes is worth carrying: the claim is that \
+neither build branches on the build and each emits one path, rather than that \
+no runtime check exists, because the base build's compare-and-select is the \
+declared saturating arithmetic and is exactly what the intent permits.
+
+`normative` because the sentence tells the design what the type must carry. The \
+compulsion is its reason and sits in `because`.
+"""
+gap = "The second read the rung requests has not happened. A reader treating the criterion as settled is treating a one-instance entailment as two."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::580",
+  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::240",
+]
+keywords = ["type", "const-available", "compelled", "validity", "lowering", "runtime check", "parameter", "binding time", "emitted path", "monomorphisation"]
+
+[[proposal]]
+id = "membership_in_the_type_and_identity_are_two_criteria"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_primitive"
+says = "Membership in the type and identity of the primitive are two criteria answering two questions, and a design needs both. What must be const-available decides membership; what is preserved up to denotation-preserving isomorphism decides identity, and neither answers the other's question."
+because = "An axis can be const-available and carry no denotational content, and an axis can be identity-bearing and be decidable at runtime, so a design collapsing the two either puts something in the type that nothing reads or leaves out something that changes the answer."
+note = """
+Split from the const-availability row so the stronger standing is visible. Both \
+members reached the membership-and-identity split in their second phase and \
+stated it independently, which is what the panel records as converged; the \
+entailment about compulsion in the neighbouring row is the part that is one \
+instance, and folding the two together would have made this inherit the weaker \
+rung.
+
+`normative` because it is a criterion the design is told to apply, stipulated \
+rather than measured.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::580",
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::214",
+]
+keywords = ["membership", "identity", "two criteria", "type", "const-available", "denotation", "isomorphism", "collapse", "axis"]
