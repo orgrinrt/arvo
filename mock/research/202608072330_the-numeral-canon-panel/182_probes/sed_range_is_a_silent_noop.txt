@@ -1,0 +1,53 @@
+BSD sed accepts `0,/re/s//repl/`, exits 0, and changes nothing.
+
+Measured on this host, in the scratch directory, on a three-line file
+containing "aaa / bbb / aaa":
+
+  $ sed -i '' '0,/aaa/s//ZZZ/' t1.txt ; echo "exit=$?"
+  exit=0
+  $ cat t1.txt
+  aaa
+  bbb
+  aaa                 <- unchanged, no diagnostic, exit 0
+
+  $ sed -i '' '1,/aaa/s//ZZZ/' t2.txt
+  sed: first RE may not be empty      <- this form at least fails loudly
+  $ cat t2.txt
+  aaa
+  bbb
+  aaa
+
+  $ sed -i '' 's/aaa/ZZZ/g' t3.txt
+  $ cat t3.txt
+  ZZZ
+  bbb
+  ZZZ                 <- works
+
+  $ sed --version
+  sed: illegal option -- -            <- BSD sed, not GNU
+
+`0,/re/` is a GNU extension. GNU sed applies it; BSD sed parses it, matches
+nothing, and says nothing.
+
+Why this matters here rather than being a shell footnote. Every arm of
+`182_probes/controls.sh` mutates one citation, runs a validator, and reads the
+validator's output. A mutation that is a silent no-op produces a validator run
+that is clean, and a clean run after an intended mutation reads exactly like the
+checker working. The first version of the script used `0,/re/s//repl/` in all
+seven arms and reported seven clean validators. Nothing was mutated in any of
+them.
+
+Two things caught it and neither was reading the output.
+
+The substitution counter, which prints how many substitutions actually landed
+before each run, printed 0 seven times. `180_probes/control_runs.txt` had
+already put that counter in the file for the same class of reason on a different
+sed form, which is why it was in this script from the first draft.
+
+And the very first arm, run by hand earlier with a different mutation method,
+had fired correctly, so there was a known-good result to compare the script's
+zero against.
+
+The rewritten script uses plain `s/pattern/replacement/g`, which mutates every
+occurrence rather than the first. That is fine for a control and the count says
+how many landed. No pattern in it may contain a `/`.

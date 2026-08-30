@@ -1161,3 +1161,49 @@ law = ["multiplicative_associativity_under_saturation", "distributivity_of_multi
 note = "The predicate is the union of the two conflatable measurements' regions, which is the region a reader has to be careful in. One expert: the ledger's author read the four consolidations end to end and opened no member file, no probe directory and no register, so every rung and every characterisation in it is the consolidation's own rather than one the ledger derived. It states that limit itself."
 provenance = ["panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#7-contradictions-between-consolidations"]
 keywords = ["contradiction", "conflation", "952", "47.72", "34.52", "distributivity", "associativity", "ledger"]
+
+[[proposal]]
+id = "a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_strategy_axis"
+says = "A strategy is a preference over measurements, resolved as an argmin over candidate arms at compile time. The container, the codegen choice and the overflow rule are effects of that one cause rather than three components of a marker."
+because = "Two authors reached it blind and in parallel from different premises, one from a partial order on cost vectors and one from two of op's intents read together. Both then corrected themselves against their own evidence: one withdrew licence as a co-equal axis on the ground that which laws hold is **computed** from the policy and the region rather than chosen, with its own probe as the evidence it had misread; the other withdrew a claim about where the preference sits, conceding the better evidence and noting that its own earlier probe had already put the preference at the call site without its author noticing."
+note = "Nine claims matched across the two blind derivations, which is the two-expert rung by the panel's own definition rather than by file count. Four of the unit's eight files corrected a claim of their own against their own evidence and kept the refuted output committed."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::355",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::239",
+]
+keywords = ["strategy", "preference", "argmin", "compile time", "marker", "container", "codegen", "overflow rule"]
+
+[[proposal]]
+id = "the_named_strategies_are_points_in_a_product_and_the_flat_set_is_a_slice"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_strategy_object"
+says = "The named strategies are points in a product, and the flat named set is a slice through it. A name is a binding rather than a member of a closed set."
+because = "Two disjoint arguments, blind: one from the resolution side by counting, one from the component side by measuring that a fifth unnamed point costs one alias symbol and eight bytes. If a name were a member of a closed set, adding one would be a design change; measured, it is an alias."
+note = "Two experts. It is the same shape as I1's refusal to presume a strategy count, and the number of strategies being bounded above by the coordinate set rather than chosen is the quantitative half, which is a separate row at one expert."
+provenance = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::366"]
+keywords = ["named strategies", "product", "slice", "point", "binding", "alias", "closed set", "I1"]
+
+[[proposal]]
+id = "most_committed_bench_regions_predate_the_harness_cross_variant_validation"
+kind = "finding"
+sentence_kind = "measured"
+standing = "two_experts"
+topic = "panel_conduct"
+says = "175 of 254 committed bench regions were produced before the harness driver called cross-variant validation at all. 79 came after, none was unresolvable."
+because = "The join resolves each artifact's recorded commit against the commit time of the change that added the validation call to the driver, verified present there and absent at its parent. One author measured it and the consolidator redid the join independently from the raw metadata and the commit log, reaching the same split exactly. The one reconciliation is not a correction: there are 24 distinct commit strings and 23 distinct commits, because one commit appears both clean and dirty."
+predicate = [
+  "threads: threads = 1",
+]
+note = "**The predicate carries almost none of this claim's scope**: its coordinates are a named branch head, 254 files and 24 producing commits, none of which is a declared axis. `evidence` is empty and the measured-implies-evidence check is red on this row. The reproduction has a precondition sitting 81 files back and uncited in the unit: every recorded commit value but one carries a dirty suffix, because the harness writes its artifacts into the tree it then hashes, so a naive resolution returns 253 unresolvable and the finding evaporates. Stripping the suffix is correct and it is correct **for a reason nobody in the unit carried**, so a later reader redoing the join without that fact concludes the corpus has no resolvable provenance at all."
+gap = "What the 175 regions are worth is not established. The finding is that the gate was not running for them, not that they are wrong."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::369",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::378",
+]
+keywords = ["175", "254", "cross-variant validation", "harness", "gate", "dirty", "provenance", "join"]
