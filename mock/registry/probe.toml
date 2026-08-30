@@ -1,0 +1,233 @@
+# The instruments, and the case each one had to fail.
+#
+# A row is one instrument that establishes one thing. That is not one directory:
+# `141_probes` holds seven instruments and `168_probes/p4` and `p5` are two
+# attempts at one question, the second built because the first refuted its own
+# hypothesis.
+#
+# `establishes` is written as narrowly as the instrument actually shows it,
+# because a `proposal` or a `law` citing the row inherits the scope. A probe
+# proves what it was built to check, at the widths and shapes it checked, on the
+# toolchain it ran on, and nothing else.
+#
+# `control` is the field this namespace exists for, and most of this corpus has
+# no control. Where none was run the field says so, and `standing` is then a
+# judgement rather than a reading: an instrument whose failure mode was never
+# tested is not automatically `defective`, and the difference matters. Nothing
+# here invents a control that was not run, and "the assertions would have
+# failed" is not one, because that is what every instrument says about itself.
+#
+# `lives` carries a terminal `::1` on every artifact. A probe is a file rather
+# than a passage in one, the citation grammar has no form for a whole file, and
+# a citation whose last segment is a bare filename is refused as
+# `malformed-provenance`. Measured, both arms, in
+# `panel::202608072330_the-numeral-canon-panel::185_probes::p1_lives_citation_controls.out::1`.
+#
+# The extension is always written out. Most probe directories hold a source and
+# an output sharing a stem, and the resolver treats two matches as an error
+# rather than guessing.
+#
+# --- what this file does NOT cover ----------------------------------------
+#
+# The panel holds far more instruments than are written here, and the selection
+# is stated rather than implied: the instruments a live registry claim needs,
+# and every instrument whose defect the corpus itself records. A probe nobody
+# cites and nobody found a defect in is absent from this file, which says
+# nothing against it. `185_fog_the_instruments_and_what_each_could_have_shown`
+# carries the coverage bound and the census behind it.
+
+# --- the chain unit, files 166 to 178 ---------------------------------------
+#
+# The unit that recorded nine instrument defects in itself, two of them in
+# classes the other seven cannot be caught by. Its probes are the best in the
+# corpus and are the reason: several state the required outcome in the header
+# before the run, in capitals, and three found their own defects that way.
+
+[[probe]]
+id = "chain_resolution_degeneracy"
+establishes = "For a depth-D chain over an 8-bit domain swept exhaustively, wrapping over ring-affine steps has resolution degeneracy exactly 1, so every interior placement computes one function; rounding has degeneracy above 1 and rising with depth, so the placements disagree and the design must name which one is the answer."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p3_resolution_degeneracy.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p3_resolution_degeneracy.out::1",
+]
+control = "Three cases stated in the header before the run and all three fired. Wrapping over ring-affine steps had to report degeneracy exactly 1, or the homomorphism claim p1 rests on would be false. Rounding had to report above 1 and rising, or the probe counts nothing. And at least one input had to exist on which the fully eager placement is closer to exact than the fully deferred one, because error cancels; had none existed, deferring everything would be pointwise optimal and the aggregate framing unnecessary."
+defect = "Scope, and no control could have caught it. The pointwise-optimality search `eager_wins` opens with `let fm = full_mask(steps.len())`, so it compares fully eager against fully deferred: two placements of up to sixteen, while the claim it supported quantified over all 2^(D-1). Found by `169` section 2 reading the claim's quantifier beside the loop bound. A control tests whether an instrument measures what it points at and cannot test whether it points at the whole claim."
+standing = "sound"
+reproduced = "Widened and reproduced by `chain_every_placement_widened`, which regenerates this probe's own chains from its xorshift seed and alphabet, reproduces its published 0 / 0 / 91 and 1330 winning inputs exactly at two placements, and then runs every placement. The degeneracy result stands; the pointwise-optimality search was thin by 71 percent of the counterexamples it could reach."
+note = "The claim survived the scope defect. Round and clamp come back at zero win-chains over every placement, so `168` was right and right for the reason it gave. What it had was one placement's worth of evidence for a statement about sixteen."
+keywords = ["degeneracy", "chain", "resolution", "placement", "deferral", "interior", "eager", "exhaustive", "2^(n-1)", "wrapping", "rounding"]
+
+[[probe]]
+id = "chain_every_placement_widened"
+establishes = "Over `168`'s own chains, regenerated from its seed, widening the search from two placements to all of them takes the truncate row from 91 win-chains to 317 and from 1330 winning inputs to 13527, and leaves nearest-round and clamp at zero win-chains under both searches."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p3_is_the_clamp_row_exercised.py::1",
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p3_is_the_clamp_row_exercised.out::1",
+]
+control = "Three, all fired and all printed with their required verdict. C1: arm one had to reproduce `168`'s published 0 / 0 / 91, which is what says this is their experiment and not a neighbouring one. C2: truncate had to win in both arms. C3: the widened arm had to find strictly more than the narrow one, or the widening bought nothing and the scope defect would have been cosmetic."
+standing = "sound"
+note = "C1 is the arm worth copying. An instrument built to widen somebody else's search proves it is the same search by reproducing their number first, and without that arm a disagreement is unattributable between the widening and a different setup."
+keywords = ["placement", "widened", "reproduction", "clamp", "truncate", "scope defect", "win-chains", "deferral", "pointwise optimal"]
+
+[[probe]]
+id = "chain_affine_collapse_under_both_profiles"
+establishes = "For a per-element affine chain at 13-bit width in a `u16` container, both deferred arms vectorise and both eager arms do not, at cargo's default release profile and at the documented fat-LTO one-codegen-unit profile alike, including in a chain where the affine collapse is impossible."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p4_the_collapse_survives_the_profile.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p4_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p4_the_collapse_survives_the_profile.out::1",
+]
+control = "Stated in the header before the run and it fired in the wrong direction, which is the useful outcome. The prediction was that `affine_deferred` would differ from `affine_eager` while `blocked_deferred` and `blocked_eager` would not, because the interposed right shift is not affine over the ring. Both deferred arms vectorised and both eager arms did not, `blocked` included, so the difference is not the affine collapse. Its author records the refutation of the hypothesis rather than the confirmation, and built `chain_which_projection_blocks_the_vectoriser` to find the real mechanism."
+standing = "sound"
+note = "Its own header calls it an ad-hoc quick spike with no substance as a measurement, correctly: no timing appears in it and it prices nothing. What it establishes is qualitative, that the shape is the same under both profiles, and that is exactly the qualitative claim an ad-hoc spike may carry."
+keywords = ["affine collapse", "vectorise", "profile", "lto", "codegen-units", "deferred", "eager", "assembly", "refuted prediction", "qualitative"]
+
+[[probe]]
+id = "chain_which_projection_blocks_the_vectoriser"
+establishes = "In a chained reduction at 13-bit width in a `u16` cdylib on Apple silicon, the projection on the loop-carried accumulator is what the backend reacts to and the projection on the per-element value is not, at cargo's default release profile and at the documented fat-LTO one-codegen-unit profile alike."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_which_mask_blocks_the_vectoriser.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_which_mask_blocks_the_vectoriser.out::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_default_linked.s::1",
+  "panel::202608072330_the-numeral-canon-panel::168_probes::p5_documented_linked.s::1",
+]
+control = "Two projection-free reductions, `control_plain_sum` and `control_indexed_sum`, which must vectorise; if they do not, the setup is what suppresses vectorisation and nothing in the run may be read as a fact about the arms. The runner prints CONTROL FAILED and says do not read this run. It fired, and a second case was stated too: at least one pair of arms must differ in whether the loop vectorises, or the probe has isolated nothing."
+defect = "Three, all in earlier versions of this instrument, all found by adding the control and none visible from reading the code. A staticlib was tried first, in which every object file starts at address zero, so the identical-code-folding check compared addresses across objects and reported a hundred unrelated symbols as folded. `--emit asm` under fat LTO reports the pre-LTO module in which nothing vectorises including the positive control, and an earlier version concluded from that that the documented profile suppresses vectorisation entirely, which is a statement about the instrument. And the vector-register pattern required `v0.`, which is ARM's syntax; Apple's puts the element form on the mnemonic, so the pattern matched nothing and reported a fully vectorised function as scalar."
+standing = "sound"
+note = "The three defects are kept in the runner's own header rather than in a report, which is why they are recoverable. The wrong-dialect regex is the class the corpus names third of its nine, and it is the one that produced a false negative reading as a real result."
+keywords = ["vectorisation", "accumulator", "projection", "mask", "assembly", "dialect", "lto", "pre-LTO", "identical code folding", "cdylib", "otool", "aarch64"]
+
+[[probe]]
+id = "chain_two_realisations_definedness_is_profile_dependent"
+establishes = "For one pair of realisations over a 256-input domain, realisation A is total at `debug-assertions = off` and partial at `on`, failing on 203 of 256 inputs, while realisation B is total at both. So whether two realisations share a definedness domain is a function of the build profile rather than of the realisations alone."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::174_probes::r2_clause1_needs_the_profile_bound.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::174_probes::r2_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::174_probes::r2_clause1_needs_the_profile_bound.out::1",
+]
+control = "The hypothesis was the control and it refused. Its author set out to show a candidate clause false at `debug-assertions = on` and the measurements do not show it: at `on` the two realisations no longer share a definedness domain, so the clause's hypothesis fails and it is vacuous rather than false. Recorded in the header as the third of that dispatch's own refuted hypotheses rather than deleted."
+standing = "sound"
+note = "The reason to keep this row is the axis rather than the number. `build_profile` is a declared dimension and this is the instrument showing that a claim can range over it without saying so, which is what an absent dimension means under the predicate rule."
+keywords = ["definedness", "profile", "debug-assertions", "partial", "total", "vacuous", "overflow panic", "realisation", "build_profile"]
+
+[[probe]]
+id = "chain_const_channel_follows_debug_assertions"
+establishes = "Const evaluation does not check arithmetic unconditionally: separating optimisation level from the assertion flag, the const channel follows `debug-assertions` and not `opt-level`, and at `opt-level=3 debug-assertions=off` the narrow const compiles and evaluates to the wide arm's value."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::171_probes::channels::const_channel.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::channels::const_channel_p2b.out::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::channels::const_channel_narrow_MUST_NOT_COMPILE.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::channels::README.md::1",
+]
+control = "The wide arm had to compile in every cell of the 2x2, and it reported NO in all four, which is impossible if the table is about the two arms. That is the control firing."
+defect = "The harness rather than the instrument, and the corpus names it as the ninth defect of its unit and a new class. The first version looped over quoted flag strings in fish, which does not word-split, so `rustc` received one bogus argument and every cell reported does-not-compile. The measurement code was correct and the shell that invoked it was not. The tell is cheap and general: a 2x2 whose every cell agrees, and the control is one cell that must differ."
+standing = "sound"
+note = "A separate file in the same directory is named `const_channel_narrow_MUST_NOT_COMPILE.rs`, which is the refusal kept as an artifact rather than described. That is the right shape and it is rare here."
+keywords = ["const", "channel", "debug-assertions", "opt-level", "word-split", "fish", "harness defect", "2x2", "compile", "profile"]
+
+[[probe]]
+id = "chain_the_third_definition_is_not_observation_bounded"
+establishes = "Of three files whose definitions of a chain were counted as one convergence, one is not observation-bounded: it carries 2 observation-vocabulary occurrences in 7,299 words against 22 in 14,690 and 26 in 16,986 for the other two, and its defining sentence says what a chain contains rather than what bounds one."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::171_probes::thirdfile::is_60_observation_bounded.py::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::thirdfile::is_60_observation_bounded.out::1",
+  "panel::202608072330_the-numeral-canon-panel::171_probes::thirdfile::README.md::1",
+]
+control = "None stated in the material read. The instrument counts vocabulary occurrences and normalises per thousand words, and the separation it reports is between 0.27 and 1.50 per thousand, which is wide. What no arm tests is whether the vocabulary count tracks the property: a file could be observation-bounded and say so once. The qualitative half, that the defining sentence says contains rather than bounds, is read rather than counted and is what carries the finding."
+standing = "sound"
+note = "Marked sound rather than defective on a judgement, and the judgement is that the counted half is corroboration for a claim the quoted sentences establish on their own. A reader who thinks a word-frequency count needs a control before it may be printed beside a definition should read this row as `defective`; the finding does not move either way, because the two definitions are quoted in full beside the counts."
+keywords = ["chain", "definition", "observation", "vocabulary", "word frequency", "convergence", "three hats", "independence", "bounded"]
+
+[[probe]]
+id = "chain_heading_overlap_against_a_null"
+establishes = "Over 27 headings against 28, best match per heading, mean containment overlap is 0.327 against a random re-pairing null of 0.024 over 200 draws, and 7 of 27 headings reach overlap of at least 0.50."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q2_heading_overlap.py::1",
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q2_heading_overlap.out::1",
+]
+control = "C1 required the two known prefix pairs to score at least 0.50 under Jaccard, and it fired: the second scores 0.44, because the longer heading carries five extra tokens and a symmetric similarity penalises the longer side. So Jaccard reports a subsumption as a partial match, which is the relation the instrument existed to measure. Containment returns 1.00 on both pairs. Both metrics are kept and reported."
+standing = "sound"
+note = "The control did not find a bug in the code. It found that the chosen metric answers a different question from the one asked, which is the rarer and more useful kind of control failure. The null is what makes the 0.327 mean anything; without it a mean overlap is a number with no scale."
+keywords = ["heading", "overlap", "jaccard", "containment", "null", "random re-pairing", "metric", "convergence", "shared framing"]
+
+[[probe]]
+id = "citation_checker_normalising_whitespace"
+establishes = "A citation checker matching with `grep -F` returns false negatives on any quotation spanning a line break in the source, because the source carries a newline where the quotation carries a space. Four of fifteen quotations in one pass, all four true, all four resolved by normalising whitespace first."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::168_mcsherry_the_chain_derived_cold::1570",
+]
+control = "Added after the defect and stated as the fix's own requirement: a fragment known to be present must match, or the checker is not reading the file. Two were used, named in the source file by document and line."
+defect = "This row IS the defect. The instrument is the checker and the finding is about checkers, so it is filed here rather than as a repair note. The class matters more than the count: a checker that reports a true citation as missing is as dangerous as one reporting a false one as present, because the next action is to correct something that was right."
+standing = "defective"
+note = "No script for this run is committed under a probe directory; the account and the counts live in the member file, which is what `lives` cites. So the figures cannot be re-derived, only re-read. The two successors below are committed and are what to build on."
+keywords = ["citation", "checker", "grep -F", "line break", "whitespace", "false negative", "quotation", "normalisation"]
+
+[[probe]]
+id = "citation_checker_stripping_markup"
+establishes = "Whitespace normalisation is necessary and not sufficient for citation checking in a markdown corpus: blockquote markers and emphasis survive it, and stripping them additionally mattered on 5 of 12 quotations in one file and 4 of 13 in another."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p6_citecheck.py::1",
+  "panel::202608072330_the-numeral-canon-panel::169_probes::p6_citecheck.out::1",
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q4_citecheck.py::1",
+  "panel::202608072330_the-numeral-canon-panel::170_probes::q4_citecheck.out::1",
+]
+control = "Both carry a planted-present and a planted-absent fragment, and the run is reported only with the first found and the second not found. That is the pair: a checker that finds the planted-absent one matches too much, and one that misses the planted-present one is not reading the file."
+defect = "Two, in successive layers of the same tool, and each was found by the fix for the previous one. The first run of the whitespace-normalising version reported two of its author's own true quotations missing, one inside a blockquote where the wrap inserts a marker mid-sentence and one carrying emphasis around its numbers. The next layer was case: a quotation taken mid-sentence with a lowercased leading capital is ordinary English, and a case-sensitive checker calls it missing. Comparison is casefolded now."
+standing = "sound"
+reproduced = "Two files, two authors, same tool lineage. The second adopted the first's fix and found the markup class biting in its own file at 4 of 13, which is what says the class is real in this corpus rather than one author's habit."
+note = "Three defects in one small tool, in three layers, each surfaced only by fixing the one above it. The general form worth carrying is that a text matcher over a markdown corpus is defeated by the markup the corpus wraps its quotations in, and every fix for that is partial until a planted-present control says otherwise."
+keywords = ["citation", "checker", "markup", "blockquote", "emphasis", "casefold", "whitespace", "planted control", "false negative", "quotation"]
+
+# --- the ports into this registry, files 179 to 183 -------------------------
+
+[[probe]]
+id = "the_heading_anchor_slug_rule"
+establishes = "The reference resolver's heading anchor rule is not the one the reference documentation implies. Every run of non-alphanumeric characters collapses to a single hyphen and leading and trailing hyphens are dropped, so an apostrophe becomes a hyphen rather than being deleted: `## Op's instruction` is `#op-s-instruction`, and both `#op's-instruction` and `#opsinstruction` are refused."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::180_probes::slugs.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::slugs.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::179_lamport_porting_ops_rulings_into_the_registry::#4-the-anchor-slug-rule-which-is-not-the-one-the-reference-syntax-implies",
+]
+control = "Established by control run rather than read off a spec, which is what the emitter's own header says. Three candidate spellings of one heading were put through a lint run and two were refused, so the rule is the surviving spelling rather than a reading of the documentation. The refused spellings are the control: had all three resolved, the run would have said nothing about which rule is in force."
+standing = "sound"
+reproduced = "Reused unchanged by the next port, which is a rerun of the same code rather than an independent rebuild and is worth less. Both copies are committed."
+note = "Eleven of one port's first citations failed and every failure contained an apostrophe, which is how the rule was found. It is not written into the generated reference documentation, which still says punctuation is dropped, and that file is generated so neither port could fix it."
+keywords = ["anchor", "slug", "heading", "apostrophe", "citation", "reference", "resolver", "hyphen", "punctuation"]
+
+[[probe]]
+id = "a_measured_proposal_is_refused_without_a_probe_row"
+establishes = "The committed checks refuse a `measured` proposal that names no evidence, with `measured-claim-cites-no-probe`, and refuse an `evidence` entry naming a probe row with `unknown-row-reference` reporting that the `probe` namespace has no rows at all. So no measured claim could be written into this registry until this namespace existed."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::183_probes::measured_needs_a_probe_row.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::measured_needs_a_probe_row.out::1",
+]
+control = "The negative arm is the one that matters and it is present: an `argument` row carrying no evidence is silent. One reported row, not three. Without that arm the two positive arms would be satisfied by a checker that reports every row."
+standing = "sound"
+note = "The row is kept after the blocker it names is gone, because it is the evidence for why five topics' measured claims were unwritable, and the next reader meeting that gap in the audit trail needs to get from the gap to the instrument that measured it."
+keywords = ["measured", "evidence", "probe", "gate", "blocked", "registry", "check", "sentence_kind", "unknown-row-reference"]
+
+[[probe]]
+id = "the_registrys_citation_guards_fire"
+establishes = "In the committed checks, a citation naming no file is reported, a heading anchor naming no heading is reported, a line citation into a living ledger is reported by `no_line_citation_into_a_living_ledger`, and a line citation into a numbered member file passes."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::183_probes::citation_controls.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::183_probes::citation_controls.out::1",
+]
+control = "The fourth arm is the control and its author says so: the other three would fire on an instrument that reports everything, and only the passing arm distinguishes a checker from a shouter."
+standing = "sound"
+reproduced = "Independently rebuilt over the `lives` field rather than `provenance` by `probe_lives_citation_controls`, which adds the two arms this one does not have: what happens when the terminal segment is a bare filename, and what happens at a line past the end of a real file."
+keywords = ["citation", "control", "living ledger", "line number", "anchor", "checker", "guard", "provenance"]
+
+[[probe]]
+id = "probe_lives_citation_controls"
+establishes = "A probe row's `lives` field is resolved and guarded: a path matching no file is reported as `unresolvable-provenance`, a line past the end of a real file is reported, a bare root is reported as `malformed-provenance`, a terminal segment that is a bare filename with no line or anchor is refused as malformed, a real file at a real line is silent, and a line citation into a living ledger fails `the_committed_canon_cites_no_moving_line`."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::185_probes::p1_lives_citation_controls.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::185_probes::p1_lives_citation_controls.out::1",
+]
+control = "Arm B is the control: a real committed artifact at a real line must be silent, and it is. The other five arms would all fire on a checker that reports everything."
+defect = "Two of my own, both in earlier runs and both kept in the script's header. Run one used capital letters in the planted row's id, so every arm failed on the id regex rather than on the citation, and the existence arm and the control arm produced identical output. Run two ran the ledger half of the suite after the loop had already overwritten the plant with a different arm, so eight greens were printed against material that was never a ledger citation and the arm established nothing while looking complete."
+standing = "sound"
+note = "The terminal-anchor arm is the one that changed how every row in this file is written. There is no citation form for a whole file, so a probe artifact is cited at line 1, which is a line number that means the file."
+keywords = ["lives", "citation", "control", "malformed-provenance", "unresolvable-provenance", "living ledger", "terminal anchor", "line 1"]
