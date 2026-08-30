@@ -1,0 +1,194 @@
+=== p2 census, 2026-08-30T22:35:22Z
+
+## directories
+probe directories: 135
+artifact files under them: 2599
+sketch directories: 20
+bench artifacts (csv): 254
+
+## extensions across the probe tree
+ 626 rs
+ 492 out
+ 488 txt
+ 416 py
+ 206 s
+  91 sh
+  67 log
+  63 md
+  48 err
+  15 meta
+  14 json
+  12 stderr
+   8 toml
+   7 lock
+   6 rlib
+   6 csv
+   4 o
+   3 rmeta
+   3 gitignore
+   2 tsv
+   2 inc
+   2 dis
+   1 zig
+   1 rerun
+   1 rejected
+   1 ll
+   1 diff
+   1 cpp
+   1 cmd
+   1 awk
+   1 /62_probes/rerun/q2_61
+   1 /62_probes/rerun/p3_57
+   1 /62_probes/rerun/p3_35
+   1 /62_probes/p4
+   1 /62_probes/p3
+   1 /62_probes/p2b
+   1 /62_probes/p2
+   1 /62_probes/p1
+   1 /17_probes/bin/t1
+   1 /17_probes/bin/p3_16
+
+## directories whose filenames flag a run that did not stand
+03_probes/i2_corrected.py
+08_probes/i2e_corrected_window.py
+100_probes/p8_the_tail_coordinate_is_the_wrong_statistic.out
+100_probes/p8_the_tail_coordinate_is_the_wrong_statistic.py
+125_probes/p2_output_run1_defective_units.txt
+125_probes/p3_output_run1_representative_level.txt
+128_probes/r3_output_run1_periodic_tuple_refuted_prediction3.txt
+141_probes/p3b_the_mechanism_control_corrected.rs
+144_probes/p10c_the_witness_was_noise_and_the_gate_was_at_the_wrong_granularity.py
+16_probes/p6_first_attempt_note.md
+175_probes/clause23/clause23_v1_CONTROLS_FAILED.out
+175_probes/partial/partial2_v2_REFUTED.out
+175_probes/partial/partial_v1_REFUTED.out
+183_probes/axis_census_first_attempt.out
+22_probes/run-order/run1_wide-rung-walk-l2_n129100.csv
+22_probes/run-order/run1_wide-rung-walk-l2_n160100.csv
+22_probes/run-order/run1_wide-rung-walk-l2_n192100.csv
+22_probes/run-order/run1_wide-rung-walk-l2_n200100.csv
+22_probes/run-order/run1_wide-rung-walk-l2_n232100.csv
+22_probes/run-order/run1_wide-rung-walk-l2_n256100.csv
+93_probes/p3_mutant_wrong_join.out
+93_probes/p3_mutant_wrong_join.rs
+count: 22 files in 12 directories
+
+## C2: 175_probes/clause23 must be marked
+C2 PASS: found
+
+## C3: 147_probes must NOT be marked
+C3 PASS: not present
+
+## per directory: files, and whether committed output sits beside the source
+dir                          files  outs langs
+02_probes                       23    12 py,rs
+03_probes                       12     6 py,rs
+06_probes                       28    12 py,rs,s
+07_probes                       21     7 py,rs,s
+08_probes                       26    13 py,rs,s
+100_probes                      31    14 py,rs,s,sh
+101_probes                      31    17 py,rs,sh,toml
+102_probes                      18     9 py,rs,s
+103_probes                      28    10 py,rs,toml
+106_probes                      12     7 py,sh
+107_probes                      26    13 py,sh
+108_probes                      22    10 py,rs,s,sh
+109_probes                      28    10 rs,s
+10_probes                       76    19 rs,s
+110_probes                      31    11 py,rs
+111_probes                      35    15 py,rs,s
+112_probes                      42    17 py,rs,s
+114_probes                      24    11 py,rs,s
+115_probes                       9     4 py
+116_probes                      15     7 py
+118_probes                      15     7 py
+119_probes                       5     2 py
+11_probes                       66    30 cpp,rs,s,sh,zig
+120_probes                       9     4 py
+121_probes                       9     4 py
+122_probes                      13     6 py
+125_probes                      12     7 py
+126_probes                       8     4 py
+127_probes                       2     1 py
+128_probes                       7     4 py
+129_probes                       2     1 py
+12_probes                       57    20 rs,s,sh
+130_probes                       2     1 py
+131_probes                       6     3 py,rs
+132_probes                       2     1 py
+133_probes                       4     2 py
+135_probes                       2     1 py
+136_probes                      10     5 py
+137_probes                      19    10 py,sh
+138_probes                       4     2 py
+139_probes                      17     8 rs,s,sh
+13_probes                       63    32 py,rs,sh
+140_probes                      12     6 py,rs
+141_probes                      24    12 py,rs
+142_probes                       6     3 rs
+143_probes                       8     5 py,rs
+144_probes                      33    15 py,rs,s,sh
+145_probes                      14     7 py
+146_probes                       2     1 py
+147_probes                       2     1 rs
+148_probes                       6     3 py,rs
+149_probes                      10     5 py,rs
+150_probes                      10     5 py
+151_probes                      10     5 py
+154_probes                      36     7 py,rs,s
+155_probes                       5     3 sh
+157_probes                      27    13 py,rs,sh
+158_probes                       8     4 rs
+159_probes                       5     3 sh
+15_probes                       46    19 py,rs,sh
+160_probes                      14     5 py,rs,s,sh
+161_probes                       7     3 py,sh
+162_probes                      10     3 py,rs,s,sh
+163_probes                      15     7 py,rs,sh
+164_probes                       9     4 py,sh
+165_probes                       2     1 sh
+167_probes                      41    16 py,rs
+168_probes                      18     6 rs,s,sh
+169_probes                      12     6 py,sh
+16_probes                       19     8 rs,sh
+170_probes                       8     4 py,rs
+171_probes                      26    10 py,rs
+172_probes                      13     7 py,rs,sh
+173_probes                       9     4 py,sh
+174_probes                       7     3 py,rs,sh
+175_probes                      22     9 py,rs,sh
+176_probes                      11     5 py,sh
+177_probes                      16     8 py,sh
+178_probes                      11     5 py,sh
+179_probes                       1     0 sh
+17_probes                       21     6 py,rs,s,sh
+180_probes                       3     0 sh
+183_probes                      23     8 awk,sh
+185_probes                       4     2 sh
+18_probes                       21    10 py,rs,s
+20_probes                       11     4 rs,toml
+21_probes                        3     0 sh
+22_probes                       16     4 py,rs,toml
+23_probes                        4     1 py
+24_probes                       16     8 py,rs,sh
+25_probes                        8     4 py
+26_probes                        7     4 py,sh
+27_probes                       19    12 py
+31_probes                        5     2 py
+33_probes                        1     0 py
+35_probes                       30    12 rs
+40_probes                       14     7 py,rs
+42_probes                        7     3 rs
+43_probes                       15     5 py,rs,s
+45_probes                       16     9 py,rs
+47_probes                       25    10 rs,sh
+49_probes                        6     0 rs,s
+50_probes                       19     7 py,rs,sh
+51_probes                      328     7 py,rs,s,sh
+55_probes                       10     5 rs
+56_probes                       10     3 rs
+57_probes                       32    14 rs
+58_probes                        6     3 rs
+60_probes                       11     4 rs
+61_probes                        8     5 rs
+62_probes                       24     9 rs

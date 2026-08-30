@@ -1,0 +1,158 @@
+=== p3 citedness, 2026-08-30T22:36:31Z
+columns: dir, mentions in panel .md files, distinct files mentioning it, mentions in registry toml
+the probe tree itself is excluded from every count (C3)
+
+## C1: 151_probes must be non-zero
+C1 PASS: 26 mentions
+
+## C2: at least one existing directory must come back with zero mentions
+C2 PASS: 3 directories are cited nowhere in the panel prose
+the uncited ones:
+  158_probes
+  185_probes
+  SEED_THEORY_46_90_probes
+
+## ranked by mentions
+   205    23 files    0 reg  57_probes
+   112    18 files    0 reg  45_probes
+    94    13 files    1 reg  47_probes
+    90    19 files    0 reg  16_probes
+    71    13 files    0 reg  157_probes
+    63    17 files    0 reg  18_probes
+    61    15 files    0 reg  42_probes
+    61     7 files    0 reg  73_probes
+    59    13 files    0 reg  11_probes
+    59    17 files    0 reg  35_probes
+    57    13 files    0 reg  40_probes
+    56    10 files    0 reg  80_probes
+    55     7 files    0 reg  98_probes
+    53    11 files    0 reg  56_probes
+    51     8 files    0 reg  61_probes
+    49    14 files    0 reg  55_probes
+    46    15 files    0 reg  25_probes
+    45     5 files    0 reg  77_probes
+    45     5 files    0 reg  82_probes
+    44    12 files    0 reg  15_probes
+    44    10 files    0 reg  50_probes
+    43     6 files    1 reg  51_probes
+    43     8 files    0 reg  71_probes
+    42    13 files    0 reg  12_probes
+    42    11 files    0 reg  43_probes
+    41    12 files    0 reg  118_probes
+    40     6 files    0 reg  97_probes
+    39     7 files    0 reg  62_probes
+    38     8 files    0 reg  08_probes
+    38     6 files    0 reg  140_probes
+    37    11 files    0 reg  60_probes
+    35     8 files    0 reg  02_probes
+    35     5 files    0 reg  101_probes
+    35     6 files    0 reg  93_probes
+    34     4 files    0 reg  100_probes
+    34     8 files    0 reg  145_probes
+    34     6 files    0 reg  84_probes
+    33     6 files    0 reg  102_probes
+    33    11 files    0 reg  137_probes
+    32     6 files    0 reg  58_probes
+    32     5 files    0 reg  68_probes
+    31     7 files    0 reg  10_probes
+    31     8 files    0 reg  114_probes
+    30     2 files    0 reg  89_probes
+    29     9 files    0 reg  125_probes
+    28     7 files    0 reg  111_probes
+    26     1 files    0 reg  108_probes
+    26     5 files    1 reg  151_probes
+    25     7 files    0 reg  17_probes
+    25     7 files    0 reg  27_probes
+    25     8 files    0 reg  76_probes
+    24     8 files    0 reg  154_probes
+    24     6 files    0 reg  79_probes
+    23     5 files    0 reg  07_probes
+    23    10 files    0 reg  139_probes
+    22     4 files    0 reg  63_probes
+    21     8 files    0 reg  13_probes
+    21     4 files    0 reg  26_probes
+    21     8 files    0 reg  31_probes
+    21     4 files    0 reg  86_probes
+    20    10 files    1 reg  49_probes
+    19     6 files    0 reg  06_probes
+    18     6 files    0 reg  112_probes
+    18     5 files    0 reg  116_probes
+    18     2 files    0 reg  163_probes
+    18     3 files    0 reg  168_probes
+    17     5 files    0 reg  03_probes
+    17     6 files    0 reg  128_probes
+    17     7 files    0 reg  131_probes
+    17     7 files    0 reg  141_probes
+    17     4 files    0 reg  171_probes
+    17     5 files    0 reg  173_probes
+    16     9 files    0 reg  130_probes
+    16     7 files    0 reg  142_probes
+    16     7 files    0 reg  144_probes
+    16     3 files    0 reg  160_probes
+    16     5 files    0 reg  72_probes
+    15     4 files    0 reg  103_probes
+    15     4 files    0 reg  136_probes
+    14     1 files    0 reg  107_probes
+    14     2 files    0 reg  110_probes
+    14     4 files    0 reg  175_probes
+    14     2 files    0 reg  177_probes
+    14     3 files    0 reg  67_probes
+    14     5 files    0 reg  94_probes
+    13     7 files    0 reg  115_probes
+    13     2 files    0 reg  167_probes
+    13     6 files    0 reg  22_probes
+    13     3 files    0 reg  24_probes
+    12     2 files    0 reg  106_probes
+    12     1 files    0 reg  126_probes
+    12     6 files    0 reg  129_probes
+    12     3 files    0 reg  66_probes
+    11     7 files    0 reg  119_probes
+    11     5 files    0 reg  127_probes
+    11     3 files    0 reg  148_probes
+    11     3 files    0 reg  161_probes
+    11     3 files    0 reg  176_probes
+    11     1 files    3 reg  183_probes
+    11     1 files    0 reg  92_probes
+    10     3 files    0 reg  70_probes
+     9     3 files    0 reg  143_probes
+     9     5 files    0 reg  146_probes
+     9     4 files    1 reg  149_probes
+     9     3 files    0 reg  169_probes
+     9     2 files    0 reg  172_probes
+     9     3 files    0 reg  33_probes
+     8     4 files    1 reg  147_probes
+     8     3 files    0 reg  162_probes
+     8     4 files    0 reg  21_probes
+     7     3 files    0 reg  135_probes
+     7     1 files    0 reg  159_probes
+     7     3 files    0 reg  65_probes
+     6     4 files    0 reg  122_probes
+     6     2 files    0 reg  133_probes
+     6     2 files    0 reg  170_probes
+     6     2 files    0 reg  174_probes
+     6     1 files    0 reg  178_probes
+     6     3 files    0 reg  20_probes
+     5     3 files    0 reg  132_probes
+     5     3 files    0 reg  150_probes
+     5     2 files    0 reg  164_probes
+     5     2 files    0 reg  23_probes
+     4     2 files    0 reg  121_probes
+     4     1 files    0 reg  179_probes
+     3     1 files    0 reg  109_probes
+     3     2 files    0 reg  138_probes
+     3     1 files    0 reg  180_probes
+     3     1 files    0 reg  SEED_TALKING_POINTS_probes
+     2     2 files    0 reg  120_probes
+     2     1 files    0 reg  165_probes
+     1     1 files    0 reg  155_probes
+     0     0 files    0 reg  158_probes
+     0     0 files    0 reg  185_probes
+     0     0 files    0 reg  SEED_THEORY_46_90_probes
+
+## totals
+directories: 135
+cited at least once: 132
+uncited: 3
+total mentions: 3410
+mentions in registry toml: 0 expected before this dispatch
+actual registry mentions: 9
