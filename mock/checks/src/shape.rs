@@ -99,7 +99,10 @@ const RAN_SOMETHING: &[&str] = &["measured", "enumeration"];
 /// theorem and a measurement in one voice loses the distinction.
 pub fn measured_without_evidence(reg: &Registry) -> Vec<Finding> {
     reg.of("proposal")
-        .filter(|row| row.get("sentence_kind").is_some_and(|k| RAN_SOMETHING.contains(&k)))
+        .filter(|row| {
+            row.get("sentence_kind")
+                .is_some_and(|k| RAN_SOMETHING.contains(&k))
+        })
         .filter(|row| row.list("evidence").is_empty())
         .map(|row| {
             let kind = row.get("sentence_kind").unwrap_or("measured");
