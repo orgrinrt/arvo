@@ -1025,8 +1025,8 @@ values = ["answer", "refusal", "finding"]
 name = "sentence_kind"
 type = "string"
 required = true
-description = "What kind of statement this is. `theorem` where it is proved and the route is stated; `measured` where an instrument produced it; `enumeration` where it is a bounded list somebody walked; `normative` where it is imposed rather than established, which is the one kind a predicate would invert; `argument` where it is reasoned and neither proved nor measured, which is the mark that keeps getting dropped."
-values = ["theorem", "measured", "enumeration", "normative", "argument"]
+description = "What kind of statement this is. `theorem` where it is proved and the route is stated; `measured` where an instrument produced it; `enumeration` where it is a bounded list somebody walked; `definition` where it stipulates what a term means, which is neither established nor imposed; `normative` where it is imposed rather than established; `argument` where it is reasoned and neither proved nor measured, which is the mark that keeps getting dropped. `definition` and `normative` are the two that carry no region."
+values = ["theorem", "measured", "enumeration", "definition", "normative", "argument"]
 
 [[registry.namespace.field]]
 name = "standing"
@@ -1057,13 +1057,19 @@ description = "Why it holds. Required here where it is optional on a ruling, and
 name = "predicate"
 type = "string[]"
 required = false
-description = "The region it was established in, one entry per dimension, written `<dimension slug>: <values>`. A dimension left out says the claim holds in no situation where that dimension exists, which is a real and deliberate statement rather than a shrug. Absent entirely only where `sentence_kind` is `normative`, because a predicate on an imposed proposition would say the design may violate it everywhere unmeasured."
+description = "The region it was established in, one entry per dimension, written `<dimension slug>: <values>`. A dimension left out says the claim holds in no situation where that dimension exists, which is a real and deliberate statement rather than a shrug. Absent entirely only where `sentence_kind` is `normative` or `definition`: a predicate on an imposed proposition would say the design may violate it everywhere unmeasured, and a definition is not a claim about where anything holds, so a region on one is a category error rather than a narrowing."
 
 [[registry.namespace.field]]
 name = "evidence"
 type = "probe[]"
 required = false
-description = "The committed instruments behind it. Required in spirit for a `measured` row and checked as such in `mock/checks` rather than by the schema, since the schema cannot read `sentence_kind`."
+description = "The committed instruments behind it. Required in spirit for a row that ran something, which is `measured` and `enumeration` alike, and checked as such in `mock/checks` rather than by the schema, since the schema cannot read `sentence_kind`. A proof owes its route rather than a run, so `theorem` is outside it; a walk whose full list is printed inline is a proof by exhaustion and is one, while a walk performed by code owes the walker."
+
+[[registry.namespace.field]]
+name = "defines"
+type = "string"
+required = false
+description = "For a `definition`: the term it stipulates the meaning of, as the term rather than as a sentence about it. One live definition per term, so a second row defining the same thing is either a supersession or a disagreement, and both want saying rather than sitting side by side."
 
 [[registry.namespace.field]]
 name = "law"

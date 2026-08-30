@@ -41,6 +41,112 @@ fn the_committed_canon_stamps_nothing_on_an_ack() {
 }
 
 #[test]
+fn the_committed_canon_defines_no_term_twice() {
+    let found = shape::a_term_defined_twice(&canon());
+    assert!(found.is_empty(), "{found:#?}");
+}
+
+#[test]
+fn the_committed_canon_has_no_definition_without_a_term() {
+    let found = shape::definitions_with_no_term(&canon());
+    assert!(found.is_empty(), "{found:#?}");
+}
+
+/// A definition states no region for a different reason than an imposition
+/// does, and both must be silent while everything else is not.
+#[test]
+fn a_definition_carries_no_region_and_neither_does_an_imposition() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[proposal]]
+id = "a_stipulation"
+sentence_kind = "definition"
+defines = "chain"
+
+[[proposal]]
+id = "a_stipulation_with_a_region"
+sentence_kind = "definition"
+defines = "stretch"
+predicate = ["fraction_width: 0"]
+
+[[proposal]]
+id = "an_imposed_one"
+sentence_kind = "normative"
+"#,
+    );
+    let found = shape::predicate_disagrees_with_the_sentence_kind(&reg);
+    assert_eq!(found.len(), 1, "{found:#?}");
+    assert!(
+        found[0].at.contains("a_stipulation_with_a_region"),
+        "{}",
+        found[0].at
+    );
+    assert!(
+        found[0].says.contains("definition"),
+        "the report names which of the two kinds it was: {}",
+        found[0].says
+    );
+}
+
+#[test]
+fn one_term_stipulated_twice_is_reported_and_a_supersession_is_not() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[proposal]]
+id = "the_first_reading"
+sentence_kind = "definition"
+defines = "chain"
+
+[[proposal]]
+id = "a_rival_reading"
+sentence_kind = "definition"
+defines = "chain"
+
+[[proposal]]
+id = "an_older_reading_of_something_else"
+sentence_kind = "definition"
+defines = "stretch"
+
+[[proposal]]
+id = "the_reading_that_replaced_it"
+sentence_kind = "definition"
+defines = "stretch"
+supersedes = ["an_older_reading_of_something_else"]
+"#,
+    );
+    let found = shape::a_term_defined_twice(&reg);
+    assert_eq!(
+        found.len(),
+        1,
+        "two live readings of `chain` are a finding; a replaced reading of `stretch` is the \
+         mechanism working: {found:#?}"
+    );
+    assert!(found[0].at.contains("a_rival_reading"), "{}", found[0].at);
+}
+
+#[test]
+fn a_definition_that_says_nothing_about_what_it_defines_is_reported() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[proposal]]
+id = "a_stipulation_of_nothing"
+sentence_kind = "definition"
+
+[[proposal]]
+id = "a_stipulation_of_something"
+sentence_kind = "definition"
+defines = "chain"
+"#,
+    );
+    let found = shape::definitions_with_no_term(&reg);
+    assert_eq!(found.len(), 1, "{found:#?}");
+    assert_eq!(found[0].kind, "definition-names-no-term");
+}
+
+#[test]
 fn the_committed_canon_leaves_no_row_unfindable() {
     let found = shape::rows_with_no_keywords(&canon());
     assert!(found.is_empty(), "{found:#?}");

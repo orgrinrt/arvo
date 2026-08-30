@@ -20,21 +20,45 @@
 # with, and the two want opposite fixes. Read the ranking before concluding a
 # region does not exist.
 #
-# Extending the set is not a free edit and is why it has not been done in
-# passing. Declaring a new axis makes every predicate already committed silently
-# say less, because an axis a predicate does not name is one the claim does not
-# hold on at all. The workspace's own rule answers that: a predicate is never
-# widened in place, the original stays as its evidence supported it, and the
-# widening arrives as a later claim. It still wants two independent readings
-# before the vocabulary moves.
+# **Extending the set does not reach backwards, and this paragraph used to say
+# it did.** It read that declaring a new axis makes every committed predicate
+# silently say less. That is wrong, and wrong in the direction that does damage:
+# a predicate's absence quantifies over the world rather than over this file's
+# contents, so a row written before an axis was declared was always exactly as
+# narrow as it now reads. **Declaring reveals a narrowness rather than creating
+# one.** The worry was the reason a seat declined to declare the axis blocking
+# the most spans in the corpus, and taken seriously it would license reading
+# absence as silence per axis, which is the fourth omission state op refused.
+#
+# What genuinely rewrites meaning is **deleting or renaming a row here**, which
+# turns a written span into an unparseable one and a written absence into
+# nonsense. So the set is append-only, and a check pins it rather than this
+# sentence asking.
+#
+# The set still moves only on two independent readings, because which of the
+# corpus's keys are axes is a judgement and not a lookup.
 #
 # **These are design axes and not instrument parameters.** The corpus writes
 # both into `holds for:` lines and the two are different things: `F = 0` is a
-# region an arm can be gated on, and `regions = 6, arms in {5, 6}` says what a
-# bench run happened to sweep. The second belongs on the `probe` row that ran
-# it. The test is gateability, and it comes straight from I13: a predicate
-# exists so that an arm can be built over the region it names, so an axis
-# nothing could gate on is not one.
+# region a claim holds in, and `regions = 6, arms in {5, 6}` says what a bench
+# run happened to sweep. The second belongs on the `probe` row that ran it,
+# whose `establishes` field already says a probe shows what it shows at the
+# widths and shapes it checked.
+#
+# **The test is what the value indexes.** An axis indexes a situation the world
+# can be in: a format has a radix, a workload's values live in a domain, a build
+# has a profile, and a claim is true or false at each. A parameter indexes a run:
+# how many arms it compared, which cost coordinates it collected. Nothing about
+# the world is different at five arms rather than six.
+#
+# **Gateability is a corollary and not the test**, and an earlier version of this
+# header had it the other way round and claimed I13's warrant for it. I13's own
+# final paragraph bounds its scope to two paragraphs and says the dimension list
+# and the exactness bar are elaboration rather than what was ratified, so the
+# attribution was inflation on the one entry whose scope op explicitly limited.
+# What gateability actually picks out is the subset of axes that are also
+# const-available, which is the subset arms get built over; the axes outside it
+# still bound where a claim holds, which is what a predicate is for.
 #
 # Two width spellings are both here because the corpus uses both and they are
 # not independent. See the `note` on each.
@@ -93,9 +117,9 @@ keywords = ["rounding", "round", "truncate", "ties to even", "nearest", "IEEE", 
 [[dimension]]
 id = "operation"
 what = "Which arithmetic operation the claim is about."
-grammar = "`operation = <op>`, `operation in {<set>}`, or `operation any`. Values are the operations the design ships, which is itself an open question."
+grammar = "`operation = <op>` or `operation in {<set>}`. Values are the operations the design ships, which is itself an open question. **`operation any` is not admissible**, because `any` quantifies over a set nobody has closed."
 moves = "Nearly everything. A law is a statement relating operations, and a claim about addition transfers to multiplication only where somebody showed it does. The corpus has twice mis-attributed a measured count to the wrong operation."
-note = "`operation any` is not writable while the operation set is open, because `any` quantifies over a set nobody has closed. A row wanting it says which operations instead."
+note = "The grammar used to admit `any` while this note forbade it, which is a gate with a gap exactly the width of the failure it guards: a checker reads a grammar and cannot read a note, so the admissible-but-forbidden spelling would eventually be written and would validate. The spelling becomes admissible when the operation set is closed and not before."
 provenance = ["panel::202608072330_the-numeral-canon-panel::109_bellard_the_primitive_derived_cold::157"]
 keywords = ["operation", "op", "add", "addition", "mul", "multiply", "shift", "subtract", "operation set"]
 
@@ -136,8 +160,8 @@ keywords = ["alignment", "aligned", "straddling", "boundary", "packed", "bitpack
 id = "access_pattern"
 what = "How the values are reached: sequentially, at random, contended between threads, or otherwise."
 grammar = "`access pattern = <name>` or `access pattern any`."
-moves = "Cost, and only cost. Nothing about which answer is correct depends on it, so a correctness claim leaving it out is not making the strong negative statement the notation otherwise assigns to an absent axis."
-note = "Named as an axis in the corpus's own predicates and rarely varied. A cost claim that leaves it out has not established anything about a pattern it did not run."
+moves = "Cost, and only cost. Which answer is correct does not depend on it."
+note = "Named as an axis in the corpus's own predicates and rarely varied. A cost claim that leaves it out has not established anything about a pattern it did not run. **A correctness claim untouched by it writes `access pattern: any`**, with the structural argument as the warrant, exactly as a compile-time result writes `threads any`. This note used to say the opposite, that a correctness claim could leave the axis out without making the strong negative statement, and that was a fourth omission state invented per axis. Op's mechanism has three and no fourth: nothing infers a universal, it has to be written, and the notation gives no middle ground where a hedge could sit."
 provenance = ["panel::202608072330_the-numeral-canon-panel::109_bellard_the_primitive_derived_cold::158"]
 keywords = ["access pattern", "sequential", "random", "strided", "contended", "locality"]
 
@@ -161,11 +185,59 @@ keywords = ["threads", "thread count", "cores", "parallel", "single threaded", "
 [[dimension]]
 id = "strategy"
 what = "Which strategy the claim was established under."
-grammar = "`S = <name>`, `S in {<set>}`, or `S any`."
+grammar = "`S = <name>` or `S in {<set>}`. **`S any` is not admissible**, because it quantifies over a set op has stated is open."
 moves = "What counts as the correct answer. The strategies weigh measurements differently, so a claim about which arm is best is a claim about one strategy unless it names them all."
-note = "`S any` quantifies over a set op has stated is open, so a row writing it is claiming more than the corpus can currently close. Rows naming the strategies they ran are the honest form."
+note = "The grammar used to admit `any` while this note said a row writing it claimed more than the corpus can close, which is the same gap the `operation` row carried: nothing parses a note. Rows naming the strategies they ran are the honest form, and the spelling becomes admissible when the set is closed."
 provenance = ["panel::202608072330_the-numeral-canon-panel::109_bellard_the_primitive_derived_cold::156"]
 keywords = ["S", "strategy", "Hot", "Cold", "Warm", "Precise", "preset", "policy"]
+
+# --- added after the first census, on two independent readings -----------------
+#
+# The four below were not in the sweep that produced this file, because that
+# sweep read one member file from topic five's first sitting and these were
+# discovered by the topics that came after it. Two readers agree they index
+# situations rather than runs, and one of them derived the criterion cold.
+#
+# **Declaring an axis does not reach backwards.** A predicate's absence quantifies
+# over the world rather than over this file's contents, so a row written before an
+# axis was declared was always as narrow as it now reads: declaring reveals a
+# narrowness rather than creating one. What genuinely would rewrite meaning is
+# deleting or renaming a row here, which turns a written span into an unparseable
+# one, so the set is append-only and a check pins it.
+
+[[dimension]]
+id = "ambient_domain"
+what = "The mathematical domain a computation's values are taken to live in, which the format approximates."
+grammar = "`ambient domain = <domain>`, `ambient domain in {<set>}`, or `ambient domain any`. Values name a domain: the integers, the rationals, the reals, a finite ring."
+moves = "Which laws are even askable. Associativity over the reals and associativity over a finite ring are different questions with different answers, and a claim proved over one says nothing about the other. It is the single largest blocker in the corpus's unwritable predicates, sole blocker of four spans and present in eleven."
+note = "Not the same axis as `container`. The container is what a value is stored in; the ambient domain is what it is understood to approximate, and a claim can be exact in one and lossy in the other."
+provenance = ["panel::202608072330_the-numeral-canon-panel::183_probes::unblock_value.out::6", "panel::202608072330_the-numeral-canon-panel::186_spj_the_notation_calls_derived_cold::#1-3-the-gateability-test-attacked-as-instructed"]
+keywords = ["ambient", "ambient domain", "domain", "reals", "rationals", "integers", "ring", "field", "approximates", "exact values", "denotation"]
+
+[[dimension]]
+id = "radix"
+what = "The base a format's fraction is expressed in."
+grammar = "`radix = <n>`, `radix in {<set>}`, or `radix any`."
+moves = "Which values are representable at all, and therefore which roundings are exact. A result established at radix two does not transfer to a decimal format, and the corpus has measurements at both."
+provenance = ["panel::202608072330_the-numeral-canon-panel::183_probes::unblock_value.out::5", "panel::202608072330_the-numeral-canon-panel::186_spj_the_notation_calls_derived_cold::#1-3-the-gateability-test-attacked-as-instructed"]
+keywords = ["radix", "base", "binary", "decimal", "base two", "base ten", "quantiser", "grid"]
+
+[[dimension]]
+id = "accumulator_width"
+what = "How wide the intermediate a chain accumulates into is, where it differs from the declared width."
+grammar = "`accumulator width = <n>`, `accumulator width in {<set>}`, or `accumulator width any`. `accumulator width = declared` names the case where no widening happens."
+moves = "Whether a chain's intermediate overflows, and therefore whether a fold's result depends on its order. It is a design choice an implementation sits at a value of, which is what makes it an axis rather than a parameter of whichever run measured it."
+provenance = ["panel::202608072330_the-numeral-canon-panel::183_probes::unblock_value.out::22", "panel::202608072330_the-numeral-canon-panel::186_spj_the_notation_calls_derived_cold::#1-3-the-gateability-test-attacked-as-instructed"]
+keywords = ["accumulator", "accumulator width", "intermediate", "widening", "staged narrowing", "fold", "headroom", "chain"]
+
+[[dimension]]
+id = "toolchain"
+what = "Which compiler built it, and under which language edition."
+grammar = "`rustc = <version>` and `edition = <year>`, written as separate entries where both were fixed. `toolchain any` where a result is established to be independent of both."
+moves = "What the backend does with the same source. The corpus carries results at two editions and pins one nightly across the workspace precisely because a floating one could roll past a behaviour change unnoticed."
+note = "Distinct from `target_features`, which is what the machine offers, and from `build_profile`, which is how the compiler was asked to optimise. This is which compiler, and the corpus writes all three separately. Whether it should instead fold into those two neighbours was raised and left as a fork; it is declared because the corpus writes an edition and a rustc version as their own coordinates and neither neighbour has anywhere to put them."
+provenance = ["panel::202608072330_the-numeral-canon-panel::183_probes::unblock_value.out::21", "panel::202608072330_the-numeral-canon-panel::186_spj_the_notation_calls_derived_cold::#1-3-the-gateability-test-attacked-as-instructed"]
+keywords = ["toolchain", "rustc", "nightly", "compiler", "version", "edition", "2021", "2024", "compilation environment"]
 
 [[dimension]]
 id = "build_profile"

@@ -14,7 +14,9 @@
 //! Each arm is a separate function rather than one sweep, so a report names the
 //! contract that was broken rather than the file that broke several.
 
-use crate::{Finding, Registry};
+use std::collections::BTreeMap;
+
+use crate::{Finding, Registry, Row};
 
 /// A ruling recording op's authority with no words of his behind it.
 ///
@@ -128,22 +130,36 @@ pub fn measured_without_evidence(reg: &Registry) -> Vec<Finding> {
 /// reach, which is the opposite of what it means. Every other kind of sentence
 /// is established somewhere and nowhere else, and leaving the region out claims
 /// the whole space.
+/// The two kinds that state no region, for opposite reasons.
+///
+/// A `normative` sentence imposes rather than establishes, so a region on it
+/// says the design may violate it everywhere the region does not reach. A
+/// `definition` stipulates what a term means: it is not a claim about where
+/// anything holds, so a region on one is a category error rather than a
+/// narrowing. Fifteen of the first seventeen rows written were marked
+/// `normative` and about half were stipulations, which is what earned the
+/// second value.
+const REGIONLESS: &[&str] = &["normative", "definition"];
+
 pub fn predicate_disagrees_with_the_sentence_kind(reg: &Registry) -> Vec<Finding> {
     let mut out = Vec::new();
     for row in reg.of("proposal") {
-        let normative = row.get("sentence_kind") == Some("normative");
+        let kind = row.get("sentence_kind").unwrap_or("");
+        let regionless = REGIONLESS.contains(&kind);
         let has_predicate = !row.list("predicate").is_empty();
-        if normative && has_predicate {
+        if regionless && has_predicate {
             out.push(Finding::new(
                 "an-imposed-proposition-carries-a-region",
                 row.addr(),
-                "`sentence_kind` is `normative` and `predicate` is set. A region on an \
-                 imposed proposition says the design may violate it everywhere the region \
-                 does not reach, which inverts it."
-                    .to_string(),
+                format!(
+                    "`sentence_kind` is `{kind}` and `predicate` is set. Neither kind states \
+                     a region: an imposed proposition would be saying the design may violate \
+                     it everywhere the region does not reach, and a definition is not a claim \
+                     about where anything holds."
+                ),
             ));
         }
-        if !normative && !has_predicate {
+        if !regionless && !has_predicate {
             out.push(Finding::new(
                 "an-established-claim-carries-no-region",
                 row.addr(),
@@ -177,6 +193,62 @@ pub fn stamps_from_an_unratified_ruling(reg: &Registry) -> Vec<Finding> {
                      any other rung the proposal it names becomes canon on the strength of an \
                      ack, which op's own correction says an ack is not."
                 ),
+            )
+        })
+        .collect()
+}
+
+/// Two live definitions of one term.
+///
+/// A definition stipulates what a term means, so two rows defining the same
+/// term are either a supersession, in which case the later one says so, or a
+/// disagreement, in which case somebody has to resolve it. Sitting side by
+/// side, both are cited and each reader gets whichever they found.
+pub fn a_term_defined_twice(reg: &Registry) -> Vec<Finding> {
+    let mut seen: BTreeMap<&str, Vec<&Row>> = BTreeMap::new();
+    for row in reg.of("proposal") {
+        if row.get("sentence_kind") != Some("definition") {
+            continue;
+        }
+        // A supersession is one definition replacing another, not two live ones.
+        if !row.list("supersedes").is_empty() {
+            continue;
+        }
+        if let Some(term) = row.get("defines") {
+            seen.entry(term).or_default().push(row);
+        }
+    }
+    seen.into_iter()
+        .filter(|(_, rows)| rows.len() > 1)
+        .map(|(term, rows)| {
+            let who: Vec<String> = rows.iter().map(|r| r.addr()).collect();
+            Finding::new(
+                "a-term-is-defined-twice",
+                who.join(", "),
+                format!(
+                    "`{term}` is defined by {} live rows and none supersedes another. Two \
+                     stipulations of one term is a supersession somebody did not record or a \
+                     disagreement somebody did not resolve.",
+                    rows.len()
+                ),
+            )
+        })
+        .collect()
+}
+
+/// A definition that does not say what it defines.
+pub fn definitions_with_no_term(reg: &Registry) -> Vec<Finding> {
+    reg.of("proposal")
+        .filter(|row| row.get("sentence_kind") == Some("definition"))
+        .filter(|row| row.get("defines").is_none_or(str::is_empty))
+        .map(|row| {
+            Finding::new(
+                "definition-names-no-term",
+                row.addr(),
+                "`sentence_kind` is `definition` and `defines` is empty, so nothing says \
+                 which term is being stipulated and nothing can tell whether it is stipulated \
+                 twice."
+                    .to_string(),
             )
         })
         .collect()
