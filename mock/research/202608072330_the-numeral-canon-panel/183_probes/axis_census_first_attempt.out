@@ -1,0 +1,178 @@
+### declared axes (16)
+integer_width fraction_width total_width signedness overflow_policy rounding operation arity chain_length container alignment access_pattern target_features threads strategy build_profile 
+
+### C3, spans per governing file (every one must be non-zero)
+  119_leroy_the_canon_candidate_for_the_realisation_map.md               11
+  122_leroy_the_candidate_revised_against_two_partial_signatures.md      8
+  132_leroy_the_canon_candidate_for_the_rounding_axis.md                 11
+  136_leroy_the_candidate_revised_against_three_signatures.md            10
+  138_leroy_the_restoration_pass.md                                      3
+  146_leroy_the_canon_candidate_for_the_strategy_object.md               20
+  151_leroy_the_candidate_revised_against_four_signatures.md             2
+  161_leroy_the_canon_candidate_for_the_primitive.md                     0
+  164_leroy_the_candidate_revised_against_two_signatures.md              0
+  173_leroy_the_canon_candidate_for_the_chain.md                         0
+  176_leroy_the_candidate_revised_against_two_signatures.md              0
+  178_leroy_the_restoration_pass.md                                      1
+
+### keys the corpus predicates over, by occurrence, marked against the declared set
+    40  W                                          declared (total_width)
+    33  threads                                    declared
+    27  signedness                                 declared
+    26  F                                          declared (fraction_width)
+    18  target features                            declared (target_features)
+    18  rounding                                   declared
+     9  threads any                                UNDECLARED
+     9  overflow                                   declared (overflow_policy)
+     9  container width                            declared (container)
+     8  operation                                  declared
+     7  cost coordinates                           UNDECLARED
+     6  domain closed under negation               UNDECLARED
+     6  domain                                     UNDECLARED
+     6  arms                                       UNDECLARED
+     6  arity                                      declared
+     5  range policy                               declared (overflow_policy)
+     5  coupling                                   UNDECLARED
+     5  chain length                               declared (chain_length)
+     4  target features any                        UNDECLARED
+     4  domain any                                 UNDECLARED
+     3  weight grid resolution                     UNDECLARED
+     3  toolchain                                  UNDECLARED
+     3  selector                                   UNDECLARED
+     3  overflow limit read at the declared width  UNDECLARED
+     3  observation sets                           UNDECLARED
+     3  inputs exhaustive over the declared range  UNDECLARED
+     3  fraction                                   UNDECLARED
+     3  element count                              UNDECLARED
+     3  cost tables drawn uniformly from integers 1 UNDECLARED
+     3  accumulator width                          UNDECLARED
+     3  OPTIONS                                    UNDECLARED
+     2  value set finite with at least two elements UNDECLARED
+     2  operations including addition              UNDECLARED
+     2  operations                                 declared (operation)
+     2  inputs exhaustive                          UNDECLARED
+     2  fold length                                declared (chain_length)
+     2  everything 132 5                           UNDECLARED
+     2  every deterministic member against saturation UNDECLARED
+     2  decision procedure                         UNDECLARED
+     2  assignment set                             UNDECLARED
+     1  y1 T3 reads the D1 block and returns 125   UNDECLARED
+     1  withdrawal recorded                        UNDECLARED
+     1  with a plural subject                      UNDECLARED
+     1  whether the narrower accumulator 118 F118-15 makes available is faster UNDECLARED
+     1  whether the character belongs              UNDECLARED
+     1  what is unresolved is whether the prose beside them is right to call the obligations open UNDECLARED
+     1  what a reduction costs at all              UNDECLARED
+     1  weights any positive                       UNDECLARED
+     1  warm-clamp-shared/src/lib                  UNDECLARED
+     1  threshold                                  UNDECLARED
+     1  they stand from 173's own check chain      UNDECLARED
+     1  they live where they were written          UNDECLARED
+     1  that pull is exactly what op's instruction names UNDECLARED
+     1  subtraction-freeness over one-signed declarations is a sufficient syntactic condition for it UNDECLARED
+     1  staged narrowing F_exact                   UNDECLARED
+     1  section 4 repairs the   placement and leaves the question exactly where it was UNDECLARED
+     1  saturating side is not established either way and no mechanism is offered for it UNDECLARED
+     1  same population                            UNDECLARED
+     1  same assignment set at W                   UNDECLARED
+     1  rounding any                               UNDECLARED
+     1  reference point                            UNDECLARED
+     1  pricing questions                          UNDECLARED
+     1  positions                                  UNDECLARED
+     1  operations {multiply-add                   UNDECLARED
+     1  only the partial-enumeration finding survived UNDECLARED
+     1  only R6 does not (137_probes/g8_does_the_class_reach_131s_arms UNDECLARED
+     1  numeral fixed-point signed                 UNDECLARED
+     1  non-conforming pair                        UNDECLARED
+     1  no exact duplicate arms                    UNDECLARED
+     1  multiplier schedules {[1                   UNDECLARED
+     1  multiplicative-only case is a measurement with that predicate and not a consequence of the proof UNDECLARED
+     1  line-anchor count is 47 over any target and 34 into panel files once ranges are normalised UNDECLARED
+     1  keying                                     UNDECLARED
+     1  it was                                     UNDECLARED
+     1  it caught the disabling on the first run of the finished text UNDECLARED
+     1  input shape                                UNDECLARED
+     1  if you would rather restate it yourself    UNDECLARED
+     1  if the licence predicates 177 computed diverge from 168's UNDECLARED
+     1  how any of this meets the strategy axis    UNDECLARED
+     1  float types                                UNDECLARED
+     1  feature gates                              UNDECLARED
+     1  every panel file before 114 except through 119's account UNDECLARED
+     1  every panel file before 108 except through 114's account UNDECLARED
+     1  every measurement it cites was taken       UNDECLARED
+     1  every file before 125                      UNDECLARED
+     1  equality read                              UNDECLARED
+     1  edition 2021                               UNDECLARED
+     1  domain: OPEN                               UNDECLARED
+     1  domain containing a complete residue system and the interval from zero to the value set's size UNDECLARED
+     1  decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions UNDECLARED
+     1  crate type                                 UNDECLARED
+     1  conforming pair                            UNDECLARED
+     1  closing a non-negative window under negation empties it again UNDECLARED
+     1  claim is about the additive structure      UNDECLARED
+     1  certificate weight proportional to the reciprocal deviation UNDECLARED
+     1  baseline uniform across coordinates        UNDECLARED
+     1  baseline any arm with positive weighted cost UNDECLARED
+     1  baseline any arm with positive coordinates UNDECLARED
+     1  augmentation coefficient                   UNDECLARED
+     1  assignments                                UNDECLARED
+     1  assignment sets and observation sets as    UNDECLARED
+     1  assignment set of rounding                 UNDECLARED
+     1  as 119 4                                   UNDECLARED
+     1  artifact repaired with numbers verified unchanged UNDECLARED
+     1  arm set                                    UNDECLARED
+     1  almost everything here fails it            UNDECLARED
+     1  accumulator width varied above the declared width UNDECLARED
+     1  a zero on a layer is a quoting-style fact  UNDECLARED
+     1  a verdict printing a literal               UNDECLARED
+     1  a trailing mark attaches to the sentence > immediately before it UNDECLARED
+     1  a matching heuristic applied to a question about absence UNDECLARED
+     1  a mark inside a sentence attaches to the semicolon- or comma-separated > clause it follows UNDECLARED
+     1  a heuristic scoped to adjacency            UNDECLARED
+     1  a clause that stands is cited by section number rather than by repeating 132's own anchors UNDECLARED
+     1  a carrier asserts the count as its own inherited result UNDECLARED
+     1  O-4                                        UNDECLARED
+     1  INTENTS                                    UNDECLARED
+     1  F_intermediate                             UNDECLARED
+     1  F_final                                    UNDECLARED
+     1  F_exact                                    UNDECLARED
+     1  F131-6 is the staged-narrowing finding     UNDECLARED
+     1  F116-11 and F14                            UNDECLARED
+     1  F112-16                                    UNDECLARED
+     1  > (4) whether the observability principle becomes an arvo intent UNDECLARED
+     1  720                                        UNDECLARED
+     1  5                                          UNDECLARED
+     1  2161 and 17840 deferral failures and 38 and 142 unsound with subtraction present UNDECLARED
+     1  200 independent target pairs               UNDECLARED
+     1  178_probes/quotecheck/ for the verbatim quotations under whitespace UNDECLARED
+     1  177 cited the same passages at slightly wider ranges UNDECLARED
+     1  176 at every superseded site               UNDECLARED
+     1  175 at 5                                   UNDECLARED
+     1  174 at A4                                  UNDECLARED
+     1  173 section 6 for the reserved list        UNDECLARED
+     1  168 4                                      UNDECLARED
+     1  135_probes/z1 output and its source at the parts my x2 reproduces UNDECLARED
+     1  133_probes/s1 source                       UNDECLARED
+     1  132:130                                    UNDECLARED
+     1  131:401                                    UNDECLARED
+     1  125_probes through 131_probes sources      UNDECLARED
+     1  122:53-55 and 122_probes/u0_test_gate_run  UNDECLARED
+     1  121 section 3                              UNDECLARED
+     1  120 tables per cell                        UNDECLARED
+     1  119_probes beyond r1                       UNDECLARED
+     1  116_probes/p3 at its search structure      UNDECLARED
+     1  116_probes/p1                              UNDECLARED
+     1  114_probes/p9 at the variant definitions   UNDECLARED
+     1  (6) the vocabulary calls (chain against region UNDECLARED
+     1  (5) which chain carrier > ships            UNDECLARED
+     1  (3) which accuracy target I7 names         UNDECLARED
+     1  (2) the canon-form > question coupled to 156 item 2 as one decision UNDECLARED
+     1  #![no_std]                                 UNDECLARED
+     1  "no subtraction over one-signed declarations" is what a compiler can check UNDECLARED
+
+### C1, two axes that must read declared
+  present in the key list: PASS
+### C2, one key that must read undeclared
+  radix ABSENT: extractor missed a key it should have found
+### C4, the key the previous three extractors mangled
+  domain present, spelled in full: PASS
