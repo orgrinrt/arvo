@@ -406,10 +406,7 @@ pub fn rows_restating_a_retired_claim(reg: &Registry) -> Vec<Finding> {
                     }
                     continue;
                 }
-                if words
-                    .windows(RUN)
-                    .any(|w| haystack.contains(&w.join(" ")))
-                {
+                if words.windows(RUN).any(|w| haystack.contains(&w.join(" "))) {
                     out.push(hit(row, slug, claim));
                 }
             }
