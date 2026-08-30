@@ -498,8 +498,21 @@ to qualify every citation, which is a rule people forget. This is a rule the fil
 **Citing dead material stays legal and stays visible.** `OLD_109_the_consolidation_drop_audit.md` reads as
 what it is at every glance, in prose, in a grep result, and in a diff. The 105 archive citations already
 written into `SEED_TALKING_POINTS.md`, the three `SEED_THEORY_*` files and `PRIOR_CALLS.md` were repointed
-when the rename landed, checked both directions: no unprefixed archive citation remains, and no `OLD_`
-citation names a file that does not exist.
+when the rename landed, and those five files still carry none: measured at zero each.
+
+**That pass claimed the class and had fixed the instances, and the sentence here used to say so.** It read
+"no unprefixed archive citation remains", which is a claim over the whole tree made from a check over five
+files. Measured across the panel directory: **45 files carry 118 unprefixed `seed/SETTLED_*` citations**,
+none of which resolves. Two were in `INTENTS.md`, which is the catalogue every dispatch reads first, so
+the provenance of I2 and I3 pointed at nothing for as long as the sentence stood.
+
+- **The two in `INTENTS.md` are repointed.** It is a living ledger and it is read as current.
+- **The other 116 stay exactly as written.** They are in landed numbered files, which are the record and
+  are not edited. **Read an unprefixed `seed/SETTLED_*` citation by prepending `OLD_`**; nothing else about
+  it has moved.
+- **`mock/checks` enforces the repaired claim** rather than the prose asserting it: no living ledger may
+  carry an unprefixed archive citation, and every `seed/OLD_*` citation anywhere has to name a file that
+  exists. A totality claim with nothing enforcing it is what produced this.
 
 **When something in root dies, prefix it then.** The root's non-prefixed state is a claim that everything in
 it is live, and that claim is only true if it is maintained.

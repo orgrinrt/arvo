@@ -64,7 +64,7 @@ names and the decomposition are all open.
 
 **STATED, and its enumeration is OPEN.** The shape of this claim survives, because op spent 2026-08-08
 stating intents rather than deriving them (`34`, `36`, `37`, `38`). The list of four it enumerates does
-not, per I1. Quoted at `seed/SETTLED_strategy.md` section 2, from the prior panel at `70:106-109` and
+not, per I1. Quoted at `seed/OLD_SETTLED_strategy.md` section 2, from the prior panel at `70:106-109` and
 requoted at `124:2578-2580`.
 
 > `Hot` is as fast as possible, `Cold` stores as small as possible, `Precise` is the most precise at
@@ -76,7 +76,7 @@ requoted at `124:2578-2580`.
 **STATED, on op's current word rather than on the carried rung.** He restated it on 2026-08-08 and
 refined it at `38`, so its authority does not depend on the prior panel's classification. Whether a
 strategy named `Warm` exists in the final decomposition is open, per I1. Originally at `140b:16-21`,
-carried at `seed/SETTLED_strategy.md` section 3.
+carried at `seed/OLD_SETTLED_strategy.md` section 3.
 
 > My standing call is "It should behave like native primitives in regular old rust would"... The
 > intent, here, is what matters. The mechanisms and theory may live freely and shift under and around

@@ -86,6 +86,48 @@ what = "What a canon sentence may be: which kinds of statement it carries, where
 unit = "put to op at 156 items 2 and 3; the marking convention is 173's"
 keywords = ["canon", "canon form", "sentence kind", "theorem", "measured", "normative", "argument", "canon or design", "tier", "marking"]
 
+# The six below were added after the first port of op's rulings, which reported
+# that his clearest statements about what arvo is had nowhere to go and were
+# filed under headings about lowering. Every one of them names a subject op
+# himself speaks about directly, which is the tell that the first pass built the
+# topic list from the panel's units rather than from his words.
+
+[[topic]]
+id = "arvo_identity"
+what = "What arvo is and what it is for: a library rather than a program, whose value is what composes on top of it."
+unit = "op's own statements, chiefly I11"
+keywords = ["identity", "library", "not a program", "selling point", "consumer", "downstream", "composition contract", "what arvo is", "purpose", "scope"]
+
+[[topic]]
+id = "execution_environment"
+what = "What arvo assumes about the machine it runs on: cores, threads, detection, and when adaptation is permitted."
+unit = "op's own statements, chiefly I10"
+keywords = ["threads", "cores", "core count", "parallel", "adaptation", "detection", "runtime environment", "machine", "concurrency", "no stance"]
+
+[[topic]]
+id = "operating_constraints"
+what = "The constraints arvo is built under and does not relitigate: no_std, no alloc, const sizes, monomorphisation as dispatch, no platform dependency, and the stack's own primitives at public positions."
+unit = "op's own statements, chiefly I14; enforced independently by this repo's lint configuration"
+keywords = ["no_std", "no alloc", "const", "monomorphisation", "dyn", "TypeId", "platform", "dependency", "bare primitive", "constraint", "in force", "rules"]
+
+[[topic]]
+id = "binding_time"
+what = "When a thing happens: what is decided at compile time, what a const expression may reach, and what may never happen at runtime."
+unit = "op's own statements, chiefly I15 and I16, with the const-availability call at 83"
+keywords = ["const", "compile time", "runtime", "runtime check", "binding time", "monomorphisation", "erased", "lowered", "const eval", "typestate", "gate", "when"]
+
+[[topic]]
+id = "validation"
+what = "What validating a numeral means and who does it: whether a shape is admissible, whether a use is correct, and whether a value checks itself."
+unit = "raised as Q1 and never separated from the format topic"
+keywords = ["validate", "validation", "admissible", "admissibility", "check", "well formed", "invalid", "refuse", "self validation", "usage"]
+
+[[topic]]
+id = "naming"
+what = "What things are called, where the name is a call somebody has to make rather than something a measurement settles."
+unit = "reached in several units; op's 105 on Strategy is the clearest instance"
+keywords = ["name", "naming", "vocabulary", "spelling", "rename", "term", "what to call it", "taste"]
+
 [[topic]]
 id = "panel_conduct"
 what = "How this panel is run and how its output is to be read. Not a claim about arvo."

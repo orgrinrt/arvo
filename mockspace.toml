@@ -876,8 +876,8 @@ group_by = "topic"
 name = "kind"
 type = "string"
 required = true
-description = "`intent` for a want stated with no question in front of it; `ruling` for a question answered; `refusal` for an answer that a thing will not be done, which owes what happens instead; `process` for a call about how the work is conducted rather than about what arvo is."
-values = ["intent", "ruling", "refusal", "process"]
+description = "`intent` for a want stated with no question in front of it; `ruling` for a question answered; `refusal` for an answer that a thing will not be done, which owes what happens instead; `deferral` for a question he declines to answer and hands back, which owes who it goes to; `process` for a call about how the work is conducted rather than about what arvo is."
+values = ["intent", "ruling", "refusal", "deferral", "process"]
 
 [[registry.namespace.field]]
 name = "rung"
@@ -915,7 +915,7 @@ description = "The reasoning, where he gave one. A ruling whose reasoning is los
 name = "instead"
 type = "string"
 required = false
-description = "For a refusal: what happens in place of the refused thing. A refusal naming no alternative leaves the question it closed with no answer."
+description = "For a refusal, what happens in place of the refused thing; for a deferral, who the question goes back to and on what terms. Either without it leaves the question it closed with no answer."
 
 [[registry.namespace.field]]
 name = "answers"

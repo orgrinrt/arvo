@@ -16,26 +16,60 @@
 
 use crate::{Finding, Registry};
 
-/// A refusal that names nothing in its place closes a question and leaves it
-/// with no answer.
+/// A ruling recording op's authority with no words of his behind it.
 ///
-/// Both namespaces that carry a `refusal` kind, because the obligation is the
-/// same wherever the refusal came from.
+/// `says` is required and `quote` is not, which inverts the trust order: a row
+/// can carry somebody's restatement of him, pass every check, and be
+/// mechanically indistinguishable from one that was invented. The first port
+/// landed four of exactly that shape, and one of them governs when anything
+/// becomes canon at all, its only record being an agent's sentence reporting
+/// which option he took.
+///
+/// **Not an error in the row.** Sometimes the corpus genuinely holds no
+/// verbatim, and the row is the best available record of a real call. What the
+/// finding says is that the hole is in the corpus and somebody should know
+/// where. A row that has a reason states it in `note`, and this reports it
+/// anyway, because a note is prose and this is a list.
+pub fn rulings_with_no_verbatim(reg: &Registry) -> Vec<Finding> {
+    reg.of("ruling")
+        .filter(|row| row.get("quote").is_none_or(str::is_empty))
+        .map(|row| {
+            Finding::new(
+                "ruling-carries-no-verbatim",
+                row.addr(),
+                "`says` is set and `quote` is not, so what stands behind this is somebody's \
+                 restatement of him. Quote the source, or record in `note` that the corpus \
+                 holds no verbatim and what it holds instead."
+                    .to_string(),
+            )
+        })
+        .collect()
+}
+
+/// A refusal or a deferral that names nothing in its place closes a question
+/// and leaves it with no answer.
+///
+/// Both namespaces that carry the kinds, because the obligation is the same
+/// wherever the answer came from. A deferral owes the same sentence for a
+/// different reason: it says who the question goes back to, and without that it
+/// is a question that has stopped being anybody's.
 pub fn refusals_without_an_instead(reg: &Registry) -> Vec<Finding> {
     let mut out = Vec::new();
     for namespace in ["ruling", "proposal"] {
         for row in reg.of(namespace) {
-            if row.get("kind") != Some("refusal") {
+            if !matches!(row.get("kind"), Some("refusal" | "deferral")) {
                 continue;
             }
             if row.get("instead").is_none_or(str::is_empty) {
+                let kind = row.get("kind").unwrap_or("refusal");
                 out.push(Finding::new(
                     "refusal-owes-an-instead",
                     row.addr(),
-                    "the kind is `refusal` and `instead` is empty. A refusal naming no \
-                     alternative closes the question it answered and leaves nothing in its \
-                     place, so the next reader reopens it."
-                        .to_string(),
+                    format!(
+                        "the kind is `{kind}` and `instead` is empty. Closing a question \
+                         without naming what happens in its place leaves nothing there, so \
+                         the next reader reopens it."
+                    ),
                 ));
             }
         }

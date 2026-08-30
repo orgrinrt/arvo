@@ -42,6 +42,74 @@ fn the_committed_canon_leaves_no_row_unfindable() {
     assert!(found.is_empty(), "{found:#?}");
 }
 
+/// The rulings with nothing verbatim behind them, pinned by name.
+///
+/// This one does not assert an empty list, because the list is not empty and
+/// will not become empty: for these four the corpus itself holds no words of
+/// op's, only somebody's report of which option he took. Asserting zero would
+/// be a red test nobody can fix, and ignoring it would stop the arm reporting a
+/// fifth.
+///
+/// So the known hole is written down and anything else fails. The most
+/// consequential of the four governs when anything becomes canon at all, and
+/// its only record is an agent's sentence reading "He took the third."
+#[test]
+fn the_rulings_with_no_verbatim_are_the_four_the_corpus_has_no_words_for() {
+    const KNOWN: &[&str] = &[
+        "ruling::the_branch_waits_for_the_canon",
+        "ruling::the_canon_is_written_once_at_the_end",
+        "ruling::the_d_numbered_decisions_are_dead",
+        "ruling::the_family_question_wants_the_comparison_first",
+    ];
+    let mut found: Vec<String> = shape::rulings_with_no_verbatim(&canon())
+        .into_iter()
+        .map(|f| f.at)
+        .collect();
+    found.sort();
+    assert_eq!(
+        found, KNOWN,
+        "a ruling claims op's authority with no words of his behind it. Either quote the \
+         source, or add it here with the reason the corpus holds none."
+    );
+}
+
+#[test]
+fn a_ruling_with_a_quote_is_not_reported_and_one_without_is() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[ruling]]
+id = "his_own_words"
+says = "the strategy set is not closed at four"
+quote = "the strategy set is not closed at exactly four"
+
+[[ruling]]
+id = "somebody_elses_words"
+says = "he took the third option"
+"#,
+    );
+    let found = shape::rulings_with_no_verbatim(&reg);
+    assert_eq!(found.len(), 1, "{found:#?}");
+    assert!(found[0].at.contains("somebody_elses_words"), "{}", found[0].at);
+    assert_eq!(found[0].kind, "ruling-carries-no-verbatim");
+}
+
+/// A proposal has no `quote` by construction: there are no words but the
+/// panel's, which is what `says` holds. Reporting one would be reporting the
+/// namespace rather than a defect in a row.
+#[test]
+fn a_proposal_is_not_asked_for_a_verbatim() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[proposal]]
+id = "a_claim"
+says = "the partition is derivable without the observability rule"
+"#,
+    );
+    assert!(shape::rulings_with_no_verbatim(&reg).is_empty());
+}
+
 #[test]
 fn a_refusal_with_no_alternative_is_reported_in_either_namespace() {
     let reg = parse(
@@ -69,6 +137,38 @@ instead = "the overlay stays, and it costs the support this brings"
          {found:#?}"
     );
     assert!(found.iter().all(|f| f.kind == "refusal-owes-an-instead"));
+}
+
+/// A deferral owes the same sentence for a different reason.
+///
+/// Op declining to make a call and handing it back is a distinct act from
+/// refusing a thing, and it was being recorded as `refusal` because nothing
+/// else fitted. A reader of a design would take that as arvo refusing to do
+/// something, which is the opposite of what happened. What a deferral owes is
+/// who it went back to.
+#[test]
+fn a_deferral_owes_the_same_sentence_and_says_which_kind_it_was() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[ruling]]
+id = "handed_back_with_nothing"
+kind = "deferral"
+
+[[ruling]]
+id = "handed_back_to_somebody"
+kind = "deferral"
+instead = "the panel settles it: impl detail, optimal and converged to by experts, iteratively"
+"#,
+    );
+    let found = shape::refusals_without_an_instead(&reg);
+    assert_eq!(found.len(), 1, "{found:#?}");
+    assert!(
+        found[0].says.contains("deferral"),
+        "the report names which kind it was, or a reader fixing it writes the wrong \
+         sentence: {}",
+        found[0].says
+    );
 }
 
 #[test]

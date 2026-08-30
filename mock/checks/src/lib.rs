@@ -29,6 +29,7 @@ use toml_edit::{DocumentMut, Item, Value};
 
 pub mod citation;
 pub mod comments;
+pub mod corpus;
 pub mod predicate;
 pub mod shape;
 
