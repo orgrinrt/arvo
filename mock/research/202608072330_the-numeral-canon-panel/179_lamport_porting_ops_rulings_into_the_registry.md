@@ -454,3 +454,353 @@ topic rows, not a rewording of the rulings.
 **Six. `mock/checks/`.** It is named in the configuration, it is the guard the citation discipline rests on,
 and it does not exist. Every line citation into a living ledger in this corpus is currently unguarded, and
 section 9 has two that have already gone wrong.
+
+---
+
+# Second pass
+
+Appended rather than merged into the sections above, so that what the first pass claimed on its own
+evidence stays legible beside what later evidence changed. Four things landed underneath this file
+between the passes and I have acted on all four.
+
+## 12. Which statements above are now overtaken, named before anything else
+
+**Section 3's finding that `mock/checks/` does not exist is overtaken.** It exists, the living-ledger
+refusal is real at `mock/checks/tests/no_line_citation_into_a_living_ledger.rs`, and my `INTENTS::214`
+control passed at the time because the guard had not been built yet rather than because it was
+unsound. The sentence in `mockspace.toml:313-317` that described a guard which had never run now
+describes one that has. **The finding was correct when written and the repair is real.** I re-ran the
+whole check suite: 41 tests pass and one is ignored, correctly so, carrying a catalogue reason and the
+commit that removes it.
+
+**Section 8's six missing topics are overtaken.** All six exist and I have refiled onto them.
+
+**Sections 9's two source findings are overtaken by repair rather than by refutation.** The
+`seed/SETTLED_strategy.md` citations in `INTENTS.md` are repointed, and the class is far larger than
+the two I found. **My grep found the instance and stopped at the document I was reading**, which is
+the failure `fix-the-class-not-the-instance-named.md` names, and I committed it inside a file whose
+section 9 is about other people making the same mistake. `RULES.md:505` now states the class as **45
+files carrying 118 unprefixed citations**, measured. I reproduced it and got a different shape, so the
+figure is relayed with that caveat rather than adopted: `grep -rl` reports **44** files and `grep -ro`
+reports **118** occurrences today, of which **2** are `RULES.md`'s own prose describing the class, and
+`INTENTS.md` and `PERSONA_CALLS.md` are both at zero while `OPTIONS.md` holds the 4 catalogued red. The
+occurrence total is unchanged across a repair that removed citations, which is the shape that reads as
+reassurance and means nothing. **It is not my number and not load-bearing for these rows; I could not
+close the one-file gap from here and am handing it back rather than guessing at it.**
+
+**Nothing else above is retracted**, and in particular the rung findings against `45_fallin` and
+`AGREEMENTS.md` stand unrepaired as far as I can see.
+
+## 13. The refiling, and one topic I judged already correct
+
+The six new topic rows are the right shape. I read each `what` and `keywords` against what section 8
+said the topic was for before refiling anything, and none needed arguing with. Ten rows moved:
+
+| Row | From | To |
+|---|---|---|
+| `arvo_is_a_library_and_the_value_composes_on_top` | `the_chain` | `arvo_identity` |
+| `ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up` | `the_realisation_map` | `arvo_identity` |
+| `arvo_takes_no_stance_on_how_many_cores_it_runs_on` | `the_realisation_map` | `execution_environment` |
+| `adaptation_is_conditional_on_proof_and_on_soundness` | `the_realisation_map` | `execution_environment` |
+| `the_core_adaptation_intent_is_canon_bound` | `the_realisation_map` | `execution_environment` |
+| `the_operating_constraints_are_intents_and_rules` | `the_realisation_map` | `operating_constraints` |
+| `never_a_runtime_check_and_one_lowered_path` | `the_realisation_map` | `binding_time` |
+| `the_predicate_is_whatever_is_available_at_const_time` | `the_predicate_notation` | `binding_time` |
+| `validate_means_all_three_readings` | `the_format` | `validation` |
+| `notko_renames_and_strategy_is_arvos_name` | `the_strategy_axis` | `naming` |
+
+The eighth was not in section 8's list and I moved it anyway. `the_predicate_is_whatever_is_available_at_const_time`
+was under `the_predicate_notation`, whose subject is **how a finding writes down the region it holds in**.
+Op's sentence is not about notation; it is about what a predicate may be built from, and the axis he
+names is const-availability. `binding_time`'s own `unit` field already anticipates it. Moved.
+
+**Every note that existed only to record a misfiling is gone.** One was reworded rather than deleted:
+`the_container_derivation_needs_fresh_eyes` stays under `the_realisation_map`, and its note now says
+that deriving a container from a declaration **is** realisation, so the topic fits rather than being a
+fallback. That was a bad judgement in the first pass, not a missing topic.
+
+**I did not move `the_canon_does_not_police_what_shape_a_law_takes` to `binding_time`**, although
+`binding_time`'s `unit` names I16. Op's call is that the canon shall not rank the constructions, and
+`algebraic_laws` covers "how a law's verdict is established and expressed", which is what the call is
+about. The one-lowered-path requirement is his **reason**, and it is in `because` where a reason
+belongs. A row goes under what it is about rather than under what its reason mentions.
+
+## 14. The `deferral` kind: agreed for one row, refused for the other, and swept for three more
+
+**The value is right and the reason given for it is right.** My first pass said `refusal` plus
+`instead` works, and that reading was wrong in a way I could not see from inside the registry: I was
+reading `refusal` as a speech act, and a reader of a *design* reads it as a claim about arvo. Those are
+different sentences and only one of them is true of these rows.
+
+**Agreed: `which_half_of_the_pair_i9_attaches_to_is_not_his` is a deferral.** He declined to pick, the
+question went back to the experts, and the terms are stated in his own words. Retagged.
+
+**Refused: `the_canon_does_not_police_what_shape_a_law_takes` stays a `refusal`.** He did not hand this
+question back to anybody. He dissolved it. Asked which of four const-time constructions a law
+permission must use, he answered that **the canon shall not police what shape a law takes**, which is a
+permanent normative statement about the canon rather than a decline to make one. The new definition
+requires a deferral to name **who it goes to**, and there is no who: nothing is owed by anyone
+afterwards. And the reader-of-a-design test the coordinator used to justify the new value cuts the
+other way here: a reader taking this as "arvo refuses to do the thing" reads it **correctly**, because
+what is refused is the policing.
+
+**And I swept, because a five-value enumeration applied to one of the rows it fits leaves the namespace
+inconsistent for the next reader.** Three more retagged, each on the same test, does the row's content
+name who the question goes back to and on what terms:
+
+- `the_family_question_wants_the_comparison_first`, back to the panel as its first expert task.
+- `his_instinct_on_one_family_is_not_to_be_acted_on`, back to the panel to converge, with the instinct explicitly not to be acted on.
+- `wrap_or_clamp_stays_open_and_both_get_priced`, back to the bench, with both readings written and priced.
+- `the_carrier_question_waits_on_the_contention_measurement`, back to the panel and waiting on the contention run.
+
+**All four gained an `instead`**, which they did not have as `ruling` or `process` rows and which the
+new value obliges. `mock/checks` enforces that and the arm has both directions planted, so this was
+checked rather than asserted.
+
+**Three rows I considered and left alone, because the sweep has an edge and this is where it falls.**
+`do_not_escalate_a_measurement_dispute`, `the_next_unit_is_chosen_bottom_up` and
+`the_question_was_already_answered_by_an_intent` are each, as speech acts, declines that hand something
+back. They stay `process`. **The reason is that `kind` is not one classification but two wearing one
+field**: `intent`, `ruling`, `refusal` and `deferral` sort by speech act, and `process` sorts by
+subject. Where a row is both, I have let `process` win when the row's value to a later reader is the
+standing instruction it establishes, and `deferral` win when its value is that one named question went
+back unanswered. **That rule is mine and is not in the schema.** Somebody should either write it into
+the `kind` description or split the field, because the next person to hit it will draw the line
+somewhere else and nothing will report the disagreement.
+
+## 15. What op said at `181`, and what I took from it
+
+Nine rows. **I agree with both design statements the coordinator named and took a third, and I ported
+five process statements rather than none.**
+
+**The two design statements, as offered.** `the_trait_contract_structure_is_a_primary_paradigm`, under
+`arvo_identity`, with his reason in `because`. And `the_canon_must_support_a_full_design_and_impl`,
+under `canon_form`, which I have as `process` rather than `intent` because it is a bar on the artifact
+rather than a want about arvo.
+
+**A third the coordinator's reading folded into process, which I think is separable.**
+`the_canon_is_settled_in_full_then_he_reviews_it`. It looks like a restatement of his earlier call that
+the goal is not met until ratification, and it is not quite: **it puts a review step between settling
+and ratifying**, and those are two acts. The earlier row stands and this one refines it.
+
+**Five process rows.** The registry conversion, the porting work order, the pace instruction, the
+autonomy and question-batching instruction, and the wider stack to borrow from. I ported the last of
+those because it bears on design rather than on housekeeping: it is the standing instruction against
+reinventing what the stack already carries.
+
+**One deferral, and it is the cleanest instance of the new kind in the namespace.**
+`the_tools_concept_is_the_coordinators_call`. "Your call either way" hands a named fork over on two
+stated terms, which is exactly what `instead` is for.
+
+**What I did not port, and why.** The worktree hygiene, the homma tooling, `.shared/scripts`, and the
+four questions in his closing paragraph. Those govern how this session operates and create no
+obligation on arvo's design; `181`'s own closing section says so of the four questions and I agree
+about the rest. **If somebody wants them recorded, the place is the workspace state file, not arvo's
+canon.**
+
+**Rung: `stated` on all nine, and I looked for an argument against it twice.**
+
+- **The trait-contract paradigm** has a partial enforcement outside the panel, which is the test I14 passes to earn `in_force`: `mockspace.toml:135` declares an `arvo-bits-traits-only` lint and the crate layer vocabulary carries three contracts crates. **I did not take it.** What that lint enforces is where traits may live in one crate, which is narrower than the paradigm he stated, so the enforcement does not reach the claim.
+- **The registry conversion** is enforced in the sense that the schema check runs on every commit. **I did not take it.** What the tooling enforces is the registry's shape, not the decision to have one.
+
+Both arguments are in the rows' `note` fields so the next reader can overturn me without rediscovering
+them.
+
+**One tension recorded rather than resolved.** At `87` he took the option that **nothing moves into the
+canon until every topic is done**, and at `181` the first work is to **port everything settled into the
+registry now**. These compose only if porting is not promoting, which is what the rungs are doing:
+sixty-eight of seventy-five rows are `stated`. **If a later reader treats the registry's existence as
+the canon existing, the two statements collide and `87` is the one being broken.** It is in the
+registry row's note.
+
+## 16. Counts, second pass, measured
+
+```
+$ grep -c '^\[\[ruling\]\]' mock/registry/ruling.toml
+75
+$ grep '^kind = ' mock/registry/ruling.toml | sort | uniq -c | sort -rn
+  37 kind = "process"
+  20 kind = "intent"
+  11 kind = "ruling"
+   6 kind = "deferral"
+   1 kind = "refusal"
+$ grep '^rung = ' mock/registry/ruling.toml | sort | uniq -c | sort -rn
+  68 rung = "stated"
+   5 rung = "open"
+   1 rung = "ratified"
+   1 rung = "in_force"
+$ grep -c '^quote = ' mock/registry/ruling.toml    # 71; the same four have none
+71
+$ grep -c '^instead = ' mock/registry/ruling.toml
+12
+```
+
+`mock/research/.../179_probes/verify_quotes.sh` reports 71 quoted rows and zero mismatches, with its
+negative control firing. `cargo test -p arvo-checks` from `mock/`: 41 passed, 1 ignored.
+
+**The rung distribution has got worse rather than better, and that is the honest result.** Nine rows
+added, none of them ratified, so ninety-one percent of what op has said in this corpus sits at `stated`.
+
+## 17. Brief for the second reader on `PRIOR_CALLS.md`
+
+**The question, stated exactly.** `PRIOR_CALLS.md` collects op's design decisions from arvo's earlier
+history. **Should its substantive entries become rows in the `ruling` namespace?** I answered no. That
+answer is one expert's and needs a second, independent one. **Form your own reading from the material
+below before reading my reasoning in section 5, and say where you land even if it is where I did.**
+
+### 17.1 The text I relied on, verbatim
+
+`PRIOR_CALLS.md`, heading `## The status of everything below, in op's own words`. Op, quoted there from
+the dispatch that commissioned the file:
+
+> So all my prior calls can be mined and should be collected for reference, but not as calls, not as
+> ratified intents, but as historical log of my calls, explicitly connected to a *failure* which means
+> they aren't "canon" so to say. All of them I've made in earnest, all of them made sense at the time,
+> but none of them relate to this new panel or its convergence or settled intents, and should not act
+> as if it did. They should be added as an extra layer of reference, but nothing more, and mostly its
+> usefulness is giving experts ideas what to test (why did they make that call, and does it hold here?
+> Etc) and explore, and also, for you and the orgrinrt persona especially, gives material to learn my
+> preference, taste, gut instincts and intuition by inference. But again, none of it absolute. The
+> answers are likely wrong, and the questions they answer, are also probably wrong. So substance
+> itself is only good as extra stuff to consider or explore, nothing more. The flavor and intuition
+> inferred can feed my persona and also feed exploration and testing though.
+
+The operative clauses, as I read them: **"not as calls, not as ratified intents"**; **"should not act
+as if it did"**; and **"substance itself is only good as extra stuff to consider or explore, nothing
+more."**
+
+`RULES.md:641-642` draws the consequence and is the panel's own statement rather than op's:
+
+> attributed to op does not outrank a panel finding, does not settle an option, and does not close a
+> question. It cannot be cited to support a claim.
+
+### 17.2 The two panel citations, with what surrounds them
+
+**`85` section 4, in full.** Note that the source paraphrases his answer rather than quoting it, which
+is a weakness in my case and I am naming it rather than leaving you to find it:
+
+> ## 4. The twenty-one D-numbered decisions are dead
+>
+> **The question.** Twenty-one decisions attributed to op sit outside `INTENTS.md`, in the formalization
+> talk's topic file, numbered to D75 and marked "Decision (op, ...)". Offered: dead, do not mine them; mine
+> them case by case and re-quote anything still meant; or they are live as they stand.
+>
+> **He chose the first: dead, do not mine them.**
+>
+> They belong to the failed lineage with the rest of the prior calls. Useful for inferring taste and for
+> giving experts things to test, never authority. Nothing is promoted from them and the panel re-derives
+> anything it needs.
+
+**`104` section 4**, where the same question was put again and he answered "Already answered." The
+file's own conclusion is that the question was derivable from I12 and should not have been asked. **Note
+the scope**: both citations are about the twenty-one D-numbered decisions specifically, not about the
+whole of `PRIOR_CALLS.md`. **My argument generalises from them and you should test that step.**
+
+### 17.3 The strongest case against my answer, which I owe you
+
+**One. He asked for the material to be collected, and the registry is replacing the prose ledgers.**
+"They should be added as an extra layer of reference" is his instruction, "added" is his verb, and
+`PRIOR_CALLS.md` is a prose ledger of exactly the kind `181` says the registry is now the convention
+for. Refusing to port may be losing a layer he asked to exist, by preserving it in a format the project
+is moving off.
+
+**Two. The namespace is built to hold material that does not bind.** Its own schema comment: "Superseded
+rows stay. A later row supersedes an earlier one and both remain readable, because the record of having
+changed course is worth more than a tidy table." A namespace designed around that is not obviously the
+wrong home for a superseded corpus.
+
+**Three. At least one prior call has the same standing that earned I14 its `in_force` rung.** The
+pricing pillar at `PRIOR_CALLS.md` section 5 is op verbatim, and a live workspace rule of the same
+name, `arvo-compile-time-last.md`, sits at the workspace root rather than in this repo and is enforced
+outside this panel exactly as I14's constraints are. **If enforcement outside the panel is what makes
+I14 `in_force` despite its age, the same test applied to this call gives the same answer, and my
+refusal is inconsistent.** This is the
+single best argument against me and I have no clean answer to it.
+
+### 17.4 What the row would have looked like
+
+I built the candidate from the pricing pillar, because it is the entry most defensible to port and
+therefore the one worth disagreeing about. It is not committed and does not exist in the registry.
+
+```toml
+[[ruling]]
+id = "compile_time_is_nothing_and_cost_is_amortised_there"
+kind = "intent"
+rung = "stated"          # or "in_force", per 17.3 argument three
+topic = "binding_time"
+says = "Compile time is nothing and may be literal minutes. Long compile times are wanted where they resolve to snappy optimal runtime with the soundness, safety and numeric machinery amortised fully at compile time, and no strategy defers to runtime a cost it can avoid."
+quote = '''
+Compile time is nothing. That can be literal minutes for all we care ... We *want* long compile
+times, if it resolves to snappy optimal runtime with the extra soundness, safety and numeric
+machinery amortized fully at compile.
+
+it's always amortize runtime cost in compile, const time, absolutely always, no matter the
+strategy ... NEVER do any strategy defer the cost to runtime that it can avoid!
+'''
+provenance = ["panel::202607301300_formalization-spec-panel::OLD_77b_op_checkpoint_nineteen::#..."]
+```
+
+**Three things go wrong in it and they are the whole of my case.**
+
+**The `rung` is a lie whichever value it takes.** `stated` means his direction, and he has said this is
+not direction for this panel. `in_force` is arguable on argument three and would make a call from a
+nuked lineage outrank a live panel finding, which `RULES.md:641-642` forbids by name. `open` means he
+has explicitly not settled it, which is not what happened. **There is no honest value.**
+
+**The quotation is elided.** Both halves carry `...` in the ledger, so a verbatim field would be
+carrying an agent's edit of his words. `179_probes/verify_quotes.sh` would pass it, because it tests
+containment of what I typed rather than completeness of what he said, and that is a hole in my
+instrument worth knowing about.
+
+**The provenance would point into the closed panel.** `OLD_77b_op_checkpoint_nineteen.md` exists and is
+citable, so this one is soluble; but the ledger's own coverage statement says the D1-to-D52 material was
+read through an agent compression with two originals spot-checked, so **a row built from most of the
+file would quote a compression and cite an original nobody opened.**
+
+### 17.5 The third answer neither of us named, and I think it is the real one
+
+**`retirement` is a better fit than `ruling` and nobody has proposed it.** Its fields land almost
+exactly on this material: `claim` is the call in the words a reader would grep, `why` is the withdrawal,
+`replacement` is optional and the schema says its absence is "an ordinary outcome and not a gap", and
+`provenance` is specified as **"Where the claim was made and where it was retired. Both, because a
+reader meeting the claim in the wild needs to get from there to here."** That last sentence describes
+this problem precisely.
+
+**It is not exact either, and the misfit is worth stating.** `retirement` is "what must not be cited
+again", and op did not say that: he said the calls should be mined for taste and for things to test,
+and only that they carry no authority. A blanket retirement over-reads him in the opposite direction
+from the one a `ruling` row would.
+
+**So the choice is three-way and each option misfits differently.** `ruling` claims an authority he
+withdrew. `retirement` withdraws a use he licensed. Leaving it in prose keeps both right and keeps the
+material outside the registry the project is converging on. **I chose the third and I hold it weakly.**
+If you reach `retirement`, say so, because that is a schema answer rather than a filing answer and it
+would need op.
+
+### 17.6 What would change my mind
+
+A reading of "should be added as an extra layer of reference" that survives the registry becoming the
+only layer there is. Or a `rung` value that says "his words, authority withdrawn by him", which does not
+exist and which only op can license. Or a demonstration that `retirement` holds the material without
+over-reading him.
+
+## 18. What is still owed after this pass
+
+**One.** The `PRIOR_CALLS.md` question, to a second reader, against section 17 rather than against a
+paraphrase.
+
+**Two.** The `kind` field sorting by two different things at once, section 14. It needs either a
+sentence in the schema or a split, and until then my three borderline rows are a judgement nothing
+checks.
+
+**Three.** `45_fallin:86`, `45:350`, `45:379` and `AGREEMENTS.md:62-64` still carry the RATIFIED import
+that `INTENTS.md:33` forbids. Unrepaired as far as I can see, and `AGREEMENTS.md` is a living ledger, so
+correcting it is cheap.
+
+**Four.** The `87` against `181` tension in section 15, which nobody has put to op and which I have
+recorded rather than resolved.
+
+**Five.** My quote verifier passes an elided quotation, section 17.4. It tests containment of what was
+typed, not completeness of what he said, and a row carrying `...` inside a verbatim field would go
+unreported. I have not fixed it because no committed row carries an elision; the next person to port
+from a ledger that elides will need it.

@@ -452,7 +452,7 @@ keywords = ["queue", "batch", "scope", "repository", "context switch", "parked",
 id = "arvo_is_a_library_and_the_value_composes_on_top"
 kind = "intent"
 rung = "stated"
-topic = "the_chain"
+topic = "arvo_identity"
 key = "I11"
 says = "arvo is a library rather than a program, so how end users will use it is unknown. The selling point is the algorithm crates that every downstream repository uses, and the contracts for things that compose into units bigger than numerals alone. The numeral base has to work so the bigger things can be built on it."
 quote = '''
@@ -461,7 +461,7 @@ selling point are the algo crates that hilavitkutin, vehje, pretty much every si
 I have, downstream, use. As well as the contracts for things that compose to bigger units than just
 numerals alone. But we need this base to work, to build the bigger things.
 '''
-note = "Said inside the answer about thread counts, and it is the half with the wider reach. The topic is the least-wrong of the ones that exist, taken for the composition half of the claim. No topic in this registry is about what arvo is or what it is for, and `panel_conduct` is not the fallback because its own row says it is not a claim about arvo. He marks the whole answer a ratifiable intent, which is not the same as ratified."
+note = "Said inside the answer about thread counts, and it is the half with the wider reach. He marks the whole answer a ratifiable intent, which is not the same as ratified."
 provenance = ["panel::202608072330_the-numeral-canon-panel::32_op_arvo_adapts_to_the_cores_it_finds::#his-answer-verbatim"]
 keywords = ["library", "program", "consumer", "downstream", "algo crates", "contracts", "composition", "identity", "selling point"]
 
@@ -469,7 +469,7 @@ keywords = ["library", "program", "consumer", "downstream", "algo crates", "cont
 id = "arvo_takes_no_stance_on_how_many_cores_it_runs_on"
 kind = "intent"
 rung = "stated"
-topic = "the_realisation_map"
+topic = "execution_environment"
 key = "I10"
 says = "arvo will run at one thread, two threads, or any finite n, and takes no stance on which. Where several cores can be detected and parallelism proves more efficient than the alternatives, do that. Where they cannot, do the most efficient thing in a single-threaded realm."
 quote = '''
@@ -479,7 +479,7 @@ we can detect we have several cores available. When we don't, we do what is the 
 in a single-threaded realm.
 '''
 because = "A library does not know how it will be used, so it cannot name a regime."
-note = "This dissolves the question it was asked rather than picking among its options. The options were: the canon's claim is about one core; about the declared parallel workload; or the inequality alone with no regime. Whether the core count is detected at build time, at run time, or supplied by the consumer is not stated and is not to be assumed. The topic is a placeholder: no topic in this registry is about arvo's execution environment, and `panel_conduct` is not the fallback because its own row says it is not a claim about arvo."
+note = "This dissolves the question it was asked rather than picking among its options. The options were: the canon's claim is about one core; about the declared parallel workload; or the inequality alone with no regime. Whether the core count is detected at build time, at run time, or supplied by the consumer is not stated and is not to be assumed."
 provenance = ["panel::202608072330_the-numeral-canon-panel::32_op_arvo_adapts_to_the_cores_it_finds::#his-answer-verbatim"]
 keywords = ["threads", "cores", "parallel", "single-threaded", "detect", "regime", "no stance", "concurrency"]
 
@@ -487,13 +487,13 @@ keywords = ["threads", "cores", "parallel", "single-threaded", "detect", "regime
 id = "adaptation_is_conditional_on_proof_and_on_soundness"
 kind = "intent"
 rung = "stated"
-topic = "the_realisation_map"
+topic = "execution_environment"
 says = "arvo is multi-threadable wherever that is proven to improve performance without sacrificing soundness. Two conditions, not one."
 quote = '''
 Yes, arvo will be multi-threadanle wherever it is proven to improve performance without sacrificing
 the soundness.
 '''
-note = "Read alone this makes soundness a uniform side condition over every strategy. He corrected that within the hour, and the correction is a separate row. The topic is a placeholder: no topic in this registry is about arvo's execution environment, and `panel_conduct` is not the fallback because its own row says it is not a claim about arvo."
+note = "Read alone this makes soundness a uniform side condition over every strategy. He corrected that within the hour, and the correction is a separate row."
 provenance = ["panel::202608072330_the-numeral-canon-panel::32_op_arvo_adapts_to_the_cores_it_finds::#his-answer-verbatim"]
 keywords = ["multi-threadable", "proven", "soundness", "performance", "adaptation", "condition"]
 
@@ -712,7 +712,7 @@ keywords = ["strategy", "orthogonal", "correct", "variable", "path", "parameteri
 
 [[ruling]]
 id = "which_half_of_the_pair_i9_attaches_to_is_not_his"
-kind = "refusal"
+kind = "deferral"
 rung = "stated"
 topic = "the_strategy_axis"
 says = "Whether the strategy-is-what-makes-an-answer-correct intent describes the whole strategy or only its policy half is an implementation detail, not a call he owes. The intent is clear as stated."
@@ -760,7 +760,7 @@ keywords = ["Cold", "deprioritise", "storage", "bitpack", "intent", "vehicle", "
 id = "notko_renames_and_strategy_is_arvos_name"
 kind = "ruling"
 rung = "stated"
-topic = "the_strategy_axis"
+topic = "naming"
 says = "Where the name Strategy collides between arvo and notko, notko is the side that renames."
 quote = '''
 notko renames
@@ -822,7 +822,7 @@ keywords = ["predicate", "unmeasured", "unknown", "unsure", "unstated", "absent"
 id = "the_predicate_is_whatever_is_available_at_const_time"
 kind = "ruling"
 rung = "stated"
-topic = "the_predicate_notation"
+topic = "binding_time"
 says = "The admissible category for a predicate is whatever is available at const time. Making the predicates const expressions allows using const functions and piping in data from outside the typestate, and because they are const-time expressions the typestate is usable inside them too."
 quote = '''
 Let me just add there that the above collapses to whatever is available at const time: Making the
@@ -860,7 +860,7 @@ keywords = ["universal", "one-fits-all", "case by case", "gate", "const expressi
 id = "the_operating_constraints_are_intents_and_rules"
 kind = "intent"
 rung = "in_force"
-topic = "the_realisation_map"
+topic = "operating_constraints"
 key = "I14"
 says = "The long-standing constraints are very explicitly arvo intents and rules: no std, no alloc, const sizes with no runtime growth, monomorphisation as the dispatch with no dyn and no TypeId, no platform dependency, and public API positions using the stack's own primitives rather than bare integers, floats, bool or usize. They are already in place, enforced by the mockspace lints and the workspace and repo rules, and they are not to be questioned."
 quote = '''
@@ -871,7 +871,7 @@ that, but it should've been clear. It doesn't trace to polka-dots, it traces to 
 and its rules... and this very mockspace of arvo's own...
 '''
 because = "The authority is the workspace rules and arvo's own mockspace configuration, both live and both enforced. Finding an older copy of a rule in another repository does not demote the rule."
-note = "The options put to him were: they are his intents; they are inherited assumptions the canon must re-derive or drop; or some are and some are not. He corrected the premise. The panel had spent five files hedging that arguments resting on these constraints stood on unratified ground, and arvo's generated agent instructions had been edited to say the same; nothing built on the constraints needed redoing, only the hedge attached to it. The topic here is a placeholder: no topic in this registry is about arvo's operating constraints."
+note = "The options put to him were: they are his intents; they are inherited assumptions the canon must re-derive or drop; or some are and some are not. He corrected the premise. The panel had spent five files hedging that arguments resting on these constraints stood on unratified ground, and arvo's generated agent instructions had been edited to say the same; nothing built on the constraints needed redoing, only the hedge attached to it."
 provenance = ["panel::202608072330_the-numeral-canon-panel::85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::#3-the-long-standing-constraints-were-always-intents-and-the-provenance-trace-was-beside-the-point"]
 keywords = ["no_std", "alloc", "const sizes", "monomorphisation", "dyn", "TypeId", "platform", "primitives", "lints", "constraints", "in force"]
 
@@ -879,7 +879,7 @@ keywords = ["no_std", "alloc", "const sizes", "monomorphisation", "dyn", "TypeId
 id = "never_a_runtime_check_and_one_lowered_path"
 kind = "intent"
 rung = "stated"
-topic = "the_realisation_map"
+topic = "binding_time"
 key = "I15"
 says = "Runtime code can exist. Its branching should be done as much as possible with const-time ifs erased by monomorphisation, const solving and ultimately the backend. Never any runtime checks, ever: invalids are caught at compile time and unused paths are cleared when lowered."
 quote = '''
@@ -888,7 +888,7 @@ should be done as much as possible, with const-time ifs that get erased via mono
 const time solving and ultimately llvm. Never any runtime checks, ever. We catch invalids on compile
 time, and unused paths we clear out when lowered. Period.
 '''
-note = "Two strengths in one sentence and they are different: \"as much as possible\" governs the branching, \"never, ever\" governs the checks. Runtime code exists; runtime validation does not. The options put to him were: compile time only, per type; both, at named places, compile time per type plus a runtime check at a declared ingest boundary; or runtime ingest as primary with the compile-time acts as consequences. He took the first and sharpened past it. The catalogue marks this STATED; by the same test it applies to the operating constraints it arguably reads as in force, since arvo's own repo rules carry it, and that disagreement is recorded here rather than acted on. The topic is a placeholder: no topic in this registry is about binding time."
+note = "Two strengths in one sentence and they are different: \"as much as possible\" governs the branching, \"never, ever\" governs the checks. Runtime code exists; runtime validation does not. The options put to him were: compile time only, per type; both, at named places, compile time per type plus a runtime check at a declared ingest boundary; or runtime ingest as primary with the compile-time acts as consequences. He took the first and sharpened past it. The catalogue marks this STATED; by the same test it applies to the operating constraints it arguably reads as in force, since arvo's own repo rules carry it, and that disagreement is recorded here rather than acted on."
 provenance = ["panel::202608072330_the-numeral-canon-panel::85_op_no_runtime_checks_ever_and_stop_policing_law_shapes::#1-never-any-runtime-checks-ever"]
 keywords = ["runtime check", "compile time", "const", "monomorphisation", "lowering", "erased", "validation", "invalid", "one path", "branch"]
 
@@ -896,7 +896,7 @@ keywords = ["runtime check", "compile time", "const", "monomorphisation", "lower
 id = "ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up"
 kind = "ruling"
 rung = "stated"
-topic = "the_realisation_map"
+topic = "arvo_identity"
 says = "Data entering from outside the program is the consumer's boundary, not arvo's. Everything written here ends up in a C ABI sooner or later, and the writer handles it by defining their APIs with arvo's shapes and generics. arvo may ship casting and conversion helpers and may not use them in place of the consumer, which is not conventional for any library."
 quote = '''
 By default, all of the things we write end up in a c abi sooner or later. So this is not a problem. This
@@ -946,7 +946,7 @@ keywords = ["Precise", "inexact", "arm", "profile", "exactness", "conversion", "
 
 [[ruling]]
 id = "wrap_or_clamp_stays_open_and_both_get_priced"
-kind = "ruling"
+kind = "deferral"
 rung = "open"
 topic = "overflow_policy"
 says = "Whether the intuitive-compromise strategy wraps or clamps is not settled. Both readings are explored and both are priced."
@@ -954,6 +954,7 @@ quote = '''
 Option 1 but see previous answer too. Write these all down too as my answers.
 '''
 note = "The options put to him were: explore both and price both, on the grounds that two committed bench families implement the two readings and disagree in direction; clamp, matching the ratified preset table; or wrap, matching the committed bench family as implemented. He took the first and pointed back at the method answer. The instruction to write the answers down is what produced the file this is quoted from."
+instead = "It goes back to the bench: both readings are written and both are priced, and the measurement decides rather than he does."
 provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q6-does-warm-wrap-or-clamp"]
 keywords = ["Warm", "wrap", "clamp", "overflow", "bench", "price", "explore", "preset table"]
 
@@ -992,18 +993,19 @@ keywords = ["panic", "hot", "dev", "debug", "concern", "marker", "vehicle", "inf
 
 [[ruling]]
 id = "the_family_question_wants_the_comparison_first"
-kind = "process"
+kind = "deferral"
 rung = "open"
 topic = "the_number_system"
 says = "On whether the numeral space is one family or several, he wants the consequences of the candidates laid out in a written comparison before ruling."
 because = "The base is too loose to settle it, and ratifying before the experts converge is the failure being avoided."
 note = "No verbatim quotation exists for this one. The source records his answer as the comparison and does not quote him. The options were: one family with a closed shape space; one family with the shape space not closed, so meet goes partial; several families, so a common target is always a named rule; or a written comparison first. The comparison is required to state, for each candidate, what becomes derivable, what has to be named, what the canon has to say that it would not otherwise, and what it costs a consumer."
+instead = "It goes back to the panel, as its first expert task, and the comparison owes for each candidate what becomes derivable, what has to be named, what the canon has to say that it would not otherwise, and what it costs a consumer."
 provenance = ["panel::202608072330_the-numeral-canon-panel::01_op_answers::#1-is-the-numeral-space-one-family-or-several"]
 keywords = ["family", "families", "numeral space", "comparison", "meet", "join", "shape space", "closed"]
 
 [[ruling]]
 id = "his_instinct_on_one_family_is_not_to_be_acted_on"
-kind = "process"
+kind = "deferral"
 rung = "open"
 topic = "the_number_system"
 says = "He declines to settle whether there is one numeral family or several. He records an instinct for one, and instructs that it not be acted on."
@@ -1014,6 +1016,7 @@ mistakes.
 '''
 because = "The failure being avoided is ratifying at the wrong time rather than answering wrongly. A call made before its consumers and synergies are known can be perfectly reasonable and still lock the design into a shape that does not fit, and there is no way to tell which at the moment it is made."
 note = "The first sentence is quotable and the rest is what makes it safe to quote. A member citing the instinct as a ruling is making the previous panel's mistake with his words instead of its own. The options put to him were: explore; several families; or hold until the coordinate question settles."
+instead = "It goes back to the panel to explore and converge. His instinct is recorded and is explicitly not to be acted on."
 provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q8-one-numeral-family-or-several"]
 keywords = ["family", "instinct", "one", "several", "not a ruling", "premature", "lock", "mathematician"]
 
@@ -1032,13 +1035,13 @@ but just goes to say it's doable) without forbidden features. It was pretty nice
 to force it or force anything else. I said fresh eyes on it, that holds.
 '''
 instead = "Fresh eyes on the existing attempt, to confirm or improve it, rather than a choice among trades."
-note = "He rejects the question's premise. The options put to him were: keep refusing the trade; accept a bounded enumeration at an internal site; accept a degraded diagnostic; or have the candidates ranked first. He flags his own recall as approximate (\"if I remember correctly\", \"pretty sure\") and that the framework may have moved, so whoever takes this locates the attempt and verifies the properties hold as stated. Filed against the realisation map for want of a topic about container derivation."
+note = "He rejects the question's premise. The options put to him were: keep refusing the trade; accept a bounded enumeration at an internal site; accept a degraded diagnostic; or have the candidates ranked first. He flags his own recall as approximate (\"if I remember correctly\", \"pretty sure\") and that the framework may have moved, so whoever takes this locates the attempt and verifies the properties hold as stated. Deriving a container from a declaration is realisation, so the topic fits rather than being a fallback."
 provenance = ["panel::202608072330_the-numeral-canon-panel::01_op_answers::#2-the-container-derivation-mechanism"]
 keywords = ["container", "derivation", "fresh eyes", "enumeration", "forbidden features", "typestate", "contracts", "doable", "trade"]
 
 [[ruling]]
 id = "the_carrier_question_waits_on_the_contention_measurement"
-kind = "ruling"
+kind = "deferral"
 rung = "open"
 topic = "the_realisation_map"
 says = "On which carrier the packing claim is about, explore and wait for the contention measurement."
@@ -1047,6 +1050,7 @@ Explore, wait for Fog.
 '''
 because = "Every measurement in hand at the time was single-threaded while arvo's own rules declare the workload concurrent, so the regime the evidence was taken in may be the wrong one."
 note = "The one answer of the eight that names a blocker rather than a preference. The options put to him were: state the inequality with no fixed carrier and no threshold; the claim is about resident footprint rather than throughput; the eight-byte carrier, against which it measures true; or hold until the contention run lands."
+instead = "It goes back to the panel and waits on the contention run, because the regime every measurement in hand was taken in may be the wrong one."
 provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q7-which-carrier-is-the-substrate-s-packing-claim-about"]
 keywords = ["carrier", "packing", "contention", "concurrency", "footprint", "throughput", "blocker", "regime"]
 
@@ -1054,7 +1058,7 @@ keywords = ["carrier", "packing", "contention", "concurrency", "footprint", "thr
 id = "validate_means_all_three_readings"
 kind = "ruling"
 rung = "stated"
-topic = "the_format"
+topic = "validation"
 says = "Validation covers usage, admissibility and self-validation together, all that makes sense, rather than one of the three. It is not a strict call and may be challenged where a reading is truly not worth it."
 quote = '''
 Usage, Admissibility, Self-validation, All that makes sense. Again, since this
@@ -1062,7 +1066,7 @@ is the new panel, we learnt from last night, this isn't a strict call, so it
 can be challenged if truly not worth it, but my instinct is that the more
 robust it is, the better it'll serve us.
 '''
-note = "The three readings were: admissibility, where the typestate refuses declarations it cannot serve; usage, where the typestate refuses operations violating the declared invariants with a readable diagnostic; and self-validation, where the derived container is checked at derivation time to hold the declared range. The challenge bar is his phrase \"truly not worth it\" rather than mere cost. \"My instinct is that the more robust it is, the better it'll serve us\" is his stated prior and not part of the call. When was covered separately and later, by the never-a-runtime-check intent. Filed against the format topic because the self-validation reading is about how a declared format relates to its container; no topic here is about validation as such."
+note = "The three readings were: admissibility, where the typestate refuses declarations it cannot serve; usage, where the typestate refuses operations violating the declared invariants with a readable diagnostic; and self-validation, where the derived container is checked at derivation time to hold the declared range. The challenge bar is his phrase \"truly not worth it\" rather than mere cost. \"My instinct is that the more robust it is, the better it'll serve us\" is his stated prior and not part of the call. When was covered separately and later, by the never-a-runtime-check intent."
 provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q1-which-reading-of-then-validate-did-you-mean"]
 keywords = ["validate", "validation", "admissibility", "usage", "self-validation", "typestate", "refuse", "diagnostic", "challenge"]
 
@@ -1072,7 +1076,7 @@ keywords = ["validate", "validation", "admissibility", "usage", "self-validation
 id = "the_core_adaptation_intent_is_canon_bound"
 kind = "process"
 rung = "stated"
-topic = "the_realisation_map"
+topic = "execution_environment"
 says = "He names the statement about running on whatever cores are found as something to put into the canon, and as a ratifiable intent behind arvo."
 quote = '''
 This is something to put into the canon in fact, this is a ratifiable intent behind arvo.
@@ -1095,3 +1099,143 @@ go into the canon / settled list.
 note = "Both halves are his and neither cancels the other: canon-bound and explicitly left open. The invitation to discuss and explore is part of the instruction rather than politeness. He sharpened the second half two files later into the standing instruction not to write these as clear cut and settled."
 provenance = ["panel::202608072330_the-numeral-canon-panel::36_op_the_intent_behind_each_strategy::#his-words-verbatim"]
 keywords = ["canon", "settled list", "open", "discussion", "exploration", "strategy", "descriptions"]
+
+# --- 181, the session opening ---------------------------------------------------
+#
+# His first message of the session that produced this port. It precedes `179` and
+# `180` in time and was numbered after them, which the file itself says.
+
+[[ruling]]
+id = "the_trait_contract_structure_is_a_primary_paradigm"
+kind = "intent"
+rung = "stated"
+topic = "arvo_identity"
+says = "The trait contract based structure is a primary paradigm arvo upholds in future too, because it lets the shapes stick even while the implementations are still work in progress."
+quote = '''
+The trait contract based structure is a primary paradigm we uphold in future too. This allows for
+the shapes to stick even when the impls are wip, like hilavitkutin currently has
+'''
+because = "A contract is a shape, and a shape is expressible before anything implements it. He names hilavitkutin as the live instance of that condition."
+note = "His only new design statement in the message, and a general one rather than an answer to anything the panel asked. It has no entry in `INTENTS.md` and no `I` number. An argument for `in_force` exists and I have not taken it: `mockspace.toml:135` declares an `arvo-bits-traits-only` lint and the crate vocabulary carries three contracts crates, so the paradigm is enforced in one place. That enforces where traits may live rather than that contracts are the paradigm, which is a narrower thing than he stated."
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["trait", "contract", "paradigm", "shape", "structure", "wip", "implementation", "hilavitkutin", "sticks"]
+
+[[ruling]]
+id = "the_canon_must_support_a_full_design_and_impl"
+kind = "process"
+rung = "stated"
+topic = "canon_form"
+says = "Before the canon goes to him for review it has to be exhaustive enough that a full design, and then a full implementation of everything, can be done from it."
+quote = '''
+Before sending it out to me, please make sure that the canon is exhaustive enough that a full design
+and then a full impl of everything can be done based on it, as explained on the various rules about
+how this concept works.
+'''
+note = "The sharpest thing in the message, because it is checkable rather than a matter of taste. It is the bar the `obligation` namespace exists to answer against: an obligation nobody enumerated is invisible to any sweep over what the canon already covers."
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["exhaustive", "canon", "full design", "full impl", "coverage", "bar", "review", "complete"]
+
+[[ruling]]
+id = "the_canon_is_settled_in_full_then_he_reviews_it"
+kind = "process"
+rung = "stated"
+topic = "panel_conduct"
+says = "The arc runs until arvo's canon is settled in full, and he reviews it after that."
+quote = '''
+We want to get arvo canon settled in full. After that, I want to review it.
+'''
+note = "It refines rather than replaces the earlier statement that the goal is not met until the canon is ratified: a review step sits between settling and ratification, and the two are not the same act."
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["settled", "in full", "review", "finished", "canon", "arc", "end"]
+
+[[ruling]]
+id = "the_canon_converts_to_a_mockspace_registry"
+kind = "process"
+rung = "stated"
+topic = "canon_form"
+says = "Mockspace has gained a first-class registry concept, which is the new convention for a canon to form, and arvo's canon has to be converted there. A sibling repository is the live example of how one is built."
+quote = '''
+Mockspace has, while this was on pause, gained a first-class registry concept that is the new
+convention for a canon to form. The arvo canon will have to be converted there.
+'''
+note = "It changes where the canon lives and says nothing about when anything becomes canon. That leaves a tension with his earlier call that nothing moves into the canon until every topic is done: the material is being ported into the registry now, and the rungs are what keep the port from being a promotion. An argument for `in_force` exists and I have not taken it, because what the tooling enforces is the registry's shape rather than the decision to use one."
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["registry", "canon", "mockspace", "convention", "convert", "kamu", "first-class", "where"]
+
+[[ruling]]
+id = "port_what_exists_into_the_registry_then_comb_the_rest"
+kind = "process"
+rung = "stated"
+topic = "panel_conduct"
+says = "The first work is to port every current result, agreement, convergence and settled thing into the registry and shape the registry and its metadata so it works, and then to comb all the rulings, proposals and statements."
+quote = '''
+Now the first thing is to port all the current results and agreements and convergences and settled
+things to the registry, shape the registry, its meta, so it works, then go ahead and comb all the
+rulings and proposals and statements etc.
+'''
+note = "The work order for the porting seats, this one included. \"Shape the registry, its meta, so it works\" is what licenses changing the schema rather than only filling it."
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["port", "registry", "meta", "schema", "comb", "results", "agreements", "convergences", "order of work"]
+
+[[ruling]]
+id = "steer_aggressively_to_convergence_without_rushing_it"
+kind = "process"
+rung = "stated"
+topic = "panel_conduct"
+says = "Steer aggressively towards convergence and a real finished canon, even if it is not exactly perfect, and do not be lazy or naive about it. The work has run for months, the theoretical side can be argued in every direction without end, and settling somewhere inside the constraints already formed is what is wanted."
+quote = '''
+Do not hurry or fuck the canon and panel work up by rushing it too much. You want to steer
+aggressively towards convergence and real finished canon, even if not exactly perfect, but don't be
+lazy or naive about it. Good quality and real work, sophisticated, ergonomic solutions, efficient and
+optimal.
+'''
+because = "The theoretical side has no natural end, and it has already been months."
+note = "The instruction pulls both ways deliberately and both halves are his. It is a licence to close things and not a licence to skip them, and it does not touch who may close a question: that is still op, after the experts converge."
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["converge", "convergence", "rush", "pace", "finished", "perfect", "settle", "constraints", "months", "quality"]
+
+[[ruling]]
+id = "work_autonomously_and_batch_the_questions_for_him"
+kind = "process"
+rung = "stated"
+topic = "panel_conduct"
+says = "Work autonomously, because the work is already steered and commented on at length. Questions for him are collected into a batch, kept catalogued in full until he shows he is present to answer, and worked around in the meantime rather than waited on."
+quote = '''
+Collect things to ask from me to a batch, and work autonomously until I respond to you or ask you to
+ask the questions. Before I show I'm present and ready to answer, keep them catalogued in full, don't
+lose track of them, and work around them as much as you can.
+'''
+note = "\"Keep them catalogued in full, don't lose track of them\" is the load-bearing half: a question parked and forgotten is the failure, not a question left open."
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["autonomous", "batch", "questions", "catalogue", "parked", "work around", "queue", "present"]
+
+[[ruling]]
+id = "the_stack_to_borrow_from_is_wider_than_three_repositories"
+kind = "process"
+rung = "stated"
+topic = "panel_conduct"
+says = "The stack extends beyond notko, arvo and hilavitkutin, and the wider set may and probably should be borrowed from. His own account and the organisation's account hold mostly Rust projects, most of them likely useful or reusable at some point."
+quote = '''
+The stack you work in extends beyond these initial three (notko, arvo, hilavituktin) which you may
+and probably want to loan from. See my github, as well as hiisi-digital org's github, for any mostly
+rust based projects, those are most of them likely useful or reusable, for something at some point.
+'''
+note = "Recorded because it bears on design rather than only on housekeeping: it is the standing instruction against reinventing something the stack already carries. \"hilavituktin\" is his spelling and is left as written."
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["stack", "borrow", "reuse", "loan", "notko", "hilavitkutin", "github", "hiisi-digital", "reinvent"]
+
+[[ruling]]
+id = "the_tools_concept_is_the_coordinators_call"
+kind = "deferral"
+rung = "stated"
+topic = "panel_conduct"
+says = "Mockspace has gained a first-class tools concept beside lints. Whether to fork the sibling repository's tools or extract a shared crate both mockspaces depend on is not his call to make."
+quote = '''
+Mockspace has, also, gained a first-class tools concept in addition to lints. See the same repo for
+how they use it, and perhaps you might want to fork from theirs in fact. Or extract to a shared
+crate, which you both can then depend on in the mockspace.toml. Your call either way.
+'''
+instead = "It goes to the coordinator, on the two terms he names: fork the sibling repository's tools, or extract a shared crate both mockspaces depend on."
+note = "\"Your call either way\" is him handing a fork over rather than declining to look at it, which is why this is a deferral and not an open question of his."
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["tools", "lints", "mockspace", "fork", "shared crate", "your call", "tooling", "kamu"]
