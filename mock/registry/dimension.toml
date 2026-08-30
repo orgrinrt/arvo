@@ -1,9 +1,32 @@
 # The axes a finding's region is stated over.
 #
-# The set is what the corpus actually varies, read off the predicates it
-# writes. The fullest single one is at `109:156-159`, which names eleven axes in
-# one line and is the closest thing the panel has to a declaration of the
-# vocabulary.
+# **This set is incomplete and the reason is worth stating before the rows.**
+# It was read off the predicates the corpus writes, and the fullest single one
+# is at `109:156-159`, which names eleven axes in one line. Fifteen of the
+# sixteen rows below cite that one file, which is a member file from topic
+# five's first sitting: it was written before topics six through ten ran, so the
+# axes those topics discovered are not in it and were not in the sweep that
+# produced this file either.
+#
+# A later seat measured what that cost. Across the twelve files governing the
+# five later topics: 115 distinct keys the corpus predicates over, 19 of them
+# declared here and 96 not, and 60 predicate spans that cannot be written as a
+# registry predicate at all. `183_probes/unblock_value.out` ranks the
+# undeclared keys by how many spans each one blocks, and
+# `183_probes/axis_census.out` is the census behind it.
+#
+# **So a claim rejected for naming an undeclared axis is not necessarily a claim
+# with no region.** It may be a claim over an axis this file has not caught up
+# with, and the two want opposite fixes. Read the ranking before concluding a
+# region does not exist.
+#
+# Extending the set is not a free edit and is why it has not been done in
+# passing. Declaring a new axis makes every predicate already committed silently
+# say less, because an axis a predicate does not name is one the claim does not
+# hold on at all. The workspace's own rule answers that: a predicate is never
+# widened in place, the original stays as its evidence supported it, and the
+# widening arrives as a later claim. It still wants two independent readings
+# before the vocabulary moves.
 #
 # **These are design axes and not instrument parameters.** The corpus writes
 # both into `holds for:` lines and the two are different things: `F = 0` is a
