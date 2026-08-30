@@ -173,7 +173,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::170_probes::q4_citecheck.out::1",
 ]
 control = "Both carry a planted-present and a planted-absent fragment, and the run is reported only with the first found and the second not found. That is the pair: a checker that finds the planted-absent one matches too much, and one that misses the planted-present one is not reading the file."
-defect = "Two, in successive layers of the same tool, and each was found by the fix for the previous one. The first run of the whitespace-normalising version reported two of its author's own true quotations missing, one inside a blockquote where the wrap inserts a marker mid-sentence and one carrying emphasis around its numbers. The next layer was case: a quotation taken mid-sentence with a lowercased leading capital is ordinary English, and a case-sensitive checker calls it missing. Comparison is casefolded now."
+defect = "Three, and the third was not found by the panel. Two are in successive layers of the same tool, each found by the fix for the previous one: the first run of the whitespace-normalising version reported two of its author's own true quotations missing, one inside a blockquote where the wrap inserts a marker mid-sentence and one carrying emphasis around its numbers; the next layer was case, since a quotation taken mid-sentence with a lowercased leading capital is ordinary English and a case-sensitive checker calls it missing. The third is that both copies hardcode an absolute path to a different clone of this repository, so run from any other checkout they verify that tree rather than the one they are committed beside, and on a host where that path exists they succeed and report OK. Counted in `panel::202608072330_the-numeral-canon-panel::185_probes::p6_absolute_paths.out::1`, where twenty citation checkers in this corpus carry it."
 standing = "sound"
 reproduced = "Two files, two authors, same tool lineage. The second adopted the first's fix and found the markup class biting in its own file at 4 of 13, which is what says the class is real in this corpus rather than one author's habit."
 note = "Three defects in one small tool, in three layers, each surfaced only by fixing the one above it. The general form worth carrying is that a text matcher over a markdown corpus is defeated by the markup the corpus wraps its quotations in, and every fix for that is partial until a planted-present control says otherwise."
@@ -429,3 +429,59 @@ control = "K3: on every cell where a licence holds the family must be one, which
 standing = "sound"
 note = "The failing direction is the one the repair does not need, which is why this is an amendment to two words rather than a refutation. The words are `exactly` and `precisely`, and the instrument exists because somebody decomposed a sentence into its three implications before believing any of them."
 keywords = ["biconditional", "licence", "family", "counterexample", "converse", "deletion", "algebra licence", "range licence", "exactly"]
+
+# --- the instruments about this repository's own instruments ---------------
+#
+# Four rows that are not about numerals at all. They are about the harness, the
+# test gate and the checkers, and they are here because a `measured` claim
+# citing anything in `mock/benches/` inherits every one of them.
+
+[[probe]]
+id = "the_bench_tree_was_built_at_the_undocumented_profile"
+establishes = "The bench harness builds every variant and the bench binary with a plain release build and no profile flags, none of the variant manifests declares a profile, the bench root declares none, and no cargo config supplies one. So the whole bench directory was built at cargo's default release profile, `lto = false` and `codegen-units = 16`, rather than the fat-LTO one-codegen-unit profile the harness's own scaffolding documents."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::117_dispatcher_note_the_bench_profile_and_the_tests_that_cannot_run::#the-second-defect-which-is-the-serious-one-the-documented-profile-is-not-set-anywhere",
+]
+control = "None run, and the shape does not admit an obvious one: the finding is three greps returning zero and a fourth returning the documented values from the scaffolding, so the failing case is a profile declaration existing somewhere unlooked-at. What stands in its place is that the zero-returning greps are printed with their commands and the file paths they searched, so a reader re-runs them rather than trusting the count."
+standing = "sound"
+defect = "None in the instrument. Its own containing note carries a correction to a neighbouring claim, made an hour after first writing and left visible: it had called the variant test surface untested, in a panel whose members had run those tests ten times, and the real defect is smaller and differently shaped."
+note = "The consequence for this namespace is direct. `codegen-units = 16` partitions unstably across builds, so two runs of the same unchanged variant can differ in inlining and layout, which is the contamination the per-variant isolation exists to prevent. It does not say any particular finding is wrong. It says every number in that directory was taken under a profile nobody recorded, and which findings rest on a harness artifact is a pass nobody has done."
+keywords = ["bench", "profile", "lto", "codegen-units", "release", "harness", "variants", "reproducibility", "documented profile"]
+
+[[probe]]
+id = "no_bench_artifact_records_its_build_profile"
+establishes = "Of the meta files beside the committed bench results, none records an optimisation level, an LTO setting, a codegen-unit count or a cargo profile. Each carries cpu, os, rustc, git_commit, timestamp, counter_freq and framework, and all but one record a git commit marked dirty."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::185_probes::p5_build_profile.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::185_probes::p5_build_profile.out::1",
+]
+control = "C4: a synthetic meta carrying a `profile` field is planted and the same grep must find it, or a zero over the real files is a fact about the grep. It is found. Plus C3, which plants six command lines and checks that `-O` and `opt-level` count as naming a profile while `--emit asm`, `cargo test`, `--crate-type` and `nm -g` do not."
+standing = "sound"
+note = "This is the mechanical half of the row above. That one establishes what profile the tree was actually built at; this one establishes that the artifacts cannot say. `build_profile` is a declared axis, and under the absence rule a result that cannot name it holds at no profile at all. The dirty-tree count is the second half of the same problem: a result whose commit is dirty cannot be tied to a tree either."
+keywords = ["bench", "meta", "profile", "dirty", "git commit", "provenance", "build_profile", "artifact", "unrecorded"]
+
+[[probe]]
+id = "the_debug_release_gap_that_retired_a_true_finding"
+establishes = "On one host in one session, back to back, the same crate's test suite finishes in 109.08s under `cargo test` and 3.78s under `cargo test --release`, a factor of 29."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::154_kiselyov_the_primitive_derived_cold::655",
+]
+control = "None, and none is needed for what it establishes: it is two runs of one command differing in one flag, on one host, back to back, and both numbers are printed with the command that produced them. The back-to-back-on-one-host part is what a control would otherwise have to buy."
+standing = "sound"
+note = "The reason this row exists is what the gap cost rather than the gap itself. A true finding was retired as unreproducible because the figure came from `cargo test`, which defaults to debug, and the three measurements refuting it were taken at `--release`. Nothing was contested and nobody was wrong; a dimension was missing from all four. This instrument is the one that priced it, and the rule that every timing carries its build profile is downstream of exactly this number."
+keywords = ["debug", "release", "profile", "29x", "compile time", "retired", "unreproducible", "cargo test", "predicate", "missing dimension"]
+
+[[probe]]
+id = "six_ways_this_corpus_produces_a_meaningless_green"
+establishes = "Six distinct ways a test-gate runner over the bench variant crates exits zero having examined nothing, all six observed in this corpus. Among them: `cargo test --workspace` from the bench root compiles the bench binary, runs zero tests and exits 0, because the variant crates are path dependencies rather than workspace members; a runner piping through a `timeout` binary not installed on the host produces no output and exits 0 for every crate; and a batch runner under a two-minute cap silently reports twelve of thirteen, because one crate alone takes 107 seconds."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::107_probes::p0_test_gate.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::107_probes::p0_test_gate.out::1",
+  "panel::202608072330_the-numeral-canon-panel::107_probes::p4_the_four_meaningless_greens.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::107_probes::p4_the_four_meaningless_greens.out::1",
+]
+control = "The count itself is the control and it fired against its own author: the runner that produced the fifth green was this instrument's own first version, caught because the gate demands running the suite rather than citing it. The positive case is the per-crate count, reproduced independently and matching every per-crate figure exactly."
+defect = "It hardcodes an absolute path to a different clone of this repository, so run from any other checkout it examines that tree. That is the seventh way, and it is not in the list of six."
+standing = "sound"
+note = "The population is stated as six and is not established as complete. Two were found by one member, one by the next, one by this instrument against itself, and the seventh above by a later census, so the honest reading is that the count rises whenever somebody looks."
+keywords = ["test gate", "meaningless green", "exit zero", "workspace", "timeout", "false green", "variants", "per-crate", "bench"]
