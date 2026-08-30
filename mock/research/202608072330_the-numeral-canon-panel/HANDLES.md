@@ -208,6 +208,12 @@ rather than for the seat.
 | 182 | orchard (the four consolidations into `proposal.toml` and `law.toml`) | `port-proposals`, reaped | `a2637fbd6061d2c5d` |
 | 187 | mcsherry (the cross-namespace edges, in the rows four seats could not wire) | `port-questions`, reused | `ad7879c741cc5063f` |
 | 188 | ringer (entailment check on the consolidation port, four instruments) | `notation`, reused | `aa5dce80fcb11aa7a` |
+| 189 | kiselyov (settling the panel questions the corpus already settles) | `port-questions`, reused | `afa69737b61628945` |
+| 191 | leijen (cold derivation on the surface above the numeral) | `notation`, reused again | `a32cb48dff4446740` |
+
+`191` opens a unit rather than closing one. Five of the eleven obligations are reached by no row
+anywhere, all of them from the heaviest consumer's own plan chain, and I11 says the algorithm crates
+downstream consume are half of what arvo is for. So a cold derivation goes first and gets attacked.
 
 `188` exists because `182`'s own author asked for it: that file is a compression of four
 compressions and an author cannot be their own checker. Dispatched at opus rather than the persona's
