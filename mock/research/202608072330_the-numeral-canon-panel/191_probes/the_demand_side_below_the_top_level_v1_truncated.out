@@ -1,0 +1,97 @@
+### workspace: /Users/orgrinrt/Dev/clause-work/numeric-stack
+
+######## hilavitkutin   crates=13   arvo-lines: top-level=3  per-crate DESIGN=58
+  --- hilavitkutin-api  (11 lines)
+      6:alloc. All index, count, and size types use arvo newtypes.
+      154:`StoreId` is a dense index assigned at plan time. Wraps an arvo
+      155:fixed-point newtype (not raw u16). `AccessMask` is the arvo-bitmask
+      234:an arvo sub-byte type is a storage-layer concern, read from arvo's own
+      522:in const contexts via the const-arith surface on `arvo::USize`.
+      916:arvo `UFixed<N, 0, Hot>` alias that fits the axis.
+      971:types should use arvo newtypes in the final API (e.g. `ByteCount`,
+      972:`Alignment`, `CoreCount`, `Nanoseconds`). Exact arvo type mappings
+      1135:scan cost); the consumer picks per-app. Per `arvo-toolbox-not-policer.md`,
+      1174:Bit-packed fire flags using arvo-bitmask types. One bit per registered
+      1175:Virtual type. Packed into arvo words, grouped into Mask64/Mask256.
+  --- hilavitkutin-build  (5 lines)
+      73:natively. arvo detects hardware capabilities in its own build.rs
+      77:- `arvo_fast_math`, when the FastMath pragma is active. arvo uses
+      104:| `FastMath` | LLVM unsafe-fp-math flag + `arvo_fast_math` cfg | Rustc wrapper |
+      173:- `--cfg arvo_fast_math`
+      294:or arvo. The LLVM plugins are compiled against LLVM headers inside
+  --- hilavitkutin-extensions  (6 lines)
+      25:- `ExtensionDescriptor` is the `#[repr(C)]` manifest the extension exposes to the host. Fields in layout order: `tag: u32` (the literal `EXTENSION_DESCRIPTOR_TAG`, gates all subsequent re
+      26:- `ExtensionVersion` is the `#[repr(C)]` semver triple used in the descriptor. Four `u16` fields: major, minor, patch, and a padding slot for future use. The fields are bare `u16` by FFI-
+      53:1. Use an arvo `#[repr(transparent)]` newtype when its backing is wire-identical to the C type. `USize(pub usize)` is transparent over `usize` and slots into every `len` field paired with
+      54:2. Retain a bare primitive when no wire-stable arvo newtype exists. `UFixed<I, F, S>` is `#[repr(transparent)]` over its backing, but the backing width comes from `S: Strategy` and is not
+      58:A future arvo primitive `UWire<N>` (fixed backing for exactly `N` wire bits, no `Strategy` axis) would collapse the second tier back into the first. BACKLOG records the dependency.
+      139:- arvo for USize and other numeric primitives where public signatures express sizes.
+  --- hilavitkutin-linking  (6 lines)
+      12:are notko for the fallibility ladder, arvo for numeric primitives, and
+      13:arvo-bits for boolean values.
+      30:- `LinkError` is the load / resolve / unload error enum. Fixed-shape variants; no heap payloads. Carries `arvo::USize` platform codes where relevant.
+      47:Error shapes are fixed enum variants with no heap payloads. OS error codes are carried as `arvo::USize` values (non-negative on both unix errno and Windows GetLastError ranges). On Window
+      65:- arvo for USize / Cap and similar numeric primitives where public signatures express sizes or capacities.
+      66:- arvo-bits for Bool where public signatures express boolean values.
+  --- hilavitkutin-persistence  (5 lines)
+      36:arvo_hash ContentHash for the hash value; the rkyv Archived form
+      67:The runtime API carries the hash value as arvo_hash ContentHash,
+      68:an alias for arvo_bits Bits<28>. Conversion at the rkyv boundary
+      168:- ContentHash comes from arvo_hash (alias for arvo_bits Bits<28>).
+      193:| ContentHash (from arvo_hash) | 28-bit FNV content-hash identity |
+  --- hilavitkutin-str  (1 lines)
+      4:and its interning and domain traits, plus `arvo-bits` for `Bits<N>`.
+  --- hilavitkutin-sym  (4 lines)
+      3:`#![no_std]`, no alloc. Depends on `arvo` for the `bitfield!` macro and
+      4:`Bool`, `arvo-bits` for `Bits<N>`, and `notko` for `Maybe`. Generic
+      52:`arvo_bits::bitfield!`:
+      414:`arvo`, `arvo-bits`, and `notko`, so any consumer can build on it without
+  --- hilavitkutin  (20 lines)
+      6:pool. `#![no_std]`, no alloc. All index/count/weight types use arvo
+      36:1. Build DAG from AccessMask overlap (arvo-bitmask). DependencyGraph
+      40:   pre-computed transpose) to feed the arvo-sparse structural steps
+      46:2. Topological sort + node renumbering (arvo-graph). A registration
+      55:3. Upward rank → critical path (arvo-graph)
+      56:4. Waist detection → phase boundaries (arvo-graph)
+      57:5. RCM reordering → renumber permutation on `ExecutionPlan`: row order is the WU execution order (feeds fiber grouping, step 8), column order is the arena layout (arvo-sparse)
+      61: and the phase-alignment check layer on in later rounds (arvo-sparse).
+      65: symmetric Laplacian over arvo-spectral's k-way partitioning, run over
+      67: width-gate consumes it for wide blocks (arvo-spectral).
+      74: and dispatch shape fill in at later steps (arvo-comb).
+      92:12. Dirty propagation masks for incremental skip (arvo-bitmask)
+      998:one trait whose associated types are each an arvo `Capacity`:
+      1048:`arvo_graph::waist_detect` over it). It is a concrete type pinned at each impl,
+      1052:arvo's `Bits` resolves its storage container by per-concrete-N projection: a
+      1058:contract, not type-enforced, matching how arvo's own wide-width waist tests pin
+      1072:unrelated `Capacity` introspection trait, so the bundle and its arvo
+      1091:leaf of the tree is already a `ColumnValue` arvo scalar (`FiberId`,
+      1398:Runtime: hilavitkutin-api, arvo, arvo-bitmask, arvo-graph,
+      1399:arvo-sparse, arvo-spectral, arvo-comb.
+
+######## vehje   crates=11   arvo-lines: top-level=3  per-crate DESIGN=19
+  --- vehje-ir  (1 lines)
+      48:- arvo (for `USize`, `Cap`, newtype discipline).
+  --- vehje-lex  (1 lines)
+      27:- arvo for USize / Cap / newtype discipline.
+  --- vehje-runtime-abi  (7 lines)
+      64:but arvo types satisfy only where a `#[repr(transparent)]` newtype
+      70:1. **arvo newtype where wire-identical.** `USize` is
+      73:   in for wire `u64`. Use the arvo newtype wherever the FFI wire
+      74:   type matches exactly and the arvo type carries semantic weight.
+      80:   signatures without a wire-stable arvo newtype available stay
+      81:   bare with a `// lint:allow(arvo-types-only) tracked: #207`
+      90:A future `arvo::UWire<N>` primitive (see arvo BACKLOG) provides
+  --- vehje-schedule  (7 lines)
+      4:program graph from vehje-typecheck. Uses arvo-graph for
+      14:- `Scheduler`. orders passes via arvo-graph topological sort +
+      28:- arvo (numeric + newtype).
+      29:- arvo-bitmask (Mask64 for pass read / write sets).
+      30:- arvo-graph (topological sort, critical path, rank).
+      44:- arvo-graph DESIGN.md.tmpl (foundations contract)
+      45:- arvo-bitmask DESIGN.md.tmpl (AccessMask contract)
+  --- vehje-syntax  (1 lines)
+      18: . const-sized child array, arvo-style, no alloc.
+  --- vehje-typecheck  (2 lines)
+      33:- arvo for numeric / newtype discipline.
+      34:- arvo-bitmask for validator access sets (one validator ↔ one
+
