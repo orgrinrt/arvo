@@ -1,0 +1,167 @@
+=== p5 build profile, 2026-08-30T22:44:28Z
+
+## population 1: the bench harness artifacts
+meta files:                       254
+recording any profile field:      0
+recording a dirty git tree:       253
+fields a meta actually carries:   cpu os rustc git_commit timestamp counter_freq framework 
+
+C4: plant a meta that does carry one, and confirm the grep can see it
+C4 PASS: the planted meta is found, so 0 of 254 is a fact about the files
+
+## C3: what counts as naming a profile
+  names a profile:     rustc -O foo.rs
+  names none:          rustc --emit asm foo.rs
+  names a profile:     rustc -C opt-level=3 foo.rs
+  names none:          cargo test -p x
+  names none:          rustc --crate-type lib foo.rs
+  names none:          nm -g libfoo.dylib
+  (expected: -O yes, --emit asm no, opt-level yes, cargo test no,
+   --crate-type no, nm -g no. A yes on nm -g would mean the -O arm
+   is matching a bare hyphen-letter anywhere.)
+
+## population 2: probe files that compile something
+probe files invoking a compiler:  320
+naming an optimisation setting:   207
+naming none:                      113
+
+C1: 168_probes/p5_run.sh must be in the naming set
+C1 PASS
+C2: the silent set must be non-empty
+C2 PASS: 113
+
+the silent ones, in full:
+  02_probes/p1_target_keyed.rs
+  02_probes/p2_adjudicator_as_free_key.rs
+  02_probes/p3_adjudicator_derived.rs
+  02_probes/p4_two_rules.rs
+  02_probes/p5_domain_derives_range.rs
+  02_probes/p6_run_checks.rs
+  03_probes/i3_independent.rs
+  100_probes/p6_verify_my_citations.py
+  107_probes/p0_test_gate.sh
+  107_probes/p4_the_four_meaningless_greens.sh
+  108_probes/p0_test_gate.sh
+  10_probes/ladder.rs
+  10_probes/p03_type_const_rhs.rs
+  10_probes/p04_type_const_block.rs
+  10_probes/p08a_alias_nat_diag.rs
+  10_probes/p08b_opaque_nat_diag.rs
+  10_probes/p09a_lawsite_control.rs
+  10_probes/p09b_lawsite_named_relation.rs
+  10_probes/p09c_lawsite_named_clean.rs
+  10_probes/p12_improved_full.rs
+  10_probes/p13_diag_showcase.rs
+  10_probes/p14_bridge_laziness.rs
+  10_probes/reproduced/ladder.rs
+  10_probes/reproduced/p5_total_ladder.rs
+  10_probes/reproduced/p7_law_site.rs
+  110_probes/p12_the_repair_i_said_did_not_exist.rs
+  110_probes/p12b_storage_site_expected_failure.rs
+  110_probes/p6_expressibility.rs
+  110_probes/p6_noncanonical_wall.rs
+  110_probes/p6_run.rs
+  111_probes/p1a_fn_pointer_in_const_fn.rs
+  115_probes/s2_where_the_selection_can_live.py
+  11_probes/b01_table_caps_the_algebra.rs
+  11_probes/b02_the_table_chases_its_tail.rs
+  11_probes/b03_the_ceiling_is_the_const_surface.rs
+  11_probes/f01_const_param_default_from_siblings.rs
+  11_probes/ladder.rs
+  120_probes/t3_is_the_recursion_depth_additive_or_multiplicative.py
+  12_probes/ladder.rs
+  12_probes/p05_diag_mismatch.rs
+  12_probes/p06_default_param_elision.rs
+  12_probes/p07a_pin_const_to_nat_nogate.rs
+  12_probes/p07b_pin_const_to_nat_min_gca.rs
+  12_probes/p07c_pin_const_to_nat_type_const.rs
+  12_probes/p07d_pin_const_block.rs
+  12_probes/p11_diag_battery.rs
+  12_probes/p12_first_day_errors.rs
+  12_probes/p13_where_the_door_error_lands.rs
+  12_probes/p14_lazy_type_alias.rs
+  12_probes/p14b_lazy_over_full_ladder.rs
+  13_probes/p03_mgca_type_const.rs
+  15_probes/gen.py
+  15_probes/q04_core.rs
+  15_probes/q05_subtraction_matrix.rs
+  15_probes/q06_negctl.rs
+  15_probes/q06_shape_matrix.rs
+  15_probes/q07_three_input_map.rs
+  15_probes/q08_map_matrix.rs
+  15_probes/q08_negctl.rs
+  15_probes/q08_negctl2.rs
+  15_probes/q10_diag_tag.rs
+  15_probes/q14_declared_plus_tag.rs
+  15_probes/q15_ceiling_and_alias_site.rs
+  16_probes/p5b_const_to_type.rs
+  17_probes/alias/t5_perimeter_alias.rs
+  17_probes/ctl/t5_perimeter_control.rs
+  17_probes/t4_validation_directions.py
+  17_probes/t5_perimeter.py
+  17_probes/t5_perimeter.rs
+  183_probes/citation_controls.sh
+  183_probes/measured_needs_a_probe_row.sh
+  24_probes/RUN.sh
+  24_probes/s3_one_definition_two_projections.rs
+  35_probes/p1_fold_cannot_widen.rs
+  35_probes/p6_generic_accumulator.rs
+  35_probes/p7_accumulator_from_capacity.rs
+  35_probes/p8_log2ceil_without_a_table.rs
+  35_probes/p8_scale_check.rs
+  40_probes/p3_axes_presets_properties.rs
+  40_probes/p4_do_the_weightings_agree.py
+  40_probes/p5_what_a_property_costs.rs
+  42_probes/p2_composed_accumulator_and_law_bound.rs
+  43_probes/p2_which_coordinates_each_derivation_reads.rs
+  43_probes/p4_nesting_and_the_flattened_capacity.rs
+  47_probes/p1b_negctl_distinctness.rs
+  47_probes/p2_scalar_single_output_refused.rs
+  47_probes/p3_access_type_from_const_refused.rs
+  47_probes/p4b_negctl_joint_distinctness.rs
+  47_probes/p5b_negctl_forcings.rs
+  49_probes/p1_fact_schema.rs
+  49_probes/p2_validation_is_a_missing_impl.rs
+  49_probes/p4_sign_axis_is_orthogonal.rs
+  50_probes/p5b_negctl_three_facts.rs
+  50_probes/p7_bench_readout.py
+  66_probes/derive_validate_erase_pipeline.rs
+  67_probes/p1_neg_a.rs
+  67_probes/p1_neg_b.rs
+  67_probes/p1_telescope.rs
+  67_probes/p5_neg.rs
+  67_probes/p5_strategy_selects_the_member.rs
+  68_probes/p5_const_eval_ceiling.rs
+  71_probes/p4_crossing_contract.rs
+  71_probes/p4_n1.rs
+  71_probes/p4_n2.rs
+  71_probes/p4_n3.rs
+  71_probes/p4_negatives.sh
+  73_probes/p3_negatives.sh
+  73_probes/p6_closed_form_lifts_the_ceiling.py
+  82_probes/p3d_bad_straddling_dead_code.rs
+  82_probes/p3d_perturbed_verdict.rs
+  82_probes/p3d_structural_permission.rs
+  82_probes/p3e_bound_position_refused.rs
+  SEED_TALKING_POINTS_probes/p5_total_ladder.rs
+
+## population 3: probe files that read a clock
+  SILENT   131_probes/v3_which_stochastic_members_survive_the_operating_constraints.rs
+  SILENT   139_probes/p7_gate_diagnostic.rs
+  names    20_probes/p1_counter_nomem_is_not_a_barrier.rs
+  names    20_probes/p2_counter_nomem_isolated.rs
+  SILENT   20_probes/p3_dylib_probe/src/main.rs
+  names    20_probes/p4_absorbing_fixpoint.rs
+  names    80_probes/p2_frontier.py
+  names    80_probes/p2_frontier_BROKEN_FIRST_RUN.py
+  names    80_probes/p5_allow_the_guard.py
+  names    82_probes/p11_the_frontier_reads_the_encoding.py
+  names    82_probes/p9_positive_verdict_at_a_shipped_width.py
+  names    86_probes/p2_box_frontier.py
+  names    86_probes/p2b_pin_default_frontier.py
+  names    89_probes/p2_run.sh
+  names    89_probes/p3_frontier.py
+  names    89_probes/p3b_checker_frontier.py
+  names    89_probes/p6_run.sh
+  names    89_probes/p7_arity_frontier.py
+timing probe files: 18
