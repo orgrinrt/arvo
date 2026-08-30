@@ -1207,3 +1207,134 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::378",
 ]
 keywords = ["175", "254", "cross-variant validation", "harness", "gate", "dirty", "provenance", "join"]
+
+# --- recovered on a second pass, from the instruments rather than the prose ---
+#
+# The five rows below were in `182` section 5.2's first draft as claims that
+# could not be predicated, because the consolidation carrying each states no
+# region. Every one of their instruments states its own parameters, in its
+# committed output or in the constants at the top of its source, and the brief's
+# instruction was to derive the region from those. The first pass read the
+# consolidations and did not open the probe directories, which is exactly the
+# reading a canon writer working from the consolidations would do, and it is
+# how the accumulator result came within one pass of being absent from the canon
+# entirely. Section 5.2 of `182` is now the record of the correction.
+
+[[proposal]]
+id = "a_coherent_reduction_needs_no_accumulator"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_chain"
+says = "A coherent reduction needs no accumulator: the format's own width already suffices at every fold length. Eager saturation in the format itself agrees with exact-then-adapt at the narrowest accumulator width there is."
+because = "Where the reduction is coherent there is no grade to collapse, because the ambient operation is associative and the reduction's kernel is a congruence for it, so reducing at every step and reducing once are the same function. Measured across sixteen unsigned rows, every one reporting that the format width already suffices, exhaustively over every tuple at each row."
+predicate = [
+  "total_width: W in 3..=5",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy = saturate",
+  "operation: operation = add",
+  "chain_length: chain length in 2..=8",
+]
+law = ["additive_associativity_under_saturation"]
+note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instrument is `57_probes/p6_the_adaptation_absorbs_one_bit.rs` with its output beside it. The region here comes from the instrument's own table rather than from the consolidation, which states the sixteen rows and the fold lengths and no width at all. Four signed rows at fold length two report the same thing, which is the degenerate case where no accumulator question arises, and they are not in this region because the general signed verdict is the neighbouring row's."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::498",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::683",
+]
+keywords = ["accumulator", "coherent", "reduction", "format width suffices", "fold", "grade", "collapse", "C8"]
+
+[[proposal]]
+id = "an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_chain"
+says = "For incoherent clamped addition, agreement with the once-adapted exact answer needs the exact-sum width less one bit. The final adaptation absorbs the outermost bit, because the accumulator must decide which side of the format the result fell on rather than represent how far outside it fell."
+because = "The gap between the exact-sum width and the smallest sufficient accumulator width is exactly one bit in every row of the sweep where a minimum can be located, with zero anomalies: nineteen signed rows, all at a gap of one, of which fifteen locate a minimum by divergence and four are the degenerate fold-length-two case. Two predicates are distinguished on the way and the panel had one phrase for both: interior safety, where no clamp fires, and adaptation agreement, where the answer equals exact-then-adapt. They differ by exactly this bit."
+predicate = [
+  "total_width: W in 3..=6",
+  "fraction_width: F = 0",
+  "signedness: signedness = signed",
+  "overflow_policy: overflow policy = saturate",
+  "operation: operation = add",
+  "chain_length: chain length in 2..=8",
+]
+note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instrument is `57_probes/p6` with its output beside it, and its own closing note bounds it exactly: measured at the widths and fold lengths in the table and no further, exhaustive within each row, not a proof, and the unsigned and signed rows are the same claim at two sign domains rather than two independent instances. The consolidation writes the candidate canon sentence to survive without the constant, as `at most the exact-sum width`, which is how a canon holds a constant that is measured and not proven, and that weaker form is the one to promote."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::506",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::683",
+]
+keywords = ["accumulator", "exact-sum width", "one bit", "incoherent", "clamped", "interior safety", "adaptation agreement", "C8"]
+
+[[proposal]]
+id = "the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion"
+kind = "finding"
+sentence_kind = "measured"
+standing = "two_experts"
+topic = "the_chain"
+says = "For multiplication no bounded closed form exists: the exact guard grows linearly in fold length at `(n-1)F` bits with no logarithmic closed form. The saving below full precision is adaptation fusion, and it is rounding-conditional rather than constant: worth exactly `F` under a composing rounding rule and zero under round-to-nearest-even at fold lengths three and four, with a second growing rule-independent slack appearing at five. So any accumulator statement derived from a capacity is an additive-only mechanism."
+because = "The first author measured the saving under truncation and read it as exactly `F`, constant. The second parameterised the rounding rule, predicted the fusion from the schedule algebra in the probe header before running, and refuted the constant at fold length five: truncation savings of 3, 3 and 4 against round-to-nearest-even savings of 0, 0 and 3. The third extended it to the signed domain on a second rounding axis, where the floor spelling shows pure fusion at exactly `F` for fold lengths three, four and five while truncation is irregular."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F = 3",
+  "signedness: signedness in {unsigned, signed}",
+  "operation: operation = mul",
+  "chain_length: chain length in 2..=5",
+  "rounding: rounding in {truncate, floor, round to nearest even}",
+]
+note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instruments are `60_probes/p_d_rescale_saving_is_adaptation_fusion.rs` and `62_probes/p4_signed_multiplicative_accumulator.rs`, both committed with their output. The region is the two instruments' own stated parameters, `M = 15, F = 3` for the unsigned side and `Q = [-8, 7], F = 3` for the signed, exhaustive over the representable domain at each fold length. **Two experts and the second was a blind prediction that refuted the first's constant**, which is a stronger shape than agreement. The consolidation states none of these parameters."
+gap = "Nothing here is priced. No bench harness ran on any of it and every member says so."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::515",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::683",
+]
+keywords = ["accumulator", "guard", "linear", "fold length", "adaptation fusion", "rounding", "capacity", "additive-only", "C8"]
+
+[[proposal]]
+id = "a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_format"
+says = "A half-step-biased grid is not closed under exact addition. No exact sum of two grid points lands on the grid, every one sits exactly half a step away, and the grid contains neither zero nor one. So a nonzero phase decides whether the identity adaptation ever occurs for addition, promotes the tie rule from a corner case to the policy that decides every sum, and produces a numeral that is not even a monoid carrier."
+because = "Measured exhaustively over every pair of grid points, with the affine membership predicate cross-checked against an independent enumeration and a mutant with the bias dropped detected. The repair is contained in the representable set and costs the adaptation slot nothing: rounding to nearest onto the biased grid keeps totality, retraction, monotonicity and distance minimisation, all four, while a mutant rounder targeting the phase-zero grid fails retraction."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "operation: operation = add",
+  "arity: arity = 2",
+  "rounding: rounding = nearest, against a phase-zero mutant",
+]
+note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instrument is `56_probes/q2_affine_membership.rs` with its output beside it. `W = 4` is the instrument's own, stated as sixteen representable values and 256 pairs, rather than an inference from the pair count. The consolidation carries the counts and no width. This is the argument for the canon stating the phase term explicitly rather than leaving it to be inferred, and its evidence is that two independent instruments erred at this coordinate in opposite directions."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::188",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::633",
+]
+keywords = ["phase", "bias", "grid", "additive identity", "monoid", "tie rule", "affine", "nearest", "C3"]
+
+[[proposal]]
+id = "a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "A trajectory condition lifts into a declaration over the operand set exactly when the condition survives the set's closure under the operations the law is about. A condition that does not survive closure reaches only the degenerate sub-cases: the maximal lifted box is 21.98% of the holding set and every non-degenerate holding box is clamp-free, at zero residue against a live control."
+because = "The word that moves a trajectory fact across the binding-time boundary is `declared`, and a declared range only means something if the operations the law is about cannot leave it. Sign uniformity survives closure and buys a recovered law; a bounded length survives closure up to the bound, so a length-aware predicate licenses strictly more and needs the length at const time; the composed saturating condition does not survive closure and its lifting reaches only boxes that pin an operand to zero. The control is what makes the zero residue mean something: the same widths carry 916, 44940, 2461192 and 144873168 boxes in which a clamp can fire, so the instrument had every opportunity to find a counterexample."
+predicate = [
+  "total_width: W in 2..=5",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy = saturate",
+  "operation: op pair {add, sub} composed",
+  "arity: arity = 3",
+]
+law = ["associativity_of_a_composed_saturating_add_and_subtract"]
+note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instruments are `82_probes/p1_box_lifting_of_p4.rs` and `p1b_is_every_lifted_box_degenerate.rs`, committed with output. The four widths the consolidation names without naming are 2, 3, 4 and 5, read off the instrument's own table. **The consolidation marks this low confidence for a reason unrelated to its content**: an earlier draft of that consolidation misattributed which of the supporting instances shared an author, and it records itself as having made and repaired the error. Nothing downstream cites it for an independence count."
+gap = "Stated as one-directional sufficiency by its own author. The length-aware construction that a bounded length would license is unbuilt. And the declaration a consumer would naturally write instead, that the exact result stays in range, is unsound: true while the law is false on 49.80% of the domain and wrong in 87.5% of the boxes satisfying it."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::341",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::372",
+]
+keywords = ["lifting", "closure", "trajectory", "declaration", "declared range", "degenerate", "box", "21.98", "R8"]

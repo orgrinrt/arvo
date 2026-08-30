@@ -1,7 +1,7 @@
 === rows per namespace, whole registry ===
 dimension      16
 law            14
-proposal       68
+proposal       73
 question       78
 retirement     176
 ruling         75
@@ -9,60 +9,60 @@ strategy       4
 topic          20
 
 === proposal rows written by this pass ===
-68
+73
 
 === proposals by sentence_kind ===
   43 sentence_kind = "normative"
-  12 sentence_kind = "measured"
+  17 sentence_kind = "measured"
    6 sentence_kind = "argument"
    5 sentence_kind = "theorem"
    2 sentence_kind = "enumeration"
 
 === proposals by standing ===
-  44 standing = "one_expert"
-  14 standing = "two_experts"
+  48 standing = "one_expert"
+  15 standing = "two_experts"
    6 standing = "cross_topic"
    4 standing = "three_or_more"
 
 === proposals by kind ===
-  46 kind = "answer"
-  19 kind = "finding"
+  47 kind = "answer"
+  23 kind = "finding"
    3 kind = "refusal"
 
 === proposals by topic ===
   18 topic = "the_number_system"
-  11 topic = "algebraic_laws"
+  12 topic = "algebraic_laws"
    9 topic = "the_strategy_axis"
+   6 topic = "the_format"
+   6 topic = "the_chain"
    5 topic = "the_strategy_object"
-   5 topic = "the_format"
    4 topic = "validation"
    4 topic = "panel_conduct"
    4 topic = "binding_time"
-   3 topic = "the_chain"
    2 topic = "the_predicate_notation"
    1 topic = "the_realisation_map"
    1 topic = "canon_form"
    1 topic = "arvo_identity"
 
 === predicate carried, against not carried ===
-rows with a predicate:    25
+rows with a predicate:    30
 rows without a predicate: 43
 (every row without one is normative; the check enforces the biconditional,
  so these two numbers are the normative and non-normative counts as well.)
 normative rows: 43
 
 === predicate entries, by axis, across proposal and law ===
-  40 operation
-  36 total_width
-  36 overflow_policy
-  35 fraction_width
-  34 signedness
-  29 arity
+  45 operation
+  41 total_width
+  40 fraction_width
+  39 signedness
+  39 overflow_policy
+  31 arity
   12 threads
   10 target_features
+   6 rounding
+   6 chain_length
    5 build_profile
-   4 rounding
-   3 chain_length
    2 container
 
 === declared axes never used by any row this pass wrote ===
@@ -79,10 +79,14 @@ with a witness:  12
 with a gap:      12
 
 === measured rows with no evidence, which is the red ===
+proposal::a_coherent_reduction_needs_no_accumulator
 proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body
 proposal::a_coordinate_set_is_a_countable_ceiling_on_how_many_strategies_can_exist
 proposal::a_law_stated_as_an_author_written_marker_is_checked_by_nothing
+proposal::a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity
+proposal::a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure
 proposal::absorption_decides_associativity_of_a_clamped_reduction
+proposal::an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit
 proposal::chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type
 proposal::generation_relocates_the_check_rather_than_removing_it
 proposal::headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region
@@ -90,15 +94,16 @@ proposal::most_committed_bench_regions_predate_the_harness_cross_variant_validat
 proposal::no_total_join_exists_over_the_observable_axes_so_the_operation_reports
 proposal::the_const_eval_frontier_collapses_along_arity_and_buys_three_bits_from_the_guard
 proposal::the_corpus_cannot_exhibit_the_accuracy_intents_because_a_coordinate_is_absent
+proposal::the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion
 proposal::the_rationalisability_counts_on_the_committed_carrier_table
 
 === citations, by shape ===
-line citations into numbered panel files: 139
+line citations into numbered panel files: 149
 heading anchors into living ledgers:      8
 distinct source files cited:              6
-    38 63_spj_consolidation_the_format_concept
+    46 63_spj_consolidation_the_format_concept
+    38 90_giesen_consolidation_derived_algebraic_laws
     38 106_giesen_consolidation_the_strategy_axis
-    36 90_giesen_consolidation_derived_algebraic_laws
     26 74_giesen_consolidation_the_number_system_concept
      8 AGREEMENTS
      1 108_lamport_the_pair_attacked

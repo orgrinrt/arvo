@@ -43,8 +43,8 @@ x=$(wc -l < "$D/74_giesen_consolidation_the_number_system_concept.md")
 y=$(wc -l < "$D/90_giesen_consolidation_derived_algebraic_laws.md")
 z=$(wc -l < "$D/106_giesen_consolidation_the_strategy_axis.md")
 echo "lines in the four consolidations: $w + $x + $y + $z = $((w + x + y + z))   (182 section 1 says 4,333)"
-echo "rows across both files this pass wrote: $(grep -c '^\[\[proposal\]\]' mock/registry/proposal.toml) + $(grep -c '^\[\[law\]\]' mock/registry/law.toml) = $(( $(grep -c '^\[\[proposal\]\]' mock/registry/proposal.toml) + $(grep -c '^\[\[law\]\]' mock/registry/law.toml) ))   (182 section 13 says 82)"
-echo "predicate entries summed: $(grep -hcE '^  "[a-z_]+: ' mock/registry/proposal.toml mock/registry/law.toml | paste -sd+ - | bc)   (182 section 2 says 246)"
+echo "rows across both files this pass wrote: $(grep -c '^\[\[proposal\]\]' mock/registry/proposal.toml) + $(grep -c '^\[\[law\]\]' mock/registry/law.toml) = $(( $(grep -c '^\[\[proposal\]\]' mock/registry/proposal.toml) + $(grep -c '^\[\[law\]\]' mock/registry/law.toml) ))   (182 section 13 says 87)"
+echo "predicate entries summed: $(grep -hcE '^  "[a-z_]+: ' mock/registry/proposal.toml mock/registry/law.toml | paste -sd+ - | bc)   (182 section 2 says 276)"
 
 echo
 echo "=== NEGATIVE CONTROL: a line past the end of a real file must print nothing ==="

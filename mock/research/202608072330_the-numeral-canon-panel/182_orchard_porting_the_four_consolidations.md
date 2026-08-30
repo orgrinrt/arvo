@@ -9,7 +9,7 @@ stamps it."* Nothing here is stamped, nothing claims to be, and no `ruling` row 
 
 **Test gate: run, and it is red on purpose after this pass.** Baseline before I wrote a row: 42 checks, all
 green. After: 41 green and one red, `the_committed_canon_has_an_instrument_behind_every_measurement`,
-naming twelve proposal rows by id. Section 9 is why that is the correct end state and not a defect I left
+naming seventeen proposal rows by id. Section 9 is why that is the correct end state and not a defect I left
 behind, and section 11 has the run. I read the body of every test in `mock/checks/tests/`, not the names.
 Nothing in that suite is tautological, sampled where a matrix was available, or assertion-free; the
 conditional-obligation file plants both directions of every arm it checks, including the pair that must be
@@ -54,9 +54,9 @@ coverage sections that they are compressing work whose predicates live in member
 measurement the port was for.** The registry demands a region on every established claim, the corpus was
 written before that demand existed, and the arithmetic of the two meeting is what section 5 enumerates.
 
-**What I could not do because of it is larger than what I could.** 68 proposal rows landed. 43 of them
+**What I could not do because of it is larger than what I could.** 73 proposal rows landed. 43 of them
 carry no region, and every one of those 43 is `normative`, which is the one `sentence_kind` the checker
-exempts. **Only 25 rows in the whole file carry a region**, and section 8 is where I say plainly how much
+exempts. **Only 30 rows in the whole file carry a region**, and section 8 is where I say plainly how much
 of that 43 is honest and how much is a label doing work a region should have done.
 
 ---
@@ -73,7 +73,7 @@ $ 182_probes/counts.sh
 === rows per namespace, whole registry ===
 dimension      16
 law            14          <- this pass
-proposal       68          <- this pass
+proposal       73          <- this pass
 question       78
 retirement    176
 ruling         75
@@ -82,31 +82,31 @@ topic          20
 
 === proposals by sentence_kind ===
   43 normative
-  12 measured
+  17 measured
    6 argument
    5 theorem
    2 enumeration
 
 === proposals by standing ===
-  44 one_expert
-  14 two_experts
+  48 one_expert
+  15 two_experts
    6 cross_topic
    4 three_or_more
 
 === proposals by kind ===
-  46 answer
-  19 finding
+  47 answer
+  23 finding
    3 refusal
 
 === predicate carried, against not carried ===
-rows with a predicate:    25
+rows with a predicate:    30
 rows without a predicate: 43
 normative rows:           43
 
 === proposals by topic ===
-  18 the_number_system      11 algebraic_laws          9 the_strategy_axis
-   5 the_strategy_object     5 the_format              4 validation
-   4 panel_conduct           4 binding_time            3 the_chain
+  18 the_number_system      12 algebraic_laws          9 the_strategy_axis
+   6 the_format              6 the_chain               5 the_strategy_object
+   4 validation              4 panel_conduct           4 binding_time
    2 the_predicate_notation  1 the_realisation_map     1 canon_form
    1 arvo_identity
 
@@ -114,27 +114,27 @@ normative rows:           43
 rows: 14   with holds: 11   with fails: 13   with a witness: 12   with a gap: 12
 
 === citations, by shape ===
-line citations into numbered panel files: 139
+line citations into numbered panel files: 149
 heading anchors into living ledgers:        8
 distinct source files cited:                6
-    38 63_spj_consolidation_the_format_concept
+    46 63_spj_consolidation_the_format_concept
+    38 90_giesen_consolidation_derived_algebraic_laws
     38 106_giesen_consolidation_the_strategy_axis
-    36 90_giesen_consolidation_derived_algebraic_laws
     26 74_giesen_consolidation_the_number_system_concept
      8 AGREEMENTS
      1 108_lamport_the_pair_attacked
 ```
 
-**The `43` and the `25` are the two numbers to stare at.** 63% of what I could port carries no region, and
+**The `43` and the `30` are the two numbers to stare at.** 59% of what I could port carries no region, and
 the only reason those rows exist at all is that `normative` exempts them.
 
 **Axis usage, and the four axes nothing this pass wrote ever names:**
 
 ```
 === predicate entries, by axis, across proposal and law ===
-  40 operation      36 total_width     36 overflow_policy  35 fraction_width
-  34 signedness     29 arity           12 threads          10 target_features
-   5 build_profile   4 rounding         3 chain_length      2 container
+  45 operation      41 total_width     40 fraction_width   39 signedness
+  39 overflow_policy 31 arity          12 threads          10 target_features
+   6 rounding        6 chain_length     5 build_profile     2 container
 
 === declared axes never used by any row this pass wrote ===
   integer_width    alignment    access_pattern    strategy
@@ -147,7 +147,7 @@ strategy axis not one row states a region over it. The reason is in that dimensi
 quantifies over a set op has stated is open, and the corpus names no individual strategy in any predicate,
 so there is nothing to write.
 
-**`threads` appears on 12 predicate entries out of 246.** Section 7 is what that costs.
+**`threads` appears on 12 predicate entries out of 276.** Section 7 is what that costs.
 
 ---
 
@@ -172,20 +172,27 @@ limit: `107` found four one-file results absent from `106`'s droplist and three 
 unrepaired, and I know those seven only through the file they were found in.
 
 **Not read, and named because their absence shapes the port:** every numbered member file (`08` through
-`62`, `65` through `73`, `76` through `89`, `93` through `105`); every probe directory; `OPTIONS.md`,
-`DROPLIST.md`, `RULES.md`, `PRIOR_CALLS.md`, `INTENTS.md` beyond checking I13 exists and what it says.
+`62`, `65` through `73`, `76` through `89`, `93` through `105`); `OPTIONS.md`, `DROPLIST.md`, `RULES.md`,
+`PRIOR_CALLS.md`, `INTENTS.md` beyond checking I13 exists and what it says.
 
-**That last omission is the one that bounds section 5.** The brief's instruction was to derive a predicate
-from an instrument's own stated parameters where the consolidation states none. For most of the claims in
-section 5 the parameters exist, in a member file, and a reader who opened `57_probes/p6` would find the
-widths that would make `63`'s C8 writable. **I did not open them, so section 5 is a list of what the
-consolidations cannot supply rather than a list of what the panel does not know.** The distinction matters
-and I want it read the strong way: the consolidations are what a canon writer is told to work from, and the
-canon writer will be in exactly the position I was in.
+**Probe directories: not read on the first pass, read on the second, and the change is section 5.2.** The
+first pass treated "no probe directories" as a coverage boundary, wrote five claims off as unportable
+because their consolidations state no region, and was wrong about all five. On the second pass I opened
+`56_probes/q1` and `q2`, `57_probes/p6`, `60_probes/p_d`, `62_probes/p4`, `80_probes/p4` and
+`82_probes/p1b`, each in full, and every one states its own parameters. **Those seven are read; the rest
+of the panel's probe directories are not**, so the same recovery is available on claims I did not chase.
+
+**The brief's instruction was to derive a predicate from an instrument's own stated parameters where the
+consolidation states none, and a probe directory is where an instrument lives.** Reading that as
+"where the consolidation reports the parameters" is what cost the five rows, and it is a reading a canon
+writer working from the consolidations would make by default, which is why section 5.2 is written the way
+it is rather than quietly corrected.
 
 **Built the reading list with a grep rather than from memory**, per the standing instruction. For each
 claim's vocabulary I grepped the panel root before deciding nothing else bore on it. That is how `108`
-entered the list: `grep -n '108' 106_*.md` returned section 18 pointing at it as superseding.
+entered the list: `grep -n '108' 106_*.md` returned section 18 pointing at it as superseding. **It is also
+what should have caught the probe directories on the first pass and did not, because I grepped for each
+claim's vocabulary and never ran `ls` on the directory named beside it.**
 
 ---
 
@@ -266,59 +273,59 @@ which is the one thing that made writing the row honest at all.
 list *"is a floor, not an enumeration"*. **Declaring them is not mine and I have not touched
 `dimension.toml`.**
 
-### 5.2 The source names no parameters and neither does its account of the instrument
+### 5.2 I got this section wrong, and the correction is the most useful thing here
 
-**These could be written by somebody who opens the member file. I could not write them from the
-consolidation.**
+**The first draft of this section listed six claims as unportable because the consolidation carrying
+each states no region. Five of the six are portable, and the parameters were in the committed
+instruments the whole time.** They are now rows, added on a second pass and marked as such in
+`proposal.toml`'s own comment.
 
-**`63`'s C8, all three sentences** (`63:496-534`, `63:683-690`). *A coherent reduction needs no
-accumulator*: sixteen unsigned rows, twenty rows reading "format width already suffices", fold lengths 2
-through 6, and **no width anywhere**. *Incoherent clamped addition needs the exact-sum width less one bit*:
-fifteen rows, zero anomalies, one policy, one expert, no proof, **no width**. *Multiplication's guard grows
-linearly at `(n-1)F` bits with no logarithmic closed form*: measured at fold lengths 3, 4 and 5 under three
-rounding spellings, **no width**. Every one of the three is about behaviour at widths, and a predicate
-omitting `total_width` says under I13 that it holds at no width at all, which is not a weaker claim than
-the source's, it is an absurd one. **So the whole accumulator result is absent from the registry**, and it
-is the result a consumer sizing an accumulator would go looking for first.
+**What I did wrong is worth stating exactly, because a canon writer will be in the same position.** The
+brief said to derive a region from the instrument's own stated parameters where the consolidation states
+none. I read that as "where the consolidation reports the instrument's parameters", concluded the
+consolidations mostly do not, and wrote the claims off. **The instruments are committed, in this panel,
+one directory away from the file I was reading, and every one of the five states its parameters in its
+output or in the constants at the top of its source.** I did not open them because section 3's coverage
+statement said I would not open probe directories, and I wrote that statement before I knew what was in
+them.
 
-**`56_probes/q1`'s four-combination inhabitation** (`63:217-223`). Signed saturation holds the adaptation
-laws and fails coherence at 476 chain-divergent triples; wrapping fails both and holds coherence at zero;
-unsigned add-only saturation over a nonnegative window holds both; the opposite-bound mutant holds neither,
-at 897. **No width is stated for this instrument anywhere in `63`.** I wrote
-`law::coherence_of_a_reduction_onto_its_induced_operation` at `total_width: W = 4`, which is the cube's
-parameter from `63:731` and **not this instrument's**, and the row's `note` says exactly that. A reader
-wanting these counts at another width has nothing.
+**It took one grep to find out.** `ls 57_probes/` returned `p6_output.txt`, and its second line reads
+`sign W n tuples exact measured gap`.
 
-**`63`'s C3 phase measurement** (`63:184-190`). A half-step-biased grid is not closed under exact addition:
-zero of 256 exact sums land on it, every one sits exactly half a step away, and the grid contains neither
-zero nor one. **256 is 16 by 16, so `W = 4` is a strong inference and it is an inference**, and the brief's
-instruction was transcription rather than derivation. The claim is inside
-`membership_of_the_representable_set_is_one_affine_predicate`'s `because` as prose and carries no region.
+| claim | where its region actually was | recovered as |
+|---|---|---|
+| a coherent reduction needs no accumulator | `57_probes/p6_output.txt`, sixteen unsigned rows at `W` 3 to 5, fold lengths 2 to 8 | `a_coherent_reduction_needs_no_accumulator` |
+| incoherent clamped addition needs the exact-sum width less one bit | the same table's nineteen signed rows at `W` 3 to 6, all at a gap of one | `an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit` |
+| the multiplicative guard grows linearly and the saving is fusion | `60_probes/p_d.out` line 1, `M=15 F=3`; `62_probes/p4_output.txt` line 3, `Q = [-8, 7], F = 3` | `the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion` |
+| a nonzero phase leaves the set without an additive identity | `56_probes/q2_output.txt`, sixteen values and 256 pairs, so four bits, stated rather than inferred | `a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity` |
+| a trajectory condition lifts exactly when it survives closure | `82_probes/p1b_output.txt`, a width column reading 2, 3, 4, 5 | `a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure` |
 
-**`90`'s R8, the closure criterion for lifting** (`90:341-378`). A trajectory condition lifts into a
-declaration exactly when it survives the operand set's closure under the operations the law is about. The
-supporting measurements are stated: the maximal box is 21.98% of the holding set, every non-degenerate
-holding box is clamp-free, zero residue **at four widths** against a live control, and the natural consumer
-declaration "my exact result stays in range" is unsound, true while the law is false on 49.80% of the
-domain and wrong in 87.5% of the boxes satisfying it. **Which four widths is not stated.** The
-consolidation separately marks R8 low confidence for an unrelated reason, so nothing downstream leans on
-it, but the criterion is the thing that decides which measured region can ever become a declaration and it
-is not in the registry.
+**And one of the six stays out, for a better reason than the one I gave.** R10's instruction counts are
+not missing their parameters: `80_probes/p4_asm_report.txt` line 1 names
+`aarch64-apple-darwin, rustc nightly-2026-05-28, -O, --crate-type=lib`. **Its next three lines forbid the
+numbers**: *"This is an ad-hoc quick spike with no substance for any how-much question. Nothing is timed
+and no bench ran. What it can establish is qualitative: which instructions the backend reached for."* So
+the qualitative claim is a row and the counts are not, because the instrument says so about itself, and
+that is a stronger reason than the one I had.
 
-**`90`'s R10 instruction counts** (`90:415-443`). 6.000 instructions per element for the fold as written,
-8.500 for the first licensed attempt, 0.250 with the bounds proof, 0.141 unrolled, against a wrapping
-control at 0.125; signed 6.188 against 0.250 with the control that decides attribution. **The source calls
-these an ad-hoc quick spike, unpriced, carried for which instruction appears where and nothing else**, and
-names no width, no target and no toolchain. I wrote the structural claim as
-`a_law_layer_answers_whether_a_law_reaches_a_lowering_the_backend_cannot_prove` and left every number out.
-**That is the correct treatment and it means the one place in the corpus where a law was shown to buy a
-24-times instruction reduction is in the canon as prose with no figure.**
+**Two things this changes about the rest of this file.**
 
-**`63`'s multiplicative fusion savings** (`63:515-534`). The saving below full precision is adaptation
-fusion, worth exactly `F` under a composing rounding rule and zero under round-to-nearest-even at fold
-lengths 3 and 4, with a second growing rule-independent slack appearing at 5, and the floor spelling showing
-pure fusion at exactly `F` for 3, 4 and 5 on the signed side. Rounding modes and fold lengths are stated;
-**width is not**. Same shape as C8 and the same outcome.
+**Section 1's headline is about the consolidations and it stays true**: eleven region statements across
+the four, nine of them in one file. **What it does not mean, and what I had let it mean here, is that the
+panel does not know the regions.** The panel knows them. They are in the instruments, and the
+compression from instrument to consolidation is where they were lost. **That is a much more repairable
+problem than the one section 1 describes, and it is a much worse one for a canon writer**, because a
+consolidation reads as complete and the loss is invisible from inside it.
+
+**And section 3's coverage statement was a decision, not a limit.** I wrote that I would not open probe
+directories, treated it as a boundary, and it cost five rows on the first pass. **A later pass should
+open every probe directory named in a claim it wants to port**, and section 14 now says so.
+
+**What is left genuinely unportable for want of parameters** is smaller than the six and I have not found
+a member of it while looking. Every claim I checked on the second pass had its parameters somewhere
+committed. **So the honest statement is that I do not know of one, rather than that there are none**, and
+a pass that walked all seventy-three rows against their instruments rather than the five I chased would be
+the way to find out.
 
 ### 5.3 The claim's real coordinates are bench or corpus parameters
 
@@ -428,7 +435,7 @@ The remaining 21 I am confident about: a sentence saying what the numeral concep
 
 ### 6.3 Claims I did **not** relabel, though it would have been convenient
 
-**Twelve rows are `measured` and every one of them makes the suite red.** Section 9 is why I did not move
+**Seventeen rows are `measured` and every one of them makes the suite red.** Section 9 is why I did not move
 them to `argument`. The brief warned about the failure running the other way, an argument marked as a
 measurement, and I found one instance of that class in my own drafting: I had `no_multiplicative_structure_survives_a_nonzero_fraction_width` down as `measured` on the strength of
 its three instruments, and `63:413` says in bold *"The boundary is structural, not swept-so-far"* and gives
@@ -561,7 +568,7 @@ does either.** The script is committed and takes a registry file as an argument.
 from what points at it. **The consequence for this pass is that nothing in `proposal.toml` distinguishes a
 row I am confident in from one I flagged in section 6 as a call that could go the other way.** Those flags
 live in `note` as prose, which no query reads. A reader running `mock query` over the namespace gets 68
-rows with no signal about which twelve I would defend hardest.
+rows with no signal about which of them I would defend hardest.
 ---
 
 ### 8.6 The corpus's vocabulary and the workspace's disagree on one word
@@ -582,9 +589,9 @@ is a `tier`.
 
 ---
 
-## 9. The suite is red on twelve rows and that is the correct end state
+## 9. The suite is red on seventeen rows and that is the correct end state
 
-**`the_committed_canon_has_an_instrument_behind_every_measurement` fails, naming twelve proposal rows.**
+**`the_committed_canon_has_an_instrument_behind_every_measurement` fails, naming seventeen proposal rows.**
 41 checks green, 1 red.
 
 ```
@@ -608,7 +615,7 @@ namespace with no rows fails the reference resolver. So the three available end 
 
 1. **Write the measurements as `measured` with no evidence.** Red, honest, and the red names exactly what
    is owed and where.
-2. **Relabel the twelve as `argument`.** Green, and it fabricates a claim about what established twelve
+2. **Relabel the seventeen as `argument`.** Green, and it fabricates a claim about what established seventeen
    results. The brief calls this out by name and the check's own message says *"A measurement with no
    instrument is an argument wearing a number"*, which is precisely the sentence I would be making true.
 3. **Write `probe.toml`.** Green, and it takes a namespace the brief allocated elsewhere.
@@ -616,11 +623,11 @@ namespace with no rows fails the reference resolver. So the three available end 
 **I took the first**, on `strict-by-design-quality-pressure.md`'s reading that a red test whose green path
 is a designed-but-unbuilt mechanism marks that mechanism. The namespace is designed, declared at
 `mockspace.toml:737-800`, and unbuilt. **It goes green when `probe.toml` lands, by adding one field to each
-of twelve rows, and the assertion needs no change.**
+of seventeen rows, and the assertion needs no change.**
 
 **So this is a catalogue-red, and the next seat should not fix it by editing `proposal.toml`.**
 
-**The instruments the twelve rows are owed**, tabulated so `probe.toml` can be built from it rather than
+**The instruments the seventeen rows are owed**, tabulated so `probe.toml` can be built from it rather than
 from a rediscovery pass. Every one is named in its row's `note` as well.
 
 | proposal row | committed instruments |
@@ -637,6 +644,11 @@ from a rediscovery pass. Every one is named in its row's `note` as well.
 | `a_coordinate_set_is_a_countable_ceiling_on_how_many_strategies_can_exist` | `101`'s coordinate census; `106_probes/p2` |
 | `the_corpus_cannot_exhibit_the_accuracy_intents_because_a_coordinate_is_absent` | `103`'s classification instrument; `106_probes/p5` |
 | `most_committed_bench_regions_predate_the_harness_cross_variant_validation` | `103`'s F-103-6; `106_probes/p3_prewiring_join.py` |
+| `a_coherent_reduction_needs_no_accumulator` | `57_probes/p6_the_adaptation_absorbs_one_bit.rs` |
+| `an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit` | the same instrument, its signed rows |
+| `the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion` | `60_probes/p_d_rescale_saving_is_adaptation_fusion.rs`; `62_probes/p4_signed_multiplicative_accumulator.rs` |
+| `a_nonzero_phase_leaves_the_representable_set_without_an_additive_identity` | `56_probes/q2_affine_membership.rs` |
+| `a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure` | `82_probes/p1_box_lifting_of_p4.rs`, `p1b_is_every_lifted_box_degenerate.rs` |
 
 **Three of these have a recorded defect** and the `probe` namespace's `defect` field is where it goes:
 `102_probes/p2`'s first version swept only additive chains ending in a mask and was proving the ring
@@ -774,7 +786,7 @@ four. That is a fact about which four consolidations I was given rather than abo
 
 ## 13. Edges I could not wire
 
-**`answers` and `obligation` are empty on all 68 rows**, per the brief. `question.toml` has 78 rows and
+**`answers` and `obligation` are empty on all 73 rows**, per the brief. `question.toml` has 78 rows and
 `obligation` has none, so half of that is a locus decision and half is that the namespace is empty.
 
 **What the rows would point at, tabulated for whoever wires it.** I have not opened `question.toml`, so
@@ -797,10 +809,10 @@ second time and I did not**: `a_system_exposes_its_ambient_laws_its_set_and_its_
 supersedes the sufficient direction of an earlier exposure test while keeping its necessary direction, and
 that earlier test is not a row in this file, so there is nothing to point at.
 
-**`law` is wired on 11 proposal rows.** Every wiring points at a law row this pass wrote; nothing points
+**`law` is wired on 15 proposal rows.** Every wiring points at a law row this pass wrote; nothing points
 outward.
 
-**`evidence` on all 82 rows across both files is empty**, and section 9 is the whole of it.
+**`evidence` on all 87 rows across both files is empty**, and section 9 is the whole of it.
 
 ---
 
@@ -808,23 +820,25 @@ outward.
 
 **Six things, in the order I would check them.**
 
-1. **The twelve red rows, and resist fixing them in `proposal.toml`.** Section 9. The fix is `probe.toml`
+1. **The seventeen red rows, and resist fixing them in `proposal.toml`.** Section 9. The fix is `probe.toml`
    and the table there is what to build it from.
 2. **The 43 normative rows, starting with the six in section 6.1.** If any of those six is really an
    established claim, it needs a region, and if it has no region it should not be a row. **I had an
    incentive to label them `normative` and I am telling you which ones I felt it on.**
-3. **`63`'s C8.** The accumulator result is absent from the registry entirely and it is the one a consumer
-   sizing an accumulator would look for. Section 5.2. **Opening `57_probes/p6` and reading its widths is
-   probably twenty minutes and probably makes three rows writable.**
+3. **The probe directory of every row you doubt, before you doubt it.** Section 5.2 is what skipping that
+   costs, and it cost five rows on my first pass. **`ls <NN>_probes/` is one command and the parameters are
+   usually in the first ten lines of the output file.** The sixty-odd probe directories this pass did not
+   open are where the rest of the regions are, and I have no reason to think the five I recovered are all
+   of them.
 4. **R7 and F-H.** Section 5.1. Two positive law results, both blocked on one undeclared axis, and F-H is
    the cleanest region-scoped arm in the corpus by its own author's account.
 5. **The five rows in section 5.3 with near-empty predicates.** I wrote them and I would not defend the
    decision hard. Deleting them and moving them to the un-portable list is defensible.
-6. **`182_probes/show_cited_lines.sh` over both files, after any edit.** It found twelve mis-citations in
+6. **`182_probes/show_cited_lines.sh` over both files, after any edit.** It found seventeen mis-citations in
    my own work that `cargo mock --lint-only` passed clean, and it will find yours.
 
 **And one thing I would tell whoever writes the canon rather than the next porter.** The registry's
-predicate discipline is exact, its checker is real, and both of its arms fire. But 43 of 68 rows escape it
+predicate discipline is exact, its checker is real, and both of its arms fire. But 43 of 73 rows escape it
 through `normative`, and the whole of one topic escapes it, because that topic's output is a concept rather
 than a set of measurements. **Nothing currently distinguishes a `normative` row that is genuinely a
 stipulation from one that is a regionless claim wearing the only label that fits.** A `normative` row could
@@ -836,15 +850,17 @@ region and it is checkable in the same way, and it would close the gap this port
 ## 15. Coverage, bounded
 
 **Verified independently rather than taken from a file:** the eleven region statements and their locations,
-with both controls; every count in section 2; the twelve red row ids; the eight control outcomes; that
+with both controls; every count in section 2; the seventeen red row ids; the eight control outcomes; that
 `cargo mock --lint-only` passes on an undeclared axis; that BSD sed's `0,/re/` is a silent no-op, measured
-on a scratch file; that `evidence = []` is reported malformed, measured on four real rows; and the line
-each of the 139 line citations lands on, by opening it.
+on a scratch file; that `evidence = []` is reported malformed, measured on four real rows; the line each of
+the 149 line citations lands on, by opening it; and, on the second pass, the parameters of seven
+instruments read off their committed output and source rather than off any file describing them.
 
-**Taken from a source and not verified:** every measurement quoted in any `because` field. I ran no probe,
-opened no member file and reproduced no number. Where a row says 47.72% or 13,882,880 or 82.7484%, that is
-the consolidation's figure carried forward, and the consolidations are themselves compressions of member
-files I did not read.
+**Taken from a source and not verified:** every measurement quoted in any `because` field except the seven
+instruments above. I ran no probe and reproduced no number. Where a row says 47.72% or 13,882,880 or
+82.7484%, that is the consolidation's figure carried forward, and the consolidations are themselves
+compressions of member files I did not read. **The seven I opened I opened for their parameters, not to
+check their arithmetic**, so even there the figures are carried rather than confirmed.
 
 **Not attempted:** re-deriving any standing. Every `standing` value is the consolidation's own or
 `AGREEMENTS.md`'s, with the four demotions in section 7.1 carried from the sources that made them. I
