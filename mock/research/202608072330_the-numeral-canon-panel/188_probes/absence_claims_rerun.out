@@ -1,0 +1,38 @@
+
+########## 1. the_multiplicative_guard... gap: "No bench harness ran on any of it and every member says so"
+  members of the format unit that the guard claim rests on: 60, 62
+  60_stam_the_chain_derived_cold.md                    bench-harness mentions: 2
+      210:**no expressible form**. That is a statability argument, not a benchmark, and it is the central
+  62_carmack_the_signed_cell.md                        bench-harness mentions: 2
+      381:counterexamples from a committed probe; no bench harness ran, and the accumulator-width and
+  CONTROL: a phrase certainly present in both, to show the grep reaches them
+    60_stam_the_chain_derived_cold.md                  "probe" hits: 45
+    62_carmack_the_signed_cell.md                      "probe" hits: 40
+
+########## 2. a_chain_is_exact_operations... : "nobody in the unit attacked it"
+  the unit is the format topic: 55 55b 56 57 57b 58 60 61 62. Searching for an attack
+  on the closed-operations / fused-adaptation claim.
+  55_smith_the_format_concept_derived_cold.md          1 hit(s)
+  58_wronski_the_fraction_boundary.md                  2 hit(s)
+  60_stam_the_chain_derived_cold.md                    1 hit(s)
+  CONTROL: the same sweep for a term every file in the unit uses
+    55_smith_the_format_concept_derived_cold.md        "format" hits: 56
+    57_orchard_the_grading_and_the_refutation.md       "format" hits: 24
+    62_carmack_the_signed_cell.md                      "format" hits: 2
+
+########## 3. an_additive_verdict... : "nobody in the first five files of the unit had named it"
+  first five files of the format unit: 55 55b 56 57 57b. Searching for same-scale / mixed-scale.
+  55_smith_the_format_concept_derived_cold.md          same-scale/common-scale/mixed-scale hits: 0
+  55b_smith_reply.md                                   same-scale/common-scale/mixed-scale hits: 0
+  56_knuth_the_four_choice_model_attacked.md           same-scale/common-scale/mixed-scale hits: 0
+  57_orchard_the_grading_and_the_refutation.md         same-scale/common-scale/mixed-scale hits: 0
+  57b_orchard_reply.md                                 same-scale/common-scale/mixed-scale hits: 0
+  and where it IS named, for contrast:
+  60_stam_the_chain_derived_cold.md                    4 hit(s)
+  61_absorption_against_coherence.md                   3 hit(s)
+  62_carmack_the_signed_cell.md                        3 hit(s)
+  63_spj_consolidation_the_format_concept.md           9 hit(s)
+  CONTROL: a pattern that must return zero everywhere
+    55_smith_the_format_concept_derived_cold.md        zzq hits: 0
+    58_wronski_the_fraction_boundary.md                zzq hits: 0
+    63_spj_consolidation_the_format_concept.md         zzq hits: 0
