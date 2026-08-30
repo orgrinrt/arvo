@@ -56,6 +56,7 @@ standing = "two_experts"
 topic = "the_format"
 says = "A format is identified by its ambient domain and its representable set. The representable set is a constant of the type: a value set that depends on other data is not a format but storage. Adaptation choice and encoding are realisation, observable in computed values and in pattern-level properties respectively, and not part of identity."
 because = "Not the representable set alone, because the same representative set under two ambient algebras is two formats, which is precisely what the wrapping question is about. Not the full four-tuple, because two's complement and offset binary denote the same sixteen values through different pattern maps and are one format filed two ways. The consequence it absorbs for free is that at a nonzero fraction width the two wrap sections compute different products, 96 of 256 class pairs at `w = 4, F = 1` rising to 168 of 256 at `F = 3`, which under this identity is the section being the representable set rather than a complication."
+answers = ["adaptation_in_identity_or_realisation"]
 note = "The standing is disaggregated in the source and the parts do not share it. The value-level half, that identity is denotation rather than encoding, is two experts with the same shared-literature discount as the standard model, and one of the two was read through intermediaries rather than opened by the consolidator. The refinement from the representable set alone to the pair, the dissolution of the reduction into derived structure, and the locus rider are **converged by attack and concession** rather than independently derived, which the source marks explicitly as weaker than two experts because the conceding file read rather than derived. A reader wanting the stronger half must take the value-level clause alone."
 gap = "It makes the declaration arithmetic-bearing at a nonzero fraction width, which narrows an earlier deflation sentence saying the section is chosen at declaration and no cast consults a policy. That sentence is exact at `F = 0` only, and the register's wrapping entry does not yet carry the scope."
 provenance = [
@@ -72,6 +73,7 @@ standing = "two_experts"
 topic = "the_format"
 says = "Membership is one predicate over one parameterisation: an affine slot function, a quantum per magnitude and a phase, of which integers, fixed point, scaled integers and floats are points. The phase is stated explicitly: a nonzero phase decides whether the identity adaptation ever occurs and whether the set carries an additive identity at all."
 because = "The unification was checked against textbook enumerations at 16, 16 and 47 values with both mutants detected, and subnormals fall out of a maximum with no special case. The phase is not a passive parameter: a half-step-biased grid is not closed under exact addition, no exact sum lands on it, every one sits exactly half a step away, and the grid contains neither zero nor one, so phase promotes the tie rule from a corner case to the policy deciding every sum and produces a numeral that is not even a monoid carrier."
+answers = ["which_width_coordinates_a_consumer_writes"]
 note = "The one-predicate unification carries the shared-literature discount. The necessity of the phase term does not: it is one expert's measurement, plus a concession, plus a constructive repair, and the consolidation offers it as an argument for stating phase explicitly rather than as a two-expert standing. Its evidence is that two independent instruments erred at the phase coordinate **in opposite directions**, which is a reason to name the coordinate rather than a second derivation of the claim."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::633",
@@ -256,6 +258,7 @@ standing = "one_expert"
 topic = "the_number_system"
 says = "The numeral concept is a dependent sequence of choices, not a tuple of independent ones: an ambient domain, a representable set over it, a reduction from the space that pair derives, an encoding of the set, a container for the encoding. Each choice ranges over a set the earlier choices determine, the components range over relations with the function case ordinary, and the dependency runs one way."
 because = "A tuple of independent choices cannot say that the space of reductions is derived from the pair above it, which is the fact the format topic reached separately, and it cannot say that a redundant encoding makes a relation rather than a function. The sequence says both, and the one-way dependency is what lets a sentence name the prefix it quantifies over."
+answers = ["is_the_ambient_operation_family_fixed"]
 note = "One expert with two instruments, which is one author's two arrivals rather than two authors'. The word `format` collides here: two units use it for different prefixes of this same sequence, and the collision is unresolved and is op's naming call."
 provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::475"]
 keywords = ["sequence", "dependent", "coordinates", "ambient domain", "representable set", "reduction", "encoding", "container", "N1"]
@@ -292,6 +295,7 @@ standing = "one_expert"
 topic = "the_number_system"
 says = "A value crosses between two systems along the coordinates at which they differ, one class per coordinate. A crossing carries a relation on values, a relation on patterns, and a verdict per law family, and none determines another; the two relations need not even be the same kind of thing, since a redundant encoding makes the pattern relation a section and a retraction rather than a function, and a named section is then owed by neither endpoint."
 because = "Five crossing classes fall out of the sequence, one per coordinate, and the three carried things are independent because each is decided at a different depth. The redundant-encoding case is what forces the pattern relation to be more general than a function, and it leaves an owner unassigned, which is a real gap rather than a curiosity."
+answers = ["does_the_canon_name_crossing_classes"]
 note = "One expert."
 gap = "Who owns a named section when a redundant encoding makes the pattern relation a section and a retraction is stated and not answered."
 provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::494"]
@@ -317,6 +321,7 @@ standing = "one_expert"
 topic = "the_number_system"
 says = "What a crossing means is decided by the ambient domain, the representable set and the selected reduction on both sides. What it costs is decided by the encoding and the container on both sides, and those two can never change what it computes."
 because = "It is the previous sentence read as a partition rather than as a test, and it is what scopes every other claim in the topic: a claim about meaning and a claim about cost are claims about disjoint halves of the sequence, so neither transfers to the other."
+answers = ["does_the_canon_name_crossing_classes", "does_the_canon_speak_about_cost"]
 note = "One expert, and the unit's own files name it the sentence most wanting attack, because everything else in the topic is scoped by it. It has not had a second derivation."
 provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::507"]
 keywords = ["two depths", "meaning", "cost", "partition", "scope", "crossing", "N6"]
@@ -382,7 +387,7 @@ standing = "one_expert"
 topic = "the_number_system"
 says = "A system exposes its ambient domain together with that domain's own law inventory, its representable set, and its selected reduction with that reduction's verdicts, including that the reduction moves no value already representable. The reduction's verdicts carry no information alone: the properties a consumer relies on are conjunctions of an ambient law and a reduction verdict, and a system that names its own computed algebra as its ambient domain satisfies every verdict while voiding every conclusion."
 because = "The self-collapsed system is the counterexample that forced the ambient law inventory into the exposure list: it passes a verdict-only test while computing nothing, because with the computed algebra as its own ambient every reduction verdict is trivially true. So a verdict is only worth anything conjoined with the ambient law it is a verdict about."
-answers = ["what_the_admission_contract_asks_a_candidate_to_expose"]
+answers = ["what_the_admission_contract_asks_a_candidate_to_expose", "is_the_ambient_operation_family_fixed"]
 note = "One expert. It supersedes the sufficient direction of an earlier exposure test while keeping that test's necessary direction whole. The refutation that forced it is a row of its own, `an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing`, and it carries the region its instrument states."
 provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::543"]
 keywords = ["exposure", "admission test", "ambient laws", "verdict", "self-collapsed", "refuted", "sufficient", "N11"]
@@ -606,6 +611,7 @@ predicate = [
   "threads: threads = 1",
   "target_features: target features any",
 ]
+answers = ["how_the_law_inventory_is_named"]
 note = "The predicate is the source's own, verbatim, and it is one of only two in the whole derived-laws consolidation. `evidence` is empty and the measured-implies-evidence check is red on this row: the instruments are `80_probes/p1a_declared_law_lies.rs` and `p1b_computed_law_refuses.rs`, both committed, and `probe.toml` does not exist for them to be named in. The 24.8% figure has a zero arity-2 control, so the number is not an artefact of the sweep."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::147",
@@ -665,7 +671,7 @@ predicate = [
 ]
 instead = "Compute the verdict at the shipped width inside a fragment that has a complete test set, which is a degree box rather than an exhaustive enumeration. Outside such a fragment there is no established route, and the narrower use of a band, validating a checker's own implementation, survives."
 law = ["the_falling_factorial_family_vanishes_modulo_two_to_the_width", "the_saturating_exponent_absorbing_identity"]
-answers = ["where_a_law_verdict_is_established"]
+answers = ["where_a_law_verdict_is_established", "what_transfers_from_a_model_width"]
 note = "Two authors, two fragments, one structural shape, which is the strongest multi-instance result in the topic. `W any` is the claim's own: the defeat is by construction and works at whatever the shipped width is. The proviso a band mechanism had relied on, that no law-relevant path dispatches on width, is satisfied by the defeating family and is therefore not sufficient either. Composed with I15 the weight doubles: with the runtime column gone, the compile-time verdict mechanism is the only validation path there is, so a false soundness story there has no catch anywhere."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::207",
@@ -751,6 +757,7 @@ predicate = [
   "operation: operations {add, mul}",
   "arity: arity = 3 for the grouping kind, and arity in 2..=5 for the schedule kind",
 ]
+answers = ["which_route_a_law_verdict_takes_to_closed_form"]
 note = "One expert, correcting its own earlier section. The consequence for the box procedure was priced by a second author: a multilinear chain law must reach length 15 before the default guard notices, so the residual exposure is high-arity non-liftable ring laws, of which the unit exhibited none."
 gap = "The schedule kind sits outside both fragments that have a test set, so nothing established in this topic decides a schedule question at the shipped width, and that is the kind op's accuracy intent is stated over."
 provenance = [
@@ -896,6 +903,7 @@ predicate = [
   "target_features: target features any",
 ]
 instead = "The operation reports that two operands demand different computed answers and the site says which. The predicate separating the reporting arm from the resolving one is not where the demands happen to have a join; it is the far simpler question of whether the coordinate is observable, which is static."
+answers = ["are_strategies_partially_ordered_by_chain_laws"]
 note = "The source calls this the unit's clearest refutation of a shipped shape. `evidence` is empty and the measured-implies-evidence check is red on this row. The predicate is the source's own, verbatim, minus the clause naming which laws the probe enumerated, which is an instrument parameter."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::523",
@@ -938,6 +946,7 @@ predicate = [
   "threads: threads = 1",
   "target_features: host aarch64-apple-darwin, rustc nightly-2026-05-28",
 ]
+answers = ["which_axes_a_build_arm_may_move"]
 note = "The probe's first version is worth more than its result: it swept only additive chains ending in a mask and reported both axes unobservable at 0 of 640, and those zeros were the sweep proving the ring homomorphism it stood on rather than testing the axis. Both versions are committed. The region is large, it is const-visible wherever the chain is written, and it is exactly the arm-with-a-predicate shape I13 asks for. It is unpriced and unbuilt and the source carries it as a live option rather than as a recommendation. `evidence` is empty and the measured-implies-evidence check is red on this row."
 gap = "Unpriced and unbuilt. Nobody has measured what taking the licence saves, and nobody has built the const predicate that would gate it."
 provenance = [
@@ -1298,6 +1307,7 @@ predicate = [
   "chain_length: chain length in 2..=5",
   "rounding: rounding in {truncate, floor, round to nearest even}",
 ]
+answers = ["what_a_numeral_guarantees_to_a_fold"]
 note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instruments are `60_probes/p_d_rescale_saving_is_adaptation_fusion.rs` and `62_probes/p4_signed_multiplicative_accumulator.rs`, both committed with their output. The region is the two instruments' own stated parameters, `M = 15, F = 3` for the unsigned side and `Q = [-8, 7], F = 3` for the signed, exhaustive over the representable domain at each fold length. **Two experts and the second was a blind prediction that refuted the first's constant**, which is a stronger shape than agreement. The consolidation states none of these parameters."
 gap = "Nothing here is priced. No bench harness ran on any of it and every member says so."
 provenance = [
@@ -1346,6 +1356,7 @@ predicate = [
   "arity: arity = 3",
 ]
 law = ["associativity_of_a_composed_saturating_add_and_subtract"]
+answers = ["may_an_arms_predicate_read_data"]
 note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instruments are `82_probes/p1_box_lifting_of_p4.rs` and `p1b_is_every_lifted_box_degenerate.rs`, committed with output. The four widths the consolidation names without naming are 2, 3, 4 and 5, read off the instrument's own table. **The consolidation marks this low confidence for a reason unrelated to its content**: an earlier draft of that consolidation misattributed which of the supporting instances shared an author, and it records itself as having made and repaired the error. Nothing downstream cites it for an independence count."
 gap = "Stated as one-directional sufficiency by its own author. The length-aware construction that a bounded length would license is unbuilt. And the declaration a consumer would naturally write instead, that the exact result stays in range, is unsound: true while the law is false on 49.80% of the domain and wrong in 87.5% of the boxes satisfying it."
 provenance = [
@@ -1378,3 +1389,160 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::251",
 ]
 keywords = ["admission", "exposure test", "self-collapsed", "ambient domain", "refuted", "sufficient", "322", "952", "N11"]
+
+# --- written against the questions they settle, from the corpus rather than -----
+# --- from a consolidation ------------------------------------------------------
+#
+# Each of these was established in a member file, never reached a consolidation
+# in a form a port could carry, and therefore never reached a row. They are
+# written here because a question with `decider = "panel"` and nothing pointing
+# at it reads as unsettled, and for these it was not: the answer existed and the
+# link did not.
+#
+# Every one of them ran an instrument, and for two of the three that instrument
+# has no `probe` row, so what is written is the part of the claim its own route
+# establishes rather than the part its sweep confirms. Where that shortens a
+# sentence the `gap` says which half was left out and what blocks it.
+
+[[proposal]]
+id = "a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains"
+kind = "answer"
+sentence_kind = "theorem"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "Where the realisation map respects every ordered nesting of operations a law contains, the representable set under the induced operations is a quotient of exact arithmetic, so the law holds there whenever it is an identity of exact arithmetic. A verdict is therefore inherited rather than swept: the retraction table has one entry per ordered operation pair and is finite, while the space of identities is infinite at every arity, so deciding the finite table decides the infinite family."
+because = "A map that changes nothing when it is applied to an intermediate result is a congruence for the operation, and the induced structure on its image is the quotient by that congruence. A quotient satisfies every identity its source satisfies, because an identity is an equation between terms and the quotient map sends a proof of the equation to a proof of its image. So no sweep is needed for a law whose every nesting is respected, and the per-law, per-policy, per-fraction-width, per-signedness sweeps the panel has been running are consequences of one property that is decidable by inspection of a table nobody has to grow."
+predicate = [
+  "total_width: W in {4, 5, 6}",
+  "fraction_width: F in {0, 1, 2}",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "rounding: rounding in {truncate, nearest}",
+  "operation: operations {add, sub, mul}",
+  "arity: arity in {2, 3}",
+  "threads: threads = 1",
+  "target_features: target features any",
+]
+answers = ["which_route_a_law_verdict_takes_to_closed_form", "how_the_law_inventory_is_named"]
+note = """
+**The mark is `theorem` and the reason is the order the source did it in.** The \
+criterion is derived from the quotient construction and the instrument states it \
+before running, so the sweep is a control on a prediction rather than the thing \
+that established it. The sweep is real and is not this row's evidence: 552 cells \
+over twenty-three configurations, zero soundness mismatches and zero \
+conservative mismatches, both directions counted separately on purpose. Its \
+instrument is `97_probes/p2_congruence_predicts_the_laws.py`, committed, and no \
+`probe` row names it, so `evidence` is empty and the figure stays in this note \
+rather than in a `measured` sentence it could not support.
+
+**The region is the source's own, minus what is not an axis.** The laws the \
+probe enumerated and the exhaustiveness of the value sweep are instrument \
+parameters rather than situations the world can be in. `operand window in \
+{full, declared non-negative}` is dropped because no `dimension` row declares \
+that axis; the sweep covered both of its values, so the written region is \
+narrower than what was established and the absence here is a gap in the \
+vocabulary rather than a claim.
+
+**The quotient route does not depend on the axes written above**, and the region \
+is nonetheless the source's, because a predicate is never widened in place. A \
+later expert wanting the wider claim states it with its own evidence.
+
+**Whether this is a second arrival is not established here.** The format topic's \
+law frame states the same criterion for associativity alone, as ambient \
+associativity plus the reduction's kernel being a congruence, and this is its \
+general form over every identity. The two were reached in separately dispatched \
+topics and neither cites the other. Somebody who has read both should say \
+whether that is a convergence; this row does not claim the rung.
+"""
+gap = "Only the sufficient direction is proved. That the criterion is also necessary, so a law failing it fails in the representable set, is measured at zero conservative mismatches over the 552 cells and is not derived. A design licensing a rewrite needs only the direction proved here; a design refusing one needs the other."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::97_dolan_the_strategy_space_attacked::705",
+  "panel::202608072330_the-numeral-canon-panel::97_dolan_the_strategy_space_attacked::786",
+]
+keywords = ["congruence", "quotient", "retraction table", "identity", "law verdict", "inherited", "finite table", "infinite family", "structural argument", "F-F", "closed form"]
+
+[[proposal]]
+id = "staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even"
+kind = "finding"
+sentence_kind = "measured"
+standing = "three_or_more"
+topic = "rounding"
+says = "Narrowing through an intermediate grid is not the same function as narrowing once, under round to nearest even. On a nine-bit signed fixed-point grid staged from four fraction bits through two to zero, the two disagree, first at -247/16, where narrowing directly gives -15 and narrowing in stages gives -16. So a design that wants narrowing to compose cannot carry the mode every other numeric surface defaults to, and a design that keeps that mode owes the sentence saying narrowing twice is not narrowing once."
+because = "Round to nearest switches its direction at every cell midpoint of the finer grid, and none of those midpoints is a point of the coarser grid, so an intermediate stage can move a value across a coarse boundary that the direct narrowing would never have crossed. The directed modes never switch direction at all, and toward zero switches only at zero, which is a point of every anchored grid, which is why those compose and this one does not."
+predicate = [
+  "total_width: W = 9",
+  "fraction_width: F = 4",
+  "signedness: signedness = signed",
+  "rounding: rounding = round to nearest even",
+  "radix: radix = 2",
+  "threads: threads = 1",
+]
+evidence = ["staged_narrowing_depends_on_its_staging"]
+answers = ["does_narrowing_compose"]
+note = """
+**The general rule behind it is in the corpus and cannot be written here.** The \
+adjunction file establishes the characterisation directly: a mode composes \
+across nested grids exactly when its direction switches only at points of the \
+coarser grid, tested by building a family of away-from-pivot modes and moving \
+the pivot on and off the coarse grid, at zero failures on-grid and seven \
+off-grid. That is the sentence a canon would carry. Its instrument is \
+`07_probes/p4_composition_and_forced_adjoint.py`, committed with its output, \
+and no `probe` row names it, so the general form is not writable and what is \
+written is the one instance whose instrument is registered.
+
+**Three witnesses, which is what the standing rests on**, and they are the cited \
+probe's own: this instrument, an earlier probe's P4 at 500 half-even mismatches \
+of 4001, and a signature's `s2`. They agree on the corrected result, and the \
+correction is why the count matters: the instrument's first run reported half-even \
+carrying exact staged composition, over a window holding no value whose \
+intermediate stage lands on a tie.
+
+**The staging is stated in the sentence and not in the predicate**, because no \
+`dimension` row declares the intermediate fraction width of a staged narrowing. \
+`accumulator_width` is the nearest and is about what a chain accumulates into \
+rather than what a narrowing passes through, so writing it would name the wrong \
+axis.
+"""
+gap = "Whether the design wants composable narrowing is a preference and is untouched. What is settled is the price of wanting it, which is the rounding mode, and the price of not wanting it, which is a canon sentence saying so."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::07_orchard_the_adjunction_frame::370",
+  "panel::202608072330_the-numeral-canon-panel::07_orchard_the_adjunction_frame::377",
+]
+keywords = ["narrowing", "composition", "staged", "round to nearest even", "half even", "directed rounding", "toward zero", "grid", "pivot", "coarser grid", "double rounding"]
+
+[[proposal]]
+id = "an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover"
+kind = "answer"
+sentence_kind = "definition"
+defines = "output of the container derivation"
+standing = "one_expert"
+topic = "the_realisation_map"
+says = "A component is an output of the derivation when the consumer did not write it, the machine needs it, and a downstream site holding the other components cannot recover it. That criterion quantifies over the observation surface and not over the codomain, so it settles what must be observable and says nothing about how the derivation packages what it returns. Any product is one thing: a pair is a single element of a single set, and anything with two projections is a pair. So one output and two outputs are one mechanism at two levels of packaging, and the count of associated items on a derivation trait is not the count the criterion produces. What is left to decide is how many of the derived facts must be available as types rather than as values, and that number is at least two."
+because = "Without a criterion for what counts as an output the question is unfalsifiable, because everything downstream is a function of the declaration and one can always claim a single output and call the rest recomputation. With the criterion, the two candidate answers stop being rivals: a single richer output with named projections is the pair wearing one name, and every argument the panel reached by counting associated items was adjudicated on packaging while claiming to be about observability."
+answers = ["container_derivation_output_count"]
+note = """
+**A definition carries no region and that is right here**, because this \
+stipulates what the word `output` picks out rather than claiming that something \
+holds somewhere.
+
+**The measured half of the same file is not in this row and cannot be.** It \
+establishes that a single richer output suffices if and only if it is a type: \
+the type-valued spelling compiles gate-free and separates eight declarations \
+that collapse to one carrier, while the value-valued spelling, which is lossless \
+as information, is refused six times in three syntactic positions, each naming \
+`generic_const_exprs`, which the panel forbids. That is a compiler measurement, \
+its instruments are `47_probes/p1`, `p1b`, `p2` and `p2b`, all committed with \
+their outputs and errors and five negative controls among the eleven, and no \
+`probe` row names any of them. Marking it as an argument to get it written would \
+be the dodge the evidence gate exists to catch, so it stays out and stays named.
+
+**The register records a standing disagreement inside the same material** that \
+this does not touch: whether the strategy is an upstream selector the ladder \
+never sees or a key of the ladder itself.
+"""
+gap = "How many facts must be types is stated as at least two and is not settled. The same file argues that two is already insufficient under a widening accuracy strategy, and separately that two strategies at one width can share carrier and stride and differ only in compute, which the criterion above makes a question about the observation surface rather than about arity."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::47_wingo_one_richer_output::62",
+  "panel::202608072330_the-numeral-canon-panel::47_wingo_one_richer_output::180",
+]
+keywords = ["output", "derivation", "codomain", "packaging", "projection", "carrier", "stride", "injectivity", "observation surface", "recoverable", "kind boundary"]

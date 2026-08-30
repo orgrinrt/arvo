@@ -92,6 +92,7 @@ topic = "algebraic_laws"
 says = "A law is read off the algebra and never declared. A declared law is a claim nothing constrains: it compiles while false, and an optimisation gated on it substitutes wrong answers along a name."
 because = "Closure is prior to every law. An operation that leaves its value set is not yet the function the law would be about, so a law asserted about it asserts nothing, and nothing in the type system is in a position to refuse the assertion."
 instead = "Read as a demand rather than as an assertion, a law is a predicate over the configuration space: a surface a consumer may query, and never a field a consumer may set."
+answers = ["how_the_law_inventory_is_named"]
 note = "`normative` because it is a prohibition on the design rather than a measured claim. A region on it would say the design may declare laws everywhere unmeasured."
 provenance = ["panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::531"]
 keywords = ["law", "declared law", "read off", "algebra", "demand", "predicate", "configuration space", "closure", "query", "gated optimisation"]
@@ -263,6 +264,7 @@ standing = "two_experts"
 topic = "the_strategy_object"
 says = "A strategy is a pair. Component one is an assignment on observable policy axes and it fixes the denoted answer. Component two is a weighting over cost coordinates and it ranges over realisations of that denotation. The two are told apart by one mechanical test rather than by taste: take the candidate axis, hold everything else fixed, sweep the domain, and look for an input where the answer changes."
 because = "The components have different closure properties, so the question of whether the strategy set is closed has two answers and conflates them. The assignment space is closed and enumerable, because an axis position with no lowering cannot be supplied from outside. The weighting space is open and consumer-supplied, because a weighting re-ranks arms that already exist. The axes are closed; the named points are open."
+answers = ["is_i9_about_a_strategy_or_one_component"]
 note = """
 Two cold derivations reached the pair blind by different routes, one from a \
 bytes-level model and one from two of the stated intents set against each other. \
@@ -299,6 +301,7 @@ topic = "the_strategy_object"
 says = "No cost model may move an answer. Every difference in an answer traces to the declared policy and nothing else may move one. With the firewall, a target change moves which arm runs and moves no answer; without it, a target change moves answers at the arms' full disagreement rate and no predicate names the change, because the cost table is not in the type."
 because = "The constraint is imposed rather than established, and it is what the whole two-component split is for: if a weighting could move an answer, the assignment would not fix the denotation and the pair would not be a pair."
 instead = "Where an arm realises no assignment in the assignment set, the firewall has no repair available in the type. The obligation then falls on the arm set rather than on the cost model: admit only arms that realise the denotation of some assignment, and a conforming pair becomes two arms of one assignment that the weighting may pick between freely."
+answers = ["is_i9_about_a_strategy_or_one_component", "reduction_order_or_associativity"]
 note = """
 **This row carries no region on purpose and both signatures agree that is right.** \
 A predicate records the region a claim was established in. The firewall is not \
@@ -452,6 +455,7 @@ says = "Within a maximal unbound stretch, the design may select any realisation 
 because = "The licence rests on two normative premises and both are named. The observability perimeter bounds obligations above, so nothing beyond the observation surface is owed; the declaration bounds them below, so the declared grade is owed. Neither follows from the partition theorem the clause sits beside."
 instead = "Where a stretch contains an operation that is partial at the profile in force, agreement on definedness is part of the declared grade at every profile, because partiality is a binding-free observation channel that no assertion flag governs."
 obligation = ["composition_contracts_above_the_numeral"]
+answers = ["reduction_order_or_associativity"]
 note = """
 **This is the underivable one, and it is why the topic's own result is that its \
 central claim splits by provenance.** Three members tried to derive it from the \
