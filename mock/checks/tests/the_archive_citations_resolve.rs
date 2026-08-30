@@ -17,11 +17,6 @@ use std::fs;
 use arvo_checks::corpus;
 
 #[test]
-#[ignore = "catalogue: OPTIONS.md:111,148,296,562 still cite `seed/SETTLED_laws.md` and \
-            `seed/SETTLED_container.md`; repointing waits until the dispatch reading that \
-            file has returned, because a document must not move under a member reading it. \
-            INTENTS.md and PERSONA_CALLS.md are already repointed. Remove this attribute in \
-            the same commit as the OPTIONS.md repoint."]
 fn no_living_ledger_cites_the_archive_by_its_dead_name() {
     let found = corpus::unprefixed_archive_citations_in_living_ledgers(&corpus::panel_dir());
     assert!(
@@ -40,32 +35,57 @@ fn every_archive_citation_in_the_panel_names_a_file_that_is_there() {
     );
 }
 
-/// The 116 that stay, counted, so the number in `RULES.md` is measured rather
-/// than remembered and a later pass cannot quietly grow it.
+/// The ones that stay, counted here and nowhere else.
 ///
-/// These sit in landed numbered files, which are the record and are not edited.
-/// The reading rule is one sentence: prepend `OLD_`. What this pins is that
-/// nobody adds more.
+/// They sit in landed files and committed probe output, which are the record
+/// and are not edited. The reading rule is one sentence: prepend `OLD_`. What
+/// this pins is that nobody writes a new one.
+///
+/// **The number lives in this test rather than in `RULES.md`.** The first
+/// repair wrote it into the prose and it was stale within the hour, twice over:
+/// the repair itself removed citations, and the paragraph announcing the count
+/// then contained the string it was counting. A number in prose has no way to
+/// know it stopped being true.
+///
+/// Which is why the files *about* this class are excluded below. Every one of
+/// them contains `seed/SETTLED_` because it is discussing the spelling, and
+/// counting those would mean the count rises whenever somebody writes about the
+/// problem.
 #[test]
-fn the_landed_files_carry_the_count_the_rule_states_and_no_more() {
+fn no_new_unprefixed_archive_citation_is_written() {
+    /// Files that carry the string because they are about it.
+    const ABOUT_THE_CLASS: &[&str] = &[
+        "RULES.md",
+        "179_lamport_porting_ops_rulings_into_the_registry.md",
+        "180_kiselyov_porting_the_options_register_and_the_droplist.md",
+    ];
+    /// Measured after the three living ledgers were repointed. Raising this is
+    /// not the fix for a failure; repointing the new citation is.
+    const CEILING: usize = 110;
+
     let dir = corpus::panel_dir();
     let mut total = 0usize;
-    let mut files = 0usize;
+    let mut worst: Vec<String> = Vec::new();
     for entry in walk(&dir) {
+        let name = entry.file_name().unwrap_or_default().to_string_lossy().to_string();
+        if ABOUT_THE_CLASS.contains(&name.as_str()) {
+            continue;
+        }
         let Ok(text) = fs::read_to_string(&entry) else {
             continue;
         };
         let n = text.matches("seed/SETTLED_").count();
         if n > 0 {
-            files += 1;
             total += n;
+            worst.push(format!("{name}: {n}"));
         }
     }
+    worst.sort();
     assert!(
-        total <= 116 && files <= 43,
-        "{files} files carry {total} unprefixed archive citations, against the 43 and 116 \
-         recorded in RULES.md after the two in INTENTS.md were repointed. A new one has been \
-         written; repoint it rather than raising this number."
+        total <= CEILING,
+        "{total} unprefixed archive citations against a ceiling of {CEILING}. One has been \
+         written since the repair; repoint it rather than raising the number. Per file: \
+         {worst:#?}"
     );
 }
 

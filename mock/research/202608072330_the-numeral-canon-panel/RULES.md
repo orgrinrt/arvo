@@ -502,17 +502,22 @@ when the rename landed, and those five files still carry none: measured at zero 
 
 **That pass claimed the class and had fixed the instances, and the sentence here used to say so.** It read
 "no unprefixed archive citation remains", which is a claim over the whole tree made from a check over five
-files. Measured across the panel directory: **45 files carry 118 unprefixed `seed/SETTLED_*` citations**,
-none of which resolves. Two were in `INTENTS.md`, which is the catalogue every dispatch reads first, so
-the provenance of I2 and I3 pointed at nothing for as long as the sentence stood.
+files. Dozens of files across the panel carry unprefixed `seed/SETTLED_*` citations, none of which
+resolves, and some were in `INTENTS.md`, the catalogue every dispatch reads first, so the provenance of
+I2 and I3 pointed at nothing for as long as the sentence stood.
 
-- **The two in `INTENTS.md` are repointed.** It is a living ledger and it is read as current.
-- **The other 116 stay exactly as written.** They are in landed numbered files, which are the record and
-  are not edited. **Read an unprefixed `seed/SETTLED_*` citation by prepending `OLD_`**; nothing else about
-  it has moved.
-- **`mock/checks` enforces the repaired claim** rather than the prose asserting it: no living ledger may
-  carry an unprefixed archive citation, and every `seed/OLD_*` citation anywhere has to name a file that
-  exists. A totality claim with nothing enforcing it is what produced this.
+**No count is written here on purpose.** The first repair put one in, and it was stale within the hour
+because the repair itself changed it and because this paragraph then contained the string it was counting.
+`mock/checks` measures it, which is the only form that cannot drift.
+
+- **The living ledgers are repointed**: `INTENTS.md`, `PERSONA_CALLS.md`, `OPTIONS.md`.
+- **The rest stay exactly as written.** They are in landed numbered files and in committed probe output,
+  which are the record and are not edited. **Read an unprefixed `seed/SETTLED_*` citation by prepending
+  `OLD_`**; nothing else about it has moved.
+- **`mock/checks` enforces the repaired claim** rather than this prose asserting it: no living ledger may
+  carry an unprefixed archive citation, every `seed/OLD_*` citation anywhere has to name a file that
+  exists, and the number left in the landed files may not grow. A totality claim with nothing enforcing it
+  is what produced this, and a count in prose is the same defect one size down.
 
 **When something in root dies, prefix it then.** The root's non-prefixed state is a claim that everything in
 it is live, and that claim is only true if it is maintained.
