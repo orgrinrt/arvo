@@ -14,9 +14,21 @@
 # then designs derived from it, then code written from those. Source that
 # predates the canon is not a starting point; it is the thing being replaced.
 
+# `checks` is the one member, and it is not an exception to any of the above.
+#
+# It implements nothing the design says. It is a harness over the canon: it
+# reads the rows under `mock/registry/` and asserts the things a TOML schema
+# structurally cannot, which is most of what makes a predicate exact and a
+# citation honest. So it sits above the canon rather than below it, and nuking
+# the design tier does not reach it.
+#
+# A member rather than a free-standing tree, because membership is what makes
+# `cargo mock test` and the readiness report reach it. Tool crates get there by
+# sitting under `mock/tools/` with an empty `[workspace]` of their own; this is
+# not a tool.
 [workspace]
 resolver = "2"
-members = []
+members = ["checks"]
 # `benches` (and every crate under `benches/variants/`) is excluded rather than
 # listed as a member. The deletion commit that emptied `members` above (929c46ed)
 # dropped every `benches*` entry along with the crate list, even though its own

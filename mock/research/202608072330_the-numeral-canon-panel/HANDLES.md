@@ -186,3 +186,22 @@ remain resumable for this unit.
 | 141 | lamport | `a07940056001e00c6` |
 | 144 | fog | `add5eb6bcca4570a4` |
 | 152 | chlipala (independent check) | `a1f48c604ae412570` |
+
+## The registry migration, session `02cc2df2-cbb5-4e54-aba8-40f92ba44df7`
+
+A new session, so none of the ids above is addressable any more. These are.
+
+The canon stopped being prose while this session opened. Op's call: mockspace has
+gained a first-class registry and that is where a canon forms now, so the panel's
+output is being moved into typed rows under `mock/registry/` rather than written
+up as a document. The rows are `canon_paths` in `mockspace.toml` and the schema is
+declared there.
+
+These seats are porting rather than arguing, so they take numbers in the panel's
+own sequence for their findings files and their worktrees are named for the work
+rather than for the seat.
+
+| Number | Persona | Worktree | Task id |
+|---|---|---|---|
+| 179 | lamport (op's rulings into `ruling.toml`) | `port-rulings` | `afe5cfa1d438060cd` |
+| 180 | kiselyov (the register and the droplist into `question.toml` and `retirement.toml`) | `port-questions` | `adc45b989117f6c1d` |
