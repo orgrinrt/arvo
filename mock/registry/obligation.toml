@@ -1,0 +1,128 @@
+# What arvo is asked for, in the asker's own terms.
+#
+# Read from outside the canon on purpose: a check that walks the canon can only
+# report that the canon agrees with itself, so the enumeration has to come from
+# somewhere the canon does not reach. This is the instrument behind op's bar
+# that the canon be exhaustive enough for a full design and a full
+# implementation to follow from it.
+#
+# **Whether an obligation is met is derived and is never stated here.**
+# `refsto(obligation::<slug>)` reports what points at it, and an empty result is
+# the finding. A proposal alone does not meet one: a proposal is proposed rather
+# than met, and reporting it otherwise closes a gap op has never seen.
+#
+# **The names in the sources are the deleted crate tree's and none of them
+# appear below.** Every row is the need the consumer states in its own words.
+# Where a consumer names a crate and never says what it is for, no row exists
+# and `184` records the gap.
+#
+# An absence here means nobody has enumerated it, never that arvo does not owe
+# it. `184` says exactly what was read.
+
+# --- what the engine's plan chain asks for ------------------------------------
+
+[[obligation]]
+id = "set_operations_over_a_fixed_size_bit_set"
+need = "Union, intersection and difference over sets of a size fixed at compile time, for a scheduler's read and write sets and for the dirty masks its plan ends on."
+consumer = "hilavitkutin, and vehje for a compiler's artifact read and write sets"
+why = "Two steps of a twelve-step plan chain rest on it, and the same surface is asked for again by a different consumer for a different purpose, which is what makes it an obligation rather than one consumer's convenience."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for", "panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-vehje-asks-for"]
+keywords = ["set", "sets", "bitmask", "bit set", "mask", "union", "intersection", "difference", "read set", "write set", "dirty mask", "access set"]
+
+[[obligation]]
+id = "ordering_a_directed_acyclic_graph"
+need = "Topological order over a dependency graph, an upward rank on it, a waist detection, and a bandwidth-reducing reordering."
+consumer = "hilavitkutin for a scheduler's plan, vehje for a compiler's pass order"
+why = "Four of the twelve plan steps are this one surface asked for four ways, and the second consumer wants the same thing for an unrelated reason."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
+keywords = ["graph", "DAG", "dependency graph", "topological sort", "topo", "rank", "waist", "RCM", "reverse Cuthill McKee", "bandwidth", "ordering", "pass order"]
+
+[[obligation]]
+id = "a_sparse_adjacency_a_plan_can_be_built_on"
+need = "A compressed sparse representation of a dependency graph, sized at compile time, that stays the fastest shape at every graph size the consumer sees."
+consumer = "hilavitkutin"
+why = "Its design records the choice as bench-locked canonical at all N rather than as a preference, so what is owed is the representation and the property that it does not lose at some size."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
+keywords = ["sparse", "CSR", "compressed", "adjacency", "dependency graph", "row offsets", "bench locked"]
+
+[[obligation]]
+id = "a_spectral_partition_of_a_dependency_graph"
+need = "A Fiedler partition, splitting a dependency graph into groups that can run apart."
+consumer = "hilavitkutin"
+why = "One named step of the plan chain, and the one that decides which work is allowed to run in parallel."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
+keywords = ["spectral", "Fiedler", "eigenvector", "partition", "graph partition", "block diagonal", "parallel groups"]
+
+[[obligation]]
+id = "a_cost_dynamic_program"
+need = "A dynamic program over costs, deciding how to group work under a budget."
+consumer = "hilavitkutin"
+why = "The plan chain's cost step, which is what turns the partition into a schedule with a size."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
+keywords = ["cost", "DP", "dynamic programming", "combinatorics", "budget", "grouping", "morsel size", "knapsack"]
+
+# --- what reaches the numeral itself -------------------------------------------
+
+[[obligation]]
+id = "a_platform_sized_unsigned_integer_at_an_api_position"
+need = "An unsigned integer of the platform's size, usable in a public error type, whose range covers both a unix errno and a Windows GetLastError value with no negative case."
+consumer = "hilavitkutin"
+why = "The consumer states the property rather than the type: non-negative across both platforms' ranges. A fixed-shape error enum with no heap payload has to carry the code somewhere, and the stack's own primitive is what its public positions are allowed to use."
+topic = "the_format"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
+keywords = ["usize", "USize", "platform size", "pointer width", "errno", "GetLastError", "error code", "non-negative", "public API", "primitive"]
+
+[[obligation]]
+id = "an_exact_width_container_a_consumer_can_alias_and_pin"
+need = "A container of an exactly declared bit width that a consumer can name, alias under its own name, and convert to a fixed wider width at a boundary it controls."
+consumer = "hilavitkutin"
+why = "Its content hash is a 28-bit value in the runtime API and a bare 32-bit value on disk, and the on-disk width is pinned by a serialisation format rather than chosen. So the demand is both halves: the exact width in memory and a conversion the consumer writes at the boundary."
+topic = "the_format"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
+keywords = ["exact width", "Bits", "28 bit", "container", "alias", "newtype", "content hash", "serialisation", "on disk", "byte layout", "conversion"]
+
+[[obligation]]
+id = "a_content_hash"
+need = "A hash of content, stable across sessions."
+consumer = "hilavitkutin"
+why = "Its persistence layer keys on it, and stability across sessions is the property that makes a cache a cache."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
+keywords = ["hash", "content hash", "digest", "stable", "across sessions", "cache key", "persistence"]
+
+[[obligation]]
+id = "debug_output_from_every_numeral_shape"
+need = "Debug output from every numeral, at every width and under every strategy, written into a caller-supplied fixed-size buffer with no alloc and no std."
+consumer = "any"
+why = "A check written for it exists and cannot run, because the tree it was written against was deleted. The obligation is what outlives the file: a substrate whose types cannot be printed is one nobody can debug, and the no-alloc constraint means the ordinary route is unavailable."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#and-one-from-a-check-that-was-written-and-never-landed"]
+keywords = ["Debug", "fmt", "format", "print", "no_std", "no alloc", "core::fmt::Write", "buffer", "smoke test", "diagnostics"]
+
+# --- the one that is not a type -------------------------------------------------
+
+[[obligation]]
+id = "a_build_flag_that_changes_float_semantics"
+need = "A cfg a consumer's build system sets, under which arvo's float semantics change."
+consumer = "hilavitkutin"
+why = "Its rustc wrapper emits exactly one cfg and this is it, on the consumer's own account, and a pragma in the consumer's source is what turns it on."
+gap = "This is a live dependency and a hazard at the same time, and the row records the first without endorsing the second. The panel has measured the other direction: one source one flag apart gives one type name two policies, and a compile-time check cannot catch it, because each build emits one lowered path and satisfies the check while the denotation differs between builds. Whether arvo should carry such a surface at all is a design question no row here answers."
+topic = "binding_time"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#the-one-that-is-not-a-type-at-all"]
+keywords = ["cfg", "build flag", "fast math", "unsafe-fp-math", "float semantics", "pragma", "rustc wrapper", "denotation", "one lowered path", "soundness hole"]
+
+# --- op's own, which no consumer document could state ---------------------------
+
+[[obligation]]
+id = "composition_contracts_above_the_numeral"
+need = "Contracts for units bigger than a single numeral, so that what a chain of operations guarantees is expressible at all."
+consumer = "any"
+why = "Op names it as half of what arvo is for, beside the algorithm surface, and explicitly not the numeral alone. The panel reaches the same place from the other direction: a chain is not a value, so an accuracy intent stated over chains has no expression over a per-value primitive, and that was recorded as a hole in the whole framing rather than as a gap in one topic."
+topic = "the_chain"
+provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-op-asks-for", "panel::202608072330_the-numeral-canon-panel::INTENTS::#i11-arvo-is-a-library-and-the-value-is-what-composes-on-top-of-it"]
+keywords = ["composition", "contract", "chain", "beyond the numeral", "fold", "accuracy across chains", "bigger than a numeral", "guarantee", "trait contract"]

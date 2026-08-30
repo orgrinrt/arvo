@@ -203,5 +203,16 @@ rather than for the seat.
 
 | Number | Persona | Worktree | Task id |
 |---|---|---|---|
-| 179 | lamport (op's rulings into `ruling.toml`) | `port-rulings` | `afe5cfa1d438060cd` |
-| 180 | kiselyov (the register and the droplist into `question.toml` and `retirement.toml`) | `port-questions` | `adc45b989117f6c1d` |
+| 179 | lamport (op's rulings into `ruling.toml`) | `port-rulings`, reaped | `afe5cfa1d438060cd` |
+| 180 | kiselyov (the register and the droplist into `question.toml` and `retirement.toml`) | `port-questions`, reaped | `adc45b989117f6c1d` |
+| 182 | orchard (the four consolidations into `proposal.toml` and `law.toml`) | `port-proposals` | `a2637fbd6061d2c5d` |
+| 183 | rompf (the five candidates into `proposal-the-later-topics.toml` and its law file) | `port-candidates` | `a7b95978b2b0bc397` |
+
+`179` and `180` are complete and merged into `research/canon-registry`; their worktrees and branches
+are gone and the ids stay addressable while this session lives. **`179` is owed a second reader** on
+its `PRIOR_CALLS.md` refusal, and the brief for that reader is `179` section 17, written to be
+dispatched against rather than paraphrased.
+
+`182` and `183` write different files on purpose. A row's namespace is the array-of-tables key rather
+than its path, so `[[proposal]]` rows in either file are one namespace and every query sees both,
+while the merge stays clean.
