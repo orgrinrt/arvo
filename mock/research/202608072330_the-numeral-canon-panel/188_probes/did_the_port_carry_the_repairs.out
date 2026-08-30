@@ -1,0 +1,31 @@
+### side under test: added
+
+=== 63, repaired per 64: D-C the chain as a first-class typed object ===
+  the label D-C                                              PRESENT (2 hits)
+  expression template                                        ABSENT
+  the three-way direction question (D-A, D-B, D-C live)      PRESENT (11 hits)
+  computation graph drift                                    ABSENT
+
+=== 74, repaired per 75: three restorations ===
+  2a: 65's change-test misfiles its own chain                ABSENT
+  2b: 66 credited for posing conversion vs resolution        ABSENT
+  2c: the typestate cannot break the tie                     PRESENT (1 hits)
+
+=== 90, repaired per 91: R8 and the restored ordering candidate ===
+  R8 repair (the shared-author caveat attaches elsewhere)    ABSENT
+  76's ordering candidate: Precise refines Hot               PRESENT (2 hits)
+  honored set / honoured set                                 ABSENT
+
+=== 106, repaired per 107: the law predicate and four dropped results ===
+  the restored predicate: signedness on the distributivity claim PRESENT (20 hits)
+  F-H: the declared non-negative operand window              PRESENT (9 hits)
+  F-B: polynomial against exponential in the region count    PRESENT (2 hits)
+  the exchange-rate against priority reading                 ABSENT
+  98's five-tier ladder and the Pareto-admissible tier       PRESENT (4 hits)
+  97's criterion stated rather than scored                   ABSENT
+
+=== CONTROL 2: a term in no source at all must be ABSENT ===
+  zzq_not_a_real_term                                        ABSENT
+
+=== CONTROL 3: a term that is certainly in the rows must be PRESENT ===
+  the word predicate                                         PRESENT (87 hits)

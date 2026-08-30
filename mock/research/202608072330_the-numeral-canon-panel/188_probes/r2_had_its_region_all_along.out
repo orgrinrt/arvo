@@ -1,0 +1,28 @@
+=== the row, as committed ===
+id = "a_composed_expressions_region_is_never_inherited_from_its_parts"
+sentence_kind = "normative"
+standing = "one_expert"
+because = "The counterexample is exact rather than illustrative: unsigned saturating addition associates on every triple at eight bits, and the composition of that addition with the matching subtracti
+  predicate field present: NO
+
+=== the source, two lines below the sentence the row's because quotes ===
+136:`79_probes/p1_negative_control.rs`, `79_probes/p1_negative_output.txt`). Predicate as `79` stated it:
+137-`N = 8, sign = unsigned, policy = saturate, op pair = {+, -} composed, F = 0, threads any, features any`
+
+=== every axis that predicate names, mapped, and checked against dimension.toml ===
+SOURCE SPELLING            REGISTRY AXIS                      DECLARED
+N = 8                      total_width                        yes
+sign = unsigned            signedness                         yes
+policy = saturate          overflow_policy                    yes
+op pair = {+, -}           operation                          yes
+F = 0                      fraction_width                     yes
+threads any                threads                            yes
+features any               target_features                    yes
+
+=== CONTROL 1: an axis the corpus names that is NOT declared, which must read NO ===
+operand window             declared_operand_window            NO
+
+=== CONTROL 2: the same search for a source predicate on a genuine stipulation ===
+row: one_container_hosts_many_systems_so_the_canon_types_the_system
+hits for a predicate line near its source in 74:
+0
