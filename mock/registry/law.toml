@@ -1,0 +1,142 @@
+# The algebraic laws this panel reasoned about, with the regions it established.
+#
+# Every region here is transcribed from the establishing consolidation. Where a
+# consolidation stated a region in the ratified notation it is carried verbatim;
+# where it stated none but named its instrument's parameters, the region is those
+# parameters and nothing more. Nothing is widened, and no axis is supplied that a
+# source did not name.
+#
+# Three things a reader has to know before quoting any row.
+#
+# **`holds` and `fails` are not complements.** Absence from `holds` is not a claim
+# that a law fails there, which is the one place this namespace's absence
+# semantics is weaker than a proposal's predicate. Several rows below leave a cell
+# out of both lists, and each says so in `gap`.
+#
+# **Several cells cannot be placed on either list, because the axis that
+# separates them is not declared.** The representable range's geometry, the
+# declared operand window and the constant-embedding convention each decide a
+# verdict with every declared axis held fixed, so a row trying to carry them
+# would put one region in both lists at once. Those cells are in `gap` rather
+# than silently on one side.
+#
+# **`threads` is present on exactly the rows whose source wrote it.** The same
+# class of pure-value law appears here both with `threads any` and with no thread
+# axis at all, because one consolidation wrote the axis into its predicate and
+# another did not. Under I13 that difference is the difference between a law that
+# holds at any core count and one that holds only where threads do not exist, and
+# it is an artefact of who was writing rather than of the algebra.
+
+[[law]]
+id = "additive_associativity_under_wrapping"
+statement = "`(a + b) + c == a + (b + c)`, where addition is the exact ambient sum reduced onto the representable set by wrapping."
+holds = [
+  "total_width: W in {4, 8}",
+  "fraction_width: F any",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy = wrap",
+  "operation: operation = add",
+  "arity: arity = 3",
+]
+topic = "algebraic_laws"
+note = "Two instruments at two widths: the format unit's cube at four-bit widths, and `76`'s exhaustive sweep over `u8`. `F any` is licensed by the format unit's own scale-blindness argument, that addition at a common scale never reads the scale, rather than by a sweep over F. The source states no thread count and no target features, so both axes are absent, which under I13 says the law holds in no situation where threads exist. That reading is an artefact of the consolidation's notation discipline rather than of the algebra: the neighbouring row `associativity_of_a_composed_saturating_add_and_subtract` carries `threads any` for a claim of exactly the same kind, because its source wrote the axis."
+gap = "The premise is same-scale addition throughout. Whether a mixed-scale addition exists, and what result format it infers, is an open question the additive column depends on and nobody has swept."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::444",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::473",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::122",
+]
+keywords = ["associativity", "addition", "wrap", "wrapping", "abelian group", "additive", "scale blind"]
+
+[[law]]
+id = "additive_associativity_under_saturation"
+statement = "`(a + b) + c == a + (b + c)`, where addition is the exact ambient sum reduced onto the representable set by saturation."
+holds = [
+  "total_width: W in {4, 8}",
+  "fraction_width: F any",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy = saturate",
+  "operation: operation = add",
+  "arity: arity = 3",
+]
+fails = [
+  "total_width: W = 4",
+  "fraction_width: F any",
+  "signedness: signedness = signed",
+  "overflow_policy: overflow policy = saturate",
+  "operation: operation = add",
+  "arity: arity = 3",
+]
+witness = "Signed two's complement, `W = 8`: 4,177,792 of 16,777,216 triples diverge, first counterexample `a = -128, b = -128, c = 1` (`76_probes/probe1_associativity_exhaustive.rs`). At `W = 4` the count is 952 triples, and it is invariant in F: 448 ceiling-only, 504 floor-only, zero involving both bounds."
+topic = "algebraic_laws"
+note = "The unsigned side is stronger than a sweep: the format unit's congruence argument, that `equal, or both at or beyond the bound` is a congruence on the naturals, covers all widths at once, and the semiring axioms were measured at bounds M in {1, 2, 3, 7, 15, 31, 63, 127, 255} with zero failures. The width entry here carries only what an instrument ran, because no source restated the structural argument as a width predicate. The signed failure count is F-invariant by the same scale-blindness argument that licenses `F any` on the holds side, so the fraction axis carries `any` on both."
+gap = "Both lists are silent on the signed case restricted to a declared non-negative operand window, where the strategy unit measured additive associativity recovered at `W in {4, 5, 6}`. That cell is separated from the failing signed cell by the declared operand window alone, which no `dimension` row declares, so placing it on `holds` would put one region on both lists."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::443",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::352",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::300",
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::123",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::1356",
+]
+keywords = ["associativity", "addition", "saturate", "saturating", "clamp", "952", "monoid", "additive"]
+
+[[law]]
+id = "multiplicative_associativity_under_wrapping"
+statement = "`(a * b) * c == a * (b * c)`, where multiplication is the exact ambient product reduced onto the representable set by wrapping."
+holds = [
+  "total_width: W in 3..=8",
+  "fraction_width: F = 0",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy = wrap",
+  "operation: operation = mul",
+  "arity: arity in {2, 3}",
+]
+fails = [
+  "total_width: W in 3..=7",
+  "fraction_width: F > 0",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy = wrap",
+  "operation: operation = mul",
+  "arity: arity in {2, 3}",
+]
+witness = "At `F > 0` a representable-width multiply discards F bits at every pairwise step before any clamp is consulted, so the ambient operation is no longer associative and no reduction repairs it. Measured three ways: nine of nine fractional configurations fail in `57_probes/p3` section 3, wrap's ring collapses identically at nine of nine in `61_probes/q2`, and 54 of 54 signed rows fail in `62_probes/p2` under both rounding spellings."
+topic = "algebraic_laws"
+note = "The `F = 0` holds region combines two instrument sets at different widths: the format unit's cube at four-bit widths with the `w = 3 through 7` width instances, and the strategy unit's `93` F1 sweep at `W in 3..8` for the unsigned case. The signed `F = 0` wrap cell is the cube's `ring` row and is separately marked `section-dependent` at `F > 0`, meaning the choice of representative range becomes arithmetic-bearing there."
+gap = "Nothing here is established above `W = 8`. Every width in both lists is a model width, and the derived-laws unit established that a model band below the shipped width can be defeated by construction, so no row of this law transfers to a shipped width by band agreement."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::446",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::417",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::324",
+]
+keywords = ["associativity", "multiplication", "wrap", "wrapping", "ring", "fraction", "F > 0", "coarsening"]
+
+[[law]]
+id = "multiplicative_associativity_under_saturation"
+statement = "`(a * b) * c == a * (b * c)`, where multiplication is the exact ambient product reduced onto the representable set by saturation."
+holds = [
+  "total_width: W in 3..=8",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy = saturate",
+  "operation: operation = mul",
+  "arity: arity in {2, 3}",
+]
+fails = [
+  "total_width: W in 3..=6",
+  "fraction_width: F = 0",
+  "signedness: signedness = signed",
+  "overflow_policy: overflow policy = saturate",
+  "operation: operation = mul",
+  "arity: arity = 3",
+]
+witness = "Signed two's complement saturating multiplication fails on the integer grid at 28, 160, 780 and 3516 triples for `W` = 3, 4, 5 and 6, with the three-value witness `(7 * 7) * -1 = -7` against `7 * (7 * -1) = -8` and no coarsening anywhere in it. The mechanism is the range's asymmetry under negation: negation carries one absorbed tail into the interior, so `both beyond the same bound` is not preserved by multiplication by a negative and no congruence can be stated."
+topic = "algebraic_laws"
+note = "The unsigned holds region rests on a congruence argument the format unit states covers all widths at once, measured at bounds M in {1, 2, 3, 7, 15, 31, 63, 127, 255}; the width entry carries only the widths an instrument ran. The signed cell is the worst corner of the format unit's cube and it is the corner a general-purpose default lands in, because I3 points the default at Rust's primitives and those are signed."
+gap = "The signed cell under a mirror-symmetric representable range is established to hold, at zero associativity failures and zero coherence violations at every width measured up to `w = 7`, and it is on neither list. It differs from the failing signed cell only in the geometry of the representable range, which no `dimension` row declares, so writing it would put one region on both lists at once. One code point, the most negative value, is the entire difference. The `F > 0` cells are likewise absent from both lists here and are carried by `multiplicative_associativity_under_wrapping`'s fails region, which the cube states holds for saturation too."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::358",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::364",
+  "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::445",
+  "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::324",
+]
+keywords = ["associativity", "multiplication", "saturate", "saturating", "clamp", "signed", "symmetric range", "semiring"]

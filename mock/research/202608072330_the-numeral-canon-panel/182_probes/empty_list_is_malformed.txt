@@ -1,0 +1,28 @@
+An explicitly empty optional list field is reported as a malformed row reference.
+
+Observed while writing mock/registry/law.toml. Four law rows carried
+
+    evidence = []
+
+which is an empty TOML array in a field the schema declares `type = "probe[]"`,
+`required = false`. The intent was to say "no probe row exists for this yet",
+explicitly rather than by omission.
+
+`cargo mock --lint-only` reported, once per row:
+
+  ERROR [malformed-row-reference]: law::additive_associativity_under_saturation:
+    field `evidence` holds ``, which is not a slug (snake_case, starting with a
+    letter).
+  ERROR [malformed-row-reference]: law::additive_associativity_under_wrapping: ...
+  ERROR [malformed-row-reference]: law::multiplicative_associativity_under_saturation: ...
+  ERROR [malformed-row-reference]: law::multiplicative_associativity_under_wrapping: ...
+  registry check failed: 4 error(s)
+
+So the reference reader turns an empty array into a single empty-string entry
+rather than into no entries. The two states a writer wants to distinguish,
+"nobody has looked" and "somebody looked and there is nothing", collapse: the
+only expressible one is omission, which reads as the first.
+
+Removing the field clears it. Every `evidence` field in the rows this pass
+committed is therefore omitted rather than empty, and that omission does not
+mean what an author writing `[]` meant it to mean.
