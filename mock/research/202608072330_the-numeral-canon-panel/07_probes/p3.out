@@ -1,0 +1,36 @@
+# Q1 box wmax=4 (default 6 was killed at 25 minutes without finishing)
+=== Q1. Closed form against enumeration, on the region both cover ===
+  sets tested        : 18602
+  agree              : 3163
+  disagree           : 0
+  answer outside box : 15439
+  (a disagreement here is a defect in the closed form and would void Q2-Q4)
+
+=== Q2. Which inputs push the closed form outside each admission policy? ===
+  sets tested                    : 2796636
+  answer inside I>=0, width>=1   : 2791148
+  answer needs width 0 (the origin): 1
+  answer needs I < 0             : 5487
+  needs both at once             : 0
+  width-0 witness : S=[Fraction(0, 1)]
+  I<0 witness     : S=[Fraction(1, 64)] -> U<-5,6>
+  NOTE the two admissions are disjoint conditions on the SAME formula,
+       which is why the record found them doing two different jobs.
+
+=== Q3. Is the order's JOIN equal to the closed form applied to the union? ===
+  pairs            : 190
+  join = alpha(cup): 120
+  differ           : 0
+  join outside box : 70
+  (identical by definition; measured so the definition is not merely asserted)
+
+=== Q4. Multiplication: closed form vs sum-of-widths vs file 06's corrected form ===
+  operand pairs                       : 400
+  sum-of-widths form IS the best      : 324
+  sum-of-widths form OVERSHOOTS       : 76
+  file 06's corrected form IS the best: 400
+  file 06's corrected form differs    : 0
+  best answer needs I < 0             : 9
+  best answer has width 0             : 0
+  overshoot witness : ('U<1,0>', 'U<1,0>', 'naive U<2,0>', 'best U<1,0>')
+  I<0 witness       : ('U<0,1>', 'U<0,1>', (-1, 2))

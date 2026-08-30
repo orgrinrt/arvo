@@ -1,0 +1,43 @@
+Does requiring one weighting to explain the whole table let a reader
+predict a row that weighting was not fitted to?
+
+three-coordinate table (time, bytes, spread), p1
+  regions 6, arms 6, sections at the strictly-positive rung: 58
+  Pareto-admissible arms per region (the baseline a reader already has): [4, 4, 4, 4, 4, 2]
+
+  leave-one-out trials: 348
+    determinate     162    46.55%
+    narrowed        168    48.28%
+    vacuous          18     5.17%
+  mean surviving arms at the hidden region: 1.621
+  mean admissible arms at the hidden region: 3.667
+  hidden row recovered uniquely and correctly: 162 of 348 (46.55%)
+
+97's two-coordinate model (ns per record, bits), p6
+  regions 6, arms 5, sections at the strictly-positive rung: 9
+  Pareto-admissible arms per region (the baseline a reader already has): [3, 3, 2, 2, 2, 2]
+
+  leave-one-out trials: 54
+    determinate      38    70.37%
+    narrowed          8    14.81%
+    vacuous           8    14.81%
+  mean surviving arms at the hidden region: 1.296
+  mean admissible arms at the hidden region: 2.333
+  hidden row recovered uniquely and correctly: 38 of 54 (70.37%)
+
+reading
+  The constraint is not a lookup-key-versus-rule dichotomy. It buys a
+  narrowing, and how much it buys is a property of the table rather
+  than of the constraint. Where a strategy's remaining freedom at the
+  hidden region is more than one arm, the name is predictive about
+  which arms are POSSIBLE and silent about which is taken, which is
+  weaker than the argument for the constraint claims and stronger
+  than nothing.
+
+  Two honest bounds on this probe. Leave-one-out over the regions a
+  table was fitted on is not the same as a genuinely new region with
+  costs nobody has seen, and the second is what the argument is about;
+  this measures the first because the second needs a measurement that
+  does not exist. And a determinate rate is a fact about these two
+  tables, which p3 showed varies by a factor of tens across tables of
+  the same shape.

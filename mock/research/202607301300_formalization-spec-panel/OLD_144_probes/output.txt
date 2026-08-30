@@ -1,0 +1,168 @@
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+########## p02 scope shadowing (runs)
+A plain          body = p02_scope_shadowing::Warm
+B annotated      body = p02_scope_shadowing::Hot
+C sig-typed      body = p02_scope_shadowing::Hot
+C sig-typed      sig  = p02_scope_shadowing::Num<5, p02_scope_shadowing::Warm>
+D via alias      body = p02_scope_shadowing::Warm
+E explicit       body = p02_scope_shadowing::Warm
+
+########## p03 boundary is a type error (E0308)
+error[E0308]: mismatched types
+  --> p03_boundary_is_a_type_error.rs:21:5
+   |
+18 | fn leaks() -> UInt<5> {
+   |               ------- expected `Num<5, Warm>` because of return type
+...
+21 |     x
+   |     ^ expected `Num<5, Warm>`, found `Num<5, Hot>`
+   |
+   = note: expected struct `Num<_, Warm>`
+              found struct `Num<_, Hot>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.
+
+########## p04 op-level retarget (runs)
+ambient  = 7
+hot      = 7
+precise  = 7
+stored   = p04_op_level_retarget::Num<5, p04_op_level_retarget::Warm>
+
+########## p05 posture param erases (asm)
+_bare = _ambient
+_hot_scope = _ambient
+
+########## p06a fn default type param (refused)
+error: defaults for generic parameters are not allowed here
+ --> p06a_fn_default_type_param.rs:5:16
+  |
+5 | pub fn algo<T, Out = T>(x: T) -> Out
+  |                ^^^^^^^
+  |
+  = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+  = note: for more information, see issue #36887 <https://github.com/rust-lang/rust/issues/36887>
+  = note: `#[deny(invalid_type_param_default)]` (part of `#[deny(future_incompatible)]`) on by default
+
+error: aborting due to 1 previous error
+
+
+########## p06b output via mode marker (runs)
+R-a  bound, default elided : 7
+R-a' bound, named          : Erased(7)
+R-c  mode default          : 7
+R-c  mode named            : Erased(7)
+
+########## p06c method call ambiguity (E0283)
+error[E0283]: type annotations needed
+  --> p06c_method_call_ambiguity.rs:18:9
+   |
+18 |     let y = 3u32.sum(4);
+   |         ^        --- type must be known at this point
+   |
+note: multiple `impl`s satisfying `u32: Sum<_>` found
+  --> p06c_method_call_ambiguity.rs:7:1
+   |
+ 7 | impl Sum<u32> for u32 {
+   | ^^^^^^^^^^^^^^^^^^^^^
+...
+12 | impl Sum<Erased> for u32 {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+help: consider giving `y` an explicit type
+   |
+18 |     let y: /* Type */ = 3u32.sum(4);
+   |          ++++++++++++
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0283`.
+
+########## p06d mode marker at a method call
+error[E0284]: type annotations needed
+  --> p06d_mode_method_call.rs:26:18
+   |
+26 |     let y = 3u32.run(4); // elides M: does the default apply?
+   |                  ^^^
+   |
+   = note: cannot satisfy `<u32 as Algo<_>>::Out == _`
+help: try using a fully qualified path to specify the expected types
+   |
+26 -     let y = 3u32.run(4); // elides M: does the default apply?
+26 +     let y = <u32 as Algo<M>>::run(3u32, 4); // elides M: does the default apply?
+   |
+
+error[E0283]: type annotations needed
+  --> p06d_mode_method_call.rs:26:18
+   |
+26 |     let y = 3u32.run(4); // elides M: does the default apply?
+   |                  ^^^
+   |
+note: multiple `impl`s satisfying `u32: Algo<_>` found
+  --> p06d_mode_method_call.rs:13:1
+   |
+13 | impl Algo<Native> for u32 {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+19 | impl Algo<Erase> for u32 {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+help: try using a fully qualified path to specify the expected types
+   |
+26 -     let y = 3u32.run(4); // elides M: does the default apply?
+26 +     let y = <u32 as Algo<M>>::run(3u32, 4); // elides M: does the default apply?
+   |
+
+error: aborting due to 2 previous errors
+
+Some errors have detailed explanations: E0283, E0284.
+For more information about an error, try `rustc --explain E0283`.
+
+########## p07 notko granularity: see p07_notko_granularity/NOTES.md
+
+########## p08 ambient marker reaches tier two
+plain      = 7
+hot scope  = 7
+declared under a Hot scope refuses = true
+alias identity unchanged: p08_ambient_marker_reaches_tier_two::Num<5, p08_ambient_marker_reaches_tier_two::Ambient>
+
+########## p09 resolve laws + control (control MUST fail)
+error[E0277]: the trait bound `Precise: Same<Hot>` is not satisfied
+  --> p09_resolve_laws_and_control.rs:38:19
+   |
+38 |     assert_same::<<Precise as Resolve<Hot>>::Out, Hot>();
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+   |
+help: the trait `Same<Hot>` is not implemented for `Precise`
+  --> p09_resolve_laws_and_control.rs:4:54
+   |
+ 4 | pub struct Ambient; pub struct Hot; pub struct Warm; pub struct Precise;
+   |                                                      ^^^^^^^^^^^^^^^^^^
+note: required by a bound in `assert_same`
+  --> p09_resolve_laws_and_control.rs:13:19
+   |
+13 | fn assert_same<A: Same<B>, B>() {}
+   |                   ^^^^^^^ required by this bound in `assert_same`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.
+
+########## p10 resolve erases (asm aliasing)
+_bare = _ambient_scope
+_declared_under_hot = _ambient_scope
+_hot_scope = _ambient_scope
+
+########## p11 postures do not fold (asm)
+5:_under_cold:
+6-	.cfi_startproc
+7-	adds	w8, w0, w1
+8-	csinv	w0, w8, wzr, lo
+9-	ret
+--
+14:_under_hot:
+15-	.cfi_startproc
+16-	add	w0, w1, w0
+17-	ret
+18-	.cfi_endproc
+

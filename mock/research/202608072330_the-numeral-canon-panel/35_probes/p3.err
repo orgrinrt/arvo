@@ -1,0 +1,3 @@
+witness w=4 n=4 signed saturate: input [7, -6, -8, -8] -> sequential -8 but a split reduction -7
+witness w=3 n=8 signed saturate: input [3, 0, 2, -4, -4, -4, -4, -4] -> sequential -4 but a split reduction -3
+float arm is a 1e6 pseudo-random sample with a fixed seed, not exhaustive

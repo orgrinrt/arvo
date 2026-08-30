@@ -1,0 +1,12 @@
+logical width                     : 13 bits
+Dense13 (u16 newtype)             : 16 bits per value
+BitfieldNewtype (u16)             : 16 bits per value
+Packed13Elem ([bool; 13])         : 104 bits per value
+packed-in-column, amortised       : 13 bits per value (no standalone size)
+
+column of N = 33554432 elements:
+  dense  : 67108864 bytes
+  packed : 54525952 bytes
+  ratio  : 1.2308x
+
+smallest expressible standalone value / logical width = 8x

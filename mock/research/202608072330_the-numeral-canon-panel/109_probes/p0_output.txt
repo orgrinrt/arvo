@@ -1,0 +1,2 @@
+const trait + [const] bound + generic const fn + const-eval: OK, X=6
+spelling on this pin: `const trait T`, NOT `#[const_trait] trait T`

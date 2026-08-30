@@ -1,0 +1,26 @@
+# probe F output
+# rustc rustc 1.98.0-nightly (57d06900f 2026-05-27), --edition 2024 -O -C panic=abort, aarch64-apple-darwin
+# feature gates in source: 0
+
+## four sites, ONE value type across the first three, no cast in the source
+_site_faithful:
+	mov	w2, #8191
+	b	__RNvCsltXhV8SboNZ_15f_where_carried12arm_wide_sat
+_site_fast:
+	mov	w2, #8191
+	b	__RNvCsltXhV8SboNZ_15f_where_carried13arm_lanes_sat
+_site_fast_wrapping:
+	mov	w2, #8191
+	b	__RNvCsltXhV8SboNZ_15f_where_carried14arm_lanes_wrap
+_site_tight:
+	mov	w2, #8191
+	b	__RNvCsltXhV8SboNZ_15f_where_carried13arm_tight_sat
+
+## conditional instructions in each site body
+site_tight: 0
+site_fast: 0
+site_faithful: 0
+site_fast_wrapping: 0
+
+## casts between the three saturating sites, counted in the source
+0

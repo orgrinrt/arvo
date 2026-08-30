@@ -1,0 +1,8 @@
+twos == offset as value sets: true
+twos and offset maps differ pointwise: true
+sign-magnitude set differs from twos: true
+sign-magnitude distinct values: 15 (of 16 patterns)
+sign-magnitude patterns denoting zero: 2
+raw compare matches value order: offset true, twos false, signmag false
+mutant offset (K=7) detected: true
+P3 WORKS

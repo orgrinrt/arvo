@@ -1,0 +1,26 @@
+p4: the finite-difference decision procedure, validated then used
+
+univariate battery: 311 laws x widths 1..=12
+  (law, width) pairs checked:                     3732
+  laws whose threshold sits inside the range:     267
+  sweep vs exact certificate mismatches:          0
+  sweep vs modular-difference verdict mismatches: 0
+
+verdicts at width 64 by modular differences (no sweep, no band):
+  L_16: false (17 evaluations; threshold 15, so false)
+  L_64: false (65 evaluations; threshold 63, so false)
+  L_16 exact certificate W* = 15
+  L_128: true (129 evaluations; threshold 127, so true)
+
+multivariate: mixed differences against exhaustive sweeps
+  assoc(mul), arity 3    box  27 points, verdicts 1..=6: TTTTTT  verdict at width 64: true
+  distrib, arity 3       box  27 points, verdicts 1..=6: TTTTTT  verdict at width 64: true
+  a*b - b*a + 8a         box   9 points, verdicts 1..=8: TTTfffff  verdict at width 64: false
+  chain assoc, arity 4   box  16 points, verdicts 1..=5: TTTTT  verdict at width 64: true
+  mixed-difference vs sweep mismatches: 0
+
+negative controls (each must produce a WRONG verdict):
+  saturating law, width 4: difference test says true, sweep says false => wrong, as it must be (not a ring term)
+  (x)_4 with claimed degree 2, width 6: difference test says true, sweep says false => wrong, as it must be (degree bound violated)
+
+all checks passed

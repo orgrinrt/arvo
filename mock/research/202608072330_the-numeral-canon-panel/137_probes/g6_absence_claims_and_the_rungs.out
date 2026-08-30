@@ -1,0 +1,82 @@
+############ (A) ABSENCE CLAIMS IN 136 ############
+
+--- every sentence in 136 making a negative claim about evidence ---
+  57:**Stands, cosigned by at least one builder and unchallenged by the others.** `127` F127-1's
+  66:unchallenged by any signature. Four predicates carry no domain dimension at all, which no signature
+  69:carries a hypothesis nobody stated (section 4.3).
+  77:greps `125` and both its probe directories for the figure and returns nothing. It originated in
+  102:`125:116` reads "Its compensation is T9 in section 6" and `125` defines no T9. `x3` Q6 confirms one
+  163:**Provenance.** `x3` Q5 greps: the sentence appears in neither `125` nor `126`, and appears at
+  199:is precisely the class `133` names for the three unclassifiable pins and which nobody noticed had
+  202:### 4.3 The widening `135` asks for carries a hypothesis nobody stated
+  268:value nobody measured is exactly what the notation exists to prevent.
+  388:by the construction reading only `frac(x)` and never the cell index, given a **floor-based cell
+  437:contribution is often the dimension nobody listed.**
+  472:absence table exists because of the fourth, and it found the four vacuous predicates that no signature
+  483:Section 5 leaves them open on the principle that a value nobody measured must not be written into a
+  534:filename or a `NNN_probes/` prefix, so the stripper shows no probe-stem delta where it should show one.
+
+./137_probes/g6_absence_claims_and_the_rungs.sh: line 22: x3: command not found
+--- CHECKED 1: ' Q5 greps: the sentence appears in neither 125 nor 126' ---
+   the sentence is 5.3's 'no member carries more than one of the first three'
+     125_knuth_rounding_cold_derivation.md                0
+     126_wronski_what_rounding_actually_selects.md        0
+     131_leroy_formalising_the_rounding_axis.md           1
+     132_leroy_the_canon_candidate_for_the_rounding_axis. 1
+
+--- CHECKED 2: '125 defines no T9' ---
+     definitions matching **Tn ( in 125 : 9
+     which labels are defined:
+**T1 **T1b **T2 **T3 **T4 **T5 **T6 **T7 **T8 
+     references to T9 in 125                : 1
+
+--- CHECKED 3: 'no signature reported the four absences' ---
+     133_knuth_signature_in_part_with_two_corrections.md  1
+     134_wronski_cosign_with_one_addendum_on_the_dither.m 0
+     135_dolan_signature_in_part.md                       0
+     (135 dissents that 5.6/5.7 are OVER-NARROW, the opposite reading;
+      136 4.2 says so and that is checked in the write-up)
+
+--- CHECKED 4: '135's z1 carries no negative control' ---
+     matches for control in z1: 0
+
+--- CHECKED 5: '131 F131-6's vocabulary count is unchallenged by any signature' ---
+     NOTE: F131-6 is the staged-narrowing finding, not the vocabulary one.
+     553:**F131-6. Staged narrowing equals direct narrowing for the directed modes and not for the nearest
+     535:**F131-3. Two's complement bit-drop is floor and is not toward-zero, and the difference is confined to
+
+############ (B) THE RUNGS ############
+
+--- 128's five, verbatim from its own section 7 ---
+  **From `126`, and which agreements were independent now that I have read it.** Five convergences
+  between `126` and my phase one were reached blind by both of us, with the commit ordering as the
+  audit trail: the vacuity of rounding for grid-closed operations (my F4, its Finding 1), universal
+  deterministic monotonicity (my T2, its Finding 3), non-additivity off-grid (my T1, its Finding 2's
+  measured half), the double-rounding split of nearest against directed modes (my T4/P4, its Finding
+  5, on two genuinely different instruments), and saturate-composition preserving monotonicity (my
+  T6, its Finding 6 first half). Those are independent instances in `RULES.md`'s sense, and `127`
+  carries four of them with the same reading. Three things of `126`'s I did not derive and take by
+
+--- 129's two, verbatim from its own section ---
+  **Two things I reached independently before reading `125`, now confirmed as independent rather than
+  inherited:** the vacuity fact (my Finding 1, `125`'s F4, both derived from the same grid-closure argument
+  before either of us had read the other or `122`), and the general shape of the answer to the brief's
+  question (neither a copy nor a modifier of the overflow axis, an independent axis with its own selected
+  property), which `125` section 8 and my own reconciliation section both state, arrived at from different
+  argument structures (a divisibility-obstruction theorem in `125`'s case, a domain-and-operation-set sweep
+  plus reading `122`'s own grid-part rule in mine). I did not know either of these before this reading pass;
+  both are genuine independent convergences and I record them as such rather than as citations.
+
+--- B6 must be in 126 PHASE ONE to be blind. Is it? ---
+  126's phase-one answer, stated up front:
+    **My answer, stated up front and argued below: neither, and the reason it is neither is
+    structurally informative.** Overflow is a genuine two-way fork where both branches are fully
+    achievable and mutually exclusive. Rounding is not that shape at all. For any operation that
+  and 125's section 8 heading:
+    338:## 8. The answer to the question, assembled
+
+--- does 133 (Knuth resumed) confirm B1..B6 as his phase-one content? ---
+  **The ledger records my agreements with `126` correctly.** B1 through B6 are all phase-one content of
+  mine (F4, T2 with F2, T1 with F1, T4 with P4, T6, and section 8's shape respectively), committed at
+  `a42f0b17` before I read anything of `126`'s. Nothing of my phase two, where I did read, is recorded
+  as blind: the F6-to-`122`-4.5 parallel and the widening's application sit elsewhere in the ledger at

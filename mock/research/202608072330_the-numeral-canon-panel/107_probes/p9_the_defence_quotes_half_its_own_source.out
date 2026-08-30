@@ -1,0 +1,58 @@
+=== 106's defence, verbatim ===
+- **Probe anchors carried:** the ones each stated claim rests on, named at the claim. **Probe anchors
+  dropped:** the remainder of the 125, which support claims this file compressed away or did not carry.
+  They are not lost: every member file is intact beside this one, and `87` fixes that the canon is written
+  from the consolidations **read alongside the members they compress**. A dropped probe anchor here is one
+  hop away rather than gone.
+
+=== the sentence in 87 it rests on, whole ===
+- **A consolidation is not the last chance to get a topic right.** It is a working artifact that the final
+  writing reads alongside the members it compressed. A finding that a consolidation dropped is recoverable
+  at the end from the file it came from, which is why the droplist and the compression checks matter and
+  why a dropped item is a defect rather than a closed question.
+
+-- the half 106 carries --
+   "recoverable at the end from the file it came from"
+-- the half of the same sentence 106 does not carry --
+   "which is why the droplist and the compression checks matter and why a
+    dropped item is a defect rather than a closed question"
+
+-- does any 'defect' in 106 refer to ITS OWN drops? --
+   (checked by hand: every occurrence is listed, none is about its drops)
+     64:manifest is virtual, and the workspace has no members". That is the intended state and not a defect. The
+     561:Generating removes every defect a human writing a table can introduce and admits one a human cannot: the
+     565:exactly the property those defects preserve.
+     567:`100_probes/p2_generation_relocates_the_check.py` injects five ordinary generator defects and runs three
+     571:recomputation flagging a tie as a defect 48 of 48 times when a tie is precisely where the weighting
+     575:rational, defect classes {unit scale, coordinate swap, tie-break policy, region off-by-one, dropped
+     580:defect class outright and leaves one detectable by a decider the panel has already built three times, in
+     718:defect before accepts it after. The replacement is `100`'s own instrument used in the right currency: the
+     791:> semantics coincide, and its absence is not a defect where they do not.
+     807:The third row is the only defect and it has four instances, all `fnv1a-vs-xxhash3`.
+     1027:and the second does not follow. Replaced by section 6.1: generation removes one defect class and admits
+     1305:instrument defect that made it read green at zero tests; the corpus counts with the build-artifact
+   The one line matching both words is a predicate listing generator
+   defect classes, which is a false positive of the naive grep.
+
+-- and the provenance of that bullet: op's verbatim, or the coordinator's? --
+   87 marks op's words with '>' blockquotes. The bullet is under
+   'Two consequences worth stating', outside any blockquote:
+Two consequences worth stating because they change how the remaining work is done:
+
+   So BOTH halves are agent-authored. 106 may not take one and leave the other.
+
+=== predicate audit of 106 section 3.1, stated exactly ===
+  LEAD        **The rationalisability counts.** On the committed `bitpack-carrie
+  PREDICATE   ^
+  LEAD        **And the whole 72-against-9 gap is one tie**, which `101` establi
+  LEAD        **The suite is 123 tests across 13 crates.** Five independent coun
+  LEAD        **The selection erases.** A strategy resolved at compile time leav
+  PREDICATE   ^
+  LEAD        **Multiplicative associativity and distributivity hold at `F = 0` 
+
+  Five bold leads. Two carry a predicate. Of the three that do not, one is
+  a sub-note on the lead above it and one is a test count. The law bullet is
+  the only claim about arvo's arithmetic in the section, and it is
+  unpredicated, while 93's F1 which it compresses reads:
+does not move with the overflow policy or the rounding mode.**
+`holds for: W in 3..8, F in 0..2, signedness = unsigned, overflow in {wrap, saturate}, rounding in

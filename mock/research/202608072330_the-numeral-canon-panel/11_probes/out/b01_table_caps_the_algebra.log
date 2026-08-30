@@ -1,0 +1,53 @@
+error[E0277]: arvo does not ship this width: Idx<48>
+   --> b01_table_caps_the_algebra.rs:245:70
+    |
+245 | pub fn closure_site(a: UFixed<24, 8, Hot>, b: UFixed<24, 8, Hot>) -> Fixed<48, 16, Hot> {
+    |                                                                      ^^^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+    |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<48>`
+   --> b01_table_caps_the_algebra.rs:24:1
+    |
+ 24 | pub struct Idx<const N: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<48>` and spell the numeral against `MyWidths`
+help: the following other types implement trait `ToNat<M>`
+   --> b01_table_caps_the_algebra.rs:151:1
+    |
+151 | impl ToNat<Mine> for Idx<777> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<777>`
+...
+154 | impl ToNat<Mine> for Idx<41> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<41>`
+note: required by a bound in `Fixed`
+   --> b01_table_caps_the_algebra.rs:45:13
+    |
+ 43 | pub struct Fixed<const I: u32, const F: u32, S, M = Arvo>
+    |            ----- required by a bound in this struct
+ 44 | where
+ 45 |     Idx<I>: ToNat<M>,
+    |             ^^^^^^^^ required by this bound in `Fixed`
+
+error[E0277]: width 48 is not the sum of widths 24 and 24
+   --> b01_table_caps_the_algebra.rs:246:5
+    |
+246 |     mul(a, b)
+    |     ^^^ this output width does not follow from the input widths
+    |
+help: the trait `WidthSum<24, 24, 48>` is not implemented for `Arvo`
+   --> b01_table_caps_the_algebra.rs:33:1
+    |
+ 33 | pub struct Arvo;
+    | ^^^^^^^^^^^^^^^
+    = note: the result of this operation is 24 + 24 bits wide; write that width, or let it be inferred
+note: required by a bound in `mul`
+   --> b01_table_caps_the_algebra.rs:210:8
+    |
+187 | pub fn mul<
+    |        --- required by a bound in this function
+...
+210 |     M: WidthSum<I, J, OI> + WidthSum<F, K, OF>,
+    |        ^^^^^^^^^^^^^^^^^^ required by this bound in `mul`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0277`.

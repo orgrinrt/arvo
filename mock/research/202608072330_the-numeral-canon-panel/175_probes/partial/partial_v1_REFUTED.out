@@ -1,0 +1,481 @@
+########## debug-assertions=off
+== P2, profile = debug-assertions=off ==
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909404) panicked at partial.rs:39:6:
+attempt to divide by zero
+PARTIAL interior (255 / (x % 7)):
+  inputs hitting a zero divisor          : 37   (C-C, must be > 0)
+  both defined and equal                 : 219
+  both defined and DISAGREEING on value  : 0   (C-A, must be 0)
+  both undefined (both panic)            : 37
+  DEFINEDNESS SPLIT (one panics, one not): 0
+TOTAL interior control (C-B):
+  definedness splits                     : 0
+  value disagreements                    : 0
+
+VERDICT at debug-assertions=off: a partial interior makes the pair distinguishable
+  by definedness alone, with NO binding to the interior: true
+  (both-undefined counts too: a caller binding only the final value still sees
+   the program abort, and the wider realisation would not have aborted had the
+   division been the only difference; see the total control for the contrast.)
+
+########## debug-assertions=on
+== P2, profile = debug-assertions=on ==
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:34:5:
+attempt to divide by zero
+
+thread 'main' (54909511) panicked at partial.rs:39:6:
+attempt to divide by zero
+PARTIAL interior (255 / (x % 7)):
+  inputs hitting a zero divisor          : 37   (C-C, must be > 0)
+  both defined and equal                 : 219
+  both defined and DISAGREEING on value  : 0   (C-A, must be 0)
+  both undefined (both panic)            : 37
+  DEFINEDNESS SPLIT (one panics, one not): 0
+TOTAL interior control (C-B):
+  definedness splits                     : 0
+  value disagreements                    : 0
+
+VERDICT at debug-assertions=on: a partial interior makes the pair distinguishable
+  by definedness alone, with NO binding to the interior: true
+  (both-undefined counts too: a caller binding only the final value still sees
+   the program abort, and the wider realisation would not have aborted had the
+   division been the only difference; see the total control for the contrast.)

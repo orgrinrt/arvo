@@ -1,0 +1,35 @@
+# 157 P7: is the per-axis verdict reachable outside 111's probe stdout?
+# CONTROL: the same grep must FIND it inside the probe output, or the pattern is wrong.
+
+$ grep -rn "wrong unit" --include="*.md" .
+157_lamport_the_primitive_attacked.md:750:  a reason a per-axis degeneracy verdict is the wrong unit.
+157_lamport_the_primitive_attacked.md:769:root for the sentence and for "per-axis" and "wrong unit", threads any, target features any`.
+106_giesen_consolidation_the_strategy_axis.md:586:else**. A coordinate read in the wrong unit is the exact argmin of the rescaled weighting; a column swap is
+77_amin_derived_laws_derived_cold.md:22:decoding function. Laws only appear once an operation acts on it, so the type alone is the wrong unit.
+77_amin_derived_laws_derived_cold.md:24:The operation alone is also the wrong unit, for a more specific reason than "operations need operands."
+111_jhala_the_primitive_attacked.md:470:the overflow policy at least, and a per-axis verdict is the wrong unit. This is I13's shape appearing
+100_xu_generating_the_table_attacked.md:232:coordinate read in the wrong unit is the exact argmin of the correspondingly rescaled weighting. A column
+100_xu_generating_the_table_attacked.md:294:the wrong unit, in the wrong order, or not at all emits a section that is rationalisable at both the
+  (exit 0)
+
+$ grep -rln "per-axis" --include="*.md" . | sort
+101_wronski_the_cost_coordinates.md
+108_lamport_the_pair_attacked.md
+110_willsey_the_primitive_derived_cold.md
+111_jhala_the_primitive_attacked.md
+139_muratori_the_strategy_set_derived_cold.md
+157_lamport_the_primitive_attacked.md
+40_leijen_what_the_axes_actually_are.md
+42_willsey_the_law_layer.md
+76_willsey_derived_laws_derived_cold.md
+77_amin_derived_laws_derived_cold.md
+93_orchard_the_strategy_axis_derived_cold.md
+94_wingo_the_strategy_axis_derived_cold.md
+archive/OLD_CANON_CANDIDATE.md
+OPTIONS.md
+SEED_TALKING_POINTS.md
+seed/OLD_SETTLED_surface.md
+
+$ grep -rn "wrong unit" 111_probes/ (the CONTROL)
+111_probes/p4_constant_injection_collapses_the_two_degeneracies.py:248:    print("  a reason a per-axis degeneracy verdict is the wrong unit.")
+111_probes/p4_output.txt:35:  a reason a per-axis degeneracy verdict is the wrong unit.

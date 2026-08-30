@@ -1,0 +1,25 @@
+declaration under test: UFixed<13, 0, Cold>, unsigned
+derivation under test : one output, the carrier, which is u16
+
+the suite a reasonable person writes:
+  PASS  round trip
+          raw(from_raw(r)) == r for all 8192 representable r
+  PASS  arithmetic agreement with the native reference
+          derived == native over 163840 pairs
+  PASS  erasure / codegen equality (per value)
+          one operation, one value, byte-identical to the native primitive
+  PASS  size_of matches the ladder
+          size_of::<Num>() == 2, which the ladder also says. tautology.
+  -> 4 of 4 green. the derivation is certified.
+
+the two checks that catch it:
+  FAIL  array extent equals N * W
+          [Num; 1000] occupies 16000 bits, the Cold declaration promised 13000 (2000 bytes against 1625 bytes, 23.1% over)
+  FAIL  packed round trip, access width = size_of(carrier) = 2 bytes
+          24 of 64 wrong with a 2-byte access. failing bit-phases [4, 5, 6, 7]. first: index 3 wrote 1852 read 316
+  PASS  packed round trip, access width from the extent = 3 bytes
+          64 values round-tripped through a packed store with a 3-byte access
+
+the second of those is the sharper one. it is not that the carrier-only derivation
+stores wrong, it is that a site handed only the carrier picks the carrier as its
+access type, and that load is too narrow to cover a 13-bit field at high phase.

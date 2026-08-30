@@ -1,0 +1,33 @@
+p9: two routes attacked and closed
+
+ROUTE A. The box criterion at F > 0, where a shift enters the term.
+  A = ((x>>2)*4)   (degree bound 1)
+  B = ((x>>1)*2)   (degree bound 1)
+    width  3: box criterion says true   sweep says false (first witness Some(2))
+    width  4: box criterion says true   sweep says false (first witness Some(2))
+    width  5: box criterion says true   sweep says false (first witness Some(2))
+    width  6: box criterion says true   sweep says false (first witness Some(2))
+    width  7: box criterion says true   sweep says false (first witness Some(2))
+    width  8: box criterion says true   sweep says false (first witness Some(2))
+  The criterion says TRUE at every width and the law is FALSE at every
+  width, first witness x = 2. Both sides have degree bound 1, so the box
+  is {0, 1}, and a shift makes the value non-polynomial, so agreement on
+  the box carries nothing. F = 0 is a hard boundary of the criterion, not
+  an untested caution.
+
+  over a shift-carrying term space, widths 4..=6: 417384 pairs checked,
+  82002 of them are TRUE on the box and FALSE in the domain.
+
+ROUTE B. A saturation radius for the general signed case.
+  T = ((x*x)+x)   (degree 2)
+  the route needs T to be CONSTANT outside a radius. On the negative tail
+  the square saturates to MAX and the surviving linear term keeps moving:
+    width  8: T at MIN..MIN+5 = [-1, 0, 1, 2, 3, 4]
+    width 10: T at MIN..MIN+5 = [-1, 0, 1, 2, 3, 4]
+  Not constant, so a sweep of [-R, R] plus a constant-tail argument does
+  not decide the law. What survives after the top-degree nodes clamp is a
+  lower-degree remainder, which is the piecewise structure again. The
+  expensive form of the route, exact coefficient tracking with root
+  isolation to locate the clamp boundaries, is not built here and stays open.
+
+all checks passed

@@ -1,0 +1,30 @@
+v3. The entropy hole, checked by compiling.
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+Build (--crate-type lib, no_std, no feature gates):
+exit: 0
+
+feature gates in the source: 0
+std / alloc / platform references: 1, and it is line 15, a COMMENT quoting the
+  forbidden list ("I14 forbids `std::time`, `std::fs`, ..."). Not a reference.
+  There is no `std::`, no `alloc::` and no `extern crate` in any code line.
+float types: 0
+
+WHAT THE BUILD ESTABLISHES
+--------------------------
+The four assertions are `const _: () = assert!(..)`, so they are checked at
+compile time and a wrong one is a build failure rather than a number nobody
+reads. Exit 0 means all four held:
+
+  P3  a repeated value receives BOTH decisions across 40 positions, and across
+      256, so the position keying decorrelates.
+  C1  a degenerate keying that returns one threshold everywhere receives ONE
+      decision, so the count above is measuring decorrelation rather than
+      counting to two by construction.
+  P4  the position keying costs monotonicity on a ramp, which is the price
+      `129` measures, confirmed here rather than assumed.
+  P2  the decisions at compile-time-known positions are `const` items, so the
+      rounding decision gates an arm rather than branching at runtime.
+
+And P1 is the build itself: integer arithmetic only, `#![no_std]`, zero feature
+gates, zero float types, no platform call. No entropy is drawn anywhere.

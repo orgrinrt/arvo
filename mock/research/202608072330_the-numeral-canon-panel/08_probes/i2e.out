@@ -1,0 +1,32 @@
+Shapes over W binades with a precision floor P, monotone, inhabited.
+  W   P       all  fixed  float   knee  named  meet-cl  join-cl  tapered
+  4   4       275      5      5     20     20       20       35      235
+  5   5      1638      6      6     30     30       30       79     1542
+  6   5      6188      6      6     36     36       36      143     5996
+  6   6      9996      7      7     42     42       42      175     9772
+  7   6     38760      7      7     49     49       49      319    38312
+
+At W=5, P=5: 30 named of 1638 shapes.
+    meet closure adds 0
+    join closure adds 49
+
+Per family, both operations:
+    fixed alone                  n=  6  meet=  6  join=  6
+    float alone                  n=  6  meet=  6  join=  6
+    float with underflow alone   n= 30  meet= 30  join= 79   <- leaks
+    fixed + float                n= 12  meet= 24  join= 24   <- leaks
+    all three                    n= 30  meet= 30  join= 79   <- leaks
+
+Three joins of a fixed shape with a float shape, in full:
+    fixed (-4, -4, -4, -4, -4)
+  v float (-5, -4, -3, -2, -1)
+  =       (-5, -4, -4, -4, -4)   -> slope 1 x1 then slope 0 x3, unnamed
+    fixed (-3, -3, -3, -3, -3)
+  v float (-5, -4, -3, -2, -1)
+  =       (-5, -4, -3, -3, -3)   -> slope 1 x2 then slope 0 x2, unnamed
+    fixed (-3, -3, -3, -3, -3)
+  v float (-4, -3, -2, -1, 0)
+  =       (-4, -3, -3, -3, -3)   -> slope 1 x1 then slope 0 x3, unnamed
+
+Three meets of a fixed shape with a float shape, in full:
+    none: every pointwise maximum of a fixed and a float shape is named.

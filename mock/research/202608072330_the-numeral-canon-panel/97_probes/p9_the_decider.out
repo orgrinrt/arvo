@@ -1,0 +1,46 @@
+P9. rationalisability as a decision procedure
+exact rational arithmetic throughout, no sampling and no tolerance
+
+check one: the decider against P1's direction sweep
+  regions 6, arms 5, sections 15625
+  AN argmin, ties allowed   (this decider) : 72
+  THE argmin, ties broken   (P1's sweep)   : 9
+
+  the two differ, and the difference is exactly the tie degeneracy.
+  arms tied on the residency axis          : packed, packed-simd
+  mixtures of those across 6 regions       : 2^6 = 64
+  strict sections, recomputed here         : 9
+  in both sets                             : 1
+  union                                    : 72
+  decider's count                          : 72
+  the union IS the decider's set           : True
+
+  So the honest figure for the claim in section 2.4 is the weak one: 72 of
+  15625, or 0.461%, because at a tie the design really may take either arm.
+  Both figures are three orders below the section count.
+
+check two: three cost dimensions, two cases with a known answer
+  A: a dominates everywhere, section (a, a)      -> True  (expected True)
+  A: a dominates everywhere, section (b, b)      -> False  (expected False)
+  B: identical regions, section (a, a)           -> True  (expected True)
+  B: identical regions, section (a, b)           -> True  (expected True)
+     I expected False here and the decider was right. All three arms share
+     the third coordinate, so the weighting (0, 0, 1) makes every arm tie,
+     and under a tie either pick is an argmin. The case is kept with the
+     correction rather than deleted.
+  C: identical regions, no shared coordinate, section (a, b)
+                                                 -> False  (expected False)
+
+  A section that picks differently in two identical regions, where nothing
+  ties the arms, cannot be an argmin of one weighting, and the decider says
+  so. That is the shape of every inconsistency the check exists to catch,
+  and case B is the reminder that a tie is not an inconsistency.
+
+==================================================================
+decider's weak count on the committed data, decomposed exactly   : 72
+decider answers every constructed case correctly                : True
+
+So the constraint section 2.4 proposes is not merely stateable, it is
+decidable, in the number of cost dimensions the design actually uses, by
+a procedure that runs once where a table is written and never at compile
+time or at run time. What it costs to keep is one offline check.

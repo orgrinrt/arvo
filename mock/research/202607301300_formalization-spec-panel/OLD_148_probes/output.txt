@@ -1,0 +1,278 @@
+
+=============== p1  the inclusion conditions, Implicit, 331776 ordered pairs ===============
+numerals: 576
+ordered pairs: 331776
+
+oracle: 8109 of 331776 ordered pairs include
+
+condition set            false-positive  false-negative
+C_two  (grid, top)                17037               0
+C_four (grid,phase,lo,hi)             0               0
+C_lat  (lattice, range)               0               0
+C_decl (top,grid,dom)                  0            5853
+C_pure (prec,exp,dom)               2064            5853
+
+pure-product-order false positive (it claims an inclusion the oracle refuses):
+  source: r=2 p=1 e=-1 A=1/1 B=0/1 dom=NonNegative  values [Rat { n: 0, d: 1 } .. Rat { n: 1, d: 2 }] step Rat { n: 1, d: 2 }
+  target: r=2 p=1 e=-2 A=1/1 B=0/1 dom=NonNegative  values [Rat { n: 0, d: 1 } .. Rat { n: 1, d: 4 }] step Rat { n: 1, d: 4 }
+
+of C_two's false positives: 6549 are sole phase failures, 5229 are sole lower-range failures
+
+phase witness (finer grid, containing range, no shared value):
+  source: r=2 p=1 e=-2 A=1/1 B=0/1 dom=NonNegative  values [Rat { n: 0, d: 1 } .. Rat { n: 1, d: 4 }] step Rat { n: 1, d: 4 }
+  target: r=2 p=1 e=-2 A=1/1 B=1/3 dom=AsymmetricLow  values [Rat { n: -1, d: 6 } .. Rat { n: 7, d: 12 }] step Rat { n: 1, d: 4 }
+  source quantum Rat { n: 1, d: 4 }  target quantum Rat { n: 1, d: 4 }  ratio integral: true
+  source range [Rat { n: 0, d: 1 },Rat { n: 1, d: 4 }] target range [Rat { n: -1, d: 6 },Rat { n: 7, d: 12 }]
+  source has 2 values, 0 of them are in the target
+
+lower-range witness (C_two checks only the top):
+  source: r=2 p=1 e=-2 A=1/1 B=0/1 dom=NonNegative  values [Rat { n: 0, d: 1 } .. Rat { n: 1, d: 4 }] step Rat { n: 1, d: 4 }
+  target: r=2 p=1 e=-2 A=1/1 B=1/2 dom=NonNegative  values [Rat { n: 1, d: 2 } .. Rat { n: 3, d: 4 }] step Rat { n: 1, d: 4 }
+
+same radix/adjustment/bias slice: product order has 0 false positives, 120 false negatives
+
+pairs where the sign domain strictly DECREASES and inclusion still holds: 120
+  source: r=2 p=1 e=-2 A=1/1 B=0/1 dom=AsymmetricLow  values [Rat { n: -1, d: 2 } .. Rat { n: 1, d: 4 }] step Rat { n: 1, d: 4 }
+  target: r=2 p=2 e=-2 A=1/1 B=0/1 dom=Symmetric  values [Rat { n: -3, d: 4 } .. Rat { n: 3, d: 4 }] step Rat { n: 1, d: 4 }
+
+=============== p2  the inclusion conditions, Ranged, 147456 ordered pairs ===============
+146's third-instance pair, Underflow=Gradual: source has 10 values, target has 20, source values NOT in target: 0 []
+  under the design's sentence the binade quantum is r^(e-p+1), so at e=-3 it is r^-4 for the source and r^-5 for the target: the target grid is FINER everywhere
+146's third-instance pair, Underflow=Abrupt: source has 9 values, target has 17, source values NOT in target: 0 []
+  under the design's sentence the binade quantum is r^(e-p+1), so at e=-3 it is r^-4 for the source and r^-5 for the target: the target grid is FINER everywhere
+
+Ranged numerals: 384
+ordered pairs: 147456
+
+oracle: 11592 of 147456 ordered pairs include
+
+condition set                      false-positive  false-negative
+R_naive (p, EMIN, EMAX, U, dom)                 0            4572
+R_basis (p, EMIN-p+1, EMAX, ...)              882            2808
+R_exact (pointwise phi + range)                 0            1296
+
+R_basis false positive:
+  source: r=2 p=1 EMIN=-3 EMAX=-3 U=Abrupt dom=NonNegative  finest=r^-3 coarsest=r^-3  |V|=2
+  target: r=2 p=2 EMIN=-2 EMAX=-2 U=Abrupt dom=NonNegative  finest=r^-3 coarsest=r^-3  |V|=3
+
+R_exact false negative:
+  source: r=2 p=1 EMIN=0 EMAX=0 U=Gradual dom=NonNegative  finest=r^0 coarsest=r^0  |V|=2
+  target: r=3 p=1 EMIN=-3 EMAX=0 U=Gradual dom=NonNegative  finest=r^-3 coarsest=r^0  |V|=9
+
+same-radix pairs: 73728, R_exact false negatives among them: 0
+cross-radix inclusions the oracle finds: 1296, of which the source has at least 4 values: 552
+cross-radix witness:
+  source: r=2 p=1 EMIN=0 EMAX=1 U=Gradual dom=Symmetric  finest=r^0 coarsest=r^1  |V|=5
+  target: r=3 p=1 EMIN=-3 EMAX=0 U=Gradual dom=Symmetric  finest=r^-3 coarsest=r^0  |V|=17
+  source values: [(-2, 1), (-1, 1), (0, 1), (1, 1), (2, 1)]
+
+inclusions where the target's precision is strictly larger AND its EMIN is strictly larger (a significand digit paying for an exponent): 1764
+  source: r=2 p=1 EMIN=-3 EMAX=-3 U=Gradual dom=NonNegative  finest=r^-3 coarsest=r^-3  |V|=2
+  target: r=2 p=2 EMIN=-2 EMAX=-2 U=Gradual dom=NonNegative  finest=r^-3 coarsest=r^-3  |V|=4
+  source finest-quantum exponent -3, target finest-quantum exponent -3
+
+=============== p3  meets and joins, complete enumeration inside the bounding sets ===============
+
+== A. unbiased, same radix, same sign domain ==
+  N1 |V|=8 values ["0", "1", "2", "3", "4", "5", "6", "7"]
+  N2 |V|=4 values ["0", "1/2", "1", "3/2"]
+  intersection |2|  union |10|
+  lower bounds: 3 distinct value sets, 1 maximal
+  MEET EXISTS, |V| = 2
+  upper bounds found (count <= 64, quantum refined <= 6x): 445, minimal: 1
+  JOIN EXISTS, |V| = 15, overshoot = 5 points beyond the union
+
+== B. unbiased, sign domains differing ==
+  N1 |V|=8 values ["0", "1", "2", "3", "4", "5", "6", "7"]
+  N2 |V|=8 values ["-4", "-3", "-2", "-1", "0", "1", "2", "3"]
+  intersection |4|  union |12|
+  lower bounds: 13 distinct value sets, 1 maximal
+  MEET EXISTS, |V| = 4
+  upper bounds found (count <= 64, quantum refined <= 6x): 1753, minimal: 1
+  JOIN EXISTS, |V| = 12, overshoot = 0 points beyond the union
+
+== C. biased, same grid, offset by three quanta ==
+  N1 |V|=8 values ["0", "1", "2", "3", "4", "5", "6", "7"]
+  N2 |V|=8 values ["-3", "-2", "-1", "0", "1", "2", "3", "4"]
+  intersection |5|  union |11|
+  lower bounds: 22 distinct value sets, 1 maximal
+  MEET EXISTS, |V| = 5
+  upper bounds found (count <= 64, quantum refined <= 6x): 1859, minimal: 1
+  JOIN EXISTS, |V| = 11, overshoot = 0 points beyond the union
+
+== D. biased and off-phase, disjoint value sets ==
+  N1 |V|=4 values ["0", "1", "2", "3"]
+  N2 |V|=4 values ["1/3", "4/3", "7/3", "10/3"]
+  intersection |0|  union |8|
+  lower bounds: 0 distinct value sets, 0 maximal
+  NO MEET. the maximal lower bounds are incomparable:
+  upper bounds found (count <= 64, quantum refined <= 6x): 630, minimal: 25
+  NO JOIN: 25 incomparable minimal upper bounds, sizes [15, 27, 63], union has 8
+    smallest minimal upper bound, 15 points: ["-4/3", "-1", "-2/3", "-1/3", "0", "1/3", "2/3", "1", "4/3", "5/3", "2", "7/3", "8/3", "3", "10/3"]
+    an incomparable sibling, 63 points: ["-4/5", "-11/15", "-2/3", "-3/5", "-8/15", "-7/15", "-2/5", "-1/3", "-4/15", "-1/5", "-2/15", "-1/15", "0", "1/15", "2/15", "1/5", "4/15", "1/3", "2/5", "7/15", "8/15", "3/5", "2/3", "11/15", "4/5", "13/15", "14/15", "1", "16/15", "17/15", "6/5", "19/15", "4/3", "7/5", "22/15", "23/15", "8/5", "5/3", "26/15", "9/5", "28/15", "29/15", "2", "31/15", "32/15", "11/5", "34/15", "7/3", "12/5", "37/15", "38/15", "13/5", "8/3", "41/15", "14/5", "43/15", "44/15", "3", "46/15", "47/15", "16/5", "49/15", "10/3"]
+
+== F. biased, on-phase, unrealisable intersection cardinality ==
+  N1 |V|=8 values ["0", "1/4", "1/2", "3/4", "1", "5/4", "3/2", "7/4"]
+  N2 |V|=8 values ["-1/2", "-1/4", "0", "1/4", "1/2", "3/4", "1", "5/4"]
+  intersection |6|  union |10|
+  lower bounds: 29 distinct value sets, 3 maximal
+  NO MEET. the maximal lower bounds are incomparable:
+    ["0", "1/4", "1/2", "3/4", "1"]
+    ["0", "5/4"]
+    ["1/4", "1/2", "3/4", "1", "5/4"]
+  upper bounds found (count <= 64, quantum refined <= 6x): 628, minimal: 1
+  JOIN EXISTS, |V| = 10, overshoot = 0 points beyond the union
+
+SWEEP unbiased, radix two, Unit adjustment: 351 unordered pairs. meet absent in 0. join present in 249, absent in 81 (decided), undetermined by the bounded search in 21.
+
+SWEEP biased, radix two, NonNegative: 351 unordered pairs. meet absent in 184. join present in 198, absent in 100 (decided), undetermined by the bounded search in 53.
+
+== E. radices differing ==
+  N1 |V|=8 values ["0", "1/4", "1/2", "3/4", "1", "5/4", "3/2", "7/4"]
+  N2 |V|=9 values ["0", "1/9", "2/9", "1/3", "4/9", "5/9", "2/3", "7/9", "8/9"]
+  intersection |1|  union |16|
+  lower bounds: 1 distinct value sets, 1 maximal
+  MEET EXISTS, |V| = 1
+  upper bounds found (count <= 64, quantum refined <= 6x): 0, minimal: 0
+  no upper bound inside the searched region; inconclusive on the join
+
+=============== p4a From by reference, condition on a trait, Peano widths (expect exit 0, no -Z, no features) ===============
+warning: bounds on generic parameters in type aliases are not enforced
+  --> p4a_from_ref_trait_bound.rs:87:15
+   |
+87 | pub type U<I: Nat, F: Nat> = Fixed<I, F, Unsigned, Warm>;
+   |               ^^^     ^^^ will not be checked at usage sites of the type alias
+   |
+   = note: this is a known limitation of the type checker that may be lifted in a future edition.
+           see issue #112792 <https://github.com/rust-lang/rust/issues/112792> for more information
+   = help: add `#![feature(lazy_type_alias)]` to the crate attributes to enable the desired semantics
+   = note: `#[warn(type_alias_bounds)]` on by default
+help: remove these bounds
+   |
+87 - pub type U<I: Nat, F: Nat> = Fixed<I, F, Unsigned, Warm>;
+87 + pub type U<I, F> = Fixed<I, F, Unsigned, Warm>;
+   |
+
+warning: 1 warning emitted
+
+exit=0
+
+=============== p4b the same BY VALUE (expect E0119) ===============
+error[E0119]: conflicting implementations of trait `From<Fixed<_, _, _, _>>` for type `Fixed<_, _, _, _>`
+  --> p4b_by_value_control.rs:72:1
+   |
+72 | / impl<I1: Nat, F1: Nat, I2: Nat, F2: Nat, G, S> From<Fixed<I1, F1, G, S>> for Fixed<I2, F2, G, S>
+73 | | where
+74 | |     I1: Le<I2>,
+75 | |     F1: Le<F2>,
+   | |_______________^
+   |
+   = note: conflicting implementation in crate `core`:
+           - impl<T> From<T> for T;
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0119`.
+exit=1
+
+=============== p4c the same over the design's binary width encoding (expect exit 0) ===============
+exit=0
+
+=============== p4d negative controls, Peano (expect refusal; note the diagnostic size) ===============
+error[E0277]: this numeral does not embed into that one
+  --> p4d_negative_controls.rs:92:10
+   |
+92 |     (&a).into()
+   |          ^^^^ no exact embedding here
+   |
+   = note: an embedding needs the target integer digits and fraction digits to be both at least the source. Where either shrinks the conversion is lossy and is written, and the strategy names what it does with what does not fit.
+help: the trait `Le<Z>` is not implemented for `Su<Su<Su<Su<Su<Z>>>>>`
+      but trait `Le<Su<Su<Su<Su<Su<_>>>>>>` is implemented for it
+  --> p4d_negative_controls.rs:51:1
+   |
+51 | impl<A: Nat, B: Nat> Le<Su<B>> for Su<A> where A: Le<B> {}
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = help: for that trait implementation, expected `Su<Su<Su<Su<Su<_>>>>>`, found `Z`
+note: required for `Su<Su<Su<Su<Su<Su<Z>>>>>>` to implement `Le<Su<Z>>`
+  --> p4d_negative_controls.rs:51:22
+   |
+51 | impl<A: Nat, B: Nat> Le<Su<B>> for Su<A> where A: Le<B> {}
+   |                      ^^^^^^^^^     ^^^^^          ----- unsatisfied trait bound introduced here
+   = note: 7 redundant requirements hidden
+exit=1
+
+=============== p4e negative control, binary, WITHOUT do_not_recommend (expect the internals to leak) ===============
+error[E0277]: the trait bound `H: PLt<H>` is not satisfied
+   --> p4e_binary_negative.rs:127:10
+    |
+127 |     (&a).into()
+    |          ^^^^ unsatisfied trait bound
+    |
+help: the trait `PLt<H>` is not implemented for `H`
+   --> p4e_binary_negative.rs:35:1
+    |
+ 35 | pub struct H;
+    | ^^^^^^^^^^^^
+help: `H` implements trait `PLt<R>`
+exit=1
+
+=============== p4f the same WITH do_not_recommend (expect the design's own message at the top) ===============
+error[E0277]: this numeral does not embed into that one
+   --> p4f_do_not_recommend.rs:140:5
+    |
+140 |     (&a).into()
+    |     ^^^^ no exact embedding here
+    |
+help: the trait `Le<Pv<O<O<O<H>>>>>` is not implemented for `Pv<I<O<I<H>>>>`
+   --> p4f_do_not_recommend.rs:82:1
+    |
+ 82 | pub struct Pv<P: Pos>(PhantomData<P>);
+    | ^^^^^^^^^^^^^^^^^^^^^
+    = note: an embedding needs the target integer digits and fraction digits to be both at least the source. Where either shrinks the conversion is lossy and is written, and the strategy names what it does with what does not fit.
+help: `Zero` implements trait `Le<R>`
+   --> p4f_do_not_recommend.rs:96:1
+exit=1
+
+=============== p4g strict order by value, binary encoding (expect E0119 on BOTH solvers) ===============
+error[E0119]: conflicting implementations of trait `From<Fixed<_, _, _, _>>` for type `Fixed<_, _, _, _>`
+   --> p4g_strict_by_value.rs:114:1
+    |
+114 | / impl<I1: Nat, F1: Nat, I2: Nat, F2: Nat, G, S> From<Fixed<I1, F1, G, S>> for Fixed<I2, F2, G, S>
+115 | | where
+116 | |     I1: Lt<I2>,
+117 | |     F1: Lt<F2>,
+    | |_______________^
+    |
+    = note: conflicting implementation in crate `core`:
+exit=1 (default solver)
+error[E0119]: conflicting implementations of trait `From<Fixed<_, _, _, _>>` for type `Fixed<_, _, _, _>`
+   --> p4g_strict_by_value.rs:114:1
+    |
+114 | / impl<I1: Nat, F1: Nat, I2: Nat, F2: Nat, G, S> From<Fixed<I1, F1, G, S>> for Fixed<I2, F2, G, S>
+115 | | where
+116 | |     I1: Lt<I2>,
+exit=1 (next solver)
+
+=============== p4h TryFrom beside From (expect E0119) ===============
+error[E0119]: conflicting implementations of trait `TryFrom<&Fixed<_, _, _, _>>` for type `Fixed<_, _, _, _>`
+   --> p4h_tryfrom_beside.rs:115:1
+    |
+115 | / impl<I1: Nat, F1: Nat, I2: Nat, F2: Nat, G, S> TryFrom<&Fixed<I1, F1, G, S>>
+116 | |     for Fixed<I2, F2, G, S>
+    | |___________________________^
+    |
+    = note: conflicting implementation in crate `core`:
+            - impl<T, U> TryFrom<U> for T
+              where U: Into<T>;
+
+error: aborting due to 1 previous error
+exit=1
+
+=============== p5  erasure, and the by-value arm beside the by-reference one ===============
+exit=0
+251:__RNvCs7lDxcrvSw32_27p5_erasure_and_by_value_arm15scalar_via_from = __RNvCs7lDxcrvSw32_27p5_erasure_and_by_value_arm14scalar_by_hand
+253:__RNvCs7lDxcrvSw32_27p5_erasure_and_by_value_arm16scalar_via_embed = __RNvCs7lDxcrvSw32_27p5_erasure_and_by_value_arm14scalar_by_hand
+
+=============== re-check of 146's own f03 with and without the flag it needs ===============
+f03 WITH -Znext-solver=globally: exit=0
+f03 WITHOUT it: exit=1

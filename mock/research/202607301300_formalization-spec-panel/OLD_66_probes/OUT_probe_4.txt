@@ -1,0 +1,20 @@
+  r   p   Underflow   encoding        data   escaping   example escape
+  2   2   Abrupt      normalised         6          0   -
+  2   2   Abrupt      unnormalised       9          1   m=1 * r^-1 
+  2   2   Gradual     normalised         6          0   -
+  2   2   Gradual     unnormalised       9          0   -
+  2   3   Abrupt      normalised        12          0   -
+  2   3   Abrupt      unnormalised      21          4   m=1 * r^-2 
+  2   3   Gradual     normalised        12          0   -
+  2   3   Gradual     unnormalised      21          0   -
+ 10   2   Abrupt      normalised       270          0   -
+ 10   2   Abrupt      unnormalised     297          9   m=1 * r^-1 
+ 10   2   Gradual     normalised       270          0   -
+ 10   2   Gradual     unnormalised     297          0   -
+ 10   3   Abrupt      normalised      2700          0   -
+ 10   3   Abrupt      unnormalised    2997        108   m=1 * r^-2 
+ 10   3   Gradual     normalised      2700          0   -
+ 10   3   Gradual     unnormalised    2997          0   -
+
+exactly one cell of the matrix leaks: Abrupt with an unnormalised significand.
+under Gradual the same data decode into the subnormal grid, which is in V(N), so nothing escapes and the axis is invisible.

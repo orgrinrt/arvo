@@ -1,0 +1,16 @@
+# file 47 price sweep. rustc 1.98.0-nightly (57d06900f 2026-05-27), aarch64-apple-darwin.
+# --emit=metadata, min of three, counts 0 and 400. Time is a difference quotient, not a fitted slope.
+# Two full sweeps are recorded because the time figures do not repeat and the metadata figures do.
+kind,count,ms_min_of_3,metadata_bytes,sweep
+alias_table,0,73.674,3263,2
+alias_table,400,106.824,270520,2
+alias_table_bare,0,56.265,2536,2
+alias_table_bare,400,68.593,68701,2
+grade_projected,0,66.368,32116,2
+grade_projected,400,119.022,256797,2
+grade_declared,0,84.995,41350,2
+grade_declared,400,124.954,638838,2
+grade_projected,0,66.871,32116,1
+grade_projected,400,117.485,256797,1
+grade_declared,0,71.582,41350,1
+grade_declared,400,127.170,638838,1

@@ -1,0 +1,20 @@
+error: generic parameters may not be used in const operations
+  --> f01_const_param_default_from_siblings.rs:20:78
+   |
+20 | pub struct Fixed<const I: usize, const F: usize, S, const B: usize = { bytes(I, F) }> {
+   |                                                                              ^ cannot perform const operation using `I`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `I`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> f01_const_param_default_from_siblings.rs:20:81
+   |
+20 | pub struct Fixed<const I: usize, const F: usize, S, const B: usize = { bytes(I, F) }> {
+   |                                                                                 ^ cannot perform const operation using `F`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `F`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: aborting due to 2 previous errors
+

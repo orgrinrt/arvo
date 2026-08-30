@@ -1,0 +1,52 @@
+==============================================================================
+L1. is 44.3% informative? the switch rate over random target pairs
+==============================================================================
+  200 random independent target pairs, 861 weights each
+  switch rate: min 33.8%  median 90.2%  mean 84.4%  max 100.0%
+  139's 44.3% sits at percentile 2 of this distribution
+  L1 mean at least 40%: CONFIRMED
+  reading: the size of the number is a fact about how different two cost
+  tables are. It is not a fact about weightings, and nothing in the design
+  should be gated on it.
+
+==============================================================================
+L2/M3. carrying the arm against carrying the weighting
+==============================================================================
+  20874 weight-and-target-pair cases where the frozen arm is not optimal
+  relative regret of carrying the ARM: mean 200.0%  median 128.2%  worst 5900.0%
+  M3 regret of carrying the WEIGHTING, non-zero cases: 0 -> PASS
+  L2 mean regret at least 20%: CONFIRMED
+  reading: a weighting travels with zero loss and an arm does not. So a
+  predicate that names an ARM is bound to the target it was measured on,
+  and a predicate that names a WEIGHTING is not.
+
+==============================================================================
+M1. the case that must fail: identical targets
+==============================================================================
+  identical targets: switch rate 0, arm-carrying regret cases 0
+  M1 -> PASS
+
+==============================================================================
+L3. does normalising by one shared baseline arm make a weighting travel?
+==============================================================================
+  (a) target pairs differing by a PURE per-coordinate rescaling
+      un-normalised switch rate: mean 18.0%  max 49.2%
+      normalised switch rate:    mean 0.0%  max 0.0%
+      M2 the rescale moves the selection before normalising: PASS
+      L3a normalising drives it to exactly zero: CONFIRMED
+  (b) arbitrary target pairs
+      un-normalised switch rate: mean 85.8%
+      normalised switch rate:    mean 83.0%
+      change: -2.8 points
+      L3b normalising does not help here: CONFIRMED
+
+  the composed statement, which is what the two halves are for:
+    a weighting travels across a target change exactly to the extent that
+    the change is a per-coordinate rescaling of the cost table, and one
+    shared baseline arm, normalised per target, is what makes that part
+    travel. The rest of a target change reorders arms genuinely and no
+    normalisation can recover it.
+
+==============================================================================
+control failures: 0 []
+==============================================================================

@@ -1,0 +1,25 @@
+error[E0277]: the trait bound `L<100>: Lit` is not satisfied
+   --> p16_unbridged_width.rs:627:44
+    |
+627 | pub const SZ: usize = core::mem::size_of::<Wide>();
+    |                                            ^^^^ unsatisfied trait bound
+    |
+help: the trait `Lit` is not implemented for `L<100>`
+   --> p16_unbridged_width.rs:509:1
+    |
+509 | pub struct L<const K: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `Lit`:
+              L<0>
+              L<10>
+              L<11>
+              L<12>
+              L<13>
+              L<14>
+              L<15>
+              L<16>
+            and 57 others
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

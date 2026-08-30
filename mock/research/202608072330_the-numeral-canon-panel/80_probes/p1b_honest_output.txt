@@ -1,0 +1,4 @@
+p1b: the law computed from the policy's own map
+  assoc_holds(Wrap)      = true   (evaluated at compile time)
+  assoc_holds(SatSigned) = false   (evaluated at compile time)
+  reassociating_fold::<Wrap>([-8, -8, -8, 1]) = -7

@@ -1,0 +1,61 @@
+=== bitpack-carrier-shared
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.40s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== bitpack-contend-shared
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.34s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== bitpack-footprint-shared
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== bitpack-plan-shared
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== bitpack-shared
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== bitpack-wide-shared
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== bitpack-write-contend-shared
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.85s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== quantiser-fadd-shared
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== quantiser-radix-shared
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== satfold-shared
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.54s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== warm-clamp-shared
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.05s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== warm-container-shared
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.73s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+=== wide-rung-shared
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 153.95s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 153.15s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+--- command ---
+cd mock/benches/variants && for d in *-shared; do echo "=== $d"; (cd "$d" && cargo test -q -- --test-threads=1 2>&1 | grep -E 'test result|error'); done
+wide-rung-shared was run separately because it takes 153s.
+
+--- total ---
+9+12+6+5+3+6+15+1+3+11+7+15+30 = 123 across 13 crates, 0 failed.
+Fifth independent count, after 98, 100, 102, 103.
+
+--- THE INSTRUMENT DEFECT, recorded because it produced a meaningless green ---
+My FIRST invocation piped each crate through `tail -4` to get the result line.
+`cargo test` emits TWO result lines: unit tests, then doc tests. The doc-test
+line is last and reads "0 passed; 0 failed". So the run reported ZERO TESTS in
+all thirteen crates and exit code 0, and it looked like a completed gate.
+Nothing was wrong with the suite. The instrument was mine.
+This is the third distinct way this corpus produces a meaningless green:
+  1. `cargo test --workspace` from mock/benches reaches only the driver: 0 tests (102, 103)
+  2. `cargo test` without --test-threads=1 hangs on bitpack-write-contend-shared (96, 100)
+  3. the obvious result-line extraction reads the doc-test block (this)
+All three exit zero.

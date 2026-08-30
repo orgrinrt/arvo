@@ -1,0 +1,308 @@
+[
+ {
+  "width": 4,
+  "set": "full",
+  "allow_guard": false,
+  "tuples": 4096,
+  "accepted": true,
+  "seconds": 0.34,
+  "diagnostic": ""
+ },
+ {
+  "width": 4,
+  "set": "full",
+  "allow_guard": true,
+  "tuples": 4096,
+  "accepted": true,
+  "seconds": 0.09,
+  "diagnostic": ""
+ },
+ {
+  "width": 4,
+  "set": "nonneg",
+  "allow_guard": false,
+  "tuples": 512,
+  "accepted": true,
+  "seconds": 0.04,
+  "diagnostic": ""
+ },
+ {
+  "width": 4,
+  "set": "nonneg",
+  "allow_guard": true,
+  "tuples": 512,
+  "accepted": true,
+  "seconds": 0.05,
+  "diagnostic": ""
+ },
+ {
+  "width": 4,
+  "set": "nonpos",
+  "allow_guard": false,
+  "tuples": 729,
+  "accepted": true,
+  "seconds": 0.05,
+  "diagnostic": ""
+ },
+ {
+  "width": 4,
+  "set": "nonpos",
+  "allow_guard": true,
+  "tuples": 729,
+  "accepted": true,
+  "seconds": 0.05,
+  "diagnostic": ""
+ },
+ {
+  "width": 5,
+  "set": "full",
+  "allow_guard": false,
+  "tuples": 32768,
+  "accepted": true,
+  "seconds": 0.42,
+  "diagnostic": ""
+ },
+ {
+  "width": 5,
+  "set": "full",
+  "allow_guard": true,
+  "tuples": 32768,
+  "accepted": true,
+  "seconds": 0.41,
+  "diagnostic": ""
+ },
+ {
+  "width": 5,
+  "set": "nonneg",
+  "allow_guard": false,
+  "tuples": 4096,
+  "accepted": true,
+  "seconds": 0.09,
+  "diagnostic": ""
+ },
+ {
+  "width": 5,
+  "set": "nonneg",
+  "allow_guard": true,
+  "tuples": 4096,
+  "accepted": true,
+  "seconds": 0.09,
+  "diagnostic": ""
+ },
+ {
+  "width": 5,
+  "set": "nonpos",
+  "allow_guard": false,
+  "tuples": 4913,
+  "accepted": true,
+  "seconds": 0.1,
+  "diagnostic": ""
+ },
+ {
+  "width": 5,
+  "set": "nonpos",
+  "allow_guard": true,
+  "tuples": 4913,
+  "accepted": true,
+  "seconds": 0.1,
+  "diagnostic": ""
+ },
+ {
+  "width": 6,
+  "set": "full",
+  "allow_guard": false,
+  "tuples": 262144,
+  "accepted": true,
+  "seconds": 3.02,
+  "diagnostic": ""
+ },
+ {
+  "width": 6,
+  "set": "full",
+  "allow_guard": true,
+  "tuples": 262144,
+  "accepted": true,
+  "seconds": 3.03,
+  "diagnostic": ""
+ },
+ {
+  "width": 6,
+  "set": "nonneg",
+  "allow_guard": false,
+  "tuples": 32768,
+  "accepted": true,
+  "seconds": 0.38,
+  "diagnostic": ""
+ },
+ {
+  "width": 6,
+  "set": "nonneg",
+  "allow_guard": true,
+  "tuples": 32768,
+  "accepted": true,
+  "seconds": 0.38,
+  "diagnostic": ""
+ },
+ {
+  "width": 6,
+  "set": "nonpos",
+  "allow_guard": false,
+  "tuples": 35937,
+  "accepted": true,
+  "seconds": 0.44,
+  "diagnostic": ""
+ },
+ {
+  "width": 6,
+  "set": "nonpos",
+  "allow_guard": true,
+  "tuples": 35937,
+  "accepted": true,
+  "seconds": 0.45,
+  "diagnostic": ""
+ },
+ {
+  "width": 7,
+  "set": "full",
+  "allow_guard": false,
+  "tuples": 2097152,
+  "accepted": false,
+  "seconds": 4.58,
+  "diagnostic": "error: constant evaluation is taking a long time"
+ },
+ {
+  "width": 7,
+  "set": "full",
+  "allow_guard": true,
+  "tuples": 2097152,
+  "accepted": true,
+  "seconds": 23.57,
+  "diagnostic": ""
+ },
+ {
+  "width": 7,
+  "set": "nonneg",
+  "allow_guard": false,
+  "tuples": 262144,
+  "accepted": true,
+  "seconds": 2.74,
+  "diagnostic": ""
+ },
+ {
+  "width": 7,
+  "set": "nonneg",
+  "allow_guard": true,
+  "tuples": 262144,
+  "accepted": true,
+  "seconds": 2.71,
+  "diagnostic": ""
+ },
+ {
+  "width": 7,
+  "set": "nonpos",
+  "allow_guard": false,
+  "tuples": 274625,
+  "accepted": true,
+  "seconds": 3.13,
+  "diagnostic": ""
+ },
+ {
+  "width": 7,
+  "set": "nonpos",
+  "allow_guard": true,
+  "tuples": 274625,
+  "accepted": true,
+  "seconds": 3.16,
+  "diagnostic": ""
+ },
+ {
+  "width": 8,
+  "set": "full",
+  "allow_guard": true,
+  "tuples": 16777216,
+  "accepted": true,
+  "seconds": 188.5,
+  "diagnostic": ""
+ },
+ {
+  "width": 8,
+  "set": "nonneg",
+  "allow_guard": false,
+  "tuples": 2097152,
+  "accepted": false,
+  "seconds": 4.35,
+  "diagnostic": "error: constant evaluation is taking a long time"
+ },
+ {
+  "width": 8,
+  "set": "nonneg",
+  "allow_guard": true,
+  "tuples": 2097152,
+  "accepted": true,
+  "seconds": 21.59,
+  "diagnostic": ""
+ },
+ {
+  "width": 8,
+  "set": "nonpos",
+  "allow_guard": false,
+  "tuples": 2146689,
+  "accepted": false,
+  "seconds": 4.56,
+  "diagnostic": "error: constant evaluation is taking a long time"
+ },
+ {
+  "width": 8,
+  "set": "nonpos",
+  "allow_guard": true,
+  "tuples": 2146689,
+  "accepted": true,
+  "seconds": 24.25,
+  "diagnostic": ""
+ },
+ {
+  "width": 9,
+  "set": "full",
+  "allow_guard": true,
+  "tuples": 134217728,
+  "accepted": false,
+  "seconds": 300.0,
+  "diagnostic": "TIMEOUT at the probe cap"
+ },
+ {
+  "width": 9,
+  "set": "nonneg",
+  "allow_guard": true,
+  "tuples": 16777216,
+  "accepted": true,
+  "seconds": 173.52,
+  "diagnostic": ""
+ },
+ {
+  "width": 9,
+  "set": "nonpos",
+  "allow_guard": true,
+  "tuples": 16974593,
+  "accepted": true,
+  "seconds": 198.57,
+  "diagnostic": ""
+ },
+ {
+  "width": 10,
+  "set": "nonneg",
+  "allow_guard": true,
+  "tuples": 134217728,
+  "accepted": false,
+  "seconds": 300.0,
+  "diagnostic": "TIMEOUT at the probe cap"
+ },
+ {
+  "width": 10,
+  "set": "nonpos",
+  "allow_guard": true,
+  "tuples": 134217728,
+  "accepted": false,
+  "seconds": 300.0,
+  "diagnostic": "TIMEOUT at the probe cap"
+ }
+]

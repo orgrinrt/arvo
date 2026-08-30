@@ -1,0 +1,24 @@
+F=3: triples checked=238, step-wise-vs-once-truncated disagreements=61
+  widening (round only once) matches the once-truncated reference on every case checked: True
+  first witness (independent search): x1=1/8 x2=1/4 a=1/2 b=1/2
+    step-wise (F bits at every step) gives 1/8 for both x1 and x2
+    once-truncated exact reference gives 0 for x1 and 1/8 for x2
+
+F=4: triples checked=3255, step-wise-vs-once-truncated disagreements=732
+  widening (round only once) matches the once-truncated reference on every case checked: True
+  first witness (independent search): x1=1/16 x2=1/8 a=1/2 b=1/2
+    step-wise (F bits at every step) gives 1/16 for both x1 and x2
+    once-truncated exact reference gives 0 for x1 and 1/16 for x2
+
+F=5: triples checked=37076, step-wise-vs-once-truncated disagreements=7354
+  widening (round only once) matches the once-truncated reference on every case checked: True
+  first witness (independent search): x1=1/32 x2=1/16 a=1/2 b=1/2
+    step-wise (F bits at every step) gives 1/32 for both x1 and x2
+    once-truncated exact reference gives 0 for x1 and 1/32 for x2
+
+F=6: triples checked=388899, step-wise-vs-once-truncated disagreements=73461
+  widening (round only once) matches the once-truncated reference on every case checked: True
+  first witness (independent search): x1=1/64 x2=1/32 a=1/2 b=1/2
+    step-wise (F bits at every step) gives 1/64 for both x1 and x2
+    once-truncated exact reference gives 0 for x1 and 1/64 for x2
+

@@ -1,0 +1,37 @@
+p4. does the harness's own cross-variant gate accept a committed family?
+
+gate    : validation_plan(outputs_may_differ=false, max_relative_error=None)
+          => cross_variant = Some(ByteExact), per_variant = true
+          ByteExact compares each variant's raw output bytes to a baseline
+seeds   : Rng::new(0xCAFEBABEDEADBEEF) x 100, the harness's own
+
+SUBJECT: quantiser-radix, arms quantiser-radix2 and quantiser-radix10
+  declared flags: outputs_may_differ DEFAULT(false), max_relative_error DEFAULT(None)
+  committed together in decimal-quantiser-radix-sweep_n{0,2,8,20}.csv
+  SPREAD=0   seeds=100  byte-mismatched seeds=100   gate: REFUSE
+           first mismatch: seed=17010672633609114990 at output byte 8
+  SPREAD=2   seeds=100  byte-mismatched seeds=100   gate: REFUSE
+           first mismatch: seed=17010672633609114990 at output byte 8
+  SPREAD=8   seeds=100  byte-mismatched seeds=100   gate: REFUSE
+           first mismatch: seed=17010672633609114990 at output byte 0
+  SPREAD=20  seeds=100  byte-mismatched seeds=100   gate: REFUSE
+           first mismatch: seed=17010672633609114990 at output byte 0
+
+CONTROL: quantiser-fadd, arms quantiser-fadd-hardware and quantiser-fadd-software
+  declared flags: outputs_may_differ DEFAULT(false), max_relative_error DEFAULT(None)
+  committed together in quantiser-vs-fadd-subnormal-sweep_n*.csv
+  the shared crate claims the software model is bit-exact against silicon
+  PCT=0      seeds=100  byte-mismatched seeds=0     gate: ACCEPT
+  PCT=10     seeds=100  byte-mismatched seeds=0     gate: ACCEPT
+  PCT=25     seeds=100  byte-mismatched seeds=0     gate: ACCEPT
+  PCT=50     seeds=100  byte-mismatched seeds=0     gate: ACCEPT
+  PCT=75     seeds=100  byte-mismatched seeds=0     gate: ACCEPT
+  PCT=100    seeds=100  byte-mismatched seeds=0     gate: ACCEPT
+
+READING
+  A REFUSE on the subject with an ACCEPT on the control means the gate
+  works and the subject family cannot have passed it. Its committed CSVs
+  then record a run that the harness's stated acceptance criterion would
+  not have permitted, so the criterion cannot be cited as evidence that
+  the committed arm set computes one value.
+  A REFUSE on both would mean the probe is measuring the wrong thing.

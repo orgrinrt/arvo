@@ -1,0 +1,28 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+target:    aarch64-apple-darwin
+
+=== the real file: cost table read only at const time ===
+sections:
+  Segment : 880
+  	Section (__TEXT, __text): 848
+  	Section (__LD, __compact_unwind): 32
+  	total 880
+  total 880
+symbols mentioning COST or WINNER:
+object bytes:     1768
+
+=== the control: same table, one runtime read, so it MUST survive ===
+sections:
+  Segment : 1200
+  	Section (__TEXT, __text): 928
+  	Section (__TEXT, __const): 240
+  	Section (__LD, __compact_unwind): 32
+  	total 1200
+  total 1200
+object bytes:     2288
+
+=== verdict ===
+  constant-data sections in the real object   : 0
+  constant-data sections in the control object: 1
+  The cost table is consumed at const time and carries ZERO bytes.
+  The control shows the section it would occupy if it were not.

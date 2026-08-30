@@ -1,0 +1,29 @@
+error[E0599]: the associated function or constant `SET_STEP` exists for struct `Step<Sys<RingZ, S6, SatK, Twos, Plain>, Sys<RingZ, S4, SatK, Twos, Plain>, PreservesOps>`, but its trait bounds were not satisfied
+   --> p4_n2.rs:246:56
+    |
+120 | pub struct At<R, Q>(PhantomData<(R, Q)>);
+    | ------------------- doesn't satisfy `At<SatK, S4>: Coherent`
+...
+142 | pub struct Step<A, B, P>(PhantomData<(A, B, P)>);
+    | ------------------------ associated function or constant `SET_STEP` not found for this struct
+...
+246 |     <Step<SignedWide, SignedNarrowSat, PreservesOps>>::SET_STEP;
+    |                                                        ^^^^^^^^ associated function or constant cannot be called due to unsatisfied trait bounds
+    |
+note: trait bound `At<SatK, S4>: Coherent` was not satisfied
+   --> p4_n2.rs:163:25
+    |
+159 | impl<A, B> Step<A, B, PreservesOps>
+    |            ------------------------
+...
+163 |     At<B::Red, B::Set>: Coherent,
+    |                         ^^^^^^^^ unsatisfied trait bound introduced here
+note: the trait `Coherent` must be implemented
+   --> p4_n2.rs:125:1
+    |
+125 | pub trait Coherent {}
+    | ^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0599`.

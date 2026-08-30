@@ -1,0 +1,66 @@
+=== what 106 section 3.1 says, verbatim, with its (absent) predicate ===
+**Multiplicative associativity and distributivity hold at `F = 0` and fail at `F > 0`.** `93`'s F1 measured
+it exhaustively over every triple at `W` in 3 to 8; `94`'s probe C part 2 measured that rounding retraction
+retracts exactly at `F = 0` over `W` in {4, 6, 8} and `F` in 0 to `W`, both rounding modes; `97`'s
+criterion predicts every verdict in 552 cells with zero mismatches in either direction; and `97`'s p7
+tested the same criterion against `35`'s 660 committed law rows, generated independently months earlier,
+with 659 agreements, one conservative row and zero soundness mismatches.
+
+
+-- every other bullet in 3.1 carries a 'holds for:' line; this one does not --
+2
+   (2 of the 4 bullets; the law bullet and the 123-tests bullet have none)
+
+=== 93's F1 predicate, which 106 drops ===
+**F1. Multiplicative associativity and distributivity hold at F = 0 and fail at F > 0, and the boundary
+does not move with the overflow policy or the rounding mode.**
+`holds for: W in 3..8, F in 0..2, signedness = unsigned, overflow in {wrap, saturate}, rounding in
+{truncate, nearest}, operations {mul, add}, arity 3, threads = 1, target features any`
+Evidence: `93_probes/p2c_the_boundary_across_widths.out`, `93_probes/p2b_where_the_algebra_actually_varies.out`,
+
+=== 93's P7, at F = 0, SIGNED SATURATING (the counterexample) ===
+--- signed W = 7, domain [-64, 63], overflow = saturate ---
+    (a+b)+c == a+(b+c)     FAILS  520128/2097152 = 24.80%   first: a=-64,b=-64,c=1 -> -63 vs -64
+    (a*b)*c == a*(b*c)     FAILS  15036/2097152 =  0.72%   first: a=-64,b=-64,c=-1 -> -63 vs -64
+    a*(b+c) == a*b+a*c     FAILS  1000674/2097152 = 47.72%   first: a=-64,b=-64,c=1 -> 63 vs -1
+
+
+=== 97's P2, at F = 0, the same cell, from an independently written model ===
+signed   saturate F=0 truncate
+  pi respects: 
+  pi breaks  : add>add(11.62%), add>mul(0.68%), add>sub(12.50%), mul>add(28.47%), mul>mul(1.98%), mul>sub(30.27%), sub>add(11.82%), sub>mul(0.88%), sub>sub(12.50%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      fails      fails      agree  (23.24% of 4096)
+  mul_assoc      fails      fails      agree  (3.91% of 4096)
+  distrib        fails      fails      agree  (34.52% of 4096)
+  mul_over_sub   fails      fails      agree  (33.08% of 4096)
+  sub_assoc      fails      fails      agree  (88.77% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+
+=== and the hazard INSIDE the region the sentence is right about ===
+-- unsigned saturate F=0: distrib holds, mul_over_sub does not --
+unsigned saturate F=0 truncate
+  pi respects: add>add, add>mul, mul>add, mul>mul, sub>mul
+  pi breaks  : add>sub(43.95%), mul>sub(65.92%), sub>add(43.95%), sub>sub(43.95%)
+  law            predicted  measured   verdict
+  add_comm       holds      holds      agree
+  mul_comm       holds      holds      agree
+  add_assoc      holds      holds      agree
+  mul_assoc      holds      holds      agree
+  distrib        holds      holds      agree
+  mul_over_sub   fails      fails      agree  (34.94% of 4096)
+  sub_assoc      fails      fails      agree  (74.22% of 4096)
+  sub_comm       fails      fails      agree  (93.75% of 256)
+
+=== does 106 carry signedness anywhere in its own prose? ===
+occurrences of 'signed' in 106 outside a quoted predicate: 2
+-- the lines --
+35:Both run before the assigned work. The brief can neither request nor waive them, and this one did not
+438:seeds 1 to 64, unsigned, threads = 1, host aarch64-apple-darwin, rustc nightly-2026-05-28`
+507:`holds for: W in {5, 6}, F in {0, 1}, signedness in {unsigned, signed}, overflow in {wrap, saturate,
+520:exact-in-a-wider-rung are **incomparable at `F = 0`**, both signednesses, both widths, because the absorbing
+
+=== the same sentence is what the workspace rule was CORRECTED AWAY FROM during this unit ===
+65:**`F == 0` is necessary and it is not sufficient, and this rule previously said it was.** The earlier

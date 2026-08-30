@@ -1,0 +1,15 @@
+error[E0271]: type mismatch resolving `<Idx<16> as ToNat<Arvo>>::N == N13`
+  --> p08b_opaque_nat_diag.rs:35:51
+   |
+35 | pub fn bad(a: Fixed<13, Hot>) -> Fixed<16, Hot> { relate(a) }
+   |                                                   ^^^^^^^^^ type mismatch resolving `<Idx<16> as ToNat<Arvo>>::N == N13`
+   |
+note: expected this to be `N13`
+  --> p08b_opaque_nat_diag.rs:24:41
+   |
+24 | impl ToNat<Arvo> for Idx<16> { type N = N16; }
+   |                                         ^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0271`.

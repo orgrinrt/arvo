@@ -1,0 +1,12 @@
+[package]
+name = "sketch-container-projection"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+# Standalone. Detached from the arvo mock workspace so the sketch's feature
+# gates (deliberately none) are its own and not inherited.
+[workspace]

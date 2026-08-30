@@ -1,0 +1,179 @@
+--- fixed U<3,3>  (radix 2, 64 values)
+    verdict            : INSIDE
+    binades            : 6 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/8, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-2:0, -1:0, 0:0, 1:0, 2:0}  distinct=1
+    family             : FIXED: one segment
+
+--- fixed U<0,4>  (radix 2, 16 values)
+    verdict            : INSIDE
+    binades            : 4 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/16, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-3:0, -2:0, -1:0}  distinct=1
+    family             : FIXED: one segment
+
+--- HUB fixed I=2 F=2  (radix 2, 16 values)
+    note: half-unit-biased; i1 called this OUTSIDE
+    verdict            : INSIDE
+    binades            : 5 (2 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/4, bias 1/8)
+    Flocq generic_format (bias zero, step a power of the radix): False
+    canonical exponent : {-1:0, 0:0, 1:0}  distinct=1
+    family             : FIXED: one segment
+
+--- ranged grid, step 1/2, 7 values (03's join witness)  (radix 2, 7 values)
+    note: count is not a power of the radix
+    verdict            : INSIDE
+    binades            : 3 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/2, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {0:0, 1:0}  distinct=1
+    family             : FIXED: one segment
+
+--- float p=3 e=-2..3, no subnormals  (radix 2, 25 values)
+    verdict            : INSIDE
+    binades            : 6 (0 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/16, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-2:0, -1:1, 0:2, 1:3, 2:4, 3:5}  distinct=6
+    family             : FLOAT: fexp(e) = e - -2
+
+--- float p=3 e=-2..3, subnormals  (radix 2, 28 values)
+    verdict            : INSIDE
+    binades            : 8 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/16, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-3:0, -2:0, -1:1, 0:2, 1:3, 2:4, 3:5}  distinct=6
+    family             : FLOAT with gradual underflow: constant below e = -2, slope one above
+
+--- fp8 E4M3-shaped p=4 e=-6..8, subnormals  (radix 2, 128 values)
+    verdict            : INSIDE
+    binades            : 18 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/512, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-8:0, -7:0, -6:0, -5:1, -4:2, -3:3, -2:4, -1:5, ... (17 constrained binades)}  distinct=15
+    family             : FLOAT with gradual underflow: constant below e = -6, slope one above
+
+--- bfloat16-shaped p=8 e=-6..7, subnormals  (radix 2, 1920 values)
+    verdict            : INSIDE
+    binades            : 21 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/8192, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-12:0, -11:0, -10:0, -9:0, -8:0, -7:0, -6:0, -5:1, ... (20 constrained binades)}  distinct=14
+    family             : FLOAT with gradual underflow: constant below e = -6, slope one above
+
+--- posit<8,0>  (radix 2, 128 values)
+    verdict            : INSIDE
+    binades            : 13 (3 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/64, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-5:0, -4:0, -3:0, -2:0, -1:0, 0:1, 1:3, 2:5, ... (10 constrained binades)}  distinct=6
+    family             : SEGMENTED: no named shape, 3 distinct step ratios
+
+--- posit<8,1>  (radix 2, 128 values)
+    verdict            : INSIDE
+    binades            : 23 (7 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/512, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-8:0, -7:1, -6:1, -5:2, -4:2, -3:3, -2:3, -1:4, ... (16 constrained binades)}  distinct=13
+    family             : SEGMENTED: no named shape, 3 distinct step ratios
+
+--- posit<10,2>  (radix 2, 512 values)
+    verdict            : INSIDE
+    binades            : 55 (15 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/2097152, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-20:0, -19:1, -18:2, -17:3, -16:3, -15:4, -14:5, -13:6, ... (40 constrained binades)}  distinct=36
+    family             : SEGMENTED: no named shape, 3 distinct step ratios
+
+--- decimal p=2 e=-2..2 at radix 10  (radix 10, 451 values)
+    verdict            : INSIDE
+    binades            : 5 (0 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/100, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-1:0, 0:1, 1:2, 2:3, 3:4}  distinct=5
+    family             : FLOAT: fexp(e) = e - -1
+
+--- decimal p=2 e=-2..2 at radix 2  (radix 2, 451 values)
+    note: same set, asked at the binary radix
+    verdict            : OUTSIDE: values are not m * r^q
+
+--- fixed-slash P=7 Q=7  (radix 2, 36 values)
+    verdict            : OUTSIDE: values are not m * r^q
+
+--- residue number system (3,5,7), value set  (radix 2, 105 values)
+    note: the encoding is the whole point and no value-set test can see it
+    verdict            : INSIDE
+    binades            : 7 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {1:0, 2:0, 3:0, 4:0, 5:0, 6:0}  distinct=1
+    family             : FIXED: one segment
+
+--- thermometer 16 levels, value set  (radix 2, 17 values)
+    note: encoding-only difference
+    verdict            : INSIDE
+    binades            : 5 (2 hold one value and pin no step)
+    affine grid        : True   (adjustment 1, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {1:0, 2:0, 3:0}  distinct=1
+    family             : FIXED: one segment
+
+--- carry-save 6-bit, value set  (radix 2, 64 values)
+    note: encoding-only difference, and the encoding is not injective
+    verdict            : INSIDE
+    binades            : 6 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {1:0, 2:0, 3:0, 4:0, 5:0}  distinct=1
+    family             : FIXED: one segment
+
+--- negabinary 6 digits  (radix 2, 64 values)
+    verdict            : INSIDE
+    binades            : 6 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {1:0, 2:0, 3:0, 4:0, 5:0}  distinct=1
+    family             : FIXED: one segment
+
+--- mixed radix (factorial base, 5!)  (radix 2, 120 values)
+    verdict            : INSIDE
+    binades            : 7 (1 hold one value and pin no step)
+    affine grid        : True   (adjustment 1, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {1:0, 2:0, 3:0, 4:0, 5:0, 6:0}  distinct=1
+    family             : FIXED: one segment
+
+--- stochastic stream N=16, value set  (radix 2, 17 values)
+    note: a datum denotes a distribution, not a point
+    verdict            : INSIDE
+    binades            : 5 (2 hold one value and pin no step)
+    affine grid        : True   (adjustment 1/16, bias 0)
+    Flocq generic_format (bias zero, step a power of the radix): True
+    canonical exponent : {-3:0, -2:0, -1:0}  distinct=1
+    family             : FIXED: one segment
+
+--- double-double p=3 e=-1..2  (radix 2, 982 values)
+    note: i1's generator produced the plain float here
+    verdict            : OUTSIDE: a binade is not an arithmetic progression
+    binades            : 5 (0 hold one value and pin no step)
+
+--- logarithmic number system, base 2, three fraction bits
+    2^(k/8) for k = 1..64, rational at all: 8 of 64
+    verdict            : OUTSIDE: values are not m * r^q
+
+SUMMARY over 21 value sets plus the logarithmic case:
+  inside the affine-grid-per-binade concept : 18 of 21
+    of those, at bias zero (Flocq generic_format): 17
+    of those, needing a nonzero bias            : 1
+    FIXED: 10
+    FLOAT: 2
+    FLOAT with gradual underflow: 3
+    SEGMENTED: 3
+  outside, with the clause that fails:
+    decimal p=2 e=-2..2 at radix 2: OUTSIDE: values are not m * r^q
+    fixed-slash P=7 Q=7: OUTSIDE: values are not m * r^q
+    double-double p=3 e=-1..2: OUTSIDE: a binade is not an arithmetic progression
+    logarithmic number system: OUTSIDE: values are not m * r^q

@@ -1,0 +1,103 @@
+error[E0277]: arvo does not ship this width: Idx<96>
+   --> b02_the_table_chases_its_tail.rs:250:75
+    |
+250 | pub fn b02_next_octave(a: UFixed<48, 16, Hot>, b: UFixed<48, 16, Hot>) -> Fixed<96, 32, Hot> {
+    |                                                                           ^^^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+    |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<96>`
+   --> b02_the_table_chases_its_tail.rs:24:1
+    |
+ 24 | pub struct Idx<const N: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<96>` and spell the numeral against `MyWidths`
+help: the following other types implement trait `ToNat<M>`
+   --> b02_the_table_chases_its_tail.rs:154:1
+    |
+154 | impl ToNat<Mine> for Idx<777> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<777>`
+...
+157 | impl ToNat<Mine> for Idx<41> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<41>`
+note: required by a bound in `Fixed`
+   --> b02_the_table_chases_its_tail.rs:48:13
+    |
+ 46 | pub struct Fixed<const I: u32, const F: u32, S, M = Arvo>
+    |            ----- required by a bound in this struct
+ 47 | where
+ 48 |     Idx<I>: ToNat<M>,
+    |             ^^^^^^^^ required by this bound in `Fixed`
+
+error[E0277]: arvo does not ship this width: Idx<32>
+   --> b02_the_table_chases_its_tail.rs:250:75
+    |
+250 | pub fn b02_next_octave(a: UFixed<48, 16, Hot>, b: UFixed<48, 16, Hot>) -> Fixed<96, 32, Hot> {
+    |                                                                           ^^^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+    |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<32>`
+   --> b02_the_table_chases_its_tail.rs:24:1
+    |
+ 24 | pub struct Idx<const N: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<32>` and spell the numeral against `MyWidths`
+help: the following other types implement trait `ToNat<M>`
+   --> b02_the_table_chases_its_tail.rs:154:1
+    |
+154 | impl ToNat<Mine> for Idx<777> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<777>`
+...
+157 | impl ToNat<Mine> for Idx<41> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<41>`
+note: required by a bound in `Fixed`
+   --> b02_the_table_chases_its_tail.rs:49:13
+    |
+ 46 | pub struct Fixed<const I: u32, const F: u32, S, M = Arvo>
+    |            ----- required by a bound in this struct
+...
+ 49 |     Idx<F>: ToNat<M>,
+    |             ^^^^^^^^ required by this bound in `Fixed`
+
+error[E0277]: width 96 is not the sum of widths 48 and 48
+   --> b02_the_table_chases_its_tail.rs:251:5
+    |
+251 |     mul(a, b)
+    |     ^^^ this output width does not follow from the input widths
+    |
+help: the trait `WidthSum<48, 48, 96>` is not implemented for `Arvo`
+   --> b02_the_table_chases_its_tail.rs:33:1
+    |
+ 33 | pub struct Arvo;
+    | ^^^^^^^^^^^^^^^
+    = note: the result of this operation is 48 + 48 bits wide; write that width, or let it be inferred
+note: required by a bound in `mul`
+   --> b02_the_table_chases_its_tail.rs:213:8
+    |
+190 | pub fn mul<
+    |        --- required by a bound in this function
+...
+213 |     M: WidthSum<I, J, OI> + WidthSum<F, K, OF>,
+    |        ^^^^^^^^^^^^^^^^^^ required by this bound in `mul`
+
+error[E0277]: width 32 is not the sum of widths 16 and 16
+   --> b02_the_table_chases_its_tail.rs:251:5
+    |
+251 |     mul(a, b)
+    |     ^^^ this output width does not follow from the input widths
+    |
+help: the trait `WidthSum<16, 16, 32>` is not implemented for `Arvo`
+   --> b02_the_table_chases_its_tail.rs:33:1
+    |
+ 33 | pub struct Arvo;
+    | ^^^^^^^^^^^^^^^
+    = note: the result of this operation is 16 + 16 bits wide; write that width, or let it be inferred
+note: required by a bound in `mul`
+   --> b02_the_table_chases_its_tail.rs:213:29
+    |
+190 | pub fn mul<
+    |        --- required by a bound in this function
+...
+213 |     M: WidthSum<I, J, OI> + WidthSum<F, K, OF>,
+    |                             ^^^^^^^^^^^^^^^^^^ required by this bound in `mul`
+
+error: aborting due to 4 previous errors
+
+For more information about this error, try `rustc --explain E0277`.

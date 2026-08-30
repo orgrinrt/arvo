@@ -1,0 +1,70 @@
+P4. Does I18's bounded panic survive I15's "never any runtime checks"?
+
+Commands (from inside the repo, nightly-2026-05-28, rustc 1.98.0-nightly
+57d06900f, host aarch64-apple-darwin):
+
+  rustc --edition 2021 -O --crate-type=lib --emit asm \
+        p4_the_bounded_panic_erases_under_lowering.rs -o p4_rel.s
+  rustc --edition 2021 -O -C debug-assertions=on --crate-type=lib --emit asm \
+        p4_the_bounded_panic_erases_under_lowering.rs -o p4_dbg.s
+
+RELEASE (p4_rel.s)
+
+_add_bare:
+	add	w8, w1, w0
+	and	w0, w8, #0xff
+	ret
+
+_add_imitating   = _add_bare        <- the build gate erased it
+_add_speed_first = _add_bare        <- the concern gate erased it
+
+_add_ungated_check:                  <- the control, check intact
+	stp	x29, x30, [sp, #-16]!
+	mov	x29, sp
+	add	w8, w1, w0
+	tbnz	w8, #8, LBB1_2
+	and	w0, w8, #0xff
+	ldp	x29, x30, [sp], #16
+	ret
+
+DEBUG (p4_dbg.s, -C debug-assertions=on, still -O)
+
+_add_bare:                           unchanged, 3 instructions
+_add_speed_first = _add_bare        <- the concern gate erased it HERE TOO
+_add_imitating:                      <- the build gate opened, check present
+	stp	x29, x30, [sp, #-16]!
+	mov	x29, sp
+	add	w8, w1, w0
+	tbnz	w8, #8, LBB1_2
+	and	w0, w8, #0xff
+	ldp	x29, x30, [sp], #16
+	ret
+_add_ungated_check:                  same shape, check intact
+
+PANIC REFERENCES IN THE RELEASE OBJECT
+
+  grep -c panic p4_rel.s  ->  3
+
+All three sit inside `_add_ungated_check` (its blocks LBB1_2 and LBB1_4, plus
+the source-filename string in the panic location table). There is no panic
+path reachable from either gated function: both are aliases of the bare add.
+
+WHAT THIS ESTABLISHES
+
+Both of I18's bounds erase. The build bound erases the panic from a release
+artifact, and the concern bound erases it even in a debug build, so a
+speed-first path does not pay for a check that exists for familiarity. On this
+evidence I18 is a bounded exception INSIDE I15 rather than a hole in it: a
+shipped program contains no runtime validation, and a debug program contains
+it only on the paths whose concern is imitation.
+
+WHAT IT DOES NOT ESTABLISH
+
+It is a compile-and-inspect check on one target and one function shape. It is
+an ad-hoc quick spike as far as magnitude goes and prices nothing. Instruction
+counts here are not a measurement and the word bench does not apply.
+
+The control arm is what makes it a comparison rather than a demonstration:
+`add_ungated_check` is the same check with no const gate, and it survives both
+builds. Without it, the clean release output would be equally consistent with
+the optimiser having deleted dead arithmetic for reasons unrelated to the gate.

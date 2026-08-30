@@ -1,0 +1,60 @@
+==============================================================================
+p7b. The union of the two grade rules
+==============================================================================
+
+  x + y                            c   136 a   136 UNION   136 oracle   136 of   256   unsound(u)=0  union>max: False  reaches oracle: True
+  x * y                            c    76 a    31 UNION    76 oracle    76 of   256   unsound(u)=0  union>max: False  reaches oracle: True
+  (x + y) + z                      c   816 a   816 UNION   816 oracle   816 of  4096   unsound(u)=0  union>max: False  reaches oracle: True
+  (x + y) - y                      c    16 a   136 UNION   136 oracle   136 of   256   unsound(u)=0  union>max: False  reaches oracle: True
+  x * (y - y)  SIGNED              c    31 a    64 UNION    64 oracle    64 of    64   unsound(u)=0  union>max: False  reaches oracle: True
+  (x + y) * z                      c   385 a   151 UNION   385 oracle   385 of  4096   unsound(u)=0  union>max: False  reaches oracle: True
+  (x+y) * (z+w)                    c   212 a    31 UNION   212 oracle   212 of   256   unsound(u)=0  union>max: False  reaches oracle: True
+  x*y - x*y  SIGNED                c    15 a    15 UNION    15 oracle    15 of    16   unsound(u)=0  union>max: False  reaches oracle: True
+  (x + y) - y  WRAP                c    16 a   136 UNION   136 oracle   136 of   256   unsound(u)=0  union>max: False  reaches oracle: True
+  (x - y) + y  SIGNED              c    36 a    64 UNION    64 oracle    64 of    64   unsound(u)=0  union>max: False  reaches oracle: True
+
+SUMMARY
+
+  rows swept                                   : 10
+  rows where the union is unsound              : 0
+  rows where the union reaches the oracle      : 10/10
+  rows where the union beats BOTH counts       : 0/10
+  rows where affine licenses what corner refuses: 4/10
+
+THE ROWS THE UNION DOES NOT REACH, named rather than left in a ratio
+
+  none: the union reaches the oracle on every row swept
+
+THE ANNIHILATION CASE, checked directly since P4 predicted it
+
+  with z declared 0: the union licenses 136/256, the arms actually agree on 256/256
+  so the union is short by 120 on the annihilation case, which is a fact about the TERM's dependence rather than about any node's range
+
+INSTRUMENT CHECK
+
+  MUTATION: make the union unsound on purpose by dropping the node check
+    a root-only check (no per-node check) is unsound on 0/4096 extents
+    so the per-node discipline is load-bearing and the sound counts above are not free: False
+
+-----------------------------------------------------------------------------
+THE INSTRUMENT CHECK FAILED, AND THE FAILURE IS INFORMATIVE
+-----------------------------------------------------------------------------
+The mutation at the bottom reports "a root-only check is unsound on 0/4096
+extents", which reads as the per-node discipline being unnecessary.  It is not.
+The mutation could not fire, for a reason that is a limitation of EVERY sweep
+in this file's probes and is worth more than the mutation was.
+
+Every declared extent in p1, p2b, p3b, p5, p7 and p7b has the form [0, b].
+With every leaf's lower bound pinned at zero, the root of a chain of additions
+over a non-negative domain is the WIDEST node in the term, so a root that fits
+implies every intermediate fits, and a root-only check is equivalent to a
+per-node check by construction.  There is no counterexample inside the swept
+region, so the mutation measures nothing.
+
+The per-node discipline IS load-bearing and `p7c` builds the witness by hand,
+with a two-endpoint extent, which is the shape `111` section 12 alternative B
+names as untested and `82` F6 actually uses.
+
+The consequence for everything above: every count in this file is predicated on
+one-sided extents.  A two-endpoint window is strictly more expressive and none
+of these numbers is claimed for it.

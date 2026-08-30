@@ -1,0 +1,15 @@
+pairs where the sum-of-widths form exceeds the exact width: 476
+by number of bits wasted: {1: 320, 2: 6, 3: 8, 4: 10, 5: 12, 6: 14, 7: 16, 8: 18, 9: 16, 10: 14, 11: 12, 12: 10, 13: 8, 14: 6, 15: 4, 16: 2}
+  at least one operand is the zero-only numeral: 160
+  narrower operand has total width 1, non-degenerate: 316
+    of those, the exact answer has I < 0: 15
+    of those, the exact answer has I >= 0: 301
+
+06's decomposition, read with the overlap removed:
+  160 (degenerate) + 301 (narrow-1, I >= 0) + 15 (narrow-1, I < 0) = 160 + 301 + 15 = 476
+06's 461 is its own first two terms. The 15 it accounts for
+separately, as the pairs where the clamp hides the waste, and its
+'16' includes the doubly degenerate pair already inside the 160.
+
+Both numbers are right and they answer different questions. Neither
+should be quoted without its convention.

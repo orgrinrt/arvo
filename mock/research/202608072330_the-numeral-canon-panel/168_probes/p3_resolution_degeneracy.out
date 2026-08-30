@@ -1,0 +1,38 @@
+W = 8, domain 0..256 exhaustive, limit 255
+
+DEGENERACY 1 IS THE CASE WITH NOTHING TO DECIDE
+  wrap, affine, D=3                  depth 3  degeneracy 1
+  wrap, affine, D=5                  depth 5  degeneracy 1
+  clamp, non-negative additions, D=3 depth 3  degeneracy 1
+
+DEGENERACY ABOVE 1 IS THE CASE THE DESIGN MUST DECIDE
+  clamp, mixed, D=3                  depth 3  degeneracy 3
+  round to 2^3, affine, D=3          depth 3  degeneracy 3
+  round to 2^3, affine, D=5          depth 5  degeneracy 7
+  -> rounding's decision space grows with depth: 3 at D=3, 7 at D=5.
+
+WHICH PLACEMENT IS CLOSEST TO THE EXACT COMPOSITE (rounding, D=5)
+  fully eager  (mask 0b1111): total |err| 7936, worst |err| 64
+  fully defer  (mask 0b0000): total |err| 512, worst |err| 4
+  best of all 16 placements: mask 0b0000, total |err| 512
+
+IS DEFERRAL POINTWISE OPTIMAL, OR ONLY IN AGGREGATE?
+  The reason to expect it is: every placement ends with the SAME boundary
+  resolution, so every output is a representable point; and where that
+  resolution is a NEAREST-point projection, the deferred form outputs the
+  nearest representable point to the exact value by definition. Nothing
+  else can be strictly closer. Below, that is checked rather than argued,
+  and then broken on a resolution that is not nearest-point.
+
+  nearest (round to 2^3)   3000 chains searched, 0 with any eager win, 0 winning inputs
+  nearest (clamp)          3000 chains searched, 0 with any eager win, 0 winning inputs
+  NOT nearest (truncate)   3000 chains searched, 91 with any eager win, 1330 winning inputs
+  e.g. [SatSubK(127), AddK(97), MulK(3), XorK(182)] at x=134: eager |err| 2 < deferred |err| 6
+
+RESULT: degeneracy separates the chains that pose a decision from those that
+do not. Where it is above one, deferring every interior resolution is the
+aggregate and worst-case optimum, and it is also the POINTWISE optimum for
+every chain searched whose boundary resolution is a nearest-point projection.
+That last part fails as soon as the boundary resolution is not nearest-point,
+which is what the truncation row shows, so it is a property of the resolution
+rather than of chains in general.

@@ -1,0 +1,109 @@
+p8. The tail coordinate's problems are a property of the estimator, not of the
+idea, and a different estimator of the same intent fixes most of them.
+
+Section 7 of `100` finds one configuration where no differential band both
+absorbs the measurement noise and refuses a generator defect, and it is the
+tail-weighing one. `98`'s F-98-12 independently finds that the same coordinate's
+differences "are not distinguishable from zero, at all four regions where the
+rescue occurs", while separating 58 of 90 arm pairs in general. `98` p10 finds
+the tail-weighing section by far the least stable of three.
+
+Three findings about one coordinate, all negative, and all of them measured on
+ONE estimator of it: the INTERQUARTILE RANGE of the per-batch samples.
+
+THE OBSERVATION THIS PROBE TESTS. The interquartile range is the spread of the
+MIDDLE FIFTY PERCENT. It is, by construction, the statistic that discards both
+tails. A strategy weighing "tail behaviour" and reading the IQR is reading a
+number whose defining property is that the tail has been removed from it, and it
+is also a DIFFERENCE of two order statistics, so its sampling variance is roughly
+the sum of theirs while its magnitude is the gap between them. Both properties
+push the same way: high noise, small signal.
+
+If that is the mechanism, then estimators that keep the tail and are not
+differences should be both more stable and more separating, with no change to
+what the strategy intends.
+
+SIX ESTIMATORS OF THE SAME INTENT, on the same committed samples:
+
+  iqr        P75 - P25, the one every prior file used
+  idr        P90 - P10, interdecile range, still a difference but wider
+  mad        median absolute deviation, robust, not a difference of quantiles
+  p95        the 95th percentile itself, absolute rather than a spread
+  p99        the 99th percentile itself
+  trimsd     standard deviation after trimming 10% from each end
+
+TWO MEASUREMENTS PER ESTIMATOR:
+
+  1. STABILITY. Distinct sections across 2000 bootstrap resamples under a
+     weighting that reads only that coordinate, so nothing else can move.
+  2. SEPARATION. Of all arm pairs at all regions, how many have a bootstrap
+     confidence interval on the difference that excludes zero. This is `98`'s
+     p12 question asked of six statistics rather than one.
+
+And then the payoff, section 2 of the output: `100` section 7's false alarm sweep
+rerun with each statistic in the third coordinate, which is where the band
+tension either survives the swap or does not.
+
+A COORDINATE THE INSTRUMENT CANNOT RESOLVE CANNOT SUPPORT A DIFFERENTIAL, which
+is section 7's conclusion. This probe asks whether the instrument cannot resolve
+the TAIL, or cannot resolve the IQR.
+
+Not a bench. Reads committed harness output and resamples it. No measurement was
+taken.
+
+regions 6, arms 5, samples per arm per region 80
+resamples 2000, CI resamples 2000, seed 20260814
+noise-floor control arm excluded, per p1
+
+  estimator   distinct            modal    arm pairs separated
+  iqr              161     270/2000 ( 13.5%)           43 of 60     ( 71.7%)
+  idr               51     389/2000 ( 19.4%)           48 of 60     ( 80.0%)
+  mad              264     139/2000 (  7.0%)           36 of 60     ( 60.0%)
+  p95                3    1980/2000 ( 99.0%)           54 of 60     ( 90.0%)
+  p99                2    1781/2000 ( 89.0%)           54 of 60     ( 90.0%)
+  trimsd            46     798/2000 ( 39.9%)           49 of 60     ( 81.7%)
+
+==============================================================================
+2. THE BAND TENSION, WITH THE TAIL COORDINATE SWAPPED
+==============================================================================
+  the tail-weighing weighting from `100` section 7, three coordinates
+  (median time, declared bytes, TAIL STATISTIC), false alarm rate over
+  2000 regenerations
+    tail statistic     0.0%    0.5%    1.0%    2.0%    5.0%   10.0%
+    iqr               65.1%   22.9%   13.2%    3.0%    0.1%    0.0%
+    idr               77.1%   47.6%   31.9%   15.6%    5.0%    0.1%
+    mad               77.2%   45.8%   25.1%    9.4%    0.3%    0.1%
+    p95               15.8%    0.0%    0.0%    0.0%    0.0%    0.0%
+    p99                0.5%    0.0%    0.0%    0.0%    0.0%    0.0%
+    trimsd            37.3%   12.2%    4.5%    0.6%    0.0%    0.0%
+
+  DETECTION: the widest band at which each generator defect is still
+  refused. A statistic is usable only if its false-alarm band above is
+  narrower than its detection band here.
+    tail statistic      G1 unit    G2 swap   G4 offbyone
+    iqr               no change  no change          5.0%
+    idr               no change  no change         10.0%
+    mad               no change  no change          5.0%
+    p95               no change  no change         10.0%
+    p99               no change  no change         10.0%
+    trimsd            no change  no change          5.0%
+
+==============================================================================
+READING
+==============================================================================
+
+The interquartile range is the estimator every prior file in this unit used, and
+it produced 161 distinct sections and separated 43 of 60 arm pairs.
+
+The most stable estimator here is 'p99' at 2 distinct sections, and the most
+separating is 'p95' at 54 of 60.
+
+If a tail-keeping estimator is both more stable and more separating than the
+interquartile range, then section 7's band tension and `98`'s F-98-12 are facts
+about the IQR rather than about tail behaviour, and the fix is to change the
+statistic rather than to drop the coordinate or widen the band.
+
+If the IQR is competitive, the conclusion is the harder one: the instrument
+cannot resolve the tail at all on this workload, and no choice of statistic
+rescues it.
+

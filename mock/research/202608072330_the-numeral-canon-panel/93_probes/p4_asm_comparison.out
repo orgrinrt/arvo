@@ -1,0 +1,58 @@
+P4. Emitted assembly, aarch64-apple-darwin, rustc 1.98.0-nightly (57d06900f), -O
+=============================================================================
+
+Local label numbering normalised (LBB<n>_<k> -> LBB_<k>); nothing else touched.
+
+  direct_wrap        9 instructions
+  pref_speed         9 instructions
+  direct_widen      39 instructions
+  pref_accuracy     39 instructions
+
+  direct_wrap   == pref_speed     : True
+  direct_widen  == pref_accuracy  : False
+  direct_wrap   == direct_widen   : False   <- must be False or the comparison above is vacuous
+
+  direct_wrap / pref_speed body:
+      mov x8, #0
+      cbz x1, LBB_2
+      ldr w9, [x0], #8
+      add w8, w9, w8
+      and x8, x8, #0xfff
+      subs x1, x1, #1
+      b.ne LBB_1
+      mov x0, x8
+      ret
+
+
+Addendum: the widen pair is NOT instruction-identical. Located, not reported.
+---------------------------------------------------------------------------
+  instruction count      : 39 vs 39
+  differing lines        : 4 of 39
+  opcode MULTISET equal   : True
+  opcode SEQUENCE equal   : False
+
+  The four differing instructions, side by side:
+      --- direct_widen
+      +++ pref_accuracy
+      @@ -29,11 +29,11 @@
+      -sub x10, x1, x9
+      -add x9, x0, x9, lsl #3
+      -ldr x11, [x9], #8
+      +add x10, x0, x9, lsl #3
+      +sub x9, x1, x9
+      +ldr x11, [x10], #8
+      -subs x10, x10, #1
+      +subs x9, x9, #1
+
+  Reading. The opcode multiset is identical and the sequence is not: two
+  adjacent, mutually independent instructions (an `add` computing an
+  address and a `sub` computing a trip count) are scheduled in the
+  opposite order, and the register allocator then assigns x9 and x10 the
+  other way round. No instruction is added, none is removed, and there is
+  no branch on anything the cost model produced.
+
+  So the honest claim is narrower than 'identical output': the cost model
+  leaves NO residue, evidenced by an identical opcode multiset and count,
+  while the backend's scheduling is not stable across two call sites of
+  the same inlined body. The wrap pair happens to be identical line for
+  line; the widen pair is not, and that difference is the scheduler's.

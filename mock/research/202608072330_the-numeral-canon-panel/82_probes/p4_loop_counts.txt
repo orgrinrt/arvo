@@ -1,0 +1,36 @@
+__RINvCshtEs8sf6Dux_30p4_what_the_lifted_arm_unlocks14lanes4_indexedINtB2_6NonNegKh0_Kh7f_EEB2_
+   loop LBB0_3: 8 instructions, sqadd/uqadd 0, vector add 0, loads 1, step 1
+      -> 8.000 instructions per element
+   loop LBB0_6: 37 instructions, sqadd/uqadd 1, vector add 0, loads 3, step 1 (no explicit stride)
+      -> 37.000 instructions per element (serial)
+   loop LBB0_2: 87 instructions, sqadd/uqadd 1, vector add 0, loads 5, step 1
+      -> 87.000 instructions per element
+
+__RINvCshtEs8sf6Dux_30p4_what_the_lifted_arm_unlocks15lanes16_chunkedINtB2_6NonNegKh0_Kh7f_EEB2_
+   loop LBB1_2: 4 instructions, sqadd/uqadd 1, vector add 0, loads 1, step 16
+      -> 0.250 instructions per element
+   loop LBB1_6: 8 instructions, sqadd/uqadd 0, vector add 0, loads 1, step 1
+      -> 8.000 instructions per element
+
+__RNvCske4UNIzLImn_7___rustc17rust_begin_unwind
+   loop LBB2_1: 1 instructions, sqadd/uqadd 0, vector add 0, loads 0, step 1 (no explicit stride)
+      -> 1.000 instructions per element (serial)
+
+_sat_sum_seq
+   loop LBB5_2: 8 instructions, sqadd/uqadd 0, vector add 0, loads 1, step 1
+      -> 8.000 instructions per element
+
+_sat_sum_seq_chunked_no_law
+   loop LBB6_2: 99 instructions, sqadd/uqadd 0, vector add 0, loads 16, step 16
+      -> 6.188 instructions per element
+   loop LBB6_5: 8 instructions, sqadd/uqadd 0, vector add 0, loads 1, step 1
+      -> 8.000 instructions per element
+
+_wrap_sum_seq
+   loop LBB7_7: 8 instructions, sqadd/uqadd 0, vector add 4, loads 2, step 64
+      -> 0.125 instructions per element
+   loop LBB7_11: 4 instructions, sqadd/uqadd 0, vector add 1, loads 1, step 8
+      -> 0.500 instructions per element
+   loop LBB7_14: 4 instructions, sqadd/uqadd 0, vector add 0, loads 1, step 1
+      -> 4.000 instructions per element
+

@@ -1,0 +1,23 @@
+How many DISTINCT boundary functions does one stretch have, over all interior placements?
+                       chain   resolution   distinct boundary functions
+                  +97 *3 +13   round-to-8                             1
+                  +97 *3 +13     identity                             1
+                   *3 >>1 *5   round-to-8                             4
+                   *3 >>1 *5     identity                             1
+              +97 *5 >>1 +13   round-to-8                             3
+              +97 *5 >>1 +13     identity                             1
+                   *3 *3 +97   round-to-8                             3
+                   *3 *3 +97     identity                             1
+
+C-A  identity resolution gives exactly 1 distinct boundary function on every chain: True   (must be True)
+C-B  a fully-bound stretch has 1 placement by construction, so 1 function: True
+C-C  chains where the free schedule yields more than one boundary function: 3 of 4   (must be > 0)
+C-D  witness chain: *3 >>1 *5, placements (False, False) against (False, True)
+C-D  inputs whose BOUNDARY output differs: 30 of 256   (must be > 0)
+
+VERDICT
+  On a stretch with a free interior adaptation point, 'the stretch's boundary
+  function' is a definite description with no unique referent: the stretch has
+  up to 4 of them. Clause 2 licenses realisations that induce THE boundary
+  function; clause 3 places the schedule choice under clause 2; and the schedule
+  choice is exactly what selects among them.

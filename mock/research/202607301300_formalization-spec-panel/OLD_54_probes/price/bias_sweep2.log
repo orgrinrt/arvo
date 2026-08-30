@@ -1,0 +1,9 @@
+dec_quantum,0,182,83,85,83,ok
+dec_quantum,20,401,373,379,373,ok
+dec_quantum,40,780,707,664,664,ok
+dec_slope,0,78,102,90,78,ok
+dec_slope,20,624,536,450,450,ok
+dec_slope,40,1118,948,919,919,ok
+dec_wide,0,92,106,98,92,ok
+dec_wide,20,1898,1683,1670,1670,ok
+dec_wide,40,3523,3329,3248,3248,ok

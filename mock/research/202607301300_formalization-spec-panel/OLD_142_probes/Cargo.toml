@@ -1,0 +1,16 @@
+[package]
+name = "p142_asm"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "p142_asm"
+path = "src/lib.rs"
+crate-type = ["lib"]
+
+[dependencies]
+bench-warm-clamp-shared = { path = "../../../benches/variants/warm-clamp-shared" }
+
+
+[workspace]

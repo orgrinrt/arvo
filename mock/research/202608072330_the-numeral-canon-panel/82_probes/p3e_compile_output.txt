@@ -1,0 +1,38 @@
+error: generic parameters may not be used in const operations
+  --> p3e_bound_position_refused.rs:43:27
+   |
+43 |     Cond<{ closed_verdict(LO, HI) }>: IsTrue,
+   |                           ^^ cannot perform const operation using `LO`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `LO`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p3e_bound_position_refused.rs:43:31
+   |
+43 |     Cond<{ closed_verdict(LO, HI) }>: IsTrue,
+   |                               ^^ cannot perform const operation using `HI`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `HI`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p3e_bound_position_refused.rs:54:28
+   |
+54 |     Cond<{ closed_verdict(<W as Window>::LO, <W as Window>::HI) }>: IsTrue,
+   |                            ^ cannot perform const operation using `W`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p3e_bound_position_refused.rs:54:47
+   |
+54 |     Cond<{ closed_verdict(<W as Window>::LO, <W as Window>::HI) }>: IsTrue,
+   |                                               ^ cannot perform const operation using `W`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: aborting due to 4 previous errors
+

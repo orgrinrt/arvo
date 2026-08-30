@@ -1,0 +1,72 @@
+A. HEADINGS
+  ok    INTENTS.md :: ## I3.
+  ok    INTENTS.md :: ## I4.
+  ok    INTENTS.md :: ## I5.
+  ok    INTENTS.md :: ## I6.
+  ok    INTENTS.md :: ## I7.
+  ok    INTENTS.md :: ## I8.
+  ok    INTENTS.md :: ## I9.
+  ok    INTENTS.md :: ## I13.
+  ok    INTENTS.md :: ## I15.
+  ok    INTENTS.md :: ## I17.
+  ok    25_torvalds_what_a_strategy_is.md :: ## 7. The sentences
+  ok    25_torvalds_what_a_strategy_is.md :: ## 8. What is op's
+  ok    97_dolan_the_strategy_space_attacked.md :: ### 2.1 What each of the three actually says
+  ok    97_dolan_the_strategy_space_attacked.md :: ### 3.2 The distinction that actually does the work is polarity
+  ok    98_spj_what_the_strategy_axis_settles.md :: ### 4.1 A priority is not an exchange rate
+  ok    98_spj_what_the_strategy_axis_settles.md :: ### 4.2 What is not expressible
+  ok    98_spj_what_the_strategy_axis_settles.md :: ### 4.3 One of op's strategies is defined by a coordinate
+  ok    98_spj_what_the_strategy_axis_settles.md :: ## 5. What the committed corpus can and cannot weigh
+  ok    100_xu_generating_the_table_attacked.md :: ### 6.1 The same thing as arms with predicates
+  ok    101_wronski_the_cost_coordinates.md :: ### 2.3 The storage coordinate is declared
+  ok    101_wronski_the_cost_coordinates.md :: ### 4.2 The ceiling, and it is what a coordinate is for
+  ok    101_wronski_the_cost_coordinates.md :: ### 6.1 Accuracy cannot be a per-arm scalar
+  ok    101_wronski_the_cost_coordinates.md :: ### 6.2 The fidelity coordinate is reachable
+  ok    101_wronski_the_cost_coordinates.md :: ## 7. The region set
+  ok    OPTIONS.md :: ### Q43.
+  ok    OPTIONS.md :: ### Q44.
+  ok    OPTIONS.md :: ### Q47.
+  ok    OPTIONS.md :: ### Q48.
+  ok    88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md :: ## 1. A strategy is a preset
+  ok    88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md :: ## 4. There is no universal answer
+  ok    85_op_no_runtime_checks_ever_and_stop_policing_law_shapes.md :: ## 1. Never any runtime checks, ever
+  ok    85_op_no_runtime_checks_ever_and_stop_policing_law_shapes.md :: ## 2. Stop policing what shape a law takes
+
+B. VERBATIM QUOTATIONS
+  ok    INTENTS.md :: It should behave like native primitives in regular old rust would
+  ok    INTENTS.md :: does not make it absolutely required, if mimicking is consistently jus
+  ok    INTENTS.md :: the intent behind Hot is performance, efficiency, even at the cost of 
+  ok    INTENTS.md :: it should not lose it for nothing, instead, provable meaningful gains
+  ok    INTENTS.md :: it should remain small for memory or disk storage, because it's just s
+  ok    INTENTS.md :: Cold does not *have to* drop efficiency wins elsewhere
+  ok    INTENTS.md :: But if the path fights the intent, then it's not for Cold
+  ok    INTENTS.md :: especially within chains and ops, not only alone
+  ok    INTENTS.md :: They weigh different measurements differently
+  ok    INTENTS.md :: strategies are the variables that change what the "correct" answer is 
+  ok    INTENTS.md :: Never any runtime checks, ever
+  ok    97_dolan_the_strategy_space_attacked.md :: a policy coordinate can never be decided by measurement at all, in any
+  ok    97_dolan_the_strategy_space_attacked.md :: 72 of 15625 sections are rationalisable
+  ok    98_spj_what_the_strategy_axis_settles.md :: an imitation constraint is a different kind of specification from a we
+  ok    98_spj_what_the_strategy_axis_settles.md :: runs where the shipped rule is Pareto-dominated on (time, bytes): 18
+  ok    100_xu_generating_the_table_attacked.md :: 0.045%
+  ok    100_xu_generating_the_table_attacked.md :: 3.83%
+  ok    100_xu_generating_the_table_attacked.md :: a median of 0.273%
+  ok    100_xu_generating_the_table_attacked.md :: **Arm C, the band rather than the equality.**
+  ok    100_xu_generating_the_table_attacked.md :: holds where the region's competing arms are separated by less than the
+  ok    101_wronski_the_cost_coordinates.md :: A strategy whose intent names a quantity with no coordinate is not unm
+  ok    101_wronski_the_cost_coordinates.md :: CROSSING at chain length k = 4
+  ok    101_wronski_the_cost_coordinates.md :: A quantity belongs in the **region** when a strategy's answer may diff
+  ok    88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md :: Mostly option 1, but a little bit of option 3 with it
+  ok    25_torvalds_what_a_strategy_is.md :: named sections over a product of axes rather than values of a single a
+  ok    25_torvalds_what_a_strategy_is.md :: a function of the build condition
+  ok    RULES.md :: One instance of evidence is never enough
+
+C. SOURCE ITEMS IN THE TREE
+  ok    tests.rs :: Agreement between the arms establishes only that they agree
+  ok    lib.rs :: all_four_arms_agree_with_each_other_and_with_the_oracle_on_e
+  ok    lib.rs :: every arm is compared against an independent reference compu
+  ok    lib.rs :: The byte-identity is not assumed
+  ok    lib.rs :: byte-identical to `bitpack-wide-d16`
+
+checked: 32 headings, 27 quotations, 5 source items
+failures: 0

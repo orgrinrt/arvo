@@ -1,0 +1,83 @@
+====================================================================================================
+t1. The ablation of F116-4, and the predicate 119 gives it
+====================================================================================================
+
+A. The ablations, on a window straddling zero (which is what my probe used)
+
+  |V|=2, window -4..4, ops add+mul                       maps      512  hom     3  mono     10  both    2  BOTH+NONCONST    0
+  |V|=2, window -4..4, ops ADD ONLY                      maps      512  hom     4  mono     10  both    2  BOTH+NONCONST    0
+  |V|=2, window -4..4, ops MUL ONLY                      maps      512  hom     6  mono     10  both    2  BOTH+NONCONST    0
+
+  |V|=3, window -6..6, ops add+mul                       maps  1594323  hom     6  mono    105  both    3  BOTH+NONCONST    0
+  |V|=3, window -6..6, ops ADD ONLY                      maps  1594323  hom     8  mono    105  both    3  BOTH+NONCONST    0
+  |V|=3, window -6..6, ops MUL ONLY                      maps  1594323  hom    73  mono    105  both    3  BOTH+NONCONST    0
+
+  P1: dropping multiplication leaves the conjunction empty, so it is not
+      load-bearing. P2: multiplication alone does not, on a window with
+      negatives; the non-negative case is below.
+
+B. Multiplication alone on a NON-NEGATIVE window, where addition's absence shows
+
+  |V|=2, window 0..8, ops MUL ONLY                       maps      512  hom    18  mono     10  both    3  BOTH+NONCONST    1
+      witness: {0->0, 1->1, 2->1, 3->1, 4->1, 5->1, 6->1, 7->1, 8->1}
+  |V|=2, window 0..8, ops ADD ONLY                       maps      512  hom     5  mono     10  both    3  BOTH+NONCONST    1
+      witness: {0->0, 1->1, 2->1, 3->1, 4->1, 5->1, 6->1, 7->1, 8->1}
+
+  |V|=3, window 0..12, ops MUL ONLY                      maps  1594323  hom   391  mono    105  both    6  BOTH+NONCONST    3
+      witness: {0->0, 1->1, 2->1, 3->1, 4->1, 5->1, 6->1, 7->1, 8->1, 9->1, 10->1, 11->1, 12->1}
+  |V|=3, window 0..12, ops ADD ONLY                      maps  1594323  hom    12  mono    105  both    6  BOTH+NONCONST    3
+      witness: {0->0, 1->1, 2->1, 3->1, 4->1, 5->1, 6->1, 7->1, 8->1, 9->1, 10->1, 11->1, 12->1}
+
+
+C. A window no wider than the value set
+
+  |V|=3, window 0..2 (width 3)                           maps       27  hom     8  mono     10  both    6  BOTH+NONCONST    3
+      witness: {0->0, 1->1, 2->1}
+  |V|=3, window 0..3 (width 4)                           maps       81  hom    11  mono     15  both    6  BOTH+NONCONST    3
+      witness: {0->0, 1->1, 2->1, 3->1}
+  |V|=4, window 0..3 (width 4)                           maps      256  hom    36  mono     35  both   14  BOTH+NONCONST   10
+      witness: {0->0, 1->1, 2->1, 3->1}
+  |V|=4, window 0..4 (width 5)                           maps     1024  hom    36  mono     56  both   10  BOTH+NONCONST    6
+      witness: {0->0, 1->1, 2->1, 3->1, 4->1}
+
+
+D. Monotonicity under the natural order against under SOME total order
+
+  |V|=2: natural-order monotone 10, some-order monotone 18, both+nonconst 0 and 0
+  |V|=3: natural-order monotone 105, some-order monotone 471, both+nonconst 0 and 0
+
+  My statement quantifies over SOME total order and my probe tested the
+  natural one only, so my probe verified a weaker theorem than I stated.
+  My proof covers the stronger one: non-decreasing under any order with
+  R(0) = R(n) forces constancy on [0, n] by antisymmetry alone.
+
+E. THE PREDICATE `119` 4.2 STATES, tested against a saturating map
+
+  saturating R(v)=min(v,15) on 0..47: hom(add) True, hom(mul) True, hom(sub) False, monotone True, non-constant True
+    the two conditions `119` 4.2 names: complete residue system True, interval 0..16 present True
+    so it satisfies the stated predicate and is a counterexample: True
+  saturating R(v)=min(v,15) on 0..63: hom(add) True, hom(mul) True, hom(sub) False, monotone True, non-constant True
+    the two conditions `119` 4.2 names: complete residue system True, interval 0..16 present True
+    so it satisfies the stated predicate and is a counterexample: True
+
+  On a window that straddles zero the same map is NOT an additive hom:
+    R(v)=clamp(v,0,15) on -32..32: hom(add) False, monotone True
+    witness: a=-1, b=1: R(a+b)=0, R(R(a)+R(b))=1
+
+  So the missing dimension is that the domain must contain additive
+  inverses, equivalently that the induced structure is a GROUP. My own
+  statement says `R : Z -> V`, which is safe. My own PREDICATE said
+  'consecutive integers' without saying they straddle zero, and `119`
+  inherited that gap and made it falsifiable by naming two weaker
+  conditions in its place.
+
+F. `119` 4.4's clause that a saturating map is a homomorphism for NO operation
+
+  saturating unsigned W=4, window 0..45: add 0/1081, sub 885/1081, mul 0/273
+  saturating signed W=4, window -24..21: add 868/1585, sub 871/1585, mul 28/393
+
+  The unsigned row is the point: saturation IS a homomorphism for
+  addition and for multiplication on a non-negative domain, and is not
+  one for subtraction. `116_probes/p4` printed exactly this at
+  0/2116, 885/2116 and 0/2116 and nobody read it as a finding, me
+  included.

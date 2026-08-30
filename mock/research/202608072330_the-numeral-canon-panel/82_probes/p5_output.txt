@@ -1,0 +1,40 @@
+`closure` is what p2's predicate says; `first n` is what a length-aware
+predicate could say instead.
+
+width         window     sign-uniform      first n  closure assoc
+    4         [-8,7]            false            4          false
+    4         [-1,1]            false    none <= 7          false
+    4         [-1,2]            false            6          false
+    4         [-2,2]            false            6          false
+    4         [-1,7]            false            4          false
+    4          [0,7]             true    none <= 7           true
+    4         [-8,0]             true    none <= 7           true
+    4         [-3,3]            false            4          false
+
+    5       [-16,15]            false            4          false
+    5         [-1,1]            false    none <= 7          false
+    5         [-1,2]            false    none <= 7          false
+    5         [-2,2]            false    none <= 7          false
+    5        [-1,15]            false            4          false
+    5         [0,15]             true    none <= 6           true
+    5        [-16,0]             true    none <= 6           true
+    5         [-3,3]            false            7          false
+
+    6       [-32,31]            false            4          false
+    6         [-1,1]            false    none <= 7          false
+    6         [-1,2]            false    none <= 7          false
+    6         [-2,2]            false    none <= 7          false
+    6        [-1,31]            false            4          false
+    6         [0,31]             true    none <= 4           true
+    6        [-32,0]             true    none <= 4           true
+    6         [-3,3]            false    none <= 7          false
+
+`none <= k` means the exhaustive enumeration was cut off at arity k by
+this probe's own 3e7-tuple bound, NOT that no divergence exists above k.
+The first run of this probe printed `none <= 7` on every such row, which
+overstated the coverage for the wider windows, and both runs are on disk.
+
+reading: any row where sign-uniform is false and `first n` is above 2 is a
+region the closure predicate refuses and a length-aware predicate could
+license, for folds shorter than `first n`. That predicate needs the length
+at monomorphisation, which a runtime-length fold does not have.

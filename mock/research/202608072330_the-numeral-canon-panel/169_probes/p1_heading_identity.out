@@ -1,0 +1,25 @@
+=== headings extracted ===
+  167: 13
+  168: 28
+
+=== exactly identical heading TEXT in both ===
+  What I settled, what I moved, what I could not
+  count: 1
+
+=== the two 168 NAMED as word-for-word, opened in both files ===
+  claimed shared: What is carried along a chain, and what is discarded
+    167: 3. What is carried along a chain, and what is discarded at each step
+    168: 3. What is carried along a chain, and what is discarded
+  claimed shared: "Chain" is at least three things
+    167: 5. "Chain" is at least three things, and they have different binding times
+    168: 5. "Chain" is at least three things
+
+CONTROL C1 some heading text is exactly shared : 1 (want >= 1)
+CONTROL C2 some 167 heading has no counterpart : 12 (want >= 1)
+
+VERDICT: neither pair 168 names is word-for-word identical. In both cases
+         168's heading is a strict PREFIX of 167's, and 168 quoted its own
+         shorter form as though it were the shared text. The one heading
+         that IS exactly shared is 'What I settled, what I moved, what I
+         could not', which the standing rules prescribe verbatim, so it is
+         zero evidence of convergence.

@@ -1,0 +1,40 @@
+=== section 1: F = 0, the section must be a relabelling (zero disagreements) ===
+
+  w=4 F=0 trunc: 0 disagreements over 256 class pairs
+  w=4 F=0 floor: 0 disagreements over 256 class pairs
+  w=5 F=0 trunc: 0 disagreements over 1024 class pairs
+  w=5 F=0 floor: 0 disagreements over 1024 class pairs
+  w=6 F=0 trunc: 0 disagreements over 4096 class pairs
+  w=6 F=0 floor: 0 disagreements over 4096 class pairs
+
+  F = 0 transport fact reproduced (both sections one ring): true
+
+=== section 2: mutant check, a misaligned class map must fire at F = 0 ===
+
+  misaligned section at w=4 F=0: 0 disagreements (must be > 0)
+
+=== section 3: F > 0, the section becomes arithmetic ===
+
+  w=4 F=1 trunc: 96 of 256 class pairs disagree, witness Some((1, 8, 4, 12))
+  w=4 F=1 floor: 96 of 256 class pairs disagree, witness Some((1, 8, 4, 12))
+  w=4 F=2 trunc: 144 of 256 class pairs disagree, witness Some((1, 8, 2, 14))
+  w=4 F=2 floor: 144 of 256 class pairs disagree, witness Some((1, 8, 2, 14))
+  w=4 F=3 trunc: 168 of 256 class pairs disagree, witness Some((1, 8, 1, 15))
+  w=4 F=3 floor: 168 of 256 class pairs disagree, witness Some((1, 8, 1, 15))
+  w=5 F=1 trunc: 384 of 1024 class pairs disagree, witness Some((1, 16, 8, 24))
+  w=5 F=1 floor: 384 of 1024 class pairs disagree, witness Some((1, 16, 8, 24))
+  w=5 F=2 trunc: 576 of 1024 class pairs disagree, witness Some((1, 16, 4, 28))
+  w=5 F=2 floor: 576 of 1024 class pairs disagree, witness Some((1, 16, 4, 28))
+  w=5 F=3 trunc: 672 of 1024 class pairs disagree, witness Some((1, 16, 2, 30))
+  w=5 F=3 floor: 672 of 1024 class pairs disagree, witness Some((1, 16, 2, 30))
+  w=6 F=1 trunc: 1536 of 4096 class pairs disagree, witness Some((1, 32, 16, 48))
+  w=6 F=1 floor: 1536 of 4096 class pairs disagree, witness Some((1, 32, 16, 48))
+  w=6 F=2 trunc: 2304 of 4096 class pairs disagree, witness Some((1, 32, 8, 56))
+  w=6 F=2 floor: 2304 of 4096 class pairs disagree, witness Some((1, 32, 8, 56))
+  w=6 F=3 trunc: 2688 of 4096 class pairs disagree, witness Some((1, 32, 4, 60))
+  w=6 F=3 floor: 2688 of 4096 class pairs disagree, witness Some((1, 32, 4, 60))
+
+  every F > 0 configuration distinguishes the sections, both spellings: true
+  hand witness w=4 F=1 floor, classes (9, 3): unsigned section -> 13, signed section -> 5 (predicted 13 vs 5)
+
+P3 FAILS

@@ -1,0 +1,57 @@
+============================================================================================
+u1. Is the compile wall additive or multiplicative in the limit?
+============================================================================================
+
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+Generator: `114_probes/p9`, imported. Only the recursion-limit attribute
+is varied. `corner` is the cheap tower, `affine` the expensive one.
+
+C2. A variant forcing neither tower, at every limit.
+    16:ok  24:ok  32:ok  48:ok  64:ok  96:ok
+
+P1 to P4. The wall for each tower at each limit.
+
+    limit  cheap wall  expensive wall  cheap/limit  expensive/limit
+       16          15               7        0.938            0.438
+       24          23              11        0.958            0.458
+       32          31              15        0.969            0.469
+       48          47              23        0.979            0.479
+       64          63              31        0.984            0.484
+       96          95              47        0.990            0.490
+
+--------------------------------------------------------------------------------------------
+P3. The two candidate laws scored against the measurement.
+
+  additive       : the expensive chain is spine + vector, so a fold of L
+                   leaves costs about 2L and the wall is about limit / 2.
+  multiplicative : the chain is spine TIMES per-node state, so the wall
+                   would fall as the square root of the limit, fitted at
+                   the middle of the swept range.
+
+    limit  measured   additive  multiplicative
+       16         7        8.0            13.3
+       24        11       12.0            16.3
+       32        15       16.0            18.8
+       48        23       24.0            23.0
+       64        31       32.0            26.6
+       96        47       48.0            32.5
+
+  mean absolute error, additive       : 1.00
+  mean absolute error, multiplicative : 5.71
+
+  C3: the two models give 12 distinct predictions over
+      6 limits, so scoring them against each other is not vacuous.
+
+============================================================================================
+
+  READING IT
+
+  P1 and P4 hold when the cheap wall moves across the limits rather than sitting
+  at one value. A fixed cheap wall means the instrument is reading the file.
+
+  P2 holds when the expensive wall is about half the cheap one at every limit.
+
+  P3 holds when the additive error is far below the multiplicative one. If it is,
+  `119:566` attributes the wrong law and `120` is right.
+

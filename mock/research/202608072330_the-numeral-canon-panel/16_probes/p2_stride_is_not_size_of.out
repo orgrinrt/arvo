@@ -1,0 +1,15 @@
+all layout assertions are const and were checked at compile time
+
+one declaration, one carrier, one size:
+  UFixed<13,0,Cold> -> carrier u16, size_of = 2
+  UFixed<16,0,Cold> -> carrier u16, size_of = 2
+  UFixed<13,0,Warm> -> carrier u16, size_of = 2
+  the three are indistinguishable by every layout question a type can answer
+
+N = 1000 contiguous:
+  [carrier; N] for the 13-bit declaration : 2000 bytes
+  packed extent for the 13-bit declaration: 1625 bytes
+  packed extent for the 16-bit declaration: 2000 bytes
+
+the 16-bit rows agree, the 13-bit rows do not. a matrix of power-of-two widths
+reports green over a derivation that has lost the strategy entirely.

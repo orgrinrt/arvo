@@ -1,0 +1,29 @@
+instrument 3: independent re-derivation in Rust over scaled integers
+==========================================================================
+C1  four-condition predicate against true inclusion, split by source size
+      ordered pairs 484, agree 456, disagree 28
+        source carries fewer than two values: 28
+        source carries two or more values:    0
+      witness: U<-3,3> into U<-2,2>: really true, predicate false
+
+C2  does the unsigned family's meet need the origin shape?
+      origin admitted: points 28, meets present 378, meets absent 0
+      origin refused : points 27, meets present 315, meets absent 36   first absence: U<0,1> and U<1,0>
+      the intersection of U<0,1> and U<1,0> is the single value zero, which is
+      the origin shape and nothing else in the family.
+
+C3  the join of U<0,1> and U<2,0>, before and after a float joins the space
+      U<0,1> = ["0", "1/2"]
+      U<2,0> = ["0", "1", "2", "3"]
+      fixed-point alone, minimal upper bounds: ["U<2,1>"]
+      with floats present, minimal upper bounds: ["U<2,1>", "F<p2,e-1..1>"]
+      two or more minimal upper bounds and no least one: the join is gone.
+      F<p2,e-1..1> = ["0", "1/2", "3/4", "1", "1+1/2", "2", "3"]
+      U<2,1>       = ["0", "1/2", "1", "1+1/2", "2", "2+1/2", "3", "3+1/2"]
+      neither contains the other: U<2,1> into float false, float into U<2,1> false
+
+C4  the exact meet across two sign domains, with and without negative width
+      I >= 0 : exact 821, undershooting 40, absent 0
+        first undershoot U<0,2> and S<0,2>: intersection ["0", "1/4"], greatest lower bound ["0"]
+      I >= -4: exact 2415, undershooting 0, absent 0
+

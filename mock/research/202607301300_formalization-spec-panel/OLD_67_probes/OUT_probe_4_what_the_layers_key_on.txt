@@ -1,0 +1,5 @@
+  4.1 two faces, one literal, same encoding type:   OK
+  4.2 projection erases the site:                    OK
+  4.3 DISPLAY distinguishes them, and nothing else:  OK (1/3 vs 2/6)
+
+  ALL ASSERTIONS PASSED

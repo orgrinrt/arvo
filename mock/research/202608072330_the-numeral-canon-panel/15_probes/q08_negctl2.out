@@ -1,0 +1,8 @@
+error[E0277]: the trait bound `E<E<E<E<E<E<E<E<O<Z>>>>>>>>>: Same<E<E<E<O<E<E<O<O<Z>>>>>>>>>` is not satisfied
+   --> q08_negctl2.rs:227:98
+    |
+227 | ... Same<Aligned16<BufOf<N25>>>, StrideBits<Hot, Unsigned, N200>: Same<N200>,
+    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Same<E<E<E<O<E<E<O<O<Z>>>>>>>>>` is not implemented for `E<E<E<E<E<E<E<E<O<Z>>>>>>>>>`
+   --> q04_core_inc.rs:6:1

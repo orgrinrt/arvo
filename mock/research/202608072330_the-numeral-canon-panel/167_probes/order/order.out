@@ -1,0 +1,24 @@
+== Fixed point, Q(.12) accumulate, error in LSBs, worst of 32 seeds ==
+        n      sequential   pairwise tree      difference     truncs equal?
+       16           9.985           9.985           0.000               yes
+       64          36.224          36.224           0.000               yes
+      256         139.219         139.219           0.000               yes
+     1024         536.403         536.403           0.000               yes
+     4096        2082.494        2082.494           0.000               yes
+    16384        8256.423        8256.423           0.000               yes
+    65536       32922.755       32922.755           0.000               yes
+  NC13 (identical truncation count both orders): ok
+  sizes where the tree is strictly better: 0
+  sizes where the sequential is strictly better: 0
+
+== NC12: the same comparison on a relative-precision accumulator (f32) ==
+        n  sequential |err|        tree |err|    seq/tree
+       16       1.195353e-6       6.109476e-7        1.96
+       64       7.311348e-6       2.830755e-6        2.58
+      256       6.989669e-5       1.053500e-5        6.63
+     1024       5.316668e-4       6.559864e-5        8.10
+     4096       4.171241e-3       2.375878e-4       17.56
+    16384       2.733323e-2       8.767731e-4       31.17
+    65536       2.427174e-1       2.560261e-3       94.80
+  NC12 (tree must beat sequential on a relative-precision accumulator at some size): ok
+  sizes where the tree is strictly better, f32: 7 of 7

@@ -1,0 +1,11 @@
+UFixed<13,3,U,Hot>         container size=2    align=2  
+UFixed<13,3,U,Cold>        container size=2    align=2  
+UFixed<13,3,S,Hot>         container size=2    align=2  
+UInt<5,U,Warm>             container size=1    align=1  
+UFixed<200,40,U,Warm>      container size=30   align=1  
+UFixed<200,40,U,Hot>       container size=32   align=16 
+UFixed<200,40,U,Cold>      container size=30   align=1  
+Half^2 (W=1,F=2,I=-1)      container size=1    align=1  
+
+the wide rung, alignment by strategy:
+  Hot  align=16  Warm align=1  Cold align=1

@@ -1,8 +1,0 @@
-# arvo-refit
-
-Re-export crate for the bit-width refit trait family (`Narrow` and
-`Widen`). Trait declarations and impls live in `arvo-bits-contracts`
-(orphan-rule constraint: trait + foreign-primitive impls share a
-crate). The `arvo` facade pulls this crate to expose `Narrow`,
-`Narrowed`, `Widen`, `Widened` at the top level. `#![no_std]`, no
-alloc.

@@ -1,0 +1,43 @@
+# counts cited in 151, each with the command that produced it
+# NOTE: an earlier version of the possessive count used the pattern
+#   (target|source)('s)? (five )?resolutions
+# which reported zero and was WRONG: it cannot match 'target strategy's five
+# resolutions', the exact phrase 145 uses. The corrected pattern is below.
+
+$ ls *.md | wc -l
+     203
+
+### law-key cells naming resolutions or Direction, in the three law-table files
+$ grep -hoE "\| (source|the source|N1|the three numerals|the numeral)[^|]*(resolutions|Direction)[^|]*\|" 135_*.md 136_*.md 145_*.md
+| source, target, resolutions, `Direction` |
+| the three numerals, resolutions, `Direction` |
+| the numeral, resolutions |
+| source, target, resolutions |
+| source, target, `OverRange`, `UnderRange`, `Direction` |
+
+### any possessive attached to the resolutions column, anywhere in the panel
+$ grep -rhoiE "[a-z']+ ?(strategy)?.?s? (five )?resolutions" *.md | sort | uniq -c | sort -rn
+  10 the resolutions
+  10 Quantisation` resolutions
+   6 four resolutions
+   4 two resolutions
+   4 offered resolutions
+   4 numeral, resolutions
+   2 total resolutions
+   2 target, resolutions
+   2 numerals, resolutions
+   2 honest resolutions
+   2 's resolutions
+   1 wrapping resolutions
+   1 which resolutions
+   1 three resolutions
+   1 strategy's five resolutions
+   1 strategies' resolutions
+   1 schema's resolutions
+   1 same five resolutions
+   1 refusing resolutions
+   1 radix, resolutions
+
+### occurrences of the phrase "source strategy"
+$ grep -rc "source strategy" *.md | grep -v ":0"
+146_chlipala_the_order_and_the_cast.md:1

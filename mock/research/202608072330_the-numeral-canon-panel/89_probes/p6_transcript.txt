@@ -1,0 +1,15 @@
+p6: the const gate for a signed saturating law over a declared window
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+host: aarch64-apple-darwin
+
+=== default: declared window [0, MAX], admissible, n = 8 ===
+ACCEPT (rustc exit 0) in 0.50s
+
+=== --cfg straddle: declared window [MIN, MAX] ===
+REFUSE (rustc exit 1) in 0.41s
+error[E0080]: evaluation panicked: the declared operand window straddles zero, so both clamps are reachable and the box criterion has no hypothesis
+error: aborting due to 1 previous error
+
+=== --cfg unchecked_straddle: admissibility check removed (negative control) ===
+ACCEPT (rustc exit 0) in 0.47s
+

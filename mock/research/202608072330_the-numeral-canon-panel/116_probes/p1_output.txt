@@ -1,0 +1,48 @@
+================================================================================================
+p1. Reproducing the root-only claim independently
+================================================================================================
+
+P1. Is the realisation map a ring homomorphism
+
+  uW3/wrap     R(R(a) op R(b)) != R(a op b) on      0 of 1452
+  iW3/wrap     R(R(a) op R(b)) != R(a op b) on      0 of 1452
+  uW4/wrap     R(R(a) op R(b)) != R(a op b) on      0 of 6348
+  uW3/sat      R(R(a) op R(b)) != R(a op b) on    189 of 1452
+  iW3/sat      R(R(a) op R(b)) != R(a op b) on    376 of 1452
+  uW4/sat      R(R(a) op R(b)) != R(a op b) on    885 of 6348
+
+Term enumeration: 12 terms at 2 leaf slots, 486 at 3
+
+P2/P3/P4. The root-only check against the per-node check
+
+  uW3/wrap, one-sided, arity 2 and 3       cells  76896  agree  18672  root-lic  14968  pernode-lic  13060  ro-UNSOUND     0  pn-unsound    0  checks-differ  1908
+  iW3/wrap, one-sided, arity 2 and 3       cells  12432  agree   8066  root-lic   7541  pernode-lic   7175  ro-UNSOUND     0  pn-unsound    0  checks-differ   366
+  uW3/sat, one-sided, arity 2 and 3        cells  76896  agree  17127  root-lic  14968  pernode-lic  13060  ro-UNSOUND   228  pn-unsound    0  checks-differ  1908
+  iW3/sat, one-sided, arity 2 and 3        cells  12432  agree   7700  root-lic   7541  pernode-lic   7175  ro-UNSOUND   198  pn-unsound    0  checks-differ   366
+
+THE CONDITION-CAN-FIRE CHECK, read before any verdict
+
+  uW3/wrap       the two checks disagree on   1908 cells (LIVE)
+  iW3/wrap       the two checks disagree on    366 cells (LIVE)
+  uW3/sat        the two checks disagree on   1908 cells (LIVE)
+  iW3/sat        the two checks disagree on    366 cells (LIVE)
+
+VERDICTS
+
+  uW3/wrap       root-only unsound on     0 of 76896 cells, per-node unsound on 0
+  iW3/wrap       root-only unsound on     0 of 12432 cells, per-node unsound on 0
+  uW3/sat        root-only unsound on   228 of 76896 cells, per-node unsound on 0
+  iW3/sat        root-only unsound on   198 of 12432 cells, per-node unsound on 0
+
+P5. Add a non-ring operation and the wrapping rows should break
+
+  uW3/wrap     the identity fails for min on 164 of 484
+  uW3/wrap, signature with min             cells 136512  agree  51900  root-lic  54226  pernode-lic  44080  ro-UNSOUND  7374  pn-unsound    0  checks-differ 10146
+  iW3/wrap     the identity fails for min on 164 of 484
+  iW3/wrap, signature with min             cells  22048  agree  16122  root-lic  16533  pernode-lic  15231  ro-UNSOUND   936  pn-unsound    0  checks-differ  1302
+
+INSTRUMENT CHECK
+
+  MUTATION: halve the propagated interval, which must go unsound everywhere
+    a halved-interval rule at uW3/wrap is unsound on 148 of 432 cells
+    so the soundness counter is live at wrap and its zero is a result: True

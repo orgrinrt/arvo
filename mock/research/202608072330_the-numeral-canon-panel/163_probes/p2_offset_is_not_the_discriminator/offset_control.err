@@ -1,0 +1,9 @@
+error[E0080]: evaluation panicked: lens focus leaves the carrier
+  --> offset.rs:53:18
+   |
+53 | const _OOB: () = assert!(fits(60, 13, 64), "lens focus leaves the carrier");
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_OOB` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

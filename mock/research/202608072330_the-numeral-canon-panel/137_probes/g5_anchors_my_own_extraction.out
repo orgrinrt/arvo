@@ -1,0 +1,32 @@
+union files: 11  (125..135)
+136 prose says 'the five preceding files of this topic plus the three
+signatures'; its table header says eleven-file union.
+
+class         union  in 136  carried  dropped  new in 136
+finding          19      16       16        3           0
+theorem          10      10       10        0           0
+probe_stem       21      22       19        2           3
+line_panel       13      19        4        9          15
+
+DROPPED finding: ['F122-2', 'F122-4', 'F122-5']
+DROPPED theorem: []
+DROPPED probe_stem: ['p11', 'x87']
+
+DROPPED line_panel (9):
+   116:486        PRECEDING topic
+   117:35         PRECEDING topic
+   119:598        PRECEDING topic
+   122:642        PRECEDING topic
+   125:326        THIS topic
+   125:4          THIS topic
+   125:455        THIS topic
+   126:511        THIS topic
+   128:177        THIS topic
+
+=== the stripper guard: does excluding the accounting section change the count? ===
+  finding      stripped= 16  unstripped= 19  delta=+3
+  theorem      stripped= 10  unstripped= 10  delta=+0
+  probe_stem   stripped= 22  unstripped= 22  delta=+0
+  line_panel   stripped= 19  unstripped= 24  delta=+5
+  A positive delta is the guard's designed case: the accounting section
+  names the anchors it dropped, which makes them present.

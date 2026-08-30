@@ -1,0 +1,50 @@
+concept side : 6 files  ['02', '03', '06', '07', '08', '18']
+surface side : 7 files  ['10', '11', '12', '13', '15', '16', '17']
+
+term                    concept  surface   reading
+------------------------------------------------------------------------
+--- vocabulary A, the concept ---
+radix                       122        0   concept only
+binade                       22        0   concept only
+canonical exponent           19        0   concept only
+exponent form                 1        0   concept only
+adjustment                   13        0   concept only
+bias                         36        0   concept only
+phase                        30       13   IN BOTH, candidate collision
+value set                    74        0   concept only
+progression                  23        0   concept only
+locus                         2        0   concept only
+encoding                     45        4   IN BOTH, candidate collision
+denot                       121        1   IN BOTH, candidate collision
+
+--- vocabulary B, the widths ---
+total width                  11       11   IN BOTH, candidate collision
+fraction width                5        3   IN BOTH, candidate collision
+integer width                25       14   IN BOTH, candidate collision
+container                    39      156   IN BOTH, candidate collision
+carrier                       0       94   surface only
+stride                        0       69   surface only
+rung                          6       62   IN BOTH, candidate collision
+extent                        1       34   IN BOTH, candidate collision
+ladder                        0       79   surface only
+width pair                    1        1   IN BOTH, candidate collision
+
+------------------------------------------------------------------------
+terms on both sides: 10  ['phase', 'encoding', 'denot', 'total width', 'fraction width', 'integer width', 'container', 'rung', 'extent', 'width pair']
+
+Every one of these was read. The verdicts:
+  phase (30 vs 13): COLLISION. Value-space offset within a binade (08:222-224, 08:306) against bit offset of a packed element (16:178-179). s4 shows all four combinations occur, so neither determines the other.
+  encoding (45 vs 4): not a collision. 08:253-277 uses it for the datum-to-value map and the surface side uses it in the ordinary sense. No sentence turns on the difference.
+  denot (121 vs 1): not a collision. One meaning throughout, and 08's denotation clause is where it is load-bearing.
+  total width (11 vs 11): NOT YET READ. This is a gap in this probe's coverage.
+  fraction width (5 vs 3): NOT YET READ. This is a gap in this probe's coverage.
+  integer width (25 vs 14): NOT YET READ. This is a gap in this probe's coverage.
+  container (39 vs 156): not a collision. Both sides mean the storage the numeral lowers to. The concept side barely uses it and never load-bearingly.
+  rung (6 vs 62): NOT YET READ. This is a gap in this probe's coverage.
+  extent (1 vs 34): not a collision. Surface side only in any load-bearing sense.
+  width pair (1 vs 1): NOT YET READ. This is a gap in this probe's coverage.
+
+So the overlap is wide and the collision count is one. That is the useful
+shape of the answer: most shared words are shared innocently, and the single
+hazard sits inside 08's own membership predicate, which is the worst place
+for it.

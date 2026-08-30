@@ -1,0 +1,100 @@
+# p1 raw compiler output, rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+## BASE: arms A, C, C4, D, E
+(no output above = compiled clean, exit 0)
+
+## arm_b1
+error[E0308]: mismatched types
+   --> p1_fold_cannot_widen.rs:144:15
+    |
+138 | pub fn arm_b1<W>(xs: &[Num<W>]) -> Num<W>
+    |               - expected this type parameter
+...
+142 |     let mut acc: Num<W> = Num::new(0);
+    |                  ------ expected due to this type
+143 |     for x in xs {
+144 |         acc = acc.wadd(*x);
+    |               ^^^^^^^^^^^^ expected `Num<W>`, found `Num<S<<W as Max<W>>::Out>>`
+    |
+    = note: expected struct `Num<W>`
+               found struct `Num<S<<W as Max<W>>::Out>>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.
+
+## arm_b2
+error[E0308]: mismatched types
+   --> p1_fold_cannot_widen.rs:157:15
+    |
+151 | pub fn arm_b2<W>(xs: &[Num<W>]) -> <Num<W> as WAdd<Num<W>>>::Output
+    |               - expected this type parameter
+...
+155 |     let mut acc: Num<W> = Num::new(0);
+    |                  ------ expected due to this type
+156 |     for x in xs {
+157 |         acc = acc.wadd(*x);
+    |               ^^^^^^^^^^^^ expected `Num<W>`, found `Num<S<<W as Max<W>>::Out>>`
+    |
+    = note: expected struct `Num<W>`
+               found struct `Num<S<<W as Max<W>>::Out>>`
+
+error[E0308]: mismatched types
+   --> p1_fold_cannot_widen.rs:159:5
+    |
+151 | pub fn arm_b2<W>(xs: &[Num<W>]) -> <Num<W> as WAdd<Num<W>>>::Output
+    |               -                    -------------------------------- expected `Num<S<<W as Max<W>>::Out>>` because of return type
+    |               |
+    |               found this type parameter
+...
+159 |     acc
+    |     ^^^ expected `Num<S<<W as Max<W>>::Out>>`, found `Num<W>`
+    |
+    = note: expected struct `Num<S<<W as Max<W>>::Out>>`
+               found struct `Num<W>`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0308`.
+
+## arm_b3
+error[E0308]: mismatched types
+   --> p1_fold_cannot_widen.rs:170:15
+    |
+164 | pub fn arm_b3<W>(xs: &[Num<W>]) -> impl Sized
+    |               - expected this type parameter
+...
+168 |     let mut acc = Num::<W>::new(0);
+    |                   ---------------- expected due to this value
+169 |     for x in xs {
+170 |         acc = acc.wadd(*x);
+    |               ^^^^^^^^^^^^ expected `Num<W>`, found `Num<S<<W as Max<W>>::Out>>`
+    |
+    = note: expected struct `Num<W>`
+               found struct `Num<S<<W as Max<W>>::Out>>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.
+
+## arm_b4
+error[E0308]: `match` arms have incompatible types
+   --> p1_fold_cannot_widen.rs:183:25
+    |
+177 |   pub fn arm_b4<W>(xs: &[Num<W>]) -> Num<W>
+    |                 - expected this type parameter
+...
+181 | /     match xs.split_first() {
+182 | |         None => Num::new(0),
+    | |                 ----------- this is found to be of type `Num<W>`
+183 | |         Some((h, t)) => (*h).wadd(arm_b4(t)),
+    | |                         ^^^^^^^^^^^^^^^^^^^^ expected `Num<W>`, found `Num<S<<W as Max<W>>::Out>>`
+184 | |     }
+    | |_____- `match` arms have incompatible types
+    |
+    = note: expected struct `Num<W>`
+               found struct `Num<S<<W as Max<W>>::Out>>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.

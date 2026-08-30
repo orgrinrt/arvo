@@ -1,0 +1,33 @@
+p2: the const gate for the saturating verdict
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+host: aarch64-apple-darwin
+
+=== default: law = E_64 (x^64 == x^65), true at width 64 ===
+ACCEPT (rustc exit 0) in 0.91s
+
+=== --cfg use_e63: law = E_63, false at width 64 ===
+REFUSE (rustc exit 1) in 0.43s
+error[E0080]: evaluation panicked: the law is FALSE at the gated width, decided there by the degree criterion
+error: aborting due to 1 previous error
+
+=== --cfg perturb: criterion samples one point short ===
+REFUSE (rustc exit 1) in 0.48s
+error[E0080]: evaluation panicked: the verdict criterion disagrees with the sweep at a swept width
+error: aborting due to 1 previous error
+
+=== --cfg nonfragment: law carries sat_sub, fragment check must catch it ===
+REFUSE (rustc exit 1) in 0.42s
+error[E0080]: evaluation panicked: the law is outside the monotone saturating fragment; the criterion does not apply to it
+error: aborting due to 1 previous error
+
+=== --cfg unchecked_nonfragment: fragment check removed (negative control) ===
+ACCEPT (rustc exit 0) in 0.44s
+
+Reading of the last one. It ACCEPTS, and accepting is the finding: with the
+fragment check removed the criterion returns TRUE for a law that is FALSE at
+width 64 with witness x = 101, and the file asserts both facts, so a clean
+compile is the compiled demonstration that fragment membership is load-bearing
+rather than decorative.
+
+Seconds are an ad-hoc quick spike with no substance. Accept and refuse are the
+results.

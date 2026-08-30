@@ -1,0 +1,176 @@
+=== p1_fibre_count ===
+widths 1..=128, 2 signs, 4 strategies
+  distinct declarations      : 1024
+  distinct carriers          : 10
+  distinct (carrier, stride) : 256
+  declarations per carrier   : 102.4 average
+
+unsigned Cold, grouped by carrier; every row inside a group shares a carrier
+  carrier u8   <- 8 widths, strides 1..=8 (8 distinct layouts collapsed to 1)
+  carrier u16  <- 8 widths, strides 9..=16 (8 distinct layouts collapsed to 1)
+  carrier u32  <- 16 widths, strides 17..=32 (16 distinct layouts collapsed to 1)
+  carrier u64  <- 32 widths, strides 33..=64 (32 distinct layouts collapsed to 1)
+  carrier u128 <- 64 widths, strides 65..=128 (64 distinct layouts collapsed to 1)
+
+contiguous run of N = 1_000_000 values, unsigned Cold
+  W    carrier-only bytes   two-output bytes   carrier-only overhead
+  3               1000000             375000    166.7%
+  5               1000000             625000     60.0%
+  9               2000000            1125000     77.8%
+  11              2000000            1375000     45.5%
+  13              2000000            1625000     23.1%
+  17              4000000            2125000     88.2%
+  23              4000000            2875000     39.1%
+  27              4000000            3375000     18.5%
+  31              4000000            3875000      3.2%
+  47              8000000            5875000     36.2%
+  63              8000000            7875000      1.6%
+
+worst ratio in 1..=128: W = 1, carrier-only is 8.00x the packed size
+
+=== p2_stride_is_not_size_of ===
+all layout assertions are const and were checked at compile time
+
+one declaration, one carrier, one size:
+  UFixed<13,0,Cold> -> carrier u16, size_of = 2
+  UFixed<16,0,Cold> -> carrier u16, size_of = 2
+  UFixed<13,0,Warm> -> carrier u16, size_of = 2
+  the three are indistinguishable by every layout question a type can answer
+
+N = 1000 contiguous:
+  [carrier; N] for the 13-bit declaration : 2000 bytes
+  packed extent for the 13-bit declaration: 1625 bytes
+  packed extent for the 16-bit declaration: 2000 bytes
+
+the 16-bit rows agree, the 13-bit rows do not. a matrix of power-of-two widths
+reports green over a derivation that has lost the strategy entirely.
+
+=== p3_blind_suite ===
+declaration under test: UFixed<13, 0, Cold>, unsigned
+derivation under test : one output, the carrier, which is u16
+
+the suite a reasonable person writes:
+  PASS  round trip
+          raw(from_raw(r)) == r for all 8192 representable r
+  PASS  arithmetic agreement with the native reference
+          derived == native over 163840 pairs
+  PASS  erasure / codegen equality (per value)
+          one operation, one value, byte-identical to the native primitive
+  PASS  size_of matches the ladder
+          size_of::<Num>() == 2, which the ladder also says. tautology.
+  -> 4 of 4 green. the derivation is certified.
+
+the two checks that catch it:
+  FAIL  array extent equals N * W
+          [Num; 1000] occupies 16000 bits, the Cold declaration promised 13000 (2000 bytes against 1625 bytes, 23.1% over)
+  FAIL  packed round trip, access width = size_of(carrier) = 2 bytes
+          24 of 64 wrong with a 2-byte access. failing bit-phases [4, 5, 6, 7]. first: index 3 wrote 1852 read 316
+  PASS  packed round trip, access width from the extent = 3 bytes
+          64 values round-tripped through a packed store with a 3-byte access
+
+the second of those is the sharper one. it is not that the carrier-only derivation
+stores wrong, it is that a site handed only the carrier picks the carrier as its
+access type, and that load is too narrow to cover a 13-bit field at high phase.
+
+=== p4_access_width ===
+W    carrier  stride(Cold)  span_bytes  access  carrier==access?
+1    u8      1             1           u8     yes
+3    u8      3             2           u16    NO
+5    u8      5             2           u16    NO
+7    u8      7             2           u16    NO
+8    u8      8             2           u16    NO
+9    u16     9             2           u16    yes
+13   u16     13            3           u32    NO
+16   u16     16            3           u32    NO
+17   u32     17            3           u32    yes
+23   u32     23            4           u32    yes
+25   u32     25            4           u32    yes
+31   u32     31            5           u64    NO
+32   u32     32            5           u64    NO
+33   u64     33            5           u64    yes
+47   u64     47            7           u64    yes
+57   u64     57            8           u64    yes
+64   u64     64            9           u128   NO
+
+across W = 1..=64: carrier and access width disagree for 28 of 64 widths
+closed form floor((W+6)/8)+1 vs exhaustive phase scan, W = 1..=1024: 0 mismatches
+
+recoverability, checked rather than argued:
+  from carrier u8   : the 8 widths behind it need access widths [8, 16] -> NOT recoverable
+  from carrier u16  : the 8 widths behind it need access widths [16, 32] -> NOT recoverable
+  from carrier u32  : the 16 widths behind it need access widths [32, 64] -> NOT recoverable
+  from carrier u64  : the 32 widths behind it need access widths [64, 128] -> NOT recoverable
+  from the extent  : W is carried directly, so access = f(W) is recoverable for every W
+
+(b) a too-narrow access is wrong only when the truncated bits are non-zero.
+  values 0..64 (a small-value test)  -> 0 of 64 wrong with a 2-byte access
+  values with the top bit set        -> 32 of 64 wrong with a 2-byte access
+  all bits set                       -> 32 of 64 wrong with a 2-byte access
+
+so the catching check is itself blind to a test that uses small values.
+only a test whose data fills the declared width exercises the truncation.
+
+=== p5_recovery_direction ===
+=== reading B: Precise does NOT widen the compute type past storage ===
+  distinct extents: 251
+  extents mapping to more than one carrier: 0
+  -> extent -> carrier IS a function under this reading.
+     so the objection survives the arithmetic, and only part (b) answers it.
+
+=== reading A: Precise DOES widen the compute type past storage ===
+  distinct extents: 251
+  extents mapping to more than one carrier: 64
+  witness: extent (W=1, stride=8) is shared by [Hot, Warm, Precise], which need carriers [8, 16]
+  -> extent -> carrier is NOT a function. the pair is irreducible both ways.
+
+part (b) is in p5b_const_to_type.rs, which does not compile on purpose.
+see p5b_const_to_type.err for the diagnostic.
+
+=== p6_trait_form_recovers_both ===
+one trait, two associated items, no feature gates.
+
+declaration          carrier  extent  stride  access  bytes/1e6   phase of elem 3
+UFixed<5,0,Warm>     u8      5       8       2       1000000     0
+UFixed<5,0,Cold>     u8      5       5       2       625000      7
+UFixed<8,0,Cold>     u8      8       8       2       1000000     0
+UFixed<13,0,Warm>    u16     13      16      3       2000000     0
+UFixed<13,0,Cold>    u16     13      13      3       1625000     7
+UFixed<16,0,Cold>    u16     16      16      3       2000000     0
+UFixed<31,0,Cold>    u32     31      31      5       3875000     5
+UFixed<47,0,Cold>    u64     47      47      7       5875000     5
+
+the 13-bit Warm row and the 13-bit Cold row share a carrier and differ in stride.
+the 13-bit Cold row and the 16-bit Cold row share a carrier and differ in stride.
+a derivation returning only the first column cannot tell any of them apart.
+
+every remaining column is computed from the pair by a plain const fn, so no
+third component is needed for the layout quantities I was able to name.
+
+=== p7_alignment_is_not_a_third ===
+(a) can two declarations share size and stride but need different alignment?
+    WideBits32   size  32  align   1   stride would be 256 bits
+    AlignedWide32 size 32  align  16   stride would be 256 bits
+    yes. so alignment is not recoverable from the stride.
+
+(b) does the CARRIER already distinguish them?
+    align_of is a property of the type, so a site holding the carrier type reads
+    1 and 16 directly. it does not need a third component.
+
+(c) the one case where no carrier holds the run: a packed column's base.
+    a 13-bit field at unknown phase touches at most 3 bytes.
+    every byte offset is reachable, so no base alignment makes any element aligned;
+    align 1 is sufficient and nothing higher is required for correctness.
+    what a higher base alignment buys is a load-crossing question, and that is
+    UNPRICED: no bench harness run in this panel bears on it.
+
+verdict: alignment rides on the carrier for the unpacked case and is a free choice
+for the packed base. it is not a third output. it IS a reason the carrier has to be
+a type rather than a width, because a width cannot carry an alignment.
+
+=== p5b_const_to_type (expected to be REFUSED) ===
+refused as expected. diagnostic count:
+5
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+feature gates enabled across all probes (expect none):
+  none

@@ -1,0 +1,52 @@
+error: generic parameters may not be used in const operations
+  --> p5b_negctl_three_facts.rs:67:55
+   |
+67 | pub type AtRestFromStride<S> = <Bytes<{ <W13 as Facts<S>>::STRIDE / 8 }> as NativeFor>::T;
+   |                                                       ^ cannot perform const operation using `S`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p5b_negctl_three_facts.rs:73:27
+   |
+73 |     Bytes<{ <W13 as Facts<S>>::STRIDE / 8 }>: NativeFor,
+   |                           ^ cannot perform const operation using `S`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p5b_negctl_three_facts.rs:70:50
+   |
+70 | pub fn at_rest_of<S>() -> <Bytes<{ <W13 as Facts<S>>::STRIDE / 8 }> as NativeFor>::T
+   |                                                  ^ cannot perform const operation using `S`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error[E0091]: type parameter `S` is never used
+  --> p5b_negctl_three_facts.rs:67:27
+   |
+67 | pub type AtRestFromStride<S> = <Bytes<{ <W13 as Facts<S>>::STRIDE / 8 }> as NativeFor>::T;
+   |                           ^ unused type parameter
+   |
+   = help: consider removing `S` or referring to it in the body of the type alias
+   = help: if you intended `S` to be a const parameter, use `const S: /* Type */` instead
+
+error[E0277]: the trait bound `u16: SameType<u32>` is not satisfied
+  --> p5b_negctl_three_facts.rs:47:29
+   |
+47 | const _: () = assert_same::<<W13 as Facts<Warm>>::Compute, <W13 as Facts<Precise>>::Compute>();
+   |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `SameType<u32>` is not implemented for `u16`
+   |
+note: required by a bound in `assert_same`
+  --> p5b_negctl_three_facts.rs:28:29
+   |
+28 | pub const fn assert_same<A: SameType<B>, B>() {}
+   |                             ^^^^^^^^^^^ required by this bound in `assert_same`
+
+error: aborting due to 5 previous errors
+
+Some errors have detailed explanations: E0091, E0277.
+For more information about an error, try `rustc --explain E0091`.

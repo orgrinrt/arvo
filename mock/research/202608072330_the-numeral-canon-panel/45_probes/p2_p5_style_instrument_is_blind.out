@@ -1,0 +1,20 @@
+reproducing p5's OWN instrument (bit-count carrier, no alignment tracked),
+swept over W = 129..=768, the same domain p1 found 40 real collisions in.
+
+p5-style instrument (carrier as bit count): extents mapping to more than one carrier value: 0
+
+p5's own model conflates `native_p5_style` with 128 for every width above 64,
+so at W = 249..768 it reports a UNIFORM carrier bit count of 128 for Hot, Warm
+and Precise alike, never distinguishing the wide-rung align-16 case from the
+align-1 case at all, because its representation of a carrier is a number, not
+a type, and its own model of `native` never grows past 128 in the first place.
+
+p1's type-aware instrument, same domain, found: 40 of 640 real collisions.
+this instrument, reproducing p5's own representation on the same domain: 0.
+
+0 versus 40 on the identical (W, strategy) domain is not a disagreement about facts;
+it is p5's own carrier representation being unable to express the fact that would
+refute its claim. this is the same blindness `16` itself diagnosed in section 5
+for the erasure-and-codegen-equality check ("its instrument is a scalar... a
+carrier-only derivation passes it at full marks"), now found in `16`'s OWN
+instrument for the pair's irreducibility claim, in the same file.

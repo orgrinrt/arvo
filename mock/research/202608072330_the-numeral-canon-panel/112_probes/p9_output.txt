@@ -1,0 +1,46 @@
+==============================================================================
+p9. A one-sided form against the symmetric one and the interval rule
+==============================================================================
+
+NON-NEGATIVE DECLARATIONS (leaves declared 0..=b)
+
+  x + y                          corner   136 symAff   136 ONESIDED   136 union   136 oracle   136 of   256   unsound c=0 a=0 o=0
+  x * y                          corner    76 symAff    31 ONESIDED    76 union    76 oracle    76 of   256   unsound c=0 a=0 o=0
+  (x + y) + z                    corner   816 symAff   816 ONESIDED   816 union   816 oracle   816 of  4096   unsound c=0 a=0 o=0
+  (x + y) - y                    corner    16 symAff   136 ONESIDED   136 union   136 oracle   136 of   256   unsound c=0 a=0 o=0
+  (x + y) * z                    corner   385 symAff   151 ONESIDED   385 union   385 oracle   385 of  4096   unsound c=0 a=0 o=0
+  (x+y) * (z+w)                  corner   212 symAff    31 ONESIDED   212 union   212 oracle   212 of   256   unsound c=0 a=0 o=0
+  (x + y) - y  WRAP              corner    16 symAff   136 ONESIDED   136 union   136 oracle   136 of   256   unsound c=0 a=0 o=0
+
+SIGNED CONTAINER, leaves still declared 0..=b
+
+  x * (y - y)  SIGNED            corner    31 symAff    64 ONESIDED    64 union    64 oracle    64 of    64   unsound c=0 a=0 o=0
+  (x - y) + y  SIGNED            corner    36 symAff    64 ONESIDED    64 union    64 oracle    64 of    64   unsound c=0 a=0 o=0
+  x*y - x*y  SIGNED              corner    15 symAff    15 ONESIDED    15 union    15 oracle    15 of    16   unsound c=0 a=0 o=0
+
+LEAVES THAT STRADDLE ZERO, which is where P6 expects it to fail
+
+  x + y, leaves -4..=b           corner   116 symAff   116 ONESIDED   116 union   116 oracle   116 of   144   unsound c=0 a=0 o=0
+  x * y, leaves -4..=b           corner     0 symAff     0 ONESIDED     0 union     0 oracle     0 of   144   unsound c=0 a=0 o=0
+  (x + y) - y, leaves -4..=b     corner    50 symAff   116 ONESIDED   116 union   116 oracle   116 of   144   unsound c=0 a=0 o=0
+
+SUMMARY
+
+  rows swept                                        : 13
+  rows where the one-sided form is unsound          : 0
+  rows where it alone reaches the oracle            : 13/13
+  rows where it beats the corner rule               : 5/13
+  rows where it beats the symmetric affine rule     : 3/13
+  rows where it is beaten by one of the other two   : 0/13
+
+  rows it does NOT reach the oracle on, named:
+    none
+
+THE ANNIHILATION CASE, since P5 predicts it is still out of reach
+
+  with z declared 0: one-sided licenses 136/256, arms agree 256/256
+
+INSTRUMENT CHECK
+
+  MUTATION: break the cancellation by renaming one occurrence
+    correlation broken: one-sided licenses 16/256, which should match the corner rule's 16

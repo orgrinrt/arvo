@@ -1,0 +1,84 @@
+================================================================================
+PART A. monotonicity of visibility, from 144's own committed p7 output
+================================================================================
+  parsed 24 rows from p7_out.txt
+  observation-set pairs ordered by strict inclusion: [('binary only', 'all five'), ('madd only', 'mul and madd'), ('madd only', 'all five'), ('mul and madd', 'all five')]
+  EE1 comparable (shape, axis, O1 < O2) triples checked: 24, violations: 0 -> CONFIRMED
+  FF1 pairs where enlarging the observation set makes the axis visible: 12 -> PASS
+  FF2 dead-axis rows reported visible: 0 -> PASS
+
+  EE2 which observation sets make the intermediate axis visible:
+    unsign F=1: visible under ['all five']
+    signed F=1: visible under ['madd only', 'mul and madd', 'all five']
+  EE2 -> CONFIRMED: at unsigned only the full set reveals it,
+      at signed a single operation does. So the maximal observation set is load-bearing
+      at one signedness and not the other, which sharpens 146 section 6.3: the table
+      waits on the operation set, and it waits harder at unsigned.
+  NOTE ON INDEPENDENCE: this is a re-reading of MY OWN committed artifact, so it is a
+      second instrument on 145's A1 only in the sense that the model was built before
+      A1 existed and for another purpose. Our models share W, F, signedness, the
+      rounding pair, the intermediate pair and the dead axis; mine adds a third overflow
+      position. The intersection is nearly the union, so this corroborates the
+      arithmetic and says nothing about generality.
+
+================================================================================
+PART B. how many arms conform, as a function of the whole assignment
+================================================================================
+  signedness  F  overflow      rounding  classes  largest class
+  unsigned    0      wrap         floor        1              4
+  unsigned    0      wrap   toward_zero        1              4
+  unsigned    0       sat         floor        1              4
+  unsigned    0       sat   toward_zero        1              4
+  unsigned    1      wrap         floor        1              4
+  unsigned    1      wrap   toward_zero        1              4
+  unsigned    1       sat         floor        1              4
+  unsigned    1       sat   toward_zero        1              4
+  unsigned    2      wrap         floor        1              4
+  unsigned    2      wrap   toward_zero        1              4
+  unsigned    2       sat         floor        1              4
+  unsigned    2       sat   toward_zero        1              4
+  unsigned    3      wrap         floor        1              4
+  unsigned    3      wrap   toward_zero        1              4
+  unsigned    3       sat         floor        1              4
+  unsigned    3       sat   toward_zero        1              4
+  signed      0      wrap         floor        1              4
+  signed      0      wrap   toward_zero        1              4
+  signed      0       sat         floor        2              2
+  signed      0       sat   toward_zero        2              2
+  signed      1      wrap         floor        1              4
+  signed      1      wrap   toward_zero        2              2
+  signed      1       sat         floor        2              2
+  signed      1       sat   toward_zero        2              2
+  signed      2      wrap         floor        1              4
+  signed      2      wrap   toward_zero        2              2
+  signed      2       sat         floor        2              2
+  signed      2       sat   toward_zero        2              2
+  signed      3      wrap         floor        1              4
+  signed      3      wrap   toward_zero        2              2
+  signed      3       sat         floor        2              2
+  signed      3       sat   toward_zero        2              2
+
+  FF3 the two fused arms disagreed in 0 cells, the two stepwise arms in 0 -> PASS
+  FF4 class counts observed: [1, 2] -> PASS
+
+  EE3 signed / wrap / toward-zero at F >= 1 splits rather than conforming: CONFIRMED
+  EE4 signed / wrap / floor conforms: CONFIRMED
+  EE5 signed / saturating splits at every rounding and F: CONFIRMED
+  EE6 unsigned conforms everywhere: CONFIRMED
+
+  the corrected statement:
+    the number of arms component two ranges over is a function of the WHOLE assignment,
+    rounding included, and not of the overflow position alone. Under wrapping it is one
+    class for translation-equivariant rounding and two otherwise; under saturating on
+    signed shapes it is two at every rounding; on unsigned shapes it is one everywhere.
+
+  145 section 2's wrapping clause is contradicted by 145's own z3 output, which prints
+  `overflow = wrap conforming-arm counts observed: [2, 4]` two lines above a verdict
+  saying every arm conforms under wrapping. That is the same verdict-contradicts-its-own-
+  table defect 145 section 9 records against its z4, occurring a second time in the same
+  file and not caught. The structural claim survives and gets sharper; only the clause
+  naming overflow as the argument is wrong.
+
+================================================================================
+control failures: 0 []
+================================================================================

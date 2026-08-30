@@ -1,0 +1,93 @@
+error: generic parameters may not be used in const operations
+  --> p2_scalar_single_output_refused.rs:95:48
+   |
+95 | pub type CarrierA<W, S> = <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T;
+   |                                                ^ cannot perform const operation using `W`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p2_scalar_single_output_refused.rs:95:66
+   |
+95 | pub type CarrierA<W, S> = <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T;
+   |                                                                  ^ cannot perform const operation using `S`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p2_scalar_single_output_refused.rs:98:35
+   |
+98 | pub type CarrierB<W, S> = <Nat<{ <W as DeriveScalar<S>>::REPR }> as NativeFor>::T;
+   |                                   ^ cannot perform const operation using `W`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p2_scalar_single_output_refused.rs:98:53
+   |
+98 | pub type CarrierB<W, S> = <Nat<{ <W as DeriveScalar<S>>::REPR }> as NativeFor>::T;
+   |                                                     ^ cannot perform const operation using `S`
+   |
+   = note: type parameters may not be used in const expressions
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+   --> p2_scalar_single_output_refused.rs:103:27
+    |
+103 | ) -> <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T
+    |                           ^ cannot perform const operation using `W`
+    |
+    = note: type parameters may not be used in const expressions
+    = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+   --> p2_scalar_single_output_refused.rs:103:45
+    |
+103 | ) -> <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T
+    |                                             ^ cannot perform const operation using `S`
+    |
+    = note: type parameters may not be used in const expressions
+    = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error[E0091]: type parameter `W` is never used
+  --> p2_scalar_single_output_refused.rs:95:19
+   |
+95 | pub type CarrierA<W, S> = <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T;
+   |                   ^ unused type parameter
+   |
+   = help: consider removing `W` or referring to it in the body of the type alias
+   = help: if you intended `W` to be a const parameter, use `const W: /* Type */` instead
+
+error[E0091]: type parameter `S` is never used
+  --> p2_scalar_single_output_refused.rs:95:22
+   |
+95 | pub type CarrierA<W, S> = <Nat<{ carrier_bits(<W as DeriveScalar<S>>::REPR) }> as NativeFor>::T;
+   |                      ^ unused type parameter
+   |
+   = help: consider removing `S` or referring to it in the body of the type alias
+   = help: if you intended `S` to be a const parameter, use `const S: /* Type */` instead
+
+error[E0091]: type parameter `W` is never used
+  --> p2_scalar_single_output_refused.rs:98:19
+   |
+98 | pub type CarrierB<W, S> = <Nat<{ <W as DeriveScalar<S>>::REPR }> as NativeFor>::T;
+   |                   ^ unused type parameter
+   |
+   = help: consider removing `W` or referring to it in the body of the type alias
+   = help: if you intended `W` to be a const parameter, use `const W: /* Type */` instead
+
+error[E0091]: type parameter `S` is never used
+  --> p2_scalar_single_output_refused.rs:98:22
+   |
+98 | pub type CarrierB<W, S> = <Nat<{ <W as DeriveScalar<S>>::REPR }> as NativeFor>::T;
+   |                      ^ unused type parameter
+   |
+   = help: consider removing `S` or referring to it in the body of the type alias
+   = help: if you intended `S` to be a const parameter, use `const S: /* Type */` instead
+
+error: aborting due to 10 previous errors
+
+For more information about this error, try `rustc --explain E0091`.

@@ -1,0 +1,25 @@
+p5b: is the shape dependence in W at all?
+assignments = 8, widths = (2, 3, 4, 5), fractions = (0, 1, 2)
+witness subsets = 31
+
+=== class count under the full operation set ===
+sign    F W=2   W=3   W=4   W=5  
+u       0 3    3    3    3    
+u       1 3    3    3    3    
+u       2   -  3    3    3    
+s       0 3    3    3    3    
+s       1 6    6    6    6    
+s       2   -  6    6    6    
+
+=== V1: W-invariance, over every witness subset ===
+W in [3, 4, 5]: (sign, F, subset) triples whose count moves with W: 0
+  -> V1 CONFIRMED over the non-degenerate widths swept.
+
+=== V2 CONTROL: does the degenerate width W=2 break it? ===
+(sign, F, subset) triples where W=2 disagrees with W=3: 0
+  -> control TOOTHLESS, the check cannot see width at all
+
+=== V3 CONTROL: do signedness and F move the count? ===
+cases where signedness changes the count: 192
+cases where F changes the count:          84
+  -> control FIRES

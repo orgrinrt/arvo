@@ -1,0 +1,88 @@
+=== F = 3 bits, domain [0, 8) representing [0, 1) in units of 2^-3 ===
+  round-half-up: 61 witness quadruples found where step-wise disagrees with once-truncated
+    first witness: x1=4/8 x2=5/8 a=1/8 b=7/8
+      step 1 (x*a, rounded to F bits) collapses both to m = 1/8
+      step 2 (m*b, rounded): 1/8
+      once-truncated exact chain, x1*a*b: 0/8
+      once-truncated exact chain, x2*a*b: 1/8
+      the once-truncated answers genuinely differ (0 != 1),
+      but the step-wise F-bit computation cannot distinguish x1 from x2
+      after step 1, so it gives the SAME answer (1) for both, which
+      is wrong for at least one of them.
+  round-half-to-even: 46 witness quadruples found where step-wise disagrees with once-truncated
+    first witness: x1=5/8 x2=6/8 a=1/8 b=6/8
+      step 1 (x*a, rounded to F bits) collapses both to m = 1/8
+      step 2 (m*b, rounded): 1/8
+      once-truncated exact chain, x1*a*b: 0/8
+      once-truncated exact chain, x2*a*b: 1/8
+      the once-truncated answers genuinely differ (0 != 1),
+      but the step-wise F-bit computation cannot distinguish x1 from x2
+      after step 1, so it gives the SAME answer (1) for both, which
+      is wrong for at least one of them.
+
+=== F = 4 bits, domain [0, 16) representing [0, 1) in units of 2^-4 ===
+  round-half-up: 732 witness quadruples found where step-wise disagrees with once-truncated
+    first witness: x1=8/16 x2=9/16 a=1/16 b=15/16
+      step 1 (x*a, rounded to F bits) collapses both to m = 1/16
+      step 2 (m*b, rounded): 1/16
+      once-truncated exact chain, x1*a*b: 0/16
+      once-truncated exact chain, x2*a*b: 1/16
+      the once-truncated answers genuinely differ (0 != 1),
+      but the step-wise F-bit computation cannot distinguish x1 from x2
+      after step 1, so it gives the SAME answer (1) for both, which
+      is wrong for at least one of them.
+  round-half-to-even: 638 witness quadruples found where step-wise disagrees with once-truncated
+    first witness: x1=9/16 x2=10/16 a=1/16 b=13/16
+      step 1 (x*a, rounded to F bits) collapses both to m = 1/16
+      step 2 (m*b, rounded): 1/16
+      once-truncated exact chain, x1*a*b: 0/16
+      once-truncated exact chain, x2*a*b: 1/16
+      the once-truncated answers genuinely differ (0 != 1),
+      but the step-wise F-bit computation cannot distinguish x1 from x2
+      after step 1, so it gives the SAME answer (1) for both, which
+      is wrong for at least one of them.
+
+=== F = 5 bits, domain [0, 32) representing [0, 1) in units of 2^-5 ===
+  round-half-up: 7354 witness quadruples found where step-wise disagrees with once-truncated
+    first witness: x1=16/32 x2=17/32 a=1/32 b=31/32
+      step 1 (x*a, rounded to F bits) collapses both to m = 1/32
+      step 2 (m*b, rounded): 1/32
+      once-truncated exact chain, x1*a*b: 0/32
+      once-truncated exact chain, x2*a*b: 1/32
+      the once-truncated answers genuinely differ (0 != 1),
+      but the step-wise F-bit computation cannot distinguish x1 from x2
+      after step 1, so it gives the SAME answer (1) for both, which
+      is wrong for at least one of them.
+  round-half-to-even: 6989 witness quadruples found where step-wise disagrees with once-truncated
+    first witness: x1=17/32 x2=18/32 a=1/32 b=29/32
+      step 1 (x*a, rounded to F bits) collapses both to m = 1/32
+      step 2 (m*b, rounded): 1/32
+      once-truncated exact chain, x1*a*b: 0/32
+      once-truncated exact chain, x2*a*b: 1/32
+      the once-truncated answers genuinely differ (0 != 1),
+      but the step-wise F-bit computation cannot distinguish x1 from x2
+      after step 1, so it gives the SAME answer (1) for both, which
+      is wrong for at least one of them.
+
+=== F = 6 bits, domain [0, 64) representing [0, 1) in units of 2^-6 ===
+  round-half-up: 73461 witness quadruples found where step-wise disagrees with once-truncated
+    first witness: x1=32/64 x2=33/64 a=1/64 b=63/64
+      step 1 (x*a, rounded to F bits) collapses both to m = 1/64
+      step 2 (m*b, rounded): 1/64
+      once-truncated exact chain, x1*a*b: 0/64
+      once-truncated exact chain, x2*a*b: 1/64
+      the once-truncated answers genuinely differ (0 != 1),
+      but the step-wise F-bit computation cannot distinguish x1 from x2
+      after step 1, so it gives the SAME answer (1) for both, which
+      is wrong for at least one of them.
+  round-half-to-even: 71627 witness quadruples found where step-wise disagrees with once-truncated
+    first witness: x1=33/64 x2=34/64 a=1/64 b=61/64
+      step 1 (x*a, rounded to F bits) collapses both to m = 1/64
+      step 2 (m*b, rounded): 1/64
+      once-truncated exact chain, x1*a*b: 0/64
+      once-truncated exact chain, x2*a*b: 1/64
+      the once-truncated answers genuinely differ (0 != 1),
+      but the step-wise F-bit computation cannot distinguish x1 from x2
+      after step 1, so it gives the SAME answer (1) for both, which
+      is wrong for at least one of them.
+

@@ -1,0 +1,29 @@
+p3: transfer polarity in the wrapping fragment
+
+equations (forall x: p(x) == 0):
+       law      truth set initial segment? witness embeds upward?
+       L_4          1..=3              yes                    yes
+       L_6          1..=4              yes                    yes
+       L_8          1..=7              yes                    yes
+      L_12         1..=10              yes                    yes
+  8x^3+24x          1..=4              yes                    yes
+   4x^2+4x          1..=3              yes                    yes
+
+disequations (forall x: lhs(x) != rhs(x)):
+         law truth per width 1..=16  final segment?
+   x+32 != x     fffffTTTTTTTTTTT             yes
+    x+8 != x     fffTTTTTTTTTTTTT             yes
+    x+1 != x     TTTTTTTTTTTTTTTT             yes
+     2x != 1     TTTTTTTTTTTTTTTT             yes
+     3x != 5     ffffffffffffffff             yes
+
+reading:
+  equations:    truth sets are initial segments; every counterexample
+                embeds upward. A band TRUE proves nothing above the band;
+                a band FALSE refutes every wider width.
+  disequations: truth sets are final segments (x+32 != x is false at
+                widths 1..=5, where 32 reduces to 0, and true from 6 up).
+                A band TRUE at width B proves TRUE at every wider width;
+                a band FALSE proves nothing above the band.
+  Nothing here touches saturating, order-predicated, or mixed laws;
+  no closure claim is made for them.

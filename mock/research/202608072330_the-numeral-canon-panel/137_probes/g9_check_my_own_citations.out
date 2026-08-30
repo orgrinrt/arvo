@@ -1,0 +1,7 @@
+
+citations checked: 34   ok: 34   failed: 0
+
+--- mutation test, three ways ---
+  CAUGHT  a phrase op did not say
+  CAUGHT  a real phrase at the wrong span
+  CAUGHT  a real phrase in the wrong file

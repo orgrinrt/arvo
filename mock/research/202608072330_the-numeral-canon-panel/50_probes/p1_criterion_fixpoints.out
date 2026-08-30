@@ -1,0 +1,45 @@
+============================================================================================
+Precise widens compute past storage: False
+============================================================================================
+reading   stratset  kind     criterion-consistent output sets               unreachable but needed
+A         S4        blind    {CARRIER, STRIDE}                              none
+A         S4        aware    {ACCESS, CARRIER, STRIDE}                      none
+A         S5        blind    {ACCESS, CARRIER, STRIDE}                      W
+A         S5        aware    {ACCESS, CARRIER, STRIDE}                      W
+B         S4        blind    {}                                             none
+B         S4        aware    {ACCESS, CARRIER}                              none
+B         S5        blind    {}                                             none
+B         S5        aware    {ACCESS, CARRIER}                              none
+
+============================================================================================
+Precise widens compute past storage: True
+============================================================================================
+reading   stratset  kind     criterion-consistent output sets               unreachable but needed
+A         S4        blind    {CARRIER, COMPUTE, STRIDE}                     none
+A         S4        aware    {ACCESS, CARRIER, COMPUTE, STRIDE}             none
+A         S5        blind    {ACCESS, CARRIER, COMPUTE, STRIDE}             W
+A         S5        aware    {ACCESS, CARRIER, COMPUTE, STRIDE}             W
+B         S4        blind    {}                                             none
+B         S4        aware    {ACCESS, CARRIER, COMPUTE}                     none
+B         S5        blind    {}                                             none
+B         S5        aware    {ACCESS, CARRIER, COMPUTE}                     none
+
+============================================================================================
+the operator is non-monotone, which is why there is no canonical fixpoint
+============================================================================================
+  site holds {CARRIER}                -> W recoverable: False  ACCESS recoverable: False
+  site holds {CARRIER, STRIDE}        -> W recoverable: True   ACCESS recoverable: True
+  ACCESS is an output when the site holds {CARRIER} and is NOT one when it holds
+  {CARRIER, STRIDE}. so growing O REMOVES a member of O. a monotone operator cannot
+  do that, and lfp/gfp are therefore unavailable as a tie-break between the fixpoints.
+
+distinct criterion-consistent output sets across all 16 cells: 7
+   |O| = 0   {}
+   |O| = 2   {ACCESS, CARRIER}
+   |O| = 2   {CARRIER, STRIDE}
+   |O| = 3   {ACCESS, CARRIER, COMPUTE}
+   |O| = 3   {ACCESS, CARRIER, STRIDE}
+   |O| = 3   {CARRIER, COMPUTE, STRIDE}
+   |O| = 4   {ACCESS, CARRIER, COMPUTE, STRIDE}
+
+counts the sentence admits: [0, 2, 3, 4]

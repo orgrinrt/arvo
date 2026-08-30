@@ -1,0 +1,1 @@
+W6_EXIT=0 (timing in prior run: 3.1s; this rerun exists so the diagnostic lines match the rustfmt-formatted committed source)

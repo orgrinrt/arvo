@@ -1,0 +1,85 @@
+arity= 2 width= 1  tuples=2^2    accept                  0.63s  
+arity= 2 width= 2  tuples=2^4    accept                  0.09s  
+arity= 2 width= 3  tuples=2^6    accept                  0.09s  
+arity= 2 width= 4  tuples=2^8    accept                  0.10s  
+arity= 2 width= 5  tuples=2^10   accept                  0.11s  
+arity= 2 width= 6  tuples=2^12   accept                  0.17s  
+arity= 2 width= 7  tuples=2^14   accept                  0.39s  
+arity= 2 width= 8  tuples=2^16   accept                  1.30s  
+arity= 2 width= 9  tuples=2^18   refuse-long-running     4.17s  error: constant evaluation is taking a long time
+arity= 3 width= 1  tuples=2^3    accept                  0.09s  
+arity= 3 width= 2  tuples=2^6    accept                  0.09s  
+arity= 3 width= 3  tuples=2^9    accept                  0.09s  
+arity= 3 width= 4  tuples=2^12   accept                  0.09s  
+arity= 3 width= 5  tuples=2^15   accept                  0.09s  
+arity= 3 width= 6  tuples=2^18   accept                  0.09s  
+arity= 3 width= 7  tuples=2^21   accept                  0.09s  
+arity= 3 width= 8  tuples=2^24   accept                  0.09s  
+arity= 3 width= 9  tuples=2^27   accept                  0.10s  
+arity= 3 width=10  tuples=2^30   accept                  0.22s  
+arity= 3 width=11  tuples=2^33   accept                  0.12s  
+arity= 3 width=12  tuples=2^36   accept                  0.15s  
+arity= 3 width=13  tuples=2^39   accept                  0.20s  
+arity= 3 width=14  tuples=2^42   accept                  0.32s  
+arity= 3 width=15  tuples=2^45   accept                  0.54s  
+arity= 3 width=16  tuples=2^48   accept                  1.00s  
+arity= 4 width= 1  tuples=2^4    accept                  0.21s  
+arity= 4 width= 2  tuples=2^8    accept                  0.10s  
+arity= 4 width= 3  tuples=2^12   accept                  0.09s  
+arity= 4 width= 4  tuples=2^16   accept                  0.10s  
+arity= 4 width= 5  tuples=2^20   accept                  0.10s  
+arity= 4 width= 6  tuples=2^24   accept                  0.10s  
+arity= 4 width= 7  tuples=2^28   accept                  0.10s  
+arity= 4 width= 8  tuples=2^32   accept                  0.10s  
+arity= 4 width= 9  tuples=2^36   accept                  0.11s  
+arity= 4 width=10  tuples=2^40   accept                  0.12s  
+arity= 4 width=11  tuples=2^44   accept                  0.14s  
+arity= 4 width=12  tuples=2^48   accept                  0.17s  
+arity= 4 width=13  tuples=2^52   accept                  0.25s  
+arity= 4 width=14  tuples=2^56   accept                  0.40s  
+arity= 4 width=15  tuples=2^60   accept                  0.71s  
+arity= 4 width=16  tuples=2^64   error                   0.03s  error: literal out of range for `u64`
+  --> /Users/orgrinrt/Dev/clause
+arity= 5 width= 1  tuples=2^5    accept                  0.10s  
+arity= 5 width= 2  tuples=2^10   accept                  0.10s  
+arity= 5 width= 3  tuples=2^15   accept                  0.09s  
+arity= 5 width= 4  tuples=2^20   accept                  0.09s  
+arity= 5 width= 5  tuples=2^25   accept                  0.09s  
+arity= 5 width= 6  tuples=2^30   accept                  0.10s  
+arity= 5 width= 7  tuples=2^35   accept                  0.10s  
+arity= 5 width= 8  tuples=2^40   accept                  0.10s  
+arity= 5 width= 9  tuples=2^45   accept                  0.10s  
+arity= 5 width=10  tuples=2^50   accept                  0.12s  
+arity= 5 width=11  tuples=2^55   accept                  0.14s  
+arity= 5 width=12  tuples=2^60   accept                  0.19s  
+arity= 5 width=13  tuples=2^65   error                   0.03s  error: literal out of range for `u64`
+  --> /Users/orgrinrt/Dev/clause
+arity= 6 width= 1  tuples=2^6    accept                  0.10s  
+arity= 6 width= 2  tuples=2^12   accept                  0.10s  
+arity= 6 width= 3  tuples=2^18   accept                  0.10s  
+arity= 6 width= 4  tuples=2^24   accept                  0.10s  
+arity= 6 width= 5  tuples=2^30   accept                  0.09s  
+arity= 6 width= 6  tuples=2^36   accept                  0.09s  
+arity= 6 width= 7  tuples=2^42   accept                  0.10s  
+arity= 6 width= 8  tuples=2^48   accept                  0.11s  
+arity= 6 width= 9  tuples=2^54   accept                  0.11s  
+arity= 6 width=10  tuples=2^60   accept                  0.12s  
+arity= 6 width=11  tuples=2^66   error                   0.03s  error: literal out of range for `u64`
+  --> /Users/orgrinrt/Dev/clause
+arity= 8 width= 1  tuples=2^8    accept                  0.11s  
+arity= 8 width= 2  tuples=2^16   accept                  0.09s  
+arity= 8 width= 3  tuples=2^24   accept                  0.09s  
+arity= 8 width= 4  tuples=2^32   accept                  0.09s  
+arity= 8 width= 5  tuples=2^40   accept                  0.09s  
+arity= 8 width= 6  tuples=2^48   accept                  0.09s  
+arity= 8 width= 7  tuples=2^56   accept                  0.10s  
+arity= 8 width= 8  tuples=2^64   error                   0.03s  error: literal out of range for `u64`
+  --> /Users/orgrinrt/Dev/clause
+
+first non-accepting width per arity, and the tuple count there:
+  arity 2: widest accepted W=8, first refused W=9 at 2^18 tuples (refuse-long-running)
+  arity 3: no refusal up to W=16
+  arity 4: widest accepted W=15, first refused W=16 at 2^64 tuples (error)
+  arity 5: widest accepted W=12, first refused W=13 at 2^65 tuples (error)
+  arity 6: widest accepted W=10, first refused W=11 at 2^66 tuples (error)
+  arity 8: widest accepted W=7, first refused W=8 at 2^64 tuples (error)

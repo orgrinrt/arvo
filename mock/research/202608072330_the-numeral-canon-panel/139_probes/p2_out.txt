@@ -1,0 +1,40 @@
+PART A: two routes, one policy (saturating multiply, truncating)
+  W=8 F=0 signed=false: pairs=65536 arm1-vs-arm2 differ=0 | nonzero results=65025 saturating inputs=63568
+    C1 wrong-clamp control detected as differing at 63576 of 65536 pairs
+  W=8 F=0 signed=true: pairs=65536 arm1-vs-arm2 differ=0 | nonzero results=65025 saturating inputs=62463
+    C1 wrong-clamp control detected as differing at 31243 of 65536 pairs
+  W=8 F=3 signed=false: pairs=65536 arm1-vs-arm2 differ=0 | nonzero results=65009 saturating inputs=56140
+    C1 wrong-clamp control detected as differing at 56178 of 65536 pairs
+  W=8 F=3 signed=true: pairs=65536 arm1-vs-arm2 differ=0 | nonzero results=64961 saturating inputs=50041
+    C1 wrong-clamp control detected as differing at 25085 of 65536 pairs
+  W=8 F=7 signed=true: pairs=65536 arm1-vs-arm2 differ=0 | nonzero results=62477 saturating inputs=1
+    C1 wrong-clamp control detected as differing at 3 of 65536 pairs
+  W=10 F=5 signed=true: pairs=1048576 arm1-vs-arm2 differ=0 | nonzero results=1046077 saturating inputs=801141
+    C1 wrong-clamp control detected as differing at 400865 of 1048576 pairs
+
+PART B: fusing the multiply-add, same declared policy
+  W=6 F=0 signed=false Wrap stride=1: triples=   262144 differ=        0 (  0.00%) inexact-shift pairs=0/4096  no witness
+  W=6 F=0 signed=false Sat  stride=1: triples=   262144 differ=        0 (  0.00%) inexact-shift pairs=0/4096  no witness
+  W=6 F=0 signed=true  Wrap stride=1: triples=   262144 differ=        0 (  0.00%) inexact-shift pairs=0/4096  no witness
+  W=6 F=0 signed=true  Sat  stride=1: triples=   262144 differ=   110476 ( 42.14%) inexact-shift pairs=0/4096  witness a=-32 b=-32 c=-32 unfused=-1 fused=31
+  W=6 F=2 signed=false Wrap stride=1: triples=   262144 differ=        0 (  0.00%) inexact-shift pairs=2048/4096  no witness
+  W=6 F=2 signed=false Sat  stride=1: triples=   262144 differ=        0 (  0.00%) inexact-shift pairs=2048/4096  no witness
+  W=6 F=2 signed=true  Wrap stride=1: triples=   262144 differ=    14520 (  5.54%) inexact-shift pairs=2048/4096  witness a=-31 b=-3 c=-32 unfused=-9 fused=-8
+  W=6 F=2 signed=true  Sat  stride=1: triples=   262144 differ=    93498 ( 35.67%) inexact-shift pairs=2048/4096  witness a=-32 b=-32 c=-32 unfused=-1 fused=31
+  W=6 F=4 signed=true  Wrap stride=1: triples=   262144 differ=    58246 ( 22.22%) inexact-shift pairs=3328/4096  witness a=-31 b=-15 c=-32 unfused=-3 fused=-2
+  W=6 F=4 signed=true  Sat  stride=1: triples=   262144 differ=    77378 ( 29.52%) inexact-shift pairs=3328/4096  witness a=-32 b=-32 c=-32 unfused=-1 fused=31
+  W=8 F=3 signed=false Wrap stride=5: triples=   140608 differ=        0 (  0.00%) inexact-shift pairs=1833/2704  no witness
+  W=8 F=3 signed=false Sat  stride=5: triples=   140608 differ=        0 (  0.00%) inexact-shift pairs=1833/2704  no witness
+  W=8 F=3 signed=true  Wrap stride=5: triples=   140608 differ=     6401 (  4.55%) inexact-shift pairs=1833/2704  witness a=-123 b=-3 c=-128 unfused=-82 fused=-81
+  W=8 F=3 signed=true  Sat  stride=5: triples=   140608 differ=    60377 ( 42.94%) inexact-shift pairs=1833/2704  witness a=-128 b=-128 c=-128 unfused=-1 fused=127
+  W=8 F=7 signed=true  Wrap stride=5: triples=   140608 differ=    50309 ( 35.78%) inexact-shift pairs=2562/2704  witness a=-123 b=-123 c=-128 unfused=-10 fused=-9
+  W=8 F=7 signed=true  Sat  stride=5: triples=   140608 differ=    50335 ( 35.80%) inexact-shift pairs=2562/2704  witness a=-128 b=-128 c=-128 unfused=-1 fused=0
+
+PART C: fusion difference rate over the WHOLE fraction axis, W=6 exhaustive
+  (the predicate wants every F, not three sampled values)
+  signed=false Wrap:  F=0:  0.00% F=1:  0.00% F=2:  0.00% F=3:  0.00% F=4:  0.00% F=5:  0.00%
+  signed=false Sat :  F=0:  0.00% F=1:  0.00% F=2:  0.00% F=3:  0.00% F=4:  0.00% F=5:  0.00%
+  signed=true  Wrap:  F=0:  0.00% F=1:  1.64% F=2:  5.54% F=3: 12.34% F=4: 22.22% F=5: 33.40%
+  signed=true  Sat :  F=0: 42.14% F=1: 39.10% F=2: 35.67% F=3: 31.96% F=4: 29.52% F=5: 33.41%
+
+control failures: 0

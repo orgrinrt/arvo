@@ -1,0 +1,21 @@
+error[E0283]: type annotations needed
+ --> p06c_method_call_ambiguity.rs:7:17
+  |
+7 | fn main() { let y = 3u32.sum(4); let _ = y; }
+  |                 ^        --- type must be known at this point
+  |
+note: multiple `impl`s satisfying `u32: Sum<_>` found
+ --> p06c_method_call_ambiguity.rs:5:1
+  |
+5 | impl Sum<u32>    for u32 { fn sum(self, o: u32) -> u32    { self + o } }
+  | ^^^^^^^^^^^^^^^^^^^^^^^^
+6 | impl Sum<Erased> for u32 { fn sum(self, o: u32) -> Erased { Erased(self + o) } }
+  | ^^^^^^^^^^^^^^^^^^^^^^^^
+help: consider giving `y` an explicit type
+  |
+7 | fn main() { let y: /* Type */ = 3u32.sum(4); let _ = y; }
+  |                  ++++++++++++
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0283`.

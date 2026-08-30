@@ -1,0 +1,40 @@
+=== is the rule in the enumerated auto-loaded set? ===
+  what-you-can-observe-is-what-you-guaranteed    LOADED (line 4)
+  C1 control, a rule 157 measured as NOT loaded:
+  arvo-always-optimal-internals                  not loaded (C1 ok)
+
+=== the rule's thesis, quoted ===
+  A guarantee about a type holds only over the operations through which the type can be observed. Every
+  public field, every accessor returning something the invariant does not cover, and every constructor
+  that does not re-establish the invariant is a hole in the guarantee, not a stylistic matter.
+
+=== does any member declare it? ===
+  167_rompf_the_chain_derived_cold.md        0
+  168_mcsherry_the_chain_derived_cold.md     0
+  60_stam_the_chain_derived_cold.md          0
+
+=== C2 control: do these files cite workspace rules by name at all? ===
+  167_rompf_the_chain_derived_cold.md        3 distinct rule-shaped .md names
+  168_mcsherry_the_chain_derived_cold.md     7 distinct rule-shaped .md names
+  60_stam_the_chain_derived_cold.md          1 distinct rule-shaped .md names
+  C2: rule-name citations found across the three: 5 (want >= 1)
+
+CONTROLS: both ok.
+VERDICT: the observability-perimeter rule is line 4 of the auto-loaded set
+         157 measured in this same panel, it states the principle both
+         definitions are built on, and NONE of the three members names it.
+         This is a plausible shared route for the definitional agreement
+         and it is undeclared in all three contamination sections.
+
+         BOUND, stated because the finding is easy to overstate: 168's
+         derivation is semantically self-contained (pi.g.pi.f against
+         pi.g.f) and does not NEED the rule. What is established is that
+         the rule was in every context and was declared by nobody, not
+         that anyone used it. That is a gap in the accounting, not a
+         demonstration of dependence.
+
+         AND A SECOND BOUND, for 60. 157 measured the loaded set at its
+         own dispatch, not at 60's. The rule file records its own origin
+         in a panel dated 202607301300, which predates this panel, so the
+         rule EXISTED when 60 was written; whether it was loaded then is
+         not measured and I do not claim it.

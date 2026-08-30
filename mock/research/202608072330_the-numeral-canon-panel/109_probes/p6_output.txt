@@ -1,0 +1,20 @@
+
+running 4 tests
+len  seeds  per-step-worse  deferred-worse  tied  max|err| per-step  max|err| deferred
+witness: seed 0, chain length 3, per-step 878, deferred 879
+  1    400               0               0   400                  0                  0
+  2    400               0               0   400                254                254
+  3    400             181               0   219             163786              65496
+  4    400             256               0   144           79265712           16742448
+test tests::the_deferred_route_costs_intermediate_width_that_grows_with_the_chain ... ok
+test tests::no_per_value_component_differs_between_the_two_routes ... ok
+  5    400             287               0   113        33617975984         4281834240
+test tests::the_routes_agree_on_a_single_operation ... ok
+  6    400             308               0    92     13292080393136      1094722063296
+  7    400             311               0    89   6308948376789200    281012935502880
+  8    400             313               0    87  2308019703317810688  71623882438406656
+chain lengths where the deferred route strictly wins somewhere: 6 of 8
+test tests::the_deferred_route_is_closer_to_exact_on_every_chain_length_above_one ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

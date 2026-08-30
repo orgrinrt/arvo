@@ -1,0 +1,39 @@
+per-element cost, picoseconds (median warm algo_ns / n * 1000)
+variant                            16384    131072   1048576   2097152   4194304   8388608
+bitpack-carrier-d16                 84.5      86.7      84.8      84.8      87.1      87.9
+bitpack-carrier-d16-control         85.2      86.7      84.9      85.4      88.1      87.7
+bitpack-carrier-d32                 82.8      85.4      83.8      86.9      96.6      88.3
+bitpack-carrier-d64                 80.4      96.0     111.1     128.0     149.3     145.7
+bitpack-carrier-packed             128.3     128.7     126.9     127.2     129.3     131.3
+bitpack-carrier-packed-simd        120.0     121.1     119.7     119.5     120.6     122.4
+
+guard one, deletion
+  per-element cost, largest n over smallest n (1.0 = perfectly linear)
+    bitpack-carrier-d16             1.041   ok
+    bitpack-carrier-d16-control     1.029   ok
+    bitpack-carrier-d32             1.067   ok
+    bitpack-carrier-d64             1.813   ok
+    bitpack-carrier-packed          1.023   ok
+    bitpack-carrier-packed-simd     1.020   ok
+  total time growth against 512x size growth
+    bitpack-carrier-d16              533.1x  ok
+    bitpack-carrier-d16-control      526.8x  ok
+    bitpack-carrier-d32              546.1x  ok
+    bitpack-carrier-d64              928.4x  ok
+    bitpack-carrier-packed           523.9x  ok
+    bitpack-carrier-packed-simd      522.3x  ok
+
+guard two, roofline: implied read bandwidth, GB/s (* = working set past L2)
+variant                            16384    131072   1048576   2097152   4194304   8388608
+bitpack-carrier-d16                23.7      23.1      23.6      23.6      23.0      22.7*
+bitpack-carrier-d16-control        23.5      23.1      23.6      23.4      22.7      22.8*
+bitpack-carrier-d32                48.3      46.8      47.7      46.0      41.4*     45.3*
+bitpack-carrier-d64                99.5      83.3      72.0      62.5*     53.6*     54.9*
+bitpack-carrier-packed             12.7      12.6      12.8      12.8      12.6      12.4*
+bitpack-carrier-packed-simd        13.5      13.4      13.6      13.6      13.5      13.3*
+
+  highest bandwidth measured with the working set past L2: 62.5 GB/s
+  ceiling used (1.25x that, measured rather than from a datasheet): 78.1 GB/s
+
+both guards pass: every arm scales with n, and no arm reading past L2
+implies a bandwidth the memory below it cannot deliver

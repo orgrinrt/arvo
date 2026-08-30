@@ -1,0 +1,336 @@
+
+codegen.o:	file format mach-o arm64
+
+Disassembly of section __TEXT,__text:
+
+0000000000000000 <ltmp0>:
+       0:      	stp	x29, x30, [sp, #-0x10]!
+       4:      	mov	x29, sp
+       8:      	mov	x8, x0
+       c:      	lsl	x0, x2, #1
+      10:      	cmp	x0, x1
+      14:      	b.hs	0x38 <ltmp0+0x38>
+      18:      	orr	x9, x0, #0x1
+      1c:      	cmp	x9, x1
+      20:      	b.hs	0x44 <ltmp0+0x44>
+      24:      	ldrb	w0, [x8, x0]
+      28:      	ldrb	w8, [x8, x9]
+      2c:      	bfi	w0, w8, #8, #5
+      30:      	ldp	x29, x30, [sp], #0x10
+      34:      	ret
+      38:      	adrp	x2, 0x0 <ltmp0>
+      3c:      	add	x2, x2, #0x0
+      40:      	bl	0x40 <ltmp0+0x40>
+      44:      	adrp	x2, 0x0 <ltmp0>
+      48:      	add	x2, x2, #0x0
+      4c:      	mov	x0, x9
+      50:      	bl	0x50 <ltmp0+0x50>
+
+0000000000000054 <_extract_native_standalone>:
+      54:      	cmp	x2, x1
+      58:      	b.hs	0x68 <_extract_native_standalone+0x14>
+      5c:      	ldrh	w8, [x0, x2, lsl #1]
+      60:      	and	w0, w8, #0x1fff
+      64:      	ret
+      68:      	stp	x29, x30, [sp, #-0x10]!
+      6c:      	mov	x29, sp
+      70:      	adrp	x8, 0x0 <ltmp0>
+      74:      	add	x8, x8, #0x0
+      78:      	mov	x0, x2
+      7c:      	mov	x2, x8
+      80:      	bl	0x80 <_extract_native_standalone+0x2c>
+
+0000000000000084 <_extract_zeropad_standalone>:
+      84:      	stp	x29, x30, [sp, #-0x10]!
+      88:      	mov	x29, sp
+      8c:      	mov	w8, #0xd                ; =13
+      90:      	mul	x12, x2, x8
+      94:      	lsr	x8, x12, #3
+      98:      	cmp	x8, x1
+      9c:      	b.hs	0xec <_extract_zeropad_standalone+0x68>
+      a0:      	add	x9, x8, #0x1
+      a4:      	cmp	x9, x1
+      a8:      	b.hs	0xfc <_extract_zeropad_standalone+0x78>
+      ac:      	add	x10, x8, #0x2
+      b0:      	cmp	x10, x1
+      b4:      	b.hs	0x10c <_extract_zeropad_standalone+0x88>
+      b8:      	add	x11, x8, #0x3
+      bc:      	cmp	x11, x1
+      c0:      	b.hs	0x11c <_extract_zeropad_standalone+0x98>
+      c4:      	ldrb	w8, [x0, x8]
+      c8:      	ldrb	w9, [x0, x9]
+      cc:      	ldrb	w10, [x0, x10]
+      d0:      	and	w11, w12, #0x7
+      d4:      	orr	w8, w8, w9, lsl #8
+      d8:      	orr	w8, w8, w10, lsl #16
+      dc:      	lsr	w8, w8, w11
+      e0:      	and	w0, w8, #0x1fff
+      e4:      	ldp	x29, x30, [sp], #0x10
+      e8:      	ret
+      ec:      	adrp	x2, 0x0 <ltmp0>
+      f0:      	add	x2, x2, #0x0
+      f4:      	mov	x0, x8
+      f8:      	bl	0xf8 <_extract_zeropad_standalone+0x74>
+      fc:      	adrp	x2, 0x0 <ltmp0>
+     100:      	add	x2, x2, #0x0
+     104:      	mov	x0, x9
+     108:      	bl	0x108 <_extract_zeropad_standalone+0x84>
+     10c:      	adrp	x2, 0x0 <ltmp0>
+     110:      	add	x2, x2, #0x0
+     114:      	mov	x0, x10
+     118:      	bl	0x118 <_extract_zeropad_standalone+0x94>
+     11c:      	adrp	x2, 0x0 <ltmp0>
+     120:      	add	x2, x2, #0x0
+     124:      	mov	x0, x11
+     128:      	bl	0x128 <_extract_zeropad_standalone+0xa4>
+
+000000000000012c <_sum_aligned>:
+     12c:      	stp	x29, x30, [sp, #-0x10]!
+     130:      	mov	x29, sp
+     134:      	cbz	x2, 0x18c <_sum_aligned+0x60>
+     138:      	mov	x9, #0x0                ; =0
+     13c:      	mov	x8, #0x0                ; =0
+     140:      	add	x10, x1, #0x1
+     144:      	lsr	x10, x10, #1
+     148:      	lsr	x11, x1, #1
+     14c:      	cbz	x10, 0x19c <_sum_aligned+0x70>
+     150:      	cbz	x11, 0x1ac <_sum_aligned+0x80>
+     154:      	ldrb	w12, [x0]
+     158:      	ldrb	w13, [x0, #0x1]
+     15c:      	ubfiz	x13, x13, #8, #5
+     160:      	add	x8, x8, x12
+     164:      	add	x8, x8, x13
+     168:      	sub	x11, x11, #0x1
+     16c:      	sub	x10, x10, #0x1
+     170:      	sub	x9, x9, #0x2
+     174:      	add	x0, x0, #0x2
+     178:      	sub	x2, x2, #0x1
+     17c:      	cbnz	x2, 0x14c <_sum_aligned+0x20>
+     180:      	mov	x0, x8
+     184:      	ldp	x29, x30, [sp], #0x10
+     188:      	ret
+     18c:      	mov	x8, #0x0                ; =0
+     190:      	mov	x0, x8
+     194:      	ldp	x29, x30, [sp], #0x10
+     198:      	ret
+     19c:      	neg	x0, x9
+     1a0:      	adrp	x2, 0x0 <ltmp0>
+     1a4:      	add	x2, x2, #0x0
+     1a8:      	bl	0x1a8 <_sum_aligned+0x7c>
+     1ac:      	mov	w8, #0x1                ; =1
+     1b0:      	sub	x0, x8, x9
+     1b4:      	adrp	x2, 0x0 <ltmp0>
+     1b8:      	add	x2, x2, #0x0
+     1bc:      	bl	0x1bc <_sum_aligned+0x90>
+
+00000000000001c0 <_sum_aligned_rand>:
+     1c0:      	stp	x29, x30, [sp, #-0x10]!
+     1c4:      	mov	x29, sp
+     1c8:      	mov	x8, #0x0                ; =0
+     1cc:      	cbz	x2, 0x218 <_sum_aligned_rand+0x58>
+     1d0:      	mov	x11, #0x0               ; =0
+     1d4:      	cmp	x4, x11
+     1d8:      	b.eq	0x224 <_sum_aligned_rand+0x64>
+     1dc:      	ldr	w9, [x3, x11, lsl #2]
+     1e0:      	lsl	x9, x9, #1
+     1e4:      	cmp	x9, x1
+     1e8:      	b.hs	0x248 <_sum_aligned_rand+0x88>
+     1ec:      	orr	x10, x9, #0x1
+     1f0:      	cmp	x10, x1
+     1f4:      	b.hs	0x238 <_sum_aligned_rand+0x78>
+     1f8:      	ldrb	w9, [x0, x9]
+     1fc:      	ldrb	w10, [x0, x10]
+     200:      	ubfiz	x10, x10, #8, #5
+     204:      	add	x8, x8, x9
+     208:      	add	x8, x8, x10
+     20c:      	add	x11, x11, #0x1
+     210:      	cmp	x2, x11
+     214:      	b.ne	0x1d4 <_sum_aligned_rand+0x14>
+     218:      	mov	x0, x8
+     21c:      	ldp	x29, x30, [sp], #0x10
+     220:      	ret
+     224:      	adrp	x2, 0x0 <ltmp0>
+     228:      	add	x2, x2, #0x0
+     22c:      	mov	x0, x4
+     230:      	mov	x1, x4
+     234:      	bl	0x234 <_sum_aligned_rand+0x74>
+     238:      	adrp	x2, 0x0 <ltmp0>
+     23c:      	add	x2, x2, #0x0
+     240:      	mov	x0, x10
+     244:      	bl	0x244 <_sum_aligned_rand+0x84>
+     248:      	adrp	x2, 0x0 <ltmp0>
+     24c:      	add	x2, x2, #0x0
+     250:      	mov	x0, x9
+     254:      	bl	0x254 <_sum_aligned_rand+0x94>
+
+0000000000000258 <_sum_native>:
+     258:      	stp	x29, x30, [sp, #-0x10]!
+     25c:      	mov	x29, sp
+     260:      	cbz	x2, 0x294 <_sum_native+0x3c>
+     264:      	sub	x8, x2, #0x1
+     268:      	cmp	x1, x8
+     26c:      	b.ls	0x2a4 <_sum_native+0x4c>
+     270:      	mov	x8, #0x0                ; =0
+     274:      	ldrh	w9, [x0], #0x2
+     278:      	and	x9, x9, #0x1fff
+     27c:      	add	x8, x8, x9
+     280:      	subs	x2, x2, #0x1
+     284:      	b.ne	0x274 <_sum_native+0x1c>
+     288:      	mov	x0, x8
+     28c:      	ldp	x29, x30, [sp], #0x10
+     290:      	ret
+     294:      	mov	x8, #0x0                ; =0
+     298:      	mov	x0, x8
+     29c:      	ldp	x29, x30, [sp], #0x10
+     2a0:      	ret
+     2a4:      	adrp	x2, 0x0 <ltmp0>
+     2a8:      	add	x2, x2, #0x0
+     2ac:      	mov	x0, x1
+     2b0:      	bl	0x2b0 <_sum_native+0x58>
+
+00000000000002b4 <_sum_native_rand>:
+     2b4:      	stp	x29, x30, [sp, #-0x10]!
+     2b8:      	mov	x29, sp
+     2bc:      	mov	x8, #0x0                ; =0
+     2c0:      	cbz	x2, 0x2f4 <_sum_native_rand+0x40>
+     2c4:      	mov	x10, #0x0               ; =0
+     2c8:      	cmp	x4, x10
+     2cc:      	b.eq	0x300 <_sum_native_rand+0x4c>
+     2d0:      	ldr	w9, [x3, x10, lsl #2]
+     2d4:      	cmp	x1, x9
+     2d8:      	b.ls	0x314 <_sum_native_rand+0x60>
+     2dc:      	ldrh	w9, [x0, x9, lsl #1]
+     2e0:      	and	x9, x9, #0x1fff
+     2e4:      	add	x8, x8, x9
+     2e8:      	add	x10, x10, #0x1
+     2ec:      	cmp	x2, x10
+     2f0:      	b.ne	0x2c8 <_sum_native_rand+0x14>
+     2f4:      	mov	x0, x8
+     2f8:      	ldp	x29, x30, [sp], #0x10
+     2fc:      	ret
+     300:      	adrp	x2, 0x0 <ltmp0>
+     304:      	add	x2, x2, #0x0
+     308:      	mov	x0, x4
+     30c:      	mov	x1, x4
+     310:      	bl	0x310 <_sum_native_rand+0x5c>
+     314:      	adrp	x2, 0x0 <ltmp0>
+     318:      	add	x2, x2, #0x0
+     31c:      	mov	x0, x9
+     320:      	bl	0x320 <_sum_native_rand+0x6c>
+
+0000000000000324 <_sum_zeropad>:
+     324:      	stp	x29, x30, [sp, #-0x10]!
+     328:      	mov	x29, sp
+     32c:      	cbz	x2, 0x3a4 <_sum_zeropad+0x80>
+     330:      	mov	x13, #0x0               ; =0
+     334:      	mov	x8, #0x0                ; =0
+     338:      	lsr	x9, x13, #3
+     33c:      	cmp	x9, x1
+     340:      	b.hs	0x3e4 <_sum_zeropad+0xc0>
+     344:      	add	x10, x9, #0x1
+     348:      	cmp	x10, x1
+     34c:      	b.hs	0x3d4 <_sum_zeropad+0xb0>
+     350:      	add	x11, x9, #0x2
+     354:      	cmp	x11, x1
+     358:      	b.hs	0x3c4 <_sum_zeropad+0xa0>
+     35c:      	add	x12, x9, #0x3
+     360:      	cmp	x12, x1
+     364:      	b.hs	0x3b4 <_sum_zeropad+0x90>
+     368:      	ldrb	w9, [x0, x9]
+     36c:      	ldrb	w10, [x0, x10]
+     370:      	ldrb	w11, [x0, x11]
+     374:      	and	w12, w13, #0x7
+     378:      	orr	w9, w9, w10, lsl #8
+     37c:      	orr	w9, w9, w11, lsl #16
+     380:      	lsr	w9, w9, w12
+     384:      	and	w9, w9, #0x1fff
+     388:      	add	x8, x8, x9
+     38c:      	add	x13, x13, #0xd
+     390:      	subs	x2, x2, #0x1
+     394:      	b.ne	0x338 <_sum_zeropad+0x14>
+     398:      	mov	x0, x8
+     39c:      	ldp	x29, x30, [sp], #0x10
+     3a0:      	ret
+     3a4:      	mov	x8, #0x0                ; =0
+     3a8:      	mov	x0, x8
+     3ac:      	ldp	x29, x30, [sp], #0x10
+     3b0:      	ret
+     3b4:      	adrp	x2, 0x0 <ltmp0>
+     3b8:      	add	x2, x2, #0x0
+     3bc:      	mov	x0, x12
+     3c0:      	bl	0x3c0 <_sum_zeropad+0x9c>
+     3c4:      	adrp	x2, 0x0 <ltmp0>
+     3c8:      	add	x2, x2, #0x0
+     3cc:      	mov	x0, x11
+     3d0:      	bl	0x3d0 <_sum_zeropad+0xac>
+     3d4:      	adrp	x2, 0x0 <ltmp0>
+     3d8:      	add	x2, x2, #0x0
+     3dc:      	mov	x0, x10
+     3e0:      	bl	0x3e0 <_sum_zeropad+0xbc>
+     3e4:      	adrp	x2, 0x0 <ltmp0>
+     3e8:      	add	x2, x2, #0x0
+     3ec:      	mov	x0, x9
+     3f0:      	bl	0x3f0 <_sum_zeropad+0xcc>
+
+00000000000003f4 <_sum_zeropad_rand>:
+     3f4:      	stp	x29, x30, [sp, #-0x10]!
+     3f8:      	mov	x29, sp
+     3fc:      	cbz	x2, 0x488 <_sum_zeropad_rand+0x94>
+     400:      	mov	x8, x0
+     404:      	mov	x0, #0x0                ; =0
+     408:      	mov	x13, #0x0               ; =0
+     40c:      	mov	w14, #0xd               ; =13
+     410:      	cmp	x4, x13
+     414:      	b.eq	0x494 <_sum_zeropad_rand+0xa0>
+     418:      	ldr	w9, [x3, x13, lsl #2]
+     41c:      	umull	x15, w9, w14
+     420:      	lsr	x9, x15, #3
+     424:      	cmp	x9, x1
+     428:      	b.hs	0x4d8 <_sum_zeropad_rand+0xe4>
+     42c:      	add	x10, x9, #0x1
+     430:      	cmp	x10, x1
+     434:      	b.hs	0x4c8 <_sum_zeropad_rand+0xd4>
+     438:      	add	x11, x9, #0x2
+     43c:      	cmp	x11, x1
+     440:      	b.hs	0x4b8 <_sum_zeropad_rand+0xc4>
+     444:      	add	x12, x9, #0x3
+     448:      	cmp	x12, x1
+     44c:      	b.hs	0x4a8 <_sum_zeropad_rand+0xb4>
+     450:      	ldrb	w9, [x8, x9]
+     454:      	ldrb	w10, [x8, x10]
+     458:      	ldrb	w11, [x8, x11]
+     45c:      	and	w12, w15, #0x7
+     460:      	orr	w9, w9, w10, lsl #8
+     464:      	orr	w9, w9, w11, lsl #16
+     468:      	lsr	w9, w9, w12
+     46c:      	and	w9, w9, #0x1fff
+     470:      	add	x0, x0, x9
+     474:      	add	x13, x13, #0x1
+     478:      	cmp	x2, x13
+     47c:      	b.ne	0x410 <_sum_zeropad_rand+0x1c>
+     480:      	ldp	x29, x30, [sp], #0x10
+     484:      	ret
+     488:      	mov	x0, #0x0                ; =0
+     48c:      	ldp	x29, x30, [sp], #0x10
+     490:      	ret
+     494:      	adrp	x2, 0x0 <ltmp0>
+     498:      	add	x2, x2, #0x0
+     49c:      	mov	x0, x4
+     4a0:      	mov	x1, x4
+     4a4:      	bl	0x4a4 <_sum_zeropad_rand+0xb0>
+     4a8:      	adrp	x2, 0x0 <ltmp0>
+     4ac:      	add	x2, x2, #0x0
+     4b0:      	mov	x0, x12
+     4b4:      	bl	0x4b4 <_sum_zeropad_rand+0xc0>
+     4b8:      	adrp	x2, 0x0 <ltmp0>
+     4bc:      	add	x2, x2, #0x0
+     4c0:      	mov	x0, x11
+     4c4:      	bl	0x4c4 <_sum_zeropad_rand+0xd0>
+     4c8:      	adrp	x2, 0x0 <ltmp0>
+     4cc:      	add	x2, x2, #0x0
+     4d0:      	mov	x0, x10
+     4d4:      	bl	0x4d4 <_sum_zeropad_rand+0xe0>
+     4d8:      	adrp	x2, 0x0 <ltmp0>
+     4dc:      	add	x2, x2, #0x0
+     4e0:      	mov	x0, x9
+     4e4:      	bl	0x4e4 <_sum_zeropad_rand+0xf0>

@@ -1,0 +1,54 @@
+==============================================================================
+p1. How many directions admit a denotation-preserving total map
+==============================================================================
+
+SINGLE-AXIS MOVES (the coordinates the four-part assumption names)
+
+  radix 2 vs 3, F = 0                                      count 2   A<->B   consumers disagree on 0/768 applications
+  radix 2 vs 3, F = 1                                      count 0   neither consumers disagree on 30/108 applications
+  overflow policy sat vs wrap                              count 0   neither consumers disagree on 416/768 applications
+  rounding trunc vs near, F = 1                            count 0   neither consumers disagree on 12/768 applications
+  rounding trunc vs near, F = 0                            count 2   A<->B   consumers disagree on 0/768 applications
+  total width 3 vs 4                                       count 0   neither consumers disagree on 61/192 applications
+  fraction width 0 vs 1                                    count 0   neither consumers disagree on 61/192 applications
+  signedness unsigned vs signed                            count 0   neither consumers disagree on 89/192 applications
+
+A DECLARED EXTENT (the refinement), unsigned W = 4, F = 0, saturating
+
+  extent v <=  0 (size  1)                                 count 1   widen True  tighten False closed True  disagree 0/3
+  extent v <=  1 (size  2)                                 count 0   widen False tighten False closed False disagree 1/12
+  extent v <=  2 (size  3)                                 count 0   widen False tighten False closed False disagree 3/27
+  extent v <=  3 (size  4)                                 count 0   widen False tighten False closed False disagree 6/48
+  extent v <=  4 (size  5)                                 count 0   widen False tighten False closed False disagree 11/75
+  extent v <=  5 (size  6)                                 count 0   widen False tighten False closed False disagree 19/108
+  extent v <=  6 (size  7)                                 count 0   widen False tighten False closed False disagree 32/147
+  extent v <=  7 (size  8)                                 count 0   widen False tighten False closed False disagree 48/192
+  extent v <=  8 (size  9)                                 count 0   widen False tighten False closed False disagree 70/243
+  extent v <=  9 (size 10)                                 count 0   widen False tighten False closed False disagree 99/300
+  extent v <= 10 (size 11)                                 count 0   widen False tighten False closed False disagree 135/363
+  extent v <= 11 (size 12)                                 count 0   widen False tighten False closed False disagree 178/432
+  extent v <= 12 (size 13)                                 count 0   widen False tighten False closed False disagree 228/507
+  extent v <= 13 (size 14)                                 count 0   widen False tighten False closed False disagree 285/588
+  extent v <= 14 (size 15)                                 count 0   widen False tighten False closed False disagree 349/675
+  extent v <= 15 (size 16)                                 count 0   widen False tighten False closed True  disagree 420/768
+
+  widening direction exists for bounds: [0]
+  extents closed under the operations:   [0, 15]
+  extents where BOTH hold:               [0]
+
+P5. Do the count and the consumer-disagreement reading agree, cell by cell
+
+    agree 24, disagree 0
+
+INSTRUMENT CHECK
+  every cell performed at least one comparison: no vacuous verdict
+
+MUTATION: force both sides to share one interpretation
+  overflow policy pair, count before mutation: 0
+  overflow policy pair, count after  mutation: 2
+  the verdict moves when the thing it tests for is removed: True
+
+MUTATION: give the refined arm the general arm's completion
+  bounds admitting a widening, cheap arm:   1/16
+  bounds admitting a widening, same arm:    16/16
+  the verdict moves when the arm stops differing: True

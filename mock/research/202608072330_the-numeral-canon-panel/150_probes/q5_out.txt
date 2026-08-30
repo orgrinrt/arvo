@@ -1,0 +1,53 @@
+==============================================================================
+PART A. line-anchored citations, parsed out of 150 itself
+==============================================================================
+  parsed 6 distinct line-anchored citations
+  139:396-396            ok        '838 of 1891 grid points, 44.3%'
+  INTENTS.md:51-61       ok        'DEMOTED TO OPEN'
+  INTENTS.md:214-235     ok        'RATIFIED'
+  INTENTS.md:214-235     ok        'predicated arms composed'
+  INTENTS.md:317-331     ok        'The canon does not police what shape a law takes'
+  INTENTS.md:363-383     ok        "cold isn't to be depriorised"
+  RULES.md:486-541       ok        'Every finding carries its predicate'
+
+==============================================================================
+PART B. verbatim quotations, which is what the dissents rest on
+==============================================================================
+  145     ok        "at `overflow = wrap` all four lowering arms in the topic's own arm set conform to "
+  145     ok        'at `overflow = sat` the four split two and two'
+  145     ok        'conflict and the file does not say so'
+  145     ok        "z4's verdict block asserted D3's predicted outcome while the run reported it not e"
+  z3out   ok        'overflow = wrap   conforming-arm counts observed: [2, 4]'
+  z3out   ok        'toward_zero/wrap/stepwise          2 conforming arms'
+  144     ok        "Every strategy's cost claim is stated against the same named arm, and the comparis"
+  144     ok        'the arm a consumer asked for is not the arm they get'
+  144     ok        'And section 4.3 is the other face of the same coin'
+  144     ok        'It is not wrong, it is a different operation with a different purpose, and using o'
+  144     ok        'whether the design wants one baseline for reporting or one for normalising. They a'
+  146     ok        'loses by at least one unit **at every point of the simplex**, by exact vertex enum'
+  146     ok        'over 29 askable families under the conservative gate reading and 20 under the symm'
+  146     ok        'closure for the unsigned half and equivariance for the signed wrapping half'
+  146     ok        'roughly one non-dominated arm in nine'
+  146     ok        'the median 90.2% cross-target switch rate'
+
+==============================================================================
+PART C. the negatives 150 asserts, checked as negatives
+==============================================================================
+  146     absent, ok          'all four lowering arms'
+          150 D1 claims 146 does not carry 145's wrapping clause
+  146     absent, ok          'split two and two'
+          150 D1 claims 146 does not carry 145's wrapping clause
+  146     absent, ok          '44.3'
+          150 D4 claims 146 never reuses 139's figure as a magnitude
+  NOTE: a negative is only as good as its phrasing. These test the exact wording 150
+  attributes to 145 and to 139; a paraphrase of the same claim in 146 would not be
+  caught, and I say so rather than presenting an absence as a proof.
+
+==============================================================================
+the three cases that must fail
+==============================================================================
+  nobody wrote this          -> PASS, reported
+  right phrase, wrong file   -> PASS, reported
+  right phrase, wrong span   -> PASS, reported
+
+citations, quotations and negatives checked: 25, failures: 0

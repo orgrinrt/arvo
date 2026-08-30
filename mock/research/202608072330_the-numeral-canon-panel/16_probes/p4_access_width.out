@@ -1,0 +1,36 @@
+W    carrier  stride(Cold)  span_bytes  access  carrier==access?
+1    u8      1             1           u8     yes
+3    u8      3             2           u16    NO
+5    u8      5             2           u16    NO
+7    u8      7             2           u16    NO
+8    u8      8             2           u16    NO
+9    u16     9             2           u16    yes
+13   u16     13            3           u32    NO
+16   u16     16            3           u32    NO
+17   u32     17            3           u32    yes
+23   u32     23            4           u32    yes
+25   u32     25            4           u32    yes
+31   u32     31            5           u64    NO
+32   u32     32            5           u64    NO
+33   u64     33            5           u64    yes
+47   u64     47            7           u64    yes
+57   u64     57            8           u64    yes
+64   u64     64            9           u128   NO
+
+across W = 1..=64: carrier and access width disagree for 28 of 64 widths
+closed form floor((W+6)/8)+1 vs exhaustive phase scan, W = 1..=1024: 0 mismatches
+
+recoverability, checked rather than argued:
+  from carrier u8   : the 8 widths behind it need access widths [8, 16] -> NOT recoverable
+  from carrier u16  : the 8 widths behind it need access widths [16, 32] -> NOT recoverable
+  from carrier u32  : the 16 widths behind it need access widths [32, 64] -> NOT recoverable
+  from carrier u64  : the 32 widths behind it need access widths [64, 128] -> NOT recoverable
+  from the extent  : W is carried directly, so access = f(W) is recoverable for every W
+
+(b) a too-narrow access is wrong only when the truncated bits are non-zero.
+  values 0..64 (a small-value test)  -> 0 of 64 wrong with a 2-byte access
+  values with the top bit set        -> 32 of 64 wrong with a 2-byte access
+  all bits set                       -> 32 of 64 wrong with a 2-byte access
+
+so the catching check is itself blind to a test that uses small values.
+only a test whose data fills the declared width exercises the truncation.

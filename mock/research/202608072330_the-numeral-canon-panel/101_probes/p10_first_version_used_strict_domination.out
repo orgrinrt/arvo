@@ -1,0 +1,34 @@
+==============================================================================
+A. THE FOUR CELLS, ON `97`'S MODEL
+==============================================================================
+  6 regions, 5 arms, 2 coordinates (median algo_ns, bits per element)
+  arms dominated at every region: ['bitpack-carrier-d64']
+
+     weights     minima  sections   selecting a dominated arm
+      w >= 0       weak        72   0
+      w >= 0     unique         9   0
+       w > 0       weak         9   0
+       w > 0     unique         9   0
+
+  `97` and `98` report 72 at the top-left cell and 9 at the bottom-left.
+  Whether the OTHER knob alone reaches 9 is what Q44 does not ask.
+
+==============================================================================
+B. IS A ZERO WEIGHT'S SECTION REACHABLE BY A STRICTLY POSITIVE ONE
+==============================================================================
+  At two coordinates the weighting is one number r = w2/w1, so a zero
+  weight on coordinate 2 is the limit r -> 0. If the section at r = 0
+  equals the section at every sufficiently small positive r, then
+  indifference is expressible to any tolerance without a zero weight.
+
+    r = 1e-1   section == the r = 0 section
+    r = 1e-3   section == the r = 0 section
+    r = 1e-6   section == the r = 0 section
+    r = 1e-12  section == the r = 0 section
+
+    r = 0     d32,d32,d16,d16,d16,d16
+
+  Ties are the whole content of the gap. A zero weight lets two arms tie
+  on the coordinate that is still being weighed, and a tie is where a
+  dominated arm gets in. A strictly positive r breaks the tie with the
+  second coordinate rather than admitting both.

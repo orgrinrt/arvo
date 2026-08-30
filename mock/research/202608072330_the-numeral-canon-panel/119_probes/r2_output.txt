@@ -1,0 +1,12 @@
+r2. Every citation in `119`, opened
+==============================================================================
+
+
+  citations checked : 24
+  passing           : 24
+  failing           : 0
+  controls that correctly failed : 3 of 3
+  controls that wrongly passed   : 0
+
+  Every citation opens and says what the claim depends on, and all three
+  deliberately wrong entries were caught.

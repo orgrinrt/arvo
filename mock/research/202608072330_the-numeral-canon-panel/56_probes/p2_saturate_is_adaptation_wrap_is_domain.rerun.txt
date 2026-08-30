@@ -1,0 +1,12 @@
+clamp is a retraction: true
+clamp is distance minimising: true
+clamp is monotone: true
+wrap is a retraction: true
+wrap not-nearest witnesses in window: 107
+wrap monotonicity violation: Some((-64, -56))
+wrap add is exact in Z/16 (hom property): true
+wrapped add associative: true
+saturating add associativity counterexamples (signed): 952
+unsigned add-only saturation associative: true
+mutant adaptation detected as non-minimising: true
+P2 WORKS

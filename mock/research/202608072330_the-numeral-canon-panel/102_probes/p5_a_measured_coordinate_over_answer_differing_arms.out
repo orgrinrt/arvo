@@ -1,0 +1,93 @@
+1. THE ARGMIN FLIPS UNDER THE CORPUS'S OWN NOISE
+
+regions (files) : 6
+arms            : 6  ['bitpack-carrier-d16', 'bitpack-carrier-d16-control', 'bitpack-carrier-d32', 'bitpack-carrier-d64', 'bitpack-carrier-packed', 'bitpack-carrier-packed-simd']
+samples per arm per region (first region): {'bitpack-carrier-d16': 80, 'bitpack-carrier-d16-control': 80, 'bitpack-carrier-d32': 80, 'bitpack-carrier-d64': 80, 'bitpack-carrier-packed': 80, 'bitpack-carrier-packed-simd': 80}
+
+  bitpack-carrier-width_n1048576.csv           distinct winners  3   modal bitpack-carrier-d16 at 1183/2000
+  bitpack-carrier-width_n131072.csv            distinct winners  2   modal bitpack-carrier-d32 at 1994/2000
+  bitpack-carrier-width_n16384.csv             distinct winners  1   modal bitpack-carrier-d32 at 2000/2000
+  bitpack-carrier-width_n2097152.csv           distinct winners  2   modal bitpack-carrier-d16 at 1405/2000
+  bitpack-carrier-width_n4194304.csv           distinct winners  2   modal bitpack-carrier-d16 at 1574/2000
+  bitpack-carrier-width_n8388608.csv           distinct winners  2   modal bitpack-carrier-d16-control at 1765/2000
+
+regions whose pure-time argmin is NOT unique across 2000 resamples: 5 of 6
+
+That is `100`'s mechanism reproduced from a third implementation on the same
+committed samples. Over these arms it is harmless: they all compute the same
+value, so a flip buys or loses a little time and nothing else.
+
+2. COUNTERFACTUAL: THE SAME NOISE OVER ARMS THAT DISAGREE
+
+   The error column is REAL, computed exactly by p3 at k = 16 against a
+   rational reference. The time column is SYNTHETIC, because no committed
+   family has arms that disagree. That absence is the finding, not a gap in
+   this probe. The noise magnitude is the corpus's own measured floor.
+
+   noise sigma = 0.00273 (relative), the corpus's measured floor
+   arms = 18, k = 16
+
+    exchange rate   distinct arms   distinct errors   error spread
+            0.020               2                 1        0.00000
+            0.050               3                 2        0.04651
+            0.100               4                 3        0.15976
+            0.200               5                 4        0.33315
+            0.500               9                 8        1.26732
+            1.000              15                15        3.35597
+            2.000               7                 7        1.50195
+
+   Read the last column as declared ulp. Where it is non-zero, a rerun of the
+   bench changes the numeric answer the shipped program produces, at the same
+   source, the same weighting and the same inputs.
+
+3. THE SAME TABLE RANKED BY COMPUTED COORDINATES ONLY
+
+   Both coordinates exact: error against a rational reference, and the
+   rne-step count, which is a declared static property of the arm exactly as
+   bits per element is in `97`'s model.
+
+    exchange rate   distinct arms   distinct errors   error spread
+            0.020               1                 1        0.00000
+            0.050               1                 1        0.00000
+            0.100               1                 1        0.00000
+            0.200               1                 1        0.00000
+            0.500               1                 1        0.00000
+            1.000               1                 1        0.00000
+            2.000               1                 1        0.00000
+
+WHAT THIS ESTABLISHES
+
+ONE. The unit's coordinates are two kinds and nothing has said so. A MEASURED
+coordinate carries a noise floor the corpus itself reports. A COMPUTED one
+does not: bits per element is declared and exact, and so is error against a
+rational reference. `101` noticed the first half of this and read it as a
+caution about applying a tolerance band uniformly. It is more than that.
+
+TWO. Over answer-equivalent arms the distinction is a nuisance. `100` prices
+the whole cost of the flips at 0.045% to 3.83% of speed. Over answer-differing
+arms the same flip is a change in the value the program computes, and part 2
+shows it happening at six of the seven exchange rates swept. The seventh is
+not a reprieve: at that rate the weighting is close enough to pure error that
+the two lowest-error arms tie, and they tie because their errors are equal to
+five figures rather than because the noise stopped mattering.
+
+THREE. So there is a predicate on the mechanism the unit converged on, and it
+is not a small one:
+
+     A weighting may include a MEASURED coordinate only where every arm it
+     ranges over computes the same answer. Where the arms disagree, every
+     coordinate in the weighting must be computed or declared, because
+     otherwise the program's output is a function of a benchmark's noise.
+
+FOUR. And that lands on `100` section 6.1's Arm C, the band. A band accepts a
+committed entry that is not the argmin. Over answer-equivalent arms that costs
+a little speed, which is what `100` measures. Over answer-differing arms it
+accepts a different ANSWER than the strategy names, which is not a cost to
+trade. Arm C carries a predicate its statement does not: `holds where the arms
+at the region compute the same value`.
+
+FIVE. And the way out is not a restriction, it is a licence. Accuracy is
+exactly computable, which p3 does and which the harness's own `score_output`
+hook is shaped for. So the coordinate op's accuracy intent needs is a COMPUTED
+one by nature, and it lands on the same side as bits per element rather than
+on the timing side. The mechanism serves I7 and I5 once that is said out loud.

@@ -1,0 +1,13 @@
+route A: width as a const, trait keyed directly on the width.
+  compiles. access type reachable. no arithmetic in type position.
+  impls needed in this file: 8
+  impls needed to cover widths 1..=128: 128, one per width.
+  that is the enumeration shape the design refused (quoted at 16:485-488).
+  so route A is closed by DESIGN, not by the compiler. p3 was closed by the compiler.
+
+route B: width as a type, access as an associated type on the derivation result.
+  compiles. access type reachable. one blanket impl per strategy.
+  W13/Cold access = u32   W13/Warm access = u16   W31/Cold access = u64
+
+the load type is a projection of the derivation result under B, and is not
+reachable at all from the flat pair (carrier type, stride const) alone.

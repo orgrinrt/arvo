@@ -1,0 +1,3 @@
+instructions (d16):            50496
+instructions (d16-control):    50496
+IDENTICAL: the control compiles to the same code as the arm it controls

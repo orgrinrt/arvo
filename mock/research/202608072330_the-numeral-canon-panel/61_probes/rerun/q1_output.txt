@@ -1,0 +1,7 @@
+clamp signed     retraction true  monotone true  nearest true  coherent(+) false  chain-divergent triples 476
+wrap signed      retraction true  monotone false  nearest false  coherent(+) true  chain-divergent triples 0
+clamp unsigned   retraction true  monotone true  nearest true  coherent(+) true  chain-divergent triples 0
+mutant clamp     retraction true  monotone false  nearest false  coherent(+) false  chain-divergent triples 897
+wrap coherent(*): true   clamp signed coherent(*): false
+clamp unsigned over a signed window: coherent(+) false (floor now reachable)
+Q1 WORKS

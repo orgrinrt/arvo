@@ -1,0 +1,10 @@
+OK  : canonical_by_construction saturates at 255 = 255
+OK  : saturating 200 + 100 = 255
+OK  : wrapping   200 + 100 = 44
+OK  : binary  Q8: 1.0 * 1.0 in grid units = 256
+OK  : decimal Q3: 1.0 * 1.0 in grid units = 1000
+OK  : half(7) under nearest rounding = 4
+OK  : half(7) under toward-zero = 3
+OK  : the two types were indistinguishable over {add, mul} and differ under half, which is why merging them would not have been stable
+
+all checks passed

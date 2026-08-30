@@ -1,0 +1,13 @@
+warning: method `op` is never used
+   --> ../../57_probes/p1_absorption_versus_bound_count.rs:120:8
+    |
+ 83 | impl Cfg {
+    | -------- method in this implementation
+...
+120 |     fn op(&self, a: i64, b: i64) -> i64 {
+    |        ^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: 1 warning emitted
+

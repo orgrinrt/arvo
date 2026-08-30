@@ -1,0 +1,23 @@
+maximum fused-vs-unfused gap in raw units, W=6 exhaustive over all triples
+range at W=6: unsigned 0..63, signed -32..31, so 63 units spans the whole type
+
+  signed=false Wrap: max gap  F=0:  0 F=1:  0 F=2:  0 F=3:  0 F=4:  0 F=5:  0
+  signed=false Sat : max gap  F=0:  0 F=1:  0 F=2:  0 F=3:  0 F=4:  0 F=5:  0
+  signed=true  Wrap: max gap  F=0:  0 F=1:  1 F=2:  1 F=3:  1 F=4:  1 F=5:  1
+  signed=true  Sat : max gap  F=0: 32 F=1: 32 F=2: 32 F=3: 32 F=4: 32 F=5:  1
+
+conformance, with both controls, at the smallest slack that admits fusion
+  signed=false Wrap F=0: slack needed=  0 raw units (  0.00% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=false Wrap F=2: slack needed=  0 raw units (  0.00% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=false Wrap F=4: slack needed=  0 raw units (  0.00% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=false Sat  F=0: slack needed=  0 raw units (  0.00% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=false Sat  F=2: slack needed=  0 raw units (  0.00% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=false Sat  F=4: slack needed=  0 raw units (  0.00% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=true  Wrap F=0: slack needed=  0 raw units (  0.00% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=true  Wrap F=2: slack needed=  1 raw units (  1.59% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=true  Wrap F=4: slack needed=  1 raw units (  1.59% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=true  Sat  F=0: slack needed= 32 raw units ( 50.79% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=true  Sat  F=2: slack needed= 32 raw units ( 50.79% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+  signed=true  Sat  F=4: slack needed= 32 raw units ( 50.79% of range) | C1 rejects of conforming arm=0 C2 rejects of violator=262144/262144 PASS
+
+control failures: 0

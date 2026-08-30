@@ -1,0 +1,54 @@
+P10. which axes a law verdict actually reads
+==============================================================================
+configurations: 192
+  W in {3,4}, F in {0,1,2}, signed, policy in {sat,wrap},
+  rounding in {near,trunc}, radix in {2,3}, spurious in {a,b}
+distinct law sets: 7 over 7 laws
+
+the original test's key, reproduced, so the defect is visible:
+  key = every swept axis -> collisions 0, so comparisons 0.
+  a test whose comparison count is zero reports its default forever.
+
+per-axis, holding every other axis fixed:
+  axis        comparisons  disagreements  verdict
+  W                    96              4  READ by some law
+  F                   128             98  READ by some law
+  signed               96             50  READ by some law
+  policy               96             96  READ by some law
+  rounding             96              4  READ by some law
+  radix                96              4  READ by some law
+  spurious             96              0  not read
+
+CONTROL ONE, the negative control that proves a negative is reachable:
+  the spurious axis was swept, compared 96 times, and moved
+  nothing. so 'not read' is an outcome this test can produce.
+
+CONTROL TWO, ordering the real axes by how hard they are read:
+  F             98 of 128   comparisons ( 76.6%)   e.g. uW3F0r2/sat/near/spa vs uW3F1r2/sat/near/spa
+  policy        96 of 96    comparisons (100.0%)   e.g. uW3F0r2/sat/near/spa vs uW3F0r2/wrap/near/spa
+  signed        50 of 96    comparisons ( 52.1%)   e.g. uW3F0r2/sat/near/spa vs iW3F0r2/sat/near/spa
+  W              4 of 96    comparisons (  4.2%)   e.g. iW3F2r3/sat/trunc/spa vs iW4F2r3/sat/trunc/spa
+  rounding       4 of 96    comparisons (  4.2%)   e.g. iW3F2r3/sat/near/spa vs iW3F2r3/sat/trunc/spa
+  radix          4 of 96    comparisons (  4.2%)   e.g. iW3F2r2/sat/trunc/spa vs iW3F2r3/sat/trunc/spa
+
+CONTROL THREE, mutation: law sets assigned at random.
+  axis           real    mutated
+  W                 4         96
+  F                98        128
+  signed           50         95
+  policy           96         93
+  rounding          4         95
+  radix             4         95
+  spurious          0         95
+  axes whose disagreement count rose under mutation: 6 of 7
+  a random verdict is explainable by no axis, which is what the
+  mutation should produce. the instrument reacts.
+
+reading:
+  the honest form of the original finding is not that a law set is an
+  unsettable coordinate, which is analytic and needs no sweep. it is
+  that a law verdict reads a NAMED SET of axes and not the others, and
+  that the set is measurable with a test that can return either answer.
+  over this sweep every real axis is read and the spurious one is not,
+  which is `90` R1's dimension list given a measured floor rather than
+  an enumeration.

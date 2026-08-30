@@ -1,0 +1,66 @@
+p7. Every remaining quotation in 108, opened and tested.
+
+Two directions per entry:
+  SRC  the phrase is present in the file it is attributed to
+  MINE the phrase is present in 108 itself, so the list has not drifted
+
+  [ok ] `106`  106 names the thing it did not do
+  [ok ] `107`  107 says the same about itself
+  [ok ] `95`  95, the convergence steer, verbatim
+  [ok ] `INTENTS`  I16, the policing clause
+  [ok ] `RULES`  RULES on opening citations
+  [ok ] `103`  103's lesson about an untested checker
+  [ok ] `40`  40's definition of observable
+  [ok ] `40`  40's convention, the only-if
+  [ok ] `40`  40 calls it a canon-shaped sentence nobody has written
+  [ok ] `40`  40's own conclusion on the shape
+  [ok ] `102`  102's ring boundary
+  [ok ] `102`  102's p2 table, headroom in both regimes
+  [ok ] `102`  102's p2 table, packing
+  [ok ] `102`  102's p2 table, overflow policy
+  [ok ] `106`  106's fidelity-constant sentence
+  [ok ] `103`  103's per-arm oracle shape
+  [ok ] `103`  103's refined predicate on the measured-coordinate hazard
+  [ok ] `106`  106 prices the cast
+  [ok ] `97`  97 section 5's arity result
+  [ok ] `106`  94's W9 shape, as 106 carries it
+  [ok ] `106`  106 clause seven
+  [ok ] `106`  106 section 5, the opposite about the same word
+  [ok ] `97`  97's p4b, unions that are not generators
+  [ok ] `97`  97's p4b, nothing unresolvable inside the closure
+  [ok ] `97`  97's generators
+  [ok ] `106`  101's units clause, as 106 carries it
+  [ok ] `106`  101's ray clause, as 106 carries it
+  [ok ] `106`  94's diagnosis of the flat set, as 106 carries it
+  [ok ] `106`  101's ceiling, as 106 carries it
+  [ok ] `40`  40's p2 product size
+  [ok ] `106`  98's 144 rung, restored in 106 section 16
+  [ok ] `104`  104's ergonomics answer
+  [ok ] `104`  104's test for what is not op's
+  [ok ] `INTENTS`  I5 verbatim
+  [ok ] `40`  40 section 5.3's lexicographic-against-finite reading
+  [ok ] `40`  40 records the rate is unset
+  [ok ] `88`  88 on the pull-apart being real
+  [ok ] `40`  40's two-space relation
+  [ok ] `93`  93's phase-one credit paragraph
+  [ok ] `97`  97's dependent function
+  [ok ] `106`  100's detector counts, as 106 carries them
+  [ok ] `106`  cone membership catches all 489
+  [ok ] `106`  101's failed citations, as 106 carries them
+
+checked: 43   ok: 43   failed: 0   file missing: 0
+
+=== the other direction: does 108 actually quote each of these? ===
+
+  entries checked both ways:     30
+  entries cited without quoting: 13 (listed in the source of this probe)
+
+  0 entries. Every phrase checked against a source is also in 108.
+
+=== mutation test ===
+
+  [caught] a phrase op did not say
+  [caught] a real phrase in the wrong file
+  [caught] a near-miss on a real quotation
+
+mutants caught: 3 of 3

@@ -1,0 +1,17 @@
+# base numeral U<2,2> unsigned, 16 grid points, 136 interval data, outward rounding
+
+# two-argument laws, over 18496 ordered pairs
+commutativity of +                     checked=     3876 skipped=    14620 equal=     3876 differ=       0 of-which-lhs-inside-rhs=       0
+A - A == 0                             checked=      136 skipped=        0 equal=      136 differ=       0 of-which-lhs-inside-rhs=       0
+
+# three-argument laws, over 2515456 ordered triples
+associativity of +                     checked=    54264 skipped=  2461192 equal=    54264 differ=       0 of-which-lhs-inside-rhs=       0
+distributivity A*(B+C) vs A*B + A*C    checked=    89853 skipped=  2425603 equal=    62439 differ=   27414 of-which-lhs-inside-rhs=   27414
+                                       first witness args=((0, 1), (0, 1), (0, 1)) lhs=(0, 1) rhs=(0, 2)
+
+# the same four laws on the base numeral, where a datum denotes a point
+point: commutativity of +              checked=      136 skipped=      120 equal=      136 differ=       0 of-which-lhs-inside-rhs=       0
+point: A - A == 0                      checked=       16 skipped=        0 equal=       16 differ=       0 of-which-lhs-inside-rhs=       0
+point: associativity of +              checked=      816 skipped=     3280 equal=      816 differ=       0 of-which-lhs-inside-rhs=       0
+point: distributivity                  checked=     1041 skipped=     3055 equal=      780 differ=     261 of-which-lhs-inside-rhs=     261
+                                       first witness args=((1, 1), (1, 1), (1, 1)) lhs=(0, 1) rhs=(0, 2)

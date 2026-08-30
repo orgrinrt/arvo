@@ -1,0 +1,40 @@
+p2: does the fold-associativity region lift through a declared interval
+
+section 1: sign_uniform(LO, HI) against associativity on the generated closure
+width  intervals assoc-closed   sign-uniform    suff. viol.     nec. viol.
+    2         10            8              8              0              0
+    3         36           24             24              0              0
+    4        136           80             80              0              0
+    5        528          288            288              0              0
+    6       2080         1088           1088              0              0
+
+section 1b: negative control, weakened predicates over widths 2..=5
+  M1: LO >= -1 || HI <= 0   (allow one negative) -> sufficiency 26 necessity 0
+  M2: LO >= 0 || HI <= 1    (allow one positive) -> sufficiency 30 necessity 0
+  M3: LO >= 0               (drop the non-positive arm) -> sufficiency 0 necessity 215
+  M4: HI - LO <= 1          (narrow interval, any sign) -> sufficiency 0 necessity 284
+
+section 2: every parenthesisation, arity 2..=5, computed not assumed
+  w=4 full range (straddles)   n=2:0/256 n=3:952/4096 n=4:28917/65536 n=5:623049/1048576
+  w=4 non-negative half        n=2:0/64 n=3:0/512 n=4:0/4096 n=5:0/32768
+  w=4 non-positive half        n=2:0/81 n=3:0/729 n=4:0/6561 n=5:0/59049
+  w=4 narrow straddle [-1, 1]  n=2:0/9 n=3:0/27 n=4:0/81 n=5:0/243
+  w=5 full range (straddles)   n=2:0/1024 n=3:7920/32768 n=4:478185/1048576 n=5:20509425/33554432
+  w=5 non-negative half        n=2:0/256 n=3:0/4096 n=4:0/65536 n=5:0/1048576
+  w=5 non-positive half        n=2:0/289 n=3:0/4913 n=4:0/83521 n=5:0/1419857
+  w=5 narrow straddle [-1, 1]  n=2:0/9 n=3:0/27 n=4:0/81 n=5:0/243
+
+section 3: length-8 fold, left against balanced tree, width 8 signed, 4,000,000 samples
+  declared [-128, 127] (straddles)     divergent   2544825 of 4000000 (63.6206%)
+      witness [-126, 54, -45, -99, -29, 15, -36, 28] left=-100 tree=-128
+  declared [0, 127] (non-negative)     divergent         0 of 4000000 (0.0000%)
+  declared [-128, 0] (non-positive)    divergent         0 of 4000000 (0.0000%)
+  declared [-1, 127] (straddles by one) divergent     31331 of 4000000 (0.7833%)
+      witness [71, 24, 71, 84, 90, 121, 53, -1] left=126 tree=127
+
+section 4: closure of a declared interval under the operation, width 6 signed
+  [0, 7] non-negative declared [0, 7] -> closure [0, 31] size 32 : sign-uniform closure true : associative true
+  [-7, 0] non-positive declared [-7, 0] -> closure [-32, 0] size 33 : sign-uniform closure true : associative true
+  [-1, 1] straddles declared [-1, 1] -> closure [-32, 31] size 64 : sign-uniform closure false : associative false
+  [3, 5] non-negative declared [3, 5] -> closure [3, 31] size 29 : sign-uniform closure true : associative true
+  [-2, 9] straddles declared [-2, 9] -> closure [-32, 31] size 64 : sign-uniform closure false : associative false

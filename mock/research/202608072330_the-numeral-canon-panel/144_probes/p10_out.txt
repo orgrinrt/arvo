@@ -1,0 +1,80 @@
+read 35 bench families from /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+
+family                         arms coords pareto linear unreach  noise ratio  stable
+bitpack-carrier-width             6      6      3      3       0          0.8    True
+bitpack-contend-best              6      4      1      1       0          0.9   False
+bitpack-contend-decode            5      6      4      4       0          0.0   False
+bitpack-contention                6     12      3      3       0          0.2   False
+bitpack-decoder-shape             4      4      1      1       0          9.8    True
+bitpack-footprint-headtohead      4      5      2      2       0         22.4    True
+bitpack-kernel-amortisation       5      4      1      1       0         11.3    True
+bitpack-wide                      4      6      2      2       0          0.5   False
+precise-container-width-l1        5      6      1      1       0         17.6    True
+precise-elementwise-width-l1      5      6      3      3       0          2.6   False
+precise-widening-theorem-l1       6      6      6      4       2          0.3   False
+satfold-align-l1                  8      4      1      1       0         31.4    True
+satfold-const-gate                5      3      3      3       0         23.2    True
+satfold-length-l1                 9     12      6      4       2          1.3   False
+satfold-length-l1-wrap            9      5      8      8       0          0.2   False
+warm-affine-collapse-l1           6      6      3      3       0          8.3   False
+warm-affine-density-w13           6      5      3      3       0          9.4   False
+warm-clamp-arity-l2               6      6      3      3       0          1.3    True
+warm-clamp-arity-w13              6      6      3      3       0          5.2    True
+warm-clamp-arity-w16              6      6      3      3       0          9.6    True
+warm-clamp-arity-w32              6      6      5      4       1          9.2    True
+warm-clamp-arity-w60              6      6      4      4       0          3.9    True
+warm-clamp-arity-w64              6      6      3      3       0          2.2   False
+warm-clamp-arity-w8               6      4      3      3       0          6.1    True
+warm-clamp-chain-l1               6      6      2      2       0          0.1   False
+warm-container-density-w13        6      5      1      1       0         21.4    True
+warm-container-density-w64        5      5      3      3       0          9.1   False
+warm-container-width-l1           6      6      4      4       0         12.6    True
+warm-container-width-l2           4      6      2      2       0         17.6   False
+warm-elementwise-width-l1         5      6      3      3       0          0.8   False
+wide-rung-density-w200            5      4      2      2       0          0.2   False
+wide-rung-walk-l1                 5      6      5      4       1          0.1   False
+wide-rung-walk-l2                 5      6      2      2       0          0.2   False
+wide-rung-width-l1                5      6      3      3       0          0.2   False
+wide-rung-width-l2                5      6      4      4       0          0.4   False
+
+BB3 families excluded for arm spread below within-arm spread: 14 ['bitpack-carrier-width', 'bitpack-contend-best', 'bitpack-contend-decode', 'bitpack-contention', 'bitpack-wide', 'precise-widening-theorem-l1', 'satfold-length-l1-wrap', 'warm-clamp-chain-l1', 'warm-elementwise-width-l1', 'wide-rung-density-w200', 'wide-rung-walk-l1', 'wide-rung-walk-l2', 'wide-rung-width-l1', 'wide-rung-width-l2']
+BB2 families excluded because median and mean disagree on the verdict: 7 ['precise-elementwise-width-l1', 'satfold-length-l1', 'warm-affine-collapse-l1', 'warm-affine-density-w13', 'warm-clamp-arity-w64', 'warm-container-density-w64', 'warm-container-width-l2']
+BB1 dominated arms reported strictly selectable: 0, PASS
+families surviving both controls: 14
+
+==============================================================================
+AA1. is there a real Pareto arm no linear weighting can select?
+==============================================================================
+  YES. 1 such arms across 1 families:
+    warm-clamp-arity-w32: ['warm-clamp-accfit-dyn']
+  O-139-C closes in the direction 139 flagged as the live one: the limit
+  is not theoretical, it is present in the arm sets arvo has today.
+  AA1 -> CONFIRMED
+
+==============================================================================
+AA2. is the linear image smaller than the Pareto count on real arms?
+==============================================================================
+  strictly smaller in 1 of 14 surviving families (7%)
+  AA2 -> REFUTED
+
+==============================================================================
+AA3. does the coordinate axis reorder arms on committed data?
+==============================================================================
+  families where the smallest-size winner is not the largest-size winner: 9 of 14
+    bitpack-footprint-headtohead: smallest -> bitpack-footprint-dense-alt, largest -> bitpack-footprint-dense
+    satfold-const-gate: smallest -> satfold-lanes16, largest -> satfold-lanes16-3
+    warm-clamp-arity-l2: smallest -> warm-clamp-accfit, largest -> warm-clamp-min-lanes
+    warm-clamp-arity-w13: smallest -> warm-clamp-minimum, largest -> warm-clamp-accfit
+    warm-clamp-arity-w16: smallest -> warm-clamp-minimum, largest -> warm-clamp-accfit
+    warm-clamp-arity-w32: smallest -> warm-clamp-minimum, largest -> warm-clamp-min-lanes
+    warm-clamp-arity-w60: smallest -> warm-clamp-minimum, largest -> warm-clamp-min-lanes
+    warm-clamp-arity-w8: smallest -> warm-clamp-minimum, largest -> warm-clamp-accfit
+    warm-container-width-l1: smallest -> warm-container-native, largest -> warm-container-kernel
+  AA3 -> CONFIRMED
+  this is p4's portability phenomenon on committed measurements rather than
+  invented cost tables: one weighting, two answers, and the difference is a
+  fact about the workload rather than about the design.
+
+==============================================================================
+control failures: 0 []
+==============================================================================

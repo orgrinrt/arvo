@@ -1,0 +1,30 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+     Running unittests src/lib.rs (target/release/deps/bench_bitpack_write_contend_shared-ff4aa0a6e19f08bc)
+
+running 15 tests
+test input::tests::chosen_sizes_land_where_the_bench_needs_them_to ... ok
+test input::tests::layout_size_matches_total_bytes ... ok
+test kernels::tests::dense_write_agrees ... ok
+test kernels::tests::layout_size_is_consistent ... ok
+test kernels::tests::sequential_split_guarded_agrees_misaligned ... ok
+test kernels::tests::sequential_split_plain_agrees_aligned ... ok
+test kernels::tests::sequential_split_plain_agrees_even_misaligned ... ok
+test kernels::tests::single_threaded_guarded_agrees ... ok
+test kernels::tests::single_threaded_plain_agrees ... ok
+test kernels::tests::windowed_agrees_single_call ... ok
+test kernels::tests::windowed_agrees_split_across_period_aligned_calls ... ok
+test stress::guarded_kernel_never_corrupts_under_real_concurrency ... ok
+test stress::naive_kernel_corruption_rate_under_real_concurrency ... ok
+test stress::naive_kernel_never_corrupts_when_the_split_is_aligned ... ok
+test stress::stress_size_is_actually_misaligned ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.25s
+
+   Doc-tests bench_bitpack_write_contend_shared
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+cargo test --release -- --test-threads=1  7.98s user 0.10s system 301% cpu 2.679 total
+EXIT=0

@@ -1,0 +1,108 @@
+==============================================================================
+p4. The per-node intersection against both rules and their disjunction
+==============================================================================
+
+------------------------------------------------------------------------------
+C3's region: ONE-SIDED declarations, where p3 measures the one-sided
+form as unbeaten. The hybrid must equal it here.
+
+  exhaustive   primitive uW3/sat   terms 96
+    cells 13032   arms agree 2950   corner 2247   one-sided 2663
+    disjunction of the two verdicts 2663   HYBRID (per-node intersection) 2663   root-only 2565
+    unsound: corner 0  one-sided 0  hybrid 0  root-only 38
+    C1 halved rule unsound on 1232;  C2 union-instead-of-intersection licenses 2247 and is unsound on 0
+    hybrid beaten by corner on 0, by one-sided on 0; beats the disjunction on 0
+    C3: hybrid differs from the one-sided form on 0 cells
+
+  exhaustive   primitive iW3/sat   terms 96
+    cells 2148   arms agree 1338   corner 1245   one-sided 1306
+    disjunction of the two verdicts 1306   HYBRID (per-node intersection) 1306   root-only 1307
+    unsound: corner 0  one-sided 0  hybrid 0  root-only 34
+    C1 halved rule unsound on 297;  C2 union-instead-of-intersection licenses 1245 and is unsound on 0
+    hybrid beaten by corner on 0, by one-sided on 0; beats the disjunction on 0
+    C3: hybrid differs from the one-sided form on 0 cells
+
+------------------------------------------------------------------------------
+TWO-ENDPOINT declarations, where the one-sided form loses
+
+  exhaustive, arity 2   primitive uW3/sat   terms 6
+    cells 3996   arms agree 952   corner 924   one-sided 952
+    disjunction of the two verdicts 952   HYBRID (per-node intersection) 952   root-only 924
+    unsound: corner 0  one-sided 0  hybrid 0  root-only 0
+    C1 halved rule unsound on 245;  C2 union-instead-of-intersection licenses 924 and is unsound on 0
+    hybrid beaten by corner on 0, by one-sided on 0; beats the disjunction on 0
+    C3: hybrid differs from the one-sided form on 0 cells
+
+  exhaustive, arity 2   primitive iW3/sat   terms 6
+    cells 3996   arms agree 1532   corner 1522   one-sided 1440
+    disjunction of the two verdicts 1532   HYBRID (per-node intersection) 1532   root-only 1522
+    unsound: corner 0  one-sided 0  hybrid 0  root-only 0
+    C1 halved rule unsound on 738;  C2 union-instead-of-intersection licenses 1430 and is unsound on 0
+    hybrid beaten by corner on 0, by one-sided on 0; beats the disjunction on 0
+    C3: hybrid differs from the one-sided form on 92 cells
+
+  sampled 500, arity 3   primitive uW3/sat   terms 90
+    cells 36648   arms agree 5874   corner 3199   one-sided 5625
+    disjunction of the two verdicts 5668   HYBRID (per-node intersection) 5669   root-only 4770
+    unsound: corner 0  one-sided 0  hybrid 0  root-only 1129
+    C1 halved rule unsound on 1050;  C2 union-instead-of-intersection licenses 3156 and is unsound on 0
+    hybrid beaten by corner on 0, by one-sided on 0; beats the disjunction on 1
+    C3: hybrid differs from the one-sided form on 44 cells
+    terms where the per-node intersection beats disjoining verdicts:
+      ((x - y) * y)            +1 cells   disjunction 54  hybrid 55
+
+  sampled 500, arity 3   primitive iW3/sat   terms 90
+    cells 36648   arms agree 9552   corner 6738   one-sided 8661
+    disjunction of the two verdicts 9254   HYBRID (per-node intersection) 9258   root-only 7917
+    unsound: corner 0  one-sided 0  hybrid 0  root-only 1067
+    C1 halved rule unsound on 5689;  C2 union-instead-of-intersection licenses 6128 and is unsound on 0
+    hybrid beaten by corner on 0, by one-sided on 0; beats the disjunction on 4
+    C3: hybrid differs from the one-sided form on 597 cells
+    terms where the per-node intersection beats disjoining verdicts:
+      (x * (x + y))            +1 cells   disjunction 80  hybrid 81
+      (x - (x * y))            +1 cells   disjunction 102  hybrid 103
+      ((x + y) * x)            +1 cells   disjunction 80  hybrid 81
+      ((x + y) * y)            +1 cells   disjunction 87  hybrid 88
+
+------------------------------------------------------------------------------
+P4: under wrap, does any of this buy anything over the root check?
+
+  exhaustive   primitive uW3/wrap   terms 96
+    cells 13032   arms agree 3210   corner 2247   one-sided 2663
+    disjunction of the two verdicts 2663   HYBRID (per-node intersection) 2663   root-only 2565
+    unsound: corner 0  one-sided 0  hybrid 0  root-only 0
+    C1 halved rule unsound on 1202;  C2 union-instead-of-intersection licenses 2247 and is unsound on 0
+    hybrid beaten by corner on 0, by one-sided on 0; beats the disjunction on 0
+    C3: hybrid differs from the one-sided form on 0 cells
+
+  sampled 500, arity 3, two-endpoint   primitive uW3/wrap   terms 90
+    cells 36648   arms agree 8272   corner 3247   one-sided 5674
+    disjunction of the two verdicts 5702   HYBRID (per-node intersection) 5704   root-only 4750
+    unsound: corner 0  one-sided 0  hybrid 0  root-only 0
+    C1 halved rule unsound on 948;  C2 union-instead-of-intersection licenses 3219 and is unsound on 0
+    hybrid beaten by corner on 0, by one-sided on 0; beats the disjunction on 2
+    C3: hybrid differs from the one-sided form on 30 cells
+    terms where the per-node intersection beats disjoining verdicts:
+      (x * (y - x))            +1 cells   disjunction 57  hybrid 58
+      ((x - y) * y)            +1 cells   disjunction 56  hybrid 57
+
+==============================================================================
+READING IT
+==============================================================================
+
+  P1 holds when every 'hybrid' unsound count is zero AND C1's halved rule is
+  nonzero, so the counter is live.
+
+  P2 holds when 'hybrid beaten by corner' and 'beaten by one-sided' are both
+  zero on every row.
+
+  P3 holds when 'beats the disjunction' is nonzero somewhere. If it is zero
+  everywhere the intersection buys nothing a disjunction does not, and `112`
+  section 9's clause needs no repair.
+
+  C2 fires when the union variant licenses more cells than the intersection AND
+  is reported unsound. A union of two sound over-approximations is not sound,
+  so a zero there would mean the soundness counter is not reading this rule.
+
+  C3 holds when 'hybrid differs from one-sided' is zero on the one-sided rows.
+

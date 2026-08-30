@@ -1,0 +1,7 @@
+Double rounding WITHOUT any clamp/overflow bound present at all:
+  total divergences per mode across all (F_acc,F_final) pairs swept: {'floor': 0, 'ceil': 0, 'trunc': 0, 'round_half_up': 64, 'round_half_even': 48}
+  first example per (F_acc,F_final,mode) that diverges:
+    (3, 1, 'round_half_up') exact= -91/24 double_rounded= -7/2 direct_single_round= -4
+    (3, 1, 'round_half_even') exact= -89/24 double_rounded= -4 direct_single_round= -7/2
+    (2, 1, 'round_half_up') exact= -31/8 double_rounded= -7/2 direct_single_round= -4
+    (2, 1, 'round_half_even') exact= -89/24 double_rounded= -4 direct_single_round= -7/2

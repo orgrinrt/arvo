@@ -1,0 +1,62 @@
+PART A. Flat four-marker set under the full constraint list
+===========================================================
+
+join semilattices on 4 labelled elements : 76
+
+  after K1 Resolve(Hot,Precise) = Precise    :  31 survive   (toolbox-not-policer's own worked example; accuracy is not lost to speed)
+  after K2 Resolve(Cold,Hot) != Hot          :  24 survive   (I17: the storage-minimising path is not deprioritised)
+  after K3 Resolve(Cold,Hot) != Cold         :   9 survive   (I5: Hot's intent is performance, and must be reachable in expressions)
+  after K4 Resolve(Warm,Precise) = Precise   :   7 survive   (same argument as K1, against the default rather than against Hot)
+  after K5 Resolve(Warm,Cold) != Warm        :   5 survive   (I17 again: cold storage is not silently traded for the default)
+  after K6 Resolve(Warm,Hot) != Warm         :   4 survive   (I5 again: speed is not silently traded for the default)
+
+RESULT: 4 table(s) survive all six:
+  HvC=Precise HvW=Hot CvW=Cold CvP=Precise WvP=Precise HvP=Precise
+  HvC=Precise HvW=Precise CvW=Cold CvP=Precise WvP=Precise HvP=Precise
+  HvC=Precise HvW=Hot CvW=Precise CvP=Precise WvP=Precise HvP=Precise
+  HvC=Precise HvW=Precise CvW=Precise CvP=Precise WvP=Precise HvP=Precise
+
+Located: which minimal subsets are already unsatisfiable?
+
+PART B. Closure under demand-union
+==================================
+
+Resolution loses nothing exactly when the strategy set is closed
+under union of the demands its members carry.
+
+  four singleton-demand markers: 4 members, 12 unresolvable pairs
+      Hot v Cold needs {speed,space} and no member carries it
+      Hot v Precise needs {speed,accuracy} and no member carries it
+      Hot v Warm needs {speed,familiarity} and no member carries it
+      Cold v Hot needs {speed,space} and no member carries it
+      Cold v Precise needs {space,accuracy} and no member carries it
+      Cold v Warm needs {space,familiarity} and no member carries it
+      ... and 6 more
+  full powerset of demands: 16 members, 0 unresolvable pairs
+
+The powerset is closed by construction, which is the point: closure
+is not something a marker set can be given, it is what a LATTICE is.
+A named preset is then a point in it and naming more costs nothing
+structural, which is what I1 says the design needs.
+
+Size of the smallest closed set containing the four singletons:
+  15 elements (from 4), namely:
+    {speed}
+    {space}
+    {speed,space}
+    {accuracy}
+    {speed,accuracy}
+    {space,accuracy}
+    {speed,space,accuracy}
+    {familiarity}
+    {speed,familiarity}
+    {space,familiarity}
+    {speed,space,familiarity}
+    {accuracy,familiarity}
+    {speed,accuracy,familiarity}
+    {space,accuracy,familiarity}
+    {speed,space,accuracy,familiarity}
+
+So closing the four presets under their own resolution generates
+15 strategies. Either the design carries them, or resolution is not
+a join and has to be something else.

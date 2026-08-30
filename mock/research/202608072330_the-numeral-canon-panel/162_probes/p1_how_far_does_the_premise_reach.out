@@ -1,0 +1,29 @@
+C1 container rule is inert without the observation : True   (want True)
+C1b and the rules do differ in container bits      : True   (want True)
+C2 the observation separates at least one pair     : True   (want True)
+C3 a value-set difference separates on both branches: True   (want True)
+
+configurations                     : 64
+distinct primitives, container internal   : 32
+distinct primitives, container observable : 64
+pairs with identical (V,R) split by the observation: 32 of 32
+  worked pair: W=3 F=0 signed=False wrap
+    rule=minimum  -> container 8 bits
+    rule=above    -> container 16 bits
+
+REACH INTO THE STATEMENT'S CLAUSES
+  clause 2 ('identity is that structure up to denotation-preserving
+    isomorphism'): its EXTENSION moves, 32 primitives against 64.
+    Conditional. The statement gives it no inline marker.
+  clause 6 ('the realisation is not part of identity'): its TRUTH VALUE
+    moves. Under observable, the carrier is part of the realisation
+    (clause 5 defines the lens as carrier, offset, width) and it is
+    identity-bearing, so clause 6's first sentence is false on that
+    branch. Conditional. The statement gives it no inline marker.
+  clause 4 (saturation): conditional, and the statement SAYS SO.
+
+VERDICT: the premise reaches at least three clauses, not one. The
+         preamble promises 'Clauses conditional on op's premise say
+         so inline' and the closing note says 'Clause 4 is
+         conditional on op'. Clauses 2 and 6 are conditional and
+         unmarked.

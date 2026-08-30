@@ -1,0 +1,66 @@
+=== 1. commutative-semiring axioms for unsigned saturation, F = 0 ===
+
+     M  +assoc   +comm     +id  *assoc   *comm     *id  distrib 0-annih no-add-inv    verdict
+     1       0       0       0       0       0       0        0       0          1   semiring
+     2       0       0       0       0       0       0        0       0          2   semiring
+     3       0       0       0       0       0       0        0       0          3   semiring
+     7       0       0       0       0       0       0        0       0          7   semiring
+    15       0       0       0       0       0       0        0       0         15   semiring
+    31       0       0       0       0       0       0        0       0         31   semiring
+    63       0       0       0       0       0       0        0       0         63   semiring
+   127       0       0       0       0       0       0        0       0        127   semiring
+   255       0       0       0       0       0       0        0       0        255   semiring
+
+  M = 1 is the Boolean semiring: two elements, min-clamped add is OR,
+  min-clamped mul is AND. A structurally different instance, not another size.
+
+=== 2. the structural reason: saturation at M is a quotient by a congruence ===
+
+  'x ~ y iff x == y or both >= M' must be preserved by + and * on the naturals.
+  If it is, the saturating algebra IS N/~ and inherits every semiring axiom,
+  which is a claim about all widths rather than the nine measured above.
+
+  M=1    ambient 0..7     congruence violations: + 0  * 0
+  M=3    ambient 0..15    congruence violations: + 0  * 0
+  M=7    ambient 0..31    congruence violations: + 0  * 0
+  M=15   ambient 0..63    congruence violations: + 0  * 0
+  M=31   ambient 0..127   congruence violations: + 0  * 0
+
+=== 3. scale: does the semiring survive fractional bits ===
+
+  Raw value r denotes r / 2^F. Add is raw add; multiply rescales by >> F,
+  which is a SECOND lossy step the integer grid does not have.
+
+     M    F  +assoc  *assoc  distrib     *id    verdict
+    15    0       0       0        0       0   semiring
+    15    1       0     398      168       0        NOT
+    15    2       0     878      518       0        NOT
+    15    3       0     884     1158       0        NOT
+    31    0       0       0        0       0   semiring
+    31    1       0    1892      709       0        NOT
+    31    2       0    5352     2309       0        NOT
+    31    3       0    9522     5495       0        NOT
+    63    0       0       0        0       0   semiring
+    63    1       0    8054     2946       0        NOT
+    63    2       0   24350     9704       0        NOT
+    63    3       0   53032    23706       0        NOT
+
+  fractional configurations that are NOT semirings: 9
+  (a nonzero count here is the finding, not a failure: it bounds the
+   semiring result to F == 0 and is what the canon would have to state.)
+
+=== 4. instrument validation: the same checkers on wrap and on the mutant ===
+
+          policy      M  +assoc  *assoc  distrib no-add-inv    verdict
+    unsigned sat     15       0       0        0         15   semiring
+            wrap     15       0       0        0          0   semiring
+MUTANT opp-bound     15    2240       0      684          0        NOT
+
+  a checker that could not fail would put the same verdict on all three rows.
+  wrap has every additive inverse (a ring), saturation has 15 of 16 missing
+  (a semiring and not a ring), the mutant fails outright:
+    checkers reported at least one pass: true
+    checkers reported at least one fail: true
+    wrap measured with zero missing additive inverses: true
+
+P3 WORKS

@@ -1,0 +1,56 @@
+============================================================================================
+p2. Reproducing the two-endpoint beating of my own one-sided form
+============================================================================================
+
+P1. The hand witness from `114` section 5.3, recomputed
+
+  leaves both declared [-4, -1], term x * y, container [-4, 3]
+    true reachable range   : [1, 16]
+    corner rule            : [1, 16]
+    my one-sided form      : [-8, 25]
+    matches `114`'s worked [-8, 25] against [1, 16]: True
+
+P2/P3. One-sided against two-endpoint declarations
+
+  iW3/sat  x * y  ONE-SIDED                    cells     16  corner     12  one-sided     12  BEATEN     0  unsound c=0 o=0
+  iW3/sat  x * y  TWO-ENDPOINT                 cells   1296  corner    380  one-sided    289  BEATEN    91  unsound c=0 o=0
+      witness: {'x': (-4, 0), 'y': (0, 1)}
+      witness: {'x': (-4, 1), 'y': (0, 1)}
+
+  iW3/sat  x * x  ONE-SIDED                    cells      4  corner      2  one-sided      2  BEATEN     0  unsound c=0 o=0
+  iW3/sat  x * x  TWO-ENDPOINT                 cells     36  corner      6  one-sided      5  BEATEN     1  unsound c=0 o=0
+      witness: {'x': (-1, 1)}
+
+  iW3/sat  x + y  ONE-SIDED                    cells     16  corner     10  one-sided     10  BEATEN     0  unsound c=0 o=0
+  iW3/sat  x + y  TWO-ENDPOINT                 cells   1296  corner    550  one-sided    550  BEATEN     0  unsound c=0 o=0
+
+  uW3/sat  x * y  ONE-SIDED                    cells     64  corner     31  one-sided     31  BEATEN     0  unsound c=0 o=0
+  uW3/sat  x * y  TWO-ENDPOINT                 cells   1296  corner    240  one-sided    240  BEATEN     0  unsound c=0 o=0
+
+  iW3/sat  (x + y) * z  ONE-SIDED              cells     64  corner     26  one-sided     26  BEATEN     0  unsound c=0 o=0
+  iW3/sat  (x + y) * z  TWO-ENDPOINT           cells  46656  corner   4958  one-sided   3342  BEATEN  1616  unsound c=0 o=0
+      witness: {'x': (-4, -4), 'y': (1, 2), 'z': (-1, 0)}
+      witness: {'x': (-4, -4), 'y': (1, 2), 'z': (-1, 1)}
+
+  iW3/sat  (x + y) - y  ONE-SIDED              cells     16  corner     10  one-sided     10  BEATEN     0  unsound c=0 o=0
+  iW3/sat  (x + y) - y  TWO-ENDPOINT           cells   1296  corner    330  one-sided    550  BEATEN     0  unsound c=0 o=0
+
+  totals across the six terms:
+    beaten under one-sided declarations : 0
+    beaten under two-endpoint            : 1708
+
+P5. Two-endpoint but with every lower bound at least zero
+
+  iW3/sat  x * y  TWO-ENDPOINT, lo >= 0        cells    100  corner     51  one-sided     51  BEATEN     0  unsound c=0 o=0
+  iW3/sat  x * x  TWO-ENDPOINT, lo >= 0        cells     10  corner      3  one-sided      3  BEATEN     0  unsound c=0 o=0
+  iW3/sat  x + y  TWO-ENDPOINT, lo >= 0        cells    100  corner     35  one-sided     35  BEATEN     0  unsound c=0 o=0
+  uW3/sat  x * y  TWO-ENDPOINT, lo >= 0        cells   1296  corner    240  one-sided    240  BEATEN     0  unsound c=0 o=0
+  iW3/sat  (x + y) * z  TWO-ENDPOINT, lo >= 0  cells   1000  corner    140  one-sided    140  BEATEN     0  unsound c=0 o=0
+  iW3/sat  (x + y) - y  TWO-ENDPOINT, lo >= 0  cells    100  corner     35  one-sided     35  BEATEN     0  unsound c=0 o=0
+
+    beaten with two endpoints but no negative lower bound: 0
+    so the mechanism is the NEGATIVE CONSTANT and not the second endpoint: True
+
+CONDITION-CAN-FIRE CHECK
+
+  the one-sided rows are 0 and the two-endpoint rows are 1708; the sweep isolates the declaration shape: True

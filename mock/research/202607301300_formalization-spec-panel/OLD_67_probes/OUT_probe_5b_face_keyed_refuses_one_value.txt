@@ -1,0 +1,28 @@
+warning: unused import: `site_c::Half`
+   --> probe_5b_face_keyed_refuses_one_value.rs:142:5
+    |
+142 | use site_c::Half;
+    |     ^^^^^^^^^^^^
+    |
+    = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0308]: mismatched types
+   --> probe_5b_face_keyed_refuses_one_value.rs:186:9
+    |
+184 |     let _ = keyed_on_face(
+    |             ------------- arguments to this function are incorrect
+185 |         Tagged::<Third>(core::marker::PhantomData),
+186 |         Tagged::<OneThird>(core::marker::PhantomData),
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Tagged<Third>`, found `Tagged<OneThird>`
+    |
+    = note: expected struct `Tagged<Third>`
+               found struct `Tagged<OneThird>`
+note: function defined here
+   --> probe_5b_face_keyed_refuses_one_value.rs:161:4
+    |
+161 | fn keyed_on_face<F: NumeralFace>(_x: Tagged<F>, _y: Tagged<F>) -> &'static str {
+    |    ^^^^^^^^^^^^^                                -------------
+
+error: aborting due to 1 previous error; 1 warning emitted
+
+For more information about this error, try `rustc --explain E0308`.

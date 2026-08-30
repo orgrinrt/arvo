@@ -1,0 +1,77 @@
+================================================================================================
+REGIME 1: the source's reduction never fires. Definitional, and stated as such.
+================================================================================================
+window                      target rho      op    monotone  coherent  ord-pres  op-pres   paired
+signed  [-32,31] -> [-8,7]  wrap            add   False     True      False     True      yes
+signed  [-32,31] -> [-8,7]  wrap            mul   False     True      False     True      yes
+signed  [-32,31] -> [-8,7]  saturate        add   True      False     True      False     yes
+signed  [-32,31] -> [-8,7]  saturate        mul   True      False     True      False     yes
+signed  [-32,31] -> [-8,7]  opposite-bound  add   False     False     False     False     yes
+signed  [-32,31] -> [-8,7]  opposite-bound  mul   False     False     False     False     yes
+nonneg  [0,63]   -> [0,15]  wrap            add   False     True      False     True      yes
+nonneg  [0,63]   -> [0,15]  wrap            mul   False     True      False     True      yes
+nonneg  [0,63]   -> [0,15]  saturate        add   True      True      True      True      yes
+nonneg  [0,63]   -> [0,15]  saturate        mul   True      True      True      True      yes
+nonneg  [0,63]   -> [0,15]  opposite-bound  add   False     False     False     False     yes
+nonneg  [0,63]   -> [0,15]  opposite-bound  mul   False     True      False     True      yes
+
+Every cell pairs as predicted: True
+
+Inhabitation of the two-by-two, which is what makes the two properties independent
+rather than one property wearing two names:
+  monotone=True   coherent=True     2 cells   ['nonneg:saturate/add', 'nonneg:saturate/mul']
+  monotone=True   coherent=False    2 cells   ['signed:saturate/add', 'signed:saturate/mul']
+  monotone=False  coherent=True     5 cells   ['nonneg:opposite-bound/mul', 'nonneg:wrap/add', 'nonneg:wrap/mul', 'signed:wrap/add', 'signed:wrap/mul']
+  monotone=False  coherent=False    3 cells   ['nonneg:opposite-bound/add', 'signed:opposite-bound/add', 'signed:opposite-bound/mul']
+  cells inhabited: 4 of 4
+
+================================================================================================
+REGIME 2: the source's reduction fires first. Not definitional.
+================================================================================================
+window                      source rho    target rho      op    target coherent   crossing op-preserving
+signed  [-32,31] -> [-8,7]  wrap          wrap            add   True              1024/1024
+signed  [-32,31] -> [-8,7]  wrap          wrap            mul   True              3507/3507
+signed  [-32,31] -> [-8,7]  wrap          saturate        add   False             0/1024
+signed  [-32,31] -> [-8,7]  wrap          saturate        mul   False             1266/3507
+signed  [-32,31] -> [-8,7]  saturate      wrap            add   True              34/1024
+signed  [-32,31] -> [-8,7]  saturate      wrap            mul   True              352/3507
+signed  [-32,31] -> [-8,7]  saturate      saturate        add   False             1024/1024
+signed  [-32,31] -> [-8,7]  saturate      saturate        mul   False             3507/3507
+nonneg  [0,63]   -> [0,15]  wrap          wrap            add   True              2016/2016
+nonneg  [0,63]   -> [0,15]  wrap          wrap            mul   True              3696/3696
+nonneg  [0,63]   -> [0,15]  wrap          saturate        add   True              1176/2016
+nonneg  [0,63]   -> [0,15]  wrap          saturate        mul   True              2808/3696
+nonneg  [0,63]   -> [0,15]  saturate      wrap            add   True              96/2016
+nonneg  [0,63]   -> [0,15]  saturate      wrap            mul   True              114/3696
+nonneg  [0,63]   -> [0,15]  saturate      saturate        add   True              2016/2016
+nonneg  [0,63]   -> [0,15]  saturate      saturate        mul   True              3696/3696
+
+PREDICTION HELD. A COHERENT target reduction is not sufficient once the source's own
+reduction has already fired. Cells where it fails:
+  signed  [-32,31] -> [-8,7]  source=saturate  target=wrap  add: 990 of 1024 operand pairs diverge
+  signed  [-32,31] -> [-8,7]  source=saturate  target=wrap  mul: 3155 of 3507 operand pairs diverge
+  nonneg  [0,63]   -> [0,15]  source=wrap  target=saturate  add: 840 of 2016 operand pairs diverge
+  nonneg  [0,63]   -> [0,15]  source=wrap  target=saturate  mul: 888 of 3696 operand pairs diverge
+  nonneg  [0,63]   -> [0,15]  source=saturate  target=wrap  add: 1920 of 2016 operand pairs diverge
+  nonneg  [0,63]   -> [0,15]  source=saturate  target=wrap  mul: 3582 of 3696 operand pairs diverge
+
+Hand witness, signed, source saturate, target wrap, addition:
+  a = b = 31;  exact = 62
+  cross(a +_A b) = wrap(saturate(62)) = wrap(31) = -1
+  cross(a) +_B cross(b) = wrap(-1 + -1) = -2
+  -1 against -2: two adaptations in sequence, which is double rounding.
+
+================================================================================================
+READING
+================================================================================================
+The two properties a narrowing crossing can have are the two law families the concept
+already carries, one each, and all four combinations are inhabited, so neither implies
+the other. The crossing therefore demands nothing new of a number system: it consumes
+C4's classification. That makes crossings a THIRD consumer of the two families beside
+the two `67` section 5 names.
+
+And the sufficiency half fails: coherence of the target reduction makes the crossing
+commute only while the source's own reduction has not acted. Once it has, two
+adaptations sit in the schedule and the square does not close. That is `63` C1's
+unfused condition arriving at the crossing layer, and the count of adaptation points,
+not the choice of reduction, is what decides the answer.

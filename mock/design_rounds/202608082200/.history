@@ -1,0 +1,50 @@
+a46cd908 chore: lock src changelist for the design removal round
+b6787b0d docs: src changelist recording an empty source scope
+e19aac19 chore: lock doc changelist for removing the per-crate designs
+516b24b4 docs!: delete the per-crate designs, which describe deleted code
+0436c564 chore: unlock doc changelist to open the doc window
+9d5e908f chore: lock doc changelist for removing the per-crate designs
+70ba8067 docs: doc changelist for removing the per-crate designs
+6b345612 docs: topic for removing the per-crate designs
+64fd8287 chore: close design round 202608082157
+2aedd4e0 chore: lock src changelist for the tree nuke
+929c46ed chore!: delete the crate sources and empty the workspace
+2e85c069 docs: src changelist for the tree nuke
+29bd2c79 chore: lock doc changelist for the tree nuke
+760abd1f docs: doc changelist for the tree nuke
+8adfe453 docs: topic for nuking the tree so the canon can be written
+399e3519 panel: archive the three carried catalogues, four live files remain
+934be997 panel: check file 35 against the four op files that landed during it
+6e506d2a panel: what the algorithm layer and composition contracts need from the numeral
+98b78078 panel: refute the reserved-top shape, and land the ema fixed-point prediction
+d835a0bb panel: demote the strategy set from closed, and drop the carried ratified rung
+6a61d87e panel: put the intent catalogue first in the reading order
+86a582f8 panel: open the intent catalogue, and put it first in the reading order
+10cdb47c panel: probes for what the algorithm layer needs from the numeral
+ba2c79ad panel: the strategies weigh measurements differently, none of it clear cut
+df00ca4f panel: warm imitates rust, and the strategy axis decides what correct means
+27bf046d panel: op records the intent behind each strategy
+0891f353 panel: op corrects the soundness condition, and a coverage instrument
+9279a206 panel: fold op's regime answer into the carrier question
+9d7e10b5 panel: restore the missing order-predicate question and fold op's regime answer
+98204e58 panel: op answers the regime question and names a ratifiable intent
+8d76dbc8 panel: rebuild the option register from the member files
+e65338cd panel: fold the contention result into the register and the map
+9c22dded research: land the largest wide row and settle the magnitude
+f4cd8e21 research: reconcile section 10 against section 15, land the 33M single-core row
+cf8dcf05 research: the wide sweep settles the u16 question
+0f456bb8 panel: dispatcher note on what the mode change costs and what follows
+6fe87f8d panel: state the option register's provenance and the rebuild it owes
+5537a27a panel: mark the eight questions answered in the map
+73bce1ba panel: op answers the eight, and explore-not-settle becomes the standing mode
+41d2de2e bench: add the wide sweep, both columns several times past L2
+c3950874 research: file 27, packing under memory-system contention
+0988bb79 bench: attack the dense side too, and run the decode comparison
+7da8523d bench: run the contention sweep and add the decode attack
+3454060d bench: add the contention sweep, one column split T ways
+c1400321 research: the packing claim is measured and its condition is the carrier
+326b4025 docs: mark panel file 26 complete
+ea6b0ac7 bench: packing pays against a u64 carrier past 2M records, not against u16
+fbac19ca bench: run the packed-against-dense head-to-head and add the carrier-width sweep
+f32abe40 research: record the strategy definition and adopt the citation checker
+f93d2851 research: define a strategy as named sections over a product of axes

@@ -1,0 +1,48 @@
+=== the corpus counts 106 claims to have taken itself ===
+  variant crates                     claimed=94     measured=94     OK
+  crates impl score_output           claimed=0      measured=0      OK
+  crates impl score_dimensions       claimed=0      measured=0      OK
+  crates impl max_relative_error     claimed=0      measured=0      OK
+  crates defining validate_output    claimed=15     measured=15     OK
+  crates mentioning outputs_may_differ claimed=1      measured=1      OK
+  committed CSVs                     claimed=254    measured=254    OK
+  committed meta files               claimed=254    measured=254    OK
+
+=== the satfold-const-gate numbers 106 cites for 'the selection erases' ===
+Baseline: **satfold-gate-false**
+Baseline for all deltas below: **satfold-gate-false**. (Deltas are paired `variant - baseline` medians; `*` marks a CI that excludes zero.)
+### satfold-lanes16 beats baseline by 96% (significant)
+satfold-lanes16 is -36.90 us (96%) faster than baseline satfold-gate-false, with a CI that excludes zero.
+### satfold-lanes16-3 shows warm-up / thermal drift (autocorr +0.85)
+satfold-lanes16-3's per-pass series has lag-1 autocorrelation +0.85, indicating warm-up / thermal drift. Its timing may not be at steady state.
+### Two tiers: {satfold-gate-true, satfold-lanes16, satfold-lanes16-3} vs {satfold-gate-false, satfold-seq} (2444% apart)
+The field splits into a fast tier {satfold-gate-true, satfold-lanes16, satfold-lanes16-3} and a slow tier {satfold-gate-false, satfold-seq} with a 2444% jump between them - a qualitative difference, not a gradient.
+Fastest satfold-gate-true (1.44 us) to slowest satfold-seq (38.74 us): 26.9x. The strategy choice matters a lot for this workload.
+- **Fastest: satfold-gate-true** at 1438.1 ns median (-96.3% vs baseline)
+- Spread: 26.94x (fastest 1438.1 ns, slowest 38740.6 ns)
+| satfold-gate-false | 38621ns | 38478ns | 38403ns | 38496ns | 39217ns | base |
+
+=== 106 section 16 also claims 'the existence of twenty cited probe files
+    across six probe directories'. Counted from 106's own text: ===
+  distinct probe files cited in 106's body :       17
+  distinct probe directories               :        6
+  -- do they all exist? --
+     MISSING 106_probes/p2
+  missing: 1
+
+=== correcting this probe's own false positive, and the probe-file count ===
+  The 'MISSING 106_probes/p2' above is MINE, not 106's: 106 cites its own
+  probe by stem and the file is 106_probes/p2_corpus_counts.sh, which exists.
+
+  distinct probe files 106 cites, excluding its own :       12
+  of those, missing from the tree                   : 0
+  distinct probe files including its own            :       18
+  106 section 16 says 'twenty cited probe files across six probe
+  directories'. Six directories reproduces. Twenty does not on this
+  extractor, which finds 18. Every probe 106 does cite exists, so the
+  gap is in how each counts rather than in a citation pointing nowhere.
+
+=== the satfold medians, at their line in the committed findings file ===
+| satfold-gate-false | 38391ns | base | --- | [38374, 38405] | --- | --- | --- | --- |
+| satfold-gate-true | 1438ns | -36940.4ns (-96.2%) | [-36958, -36900]ns | [1435, 1460] | YES | 0.0000 | 0.0000 | 0 |
+| satfold-lanes16 | 1456ns | -36931.9ns (-96.2%) | [-36964, -36901]ns | [1454, 1460] | YES | 0.0000 | 0.0000 | 0 |

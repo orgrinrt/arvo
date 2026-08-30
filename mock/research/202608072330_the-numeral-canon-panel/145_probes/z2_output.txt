@@ -1,0 +1,97 @@
+================================================================================================
+Loading the committed corpus
+================================================================================================
+  csv files read: 254
+  families with >= 3 size points and >= 4 shared variants: 35
+
+================================================================================================
+B1/B2/B3. Established non-dominated arms per family, as the gate tightens
+================================================================================================
+  conservative reading: the strict half is gated, the no-worse half is read on medians
+       k    mean nd arms    median    families with <= 1   with >= 2
+     0.0            3.03       3.0                     6          29
+    0.05            3.03       3.0                     6          29
+     0.1            3.03       3.0                     6          29
+    0.25            3.06       3.0                     6          29
+     0.5            3.14       3.0                     6          29
+     1.0            3.17       3.0                     6          29
+     2.0            3.26       3.0                     6          29
+
+  symmetric reading: both halves gated, which is what refuted B2
+       k    mean nd arms    median    families with <= 1   with >= 2
+     0.0            3.03       3.0                     6          29
+    0.05            2.63       3.0                     7          28
+     0.1            2.34       2.0                    10          25
+    0.25            1.77       2.0                    15          20
+     0.5            1.89       2.0                    15          20
+     1.0            2.11       2.0                    12          23
+     2.0            2.23       2.0                    14          21
+
+  B2 as predicted (count NON-INCREASING in k): REFUTED under both readings.
+     conservative reading is monotone NON-DECREASING: True, which is the correct
+       behaviour: a tighter gate establishes fewer dominations, so more arms survive
+       as non-dominated. My prediction had the direction backwards.
+     symmetric reading is monotone in neither direction: non-increasing = False, and
+       the table above shows it falling then rising, which is the two-comparison
+       mechanism recorded in the header.
+  B1 (askable at k = 0): mean 3.03 non-dominated arms, 29 of 35 families have at least two -> CONFIRMED
+  B3 (at 144's k = 0.5 the question is unaskable for a large fraction): 17.1% of families have at most one established non-dominated arm
+
+================================================================================================
+The families that keep the question askable at k = 0.5, which are the only ones
+144's zero is actually a statement about
+================================================================================================
+  families still carrying two or more established non-dominated arms at k = 0.5: 29 of 35
+    satfold-length-l1-wrap                       8 of 9 arms, 5 size points
+    precise-widening-theorem-l1                  6 of 6 arms, 6 size points
+    satfold-length-l1                            6 of 9 arms, 12 size points
+    warm-clamp-arity-w32                         5 of 6 arms, 6 size points
+    wide-rung-walk-l1                            5 of 5 arms, 6 size points
+    bitpack-contend-decode                       4 of 5 arms, 6 size points
+    warm-affine-collapse-l1                      4 of 6 arms, 6 size points
+    warm-clamp-arity-w60                         4 of 6 arms, 6 size points
+    warm-container-width-l1                      4 of 6 arms, 6 size points
+    wide-rung-density-w200                       4 of 5 arms, 4 size points
+    wide-rung-width-l1                           4 of 5 arms, 6 size points
+    wide-rung-width-l2                           4 of 5 arms, 6 size points
+    ... and 17 more
+
+================================================================================================
+B4/B5. The controls
+================================================================================================
+       k     well-separated family    duplicate family
+     0.0                         3                   4
+    0.05                         3                   4
+     0.1                         3                   4
+    0.25                         3                   4
+     0.5                         3                   4
+     1.0                         3                   4
+     2.0                         3                   4
+
+  B4 (well-separated family keeps its 3 non-dominated arms at every k): CONFIRMED
+  B5 (a family of exact duplicates reports all 4 as non-dominated at every k, since
+      no arm establishes domination over an identical one): CONFIRMED
+
+================================================================================================
+VERDICT
+================================================================================================
+  Under the conservative reading at 144's k = 0.5, 17.1% of families cannot
+  carry the question at all, because at most one of their arms is established
+  non-dominated. 144's zero is a statement about the 29 families that can,
+  not about 35.
+
+  And the gate's direction of conservatism is not stated anywhere and changes the
+  answer. Under the symmetric reading the same corpus at the same k gives a different
+  set of askable families, and the count moves non-monotonically in the gate strength,
+  which is the shape of a gate whose two comparisons pull opposite ways.
+
+  So the emptiness is partly reading (a) and partly reading (b), and the two have
+  different consequences. Where the question is askable and the answer is no instance,
+  that is evidence the linear selector suffices. Where the question is unaskable, nothing
+  has been established in either direction and the family should not be counted as
+  supporting the linear selector.
+
+  What survives without an instance: the construction (144 F144-6), the rate in random
+  tables (F144-5), and the cost where it bites (F144-9). What does not: any claim that
+  the linear limit currently costs arvo anything, and any claim that the corpus has
+  established it does not.

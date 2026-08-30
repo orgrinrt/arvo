@@ -1,0 +1,192 @@
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (16s elapsed, ~49s left)
+  pass 2/4 cd=0ms... done (32s elapsed, ~32s left)
+  pass 3/4 cd=0ms... done (48s elapsed, ~16s left)
+  pass 4/4 cd=0ms... done (64s elapsed, ~0s left)
+  Total: 64.2s
+  CSV: bitpack-contention_n163841.csv (480 rows)
+  Meta: bitpack-contention_n163841.meta.json
+  wrote bitpack-contention_n163841.csv + bitpack-contention_n163841_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (16s elapsed, ~48s left)
+  pass 2/4 cd=0ms... done (33s elapsed, ~33s left)
+  pass 3/4 cd=0ms... done (51s elapsed, ~17s left)
+  pass 4/4 cd=0ms... done (66s elapsed, ~0s left)
+  Total: 66.4s
+  CSV: bitpack-contention_n163842.csv (480 rows)
+  Meta: bitpack-contention_n163842.meta.json
+  wrote bitpack-contention_n163842.csv + bitpack-contention_n163842_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (16s elapsed, ~48s left)
+  pass 2/4 cd=0ms... done (32s elapsed, ~32s left)
+  pass 3/4 cd=0ms... done (47s elapsed, ~16s left)
+  pass 4/4 cd=0ms... done (63s elapsed, ~0s left)
+  Total: 63.0s
+  CSV: bitpack-contention_n163844.csv (480 rows)
+  Meta: bitpack-contention_n163844.meta.json
+  wrote bitpack-contention_n163844.csv + bitpack-contention_n163844_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (39s elapsed, ~118s left)
+  pass 2/4 cd=0ms... done (78s elapsed, ~78s left)
+  pass 3/4 cd=0ms... done (117s elapsed, ~39s left)
+  pass 4/4 cd=0ms... done (156s elapsed, ~0s left)
+  Total: 156.2s
+  CSV: bitpack-contention_n10485761.csv (480 rows)
+  Meta: bitpack-contention_n10485761.meta.json
+  wrote bitpack-contention_n10485761.csv + bitpack-contention_n10485761_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (39s elapsed, ~116s left)
+  pass 2/4 cd=0ms... done (77s elapsed, ~77s left)
+  pass 3/4 cd=0ms... done (116s elapsed, ~39s left)
+  pass 4/4 cd=0ms... done (155s elapsed, ~0s left)
+  Total: 154.6s
+  CSV: bitpack-contention_n10485762.csv (480 rows)
+  Meta: bitpack-contention_n10485762.meta.json
+  wrote bitpack-contention_n10485762.csv + bitpack-contention_n10485762_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (40s elapsed, ~120s left)
+  pass 2/4 cd=0ms... done (81s elapsed, ~81s left)
+  pass 3/4 cd=0ms... done (123s elapsed, ~41s left)
+  pass 4/4 cd=0ms... done (165s elapsed, ~0s left)
+  Total: 165.2s
+  CSV: bitpack-contention_n10485764.csv (480 rows)
+  Meta: bitpack-contention_n10485764.meta.json
+  wrote bitpack-contention_n10485764.csv + bitpack-contention_n10485764_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (112s elapsed, ~335s left)
+  pass 2/4 cd=0ms... done (226s elapsed, ~226s left)
+  pass 3/4 cd=0ms... done (339s elapsed, ~113s left)
+  pass 4/4 cd=0ms... done (452s elapsed, ~0s left)
+  Total: 452.4s
+  CSV: bitpack-contention_n41943041.csv (480 rows)
+  Meta: bitpack-contention_n41943041.meta.json
+  wrote bitpack-contention_n41943041.csv + bitpack-contention_n41943041_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (111s elapsed, ~332s left)
+  pass 2/4 cd=0ms... done (223s elapsed, ~223s left)
+  pass 3/4 cd=0ms... done (336s elapsed, ~112s left)
+  pass 4/4 cd=0ms... done (449s elapsed, ~0s left)
+  Total: 448.6s
+  CSV: bitpack-contention_n41943042.csv (480 rows)
+  Meta: bitpack-contention_n41943042.meta.json
+  wrote bitpack-contention_n41943042.csv + bitpack-contention_n41943042_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (132s elapsed, ~395s left)
+  pass 2/4 cd=0ms... done (265s elapsed, ~265s left)
+  pass 3/4 cd=0ms... done (398s elapsed, ~133s left)
+  pass 4/4 cd=0ms... done (534s elapsed, ~0s left)
+  Total: 533.6s
+  CSV: bitpack-contention_n41943044.csv (480 rows)
+  Meta: bitpack-contention_n41943044.meta.json
+  wrote bitpack-contention_n41943044.csv + bitpack-contention_n41943044_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (210s elapsed, ~629s left)
+  pass 2/4 cd=0ms... done (417s elapsed, ~417s left)
+  pass 3/4 cd=0ms... done (625s elapsed, ~208s left)
+  pass 4/4 cd=0ms... done (834s elapsed, ~0s left)
+  Total: 834.0s
+  CSV: bitpack-contention_n83886081.csv (480 rows)
+  Meta: bitpack-contention_n83886081.meta.json
+  wrote bitpack-contention_n83886081.csv + bitpack-contention_n83886081_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (216s elapsed, ~649s left)
+  pass 2/4 cd=0ms... done (445s elapsed, ~445s left)
+  pass 3/4 cd=0ms... done (660s elapsed, ~220s left)
+  pass 4/4 cd=0ms... done (883s elapsed, ~0s left)
+  Total: 883.2s
+  CSV: bitpack-contention_n83886082.csv (480 rows)
+  Meta: bitpack-contention_n83886082.meta.json
+  wrote bitpack-contention_n83886082.csv + bitpack-contention_n83886082_findings.md
+  Validating 6 variants × 100 seeds...
+  Validation OK: all 6 variants produce identical output
+  Determinism check: 6 variants × 10 seeds...
+  Determinism OK: all 6 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_bitpack_contend_d16.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (263s elapsed, ~789s left)
+  pass 2/4 cd=0ms... done (520s elapsed, ~520s left)
+  pass 3/4 cd=0ms... done (776s elapsed, ~259s left)
+  pass 4/4 cd=0ms... done (1040s elapsed, ~0s left)
+  Total: 1040.1s
+  CSV: bitpack-contention_n83886084.csv (480 rows)
+  Meta: bitpack-contention_n83886084.meta.json
+  wrote bitpack-contention_n83886084.csv + bitpack-contention_n83886084_findings.md

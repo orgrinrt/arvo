@@ -1,0 +1,14 @@
+  layout   Specials       data   escaping   percent
+  ieee     NoSpecials       128          8     6.2%
+  ieee     NanOnly          128          1     0.8%
+  ieee     InfOnly          128          7     5.5%
+  ieee     IeeeSpecials     128          0     0.0%
+  ocp      NoSpecials       128          1     0.8%
+  ocp      NanOnly          128          0     0.0%
+  ocp      InfOnly          128          1     0.8%
+  ocp      IeeeSpecials     128          0     0.0%
+
+  ieee layout, summed escapes across the Specials product: 16
+  ocp  layout, summed escapes across the Specials product: 2
+
+  ALL ASSERTIONS PASSED

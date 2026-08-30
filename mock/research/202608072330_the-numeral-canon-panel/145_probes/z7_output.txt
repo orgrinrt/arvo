@@ -1,0 +1,50 @@
+================================================================================================
+H1. Every citation, opened and its content tested
+================================================================================================
+  ok    I1 demoted                               INTENTS.md:51-61
+  ok    I13 ratified                             INTENTS.md:214-235
+  ok    I13 scope limit                          INTENTS.md:263-267
+  ok    op on hedge tokens                       INTENTS.md:241-246
+  ok    I16 law shape                            INTENTS.md:317-331
+  ok    Q51 span                                 OPTIONS.md:2425-2461
+  ok    Q51 denoted repair                       OPTIONS.md:2425-2461
+  ok    140 closure asymmetry                    140_mcsherry_the_strategy_set_derived_cold.md:160-169
+  ok    140 permanence test                      140_mcsherry_the_strategy_set_derived_cold.md:186-191
+  ok    139 firewall text                        139_muratori_the_strategy_set_derived_cold.md:264-270
+  ok    139 concedes the chain granularity       139_muratori_the_strategy_set_derived_cold.md:769-777
+  ok    141 monotonicity theorem                 141_lamport_the_strategy_set_attacked.md:510-524
+  ok    141 F3 absorption                        141_lamport_the_strategy_set_attacked.md:287-308
+  ok    141 F7 identity                          141_lamport_the_strategy_set_attacked.md:705-716
+  ok    142 F142-1                               142_muratori_reply_the_repair_was_dead_on_arrival.md:453-464
+  ok    142 q1 counts                            142_muratori_reply_the_repair_was_dead_on_arrival.md:88-100
+  ok    142 F142-2 partition                     142_muratori_reply_the_repair_was_dead_on_arrival.md:466-475
+  ok    142 F142-6 schedule                      142_muratori_reply_the_repair_was_dead_on_arrival.md:515-527
+  ok    142 necessary not sufficient             142_muratori_reply_the_repair_was_dead_on_arrival.md:264-270
+  ok    143 intersection lesson                  143_mcsherry_reply_the_scope_the_wording_and_one_claim_i_keep.md:424-431
+  ok    143 anti-monotone control                143_mcsherry_reply_the_scope_the_wording_and_one_claim_i_keep.md:218-226
+  ok    143 two-argument count                   143_mcsherry_reply_the_scope_the_wording_and_one_claim_i_keep.md:296-313
+  ok    144 F144-15                              144_fog_the_weighting_half_measured.md:787-803
+  ok    144 F144-16                              144_fog_the_weighting_half_measured.md:805-823
+  ok    144 F144-18                              144_fog_the_weighting_half_measured.md:837-852
+  ok    144 F144-13                              144_fog_the_weighting_half_measured.md:764-775
+  ok    144 F144-2 exact LP                      144_fog_the_weighting_half_measured.md:640-649
+  ok    144 F144-4 dead coordinate               144_fog_the_weighting_half_measured.md:662-669
+  ok    144 F144-11 arm regret                   144_fog_the_weighting_half_measured.md:739-748
+  ok    144 4.3 rescale                          144_fog_the_weighting_half_measured.md:379-392
+  ok    144 section 6 repair                     144_fog_the_weighting_half_measured.md:491-501
+  ok    144 withdrawal                           144_fog_the_weighting_half_measured.md:992-1010
+  ok    144 pairwise gate                        144_fog_the_weighting_half_measured.md:1004-1010
+  ok    137 gate run                             137_probes/g0_test_gate.out
+
+  citations checked: 34   ok: 34   failed: 0
+  H1: CONFIRMED
+
+================================================================================================
+H2/H3/H4. The mutants, each of which must be caught
+================================================================================================
+  H2 a phrase nobody wrote, in the right file and span: False (must be False)
+  H3 a real phrase in the wrong file:                   False (must be False)
+  H4 a real phrase at the wrong span:                   False (must be False)
+
+  mutants all caught: True
+  H2/H3/H4: CONFIRMED

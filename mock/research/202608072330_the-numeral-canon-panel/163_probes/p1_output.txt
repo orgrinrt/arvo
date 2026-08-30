@@ -1,0 +1,21 @@
+=== branch: footprint INTERNAL ===
+  G1 policy pair    (wrap vs sat, one carrier rule)        directions=0  witness=yes  -> SEPARATED (both names stay)
+  G2 refinement pair (one primitive, bound 15 vs 63)       directions=1  witness=no   -> REFINEMENT PAIR (ordered, both names stay)
+  THE CARRIER PAIR  (one (V,R), minimum vs headroom rule)  directions=2  witness=no   -> REFUSED as a spurious split
+
+=== branch: footprint OBSERVABLE ===
+  G1 policy pair    (wrap vs sat, one carrier rule)        directions=0  witness=yes  -> SEPARATED (both names stay)
+  G2 refinement pair (one primitive, bound 15 vs 63)       directions=1  witness=no   -> REFINEMENT PAIR (ordered, both names stay)
+  THE CARRIER PAIR  (one (V,R), minimum vs headroom rule)  directions=0  witness=yes  -> SEPARATED (both names stay)
+
+CONTROLS
+  G1 policy pair separated under footprint-internal      : PASS
+  G2 refinement pair is witness=no, directions=1         : PASS
+  G3 carrier pair separated under footprint-observable   : PASS
+
+READING
+  Under footprint-internal the carrier pair is: REFUSED as a spurious split
+  So clause 9's refusal branch fires on two shipped instantiations that differ
+  only in which carrier a marker selected. Under footprint-observable it does not.
+  Clause 9's SATISFIABILITY therefore reads the container premise, and clause 9
+  carries no conditionality marker.

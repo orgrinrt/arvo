@@ -1,0 +1,39 @@
+== --cfg badclosed (perturbation control, must refuse) ==
+error[E0080]: evaluation panicked: the closed-form law verdict disagrees with the swept verdict somewhere in the model band, so the closed form is wrong and no arm may be gated on it
+   --> p2_defeat_the_cross_check.rs:98:23
+    |
+ 98 |   const AGREEMENT: () = assert!(
+    |  _______________________^
+ 99 | |     closed_agrees_with_sweep(),
+100 | |     "the closed-form law verdict disagrees with the swept verdict somewhere in the \
+101 | |      model band, so the closed form is wrong and no arm may be gated on it"
+102 | | );
+    | |_^ evaluation of `AGREEMENT` failed here
+
+note: erroneous constant encountered
+   --> p2_defeat_the_cross_check.rs:112:18
+    |
+112 |         let () = AGREEMENT;
+    |                  ^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit: 1
+
+== --cfg audit (the check the mechanism does not run, must refuse) ==
+error[E0080]: evaluation panicked: the licensed law is FALSE at the gated width: the product of the sixteen consecutive integers ending at x = 16 is 16! = 2^15 * odd, nonzero mod 2^64
+   --> p2_defeat_the_cross_check.rs:129:19
+    |
+129 |   const AUDIT: () = assert!(
+    |  ___________________^
+130 | |     falling_prod(16, 64) == 0,
+131 | |     "the licensed law is FALSE at the gated width: the product of the sixteen \
+132 | |      consecutive integers ending at x = 16 is 16! = 2^15 * odd, nonzero mod 2^64"
+133 | | );
+    | |_^ evaluation of `AUDIT` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+exit: 1

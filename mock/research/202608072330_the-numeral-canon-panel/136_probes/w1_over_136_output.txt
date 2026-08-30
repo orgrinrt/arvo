@@ -1,0 +1,50 @@
+================================================================================================
+Anchor accounting for 136, on 132_probes/w1's patterns
+================================================================================================
+  union built from 11 files
+
+  class                 in the union   in 136  incl. accounting  not carried
+  finding                         28       25                28            3
+  finding_full_only               19       16                19            3
+  line                            24       19                24           20
+  line_panel                      17       19                24           13
+  line_panel_norm                 16       19                24           12
+  probe                           25       12                12           16
+  probe_stem                      17       21                21            1
+  theorem                          9        9                 9            0
+
+  S1, the stripper: FIRED  (finding +3, finding_full_only +3, line +5, line_panel +5, line_panel_norm +5)
+
+  finding: 25 carried, 3 not
+      F122-2                F122-4                F122-5              
+  finding_full_only: 16 carried, 3 not
+      F122-2                F122-4                F122-5              
+  line: 4 carried, 20 not
+      116:486               117:35                119:598               122:642               122:642-646           125:326             
+      125:4                 125:455-477           126:511               128:177               23:20                 23:28               
+      23:29                 INTENTS.md:135        INTENTS.md:214        INTENTS.md:252        INTENTS.md:268        INTENTS.md:299      
+      q3_the_fraction_width_splits_my_arms_too.py:407-413  q5_one_rule_with_two_locality_conditions.py:107-109
+  line_panel: 4 carried, 13 not
+      116:486               117:35                119:598               122:642               122:642-646           125:326             
+      125:4                 125:455-477           126:511               128:177               23:20                 23:28               
+      23:29               
+  line_panel_norm: 4 carried, 12 not
+      ('116', '486')        ('117', '35')         ('119', '598')        ('122', '642')        ('125', '326')        ('125', '4')        
+      ('125', '455')        ('126', '511')        ('128', '177')        ('23', '20')          ('23', '28')          ('23', '29')        
+  probe: 9 carried, 16 not
+      118_probes/q3_the_fraction_width_splits_my_arms_too.py  118_probes/q5         118_probes/q5_one_rule_with_two_locality_conditions.py  125_probes/p3_commutation_with_overflow.py  125_probes/p3_output.txt  126_probes/p1_output.txt
+      126_probes/p1_rounding_character.py  126_probes/p2_order_of_round_and_clamp.py  126_probes/p3_double_rounding_isolated.py  126_probes/p4_stochastic_nonmonotone_fixed.py  128_probes/r1         p1_rounding_character.py
+      p3_double_rounding_isolated.py  p4_stochastic_nonmonotone_fixed.py  q3_the_fraction_width_splits_my_arms_too.py  q5_one_rule_with_two_locality_conditions.py
+  probe_stem: 16 carried, 1 not
+      q5                  
+  theorem: 9 carried, 0 not
+
+================================================================================================
+VERDICT
+================================================================================================
+  S1 stripper fired: True
+  S2 not-carried is non-empty: True (68 across all classes)
+  S3 is not answerable by this probe. Whether every CHANGED clause carries its own
+     anchors is a hand check against the list above, run in 136 section 11. A count
+     cannot make it, because a revision legitimately drops the anchors of clauses it
+     leaves standing, and that is indistinguishable from dropping the ones it moved.

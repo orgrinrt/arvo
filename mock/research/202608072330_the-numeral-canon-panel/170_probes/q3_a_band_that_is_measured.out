@@ -1,0 +1,48 @@
+W = 8, domain 0..256 exhaustive, nearest-point resolution onto [0,255]
+
+CONSTRUCTION 1 (168's)
+  branch A: exact needs 20 bits, resolved needs 16  -> band [16,19] width 4
+  branch B: exact needs 10 bits, resolved needs 6
+   carrier  A forces  cost inputs   cost total  actual loss
+         8     False            0            0            0
+        10     False          203        15504            0
+        12     False          203        15504            0
+        14     False          203        15504            0
+        16      True          203        15504        15504
+        19      True          203        15504        15504
+        20     False          203        15504            0
+        22     False          203        15504            0
+        24     False          203        15504            0
+        25     False          203        15504            0
+        29     False          203        15504            0
+        33     False          203        15504            0
+
+CONSTRUCTION 2 (new)
+  branch A: exact needs 20 bits, resolved needs 16  -> band [16,19] width 4
+  branch B: exact needs 25 bits, resolved needs 22
+   carrier  A forces  cost inputs   cost total  actual loss
+         8     False            0            0            0
+        10     False            0            0            0
+        12     False            0            0            0
+        14     False            0            0            0
+        16      True          203         1827         1827
+        19      True           46          414          414
+        20     False            0            0            0
+        22     False           23        16964            0
+        24     False          131       773895            0
+        25     False          203      2207232            0
+        29     False          203      2207232            0
+        33     False          203      2207232            0
+
+=== CONTROLS ===
+C1 construction 1's cost is constant over the range 169 swept    : True  [(203, 15504)]
+    and over the full 8..33 sweep it takes 3 values: [(0, 0), (86, 2795), (203, 15504)]
+    the extra values are all at carriers below 12, where A is unrealisable either way
+C2 construction 2's loss takes >= 2 values inside A's band       : True  [(46, 414), (117, 1053), (167, 1503), (203, 1827)]
+C3 above every requirement A does not force, so actual loss is 0 : True
+C4 construction 1 reproduces 168's 203 inputs / 15504 at c=16    : True
+
+RESULT: the band is entailed for 168's construction and MEASURED for one
+where branch B reads the carrier. 169's O-169-3 closes: T1's conclusion is
+unchanged, its band has a closed form [R, E-1], and 'measured' becomes the
+right word only for a construction whose losing branch has a width of its own.

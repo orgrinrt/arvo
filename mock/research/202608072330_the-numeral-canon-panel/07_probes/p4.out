@@ -1,0 +1,70 @@
+=== Q1. The forced right adjoint g'(v) = max{x : a(x) <= v} ===
+    Reported: does g' satisfy the biconditional with a, and is g' the
+    embedding.  'adjoint to something else' is the interesting middle case.
+
+     toward +inf | biconditional-with-g' fails at     0 | g' is the embedding: True
+     toward -inf | biconditional-with-g' fails at     0 | g' is the embedding: False
+     toward zero | biconditional-with-g' fails at     0 | g' is the embedding: False
+  away from zero | biconditional-with-g' fails at     0 | g' is the embedding: False
+   nearest, even | biconditional-with-g' fails at     0 | g' is the embedding: False
+   nearest, away | biconditional-with-g' fails at     0 | g' is the embedding: False
+
+    A mode with 0 failures and g' = embedding is a lower adjoint to the
+    embedding.  0 failures with g' != embedding would be an adjoint to a
+    different upper map.  Nonzero failures means not an adjoint at all,
+    since the forced candidate is the only one that could have worked.
+
+=== Q2. Double rounding: is rounding through an intermediate grid the same ===
+    as rounding once?  Nested grids first, then non-nested.
+
+                        case |    toward +inf |    toward -inf |    toward zero | away from zero |  nearest, even |  nearest, away
+------------------------------------------------------------------------------------------------------------------------------------
+nested   1/16 -> 1/4  -> 1/1 |              0 |              0 |              0 |              0 |              8 |              8   [V2 in V1: True]
+nested   1/32 -> 1/8  -> 1/2 |              0 |              0 |              0 |              0 |             16 |             16   [V2 in V1: True]
+nested   1/64 -> 1/16 -> 1/4 |              0 |              0 |              0 |              0 |             32 |             32   [V2 in V1: True]
+NON-nest 1/12 -> 1/4  -> 1/3 |             12 |             12 |             12 |             12 |              8 |              8   [V2 in V1: False]
+NON-nest 1/36 -> 1/9  -> 1/4 |             24 |             24 |             24 |             24 |             16 |             16   [V2 in V1: False]
+NON-nest 1/30 -> 1/6  -> 1/5 |             40 |             40 |             40 |             40 |             24 |             24   [V2 in V1: False]
+
+    Columns are counts of exact values where two-step rounding differs from
+    one-step.  Zero means the composition law holds on that grid triple.
+
+=== Q3. A named witness for round-to-nearest, since a count is not a proof ===
+     toward +inf | no witness on this triple
+     toward -inf | no witness on this triple
+     toward zero | no witness on this triple
+  away from zero | no witness on this triple
+   nearest, even | x=9/16  one-step -> 1  two-step -> 0  (via 1/2)
+   nearest, away | x=3/8  one-step -> 0  two-step -> 1  (via 1/2)
+
+=== Q1b. What each mode's forced upper adjoint actually is ===
+    g'(v) = max{x : a(x) <= v}.  The gap g'(v) - v is what a datum of
+    that mode denotes beyond its own value.
+     toward +inf | g'(v) - v takes values [Fraction(0, 1)]
+     toward -inf | g'(v) - v takes values [Fraction(0, 1), Fraction(7, 32)]
+     toward zero | g'(v) - v takes values [Fraction(0, 1), Fraction(7, 32)]
+  away from zero | g'(v) - v takes values [Fraction(0, 1), Fraction(7, 32)]
+   nearest, even | g'(v) - v takes values [Fraction(0, 1), Fraction(3, 32), Fraction(1, 8)]
+   nearest, away | g'(v) - v takes values [Fraction(0, 1), Fraction(3, 32), Fraction(1, 8)]
+    step is 1/4 and the concrete lattice's own tick is 1/32, so a gap of
+    7/32 is 'a quarter minus one tick', i.e. the whole half-open cell.
+
+=== Q2b. Composition over a SIGNED range, so toward-zero separates ===
+                        case |    toward +inf |    toward -inf |    toward zero | away from zero |  nearest, even |  nearest, away
+------------------------------------------------------------------------------------------------------------------------------------
+nested   1/16 -> 1/4  -> 1/1 |              0 |              0 |              0 |              0 |              8 |              8   [V2 in V1: True]
+nested   1/32 -> 1/8  -> 1/2 |              0 |              0 |              0 |              0 |             16 |             16   [V2 in V1: True]
+NON-nest 1/12 -> 1/4  -> 1/3 |             12 |             12 |             12 |             12 |              8 |              8   [V2 in V1: False]
+
+=== Q4. Does the composition law track the pivot's position? ===
+    'away from p' rounds down above p and up below it.  With V2 the
+    integer grid and V1 the quarter grid, a pivot at 0 or 1 sits on both
+    grids; a pivot at 1/2 or 1/4 sits inside a coarse cell.
+    [V2 in V1: True]
+    pivot    0 | on the coarse grid:  True | composition fails at   0
+    pivot    1 | on the coarse grid:  True | composition fails at   0
+    pivot    2 | on the coarse grid:  True | composition fails at   0
+    pivot  1/2 | on the coarse grid: False | composition fails at   7  first x=9/32: one-step 1, two-step 0 via 1/2
+    pivot  1/4 | on the coarse grid: False | composition fails at   7  first x=1/32: one-step 1, two-step 0 via 1/4
+    pivot  3/4 | on the coarse grid: False | composition fails at   7  first x=17/32: one-step 1, two-step 0 via 3/4
+    pivot  3/2 | on the coarse grid: False | composition fails at   7  first x=41/32: one-step 2, two-step 1 via 3/2

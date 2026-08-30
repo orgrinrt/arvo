@@ -1,0 +1,13 @@
+W=13 lim=8191 k=2731  N=8192, 3 ops/element
+
+arm                                              ns/call      answer
+saturating, const k and lim (bench shape)              0        8191
+saturating, opaque k and lim (test shape)           1554        8191
+wrapping,   const k and lim (no fixpoint)            767        4096
+
+saturating, const, DIFFERENT column b                  0        8191
+wrapping,   const, DIFFERENT column b                764        4928
+
+saturating agrees across shapes: true
+saturating answer is input-insensitive past element 3: a=8191 b=8191 same=true
+wrapping   answer IS input-sensitive:                 a=4096 b=4928 same=false

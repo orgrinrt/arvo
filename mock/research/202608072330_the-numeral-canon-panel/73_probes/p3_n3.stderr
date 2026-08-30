@@ -1,0 +1,10 @@
+error[E0080]: evaluation panicked: assertion failed: add_closed_on_window()
+   --> p3_n3.rs:317:15
+    |
+317 | const _: () = assert!(add_closed_on_window());
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
+n3 EXIT=1

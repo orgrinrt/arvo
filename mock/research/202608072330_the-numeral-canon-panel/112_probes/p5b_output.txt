@@ -1,0 +1,86 @@
+==============================================================================
+p5b. The lifting rule is per construction
+==============================================================================
+
+BASE uW3sat  (range 0 .. 7)
+
+  ctor       rule                      bound      says      unsound
+  product2   componentwise                 1 discharge         0/16
+  product2   componentwise                 2 discharge         0/81
+  product2   componentwise                 3    refuse        0/256
+  product2   twice-componentwise           1 discharge         0/16
+  product2   twice-componentwise           2    refuse         0/81
+  product2   twice-componentwise           3    refuse        0/256
+  product2   twice-and-signed-below        1    refuse         0/16
+  product2   twice-and-signed-below        2    refuse         0/81
+  product2   twice-and-signed-below        3    refuse        0/256
+
+  dual       componentwise                 1 discharge         0/16
+  dual       componentwise                 2 discharge         1/81  <== UNSOUND
+  dual       componentwise                 3    refuse        0/256
+  dual       twice-componentwise           1 discharge         0/16
+  dual       twice-componentwise           2    refuse         0/81
+  dual       twice-componentwise           3    refuse        0/256
+  dual       twice-and-signed-below        1    refuse         0/16
+  dual       twice-and-signed-below        2    refuse         0/81
+  dual       twice-and-signed-below        3    refuse        0/256
+
+  complex    componentwise                 1 discharge         3/16  <== UNSOUND
+  complex    componentwise                 2 discharge        26/81  <== UNSOUND
+  complex    componentwise                 3    refuse        0/256
+  complex    twice-componentwise           1 discharge         3/16  <== UNSOUND
+  complex    twice-componentwise           2    refuse         0/81
+  complex    twice-componentwise           3    refuse        0/256
+  complex    twice-and-signed-below        1    refuse         0/16
+  complex    twice-and-signed-below        2    refuse         0/81
+  complex    twice-and-signed-below        3    refuse        0/256
+
+
+BASE sW4sat  (range -8 .. 7)
+
+  ctor       rule                      bound      says      unsound
+  product2   componentwise                 1 discharge         0/16
+  product2   componentwise                 2 discharge         0/81
+  product2   componentwise                 3    refuse        0/256
+  product2   twice-componentwise           1 discharge         0/16
+  product2   twice-componentwise           2    refuse         0/81
+  product2   twice-componentwise           3    refuse        0/256
+  product2   twice-and-signed-below        1 discharge         0/16
+  product2   twice-and-signed-below        2    refuse         0/81
+  product2   twice-and-signed-below        3    refuse        0/256
+
+  dual       componentwise                 1 discharge         0/16
+  dual       componentwise                 2 discharge         1/81  <== UNSOUND
+  dual       componentwise                 3    refuse        0/256
+  dual       twice-componentwise           1 discharge         0/16
+  dual       twice-componentwise           2    refuse         0/81
+  dual       twice-componentwise           3    refuse        0/256
+  dual       twice-and-signed-below        1 discharge         0/16
+  dual       twice-and-signed-below        2    refuse         0/81
+  dual       twice-and-signed-below        3    refuse        0/256
+
+  complex    componentwise                 1 discharge         0/16
+  complex    componentwise                 2 discharge         1/81  <== UNSOUND
+  complex    componentwise                 3    refuse        0/256
+  complex    twice-componentwise           1 discharge         0/16
+  complex    twice-componentwise           2    refuse         0/81
+  complex    twice-componentwise           3    refuse        0/256
+  complex    twice-and-signed-below        1 discharge         0/16
+  complex    twice-and-signed-below        2    refuse         0/81
+  complex    twice-and-signed-below        3    refuse        0/256
+
+SUMMARY: the smallest rule that is sound for each construction
+
+  base uW3sat     product2   smallest sound rule: componentwise
+  base uW3sat     dual       smallest sound rule: twice-componentwise
+  base uW3sat     complex    smallest sound rule: NONE of the three fires soundly
+
+  base sW4sat     product2   smallest sound rule: componentwise
+  base sW4sat     dual       smallest sound rule: twice-componentwise
+  base sW4sat     complex    smallest sound rule: twice-componentwise
+
+INSTRUMENT CHECK
+
+  the known-bad cell reproduces: complex/componentwise/2 -> 26/81
+  the known-good cell reproduces: product2/componentwise/2 -> 0/81
+  the scorer separates them: True

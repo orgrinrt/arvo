@@ -1,0 +1,15 @@
+[package]
+name = "bench-bitpack-footprint-packed"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_bitpack_footprint_packed"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+bench-bitpack-footprint-shared = { path = "../bitpack-footprint-shared" }
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }

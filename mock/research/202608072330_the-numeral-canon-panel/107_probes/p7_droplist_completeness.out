@@ -1,0 +1,34 @@
+=== is it twelve? counting the bold leads in 106 section 13.2 ===
+13
+
+=== one-file results from the members, tested against 106 ===
+-- from 97 --
+  DROPPED  F-H: a declared non-negative operand window RECOVERS three laws at signed saturating
+  DROPPED  F-B: the gap is polynomial against exponential in the region count
+  carried  F-A2: rationalisability decidable at ANY number of cost dimensions (1 hits)
+  DROPPED  F-G: at F=0 unsigned saturating, distributivity over SUBTRACTION fails
+-- from 98 --
+  DROPPED  F-98-7: a hard bound on a measurement has NO weighting
+  DROPPED  the five-rung ladder L0..L5, and L1 = L2 on structured data
+  DROPPED  F-98-5: the L4/L1 ratio varies 47x, so a value of it is a fact about ONE table
+  DROPPED  F-98-4: the union-graph acyclicity criterion for the order rung
+  DROPPED  F-98-1: 144 Pareto-admissible sections, the rung between L0 and L3
+  DROPPED  F-98-13: select the section by resample agreement, not the point estimate
+-- from 93 --
+  DROPPED  F1a: the F = 0 half extends to ANY width by proof rather than by sweep
+  carried  F11 / P8: Q41 answered, with signedness as the separating predicate (2 hits)
+  DROPPED  Q14 collapse: lexicographic and a stated rate are one option at two values
+  DROPPED  section 2's six axes, including the five it does name
+-- from 94 --
+  carried  W4/W5: the retraction verdict differs PER OPERATION PAIR, 6 of 9 for saturation (2 hits)
+  carried  R1/R2/R3 and W8                                                (6 hits)
+-- from 101 --
+  carried  F-101-2: 0 of 94 implement score_output; 82 of 82 call sites use timed! (6 hits)
+  carried  the six reachable dead columns and the distance to each        (7 hits)
+-- from 102 --
+  carried  F-102-7: rounding to nearest costs ONE hoisted instruction on aarch64 (2 hits)
+
+=== for contrast: things 106 does carry, as a control on the instrument ===
+  carried  CONTROL the free join semilattice (should be carried)          (2 hits)
+  carried  CONTROL the 0.273% control-pair floor (should be carried)      (1 hits)
+  carried  CONTROL the 175/79 pre-wiring split (should be carried)        (3 hits)

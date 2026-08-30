@@ -1,0 +1,108 @@
+====================================================================================================
+C1. Does every arm match exactly one assignment's denotation?
+====================================================================================================
+  shape       arm                         realises assignments                        n
+  W4 F0 s     fused/widening              floor/sat/exact, floor/wrap/exact, +4       6
+  W4 F0 s     fused/partials              floor/sat/exact, floor/wrap/exact, +4       6
+  W4 F0 s     stepwise/shift              floor/sat/stepwise, floor/wrap/exact, +4    6
+  W4 F0 s     stepwise/partials           floor/sat/stepwise, floor/wrap/exact, +4    6
+  W4 F0 s     CONTROL off-axis ceiling    floor/sat/exact, floor/wrap/exact, +4       6
+
+  W4 F1 s     fused/widening              floor/sat/exact, floor/wrap/exact, +3       5
+  W4 F1 s     fused/partials              floor/sat/exact, floor/wrap/exact, +3       5
+  W4 F1 s     stepwise/shift              floor/sat/stepwise, floor/wrap/exact, +3    5
+  W4 F1 s     stepwise/partials           floor/sat/stepwise, floor/wrap/exact, +3    5
+  W4 F1 s     CONTROL off-axis ceiling    NONE                                        0
+
+  W4 F2 s     fused/widening              floor/sat/exact, floor/wrap/exact, +3       5
+  W4 F2 s     fused/partials              floor/sat/exact, floor/wrap/exact, +3       5
+  W4 F2 s     stepwise/shift              floor/sat/stepwise, floor/wrap/exact, +3    5
+  W4 F2 s     stepwise/partials           floor/sat/stepwise, floor/wrap/exact, +3    5
+  W4 F2 s     CONTROL off-axis ceiling    NONE                                        0
+
+  W4 F0 u     fused/widening              floor/sat/exact, floor/sat/stepwise, +6     8
+  W4 F0 u     fused/partials              floor/sat/exact, floor/sat/stepwise, +6     8
+  W4 F0 u     stepwise/shift              floor/sat/exact, floor/sat/stepwise, +6     8
+  W4 F0 u     stepwise/partials           floor/sat/exact, floor/sat/stepwise, +6     8
+  W4 F0 u     CONTROL off-axis ceiling    floor/sat/exact, floor/sat/stepwise, +6     8
+
+  W4 F2 u     fused/widening              floor/sat/exact, floor/sat/stepwise, +6     8
+  W4 F2 u     fused/partials              floor/sat/exact, floor/sat/stepwise, +6     8
+  W4 F2 u     stepwise/shift              floor/sat/exact, floor/sat/stepwise, +6     8
+  W4 F2 u     stepwise/partials           floor/sat/exact, floor/sat/stepwise, +6     8
+  W4 F2 u     CONTROL off-axis ceiling    NONE                                        0
+
+  C1 (every non-control arm realises at least one assignment): CONFIRMED
+  C2 (the off-axis control matches nothing, except at F = 0 where no rounding fires): CONFIRMED
+
+====================================================================================================
+C3. The pairing, which is what makes C1 non-vacuous
+====================================================================================================
+  shape       pair                                            differences of
+  W4 F0 s     conforming: fused/widening vs fused/partials         0 of 4096
+  W4 F0 s     non-conforming: fused vs stepwise                 1166 of 4096   (28.47%)
+  W4 F1 s     conforming: fused/widening vs fused/partials         0 of 4096
+  W4 F1 s     non-conforming: fused vs stepwise                  940 of 4096   (22.95%)
+  W4 F2 s     conforming: fused/widening vs fused/partials         0 of 4096
+  W4 F2 s     non-conforming: fused vs stepwise                  820 of 4096   (20.02%)
+  W4 F0 u     conforming: fused/widening vs fused/partials         0 of 4096
+  W4 F0 u     non-conforming: fused vs stepwise                    0 of 4096   (0.00%)
+  W4 F2 u     conforming: fused/widening vs fused/partials         0 of 4096
+  W4 F2 u     non-conforming: fused vs stepwise                    0 of 4096   (0.00%)
+
+  C3 (conforming pair agrees, non-conforming pair differs): CONFIRMED
+
+====================================================================================================
+C4. How many arms does each assignment have, since a weighting needs at least two
+====================================================================================================
+  W4 F0 s
+    floor/wrap/stepwise                4 conforming arms: fused/widening, fused/partials, stepwise/shift, stepwise/partials
+    floor/wrap/exact                   4 conforming arms: fused/widening, fused/partials, stepwise/shift, stepwise/partials
+    floor/sat/stepwise                 2 conforming arms: stepwise/shift, stepwise/partials
+    floor/sat/exact                    2 conforming arms: fused/widening, fused/partials
+    toward_zero/wrap/stepwise          4 conforming arms: fused/widening, fused/partials, stepwise/shift, stepwise/partials
+    toward_zero/wrap/exact             4 conforming arms: fused/widening, fused/partials, stepwise/shift, stepwise/partials
+    toward_zero/sat/stepwise           2 conforming arms: stepwise/shift, stepwise/partials
+    toward_zero/sat/exact              2 conforming arms: fused/widening, fused/partials
+  W4 F1 s
+    floor/wrap/stepwise                4 conforming arms: fused/widening, fused/partials, stepwise/shift, stepwise/partials
+    floor/wrap/exact                   4 conforming arms: fused/widening, fused/partials, stepwise/shift, stepwise/partials
+    floor/sat/stepwise                 2 conforming arms: stepwise/shift, stepwise/partials
+    floor/sat/exact                    2 conforming arms: fused/widening, fused/partials
+    toward_zero/wrap/stepwise          2 conforming arms: stepwise/shift, stepwise/partials
+    toward_zero/wrap/exact             2 conforming arms: fused/widening, fused/partials
+    toward_zero/sat/stepwise           2 conforming arms: stepwise/shift, stepwise/partials
+    toward_zero/sat/exact              2 conforming arms: fused/widening, fused/partials
+  W4 F2 s
+    floor/wrap/stepwise                4 conforming arms: fused/widening, fused/partials, stepwise/shift, stepwise/partials
+    floor/wrap/exact                   4 conforming arms: fused/widening, fused/partials, stepwise/shift, stepwise/partials
+    floor/sat/stepwise                 2 conforming arms: stepwise/shift, stepwise/partials
+    floor/sat/exact                    2 conforming arms: fused/widening, fused/partials
+    toward_zero/wrap/stepwise          2 conforming arms: stepwise/shift, stepwise/partials
+    toward_zero/wrap/exact             2 conforming arms: fused/widening, fused/partials
+    toward_zero/sat/stepwise           2 conforming arms: stepwise/shift, stepwise/partials
+    toward_zero/sat/exact              2 conforming arms: fused/widening, fused/partials
+
+  The count is a function of the OVERFLOW position, which is component one:
+    overflow = sat    conforming-arm counts observed: [2]
+    overflow = wrap   conforming-arm counts observed: [2, 4]
+  C4: under wrapping every arm conforms to every intermediate position, because the
+  absorption theorem (141 F3) makes fused and stepwise the same denotation there. Under
+  saturating the four arms split two and two. So the number of arms component two ranges
+  over is itself a function of component one, and at some assignments a weighting has
+  strictly fewer things to choose among than at others.
+
+====================================================================================================
+VERDICT
+====================================================================================================
+  144's 'nothing in the type says so' is true of an assignment set that lacks the axis and
+  false of one that carries it. The join therefore has a condition, and it is checkable:
+
+    every lowering arm the design admits realises the denotation of some assignment
+
+  Under that condition the firewall is enforceable by declaration alone. A conforming pair
+  is two arms of one assignment and the weighting picks between them freely, moving no
+  answer. A non-conforming pair is two assignments and the type names which one, so the
+  42.14% is a declared difference rather than a silent one. The control shows the condition
+  is not automatic: an arm rounding off the axis realises no assignment, and for that arm
+  the firewall has no repair available in the type.

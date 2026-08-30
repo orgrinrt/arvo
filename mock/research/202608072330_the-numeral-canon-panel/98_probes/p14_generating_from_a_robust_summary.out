@@ -1,0 +1,44 @@
+resamples 2000, seed 20260814, committed samples only, no new measurement
+
+speed-first
+  point-estimate section   ['packed-simd', 'd16-control', 'd16', 'd16', 'd16', 'd16-control']
+    reproduced by 531 of 2000 resamples (26.6%)
+  modal section            ['packed-simd', 'd16-control', 'd16', 'd16', 'd16', 'd16-control']
+    reproduced by 531 of 2000 resamples (26.6%)
+  they agree, so the point estimate was already the most reproducible one
+
+storage-first
+  point-estimate section   ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+    reproduced by 881 of 2000 resamples (44.0%)
+  modal section            ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+    reproduced by 881 of 2000 resamples (44.0%)
+  they agree, so the point estimate was already the most reproducible one
+
+tail-first
+  point-estimate section   ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']
+    reproduced by 114 of 2000 resamples (5.7%)
+  modal section            ['packed', 'packed-simd', 'packed', 'packed-simd', 'packed', 'packed-simd']
+    reproduced by 243 of 2000 resamples (12.2%)
+  THEY DIFFER at 1 of 6 regions, and the modal one is reproduced 129 times more often
+    region index 3: point picks packed, modal picks packed-simd
+
+weightings where the two rules disagree: 1 of 3
+
+reading
+  The improvement is available only under the generation order. A
+  hand-written table records a winner somebody read off a findings
+  file, and a findings file reports medians. A generator holds the
+  samples, so it can pick the section a rerun is most likely to
+  reproduce instead of the section this run happened to produce.
+
+  It is a small win and it is cheap to keep: the generator already has
+  the samples, and the extra cost is resampling them once, offline, at
+  the moment the table is written. It costs nothing at compile time and
+  nothing at run time, which is the bound on taking a win.
+
+  What it does NOT do is make the section stable. The modal section for
+  the least stable weighting is still reproduced by only a minority of
+  resamples, so the underlying instability is a property of the
+  measurement rather than of the selection rule. Choosing the modal one
+  makes the shipped answer the most likely one; it does not make it
+  likely.

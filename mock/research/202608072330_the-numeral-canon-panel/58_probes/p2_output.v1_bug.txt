@@ -1,0 +1,27 @@
+=== multiplicative fold: LEFT versus RIGHT association, guard width w ===
+
+  format: M = 15, F = 3 (I = 1). w = guard fractional bits kept
+  between steps, narrowed once at the very end. w=0 is what an ordinary
+  eager `UFixed<I,F,S>` multiply chain does today.
+
+   n     tuples   div at w=0     full w  min w clean   min_w/full_w
+   2        256            0          3            0          0.00%
+   3       4096          884          6            7        116.67%
+   4      65536        19200          9           10        111.11%
+
+  n>=3 shows divergence at w=0 (matches p4's coarsen-only finding): true
+  full-precision guard (w = (n-1)*F) always agrees with LEFT, RIGHT and
+  the once-at-the-end exact reduction: false
+  the required guard tracks full precision rather than staying a small
+additive-shaped constant (min_w >= full_w - 1 for every n >= 3 measured): true
+
+=== contrast: 57_probes/p6's additive result, restated for scale ===
+
+  addition needed exactly ONE bit less than the exact-sum width, at EVERY
+  fold length 2 through 8, uniformly: a constant offset from a bound that
+  itself grows only logarithmically in n (ceil(log2 n) extra integer bits).
+  the multiplicative guard measured here tracks a bound that grows LINEARLY
+  in n (one full rescale, F bits, per additional operand), and needs nearly
+  all of it: there is no small constant that suffices independent of n.
+
+P2 FAILS

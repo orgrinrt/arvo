@@ -1,0 +1,38 @@
+==============================================================================
+K3. the separation LP against the full enumeration
+==============================================================================
+  compared 770 arms: 406 strictly negative, 63 exactly zero, 301 strictly positive
+  mismatches: 0 -> PASS
+
+==============================================================================
+J1/J2. the image against the two arguments
+==============================================================================
+ d        n=8      n=16      n=24
+ 1       1.00      1.00      1.00
+ 2       2.45      2.60      2.70
+ 3       3.55      4.70      5.75
+ 4       4.45      6.90      8.65
+ 5       5.70      9.05     12.50
+
+K1 image at d=1 is exactly 1: [1.0, 1.0, 1.0] -> PASS
+K2 no dominated arm strictly selectable: PASS
+J1 image rises monotonically with d at every n: CONFIRMED
+
+J2 which argument moves it more:
+   d=2: tripling the arm count 8 -> 24 adds +0.25; adding one coordinate adds +2.10
+   d=3: tripling the arm count 8 -> 24 adds +2.20; adding one coordinate adds +2.20
+   d=4: tripling the arm count 8 -> 24 adds +4.20; adding one coordinate adds +2.15
+   J2 -> REFUTED
+
+reading, with J2 refuted and the conclusion narrowed to what survives:
+  the image grows in BOTH arguments, so my saturation prediction was wrong,
+  and above d = 3 the arm count moves it more than a coordinate does. What
+  survives is the level rather than the growth. At d = 2 the image is 2.45
+  to 2.70 arms whatever the arm count, and at d = 3 it is 3.55 to 5.75. In
+  the region 139 actually proposes, three cost coordinates, a linear
+  selector can distinguish about four to six arms however many exist, so a
+  design naming many more weightings than that has named points nothing can
+  tell apart. At d = 5 the image reaches half the arm set and the bound stops
+  being interesting, which is itself a reason to keep the coordinate set small.
+
+control failures: 0 []

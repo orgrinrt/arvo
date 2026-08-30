@@ -1,0 +1,28 @@
+=== first attempt, kept with its refutation ===
+clamp_top_only_unconstrained_floor: one clamp (ceiling), operands of both signs
+  top=3   operands in [  -7,7   ] triples=   3375  assoc-failures=904   H1 predicted 0, got this
+  top=8   operands in [ -12,12  ] triples=  15625  assoc-failures=3244   H1 predicted 0, got this
+  top=15  operands in [ -19,19  ] triples=  59319  assoc-failures=10468   H1 predicted 0, got this
+
+=== second attempt, the discriminating case ===
+non-negative operands (0..=N), one clamp at the top, floor never reached:
+  top=3   operands in [0,12 ] triples=   2197  assoc-failures=0
+  top=8   operands in [0,16 ] triples=   4913  assoc-failures=0
+  top=15  operands in [0,24 ] triples=  15625  assoc-failures=0
+
+non-negative operands (0..=N), TWO clamps (explicit floor 0, ceiling top),
+floor still structurally unreachable from non-negative operands:
+  lo=0 hi=3   operands in [0,12 ] triples=   2197  assoc-failures=0
+  lo=0 hi=8   operands in [0,16 ] triples=   4913  assoc-failures=0
+  lo=0 hi=15  operands in [0,24 ] triples=  15625  assoc-failures=0
+
+non-negative operands (0..=N), TWO clamps where the floor IS reachable
+(a positive floor above 0, so a small enough partial sum clamps low):
+  lo=2   hi=10  operands in [0,14 ] triples=   3375  assoc-failures=48
+  lo=5   hi=20  operands in [0,26 ] triples=  19683  assoc-failures=450
+
+H1 (one clamp associates, two do not) predicts failures in the second and third
+blocks above and none in the first. H2 (confinement to a half-line that already
+contains the result associates, regardless of clamp count) predicts failures
+only in the fourth block, where the floor is actually reachable, and none in the
+second or third.

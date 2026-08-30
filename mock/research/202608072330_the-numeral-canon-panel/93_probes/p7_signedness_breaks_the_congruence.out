@@ -1,0 +1,67 @@
+P7. Signedness against the congruence argument
+==============================================
+
+F = 0 throughout, so this isolates signedness from the fraction axis
+that P2b and P2c already established. Exhaustive over the whole
+signed domain at each width, both operand orders, every triple.
+
+--- signed W = 3, domain [-4, 3], overflow = wrap ---
+    (a+b)+c == a+(b+c)     HOLDS  (0/512)
+    (a*b)*c == a*(b*c)     HOLDS  (0/512)
+    a*(b+c) == a*b+a*c     HOLDS  (0/512)
+--- signed W = 3, domain [-4, 3], overflow = saturate ---
+    (a+b)+c == a+(b+c)     FAILS  108/512 = 21.09%   first: a=-4,b=-4,c=1 -> -3 vs -4
+    (a*b)*c == a*(b*c)     FAILS  28/512 =  5.47%   first: a=-4,b=-4,c=-1 -> -3 vs -4
+    a*(b+c) == a*b+a*c     FAILS  120/512 = 23.44%   first: a=-4,b=-4,c=1 -> 3 vs -1
+--- signed W = 4, domain [-8, 7], overflow = wrap ---
+    (a+b)+c == a+(b+c)     HOLDS  (0/4096)
+    (a*b)*c == a*(b*c)     HOLDS  (0/4096)
+    a*(b+c) == a*b+a*c     HOLDS  (0/4096)
+--- signed W = 4, domain [-8, 7], overflow = saturate ---
+    (a+b)+c == a+(b+c)     FAILS  952/4096 = 23.24%   first: a=-8,b=-8,c=1 -> -7 vs -8
+    (a*b)*c == a*(b*c)     FAILS  160/4096 =  3.91%   first: a=-8,b=-8,c=-1 -> -7 vs -8
+    a*(b+c) == a*b+a*c     FAILS  1414/4096 = 34.52%   first: a=-8,b=-8,c=1 -> 7 vs -1
+--- signed W = 5, domain [-16, 15], overflow = wrap ---
+    (a+b)+c == a+(b+c)     HOLDS  (0/32768)
+    (a*b)*c == a*(b*c)     HOLDS  (0/32768)
+    a*(b+c) == a*b+a*c     HOLDS  (0/32768)
+--- signed W = 5, domain [-16, 15], overflow = saturate ---
+    (a+b)+c == a+(b+c)     FAILS  7920/32768 = 24.17%   first: a=-16,b=-16,c=1 -> -15 vs -16
+    (a*b)*c == a*(b*c)     FAILS  780/32768 =  2.38%   first: a=-16,b=-16,c=-1 -> -15 vs -16
+    a*(b+c) == a*b+a*c     FAILS  13594/32768 = 41.49%   first: a=-16,b=-16,c=1 -> 15 vs -1
+--- signed W = 6, domain [-32, 31], overflow = wrap ---
+    (a+b)+c == a+(b+c)     HOLDS  (0/262144)
+    (a*b)*c == a*(b*c)     HOLDS  (0/262144)
+    a*(b+c) == a*b+a*c     HOLDS  (0/262144)
+--- signed W = 6, domain [-32, 31], overflow = saturate ---
+    (a+b)+c == a+(b+c)     FAILS  64480/262144 = 24.60%   first: a=-32,b=-32,c=1 -> -31 vs -32
+    (a*b)*c == a*(b*c)     FAILS  3516/262144 =  1.34%   first: a=-32,b=-32,c=-1 -> -31 vs -32
+    a*(b+c) == a*b+a*c     FAILS  119422/262144 = 45.56%   first: a=-32,b=-32,c=1 -> 31 vs -1
+--- signed W = 7, domain [-64, 63], overflow = wrap ---
+    (a+b)+c == a+(b+c)     HOLDS  (0/2097152)
+    (a*b)*c == a*(b*c)     HOLDS  (0/2097152)
+    a*(b+c) == a*b+a*c     HOLDS  (0/2097152)
+--- signed W = 7, domain [-64, 63], overflow = saturate ---
+    (a+b)+c == a+(b+c)     FAILS  520128/2097152 = 24.80%   first: a=-64,b=-64,c=1 -> -63 vs -64
+    (a*b)*c == a*(b*c)     FAILS  15036/2097152 =  0.72%   first: a=-64,b=-64,c=-1 -> -63 vs -64
+    a*(b+c) == a*b+a*c     FAILS  1000674/2097152 = 47.72%   first: a=-64,b=-64,c=1 -> 63 vs -1
+
+Reading:
+
+The prediction holds and phase one's F1a is narrower than it read.
+Signed WRAPPING is a ring at every swept width, so all three laws
+hold, exactly as in the unsigned case: reduction mod 2^W is still a
+congruence when the representatives are re-centred.
+
+Signed SATURATION is not, and the mechanism is the two-sided clamp.
+A one-sided clamp is a congruence because nothing below the bound
+can be pushed back across it by a monotone operation. With a clamp
+at each end, multiplication by a negative value carries a value
+across from one bound to the other, and the collapse stops
+respecting the operation.
+
+So the signedness dimension is not free on this axis, and any
+finding of the form 'the laws hold at F = 0' has to carry its
+signedness. Phase one's F1 and F1a both listed `signedness =
+unsigned`, which the notation says means they hold nowhere else.
+That was the right reading and this is why.

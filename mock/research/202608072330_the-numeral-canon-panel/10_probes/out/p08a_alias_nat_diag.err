@@ -1,0 +1,17 @@
+error[E0271]: type mismatch resolving `<Idx<16> as ToNat<Arvo>>::N == D1<D0<D1<D1<Term>>>>`
+  --> p08a_alias_nat_diag.rs:30:51
+   |
+30 | pub fn bad(a: Fixed<13, Hot>) -> Fixed<16, Hot> { relate(a) }
+   |                                                   ^^^^^^^^^ type mismatch resolving `<Idx<16> as ToNat<Arvo>>::N == D1<D0<D1<D1<Term>>>>`
+   |
+note: expected this to be `D1<D0<D1<D1<Term>>>>`
+  --> p08a_alias_nat_diag.rs:18:41
+   |
+18 | impl ToNat<Arvo> for Idx<16> { type N = T16; }
+   |                                         ^^^
+   = note: expected struct `D1<D0<D1<D1<Term>>>>`
+              found struct `D0<D0<D0<D0<D1<Term>>>>>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0271`.

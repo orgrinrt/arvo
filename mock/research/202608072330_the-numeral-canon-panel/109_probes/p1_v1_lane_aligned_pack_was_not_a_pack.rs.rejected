@@ -1,0 +1,225 @@
+//! P1. Are the value set and the bit realisation one thing or two?
+//!
+//! The panel's working assumption bundles them under "format". This probe
+//! asks whether they can vary independently, which is the test for whether
+//! they are one component or two.
+//!
+//! Two directions, and both have to hold for independence:
+//!
+//!   A. Same value set, two different realisations. If the answers agree and
+//!      the footprints differ, the realisation moved while the value set
+//!      stood still.
+//!   B. Same realisation, two different value sets. If the same bits denote
+//!      two different rationals and arithmetic on them differs, the value
+//!      set moved while the realisation stood still.
+//!
+//! Nothing here is a design proposal. The types are scaffolding chosen to
+//! reach the check. No feature gates, no alloc; `std` is used only by the
+//! test harness.
+//!
+//! Build: rustc --test -O p1_value_set_and_realisation_are_independent.rs
+
+#![allow(dead_code)]
+
+// ---------------------------------------------------------------------------
+// Direction A. One value set, two realisations.
+//
+// The value set: the integers 0..=8191, i.e. 13 bits of range, no fraction.
+// Realisation A1 rests each element in its own u16 container.
+// Realisation A2 rests five elements bitpacked into one u64 (13*5 = 65 > 64,
+// so four per word at 13 bits with 12 bits spare; the point is that the
+// resting form is not addressable on its own).
+// ---------------------------------------------------------------------------
+
+const V13_MAX: u32 = (1 << 13) - 1;
+
+/// Realisation A1: one element, one container, decode is the identity.
+#[derive(Copy, Clone, Debug, PartialEq)]
+struct WideRest(u16);
+
+impl WideRest {
+    const fn encode(v: u32) -> Self {
+        WideRest(v as u16)
+    }
+    const fn decode(self) -> u32 {
+        self.0 as u32
+    }
+    /// Bytes at rest, per element.
+    const BYTES_PER_ELEM_NUM: usize = 2;
+    const BYTES_PER_ELEM_DEN: usize = 1;
+}
+
+/// Realisation A2: four elements share one u64 word, 13 bits each.
+#[derive(Copy, Clone, Debug, PartialEq)]
+struct PackedRest(u64);
+
+impl PackedRest {
+    const LANES: usize = 4;
+    const BITS: u32 = 13;
+
+    const fn encode4(v: [u32; 4]) -> Self {
+        let mut w = 0u64;
+        w |= (v[0] as u64) << (0 * 13);
+        w |= (v[1] as u64) << (1 * 13);
+        w |= (v[2] as u64) << (2 * 13);
+        w |= (v[3] as u64) << (3 * 13);
+        PackedRest(w)
+    }
+    const fn decode(self, lane: usize) -> u32 {
+        ((self.0 >> (lane as u32 * Self::BITS)) & (V13_MAX as u64)) as u32
+    }
+    /// Bytes at rest, per element: 8 bytes for 4 elements.
+    const BYTES_PER_ELEM_NUM: usize = 8;
+    const BYTES_PER_ELEM_DEN: usize = 4;
+}
+
+/// The completion policy, held FIXED across A1 and A2 so that only the
+/// realisation varies: saturating at the top of the 13-bit value set.
+const fn complete_sat(exact: u32) -> u32 {
+    if exact > V13_MAX { V13_MAX } else { exact }
+}
+
+// ---------------------------------------------------------------------------
+// Direction B. One realisation, two value sets.
+//
+// The realisation: exactly eight bits, in a u8, no spare, no tag.
+// Value set B1: the integers 0..=255.          (I = 8, F = 0)
+// Value set B2: the multiples of 1/16 in [0,16). (I = 4, F = 4)
+//
+// The bits are identical. What they denote is not, and neither is the answer
+// to a multiplication, which is the observable that separates them.
+// ---------------------------------------------------------------------------
+
+/// Denotation under B1: the bit pattern k denotes the rational k/1.
+const fn denote_i8f0(bits: u8) -> (u32, u32) {
+    (bits as u32, 1)
+}
+
+/// Denotation under B2: the bit pattern k denotes the rational k/16.
+const fn denote_i4f4(bits: u8) -> (u32, u32) {
+    (bits as u32, 16)
+}
+
+/// Multiplication that stays in the same eight bits, truncating toward zero,
+/// wrapping on range failure. Held FIXED across B1 and B2; only the fraction
+/// position, which is a fact about the value set rather than about the bits,
+/// differs.
+const fn mul_in_place(a: u8, b: u8, frac_bits: u32) -> u8 {
+    let prod = (a as u32) * (b as u32);
+    ((prod >> frac_bits) & 0xff) as u8
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// A. Every element of the value set survives both realisations, and the
+    /// completed sum agrees, element for element, across all 8192 values
+    /// against a representative set of addends.
+    #[test]
+    fn same_value_set_two_realisations_agree_on_every_answer() {
+        let mut checked = 0u64;
+        let addends = [0u32, 1, 7, 64, 1000, 4095, 8191];
+        for a in 0..=V13_MAX {
+            for &b in &addends {
+                let want = complete_sat(a + b);
+
+                // A1: element in its own container.
+                let wide = WideRest::encode(complete_sat(a + b));
+                let got_wide = wide.decode();
+
+                // A2: element sharing a word with three neighbours. The
+                // neighbours are deliberately non-zero so a lane-bleed bug
+                // would be caught rather than masked by zeros.
+                let packed = PackedRest::encode4([complete_sat(a + b), 8191, 0, 4242]);
+                let got_packed = packed.decode(0);
+
+                assert_eq!(got_wide, want, "A1 lost a value at a={a} b={b}");
+                assert_eq!(got_packed, want, "A2 lost a value at a={a} b={b}");
+                checked += 1;
+            }
+        }
+        // Guard against a setup that silently skips: the loop must have run
+        // over the entire value set.
+        assert_eq!(checked, (V13_MAX as u64 + 1) * 7);
+    }
+
+    /// A, second half. The two realisations differ in footprint. If they did
+    /// not, there would be nothing to choose between them and the axis would
+    /// be vacuous.
+    #[test]
+    fn the_two_realisations_have_different_footprints() {
+        // 16 bits per element against 16 bits per four elements.
+        let wide_bits_per_1000 =
+            1000 * 8 * WideRest::BYTES_PER_ELEM_NUM / WideRest::BYTES_PER_ELEM_DEN;
+        let packed_bits_per_1000 =
+            1000 * 8 * PackedRest::BYTES_PER_ELEM_NUM / PackedRest::BYTES_PER_ELEM_DEN;
+        assert_eq!(wide_bits_per_1000, 16_000);
+        assert_eq!(packed_bits_per_1000, 16_000 / 4 * 1);
+        assert!(packed_bits_per_1000 < wide_bits_per_1000);
+    }
+
+    /// A, third half, and the one that matters for the claim. The packed
+    /// realisation is NOT addressable on its own: reading lane 0 requires
+    /// touching bits belonging to three other elements. That is the property
+    /// which makes it a different realisation rather than a different type
+    /// name for the same one.
+    #[test]
+    fn the_packed_realisation_is_not_independently_addressable() {
+        let p = PackedRest::encode4([1, 2, 3, 4]);
+        // Mutating lane 3 changes the word that lane 0 lives in.
+        let q = PackedRest::encode4([1, 2, 3, 5]);
+        assert_ne!(p.0, q.0, "lane 3 must share the word with lane 0");
+        assert_eq!(p.decode(0), q.decode(0), "lane 0 must be unaffected");
+    }
+
+    /// B. The same eight bits denote different rationals under two value
+    /// sets, and the multiplication answers differ. Exhaustive over all
+    /// 65536 pairs; the count of disagreements is reported rather than
+    /// asserted to be non-zero at one point, because a single witness proves
+    /// less than a census.
+    #[test]
+    fn same_realisation_two_value_sets_disagree() {
+        let mut disagreements = 0u32;
+        let mut checked = 0u32;
+        for a in 0u16..=255 {
+            for b in 0u16..=255 {
+                let (a, b) = (a as u8, b as u8);
+                let r1 = mul_in_place(a, b, 0); // I=8,F=0
+                let r2 = mul_in_place(a, b, 4); // I=4,F=4
+                if r1 != r2 {
+                    disagreements += 1;
+                }
+                checked += 1;
+            }
+        }
+        assert_eq!(checked, 65_536);
+        assert!(
+            disagreements > 0,
+            "if the two value sets never disagreed, the fraction position \
+             would not be observable and the axis would be vacuous"
+        );
+        // Reported, not asserted at a magnitude: this probe establishes the
+        // existence of the disagreement, not its size.
+        println!("B: {disagreements} of {checked} pairs disagree between I=8,F=0 and I=4,F=4");
+    }
+
+    /// B, second half. The denotations differ as rationals, which is what
+    /// makes the disagreement above a disagreement about meaning rather than
+    /// about a shift.
+    #[test]
+    fn the_two_value_sets_denote_different_rationals() {
+        for bits in 0u16..=255 {
+            let bits = bits as u8;
+            let (n1, d1) = denote_i8f0(bits);
+            let (n2, d2) = denote_i4f4(bits);
+            // n1/d1 == n2/d2  iff  n1*d2 == n2*d1
+            let same = n1 * d2 == n2 * d1;
+            if bits == 0 {
+                assert!(same, "zero denotes zero under both");
+            } else {
+                assert!(!same, "bit pattern {bits} must denote two values");
+            }
+        }
+    }
+}

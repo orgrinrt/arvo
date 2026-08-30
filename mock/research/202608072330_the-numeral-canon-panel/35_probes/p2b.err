@@ -1,0 +1,4 @@
+--- the axis p2 held fixed ---
+SIGNED saturating addition associativity failures, summed over every (w,f): 4665126
+SIGNED wrapping addition associativity failures, summed over every (w,f): 0
+first saturating witness at w=2 f=0: (a+b)+c = -1 but a+(b+c) = -2, with a=-2 b=-2 c=1 (raw units)

@@ -1,0 +1,45 @@
+p2. Is 'observable' a property of an axis, or of an axis at a region?
+
+The axis under test is HEADROOM: the same declared width, two containers.
+A difference in the reduced result means a consumer can tell the arms
+apart, which is exactly the pair's test for component-one membership.
+
+--- declared width W = 5, chain length 3, containers 5 against 16
+    exhaustive over 32768 chains, every element in [0, 2^5)
+
+op            differing        pct   predicted    measured     agree
+wadd                  0     0.000%   invisible    invisible    yes
+wsub                  0     0.000%   invisible    invisible    yes
+wmul                  0     0.000%   invisible    invisible    yes
+shr1                  0     0.000%   visible      invisible    NO  <<<<
+div3              19337    59.012%   visible      visible      yes
+sat_at_W              0     0.000%   invisible    invisible    yes
+sat_at_C          26288    80.225%   visible      visible      yes
+min                   0     0.000%   invisible    invisible    yes
+cmp                   0     0.000%   visible      invisible    NO  <<<<
+
+--- declared width W = 4, chain length 4, containers 4 against 16
+    exhaustive over 65536 chains, every element in [0, 2^4)
+
+op            differing        pct   predicted    measured     agree
+wadd                  0     0.000%   invisible    invisible    yes
+wsub                  0     0.000%   invisible    invisible    yes
+wmul                  0     0.000%   invisible    invisible    yes
+shr1                  0     0.000%   visible      invisible    NO  <<<<
+div3              31560    48.157%   visible      visible      yes
+sat_at_W              0     0.000%   invisible    invisible    yes
+sat_at_C          58380    89.081%   visible      visible      yes
+min                   0     0.000%   invisible    invisible    yes
+cmp                   0     0.000%   visible      invisible    NO  <<<<
+
+criterion cells: 18, mismatches: 4
+
+=== what the two saturating rows are for ===
+
+sat_at_W and sat_at_C are the SAME axis assignment on overflow policy
+(saturate), differing only in the width the limit is read at. `40`
+section 5.2 says the headroom axis sits on the unobservable side ONLY
+IF the limit is the declared width, and calls that 'a canon-shaped
+sentence nobody has written'. If those two rows land on opposite sides
+of the cut, the sentence is load-bearing as measured fact and the
+membership of the pair's first component depends on it.

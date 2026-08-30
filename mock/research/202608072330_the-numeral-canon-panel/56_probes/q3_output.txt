@@ -1,0 +1,7 @@
+raw order agrees: twos false  offset true  scrambled false
+raw adder correct pairs of 256: twos 256  offset 0  scrambled 26
+offset-binary adder defect is constant: Some(8) (expect Some(8))
+the unique monotone bijection is offset binary: true
+mutant offset (K=7) breaks the sorted correspondence: true
+unsigned identity encoding: raw order true  raw adder correct pairs 256 of 256
+Q3 WORKS

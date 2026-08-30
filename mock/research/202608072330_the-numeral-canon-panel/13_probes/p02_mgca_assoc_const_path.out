@@ -1,0 +1,13 @@
+error: use of `const` in the type system not defined as `type const`
+  --> p02_mgca_assoc_const_path.rs:21:44
+   |
+21 | pub struct Derived<const N: usize>(Store<{ <M<N> as Bytes>::B }>);
+   |                                            ^^^^^^^^^^^^^^^^^^
+   |
+help: add `type` before `const` for `Bytes::B`
+   |
+13 |     type const B: usize;
+   |     ++++
+
+error: aborting due to 1 previous error
+

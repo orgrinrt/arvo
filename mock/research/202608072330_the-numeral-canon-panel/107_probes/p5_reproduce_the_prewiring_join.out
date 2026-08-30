@@ -1,0 +1,23 @@
+=== (a) the -dirty precondition ===
+meta files                          : 254
+git_commit values ending -dirty     : 253
+git_commit values clean             : 1
+
+-- what a naive join (no strip) would resolve --
+naive: resolvable=1 unresolvable=253
+
+=== (b) the wiring commit ===
+harness::validate present in main.rs at 9db33f8c : True
+present at its parent 9db33f8c^                  : False
+subject: bench: make the driver validate its arms, and re-run every wide-rung section
+
+=== (c) the split, stripping -dirty ===
+produced BEFORE the wiring : 175
+produced AFTER  the wiring : 79
+unresolvable               : 0
+
+-- 106 reconciles 103's 24 as a STRING count against 23 distinct commits --
+distinct git_commit strings  :       24
+distinct commits after strip :       23
+-- the string that appears both clean and dirty --
+  defc747 : clean=1 dirty=2

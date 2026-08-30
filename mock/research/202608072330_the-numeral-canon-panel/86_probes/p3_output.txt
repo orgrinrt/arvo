@@ -1,0 +1,45 @@
+p3: the saturating threshold family
+
+E_d: x^d == x^(d+1), unsigned saturating mul, swept at widths 1..=14
+   d truth set (T = true at that width)  
+   2 TTffffffffffff   first false at width 3 (predicted 3)  ok
+   3 TTTfffffffffff   first false at width 4 (predicted 4)  ok
+   4 TTTTffffffffff   first false at width 5 (predicted 5)  ok
+   5 TTTTTfffffffff   first false at width 6 (predicted 6)  ok
+   6 TTTTTTffffffff   first false at width 7 (predicted 7)  ok
+   7 TTTTTTTfffffff   first false at width 8 (predicted 8)  ok
+   8 TTTTTTTTffffff   first false at width 9 (predicted 9)  ok
+   9 TTTTTTTTTfffff   first false at width 10 (predicted 10)  ok
+  10 TTTTTTTTTTffff   first false at width 11 (predicted 11)  ok
+  11 TTTTTTTTTTTfff   first false at width 12 (predicted 12)  ok
+  12 TTTTTTTTTTTTff   first false at width 13 (predicted 13)  ok
+
+E_63 at width 64, witness x = 2: lhs = 2^63 = 0x8000000000000000, rhs = sat(2^64) = 0xffffffffffffffff => FALSE at the shipped width
+E_63 at width 20: boundary + 1000 random points all agree: true
+E_63 at width 40: boundary + 1000 random points all agree: true
+E_63 at width 63: boundary + 1000 random points all agree: true
+E_63 at width 65: witness x = 2 gives 2^63 vs 2^64, both unclamped, still false
+
+C-member: sat_mul(x, C) == sat_mul(x, sat_add(C, 1)), C = 2^63 - 1
+  wrap embedding, widths 1..=12: TTTTTTTTTTTT
+  clamp embedding, widths 1..=12: TTTTTTTTTTTT
+  width 64: sat_add(C, 1) = 0x8000000000000000; witness x = 1: 0x7fffffffffffffff vs 0x8000000000000000 => FALSE at the shipped width
+
+convention-dependent member: sat_mul(2, x) == sat_add(x, x)
+  wrap embedding, widths 1..=8: fTTTTTTT
+  clamp embedding, widths 1..=8: TTTTTTTT
+
+shape catalogue: constant-free term pairs over {sat_add, sat_mul} on {x, y}, depth <= 2, widths 1..=8
+  terms: 210
+  unsigned: pair truth-set shapes over widths 1..=8:
+               empty:  16425   example truth set ffffffff
+                full:    388   example truth set TTTTTTTT
+     initial segment:   5132   example truth set Tfffffff
+  signed: pair truth-set shapes over widths 1..=8:
+               empty:  13284   example truth set ffffffff
+                full:    280   example truth set TTTTTTTT
+              gapped:     16   example truth set TfTTTTTT
+     initial segment:   8341   example truth set Tfffffff
+        interior run:     24   example truth set fTffffff
+
+all checks passed

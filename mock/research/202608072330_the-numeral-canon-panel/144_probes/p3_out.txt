@@ -1,0 +1,46 @@
+==============================================================================
+H1/H2. how wide is the observable weighting vocabulary?
+==============================================================================
+ d   n  sets  mean arms  mean pareto  mean linear image  mean cheb image
+ 2   4    40          4         2.02               1.88             2.02
+ 2   8    40          8         2.60               2.25             2.60
+ 2  12    40         12         2.52               2.35             2.52
+ 2  16    40         16         2.90               2.45             2.90
+ 3   4    40          4         2.90               2.73             2.90
+ 3   8    40          8         4.28               3.80             4.28
+ 3  12    40         12         5.75               4.47             5.75
+ 3  16    40         16         6.05               4.85             6.05
+
+H1 linear image below 8 at d=3, n=16: measured 4.85 -> CONFIRMED
+H2 the Chebyshev image is never smaller and somewhere strictly larger: CONFIRMED
+I2 every linear unique winner is Chebyshev reachable: PASS
+
+  the ratio that matters for a design shipping named weightings:
+    d=2 n= 4: linear can ever distinguish 1.88 of 4 arms (47%), Chebyshev 2.02 (51%)
+    d=2 n= 8: linear can ever distinguish 2.25 of 8 arms (28%), Chebyshev 2.60 (32%)
+    d=2 n=12: linear can ever distinguish 2.35 of 12 arms (20%), Chebyshev 2.52 (21%)
+    d=2 n=16: linear can ever distinguish 2.45 of 16 arms (15%), Chebyshev 2.90 (18%)
+    d=3 n= 4: linear can ever distinguish 2.73 of 4 arms (68%), Chebyshev 2.90 (72%)
+    d=3 n= 8: linear can ever distinguish 3.80 of 8 arms (48%), Chebyshev 4.28 (53%)
+    d=3 n=12: linear can ever distinguish 4.47 of 12 arms (37%), Chebyshev 5.75 (48%)
+    d=3 n=16: linear can ever distinguish 4.85 of 16 arms (30%), Chebyshev 6.05 (38%)
+
+==============================================================================
+I1. the case that must fail: collinear arms
+==============================================================================
+  five collinear points on one hull edge: pareto=5, linear unique winners=2 [0, 4]
+  I1 -> PASS
+  and Chebyshev reaches 5 of the 5: [0, 1, 2, 3, 4]
+  so on a linear tradeoff frontier a linear selector can name exactly the two
+  extremes and nothing between them, while Chebyshev names every point.
+
+==============================================================================
+H3/I3. is a Chebyshev win region ever disconnected?
+==============================================================================
+  searched 397 random two-coordinate sets at grid resolution 1/2000
+  I3 linear regions that split into more than one run: 0 -> PASS
+  H3 NOT WITNESSED in this search. The claim is unestablished and is not used.
+
+==============================================================================
+control failures: 1 ['H3-not-witnessed']
+==============================================================================

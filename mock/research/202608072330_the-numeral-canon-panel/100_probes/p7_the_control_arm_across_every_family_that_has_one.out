@@ -1,0 +1,104 @@
+p7. Does the noise-floor control explain the section instability in every
+committed family that has one, or only in the one `98` happened to measure.
+
+`p1` establishes, on `bitpack-carrier-width`, that every flip `98`'s F-98-10
+reports at speed-first is between `bitpack-carrier-d16` and its own
+byte-identical noise-floor control, and that dropping the control takes the
+section from 31 distinct across 2000 resamples to 1. That is one family, and
+`RULES.md` puts the bar at three independent instances.
+
+Three more committed families declare a noise-floor control arm, each in its own
+words:
+
+  bitpack-contend-d16-control  "The noise floor: byte-identical to
+                                `bitpack-contend-d16`. Same kernel, same region,
+                                same arguments, same thread count."
+  bitpack-wide-d16-control     "The noise floor: byte-identical to
+                                `bitpack-wide-d16`."
+  bitpack-carrier-d16-control  the one `p1` uses.
+
+They appear across four committed bench families: `bitpack-carrier-width`,
+`bitpack-contention`, `bitpack-contend-decode` and `bitpack-wide`.
+
+THE MEASUREMENT is deliberately narrower than `p1`'s so that nothing depends on
+a footprint declaration for arms this probe has not studied. It uses ONE cost
+coordinate, the median `algo_ns`, which is the pure speed-first case and the
+exact case `98` reports thirty distinct sections for. With one coordinate the
+weighting drops out entirely: the section is just the per-region fastest arm, so
+any instability is measurement noise and nothing else.
+
+For each family: how many distinct sections across 2000 bootstrap resamples with
+the control arm present, how many with it dropped, and which arms trade places.
+
+A family where the controlled arm is never the fastest anywhere is a family where
+dropping the control changes nothing, and that outcome is reported rather than
+treated as a failure: the effect can only bite where the controlled arm is
+competitive.
+
+Not a bench. Reads committed harness output and resamples it. No measurement was
+taken.
+
+committed families carrying a noise-floor control arm: 4
+resamples 2000, seed 20260814, one cost coordinate (median algo_ns)
+
+bitpack-carrier-width
+  regions 6, arms 6, control arm(s) ['bitpack-carrier-d16-control']
+  samples per arm per region: [80]
+    with control     distinct   29   modal 556/2000 ( 27.8%)   ['d32', 'd32', 'd16', 'd16', 'd16', 'd16-control']
+    control dropped  distinct    3   modal 1250/2000 ( 62.5%)   ['d32', 'd32', 'd16', 'd16', 'd16', 'd16']
+    cost of holding the committed section, control dropped: mean 0.0453% slower, worst 3.2329%
+    arms that trade places: d16-control(5 regions), d16(5 regions), d32(2 regions)
+    a control arm is one of them: True
+
+bitpack-contend-decode
+  regions 6, arms 5, control arm(s) ['bitpack-contend-d16-control']
+  samples per arm per region: [80]
+    with control     distinct  202   modal 59/2000 (  3.0%)   ['pipe4', 'd16-control', 'pipe2', 'pipe2', 'pipe4', 'pipe4']
+    control dropped  distinct  160   modal 82/2000 (  4.1%)   ['pipe4', 'd16', 'pipe2', 'pipe2', 'pipe4', 'pipe4']
+    cost of holding the committed section, control dropped: mean 3.8322% slower, worst 264.4200%
+    arms that trade places: pipe2(6 regions), pipe4(6 regions), d16(3 regions), d16-control(3 regions), packed-simd(1 regions)
+    a control arm is one of them: True
+
+bitpack-contention
+  regions 12, arms 6, control arm(s) ['bitpack-contend-d16-control']
+  samples per arm per region: [80]
+    with control     distinct  987   modal 30/2000 (  1.5%)   ['contend-d32', 'contend-d16-control', 'contend-d16', 'contend-d16', 'contend-d16-control', 'contend-d16-control', 'contend-d16-control', 'contend-d16-control', 'contend-d16', 'contend-d16', 'contend-d16-control', 'contend-d16-control']
+    control dropped  distinct  136   modal 118/2000 (  5.9%)   ['contend-d32', 'contend-d16', 'contend-d16', 'contend-d16', 'contend-d16', 'contend-d16', 'contend-d16', 'contend-d16', 'contend-d16', 'contend-d16', 'contend-d16', 'contend-d16']
+    cost of holding the committed section, control dropped: mean 1.0797% slower, worst 31.5238%
+    arms that trade places: contend-d16(10 regions), contend-d16-control(9 regions), contend-d32(6 regions), contend-d64(2 regions), contend-packed-simd(1 regions)
+    a control arm is one of them: True
+
+bitpack-wide
+  regions 6, arms 4, control arm(s) ['bitpack-wide-d16-control']
+  samples per arm per region: [80]
+    with control     distinct   14   modal 1362/2000 ( 68.1%)   ['wide-d16-padal', 'wide-d16-padal', 'wide-d16-padal', 'wide-pipe4', 'wide-d16-padal', 'wide-pipe4']
+    control dropped  distinct   10   modal 1394/2000 ( 69.7%)   ['wide-d16-padal', 'wide-d16-padal', 'wide-d16-padal', 'wide-pipe4', 'wide-d16-padal', 'wide-pipe4']
+    cost of holding the committed section, control dropped: mean 0.1544% slower, worst 21.7460%
+    arms that trade places: wide-d16-padal(3 regions), wide-pipe4(3 regions), wide-d16-control(2 regions)
+    a control arm is one of them: True
+
+==============================================================================
+SUMMARY
+==============================================================================
+  family                      distinct with  distinct without
+  bitpack-carrier-width                  29                 3
+  bitpack-contend-decode                202               160
+  bitpack-contention                    987               136
+  bitpack-wide                           14                10
+
+
+The regret line is the one that says whether any of it matters. With a single raw
+cost coordinate it is directly interpretable: it is how much slower the committed
+section runs than the fastest arms that resample would have picked.
+
+A family whose count falls when the control is dropped is one where the argmin
+was choosing between two copies of one arm. A family whose count does not fall is
+one where the controlled arm was not competitive, so the control never reached
+the section and there was nothing for it to destabilise; that is a fact about
+which arm the control shadows rather than a counterexample.
+
+With one cost coordinate there is no weighting to blame: the section is the
+per-region fastest arm, so every distinct section beyond the first is measurement
+noise, and every flip involving a control arm is the harness's own declared
+resolution deciding a bench result.
+

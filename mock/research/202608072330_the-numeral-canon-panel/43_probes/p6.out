@@ -1,0 +1,43 @@
+p6: content check on every cited range
+==========================================================================
+  ok    archive/CANON_CANDIDATE.md:3386-3387   contains 'Compositions are public and bindable by'
+  ok    archive/CANON_CANDIDATE.md:802-805     contains 'pub struct Number<N: Numeral'
+  ok    32:73                                  contains 'compose to bigger units than just numerals alone'
+  ok    32:82-83                               contains 'first-class concern'
+  ok    00_brief.md:8                          contains 'named compositions over one format'
+  ok    RULES.md:207-208                       contains 'writes its file to disk early'
+  ok    RULES.md:116-118                       contains 'One instance of evidence is never enough'
+  ok    RULES.md:224-228                       contains 'mock/benches/'
+  ok    RULES.md:20-27                         contains 'ACK'
+  ok    35:41-43                               contains 'a quantity that lives in the composition'
+  ok    35:113-115                             contains 'taxonomy classifies a site by which'
+  ok    35:820-822                             contains 'I did not read vehje at'
+  ok    35:96-97                               contains 'The boundary is the runtime trip count and nothing else'
+  ok    08:287-288                             contains 'no per-datum type can express a constraint that holds between'
+  ok    08:292-294                             contains 'the workload arvo exists'
+  ok    08:283-290                             contains 'dictionary encodings and run-length encodings'
+  ok    RULES.md:126-133                       contains 'Check your own citations before shipping'
+  ok    08:282-290                             contains 'Block floating point'
+  ok    08:287-290                             contains 'the layer it names is storage'
+  ok    08:292                                 contains 'the workload arvo exists'
+  ok    35:97                                  contains 'The boundary is the runtime trip count and nothing else'
+  ok    40:409                                 contains 'reduction shape'
+  ok    42:370-376                             contains 'Only arvo knows its own axis values'
+  ok    42:460-484                             contains 'equality-saturation engine'
+  ok    42:299-334                             contains 'reachab'
+  ok    24:734-747                             contains 'One definition, projected, rather than two definitions'
+  ok    08:330                                 contains 'buildable above'
+  ok    08:306                                 contains 'the only case the `Bias` axis earns'
+  ok    08:556-560                             contains 'A representation is a numeral when a datum denotes one rational'
+  ok    24:262                                 contains 'varepsilon'
+  ok    40:47-53                               contains 'observable'
+  ok    42:33-38                               contains 'The law layer is a vocabulary of derived facts'
+  ok    seed/SETTLED_laws.md:274               contains 'Adjustment'
+  ok    DROPLIST.md:400                        contains 'compositions public and bindable'
+
+  checked: 34   failures: 0
+
+cross-check: citations present in the document but absent here
+  none
+
+TOTAL failures (content + unchecked): 0

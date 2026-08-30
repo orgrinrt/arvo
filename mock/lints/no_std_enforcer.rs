@@ -9,9 +9,9 @@
 //! compile pipeline — giving a clear arvo-specific message rather
 //! than a generic `unresolved import` error from `no_std` mode.
 
-use mockspace::{Lint, LintContext, LintError, Severity};
+use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
-pub fn lint() -> Box<dyn Lint> {
+pub fn lint() -> Box<dyn CrateLint> {
     Box::new(NoStdEnforcer)
 }
 
@@ -25,7 +25,9 @@ impl Lint for NoStdEnforcer {
     fn default_severity(&self) -> Severity {
         Severity::HARD_ERROR
     }
+}
 
+impl CrateLint for NoStdEnforcer {
     fn check(&self, ctx: &LintContext) -> Vec<LintError> {
         if ctx.is_proc_macro_crate() {
             return Vec::new();

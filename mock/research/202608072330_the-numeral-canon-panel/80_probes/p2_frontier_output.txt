@@ -1,0 +1,65 @@
+arity= 1 width= 1  tuples=2^1    accept                  0.10s  
+arity= 1 width= 2  tuples=2^2    accept                  0.10s  
+arity= 1 width= 3  tuples=2^3    accept                  0.09s  
+arity= 1 width= 4  tuples=2^4    accept                  0.09s  
+arity= 1 width= 5  tuples=2^5    accept                  0.09s  
+arity= 1 width= 6  tuples=2^6    accept                  0.09s  
+arity= 1 width= 7  tuples=2^7    accept                  0.10s  
+arity= 1 width= 8  tuples=2^8    accept                  0.09s  
+arity= 1 width= 9  tuples=2^9    accept                  0.10s  
+arity= 1 width=10  tuples=2^10   accept                  0.11s  
+arity= 1 width=11  tuples=2^11   accept                  0.11s  
+arity= 1 width=12  tuples=2^12   accept                  0.12s  
+arity= 1 width=13  tuples=2^13   accept                  0.15s  
+arity= 1 width=14  tuples=2^14   accept                  0.20s  
+arity= 1 width=15  tuples=2^15   accept                  0.32s  
+arity= 1 width=16  tuples=2^16   accept                  0.53s  
+arity= 1 width=17  tuples=2^17   accept                  0.95s  
+arity= 1 width=18  tuples=2^18   accept                  1.82s  
+arity= 1 width=19  tuples=2^19   accept                  3.76s  
+arity= 1 width=20  tuples=2^20   refuse-long-running     4.33s  
+arity= 2 width= 1  tuples=2^2    accept                  0.09s  
+arity= 2 width= 2  tuples=2^4    accept                  0.10s  
+arity= 2 width= 3  tuples=2^6    accept                  0.09s  
+arity= 2 width= 4  tuples=2^8    accept                  0.09s  
+arity= 2 width= 5  tuples=2^10   accept                  0.10s  
+arity= 2 width= 6  tuples=2^12   accept                  0.15s  
+arity= 2 width= 7  tuples=2^14   accept                  0.32s  
+arity= 2 width= 8  tuples=2^16   accept                  1.01s  
+arity= 2 width= 9  tuples=2^18   accept                  3.97s  
+arity= 2 width=10  tuples=2^20   refuse-long-running     4.06s  
+arity= 3 width= 1  tuples=2^3    accept                  0.10s  
+arity= 3 width= 2  tuples=2^6    accept                  0.10s  
+arity= 3 width= 3  tuples=2^9    accept                  0.10s  
+arity= 3 width= 4  tuples=2^12   accept                  0.18s  
+arity= 3 width= 5  tuples=2^15   accept                  0.80s  
+arity= 3 width= 6  tuples=2^18   refuse-long-running     4.01s  
+arity= 4 width= 1  tuples=2^4    accept                  0.10s  
+arity= 4 width= 2  tuples=2^8    accept                  0.10s  
+arity= 4 width= 3  tuples=2^12   accept                  0.21s  
+arity= 4 width= 4  tuples=2^16   accept                  2.09s  
+arity= 4 width= 5  tuples=2^20   refuse-long-running     3.81s  
+arity= 5 width= 1  tuples=2^5    accept                  0.09s  
+arity= 5 width= 2  tuples=2^10   accept                  0.13s  
+arity= 5 width= 3  tuples=2^15   accept                  1.41s  
+arity= 5 width= 4  tuples=2^20   refuse-long-running     3.85s  
+arity= 6 width= 1  tuples=2^6    accept                  0.09s  
+arity= 6 width= 2  tuples=2^12   accept                  0.26s  
+arity= 6 width= 3  tuples=2^18   refuse-long-running     3.72s  
+arity= 8 width= 1  tuples=2^8    accept                  0.11s  
+arity= 8 width= 2  tuples=2^16   refuse-long-running     3.84s  
+arity=12 width= 1  tuples=2^12   accept                  0.45s  
+arity=12 width= 2  tuples=2^24   refuse-long-running     3.83s  
+
+frontier: widest width whose exhaustive law check rustc will evaluate,
+and the log2 of the tuple count at that point.
+
+ arity  widest accepted W  log2 tuples there  first refused W  log2 tuples there
+     1                 19                 19               20                 20   (refuse-long-running)
+     2                  9                 18               10                 20   (refuse-long-running)
+     3                  5                 15                6                 18   (refuse-long-running)
+     4                  4                 16                5                 20   (refuse-long-running)
+     5                  3                 15                4                 20   (refuse-long-running)
+     6                  2                 12                3                 18   (refuse-long-running)
+     8                  1                  8                2                 16   (refuse-long-running)
+    12                  1                 12                2                 24   (refuse-long-running)

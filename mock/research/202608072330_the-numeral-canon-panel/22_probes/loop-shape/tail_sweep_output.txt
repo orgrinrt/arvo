@@ -1,0 +1,18 @@
+Ad-hoc quick spike. No timing. Hot-loop instruction counts, D=3.
+Limb count held at four (widths 193..256); only the ragged tail moves.
+
+Hypothesis under test: the ragged payload costs extra instructions exactly
+when its trailing partial word is not a power-of-two number of bytes.
+
+   W  rag B  tail  pow2? |  ragged  rag-over  wordround |  rag-wr  over-wr
+ 192     24     0    yes |      27        27         27 |      +0       +0   
+ 200     25     1    yes |      38        38         38 |      +0       +0   
+ 208     26     2    yes |      38        38         38 |      +0       +0   
+ 216     27     3     NO |      41        38         38 |      +3       +0   
+ 224     28     4    yes |      37        37         37 |      +0       +0   
+ 232     29     5     NO |      45        42         42 |      +3       +0   
+ 240     30     6     NO |      45        42         42 |      +3       +0   
+ 248     31     7     NO |      48        42         42 |      +6       +0   
+ 256     32     0    yes |      41        41         41 |      +0       +0   
+
+prediction held at every width in the residue class: True

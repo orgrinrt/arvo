@@ -1,0 +1,12 @@
+warning: method `one` is never used
+  --> ../../57_probes/p4_which_factor_breaks_and_what_coherence_buys.rs:63:8
+   |
+62 | impl Alg {
+   | -------- method in this implementation
+63 |     fn one(&self) -> i64 {
+   |        ^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: 1 warning emitted
+

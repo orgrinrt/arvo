@@ -1,0 +1,129 @@
+p5. The region a strategy selects over is written down twice, and nothing
+joins the two.
+
+The unit has been arguing about whether the region-to-arm table should be checked
+or generated. Both shapes take the REGION SET as given. This probe asks where the
+region set actually comes from, on the evidence in this repository, and finds it
+comes from two places at once.
+
+WHAT IS DUPLICATED. Several bench families identify a region by packing several
+parameters into one integer. `warm-clamp-shared` declares
+`KEY = W * 10000 + NC * 1000 + LOG2A * 10 + OP`
+(`mock/benches/variants/warm-clamp-shared/src/lib.rs:83`) and ships const-fn
+decoders for each field. `mock/benches/bench.toml` writes the keys as integer
+literals. So the same fact, "this row is 13 bits at arity 64", exists as a
+literal in the manifest and as a decoder in the crate, and the two are joined by
+nothing.
+
+`97` hit this directly: its section 5 says it decoded the arity sweep "from the
+crate's own key encoding rather than from the title", which is a reader
+discovering by hand that the human-facing statement of a region and the machine
+one are separate artifacts.
+
+WHAT THIS PROBE CHECKS, mechanically:
+
+  1. Every bench block whose variants come from a crate with a key decoder: does
+     every key in `bench.toml` decode to parameters the block's own TITLE
+     declares? A title listing "arity 2 / 4 / 8 / 16" against a key set decoding
+     to something else is a drift between two statements of one fact.
+  2. Does every key decode to a parameter set the crate can actually serve, or
+     can a manifest name a region that has no arm?
+  3. Do the region sets of the two families this unit has reasoned from,
+     `bitpack-carrier-width` and `warm-clamp-arity-w13`, match what `97` and `98`
+     assumed about them?
+
+A clean result is still a result. It says the twins agree TODAY, which is
+different from saying anything keeps them agreeing.
+
+Not a bench, no measurement. Reads committed source and manifest.
+
+bench blocks in bench.toml: 49
+
+==============================================================================
+1 and 2. warm-clamp: manifest keys against the crate's decoder and the
+         block's own title
+==============================================================================
+  decoder transcription checked against the crate source: ok
+
+  warm-clamp-arity-l2
+    keys            : [81040, 131040, 161040, 321040, 601040, 641040]
+    decoded widths  : [8, 13, 16, 32, 60, 64]   title says: None
+    decoded arities : [16]   title says: None
+    decoded ops     : [0]
+  warm-clamp-arity-w13
+    keys            : [130010, 130020, 130030, 130040, 130060, 130080]
+    decoded widths  : [13]   title says: 13
+    decoded arities : [2, 4, 8, 16, 64, 256]   title says: [2, 4, 8, 16, 64, 256]
+    decoded ops     : [0]
+  warm-clamp-arity-w16
+    keys            : [160010, 160020, 160030, 160040, 160060, 160080]
+    decoded widths  : [16]   title says: 16
+    decoded arities : [2, 4, 8, 16, 64, 256]   title says: [2, 4, 8, 16, 64, 256]
+    decoded ops     : [0]
+  warm-clamp-arity-w32
+    keys            : [320010, 320020, 320030, 320040, 320060, 320080]
+    decoded widths  : [32]   title says: 32
+    decoded arities : [2, 4, 8, 16, 64, 256]   title says: [2, 4, 8, 16, 64, 256]
+    decoded ops     : [0]
+  warm-clamp-arity-w60
+    keys            : [600010, 600020, 600030, 600040, 600060, 600080]
+    decoded widths  : [60]   title says: 60
+    decoded arities : [2, 4, 8, 16, 64, 256]   title says: [2, 4, 8, 16, 64, 256]
+    decoded ops     : [0]
+  warm-clamp-arity-w64
+    keys            : [640010, 640020, 640030, 640040, 640060, 640080]
+    decoded widths  : [64]   title says: 64
+    decoded arities : [2, 4, 8, 16, 64, 256]   title says: [2, 4, 8, 16, 64, 256]
+    decoded ops     : [0]
+  warm-clamp-arity-w8
+    keys            : [80010, 80020, 80030, 80040]
+    decoded widths  : [8]   title says: 8
+    decoded arities : [2, 4, 8, 16]   title says: [2, 4, 8, 16]
+    decoded ops     : [0]
+  warm-clamp-chain-l1
+    keys            : [80001, 130001, 160001, 320001, 600001, 640001]
+    decoded widths  : [8, 13, 16, 32, 60, 64]   title says: None
+    decoded arities : [1]   title says: None
+    decoded ops     : [1]
+
+  blocks whose title disagrees with its decoded keys: 0
+
+==============================================================================
+3. The two families this unit reasoned from
+==============================================================================
+
+  bitpack-carrier-width
+    regions : [16384, 131072, 1048576, 2097152, 4194304, 8388608]
+    arms    : ['bitpack_carrier_d16', 'bitpack_carrier_d16_control', 'bitpack_carrier_d32', 'bitpack_carrier_d64', 'bitpack_carrier_packed', 'bitpack_carrier_packed_simd']
+
+  warm-clamp-arity-w13
+    regions : [130010, 130020, 130030, 130040, 130060, 130080]
+    arms    : ['warm_clamp_acc64', 'warm_clamp_accfit', 'warm_clamp_accfit_dyn', 'warm_clamp_head', 'warm_clamp_min_lanes', 'warm_clamp_minimum']
+
+  `97` section 5 and `98` section 2 both treat these region sets as given.
+  They are given, by bench.toml, and the meaning of each integer lives in a
+  different file.
+
+==============================================================================
+READING
+==============================================================================
+
+Whether or not anything disagrees today, the shape is the one that rots. One
+fact, "which region is this", is stated as an integer literal in a manifest and
+as a decoder in a crate, and a third time in prose in the block's title. Nothing
+derives any of the three from the others, so a fourth reader has to do what `97`
+did, which is decode the keys by hand and say so.
+
+This bears on the unit's question in a way neither `97` nor `98` reached. Both
+proposals take the region set as an input and argue about what is computed from
+it. If the region set itself is duplicated, then a design that generates the
+selection table from the weighting has automated one join and left the one
+underneath it manual, and the unautomated join is the one a reader already had to
+repair by hand once in this unit.
+
+The generated artifact a single-definition discipline would want here is not only
+the winner table. It is the region grid, the arm registry, and the key encoding,
+emitted from one declaration, so that the region a strategy selects over and the
+region the harness measured are the same object by construction rather than by
+a reader decoding an integer.
+

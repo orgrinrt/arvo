@@ -1,0 +1,111 @@
+SOURCE
+  bench directory: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches
+  csv files read:  6
+  harness: mockspace-bench-harness, rustc 1.98.0-nightly (57d06900f 2026-05-27), Apple M1, Darwin 25.5.0
+
+SELF-CHECK: recomputed medians against the committed findings files
+  medians compared: 36, mismatches: 0
+
+PER RECORD COUNT: does a pure-time objective pick what a pure-space one picks?
+
+     records  time-argmin (fastest)        space-argmin (smallest)       agree?
+       16384  bitpack-carrier-d64          bitpack-carrier-packed-simd       NO
+      131072  bitpack-carrier-d32          bitpack-carrier-packed-simd       NO
+     1048576  bitpack-carrier-d32          bitpack-carrier-packed-simd       NO
+     2097152  bitpack-carrier-d16          bitpack-carrier-packed-simd       NO
+     4194304  bitpack-carrier-d16          bitpack-carrier-packed-simd       NO
+     8388608  bitpack-carrier-d16-control  bitpack-carrier-packed-simd       NO
+
+  record counts where the two objectives agree: 0 of 6
+
+DOES ONE OBJECTIVE EVEN GIVE ONE ANSWER ACROSS THE SWEEP?
+
+  pure-time objective, distinct winning arms across the six record counts: 4  ['d16', 'd16-control', 'd32', 'd64']
+  pure-space objective, distinct winning arms across the six record counts: 1  ['packed-simd']
+  -> a single objective's mechanism answer is not a constant either.
+     It is a function of the workload, which is 25 section 4.4's claim
+     that a strategy assigns functions rather than values, holding on
+     an axis 25 did not measure.
+
+HOW MANY MECHANISM ANSWERS THIS OBJECTIVE SPACE DISTINGUISHES
+
+     records   |par|  Pareto set                                    |hul|  linear-weighting winners, in order
+       16384       4  d16, d32, d64, packed-simd                       4  packed-simd -> d16 -> d32 -> d64
+      131072       3  d16-control, d32, packed-simd                    3  packed-simd -> d16-control -> d32
+     1048576       3  d16, d32, packed-simd                            3  packed-simd -> d16 -> d32
+     2097152       2  d16, packed-simd                                 2  packed-simd -> d16
+     4194304       2  d16, packed-simd                                 2  packed-simd -> d16
+     8388608       2  d16-control, packed-simd                         2  packed-simd -> d16-control
+
+ARE THE INTERIOR WEIGHTINGS REDUNDANT?
+
+  A compromise objective is worth naming only if it selects something
+  no pure objective selects. The two pure objectives are the two ends
+  of the weighting range, so an arm in the hull set that is neither
+  end is an arm reachable only from the interior.
+
+     records  count  arms only an interior weighting selects 
+       16384      2  d16, d32                                
+      131072      1  d16-control                             
+     1048576      1  d16                                     
+     2097152      0  (none)                                  
+     4194304      0  (none)                                  
+     8388608      0  (none)                                  
+
+  record counts with at least one interior-only arm: 3 of 6
+  interior-only selections in total: 4
+
+  switch points, reported as an artifact of min-max normalisation
+  rather than as a finding (the winner SET is normalisation-free,
+  the switch weight is not):
+    n=16384: w>=0.0000: packed-simd, w>=0.0694: d16, w>=0.8915: d32, w>=0.9798: d64
+    n=131072: w>=0.0000: packed-simd, w>=0.0687: d16-control, w>=0.9186: d32
+    n=1048576: w>=0.0000: packed-simd, w>=0.0675: d16, w>=0.9335: d32
+    n=2097152: w>=0.0000: packed-simd, w>=0.0694: d16
+    n=4194304: w>=0.0000: packed-simd, w>=0.0993: d16
+    n=8388608: w>=0.0000: packed-simd, w>=0.0897: d16-control
+
+MEDIANS AND BYTES, so every number above can be re-derived
+
+  n = 16384
+    bitpack-carrier-d16                  1446.0 ns    2.000 B/elem
+    bitpack-carrier-d16-control          1456.5 ns    2.000 B/elem
+    bitpack-carrier-d32                  1417.1 ns    4.000 B/elem
+    bitpack-carrier-d64                  1407.3 ns    8.000 B/elem
+    bitpack-carrier-packed               2165.4 ns    1.625 B/elem
+    bitpack-carrier-packed-simd          2043.8 ns    1.625 B/elem
+  n = 131072
+    bitpack-carrier-d16                 11457.0 ns    2.000 B/elem
+    bitpack-carrier-d16-control         11456.7 ns    2.000 B/elem
+    bitpack-carrier-d32                 11299.1 ns    4.000 B/elem
+    bitpack-carrier-d64                 12686.0 ns    8.000 B/elem
+    bitpack-carrier-packed              16964.0 ns    1.625 B/elem
+    bitpack-carrier-packed-simd         15971.7 ns    1.625 B/elem
+  n = 1048576
+    bitpack-carrier-d16                 89160.0 ns    2.000 B/elem
+    bitpack-carrier-d16-control         89200.2 ns    2.000 B/elem
+    bitpack-carrier-d32                 88151.2 ns    4.000 B/elem
+    bitpack-carrier-d64                116766.1 ns    8.000 B/elem
+    bitpack-carrier-packed             133279.5 ns    1.625 B/elem
+    bitpack-carrier-packed-simd        125824.8 ns    1.625 B/elem
+  n = 2097152
+    bitpack-carrier-d16                178125.8 ns    2.000 B/elem
+    bitpack-carrier-d16-control        179310.2 ns    2.000 B/elem
+    bitpack-carrier-d32                182630.8 ns    4.000 B/elem
+    bitpack-carrier-d64                270676.1 ns    8.000 B/elem
+    bitpack-carrier-packed             267103.8 ns    1.625 B/elem
+    bitpack-carrier-packed-simd        251113.4 ns    1.625 B/elem
+  n = 4194304
+    bitpack-carrier-d16                366753.8 ns    2.000 B/elem
+    bitpack-carrier-d16-control        369746.0 ns    2.000 B/elem
+    bitpack-carrier-d32                406688.3 ns    4.000 B/elem
+    bitpack-carrier-d64                627929.8 ns    8.000 B/elem
+    bitpack-carrier-packed             543205.0 ns    1.625 B/elem
+    bitpack-carrier-packed-simd        506164.3 ns    1.625 B/elem
+  n = 8388608
+    bitpack-carrier-d16                739340.2 ns    2.000 B/elem
+    bitpack-carrier-d16-control        736662.9 ns    2.000 B/elem
+    bitpack-carrier-d32                741526.9 ns    4.000 B/elem
+    bitpack-carrier-d64               1224153.1 ns    8.000 B/elem
+    bitpack-carrier-packed            1102721.0 ns    1.625 B/elem
+    bitpack-carrier-packed-simd       1027724.8 ns    1.625 B/elem

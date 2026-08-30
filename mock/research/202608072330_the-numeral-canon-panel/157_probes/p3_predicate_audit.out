@@ -1,0 +1,8 @@
+109_bellard_the_primitive_derived_cold.md            findings=0    W-fixed=6    W-any=0    threads-any=7    tfeat-any=6
+110_willsey_the_primitive_derived_cold.md            findings=16   W-fixed=10   W-any=0    threads-any=1    tfeat-any=0
+111_jhala_the_primitive_attacked.md                  findings=20   W-fixed=21   W-any=0    threads-any=6    tfeat-any=13
+112_leijen_where_the_refinement_lives.md             findings=25   W-fixed=24   W-any=0    threads-any=6    tfeat-any=13
+114_leroy_formalising_the_primitive.md               findings=21   W-fixed=15   W-any=0    threads-any=5    tfeat-any=13
+
+CONTROL: the 'any' pattern must fire somewhere. threads-any and tfeat-any totals above
+are non-zero, so a zero in the W-any column is the corpus and not the pattern.

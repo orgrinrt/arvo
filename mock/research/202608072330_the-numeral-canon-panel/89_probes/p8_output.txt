@@ -1,0 +1,34 @@
+p8: why signed saturating truth sets are gapped, and how far the criterion reaches
+
+minimal min-form failure at width 4 (MAX = 7, MIN = -8):
+  term ((7+7)+-7)
+  clamp at every node (saturating):        0
+  exact over Z then clamp once at the root: 7
+  the ceiling clamp discarded magnitude a later negative operand would have restored
+
+term space: constant-free, two variables, depth <= 2, deduped by value table: 69 terms
+                      domain        width min-form holds        fails
+      full signed [MIN, MAX]            3           37           32
+      full signed [MIN, MAX]            4           37           32
+      full signed [MIN, MAX]            5           37           32
+       non-negative [0, MAX]            3           69            0
+       non-negative [0, MAX]            4           69            0
+       non-negative [0, MAX]            5           69            0
+       non-positive [MIN, 0]            3           50           19
+       non-positive [MIN, 0]            4           50           19
+       non-positive [MIN, 0]            5           50           19
+
+86's F6 shape catalogue, re-derived, with the min-form class marked:
+  pairs classified:                                   2346
+  pairs with a NON-monotone truth set over widths 1..=8:  8
+  of those, pairs where BOTH sides are min-form at every width: 0
+    x  ==  (x*(x*x))   truth set fTffffff
+    y  ==  (y*(y*y))   truth set fTffffff
+    (x+x)  ==  ((x+x)*(x*x))   truth set fTTfffff
+    (y+y)  ==  ((y+y)*(y*y))   truth set fTTfffff
+
+  Zero. Every non-monotone truth set in this space has at least one side
+  outside the min-form class at some width, so the pathology and the
+  fragment boundary coincide rather than merely coexist.
+
+all checks passed

@@ -1,0 +1,3 @@
+chained exact type derived by solver: Q<6,18>, raw 442368
+adapt back to Q<2,6>: 108
+OUTCOME: WORKS

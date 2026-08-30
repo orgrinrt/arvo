@@ -1,0 +1,136 @@
+error[E0277]: arvo does not ship this width: Idx<7>
+   --> p13_diag_showcase.rs:232:14
+    |
+232 | pub fn e2(a: Fixed<7, 1, Hot>) -> Fixed<7, 1, Hot> { a }
+    |              ^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+    |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<7>`
+   --> p13_diag_showcase.rs:24:1
+    |
+ 24 | pub struct Idx<const N: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<7>` and spell the numeral against `MyWidths`
+help: the following other types implement trait `ToNat<M>`
+   --> p13_diag_showcase.rs:151:1
+    |
+151 | impl ToNat<Mine> for Idx<777> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<777>`
+...
+154 | impl ToNat<Mine> for Idx<41> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<41>`
+note: required by a bound in `Fixed`
+   --> p13_diag_showcase.rs:45:13
+    |
+ 43 | pub struct Fixed<const I: u32, const F: u32, S, M = Arvo>
+    |            ----- required by a bound in this struct
+ 44 | where
+ 45 |     Idx<I>: ToNat<M>,
+    |             ^^^^^^^^ required by this bound in `Fixed`
+
+error[E0277]: arvo does not ship this width: Idx<1>
+   --> p13_diag_showcase.rs:232:14
+    |
+232 | pub fn e2(a: Fixed<7, 1, Hot>) -> Fixed<7, 1, Hot> { a }
+    |              ^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+    |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<1>`
+   --> p13_diag_showcase.rs:24:1
+    |
+ 24 | pub struct Idx<const N: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<1>` and spell the numeral against `MyWidths`
+help: the following other types implement trait `ToNat<M>`
+   --> p13_diag_showcase.rs:151:1
+    |
+151 | impl ToNat<Mine> for Idx<777> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<777>`
+...
+154 | impl ToNat<Mine> for Idx<41> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<41>`
+note: required by a bound in `Fixed`
+   --> p13_diag_showcase.rs:46:13
+    |
+ 43 | pub struct Fixed<const I: u32, const F: u32, S, M = Arvo>
+    |            ----- required by a bound in this struct
+...
+ 46 |     Idx<F>: ToNat<M>,
+    |             ^^^^^^^^ required by this bound in `Fixed`
+
+error[E0308]: mismatched types
+   --> p13_diag_showcase.rs:230:58
+    |
+230 | pub fn e1(a: UFixed<13, 3, Hot>) -> UFixed<16, 3, Hot> { a }
+    |                                     ------------------   ^ expected `16`, found `13`
+    |                                     |
+    |                                     expected `Fixed<16, 3, Hot>` because of return type
+    |
+    = note: expected struct `Fixed<16, _, _>`
+               found struct `Fixed<13, _, _>`
+
+error[E0277]: width 30 is not the sum of widths 13 and 13
+   --> p13_diag_showcase.rs:234:80
+    |
+234 | pub fn e3(a: UFixed<13, 3, Hot>, b: UFixed<13, 3, Hot>) -> Fixed<30, 6, Hot> { mul(a, b) }
+    |                                                                                ^^^ this output width does not follow from the input widths
+    |
+help: the trait `WidthSum<13, 13, 30>` is not implemented for `Arvo`
+   --> p13_diag_showcase.rs:33:1
+    |
+ 33 | pub struct Arvo;
+    | ^^^^^^^^^^^^^^^
+    = note: the result of this operation is 13 + 13 bits wide; write that width, or let it be inferred
+note: required by a bound in `mul`
+   --> p13_diag_showcase.rs:211:8
+    |
+187 | pub fn mul<
+    |        --- required by a bound in this function
+...
+211 |     M: WidthSum<I, J, OI> + WidthSum<F, K, OF>,
+    |        ^^^^^^^^^^^^^^^^^^ required by this bound in `mul`
+
+error[E0277]: arvo does not ship this width: Idx<7>
+   --> p13_diag_showcase.rs:232:35
+    |
+232 | pub fn e2(a: Fixed<7, 1, Hot>) -> Fixed<7, 1, Hot> { a }
+    |                                   ^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+    |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<7>`
+   --> p13_diag_showcase.rs:24:1
+    |
+ 24 | pub struct Idx<const N: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<7>` and spell the numeral against `MyWidths`
+help: the following other types implement trait `ToNat<M>`
+   --> p13_diag_showcase.rs:151:1
+    |
+151 | impl ToNat<Mine> for Idx<777> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<777>`
+...
+154 | impl ToNat<Mine> for Idx<41> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<41>`
+
+error[E0277]: arvo does not ship this width: Idx<1>
+   --> p13_diag_showcase.rs:232:35
+    |
+232 | pub fn e2(a: Fixed<7, 1, Hot>) -> Fixed<7, 1, Hot> { a }
+    |                                   ^^^^^^^^^^^^^^^^ this numeral names a width arvo does not ship
+    |
+help: the trait `ToNat<Arvo>` is not implemented for `Idx<1>`
+   --> p13_diag_showcase.rs:24:1
+    |
+ 24 | pub struct Idx<const N: u32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: widths are opt-in per program. Add `impl ToNat<MyWidths> for Idx<1>` and spell the numeral against `MyWidths`
+help: the following other types implement trait `ToNat<M>`
+   --> p13_diag_showcase.rs:151:1
+    |
+151 | impl ToNat<Mine> for Idx<777> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<777>`
+...
+154 | impl ToNat<Mine> for Idx<41> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Idx<41>`
+
+error: aborting due to 6 previous errors
+
+Some errors have detailed explanations: E0277, E0308.
+For more information about an error, try `rustc --explain E0277`.

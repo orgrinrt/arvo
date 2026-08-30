@@ -1,0 +1,28 @@
+per-source line-anchor / probe-path counts:
+  109_bellard_the_primitive_derived_cold.md                  4   5
+  110_willsey_the_primitive_derived_cold.md                  7   6
+  111_jhala_the_primitive_attacked.md                       23  23
+  112_leijen_where_the_refinement_lives.md                  25   4
+  113_op_steer_them_and_make_them_build_it_together.md       0   0
+  114_leroy_formalising_the_primitive.md                    22   5
+  154_kiselyov_the_primitive_derived_cold.md                42   4
+  155_dolan_the_primitive_derived_cold.md                   23   1
+  156_checkpoint_nine_the_queue_for_ops_seat.md             19   0
+  157_lamport_the_primitive_attacked.md                     55  25
+  158_dolan_reply_the_instrument_could_not_reach_it.md      10   4
+  159_kiselyov_reply.md                                     12  11
+  160_leroy_formalising_the_primitive.md                    17  12
+
+unique line anchors across the 13 sources : 206
+unique probe paths across the 13 sources  : 91
+line anchors in the candidate             : 19
+probe paths in the candidate              : 13
+candidate anchors that appear in a source : 18
+candidate anchors novel to the candidate  : 1
+    NOVEL 82:770-774
+source anchors not carried (dropped)      : 188
+probe paths carried                       : 7 of 91
+
+-- controls --
+positive control (112:904-906 found in candidate): PASS
+negative control (planted anchor reported NOVEL): PASS (fires)

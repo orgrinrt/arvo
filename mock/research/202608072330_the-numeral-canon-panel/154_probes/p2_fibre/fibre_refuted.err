@@ -1,0 +1,13 @@
+error[E0080]: evaluation panicked: a packed 13-bit element does not occupy 13 bits as a standalone value
+  --> fibre_refuted.rs:40:15
+   |
+40 |   const _: () = assert!(
+   |  _______________^
+41 | |     core::mem::size_of::<Packed13Elem>() * 8 == W as usize,
+42 | |     "a packed 13-bit element does not occupy 13 bits as a standalone value"
+43 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

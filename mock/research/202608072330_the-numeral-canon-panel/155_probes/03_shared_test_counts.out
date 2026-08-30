@@ -1,0 +1,13 @@
+mock/benches/variants/bitpack-carrier-shared : tests=9
+mock/benches/variants/bitpack-contend-shared : tests=12
+mock/benches/variants/bitpack-footprint-shared : tests=6
+mock/benches/variants/bitpack-plan-shared : tests=5
+mock/benches/variants/bitpack-shared : tests=3
+mock/benches/variants/bitpack-wide-shared : tests=6
+mock/benches/variants/bitpack-write-contend-shared : tests=16
+mock/benches/variants/quantiser-fadd-shared : tests=1
+mock/benches/variants/quantiser-radix-shared : tests=3
+mock/benches/variants/satfold-shared : tests=11
+mock/benches/variants/warm-clamp-shared : tests=7
+mock/benches/variants/warm-container-shared : tests=15
+mock/benches/variants/wide-rung-shared : tests=30

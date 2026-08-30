@@ -1,0 +1,67 @@
+==============================================================================
+THREE NUMBERS PER ESTIMATOR: FLOOR, SEPARATION, EXPRESSIVENESS
+==============================================================================
+floor      = 95th percentile of |E(A) - E(B)| / E(A) across resamples,
+             for the two arms the bench declares byte-identical, in percent
+separated  = arm pairs whose 95% bootstrap interval for the difference
+             excludes zero, over the arms that genuinely differ
+sections   = exact count reachable by a strictly positive weighting on
+             {median, candidate}; 1 means the candidate adds nothing
+
+  bitpack-carrier-width   arms=5 regions=6 pairs=60
+    estimator            floor %    separated  sections
+    median                  1.16     57 of 60          1
+    mean                    1.45     59 of 60          1
+    iqr  (spread)          48.28     43 of 60          6
+    idr  (spread)          52.15     47 of 60          7
+    mad  (spread)          60.81     37 of 60          8
+    p95  (level)            5.66     54 of 60          1
+    p99  (level)            7.36     54 of 60          1
+    p95-med (excess)      101.18     38 of 60          3
+    p99-med (excess)      149.05     39 of 60          2
+    correlation between separation and sections, over the 9 candidates: -0.641
+
+  bitpack-contend-decode   arms=4 regions=6 pairs=36
+    estimator            floor %    separated  sections
+    median                 18.24     21 of 36          1
+    mean                   42.24     25 of 36          5
+    iqr  (spread)         135.09      3 of 36          7
+    idr  (spread)         146.13      1 of 36          6
+    mad  (spread)         117.42      2 of 36          7
+    p95  (level)          144.78     14 of 36          7
+    p99  (level)          112.08     14 of 36          5
+    p95-med (excess)      404.51      2 of 36          9
+    p99-med (excess)      272.19      5 of 36          8
+    correlation between separation and sections, over the 9 candidates: -0.705
+
+  bitpack-contention   arms=5 regions=12 pairs=120   (too large to enumerate sections)
+    estimator            floor %    separated  sections
+    median                  7.47    102 of 120         -
+    mean                   66.99    100 of 120         -
+    iqr  (spread)          93.60     72 of 120         -
+    idr  (spread)          87.92     73 of 120         -
+    mad  (spread)         112.51     66 of 120         -
+    p95  (level)           70.59     87 of 120         -
+    p99  (level)          229.31     84 of 120         -
+    p95-med (excess)      215.02     52 of 120         -
+    p99-med (excess)      388.94     53 of 120         -
+
+  bitpack-wide   arms=3 regions=6 pairs=18
+    estimator            floor %    separated  sections
+    median                  7.87     15 of 18          1
+    mean                    8.79     14 of 18          2
+    iqr  (spread)          77.92      6 of 18          8
+    idr  (spread)          52.35      7 of 18          5
+    mad  (spread)          71.38      5 of 18          8
+    p95  (level)           24.00      9 of 18          3
+    p99  (level)           40.61      7 of 18          2
+    p95-med (excess)      113.61      2 of 18          5
+    p99-med (excess)      130.14      2 of 18          5
+    correlation between separation and sections, over the 9 candidates: -0.673
+
+==============================================================================
+WHAT THE TWO TESTS DO TO EACH OTHER
+==============================================================================
+  If separation and expressiveness ranked candidates alike, section 5's
+  composition would collapse into one test and the simpler one would win.
+  Read the two columns against each other per family above.

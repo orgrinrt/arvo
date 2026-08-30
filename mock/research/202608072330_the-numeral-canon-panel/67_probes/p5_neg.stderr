@@ -1,0 +1,28 @@
+error[E0277]: the trait bound `Saturate<Id<RingZ, S4>>: AddAssociates` is not satisfied
+   --> p5_neg.rs:21:40
+    |
+ 21 |     reassociating_fold::<SignedWindow, Guarded>()
+    |                                        ^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `AddAssociates` is not implemented for `Saturate<Id<RingZ, S4>>`
+   --> p5_strategy_selects_the_member.rs:100:1
+    |
+100 | pub struct Saturate<I>(PhantomData<I>);
+    | ^^^^^^^^^^^^^^^^^^^^^^
+help: the trait `AddAssociates` is implemented for `Saturate<Id<D, U4>>`
+   --> p5_strategy_selects_the_member.rs:136:1
+    |
+136 | impl<D: Ambient> AddAssociates for Saturate<Id<D, U4>> {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `sel::reassociating_fold`
+   --> p5_strategy_selects_the_member.rs:144:35
+    |
+140 | pub fn reassociating_fold<I, S>() -> &'static str
+    |        ------------------ required by a bound in this function
+...
+144 |     <S as Strategy<I>>::Selected: AddAssociates,
+    |                                   ^^^^^^^^^^^^^ required by this bound in `reassociating_fold`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

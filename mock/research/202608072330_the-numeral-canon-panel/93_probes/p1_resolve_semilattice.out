@@ -1,0 +1,100 @@
+P1. Resolve on a flat four-marker set
+=====================================
+
+commutative + idempotent binary ops on 4 elements : 4096
+of those, also associative (= join semilattices)  : 76
+
+K1  Resolve(Hot, Precise) = Precise               : 31 survive
+K2  and Resolve(Cold, Hot) != Hot   [I17]         : 24 survive
+K3  and Resolve(Cold, Hot) != Cold  [I5]          : 9 survive
+
+What K1-satisfying semilattices are FORCED to decide for Hot v Cold:
+  Hot v Cold = Hot      : 7 of 31
+  Hot v Cold = Warm     : 2 of 31
+  Hot v Cold = Cold     : 15 of 31
+  Hot v Cold = Precise  : 7 of 31
+
+9 semilattice(s) satisfy all three. Each is listed with the partial
+order it induces, so the reader can check it against the intents:
+
+  --- survivor 1 ---
+  Hot v Cold    = Warm
+  Hot v Warm    = Warm
+  Cold v Warm   = Warm
+  Cold v Precise= Warm
+  Warm v Precise= Warm
+  order: Hot<=Warm, Hot<=Precise, Cold<=Warm, Precise<=Warm
+
+  --- survivor 2 ---
+  Hot v Cold    = Precise
+  Hot v Warm    = Warm
+  Cold v Warm   = Warm
+  Cold v Precise= Precise
+  Warm v Precise= Warm
+  order: Hot<=Warm, Hot<=Precise, Cold<=Warm, Cold<=Precise, Precise<=Warm
+
+  --- survivor 3 ---
+  Hot v Cold    = Warm
+  Hot v Warm    = Warm
+  Cold v Warm   = Warm
+  Cold v Precise= Precise
+  Warm v Precise= Precise
+  order: Hot<=Warm, Hot<=Precise, Warm<=Precise, Cold<=Warm, Cold<=Precise
+
+  --- survivor 4 ---
+  Hot v Cold    = Precise
+  Hot v Warm    = Precise
+  Cold v Warm   = Warm
+  Cold v Precise= Precise
+  Warm v Precise= Precise
+  order: Hot<=Precise, Warm<=Precise, Cold<=Warm, Cold<=Precise
+
+  --- survivor 5 ---
+  Hot v Cold    = Precise
+  Hot v Warm    = Hot
+  Cold v Warm   = Cold
+  Cold v Precise= Precise
+  Warm v Precise= Precise
+  order: Hot<=Precise, Warm<=Hot, Warm<=Cold, Warm<=Precise, Cold<=Precise
+
+  --- survivor 6 ---
+  Hot v Cold    = Precise
+  Hot v Warm    = Precise
+  Cold v Warm   = Cold
+  Cold v Precise= Precise
+  Warm v Precise= Precise
+  order: Hot<=Precise, Warm<=Cold, Warm<=Precise, Cold<=Precise
+
+  --- survivor 7 ---
+  Hot v Cold    = Precise
+  Hot v Warm    = Hot
+  Cold v Warm   = Precise
+  Cold v Precise= Precise
+  Warm v Precise= Precise
+  order: Hot<=Precise, Warm<=Hot, Warm<=Precise, Cold<=Precise
+
+  --- survivor 8 ---
+  Hot v Cold    = Precise
+  Hot v Warm    = Warm
+  Cold v Warm   = Precise
+  Cold v Precise= Precise
+  Warm v Precise= Precise
+  order: Hot<=Warm, Hot<=Precise, Warm<=Precise, Cold<=Precise
+
+  --- survivor 9 ---
+  Hot v Cold    = Precise
+  Hot v Warm    = Precise
+  Cold v Warm   = Precise
+  Cold v Precise= Precise
+  Warm v Precise= Precise
+  order: Hot<=Precise, Warm<=Precise, Cold<=Precise
+
+--- the same question on a PRODUCT of per-axis chains ---
+elements in the product lattice        : 27
+idempotence  holds on 27/27
+commutativity holds on 729/729
+associativity holds on 19683/19683
+
+The product needs no order to be chosen: every pair has a join by
+construction, so the four presets can be NAMED POINTS in it without
+the resolution question ever arising as a separate design decision.

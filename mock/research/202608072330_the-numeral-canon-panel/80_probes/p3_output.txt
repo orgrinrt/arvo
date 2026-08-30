@@ -1,0 +1,7 @@
+p3: the select stage
+  F=0 : general=56 fused=56 agree=true
+  F=8 : general=0 fused=0 agree=true
+  swept raw operands in [-4096, 4096) step 97: 614125 triples
+  at F=8 the two lowerings disagree on 149081 of 614125
+  at F=0 they disagree on 0 of 614125
+  sel_static_f0=56 sel_static_f8=0 sel_dynamic(f=0)=56 sel_dynamic(f=8)=0

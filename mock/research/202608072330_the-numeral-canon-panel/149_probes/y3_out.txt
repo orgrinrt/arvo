@@ -1,0 +1,46 @@
+y3: 141's results traced into the later files of its own topic
+
+=== findings ===
+id       142    143    144    145    146   carried?
+F1         0      2      0      2      1   in 146
+F2         6     12      0      3      8   in 146
+F3         0      4      0      2      3   in 146
+F4         0      1      1      0      3   in 146
+F5         1      0      0      0      1   in 146
+F6         0      0      0      0      1   in 146
+F7         0      0      0      2      2   in 146
+F8         0      1      0      1      1   in 146
+F9         0      3      0      0      3   in 146
+
+
+=== controls ===
+K1: nonexistent id F99 found 0 times (must be 0)
+K2: F7, which two files rest on, found 4 times (must be > 0)
+K3: F9 as a bare id 4, as a possessive 2; both counted, neither read as F9'
+
+=== replacements, by letter, in the candidate and in 145 ===
+(half mechanical: a replacement carried without being named by letter is invisible here)
+  145: replacement letters named = ['C']
+       occurrences of the word 'replacement' = 2
+  146: replacement letters named = ['B']
+       occurrences of the word 'replacement' = 1
+
+=== which of my twelve replacements are named by letter anywhere ===
+  A:   2 named occurrences   keep the firewall, gate the fused arm on a const predicate
+  B:   6 named occurrences   spell the fractional shift as an arithmetic shift right
+  C:   2 named occurrences   select the exact-intermediate axis position rather than declaring slack
+  D:   0 named occurrences   if a tolerance is wanted, make it an axis position not a modifier
+  E:   0 named occurrences   compose the firewall with Q51's denotation repair
+  F:   0 named occurrences   restate F2 as monotone non-decreasing
+  G:   0 named occurrences   state the count once as a quotient over the observation set
+  H:   0 named occurrences   state the count as a function rather than as an absence
+  I:   0 named occurrences   carry the W result with its own predicate
+  J:   0 named occurrences   predicate the invisibility: column versus accumulator
+  K:   0 named occurrences   the storage question and the fusion question are one congruence question
+  L:   0 named occurrences   a minimising choice is cost where the reduction is a congruence, policy where not
+
+NOTE. A zero in the last block does NOT mean the replacement was dropped.
+It means it is not carried under my letter, which is the expected shape for the
+ones that became findings or clauses rather than staying labelled proposals.
+The file resolves each zero by hand and says which are carried unlabelled and
+which are genuinely absent.

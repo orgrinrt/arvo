@@ -1,0 +1,39 @@
+========================================================================================
+U1. Hedge tokens in predicates, before and after
+========================================================================================
+  136, before    9 predicates, 3 carrying a hedge token
+      predicate 4: ['OPEN']
+      predicate 6: ['OPEN']
+      predicate 7: ['OPEN']
+  138, after     3 predicates, 0 carrying a hedge token
+
+  U1: CONFIRMED (control: the scanner finds 3 in 136, must be 3; finds 0 in 138, must be 0)
+
+========================================================================================
+U2/U3. The anchors the repairs rest on
+========================================================================================
+  ok    the OPEN instruction               /INTENTS\.md:241-243/
+  ok    its gloss                          /INTENTS\.md:245-246/
+  ok    the arms sweep                     /g8_does_the_class_reach_131s_arms/
+  ok    R3's compound predicate            /131:169-173/
+  ok    R5's compound predicate            /131:203-209/
+  ok    R6, the one that propagated        /131:221-223/
+  ok    the origin carrier                 /130:13/
+  ok    the four misattributions           /131:48.*131:52.*132:43.*134:13.*135:10/
+  ok    the ledger row                     /132:70/
+  ok    B6 in phase one                    /126:24/
+  ok    the phase-two boundary             /126:393/
+  ok    the gate run                       /g0_test_gate\.out/
+  ok    the third data point               /6\.61/
+  ok    the prior artifact                 /u0_test_gate_run\.txt/
+  ok    the present-vs-not-present test    /136:145-147/
+  ok    the misdirected citation           /136:65-66/
+
+  U2: CONFIRMED
+
+  U3 control, a bogus anchor is caught by the same scan: True (must be True: 138 does not contain it)
+  panel files cited: ['125', '126', '128', '130', '131', '132', '133', '136', '137']
+  cited but not present on disk: [] (must be empty)
+
+========================================================================================
+VERDICT: hedge tokens removed: True, anchors owed and present: True, no dangling file citation: True

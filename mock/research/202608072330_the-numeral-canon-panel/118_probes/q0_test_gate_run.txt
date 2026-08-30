@@ -1,0 +1,32 @@
+118 test gate. Twelfth independent count.
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+host: host: aarch64-apple-darwin
+
+Attribute-only #[test] count across variants/, excluding target/:
+     123
+
+Per crate, by --manifest-path, --test-threads=1:
+bench-bitpack-carrier-shared             test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+bench-bitpack-contend-shared             test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+bench-bitpack-footprint-shared           test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+bench-bitpack-plan-shared                test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+bench-bitpack-shared                     test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+bench-bitpack-wide-shared                test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+bench-bitpack-write-contend-shared       test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.34s
+bench-quantiser-fadd-shared              test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+bench-quantiser-radix-shared             test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+bench-satfold-shared                     test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+bench-warm-clamp-shared                  test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s
+bench-warm-container-shared              test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+bench-wide-rung-shared                   test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.89s
+
+TOTAL PASSED: 123
+
+Note on the command, against 117.
+  117 records that 'cargo test --workspace' from mock/benches returns a false
+  green: it compiles the bench binary, runs zero tests and exits 0. Confirmed:
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+  114's ninth count used 'cargo test -p <pkg>', which reaches the tests because
+  the variants are path dependencies of the bench binary. This count uses
+  '--manifest-path', which reaches them because each variant is its own
+  workspace root. Two working forms, one false-green form.

@@ -1,0 +1,13 @@
+error: use of `const` in the type system not defined as `type const`
+  --> p02_assoc_const_min_gca.rs:18:20
+   |
+18 |     type C = [u64; <Key<I, F> as Pick>::WORDS];
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+help: add `type` before `const` for `Pick::WORDS`
+   |
+12 |     type const WORDS: usize;
+   |     ++++
+
+error: aborting due to 1 previous error
+

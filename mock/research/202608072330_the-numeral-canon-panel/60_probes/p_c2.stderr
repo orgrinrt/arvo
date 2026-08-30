@@ -1,0 +1,38 @@
+error: generic parameters may not be used in const operations
+  --> p_c2_general_impl_refused.rs:24:20
+   |
+24 |     type Out = Q<{ I1 + I2 }, { F1 + F2 }>;
+   |                    ^^ cannot perform const operation using `I1`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `I1`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p_c2_general_impl_refused.rs:24:25
+   |
+24 |     type Out = Q<{ I1 + I2 }, { F1 + F2 }>;
+   |                         ^^ cannot perform const operation using `I2`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `I2`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p_c2_general_impl_refused.rs:24:33
+   |
+24 |     type Out = Q<{ I1 + I2 }, { F1 + F2 }>;
+   |                                 ^^ cannot perform const operation using `F1`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `F1`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p_c2_general_impl_refused.rs:24:38
+   |
+24 |     type Out = Q<{ I1 + I2 }, { F1 + F2 }>;
+   |                                      ^^ cannot perform const operation using `F2`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `F2`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: aborting due to 4 previous errors
+

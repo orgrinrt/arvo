@@ -1,0 +1,20 @@
+$ rustc --edition 2021 -O p1d_the_carrier_choice_does_not_repair_the_split.rs   # expect FAIL
+error[E0308]: mismatched types
+  --> p1d_the_carrier_choice_does_not_repair_the_split.rs:46:15
+   |
+46 |     takes_sat(w);
+   |     --------- ^ expected `Fx<SatBoth>`, found `Fx<Wrap>`
+   |     |
+   |     arguments to this function are incorrect
+   |
+   = note: expected struct `Fx<SatBoth>`
+              found struct `Fx<Wrap>`
+note: function defined here
+  --> p1d_the_carrier_choice_does_not_repair_the_split.rs:39:4
+   |
+39 | fn takes_sat(_x: Fx<SatBoth>) {}
+   |    ^^^^^^^^^ ---------------
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.

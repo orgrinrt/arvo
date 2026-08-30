@@ -1,0 +1,33 @@
+p10: is sign uniformity necessary for EVERY declared operand set,
+     or only for intervals
+
+exhaustive over every subset of the representable set:
+
+width    subsets     straddling   assoc-closed   STRADDLING AND ASSOC sign-unif & !assoc
+    2         15              6              9                      0                  0
+    3        255            210             45                      0                  0
+    4      65535          64770            765                      0                  0
+
+sampled where exhaustive is out of reach. Sets are drawn by picking each
+value independently with probability one half, then resampled until the set
+straddles, so every sample is in the region the attack cares about.
+
+width  straddling sets  of which assoc-closed   control: assoc
+    5           400000                      0               22
+    6           400000                      0                0
+
+section 3: the control. If `associative_on_mask` could not return false
+the tables above would be meaningless. Two named sets, one of each kind:
+
+  non-negative [0,7]           straddles false  closure size   8  associative true
+  straddling [-1,1]            straddles true   closure size  16  associative false
+  straddling multiples of 4    straddles true   closure size  16  associative false
+  non-positive [-7,0]          straddles false  closure size   9  associative true
+  straddling sparse {-8, 7}    straddles true   closure size  16  associative false
+
+reading: column 5 of the first table is the attack. Zero there means no
+declared operand set of ANY shape, at that width, is both straddling and
+associative over its closure, so sign uniformity is necessary for every
+declaration and not only for intervals. Column 6 is the other direction:
+zero means every sign-uniform set is associative, which p2 measured for
+intervals and this extends to arbitrary sets.

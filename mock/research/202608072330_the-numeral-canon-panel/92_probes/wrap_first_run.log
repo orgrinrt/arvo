@@ -1,0 +1,80 @@
+  Validating 8 variants × 100 seeds...
+  Validation OK: all 8 variants produce valid output
+  Determinism check: 8 variants × 10 seeds...
+  Determinism OK: all 8 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_seq.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (3s elapsed, ~10s left)
+  pass 2/4 cd=0ms... done (7s elapsed, ~7s left)
+  pass 3/4 cd=0ms... done (10s elapsed, ~3s left)
+  pass 4/4 cd=0ms... done (14s elapsed, ~0s left)
+  Total: 13.6s
+  CSV: satfold-length-l1-wrap_n1001.csv (640 rows)
+  Meta: satfold-length-l1-wrap_n1001.meta.json
+  wrote satfold-length-l1-wrap_n1001.csv + satfold-length-l1-wrap_n1001_findings.md
+  Validating 8 variants × 100 seeds...
+  Validation OK: all 8 variants produce valid output
+  Determinism check: 8 variants × 10 seeds...
+  Determinism OK: all 8 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_seq.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (3s elapsed, ~10s left)
+  pass 2/4 cd=0ms... done (7s elapsed, ~7s left)
+  pass 3/4 cd=0ms... done (10s elapsed, ~3s left)
+  pass 4/4 cd=0ms... done (14s elapsed, ~0s left)
+  Total: 13.5s
+  CSV: satfold-length-l1-wrap_n3001.csv (640 rows)
+  Meta: satfold-length-l1-wrap_n3001.meta.json
+  wrote satfold-length-l1-wrap_n3001.csv + satfold-length-l1-wrap_n3001_findings.md
+  Validating 8 variants × 100 seeds...
+  Validation OK: all 8 variants produce valid output
+  Determinism check: 8 variants × 10 seeds...
+  Determinism OK: all 8 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_seq.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (3s elapsed, ~10s left)
+  pass 2/4 cd=0ms... done (7s elapsed, ~7s left)
+  pass 3/4 cd=0ms... done (10s elapsed, ~3s left)
+  pass 4/4 cd=0ms... done (14s elapsed, ~0s left)
+  Total: 14.1s
+  CSV: satfold-length-l1-wrap_n7001.csv (640 rows)
+  Meta: satfold-length-l1-wrap_n7001.meta.json
+  wrote satfold-length-l1-wrap_n7001.csv + satfold-length-l1-wrap_n7001_findings.md
+  Validating 8 variants × 100 seeds...
+  Validation OK: all 8 variants produce valid output
+  Determinism check: 8 variants × 10 seeds...
+  Determinism OK: all 8 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_seq.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (4s elapsed, ~12s left)
+  pass 2/4 cd=0ms... done (8s elapsed, ~8s left)
+  pass 3/4 cd=0ms... done (12s elapsed, ~4s left)
+  pass 4/4 cd=0ms... done (15s elapsed, ~0s left)
+  Total: 15.3s
+  CSV: satfold-length-l1-wrap_n10001.csv (640 rows)
+  Meta: satfold-length-l1-wrap_n10001.meta.json
+  wrote satfold-length-l1-wrap_n10001.csv + satfold-length-l1-wrap_n10001_findings.md
+  Validating 8 variants × 100 seeds...
+  Validation OK: all 8 variants produce valid output
+  Determinism check: 8 variants × 10 seeds...
+  Determinism OK: all 8 variants are deterministic
+  Subprocess sanity: /Users/orgrinrt/Dev/clause-dev/arvo/mock/benches/../target/release/libbench_satfold_seq.dylib (1 run, warm)...
+  Subprocess sanity OK
+  Warmup spawn complete.
+  ── Harness run 1/1 ──
+  pass 1/4 cd=0ms... done (4s elapsed, ~11s left)
+  pass 2/4 cd=0ms... done (7s elapsed, ~7s left)
+  pass 3/4 cd=0ms... done (11s elapsed, ~4s left)
+  pass 4/4 cd=0ms... done (15s elapsed, ~0s left)
+  Total: 14.5s
+  CSV: satfold-length-l1-wrap_n12001.csv (640 rows)
+  Meta: satfold-length-l1-wrap_n12001.meta.json
+  wrote satfold-length-l1-wrap_n12001.csv + satfold-length-l1-wrap_n12001_findings.md

@@ -1,0 +1,7 @@
+adjunction floor: 0 failures over 4001x281 (must be 0)
+adjunction ceil:  0 failures over 4001x281 (must be 0)
+staged narrowing floor: 0 mismatches of 4001 (must be 0)
+staged narrowing ceil: 0 mismatches of 4001 (must be 0)
+staged narrowing toward_zero: 0 mismatches of 4001 (must be 0)
+staged narrowing half_up: 500 mismatches of 4001 (control: must be > 0)
+staged narrowing half_even: 500 mismatches of 4001 (control: must be > 0)

@@ -1,0 +1,58 @@
+family warm-clamp-arity-w32, 6 arms, 6 size coordinates
+sizes: [320010, 320020, 320030, 320040, 320060, 320080]
+
+arm                            320010     320020     320030     320040     320060     320080
+warm-clamp-acc64                  868        842        571        433        414        438
+warm-clamp-accfit                 873        859        573        426        402        428
+warm-clamp-accfit-dyn            5742       3135       2723        884        481        424
+warm-clamp-head                  1038       1181        654        537        545        530
+warm-clamp-min-lanes              440        511       1906       1867       1888        340
+warm-clamp-minimum                436        525       1964       2152       3740       5128
+
+==============================================================================
+CC1. why the witness is non-dominated, arm by arm
+==============================================================================
+  against warm-clamp-acc64           faster at sizes [320080]
+  against warm-clamp-accfit          faster at sizes [320080]
+  against warm-clamp-head            faster at sizes [320060, 320080]
+  against warm-clamp-min-lanes       faster at sizes [320040, 320060]
+  against warm-clamp-minimum         faster at sizes [320040, 320060, 320080]
+  CC1 -> CONFIRMED
+
+==============================================================================
+CC2/CC4/DD2. two decision procedures over every arm
+==============================================================================
+  arm                         dominated  separation LP   enumeration min t
+  warm-clamp-acc64                False     selectable      -1162681/84035
+  warm-clamp-accfit               False     selectable               -63/5
+  warm-clamp-accfit-dyn           False    unreachable           8711/9260
+  warm-clamp-head                  True    unreachable               412/5
+  warm-clamp-min-lanes            False     selectable     -20474346/51215
+  warm-clamp-minimum              False     selectable                  -4
+  DD2 procedures disagree on 0 arms -> PASS
+  CC2 the witness has strictly positive optimum 8711/9260: CONFIRMED
+  CC4 selectable siblings confirmed by both: ['warm-clamp-acc64', 'warm-clamp-accfit', 'warm-clamp-min-lanes', 'warm-clamp-minimum']
+
+==============================================================================
+DD1. the case that must fail: a deliberately dominated arm
+==============================================================================
+  witness plus one nanosecond on every coordinate: dominated=True, selectable=False
+  DD1 -> PASS
+
+==============================================================================
+CC3. is the finding carried by one size point?
+==============================================================================
+  dropping size     320010: witness is unreachable
+  dropping size     320020: witness is unreachable
+  dropping size     320030: witness is unreachable
+  dropping size     320040: witness is unreachable
+  dropping size     320060: witness is unreachable
+  dropping size     320080: witness is dominated
+  CC3 the verdict survives dropping any single coordinate: REFUTED
+      it flips when dropping ['320080 -> dominated']
+      so the finding is a statement about the full coordinate set rather
+      than about the arm alone, and its predicate has to say so.
+
+==============================================================================
+control failures: 0 []
+==============================================================================

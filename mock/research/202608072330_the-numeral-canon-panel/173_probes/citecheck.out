@@ -1,0 +1,36 @@
+OK  157_probes/loaded_rules_157.txt:4   [1 lines]
+      what-you-can-observe-is-what-you-guaranteed
+OK  171:249-253   [5 lines]
+      | file | its own defining sentence | observation-bounded | observation vocabulary |
+      |---|---|---|---|
+      | `60` | "A chain is a composition of exact operations together with a schedule of adaptation points" | **no** | 2 in 7,299 words, 0.27 per 1000 |
+OK  171:77-91   [15 lines]
+      **(P) The partition.** A program divides into maximal stretches whose intermediates nothing binds. That
+      is a statement about the program.
+      
+OK  60:28-29   [2 lines]
+      something must bring it back, and that something, the adaptation, must be placed somewhere. **A
+      chain is a composition of exact operations together with a schedule of adaptation points.** The
+OK  167:1052-1062   [11 lines]
+      **I hold that the unit is the unobserved region rather than the chain**, and `AGREEMENTS.md:206` gives me
+      the thing to hold it against. C9, from `63`, is the panel's existing chain concept:
+      
+OK  60:69-84   [16 lines]
+      Five things, none of which a per-op model can express.
+      
+      An **intermediate format** wider than the boundary format, or there is nothing between "adapt
+OK  60:83-84   [2 lines]
+      schedule is also the index set of the error analysis. Fewer adaptation points is not merely
+      cheaper rounding; it is a structurally shorter error sum.
+OK  168:362-368   [7 lines]
+      affine chain with a single `saturating_sub` in place of the `wrapping_sub`. Nothing about the
+      endpoints changed, the width did not change, the depth did not change, and the licence is gone. So:
+      
+OK  60:209-210   [2 lines]
+      intermediate value the closed concept cannot name, so under a closed concept I7's chain clause has
+      **no expressible form**. That is a statability argument, not a benchmark, and it is the central
+UNRESOLVED  no_such_file_157.md:1
+OUT OF RANGE 109_bellard_the_primitive_derived_cold.md:999999
+
+citations checked: 9 plus 2 controls
+failures: 2  (the 2 controls MUST be among them; CONTROL PASS)

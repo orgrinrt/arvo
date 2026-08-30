@@ -1,0 +1,10 @@
+warning: type alias `N8` is never used
+  --> p4_cross_family_join.rs:92:6
+   |
+92 | type N8 = Zero<Zero<Zero<One<End>>>>;
+   |      ^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: 1 warning emitted
+

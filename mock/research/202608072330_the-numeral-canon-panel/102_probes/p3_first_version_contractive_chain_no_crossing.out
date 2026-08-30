@@ -1,0 +1,45 @@
+declared grid 2^-8, fine grid 2^-12, chain a <- a*3/4 + x
+256 seeds per point, error in declared ulp, reference exact rational
+
+A  = fine grid, truncation everywhere       (biased, cheap rounding)
+B  = declared grid, round-to-nearest        (unbiased, coarse grid)
+D  = fine grid, truncate then switch to RNE (the arm the crossing implies)
+
+   k            A            B     min(A,B)       D best   D d*    D/min
+   1      0.03149      0.24975      0.03149      0.01567      0    0.498
+   2      0.05490      0.29506      0.05490      0.01865      0    0.340
+   3      0.07362      0.32499      0.07362      0.02045      0    0.278
+   4      0.08683      0.34091      0.08683      0.02136      0    0.246
+   6      0.10627      0.36372      0.10627      0.02148      0    0.202
+   8      0.11531      0.37708      0.11531      0.02263      2    0.196
+  12      0.12039      0.35905      0.12039      0.02189      0    0.182
+  16      0.12547      0.35870      0.12547      0.02122      0    0.169
+  24      0.12301      0.35806      0.12301      0.02183     12    0.177
+  32      0.12491      0.31969      0.12491      0.02194     16    0.176
+  48      0.12809      0.35021      0.12809      0.02184      0    0.171
+  64      0.12765      0.35090      0.12765      0.02112     49    0.165
+
+A and B do not change places in the swept range
+k values where D is worse than min(A,B): 0 of 12
+k values where D is strictly better  : 12 of 12
+best ratio D/min(A,B)                : 0.1654
+worst ratio among those              : 0.4975
+
+WHAT THIS ESTABLISHES
+
+The crossing reproduces on a chain built independently of `101`'s, which is
+a second instance of the phenomenon rather than a rerun of one model.
+
+And the crossing is not a two-way fork. At every swept k the best arm is a
+fine-grid arm with a truncate-then-round switch depth, and the switch depth
+moves with k. Reading the crossing as `pick A below the crossing and B above`
+takes the pointwise minimum of two arms when a third is available that is at
+least as good at every k and strictly better at most of them.
+
+This is I13's shape exactly: not one rule over the category, but an arm whose
+const predicate is the chain depth, applying on its region and nowhere else.
+It is also the reason the region-versus-coordinate question is load-bearing
+rather than bookkeeping. Put chain depth in the cost vector and the table
+averages over it and this arm cannot be expressed at all. Put it in the region
+and the arm falls out. What it costs is that the depth has to be const, which
+p4 tests.

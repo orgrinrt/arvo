@@ -1,0 +1,15 @@
+[package]
+name = "bench-bitpack-wide-shared"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_bitpack_wide_shared"
+path = "src/lib.rs"
+
+[dependencies]
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+bench-bitpack-carrier-shared = { path = "../bitpack-carrier-shared" }
+bench-bitpack-plan-shared = { path = "../bitpack-plan-shared" }
+bench-bitpack-contend-shared = { path = "../bitpack-contend-shared" }

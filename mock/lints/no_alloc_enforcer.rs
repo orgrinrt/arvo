@@ -10,9 +10,9 @@
 //! because the scan only fires on import-like or type-position
 //! usage (line starts with `use ...`, contains `: Vec<`, etc.).
 
-use mockspace::{Lint, LintContext, LintError, Severity};
+use mockspace::{CrateLint, Lint, LintContext, LintError, Severity};
 
-pub fn lint() -> Box<dyn Lint> {
+pub fn lint() -> Box<dyn CrateLint> {
     Box::new(NoAllocEnforcer)
 }
 
@@ -26,7 +26,9 @@ impl Lint for NoAllocEnforcer {
     fn default_severity(&self) -> Severity {
         Severity::HARD_ERROR
     }
+}
 
+impl CrateLint for NoAllocEnforcer {
     fn check(&self, ctx: &LintContext) -> Vec<LintError> {
         if ctx.is_proc_macro_crate() {
             return Vec::new();

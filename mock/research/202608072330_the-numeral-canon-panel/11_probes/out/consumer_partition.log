@@ -1,0 +1,57 @@
+error[E0277]: the trait bound `arvo_min::Idx<0>: arvo_min::ToNat<LibA>` is not satisfied
+  --> consumer_partition.rs:23:19
+   |
+23 | pub fn compose(x: FromA) -> FromArvo { x }
+   |                   ^^^^^ the trait `arvo_min::ToNat<LibA>` is not implemented for `arvo_min::Idx<0>`
+   |
+help: the following other types implement trait `arvo_min::ToNat<M>`
+  --> consumer_partition.rs:13:1
+   |
+13 | impl ToNat<LibA> for Idx<7> { type N = T7; }
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `arvo_min::Idx<7>`
+14 | impl ToNat<LibA> for Idx<13> { type N = T13; }
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `arvo_min::Idx<13>`
+note: required by a bound in `arvo_min::Fixed`
+  --> arvo_min.rs:20:13
+   |
+17 | pub struct Fixed<const I: u32, const F: u32, M = Arvo>(core::marker::PhantomData<(Idx<I>, Idx<F>, M)>)
+   |            ----- required by a bound in this struct
+...
+20 |     Idx<F>: ToNat<M>;
+   |             ^^^^^^^^ required by this bound in `Fixed`
+
+error[E0277]: the trait bound `arvo_min::Idx<0>: arvo_min::ToNat<arvo_min::Arvo>` is not satisfied
+  --> consumer_partition.rs:23:29
+   |
+23 | pub fn compose(x: FromA) -> FromArvo { x }
+   |                             ^^^^^^^^ the trait `arvo_min::ToNat<arvo_min::Arvo>` is not implemented for `arvo_min::Idx<0>`
+   |
+help: the trait `arvo_min::ToNat<arvo_min::Arvo>` is implemented for `arvo_min::Idx<13>`
+  --> arvo_min.rs:15:1
+   |
+15 | impl ToNat<Arvo> for Idx<13> { type N = T13; }
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+note: required by a bound in `arvo_min::Fixed`
+  --> arvo_min.rs:20:13
+   |
+17 | pub struct Fixed<const I: u32, const F: u32, M = Arvo>(core::marker::PhantomData<(Idx<I>, Idx<F>, M)>)
+   |            ----- required by a bound in this struct
+...
+20 |     Idx<F>: ToNat<M>;
+   |             ^^^^^^^^ required by this bound in `Fixed`
+
+error[E0308]: mismatched types
+  --> consumer_partition.rs:23:40
+   |
+23 | pub fn compose(x: FromA) -> FromArvo { x }
+   |                             --------   ^ expected `Fixed<13, 0>`, found `Fixed<13, 0, LibA>`
+   |                             |
+   |                             expected `arvo_min::Fixed<13, 0>` because of return type
+   |
+   = note: expected struct `arvo_min::Fixed<_, _, arvo_min::Arvo>`
+              found struct `arvo_min::Fixed<_, _, LibA>`
+
+error: aborting due to 3 previous errors
+
+Some errors have detailed explanations: E0277, E0308.
+For more information about an error, try `rustc --explain E0277`.

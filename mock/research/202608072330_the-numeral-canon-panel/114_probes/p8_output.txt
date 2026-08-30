@@ -1,0 +1,42 @@
+==============================================================================================================
+p8. Three arms, and which of them a declaration is needed for
+==============================================================================================================
+
+  logical width 3, terms 96, 6 sampled declarations each
+
+P1: wrapping logical map, wrapping carrier, carrier width at or above
+the logical width
+  wrap logical, wrap carrier m = 3               cells    576  cheap_reduced differs      0  cheap_unreduced differs      0  root out of range    363
+  wrap logical, wrap carrier m = 4               cells    576  cheap_reduced differs      0  cheap_unreduced differs    363  root out of range    363
+  wrap logical, wrap carrier m = 5               cells    576  cheap_reduced differs      0  cheap_unreduced differs    363  root out of range    363
+  wrap logical, wrap carrier m = 8               cells    576  cheap_reduced differs      0  cheap_unreduced differs    363  root out of range    363
+
+C1: the same measurement under a saturating logical map
+  sat logical, sat carrier m = 3                 cells    576  cheap_reduced differs      0  cheap_unreduced differs      0  root out of range    363
+  sat logical, sat carrier m = 4                 cells    576  cheap_reduced differs     26  cheap_unreduced differs    234  root out of range    363
+  sat logical, sat carrier m = 5                 cells    576  cheap_reduced differs     26  cheap_unreduced differs    234  root out of range    363
+  sat logical, sat carrier m = 8                 cells    576  cheap_reduced differs     26  cheap_unreduced differs    234  root out of range    363
+
+C2 / P4: wrapping logical map, SATURATING carrier, which breaks the
+composite even though the logical map is a homomorphism
+  wrap logical, SAT carrier m = 4                cells    576  cheap_reduced differs    322  cheap_unreduced differs    381  root out of range    363
+  wrap logical, SAT carrier m = 5                cells    576  cheap_reduced differs    265  cheap_unreduced differs    381  root out of range    363
+  wrap logical, SAT carrier m = 8                cells    576  cheap_reduced differs    189  cheap_unreduced differs    381  root out of range    363
+
+C3: the mutation, reducing at the wrong width
+  wrap logical at n-1 (WRONG), wrap carrier m = 4 cells    576  cheap_reduced differs      0  cheap_unreduced differs    445  root out of range    363
+  wrap logical at n-1 (WRONG), wrap carrier m = 8 cells    576  cheap_reduced differs      0  cheap_unreduced differs    445  root out of range    363
+
+==============================================================================================================
+
+  P1 holds when the 'cheap_reduced differs' column is zero on every wrapping
+  row, at every carrier width, INCLUDING the rows where 'root out of range' is
+  large. That is the point: the equality does not depend on any declaration.
+
+  P3 is the 'cheap_unreduced differs' column tracking 'root out of range' on the
+  wrapping rows. Where they are equal, the root check is exactly the licence for
+  the unreduced arm.
+
+  C1, C2 and C3 must all be nonzero somewhere, or the instrument cannot see a
+  difference and every zero above is a dead branch.
+

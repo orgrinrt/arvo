@@ -1,0 +1,33 @@
+s1: grid-and-reach agreement between vocabulary A and vocabulary B
+box: W in [0,10], F in [0,10]  ->  121 numerals
+
+Q1 set equality      : 121/121
+
+Q2 08's predicate over a discriminating pool (accepts AND rejects):
+    ok  fixed W=4 F=2                        got accept  want accept  
+    ok  fixed W=8 F=0                        got accept  want accept  
+    ok  fixed W=1 F=4                        got accept  want accept  
+    ok  fixed W=0 F=0                        got accept  want accept  
+    ok  fixed W=6 F=6                        got accept  want accept  
+    ok  HUB W=4 F=2 (phase half a step)      got reject  want reject  binade -3: 1/8 is not on the step lattice
+    ok  float p=4 e=-3..3                    got reject  want reject  binade -2: step 1/32, expected 1/64
+    ok  decimal 2 digits F10=1               got reject  want reject  step 1/10 is not a power of radix 2
+    ok  ragged progression                   got reject  want reject  binade 0: 2 distinct steps [Fraction(1, 4), Fraction(1, 2)]
+    ok  fixed W=4 F=2, wrong step asserted   got reject  want reject  binade -1: step 1/4, expected 1/8
+    -> 10/10 verdicts correct
+
+I = W - F as the binade the reach stops at (exclusive):
+  W=4   F=0   I=4    reach=[0,2^4) = [0,16)   max value 15
+  W=4   F=2   I=2    reach=[0,2^2) = [0,4)   max value 15/4
+  W=4   F=4   I=0    reach=[0,2^0) = [0,1)   max value 15/16
+  W=1   F=1   I=0    reach=[0,2^0) = [0,1)   max value 1/2
+  W=1   F=8   I=-7   reach=[0,2^-7) = [0,1/128)   max value 1/256
+  W=1   F=32  I=-31  reach=[0,2^-31) = [0,1/2147483648)   max value 1/4294967296
+  W=0   F=0   I=0    reach=[0,2^0) = [0,1)   max value 0
+
+negative I is the reach lying wholly below one, which needs no signed storage:
+  W=1 F=1: I=0, values are exactly {0, 2^-1}, one bit
+  W=1 F=2: I=-1, values are exactly {0, 2^-2}, one bit
+  W=1 F=4: I=-3, values are exactly {0, 2^-4}, one bit
+  W=1 F=8: I=-7, values are exactly {0, 2^-8}, one bit
+  W=1 F=32: I=-31, values are exactly {0, 2^-32}, one bit

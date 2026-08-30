@@ -1,0 +1,39 @@
+=== absorption as a biconditional, swept rather than sampled ===
+
+Sufficiency violations refute 'absorbing implies associative'.
+Necessity violations refute 'associative implies absorbing'.
+Both counts are reported; neither is assumed.
+
+--- ambient operation: addition ---
+  configurations swept:                       4248
+    measured associative:                     1609
+    measured non-associative:                 2639
+    absorption true:                          1609
+    absorption false:                         2639
+  SUFFICIENCY violations (absorbing but not associative): 0
+  NECESSITY violations   (associative but not absorbing): 0
+  42 per-domain reading: configurations mispredicted    1749
+  42 per-fold reading:   divergent triples it excludes  306024 (across 2639 configurations)
+  instrument: both truths present true, both absorption values present true, harness demonstrably reports disagreement true
+
+--- ambient operation: multiplication ---
+  configurations swept:                       4248
+    measured associative:                     1770
+    measured non-associative:                 2478
+    absorption true:                          1617
+    absorption false:                         2631
+  SUFFICIENCY violations (absorbing but not associative): 0
+  NECESSITY violations   (associative but not absorbing): 153
+     lo=None hi=Some(-6) box=[-5,0]  assoc-failures=0
+     lo=None hi=Some(-6) box=[-5,1]  assoc-failures=0
+     lo=None hi=Some(-6) box=[-4,0]  assoc-failures=0
+     lo=None hi=Some(-6) box=[-4,1]  assoc-failures=0
+     lo=None hi=Some(-6) box=[-3,0]  assoc-failures=0
+     lo=None hi=Some(-6) box=[-3,1]  assoc-failures=0
+     lo=None hi=Some(-6) box=[-2,0]  assoc-failures=0
+     lo=None hi=Some(-6) box=[-2,1]  assoc-failures=0
+  42 per-domain reading: configurations mispredicted    1554
+  42 per-fold reading:   divergent triples it excludes  135294 (across 2325 configurations)
+  instrument: both truths present true, both absorption values present true, harness demonstrably reports disagreement true
+
+P2 WORKS

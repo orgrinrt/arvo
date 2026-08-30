@@ -1,0 +1,43 @@
+=== p3d_bad, TYPE CHECK ONLY (--emit=metadata, no codegen): EXPECT REFUSAL ===
+error[E0277]: the declared operand window `Win<-128, 127>` may straddle zero
+   --> p3d_bad_straddling_dead_code.rs:297:25
+    |
+297 |     fold_reassociated::<Delta>(xs)
+    |                         ^^^^^ signed saturating addition is not associative on the values a fold over a straddling window can reach
+    |
+help: the trait `ReassociableFold` is not implemented for `Win<-128, 127>`
+   --> p3d_bad_straddling_dead_code.rs:200:1
+    |
+200 | pub struct Win<const LO: i32, const HI: i32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: declare the window as `NonNeg<LO, HI>` or `NonPos<MAG_LO, MAG_HI>` if the operands are sign-uniform, or use the sequential fold
+help: the following other types implement trait `ReassociableFold`
+   --> p3d_bad_straddling_dead_code.rs:228:1
+    |
+228 | impl<const LO: u8, const HI: u8> ReassociableFold for NonNeg<LO, HI> {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `NonNeg<LO, HI>`
+229 | impl<const MAG_LO: u8, const MAG_HI: u8> ReassociableFold for NonPos<MAG_LO, MAG_HI> {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `NonPos<MAG_LO, MAG_HI>`
+note: required by a bound in `fold_reassociated`
+   --> p3d_bad_straddling_dead_code.rs:254:29
+    |
+254 | pub fn fold_reassociated<W: ReassociableFold>(xs: &[i8]) -> i8 {
+    |                             ^^^^^^^^^^^^^^^^ required by this bound in `fold_reassociated`
+
+
+=== p3d_bad, full codegen: EXPECT REFUSAL ===
+error[E0277]: the declared operand window `Win<-128, 127>` may straddle zero
+   --> p3d_bad_straddling_dead_code.rs:297:25
+    |
+297 |     fold_reassociated::<Delta>(xs)
+    |                         ^^^^^ signed saturating addition is not associative on the values a fold over a straddling window can reach
+    |
+help: the trait `ReassociableFold` is not implemented for `Win<-128, 127>`
+   --> p3d_bad_straddling_dead_code.rs:200:1
+    |
+200 | pub struct Win<const LO: i32, const HI: i32>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: declare the window as `NonNeg<LO, HI>` or `NonPos<MAG_LO, MAG_HI>` if the operands are sign-uniform, or use the sequential fold
+
+=== CONTROL: p3b (const-assert construction) same dead-code shape, TYPE CHECK ONLY ===
+  (empty above means it compiled, which is the defect)

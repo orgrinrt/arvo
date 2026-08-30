@@ -1,0 +1,56 @@
+P11. congruence is free; lifting is not
+==============================================================================
+OBLIGATION ONE: does EQUALITY transport through a construction?
+  each base is compared against a RELABELLED twin (identical tables,
+  different construction path) and against a SABOTAGED twin (one
+  operation genuinely changed). the sabotaged arm must fail, or the
+  relabelled arm's zero means nothing.
+
+  construction   relabelled: same?    sabotaged: same?
+  product2                     4/4                 0/4
+  complex                      4/4                 0/4
+  dual                         4/4                 0/4
+  interval                     4/4                 0/4
+
+  congruence failures on the relabelled twin: 0
+  sabotaged twins that slipped through as 'same': 0
+  the control fails as it must and the real arm passes, so the zero
+  is a measurement rather than a default.
+
+OBLIGATION TWO: does a PREDICATE transport through a construction?
+  predicate: the base is EXACT on the extent {0..e}, no reduction fires.
+  candidate rule: componentwise, which is the obvious rule and the one
+  a design reaches for when it has already seen congruence hold.
+
+  base           construction  extent   unsound pairs
+  uW3/wrap       complex         <= 1            3/16
+  uW3/wrap       complex         <= 2           26/81
+  uW3/wrap       dual            <= 2            1/81
+  uW3/sat        complex         <= 1            3/16
+  uW3/sat        complex         <= 2           26/81
+  uW3/sat        dual            <= 2            1/81
+  iW4/wrap       complex         <= 2            1/81
+  iW4/wrap       dual            <= 2            1/81
+  iW4/sat        complex         <= 2            1/81
+  iW4/sat        dual            <= 2            1/81
+  rule fired 48 times; unsound in 10 of them
+
+THE POINT:
+  congruence failures:  0
+  lifting failures:     10
+
+  Every construction transports EQUALITY and some do not transport
+  the PREDICATE, over the same bases and the same constructions.
+  The two obligations are independent and the first is no evidence
+  for the second.
+
+  The reason is structural rather than incidental. A construction is
+  a function of the base's operation tables, so equal tables in give
+  equal tables out however much the construction mixes components.
+  A predicate is a claim quantified over a region, and a construction
+  that mixes components mixes the regions, so nothing carries it
+  across for free.
+
+  A design that reads 'the construction respects the base' off the
+  congruence and lifts a predicate on that basis makes exactly the
+  error `112` measured. The two look like one property and are not.

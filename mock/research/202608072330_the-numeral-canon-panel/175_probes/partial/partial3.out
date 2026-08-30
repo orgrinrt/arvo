@@ -1,0 +1,35 @@
+########## debug-assertions=off
+== P2c, profile = debug-assertions=off, inputs 0..4096 ==
+                                  pair  both ok  both bad   SPLIT  value dis
+        constructed: (x*x)/x against x     4095         0       1          0
+               C-D  v1, shared divisor     3510       586       0          0
+               C-D  v2, no-op widening     4080        16       0          0
+             C-B  no partial operation     4096         0       0          0
+
+C-A  value disagreements where both defined: 0   (must be 0)
+C-B  no-partial control splits: 0, disagreements: 0   (both must be 0)
+C-C  constructed splits: 1   (must be > 0)
+C-D  refuted constructions still at zero splits: v1 0, v2 0   (both must be 0)
+C-E  a value-only check skipping undefined inputs CERTIFIES the pair: true
+     (must be true: that is the check clause 1 refuses)
+
+VERDICT at debug-assertions=off: a partial interior gives a binding-free definedness
+  channel with full value agreement: true
+
+########## debug-assertions=on
+== P2c, profile = debug-assertions=on, inputs 0..4096 ==
+                                  pair  both ok  both bad   SPLIT  value dis
+        constructed: (x*x)/x against x     4095         0       1          0
+               C-D  v1, shared divisor     3510       586       0          0
+               C-D  v2, no-op widening     4080        16       0          0
+             C-B  no partial operation     4096         0       0          0
+
+C-A  value disagreements where both defined: 0   (must be 0)
+C-B  no-partial control splits: 0, disagreements: 0   (both must be 0)
+C-C  constructed splits: 1   (must be > 0)
+C-D  refuted constructions still at zero splits: v1 0, v2 0   (both must be 0)
+C-E  a value-only check skipping undefined inputs CERTIFIES the pair: true
+     (must be true: that is the check clause 1 refuses)
+
+VERDICT at debug-assertions=on: a partial interior gives a binding-free definedness
+  channel with full value agreement: true

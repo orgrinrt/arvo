@@ -1,0 +1,26 @@
+p11: the const-eval frontier reads the ENCODING, not only the domain
+
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+host:      aarch64-apple-darwin
+
+agreement check first: all three encodings must report the same violation
+count, or they are not computing the same law and nothing below compares.
+
+  inline (p9's shape)              violations at width 4: 952
+  array + two folds (80's shape)   violations at width 4: 952
+  array + copy + two folds         violations at width 4: 952
+
+encoding                            guard  widest accept  first refuse  diagnostic
+inline (p9's shape)               default              6             7  error: constant evaluation is taking a long time
+inline (p9's shape)               allowed              8             9  TIMEOUT at the probe cap
+array + two folds (80's shape)    default              5             6  error: constant evaluation is taking a long time
+array + two folds (80's shape)    allowed              7             8  TIMEOUT at the probe cap
+array + copy + two folds          default              5             6  error: constant evaluation is taking a long time
+array + copy + two folds          allowed              7             8  TIMEOUT at the probe cap
+
+machine-readable at p11_output.json
+
+reading: the law, the domain, the arity, the guard, the host and the
+toolchain are identical down every column. Only the spelling of the
+check differs. Any spread in the frontier is therefore attributable to
+per-tuple evaluation cost and to nothing else.

@@ -1,0 +1,15 @@
+[package]
+name = "bench-bitpack-native-rand"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[lib]
+name = "bench_bitpack_native_rand"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+bench-bitpack-shared = { path = "../bitpack-shared" }
+mockspace-bench-core = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev", features = ["std"] }
+mockspace-bench-macro = { git = "ssh://git@github.com/hiisi-digital/mockspace.git", branch = "dev" }

@@ -1,0 +1,42 @@
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/INTENTS.md:155-156
+          wanted: 'ordinary empirical question about arvo'
+          got:    'Nothing is open here. Whether the weightings agree in practice is an ordinary empirical question about\narvo, answerable by measurement like any other, and it is not an intent op owes.'
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/INTENTS.md:112-113
+          wanted: 'remain small for memory or disk storage'
+          got:    "> It's intent is that it is for cold paths, cold use. Which means, it should remain small for memory or\n> disk storage, because it's just sitting basically."
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/INTENTS.md:92-94
+          wanted: 'if mimicking is consistently just worse choice'
+          got:    '> Warm does not merely imitate, its intent is to be intuitive best choice for most every use case, and\n> the intuitive part demands it mimics, but it does not make it absolutely required, if mimicking'
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/100_xu_generating_the_table_attacked.md:500-500
+          wanted: 'threads = 1'
+          got:    '**What changes is the reach.** "A section is not stable" is a per-family fact with a measurable'
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/100_xu_generating_the_table_attacked.md:774-783
+          wanted: 'iqr '
+          got:    "in the mechanism.\n\nSo the arm is predicated: **the differential is available exactly where the coordinate's measurement\nresolution is finer than the separation between the arms it must distinguish.** "
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/100_xu_generating_the_table_attacked.md:783-783
+          wanted: 'Strictly better on both'
+          got:    'That is where I would have left it, and leaving it there would have been wrong. The predicate above is'
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/100_xu_generating_the_table_attacked.md:811-811
+          wanted: 'a fact about the interquartile range'
+          got:    "**The 95th percentile gives 3 distinct sections against the interquartile range's 161, and separates more"
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/100_xu_generating_the_table_attacked.md:836-836
+          wanted: 'achievable objective range'
+          got:    'estimator because the table is min-max normalised and section 8 explains why: normalisation is scale'
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/100_xu_generating_the_table_attacked.md:895-897
+          wanted: 'declared constants'
+          got:    "D. sweeping the unselectable arm's extremity, min-max normalised\n      factor  regions whose pick moved, per weighting\n        2.00  speed-first 0/6   storage-first 2/6   tail-first 0/6"
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/100_xu_generating_the_table_attacked.md:1060-1062
+          wanted: 'Normalise per region'
+          got:    'yet gone wrong.\n\nI offer that as an option to add to the register rather than as a proposal, and I have not built it.'
+  FAILED  mock/research/202608072330_the-numeral-canon-panel/100_xu_generating_the_table_attacked.md:1072-1074
+          wanted: 'per-coordinate tolerance band'
+          got:    "itself: where two of op's four intents have no measurable coordinate, no weight vector can be written for\nthem, so there is nothing to generate from and a checked table is what exists.\n"
+  FAILED  bench-core/src/lib.rs:99-110
+          wanted: 'Score an output for quality comparison'
+          got:    '    /// Lower = better. None means "no quality metric for this routine".\n    /// Examples: number of colours (graph colouring), bandwidth (RCM).\n    fn score_output(_input: &Self::Input, _output: &Sel'
+  MISSING FILE  mock/benches/variants/bitpack-wide-shared/src/routine.rs:102-102
+  FAILED  mock/benches/variants/bitpack-carrier-d16-control/src/lib.rs:1-8
+          wanted: 'must compile to the same machine code'
+          got:    '//! Noise-floor control. Calls the identical `sum_d16` on the identical\n//! region with the identical arguments as `bitpack-carrier-d16`, so the two\n//! arms differ only in the exported symbol name an'
+
+citations checked: 37   ok: 23   failed: 14

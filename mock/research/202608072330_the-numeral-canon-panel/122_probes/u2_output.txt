@@ -1,0 +1,89 @@
+====================================================================================================
+u2. The domain was confounded with the operation set, in my own ablation
+====================================================================================================
+
+P1. `121`'s counterexample to `119` 4.2's predicate, recomputed.
+
+    R(v) = clamp(v, 0, 15) on 0..47, homomorphism for add: YES  (0 failures of 2304)
+    R(v) = clamp(v, 0, 15) on 0..47, homomorphism for mul: YES  (0 failures of 2304)
+    R(v) = clamp(v, 0, 15) on 0..47, homomorphism for sub: no  (976 failures of 2304)
+    order-preserving : True
+    non-constant     : True
+
+    `119` 4.2's condition 1, a complete residue system : True
+    `119` 4.2's condition 2, the interval 0..16 present : True
+    closed under negation                              : False
+
+    So it satisfies both stated conditions, fails the one `121` names,
+    and is a counterexample to the predicate as `119` states it: True
+
+    The same map on a domain that straddles zero, which is the control:
+      homomorphism for add on -24..24: no  (1062 failures)
+      witness: a=-24, b=1: R(a+b)=0, R(R(a)+R(b))=1
+
+----------------------------------------------------------------------------------------------------
+P2 and P3. The two-by-two my own q2 never completed.
+
+  My q2's rows, read from its `main`:
+    {+, *}      straddling only
+    {+} alone   straddling only          <- the missing cell is this one,
+    {*} alone   straddling AND non-negative   non-negative
+
+   |V| window                     ops            maps    hom   mono   both  NON-CONSTANT BOTH
+     2 straddling zero            {add, mul}       32      3     10      2                  0
+     2 straddling zero            {add}            32      4     10      2                  0
+     2 straddling zero            {mul}            32      4     10      2                  0
+     2 non-negative, same size    {add, mul}       32      4     10      3                  1
+       witness: 0->0, 1->1, 2->1, 3->1, 4->1
+     2 non-negative, same size    {add}            32      5     10      3                  1
+       witness: 0->0, 1->1, 2->1, 3->1, 4->1
+     2 non-negative, same size    {mul}            32      6     10      3                  1
+       witness: 0->0, 1->1, 2->1, 3->1, 4->1
+     3 straddling zero            {add, mul}     2187      8    129      3                  0
+     3 straddling zero            {add}          2187     10    129      3                  0
+     3 straddling zero            {mul}          2187     36    129      3                  0
+     3 non-negative, same size    {add, mul}     2187     10    129      6                  3
+       witness: 0->0, 1->1, 2->1, 3->1, 4->1, 5->1, 6->1
+     3 non-negative, same size    {add}          2187     12    129      6                  3
+       witness: 0->0, 1->1, 2->1, 3->1, 4->1, 5->1, 6->1
+     3 non-negative, same size    {mul}          2187     55    129      6                  3
+       witness: 0->0, 1->1, 2->1, 3->1, 4->1, 5->1, 6->1
+
+  P3 holds when every straddling row is 0 and every non-negative row is
+  nonzero, at every operation set. C1 is the 'hom' and 'mono' columns,
+  each nonzero on its own everywhere.
+
+C2. Do `119` 4.2's two conditions separate the rows? They must not, or
+    `121` is wrong about which condition is load-bearing.
+
+    |V|=2 straddling zero    residue system True   interval 0..2 present True   closed under negation True
+    |V|=2 non-negative, same size residue system True   interval 0..2 present True   closed under negation False
+    |V|=3 straddling zero    residue system True   interval 0..3 present True   closed under negation True
+    |V|=3 non-negative, same size residue system True   interval 0..3 present True   closed under negation False
+
+----------------------------------------------------------------------------------------------------
+P4. Restoring closure under negation to a non-negative window.
+
+    |V|=2 non-negative window closed under negation (5 points) {add, mul} non-constant both 0
+    |V|=2 non-negative window closed under negation (5 points) {add}      non-constant both 0
+    |V|=2 non-negative window closed under negation (5 points) {mul}      non-constant both 0
+    |V|=3 non-negative window closed under negation (7 points) {add, mul} non-constant both 0
+    |V|=3 non-negative window closed under negation (7 points) {add}      non-constant both 0
+    |V|=3 non-negative window closed under negation (7 points) {mul}      non-constant both 0
+
+====================================================================================================
+
+  READING IT
+
+  P1 decides the dissent on its own: a map satisfying every condition `119` 4.2
+  states, and failing the theorem, means the predicate is wrong and is replaced
+  rather than widened.
+
+  P2 and P3 decide what replaces it. If the missing cell has a witness, my
+  F118-5's attribution is wrong and the separating dimension is the domain.
+
+  C3 is the `{mul}` rows on the closed windows. A zero there is a MEASUREMENT
+  with the predicate this probe carries, not a consequence of the theorem's
+  proof, which covers the additive case only. That distinction is kept in the
+  finding rather than collapsed into `121`'s wider phrasing.
+

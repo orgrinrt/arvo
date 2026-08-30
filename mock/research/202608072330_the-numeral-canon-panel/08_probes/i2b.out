@@ -1,0 +1,25 @@
+First: do the two conditions hold on the formats i1b measured?
+    fixed U<3,3>           monotone=True  inhabited=True
+    float p=3 e=-2..3      monotone=True  inhabited=True
+    posit<8,0>             monotone=True  inhabited=True
+    posit<8,1>             monotone=True  inhabited=True
+    posit<10,2>            monotone=True  inhabited=True
+
+Shapes over a window of binades, counting only monotone inhabited ones:
+ window  depth        all   named  +closure   unnamed     pct  tapered
+      4      3        121      10        10       111   91.7%      101
+      4      4        221      14        14       207   93.7%      193
+      4      5        364      18        18       346   95.1%      328
+      6      3       1093      10        10      1083   99.1%     1044
+      6      4       2380      15        15      2365   99.4%     2300
+      6      5       4488      21        21      4467   99.5%     4376
+      8      3       9841      10        10      9831   99.9%     9739
+      8      4      25213      15        15     25198   99.9%    25012
+      8      5      53296      21        21     53275  100.0%    52975
+
+`named` is the three shapes the design's two-instance exponent axis
+reaches: a constant, a slope of one, and a slope of one with a knee.
+`+closure` adds every pointwise maximum of those, which is what
+closing the family under intersection buys. `tapered` counts the
+shapes with a slope of two or more anywhere, none of which the
+closure reaches.

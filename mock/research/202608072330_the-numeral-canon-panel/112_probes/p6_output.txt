@@ -1,0 +1,48 @@
+==============================================================================
+p6. Citation check
+==============================================================================
+
+  ok    110_willsey_the_primitive_derived_cold.md:282  'costs names and nothing else'
+  ok    110_willsey_the_primitive_derived_cold.md:357  'rather than a slow path'
+  ok    110_willsey_the_primitive_derived_cold.md:370  'And there is no repair'
+  ok    110_willsey_the_primitive_derived_cold.md:395  'not be a type parameter'
+  ok    110_willsey_the_primitive_derived_cold.md:540  'is a soundness statement'
+  ok    110_willsey_the_primitive_derived_cold.md:348  'the predicate is monotonicity'
+  ok    110_willsey_the_primitive_derived_cold.md:350  'I was not looking for it'
+  ok    110_willsey_the_primitive_derived_cold.md:524  'The interval construction is closed exactly on mon'
+  ok    110_willsey_the_primitive_derived_cold.md:519  'componentwise product preserves its base'
+  ok    111_jhala_the_primitive_attacked.md:728  'An axis nothing reads has no repair'
+  ok    111_jhala_the_primitive_attacked.md:951  'Asking whether the refinement is a strategy'
+  ok    111_jhala_the_primitive_attacked.md:626  'largest sound declared bound'
+  ok    111_jhala_the_primitive_attacked.md:837  'extent closed under the operations'
+  ok    111_jhala_the_primitive_attacked.md:844  'predicts the completion merge boundary exactly'
+  ok    111_jhala_the_primitive_attacked.md:993  'composite results at all'
+  ok    108_lamport_the_pair_attacked.md:825  'must agree about it'
+  ok    108_lamport_the_pair_attacked.md:827  'not a reclassification of the axis'
+  ok    108_lamport_the_pair_attacked.md:442  'fails'
+  ok    108_lamport_the_pair_attacked.md:298  '| 729 | 65536 | 701 | 28 |'
+  ok    108_lamport_the_pair_attacked.md:869  'nothing that changes a denoted answer is'
+  ok    40_probes/p1.out:3  'exact bijections with every cell filled and none r'
+  ok    40_probes/p1_the_two_by_two_carries_no_information.py:13  'This probe tests that reading two ways'
+  ok    106_giesen_consolidation_the_strategy_axis.md:174  'cannot recover it from the bits'
+  ok    109_bellard_the_primitive_derived_cold.md:376  'perimeter is the construction site'
+  ok    109_bellard_the_primitive_derived_cold.md:424  'is not an endomorphism'
+  ok    INTENTS.md:110  'Hot may sacrifice soundness'
+  ok    INTENTS.md:214  'predicated arms composed'
+  ok    INTENTS.md:299  'Never a runtime check'
+  ok    INTENTS.md:363  'Cold is not to be deprioritised'
+  ok    88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md:1  'there is never a universal answer'
+  ok    104_op_the_imitation_is_ergonomic_and_i9_is_not_his_to_settle.md:1  'I9 is not his to settle'
+  ok    95_op_the_panel_runs_to_ratification_and_units_must_converge.md:1  'a unit has to end in agreement'
+  ok    ../../benches/variants/satfold-shared/src/lib.rs:519  'saturating_add_is_associative_at'
+  ok    ../../benches/variants/satfold-shared/src/lib.rs:547  'saturating_sub_is_associative_at'
+
+  34 citations checked, 0 failing
+
+MUTATIONS (each must produce exactly one failure)
+
+  wrong line number  : 1 failures (expected 1)
+  wrong substring    : 1 failures (expected 1)
+  wrong file         : 1 failures (expected 1)
+
+  the instrument fails when it should: True

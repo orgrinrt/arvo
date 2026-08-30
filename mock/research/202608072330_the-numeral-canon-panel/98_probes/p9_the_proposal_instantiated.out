@@ -1,0 +1,95 @@
+1. what a zero weight costs
+
+  weighs footprint only    -> ['packed', 'packed', 'packed', 'packed', 'packed', 'packed']
+                              selects a Pareto-dominated arm at 2 of 6 regions: [(131072, 'packed'), (8388608, 'packed')]
+  weighs time only         -> ['d32', 'd32', 'd16', 'd16', 'd16', 'd16-control']
+                              selects a Pareto-dominated arm at 0 of 6 regions
+  weighs spread only       -> ['d16-control', 'd32', 'packed', 'packed', 'packed', 'packed-simd']
+                              selects a Pareto-dominated arm at 0 of 6 regions
+
+  Two of the three zero-weight cases select no dominated arm, and that
+  is the honest shape of the claim rather than a weakening of it. The
+  two statements are not symmetric:
+
+    A strictly positive weight vector CANNOT select a dominated arm.
+    That is a theorem, not a measurement: if b beats a on every
+    coordinate and strictly on one, then <w, b> < <w, a> for every
+    w > 0, so a is never an argmin.
+
+    A weight vector with a zero MAY select one, and whether it does is
+    a fact about the table. It does exactly when the zeroed coordinate
+    is the only one separating an arm from something that beats it.
+
+  So the guarantee is not 'usually holds' at a zero weight, it is
+  'unclaimed'. p2 measured 48 sections on this table that do select a
+  dominated arm under a non-negative weighting, and p6 measured 63 of
+  the 72 a predecessor reported. A canon that wants the guarantee has
+  to require strict positivity; it cannot get it from non-negativity
+  and a hope about the table.
+
+2. 'more leeway' as a small positive weight, swept toward zero
+
+  I6 says the storage-minimising path 'has more leeway to do things
+  non-efficient'. Read as a weight, the question is whether that is a
+  small one or a zero one, and the two behave differently.
+
+    weight on time  section                                                  dominated picks
+                 1  ['packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'd16-control', 'd16-control'] 0
+               1/4  ['packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd'] 0
+              1/16  ['packed', 'packed-simd', 'packed', 'packed-simd', 'packed', 'packed-simd'] 0
+              1/64  ['packed', 'packed-simd', 'packed', 'packed-simd', 'packed', 'packed-simd'] 0
+             1/256  ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd'] 0
+            1/4096  ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd'] 0
+                 0  ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd'] 0
+
+  Two things in that table, and the second is the one that matters.
+
+  The selected section MOVES as the weight shrinks, through four
+  distinct sections, so 'more leeway' is a real dial with real
+  consequences rather than a figure of speech. A canon that said the
+  storage-first strategy 'ignores compute' would be naming the bottom
+  row; op's own wording names a row above it and does not say which.
+
+  And no strictly positive weight, however small, selects a dominated
+  arm, which is the theorem in 1 rather than a result of this sweep.
+  The zero row also selects none here, which is the table being kind
+  and is not a guarantee. So 'more leeway' is expressible at any
+  positive weight without giving up the property, and the canon can
+  require strict positivity without contradicting I6.
+
+3. a priority plus finite weights is still one weighting
+
+  lexicographic-lead sections over 150 random 4x5x3 models, one per
+  lead coordinate: 450 checked
+  realisable by a single strictly positive weight vector: 450
+  not realisable: 0
+  So `40` section 5.3's reading of I5 and I34, that accuracy is
+  lexicographically prior for every objective except the speed-first
+  one and finitely weighted for that one, is expressible in this
+  model without a second mechanism. A priority is a weight ratio
+  large enough, and on a finite arm set large enough is finite.
+
+4. do two intents give two different strategies on this table
+
+  speed-first (I5): time heavy, footprint light, spread light
+    -> ['packed-simd', 'd16-control', 'd16', 'd16', 'd16', 'd16-control']
+    dominated picks: 0
+  storage-first (I6): footprint heavy, time light, spread light
+    -> ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+    dominated picks: 0
+  tail-first: spread heavy, the coordinate the harness's own findings
+    -> ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']
+    dominated picks: 0
+
+  distinct sections from 3 intents: 3
+  The model distinguishes them. Two intents weighing different
+  coordinates produce different behaviour on the same measured
+  table, which is what makes the name carry information.
+
+  and the third one is the finding rather than an illustration: the
+  spread coordinate is not named by any of op's four intents, and it
+  produces a section none of the other two produce. Either it is a
+  coordinate a strategy should weigh and no intent names it, or it is
+  noise and should not be in the coordinate set. The harness's own
+  findings file for this family raises it as a decision axis in those
+  words, so it is at least a candidate.

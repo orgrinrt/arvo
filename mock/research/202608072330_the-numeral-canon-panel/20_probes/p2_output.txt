@@ -1,0 +1,10 @@
+N = 8192, 500 reps, 3 ops/element, saturating, u64
+
+arm                                    ticks/rep      ns/rep
+lanes,  counter WITH nomem                  0.02           1
+lanes,  counter WITHOUT nomem               0.01           1
+serial, counter WITH nomem                133.77        5574
+serial, counter WITHOUT nomem             250.84       10452
+
+lanes,  Instant + black_box (ns)                        3604
+serial, Instant + black_box (ns)                       19088

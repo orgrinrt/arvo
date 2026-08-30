@@ -1,0 +1,5 @@
+wrapping_add associativity, exhaustive over u8^3 (16,777,216 triples):
+  HOLDS UNIVERSALLY. Zero counterexamples found.
+saturating_add associativity, exhaustive over u8^3 (16,777,216 triples):
+  HOLDS UNIVERSALLY. Zero counterexamples found.
+  total failing triples out of 16,777,216: 0

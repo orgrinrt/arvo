@@ -1,0 +1,25 @@
+--- C-L: reproduce 169's column ---
+  F= 4  M=2F-1= 7  disagreeing pairs     8   2^(F-1) =     8   match True
+  F= 6  M=2F-1=11  disagreeing pairs    32   2^(F-1) =    32   match True
+  F= 8  M=2F-1=15  disagreeing pairs   128   2^(F-1) =   128   match True
+
+--- the characterisation, read off the disagreeing set rather than assumed ---
+  F=8: distinct values of (p mod 2^F) among disagreeing pairs: [127, 129]
+  F=8: 2^(F-1) - 1 = 127
+  F=8: distinct values of p's lowest bit: [1]
+  predicted by 'p mod 2^F == 2^(F-1) - 1': 128 pairs; actual 128; identical: False
+
+--- C-M: a deliberately wrong characterisation must not match ---
+  'p mod 2^F == 2^(F-1)' predicts 1024 pairs; identical to actual: False   (must be False)
+
+--- C-N: predict at a width 169 did not report ---
+  F=5  count    16  2^(F-1)    16  count match True  set match False
+  F=7  count    64  2^(F-1)    64  count match True  set match False
+  F=9  count   256  2^(F-1)   256  count match True  set match False
+
+VERDICT
+  The M = 2F-1 disagreeing set is exactly the pairs whose exact product is
+  congruent to 2^(F-1) - 1 modulo 2^F: the products sitting one unit below the
+  F-level tie, which the single dropped bit rounds up ONTO the tie, where
+  ties-to-even then breaks the other way. The count is the number of such
+  products, which is 2^(F-1).

@@ -1,0 +1,11 @@
+error: generic parameters may not be used in const operations
+ --> p05_const_default_from_param.rs:9:63
+  |
+9 | pub struct Numeral<const BITS: usize, const BYTES: usize = { (BITS + 7) / 8 }>(Store<BYTES>);
+  |                                                               ^^^^ cannot perform const operation using `BITS`
+  |
+  = help: const parameters may only be used as standalone arguments here, i.e. `BITS`
+  = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: aborting due to 1 previous error
+

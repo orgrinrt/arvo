@@ -1,0 +1,30 @@
+=== absorption's off-domain mispredictions on `61`'s widened sweep ===
+
+  Sweep parameters read from `61_probes/q1_absorption_versus_coherence.rs`
+  lines 364 to 368, not from its prose.
+
+--- multiplication, widened box ---
+  configurations swept:                             7744
+  absorption mispredictions:                        150
+    of which the induced operation is CONSTANT:     150
+    residue (mispredicted and NOT constant):        0
+  reproduces `61_probes/q1`'s reported count of 150: true
+  instrument: constancy checker saw constant true and non-constant true
+
+--- addition, widened box ---
+  configurations swept:                             7744
+  absorption mispredictions:                        0
+    of which the induced operation is CONSTANT:     0
+    residue (mispredicted and NOT constant):        0
+  reproduces `61_probes/q1`'s reported count of 0: true
+  instrument: constancy checker saw constant true and non-constant true
+
+=== what this settles ===
+
+  If the residue is zero for multiplication, the widened sweep's mispredictions
+  are the same collapsed-operation class `57_probes/p2b` isolated on the narrower
+  sweep, and the criterion's stated boundary needs no change. If addition's count
+  is zero here as it was there, absorption's addition result is exact on both
+  sweeps and the correction does not touch it.
+
+P8 WORKS

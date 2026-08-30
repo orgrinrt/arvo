@@ -1,0 +1,76 @@
+cross-check: brute force against the valuation DP, where brute force is affordable
+  F  k   D1 brute      D1 dp         D3 brute      D3 dp         agree
+  3  1   20            20            20            20            yes
+  3  2   126           126           170           170           yes
+  3  3   1001          1001          1695          1695          yes
+  4  1   48            48            48            48            yes
+  4  2   520           520           728           728           yes
+  4  3   8216          8216          14912         14912         yes
+
+admitted fraction of the input space, by design and chain length
+
+  D1  refuse per step, never widen        (45's reading (b), applied per operation)
+  D3  carry the chain exactly, refuse only at the end   (refusal AND widening)
+
+   F   k     D1 admitted     D3 admitted   D3/D1     D1 nonzero   D3 nonzero
+   4   1     18.750000%     18.750000%     1.0x     7.555556%     7.555556%
+   4   2     12.695312%     17.773438%     1.4x     0.207407%     0.207407%
+   4   3     12.536621%     22.753906%     1.8x     0.001975%     0.001975%
+   4   4     12.535191%     27.580357%     2.2x     0.000000%     0.000000%
+   4   6     12.535191%     36.349923%     2.9x     0.000000%     0.000000%
+   4   8     12.535191%     44.057549%     3.5x     0.000000%     0.000000%
+
+   6   1      6.250000%      6.250000%     1.0x     3.250189%     3.250189%
+   6   2      3.192139%      4.656982%     1.5x     0.044392%     0.044392%
+   6   3      3.150749%      6.105328%     1.9x     0.000311%     0.000311%
+   6   4      3.150463%      7.572145%     2.4x     0.000001%     0.000001%
+   6   6      3.150462%     10.437949%     3.3x     0.000000%     0.000000%
+   6   8      3.150462%     13.214898%     4.2x     0.000000%     0.000000%
+
+   8   1      1.953125%      1.953125%     1.0x     1.182622%     1.182622%
+   8   2      0.790405%      1.173401%     1.5x     0.006170%     0.006170%
+   8   3      0.784349%      1.553386%     2.0x     0.000018%     0.000018%
+   8   4      0.784332%      1.937926%     2.5x     0.000000%     0.000000%
+   8   6      0.784332%      2.702539%     3.4x     0.000000%     0.000000%
+   8   8      0.784332%      3.461191%     4.4x     0.000000%     0.000000%
+
+  10   1      0.585938%      0.585938%     1.0x     0.391485%     0.391485%
+  10   2      0.196290%      0.293374%     1.5x     0.000693%     0.000693%
+  10   3      0.195600%      0.390054%     2.0x     0.000001%     0.000001%
+  10   4      0.195599%      0.487329%     2.5x     0.000000%     0.000000%
+  10   6      0.195599%      0.681594%     3.5x     0.000000%     0.000000%
+  10   8      0.195599%      0.875481%     4.5x     0.000000%     0.000000%
+
+D1 and D3 admit the SAME chains once zero operands are excluded. checked:
+  cells checked: 42.  cells where they differ: 0
+  and it is a theorem, not a coincidence. write T_i for the total 2-adic valuation of
+  the start and the first i multipliers. D1 admits iff T_i >= i*F for every i; D3 admits
+  iff T_k >= k*F. a nonzero raw below 2^F has valuation at most F-1, so if T_i <= i*F - 1
+  then T_k <= i*F - 1 + (k-i)(F-1) = k*F - 1 - (k-i) < k*F. contrapositive: T_k >= k*F
+  forces every T_i >= i*F. the hypothesis is exactly W == F, which is this file's domain.
+
+what the numbers say, stated as what they are and no further:
+  * refusal on inexact is not a viable design for chains, and the number is not close.
+    at F=8 with nonzero operands it admits 1.18% of single multiplies, 0.0062% of pairs,
+    and 0.000018% of triples, which is eighteen chains in a hundred million. a strategy
+    whose intent is to be accurate WITHIN CHAINS cannot be one that refuses all of them.
+  * where the two refusal designs were presented as a choice, they are the same policy.
+    the 1.5x to 4.5x gap in the with-zero columns is entirely chains containing a zero
+    operand, which are exact by accident.
+  * so the fork 45 names is not two live designs. one arm is measurable and is not a
+    design anyone ships. what survives as a real question is narrower and is about the
+    container derivation directly: whether the wide value a multiply forms internally is
+    CARRIED between operations, or consumed inside one and discarded. every fixed-point
+    multiply forms a 2W-bit product whatever the strategy, so forming it is not what
+    distinguishes Precise; carrying it is.
+
+what this file does not establish:
+  * the W > F case. the equivalence theorem above needs every operand's valuation to be
+    at most F-1, which holds exactly when W == F. with integer bits present a raw can
+    carry more trailing zeros than F, the implication breaks, and D1 and D3 may separate.
+    a design keyed on total-and-fraction width would want that measured; I did not.
+  * 18 section 3.4's 4.60% to 55.56% is a different domain (in-range multiplications and
+    divisions over mixed integer and fraction widths). these numbers do not replace it
+    and are not comparable to it row for row.
+  * what any of the three designs costs in cycles or code size. no bench in this panel
+    has priced it, so it is unpriced.

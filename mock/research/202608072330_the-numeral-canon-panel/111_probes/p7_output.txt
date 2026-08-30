@@ -1,0 +1,40 @@
+$ rustc --version
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+$ rustc --edition 2021 -O p7_the_merge_is_visible_in_the_emitted_symbols.rs && ./p7
+within the proved bound, sat and wrap agree on 10201 of 10201 pairs
+outside it, they differ on 32640 of 65536 pairs
+proved_sat(100,100)   = 200
+unproved_sat(200,200) = 255
+unproved_wrap(200,200)= 144
+
+$ grep for the symbol definitions and aliases in p7_asm.s
+250:_proved_sat:
+258:_ungated_sat:
+324:_proved_wrap = _proved_sat
+326:_ungated_wrap = _proved_sat
+328:_unproved_wrap = _proved_sat
+330:_unproved_sat = _ungated_sat
+
+bodies:
+_proved_sat:
+	.cfi_startproc
+	add	w0, w1, w0
+	ret
+
+_ungated_sat:
+	.cfi_startproc
+	and	w8, w1, #0xff
+	add	w8, w8, w0, uxtb
+	mov	w9, #255
+	cmp	w8, #255
+	csel	w0, w8, w9, lo
+	ret
+
+DEFECT IN THIS PROBE, recorded rather than fixed in place:
+  wrapping at the CONTAINER width is already the bare add, so the wrap arm
+  is not an independent body and three of the four symbols alias for a
+  reason that has nothing to do with the bound. The merge claim is visible
+  only in the one cell that is properly controlled: _unproved_sat keeps its
+  own body while _proved_sat does not. p7b repairs the control by declaring
+  a logical range strictly inside the container so both completions do work.

@@ -1,0 +1,68 @@
+====================================================================================
+DD2. the discriminator: do the three readings actually differ?
+====================================================================================
+  reading                           duplicates    well-separated
+  earned (144 p10c)                          0                 3
+  escaped-conservative (145 z2)              4                 3
+  escaped-symmetric (145 z2)                 4                 3
+  DD2 earned gives 0 on duplicates and escaped-conservative gives 4: PASS, the readings are genuinely different
+  DD1 the well-separated family keeps its 3 non-dominated arms under every reading at every k: PASS
+
+====================================================================================
+CC1/CC2/CC3. the three readings on the committed corpus
+====================================================================================
+  35 families with at least 3 size points and 4 shared variants
+
+       k                earned  escaped-conservative     escaped-symmetric
+             mean nd / askable     mean nd / askable     mean nd / askable
+     0.0           3.03 /   29           3.03 /   29           3.03 /   29
+    0.05           2.63 /   28           3.03 /   29           2.63 /   28
+     0.1           2.23 /   23           3.03 /   29           2.34 /   25
+    0.25           1.26 /   11           3.06 /   29           1.77 /   20
+     0.5           0.77 /    4           3.14 /   29           1.89 /   20
+     1.0           0.66 /    4           3.17 /   29           2.11 /   23
+     2.0           0.60 /    2           3.26 /   29           2.23 /   21
+
+  CC2 the earned reading is monotone NON-INCREASING in k: CONFIRMED
+      so z2's B2 holds for the reading 144 used and was refuted against two readings
+      144 did not use. A gate that has to earn a positive claim has one comparison,
+      not two, and one comparison cannot pull two ways.
+  CC1 earned is a subset of escaped-conservative in every family: CONFIRMED, strict in 29 of 35
+  CC3 askable families at k = 0.5: earned 4, escaped-conservative 29, escaped-symmetric 20
+      CONFIRMED: the reading 144 used is
+      stricter than either z2 implemented, so F144-18's zero is a statement about
+      4 families rather than 29 or 20.
+
+====================================================================================
+CC4. does a looser reading resurrect an established unreachable arm?
+====================================================================================
+  reading                           askable families    established unreachable arms
+  earned (144 p10c)                                4                               0
+  escaped-conservative (145 z2)                   29                               0
+  escaped-symmetric (145 z2)                      20                               0
+
+  CC4 REFUTED. No reading produces an instance, so F144-18's zero survives every
+      direction of conservatism on the table and the gate question changes what the
+      zero is a statement ABOUT without changing the zero itself.
+
+====================================================================================
+DD3. idempotence
+====================================================================================
+  the same reading at the same k gives the same set: PASS
+
+====================================================================================
+the settlement, in the author's own words
+====================================================================================
+  I meant the earned reading and I should have said so. The gate exists because I had
+  just published a false positive, so the thing it guards is the POSITIVE claim: an arm
+  counts as non-dominated only if it beats every rival somewhere by more than the noise.
+  Guarding the negative claim instead, which is what both of z2's readings do, admits
+  arms that merely escape an established domination, and that is the wrong direction for
+  a finding whose failure mode is claiming an arm is special when it is not.
+
+  What 145 gets right and I owe it: the direction is not stated anywhere in 144, the
+  finding is unusable without it, and z2 is the file that made that visible.
+
+====================================================================================
+control failures: 0 []
+====================================================================================

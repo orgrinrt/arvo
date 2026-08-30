@@ -1,0 +1,16 @@
+p10: a wider falsification search against Theorem C
+
+k = 2, terms of depth <= 3, deduped by value table at width 4: 260 distinct functions
+  width 2: 33670 pairs, 4467 agree on the box, 4467 of those with a clamped box point, 0 COUNTEREXAMPLES
+  width 3: 33670 pairs, 664 agree on the box, 664 of those with a clamped box point, 0 COUNTEREXAMPLES
+  width 4: 33670 pairs, 0 agree on the box, 0 of those with a clamped box point, 0 COUNTEREXAMPLES
+    (dedup width: every pair differs in the domain by construction, so the 33670 zero above
+     is the theorem's contrapositive tested at full strength)
+
+k = 3, terms of depth <= 2, deduped by value table at width 3: 130 distinct functions
+  width 2: 8385 pairs, 320 agree on the box, 320 of those with a clamped box point, 0 COUNTEREXAMPLES
+  width 3: 8385 pairs, 0 agree on the box, 0 of those with a clamped box point, 0 COUNTEREXAMPLES
+    (dedup width: every pair differs in the domain by construction, so the 8385 zero above
+     is the theorem's contrapositive tested at full strength)
+
+all checks passed

@@ -1,0 +1,35 @@
+== default build: licenses the two true laws ==
+exit: 0
+p4b: arms gated on the law itself at width 64, no band, no transfer
+  consumer::<LawL<128>>()  = licensed (threshold 127, true at 64)
+  consumer::<AssocMul64>() = licensed (integer identity)
+  l_k_diff_verdict(16, 64) = false   l_k_diff_verdict(64, 64) = false
+  build with --cfg use_l16 or --cfg use_l64 for the refusals
+
+== --cfg use_l16 (must refuse: false at 64) ==
+error[E0080]: evaluation panicked: this law is FALSE at width 64, decided at width 64 by the difference criterion in K+1 evaluations; no arm may rewrite through it
+   --> p4b_certificate_gate.rs:220:9
+    |
+220 | /         assert!(
+221 | |             l_k_diff_verdict(K, 64),
+222 | |             "this law is FALSE at width 64, decided at width 64 by the difference \
+223 | |              criterion in K+1 evaluations; no arm may rewrite through it"
+224 | |         );
+    | |_________^ evaluation of `<LawL<16> as Licensed>::CHECK` failed here
+
+note: erroneous constant encountered
+   --> p4b_certificate_gate.rs:250:26
+
+== --cfg use_l64 (must refuse: false at 64) ==
+error[E0080]: evaluation panicked: this law is FALSE at width 64, decided at width 64 by the difference criterion in K+1 evaluations; no arm may rewrite through it
+   --> p4b_certificate_gate.rs:220:9
+    |
+220 | /         assert!(
+221 | |             l_k_diff_verdict(K, 64),
+222 | |             "this law is FALSE at width 64, decided at width 64 by the difference \
+223 | |              criterion in K+1 evaluations; no arm may rewrite through it"
+224 | |         );
+    | |_________^ evaluation of `<LawL<64> as Licensed>::CHECK` failed here
+
+note: erroneous constant encountered
+   --> p4b_certificate_gate.rs:252:26

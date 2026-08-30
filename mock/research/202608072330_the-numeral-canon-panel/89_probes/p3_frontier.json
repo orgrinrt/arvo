@@ -1,0 +1,137 @@
+[
+ {
+  "kind": "verdict",
+  "D": 64,
+  "steps": 16640,
+  "default": "accept",
+  "default_s": 0.67,
+  "allow": "skipped",
+  "allow_s": 0.0
+ },
+ {
+  "kind": "verdict",
+  "D": 128,
+  "steps": 66048,
+  "default": "accept",
+  "default_s": 0.32,
+  "allow": "skipped",
+  "allow_s": 0.0
+ },
+ {
+  "kind": "verdict",
+  "D": 256,
+  "steps": 263168,
+  "default": "accept",
+  "default_s": 1.14,
+  "allow": "skipped",
+  "allow_s": 0.0
+ },
+ {
+  "kind": "verdict",
+  "D": 512,
+  "steps": 1050624,
+  "default": "accept",
+  "default_s": 4.42,
+  "allow": "skipped",
+  "allow_s": 0.0
+ },
+ {
+  "kind": "verdict",
+  "D": 1024,
+  "steps": 4198400,
+  "default": "refuse-guard",
+  "default_s": 8.39,
+  "allow": "accept",
+  "allow_s": 17.68
+ },
+ {
+  "kind": "verdict",
+  "D": 2048,
+  "steps": 16785408,
+  "default": "refuse-guard",
+  "default_s": 8.41,
+  "allow": "accept",
+  "allow_s": 71.64
+ },
+ {
+  "kind": "verdict",
+  "D": 4096,
+  "steps": 67125248,
+  "default": "refuse-guard",
+  "default_s": 8.5,
+  "allow": "accept",
+  "allow_s": 331.21
+ },
+ {
+  "kind": "checker",
+  "L": 9,
+  "WB": 8,
+  "default": "accept",
+  "default_s": 0.34,
+  "allow": "skipped",
+  "allow_s": 0.0
+ },
+ {
+  "kind": "checker",
+  "L": 9,
+  "WB": 10,
+  "default": "accept",
+  "default_s": 0.49,
+  "allow": "skipped",
+  "allow_s": 0.0
+ },
+ {
+  "kind": "checker",
+  "L": 9,
+  "WB": 12,
+  "default": "accept",
+  "default_s": 0.43,
+  "allow": "skipped",
+  "allow_s": 0.0
+ },
+ {
+  "kind": "checker",
+  "L": 9,
+  "WB": 14,
+  "default": "accept",
+  "default_s": 0.41,
+  "allow": "skipped",
+  "allow_s": 0.0
+ },
+ {
+  "kind": "checker",
+  "L": 9,
+  "WB": 16,
+  "default": "accept",
+  "default_s": 0.42,
+  "allow": "skipped",
+  "allow_s": 0.0
+ },
+ {
+  "kind": "checker",
+  "L": 16,
+  "WB": 12,
+  "default": "refuse-guard",
+  "default_s": 8.0,
+  "allow": "accept",
+  "allow_s": 11.81
+ },
+ {
+  "kind": "checker",
+  "L": 16,
+  "WB": 14,
+  "default": "refuse-guard",
+  "default_s": 7.9,
+  "allow": "accept",
+  "allow_s": 33.3
+ },
+ {
+  "kind": "checker",
+  "L": 32,
+  "WB": 12,
+  "default": "refuse-guard",
+  "default_s": 8.06,
+  "allow": "refuse",
+  "allow_s": 65.13
+ }
+]

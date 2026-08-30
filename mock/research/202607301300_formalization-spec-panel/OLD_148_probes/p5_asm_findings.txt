@@ -1,0 +1,12 @@
+p5 assembly, aarch64, rustc 1.98.0-nightly (57d06900f 2026-05-27), -O, --crate-type lib
+
+scalar route: LLVM emitted ONE body and two aliases.
+  _scalar_via_from  = _scalar_by_hand
+  _scalar_via_embed = _scalar_by_hand
+
+loop route: three separate bodies, instruction-identical modulo local label numbering.
+  loop_by_hand   56 instructions
+  loop_via_from  56 instructions
+  loop_via_embed 56 instructions
+  by_hand == via_from  (labels normalised): False
+  by_hand == via_embed (labels normalised): False

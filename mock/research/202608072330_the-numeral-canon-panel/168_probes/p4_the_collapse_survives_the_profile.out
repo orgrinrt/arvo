@@ -1,0 +1,16 @@
+profile=default  (-Copt-level=3 -Clto=off -Ccodegen-units=16)  [cdylib, post-LTO disassembly]
+  affine_deferred      addr=00000000000002f8 lines=80   vectorised=YES  vec_operands=22   
+  affine_eager         addr=0000000000000438 lines=13   vectorised=no   vec_operands=0    
+  blocked_deferred     addr=000000000000046c lines=94   vectorised=YES  vec_operands=32   
+  blocked_eager        addr=00000000000005e4 lines=15   vectorised=no   vec_operands=0    
+  note: p4 has no projection-free control of its own; its deferred arm is the
+  reference, and p5 is where the control lives.
+
+profile=documented  (-Copt-level=3 -Clto=fat -Ccodegen-units=1)  [cdylib, post-LTO disassembly]
+  affine_deferred      addr=00000000000002f8 lines=80   vectorised=YES  vec_operands=22   
+  affine_eager         addr=0000000000000438 lines=13   vectorised=no   vec_operands=0    
+  blocked_deferred     addr=000000000000046c lines=94   vectorised=YES  vec_operands=32   
+  blocked_eager        addr=00000000000005e4 lines=15   vectorised=no   vec_operands=0    
+  note: p4 has no projection-free control of its own; its deferred arm is the
+  reference, and p5 is where the control lives.
+

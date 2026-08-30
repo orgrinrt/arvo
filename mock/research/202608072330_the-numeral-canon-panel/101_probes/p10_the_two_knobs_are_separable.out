@@ -1,0 +1,49 @@
+==============================================================================
+A. THE FOUR CELLS, ON `97`'S MODEL
+==============================================================================
+  6 regions, 5 arms, 2 coordinates (median algo_ns, bits per element)
+  arms dominated at every region: ['bitpack-carrier-d64', 'bitpack-carrier-packed']
+
+     weights     minima  sections   selecting a dominated arm
+      w >= 0       weak        72   63
+      w >= 0     unique         9   0
+       w > 0       weak         9   0
+       w > 0     unique         9   0
+
+  `97` and `98` report 72 at the top-left cell and 9 at the bottom-left.
+  Whether the OTHER knob alone reaches 9 is what Q44 does not ask.
+
+==============================================================================
+B. IS A ZERO WEIGHT'S SECTION REACHABLE BY A STRICTLY POSITIVE ONE
+==============================================================================
+  At two coordinates the weighting is one number r = w2/w1, so a zero
+  weight on coordinate 2 is the limit r -> 0. If the section at r = 0
+  equals the section at every sufficiently small positive r, then
+  indifference is expressible to any tolerance without a zero weight.
+
+  END ONE: zero weight on the SIZE coordinate, r -> 0.
+    r = 1e-1   == the r = 0 section
+    r = 1e-3   == the r = 0 section
+    r = 1e-6   == the r = 0 section
+    r = 1e-12  == the r = 0 section
+    r = 0     d32,d32,d16,d16,d16,d16
+
+  END TWO: zero weight on the TIME coordinate, r -> infinity. This is
+  the end where the gap lives, because two arms carry 13 bits each.
+    r = 1e1    != the large-r section   d16,d16,d16,d16,d16,d16
+    r = 1e3    != the large-r section   simd,d16,d16,d16,d16,d16
+    r = 1e6    == the large-r section   simd,simd,simd,simd,simd,simd
+    r = 1e12   == the large-r section   simd,simd,simd,simd,simd,simd
+
+  weak argmin set at a pure-size weighting, per region:
+    n = 16384      packed,simd
+    n = 131072     packed,simd
+    n = 1048576    packed,simd
+    n = 2097152    packed,simd
+    n = 4194304    packed,simd
+    n = 8388608    packed,simd
+
+  Ties are the whole content of the gap. A zero weight lets two arms tie
+  on the coordinate that is still being weighed, and a tie is where a
+  dominated arm gets in. A strictly positive r breaks the tie with the
+  second coordinate rather than admitting both.

@@ -1,0 +1,10 @@
+debug_assertions = false
+constructed divisor: exact = 4294967296 (nonzero), wrapped i32 = 0
+partial arm, narrow realisation : Err(())
+partial arm, wide realisation   : Ok(0)
+binding-free channel at this profile: true
+sweep: 200000 both-defined non-wrapping checked, 0 disagreements, 0 with a side undefined
+CONTROL (divisor is an input): 200000 checked, 0 disagreements, 0 panics
+CONTROL verdict: PASS (control does not distinguish)
+value-only checker over the random sweep : 0 disagreements -> would certify
+definedness checker at the witness       : narrow undefined, wide defined -> refuses

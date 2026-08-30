@@ -1,0 +1,46 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+feature gates: 0
+target: host: aarch64-apple-darwin
+
+p7. The structural predicate, and the policy-selected discharge check
+==============================================================================
+
+Container [0, 7], SATURATING (not a ring homomorphism)
+
+  (x + y) + z                [   2,   7]  linear true  noann true  PRED true  per-node true  root true  SELECTED true 
+  (x * y) + z                [   0,   6]  linear true  noann true  PRED true  per-node true  root true  SELECTED true 
+  (x + y) - y          [C1]  [   1,   4]  linear false noann true  PRED false per-node true  root true  SELECTED true 
+  (x + y) * z, z >= 0  [C1]  [   0,  12]  linear true  noann false PRED false per-node false root false SELECTED false
+  (x + y) * z, z >= 1  [P3]  [   2,  12]  linear true  noann true  PRED true  per-node false root false SELECTED false
+  x - (y - z)          [P4]  [   1,   6]  linear true  noann true  PRED true  per-node false root true  SELECTED false
+  x + y                [C2]  [   2,   4]  linear true  noann true  PRED true  per-node true  root true  SELECTED true 
+
+Container [0, 7], WRAPPING (a ring homomorphism)
+
+  (x + y) + z                [   2,   7]  linear true  noann true  PRED true  per-node true  root true  SELECTED true 
+  (x + y) - y          [C1]  [   1,   4]  linear false noann true  PRED false per-node true  root true  SELECTED true 
+  x - (y - z)          [P4]  [   1,   6]  linear true  noann true  PRED true  per-node false root true  SELECTED true 
+  x + y                [C2]  [   2,   4]  linear true  noann true  PRED true  per-node true  root true  SELECTED true 
+
+P4 is the pair of `x - (y - z)` rows: the per-node check refuses
+because the inner difference reaches below zero, and the root-only
+check licenses because the root does not. C2 is the `x + y` pair,
+where the two checks agree, so the difference is about the term.
+
+Container [0, 255], SATURATING, the width the gated arms use
+
+  x - (y - z)                [   1,   6]  linear true  noann true  PRED true  per-node false root true  SELECTED false
+
+
+The gated arms: logical width 5 in a u8 container, x in [12,15],
+y in [0,4], z in [0,10], term x - (y - z)
+
+  x - (y - z)  SAT           [   8,  25]  linear true  noann true  PRED true  per-node false root true  SELECTED false
+  x - (y - z)  WRAP          [   8,  25]  linear true  noann true  PRED true  per-node false root true  SELECTED true 
+
+  wrap_gated selected: true
+  sat_gated  selected: false
+
+The predicate's own claim, restated: where PRED is true and the
+per-node check refuses, `p1` measures that an enumerating oracle
+also refuses, on 63037 of 63037 such cells at uW3/sat.

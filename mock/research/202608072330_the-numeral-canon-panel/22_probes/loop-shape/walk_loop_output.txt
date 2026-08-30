@@ -1,0 +1,28 @@
+Bare column walk (D=0) hot loop. Ad-hoc quick spike, no timing.
+
+   W           top mask |  ragged  wordround | vector regs in wr loop
+ 129                  1 |       8          8 |                      0
+ 160         4294967295 |       7          7 |                      0
+ 192           u64::MAX |       7          7 |                      0
+ 200                255 |      11         11 |                      0
+ 232      1099511627775 |      18         14 |                      0
+ 256           u64::MAX |      13         13 |                      0
+
+W=129 wordround loop, in full:
+    ldp	x12, x13, [x11, #-0xX]
+    ldr	w14, [x11], #0xX
+    adds	x8, x12, x8
+    adcs	x9, x13, x9
+    adc	w10, w14, w10
+    and	x10, x10, #0xX
+    subs	x1, x1, #0xX
+    b.ne	0xX 
+
+W=192 wordround loop, in full:
+    ldp	x12, x13, [x11, #-0xX]
+    ldr	x14, [x11], #0xX
+    adds	x8, x12, x8
+    adcs	x9, x13, x9
+    adc	x10, x14, x10
+    subs	x1, x1, #0xX
+    b.ne	0xX 

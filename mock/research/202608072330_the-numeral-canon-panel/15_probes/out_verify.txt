@@ -1,0 +1,60 @@
+== toolchain ==
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+== feature gates across every probe (must all be 0) ==
+  q04_core_inc.rs:0
+  q04_core.rs:0
+  q04_literals_inc.rs:0
+  q05_subtraction_matrix.rs:0
+  q06_negctl.rs:0
+  q06_shape_matrix.rs:0
+  q07_body_inc.rs:0
+  q07_three_input_map.rs:0
+  q08_map_matrix.rs:0
+  q08_negctl.rs:0
+  q08_negctl2.rs:0
+  q09_door_and_erasure.rs:0
+  q09_lit_inc.rs:0
+  q09_shape_inc.rs:0
+  q10_diag_tag.rs:0
+  q11_tag_costs.rs:0
+  q12_door_inc.rs:0
+  q12_erasure_asm.rs:0
+  q13_cold_packed.rs:0
+  q14_declared_plus_tag.rs:0
+  q15_ceiling_and_alias_site.rs:0
+
+== python instruments ==
+q01 negative-width recount                     ok (expected ok)
+q02 (W,F) coordinates                          ok (expected ok)
+q03 tight addition                             ok (expected ok)
+q03b reconcile 461 vs 476                      ok (expected ok)
+
+== generated matrices ==
+q05 subtraction whole matrix                   ok (expected ok)
+q06 shape rules whole matrix                   ok (expected ok)
+q06 negative control                           refused (expected refusal)
+
+== the three-input map ==
+q07 map compiles                               ok (expected ok)
+q08 map whole matrix, 1608 triples             ok (expected ok)
+q08 negative control, Cold stride              refused (expected refusal)
+q08 negative control, Hot padding              refused (expected refusal)
+
+== the door, erasure, Cold ==
+q09 door + derivation                          ok (expected ok)
+q12 erasure asm                                ok (expected ok)
+q13 Cold packed column                         ok (expected ok)
+
+== the diagnostic tag ==
+q10 three diag arms (all fail)                 refused (expected refusal)
+q11 t1, computed vs written                    refused (expected refusal)
+q11 without t1                                 ok (expected ok)
+q14 too-narrow declaration                     refused (expected refusal)
+q14 adequate declaration                       ok (expected ok)
+
+== the ceiling and the alias site ==
+q15 c1, four multiplies past the table         ok (expected ok)
+q15 c2, undeclared width                       refused (expected refusal)
+
+unexpected outcomes: 0

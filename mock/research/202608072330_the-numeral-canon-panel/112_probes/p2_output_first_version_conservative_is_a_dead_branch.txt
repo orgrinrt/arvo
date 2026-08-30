@@ -1,0 +1,83 @@
+==============================================================================
+p2. What a declared extent switches off
+==============================================================================
+
+Q1. Does the propagated extent predict agreement, in both directions
+
+  W=4 sat  add arity=2 bounds=all    : unsound 0, conservative 120, over 256 extents and 18496 value tuples
+  W=4 wrap add arity=2 bounds=all    : unsound 0, conservative 120, over 256 extents and 18496 value tuples
+  W=4 sat  mul arity=2 bounds=all    : unsound 0, conservative 180, over 256 extents and 18496 value tuples
+  W=4 sat  add arity=3 bounds=uniform: unsound 0, conservative 10, over 16 extents and 18496 value tuples
+  W=5 sat  add arity=2 bounds=all    : unsound 0, conservative 496, over 1024 extents and 278784 value tuples
+  W=5 wrap add arity=3 bounds=uniform: unsound 0, conservative 21, over 32 extents and 278784 value tuples
+
+  W=6 F=2 sat  mul arity=2 bounds=all     (grid too): unsound 0, conservative 256, over 256 extents and 246016 value tuples
+  W=6 F=2 sat  mul arity=3 bounds=uniform (grid too): unsound 0, conservative 16, over 16 extents and 982576 value tuples
+
+Q2/Q3. Does a discharged extent license an axis substitution on a term,
+       and does it merge the two assignments as types
+
+  axis moved                          bound  discharged   term differs  types merge
+  overflow policy sat vs wrap             7        True           0/64        False
+  overflow policy sat vs wrap            15       False        120/256        False
+  overflow policy sat vs wrap             5        True          0/216        False
+  overflow policy sat vs wrap            15       False      3160/4096        False
+  total width 3 vs 4                      3        True           0/16        False
+  total width 3 vs 4                      7       False          28/64        False
+  signedness unsigned vs signed           3        True           0/16        False
+  signedness unsigned vs signed           7       False          28/64        False
+  rounding trunc vs near, F = 2           3        True         36/169        False
+  rounding trunc vs near, F = 2           3       False         36/169        False
+
+Q4. Which part of the grade switches off which region of R
+
+  magnitude bound vs completion      discharged=True   differing 0/169
+  magnitude bound vs rounding        discharged=True   differing 36/169
+  grid bound vs rounding             discharged=False  differing 36/169
+  grid bound vs completion           discharged=False  differing 0/169
+
+The same licence read representationally rather than denotationally
+
+  bit patterns whose VALUE differs between the two: 8/16
+  the same pair, ARITHMETIC on a discharged extent: differing 0/16, discharged=True
+
+INSTRUMENT CHECK
+  every cell performed at least one comparison
+
+MUTATION 1: widen the extent past the discharge point
+  bound 7  discharged=True differing 0/64
+  bound 15 discharged=False differing 120/256
+  the verdict moves with the extent: True
+
+MUTATION 2: break the propagation rule and see whether Q1 notices
+  correct rule: unsound 0, conservative 120
+  broken rule:  unsound 120, conservative 0
+  the test detects the broken rule: True
+
+-----------------------------------------------------------------------------
+DEFECT IN THIS RUN, FOUND BY ITS AUTHOR, KEPT RATHER THAN OVERWRITTEN
+-----------------------------------------------------------------------------
+The `conservative` column above is VACUOUS and its numbers must not be cited.
+
+`q1_exactness` increments `conservative` when the rule refuses to discharge
+AND the measured arm agrees with the general arm.  The measured arm is
+`eval_cheap_where_discharged`, which FALLS BACK TO THE GENERAL ARM at any node
+that does not discharge.  So whenever the rule refuses, the two are the same
+function by construction and `agrees` is True with certainty.  The counter is
+therefore reporting the number of non-discharging extents and nothing else,
+and it cannot ever report a zero for a reason having to do with conservatism.
+
+This is the same class as `110` F3's third bullet, which `111` section 2.2
+found and mutation-tested: a count produced by a command that could not have
+returned anything else.  Mine is worse in one respect, since I wrote the
+condition-can-fire warning into this probe's own header and then failed it.
+
+The `unsound` column is NOT affected: it fires only when the rule discharges
+and the arms disagree, both of which are live, and MUTATION 2 at the bottom of
+this run confirms it moves (0 -> 120) when the propagation rule is broken.
+
+Repaired in `p2b`, which measures conservatism against the FULLY cheap arm.
+A second defect found at the same time: Q4's "grid bound" passed `P.step` as
+the leaf grade's step, which is the finest grid rather than a declared coarser
+one, so the grid bound could never discharge under `mul`.  Also repaired in
+`p2b`.

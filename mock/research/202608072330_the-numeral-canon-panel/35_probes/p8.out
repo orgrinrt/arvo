@@ -1,0 +1,29 @@
+# p8 raw output
+
+## BASE (40 value checks vs integer arithmetic, lg_ref pins, sufficiency sweep w=1..24 k=1..64, tightness controls)
+(no output = compiled clean, exit 0)
+
+## --cfg mutate (recurrence broken on purpose; must fail)
+...
+232 | check!(P257);
+    | ------------ in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `check` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: got == lg_ref(v)
+   --> p8_log2ceil_without_a_table.rs:141:13
+    |
+141 |             assert!(got == lg_ref(v));
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+...
+233 | check!(P1023);
+    | ------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `check` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to 32 previous errors
+
+For more information about this error, try `rustc --explain E0080`.
+
+error count under --cfg mutate:
+32

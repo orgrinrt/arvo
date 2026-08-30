@@ -1,0 +1,16 @@
+error[E0277]: no width literal `c4::Idx<7>` is declared in this program
+  --> p13_where_the_door_error_lands.rs:40:20
+   |
+40 | pub fn read_tag(t: PacketTag) -> PacketTag {
+   |                    ^^^^^^^^^ this literal width is not declared
+   |
+help: the trait `c4::ToNat<Arvo>` is not implemented for `c4::Idx<7>`
+  --> surfaces.rs:87:5
+   |
+87 |     pub struct Idx<const N: u32>;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: literal widths are declared per program, one line each. Declare it, or name a width you already have
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.

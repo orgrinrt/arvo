@@ -1,0 +1,36 @@
+
+KEY 130103 : W=13 n=8192 op=1 D=3   (op 0 wrapping, 1 saturating)
+arm                                  run_ticks   outer ns/call          output value
+headroom                                594.44           24781                  8191
+minimum                                 420.00           17512                  8191
+native                                  329.58           13736                  8191
+kernel                                    0.10               8                  8191
+lanes_deferred                            0.10               8                  8191
+plusone                                 300.56           12520                  8191
+
+KEY 640103 : W=64 n=8192 op=1 D=3   (op 0 wrapping, 1 saturating)
+arm                                  run_ticks   outer ns/call          output value
+headroom                                302.44           12611  18446744073709551615
+minimum                                 200.88            8381  18446744073709551615
+native                                  122.78            5119  18446744073709551615
+kernel                                    0.10               6  18446744073709551615
+lanes_deferred                            0.09               6  18446744073709551615
+plusone                                 375.31           15641  18446744073709551615
+
+KEY 130003 : W=13 n=8192 op=0 D=3   (op 0 wrapping, 1 saturating)
+arm                                  run_ticks   outer ns/call          output value
+headroom                                242.16           10100                  4874
+minimum                                 276.62           11529                  4874
+native                                   13.84             581                  4874
+kernel                                   25.11            1049                  4874
+lanes_deferred                           24.72            1041                  4874
+plusone                                 234.74            9791                  4874
+
+KEY 640003 : W=64 n=8192 op=0 D=3   (op 0 wrapping, 1 saturating)
+arm                                  run_ticks   outer ns/call          output value
+headroom                                166.97            6959  13726510716020511498
+minimum                                  66.07            2756  13726510716020511498
+native                                   64.22            2672  13726510716020511498
+kernel                                   51.83            2162  13726510716020511498
+lanes_deferred                           55.58            2312  13726510716020511498
+plusone                                 147.53            6150  13726510716020511498

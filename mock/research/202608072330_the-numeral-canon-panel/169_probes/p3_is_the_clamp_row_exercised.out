@@ -1,0 +1,48 @@
+=== ARM 1: two placements, as 168 ran it ===
+condition                   win chains  win inputs   chains where placement
+                                                         changes the output
+nearest (round to 2^3)               0           0                     2737
+nearest (clamp)                      0           0                     1183
+NOT nearest (truncate)              91        1330                     2296
+
+=== ARM 2: every placement, as the claim states it ===
+condition                   win chains  win inputs   chains where placement
+                                                         changes the output
+nearest (round to 2^3)               0           0                     2762
+nearest (clamp)                      0           0                     1198
+NOT nearest (truncate)             317       13527                     2297
+
+C1 arm 1 reproduces 168's 0 / 0 / 91        : True   (got 0 / 0 / 91)
+C2 truncate wins in both arms               : True   (91 narrow, 317 full)
+C3 widening finds strictly more             : True   (317 > 91)
+
+THE SIXTH INSTRUMENT DEFECT
+  168's search compares two placements. Its claim quantifies over all of
+  them. Widening the search to every placement takes the truncate control
+  from 91 win-chains to 317, so intermediate placements do reach cases the
+  endpoints do not: the instrument was thinner than the claim.
+
+  AND THE CLAIM SURVIVES THE WIDER TEST.
+  round: 0 win-chains over every placement. clamp: 0. Both still zero.
+  The finding is not refuted; it is now supported at the strength it
+  actually asserts rather than one placement's worth of it.
+
+
+VERDICT
+  round    : placement changes the output on 2762 of 3000 chains, and never helps.
+  clamp    : placement changes the output on 1198 of 3000 chains, and never helps.
+  truncate : placement changes the output on 2297 of 3000 chains, and helps on 317.
+
+  The clamp row is exercised on 1198 chains against round's 2762. Both report
+  zero, and they are not equally strong zeros: the smaller the set of
+  chains where placement changes anything, the less a zero says.
+
+  The matched pair is round against truncate: same representable set (the
+  32 multiples of 8), differing only in nearest against not. That pair is
+  a proper experiment and it carries the claim.
+  The clamp row has a representable set of all 256 in-range values, so it
+  is not the control's partner; it is a second positive with no matched
+  negative. 168 does not claim otherwise, and its summary sentence
+  ('checked over 3000 chains with a control that finds 1330
+  counterexamples') reads as though the control covers both positives.
+RC=0

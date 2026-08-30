@@ -1,0 +1,30 @@
+=== CLAIM 1: 'Neither signature stated this composition' (176 sec 1) ===
+  the composition = B3's witnesses are chains where clause 6's licences refuse
+  174_mcsherry_signature_in_part.md    mentions-clause6/licence=1  licence-refuses=0
+  175_rompf_signature_in_part.md       mentions-clause6/licence=1  licence-refuses=0
+  lines in either signature joining the family to a licence:
+    175_rompf_signature_in_part.md:164:grade c does not induce the same boundary function and clause 2 therefore licenses none of its
+
+=== CLAIM 2: 'the signatures quoted the sentence and neither spelled its line' ===
+  174_mcsherry_signature_in_part.md    quotes-disclaimer=3  spells-60:210=0
+  175_rompf_signature_in_part.md       quotes-disclaimer=1  spells-60:210=0
+  any 60:NNN anchor in either signature:
+    174_mcsherry_signature_in_part.md:266:`60:69-84`
+
+=== CLAIM 3: 'partiality was in neither 171's tested six nor its named four' ===
+  171 lines naming its tested and named channel sets:
+    408:`171_probes/channels/` with those four. If one survives, section 3's release row is wrong and (L) is
+    536:I could not rule out a binding-free channel that survives `debug-assertions = off`. I tested six and
+  occurrences of 'partial' in 171:
+    total=0
+  and in the channel-enumerating region only:
+    sec3=0
+
+=== CLAIM 4: 'O-171-1 ... recorded only inside L3 rung history' (176 R-o) ===
+  occurrences of O-171-1 in 173: 0
+  173 sections mentioning 172 section 10 (the closer): 
+    76:compilation, `171_probes/perimeter/`). Second read by `172` section 10, verdict formed from the
+
+=== CONTROLS ===
+  P-A present pattern ("boundary function" in 175): 14  (must be > 0)
+  P-B absent pattern ("zzz-not-a-string" in 175)  : 0  (must be 0)

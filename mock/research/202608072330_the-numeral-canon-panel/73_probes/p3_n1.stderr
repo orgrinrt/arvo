@@ -1,0 +1,40 @@
+error[E0277]: the trait bound `SatOwnAlgebra: AmbientAssociates` is not satisfied
+   --> p3_n1.rs:319:26
+    |
+319 |     reassociating_fold::<IdentCollapsed>(xs)
+    |                          ^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `AmbientAssociates` is not implemented for `SatOwnAlgebra`
+   --> p3_n1.rs:92:1
+    |
+ 92 | pub struct SatOwnAlgebra;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^
+help: the following other types implement trait `AmbientAssociates`
+   --> p3_n1.rs:71:1
+    |
+ 71 | impl AmbientAssociates for RingZ {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `RingZ`
+...
+ 87 | impl AmbientAssociates for Gf2v4 {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Gf2v4`
+note: required for `IdentCollapsed` to implement `InducedAssociates`
+   --> p3_n1.rs:160:9
+    |
+160 | impl<R> InducedAssociates for R
+    |         ^^^^^^^^^^^^^^^^^     ^
+...
+163 |     <<R as Reduce>::Over as Reach>::Amb: AmbientAssociates,
+    |                                          ----------------- unsatisfied trait bound introduced here
+note: required by a bound in `reassociating_fold`
+   --> p3_n1.rs:263:17
+    |
+261 | pub fn reassociating_fold<R>(xs: &[u8]) -> u8
+    |        ------------------ required by a bound in this function
+262 | where
+263 |     R: Reduce + InducedAssociates,
+    |                 ^^^^^^^^^^^^^^^^^ required by this bound in `reassociating_fold`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.
+n1 EXIT=1

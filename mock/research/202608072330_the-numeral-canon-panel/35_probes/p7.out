@@ -1,0 +1,77 @@
+# p7 raw output
+
+## BASE (arms 1-4, including the const assertions on derived widths and sufficiency)
+(no output = compiled clean)
+
+## --cfg arm5 (capacity with no Log2Ceil row)
+error[E0277]: the trait bound `Cap<7>: Log2Ceil` is not satisfied
+   --> p7_accumulator_from_capacity.rs:255:51
+    |
+255 | pub fn arm5_uncovered(b: &Bounded<Num<N4>, 7>) -> <Num<N4> as SumAccum<Cap<7>>>::Acc {
+    |                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Log2Ceil` is not implemented for `Cap<7>`
+   --> p7_accumulator_from_capacity.rs:98:1
+    |
+ 98 | pub struct Cap<const K: usize>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `Log2Ceil`:
+              Cap<1024>
+              Cap<16>
+              Cap<1>
+              Cap<256>
+              Cap<2>
+              Cap<3>
+              Cap<4>
+              Cap<8>
+note: required for `Num<Su<Su<Su<Su<Z>>>>>` to implement `SumAccum<Cap<7>>`
+   --> p7_accumulator_from_capacity.rs:169:25
+    |
+169 | impl<W, const K: usize> SumAccum<Cap<K>> for Num<W>
+    |                         ^^^^^^^^^^^^^^^^     ^^^^^^
+170 | where
+171 |     Cap<K>: Log2Ceil,
+    |             -------- unsatisfied trait bound introduced here
+
+error[E0277]: the trait bound `Cap<7>: Log2Ceil` is not satisfied
+   --> p7_accumulator_from_capacity.rs:256:17
+    |
+256 |     sum_bounded(b)
+    |     ----------- ^ unsatisfied trait bound
+    |     |
+    |     required by a bound introduced by this call
+    |
+help: the trait `Log2Ceil` is not implemented for `Cap<7>`
+   --> p7_accumulator_from_capacity.rs:98:1
+    |
+ 98 | pub struct Cap<const K: usize>;
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: the following other types implement trait `Log2Ceil`:
+              Cap<1024>
+              Cap<16>
+              Cap<1>
+              Cap<256>
+              Cap<2>
+              Cap<3>
+              Cap<4>
+              Cap<8>
+note: required for `Num<Su<Su<Su<Su<Z>>>>>` to implement `SumAccum<Cap<7>>`
+   --> p7_accumulator_from_capacity.rs:169:25
+    |
+169 | impl<W, const K: usize> SumAccum<Cap<K>> for Num<W>
+    |                         ^^^^^^^^^^^^^^^^     ^^^^^^
+170 | where
+171 |     Cap<K>: Log2Ceil,
+    |             -------- unsatisfied trait bound introduced here
+note: required by a bound in `sum_bounded`
+   --> p7_accumulator_from_capacity.rs:194:13
+    |
+190 | pub fn sum_bounded<W, const K: usize>(
+    |        ----------- required by a bound in this function
+...
+194 |     Num<W>: SumAccum<Cap<K>>,
+    |             ^^^^^^^^^^^^^^^^ required by this bound in `sum_bounded`
+
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0277`.

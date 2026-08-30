@@ -1,0 +1,12 @@
+cfg(precise_widens) = false
+
+Hot        rung=  16  carrier=  16  stride=  16  compute_carrier=  16  
+Warm       rung=  16  carrier=  16  stride=  16  compute_carrier=  16  
+Cold       rung=  16  carrier=  16  stride=  16  compute_carrier=  16  
+Cold       rung=  13  carrier=  16  stride=  13  compute_carrier=  16  
+Precise    rung=  16  carrier=  16  stride=  16  compute_carrier=  16  
+
+three associated items on one trait, same arity for every strategy at every
+rung, zero feature gates. switching between the two readings of Precise is a
+single impl block; nothing else in the mechanism, and nothing in the other
+three strategies' impls, needs to move either way.

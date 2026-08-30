@@ -1,0 +1,8 @@
+error: complex const arguments must be placed inside of a `const` block
+  --> e03_overshoot_under_min_gca.rs:80:27
+   |
+80 |     type const B: usize = (N + 7) / 8;
+   |                           ^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+

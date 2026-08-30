@@ -1,0 +1,103 @@
+
+================ reading P1 (sign digit inside precision)
+--- Q1  does the sign domain survive the quotient by V(a) = V(b)?   [P1]
+  radix  2: cross-domain value-set collisions =   80   (NO, it collapses)
+            (0, 'AsymmetricLow', -3) == (0, 'NonNegative', -3)   both denote a set of size 1
+            (0, 'AsymmetricLow', -3) == (0, 'NonNegative', -2)   both denote a set of size 1
+            (0, 'AsymmetricLow', -3) == (0, 'NonNegative', -1)   both denote a set of size 1
+  radix  3: cross-domain value-set collisions =   68   (NO, it collapses)
+            (0, 'AsymmetricLow', -3) == (0, 'NonNegative', -3)   both denote a set of size 1
+            (0, 'AsymmetricLow', -3) == (0, 'NonNegative', -2)   both denote a set of size 1
+            (0, 'AsymmetricLow', -3) == (0, 'NonNegative', -1)   both denote a set of size 1
+  radix 10: cross-domain value-set collisions =   48   (NO, it collapses)
+            (0, 'AsymmetricLow', -3) == (0, 'NonNegative', -3)   both denote a set of size 1
+            (0, 'AsymmetricLow', -3) == (0, 'NonNegative', -2)   both denote a set of size 1
+            (0, 'AsymmetricLow', -3) == (0, 'NonNegative', -1)   both denote a set of size 1
+--- Q2  does inclusion factor as a product order over (grid, precision, domain)?   [P1]
+  radix  2: partial orders on the three domains tried = 19, surviving = 0
+  radix  3: partial orders on the three domains tried = 19, surviving = 0
+  radix 10: partial orders on the three domains tried = 19, surviving = 0
+  radix  2 witness: Symmetric(p=1) [0,0] is contained in AsymmetricLow(p=0) [0,0] while its precision is strictly larger, so no order on the domains can carry the relation
+--- Q3  which domains are comparable at equal grid and equal precision?   [P1]
+  radix  2: AsymmetricLow is contained in NonNegative at 1 of 6 precisions
+  radix  2: AsymmetricLow is contained in Symmetric at 1 of 6 precisions
+  radix  2: NonNegative is contained in AsymmetricLow at 1 of 6 precisions
+  radix  2: NonNegative is contained in Symmetric at 1 of 6 precisions
+  radix  2: Symmetric is contained in AsymmetricLow at 6 of 6 precisions
+  radix  2: Symmetric is contained in NonNegative at 2 of 6 precisions
+  radix  3: AsymmetricLow is contained in NonNegative at 1 of 6 precisions
+  radix  3: AsymmetricLow is contained in Symmetric at 6 of 6 precisions
+  radix  3: NonNegative is contained in AsymmetricLow at 1 of 6 precisions
+  radix  3: NonNegative is contained in Symmetric at 1 of 6 precisions
+  radix  3: Symmetric is contained in AsymmetricLow at 6 of 6 precisions
+  radix  3: Symmetric is contained in NonNegative at 1 of 6 precisions
+  radix 10: AsymmetricLow is contained in NonNegative at 1 of 6 precisions
+  radix 10: AsymmetricLow is contained in Symmetric at 1 of 6 precisions
+  radix 10: NonNegative is contained in AsymmetricLow at 1 of 6 precisions
+  radix 10: NonNegative is contained in Symmetric at 1 of 6 precisions
+  radix 10: Symmetric is contained in AsymmetricLow at 6 of 6 precisions
+  radix 10: Symmetric is contained in NonNegative at 1 of 6 precisions
+--- Q4  is there a numeral denoting exactly the zero set, at precision one or more?   [P1]
+  radix  2: yes [(1, 'Symmetric')]
+  radix  3: no
+  radix 10: no
+--- Q5  code count against value count (which domain leaves a spare code)   [P1]
+  radix  2 p=3 NonNegative    values=    8 codes=    8 spare=0
+  radix  2 p=3 Symmetric      values=    7 codes=    8 spare=1
+  radix  2 p=3 AsymmetricLow  values=    8 codes=    8 spare=0
+  radix  3 p=3 NonNegative    values=   27 codes=   27 spare=0
+  radix  3 p=3 Symmetric      values=   27 codes=   27 spare=0
+  radix  3 p=3 AsymmetricLow  values=   27 codes=   27 spare=0
+  radix 10 p=3 NonNegative    values= 1000 codes= 1000 spare=0
+  radix 10 p=3 Symmetric      values=  999 codes= 1000 spare=1
+  radix 10 p=3 AsymmetricLow  values= 1000 codes= 1000 spare=0
+--- Q6  meets and joins in the radix-two three-domain family, fixed grid   [P1]
+  pairs=105  meet absent=0  meet non-unique=0  join absent=0  join non-unique=0
+
+================ reading P2 (sign outside precision)
+--- Q1  does the sign domain survive the quotient by V(a) = V(b)?   [P2]
+  radix  2: cross-domain value-set collisions =   16   (NO, it collapses)
+            (0, 'NonNegative', -3) == (0, 'Symmetric', -3)   both denote a set of size 1
+            (0, 'NonNegative', -3) == (0, 'Symmetric', -2)   both denote a set of size 1
+            (0, 'NonNegative', -3) == (0, 'Symmetric', -1)   both denote a set of size 1
+  radix  3: cross-domain value-set collisions =   16   (NO, it collapses)
+            (0, 'NonNegative', -3) == (0, 'Symmetric', -3)   both denote a set of size 1
+            (0, 'NonNegative', -3) == (0, 'Symmetric', -2)   both denote a set of size 1
+            (0, 'NonNegative', -3) == (0, 'Symmetric', -1)   both denote a set of size 1
+  radix 10: cross-domain value-set collisions =   16   (NO, it collapses)
+            (0, 'NonNegative', -3) == (0, 'Symmetric', -3)   both denote a set of size 1
+            (0, 'NonNegative', -3) == (0, 'Symmetric', -2)   both denote a set of size 1
+            (0, 'NonNegative', -3) == (0, 'Symmetric', -1)   both denote a set of size 1
+--- Q2  does inclusion factor as a product order over (grid, precision, domain)?   [P2]
+  radix  2: partial orders on the three domains tried = 19, surviving = 0
+  radix  3: partial orders on the three domains tried = 19, surviving = 0
+  radix 10: partial orders on the three domains tried = 19, surviving = 0
+--- Q3  which domains are comparable at equal grid and equal precision?   [P2]
+  radix  2: NonNegative is contained in AsymmetricLow at 6 of 6 precisions
+  radix  2: NonNegative is contained in Symmetric at 6 of 6 precisions
+  radix  2: Symmetric is contained in AsymmetricLow at 6 of 6 precisions
+  radix  2: Symmetric is contained in NonNegative at 1 of 6 precisions
+  radix  3: NonNegative is contained in AsymmetricLow at 6 of 6 precisions
+  radix  3: NonNegative is contained in Symmetric at 6 of 6 precisions
+  radix  3: Symmetric is contained in AsymmetricLow at 6 of 6 precisions
+  radix  3: Symmetric is contained in NonNegative at 1 of 6 precisions
+  radix 10: NonNegative is contained in AsymmetricLow at 6 of 6 precisions
+  radix 10: NonNegative is contained in Symmetric at 6 of 6 precisions
+  radix 10: Symmetric is contained in AsymmetricLow at 6 of 6 precisions
+  radix 10: Symmetric is contained in NonNegative at 1 of 6 precisions
+--- Q4  is there a numeral denoting exactly the zero set, at precision one or more?   [P2]
+  radix  2: no
+  radix  3: no
+  radix 10: no
+--- Q5  code count against value count (which domain leaves a spare code)   [P2]
+  radix  2 p=3 NonNegative    values=    8 codes=    8 spare=0
+  radix  2 p=3 Symmetric      values=   15 codes=   16 spare=1
+  radix  2 p=3 AsymmetricLow  values=   16 codes=   16 spare=0
+  radix  3 p=3 NonNegative    values=   27 codes=   27 spare=0
+  radix  3 p=3 Symmetric      values=   53 codes=   54 spare=1
+  radix  3 p=3 AsymmetricLow  values=   54 codes=   54 spare=0
+  radix 10 p=3 NonNegative    values= 1000 codes= 1000 spare=0
+  radix 10 p=3 Symmetric      values= 1999 codes= 2000 spare=1
+  radix 10 p=3 AsymmetricLow  values= 2000 codes= 2000 spare=0
+--- Q6  meets and joins in the radix-two three-domain family, fixed grid   [P2]
+  pairs=105  meet absent=0  meet non-unique=0  join absent=0  join non-unique=0

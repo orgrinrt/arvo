@@ -1,0 +1,14 @@
+TOTAL_BYTES as the crate sizes it = 23592976 (23.6 MB)
+right-sized for STRESS_N = 4094 would be 23044 bytes
+ratio = 1024x
+
+200 builds as the crate sizes them : 144.794583ms
+200 builds right-sized             : 1.087042ms
+per-build as-is      : 723.972µs
+per-build right-sized: 5.435µs
+sink (kept so nothing is eliminated): 50840
+
+projected cost of the 4500 builds the three stress tests perform: 3.3 s
+
+CONTROL PASSED: right-sizing is more than 4x cheaper, so the buffer
+  IS a dominant term and the gate finding names a real cause.

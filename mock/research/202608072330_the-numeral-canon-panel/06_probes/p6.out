@@ -1,0 +1,20 @@
+# P6. box I,F in 0..8: 81 shapes, 6561 pairs
+
+## the sum-of-widths form is not the least ADMITTED shape: 461/6561
+   minimum total width of the narrower operand, over the waste set: [0, 1]
+     narrower operand total width 0: 160 pairs
+     narrower operand total width 1: 301 pairs
+   pairs with narrower total width in [0, 1]: 477
+   of those, wasting: 461; NOT wasting: 16
+   the non-wasting exceptions, all of them: [((0, 0), (0, 0)), ((0, 1), (0, 1)), ((0, 1), (0, 2)), ((0, 1), (0, 3)), ((0, 1), (0, 4)), ((0, 1), (0, 5)), ((0, 1), (0, 6)), ((0, 1), (0, 7)), ((0, 1), (0, 8)), ((0, 2), (0, 1)), ((0, 3), (0, 1)), ((0, 4), (0, 1)), ((0, 5), (0, 1)), ((0, 6), (0, 1)), ((0, 7), (0, 1)), ((0, 8), (0, 1))]
+
+## tight answer needs NEGATIVE integer width: 15/6561
+   the region, stated exactly:
+   shapes appearing in it: [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8)]
+   every such pair has one operand U<0,1>: True
+   every such pair has both operands purely fractional (I==0): True
+   how the count scales with the box: linear in LIM (2*LIM-1), so the
+   FRACTION shrinks as the box grows. this is a corner, not a region.
+     LIM=4: 7/625 = 1.120%
+     LIM=6: 11/2401 = 0.458%
+     LIM=8: 15/6561 = 0.229%

@@ -1,0 +1,11 @@
+OK L1  60_stam_the_chain_derived_cold.md: A chain is a composition of exact operations together with a
+OK L0  60_stam_the_chain_derived_cold.md: Five things, none of which a per-op model can express
+OK L0  60_stam_the_chain_derived_cold.md: no expressible form
+OK L1  60_stam_the_chain_derived_cold.md: a constraint on the shape of the format concept itself
+OK L1  167_rompf_the_chain_derived_cold.md: C9 says what a chain **contains**. Mine says what **bounds**
+OK L0  167_rompf_the_chain_derived_cold.md: no adaptation on the additive side occurs
+OK L0  171_rompf_reply.md: everything inside it is arvo's to choose
+OK L0  168_mcsherry_the_chain_derived_cold.md: a single `saturating_sub` in place of the `wrapping_sub`
+CONTROL absent not found : PASS
+CONTROL present found    : PASS
+VERDICT: PASS

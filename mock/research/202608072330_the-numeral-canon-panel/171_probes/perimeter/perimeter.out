@@ -1,0 +1,33 @@
+########## P3 at debug-assertions=off
+== Probe P3: binding perimeter against observation perimeter ==
+profile: debug_assertions = false
+
+1. transparent binding, differing types:
+   size_of_val  wide 8  narrow 4  distinguishes: true
+2. OPAQUE binding (impl Carry), differing types:
+   size_of_val  wide 8  narrow 4  distinguishes: true
+   both still compute the same final value: 900000000 == 900000000 -> true
+   C-G: see perimeter_opaque_MUST_NOT_COMPILE.rs, expected to be refused
+3. C-F, binding at the SAME type in both implementations:
+   size_of_val  8  8  distinguishes: false   (must be false)
+   values equal: true
+
+C-H  size_of_val distinguishes at least one pair: true
+
+VERDICT
+  a binding at a differing type admits a distinguishing context: true
+  opacity does NOT extend the region: true
+  a binding at the same type does not: true
+
+########## C-G: naming the opaque type (must be REFUSED)
+error[E0308]: mismatched types
+  --> perimeter_opaque_MUST_NOT_COMPILE.rs:11:18
+   |
+ 7 | fn mk_wide_opaque(a: i32, b: i32) -> impl Carry { a as i64 + b as i64 }
+   |                                      ---------- the found opaque type
+...
+11 |     let t: i64 = mk_wide_opaque(1, 2);
+   |            ---   ^^^^^^^^^^^^^^^^^^^^ expected `i64`, found opaque type
+   |            |
+   |            expected due to this
+artifact produced: NO

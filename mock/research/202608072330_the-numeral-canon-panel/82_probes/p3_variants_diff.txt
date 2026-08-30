@@ -1,0 +1,13 @@
+generated:
+  p3b diff against p3a:
+325a326,330
+> pub type Straddles = Win<-128, 127>;
+> pub fn total_delta(xs: &[i8]) -> i8 {
+>     fold_reassociated::<Straddles>(xs)
+> }
+> 
+  p3c diff against p3a:
+126c126
+<     lo >= 0 || hi <= 0
+---
+>     lo >= -1 || hi <= 0

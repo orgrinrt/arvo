@@ -1,0 +1,5 @@
+P1 declared-semantics pair : witness=true directions=0
+P2 refinement pair         : witness=false directions=1
+P3 spurious pair           : witness=false directions=2
+witness-only conflates P2 and P3 : true
+policy_separates_every_width()   : true

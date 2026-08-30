@@ -4,6 +4,15 @@ apply_to: ["**/Cargo.toml"]
 
 ## Cargo workspace rules
 
+> **The crate names below name a tree that no longer exists.** `mock/crates/` was
+> cleared for the canon work, and the decomposition is being redecided from
+> scratch. Read what follows for the discipline it states, never for the
+> architecture it names. Do not restore a crate because this file mentions it,
+> and do not cite this file as evidence that a surface exists. Authority is
+> `mock/research/202608072330_the-numeral-canon-panel/INTENTS.md`.
+
+
+
 ### Mock workspace inheritance
 
 - Every `arvo*` crate uses `version.workspace = true`,
@@ -16,26 +25,11 @@ apply_to: ["**/Cargo.toml"]
 
 ### Layer rules (dependency direction)
 
-arvo is a four-layer stack. Cross-layer imports flow one way only.
-
-| Layer | Crate | Allowed deps |
-|---|---|---|
-| L0 | `arvo` | (none within arvo family) |
-| L1 | `arvo-bits` | `arvo` |
-| L2 | `arvo-bitmask` | `arvo-bits` |
-| L2 | `arvo-graph` | `arvo`, `arvo-bitmask` |
-| L2 | `arvo-sparse` | `arvo`, `arvo-bitmask` |
-| L2 | `arvo-comb` | `arvo`, `arvo-bitmask` |
-| L3 | `arvo-spectral` | `arvo`, `arvo-sparse` |
-
-Notes:
-
-- `arvo-graph` / `arvo-sparse` / `arvo-comb` depend on `arvo-bitmask`
-  (not `arvo-bits` directly). They reach bit contracts transitively.
-- `arvo-spectral` uses `arvo-sparse` for the matrix layout. Spectral
-  math doesn't need bitmask adjacency.
-- The lint `forbidden-imports` in `mockspace.toml` encodes this
-  table. Violations are rejected at build time.
+The layer table that stood here encoded the removed decomposition and is gone.
+Dependency direction as a principle survives: a lower layer never depends on a
+higher one, and the direction is part of the design rather than an accident of
+what compiled. Which layers exist, and what they are called, is what the canon
+work is deciding.
 
 ### No external runtime deps (except notko foundation)
 

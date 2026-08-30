@@ -1,0 +1,6 @@
+citations checked: 46
+files missing:     0
+failures:          0
+
+every citation opened, and every target contains the text the claim depends on.
+EXIT=0

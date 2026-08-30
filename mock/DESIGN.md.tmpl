@@ -1,3 +1,11 @@
+> **Superseded. This document describes a design that is being replaced, and it is
+> not current.**
+>
+> Two things it states as settled are not. The strategy set is not fixed at four
+> markers; how many there are, what they are called, and how they decompose are all
+> open. And `feature(generic_const_exprs)` is named here but is not used and will not
+> be. A replacement is in progress; until it lands, treat nothing below as binding.
+
 # arvo. Architecture Design
 
 > Numeric primitives + analysis algorithms with Hot / Warm / Cold /
@@ -33,20 +41,20 @@ the bottom.
 |---|---|---|
 | L0a | `arvo-transparent` | `Transparent` const unsafe trait. `NumericPrimitive` marker. Free `arvo::raw` const fn. |
 | L0a | `arvo-strategy` | `Strategy` marker, `Hot` / `Warm` / `Cold` / `Precise` ZSTs, unified `BitsContainerFor<const N: u16, Sign>` const trait via Pattern C const-tag dispatch through `Project<TAG, Sign, BYTES, S>` helper, `Resolve<S1, S2>`, `Width` newtype. |
-| L0  | `arvo-storage` | `Bits<N, S, Sign>` storage primitive (default `Sign = Unsigned`). `WideBits<BYTES>` byte-sequence (Warm/Cold/Precise above 128). `AlignedWideBits16<BYTES>` align(16) byte-sequence (Hot above 128). `Bool`, `USize` platform wrappers. `IBits`, `FBits` typed meta-bit newtypes (`Width` re-exported from arvo-strategy). |
+| L0  | `arvo-storage` | `Bits<N, S, Sign>` storage primitive (default `Sign = Unsigned`). `WideBits<BYTES>` byte-sequence (Warm/Cold/Precise above 128). `AlignedWideBits16<BYTES>` align(16) byte-sequence (Hot above 128). `Bool`, `USize`, `Cap` platform wrappers. `IBits`, `FBits` typed meta-bit newtypes (`Width` re-exported from arvo-strategy). |
 | L0.5 | `arvo-bits-contracts` | `HasBitWidth`, `BitAccess`, `BitSequence`, `BitLogic`, `BitPrim`, `UBitContainer`, `IBitContainer`, `Narrow<T>`, `Widen<T>` (all `pub const trait`). Hosts the cross-primitive + cross-Bits Narrow / Widen impl tables. |
 | L0.5 | `arvo-mask-contracts` | `MaskOps` const trait. |
 | L0.5 | `arvo-numeric-contracts` | `Abs`, `Recip`, `Sqrt`, `TotalOrd`, `FromConstant`, `Predicate` family (all `pub const trait`). |
 | L1  | `arvo-bits` | Concrete blanket impls of bit-level traits on `Bits<N, S>` and bare primitives. Bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`, `QWord`). |
 | L1  | `arvo-bitmask` | `Mask<B>` chassis, `BitMatrix<B, const N: Cap>` chassis. `MaskOps` impls at concrete widths 64 and 256. |
 | L1  | `arvo-refit` | Re-export gateway for the bit-width refit family (`Narrow<T>`, `Widen<T>`, `Narrowed`, `Widened`). |
-| L1  | `arvo-tensor` | `Array<T, N>`, `Matrix<W, N>`, `Cap`, `Enumerator`. |
+| L1  | `arvo-tensor` | `Array<T, N>`, `Matrix<W, N>`, `Enumerator`. Consumes `Cap` from arvo-storage; `cap_size` is the canonical `Cap` to `usize` projection. |
 | L2  | `arvo-hash` | `Hasher<N>` const trait, `Fnv1a<N>`, `ContentHash` alias. |
 | L2  | `arvo-graph` | DAG algorithms. |
 | L2  | `arvo-sparse` | CSR, RCM, block-diagonal, Dulmage-Mendelsohn. |
 | L2  | `arvo-comb` | Combinatorial optimisation. |
 | L3  | `arvo-spectral` | Laplacian, Fiedler, power iteration. |
-| facade | `arvo` | Re-exports public surface. Hosts `UFixed<I, F, S>` and `IFixed<I, F, S>` as `repr(transparent)` newtypes over `Bits`. Defines `Int<const N: u16, S>` / `Uint<const N: u16, S>` ergonomic generic aliases. Hosts default impls of the numeric-contract traits. Floats (`FastFloat`, `StrictFloat`) and `Cap` live here too. |
+| facade | `arvo` | Re-exports public surface. Hosts `UFixed<I, F, S>` and `IFixed<I, F, S>` as `repr(transparent)` newtypes over `Bits`. Defines `Int<const N: u16, S>` / `Uint<const N: u16, S>` ergonomic generic aliases. Hosts default impls of the numeric-contract traits. Floats (`FastFloat`, `StrictFloat`) live here too; `Cap` is re-exported from arvo-storage rather than defined here. |
 
 ## Trait-contract crates
 
@@ -83,9 +91,14 @@ The facade itself defines:
   `Uint<13>`, `Int<47>`); std-parallel `Uint8`/`Int8`/etc.
   spellings are not part of the surface.
 - `FastFloat`, `StrictFloat`.
-- `Cap`.
 - Default impls of the numeric-contract traits over the composed
   types.
+
+`Cap` is re-exported through the facade but declared in
+`arvo-storage`, alongside `Bool` and `USize`. Three earlier statements
+in this document placed it in `arvo-tensor` or in the facade itself;
+all three were wrong, and the correction is recorded as item 3 of D14
+in `design_rounds/202607290050_topic.the-restructure-widens.md`.
 
 ## Dependency direction
 

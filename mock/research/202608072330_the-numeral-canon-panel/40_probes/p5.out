@@ -1,0 +1,53 @@
+### toolchain
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### feature gates
+0
+
+### ARM base (expected clean)
+(base done)
+
+### ARM bad
+error[E0277]: this strategy's arithmetic is not exactly reassociable, so a reduction over it may not be split
+   --> p5_what_a_property_costs.rs:122:23
+    |
+122 |     splittable_fold::<Strat<Saturate, Signed>>();
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^ splitting across lanes or cores changes the association order
+    |
+help: the trait `ExactlyReassociable` is not implemented for `Strat<Saturate, Signed>`
+   --> p5_what_a_property_costs.rs:54:1
+    |
+ 54 | pub struct Strat<O, G>(PhantomData<(O, G)>);
+    | ^^^^^^^^^^^^^^^^^^^^^^
+    = note: signed saturating addition is the one combination that fails: 11,760,675 of 16,777,216 vectors at n=8 give a different answer under a different split
+help: the following other types implement trait `ExactlyReassociable`
+   --> p5_what_a_property_costs.rs:100:1
+    |
+100 | impl ExactlyReassociable for Strat<Wrap, Unsigned> {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Strat<Wrap, Unsigned>`
+101 | impl ExactlyReassociable for Strat<Saturate, Unsigned> {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Strat<Saturate, Unsigned>`
+102 | impl ExactlyReassociable for Strat<Wrap, Signed> {}
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Strat<Wrap, Signed>`
+note: required by a bound in `splittable_fold`
+   --> p5_what_a_property_costs.rs:105:38
+    |
+105 | pub fn splittable_fold<S: Strategy + ExactlyReassociable>() {}
+    |                                      ^^^^^^^^^^^^^^^^^^^ required by this bound in `splittable_fold`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.
+
+### ARM negative
+error[E0119]: conflicting implementations of trait `NotBoth` for type `Strat<Saturate, Signed>`
+   --> p5_what_a_property_costs.rs:143:5
+    |
+140 |     impl<O: Overflow, G: Sign> NotBoth for Strat<O, G> {}
+    |     -------------------------------------------------- first implementation here
+...
+143 |     impl NotBoth for Strat<Saturate, Signed> {}
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ conflicting implementation for `Strat<Saturate, Signed>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0119`.

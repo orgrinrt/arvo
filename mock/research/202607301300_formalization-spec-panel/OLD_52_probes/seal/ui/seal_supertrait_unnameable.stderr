@@ -1,0 +1,45 @@
+error[E0603]: module `sealed` is private
+  --> probe_3b_supertrait_unnameable.rs:13:20
+   |
+13 | impl vu_core::nat::sealed::PosSealed for Evil {}
+   |                    ^^^^^^  --------- trait `PosSealed` is not publicly re-exported
+   |                    |
+   |                    private module
+   |
+note: the module `sealed` is defined here
+  --> vu_nat_sealed_adj.rs:46:1
+   |
+46 | mod sealed {
+   | ^^^^^^^^^^
+
+error[E0603]: module `sealed` is private
+  --> probe_3b_supertrait_unnameable.rs:14:20
+   |
+14 | impl vu_core::nat::sealed::AdjustmentSealed for Evil {}
+   |                    ^^^^^^  ---------------- trait `AdjustmentSealed` is not publicly re-exported
+   |                    |
+   |                    private module
+   |
+note: the module `sealed` is defined here
+  --> vu_nat_sealed_adj.rs:46:1
+   |
+46 | mod sealed {
+   | ^^^^^^^^^^
+
+error[E0603]: module `bias_sealed` is private
+   --> probe_3b_supertrait_unnameable.rs:15:21
+    |
+ 15 | impl vu_core::bias::bias_sealed::BiasSealed for Evil {}
+    |                     ^^^^^^^^^^^  ---------- trait `BiasSealed` is not publicly re-exported
+    |                     |
+    |                     private module
+    |
+note: the module `bias_sealed` is defined here
+   --> vu_bias_sealed_adj.rs:178:1
+    |
+178 | mod bias_sealed {
+    | ^^^^^^^^^^^^^^^
+
+error: aborting due to 3 previous errors
+
+For more information about this error, try `rustc --explain E0603`.

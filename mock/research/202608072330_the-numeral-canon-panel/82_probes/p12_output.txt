@@ -1,0 +1,49 @@
+p12: splitting the width-transfer residue into two named pieces
+
+piece two: does `sat_add(x, y) == min(x + y, MAX)` hold on the
+non-negative half, and `max(x + y, MIN)` on the non-positive half
+
+width   pairs per half   nonneg fails   nonpos fails control: full fails
+    4               64              0              0                 36
+    5              256              0              0                136
+    6             1024              0              0                528
+    7             4096              0              0               2080
+    8            16384              0              0               8256
+    9            65536              0              0              32896
+   10           262144              0              0             131328
+   11          1048576              0              0             524800
+   12          4194304              0              0            2098176
+   13         16777216              0              0            8390656
+   14         67108864              0              0           33558528
+   15        268435456              0              0          134225920
+   16       1073741824              0              0          536887296
+
+piece one: do BOTH parenthesisations equal `min(a + b + c, MAX)` on the
+non-negative half. This is arity-independent: if both equal one closed
+form at arity 3, and the closed form is the whole chain's sum clamped
+once, then every parenthesisation at every arity equals it too.
+
+width triples per half   left != closed  right != closed control: full left!=cf
+    4              512                0                0                 1208
+    5             4096                0                0                 9264
+    6            32768                0                0                72544
+    7           262144                0                0               574144
+    8          2097152                0                0              4568448
+    9         16777216                0                0              not run
+   10        134217728                0                0              not run
+   11       1073741824                0                0              not run
+   12       8589934592                0                0              not run
+
+piece one, continued: every parenthesisation at arities 4 and 5 against
+the same closed form, at width 6, non-negative half.
+
+  arity 4: 1048576 tuples, tuples where some parenthesisation differs from the closed form: 0
+  arity 5: 33554432 tuples, tuples where some parenthesisation differs from the closed form: 0
+
+reading: every residue column on the non-negative and non-positive halves
+must be zero and every control column must be non-zero. A zero control
+would mean the closed form is trivially true and the probe establishes
+nothing. What remains unchecked after this is the transfer from the widest
+width reached here to 32 and 64, which is one named sentence rather than
+the whole verdict.
+/tmp/p12  106.73s user 0.15s system 99% cpu 1:47.41 total

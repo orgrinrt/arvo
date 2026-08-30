@@ -1,0 +1,9 @@
+error[E0080]: evaluation panicked: assertion failed: pair_is_admissible(M, SAT, M, SAT)
+   --> 160_probes/p1_two_branch_certificate/cert2.rs:190:15
+    |
+190 | const _: () = assert!(pair_is_admissible(M, SAT, M, SAT)); // MUST FAIL TO COMPILE
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

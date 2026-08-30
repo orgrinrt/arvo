@@ -1,0 +1,6 @@
+  shared generator, reduce(2,6) = (1, 3)
+  arrangement 1 (one door):  correct 11, swapped 84.33333333333333, both compile
+  arrangement 2 (two doors): correct 11; swapped refuses (probe_6b)
+
+  the swap changes the value by 73.333
+  ALL ASSERTIONS PASSED

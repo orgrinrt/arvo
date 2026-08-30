@@ -1,0 +1,22 @@
+file                                         layer needed quotation
+173_leroy_the_canon_candidate_for_the_chain. L2 markup    A concept whose operations are closed over the forma
+173_leroy_the_canon_candidate_for_the_chain. L0 raw       theorem, with one measured premise and an enumeratio
+173_leroy_the_canon_candidate_for_the_chain. L2 markup    deferring every interior resolution to the boundary 
+173_leroy_the_canon_candidate_for_the_chain. L2 markup    End state: (P) at two instances
+173_leroy_the_canon_candidate_for_the_chain. L1 ws        Cite the theorem, not the original sweep.
+173_leroy_the_canon_candidate_for_the_chain. L1 ws        printing dropped anchors inside the file being diffe
+173_leroy_the_canon_candidate_for_the_chain. L2 markup    an intermediate format, a schedule, an association a
+173_leroy_the_canon_candidate_for_the_chain. L2 markup    63/60 via the adaptation schedule
+60_stam_the_chain_derived_cold.md            L0 raw       That is a statability argument, not a benchmark
+60_stam_the_chain_derived_cold.md            L3 case      An error bound composed per adaptation point
+172_leroy_formalising_the_chain.md           L0 raw       A chain of total steps
+172_leroy_formalising_the_chain.md           L0 raw       (P) carries two instances, one with a rule-free deri
+
+layer report: L0 raw 4, L1 ws 2, L2 markup 5, L3 case 1 , missing 0
+
+=== CONTROLS ===
+C1 planted-present found : True
+C2 planted-absent  not found : True
+C3 a layer count is printed for every quotation, zeros included : True
+
+RESULT: every quotation in 174 opens to the text it claims.

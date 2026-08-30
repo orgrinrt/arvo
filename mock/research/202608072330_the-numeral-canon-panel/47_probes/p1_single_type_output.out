@@ -1,0 +1,24 @@
+one output, a TYPE, per (strategy, width). every layout fact is a projection.
+
+declaration            single output   carrier  access  stride  bytes/1e6
+UFixed<13,0,Warm>      Padded<W13>     u16      u16     16      2000000
+UFixed<13,0,Cold>      Packed<W13>     u16      u32     13      1625000
+UFixed<16,0,Cold>      Packed<W16>     u16      u32     16      2000000
+UFixed<5,0,Cold>       Packed<W5>      u8       u16     5       625000
+UFixed<31,0,Cold>      Packed<W31>     u32      u64     31      3875000
+UFixed<47,0,Cold>      Packed<W47>     u64      u64     47      5875000
+
+the collapse 16:126-141 names, and its repair under one output:
+  width  carrier(collapses)  single output(does not)
+  9      u16                 Packed<W9>   stride=9
+  10     u16                 Packed<W10>  stride=10
+  11     u16                 Packed<W11>  stride=11
+  12     u16                 Packed<W12>  stride=12
+  13     u16                 Packed<W13>  stride=13
+  14     u16                 Packed<W14>  stride=14
+  15     u16                 Packed<W15>  stride=15
+  16     u16                 Packed<W16>  stride=16
+
+eight declarations, one carrier, eight distinct single outputs.
+the const _ blocks above are compile-time type-equality assertions; the file
+compiled, so they hold. distinctness is pinned by the negative control in p1b.

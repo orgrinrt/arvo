@@ -1,0 +1,47 @@
+error[E0308]: mismatched types
+  --> p05_diag_mismatch.rs:23:5
+   |
+22 | pub fn mistake_c0(x: c0::Product) -> c0::Coord {
+   |                                      --------- expected `CFixed<13, 3, Hot>` because of return type
+23 |     x
+   |     ^ expected `13`, found `26`
+   |
+   = note: expected struct `CFixed<13, 3, _>`
+              found struct `CFixed<26, 6, _>`
+
+error[E0308]: mismatched types
+  --> p05_diag_mismatch.rs:26:5
+   |
+25 | pub fn mistake_c1(x: c1::Product) -> c1::Coord {
+   |                                      --------- expected `Fixed<D1<D0<D1<D1<Term>>>>, D1<D1<Term>>, Hot>` because of return type
+26 |     x
+   |     ^ expected `Fixed<D1<D0<D1<D1<Term>>>>, ..., ...>`, found `Fixed<D0<D1<D0<D1<D1<...>>>>>, ..., ...>`
+   |
+   = note: expected struct `Fixed<D1<D0<D1<D1<Term>>>>, D1<_>, _>`
+              found struct `Fixed<D0<D1<D0<D1<D1<Term>>>>>, D0<D1<_>>, _>`
+
+error[E0308]: mismatched types
+  --> p05_diag_mismatch.rs:29:5
+   |
+28 | pub fn mistake_c2(x: c2::Product) -> c2::Coord {
+   |                                      --------- expected `Fixed<D1<D0<D1<D1<Term>>>>, D1<D1<Term>>, Hot>` because of return type
+29 |     x
+   |     ^ expected `Fixed<D1<D0<D1<D1<Term>>>>, ..., ...>`, found `Fixed<D0<D1<D0<D1<D1<...>>>>>, ..., ...>`
+   |
+   = note: expected struct `Fixed<D1<D0<D1<D1<Term>>>>, D1<_>, _>`
+              found struct `Fixed<D0<D1<D0<D1<D1<Term>>>>>, D0<D1<_>>, _>`
+
+error[E0308]: mismatched types
+  --> p05_diag_mismatch.rs:32:5
+   |
+31 | pub fn mistake_c4(x: c4::Product) -> c4::Coord {
+   |                                      --------- expected `Fixed<D1<D0<D1<D1<Term>>>>, D1<D1<Term>>, Hot>` because of return type
+32 |     x
+   |     ^ expected `Fixed<D1<D0<D1<D1<Term>>>>, ..., ...>`, found `Fixed<D0<D1<D0<D1<D1<...>>>>>, ..., ...>`
+   |
+   = note: expected struct `Fixed<D1<D0<D1<D1<Term>>>>, D1<_>, _>`
+              found struct `Fixed<D0<D1<D0<D1<D1<Term>>>>>, D0<D1<_>>, _>`
+
+error: aborting due to 4 previous errors
+
+For more information about this error, try `rustc --explain E0308`.

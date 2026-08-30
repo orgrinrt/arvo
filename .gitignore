@@ -19,6 +19,13 @@
 mock/research/sketches/*/libsketch.rmeta
 mock/research/sketches/*/*.rmeta
 
+# Python bytecode from probe scripts. The panel's probes are python as often
+# as rust, and every run leaves a __pycache__ beside the script. One was
+# removed by hand in a prior commit, which fixed that instance; this is the
+# class.
+__pycache__/
+*.pyc
+
 # === mockspace-managed build artifacts (do not edit) ===
 # Catch-all: every cargo build dir, including nested ones under benches/,
 # tests/, and research sketches. A leading-slash /target would miss those.

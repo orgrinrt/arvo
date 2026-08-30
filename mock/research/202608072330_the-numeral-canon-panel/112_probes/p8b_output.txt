@@ -1,0 +1,52 @@
+toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+feature gates in this file: 0
+dyn/TypeId occurrences: 1
+
+build exit: 0
+
+p8b. The affine grade with no arithmetic in type position
+======================================================================
+
+  container: [0, 15]
+
+  Gx      -> [  0,  14]   vector length 2
+  Gy      -> [  0,  14]   vector length 2
+  x + y   -> [  0,  28]   discharges false
+
+  the correlated term, (x + y) - y, COMPOSED rather than written out:
+    affine -> [  0,  14]   discharges true   radius 7
+    corner -> [-14,  28]   discharges false
+
+  a deeper composition, ((x + y) + x) - (x + y):
+    affine -> [  0,  14]   discharges true   vector length 2
+    (the exact value of that term is x, so [0, 14] is the tight answer)
+
+  BEHAVIOUR, on the declared term with c = b:
+    the affine-gated arm differs from exact on 0/225 tuples
+    the corner-gated arm differs from exact on 0/225 tuples, because it
+    refused the licence and took the saturating path
+
+-----------------------------------------------------------------------------
+DEFECT: THIS GATE IS ROOT-ONLY, WHICH p7c ESTABLISHED IS THE WRONG PREDICATE
+-----------------------------------------------------------------------------
+`Discharges` above tests one interval, the root's.  `p7`'s model rule tests
+EVERY node, and `p7c` builds a hand witness where a root-only test licenses an
+arm that computes the wrong answer.  So the gate compiled here is not the
+predicate whose 136/256 `p7` measured, and the row it prints for
+`(x + y) - y` at x,y <= 14 is licensed by a test `p7` would have refused: the
+intermediate `x + y` reaches 28, which is outside the declared 0..=15.
+
+The behaviour check still reports 0/225 differing, and that is an accident of
+the CONTAINER rather than a property of the declaration: `u8` holds 28, so
+`(a + b) - b` recovers `a` even though the intermediate left the declared
+range.  That is exactly `40` section 5.2's headroom convention, which `108`
+section 3.1 measures at 0% against 89.081% depending on whether the limit is
+read at the declared width or the container width.  Under the declared-width
+reading this probe's licence is unsound and its green behaviour row is a
+coincidence.
+
+The expressibility claim, which is what this probe exists for, is UNAFFECTED:
+the type-level affine vector compiles, cancels in the type, and composes to
+depth, with zero feature gates.  What is wrong is the predicate wired to it.
+
+Repaired in `p8c`, which recurses the check over every node of the grade.

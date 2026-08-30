@@ -1,0 +1,17 @@
+P2b. Separating optimisation level from debug-assertions, because -O moves BOTH.
+NOTE: an earlier version of this script looped over quoted flag strings in fish,
+which does not word-split, so rustc got one bogus argument and NOTHING compiled.
+The CONTROL caught it: the wide arm reported NO in all four cells, which is
+impossible if the table is about the two arms. Written out explicitly below.
+
+--- narrow arm (expected: refused wherever const-eval checks) ---
+opt0 dbg-assert=off : E0080 count -, artifact 0
+opt0 dbg-assert=off : artifact YES
+opt0 dbg-assert=on  : artifact NO (E0080 lines 2)
+opt3 dbg-assert=off : artifact YES (E0080 lines 0)
+opt3 dbg-assert=on  : artifact NO (E0080 lines 2)
+o1 runs -> if this printed, the const channel does not distinguish: 900000000
+o3 runs -> if this printed, the const channel does not distinguish: 900000000
+
+--- CONTROL: the wide arm must compile under all four ---
+wide arm artifacts: opt0/off YES  opt0/on YES  opt3/off YES  opt3/on YES

@@ -1,0 +1,29 @@
+error: generic parameters may not be used in const operations
+  --> p3_access_type_from_const_refused.rs:70:57
+   |
+70 | pub type AccessOf<const W: u32> = <Bytes<{ access_bytes(W) }> as AccessFor>::T;
+   |                                                         ^ cannot perform const operation using `W`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `W`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p3_access_type_from_const_refused.rs:77:28
+   |
+77 | ) -> <Bytes<{ access_bytes(W) }> as AccessFor>::T {
+   |                            ^ cannot perform const operation using `W`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `W`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: generic parameters may not be used in const operations
+  --> p3_access_type_from_const_refused.rs:85:26
+   |
+85 |     Bytes<{ access_bytes(W) }>: AccessFor,
+   |                          ^ cannot perform const operation using `W`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `W`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error: aborting due to 3 previous errors
+

@@ -1,0 +1,48 @@
+y1: the unsigned half of the fusion arm, over six rounding modes
+W = 6, exhaustive over all triples per cell
+stepwise = R(R(rnd(ab)) + c), fused = R(rnd(ab + c*2^F))
+
+=== unsigned, wrapping ===
+mode                      F=0      F=1      F=2      F=3      F=4      F=5
+floor                   0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+ceiling                 0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+toward-zero             0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+      ! F=1 C2 TOOTHLESS: mutant never caught
+      ! F=2 C2 TOOTHLESS: mutant never caught
+      ! F=3 C2 TOOTHLESS: mutant never caught
+      ! F=4 C2 TOOTHLESS: mutant never caught
+      ! F=5 C2 TOOTHLESS: mutant never caught
+away-from-zero          0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+nearest-half-up         0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+nearest-half-even       0.00%   12.50%   12.50%    9.38%    6.25%    3.91%
+
+=== unsigned, saturating ===
+mode                      F=0      F=1      F=2      F=3      F=4      F=5
+floor                   0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+ceiling                 0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+toward-zero             0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+      ! F=1 C2 TOOTHLESS: mutant never caught
+      ! F=2 C2 TOOTHLESS: mutant never caught
+      ! F=3 C2 TOOTHLESS: mutant never caught
+      ! F=4 C2 TOOTHLESS: mutant never caught
+      ! F=5 C2 TOOTHLESS: mutant never caught
+away-from-zero          0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+nearest-half-up         0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+nearest-half-even       0.00%    0.93%    1.61%    2.02%    2.18%    2.08%
+
+=== C3 cross-check: signed wrapping, my own mode implementations ===
+(142 q2 part B reports half-even at 0.00 / 12.50 / 12.50 / 9.38 / 6.25 / 3.91)
+mode                      F=0      F=1      F=2      F=3      F=4      F=5
+floor                   0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+ceiling                 0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+toward-zero             0.00%    1.64%    5.54%   12.34%   22.22%   33.40%
+away-from-zero          0.00%    1.64%    5.54%   12.34%   22.22%   33.40%
+nearest-half-up         0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+nearest-half-even       0.00%   12.50%   12.50%    9.38%    6.25%    3.91%
+
+=== tie reach under unsigned, which is what half-even needs ===
+F=1: ties present at   65536 triples, rounding inexact at   65536, mutant caught at   32768
+F=2: ties present at   65536 triples, rounding inexact at  131072, mutant caught at   65536
+F=3: ties present at   49152 triples, rounding inexact at  180224, mutant caught at   90112
+F=4: ties present at   32768 triples, rounding inexact at  212992, mutant caught at  106496
+F=5: ties present at   20480 triples, rounding inexact at  233472, mutant caught at  116736

@@ -1,0 +1,25 @@
+==============================================================================
+p1c. mutation: can the collapsed verdict be made to fail?
+Q = [-8, 7], ambient = integer addition, reachable set = 31 values
+==============================================================================
+
+reduction          HONEST coh/mono/assoc  COLLAPSED coh/mono/assoc
+------------------------------------------------------------------
+honest saturate    322/961  0/961  952/4096 0/256  0/256  952/4096
+constant zero      0/961  0/961  0/4096   0/256  0/256  0/4096  
+opposite bound     633/961  281/961  1386/4096 0/256  0/256  1386/4096
+parity scramble    735/961  189/961  3106/4096 0/256  0/256  3106/4096
+
+------------------------------------------------------------------------------
+ASSERTIONS
+------------------------------------------------------------------------------
+  ok  the mutation set breaks the HONEST verdicts in 3 of 4 cases
+  ok  no mutant reaches the COLLAPSED verdict: 0 of 4, both law families
+
+READING. The collapsed coherence and monotonicity numbers in p1 are not
+measurements and must not be cited as any. They are the shape of the
+declaration, and the shape is available to every candidate for free.
+A membership test that reads a candidate's own law verdicts off the pair
+the candidate named is passed by a reduction that adapts every value to
+zero. What p1c adds to p1 is that this is not a 4-bit fact.
+EXIT=0

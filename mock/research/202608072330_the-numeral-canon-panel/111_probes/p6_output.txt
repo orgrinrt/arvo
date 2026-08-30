@@ -1,0 +1,105 @@
+P6. the refinement propagates, and the propagated bound is the predicate
+==============================================================================
+
+W = 4, F = 0, unsigned, carrier 0..=15, signature {add}, saturate against wrap
+  arity  bound B  propagated  fits?  disagreements  of      verdict
+      2        0           0    yes              0       1  exact
+      2        1           2    yes              0       4  exact
+      2        2           4    yes              0       9  exact
+      2        3           6    yes              0      16  exact
+      2        4           8    yes              0      25  exact
+      2        5          10    yes              0      36  exact
+      2        7          14    yes              0      64  exact
+      2        8          16    no               1      81  exact
+      2       15          30    no             120     256  exact
+      3        0           0    yes              0       1  exact
+      3        1           3    yes              0       8  exact
+      3        2           6    yes              0      27  exact
+      3        3           9    yes              0      64  exact
+      3        4          12    yes              0     125  exact
+      3        5          15    yes              0     216  exact
+      3        7          21    no              56     512  exact
+      3        8          24    no             165     729  exact
+      3       15          45    no            3160    4096  exact
+      4        0           0    yes              0       1  exact
+      4        1           4    yes              0      16  exact
+      4        2           8    yes              0      81  exact
+      4        3          12    yes              0     256  exact
+      4        4          16    no               1     625  exact
+      4        5          20    no              70    1296  exact
+      4        7          28    no            1540    4096  exact
+      4        8          32    no            3521    6561  exact
+      4       15          60    no           58380   65536  exact
+  unsound predictions (rule says merge, answers differ): 0
+  conservative        (rule refuses, answers agree)    : 0
+
+W = 4, F = 0, unsigned, carrier 0..=15, signature {mul}, saturate against wrap
+  arity  bound B  propagated  fits?  disagreements  of      verdict
+      2        0           0    yes              0       1  exact
+      2        1           1    yes              0       4  exact
+      2        2           4    yes              0       9  exact
+      2        3           9    yes              0      16  exact
+      2        4          16    no               1      25  exact
+      2        5          25    no               4      36  exact
+      2        7          49    no              20      64  exact
+      2        8          64    no              33      81  exact
+      2       15         225    no             176     256  exact
+      3        0           0    yes              0       1  exact
+      3        1           1    yes              0       8  exact
+      3        2           8    yes              0      27  exact
+      3        3          27    no               4      64  exact
+      3        4          64    no              26     125  exact
+      3        5         125    no              72     216  exact
+      3        7         343    no             266     512  exact
+      3        8         512    no             432     729  exact
+      3       15        3375    no            3225    4096  exact
+  unsound predictions (rule says merge, answers differ): 0
+  conservative        (rule refuses, answers agree)    : 0
+
+W = 5, F = 0, unsigned, carrier 0..=31, signature {add}, saturate against wrap
+  arity  bound B  propagated  fits?  disagreements  of      verdict
+      2        0           0    yes              0       1  exact
+      2        1           2    yes              0       4  exact
+      2        2           4    yes              0       9  exact
+      2        3           6    yes              0      16  exact
+      2        4           8    yes              0      25  exact
+      2        5          10    yes              0      36  exact
+      2        7          14    yes              0      64  exact
+      2        8          16    yes              0      81  exact
+      2       15          30    yes              0     256  exact
+      3        0           0    yes              0       1  exact
+      3        1           3    yes              0       8  exact
+      3        2           6    yes              0      27  exact
+      3        3           9    yes              0      64  exact
+      3        4          12    yes              0     125  exact
+      3        5          15    yes              0     216  exact
+      3        7          21    yes              0     512  exact
+      3        8          24    yes              0     729  exact
+      3       15          45    no             560    4096  exact
+  unsound predictions (rule says merge, answers differ): 0
+  conservative        (rule refuses, answers agree)    : 0
+
+------------------------------------------------------------------------------
+the rounding axis: the propagated quantity is the fraction width
+W = 6, F = 2, signature {mul}, truncate against nearest
+  operand fraction bits c  arity  propagated cF  <= F?  disagreements  of
+  c = 0                         2              0    yes              0     256
+  c = 0                         3              0    yes              0    4096
+  c = 1                         2              2    yes              0    1024
+  c = 1                         3              3    no             866   32768
+  c = 2                         2              4    no             236    4096
+  c = 2                         3              6    no           12444  262144
+  unsound predictions: 0, conservative: 0
+
+------------------------------------------------------------------------------
+reading:
+  There is no invariant extent to find, and P5 was wrong to look for
+  one. The equivalence is indexed by a DERIVATION: each node carries
+  the extent its operands' extents imply, and the merge is checked
+  against that node's extent. Composition works because the extent
+  propagates, not because it is preserved.
+
+  That is the same move 109 section 8 makes for chain accuracy, one
+  level down: the operator is not an endomorphism, and once its
+  result is allowed to be a different primitive the property falls
+  out of the typing instead of needing a policy.

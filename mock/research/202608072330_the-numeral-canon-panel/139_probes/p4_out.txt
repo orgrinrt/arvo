@@ -1,0 +1,58 @@
+TARGET 1 (wide multiplier, cheap wide loads)
+  arms=7 pareto-nondominated=6 distinct winners (cells)=5  grid points=80601
+    scalar-widened         cost=[  10.0,  40.0,  32.0]  wins=55720   
+    packed                 cost=[  26.0,  90.0,  13.0]  wins=4514    
+    packed-simd            cost=[  14.0, 240.0,  13.0]  wins=2269    
+    table-lookup           cost=[   8.0,  60.0, 512.0]  wins=52      
+    narrow-band-compromise cost=[  15.5,  55.0,  20.0]  wins=18046   
+    naive-loop             cost=[  40.0,  95.0,  32.0]  wins=0       DOMINATED never optimal
+    scalar-widened [dup]   cost=[  10.0,  40.0,  32.0]  wins=0       never optimal
+  C1 dominated arms win zero times: PASS
+  C2 the narrow-band arm wins 18046 times, so the grid resolves it: PASS
+  C3 the duplicate arm wins zero times: PASS
+
+TARGET 2 (no wide multiplier, expensive icache)
+  arms=7 pareto-nondominated=6 distinct winners (cells)=5  grid points=80601
+    scalar-widened         cost=[  34.0,  40.0,  32.0]  wins=20102   
+    packed                 cost=[  30.0,  90.0,  13.0]  wins=3514    
+    packed-simd            cost=[  11.0, 240.0,  13.0]  wins=4153    
+    table-lookup           cost=[   9.0,  60.0, 512.0]  wins=683     
+    narrow-band-compromise cost=[  15.5,  55.0,  20.0]  wins=52149   
+    naive-loop             cost=[  40.0,  95.0,  32.0]  wins=0       DOMINATED never optimal
+    scalar-widened [dup]   cost=[  34.0,  40.0,  32.0]  wins=0       never optimal
+  C1 dominated arms win zero times: PASS
+  C2 the narrow-band arm wins 52149 times, so the grid resolves it: PASS
+  C3 the duplicate arm wins zero times: PASS
+
+  S3 the cell counts coincide (5): no target-dependence found in this pair
+
+WHERE THE NAMED CONCERNS LAND
+  Only three of the four concerns are points on this simplex at all.
+  The accuracy-first concern is not a weighting: it asks for a different
+  ANSWER, not a cheaper route to the same one, so it has no weight vector.
+  target 1  speed-first          w=(1,0,0) -> table-lookup
+  target 1  storage-minimising   w=(0,0,1) -> packed
+  target 1  balanced             w=(1/3,1/3,1/3) -> scalar-widened
+  target 1  the three named weightings reach 3 of 5 cells
+  target 1  S4 holds here: naming three points does not cover the space
+  target 2  speed-first          w=(1,0,0) -> table-lookup
+  target 2  storage-minimising   w=(0,0,1) -> packed
+  target 2  balanced             w=(1/3,1/3,1/3) -> narrow-band-compromise
+  target 2  the three named weightings reach 3 of 5 cells
+  target 2  S4 holds here: naming three points does not cover the space
+
+S3 RESTATED. The cell COUNT coinciding refutes S3 as I wrote it. The claim
+that survives is about the MAPPING, so it is tested rather than assumed:
+  the same weight vector selects a DIFFERENT arm at 838 of 1891 grid points (44.3%)
+
+S2 WITNESS: a Pareto-optimal arm that NO linear weighting can select.
+  Two coordinates, three arms. The compromise arm is dominated by neither
+  endpoint, and sits above the line joining them, so every weight vector
+  prefers an endpoint. If the weighting is linear, this arm is unreachable.
+    endpoint-A     cost=[ 0.0,10.0] pareto-nondominated=true wins=1001
+    endpoint-B     cost=[10.0, 0.0] pareto-nondominated=true wins=1000
+    compromise-C   cost=[ 6.0, 6.0] pareto-nondominated=true wins=0
+    S2 strict inequality witnessed: nondominated and never selectable: PASS
+    control: pulling the same arm inside the hull makes it win 399 times: PASS
+
+control failures: 0

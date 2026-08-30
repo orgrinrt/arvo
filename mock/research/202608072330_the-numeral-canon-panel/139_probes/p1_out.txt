@@ -1,0 +1,98 @@
+shape W=6 F=0 signed=false stride3=1  domain=64 observations/policy=536576
+  distinct classes among 12 syntactic policies (+1 duplicate): 2
+    class 0: Wrap/Trunc/Exact  |  Wrap/Trunc/Stepwise  |  Wrap/NearestEven/Exact  |  Wrap/NearestEven/Stepwise  |  Wrap/Floor/Exact  |  Wrap/Floor/Stepwise  |  Wrap/Trunc/Exact [dup]
+    class 1: Sat/Trunc/Exact  |  Sat/Trunc/Stepwise  |  Sat/NearestEven/Exact  |  Sat/NearestEven/Stepwise  |  Sat/Floor/Exact  |  Sat/Floor/Stepwise
+  C1 duplicate merges with its twin: PASS
+  C2 Wrap and Sat separate: PASS
+  C3 mutation: real=2 always-equal=1 never-equal=13
+  C3 count is sensitive to the comparator: PASS
+
+shape W=6 F=0 signed=true stride3=1  domain=64 observations/policy=536576
+  distinct classes among 12 syntactic policies (+1 duplicate): 3
+    class 0: Wrap/Trunc/Exact  |  Wrap/Trunc/Stepwise  |  Wrap/NearestEven/Exact  |  Wrap/NearestEven/Stepwise  |  Wrap/Floor/Exact  |  Wrap/Floor/Stepwise  |  Wrap/Trunc/Exact [dup]
+    class 1: Sat/Trunc/Exact  |  Sat/NearestEven/Exact  |  Sat/Floor/Exact
+    class 2: Sat/Trunc/Stepwise  |  Sat/NearestEven/Stepwise  |  Sat/Floor/Stepwise
+  C1 duplicate merges with its twin: PASS
+  C2 Wrap and Sat separate: PASS
+  C3 mutation: real=3 always-equal=1 never-equal=13
+  C3 count is sensitive to the comparator: PASS
+
+shape W=6 F=3 signed=false stride3=1  domain=64 observations/policy=536576
+  distinct classes among 12 syntactic policies (+1 duplicate): 8
+    class 0: Wrap/Trunc/Exact  |  Wrap/Floor/Exact  |  Wrap/Trunc/Exact [dup]
+    class 1: Wrap/Trunc/Stepwise  |  Wrap/Floor/Stepwise
+    class 2: Wrap/NearestEven/Exact
+    class 3: Wrap/NearestEven/Stepwise
+    class 4: Sat/Trunc/Exact  |  Sat/Floor/Exact
+    class 5: Sat/Trunc/Stepwise  |  Sat/Floor/Stepwise
+    class 6: Sat/NearestEven/Exact
+    class 7: Sat/NearestEven/Stepwise
+  C1 duplicate merges with its twin: PASS
+  C2 Wrap and Sat separate: PASS
+  C3 mutation: real=8 always-equal=1 never-equal=13
+  C3 count is sensitive to the comparator: PASS
+
+shape W=6 F=3 signed=true stride3=1  domain=64 observations/policy=536576
+  distinct classes among 12 syntactic policies (+1 duplicate): 12
+    class 0: Wrap/Trunc/Exact  |  Wrap/Trunc/Exact [dup]
+    class 1: Wrap/Trunc/Stepwise
+    class 2: Wrap/NearestEven/Exact
+    class 3: Wrap/NearestEven/Stepwise
+    class 4: Wrap/Floor/Exact
+    class 5: Wrap/Floor/Stepwise
+    class 6: Sat/Trunc/Exact
+    class 7: Sat/Trunc/Stepwise
+    class 8: Sat/NearestEven/Exact
+    class 9: Sat/NearestEven/Stepwise
+    class 10: Sat/Floor/Exact
+    class 11: Sat/Floor/Stepwise
+  C1 duplicate merges with its twin: PASS
+  C2 Wrap and Sat separate: PASS
+  C3 mutation: real=12 always-equal=1 never-equal=13
+  C3 count is sensitive to the comparator: PASS
+
+shape W=8 F=0 signed=true stride3=8  domain=256 observations/policy=262144
+  distinct classes among 12 syntactic policies (+1 duplicate): 3
+    class 0: Wrap/Trunc/Exact  |  Wrap/Trunc/Stepwise  |  Wrap/NearestEven/Exact  |  Wrap/NearestEven/Stepwise  |  Wrap/Floor/Exact  |  Wrap/Floor/Stepwise  |  Wrap/Trunc/Exact [dup]
+    class 1: Sat/Trunc/Exact  |  Sat/NearestEven/Exact  |  Sat/Floor/Exact
+    class 2: Sat/Trunc/Stepwise  |  Sat/NearestEven/Stepwise  |  Sat/Floor/Stepwise
+  C1 duplicate merges with its twin: PASS
+  C2 Wrap and Sat separate: PASS
+  C3 mutation: real=3 always-equal=1 never-equal=13
+  C3 count is sensitive to the comparator: PASS
+
+shape W=8 F=4 signed=true stride3=8  domain=256 observations/policy=262144
+  distinct classes among 12 syntactic policies (+1 duplicate): 12
+    class 0: Wrap/Trunc/Exact  |  Wrap/Trunc/Exact [dup]
+    class 1: Wrap/Trunc/Stepwise
+    class 2: Wrap/NearestEven/Exact
+    class 3: Wrap/NearestEven/Stepwise
+    class 4: Wrap/Floor/Exact
+    class 5: Wrap/Floor/Stepwise
+    class 6: Sat/Trunc/Exact
+    class 7: Sat/Trunc/Stepwise
+    class 8: Sat/NearestEven/Exact
+    class 9: Sat/NearestEven/Stepwise
+    class 10: Sat/Floor/Exact
+    class 11: Sat/Floor/Stepwise
+  C1 duplicate merges with its twin: PASS
+  C2 Wrap and Sat separate: PASS
+  C3 mutation: real=12 always-equal=1 never-equal=13
+  C3 count is sensitive to the comparator: PASS
+
+shape W=8 F=4 signed=false stride3=8  domain=256 observations/policy=262144
+  distinct classes among 12 syntactic policies (+1 duplicate): 8
+    class 0: Wrap/Trunc/Exact  |  Wrap/Floor/Exact  |  Wrap/Trunc/Exact [dup]
+    class 1: Wrap/Trunc/Stepwise  |  Wrap/Floor/Stepwise
+    class 2: Wrap/NearestEven/Exact
+    class 3: Wrap/NearestEven/Stepwise
+    class 4: Sat/Trunc/Exact  |  Sat/Floor/Exact
+    class 5: Sat/Trunc/Stepwise  |  Sat/Floor/Stepwise
+    class 6: Sat/NearestEven/Exact
+    class 7: Sat/NearestEven/Stepwise
+  C1 duplicate merges with its twin: PASS
+  C2 Wrap and Sat separate: PASS
+  C3 mutation: real=8 always-equal=1 never-equal=13
+  C3 count is sensitive to the comparator: PASS
+
+control failures: 0

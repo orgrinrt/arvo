@@ -1,0 +1,35 @@
+the real carrier table
+  backward cross-region Pareto edges: 2
+  the refuted hypothesis predicted zero of these. Each one, and where
+  its endpoints live:
+    dominated : n= 2097152 bitpack-carrier-d64  admissible in its own region: False
+    dominating: n= 4194304 bitpack-carrier-d16
+
+    dominated : n= 2097152 bitpack-carrier-d64  admissible in its own region: False
+    dominating: n= 4194304 bitpack-carrier-d16-control
+
+  union graph over every admissible choice: 36 vertices, 383 strict Pareto edges
+  strict edges lying on a cycle: 0
+  => no admissible section can be order-irrational: True
+  which predicts L1 == L2, and p2 measured 2048 == 2048.
+
+the same criterion against the three generators from p3
+  uniform: criterion clean in 13 of 40, and of those L1 == L2 in 13
+           L1 == L2 actually held in 13 of 40, so the criterion is exact here
+  scaled: criterion clean in 40 of 40, and of those L1 == L2 in 40
+           L1 == L2 actually held in 40 of 40, so the criterion is exact here
+  tiered: criterion clean in 40 of 40, and of those L1 == L2 in 40
+           L1 == L2 actually held in 40 of 40, so the criterion is exact here
+
+what this establishes
+  The middle rung of the ladder is a real rung: the unstructured
+  generator separates it from admissibility in most of its models.
+  It is EMPTY on the real table and on both structured generators, and
+  the union-graph criterion says why in a way that can be rechecked on
+  any future cost table in one sweep.
+
+  The design consequence, stated as a consequence and not as a rule:
+  where the criterion is clean, a canon that required only 'never
+  select a dominated arm' would get order-consistency for free, and a
+  canon that required order-consistency would be asking for nothing
+  extra. The two are only worth distinguishing where it is dirty.

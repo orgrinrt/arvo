@@ -1,0 +1,63 @@
+# P1. sites, formulas, tightness, and whether any of them is the join
+
+## Q0. is inclusion in this family componentwise on (I,F)?
+   disagreements between set inclusion and coordinate order: 0
+   so the coordinate order IS the inclusion order here, and a
+   coordinatewise formula is a statement about value sets.
+
+## Q1. do the two least-containing methods agree?
+   pairs cross-checked : 324
+   disagreements       : 0
+   antichains found by the brute-force method : 0
+
+## Q2. per site, over 1296 operand pairs (I,F in 0..5)
+
+### mul_full
+   formula contains the exact result   : 1296/1296
+   formula IS the least such (tight)   : 1099/1296
+   formula overshoots                  : 197/1296
+   formula does NOT contain (would be a bug) : 0/1296
+   formula == join of the operands     : 121/1296
+   first overshoot : U(0, 0) x U(0, 1) -> formula U(0, 1), least U(0, 0)
+
+### add_mixed
+   formula contains the exact result   : 1296/1296
+   formula IS the least such (tight)   : 1175/1296
+   formula overshoots                  : 121/1296
+   formula does NOT contain (would be a bug) : 0/1296
+   formula == join of the operands     : 0/1296
+   first overshoot : U(0, 0) x U(0, 0) -> formula U(1, 0), least U(0, 0)
+
+### sub_mixed
+   formula contains the exact result   : 1296/1296
+   formula IS the least such (tight)   : 751/1296
+   formula overshoots                  : 545/1296
+   formula does NOT contain (would be a bug) : 0/1296
+   formula == join of the operands     : 1296/1296
+   first overshoot : U(0, 0) x U(0, 1) -> formula U(0, 1), least U(0, 0)
+
+### join
+   formula contains the exact result   : 1296/1296
+   formula IS the least such (tight)   : 1296/1296
+   formula overshoots                  : 0/1296
+   formula does NOT contain (would be a bug) : 0/1296
+   formula == join of the operands     : 1296/1296
+
+## Q3. the claim under test: is the product numeral the join?
+   product shape == join shape : 121/1296
+   product shape != join shape : 1175/1296
+   every coincidence has min(I1,I2)==0 and min(F1,F2)==0 : True
+   so the two agree only where one operand contributes nothing on
+   each coordinate, which is the degenerate corner rather than a region.
+
+## Q4. does any site's formula coincide with the join, over the whole box?
+   mul_full   : 121/1296
+   add_mixed  : 0/1296
+   sub_mixed  : 1296/1296
+   join       : 1296/1296
+
+## Q5. where the JOIN itself is the site, is it tight?
+   (this is the one site whose formula IS a lattice operation, and it
+    is measured above as the 'join' row; a tight count equal to the
+    pair count means the coordinatewise answer and the least upper
+    bound coincide everywhere in this family)

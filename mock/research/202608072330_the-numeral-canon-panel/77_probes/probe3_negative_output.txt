@@ -1,0 +1,16 @@
+error[E0080]: evaluation panicked: assertion failed: <P00 as Resolve<P12>>::OVERFLOW_RANK == <P12 as Resolve<P00>>::OVERFLOW_RANK
+   --> probe3_negative_check.rs:74:13
+    |
+ 74 | /             assert!(
+ 75 | |                 <$x as Resolve<$y>>::OVERFLOW_RANK == <$y as Resolve<$x>>::OVERFLOW_RANK
+ 76 | |             );
+    | |_____________^ evaluation of `_` failed here
+...
+104 |   check_semilattice_laws!(P00, P12, P21);
+    |   -------------------------------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `check_semilattice_laws` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

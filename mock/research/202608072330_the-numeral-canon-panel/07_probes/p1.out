@@ -1,0 +1,59 @@
+shapes: 23
+
+=== IN RANGE ONLY ===
+            mode |  LOW fails |  UPP fails |     pairs
+----------------------------------------------------------
+     toward +inf |          0 |        891 |     34976
+                   UPP witness: x=1/8, a(x)=1/2, v=1/2
+     toward -inf |        891 |          0 |     34976
+                   LOW witness: x=1/8, a(x)=0, v=0
+     toward zero |        747 |        144 |     34976
+                   LOW witness: x=1/8, a(x)=0, v=0
+                   UPP witness: x=-7/8, a(x)=-1/2, v=-1/2
+  away from zero |        144 |        747 |     34976
+                   LOW witness: x=-7/8, a(x)=-1, v=-1
+                   UPP witness: x=1/8, a(x)=1/2, v=1/2
+   nearest, even |        457 |        434 |     34976
+                   LOW witness: x=1/8, a(x)=0, v=0
+                   UPP witness: x=3/8, a(x)=1/2, v=1/2
+   nearest, away |        345 |        546 |     34976
+                   LOW witness: x=1/8, a(x)=0, v=0
+                   UPP witness: x=1/4, a(x)=1/2, v=1/2
+
+=== FULL RANGE (out-of-range x present, clamped) ===
+            mode |  LOW fails |  UPP fails |     pairs
+----------------------------------------------------------
+     toward +inf |        184 |       1075 |     40096
+                   LOW witness: x=5/8, a(x)=1/2, v=1/2
+                   UPP witness: x=-1, a(x)=0, v=0
+     toward -inf |       1075 |        184 |     40096
+                   LOW witness: x=1/8, a(x)=0, v=0
+                   UPP witness: x=-1, a(x)=0, v=0
+     toward zero |        931 |        328 |     40096
+                   LOW witness: x=1/8, a(x)=0, v=0
+                   UPP witness: x=-1, a(x)=0, v=0
+  away from zero |        328 |        931 |     40096
+                   LOW witness: x=5/8, a(x)=1/2, v=1/2
+                   UPP witness: x=-1, a(x)=0, v=0
+   nearest, even |        641 |        618 |     40096
+                   LOW witness: x=1/8, a(x)=0, v=0
+                   UPP witness: x=-1, a(x)=0, v=0
+   nearest, away |        529 |        730 |     40096
+                   LOW witness: x=1/8, a(x)=0, v=0
+                   UPP witness: x=-1, a(x)=0, v=0
+
+=== Q2: is a . g = id on V (the Galois INSERTION condition)? ===
+     toward +inf | a(g(v)) != v at 0 of 320 representable points
+     toward -inf | a(g(v)) != v at 0 of 320 representable points
+     toward zero | a(g(v)) != v at 0 of 320 representable points
+  away from zero | a(g(v)) != v at 0 of 320 representable points
+   nearest, even | a(g(v)) != v at 0 of 320 representable points
+   nearest, away | a(g(v)) != v at 0 of 320 representable points
+
+=== Q3: g(a(x)) >= x (extensive) and <= x (reductive), in range ===
+     toward +inf | not extensive at     0 | not reductive at   891 | of 1211
+     toward -inf | not extensive at   891 | not reductive at     0 | of 1211
+     toward zero | not extensive at   747 | not reductive at   144 | of 1211
+  away from zero | not extensive at   144 | not reductive at   747 | of 1211
+   nearest, even | not extensive at   457 | not reductive at   434 | of 1211
+   nearest, away | not extensive at   345 | not reductive at   546 | of 1211

@@ -1,0 +1,147 @@
+p4b. Under min-max normalisation, an arm no weighting can ever select still
+changes what every weighting selects.
+
+`98`'s p10 and this panel's `p1` both min-max normalise each cost coordinate over
+the whole table before applying the weighting, so that coordinates measured in
+nanoseconds and in bytes can be added. That is the obvious move and it has a
+consequence nobody in the unit has named.
+
+THE CLAIM UNDER TEST. Min-max normalisation reads its scale off the arm set. Add
+an arm and the range of a coordinate can widen; widen it and every other arm's
+normalised value on that coordinate shrinks; shrink it and the effective weight
+on that coordinate falls. So the argmin at a region can move because of an arm
+that is not, and could never be, the argmin anywhere.
+
+Under raw coordinates that cannot happen: an argmin is unaffected by an
+alternative that is never the minimum. Under normalisation it can, and this probe
+measures whether it does on the committed carrier table.
+
+WHY THIS IS NOT HYPOTHETICAL. `97` section 10 establishes that the committed
+carrier family contains arms Pareto-dominated in EVERY region, so no weighting
+can select them anywhere; on the three-coordinate model used here that set is
+`{bitpack-carrier-d64}` and the probe recomputes it rather than importing it.
+`98` p10 normalises over a table containing it, and so does `p1`. If this effect
+is real, every number those files report depends on the presence of an arm whose
+entire role is to be unselectable.
+
+FOUR EXPERIMENTS.
+
+  A. Drop every arm dominated in every region, computed from the model in use
+     rather than taken from `97`'s two-coordinate figure, and see whether the
+     section over the remaining arms moves.
+  B. Add a synthetic arm that is strictly dominated at every region and extreme
+     on one coordinate, the shape of a bench arm added as a negative control, and
+     see whether the section moves.
+  C. The same two, under raw coordinates, where the prediction is that nothing
+     moves and a move would refute the reasoning above rather than confirm it,
+     and under a normalisation whose range is FROZEN as declared constants rather
+     than read off the arm set, which is the remedy this probe proposes and
+     therefore has to test rather than assert.
+  D. How far the effect can be pushed: sweep the synthetic arm's extremity and
+     count how many regions change their pick.
+
+Not a bench. Reads committed harness output. No measurement taken.
+
+regions 6, arms 5, coordinates 3
+(median algo_ns, declared bytes per element, IQR of the samples)
+
+  arms dominated in every region, recomputed here rather than taken from `97`:
+    bitpack-carrier-d64
+
+==============================================================================
+MIN-MAX NORMALISED, range read off the arm set
+==============================================================================
+
+  speed-first
+    all 5 arms                : ['packed-simd', 'd16', 'd16', 'd16', 'd16', 'd16']
+    A. 1 dominated arm(s) dropped : ['packed-simd', 'packed-simd', 'd16', 'd16', 'd16', 'd16']   MOVED
+    B. unselectable arm added    : ['packed-simd', 'packed-simd', 'd16', 'd16', 'd16', 'd16']   MOVED
+
+  storage-first
+    all 5 arms                : ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+    A. 1 dominated arm(s) dropped : ['packed', 'packed-simd', 'packed', 'packed-simd', 'packed-simd', 'packed-simd']   MOVED
+    B. unselectable arm added    : ['packed', 'packed-simd', 'packed', 'packed-simd', 'packed', 'packed-simd']   MOVED
+
+  tail-first
+    all 5 arms                : ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']
+    A. 1 dominated arm(s) dropped : ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']   SAME
+    B. unselectable arm added    : ['packed', 'packed-simd', 'packed', 'packed', 'packed', 'packed-simd']   SAME
+==============================================================================
+RAW COORDINATES
+==============================================================================
+
+  speed-first
+    all 5 arms                : ['d32', 'd32', 'd16', 'd16', 'd16', 'd16']
+    A. 1 dominated arm(s) dropped : ['d32', 'd32', 'd16', 'd16', 'd16', 'd16']   SAME
+    B. unselectable arm added    : ['d32', 'd32', 'd16', 'd16', 'd16', 'd16']   SAME
+
+  storage-first
+    all 5 arms                : ['d16', 'd32', 'd16', 'd16', 'd16', 'd16']
+    A. 1 dominated arm(s) dropped : ['d16', 'd32', 'd16', 'd16', 'd16', 'd16']   SAME
+    B. unselectable arm added    : ['d16', 'd32', 'd16', 'd16', 'd16', 'd16']   SAME
+
+  tail-first
+    all 5 arms                : ['d32', 'd32', 'packed', 'packed-simd', 'd16', 'd16']
+    A. 1 dominated arm(s) dropped : ['d32', 'd32', 'packed', 'packed-simd', 'd16', 'd16']   SAME
+    B. unselectable arm added    : ['d32', 'd32', 'packed', 'packed-simd', 'd16', 'd16']   SAME
+==============================================================================
+NORMALISED, range FROZEN as declared constants
+==============================================================================
+
+  speed-first
+    all 5 arms                : ['packed-simd', 'd16', 'd16', 'd16', 'd16', 'd16']
+    A. 1 dominated arm(s) dropped : ['packed-simd', 'd16', 'd16', 'd16', 'd16', 'd16']   SAME
+    B. unselectable arm added    : ['packed-simd', 'd16', 'd16', 'd16', 'd16', 'd16']   SAME
+
+  storage-first
+    all 5 arms                : ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']
+    A. 1 dominated arm(s) dropped : ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']   SAME
+    B. unselectable arm added    : ['packed', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd', 'packed-simd']   SAME
+
+  tail-first
+    all 5 arms                : ['packed', 'd16', 'packed', 'packed', 'packed', 'packed-simd']
+    A. 1 dominated arm(s) dropped : ['packed', 'd16', 'packed', 'packed', 'packed', 'packed-simd']   SAME
+    B. unselectable arm added    : ['packed', 'd16', 'packed', 'packed', 'packed', 'packed-simd']   SAME
+
+==============================================================================
+D. HOW FAR IT GOES: sweeping the unselectable arm's extremity
+==============================================================================
+  min-max normalised. The added arm is never selected at any factor.
+    factor  regions whose pick moved, per weighting
+      1.01  speed-first 0/6   storage-first 0/6   tail-first 0/6
+      1.50  speed-first 0/6   storage-first 0/6   tail-first 0/6
+      2.00  speed-first 0/6   storage-first 2/6   tail-first 0/6
+      4.00  speed-first 1/6   storage-first 2/6   tail-first 0/6
+      8.00  speed-first 1/6   storage-first 2/6   tail-first 0/6
+     32.00  speed-first 4/6   storage-first 3/6   tail-first 0/6
+    128.00  speed-first 6/6   storage-first 3/6   tail-first 0/6
+
+==============================================================================
+READING
+==============================================================================
+
+The raw and normalised sections are not comparable to each other: the same weight
+numbers mean different things applied to nanoseconds and to normalised units, so
+the raw half is a control for the MOVED/SAME column and for nothing else.
+
+Whatever the rows above say, the raw-coordinate half is the control and it must
+show nothing moving. An argmin cannot be changed by an alternative that is never
+the minimum, so a MOVED there would mean this probe is broken rather than that
+something was found.
+
+If the normalised half moves where the raw half does not, then the effect is
+exactly what it looks like: a weighting applied to normalised coordinates is not
+a weighting over the arms, it is a weighting over the arms AND whatever else
+happens to be in the table. Two consequences follow and neither is about noise.
+
+A design shipping normalised costs has to say what the normalisation range is,
+because it is part of the semantics rather than a presentation detail. Freezing
+it as declared constants restores independence; reading it off the arm set does
+not.
+
+And a bench arm added as a negative control, which is measurement hygiene and
+exactly what `bitpack-carrier-d16-control` is for, would then be able to change
+what every strategy selects. That is a coupling between the instrument and the
+answer, and it is worth knowing about before anything is built on a normalised
+cost table.
+

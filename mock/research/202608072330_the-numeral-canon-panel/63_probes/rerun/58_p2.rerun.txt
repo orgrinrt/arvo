@@ -1,0 +1,54 @@
+=== section 1: pure fractional axis, no intermediate range clamp ===
+
+  format: M = 15, F = 3 (I = 1). w = guard fractional bits kept
+  between steps; range is clamped exactly once, at the end, matching
+  exact_once's own shape. w=0 keeps no guard at all.
+
+   n     tuples   div at w=0     full w  min w clean   min_w/full_w
+   2        256            0          3            0          0.00%
+   3       4096          812          6            3         50.00%
+   4      65536        18692          9            6         66.67%
+
+  n>=3 shows divergence at w=0 (matches p4's coarsen-only finding): true
+  full precision (w = (n-1)*F) is clean, LEFT == RIGHT == exact_once: true
+  the savings below full precision is EXACTLY one rescale's worth (F bits),
+constant in n, never more (min_w == full_w - F for every n >= 3 measured): true
+  so the ABSOLUTE guard still needed still grows linearly with n, unlike
+addition's near-total, n-independent savings (57_probes/p6): one multiply
+can be delayed past its narrowing point; the rest of the chain cannot.
+
+=== section 2: the bug, kept, and what it turned out to measure ===
+
+  the first run of this probe clamped the accumulator to the format's
+  range at EVERY step, even at full guard width, and reported LEFT !=
+  RIGHT at w = (n-1)*F, which is impossible for exact integer
+  multiplication with no other lossy step present. it is a second,
+  independent source of non-associativity: an intermediate RANGE clamp,
+  exactly job one's absorption/reachability mechanism, now acting inside
+  a multiplicative fold rather than an additive one, and orthogonally to
+  the fractional axis this file exists to measure.
+
+   n       full w   no-clamp div   with-clamp div
+   3            6              0              448
+   4            9              0            11528
+
+  the with-clamp variant still diverges at full fractional precision (the
+bug's own symptom, reproduced and now understood): true
+  at every w measured, with-clamp divergence count >= no-clamp's (the second
+mechanism adds failures, it substitutes for none): true
+
+=== contrast with 57_probes/p6's additive result ===
+
+  addition needed exactly ONE bit less than the exact-sum width, at EVERY
+  fold length 2 through 8, uniformly: a constant offset from a bound that
+  itself grows only logarithmically in n (ceil(log2 n) extra integer bits).
+  the pure-fractional multiplicative guard measured in section 1 saves
+  EXACTLY one rescale's worth (F bits) below full precision, constant in n,
+  never more: only the LAST narrowing in the chain can be delayed. every
+  earlier one still needs its full F bits kept, so the ABSOLUTE guard still
+  grows LINEARLY in n. section 2 shows a second, additive-shaped mechanism
+  (range-clamp reachability) can ALSO fire on top of that, so the two are
+  not alternatives an implementation picks between; both apply, and paying
+  for one buys nothing against the other.
+
+P2 WORKS

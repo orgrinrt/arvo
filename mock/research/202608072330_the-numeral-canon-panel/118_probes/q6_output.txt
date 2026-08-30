@@ -1,0 +1,66 @@
+========================================================================================================
+q6. The shipped guard makes the carrier's policy free
+========================================================================================================
+
+The guard, transcribed from warm-clamp-shared/src/lib.rs:158-160:
+    accumulator_bits_needed(w, arity) = w + ceil_log2(arity)
+
+    W  arity  needed   guard met: wrap / sat / agree  guard short by 1: wrap / sat
+    3      4       5          0 / 0      / 4000/4000           1432 / 0           
+    3      8       6          0 / 0      / 4000/4000            970 / 0           
+    4      4       6          0 / 0      / 4000/4000           1598 / 0           
+    4     16       8          0 / 0      / 4000/4000            962 / 0           
+    5      8       8          0 / 0      / 4000/4000           1395 / 0           
+    6      4       8          0 / 0      / 4000/4000           1801 / 0           
+
+  Columns are disagreements with the oracle out of 4000 random chunks.
+  'agree' counts chunks where the two carriers give the same answer.
+  The last pair is C2: the guard lowered by one bit, where the
+  disagreement must appear or 'neither larger nor smaller' is untested.
+
+--------------------------------------------------------------------------------------------------------
+P3. Is the guard exactly the corner rule at the root of the fold?
+The smallest accumulator width at which the safe branch is correct,
+found by search, against what the shipped formula says.
+
+    W  arity  formula   smallest correct, wrap   smallest correct, sat
+    3      4        5                        5                       3
+    3      8        6                        6                       3
+    4      4        6                        6                       4
+    4     16        8                        8                       4
+    5      8        8                        8                       5
+    2     32        7                        7                       2
+
+  A saturating carrier can be correct at a NARROWER width than a
+  wrapping one, because saturation and the final clamp agree above the
+  logical limit while wrapping does not. Where the two columns differ,
+  the shipped guard is the WRAPPING one, which is the conservative
+  choice and is what the formula computes.
+
+--------------------------------------------------------------------------------------------------------
+P4 and C3. The unsafe branch, and whether the sweep could see anything.
+
+    W  arity  abits   unsafe branch wrong   chunks whose sum exceeds the carrier
+    3      8      3                     0                                   3998
+    3      8      5                     0                                   1232
+    4     16      4                     0                                   4000
+    4     16      8                     0                                      0
+
+========================================================================================================
+
+  READING IT
+
+  P1 holds when the guard-met columns are zero for BOTH carriers and 'agree' is
+  the full count. That says the kernel's correctness does not read the carrier's
+  overflow policy, so it is `116` F116-6's identity rather than `114`'s arm W1.
+
+  P2 and C1 are the guard-short-by-one columns. They must be nonzero, or the
+  guard is not what is doing the work.
+
+  P3's two columns differing is the finding underneath: the shipped formula
+  computes the width a WRAPPING carrier needs, which is conservative for a
+  saturating one. That is a real slack a design could take.
+
+  C3 is the last column: the sweep must contain chunks whose sum exceeds the
+  carrier at the narrow widths, or nothing could have differed anywhere.
+

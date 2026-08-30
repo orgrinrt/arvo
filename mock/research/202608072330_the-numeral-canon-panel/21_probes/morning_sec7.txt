@@ -1,0 +1,66 @@
+## Seven: your second standing instruction, discharged, and what the repository knew
+
+You said the headroom bench body was "one instance of evidence, completely unaudited by a second
+expert set of eyes". `20` is that second set of eyes. It read the harness rather than the summaries.
+
+**The verdict is that the bench body is sound.** Real competitors over one shared transform, not a
+strawman. A genuine noise-floor control that compiles byte-identical to a real arm at every width,
+asserted by tests rather than assumed. And the crate documents a **discarded first cut** where the
+optimiser collapsed the chain and the numbers were thrown away, which is the shape an honest bench
+has. Keeping it is the result.
+
+Three qualifications, and the third is the one that becomes your question.
+
+**The cost is not the number the record carries.** The record says roughly 1600 instructions against
+81, corrected to 339 against 81. The harness answer is **width-banded and not monotone**: 44.2x,
+0.98x, 21.0x, 7.0x, 0.99x, 2.45x across the widths measured. The split is exactly filled versus
+sub-rung widths, and the mechanism is that **headroom guarantees the container exceeds the width at
+every width, so it removes the case where the projection would have been free.** A larger effect sits
+beside it: writing the projection once is 21.6x faster than the minimum arm at one width.
+
+**The arm matrix is asymmetric.** Headroom measured in one configuration, minimum in four, and
+headroom's is its worst. That does not change the verdict under wrapping, where a lazy headroom arm
+provably cannot win. **It does not carry to clamping.**
+
+**And the family implements `Warm` as wrapping**, while the ratified preset table gives `Warm` the
+clamp and gives wrapping to `Hot` alone. So that half of the bench measures a different strategy's
+resolution than the one it names. **The clamp family reverses the answer**: headroom goes from 2.2x
+worse at fold arity two to **44x better at arity 256**, crossing over exactly where its own interior
+safety predicate says it should.
+
+### Six committed cells are void, and the mechanism is instructive
+
+One bench family reports throughput **48x to 66x above the machine's roofline**. The harness calls it
+"a safe default pick".
+
+Cause, established with a probe: the saturating fold has an absorbing fixpoint, so after three
+elements every lane sits at the limit and the optimiser deletes the loop. **The value stays correct,
+so the cross-variant value check is vacuous there**, and the crate's own guard against exactly this
+passes only because an opacity barrier hides the constant the proof needs.
+
+Scope measured, not estimated: **6 of 691 cells.** This is the same shape as the night's other
+instrument findings, arriving in the runtime evidence rather than the compile-time evidence.
+
+### What the repository knew that eighteen files did not
+
+- An affine collapse worth **33x**, same container, projection eager against deferred, with the
+  deferred form costing the same at sixteen operations as at one.
+- A widening result worth **7.5x to 32x**, with its predicate boundary confirmed at exactly the
+  widths it predicts.
+- Const fold arity worth **16.8x falling to 1.03x**.
+- And the wide rung above 64 bits is ratified **on an instruction count, with no harness run touching
+  it at all.**
+
+### Hygiene findings worth one line each
+
+The fidelity columns are zero in all 55,280 rows, so **no fidelity check ran in any of the 147
+findings files**. The end-to-end figure is derived by subtraction rather than measured independently.
+The timing bracket carries an attribute on this architecture that stops it being a barrier,
+characterised but not closed. And **146 of the 147 runs were taken from a dirty tree.**
+
+### A number reconciled before it could become a second contradiction
+
+`15`'s product-overshoot count is 476 where the first stretch's was 461. It reconciled them exactly,
+160 plus 301 plus 15, both correct under different conventions, and flagged that if either travels
+alone the panel acquires a second unresolved count dispute. It has one already.
+

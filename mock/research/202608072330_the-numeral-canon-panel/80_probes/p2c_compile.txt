@@ -1,0 +1,25 @@
+=== honest ===
+rustc --edition 2021 -O p2c_closed_form_checked_on_a_model.rs -o p2c  4.04s user 0.14s system 90% cpu 4.599 total
+exit above
+
+=== badclosed (negative control: one entry of the closed form perturbed) ===
+error[E0080]: evaluation panicked: the closed-form law verdict disagrees with the swept verdict somewhere in the model band, so the closed form is wrong and no arm may be gated on it
+   --> p2c_closed_form_checked_on_a_model.rs:122:23
+    |
+122 |   const AGREEMENT: () = assert!(
+    |  _______________________^
+123 | |     closed_agrees_with_sweep(),
+124 | |     "the closed-form law verdict disagrees with the swept verdict somewhere in the \
+125 | |      model band, so the closed form is wrong and no arm may be gated on it"
+126 | | );
+    | |_^ evaluation of `AGREEMENT` failed here
+
+note: erroneous constant encountered
+   --> p2c_closed_form_checked_on_a_model.rs:136:18
+    |
+136 |         let () = AGREEMENT;
+    |                  ^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

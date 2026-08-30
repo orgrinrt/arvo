@@ -1,0 +1,44 @@
+pool: 21 shapes (12 fixed, 9 float)
+
+Q1: is the class closed under intersection?
+    pairs                                    : 210
+    intersections with fewer than two values : 26
+    the rest, and how many are again a format: 184 of 184
+
+Q2/Q3: the join in the general class, and where it lands
+    cross-kind pairs                    : 108
+    joins that contain both operands    : 108 of 108
+    where the join's shape lands:
+        FIXED: 3
+        FLOAT: 54
+        SEGMENTED: 51
+
+Q2b: 03's witness, worked
+    U<0,1> = ['0', '1/2']
+    U<2,0> = ['0', '1', '2', '3']
+    canonical exponent of the join      : {-1: -1, 0: 0, 1: 0}
+    the join                            : ['0', '1/2', '1', '2', '3']
+    contains both operands              : True
+    the join's family                   : UNDETERMINED (fewer than two constrained binades)
+    strictly inside U<2,1>              : True
+    strictly inside the float p2 e-1..1 : True   (float = ['0', '1/2', '3/4', '1', '3/2', '2', '3'])
+
+Q4: is a tapered format reachable by intersecting the two named families?
+    Intersection takes the canonical exponent pointwise maximum, so the
+    reachable slopes are the maxima of the operands' slopes. Measured,
+    not argued:
+    slopes of the canonical exponent over every pairwise intersection: [0, 1]
+    slopes of posit<8,0>'s canonical exponent: [0, 1, 2]
+    slopes of posit<8,1>'s canonical exponent: [0, 1, 2]
+    slopes of posit<10,2>'s canonical exponent: [0, 1, 2]
+
+    A slope above one is not a maximum of slopes at most one, so a
+    tapered format is not in the intersection-closure of the two
+    named families, while it is in the general class (i1b).
+
+Q5: shape counts over a four-binade window, precision 0..3
+    canonical exponent functions in the window : 256
+    named by fixed / float / float-with-a-knee : 10
+    plus their intersection closure            : 10
+    still unnamed by the closure               : 246  (96.1 percent)
+

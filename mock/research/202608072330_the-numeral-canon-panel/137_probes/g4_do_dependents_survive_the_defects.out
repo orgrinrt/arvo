@@ -1,0 +1,79 @@
+=== DEFECT 1. x1 part B first run reported half_even carrying exact composition ===
+-- what the corrected committed output says --
+  ceil         True          True          False         2     
+  toward_zero  False         True          True          2     
+  half_up      False         False         False         0     
+  half_even    False         False         True          1     
+
+  composition sweep detail (a True over zero candidates would be the defect above):
+    floor         swept  512 values, no failing value in sweep
+    ceil          swept  512 values, no failing value in sweep
+    toward_zero   swept  512 values, no failing value in sweep
+    half_up       swept  512 values, first failing value -125/8 direct=-16 staged=-15
+    half_even     swept  512 values, first failing value -247/16 direct=-15 staged=-16
+
+  B1 floor carries order bound AND composition: True (predicted True)
+
+-- does any sentence in 136 give half-even exact composition? --
+   158:order bound and exact composition; toward-zero carries composition and negation symmetry; half-even
+   284:for ceil, half-up and half-even. A design that ever observes an intermediate representative needs that,
+   445:with a 3-to-2-to-1 staging reported half-even carrying exact staged composition, contradicting both
+   446:`133`'s `s2` and `125` section 10's P4, which measured 500 half-even mismatches of 4001. The window held
+   447:no value whose intermediate stage lands on a tie. Widened to `W = 9`, `F = 4`, 4-to-2-to-0, half-even
+
+-- and what 132 5.3 said, which the defect would have contradicted --
+-- and 125's own P4 count, the third witness --
+451:zero mismatches; half_up 500, half_even 500 of 4001 (the double-rounding controls, failing as they
+
+=== DEFECT 2. x2's two controls could not fire. Do the replacements fire? ===
+   12:P2. THE CONTROL. A deliberately sign-dependent variant must be DETECTED.
+   19:  P2 (control fires): CONFIRMED
+   22:P3. The variance closed forms per k, and the same control
+   25:        control at k=-4 vs k=+4 under the sign-dependent variant: (125/36, 25/36) vs (50/9, 10/9), differ = True
+   27:        control at k=-4 vs k=+4 under the sign-dependent variant: (125/9, 25/18) vs (200/9, 20/9), differ = True
+   29:  P3 (variance sign-blind, control fires): CONFIRMED
+
+=== DEFECT 3/4. x4 reported a confident zero, and missed one predicate ===
+-- the corrected x4's predicate count and absences --
+   2:R1. Predicates found in 132: 11
+   4:  5.2    The quantisation axis has no homomorphic mem   8 dimensions: F, W, domain, operation = addition, rounding = every deterministic member, signedness, target features, threads
+   5:  5.3    What the axis selects instead: which exact l   7 dimensions: F, W, domain closed under negation, operations, rounding, signedness, threads
+   6:  5.3    What the axis selects instead: which exact l   6 dimensions: F_exact, F_final, F_intermediate, domain = rationals over the swept window closed under negation, rounding, threads = 1
+   7:  5.4    The axes decompose, with one named exception   6 dimensions: F, W >= 1, domain closed under negation, every deterministic member against saturation, and every translation-equivariant member against wrapping, signedness, threads
+   9:  5.5    Where the axis does not act at all             8 dimensions: F = 0 with operations, W, domain, range policy, rounding, signedness, target features, threads
+   10:  5.5    Where the axis does not act at all             8 dimensions: F, W, domain, operation = multiplication, range policy, rounding, signedness, threads
+   11:  5.6    Beyond the functions: unbiasedness fixes the   6 dimensions: F, W, coupling =, domain closed under negation, signedness, threads
+   17:  control, `domain` is not split at the `in` inside it: True (must be True), keys = ['W', 'domain closed under negation']
+   28:  5.4    shares with 5.3    (2 clauses up)     : F, domain closed under negation, signedness, threads
+   36:  5.5    shares with 5.5    (adjacent)         : W, domain, range policy, signedness, threads
+   38:  5.6    shares with 5.3    (6 clauses up)     : F, W, domain closed under negation, signedness, threads
+   39:  5.6    shares with 5.4    (4 clauses up)     : F, domain closed under negation, signedness, threads
+   65:  of those, flagged on the domain dimension specifically: 4
+   66:    5.4 inherits domain from 5.3
+   67:    5.5 inherits domain from 5.5
+   68:    5.6 inherits domain from 5.3
+   69:    5.6 inherits domain from 5.4
+
+=== does 136 cite x2 P3/P4 for claims that are now load-bearing? ===
+   208:there is none. `x2` P2 and P3 supply controls that fire.
+   212:`frac(x) = x - trunc(x)`, which lands in `(-1, 0]` for negative `x`, `x2` P4 finds the same construction
+   393:transfer (`136_probes/x2` P4).*
+   398:(`136_probes/x2` P3); threads any; **W, F and
+   559:through B5, `x2` P1 through P4, `x3` Q1 through Q6, `x4` R1 and R3. **Refuted: `x1` A3**, and the
+
+-- x2 P4, the condition that bounds 135's widening --
+   32:P4. What the widening rests on: the frac convention, which nobody has stated
+   33-==========================================================================================
+   34-  m=5, truncating frac: 2 distinct distribution(s) across k (floor-based gave 1)
+   35-        k=-3 -> ['-4/5', '1/5', '1/5', '1/5', '1/5', '1']
+   36-        k=+3 -> ['1/5', '1/5', '1/5', '1/5', '1/5']
+   37-        differ = True
+   38-  m=8, truncating frac: 2 distinct distribution(s) across k (floor-based gave 1)
+   --
+   43:  P4 (the same construction IS sign-dependent under truncating frac): CONFIRMED
+   44-
+   45-==========================================================================================
+   46-VERDICT
+   47-==========================================================================================
+   48-  135's dissent reproduces on an instrument that can report a difference: True
+   49-  and the widening carries a hypothesis 135 did not state: True

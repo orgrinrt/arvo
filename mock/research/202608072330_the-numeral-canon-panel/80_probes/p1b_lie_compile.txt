@@ -1,0 +1,26 @@
+error[E0080]: evaluation panicked: this policy's addition is not associative over the model window, so a reassociating consumer may not be instantiated at it
+  --> p1b_computed_law_refuses.rs:85:23
+   |
+85 |       const PROOF: () = assert!(
+   |  _______________________^
+86 | |         assoc_holds(Self::TAG),
+87 | |         "this policy's addition is not associative over the model window, so a \
+88 | |          reassociating consumer may not be instantiated at it"
+89 | |     );
+   | |_____^ evaluation of `<SatSigned as AssocProven>::PROOF` failed here
+
+note: erroneous constant encountered
+  --> p1b_computed_law_refuses.rs:95:14
+   |
+95 |     let () = <P as AssocProven>::PROOF;
+   |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: the above error was encountered while instantiating `fn reassociating_fold::<SatSigned>`
+   --> p1b_computed_law_refuses.rs:145:9
+    |
+145 |         reassociating_fold::<SatSigned>(&xs)
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

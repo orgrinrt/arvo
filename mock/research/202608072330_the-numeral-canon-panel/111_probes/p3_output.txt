@@ -1,0 +1,49 @@
+P3. does the signature keep deciding the count?
+==============================================================================
+configurations swept: 216
+  W in {2,3,4}, F in 0..=2, signedness any, policy in {sat,wrap},
+  rounding in {near,trunc,floor}, radix in {2,3}
+
+  signature                                  primitives
+  {add}                                              60
+  {add,sub}                                          60
+  {add,mul}                                         126
+  {add,sub,mul,neg}                                 126
+  {add,sub,mul,neg,half}                            142
+  {add,sub,mul,neg,half,recip,fma}                  148
+  {literal}                                         165
+  {literal,add}                                     165
+  {literal,add,sub,mul,neg,half,recip,fma}          165
+
+instrument check, monotone under signature extension:
+  60 <= 60 <= 126 <= 142 <= 148   ok
+
+the saturation claim:
+  {literal}                                       165
+  {literal,add}                                   165
+  {literal, everything}                           165
+  adding every operation to the literal splits nothing: True
+  and the partitions are identical, not merely equinumerous: True
+  finest signature without a literal reaches               148
+  the literal alone reaches                                165
+
+what the literal separates that {add,sub,mul,neg,half,recip,fma} does not:
+  one class of 4 splits into 2: uW2F0r2/wrap/floor ... uW2F0r3/wrap/trunc
+  one class of 4 splits into 2: iW2F0r2/sat/near ... iW2F0r3/sat/trunc
+  one class of 4 splits into 2: iW2F0r2/wrap/near ... iW2F0r3/wrap/trunc
+  one class of 2 splits into 2: uW2F1r2/wrap/floor ... uW2F1r2/wrap/trunc
+  one class of 2 splits into 2: uW2F1r3/wrap/floor ... uW2F1r3/wrap/trunc
+  one class of 2 splits into 2: uW2F2r2/wrap/floor ... uW2F2r2/wrap/trunc
+
+cross-check against p4, radix-only pairs at F = 0:
+  radix-only pairs at F = 0: 72, in the same class 72, split 0
+  agrees with p4's 0 of 108: True
+
+------------------------------------------------------------------------------
+reading:
+  F4 is right that the count is a function of the signature, and the
+  function is constant above the literal. A design that can write a
+  literal is already at the finest identity its realisation map
+  supports, so it does not have to declare a closed operation set to
+  have stable identity. It has to have a constructor, which it cannot
+  avoid having.

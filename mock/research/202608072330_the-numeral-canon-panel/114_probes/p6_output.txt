@@ -1,0 +1,94 @@
+==============================================================================
+p6. Is the lifting rule a formula or a table?
+==============================================================================
+
+P3. The formula against `112` F112-14's three verdicts, and one more.
+
+  construction     L1 norms       has a negative  formula says                
+  product2         1, 1           no, no          unsigned largest m 3, signed largest m 2
+  dual             1, 2           no, no          unsigned largest m 2, signed largest m 1
+  complex          2, 2           yes, no         unsigned largest m 0, signed largest m 1
+  split-complex    2, 2           no, no          unsigned largest m 2, signed largest m 1
+  quaternion       4, 4, 4, 4     yes, yes, yes, yes unsigned largest m 0, signed largest m 1
+
+  `112` F112-14 reads: product2 componentwise, dual twice it, complex
+  twice it over a signed base and nothing over an unsigned one. The
+  unsigned column above must show complex at m = 0 for that to match.
+
+------------------------------------------------------------------------------
+P1, P2 and the controls, over the whole two-dimensional family.
+
+  constructions in the family: 1024
+
+  base uW3/sat   cells 8192   arms agree on 1140
+    FORMULA          discharges   1140   unsound     0   conservative      0
+    C1 componentwise discharges   3072   unsound  1932
+    C2 unit norm     discharges   1224   unsound    84
+    C3: the formula refuses on 7052 of 8192 cells
+
+  base iW3/sat   cells 4096   arms agree on 2048
+    FORMULA          discharges   2048   unsound     0   conservative      0
+    C1 componentwise discharges   2048   unsound     0
+    C2 unit norm     discharges   2048   unsound     0
+    C3: the formula refuses on 2048 of 4096 cells
+
+  base uW3/wrap   cells 8192   arms agree on 1140
+    FORMULA          discharges   1140   unsound     0   conservative      0
+    C1 componentwise discharges   3072   unsound  1932
+    C2 unit norm     discharges   1224   unsound    84
+    C3: the formula refuses on 7052 of 8192 cells
+
+------------------------------------------------------------------------------
+A wider signed base, so the signed controls can fire. The family is
+sampled here because the exhaustive pair enumeration grows as m^8.
+
+  base iW5/sat   cells 750 (150 sampled constructions, m in 0..4)   arms agree on 458
+    FORMULA          discharges    458   unsound     0   conservative      0
+    C1 componentwise discharges    600   unsound   142
+    C2 unit norm     discharges    600   unsound   142
+  base iW6/sat   cells 750 (150 sampled constructions, m in 0..4)   arms agree on 608
+    FORMULA          discharges    608   unsound     0   conservative      0
+    C1 componentwise discharges    750   unsound   142
+    C2 unit norm     discharges    750   unsound   142
+
+------------------------------------------------------------------------------
+P4. Dimension four, where nothing in the derivation changes.
+
+  base iW3/sat
+      m  arms agree   formula   C1 componentwise
+      0        True      True               True
+      1       False     False               True   <- C1 unsound
+      2       False     False              False
+      3       False     False              False
+  base iW4/sat
+      m  arms agree   formula   C1 componentwise
+      0        True      True               True
+      1        True      True               True
+      2       False     False               True   <- C1 unsound
+      3       False     False              False
+  base uW3/sat
+      m  arms agree   formula   C1 componentwise
+      0        True      True               True
+      1       False     False               True   <- C1 unsound
+      2       False     False               True   <- C1 unsound
+      3       False     False              False
+
+------------------------------------------------------------------------------
+P2. Where the formula is conservative, named rather than counted.
+
+  none among the named constructions at this base
+
+==============================================================================
+
+  The formula is a sentence rather than a table when its unsound count is zero
+  across the family AND both controls are nonzero somewhere. If C1 and C2 never
+  go unsound, the family contains no construction that distinguishes them and
+  the sweep proves nothing about the formula.
+
+  SCOPE, stated because it is narrower than it looks. This covers BILINEAR
+  constructions on tuples, which is what `product2`, `dual`, `complex` and the
+  quaternions are. It does NOT cover `interval`, whose product is a hull rather
+  than a bilinear form, and whose transformer `110` F12 and `112` F112-12 handle
+  by a monotonicity predicate instead. So the canon sentence is about bilinear
+  constructions, and a non-bilinear construction remains its own obligation.
+

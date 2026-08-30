@@ -1,0 +1,42 @@
+P7. A recursive grep from the repo root does not reach `.claude/` or
+`.github/`, so a negative claim made with one is a claim about a smaller tree
+than the author thinks.
+
+`grep` on this machine is ugrep 7.5.0, and a recursive search rooted at `.`
+skips dot-directories.
+
+CONTROLLED TEST. The same unique marker written to two places, one visible to
+the search and one not:
+
+  $ echo MARKER_UNIQUE_109_PROBE > .claude/_grep_reach_test.txt
+  $ echo MARKER_UNIQUE_109_PROBE > mock/_grep_reach_test.txt
+
+  $ grep -rn "MARKER_UNIQUE_109_PROBE" . --exclude-dir=target --exclude-dir=.git
+  mock/_grep_reach_test.txt:1:MARKER_UNIQUE_109_PROBE
+
+  $ grep -rn "MARKER_UNIQUE_109_PROBE" .claude
+  .claude/_grep_reach_test.txt:1:MARKER_UNIQUE_109_PROBE
+
+One of two identical files is found. Naming the directory explicitly finds it.
+Both test files were removed afterwards.
+
+WHY IT MATTERS HERE. The panel's standing instruction is to exclude `target/`
+from every grep, because a match under `target/` inflated a count 133 to 1.
+A member following that instruction with the default recursive form ALSO
+misses the two trees that hold this repository's generated agent instructions,
+which are the files every agent working here loads before it does anything.
+
+This is the same class as the six meaningless greens already on record, from
+the other direction: not a false positive from a directory that should have
+been excluded, but a false NEGATIVE from two directories that were never
+searched. "No file in the repository says X" produced this way is a
+description of the search, not of the repository.
+
+CONCRETE INSTANCE FOUND WITH IT. Searching those two trees by name turns up
+the refuted provenance claim about I14 still live in
+`.claude/CLAUDE.md:70` and `.github/copilot-instructions.md`, after the
+template `mock/agent/MAIN.md.tmpl:61` was corrected. Full statement in
+`109_bellard_the_primitive_derived_cold.md`.
+
+MITIGATION. Name the directories: `grep -rn <pattern> mock .claude .github`,
+or pass the dot-directories explicitly. Do not trust a bare `.`.

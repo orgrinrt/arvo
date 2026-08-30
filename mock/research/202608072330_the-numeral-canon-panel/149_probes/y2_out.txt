@@ -1,0 +1,42 @@
+y2 part one: is the licensing property domain-restricted?
+
+mode                   unrestricted  restricted >= 0       agree?
+floor                          true             true         same
+ceiling                        true             true         same
+toward-zero                   false             true       DIFFER
+away-from-zero                false             true       DIFFER
+nearest-half-up                true             true         same
+nearest-half-even             false            false         same
+
+C1: the two tests disagree on 2 modes (must be > 0, or the refinement is empty)
+
+=== Z1: does the RESTRICTED test predict the fusion table? ===
+(wrapping, W = 6, exhaustive; a mode is predicted zero iff restricted-equivariant)
+mode                 signedness   restricted   measured max    verdict
+floor                  unsigned         true          0.00%         ok
+ceiling                unsigned         true          0.00%         ok
+toward-zero            unsigned         true          0.00%         ok
+away-from-zero         unsigned         true          0.00%         ok
+nearest-half-up        unsigned         true          0.00%         ok
+nearest-half-even      unsigned        false         12.50%         ok
+floor                    signed         true          0.00%         ok
+ceiling                  signed         true          0.00%         ok
+toward-zero              signed        false         33.40%         ok
+away-from-zero           signed        false         33.40%         ok
+nearest-half-up          signed         true          0.00%         ok
+nearest-half-even        signed        false         12.50%         ok
+
+  restricted test mispredictions:   0 of 12 (Z1 wants 0)
+  unrestricted test mispredictions: 2 of 12 (Z4 wants 2)
+
+=== part two: reproducing 142 F142-4, the cost of my replacement B ===
+(rate at which swapping toward-zero for floor changes a MULTIPLY answer)
+cell                        F=0      F=1      F=2      F=3      F=4      F=5
+unsigned, wrapping        0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+unsigned, saturating      0.00%    0.00%    0.00%    0.00%    0.00%    0.00%
+signed, wrapping          0.00%   12.50%   25.00%   34.38%   40.62%   44.53%
+signed, saturating        0.00%    2.93%    9.57%   20.51%   34.33%   44.53%
+
+142 F142-4 reports signed wrapping   0.00 12.50 25.00 34.38 40.62 44.53
+142 F142-4 reports signed saturating 0.00  2.93  9.57 20.51 34.33 44.53
+and zero on both unsigned rows.

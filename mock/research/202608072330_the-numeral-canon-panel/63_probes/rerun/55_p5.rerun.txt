@@ -1,0 +1,9 @@
+divergent triples:            952
+  with no clamp event:        0
+  ceiling only:               448
+  floor only:                 504
+  both bounds:                0
+  all-same-sign operands:     0
+witness (7,7,-1) divergent, ceiling-only: true
+witness (-8,-8,1) divergent, floor-only:  true
+P5 WORKS

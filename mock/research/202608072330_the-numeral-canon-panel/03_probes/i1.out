@@ -1,0 +1,100 @@
+instrument 1: brute force over materialised value sets, exact rationals
+==============================================================================
+Q1  four-condition predicate against true set inclusion
+    shapes: unsigned fixed-point radix 2, I in 0..3, F in 0..3, plus the same
+    at radix 3, all with declared step read from the DECLARATION not the set.
+    ordered pairs 1024   agree 1024   disagree 0
+      of the disagreements, source carries fewer than two values: 0
+      of the disagreements, source carries two or more values:    0
+
+Q2  unsigned fixed-point, radix 2, zero bias, one family
+  I>=1, F>=1: neither the origin nor negative width   box=5
+    points    19 (label collisions folded: 0)   pairs    171
+    meet   ok    171  (exact 171, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    130                                       no-upper-bound    41   bounds-but-no-least       0
+    first join failure: none  UF<1,3>  &  UF<5,1>
+  I>=1, F>=1: neither the origin nor negative width   box=6
+    points    26 (label collisions folded: 0)   pairs    325
+    meet   ok    325  (exact 325, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    240                                       no-upper-bound    85   bounds-but-no-least       0
+    first join failure: none  UF<1,3>  &  UF<6,1>
+  I>=0, F>=0: the origin shape admitted   box=5
+    points    30 (label collisions folded: 0)   pairs    435
+    meet   ok    435  (exact 435, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    356                                       no-upper-bound    79   bounds-but-no-least       0
+    first join failure: none  UF<0,3>  &  UF<5,0>
+  I>=0, F>=0: the origin shape admitted   box=6
+    points    39 (label collisions folded: 0)   pairs    741
+    meet   ok    741  (exact 741, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    586                                       no-upper-bound   155   bounds-but-no-least       0
+    first join failure: none  UF<0,3>  &  UF<6,0>
+  I>=-3, F>=0: negative integer width admitted   box=5
+    points    39 (label collisions folded: 3)   pairs    741
+    meet   ok    741  (exact 741, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    599                                       no-upper-bound   142   bounds-but-no-least       0
+    first join failure: none  UF<-3,4>  &  UF<4,0>
+  I>=-3, F>=0: negative integer width admitted   box=6
+    points    51 (label collisions folded: 3)   pairs   1275
+    meet   ok   1275  (exact 1275, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok   1003                                       no-upper-bound   272   bounds-but-no-least       0
+    first join failure: none  UF<-3,4>  &  UF<5,0>
+
+Q3  two radices in one shape space (unsigned fixed-point, zero bias)
+  radix 2 and radix 3 together   box=4
+    points    31 (label collisions folded: 1)   pairs    465
+    meet   ok    465  (exact 465, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    248                                       no-upper-bound   217   bounds-but-no-least       0
+    first join failure: none  UF2<0,1>  &  UF3<0,1>
+  radix 2 and radix 3 together   box=5
+    points    40 (label collisions folded: 1)   pairs    780
+    meet   ok    780  (exact 780, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    392                                       no-upper-bound   388   bounds-but-no-least       0
+    first join failure: none  UF2<0,1>  &  UF3<0,1>
+
+Q4  fixed-point and float in one shape space (nonnegative, zero bias)
+  fixed-point alone   box=4
+    points    19 (label collisions folded: 0)   pairs    171
+    meet   ok    171  (exact 171, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    130                                       no-upper-bound    41   bounds-but-no-least       0
+    first join failure: none  UF<0,2>  &  UF<4,0>
+  fixed-point and float together   box=4
+    points    54 (label collisions folded: 1)   pairs   1431
+    meet   ok   1341  (exact 1280, undershoot 61)   no-lower-bound     0   bounds-but-no-greatest    90
+    join   ok    985                                       no-upper-bound   226   bounds-but-no-least     220
+    first meet failure: no-greatest  UF<1,2>  &  FL<p2,e-3..0>
+    first join failure: no-least  UF<0,1>  &  UF<2,0>
+  fixed-point alone   box=5
+    points    26 (label collisions folded: 0)   pairs    325
+    meet   ok    325  (exact 325, undershoot 0)   no-lower-bound     0   bounds-but-no-greatest     0
+    join   ok    240                                       no-upper-bound    85   bounds-but-no-least       0
+    first join failure: none  UF<0,2>  &  UF<5,0>
+  fixed-point and float together   box=5
+    points    61 (label collisions folded: 1)   pairs   1830
+    meet   ok   1701  (exact 1615, undershoot 86)   no-lower-bound     0   bounds-but-no-greatest   129
+    join   ok   1206                                       no-upper-bound   322   bounds-but-no-least     302
+    first meet failure: no-greatest  UF<1,2>  &  FL<p2,e-3..0>
+    first join failure: no-least  UF<0,1>  &  UF<2,0>
+
+Q5  joins that exist among fixed-point alone and stop existing once floats join
+    LOST JOIN  UF<0,1>  v  UF<2,0>
+      was UF<2,1>; with floats present there is no least upper bound
+      upper bounds present: 18, minimal ones: ['UF<2,1>', 'FL<p2,e-1..1>']
+    LOST JOIN  UF<0,1>  v  UF<3,0>
+      was UF<3,1>; with floats present there is no least upper bound
+      upper bounds present: 6, minimal ones: ['UF<3,1>', 'FL<p3,e-1..2>']
+    LOST JOIN  UF<0,2>  v  UF<1,0>
+      was UF<1,2>; with floats present there is no least upper bound
+      upper bounds present: 18, minimal ones: ['UF<1,2>', 'FL<p2,e-2..0>']
+    joins present among fixed-point alone and absent once floats join: 18
+    meets present among fixed-point alone and absent once floats join:  0
+
+Q6  nonzero bias
+  unsigned fixed-point radix 2 with four biases
+    points    52 (label collisions folded: 0)   pairs   1326
+    meet   ok    640  (exact 597, undershoot 43)   no-lower-bound   636   bounds-but-no-greatest    50
+    join   ok    484                                       no-upper-bound   776   bounds-but-no-least      66
+    first meet failure: none  UF<0,0>+0  &  UF<0,0>+1/2
+    first join failure: none  UF<0,0>+0  &  UF<0,0>+1/3
+    pairs whose value sets are disjoint (so the only lower bound is the empty set): 609
+    of the 636 pairs with no lower bound at all, disjoint ones: 609
+

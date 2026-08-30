@@ -1,0 +1,27 @@
+y4: is one property behind the fusion cell and the accumulator cell?
+W = 4, exhaustive per cell
+
+=== reduction = wrapping ===
+signedness   congruence   failures    fusion diff        reach    acc visible  saturated
+unsigned           true          0              0         2304              0       3280
+signed             true          0              0         1616              0       1712
+
+=== reduction = saturating ===
+signedness   congruence   failures    fusion diff        reach    acc visible  saturated
+unsigned           true          0              0         2304              0       3280
+signed            false       3728            760         1616            476       1712
+
+=== reduction = BADFOLD (control) ===
+signedness   congruence   failures    fusion diff        reach    acc visible  saturated
+unsigned          false       3495           2096         2304           1772       3280
+signed            false       7198           1434         1616            896       1712
+
+=== verdicts ===
+W2: congruence predicts the fusion cell at 4 of 4
+W3: congruence predicts the accumulator cell at 4 of 4
+W4: the two cells coincide iff both are 4 of 4
+
+C1: the BADFOLD control must show congruence=false, fusion diff > 0 and
+    accumulator visible > 0 in every row above, including the cells where
+    wrapping and saturating are all zero. If it does not, the congruence
+    test is not what is driving the prediction.

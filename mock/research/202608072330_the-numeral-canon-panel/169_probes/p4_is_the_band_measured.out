@@ -1,0 +1,44 @@
+=== A. is a band generic across constructions? ===
+construction                          exact  resolved       band  width
+168: t=3x+97, A=t*t, B=t>>2              20        16    [16,19]      4
+A=t*t, t=x+97 (smaller node)             17        16    [16,16]      1
+A=t*3 (linear branch)                    12        10    [10,11]      2
+A=t*t*t (cubic branch)                   30        24    [24,29]      6
+A=t>>1 (contracting branch)               9         7      [7,8]      2
+t=x (identity node), A=t*t               16        16      empty      0
+
+C3 some construction has an empty band : True   (want True)
+
+=== B. is branch B's loss measured across the band, or at one width? ===
+    168's construction: exact needs 20 bits, resolved needs 16, band [16, 17, 18, 19]
+ carrier  in band  inputs worse  total extra |err|
+      14    False           203              15504
+      15    False           203              15504
+      16     True           203              15504
+      17     True           203              15504
+      18     True           203              15504
+      19     True           203              15504
+      20    False           203              15504
+      21    False           203              15504
+      22    False           203              15504
+
+C1 loss is independent of the carrier width : confirmed below
+C2 width 16 reproduces 168's 203 / 15504     : True   (got (203, 15504))
+
+VERDICT
+  Branch B's loss is IDENTICAL at every carrier width swept:
+    1 distinct (worse, total) pair(s) across 9 widths -> {(203, 15504)}
+  which is what the model forces: B's loss depends on whether t is
+  resolved, and nothing in B's computation reads the carrier at all.
+
+  So the band is not a measured boundary. It is the interval
+  [resolved_need, exact_need - 1], entailed by p6's own inequality, and
+  the ONE thing measured in it is the loss at a single width, which is
+  the same number at every other width. The claim 'the conflict exists
+  at 16 through 19' is arithmetic on two observed widths plus one
+  measurement that does not vary across them.
+
+  That does NOT make it an artifact of the construction. The sweep above
+  shows a band appears whenever the exact form needs more than the
+  resolved one, which is generic, and vanishes exactly when they agree.
+  The bound is right. What is wrong is calling it measured.

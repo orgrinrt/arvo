@@ -1,0 +1,154 @@
+===== poset.py =====
+    meet failure: U0.1@0 vs U0.1@1/2 -> extremal []
+    join failure: U0.1@0 vs U0.1@1/4 -> extremal []  [TRUNC]
+    join failure: U0.1@0 vs U0.2@1/4 -> extremal []  [TRUNC]
+    join failure: U0.1@0 vs U0.2@1/2 -> extremal []  [TRUNC]
+
+=== D. floats alone, unsigned ===
+elements (distinct value sets): 15   pairs: 105   comparable: 72
+  meet: unique 105 (exact = intersection 105), FAILS 0
+  join: unique 99 (exact = union 75), FAILS real 0, boundary/unknown 6
+  VERDICT: meet-semilattice and join-semilattice modulo truncation
+    join failure: F(p=2,e=[0,3]) vs F(p=4,e=[-1,1]) -> extremal []  [TRUNC]
+    join failure: F(p=2,e=[0,3]) vs F(p=4,e=[-1,2]) -> extremal []  [TRUNC]
+    join failure: F(p=3,e=[0,3]) vs F(p=4,e=[-1,1]) -> extremal []  [TRUNC]
+
+=== E. fixed and float in one order, unsigned ===
+elements (distinct value sets): 21   pairs: 210   comparable: 137
+  meet: unique 197 (exact = intersection 196), FAILS 13
+  join: unique 199 (exact = union 142), FAILS real 11, boundary/unknown 0
+  VERDICT: NOT a meet-semilattice and NOT a join-semilattice
+    meet failure: U0.1 vs U1.0 -> extremal []
+    meet failure: U0.1 vs U2.0 -> extremal []
+    meet failure: U0.1 vs U3.0 -> extremal []
+    join failure: U0.1 vs U3.0 -> extremal ['F(p=3,e=[0,2])', 'U3.1']  [REAL]
+    join failure: U1.0 vs U0.2 -> extremal ['U1.2', 'F(p=2,e=[-1,1])']  [REAL]
+    join failure: U1.0 vs U0.3 -> extremal ['U1.3', 'F(p=3,e=[-1,1])']  [REAL]
+===== closure.py =====
+  meet: unique 300 (exact = intersection 300), FAILS 0
+  join: unique 300 (exact = union 200), FAILS real 0, boundary/unknown 0
+  VERDICT: meet-semilattice and join-semilattice
+
+=== both signs: zero-width=Y negative-width=N ===
+elements (distinct value sets): 49   pairs: 1176   comparable: 530
+  meet: unique 1176 (exact = intersection 1131), FAILS 0
+  join: unique 1056 (exact = union 530), FAILS real 0, boundary/unknown 120
+  VERDICT: meet-semilattice and join-semilattice modulo truncation
+    join failure: I1.0 vs U4.0 -> extremal []  [TRUNC]
+    join failure: I1.0 vs U4.1 -> extremal []  [TRUNC]
+
+=== unsigned: zero-width=Y negative-width=Y ===
+elements (distinct value sets): 37   pairs: 666   comparable: 330
+  meet: unique 666 (exact = intersection 666), FAILS 0
+  join: unique 666 (exact = union 330), FAILS real 0, boundary/unknown 0
+  VERDICT: meet-semilattice and join-semilattice
+
+=== both signs: zero-width=Y negative-width=Y ===
+elements (distinct value sets): 73   pairs: 2628   comparable: 870
+  meet: unique 2628 (exact = intersection 2628), FAILS 0
+  join: unique 2340 (exact = union 870), FAILS real 0, boundary/unknown 288
+  VERDICT: meet-semilattice and join-semilattice modulo truncation
+    join failure: I4.-3 vs U4.-3 -> extremal []  [TRUNC]
+    join failure: I4.-3 vs U4.-2 -> extremal []  [TRUNC]
+===== predicate.py =====
+    meet not unique: 64    join not unique: 0
+    meet witness: U0.1 ^ U1.0 has 0 maximal lower bounds, e.g. []
+
+--- the four shipped float formats only: 4 shapes, 6 pairs
+    meet not unique: 1    join not unique: 0
+    meet witness: F(p=11,e=[-14,15]) ^ F(p=8,e=[-126,127]) has 0 maximal lower bounds, e.g. []
+
+--- fixed I,F <= 8 together with the four float formats: 84 shapes, 3486 pairs
+    meet not unique: 116    join not unique: 675
+    meet witness: U0.1 ^ U1.0 has 0 maximal lower bounds, e.g. []
+    join witness: U0.1 v U8.0 has 2 minimal upper bounds, e.g. [U8.1, F(p=8,e=[-126,127])]
+
+--- fixed I,F <= 32 step 4 together with the four float formats: 84 shapes, 3486 pairs
+    meet not unique: 231    join not unique: 442
+    meet witness: U0.4 ^ U4.0 has 0 maximal lower bounds, e.g. []
+    join witness: U0.4 v U8.0 has 3 minimal upper bounds, e.g. [U8.4, F(p=11,e=[-14,15]), F(p=8,e=[-126,127])]
+
+--- the hand-checkable witness, at widths anyone would ship
+    U20.0 subset U20.20: True   U0.20 subset U20.20: True
+    U20.0 subset F(p=11,e=[-14,15]): False   U0.20 subset F(p=11,e=[-14,15]): False
+    U20.0 subset F(p=8,e=[-126,127]): False   U0.20 subset F(p=8,e=[-126,127]): False
+    U20.0 subset F(p=24,e=[-126,127]): True   U0.20 subset F(p=24,e=[-126,127]): True
+    U20.0 subset F(p=53,e=[-1022,1023]): True   U0.20 subset F(p=53,e=[-1022,1023]): True
+    Fix(20,20) subset binary32: False
+    binary32 subset Fix(20,20): False
+===== sliding.py =====
+=== (a) the mechanism built directly, free placement, sizes 2^n ===
+  cover of {0} and {2}: 2 minimal upper bounds
+    ['-1', '0', '1', '2']
+    ['0', '1', '2', '3']
+  -> VALID. The hull spans 3 points, the ladder offers only 4, and the size-4 window slides.
+
+=== (b) the same construction with placement anchored to zero ===
+  1 minimal upper bound(s): [['0', '1', '2', '3']]
+  -> anchoring removes the freedom the mechanism needs.
+
+=== (c) does anything slide in the anchored fixed-point family? ===
+  pairs drawn from the I,F<=4 box, joins computed in the I,F<=7 box
+  pairs: 1176   non-unique join: 0
+  -> nothing slides. Every anchored pair has one least cover.
+
+=== (d) the fixed-versus-float failure is not sliding ===
+  float set: ['0', '1/4', '1/2', '3/4', '1', '3/2', '2', '3']
+  A = ['0', '1']
+  B = ['0', '1/4', '1/2', '3/4']
+  A join B: 2 minimal upper bounds
+    contains 0: True   ['0', '1/4', '1/2', '3/4', '1', '3/2', '2', '3']
+    contains 0: True   ['0', '1/4', '1/2', '3/4', '1', '5/4', '3/2', '7/4']
+  -> both covers contain zero, so no window moved. They are incomparable in SHAPE, uniform against tapered.
+===== decisive.py =====
+
+=== operands radix two, bias zero (148's unbiased slice) ===
+  elements 231   pairs 26565
+  DECIDED join failures: 0
+  DECIDED meet failures: 0
+
+=== operands any radix up to 16 points, bias zero ===
+  elements 420   pairs 87990
+  DECIDED join failures: 20
+  DECIDED meet failures: 240
+    join: NN(n=2,q=1/8) v NN(n=2,q=1/4)  covers NN(n=4,q=1/8) and NN(n=9,q=1/24)  meeting in the union ['0', '1/8', '1/4']
+    join: SY(n=3,q=1/8) v SY(n=3,q=1/4)  covers SY(n=7,q=1/8) and SY(n=17,q=1/24)  meeting in the union ['-1/4', '-1/8', '0', '1/8', '1/4']
+    join: AL(n=4,q=1/8) v NN(n=2,q=1/4)  covers SY(n=7,q=1/8) and SY(n=17,q=1/24)  meeting in the union ['-1/4', '-1/8', '0', '1/8', '1/4']
+    meet: NN(n=4,q=1/8) ^ NN(n=9,q=1/24)  lower NN(n=2,q=1/8) and NN(n=2,q=1/4)  spanning the intersection ['0', '1/8', '1/4']
+    meet: NN(n=4,q=1/8) ^ SY(n=17,q=1/24)  lower NN(n=2,q=1/8) and NN(n=2,q=1/4)  spanning the intersection ['0', '1/8', '1/4']
+    meet: NN(n=4,q=1/8) ^ AL(n=18,q=1/24)  lower NN(n=2,q=1/8) and NN(n=2,q=1/4)  spanning the intersection ['0', '1/8', '1/4']
+===== minimal_ubs.py =====
+
+pairs 5356   more than one minimal upper bound: 0   region unstable J=8 vs J=10: 0
+Every pair in the unbiased radix-two slice has exactly one minimal upper bound. The join exists throughout it.
+===== fullrange.py =====
+radix two, one value map, bias zero: pairs 2415   operands 70  search pool 330   MORE THAN ONE MINIMAL UPPER BOUND: 0
+
+radix two, both value maps, bias zero: pairs 6216   operands 112  search pool 600   MORE THAN ONE MINIMAL UPPER BOUND: 0
+
+===== radix_mix.py =====
+      q=1/4 count=3 reach 1/4
+  JOIN (Fraction(1, 4), -4, 3) v (Fraction(1, 2), -2, 2)
+      q=1/8 count=17 reach 1
+      q=1/4 count=15 reach 7/4
+  JOIN (Fraction(1, 4), -4, 3) v (Fraction(1, 2), 0, 2)
+      q=1/8 count=17 reach 1
+      q=1/4 count=15 reach 7/4
+radices two and three, bias zero
+   operands 114  pool 766  pairs 6441   join non-unique 28   meet non-unique 18
+
+  MEET (Fraction(1, 24), -9, 8) ^ (Fraction(1, 8), -9, 8)
+      q=1/8 count=4 reach 1/8
+      q=1/4 count=3 reach 1/4
+  MEET (Fraction(1, 24), -9, 8) ^ (Fraction(1, 8), -8, 8)
+      q=1/8 count=4 reach 1/8
+      q=1/4 count=3 reach 1/4
+  JOIN (Fraction(1, 20), -5, 4) v (Fraction(1, 4), -1, 1)
+      q=1/80 count=161 reach 1
+      q=1/60 count=31 reach 1/4
+  JOIN (Fraction(1, 20), -5, 4) v (Fraction(1, 4), 0, 1)
+      q=1/80 count=161 reach 1
+      q=1/60 count=31 reach 1/4
+radices two, three and five, bias zero
+   operands 178  pool 1090  pairs 15753   join non-unique 30   meet non-unique 36
+

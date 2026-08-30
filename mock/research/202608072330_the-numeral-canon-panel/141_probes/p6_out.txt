@@ -1,0 +1,36 @@
+p6: is the fused arm the exact-intermediate policy?
+W = 6, exhaustive over all triples per cell, rounding = floor
+
+cell                        F    X1 mismatches  X2 stepwise diffs          X3 rate
+unsigned, wrapping          0                0                  0            0.00%
+                            1                0                  0            0.00%
+                            2                0                  0            0.00%
+                            3                0                  0            0.00%
+                            4                0                  0            0.00%
+                            5                0                  0            0.00%
+unsigned, saturating        0                0                  0            0.00%
+                            1                0                  0            0.00%
+                            2                0                  0            0.00%
+                            3                0                  0            0.00%
+                            4                0                  0            0.00%
+                            5                0                  0            0.00%
+signed, wrapping            0                0                  0            0.00%
+                            1                0                  0            0.00%
+                            2                0                  0            0.00%
+                            3                0                  0            0.00%
+                            4                0                  0            0.00%
+                            5                0                  0            0.00%
+signed, saturating          0                0             110476           42.14%
+                            1                0              98316           37.50%
+                            2                0              79226           30.22%
+                            3                0              51820           19.77%
+                            4                0              19752            7.53%
+                            5                0                 32            0.01%
+
+X1 holds iff the mismatch column is 0 everywhere: the fused lowering of
+the stepwise policy and the plain lowering of the exact-intermediate policy
+are the same function.
+X2 holds iff the stepwise-diffs column is nonzero wherever fusion differs:
+the two intermediate positions are genuinely two positions.
+X3's rate column should reproduce p1's fusion table under floor, which is
+what makes the identification a measured claim rather than a restatement.

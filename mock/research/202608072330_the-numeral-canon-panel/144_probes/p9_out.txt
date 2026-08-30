@@ -1,0 +1,45 @@
+==============================================================================
+X1/X2/Y1. does a Chebyshev weight travel worse than a linear one?
+==============================================================================
+  120 independent target pairs, 496 weights each
+    linear selector:                       86.9% switch
+    chebyshev, ideal computed per target:  86.9% switch
+    chebyshev, reference declared by design:87.1% switch
+  X1 chebyshev switches at least as often: CONFIRMED
+  X2 declaring the reference reduces it: REFUTED
+  Y1 identical targets, both selectors: 0 switches -> PASS
+
+==============================================================================
+X3/Y2. does the shared-baseline normalisation rescue Chebyshev too?
+==============================================================================
+  pure-rescale target pairs, chebyshev with a per-target ideal:
+    un-normalised: mean 23.8%  max 62.7%
+    normalised:    mean 0.0%  max 0.0%
+  Y2 the rescale moves it before normalising: PASS
+  X3 normalising drives it to exactly zero: CONFIRMED
+
+==============================================================================
+Z1/Y3. what does the linear limit cost, in the criterion it forgoes?
+==============================================================================
+  150 random arm sets containing an unreachable Pareto arm (of 361 drawn)
+  201 unreachable arms, gap to the best linearly reachable arm at the
+  unreachable arm's own certificate weight, in that criterion:
+    min 1.7%  median 17.6%  mean 21.1%  max 72.0%
+  Y3 negative gaps (impossible by construction): 0 -> PASS
+  Z1 median gap at least 10%: CONFIRMED
+
+the composition, which is what this is for:
+  the Chebyshev selector reaches every Pareto arm and costs nothing at
+  compile time. I expected its extra target-dependent object, the reference
+  point, to make a frozen selection travel worse. It does not: the two
+  selectors switch at 86.9% each, indistinguishable at one decimal, so the
+  reference point is not where the portability goes. And X2 fell: declaring
+  the reference in the design does not help either, which closes that route
+  rather than opening it. What DOES recover the rescale part of a target
+  change is the shared-baseline normalisation, exactly and for both
+  selectors. So neither selector is the answer on its own: what travels is a
+  weighting and a named baseline arm, and what never travels is the arm.
+
+==============================================================================
+control failures: 0 []
+==============================================================================

@@ -1,0 +1,69 @@
+========================================================================================================
+u3. Saturation has a deferral arm on a one-signed domain, and I missed it
+========================================================================================================
+
+P1 and C1. The homomorphism verdict against the ambient domain's sign.
+`118` q3's ambient range starts at `klo - span`, which is negative even
+for an unsigned primitive, so its saturating column measured a
+straddling domain. Both spans are run here.
+
+  primitive    ambient domain                   add           sub           mul
+  uW4/sat      non-negative 0..45         0/1089      391/1089        0/1089   
+  uW4/sat      straddling -48..48       720/2401      751/2401      256/2401   
+  uW4/wrap     non-negative 0..45         0/1089        0/1089        0/1089   
+  uW4/wrap     straddling -48..48         0/2401        0/2401        0/2401   
+
+  C1 is the wrapping rows: identical on both domains. P1 is the
+  saturating rows moving, which is `121`'s reconciliation reproduced.
+
+--------------------------------------------------------------------------------------------------------
+P2 and P3. Does the deferral licence exist under saturation?
+
+  terms: 96, of which 44 contain no subtraction
+
+  setting                                       cells  exact out  W0 differs root unsound  per-node uns
+  uW3/sat, one-sided, NO subtraction             5840       4002           0            0             0
+  uW3/sat, one-sided, with subtraction           7192       5820        2161           38             0
+  uW4/sat, one-sided, NO subtraction            39584      32104           0            0             0
+  uW4/sat, one-sided, with subtraction          49072      44247       17840          142             0
+  uW3/wrap, one-sided, NO subtraction [C1]       5840       4002           0            0             0
+  uW3/wrap, one-sided, with subtraction [C1]     7192       5820           0            0             0
+
+  C3. A signed container with declarations reaching below zero, where the
+  reachable set straddles zero with no subtraction present:
+
+  iW3/sat, two-sided decls, NO subtraction        968        968         656            0             0
+  iW4/sat, two-sided decls, NO subtraction       5840       5840        4416            0             0
+
+--------------------------------------------------------------------------------------------------------
+P4. Are `118` q1's saturating root-only unsound cells all subtraction terms?
+
+    uW3/sat      root-only unsound on   38 cells; 38 contain a subtraction, 0 do not
+    iW3/sat      root-only unsound on   34 cells; 34 contain a subtraction, 0 do not
+
+--------------------------------------------------------------------------------------------------------
+P5. The shipped test's identity, re-derived.
+`warm-clamp-shared/src/lib.rs:1105` asserts that for non-negative
+addition, clamping every step equals clamping once.
+
+    W=3 arity=2: eager and deferred clamping disagree on 0/64 folds
+    W=3 arity=3: eager and deferred clamping disagree on 0/512 folds
+    W=4 arity=2: eager and deferred clamping disagree on 0/256 folds
+    W=4 arity=3: eager and deferred clamping disagree on 0/4096 folds
+    W=5 arity=2: eager and deferred clamping disagree on 0/1024 folds
+    W=5 arity=3: eager and deferred clamping disagree on 0/32768 folds
+
+========================================================================================================
+
+  READING IT
+
+  P2 and P3 are the finding. If W0 differs is zero and root unsound is zero on
+  the saturating subtraction-free rows, with the 'exact out' column nonzero so
+  C2 is satisfied, then saturation carries the deferral licence on that region
+  and `119` 4.3 and 4.4 are both narrower than the evidence.
+
+  C3 decides how the region is stated. If the signed two-sided rows break, the
+  condition is that the reachable set keeps its sign rather than that no
+  subtraction appears, and the weaker syntactic form is a sufficient condition
+  for it rather than the condition itself.
+

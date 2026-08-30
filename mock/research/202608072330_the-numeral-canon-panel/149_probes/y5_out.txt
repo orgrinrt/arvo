@@ -1,0 +1,12 @@
+citations checked (must pass): 26
+failures: 0
+deliberately wrong entries: 2
+  of those, wrongly found: 0 (must be 0)
+
+claim: 'tolerance' absent from 146 and 145 -> 146:0 145:0 (both must be 0)
+claim: 'congruence' occurrences in 146 -> 5
+    line 48
+    line 52
+    line 87
+    line 291
+    line 421

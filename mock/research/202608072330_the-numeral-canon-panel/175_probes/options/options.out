@@ -1,0 +1,33 @@
+--- each option of mine, counted across the whole candidate ---
+  Q-C1      2
+  Q-C2      1
+  Q-C3      0
+  Q-C4      2
+  Q-C5      3
+  Q-C6      0
+  Q-C7      0
+  O-171-1   0
+  O-171-2   3
+  O-171-3   1
+  O-171-4   2
+  O-169-2   3
+
+--- C-C: a name that does not exist ---
+  Q-C99     0
+
+--- where each found one sits: section 3 (closed) or section 7 (live) ---
+  Q-C1      closed(s3)=0 live(s7)=1 notsettled(s5)=0
+  Q-C2      closed(s3)=0 live(s7)=0 notsettled(s5)=1
+  Q-C3      closed(s3)=0 live(s7)=0 notsettled(s5)=0
+  Q-C4      closed(s3)=0 live(s7)=1 notsettled(s5)=0
+  Q-C5      closed(s3)=0 live(s7)=1 notsettled(s5)=0
+  Q-C6      closed(s3)=0 live(s7)=0 notsettled(s5)=0
+  Q-C7      closed(s3)=0 live(s7)=0 notsettled(s5)=0
+  O-171-1   closed(s3)=0 live(s7)=0 notsettled(s5)=0
+  O-171-2   closed(s3)=0 live(s7)=1 notsettled(s5)=0
+  O-171-3   closed(s3)=0 live(s7)=0 notsettled(s5)=0
+  O-171-4   closed(s3)=0 live(s7)=0 notsettled(s5)=0
+
+--- the two I most want to find: O-171-1 and Q-C2, in context ---
+
+ named instances; signed beyond Q12; non-uniform value sets** (inherited gap from the primitive topic). 5. **The mechanical enumeration of observation** (`167` Q-C2): every way a value escapes a region in a no-alloc, no-`dyn`, monomorphised setting, believed finite and decidable, unbuilt. (P)'s uniqueness argument assumes the binding relation is decidable at com

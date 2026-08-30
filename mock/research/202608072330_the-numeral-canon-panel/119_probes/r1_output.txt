@@ -1,0 +1,100 @@
+============================================================================================
+r1. The anchor inventory, and what the candidate carries
+============================================================================================
+
+  source                                                      findings  probes  lines
+  114_leroy_formalising_the_primitive.md                            34      29     22
+  115_jhala_the_check_the_policy_selects.md                         18      13      3
+  116_leijen_reply_what_the_homomorphism_opens.md                   24      18      5
+  118_leroy_reply_one_mechanism_and_the_condition_set.md            41      23     23
+
+  UNION across the four                                             68      73     47
+    (finding ids of the F<n>-<n> shape only)                        66
+    (probes counted by stem, so source and output are one)                  29
+    (line anchors into panel files only, not into source)                          36
+
+--------------------------------------------------------------------------------------------
+P1. Against the counts the dispatch states.
+
+  distinct finding ids                     counted   68   stated   66   differs
+  distinct finding ids, F<n>-<n> only      counted   66   stated   66   MATCHES
+  distinct probe-file references           counted   73   stated   52   differs
+  distinct probes counted by stem          counted   29   stated   52   differs
+  line anchors, any target                 counted   47   stated   11   differs
+  line anchors into panel files only       counted   36   stated   11   differs
+
+  Where a count differs the pattern is the thing to read, not the
+  number. Both are printed above so a reader can decide which counting
+  the dispatch meant, and the set difference below is unaffected by
+  which of the two is preferred: it is computed per class on my own
+  patterns, consistently on both sides.
+
+--------------------------------------------------------------------------------------------
+C1. The extractor on a file with no anchors, and on each panel file.
+
+    prose with no anchors: findings 0, probes 0, lines 0
+    each panel file above is nonzero in at least one class
+
+C2. Mangled anchors must not be extracted.
+
+    mangled text: findings [], probes [], lines []
+    (any of these being nonempty means the pattern is too loose)
+
+--------------------------------------------------------------------------------------------
+P2 and C3. What the candidate carries, with its own anchor accounting
+section excluded so listing a dropped anchor cannot make it present.
+
+  class             in the four   in 119  in 119 incl. accounting  dropped
+  finding                    68       65                       69        4
+  probe                      73       32                       32       66
+  probe_stem                 29       25                       25        7
+  line                       47       22                       22       38
+  line_panel                 36       18                       18       28
+  line_panel_norm            34       18                       18       24
+
+  C3 fires when the 'incl. accounting' column exceeds the 'in 119'
+  column: it means the accounting section does contain anchors that
+  the body does not, which is exactly the disabling this guards.
+
+  Dropped, per class, listed so the drop is visible rather than silent:
+
+    finding (4 dropped):
+      F111-10                 F112-16                 F116-11                 F14                   
+
+    probe_stem (7 dropped):
+      p0                      p10                     p8c                     q0                      q7                      s0                    
+      s4                    
+
+    line_panel_norm (24 dropped):
+      106:172                 106:280                 108:822                 110:523                 111:1385                111:951               
+      112:1029                112:1039                112:1113                112:1142                112:937                 114:1124              
+      114:884                 114:897                 114:913                 114:916                 114:921                 115:146               
+      115:215                 115:349                 115:59                  116:322                 116:353                 116:453               
+
+  Carried, per class:
+
+    finding (64 carried):
+      F111-15                 F111-18                 F112-12                 F112-14                 F112-2                  F112-21               
+      F112-22                 F112-23                 F112-24                 F112-3                  F112-4                  F114-1                
+      F114-10                 F114-11                 F114-12                 F114-13                 F114-14                 F114-15               
+      F114-16                 F114-17                 F114-18                 F114-19                 F114-2                  F114-20               
+      F114-3                  F114-4                  F114-5                  F114-6                  F114-7                  F114-8                
+      F114-9                  F115-1                  F115-2                  F115-3                  F115-4                  F115-5                
+      F115-6                  F116-1                  F116-10                 F116-2                  F116-3                  F116-4                
+      F116-5                  F116-6                  F116-7                  F116-8                  F116-9                  F118-1                
+      F118-10                 F118-11                 F118-12                 F118-13                 F118-14                 F118-15               
+      F118-16                 F118-2                  F118-3                  F118-4                  F118-5                  F118-6                
+      F118-7                  F118-8                  F118-9                  F12                   
+
+    probe_stem (22 carried):
+      p1                      p11                     p2                      p3                      p4                      p4b                   
+      p5                      p5b                     p6                      p7                      p8                      p9                    
+      q1                      q2                      q3                      q4                      q5                      q6                    
+      r2                      s1                      s2                      s3                    
+
+    line_panel_norm (10 carried):
+      108:825                 112:1002                112:1009                112:1116                112:928                 115:120               
+      115:182                 116:315                 116:359                 117:35                
+
+  Finding ids appearing in 119 and in none of the four (1):
+      F3
