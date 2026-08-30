@@ -41,6 +41,116 @@ fn the_committed_canon_stamps_nothing_on_an_ack() {
 }
 
 #[test]
+fn the_committed_canon_rests_no_measurement_on_an_unusable_instrument() {
+    let found = shape::measurements_resting_on_an_unusable_instrument(&canon());
+    assert!(found.is_empty(), "{found:#?}");
+}
+
+/// The three ways an instrument cannot be used, and the one way it can.
+///
+/// This arm exists because the gate beside it was accidentally strong while
+/// the `probe` namespace was empty and got weaker the moment somebody filled
+/// it: naming a probe became enough. The seat that filled it predicted that
+/// before its own run, which is the shape of finding worth acting on rather
+/// than filing.
+#[test]
+fn a_measurement_may_not_rest_on_a_defective_withdrawn_or_uncontrolled_probe() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[probe]]
+id = "the_sound_one"
+standing = "sound"
+control = "the wrap arm had to disagree with clamp at width 5, and it fired"
+
+[[probe]]
+id = "the_defective_one"
+standing = "defective"
+control = "the arm compared two placements of sixteen; no control caught it"
+
+[[probe]]
+id = "the_withdrawn_one"
+standing = "withdrawn"
+control = "the author retracted it before reporting"
+
+[[probe]]
+id = "the_uncontrolled_one"
+standing = "sound"
+control = "no control was run"
+
+[[proposal]]
+id = "rests_on_the_sound_one"
+sentence_kind = "measured"
+evidence = ["the_sound_one"]
+
+[[proposal]]
+id = "rests_on_the_defective_one"
+sentence_kind = "measured"
+evidence = ["the_defective_one"]
+
+[[proposal]]
+id = "rests_on_the_withdrawn_one"
+sentence_kind = "enumeration"
+evidence = ["the_withdrawn_one"]
+
+[[proposal]]
+id = "rests_on_the_uncontrolled_one"
+sentence_kind = "measured"
+evidence = ["the_uncontrolled_one"]
+
+[[proposal]]
+id = "an_argument_citing_a_defective_one"
+sentence_kind = "argument"
+evidence = ["the_defective_one"]
+"#,
+    );
+    let found = shape::measurements_resting_on_an_unusable_instrument(&reg);
+    let mut at: Vec<&str> = found.iter().map(|f| f.at.as_str()).collect();
+    at.sort();
+    assert_eq!(
+        at,
+        [
+            "proposal::rests_on_the_defective_one",
+            "proposal::rests_on_the_uncontrolled_one",
+            "proposal::rests_on_the_withdrawn_one",
+        ],
+        "the sound one must pass, and an argument citing a defective probe is not a \
+         measurement resting on one: {found:#?}"
+    );
+    assert!(
+        found
+            .iter()
+            .any(|f| f.kind == "measurement-rests-on-an-uncontrolled-instrument"),
+        "the uncontrolled case is reported under its own kind, because the fix differs: \
+         {found:#?}"
+    );
+}
+
+/// The control on the control-detector, which is a phrase match and could
+/// easily report every probe that uses the word.
+#[test]
+fn a_probe_describing_a_control_that_fired_is_not_read_as_having_none() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[probe]]
+id = "a_real_one"
+standing = "sound"
+control = "a planted anchor that must be reported; it fired on the first run"
+
+[[proposal]]
+id = "rests_on_it"
+sentence_kind = "measured"
+evidence = ["a_real_one"]
+"#,
+    );
+    assert!(
+        shape::measurements_resting_on_an_unusable_instrument(&reg).is_empty(),
+        "the word `control` appearing is not an admission that none was run"
+    );
+}
+
+#[test]
 fn the_committed_canon_defines_no_term_twice() {
     let found = shape::a_term_defined_twice(&canon());
     assert!(found.is_empty(), "{found:#?}");

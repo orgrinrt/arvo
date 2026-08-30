@@ -131,6 +131,81 @@ pub fn archive_citations_naming_nothing(dir: &Path) -> Vec<Finding> {
     out
 }
 
+/// A committed probe that reads a tree other than the one it sits in.
+///
+/// **The quietest instrument defect this corpus has produced, and it was found
+/// tenth.** A probe script with an absolute path to somebody's checkout does
+/// not fail when run somewhere else: if that checkout exists on the host, and
+/// here it does, the script succeeds and reports about a different tree. Twenty
+/// of the ones carrying it are citation checkers, which is the cheapest
+/// correctness tool the panel has, verifying somebody else's clone.
+///
+/// They were correct when written, because the panel lived in that clone. They
+/// became wrong the moment the arc moved, silently, with nothing in any output
+/// saying which tree had been read. **That is the shape worth naming: not a
+/// broken probe, a probe that keeps working on the wrong subject.**
+///
+/// The repair in every case is the same and is one line: resolve the root from
+/// the script's own location rather than naming it.
+pub fn probes_reading_another_tree(dir: &Path) -> Vec<Finding> {
+    let mut out = Vec::new();
+    let mut files = Vec::new();
+    collect_scripts(dir, &mut files);
+    files.sort();
+    for path in files {
+        let Ok(text) = fs::read_to_string(&path) else {
+            continue;
+        };
+        let shown = path
+            .strip_prefix(dir)
+            .unwrap_or(&path)
+            .display()
+            .to_string();
+        for (n, line) in text.lines().enumerate() {
+            // A home-anchored absolute path is the whole tell. A relative path
+            // is resolved against wherever the script runs, which is a
+            // different and much louder failure.
+            let Some(at) = line.find("/Users/") else {
+                continue;
+            };
+            let rest = &line[at ..];
+            let cited: String = rest
+                .chars()
+                .take_while(|c| !c.is_whitespace() && *c != '"' && *c != '\'' && *c != ')')
+                .collect();
+            out.push(Finding::new(
+                "a-probe-reads-another-tree",
+                format!("{shown}:{}", n + 1),
+                format!(
+                    "names `{cited}`, an absolute path outside this repository. If that path \
+                     exists on the host the script succeeds against a tree that is not this \
+                     one and says nothing; if it does not, the script fails for a reason \
+                     nobody will connect to the move. Resolve the root from the script's own \
+                     location."
+                ),
+            ));
+        }
+    }
+    out
+}
+
+fn collect_scripts(dir: &Path, out: &mut Vec<PathBuf>) {
+    let Ok(entries) = fs::read_dir(dir) else {
+        return;
+    };
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.is_dir() {
+            collect_scripts(&path, out);
+        } else if path
+            .extension()
+            .is_some_and(|e| e == "sh" || e == "py" || e == "rs" || e == "awk")
+        {
+            out.push(path);
+        }
+    }
+}
+
 /// Every `seed/<file>.md` a line mentions.
 ///
 /// Reads the bare path rather than a reference expression, because the corpus

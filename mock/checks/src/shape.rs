@@ -122,6 +122,83 @@ pub fn measured_without_evidence(reg: &Registry) -> Vec<Finding> {
         .collect()
 }
 
+/// A measurement resting on an instrument nobody should quote.
+///
+/// **The gate above was accidentally strong while the `probe` namespace was
+/// empty**: a `measured` row could name no probe and was reported, and it could
+/// name no usable one either, because there were none of any kind. The seat
+/// that filled the namespace predicted, before its own run, that finishing the
+/// job would weaken the check, and it was right. Naming a probe is now enough
+/// to pass, and a probe can be defective, withdrawn, or one whose own `control`
+/// field says nothing was run.
+///
+/// So citing is not the bar. **What a measurement owes is an instrument whose
+/// figures may be used**, and the three states this reports are the three ways
+/// one cannot be:
+///
+/// - `defective`, where a known defect means the numbers are wrong.
+/// - `withdrawn`, where the author retracted it.
+/// - `sound` on paper with a `control` saying no case that had to fail was run,
+///   which is the quietest of the three and the one the corpus is full of: a
+///   probe that cannot come out any other way produces a number and is not an
+///   instrument.
+pub fn measurements_resting_on_an_unusable_instrument(reg: &Registry) -> Vec<Finding> {
+    let mut out = Vec::new();
+    for row in reg.of("proposal") {
+        let Some(kind) = row.get("sentence_kind") else {
+            continue;
+        };
+        if !RAN_SOMETHING.contains(&kind) {
+            continue;
+        }
+        for cited in row.list("evidence") {
+            let Some(probe) = reg.of("probe").find(|p| &p.id == cited) else {
+                continue; // a slug naming no row is the engine's report, not this arm's
+            };
+            let standing = probe.get("standing").unwrap_or("");
+            if standing == "defective" || standing == "withdrawn" {
+                out.push(Finding::new(
+                    "measurement-rests-on-an-unusable-instrument",
+                    row.addr(),
+                    format!(
+                        "`evidence` names `probe::{cited}`, whose `standing` is `{standing}`. \
+                         Its figures are not to be used, so a claim resting on it is not a \
+                         measurement. Cite a sound instrument, or mark the sentence as the \
+                         argument it now is."
+                    ),
+                ));
+                continue;
+            }
+            if names_no_control(probe.get("control").unwrap_or("")) {
+                out.push(Finding::new(
+                    "measurement-rests-on-an-uncontrolled-instrument",
+                    row.addr(),
+                    format!(
+                        "`evidence` names `probe::{cited}`, whose own `control` says no case \
+                         that had to fail was run. An instrument that cannot come out any \
+                         other way produces a number and is not an instrument, so what this \
+                         row has is a figure rather than a measurement."
+                    ),
+                ));
+            }
+        }
+    }
+    out
+}
+
+/// Whether a `control` field is an admission that none was run.
+///
+/// Read from the text because that is where the corpus puts it, and the field
+/// is required precisely so the admission has somewhere to go. Deliberately
+/// narrow: it matches a probe saying plainly that nothing was run, and not one
+/// describing a control that did.
+fn names_no_control(control: &str) -> bool {
+    let c = control.to_ascii_lowercase();
+    ["no control", "none was run", "none run", "nothing was run", "no case"]
+        .iter()
+        .any(|phrase| c.contains(phrase))
+}
+
 /// A region on an imposed proposition inverts it, and its absence anywhere else
 /// hides one.
 ///
@@ -263,7 +340,18 @@ pub fn definitions_with_no_term(reg: &Registry) -> Vec<Finding> {
 /// enumeration.
 pub fn rows_with_no_keywords(reg: &Registry) -> Vec<Finding> {
     let mut out = Vec::new();
-    for namespace in ["ruling", "proposal", "question", "obligation", "retirement"] {
+    // `probe` joined this list late, reported by the seat that filled it: a
+    // reader hunting for the instrument behind a figure searches for what it
+    // measured, and a probe row is exactly as unfindable without keywords as
+    // any other.
+    for namespace in [
+        "ruling",
+        "proposal",
+        "question",
+        "obligation",
+        "retirement",
+        "probe",
+    ] {
         for row in reg.of(namespace) {
             if row.list("keywords").is_empty() {
                 out.push(Finding::new(
