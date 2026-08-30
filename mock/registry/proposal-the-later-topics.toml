@@ -264,7 +264,6 @@ standing = "two_experts"
 topic = "the_strategy_object"
 says = "A strategy is a pair. Component one is an assignment on observable policy axes and it fixes the denoted answer. Component two is a weighting over cost coordinates and it ranges over realisations of that denotation. The two are told apart by one mechanical test rather than by taste: take the candidate axis, hold everything else fixed, sweep the domain, and look for an input where the answer changes."
 because = "The components have different closure properties, so the question of whether the strategy set is closed has two answers and conflates them. The assignment space is closed and enumerable, because an axis position with no lowering cannot be supplied from outside. The weighting space is open and consumer-supplied, because a weighting re-ranks arms that already exist. The axes are closed; the named points are open."
-answers = ["is_i9_about_a_strategy_or_one_component"]
 note = """
 Two cold derivations reached the pair blind by different routes, one from a \
 bytes-level model and one from two of the stated intents set against each other. \
