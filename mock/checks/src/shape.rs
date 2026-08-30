@@ -354,6 +354,97 @@ pub fn definitions_with_no_term(reg: &Registry) -> Vec<Finding> {
         .collect()
 }
 
+/// A live claim restating something the corpus retired.
+///
+/// 176 retirements exist and each holds the retired sentence in the words a
+/// later reader would search for, which is what makes this checkable at all.
+/// **Nothing was checking it.** The seat that wired the first answering edges
+/// named the gap itself: it had not read `retirement.toml`, so a claim it wired
+/// to a question could be one somebody had already struck out, and nothing in
+/// its process would have caught that.
+///
+/// The failure is worse than a stale row. A retired claim wired to a question
+/// reports that question **settled**, by a sentence the corpus has said must
+/// not be cited, and the reader who follows the edge finds an answer rather
+/// than a retirement.
+///
+/// **Deliberately high precision and low recall.** It matches a long verbatim
+/// run rather than a paraphrase, so it finds a claim carried over wholesale and
+/// misses one reworded. A fuzzy version would report a shared subject as a
+/// restatement, and a check nobody believes is a check nobody runs.
+pub fn rows_restating_a_retired_claim(reg: &Registry) -> Vec<Finding> {
+    /// How many consecutive words make a match distinctive rather than a
+    /// coincidence of vocabulary. Eight is long enough that two authors do not
+    /// write it twice by accident on this subject, and short enough to survive
+    /// a claim being quoted with its edges trimmed.
+    const RUN: usize = 8;
+
+    let retired: Vec<(&str, String, Vec<String>)> = reg
+        .of("retirement")
+        .filter_map(|r| {
+            let claim = r.get("claim")?;
+            let words: Vec<String> = normalise(claim);
+            Some((r.id.as_str(), claim.to_string(), words))
+        })
+        .collect();
+
+    let mut out = Vec::new();
+    for namespace in ["proposal", "ruling"] {
+        for row in reg.of(namespace) {
+            let Some(says) = row.get("says") else {
+                continue;
+            };
+            let haystack = normalise(says).join(" ");
+            for (slug, claim, words) in &retired {
+                if words.len() < RUN {
+                    // A short claim has no distinctive run, so the whole of it
+                    // has to appear or nothing is reported. Anything looser on
+                    // a five-word sentence matches the subject rather than the
+                    // claim.
+                    if !words.is_empty() && haystack.contains(&words.join(" ")) {
+                        out.push(hit(row, slug, claim));
+                    }
+                    continue;
+                }
+                if words
+                    .windows(RUN)
+                    .any(|w| haystack.contains(&w.join(" ")))
+                {
+                    out.push(hit(row, slug, claim));
+                }
+            }
+        }
+    }
+    out
+}
+
+fn hit(row: &Row, slug: &str, claim: &str) -> Finding {
+    let shown: String = claim.chars().take(120).collect();
+    Finding::new(
+        "a-live-row-restates-a-retired-claim",
+        row.addr(),
+        format!(
+            "`says` carries a run of `retirement::{slug}`, whose whole purpose is that the \
+             sentence is not cited again: \"{shown}\". If the row is right the retirement is \
+             wrong and says so; if the retirement is right this row answers nothing."
+        ),
+    )
+}
+
+/// Lowercase words, punctuation dropped, so a quotation matches the sentence it
+/// quotes across a difference in emphasis or a trailing comma.
+fn normalise(s: &str) -> Vec<String> {
+    s.split_whitespace()
+        .map(|w| {
+            w.chars()
+                .filter(|c| c.is_alphanumeric())
+                .flat_map(char::to_lowercase)
+                .collect::<String>()
+        })
+        .filter(|w| !w.is_empty())
+        .collect()
+}
+
 /// A row nobody will find, because it uses none of the words they will search for.
 ///
 /// Cheap, and it has already cost this project the same question twice: a row

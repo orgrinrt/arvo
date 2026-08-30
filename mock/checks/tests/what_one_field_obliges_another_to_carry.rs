@@ -18,14 +18,39 @@ fn the_committed_canon_leaves_no_refusal_without_an_alternative() {
     assert!(found.is_empty(), "{found:#?}");
 }
 
+/// The claims that ran something and name no instrument, pinned by count.
+///
+/// **This carried an `#[ignore]` whose stated reason was false**, and it is
+/// worth saying so rather than quietly swapping it. The reason read "the
+/// `probe` namespace is empty and is being written". It was true when written
+/// and stopped being true when 48 probe rows landed; nobody updated it, so a
+/// catalogue-red sat behind an explanation that had become a lie, which is the
+/// exact class this suite exists to catch in other people's work. The seat that
+/// found it ran the test with `--ignored` and read what came out, which is the
+/// one thing an ignore stops anybody doing by accident.
+///
+/// What is actually true: 48 probes cover 27 of 135 directories, chosen by one
+/// seat's selection, and the claims from the earlier topics are not among them.
+/// Eight further claims are settled and unwritable for the same reason, the
+/// instrument being committed with no row naming it. So the gap is a namespace
+/// half-filled rather than an empty one, and filling the rest is a dispatch.
+///
+/// A ceiling rather than an ignore, because a ceiling keeps reporting. Lower it
+/// as probe rows land; raising it means a new claim was written with nothing
+/// behind it, and that is not the fix.
 #[test]
-#[ignore = "catalogue: the `probe` namespace is empty and is being written, so no row can \
-            name an instrument yet. Every measured and enumerated claim in the corpus is \
-            blocked on it, which is why that namespace was dispatched. Remove this attribute \
-            once `probe.toml` has rows and the citing proposals point at them."]
-fn the_committed_canon_has_an_instrument_behind_every_measurement() {
+fn no_new_measurement_lands_without_an_instrument() {
+    /// Measured after the probe port and the settling pass.
+    const WITHOUT_AN_INSTRUMENT: usize = 21;
+
     let found = shape::measured_without_evidence(&canon());
-    assert!(found.is_empty(), "{found:#?}");
+    assert!(
+        found.len() <= WITHOUT_AN_INSTRUMENT,
+        "{} claims ran something and name no instrument, against a ceiling of \
+         {WITHOUT_AN_INSTRUMENT}. Name the committed probe, or mark the sentence as the \
+         argument it is: {found:#?}",
+        found.len()
+    );
 }
 
 #[test]
