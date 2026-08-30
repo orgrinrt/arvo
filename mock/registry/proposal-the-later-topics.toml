@@ -451,6 +451,7 @@ topic = "the_chain"
 says = "Within a maximal unbound stretch, the design may select any realisation whose boundary behaviour meets the stretch's declared grade on its definedness domain. The exact grades fix the boundary function uniquely: composite correct rounding owes the resolution of the exact value, structural exactness owes the exact value, stepwise owes the fully-eager function, and the bounded-drift grade admits the family of placements within its bound."
 because = "The licence rests on two normative premises and both are named. The observability perimeter bounds obligations above, so nothing beyond the observation surface is owed; the declaration bounds them below, so the declared grade is owed. Neither follows from the partition theorem the clause sits beside."
 instead = "Where a stretch contains an operation that is partial at the profile in force, agreement on definedness is part of the declared grade at every profile, because partiality is a binding-free observation channel that no assertion flag governs."
+obligation = ["composition_contracts_above_the_numeral"]
 note = """
 **This is the underivable one, and it is why the topic's own result is that its \
 central claim splits by provenance.** Three members tried to derive it from the \
