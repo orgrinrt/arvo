@@ -1781,3 +1781,22 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::199_leijen_reply_two_axes_and_one_half_fact::#21-arm-e-compiles-and-does-not-compute",
 ]
 keywords = ["accumulator", "capacity", "bound", "static", "runtime length", "fold", "chain", "widen", "guard bits", "sufficiency", "ceil log2", "two axes"]
+
+[[proposal]]
+id = "the_derived_laws_units_re_runs_reproduced_and_its_defects_were_all_in_blind_spots"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "panel_conduct"
+says = "Inside the derived-laws unit, five re-run events across six member files reproduced to the digit, and every defect the unit found was in what an instrument could not see rather than in whether it reproduced. So a figure from that unit is at risk from its instrument's blind spots and not from its rerunnability, and those are different risks wanting different checks."
+because = "The chain is `79` re-running `76`'s and `77`'s probes, `82` re-running `79`'s, `84` re-running `80`'s p2c, `86` re-running six of `84`'s, and `89` re-running `86`'s p5, each with the rerun transcript committed beside the original rather than replacing it. The consolidation that assembled it is explicit that it did not re-execute the sources itself and that the chain is the members' work, which is why this is one expert aggregating five reports rather than five arrivals at one claim."
+predicate = [
+  "threads: threads = 1",
+]
+note = "**The predicate carries almost none of this claim's scope.** Its real coordinates are one unit, eight probe directories and five rerun events, none of which is a declared axis, and the same is true of the neighbouring bench-regions row which says so about itself. `threads = 1` is written because it was checked here rather than inherited: the eight probe directories hold 185 files and none mentions a thread, a spawn or rayon. That check matters because the corpus retired the claim that every instrument in this panel runs on one thread, as false at the moment it was written, so a blanket single-thread coordinate may not be assumed from anywhere. **The claim is scoped to one unit on purpose and does not generalise**: a later unit records a rerun that did not reproduce, twelve of thirteen crates at 108 tests with the thirteenth non-terminating under concurrent load against a completed run at 123 across 13, which is a difference in run conditions rather than a contradiction and is exactly the kind of thing this row must not be read past."
+gap = "What the reproduced figures are worth is untouched. The finding is that rerunning them returned the same numbers, never that the numbers answer the question their instrument was pointed at, and the unit's own defect record is the argument that the second risk is the live one."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::#r13-the-units-own-instruments-failed-in-one-repeated-way-and-the-record-of-it-is-a-result",
+  "panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#41-multi-instance-per-the-consolidations-own-account",
+]
+keywords = ["reproduction", "rerun", "re-run", "instrument discipline", "blind spot", "R13", "derived laws", "transcript", "panel conduct", "reproducibility"]
