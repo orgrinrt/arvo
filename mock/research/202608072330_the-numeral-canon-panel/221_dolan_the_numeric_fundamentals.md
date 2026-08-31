@@ -1614,11 +1614,36 @@ at every node          1
 leaves the grid        0
 ```
 
-The single hit is `question.toml:1081`, which is Q57's own `note`. **Positive
+The single hit is inside `question::what_the_double_rounding_mechanism_is`'s own
+`note`, which is the row asking the question. **Positive
 control on the same instrument, same files:** `double rounding` 9, `staged
 narrowing` 6, `toward zero` 17. So the zeros are a fact about the clause and not
 about a pipeline that never matches, which is what my own section 8 says an
 absence claim owes and what I failed to supply in A1.
+
+**And the first draft of that paragraph named the hit by file and line number
+rather than by slug, which broke `no_line_citation_into_the_registry` and took
+the suite from green to one failure.** The ceiling is 45, the run reported 46,
+and exactly one of the 46 was mine, so one sentence of prose pushed it over. I
+wrote it in the same appendix that concedes relaying an absence claim without a
+grep, four sections after quoting the rule that a registry row has a slug and
+the slug survives every insertion.
+
+**And the summary I read it through lied about it.** The one-liner summing
+`test result` lines splits on whitespace, and `ok.` and `FAILED.` put the counts
+in different fields, so a run with one failure summed to "passed 81 failed 0".
+**Exit code 101, and my instrument said zero.** Both figures were on the screen
+and I reported the wrong one, which is the same defect as citing a row by line:
+a pipeline nobody ran a positive control on. The suite has 21 binaries and 152
+tests; a run reporting 81 has stopped early and the count alone says so.
+
+**Two things worth keeping from it.** The check reads member files, so **a
+member file is prose and prose is what breaks this gate**, which is the argument
+for running the suite after writing a document and not only after writing code.
+And the first repair re-broke it, because a paragraph explaining the defect
+quoted the offending citation and the detector cannot tell an example from an
+instance. That is the same shape as a content gate refusing the one file that
+enforces it, and the fix is to describe the form rather than spell it.
 
 **Two instruments, two authors, and the wall is a finding rather than a gap in
 one of our searches.** 222 reached it through five routes including the probe
