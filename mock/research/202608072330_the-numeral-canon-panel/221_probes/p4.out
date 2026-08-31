@@ -1,0 +1,48 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p4_what_the_const_width_surface_can_carry.rs
+
+### compiled clean
+
+### p4. what a const generic width surface carries on the pinned nightly
+### the bar is the ungated column: `the_unstable_machinery_does_not_reach_a_consumer`
+
+arm  what                                                 ungated cc  ungated bld gated    
+A1   const generic as a value in a body (baseline)        compiles    compiles    compiles 
+A2   arithmetic on const widths in a TYPE position: N<{W + F}> REFUSED     REFUSED     compiles 
+A3   comparison of const widths in a where clause: W >= F REFUSED     REFUSED     compiles 
+A4   arithmetic in an associated const, used as a value   compiles    compiles    compiles 
+A5   an associated const used as a const generic argument REFUSED     REFUSED     compiles 
+A6   a consumer-facing alias fixing the const (option 5's shape) compiles    compiles    compiles 
+A7   a const assertion in an associated const (option 7's shape) compiles    compiles    compiles 
+C5   option 7's assertion on a VIOLATING width (must be refused) compiles    REFUSED     REFUSED  
+C4   a deliberately broken arm (must fail in both columns) REFUSED     REFUSED     REFUSED  
+
+  `ungated cc` is `--emit metadata`, what `cargo check` runs.
+  `ungated bld` is `--emit link`, what `cargo build` runs.
+  a row differing between them is a check a consumer's `cargo check` misses.
+
+CONTROLS
+  C1  the baseline compiles ungated                  as required  required=compiles
+  C2  some arm is refused ungated                    as required  required=a refusal
+  C3  some ungated refusal is rescued by the gate    as required  required=rescued
+  C4  the broken arm fails in both columns           as required  required=refused twice
+  C5  option 7's assertion refuses a violating width as required  required=refused twice
+  C5b it is refused under codegen specifically       as required  required=refused
+
+THE FIRST DIAGNOSTIC OF EACH UNGATED REFUSAL
+  A2   error: generic parameters may not be used in const operations
+  A3   error: generic parameters may not be used in const operations
+  A5   error: generic parameters may not be used in const operations
+  C5   error[E0080]: evaluation panicked: declared width is narrower than its fraction
+  C4   error[E0425]: cannot find function `this_function_does_not_exist` in this scope
+
+THE EMISSION SPLIT, WHICH IS THE PART A DESIGN HAS TO KNOW
+  C5   `cargo check` accepts, `cargo build` refuses
+
+WHAT A CONSUMER MAY WRITE WITH NO FEATURE OF ITS OWN
+  A1   const generic as a value in a body (baseline)
+  A4   arithmetic in an associated const, used as a value
+  A6   a consumer-facing alias fixing the const (option 5's shape)
+  A7   a const assertion in an associated const (option 7's shape)
+
+### exit 0
