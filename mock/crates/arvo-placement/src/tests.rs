@@ -14,8 +14,8 @@
 //! standing and failing rather than an assertion narrowed until it passes.
 
 use crate::{
-    declared_width, derive_shared, derive_sole, narrowest_carrier, Carrier, Objective, Occupancy,
-    Placement, Carrier16, Carrier32, Carrier64, Carrier8, LADDER,
+    declared_width, derive_shared, derive_sole, narrowest_carrier, Carrier, Carrier16, Carrier32,
+    Carrier64, Carrier8, Objective, Occupancy, Placement, LADDER,
 };
 use arvo_format::overflow::Wrap;
 use arvo_format::points::{Integer, UFixed};
