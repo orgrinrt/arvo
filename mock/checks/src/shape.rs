@@ -533,9 +533,9 @@ pub fn notes_claiming_an_empty_field_that_is_not(reg: &Registry) -> Vec<Finding>
             // about something else is not this.
             let needle = format!("`{field}`");
             let mut from = 0;
-            while let Some(at) = note[from ..].find(&needle) {
+            while let Some(at) = note[from..].find(&needle) {
                 let start = from + at + needle.len();
-                let window = &note[start .. note.len().min(start + 24)];
+                let window = &note[start..note.len().min(start + 24)];
                 if SAYS_EMPTY.iter().any(|p| window.contains(p)) && !row.list(field).is_empty() {
                     out.push(Finding::new(
                         "note-claims-an-empty-field-that-is-not",
@@ -546,7 +546,11 @@ pub fn notes_claiming_an_empty_field_that_is_not(reg: &Registry) -> Vec<Finding>
                              field, so it now reads as a caveat about the row it sits on and \
                              describes a different one.",
                             row.list(field).len(),
-                            if row.list(field).len() == 1 { "y" } else { "ies" }
+                            if row.list(field).len() == 1 {
+                                "y"
+                            } else {
+                                "ies"
+                            }
                         ),
                     ));
                     break;
