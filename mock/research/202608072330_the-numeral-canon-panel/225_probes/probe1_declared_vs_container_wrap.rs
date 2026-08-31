@@ -21,19 +21,31 @@
 // threads = 1, toolchain = the committed rustc in probe1_out.txt.
 
 fn mask(w: u32) -> u64 {
-    if w >= 64 { u64::MAX } else { (1u64 << w) - 1 }
+    if w >= 64 {
+        u64::MAX
+    } else {
+        (1u64 << w) - 1
+    }
 }
 
 // deterministic LCG so the run is reproducible without any input
 struct Lcg(u64);
 impl Lcg {
     fn next(&mut self) -> u64 {
-        self.0 = self.0.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+        self.0 = self
+            .0
+            .wrapping_mul(6364136223846793005)
+            .wrapping_add(1442695040888963407);
         self.0
     }
 }
 
-fn disagreements(w: u32, c: u32, exhaustive_limit: u32, samples: u32) -> (u64, u64, Option<(u64, u64)>) {
+fn disagreements(
+    w: u32,
+    c: u32,
+    exhaustive_limit: u32,
+    samples: u32,
+) -> (u64, u64, Option<(u64, u64)>) {
     let mw = mask(w);
     let mc = mask(c);
     let mut total = 0u64;
@@ -69,7 +81,10 @@ fn disagreements(w: u32, c: u32, exhaustive_limit: u32, samples: u32) -> (u64, u
 
 fn main() {
     println!("arm A: W in 1..=31, C = 32, wrap mul, declared vs container");
-    println!("{:>3} {:>12} {:>12} {:>10}  first witness", "W", "pairs", "disagree", "mode");
+    println!(
+        "{:>3} {:>12} {:>12} {:>10}  first witness",
+        "W", "pairs", "disagree", "mode"
+    );
     for w in 1..=31u32 {
         let (total, diff, first) = disagreements(w, 32, 10, 40_000);
         let mode = if w <= 10 { "exhaustive" } else { "sampled" };
@@ -85,7 +100,9 @@ fn main() {
     let (total, diff, _) = disagreements(32, 32, 10, 200_000);
     println!("  pairs={total} disagree={diff}");
     if diff != 0 {
-        println!("  INSTRUMENT BROKEN: control disagrees where the two wraps coincide by construction");
+        println!(
+            "  INSTRUMENT BROKEN: control disagrees where the two wraps coincide by construction"
+        );
         std::process::exit(2);
     }
 

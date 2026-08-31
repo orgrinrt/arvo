@@ -53,7 +53,10 @@ fn witnesses(f_src: u32, f_mid: u32, f_dst: u32) -> (u64, Vec<u64>) {
 
 fn main() {
     println!("arm A: witness counts, half-up, F_dst < F_mid < F_src <= 8, exhaustive per cell");
-    println!("{:>6} {:>6} {:>6} {:>8} {:>10}", "F_src", "F_mid", "F_dst", "values", "witnesses");
+    println!(
+        "{:>6} {:>6} {:>6} {:>8} {:>10}",
+        "F_src", "F_mid", "F_dst", "values", "witnesses"
+    );
     let mut any = false;
     for f_src in 3..=8u32 {
         for f_mid in 1..f_src {
@@ -92,7 +95,10 @@ fn main() {
         std::process::exit(2);
     }
     let x = w[0];
-    println!("  FAILED AS REQUIRED: {} witnesses; first x = {x}/16:", w.len());
+    println!(
+        "  FAILED AS REQUIRED: {} witnesses; first x = {x}/16:",
+        w.len()
+    );
     println!(
         "    direct to quarters: {}/4, via eighths: {}/4",
         quantise_half_up(x, 4, 2),

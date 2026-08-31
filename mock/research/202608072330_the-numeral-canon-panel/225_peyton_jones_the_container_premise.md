@@ -380,6 +380,137 @@ topic's to hold open:
 
 ---
 
-## 9. Reconciliation
+## 9. Reconciliation, appended after the phase-one commit
 
-Appended after the phase-one commit; see the commit ordering on this branch for the record that everything above was written blind.
+Everything above this heading was committed at `0b8e969c` and pushed before any
+of the following was opened. Nothing above it has been edited since; the branch
+history is the record. What phase two read, in order: the four proposal rows
+named in the brief, all seat 210's; the two `r210_*` retirement rows; the panel
+files `210_dolan_the_container_premise_is_a_theorem_over_a_signature.md`,
+`221_dolan_the_numeric_fundamentals.md` (its container-premise section),
+`222_kiselyov_the_numeric_fundamentals.md` (its 5.3 and section 11),
+`223_checkpoint_the_topic_layering.md`; the `probe` rows 210's proposals cite,
+whose committed artifacts I confirmed exist under `210_probes/`; and
+`git log` on this branch's ancestry.
+
+**The blindness, honestly restated.** Beyond the two leaks declared up front,
+nothing reached me before the commit. The four slugs in the brief are, read
+together, close to a table of contents for my sections 1 to 3, so the honest
+claim is: independent in route and instruments, signposted in destination. The
+route is where the independence lives, and my route was built from the ratified
+rows plus probes 1 to 3 before any prior file was opened.
+
+### Against the four proposals, one at a time
+
+- `observability_is_relative_to_a_declared_signature` (seat 210, definition,
+  one expert). My section 3's quantifier is the same definition reached from
+  the other end: 210 derives it from the candidate's own clauses 2 and 4, which
+  I never read; I derived it from the machine facts and the ratified spine.
+  Convergent, and by different instruments. What mine adds: the choice of
+  signature set is not free. The standards bound and the obligations force
+  layout signatures to be *declared* for some kinds (interchange, ABI, the
+  masked-cast boundary), and shared occupancy forbids a per-element one, so the
+  schema's parameter ranges over a constrained set with two hard walls.
+- `every_operation_arvo_declares_is_a_function_of_the_declared_width` (seat
+  210, measured, one expert). My finding 1 and probe 1 are the second
+  independent instance. Per the intersection discipline: the two instruments
+  overlap at `W = 13, F = 0, signedness = unsigned, operation = mul,
+  overflow policy = wrap, container = u16/u32-class, threads = 1`, and the
+  convergence claim is over that region. Each instance extends it alone
+  elsewhere: 210's carries `operation in {encode, add, mul, xor}`,
+  `overflow policy in {wrap, sat}`, `chain length in {1, 4}` and the twelve
+  standards widths; mine carries `W in 2..=31` for the wrap-mul divergence,
+  exhaustive at `W in 2..=10`. Cite 210 for the operation and policy axes and
+  mine for the width span; neither alone carries the union. And 210's own note
+  flags that nothing there reaches a fraction width above zero: **probe 2 is
+  the first instrument on this question that varies fraction grids**, and it
+  establishes the projection obligation at the rounding axis: an intermediate
+  on a finer grid, unprojected, is arithmetically observable, witnesses in all
+  83 cells with `F_dst < F_mid < F_src <= 8` under half-up. That is the
+  fractional edge of 210's "where the projection is omitted the carrier
+  becomes arithmetically observable", measured rather than inherited.
+- `the_carrier_is_observable_through_the_ambient_layout_observation_alone`
+  (seat 210, measured, one expert). Probe 3's facts 1 and 2 are the second
+  instance of the layout half, same shape, different types, and the must-fail
+  companion adds the direction 210's part A does not carry: the contrary
+  claim, one primitive with two carriers and footprint in the contract, is not
+  merely false but **uncompilable**, E0080 at const evaluation, stderr
+  committed. 210 shows the separation compiles; mine shows the anti-claim
+  cannot.
+- `at_shared_occupancy_no_per_element_footprint_observation_exists` (seat 210,
+  argument, one expert, its own note saying "a probe that builds the shared
+  placement and shows no per-element size observation exists would raise it",
+  and 222 section 11 repeating that the probe does not exist). **It exists
+  now: probe 4, built in this phase for exactly that gap.** A packed column of
+  five 13-bit elements, 9 bytes, elements 1 through 4 straddling byte
+  boundaries, roundtripping exactly (the control that the placement is real),
+  and the negative arm showing the only reachable size observation returns 16
+  bits, the extraction target, never the 13-bit placement. So the row's
+  argument-tier claim now has an instrument, which under its own note raises
+  it, and the second instance is not the same persona.
+
+### The one live disagreement in the corpus, and where I land
+
+222's summary table carries the container premise as "observable, and
+observable at const time", and its section 11 opens a fork: declare an
+occupancy dimension row, or rest on the const `size_of` read. Probe 4 bears on
+it directly: **the const read exists for the column and not for the element**,
+so at shared occupancy a per-element predicate cannot be built from `size_of`
+at all. The const-availability result (222's 5.3, real and useful) holds at
+sole occupancy only, and its table line is unpredicated on exactly the axis
+that moves it. Whichever route the panel picks, the sole-against-shared
+condition has to be carried somewhere explicit; the const read alone does not
+carry it. That is evidence for the occupancy-axis route, or for the condition
+staying in the sentences as 210 chose, and against reading 5.3 as
+occupancy-free. Declaring the axis is a two-reader call per the vocabulary
+rule and I am one reader; I flag rather than declare, and note that
+`alignment` does not substitute (probe 4's elements are straddling, and the
+distinction it needed was occupancy, not alignment).
+
+### What the prior work has that mine lacked, credited
+
+The clause-level surgery is 210's and it is the better half of the joint
+result: clause 6 repaired by one word ("denotational"), clause 9's witness
+quantifier widened to admit nullary observations with the spurious-pair
+control surviving, clause 4's conditional discharged, and the circular
+dependency between this question and the operation-set question located and
+retired (`r210_the_container_premise_is_upstream_of_the_operation_set_question`).
+I never saw the candidate's clauses and could not have done any of that. The
+32-to-64 dissolution is also 210's in full; my phase-one section 4 predicted
+its shape ("adding a signature refines the quotient") without knowing it was
+already established. And 222's const-availability observation, that `size_of`
+being const makes the footprint a gateable axis under
+`ruling::the_predicate_is_whatever_is_available_at_const_time`, is a
+consequence I did not draw.
+
+### What mine adds beyond the prior work, so the next seat starts from the list
+
+1. **The refutation symmetry** (section 2): each of op's two returned bounds
+   kills exactly one universal branch, so the fork was closed by its own bound
+   the day he returned it. 210 reaches both halves; the symmetry as a
+   one-sentence closure of the question row's option list is new, and it is
+   the sentence I would put in the consolidation.
+2. **Probe 2, the fraction-grid instrument**, the first on this question at
+   `F > 0` in the quantisation sense, closing the gap 210's own note names.
+3. **The must-fail compile form** of the layout half.
+4. **Probe 4, the packed-column instrument** both prior files name as missing.
+5. **The I5 strut**: Hot's licence to sacrifice soundness presupposes the
+   declared-width denotation as the reference semantics, so the strategy
+   axis's own ratified wording already commits the design to the
+   declared-width statement of value observations. Not in 210, 221 or 222.
+6. **The carrier-is-derived strut**: under const sizes and monomorphisation
+   the carrier is a const function of declaration and strategy, so the
+   container branch was never a different function space, only a weaker
+   contract over the same one. Also not in the prior files.
+
+### Standing, stated for the coordinator's gate
+
+Four claims now hold two independent instances each, with the second instance
+not seat 210's persona, which is what 221 said was owed: the signature-relative
+definition, the declared-width statement of declared value and encoding
+observations (convergent over the named intersection, extended per-axis by the
+instance that varied that axis), the ambient-layout observability at sole
+occupancy, and the shared-occupancy absence of a per-element footprint (now
+instrumented from both sides). The independence caveat is the signposting
+stated at the top of this section, and the coordinator should weigh it; the
+committed route evidence is what makes the caveat bounded rather than fatal.
