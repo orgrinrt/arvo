@@ -1,0 +1,39 @@
+######## 197 control runs ########
+
+=== 1. re-run of `191`'s figure-survival probes against the current registry ===
+Both were run in another worktree at a different commit, so the numbers were
+re-measured here rather than carried. All three of the 35 probe's controls
+behave: two positive figures present, one negative absent.
+
+  CTRL+A  present  476            registry=5   coherence law witness
+  CTRL+A  present  897            registry=2   coherence law witness, mutant
+  CTRL+B  present  12.6           registry=6   a 35 figure that DID survive
+  CTRL-N  ABSENT   999999999      registry=0   a figure in neither document
+
+  Of 35's fourteen figures, the same two are present and twelve absent, and both
+  present ones are from section 3.5a, the shape 35 proposed and then killed.
+
+=== 2. the citation checker refuses an evidence slug naming no probe ===
+Established in `193` and unchanged; the arm is `unknown-row-reference`. Every
+`evidence` slug written in this pass names a probe row written in this pass, and
+`cargo mock --lint-only` reports `schema check passed` at 588 rows.
+
+=== 3. the obligation coverage does not move, measured rather than assumed ===
+The ceiling test does not print its tally when it passes, so it was forced to
+print by setting its ceiling to zero, reading the panic, and restoring the file:
+
+  11 obligations are answered by nothing, against a ceiling of 11.
+  {"met": 1, "nothing": 8, "proposed": 1, "route-closed": 3}
+
+  Identical before and after the four proposals landed. That is the finding
+  rather than a defect in the instrument: all four reach the one obligation that
+  was already reached.
+
+=== 4. the edit is additive and touches nothing it was not asked to ===
+  git diff --numstat mock/registry/
+    68  0  probe.toml
+    99  0  proposal.toml
+  Zero deleted lines in the registry. Row counts: probe 79 -> 84, proposal 77 -> 81.
+
+=== 5. the suite ===
+  77 passed, 0 failed, 0 ignored, before and after.
