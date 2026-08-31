@@ -579,8 +579,35 @@ keywords = ["ergonomics", "imitation", "declared width", "container", "boundary"
 
 [[ruling]]
 id = "warms_objective_is_the_intuitive_best_choice"
+supersedes = ["warm_behaves_as_a_native_rust_primitive_would"]
+ratification = '''
+Ratified by op. Asked to ratify the earlier
+`warm_behaves_as_a_native_rust_primitive_would`, he sent the question here
+instead, saying the later wording is the one that holds:
+
+> I think I have already expanded on this and reworded it better later, so there
+> should already be a ruling, ratified by me, to the same effect, with the
+> exception that intuition trumps rust convention, because we don't just want to
+> simply mimic rust and lose on efficiencies, ergonomics, solidness, where
+> following rust would lose those. It's more complex and nuanced, but the intent
+> itself is that for the most part it should be *intuitive* to users, and being a
+> rust crate, how rust does it *is the baseline* for intuition, but it's not
+> absolute and there are already clarifications from me on that.
+
+**Intuition is the intent and Rust convention is its baseline, not its
+definition.** Being a Rust crate is what makes Rust's way the starting point for
+what a user finds intuitive; it is not what makes it correct. Where following
+Rust costs efficiency, ergonomics or soundness, intuition wins and the imitation
+goes.
+
+The options put to him on the earlier row were: ratify it as written with the
+naming left open; ratify and close the naming with it; or leave it stated. **He
+answered about a different row**, which is the finding: the roster of what to ask
+about was built from the row that was easiest to find rather than from the one
+that governs.
+'''
 kind = "intent"
-rung = "stated"
+rung = "ratified"
 topic = "the_strategy_axis"
 key = "I4"
 says = "The intuitive-compromise strategy does not merely imitate. Its intent is to be the intuitive best choice for most every use case, and the intuitive part demands it mimics. Mimicry is not absolutely required and is dropped where it is consistently just the worse choice."
@@ -681,7 +708,19 @@ keywords = ["Precise", "accuracy", "precision", "chains", "ops", "composed", "sa
 [[ruling]]
 id = "the_strategies_weigh_measurements_differently"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
+ratification = '''
+Ratified by op, answering "Yes, ratify as written" to whether the note's reading
+is right: that the intent is the first sentence only, and that everything from
+"For the most part, they probably agree" onward is provenance rather than intent.
+
+The options he chose among were: ratify as written; ratify but treat the whole
+quotation as intent, the agreement clause included; or leave it stated.
+
+So the disowned half stays on the row and stays outside the intent. Whether the
+weightings agree in practice is an ordinary empirical question and he owes no
+answer to it.
+'''
 topic = "the_strategy_axis"
 key = "I8"
 says = "All the strategies are decided by measurement. They measure different things, and they weigh different measurements differently. He calls this the mental unlock."
@@ -880,10 +919,29 @@ keywords = ["no_std", "alloc", "const sizes", "monomorphisation", "dyn", "TypeId
 [[ruling]]
 id = "never_a_runtime_check_and_one_lowered_path"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
 topic = "binding_time"
 key = "I15"
-says = "Runtime code can exist. Its branching should be done as much as possible with const-time ifs erased by monomorphisation, const solving and ultimately the backend. Never any runtime checks, ever: invalids are caught at compile time and unused paths are cleared when lowered."
+says = "Runtime code can exist. Its branching should be done as much as possible with const-time ifs erased by monomorphisation, const solving and ultimately the backend. Never any runtime checks, ever: invalids are caught at compile time and unused paths are cleared when lowered. **Unless there is a justifiable reason that is blessed by a lead designer.**"
+ratification = '''
+Ratified by op on being asked whether this was `stated` or `in_force`, and he
+took neither option as put: he ratified it and added a bound nobody had asked
+about, because the absolute reading is too strong for what sits downstream.
+
+> This is perhaps too absolute for some things specifically downstream in arvo,
+> the algorithm crates and all. So ratify it with the addendum ", unless there's
+> a justifiable reason that is blessed by a lead designer" or something similar.
+
+The options he chose among were: `in_force` and ratified, on the grounds that
+arvo's own lints already enforce it independently of any panel convergence;
+ratified but not `in_force`, keeping his authority separate from the lints'; or
+left at `stated`. **He picked none of the three**, which is the answer: the
+question was about standing and the thing that actually needed fixing was the
+strength of the claim.
+
+The escape is his to grant and nobody else's. An agent finding a reason it
+believes justifiable has found a question for him, not a licence.
+'''
 quote = '''
 Option 1, but I should be clear on this: Runtime code can exist, it's only that the branching of it
 should be done as much as possible, with const-time ifs that get erased via monomorphisation and just
@@ -964,11 +1022,47 @@ keywords = ["Warm", "wrap", "clamp", "overflow", "bench", "price", "explore", "p
 [[ruling]]
 id = "the_overflow_panic_is_permitted_and_bounded"
 kind = "ruling"
-rung = "stated"
+rung = "ratified"
 topic = "overflow_policy"
 answers = ["does_the_native_imitation_cover_the_debug_panic"]
 key = "I18"
-says = "A native-primitive-style overflow panic is permitted and the never-a-runtime-check intent bends for it, bounded by build so that it never survives into a release artifact, and bounded by concern so that it belongs where imitating the native primitive is the point. It is a rule of thumb rather than an absolute, and more of an intent."
+says = "Panic is the go-to for what cannot be caught at compile time through the typestate, on debug builds, in every strategy rather than only where a native primitive is being imitated. On a release build pretty much nothing panics, because the typestate and the debug panics are what force soundness in, so the panic is not needed there. What stands in its place on release is the guarantee plus an explicit declaration of the mode, saturate or wrap or whatever applies to the overflow or underflow at hand, which then lowers and behaves accordingly. None of this is black and white and the intent is deliberately loose."
+ratification = '''
+Ratified by op, in his own words and at his own request kept as loose as he
+stated them. Asked whether "never on release outside of warm" named a concern
+or a marker, he rejected the frame the question was built on:
+
+> It's not the point to imitate, that is stale thinking, and see prior answer.
+> However, panic is the go-to for things that can't be caught on compile time
+> via typestate, when on debug builds, even on hot. On release, pretty much
+> nothing should panic, because the intent is that the typestate and debug panics
+> will force soundness into everything, so it's not needed on release builds.
+> However, that's not as black and white either, so the intent, a bit loosened,
+> and framed as above I frame it, holds. Idea is to make things forced sound,
+> which means usually panic over saturation or overflow. But on a release build,
+> we don't want to panic, rather we should either have the guarantees and
+> explicit declaration of the saturation or wrap or whatever mode on overflow (or
+> underflow) at hand and it will lower and behave accordingly. This is more
+> complex than it seems so it should be ratified as ambiguously as I've stated it
+> here, perhaps this verbatim to start with, and sharpen as we find the boundaries
+> and real constraints to this and can name them precisely
+
+**Two things moved.** The bound is no longer the imitation concern at all, which
+he called stale thinking, and it reaches every strategy: "even on hot". And the
+axis is the build rather than the strategy, debug against release, with the
+release side carrying a declared mode instead of a panic.
+
+**The looseness is ratified, not tolerated.** He asked for it kept ambiguous
+until the boundaries are found and can be named precisely, so an arm that
+sharpens this without having measured those boundaries is going past what he
+blessed rather than completing it.
+
+The options he chose among were: the reading that "outside of warm" named a
+concern rather than a marker, so it survives the strategy set being reshaped;
+that it named the Warm marker specifically and the row generalised past him; or
+leaving it stated. **He took none, because both readings rested on the imitation
+framing he was discarding.**
+'''
 quote = '''
 Option 3 but strategy bound and never on release outside of warm. As a rule of thumb, not an
 absolute, more of an intent
