@@ -103,3 +103,119 @@ edge, and the question's own `note` says "Recorded as answered at `28` batch one
 So the field's absence marks rows the schema's newer answer mechanism has not
 reached rather than rows nobody has answered. Reading the count as thirty-seven
 open questions overstates it, and by more than one.
+
+## 3. Four structural findings, which change what several of the questions are
+
+These come first because three of them move questions out of my answer list
+before any derivation starts, and the fourth changes the shape of eight more.
+
+### 3.1 Three questions are closed at the governing tier and the queue cannot see it
+
+`ruling::the_format_spine_is_canon` (`ruling.toml:1436`) is ratified, marked
+`ratified_by = "both"`, and carries a `ratifies` list of four propositions. Three
+of those four carry `answers` edges, and every one of the three lands in my
+assignment:
+
+| ratified proposition | line | closes |
+|---|---|---|
+| `a_format_is_identified_by_its_ambient_domain_and_its_representable_set` | `proposal.toml:65` | `adaptation_in_identity_or_realisation` (Q18) |
+| `membership_of_the_representable_set_is_one_affine_predicate` | `proposal.toml:82` | `which_width_coordinates_a_consumer_writes` (Q2) |
+| `the_concept_is_closed_and_the_inventory_is_open` | `proposal.toml:576` | `is_the_number_system_inventory_open` (Q20) |
+
+**The mechanism that hides them is one line of the checker.**
+`checks/tests/a_settled_question_does_not_sit_in_the_queue.rs:80` defines
+`answered_by`, and its walk at line 82 is `for ruling in reg.of("ruling")`. It
+reads `ruling.answers` and nothing else. A question closed by a ratified
+*proposition* rather than by a ruling is therefore invisible to the arm whose
+whole purpose is finding settled questions still in the queue, and the file's own
+module doc says why that matters: "a question op has already answered renders as
+open, reads as open, and counts as open in every roster built by reading
+`decider`". It is right about the failure and wrong about the extent, because it
+guards one of the two edges that produce it.
+
+The fix is two lines in `answered_by`: walk `reg.of("proposal")` as well, and
+report only where the answering proposition appears in some ruling's `ratifies`.
+That last condition is what keeps a `one_expert` proposal from closing anything,
+which it must not.
+
+**A fourth row is in the same class and I am less sure of it**, so it is
+separate. `staged_narrowing_disagrees_with_direct_narrowing_under_round_to_nearest_even`
+(`proposal.toml:1579`) answers `does_narrowing_compose` at `standing =
+"three_or_more"` with an exact predicate and a named instrument. That is not a
+ratified proposition, so it does not close the question the way the three above
+do; what it does is make the question's binary option set false, which is section
+6.1.
+
+### 3.2 A live self-contradiction in the registry, about the general form of a rounding law
+
+`proposal.toml:1603` names the instrument
+`07_probes/p4_composition_and_forced_adjoint.py` and line 1604 says of it, in
+the same sentence, "and no `probe` row names it, so the general form is not
+writable and what is written is the one instance whose instrument is
+registered". The preceding line says, in bold, "**The general rule behind it is
+in the corpus and cannot be written here.**"
+
+`probe.toml:982` is a row with `id =
+"narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points"`,
+whose `lives` list at line 987 is exactly
+`07_probes/p4_composition_and_forced_adjoint.py`, and whose `establishes` states
+the general rule verbatim: narrowing composes exactly when the mode's direction
+switches only at coarser-grid points. It carries `standing = "sound"` and a
+control whose note is the best statement of method in this corpus.
+
+So the blocker is gone and the sentence recording it is still there. The general
+form is writable now, and section 6.1 writes it. I did not check which row is
+older, because I may not run `git log` and because it does not matter: both are
+in the committed canon at the same commit and they disagree.
+
+### 3.3 One `answers` edge reaches past its own `says`
+
+`membership_of_the_representable_set_is_one_affine_predicate` closes Q2, "which
+pair of width coordinates does a consumer write at the surface?" Its `says`
+establishes that membership is one affine predicate over a slot function, a
+quantum and a phase, of which integers, fixed point, scaled integers and floats
+are points. That is Q2's fourth option's *reading*, which the row's own question
+describes as "the numeral is one object, a grid cut down to a reach, and the
+width pair is what that object is called". It settles that the width pair is a
+projection of one definition rather than a definition.
+
+It does not say which projection a consumer writes, which is the question's first
+three options and its literal text. So Q2 is closed at the definitional half and
+open at the surface half, and the residue is a strictly narrower question than
+the row as written. That is the same failure the ratification gate exists to
+catch, in a field the gate does not read: the `promotion` note on
+`the_additive_and_absorption_verdicts_are_canon` says the gate is that "neither
+prose reaches past its predicate", and an `answers` edge is prose about scope
+that nothing audits.
+
+### 3.4 Eight of the thirty-seven ask which single policy governs a category
+
+The canon names this shape and rejects it.
+`ruling::there_is_no_universal_answer_take_the_win_and_gate_it`
+(`ruling.toml:909`) carries op's words: "we don't need to settle for one
+universal solution, it's the anti-pattern I've already named. Case by case ...
+Take the win where it applies, gate it out from where it does not. No single
+one-fits-all solutions, it's impossible." The ratified
+`ruling::the_work_is_predicated_arms_composed` (`ruling.toml:847`) and
+`ruling::arms_over_regions_are_the_fundamental_heart` (`ruling.toml:1459`) say
+the same thing positively.
+
+The eight, and what each is really asking once the shape is removed:
+
+| row | asks for one policy over | the answer the canon already gives |
+|---|---|---|
+| `does_warm_wrap_or_clamp` | a whole strategy's overflow behaviour | the mode is declared per site; section 5.1 |
+| `do_arvos_consumers_want_value_keying_or_position_keying` | a whole consumer base | both, each gated; its own `bound` says so |
+| `does_narrowing_compose` | a whole design | a predicate on the rounding mode; section 6.1 |
+| `is_the_derived_numeral_required_to_be_tightest` | every derived numeral | soundness in the canon, tightness as arms; 7.3 |
+| `is_the_cross_kind_join_closed_or_priced` | the whole shape space | priced and unclosed, arms per region; 7.4 |
+| `does_the_position_keyed_dither_arm_ship` | whether an arm exists at all | it ships; 7.6 |
+| `does_a_consumer_supplied_seed_surface_exist` | whether a surface exists at all | it exists; 7.7 |
+| `whose_reduction_governs_a_lossy_crossing` | every lossy crossing | the target's, by the ratified factoring; 6.4 |
+
+Three of those eight already say so in their own `bound` fields, which were
+written after op returned them. That is the discipline working. What it has not
+done is change the `options` arrays, so each still reads as a live fork to anyone
+who reads the row rather than the bound, and the option arrays are what a
+consolidation compresses. Rewriting an option set is not a port's call and is not
+mine either, so I am naming them rather than editing them.
