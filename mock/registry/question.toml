@@ -382,6 +382,7 @@ options = [
   "Silence, with the consequence that \"meaningful\" is decided case by case by whoever writes the arm.",
 ]
 decider = "op"
+answered = "Recorded as answered by op on 2026-08-31. No rate, because a rate is a generalisation over a category and the design rejects those by premise. Op, given all four options above: \"This is case by case basis and has to be justified in words that get recorded. Even small wins are wins worth pursuing, however small, and however small a set they apply to. This is the \\\"patchwork\\\" approach where we don't even try to generalise, we operate on const predicates that choose the most optimal path always, from a million small different impls for different situations.\" Silence was one of the four and was not chosen, so a conflict still owes a written reason; what changes is that the reason is local to the arm rather than derived from a global rate. A small win is taken however small the region it applies to, and the size of that region is the arm's predicate rather than an argument against the arm. Ratified as `ruling::there_is_no_exchange_rate_because_there_is_no_generalisation`, recorded whole at `panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone`."
 topic = "the_strategy_axis"
 note = "Added from `40`, which records it as op's own question and as unset in two of his sentences at once: the provable meaningful gains that bound a soundness trade, and whether mimicking is consistently just a worse choice. `40` argues these are one hole rather than two and that naming the rate once answers both."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q14-at-what-exchange-rate-does-a-strategy-s-preference-yield"]
@@ -412,7 +413,8 @@ options = [
   "Keep both senses with distinct names.",
   "Find that they are the same concept at two scales, which nobody has argued.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`. The option list is measured to be missing a member: the word does three jobs rather than two, configuration and construction being two and the chain, meaning the same carrier with operations in sequence and no new primitive, being neither. So the constraint is that any answer keeping one word has to say what becomes of the third sense, and an answer picking a sense has to say which of the three it picked. Both of op's own uses are preserved as evidence of what he meant on each object rather than as a vote."
 topic = "the_chain"
 note = "It is op's to settle because both senses carry his word on different objects: a numeral kind bound to a strategy, which is what the panel's founding sentence means, and an aggregate over numerals, which is what he means at `32`. The dispatching agent briefed the file that raised this on the second sense while the founding sentence uses the first, and did not notice. The option list is measured to be missing a member: `173`'s ledger entry L20 finds the word does three jobs, configuration and construction being two and the chain, meaning the same carrier with operations in sequence and no new primitive, being neither. Naming that third sense is carried separately as op's."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q16-which-sense-does-composition-carry-and-does-the-canon-need-both-words"]
@@ -454,7 +456,8 @@ options = [
   "It counts it, which is what one row of the record's own family table does.",
   "It does not, which is what an adjacent row of the same table does.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`. Nothing decides this mathematically and both readings were computed through to their four consequences, so what is left is a convention, and a convention is chosen for what it makes expressible. Answered inside the arms paradigm: take the reading under which the three sign domains form a structure a const predicate can gate on rather than one leaving a domain incomparable, and repair the two rows of the record's own family table that disagree in the same act, because preserving the disagreement is what made this a question."
 topic = "the_format"
 unblocks = "What the sign domain moves; whether the three sign domains at equal precision form a chain or leave one incomparable; whether the symmetric domain at precision one denotes exactly the zero set, which bears on whether a zero-width numeral already exists under one reading; and whether two of the three sign domains collapse at an odd radix."
 note = "`02` names exactly two things as genuinely undetermined and op's, and this is the first. All four consequences are computed under both readings so nothing in that derivation depends on the answer, and the answer itself is not decided by mathematics."
@@ -1151,6 +1154,7 @@ options = [
   "Op ruling that a proof carries a different marker from a measurement, so a width-free argument is written as one rather than being dressed as a sweep that happened to stop at three widths.",
 ]
 decider = "op"
+answered = "Recorded as answered by op on 2026-08-31. Both of the first two options, taken together. A proof carries a marker distinct from a measurement, so a width-free argument is written as one rather than dressed as a sweep that stopped at three widths; and the bounded whole-container range gets its own spelling, being neither a sample nor a universal. He declined the per-file restatement pass and declined leaving the notation as it stood, so no existing predicate is rewritten and the never-widen-in-place rule is untouched. Ratified as `ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked`, recorded whole at `panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone`."
 topic = "the_predicate_notation"
 note = "A finding about the corpus rather than about arvo. Counted across one topic's four files: 82 findings and not one carrying a width universal, against eighteen firings of the thread universal and thirty-nine of the target-feature one, so read literally that topic holds at no width in the library, which is not what any of its authors meant. The count's generalisation was corrected: it is right for the four files counted and does not prove the width axis's spellings were enumerated, since one file writes a width universal as two separately quantified widths that the instrument could not see. A third state exists the notation has no name for, a finding carrying a bounded whole-container range, which is neither a sample nor a universal, and this question should have that case in front of it. The second option is named in the source as cheaper and as the one the corpus is actually asking for; that is the source's judgement and not an answer. It is what makes this op's rather than the panel's."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q65-whether-this-panel-s-own-findings-satisfy-the-notation-it-ratified"]
@@ -1239,7 +1243,8 @@ options = [
   "Re-measured per target, so portability is a property of each build.",
   "Units fixed and baseline re-measured, which the topic says does not buy the guarantee.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`, and narrowed by `ruling::there_is_no_exchange_rate_because_there_is_no_generalisation`: there is no global rate between objectives, so a weighting is local to an arm and carries its justification in words. Answer inside that. Whether a weighting travels is then a property of the arm rather than of the design or of each build, and the strategy-object topic's measurement, that a weighting travels by construction while an arm does not, is the evidence to reconcile against rather than to restate."
 topic = "the_strategy_axis"
 unblocks = "Whether a weighting travels."
 note = "One candidate calls this a declaration rather than evidence; its revision sharpens it to two declarations rather than one and reports that only the conjunction buys portability. The strategy-object topic found the portability worry inverts: a weighting travels by construction while an arm does not, which is the opposite of what the panel assumed before it was measured."
@@ -1254,6 +1259,7 @@ options = [
   "The older spelling kept.",
 ]
 decider = "op"
+answered = "Recorded as answered by op on 2026-08-31. The word is retired in both spellings and the vocabulary is six explicit names: `toward_zero`, `floor`, `ceil`, `half_up`, `half_even`, `stochastic`. A note records that bit truncation of a two's complement value is floor, so the hardware operation is not read back into the name. He was given the two alternatives, keeping `trunc` defined once as toward-zero and renaming the hardware operation to `bit_drop`, and took neither. Ratified as `ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names`, recorded whole at `panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone`."
 topic = "rounding"
 unblocks = "Nothing structural. It is in the queue because naming is op's taste and taste does not converge by argument, so it will sit forever unless it is asked."
 note = "The coordinator deliberately did not restate the options at `156`, calling this the one item where a compression would change the question and directing op to read the source entry directly. The options above are taken from that entry rather than from the queue, and this row should be read as a pointer to it rather than as a substitute. The factual half is settled and is not contested: bit-drop is measured equal to floor on every row and different from toward-zero on signed rows only, so on a signed domain the word names two operations. What remains is the naming call, which is a canon-vocabulary decision rather than a measurement."
@@ -1320,6 +1326,7 @@ options = [
   "Reproducing what a named reference implementation does step by step, which would pick a different placement and is an equally coherent reading of the word.",
 ]
 decider = "op"
+answered = "Recorded as answered by op on 2026-08-31. Neither reading, because the question presumed a trade that does not exist. Op, given both placements and a third option of both per arm: \"We never sacrifice performance. If we can't express something reliably and accurate enough for genereal computing (precision strategy is different, and would be used when more than usual precision is needed) without losing perf and efficiency, we haven't done out job well enough and lack the actual solutions and need to find them.\" So the placement is decided by which one is accurate enough at full speed, and where no such arm is known that is a gap in the solutions rather than a licence to rank one objective above the other. The 15.5x measurement stands as a fact about two candidate placements and stops being an argument for the slower one. Ratified as `ruling::accuracy_is_never_bought_with_performance`, recorded whole at `panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone`."
 topic = "the_chain"
 note = "Priced rather than argued: the two placements differ by 15.5x in aggregate error and 16x in worst case at depth five, so it is not a distinction without a difference. The candidate's clause says which placement is distinguished, not which target is meant. The intent's own wording carries a second unresolved reading in the same sentence, ported here as its own row."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#8-the-tenth-unit-adds-four-items-and-one-of-them-is-whether-a-rule-of-the-workspace-becomes-an-intent-of-yours"]
@@ -1332,7 +1339,8 @@ options = [
   "Two things, chains and operations quantified separately.",
   "One phrase, naming a single subject.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`. Read the sentence under `ruling::accuracy_is_never_bought_with_performance`, which is the same intent's other half and holds for chains and for single operations alike. The constraint is that the reading picked must not change what any arm does, since the intent it sits in is now settled independently of how the phrase parses; if a reading does change an arm, that is the finding and it outranks the parse."
 topic = "the_chain"
 note = "Recorded as a second unresolved reading inside the same sentence as the accuracy-target question, and carried here as its own row because the two have disjoint answers; the split is this port's call. Nobody can settle either from the outside."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#8-the-tenth-unit-adds-four-items-and-one-of-them-is-whether-a-rule-of-the-workspace-becomes-an-intent-of-yours"]
@@ -1347,7 +1355,8 @@ options = [
   "The staged expression description, the only one reaching the backward facts because the sink triggers the lowering, and the one carrying a taste question about the native-imitation intent inside it.",
   "A composition of more than one of them, covering different shapes.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`, and constrained by two rulings from the same round. `ruling::accuracy_is_never_bought_with_performance` means the carrier is chosen on what it costs at run time rather than on surface elegance, and a carrier that buys expressiveness with speed has not answered. `ruling::there_is_no_exchange_rate_because_there_is_no_generalisation` means the fourth option, several carriers each covering the shapes it is optimal for, is the paradigm rather than a compromise between the first three. The cost gradient across the first three, nothing new, then a crate surface, then a new binding-time surface, is evidence about each arm's price and not a ranking."
 topic = "the_chain"
 note = "The discriminator and the doability evidence are in the tenth unit's ledger; the choice is op's. The cost gradient across the first three is stated there as nothing new, then a crate surface, then a new binding-time surface. The fourth option is the composition the unit's own option pass carries beside the three."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#8-the-tenth-unit-adds-four-items-and-one-of-them-is-whether-a-rule-of-the-workspace-becomes-an-intent-of-yours"]
@@ -1360,7 +1369,8 @@ options = [
   "Chain.",
   "Region between observations.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`. What is at stake was settled by measurement before the naming was put: the object is the schedule rather than the carrier. So the constraint is that the name has to say schedule, and has to not let the path case read as the general case, since a path-only reading gets the schedule silently wrong at shared nodes. A name failing either of those is refused whatever its other merits."
 topic = "the_chain"
 note = "A vocabulary decision for the canon writer with op, and one of two the tenth unit reserves. What is at stake was settled by measurement before the naming was put: the object is the schedule rather than the carrier. The path case is the easy instantiation either way, and a path-only reading gets the schedule silently wrong at shared nodes."
 provenance = [

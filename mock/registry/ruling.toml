@@ -1468,3 +1468,93 @@ because = "Under the ratification model settled today the experts propose and th
 note = "One open asymmetry, recorded rather than resolved because it is the panel's: the additive row lists no `rounding` dimension where its multiplicative sibling lists `rounding any`. Addition at a common scale does not round, so the omission is arguably correct, but the notation has no inapplicable state and absence means the finding holds nowhere that dimension exists. Whether that reading is intended, or whether the row wants `rounding any`, is a question for whoever next touches the axis."
 provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-correction-which-arrived-before-any-of-it-was-encoded"]
 keywords = ["addition", "absorption", "associativity", "fraction width", "rescale", "reduction", "clamped", "promotion", "gate"]
+
+# --- the last round he answered, from `217` -----------------------------------
+
+[[ruling]]
+id = "a_proof_and_a_bounded_range_get_markers_the_notation_lacked"
+kind = "ruling"
+rung = "ratified"
+ratified_by = "op"
+ratification = "Asked as a four-option question and answered by selecting two of them together: a proof carries a different marker from a measurement, and the bounded whole-container range gets its own spelling. The two options he did not take were a per-file pass restating the missing dimension in each author's own voice, and leaving I13 as it stands with the corpus read literally."
+topic = "the_predicate_notation"
+says = "The predicate notation distinguishes three things where it distinguished two. A measurement carries the region it was swept over. A proof carries a marker saying its argument is width-free by construction, rather than being written as a sweep that happened to stop at three widths. A finding established across a bounded whole-container range, exhaustively over every value a container holds, is neither a sample nor a universal and carries its own spelling. The markers apply going forward; no existing file is restated, because the per-file pass was offered and declined."
+because = "Across one topic's four files, 82 findings carried no width universal at all, against eighteen firings of the thread universal and thirty-nine of the target-feature one. Under I13 an absent axis says the finding holds in no situation where that axis exists, so read literally that topic held at no width anywhere in the library, which is not what any of its authors meant. The gap was in the notation rather than in the findings: a width-free argument had no honest spelling, so its authors wrote nothing and the notation read that as the strongest possible negative."
+answers = ["what_a_proof_marker_is_against_a_measurement"]
+note = "This is an append to I13 and invalidates nothing beneath it: every existing predicate still means exactly what it meant, and the never-widen-in-place rule is untouched, which is why declining the restatement pass costs nothing. What it does not settle is the marker's spelling or where a checker enforces the distinction, both of which are the panel's. The obvious failure to guard is a sweep relabelled a proof, and the test is the same one the notation already uses: name the construction that makes the width unable to enter, or it was a sweep."
+provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-predicate-notation-gains-two-markers"]
+keywords = ["predicate", "proof", "measurement", "marker", "width", "universal", "bounded range", "exhaustive", "I13", "notation"]
+
+[[ruling]]
+id = "accuracy_is_never_bought_with_performance"
+kind = "intent"
+rung = "ratified"
+ratified_by = "op"
+ratification = "Put as a fork between two readings of the accuracy intent, priced at 15.5x aggregate error and 16x worst case at depth five, with a third option offering both per arm. He selected none of the three and stated the intent below instead."
+topic = "the_chain"
+says = "Performance is never sacrificed for accuracy. Where something cannot be expressed reliably and accurately enough for general computing without losing performance and efficiency, that is a gap in the solutions rather than a trade to be made, and the work is finding the arm that is both. The precision strategy is the carve-out and it is narrow: it exists for the case where more than usual precision is wanted, and it is not the general answer."
+quote = '''
+We never sacrifice performance. If we can't express something reliably and accurate enough for
+genereal computing (precision strategy is different, and would be used when more than usual
+precision is needed) without losing perf and efficiency, we haven't done out job well enough and
+lack the actual solutions and need to find them.
+'''
+because = "The fork presumed a trade. Ranking accuracy above performance answers a different question from the one the design poses, and a placement that buys accuracy by giving up speed has changed the question rather than settled it."
+answers = ["which_accuracy_target_the_accuracy_intent_names"]
+note = "What this does not do is pick the interior placement. It says the placement is chosen by which one is accurate enough at full speed, so the 15.5x measurement remains a fact about two candidate placements and stops being an argument for the slower one. Where no arm is currently known that is both, the honest report is that the arm has not been found, and that is a finding rather than a licence to take a side. His spelling is kept as he typed it."
+provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-accuracy-target-he-refuses-the-trade-rather-than-the-reading"]
+keywords = ["accuracy", "performance", "precision strategy", "general computing", "trade", "placement", "chain", "efficiency"]
+
+[[ruling]]
+id = "there_is_no_exchange_rate_because_there_is_no_generalisation"
+kind = "intent"
+rung = "ratified"
+ratified_by = "op"
+ratification = "Put as four candidate exchange rates: lexicographic with no rate, a stated rate per objective, a consumer-supplied rate, or silence. He selected none and stated the patchwork intent below, which rejects the question's premise rather than choosing among its answers."
+topic = "the_strategy_axis"
+says = "No exchange rate exists between objectives, because a rate is a generalisation over a category and the design rejects those by premise. Each arm carries its own justification, in words, recorded. A win is taken however small the gain and however small the region it applies to; the size of the region is the arm's predicate rather than an argument against it. The intended shape is a million small implementations for different situations, selected by const predicates that choose the most optimal path, with no attempt to generalise across them."
+quote = '''
+This is case by case basis and has to be justified in words that get recorded. Even small wins are
+wins worth pursuing, however small, and however small a set they apply to. This is the "patchwork"
+approach where we don't even try to generalise, we operate on const predicates that choose the most
+optimal path always, from a million small different impls for different situations.
+'''
+because = "Asking at what rate one objective yields to another asks for a single policy covering a whole category, which is the anti-pattern the arms paradigm exists to refuse. The answer is not a rate and not silence: it is a recorded reason per arm, which is checkable in a way a rate never was."
+answers = ["the_exchange_rate_a_preference_yields_at"]
+instead = "Where a conflict between objectives arises, the arm states in words why it resolves the conflict the way it does, and that justification goes in the record beside the arm."
+note = "Silence was on the option list and was not chosen, so this is not a licence to leave a conflict unexplained. The distinction is that the reason is local and written rather than global and derived. A million small implementations is the intended shape rather than a failure mode to be refactored away later, which bears on any review that would flag the count as duplication."
+provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-exchange-rate-there-is-no-rate-because-there-is-no-generalisation"]
+keywords = ["exchange rate", "patchwork", "arms", "const predicate", "small wins", "generalisation", "objectives", "justification", "I13"]
+
+[[ruling]]
+id = "the_ambiguous_rounding_word_is_retired_for_six_explicit_names"
+kind = "ruling"
+rung = "ratified"
+ratified_by = "op"
+ratification = "Re-asked carrying the ambiguous word, the two operations it names on a signed domain, and the six replacements, after an earlier asking that restated the row title was refused as unanswerable. Three options: retire both spellings for six names; keep `trunc` and define it once as toward-zero; or rename the hardware operation to `bit_drop` and let `floor` cover it. He took the first."
+topic = "rounding"
+says = "The rounding mode vocabulary is `toward_zero`, `floor`, `ceil`, `half_up`, `half_even`, `stochastic`. Both spellings of the ambiguous word, `truncation` and `trunc`, are retired. A note records that bit truncation of a two's complement value is floor, so the hardware operation is not read back into the name."
+because = "On a signed domain the retired word named two different operations. Bit-drop measures equal to floor on every row and differs from toward-zero on signed rows only, so a reader coming from the hardware and a reader coming from C would have understood the same word as two operations that genuinely differ."
+answers = ["the_rounding_mode_vocabulary"]
+note = "The factual half was settled by measurement before the question was put and was never contested; only the naming was open, which is why this sat unanswerable for as long as it did while reading like a technical question. What the panel had argued was two spellings of the same retirement, so no position is overturned by this."
+provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-rounding-vocabulary-retires-the-ambiguous-word"]
+keywords = ["rounding", "vocabulary", "truncation", "trunc", "toward_zero", "floor", "ceil", "half_up", "half_even", "stochastic", "bit-drop"]
+
+[[ruling]]
+id = "the_panel_finishes_the_canon_without_him"
+kind = "process"
+rung = "ratified"
+ratified_by = "op"
+ratification = "Sent unprompted, in the middle of the round that answered his last four questions, after months of the panel routing questions to him. No options were offered; he ended his own involvement."
+topic = "panel_conduct"
+says = "Every remaining canon question is the panel's. A question filed as op's is now derived from what he has already said, argued among peers, and gated by the coordinator. His absence is not a licence to invent: silence in his corpus is still not permission, and where his words genuinely do not reach a question the answer is derived from the intent inside its spirit and put through two independent agreements. Nothing is parked awaiting him."
+quote = '''
+Now work autonomously, you don't need me anymore. I've given all I can, the canon should be
+solvable and fully fillable without me from now on with all that I've already said.
+'''
+because = "He had said in the same round that specifics are out of his depth and that a panel exists precisely because they are, and the ratification model settled hours earlier had already moved promotion off his desk. This is that model reaching its conclusion: the remaining questions filed as his were filed there by habit rather than because they needed him."
+instead = "The corpus of his statements is where a question filed as his gets answered from. `.data/op-responses/` holds his words verbatim across the whole arc, `INTENTS.md` holds the ratified intents, and the ruling namespace holds what he has stamped. A question that feels unanswerable is usually one nobody searched for in the words the answer would be written in."
+supersedes = ["two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate"]
+note = "It does not supersede that ruling's substance, which stands unchanged and is what makes this workable; it supersedes only the residual reading that a question could still be routed to him when the panel found one hard. Read together: the experts propose, the coordinator gates, and there is no third party to appeal to. The standing steer he gave minutes earlier bounds how this is used, in his words, that the ratification is to be sped up and the canon finished, and that speed comes from deciding rather than from being careless, dismissive or naive."
+provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#and-then-he-left"]
+keywords = ["autonomy", "handover", "panel", "coordinator", "decider", "op", "corpus", "canon", "silence"]
