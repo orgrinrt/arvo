@@ -207,6 +207,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.a-committed-timing-records-what-built-it]
+commit = "error"
+build = "error"
+push = "error"
+
 # --- Layer enforcement via forbidden-imports -------------------------------
 #
 # The per-crate layering rules were removed when mock/crates was
