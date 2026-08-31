@@ -514,3 +514,310 @@ occupancy, and the shared-occupancy absence of a per-element footprint (now
 instrumented from both sides). The independence caveat is the signposting
 stated at the top of this section, and the coordinator should weigh it; the
 committed route evidence is what makes the caveat bounded rather than fatal.
+
+---
+
+# Second dispatch: the two questions standing on the settled floor
+
+Appended on the same branch after merging `origin/research/canon-registry`,
+which now carries `ruling::behaviour_is_stated_per_declared_signature_and_the_premise_dissolves`
+(ratified, experts), both fundamentals seats and the lint pack that replaced
+`mock/checks`. **Gates.** Canon gate: both assigned questions are open canon
+rows, `decider = "panel"`, so deriving them is the licensed work. Test gate:
+the checks crate is gone by design (its arms are lints under `mock/lints/` and
+tools under `mock/tools/`, gating at commit); the five tools' suites run green,
+84 tests, and the lint pack ran on every commit of this branch. What this
+dispatch read: the two question rows; every `proposal` row on
+`the_realisation_map` and `the_strategy_object`; the `r210` retirements; the
+register's "The derivation's outputs" section; `156` items 1 and 2; `146`
+sections 5.4, 6.1 and 8; `151` section 10; `150` F150-7; `162`'s and `47`'s
+claims as carried by the rows citing them; and the canon-form rows. Per the
+brief, I did not go looking for the parallel seat and have read nothing of it.
+
+## 10. `question::container_derivation_output_count`
+
+**The count is not a canon constant, and the canon already carries the thing
+that is: the criterion. Applied under the dissolution, the criterion makes the
+count a computed consequence per declaration, and it comes out 1, 2 or 3
+strategy-owned facts by region.** The three options, one output, two outputs,
+one richer output, all quantify over the whole category, which is the shape op
+has refused three times; this row is the third registered instance of it on
+this panel and it dissolves the same way the premise did.
+
+### 10.1 The criterion is settled and it decides every candidate fact
+
+`proposal::a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns`
+stands at two experts, flanked by the site clause
+(`a_lowering_site_holds_the_numerals_full_type`) and the sort clause
+(`a_carried_fact_takes_the_sort_its_consuming_site_uses_it_in`). Run every
+candidate fact the corpus has named through it:
+
+| fact | strategy-owned to produce? | verdict |
+|---|---|---|
+| carrier | yes: the rung rule is the strategy's | **carried, as a type** (generic bodies need the type; the value-valued spelling is compiled-refused six times, `47`) |
+| stride at sole occupancy | no: `size_of(carrier)`, a language primitive over a fact already carried | **recomputed** |
+| placement at shared occupancy | yes: the packing rule is the strategy's, and the extent is not recoverable from the carrier | **carried** |
+| load type for one packed element | no: `floor((W+6)/8)+1`, a pure function of the declaration | **recomputed** (the corpus already says it is "neither of the two outputs") |
+| alignment | no: `align_of(carrier)` | **recomputed** (the corpus: alignment "rides on the carrier") |
+| compute carrier for a chain | yes, exactly where the strategy's declared semantics reaches chains | **carried there** (I7's Precise; the pigeonhole result makes the widening forced by semantics) |
+
+The occupancy split in the second and third rows is measured rather than
+argued: probe 4 already showed the packed extent (9 bytes for five 13-bit
+elements) is not `k * size_of(carrier)` (10), and probe 5 arm B counts 80 of
+128 cells over `W in 1..=16, k in 1..=8` where the shared extent differs from
+`k` carriers, with arm D the must-fail case at the exact cell. Both prior
+files' evidence fits the split: the wide-rung case (payload 25, stride 32 at
+`W = 200`) is sole occupancy with stride equal to the carrier's size, and the
+general keying claim both files carry, that stride follows the carrier's size,
+is exactly the sole-occupancy half. **So the per-aggregate answer is an
+independent fact precisely at shared occupancy, which is the same boundary the
+ratified dissolution drew for the footprint observation.** The derivation's
+output set inherits the occupancy arm structure of the floor it stands on, and
+that is not a coincidence: a fact is independently carried exactly where a
+signature class has a strategy-owned decision in it, and the classes are the
+ruling's classes (value, aggregate, chain).
+
+> holds for the measured half: W in 1..=16, k in 1..=8, container = dense bit
+> stream against minimum rung, signedness = unsigned, threads = 1, toolchain
+> in `225_probes/toolchain.txt`. The classification itself is the criterion
+> applied, argued, with each row's ground cited above.
+
+### 10.2 The arity was packaging, and packaging is not canon
+
+`proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover`
+has this right and the compiled evidence behind it: any product is one thing,
+one richer type-valued output with named projections is the pair wearing one
+name, and the value-valued spelling is refused at the forbidden-feature wall
+while the type-valued one compiles gate-free. Under
+`the-canon-is-intent-not-implementation` the canon states which facts are
+carried and in which sort each is reachable; how many associated items spell
+that is design tier. **What the canon owes is one sentence: every carried fact
+is reachable as a type from the declaration without forbidden features**, and
+`47`'s committed compilations establish that as doable, which is the only
+doability the intent needs.
+
+### 10.3 The standing disagreement does not survive the dissolution
+
+The register's fork: is the strategy an upstream selector the ladder never
+sees (`10`), or a key of the ladder itself (`15`)? Both compile, and the
+register says neither file addresses the other. **Under the ratified identity
+clause this is two factorings of one map, and no declared signature separates
+them.** Probe 5 makes the shape of that claim exact: a keyed spelling and a
+selector-into-blind-ladder spelling of one model rule agree pointwise over all
+2048 cells, the negative control with one exceptional cell is caught at its
+first witness, so the sweep distinguishes assignments while the factorings are
+extensionally one. What is genuinely forced is only the map's domain: it
+includes the strategy, because the assignment differs by strategy somewhere
+(the packing and padding evidence in both files). What is genuinely free is
+the interior: whether a ladder factors through strategy parameters is
+unobservable through every declared signature, hence unstatable as canon under
+the dissolution. **The residue, what a diagnostic can say, is real and is
+design tier**, governed by the usage half of
+`ruling::validate_means_all_three_readings`, and a design is free to pick the
+spelling whose refusals read better. So the disagreement should be retired as
+dissolved rather than argued to a winner: a question about which factoring the
+design "is" has no canon content once identity saturates at the declared
+signature set.
+
+One bound on that dissolution, stated so it is not overread: it holds for the
+statement of the map, not for every family of assignments. A selector
+vocabulary that is deliberately small (a crossover point and nothing else)
+expresses a strict subfamily of the assignments a full keying expresses, and
+legislating such a vocabulary into the canon would be exactly the
+generalisation `ruling::there_is_no_exchange_rate_because_there_is_no_generalisation`
+rejects. The canon states the domain and the carried facts; it does not state
+a parameter vocabulary.
+
+### 10.4 What remains open, and it is small
+
+Whether the chain-class fact is the third projection of one derivation or the
+first projection of a chain-level one is packaging again. What is not
+packaging: `proposal::a_fact_delivered_as_a_const_a_generic_body_loops_over_costs_the_reduction`
+shows delivery form is load-bearing at the consuming site (the W = 18
+collapse), so the design owes each carried fact a delivery-form decision, and
+the canon owes only the criterion it already has (the sort clause). The
+proposal's own gap, "how many facts must be types is at least two and not
+settled", resolves under 10.1 to: at least the carrier everywhere, plus the
+placement at shared occupancy, plus the compute carrier where the strategy
+reaches chains, each as a type where a generic body consumes it. I find
+nothing in the canon that forces more, and nothing that permits less.
+
+## 11. `question::which_operation_set_the_design_ships`
+
+**The canon forces the shape of the answer, a named core with the inventory
+declared open under an admission contract, and it forces the floor of the
+core. What it does not force is membership above the floor, and that residue
+has a checkable oracle rather than a judgement in it.**
+
+### 11.1 What the dissolution already closed in this row
+
+Three of the row's own load-bearing clauses are stale, and saying so is part
+of the answer:
+
+- **"It also decides whether footprint is observable": dead.** The ratified
+  ruling settles footprint observability independently of any operation-set
+  choice: the layout observation is the host's, outside every set arvo could
+  declare, and every operation arvo declares is a function of the declared
+  width and never the carrier. No admissible choice here can make footprint
+  observable or unobservable.
+- **"Whether the count of primitives is container-relative": dead the same
+  way.** Identity saturates at the declared signature set and no declared
+  operation reads the carrier, so the count under arvo's maximal declared
+  observation set is container-free at every admissible answer. The 32-to-64
+  split was the ambient observation's doing, and the ambient observation is
+  not arvo's to ship or withhold.
+- **The `bound` field still carries, verbatim, the sentence
+  `retirement::r210_the_container_premise_is_upstream_of_the_operation_set_question`
+  retired** ("It is downstream of `the_container_premise` ..."). A live row
+  restating a retired claim is the exact class the lint pack polices, and this
+  one appears to sit outside its reach. Reported below.
+
+What survives is the real question: which declared-width operations exist,
+which decides which strategy-object axes are visible (F150-7: the intermediate
+axis is visible only through the fused operations, at the swept cell).
+
+### 11.2 The shape is forced by three precedents and one theorem
+
+- **Option 1, close the set now, contradicts a stated ruling.** Op reserved
+  `sc_fixed`, `ap_fixed` and `ac_fixed` "so it can't close them out"
+  (`ruling::the_standards_bound_starts_at_two_and_reserves_the_rest`). Each
+  reserved convention carries operations of its own, so a closed set closes
+  them out, which is the thing the reservation exists to prevent.
+- **Option 2, wholly open, fails the full-design bar needlessly.** Under
+  `ruling::the_canon_must_support_a_full_design_and_impl` the canon has to be
+  exhaustive enough to design from, and a shape-to-count table unwritable by
+  construction leaves the strategy object undesignable. Needlessly, because
+  the topic's own measurement makes a core-relative table sound: visibility is
+  monotone in the observation set (F150-7, 24 triples, zero violations), so a
+  table computed at a named core and predicated `operation in <core>` is never
+  falsified by a later admission; admission refines it, splitting cells, and
+  the predicate discipline already knows how to say that.
+- **Option 3 is the pattern the canon already ratified twice.** The format
+  spine's fourth clause, ratified by both: the concept is closed and the
+  inventory is open. Op's own standards answer: name two, reserve the rest.
+  The strategy set: open on his word. A named operation core with open
+  admission is the same sentence at the operation tier, and I can find no row
+  pulling the other way.
+
+### 11.3 The floor of the core is derivable, and it discharges F150-7's worry
+
+`obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`
+is an adequacy test: every operation the two named standards declare must be
+writable over the primitives. So the core contains at least the union of
+MATLAB `fi`/`fimath`'s and IEEE 754's declared operation sets, and that union
+is read off documents rather than decided. One membership matters structurally:
+**IEEE 754 requires the fused multiply-add**, so the fused operation is in the
+floor by obligation, and the cell F150-7 warns about, a design shipping the
+unfused four and reporting the intermediate axis dead, is unreachable for any
+standards-adequate core. The worry the row carries forward is discharged by an
+obligation the registry already holds; nobody had put the two rows next to
+each other. Beside the standards union, the canon's own rows already quantify
+over operations that are therefore in the floor on pain of those rows meaning
+nothing: the six rounding modes (a quantise per mode), the declared overflow
+policies, the encodings (`bin`, `storedInteger`, interchange read and write),
+and the law rows' `add`, `sub`, `mul`.
+
+### 11.4 The open half carries an admission obligation, measured
+
+Openness is not free, and the cost has a precise shape. **Admitting an
+operation that separates two assignments previously equal under the core turns
+a resolver-free interior choice into an answer-moving one retroactively.**
+Probe 6 builds the smallest real instance: signed saturating fixed point at
+`W = 4, F = 1`, two assignments differing only in the fused intermediate. Under
+the core `{add, sub, mul}` the exact-intermediate behaviour is unreachable
+(all nine depth-two composites differ from it somewhere, 760 to 3818 of 4096
+triples each), the stepwise behaviour is core-expressible (mul-then-add equals
+it on all 4096, the control), so the two assignments are one denotation there;
+admit the fused operation and they separate on 760 of 4096 triples, first
+witness `(-8, -8, -8)`, exact `7` against stepwise `-1`. So the admission
+contract the open half owes is: **an admitted operation that separates
+existing assignments forces the separating axis into the declared policy at
+admission, or pins a named default**, else one type name carries two
+semantics, which is the exact shape
+`obligation::a_build_flag_that_changes_float_semantics`' gap already condemns
+for the fast-math flag.
+
+> holds for: W = 4, F = 1, signedness = signed, overflow policy = saturate,
+> rounding = floor, operation in {add, sub, mul, madd}, arity in {2, 3},
+> chain length in {1, 2}, exhaustive over the representable set, threads = 1,
+> toolchain in `225_probes/toolchain.txt`. The general monotonicity of
+> visibility is F150-7's and is cited, not re-established here.
+
+### 11.5 The firewall coupling resolves, and the firewall gains a parent
+
+`151` says the unpredicated-proposition question and this one are one
+decision. The first half is answered
+(`ruling::a_thing_that_constrains_the_work_and_cannot_be_designed_away_is_canon`),
+so the coupling now runs one way: the firewall enters the canon on op's test as
+an imposed sentence with its predicated enforceability condition beside it,
+exactly as `146` 6.1 stages it, and its quantifier, the denotation of an
+assignment, is read at the declared core and refines monotonically with
+admission. Worth saying because nobody has: **the firewall is the cost-axis
+instance of the ratified dissolution.** "No cost model may move an answer;
+every difference traces to the declared policy" and "every operation arvo
+declares is a function of the declared width and never of the carrier" are one
+principle, behaviour is a function of declared inputs only, instantiated at
+the cost axis and the carrier axis. The ratified ruling is therefore the
+parent the firewall lacked, and Q62's unpredicated form is consistent with how
+the parent itself is stated: a normative sentence whose measured consequences
+carry the predicates.
+
+### 11.6 What the canon does not force, and what would settle it
+
+Membership above the floor: whether division, square root, remainder and the
+comparison predicates beyond the standards' lists ship in the core or arrive by
+admission. The canon is silent and the silence is not permission; what settles
+it is mechanical, an enumeration of the two named standards' operation lists
+against the parity-suite mandate, which is a reading of two documents with a
+checkable oracle at the end, not a judgement. Until that enumeration is done
+the honest canon sentence names the floor as "the union of the two named
+standards' declared operations" intensionally, which is exact without the
+list, and the list lands as evidence when the parity suite is built.
+
+## 12. Findings, each with its predicate
+
+1. **The output count is a consequence of the settled criterion, per
+   declaration class** (argued; section 10.1's table with each row's cited
+   ground). Carried facts: the carrier everywhere; the placement exactly at
+   shared occupancy; the compute carrier exactly where the strategy's declared
+   semantics reaches chains. The options' shared premise, one count for the
+   category, is the refused shape.
+2. **The shared-occupancy placement is not a function of the carrier**
+   (measured, probes 4 and 5 arms B and D). holds for: W in 1..=16,
+   k in 1..=8, container = dense bit stream against minimum rung,
+   signedness = unsigned, threads = 1. 80 of 128 cells differ; must-fail arm
+   at W = 13, k = 5 shows 9 against 10.
+3. **Two factorings of one realisation map are separated by no declared
+   signature, and the sweep that decides factoring-versus-assignment exists**
+   (measured on the model, probe 5 arms A and C). holds for: the model rule,
+   S in {hot, warm, cold, precise}, W in 1..=256, signedness in
+   {unsigned, signed}, threads = 1. The claim about the real design's two
+   spellings is not established here; the instrument shape is, with both
+   controls firing. The selector-versus-key disagreement is thereby dissolved
+   as canon and survives as design-tier diagnostics.
+4. **Admitting the fused operation separates assignments that are one
+   denotation under the unfused core** (measured, probe 6). Predicate in
+   section 11.4. Consequence: the admission contract of 11.4, argued from the
+   measurement plus the fast-math gap's own condemnation of one-name-two-
+   semantics.
+5. **The operation-set answer's shape is option 3 and its floor is the
+   standards union** (argued from ratified and stated rows named in 11.2 and
+   11.3; the fused operation's membership in the floor is IEEE 754's own
+   requirement read through the alias obligation).
+
+## 13. Reported outside the questions, as the standing instruction requires
+
+- **`question::which_operation_set_the_design_ships` carries, in its `bound`,
+  the verbatim sentence `r210` retired as wrong**, and two stale stakes in its
+  `unblocks` (the footprint clause and the container-relative count, both now
+  settled by the ratified ruling). A live row restating a retired claim is the
+  class `mock/lints/a_live_row_restates_a_retired_claim.rs` exists to catch;
+  whether the lint's reach excludes `bound` fields or the match is too narrow,
+  the row is standing in the state the lint names, and either the row or the
+  lint wants fixing.
+- **`question::container_derivation_output_count`'s option list is the
+  category-binary shape a third time**, after the premise row and the
+  operation-set row. Three registered instances in one topic family is a
+  pattern for whoever ports closures: the register keeps writing "which single
+  answer governs the category" over questions whose canon answer is a
+  criterion plus regions.
