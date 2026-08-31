@@ -30,29 +30,67 @@
 //!       offset, must be reported as disagreeing at every F > 0.
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
-enum Mode { Floor, Ceil, TowardZero, AwayFromZero, HalfUp, HalfEven, PlantedBias }
+enum Mode {
+    Floor,
+    Ceil,
+    TowardZero,
+    AwayFromZero,
+    HalfUp,
+    HalfEven,
+    PlantedBias,
+}
 
 const MODES: [Mode; 6] = [
-    Mode::Floor, Mode::Ceil, Mode::TowardZero,
-    Mode::AwayFromZero, Mode::HalfUp, Mode::HalfEven,
+    Mode::Floor,
+    Mode::Ceil,
+    Mode::TowardZero,
+    Mode::AwayFromZero,
+    Mode::HalfUp,
+    Mode::HalfEven,
 ];
 
 /// Place the exact value `num / den` on the integer grid, `den` a power of two.
 fn adapt(num: i128, den: i128, m: Mode) -> i128 {
     let q = num.div_euclid(den);
     let r = num.rem_euclid(den); // 0 <= r < den
-    if r == 0 { return q; }
+    if r == 0 {
+        return q;
+    }
     let twice = 2 * r;
     match m {
         Mode::Floor => q,
         Mode::Ceil => q + 1,
-        Mode::TowardZero => if num < 0 { q + 1 } else { q },
-        Mode::AwayFromZero => if num < 0 { q } else { q + 1 },
-        Mode::HalfUp => if twice >= den { q + 1 } else { q },
+        Mode::TowardZero => {
+            if num < 0 {
+                q + 1
+            } else {
+                q
+            }
+        }
+        Mode::AwayFromZero => {
+            if num < 0 {
+                q
+            } else {
+                q + 1
+            }
+        }
+        Mode::HalfUp => {
+            if twice >= den {
+                q + 1
+            } else {
+                q
+            }
+        }
         Mode::HalfEven => {
-            if twice > den { q + 1 }
-            else if twice < den { q }
-            else if q % 2 == 0 { q } else { q + 1 }
+            if twice > den {
+                q + 1
+            } else if twice < den {
+                q
+            } else if q % 2 == 0 {
+                q
+            } else {
+                q + 1
+            }
         }
         // C3. Its first form was `3 * r >= den`, which agreed everywhere and
         // failed as a control. The reason is the finding: translating by a grid
@@ -60,23 +98,50 @@ fn adapt(num: i128, den: i128, m: Mode) -> i128 {
         // ANY rule reading only `r` is equivariant by construction. A rule that
         // cannot commute has to read `q`, which is what this one does and what
         // half-even does.
-        Mode::PlantedBias => if q.rem_euclid(3) == 0 { q + 1 } else { q },
+        Mode::PlantedBias => {
+            if q.rem_euclid(3) == 0 {
+                q + 1
+            } else {
+                q
+            }
+        }
     }
 }
 
 #[derive(Clone, Copy)]
-struct Shape { w: u32, f: u32, signed: bool, sat: bool }
+struct Shape {
+    w: u32,
+    f: u32,
+    signed: bool,
+    sat: bool,
+}
 
 impl Shape {
-    fn lo(&self) -> i128 { if self.signed { -(1i128 << (self.w - 1)) } else { 0 } }
-    fn hi(&self) -> i128 { if self.signed { (1i128 << (self.w - 1)) - 1 } else { (1i128 << self.w) - 1 } }
+    fn lo(&self) -> i128 {
+        if self.signed {
+            -(1i128 << (self.w - 1))
+        } else {
+            0
+        }
+    }
+    fn hi(&self) -> i128 {
+        if self.signed {
+            (1i128 << (self.w - 1)) - 1
+        } else {
+            (1i128 << self.w) - 1
+        }
+    }
     fn place(&self, v: i128) -> i128 {
         if self.sat {
             v.clamp(self.lo(), self.hi())
         } else {
             let span = 1i128 << self.w;
             let m = v.rem_euclid(span);
-            if self.signed && m > self.hi() { m - span } else { m }
+            if self.signed && m > self.hi() {
+                m - span
+            } else {
+                m
+            }
         }
     }
 }
@@ -103,7 +168,9 @@ fn disagreements(s: Shape, m: Mode, twice_placed: bool) -> (u64, Option<(i128, i
                 };
                 if fused != composed {
                     n += 1;
-                    if first.is_none() { first = Some((a, b, c)); }
+                    if first.is_none() {
+                        first = Some((a, b, c));
+                    }
                 }
             }
         }
@@ -112,9 +179,9 @@ fn disagreements(s: Shape, m: Mode, twice_placed: bool) -> (u64, Option<(i128, i
 }
 
 fn main() {
-    let mut c1_ok = true;   // every mode agrees at F = 0
-    let mut c2_ok = true;   // some mode disagrees at F > 0
-    let mut c3_ok = true;   // the planted mode disagrees at every F > 0
+    let mut c1_ok = true; // every mode agrees at F = 0
+    let mut c2_ok = true; // some mode disagrees at F > 0
+    let mut c3_ok = true; // the planted mode disagrees at every F > 0
     let mut free: Vec<String> = Vec::new();
     // C4: the isolated cell. At signed saturating the realistic two-placement
     // composition must reach the fused result for no mode at any fraction width,
@@ -137,17 +204,45 @@ fn main() {
                     for &m in &MODES {
                         let (n, _) = disagreements(s, m, false);
                         let (n2, _) = disagreements(s, m, true);
-                        if n == 0 { agreeing.push(format!("{m:?}")); } else { any_disagree = true; }
-                        if n2 == 0 { agreeing2.push(format!("{m:?}")); }
-                        if f == 0 && n != 0 { c1_ok = false; }
+                        if n == 0 {
+                            agreeing.push(format!("{m:?}"));
+                        } else {
+                            any_disagree = true;
+                        }
+                        if n2 == 0 {
+                            agreeing2.push(format!("{m:?}"));
+                        }
+                        if f == 0 && n != 0 {
+                            c1_ok = false;
+                        }
                     }
                     let (pn, _) = disagreements(s, Mode::PlantedBias, false);
-                    if f > 0 && pn == 0 { c3_ok = false; }
-                    if f > 0 && !any_disagree { c2_ok = false; }
-                    println!("  F={f}  one placement: {}", if agreeing.is_empty() { "none".into() } else { agreeing.join(", ") });
-                    println!("        two placements: {}", if agreeing2.is_empty() { "none".into() } else { agreeing2.join(", ") });
+                    if f > 0 && pn == 0 {
+                        c3_ok = false;
+                    }
+                    if f > 0 && !any_disagree {
+                        c2_ok = false;
+                    }
+                    println!(
+                        "  F={f}  one placement: {}",
+                        if agreeing.is_empty() {
+                            "none".into()
+                        } else {
+                            agreeing.join(", ")
+                        }
+                    );
+                    println!(
+                        "        two placements: {}",
+                        if agreeing2.is_empty() {
+                            "none".into()
+                        } else {
+                            agreeing2.join(", ")
+                        }
+                    );
                     if signed && sat {
-                        if !agreeing2.is_empty() { c4_signed_sat_empty = false; }
+                        if !agreeing2.is_empty() {
+                            c4_signed_sat_empty = false;
+                        }
                     } else if agreeing2.is_empty() {
                         c4_elsewhere_nonempty = false;
                     }
@@ -163,12 +258,22 @@ fn main() {
     println!("  C1 every mode agrees at F = 0:                    {c1_ok}");
     println!("  C2 some mode disagrees at every F > 0:            {c2_ok}");
     println!("  C3 the planted non-equivariant mode is caught:    {c3_ok}");
-    println!("  C4 signed saturating reaches it for no mode, two placements: {c4_signed_sat_empty}");
+    println!(
+        "  C4 signed saturating reaches it for no mode, two placements: {c4_signed_sat_empty}"
+    );
     println!("  C4 every other policy reaches it for some mode:   {c4_elsewhere_nonempty}");
-    println!("  cells with at least one mode reaching it, one placement: {}", free.len());
+    println!(
+        "  cells with at least one mode reaching it, one placement: {}",
+        free.len()
+    );
     let pass = c1_ok && c2_ok && c3_ok && c4_signed_sat_empty && c4_elsewhere_nonempty;
-    println!("\n  RESULT: {}", if pass {
-        "the fused result is reachable by composing multiply and add, in a nameable region and not outside it"
-    } else { "INCONCLUSIVE" });
+    println!(
+        "\n  RESULT: {}",
+        if pass {
+            "the fused result is reachable by composing multiply and add, in a nameable region and not outside it"
+        } else {
+            "INCONCLUSIVE"
+        }
+    );
     std::process::exit(if pass { 0 } else { 1 });
 }
