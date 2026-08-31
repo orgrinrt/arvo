@@ -1,0 +1,205 @@
+############ KEY: declarations
+119 #6
+    W = 4, F in {0, 1, 2}, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul} and in {add, sub, mul, min}, term shapes = every term at 2 and 3 leaf slots over the signature in play, arity in {2, 3}, declarations = one-sided, threads = 1, target features any.
+
+119 #7
+    W = 3, F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots with every leaf identification, arity in {2, 3}, declarations = one-sided exhaustive, discharge check = root under a homomorphism and per node otherwise, threads = 1, target features any.
+
+119 #8
+    W in {2, 3}, F = 0, signedness in {unsigned, signed}, overflow behaviour = saturating, rounding = truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots with every leaf identification and 120 of 2025 sampled at 4, arity in {2, 3, 4}, declarations = one-sided exhaustive and two-endpoint exhaustive at arity 2 and sampled at arity 3, threads = 1, target features any.
+
+119 #9
+    W = 3, F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots, arity in {2, 3}, declarations = one-sided exhaustive and two-endpoint exhaustive at arity 2 and sampled at arity 3, threads = 1, target features any.
+
+119 #10
+    W in {3, 5, 6}, F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, radix = 2, dimension in {2, 4}, structure constants in {-1, 0, 1} with one or two nonzero entries per row, operation = mul, arity = 2, declarations = a uniform magnitude bound on every component, threads = 1, target features any.
+
+122 #5
+    W = 4, F in {0, 1, 2}, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul} and {add, sub, mul, min}, term shapes = every term at 2 and 3 leaf slots over the signature in play, arity in {2, 3}, declarations = one-sided, ambient domain one-signed, threads = 1, target features any.
+
+122 #6
+    W = 3, F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots with every leaf identification, arity in {2, 3}, declarations = one-sided exhaustive, ambient domain closed under negation for the saturating arm, discharge check = root under a homomorphism and per node otherwise, threads = 1, target features any.
+
+### spans carrying key declarations: 7
+
+############ KEY: restrictions
+119 #4
+    W = 3, F = 0, signedness = unsigned, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operation = add, arity = 2, restrictions = upper bounds in {1, 3, 7}, threads = 1, target features any.
+
+122 #4
+    W = 3, F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, mul} and {add, sub, mul}, arity in {2, 3}, ambient domain in {one-signed, closed under negation}, restrictions = upper bounds in {1, 3, 7}, threads = 1, target features any.
+
+### spans carrying key restrictions: 2
+
+############ KEY: term shapes
+119 #6
+    W = 4, F in {0, 1, 2}, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul} and in {add, sub, mul, min}, term shapes = every term at 2 and 3 leaf slots over the signature in play, arity in {2, 3}, declarations = one-sided, threads = 1, target features any.
+
+119 #7
+    W = 3, F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots with every leaf identification, arity in {2, 3}, declarations = one-sided exhaustive, discharge check = root under a homomorphism and per node otherwise, threads = 1, target features any.
+
+119 #8
+    W in {2, 3}, F = 0, signedness in {unsigned, signed}, overflow behaviour = saturating, rounding = truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots with every leaf identification and 120 of 2025 sampled at 4, arity in {2, 3, 4}, declarations = one-sided exhaustive and two-endpoint exhaustive at arity 2 and sampled at arity 3, threads = 1, target features any.
+
+119 #9
+    W = 3, F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots, arity in {2, 3}, declarations = one-sided exhaustive and two-endpoint exhaustive at arity 2 and sampled at arity 3, threads = 1, target features any.
+
+122 #5
+    W = 4, F in {0, 1, 2}, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul} and {add, sub, mul, min}, term shapes = every term at 2 and 3 leaf slots over the signature in play, arity in {2, 3}, declarations = one-sided, ambient domain one-signed, threads = 1, target features any.
+
+122 #6
+    W = 3, F = 0, signedness in {unsigned, signed}, overflow behaviour in {wrapping, saturating}, rounding = truncation, radix = 2, operations in {add, sub, mul}, term shapes = every term at 2 and 3 leaf slots with every leaf identification, arity in {2, 3}, declarations = one-sided exhaustive, ambient domain closed under negation for the saturating arm, discharge check = root under a homomorphism and per node otherwise, threads = 1, target features any.
+
+### spans carrying key term shapes: 6
+
+############ KEY: term
+119 #11
+    toolchain = the pinned nightly, edition 2021, crate type = library, feature gates = none, term = a left-nested fold, fold length in {2, 8, 16, 24, 32, 48, 64, 96, 128}, threads any, target features any.
+
+122 #8
+    toolchain = the pinned nightly, edition 2021, crate type = library, feature gates = none, term = a left-nested fold, recursion limit in {16, 24, 32, 48, 64, 96}, threads any, target features any.
+
+### spans carrying key term: 2
+
+############ KEY: F_intermediate
+132 #3
+    rounding in the nearest members; F_exact in {4, 5}; F_intermediate in {2, 3}; F_final in {1, 2}; domain = rationals over the swept window closed under negation; threads = 1. 
+
+136 #2
+    W in {9}; F in {4}; signedness = signed; domain closed under negation; rounding in the five standard members; staged narrowing F_exact = 4, F_intermediate = 2, F_final = 0; threads = 1. 
+
+### spans carrying key F_intermediate: 2
+
+############ KEY: F_final
+132 #3
+    rounding in the nearest members; F_exact in {4, 5}; F_intermediate in {2, 3}; F_final in {1, 2}; domain = rationals over the swept window closed under negation; threads = 1. 
+
+136 #2
+    W in {9}; F in {4}; signedness = signed; domain closed under negation; rounding in the five standard members; staged narrowing F_exact = 4, F_intermediate = 2, F_final = 0; threads = 1. 
+
+### spans carrying key F_final: 2
+
+############ KEY: F_exact
+132 #3
+    rounding in the nearest members; F_exact in {4, 5}; F_intermediate in {2, 3}; F_final in {1, 2}; domain = rationals over the swept window closed under negation; threads = 1. 
+
+### spans carrying key F_exact: 1
+
+############ KEY: staged narrowing F_exact
+136 #2
+    W in {9}; F in {4}; signedness = signed; domain closed under negation; rounding in the five standard members; staged narrowing F_exact = 4, F_intermediate = 2, F_final = 0; threads = 1. 
+
+### spans carrying key staged narrowing F_exact: 1
+
+############ KEY: coupling
+132 #8
+    F any; W any; signedness any; domain closed under negation; coupling = any point of the Fréchet interval; threads any. 
+
+132 #9
+    element count any; fraction = 1/3; coupling in {comonotone, independent}; threads any. 
+
+136 #6
+    F any; W any; signedness any; domain any, established by the construction reading only frac(x) and never the cell index, given a floor-based cell coordinate; coupling = any point of the Fréchet interval; threads any. 
+
+136 #7
+    element count any; fraction = 1/3; coupling in {comonotone, independent}; domain any, same construction and same condition (136_probes/x2 P3); threads any; W, F and signedness: OPEN. 
+
+138 #2
+    element count any; fraction = 1/3; coupling in {comonotone, independent}; domain any, same construction and same condition (136_probes/x2 P3); threads any. 
+
+### spans carrying key coupling: 5
+
+############ KEY: element count
+132 #9
+    element count any; fraction = 1/3; coupling in {comonotone, independent}; threads any. 
+
+136 #7
+    element count any; fraction = 1/3; coupling in {comonotone, independent}; domain any, same construction and same condition (136_probes/x2 P3); threads any; W, F and signedness: OPEN. 
+
+138 #2
+    element count any; fraction = 1/3; coupling in {comonotone, independent}; domain any, same construction and same condition (136_probes/x2 P3); threads any. 
+
+### spans carrying key element count: 3
+
+############ KEY: keying
+132 #10
+    keying in {none, value, position}; decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions; F any; signedness any; input shape = one constant value at forty positions in one cell; threads = 1. 
+
+### spans carrying key keying: 1
+
+############ KEY: keying axis
+136 #8
+    everything 132 5.8's predicate lists, unchanged, plus keying axis = one-dimensional (section 8), plus domain, W, F and signedness: OPEN.
+
+138 #3
+    everything 132 5.8's predicate lists, unchanged, plus keying axis = one-dimensional (136 section 8).
+
+### spans carrying key keying axis: 2
+
+############ KEY: cost coordinates
+146 #6
+    numeral fixed-point signed; W = 6; F in {0, 3}; overflow = saturating; rounding = truncate toward zero; conforming pair = two routes to one multiply; non-conforming pair = fused and stepwise multiply-add; cost coordinates = 3 with two committed synthetic tables; selector = linear; weight grid resolution = 1/24; inputs exhaustive over the declared range; container width = declared width; threads = 1; target features = host. 
+
+146 #14
+    cost tables drawn uniformly from integers 1..20; arms in {4, 6, 8}; cost coordinates in {2, 3, 4}; 120 tables per cell; no exact duplicate arms; decision procedure = exact vertex enumeration over rationals; threads = 1; target features = host. 
+
+146 #16
+    arms = 4; cost coordinates in {2, 3} with the third constant across arms; selector = linear; decision procedure = exact vertex enumeration; threads = 1; target features = host. 
+
+146 #17
+    cost tables drawn uniformly from integers 1..60; arms = 7; cost coordinates = 3; 200 independent target pairs; selector = linear; weight grid resolution = 1/40 sampled every seventh point; threads = 1; target features = host. 
+
+146 #18
+    cost coordinates any; arms any; weights any positive; baseline any arm with positive weighted cost; threads = 1. 
+
+146 #19
+    cost coordinates = 3; arms = 7; cost tables drawn uniformly from integers 1..60; weight grid resolution = 1/12 on the 2-simplex; baseline any arm with positive coordinates; threads = 1; target features = host. 
+
+146 #20
+    baseline uniform across coordinates; cost coordinates = 3; arms = 7; threads = 1. 
+
+### spans carrying key cost coordinates: 7
+
+############ KEY: arms
+146 #14
+    cost tables drawn uniformly from integers 1..20; arms in {4, 6, 8}; cost coordinates in {2, 3, 4}; 120 tables per cell; no exact duplicate arms; decision procedure = exact vertex enumeration over rationals; threads = 1; target features = host. 
+
+146 #16
+    arms = 4; cost coordinates in {2, 3} with the third constant across arms; selector = linear; decision procedure = exact vertex enumeration; threads = 1; target features = host. 
+
+146 #17
+    cost tables drawn uniformly from integers 1..60; arms = 7; cost coordinates = 3; 200 independent target pairs; selector = linear; weight grid resolution = 1/40 sampled every seventh point; threads = 1; target features = host. 
+
+146 #18
+    cost coordinates any; arms any; weights any positive; baseline any arm with positive weighted cost; threads = 1. 
+
+146 #19
+    cost coordinates = 3; arms = 7; cost tables drawn uniformly from integers 1..60; weight grid resolution = 1/12 on the 2-simplex; baseline any arm with positive coordinates; threads = 1; target features = host. 
+
+146 #20
+    baseline uniform across coordinates; cost coordinates = 3; arms = 7; threads = 1. 
+
+### spans carrying key arms: 6
+
+############ KEY: selector
+146 #6
+    numeral fixed-point signed; W = 6; F in {0, 3}; overflow = saturating; rounding = truncate toward zero; conforming pair = two routes to one multiply; non-conforming pair = fused and stepwise multiply-add; cost coordinates = 3 with two committed synthetic tables; selector = linear; weight grid resolution = 1/24; inputs exhaustive over the declared range; container width = declared width; threads = 1; target features = host. 
+
+146 #16
+    arms = 4; cost coordinates in {2, 3} with the third constant across arms; selector = linear; decision procedure = exact vertex enumeration; threads = 1; target features = host. 
+
+146 #17
+    cost tables drawn uniformly from integers 1..60; arms = 7; cost coordinates = 3; 200 independent target pairs; selector = linear; weight grid resolution = 1/40 sampled every seventh point; threads = 1; target features = host. 
+
+### spans carrying key selector: 3
+
+############ KEY: baseline
+146 #18
+    cost coordinates any; arms any; weights any positive; baseline any arm with positive weighted cost; threads = 1. 
+
+146 #19
+    cost coordinates = 3; arms = 7; cost tables drawn uniformly from integers 1..60; weight grid resolution = 1/12 on the 2-simplex; baseline any arm with positive coordinates; threads = 1; target features = host. 
+
+### spans carrying key baseline: 2
+
+############ KEY: weight grid resolution
