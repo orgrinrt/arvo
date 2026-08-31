@@ -1539,3 +1539,22 @@ answers = ["the_rounding_mode_vocabulary"]
 note = "The factual half was settled by measurement before the question was put and was never contested; only the naming was open, which is why this sat unanswerable for as long as it did while reading like a technical question. What the panel had argued was two spellings of the same retirement, so no position is overturned by this."
 provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#the-rounding-vocabulary-retires-the-ambiguous-word"]
 keywords = ["rounding", "vocabulary", "truncation", "trunc", "toward_zero", "floor", "ceil", "half_up", "half_even", "stochastic", "bit-drop"]
+
+[[ruling]]
+id = "the_panel_finishes_the_canon_without_him"
+kind = "process"
+rung = "ratified"
+ratified_by = "op"
+ratification = "Sent unprompted, in the middle of the round that answered his last four questions, after months of the panel routing questions to him. No options were offered; he ended his own involvement."
+topic = "panel_conduct"
+says = "Every remaining canon question is the panel's. A question filed as op's is now derived from what he has already said, argued among peers, and gated by the coordinator. His absence is not a licence to invent: silence in his corpus is still not permission, and where his words genuinely do not reach a question the answer is derived from the intent inside its spirit and put through two independent agreements. Nothing is parked awaiting him."
+quote = '''
+Now work autonomously, you don't need me anymore. I've given all I can, the canon should be
+solvable and fully fillable without me from now on with all that I've already said.
+'''
+because = "He had said in the same round that specifics are out of his depth and that a panel exists precisely because they are, and the ratification model settled hours earlier had already moved promotion off his desk. This is that model reaching its conclusion: the remaining questions filed as his were filed there by habit rather than because they needed him."
+instead = "The corpus of his statements is where a question filed as his gets answered from. `.data/op-responses/` holds his words verbatim across the whole arc, `INTENTS.md` holds the ratified intents, and the ruling namespace holds what he has stamped. A question that feels unanswerable is usually one nobody searched for in the words the answer would be written in."
+supersedes = ["two_experts_converging_is_a_ratification_and_the_coordinator_holds_the_gate"]
+note = "It does not supersede that ruling's substance, which stands unchanged and is what makes this workable; it supersedes only the residual reading that a question could still be routed to him when the panel found one hard. Read together: the experts propose, the coordinator gates, and there is no third party to appeal to. The standing steer he gave minutes earlier bounds how this is used, in his words, that the ratification is to be sped up and the canon finished, and that speed comes from deciding rather than from being careless, dismissive or naive."
+provenance = ["panel::202608072330_the-numeral-canon-panel::217_op_the_last_round_and_the_panel_finishes_alone::#and-then-he-left"]
+keywords = ["autonomy", "handover", "panel", "coordinator", "decider", "op", "corpus", "canon", "silence"]

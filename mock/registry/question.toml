@@ -413,7 +413,8 @@ options = [
   "Keep both senses with distinct names.",
   "Find that they are the same concept at two scales, which nobody has argued.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`. The option list is measured to be missing a member: the word does three jobs rather than two, configuration and construction being two and the chain, meaning the same carrier with operations in sequence and no new primitive, being neither. So the constraint is that any answer keeping one word has to say what becomes of the third sense, and an answer picking a sense has to say which of the three it picked. Both of op's own uses are preserved as evidence of what he meant on each object rather than as a vote."
 topic = "the_chain"
 note = "It is op's to settle because both senses carry his word on different objects: a numeral kind bound to a strategy, which is what the panel's founding sentence means, and an aggregate over numerals, which is what he means at `32`. The dispatching agent briefed the file that raised this on the second sense while the founding sentence uses the first, and did not notice. The option list is measured to be missing a member: `173`'s ledger entry L20 finds the word does three jobs, configuration and construction being two and the chain, meaning the same carrier with operations in sequence and no new primitive, being neither. Naming that third sense is carried separately as op's."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q16-which-sense-does-composition-carry-and-does-the-canon-need-both-words"]
@@ -455,7 +456,8 @@ options = [
   "It counts it, which is what one row of the record's own family table does.",
   "It does not, which is what an adjacent row of the same table does.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`. Nothing decides this mathematically and both readings were computed through to their four consequences, so what is left is a convention, and a convention is chosen for what it makes expressible. Answered inside the arms paradigm: take the reading under which the three sign domains form a structure a const predicate can gate on rather than one leaving a domain incomparable, and repair the two rows of the record's own family table that disagree in the same act, because preserving the disagreement is what made this a question."
 topic = "the_format"
 unblocks = "What the sign domain moves; whether the three sign domains at equal precision form a chain or leave one incomparable; whether the symmetric domain at precision one denotes exactly the zero set, which bears on whether a zero-width numeral already exists under one reading; and whether two of the three sign domains collapse at an odd radix."
 note = "`02` names exactly two things as genuinely undetermined and op's, and this is the first. All four consequences are computed under both readings so nothing in that derivation depends on the answer, and the answer itself is not decided by mathematics."
@@ -1241,7 +1243,8 @@ options = [
   "Re-measured per target, so portability is a property of each build.",
   "Units fixed and baseline re-measured, which the topic says does not buy the guarantee.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`, and narrowed by `ruling::there_is_no_exchange_rate_because_there_is_no_generalisation`: there is no global rate between objectives, so a weighting is local to an arm and carries its justification in words. Answer inside that. Whether a weighting travels is then a property of the arm rather than of the design or of each build, and the strategy-object topic's measurement, that a weighting travels by construction while an arm does not, is the evidence to reconcile against rather than to restate."
 topic = "the_strategy_axis"
 unblocks = "Whether a weighting travels."
 note = "One candidate calls this a declaration rather than evidence; its revision sharpens it to two declarations rather than one and reports that only the conjunction buys portability. The strategy-object topic found the portability worry inverts: a weighting travels by construction while an arm does not, which is the opposite of what the panel assumed before it was measured."
@@ -1336,7 +1339,8 @@ options = [
   "Two things, chains and operations quantified separately.",
   "One phrase, naming a single subject.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`. Read the sentence under `ruling::accuracy_is_never_bought_with_performance`, which is the same intent's other half and holds for chains and for single operations alike. The constraint is that the reading picked must not change what any arm does, since the intent it sits in is now settled independently of how the phrase parses; if a reading does change an arm, that is the finding and it outranks the parse."
 topic = "the_chain"
 note = "Recorded as a second unresolved reading inside the same sentence as the accuracy-target question, and carried here as its own row because the two have disjoint answers; the split is this port's call. Nobody can settle either from the outside."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#8-the-tenth-unit-adds-four-items-and-one-of-them-is-whether-a-rule-of-the-workspace-becomes-an-intent-of-yours"]
@@ -1351,7 +1355,8 @@ options = [
   "The staged expression description, the only one reaching the backward facts because the sink triggers the lowering, and the one carrying a taste question about the native-imitation intent inside it.",
   "A composition of more than one of them, covering different shapes.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`, and constrained by two rulings from the same round. `ruling::accuracy_is_never_bought_with_performance` means the carrier is chosen on what it costs at run time rather than on surface elegance, and a carrier that buys expressiveness with speed has not answered. `ruling::there_is_no_exchange_rate_because_there_is_no_generalisation` means the fourth option, several carriers each covering the shapes it is optimal for, is the paradigm rather than a compromise between the first three. The cost gradient across the first three, nothing new, then a crate surface, then a new binding-time surface, is evidence about each arm's price and not a ranking."
 topic = "the_chain"
 note = "The discriminator and the doability evidence are in the tenth unit's ledger; the choice is op's. The cost gradient across the first three is stated there as nothing new, then a crate surface, then a new binding-time surface. The fourth option is the composition the unit's own option pass carries beside the three."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#8-the-tenth-unit-adds-four-items-and-one-of-them-is-whether-a-rule-of-the-workspace-becomes-an-intent-of-yours"]
@@ -1364,7 +1369,8 @@ options = [
   "Chain.",
   "Region between observations.",
 ]
-decider = "op"
+decider = "panel"
+bound = "Returned by `ruling::the_panel_finishes_the_canon_without_him`. What is at stake was settled by measurement before the naming was put: the object is the schedule rather than the carrier. So the constraint is that the name has to say schedule, and has to not let the path case read as the general case, since a path-only reading gets the schedule silently wrong at shared nodes. A name failing either of those is refused whatever its other merits."
 topic = "the_chain"
 note = "A vocabulary decision for the canon writer with op, and one of two the tenth unit reserves. What is at stake was settled by measurement before the naming was put: the object is the schedule rather than the carrier. The path case is the easy instantiation either way, and a path-only reading gets the schedule silently wrong at shared nodes."
 provenance = [
