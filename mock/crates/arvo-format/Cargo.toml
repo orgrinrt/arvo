@@ -10,3 +10,6 @@ notko.workspace = true
 
 [lints.rust]
 unsafe_op_in_unsafe_fn = "forbid"
+
+[dev-dependencies]
+trybuild = "1"

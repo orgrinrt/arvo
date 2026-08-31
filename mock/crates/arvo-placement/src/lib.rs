@@ -28,12 +28,9 @@
 //! crate does not introduce the numeric category and is checked for that.
 
 #![no_std]
-#![feature(adt_const_params)]
-#![allow(incomplete_features)]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
 use arvo_format::{Bool, DeclaredSignature, Format, Slots, Width};
-use core::marker::ConstParamTy;
 
 /// Whether a value has its carrier allocation to itself.
 ///
@@ -97,12 +94,43 @@ pub const LADDER: [Width; 4] = [
 /// strategy is a binding onto it, which is `arvo-strategy`'s subject, and keeping
 /// the key here is what lets the strategy set be reshaped without the ladder
 /// moving.
-#[derive(Clone, Copy, PartialEq, Eq, Debug, ConstParamTy)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Objective {
     /// Smallest footprint. Bitpacks and shares allocations where it can.
     Footprint,
     /// Widest native access. Prefers a container the host handles directly.
     Access,
+}
+
+/// An objective as a type, which is how it reaches the derivation.
+///
+/// A const generic cannot carry it: a const argument may not depend on a generic
+/// type parameter, so a consumer generic over the strategy could not write the
+/// call at all, and the feature rustc suggests for that is forbidden here. A
+/// marker composes as an ordinary type argument and its associated const is still
+/// a constant after monomorphisation, so the branch erases either way.
+pub trait ObjectiveKind {
+    /// Which objective this marker names.
+    const OBJECTIVE: Objective;
+}
+
+/// The markers, one per objective.
+pub mod objective {
+    use super::{Objective, ObjectiveKind};
+
+    /// Smallest footprint. Packs at shared occupancy.
+    pub struct Footprint;
+
+    /// Widest native access. Does not pack.
+    pub struct Access;
+
+    impl ObjectiveKind for Footprint {
+        const OBJECTIVE: Objective = Objective::Footprint;
+    }
+
+    impl ObjectiveKind for Access {
+        const OBJECTIVE: Objective = Objective::Access;
+    }
 }
 
 /// The placement of a declared signature.
@@ -187,10 +215,12 @@ pub const fn narrowest_carrier(declared: Width) -> Width {
 /// compile-time fact. The branch resolves at monomorphisation and is gone before
 /// the backend sees it.
 #[must_use]
-pub const fn derive_sole<S: DeclaredSignature, const O: Objective>() -> Placement {
+pub const fn derive_sole<S: DeclaredSignature, O: ObjectiveKind>() -> Placement {
     let declared = declared_width::<S>();
     let carrier = narrowest_carrier(declared);
-    let _ = O;
+    // Read so the parameter is not decorative, and so a marker whose associated
+    // const disagreed with its own identity would still resolve here.
+    let _ = O::OBJECTIVE;
     Placement {
         carrier,
         access: carrier,
@@ -213,10 +243,12 @@ pub const fn derive_sole<S: DeclaredSignature, const O: Objective>() -> Placemen
 /// carrier, padding rather than straddling, so every read is a single native
 /// access and no shift pair assembles a value.
 #[must_use]
-pub const fn derive_shared<S: DeclaredSignature, const O: Objective>() -> Placement {
+pub const fn derive_shared<S: DeclaredSignature, O: ObjectiveKind>() -> Placement {
     let declared = declared_width::<S>();
     let carrier = narrowest_carrier(declared);
-    match O {
+    // An associated const of a generic parameter, so this is a constant once the
+    // call is monomorphised and the unselected arm is gone before the backend.
+    match O::OBJECTIVE {
         Objective::Footprint => Placement {
             carrier,
             // An element of `declared` bits at an arbitrary offset can span one

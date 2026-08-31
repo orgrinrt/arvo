@@ -64,12 +64,15 @@ pub mod points {
     use crate::ambient::{BinaryRationals, UnsignedBinaryRationals};
     use crate::format::Format;
     use crate::quantum::{Constant, Indexed};
-    use crate::slots::{Signed, Unsigned};
+    use crate::slots::{Signed, Slots, Unsigned};
 
     /// Signed integers of `BITS` bits: constant quantum at exponent zero, no phase.
     pub struct Integer<const BITS: u32>;
 
-    impl<const BITS: u32> Format for Integer<BITS> {
+    impl<const BITS: u32> Format for Integer<BITS>
+where
+    Signed<BITS>: Slots,
+{
         type Ambient = BinaryRationals;
         type Quantum = Constant<0>;
         type Slots = Signed<BITS>;
@@ -83,7 +86,10 @@ pub mod points {
     /// what makes it fixed point rather than integral.
     pub struct UFixed<const BITS: u32, const FRAC: i32>;
 
-    impl<const BITS: u32, const FRAC: i32> Format for UFixed<BITS, FRAC> {
+    impl<const BITS: u32, const FRAC: i32> Format for UFixed<BITS, FRAC>
+where
+    Unsigned<BITS>: Slots,
+{
         type Ambient = UnsignedBinaryRationals;
         type Quantum = Constant<FRAC>;
         type Slots = Unsigned<BITS>;
@@ -98,7 +104,10 @@ pub mod points {
     /// law asserting that is what keeps the coordinate honest.
     pub struct Biased<const BITS: u32, const EXP: i32, const PHASE: i64>;
 
-    impl<const BITS: u32, const EXP: i32, const PHASE: i64> Format for Biased<BITS, EXP, PHASE> {
+    impl<const BITS: u32, const EXP: i32, const PHASE: i64> Format for Biased<BITS, EXP, PHASE>
+where
+    Signed<BITS>: Slots,
+{
         type Ambient = BinaryRationals;
         type Quantum = Constant<EXP>;
         type Slots = Signed<BITS>;
@@ -115,6 +124,8 @@ pub mod points {
 
     impl<const MANTISSA: u32, const MIN_EXP: i32, const EXPONENTS: u32> Format
         for Floating<MANTISSA, MIN_EXP, EXPONENTS>
+    where
+        Signed<MANTISSA>: Slots,
     {
         type Ambient = BinaryRationals;
         type Quantum = Indexed<MIN_EXP, EXPONENTS>;

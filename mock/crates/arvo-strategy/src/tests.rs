@@ -90,7 +90,7 @@ fn every_preset_selects_an_adaptation() {
 struct Bespoke;
 
 impl Strategy for Bespoke {
-    const OBJECTIVE: Objective = Objective::Footprint;
+    type Objective = arvo_placement::objective::Footprint;
     type Adaptation = Adapt<TowardZero, Wrap>;
 }
 
@@ -114,8 +114,8 @@ fn a_new_strategy_reaches_the_ladder_the_same_way_a_preset_does() {
 
     type Sig = Signature<Integer<13>, A<Floor, Wrap>>;
 
-    let from_preset = derive_sole::<Sig, { <Cold as Strategy>::OBJECTIVE }>();
-    let from_bespoke = derive_sole::<Sig, { <Bespoke as Strategy>::OBJECTIVE }>();
+    let from_preset = derive_sole::<Sig, <Cold as Strategy>::Objective>();
+    let from_bespoke = derive_sole::<Sig, <Bespoke as Strategy>::Objective>();
     assert_eq!(from_preset, from_bespoke);
 }
 
@@ -153,7 +153,10 @@ fn every_preset_resolves_both_items_through_one_generic_path() {
     // And the generic path agrees with reaching each item directly, which is what
     // makes "uniform" mean something rather than "the generic path is consistent
     // with itself".
-    assert_eq!(both_items::<Hot>().0, <Hot as Strategy>::OBJECTIVE);
+    assert_eq!(
+        both_items::<Hot>().0,
+        <<Hot as Strategy>::Objective as arvo_placement::ObjectiveKind>::OBJECTIVE
+    );
     assert_eq!(
         both_items::<Hot>().1,
         rounding_of::<<Hot as Strategy>::Adaptation>()
@@ -173,4 +176,71 @@ fn the_binding_is_readable_at_const_time() {
     // are also right.
     assert_eq!(_HOT_OBJECTIVE, Objective::Access);
     assert_eq!(_COLD_OBJECTIVE, Objective::Footprint);
+}
+
+// --- the binding composes, which is what the const generic severed -----------
+
+#[test]
+fn a_consumer_generic_over_the_strategy_reaches_the_ladder() {
+    // **This test's assertion is that it compiles.** Under the previous shape,
+    // where the objective was a const generic parameter, the body below was
+    // refused with `generic parameters may not be used in const operations` and
+    // rustc suggested a forbidden feature. So a consumer generic over the
+    // strategy could not reach the ladder at all, and every test passed because
+    // every test named a concrete preset.
+    //
+    // If anyone re-severs the binding this stops compiling, which is the pin.
+    use arvo_format::points::Integer;
+    use arvo_format::rounding::Floor;
+    use arvo_format::{Adapt, DeclaredSignature, Signature};
+    use arvo_placement::{Placement, derive_shared, derive_sole};
+
+    fn place_sole<F: DeclaredSignature, S: Strategy>() -> Placement {
+        derive_sole::<F, S::Objective>()
+    }
+
+    fn place_shared<F: DeclaredSignature, S: Strategy>() -> Placement {
+        derive_shared::<F, S::Objective>()
+    }
+
+    type Sig = Signature<Integer<13>, Adapt<Floor, Wrap>>;
+
+    // And it derives the same thing the concrete call site does, so composing
+    // generically is not a second path with its own answer.
+    assert_eq!(
+        place_sole::<Sig, Cold>(),
+        derive_sole::<Sig, <Cold as Strategy>::Objective>()
+    );
+    assert_eq!(
+        place_shared::<Sig, Cold>(),
+        derive_shared::<Sig, <Cold as Strategy>::Objective>()
+    );
+
+    // Two presets binding to different objectives give the generic consumer two
+    // answers at shared occupancy, which is the whole point of it composing.
+    assert_ne!(place_shared::<Sig, Cold>(), place_shared::<Sig, Hot>());
+}
+
+#[test]
+fn a_consumer_generic_over_the_strategy_never_names_a_preset() {
+    // The claim `lib.rs` makes, that a consumer never has to know which preset it
+    // holds, asserted rather than stated. This function mentions no preset and
+    // still reaches both the objective and the adaptation.
+    use arvo_format::rounding::Mode;
+
+    fn everything_a_consumer_needs<S: Strategy>() -> (Objective, Mode) {
+        (
+            objective_of::<S>(),
+            rounding_of::<<S as Strategy>::Adaptation>(),
+        )
+    }
+
+    assert_eq!(
+        everything_a_consumer_needs::<Cold>(),
+        (Objective::Footprint, Mode::TowardZero)
+    );
+    assert_eq!(
+        everything_a_consumer_needs::<Precise>(),
+        (Objective::Access, Mode::HalfEven)
+    );
 }

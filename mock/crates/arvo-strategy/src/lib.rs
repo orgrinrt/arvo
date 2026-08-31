@@ -27,7 +27,7 @@
 //! gets closed where nobody can see it happen.
 
 use arvo_format::Adaptation;
-use arvo_placement::Objective;
+use arvo_placement::{Objective, ObjectiveKind};
 
 /// A name bound to an objective and an adaptation selection.
 ///
@@ -39,7 +39,12 @@ use arvo_placement::Objective;
 /// about, which is the intended shape and not a gap.
 pub trait Strategy {
     /// What the placement ladder is keyed on for this binding.
-    const OBJECTIVE: Objective;
+    ///
+    /// A type rather than a const, so a consumer generic over the strategy can
+    /// hand it to the derivation. A const here would be a const generic argument
+    /// depending on a generic parameter at the call site, which does not compile
+    /// without a forbidden feature.
+    type Objective: ObjectiveKind;
 
     /// The adaptation this binding selects.
     ///
@@ -54,7 +59,7 @@ pub trait Strategy {
 /// know which preset it holds to know what the ladder will do.
 #[must_use]
 pub const fn objective_of<S: Strategy>() -> Objective {
-    S::OBJECTIVE
+    <S::Objective as ObjectiveKind>::OBJECTIVE
 }
 
 /// The presets the corpus carries.
@@ -67,7 +72,7 @@ pub mod presets {
     use arvo_format::overflow::{Saturate, Wrap};
     use arvo_format::rounding::{HalfEven, TowardZero};
     use arvo_format::Adapt;
-    use arvo_placement::Objective;
+    use arvo_placement::objective;
 
     /// The speed-first binding.
     ///
@@ -79,7 +84,7 @@ pub mod presets {
     pub struct Hot;
 
     impl Strategy for Hot {
-        const OBJECTIVE: Objective = Objective::Access;
+        type Objective = objective::Access;
         type Adaptation = Adapt<TowardZero, Wrap>;
     }
 
@@ -94,7 +99,7 @@ pub mod presets {
     pub struct Cold;
 
     impl Strategy for Cold {
-        const OBJECTIVE: Objective = Objective::Footprint;
+        type Objective = objective::Footprint;
         type Adaptation = Adapt<TowardZero, Wrap>;
     }
 
@@ -108,7 +113,7 @@ pub mod presets {
     pub struct Precise;
 
     impl Strategy for Precise {
-        const OBJECTIVE: Objective = Objective::Access;
+        type Objective = objective::Access;
         type Adaptation = Adapt<HalfEven, Saturate>;
     }
 
@@ -122,7 +127,7 @@ pub mod presets {
     pub struct Warm;
 
     impl Strategy for Warm {
-        const OBJECTIVE: Objective = Objective::Access;
+        type Objective = objective::Access;
         type Adaptation = Adapt<HalfEven, Wrap>;
     }
 }

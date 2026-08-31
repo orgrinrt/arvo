@@ -13,6 +13,7 @@
 //! packing rule exhibits one of them, so the honest state is the assertion
 //! standing and failing rather than an assertion narrowed until it passes.
 
+use crate::objective;
 use crate::{
     declared_width, derive_shared, derive_sole, narrowest_carrier, Carrier, Carrier16, Carrier32,
     Carrier64, Carrier8, Objective, Occupancy, Placement, LADDER,
@@ -49,8 +50,8 @@ fn the_control_the_ladder_rungs_are_distinct_and_ordered() {
 
 #[test]
 fn the_output_count_is_one_at_sole_and_three_at_shared() {
-    let sole = derive_sole::<Sig<Integer<13>>, { Objective::Footprint }>();
-    let shared = derive_shared::<Sig<Integer<13>>, { Objective::Footprint }>();
+    let sole = derive_sole::<Sig<Integer<13>>, objective::Footprint>();
+    let shared = derive_shared::<Sig<Integer<13>>, objective::Footprint>();
 
     assert_eq!(sole.output_count(), Width::bits(1));
     assert_eq!(shared.output_count(), Width::bits(3));
@@ -64,8 +65,8 @@ fn the_output_count_is_one_at_sole_and_three_at_shared() {
 
 #[test]
 fn the_footprint_is_observable_at_sole_occupancy_and_not_at_shared() {
-    let sole = derive_sole::<Sig<Integer<13>>, { Objective::Footprint }>();
-    let shared = derive_shared::<Sig<Integer<13>>, { Objective::Footprint }>();
+    let sole = derive_sole::<Sig<Integer<13>>, objective::Footprint>();
+    let shared = derive_shared::<Sig<Integer<13>>, objective::Footprint>();
 
     assert!(sole.footprint_is_observable().get());
     assert!(!shared.footprint_is_observable().get());
@@ -91,7 +92,7 @@ fn at_sole_occupancy_the_three_numbers_collapse_to_the_carrier() {
 
 #[test]
 fn at_shared_occupancy_the_stride_is_the_declared_width_and_not_the_carrier() {
-    let p = derive_shared::<Sig<Integer<13>>, { Objective::Footprint }>();
+    let p = derive_shared::<Sig<Integer<13>>, objective::Footprint>();
     assert_eq!(p.stride, declared_width::<Sig<Integer<13>>>());
     assert_ne!(
         p.stride, p.carrier,
@@ -222,12 +223,12 @@ fn two_adaptations_over_one_format_derive_one_placement() {
     type B = Signature<Integer<13>, Adapt<HalfEven, Saturate>>;
 
     assert_eq!(
-        derive_sole::<A, { Objective::Footprint }>(),
-        derive_sole::<B, { Objective::Footprint }>()
+        derive_sole::<A, objective::Footprint>(),
+        derive_sole::<B, objective::Footprint>()
     );
     assert_eq!(
-        derive_shared::<A, { Objective::Footprint }>(),
-        derive_shared::<B, { Objective::Footprint }>()
+        derive_shared::<A, objective::Footprint>(),
+        derive_shared::<B, objective::Footprint>()
     );
 }
 
@@ -301,8 +302,8 @@ macro_rules! objective_sweep {
             // it reads as the finding it is rather than as the collapse it was.
             $(
                 assert_eq!(
-                    derive_sole::<Sig<Integer<$w>>, { Objective::Footprint }>(),
-                    derive_sole::<Sig<Integer<$w>>, { Objective::Access }>(),
+                    derive_sole::<Sig<Integer<$w>>, objective::Footprint>(),
+                    derive_sole::<Sig<Integer<$w>>, objective::Access>(),
                     "the objectives differ at sole occupancy at width {}", $w
                 );
             )+
@@ -316,8 +317,8 @@ macro_rules! objective_sweep {
             let mut differing = 0usize;
             $(
                 {
-                    let f = derive_shared::<Sig<Integer<$w>>, { Objective::Footprint }>();
-                    let a = derive_shared::<Sig<Integer<$w>>, { Objective::Access }>();
+                    let f = derive_shared::<Sig<Integer<$w>>, objective::Footprint>();
+                    let a = derive_shared::<Sig<Integer<$w>>, objective::Access>();
                     if f != a { differing += 1; }
                 }
             )+
@@ -341,8 +342,8 @@ fn the_two_objectives_derive_two_placements_at_shared_occupancy() {
     // Footprint packs, so the stride is the declared width and the access reaches
     // wider. Access does not pack, so stride and access are both the carrier.
     type S13 = Sig<Integer<13>>;
-    let f = derive_shared::<S13, { Objective::Footprint }>();
-    let a = derive_shared::<S13, { Objective::Access }>();
+    let f = derive_shared::<S13, objective::Footprint>();
+    let a = derive_shared::<S13, objective::Access>();
 
     assert_ne!(
         f, a,
@@ -373,7 +374,7 @@ fn a_placement_carries_no_adaptation_and_no_operation() {
     // the axis. A rounding mode or an operation arriving in this struct would
     // break this destructuring, which is why it is written rather than left to a
     // comment.
-    let p = derive_sole::<Sig<Integer<13>>, { Objective::Footprint }>();
+    let p = derive_sole::<Sig<Integer<13>>, objective::Footprint>();
     let Placement {
         carrier,
         access,
@@ -384,4 +385,46 @@ fn a_placement_carries_no_adaptation_and_no_operation() {
     assert!(!access.is_none().get());
     assert!(!stride.is_none().get());
     assert_eq!(occupancy, Occupancy::Sole);
+}
+
+// --- the branch erases, which is what the marker had to keep -----------------
+
+/// Both arms, resolved at compile time.
+///
+/// A `const` binding is the assertion: a derivation that branched on anything the
+/// compiler could not fold would not be const-evaluable, so this failing to
+/// compile is what a lost erasure looks like. The const-generic shape this
+/// replaced had the same property and lost composition to get it; the marker has
+/// both.
+const FOOTPRINT_AT_13: Placement = derive_shared::<Sig<Integer<13>>, objective::Footprint>();
+const ACCESS_AT_13: Placement = derive_shared::<Sig<Integer<13>>, objective::Access>();
+
+#[test]
+fn both_arms_resolve_at_compile_time_and_to_different_placements() {
+    // The const bindings above are the erasure assertion. This checks they are
+    // also the two different answers, so the folding did not fold them together.
+    assert_ne!(FOOTPRINT_AT_13, ACCESS_AT_13);
+    assert_eq!(FOOTPRINT_AT_13, derive_shared::<Sig<Integer<13>>, objective::Footprint>());
+    assert_eq!(ACCESS_AT_13, derive_shared::<Sig<Integer<13>>, objective::Access>());
+}
+
+#[test]
+fn each_marker_names_the_objective_it_is_named_for() {
+    // The markers carry the objective as an associated const, so a marker whose
+    // const disagreed with its own identity would silently send the footprint
+    // arm down the access path. Nothing else checks that pairing.
+    use crate::ObjectiveKind;
+    assert_eq!(
+        <objective::Footprint as ObjectiveKind>::OBJECTIVE,
+        Objective::Footprint
+    );
+    assert_eq!(
+        <objective::Access as ObjectiveKind>::OBJECTIVE,
+        Objective::Access
+    );
+    assert_ne!(
+        <objective::Footprint as ObjectiveKind>::OBJECTIVE,
+        <objective::Access as ObjectiveKind>::OBJECTIVE,
+        "two markers naming one objective would make the ladder's key single-valued"
+    );
 }
