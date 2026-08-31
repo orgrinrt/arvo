@@ -1,0 +1,38 @@
+### predicate entries in the registry: 517
+### declared axes: 22
+
+axis                 entries
+integer_width        4
+fraction_width       64
+total_width          65
+signedness           66
+overflow_policy      61
+rounding             17
+operation            71
+arity                53
+chain_length         19
+container            14
+alignment            2
+access_pattern       0
+target_features      23
+threads              34
+strategy             0
+ambient_domain       0
+radix                2
+accumulator_width    1
+toolchain            7
+build_profile        11
+operand_window       3
+occupancy            0
+---
+(sum)                517
+
+### U1, two axes in constant use must be high
+  total_width: PASS (65)
+  threads: PASS (34)
+### U2, an axis nobody declared is absent and unused
+  PASS
+### U3, the per-axis sum against the entry count
+  PASS, 517 = 517, so every entry names a declared axis
+### U4, one table row per declared axis
+  PASS, 22 of 22
