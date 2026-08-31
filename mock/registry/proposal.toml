@@ -1847,3 +1847,25 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::55_smith_the_format_concept_derived_cold::#3-one-refinement-to-08-from-probe-3",
 ]
 keywords = ["raw order", "memcmp", "sortable", "monotone encoding", "excess-K", "offset binary", "biased exponent", "IEEE 754", "two's complement", "encoding choice"]
+
+[[proposal]]
+id = "the_reachable_interval_is_the_true_grade_and_width_is_its_lax_abstraction"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "The quantity that composes exactly under repeated addition is the reachable interval (the Minkowski sum of the operand ranges), not the width. Width, computed by the rule g(W,V) = max(W,V) + 1, is not associative and is a sound but increasingly loose abstraction of the reachable interval as fold length grows. The multiplicative width rule g(W,V) = W + V is associative, so this is specific to addition."
+because = "Measured directly: the width composition rule fails associativity by exhibiting two different results for the two association orders, while the reachable-interval rule matches the measured exact reachable set exactly at every fold length from 1 to 6, with the slack between the two growing from 0 to 2 bits over that range."
+predicate = [
+  "total_width: W = 4",
+  "signedness: signedness = signed",
+  "operation: operation = add",
+  "chain_length: chain length in 1..=6",
+]
+evidence = ["the_reachable_interval_composes_exactly_where_width_does_not"]
+note = "This is the same relationship interval arithmetic generally has to width analysis, offered as a design-level statement about which of the two the canon should treat as primary: the reachable set as the intent, width as the derived conservative quantity an implementation computes from it. Distinct from the retired 'grade monoid' claim (retirement::dl_is_exact_alone_as_a_trivial_grade_monoid), which is about an operation's IS_EXACT flag in an unrelated context from an earlier, superseded panel."
+gap = "Measured for addition at one width and one signedness, over operand ranges drawn from one interval. Whether the same relationship holds for multiplication's accumulator (linear rather than logarithmic growth, per proposal::an_accumulator_is_decided_by_the_operation_and_by_whether_a_bound_exists) is not addressed here."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::57_orchard_the_grading_and_the_refutation::#3-job-two-the-grading-second-read",
+]
+keywords = ["grading", "reachable interval", "Minkowski sum", "width", "accumulator", "interval arithmetic", "lax abstraction", "associativity"]

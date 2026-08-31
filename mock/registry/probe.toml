@@ -1335,3 +1335,17 @@ control = "The mutant offset (K=7) must break the sorted correspondence, and doe
 standing = "sound"
 note = "The adder-correctness half of the evidence behind law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness. The raw-order half is probe::raw_order_agrees_for_offset_binary_and_not_for_twos_complement_or_sign_magnitude, from the same unit's earlier file."
 keywords = ["encoding", "raw order", "raw adder", "offset binary", "two's complement", "scrambled", "unsigned identity", "constant defect", "uniqueness", "signed", "exhaustive"]
+
+# --- what grades an accumulator: width or the reachable interval -----------
+
+[[probe]]
+id = "the_reachable_interval_composes_exactly_where_width_does_not"
+establishes = "The width-growth rule g(W,V) = max(W,V) + 1 for repeated addition is not associative: g(g(5,0),0) = 7 against g(5,g(0,0)) = 6. The multiplicative rule g(W,V) = W + V is associative, so products do grade over widths where sums do not. For n operands drawn from Q = [-8, 7], the measured reachable set of exact sums equals the Minkowski sum [n*lo, n*hi] exactly at every n from 1 to 6, and the width computed by repeated max+1 is a sound but increasingly loose image of it: the slack between the exact bit count needed for the measured range and the repeated-max+1 bit count grows from 0 at n=2,3 to 2 at n=6."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p5_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::57_orchard_the_grading_and_the_refutation::#3-job-two-the-grading-second-read",
+]
+control = "The non-associativity of the width rule is exhibited directly by naming the two different results of the two association orders, g(g(5,0),0) versus g(5,g(0,0)), rather than merely asserted."
+standing = "sound"
+note = "The design consequence: the value set (the reachable interval) is what composes exactly under repeated addition; width is a derived, conservative abstraction of it that loosens with fold length. Says which of the two a canon should state as primary: the reachable set, with width as the thing an implementation computes from it."
+keywords = ["grading", "grade monoid", "width", "reachable interval", "Minkowski sum", "accumulator", "associativity", "interval arithmetic", "fold length"]

@@ -145,3 +145,35 @@ edited_after_supersessor = false
 canon_rows = []
 ported_this_pass = ["proposal::raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned"]
 note = "'superseded_by' names 56 on the strength of its title ('the four-choice model attacked') and its position immediately after 55 in the unit; this pass did not fully verify that 56 is what folded the wrapping question from three options to two, only that a folded two-option version exists in the registry citing OPTIONS.md. Worth a second look by whoever audits unit two end to end."
+
+[[item]]
+path = "56_knuth_the_four_choice_model_attacked.md"
+unit = "unit two (the format concept), files 55-64"
+claims = "Attacks 55's four-choice model. Deflates 55's three-option wrapping-fork to two (options two and three, ambient-domain and named-composite, are observationally equivalent; only option one, exception-list, is genuinely distinct). Places the phase parameter in Q by construction, with an arithmetic consequence (a biased grid has no additive identity, no unit, every addition ties). Completes 55's raw-order refinement into a forced trade: no bijective signed encoding has both raw-order agreement and raw-adder correctness."
+verdict = "live"
+confidence = 0.85
+reason = "The wrapping-fork deflation matches the registry's current two-option version of question::where_wrapping_lives, citing OPTIONS.md, confirming this file (or a close descendant of its reasoning) is what produced that fold. The raw-order/raw-adder exclusivity finding had zero registry presence before this pass; ported this pass as law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness plus its two supporting probes. The phase-in-Q placement and its arithmetic consequence (biased grid has no additive identity) were not independently checked against the registry by this pass and may be a further gap; flagged rather than resolved."
+superseded_by = []
+supersedes = ["55_smith_the_format_concept_derived_cold.md"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = ["law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness", "probe::raw_order_and_raw_adder_correctness_are_exclusive_for_a_signed_4bit_set"]
+note = "Section 5 (phase placement, and the biased-grid additive-identity consequence) was checked separately and found already ported (proposal.toml:1338, citing this file), so it was not double-counted here."
+
+[[item]]
+path = "57_orchard_the_grading_and_the_refutation.md"
+unit = "unit two (the format concept), files 55-64"
+claims = "Two jobs. Job one: refutes 42's clamp-counting criterion (its own probe already refutes it), replaces it with absorption, and identifies absorption as identical to 56's coherence law. Job two: confirms 55b's saturating semiring at nine widths via a congruence argument, bounds it to the integer grid (collapses under fractional scale), attributes the blame to rounding rather than saturation, and separately finds a genuine grading (the reachable interval under Minkowski sum) distinct from width, plus that a coherent reduction needs one bit less of accumulator than the exact-sum width."
+verdict = "live"
+confidence = 0.9
+reason = "The heaviest-cited file in this pass's early range (16 citations before this pass). Spot-checked absorption, the coherent-accumulator finding, and the one-bit-less finding: all three are present in the registry with matching numbers. The Minkowski-sum/reachable-interval grading finding had zero registry presence and is distinct from an unrelated, differently-scoped 'grade monoid' retirement from an earlier superseded panel; ported this pass."
+superseded_by = []
+supersedes = ["42 (outside this seat's slice)"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::absorption_decides_associativity_of_a_clamped_reduction", "proposal::a_coherent_reduction_needs_no_accumulator", "proposal::an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit"]
+ported_this_pass = ["probe::the_reachable_interval_composes_exactly_where_width_does_not", "proposal::the_reachable_interval_is_the_true_grade_and_width_is_its_lax_abstraction"]
+note = "canon_rows above is this pass's best guess at the matching row ids from a keyword search; not independently confirmed field-by-field beyond the spot checks in `reason`. A full audit of this file's sixteen citation sites against every claim in its ~700 lines was not performed; the file is large and well-covered, and the residue found (Minkowski-sum grading) came from reading its own section headers for anything not obviously matched by a grep."
