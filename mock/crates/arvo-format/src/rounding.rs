@@ -96,21 +96,7 @@ pub const ALL_MODES: [Mode; 6] = [
     Mode::Stochastic,
 ];
 
-/// Whether the mode's result is a function of the value alone.
-///
-/// True for five of the six. The odd one out is why a chain carrying it is not
-/// reproducible without saying more, and what more it needs is open.
-#[must_use]
-pub const fn is_deterministic(mode: Mode) -> bool {
-    !matches!(mode, Mode::Stochastic)
-}
-
-/// Whether the mode always moves toward one fixed direction, regardless of where
-/// the value sits between its neighbours.
-///
-/// The directed modes are the ones a narrowing composes through, and that
-/// composition is open in the registry rather than settled here.
-#[must_use]
-pub const fn is_directed(mode: Mode) -> bool {
-    matches!(mode, Mode::TowardZero | Mode::Floor | Mode::Ceil)
-}
+// Two predicates stood here, `is_deterministic` and `is_directed`, deleted for
+// the same reason as their siblings in `overflow`. Determinism is now measured by
+// varying the dither the applied map reads, and direction by looking at the slots
+// it returns.

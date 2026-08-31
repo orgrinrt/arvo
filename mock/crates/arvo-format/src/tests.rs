@@ -17,12 +17,12 @@ use crate::format::{
     contains, has_additive_identity, radix, smallest_step_exponent, step_exponent, Format,
 };
 use crate::overflow::{
-    is_identity_inside_range, is_monotone, Overflow, Policy, Saturate, Wrap, SHIPPED_POLICIES,
+    Overflow, Policy, Saturate, Wrap, SHIPPED_POLICIES,
 };
 use crate::points::{Biased, Floating, Integer, UFixed};
 use crate::quantum::{exponent_at, is_constant_family, Constant, Indexed, Quantum};
 use crate::rounding::{
-    is_deterministic, is_directed, Ceil, Floor, HalfEven, HalfUp, Mode, Rounding, Stochastic,
+    Ceil, Floor, HalfEven, HalfUp, Mode, Rounding, Stochastic,
     TowardZero, ALL_MODES,
 };
 use crate::slots::{slot_count, slot_in_range, Signed, Slots, Unsigned};
@@ -232,34 +232,6 @@ fn the_rounding_vocabulary_is_exactly_six_names() {
     assert_eq!(<Stochastic as Rounding>::MODE, Mode::Stochastic);
 }
 
-#[test]
-fn toward_zero_and_floor_are_two_modes_and_not_one() {
-    // The whole reason the ambiguous word was retired. On a signed domain it
-    // named these two, which genuinely differ, so a design carrying one name for
-    // both would have been carrying a bug in its vocabulary.
-    assert_ne!(Mode::TowardZero, Mode::Floor);
-    assert!(is_directed(Mode::TowardZero));
-    assert!(is_directed(Mode::Floor));
-}
-
-#[test]
-fn exactly_one_mode_is_not_a_function_of_the_value_alone() {
-    let nondeterministic = ALL_MODES.iter().filter(|m| !is_deterministic(**m)).count();
-    assert_eq!(
-        nondeterministic, 1,
-        "the chain questions about seeding and keying hang off there being exactly \
-         one such mode; if that count moves, those questions change shape"
-    );
-    assert!(!is_deterministic(Mode::Stochastic));
-}
-
-#[test]
-fn exactly_three_modes_are_directed() {
-    let directed = ALL_MODES.iter().filter(|m| is_directed(**m)).count();
-    assert_eq!(directed, 3);
-}
-
-// --- the overflow inventory ships three and is not closed --------------------
 
 #[test]
 fn the_shipped_overflow_policies_are_three_and_distinct() {
@@ -273,32 +245,6 @@ fn the_shipped_overflow_policies_are_three_and_distinct() {
     }
 }
 
-#[test]
-fn every_shipped_policy_is_the_identity_inside_the_range() {
-    // The law over the whole shipped matrix rather than the member somebody
-    // happened to think of. A fourth member that is not the identity inside the
-    // range would fail here, which is what this is for.
-    for policy in SHIPPED_POLICIES {
-        assert!(
-            is_identity_inside_range(policy),
-            "{policy:?} changes a value that was already representable"
-        );
-    }
-}
-
-#[test]
-fn wrapping_is_the_one_shipped_policy_that_does_not_transport_order() {
-    let monotone = SHIPPED_POLICIES.iter().filter(|p| is_monotone(**p)).count();
-    assert_eq!(
-        monotone, 2,
-        "the two law families are separate because order transport and coherence \
-         are independent; if every policy were monotone that separation would have \
-         no instance here"
-    );
-    assert!(!is_monotone(Policy::Wrap));
-    assert!(is_monotone(Policy::Saturate));
-    assert!(is_monotone(Policy::Clamp));
-}
 
 /// A user-defined overflow policy, which is what an open inventory means.
 ///

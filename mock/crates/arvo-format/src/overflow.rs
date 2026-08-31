@@ -65,21 +65,8 @@ impl Overflow for Clamp {
 /// and a later member would not be here.
 pub const SHIPPED_POLICIES: [Policy; 3] = [Policy::Wrap, Policy::Saturate, Policy::Clamp];
 
-/// Whether the policy preserves order across the boundary.
-///
-/// Wrapping does not: two values a step apart can land at opposite ends. The
-/// order-transporting algorithms are the consumers that read this, and they are
-/// the reason the two law families are separate.
-#[must_use]
-pub const fn is_monotone(policy: Policy) -> bool {
-    !matches!(policy, Policy::Wrap)
-}
-
-/// Whether the policy is idempotent on values already inside the range.
-///
-/// All three are, and the test asserting it over the whole matrix is what would
-/// catch a fourth member that is not.
-#[must_use]
-pub const fn is_identity_inside_range(policy: Policy) -> bool {
-    matches!(policy, Policy::Wrap | Policy::Saturate | Policy::Clamp)
-}
+// Two predicates stood here, `is_monotone` and `is_identity_inside_range`, and
+// they were deleted rather than improved. Each was a `matches!` over this
+// enumeration that no code read, so their tests reached a declaration and
+// stopped. Both properties are now asserted against the applied map in `apply`,
+// where being wrong about arithmetic is possible.

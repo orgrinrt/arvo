@@ -33,6 +33,7 @@
 
 pub mod adapt;
 pub mod ambient;
+pub mod apply;
 pub mod format;
 pub mod overflow;
 pub mod quantum;
