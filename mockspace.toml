@@ -555,6 +555,12 @@ description = "`op` where it is his intent and nobody else's; `measurement` wher
 values = ["op", "measurement", "panel", "coordinator"]
 
 [[registry.namespace.field]]
+name = "bound"
+type = "string"
+required = false
+description = "The constraint a question is to be answered inside, and how it got one. Written when a question filed as op's is put to him and he returns it: what he owed was the bound rather than the answer, so the row records his words, the constraints they impose, and that `decider` moved off him. It is the record that stops the same question going back a second time, which has already cost him a round trip. A `decider = op` row carrying no `bound` has simply not been asked yet; one carrying a `bound` and still naming him is a filing error."
+
+[[registry.namespace.field]]
 name = "unblocks"
 type = "string"
 required = false

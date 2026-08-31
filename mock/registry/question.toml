@@ -968,9 +968,21 @@ options = [
   "Declare it open-ended, under which the table is not writable by construction and the canon says so rather than leaving a gap that reads as unfinished work.",
   "Name a core set and declare the rest open.",
 ]
-decider = "op"
+decider = "panel"
 topic = "the_strategy_object"
 unblocks = "The preset count and their names, which is op's own open intent. The topic's result is that it cannot be closed from below, because it is downstream of this, so this one question is the whole of that one. It also decides whether footprint is observable, and with it one clause of the primitive candidate, the contested one-vocabulary-or-two fork, and whether the count of primitives is container-relative."
+bound = '''
+Put to op and returned, on the ground that it is not a question he is placed to
+answer:
+
+> This bears on the prior answer and isn't mine to call, sine I'm not an expert
+> or a domain specialist on maths. This is why you and the panel exist.
+
+**It was recorded as blocked on him and it never was.** It is downstream of
+`the_container_premise`, which is itself now the panel's under a stated bound,
+so the chain that ends here is workable from end to end without him. Whether the
+resulting set is right is his to ratify; deriving it is not his to do.
+'''
 note = "No measurement can supply this: the topic established that the question is a decision, and that is itself the finding. Where it bites: at unsigned, a design shipping four of the five operations would report the intermediate axis dead and be wrong. The second option is stated in the register rather than in either candidate; the third is the coordinator's addition at `156`, added so the question does not read as a binary, and is marked there as its own. Coupled to the unpredicated-proposition question, which one signature records as the same decision."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::OPTIONS::#q61-which-operation-set-the-design-ships",
@@ -1096,9 +1108,27 @@ options = [
   "A strategy changes a computed value, which is the escalation the panel has treated as an inter-topic pointer rather than a live fork.",
   "Two markers over one value set and one realisation map must not be two types, which contradicts the shipped rule rather than the candidate.",
 ]
-decider = "op"
+decider = "panel"
 topic = "the_container_premise"
 unblocks = "The statement of what a primitive is, which is the panel's central noun and which four topics have deferred to."
+bound = '''
+Put to op and returned. It was filed as his and it is not; what he owed was the
+bound, and he gave it:
+
+> Hmm, this is not mine to call, it is bounded by soundness and also the rule
+> that demands we provide first-class matlab and ieee754 compatible apis as
+> aliases over arvo primitives and such
+
+So the panel decides it, inside two constraints. **Soundness**, which admits no
+branch that cannot be shown correct. And **the standards-alias demand**, filed as
+`obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`:
+a convention that cannot be written as an alias over the primitives is a gap in
+the primitives, which makes it an adequacy test on any answer here rather than a
+preference between the three options.
+
+**A question he returns is a question that was misfiled.** Recorded so this one
+is not put to him a second time.
+'''
 note = "This grew from an option into the thing the ninth unit could not finish without. Whether footprint is observable decides whether identity saturates at the literal; a container observation is measured to split every class, 32 to 64. The candidate's preamble claimed the premise was localised to one clause and two signatures refuted that independently: one found it reaches three clauses, one made it four, the strongest addition being that a clause's satisfiability moves, since under one branch the shipped rule's pair is connected both ways and separated by nothing, which is that clause's own definition of a spurious split. One signature refuses a clause as written and says it is not a wording complaint: no wording is true on both branches until this is ruled. It names three readings and chooses none, and two of the three are op's."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#7-the-container-premise-now-blocks-a-clause-of-the-candidate-not-just-an-option"]
 keywords = ["container premise", "footprint", "observable", "internal", "declared width", "carrier", "identity", "realisation", "spurious split", "saturation at the literal"]
