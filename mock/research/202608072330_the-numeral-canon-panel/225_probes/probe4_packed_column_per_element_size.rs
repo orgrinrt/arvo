@@ -76,12 +76,20 @@ impl Packed {
 
 fn main() {
     println!("arm A: the column footprint is const-observable, the per-element one is not whole");
-    println!("  size_of::<Packed>() = {} (ceil({} * {} / 8) = {BYTES})", size_of::<Packed>(), N, W);
+    println!(
+        "  size_of::<Packed>() = {} (ceil({} * {} / 8) = {BYTES})",
+        size_of::<Packed>(),
+        N,
+        W
+    );
     if size_of::<Packed>() != BYTES {
         println!("  INSTRUMENT BROKEN: the column does not have the dense footprint");
         std::process::exit(2);
     }
-    println!("  per-element even split: {BYTES} / {N} bytes, remainder {}", BYTES % N);
+    println!(
+        "  per-element even split: {BYTES} / {N} bytes, remainder {}",
+        BYTES % N
+    );
     if BYTES % N == 0 {
         println!("  UNEXPECTED: split is whole; pick a width where it is not");
         std::process::exit(2);
@@ -102,7 +110,10 @@ fn main() {
         }
         for (i, v) in p.iter().enumerate() {
             if col.get(i) != *v {
-                println!("  INSTRUMENT BROKEN: element {i} wrote {v}, read {}", col.get(i));
+                println!(
+                    "  INSTRUMENT BROKEN: element {i} wrote {v}, read {}",
+                    col.get(i)
+                );
                 std::process::exit(2);
             }
         }
@@ -119,7 +130,9 @@ fn main() {
         println!("  UNEXPECTED PASS: a per-element footprint observation exists after all");
         std::process::exit(2);
     }
-    println!("  FAILED AS REQUIRED: size_of_val(&col.get(2)) * 8 = {observed_bits} bits, W = {W} bits.");
+    println!(
+        "  FAILED AS REQUIRED: size_of_val(&col.get(2)) * 8 = {observed_bits} bits, W = {W} bits."
+    );
     println!("  the only size observation an element access reaches measures the extraction");
     println!("  target (u16), not the placement. the placement footprint is returned by");
     println!("  nothing: get() yields a value, and there is no place of the element's own to");
