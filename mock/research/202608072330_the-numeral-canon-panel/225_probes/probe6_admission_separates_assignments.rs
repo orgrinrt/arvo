@@ -35,17 +35,31 @@
 const LO: i32 = -8;
 const HI: i32 = 7;
 
-fn sat(x: i32) -> i32 { x.clamp(LO, HI) }
-fn floor_div2(x: i32) -> i32 { x.div_euclid(2) } // floor, negatives included
+fn sat(x: i32) -> i32 {
+    x.clamp(LO, HI)
+}
+fn floor_div2(x: i32) -> i32 {
+    x.div_euclid(2)
+} // floor, negatives included
 
 // single operations: one rounding, one saturation each
-fn add(a: i32, b: i32) -> i32 { sat(a + b) }
-fn sub(a: i32, b: i32) -> i32 { sat(a - b) }
-fn mul(a: i32, b: i32) -> i32 { sat(floor_div2(a * b)) }
+fn add(a: i32, b: i32) -> i32 {
+    sat(a + b)
+}
+fn sub(a: i32, b: i32) -> i32 {
+    sat(a - b)
+}
+fn mul(a: i32, b: i32) -> i32 {
+    sat(floor_div2(a * b))
+}
 
 // the admitted operation, under each assignment of the intermediate axis
-fn madd_exact(a: i32, b: i32, c: i32) -> i32 { sat(floor_div2(a * b + 2 * c)) }
-fn madd_stepwise(a: i32, b: i32, c: i32) -> i32 { sat(mul(a, b) + c) }
+fn madd_exact(a: i32, b: i32, c: i32) -> i32 {
+    sat(floor_div2(a * b + 2 * c))
+}
+fn madd_stepwise(a: i32, b: i32, c: i32) -> i32 {
+    sat(mul(a, b) + c)
+}
 
 fn main() {
     let ops: [(&str, fn(i32, i32) -> i32); 3] = [("add", add), ("sub", sub), ("mul", mul)];
@@ -61,13 +75,19 @@ fn main() {
                     for c in LO..=HI {
                         if f2(f1(a, b), c) != madd_exact(a, b, c) {
                             differs += 1;
-                            if first.is_none() { first = Some((a, b, c)); }
+                            if first.is_none() {
+                                first = Some((a, b, c));
+                            }
                         }
                     }
                 }
             }
-            println!("  {n2}({n1}(a,b),c) vs exact madd: {differs} of 4096 differ, first {first:?}");
-            if differs == 0 { reachable = true; }
+            println!(
+                "  {n2}({n1}(a,b),c) vs exact madd: {differs} of 4096 differ, first {first:?}"
+            );
+            if differs == 0 {
+                reachable = true;
+            }
         }
     }
     if reachable {
@@ -99,7 +119,9 @@ fn main() {
             for c in LO..=HI {
                 if madd_exact(a, b, c) != madd_stepwise(a, b, c) {
                     differs += 1;
-                    if first.is_none() { first = Some((a, b, c)); }
+                    if first.is_none() {
+                        first = Some((a, b, c));
+                    }
                 }
             }
         }
@@ -110,7 +132,11 @@ fn main() {
     }
     let (a, b, c) = first.unwrap();
     println!("  FAILED AS REQUIRED: {differs} of 4096 triples differ; first ({a},{b},{c}):");
-    println!("    exact {} against stepwise {}", madd_exact(a, b, c), madd_stepwise(a, b, c));
+    println!(
+        "    exact {} against stepwise {}",
+        madd_exact(a, b, c),
+        madd_stepwise(a, b, c)
+    );
     println!("  so admitting the fused operation turns a resolver-free interior choice into");
     println!("  an answer-moving one: the axis must join the declared policy at admission,");
     println!("  or one type name carries two semantics, which is the shape the fast-math");

@@ -40,13 +40,20 @@
 // decides it, with both controls shown firing.
 
 #[derive(Clone, Copy, PartialEq, Debug)]
-enum S { Hot, Warm, Cold, Precise }
+enum S {
+    Hot,
+    Warm,
+    Cold,
+    Precise,
+}
 const ALL: [S; 4] = [S::Hot, S::Warm, S::Cold, S::Precise];
 
 fn rung_bytes(bits: u32) -> u32 {
     // minimum byte-aligned rung: 1, 2, 4, 8, 16, 32 bytes
     let mut b = 1u32;
-    while b * 8 < bits { b *= 2; }
+    while b * 8 < bits {
+        b *= 2;
+    }
     b
 }
 
@@ -63,13 +70,33 @@ fn keyed(s: S, w: u32) -> (u32, u32) {
 }
 
 // --- the selector spelling: params(strategy) into a strategy-blind ladder ------
-struct Params { mult: u32, min_align: u32, wide_from: u32 }
+struct Params {
+    mult: u32,
+    min_align: u32,
+    wide_from: u32,
+}
 fn params(s: S) -> Params {
     match s {
-        S::Hot => Params { mult: 1, min_align: 16, wide_from: 129 },
-        S::Warm => Params { mult: 2, min_align: 1, wide_from: u32::MAX },
-        S::Cold => Params { mult: 1, min_align: 1, wide_from: u32::MAX },
-        S::Precise => Params { mult: 2, min_align: 1, wide_from: u32::MAX },
+        S::Hot => Params {
+            mult: 1,
+            min_align: 16,
+            wide_from: 129,
+        },
+        S::Warm => Params {
+            mult: 2,
+            min_align: 1,
+            wide_from: u32::MAX,
+        },
+        S::Cold => Params {
+            mult: 1,
+            min_align: 1,
+            wide_from: u32::MAX,
+        },
+        S::Precise => Params {
+            mult: 2,
+            min_align: 1,
+            wide_from: u32::MAX,
+        },
     }
 }
 fn ladder(p: &Params, w: u32) -> (u32, u32) {
@@ -77,15 +104,21 @@ fn ladder(p: &Params, w: u32) -> (u32, u32) {
     let c = rung_bytes(p.mult * w).max(align);
     (c, c)
 }
-fn selector(s: S, w: u32) -> (u32, u32) { ladder(&params(s), w) }
+fn selector(s: S, w: u32) -> (u32, u32) {
+    ladder(&params(s), w)
+}
 
 // --- the exceptional-cell mutant for arm C ------------------------------------
 fn keyed_mutant(s: S, w: u32) -> (u32, u32) {
-    if s == S::Cold && w == 24 { return (8, 8); } // one cell nobody's params express
+    if s == S::Cold && w == 24 {
+        return (8, 8);
+    } // one cell nobody's params express
     keyed(s, w)
 }
 
-fn shared_extent_bytes(w: u32, k: u32) -> u32 { (w * k + 7) / 8 }
+fn shared_extent_bytes(w: u32, k: u32) -> u32 {
+    (w * k + 7) / 8
+}
 
 fn main() {
     println!("arm A: keyed and selector agree pointwise over the whole box");
@@ -115,7 +148,9 @@ fn main() {
         for k in 1..=8u32 {
             total += 1;
             let (c, _) = keyed(S::Cold, w);
-            if shared_extent_bytes(w, k) != k * c { differ += 1; }
+            if shared_extent_bytes(w, k) != k * c {
+                differ += 1;
+            }
         }
     }
     println!("  {differ} of {total} cells differ, so the aggregate fact is not a function of the carrier there");
@@ -129,23 +164,36 @@ fn main() {
     let mut caught = None;
     'outer: for s in ALL {
         for w in 1..=256u32 {
-            if keyed_mutant(s, w) != selector(s, w) { caught = Some((s, w)); break 'outer; }
+            if keyed_mutant(s, w) != selector(s, w) {
+                caught = Some((s, w));
+                break 'outer;
+            }
         }
     }
     match caught {
-        Some((s, w)) => println!("  FAILED AS REQUIRED: first witness at {s:?} W={w}: the sweep separates assignments"),
-        None => { println!("  UNEXPECTED PASS: instrument cannot see an exceptional cell"); std::process::exit(2); }
+        Some((s, w)) => println!(
+            "  FAILED AS REQUIRED: first witness at {s:?} W={w}: the sweep separates assignments"
+        ),
+        None => {
+            println!("  UNEXPECTED PASS: instrument cannot see an exceptional cell");
+            std::process::exit(2);
+        }
     }
 
     println!();
-    println!("arm D (negative control, MUST FAIL): shared extent == k * carrier bytes at W=13, k=5");
+    println!(
+        "arm D (negative control, MUST FAIL): shared extent == k * carrier bytes at W=13, k=5"
+    );
     let (c, _) = keyed(S::Cold, 13);
     let ext = shared_extent_bytes(13, 5);
     if ext == 5 * c {
         println!("  UNEXPECTED PASS");
         std::process::exit(2);
     }
-    println!("  FAILED AS REQUIRED: extent {ext} bytes against k * carrier = {}", 5 * c);
+    println!(
+        "  FAILED AS REQUIRED: extent {ext} bytes against k * carrier = {}",
+        5 * c
+    );
     println!("  producing the packed extent applies the strategy's packing rule, so the");
     println!("  ownership clause carries it; the sole-occupancy stride is size_of(carrier)");
     println!("  and is recomputed.");
