@@ -28,7 +28,11 @@ const NATIVE: [u32; 5] = [8, 16, 32, 64, 128];
 const MAX_W: u32 = 128;
 
 fn gcd(a: u32, b: u32) -> u32 {
-    if b == 0 { a } else { gcd(b, a % b) }
+    if b == 0 {
+        a
+    } else {
+        gcd(b, a % b)
+    }
 }
 fn nat(bits: u32) -> u32 {
     NATIVE.iter().copied().find(|&n| n >= bits).unwrap_or(0)
