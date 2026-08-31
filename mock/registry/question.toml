@@ -1835,3 +1835,36 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::215_kiselyov_second_read_the_algebraic_laws::762",
 ]
 keywords = ["law layer", "consumer", "lowering", "backend", "order transport", "coherence", "law families", "closure", "floor", "conflict"]
+
+# --- raised by seat 218, on a row op was asked to bless and declined ---------
+
+[[question]]
+id = "what_the_ingest_row_claims_and_what_turns_on_it"
+asks = "`ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up` carries op's words about the C ABI and about helpers arvo may ship and may not use in place of the consumer. He was asked to bless it and declined, saying the explanation did not explain what the thing is. What does the row claim, concretely enough to judge, and what turns on it? Specifically: does it constrain arvo's surface at all, or is it a statement about what arvo declines to do?"
+options = [
+  "It constrains the surface: arvo ships casting and conversion helpers, and the constraint is that no arvo entry point calls one on the consumer's behalf, which is checkable against any proposed API.",
+  "It is a refusal and constrains nothing arvo builds: it says a validating ingest constructor is not arvo's to write, which the never-a-runtime-check intent already reaches, so the row is a restatement.",
+  "It constrains the consumer-facing generics instead: the claim is that arvo's shapes are expressive enough to define an API against, which is an adequacy demand on the shapes rather than a rule about ingest.",
+  "The row conflates two claims, one about the C ABI being unavoidable and one about helper usage, and they are separate rows with separate consequences.",
+]
+decider = "panel"
+bound = '''
+Answered inside `ruling::the_panel_finishes_the_canon_without_him`. He declined to bless this and the
+panel file recorded that it returns to him once it carries what the row actually claims; it cannot,
+because he has since handed the canon over. So the elaboration he asked for is the panel's to write,
+and it is written to his standard rather than sent to him.
+
+Two of his rulings bound what the answer may say. The never-a-runtime-check intent means no option
+here reintroduces a validating constructor, and `arvo-toolbox-not-policer` means an answer that has
+arvo making the consumer's choice for them is refused on its face. The quote itself already draws the
+line, that helpers may exist and may not be used in place of the consumer, so what is open is what
+that constrains rather than whether it holds.
+'''
+unblocks = "Promotion of the row. It sits at `stated` carrying his words, reads as ready, and is the one row he was asked about and refused, with nothing on it saying so until now."
+topic = "arvo_identity"
+note = "Filed by the coordinator from seat 218's check of the stated rows against his own words. The refusal is at `211:106` and the row is faithful to the quote it carries; what it lacked was any mark that a promotion is blocked, so a coordinator working the `stated` list top to bottom would have promoted it. That is the same shape as the `awaiting-a-ruling` tool listing declined and held rows unmarked, which is filed separately.\n\nThe row's own `says` also opened on a boundary sentence the quote does not contain, which is corrected on the row rather than here. This question is about what the remaining sentence commits arvo to, which is what he said was missing."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round::106",
+  "panel::202608072330_the-numeral-canon-panel::218_ringer_the_stated_rows_checked_against_his_words::1",
+]
+keywords = ["ingest", "C ABI", "helper", "cast", "convert", "boundary", "consumer", "blessing", "declined", "elaboration"]
