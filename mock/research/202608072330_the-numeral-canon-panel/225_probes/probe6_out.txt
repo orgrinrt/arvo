@@ -1,0 +1,22 @@
+arm A: no depth-two core composite computes exact madd
+  add(add(a,b),c) vs exact madd: 3448 of 4096 differ, first Some((-8, -8, -8))
+  sub(add(a,b),c) vs exact madd: 3818 of 4096 differ, first Some((-8, -8, -8))
+  mul(add(a,b),c) vs exact madd: 3404 of 4096 differ, first Some((-8, -8, -1))
+  add(sub(a,b),c) vs exact madd: 3397 of 4096 differ, first Some((-8, -8, -8))
+  sub(sub(a,b),c) vs exact madd: 3775 of 4096 differ, first Some((-8, -8, -6))
+  mul(sub(a,b),c) vs exact madd: 3421 of 4096 differ, first Some((-8, -8, -8))
+  add(mul(a,b),c) vs exact madd: 760 of 4096 differ, first Some((-8, -8, -8))
+  sub(mul(a,b),c) vs exact madd: 3286 of 4096 differ, first Some((-8, -8, 1))
+  mul(mul(a,b),c) vs exact madd: 3319 of 4096 differ, first Some((-8, -8, -8))
+  the exact intermediate is unreachable through the core: one denotation there
+
+arm B (control, must agree): mul-then-add IS stepwise madd
+  equal on all 4096 triples, as required
+
+arm C (negative control, MUST FAIL): exact madd == stepwise madd exhaustively
+  FAILED AS REQUIRED: 760 of 4096 triples differ; first (-8,-8,-8):
+    exact 7 against stepwise -1
+  so admitting the fused operation turns a resolver-free interior choice into
+  an answer-moving one: the axis must join the declared policy at admission,
+  or one type name carries two semantics, which is the shape the fast-math
+  obligation's own gap already condemns.
