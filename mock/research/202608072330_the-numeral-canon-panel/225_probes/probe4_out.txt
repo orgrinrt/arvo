@@ -1,0 +1,14 @@
+arm A: the column footprint is const-observable, the per-element one is not whole
+  size_of::<Packed>() = 9 (ceil(5 * 13 / 8) = 9)
+  per-element even split: 9 / 5 bytes, remainder 4
+
+arm B (control, must work): the elements genuinely live in the stream
+  all patterns roundtrip exactly, straddling elements included
+
+arm C (negative control, MUST FAIL): the reachable size observation reads the
+  placement share, i.e. equals W bits
+  FAILED AS REQUIRED: size_of_val(&col.get(2)) * 8 = 16 bits, W = 13 bits.
+  the only size observation an element access reaches measures the extraction
+  target (u16), not the placement. the placement footprint is returned by
+  nothing: get() yields a value, and there is no place of the element's own to
+  observe, because its bits straddle byte boundaries inside the column.
