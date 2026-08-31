@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 
 use mockspace::Lint;
 
-use super::{APanelCatalogueIsReadable, catalogues, check, rows};
+use super::{catalogues, check, rows, APanelCatalogueIsReadable};
 
 /// A mock directory with the catalogues named, under the first declared root.
 ///

@@ -4,10 +4,10 @@
 
 use std::collections::BTreeMap;
 
-use mockspace::RegistryView;
 use mockspace::tool::{Outcome, Tool, ToolContext};
+use mockspace::RegistryView;
 
-use super::{ObligationCoverage, Reach, preconditions, reach, tally};
+use super::{preconditions, reach, tally, ObligationCoverage, Reach};
 
 /// A registry with the rows a test names.
 ///

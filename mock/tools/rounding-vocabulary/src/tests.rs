@@ -4,10 +4,10 @@
 
 use std::collections::BTreeMap;
 
-use mockspace::RegistryView;
 use mockspace::tool::{Outcome, Tool, ToolContext};
+use mockspace::RegistryView;
 
-use super::{CLOSING_RULING, RATIFIED, RoundingVocabulary, Standing, classify, modes_in};
+use super::{classify, modes_in, RoundingVocabulary, Standing, CLOSING_RULING, RATIFIED};
 
 fn view(rows: &[(&str, &[(&str, &str)])]) -> RegistryView {
     let mut r: BTreeMap<String, BTreeMap<String, String>> = BTreeMap::new();
