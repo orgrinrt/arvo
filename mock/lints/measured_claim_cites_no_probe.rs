@@ -167,7 +167,10 @@ mod tests {
         assert!(named.contains("proposal::a_bare_number"), "{named}");
         assert!(!named.contains("a_reasoned_claim"), "{named}");
         assert!(!named.contains("a_real_measurement"), "{named}");
-        assert!(named.contains("1 rows"), "the count is the population: {named}");
+        assert!(
+            named.contains("1 rows"),
+            "the count is the population: {named}"
+        );
     }
 
     #[test]
@@ -248,7 +251,10 @@ mod tests {
         // calls this a ceiling admitting no new arrival, so the population it
         // grandfathers must pass and one more must not.
         let two = [
-            ("proposal::a", &[("sentence_kind", "measured")] as &[(&str, &str)]),
+            (
+                "proposal::a",
+                &[("sentence_kind", "measured")] as &[(&str, &str)],
+            ),
             ("proposal::b", &[("sentence_kind", "measured")]),
         ];
         assert!(found(&two, 2).is_empty(), "two under a ceiling of two");
@@ -262,7 +268,10 @@ mod tests {
         // The off-by-one that decides whether the current corpus commits at
         // all. The canon says the ceiling holds with no headroom, so equal has
         // to pass and greater has to fail.
-        let one = [("proposal::a", &[("sentence_kind", "measured")] as &[(&str, &str)])];
+        let one = [(
+            "proposal::a",
+            &[("sentence_kind", "measured")] as &[(&str, &str)],
+        )];
         assert!(found(&one, 1).is_empty());
         assert_eq!(found(&one, 0).len(), 1);
     }

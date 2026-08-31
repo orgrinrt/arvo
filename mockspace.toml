@@ -164,6 +164,56 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.a-standing-is-reachable-from-what-it-cites]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-proposal-rests-on-more-than-a-consolidation]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-imposition-rests-on-no-instrument]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-ruling-supersedes-one-that-outranks-it]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-line-citation-into-a-living-ledger]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-citation-names-a-target]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-predicate-names-an-axis-once]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-obligation-edge-names-a-row]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-obligation-edge-comes-from-a-tiered-namespace]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-precondition-comes-from-a-namespace-that-can-establish-one]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-measurement-owes-a-usable-instrument]
 commit = "error"
 build = "error"
