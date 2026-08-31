@@ -988,3 +988,80 @@ control = "The method is the control and its header says so: the predecessor tes
 standing = "sound"
 note = "Two methods that would agree trivially are one method. This is the clearest case in the corpus of an author paying for independence by choosing a harder route, and it is worth copying wherever a second instrument is being built to confirm a first."
 keywords = ["narrowing", "composition", "adjunction", "forced adjoint", "biconditional", "grid", "rounding mode", "independence", "method", "embedding"]
+
+[[probe]]
+id = "three_of_the_four_proposed_axes_change_no_answer"
+establishes = "Of four proposed strategy axes, run against the polarity test that an observable coordinate is one where moving it changes the value computed, one changes the answer and three do not. On the corrected instrument the overflow policy separates and headroom, packing and intermediate precision do not."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::102_probes::p2_which_of_25s_axes_change_the_answer.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::102_probes::p2_which_of_25s_axes_change_the_answer.out::1",
+  "panel::202608072330_the-numeral-canon-panel::102_probes::p2_first_version_setup_that_helped.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::102_probes::p2_first_version_setup_that_helped.out::1",
+]
+control = "The overflow axis is the arm that must separate and it does, so a zero on the other three is a zero from a sweep shown able to report a difference. Without a separating axis in the same run, three zeroes and a fourth would be indistinguishable from a comparator that never fires."
+defect = "The first version is kept under a filename naming its own failure kind, `p2_first_version_setup_that_helped`, which is the test gate's own vocabulary for feeding an implementation only the inputs it handles. Its figures are on disk beside the corrected ones."
+standing = "sound"
+note = "The test it applies was stated by a different file and had never been run against this axis list, which is the gap worth naming: a polarity criterion existed and the list it was supposed to sort had not been put through it."
+keywords = ["axes", "observable", "polarity", "headroom", "packing", "overflow", "intermediate precision", "setup that helped", "answer-visible"]
+
+[[probe]]
+id = "the_const_eval_frontier_by_arity"
+establishes = "The widest exhaustively const-evaluable width falls with arity: 19 at arity 1, 9 at arity 2, 5 at arity 3, 3 at arity 5 and 1 at arity 8, every refusal being the long-running-const-eval limit rather than a width ceiling."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::80_probes::p2_frontier.py::1",
+  "panel::202608072330_the-numeral-canon-panel::80_probes::p2_frontier_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::80_probes::p2_frontier.json::1",
+  "panel::202608072330_the-numeral-canon-panel::80_probes::NOTE_p2_first_run.md::1",
+  "panel::202608072330_the-numeral-canon-panel::80_probes::p2_frontier_BROKEN_FIRST_RUN.py::1",
+]
+control = "The refusal is read for which limit it hit rather than counted, which is what distinguishes a total-step budget from a width ceiling and is the whole content of the finding. A frontier measured by counting failures alone would report the same numbers and support the wrong conclusion."
+defect = "The first run is kept in full, script, json and output, under `BROKEN_FIRST_RUN` names with a note beside it."
+standing = "sound"
+note = "The frontier is a fact about the evaluation procedure rather than about any law, which is a distinction the corpus later writes into its own claims. A width in this table is a budget observed, and one earlier file reported the same wall as a nuisance in a parenthetical while it was the thing being measured."
+keywords = ["const eval", "frontier", "arity", "width", "budget", "step limit", "exhaustive", "E0080", "collapse"]
+
+[[probe]]
+id = "generating_a_winner_table_from_a_stated_weighting"
+establishes = "Generating a winner table from a stated weighting removes every defect a human writing the table can introduce and admits one a human cannot, so the check is relocated rather than removed."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::98_probes::p14_generating_from_a_robust_summary.py::1",
+  "panel::202608072330_the-numeral-canon-panel::98_probes::p14_generating_from_a_robust_summary.out::1",
+  "panel::202608072330_the-numeral-canon-panel::98_probes::p10_is_the_table_stable_enough_to_be_an_object.py::1",
+  "panel::202608072330_the-numeral-canon-panel::98_probes::p10_is_the_table_stable_enough_to_be_an_object.out::1",
+]
+control = "The stability arm is the prerequisite and is a separate instrument: a table not stable enough to be an object cannot be generated from anything, so the generation result is conditional on it and the two are cited together."
+standing = "sound"
+note = "The claim is a trade rather than a win, and the row says so because the sentence it supports does. A reader looking for whether generation is better than hand-writing will not find it here; what is here is which defect class each admits."
+keywords = ["generation", "winner table", "weighting", "relocated", "defect class", "stability", "robust summary", "tooling"]
+
+[[probe]]
+id = "fusion_is_an_axis_position_rather_than_a_new_axis"
+establishes = "The fused and the stepwise multiply-add are two positions on the rounding axis rather than two operations, and at signed saturating they are two distinct realisations whose difference the axis already names. The slack an earlier reading attributed to fusion buys nothing."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p1_fusion_reproduced.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p1_out.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p2_the_slack_buys_nothing.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p2_out.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p6_fusion_is_an_axis_position_already.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::141_probes::p6_out.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::139_probes::p1_policy_classes.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::139_probes::p1_out.txt::1",
+]
+control = "The first arm reproduces the predecessor's published table before anything is built on it, which is what says the later arms are about the same object. The slack arm is a refutation of its own author's earlier reading rather than a confirmation."
+standing = "sound"
+note = "Cited by the claim that where fusion changes the answer it is not a lowering. The reproduction-first shape appears three times in this corpus and it is the cheapest way to make a disagreement attributable: without it, a later instrument disagreeing with an earlier one is unattributable between the widening and a different setup."
+keywords = ["fusion", "axis position", "multiply-add", "slack", "signed saturating", "lowering", "reproduction", "policy classes", "realisation"]
+
+[[probe]]
+id = "chain_accuracy_needs_an_intermediate_wider_than_the_operand_type"
+establishes = "An operator closed over its operand type cannot serve chain accuracy: the intermediate width required grows linearly in chain length, measured at width 8 with fraction width 4 and independently at width 16 with fraction width 8, with the growth rate reported in both."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::93_probes::p1b_demands_and_closure.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::93_probes::p1b_demands_and_closure.out::1",
+  "panel::202608072330_the-numeral-canon-panel::94_probes::e_chain_exactness.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::94_probes::e_chain_exactness.out.txt::1",
+]
+control = "None was run as a case that had to fail. The two instruments are at different widths and fraction widths by different authors, so what stands in place of a control is that the growth rate agrees across a change of both, which a single-width sweep could not have shown. What neither arm carries is a chain shape on which the width must NOT grow, and without one the linear growth is measured rather than isolated."
+standing = "sound"
+note = "Marked sound on a judgement and it is one of the two thinnest sound rows here. The agreement across two widths is real corroboration and it is not a control: both instruments could share a modelling assumption about what an intermediate must hold, and nothing in either would report that."
+keywords = ["chain", "accuracy", "intermediate width", "linear growth", "operand type", "closed", "exactness", "demands", "closure"]
