@@ -2,5 +2,9 @@
 // arm selecting a lowering has to do. Passing it through is not arithmetic on it.
 struct Fx<const W: usize>;
 struct Acc<const W: usize>;
-fn accumulate<const W: usize>(_: Fx<W>) -> Acc<W> { Acc }
-fn main() { let _ = accumulate(Fx::<13>); }
+fn accumulate<const W: usize>(_: Fx<W>) -> Acc<W> {
+    Acc
+}
+fn main() {
+    let _ = accumulate(Fx::<13>);
+}

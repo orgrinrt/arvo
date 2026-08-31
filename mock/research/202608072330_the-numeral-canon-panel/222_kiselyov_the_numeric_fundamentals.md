@@ -1523,3 +1523,642 @@ The mechanism proved itself while I worked rather than in the abstract: five of 
 line citations were already wrong when I checked them, because rows had moved under
 me between reading and writing. A slug cannot go wrong that way, which is the whole
 argument and it took an afternoon to feel.
+
+---
+
+# Appendix. Reply to 221
+
+Written after reading `221_dolan_the_numeric_fundamentals.md` and its probes, merged
+into my worktree from `origin/research/fundamentals-221`. Everything above this line
+was committed before I read a word of it.
+
+**One correction before anything else, because the coordinator's brief said the
+file was on `research/canon-registry` and it is not.** That branch carries `219`
+and `220` and no `221`. The file is on `origin/research/fundamentals-221`, which is
+where I merged it from. Worth saying because a reader following the brief would
+have fetched a branch, found nothing, and had to guess whether the seat had landed.
+
+## A. What this appendix changes above, so nobody acts on the superseded half
+
+**Section 6.4 is withdrawn.** I answered `whose_reduction_governs_a_lossy_crossing`
+with "the target's" and called it an entailment of the ratified factoring. The
+entailment does not reach that far and B.1 says exactly where it stops. The row is
+unresolved and 221's concession on it is the right answer.
+
+**Section 7.16 is superseded, not withdrawn.** My statement that the shape space is
+not a lattice is true and hides the structure. 221 measured the structure and B.2
+carries it.
+
+**Section 7.5 is superseded.** I left `inclusion_order_singleton_amendment` partial.
+It is answerable and 221 answers it; B.3 concedes the answer and C.1 attacks the
+evidence offered for it.
+
+**Section 3.3's residue on Q2 is closed.** I said the surface half was settled by
+nothing I could find. It is settled, by a bound I had read and failed to apply, and
+B.4 concedes it.
+
+**Section 7.17's reasoning is replaced and its conclusion is now a composition.**
+D.1 carries the measurement, which refutes 221's decider and mine.
+
+Everything else above stands.
+
+## B. Where 221 is right and I was not
+
+### B.1 I over-reached on Q36, and the over-reach is one word
+
+My 6.4 argued: ratified `arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation`
+makes a crossing an exact operation composed with "a named, total adaptation onto
+the representable set", the set is the target's, so the target's reduction governs.
+
+**The ratified sentence fixes the codomain and says nothing about the selector.**
+All three of the row's options adapt onto the target's representable set; what they
+disagree about is whose policy picks which member of the adaptation slot. The row
+that names a selector is `proposal::the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation`,
+which says a strategy selects a member per operation, and it is `one_expert` and
+does not say whose strategy. So there is no ratified text on the question I claimed
+to have entailed an answer to.
+
+221 declines to pick and gives the reason I should have weighed: MATLAB `fimath`
+attaches `OverflowAction` and `RoundingMethod` to the `fimath` object rather than
+to either operand's `numerictype`, which is the third option, a policy named at the
+site. Under `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`,
+an adequacy test rather than a preference, a design in which the target's policy
+always governs cannot write that convention as an alias without the alias carrying a
+policy neither endpoint holds. **That is evidence against my answer and I had the
+obligation in front of me at 7.15, where I used it, and did not carry it one section
+further.**
+
+**Concession in terms: 6.4 is withdrawn. What survives is one sentence, that the
+codomain of a crossing is the target's representable set, which is an entailment and
+is not what the question asks.** The question is the panel's and open.
+
+### B.2 Q8 has structure and I reported its absence
+
+I wrote that the shape space is not a lattice and that the step-set reading is the
+same obstruction in different words. Both are true and neither is the useful thing.
+
+`221_probes/p2` computes the order over 47 denotationally distinct points and gets
+1003 unique joins of 1081, 1032 unique meets, and this:
+
+```
+every pair, bounds drawn from the whole space   pairs 1081  join fails 78  meet fails 49
+constant pairs, bounds from the whole space     pairs  703  join fails 55  meet fails  0
+constant pairs, bounds from the constant space  pairs  703  join fails  0  meet fails  0
+```
+
+**The constant-quantum family on its own is a lattice, and putting the float points
+into the space breaks the join on 55 pairs that are both fixed-point.** Those pairs
+did not change; their bounds did. So the join failure is a property of the space
+rather than of the pair, which is the opposite of what "several families" would
+predict, and the cost of one family is paid inside the kind that was already fine.
+
+That is a real result and I did not have it. My section 7.16 said "no design may
+rely on a computed unique join, at any point, anywhere", which is now visibly too
+strong: inside one kind a design may rely on it entirely.
+
+**On the step-set reading, our verdicts agree and its diagnosis is better than
+mine.** I said nesting fails across the float boundary, which is the obstruction
+restated. 221 says nesting of step sets is what inclusion already is on these
+points, so the criterion is the order rather than a partition of it. That is why the
+option cannot work at all rather than why it fails on these particular points, and
+it is the sharper statement.
+
+**One thing about its predicate that is right and worth repeating rather than
+attacking.** It writes `signedness: signed: construction` and then says in the same
+breath that it has not run the instrument a `construction` token obliges under
+`ruling::the_warrant_is_a_token_and_a_clause_on_the_values_side`, so the entry
+should be read as unmarked and the claim as holding at signed only. **That is the
+warrant discipline working on the day it landed**, and its item 1 is the repair. Its
+section 5 numbers hold at `signedness = signed` and nowhere else until that runs.
+
+### B.3 The singleton amendment is answerable and I left it partial
+
+My 7.5 narrowed `inclusion_order_singleton_amendment` and left it open, on the
+ground that the sub-two-value numeral I found at 5.4 is a different construction
+from the one the row is about. That part is right and I stand on it.
+
+What I did not do is attack the order directly. 221 did, and its C5 arm reports that
+removing the degenerate points makes 256 of 630 pairs inside one kind have no meet
+at all. **That refutes the row's third option outright**, which says a numeral
+carrying fewer than two values is not a case any consumer reaches: the order needs
+the bottom whether or not anybody declares one, so the case is reached by the
+algebra rather than by a consumer.
+
+I reproduce both of its cells exactly in `222_probes/a6_the_two_repairs_separated.rs`,
+0 and 256, which is the control that says my copy is its instrument.
+
+**Concession: the row is answerable, option 3 is dead, and option 1 is the answer.**
+I agree with the answer. C.1 is about the evidence rather than the conclusion.
+
+### B.4 Q2's surface half was settled by a bound I had read
+
+I wrote at 4 that the surface half is "not settled by anything I can find". It is
+settled by `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`,
+which I quoted at 7.15 for a different row and did not apply here.
+
+The argument is 221's and it is right. The obligation is an adequacy test, so the
+question is which surface pair the two named conventions are aliases over, and both
+answer total and fraction. **I checked the two documentary facts rather than taking
+them, which makes this a second instance on them:** MATLAB's `fi` is parameterised
+by `WordLength` and `FractionLength`, `numerictype` carries no integer-length
+property and the integer part is derived from the other two and the signedness; IEEE
+754 interchange formats are parameterised by `k` with `k = w + p`, and conformance is
+stated over a value encoded in exactly `k` bits. Both correct.
+
+And its `fi(v, 1, 8, 12)` example is the load-bearing part: word length 8, fraction
+length 12, integer width `8 - 12 - 1 = -5`, and MATLAB accepts it as an ordinary
+declaration. **So the integer-and-fraction surface has to name a coordinate that
+takes negative values in an object that has no negative widths**, which is a sharper
+statement of the cost than the row's own "every reflective surface must choose which
+pair it shows".
+
+### B.5 `overflow policy = panic` names something that is not an overflow policy
+
+221's finding and I did not make it, which is worse than not having thought of it,
+because I quoted the sentence it follows from. My 6.7 cites ratified
+`arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation` for the
+"one slot" answer, and the same sentence says the adaptation is **total**. Panic
+diverges, so it is not a member of the slot, so a predicate span writing `overflow
+policy = panic` is saying something about the build profile in the overflow
+vocabulary. `dimension::build_profile` is the axis that says it, and ratified
+`the_overflow_panic_is_permitted_and_bounded` reaches the same bound from the other
+side.
+
+I had the clause, used it for one consequence, and stopped. **Conceded, and it is
+the cleanest example in either file of a ratified sentence carrying more than the
+seat that quoted it took.**
+
+### B.6 Q3's option 3 is refuted as worded, and the cost I flagged dissolves
+
+My 7.15 answered "both, the inferred and the explicit forms, gated". 221 refutes
+option 3 on its own sentence: it says "a consumer converts one operand into the
+other's numeral first", and MATLAB's `SumMode = 'FullPrecision'` goes to a numeral
+wider than both, computed from both, because the result needs a carry bit neither
+operand has. **So the target of the conversion is not either operand, and what I
+called the always-available explicit form is option 2 with the target written by
+hand rather than inferred.** The composition I offered is still a composition; one
+of its two arms was misnamed.
+
+And the cost I flagged at the end of 7.15, that unit two's unconditional result
+becomes conditional, dissolves under its observation that **alignment to a join is a
+widening and widening loses nothing**. The coarsening happens on the way back down
+to a declared output width, which is a separate declared act. That is better than my
+"somebody has to restate it with the predicate the gate supplies", and it means
+nobody has to.
+
+## C. Where 221 is wrong
+
+### C.1 Its evidence for the singleton amendment measures a repair it never varied
+
+I agree with its answer, per B.3. What follows is about the evidence, and it is
+decidable because its probe is committed and I ran it.
+
+Its `catalogue_with(degenerates: bool)` makes admitting the bottom a parameter and
+its C5 arm varies it. **The deduplication by denotation sits unconditionally in the
+same function and nothing varies it.** Its file says "the deduplication is what
+makes C1 pass", and its own `p2d` diagnosis of the 256 says the opposite: "every one
+of them has an EMPTY intersection, zero have several maximal lower bounds", which is
+the bottom being absent rather than duplicates being present.
+
+`222_probes/a6_the_two_repairs_separated.rs` copies its catalogue machinery verbatim,
+lines 63 to 270 of its core, changes one thing, and runs the two-by-two. **Both of
+its cells reproduce exactly, 0 and 256, which is the control that says my copy is its
+instrument:**
+
+```
+degenerate  dedup  points  pairs   fail | no bounds  annihilated  distinct      same
+      true   true      47    703      0 |         0            0         0         0
+      true  false      54    861     28 |         0           28         0         0
+     false   true      45    630    256 |       256            0         0         0
+     false  false      52    780    284 |       256           28         0         0
+```
+
+Three mechanisms, not two, and the third is the one nobody had named:
+
+- **256 is the bottom being absent.** Every one of them has no lower bound at all.
+- **28 is the copied helper.** `maximal` keeps `i` when no `j` has `c[i].vals` a
+  subset of `c[j].vals`, and two indices denoting one set are each a subset of the
+  other, so **both are dropped and the maximal set comes back empty**. Running its
+  instrument without deduplication is therefore not running the same measurement; it
+  is running one whose helper functions are undefined on the input.
+- **Zero failures anywhere are several maximal lower bounds with distinct
+  denotations**, which is the shape a genuine order failure would take.
+
+So the number offered as evidence for deciding inclusion on denotation is a number
+about admitting the bottom, and varying the other repair produces a fact about the
+instrument rather than about the canon. **The answer survives and the argument for
+it has to be the algebraic one:** without deduplication the relation is a preorder,
+two declarations denoting one set are each below the other, neither is the meet, and
+"unique least upper bound" is unique only up to an equivalence nobody named. That
+argument needs no measurement and 221 did not make it.
+
+My first version of that split got it wrong in the same family and is kept beside it
+as `a6_v1_the_split_conflated_no_bounds_with_annihilated_bounds.txt`: it reported all
+28 as empty intersections, which cannot be right with the bottom present, and the
+four-column split is what the correction produced.
+
+### C.2 Q26 is decided against 221 by a row it does not cite
+
+221 answers "storage, not format, and the ratified spine says so in the words the
+option uses", quoting: "a value set that depends on other data is not a format but
+storage". My 6.6 answers a target-indexed family of formats.
+
+**`proposal::each_choice_in_the_sequence_has_an_owner_and_a_resolution_time` speaks
+to exactly this and says the exclusion does not reach it**: "a platform-width numeral
+is a target-indexed family of formats whose exclusion grounds apply only to
+dependence that survives to runtime". 221 cites that row nowhere in its file, and
+its own discipline everywhere else in section 6 is to confirm the one-expert row that
+answers a question.
+
+The substance rather than the citation: **a type is a compile-time object, and within
+one compilation a platform-width numeral's representable set is a constant of the
+type.** Across compilations it is a different type with the same spelling. "Depends on
+other data" in the ratified clause is a statement about a value set that varies with
+data the program is holding, which is what makes it storage; a value set fixed before
+the program exists is not that. Read 221's way, the clause classifies by the spelling
+of a type rather than by what varies at run time.
+
+**What its reading gets right and mine has to answer.** If a platform-width numeral
+is a format, then the format concept contains a family whose member is chosen by
+something outside the program, and every canon sentence about "a format" acquires a
+per-compilation quantifier. That is a real cost and it is the cost
+`the_ownership_key_as_a_structural_axis` is about, which is why 7.13 adopts the key.
+**Under 221's reading the cost disappears and so does the ability to say anything
+about `obligation::a_platform_sized_unsigned_integer_at_an_api_position`**, a live
+consumer demand: calling the thing storage says what it is not and nothing about
+which laws it has, and the consumer asked for a primitive rather than for a
+classification.
+
+### C.3 Two of its nine concessions were passable, and I passed them
+
+221 concedes `does_the_rounding_variance_form_hold_at_a_second_fraction_width` with
+"I could not run it without knowing what the variance forms are, and they live in a
+numbered member file I may not open", and
+`does_the_position_keyed_members_monotonicity_failure_rate_differ_from_the_independent_members`
+with "the two members' definitions are in files I may not open". It then diagnoses
+both as "a dispatch problem rather than a research one" and recommends sending a seat
+with reading rights.
+
+**Neither wall is where it thought.** The brief licenses the probe corpus as
+greppable, and both objects are in it:
+
+- The variance forms are in `128_probes/r3_output.txt` and `130_probes/y1_output.txt`,
+  which print `n^2 f(1-f)` and `n f(1-f)` against enumerated values at nine chain
+  lengths between them. My 5.1 is built on those two outputs and no member file.
+- The two keying members are in `129_probes/x1_output.txt` and its script, which name
+  the shared-threshold, independent-per-element and position-keyed golden-ratio
+  variants and report the 7-of-40 count. My 5.2 is built on those and no member file.
+
+So the recommendation to dispatch a seat with reading rights for those two rows is
+answering a wall that is not there, and **both rows are measured now.** The
+recommendation may still be right for Q57, where the wall is real and G says so.
+
+**I do not think this reflects badly on 221 and it is worth saying why.** It searched
+for the definitions and concluded they were behind a rule; I searched for the numbers
+and found them printed. That is a difference in what we went looking for rather than
+in diligence, and the lesson generalises: **a committed probe output is a source a
+blind seat may read, and it frequently carries the thing the member file states.**
+
+### C.4 It had the tool for Q22 and Q4 and did not use it
+
+221 concedes `are_set_valued_carriers_admitted` and `what_a_datum_stands_for`, and
+its finding about them is a good one: the two rows price the same admission
+disjointly and neither cites the other.
+
+Two sections earlier, at `is_the_cross_kind_join_closed_or_priced`, it argues that
+ratified `membership_of_the_representable_set_is_one_affine_predicate` says membership
+is "one affine predicate over one parameterisation, of which the named kinds are
+points", and that a set whose membership is not one affine predicate is outside the
+concept rather than a new inventory entry. **That argument settles Q22 verbatim**, and
+my 6.3 is it: an interval is not a point of that parameterisation, so a set-valued
+carrier is not a format, and `the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws`
+says where it goes instead.
+
+**Its own caveat on that argument does not bite here**, which is why I can use it
+where it could not use it on the join. It marks the reading as turning on whether "a
+quantum per magnitude" means an arbitrary function of magnitude or a parameter of the
+affine slot function. An interval carrier's elements are pairs rather than scalars, so
+it is not a point of a parameterisation of scalar grids under either reading of the
+quantum. **The Q22 use of the clause is unconditional where the closure use is
+conditional.**
+
+## D. Where we differ on a call rather than on a fact
+
+### D.1 Q9: both our deciders are refuted, and the answer is a composition
+
+221 answers option 6, the literal in the type with the structural natural demoted to
+a hidden projection. I answered option 5, the alias carrying the const with the
+algebra keyed on naturals. Its decider was
+`ruling::the_predicate_is_whatever_is_available_at_const_time`: an arm's predicate is
+a const expression, a const expression over a type-level natural has to cross back
+out of the type level, and option 5 puts the algebra on the far side of that crossing
+from its own predicates. Mine was the crossing-back price, taken from the row rather
+than measured.
+
+**Both are refuted by compiling them.** 221 put this at item 4 of what it would
+attack next and said the retirements were old enough that re-running them beats
+reasoning about them. `222_probes/a5_const_surface/` is that run, nine arms on the
+pinned nightly with no feature gates, controls at both ends:
+
+```
+t0 positive control                          compiles   the driver works
+t1 arithmetic on a generic const             refused    generic parameters may not be used in const operations
+t2 width comparison in a where clause        refused    generic parameters may not be used in const operations
+t3 const predicate over a structural nat     compiles
+t4 const predicate over a const generic      compiles
+t5 const generic passed on unchanged         compiles
+t6 bridge from a const to a nat by table     compiles
+t7 type-level comparison, no const ops       compiles
+t8 negative control, wrong-direction narrow  refused    the trait bound `Z: AtLeast<S<S<Z>>>` is not satisfied
+```
+
+**t3 refutes 221's decider.** `const IS_NARROW: bool = N::USIZE <= 16;` inside a
+generic impl compiles gate-free today, so a numeral keyed on a structural natural has
+its predicates available at const time and the crossing it worried about is free.
+t4 shows option 6's predicates work too. **The predicate argument does not separate
+the two routes because both routes have their predicates.**
+
+**t1 and t2 refute the framing both of us were working in.** Both retirements still
+hold on the pin: neither the const-generic surface nor a where-clause comparison
+supports width arithmetic or width comparison without a feature gate, and
+`obligation::the_unstable_machinery_does_not_reach_a_consumer` forbids the gate
+reaching a consumer. **So no route can compute a derived output width on the const
+surface at all**, which is a constraint on all seven options rather than a
+discriminator between two.
+
+**What is left is a composition, and neither of us wrote it.** t7 shows a comparison
+on structural naturals is trait resolution and needs no const operation, and t8 shows
+the comparison is a comparison rather than a free bound. So the only expressible form
+of "the declared output is wide enough" is option 7's check, and it needs a natural in
+the type, which is what option 5 keys on, behind a surface that is a const literal,
+which is option 6's. **Option 6's surface, option 7's check, option 5's internals**,
+with t6's table as the bridge and its cost the one row per width the row already
+names.
+
+**The residue, and it is real.** t6's bridge is one impl per width and I demonstrated
+three. Nothing here measures what that costs at the widths a design would ship, and
+the row's own finding that "a table is the only known implementation of either
+direction" is untouched by anything I ran. That is the next measurement and it is a
+compile-time one.
+
+### D.2 Q29: it keeps option 3 alive and I closed it
+
+221 confirms option 2 and says it would keep option 3 open, admission relative to a
+consumer-supplied ambient domain, because "it makes the collapse unstateable rather
+than caught, which is a real property and not obviously worse than catching it".
+
+My 6.5 closes option 3 on ratified text: `a_format_is_identified_by_its_ambient_domain_and_its_representable_set`
+makes the ambient domain half of what identifies a candidate, so a candidate that does
+not fix its own ambient domain has no identity, and a concept whose members lack
+identities is not the concept that sentence ratifies.
+
+**This is a genuine difference and it is decidable.** What decides it is whether the
+canon needs to say anything about a candidate before a frame is chosen. If it does,
+option 3 is out. **The row itself names the test and reports it run**: "whether any
+canon sentence must be true of a system with no ambient domain named. The ingest door
+was proposed as that case and is measured not to be one." So the test exists, one
+candidate case was tried, and it failed. **My close is therefore stronger than the
+row's own evidence supports**, since one failed candidate is not an exhaustion, and
+221's reluctance is better calibrated than my confidence.
+
+**Revised: option 2 is the answer, option 3 is not closed, and closing it wants
+somebody to enumerate the canon sentences quantifying over unframed candidates rather
+than to test one more case.**
+
+### D.3 Q23: it holds the role set open and I closed it
+
+221 declines and gives a structural reason I find good:
+`ruling::the_strategy_set_is_not_closed_at_four` is op's, the level count is refused
+by Q19's answer, the inventory is open by Q20's, and **three counts refused in one
+concept is a pattern, so a fourth closed count wants a reason rather than a default.**
+
+My 7.11 closed the *concept* of a role while leaving the *inventory* open, by
+transferring the ratified closed-concept/open-inventory shape one level down, and I
+flagged the transfer as the weak link.
+
+**Read against each other, we are closer than the verdicts look.** Nothing in my
+answer closes a count: "storage, compute and interchange" is not a bound in it, and a
+role is anything that re-establishes the invariant. What 221 is refusing is the
+closed count and I am not proposing one. **What genuinely differs is whether the role
+concept has a definition sharp enough to close**, and its answer is that it does not
+have one it can check.
+
+**What would decide it: whether any proposed role moves something before the
+encoding.** `roles_derive_representations_and_a_realisation_variant_computes_nothing_new`
+carries that as its own open condition, in the form of whether a compute role may
+widen the representable set. If none can, every role is a realisation variant and the
+concept closes on a checkable property. If one can, the concept is not closed and
+221 is right. **That is an instrument nobody has built and it is small: enumerate the
+proposed roles and ask of each whether it moves a coordinate before the encoding.**
+
+## E. The agreement audit
+
+The registry is a shared premise, so agreeing with a row we both read is one instance
+in two hats. Sorted by what the agreement actually rests on, and intersected over
+values rather than over names.
+
+**Two instruments, genuinely.** Three items.
+
+- **The two-hop settled-question defect.** Both of us walked `ruling.ratifies` into
+  `proposal.answers` and both located the mechanism at the same place, a finder that
+  reads the ruling namespace and never the proposal one. Different routes to it: I
+  read `checks/tests/a_settled_question_does_not_sit_in_the_queue.rs:82` and it built
+  `221_probes/p1_the_unread_answer_edge.rs`. **Two instruments, and the coordinator is
+  right that it needs no relitigating.**
+- **`does_precision_count_the_sign_digit`.** Two probes, written blind, over the same
+  criterion the row's `bound` states. Same answer, and the numbers agree where they
+  overlap: at radix 3, precision 3, its balanced point is `(-13, 13)`, its symmetric
+  `(-26, 26)`, its asymmetric `(-27, 26)`, and my `a4` prints `[-13,13] |27|`,
+  `[-26,26] |53|`, `[-27,26] |54|` for the same three. **The intersection of what we
+  actually varied is `radix in {2, 3, 4, 10}` and `precision 1..=5`**; radix 5 and
+  precision 6 are mine alone, and its instrument covers nothing mine does not.
+- **`does_narrowing_compose` reaching a predicate rather than a policy.** Both of us
+  refuse the binary and both cite the same measured row for the characterisation, so
+  the *answer* is inherited. What is two instruments is the **refusal of the question's
+  shape**, which each of us reached from `ruling::there_is_no_universal_answer_take_the_win_and_gate_it`
+  independently and applied to a different list of rows: my 3.4 names eight, its
+  sections name a partly different set.
+
+**Inherited from a document we both read, and therefore one instance.** Q6, Q18, Q20,
+Q19, Q21, Q27, Q30, Q31, Q37 in both halves, `where_wrapping_lives`,
+`is_the_derived_numeral_required_to_be_tightest`, and the Q2 definitional half. On
+every one of these we agree and on every one we read the answering row first. **None
+of them moves a standing and neither of us should be counted as a second expert on
+any of them.**
+
+**Agreement about a dimension neither of us varied, which is the trap worth naming.**
+Both of our precision probes are single-threaded, at radix 2 through 10, over
+representable sets with nothing computing on them. **We agree perfectly about
+`operation`, `container`, `overflow_policy`, `strategy` and `access_pattern` by both
+having no instrument that could reach them.** 221 says so in its own words, that
+`operation` is absent on purpose and the severity is intended. Mine says the same at
+5.4. **Two files stating the same absence is not evidence that the absence is
+correct**, and if the sign-domain result is ever wanted about a computing type,
+neither of us has touched the question.
+
+**One accounting difference the coordinator should not read as an asymmetry.** It
+reports nine unanswered of thirty-seven; I report one conceded and one partial. The
+gap is bookkeeping rather than output: **it declines to count a confirmation as
+settled by itself, and I counted confirmations in my roster with the tier marked
+`confirmed`.** Its eleven number-system confirmations are answers it agrees with and
+declines to claim; my roster carries the same answers marked as not raising a
+standing. The underlying state of those rows is identical and neither of us is a
+second instance on them.
+
+## F. The container premise, and whether I am the second read
+
+221 says `question::the_container_premise` "is answered by six rows, all of them seat
+210's, and seat 210 is this persona", that whatever it says is confirmation from the
+same head, and that "a genuinely independent second read is owed and it should not be
+Dolan."
+
+**I am not Dolan, I have not worked this topic before, and 5.3 is an instrument.** So
+this is the read that was owed. What it is worth, stated precisely, because the parts
+have different standing:
+
+- **The measured half is an independent third instrument and it agrees.** `a3` uses
+  operations 210's row does not (a saturating multiply, a roundtrip), its own three
+  controls, and a mutant found only after two dead routes. It reports the layout
+  observation separating 2 bytes from 4, and roundtrip, wrapping addition, saturating
+  addition, wrapping multiplication, saturating multiplication and exclusive-or all at
+  0 differences over 8192 values and 67108864 ordered pairs. **The footprint is
+  observable and nothing the design declares observes it.** That is a second instance
+  on the measurement.
+- **The setup is inherited and I chose that deliberately.** 13 bits, unsigned, `u16`
+  against `u32`, sole occupancy, one thread. I mirrored 210's predicate so the numbers
+  would be comparable, which means **on integer width, signedness, carrier pair and
+  alignment we agree about a region neither of us varied.** Under the discipline the
+  coordinator asked me to apply, that is not two instances of anything; it is one
+  region measured twice. A genuinely independent instrument would pick different
+  widths and a different carrier pair, and none exists.
+- **The interpretation is confirmation, not corroboration.** I read
+  `observability_is_relative_to_a_declared_signature` and its five neighbours before
+  building anything, so my agreeing that observability is a theorem schema over the
+  operation set adds nothing to that row's standing.
+- **One thing in 5.3 is in no row and is mine.** `core::mem::size_of` is a const
+  function, so the footprint is not merely observable but observable **at const
+  time**, which under `ruling::the_predicate_is_whatever_is_available_at_const_time`
+  makes it a legitimate axis for an arm to be gated on and under
+  `ruling::never_a_runtime_check_and_one_lowered_path` costs nothing at run time to
+  read. `a3` compiles two `const` items whose values came from `size_of`, so it is a
+  compile result rather than an argument. **That changes what the premise is for: it
+  does not only decide whether a sentence about identity is true, it hands the design
+  a gateable axis.**
+
+**And it composes with 221's own dead route rather than merely sitting beside it.**
+Two of my three mutants failed, and between them they say when a carrier is
+arithmetically observable at all: the intermediate must be able to leave the narrower
+carrier, **and** the projection must read magnitude rather than low bits. An addition
+of two 13-bit values cannot leave a `u16`, and a low-bit mask at the declared width
+absorbs a wider low-bit mask above it. The working mutant is a saturating multiply
+with a carrier-held intermediate, at 8346078 of 67108864 pairs. **That is the shape of
+the design failure the premise is about, stated as a condition rather than as an
+example**, and it is the thing I would carry forward from this topic.
+
+**So: yes, my work reaches the container premise, and I agree with what 210
+established, at the tier above.** The measurement is corroborated by a second
+instrument over the same region; the region itself is corroborated by nobody.
+
+## G. Q57: it hit the same wall and did not go round it
+
+221 concedes `what_the_double_rounding_mechanism_is` and says it did not attack it,
+that what is left is a fourth construction and it did not have the budget after its
+other two probes, and that "saying so is more useful than a fourth wrong one".
+
+**Same wall, and it did not reason from the dead tier.** It cites
+`law::double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f` for the
+closed half, which is a registry row, and nothing from a member file. So its
+concession is sound and it stopped at the same place I did.
+
+**My section 9 goes one step further and that step is the useful difference.** Its
+stopping point is budget; mine is that the object the question disambiguates has no
+canon existence. I grepped for the clause's own arms across all twelve registry files
+and found one hit, inside Q57's own `note`. So a fourth construction has nothing to
+reproduce, which is why the three that were tried were wrong: they were reproducing a
+paraphrase. **The remedy is to port the clause, and only then is a construction worth
+building.**
+
+Its recommendation, to send one seat with reading rights at Q57 together with the two
+rounding measurement rows, is right for Q57 and unnecessary for the other two, per
+C.3. **The seat with reading rights should be sent, and it should be sent to port the
+clause rather than to build a fourth probe.**
+
+## H. An incident in the coordinator's clone, reported rather than tidied
+
+**I wrote into `arvo-coord`, which is not my tree, for about fifteen minutes during
+the reply phase.** Nothing is lost and nothing of anyone else's was overwritten, but
+it happened and the record should carry it rather than a clean-looking file.
+
+**What happened.** The Bash tool resets the working directory between calls, and my
+worktree is `/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/seat222` while
+the session's default directory is `arvo-coord`. Several commands in this phase began
+`cd mock/research/...` with no absolute prefix, so they resolved in `arvo-coord`. The
+`a5` and `a6` probe sources, their outputs and the first 182 lines of this appendix
+were created there rather than here, and one `git add` plus `git commit` ran there
+too.
+
+**What it cost and what it did not.** The appendix existed only in that tree until I
+copied it out; the probes existed only there until I copied them out; both are now
+committed on `research/fundamentals-222` and both reproduce their outputs in this
+worktree after the pre-commit reformatting. **Nothing of the coordinator's was
+modified**: its own staged work was a large `mock/checks` to `mock/lints` and
+`mock/tools` restructure which it committed itself as `3a18faae` while I was running,
+and my writes touched only paths under `222_probes` and my own file.
+
+**What I did about it, and what I did not do.** I did not revert, per
+`one-session-one-workspace.md`: "having edited a tree and only then discovered it was
+not yours, stop before reverting ... prefer `git stash` over `git restore`, because a
+stash is recoverable and a restore leaves no object and no reflog entry." So the
+worktree modifications I made there are in `stash@{0}` of that clone, under the
+message "seat222 accidental writes, recoverable: appendix draft plus unformatted
+probe copies. Content is all committed on research/fundamentals-222." I limited the
+stash by pathspec to my eleven files and verified afterwards that it captured exactly
+those and nothing else.
+
+**What is left for the owner to decide.** My `a5` and `a6` files are tracked in that
+clone as well as here, because the accidental commit landed there. They are byte
+identical to what is on my branch. **Removing them from `research/canon-registry` is
+that clone's owner's call and not mine**, and I have not touched it further.
+
+**The rule that would have prevented it is already written and I did not follow it.**
+`one-session-one-workspace.md`: "never `cd` between repos by relative path ... where
+the answer matters, use `git -C <absolute-path>`". Every command after the incident in
+this file uses an absolute path, and the two before it that produced the file above
+did not, which is why the first half of this session landed correctly by luck rather
+than by discipline: those commands happened to run while the shell was in the right
+place.
+
+## I. The roster, after the reply
+
+Changes only. Everything not listed is unchanged from section 10.
+
+| question | was | is now | why |
+|---|---|---|---|
+| `whose_reduction_governs_a_lossy_crossing` | entailed, the target's | **open** | B.1, my entailment reaches the codomain and not the selector |
+| `which_width_coordinates_a_consumer_writes` | half open | **settled**, total and fraction | B.4, 221's argument from the standards obligation |
+| `inclusion_order_singleton_amendment` | partial | **settled**, option 1 | B.3, its answer; C.1, on different evidence |
+| `one_numeral_family_or_several` | derived | **measured**, and the structure is the answer | B.2, its probe |
+| `mixed_numeral_addition` | entailed, both forms | **entailed**, option 2 with the target declared or inferred | B.6, option 3 is refuted as worded |
+| `the_width_surface_crossing` | derived, option 5 | **measured**, a composition of 5, 6 and 7 | D.1, both deciders refuted by `a5` |
+| `what_the_admission_contract_asks_a_candidate_to_expose` | entailed, option 2 | **option 2, with option 3 not closed** | D.2, 221's calibration is better than mine |
+| `is_the_role_set_closed` | derived, closed concept | **derived, and contested** | D.3, and the instrument that would decide it is named |
+| `what_a_platform_width_type_is` | entailed, a fifth option | **entailed, and now contested** | C.2, decided against 221 by a row it does not cite |
+
+Net: one answer withdrawn, three questions closed that were not, one upgraded from a
+reading to a measurement, one softened, and two now carry a stated disagreement with
+the evidence that would settle each.
+
+**What a third seat should attack first**, and this is a joint list rather than mine:
+
+1. **Q36**, which both of us now leave open and which I briefly closed wrongly. The
+   MATLAB `fimath` observation is the lead and the instrument is a parity check
+   against one convention, which the standards obligation already demands for other
+   reasons.
+2. **The unsigned half of 221's `p2`**, its own item 1, which is the difference
+   between `signedness: signed` and a claim about the order at all.
+3. **Q26**, where C.2 and 221's section 4 disagree on a ratified clause's reach. It is
+   a reading rather than a measurement, so it wants a third reader rather than a probe.
+4. **The bridge table's cost at shipping widths**, D.1's residue, which is the only
+   part of Q9 no instrument has touched.
+5. **Porting `122` section 4.6 into the registry**, without which Q57 is not a
+   research question.
