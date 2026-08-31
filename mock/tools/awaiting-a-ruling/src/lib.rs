@@ -227,6 +227,21 @@ impl AwaitingARuling {
             }
         }
 
+        let later = op_files_after(ctx, q);
+        if !later.is_empty() {
+            s.push_str(
+                "\n  Op files that postdate this row. Read them before asking about it:\n",
+            );
+            for f in &later {
+                s.push_str(&format!("    {f}\n"));
+            }
+            s.push_str(
+                "  A later file of his own may already settle this, restate it better, or\n  \
+                 supersede it. Asking about a row he has already settled spends the one thing\n  \
+                 a batch exists to save.\n",
+            );
+        }
+
         ToolReport {
             outcome: Outcome::Clean { examined: 1 },
             output: s,
@@ -256,4 +271,89 @@ mod tests;
 
 mockspace::lint_pack! {
     tools: [AwaitingARuling],
+}
+
+/// Op's own panel files that postdate the row's own provenance.
+///
+/// **The check that was missing when four rows he had settled repeatedly were
+/// put to him anyway.** His reply: *"Most of these have been well established
+/// and blessed by me earlier several times. This should not be something to ask
+/// me, I've been clear"*. Panel file `95` is his, carries two of those four in
+/// its addendum, and nothing in the tool pointed at it.
+///
+/// Ordering is by the leading number in the filename, which is the panel's own
+/// sequence, against the leading number in the row's `provenance`. A file that
+/// predates the row is where the row came from and is not news; one that
+/// postdates it may settle, restate or supersede it.
+///
+/// **This reports rather than gates.** A later file of his often has nothing to
+/// do with the row, so a hit is a thing to read and not a refusal, and there is
+/// no threshold here to tune.
+fn op_files_after(ctx: &ToolContext<'_>, q: &str) -> Vec<String> {
+    let Some(after) = ctx
+        .registry
+        .field(q, "provenance")
+        .and_then(|p| panel_number(p))
+    else {
+        // No provenance, or none this can order. Reporting every op file would
+        // be noise dressed as diligence, so it reports none and says nothing.
+        return Vec::new();
+    };
+
+    let dir = ctx.mock_dir.join("research");
+    let mut out: Vec<(u32, String)> = Vec::new();
+    let Ok(panels) = std::fs::read_dir(&dir) else {
+        return Vec::new();
+    };
+    for panel in panels.flatten() {
+        let Ok(files) = std::fs::read_dir(panel.path()) else {
+            continue;
+        };
+        for f in files.flatten() {
+            let name = f.file_name().to_string_lossy().to_string();
+            if !name.ends_with(".md") || !is_op_file(&name) {
+                continue;
+            }
+            if let Some(n) = leading_number(&name)
+                && n > after {
+                    out.push((n, name));
+                }
+        }
+    }
+    out.sort();
+    out.into_iter().map(|(_, n)| n).collect()
+}
+
+/// The panel-file number a provenance string points at.
+///
+/// A provenance is `panel::<dir>::<file>::<anchor>`, so the number wanted is the
+/// one leading the third segment. Taking the first number in the whole string
+/// would take the panel directory's timestamp instead, which is the same for
+/// every row and would order nothing.
+fn panel_number(provenance: &str) -> Option<u32> {
+    provenance
+        .split("::")
+        .nth(2)
+        .and_then(leading_number)
+}
+
+fn leading_number(s: &str) -> Option<u32> {
+    let digits: String = s.chars().take_while(char::is_ascii_digit).collect();
+    digits.parse().ok()
+}
+
+/// Whether a panel filename is one of op's own files rather than one about him.
+///
+/// The convention is `<number>[<letter>]_op_<slug>.md`, so `op` has to be the
+/// segment straight after the number. `contains("_op_")` is the obvious spelling
+/// and it is wrong: it takes `207_mcsherry_op_material_in_the_dead_panel.md`,
+/// which is a member's file *about* his material and carries none of his words.
+///
+/// That matters more than a tidy listing. This whole check exists to make a
+/// short list somebody will actually read, and a list padded with files that are
+/// not his is one nobody reads, which puts it back where it started.
+fn is_op_file(name: &str) -> bool {
+    let rest = name.trim_start_matches(|c: char| c.is_ascii_digit());
+    let rest = rest.strip_prefix(|c: char| c.is_ascii_alphabetic()).unwrap_or(rest);
+    rest.starts_with("_op_")
 }
