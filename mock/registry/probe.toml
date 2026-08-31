@@ -1193,3 +1193,71 @@ standing = "sound"
 reproduced = "Three measurements of one proposition by one author, each sufficient alone and each by a different route: a per-lane denotation comparison, a same-input trial sweep, and a census over a different unit. Independence is across method rather than across author, which is worth less than two authors and more than one method run twice."
 note = "Its author built these before opening the file it refutes, which is what the claim resting on it records. The census's own header names the mechanical cause of the refuted count: a region's answer discipline is decided by the bridge the driver registers, one region's bridge is declared inline in that table with no shared crate anywhere, and a census whose unit is the shared crate directory cannot see it or its flag."
 keywords = ["answer-differing", "arms", "refutation", "region census", "oracle", "bridge", "234", "254", "exact rational", "denotation", "radix"]
+
+# --- the surface above the numeral, from `35` and `43` --------------------------
+#
+# Ten instruments sat behind those two derivations with no row naming any of
+# them, so every result in both was unciteable and the `evidence` field of any
+# proposal drawn from them would have had nothing to point at. The five below
+# are the ones a claim in this pass rests on.
+
+[[probe]]
+id = "a_widening_operation_cannot_be_folded"
+establishes = "A fold cannot take a widening operation. Four independent formulations of a widening fold over a runtime-length slice are refused by rustc, each because the accumulator's type after one step is not its type before. The wall is the runtime trip count: the same widening operation folded over a static-length list compiles, as does a closed operation over a runtime-length slice."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p1_fold_cannot_widen.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p1.out::1",
+]
+control = "Four positive arms, and all four compile clean in the same run: a widening operation in a fixed-arity expression, the same over a static-length list, a closed operation in a runtime-length loop, and a closed operation into a separately named wider accumulator. They are what locates the boundary. Without them the result reads as widening never working, and the actual wall, the trip count rather than the widening, would be invisible."
+standing = "sound"
+note = "A compiled refusal rather than a count, so it carries no magnitude and needs none. The four refused arms report one diagnosis between them, which is what says they are one wall met four ways rather than four separate defects."
+keywords = ["fold", "widening", "closed operation", "accumulator", "trip count", "loop-carried", "compiled refusal", "capacity", "E0308"]
+
+[[probe]]
+id = "which_sign_and_policy_cells_survive_reassociation"
+establishes = "Of the four sign-and-policy cells of a bounded integer addition, three give the same answer however the reduction is split and one does not. Signed saturating disagrees on 28,336 of 65,536 vectors at width 4 over 4 operands, and on 11,760,675 of 16,777,216 at width 3 over 8 operands. Unsigned wrapping, unsigned saturating and signed wrapping disagree on none, at either shape."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p3_reduction_order.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p3.out::1",
+]
+control = "Every vector is folded four ways on the same code path, a strict left fold, a balanced tree, two lanes and four lanes, and the instrument counts the vectors on which the four do not agree. Three cells report zero and the fourth reports a majority, so the same counter comes out both ways; one reporting zero everywhere would be measuring the harness rather than the arithmetic."
+standing = "sound"
+note = "A fifth row in the same output samples `f32` at 554,034 of 1,000,000 trials. It is a sample rather than a sweep and a different ambient domain, and it is not part of what this row establishes."
+keywords = ["reassociation", "split", "reduction order", "associativity", "signed saturating", "lanes", "threads", "70.1", "43.2", "tree fold"]
+
+[[probe]]
+id = "the_top_absorbs_under_saturation_and_never_under_wrapping"
+establishes = "Over 63 unsigned width-and-fraction cells, the top of the range absorbs addition at every cell under saturation and at no cell under wrapping. Separately and on the same sweep, the multiplicative identity is not representable at the 9 cells where the fraction width fills the container, and a product fold seeded with the nearest representable value is wrong at every non-zero element there."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p4_identities_and_absorption.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p4.out::1",
+]
+control = "Both directions are counted per cell and printed side by side, so the same column reports 0 failures of 63 under one policy and 63 of 63 under the other. The identity column is a second arm moving independently of the first: it goes false at exactly the nine cells where the fraction width equals the total width and stays true everywhere else, which is what says the sweep is reading the cell rather than the policy."
+standing = "sound"
+note = "Unsigned throughout; the model is `u128` and there is no signed arm. So this says nothing about a signed top, which is a different question and one a min-plus consumer would also need answered."
+keywords = ["absorbing top", "absorption", "saturation", "wrapping", "min-plus", "tropical", "identity", "seed", "fold seed", "63", "infinity"]
+
+[[probe]]
+id = "a_dag_dynamic_programme_returns_wrong_answers_on_in_range_instances"
+establishes = "Two DAG dynamic programmes run over the numeral and compared against exact unbounded arithmetic, exhaustively over every four-node DAG respecting one topological order and every weight assignment. Under wrapping the min-plus shortest path disagrees with the exact answer on 5,414,255 of 11,932,446 in-range instances at width 3 and on 407,293,133 of 832,398,764 at width 4. Under saturation it disagrees on none. The max-plus longest path agrees under both policies at both widths."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p5_algorithm_end_to_end.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p5.out::1",
+  "panel::202608072330_the-numeral-canon-panel::35_probes::p5_run.log::1",
+]
+control = "An instance is counted only where the exact answer and every exact intermediate fit inside the numeral's range, so a disagreement cannot be range exhaustion reported as a law failure. Three of the four routine-and-policy cells report zero wrong answers, including the longest-path routine under the same wrapping policy the shortest path fails under, which is what says the failure is the operation's and not the harness's."
+standing = "sound"
+note = "The topological order is an input to both routines rather than something either computes. This measures what a numeral does to an algorithm given an ordering; it establishes nothing about producing one."
+keywords = ["DAG", "shortest path", "longest path", "min-plus", "max-plus", "dynamic programme", "in-range control", "wrapping", "end to end", "algorithm layer"]
+
+[[probe]]
+id = "no_derivation_reads_the_numerals_grid"
+establishes = "The carrier, the stride and the fold accumulator derive to literally the same types across two numerals differing in adjustment, bias, phase and canonical exponent, and a law bound is satisfied or refused by the strategy alone at every grid. Type equality is asserted through a blanket implementation, so a mismatch is a compile error rather than a runtime comparison."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::43_probes::p2_which_coordinates_each_derivation_reads.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::43_probes::RUN.md::1",
+]
+control = "Three negative arms, each of which must fail to build and each of which does, with its diagnostic recorded. A value map that genuinely does read the grid fails its equality assertion; a wrapping strategy fails the absorbing-top bound; and a deliberately mismatched pair fails the sameness bound, which is what says the sameness relation is not vacuous. The main arm builds at exit 0 with no feature gate anywhere."
+standing = "sound"
+note = "The outputs live in `RUN.md` rather than in a `.out` file beside the source, because the result of a compile arm is its diagnostic. Both are committed."
+keywords = ["grid", "adjustment", "bias", "phase", "canonical exponent", "binding time", "derivation", "type equality", "negative control", "composition", "dynamic coordinate"]

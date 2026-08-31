@@ -1630,3 +1630,102 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation::#4-2-the-replacement-in-three-clauses-with-the-provenance-of-each",
 ]
 keywords = ["kind", "sort", "type", "constant", "generic body", "computed value", "consuming site", "form"]
+
+# --- what the layer above needs from the numeral, from `35` and `43` ------------
+#
+# Two cold derivations, 884 and 934 lines, with ten committed instruments between
+# them and until now no row drawn from either. What reached the registry before
+# this pass was one retirement: the shape `35` proposed and then killed. Its
+# positive results were not filed, which is the selection this repairs.
+
+[[proposal]]
+id = "a_fold_needs_a_closed_operation_and_a_separately_determined_accumulator"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_chain"
+says = "A fold cannot take a widening operation, so a composition needs a closed operation together with an accumulator determined separately. The accumulator's width is not a function of the operand widths at all: it is a function of the element width and the capacity, and the capacity is a quantity that lives in the composition rather than in the numeral. The wall is the runtime trip count and nothing else, which is why the same widening operation folds fine over a static-length list."
+because = "A fold's accumulator is loop-carried, so it has exactly one type, and a widening operation gives it a different type on every iteration. Four independent formulations are refused with one diagnosis between them, and four positive arms compile in the same run, which locates the boundary at the trip count rather than at the widening. The escape is not a trick: the bound was known at compile time all along and had been classified as runtime because the count is."
+predicate = [
+  "toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27), edition 2021",
+  "build_profile: no feature gates, opt level 3",
+  "threads: threads any, the refusal being a type-check outcome that precedes execution",
+]
+evidence = ["a_widening_operation_cannot_be_folded"]
+obligation = ["composition_contracts_above_the_numeral"]
+note = "One expert, and the `threads any` is argued rather than swept: no run varied the thread count, and the refusal happens before any thread exists, so it cannot vary with one. A reader wanting that dimension established by measurement should treat it as unmeasured."
+gap = "It says a capacity is the second input and does not say where a consumer writes one, nor what the derivation from element width and capacity is. `35` sections 3.2 and 3.8 have both and neither is filed here."
+provenance = ["panel::202608072330_the-numeral-canon-panel::35_mcsherry_what_the_layers_above_need_from_the_numeral::#31-a-folds-operation-must-be-closed-or-its-trip-count-must-be-static"]
+keywords = ["fold", "closed operation", "widening", "accumulator", "capacity", "trip count", "composition", "loop-carried", "layer above", "algorithm layer"]
+
+[[proposal]]
+id = "splitting_a_reduction_is_sound_in_three_of_the_four_sign_and_policy_cells"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "execution_environment"
+says = "Splitting a reduction changes the association order, so an implementation free to choose how many lanes it uses gives an answer that depends on that choice wherever the operation is not associative. Of the four sign-and-policy cells of a bounded integer addition, three give the same answer under every split measured and one does not: signed saturating disagrees on 28,336 of 65,536 vectors at width 4 over 4 operands and on 11,760,675 of 16,777,216 at width 3 over 8."
+because = "Op's intent is that arvo runs at one thread, two, or any finite n, detected rather than declared, and his correction is that this may not cost soundness for any strategy except the speed-first one. Those two together impose a precondition stated nowhere: a reduction may only be split where the operation is associative. The measurement says which cells that permits and which it does not, on a single code path that reports zero for three of them and a majority for the fourth."
+predicate = [
+  "total_width: W in {3, 4}",
+  "fraction_width: F = 0",
+  "signedness: signedness in {unsigned, signed}",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operation = add",
+  "arity: arity = 2",
+  "chain_length: fold length in {4, 8}",
+  "threads: threads = 1, the splits being computed rather than executed on lanes",
+]
+evidence = ["which_sign_and_policy_cells_survive_reassociation"]
+obligation = ["composition_contracts_above_the_numeral"]
+note = "One expert on the measurement. The structural half of it, that coherence is what a reduction which may be split or reassociated consumes, was reached separately in the number-system topic and is carried by `the_two_law_families_have_two_consumer_classes`, which states the mapping and carries no region and no instrument. This row is the region, and the two should be read together rather than as two instances of one claim."
+gap = "Measured on addition alone, at two widths, at zero fraction width and on one thread. Whether the same three cells survive at a nonzero fraction width, under multiplication, or when the splits are genuinely executed on separate lanes is not established here."
+provenance = ["panel::202608072330_the-numeral-canon-panel::35_mcsherry_what_the_layers_above_need_from_the_numeral::#36-a-reduction-may-only-be-split-when-the-operation-is-associative"]
+keywords = ["reassociation", "split", "lanes", "cores", "associativity", "reduction order", "signed saturating", "soundness", "detection", "I10", "adaptation"]
+
+[[proposal]]
+id = "a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "A min-plus computation stands infinity on the numeral's top, so it needs that top to absorb addition. Over 63 unsigned width-and-fraction cells the top absorbs at every cell under saturation and at no cell under wrapping, and the consequence is measured end to end rather than left as a violated identity: a DAG shortest path under wrapping disagrees with exact unbounded arithmetic on 5,414,255 of 11,932,446 in-range instances at width 3 and on 407,293,133 of 832,398,764 at width 4, and on none under saturation."
+because = "Counting a law failure is not the same as counting a wrong answer, because an algorithm may never visit the triples that break. So the identity was counted first and then an actual routine was run over the numeral and compared against exact arithmetic, with an instance counted only where the exact answer and every exact intermediate fit inside the range. The max-plus longest path over the same graphs and the same policy agrees everywhere, which is what says the failure belongs to the operation rather than to the harness."
+predicate = [
+  "total_width: W in {3, 4} for the end-to-end run, and W in 2..=10 for the absorption sweep",
+  "fraction_width: F = 0 for the end-to-end run, and F in 0..=W for the absorption sweep",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy in {wrap, saturate}",
+  "operation: operations {add, min, max}",
+  "arity: arity = 2",
+  "threads: threads = 1",
+]
+evidence = [
+  "the_top_absorbs_under_saturation_and_never_under_wrapping",
+  "a_dag_dynamic_programme_returns_wrong_answers_on_in_range_instances",
+]
+obligation = ["composition_contracts_above_the_numeral"]
+note = "Unsigned throughout, on both instruments, so it says nothing about a signed top. The width and fraction entries are two regions rather than one because two instruments established the two halves; the conjunction holds where they intersect, which is the narrower of the two."
+gap = "Absorption is one of the two properties a min-plus computation needs and monotonicity is the other, measured in the same file and not filed here. A numeral that absorbs and is not monotone still gets the answer wrong, which is what `dl_interior_wrapping_with_a_reserved_absorbing_top` retires."
+provenance = ["panel::202608072330_the-numeral-canon-panel::35_mcsherry_what_the_layers_above_need_from_the_numeral::#34-a-min-plus-fold-needs-an-absorbing-top-and-only-saturation-supplies-one"]
+keywords = ["min-plus", "tropical", "absorbing top", "infinity", "shortest path", "DAG", "saturation", "wrapping", "in-range", "end to end", "graph"]
+
+[[proposal]]
+id = "no_derivation_reads_the_grid_so_a_composition_may_hold_it_at_run_time"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_chain"
+says = "The carrier, the stride and the fold accumulator derive to the same types across numerals differing in adjustment, bias, phase and canonical exponent, and a law bound is decided by the strategy alone at every grid. So a numeral's grid coordinates are the ones a composition may hold at run time, shared over a run, with every derivation unchanged. That is what a composition's static part is for: it supplies the quantities a numeral's own type cannot carry, because they are facts about a run rather than about a value."
+because = "Which coordinates a derivation reads is a binding-time question and nobody had asked it. A coordinate no derivation reads may move to run time for free; one a derivation does read takes the derivation with it. Type equality is asserted through a blanket implementation so a mismatch is a compile error, and three negative arms fail as required, including one whose map genuinely does read the grid and one that shows the sameness relation is not vacuous."
+predicate = [
+  "toolchain: rustc 1.98.0-nightly (57d06900f 2026-05-27), edition 2021",
+  "build_profile: no feature gates anywhere, main arm at exit 0",
+  "threads: threads any, the equalities being decided at compile time",
+]
+evidence = ["no_derivation_reads_the_numerals_grid"]
+obligation = ["composition_contracts_above_the_numeral"]
+note = "One expert. The operations do not all agree with the derivations and the split is exact: a same-grid addition reads neither the adjustment nor the canonical exponent, a multiplication reads the exponent, and the bias is in neither set. That is measured separately in the same file and is not filed here, so this row states what the derivations read and not what the operations do."
+gap = "It says the grid may be held dynamically and does not say what holds it, nor what a consumer writes to say so. Whether arvo ships the container that would is a separate question its own source declines to settle."
+provenance = ["panel::202608072330_the-numeral-canon-panel::43_rompf_what_a_composition_is::#52-no-derivation-reads-the-grid-and-that-is-compiled"]
+keywords = ["grid", "binding time", "composition", "run time", "adjustment", "bias", "phase", "canonical exponent", "shared scale", "frame of reference", "stride"]

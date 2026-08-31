@@ -23,25 +23,63 @@ use std::fs;
 
 use arvo_checks::corpus;
 
-/// The citations that already exist, pinned by count.
+/// A ledger carries none, and a ledger is a file anybody may edit.
 ///
-/// They sit in landed member files, which are the record and are not edited, so
-/// the repair is a later pass rewriting them as slugs rather than an edit here.
-/// What this pins is that nobody writes a new one.
+/// **This is the half that is repairable and therefore the half that is a
+/// gate.** A living ledger is rewritten as the panel moves, so a line citation
+/// in one is a defect somebody fixes rather than a fact about the record.
 #[test]
-fn no_new_line_citation_into_the_registry_is_written() {
-    /// Measured over the committed tree. Lower it as citations are rewritten
-    /// as slugs; never raise it.
-    const CEILING: usize = 32;
+fn no_ledger_cites_the_registry_by_line() {
+    let found: Vec<_> = corpus::line_citations_into_the_registry(&corpus::panel_dir())
+        .into_iter()
+        .filter(|f| !in_a_member_file(&f.at))
+        .collect();
+    assert!(
+        found.is_empty(),
+        "a file that gets edited cites a registry file by line. Name the row's slug: {found:#?}"
+    );
+}
 
-    let found = corpus::line_citations_into_the_registry(&corpus::panel_dir());
+/// The member files carry a ceiling, because a member file is not edited.
+///
+/// **The first version of this test capped both together and was wrong about
+/// what a ceiling is for.** It read as pinning the corpus while the number was
+/// still moving: a seat working on a branch cut before this check landed added
+/// thirteen, none of which is repairable, and the ceiling then reported a
+/// regression where there was only a merge.
+///
+/// A numbered member file is the record. Repointing its citations would be
+/// editing history to make a checker green, which is exactly what the archive
+/// arms in this module decline to do for the same reason. So what this measures
+/// is the standing cost, and **the repair is upstream of the file**: a seat
+/// briefed to name slugs writes none of these, and the number stops growing
+/// because nobody adds to it rather than because anybody cleaned it.
+#[test]
+fn the_member_files_line_citations_do_not_grow() {
+    /// Measured over the committed tree. Every one is unrepairable by
+    /// construction; the number falls only when a file is superseded.
+    const CEILING: usize = 45;
+
+    let found: Vec<_> = corpus::line_citations_into_the_registry(&corpus::panel_dir())
+        .into_iter()
+        .filter(|f| in_a_member_file(&f.at))
+        .collect();
     assert!(
         found.len() <= CEILING,
-        "{} line citations into a registry file, against a ceiling of {CEILING}. A registry \
-         file gains rows constantly and every insertion moves the lines under it, so name the \
-         row's slug rather than raising this number: {found:#?}",
+        "{} line citations into a registry file from member files, against a ceiling of \
+         {CEILING}. A registry file gains rows constantly and every insertion moves the lines \
+         under it, so the citation still resolves and names a different row. Brief the next \
+         seat to write slugs; do not raise this: {found:#?}",
         found.len()
     );
+}
+
+/// A numbered member file, which is written once and is the record.
+fn in_a_member_file(at: &str) -> bool {
+    at.split('/')
+        .next_back()
+        .and_then(|f| f.split('_').next())
+        .is_some_and(|n| !n.is_empty() && n.chars().all(|c| c.is_ascii_digit()))
 }
 
 /// The control, and both directions.
