@@ -1,0 +1,153 @@
+=== p1. the minimum sufficient accumulator width, second instrument ===
+
+  reference : the exact ambient sum, adapted once onto the format
+  candidate : eager adaptation into width A at every step, adapted once at the end
+  exact     : the width holding every exact sum, derived from the interval
+  measured  : the smallest A at which candidate and reference agree everywhere
+  gap       : exact - measured
+
+  Every cell is exhaustive over every tuple. Nothing here is sampled, and a
+  cell above the budget is listed as unreached rather than estimated.
+  tuple budget per cell: 40000000
+
+N3 wrong-reference control (signed W=3 L=4 at A=exact-1=4):
+    a reference clamped to the accumulator is detected at [-4, -4, -4, -4]  PASS
+
+     sign   W   L          tuples   exact  measured   gap  N1 witness at measured-1
+   signed   3   2              64       4         3     1  format width already suffices
+   signed   3   3             512       5         4     1  [3, 1, -4]
+   signed   3   4            4096       5         4     1  [3, 2, -4, -4]
+   signed   3   5           32768       6         5     1  [3, 3, 2, -4, -4]
+   signed   3   6          262144       6         5     1  [3, 3, 3, -4, -4, -4]
+   signed   3   7         2097152       6         5     1  [3, 3, 3, 0, -4, -4, -4]
+   signed   3   8        16777216       6         5     1  [3, 3, 3, 3, -3, -4, -4, -4]
+   signed   4   2             256       5         4     1  format width already suffices
+   signed   4   3            4096       6         5     1  [7, 1, -8]
+   signed   4   4           65536       6         5     1  [7, 2, -8, -8]
+   signed   4   5         1048576       7         6     1  [7, 7, 2, -8, -8]
+   signed   4   6        16777216       7         6     1  [7, 7, 3, -8, -8, -8]
+   signed   5   2            1024       6         5     1  format width already suffices
+   signed   5   3           32768       7         6     1  [15, 1, -16]
+   signed   5   4         1048576       7         6     1  [15, 2, -16, -16]
+   signed   5   5        33554432       8         7     1  [15, 15, 2, -16, -16]
+   signed   6   2            4096       7         6     1  format width already suffices
+   signed   6   3          262144       8         7     1  [31, 1, -32]
+   signed   6   4        16777216       8         7     1  [31, 2, -32, -32]
+   signed   7   2           16384       8         7     1  format width already suffices
+   signed   7   3         2097152       9         8     1  [63, 1, -64]
+
+     sign   W   L          tuples   exact  measured   gap  N1 witness at measured-1
+ unsigned   3   2              64       4         3     1  format width already suffices
+ unsigned   3   3             512       5         3     2  format width already suffices
+ unsigned   3   4            4096       5         3     2  format width already suffices
+ unsigned   3   5           32768       6         3     3  format width already suffices
+ unsigned   3   6          262144       6         3     3  format width already suffices
+ unsigned   3   7         2097152       6         3     3  format width already suffices
+ unsigned   3   8        16777216       6         3     3  format width already suffices
+ unsigned   4   2             256       5         4     1  format width already suffices
+ unsigned   4   3            4096       6         4     2  format width already suffices
+ unsigned   4   4           65536       6         4     2  format width already suffices
+ unsigned   4   5         1048576       7         4     3  format width already suffices
+ unsigned   4   6        16777216       7         4     3  format width already suffices
+ unsigned   5   2            1024       6         5     1  format width already suffices
+ unsigned   5   3           32768       7         5     2  format width already suffices
+ unsigned   5   4         1048576       7         5     2  format width already suffices
+ unsigned   5   5        33554432       8         5     3  format width already suffices
+ unsigned   6   2            4096       7         6     1  format width already suffices
+ unsigned   6   3          262144       8         6     2  format width already suffices
+ unsigned   6   4        16777216       8         6     2  format width already suffices
+ unsigned   7   2           16384       8         7     1  format width already suffices
+ unsigned   7   3         2097152       9         7     2  format width already suffices
+
+=== Q2, the two verdicts, counted ===
+
+  signed cells measured                              : 21
+  signed cells at fold length above two              : 16
+  every one of those at a gap of exactly one bit      : true
+  any signed cell at gap zero, which would refute it  : false
+  unsigned cells measured                            : 21
+  unsigned: the format's own width sufficed in all    : true
+
+=== N2, the wrapping-accumulator control ===
+
+  The same sweep with the accumulator wrapping rather than saturating. If the
+  answer does not move, the sweep is not sensitive to the accumulator's own
+  adaptation and the finding is about something else.
+
+  signed W=3 L=3: exact=5  saturating-acc min=4  wrapping-acc min=5
+  signed W=3 L=4: exact=5  saturating-acc min=4  wrapping-acc min=5
+  signed W=3 L=5: exact=6  saturating-acc min=5  wrapping-acc min=6
+  signed W=4 L=3: exact=6  saturating-acc min=5  wrapping-acc min=6
+  signed W=4 L=4: exact=6  saturating-acc min=5  wrapping-acc min=6
+  signed W=4 L=5: exact=7  saturating-acc min=6  wrapping-acc min=7
+
+  the accumulator's adaptation moves the answer: true
+
+=== Q3, whether the fraction width moves either answer ===
+
+  A fixed-point format of total width W is the integer format of that width
+  with every value divided by 2^F, so the question is whether the located
+  minimum is invariant under a change of common scale. Below, the identical
+  construction runs at four scales. If F could move the answer, a scale
+  would move it. N4 is what says this code can see a scale at all.
+
+  scale points checked                        : 56
+  disagreements                               : 0
+  addition's located minimum is invariant under the common scale: true
+
+=== N4, the control that says the harness can see F ===
+
+  If the fraction width were invisible to this code, Q3 would report agreement
+  whatever the truth. A rescaling operation must show F moving a width.
+
+  W=8 F=0: a three-operand product needs 0 fraction bits beyond the declared ones
+  W=8 F=1: a three-operand product needs 2 fraction bits beyond the declared ones
+  W=8 F=2: a three-operand product needs 4 fraction bits beyond the declared ones
+  W=8 F=3: a three-operand product needs 6 fraction bits beyond the declared ones
+
+  the fraction width moves a width requirement for multiplication: true
+
+=== cells this run did not reach ===
+
+  Unmeasured here. Under I13 an unmeasured cell is not claimed.
+
+    signed W=3 L=9: 134217728 tuples, above the budget
+    signed W=4 L=7: 268435456 tuples, above the budget
+    signed W=4 L=8: 4294967296 tuples, above the budget
+    signed W=4 L=9: 68719476736 tuples, above the budget
+    signed W=5 L=6: 1073741824 tuples, above the budget
+    signed W=5 L=7: 34359738368 tuples, above the budget
+    signed W=5 L=8: 1099511627776 tuples, above the budget
+    signed W=5 L=9: 35184372088832 tuples, above the budget
+    signed W=6 L=5: 1073741824 tuples, above the budget
+    signed W=6 L=6: 68719476736 tuples, above the budget
+    signed W=6 L=7: 4398046511104 tuples, above the budget
+    signed W=6 L=8: 281474976710656 tuples, above the budget
+    signed W=6 L=9: 18014398509481984 tuples, above the budget
+    signed W=7 L=4: 268435456 tuples, above the budget
+    signed W=7 L=5: 34359738368 tuples, above the budget
+    signed W=7 L=6: 4398046511104 tuples, above the budget
+    signed W=7 L=7: 562949953421312 tuples, above the budget
+    signed W=7 L=8: 72057594037927936 tuples, above the budget
+    signed W=7 L=9: 9223372036854775808 tuples, above the budget
+  unsigned W=3 L=9: 134217728 tuples, above the budget
+  unsigned W=4 L=7: 268435456 tuples, above the budget
+  unsigned W=4 L=8: 4294967296 tuples, above the budget
+  unsigned W=4 L=9: 68719476736 tuples, above the budget
+  unsigned W=5 L=6: 1073741824 tuples, above the budget
+  unsigned W=5 L=7: 34359738368 tuples, above the budget
+  unsigned W=5 L=8: 1099511627776 tuples, above the budget
+  unsigned W=5 L=9: 35184372088832 tuples, above the budget
+  unsigned W=6 L=5: 1073741824 tuples, above the budget
+  unsigned W=6 L=6: 68719476736 tuples, above the budget
+  unsigned W=6 L=7: 4398046511104 tuples, above the budget
+  unsigned W=6 L=8: 281474976710656 tuples, above the budget
+  unsigned W=6 L=9: 18014398509481984 tuples, above the budget
+  unsigned W=7 L=4: 268435456 tuples, above the budget
+  unsigned W=7 L=5: 34359738368 tuples, above the budget
+  unsigned W=7 L=6: 4398046511104 tuples, above the budget
+  unsigned W=7 L=7: 562949953421312 tuples, above the budget
+  unsigned W=7 L=8: 72057594037927936 tuples, above the budget
+  unsigned W=7 L=9: 9223372036854775808 tuples, above the budget
+
+P1 WORKS
