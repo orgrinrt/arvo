@@ -34,6 +34,19 @@ use crate::{Finding, Registry, Row};
 /// anyway, because a note is prose and this is a list.
 pub fn rulings_with_no_verbatim(reg: &Registry) -> Vec<Finding> {
     reg.of("ruling")
+        // A ruling ratified by the experts carries no verbatim of op by
+        // construction, and demanding one of it is the old model still running.
+        //
+        // Until today ratification needed both expert convergence and his
+        // blessing, so every ruling was his and a missing quote meant a missing
+        // source. `ratified_by = experts` is now a route of its own: the experts
+        // propose, the coordinator gates, and he is not in it. Such a row has a
+        // `promotion` recording the judgement instead, and that is what stands
+        // behind it.
+        //
+        // Left as a filter rather than an entry in the known-holes list, because
+        // a hole is something somebody should go and fill and this is not one.
+        .filter(|row| row.get("ratified_by") != Some("experts"))
         .filter(|row| row.get("quote").is_none_or(str::is_empty))
         .map(|row| {
             Finding::new(

@@ -1451,3 +1451,20 @@ because = "Four topics reached this independently and the earliest reached it be
 note = "This is `I13` stated as a positive shape rather than as a rejection of universals. It is why a finding carries the region it holds in: an arm without a predicate has nothing to be gated on, and a universal claim is not what this design produces."
 provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-organising-shape"]
 keywords = ["arms", "predicates", "regions", "composition", "optimal", "fundamental heart", "I13", "universal"]
+
+[[ruling]]
+id = "the_additive_and_absorption_verdicts_are_canon"
+kind = "ruling"
+rung = "ratified"
+ratified_by = "experts"
+topic = "algebraic_laws"
+ratifies = [
+  "an_additive_verdict_is_independent_of_the_fraction_width",
+  "absorption_decides_associativity_of_a_clamped_reduction",
+]
+says = "Two law-tier propositions become canon. Addition at a common scale never rescales, so an additive verdict, survival and breakage alike, is independent of the fraction width. And whether a reduction's induced operation is associative is decided by absorption, quantified over the values the format can hold."
+promotion = "Promoted on the gate rather than on the count. The additive verdict stands at three or more instances and its predicate claims `W any` and `F any`, which is a genuinely wide region rather than a measured band written up as one; the mechanism it names, that addition at a common scale performs no rescale, is why the width cannot enter. Absorption stands at two, and its statement is quantified exactly as its predicate is, over the values the format can hold, at `W in 3..=7`, `F = 0`, arity 3, over a hundred interval numerals containing zero. Neither prose reaches past its predicate, which is the thing this gate is for and which the third proposal read alongside them failed."
+because = "Under the ratification model settled today the experts propose and the coordinator judges whether the reasoning, the evidence and the stated region are enough. These two were read for that rather than counted."
+note = "One open asymmetry, recorded rather than resolved because it is the panel's: the additive row lists no `rounding` dimension where its multiplicative sibling lists `rounding any`. Addition at a common scale does not round, so the omission is arguably correct, but the notation has no inapplicable state and absence means the finding holds nowhere that dimension exists. Whether that reading is intended, or whether the row wants `rounding any`, is a question for whoever next touches the axis."
+provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_ratify_and_i_read::#the-correction-which-arrived-before-any-of-it-was-encoded"]
+keywords = ["addition", "absorption", "associativity", "fraction width", "rescale", "reduction", "clamped", "promotion", "gate"]

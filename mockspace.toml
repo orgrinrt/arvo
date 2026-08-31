@@ -1086,6 +1086,12 @@ description = "How many independent instances reached it, over the region they s
 values = ["one_expert", "two_experts", "three_or_more", "cross_topic", "contested"]
 
 [[registry.namespace.field]]
+name = "gate"
+type = "string"
+required = false
+description = "Why the coordinator refused to promote it, where one did. Present on a proposal that met the convergence bar and did not clear the gate, absent otherwise. The bar and the gate are two different things: convergence says several experts reached it, and the gate asks whether the reasoning, the evidence and the stated region are enough for canon. A proposal at `two_experts` with no `gate` has not been looked at yet; one carrying a `gate` has, and was refused with a reason somebody can argue with. Refusals concentrate in one place: the prose reaching past the predicate. Every mechanism here audits predicates and none audits the sentence beside them, and that sentence is what a later reader quotes."
+
+[[registry.namespace.field]]
 name = "topic"
 type = "topic"
 required = true
