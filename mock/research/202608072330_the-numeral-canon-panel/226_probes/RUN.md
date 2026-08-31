@@ -114,3 +114,27 @@ read them, and one family plausibly would: an encoding that is not two's
 complement, sign-magnitude or offset binary, might want a placement the sign
 participates in. That is the hole in the `signedness: any` entry and it is named
 in the deliverable rather than buried here.
+
+**`p5`.** `p3`'s law is an arm with a const predicate, so how wide the arm is
+matters. A chain of k additions accumulated without projecting between steps and
+projected once at the end agrees across carriers up to some k, and two routes to
+that boundary were run rather than one, because a closed form checked against
+itself is not checked.
+
+The closed form, free while `ceil(log2(k+1)) <= headroom`, is **sound and
+conservative**: over widths 3 to 16 and chain lengths 1 to 4096 it disagrees with
+the exact condition in 5 cells and is unsound in none of them. The exact
+condition, `(k+1) * (2^W - 1) < 2^C`, is the wider arm: at width 3 it allows 35
+free additions where the form allows 31, and at width 4 it allows 16 where the
+form allows 15. Both are const-computable, so the wider one costs nothing to
+prefer.
+
+Two controls. The same form given one bit of slack it does not have disagrees in
+313 cells and every one of them is unsound, so the disagreement counter can see
+the direction that matters. And both outcomes must be present at every width with
+headroom, with only the splitting outcome present where headroom is zero.
+
+That second control's first form demanded both outcomes at every width and failed
+on correct data: at zero headroom the narrowest carrier is the declared width, a
+two-term sum already wraps it, and no chain is ever free. The criterion was wrong
+rather than the data. It is now two claims rather than an exemption.

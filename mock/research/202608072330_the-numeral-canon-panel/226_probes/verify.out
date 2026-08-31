@@ -16,4 +16,7 @@ p3_the_count_is_constant_in_the_operation_set.rsexit 0  ok
 -- the placement axes --
 p4_the_placement_reads_only_the_total_width.rsexit 0  ok
 
+-- how far the chain runs --
+p5_how_far_a_chain_runs_before_the_carrier_shows.rsexit 0  ok
+
 VERIFIED
