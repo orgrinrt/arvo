@@ -2107,3 +2107,16 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::OPTIONS::#q32-addendum-from-78",
 ]
 keywords = ["one thread", "instrument", "threads", "contention", "packing", "write hazard", "read-modify-write", "absence claim", "Q32"]
+
+[[retirement]]
+id = "dl_wraps_induced_ring_transfers_to_fractional_formats"
+claim = "Wrap's induced ring transfers to fractional formats."
+why = "Measured directly rather than only argued by analogy from saturation's semiring: wrap keeps a full abelian group under addition at every fraction width, but its multiplicative half fails associativity and distributivity at every measured F > 0 configuration, by the identical shared rescale mechanism that broke saturation's semiring. Closed on structural grounds, the same grounds that closed the analogous semiring candidate: the mechanism is a fact about what a fixed-width rescaling multiply is, not about which overflow policy consumes its output. What would reopen it: a total translation-covariant rounding rule under which the rescale loses no information on some nontrivial operand set, which the source argues cannot exist but has not proven as a theorem."
+kind = "wrong"
+replacement = "law::multiplicative_associativity_under_wrapping's holds/fails regions, which state directly that wrap induces a ring only at F = 0 and degrades to a non-associative, non-distributive multiplicative structure over an abelian additive group at F > 0."
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::61_absorption_against_coherence::#6-what-the-register-should-gain",
+  "panel::202608072330_the-numeral-canon-panel::61_probes::q2_wrap_ring_at_nonzero_fraction.rs::1",
+]
+keywords = ["wrap", "induced ring", "fraction width", "abelian group", "semiring", "droplist", "abandoned"]

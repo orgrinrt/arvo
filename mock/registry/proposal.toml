@@ -1896,3 +1896,27 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::57_orchard_the_grading_and_the_refutation::399",
 ]
 keywords = ["range clamp", "coarsening", "independent mechanisms", "multiplicative", "associativity", "masking", "absorption", "composite"]
+
+[[proposal]]
+id = "absorption_is_the_correct_associativity_criterion_and_literal_coherence_is_a_strictly_narrower_law"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "Absorption and a literal reading of coherence (both fold operands independently reduced before combining) are the same law exactly on the domain a real fold ever presents, and different laws the moment either sweep tests an operand drawn from outside the representable set. Where they diverge, absorption is the one that agrees with measured associativity; a design using literal coherence as its associativity criterion would be wrong on precisely the configurations where the two laws part ways, never merely imprecise."
+because = "Exhaustive over two independently shaped sweeps (4248 and 7744 configurations, addition and multiplication both), the disagreement set between absorption and coherence-ext is identical, configuration for configuration, to the set where the operand box extends outside the representable set Q, with zero exceptions in either direction. Absorption matches directly measured associativity on every configuration in both sweeps; coherence-ext mismatches on exactly the configurations it disagrees with absorption on. The mechanism is that every real arvo numeral is format-typed, so a genuine fold operand is always already an element of Q, and coherence's second reduction is then a no-op that makes the two laws collapse to one identically."
+predicate = [
+  "total_width: total width = 4 (M = 15)",
+  "operation: operation in {add, mul}",
+  "arity: arity = 2",
+  "overflow_policy: overflow policy = clamp",
+]
+evidence = ["absorption_and_coherence_ext_agree_exactly_when_the_second_operand_is_representable"]
+law = ["multiplicative_associativity_under_wrapping"]
+note = "`signedness`, `fraction_width`, `rounding` and `threads` are absent because the source's two sweeps vary neither: both are unsigned, F is not stated as varying, and the sweeps are silent on threads, so under I13 this holds in no threaded situation and does not transfer to the signed domain by this evidence alone. The `law` field points at the neighbouring multiplicative-associativity row because this proposal is about which CRITERION correctly identifies associativity, not about a new region where associativity itself holds or fails; the two are complementary."
+gap = "A second, weaker mechanism is measured but not this proposal's subject: instantiating a literal window-based coherence law directly at a configuration's own box (rather than at the theoretically-correct reachable-sum domain) disagrees with absorption far more often (681 of 4248), including inside the outside-Q partition's complement. That is a caution about naive instantiation of an existing law and is recorded on the evidencing probe's `note` field rather than promoted to its own predicate here, since it was not this file's crux and the source says so explicitly."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::61_absorption_against_coherence::44",
+  "panel::202608072330_the-numeral-canon-panel::61_absorption_against_coherence::116",
+]
+keywords = ["absorption", "coherence", "associativity criterion", "representable set", "fold", "reduced operand"]
