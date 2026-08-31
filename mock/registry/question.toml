@@ -1804,3 +1804,34 @@ topic = "arvo_identity"
 note = "Filed because it existed only as a `gap` on an obligation, which no roster reads: every list of what is owed here is built from `question` rows and their `decider`, so this was invisible to the queue while being upstream of the two largest questions in it. The obligation's own words: which conventions are in scope is unstated, five appear in the corpus, two were named, and no row says whether the set is those, more, or a core with the rest open.\n\nWhy it is his rather than derivable: the bound is a demand he made, and how far a demand reaches is the demand's author's to say. The panel can establish whether any given convention is expressible, which is the adequacy test working, and cannot establish which ones were promised.\n\nThe second half of the same gap is not asked here and is not his: the parity suite is a mandate with no artifact, and building it is work rather than a decision. It cannot start until this is answered, which is most of why this ranks where it does."
 provenance = ["panel::202608072330_the-numeral-canon-panel::206_op_the_canon_test_and_the_standards_bound::#the-container-premise-and-a-bound-nobody-had-filed"]
 keywords = ["MATLAB", "fi", "fimath", "IEEE 754", "SystemC", "sc_fixed", "ap_fixed", "ac_fixed", "alias", "convention", "standard", "parity suite", "scope", "adequacy"]
+
+# --- raised by seat 215's second read, which found two rows in one topic at one
+#     standing giving incompatible answers to what a law layer is for
+
+[[question]]
+id = "whether_a_law_layers_consumer_is_the_lowering_or_one_of_several"
+asks = "Two `algebraic_laws` rows define a law's consumer differently. One says the question a law layer answers is whether a law reaches a lowering the backend could not prove for itself, which makes the lowering the consumer and narrows the paying region to where the backend is blind. The other says the laws split into two families with two consumer classes, adaptation laws read by order transport and coherence read by a reduction that may be split or reassociated, all four combinations inhabited. Order transport is not the lowering. Which is the law layer's consumer, and is the second row's count of two a closure or a floor?"
+options = [
+  "The lowering is the consumer and the second row's families are a classification inside it, so order transport reaches the design through a lowering like anything else and the two rows compose.",
+  "There are several consumers and the first row states one of them, so its sentence narrows to the backend-facing case and stops defining what a law layer is for in general.",
+  "Both stand at their own addresses because they answer different questions, one about what makes a law pay and one about who reads it, and the conflict is in reading either as a definition of the layer.",
+  "The count of two is a floor rather than a closure, which leaves the first row's sentence standing and makes the second row's `says` overstate what its evidence reaches.",
+]
+decider = "panel"
+bound = '''
+Answered inside `ruling::there_is_no_exchange_rate_because_there_is_no_generalisation` and the
+patchwork it states: a single answer covering the whole category is the shape op has refused
+by name, so a reading that makes one of these rows the definition and the other a special case
+needs to say what region each holds in rather than which one wins. `I13` supplies the form. A
+law that pays only where the backend is blind and a law that pays because order transport reads
+it are two arms with two predicates, and the question is what those predicates are, not which
+sentence survives.
+'''
+unblocks = "Promotion of either row. They sit in one topic at one standing, and seat 215 established that they cannot both be promoted as written, so the pair is blocked on this rather than on evidence."
+topic = "algebraic_laws"
+note = "Filed by the coordinator from seat 215's second read, which reached the conflict from the two rows' texts rather than from either author. Neither row is refuted and neither author saw the other's: `80`'s law-layer finding came out of a probe that refuted its own thesis, and `67`'s families were measured independent in the format topic with all four combinations inhabited. What is open is only whether the first sentence is a definition of the layer or a statement about one of its consumers, and the second row's `note` already concedes that the mapping from families to consumers is the one-expert part while the families themselves are carried as a law row.\n\nSeat 215 refuses the closure at two separately from the conflict, which is why the fourth option exists: nothing establishes that no third consumer class arrives, and a count stated as a closure is the kind of category-wide claim this workspace files as an arm rather than a ruling."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::215_kiselyov_second_read_the_algebraic_laws::491",
+  "panel::202608072330_the-numeral-canon-panel::215_kiselyov_second_read_the_algebraic_laws::762",
+]
+keywords = ["law layer", "consumer", "lowering", "backend", "order transport", "coherence", "law families", "closure", "floor", "conflict"]

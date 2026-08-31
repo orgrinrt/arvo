@@ -136,15 +136,17 @@ says = "The laws of a format's operations are derived, not enumerated per policy
 because = "Both hypotheses hold and the induced operation on the representable set is associative, because that set is the quotient. Evaluated mechanically over the unit's cube: zero sufficiency violations, zero cells associative without both hypotheses, zero residue, with each hypothesis and the measured truth observed both true and false across the cube. Read through it the unit's table rows become derivations rather than observations: addition's ambient is always associative so additive verdicts are decided by the congruence half alone and are scale-blind; wrapping's kernel is always a ring congruence so wrapping is decided by the ambient half alone; saturation's kernel is a congruence only under the stated geometry; and no multiplicative cell survives a nonzero fraction width anywhere. The closed forms are exact: the kernel is a multiplicative congruence iff the range is mirror-symmetric or nonnegative, and an additive congruence iff the range is sign-confined, with the predictor mismatching nothing over all 100 zero-containing intervals."
 predicate = [
   "total_width: W = 4",
-  "fraction_width: F in {0, one unnamed value above 0}",
+  "fraction_width: F in {0, 2}",
   "signedness: three sign domains, unsigned and signed two's complement and signed symmetric range",
   "overflow_policy: overflow policy in {wrap, saturate}",
   "operation: operations {add, mul}",
 ]
 law = ["multiplicative_associativity_under_saturation", "additive_associativity_under_saturation"]
-note = "The consolidation marks its equivalence **provisionally passes** and says so in load-bearing terms rather than as a hedge: the twenty-four-cell prediction with zero residue is an equivalence trial passed, but the frame itself is one expert and unattacked, and nobody has tried to break it the way two earlier claims in the same unit were broken. It names this as the thing it most wants attacked next. It was subsequently attacked from the number-system topic, from a direction it was not built to face, and it held, which the attacker states as a failed refutation rather than a proof. The fraction entry names the cube's two columns and one of them is genuinely unnamed: the source says two scales and never says which nonzero one. The sign entry conflates the range's geometry into the signedness axis because no `dimension` row declares the geometry, and the geometry is exactly what the congruence half turns on."
-gap = "The frame is stated over associativity. Whether it derives the other laws the design cares about is not established, and nobody has tried."
+note = "The consolidation marks its equivalence **provisionally passes** and says so in load-bearing terms rather than as a hedge: the twenty-four-cell prediction with zero residue is an equivalence trial passed, but the frame itself is one expert and unattacked, and nobody has tried to break it the way two earlier claims in the same unit were broken. It names this as the thing it most wants attacked next. It was subsequently attacked from the number-system topic, from a direction it was not built to face, and it held, which the attacker states as a failed refutation rather than a proof. The fraction entry read `one unnamed value above 0` until seat 215 asked for it to be named or dropped, on the ground that an unnamed value cannot be gated on. It is 2, and it was never missing: `57b`'s prose says two scales without naming the nonzero one, while the cube in `57_probes/p9_output.txt` labels all twelve of its second-half rows `F=2`. The probe was outside this row's provenance at the time, which is the same porting gap the five repaired chains had. The sign entry conflates the range's geometry into the signedness axis because no `dimension` row declares the geometry, and the geometry is exactly what the congruence half turns on."
+gap = "The frame is stated over associativity. Whether it derives the other laws the design cares about is not established, and nobody has tried. Held at one expert on width alone, and it is the strongest row in its topic. Seat 215 took the closed forms as a predictor rather than a claim and ran them out of sample at `W = 8`, over 24 cells of three sign domains, two policies, two operations and `F in {0, 2}`: every cell agrees, in both directions, with the predictor returning both verdicts across the cube so the run could have disagreed. The decisive cell is multiplication, saturating, on the mirror-symmetric range at `F = 0`, where the closed form says associative and the ordinary reading that signed saturation breaks associativity says not: measured 0 bad of 16,581,375. On that same range addition fails on 4,129,024, and two operations splitting on one range is something no account keyed on signedness alone can produce, which is what makes the geometry claim carry its own weight. What that does not do is widen the predicate. This row is evidenced at `W = 4` and 215 is at `W = 8`, so the widths intersect nowhere and the fraction widths intersect at exactly `{0, 2}`. The proposition has two arrivals; its width region has one instance each, and each is cited for its own."
 provenance = [
+  "panel::202608072330_the-numeral-canon-panel::57b_orchard_reply::247",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p9_output.txt::1",
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::659",
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::385",
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::370",
@@ -602,7 +604,10 @@ says = "The adaptation laws are what order transport consumes, and the algorithm
 because = "The two families were measured independent in the format topic, with all four combinations inhabited, and each family has a distinct consumer that reads it and not the other. So a numeral's usefulness is two verdicts rather than one, and neither implies the other."
 law = ["coherence_of_a_reduction_onto_its_induced_operation"]
 note = "One expert on the mapping from families to consumers; the families and their inhabitation are the format topic's and are carried as a law row."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::632"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::67_kiselyov_which_prefix_earns_the_word::647",
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::632",
+]
 keywords = ["law families", "consumer", "order transport", "reassociation", "coherence", "adaptation laws", "N22"]
 
 [[proposal]]
@@ -652,14 +657,16 @@ keywords = ["locus", "rewriting engine", "vocabulary", "checkable facts", "toolb
 id = "a_composed_expressions_region_is_never_inherited_from_its_parts"
 kind = "answer"
 sentence_kind = "normative"
-standing = "one_expert"
+standing = "two_experts"
 topic = "algebraic_laws"
 says = "A composed expression's region is never inherited from its parts. Even where a component operation's own hypotheses hold unconditionally, the composition needs its own derivation."
 because = "The counterexample is exact rather than illustrative: unsigned saturating addition associates on every triple at eight bits, and the composition of that addition with the matching subtraction fails on 82.7484% of triples at the same coordinates. Nothing about the components predicts it, and the exact holding region turns out to be a four-way case split on the two clamp events plus a residual operand condition."
 law = ["associativity_of_a_composed_saturating_add_and_subtract"]
 obligation = ["composition_contracts_above_the_numeral"]
-note = "`normative` because the sentence is a rule about how a region may be derived rather than a claim an instrument could refute; the instrument's own claim is the law row it points at, which carries the region. Both later attackers re-ran the establishing probe and it reproduced to the digit."
+note = "`normative` because the sentence is a rule about how a region may be derived rather than a claim an instrument could refute; the instrument's own claim is the law row it points at, which carries the region. Both later attackers re-ran the establishing probe and it reproduced to the digit. A third arrival, seat 215, recomputed the figure rather than taking it: 13,882,880 of 16,777,216 triples, 82.7484%, unsigned saturating, at the same eight bits, with the same composition under wrapping reporting zero as a group requires, so the instrument is not simply reporting failure. It added the second direction, that the composite fails on 82.7% of triples where both its parts are associative alone, which the row states and the establishing file left implicit."
 provenance = [
+  "panel::202608072330_the-numeral-canon-panel::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::27",
+  "panel::202608072330_the-numeral-canon-panel::79_fallin_attacking_the_two_cold_derivations_on_derived_laws::112",
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::127",
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::140",
 ]
@@ -813,6 +820,7 @@ says = "The question a law layer answers is not whether the law holds but whethe
 because = "The probe that established it refuted its own thesis: at zero fraction width the emitted assembly aliases the fused and general forms to one symbol, so the backend performed the distributive rewrite unaided and the arm bought nothing in exactly the region where the law holds. Where it does pay is the case a backend structurally cannot reassociate, a saturating reduction, and there the control decides the attribution: the bounds proof **without** the law gets an unrolled loop with the serial clamp chain intact and no vector instruction, so the law is load-bearing and the bounds proof is not."
 note = "`normative` because it is a rule about what a law layer is for. Every instruction count behind it is read off emitted assembly and the source calls them **an ad-hoc quick spike, unpriced**, carried for which instruction appears where and nothing else, so the numbers are not a row here and are listed in `182` as unportable. The value-gated alternative was measured worse than either static arm and then closed on principle by I15 regardless of its cost."
 provenance = [
+  "panel::202608072330_the-numeral-canon-panel::80_rompf_when_the_deriving_happens::452",
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::415",
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::426",
 ]
@@ -1194,7 +1202,7 @@ says = "The format topic's law frame, marked provisionally passing and named by 
 because = "A single-expert claim from one topic being independently pressure-tested by a different topic and coming out intact is stronger evidence than either topic states alone, and neither topic states it. The attacker calls it a failed refutation rather than a proof, and the provisional marking stays."
 predicate = [
   "total_width: W = 4",
-  "fraction_width: F in {0, one unnamed value above 0}",
+  "fraction_width: F in {0, 2}",
   "signedness: three sign domains, unsigned and signed two's complement and signed symmetric range",
   "overflow_policy: overflow policy in {wrap, saturate}",
   "operation: operations {add, mul}",
@@ -1442,8 +1450,10 @@ law = ["associativity_of_a_composed_saturating_add_and_subtract"]
 answers = ["may_an_arms_predicate_read_data"]
 evidence = ["a_trajectory_condition_lifts_exactly_when_it_survives_closure"]
 note = "The instruments are `82_probes/p1_box_lifting_of_p4.rs` and `p1b_is_every_lifted_box_degenerate.rs`, committed with output. The four widths the consolidation names without naming are 2, 3, 4 and 5, read off the instrument's own table. **The consolidation's own R8 text (`90:346-348`) conflates two separate honesty notes `82` makes about two different sets of three (its cross-persona convergence with 76 and 77, versus its own three internal instances), attaching the 'share an author' clause from the second to the items named in the first, which understates the cross-persona corroboration and overstates the single-author one. This was found by an entailment check (`91` finding 1) and is uncorrected in `90`'s own text as committed; a prior version of this note incorrectly claimed the consolidation self-repaired it, which `91`'s direct citation check refutes. Named moderate rather than severe because it sits inside an already-hedged section and nothing downstream cites R8 for an independence count.**"
-gap = "Stated as one-directional sufficiency by its own author. The length-aware construction that a bounded length would license is unbuilt. And the declaration a consumer would naturally write instead, that the exact result stays in range, is unsound: true while the law is false on 49.80% of the domain and wrong in 87.5% of the boxes satisfying it."
+gap = "This field said the claim was one-directional sufficiency by its own author, which contradicted the `says` and the id, both of which read `exactly when`. Seat 215 put the two side by side and reported the contradiction without deciding it. The `says` wins, on the row's own third arm: `82_probes/p10_is_the_interval_the_limit` sweeps every subset of the representable set at widths 2, 3 and 4, and reports zero sets that both straddle and stay associative over their closure, so the condition is necessary, and zero sign-uniform sets that fail associativity, so it is sufficient. Both directions, with a live control naming five sets and returning both verdicts. What is genuinely open is narrower and is the quantifier: the biconditional is measured for sign uniformity and for the composed saturating condition, and the sentence quantifies over trajectory conditions generally, which two conditions do not establish. The length-aware construction that a bounded length would license is unbuilt. And the declaration a consumer would naturally write instead, that the exact result stays in range, is unsound: true while the law is false on 49.80% of the domain and wrong in 87.5% of the boxes satisfying it."
 provenance = [
+  "panel::202608072330_the-numeral-canon-panel::82_jhala_lifting_a_measured_region_into_a_declaration::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p1_box_lifting_of_p4.rs::1",
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::341",
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::372",
   "panel::202608072330_the-numeral-canon-panel::91_ringer_entailment_check_on_the_derived_laws_consolidation::83",
@@ -1779,7 +1789,7 @@ evidence = [
 ]
 obligation = ["composition_contracts_above_the_numeral"]
 note = "Unsigned throughout, on both instruments, so it says nothing about a signed top. The width and fraction entries are two regions rather than one because two instruments established the two halves; the conjunction holds where they intersect, which is the narrower of the two."
-gap = "Absorption is one of the two properties a min-plus computation needs and monotonicity is the other, measured in the same file and not filed here. A numeral that absorbs and is not monotone still gets the answer wrong, which is what `dl_interior_wrapping_with_a_reserved_absorbing_top` retires."
+gap = "Absorption is one of the two properties a min-plus computation needs and monotonicity is the other, measured in the same file and not filed here. A numeral that absorbs and is not monotone still gets the answer wrong, which is what `dl_interior_wrapping_with_a_reserved_absorbing_top` retires. Held at one expert on a split the row's own shape hides. Seat 215 reproduced the absorption sweep independently over the whole stated rectangle, `W in 2..=10` and `F in 0..=W`, 63 cells, the top absorbing at all 63 saturating cells and at none of the 63 wrapping ones, and derived the cell count from the rectangle rather than matching it by eye. That half has two arrivals. The end-to-end half, the DAG shortest path at `W in {3, 4}`, has one and nobody has re-run it. The row is one sentence carrying two measurements over two regions, which is why no single standing fits it: split into an absorption row and an end-to-end row, the first is promotable now and the second stays honestly at one expert."
 provenance = ["panel::202608072330_the-numeral-canon-panel::35_mcsherry_what_the_layers_above_need_from_the_numeral::#34-a-min-plus-fold-needs-an-absorbing-top-and-only-saturation-supplies-one"]
 keywords = ["min-plus", "tropical", "absorbing top", "infinity", "shortest path", "DAG", "saturation", "wrapping", "in-range", "end to end", "graph"]
 
@@ -1961,7 +1971,7 @@ predicate = [
 evidence = ["an_intermediate_range_clamp_alone_breaks_multiplicative_associativity_at_full_precision", "which_factor_of_a_reduction_breaks_the_semiring"]
 law = ["multiplicative_associativity_under_wrapping"]
 note = "`total_width`, `fraction_width` and `arity` are the two instruments' own stated parameters and nothing wider; neither instrument varied signedness, rounding mode, or overflow policy in the clamp-alone arm, so this predicate does not transfer to the signed or saturate rows the neighbouring law row separately establishes at `F > 0` by other means. `threads` and `target_features` are absent because neither instrument names them, so under I13 this holds in no situation where threads exist. The relation to `multiplicative_associativity_under_wrapping` is that this refines its `witness` field's attribution of the mechanism from 'a representable-width multiply discards F bits' to 'two independent lossy mechanisms exist, coarsening and clamping, either alone sufficient'; the existing witness is not wrong, it names the mechanism this proposal's predicate does not reach (unbounded fold, wrap policy, not clamp), so the two are complementary rather than competing accounts."
-gap = "Whether an intermediate SATURATING clamp (rather than the hard clamp measured here) shows the same independent-sufficiency behaviour is untested; the mechanism argument (an intermediate bound applied mid-fold, before the final narrowing, is itself a lossy step regardless of what happens at the bound) suggests it would, but suggestion is not the standing this registry records."
+gap = "Whether an intermediate SATURATING clamp (rather than the hard clamp measured here) shows the same independent-sufficiency behaviour is untested; the mechanism argument (an intermediate bound applied mid-fold, before the final narrowing, is itself a lossy step regardless of what happens at the bound) suggests it would, but suggestion is not the standing this registry records. Held at one expert, and the reason is a region rather than a doubt: seat 215 reproduced the clamp-alone result independently, but at `W = 8` and `F in {0, 2, 4}` against this row's `W = 4` and `F in {1, 3}`, so intersecting over values rather than over axis names the agreement covers no width and no fraction width, and taking the union would claim a rectangle neither instrument swept. What 215 adds instead is the region this row does not give, established at its own coordinates: an intermediate clamp preserves multiplicative associativity on any operand set whose non-zero members are at least one, because multiplying can then never bring a magnitude back down past the bound the clamp pinned it to, which is why the `F = 0` unsigned sweep and the clamp-alone result were never in conflict. Its first attempt at that section was confounded, rescaling at every step so coarsening fired throughout and the clamp was never isolated, and it kept the refutation in its own source rather than deleting it."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::58_wronski_the_fraction_boundary::226",
   "panel::202608072330_the-numeral-canon-panel::58_wronski_the_fraction_boundary::276",
@@ -2061,7 +2071,11 @@ predicate = ["operation: operation = resolve (strategy join)", "strategy: strate
 answers = ["which_strategys_laws_govern_a_cross_strategy_operation"]
 evidence = ["a_two_axis_strategy_resolve_rule_is_checked_as_a_semilattice_join_at_compile_time"]
 note = "Offered as a direction rather than a settlement; its author explicitly declines to resolve, in the same file, whether the strategy space is a single ranking or a genuine multi-axis lattice, saying I8's 'they weigh different measurements differently' is compatible with either reading. This meta-law is what the probe's associativity check demonstrates one level abstracted: a property of the join operator itself, not of the operations it composes."
-provenance = ["panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::295"]
+gap = "The domination clause is measured false on the one axis where conservatism has a concrete ordering, and the row is held at one expert for it. Seat 215 swept two's complement [-128,127] at eight bits exhaustively: wrapping addition is associative on all 16,777,216 triples and saturating addition fails on 4,177,792 of them. Saturating is the more conservative policy and has strictly fewer laws, so law-set containment runs against conservatism rather than with it, and the `because` clause's reading of the more-conservative-side framing as at-least-as-strong does not survive. What the row can still say is the non-inheritance clause, which the same sweep supports. Two readings are open and one expert cannot close them: either the meta-law is genuinely about the join operator over generic labels, in which case it makes no claim about laws at all and the `because` overstates it, or it is about the resolved arithmetic, in which case it is refuted. The second reader decides which, and the sweep is at `215_probes/p3.out`."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::295",
+  "panel::202608072330_the-numeral-canon-panel::215_probes::p3.out::1",
+]
 keywords = ["resolution", "cross-strategy", "monotonicity", "join", "inheritance", "meta-law", "Q27"]
 
 [[proposal]]
