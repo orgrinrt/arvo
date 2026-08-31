@@ -12,16 +12,16 @@
 ######## H2    capacity 300 in 8 bits, in a signature
          required=REFUSED   got=REFUSED    as required
     error[E0277]: the trait bound `B1<E>: FitsIn<Z>` is not satisfied
-      --> p2_definition_site_refusal.rs:90:16
+      --> p2_definition_site_refusal.rs:92:16
        |
-    90 | pub fn h2() -> Plan<C300, W8> { Plan(PhantomData) }
+    92 | pub fn h2() -> Plan<C300, W8> {
        |                ^^^^^^^^^^^^^^ unsatisfied trait bound
        |
     help: the trait `FitsIn<Z>` is not implemented for `B1<E>`
           but trait `FitsIn<S<_>>` is implemented for it
-      --> p2_definition_site_refusal.rs:68:1
+      --> p2_definition_site_refusal.rs:70:1
        |
-    68 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
+    70 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
        | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
        = help: for that trait implementation, expected `S<_>`, found `Z`
     note: required for `B0<B1<E>>` to implement `FitsIn<S<Z>>`
@@ -29,18 +29,18 @@
 ######## H4    capacity 300 in 8 bits, only in a field
          required=REFUSED   got=REFUSED    as required
     error[E0277]: the trait bound `B1<E>: FitsIn<Z>` is not satisfied
-      --> p2_definition_site_refusal.rs:96:30
-       |
-    96 | pub struct HoldsBad { inner: Plan<C300, W8> }
-       |                              ^^^^^^^^^^^^^^ unsatisfied trait bound
-       |
+       --> p2_definition_site_refusal.rs:101:12
+        |
+    101 |     inner: Plan<C300, W8>,
+        |            ^^^^^^^^^^^^^^ unsatisfied trait bound
+        |
     help: the trait `FitsIn<Z>` is not implemented for `B1<E>`
           but trait `FitsIn<S<_>>` is implemented for it
-      --> p2_definition_site_refusal.rs:68:1
-       |
-    68 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
-       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-       = help: for that trait implementation, expected `S<_>`, found `Z`
+       --> p2_definition_site_refusal.rs:70:1
+        |
+     70 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        = help: for that trait implementation, expected `S<_>`, found `Z`
     note: required for `B0<B1<E>>` to implement `FitsIn<S<Z>>`
 
 ######## H5    capacity 300 in 8 bits, only aliased
@@ -49,16 +49,16 @@
 ######## H6    the alias then held in a field
          required=REFUSED   got=REFUSED    as required
     error[E0277]: the trait bound `B1<E>: FitsIn<Z>` is not satisfied
-       --> p2_definition_site_refusal.rs:111:31
+       --> p2_definition_site_refusal.rs:120:12
         |
-    111 | pub struct UsesAlias { inner: H5Alias }
-        |                               ^^^^^^^ unsatisfied trait bound
+    120 |     inner: H5Alias,
+        |            ^^^^^^^ unsatisfied trait bound
         |
     help: the trait `FitsIn<Z>` is not implemented for `B1<E>`
           but trait `FitsIn<S<_>>` is implemented for it
-       --> p2_definition_site_refusal.rs:68:1
+       --> p2_definition_site_refusal.rs:70:1
         |
-     68 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
+     70 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
         | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         = help: for that trait implementation, expected `S<_>`, found `Z`
     note: required for `B0<B1<E>>` to implement `FitsIn<S<Z>>`
@@ -66,16 +66,16 @@
 ######## H7    the alias then used in a signature
          required=REFUSED   got=REFUSED    as required
     error[E0277]: the trait bound `B1<E>: FitsIn<Z>` is not satisfied
-       --> p2_definition_site_refusal.rs:116:16
+       --> p2_definition_site_refusal.rs:126:16
         |
-    116 | pub fn h7() -> H7Alias { Plan(PhantomData) }
+    126 | pub fn h7() -> H7Alias {
         |                ^^^^^^^ unsatisfied trait bound
         |
     help: the trait `FitsIn<Z>` is not implemented for `B1<E>`
           but trait `FitsIn<S<_>>` is implemented for it
-       --> p2_definition_site_refusal.rs:68:1
+       --> p2_definition_site_refusal.rs:70:1
         |
-     68 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
+     70 | impl<T: FitsIn<W>, W> FitsIn<S<W>> for B1<T> {}
         | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         = help: for that trait implementation, expected `S<_>`, found `Z`
     note: required for `B0<B1<E>>` to implement `FitsIn<S<Z>>`

@@ -60,7 +60,9 @@ const fn fits(names: usize, capacity: usize) -> bool {
 pub struct PlanA;
 impl PlanA {
     const _CHECK: () = assert!(fits(Id::<8>::NAMES, 200), "capacity exceeds id width");
-    pub fn touch() { let _ = Self::_CHECK; }
+    pub fn touch() {
+        let _ = Self::_CHECK;
+    }
 }
 
 #[cfg(arm_b)]
@@ -69,7 +71,9 @@ pub struct PlanB;
 impl PlanB {
     // 300 values do not fit in an 8-bit id. This must not build.
     const _CHECK: () = assert!(fits(Id::<8>::NAMES, 300), "capacity exceeds id width");
-    pub fn touch() { let _ = Self::_CHECK; }
+    pub fn touch() {
+        let _ = Self::_CHECK;
+    }
 }
 
 // --- C: generic, the assertion inside an inherent const ----------------------
@@ -77,13 +81,19 @@ impl PlanB {
 pub struct PlanC<const W: u32, const N: usize>;
 impl<const W: u32, const N: usize> PlanC<W, N> {
     const _CHECK: () = assert!(fits(Id::<W>::NAMES, N), "capacity exceeds id width");
-    pub fn touch() { let _ = Self::_CHECK; }
+    pub fn touch() {
+        let _ = Self::_CHECK;
+    }
 }
 
-pub fn use_c_ok() { PlanC::<8, 200>::touch(); }
+pub fn use_c_ok() {
+    PlanC::<8, 200>::touch();
+}
 
 #[cfg(arm_c_bad)]
-pub fn use_c_bad() { PlanC::<8, 300>::touch(); }
+pub fn use_c_bad() {
+    PlanC::<8, 300>::touch();
+}
 
 // --- D: the bound written in a `where` clause, which 35 records as closed ----
 
@@ -106,13 +116,19 @@ impl<const W: u32> IdWidth for Id<W> {
 pub struct Gated<I, const N: usize>(core::marker::PhantomData<I>);
 impl<I: IdWidth, const N: usize> Gated<I, N> {
     const _CHECK: () = assert!(N <= I::NAMES, "capacity exceeds id width");
-    pub fn touch() { let _ = Self::_CHECK; }
+    pub fn touch() {
+        let _ = Self::_CHECK;
+    }
 }
 
-pub fn use_e_ok() { Gated::<Id<8>, 200>::touch(); }
+pub fn use_e_ok() {
+    Gated::<Id<8>, 200>::touch();
+}
 
 #[cfg(arm_f)]
-pub fn use_f_bad() { Gated::<Id<8>, 300>::touch(); }
+pub fn use_f_bad() {
+    Gated::<Id<8>, 300>::touch();
+}
 
 fn main() {
     PlanA::touch();
@@ -135,10 +151,14 @@ fn main() {
 // if it compiles then arms C-bad and F are measuring the call site rather than
 // the type.
 #[cfg(arm_g_construct)]
-pub fn use_g_construct() -> PlanC<8, 300> { PlanC }
+pub fn use_g_construct() -> PlanC<8, 300> {
+    PlanC
+}
 
 #[cfg(arm_g_typedef)]
 pub type GBad = PlanC<8, 300>;
 
 #[cfg(arm_g_field)]
-pub struct HoldsIt { inner: PlanC<8, 300> }
+pub struct HoldsIt {
+    inner: PlanC<8, 300>,
+}

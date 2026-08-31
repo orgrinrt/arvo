@@ -38,7 +38,7 @@ use core::marker::PhantomData;
 
 // --- type-level binary naturals ---------------------------------------------
 
-pub struct E;              // empty, value 0
+pub struct E; // empty, value 0
 pub struct B0<T>(PhantomData<T>);
 pub struct B1<T>(PhantomData<T>);
 
@@ -52,7 +52,9 @@ pub struct S<T>(PhantomData<T>);
 // Sealed so a consumer cannot assert it about a shape that does not have it,
 // which is the failure `a_law_stated_as_an_author_written_marker_is_checked_by
 // _nothing` measured on a different subject.
-mod sealed { pub trait Sealed {} }
+mod sealed {
+    pub trait Sealed {}
+}
 
 pub trait FitsIn<W>: sealed::Sealed {}
 
@@ -87,18 +89,24 @@ pub struct Plan<N: FitsIn<W>, W>(PhantomData<(N, W)>);
 pub type H1 = Plan<C200, W8>;
 
 #[cfg(arm_h2)]
-pub fn h2() -> Plan<C300, W8> { Plan(PhantomData) }
+pub fn h2() -> Plan<C300, W8> {
+    Plan(PhantomData)
+}
 
 #[cfg(arm_h3)]
 pub type H3 = Plan<C300, W9>;
 
 #[cfg(arm_h4)]
-pub struct HoldsBad { inner: Plan<C300, W8> }
+pub struct HoldsBad {
+    inner: Plan<C300, W8>,
+}
 
 #[cfg(arm_h5)]
 pub type H5 = Plan<C300, W8>;
 
-fn main() { println!("compiled"); }
+fn main() {
+    println!("compiled");
+}
 
 // H5 compiled. Rust does not check trait bounds written on a `type` alias at
 // all: that is the `type_alias_bounds` behaviour, general to aliases, and not a
@@ -108,9 +116,13 @@ fn main() { println!("compiled"); }
 #[cfg(arm_h6)]
 pub type H5Alias = Plan<C300, W8>;
 #[cfg(arm_h6)]
-pub struct UsesAlias { inner: H5Alias }
+pub struct UsesAlias {
+    inner: H5Alias,
+}
 
 #[cfg(arm_h7)]
 pub type H7Alias = Plan<C300, W8>;
 #[cfg(arm_h7)]
-pub fn h7() -> H7Alias { Plan(PhantomData) }
+pub fn h7() -> H7Alias {
+    Plan(PhantomData)
+}
