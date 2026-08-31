@@ -576,3 +576,273 @@ All in `220_probes/`, sources and outputs both committed.
   append-only run over the committed canon, and the empty-registry section.
   Build with `cargo run` from `warrant_spike/`; it exits non-zero if any case
   misbehaves.
+
+---
+
+# Reconciliation, after the blind commit
+
+Everything above is `060ddccb`, committed before I opened the panel directory.
+What follows was written after reading `217`, `OPTIONS` at
+`#q65-whether-this-panel-s-own-findings-satisfy-the-notation-it-ratified`,
+`159_kiselyov_reply.md`, and the ledgers. **No parallel seat's file existed to
+read**: `ls` of the panel root shows `217` and then me, so my blindness was
+intact by construction rather than by discipline, and I claim no credit for it.
+
+## The derivation survives, and the origin file already had the three-way split
+
+`159_kiselyov_reply.md` section 5 states the distinction I derived, in one
+sentence and before the ruling existed: "the notation currently cannot
+distinguish 'sampled three widths' from 'swept the entire domain of the thing'
+from 'proved for all widths', and all three land as a non-`any` predicate that
+reads as narrow."
+
+That is the same three-way split and I take no independence credit for the
+observation. What I did not find already made, and what I think this deliverable
+adds, is the argument in section 1 that the split is **not a split among
+regions**. Both `159` and `OPTIONS` reach for a region reading and get stuck on
+it, which is visible in the question `OPTIONS` leaves open: whether `W in 1..=64`
+"reads as `any` bounded by the container, or as a fixed set that claims nothing
+outside itself."
+
+**That question has no answer because it is two questions.** The region is the
+span exactly as written, a bounded range claiming nothing outside itself, which
+is the second horn. The completeness that makes it *feel* like `any` is the
+warrant, which is the first horn. Nobody could choose between them because each
+is right about a different thing, and the notation had one slot. **I would call
+that sub-question closed rather than answered**, and I would rather say which of
+the two mechanisms it decomposes into than pick a horn.
+
+## `159` is also the proof that the warrant slot is already being used
+
+Two of its findings widen on an argument, and it states both **in prose in its
+own file**, correctly, because the append-only rule forbids editing the original
+and the notation gave it nowhere else:
+
+- F6, recorded at `W = 13`, widened to `W any where W mod 8 != 0`, "because
+  `size_of` is denominated in bytes, so every Rust type's bit size is a multiple
+  of eight".
+- F1, recorded at `N in {13, 47}`, widened to `N any`, "because a width the
+  compiler cannot know forces a range check, for any width whatever".
+
+Both name the construction. Both pass the ruling's test. Both live in a paragraph
+of a member file, reachable by whoever reads that file and nobody else. Under the
+spelling above, the first is:
+
+```
+"total_width: W any where W mod 8 != 0: proof, size_of is denominated in bytes so no Rust type has exactly W bits where W is not a multiple of eight"
+```
+
+**That is now five places in the corpus carrying warrants with no slot**, up from
+the four I counted blind: three prose spans in committed predicates,
+`dimension.toml`'s `access_pattern` note, a ratified ruling's `promotion` field,
+eight `sentence_kind = "theorem"` assertions, and these member-file widenings.
+I did not have to look far for any of them, which is the argument for the slot in
+one line.
+
+## A drift in the ratified row, and it changes what `exhaustive` is about
+
+**The third state is about widths at its origin and about values by the time it
+is ratified.** Three renderings, in order:
+
+- `159_kiselyov_reply.md` section 5: `W in 1..=64` is "exhaustive over every
+  **width** a `u64` container can hold".
+- `OPTIONS`, at the Q65 heading: "it is the whole domain of a `u64` container,
+  exhaustively", introduced by `W in 1..=64`. Widths.
+- `217`, in the coordinator's rendering of the option op selected: "every
+  **value** of a container, exhaustively, at that container's width." And then
+  `ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked`'s `says`:
+  "exhaustively over every **value** a container holds."
+
+Widths and values are different objects and the corpus has instances of both. The
+absorption law is quantified over values ("a hundred interval numerals containing
+zero"); `159`'s three findings are quantified over widths. **The drift is one
+word, in the ratified text, in the direction that changes which axis the marker
+qualifies**, and whoever writes the first `exhaustive` entry will read the ruling
+rather than the origin.
+
+**It does not change the spelling, which is the one piece of luck here.** The
+warrant qualifies whatever axis its entry names, so the width reading is
+`"total_width: W in 1..=64: exhaustive, ..."` and the value reading is
+`"operand_window: operand window = full range: exhaustive, every value a u64
+holds at W = 4"`, on the axis `dimension.toml` already declares for which subset
+of a representable set the operands are drawn from. **A marker that had been
+designed around the width axis specifically would have had to be redesigned
+here**, which is the argument for having derived it as a warrant on an arbitrary
+axis rather than as a width spelling.
+
+I report the drift rather than resolve it. It is a ratified row and the reading
+is not mine to pick; what I would say to whoever does is that both readings are
+real cases in the corpus, so the honest answer is probably that the marker covers
+both and the ruling's sentence is narrower than the thing it named.
+
+## `W in 1..=64` appears nowhere in the registry because those findings were never ported
+
+My blind census reported zero instances and I flagged it as odd. `159` explains
+it: the three instances are its own findings, in `154_probes/p2_fibre/FINDINGS.md`
+and in its own file, and no `proposal` row carries them. So the canonical example
+of the case the ruling names has **no registry instance at all**, and the nearest
+things in the registry are `W in 1..=65`, `1..=19`, `1..=d`, `1..=k - s2(k)` and
+the five parameterised whole-domain fraction spans (`F in 0..=W-1` and kin).
+
+Two consequences, both practical:
+
+- **An arm keyed to the literal sixty-four would fire on nothing.** The
+  exhaustive case in this corpus is more often a parameterised whole domain than
+  a numeric one, and a parameterised whole domain is spelled identically to a
+  sample. That is the strongest argument I have found for the warrant being
+  written rather than inferred: **no instrument can derive `exhaustive` from
+  `F in 0..=W-1`**, because the same string is a sample when `W` is a bound
+  somebody chose.
+- **The first three rows that would carry the marker are not in the registry.**
+  If somebody wants the marker exercised rather than merely defined, porting
+  `159`'s three is where the instances are.
+
+## What I checked and did not change
+
+- **The ruling carries no `quote` field, and that is correct.** `217` records the
+  answer as a two-of-four multi-select from an options list, with no words of
+  op's on this question. The row's `ratification` field says exactly that. The
+  shipped test `the_rulings_with_no_verbatim_are_the_ones_the_corpus_has_no_words_for`
+  is what pins it, and it is green.
+- **Nothing in `DROPLIST` retires anything I have proposed.** Its marker entries
+  are about strategy marker traits and a width-ceiling marker, a different sense
+  of the word.
+- **`AGREEMENTS` records Q65's marker question as op's** and carries no prior
+  agreement on the spelling, so this is not a rediscovery of a settled position.
+
+## One thing I would now say more strongly
+
+Section 3 argues that `sentence_kind = "theorem"` is the bare-token experiment
+already run. Having read `159`, I would put it harder: **the corpus contains
+proofs that pass the ruling's test and are not marked `theorem`, and rows marked
+`theorem` that carry a sweep's region.** The row-level word is uncorrelated with
+the property in both directions, which is worse than the census alone showed. It
+should be derived from the per-axis warrants once the ratchet has run down, and
+until then it should be read as a genre label rather than as a claim.
+
+---
+
+# The two things I conceded, attacked
+
+Section 12 listed three residues. Two of them turned out to be work rather than
+walls, so I did the work. The third, whether `exhaustive` should be admissible on
+a set-shaped span, I still have not found a case that decides, and it stays a
+residue.
+
+## The blocklist arm, replaced by a test pointed the other way round
+
+The concession was that `warrant-clause-is-a-bare-relabel` is a phrase list and
+therefore carries the defect `checks/src/shape.rs` documents about its own
+retired one: **a blocklist has to anticipate every bad phrase**, and the set of
+bad phrases is not finishable.
+
+**Invert it.** Rather than forbidding phrases, require that the clause names
+something **outside the vocabulary of warranting**. The observation that makes
+this work is that a relabel is built *entirely* out of the notation's own words:
+proof, construction, structural, argument, width, any, holds. A mechanism is not,
+because a mechanism is about the thing rather than about the warrant. And **the
+vocabulary to strip is closed and finishable**, being the words this one notation
+uses to talk about predicates, plus the axis names, plus stop words. That is a
+list somebody can finish writing. A blocklist is not.
+
+`220_probes/clause_test/`, eighteen clauses, **six of the eight mechanisms taken
+verbatim from the committed corpus** rather than invented, and the relabels
+including one written adversarially to beat the test.
+
+```
+quietest mechanism: 2 content tokens
+loudest relabel:    0 content tokens
+misclassified:      0 of 18
+```
+
+**Every relabel scores exactly zero**, the adversarial one included: "the width
+cannot enter the argument by construction of the proof" is nine words and not one
+of them is about anything. The real warrants score two to nine. The populations
+separate at zero against two, so any floor in `(0, 2]` works and one is the
+safest point in it.
+
+**I guessed three before measuring and it misclassified the shortest real
+clause.** That is the reason to run the thing rather than reason about it, and
+the floor in the spike is now one, set from the measurement.
+
+**What it still cannot do**, said plainly: somebody can pad a relabel with
+content words that are not about anything ("addition banana rescale" scores
+three). No test catches that and I am not going to pretend otherwise. What
+changes is the failure mode. A blocklist fails **open** on every phrase nobody
+anticipated, silently, forever. This fails **closed** on the lazy case and can
+only be beaten by deliberately typing a lie, which is the case the human gate at
+promotion exists for and the case no checker was ever going to reach.
+
+So the arm becomes `warrant-clause-names-no-mechanism`, the blocklist is deleted
+rather than kept alongside, and the honest claim is one notch stronger than the
+one I made blind.
+
+## The ceiling of eight, triaged
+
+The concession was that a ratchet whose comment says only "eight" is weaker than
+one that says why each is stuck. Here is why each is stuck. **Three shapes, and
+the distribution is itself the argument for per-axis granularity.**
+
+**A genuine proof recorded as a sweep. Three of the eight, and the first says so
+in its own `because`.**
+
+- `a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains`
+  writes `W in {4, 5, 6}` and argues: "A quotient satisfies every identity its
+  source satisfies, because an identity is an equation between terms and the
+  quotient map sends a proof of the equation to a proof of its image. **So no
+  sweep is needed.**" The row states that it is not a sweep and its predicate
+  says three widths. **This is the clearest instance in the corpus of the exact
+  thing the ruling was ratified about**, and it wants
+  `total_width: W any: proof, the realisation map is a congruence so the induced
+  structure is a quotient and inherits every identity of its source`.
+- `a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing`
+  carries no width axis at all, and its argument is a width-parametric identity:
+  "a sum of `k` values each of fraction width `F` needs `kF` fraction bits". A
+  proof in `k` and `F`, at any width, reading under I13 as holding at no width.
+- `the_join_over_demands_is_union_and_it_is_free` carries no width axis, and
+  correctly so: **the object has no width.** It is a free join semilattice on `d`
+  generators. Under I13 that still reads as holding at no width, and this is the
+  row where the absent-versus-inapplicable pressure is sharpest. **The marker is
+  what lets it say the honest thing**, `total_width: W any: proof, the object is
+  a semilattice on demand generators and no width appears in it`, without
+  inventing the inapplicable state op refused.
+
+**Mixed: a proof on one axis and a sweep on another. Three of the eight, and no
+row-level word can describe any of them.**
+
+- `no_multiplicative_structure_survives_a_nonzero_fraction_width` proves over
+  policy and reduction ("the failure is in the ambient operation and no choice of
+  reduction reaches it") and sweeps `W in 3..=7`.
+- `the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy`
+  derives the two hypotheses and then evaluates "mechanically over the unit's
+  cube" at `W = 4`.
+- `inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width`
+  proves ("a complete tensor proof reduces to evaluation on the degree grid") and
+  measures at 1,975 pairs and 23,950,484 evaluations, over `W in 1..=65`. **This
+  is the corpus's best candidate for `exhaustive`**, and it is the row to write
+  the first one on.
+
+**A measurement wearing the word. One of the eight, and its own note concedes
+it.**
+
+- `fusing_a_multiply_add_is_free_exactly_at_translation_equivariance` is
+  `sentence_kind = "theorem"` over a twelve-cell table at `total_width: 6`, and
+  its `note` says "a clean sweep does not settle a property the way a
+  counterexample settles its negation." The row is honest and the label is not.
+
+**Already consistent. One of the eight.**
+
+- `the_model_band_transfer_is_defeated_in_both_fragments` writes `W any` and its
+  argument is Legendre's formula, so the region and the word agree. **Even here
+  the row does not say why `W any` is earned**, and a reader has to open
+  `because` and recognise the construction. That is the whole case for the
+  marker on a row that has nothing wrong with it.
+
+**So: six of eight are mixed or are proofs, and every one of the six needs a
+per-axis warrant to be stated correctly.** That is a measurement rather than an
+argument, and it is the strongest thing I can put behind the locus.
+
+The ratchet's ceiling is eight and its comment is the four paragraphs above. **It
+falls to seven the day somebody writes the congruence row's warrant**, which is
+one line and no new evidence, and that is the right first move for whoever picks
+this up.

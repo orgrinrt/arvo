@@ -1,0 +1,16 @@
+# A spike. It attacks one blocker the main deliverable conceded: the blocklist
+# arm, which refuses a warrant clause by matching a phrase and therefore has to
+# anticipate every bad phrase. This tries the test pointed the other way round,
+# requiring content rather than forbidding a phrase, and measures whether it
+# separates the real warrants in the corpus from the relabels.
+[workspace]
+
+[package]
+name = "clause-test"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[[bin]]
+name = "clause-test"
+path = "src/main.rs"

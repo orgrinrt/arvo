@@ -22,7 +22,10 @@ fn canon() -> Registry {
     let dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../../registry");
     assert!(dir.is_dir(), "the registry is not at {}", dir.display());
     let reg = load(&dir).expect("the registry parses");
-    assert!(!reg.rows.is_empty(), "the registry loaded no rows, so every arm below is vacuous");
+    assert!(
+        !reg.rows.is_empty(),
+        "the registry loaded no rows, so every arm below is vacuous"
+    );
     reg
 }
 
@@ -72,7 +75,7 @@ fn read(entry: &str) -> Option<Entry<'_>> {
             let w = w.trim();
             let (token, clause) = w.split_once(',').unwrap_or((w, ""));
             (span, Some((token.trim(), clause.trim())))
-        },
+        }
         None => (rest, None),
     };
     Some(Entry {
@@ -99,7 +102,11 @@ struct Finding {
 }
 
 fn f(kind: &'static str, at: &str, says: String) -> Finding {
-    Finding { kind, at: at.to_string(), says }
+    Finding {
+        kind,
+        at: at.to_string(),
+        says,
+    }
 }
 
 /// Every arm that reads one entry at a time.
@@ -117,14 +124,22 @@ fn per_entry(reg: &Registry) -> Vec<Finding> {
         // by construction of `read`, which is why the drafted arm could not fire.
         debug_assert!(!e.span.contains(':'), "read() splits at the second colon");
 
-        let Some((token, clause)) = e.warrant else { continue };
+        let Some((token, clause)) = e.warrant else {
+            continue;
+        };
 
         // Arm 1. The token set is closed the way the axis set is closed.
         if !TOKENS.contains(&token) {
-            out.push(f("warrant-is-not-a-known-token", &at,
-                format!("`{field}` writes the warrant token `{token}` on `{}`, which is not \
+            out.push(f(
+                "warrant-is-not-a-known-token",
+                &at,
+                format!(
+                    "`{field}` writes the warrant token `{token}` on `{}`, which is not \
                          one of {TOKENS:?}. A warrant nobody declared is a word, and a word \
-                         is what the row-level one already was.", e.slug)));
+                         is what the row-level one already was.",
+                    e.slug
+                ),
+            ));
             continue;
         }
 
@@ -132,28 +147,49 @@ fn per_entry(reg: &Registry) -> Vec<Finding> {
         // relabel the ruling names, written in the new notation instead of the
         // old one.
         if clause.is_empty() {
-            out.push(f("warrant-has-no-clause", &at,
-                format!("`{field}` writes `{token}` on `{}` and names no construction. \
+            out.push(f(
+                "warrant-has-no-clause",
+                &at,
+                format!(
+                    "`{field}` writes `{token}` on `{}` and names no construction. \
                          The test is to name what makes the axis unable to enter, and a \
-                         token alone does not.", e.slug)));
+                         token alone does not.",
+                    e.slug
+                ),
+            ));
             continue;
         }
 
         // Arm 3, advisory.
         let lower = clause.to_ascii_lowercase();
-        if BARE_RELABELS.iter().any(|b| lower.trim_end_matches('.') == *b) {
-            out.push(f("warrant-clause-is-a-bare-relabel", &at,
-                format!("`{field}` writes `{token}` on `{}` with the clause `{clause}`, \
-                         which asserts the warrant instead of naming a mechanism.", e.slug)));
+        if BARE_RELABELS
+            .iter()
+            .any(|b| lower.trim_end_matches('.') == *b)
+        {
+            out.push(f(
+                "warrant-clause-is-a-bare-relabel",
+                &at,
+                format!(
+                    "`{field}` writes `{token}` on `{}` with the clause `{clause}`, \
+                         which asserts the warrant instead of naming a mechanism.",
+                    e.slug
+                ),
+            ));
         }
 
         // Arm 4. `exhaustive` claims a bounded whole, `any` claims no bound.
         // The ruling's own words: neither a sample nor a universal.
         if token == "exhaustive" && span_is_any(e.span) {
-            out.push(f("exhaustive-over-an-unbounded-span", &at,
-                format!("`{field}` writes `exhaustive` on `{}` whose span is `{}`. A whole \
+            out.push(f(
+                "exhaustive-over-an-unbounded-span",
+                &at,
+                format!(
+                    "`{field}` writes `exhaustive` on `{}` whose span is `{}`. A whole \
                          bounded range is neither a sample nor a universal; `any` is the \
-                         universal.", e.slug, e.span)));
+                         universal.",
+                    e.slug, e.span
+                ),
+            ));
         }
     }
     out
@@ -166,20 +202,29 @@ fn per_entry(reg: &Registry) -> Vec<Finding> {
 fn exhaustive_without_a_container(reg: &Registry) -> Vec<Finding> {
     let mut out = Vec::new();
     for row in reg.of("proposal").chain(reg.of("law")) {
-        let all: Vec<&String> = row.list("predicate").iter()
+        let all: Vec<&String> = row
+            .list("predicate")
+            .iter()
             .chain(row.list("holds").iter())
             .chain(row.list("fails").iter())
             .collect();
-        let names_a_container = all.iter()
+        let names_a_container = all
+            .iter()
             .filter_map(|e| read(e))
             .any(|e| e.slug == "container");
         for entry in &all {
             let Some(e) = read(entry) else { continue };
             if e.warrant.map(|(t, _)| t) == Some("exhaustive") && !names_a_container {
-                out.push(f("exhaustive-names-no-container", &row.addr(),
-                    format!("`{}` is claimed exhaustive over `{}` and the row names no \
+                out.push(f(
+                    "exhaustive-names-no-container",
+                    &row.addr(),
+                    format!(
+                        "`{}` is claimed exhaustive over `{}` and the row names no \
                              `container`. `W in 1..=64` is the whole of a u64 and a sample \
-                             of a u128.", e.slug, e.span)));
+                             of a u128.",
+                        e.slug, e.span
+                    ),
+                ));
             }
         }
     }
@@ -195,19 +240,32 @@ fn a_proof_asserted_only_at_row_level(reg: &Registry) -> Vec<Finding> {
         if row.get("sentence_kind") != Some("theorem") {
             continue;
         }
-        let any_proof = row.list("predicate").iter()
+        let any_proof = row
+            .list("predicate")
+            .iter()
             .filter_map(|e| read(e))
             .any(|e| e.warrant.map(|(t, _)| t) == Some("proof"));
         if !any_proof {
-            let widths: Vec<String> = row.list("predicate").iter()
+            let widths: Vec<String> = row
+                .list("predicate")
+                .iter()
                 .filter_map(|e| read(e))
                 .filter(|e| e.slug == "total_width" || e.slug == "integer_width")
                 .map(|e| e.span.to_string())
                 .collect();
-            let w = if widths.is_empty() { "ABSENT".to_string() } else { widths.join(" / ") };
-            out.push(f("a-proof-asserted-only-at-row-level", &row.addr(),
-                format!("`sentence_kind` is `theorem` and no predicate entry carries a \
-                         `proof` warrant. Its width span is `{w}`.")));
+            let w = if widths.is_empty() {
+                "ABSENT".to_string()
+            } else {
+                widths.join(" / ")
+            };
+            out.push(f(
+                "a-proof-asserted-only-at-row-level",
+                &row.addr(),
+                format!(
+                    "`sentence_kind` is `theorem` and no predicate entry carries a \
+                         `proof` warrant. Its width span is `{w}`."
+                ),
+            ));
         }
     }
     out
@@ -217,7 +275,11 @@ fn a_proof_asserted_only_at_row_level(reg: &Registry) -> Vec<Finding> {
 // the planted cases, each of which must fail
 // -------------------------------------------------------------------------------------------------
 
-struct Case { name: &'static str, toml: &'static str, expect: &'static [&'static str] }
+struct Case {
+    name: &'static str,
+    toml: &'static str,
+    expect: &'static [&'static str],
+}
 
 const CASES: &[Case] = &[
     Case {
@@ -367,7 +429,7 @@ fn main() {
                     reparsed += 1;
                     println!("  REPARSED: {entry}");
                 }
-            },
+            }
         }
     }
     println!("  entries: {}", entries.len());
@@ -383,8 +445,7 @@ fn main() {
     for case in CASES {
         let reg = parse("planted.toml", case.toml);
         let got: Vec<&str> = all(&reg).iter().map(|f| f.kind).collect();
-        let ok = got.len() == case.expect.len()
-            && case.expect.iter().all(|k| got.contains(k));
+        let ok = got.len() == case.expect.len() && case.expect.iter().all(|k| got.contains(k));
         println!("  [{}] {}", if ok { "ok" } else { "FAIL" }, case.name);
         println!("        expected {:?}", case.expect);
         println!("        got      {got:?}");
@@ -395,7 +456,8 @@ fn main() {
 
     println!();
     println!("### 3. CONTROL. Every arm must be reachable, or a green run means nothing.");
-    let reached: std::collections::BTreeSet<&str> = CASES.iter()
+    let reached: std::collections::BTreeSet<&str> = CASES
+        .iter()
         .flat_map(|c| all(&parse("planted.toml", c.toml)))
         .map(|f| f.kind)
         .collect();
@@ -446,14 +508,35 @@ fn main() {
     println!("    the round is at TOPIC.");
     let empty = parse("empty.toml", "");
     let arms: &[(&str, fn(&Registry) -> Vec<arvo_checks::Finding>)] = &[
-        ("predicate::undeclared_dimensions", predicate::undeclared_dimensions),
-        ("predicate::repeated_dimensions", predicate::repeated_dimensions),
-        ("shape::predicate_disagrees_with_the_sentence_kind", shape::predicate_disagrees_with_the_sentence_kind),
-        ("shape::measured_without_evidence", shape::measured_without_evidence),
-        ("shape::rulings_with_no_verbatim", shape::rulings_with_no_verbatim),
+        (
+            "predicate::undeclared_dimensions",
+            predicate::undeclared_dimensions,
+        ),
+        (
+            "predicate::repeated_dimensions",
+            predicate::repeated_dimensions,
+        ),
+        (
+            "shape::predicate_disagrees_with_the_sentence_kind",
+            shape::predicate_disagrees_with_the_sentence_kind,
+        ),
+        (
+            "shape::measured_without_evidence",
+            shape::measured_without_evidence,
+        ),
+        (
+            "shape::rulings_with_no_verbatim",
+            shape::rulings_with_no_verbatim,
+        ),
         ("shape::rows_with_no_keywords", shape::rows_with_no_keywords),
-        ("citation::citations_with_no_target", citation::citations_with_no_target),
-        ("provenance::standing_claims_more_arrivals_than_it_cites", provenance::standing_claims_more_arrivals_than_it_cites),
+        (
+            "citation::citations_with_no_target",
+            citation::citations_with_no_target,
+        ),
+        (
+            "provenance::standing_claims_more_arrivals_than_it_cites",
+            provenance::standing_claims_more_arrivals_than_it_cites,
+        ),
     ];
     let mut quiet = 0usize;
     for (name, arm) in arms {
@@ -464,7 +547,10 @@ fn main() {
             quiet += 1;
         }
     }
-    println!("  arms that say nothing about an empty registry: {quiet} of {}", arms.len());
+    println!(
+        "  arms that say nothing about an empty registry: {quiet} of {}",
+        arms.len()
+    );
     println!("  CONTROL: at least one arm must speak about the committed canon, or this");
     println!("           section is comparing two silences.");
     let speaks = arms.iter().filter(|(_, a)| !a(&c).is_empty()).count();
@@ -475,6 +561,13 @@ fn main() {
     }
 
     println!();
-    println!("### exit: {}", if bad == 0 { "every case behaved" } else { "SOMETHING FAILED" });
+    println!(
+        "### exit: {}",
+        if bad == 0 {
+            "every case behaved"
+        } else {
+            "SOMETHING FAILED"
+        }
+    );
     std::process::exit(i32::from(bad != 0));
 }
