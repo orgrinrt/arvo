@@ -480,3 +480,70 @@ is about, reached from a different direction: that question found a predicate wh
 prose and therefore passed every check while stating no region. Mine are predicates whose values
 side cannot be written at all. I have not filled that question and I am not proposing an answer to
 it here.
+
+## What I did not settle, what I could not reach, and what is left
+
+**Reserved and untouched.** `question::is_the_rounding_vocabulary_complete_at_six` asks whether the
+set is short a name, on the strength of three predicates sweeping `away from zero`. My work touches
+it and does not answer it. Worth saying precisely how they relate, because they are easy to run
+together and they are not the same question. That row is about `away from zero` as a directed mode,
+the conjugate of `toward_zero` in the directed family. Mine is about "away from zero" as a tie-break
+direction inside a nearest mode. A design could pin `half_up` to either reading without adding a
+directed `away_from_zero` mode, and it could add the directed mode without pinning `half_up`. The
+two are independent, and anybody reading them as one thing will get one of them wrong.
+
+`question::does_a_consumer_supplied_seed_surface_exist` is reserved and I have said only that it is
+load-bearing for what `stochastic` denotes.
+
+`question::what_region_does_a_predicate_naming_no_mode_state` is reserved. I have added two
+instances to its neighbourhood and answered none of it.
+
+**What I could not reach.** I could not reproduce the numbers in `law::quantise_then_reduce_commutes`'s
+note, the zero disagreements for floor against 60, 32 and 32 for ceiling, half-up and half-even at
+the representative level. The row does not carry the width, the fraction width, the reduction, or
+which two of the six the half-up and half-even columns were run under, and reconstructing a setup
+that happens to produce three matching numbers would be guessing dressed as corroboration. I tried
+two reconstructions, discarded both, and stopped. This matters for my question because that note is
+the other place in the canon where a half-up column is recorded, so it is the other place a reading
+might be pinned by evidence. Somebody who can open the probe behind
+`106_giesen_consolidation_the_strategy_axis` can close it in minutes and I could not from the
+registry alone.
+
+I did not open `mock/tools/rounding-vocabulary/`, which exists and which
+`question::is_the_rounding_vocabulary_complete_at_six` says reports every named mode against the
+ratified six. It is outside the phase-one reading list, so I derived the same class of fact by
+grepping the registry directly. Somebody should check my four-pair result against what that tool
+reports.
+
+I reached the sources I wanted on the naming question and can name what they establish: IEEE 754's
+`roundTiesToAway`, the split between `java.lang.Math.round` and `java.math.RoundingMode.HALF_UP`,
+`decimal.ROUND_HALF_UP`, `MidpointRounding.AwayFromZero`, and the DSP literature's own description
+of the add-a-half-and-truncate form as the asymmetric one. On stochastic rounding I confirmed the
+two-mode split and its current naming, SR-nearness against SR-up-or-down, from a survey paper rather
+than from the primary source, because the primary source is a PDF I could not extract text from.
+The distinction I rest on is measured in probe D regardless of what anybody calls it, so the
+citation is for the reader's benefit rather than load-bearing.
+
+**Three things I would hand to the next seat.**
+
+The first is the one I think is worth most. If the equivariant-versus-unbiased split is a theorem
+over nearest modes, it is probably a theorem over the whole space of rounding modes rather than the
+nearest family, and probe F's enumeration technique extends: drop the "take the nearer neighbour"
+constraint and enumerate every monotone map from the domain onto the grid. That is a much larger
+space and probably needs an argument rather than an enumeration, but the argument looks short.
+
+The second is that everything here is one rounding of one value, and the property a design actually
+cares about is what a chain does. A biased mode compounds and an unbiased one does not, which is the
+whole reason the trade matters, and nobody in this file has measured a chain.
+
+The third is negative and I want it recorded so nobody repeats it. I looked for a signed-domain
+ambiguity in `half_even` for some time, on the reasoning that the family that broke once might break
+twice, and there is not one. Parity is sign-invariant, and that closes it. The time is not wasted
+only if the next person does not spend it again.
+
+## What this is, in one line
+
+Four of the six names denote one operation. `half_up` denotes two, which differ on exactly the rows
+the ratified ruling retired a word for, and one canon law row is true under one of them and false
+under the other. `stochastic` denotes a family of at least four, of which the canon's own retraction
+law already excludes one, and it names no function at all until the seed question is settled.
