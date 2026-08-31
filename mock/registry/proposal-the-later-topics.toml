@@ -428,6 +428,7 @@ predicate = [
   "target_features: host",
 ]
 law = ["the_fused_and_the_stepwise_multiply_add_denote_one_function"]
+evidence = ["fusion_is_an_axis_position_rather_than_a_new_axis"]
 note = """
 Two instances, one building both arms directly and one assembling the comparison \
 from a third member's two committed probes. Whether the two share every axis they \

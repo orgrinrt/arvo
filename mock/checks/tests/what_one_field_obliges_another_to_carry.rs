@@ -40,8 +40,19 @@ fn the_committed_canon_leaves_no_refusal_without_an_alternative() {
 /// behind it, and that is not the fix.
 #[test]
 fn no_new_measurement_lands_without_an_instrument() {
-    /// Measured after the probe port and the settling pass.
-    const WITHOUT_AN_INSTRUMENT: usize = 21;
+    /// Measured after the evidence pass wired fifteen of the twenty-one.
+    ///
+    /// The six that remain are not a backlog of unwritten rows, and no two of
+    /// them are stuck for the same reason. One is an absence claim nobody
+    /// built an instrument for and nobody should. Two ran an arm whose
+    /// directory has a probe row describing a different arm, so a row moves
+    /// before an edge can. One ran in a directory with no probe row at all,
+    /// and the nearest row by name is its predecessor in another directory.
+    /// One rests on a probe whose own control admits none was run, so the arm
+    /// above refuses the edge and the honest repair is to the sentence rather
+    /// than to this number. And one was offered a probe whose `establishes`
+    /// states the proposition the claim records as refuted.
+    const WITHOUT_AN_INSTRUMENT: usize = 6;
 
     let found = shape::measured_without_evidence(&canon());
     assert!(

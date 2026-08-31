@@ -116,6 +116,7 @@ predicate = [
   "container: interval numerals containing zero, 100 of them",
 ]
 law = ["additive_associativity_under_saturation", "multiplicative_associativity_under_saturation"]
+evidence = ["absorption_and_associativity_agree_for_clamped_addition"]
 note = "`evidence` is empty and the measured-implies-evidence check is red on this row, because `probe.toml` does not exist. The instruments are `57_probes/p2`, `p2b`, `p8` and `p1`, `61_probes/q1`, all committed in the panel and all re-run byte-identically by the consolidator. The width entry is the cube's own width instances, which the counts section names as the format-shaped part of the sweep; the raw 4248 and 7744 figures count clamp-and-operand-box combinations, most of which are no format at all, and a reader quoting 4248 as a count of formats checked would be wrong. The sign-confinement closed form is a corollary and never the criterion: the opposite-bound mutant is sign-confined with a reachable ceiling, the closed form predicts associativity, and it diverges 2240 times while absorption predicts the failure."
 gap = "The pullback mechanism underneath has exactly one genuinely independent arrival, a blind phase-one witness at `i16` built with no knowledge the mechanism existed. Everything else about the mechanism is one author's, kept by a second as the dynamic description."
 provenance = [
@@ -612,6 +613,7 @@ predicate = [
   "target_features: target features any",
 ]
 answers = ["how_the_law_inventory_is_named"]
+evidence = ["a_declared_law_marker_compiles_clean_when_false"]
 note = "The predicate is the source's own, verbatim, and it is one of only two in the whole derived-laws consolidation. `evidence` is empty and the measured-implies-evidence check is red on this row: the instruments are `80_probes/p1a_declared_law_lies.rs` and `p1b_computed_law_refuses.rs`, both committed, and `probe.toml` does not exist for them to be named in. The 24.8% figure has a zero arity-2 control, so the number is not an artefact of the sweep."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::147",
@@ -648,6 +650,7 @@ predicate = [
   "build_profile: default const-eval guard, and guard-allowed for the three-bit measurement",
   "operation: operations {add, sub, mul}",
 ]
+evidence = ["the_const_eval_frontier_by_arity"]
 note = "`evidence` is empty and the measured-implies-evidence check is red on this row. The instruments are `80_probes/p2_frontier.py`, `p2b_swept_verdict_at_shipped_width.rs` and `p5_allow_the_guard.py`, all committed. The table's rows are one bit low for a lighter per-tuple spelling, established later in the same unit, and one bit of sign-uniform operand restriction crosses eight bits: the positive verdict accepts at width 9 guard-allowed where the full set does not finish. Neither host nor toolchain is named where the consolidation carries these numbers, so the predicate has no `target_features` entry and the figures are not transferable to another machine."
 gap = "No host, no toolchain pin and no optimisation level, so every timing here is a fact about one unnamed machine."
 provenance = ["panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::171"]
@@ -719,6 +722,7 @@ predicate = [
   "build_profile: emission in {metadata only, full codegen}, debug-assertions any",
   "target_features: target features any",
 ]
+evidence = ["the_four_const_available_constructions_bind_at_four_times"]
 note = "Op dissolved the axis this was originally stated over, from typestate-against-trajectory to const-available-against-not, and separately refused the ranking question as policing: the requirement on a law's expression is functional, it must reach one lowered path through monomorphisation and const solving, and which construction gets it there is case by case. So this row is an enumeration of what each construction does and is **not** a ranking, and reading it as one would reinstate exactly what he refused. The bound-position spelling is refused by the compiler naming a forbidden feature, which is a fifth outcome of a different kind. What his words do not reach, and this unit did not extend them to, is whether a genuinely non-const condition may gate anything."
 gap = "Whether a genuinely non-const condition may gate anything. Op's words do not reach it and the unit did not extend them."
 provenance = [
@@ -856,6 +860,7 @@ predicate = [
   "build_profile: no_std, feature gates = 0, opt level = 3",
   "threads: threads = 1 for the timed instance and threads any for the compile-time artifacts",
 ]
+evidence = ["a_compile_time_strategy_selection_leaves_no_residue"]
 note = "The source calls this the single best-supported claim in its unit and the one the whole mechanism rests on. `evidence` is empty and the measured-implies-evidence check is red on this row. The `arms in {2, 3, 4, 5}` entry from the source's own predicate is a bench parameter rather than a design axis and is not carried here; it belongs on the probe row. The thread entry is the source's own and is the only split-valued one in the corpus: the timing holds at one thread and the compile-time artifacts hold at any."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::310",
@@ -904,6 +909,7 @@ predicate = [
 ]
 instead = "The operation reports that two operands demand different computed answers and the site says which. The predicate separating the reporting arm from the resolving one is not where the demands happen to have a join; it is the far simpler question of whether the coordinate is observable, which is static."
 answers = ["are_strategies_partially_ordered_by_chain_laws"]
+evidence = ["no_conservatism_order_exists_on_the_overflow_axis"]
 note = "The source calls this the unit's clearest refutation of a shipped shape. `evidence` is empty and the measured-implies-evidence check is red on this row. The predicate is the source's own, verbatim, minus the clause naming which laws the probe enumerated, which is an instrument parameter."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::523",
@@ -947,6 +953,7 @@ predicate = [
   "target_features: host aarch64-apple-darwin, rustc nightly-2026-05-28",
 ]
 answers = ["which_axes_a_build_arm_may_move"]
+evidence = ["three_of_the_four_proposed_axes_change_no_answer"]
 note = "The probe's first version is worth more than its result: it swept only additive chains ending in a mask and reported both axes unobservable at 0 of 640, and those zeros were the sweep proving the ring homomorphism it stood on rather than testing the axis. Both versions are committed. The region is large, it is const-visible wherever the chain is written, and it is exactly the arm-with-a-predicate shape I13 asks for. It is unpriced and unbuilt and the source carries it as a live option rather than as a recommendation. `evidence` is empty and the measured-implies-evidence check is red on this row."
 gap = "Unpriced and unbuilt. Nobody has measured what taking the licence saves, and nobody has built the const predicate that would gate it."
 provenance = [
@@ -989,6 +996,7 @@ predicate = [
   "target_features: target features any",
 ]
 instead = "Generate, and check cone membership of the stated weighting rather than rationalisability of the output."
+evidence = ["generating_a_winner_table_from_a_stated_weighting"]
 note = "**The predicate carries almost none of this claim's scope**, for the same reason as the rationalisability row: the source's region is `regions = 5, arms = 5, cost coordinates = 3, 400 random models across two families, plus the committed carrier table, defect classes {unit scale, coordinate swap, tie-break policy, region off-by-one, dropped coordinate}`, all bench parameters. `evidence` is empty and the measured-implies-evidence check is red on this row. The const assertion has been seen to fail twice, once as a mutant and once accidentally when the first hand-written winner table was wrong, which is the control this row rests on."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::578",
@@ -1224,6 +1232,7 @@ because = "The join resolves each artifact's recorded commit against the commit 
 predicate = [
   "threads: threads = 1",
 ]
+evidence = ["most_committed_bench_regions_predate_the_validation_gate"]
 note = "**The predicate carries almost none of this claim's scope**: its coordinates are a named branch head, 254 files and 24 producing commits, none of which is a declared axis. `evidence` is empty and the measured-implies-evidence check is red on this row. The reproduction has a precondition sitting 81 files back and uncited in the unit: every recorded commit value but one carries a dirty suffix, because the harness writes its artifacts into the tree it then hashes, so a naive resolution returns 253 unresolvable and the finding evaporates. Stripping the suffix is correct and it is correct **for a reason nobody in the unit carried**, so a later reader redoing the join without that fact concludes the corpus has no resolvable provenance at all."
 gap = "What the 175 regions are worth is not established. The finding is that the gate was not running for them, not that they are wrong."
 provenance = [
@@ -1284,6 +1293,7 @@ predicate = [
   "operation: operation = add",
   "chain_length: chain length in 2..=8",
 ]
+evidence = ["the_accumulator_width_is_the_exact_sum_width_less_one_bit"]
 note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instrument is `57_probes/p6` with its output beside it, and its own closing note bounds it exactly: measured at the widths and fold lengths in the table and no further, exhaustive within each row, not a proof, and the unsigned and signed rows are the same claim at two sign domains rather than two independent instances. The consolidation writes the candidate canon sentence to survive without the constant, as `at most the exact-sum width`, which is how a canon holds a constant that is measured and not proven, and that weaker form is the one to promote."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::506",
@@ -1308,6 +1318,7 @@ predicate = [
   "rounding: rounding in {truncate, floor, round to nearest even}",
 ]
 answers = ["what_a_numeral_guarantees_to_a_fold"]
+evidence = ["the_multiplicative_rescale_saving_is_adaptation_fusion"]
 note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instruments are `60_probes/p_d_rescale_saving_is_adaptation_fusion.rs` and `62_probes/p4_signed_multiplicative_accumulator.rs`, both committed with their output. The region is the two instruments' own stated parameters, `M = 15, F = 3` for the unsigned side and `Q = [-8, 7], F = 3` for the signed, exhaustive over the representable domain at each fold length. **Two experts and the second was a blind prediction that refuted the first's constant**, which is a stronger shape than agreement. The consolidation states none of these parameters."
 gap = "Nothing here is priced. No bench harness ran on any of it and every member says so."
 provenance = [
@@ -1332,6 +1343,7 @@ predicate = [
   "arity: arity = 2",
   "rounding: rounding = nearest, against a phase-zero mutant",
 ]
+evidence = ["a_half_step_biased_grid_is_not_closed_under_addition"]
 note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instrument is `56_probes/q2_affine_membership.rs` with its output beside it. `W = 4` is the instrument's own, stated as sixteen representable values and 256 pairs, rather than an inference from the pair count. The consolidation carries the counts and no width. This is the argument for the canon stating the phase term explicitly rather than leaving it to be inferred, and its evidence is that two independent instruments erred at this coordinate in opposite directions."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::188",
@@ -1357,6 +1369,7 @@ predicate = [
 ]
 law = ["associativity_of_a_composed_saturating_add_and_subtract"]
 answers = ["may_an_arms_predicate_read_data"]
+evidence = ["a_trajectory_condition_lifts_exactly_when_it_survives_closure"]
 note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instruments are `82_probes/p1_box_lifting_of_p4.rs` and `p1b_is_every_lifted_box_degenerate.rs`, committed with output. The four widths the consolidation names without naming are 2, 3, 4 and 5, read off the instrument's own table. **The consolidation marks this low confidence for a reason unrelated to its content**: an earlier draft of that consolidation misattributed which of the supporting instances shared an author, and it records itself as having made and repaired the error. Nothing downstream cites it for an independence count."
 gap = "Stated as one-directional sufficiency by its own author. The length-aware construction that a bounded length would license is unbuilt. And the declaration a consumer would naturally write instead, that the exact result stays in range, is unsound: true while the law is false on 49.80% of the domain and wrong in 87.5% of the boxes satisfying it."
 provenance = [
@@ -1383,6 +1396,7 @@ predicate = [
 ]
 instead = "A system exposes its ambient domain together with that domain's own law inventory, so that the properties a consumer relies on are conjunctions of an ambient law and a reduction verdict rather than verdicts alone."
 answers = ["what_the_admission_contract_asks_a_candidate_to_expose"]
+evidence = ["the_collapsed_declaration_cannot_be_made_to_fail"]
 note = "`evidence` is empty and the measured-implies-evidence check is red on this row; the instruments are `73_probes/p1_collapse.py` and `p1c_collapse_cannot_fail.py`, committed with their output. This row was in `182` section 5.1's first draft as a construction with no region over any declared axis, on the strength of the consolidation stating none. The instrument states `W = 4` in its second line and enumerates its four reductions in its table, which is the sixth recovery of the second pass."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::543",
