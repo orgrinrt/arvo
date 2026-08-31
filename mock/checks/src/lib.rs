@@ -32,6 +32,7 @@ pub mod comments;
 pub mod corpus;
 pub mod obligation;
 pub mod predicate;
+pub mod provenance;
 pub mod shape;
 
 /// One thing wrong, named so a reader can go and look at it.
