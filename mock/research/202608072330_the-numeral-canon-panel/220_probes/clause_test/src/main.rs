@@ -19,21 +19,108 @@
 /// the thing it warrants.
 const NOTATION_VOCABULARY: &[&str] = &[
     // warranting
-    "proof", "proved", "proves", "construction", "constructed", "structural",
-    "structurally", "trivially", "trivial", "obvious", "obviously", "follows",
-    "holds", "exhaustive", "exhaustively", "swept", "sweep", "measured",
-    "argument", "free", "clear", "evident", "immediate", "given",
+    "proof",
+    "proved",
+    "proves",
+    "construction",
+    "constructed",
+    "structural",
+    "structurally",
+    "trivially",
+    "trivial",
+    "obvious",
+    "obviously",
+    "follows",
+    "holds",
+    "exhaustive",
+    "exhaustively",
+    "swept",
+    "sweep",
+    "measured",
+    "argument",
+    "free",
+    "clear",
+    "evident",
+    "immediate",
+    "given",
     // the axis grammar and axis names
-    "any", "in", "all", "every", "w", "f", "i", "n", "s", "width", "widths",
-    "fraction", "integer", "signedness", "signed", "unsigned", "arity",
-    "operation", "container", "threads", "rounding", "alignment", "radix",
-    "toolchain", "strategy", "axis", "axes", "predicate", "region", "span",
-    "value", "values", "range", "domain", "set", "bounded", "whole",
+    "any",
+    "in",
+    "all",
+    "every",
+    "w",
+    "f",
+    "i",
+    "n",
+    "s",
+    "width",
+    "widths",
+    "fraction",
+    "integer",
+    "signedness",
+    "signed",
+    "unsigned",
+    "arity",
+    "operation",
+    "container",
+    "threads",
+    "rounding",
+    "alignment",
+    "radix",
+    "toolchain",
+    "strategy",
+    "axis",
+    "axes",
+    "predicate",
+    "region",
+    "span",
+    "value",
+    "values",
+    "range",
+    "domain",
+    "set",
+    "bounded",
+    "whole",
     // stop words
-    "the", "a", "an", "of", "to", "and", "or", "is", "are", "be", "it", "its",
-    "this", "that", "for", "by", "on", "at", "as", "with", "no", "not", "so",
-    "cannot", "can", "does", "do", "enter", "enters", "entering", "here",
-    "there", "which", "because", "since", "from", "into", "over", "under",
+    "the",
+    "a",
+    "an",
+    "of",
+    "to",
+    "and",
+    "or",
+    "is",
+    "are",
+    "be",
+    "it",
+    "its",
+    "this",
+    "that",
+    "for",
+    "by",
+    "on",
+    "at",
+    "as",
+    "with",
+    "no",
+    "not",
+    "so",
+    "cannot",
+    "can",
+    "does",
+    "do",
+    "enter",
+    "enters",
+    "entering",
+    "here",
+    "there",
+    "which",
+    "because",
+    "since",
+    "from",
+    "into",
+    "over",
+    "under",
 ];
 
 /// The content tokens a clause carries: what is left after the notation's own
@@ -64,7 +151,11 @@ fn content(clause: &str) -> Vec<String> {
 /// and one is the safest point in that interval.
 const FLOOR: usize = 1;
 
-struct Sample { verdict: &'static str, source: &'static str, clause: &'static str }
+struct Sample {
+    verdict: &'static str,
+    source: &'static str,
+    clause: &'static str,
+}
 
 /// Every clause is from the committed corpus or is a relabel a lazy author
 /// would write. Nothing here is invented to make the test look good, and the
@@ -122,8 +213,14 @@ fn main() {
         } else {
             best_relabel = best_relabel.max(c.len());
         }
-        println!("  [{}] {:>9} -> {:<9} n={}  {:?}", if ok { "ok" } else { "MISS" },
-                 s.verdict, called, c.len(), c);
+        println!(
+            "  [{}] {:>9} -> {:<9} n={}  {:?}",
+            if ok { "ok" } else { "MISS" },
+            s.verdict,
+            called,
+            c.len(),
+            c
+        );
         println!("        {:?}", s.clause);
         println!("        source: {}", s.source);
     }
@@ -135,8 +232,12 @@ fn main() {
     if worst_mechanism > best_relabel {
         println!("  the two populations are separated, and any floor in ({best_relabel}, {worst_mechanism}] works");
     } else {
-        println!("  the populations OVERLAP, so no floor separates them and the test is a heuristic");
-        println!("  rather than a discriminator. That is the honest reading and it is what to report.");
+        println!(
+            "  the populations OVERLAP, so no floor separates them and the test is a heuristic"
+        );
+        println!(
+            "  rather than a discriminator. That is the honest reading and it is what to report."
+        );
     }
 
     println!();
