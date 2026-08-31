@@ -579,3 +579,207 @@ wanting the wider claim can have `radix in {2, 3, 4, 5, 10}` for the
 sign-magnitude model. I write `radix = 2` above because that is where the answer
 is unconditional, and widening a predicate is a new claim in a new deliverable
 rather than a widening in place.
+
+## 6. Entailed by ratified canon
+
+These are applications rather than derivations. Each is a consequence of a
+sentence that is already ratified, so none needs a second instance and none is
+mine to be corroborated on. Where an entailment agrees with an existing
+`one_expert` proposal I say so and the agreement is worth nothing extra, because I
+read that proposal first.
+
+None of these carries a predicate. All of them are normative, and a consequence of
+a stipulation is part of the stipulation.
+
+### 6.1 Narrowing composes exactly where the mode's direction switches on the coarse grid
+
+`question::does_narrowing_compose` asks whether the design wants narrowing to
+compose, yes or no. Both options are false, and the canon holds the true sentence
+in two places that do not know about each other.
+
+`proposal.toml:1579` measures the instance: staged narrowing disagrees with direct
+narrowing under round to nearest even, first at `-247/16` on a nine-bit signed grid
+staged from four fraction bits through two to zero, at `standing = "three_or_more"`
+with three named witnesses. `probe.toml:982` holds the general form: narrowing
+composes exactly when the mode's direction switches only at coarser-grid points,
+tested through two consequences of an adjunction rather than through its defining
+biconditional, at zero failures on-grid and seven off-grid.
+
+So the answer is a predicate on the rounding mode, which is what
+`ruling::arms_over_regions_are_the_fundamental_heart` asks every answer to be:
+
+- **composes**: the four directed modes, and `toward_zero`, whose only direction
+  switch is at zero and zero is a point of every anchored grid;
+- **does not compose**: `half_up` and `half_even`, which switch direction at every
+  cell midpoint of the finer grid and no midpoint is a point of the coarser one.
+
+Both arms exist, both are reachable, and the design owes a gate rather than a
+choice. The row's second option, "the canon owes the sentence that narrowing twice
+is not narrowing once", is owed only on the second arm and is already written at
+`proposal.toml:1585`.
+
+The blocker recorded at `proposal.toml:1604` is stale, per 3.2, and the general
+form is writable today.
+
+### 6.2 The ambient operation family is a parameter, and the concept is therefore broad
+
+`question::is_the_ambient_operation_family_fixed` (Q33), read as one with
+`question::is_number_system_broad_enough_for_non_magnitude` (Q21), which its own
+note instructs.
+
+**The argument is the amendment test from 4 above.** Ratified text says a format is
+identified by its ambient domain and its representable set, so a candidate must
+supply an ambient domain to have an identity at all. Ratified text also says the
+inventory is open and a new instance "earns admission by supplying the concept's
+obligations rather than by amending the canon". Fix the operation family at
+addition and multiplication, and a min-plus system cannot supply an ambient domain
+within the obligations, because its domain has no multiplication in the required
+sense. It could then join only by amending the canon, which is precisely the
+mechanism the ratified sentence excludes. So the family is a parameter.
+
+**And min-plus is not a hypothetical here.** `obligation::a_cost_dynamic_program`
+and `obligation::ordering_a_directed_acyclic_graph` name `hilavitkutin` as the
+consumer, and `probe::monotonicity_and_absorption_are_two_properties_and_a_reserved_top_buys_one`
+measures a min-plus shortest path across three overflow policies at unsigned widths
+3 and 4. The design already computes in the tropical semiring on behalf of a named
+consumer. Q33's first option concedes exactly this in its own cost clause, "the
+named selling point computes in something the canon does not cover", and the
+concession is fatal rather than a price.
+
+Q21 follows without further argument. The two-element Boolean algebra and the
+vector space over the two-element field are ambient domains over ordinary
+representable sets, so they are members under a parametric family and unadmittable
+under a fixed one. This agrees with `the_concepts_edge_is_not_an_order_and_wrapping_is_the_test`
+(`proposal.toml:471`) and I read that row first, so my agreement is confirmation.
+What is new is the route: that row argues from the measured emptiness of the
+order-shaped discriminator, and this one argues from the ratified admission
+mechanism, so the two do not share a premise even though they share an author's
+reading order.
+
+**What the second option's cost list gets right.** Every law sentence acquires a
+scope it did not need, and prefix equality becomes a relation somebody must
+define. Those are real and they are the price of a ratified sentence rather than a
+reason to reconsider it.
+
+### 6.3 Set-valued carriers are outside the format concept, and a datum stands for a point
+
+`question::are_set_valued_carriers_admitted` (Q22) and
+`question::what_a_datum_stands_for` (Q4), which are the same question at two
+depths.
+
+Ratified `membership_of_the_representable_set_is_one_affine_predicate` says
+membership is one predicate over one parameterisation, "an affine slot function, a
+quantum per magnitude and a phase, of which integers, fixed point, scaled integers
+and floats are points". An interval is a pair of grid points and is not a point of
+that parameterisation. So a set-valued carrier is not a format, and Q22's answer is
+scoped out **of the format concept**, which is not the same as scoped out of the
+design. `the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws`
+(`proposal.toml:241`) already places them: intervals and error-carrying values are
+compositions over formats that consume the width algebra, the named adaptation and
+the exactness predicate, and owe their own laws. That row is one expert and I read
+it first; the ratified clause is what does the excluding, and the row is what says
+where the excluded thing goes.
+
+Q4 falls out at three of its four options:
+
+- **Option 4, a set admitted generally, is refused** by the same ratified clause.
+- **Option 2, an absorbing top, is refused** by ratified
+  `a_format_is_identified_by_its_ambient_domain_and_its_representable_set`, which
+  puts adaptation choice in realisation and not in identity. A denotation that
+  changes when the overflow member changes would make the adaptation part of what
+  the datum means, which is the clause's own negation.
+- **Option 1, a point, is what is left and is positively supported**: the
+  representable set is a constant of the type and its elements are values, and
+  ratified `arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation`
+  makes the adaptation a first-class object with its own laws, so saturation's
+  absorbing behaviour is a property of the adaptation. Which is option 1's own
+  wording, "a documented restriction on where a fold is sound rather than a
+  denotation".
+- **Option 3 is not a rival and should not be listed as one.** It says the
+  denotation clause is a statement about the constructor wearing the grammar of a
+  statement about every datum. That is a diagnosis of how the question became
+  confusing and it is compatible with option 1 rather than an alternative to it.
+
+### 6.4 The target's reduction governs a lossy crossing
+
+`question::whose_reduction_governs_a_lossy_crossing` (Q36). No proposal answers it
+and `an_order_is_named_exactly_where_a_crossing_is_lossy` records it as an open
+gap.
+
+Ratified `arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation`
+says arithmetic on a format is "an exact operation in an ambient domain composed
+with a named, total adaptation onto the representable set". A crossing into a
+target format is that shape with the exact operation being the identity: take the
+source value exactly in a common ambient, then adapt onto the target's
+representable set. The adaptation is onto the target's set, and by ratified
+`the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation`'s
+parent clause the space of total reductions onto a set is derived from that set and
+a strategy selects a member. So the member that governs is the target's.
+
+**Option 2, and its stated cost is what the ratified factoring says an operation
+into a format does.** The row's cost for option 2 is "a value can be adapted by a
+policy its own system never selected", which is a description of every arithmetic
+operation under the ratified factoring rather than a defect peculiar to crossings.
+Option 1's cost, that "the target's declared policy does not govern values entering
+it", is the one the factoring forbids.
+
+One row cuts the other way and it loses on provenance.
+`conversion_and_resolution_are_one_obligation_at_two_arities` (`proposal.toml:411`)
+lists "which reduction governs the loss" as a third thing a crossing must name,
+which reads as though it were free. It is `one_expert` and the factoring is
+ratified. What survives of it is that the crossing must **say** which reduction
+governs, and the answer to what it says is fixed.
+
+### 6.5 The admission contract asks for the ambient domain's own law inventory
+
+`question::what_the_admission_contract_asks_a_candidate_to_expose` (Q29). Option
+one's sufficient direction is already refuted by
+`an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing`
+(`proposal.toml:1490`), a measured row with a control that asks whether the
+collapsed verdict can be made to fail at all and finds it cannot.
+
+Between the surviving two, ratified text decides. Option three makes admission
+relative to a consumer-supplied ambient domain, so the candidate does not determine
+its own identity until a frame is chosen. Ratified
+`a_format_is_identified_by_its_ambient_domain_and_its_representable_set` says the
+ambient domain is half of what identifies it. A candidate that does not fix its own
+ambient domain does not have an identity, and a concept whose members lack
+identities is not the concept that sentence ratifies. **Option two.**
+
+### 6.6 A platform-width type is a target-indexed family of formats, which is a fifth option
+
+`question::what_a_platform_width_type_is` (Q26). Its first option, storage rather
+than format, is refused by ratified text read carefully. The ratified identity
+clause says "a value set that depends on other data is not a format but storage".
+A platform-width numeral's value set depends on the compilation target, which is
+fixed before anything runs, so per compilation its representable set is a constant
+of the type and the exclusion does not reach it.
+`each_choice_in_the_sequence_has_an_owner_and_a_resolution_time`
+(`proposal.toml:521`) states the positive form, that it is "a target-indexed family
+of formats whose exclusion grounds apply only to dependence that survives to
+runtime", and I read that row first, so the positive half is a confirmation and the
+refusal of option one is the entailment.
+
+That answer is none of the four listed. It is not a degenerate instance, not an
+orthogonal axis, and not a different kind of thing: it is a family of instances of
+the same kind, indexed by a parameter resolved at compile time. The option set is
+missing its answer, which is 8.3 below.
+
+### 6.7 Wrapping is one member of one derived slot
+
+`question::where_wrapping_lives`. Ratified
+`arithmetic_on_a_format_factors_as_an_adaptation_of_an_exact_operation` says "the
+adaptation is a first-class object with its own laws". One object, one slot,
+members classified by which laws they satisfy. Wrap is a member of that slot and
+not an axis value with an exception list, because an exception list is what you get
+when a member is filed outside the structure that classifies it.
+
+**Option one**, agreeing with `the_adaptation_slot_is_derived_and_a_strategy_selects_a_member_per_operation`
+(`proposal.toml:98`), which I read first. The row's own `because` carries the part
+I cannot improve on: expelling wrapping while retaining saturation "has no
+criterion that does not empty the slot".
+
+The obligation the row records as owed under every filing equally is still owed: a
+wrapped numeral has no arithmetic-compatible order, so the canon owes one sentence
+saying which order comparison means there. `law::existence_of_a_translation_invariant_total_order`
+is the measurement behind it.
