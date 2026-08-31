@@ -1,0 +1,69 @@
+### 1. rows carrying a sentence_kind, by kind
+  66 normative
+  32 measured
+  12 argument
+   8 theorem
+   3 enumeration
+   1 definition
+
+### 2. sentence_kind against the shape of the width span it writes
+  66 normative	ABSENT
+  11 measured	fixed
+  10 measured	ABSENT
+   9 argument	ABSENT
+   7 measured	range
+   4 measured	set
+   2 theorem	range
+   2 theorem	ABSENT
+   2 argument	fixed
+   1 theorem	set
+   1 theorem	prose
+   1 theorem	fixed
+   1 theorem	any
+   1 enumeration	set
+   1 enumeration	range
+   1 enumeration	ABSENT
+   1 definition	ABSENT
+   1 argument	any
+
+### 3. every row whose sentence_kind is `theorem`, with its width span
+  fusing_a_multiply_add_is_free_exactly_at_translation_equivariance        6
+  the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy W = 4
+  no_multiplicative_structure_survives_a_nonzero_fraction_width            W in 3..=7
+  the_model_band_transfer_is_defeated_in_both_fragments                    W any
+  inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width W in 1..=65
+  the_join_over_demands_is_union_and_it_is_free                            ABSENT
+  a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains W in {4, 5, 6}
+  a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing ABSENT
+
+### 4. every row whose sentence_kind is `argument`, with its width span
+  a_completeness_obligation_quantifying_over_inputs_misses_a_nullary_witness ABSENT
+  at_shared_occupancy_no_per_element_footprint_observation_exists          ABSENT
+  an_additive_verdict_is_independent_of_the_fraction_width                 W any
+  chain_laws_split_by_whether_a_lifting_theorem_exists                     ABSENT
+  a_law_verdict_is_invariant_under_change_of_encoding_and_container        ABSENT
+  the_law_frame_was_attacked_from_another_topic_and_held                   W = 4
+  three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder ABSENT
+  one_measured_count_was_attributed_to_the_wrong_operation_in_two_topics_and_corrected_in_both W = 4
+  the_derived_laws_units_re_runs_reproduced_and_its_defects_were_all_in_blind_spots ABSENT
+  the_change_test_survives_only_as_a_crossing_and_compatibility_classifier_not_as_a_boundary_definition ABSENT
+  a_resolved_strategy_never_inherits_a_composed_operations_laws_but_dominates_them_monotonically ABSENT
+  whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra ABSENT
+
+### 5. rows with a predicate and no width axis at all, by sentence_kind
+  10 measured
+   9 argument
+   2 theorem
+   1 enumeration
+  (total such rows:)
+22
+
+### 6. CONTROL. The reader must find a row it is known to contain, and not one it does not.
+found: proposal / theorem
+rows named a_row_that_does_not_exist: 0
+
+### 7. CONTROL. Planted: a theorem row whose width span is a three-width sweep must be
+    classified theorem/range, and one writing `any` must be classified theorem/any.
+theorem	range	planted_sweep
+theorem	any	planted_free
+expected: theorem range, theorem any

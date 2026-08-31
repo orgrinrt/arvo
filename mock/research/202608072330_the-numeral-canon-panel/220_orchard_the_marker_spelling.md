@@ -1,0 +1,578 @@
+# 220. The marker spelling, and what a checker can honestly enforce
+
+Dominic Orchard, seat 220. Blind first pass, committed before reading any other
+seat's file.
+
+The question is the residue of `ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked`,
+whose own `note` hands the panel two things: the marker's spelling, and where a
+checker enforces the distinction. I take them in that order, because the second
+is decided by the first and not the other way round.
+
+## The gates
+
+**Canon gate: aligned.** Checked against `ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked`
+(`rung = "ratified"`, `ratified_by = "op"`), `mock/registry/dimension.toml` in
+full, and `.claude/rules/every-finding-carries-its-predicate.md`. The ruling
+asks for exactly this work, names it as the panel's, and states four constraints
+I treat as binding: predicates are append-only and never widened in place, the
+three omission states have no fourth, there is no vocabulary for doubt, and the
+test for a proof is to name the construction that makes the axis unable to
+enter. Nothing in the assignment conflicts with any of them. I did not find the
+canon ambiguous on the question, so I have not handed the call back.
+
+**Test gate: the suite is real and I would not refuse work on it.** `cargo test
+-p arvo-checks` from `mock/`: 144 tests across nineteen binaries, all green,
+zero ignored. I read the bodies of the surface I touch rather than the names:
+
+- `checks/tests/every_predicate_names_a_declared_axis.rs`, all seven. Two run
+  over the committed canon and five plant an input. Each planted one carries the
+  case that must fail, and two of them exist specifically to stop the arm
+  becoming vacuous: `a_keywords_list_is_not_read_as_a_predicate` pins that the
+  walk is not over every `string[]`, and
+  `a_laws_failing_region_is_read_as_well_as_its_holding_one` asserts a count of
+  two so that a walk wired to one field reports one and fails. That is a test
+  written by somebody who expected to be wrong.
+- `checks/tests/the_axis_vocabulary_is_append_only.rs`, all three, and the third
+  is the reason the first two are not a list checked against itself. It asserts
+  the invented slug is absent from the canon and present in neither list, so
+  both directions can fail.
+- The region arms in `checks/tests/what_one_field_obliges_another_to_carry.rs`,
+  and `no_new_measurement_lands_without_an_instrument` alongside its control
+  `the_measured_without_evidence_finder_still_finds_the_stuck_rows`, which
+  asserts a finder **non**-empty. That inversion is the right instinct and I
+  reuse its shape below.
+
+**One thing the gate found that is not in my question**, reported here under the
+standing instruction and again at the end: **eight of the arms I exercised return
+an empty list against an empty registry, and five of those return an empty list
+against the real canon too, so for those five an empty registry is
+indistinguishable from a clean one.** `arvo_checks::load` returns `Ok(empty)` for
+a path that is not a directory (`checks/src/lib.rs:165-167`), so
+`canon()`'s `.expect("mock/registry is readable")` at `checks/src/lib.rs:139`
+cannot fire and the message is a claim nothing checks. I found it by pointing my
+own spike at the wrong directory and getting a clean run. Measured in
+`220_probes/p5_warrant_spike.out` section 5. Three arms would notice, all three
+because somebody wrote a non-empty assertion beside them.
+
+## 1. The thing the notation cannot say is not a region
+
+Start where the ruling starts, with the three cases it names, and ask what
+actually differs between them.
+
+Take four rows, all legal today.
+
+| | what the row writes on the width axis | what it means |
+|---|---|---|
+| A | `total_width: W any` | addition at a common scale performs no rescale, so no width appears in the argument |
+| B | `total_width: W any` | nobody varied the width and `any` was the widest thing available |
+| C | `total_width: W in 1..=64` | every width a `u64` admits was enumerated and none was skipped |
+| D | `total_width: W in 1..=64` | a loop ran to 64 and the claim is about what it saw |
+
+A and B write the same string. C and D write the same string. Under I13 all four
+regions are exact and all four are correct: A and B both hold at every width, C
+and D both hold over one to sixty-four. **Nothing about the region is wrong in
+any of the four rows.** So the notation is not short of a region state, and any
+proposal that adds one is answering a different question.
+
+What differs is *how the region was earned*: what makes it true, and therefore
+what a reader may conclude about it. Call that the **warrant**. Region says
+where; warrant says why you may believe where.
+
+The word is not mine. `dimension.toml` already uses it, in the `access_pattern`
+row, and uses it for exactly this: "A correctness claim untouched by it writes
+`access pattern: any`, **with the structural argument as the warrant**, exactly
+as a compile-time result writes `threads any`." That sentence names the thing,
+requires it, and has nowhere to put it. This deliverable is mostly the argument
+that giving it a place is all that is being asked for.
+
+Three warrants, matching the ruling's three cases one for one:
+
+- **swept.** The axis was varied over the span and the claim checked at each. The
+  span is a sample of the axis unless it happens to be the whole of it.
+- **proof.** An argument establishes the claim over the span without the axis
+  entering the argument.
+- **exhaustive.** The axis was varied over the span, the claim checked at each,
+  **and the span is the whole of the axis's domain for a named container.** A
+  sweep's evidence with a universal's coverage, bounded. That is precisely why
+  the ruling can say it is "neither a sample nor a universal": it has the first's
+  method and the second's completeness, over a finite domain.
+
+**Getting the direction right is the whole of the design.** A marker that
+modifies the region is a fourth region state, and I13 has three and no fourth.
+A marker that states a warrant adds no region state at all, which is what makes
+the ruling's own claim in its `note` true rather than merely asserted: appending
+this "invalidates nothing beneath it" because it is orthogonal to the thing every
+existing predicate is a statement in.
+
+## 2. The unmarked state has to stay unmarked, and it is not a hedge
+
+Append-only forces the default. Every committed entry must keep meaning exactly
+what it means, so the unmarked state must remain **warrant not stated**.
+
+It must specifically **not** be defined as `swept`. Two entries in the committed
+corpus settle that on their own:
+
+```
+"threads: threads any, the equalities being decided at compile time"
+"threads: threads any, the refusal being a type-check outcome that precedes execution"
+```
+
+Nobody swept thread counts in either. Defining the unmarked default as `swept`
+would make both rows assert a measurement that was never taken, which is
+restating existing files, which the ruling declined by name.
+
+So the honest reading of an unmarked entry is that the region stands exactly as
+written and the warrant is not asserted. **The objection to that is obvious and
+has to be met**: I13 says there is no vocabulary for doubt, because a hedge and
+a proof look alike once written down. Is an unstated warrant a hedge?
+
+No, and the reason is structural rather than a matter of taste.
+
+I13's three-states rule quantifies over **the world**. An axis listed says where
+the claim holds; absence says it holds nowhere that axis exists. That reading is
+available because a claim is a total function from world-points to truth values,
+so silence about a point can be given a definite value.
+
+A warrant is not a function of world-points. It is a property of the argument
+that produced the row. Absence of it makes no statement about the world, so it
+has no negative to fire and needs none. `dimension.toml`'s own header draws
+exactly this line one notch over, when it separates an axis from an instrument
+parameter: "An axis indexes a situation the world can be in... A parameter
+indexes a run." A warrant indexes **the argument**, which is a third kind of
+thing, is not on the axis list, and could not be written for precisely that
+reason.
+
+And declining to make a stronger claim is not hedging a claim you did make. The
+region is total and exact either way. What the marker adds is a separate,
+stronger assertion that a row may simply not make.
+
+The check that this stays honest is that the resulting notation admits no middle
+ground: the warrant is one of two declared tokens, each carrying an obligation,
+or it is absent. There is no `probably proved` and no `mostly exhaustive`, and
+below I make sure a checker refuses one if somebody writes it. Two positive
+states and an absence, which is I13's own shape one level up.
+
+## 3. A bare token is the failure, and the schema already ran that experiment
+
+The ruling's test is "name the construction that makes the width unable to
+enter, or it was a sweep." Read as a design constraint that is severe, and it
+kills the first thing anybody will propose.
+
+A marker that is a bare word is a relabelling. Anybody can type it, nothing
+checks it, and a reader cannot tell an earned one from a typed one.
+
+**This is not a hypothesis. The schema already carries such a marker and it has
+already failed.** `sentence_kind` takes six values across the registry, of which
+`theorem` (8 rows) and `measured` (32) are a proof/measurement distinction at
+row level. Here is every `theorem` row against the width span its own predicate
+writes, from `220_probes/p2_warrant_vs_region.out`:
+
+| row | width span |
+|---|---|
+| `the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy` | `W = 4` |
+| `no_multiplicative_structure_survives_a_nonzero_fraction_width` | `W in 3..=7` |
+| `a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains` | `W in {4, 5, 6}` |
+| `fusing_a_multiply_add_is_free_exactly_at_translation_equivariance` | `6` |
+| `inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width` | `W in 1..=65` |
+| `the_model_band_transfer_is_defeated_in_both_fragments` | `W any` |
+| `the_join_over_demands_is_union_and_it_is_free` | absent |
+| `a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing` | absent |
+
+**One of eight writes `W any`.** Five write a sweep-shaped span and two write
+nothing, which under I13 read literally says those two theorems hold at no width
+in the library. `no_multiplicative_structure_survives_a_nonzero_fraction_width`
+is a universal sentence in its own `id`, is marked `theorem`, and holds at widths
+three through seven and nowhere else.
+
+I am not saying those eight rows are wrong. I am saying the word `theorem` on a
+row is doing no work that anybody can check, and it is doing it in the exact
+shape the ruling warns about. **That is the experiment, it has run, and the
+result is in the committed canon.** Anything the panel ships must not be a second
+copy of it.
+
+Two consequences follow immediately, and they are the whole of the design:
+
+1. **The marker must be per axis.** A row that proves over width and sweeps over
+   signedness is the normal case, not a corner. `an_additive_verdict_is_independent_of_the_fraction_width`
+   is width-free by construction and its overflow policy is a two-value sweep. A
+   row-level word cannot say that, so it says the strongest thing about the row
+   and gets read as saying it about every axis, which is what happened above.
+2. **The token must be unwriteable without its construction.** Not a token plus
+   an optional note. One act, and a checker that refuses the half of it.
+
+## 4. The candidate spellings
+
+Seven, with what each buys and where it dies. I have kept the dead ones because
+the next reader attacking this from another angle starts from the list rather
+than from nothing.
+
+**A. Prose after a comma, which is what the corpus does today.**
+
+```
+"threads: threads any, the equalities being decided at compile time"
+```
+
+*Buys:* nothing to build; already in use; reads well; costs no grammar change.
+
+*Dies on:* the corpus writes warrants and sweep-notes in the same slot with the
+same syntax, so nothing separates them. From `220_probes/p3_delimiter_collision.out`,
+three committed spans are warrants in disguise (the two above plus `"threads:
+threads = 1, the splits being computed rather than executed on lanes"`), sitting
+beside `"total_width: W in 1..=19, the widest evaluable width per arity"` and
+`"rounding: rounding = nearest, against a phase-zero mutant"`, which are notes
+about a sweep. **Same shape, opposite kind, and no reader or checker can tell
+them apart.** That is the empirical refutation of prose as the marker, and it is
+also the evidence that the content the ruling asks for already exists and only
+wants a slot. The ruling asked for a marker the notation lacked; prose is what
+the notation already had.
+
+**B. A row-level field, or reusing `sentence_kind`.**
+
+*Buys:* trivially parseable; the field exists.
+
+*Dies on:* granularity, per section 3. It also cannot survive the two-coordinate
+problem `question::what_a_proof_marker_is_against_a_measurement` records, that
+"one file writes a width universal as two separately quantified widths" — a
+universal spelled `I any` plus `F any` rather than `W any`. A row-level word
+cannot attach to one of those and not the other. **This candidate is not
+hypothetical: it is what shipped, and the eight rows are its report card.**
+
+**C. A parallel keyed list, `warrant = ["total_width: proof, ..."]`.**
+
+*Buys:* parseable and per axis.
+
+*Dies on:* two keyed lists that must agree with nothing pairing them. A warrant
+naming an axis the predicate does not list warrants a claim nobody made; a
+predicate entry with no warrant row is silence that looks like absence. It is one
+keyed list written twice, and the divergence is silent.
+
+**D. A dimension slug per warranted axis, `total_width_proof:`.**
+
+*Dies hardest.* It doubles the axis set with non-axes, so absence of
+`total_width` stops being readable: a reader cannot tell whether the axis is
+absent or merely spelled the other way. Absence is the strongest negative
+statement in the notation and this makes every one of them ambiguous. It also
+fails `dimension.toml`'s own test for what an axis is, since a warrant indexes an
+argument rather than a situation the world can be in.
+
+**E. A leading token before the span.**
+
+```
+"total_width: proof(...) any"
+```
+
+*Dies on:* the existing splitter takes the first colon as the axis boundary, and
+any spelling that puts structure before the span either moves that boundary or
+buries the token inside a span grammar the checker deliberately does not read.
+
+**F. A trailing warrant clause after a second colon.** `<axis>: <span>: <warrant>`.
+
+```
+"total_width: W any: proof, addition at a common scale performs no rescale so no width enters the argument"
+"total_width: W in 1..=64: exhaustive, every width a u64 container admits"
+```
+
+*Buys:* per axis; parseable by one extra `split_once`; leaves the span grammar
+untouched, which preserves the stated reason `predicate.rs` gives for not
+reading the value side ("the grammars differ per axis... nothing in common a
+regex would capture without also accepting everything") — a closed token after a
+fixed delimiter is exactly what that objection does not cover; and reads left to
+right as axis, where, why.
+
+*Dies on:* nothing I could make it die on. The collision risk is the only real
+question and it is measured, below.
+
+**G. F with a rarer delimiter** (`|`, `;`, `@`, `~`, `::`, `--`, `=>`).
+
+*Buys:* the same, with a delimiter that could never collide.
+
+*Dies on:* register. Every one of them reads as machine syntax in a field the
+corpus writes as English, and they buy protection against a collision that does
+not exist. Measured: **all eight candidate delimiters, the colon included, occur
+zero times across all 527 committed spans** (`220_probes/p3_delimiter_collision.out`).
+The choice is therefore free of collision and is settled on readability, which
+the colon wins because the entry already reads `axis: span` and this extends the
+same rhythm.
+
+## 5. The spelling
+
+```
+<axis>: <span>                                     the warrant is not stated
+<axis>: <span>: proof, <the construction that makes the axis unable to enter>
+<axis>: <span>: exhaustive, <the domain the span is the whole of>
+```
+
+Two tokens, closed, the way the axis set is closed. The third state is the
+absence of a token, which is why the ruling asks for two markers and not three.
+
+**`proof`** is the ruling's own noun. The clause is not decoration: `proof` with
+nothing after it is the bare relabel, and a checker refuses it, exactly as the
+shipped arm already refuses an axis listed with no values
+(`predicate-entry-has-no-values`, `checks/src/predicate.rs:82-94`). The same
+shape, one level down.
+
+**`exhaustive`** rather than `whole` or `total`, because the distinguishing
+content is that the sweep left nothing out. The clause names the domain, and the
+row is separately obliged to carry a `container` entry, because `W in 1..=64` is
+the whole of a `u64` and a sample of a `u128`, and the span alone does not say
+which. **That obligation is on the axis vocabulary that already exists** rather
+than on a second place to name a container, which is the whole reason to prefer
+it over folding the container into the token.
+
+The append-only property is compiled and run rather than argued:
+`220_probes/p5_warrant_spike.out` section 1, **527 committed entries, zero read
+differently under the new grammar, zero unreadable.** That is the append-only
+rule discharged as a measurement.
+
+Worked, on the row the canon already reasoned about this way. The `promotion` field of `ruling::the_additive_and_absorption_verdicts_are_canon`
+promotes `an_additive_verdict_is_independent_of_the_fraction_width` with the
+sentence "the mechanism it names, that addition at a common scale performs no
+rescale, is why the width cannot enter." That is the ruling's test, applied,
+recorded, and living in a `promotion` field on a different row. Under this
+spelling it lives where it is checkable:
+
+```
+"total_width: W any: proof, addition at a common scale performs no rescale so no width enters the argument"
+"fraction_width: F any: proof, the same"
+"overflow_policy: overflow policy in {wrap, saturate}"
+```
+
+Width and fraction carry the warrant; overflow policy does not, because it was
+swept. **No row-level word can express that shape**, which is the argument for
+the locus in one line.
+
+## 6. What a checker enforces
+
+Six arms. Each is implemented and run in `220_probes/warrant_spike/`, each has a
+planted case that must fail, and a reachability control asserts every arm fires
+at least once, because an arm no planted case reaches is a line of code rather
+than a check.
+
+| arm | refuses |
+|---|---|
+| `warrant-is-not-a-known-token` | a second colon whose tail is not `proof` or `exhaustive`. Keeps the set closed the way the axis set is closed, and is also the arm that catches a colon written inside a span. |
+| `warrant-has-no-clause` | a token with nothing after the comma. **This is the arm that stops `proof` becoming what `theorem` became.** |
+| `warrant-clause-is-a-bare-relabel` | a clause from a closed blocklist that asserts the warrant instead of naming a mechanism. |
+| `exhaustive-over-an-unbounded-span` | `exhaustive` on a span containing `any`. The ruling's own words: neither a sample nor a universal, and `any` is the universal. |
+| `exhaustive-names-no-container` | `exhaustive` on a row whose predicate names no `container`. |
+| `a-proof-asserted-only-at-row-level` | a `theorem` row none of whose entries carries a per-axis `proof`. |
+
+I drafted a seventh, `a-span-carrying-a-colon`, and **the reachability control
+deleted it**: `read` splits at the second colon, so a span never contains one,
+and the case it was drafted for is refused by the token arm instead. One arm, not
+two. I record that because the control catching my own dead arm is the reason to
+trust the other six, and because a spike whose every arm passed on the first run
+would be telling me about my expectations rather than about the design.
+
+**What the checker cannot enforce, stated rather than glossed.** It enforces the
+*presence and shape* of a construction. It cannot grade the *content*: no arm can
+tell a real mechanism from a well-phrased restatement, and the blocklist arm is
+the weakest thing here by a distance. It carries the identical defect
+`checks/src/shape.rs:225-237` documents at length about its own retired word
+list, that "a word list cannot tell a report from a counterfactual", and I have
+no better instrument. So: **the mechanical half makes the absence of a
+construction impossible to hide; the content test stays a human gate, and that
+gate already exists and already works.** It is the `promotion` field on the
+ratifying ruling, which in `ruling::the_additive_and_absorption_verdicts_are_canon` did this test correctly and in
+public, and which in the same field records a third proposal failing it for
+the same reason. I would rather say that plainly than claim the arms close the class.
+
+**Where the arms run.** `mock/checks/`, as an extension of `predicate.rs`,
+because that file already walks exactly these three fields
+(`proposal.predicate`, `law.holds`, `law.fails`) and already splits on the first
+colon. The extension is a second `split_once` and the arms above. Nothing else
+in the crate moves. I have not written it into `checks/` and will not: the round
+is at `TOPIC` (two flat topic files in `mock/design_rounds/`, no changelist), and
+the crate is code tier, so a spike is the correct locus for it today.
+
+## 7. The ratchet, because no existing file is restated
+
+`a-proof-asserted-only-at-row-level` fires on eight rows today. The ruling says
+the markers apply going forward and no existing file is restated, so this arm
+cannot be a gate or it demands exactly the restatement pass op declined.
+
+It is a **ratchet**: the count does not rise. The crate already runs one,
+`no_new_measurement_lands_without_an_instrument`
+(`checks/tests/what_one_field_obliges_another_to_carry.rs:42-65`), with a ceiling
+of six and a doc comment naming why each of the six is stuck. Same shape here,
+ceiling of eight, and the eight named in the comment with their width spans as
+tabulated in section 3. The ninth turns it red.
+
+**And it carries that ratchet's control**, which is the part that matters: the
+finder is separately asserted **non**-empty, because a ceiling passes two ways
+and the second is the finder having stopped working. That control is what would
+have caught my own empty-registry problem, and it is why I am not proposing a
+ratchet without one.
+
+## 8. Corollaries
+
+**An open question in the canon closes.** The `note` on `ruling::the_additive_and_absorption_verdicts_are_canon` records an
+asymmetry it explicitly leaves to "whoever next touches the axis": the additive
+row lists no `rounding` where its multiplicative sibling lists `rounding any`,
+addition at a common scale does not round, "but the notation has no inapplicable
+state and absence means the finding holds nowhere that dimension exists." That is
+the same gap one axis over. There is no inapplicable state and there must not be
+one, because it is the fourth omission state op refused and `dimension.toml`
+already corrected itself for inventing per axis. The row wants `rounding:
+rounding any: proof, addition at a common scale performs no rescale so no
+rounding step exists`. **The marker is what makes writing that honest instead of
+inflationary**, and I would say the question is answered by this spelling rather
+than merely compatible with it.
+
+**`sentence_kind = "theorem"` becomes derivable and should stop being asserted.**
+A row is a theorem exactly when every entry of its predicate carries a `proof`
+warrant. Once the per-axis form exists, the row-level word is a second,
+unfalsifiable copy of a fact stated per axis, and the count of independent
+warrant claims should go from two to one. **I am not proposing that here**,
+because it would restate the eight existing files and the ruling declined that.
+It is the natural follow-on once the ratchet has run down, and I flag it so
+whoever gets there does not re-derive it.
+
+**The two-coordinate problem survives.** A width universal spelled `I any` plus
+`F any` carries the warrant on each entry independently. Nothing special is
+needed, and that is a consequence of per-axis granularity rather than a feature
+anybody has to remember.
+
+## 9. Challenging the thing itself, as instructed
+
+**Should the distinction exist?** Yes, and the corpus is what says so rather than
+the ruling. Three committed spans are already warrants written as prose and
+indistinguishable from sweep-notes; `dimension.toml` requires "the structural
+argument as the warrant" and gives it nowhere to go; a ratified ruling applies the
+test in a free-text field on a different row; and eight rows assert proofhood in
+a place with no axis and no construction. **Five separate places in the canon are
+carrying this one fact in five hand-maintained shapes, and none of them can be
+checked.** That is the situation a single graded slot exists to collapse.
+
+**Is the predicate notation the right place?** This is the challenge worth
+taking seriously, and the argument against is decent: the row already carries
+`evidence`, `provenance`, `standing`, `sentence_kind`, and its ratifying ruling
+carries `promotion`. Adding a sixth warrant-shaped field could fairly be called
+one more copy of the thing I just complained about.
+
+It is not, and the reason is forced rather than chosen. **Every one of those five
+is row-scoped, and the thing being warranted is a span on one axis.** The
+predicate is the only structure in the schema keyed by axis, so it is the only
+place a per-axis warrant can live at all. The choice is between putting it there
+and not having it, and the eight rows are what "not having it" looks like.
+
+**Could the three-way split fail to be spellable?** I looked for that, since the
+brief says a failure to spell it is a legitimate return. The place it would have
+failed is the doubt prohibition: if the unmarked state had to be given a positive
+reading, every existing file would be restated and the ruling's own "invalidates
+nothing" would be false. Section 2 is the argument that it does not, and it turns
+on a distinction `dimension.toml` already draws between what indexes the world
+and what indexes a run. **If a later reader wants to break this deliverable, that
+section is where to aim**: if absence of a warrant is a fourth omission state
+after all, the spelling has to go somewhere other than the predicate and I do not
+know where.
+
+## 10. Findings outside the question
+
+Reported harshly, as instructed, and none of them softened.
+
+**`arvo_checks::load` fails silently, and five of eight arms cannot tell an empty
+registry from a clean one.** `checks/src/lib.rs:165-167` returns `Ok(())` for a
+path that is not a directory, so `load` returns an empty registry and
+`canon()`'s `.expect("mock/registry is readable")` at `checks/src/lib.rs:139`
+never fires. That `expect` message is a claim that nothing checks. Measured:
+`p5_warrant_spike.out` section 5, eight arms exercised, all eight silent on an
+empty registry, three of them noisy on the real one only because somebody
+wrote a non-empty assertion. **Any future arm asserted empty is vacuous under
+this failure and nothing will say so.** The fix is one line, a `NotFound` error
+in `walk` for a top-level path that is not a directory, and it is code tier, so
+it needs a round rather than an edit here.
+
+**`fusing_a_multiply_add_is_free_exactly_at_translation_equivariance` writes its
+predicate in a different dialect from every other row.** `total_width: 6`,
+`signedness: in {unsigned, signed}`, `arity: 3`, `threads: 1`, against the
+corpus's `W = 6`, `signedness in {...}`, `arity = 3`, `threads = 1`. The shipped
+arm cannot see it, because it checks the slug side only. It parses, it means what
+it looks like, and it is the row that would break any future instrument keying on
+the span's leading token. Not a defect in the claim; a defect in the entry, and
+cheap to fix while somebody is in there.
+
+**`W in 1..=64` appears zero times in the corpus and `W in 1..=65` twice.** The
+`total_width` row of `dimension.toml` uses `W in 1..=64` as its example of the
+whole container domain, so the canonical illustration of the case the ruling
+names has no instance. The nearest instances are `1..=65`, `1..=19`, `1..=d` and
+`1..=k - s2(k)`. Worth knowing before anybody writes an arm keyed to the literal
+sixty-four: the exhaustive case in this corpus is more often a **parameterised**
+whole domain (`fraction_width: in 0..=W-1`, five instances) than a numeric one,
+and a parameterised whole domain is spelled identically to a sample.
+
+## 11. Blindness
+
+I did not open `mock/research/202608072330_the-numeral-canon-panel/` beyond
+`mkdir`-ing my own probe directory and counting the entries with `ls | grep -c .`,
+which printed a number and no names. I ran no `git log` at all, on any branch.
+
+**I read beyond the four sources the brief enumerated, and I say so rather than
+claim I did not.** Beyond the ruling row, `dimension.toml`, the workspace rule and
+the predicate strings, I read: `mock/checks/src/*.rs` and the test bodies, which
+the test gate requires and which necessarily precedes the assigned work;
+`ruling.toml` around the governing row, including `1462-1470`, which turned out
+to carry the applied test and an open question this answers;
+`registry/question.toml`'s `what_a_proof_marker_is_against_a_measurement`, being
+the question the ruling names in its own `answers` field; and row context in
+`proposal.toml`, `proposal-the-later-topics.toml` and `law*.toml`, which the
+census needed to attribute an entry to a row.
+
+All of it is committed registry and crate source, which is shared input every
+seat reads. None of it is another seat's file. **My read of the blindness
+requirement is that it is independence from the parallel derivation, not
+ignorance of the canon**, and on that reading it holds. If the dispatcher meant
+the stricter thing, this paragraph is the record and the deliverable should be
+discounted accordingly rather than trusted on my say-so.
+
+## 12. What I did not settle
+
+- **The blocklist arm is weak and I have no better instrument.** Section 6 says
+  so. Somebody with a better idea for mechanically separating a named mechanism
+  from a restatement would improve this materially, and I could not find one.
+- **Whether `exhaustive` should also be admissible on a span that is a set**
+  (`W in {1, 2, 3}` where three is the whole domain). I left it legal because a
+  bounded whole domain can be enumerated either way, but I did not look for a
+  case that makes it wrong.
+- **The ceiling of eight is a count I measured, not a triage.** The ratchet's
+  sibling names why each of its six is stuck, one at a time. I have not read the
+  eight closely enough to do that, and a ratchet whose comment says only "eight"
+  is weaker than one whose comment says why.
+
+## Predicates
+
+Corpus findings, in the notation, over the committed tree at `14d0bbab`.
+
+```
+the 527-entry census, the delimiter measurement, the zero-reparse result:
+  holds for: mock/registry/*.toml at 14d0bbab, all 12 files, all 3 predicate-bearing
+             fields (proposal.predicate, law.holds, law.fails), 527 entries, threads = 1
+the eight theorem rows and their width spans:
+  holds for: mock/registry/*.toml at 14d0bbab, sentence_kind = theorem, namespace = proposal,
+             8 of 8 rows, threads = 1
+the empty-registry vacuity:
+  holds for: mock/checks at 14d0bbab, 8 of the crate's 30 finding-returning arms, rustc
+             1.98.0-nightly (57d06900f), edition 2024, threads = 1
+```
+
+The arms not exercised are not claimed about. Eight of thirty is what I
+ran, and the other twenty-two are a question rather than a result.
+
+## Probes
+
+All in `220_probes/`, sources and outputs both committed.
+
+- `p1_predicate_census.sh` / `.out` — 527 entries, per-axis shape census, controls
+  on the classifier and on a known-absent pattern.
+- `p2_warrant_vs_region.sh` / `.out` — row-aware, `sentence_kind` against the
+  width span it writes, controls on the reader and a planted classification.
+- `p3_delimiter_collision.sh` / `.out` — eight candidate delimiters against 527
+  spans, plus the prose clauses that are already warrants, with a positive
+  control on the comma.
+- `p4_load_on_a_missing_dir.sh` / `.out` — the `walk` guard and the `expect` that
+  cannot fire.
+- `warrant_spike/` and `p5_warrant_spike.out` — the grammar, the six arms, nine
+  planted cases, the reachability control that deleted a seventh arm, the
+  append-only run over the committed canon, and the empty-registry section.
+  Build with `cargo run` from `warrant_spike/`; it exits non-zero if any case
+  misbehaves.
