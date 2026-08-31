@@ -2082,3 +2082,83 @@ Its recommendation, to send one seat with reading rights at Q57 together with th
 rounding measurement rows, is right for Q57 and unnecessary for the other two, per
 C.3. **The seat with reading rights should be sent, and it should be sent to port the
 clause rather than to build a fourth probe.**
+
+## H. An incident in the coordinator's clone, reported rather than tidied
+
+**I wrote into `arvo-coord`, which is not my tree, for about fifteen minutes during
+the reply phase.** Nothing is lost and nothing of anyone else's was overwritten, but
+it happened and the record should carry it rather than a clean-looking file.
+
+**What happened.** The Bash tool resets the working directory between calls, and my
+worktree is `/Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/seat222` while
+the session's default directory is `arvo-coord`. Several commands in this phase began
+`cd mock/research/...` with no absolute prefix, so they resolved in `arvo-coord`. The
+`a5` and `a6` probe sources, their outputs and the first 182 lines of this appendix
+were created there rather than here, and one `git add` plus `git commit` ran there
+too.
+
+**What it cost and what it did not.** The appendix existed only in that tree until I
+copied it out; the probes existed only there until I copied them out; both are now
+committed on `research/fundamentals-222` and both reproduce their outputs in this
+worktree after the pre-commit reformatting. **Nothing of the coordinator's was
+modified**: its own staged work was a large `mock/checks` to `mock/lints` and
+`mock/tools` restructure which it committed itself as `3a18faae` while I was running,
+and my writes touched only paths under `222_probes` and my own file.
+
+**What I did about it, and what I did not do.** I did not revert, per
+`one-session-one-workspace.md`: "having edited a tree and only then discovered it was
+not yours, stop before reverting ... prefer `git stash` over `git restore`, because a
+stash is recoverable and a restore leaves no object and no reflog entry." So the
+worktree modifications I made there are in `stash@{0}` of that clone, under the
+message "seat222 accidental writes, recoverable: appendix draft plus unformatted
+probe copies. Content is all committed on research/fundamentals-222." I limited the
+stash by pathspec to my eleven files and verified afterwards that it captured exactly
+those and nothing else.
+
+**What is left for the owner to decide.** My `a5` and `a6` files are tracked in that
+clone as well as here, because the accidental commit landed there. They are byte
+identical to what is on my branch. **Removing them from `research/canon-registry` is
+that clone's owner's call and not mine**, and I have not touched it further.
+
+**The rule that would have prevented it is already written and I did not follow it.**
+`one-session-one-workspace.md`: "never `cd` between repos by relative path ... where
+the answer matters, use `git -C <absolute-path>`". Every command after the incident in
+this file uses an absolute path, and the two before it that produced the file above
+did not, which is why the first half of this session landed correctly by luck rather
+than by discipline: those commands happened to run while the shell was in the right
+place.
+
+## I. The roster, after the reply
+
+Changes only. Everything not listed is unchanged from section 10.
+
+| question | was | is now | why |
+|---|---|---|---|
+| `whose_reduction_governs_a_lossy_crossing` | entailed, the target's | **open** | B.1, my entailment reaches the codomain and not the selector |
+| `which_width_coordinates_a_consumer_writes` | half open | **settled**, total and fraction | B.4, 221's argument from the standards obligation |
+| `inclusion_order_singleton_amendment` | partial | **settled**, option 1 | B.3, its answer; C.1, on different evidence |
+| `one_numeral_family_or_several` | derived | **measured**, and the structure is the answer | B.2, its probe |
+| `mixed_numeral_addition` | entailed, both forms | **entailed**, option 2 with the target declared or inferred | B.6, option 3 is refuted as worded |
+| `the_width_surface_crossing` | derived, option 5 | **measured**, a composition of 5, 6 and 7 | D.1, both deciders refuted by `a5` |
+| `what_the_admission_contract_asks_a_candidate_to_expose` | entailed, option 2 | **option 2, with option 3 not closed** | D.2, 221's calibration is better than mine |
+| `is_the_role_set_closed` | derived, closed concept | **derived, and contested** | D.3, and the instrument that would decide it is named |
+| `what_a_platform_width_type_is` | entailed, a fifth option | **entailed, and now contested** | C.2, decided against 221 by a row it does not cite |
+
+Net: one answer withdrawn, three questions closed that were not, one upgraded from a
+reading to a measurement, one softened, and two now carry a stated disagreement with
+the evidence that would settle each.
+
+**What a third seat should attack first**, and this is a joint list rather than mine:
+
+1. **Q36**, which both of us now leave open and which I briefly closed wrongly. The
+   MATLAB `fimath` observation is the lead and the instrument is a parity check
+   against one convention, which the standards obligation already demands for other
+   reasons.
+2. **The unsigned half of 221's `p2`**, its own item 1, which is the difference
+   between `signedness: signed` and a claim about the order at all.
+3. **Q26**, where C.2 and 221's section 4 disagree on a ratified clause's reach. It is
+   a reading rather than a measurement, so it wants a third reader rather than a probe.
+4. **The bridge table's cost at shipping widths**, D.1's residue, which is the only
+   part of Q9 no instrument has touched.
+5. **Porting `122` section 4.6 into the registry**, without which Q57 is not a
+   research question.
