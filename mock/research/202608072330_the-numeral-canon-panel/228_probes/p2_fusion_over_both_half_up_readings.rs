@@ -40,7 +40,13 @@ enum Mode {
 use Mode::*;
 
 const MODES: [Mode; 7] = [
-    Floor, Ceiling, TowardZero, AwayFromZero, HalfUpPinf, HalfUpAway, HalfEven,
+    Floor,
+    Ceiling,
+    TowardZero,
+    AwayFromZero,
+    HalfUpPinf,
+    HalfUpAway,
+    HalfEven,
 ];
 
 fn name(m: Mode) -> &'static str {
@@ -71,22 +77,52 @@ fn rnd(p: i128, f: u32, m: Mode) -> i128 {
     let r = p.rem_euclid(d);
     match m {
         Floor => q,
-        Ceiling => if r == 0 { q } else { q + 1 },
-        TowardZero => if p >= 0 || r == 0 { q } else { q + 1 },
+        Ceiling => {
+            if r == 0 {
+                q
+            } else {
+                q + 1
+            }
+        }
+        TowardZero => {
+            if p >= 0 || r == 0 {
+                q
+            } else {
+                q + 1
+            }
+        }
         AwayFromZero => {
             if p >= 0 {
-                if r == 0 { q } else { q + 1 }
+                if r == 0 {
+                    q
+                } else {
+                    q + 1
+                }
             } else {
                 q
             }
         }
-        HalfUpPinf => if 2 * r >= d { q + 1 } else { q },
+        HalfUpPinf => {
+            if 2 * r >= d {
+                q + 1
+            } else {
+                q
+            }
+        }
         HalfUpAway => {
             if p >= 0 {
-                if 2 * r >= d { q + 1 } else { q }
+                if 2 * r >= d {
+                    q + 1
+                } else {
+                    q
+                }
             } else {
                 // ties away from zero on the negative side: round the magnitude
-                if 2 * r > d { q + 1 } else { q }
+                if 2 * r > d {
+                    q + 1
+                } else {
+                    q
+                }
             }
         }
         HalfEven => {
@@ -191,32 +227,54 @@ fn main() {
     println!();
     let published_tz = [1.64f64, 5.54, 12.34, 22.22, 33.40];
     let published_he = [12.50f64, 12.50, 9.38, 6.25, 3.91];
-    println!("{:<14} {:>3} {:>12} {:>12}  {}", "mode", "F", "published", "measured", "verdict");
+    println!(
+        "{:<14} {:>3} {:>12} {:>12}  {}",
+        "mode", "F", "published", "measured", "verdict"
+    );
     let mut faithful = true;
     for f in 1..=5u32 {
         let (d, t) = measure(w, f, TowardZero, TowardZero, true, false);
         let pct = 100.0 * d as f64 / t as f64;
         let want = published_tz[(f - 1) as usize];
         let ok = (pct * 100.0).round() == (want * 100.0).round();
-        if !ok { faithful = false; }
-        println!("{:<14} {:>3} {:>11.2}% {:>11.2}%  {}", "toward_zero", f, want, pct,
-            if ok { "matches" } else { "DIFFERS" });
+        if !ok {
+            faithful = false;
+        }
+        println!(
+            "{:<14} {:>3} {:>11.2}% {:>11.2}%  {}",
+            "toward_zero",
+            f,
+            want,
+            pct,
+            if ok { "matches" } else { "DIFFERS" }
+        );
     }
     for f in 1..=5u32 {
         let (d, t) = measure(w, f, HalfEven, HalfEven, true, false);
         let pct = 100.0 * d as f64 / t as f64;
         let want = published_he[(f - 1) as usize];
         let ok = (pct * 100.0).round() == (want * 100.0).round();
-        if !ok { faithful = false; }
-        println!("{:<14} {:>3} {:>11.2}% {:>11.2}%  {}", "half_even", f, want, pct,
-            if ok { "matches" } else { "DIFFERS" });
+        if !ok {
+            faithful = false;
+        }
+        println!(
+            "{:<14} {:>3} {:>11.2}% {:>11.2}%  {}",
+            "half_even",
+            f,
+            want,
+            pct,
+            if ok { "matches" } else { "DIFFERS" }
+        );
     }
     println!();
-    println!("  faithfulness: {}", if faithful {
-        "ten of ten digits reproduced, so this implements the same arm"
-    } else {
-        "MISMATCH. This implements a different arm and the rest of the file is void."
-    });
+    println!(
+        "  faithfulness: {}",
+        if faithful {
+            "ten of ten digits reproduced, so this implements the same arm"
+        } else {
+            "MISMATCH. This implements a different arm and the rest of the file is void."
+        }
+    );
     println!();
 
     // ---- the table ---------------------------------------------------------
@@ -225,20 +283,34 @@ fn main() {
         (false, true, "unsigned, saturating"),
         (true, false, "signed, wrap"),
         (true, true, "signed, saturating"),
-    ].iter() {
+    ]
+    .iter()
+    {
         println!("## {label}");
         println!();
         print!("{:<16} {:<10}", "mode", "ratified");
-        for f in 0..=5u32 { print!("{:>9}", format!("F={f}")); }
+        for f in 0..=5u32 {
+            print!("{:>9}", format!("F={f}"));
+        }
         println!("   free at");
         for m in MODES {
-            print!("{:<16} {:<10}", name(m), if ratified(m) { "yes" } else { "no" });
+            print!(
+                "{:<16} {:<10}",
+                name(m),
+                if ratified(m) { "yes" } else { "no" }
+            );
             let mut free = Vec::new();
             for f in 0..=5u32 {
                 let (d, t) = measure(w, f, m, m, signed, sat);
                 let pct = 100.0 * d as f64 / t as f64;
-                if d == 0 { free.push(f.to_string()); }
-                if d == 0 { print!("{:>9}", "-"); } else { print!("{:>8.2}%", pct); }
+                if d == 0 {
+                    free.push(f.to_string());
+                }
+                if d == 0 {
+                    print!("{:>9}", "-");
+                } else {
+                    print!("{:>8.2}%", pct);
+                }
             }
             println!("   F in {{{}}}", free.join(","));
         }
@@ -248,7 +320,10 @@ fn main() {
     // ---- the equivariance prediction, cell by cell -------------------------
     println!("## the prediction. Free exactly where rnd is equivariant on the domain reached.");
     println!();
-    println!("{:<16} {:<9} {:>3} {:<14} {:<10} {}", "mode", "signed", "F", "equivariant", "free", "agree");
+    println!(
+        "{:<16} {:<9} {:>3} {:<14} {:<10} {}",
+        "mode", "signed", "F", "equivariant", "free", "agree"
+    );
     let mut cells = 0;
     let mut mismatches = 0;
     for &signed in [false, true].iter() {
@@ -260,8 +335,14 @@ fn main() {
                 cells += 1;
                 if eq != free {
                     mismatches += 1;
-                    println!("{:<16} {:<9} {:>3} {:<14} {:<10} MISMATCH",
-                        name(m), signed, f, eq, free);
+                    println!(
+                        "{:<16} {:<9} {:>3} {:<14} {:<10} MISMATCH",
+                        name(m),
+                        signed,
+                        f,
+                        eq,
+                        free
+                    );
                 }
             }
         }
@@ -284,16 +365,23 @@ fn main() {
     let mut c1_bad = 0;
     for &signed in [false, true].iter() {
         for &sat in [false, true].iter() {
-            let counts: Vec<u64> = MODES.iter().map(|&m| measure(w, 0, m, m, signed, sat).0).collect();
+            let counts: Vec<u64> = MODES
+                .iter()
+                .map(|&m| measure(w, 0, m, m, signed, sat).0)
+                .collect();
             let first = counts[0];
-            if counts.iter().any(|&c| c != first) { c1_bad += 1; }
+            if counts.iter().any(|&c| c != first) {
+                c1_bad += 1;
+            }
             let tag = if sat { "saturating" } else { "wrap" };
             let sg = if signed { "signed" } else { "unsigned" };
             println!("     F=0 {sg:<9} {tag:<11} all seven modes: {counts:?}");
         }
     }
     if c1_bad == 0 {
-        println!("  C1 EXPECTED-PASS ok: at F = 0 the rounding axis moves nothing, in all four cells");
+        println!(
+            "  C1 EXPECTED-PASS ok: at F = 0 the rounding axis moves nothing, in all four cells"
+        );
     } else {
         println!("  C1 BROKEN: {c1_bad} cell(s) where modes differ at F = 0");
         ok = false;
@@ -302,19 +390,27 @@ fn main() {
     // C1b mutation for C1: a rnd that is NOT the identity at F = 0 must break
     // the mode-independence C1 just asserted, or C1 is asserting nothing.
     fn rnd_broken_at_zero(p: i128, f: u32, m: Mode) -> i128 {
-        if f == 0 { return p + 1; }
+        if f == 0 {
+            return p + 1;
+        }
         rnd(p, f, m)
     }
     {
         let (lo, hi) = (0i128, (1i128 << w) - 1);
         let mut differ = 0u64;
-        for a in lo..=hi { for b in lo..=hi { let pr = a * b;
-            let t = reduce(rnd_broken_at_zero(pr, 0, Floor), false, false, w);
-            for c in lo..=hi {
-                let step = reduce(t + c, false, false, w);
-                let fus = reduce(rnd(pr + c, 0, Floor), false, false, w);
-                if step != fus { differ += 1; }
-            } } }
+        for a in lo..=hi {
+            for b in lo..=hi {
+                let pr = a * b;
+                let t = reduce(rnd_broken_at_zero(pr, 0, Floor), false, false, w);
+                for c in lo..=hi {
+                    let step = reduce(t + c, false, false, w);
+                    let fus = reduce(rnd(pr + c, 0, Floor), false, false, w);
+                    if step != fus {
+                        differ += 1;
+                    }
+                }
+            }
+        }
         if differ > 0 {
             println!("  C1b EXPECTED-FAIL ok: a rnd that is not the identity at F = 0 differs on {differ} triples");
         } else {
@@ -339,7 +435,9 @@ fn main() {
     for f in 1..=5u32 {
         let (a, _) = measure(w, f, HalfUpPinf, HalfUpPinf, true, false);
         let (b, _) = measure(w, f, HalfUpAway, HalfUpAway, true, false);
-        if a != b { c3 = true; }
+        if a != b {
+            c3 = true;
+        }
     }
     if c3 {
         println!("  C3 EXPECTED-FAIL ok: the two readings of half_up give different signed rates");
@@ -354,7 +452,9 @@ fn main() {
     for f in 0..=5u32 {
         let (a, _) = measure(w, f, HalfUpPinf, HalfUpPinf, false, false);
         let (b, _) = measure(w, f, HalfUpAway, HalfUpAway, false, false);
-        if a != b { c4 = false; }
+        if a != b {
+            c4 = false;
+        }
     }
     if c4 {
         println!("  C4 EXPECTED-PASS ok: the two readings agree at every F under unsigned");
@@ -372,14 +472,32 @@ fn main() {
         for f in 1..=5u32 {
             let (a, _) = measure(w, f, TowardZero, TowardZero, true, false);
             let (b, _) = measure(w, f, AwayFromZero, AwayFromZero, true, false);
-            print!("     F={f}: toward_zero {a}, away_from_zero {b}{}", if a == b { "  equal\n" } else { "  DIFFER\n" });
-            if a != b { same = false; }
+            print!(
+                "     F={f}: toward_zero {a}, away_from_zero {b}{}",
+                if a == b { "  equal\n" } else { "  DIFFER\n" }
+            );
+            if a != b {
+                same = false;
+            }
         }
-        println!("  C5 {}: the two conjugate modes {} under signed wrap",
+        println!(
+            "  C5 {}: the two conjugate modes {} under signed wrap",
             if same { "note" } else { "note" },
-            if same { "carry identical counts" } else { "carry different counts" });
+            if same {
+                "carry identical counts"
+            } else {
+                "carry different counts"
+            }
+        );
     }
 
     println!();
-    println!("controls: {}", if ok && faithful { "clean, and the arm reproduces the published digits" } else { "BROKEN" });
+    println!(
+        "controls: {}",
+        if ok && faithful {
+            "clean, and the arm reproduces the published digits"
+        } else {
+            "BROKEN"
+        }
+    );
 }

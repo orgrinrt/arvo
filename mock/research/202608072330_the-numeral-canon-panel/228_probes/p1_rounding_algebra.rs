@@ -29,7 +29,11 @@ fn div_toward_zero(x: i128, d: i128) -> i128 {
     x / d
 }
 fn div_away_from_zero(x: i128, d: i128) -> i128 {
-    if x >= 0 { div_ceil(x, d) } else { div_floor(x, d) }
+    if x >= 0 {
+        div_ceil(x, d)
+    } else {
+        div_floor(x, d)
+    }
 }
 // ties toward positive infinity: floor(x/d + 1/2)
 fn half_up_pinf(x: i128, d: i128) -> i128 {
@@ -76,9 +80,13 @@ fn modes() -> Vec<Mode> {
 
 /// Is `R(x + n*d) == R(x) + n` for every x in the scan and every n in the shift
 /// range? Returns the first witness against it.
-fn equivariance_witness(f: fn(i128, i128) -> i128, s: u32, lo: i128, hi: i128, shifts: i128)
-    -> Option<(i128, i128, i128, i128)>
-{
+fn equivariance_witness(
+    f: fn(i128, i128) -> i128,
+    s: u32,
+    lo: i128,
+    hi: i128,
+    shifts: i128,
+) -> Option<(i128, i128, i128, i128)> {
     let d = 1i128 << s;
     for x in lo..=hi {
         let base = f(x, d);
@@ -93,9 +101,13 @@ fn equivariance_witness(f: fn(i128, i128) -> i128, s: u32, lo: i128, hi: i128, s
 }
 
 /// Same, restricted to even translations.
-fn even_equivariance_witness(f: fn(i128, i128) -> i128, s: u32, lo: i128, hi: i128, shifts: i128)
-    -> Option<(i128, i128, i128, i128)>
-{
+fn even_equivariance_witness(
+    f: fn(i128, i128) -> i128,
+    s: u32,
+    lo: i128,
+    hi: i128,
+    shifts: i128,
+) -> Option<(i128, i128, i128, i128)> {
     let d = 1i128 << s;
     for x in lo..=hi {
         let base = f(x, d);
@@ -112,9 +124,13 @@ fn even_equivariance_witness(f: fn(i128, i128) -> i128, s: u32, lo: i128, hi: i1
 }
 
 /// First x in the scan where two modes disagree.
-fn disagreement(a: fn(i128, i128) -> i128, b: fn(i128, i128) -> i128, s: u32, lo: i128, hi: i128)
-    -> Option<(i128, i128, i128)>
-{
+fn disagreement(
+    a: fn(i128, i128) -> i128,
+    b: fn(i128, i128) -> i128,
+    s: u32,
+    lo: i128,
+    hi: i128,
+) -> Option<(i128, i128, i128)> {
     let d = 1i128 << s;
     for x in lo..=hi {
         let (u, v) = (a(x, d), b(x, d));
@@ -143,7 +159,10 @@ fn main() {
     // ---- 1. translation equivariance -------------------------------------
     println!("## 1. translation equivariance: R(x + n*d) == R(x) + n");
     println!();
-    println!("{:<22} {:<14} {}", "mode", "verdict", "first witness against");
+    println!(
+        "{:<22} {:<14} {}",
+        "mode", "verdict", "first witness against"
+    );
     for (name, f) in modes() {
         match equivariance_witness(f, s, lo, hi, shifts) {
             None => println!("{:<22} {:<14} -", name, "EQUIVARIANT"),
@@ -169,7 +188,12 @@ fn main() {
     let pairs: Vec<(&str, fn(i128, i128) -> i128, &str, fn(i128, i128) -> i128)> = vec![
         ("away_from_zero", div_away_from_zero, "ceil", div_ceil),
         ("toward_zero", div_toward_zero, "floor", div_floor),
-        ("half_up(ties->+inf)", half_up_pinf, "half_up(ties->away)", half_up_away),
+        (
+            "half_up(ties->+inf)",
+            half_up_pinf,
+            "half_up(ties->away)",
+            half_up_away,
+        ),
     ];
     for (na, fa, nb, fb) in &pairs {
         let w = disagreement(*fa, *fb, s, 0, hi);
@@ -202,8 +226,10 @@ fn main() {
             }
         }
     }
-    println!("  {coincidences} coinciding pair(s) out of {} on the signed domain",
-        m.len() * (m.len() - 1) / 2);
+    println!(
+        "  {coincidences} coinciding pair(s) out of {} on the signed domain",
+        m.len() * (m.len() - 1) / 2
+    );
     println!();
     println!("  and on the non-negative domain:");
     let mut nn = 0;
@@ -215,7 +241,10 @@ fn main() {
             }
         }
     }
-    println!("  {nn} coinciding pair(s) out of {}", m.len() * (m.len() - 1) / 2);
+    println!(
+        "  {nn} coinciding pair(s) out of {}",
+        m.len() * (m.len() - 1) / 2
+    );
     println!();
 
     // ---- 5. the grid is fixed by every mode -------------------------------
@@ -252,20 +281,34 @@ fn main() {
 
     // C1: away_from_zero must NOT be equivariant.
     match equivariance_witness(div_away_from_zero, s, lo, hi, shifts) {
-        Some((x, n, g, w)) => println!("  C1 EXPECTED-FAIL ok: away_from_zero not equivariant, x={x} n={n} {g} vs {w}"),
-        None => { println!("  C1 BROKEN: away_from_zero reported equivariant"); controls_ok = false; }
+        Some((x, n, g, w)) => println!(
+            "  C1 EXPECTED-FAIL ok: away_from_zero not equivariant, x={x} n={n} {g} vs {w}"
+        ),
+        None => {
+            println!("  C1 BROKEN: away_from_zero reported equivariant");
+            controls_ok = false;
+        }
     }
     // C2: away_from_zero must differ from ceil somewhere signed.
     match disagreement(div_away_from_zero, div_ceil, s, lo, hi) {
-        Some((x, u, v)) => println!("  C2 EXPECTED-FAIL ok: away_from_zero != ceil signed, x={x}: {u} vs {v}"),
-        None => { println!("  C2 BROKEN: away_from_zero == ceil on the signed domain"); controls_ok = false; }
+        Some((x, u, v)) => {
+            println!("  C2 EXPECTED-FAIL ok: away_from_zero != ceil signed, x={x}: {u} vs {v}")
+        }
+        None => {
+            println!("  C2 BROKEN: away_from_zero == ceil on the signed domain");
+            controls_ok = false;
+        }
     }
     // C3: a mode that is not a retraction must be caught by the check in 5.
-    fn floor_plus_one(x: i128, d: i128) -> i128 { div_floor(x, d) + 1 }
+    fn floor_plus_one(x: i128, d: i128) -> i128 {
+        div_floor(x, d) + 1
+    }
     let mut bad = 0;
     let mut k = lo / d;
     while k <= hi / d {
-        if floor_plus_one(k * d, d) != k { bad += 1; }
+        if floor_plus_one(k * d, d) != k {
+            bad += 1;
+        }
         k += 1;
     }
     if bad > 0 {
@@ -277,10 +320,22 @@ fn main() {
     // C4: floor MUST be equivariant. If the checker cannot report equivariance
     // at all, C1 and C2 mean nothing.
     match equivariance_witness(div_floor, s, lo, hi, shifts) {
-        None => println!("  C4 EXPECTED-PASS ok: floor is equivariant, so the checker can say both"),
-        Some(_) => { println!("  C4 BROKEN: floor reported not equivariant"); controls_ok = false; }
+        None => {
+            println!("  C4 EXPECTED-PASS ok: floor is equivariant, so the checker can say both")
+        }
+        Some(_) => {
+            println!("  C4 BROKEN: floor reported not equivariant");
+            controls_ok = false;
+        }
     }
 
     println!();
-    println!("controls: {}", if controls_ok { "all four behaved as required" } else { "BROKEN, file is void" });
+    println!(
+        "controls: {}",
+        if controls_ok {
+            "all four behaved as required"
+        } else {
+            "BROKEN, file is void"
+        }
+    );
 }

@@ -24,7 +24,14 @@
 // Run: rustc --edition 2024 -O p3_retraction_over_the_whole_vocabulary.rs -o /tmp/p3 && /tmp/p3
 
 #[derive(Copy, Clone, PartialEq, Debug)]
-enum Mode { Floor, Ceil, TowardZero, HalfUp, HalfEven, AwayFromZero }
+enum Mode {
+    Floor,
+    Ceil,
+    TowardZero,
+    HalfUp,
+    HalfEven,
+    AwayFromZero,
+}
 use Mode::*;
 
 // The ratified six are toward_zero, floor, ceil, half_up, half_even and
@@ -34,26 +41,69 @@ const MODES: [Mode; 6] = [Floor, Ceil, TowardZero, HalfUp, HalfEven, AwayFromZer
 
 fn name(m: Mode) -> &'static str {
     match m {
-        Floor => "floor", Ceil => "ceil", TowardZero => "toward_zero",
-        HalfUp => "half_up", HalfEven => "half_even", AwayFromZero => "away_from_zero",
+        Floor => "floor",
+        Ceil => "ceil",
+        TowardZero => "toward_zero",
+        HalfUp => "half_up",
+        HalfEven => "half_even",
+        AwayFromZero => "away_from_zero",
     }
 }
-fn ratified(m: Mode) -> bool { m != AwayFromZero }
+fn ratified(m: Mode) -> bool {
+    m != AwayFromZero
+}
 
 fn rnd(p: i128, s: u32, m: Mode) -> i128 {
-    if s == 0 { return p; }
+    if s == 0 {
+        return p;
+    }
     let d = 1i128 << s;
     let q = p.div_euclid(d);
     let r = p.rem_euclid(d);
     match m {
         Floor => q,
-        Ceil => if r == 0 { q } else { q + 1 },
-        TowardZero => if p >= 0 || r == 0 { q } else { q + 1 },
-        AwayFromZero => if p >= 0 { if r == 0 { q } else { q + 1 } } else { q },
-        HalfUp => if 2 * r >= d { q + 1 } else { q },
+        Ceil => {
+            if r == 0 {
+                q
+            } else {
+                q + 1
+            }
+        }
+        TowardZero => {
+            if p >= 0 || r == 0 {
+                q
+            } else {
+                q + 1
+            }
+        }
+        AwayFromZero => {
+            if p >= 0 {
+                if r == 0 {
+                    q
+                } else {
+                    q + 1
+                }
+            } else {
+                q
+            }
+        }
+        HalfUp => {
+            if 2 * r >= d {
+                q + 1
+            } else {
+                q
+            }
+        }
         HalfEven => {
-            if 2 * r > d { q + 1 } else if 2 * r < d { q }
-            else if q % 2 == 0 { q } else { q + 1 }
+            if 2 * r > d {
+                q + 1
+            } else if 2 * r < d {
+                q
+            } else if q % 2 == 0 {
+                q
+            } else {
+                q + 1
+            }
         }
     }
 }
@@ -71,7 +121,9 @@ fn measure(w: u32, f: u32, m: Mode) -> (u64, u64) {
                 total += 1;
                 let eager = rnd(ab_q * c, f, m);
                 let deferred = rnd(ab * c, 2 * f, m);
-                if eager != deferred { differ += 1; }
+                if eager != deferred {
+                    differ += 1;
+                }
             }
         }
     }
@@ -82,13 +134,17 @@ fn measure(w: u32, f: u32, m: Mode) -> (u64, u64) {
 /// eager step? Where that count is positive a stochastic mode is not a
 /// function of the triple, so no deterministic agreement can hold.
 fn undetermined_under_stochastic(w: u32, f: u32) -> u64 {
-    if f == 0 { return 0; }
+    if f == 0 {
+        return 0;
+    }
     let n: i128 = 1 << w;
     let d = 1i128 << f;
     let mut c_undet = 0u64;
     for a in 0..n {
         for b in 0..n {
-            if (a * b).rem_euclid(d) != 0 { c_undet += 1; }
+            if (a * b).rem_euclid(d) != 0 {
+                c_undet += 1;
+            }
         }
     }
     c_undet
@@ -105,25 +161,50 @@ fn main() {
     let pub_trunc: [u64; 5] = [0, 800, 1128, 910, 543];
     let pub_near: [u64; 5] = [0, 864, 1248, 880, 550];
     let mut faithful = true;
-    println!("{:<12} {:>3} {:>10} {:>10}  {}", "94's name", "F", "published", "measured", "verdict");
+    println!(
+        "{:<12} {:>3} {:>10} {:>10}  {}",
+        "94's name", "F", "published", "measured", "verdict"
+    );
     for f in 0..=4u32 {
         let (d, _) = measure(4, f, Floor);
         let want = pub_trunc[f as usize];
-        if d != want { faithful = false; }
-        println!("{:<12} {:>3} {:>10} {:>10}  {}", "truncate", f, want, d,
-            if d == want { "matches" } else { "DIFFERS" });
+        if d != want {
+            faithful = false;
+        }
+        println!(
+            "{:<12} {:>3} {:>10} {:>10}  {}",
+            "truncate",
+            f,
+            want,
+            d,
+            if d == want { "matches" } else { "DIFFERS" }
+        );
     }
     for f in 0..=4u32 {
         let (d, _) = measure(4, f, HalfUp);
         let want = pub_near[f as usize];
-        if d != want { faithful = false; }
-        println!("{:<12} {:>3} {:>10} {:>10}  {}", "nearest", f, want, d,
-            if d == want { "matches" } else { "DIFFERS" });
+        if d != want {
+            faithful = false;
+        }
+        println!(
+            "{:<12} {:>3} {:>10} {:>10}  {}",
+            "nearest",
+            f,
+            want,
+            d,
+            if d == want { "matches" } else { "DIFFERS" }
+        );
     }
     println!();
     println!("  So the instrument's two modes are floor and half_up, and this");
-    println!("  implementation is that instrument: {}",
-        if faithful { "ten of ten integers reproduced" } else { "MISMATCH, file is void" });
+    println!(
+        "  implementation is that instrument: {}",
+        if faithful {
+            "ten of ten integers reproduced"
+        } else {
+            "MISMATCH, file is void"
+        }
+    );
     println!();
 
     // ---- the whole vocabulary ----------------------------------------------
@@ -131,13 +212,23 @@ fn main() {
         println!("## W = {w}");
         println!();
         print!("{:<16} {:<10}", "mode", "ratified");
-        for f in 0..=w { print!("{:>10}", format!("F={f}")); }
+        for f in 0..=w {
+            print!("{:>10}", format!("F={f}"));
+        }
         println!();
         for m in MODES {
-            print!("{:<16} {:<10}", name(m), if ratified(m) { "yes" } else { "no" });
+            print!(
+                "{:<16} {:<10}",
+                name(m),
+                if ratified(m) { "yes" } else { "no" }
+            );
             for f in 0..=w {
                 let (d, _) = measure(w, f, m);
-                if d == 0 { print!("{:>10}", "RETRACTS"); } else { print!("{:>10}", d); }
+                if d == 0 {
+                    print!("{:>10}", "RETRACTS");
+                } else {
+                    print!("{:>10}", d);
+                }
             }
             println!();
         }
@@ -153,11 +244,15 @@ fn main() {
     for w in [4u32, 6, 8] {
         for m in MODES {
             let (d0, _) = measure(w, 0, m);
-            if d0 != 0 { holds_all = false; }
+            if d0 != 0 {
+                holds_all = false;
+            }
             for f in 1..=w {
                 let (d, _) = measure(w, f, m);
                 checked += 1;
-                if d == 0 { fails_all = false; }
+                if d == 0 {
+                    fails_all = false;
+                }
             }
         }
     }
@@ -168,10 +263,16 @@ fn main() {
     for w in [4u32, 6, 8] {
         for f in [0u32, 1, w] {
             let u = undetermined_under_stochastic(w, f);
-            println!("    W={w} F={f}: {u} product(s) with a nonzero fraction at the eager step{}",
-                if f == 0 { ", so the draw never happens and the mode is the identity" }
-                else if u > 0 { ", so the eager result is not determined by the triple" }
-                else { "" });
+            println!(
+                "    W={w} F={f}: {u} product(s) with a nonzero fraction at the eager step{}",
+                if f == 0 {
+                    ", so the draw never happens and the mode is the identity"
+                } else if u > 0 {
+                    ", so the eager result is not determined by the triple"
+                } else {
+                    ""
+                }
+            );
         }
     }
     println!();
@@ -187,24 +288,42 @@ fn main() {
     for w in [4u32, 6, 8] {
         let counts: Vec<u64> = MODES.iter().map(|&m| measure(w, 0, m).0).collect();
         println!("     W={w} F=0 counts across six modes: {counts:?}");
-        if counts.iter().any(|&c| c != counts[0]) { c1 = false; }
+        if counts.iter().any(|&c| c != counts[0]) {
+            c1 = false;
+        }
     }
-    if c1 { println!("  C1 EXPECTED-PASS ok: the rounding axis moves nothing at F = 0"); }
-    else { println!("  C1 BROKEN"); ok = false; }
+    if c1 {
+        println!("  C1 EXPECTED-PASS ok: the rounding axis moves nothing at F = 0");
+    } else {
+        println!("  C1 BROKEN");
+        ok = false;
+    }
 
     // C1b: a rnd that is not the identity at F = 0 must break C1's invariant,
     // or C1 is asserting nothing.
     {
-        let w = 4u32; let n: i128 = 1 << w;
+        let w = 4u32;
+        let n: i128 = 1 << w;
         let mut differ = 0u64;
-        for a in 0..n { for b in 0..n {
-            let ab = a * b;
-            let ab_q = rnd(ab, 0, Floor) + 1; // not the identity
-            for c in 0..n {
-                if rnd(ab_q * c, 0, Floor) != rnd(ab * c, 0, Floor) { differ += 1; }
-            } } }
-        if differ > 0 { println!("  C1b EXPECTED-FAIL ok: a non-identity map at F = 0 differs on {differ} triples"); }
-        else { println!("  C1b BROKEN: the F = 0 arm cannot see a non-identity map"); ok = false; }
+        for a in 0..n {
+            for b in 0..n {
+                let ab = a * b;
+                let ab_q = rnd(ab, 0, Floor) + 1; // not the identity
+                for c in 0..n {
+                    if rnd(ab_q * c, 0, Floor) != rnd(ab * c, 0, Floor) {
+                        differ += 1;
+                    }
+                }
+            }
+        }
+        if differ > 0 {
+            println!(
+                "  C1b EXPECTED-FAIL ok: a non-identity map at F = 0 differs on {differ} triples"
+            );
+        } else {
+            println!("  C1b BROKEN: the F = 0 arm cannot see a non-identity map");
+            ok = false;
+        }
     }
 
     // C2: the row's own `statement` is true of every mode at every F, so it is
@@ -216,17 +335,24 @@ fn main() {
             for m in MODES {
                 let mut k = 0i128;
                 while k < (1i128 << w) {
-                    if rnd(k * d, f, m) != k { c2_bad += 1; }
+                    if rnd(k * d, f, m) != k {
+                        c2_bad += 1;
+                    }
                     k += 1;
                 }
             }
         }
     }
     if c2_bad == 0 {
-        println!("  C2 EXPECTED-PASS ok: `rounding a value already on the grid returns it unchanged`");
+        println!(
+            "  C2 EXPECTED-PASS ok: `rounding a value already on the grid returns it unchanged`"
+        );
         println!("      holds for every mode at every F, 0 counterexamples, so the row's");
         println!("      `statement` cannot be what its `fails` field is about");
-    } else { println!("  C2 BROKEN: {c2_bad} grid points moved"); ok = false; }
+    } else {
+        println!("  C2 BROKEN: {c2_bad} grid points moved");
+        ok = false;
+    }
 
     // C3: a map that is not a retraction must be caught by C2's check, or C2
     // is asserting nothing.
@@ -234,11 +360,23 @@ fn main() {
         let mut bad = 0;
         let d = 1i128 << 2;
         let mut k = 0i128;
-        while k < 16 { if rnd(k * d, 2, Floor) + 1 != k { bad += 1; } k += 1; }
-        if bad > 0 { println!("  C3 EXPECTED-FAIL ok: a shifted map moves {bad} grid points"); }
-        else { println!("  C3 BROKEN"); ok = false; }
+        while k < 16 {
+            if rnd(k * d, 2, Floor) + 1 != k {
+                bad += 1;
+            }
+            k += 1;
+        }
+        if bad > 0 {
+            println!("  C3 EXPECTED-FAIL ok: a shifted map moves {bad} grid points");
+        } else {
+            println!("  C3 BROKEN");
+            ok = false;
+        }
     }
 
     println!();
-    println!("controls: {}", if ok && faithful { "clean" } else { "BROKEN" });
+    println!(
+        "controls: {}",
+        if ok && faithful { "clean" } else { "BROKEN" }
+    );
 }
