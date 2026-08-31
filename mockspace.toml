@@ -159,6 +159,16 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.a-canon-that-loads-nothing-is-not-a-clean-canon]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-registry-comment-counts-its-own-rows]
+commit = "error"
+build = "error"
+push = "error"
+
 # --- Layer enforcement via forbidden-imports -------------------------------
 #
 # The per-crate layering rules were removed when mock/crates was
