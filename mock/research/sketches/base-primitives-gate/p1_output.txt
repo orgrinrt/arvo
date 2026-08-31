@@ -1,11 +1,11 @@
 
 running 6 tests
 test a_default_does_not_dissolve_the_fork_it_picks_branch_b_and_hides_it ... ok
+test branch_a_has_exactly_one_layout_per_declared_width ... ok
 test branch_b_carries_two_layouts_at_one_declared_width ... ok
+test the_consumer_signature_arity_differs_between_the_branches ... ok
 test the_control_the_two_carriers_are_distinguishable_at_all ... ok
 test the_default_is_absent_from_the_polymorphic_position ... ok
-test the_consumer_signature_arity_differs_between_the_branches ... ok
-test branch_a_has_exactly_one_layout_per_declared_width ... ok
 
 test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
