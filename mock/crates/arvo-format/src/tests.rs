@@ -11,7 +11,7 @@
 //! is a compile-time one, because a runtime check of a compile-time property tests
 //! the test rather than the property.
 
-use crate::adapt::{Adapt, Adaptation, DeclaredSignature, Operation, Signature};
+use crate::adapt::{Adapt, DeclaredSignature, Operation, Signature};
 use crate::ambient::{Ambient, BinaryRationals, DecimalRationals, UnsignedBinaryRationals};
 use crate::format::{
     contains, has_additive_identity, radix, smallest_step_exponent, step_exponent, Format,
@@ -22,7 +22,7 @@ use crate::quantum::{exponent_at, is_constant_family, Constant, Indexed, Quantum
 use crate::rounding::{
     Ceil, Floor, HalfEven, HalfUp, Mode, Rounding, Stochastic, TowardZero, ALL_MODES,
 };
-use crate::slots::{slot_count, slot_in_range, Signed, Slots, Unsigned};
+use crate::slots::{slot_count, slot_in_range, Signed, Unsigned};
 
 // --- the control -------------------------------------------------------------
 //
