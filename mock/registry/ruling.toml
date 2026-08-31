@@ -907,6 +907,7 @@ helpers for casting and converting and all that, but we can't use them in place 
 don't need to, it's not conventional to any library ever...
 '''
 instead = "The consumer defines their own APIs in arvo's shapes and generics, and that is where external data becomes typed."
+obligation = ["an_exact_width_container_a_consumer_can_alias_and_pin"]
 note = "The options put to him were: not arvo's problem, the consumer handles it outside arvo's rule; arvo owns it with an unchecked transmute-shaped door; or arvo owns it with one validating constructor, an explicit exception carved into the never-a-runtime-check intent. He took the first in substance with a sharper reason. So that intent needs no exception, and the observation that stored bits are not self-describing stays true without licensing anything."
 provenance = ["panel::202608072330_the-numeral-canon-panel::88_op_the_intent_is_not_every_clause_and_there_is_no_universal::#3-ingest-is-the-consumer-s-and-the-c-abi-is-where-it-all-ends-up-anyway"]
 keywords = ["ingest", "boundary", "consumer", "C ABI", "external data", "helper", "cast", "convert", "self-describing", "transmute"]

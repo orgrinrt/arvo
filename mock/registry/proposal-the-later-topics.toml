@@ -186,6 +186,7 @@ standing = "two_experts"
 topic = "the_primitive"
 says = "Configuration is not composition. Choosing a format, a system or a strategy fills in a record; composition is a construction taking an algebra to an algebra; and a composite is a primitive under the same definition, so one concept serves and every contract written for a primitive applies to a composite unchanged. A construction carries two things of its own, a predicate on its base and a transformer for its base's refinements, and equality transports through a construction for free where a predicate never does."
 because = "Borrowing the base's rule for a construction's predicate is unsound where borrowing it for equality is not, which is what makes the two halves different obligations rather than one. The distinction and the closure were reached blind twice from different instrument sets."
+obligation = ["composition_contracts_above_the_numeral"]
 note = """
 Two instances on the distinction and on the closure, the second a blind arrival \
 in a later sitting from a different instrument set, classified by the attacking \

@@ -228,6 +228,7 @@ standing = "one_expert"
 topic = "the_format"
 says = "The format concept supplies the layers above with the width algebra of exact results, the named adaptation carrying its rounding rule, its overflow member and its granularity function, and the exactness predicate naming the conditions under which nothing is lost. Compositions over formats, stored pairs, intervals, error-carrying values, are not format instances; they consume these three things and owe their own laws."
 because = "The list is not optional because of the statability argument: a layer that is not handed the width algebra, the named adaptation and the exactness predicate cannot state its own error behaviour at all. Stored-pair rationals, intervals, error-carrying pairs and complexes are compositions over formats rather than format instances, uncontested through seven subsequent files of the unit."
+obligation = ["composition_contracts_above_the_numeral"]
 note = "One expert, uncontested rather than corroborated. Absence of contest is not a second instance, and the consolidation does not claim it is."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::707",
@@ -587,6 +588,7 @@ topic = "algebraic_laws"
 says = "A composed expression's region is never inherited from its parts. Even where a component operation's own hypotheses hold unconditionally, the composition needs its own derivation."
 because = "The counterexample is exact rather than illustrative: unsigned saturating addition associates on every triple at eight bits, and the composition of that addition with the matching subtraction fails on 82.7484% of triples at the same coordinates. Nothing about the components predicts it, and the exact holding region turns out to be a four-way case split on the two clamp events plus a residual operand condition."
 law = ["associativity_of_a_composed_saturating_add_and_subtract"]
+obligation = ["composition_contracts_above_the_numeral"]
 note = "`normative` because the sentence is a rule about how a region may be derived rather than a claim an instrument could refute; the instrument's own claim is the law row it points at, which carries the region. Both later attackers re-ran the establishing probe and it reproduced to the digit."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::127",
