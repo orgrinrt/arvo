@@ -40,14 +40,7 @@ use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
 use mockspace::{
-    Lint,
-    LintError,
-    LintPack,
-    RegistryView,
-    RepoContext,
-    RepoLint,
-    RowFields,
-    Severity,
+    Lint, LintError, LintPack, RegistryView, RepoContext, RepoLint, RowFields, Severity,
 };
 
 /// A registry holding exactly the rows named, and the reverse edges named.

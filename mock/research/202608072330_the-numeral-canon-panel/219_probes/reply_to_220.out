@@ -1,0 +1,44 @@
+== PLANTED CONTROL ==
+R1  universals, census rule: 1
+R1  universals, corrected rule: 3
+R1  missed by the census rule: 2
+        proposal::planted_trailing_note [threads] => threads any, the equalities being decided at compile time
+        proposal::planted_and_joined [threads] => threads = 1 for the timed instance and threads any for the artifacts
+R2  multi-binding, census rule (comma only): 1
+R2  multi-binding, corrected rule (comma or `and`): 2
+R2  missed by the census rule: 1
+        proposal::planted_and_joined [threads] => threads = 1 for the timed instance and threads any for the artifacts
+R3  sentence_kind = theorem rows and their width span: 1
+        planted_trailing_note  =>  W in 3..=7
+R4  parameterised whole-domain fraction spans:
+          1  in 0..=W-1
+
+control: passed, and every arm returned a non-zero it could have got wrong.
+
+read 12 files, 677 rows
+
+== COMMITTED REGISTRY ==
+R1  universals, census rule: 38
+R1  universals, corrected rule: 41
+R1  missed by the census rule: 3
+        proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body [threads] => threads = 1 for the timed instance and threads any for the compile-time artifacts
+        proposal::a_fold_needs_a_closed_operation_and_a_separately_determined_accumulator [threads] => threads any, the refusal being a type-check outcome that precedes execution
+        proposal::no_derivation_reads_the_grid_so_a_composition_may_hold_it_at_run_time [threads] => threads any, the equalities being decided at compile time
+R2  multi-binding, census rule (comma only): 5
+R2  multi-binding, corrected rule (comma or `and`): 6
+R2  missed by the census rule: 1
+        proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body [threads] => threads = 1 for the timed instance and threads any for the compile-time artifacts
+R3  sentence_kind = theorem rows and their width span: 8
+        fusing_a_multiply_add_is_free_exactly_at_translation_equivariance  =>  6
+        the_laws_of_a_format_are_derived_from_two_hypotheses_rather_than_enumerated_per_policy  =>  W = 4
+        no_multiplicative_structure_survives_a_nonzero_fraction_width  =>  W in 3..=7
+        the_model_band_transfer_is_defeated_in_both_fragments  =>  W any
+        inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width  =>  W in 1..=65
+        the_join_over_demands_is_union_and_it_is_free  =>  ABSENT
+        a_law_is_inherited_where_the_realisation_map_is_a_congruence_for_every_nesting_it_contains  =>  W in {4, 5, 6}
+        a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing  =>  ABSENT
+R4  parameterised whole-domain fraction spans:
+          1  F = 0 for the end-to-end run, and F in 0..=W for the absorption sweep
+          1  F in 1..=W
+          3  in 0..=W-1
+

@@ -84,11 +84,7 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block,
-        assert_not_declared_off,
-        assert_registered,
-        findings,
-        view,
+        assert_findings_block, assert_not_declared_off, assert_registered, findings, view,
     };
     fn row_in(ns: &str, kind: &str, instead: Option<&str>) -> Vec<String> {
         let with = [("kind", kind), ("instead", instead.unwrap_or(""))];
@@ -197,10 +193,10 @@ mod tests {
             &[
                 ("ruling::a", &[("kind", "refusal")]),
                 ("ruling::b", &[("kind", "refusal")]),
-                ("ruling::c", &[
-                    ("kind", "refusal"),
-                    ("instead", "Something else."),
-                ]),
+                (
+                    "ruling::c",
+                    &[("kind", "refusal"), ("instead", "Something else.")],
+                ),
             ],
             &[],
         );
@@ -216,7 +212,10 @@ mod tests {
         // returned only the first would satisfy every arm above: each of those
         // plants one namespace at a time. This is the only arm that can tell.
         let v = view(
-            &[("ruling::r", &[("kind", "refusal")]), ("proposal::p", &[("kind", "refusal")])],
+            &[
+                ("ruling::r", &[("kind", "refusal")]),
+                ("proposal::p", &[("kind", "refusal")]),
+            ],
             &[],
         );
         let f = findings(&super::RefusalOwesAnInstead, &v);

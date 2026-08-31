@@ -1,0 +1,28 @@
+== PLANTED CONTROL ==
+declared axes: 3, of which forbid the universal in their own grammar: {"operation"}
+
+A1  inadmissible universal written anyway:
+        proposal::planted_inadmissible::predicate => `operation: operation any`
+
+A2  values sides binding more than one thing:
+        proposal::planted_packed::predicate [build_profile] => `emission in {metadata only, full codegen}, debug-assertions any`   <== binds undeclared: ["emission"]
+
+summary: A1 inadmissible=1, A2 multi-binding=1, of which bind an undeclared name=1
+
+control: passed, and every arm returned a non-zero, so none is vacuous.
+
+== COMMITTED REGISTRY ==
+declared axes: 21, of which forbid the universal in their own grammar: {"operation", "strategy"}
+
+A1  inadmissible universal written anyway:
+        proposal::three_topics_independently_terminate_on_the_strategy_axis_as_their_shared_placeholder::predicate => `operation: operation any`
+
+A2  values sides binding more than one thing:
+        proposal::the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times::predicate [build_profile] => `emission in {metadata only, full codegen}, debug-assertions any`   <== binds undeclared: ["emission"]
+        proposal::chain_laws_split_by_whether_a_lifting_theorem_exists::predicate [arity] => `arity = 3 for the grouping kind, and arity in 2..=5 for the schedule kind`   <== binds undeclared: ["and_arity"]
+        proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body::predicate [build_profile] => `no_std, feature gates = 0, opt level = 3`   <== binds undeclared: ["feature_gates"]
+        proposal::a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none::predicate [total_width] => `W in {3, 4} for the end-to-end run, and W in 2..=10 for the absorption sweep`   <== binds undeclared: ["and_w"]
+        proposal::a_min_plus_fold_needs_an_absorbing_top_and_wrapping_supplies_none::predicate [fraction_width] => `F = 0 for the end-to-end run, and F in 0..=W for the absorption sweep`   <== binds undeclared: ["and_f"]
+
+summary: A1 inadmissible=1, A2 multi-binding=5, of which bind an undeclared name=5
+

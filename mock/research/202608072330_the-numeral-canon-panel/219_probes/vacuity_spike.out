@@ -1,0 +1,38 @@
+rows in the empty registry: 0
+rows in the committed canon: 677
+
+=== the 25 arms that take a Registry ===
+  VACUOUS  citation::line_citations_into_living_ledgers               empty   0   canon   0
+  VACUOUS  citation::citations_with_no_target                         empty   0   canon   0
+  VACUOUS  comments::comments_counting_their_own_rows                 empty   0   canon   0
+  VACUOUS  obligation::obligation_edges_naming_nothing                empty   0   canon   0
+  VACUOUS  obligation::obligation_edges_from_an_untiered_namespace    empty   0   canon   0
+  guarded  obligation::obligations_whose_only_route_is_closed         empty   0   canon   3
+  VACUOUS  obligation::preconditions_from_a_namespace_that_cannot_establish_one empty   0   canon   0
+  guarded  obligation::unanswered_obligations_carrying_a_precondition empty   0   canon   1
+  VACUOUS  predicate::undeclared_dimensions                           empty   0   canon   0
+  VACUOUS  predicate::repeated_dimensions                             empty   0   canon   0
+  guarded  provenance::standing_claims_more_arrivals_than_it_cites    empty   0   canon  29
+  guarded  provenance::a_proposal_resting_only_on_a_consolidation     empty   0   canon  43
+  VACUOUS  provenance::an_imposition_resting_on_an_instrument         empty   0   canon   0
+  guarded  shape::rulings_with_no_verbatim                            empty   0   canon   6
+  VACUOUS  shape::refusals_without_an_instead                         empty   0   canon   0
+  guarded  shape::measured_without_evidence                           empty   0   canon   6
+  VACUOUS  shape::measurements_resting_on_an_unusable_instrument      empty   0   canon   0
+  VACUOUS  shape::predicate_disagrees_with_the_sentence_kind          empty   0   canon   0
+  VACUOUS  shape::stamps_from_an_unratified_ruling                    empty   0   canon   0
+  VACUOUS  shape::a_term_defined_twice                                empty   0   canon   0
+  VACUOUS  shape::definitions_with_no_term                            empty   0   canon   0
+  VACUOUS  shape::rows_restating_a_retired_claim                      empty   0   canon   0
+  VACUOUS  shape::rows_with_no_keywords                               empty   0   canon   0
+  VACUOUS  shape::notes_claiming_an_empty_field_that_is_not           empty   0   canon   0
+  VACUOUS  shape::retirements_too_short_to_find                       empty   0   canon   0
+
+=== the 5 arms that take a directory ===
+  VACUOUS  corpus::unprefixed_archive_citations_in_living_ledgers     missing   0   panel   0
+  VACUOUS  corpus::archive_citations_naming_nothing                   missing   0   panel   0
+  guarded  corpus::line_citations_into_the_registry                   missing   0   panel  45
+  guarded  corpus::probes_reading_another_tree                        missing   0   panel  31
+  guarded  corpus::line_citations_into_living_ledgers_in_prose        missing   0   panel 673
+
+of 30 arms: 21 say nothing on either input, 9 would notice
