@@ -330,7 +330,9 @@ struct Split {
 }
 
 fn c1_split(c: &[Shape]) -> Split {
-    let consts: Vec<usize> = (0..c.len()).filter(|&i| c[i].kind == Kind::Constant).collect();
+    let consts: Vec<usize> = (0..c.len())
+        .filter(|&i| c[i].kind == Kind::Constant)
+        .collect();
     let mut s = Split {
         total_pairs: 0,
         failures: 0,
@@ -375,7 +377,15 @@ fn main() {
     println!();
     println!(
         "{:>10} {:>6} {:>7} {:>6} {:>6} | {:>9} {:>12} {:>9} {:>9}",
-        "degenerate", "dedup", "points", "pairs", "fail", "no bounds", "annihilated", "distinct", "same"
+        "degenerate",
+        "dedup",
+        "points",
+        "pairs",
+        "fail",
+        "no bounds",
+        "annihilated",
+        "distinct",
+        "same"
     );
     let mut cells = Vec::new();
     for &degen in &[true, false] {
@@ -433,21 +443,37 @@ fn main() {
         dd.maximal_annihilated, dd.several_distinct
     );
     println!();
-    println!("  So the 256 are mechanism (a), the bottom, exactly as 221's own p2d diagnosis says.");
+    println!(
+        "  So the 256 are mechanism (a), the bottom, exactly as 221's own p2d diagnosis says."
+    );
     println!("  The dedup-off failures are mechanism (c), the copied helper being defined only on");
-    println!("  a partial order: `maximal` drops every member of a tie because each is a subset of");
-    println!("  the other. Not one failure in any cell is several distinct denotations, so nothing");
+    println!(
+        "  a partial order: `maximal` drops every member of a tie because each is a subset of"
+    );
+    println!(
+        "  the other. Not one failure in any cell is several distinct denotations, so nothing"
+    );
     println!("  measured here is an order failure of the kind option 1 is about.");
     println!();
     println!("--- what this overturns and what it leaves standing ---");
-    println!("  221's ANSWER stands and I agree with it. Deciding inclusion on denotation is right,");
+    println!(
+        "  221's ANSWER stands and I agree with it. Deciding inclusion on denotation is right,"
+    );
     println!("  because without it the relation is a preorder, two declarations denoting one set");
-    println!("  are each below the other and neither is the meet, and 'unique least upper bound' is");
+    println!(
+        "  are each below the other and neither is the meet, and 'unique least upper bound' is"
+    );
     println!("  unique only up to an equivalence nobody named.");
     println!();
-    println!("  Its EVIDENCE does not reach that answer. The 256 are the bottom being absent, which");
-    println!("  is a different question with a different answer, and the sentence 'the deduplication");
-    println!("  is what makes C1 pass' names a repair its instrument never varied. What varying it");
+    println!(
+        "  Its EVIDENCE does not reach that answer. The 256 are the bottom being absent, which"
+    );
+    println!(
+        "  is a different question with a different answer, and the sentence 'the deduplication"
+    );
+    println!(
+        "  is what makes C1 pass' names a repair its instrument never varied. What varying it"
+    );
     println!("  shows is that the helper functions require the repair, which is a fact about the");
     println!("  instrument rather than evidence about the canon.");
     println!();

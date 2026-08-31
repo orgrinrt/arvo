@@ -7,4 +7,6 @@ where
 {
     Fx
 }
-fn main() { let _ = narrow::<13, 8>(Fx::<13>); }
+fn main() {
+    let _ = narrow::<13, 8>(Fx::<13>);
+}

@@ -4,7 +4,15 @@ struct Fx<const W: usize>;
 
 impl<const W: usize> Fx<W> {
     const IS_NARROW: bool = W <= 16;
-    fn arm(&self) -> &'static str { if Self::IS_NARROW { "narrow" } else { "wide" } }
+    fn arm(&self) -> &'static str {
+        if Self::IS_NARROW {
+            "narrow"
+        } else {
+            "wide"
+        }
+    }
 }
 
-fn main() { println!("{}", Fx::<13>.arm()); }
+fn main() {
+    println!("{}", Fx::<13>.arm());
+}
