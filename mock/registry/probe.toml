@@ -1558,3 +1558,18 @@ defect = "One arm failed on the first run and the committed first output is kept
 standing = "sound"
 note = "The two standards' own rules are quoted from the vendor documentation and from the standard's text rather than recalled. The finding that matters most is the third one, that the answer does not depend on which container rule ships, because it detaches this question from a fork that is genuinely open and belongs to somebody else."
 keywords = ["MATLAB", "fi", "bin", "storedInteger", "IEEE 754", "interchange", "k bits", "alias", "adequacy", "declared width", "container rule", "rung"]
+
+[[probe]]
+id = "container_premise_the_contextual_formulation_is_conservative"
+establishes = "Stating a completeness obligation over contexts rather than over inputs reclassifies no pair: across seven pair-and-signature rows the contextual verdict maps onto the three-outcome clause exactly. Its second branch, discharged at any width with nothing to transfer, is recovered as a property of the separating witness rather than as a third outcome. Both states of that property are reachable: over the swept widths a lazy-projection signature restricted to addition separates the two carrier rules at 3 of 7 widths, exactly the exactly-filled ones, and the same signature with multiplication admitted separates at 7 of 7."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p5_contextual_formulation.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p5_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p5.out::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p5_v1_k1_arm_did_not_isolate_the_width_specific_case.out::1",
+]
+control = "Four, declared in the header before the run. K1 requires a pair whose separating context works at some widths and not at others, without which width-polymorphism is a distinction nothing instantiates and the subsumption claim is empty rather than true. K2 requires the genuinely spurious pair to stay equivalent at every width in every signature. K3 requires the contextual classification to agree with the three-outcome clause pair for pair, since a reformulation that reclassifies anything is a different obligation wearing the name. K4 requires a pair separated at every width to be reported polymorphic, so the axis reports both of its values."
+defect = "K1 failed on the first run and the committed first output is kept. The signature it used admitted multiplication, and a product of two full-range values overflows the minimum carrier at every width, so the separation came out polymorphic and the width-specific case was invisible behind it. That is a true result about that signature and it is kept as its own row; the repair is a second signature restricted to addition, under which the width-specific case appears at exactly the exactly-filled widths."
+standing = "sound"
+note = "Built because a sentence in the file it belongs to said the contextual formulation would 'very likely' subsume the transfer branch, which is a hunch offered where a result was checkable in an afternoon. The value is as much in what it did not find: nothing is reclassified, so the reformulation buys tidiness rather than reach, and that is a reason to leave a clause under signature alone rather than a reason to replace it."
+keywords = ["contextual equivalence", "completeness", "transfer", "model width", "polymorphic witness", "conservative", "reformulation", "clause 9", "exactly filled", "lazy projection"]

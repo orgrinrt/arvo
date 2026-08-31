@@ -735,7 +735,10 @@ predicate = [
   "toolchain: nightly-2026-05-28",
   "build_profile: release",
 ]
-evidence = ["container_premise_clause_nine_witness_quantifier"]
+evidence = [
+  "container_premise_clause_nine_witness_quantifier",
+  "container_premise_the_contextual_formulation_is_conservative",
+]
 answers = ["the_container_premise"]
 note = """
 The refusal is of a wording and not of a mechanism, and it is independent of \
@@ -743,11 +746,15 @@ the container premise: the quantifier is too narrow on either branch, and \
 fixing it is what lets the clause be satisfiable without the premise being \
 ruled at all.
 
-The `instead` is the narrow repair. A wider one is worth someone's time and is \
-not proposed here: rewriting the obligation as a contextual equivalence from \
-the start would very likely subsume the discharged-at-any-width branch as well, \
-and replacing a clause under signature is a larger act than repairing what is \
-wrong with it.
+The `instead` is the narrow repair. The wider one, restating the obligation as \
+a contextual equivalence from the start, was measured rather than guessed: it \
+reclassifies no pair across seven pair-and-signature rows, and it does subsume \
+the discharged-at-any-width branch, which comes back as a property of the \
+separating witness rather than as a third outcome. Both states of that property \
+are reachable, so the branch was naming something real and naming it in the \
+wrong place. It is still not proposed as a row, and now for a stated reason \
+rather than a doubt: it buys tidiness rather than reach, and replacing a clause \
+under signature is a larger act than repairing what is wrong with it.
 """
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#5-the-answer",

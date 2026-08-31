@@ -1,8 +1,8 @@
 # 210. The container premise is a theorem over a signature, and it has been asked as a premise
 
 Seat 210, on `question::the_container_premise`. The answer is below and so is every route I closed
-getting to it. Four probes, committed with their outputs and their controls at `210_probes/`, two of
-them with a first run kept beside the second because the first run's failing controls are where the
+getting to it. Five probes, committed with their outputs and their controls at `210_probes/`, three
+of them with a first run kept beside the second, because in all three the failing control is where the
 sharper statement came from.
 
 **The short form, for anyone who reads no further.** The question cannot be answered as put, because
@@ -548,11 +548,20 @@ projection lazily is choosing, silently, to put the carrier into `SIGMA_VAL`.
   one thing. Worth doing; worth two readers agreeing on the granularity first.
 - **Rewrite clause 9's completeness in terms of a contextual equivalence** rather than patching its
   witness set. Every pair of instantiations is separated iff some context distinguishes them, with the
-  context set named; nullary observations fall out for free instead of being bolted on, and the
-  "discharged at any width with nothing to transfer" branch probably falls out too. **This is the
-  formulation I would reach for if I were writing clause 9 fresh, and I did not propose it because the
-  clause is under signature and replacing it wholesale is a bigger act than fixing what is wrong with
-  it.** Whoever revises the candidate should consider it.
+  context set named; nullary observations fall out instead of being bolted on. **I wrote here that the
+  "discharged at any width with nothing to transfer" branch "probably falls out too", and probably is
+  not a result, so `210_probes/p5` checks it.** It does fall out, and the run says something sharper
+  than the guess did. The two states the second branch is trying to name are both reachable: under a
+  lazy-projection signature restricted to addition, the carrier pair separates at 3 of 7 swept widths,
+  exactly the exactly-filled ones, while under the same signature with multiplication admitted it
+  separates at 7 of 7, because a product of two full-range values overflows the minimum carrier
+  everywhere. **So the distinction is real and it is a property of the witness rather than a third way
+  a pair can relate**: both states map to one outcome, Separated, and the transfer question is about
+  the context that separated them and not about the pair. K3 holds across all seven rows, so the
+  reformulation reclassifies nothing and is conservative. **What stops me proposing it as a row is not
+  doubt any more; it is that replacing a clause under signature is a larger act than repairing what is
+  wrong with it, and the repair I did propose is sufficient.** Whoever revises the candidate now has
+  the evidence rather than my hunch.
 - **Say the three observation classes are three operation sets and give each a name in the canon.**
   Tempting and probably right eventually, and I stopped short because naming is `question::` territory
   and `clause 11` makes a name an existence claim.
