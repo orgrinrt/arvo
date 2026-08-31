@@ -169,6 +169,44 @@ commit = "error"
 build = "error"
 push = "error"
 
+# --- arvo canon lints (mock/lints/*.rs, corpus side) ------------------------
+#
+# These read the panel's own prose under `mock/research/` rather than the
+# registry. The engine resolves the citations inside a registry row and nothing
+# resolves the ones in the corpus those rows are drawn from, which is where the
+# rot is.
+#
+# Three of them carry a measured ceiling. The population under it sits in files
+# that are the record, where repointing a citation would be editing history to
+# make a checker green, so what each refuses is a new one. The number is in the
+# lint, where the lint can read it; lower it as files are superseded and never
+# raise it.
+
+[lints.no-unprefixed-archive-citation]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-archive-citation-names-a-file]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-line-citation-into-a-registry-file]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-line-citation-into-a-living-ledger-in-prose]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-probe-reads-the-tree-it-sits-in]
+commit = "error"
+build = "error"
+push = "error"
+
 # --- Layer enforcement via forbidden-imports -------------------------------
 #
 # The per-crate layering rules were removed when mock/crates was
