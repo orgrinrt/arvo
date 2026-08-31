@@ -37,3 +37,18 @@ print by setting its ceiling to zero, reading the panic, and restoring the file:
 
 === 5. the suite ===
   77 passed, 0 failed, 0 ignored, before and after.
+
+=== 6. the suite refused my own probe, and it was right ===
+`no_new_probe_reads_another_tree` failed at 70 against a ceiling of 69 when the
+consumer-source check first landed:
+
+  70 probe scripts name a path outside this repository, against a ceiling of 69.
+  A new one has been written: resolve its root from its own location rather than
+  raising this number.
+
+The first version of `what_the_consumer_says_about_spectral.sh` defaulted its
+consumer path to an absolute checkout under a home directory, which is the exact
+defect that arm exists for: on a host where that path exists the probe succeeds
+and reports about a different tree, and no output says which. Resolved from the
+script's own location instead, by walking up to `mockspace.toml` and taking the
+sibling. Ceiling not touched. Suite back to 77 passing, 0 ignored.

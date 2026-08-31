@@ -16,7 +16,16 @@
 #
 # Both refs are printed. If they agree, which ref anybody read does not matter.
 set -euo pipefail
-repo="${1:-/Users/orgrinrt/Dev/clause-work/numeric-stack/hilavitkutin}"
+# Resolved from this script's own location rather than written down. The repo
+# root is the nearest ancestor holding `mockspace.toml` and the consumer is a
+# sibling clone of it in the workspace. A committed probe naming somebody's
+# checkout does not fail elsewhere: where that checkout exists it succeeds and
+# reports about a different tree. `a_probe_reads_the_tree_it_sits_in` refused
+# this file at the first version and was right to.
+root="$(cd "$(dirname "$0")" && pwd)"
+while [ "$root" != "/" ] && [ ! -f "$root/mockspace.toml" ]; do root="$(dirname "$root")"; done
+[ -f "$root/mockspace.toml" ] || { echo "run me from inside the repository" >&2; exit 2; }
+repo="${1:-$(dirname "$root")/hilavitkutin}"
 [ -d "$repo" ] || { echo "no consumer clone at $repo" >&2; exit 2; }
 
 for ref in origin/dev recover/unlanded-rounds-and-benches; do
