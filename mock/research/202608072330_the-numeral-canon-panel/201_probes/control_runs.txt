@@ -1,0 +1,41 @@
+######## 201 control runs ########
+
+=== 1. what_cannot_be_written.sh ===
+BASELINE   4 answered, 46 open, 29 proposed; 18 carry an unblocks, 15 of those open.
+CONTROL    a ruling edge planted at the first OPEN question, plus one at a slug
+           naming no question at all:
+             5 answered, 45 open, 29 proposed; 14 of the unblocks-carrying open.
+           Both move the right way and the nonsense slug is not counted, or
+           answered would read 6.
+
+THE CONTROL THAT WAS NOT ONE, kept because it is the point. The first version
+planted on the FIRST question in the file, which is already answered, so the
+run came out identical to the baseline. That is indistinguishable from an
+instrument reading no edges at all. A control has to be able to move the number,
+and choosing the target by position rather than by state does not guarantee it.
+
+A SECOND DEFECT, display only, found by reading the output rather than the
+count. `unblocks` was parsed with a continuation flag set unconditionally, so a
+single-line value swallowed the `note` that followed it and every quotation
+would have been two fields joined. The totals were unaffected, which is why it
+survived a run: it shows only when you read what it printed, and reading what it
+printed was the entire purpose.
+
+=== 2. how_much_of_the_canon_is_settled.sh ===
+BASELINE   ratified 1, in_force 1, stated 68, open 5; ratifies edges 0;
+           the_format 0 op rows against 6 proposals.
+CONTROL    one ratified ruling planted on the_format carrying a ratifies edge:
+             ratified 2, ratifies edges 1, the_format 1 op row.
+           All three axes move, so a zero on any of them is about the canon.
+
+=== 3. the brief's claims, checked before being built on ===
+  598 rows across ten namespaces                     confirmed
+  two candidate obligations filed under those slugs  confirmed
+  bit-set row lost `difference`                      confirmed
+  bit-set row gained the single-instruction need     confirmed
+  "eight rows now carry the consumer's verbatim"     REFUTED, it is twelve, and
+                                                     the three without are the
+                                                     three with no consumer
+  "15 obligations, 2 answered"                       MISLEADING, the two are one
+                                                     met and one proposed, which
+                                                     the schema forbids summing
