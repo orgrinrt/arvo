@@ -1,15 +1,26 @@
-# Compiled outputs of this probe. The sources, the scripts, every captured
-# stderr and the run's own output are tracked; the binaries are not, because
-# they are reproducible in a second by `matrix.sh` and are megabytes.
+# Compiled outputs of these probes. Every source, every captured stderr, every
+# panic message and every run's own output is tracked; the binaries are not,
+# because `matrix.sh` and `second_mechanism.sh` rebuild them in seconds and they
+# are megabytes each.
 ctlbin_*
 rt_on
 rt_off
-bin_on
-bin_off
 c_add_on
 c_add_off
 c_sub_on
 c_sub_off
 c_shl_on
 c_shl_off
+second_out/a_const_on
+second_out/a_const_off
+second_out/a_run_on
+second_out/a_run_off
+second_out/b_on
+second_out/b_off
+second_out/c_o*_o*
+second_out/d_o*_o*
+second_out/e_o*_o*
+second_out/ctl_c_*
+second_out/ctl_r_*
+second_out/ectl_*
 out/

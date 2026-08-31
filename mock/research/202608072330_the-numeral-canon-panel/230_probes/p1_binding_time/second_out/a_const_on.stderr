@@ -1,0 +1,27 @@
+error[E0080]: attempt to compute `200_u8 + 100_u8`, which would overflow
+  --> one_fn.rs:20:17
+   |
+20 | const OUT: u8 = saturating_looking_add(200, 100);
+   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `OUT` failed inside this call
+   |
+note: inside `saturating_looking_add`
+  --> one_fn.rs:16:5
+   |
+16 |     a + b
+   |     ^^^^^ the failure occurred here
+
+note: erroneous constant encountered
+  --> one_fn.rs:24:26
+   |
+24 |     println!("const {}", OUT);
+   |                          ^^^
+
+note: erroneous constant encountered
+  --> one_fn.rs:24:26
+   |
+24 |     println!("const {}", OUT);
+   |                          ^^^
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.
