@@ -783,3 +783,223 @@ The obligation the row records as owed under every filing equally is still owed:
 wrapped numeral has no arithmetic-compatible order, so the canon owes one sentence
 saying which order comparison means there. `law::existence_of_a_translation_invariant_total_order`
 is the measurement behind it.
+
+### 6.8 The overflow mode is declared, so the strategy does not fix it
+
+`question::does_warm_wrap_or_clamp` (Q6) asks whether one strategy wraps or
+clamps. The premise is that a strategy fixes the mode, and ratified text says the
+declaration fixes it.
+
+`ruling::the_overflow_panic_is_permitted_and_bounded` (`ruling.toml:1052`), which
+is ratified in op's own words and at his own request kept as loose as he stated
+them, says that on a release build "what stands in its place is the guarantee plus
+an explicit declaration of the mode, saturate or wrap or whatever applies to the
+overflow or underflow at hand, which then lowers and behaves accordingly". The
+mode is a declaration that lowers, and the axis of that ruling is the build rather
+than the strategy: panic on debug, in every strategy, "even on hot"; declared mode
+on release.
+
+So the question dissolves, which is its own third option, and it dissolves along a
+different seam than the one that option names. What is left of it is two smaller
+things, and both have answers:
+
+- **What the default declaration is where a consumer writes nothing.** Ratified
+  `warms_objective_is_the_intuitive_best_choice` (`ruling.toml:606`) says being a
+  Rust crate makes Rust's way "the baseline for intuition", and a native Rust
+  primitive panics under debug assertions and wraps without them. So the Warm
+  default is panic on debug and wrap on release, and the ratified preset table's
+  clamp cell is stale, which op has already said in
+  `ruling::warm_behaves_as_a_native_rust_primitive_would`'s successor. **Derived**,
+  from a ratified sentence about intuition plus a fact about the baseline it names.
+- **Whether the mimicry survives measurement.** Ratified text supplies the escape:
+  mimicry "does not make it absolutely required, if mimicking is consistently just
+  worse choice". Whether it is worse is what op's own deferral
+  `wrap_or_clamp_stays_open_and_both_get_priced` (`ruling.toml:1038`) sends to the
+  bench, in his words "Option 1 but see previous answer too", with `instead`
+  reading "It goes back to the bench: both readings are written and both are
+  priced, and the measurement decides rather than he does". **That is not my
+  question and it is not answerable without the harness.**
+
+The standing caveat on the row's evidence survives all of this and should travel
+with any future reading: the clamp-family arity crossover at `20` section 1.5 is
+self-flagged as contaminated, written after reading a commit subject carrying its
+own conclusion, and is owed an independent read that has not run.
+
+## 7. Derived from the intent, inside its spirit, and marked as derived
+
+Everything here is weaker than section 6. Each says what it rests on and what
+would overturn it. Where it agrees with an existing `one_expert` row I say so and
+the agreement adds nothing, because I read the row first.
+
+### 7.1 Two words for membership and hosting, with hosting scoped to a target
+
+`question::one_word_or_two_for_is_a_number_system` (Q31). The row's own note gives
+the decisive test and answers it: whether the canon ever says something true of a
+system arvo cannot host, "and it already does, since the bounded windows it admits
+are defined as bounded windows of systems it cannot host". Ratified
+`membership_of_the_representable_set_is_one_affine_predicate` makes every
+representable set a bounded window over some ambient domain, and the unbounded
+domains those windows are windows of are not hostable. So one word is refused.
+
+Between two words and two words with the second scoped to a target, 6.6 decides
+it. A platform-width numeral is a target-indexed family, so it is hostable at one
+target and not at another, and an unscoped hosting predicate would have to call it
+both. **Option three**, and the cost the row names, a quantifier over compilations,
+is what the platform-width case needs anyway.
+
+Agrees with `membership_and_hosting_are_two_questions` (`proposal.toml:422`) on the
+split, which I read first. The target-scoping half is where this goes further than
+that row, and it goes there on 6.6 rather than on taste.
+
+### 7.2 Admission is a location for membership and a predicate for hosting
+
+`question::is_admission_a_predicate_or_a_location` (Q30). This is Q31's shape one
+level down and it takes Q31's answer: two questions, two procedures. Membership
+asks which coordinate of the dependent sequence a candidate fixes, which is a
+location, because ratified text makes identity a pair of coordinates and locating
+a candidate on them is what deciding membership is. Hosting asks what a value at
+rest may carry on a named target, which is a predicate returning yes or no.
+**Option three.**
+
+The row's note is the supporting evidence and it is measured rather than argued:
+most of the disputed cases, a Gray code, two's complement and a stride, are
+coordinate choices rather than rejections. Agrees with
+`admission_returns_a_coordinate_rather_than_a_verdict` (`proposal.toml:479` block),
+read first.
+
+### 7.3 Soundness is the canon sentence and tightness is an arm
+
+`question::is_the_derived_numeral_required_to_be_tightest`.
+`probe::the_design_closed_forms_are_not_the_tightest_numeral` measures the design's
+natural closed forms tight on 1099 of 1296 cases for multiplication, 1175 of 1296
+for addition and 751 of 1296 for the subtraction candidate. So a canon sentence
+claiming tightness would be false today, and option two cannot be the canon
+sentence as the design stands.
+
+Option three, say nothing about tightness, is refused for a different reason: a
+canon must be able to say which things are doable, and a derived numeral that is
+not guaranteed to hold every value the operation can produce is not usable by
+anything. Soundness is the minimum a canon can say and still be a canon.
+
+**So option one is the canon sentence, and bestness is an arm wherever a tight
+form is derivable**, which is what `ruling::arms_over_regions_are_the_fundamental_heart`
+asks of every result that holds somewhere and not everywhere. The two admissions
+option two needs, the origin shape and negative integer width, then belong to the
+arm's predicate rather than to the canon, which is where an admission that only
+some regions need should sit. Derived, and the derivation is the arms ruling
+applied to a measured fraction.
+
+### 7.4 The cross-kind join stays unclosed and priced
+
+`question::is_the_cross_kind_join_closed_or_priced`.
+`probe::closing_the_family_under_intersection_is_priced_and_does_not_reach_tapered_formats`
+measures the closure at a 16 to 34 percent enlargement, every added shape a
+segmented grid neither family names, and the closure not reaching tapered formats
+at all. A closure that costs a third family and still leaves a named format class
+outside is not a closure of anything a consumer wanted closed.
+
+Closing the space is also the shape `ruling::the_work_is_predicated_arms_composed`
+rejects by premise: it is one uniform structural answer bought so that every later
+question has a cheap uniform answer. **Option two**, unclosed and priced, with the
+join computed where a region admits one and named where it does not.
+
+### 7.5 The singleton amendment is narrowed and not closed
+
+`question::inclusion_order_singleton_amendment` (Q10). 5.4 removes one source of
+sub-two-value numerals, the symmetric sign domain at precision one, by choosing the
+precision reading that never produces it. It does not remove the source the
+question is about, which its own note locates "at the coarsest declared step in
+the box": a grid whose declared step is coarse enough that one point fits in the
+range. Those are different constructions and I did not measure the second.
+
+So Q10 stays open with a smaller case set, and its third option, that no consumer
+reaches such a numeral, is now less plausible rather than more: 5.4 shows the case
+arises from an ordinary convention choice rather than from a pathological shape,
+which is weak evidence that it will arise again from another. The second read `03`
+asked for has still not run and this is not it.
+
+### 7.6 The position-keyed dither arm ships
+
+`question::does_the_position_keyed_dither_arm_ship`. Recorded as answered by the
+coordinator in op's stead and marked overturnable in a sentence, so this is the
+second independent reading the two-expert rule asks for. I formed it before reading
+the coordinator's reasoning, which the row states as the toolbox argument.
+
+`ruling::there_is_no_universal_answer_take_the_win_and_gate_it` carries op's words:
+"Take the win where it applies, gate it out from where it does not." The test for
+an arm is therefore whether a region exists where it wins, and 5.2 measures one:
+at `d = 3, delta = 5` the position-keyed member is exactly monotone on an
+increasing ramp where the independent member is not, and the region is computable
+from the dropped-bit count and the ramp step alone, so a const predicate can gate
+it. Ratified `arms_over_regions_are_the_fundamental_heart` then says the arm ships,
+because an arm with a nameable region is what the design is made of.
+
+**It ships**, and I reach it on a measurement rather than on the toolbox rule, so
+the two readings do not share a premise. Whether it ships as a default is a
+different question and 7.8 does not answer it either.
+
+### 7.7 A consumer-supplied seed surface exists
+
+`question::does_a_consumer_supplied_seed_surface_exist`. Also a coordinator call in
+op's stead, also marked overturnable, and this is my own reading formed from canon
+text.
+
+`ruling::the_operating_constraints_are_intents_and_rules` (`ruling.toml:935`) is
+`in_force` and lists **no platform dependency** among constraints that "are not to
+be questioned". Sourcing entropy is a platform dependency. So arvo cannot produce
+randomness, and a stochastic member is either fed from outside or is not
+stochastic.
+
+`ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names` is ratified
+by op and fixes the mode vocabulary at six names, one of which is `stochastic`.
+A design with no seed surface has a mode named `stochastic` that is deterministic,
+which makes one of six ratified names denote something it is not. **So the surface
+exists**, and it exists because the in-force constraint and the ratified vocabulary
+cannot both hold without it.
+
+The second option's cost as the row states it, "picks determinism for every
+consumer", understates what it costs: it does not pick determinism, it renames it.
+
+### 7.8 Both keyings ship, each gated, and the question should not have been asked
+
+`question::do_arvos_consumers_want_value_keying_or_position_keying`. The row's own
+`bound` already says the shape is one op refused, quoting him at length, and names
+the third option as the answer ratified `the_work_is_predicated_arms_composed`
+already gives. I agree and have nothing to add to the reasoning.
+
+What I can add is the predicate one of the two arms is gated on, which the row says
+is what the panel owes. 5.2 supplies part of it: on a sequentially read increasing
+ramp, position keying costs between 1.20 and 2.40 times the independent member's
+monotonicity failure rate at every cell where either is nonzero, and costs nothing
+at all in the cells where the key's increment cannot bridge the ramp's residue gap.
+Both halves are computable at compile time from the dropped-bit count and the step.
+That is a gate rather than a preference, and it is the shape the answer wanted.
+
+### 7.9 There is no single default rounding position, and the bound that says otherwise over-reaches
+
+`question::why_the_default_rounding_position_is_chosen`. The row's `bound` derives
+its answer from ratified `warms_objective_is_the_intuitive_best_choice` and flags
+itself as one of the three least certain moves in its pass, with the attack stated:
+"the ruling quoted is about one strategy's objective, and reading it as governing a
+crate-wide default is a widening."
+
+**The attack lands.** Ratified `the_strategies_weigh_measurements_differently`
+(I8) says the strategies measure different things and weigh different measurements
+differently, and ratified `each_preset_names_a_stated_intent` (I2) gives four
+different intents. A crate-wide default derived from one strategy's objective would
+have the other three inherit a default chosen against a weighting they do not
+share, which is what I8 says cannot be right. So the widening fails.
+
+**Its failure selects the row's third option rather than returning the question.**
+If the default cannot be crate-wide it is per concern, which is what
+`ruling::the_work_is_predicated_arms_composed` predicts and what the row records
+neither candidate having written down. Within the intuitive-compromise strategy the
+bound's own reasoning then holds unchanged and picks familiarity as the baseline
+with the measured escape; within a speed-first strategy
+`ruling::throughput_wins_are_the_speed_first_strategys` picks differently; and the
+row's sharp observation, that the IEEE default is the one mode not free under
+either signedness, becomes a fact about which arms are reachable at each default
+rather than an argument for one global choice.
+
+So the question is answered without op, and the part the bound worried was his
+turns out to be the part that dissolves.
