@@ -18,14 +18,14 @@ does not need a ruling. It needs splitting.
 
 ## 0. The two gates
 
-**Canon gate: passed.** Checked against `mock/registry/*.toml`, which `mockspace.toml:32` declares as
-`canon_paths`, read through `cargo mock query` and directly. Nothing below closes a question reserved
-to op: every row I propose carries `answers` rather than a stamp, per the schema's own words on that
+**Canon gate: passed.** Checked against `mock/registry/*.toml`, which `mockspace.toml` declares as
+its `canon_paths`, read through `cargo mock query` and directly. Nothing below closes a question
+reserved to op: every row I propose carries `answers` rather than a stamp, per the schema's own words on that
 field, "It does not settle them while it is a proposal."
 
 Two ratified rulings landed after my brief and both bear on this file. `ruling::an_ack_is_not_a_ratification`,
 which is why nothing here reads op's bound as an answer. And
-`ruling::the_strategy_intents_are_not_clear_cut` (`mock/registry/ruling.toml:74`), in his words: *"it's
+`ruling::the_strategy_intents_are_not_clear_cut`, in his words: *"it's
 not clear cut. You should not write these as clear cut and settled. The intent is clear I think, but
 nothing about them is absolute otherwise."* Section 4 leans on a strategy intent, and section 4.1 is
 written specifically so that it leans on the **intent** and on nothing concrete, because
@@ -54,12 +54,12 @@ before anything was staged. Nothing was committed and nothing was lost. It is th
 think it is either, so the first thing to establish is whether the question is well posed.** It is
 not, and the registry contains the proof of that already.
 
-`question::the_container_premise` (`mock/registry/question.toml:1104`) asks whether a declared
+`question::the_container_premise` asks whether a declared
 numeral's footprint is observable, and its `unblocks` says it unblocks the statement of what a
 primitive is. My brief adds that `question::which_operation_set_the_design_ships` "sits downstream of
 it".
 
-Open the other row. `question::which_operation_set_the_design_ships` (`question.toml:963`), field
+Open the other row. `question::which_operation_set_the_design_ships`, field
 `unblocks`:
 
 > The preset count and their names, which is op's own open intent. [...] **It also decides whether
@@ -101,8 +101,8 @@ split every class, 32 to 64" ever since, as though it named a contested fact. It
 already says identity is denotational sameness **"relative to the declared operation set"**, so 32 and
 64 are the extensions of one parametric definition at two values of its parameter. Both numbers are
 right. They were never in tension, and the row that reads them as a fork
-(`question.toml:1132`) has been quoted as evidence that something is unresolved when what it measured
-is that the definition is parametric, which clause 2 says in words.
+(`question::the_container_premise`, its `note` field) has been quoted as evidence that something is
+unresolved, when what it measured is that the definition is parametric, which clause 2 says in words.
 
 ---
 
@@ -564,9 +564,10 @@ projection lazily is choosing, silently, to put the carrier into `SIGMA_VAL`.
 
 **One unlicensed mechanism, outside my question, reported as the standing instruction requires.** The
 circular dependency in section 1 is not merely an inconsistency, it is two rows that between them
-license reasoning in a loop, and both are live and cited. `question.toml:973` and `question.toml:982`
-sit in the same row. Whichever direction is kept, one of the two sentences has to go, and until it
-does any later reader can derive whichever conclusion they arrived wanting.
+license reasoning in a loop, and both are live and cited. The `unblocks` and `bound` fields of
+`question::which_operation_set_the_design_ships` sit in one row. Whichever direction is kept, one
+of the two sentences has to go, and until it does any later reader can derive whichever conclusion
+they arrived wanting.
 
 ---
 
