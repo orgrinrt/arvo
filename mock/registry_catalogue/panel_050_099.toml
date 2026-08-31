@@ -247,3 +247,92 @@ edited_after_supersessor = false
 canon_rows = []
 ported_this_pass = false
 note = "A checkpoint file by design produces no committed instrument and mints no registry-eligible claim on its own authority; its value is redirection, and section 4 (redirecting the second four) is process content outside this catalogue's claims scope. Confidence held at 0.85 rather than higher because the general congruence claim's provenance (which later file actually generalised 57's five-width check to the exact closed form) was not traced to a specific file number."
+
+[[item]]
+path = "60_stam_the_chain_derived_cold.md"
+unit = "the_chain"
+claims = [
+  "cold derivation: a chain is exact operations plus a schedule of adaptation points; the schedule is part of the function's meaning; the per-operation model extends to chains exactly when adaptation is unfused from the operations",
+  "chains factor into windows (bounded subterms evaluated exactly, adapted once at exit) whose capacity is a static, typestate-derivable function of container width and operand formats",
+  "addition composes headroom logarithmically (ceil(log2 k) extra integer bits for a k-fold), multiplication composes width linearly (kF bits); three cost regimes follow (per-op, windowed, fully exact) with an explicit crossover",
+  "probe A: a windowed dot-product schedule is correctly rounded on all 46656 tested inputs where staged per-step narrowing drifts on the large majority",
+  "probe D: the multiplicative accumulator saving is adaptation fusion and is rounding-mode-conditional, not the constant 58 first reported; 58's equality form breaks at fold length 5",
+  "section 6: an order/threads/intent interaction noticed incidentally",
+]
+verdict = "mixed"
+confidence = 0.75
+reason = "The central cold-derivation claim (what a chain is, the window concept, the typestate-derivability) is already fully captured, essentially verbatim, in proposal::a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points, cited from 63's consolidation. Probe D's finding is fully captured in proposal.toml's multiplicative-grading rows and question.toml's Q11 note, both explicitly naming file 60 as source. The cost-accounting elaboration (three regimes, the ceil(log2 k) vs kF asymmetry, probe A's dot-product confirmation) was genuinely uncaptured and is ported this pass as proposal::a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing with probe::a_wide_exact_fold_with_one_final_narrow_is_correctly_rounded_where_staged_narrowing_drifts. Section 6 (order/threads/intent interaction) was not read this pass; confidence held at 0.75 rather than higher for that reason, and because this file's own two-commit history (phase one, phase two reconciliation) was not separately checked for whether phase two revised any phase-one claim I have not re-verified against phase two's text directly."
+superseded_by = ["63 (consolidation, ports the chain-as-schedule concept)"]
+supersedes = ["58's constant-accumulator-saving claim, per this file's own probe D"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "probe::a_wide_exact_fold_with_one_final_narrow_is_correctly_rounded_where_staged_narrowing_drifts",
+  "proposal::a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing",
+]
+ported_this_pass = true
+note = "Two-commit file (phase one cold derivation, phase two reconciliation with the rest of the unit); both treated as one unit for this entry since the registry citations do not distinguish which phase they draw from."
+
+[[item]]
+path = "62_carmack_the_signed_cell.md"
+unit = "the_format_concept"
+claims = [
+  "signed saturating multiplicative cell: dead at F=0 under two's-complement range, alive-associative under a symmetric range",
+  "signed additive column is policy-split (wrap group, saturation dead) with counts F-invariant",
+  "at F approaching the width the two policies' multiplicative failure sets coincide exactly",
+  "accumulator saving is rounding-spelling-dependent on the signed side too (floor exactly F at three lengths, truncation irregular)",
+  "two droplist candidates closed: signed two's-complement saturating multiplication induces a semigroup at some width; the wrap section is a relabelling at every scale",
+]
+verdict = "mixed"
+confidence = 0.85
+reason = "The symmetric-range/geometric-criterion finding is superseded by a strictly more general, already-ported closed form (proposal.toml:136, evaluated over three sign domains including symmetric range, exact over 100 zero-containing intervals). The rounding-spelling-dependent accumulator finding is already captured in the multiplicative-grading proposal rows. The two droplist candidates this file names as closed had no corresponding retirement row; both ported this pass, since a droplist candidate closed only in a research file's prose is exactly the case a retirement row exists to prevent re-citing."
+superseded_by = ["a later general closed-form treatment (proposal.toml:136, file number not traced this pass)"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "retirement::dl_signed_twos_complement_saturating_multiplication_induces_a_semigroup_at_some_width",
+  "retirement::dl_the_wrap_section_is_a_relabelling_at_every_scale",
+]
+ported_this_pass = true
+note = "Sections 0-4 (gates, the answer, the cube filled in, what this does to the picture) were not read this pass; this entry relies on section 5's own summary of what it wants ported, cross-checked against the registry. The underlying measured cube content (associativity/coherence cell values) was not independently re-derived."
+
+[[item]]
+path = "63_spj_consolidation_the_format_concept.md"
+unit = "the_format_concept"
+claims = ["the unit-two consolidation: the format concept, its laws, and the chain/format relationship, as the authoritative synthesis of files 55 through 62"]
+verdict = "live"
+confidence = 0.95
+reason = "One of the four fully-known finished consolidations in this slice, confirmed at the outset of this seat's work. Heavily cited: 15 citations in law.toml, 31 in proposal.toml. This file's own history shows a same-day repair ('63 repaired per 64, d-c carried, c6 and c9 verdicts match their rungs') after 64's entailment check ran against it, so the second commit is the one the registry should be citing; not independently verified which commit's line numbers the existing provenance citations resolve against, since heading anchors are used for citations into this file rather than line numbers wherever I checked."
+superseded_by = []
+supersedes = ["55, 55b, 56, 57, 58, 59, 60, 61, 62 (the whole unit it consolidates)"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = true
+canon_rows = []
+ported_this_pass = false
+note = "edited_after_supersessor is true in the sense that this file was itself edited after 64 (which reads it) found issues; that is the intended repair loop (consolidation, entailment check, repair) rather than an accident, and is the opposite of a stale-drift case. No new registry rows from this file this pass since it was not reopened in full; its content was reached only indirectly, through registry citations and through the OPTIONS.md Q17 synthesis, both cross-checked as noted in the files 58/60/61/62 entries above."
+
+[[item]]
+path = "64_ringer_entailment_check_on_the_format_consolidation.md"
+unit = "the_format_concept"
+claims = [
+  "the D-C chain alternative (chain as a first-class typed object) is a live, named, unkilled option in 60 and is entirely absent from 63's consolidation; a completeness gap, not an error, against the panel's own stated keep-options-open discipline",
+  "two smaller open items from 60 (schedules as strategy-implied defaults vs consumer-visible knobs; storage-versus-compute format distinction) also silently dropped",
+  "Alternative B/C labels from 55 are not carried by name in 63, though their content is; a bookkeeping loss, not a content loss",
+  "nothing miscited: five reruns, two commit orderings, a grep count, a dozen probe citations and six specific numeric claims all checked and matched their source",
+  "candidate-sentence-by-candidate-sentence permanence/equivalence re-evaluation of 63 section 6's ten canon-candidate sentences (C1-C10), independently derived before reading 63's own verdicts; agrees with nine of ten, and for C6 argues 63's flat 'Equivalence: passes' understates its own stated hedge (one expert, unattacked, author's own words 'the claim this file most wants attacked next')",
+]
+verdict = "live"
+confidence = 0.9
+reason = "Read in full this pass (method, the two measurements, what was dropped, what was miscited, the ten-sentence re-evaluation). The D-C-dropped finding is fully and precisely captured in the registry, including the specific attribution to this entailment check: proposal::a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points carries 'Where the chain lives is a three-way fork none of which is killed... a second vocabulary, type sizes growing with expression size, and drift toward a computation-graph framing' in its gap field, and its note field states 'The consolidation restored the third direction after its own first draft dropped it, catching the loss only through the independent entailment check that followed', which is this file described in the registry's own words. C6's hedge concern is also captured and, further, resolved: proposal.toml's law-frame row states it was 'marked provisionally passing and named by its own author as the thing most wanting attack', then records it was subsequently attacked from two directions (a self-collapsed-system attack from the number-system topic, a const-predicate extension from the derived-laws topic) and held, which answers exactly the gap this file identified using evidence this file could not have had. The two smaller dropped items and the Alternative B/C bookkeeping loss were not separately checked against the registry; both are explicitly named by their source as minor (60 did not flag the first pair itself, and the file states the Alternative B/C loss is bookkeeping since the underlying argument is carried). No new registry rows from this file, since every substantive claim checked is already present, correctly attributed, and in one case already superseded by stronger later evidence than this file itself had."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "This entry replaces an earlier, honestly-flagged-as-unread version written before this file was actually opened. Left as a record that the gap was caught and closed within the same pass rather than deferred, per the standing instruction against reporting a blocker and stopping."
