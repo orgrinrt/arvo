@@ -294,15 +294,21 @@ The two archive arms take the archive's address as a parameter rather than assum
 module gains the second archive. The arm that refuses a dead-name citation in a living ledger and the arm that
 refuses a dangling `OLD_` citation anywhere both now run over both archives.
 
-The seven citations in section 5 are repointed, since three sit in living ledgers, which are editable by
-definition, and the other four sit in member files, which are the record. Member files are not edited to make
-a checker green, which is the position the existing module already takes for the same reason, so those four go
-under a ceiling that reports rather than an exemption that hides.
+Three of the seven citations in section 5 are repointed, because they sit in living ledgers, which are
+editable by definition and are the half this arm is a gate for. The other four sit in member files, which
+are the record: repointing them would be editing history to make a checker green, which is the position the
+existing module already takes for the seed archive, so they go under a ceiling of four that reports rather
+than an exemption that hides. The first counter written for that ceiling reported fifteen, because it
+counted every mention of the archive prefix that was not already `OLD_`. The directory was never renamed,
+only the files inside it, so a sentence naming the archive as a place is a live reference and counting it
+as a dead spelling put the number nearly four times over. A ceiling inflated by legitimate prose stops
+measuring the thing it is named for, and rises whenever somebody mentions the directory.
 
 The control is the mutation, not the count: the planted citation in a living ledger must turn the arm red, in
 both archives, and a planted anchor that does not exist must be rejected while a real one is accepted.
 `207_probes/anchors_resolve.sh` carries the second pair and checks all 22 of the catalogue's own citations,
-which is the only thing checking them until the arm lands.
+which nothing else checks: the archive arms resolve a file, and no committed arm resolves a heading anchor in
+panel prose.
 
 ---
 
