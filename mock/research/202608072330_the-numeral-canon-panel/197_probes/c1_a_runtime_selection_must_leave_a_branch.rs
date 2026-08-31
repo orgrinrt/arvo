@@ -133,9 +133,9 @@ fn arm_widen(xs: &[u64]) -> u64 {
 #[inline(always)]
 fn dispatch(arm: usize, xs: &[u64]) -> u64 {
     match arm {
-        | 0 => arm_wrap(xs),
-        | 1 => arm_sat(xs),
-        | _ => arm_widen(xs),
+        0 => arm_wrap(xs),
+        1 => arm_sat(xs),
+        _ => arm_widen(xs),
     }
 }
 
@@ -179,7 +179,11 @@ fn main() {
     println!("fold_direct  = {c}  (the arm, hand written)");
     println!(
         "values agree: {}",
-        if a == b && b == c { "yes" } else { "NO, the premise fails" }
+        if a == b && b == c {
+            "yes"
+        } else {
+            "NO, the premise fails"
+        }
     );
 
     // And the weighting is load-bearing, which is what says `resolve` is not a
@@ -188,7 +192,11 @@ fn main() {
     println!("fold_runtime at a weighting preferring accuracy = {accuracy}");
     println!(
         "the weighting selects: {}",
-        if accuracy != b { "yes" } else { "NO, the model is inert" }
+        if accuracy != b {
+            "yes"
+        } else {
+            "NO, the model is inert"
+        }
     );
 
     println!();
