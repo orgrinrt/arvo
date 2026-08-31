@@ -1492,3 +1492,84 @@ reproduced = "Three runs on the same pin: the archive's, the seed archaeology's 
 standing = "sound"
 note = "The best-controlled instrument the closed panel has that anybody has re-run. It is the reason the sibling row above is filed `uncontrolled` rather than being given the benefit of this one's controls: the two sources are different files establishing different things, and a control belongs to the instrument that ships it."
 keywords = ["structural array", "backing array", "layout", "repr(C)", "negative control", "padding", "capacity", "unsafe", "b1", "compile"]
+
+# --- the container premise, seat 210 -----------------------------------------
+#
+# Four instruments on one question. Two of them carry a first run beside the
+# second, because in both cases a control fired as a failure and the failure is
+# where the sharper statement came from. Neither first run is a defect in the
+# finding; both are the instrument failing to reach the path it was built for,
+# which is the class `164` C6 counts and which is caught here by the controls
+# rather than by a reader.
+
+[[probe]]
+id = "container_premise_the_shipped_agreement_test_quantifies_over_carrier_rules"
+establishes = "The shipped `warm-container-shared` agreement test asserts that four carrier rules agree at a fixed key, and the semantics is a component of the key, so the test never compares two markers. Over its own 57 keys the four arms agree everywhere; over the 28 keys whose semantics field is comparable, wrapping and saturating disagree on all 28, first at key 80003 where they give 159 and 255."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p1_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p1_oracle_quantifier::src::main.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p1.out::1",
+]
+control = "Three, declared in the header before the run. A1 is the one the finding needs: had the two semantics agreed on every key, the distinction between varying the carrier and varying the marker would be vacuous and the paragraph under test would have been right by accident. A2 calls the oracle twice at one semantics and requires agreement, so A1's disagreement is the operand rather than nondeterminism. A3 reproduces the shipped claim itself, so a disagreement is attributable to the quantifier and not to a different setup."
+standing = "sound"
+note = "Depends on the bench crate by path rather than reimplementing `reference`, because a probe that rebuilds the oracle it is checking is the shape this panel has already shipped once: an instrument whose own setup makes its claim true. The consequence is that this probe is checking the shipped oracle and nothing else."
+keywords = ["oracle", "agreement test", "quantifier", "carrier rule", "semantics", "key", "warm-container-shared", "wrapping", "saturating", "marker"]
+
+[[probe]]
+id = "container_premise_three_observation_classes_over_one_carrier_pair"
+establishes = "Over one declared width in two carriers (13 bits in a u16 against a u32), exhaustively across all 8192 values and all 8192 x 8192 ordered pairs: the layout observation separates the pair, an encoding stated over the declared width does not, and projected arithmetic does not, across add, multiply and exclusive or under wrapping and saturating at arity 2 and at chain lengths 1 and 4. With the projection removed the carrier becomes arithmetically observable exactly where the unprojected intermediate can exceed the narrower carrier's range, and stays invisible where it cannot."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p2_three_observation_classes.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p2_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p2.out::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p2_v1_controls_that_did_not_reach_the_path.out::1",
+]
+control = "Four classes, every one declared before the run. C1 requires an encoding stated over the container to separate, without which the declared-width encoding reporting agreement is a dead branch. C2 requires the unprojected arms to separate. C3 requires a genuinely different declared width to separate under both the encoding and the arithmetic, so the comparators are not stuck reporting equality. And the size arms are required to separate, which they do at 2 bytes against 4."
+defect = "C2 failed on the first run, at three of four arms, and the committed first output is kept. The cause is that over a 13-bit domain at arity 2 an unprojected sum is at most 16382, which fits the narrower carrier, so no removal of the projection can make the two carriers disagree: the control never entered the path it was built to test. Repaired by splitting C2 into the region where the unprojected intermediate can exceed the narrow carrier and the region where it cannot, each declaring the verdict its own region requires, and both halves then fire as required."
+standing = "sound"
+reproduced = "Re-run bit for bit against the hook-formatted source after the pre-commit autofix reformatted it, all arms unchanged."
+note = "The repaired C2 is worth more than the one it replaced. It converts the claim that arithmetic does not observe the carrier from a measurement into an obligation with a stated trigger: the projection back to the declared width is required exactly where an unprojected intermediate can exceed the narrower carrier, and a design writing it lazily is choosing to put the carrier into the value observation."
+keywords = ["footprint", "observation", "size_of", "encoding", "projection", "carrier", "declared width", "headroom", "exhaustive", "u16", "u32"]
+
+[[probe]]
+id = "container_premise_clause_nine_witness_quantifier"
+establishes = "Clause 9's completeness obligation quantifies its witness over inputs, so it cannot see a nullary observation. Under an input-only witness set the carrier pair comes out connected in two weakening directions with no witness and is refused as a spurious split, reproducing `163` p1. Under a witness set that adds the ambient nullary layout observations the same pair separates, while a pair of two names over one carrier, one value set and one realisation map stays refused and a refinement pair stays a refinement pair. Separately, and not as a model: two repr-transparent types over different carriers compile and report different sizes, so the observation the wider witness set adds is one the host language supplies rather than one a design elects."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p3_clause9_witness_quantifier.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p3_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p3.out::1",
+]
+control = "Four, declared in the header before the run, and G1 is the one the repair rests on. G1 requires the genuinely spurious pair to stay refused under BOTH witness sets: had widening the witness set separated it, clause 9 would have no teeth left and the repair would be worse than the defect. G2 requires the refinement pair to stay a refinement pair under both. G3 requires the carrier pair to be refused under the input-only set, which is the reproduction of the file being disagreed with rather than a rival measurement. G4 requires a policy pair and a width pair to separate under both, so the verdict function can report separation without help from the nullary half."
+standing = "sound"
+note = "Part A is not a model and is the load-bearing half: the sizes come from `size_of` on real types rather than from a flag this probe sets, so the footprint-internal branch is shown to describe a host language rather than a design. The modelled half is deliberately thin, because everything it needs to establish is which pairs move when one quantifier changes."
+keywords = ["clause 9", "completeness", "witness", "nullary", "spurious split", "weakening", "size_of", "repr transparent", "quantifier", "adequacy"]
+
+[[probe]]
+id = "container_premise_standards_alias_adequacy"
+establishes = "Of three candidate statements of where arvo's encoding is stated, only the declared width satisfies every observation of both standards op named. MATLAB `fi` requires `bin` to return exactly WordLength characters and `storedInteger` to return the type its documented rung(WL) mapping gives, and IEEE 754-2019 requires an interchange format to be encoded in exactly k bits. Over twelve swept widths the shipped Warm and Precise container rule fails `bin` at 12 of 12 and `storedInteger` at 12 of 12, and fails the IEEE width at every scored interchange width. The minimum native container fails `bin` at 8 of 12, so switching container rules does not rescue a canon that states the encoding over the container."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p4_standards_alias_adequacy.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p4_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p4.out::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p4_v1_min_arm_failed_at_k256.out::1",
+]
+control = "Control 0 checks IEEE Table 3.5's own closure, k = 1 + w + t, at five interchange widths before any arm is judged against the table, so the parameter table is not itself assumed. A deliberately broken arm stating the encoding over the declared width plus one bit is required to be refused by both standards at every width, which is what stops a pass meaning only that an arm mentioned the declared width. And the declared-width arm is required to pass, so the checker is not reporting refusal on everything."
+defect = "One arm failed on the first run and the committed first output is kept: the minimum-container arm was required to satisfy IEEE at every interchange width and failed at k = 256, because the rung table stops at 128. That is the model rather than the design. Above the native rungs there is no container for a container statement to refer to, so those arms have no referent rather than a wrong one. The scored IEEE sweep is now k in {16, 32, 64} and k in {128, 256} is reported unscored."
+standing = "sound"
+note = "The two standards' own rules are quoted from the vendor documentation and from the standard's text rather than recalled. The finding that matters most is the third one, that the answer does not depend on which container rule ships, because it detaches this question from a fork that is genuinely open and belongs to somebody else."
+keywords = ["MATLAB", "fi", "bin", "storedInteger", "IEEE 754", "interchange", "k bits", "alias", "adequacy", "declared width", "container rule", "rung"]
+
+[[probe]]
+id = "container_premise_the_contextual_formulation_is_conservative"
+establishes = "Stating a completeness obligation over contexts rather than over inputs reclassifies no pair: across seven pair-and-signature rows the contextual verdict maps onto the three-outcome clause exactly. Its second branch, discharged at any width with nothing to transfer, is recovered as a property of the separating witness rather than as a third outcome. Both states of that property are reachable: over the swept widths a lazy-projection signature restricted to addition separates the two carrier rules at 3 of 7 widths, exactly the exactly-filled ones, and the same signature with multiplication admitted separates at 7 of 7."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p5_contextual_formulation.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p5_run.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p5.out::1",
+  "panel::202608072330_the-numeral-canon-panel::210_probes::p5_v1_k1_arm_did_not_isolate_the_width_specific_case.out::1",
+]
+control = "Four, declared in the header before the run. K1 requires a pair whose separating context works at some widths and not at others, without which width-polymorphism is a distinction nothing instantiates and the subsumption claim is empty rather than true. K2 requires the genuinely spurious pair to stay equivalent at every width in every signature. K3 requires the contextual classification to agree with the three-outcome clause pair for pair, since a reformulation that reclassifies anything is a different obligation wearing the name. K4 requires a pair separated at every width to be reported polymorphic, so the axis reports both of its values."
+defect = "K1 failed on the first run and the committed first output is kept. The signature it used admitted multiplication, and a product of two full-range values overflows the minimum carrier at every width, so the separation came out polymorphic and the width-specific case was invisible behind it. That is a true result about that signature and it is kept as its own row; the repair is a second signature restricted to addition, under which the width-specific case appears at exactly the exactly-filled widths."
+standing = "sound"
+note = "Built because a sentence in the file it belongs to said the contextual formulation would 'very likely' subsume the transfer branch, which is a hunch offered where a result was checkable in an afternoon. The value is as much in what it did not find: nothing is reclassified, so the reformulation buys tidiness rather than reach, and that is a reason to leave a clause under signature alone rather than a reason to replace it."
+keywords = ["contextual equivalence", "completeness", "transfer", "model width", "polymorphic witness", "conservative", "reformulation", "clause 9", "exactly filled", "lazy projection"]
