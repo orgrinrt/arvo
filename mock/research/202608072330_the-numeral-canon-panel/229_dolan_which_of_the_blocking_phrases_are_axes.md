@@ -635,10 +635,22 @@ finished against them; the only thing I have seen of the other seat is a commit 
 instrument rather than a verdict on any phrase. So this reading is uncontaminated, and I am declaring the
 brush rather than leaving somebody to wonder.
 
-**And it is why nothing could be committed for half an hour.** Five bench processes were running across
-four worktrees, every one of them `bench_bitpack_write_contend_shared`, at 43 to 207 minutes of CPU each.
-Seven cargo invocations held the shared package-cache lock, and every mockspace pre-commit hook on this
-machine builds the lint pack in release before it will let a commit through. So the hung bench test from
-section 0 is not a slow suite, it is **a machine-wide commit stall**: one `cargo test` that does not
-terminate blocks every other agent's commit in every other clone, and the only sign is a `git commit` that
-sits there.
+**And it is why nothing on this machine could be committed for three quarters of an hour, which
+turned out to be a different defect from the one I first wrote here.** Every mockspace pre-commit
+hook builds the lint pack in release, so every commit needs cargo, and cargo needs the shared
+package-cache lock. Sixteen cargo processes held it, elapsed times from two to forty-four minutes,
+every one of them asleep at about five hundredths of a second of CPU, and **no `rustc` running
+anywhere**. That is a deadlock rather than a queue.
+
+**Four of the sixteen were parentless**, `PPID 1`: a `cargo fetch`, a `cargo check`, a `cargo clean
+-p ikiuni_renderer` and a `cargo build --quiet` on stable, left behind by sessions that had exited.
+Nobody was waiting on their output and none of them could report anything to anybody. Killing those
+four, and only those four, freed the lock: ten `rustc` processes started within five seconds and the
+commit that had been stalled for twenty-five minutes went through.
+
+So I was wrong about the cause in the paragraph this replaces, and the correction matters because the
+two want different fixes. The hung bench test is real and is section 0's finding, but it was not what
+blocked the commits. **What blocked them was orphaned cargo processes holding a machine-wide lock,
+which nothing reaps and nothing reports.** The tell is one command: if `lsof ~/.cargo/.package-cache`
+lists processes and `ps aux | grep rustc` returns none, every cargo on the machine is deadlocked, and
+the ones to kill are the ones whose parent is gone.
