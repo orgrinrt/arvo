@@ -103,16 +103,21 @@ fn open_and_in_force_are_not_awaiting_a_ruling() {
     // avoid, so it is pinned rather than left to the filter's spelling.
     let v = view(
         &[
-            ("ruling::waiting", &[("rung", "stated")]),
-            ("ruling::declined", &[("rung", "open")]),
-            ("ruling::enforced", &[("rung", "in_force")]),
-            ("ruling::blessed", &[("rung", "ratified")]),
+            ("ruling::zzwaiting", &[("rung", "stated")]),
+            ("ruling::zzunsettled", &[("rung", "open")]),
+            ("ruling::zzenforced", &[("rung", "in_force")]),
+            ("ruling::zzblessed", &[("rung", "ratified")]),
         ],
         &[],
     );
     let (_, out) = run(&v, &[]);
-    assert!(out.contains("waiting"), "{out}");
-    for excluded in ["declined", "enforced", "blessed"] {
+    assert!(out.contains("zzwaiting"), "{out}");
+    // The slugs carry a prefix no English word has, because this arm asserts a
+    // substring is absent from the whole report and the report is mostly prose.
+    // It was written with the slug `declined`, which passed until the closing
+    // text gained a sentence about rows op declined to bless, and then failed
+    // for a reason that had nothing to do with the filter it tests.
+    for excluded in ["zzunsettled", "zzenforced", "zzblessed"] {
         assert!(
             !out.contains(excluded),
             "`{excluded}` must not be in the batch: {out}"
@@ -132,28 +137,94 @@ fn a_row_with_no_standing_field_is_not_swept_in() {
     assert!(out.contains("nothing is awaiting"), "{out}");
 }
 
+/// The batch threshold is gone and the report says so, at any population.
+///
+/// This arm read both sides of the four op named: three rows had to say hold,
+/// four had to say a round of asking was owed. Both are now wrong rather than
+/// merely untested. He has handed the canon to the panel, so nothing here is
+/// queued for him, no count makes a round of asking owed, and a report that
+/// still said so would send a coordinator to a person who is not coming.
+///
+/// So the population is swept across the old boundary and the report is
+/// required not to talk about asking at either side of it.
 #[test]
-fn the_batch_threshold_reads_at_four_and_not_at_three() {
-    // Both sides of op's number, because a threshold tested on one side is a
-    // constant asserted against itself.
-    let three: Vec<(&str, &[(&str, &str)])> = vec![
-        ("ruling::a", &[("rung", "stated")]),
-        ("ruling::b", &[("rung", "stated")]),
-        ("ruling::c", &[("rung", "stated")]),
-    ];
-    let (_, out) = run(&view(&three, &[]), &[]);
-    assert!(out.contains("hold until more"), "three must hold: {out}");
-    assert!(!out.contains("owed"), "{out}");
-
-    let four: Vec<(&str, &[(&str, &str)])> = vec![
+fn no_population_makes_a_round_of_asking_owed() {
+    let rows: Vec<(&str, &[(&str, &str)])> = vec![
         ("ruling::a", &[("rung", "stated")]),
         ("ruling::b", &[("rung", "stated")]),
         ("ruling::c", &[("rung", "stated")]),
         ("ruling::d", &[("rung", "stated")]),
+        ("ruling::e", &[("rung", "stated")]),
     ];
-    let (_, out) = run(&view(&four, &[]), &[]);
-    assert!(out.contains("owed"), "four must be owed: {out}");
-    assert!(!out.contains("hold until more"), "{out}");
+    for n in 1..=rows.len() {
+        let (_, out) = run(&view(&rows[..n], &[]), &[]);
+        assert!(
+            out.contains("not queued for op"),
+            "at {n} rows the report must say who these are for: {out}"
+        );
+        for dead in [
+            "hold until more",
+            "asking is owed",
+            "batch of four he once named is\n",
+        ] {
+            assert!(!out.contains(dead), "at {n} rows, `{dead}` survives: {out}");
+        }
+    }
+}
+
+/// A retired row is marked, and a live one beside it is not.
+///
+/// Seat 218 found three rows on this list that must not be promoted, and this
+/// is the one state the registry can answer for itself. The control is the live
+/// row in the same run: an arm that marked everything would pass an assertion
+/// that only looked for the mark.
+#[test]
+fn a_retired_row_is_marked_and_a_live_one_is_not() {
+    let v = view(
+        &[
+            ("ruling::killed", &[("rung", "stated")]),
+            ("ruling::alive", &[("rung", "stated")]),
+            (
+                "ruling::killer",
+                &[("rung", "ratified"), ("supersedes", "[\"killed\"]")],
+            ),
+        ],
+        &[("ruling::killed", &["ruling::killer"])],
+    );
+    let (_, out) = run(&v, &[]);
+    let marked: Vec<&str> = out
+        .lines()
+        .filter(|l| l.contains("RETIRED by killer"))
+        .collect();
+    assert_eq!(marked.len(), 1, "exactly one row is retired: {out}");
+    assert!(marked[0].contains("killed"), "{out}");
+    assert!(
+        out.lines()
+            .any(|l| l.trim_start().starts_with("alive") && !l.contains("RETIRED")),
+        "the live row must be listed and unmarked: {out}"
+    );
+    assert!(out.contains("One of those is marked retired"), "{out}");
+}
+
+/// A referrer that points here through some other field is not a retirement.
+///
+/// The arm reads the typed reverse edges to find candidates and then reads
+/// `supersedes` to say which kind of edge it is. Without that second read every
+/// row anything cites would be reported dead, which is most of the corpus.
+#[test]
+fn a_row_cited_without_being_superseded_is_not_marked_retired() {
+    let v = view(
+        &[
+            ("ruling::cited", &[("rung", "stated")]),
+            (
+                "ruling::citer",
+                &[("rung", "ratified"), ("corrects", "[\"cited\"]")],
+            ),
+        ],
+        &[("ruling::cited", &["ruling::citer"])],
+    );
+    let (_, out) = run(&v, &[]);
+    assert!(!out.contains("RETIRED"), "{out}");
 }
 
 #[test]

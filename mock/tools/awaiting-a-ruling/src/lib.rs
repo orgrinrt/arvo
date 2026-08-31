@@ -1,4 +1,19 @@
-//! What op has not blessed yet, batched so he is asked once rather than often.
+//! What op has not blessed, and what it takes to promote one now that he has
+//! stopped blessing things.
+//!
+//! **The premise this was built on is spent.** It existed to batch rows so he
+//! was asked once rather than often, four at a time, which is the workflow he
+//! described when he set it up. He has since handed the canon to the panel:
+//! *"you don't need me anymore. I've given all I can, the canon should be
+//! solvable and fully fillable without me from now on with all that I've already
+//! said."* So there is nobody to batch to, no count at which a round of asking
+//! is owed, and a row here moves by two experts independently agreeing on it
+//! with the coordinator gating that.
+//!
+//! What survives the change is everything the tool actually does. The population
+//! is still worth seeing, still worth ordering by what depends on it, and still
+//! worth reading one row at a time before touching it. Only the destination
+//! moved.
 //!
 //! The `ruling` schema already draws the line this reports on. `ratified` needs
 //! both halves, the experts converging and him blessing that convergence.
@@ -23,10 +38,15 @@
 //!
 //! # What it reports
 //!
-//! **With no argument, the batch.** Every row awaiting a ruling, ordered by how
-//! much is waiting on it, with the count and whether that count has passed the
-//! four op named. What it deliberately does not do is pick which four to ask:
-//! ordering is a suggestion and the dispatcher reads the rows.
+//! **With no argument, the whole population.** Every row awaiting a ruling,
+//! ordered by how much is waiting on it, and marked where another row has
+//! retired it. What it deliberately does not do is pick which to promote:
+//! ordering is a suggestion and the coordinator reads the rows.
+//!
+//! **Retirement is the only blocked state it can see**, because it is the only
+//! one with a field. A row op was asked to bless and declined, and a row
+//! deliberately held, both look exactly like ready ones here. Seat 218 found
+//! three that must not be promoted and only this one was derivable.
 //!
 //! **With a key, one row in full**, which is what you read before putting it to
 //! him: his words if the row carries them, what the row says on top of those
@@ -47,12 +67,6 @@ const STANDING: &str = "rung";
 /// The value meaning he said it and has not ruled on it.
 const AWAITING: &str = "stated";
 
-/// The batch size op named. Below it, hold; at or above, ask.
-///
-/// Not a threshold this tool enforces. `AskUserQuestion` takes four questions at
-/// most, so a batch is asked in rounds and this is the point at which a round is
-/// worth spending rather than a point at which anything fails.
-const BATCH: usize = 4;
 
 pub struct AwaitingARuling;
 
@@ -114,17 +128,17 @@ impl AwaitingARuling {
     ///
     /// Ordered by that count, descending, then by slug so the output is stable
     /// across runs and a diff of two reports means something.
-    fn waiting(&self, ctx: &ToolContext<'_>, rows: &[String]) -> Vec<(String, usize)> {
-        let mut out: Vec<(String, usize)> = rows
+    fn waiting(&self, ctx: &ToolContext<'_>, rows: &[String]) -> Vec<(String, usize, Option<String>)> {
+        let mut out: Vec<(String, usize, Option<String>)> = rows
             .iter()
             .filter(|q| ctx.registry.field(q, STANDING) == Some(AWAITING))
-            .map(|q| (q.clone(), cited_by(ctx, q)))
+            .map(|q| (q.clone(), cited_by(ctx, q), retired_by(ctx, q)))
             .collect();
         out.sort_by(|a, b| b.1.cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
         out
     }
 
-    fn batch(&self, waiting: &[(String, usize)], total: usize) -> ToolReport {
+    fn batch(&self, waiting: &[(String, usize, Option<String>)], total: usize) -> ToolReport {
         if waiting.is_empty() {
             return ToolReport::reported(
                 format!(
@@ -142,32 +156,46 @@ impl AwaitingARuling {
             total
         ));
 
-        for (q, cites) in waiting {
+        for (q, cites, retired) in waiting {
             let slug = q.rsplit("::").next().unwrap_or(q);
+            let mark = match retired {
+                Some(by) => format!("   RETIRED by {by}, do not promote"),
+                None => String::new(),
+            };
             match cites {
-                0 => s.push_str(&format!("  {slug}\n")),
-                1 => s.push_str(&format!("  {slug}   (1 row cites it)\n")),
-                n => s.push_str(&format!("  {slug}   ({n} rows cite it)\n")),
+                0 => s.push_str(&format!("  {slug}{mark}\n")),
+                1 => s.push_str(&format!("  {slug}   (1 row cites it){mark}\n")),
+                n => s.push_str(&format!("  {slug}   ({n} rows cite it){mark}\n")),
             }
         }
 
         s.push('\n');
-        if waiting.len() >= BATCH {
+        let retired = waiting.iter().filter(|(_, _, r)| r.is_some()).count();
+        if retired > 0 {
+            let (count, verb) = match retired {
+                1 => ("One".to_string(), "is"),
+                n => (n.to_string(), "are"),
+            };
             s.push_str(&format!(
-                "That is past the {BATCH} op named, so a round of asking is owed. \
-                 Read each with `awaiting-a-ruling <slug>` first: the question is \
-                 usually the gap between his quote and the prose written on top of \
-                 it, not the row's subject.\n\n\
-                 Ordering is by what cites a row, which is a suggestion. Nothing \
-                 here says the top four are the right four."
-            ));
-        } else {
-            s.push_str(&format!(
-                "Fewer than the {BATCH} op named, so these hold until more \
-                 accumulate. Asking one at a time is what the batch exists to \
-                 stop."
+                "{count} of those {verb} marked retired above and not a candidate \
+                 for anything. They are listed because a row another row has \
+                 killed still reads as ready on a flat list, which is how one \
+                 gets promoted.\n\n"
             ));
         }
+        s.push_str(
+            "These are not queued for op. He has handed the canon to the panel, so \
+             a row here is promoted by two experts independently agreeing on it and \
+             the coordinator gating that, and the batch of four he once named is \
+             spent. Read each with `awaiting-a-ruling <slug>` before promoting it: \
+             the work is usually the gap between his quote and the prose written on \
+             top of it, not the row's subject.\n\n\
+             Ordering is by what cites a row, which is a suggestion and not a \
+             ranking. And retirement is the only blocked state this can see: a row \
+             he was asked to bless and declined, or one deliberately held, looks \
+             exactly like a ready one here, because neither has a field to be \
+             written in.",
+        );
 
         ToolReport {
             outcome: Outcome::Clean { examined: total },
@@ -254,6 +282,33 @@ fn cited_by(ctx: &ToolContext<'_>, q: &str) -> usize {
     ctx.registry.referrers(q).len()
 }
 
+/// The field naming rows this one retires.
+const SUPERSEDES: &str = "supersedes";
+
+/// Whether another ruling has retired this row.
+///
+/// Candidates come from the engine's typed reverse edges rather than from a
+/// scan, so a row reaches this one through a declared reference field. The
+/// `supersedes` read then says which kind of edge it is, because a referrer may
+/// point here through any of several fields and only one of them means dead.
+///
+/// Worth having because a retired row is indistinguishable from a live one on a
+/// flat list, and the list is what a coordinator works top to bottom. Seat 218
+/// found three rows on it that must not be promoted, of which this is the state
+/// the registry can already answer for itself.
+fn retired_by(ctx: &ToolContext<'_>, q: &str) -> Option<String> {
+    let slug = q.rsplit("::").next().unwrap_or(q);
+    ctx.registry
+        .referrers(q)
+        .iter()
+        .find(|who| {
+            ctx.registry
+                .field(who, SUPERSEDES)
+                .is_some_and(|dead| dead.split(|c: char| !(c.is_alphanumeric() || c == '_')).any(|named| named == slug))
+        })
+        .map(|who| who.rsplit("::").next().unwrap_or(who).to_string())
+}
+
 /// Which rows depend on this one, by qualified key.
 ///
 /// The engine's own reverse edges, which are typed: a row reaches this one
@@ -293,7 +348,7 @@ fn op_files_after(ctx: &ToolContext<'_>, q: &str) -> Vec<String> {
     let Some(after) = ctx
         .registry
         .field(q, "provenance")
-        .and_then(|p| panel_number(p))
+        .and_then(panel_number)
     else {
         // No provenance, or none this can order. Reporting every op file would
         // be noise dressed as diligence, so it reports none and says nothing.
