@@ -1,0 +1,30 @@
+### every region a product of per-axis spans can denote
+  {}
+  {unsigned/unsigned}
+  {unsigned/signed}
+  {unsigned/unsigned, unsigned/signed}
+  {signed/unsigned}
+  {unsigned/unsigned, signed/unsigned}
+  {signed/signed}
+  {unsigned/signed, signed/signed}
+  {signed/unsigned, signed/signed}
+  {unsigned/unsigned, unsigned/signed, signed/unsigned, signed/signed}
+  10 distinct regions of 16 possible subsets
+
+### the region `138 #1` states
+  {unsigned/signed, signed/unsigned, signed/signed}
+  expressible as a product of per-axis spans: NO
+
+### the nearest products, and what each gets wrong
+  {unsigned/signed, signed/signed}                     claims too much: []  misses: ["signed/unsigned"]
+  {signed/unsigned, signed/signed}                     claims too much: []  misses: ["unsigned/signed"]
+  {unsigned/unsigned, unsigned/signed, signed/unsigned, signed/signed} claims too much: ["unsigned/unsigned"]  misses: []
+
+### R1, a region that is a product must be expressible
+  {signed} x {signed, unsigned} = {signed/unsigned, signed/signed} -> PASS
+### R2, the empty and the full region
+  empty PASS full PASS
+### R3, the enumeration's own count
+  10 distinct products from 16 subset pairs: PASS, 16 pairs collapse to 10 because every pair with an empty side is the empty region
+### R4, at least one region must be inexpressible
+  6 of 16 subsets are not products: PASS
