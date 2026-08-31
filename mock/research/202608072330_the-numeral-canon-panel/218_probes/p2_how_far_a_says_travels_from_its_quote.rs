@@ -119,7 +119,9 @@ fn parse(text: &str, namespace: &str) -> Vec<Row> {
 }
 
 fn provenance_file(root: &Path, prov: &str) -> Option<PathBuf> {
-    let inner = prov.trim().trim_matches(|c| c == '[' || c == ']' || c == '"');
+    let inner = prov
+        .trim()
+        .trim_matches(|c| c == '[' || c == ']' || c == '"');
     let first = inner.split("\", \"").next()?;
     let parts: Vec<&str> = first.split("::").collect();
     if parts.len() < 3 || parts[0] != "panel" {
@@ -186,17 +188,107 @@ fn backward_edges(rows: &[Row]) -> (Vec<BackwardEdge>, Vec<String>) {
 /// hit is the failure this arm exists to avoid; a false positive costs a
 /// reader ten seconds and a false negative costs the finding.
 const STOP: &[&str] = &[
-    "about", "after", "again", "against", "already", "also", "always", "another", "anything",
-    "because", "been", "before", "being", "below", "between", "both", "cannot", "could", "does",
-    "doing", "done", "each", "either", "else", "enough", "even", "ever", "every", "everything",
-    "from", "further", "give", "given", "have", "having", "here", "himself", "into", "itself",
-    "just", "keep", "less", "like", "made", "make", "makes", "many", "might", "more", "most",
-    "much", "must", "name", "named", "names", "naming", "neither", "never", "nothing", "only",
-    "other", "others", "over", "rather", "same", "several", "should", "since", "some",
-    "something", "such", "than", "that", "their", "them", "then", "there", "these", "they",
-    "thing", "things", "this", "those", "through", "under", "until", "upon", "very", "what",
-    "whatever", "when", "where", "whether", "which", "while", "with", "within", "without",
-    "would", "your", "yours",
+    "about",
+    "after",
+    "again",
+    "against",
+    "already",
+    "also",
+    "always",
+    "another",
+    "anything",
+    "because",
+    "been",
+    "before",
+    "being",
+    "below",
+    "between",
+    "both",
+    "cannot",
+    "could",
+    "does",
+    "doing",
+    "done",
+    "each",
+    "either",
+    "else",
+    "enough",
+    "even",
+    "ever",
+    "every",
+    "everything",
+    "from",
+    "further",
+    "give",
+    "given",
+    "have",
+    "having",
+    "here",
+    "himself",
+    "into",
+    "itself",
+    "just",
+    "keep",
+    "less",
+    "like",
+    "made",
+    "make",
+    "makes",
+    "many",
+    "might",
+    "more",
+    "most",
+    "much",
+    "must",
+    "name",
+    "named",
+    "names",
+    "naming",
+    "neither",
+    "never",
+    "nothing",
+    "only",
+    "other",
+    "others",
+    "over",
+    "rather",
+    "same",
+    "several",
+    "should",
+    "since",
+    "some",
+    "something",
+    "such",
+    "than",
+    "that",
+    "their",
+    "them",
+    "then",
+    "there",
+    "these",
+    "they",
+    "thing",
+    "things",
+    "this",
+    "those",
+    "through",
+    "under",
+    "until",
+    "upon",
+    "very",
+    "what",
+    "whatever",
+    "when",
+    "where",
+    "whether",
+    "which",
+    "while",
+    "with",
+    "within",
+    "without",
+    "would",
+    "your",
+    "yours",
 ];
 
 fn words(s: &str) -> BTreeSet<String> {
@@ -302,8 +394,7 @@ supersedes = ["no_such_row"]
 /// passing for the wrong reason because somebody edited a panel file. The
 /// fixture names both words it carries and says why.
 fn control_travel(root: &Path) {
-    const FIXTURE: &str =
-        "panel::202608072330_the-numeral-canon-panel/218_probes::control_fixture";
+    const FIXTURE: &str = "panel::202608072330_the-numeral-canon-panel/218_probes::control_fixture";
     let planted = format!(
         r#"
 [[ruling]]
@@ -380,7 +471,10 @@ fn main() {
     for d in &dangling {
         println!("    {d}");
     }
-    println!("edges from an unratified row at a ratified one: {}", backward.len());
+    println!(
+        "edges from an unratified row at a ratified one: {}",
+        backward.len()
+    );
     for e in &backward {
         println!(
             "    {} ({}) {} {} ({})",
@@ -395,7 +489,9 @@ fn main() {
         .collect();
     println!();
     println!("== arm D, stated rows ranked by how far the says travels ==");
-    println!("(words in `says` absent from `quote`, and how many of those the source file carries)");
+    println!(
+        "(words in `says` absent from `quote`, and how many of those the source file carries)"
+    );
     for t in travel(&root, &stated) {
         if t.of_those_in_source.is_empty() {
             continue;
