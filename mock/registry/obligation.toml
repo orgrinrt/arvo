@@ -190,3 +190,14 @@ gap = "**Legibility has no instrument here and this row does not supply one.** E
 topic = "arvo_identity"
 provenance = ["panel::202608072330_the-numeral-canon-panel::200_mcsherry_re_deriving_the_demand_side::#5-two-consumers-were-never-read-and-both-say-things"]
 keywords = ["legibility", "two layers", "grade", "site count", "moved count", "published", "misled", "adoption", "algebra", "documentation", "consumer report"]
+
+[[obligation]]
+id = "every_standard_convention_expressible_as_an_alias_over_the_primitives"
+need = "Each industrial fixed-point and floating-point convention writable as a first-class alias over arvo's own primitives, so a consumer reaches for the standard's own vocabulary and gets arvo underneath, and a parity suite runs the same computation through both and asserts the same answer."
+consumer = "any, and op by rule"
+quote = "it is bounded by soundness and also the rule that demands we provide first-class matlab and ieee754 compatible apis as aliases over arvo primitives and such (op, on whether a declared numeral's footprint is observable)  --  actual tests where we run same stuff in our api and then on matlab/sysc/etc APIs, and assert that both actually return the same ... on a wide selection of different usages (op, the verification mandate, quoted in `PRIOR_CALLS.md`)"
+why = "**It is an adequacy test on the abstraction rather than a feature.** A convention that cannot be written as an alias is a gap in the primitives, and the gap is falsifiable per standard before anything ships, which is what makes this the one demand-side row that can refute a design rather than merely ask it for something. Op names it as a bound on a question the panel had put to him as open, so it constrains work that is in flight now."
+gap = "**No row carried this and the corpus has held it since long before this panel.** The standards appear in the corpus as a test rather than an inspiration, one prior pass recorded that the table-changing files had never once been tested against MATLAB, IEEE 754 or SystemC, and the first gap the test caught was slope-bias, which is why a neighbouring retirement exists at all. None of that reached the demand side, so the enumeration was missing the requirement that most constrains it.\n\nWhat is unstated: which conventions are in scope. MATLAB `fi`/`fimath`, IEEE 754, SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed` all appear in the corpus, op named two, and no row says whether the set is those, more, or a core with the rest open. The parity suite is also unbuilt: it is a mandate with no artifact."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::PRIOR_CALLS::#which-verb-validate-is-in-his-acceptance-criterion"]
+keywords = ["MATLAB", "fi", "fimath", "IEEE 754", "SystemC", "sc_fixed", "ap_fixed", "ac_fixed", "alias", "convention", "parity suite", "adequacy", "expressible", "standard"]
