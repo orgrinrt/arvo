@@ -207,3 +207,43 @@ canon_rows = [
 ]
 ported_this_pass = true
 note = "The confidence is 0.8 rather than higher because the supersession attribution for claims 1, 2, 4 and 5 rests on reading the citing rows' `witness`/`note`/`because` fields for which panel files fed them, not on reopening 60, 61 and 62 themselves (outside a strict reading of this file's own resumption target list in its section 4, which was not read this pass). The single-file git history (one commit, no post-hoc edits) rules out an abandoned-mid-panel discontinuity for this file specifically; it does not by itself establish that 60-63 actually did resume from 58, only that the citing registry rows say so."
+
+[[item]]
+path = "55b_smith_reply.md"
+unit = "the_format_concept"
+claims = [
+  "56's quoted two-bound-reachability condition for saturating-clamp associativity is refuted, not refined: exhaustive over signed Q=[-8,7] cubed, 952 divergent triples split 448 ceiling-only/504 floor-only/zero both-bound, all one-bound events",
+  "the real mechanism is a pullback: a clamp event followed by movement toward the interior, which explains why all-same-sign (monotone-trajectory) folds are always coherent",
+  "register amendments made directly to Q12's entry and the wrapping semantics entry, self-reported in section 7",
+]
+verdict = "live"
+confidence = 0.9
+reason = "The pullback mechanism and the exact 952/448/504/0 split are already in the registry at law::(the saturating-addition associativity row, witness field, line 70) and proposal.toml:121's gap field, the latter explicitly crediting 'a second' author for keeping the dynamic description, which is this file. Fully absorbed, most likely via 57 or 63's consolidation reading this file directly. Confidence is not higher only because I did not trace the exact intermediate file that carried it forward; the destination content is confirmed, the path is inferred from file order and the gap field's own wording."
+superseded_by = ["57 or 63 (consolidation absorbed this reply's finding into the registry baseline)"]
+supersedes = ["the quoted reachability condition in 56 and in the register's pre-existing Q12 entry, per this file's own section 6"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "This file's section 7 records that its author amended OPTIONS.md's Q12 entry and a wrapping semantics entry directly, in the panel's own living-ledger convention; those amendments are not something a registry port can re-verify without opening OPTIONS.md's edit history, which is out of scope for this pass. The content that reached the registry is confirmed by cross-reference, not by tracing every hop."
+
+[[item]]
+path = "59_persona_checkpoint_five.md"
+unit = "the_format_concept"
+claims = [
+  "two things the unit holds without noticing: (a) 55b and 56 are one theorem stated two ways (raw-adder correctness makes the pattern space a homomorphic image of the wrapping group; a cyclic group admits no translation-invariant order), offered explicitly as an unbuilt hypothesis for the bijectivity restriction to be dropped; (b) 57's saturating-clamp congruence relation is provable in a paragraph for all M, not merely measured at five values",
+  "OPTIONS.md's Q17 should record the additive result as unconditional and gain the two rows 58 did not take (wrap's induced ring and 56's coherent(*) column are both F=0 too)",
+  "OPTIONS.md's Q3, Q12, Q11 entries should each gain specific corrections, listed",
+]
+verdict = "exploration"
+confidence = 0.85
+reason = "This is a checkpoint: explicitly unratified persona output standing in for op, self-describing as having built nothing and edited nothing. Its two structural observations are both already superseded/subsumed: (a) the bijectivity-restriction hypothesis is already recorded, nearly verbatim, in this seat's own earlier port at law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness's gap field ('the untested hypothesis... this same theorem in disguise'); (b) the general congruence result is superseded by a later, fully general, exact closed-form treatment already in the registry (proposal.toml:136, 'the kernel is a multiplicative congruence iff the range is mirror-symmetric or nonnegative... exact, mismatching nothing over all 100 zero-containing intervals'), which proves strictly more than 59's hand-check asked for. Its OPTIONS.md recommendations for Q17/Q3/Q12/Q11 are meta-bookkeeping about a living ledger this pass does not edit, and every substantive claim underneath them is independently confirmed already present in the registry (checked directly for Q11 and Q17's content; not reopened for Q3/Q12's narrower cross-reference requests)."
+superseded_by = ["this seat's own port of files 55/56 (claim a)", "a later general congruence treatment, unattributed to a specific file number without reopening it (claim b)"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "A checkpoint file by design produces no committed instrument and mints no registry-eligible claim on its own authority; its value is redirection, and section 4 (redirecting the second four) is process content outside this catalogue's claims scope. Confidence held at 0.85 rather than higher because the general congruence claim's provenance (which later file actually generalised 57's five-width check to the exact closed form) was not traced to a specific file number."
