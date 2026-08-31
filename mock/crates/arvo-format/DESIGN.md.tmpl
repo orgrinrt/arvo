@@ -367,8 +367,14 @@ than a negotiation**. So the obligations are checked rather than requested.
 
 A slot range is admitted when its lowest index does not exceed its highest, and when the width it
 declares is one the range can carry. An implementor supplying an inverted range has not supplied the
-obligations, and **that is refused at compile time** rather than producing a negative count at
-runtime.
+obligations, and **that is refused when a binary is produced** rather than producing a negative count
+at runtime.
+
+**Exactly when, because the difference matters and an unqualified claim here would repeat the defect
+this section exists to fix.** The obligation is a const evaluated at monomorphisation, so it fires
+during codegen. `cargo build` refuses. `cargo check` does not, because it skips codegen. So the
+guarantee is that an inadmissible range cannot reach a produced binary, and it can reach a passing
+check.
 
 The refusal reaches implementors this crate cannot see, which is what makes it a check on the concept
 rather than on the two shapes shipped with it.
