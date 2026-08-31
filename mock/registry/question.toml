@@ -1753,3 +1753,25 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::SEED_TALKING_POINTS::#33-quantiser-laws-folds",
 ]
 keywords = ["Kleene", "view lattice", "nine-point", "definedness", "Presence", "Ignore", "grade", "cause component", "finest view", "partial associativity", "repair", "replacement"]
+
+# --- from an obligation's gap, which no queue reads ------------------------------
+#
+# `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`
+# records an unstated scope in its `gap` field. A gap is not a question, nothing
+# builds a roster from one, and this is the bound now governing the two questions
+# four topics defer to, so its own scope being unnamed is what blocks applying it.
+
+[[question]]
+id = "which_standards_the_alias_obligation_covers"
+asks = "Which industrial conventions must be expressible as first-class aliases over arvo's primitives?"
+options = [
+  "The two named when the bound was stated, MATLAB `fi`/`fimath` and IEEE 754, with nothing else owed.",
+  "Every convention the corpus already carries: those two plus SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed`.",
+  "A named core with the rest declared open, so the parity suite starts somewhere and the set grows as consumers arrive.",
+]
+decider = "op"
+unblocks = "Applying the standards bound at all. It is one of the two constraints the container premise and the operation set were handed back under, four topics defer to those two, and an adequacy test whose scope is unnamed cannot refute a candidate or clear one."
+topic = "arvo_identity"
+note = "Filed because it existed only as a `gap` on an obligation, which no roster reads: every list of what is owed here is built from `question` rows and their `decider`, so this was invisible to the queue while being upstream of the two largest questions in it. The obligation's own words: which conventions are in scope is unstated, five appear in the corpus, two were named, and no row says whether the set is those, more, or a core with the rest open.\n\nWhy it is his rather than derivable: the bound is a demand he made, and how far a demand reaches is the demand's author's to say. The panel can establish whether any given convention is expressible, which is the adequacy test working, and cannot establish which ones were promised.\n\nThe second half of the same gap is not asked here and is not his: the parity suite is a mandate with no artifact, and building it is work rather than a decision. It cannot start until this is answered, which is most of why this ranks where it does."
+provenance = ["panel::202608072330_the-numeral-canon-panel::206_op_the_canon_test_and_the_standards_bound::#the-container-premise-and-a-bound-nobody-had-filed"]
+keywords = ["MATLAB", "fi", "fimath", "IEEE 754", "SystemC", "sc_fixed", "ap_fixed", "ac_fixed", "alias", "convention", "standard", "parity suite", "scope", "adequacy"]
