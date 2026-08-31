@@ -1357,14 +1357,24 @@ that happened to agree, and it is exactly the shape my own rules call two true s
 into a connection neither supports. The check that caught it was running the join instead of the
 two counts.
 
+**A live check caught me twice, and that is worth recording given what a parallel seat found about
+`standing`.** My first draft of this file cited the registry twice by line number rather than by
+slug. That took `the_member_files_line_citations_do_not_grow` from 45 to 47 against a ceiling of
+45 and turned the suite red at exit 101, with both of my citations named in the failure. The
+check's own message says what to do: "Brief the next seat to write slugs; do not raise this." I
+replaced both with a reference to the header and the suite returned to 120 green.
 
-**A live check caught me, and that is worth recording given what a parallel seat found about
-`standing`.** My first draft of this file cited the registry twice by line, as
-`proposal.toml:29` and `:31`. That took `the_member_files_line_citations_do_not_grow` from 45 to
-47 against a ceiling of 45 and turned the suite red, exit 101, with both of my citations named in
-the failure. The check's own message says what to do: "Brief the next seat to write slugs; do not
-raise this." **So this one is not a declaration nothing constrains.** It reads what a member file
-actually wrote, it counts, it ratchets, and it refused my file by name within one run of adding
+**Then the paragraph you are reading did it again.** The first version of it spelled out the two
+offending citations verbatim, in prose, in order to describe them, and the check counted the
+prose. Same file, same check, one run later, 46 against 45. **A content gate cannot be described
+in the language it forbids**, which is a known shape here: the workspace's advert scrubber has the
+same problem, since it has to spell out the suffix it deletes, and the fix there was to let a file
+declare itself a detector. There is no such carve-out for this check and none is wanted for one
+paragraph, so this one names the pattern instead of quoting it.
+
+**So this check is not a declaration nothing constrains.** It reads what a member file actually
+wrote, it counts, it ratchets, and it refused my file by name twice within two runs of my adding
+the lines.
 the lines. I replaced both with a reference to the header and the suite returned to 120 green.
 
 **And the reason it is right is the reason half this file is about provenance.** A registry file
