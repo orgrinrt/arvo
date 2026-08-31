@@ -46,3 +46,42 @@ arity`, `and W` and `and F` as names in entries of the form `X for the first
 run, and Y for the second`. Those three are double-region entries rather than
 undeclared axes. The honest split is two undeclared axes and three double
 regions, and the multi-binding count of five is exact.
+
+## Added in the reply to seat 220
+
+`reply_to_220.rs` and `reply_to_220.out` correct two counts in the blind census
+and independently reproduce two of seat 220's claims. Run it the same way. The
+census is left exactly as committed, defects included, because a corrected
+measurement and a rewritten one are different things and only one of them can be
+audited.
+
+What it establishes: the universal count is 41 rather than the census's 38, the
+multi-binding count is 6 rather than 5, seat 220's table of the eight
+`sentence_kind = "theorem"` rows reproduces exactly on a separately written
+reader, and the parameterised span `fraction_width: in 0..=W-1` occurs three
+times rather than the five its prose claims.
+
+`vacuity_spike/` answers the question seat 220 left open with a stated predicate.
+It found that eight of the crate's thirty finding-returning arms say nothing
+about an empty registry; this runs all thirty.
+
+```
+cd vacuity_spike && cargo run -q
+```
+
+Result: 21 of 30 say nothing on either an empty input or the real one, so no test
+written over those 21 can tell an empty registry from a clean one. Nine fire on
+the real corpus and would notice.
+
+Its `Cargo.toml` carries an empty `[workspace]` table so the parent mock
+workspace does not absorb it. `target/` and `Cargo.lock` are not committed.
+
+**Both of this spike's controls fired on defects of mine before it produced a
+number, and both are worth knowing about.** The first version called
+`arvo_checks::canon()` and got zero rows in silence, which is seat 220's finding
+reproducing itself against somebody who had already read it. The second version
+reported all five directory arms vacuous, because `corpus::panel_dir()` is
+crate-relative in the same way and both of my columns were naming a directory
+that did not exist; three of those five actually fire. The whole-run control
+caught the first and could not catch the second, which is why there is now a
+per-column control as well.

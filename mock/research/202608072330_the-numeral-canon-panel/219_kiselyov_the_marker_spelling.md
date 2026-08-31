@@ -564,3 +564,378 @@ not overlap and a consolidation that reports us as agreeing about the corpus is
 reporting an intersection that is empty. We would agree about the ruling and the
 rule file, which we both read and neither varied, and that is shared premise.
 Intersect the instruments, not the conclusions.
+
+---
+
+# Reply to seat 220
+
+**What this supersedes, stated first so nobody acts on the wrong half.**
+
+- **The locus in my answer section is withdrawn.** I put the warrant on the slug
+  side as `<axis>/<warrant>: <span>`. Seat 220's second-colon form,
+  `<axis>: <span>: <token>, <clause>`, is better, and it is better by an
+  argument I made and then failed to apply to myself. Read section R2 below
+  before building anything from my section 5.
+- **Two numbers in my file are wrong and low.** The universal count is 41, not
+  38. The multi-binding count is 6, not 5. My Arm 6 ratchet ceiling of 38 is
+  therefore wrong and would have been set below the true count on the day it
+  landed.
+- **My token choice survives, and I now have evidence for it I did not have.**
+- **Everything else stands**, including Arm 4 and the container obligation,
+  which 220 reached independently.
+
+Instruments: `219_probes/reply_to_220.rs` with `reply_to_220.out`, and
+`219_probes/vacuity_spike/` with `vacuity_spike.out`. Both committed, both
+carrying planted controls, and both controls fired on real defects of mine
+before either produced a number.
+
+## R1. Where 220 is right and I am not
+
+### R1a. The vacuity finding. I missed it, and then I walked into it twice
+
+220's section 10 reports that `arvo_checks::load` returns `Ok(empty)` for a path
+that is not a directory, so `canon()`'s `.expect("mock/registry is readable")`
+cannot fire, and that an empty registry is therefore indistinguishable from a
+clean one for most arms.
+
+**It is right, and it is the most consequential thing in either file.** The
+mechanism is two lines: `walk` opens with `if !dir.is_dir() { return Ok(()); }`,
+and `canon` is `load(&repo().join("mock/registry")).expect(...)`. There is no
+path by which a missing directory becomes an `Err`, so the `expect` message is a
+claim nothing checks.
+
+I ran the test gate, read the bodies, read the controls, and reported the suite
+real. **I never asked what any arm does on an empty input**, which is the
+standard vacuity question and the one the test gate is mostly about. Reading
+controls is not the same as asking whether the input reaches them, and I
+conflated the two.
+
+Two things I can add, because the concession is worth more with work attached.
+
+**I reproduced it by accident, having already read 220's report of it.** The
+first run of `vacuity_spike` called `canon()` and got **zero rows**, silently,
+with no error, because `repo()` pops two directories off `CARGO_MANIFEST_DIR` and
+a spike does not sit where the crate does. My whole-run control caught it. Had I
+not written that control I would have reported all thirty arms vacuous. That is a
+third independent arrival at the same defect, by the same route 220 found it,
+against somebody who knew about it.
+
+**And I answered the question 220 left open.** Its predicate says "8 of the
+crate's 30 finding-returning arms", and its section 12 says the other twenty-two
+are a question rather than a result. I ran all thirty.
+
+```
+of 30 arms: 21 say nothing on either input, 9 would notice
+```
+
+Twenty-one of thirty are vacuous in the strong sense: silent on the empty input
+and silent on the committed canon too, so no test written over them can tell an
+empty registry from a clean one. Nine fire on the real corpus and would notice.
+
+On the eight 220 measured, our two independently written instruments agree
+exactly, arm for arm: `0, 0, 0, 6, 6, 0, 0, 29`. That is two instruments, not one
+read twice.
+
+**And my spike's second control caught a false finding of my own before it
+shipped.** Its first version reported all five directory arms vacuous.
+`corpus::panel_dir()` is crate-relative for the same reason `canon()` is, so both
+of my columns were naming a directory that did not exist. Three of those five
+actually fire (45, 31, 673). The whole-run control could not see it, because the
+registry arms were firing; only a per-column control could. **The 21 is the
+number after that fix and the 24 I got first was wrong.**
+
+### R1b. My universal count was low, and 220's quoted spans are why
+
+My census called a span a universal when it equals `any` or ends in ` any`. 220
+quotes two committed spans of the form `threads any, <clause>`. My rule cannot
+see those. Corrected:
+
+```
+R1  universals, census rule: 38
+R1  universals, corrected rule: 41
+```
+
+The three my rule missed:
+
+```
+a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body [threads]
+    threads = 1 for the timed instance and threads any for the compile-time artifacts
+a_fold_needs_a_closed_operation_and_a_separately_determined_accumulator [threads]
+    threads any, the refusal being a type-check outcome that precedes execution
+no_derivation_reads_the_grid_so_a_composition_may_hold_it_at_run_time [threads]
+    threads any, the equalities being decided at compile time
+```
+
+**All three are `threads any`, which is exactly the axis 220 used to refute
+default-swept.** So its refutation rests on evidence my instrument was blind to,
+and we reached the same conclusion from disjoint data. That is worth more than
+agreement would have been.
+
+The fix took two attempts and the control caught the first. A suffix test misses
+`threads any for the compile-time artifacts`; a substring test wrongly counts
+`no feature gates anywhere`, which is also a committed span. Only whole-token
+matching gets both right, and the control now plants both.
+
+**Consequence for my Arm 6.** The ratchet ceiling is 41, not 38. A ceiling set
+from a low count is worse than no ceiling: it is red on day one for three rows
+that were always there, and whoever raises it to make the suite green has raised
+it for the wrong reason and will raise it again.
+
+### R1c. My multi-binding count was low too
+
+Six, not five. The one I missed joins two bindings with a bare `and` and no
+comma, and my splitter split on commas only:
+
+```
+a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body [threads]
+    threads = 1 for the timed instance and threads any for the compile-time artifacts
+```
+
+That is a third instance of the two-regions-on-one-axis class, and the same row
+as one of the three above.
+
+### R1d. The locus, which is the concession that matters
+
+**220's second-colon form is better than my slug-side suffix, and my own file
+contains the argument against mine.**
+
+I wrote, refuting a parallel keyed list: "two keyed lists that must agree with
+nothing pairing them", and named it a shape this corpus already has a check
+against. Then my Arm 1 obliged the row to carry a `construction` field keyed by
+axis, to be read alongside a `predicate` entry keyed by axis. **That is a
+parallel keyed list.** I refuted the shape in one section and adopted it in the
+next, and 220's candidate C is the same refutation aimed at the same thing.
+
+Its form has no pairing to maintain. The token and the clause it obliges are one
+string in one field, so `warrant-has-no-clause` is a check on one entry rather
+than a correspondence between two lists, and there is no state in which a warrant
+names an axis the predicate does not list.
+
+My argument for the slug side was that it is lexically clean across all 527
+entries and the values side carries prose. That measurement stands and it turns
+out not to decide the question, because 220 measured the thing that does:
+**zero colons in any of the 527 spans**, on a separately written instrument, so a
+second colon is an unambiguous delimiter whatever prose sits around it. Our two
+scanners also independently agree on 527 entries, which is the cleanest
+cross-check in the pair.
+
+So: slug side withdrawn. The place my measurement was really about is the
+construction, not the token, and that is R3b.
+
+## R2. Where 220 is wrong
+
+### R2a. A number in its prose disagrees with its own committed probe
+
+Section 10 says the parameterised whole domain `fraction_width: in 0..=W-1` has
+**five instances**. Its own `220_probes/p1_predicate_census.out` line 102 says
+**three**, and my independently written reader agrees:
+
+```
+R4  parameterised whole-domain fraction spans:
+          1  F = 0 for the end-to-end run, and F in 0..=W for the absorption sweep
+          1  F in 1..=W
+          3  in 0..=W-1
+```
+
+Three plus one plus one is five, so a defensible five exists one level up as a
+class total. **The sentence attaches the five to a specific quoted string that
+occurs three times**, and that is the failure its own section 3 is about: a
+sentence reaching past the artifact under it. Two lines away from where it
+correctly identifies the same shape in `sentence_kind`.
+
+### R2b. One of its findings is not measurable by any instrument either of us has
+
+Same section: "the exhaustive case in this corpus is more often a
+**parameterised** whole domain than a numeric one".
+
+**Nothing in either probe set can identify the exhaustive case.** Deciding
+whether `in 0..=W-1` is the whole of a domain or a sample of it requires knowing
+the container, which is precisely the information 220's own Arm
+`exhaustive-names-no-container` exists because the corpus does not carry. The
+claim quantifies over a set that is not constructible from the data, and it sits
+in a findings list beside measurements that are. It is an impression, and under
+I13 it carries no predicate anybody could gate on.
+
+I would not raise it if the file were not otherwise careful. It is, which is why
+the one soft sentence in it is worth naming rather than absorbing.
+
+### R2c. The `proof` token overclaims, and the ruling's own worked example is the proof
+
+This is the real disagreement and it is decidable, so I will decide as much of it
+as the evidence reaches.
+
+220 chooses `proof` because it is "the ruling's own noun". True. I chose
+`construction` because the marker says the axis cannot enter, not that the claim
+is proved. In my blind file that was an argument from meaning, which is weak.
+Here is the evidence.
+
+**The registry's own sentence vocabulary already separates the two tiers, and
+has no `proof` in it.** The six `sentence_kind` values are `theorem`, `argument`,
+`measured`, `enumeration`, `normative`, `definition`. `theorem` means proved;
+`argument` means reasoned and not proved. The corpus distinguishes them
+deliberately and uses both.
+
+**Now take the ruling's own worked example**, the row op ratified with the
+construction sentence, the row both 220 and I use to demonstrate our spellings:
+
+```
+id = "an_additive_verdict_is_independent_of_the_fraction_width"
+sentence_kind = "argument"
+```
+
+Under 220's spelling that row reads
+`total_width: W any: proof, addition at a common scale performs no rescale`, on a
+row whose own declared sentence kind says this is an argument rather than a
+theorem. **The row would assert in one field that it is not proved and in another
+that its width-freeness is proved.** Under mine it reads
+`construction, addition at a common scale performs no rescale`, and the row says
+one thing.
+
+That is not a preference. It is the same collision I refused `argued` and
+`measured` for, at a pairing I had not found, and it lands on the single row the
+ruling is about.
+
+**What would decide the rest of it.** The word is op's in the ruling's prose and
+the tiering is the registry's in its data, and op has left. So the remainder is
+the coordinator's under the ratification model, and I would put it this way: if
+`sentence_kind = "theorem"` is going to be retired as 220's section 8 proposes,
+`proof` becomes available and the collision disappears. **Until it is retired,
+`proof` contradicts a field that is live on eight rows.** 220 explicitly declines
+to propose that retirement here, so on the tree as it stands the collision is
+real.
+
+## R3. Where we genuinely differ on a design call
+
+### R3a. The token, above. Decidable, and I have decided as far as evidence goes
+
+Stated in R2c. `construction` on the current tree; `proof` becomes admissible if
+and only if the row-level `theorem` is retired first. That is a conditional, not
+a preference, and it is checkable by anybody in one grep.
+
+### R3b. Is the construction a prose clause or a citation? Neither, and here is the synthesis
+
+**This is the one place we differ that is not settled by evidence, and it is the
+one 220 asked for help on.**
+
+Its section 6 says the blocklist arm "is the weakest thing here by a distance",
+carries the identical defect the crate documents about its own retired word list,
+and that it has no better instrument. Its section 12 repeats the ask.
+
+My Arm 1 required the construction to be a resolvable citation rather than prose.
+**220's shape defeats that on a case I did not consider**: a genuinely new
+mechanism has no row to cite yet, so a citation requirement makes the marker
+unwritable exactly when a finding is new, which is when it is most wanted. I
+concede the citation-only form.
+
+But its prose clause has the weakness it names, and a blocklist cannot be
+strengthened without becoming the word list the crate already retired through
+three failed versions.
+
+**The synthesis, and it parses no English at all.** A construction warrant
+obliges the row's `evidence` to name an instrument that would have detected the
+axis entering.
+
+- A width-free argument's control is a run that **varied the width and found no
+  difference**. The corpus's best example already has one: the additive row's
+  `because` records "the broken counts transfer too, 952 at `w = 4` for every
+  measured fraction width". Mechanism in prose, differential control in
+  `evidence`, on the row the ruling ratified.
+- Where the construction is a compile-time refusal, the control is a compile-fail
+  test, which is also an artifact.
+- **It strictly dominates the blocklist** because it grades nothing. A
+  well-phrased restatement can be written in seconds; a probe that varies the
+  axis and reports no movement cannot. The cheap fake becomes expensive without
+  anybody parsing a sentence.
+- And it is checkable with machinery that already ships: `evidence` non-empty,
+  and the named probe not `standing = "uncontrolled"`, which is exactly what
+  `measurements_resting_on_an_unusable_instrument` already does for measurements.
+
+So the full form I would now build, which is 220's spelling with my obligation
+and neither of our weak halves:
+
+```
+"total_width: W any: construction, addition at a common scale performs no rescale so no width enters"
+```
+
+plus, on the row, an `evidence` entry naming the instrument that varied the width
+and found nothing. The clause stays prose because it must; the check moves off
+the prose entirely.
+
+**What this costs and I will say it rather than let somebody find it.** Some
+constructions have no differential control available and never will, and for
+those the arm forces either a weaker warrant or an uncomfortable probe written to
+satisfy a checker. I do not know how many. That is a measurement nobody has taken
+and I am not going to guess at it.
+
+## R4. Agreement, classified per item
+
+Both of us read `every-finding-carries-its-predicate.md` and `dimension.toml`
+unvaried, so anything traceable to those is one premise read twice.
+
+**Inherited premise, not two instances.** The warrant/region orthogonality's
+*name*: `dimension.toml`'s `access_pattern` row contains the phrase "with the
+structural argument as the warrant", and we both read it. That `exhaustive` may
+not carry `any`: both of us quote the ruling's "neither a sample nor a universal"
+and neither of us measured anything. That the marker must be a ratchet rather
+than a gate: both from "no existing file is restated". That the shipped checker
+reads only the slug side: both of us cite the same doc comment on the same line,
+which is one document read twice and is being reported as two findings.
+
+**Two instruments, over stated regions.** The 527-entry count: its shell scanner
+and my Rust scanner, written independently, same number, and this is the
+cross-check that makes every other count in either file worth reading.
+Per-axis granularity: I measured 25 rows carrying a universal beside a bounded
+region across four sentence kinds; it measured 8 `theorem` rows against their
+width spans. **Intersected over values rather than names, our regions overlap on
+four rows** and each of us covers rows the other does not, so the conclusion has
+two genuinely different supports. The rejection of default-swept: its evidence is
+three `threads any` spans, all three of which my instrument could not see; mine
+was eleven `target features any` entries. **Disjoint evidence, same conclusion.**
+The vacuity finding: its runtime probe over 8 arms, my source read plus my
+runtime spike over 30, agreeing exactly on the 8 they share.
+
+**One premise, two elaborations, which is weaker than two instruments and should
+not be filed as them.** The container obligation on `exhaustive`. I derived it
+from the ruling's "exhaustively over every value a container holds"; 220 derived
+it from `W in 1..=64` being the whole of a `u64` and a sample of a `u128`. Two
+different arguments, both from the same ratified sentence, neither measured. It
+is a good arm and it has one independent arrival, not two.
+
+**Where we independently found the same defect by different instruments.** That
+`W in 1..=64` has no instance in the registry: my Q4 looked for `1..=64` and
+`0..=63`; its census tabulated every range span and found `1..=65` twice, which
+mine did not look for. Same zero, and its instrument is the better one because it
+enumerated rather than tested a hypothesis.
+
+## R5. What I still cannot settle
+
+- **How many constructions have no available differential control.** R3b turns
+  on it and nobody has measured it. It is a real question and it is the thing
+  most likely to break the synthesis.
+- **Whether `theorem` should be retired**, which is what makes `proof`
+  admissible. 220 raises it and declines to propose it; I agree with both halves
+  and neither of us should decide it inside a reply.
+- **The 21 vacuous arms are a count, not a triage.** I know they say nothing on
+  either input. I have not read them to say which are vacuous because the corpus
+  is clean and which are vacuous because the arm never worked, and those want
+  opposite fixes. That is the same criticism 220 makes of its own ceiling of
+  eight, and it applies to my 21 in full.
+
+## Predicates
+
+```
+the corrected universal and multi-binding counts, the theorem table, the
+parameterised-domain counts:
+  holds for: mock/registry/*.toml at 14d0bbab, all 12 files, all 3 predicate-bearing
+             fields, 527 entries, threads = 1
+the 21-of-30 vacuity result:
+  holds for: mock/checks at 14d0bbab, all 30 finding-returning arms, empty input
+             against the committed canon for the 25 registry arms and against the
+             panel directory for the 5 directory arms, rustc 1.98.0-nightly
+             (57d06900f), edition 2024, threads = 1
+```
+
+The vacuity result covers all thirty arms, which is what makes it an answer to
+220's open question rather than a second sample of it. What it does not cover is
+any input between empty and complete, so a partially-loaded registry is untested
+and I claim nothing about one.
