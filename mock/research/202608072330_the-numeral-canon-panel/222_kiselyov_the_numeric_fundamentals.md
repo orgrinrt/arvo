@@ -1705,3 +1705,139 @@ widening and widening loses nothing**. The coarsening happens on the way back do
 to a declared output width, which is a separate declared act. That is better than my
 "somebody has to restate it with the predicate the gate supplies", and it means
 nobody has to.
+
+## C. Where 221 is wrong
+
+### C.1 Its evidence for the singleton amendment measures a repair it never varied
+
+I agree with its answer, per B.3. What follows is about the evidence, and it is
+decidable because its probe is committed and I ran it.
+
+Its `catalogue_with(degenerates: bool)` makes admitting the bottom a parameter and
+its C5 arm varies it. **The deduplication by denotation sits unconditionally in the
+same function and nothing varies it.** Its file says "the deduplication is what
+makes C1 pass", and its own `p2d` diagnosis of the 256 says the opposite: "every one
+of them has an EMPTY intersection, zero have several maximal lower bounds", which is
+the bottom being absent rather than duplicates being present.
+
+`222_probes/a6_the_two_repairs_separated.rs` copies its catalogue machinery verbatim,
+lines 63 to 270 of its core, changes one thing, and runs the two-by-two. **Both of
+its cells reproduce exactly, 0 and 256, which is the control that says my copy is its
+instrument:**
+
+```
+degenerate  dedup  points  pairs   fail | no bounds  annihilated  distinct      same
+      true   true      47    703      0 |         0            0         0         0
+      true  false      54    861     28 |         0           28         0         0
+     false   true      45    630    256 |       256            0         0         0
+     false  false      52    780    284 |       256           28         0         0
+```
+
+Three mechanisms, not two, and the third is the one nobody had named:
+
+- **256 is the bottom being absent.** Every one of them has no lower bound at all.
+- **28 is the copied helper.** `maximal` keeps `i` when no `j` has `c[i].vals` a
+  subset of `c[j].vals`, and two indices denoting one set are each a subset of the
+  other, so **both are dropped and the maximal set comes back empty**. Running its
+  instrument without deduplication is therefore not running the same measurement; it
+  is running one whose helper functions are undefined on the input.
+- **Zero failures anywhere are several maximal lower bounds with distinct
+  denotations**, which is the shape a genuine order failure would take.
+
+So the number offered as evidence for deciding inclusion on denotation is a number
+about admitting the bottom, and varying the other repair produces a fact about the
+instrument rather than about the canon. **The answer survives and the argument for
+it has to be the algebraic one:** without deduplication the relation is a preorder,
+two declarations denoting one set are each below the other, neither is the meet, and
+"unique least upper bound" is unique only up to an equivalence nobody named. That
+argument needs no measurement and 221 did not make it.
+
+My first version of that split got it wrong in the same family and is kept beside it
+as `a6_v1_the_split_conflated_no_bounds_with_annihilated_bounds.txt`: it reported all
+28 as empty intersections, which cannot be right with the bottom present, and the
+four-column split is what the correction produced.
+
+### C.2 Q26 is decided against 221 by a row it does not cite
+
+221 answers "storage, not format, and the ratified spine says so in the words the
+option uses", quoting: "a value set that depends on other data is not a format but
+storage". My 6.6 answers a target-indexed family of formats.
+
+**`proposal::each_choice_in_the_sequence_has_an_owner_and_a_resolution_time` speaks
+to exactly this and says the exclusion does not reach it**: "a platform-width numeral
+is a target-indexed family of formats whose exclusion grounds apply only to
+dependence that survives to runtime". 221 cites that row nowhere in its file, and
+its own discipline everywhere else in section 6 is to confirm the one-expert row that
+answers a question.
+
+The substance rather than the citation: **a type is a compile-time object, and within
+one compilation a platform-width numeral's representable set is a constant of the
+type.** Across compilations it is a different type with the same spelling. "Depends on
+other data" in the ratified clause is a statement about a value set that varies with
+data the program is holding, which is what makes it storage; a value set fixed before
+the program exists is not that. Read 221's way, the clause classifies by the spelling
+of a type rather than by what varies at run time.
+
+**What its reading gets right and mine has to answer.** If a platform-width numeral
+is a format, then the format concept contains a family whose member is chosen by
+something outside the program, and every canon sentence about "a format" acquires a
+per-compilation quantifier. That is a real cost and it is the cost
+`the_ownership_key_as_a_structural_axis` is about, which is why 7.13 adopts the key.
+**Under 221's reading the cost disappears and so does the ability to say anything
+about `obligation::a_platform_sized_unsigned_integer_at_an_api_position`**, a live
+consumer demand: calling the thing storage says what it is not and nothing about
+which laws it has, and the consumer asked for a primitive rather than for a
+classification.
+
+### C.3 Two of its nine concessions were passable, and I passed them
+
+221 concedes `does_the_rounding_variance_form_hold_at_a_second_fraction_width` with
+"I could not run it without knowing what the variance forms are, and they live in a
+numbered member file I may not open", and
+`does_the_position_keyed_members_monotonicity_failure_rate_differ_from_the_independent_members`
+with "the two members' definitions are in files I may not open". It then diagnoses
+both as "a dispatch problem rather than a research one" and recommends sending a seat
+with reading rights.
+
+**Neither wall is where it thought.** The brief licenses the probe corpus as
+greppable, and both objects are in it:
+
+- The variance forms are in `128_probes/r3_output.txt` and `130_probes/y1_output.txt`,
+  which print `n^2 f(1-f)` and `n f(1-f)` against enumerated values at nine chain
+  lengths between them. My 5.1 is built on those two outputs and no member file.
+- The two keying members are in `129_probes/x1_output.txt` and its script, which name
+  the shared-threshold, independent-per-element and position-keyed golden-ratio
+  variants and report the 7-of-40 count. My 5.2 is built on those and no member file.
+
+So the recommendation to dispatch a seat with reading rights for those two rows is
+answering a wall that is not there, and **both rows are measured now.** The
+recommendation may still be right for Q57, where the wall is real and G says so.
+
+**I do not think this reflects badly on 221 and it is worth saying why.** It searched
+for the definitions and concluded they were behind a rule; I searched for the numbers
+and found them printed. That is a difference in what we went looking for rather than
+in diligence, and the lesson generalises: **a committed probe output is a source a
+blind seat may read, and it frequently carries the thing the member file states.**
+
+### C.4 It had the tool for Q22 and Q4 and did not use it
+
+221 concedes `are_set_valued_carriers_admitted` and `what_a_datum_stands_for`, and
+its finding about them is a good one: the two rows price the same admission
+disjointly and neither cites the other.
+
+Two sections earlier, at `is_the_cross_kind_join_closed_or_priced`, it argues that
+ratified `membership_of_the_representable_set_is_one_affine_predicate` says membership
+is "one affine predicate over one parameterisation, of which the named kinds are
+points", and that a set whose membership is not one affine predicate is outside the
+concept rather than a new inventory entry. **That argument settles Q22 verbatim**, and
+my 6.3 is it: an interval is not a point of that parameterisation, so a set-valued
+carrier is not a format, and `the_format_concept_carries_three_things_upward_and_compositions_owe_their_own_laws`
+says where it goes instead.
+
+**Its own caveat on that argument does not bite here**, which is why I can use it
+where it could not use it on the join. It marks the reading as turning on whether "a
+quantum per magnitude" means an arbitrary function of magnitude or a parameter of the
+affine slot function. An interval carrier's elements are pairs rather than scalars, so
+it is not a point of a parameterisation of scalar grids under either reading of the
+quantum. **The Q22 use of the clause is unconditional where the closure use is
+conditional.**
