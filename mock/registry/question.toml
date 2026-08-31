@@ -1227,3 +1227,18 @@ topic = "canon_form"
 note = "Handed to op by a candidate. The coordinator records it as not derivable and folds it into the unpredicated-proposition question rather than answering it, on the ground that it is the same question one level down: a canon carrying a visibly open obligation is carrying a sentence that is not an established claim."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#what-i-answered-myself-as-coordinator-attackable-in-a-sentence-each"]
 keywords = ["domain dimension", "open", "obligation", "canon", "established claim", "predicate", "folded"]
+
+[[question]]
+id = "does_a_named_policy_selection_survive_above_the_numeral"
+asks = "The panel holds that a selection among named policy alternatives does not survive above the numeral. The consumer's plan chain carries exactly one such selection, at its per-phase configuration step, with three named alternatives and a selector trait over them. Does that instance refute the claim, confirm it by turning out to be a different shape, or fall outside what the claim quantifies over?"
+options = [
+  "It refutes the claim: a named policy selection does survive above the numeral, and the claim narrows to whatever excludes this case.",
+  "It confirms the claim: the selection picks a grouping policy rather than an arithmetic realisation, and the two are different shapes wearing one word.",
+  "It is outside the claim's scope, and the claim has to say so, because as written it reads as covering this and does not.",
+]
+decider = "panel"
+topic = "the_strategy_object"
+unblocks = "Whether the strategy shape is a numeral-local thing or a general one, which decides what a composition contract may carry."
+note = "**The consumer implements this itself, so it is not an obligation and no obligation was filed for it.** Filing one would have been inventing demand: nothing in the consumer asks arvo for the selection machinery, and an obligation nobody asked for is how a design acquires a requirement out of somebody's memory. What it is instead is the only datum in that chain whose shape is a selection among named alternatives, which makes it the one thing available that could test the claim rather than illustrate it. Reported by an expert attacking a neighbouring derivation, which also states plainly that it is not claiming the consumer's selector is arvo's strategy. The type, its three alternatives, its selector trait and the chain step naming it were all verified in the consumer's own source."
+provenance = ["panel::202608072330_the-numeral-canon-panel::196_dolan_attacking_the_surface_derivation::#2-5-one-stage-falls-through-both-and-it-is-the-only-stage-that-is-a-strategy"]
+keywords = ["strategy", "policy", "selection", "named alternatives", "phase", "selector", "grouping", "above the numeral", "test case", "step 10"]

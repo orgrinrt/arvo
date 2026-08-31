@@ -60,12 +60,13 @@ keywords = ["spectral", "Fiedler", "eigenvector", "partition", "graph partition"
 
 [[obligation]]
 id = "a_cost_dynamic_program"
-need = "A dynamic program over costs, deciding how to group work under a budget."
+need = "Combinatorial grouping over a cost model: packing items into bins, and ordering a chain of operations so the total cost of the chain is least."
 consumer = "hilavitkutin"
-why = "The plan chain's cost step, which is what turns the partition into a schedule with a size."
+why = "Its grouping step is named as greedy together with a matrix-chain dynamic program, and a separate ordering step reaches for bin packing by name. Both decide how work is grouped rather than how much of it fits anywhere."
+gap = "**This row read `a dynamic program over costs, deciding how to group work under a budget`, and the budget half was wrong.** The consumer's budgets are cache-footprint constants that size morsels, which is a different step of the same chain, so the row attached a real quantity to the wrong need and could have been met by something the consumer never asked for. Reported by an expert dispatched on a neighbouring question; the two routines and the misplaced budget were verified here against the consumer's own documents. What is still not stated anywhere is what cost model the ordering minimises over, which is the thing an implementation would need first."
 topic = "arvo_identity"
 provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
-keywords = ["cost", "DP", "dynamic programming", "combinatorics", "budget", "grouping", "morsel size", "knapsack"]
+keywords = ["cost", "DP", "dynamic programming", "combinatorics", "grouping", "bin packing", "matrix chain", "greedy", "knapsack", "ordering"]
 
 # --- what reaches the numeral itself -------------------------------------------
 
