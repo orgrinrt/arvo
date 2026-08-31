@@ -26,3 +26,14 @@ the six source-side CrateLints that have no source left to lint.
 
 ## 4. cargo mock --lint-only, the lints against the real registry
   695 rows across 10 namespaces / schema check passed / all lints passed
+
+## 5. addendum: what `cargo mock test` printed once its bench process was killed
+
+Full output kept as `cargo_mock_test.out`. Final two lines:
+
+  mock test: FAILED benches at .../.worktrees/axes/mock/benches
+  mock test: 1 of 7 tree(s) failed
+
+So six of seven trees are green and the seventh is the bench tree, which failed
+because I stopped it at twenty-five minutes rather than because anything in it
+asserted false. Nothing in the suite is red on its own account.

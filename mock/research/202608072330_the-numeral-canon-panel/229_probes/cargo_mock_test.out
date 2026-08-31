@@ -1,0 +1,122 @@
+test no_line_citation_into_a_living_ledger_in_prose::tests::a_probes_own_findings_file_is_the_record_rather_than_a_ledger ... ok
+test no_line_citation_into_a_living_ledger_in_prose::tests::its_findings_block_every_gate ... ok
+test no_line_citation_into_a_registry_file::tests::control_naming_a_registry_file_without_a_line_is_left_alone ... ok
+test no_line_citation_into_a_registry_file::tests::it_reaches_the_pack_the_engine_is_handed ... ok
+test no_line_citation_into_a_registry_file::tests::its_findings_block_every_gate ... ok
+test no_line_citation_into_a_registry_file::tests::a_probes_own_findings_file_is_the_record_rather_than_a_ledger ... ok
+test no_registry_comment_counts_its_own_rows::tests::a_registry_directory_that_is_not_there_is_silent_rather_than_a_panic ... ok
+test no_registry_comment_counts_its_own_rows::tests::control_a_comment_with_no_number_and_a_number_with_no_noun_are_both_silent ... ok
+test no_registry_comment_counts_its_own_rows::tests::a_comment_counting_rows_is_reported_and_names_the_line ... ok
+test no_registry_comment_counts_its_own_rows::tests::a_nested_registry_file_is_read_and_a_non_toml_file_is_not ... ok
+test no_registry_comment_counts_its_own_rows::tests::it_answers_to_the_name_the_gate_and_the_config_use ... ok
+test no_registry_comment_counts_its_own_rows::tests::it_is_not_declared_off_so_it_runs_at_all ... ok
+test canon_lint_testkit::every_registered_lint_asks_whether_it_reaches_the_gate_at_all ... ok
+test no_registry_comment_counts_its_own_rows::tests::it_reaches_the_pack_the_engine_is_handed ... ok
+test no_registry_comment_counts_its_own_rows::tests::control_a_count_inside_a_value_is_not_a_comment ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::control_a_corrects_edge_is_not_a_supersession ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::a_stated_ruling_superseding_a_ratified_one_is_reported ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::control_a_proposal_supersession_is_not_read ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::control_a_ratified_ruling_superseding_a_stated_one_is_silent ... ok
+test no_registry_comment_counts_its_own_rows::tests::control_a_number_about_something_else_is_left_alone ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::control_an_edge_into_nothing_is_left_to_the_engine ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::control_a_ruling_with_no_supersedes_owes_nothing ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::control_an_unknown_tier_is_not_ranked ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::control_an_empty_registry_is_silent_rather_than_a_panic ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::every_lower_tier_is_reported_against_a_ratified_target ... ok
+test no_registry_comment_counts_its_own_rows::tests::its_findings_block_every_gate ... ok
+test no_registry_comment_counts_its_own_rows::tests::the_plural_and_the_singular_are_both_caught ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::it_answers_to_the_name_the_gate_and_the_config_use ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::it_is_not_declared_off_so_it_runs_at_all ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::every_offending_edge_in_one_row_is_reported ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::it_reaches_the_pack_the_engine_is_handed ... ok
+test no_ruling_supersedes_one_that_outranks_it::tests::its_findings_block_every_gate ... ok
+test no_runtime_grow::tests::a_declared_proc_macro_crate_is_skipped ... ok
+test no_runtime_grow::tests::a_doc_comment_mentioning_the_patterns_is_silent ... ok
+test no_runtime_grow::tests::a_full_line_comment_mentioning_the_patterns_is_silent ... ok
+test no_runtime_grow::tests::a_string_literal_naming_a_forbidden_pattern_is_wrongly_flagged ... ignored, catalogue: a string literal naming one of the forbidden patterns false-positives; needs tree-sitter-aware scanning to fix
+test no_runtime_grow::tests::a_trailing_comment_after_real_code_is_wrongly_flagged ... ignored, catalogue: a trailing `//` comment on a real line of code is scanned as code; `let v = w; // could .push( here later` false-positives; needs tree-sitter-aware scanning to fix
+test no_runtime_grow::tests::a_fixed_size_array_construction_is_silent ... ok
+test no_runtime_grow::tests::an_interior_line_of_a_block_comment_is_wrongly_flagged ... ignored, catalogue: a block-comment interior line naming one of the forbidden patterns false-positives; needs tree-sitter-aware scanning to fix
+test no_runtime_grow::tests::a_push_call_fires ... ok
+test no_runtime_grow::tests::an_extend_call_fires ... ok
+test no_runtime_grow::tests::a_resize_call_fires ... ok
+test no_runtime_grow::tests::a_vec_with_capacity_call_fires ... ok
+test no_runtime_grow::tests::it_answers_to_the_name_the_gate_and_the_config_use ... ok
+test no_runtime_grow::tests::it_is_not_declared_off_so_it_runs_at_all ... ok
+test no_runtime_grow::tests::every_hit_names_its_own_line ... ok
+test no_runtime_grow::tests::its_undeclared_findings_carry_its_advisory_default ... ok
+test no_runtime_grow::tests::it_reaches_the_pack_the_engine_is_handed ... ok
+test no_runtime_grow::tests::a_similarly_named_method_that_is_not_the_pattern_is_silent ... ok
+test no_runtime_grow::tests::only_the_first_pattern_on_a_line_is_reported ... ok
+test no_runtime_grow::tests::the_opt_in_override_is_honoured_rather_than_ignored ... ok
+test no_runtime_grow::tests::the_pattern_still_fires_inside_a_macro_body ... ok
+test no_std_enforcer::tests::a_bare_use_std_fires ... ok
+test no_std_enforcer::tests::a_crate_not_named_as_a_proc_macro_crate_is_not_exempt ... ok
+test no_std_enforcer::tests::a_fully_qualified_std_path_outside_a_use_statement_escapes_detection ... ignored, catalogue: a fully qualified `std::` path used outside a `use` statement (e.g. `std::process::exit(0);`) is not matched at all; needs a broader, false-positive-aware match or tree-sitter-based scanning to fix
+test no_runtime_grow::tests::the_pattern_still_fires_inside_a_cfg_test_module ... ok
+test no_std_enforcer::tests::a_full_line_comment_mentioning_use_std_is_silent ... ok
+test no_std_enforcer::tests::a_declared_proc_macro_crate_is_skipped ... ok
+test no_runtime_grow::tests::the_configured_override_in_this_repos_mockspace_toml_makes_it_block ... ok
+test no_std_enforcer::tests::a_doc_comment_mentioning_use_std_is_silent ... ok
+test no_std_enforcer::tests::a_leading_double_colon_use_std_fires ... ok
+test no_std_enforcer::tests::a_pub_use_std_fires ... ok
+test no_std_enforcer::tests::a_pub_use_leading_double_colon_std_fires ... ok
+test no_std_enforcer::tests::an_extern_crate_std_fires ... ok
+test no_std_enforcer::tests::an_interior_line_of_a_block_comment_is_wrongly_flagged ... ignored, catalogue: block comments are not recognised, so an interior line of one starting with `use std::` false-positives; needs tree-sitter-aware scanning to fix
+test no_std_enforcer::tests::an_interior_line_of_a_raw_string_literal_is_wrongly_flagged ... ignored, catalogue: a raw multi-line string literal whose interior line reads `use std::...;` once trimmed false-positives; needs tree-sitter-aware scanning to fix
+test no_std_enforcer::tests::an_import_of_a_crate_merely_containing_std_as_a_substring_is_silent ... ok
+test no_std_enforcer::tests::a_trailing_comment_after_real_code_is_silent ... ok
+test no_std_enforcer::tests::core_and_alloc_imports_are_silent ... ok
+test no_std_enforcer::tests::it_answers_to_the_name_the_gate_and_the_config_use ... ok
+test no_std_enforcer::tests::it_is_not_declared_off_so_it_runs_at_all ... ok
+test no_std_enforcer::tests::every_hit_names_its_own_line ... ok
+test no_std_enforcer::tests::it_reaches_the_pack_the_engine_is_handed ... ok
+test no_std_enforcer::tests::its_findings_carry_its_own_declared_severity ... ok
+test no_std_enforcer::tests::the_lint_itself_needs_no_crate_tree_on_disk ... ok
+test no_std_enforcer::tests::the_opt_in_override_is_honoured_rather_than_ignored ... ok
+test no_line_citation_into_a_living_ledger_in_prose::tests::every_ledger_is_covered_rather_than_the_one_the_fixture_names ... ok
+test no_unprefixed_archive_citation::tests::a_panel_directory_that_is_not_there_is_silent_rather_than_a_panic ... ok
+test no_unprefixed_archive_citation::tests::it_answers_to_the_name_the_gate_and_the_config_use ... ok
+test no_unprefixed_archive_citation::tests::it_is_not_declared_off_so_it_runs_at_all ... ok
+test no_unprefixed_archive_citation::tests::it_reaches_the_pack_the_engine_is_handed ... ok
+test no_unprefixed_archive_citation::tests::a_ledger_citing_the_dead_spelling_is_reported_with_the_repair ... ok
+test panel_corpus::tests::a_ledger_line_citation_reads_the_ledger_stems_and_nothing_else ... ok
+test panel_corpus::tests::a_line_citation_needs_digits_and_a_stem_the_caller_named ... ok
+test panel_corpus::tests::a_walk_over_a_directory_that_is_not_there_is_empty_rather_than_a_panic ... ok
+test no_unprefixed_archive_citation::tests::control_a_file_writing_about_the_dead_spelling_is_not_counted ... ok
+test no_unprefixed_archive_citation::tests::a_ledger_citation_is_refused_whatever_the_ceiling_says ... ok
+test no_unprefixed_archive_citation::tests::both_archives_are_covered_by_the_same_arm ... ok
+test panel_corpus::tests::an_archive_citation_drops_whatever_follows_the_extension ... ok
+test no_unprefixed_archive_citation::tests::control_a_prefixed_citation_is_the_repaired_form_and_is_silent ... ok
+test no_unprefixed_archive_citation::tests::control_a_prefix_inside_a_longer_path_is_somebody_elses ... ok
+test panel_corpus::tests::an_archive_citation_is_read_out_of_prose_and_a_longer_word_is_not_one ... ok
+test panel_corpus::tests::several_citations_on_one_line_are_all_reported_rather_than_the_first ... ok
+test panel_corpus::tests::the_panel_directory_hangs_off_the_mock_directory_it_is_handed ... ok
+test panel_corpus::tests::every_ledger_stem_is_matched_so_the_list_and_the_finder_agree ... ok
+test refusal_owes_an_instead::tests::a_namespace_that_declares_no_kind_is_left_alone_whatever_a_row_says ... ok
+test refusal_owes_an_instead::tests::a_proposal_refusal_with_no_instead_fires_and_names_the_row ... ok
+test no_unprefixed_archive_citation::tests::its_findings_block_every_gate ... ok
+test refusal_owes_an_instead::tests::a_proposal_whose_instead_is_only_whitespace_fires_like_a_ruling_would ... ok
+test refusal_owes_an_instead::tests::a_refusal_with_no_instead_field_fires_and_names_the_row ... ok
+test refusal_owes_an_instead::tests::a_row_with_no_kind_field_at_all_is_not_a_refusal ... ok
+test refusal_owes_an_instead::tests::both_namespaces_are_reported_in_one_run_rather_than_the_first_of_them ... ok
+test refusal_owes_an_instead::tests::control_a_proposal_refusal_carrying_an_instead_is_silent ... ok
+test refusal_owes_an_instead::tests::an_instead_that_is_only_whitespace_is_no_answer_and_fires ... ok
+test refusal_owes_an_instead::tests::control_a_refusal_carrying_an_instead_is_silent ... ok
+test refusal_owes_an_instead::tests::control_a_proposal_that_answers_owes_nothing_whatever_it_carries ... ok
+test refusal_owes_an_instead::tests::control_a_row_that_is_not_a_refusal_owes_nothing_whatever_it_carries ... ok
+test refusal_owes_an_instead::tests::control_an_empty_registry_is_silent_rather_than_a_panic ... ok
+test refusal_owes_an_instead::tests::every_offending_refusal_is_reported_rather_than_the_first ... ok
+test refusal_owes_an_instead::tests::it_answers_to_the_name_the_gate_and_the_config_use ... ok
+test refusal_owes_an_instead::tests::it_is_not_declared_off_so_it_runs_at_all ... ok
+test refusal_owes_an_instead::tests::it_reaches_the_pack_the_engine_is_handed ... ok
+test refusal_owes_an_instead::tests::its_findings_block_every_gate ... ok
+test no_unprefixed_archive_citation::tests::a_member_file_is_counted_rather_than_refused_and_the_ratchet_fires_above_the_ceiling ... ok
+
+test result: ok. 540 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+mock test: FAILED benches at /Users/orgrinrt/Dev/clause-work/numeric-stack/.worktrees/axes/mock/benches
+mock test: 1 of 7 tree(s) failed
+
+[exited with code 0]
