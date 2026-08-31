@@ -116,7 +116,11 @@ impl Numeral for N13U32 {
 }
 
 fn carrier_mask<N: Numeral>() -> u32 {
-    if N::CARRIER_BITS >= 32 { u32::MAX } else { (1u32 << N::CARRIER_BITS) - 1 }
+    if N::CARRIER_BITS >= 32 {
+        u32::MAX
+    } else {
+        (1u32 << N::CARRIER_BITS) - 1
+    }
 }
 
 /// Operations stated over the DECLARED width. None of these may see the carrier.
@@ -125,7 +129,11 @@ fn wrap_add<N: Numeral>(a: N, b: N) -> u32 {
 }
 fn sat_add<N: Numeral>(a: N, b: N) -> u32 {
     let s = a.to_raw() + b.to_raw();
-    if s > MASK { MASK } else { s }
+    if s > MASK {
+        MASK
+    } else {
+        s
+    }
 }
 fn wrap_mul<N: Numeral>(a: N, b: N) -> u32 {
     a.to_raw().wrapping_mul(b.to_raw()) & MASK
@@ -133,7 +141,11 @@ fn wrap_mul<N: Numeral>(a: N, b: N) -> u32 {
 /// The declared-width saturating multiply, whose intermediate is the exact product.
 fn sat_mul<N: Numeral>(a: N, b: N) -> u32 {
     let p = (a.to_raw() as u64) * (b.to_raw() as u64);
-    if p > MASK as u64 { MASK } else { p as u32 }
+    if p > MASK as u64 {
+        MASK
+    } else {
+        p as u32
+    }
 }
 fn xor<N: Numeral>(a: N, b: N) -> u32 {
     a.to_raw() ^ b.to_raw()
@@ -147,7 +159,11 @@ fn roundtrip<N: Numeral>(v: u32) -> u32 {
 /// the clamp the result lands on.
 fn sat_mul_via_carrier<N: Numeral>(a: N, b: N) -> u32 {
     let intermediate = a.to_raw().wrapping_mul(b.to_raw()) & carrier_mask::<N>();
-    if intermediate > MASK { MASK } else { intermediate }
+    if intermediate > MASK {
+        MASK
+    } else {
+        intermediate
+    }
 }
 
 /// Dead route one, kept and still run.
@@ -163,7 +179,11 @@ fn wrap_mul_via_carrier<N: Numeral>(a: N, b: N) -> u32 {
 /// Job two: a const arm keyed on the footprint. If this compiles, the footprint is a const
 /// predicate and an arm may be gated on it.
 const fn arm_for<const BYTES: usize>() -> &'static str {
-    if BYTES <= 2 { "narrow arm" } else { "wide arm" }
+    if BYTES <= 2 {
+        "narrow arm"
+    } else {
+        "wide arm"
+    }
 }
 
 const ARM_U16: &str = arm_for::<{ size_of::<N13U16>() }>();
@@ -194,7 +214,9 @@ fn main() {
         size_of::<AlsoU16>(),
         size_of::<N13U16>() != size_of::<AlsoU16>()
     );
-    println!("     (must be false, or the observation reads type identity rather than the carrier,");
+    println!(
+        "     (must be false, or the observation reads type identity rather than the carrier,"
+    );
     println!("      and P1 would be measuring the wrong thing)");
     println!();
 

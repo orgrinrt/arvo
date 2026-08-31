@@ -77,7 +77,11 @@ fn gcd(a: i128, b: i128) -> i128 {
         a = b;
         b = t;
     }
-    if a == 0 { 1 } else { a }
+    if a == 0 {
+        1
+    } else {
+        a
+    }
 }
 
 impl Q {
@@ -109,7 +113,11 @@ impl Q {
         self.n as f64 / self.d as f64
     }
     fn show(self) -> String {
-        if self.d == 1 { format!("{}", self.n) } else { format!("{}/{}", self.n, self.d) }
+        if self.d == 1 {
+            format!("{}", self.n)
+        } else {
+            format!("{}/{}", self.n, self.d)
+        }
     }
 }
 
@@ -392,7 +400,11 @@ fn main() {
 
     let decreasing = |i: i128, m: i128, _p: i128| (m - 1 - (i % m)).max(0);
     let dec = keyed_rate(&pts, m, 1, decreasing);
-    println!("  C3 decreasing key: rate {:.6}, zero: {}", dec.approx(), dec == Q::int(0));
+    println!(
+        "  C3 decreasing key: rate {:.6}, zero: {}",
+        dec.approx(),
+        dec == Q::int(0)
+    );
     println!("     (a second construction reaching zero for a different reason than the shared");
     println!("      threshold, which separates a real zero from a sleeping arm)");
 

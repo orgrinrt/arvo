@@ -74,7 +74,11 @@ fn gcd(a: i128, b: i128) -> i128 {
         a = b;
         b = t;
     }
-    if a == 0 { 1 } else { a }
+    if a == 0 {
+        1
+    } else {
+        a
+    }
 }
 
 impl Q {
@@ -109,7 +113,11 @@ impl Q {
         )
     }
     fn show(self) -> String {
-        if self.d == 1 { format!("{}", self.n) } else { format!("{}/{}", self.n, self.d) }
+        if self.d == 1 {
+            format!("{}", self.n)
+        } else {
+            format!("{}/{}", self.n, self.d)
+        }
     }
 }
 
@@ -203,7 +211,10 @@ fn independent_by_integer_moments(n: u32, m: i128, j: i128) -> Option<(Q, Q)> {
         let b = checked_pow(m - j, n - k)?;
         tsum = tsum.checked_add(ways.checked_mul(a)?.checked_mul(b)?)?;
     }
-    assert_eq!(tsum, t, "binomial weights do not sum to m^n at n={n} m={m} j={j}");
+    assert_eq!(
+        tsum, t,
+        "binomial weights do not sum to m^n at n={n} m={m} j={j}"
+    );
 
     let num = m2.checked_mul(t)?.checked_sub(m1.checked_mul(m1)?)?;
     let den = t.checked_mul(t)?;
@@ -228,8 +239,16 @@ fn comonotone(n: u32, m: i128, j: i128) -> (Q, Q) {
 /// Disjoint when f <= 1/2 and overlapping when f > 1/2, which is why this is neither of the two
 /// couplings and is control C2.
 fn antithetic_pair(m: i128, j: i128) -> (Q, Q) {
-    let both = if 2 * j >= m { Q::new(2 * j - m, m) } else { Q::int(0) };
-    let neither = if 2 * j <= m { Q::new(m - 2 * j, m) } else { Q::int(0) };
+    let both = if 2 * j >= m {
+        Q::new(2 * j - m, m)
+    } else {
+        Q::int(0)
+    };
+    let neither = if 2 * j <= m {
+        Q::new(m - 2 * j, m)
+    } else {
+        Q::int(0)
+    };
     let one = Q::int(1).sub(both).sub(neither);
     let s = |k: i128| Q::int(k * m - 2 * j);
     let mean = both.mul(s(2)).add(one.mul(s(1))).add(neither.mul(s(0)));
@@ -333,7 +352,10 @@ fn main() {
                 }
                 if mean_e != Q::int(0) {
                     mismatches += 1;
-                    println!("  INDEPENDENT BIASED d={d} j={j} n={n}: mean {}", mean_e.show());
+                    println!(
+                        "  INDEPENDENT BIASED d={d} j={j} n={n}: mean {}",
+                        mean_e.show()
+                    );
                 }
                 let (mean_c, var_c) = comonotone(n, m, j);
                 let predicted_com = Q::int((n as i128) * (n as i128) * j * (m - j));
@@ -347,7 +369,10 @@ fn main() {
                 }
                 if mean_c != Q::int(0) {
                     mismatches += 1;
-                    println!("  COMONOTONE BIASED d={d} j={j} n={n}: mean {}", mean_c.show());
+                    println!(
+                        "  COMONOTONE BIASED d={d} j={j} n={n}: mean {}",
+                        mean_c.show()
+                    );
                 }
                 checked += 1;
             }

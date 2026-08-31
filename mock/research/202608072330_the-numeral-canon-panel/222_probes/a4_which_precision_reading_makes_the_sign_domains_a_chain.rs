@@ -107,19 +107,35 @@ fn domains(
     sign_digit_counted: bool,
     sym: Symmetric,
 ) -> Option<[(&'static str, Domain); 3]> {
-    let mag = if sign_digit_counted { p.saturating_sub(1) } else { p };
+    let mag = if sign_digit_counted {
+        p.saturating_sub(1)
+    } else {
+        p
+    };
     let m = pow(r, mag);
     let symmetric = match sym {
-        Symmetric::SignMagnitude => Domain { lo: -(m - 1), hi: m - 1 },
+        Symmetric::SignMagnitude => Domain {
+            lo: -(m - 1),
+            hi: m - 1,
+        },
         Symmetric::Balanced => {
             if (m - 1) % 2 != 0 {
                 return None;
             }
-            Domain { lo: -(m - 1) / 2, hi: (m - 1) / 2 }
+            Domain {
+                lo: -(m - 1) / 2,
+                hi: (m - 1) / 2,
+            }
         }
     };
     Some([
-        ("unsigned", Domain { lo: 0, hi: pow(r, p) - 1 }),
+        (
+            "unsigned",
+            Domain {
+                lo: 0,
+                hi: pow(r, p) - 1,
+            },
+        ),
         ("twos_complement", Domain { lo: -m, hi: m - 1 }),
         ("symmetric", symmetric),
     ])
@@ -200,9 +216,10 @@ fn main() {
         (Symmetric::SignMagnitude, "sign-magnitude symmetric"),
         (Symmetric::Balanced, "balanced-radix symmetric"),
     ] {
-        for (counted, read_label) in
-            [(true, "A: precision COUNTS the sign digit"), (false, "B: it does NOT")]
-        {
+        for (counted, read_label) in [
+            (true, "A: precision COUNTS the sign digit"),
+            (false, "B: it does NOT"),
+        ] {
             println!("--- {sym_label}, reading {read_label} ---");
             let mut chains = 0u32;
             let mut nonchains = 0u32;
@@ -256,9 +273,7 @@ fn main() {
                  {nonchains}, cells skipped as non-integral {skipped}, domains of card <= 1 \
                  {singletons}"
             );
-            println!(
-                "  interval-vs-set inclusion disagreements: {set_disagreements} (must be 0)"
-            );
+            println!("  interval-vs-set inclusion disagreements: {set_disagreements} (must be 0)");
             println!();
         }
     }
@@ -276,7 +291,9 @@ fn main() {
             b[2].1.show()
         );
     }
-    println!("  Reading A makes the symmetric domain at precision one denote exactly the zero set,");
+    println!(
+        "  Reading A makes the symmetric domain at precision one denote exactly the zero set,"
+    );
     println!("  at every radix. That is a numeral carrying fewer than two values at a legitimate");
     println!("  precision, and it is the case `question::inclusion_order_singleton_amendment`");
     println!("  exists to handle: that row's note records the instrument which first got the");
