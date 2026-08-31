@@ -693,3 +693,122 @@ control = "The derivation is written out in the header from scratch before the m
 standing = "sound"
 note = "Its author states the rung it does not earn, which is the part to keep: the mechanism was re-derived after reading the earlier file's prose claim but before reading its probe code, so this is a re-derivation and a re-measurement rather than a blind instance. A later value-level intersection then found this partition stated over the whole rational line while an arm needs it on the domain the cell reaches, which is a quantifier the partition alone does not carry."
 keywords = ["equivariance", "partition", "rounding axis", "six modes", "re-derivation", "rung", "accumulator", "independent model", "predicate"]
+
+# --- the format concept, files 55 to 63 -------------------------------------
+#
+# The earliest topic with instruments and the last to get rows. Five of the
+# twenty-one claims that ran something and named nothing sit here.
+#
+# `57_probes` keeps every superseded run under a filename saying what was wrong
+# with it: `p4_output.v1_failed_assertion.txt`, `p5_output.v1_overstated_
+# reading.txt`, `p7_output.v1_overquantified_ambient.txt` and `p7_output.v2_
+# predictor_too_broad.txt`. That is the best artifact naming in the corpus and
+# it is why these rows can say what each earlier run got wrong.
+
+[[probe]]
+id = "absorption_and_associativity_agree_for_clamped_addition"
+establishes = "Over 4248 configurations and again over a widened set, absorption and associativity of the induced operation agree exactly for clamped addition: zero cases absorbing but not associative, and zero associative but not absorbing. On a neighbouring configuration set the necessity direction shows 153 violations, and those are separately established to be degenerate."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p1_absorption_versus_bound_count.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p2_absorption_necessity_sweep.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p2_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p2b_necessity_violations_are_degenerate.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p2b_output.txt::1",
+]
+control = "Both directions are counted separately and both are printed with the sentence they would refute, in the output: sufficiency violations refute absorbing-implies-associative and necessity violations refute the converse. The 153 in the second configuration set is the arm firing, which is what says a zero elsewhere is a measurement rather than a checker that cannot report."
+standing = "sound"
+note = "The two directions are what makes this usable as a criterion rather than as a correlation, and the 153 are the reason a follow-up instrument exists. A reader taking the zeros without the 153 has taken the half that agrees."
+keywords = ["absorption", "associativity", "clamped", "reduction", "sufficiency", "necessity", "criterion", "degenerate", "4248"]
+
+[[probe]]
+id = "the_accumulator_width_is_the_exact_sum_width_less_one_bit"
+establishes = "For an n-operand fold of a W-bit signed saturating format, the minimum sufficient accumulator width is the exact-sum width less one bit, at every fold length measured: 4, 5, 5, 6 against a predicted 5, 6, 6, 7. The final adaptation absorbs the outermost bit, because the accumulator has only to decide which side of the format the result fell on rather than represent how far outside it fell."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p5_is_there_actually_a_grading.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p5_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p6_the_adaptation_absorbs_one_bit.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p6_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p5_output.v1_overstated_reading.txt::1",
+]
+control = "A row with only one verdict cannot locate a minimum and the output excludes it by name, which is the arm that stops a width being reported from a sweep that never saw it fail. The predecessor is the other half: its prediction was sound at every n and wrong by exactly one bit at every n, and a sound-but-loose bound was attacked rather than reported."
+defect = "The predecessor's first run overstated its reading and is kept as `p5_output.v1_overstated_reading.txt`."
+standing = "sound"
+note = "One bit per accumulator decides container selection exactly at the boundaries where container selection is interesting, which is why the looseness was worth chasing rather than rounding up."
+keywords = ["accumulator", "width", "fold", "saturating", "exact sum", "one bit", "grading", "adaptation", "container selection"]
+
+[[probe]]
+id = "which_factor_of_a_reduction_breaks_the_semiring"
+establishes = "The reduction at nonzero fraction width is a composite of a grid coarsening and a range clamping, and running each factor alone attributes the semiring failure to a named map rather than to the composite."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p3_semiring_across_widths_and_scales.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p4_which_factor_breaks_and_what_coherence_buys.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p4_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p4_output.v1_failed_assertion.txt::1",
+]
+control = "The two coherence arms are each other's control and the output says so: a coherent reduction is a homomorphism so reducing at every step must agree, an incoherent one must not, and the run reports the same checker on the same code path giving opposite verdicts at the same fold length. A checker returning one verdict for both would be measuring the fold rather than the coherence."
+defect = "The first run failed its own assertion and is kept as `p4_output.v1_failed_assertion.txt` rather than deleted."
+standing = "sound"
+note = "Its author states the stake before running: if the clamp alone is a semiring and the coarsening alone is not, then saying saturation breaks distributivity is false in a way that matters, because it sends a law layer to condition on the wrong axis of the format. That is a probe built to change a design decision rather than to confirm a number."
+keywords = ["semiring", "distributivity", "clamp", "coarsening", "attribution", "factor", "coherence", "homomorphism", "fraction width"]
+
+[[probe]]
+id = "a_half_step_biased_grid_is_not_closed_under_addition"
+establishes = "On a half-step-biased grid, 0 of 256 exact sums of two grid points land on the grid and every one sits exactly half a step away, and the grid contains neither zero nor one. Round-to-nearest onto the same biased grid keeps every adaptation law tested, exhaustively: total, retraction, monotone and distance minimising."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::56_probes::q2_affine_membership.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::56_probes::q2_output.txt::1",
+]
+control = "The affine membership predicate is written once and instantiated at two phases, and each instantiation is compared exhaustively against a direct enumeration that never mentions the predicate. That is the arm: a predicate agreeing with an enumeration written independently of it cannot be agreeing with itself."
+standing = "sound"
+note = "The zero is the load-bearing half and the tie is what makes it actionable: every sum lands exactly on a tie, so phase promotes the tie rule from a corner case to the common case rather than merely shifting the grid."
+keywords = ["phase", "bias", "grid", "closure", "addition", "identity", "tie", "affine predicate", "retraction", "adaptation law"]
+
+# --- the derived algebraic laws, files 76 to 90 -----------------------------
+
+[[probe]]
+id = "a_declared_law_marker_compiles_clean_when_false"
+establishes = "Over a four-bit signed window with two overflow policies declaring one associativity marker, one declaration is false, the compiler raises nothing, and the consumer licensed by the marker reassociates and produces a wrong answer silently."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::80_probes::p1a_declared_law_lies.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::80_probes::p1a_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::80_probes::p1b_computed_law_refuses.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::80_probes::p1b_honest_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::80_probes::NOTE_p1a_first_run.md::1",
+]
+control = "The companion arm is the control and it is a separate file: the same law computed rather than declared refuses the false case. A declaration that compiles and a computation that refuses, over one model, is what separates the finding from a claim about that particular window."
+defect = "The first run is kept with a note naming two defects in it. The wrapping map was not wrapping addition: it added the two offset-binary representations rather than the values, so zero was not the identity under it. And the fold was seeded with a literal zero, so the measurement was partly of whether zero was the map's identity rather than of grouping. The corrected fold starts from the first element and measures grouping alone."
+standing = "sound"
+note = "The header states the toolchain and the exact build line, which is rare here and is what lets this row carry a profile at all. It is the law-layer analogue of an earlier probe that found the same shape one coordinate lower, where an overstated declaration about a container window passed the whole validation suite because nothing tied the declaration to the executable maps."
+keywords = ["declared law", "marker", "false declaration", "reassociation", "silent", "overflow policy", "paper checking paper", "compiles clean"]
+
+[[probe]]
+id = "a_trajectory_condition_lifts_exactly_when_it_survives_closure"
+establishes = "Whether a measured trajectory region can become a declaration is decided per region by closure: the condition lifts over the operand set exactly when it survives the set's closure under the operations the law ranges over."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p1_box_lifting_of_p4.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p1_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p1b_is_every_lifted_box_degenerate.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p1b_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p10_is_the_interval_the_limit.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p10_output.txt::1",
+]
+control = "The degeneracy arm is the control and it is a separate probe: if every lifted region were degenerate the criterion would be sorting nothing, and the run exists to find out. A third arm asks whether the interval is the limit of what lifts, which bounds the criterion from the other side."
+standing = "sound"
+note = "The criterion is the deliverable rather than any one region's verdict. A reader wanting a list of which regions lift is reading the wrong instrument; this one says what decides it."
+keywords = ["lifting", "trajectory", "declaration", "closure", "operand set", "box", "region", "degenerate", "criterion"]
+
+# --- the number system concept, files 64 to 74 ------------------------------
+
+[[probe]]
+id = "the_collapsed_declaration_cannot_be_made_to_fail"
+establishes = "A system that names its own computed algebra as its ambient domain passes a reduction-verdict exposure test, and the pass survives mutation: a mutation set including a reduction that adapts every value to zero cannot make the collapsed verdict fail."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::73_probes::p1_collapse.py::1",
+  "panel::202608072330_the-numeral-canon-panel::73_probes::p1_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::73_probes::p1c_collapse_cannot_fail.py::1",
+  "panel::202608072330_the-numeral-canon-panel::73_probes::p1c_output.txt::1",
+]
+control = "The whole instrument is a control, and its header is the clearest statement of the principle in this corpus: a row that cannot fail is not a measurement, and the way to show it cannot fail is to corrupt what it is nominally about and watch it not notice. The predecessor reported zero coherence and zero monotonicity failures for every collapsed declaration, and this one says that number is worth nothing until somebody tries to make it nonzero."
+standing = "sound"
+note = "The finding is about a test rather than about a numeral. It refutes the sufficient direction of a standing admission test, which is the useful shape: the test was passed by something that computes nothing, so passing it says nothing."
+keywords = ["collapse", "mutation", "cannot fail", "exposure test", "ambient domain", "self-declaration", "admission", "sufficiency", "refuted"]
