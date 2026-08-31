@@ -17,7 +17,7 @@ describes, and `an_expert_asks_its_peers_before_it_asks_op` says the convergence
 settle. Nothing in the assignment asks me to do something the canon forbids.
 
 One thing about the state the work builds on, which is not a refusal but is reported here rather
-than in a footnote: `mock/registry/proposal.toml:29` says "`probe.toml` does not exist yet, so
+than in a footnote: the header of `mock/registry/proposal.toml` says "`probe.toml` does not exist yet, so
 there is no row for a `measured` proposal to point at" and that "the check for that is red on
 purpose". `mock/registry/probe.toml` now holds 104 `[[probe]]` rows, twenty-five of the thirty
 `measured` proposals carry `evidence`, and the suite is green rather than red. The paragraph
@@ -1321,9 +1321,9 @@ argument for keeping the two-expert row's wording rather than a finding against 
 ## D. Things I found that the question did not ask about
 
 **A canon file describes a state that has passed, and one sentence of it is still true in a way
-that matters more than the stale ones.** `mock/registry/proposal.toml:29` says "`probe.toml` does
-not exist yet, so there is no row for a `measured` proposal to point at", and line 31 says "The
-`measured` rows carry no `evidence` and the check for that is red on purpose".
+that matters more than the stale ones.** The header of `mock/registry/proposal.toml` says
+"`probe.toml` does not exist yet, so there is no row for a `measured` proposal to point at", and
+also "The `measured` rows carry no `evidence` and the check for that is red on purpose".
 
 `mock/registry/probe.toml` now holds 104 `[[probe]]` rows, **twenty-five** of the thirty `measured`
 proposals carry `evidence`, and `cargo test --workspace` is 120 green. So the first sentence is
@@ -1357,6 +1357,22 @@ that happened to agree, and it is exactly the shape my own rules call two true s
 into a connection neither supports. The check that caught it was running the join instead of the
 two counts.
 
+
+**A live check caught me, and that is worth recording given what a parallel seat found about
+`standing`.** My first draft of this file cited the registry twice by line, as
+`proposal.toml:29` and `:31`. That took `the_member_files_line_citations_do_not_grow` from 45 to
+47 against a ceiling of 45 and turned the suite red, exit 101, with both of my citations named in
+the failure. The check's own message says what to do: "Brief the next seat to write slugs; do not
+raise this." **So this one is not a declaration nothing constrains.** It reads what a member file
+actually wrote, it counts, it ratchets, and it refused my file by name within one run of adding
+the lines. I replaced both with a reference to the header and the suite returned to 120 green.
+
+**And the reason it is right is the reason half this file is about provenance.** A registry file
+gains rows constantly, every insertion moves the lines under it, and a line citation into one
+still resolves afterwards while naming a different row. That is the same failure mode as a
+`supersedes` edge left pointing at a row that has been rewritten, which is R5, and as a row's
+provenance naming the consolidation rather than the member file, which is seven of the fourteen.
+**A citation that cannot go stale loudly is a citation that goes stale quietly.**
 **The header offers a guarantee it cannot keep.** It says `182` names every instance of the
 absent-axis narrowing. C8 and R3 both have that narrowing and neither appears in `182`, because they
 came through a different port. **A reader who checks `182` and finds nothing will conclude the row is
