@@ -337,21 +337,30 @@ base-two logarithm is a computation over a quantity nobody needs, done at the on
 where the arithmetic can leave the range it is carried in. **The width is known at declaration, so it
 is read rather than derived.**
 
-### The bound, and what happens above it
+### The bound, which is the set of impls rather than a check inside one
 
-Slot indices are carried as signed 64-bit integers, so the design supports declared widths of **1
-through 62 bits**.
+Slot indices are carried as signed 64-bit integers, so the design admits declared widths of **1
+through 62 bits**. The count of representable slots is `radix^width` and it is what runs out first: at
+62 bits that is 4611686018427387904 and fits, at 63 it is 9223372036854775808 and does not.
 
-The count of representable slots is `radix^width`, and it is what runs out first: at 62 bits that is
-4611686018427387904 and fits, and at 63 it is 9223372036854775808 and does not. A design forming that
-count wraps it negative and derives nonsense from it.
+**`Slots` is implemented at the admitted widths and nowhere else.** `Signed<63>` has no impl, so every
+use of it is a trait-bound error at the use site. There is no guard inside a function, because a guard
+is a thing that can be deleted and an absent impl is not.
 
-**Above the bound the design refuses at compile time**, naming the width and the bound, because
-`ruling::never_a_runtime_check_and_one_lowered_path` is ratified and says invalids are caught at
-compile time. A width whose range cannot be represented is an invalid, and a refusal that arrives as a
-raw arithmetic overflow in a constant is a refusal a reader cannot act on.
+`#[diagnostic::on_unimplemented]` carries the message: the bound, and why the bound is where it is. A
+reader gets the same sentence a refusal would have given, from a stable attribute rather than a
+feature.
+
+**The set cannot be widened by accident.** An impl at 63 computes its own bounds in its own body and
+that arithmetic overflows at the definition site, so adding a width past the bound fails to compile
+where it was added rather than opening a hole at some use site later.
+
+**Why this rather than a checked constructor.** A public function taking a runtime width and asserting
+on it is a runtime check on the public surface, which
+`ruling::never_a_runtime_check_and_one_lowered_path` forbids, and it is a check a later edit can
+remove while every test at admitted widths stays green. The set of impls is the same statement made
+where nothing can delete it.
 
 **The bound is a property of this representation rather than a statement about how wide arvo goes.**
 `question::arbitrary_width_demands_in_the_canon` is open and its second option leaves width families
-to the design tier; this design states what it supports and what it does outside that, and does not
-answer the open question.
+to the design tier; this design states what it admits and does not answer the open question.
