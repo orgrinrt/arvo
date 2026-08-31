@@ -27,7 +27,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use arvo_checks::{Finding, Registry, canon, parse};
+use arvo_checks::{canon, parse, Finding, Registry};
 
 /// The phrase this namespace already uses to say a question is settled.
 ///
@@ -61,7 +61,9 @@ fn answered_by(reg: &Registry) -> BTreeMap<String, Vec<String>> {
     let mut out: BTreeMap<String, Vec<String>> = BTreeMap::new();
     for ruling in reg.of("ruling") {
         for question in ruling.list("answers") {
-            out.entry(question.clone()).or_default().push(ruling.id.clone());
+            out.entry(question.clone())
+                .or_default()
+                .push(ruling.id.clone());
         }
     }
     out
@@ -123,10 +125,13 @@ fn settled_questions_that_do_not_say_so(reg: &Registry) -> Vec<Finding> {
         let Some(rulings) = settled.get(&question.id) else {
             continue;
         };
-        let says_so = PROSE_FIELDS.iter().filter_map(|f| question.get(f)).any(|text| {
-            let lower = text.to_lowercase();
-            SETTLED_PHRASES.iter().any(|p| lower.contains(p))
-        });
+        let says_so = PROSE_FIELDS
+            .iter()
+            .filter_map(|f| question.get(f))
+            .any(|text| {
+                let lower = text.to_lowercase();
+                SETTLED_PHRASES.iter().any(|p| lower.contains(p))
+            });
         if !says_so {
             out.push(Finding::new(
                 "settled-question-reads-as-open",
@@ -399,7 +404,11 @@ answers = ["answered_twice"]
 "#,
     );
     let found = settled_questions_that_do_not_say_so(&reg);
-    assert_eq!(found.len(), 1, "the slug is not a settlement record: {found:#?}");
+    assert_eq!(
+        found.len(),
+        1,
+        "the slug is not a settlement record: {found:#?}"
+    );
     assert!(
         found[0].says.contains("the_first_word") && found[0].says.contains("the_sharpening"),
         "two rulings may settle one question and both are named: {}",
