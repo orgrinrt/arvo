@@ -1387,3 +1387,14 @@ control = "A mutant of the window arm (wide-exact-fold but truncating instead of
 standing = "sound"
 note = "This is the constructive complement to the negative result that an eager, per-step multiplicative schedule cannot supply an exactly associative ambient operation at nonzero fraction width: holding the whole subterm exact and narrowing once, rather than narrowing after every step, recovers correctness for the tested case. `README.md` in this probe directory names it 'probe A'."
 keywords = ["window", "schedule", "dot product", "correctly rounded", "staged narrowing", "chain", "exact fold", "multiply-accumulate"]
+
+[[probe]]
+id = "the_change_test_misfiles_its_own_hierarchy_against_its_own_prose"
+establishes = "Running the change-test discriminator (op's original hierarchy criterion) mechanically against the concept's own five dependency edges: the identity-domain, representable-set and reduction edges all classify as 'system' moved; the container edge classifies as 'format'; and the encoding edge is unclassified under the literal text, because the representation clause demands named values change and an encoding swap changes none. The charitable repair (dropping the values-changed conjunct) correctly files the encoding edge but then misfiles the representable-set edge, which the same source's own prose files under representation two sections earlier, as system instead."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::70_lattner_levels_are_clients_not_facts::117",
+]
+control = "The check is run mechanically against a document's own stated criterion and its own stated prose classification, so the case that had to fail is an internal disagreement within one source rather than a disagreement with an external ground truth: either the test and the prose agree on where the representable-set edge files, or they do not. They do not, on every reading of the test tried (literal, and the one charitable repair)."
+standing = "sound"
+note = "This is a defect in the instrument that generated candidate 1 of the change-test's own source, not a defect anywhere the candidate was carried forward: the consolidation correctly omits the change-test-as-boundary candidate from its canon text, but the mechanical reason it was dropped was, before this row, recorded nowhere reachable, which an entailment check on the consolidation found and named directly: 'a later reader who wants to know why the change-test does not appear... has nothing to find.'"
+keywords = ["change test", "discriminator", "hierarchy", "misfile", "encoding", "representable set", "internal contradiction", "boundary"]

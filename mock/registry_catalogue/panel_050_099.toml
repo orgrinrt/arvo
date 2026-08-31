@@ -513,3 +513,31 @@ edited_after_supersessor = false
 canon_rows = []
 ported_this_pass = false
 note = "Given 64's yield on direct reading, this file is the single highest-value unread file remaining in this catalogue and should be the first thing opened in any follow-up pass on this slice."
+
+[[item]]
+path = "75_arntzen_entailment_check_on_the_number_system_consolidation.md"
+unit = "the_number_system"
+claims = [
+  "94 of 74's citation anchors traced individually; roughly two-thirds legitimately out of scope, most of the remainder duplicate-range citations to content 74 already cites elsewhere; three genuine content losses found",
+  "2a: 70's mechanical finding that 65's change-test misfiles its own hierarchy (against 65's own prose) is dropped from 74 entirely; the consequence (candidate 1 correctly absent) survives, the reason does not",
+  "2b: 71's explicit credit to 66 for correctly posing the conversion/resolution split is dropped from N9's provenance, in violation of 74's own stated merge policy",
+  "2c: 71's methodological aside that the typestate cannot decide the naming-convention crossing-order question, an explicit limit of the panel's own type-first reflex, is dropped without trace; flagged as arguably out of scope for a canon-facing document",
+  "two smaller thinnings: Q10's specific evidentiary content (188/1936 disagreements) not carried alongside its open-question status; 68's 'nearly a language tautology' softened to 'close to a language guarantee' in 74, a real if small skepticism shift",
+  "the five-instance quantifier count independently re-verified",
+  "live-option census: no sixth option found beyond O-A through O-E",
+]
+verdict = "live"
+confidence = 0.95
+reason = "Read in full this pass. Both 2a and 2b were genuine, well-evidenced, previously-uncaptured gaps and both are closed this pass: 2a ported as probe::the_change_test_misfiles_its_own_hierarchy_against_its_own_prose and proposal::the_change_test_survives_only_as_a_crossing_and_compatibility_classifier_not_as_a_boundary_definition; 2b fixed by adding 66 and 71 to proposal::N9's (the conversion/resolution unification row) provenance and naming them explicitly in its note, which previously said only 'posed by one file and credited by another'. 2c was judged, on this file's own hedging, to be design-philosophy commentary about workspace practice rather than number-system canon content, and was not ported; this is a judgement call rather than a settled fact, and 75 itself flags it as arguable. The two smaller thinnings (Q10's evidentiary content, the tautology/guarantee wording shift) were not acted on given time budget; both are named honestly as unclosed rather than silently dropped."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "probe::the_change_test_misfiles_its_own_hierarchy_against_its_own_prose",
+  "proposal::the_change_test_survives_only_as_a_crossing_and_compatibility_classifier_not_as_a_boundary_definition",
+  "proposal::N9 (provenance and note amended, not a new row)",
+]
+ported_this_pass = true
+note = "This file rewarded direct reading exactly as flagged when it was still unopened; it is the second entailment-check file this pass (after 64) to yield genuine, previously-uncaptured content on direct inspection, which is worth naming as a pattern: entailment-check files in this panel are consistently higher-value to open directly than their low citation counts suggest, because their whole purpose is finding what a consolidation dropped, which is precisely the content most likely to be missing from the registry."
