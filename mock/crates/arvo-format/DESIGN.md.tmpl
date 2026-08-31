@@ -234,3 +234,94 @@ widens it.
 
 The door is kept narrow on purpose: two types, no arithmetic beyond what a width
 derivation needs, and everything else built from a `Format` instead of added here.
+
+## Applying the adaptation, which is the verb the earlier round left out
+
+The ratified factoring says arithmetic on a format is an exact operation in the ambient domain composed
+with a named total adaptation onto the representable set. The earlier round named adaptations and never
+applied one, so the composition had no second half.
+
+### The exact position, which is what the map takes
+
+An exact result is stated in the format's own coordinates rather than as a host number, because the map
+is a function of the declared signature and a host number is not part of it. A position is a slot and a
+remainder within one step:
+
+```
+value = phase + (slot + remainder) * quantum(magnitude)
+```
+
+`Exact` carries the slot, and the remainder as a numerator over a denominator so an exactly-half case
+is representable rather than approximated. A remainder of zero is a position already on the grid, and
+the map is the identity on it whatever the mode says, which is the first law below.
+
+### One map with two regions, not two mechanisms
+
+`adapt` takes an `Exact` and returns a slot the format admits. It has two regions and they are regions
+of one map:
+
+| Region | What decides | When it applies |
+|---|---|---|
+| Between grid points | the `Rounding` mode | the remainder is nonzero |
+| Outside the range | the `Overflow` policy | the rounded slot falls outside the slot range |
+
+The order is rounding then completion, and it matters: a position may round onto a slot that is out of
+range, so completion sees the rounded slot rather than the exact position. Completion never rounds and
+rounding never completes, which is what makes a magnitude bound switch off one and a grid bound the
+other.
+
+**Totality is the property the whole factoring rests on.** Every `Exact` maps to a slot in range, for
+every mode and every policy, and that is what makes an adaptation a member of the slot the canon
+names. It is also why a panic is not a policy.
+
+### The stochastic mode takes its decision as an input
+
+Five of the six modes are a function of the position alone. The sixth is not, and the questions about
+how it is seeded and whether it is keyed on value or position are open in the register.
+
+So `adapt` takes a `Dither`, a fraction the stochastic mode compares the remainder against, supplied by
+the caller. The crate stays a function of its inputs, the mode is expressible, and nothing here answers
+the seeding question or the keying question. A caller with no stochastic mode in its adaptation passes
+`Dither::UNUSED` and the parameter is erased at monomorphisation with the branch that reads it.
+
+### The panic is a build-profile behaviour and still not a policy
+
+`panic_on_inexact` and `panic_on_overflow` report whether a debug build should refuse a position rather
+than adapt it. They return a verdict rather than diverging, so the crate itself stays total and the
+decision to panic belongs to the caller's build.
+
+The bound is stated loosely on purpose. The ratified row bounds the panic by one concern and op's own
+correction rebounds it on another while saying the intent is the inferrable thing rather than the
+wording, and its own `gap` records that whether the panic may appear in dev builds of the speed-first
+concern is unsettled by either statement read literally. **A design that sharpened this would be going
+past what was blessed rather than completing it.**
+
+### The laws the applied map owes tests for
+
+These replace four the earlier round shipped that reached a declaration and stopped. The difference is
+that each of these can be wrong about arithmetic, which the earlier four could not.
+
+**The map is total.** Every position maps to an admitted slot, over every mode, every policy and every
+format shape, including positions far outside the range in both directions.
+
+**The map is the identity on the grid.** A position with a zero remainder and a slot in range comes
+back unchanged, for every mode and policy. This is the property the earlier `is_identity_inside_range`
+declared and nothing checked.
+
+**Order transport is a property of the applied map.** A policy transports order exactly when the map
+never inverts a pair, measured over positions that leave the window in both directions. Wrapping does
+not and the other two do, and that is now measured rather than declared, which is what the earlier
+`is_monotone` needed.
+
+**Determinism is a property of the applied map.** Five modes give the same slot for one position on
+every call regardless of the dither; the sixth does not, and the test varies the dither to show it.
+That is what the earlier `is_deterministic` declared about a `matches!` expression.
+
+**Direction is a property of the applied map.** A directed mode moves every off-grid position the same
+way relative to zero or to infinity, and that is checkable against the returned slots rather than
+against a list of three names.
+
+**The two regions are separable.** A position inside the range with a nonzero remainder exercises
+rounding and not completion; a position on the grid and outside the range exercises completion and not
+rounding. Both are asserted, because the claim that the map has two regions is a claim that each can be
+reached without the other.
