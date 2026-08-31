@@ -84,7 +84,9 @@ fn main() {
     let mut kinds: BTreeMap<&str, usize> = BTreeMap::new();
     for addr in &mixed {
         let (row, _) = &rows[*addr];
-        *kinds.entry(row.get("sentence_kind").unwrap_or("(none)")).or_default() += 1;
+        *kinds
+            .entry(row.get("sentence_kind").unwrap_or("(none)"))
+            .or_default() += 1;
     }
     println!("  their sentence_kind: {kinds:?}");
     println!("  219 says {{\"(none)\": 7, \"argument\": 7, \"measured\": 7, \"theorem\": 4}}");
@@ -111,7 +113,10 @@ fn main() {
         .filter(|(_, _, _, v)| v.contains("..="))
         .collect();
     println!("  range entries: {}", ranges.len());
-    let literal = ranges.iter().filter(|(_, _, _, v)| v.contains("1..=64") || v.contains("0..=63")).count();
+    let literal = ranges
+        .iter()
+        .filter(|(_, _, _, v)| v.contains("1..=64") || v.contains("0..=63"))
+        .count();
     println!("  matching 219's two literals: {literal}");
     println!("  ranges whose upper bound is itself an axis or a formula, which is what a");
     println!("  whole domain looks like when the domain is parameterised:");
@@ -144,13 +149,21 @@ fn main() {
                     let at = low.find("construction").unwrap();
                     let start = at.saturating_sub(46);
                     let end = (at + 40).min(low.len());
-                    println!("      {}::{field} ... {}", row.addr(), &text[start..end].replace('\n', " "));
+                    println!(
+                        "      {}::{field} ... {}",
+                        row.addr(),
+                        text[start..end].replace('\n', " ")
+                    );
                 }
             }
         }
     }
     println!("  fields whose text contains `construction`: {hits}");
-    let ids = c.rows.iter().filter(|r| r.id.contains("construction")).count();
+    let ids = c
+        .rows
+        .iter()
+        .filter(|r| r.id.contains("construction"))
+        .count();
     println!("  row ids containing `construction`: {ids}");
 
     println!();
@@ -159,7 +172,15 @@ fn main() {
     println!("  Where a row carrying an unmarked universal has no outbound reference at");
     println!("  all, its author must first create a target before the warrant is");
     println!("  writable. That is the friction the ruling's `because` blames for the gap.");
-    const OUTBOUND: &[&str] = &["law", "answers", "evidence", "obligation", "supersedes", "instead", "gate"];
+    const OUTBOUND: &[&str] = &[
+        "law",
+        "answers",
+        "evidence",
+        "obligation",
+        "supersedes",
+        "instead",
+        "gate",
+    ];
     let mut with = 0usize;
     let mut without: Vec<String> = Vec::new();
     let mut seen: Vec<String> = Vec::new();
@@ -168,15 +189,24 @@ fn main() {
             continue;
         }
         seen.push(r.addr());
-        if OUTBOUND.iter().any(|f| !r.list(f).is_empty() || r.get(f).is_some()) {
+        if OUTBOUND
+            .iter()
+            .any(|f| !r.list(f).is_empty() || r.get(f).is_some())
+        {
             with += 1;
         } else {
             without.push(r.addr());
         }
     }
-    println!("  distinct rows carrying an unmarked universal: {}", seen.len());
+    println!(
+        "  distinct rows carrying an unmarked universal: {}",
+        seen.len()
+    );
     println!("  of those, carrying at least one outbound reference: {with}");
-    println!("  carrying none, so Arm 1 makes them write a new row first: {}", without.len());
+    println!(
+        "  carrying none, so Arm 1 makes them write a new row first: {}",
+        without.len()
+    );
     for a in &without {
         println!("      {a}");
     }
@@ -232,7 +262,10 @@ predicate = ["threads: threads any"]
     println!("  planted mixed rows: {pmixed} (want 1)");
     assert_eq!(pe.len(), 4);
     assert_eq!(pu, 2);
-    assert_eq!(pd, 1, "the dirty-slug arm cannot fire, so its committed zero means nothing");
+    assert_eq!(
+        pd, 1,
+        "the dirty-slug arm cannot fire, so its committed zero means nothing"
+    );
     assert_eq!(pmixed, 1);
     println!("  controls held: every arm returned a non-committed value on a planted tree.");
 }
