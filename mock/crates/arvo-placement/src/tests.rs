@@ -404,8 +404,14 @@ fn both_arms_resolve_at_compile_time_and_to_different_placements() {
     // The const bindings above are the erasure assertion. This checks they are
     // also the two different answers, so the folding did not fold them together.
     assert_ne!(FOOTPRINT_AT_13, ACCESS_AT_13);
-    assert_eq!(FOOTPRINT_AT_13, derive_shared::<Sig<Integer<13>>, objective::Footprint>());
-    assert_eq!(ACCESS_AT_13, derive_shared::<Sig<Integer<13>>, objective::Access>());
+    assert_eq!(
+        FOOTPRINT_AT_13,
+        derive_shared::<Sig<Integer<13>>, objective::Footprint>()
+    );
+    assert_eq!(
+        ACCESS_AT_13,
+        derive_shared::<Sig<Integer<13>>, objective::Access>()
+    );
 }
 
 #[test]

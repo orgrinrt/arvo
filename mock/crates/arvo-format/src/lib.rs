@@ -70,9 +70,9 @@ pub mod points {
     pub struct Integer<const BITS: u32>;
 
     impl<const BITS: u32> Format for Integer<BITS>
-where
-    Signed<BITS>: Slots,
-{
+    where
+        Signed<BITS>: Slots,
+    {
         type Ambient = BinaryRationals;
         type Quantum = Constant<0>;
         type Slots = Signed<BITS>;
@@ -87,9 +87,9 @@ where
     pub struct UFixed<const BITS: u32, const FRAC: i32>;
 
     impl<const BITS: u32, const FRAC: i32> Format for UFixed<BITS, FRAC>
-where
-    Unsigned<BITS>: Slots,
-{
+    where
+        Unsigned<BITS>: Slots,
+    {
         type Ambient = UnsignedBinaryRationals;
         type Quantum = Constant<FRAC>;
         type Slots = Unsigned<BITS>;
@@ -105,9 +105,9 @@ where
     pub struct Biased<const BITS: u32, const EXP: i32, const PHASE: i64>;
 
     impl<const BITS: u32, const EXP: i32, const PHASE: i64> Format for Biased<BITS, EXP, PHASE>
-where
-    Signed<BITS>: Slots,
-{
+    where
+        Signed<BITS>: Slots,
+    {
         type Ambient = BinaryRationals;
         type Quantum = Constant<EXP>;
         type Slots = Signed<BITS>;

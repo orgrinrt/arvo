@@ -193,7 +193,7 @@ fn a_consumer_generic_over_the_strategy_reaches_the_ladder() {
     use arvo_format::points::Integer;
     use arvo_format::rounding::Floor;
     use arvo_format::{Adapt, DeclaredSignature, Signature};
-    use arvo_placement::{Placement, derive_shared, derive_sole};
+    use arvo_placement::{derive_shared, derive_sole, Placement};
 
     fn place_sole<F: DeclaredSignature, S: Strategy>() -> Placement {
         derive_sole::<F, S::Objective>()

@@ -396,7 +396,6 @@ fn the_format_inventory_admits_a_member_this_crate_does_not_know_about() {
     assert!(!contains::<Ternary>(4, 0));
 }
 
-
 // --- the width bound is the impl set, and these are the properties it is about -
 
 #[test]
