@@ -1,13 +1,19 @@
 ### M4, the two halves of each pair, printed so they can be compared by eye
 --- const_add.rs
     const C: u8 = 200u8 + 100u8;
-    fn main() { println!("{}", C); }
+    fn main() {
+        println!("{}", C);
+    }
 --- const_sub.rs
     const C: u8 = 0u8 - 1u8;
-    fn main() { println!("{}", C); }
+    fn main() {
+        println!("{}", C);
+    }
 --- const_shl.rs
     const C: u8 = 1u8 << 9u32;
-    fn main() { println!("{}", C); }
+    fn main() {
+        println!("{}", C);
+    }
 --- matrix.rs (the runtime half, one binary, op chosen by argv)
     // The 2x2: evaluation site against build profile, on one expression at a time.
     //
@@ -54,12 +60,12 @@ shl    execution          off                  value 2
   shl   const  da=off  value 128
 
 ### M3, stderr sizes
-     575 matrix_out/c_add_off.stderr
-     575 matrix_out/c_add_on.stderr
-     567 matrix_out/c_shl_off.stderr
-     567 matrix_out/c_shl_on.stderr
-     563 matrix_out/c_sub_off.stderr
-     563 matrix_out/c_sub_on.stderr
+     539 matrix_out/c_add_off.stderr
+     539 matrix_out/c_add_on.stderr
+     531 matrix_out/c_shl_off.stderr
+     531 matrix_out/c_shl_on.stderr
+     527 matrix_out/c_sub_off.stderr
+     527 matrix_out/c_sub_on.stderr
        0 matrix_out/ctl_add_off.stderr
        0 matrix_out/ctl_add_on.stderr
        0 matrix_out/ctl_shl_off.stderr
@@ -68,4 +74,4 @@ shl    execution          off                  value 2
        0 matrix_out/ctl_sub_on.stderr
        0 matrix_out/rt_off.stderr
        0 matrix_out/rt_on.stderr
-    3410 total
+    3194 total

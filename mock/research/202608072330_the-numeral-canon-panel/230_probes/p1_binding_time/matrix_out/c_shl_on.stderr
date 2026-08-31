@@ -1,17 +1,17 @@
-error[E0080]: attempt to compute `200_u8 + 100_u8`, which would overflow
- --> const_add.rs:1:15
+error[E0080]: attempt to shift left by `9_u32`, which would overflow
+ --> const_shl.rs:1:15
   |
-1 | const C: u8 = 200u8 + 100u8;
-  |               ^^^^^^^^^^^^^ evaluation of `C` failed here
+1 | const C: u8 = 1u8 << 9u32;
+  |               ^^^^^^^^^^^ evaluation of `C` failed here
 
 note: erroneous constant encountered
- --> const_add.rs:3:20
+ --> const_shl.rs:3:20
   |
 3 |     println!("{}", C);
   |                    ^
 
 note: erroneous constant encountered
- --> const_add.rs:3:20
+ --> const_shl.rs:3:20
   |
 3 |     println!("{}", C);
   |                    ^

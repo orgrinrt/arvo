@@ -1,4 +1,4 @@
 
-thread 'main' (249858598) panicked at matrix.rs:18:33:
+thread 'main' (249869667) panicked at matrix.rs:18:33:
 attempt to shift left with overflow
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

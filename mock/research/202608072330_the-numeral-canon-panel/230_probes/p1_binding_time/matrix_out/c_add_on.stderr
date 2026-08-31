@@ -5,16 +5,16 @@ error[E0080]: attempt to compute `200_u8 + 100_u8`, which would overflow
   |               ^^^^^^^^^^^^^ evaluation of `C` failed here
 
 note: erroneous constant encountered
- --> const_add.rs:2:28
+ --> const_add.rs:3:20
   |
-2 | fn main() { println!("{}", C); }
-  |                            ^
+3 |     println!("{}", C);
+  |                    ^
 
 note: erroneous constant encountered
- --> const_add.rs:2:28
+ --> const_add.rs:3:20
   |
-2 | fn main() { println!("{}", C); }
-  |                            ^
+3 |     println!("{}", C);
+  |                    ^
 
 error: aborting due to 1 previous error
 
