@@ -1,0 +1,33 @@
+=== the instrument's own header ===
+  p4 asm report: aarch64-apple-darwin, rustc nightly-2026-05-28, -O, --crate-type=lib
+  Instruction counts are read off emitted assembly. This is an ad-hoc quick spike
+  with no substance for any how-much question. Nothing is timed and no bench ran.
+  What it can establish is qualitative: which instructions the backend reached for.
+
+=== the row it became ===
+  id = "a_law_layer_answers_whether_a_law_reaches_a_lowering_the_backend_cannot_prove"
+  sentence_kind = "normative"
+  standing = "one_expert"
+  predicate field present: NO
+
+=== the axes the header states, against dimension.toml ===
+HEADER                         AXIS                   DECLARED
+aarch64-apple-darwin           target_features        yes
+rustc nightly-2026-05-28       toolchain              yes
+-O                             build_profile          yes
+  and from the row's own because, the region the claim is about:
+zero fraction width            fraction_width         yes
+a saturating reduction         overflow_policy        yes
+
+=== when the axes were declared, against when the row landed ===
+  toolchain declared: c765e8c1 2026-08-31 01:59:31 +0300 canon: declare four axes, add a kind for a definition, pin the vocabulary append-only
+  row landed:         49acdfbb 2026-08-31 01:01:08 +0300 chore: port the derived-laws results, splitting each measurement from the rule drawn off it
+
+=== CONTROL 1: the four axes 182 section 5.1 needs, which must all read NO,
+    run beside two that must read yes so a NO is about the file ===
+  declared_operand_window            NO
+  representable_range_geometry       NO
+  encoding                           NO
+  constant_embedding_convention      NO
+  toolchain                          yes
+  build_profile                      yes

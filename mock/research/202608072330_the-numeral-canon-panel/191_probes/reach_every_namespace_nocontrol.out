@@ -1,0 +1,147 @@
+### generic keys withheld: ^(set|sets|cost|ordering|partition|primitive|format|container|conversion|denotation|contract|guarantee|composition|chain|fold|mask|difference|union|intersection|rank|hash)$
+### registry: /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/registry
+
+### scanned records: 1115
+
+################ set_operations_over_a_fixed_size_bit_set
+    2 hits, namespaces: obligation 
+      obligation :: set_operations_over_a_fixed_size_bit_set	(dirty mask)
+      obligation :: set_operations_over_a_fixed_size_bit_set	(write set)
+
+################ ordering_a_directed_acyclic_graph
+    18 hits, namespaces: obligation probe proposal question retirement ruling 
+      obligation :: a_sparse_adjacency_a_plan_can_be_built_on	(dependency graph)
+      obligation :: a_sparse_adjacency_a_plan_can_be_built_on	(graph)
+      obligation :: a_spectral_partition_of_a_dependency_graph	(dependency graph)
+      obligation :: a_spectral_partition_of_a_dependency_graph	(graph)
+      obligation :: ordering_a_directed_acyclic_graph	(bandwidth)
+      obligation :: ordering_a_directed_acyclic_graph	(dependency graph)
+      obligation :: ordering_a_directed_acyclic_graph	(graph)
+      obligation :: ordering_a_directed_acyclic_graph	(topo)
+      obligation :: ordering_a_directed_acyclic_graph	(waist)
+      probe :: the_axis_census_over_the_governing_files	(graph)
+      proposal :: a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points	(graph)
+      question :: are_consumer_terms_trees_or_dags	(DAG)
+      question :: are_consumer_terms_trees_or_dags	(graph)
+      retirement :: dl_gate_algorithm_crates_on_addassoc	(graph)
+      retirement :: dl_interior_wrapping_with_a_reserved_absorbing_top	(graph)
+      retirement :: r173_rc_the_region_framing_as_a_contribution	(graph)
+      ruling :: steering_the_experts_is_the_coordinators_job	(graph)
+      ruling :: the_work_is_predicated_arms_composed	(graph)
+
+################ a_sparse_adjacency_a_plan_can_be_built_on
+    6 hits, namespaces: obligation 
+      obligation :: a_sparse_adjacency_a_plan_can_be_built_on	(adjacency)
+      obligation :: a_sparse_adjacency_a_plan_can_be_built_on	(compressed)
+      obligation :: a_sparse_adjacency_a_plan_can_be_built_on	(dependency graph)
+      obligation :: a_sparse_adjacency_a_plan_can_be_built_on	(sparse)
+      obligation :: a_spectral_partition_of_a_dependency_graph	(dependency graph)
+      obligation :: ordering_a_directed_acyclic_graph	(dependency graph)
+
+################ a_spectral_partition_of_a_dependency_graph
+    4 hits, namespaces: obligation retirement 
+      obligation :: a_spectral_partition_of_a_dependency_graph	(Fiedler)
+      obligation :: a_spectral_partition_of_a_dependency_graph	(spectral)
+      retirement :: dl_gate_algorithm_crates_on_addassoc	(spectral)
+      retirement :: dl_total_ord_makes_no_output_law_expressible	(spectral)
+
+################ a_cost_dynamic_program
+    10 hits, namespaces: obligation proposal retirement 
+      obligation :: a_cost_dynamic_program	(budget)
+      proposal :: chain_laws_split_by_whether_a_lifting_theorem_exists	(grouping)
+      retirement :: dl_consumer_declared_required_view	(grouping)
+      retirement :: dl_five_way_grouping_of_route_multiplicity	(grouping)
+      retirement :: dl_partial_associativity_as_a_named_gap	(grouping)
+      retirement :: dl_refused_at_nine_bits_as_a_width_ceiling	(budget)
+      retirement :: dl_regrouping_bounded_on_a_diameter_budget	(budget)
+      retirement :: dl_regrouping_bounded_on_a_diameter_budget	(grouping)
+      retirement :: dl_relocate_the_law_machinery_downstream	(grouping)
+      retirement :: dl_traversal_order_substitutes_for_a_law	(grouping)
+
+################ a_platform_sized_unsigned_integer_at_an_api_position
+    13 hits, namespaces: law obligation probe proposal question retirement ruling 
+      law :: additive_associativity_under_saturation	(non-negative)
+      law :: distributivity_of_multiplication_over_addition	(non-negative)
+      obligation :: a_platform_sized_unsigned_integer_at_an_api_position	(GetLastError)
+      obligation :: a_platform_sized_unsigned_integer_at_an_api_position	(errno)
+      obligation :: a_platform_sized_unsigned_integer_at_an_api_position	(non-negative)
+      probe :: equivariance_is_domain_restricted	(non-negative)
+      proposal :: generation_relocates_the_check_rather_than_removing_it	(non-negative)
+      proposal :: the_rationalisability_counts_on_the_committed_carrier_table	(non-negative)
+      question :: must_a_weighting_be_strictly_positive	(non-negative)
+      retirement :: r119_beaten_on_none	(non-negative)
+      ruling :: the_operating_constraints_are_intents_and_rules	(USize)
+      ruling :: the_operating_constraints_are_intents_and_rules	(public API)
+      ruling :: the_operating_constraints_are_intents_and_rules	(usize)
+
+################ an_exact_width_container_a_consumer_can_alias_and_pin
+    20 hits, namespaces: law obligation proposal proposal-the-later-topics question retirement ruling 
+      law :: coherence_of_a_reduction_onto_its_induced_operation	(Bits)
+      obligation :: an_exact_width_container_a_consumer_can_alias_and_pin	(alias)
+      obligation :: an_exact_width_container_a_consumer_can_alias_and_pin	(content hash)
+      obligation :: an_exact_width_container_a_consumer_can_alias_and_pin	(exact width)
+      obligation :: an_exact_width_container_a_consumer_can_alias_and_pin	(on disk)
+      obligation :: an_exact_width_container_a_consumer_can_alias_and_pin	(serialisation)
+      proposal :: erasures_guarantee_is_a_conditional_with_a_stated_base	(Bits)
+      proposal :: the_const_eval_frontier_collapses_along_arity_and_buys_three_bits_from_the_guard	(Bits)
+      proposal :: the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion	(Bits)
+      proposal :: validation_is_two_acts_keyed_by_boundary_and_it_validates_maps	(Bits)
+      proposal-the-later-topics :: the_lens_degenerates_to_an_ordinary_value_at_sole_occupancy	(Bits)
+      question :: must_a_weighting_be_strictly_positive	(Bits)
+      retirement :: dl_per_kind_preset_markers	(alias)
+      retirement :: dl_pricing_a_checked_sweep_against_an_unused_alias	(alias)
+      retirement :: dl_refused_at_nine_bits_as_a_width_ceiling	(Bits)
+      retirement :: dl_renaming_the_precision_marker_trait	(alias)
+      retirement :: dl_second_ceiling_on_the_total_width	(alias)
+      retirement :: dl_two_mechanisms_of_observing_an_instantiation	(Bits)
+      ruling :: ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up	(Bits)
+      ruling :: the_trait_contract_structure_is_a_primary_paradigm	(Bits)
+
+################ a_content_hash
+    7 hits, namespaces: obligation retirement 
+      obligation :: a_content_hash	(across sessions)
+      obligation :: a_content_hash	(stable)
+      obligation :: an_exact_width_container_a_consumer_can_alias_and_pin	(content hash)
+      retirement :: dl_datum_keyed_digest_masks_to_the_fields_width	(digest)
+      retirement :: dl_finer_reassociation_licence_than_the_bundle	(stable)
+      retirement :: dl_reification_stability_generalisation	(stable)
+      retirement :: dl_uniform_monomorphisation_makes_transfer_sound	(stable)
+
+################ debug_output_from_every_numeral_shape
+    20 hits, namespaces: obligation probe proposal question retirement ruling 
+      obligation :: debug_output_from_every_numeral_shape	(Debug)
+      obligation :: debug_output_from_every_numeral_shape	(buffer)
+      obligation :: debug_output_from_every_numeral_shape	(no alloc)
+      obligation :: debug_output_from_every_numeral_shape	(print)
+      probe :: a_free_adaptation_point_gives_a_boundary_function_family	(print)
+      probe :: a_partial_interior_operation_distinguishes_at_every_profile	(Debug)
+      probe :: chain_const_channel_follows_debug_assertions	(Debug)
+      probe :: chain_the_third_definition_is_not_observation_bounded	(print)
+      probe :: probe_lives_citation_controls	(print)
+      probe :: the_debug_release_gap_that_retired_a_true_finding	(Debug)
+      probe :: the_predicate_sweep_for_inherited_dimensions	(print)
+      proposal :: inside_a_fragment_with_a_complete_test_set_the_verdict_is_computed_at_the_shipped_width	(no alloc)
+      question :: does_the_native_imitation_cover_the_debug_panic	(Debug)
+      question :: the_container_premise	(print)
+      question :: which_carrier_the_packing_claim_is_about	(print)
+      retirement :: r161_r8_the_retirement_of_the_107_second_figure	(Debug)
+      ruling :: the_carrier_question_waits_on_the_contention_measurement	(print)
+      ruling :: the_operating_constraints_are_intents_and_rules	(no alloc)
+      ruling :: the_overflow_panic_is_permitted_and_bounded	(Debug)
+      ruling :: the_panic_bound_names_a_concern_not_a_marker	(Debug)
+
+################ a_build_flag_that_changes_float_semantics
+    8 hits, namespaces: obligation probe proposal ruling 
+      obligation :: a_build_flag_that_changes_float_semantics	(cfg)
+      obligation :: a_build_flag_that_changes_float_semantics	(float semantics)
+      obligation :: a_build_flag_that_changes_float_semantics	(one lowered path)
+      obligation :: a_build_flag_that_changes_float_semantics	(pragma)
+      obligation :: a_build_flag_that_changes_float_semantics	(rustc wrapper)
+      probe :: a_partial_interior_operation_distinguishes_at_every_profile	(build flag)
+      proposal :: the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times	(one lowered path)
+      ruling :: the_canon_does_not_police_what_shape_a_law_takes	(one lowered path)
+
+################ composition_contracts_above_the_numeral
+    1 hits, namespaces: ruling 
+      ruling :: precise_is_accurate_across_chains_not_only_per_operation	(accuracy across chains)
+

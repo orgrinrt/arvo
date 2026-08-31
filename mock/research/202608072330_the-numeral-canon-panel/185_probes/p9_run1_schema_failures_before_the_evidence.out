@@ -1,0 +1,238 @@
+p9: what the measured gate checks once probe has rows
+date: 2026-08-30T23:05:10Z
+
+=== arm a_cites_a_defective_probe
+  evidence = the_width_invariance_control_was_toothless
+  predicted: passes silently. The row says its zero is unearned and unusable.
+    452 rows across 10 namespaces
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: ERROR taplo:lint_files: invalid file error=schema validation failed path="/Users/orgrinrt/Dev/clause-work/numeric-stack/port-probes/mock/registry/zzz_planted_measured_control.toml"
+    ERROR [schema]: ERROR operation failed error=some files were not valid
+  arvo-checks: all green
+
+=== arm b_cites_a_withdrawn_probe
+  evidence = the_pareto_arm_that_rests_on_one_size_point
+  predicted: passes silently. The row says its author withdrew the finding.
+    452 rows across 10 namespaces
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: ERROR taplo:lint_files: invalid file error=schema validation failed path="/Users/orgrinrt/Dev/clause-work/numeric-stack/port-probes/mock/registry/zzz_planted_measured_control.toml"
+    ERROR [schema]: ERROR operation failed error=some files were not valid
+  arvo-checks: all green
+
+=== arm c_cites_a_probe_with_no_control
+  evidence = the_debug_release_gap_that_retired_a_true_finding
+  predicted: passes silently. The row says no control was run.
+    452 rows across 10 namespaces
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: ERROR taplo:lint_files: invalid file error=schema validation failed path="/Users/orgrinrt/Dev/clause-work/numeric-stack/port-probes/mock/registry/zzz_planted_measured_control.toml"
+    ERROR [schema]: ERROR operation failed error=some files were not valid
+  arvo-checks: all green
+
+=== arm d_cites_a_probe_that_does_not_exist_CONTROL
+  evidence = no_such_probe_row_exists_anywhere
+  MUST be reported, or arms a, b and c say nothing at all.
+    452 rows across 10 namespaces
+    ERROR [unknown-row-reference]: proposal::planted_d_cites_a_probe_that_does_not_exist_CONTROL: field `evidence` references `probe::no_such_probe_row_exists_anywhere`, which no row declares.
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "topic" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "because" is a required property
+    ERROR [schema]: error: "planted_d_cites_a_probe_that_does_not_exist_CONTROL" does not match "^[a-z][a-z0-9_]*$"
+    ERROR [schema]: │      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ "planted_d_cites_a_probe_that_does_not_exist_CONTROL" does not match "^[a-z][a-z0-9_]*$"
+    ERROR [schema]: ERROR taplo:lint_files: invalid file error=schema validation failed path="/Users/orgrinrt/Dev/clause-work/numeric-stack/port-probes/mock/registry/zzz_planted_measured_control.toml"
+    ERROR [schema]: ERROR operation failed error=some files were not valid
+  arvo-checks: all green
+

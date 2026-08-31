@@ -1,0 +1,57 @@
+######## 193 control runs ########
+
+=== 1. the citation checker refuses a slug naming no probe ===
+Planted evidence = ["a_probe_that_does_not_exist"] on
+proposal::absorption_decides_associativity_of_a_clamped_reduction:
+
+  ERROR [unknown-row-reference]: proposal::absorption_decides_associativity_of_a_clamped_reduction:
+  field `evidence` references `probe::a_probe_that_does_not_exist`, which no row declares.
+  registry check failed: 1 error(s)
+
+Swapped for the real slug: schema check passed, 573 rows across 10 namespaces.
+
+=== 2. the substance gate refuses an edge to an uncontrolled instrument ===
+Wrote the edge the map asks for on chain_accuracy_cannot_be_served_by_an_operator_
+closed_over_its_operand_type:
+
+  test the_committed_canon_rests_no_measurement_on_an_unusable_instrument ... FAILED
+  Finding {
+      kind: "measurement-rests-on-an-uncontrolled-instrument",
+      at: "proposal::chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type",
+      says: "`evidence` names `probe::chain_accuracy_needs_an_intermediate_wider_than_the_operand_type`,
+             whose own `control` says no case that had to fail was run. ..."
+  }
+
+Edge removed. This is a refusal reported rather than worked around: the honest repair
+is to the claim's `sentence_kind`, which this dispatch may not touch.
+
+=== 3. the same gate misses the parallel admission ===
+the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times
+cites a probe whose `control` opens with the identical sentence, and the gate passes it:
+
+  test the_committed_canon_rests_no_measurement_on_an_unusable_instrument ... ok
+  test result: ok. 28 passed
+
+Full reproduction and the two `control` fields side by side in
+`the_carve_out_lets_one_admission_through.out`. This is the second read the rule's
+own doc comment says is owed, and the rule loses it.
+
+=== 4. the map's claim column is the registry's own uncovered set ===
+  diff <(claims_without_evidence.sh) <(cut -f1 p4_coverage_map.tsv | sort)
+  -> identical, 21 rows
+
+Control: --control plants one measured row with no evidence, which appears, and one
+measured row with evidence, which does not. Only PLANTED_UNCOVERED comes out.
+
+=== 5. the new ceiling is exact rather than merely satisfied ===
+  const WITHOUT_AN_INSTRUMENT = 5  -> FAILED
+  const WITHOUT_AN_INSTRUMENT = 6  -> ok, 68 passed, 0 ignored
+
+=== 6. the edit touched nothing it was not asked to ===
+  git diff --numstat mock/registry/
+    1  0  proposal-the-later-topics.toml
+    14 0  proposal.toml
+  Fifteen insertions, zero deletions. Row counts before and after: proposal 77 = 77,
+  proposal-the-later-topics 17 = 17. `add_edge.sh` shifted every table header down one
+  row in a previous dispatch while exiting 0, so the row count is checked rather than
+  the reported success.

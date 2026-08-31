@@ -1,0 +1,306 @@
+# Laws established by the later five topics: the realisation map, rounding, the
+# strategy object, the primitive, and the chain.
+#
+# A separate file from `law.toml` because that one is being written at the same
+# moment for the four earlier consolidations. A row's namespace is the
+# array-of-tables key and never the path, so these are the same namespace and
+# every query sees both; two files only keep the merge clean. A later pass may
+# refile by subject.
+#
+# Every row is ported from the revision that governs its topic, per
+# `AGREEMENTS.md` sections 9 through 13: `122` over `119`, `136` restored by
+# `138` over `132`, `151` over `146`, `164` over `161`, and `176` superseded in
+# seven places by `178` over `173`.
+#
+# **Why so few rows, and why several carry no region.** `holds` and `fails` are
+# predicates and the same axis check runs over them, so a law whose region the
+# corpus states over an axis nothing declares cannot carry that region. The
+# measurement is in `183_probes/`: of 64 predicate spans in the twelve governing
+# files, 5 use only declared axes. `holds` and `fails` are optional and their
+# absence means nobody established a region, which is the opposite of what an
+# absent `predicate` entry means on a proposal, so a law can be stated honestly
+# here where a proposal could not be written at all.
+
+[[law]]
+id = "fusing_a_multiply_add_preserves_the_answer_under_unsigned"
+statement = "Fusing a multiply-add, so that the intermediate product is not resolved before the addition, computes the same answer as resolving it. The property is translation equivariance of the rounding position on the domain the cell reaches, so under an unsigned range policy the domain excludes the negatives where toward-zero and away-from-zero differ from their equivariant twins, and five of the six positions are free."
+holds = [
+  "total_width: 6",
+  "fraction_width: in 0..=5",
+  "signedness: unsigned",
+  "overflow_policy: in {wrap, saturating}",
+  "rounding: in {floor, ceiling, toward zero, away from zero, nearest-half-up}",
+  "operation: multiply-add",
+  "arity: 3",
+  "chain_length: 2",
+  "container: declared width",
+  "threads: 1",
+  "target_features: host aarch64-apple-darwin, rustc 1.98.0-nightly 57d06900f",
+]
+fails = [
+  "total_width: 6",
+  "fraction_width: in 1..=5",
+  "signedness: unsigned",
+  "overflow_policy: wrap",
+  "rounding: nearest-half-even",
+  "operation: multiply-add",
+  "arity: 3",
+  "chain_length: 2",
+  "container: declared width",
+  "threads: 1",
+  "target_features: host aarch64-apple-darwin, rustc 1.98.0-nightly 57d06900f",
+]
+topic = "the_strategy_object"
+note = """
+The failing rates at wrapping are 12.50, 12.50, 9.38, 6.25 and 3.91 percent of \
+triples at F = 1 through 5, and zero at F = 0, so the F = 0 cell of half-even \
+belongs to the holding region and is left out of both fields rather than \
+repeating `rounding` in one of them. Under saturating the same mode differs on \
+0.93 to 2.18 percent of triples, reported as a range without a per-F \
+breakdown, so the saturating half of the failing region is not written here.
+
+This region is the repair of a clause the first candidate got wrong. \
+`146` section 5.5's first predicate block claimed the whole rounding axis free \
+under unsigned, on a congruence argument that covers the reduction relocation \
+and not the rounding relocation, and nobody had swept the unsigned half over \
+six modes. Two signatures found it independently and a third instrument in a \
+third language reproduced it.
+"""
+gap = """
+No witness. The failing region is established as a rate over exhaustive triples \
+rather than by a named instance, so nothing here is reproducible from the row \
+alone. The three instruments are `147_probes`, `149_probes/y2` and \
+`151_probes/v1`; no `probe` row exists to point `evidence` at.
+
+The formulation is one expert's. `151` names its own exposure: the restricted \
+equivariance test was decided over a window its author chose, and a clean sweep \
+does not settle a property the way a counterexample settles its negation.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::92",
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::53",
+]
+keywords = ["fusion", "fused multiply-add", "fma", "equivariance", "translation equivariant", "rounding", "unsigned", "nearest-half-even", "IEEE default", "relocation", "free lowering"]
+
+[[law]]
+id = "fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping"
+statement = "The same property under a signed wrapping range policy, where the domain the cell reaches includes the negatives and three of the six rounding positions are translation equivariant on it. Signedness stops being a case split and becomes what determines the domain."
+holds = [
+  "total_width: 6",
+  "fraction_width: in 0..=5",
+  "signedness: signed",
+  "overflow_policy: wrap",
+  "rounding: in {floor, ceiling, nearest-half-up}",
+  "operation: multiply-add",
+  "arity: 3",
+  "chain_length: 2",
+  "container: declared width",
+  "threads: 1",
+  "target_features: host aarch64-apple-darwin, rustc 1.98.0-nightly 57d06900f",
+]
+fails = [
+  "total_width: 6",
+  "fraction_width: in 1..=5",
+  "signedness: signed",
+  "overflow_policy: wrap",
+  "rounding: in {toward zero, away from zero, nearest-half-even}",
+  "operation: multiply-add",
+  "arity: 3",
+  "chain_length: 2",
+  "container: declared width",
+  "threads: 1",
+  "target_features: host aarch64-apple-darwin, rustc 1.98.0-nightly 57d06900f",
+]
+topic = "the_strategy_object"
+note = """
+Split from its unsigned twin rather than folded into one row, because one law \
+row carries one region per field and two disjoint holding regions differing on \
+signedness and on the mode set cannot both be written without naming an axis \
+twice.
+
+The measured signed wrapping rates reproduce an earlier unit's digit for digit, \
+toward-zero at 1.64, 5.54, 12.34, 22.22 and 33.40 percent and half-even at \
+12.50, 12.50, 9.38, 6.25 and 3.91, which is what establishes that the two \
+sittings measured one thing rather than two that happen to disagree.
+"""
+gap = """
+No witness, for the same reason as the unsigned row. The signed saturating cell \
+is not covered by either row: it is where the fused and the stepwise forms \
+denote different functions outright, which is the separate law row \
+`the_fused_and_the_stepwise_multiply_add_denote_one_function`.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::92",
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::58",
+]
+keywords = ["fusion", "fused multiply-add", "fma", "equivariance", "signed", "wrapping", "rounding", "toward zero", "away from zero", "relocation"]
+
+[[law]]
+id = "the_fused_and_the_stepwise_multiply_add_denote_one_function"
+statement = "The fused realisation of a multiply-add and the stepwise one denote the same function, so a design may substitute either for the other. Where they do not, they are two denotations rather than two lowerings of one, and the intermediate axis already names the difference: a consumer wanting the fused answer declares the exact-intermediate position, keeps full determinism, and gets the fast arm."
+holds = [
+  "total_width: in {4, 6}",
+  "fraction_width: in 0..=W-1",
+  "signedness: in {unsigned, signed}",
+  "overflow_policy: wrap",
+  "rounding: truncate toward zero",
+  "operation: multiply-add",
+  "arity: 3",
+  "chain_length: 2",
+  "container: declared width",
+  "threads: 1",
+  "target_features: host",
+]
+fails = [
+  "total_width: in {4, 6}",
+  "fraction_width: in 0..=W-1",
+  "signedness: signed",
+  "overflow_policy: saturating",
+  "rounding: truncate toward zero",
+  "operation: multiply-add",
+  "arity: 3",
+  "chain_length: 2",
+  "container: declared width",
+  "threads: 1",
+  "target_features: host",
+]
+topic = "the_strategy_object"
+note = """
+Established twice: once by building both arms, and once from a third member's \
+two committed probes, over 6,356,992 triples, with a cross-pairing control \
+differing at 757,954. The two arrivals are independent instruments; whether \
+their regions intersect on every axis is unchecked, because the value-level \
+intersection instrument that found empty intersections in three of four \
+convergence rows was run over four rows and this is not one of them.
+
+The unsigned saturating cell holds and only the signed saturating cell fails, \
+which is the same one-cell answer the accumulator question gives, and a later \
+clause states the three tables as one question: a relocation is free exactly \
+where the thing relocated commutes with what it is relocated across, on the \
+domain the cell reaches.
+"""
+gap = """
+No witness. The failing cell is established by a count of differing triples \
+rather than by a named instance.
+
+The clause that states the three tables as one question carries a predicate \
+naming an accumulator width and an operation set that no `dimension` row \
+declares, so that clause is not written into the canon at all and this row \
+carries only the cell it measured.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::434",
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::372",
+]
+keywords = ["fused", "stepwise", "multiply-add", "denotation", "extensional identity", "intermediate", "exact intermediate", "signed saturating", "accumulator", "substitution"]
+
+[[law]]
+id = "quantise_then_reduce_commutes"
+statement = "Quantising a value and then reducing it into range gives the same answer as reducing it and then quantising, so the composition order of the two axes is unobservable and a canon need not state it."
+fails = [
+  "rounding: toward-zero",
+  "overflow_policy: wrapping",
+  "signedness: signed, or unsigned with signed intermediates",
+  "threads: 1",
+]
+topic = "rounding"
+note = """
+The failing pairing is the one member that respects no translation set against \
+the range policy built on translation. Every other pairing commutes, and the \
+equality is read after the final range reduction, which is where a wrapping \
+policy's values live. Before that reduction, at the representative level, the \
+floor member alone commutes, measured at zero disagreements against 60, 32 and \
+32 for ceiling, half-up and half-even, so a design that ever observes an \
+intermediate representative needs the stronger statement.
+
+The failing region is written exactly as the restoration pass restored it. An \
+earlier revision had written `domain: OPEN` into this predicate and that token \
+was deleted, because unmeasured goes unstated rather than hedged.
+"""
+gap = """
+**The holding region cannot be written.** The commutation predicate is stated \
+over an ambient domain closed under negation, and no `dimension` row declares \
+an axis for the ambient domain, so the region where this law holds has no \
+expressible form in the canon's own notation. That is the single largest gap \
+this port hit: the ambient domain appears in 26 of the 60 predicate spans that \
+could not be ported, and is the sole blocker of 4 of them.
+
+No witness. The source establishes the failure by existence, one witness, and \
+records that its rate does not carry; the instance itself is not quoted in the \
+governing files.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::138_leroy_the_restoration_pass::49",
+  "panel::202608072330_the-numeral-canon-panel::136_leroy_the_candidate_revised_against_three_signatures::355",
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::344",
+]
+keywords = ["commutation", "commute", "quantise", "reduce", "range policy", "toward zero", "wrapping", "decomposition", "composition order", "representative", "quotient"]
+
+[[law]]
+id = "a_deletion_licence_holds_exactly_where_the_boundary_function_family_is_a_singleton"
+statement = "Within a maximal unbound stretch, a licence to delete an interior resolution holds if and only if the placements of that stretch induce exactly one boundary function. The forward direction holds and the converse does not: a family can be a singleton with both licences refusing, so the two licences under-approximate the safe region rather than characterise it, which is what a sound licence is for."
+witness = "The chain `+97 *3 +13` under a round-to-8 resolution has a singleton boundary-function family and both deletion licences refuse it, which refutes the converse. The forward direction has no counterexample over the four chains at three resolutions swept against it."
+topic = "the_chain"
+note = """
+Carried as a law rather than as a proposal because the two licences are \
+algebraic: the range licence reads widths and a bound, the algebraic licence \
+reads whether the resolution commutes with or is absorbed by the composition. \
+The algebraic one is a conjunction over every step, so one non-conforming \
+operation anywhere revokes it with the endpoints unchanged, and the carrier of \
+a chain's licence therefore has to see every step rather than only its ends.
+
+The revision stated this as a biconditional using the words "exactly" and \
+"precisely". The independent check split it into three directions, measured \
+that one holds and one fails, and the restoration pass replaced the \
+biconditional with the implication that holds. This row states the corrected \
+form and keeps the refuted direction, because the refutation is what says the \
+licences are sound rather than complete.
+"""
+gap = """
+**No region, in either field.** The chain topic's statement carries no `holds \
+for:` predicate on any of its twelve clauses, and neither does its revision, so \
+there is nothing to transcribe. The forward direction's own support is the \
+soundness of the licences established at a grid with four firing controls over \
+4096 inputs per cell, and the check's reproduction reached only two cells of \
+that grid, which its own coverage note calls a thin base for a universal. The \
+sweep's thinness bounds the reproduction rather than the claim.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::69",
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::575",
+]
+keywords = ["licence", "deletion licence", "range licence", "algebraic licence", "congruence", "absorption", "boundary function", "singleton", "stretch", "biconditional", "chain", "interior resolution"]
+
+[[law]]
+id = "double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f"
+statement = "Narrowing in stages through an intermediate fraction width strictly between the final width and twice it gives the same answer as narrowing directly, so a design may pick such a width and stop worrying about double rounding. It does not: no intermediate width strictly between F and 2F makes double rounding innocuous, at any F."
+fails = ["fraction_width: any"]
+topic = "rounding"
+note = """
+Established by constructive witness rather than by a sweep, which is why it \
+carries a fraction width and nothing else: the construction is parametric in F \
+and produces a counterexample at every one.
+
+This is the closed half of a hole the rounding topic left open. What remains \
+open is the double-rounding mechanism itself, after three wrong constructions, \
+with the realisation-map topic's reduction-locality clause shown not to be at \
+risk and staged-versus-direct narrowing shown to be what is.
+"""
+gap = """
+The failing region names one axis. Under the notation an absent axis says the \
+claim holds in no situation where that axis exists, so as written this row \
+claims a failure only where no width, no signedness, no operation and no \
+container exist, which is not what the source means. The source states the \
+region as `F any` and states nothing else, and this row transcribes that rather \
+than widening it. **Whether the corpus's partial regions should be read as the \
+notation reads them, or as their authors meant them, is unsettled and is not a \
+question a port may answer.**
+
+No witness quoted. The construction is named in the governing files and its \
+instance is not reproduced there.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::556",
+  "panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#13-the-chain-and-the-composite-topic-ten-files-166-through-178",
+]
+keywords = ["double rounding", "staged narrowing", "intermediate width", "innocuous", "grades", "composite correct rounding", "stepwise", "no threshold", "F", "fraction width"]

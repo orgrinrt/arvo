@@ -1,0 +1,36 @@
+### rustc: rustc 1.98.0-nightly (57d06900f 2026-05-27)
+
+######## BASE   A, C, E: fitting capacities
+         required=COMPILED  got=COMPILED   as required
+
+######## B      monomorphic, 300 into 8 bits
+         required=REFUSED   got=REFUSED    as required
+    error[E0080]: evaluation panicked: capacity exceeds id width
+    error: aborting due to 1 previous error
+
+######## C-bad  generic, called at 300 / 8
+         required=REFUSED   got=REFUSED    as required
+    error[E0080]: evaluation panicked: capacity exceeds id width
+    error: aborting due to 1 previous error
+
+######## D      the where-clause spelling
+         required=REFUSED   got=REFUSED    as required
+    error: generic parameters may not be used in const operations
+    error: generic parameters may not be used in const operations
+    error[E0747]: unresolved item provided when a constant was expected
+    error: aborting due to 3 previous errors
+
+######## F      associated-const gate, called
+         required=REFUSED   got=REFUSED    as required
+    error[E0080]: evaluation panicked: capacity exceeds id width
+    error: aborting due to 1 previous error
+
+######## G1     bad type returned, const untouched
+         required=REFUSED   got=COMPILED   *** NOT AS REQUIRED ***
+
+######## G2     bad type aliased, const untouched
+         required=REFUSED   got=COMPILED   *** NOT AS REQUIRED ***
+
+######## G3     bad type in a field, untouched
+         required=REFUSED   got=COMPILED   *** NOT AS REQUIRED ***
+

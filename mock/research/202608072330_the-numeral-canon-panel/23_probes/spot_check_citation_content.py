@@ -1,5 +1,8 @@
 import io, os, glob, re
-D = "/Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel"
+# Resolved from this file's own location. It was absolute, naming a checkout
+# that still exists on this host, so it did not fail when the arc moved: it
+# resolved against a different tree and said nothing.
+D = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 files = {}
 for fp in glob.glob(os.path.join(D, "*.md")):
     b = os.path.basename(fp)

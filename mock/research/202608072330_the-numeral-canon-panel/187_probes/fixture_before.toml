@@ -1,0 +1,27 @@
+[[proposal]]
+id = "plain_row"
+kind = "answer"
+says = "a claim"
+note = "a one-line note"
+provenance = ["panel::x"]
+
+[[proposal]]
+id = "row_with_a_block_note"
+kind = "answer"
+says = "another claim"
+note = """
+A paragraph note whose second line begins with something that looks like a \
+field, to catch an inserter that does not track block strings:
+gap = "this is prose, not a field"
+"""
+gap = "the real gap"
+provenance = ["panel::y"]
+
+[[ruling]]
+id = "a_row_in_another_namespace"
+says = "must come out byte for byte unchanged"
+
+[[proposal]]
+id = "row_with_no_tail_fields"
+kind = "answer"
+says = "a third claim"

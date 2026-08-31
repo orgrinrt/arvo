@@ -1,0 +1,56 @@
+# What a consumer selects between.
+#
+# The set is open and this file is where that is visible. Op demoted the
+# closed-at-four claim on his own word hours after the intent catalogue opened:
+# these four are what the previous panel settled with and what he had written
+# for arvo before the redesign, so the number, the names and the decomposition
+# are all open.
+#
+# So every row here carries `standing = "prior_attempt"` and none of them is a
+# member of anything. A row is added at `op_stated` when he names one as the
+# intent itself, and at `proposed` when the panel puts one forward.
+#
+# The intents survive the names. Op is explicit that Cold's intent governs
+# whether the strategies are four or seventeen or a billion, and the same
+# reading applies to the rest: what is recorded in `intent` is the thing that
+# has to be served by whatever shape the set ends up in.
+
+[[strategy]]
+id = "hot"
+name = "Hot"
+intent = "Performance and efficiency, at the cost of accuracy or soundness where the loss buys something. Soundness may be sacrificed and that is its explicit purpose, but never for nothing: the gain has to be provable and meaningful."
+weighs = "Speed above accuracy and above footprint."
+standing = "prior_attempt"
+note = "The bound is the whole of it. `Hot may sacrifice soundness` on its own is the half that reads as a licence; the sentence op said carries `but it should not lose it for nothing, instead, provable meaningful gains` in the same breath."
+provenance = ["panel::202608072330_the-numeral-canon-panel::INTENTS::#i5-hot-may-sacrifice-soundness-for-a-proven-meaningful-gain"]
+keywords = ["Hot", "fast", "fastest", "speed", "performance", "efficiency", "unsound", "soundness sacrifice", "hot path"]
+
+[[strategy]]
+id = "cold"
+name = "Cold"
+intent = "Cold paths and cold storage. It aggressively minimises and bitpacks, and because the path is cold it has leeway to do things that are not efficient. The value is sitting rather than working."
+weighs = "Footprint above speed."
+standing = "prior_attempt"
+note = "Two bounds, both op's. The leeway is not an obligation: Cold may use the same paths Hot uses, and nothing in its intent fights that, but a path that fights the intent is not for Cold. And the intent survives the set being reshaped, resized or renamed, in his words, whether the strategies are four or seventeen or a billion."
+provenance = ["panel::202608072330_the-numeral-canon-panel::INTENTS::#i6-cold-is-for-cold-paths-and-cold-storage", "panel::202608072330_the-numeral-canon-panel::INTENTS::#i17-cold-is-not-to-be-deprioritised-and-that-is-independent-of-how-many-strategies-there-are"]
+keywords = ["Cold", "small", "smallest", "storage", "bitpack", "packed", "footprint", "cold path", "disk", "memory"]
+
+[[strategy]]
+id = "precise"
+name = "Precise"
+intent = "The most precise answer available, sacrificing as much performance and efficiency as makes sense to get it. Accuracy across chains and ops rather than per operation alone."
+weighs = "Accuracy above everything, and across a chain rather than at one step."
+standing = "prior_attempt"
+note = "The `especially within chains and ops, not only alone` clause is the load-bearing half and the one the panel keeps returning to: a primitive is a property of a value and a chain is not a value, so an intent stated over chains may not be expressible over a per-value primitive at all. Op's own wording also carries a second unresolved reading, whether `chains and ops` is two things or one phrase, and that is his to settle."
+provenance = ["panel::202608072330_the-numeral-canon-panel::INTENTS::#i7-precise-is-accurate-across-chains-not-only-per-operation"]
+keywords = ["Precise", "precision", "accurate", "accuracy", "chain accuracy", "exact", "error", "fidelity"]
+
+[[strategy]]
+id = "warm"
+name = "Warm"
+intent = "The intuitive best choice for most every use case. Behaving as a native Rust primitive would serves that objective, and is dropped where mimicking is consistently the worse choice."
+weighs = "The compromise, and which measurements it weighs is exactly what nobody has established."
+standing = "prior_attempt"
+note = "The imitation is about ergonomics and nothing else, settled by op in one word when the panel asked whether it targets the declared width or the container: `Neither, it's ergonomics`. So it says nothing about where arithmetic boundaries land, and the two-way fork the panel built under it, measured to disagree at all fourteen non-native widths swept, is about something the intent does not range over. He has restated the imitation call four times over two days because it kept failing to stick."
+provenance = ["panel::202608072330_the-numeral-canon-panel::INTENTS::#i3-warm-behaves-as-a-native-rust-primitive-would", "panel::202608072330_the-numeral-canon-panel::INTENTS::#i4-warm-s-objective-is-the-intuitive-best-choice-and-imitation-serves-it-rather-than-defines-it"]
+keywords = ["Warm", "intuitive", "default", "compromise", "native", "primitive", "imitation", "ergonomics", "unsurprising"]

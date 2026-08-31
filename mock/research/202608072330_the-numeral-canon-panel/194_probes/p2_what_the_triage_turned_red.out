@@ -1,0 +1,26 @@
+=== p2 what the triage turned red, 2026-08-31T01:04:29Z
+
+## C1: the unusable-instrument arm must be red
+C1 PASS: it is red
+
+## C2: nothing else moved
+failing tests in this file: 1
+  test the_committed_canon_rests_no_measurement_on_an_unusable_instrument ... FAILED
+C2 PASS: exactly the one
+
+## the probes reported, from the failure
+  a_compile_time_strategy_selection_leaves_no_residue
+  the_four_const_available_constructions_bind_at_four_times
+
+## C3: each is really `uncontrolled`, and which claim cites it
+  probe a_compile_time_strategy_selection_leaves_no_residue
+    standing: uncontrolled
+    cited by: a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body
+  probe the_four_const_available_constructions_bind_at_four_times
+    standing: uncontrolled
+    cited by: the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times
+C3 PASS
+
+LEFT RED ON PURPOSE. The rows are honest and the edges are somebody
+else s to move. The repair is on the two claims: either they cite a
+controlled instrument or they stop being marked as something that ran.

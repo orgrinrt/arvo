@@ -186,3 +186,69 @@ remain resumable for this unit.
 | 141 | lamport | `a07940056001e00c6` |
 | 144 | fog | `add5eb6bcca4570a4` |
 | 152 | chlipala (independent check) | `a1f48c604ae412570` |
+
+## The registry migration, session `02cc2df2-cbb5-4e54-aba8-40f92ba44df7`
+
+A new session, so none of the ids above is addressable any more. These are.
+
+The canon stopped being prose while this session opened. Op's call: mockspace has
+gained a first-class registry and that is where a canon forms now, so the panel's
+output is being moved into typed rows under `mock/registry/` rather than written
+up as a document. The rows are `canon_paths` in `mockspace.toml` and the schema is
+declared there.
+
+These seats are porting rather than arguing, so they take numbers in the panel's
+own sequence for their findings files and their worktrees are named for the work
+rather than for the seat.
+
+| Number | Persona | Worktree | Task id |
+|---|---|---|---|
+| 179 | lamport (op's rulings into `ruling.toml`) | `port-rulings`, reaped | `afe5cfa1d438060cd` |
+| 180 | kiselyov (the register and the droplist into `question.toml` and `retirement.toml`) | `port-questions`, reaped | `adc45b989117f6c1d` |
+| 182 | orchard (the four consolidations into `proposal.toml` and `law.toml`) | `port-proposals`, reaped | `a2637fbd6061d2c5d` |
+| 187 | mcsherry (the cross-namespace edges, in the rows four seats could not wire) | `port-questions`, reused | `ad7879c741cc5063f` |
+| 188 | ringer (entailment check on the consolidation port, four instruments) | `notation`, reused | `aa5dce80fcb11aa7a` |
+| 189 | kiselyov (settling the panel questions the corpus already settles) | `port-questions`, reused | `afa69737b61628945` |
+| 191 | leijen (cold derivation on the surface above the numeral) | `notation`, reused again | `a32cb48dff4446740` |
+| 192, 194 | fog (the rest of the instruments, then triaging them) | `port-probes` | `ad42bbfee02bb6d38` |
+| 193, 195 | mcsherry (wiring the evidence, then the obligation coverage) | `port-questions`, reaped | `ad7879c741cc5063f` |
+| 196 | dolan (attacking `191`) | `notation`, reused again | `ad95aed0b8a67d263` |
+
+`191` opens a unit rather than closing one. Five of the eleven obligations are reached by no row
+anywhere, all of them from the heaviest consumer's own plan chain, and I11 says the algorithm crates
+downstream consume are half of what arvo is for. So a cold derivation goes first and gets attacked.
+
+**That count is superseded and is left standing as what was believed when `191` was dispatched.**
+`195` measured it by hand at one met, one proposed and nine reached by nothing, of eleven. The
+measurement then moved into `mock/checks/src/obligation.rs`, out of a shell probe whose own header
+called itself a net rather than a test, and it now walks the typed edges instead of matching prose.
+Against thirteen obligations it reports one met, one proposed, three reached only by a closed route
+and eight by nothing at all. The rows are named in `tests/what_reaches_each_obligation.rs` rather
+than here, because a count in prose is a second copy of a fact that drifts from the rows silently,
+which is what happened to this paragraph.
+
+`ad7879c741cc5063f` is resumed for the filing unit, in a fresh `filing` worktree on
+`research/filing-the-algorithm-surface`, since its own was reaped when `195` merged. The unit is its
+own finding that the algorithm surface is missing filing rather than derivation: `35` and `43`
+derive it across 1818 lines with committed instruments, and two of `35`'s fourteen figures and none
+of `43`'s seven reached the registry.
+
+`188` exists because `182`'s own author asked for it: that file is a compression of four
+compressions and an author cannot be their own checker. Dispatched at opus rather than the persona's
+own tier, because what it is checking is four compressions deep.
+| 183 | rompf (the five candidates into `proposal-the-later-topics.toml` and its law file) | `port-candidates`, reaped | `a7b95978b2b0bc397` |
+| 185 | fog (the instruments into `probe.toml`) | `port-probes` | `ad42bbfee02bb6d38` |
+| 186 | spj (second reader on five notation calls, blind first) | `notation` | `a41322c442397fdfa` |
+
+`186` is the fable-tier seat and the only one this panel runs at a time. It is spent on the notation
+because those calls decide the shape of every row the canon will hold, and a wrong one is a migration
+rather than an edit. It writes no registry row: its output is a reading, and the rows follow from it.
+
+`179` and `180` are complete and merged into `research/canon-registry`; their worktrees and branches
+are gone and the ids stay addressable while this session lives. **`179` is owed a second reader** on
+its `PRIOR_CALLS.md` refusal, and the brief for that reader is `179` section 17, written to be
+dispatched against rather than paraphrased.
+
+`182` and `183` write different files on purpose. A row's namespace is the array-of-tables key rather
+than its path, so `[[proposal]]` rows in either file are one namespace and every query sees both,
+while the merge stays clean.

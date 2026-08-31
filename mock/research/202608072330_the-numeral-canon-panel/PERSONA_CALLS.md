@@ -123,7 +123,7 @@ methodology for evaluating canons.
 paraphrased, are:
 
 - The three things for op are none of what `MORNING.md` leads with. First, **op gave a second standing
-  instruction and eighteen files have walked past it**: `seed/SETTLED_container.md:410-420` records op
+  instruction and eighteen files have walked past it**: `seed/OLD_SETTLED_container.md:410-420` records op
   treating the whole `141`/`142` harness bench body as "one instance of evidence, completely unaudited
   by a second expert set of eyes" (`142b:60-64`), and the compression into `SETTLED.md` dropped the
   entire thread, so the panel cannot see it. That is the third `SETTLED.md` compression defect of the

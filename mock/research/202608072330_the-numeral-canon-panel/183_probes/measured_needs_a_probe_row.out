@@ -1,0 +1,11 @@
+### planted rows: 3
+
+### cargo test -p arvo-checks (expect: A and B reported, C silent)
+failures:
+        kind: "measured-claim-cites-no-probe",
+        at: "proposal::probe_183_a_measured_with_no_evidence",
+failures:
+test result: FAILED. 15 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+### cargo mock --lint-only (expect: unknown-row-reference on arm B)
+  ERROR [unknown-row-reference]: proposal::probe_183_b_measured_with_a_dangling_probe: field `evidence` references `probe::no_such_probe_row_exists`, which no row declares. Namespace `probe` has no rows at all.

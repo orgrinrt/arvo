@@ -1,0 +1,13 @@
+=== p2 which admissions the gate reads, 2026-08-31T00:09:10Z
+
+prediction, before the run: one reported, four silent.
+
+probe cited by a planted measured claim                      what the gate did
+  chain_the_third_definition_is_not_observation_bounded      SILENT   control opens "None stated in the material read"
+  no_dependent_survives_the_rounding_units_defects           SILENT   control opens "None stated as a must-fail arm"
+  the_bench_tree_was_built_at_the_undocumented_profile       measurement-rests-on-an-uncontrolled-instrument   control opens "None run, and the shape..."
+  the_debug_release_gap_that_retired_a_true_finding          SILENT   control opens "None, and none is needed"
+  an_equivalence_checker_that_skips_panics_certifies_a_definedness_difference SILENT   control opens "None. It is a structural argument"
+
+CONTROL, a different branch of the same check, MUST be reported:
+  the_width_invariance_control_was_toothless                 measurement-rests-on-an-unusable-instrument   standing = defective

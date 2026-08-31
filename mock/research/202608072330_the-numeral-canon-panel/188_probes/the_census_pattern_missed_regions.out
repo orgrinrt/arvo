@@ -1,0 +1,39 @@
+=== CONTROL 1: the census's own pattern, which must reproduce its table ===
+file                                                     narrow
+63_spj_consolidation_the_format_concept.md                    0
+74_giesen_consolidation_the_number_system_concept.md          0
+90_giesen_consolidation_derived_algebraic_laws.md             2
+106_giesen_consolidation_the_strategy_axis.md                 9
+AGREEMENTS.md                                                 0
+  (182 section 1 published: 0, 0, 2, 9, 0)
+
+=== the wider pattern, and the difference ===
+file                                                     narrow   wide missed
+63_spj_consolidation_the_format_concept.md                    0      4      4
+74_giesen_consolidation_the_number_system_concept.md          0      2      2
+90_giesen_consolidation_derived_algebraic_laws.md             2      7      5
+106_giesen_consolidation_the_strategy_axis.md                 9     10      1
+AGREEMENTS.md                                                 0      1      1
+TOTAL                                                        11     24     13
+
+=== the lines the narrow pattern missed, printed in full ===
+  63_spj_consolidation_the_format_concept.md:182:**The claim.** Membership of Q is one predicate over one parameterisation: a slot function giving
+  63_spj_consolidation_the_format_concept.md:196:**Rung.** The one-predicate unification: TWO EXPERTS with the shared-literature (Flocq) discount,
+  63_spj_consolidation_the_format_concept.md:570:predicate**: the conditions under which an op or adaptation loses nothing, fixed point's
+  63_spj_consolidation_the_format_concept.md:633:**C3, the representable set.** *Membership is one predicate over one parameterisation: an affine
+  74_giesen_consolidation_the_number_system_concept.md:825:**A predicate**: discards the coordinate a consumer needs and makes every mislocated member read
+  74_giesen_consolidation_the_number_system_concept.md:829:predicate for hosting**: two procedures where a reader expects one. Distinguisher: whether any
+  90_giesen_consolidation_derived_algebraic_laws.md:93:where one did. Predicates are never widened in place: where a later member widened or corrected an
+  90_giesen_consolidation_derived_algebraic_laws.md:136:`79_probes/p1_negative_control.rs`, `79_probes/p1_negative_output.txt`). Predicate as `79` stated it:
+  90_giesen_consolidation_derived_algebraic_laws.md:309:`82` established the predicate by measurement (`82:281-285`): a declared window `[LO, HI]` with `LO >= 0 || HI <= 0`
+  90_giesen_consolidation_derived_algebraic_laws.md:322:`89` then made the predicate proof-shaped: sign uniformity is exactly the hypothesis under which
+  90_giesen_consolidation_derived_algebraic_laws.md:482:corrected F4's predicate (`86:73-92`, against `84:464-466` and `84:516-519`, source at
+  106_giesen_consolidation_the_strategy_axis.md:283:read it has not had. Predicates per I13: a dimension listed with a range or `any` was established across
+  AGREEMENTS.md:184:- **C3, the representable set** (one affine membership predicate, phase included explicitly): the
+
+=== CONTROL 2: a pattern that must find nothing in any of the five ===
+  63_spj_consolidation_the_format_concept.md               0
+  74_giesen_consolidation_the_number_system_concept.md     0
+  90_giesen_consolidation_derived_algebraic_laws.md        0
+  106_giesen_consolidation_the_strategy_axis.md            0
+  AGREEMENTS.md                                            0

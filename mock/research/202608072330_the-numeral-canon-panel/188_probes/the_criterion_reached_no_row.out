@@ -1,0 +1,52 @@
+### the criterion, at its source
+  quotient inherits every identity its source satisfies. So:
+  
+  > a law holds in the representable set **iff** it is an identity of exact arithmetic **and** `pi`
+  > respects every ordered nesting of operations the law contains.
+
+  and its own region, at 97:786-791:
+  **F-F. A law holds in the representable set exactly when it is an identity of exact arithmetic and the
+  realisation map respects every ordered nesting of operations it contains. This predicts every law verdict
+  in the swept region with no soundness mismatch and no conservative mismatch.**
+  `holds for: W in {4, 5, 6}, F in {0, 1, 2}, signedness in {unsigned, signed}, overflow in {wrap,
+  saturate}, rounding in {truncate, nearest}, operations {add, sub, mul}, operand window in {full, declared
+  non-negative}, laws {add_comm, mul_comm, add_assoc, mul_assoc, distrib, mul_over_sub, sub_assoc,
+  sub_comm}, arity 2 and 3, values exhaustive over the representable domain, threads = 1, target features
+  any`
+
+### link 1: does 106 state it?
+  content hits in 106 : 0
+  score hits in 106   : 1
+  (the score is carried and the content is not, which is 107 section 4.4)
+
+### link 2: does 106 section 17 record it as an unrepaired finding?
+  - **The defence of the 177 dropped anchors quotes half its own source.** `87:26-29` says a dropped
+  - **`93_probes`, `94_probes` and `103_probes` are at zero anchors carried**, and 302 of 347 member
+  - **The census script computes no set difference** despite section 15 saying it does. The set difference
+  criterion mentioned in section 17: 0
+  107 recorded six defects. Section 17 accounts for three.
+
+### link 3: does any row carry it?
+  content hits across proposal.toml and law.toml : 0
+
+### CONTROL 1: a claim from the same file that DID reach a row
+  "no total join / conservatism order" in the rows : 1
+  non-zero, so the search finds 97's claims where they are present.
+
+### is it writable today? every axis its region names, against dimension.toml
+  SOURCE SPELLING                    AXIS                   DECLARED
+  W in {4,5,6}                       total_width            yes
+  F in {0,1,2}                       fraction_width         yes
+  signedness in {unsigned,signed}    signedness             yes
+  overflow in {wrap,saturate}        overflow_policy        yes
+  rounding in {truncate,nearest}     rounding               yes
+  operations {add,sub,mul}           operation              yes
+  arity 2 and 3                      arity                  yes
+  threads = 1                        threads                yes
+  target features any                target_features        yes
+  and the one it names that is not an axis:
+  operand window in {full, decl}     declared_operand_window NO
+
+  nine of ten declared. The tenth names both of its values, so leaving it
+  out is the blind spot 182 section 5.1 already accepted for R12's container
+  half rather than a negative claim. The row is writable.

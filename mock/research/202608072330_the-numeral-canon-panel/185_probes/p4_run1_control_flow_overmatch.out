@@ -1,0 +1,870 @@
+=== p4 who states a control, 2026-08-30T22:41:59Z
+
+## C1: a file known to state a control must be counted
+C1 PASS
+
+## C2: the unstated set must be non-empty
+C2 PASS: 707 of 1133 source files use none of the vocabulary
+
+## C3: controller / controlled / control flow must NOT count
+C3 FAIL: the matcher fires on ordinary prose
+   and the positive half, so C3 is not passing by matching nothing:
+   PASS: a real control line is matched
+
+## C4: the two sets must partition
+C4 PASS: 426 + 707 = 1133
+
+## the ratio
+probe source files (py, rs, sh, awk, zig), excluding this dispatch: 1133
+naming a case that had to come out a particular way:                426
+naming none:                                                        707
+share stating one: 37.6%
+
+WHAT THIS DOES NOT SAY: that the stated ones fired, that they could
+have fired, or that they tested the mechanism rather than the scope.
+Four defects in this corpus were controls that could not fail, and this
+instrument counts every one of them as stated.
+
+## the unstated files, in full
+  02_probes/p1_target_keyed.rs
+  02_probes/p2_adjudicator_as_free_key.rs
+  02_probes/p3_adjudicator_derived.rs
+  02_probes/p4_two_rules.rs
+  02_probes/p5_domain_derives_range.rs
+  02_probes/p6_run_checks.rs
+  02_probes/sign_domain.py
+  02_probes/sign_domain2.py
+  02_probes/sign_domain3.py
+  02_probes/sign_domain4.py
+  03_probes/i1_shape_space.py
+  03_probes/i2_corrected.py
+  03_probes/i3_independent.rs
+  03_probes/i4_categories.py
+  03_probes/i5_scaling.py
+  06_probes/p2_overshoot_mechanism.py
+  06_probes/p3_formula_vs_extremum.rs
+  06_probes/p4_cross_family_join.rs
+  06_probes/p6_waste_region.py
+  06_probes/p7_negctl.rs
+  06_probes/p7_tight_form_in_typestate.rs
+  07_probes/cmp_asm.py
+  07_probes/p1_rounding_adjunction.py
+  07_probes/p2_moore_family.py
+  07_probes/p3_best_abstraction_closed_form.py
+  07_probes/p4_composition_and_forced_adjoint.py
+  07_probes/p5_postfixpoint_accumulator.py
+  07_probes/p6_sufficiency_as_a_bound.rs
+  07_probes/p7_moore_completion_cost.py
+  08_probes/i1_classify.py
+  08_probes/i1b_classify.py
+  08_probes/i2_lattice.py
+  08_probes/i2b_valid_shapes.py
+  08_probes/i2c_join_closure.py
+  08_probes/i2d_per_family.py
+  08_probes/i2e_corrected_window.py
+  08_probes/i3_encoding_and_denotation.py
+  100_probes/cone.py
+  100_probes/p3_run.sh
+  100_probes/p3b_const_eval_scaling.py
+  100_probes/p5_the_region_is_written_down_twice.py
+  101_probes/p10_the_two_knobs_are_separable.py
+  102_probes/p1_the_corpus_compares_cost_at_a_fixed_answer.py
+  102_probes/p2_first_version_setup_that_helped.rs
+  102_probes/p2_which_of_25s_axes_change_the_answer.rs
+  102_probes/p3_first_version_contractive_chain_no_crossing.py
+  102_probes/p3_the_crossing_is_an_arm_family.py
+  102_probes/p5_a_measured_coordinate_over_answer_differing_arms.py
+  103_probes/p1_what_the_committed_data_records.py
+  103_probes/p2_two_arms_two_answers/src/main.rs
+  103_probes/p3_same_input_two_answers/src/main.rs
+  103_probes/p5_census_what_each_family_pins.py
+  103_probes/p6_the_region_census.py
+  103_probes/p7_the_constraint_on_real_arms/src/main.rs
+  103_probes/p8_when_the_gate_was_actually_running.py
+  103_probes/p9_check_my_own_citations.py
+  106_probes/p2_corpus_counts.sh
+  106_probes/p3_prewiring_join.py
+  106_probes/p6_anchor_census.sh
+  106_probes/p7_count_the_ratio.sh
+  107_probes/p0_test_gate.sh
+  107_probes/p10_the_numbers_106_says_it_verified.sh
+  107_probes/p11_check_my_own_citations.py
+  107_probes/p1_anchor_set_difference.sh
+  107_probes/p2_are_the_citations_locatable.sh
+  107_probes/p2b_locatable_including_finding_ids.sh
+  107_probes/p3_the_set_difference_106_did_not_run.sh
+  107_probes/p4_the_four_meaningless_greens.sh
+  107_probes/p5_reproduce_the_prewiring_join.sh
+  107_probes/p6_the_law_bullet_is_false_at_signed_saturating.sh
+  107_probes/p8_what_the_droplist_missed.sh
+  107_probes/p9_the_defence_quotes_half_its_own_source.sh
+  108_probes/p0_test_gate.sh
+  108_probes/p1_where_observable_came_from.sh
+  108_probes/p2_first_version_contracting_chain.rs
+  108_probes/p2b_observability_is_decided_by_the_chain.rs
+  108_probes/p2c_a_sound_conservative_predicate.rs
+  108_probes/p3_five_readings_and_one_contradiction.py
+  108_probes/p4_one_name_two_carriers.rs
+  108_probes/p4_read_the_asm.sh
+  108_probes/p5_the_fidelity_coordinate_is_constant_where_clause_three_holds.py
+  108_probes/p6_two_objects_one_word.py
+  108_probes/p7_check_my_own_citations.py
+  109_probes/p0_const_trait_spelling_on_the_pin.rs
+  109_probes/p1_value_set_and_realisation_are_independent.rs
+  109_probes/p3_three_sameness_relations_and_what_each_licenses.rs
+  109_probes/p3b_marker_makes_identical_resolutions_incompatible.rs
+  109_probes/p5_a_carried_range_eliminates_the_completion.rs
+  109_probes/p5b_overflowing_range_must_be_refused.rs
+  109_probes/p8_when_an_encoding_is_observable.rs
+  10_probes/ladder.rs
+  10_probes/p01_assoc_const_in_array_len_nogate.rs
+  10_probes/p02_assoc_const_min_gca.rs
+  10_probes/p03_type_const_rhs.rs
+  10_probes/p04_type_const_block.rs
+  10_probes/p05_const_arg_from_param.rs
+  10_probes/p06_type_const_forward_only.rs
+  10_probes/p07_structural_type_const_array.rs
+  10_probes/p08a_alias_nat_diag.rs
+  10_probes/p08b_opaque_nat_diag.rs
+  10_probes/p09a_lawsite_control.rs
+  10_probes/p12_improved_full.rs
+  10_probes/p13_diag_showcase.rs
+  10_probes/p14_bridge_laziness.rs
+  10_probes/p15_dense_bridge.rs
+  10_probes/p16_single_bound.rs
+  10_probes/reproduced/ladder.rs
+  10_probes/reproduced/p4_structural_wide.rs
+  10_probes/reproduced/p5_total_ladder.rs
+  10_probes/reproduced/p6_surface_end_to_end.rs
+  10_probes/reproduced/p7_law_site.rs
+  110_probes/p12b_storage_site_expected_failure.rs
+  110_probes/p1_identity_is_isomorphism.py
+  110_probes/p2_laws_are_a_projection_not_a_coordinate.py
+  110_probes/p3_naming_needs_a_canonicalisation.py
+  110_probes/p4_structural_collapse_survives_a_wider_signature.py
+  110_probes/p5_definitional_versus_reachability_degeneracy.py
+  110_probes/p6_expressibility.rs
+  110_probes/p6_noncanonical_wall.rs
+  110_probes/p6_run.rs
+  110_probes/p7b_constructions_carry_predicates.py
+  111_probes/p1a_fn_pointer_in_const_fn.rs
+  111_probes/p1b_const_generic_tag_and_match.rs
+  111_probes/p1c_macro_carried_operation.rs
+  111_probes/p1d_the_carrier_choice_does_not_repair_the_split.rs
+  111_probes/p2_the_law_set_freedom_test_is_a_dead_branch.py
+  111_probes/p3_the_signature_saturates_at_the_literal.py
+  111_probes/p4_constant_injection_collapses_the_two_degeneracies.py
+  111_probes/p5_identity_is_relative_to_a_refinement.py
+  111_probes/p6_the_refinement_propagates_and_that_is_the_congruence.py
+  111_probes/p8b_a_tightening_is_refused_at_build_time.rs
+  112_probes/p1_how_many_directions_admit_a_denotation_preserving_map.py
+  112_probes/p2_the_grade_switches_off_a_region_of_R_not_an_axis.py
+  112_probes/p2b_the_grade_repaired_and_the_two_regions_separated.py
+  112_probes/p4_where_a_missed_merge_actually_costs_something.rs
+  112_probes/p4b_the_storage_boundary_is_the_wall.rs
+  112_probes/p4c_a_tightening_is_refused_before_the_program_exists.rs
+  112_probes/p5_a_declared_extent_discharges_a_constructions_predicate.py
+  112_probes/p5b_the_lifting_rule_is_per_construction.py
+  112_probes/p6_check_my_own_citations.py
+  112_probes/p7b_the_two_rules_compose_and_the_union_is_the_answer.py
+  112_probes/p7c_the_per_node_check_is_load_bearing.py
+  112_probes/p8_the_affine_grade_compiles_as_a_type_level_list.rs
+  112_probes/p8b_the_affine_grade_with_no_arithmetic_in_type_position.rs
+  112_probes/p8c_the_per_node_discharge_check.rs
+  112_probes/p9_a_one_sided_form_attacks_the_affine_rules_weakness.py
+  112_probes/p9b_isolating_which_change_won.py
+  114_probes/p3_does_the_one_sided_form_dominate_off_the_thirteen_rows.py
+  114_probes/p4_the_per_node_intersection_beats_both_rules.py
+  114_probes/p9_pricing_the_two_spellings_without_a_clock.py
+  115_probes/s2_where_the_selection_can_live.py
+  116_probes/p1_reproducing_the_root_only_claim_against_my_own_sentence.py
+  116_probes/p6_check_my_own_citations.py
+  118_probes/q1_the_condition_set_follows_the_character_too.py
+  118_probes/q4_two_witnesses_for_why_the_cut_needs_both_halves.py
+  119_probes/r1_the_anchor_inventory_and_what_the_candidate_carries.py
+  11_probes/a02_zig_comptime_derivation.zig
+  11_probes/b01_table_caps_the_algebra.rs
+  11_probes/b02_the_table_chases_its_tail.rs
+  11_probes/b03_the_ceiling_is_the_const_surface.rs
+  11_probes/c_orphan/arvo_min.rs
+  11_probes/c_orphan/consumer_bad.rs
+  11_probes/c_orphan/consumer_ok.rs
+  11_probes/c_orphan/consumer_partition.rs
+  11_probes/c_orphan/consumer_partition_nored.rs
+  11_probes/d01_bare_parameter_carrier.rs
+  11_probes/e01_enumeration_free_bridge.rs
+  11_probes/e02_closing_the_overshoot.rs
+  11_probes/e03_overshoot_under_min_gca.rs
+  11_probes/e04_overshoot_const_block.rs
+  11_probes/f01_const_param_default_from_siblings.rs
+  11_probes/ladder.rs
+  11_probes/verify.sh
+  121_probes/t1_the_ablation_and_the_predicate_the_candidate_gives_my_theorem.py
+  121_probes/t4_check_my_own_citations.py
+  126_probes/p1_rounding_character.py
+  126_probes/p2_order_of_round_and_clamp.py
+  126_probes/p3_double_rounding_isolated.py
+  126_probes/p4_stochastic_nonmonotone_fixed.py
+  12_probes/count.sh
+  12_probes/ladder.rs
+  12_probes/p01_nat_canonicity.rs
+  12_probes/p02_const_door_alias.rs
+  12_probes/p03_hybrid_door_closed_algebra.rs
+  12_probes/p04_five_spellings.rs
+  12_probes/p05_diag_mismatch.rs
+  12_probes/p06_default_param_elision.rs
+  12_probes/p07a_pin_const_to_nat_nogate.rs
+  12_probes/p07b_pin_const_to_nat_min_gca.rs
+  12_probes/p07c_pin_const_to_nat_type_const.rs
+  12_probes/p07d_pin_const_block.rs
+  12_probes/p08_does_p06_shape_keep_the_ceiling.rs
+  12_probes/p09_core.rs
+  12_probes/p09_decimal_ladder.rs
+  12_probes/p10_decimal_container.rs
+  12_probes/p11_diag_battery.rs
+  12_probes/p12_first_day_errors.rs
+  12_probes/p13_where_the_door_error_lands.rs
+  12_probes/p14_lazy_type_alias.rs
+  12_probes/p14b_lazy_over_full_ladder.rs
+  12_probes/p15_markers_do_not_partition.rs
+  12_probes/surfaces.rs
+  12_probes/verify.sh
+  131_probes/v3_which_stochastic_members_survive_the_operating_constraints.rs
+  132_probes/w1_the_anchor_count_and_the_blind_commit_ordering.py
+  135_probes/z1_does_the_coupling_argument_need_domain_sign.py
+  136_probes/w1_over_136.py
+  137_probes/g1_the_two_coordinator_errors.sh
+  137_probes/g2_is_the_attribution_class_complete.sh
+  137_probes/g3_predicates_and_the_open_token.py
+  137_probes/g5_anchors_my_own_extraction.py
+  137_probes/g7_the_five_two_gap_and_x1s_sweep.sh
+  137_probes/g9_check_my_own_citations.py
+  13_probes/gen_p07_matrix.py
+  13_probes/gen_p10.py
+  13_probes/p01_the_wall.rs
+  13_probes/p02_mgca_assoc_const_path.rs
+  13_probes/p03_mgca_type_const.rs
+  13_probes/p04_mgca_type_const_block.rs
+  13_probes/p05_const_default_from_param.rs
+  13_probes/p06_nat_algebra.rs
+  13_probes/p07_matrix.rs
+  13_probes/p09_core.rs
+  13_probes/p10_full.rs
+  13_probes/p11_buf_sizes.rs
+  13_probes/p12_surface.rs
+  13_probes/p13_surface_bounded.rs
+  13_probes/p14_multiply_past_the_table.rs
+  13_probes/p15_sizes.rs
+  13_probes/p16_unbridged_width.rs
+  13_probes/p17_alias_only_no_error.rs
+  13_probes/p18_diagnostic_repair.rs
+  13_probes/p19_lazy_type_alias.rs
+  13_probes/p20_width_mismatch.rs
+  13_probes/p21_named_widths.rs
+  13_probes/p22_named_mismatch_diag.rs
+  13_probes/p23_named_ceiling.rs
+  13_probes/p24_reverse_wall.rs
+  13_probes/p25_declared_output.rs
+  13_probes/p26_declared_too_narrow.rs
+  13_probes/p27_declared_too_narrow_diag.rs
+  13_probes/p28_both_forms.rs
+  13_probes/p29_extension_without_towers.rs
+  141_probes/p1_fusion_reproduced.rs
+  145_probes/z6_convergences_agree_about_the_intersection_of_their_dimensions.py
+  149_probes/y1_the_unsigned_half_over_six_modes.rs
+  149_probes/y2_equivariance_is_domain_restricted.rs
+  154_probes/p1_saturation/sat.rs
+  154_probes/p2_fibre/sizes.rs
+  154_probes/p3_naming/grid.rs
+  154_probes/p4_injectivity/grid64.rs
+  154_probes/p4_injectivity/grid_cm.rs
+  154_probes/p4_injectivity/grid_cw.rs
+  154_probes/p4_injectivity/inj_container.py
+  154_probes/p5_signature/sig.py
+  157_probes/p3_predicate_audit.sh
+  157_probes/p4_saturation_bound.py
+  157_probes/p6_per_axis_vs_per_pair.py
+  15_probes/q01_negative_width_recount.py
+  15_probes/q02_wf_coordinates.py
+  15_probes/q03_tight_addition.py
+  15_probes/q03b_reconcile_461_vs_476.py
+  15_probes/q04_core.rs
+  15_probes/q04_core_inc.rs
+  15_probes/q04_literals_inc.rs
+  15_probes/q05_subtraction_matrix.rs
+  15_probes/q06_negctl.rs
+  15_probes/q06_shape_matrix.rs
+  15_probes/q07_body_inc.rs
+  15_probes/q07_three_input_map.rs
+  15_probes/q08_map_matrix.rs
+  15_probes/q08_negctl.rs
+  15_probes/q08_negctl2.rs
+  15_probes/q09_door_and_erasure.rs
+  15_probes/q09_lit_inc.rs
+  15_probes/q09_shape_inc.rs
+  15_probes/q10_diag_tag.rs
+  15_probes/q11_tag_costs.rs
+  15_probes/q12_door_inc.rs
+  15_probes/q12_erasure_asm.rs
+  15_probes/q13_cold_packed.rs
+  15_probes/q14_declared_plus_tag.rs
+  15_probes/q15_ceiling_and_alias_site.rs
+  162_probes/p1_how_far_does_the_premise_reach.py
+  162_probes/p2_cfg_in_const_fn/readconsts.rs
+  162_probes/p2_cfg_in_const_fn/run.sh
+  163_probes/p1_clause9_satisfiability.py
+  163_probes/p4_l_entry_anchors.sh
+  163_probes/p5_findings_survival.sh
+  167_probes/satfold_read/read_satfold.py
+  167_probes/staged/lib_nostd.rs
+  167_probes/staged/run_std.rs
+  169_probes/p1_heading_identity.sh
+  169_probes/p4_is_the_band_measured.py
+  16_probes/p1_fibre_count.rs
+  16_probes/p2_stride_is_not_size_of.rs
+  16_probes/p3_blind_suite.rs
+  16_probes/p4_access_width.rs
+  16_probes/p5_recovery_direction.rs
+  16_probes/p5b_const_to_type.rs
+  16_probes/p6_trait_form_recovers_both.rs
+  16_probes/p7_alignment_is_not_a_third.rs
+  16_probes/verify.sh
+  171_probes/channels/const_channel_narrow_MUST_NOT_COMPILE.rs
+  171_probes/perimeter/perimeter_opaque_MUST_NOT_COMPILE.rs
+  174_probes/r2_run.sh
+  177_probes/p3_marks_after_the_amendment.py
+  17_probes/t5_perimeter.py
+  17_probes/t5_perimeter.rs
+  183_probes/split_predicate.awk
+  18_probes/p1_order_under_set_denotation.py
+  18_probes/p2_absorbing_top_operation_set.py
+  18_probes/p2b_absorbing_both_ends.py
+  18_probes/p3_interval_laws.py
+  18_probes/p3c_interval_law_directions.py
+  18_probes/p5_headroom_is_a_refinement_not_a_denotation.py
+  18_probes/p6_precise_is_the_denotation_clause.py
+  20_probes/p1_counter_nomem_is_not_a_barrier.rs
+  20_probes/p2_counter_nomem_isolated.rs
+  20_probes/p4_absorbing_fixpoint.rs
+  21_probes/count_anchors.sh
+  22_probes/loop-shape/gen.py
+  22_probes/loop-shape/src/lib.rs
+  23_probes/check_own_citations.py
+  23_probes/count_strategy_mentions.py
+  23_probes/spot_check_citation_content.py
+  24_probes/RUN.sh
+  24_probes/s1_grid_reach_agreement.py
+  24_probes/s2_which_numerals_the_wf_keying_misses.py
+  24_probes/s3_one_definition_two_projections.rs
+  24_probes/s3_run.rs
+  24_probes/s4_two_phases.py
+  24_probes/s5_knee_without_enumeration.py
+  24_probes/s6_vocabulary_overlap.py
+  25_probes/p1_hunt_for_a_definition.py
+  25_probes/p2_decompose_the_preset_table.py
+  25_probes/p3_verify_my_citations.py
+  25_probes/p4_axes_vary_independently_in_the_committed_benches.py
+  26_probes/verify_my_citations.py
+  27_probes/best_table.py
+  27_probes/verify_my_citations.py
+  31_probes/check_probes.py
+  31_probes/check_sections.py
+  33_probes/coverage.py
+  35_probes/p2_laws.rs
+  35_probes/p3_reduction_order.rs
+  35_probes/p4_identities_and_absorption.rs
+  40_probes/p1_the_two_by_two_carries_no_information.py
+  40_probes/p2_what_four_names_can_reach.py
+  40_probes/p5_what_a_property_costs.rs
+  40_probes/p6_verify_my_citations.py
+  40_probes/p7_does_overflow_move_the_container_answer.py
+  42_probes/p1_commutativity_is_universal.rs
+  42_probes/p2_composed_accumulator_and_law_bound.rs
+  42_probes/p3_one_ended_clamp_versus_two.rs
+  43_probes/p6_citation_check.py
+  43_probes/p7_asm_census.py
+  43_probes/p7_does_the_capacity_bound_survive_lowering.rs
+  43_probes/s1_composition_word_census.py
+  45_probes/p2_p5_style_instrument_is_blind.rs
+  45_probes/p4_fraction_crosscheck_and_widening_recovers.py
+  45_probes/p5_third_output_is_mechanically_free.rs
+  45_probes/p6_finite_widening_headroom.py
+  45_probes/p7_alignment_lemma_abstract.rs
+  47_probes/p2_scalar_single_output_refused.rs
+  47_probes/p2b_kind_asymmetry_positive.rs
+  47_probes/p3_access_type_from_const_refused.rs
+  47_probes/p3b_access_type_two_routes_that_work.rs
+  47_probes/p5_one_output_against_all_three_forcings.rs
+  47_probes/p6_two_ladders_not_one.rs
+  47_probes/verify.sh
+  49_probes/_shared_schema.rs
+  49_probes/p1_fact_schema.rs
+  49_probes/p2_validation_is_a_missing_impl.rs
+  49_probes/p3_erasure_check.rs
+  49_probes/p4_sign_axis_is_orthogonal.rs
+  50_probes/p1_criterion_fixpoints.py
+  50_probes/p2_reading_a_loses_the_width.rs
+  50_probes/p3_site_recomputes_the_stride.rs
+  50_probes/p4_access_width_is_keyed_on_the_stride.py
+  50_probes/p6_precise_fork_is_not_a_fork.py
+  50_probes/p7_bench_readout.py
+  51_probes/check3.rs
+  51_probes/check_citations.py
+  51_probes/fixgather/w01.rs
+  51_probes/fixgather/w02.rs
+  51_probes/fixgather/w03.rs
+  51_probes/fixgather/w04.rs
+  51_probes/fixgather/w05.rs
+  51_probes/fixgather/w06.rs
+  51_probes/fixgather/w07.rs
+  51_probes/fixgather/w08.rs
+  51_probes/fixgather/w09.rs
+  51_probes/fixgather/w10.rs
+  51_probes/fixgather/w11.rs
+  51_probes/fixgather/w12.rs
+  51_probes/fixgather/w13.rs
+  51_probes/fixgather/w14.rs
+  51_probes/fixgather/w15.rs
+  51_probes/fixgather/w16.rs
+  51_probes/fixgather/w17.rs
+  51_probes/fixgather/w18.rs
+  51_probes/fixgather/w19.rs
+  51_probes/fixgather/w20.rs
+  51_probes/fixgather/w21.rs
+  51_probes/fixgather/w22.rs
+  51_probes/fixgather/w23.rs
+  51_probes/fixgather/w24.rs
+  51_probes/fixgather/w25.rs
+  51_probes/fixgather/w26.rs
+  51_probes/fixgather/w27.rs
+  51_probes/fixgather/w28.rs
+  51_probes/fixgather/w29.rs
+  51_probes/fixgather/w30.rs
+  51_probes/fixgather/w31.rs
+  51_probes/fixgather/w32.rs
+  51_probes/fixgather/w33.rs
+  51_probes/fixgather/w40.rs
+  51_probes/fixgather/w47.rs
+  51_probes/fixgather/w48.rs
+  51_probes/gen_check3.py
+  51_probes/gen_v2.py
+  51_probes/gen_v3.py
+  51_probes/gen_width_matrix.py
+  51_probes/loopshape.py
+  51_probes/oracle.py
+  51_probes/robustness.py
+  51_probes/run_v2.py
+  51_probes/run_v3.py
+  51_probes/run_width_matrix.py
+  51_probes/widths/w01.rs
+  51_probes/widths/w02.rs
+  51_probes/widths/w03.rs
+  51_probes/widths/w04.rs
+  51_probes/widths/w05.rs
+  51_probes/widths/w06.rs
+  51_probes/widths/w07.rs
+  51_probes/widths/w08.rs
+  51_probes/widths/w09.rs
+  51_probes/widths/w10.rs
+  51_probes/widths/w11.rs
+  51_probes/widths/w12.rs
+  51_probes/widths/w13.rs
+  51_probes/widths/w14.rs
+  51_probes/widths/w15.rs
+  51_probes/widths/w16.rs
+  51_probes/widths/w17.rs
+  51_probes/widths/w18.rs
+  51_probes/widths/w19.rs
+  51_probes/widths/w20.rs
+  51_probes/widths/w21.rs
+  51_probes/widths/w22.rs
+  51_probes/widths/w23.rs
+  51_probes/widths/w24.rs
+  51_probes/widths/w25.rs
+  51_probes/widths/w26.rs
+  51_probes/widths/w27.rs
+  51_probes/widths/w28.rs
+  51_probes/widths/w29.rs
+  51_probes/widths/w30.rs
+  51_probes/widths/w31.rs
+  51_probes/widths/w32.rs
+  51_probes/widths/w33.rs
+  51_probes/widths/w40.rs
+  51_probes/widths/w47.rs
+  51_probes/widths/w48.rs
+  51_probes/widths2/cross_check.rs
+  51_probes/widths2/w01.rs
+  51_probes/widths2/w02.rs
+  51_probes/widths2/w03.rs
+  51_probes/widths2/w04.rs
+  51_probes/widths2/w05.rs
+  51_probes/widths2/w06.rs
+  51_probes/widths2/w07.rs
+  51_probes/widths2/w08.rs
+  51_probes/widths2/w09.rs
+  51_probes/widths2/w10.rs
+  51_probes/widths2/w11.rs
+  51_probes/widths2/w12.rs
+  51_probes/widths2/w13.rs
+  51_probes/widths2/w14.rs
+  51_probes/widths2/w15.rs
+  51_probes/widths2/w16.rs
+  51_probes/widths2/w17.rs
+  51_probes/widths2/w18.rs
+  51_probes/widths2/w19.rs
+  51_probes/widths2/w20.rs
+  51_probes/widths2/w21.rs
+  51_probes/widths2/w22.rs
+  51_probes/widths2/w23.rs
+  51_probes/widths2/w24.rs
+  51_probes/widths2/w25.rs
+  51_probes/widths2/w26.rs
+  51_probes/widths2/w27.rs
+  51_probes/widths2/w28.rs
+  51_probes/widths2/w29.rs
+  51_probes/widths2/w30.rs
+  51_probes/widths2/w31.rs
+  51_probes/widths2/w32.rs
+  51_probes/widths2/w33.rs
+  51_probes/widths2/w40.rs
+  51_probes/widths2/w47.rs
+  51_probes/widths2/w48.rs
+  51_probes/widths3/w01.rs
+  51_probes/widths3/w02.rs
+  51_probes/widths3/w03.rs
+  51_probes/widths3/w04.rs
+  51_probes/widths3/w05.rs
+  51_probes/widths3/w06.rs
+  51_probes/widths3/w07.rs
+  51_probes/widths3/w08.rs
+  51_probes/widths3/w09.rs
+  51_probes/widths3/w10.rs
+  51_probes/widths3/w11.rs
+  51_probes/widths3/w12.rs
+  51_probes/widths3/w13.rs
+  51_probes/widths3/w14.rs
+  51_probes/widths3/w15.rs
+  51_probes/widths3/w16.rs
+  51_probes/widths3/w17.rs
+  51_probes/widths3/w18.rs
+  51_probes/widths3/w19.rs
+  51_probes/widths3/w20.rs
+  51_probes/widths3/w21.rs
+  51_probes/widths3/w22.rs
+  51_probes/widths3/w23.rs
+  51_probes/widths3/w24.rs
+  51_probes/widths3/w25.rs
+  51_probes/widths3/w26.rs
+  51_probes/widths3/w27.rs
+  51_probes/widths3/w28.rs
+  51_probes/widths3/w29.rs
+  51_probes/widths3/w30.rs
+  51_probes/widths3/w31.rs
+  51_probes/widths3/w32.rs
+  51_probes/widths3/w33.rs
+  51_probes/widths3/w40.rs
+  51_probes/widths3/w47.rs
+  51_probes/widths3/w48.rs
+  55_probes/p1_one_membership_predicate.rs
+  55_probes/p2_saturate_is_adaptation_wrap_is_domain.rs
+  55_probes/p3_encoding_is_a_separate_axis.rs
+  55_probes/p5_one_bound_divergence.rs
+  56_probes/q1_two_law_families.rs
+  57_probes/p1_absorption_versus_bound_count.rs
+  57_probes/p2_absorption_necessity_sweep.rs
+  57_probes/p2b_necessity_violations_are_degenerate.rs
+  57_probes/p3_semiring_across_widths_and_scales.rs
+  57_probes/p4_which_factor_breaks_and_what_coherence_buys.rs
+  57_probes/p5_is_there_actually_a_grading.rs
+  57_probes/p6_the_adaptation_absorbs_one_bit.rs
+  57_probes/p8_the_150_are_the_same_class_as_the_153.rs
+  57_probes/p9_two_hypotheses_predict_the_whole_cube.rs
+  58_probes/p2_multiplicative_grade_does_not_collapse.rs
+  60_probes/p_a_dot_schedules.rs
+  60_probes/p_b_order_dependence.rs
+  60_probes/p_c1_width_algebra.rs
+  60_probes/p_c2_general_impl_refused.rs
+  60_probes/p_d_rescale_saving_is_adaptation_fusion.rs
+  61_probes/q1_absorption_versus_coherence.rs
+  61_probes/q2_wrap_ring_at_nonzero_fraction.rs
+  62_probes/p2b_failure_sets_at_deep_fraction.rs
+  62_probes/p3_wrap_section_becomes_observable.rs
+  62_probes/p4_signed_multiplicative_accumulator.rs
+  65_probes/derive_validate_erase.rs
+  66_probes/associativity_check.py
+  66_probes/derive_validate_erase_pipeline.rs
+  66_probes/fixed_vs_float_generic_format.py
+  66_probes/redundant_representation_demo.py
+  67_probes/p2_three_crossings.py
+  67_probes/p4b_recount.py
+  67_probes/p5_strategy_selects_the_member.rs
+  68_probes/p1b_65_negative_enabled.rs
+  68_probes/p3_mutant_overdeclared_window.rs
+  68_probes/p4_validate_residue.rs
+  68_probes/p5_const_eval_ceiling.rs
+  70_probes/p1_target_owned_q.rs
+  70_probes/p2_ownership_moves.rs
+  70_probes/p3_component_effect_table.py
+  71_probes/p1_five_crossings.py
+  71_probes/p2_composite_crossings.py
+  71_probes/p4_crossing_contract.rs
+  71_probes/p4_n1.rs
+  71_probes/p4_n2.rs
+  71_probes/p4_n3.rs
+  71_probes/p4_negatives.sh
+  71_probes/p5_resolution_three_routes.py
+  71_probes/p6_check_my_own_citations.py
+  71_probes/p7_index2_pattern_cell.py
+  71_probes/p8_redundant_encoding_crossing.py
+  72_probes/p1_the_refuting_rows_are_constructional.py
+  73_probes/p1_collapse.py
+  73_probes/p1b_952_attribution.py
+  73_probes/p1d_admission_clauses.py
+  73_probes/p2_order_discriminator.py
+  73_probes/p3_membership_contract.rs
+  73_probes/p3_n1.rs
+  73_probes/p3_n2.rs
+  73_probes/p3_n3.rs
+  73_probes/p3_negatives.sh
+  73_probes/p4_check_my_own_citations.py
+  73_probes/p5_which_third_verdict.py
+  76_probes/probe1_associativity_exhaustive.rs
+  76_probes/probe2_derive_validate_erase.rs
+  76_probes/probe2_erase_check.rs
+  76_probes/probe2b_invalid_instantiation.rs
+  76_probes/probe3a_wrapping_law_compiletime.rs
+  76_probes/probe3b_saturating_law_compiletime.rs
+  77_probes/probe1_chain_error.py
+  77_probes/probe2_bad_case_refused.rs
+  77_probes/probe2_fail_inline_const_expr.rs
+  77_probes/probe2_works_validate_erase.rs
+  77_probes/probe3_negative_check.rs
+  77_probes/probe3_strategy_resolve_lattice.rs
+  80_probes/p1b_computed_law_refuses.rs
+  80_probes/p2_frontier.py
+  80_probes/p2_frontier_BROKEN_FIRST_RUN.py
+  80_probes/p2b_swept_verdict_at_shipped_width.rs
+  80_probes/p2c_closed_form_checked_on_a_model.rs
+  80_probes/p5_allow_the_guard.py
+  80_probes/p5_generated/allow_w6_sat.rs
+  80_probes/p5_generated/allow_w6_wrap.rs
+  80_probes/p5_generated/allow_w7_sat.rs
+  80_probes/p5_generated/allow_w7_wrap.rs
+  80_probes/p5_generated/allow_w8_sat.rs
+  80_probes/p5_generated/allow_w8_wrap.rs
+  80_probes/p5_generated/allow_w9_sat.rs
+  80_probes/p5_generated/allow_w9_wrap.rs
+  80_probes/p6_which_chain_laws_reduce_to_arity_three.rs
+  82_probes/p11_the_frontier_reads_the_encoding.py
+  82_probes/p3_make_variants.sh
+  82_probes/p3a_the_construction.rs
+  82_probes/p3b2_straddling_reachable.rs
+  82_probes/p3b_straddling_declaration_refused.rs
+  82_probes/p3c_perturbed_closed_form_refused.rs
+  82_probes/p3d_bad_straddling_dead_code.rs
+  82_probes/p3d_perturbed_verdict.rs
+  82_probes/p3d_structural_permission.rs
+  82_probes/p3e_bound_position_refused.rs
+  82_probes/p4_asm_report.sh
+  82_probes/p4_count_loops.py
+  82_probes/p5_agreement_and_the_length_axis.rs
+  82_probes/p7_bad_straddling_const.rs
+  82_probes/p7_perturbed_verdict.rs
+  82_probes/p7_window_from_outside_the_typestate.rs
+  82_probes/p8_binding_time_ladder.sh
+  82_probes/p9_positive_verdict_at_a_shipped_width.py
+  84_probes/p2b_no_band_can_catch_it.rs
+  84_probes/p3_transfer_polarity.rs
+  84_probes/p4b_certificate_gate.rs
+  86_probes/p2_box_frontier.py
+  86_probes/p2b_pin_default_frontier.py
+  86_probes/p3b_verify_shapes.rs
+  86_probes/p5_sat_piecewise_procedure.rs
+  89_probes/p10_wider_falsification.rs
+  89_probes/p3_frontier.py
+  89_probes/p3b_checker_frontier.py
+  89_probes/p7_arity_frontier.py
+  89_probes/p8_why_signed_is_gapped.rs
+  89_probes/p9_two_routes_closed.rs
+  92_probes/tabulate.py
+  93_probes/p1_resolve_semilattice.rs
+  93_probes/p1b_demands_and_closure.rs
+  93_probes/p2_policy_selects_the_algebra.rs
+  93_probes/p2b_where_the_algebra_actually_varies.rs
+  93_probes/p2c_the_boundary_across_widths.rs
+  93_probes/p3_mutant_wrong_join.rs
+  93_probes/p3_product_lattice_in_the_type_system.rs
+  93_probes/p4_preference_erases.rs
+  93_probes/p5_what_warm_imitates.rs
+  93_probes/p6_the_chain_clause.rs
+  93_probes/p7_signedness_breaks_the_congruence.rs
+  93_probes/p8_q41_do_the_honoured_law_sets_nest.rs
+  94_probes/a_choice_function.rs
+  94_probes/b_unbundled.rs
+  94_probes/b_unbundled_four.rs
+  94_probes/c_retraction.rs
+  94_probes/d_resolution.rs
+  94_probes/e_chain_exactness.rs
+  94_probes/f_where_carried.rs
+  94_probes/g_const_availability.rs
+  97_probes/p1b_the_gap_is_structural.py
+  97_probes/p3_does_a_conservatism_order_exist.py
+  97_probes/p4_demand_lattice.rs
+  97_probes/p4_generate_pairs.py
+  97_probes/p4_mutant_dropped_demand.rs
+  97_probes/p4b_the_closure_is_free.py
+  97_probes/p5_verify_my_citations.py
+  97_probes/p7_diff_the_criterion_against_35.py
+  97_probes/p8_compare.py
+  97_probes/p9_the_decider.py
+  98_probes/cone.py
+  98_probes/lp.py
+  98_probes/p11_verify_my_citations.py
+  98_probes/p1b_domination_is_relative_to_the_coordinate_set.py
+  98_probes/p3_a_rung_count_is_a_fact_about_one_table.py
+  98_probes/p3b_why_the_order_rung_is_empty_on_real_data.py
+  98_probes/p4_priority_order_against_exchange_rate.py
+  98_probes/p5_the_reference_coordinate_is_not_a_machine_cost.py
+  98_probes/p7_does_rationalisability_predict.py
+  98_probes/p8_which_intents_the_corpus_can_weigh.py
+  98_probes/p9_the_proposal_instantiated.py
+  SEED_TALKING_POINTS_probes/b1_structural_array.rs
+  SEED_TALKING_POINTS_probes/p5_total_ladder.rs
+  SEED_THEORY_46_90_probes/a_union_as_lib.rs
+  SEED_THEORY_46_90_probes/fusion.rs
+  SEED_THEORY_46_90_probes/spare.rs
+
+## per directory, stated / total
+02_probes                        0 /  10
+03_probes                        0 /   5
+06_probes                        2 /   8
+07_probes                        3 /  11
+08_probes                        3 /  11
+100_probes                      11 /  15
+101_probes                      11 /  12
+102_probes                       2 /   8
+103_probes                       2 /  10
+106_probes                       1 /   5
+107_probes                       1 /  13
+108_probes                       0 /  11
+109_probes                       3 /  10
+10_probes                        4 /  25
+110_probes                       5 /  15
+111_probes                       6 /  16
+112_probes                       3 /  19
+114_probes                       8 /  11
+115_probes                       3 /   4
+116_probes                       5 /   7
+118_probes                       5 /   7
+119_probes                       1 /   2
+11_probes                        1 /  18
+120_probes                       4 /   4
+121_probes                       2 /   4
+122_probes                       6 /   6
+125_probes                       5 /   5
+126_probes                       0 /   4
+127_probes                       1 /   1
+128_probes                       3 /   3
+129_probes                       1 /   1
+12_probes                        0 /  24
+130_probes                       1 /   1
+131_probes                       2 /   3
+132_probes                       0 /   1
+133_probes                       2 /   2
+135_probes                       0 /   1
+136_probes                       4 /   5
+137_probes                       3 /   9
+138_probes                       2 /   2
+139_probes                       8 /   8
+13_probes                        2 /  32
+140_probes                       6 /   6
+141_probes                      11 /  12
+142_probes                       3 /   3
+143_probes                       4 /   4
+144_probes                      17 /  17
+145_probes                       6 /   7
+146_probes                       1 /   1
+147_probes                       1 /   1
+148_probes                       3 /   3
+149_probes                       3 /   5
+150_probes                       5 /   5
+151_probes                       5 /   5
+154_probes                       6 /  14
+155_probes                       1 /   1
+157_probes                       7 /  10
+158_probes                       2 /   2
+159_probes                       2 /   2
+15_probes                        2 /  27
+160_probes                       5 /   5
+161_probes                       3 /   3
+162_probes                       2 /   5
+163_probes                       4 /   7
+164_probes                       4 /   4
+165_probes                       1 /   1
+167_probes                      11 /  14
+168_probes                       8 /   8
+169_probes                       4 /   6
+16_probes                        0 /   9
+170_probes                       4 /   4
+171_probes                       8 /  10
+172_probes                       6 /   6
+173_probes                       4 /   4
+174_probes                       3 /   4
+175_probes                       7 /   7
+176_probes                       5 /   5
+177_probes                       7 /   8
+178_probes                       5 /   5
+179_probes                       1 /   1
+17_probes                        7 /   9
+180_probes                       2 /   2
+183_probes                       7 /   8
+18_probes                        2 /   9
+20_probes                        1 /   4
+21_probes                        0 /   1
+22_probes                        0 /   2
+23_probes                        0 /   3
+24_probes                        0 /   8
+25_probes                        0 /   4
+26_probes                        2 /   3
+27_probes                        5 /   7
+31_probes                        0 /   2
+33_probes                        0 /   1
+35_probes                        9 /  12
+40_probes                        2 /   7
+42_probes                        0 /   3
+43_probes                        4 /   8
+45_probes                        2 /   7
+47_probes                        5 /  12
+49_probes                        0 /   5
+50_probes                        3 /   9
+51_probes                       11 / 168
+55_probes                        1 /   5
+56_probes                        2 /   3
+57_probes                        1 /  10
+58_probes                        1 /   2
+60_probes                        0 /   5
+61_probes                        0 /   2
+62_probes                        2 /   5
+65_probes                        0 /   1
+66_probes                        0 /   4
+67_probes                        6 /   9
+68_probes                        0 /   4
+70_probes                        0 /   3
+71_probes                        1 /  12
+72_probes                        1 /   2
+73_probes                        2 /  13
+76_probes                        1 /   7
+77_probes                        0 /   6
+79_probes                        2 /   2
+80_probes                        3 /  18
+82_probes                        8 /  26
+84_probes                        3 /   6
+86_probes                        3 /   7
+89_probes                        8 /  14
+92_probes                        1 /   2
+93_probes                        1 /  13
+94_probes                        0 /   8
+97_probes                        6 /  16
+98_probes                        7 /  18
+SEED_TALKING_POINTS_probes       0 /   2
+SEED_THEORY_46_90_probes         1 /   4

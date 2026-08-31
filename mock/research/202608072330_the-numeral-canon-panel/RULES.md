@@ -498,8 +498,26 @@ to qualify every citation, which is a rule people forget. This is a rule the fil
 **Citing dead material stays legal and stays visible.** `OLD_109_the_consolidation_drop_audit.md` reads as
 what it is at every glance, in prose, in a grep result, and in a diff. The 105 archive citations already
 written into `SEED_TALKING_POINTS.md`, the three `SEED_THEORY_*` files and `PRIOR_CALLS.md` were repointed
-when the rename landed, checked both directions: no unprefixed archive citation remains, and no `OLD_`
-citation names a file that does not exist.
+when the rename landed, and those five files still carry none: measured at zero each.
+
+**That pass claimed the class and had fixed the instances, and the sentence here used to say so.** It read
+"no unprefixed archive citation remains", which is a claim over the whole tree made from a check over five
+files. Dozens of files across the panel carry unprefixed `seed/SETTLED_*` citations, none of which
+resolves, and some were in `INTENTS.md`, the catalogue every dispatch reads first, so the provenance of
+I2 and I3 pointed at nothing for as long as the sentence stood.
+
+**No count is written here on purpose.** The first repair put one in, and it was stale within the hour
+because the repair itself changed it and because this paragraph then contained the string it was counting.
+`mock/checks` measures it, which is the only form that cannot drift.
+
+- **The living ledgers are repointed**: `INTENTS.md`, `PERSONA_CALLS.md`, `OPTIONS.md`.
+- **The rest stay exactly as written.** They are in landed numbered files and in committed probe output,
+  which are the record and are not edited. **Read an unprefixed `seed/SETTLED_*` citation by prepending
+  `OLD_`**; nothing else about it has moved.
+- **`mock/checks` enforces the repaired claim** rather than this prose asserting it: no living ledger may
+  carry an unprefixed archive citation, every `seed/OLD_*` citation anywhere has to name a file that
+  exists, and the number left in the landed files may not grow. A totality claim with nothing enforcing it
+  is what produced this, and a count in prose is the same defect one size down.
 
 **When something in root dies, prefix it then.** The root's non-prefixed state is a claim that everything in
 it is live, and that claim is only true if it is maintained.

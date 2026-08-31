@@ -1,0 +1,32 @@
+######## origin/dev
+--- mock/DESIGN.md.tmpl, the foundations-crate sentence
+  50:Each step names its foundations crate dependency: `arvo-bitmask` for set ops, `arvo-graph` for 
+  DAG / RCM, `arvo-sparse` for CSR DependencyGraph (bench-locked canonical at all N), `arvo-spectral` 
+  for the Fiedler partition step, `arvo-comb` for the cost DP.
+--- mock/crates/hilavitkutin/DESIGN.md.tmpl, the spectral step
+  64:7. Spectral partitioning → spectral `FiberGrouping` via an engine-local
+  65- symmetric Laplacian over arvo-spectral's k-way partitioning, run over
+  66- the live-node-count-aware (loose-CSR-correct) Laplacian. Step 8's
+  67- width-gate consumes it for wide blocks (arvo-spectral).
+
+######## recover/unlanded-rounds-and-benches
+--- mock/DESIGN.md.tmpl, the foundations-crate sentence
+  50:Each step names its foundations crate dependency: `arvo-bitmask` for set ops, `arvo-graph` for 
+  DAG / RCM, `arvo-sparse` for CSR DependencyGraph (bench-locked canonical at all N), `arvo-spectral` 
+  for the Fiedler partition step, `arvo-comb` for the cost DP.
+--- mock/crates/hilavitkutin/DESIGN.md.tmpl, the spectral step
+  64:7. Spectral partitioning → spectral `FiberGrouping` via an engine-local
+  65- symmetric Laplacian over arvo-spectral's k-way partitioning, run over
+  66- the live-node-count-aware (loose-CSR-correct) Laplacian. Step 8's
+  67- width-gate consumes it for wide blocks (arvo-spectral).
+
+######## the words the rewording attributes to that table
+  Laplacian construction   occurrences across both refs and both files: 0
+  power iteration          occurrences across both refs and both files: 0
+  both split forms         occurrences across both refs and both files: 0
+  bisection                occurrences across both refs and both files: 0
+
+######## control: a phrase that IS there, and one that is not
+  engine-local             top-level=0 per-crate=1
+  Fiedler partition step   top-level=1 per-crate=0
+  ZZZ_NOT_IN_ANY_DESIGN    top-level=0 per-crate=0

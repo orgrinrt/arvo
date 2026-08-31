@@ -1,0 +1,19 @@
+### I1, the control table, which must be reported
+  WRONG LINE    161:26 wanted clause 1. a primitive is a value set with one realisation map, line reads: Checked against `INTENTS.md` read in full including 
+  NO SUCH ROW   no_such_row_anywhere (from 161:521)
+  control: 2 problem(s), 2 ported rows referenced
+
+### I2, the real inventory, which must be clean
+  inventory: 0 problem(s), 23 ported rows referenced
+
+### I3, ported rows in the inventory against rows in the registry
+  inventory PORTED lines: 23
+  registry rows:          23
+  PASS, every registry row is reachable from a clause (some clauses share a row)
+
+### the verdict tally
+    24 NO-AXIS
+    23 PORTED
+    16 NO-REGION
+     1 REFUSED
+     1 FOLDED

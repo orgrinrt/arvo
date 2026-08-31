@@ -1,0 +1,44 @@
+######## obligation_coverage.sh control
+=== BASELINE ===
+
+  totals, counted apart because a proposal is proposed rather than met:
+    met 1   proposed 1   nothing 9   of 11
+=== CONTROL: one ruling edge, one proposal edge planted ===
+  a_cost_dynamic_program                               proposed  PLANTED_PROP
+  a_content_hash                                       met       PLANTED_RULING
+    met 2   proposed 2   nothing 7   of 11
+
+######## what_would_meet_it.sh control
+  $ what_would_meet_it.sh --control Fiedler "topological order" "content hash"
+  ---- term: Fiedler
+    PLANTED     CONTROL_ROW                                 says
+    obligation  a_spectral_partition_of_a_dependency_graph  need
+  ---- term: topological order
+    PLANTED     CONTROL_ROW                                 says
+    obligation  ordering_a_directed_acyclic_graph           need
+  ---- term: content hash
+    PLANTED     CONTROL_ROW                                 says
+    obligation  an_exact_width_container_...                why
+
+The planted record surfaces under all three, so an empty report is about the
+corpus rather than about the grep. And the only non-planted hits are the
+obligations quoting themselves: `Fiedler`, `topological order` and
+`content hash` occur nowhere else in any of the twelve registry files.
+
+######## the citation checker refuses a slug naming no obligation
+  Planted obligation = ["an_obligation_that_does_not_exist"] on
+  ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up:
+
+  ERROR [unknown-row-reference]: ruling::ingest_is_the_consumers_and_the_c_abi_is_where_it_ends_up:
+  field `obligation` references `obligation::an_obligation_that_does_not_exist`, which no row declares.
+  registry check failed: 1 error(s)
+
+  Swapped for the real slug: schema check passed.
+
+######## the edit touched nothing it was not asked to
+  git diff --numstat mock/registry/
+    1 0  proposal-the-later-topics.toml
+    2 0  proposal.toml
+    1 0  ruling.toml
+  Four insertions, zero deletions. Row counts before and after: ruling 75 = 75,
+  proposal 77 = 77, proposal-the-later-topics 17 = 17.

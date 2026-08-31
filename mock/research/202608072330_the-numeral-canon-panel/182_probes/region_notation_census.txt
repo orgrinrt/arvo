@@ -1,0 +1,37 @@
+=== region statements per source ===
+file                                                     holds for Predicate    total
+63_spj_consolidation_the_format_concept.md                      0        0        0
+74_giesen_consolidation_the_number_system_concept.md            0        0        0
+90_giesen_consolidation_derived_algebraic_laws.md               0        2        2
+106_giesen_consolidation_the_strategy_axis.md                   8        1        9
+AGREEMENTS.md                                                   0        0        0
+
+=== the eight in 106, with the line each sits on ===
+292:`holds for: regions = 6, arms = 5, cost coordinates = 2 (median algo_ns per record, declared bit
+318:`holds for: target aarch64-apple-darwin, rustc 1.98.0-nightly (57d06900f), edition 2024, opt-lev
+324:types.** `holds for: W in 3..8, F in 0..2, signedness = unsigned, overflow in {wrap, saturate},
+374:`holds for: the committed corpus at HEAD of feat/arvo-shape-topic, files 254, producing commits 
+460:`holds for: W = 13, operations in {+, -, *, >>}, column lengths in {1, 2, 3, 4, 8, 16, 32, 64, 1
+530:`holds for: W in {5, 6}, F in {0, 1}, signedness in {unsigned, signed}, overflow in {wrap, satur
+596:`holds for: regions = 5, arms = 5, cost coordinates = 3, 400 random models across two families, 
+1356:> `holds for: W in {4, 5, 6}, F = 0, signedness = signed, overflow = saturate, operand window =
+
+=== the two in 90 ===
+153:arity-2 control. Predicate: `N = 4, sign = signed, policy = {wrap, saturate}, op = add, F = 0,
+564:`84`'s multivariate predicate: established at the degree fed to the instrument, not the degree o
+
+=== NEGATIVE CONTROL: a pattern that must find nothing ===
+63_spj_consolidation_the_format_concept.md               0
+74_giesen_consolidation_the_number_system_concept.md     0
+90_giesen_consolidation_derived_algebraic_laws.md        0
+106_giesen_consolidation_the_strategy_axis.md            0
+AGREEMENTS.md                                            0
+(all zero, so a zero above is a real absence rather than a broken grep)
+
+=== POSITIVE CONTROL: a pattern that must find something in all five ===
+63_spj_consolidation_the_format_concept.md               535
+74_giesen_consolidation_the_number_system_concept.md     640
+90_giesen_consolidation_derived_algebraic_laws.md        478
+106_giesen_consolidation_the_strategy_axis.md            779
+AGREEMENTS.md                                            441
+(all non-zero, so the files are being read at all)

@@ -1,0 +1,551 @@
+# What the later five topics settled: the realisation map, rounding, the
+# strategy object, the primitive, and the chain.
+#
+# A separate file from `proposal.toml` because that one is being written at the
+# same moment for the four earlier consolidations. A row's namespace is the
+# array-of-tables key and never the path, so these are the same namespace and
+# every query sees both; two files only keep the merge clean. A later pass may
+# refile by subject.
+#
+# Every row is ported from the revision that governs its topic, per
+# `AGREEMENTS.md` sections 9 through 13: `122` over `119`, `136` restored by
+# `138` over `132`, `151` over `146`, `164` over `161`, and `176` superseded in
+# seven places by `178` over `173`. Where a revision leaves a clause standing,
+# the candidate's own text is the source and the revision's opening list is what
+# says so.
+#
+# **This file is far shorter than the material it comes from, and the reason is
+# mechanical rather than editorial.** A non-normative proposal must carry a
+# region, a region entry must name a declared `dimension`, and the corpus
+# predicates over 115 distinct keys of which 19 map onto a declared axis. Of the
+# 64 predicate spans in the twelve governing files, 5 use only declared axes.
+# Two whole topics, the primitive and the chain, write no predicate on any
+# statement clause at all. What could not be written is enumerated in
+# `183_rompf_porting_the_five_candidates.md`, which is the larger half of the
+# port and the part worth reading.
+#
+# **`normative` carries the definitions as well as the prescriptions.** The
+# `sentence_kind` enumeration has no value for a stipulated definition, and
+# `normative` is the only one whose predicate contract fits: a definition is
+# imposed rather than established, and a region on it would say the definition
+# holds only where somebody measured. Every such row says so in `note`.
+
+# --- the primitive ------------------------------------------------------------
+
+[[proposal]]
+id = "a_primitive_is_a_value_set_with_one_realisation_map"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_primitive"
+says = "A primitive is a value set together with one realisation map taking an exact result back into it, over a declared operation set. Its identity is that structure up to denotation-preserving isomorphism, relative to the declared operation set. Of the three sameness relations, nominal, representational and denotational, each licensing a different operation, only the denotational one is a congruence under composition, which is why it and only it licenses substitution inside a composite."
+because = "The composed clause survived attack at both ends: the packed end does not touch it, because it is a statement about denotation while the compile refusal that would refute it is a statement about representability. Types are the degenerate case of lenses, which is the synthesis the two cold derivations could not reach and which arrived in the reply round, and it gives one vocabulary across the whole declared range without the cost the single-vocabulary option carried."
+note = """
+The composed wording is one expert's and the parts underneath it have stronger \
+provenance of their own. The identity half is conditional on a decision that is \
+not the panel's: under one branch of the container premise the isomorphism \
+quotients the carrier and this clause's extension is the coarser partition, and \
+under the other it must preserve the carrier and the extension refines, measured \
+at 32 primitives against 64 on the swept grid. The wording is parametric in the \
+operation set, so its truth value is stable and only its extension moves.
+
+`normative` because the sentence is a definition. It is stipulated rather than \
+established, so it carries no region, and the kind enumeration has no separate \
+value for a definition.
+"""
+gap = "Which branch of the container premise holds is not the panel's to choose, and the extension of this clause moves with it."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::521",
+  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::159",
+]
+keywords = ["primitive", "value set", "realisation map", "identity", "denotation", "isomorphism", "sameness", "nominal", "representational", "denotational", "congruence", "substitution", "composite"]
+
+[[proposal]]
+id = "the_realisation_map_is_one_map_with_two_regions"
+kind = "answer"
+sentence_kind = "normative"
+standing = "three_or_more"
+topic = "the_primitive"
+says = "The realisation map is one map with two regions: rounding between grid points, and completion outside the representable range. They are never two mechanisms."
+because = "A magnitude bound switches off the completion and not the rounding, and a grid bound does the reverse, which is what two regions of one map predict and what two independent axes do not."
+note = """
+Three derivations, one of them blind, plus a fourth separately built instrument \
+on the licence side, which is why this carries a stronger standing than the \
+clause it sits inside.
+
+`normative` because it is definitional. None of the three derivations states a \
+region, and the claim is about the map's structure rather than about a numeral's \
+behaviour at a width.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::85",
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::521",
+]
+keywords = ["realisation map", "two regions", "rounding", "completion", "range", "grid", "one map", "not two mechanisms", "magnitude bound", "grid bound"]
+
+[[proposal]]
+id = "a_law_is_read_off_the_algebra_and_never_declared"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "A law is read off the algebra and never declared. A declared law is a claim nothing constrains: it compiles while false, and an optimisation gated on it substitutes wrong answers along a name."
+because = "Closure is prior to every law. An operation that leaves its value set is not yet the function the law would be about, so a law asserted about it asserts nothing, and nothing in the type system is in a position to refuse the assertion."
+instead = "Read as a demand rather than as an assertion, a law is a predicate over the configuration space: a surface a consumer may query, and never a field a consumer may set."
+answers = ["how_the_law_inventory_is_named"]
+note = "`normative` because it is a prohibition on the design rather than a measured claim. A region on it would say the design may declare laws everywhere unmeasured."
+provenance = ["panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::531"]
+keywords = ["law", "declared law", "read off", "algebra", "demand", "predicate", "configuration space", "closure", "query", "gated optimisation"]
+
+[[proposal]]
+id = "an_axis_the_realisation_map_does_not_read_is_not_a_type_parameter"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_primitive"
+says = "An axis the realisation map does not read must not be a type parameter. The cost of two names for one primitive is a property of where the spellings meet: nothing at a monomorphic site, one threaded parameter at a polymorphic signature, and no repair at a homogeneous container, which is why a spurious parameter's whole cost lands on the storage path the design protects."
+because = "The three-armed cost is measured rather than argued, and the armless arm is the one the storage discipline exists for. An axis that changes no answer and selects no arm buys nothing anywhere and costs a threaded parameter wherever two spellings meet."
+instead = "An axis the arm selection reads may be a type parameter, because weakening repairs it and weakening is free."
+note = """
+The panel records this as CONVERGED. Demoted here to one expert on the test the \
+schema states, which is that each party derived before reading the other: the \
+two later contributions sharpen the first after reading it, one correcting the \
+scope and one compiling the spurious-against-refinement asymmetry in both \
+directions. Both are real instruments and neither is an independent arrival.
+
+Carried as its own row because the clause it comes from is refused as written. \
+Under one branch of the container premise the clause's first sentence is false \
+and no wording is true on both branches until that is ruled on, so the first \
+sentence is not in this file at all. The second and third parts are untouched by \
+the premise and are signed.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::558",
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::334",
+  "panel::202608072330_the-numeral-canon-panel::163_lamport_signature_in_part::276",
+]
+keywords = ["type parameter", "spurious axis", "parameterisation", "weakening", "arm selection", "missed merge", "two names", "monomorphic", "polymorphic", "homogeneous container", "storage path"]
+
+[[proposal]]
+id = "the_lens_degenerates_to_an_ordinary_value_at_sole_occupancy"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_primitive"
+says = "The realisation is a lens: a placement of the value's bits, a carrier, an offset and a width, within a carrier allocation. It degenerates to an ordinary value exactly where its focus is the sole logical occupant of its carrier allocation, with padding permitted and sharing not. At a degenerate point the language supplies a standalone type and the native end never mentions the lens; everywhere else the primitive is reached through its carrier and no size-bounded contract ranges over it."
+because = "Sole occupancy is correct in three failure directions where the positional condition it replaces is wrong in all three: under-strict on sharing at offset zero, over-strict on padding, and over-strict on sole occupancy at a nonzero offset. A thirteen-bit value at offset three of a sixteen-bit carrier is two bytes, sized, referenceable, and round-trips over all 8192 values; the positional condition rejects it and sole occupancy accepts it."
+note = """
+The third failure direction is the one that decides it, and it was found by a \
+separately built instrument extending the first. Standing stays at one expert \
+because the second party built its instrument after reading the first rather \
+than deriving independently.
+
+What the unrepaired condition would have cost is recorded rather than inferred: \
+the canon would have classified the first element of every packed column as an \
+ordinary value.
+
+Whether a placement has a standalone name is a property of the target's \
+addressing rather than of the primitive, so this states the reason and no arity. \
+The lens's form is invariant under the container decision; only identity's \
+granularity moves with it.
+
+`normative` because it is a definition with a criterion, stipulated rather than \
+measured. The three failure directions are measured and belong to the criterion's \
+justification rather than to a region the definition holds in.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::548",
+  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::257",
+]
+keywords = ["lens", "realisation", "placement", "carrier", "offset", "width", "sole occupancy", "padding", "sharing", "degenerate", "standalone type", "Sized", "packed column"]
+
+[[proposal]]
+id = "naming_is_partial_and_injective_or_it_is_broken"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "naming"
+says = "Naming is partial and injective, or it is broken. A name is an existence claim: the set of names is the set of supported compositions, the boundary between nameable and unnameable is where compile-time validation happens, and the naming function is the validator."
+because = "The partial half is a compile refusal naming the exact composition that overflows the container, so the absence of a name is what refuses an unsupported shape. The injective half is a type error wall, so two names for one primitive is a missed merge rather than a convenience."
+note = """
+Recorded by the panel as CONVERGED and demoted here to one expert, because the \
+two halves were derived by two members and neither derived the composed claim. \
+The composed statement, that the two halves are complementary, is one file's.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::605",
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::321",
+]
+keywords = ["naming", "partial", "injective", "existence claim", "validator", "nameable", "unnameable", "compile-time validation", "missed merge", "composition"]
+
+[[proposal]]
+id = "configuration_is_not_composition_and_a_composite_is_a_primitive"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_primitive"
+says = "Configuration is not composition. Choosing a format, a system or a strategy fills in a record; composition is a construction taking an algebra to an algebra; and a composite is a primitive under the same definition, so one concept serves and every contract written for a primitive applies to a composite unchanged. A construction carries two things of its own, a predicate on its base and a transformer for its base's refinements, and equality transports through a construction for free where a predicate never does."
+because = "Borrowing the base's rule for a construction's predicate is unsound where borrowing it for equality is not, which is what makes the two halves different obligations rather than one. The distinction and the closure were reached blind twice from different instrument sets."
+obligation = ["composition_contracts_above_the_numeral"]
+note = """
+Two instances on the distinction and on the closure, the second a blind arrival \
+in a later sitting from a different instrument set, classified by the attacking \
+member as a genuine convergence with the shared bench corpus named. Any \
+particular categorical frame offered beyond the distinction stays at one expert \
+and is not in this row.
+
+`normative` because the sentence stipulates what the words mean and what follows \
+from that. The unsoundness of borrowing is measured and sits underneath as the \
+reason.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::610",
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::340",
+]
+keywords = ["configuration", "composition", "construction", "composite", "algebra", "one concept", "transformer", "predicate on the base", "equality transports", "refinement"]
+
+# --- the realisation map --------------------------------------------------------
+
+[[proposal]]
+id = "the_realisation_map_has_an_algebraic_character"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_realisation_map"
+says = "A primitive's realisation map takes an exact result back into the primitive's value set. Beyond what it computes, the map has an algebraic character: the set of algebraic properties it possesses. The map is a homomorphism for an operation when reducing before that operation and reducing after it agree, and it is order-preserving when it never inverts the order of two exact results."
+because = "The two properties are what a design may act on: one licenses deferring a reduction, and the other licenses constructions and rewrites that read the map's order. Naming the character is what makes the licence families statable at all."
+note = """
+Signed as definitional by the one signature that reached it. `normative` for the \
+same reason as the other definitions here: it is stipulated, and the source \
+marks it `Definitional; no predicate`.
+
+What follows from the character is a family of claims about which licence is \
+available where, and none of those is in this file: every one of them is stated \
+over an ambient domain and its closure under negation, and no `dimension` row \
+declares such an axis.
+"""
+gap = "The whole of what this character licenses is unported. The topic's ten remaining clauses all carry regions naming axes the registry does not declare."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::379",
+  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::347",
+]
+keywords = ["realisation map", "algebraic character", "homomorphism", "order-preserving", "monotone", "reduce", "defer", "licence family", "exact result", "value set"]
+
+# --- rounding -------------------------------------------------------------------
+
+[[proposal]]
+id = "the_realisation_map_factors_into_quantisation_and_range_policy"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "rounding"
+says = "A realisation map factors into two decisions acting on disjoint parts of its input: a quantisation, deciding what happens to a value falling between representable points, and a range policy, deciding what happens to a value falling outside the representable extent. Neither is a modifier of the other."
+because = "Selecting a quantisation mode cannot move a realisation between the overflow families, which is what makes the two axes independent rather than merely separable. The two govern disjoint regions of the input and compose canonically as quantise-then-reduce."
+note = """
+`normative` because it is definitional and the source marks it so.
+
+The topic's substance is that the quantisation axis is not a second copy of the \
+range axis: no deterministic quantisation is additive off the grid, on either \
+domain shape, and every deterministic member is order-preserving, so the property \
+pair that classifies the range policy degenerates here in both directions at \
+once. That claim is not in this file, because its region is stated over the \
+ambient domain and nothing declares that axis.
+"""
+gap = "The obstruction result this definition exists to carry cannot be written as a row. Its region names the ambient domain, and its two halves are claimed and proved separately over the two domain shapes."
+provenance = ["panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::292"]
+keywords = ["realisation map", "factors", "quantisation", "range policy", "overflow", "disjoint", "quantise then reduce", "modifier", "two axes", "independent"]
+
+# --- the strategy object ---------------------------------------------------------
+
+[[proposal]]
+id = "a_strategy_is_an_assignment_and_a_weighting"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_strategy_object"
+says = "A strategy is a pair. Component one is an assignment on observable policy axes and it fixes the denoted answer. Component two is a weighting over cost coordinates and it ranges over realisations of that denotation. The two are told apart by one mechanical test rather than by taste: take the candidate axis, hold everything else fixed, sweep the domain, and look for an input where the answer changes."
+because = "The components have different closure properties, so the question of whether the strategy set is closed has two answers and conflates them. The assignment space is closed and enumerable, because an axis position with no lowering cannot be supplied from outside. The weighting space is open and consumer-supplied, because a weighting re-ranks arms that already exist. The axes are closed; the named points are open."
+note = """
+Two cold derivations reached the pair blind by different routes, one from a \
+bytes-level model and one from two of the stated intents set against each other. \
+**The blindness evidence is weaker than the pair's own files claim and the \
+discount travels with the row.** The commit ordering establishes the within-file \
+half for each and nothing about the between-file half, and for one member it runs \
+the wrong way: its phase one landed two minutes after the other member's file was \
+already in the tree. Blindness rests on the two coverage statements and on one \
+member's specific disclaimer, and on nothing else. Both also read the same \
+auto-loaded workspace rules, one of which states a mechanism they both used, so \
+wherever that mechanism does the work they are one instance wearing two hats.
+
+`normative` because the pair is a definition, and the mechanical test is a \
+criterion rather than a measurement.
+"""
+gap = """
+The closure asymmetry carries a region naming an assignment set, which no \
+`dimension` row declares, so that half of the clause is stated here without its \
+region and cannot be gated on. The membership test's own region names an \
+assignment set and an observation set and is likewise unwritable.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::314",
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::30",
+]
+keywords = ["strategy", "pair", "two components", "assignment", "weighting", "policy axis", "cost coordinate", "denotation", "closed", "open", "membership test", "observable"]
+
+[[proposal]]
+id = "no_cost_model_may_move_an_answer"
+kind = "refusal"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_strategy_object"
+says = "No cost model may move an answer. Every difference in an answer traces to the declared policy and nothing else may move one. With the firewall, a target change moves which arm runs and moves no answer; without it, a target change moves answers at the arms' full disagreement rate and no predicate names the change, because the cost table is not in the type."
+because = "The constraint is imposed rather than established, and it is what the whole two-component split is for: if a weighting could move an answer, the assignment would not fix the denotation and the pair would not be a pair."
+instead = "Where an arm realises no assignment in the assignment set, the firewall has no repair available in the type. The obligation then falls on the arm set rather than on the cost model: admit only arms that realise the denotation of some assignment, and a conforming pair becomes two arms of one assignment that the weighting may pick between freely."
+answers = ["is_i9_about_a_strategy_or_one_component", "reduction_order_or_associativity"]
+note = """
+**This row carries no region on purpose and both signatures agree that is right.** \
+A predicate records the region a claim was established in. The firewall is not \
+established, it is imposed, so applying the notation would say the constraint \
+holds only where somebody measured, and under the absence rule that means the \
+design is free to violate it everywhere unmeasured. The notation would not merely \
+misdescribe the claim, it would invert it.
+
+Three files endorse it and none derives it independently: one proposes it, one \
+endorses the proposition while attacking the repair, and one keeps it. Standing \
+is one expert on that reading.
+
+Op has an open question underneath this, and it reaches further than the file \
+that raised it: whether a canon may carry an unpredicated proposition at all. A \
+later clause is shown to inherit the answer, so the two are one decision and \
+should be put to him together.
+"""
+gap = """
+What is gateable about the firewall is three separate things and none of them is \
+this row: a predicated enforceability condition on the arm set, a predicated \
+measurement of the consequence, and a predicated violation test for a candidate \
+arm. All three carry regions naming an assignment set, an arm set and cost \
+coordinates, none of which any `dimension` row declares, so none of the three is \
+written into the canon.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::386",
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::160",
+]
+keywords = ["firewall", "cost model", "answer", "denoted answer", "policy", "unpredicated", "imposed", "enforceability", "conforming arm", "target change", "arm set"]
+
+[[proposal]]
+id = "pick_the_policy_before_the_weighting"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_strategy_object"
+says = "The policy is chosen from the consumer's semantics and the substrate cannot know it. The weighting is chosen from the consumer's measurements and nobody else can take them. Pick the policy first, because a wrong policy is a wrong answer and a wrong weighting is a slow answer."
+because = "It follows from the object rather than from a measurement: the assignment fixes the denotation and the weighting ranges over realisations of it, so an error in the first is an error in what is computed and an error in the second is an error in how long it takes."
+note = """
+Two presets sharing a policy assignment compute the same answers on every input \
+and no test distinguishes them. That is not a defect, and a reviewer expecting \
+four presets to be four semantics will keep looking for a difference that is not \
+there.
+
+`normative` because it is guidance to a consumer. The source marks its argument \
+kind as a derivation from the object, which is how it was reached rather than \
+what kind of statement it is; the statement is a prescription and carries no \
+region.
+"""
+provenance = ["panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::534"]
+keywords = ["policy first", "weighting", "consumer", "semantics", "measurements", "preset", "wrong answer", "slow answer", "indistinguishable presets"]
+
+[[proposal]]
+id = "fusing_a_multiply_add_is_free_exactly_at_translation_equivariance"
+kind = "answer"
+sentence_kind = "theorem"
+standing = "one_expert"
+topic = "the_strategy_object"
+says = "Fusing a multiply-add is answer-preserving exactly where the rounding position is translation equivariant on the domain the cell reaches. Under unsigned that is five of six positions, because the domain excludes the negatives where toward-zero and away-from-zero differ from their equivariant twins. Under signed wrapping it is three of six. Signedness stops being a case split and becomes what determines the domain."
+because = "Equivariance restricted to the domain the cell reaches predicts the measured table at twelve of twelve cells, where the unrestricted test mispredicts two, both under unsigned and both in the direction of calling a free arm unavailable. The restriction is what turns two case tables into one property."
+predicate = [
+  "total_width: 6",
+  "fraction_width: in 0..=5",
+  "signedness: in {unsigned, signed}",
+  "overflow_policy: in {wrap, saturating}",
+  "rounding: in {floor, ceiling, toward zero, away from zero, nearest-half-up, nearest-half-even}",
+  "operation: multiply-add",
+  "arity: 3",
+  "chain_length: 2",
+  "container: declared width",
+  "threads: 1",
+  "target_features: host aarch64-apple-darwin, rustc 1.98.0-nightly 57d06900f",
+]
+law = [
+  "fusing_a_multiply_add_preserves_the_answer_under_unsigned",
+  "fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping",
+]
+note = """
+**One expert on the formulation and three instruments on the table underneath \
+it**, which is the split the source itself draws and not a discount added here. \
+The author of the formulation names its own exposure: the restricted equivariance \
+test was decided over a window it chose, and a clean sweep does not settle a \
+property the way a counterexample settles its negation. A second instrument uses \
+a different window and agrees, which is a second reading of the restricted test \
+and not a proof that the window is right. If the formulation falls, the \
+enumerated table stands on the measurement alone.
+
+The predicate carries the region the table was swept over. The clause's own \
+scope note, that inputs were exhaustive over the declared range, is coverage \
+rather than region and is recorded here rather than in the predicate.
+
+This replaces a clause of the first candidate that was **false**: it claimed the \
+whole rounding axis free under unsigned, on a congruence argument covering the \
+reduction relocation and not the rounding relocation. Two signatures found it \
+independently and a third instrument in a third language reproduced it. The false \
+clause is not in this file and no row supersedes it, because it was never ported.
+"""
+gap = "The property is stated over 'the domain the cell reaches', and no `dimension` row declares an axis for that domain. The predicate above is the swept region and does not carry the quantifier the statement turns on."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::92",
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::86",
+]
+keywords = ["fusion", "fused multiply-add", "fma", "translation equivariance", "reachable domain", "rounding position", "signedness", "free lowering", "relocation", "nearest-half-even"]
+
+[[proposal]]
+id = "where_fusion_changes_the_answer_it_is_not_a_lowering"
+kind = "answer"
+sentence_kind = "enumeration"
+standing = "two_experts"
+topic = "the_strategy_object"
+says = "Where fusion changes the answer it is not a lowering, and the axis already names it. The fused and stepwise realisations at signed saturating are two denotations, so a consumer wanting the fused answer declares the exact-intermediate position, keeps full determinism, and gets the fast arm."
+because = "The two realisations are extensionally identical everywhere the intermediate axis does not separate them, established twice on independent instruments over 6,356,992 triples with a cross-pairing control differing at 757,954. Where they are not identical the difference is a difference of denotation, which the declared axis is exactly the mechanism for naming."
+predicate = [
+  "total_width: in {4, 6}",
+  "fraction_width: in 0..=W-1",
+  "signedness: in {unsigned, signed}",
+  "overflow_policy: in {wrap, saturating}",
+  "rounding: truncate toward zero",
+  "operation: multiply-add",
+  "arity: 3",
+  "chain_length: 2",
+  "container: declared width",
+  "threads: 1",
+  "target_features: host",
+]
+law = ["the_fused_and_the_stepwise_multiply_add_denote_one_function"]
+evidence = ["fusion_is_an_axis_position_rather_than_a_new_axis"]
+note = """
+Two instances, one building both arms directly and one assembling the comparison \
+from a third member's two committed probes. Whether the two share every axis they \
+both name is unchecked: the value-level intersection instrument that found empty \
+intersections in three of four convergence rows was run over four rows and this \
+is not one of them, so the standing is over the region the two files state rather \
+than over a verified intersection.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::434",
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::438",
+]
+keywords = ["fusion", "fused", "stepwise", "denotation", "lowering", "intermediate axis", "exact intermediate", "determinism", "signed saturating", "extensional identity"]
+
+# --- the chain --------------------------------------------------------------------
+
+[[proposal]]
+id = "within_an_unbound_stretch_the_design_may_select_any_realisation"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_chain"
+says = "Within a maximal unbound stretch, the design may select any realisation whose boundary behaviour meets the stretch's declared grade on its definedness domain. The exact grades fix the boundary function uniquely: composite correct rounding owes the resolution of the exact value, structural exactness owes the exact value, stepwise owes the fully-eager function, and the bounded-drift grade admits the family of placements within its bound."
+because = "The licence rests on two normative premises and both are named. The observability perimeter bounds obligations above, so nothing beyond the observation surface is owed; the declaration bounds them below, so the declared grade is owed. Neither follows from the partition theorem the clause sits beside."
+instead = "Where a stretch contains an operation that is partial at the profile in force, agreement on definedness is part of the declared grade at every profile, because partiality is a binding-free observation channel that no assertion flag governs."
+obligation = ["composition_contracts_above_the_numeral"]
+answers = ["reduction_order_or_associativity"]
+note = """
+**This is the underivable one, and it is why the topic's own result is that its \
+central claim splits by provenance.** Three members tried to derive it from the \
+stated intents and all three failed for stated reasons: one intent licenses \
+removing unused paths rather than roaming among used ones, one says optimal \
+rather than behaviour-preserving, and two constrain the surface and supply no \
+licence. It rests on a workspace rule that was in every member's context and \
+named by none of the cold derivations until the attack found it.
+
+**Standing is recorded as one expert and the honest number is zero.** The panel's \
+own ledger puts this at zero independent instances, and the enumeration has no \
+value for that. A reader counting instances from this field will count one too \
+many.
+
+It holds in a shipped artifact and fails in a development build, which is a \
+build bound arriving from a direction the intent that already states that bound \
+was never derived from. The profile does not merely add an observation channel: \
+it changes which operations are partial, so the same pair of realisations can \
+share a definedness domain at one profile and not at the other.
+"""
+gap = """
+Whether the observability principle becomes an intent of arvo's is not the \
+panel's, and a workspace rule is not a ratification. Whether a canon may carry a \
+sentence of this kind beside established ones is a second question of op's, \
+coupled to the canon-form question as one decision.
+
+The build bound is real and is not written as a region, because a region on an \
+imposed proposition would invert it. The bound is `debug-assertions = off` for \
+the licence to hold, and it is stated in the sentence rather than in a predicate.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::176_leroy_the_candidate_revised_against_two_signatures::93",
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::80",
+]
+keywords = ["licence", "normative", "unbound stretch", "boundary function", "declared grade", "definedness domain", "observability perimeter", "underivable", "build profile", "debug-assertions", "partial operation", "composite correct rounding", "structural exactness"]
+
+[[proposal]]
+id = "the_type_carries_whatever_must_be_const_available"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "binding_time"
+says = "The type carries whatever must be const-available to decide validity or to select a lowering, and that criterion is compelled rather than chosen: a parameter left to runtime forces the check the design's own intent forbids."
+because = "The compulsion is read off emitted code rather than argued: where the parameter is const, one path is emitted and nothing branches on it, and where it is not, the check the intent forbids is what stands in its place."
+instead = "An axis that decides neither validity nor a lowering is not a member of the type on this criterion, and belongs wherever the identity criterion puts it."
+note = """
+**The entailment behind this is one expert's and is explicitly asking for a \
+second read.** The panel's first ledger entry claimed two instances; the author \
+of the second refused that rung on its own row, a signature concurred after \
+verifying at source, and the corrected entry puts the entailment at one \
+instance. Nothing about it is weakened by that, and the row carries the request \
+rather than burying it.
+
+The wording the correction also fixes is worth carrying: the claim is that \
+neither build branches on the build and each emits one path, rather than that \
+no runtime check exists, because the base build's compare-and-select is the \
+declared saturating arithmetic and is exactly what the intent permits.
+
+`normative` because the sentence tells the design what the type must carry. The \
+compulsion is its reason and sits in `because`.
+"""
+gap = "The second read the rung requests has not happened. A reader treating the criterion as settled is treating a one-instance entailment as two."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::580",
+  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::240",
+]
+keywords = ["type", "const-available", "compelled", "validity", "lowering", "runtime check", "parameter", "binding time", "emitted path", "monomorphisation"]
+
+[[proposal]]
+id = "membership_in_the_type_and_identity_are_two_criteria"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_primitive"
+says = "Membership in the type and identity of the primitive are two criteria answering two questions, and a design needs both. What must be const-available decides membership; what is preserved up to denotation-preserving isomorphism decides identity, and neither answers the other's question."
+because = "An axis can be const-available and carry no denotational content, and an axis can be identity-bearing and be decidable at runtime, so a design collapsing the two either puts something in the type that nothing reads or leaves out something that changes the answer."
+note = """
+Split from the const-availability row so the stronger standing is visible. Both \
+members reached the membership-and-identity split in their second phase and \
+stated it independently, which is what the panel records as converged; the \
+entailment about compulsion in the neighbouring row is the part that is one \
+instance, and folding the two together would have made this inherit the weaker \
+rung.
+
+`normative` because it is a criterion the design is told to apply, stipulated \
+rather than measured.
+"""
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::580",
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::214",
+]
+keywords = ["membership", "identity", "two criteria", "type", "const-available", "denotation", "isomorphism", "collapse", "axis"]

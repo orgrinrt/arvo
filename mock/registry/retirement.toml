@@ -1,0 +1,2109 @@
+# What must not be cited again, and why.
+#
+# Two bodies of material, kept in one namespace because a reader meeting a claim
+# in the wild does not know which body it came from.
+#
+# The first is `DROPLIST.md`, which this panel carries forward from its
+# predecessor: its section 6 is that panel's cumulative droplist, extracted at the
+# moment it closed. Those entries retire claims made about a design and a source
+# tree that have since been deleted, and they are here because the current panel
+# treats the ledger as live and cites into it.
+#
+# The second is the retirement and must-not-cite list each canon candidate carries
+# in its own section 3 or its equivalent, plus the amendments its revisions make to
+# those lists.
+#
+# `DROPLIST.md` is a living ledger, so every citation into it is the heading anchor
+# of the section holding the entry; the section has no subheadings, and `claim` is
+# what locates the entry inside it. That is the intended discovery path anyway: the
+# claim is written in the words a later reader would grep for.
+#
+# Both bodies write an entry as a bolded noun phrase followed by the reason, so
+# seven rows arrived here holding two to four words where a sentence belongs. A
+# claim that short pins nothing and matches ordinary prose on the same subject:
+# one of them read `No repair.` and reported a live row saying "no repair at a
+# homogeneous container", which is the restated form that same retirement
+# endorses. Every one now holds the proposition the source's phrase stood for,
+# read out of the passage the row already cited, and the source's own phrase
+# stays in `keywords`, which is where a reader arriving from the ledger will look.
+#
+# The namespace has no `note` field, so a qualification that is neither the reason
+# nor the replacement is carried inside `why`. Where a source states what would
+# have to be overturned to reopen an entry, that is carried there too, because the
+# droplist's own stated purpose is that an entry says enough of its reasoning for
+# somebody who believes a retest would come out differently to know what has to go.
+
+# --- the cumulative droplist, carried forward from the predecessor panel ---------
+
+[[retirement]]
+id = "dl_relocate_the_law_machinery_downstream"
+claim = "Relocating the algebraic-law machinery to hilavitkutin, on the theory that associativity is specifically the contract of parallel reduction."
+why = "Refused by op directly, and independently undercut by measurement: the regrouping that would have motivated the move already happens inside arvo's own licensed internals, on a single thread, worth roughly twice, before any scheduler exists to relocate to. The consolidation that carried this entry forward carried neither the theory nor the measurement, eight lines below the preamble promising both."
+kind = "wrong"
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["hilavitkutin", "relocation", "associativity", "parallel reduction", "law machinery", "scheduler", "regrouping"]
+
+[[retirement]]
+id = "dl_gate_algorithm_crates_on_addassoc"
+claim = "Gating the graph, combinatorial and spectral crates on an associativity fact by default."
+why = "Measured directly to admit the one preset whose recurrences return wrong answers under these algorithms' own stated specifications, and to refuse the two that compute correctly, because associativity and the distributivity these algorithms need are different, complementary laws that invert across the same presets. A monotonicity atom is what the refusal was reaching past."
+kind = "wrong"
+replacement = "The monotonicity marker over addition, which is the atom the gate was reaching for."
+topic = "algebraic_laws"
+obligation = ["ordering_a_directed_acyclic_graph", "a_cost_dynamic_program", "a_spectral_partition_of_a_dependency_graph"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["AddAssoc", "gate", "arvo-graph", "arvo-comb", "arvo-spectral", "distributivity", "Monotone", "preset", "recurrence"]
+
+[[retirement]]
+id = "dl_traversal_order_substitutes_for_a_law"
+claim = "A documented traversal order substitutes for a law."
+why = "Wrong axis. Associativity is about grouping rather than order, and contiguous chunking preserves element order exactly while still changing grouping."
+kind = "wrong"
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["traversal order", "grouping", "associativity", "chunking", "element order"]
+
+[[retirement]]
+id = "dl_regrouping_bounded_on_a_diameter_budget"
+claim = "Bounding a regrouping combinator on a numeric diameter budget rather than on a boolean law."
+why = "Refused by measurement: signed saturating addition's regrouping diameter grows to the entire representable range by a five-element fold, so there is no useful budget to bound against."
+kind = "wrong"
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["diameter", "budget", "regrouping", "combinator", "saturating", "fold", "representable range"]
+
+[[retirement]]
+id = "dl_threshold_from_recovery_map_monotonicity"
+claim = "Predicting the accumulator-agreement threshold from the recovery map's monotonicity."
+why = "Refuted by exhaustive measurement: every non-homomorphism resolution reaches the same threshold, interior safety at one less than the arity, regardless of whether it is monotone."
+kind = "wrong"
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["accumulator", "threshold", "recovery map", "monotonicity", "interior safety", "homomorphism", "resolution"]
+
+[[retirement]]
+id = "dl_width_arithmetic_as_a_const_generic"
+claim = "Computing type-level width arithmetic as a const generic under the restricted const-argument feature."
+why = "Refused structurally at the definition site; the feature's sound subset explicitly forbids arithmetic over a still-generic const parameter on its own right-hand side."
+kind = "unpayable"
+replacement = "Type-level binary width encoding, itself later replaced by the value-unique natural, positive and bias encoding."
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["min_generic_const_args", "const generic", "width arithmetic", "type level", "definition site", "sound subset"]
+
+[[retirement]]
+id = "dl_growing_an_accumulator_type_per_iteration"
+claim = "Growing an accumulator's own type on every iteration of a runtime-bounded loop."
+why = "Cannot work in principle rather than merely being unbuilt, since a type cannot depend on a value only known at runtime."
+kind = "unpayable"
+replacement = "Fixing the per-element product's type and checking accumulator sufficiency as a compile-time bound, with a renormalising step as the property that closes the gap."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["accumulator", "runtime bound", "loop", "type dependency", "sufficiency", "renormalising", "trip count"]
+
+[[retirement]]
+id = "dl_fidelity_licence_as_a_trusted_marker_trait"
+claim = "Declaring a fidelity-licence coercion as a trusted marker trait with no associated items."
+why = "Compiles clean when corrupted, with zero diagnostic, because a permission-shaped coercion carries no data for the compiler to check against; a hand-verified wrong grant produced a silently wrong numeric answer. Two follow-up fixes also failed: a fully generic blanket derivation hit the generic-const-in-type-position wall, and porting a witness-constant shape onto the same trait is disarmable exactly the way one existing resolution constructor's classification was already disarmed, because the implementor writing the lie also controls the check for the lie inside the same impl block. Op's own adopted principle, which no consolidation stated, is that a fidelity grant is checked rather than asserted, on the same footing as the recovery map the earlier verification thread ended up witnessing; he also recorded what that does not settle, since a licence witness is not a port of the recovery-map witness, there being no returned value to check a grant against, which is precisely why the corruption went undetected."
+kind = "wrong"
+replacement = "Recomputing the relation inline in an ordinary const block at every consumption site, which satisfies the adoption in substance because recomputing inline is checking rather than asserting."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["fidelity", "licence", "marker trait", "coercion", "trusted", "witness", "disarmable", "const block", "grant"]
+
+[[retirement]]
+id = "dl_pushed_build_layer_manifest"
+claim = "A pushed, registered build-layer manifest for monomorphisation recovery."
+why = "Strictly worse information than the pull-shaped symbol-table read, since it records what a consumer declared rather than what got instantiated, silently misses every composition reached only through generic code, and cannot be written at all for a generic function, because Rust forbids an item declared inside a generic function body from naming that function's own type parameters."
+kind = "wrong"
+replacement = "The pull-shaped symbol-table read."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["manifest", "build layer", "monomorphisation", "symbol table", "instantiation", "generic function", "type parameter"]
+
+[[retirement]]
+id = "dl_mul_add_as_a_fidelity_liberty"
+claim = "Treating the fused multiply-add primitive as a source-expressible fidelity liberty, namely contraction."
+why = "It lowers to a distinct, exact IEEE operation with one defined answer rather than a licence to pick either; it is unavailable without the standard library except under an unvetted or forbidden feature; and on a target with no hardware fused unit it compiles to a pessimising library call, the opposite of what a licence should cost."
+kind = "wrong"
+replacement = "A fused operation belongs in the design as a named operation rather than as a fidelity permission."
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["mul_add", "FMA", "contraction", "fidelity", "liberty", "no_std", "libm", "IEEE", "Fused"]
+
+[[retirement]]
+id = "dl_the_one_shipped_monotone_implementation"
+claim = "The one shipped monotonicity law implementation, cited as existing, shipped design."
+why = "It does not exist as any implementation, only as an unlocked design-round proposal, and two members built directly on the false citation before a third caught it with a single grep. Checked against its own admitted compositions and found false: it names three of the five quantiser members that decide monotonicity, and asserts monotonicity for a resolution that a separate proof rules out for every width."
+kind = "wrong"
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Monotone", "shipped", "false citation", "quantiser", "ReduceModulo", "grep", "design round"]
+
+[[retirement]]
+id = "dl_classification_cheapness_transfers_to_a_new_operation"
+claim = "The recovery-map classification's cheapness transfers automatically to a new operation."
+why = "Refuted twice independently. The classification is a property of the pair of the map and the operation rather than of the map alone."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["recovery map", "classification", "transfer", "operation", "pair", "cheapness"]
+
+[[retirement]]
+id = "dl_past_the_top_is_unreachable"
+claim = "Past the top is unreachable, once infinity is representable."
+why = "False. Infinity changes the over-range position's neighbour rather than removing the position; the midpoint that decides overflow lives on the round-first amendment's unbounded grid."
+kind = "wrong"
+topic = "overflow_policy"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["infinity", "over-range", "unreachable", "midpoint", "overflow", "grid", "round first"]
+
+[[retirement]]
+id = "dl_unsigned_faithfulness_blanket"
+claim = "The unsigned faithfulness blanket over every resolution pair, spelled as a two-impl law derivation over pairs of resolutions at the unsigned domain."
+why = "Refuted by compiled counterexample: substituting zero breaks associativity where clamping and modular reduction preserve it. Its reasoning was that unsigned addition can only leave the range above, so one end is unreachable and the rule is truncated addition whatever it does there; the counterexample is that substituting zero at the reachable end is not truncation. The signed impl, bounded on faithfulness rather than on recovery, is unaffected. Op's part is only whether the refutation stands against his own text."
+kind = "wrong"
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["faithfulness", "unsigned", "blanket impl", "SubstituteZero", "associativity", "clamp", "modular reduction", "truncated addition"]
+
+[[retirement]]
+id = "dl_classify_then_round"
+claim = "Classify-then-round as the quantiser's order."
+why = "Disagrees with all three test standards on the band past the largest representable but within half a quantum of it."
+kind = "superseded"
+replacement = "Round first, classify second."
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["quantiser", "classify", "round", "order", "half a quantum", "largest representable", "band"]
+
+[[retirement]]
+id = "dl_two_round_trip_theorems"
+claim = "Two round-trip theorems as the crossing contract, decode after encode and encode after decode, both as identities."
+why = "The second is false the moment signed zero, payload-carrying not-a-numbers, or decimal cohorts exist."
+kind = "wrong"
+replacement = "The section-retraction triple."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["round trip", "crossing contract", "encode", "decode", "identity", "signed zero", "NaN payload", "cohort", "section", "retraction"]
+
+[[retirement]]
+id = "dl_single_three_instance_sign_axis"
+claim = "A single three-instance sign axis bundling range and zero-count."
+why = "Under-determines the set and mixes a value fact with a datum fact."
+kind = "superseded"
+replacement = "A split into a sign domain, which is identity, and a sign indexing, which is encoding."
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Sign", "sign axis", "SignDomain", "SignIndexing", "range", "zero count", "identity", "encoding"]
+
+[[retirement]]
+id = "dl_block_floating_point_as_nesting_evidence"
+claim = "Block floating point as evidence for nesting the adjustment, bias, underflow and specials axes."
+why = "The nesting decision stands on the underflow argument alone; block floating point is a different kind of object, a composite numeral over a shared external exponent, and is not evidence for either shape being cheaper to extend."
+kind = "misattributed"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["block floating point", "BFP", "nesting", "Adjustment", "Bias", "Underflow", "Specials", "shared exponent", "composite"]
+
+[[retirement]]
+id = "dl_referential_uniqueness"
+claim = "Referential uniqueness as an alternative to value uniqueness."
+why = "Fails the ordinary case of storing a product in a declared numeral, and is an invariant living in a signature-writing convention, which is the class this review keeps finding rots silently."
+kind = "wrong"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["referential uniqueness", "value uniqueness", "invariant", "convention", "declared numeral", "product"]
+
+[[retirement]]
+id = "dl_projecting_a_trait_level_width_into_a_const"
+claim = "Projecting a trait-level width computation back down into an ordinary const parameter, to dodge the value-uniqueness obligation."
+why = "Refused, the feature named being neither the permitted one nor the forbidden one and unvetted."
+kind = "unpayable"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["projection", "trait level", "const parameter", "value uniqueness", "generic_const_args", "unvetted feature"]
+
+[[retirement]]
+id = "dl_shipped_width_chain_satisfies_value_uniqueness"
+claim = "The shipped width chain and integer adjustments already satisfy value-uniqueness."
+why = "False for the width chain, since the zero-terminated encoding admits a second spelling of zero and the adder propagates rather than normalises it."
+kind = "wrong"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["value uniqueness", "width chain", "UTerm", "B0", "second spelling", "zero", "normalise", "adder"]
+
+[[retirement]]
+id = "dl_two_spellings_of_one_condition"
+claim = "Two spellings of one condition, for interior safety and total safety."
+why = "Two distinct conditions serving two distinct promises."
+kind = "wrong"
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["interior safety", "total safety", "spelling", "condition", "promise", "accumulator"]
+
+[[retirement]]
+id = "dl_the_ordered_three_relation_ladder"
+claim = "The ordered three-relation ladder: weak, then Kleene, then graded."
+why = "Replaced outright by the nine-point view lattice, which is not a chain and contains two shipped presets at incomparable points."
+kind = "superseded"
+replacement = "The nine-point view lattice."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["relation ladder", "weak", "Kleene", "graded", "view lattice", "chain", "incomparable", "preset"]
+
+[[retirement]]
+id = "dl_partial_associativity_as_a_named_gap"
+claim = "Partial associativity as a named gap in the algebra vocabulary."
+why = "Retired with the three-relation ladder it belonged to, and the entry as first written retired the ladder and said nothing about op's adopted name going with it, so a reader found an op adoption with nothing anywhere saying what became of it. Op had adopted the name after a file measured that the accuracy-first preset has zero numeric spread across groupings and that its regrouping sensitivity is entirely about which groupings are defined at all, recording that the design does not name it and no standard vocabulary carried in the spec covers it."
+kind = "superseded"
+replacement = "The nine-point view lattice, which states the point positively at the position where a view preserves values and events while losing definedness, which is the definedness reading the partial law was for."
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["partial associativity", "algebra vocabulary", "Precise", "regrouping", "definedness", "view lattice", "op adoption"]
+
+[[retirement]]
+id = "dl_ffl_in_the_physical_grounds_row"
+claim = "The fault-and-failure-log ground as a member of the physical-grounds row."
+why = "Removed, because the transfer-ground scheme replaces what it was credited with. It had already been flagged as used and undefined. The removal is probably correct and it was silent, which under the droplist's own rule that its section is the cumulative diff is the thing the rule forbids."
+kind = "superseded"
+replacement = "The transfer-ground scheme."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["ffl", "physical grounds", "registry", "transfer ground", "silent removal", "undefined term"]
+
+[[retirement]]
+id = "dl_reification_stability_generalisation"
+claim = "The reification-stability generalisation, that the graded relation is the only one stable under a refusal-to-special reification."
+why = "True of one reifier and false in general. Under an out-of-set absorbing special, the Kleene relation is stable too; under substituting zero, nothing is."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["reification", "stability", "graded", "Kleene", "Refuse", "absorbing special", "SubstituteZero"]
+
+[[retirement]]
+id = "dl_is_exact_alone_as_a_trivial_grade_monoid"
+claim = "An operation's exactness flag alone, as the statement that its grade monoid is trivial."
+why = "False in general."
+kind = "wrong"
+replacement = "The conjunction of the exactness flag with totality over the operation."
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["IS_EXACT", "grade monoid", "trivial", "Total", "conjunction", "operation"]
+
+[[retirement]]
+id = "dl_consumer_declared_required_view"
+claim = "A consumer-declared required view as the mechanism gating a regrouping's licence."
+why = "Killed by the compiler mid-dispatch, because the licence check refused exactly the case the mechanism existed to handle."
+kind = "wrong"
+replacement = "The transfer rule, carried by a type projection rather than by a declared const."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["required view", "licence", "regrouping", "gate", "transfer rule", "type projection", "declared const"]
+
+[[retirement]]
+id = "dl_subset_domain_reading_of_the_view_parameter"
+claim = "The subset-domain reading of the view parameter."
+why = "Not closed under meet."
+kind = "superseded"
+replacement = "The quotient-of-the-grade reading."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["view parameter", "subset domain", "meet", "closure", "quotient", "grade"]
+
+[[retirement]]
+id = "dl_bias_as_a_plain_signed_integer"
+claim = "The bias axis as a plain signed integer."
+why = "Made a legal industrial numeric type unrepresentable, at slope one and bias one half, which is the standard's own test failing."
+kind = "wrong"
+replacement = "A signed, greatest-common-divisor-normalised rational, built and sealed."
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Bias", "signed integer", "rational", "gcd normalised", "MATLAB", "numerictype", "slope", "standard"]
+
+[[retirement]]
+id = "dl_three_restated_numeral_member_lists"
+claim = "Three separately-restated numeral member lists across three consecutive files."
+why = "None of the review's compiled results depended on any of them."
+kind = "superseded"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Numeral", "member list", "restatement", "duplication", "compiled result"]
+
+[[retirement]]
+id = "dl_overflow_band_closed_form"
+claim = "The candidate closed form for the overflow band, that the result quantum is at most twice the lattice."
+why = "Refuted by exhaustive enumeration in both directions, at 753 of 1000 for addition and 639 of 1000 for multiplication."
+kind = "wrong"
+replacement = "The two-clause lattice-plus-reachability form."
+topic = "overflow_policy"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["overflow band", "closed form", "lattice", "reachability", "exhaustive enumeration", "quantum"]
+
+[[retirement]]
+id = "dl_specials_as_a_three_instance_chain"
+claim = "The specials axis as a three-instance chain of none, infinities-only and full IEEE."
+why = "The middle rung's witness demand exposed that the axis was the wrong shape entirely."
+kind = "superseded"
+replacement = "The two-fact product."
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Specials", "three instance", "chain", "infinity", "IEEE", "witness", "two-fact product"]
+
+[[retirement]]
+id = "dl_absorbing_a_decimal_quantum_into_the_adjustment"
+claim = "Absorbing a decimal numeral's quantum into its rational adjustment, dispensing with a separate exponent axis."
+why = "Does not compile at any real decimal format's exponent range, against 64 milliseconds flat for the radix-and-exponent spelling of the same grid."
+kind = "unpayable"
+replacement = "The radix-and-exponent spelling."
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["decimal", "quantum", "adjustment", "exponent axis", "radix", "grid", "compile time"]
+
+[[retirement]]
+id = "dl_finer_reassociation_licence_than_the_bundle"
+claim = "A finer-grained reassociation licence than the four-flag algebraic-add bundle grants."
+why = "Does not exist on the stable-track surface as tested. The workaround, discharging each companion permission separately, is sound because each is independently checked rather than because the bundle became narrower."
+kind = "unpayable"
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["reassociation", "licence", "algebraic_add", "bundle", "flags", "stable track", "companion permission"]
+
+[[retirement]]
+id = "dl_vectorisable_loop_idiom_held_unconditionally"
+claim = "The vectorisable-loop-idiom finding held unconditionally."
+why = "It holds, but only under a single codegen unit, a setting inherited by accident from an earlier unrelated investigation and never identified as load-bearing until it was checked directly against the real crate."
+kind = "unpredicated"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["vectorisation", "loop idiom", "codegen units", "unconditional", "inherited setting", "load-bearing"]
+
+[[retirement]]
+id = "dl_bounded_numeral_notation_table"
+claim = "The numeral notation is given a bounded table of the forms it admits."
+why = "Refused on principle, and a second, independent route to the identical refusal appears at the notation macro's own face layer, where a const-generic face cannot be structurally sealed."
+kind = "unpayable"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["notation table", "bounded", "enumeration", "macro", "face", "const generic", "sealed"]
+
+[[retirement]]
+id = "dl_the_precise_exile_as_the_problem"
+claim = "Treating the algorithm crates' exile of the accuracy-first preset as the problem to solve."
+why = "The presets the design admits today both return wrong answers under the exact bound they satisfy. The exile was never wrong; the admission was silently wrong, and no amount of readmitting the accuracy-first preset addresses a defect living in the crates' own return type."
+kind = "wrong"
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Precise", "exile", "algorithm crates", "admission", "return type", "exact bound", "preset"]
+
+[[retirement]]
+id = "dl_underflow_as_three_instances"
+claim = "The three-instance reading of the underflow axis, as one axis carrying flush-to-zero alongside gradual and abrupt."
+why = "Flush-to-zero changes no representable set and is a quantisation resolution rather than a numeral fact wearing one's clothes."
+kind = "wrong"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Underflow", "flush to zero", "gradual", "abrupt", "quantisation", "resolution", "representable set"]
+
+[[retirement]]
+id = "dl_the_door_as_a_projection_from_the_strategy_alone"
+claim = "The door as a projection from the strategy alone, with a software fallback refined where the numeral is host-implemented."
+why = "Refused by coherence and, separately, by minimal specialization twice; the only opener is a forbidden feature."
+kind = "unpayable"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["door", "projection", "strategy", "fallback", "coherence", "E0119", "min_specialization", "host implemented"]
+
+[[retirement]]
+id = "dl_cold_door_follows_the_semantics_first_side"
+claim = "The packing preset's door justified as following the semantics-first side."
+why = "A storage fact does not imply an arithmetic-lowering answer."
+kind = "wrong"
+replacement = "A justification that does imply it."
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Cold", "door", "semantics first", "storage", "arithmetic lowering", "justification"]
+
+[[retirement]]
+id = "dl_total_ord_makes_no_output_law_expressible"
+claim = "A datum-level total order makes none of the algorithm crates' outputs law-expressible."
+why = "Refuted by compile as a design-wide verdict, correct only for the spectral crate."
+kind = "wrong"
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["TotalOrd", "law expressible", "algorithm crates", "arvo-spectral", "design-wide", "compile"]
+
+[[retirement]]
+id = "dl_macro_rules_decimal_muncher"
+claim = "A pure declarative-macro decimal-to-binary muncher."
+why = "Refused structurally rather than merely found expensive. No fragment specifier, restringify trick, or const-generic escape reaches a decimal literal's digits."
+kind = "unpayable"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["macro_rules", "muncher", "decimal", "binary", "fragment specifier", "restringify", "literal digits"]
+
+[[retirement]]
+id = "dl_pricing_a_checked_sweep_against_an_unused_alias"
+claim = "Pricing a checked declaration sweep against an unused type alias rather than against one whose bound is actually forced."
+why = "Produced a misleading result in the wrong direction on its own first attempt."
+kind = "wrong"
+replacement = "Forcing the bound in both arms before comparing, which is now a stated convention."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["pricing", "checked sweep", "type alias", "forced bound", "control", "convention", "compile time"]
+
+[[retirement]]
+id = "dl_universal_unreproducibility_from_one_file"
+claim = "A universal unreproducibility claim grounded on compiling one file in isolation rather than reading the directory it ran in."
+why = "Refuted by the committed recipe and the rebuild. The unreproducible ground's own exhibit was struck while the ground survived on its second exhibit."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["unreproducible", "isolation", "recipe", "rebuild", "exhibit", "ground", "universal claim"]
+
+[[retirement]]
+id = "dl_uniform_monomorphisation_makes_transfer_sound"
+claim = "Without them, monomorphisation is uniform and the transfer is sound, being the last sentence of the unstable-features rule's transfer argument."
+why = "Refuted twice by compiled counterexample with the bans in force. It promotes a necessary condition, implementation uniformity, to a sufficient one for a different claim, property uniformity, which the rule's own source had already named unproven."
+kind = "wrong"
+topic = "the_predicate_notation"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["monomorphisation", "uniform", "transfer", "sound", "necessary", "sufficient", "property uniformity", "unstable features"]
+
+[[retirement]]
+id = "dl_two_mechanisms_of_observing_an_instantiation"
+claim = "The two-mechanism enumeration of ways an instantiation can be observed, by specialization and by type identity, as exhaustive."
+why = "Refuted by a shipped, permitted third mechanism, const-tag container dispatch, demonstrated with a property true at eight bits and false at nine, no gate, one parametric body."
+kind = "wrong"
+topic = "the_predicate_notation"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["instantiation", "observation", "specialization", "TypeId", "const tag", "container dispatch", "exhaustive", "enumeration"]
+
+[[retirement]]
+id = "dl_refused_at_nine_bits_as_a_width_ceiling"
+claim = "The refused-at-nine-bits wall as a width ceiling."
+why = "Refuted; it is a total-step-count budget, and a cheaper predicate compiles clean at nine and refuses one bit later."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["nine bits", "wall", "width ceiling", "step count", "budget", "const eval", "predicate"]
+
+[[retirement]]
+id = "dl_exactly_one_cell_of_the_matrix_leaks"
+claim = "Exactly one cell of the matrix leaks."
+why = "Refuted; the matrix held the specials axis fixed, the full product leaks at six of eight cells, and the correct framing is a family of configurations."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["matrix", "cell", "leak", "Specials", "product", "configuration family"]
+
+[[retirement]]
+id = "dl_widening_the_crossing_target_through_the_quantiser"
+claim = "Widening the crossing contract's target through the quantiser, as an alternative to the encoding obligation."
+why = "Refused on every escaping datum tried, against a 2701-value negative control confirming the quantiser is otherwise the identity. Not a preference, an arithmetic fact."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["crossing contract", "quantiser", "widening", "target", "escaping datum", "negative control", "identity"]
+
+[[retirement]]
+id = "dl_cross_call_site_face_identity"
+claim = "Cross-call-site face identity as something needing a mechanism."
+why = "Refused; nothing that affects compilation is keyed on the face, per-site display is the better diagnostic, and unifying faces would build the exact false-refusal failure the layer-keying rule forbids."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["face", "call site", "identity", "diagnostic", "layer keying", "false refusal", "unification"]
+
+[[retirement]]
+id = "dl_only_live_gce_constructs_are_two_static_asserts"
+claim = "The facade's only live generic-const-expression constructs are two static asserts, stated as a universal in a committed sketch."
+why = "Refuted by a whole-crate compile, at two of 478 spans, and it is the origin of the whole-crate-compile convention."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["facade", "generic_const_exprs", "static assert", "whole crate compile", "span", "universal claim", "sketch"]
+
+[[retirement]]
+id = "dl_the_facade_fix_touches_every_consumer"
+claim = "The facade fix touches every consumer of the bit, unsigned fixed and signed fixed types."
+why = "Refuted; three of the four things a consumer writes are unaffected and the real public break is twenty-one call sites naming the three-parameter fixed types directly."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["facade", "consumer", "Bits", "UFixed", "IFixed", "call site", "public break", "migration"]
+
+[[retirement]]
+id = "dl_facade_migration_route_x"
+claim = "Route X for the facade migration: a const-keyed projection with only the computed width lifted to a type and the integer and fraction widths staying bare consts."
+why = "Refused structurally, six ways across two compiled attempts."
+kind = "unpayable"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["facade", "migration", "route X", "const keyed", "projection", "computed width", "structural refusal"]
+
+[[retirement]]
+id = "dl_facade_migration_route_y"
+claim = "Route Y for the facade migration."
+why = "Fails guarantee parity three separate ways, each a compiler diagnostic rather than an argument. The two-dimensional impl table refuses correctly at type-check but is priced on a ceiling the toolbox rule forbids arvo to set below what it dispatches through, failing outright below width 64 and costing thirty seconds at a 256 ceiling, roughly quartic. A host-staged witness compiles clean and fast and is caught only at link emission rather than at metadata emission, which is the command a consumer's editor actually runs, silently re-opening the identity-at-zero-integer-width defect. A consumer-emitted per-declaration impl is refused by the orphan rule, with the compiler's own diagnostic naming route Z's shape as the remedy."
+kind = "unpayable"
+replacement = "Route Z, which the compiler's own diagnostic names."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["facade", "migration", "route Y", "route Z", "orphan rule", "E0117", "emit metadata", "emit link", "impl table", "quartic"]
+
+[[retirement]]
+id = "dl_capacity_unification_naive_spelling"
+claim = "The capacity unification's naive spelling, the shared carrier answering directly for the backing array."
+why = "Refused four ways, citing the forbidden generic-const-expressions feature and, behind the compiler's own suggested successor, the inductive doubling step, which the restricted successor cannot express either."
+kind = "unpayable"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["capacity", "unification", "carrier", "backing array", "generic_const_exprs", "min_generic_const_args", "inductive step"]
+
+[[retirement]]
+id = "dl_feasibility_probe_compiled_the_load_bearing_path"
+claim = "The feasibility probe's implicit claim that the capacity unification's whole load-bearing path was compiled."
+why = "It was not; the probe declared the capacity trait as a bare const and never reached the associated array type the domain exists for."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["feasibility probe", "capacity", "load bearing", "bare const", "associated type", "array", "setup that helps"]
+
+[[retirement]]
+id = "dl_two_instances_of_layout_bitpacked"
+claim = "The working two-instances resolution of the bitpacked layout."
+why = "Superseded. The axis has one meaning; the byte-aligned reading was always the dense layout at a narrow stored width."
+kind = "superseded"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Layout", "Bitpacked", "Dense", "StoredWidth", "byte aligned", "two instances", "axis meaning"]
+
+[[retirement]]
+id = "dl_a_bitpacked_measurement_that_was_dense"
+claim = "One file's bitpacked measurement, treated as a measurement of the bitpacked layout."
+why = "It was always a measurement of the dense layout at a narrow width, correctly built and mislabelled."
+kind = "misattributed"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["bitpacked", "dense", "measurement", "mislabelled", "narrow width", "Layout"]
+
+[[retirement]]
+id = "dl_hardware_reachability_original_statement"
+claim = "The hardware-reachability theorem's original statement, that it is reachable only in a uniformly hot expression."
+why = "Corrected to four cells of sixteen once the warm preset's door moved to the host-float form."
+kind = "superseded"
+replacement = "The four-of-sixteen statement."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["hardware reachability", "Hot", "Warm", "door", "HostFloat", "uniform expression", "cells"]
+
+[[retirement]]
+id = "dl_the_strategy_door_table_derived_from_the_tree"
+claim = "One file's strategy-door table, that every row below is derived from what the preset already means for fixed-point arithmetic in the shipped tree."
+why = "Void, and it is the exhibit the whole tree-meaning prohibition rests on."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["strategy door", "table", "shipped tree", "tree meaning", "void", "prohibition", "preset"]
+
+[[retirement]]
+id = "dl_nine_bit_companion_original_characterisation"
+claim = "The nine-bit companion's original characterisation, as the first point at which the padding half of the crossing contract has observable content."
+why = "Superseded. It measured the ungoverned container level rather than the statement's content."
+kind = "superseded"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["nine bits", "companion", "padding", "crossing contract", "observable content", "container level"]
+
+[[retirement]]
+id = "dl_the_naming_principle_as_written"
+claim = "One file's naming principle, applied as written."
+why = "Dead. It forbids op's own intent pillar and was never op's own hand."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["naming principle", "intent pillar", "op", "agent authored", "dead"]
+
+[[retirement]]
+id = "dl_quantify_over_every_inhabitant_of_the_carrier"
+claim = "The quantify-over-every-inhabitant-of-the-carrier-type amendment to the crossing statement's quantifier."
+why = "Dead, killed by a compiled asymmetry between an error and a warn-level lint. It laundered a trusted-base fact into a provable one."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["quantifier", "inhabitant", "carrier type", "E0004", "lint", "trusted base", "laundering"]
+
+[[retirement]]
+id = "dl_one_clause_fix_for_the_mutation_gap"
+claim = "The one-clause fix for the mutation gap, re-canonicalises on release, stated with no enforcement mechanism named."
+why = "Superseded by the two-tier repair."
+kind = "superseded"
+replacement = "The two-tier repair."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["mutation gap", "re-canonicalise", "release", "enforcement", "two tier", "repair"]
+
+[[retirement]]
+id = "dl_exact_fold_width_construction_recursing_on_a_value"
+claim = "One file's exact fold-width construction, recursing on the value of the precision parameter."
+why = "Superseded. It does not exist above the widest binary interchange format, refusing at the default recursion limit and then at the natural's carrier once that limit is raised, both accidental ceilings coinciding at 128 and neither stated anywhere."
+kind = "superseded"
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["AllOnes", "fold width", "recursion limit", "binary128", "ceiling", "Nat", "accidental"]
+
+[[retirement]]
+id = "dl_byte_image_two_statement_framing"
+claim = "The byte-image chapter's own prior framing, that an invertible external image takes the crossing contract's statement structure verbatim, as two statements."
+why = "Superseded; the structure has three."
+kind = "superseded"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["byte image", "external image", "crossing contract", "statement structure", "invertible", "three statements"]
+
+[[retirement]]
+id = "dl_division_instinct_hot_cell_on_the_door"
+claim = "One file's division instinct, alternative one, placing the speed-first preset's cell on the door."
+why = "Dead, killed on four compiled or silicon-read facts, and the fork's other alternative carried the identical smuggle at a different address."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["division", "Hot", "Door", "smuggle", "silicon", "alternative", "fork"]
+
+[[retirement]]
+id = "dl_door_side_domain_preservation_equation"
+claim = "The proposed door-side domain-preservation equation."
+why = "Superseded. It guards a region the entry-level totality refusal, ratified at the same checkpoint that adopted the equation, already forecloses unconditionally, and a check on a door guarding a precondition the type's own construction has made unconditionally true for every value that can exist is the definition of a vacuous guard, which belongs in the suite as a regression pin rather than in the ratifying text."
+kind = "superseded"
+replacement = "A regression pin in the test suite."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["door", "domain preservation", "vacuous guard", "totality refusal", "regression pin", "ratifying text"]
+
+[[retirement]]
+id = "dl_reader_quantified_replacement_naming_test"
+claim = "One file's reader-quantified replacement naming test."
+why = "Superseded. It cannot fail in the hands of the person running it, which is the identical defect it correctly diagnosed in the parity suite it struck."
+kind = "superseded"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["naming test", "reader quantified", "cannot fail", "parity suite", "tautological", "self-check"]
+
+[[retirement]]
+id = "dl_citation_of_the_weaker_second_sentence"
+claim = "One file's citation of a section's second, weaker sentence as the guard a door placement violates."
+why = "Corrected. The operative sentence is the first."
+kind = "misattributed"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["citation", "weaker sentence", "guard", "Door", "operative", "correction"]
+
+[[retirement]]
+id = "dl_periphery_assessment_five_or_six_unexamined"
+claim = "One file's periphery assessment, that five or six crate-level subjects no panel file has ever examined exist, with an unbounded error bar."
+why = "False. The ground is op-ratified, distilled into the panel's required reading from its first hour, and row-rechecked at an earlier file before the claim was written."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["periphery", "unexamined", "error bar", "required reading", "ratified", "absence claim"]
+
+[[retirement]]
+id = "dl_rotor_storage_component_count"
+claim = "The storage argument for rotors over matrices, on a component count of one plus n times n minus one over two."
+why = "Wrong from rank four, reversing its own comparison against matrix storage at rank seven. The decision survives on the grounds it also gives; the count does not."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["rotor", "matrix", "storage", "component count", "rank", "geometric algebra"]
+
+[[retirement]]
+id = "dl_capacity_checked_at_the_one_construction_door"
+claim = "The capacity claim that it is checked to agree in an inline const block at the one construction door."
+why = "False above rank zero. The trait-method route bypasses the door entirely."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["capacity", "construction door", "inline const", "trait method", "bypass", "rank"]
+
+[[retirement]]
+id = "dl_array_grammar_pairing_forced_by_the_language"
+claim = "The ratified sentence that the array grammar's pairing is forced by the language rather than chosen."
+why = "The second clause is true and the first is false, twice. Recorded as a correction to ratified text rather than as an ordinary droplist entry, and the replacement sentence is offered rather than adopted, because a call about ratified text needs two independent agreements and the record has two compiles from two members but one design reading."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["array grammar", "pairing", "forced by the language", "ratified text", "two agreements", "design reading"]
+
+[[retirement]]
+id = "dl_datum_keyed_digest_masks_to_the_fields_width"
+claim = "The ratified sentence that a datum-keyed digest masks the container straight to the fields' own width."
+why = "Corrected by one word, to the placement map's occupancy. A widening rather than a replacement: the two masks compute the same bit pattern for every numeral that exists today."
+kind = "wrong"
+replacement = "The same sentence with occupancy in place of width."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["digest", "datum keyed", "mask", "container", "occupancy", "placement map", "ratified sentence"]
+
+[[retirement]]
+id = "dl_truth_contract_third_clause_binds_on_the_exit"
+claim = "The persona's third clause of the truth-contract shape, that the fifteen declarations bind on the exit-carrying part."
+why = "Backwards, and ratified as such. Binding them on the exit refuses the multi-lane instance at the impl, and that instance is the entire thing the generic branch buys."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["truth contract", "declarations", "exit", "multi-lane", "generic branch", "backwards", "impl"]
+
+[[retirement]]
+id = "dl_perimeter_rule_citation_on_bool"
+claim = "The perimeter-rule citation on the boolean type."
+why = "Struck. The rule's own boundary section excludes a type with no invariant, and a decorative citation is worse than none because it makes a taste question look settled, and because the two grounds put the call in different hands."
+kind = "misattributed"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["perimeter rule", "Bool", "invariant", "decorative citation", "taste", "boundary section"]
+
+[[retirement]]
+id = "dl_second_truth_type_is_shipped"
+claim = "Is there a second truth type? There is, and it is shipped, as the ground for the fork's lean."
+why = "Does not survive deleting its shipped-source citation."
+kind = "wrong"
+replacement = "The variety-closure theorem, with the mask operations demoted to a witness."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["truth type", "shipped", "fork", "lean", "variety closure", "MaskOps", "witness"]
+
+[[retirement]]
+id = "dl_derived_storage_construction_is_new"
+claim = "The derived-storage construction is new to this panel."
+why = "False. It is a committed probe recorded as working with two controls, thirty-one files before it was re-derived."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["derived storage", "new", "novelty claim", "structural array", "controls", "re-derivation", "absence claim"]
+
+[[retirement]]
+id = "dl_derived_storage_costs_a_quadratic"
+claim = "The derived-storage construction costs a quadratic in the number of capacities."
+why = "False. The type machinery is free; the cost was one operation per element from a structurally recursive fill, and rewriting it as a provided method over the projected slice collapsed 3.24 seconds to 0.12."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["derived storage", "quadratic", "capacity", "structural recursion", "provided method", "projected slice", "compile time"]
+
+[[retirement]]
+id = "dl_five_way_grouping_of_route_multiplicity"
+claim = "The five-way grouping of the route-multiplicity finding."
+why = "Retired. It is three defects with three existing owners plus one non-instance, and route multiplicity is a defect only relative to a guarantee."
+kind = "superseded"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["route multiplicity", "five-way grouping", "defect", "owner", "guarantee", "non-instance"]
+
+[[retirement]]
+id = "dl_candidate_fifth_clause_on_the_pricing_pillar"
+claim = "The candidate fifth clause on the pricing pillar, for the route question."
+why = "Not adopted. The three instances it would govern are governed better by the pricing pillar, which names the repair where the clause names the symptom; the fourth is a two-organs case; and the survival mechanism is the separation requirement, which would have caught three of the four in advance and was not run. The precedent decides against its own citation: the correct response to a requirement that works but goes unrun is a moment naming when it runs, rather than a new requirement."
+kind = "superseded"
+replacement = "The pricing pillar, plus a named moment at which the separation requirement runs."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["pricing pillar", "fifth clause", "route", "separation requirement", "symptom", "repair", "unrun"]
+
+[[retirement]]
+id = "dl_diligence_claim_about_applying_two_requirements"
+claim = "The claim that the definitional-completeness line and the separation requirement were applied to everything the ninth consolidation absorbed."
+why = "False, at three of its own sentences, grep-checkable. A fabricated diligence claim rather than a design error, in the same register as another file's search sentence."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["diligence claim", "completeness line", "separation requirement", "fabricated", "grep", "consolidation"]
+
+[[retirement]]
+id = "dl_the_arity_search_diligence_sentence"
+claim = "I searched for the arity token across every file; the hits are all fold-arity."
+why = "False, confirmed independently three times. The substance of its conclusion survives on grounds it did not give."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["diligence sentence", "arity", "search", "grep", "absence claim", "fabricated"]
+
+[[retirement]]
+id = "dl_three_resolutions_for_quantize_failure_kind"
+claim = "Three offered resolutions for the quantiser's apparent new failure kind."
+why = "None adopted; the premise dissolved instead."
+kind = "superseded"
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["quantize", "failure kind", "resolutions", "premise", "dissolved"]
+
+[[retirement]]
+id = "dl_completeness_line_scoped_to_new_prose"
+claim = "The eleventh consolidation's completeness line, scoped to this document's own new prose."
+why = "Struck. The line quantifies over the whole ratifying text, and the exemption removed exactly the population a restoration consists of, which is where six undefined terms were sitting."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["completeness line", "scope", "new prose", "exemption", "restoration", "undefined terms"]
+
+[[retirement]]
+id = "dl_trusted_base_sentence_about_a_silent_mechanism"
+claim = "The trusted-base sentence that an unrelated lowering dependency makes the contract split's mechanism go silently with no diagnostic anywhere."
+why = "False, refuted by re-running the projection with the lowering fully in scope in the same crate, where it still refuses at the associated-item error and names its own repair."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["trusted base", "lowering", "contract split", "silent", "diagnostic", "E0220", "projection"]
+
+[[retirement]]
+id = "dl_keying_policy_and_lowering_on_the_numeral"
+claim = "Keying the policy and the lowering on the numeral, as the repair for a preset denoting two rows."
+why = "Refuted at exit zero. Two implicitly-typed numerals, one number kind, disagreeing on what the warm preset means, with nothing in the language relating them, which is the layer-keying rule failing in its original direction."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Policy", "Lowering", "keying", "numeral", "preset", "layer keying", "Warm", "two rows"]
+
+[[retirement]]
+id = "dl_per_kind_preset_markers"
+claim = "Per-kind preset markers, as the other repair for a preset denoting two rows."
+why = "Refuted at exit zero and on ratified text. A number over a kind and a kind-specific warm marker type-checks at a value position, and one ratified decision makes compositions public and bindable so aliases hide the mispairing only for the four pairs they cover; another gives the strategy crate four named markers that the eight-marker shape deletes."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["preset marker", "per kind", "WarmFixed", "alias", "mispairing", "arvo-strategy", "ratified text"]
+
+[[retirement]]
+id = "dl_renaming_the_precision_marker_trait"
+claim = "Renaming the precision marker trait, as the repair for the bridge's token collision."
+why = "Not taken. It rewrites a name ratified under op's own principle that the mechanism unifies and the vocabulary does not, plus two bounds and a three-member alias family, for no gain, and an existing tiebreaker decides against it."
+kind = "superseded"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["Precision", "marker trait", "rename", "token collision", "bridge", "alias family", "tiebreaker"]
+
+[[retirement]]
+id = "dl_second_ceiling_on_the_total_width"
+claim = "A second ceiling on the total width, enforced by an emitted marker per row."
+why = "Refuted three ways. It refuses a legitimate product at precision eighty; it cannot be narrowed to the written site, because a where clause on a type alias is refused and its repair is an unvetted feature; and its refusal shows a consumer eleven numeral trees and no number."
+kind = "wrong"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["ceiling", "total width", "emitted marker", "where clause", "type alias", "unvetted feature", "diagnostic"]
+
+[[retirement]]
+id = "dl_bridge_table_cost_is_linear"
+claim = "The reading that the bridge table's cost is linear."
+why = "Does not survive the extension past 4096 rows. Each doubling costs between 3.3 and 5.6 times, so the curve is roughly quadratic, the same character the per-width container dispatch already measured."
+kind = "wrong"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["bridge table", "linear", "quadratic", "doubling", "container dispatch", "compile time", "rows"]
+
+[[retirement]]
+id = "dl_braces_are_a_general_requirement"
+claim = "The reading that the braces around a const parameter in a type-level natural application are a general requirement."
+why = "Half right. They are required exactly when the const parameter's name also names a type in scope, which it does here structurally, and renaming the parameters compiles unbraced."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
+  "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",
+]
+keywords = ["braces", "NatOf", "const parameter", "name shadowing", "type in scope", "general requirement"]
+
+# --- closed by the numeral canon panel itself, with reopen conditions -------------
+
+[[retirement]]
+id = "dl_const_generic_width_comparison_in_a_where_clause"
+claim = "The const-generic spelling of a width comparison in a where clause, at a generic definition site."
+why = "Closed by a probe arm: the compiler refuses with \"generic parameters may not be used in const operations\" and terminally names the forbidden generic-const-expressions feature. Reopened by the restricted successor feature reaching the point where a comparison of two const parameters is expressible in a bound; restating it as a relation is a different mechanism rather than a repair of this one."
+kind = "unpayable"
+topic = "the_format"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#closed-by-the-numeral-canon-panel-2026-08-08",
+]
+keywords = ["const generic", "where clause", "width comparison", "generic_const_exprs", "min_generic_const_args", "bound", "relation"]
+
+[[retirement]]
+id = "dl_interior_wrapping_with_a_reserved_absorbing_top"
+claim = "A numeral wrapping in its interior with a reserved absorbing top."
+why = "Proposed and closed in the same file by its own probe. It absorbs correctly, at zero of sixteen failures, matching saturation. It still gets shortest path on a directed acyclic graph wrong on 12.6 percent of 622 million in-range instances, because interior wrapping destroys monotonicity, at 560 of 2176, and the min-plus algebra needs absorption and monotonicity both. Reopened by a use case needing the absorbing top and the additive inverse but not monotonicity, which its author could not construct and does not believe exists among the tropical algorithms."
+kind = "wrong"
+topic = "overflow_policy"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#closed-by-the-numeral-canon-panel-2026-08-08",
+]
+keywords = ["interior wrapping", "absorbing top", "monotonicity", "min-plus", "tropical", "shortest path", "additive inverse"]
+
+[[retirement]]
+id = "dl_the_two_by_two_as_evidence_about_the_decomposition"
+claim = "The two-by-two of headroom against layout, as evidence about the decomposition."
+why = "Closed by a probe: all twenty-four placements of four labels onto a two-by-two are exact bijections, so the property carries no information about arvo specifically. Under four constraints read off op's own intent statements the shipped placement is not among the two survivors, with one constraint alone sufficient to exclude it. Reopened by an independent determination of the placement, from something other than the table, that agrees with the table."
+kind = "wrong"
+topic = "the_strategy_axis"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::DROPLIST::#closed-by-the-numeral-canon-panel-2026-08-08",
+]
+keywords = ["two-by-two", "headroom", "layout", "decomposition", "bijection", "placement", "preset table", "evidence"]
+
+# --- the realisation-map candidate's list, and its revision's withdrawals --------
+
+[[retirement]]
+id = "r119_soundness_at_both_overflow_policies"
+claim = "Soundness at overflow policy in the set of saturating and wrapping."
+why = "It is false at wrapping. Cite it at saturating or not at all. Refuted by one file, reproduced by a second, and conceded by its author."
+kind = "unpredicated"
+replacement = "The same claim predicated at saturating only."
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["F111-15", "soundness", "overflow policy", "wrap", "sat", "predicate", "region"]
+
+[[retirement]]
+id = "r119_checking_only_a_result_is_unsound"
+claim = "Checking only a derivation's result rather than every node is unsound."
+why = "The sentence carries no predicate and is false where the map is a homomorphism. Its source finding is correctly predicated and is the thing to cite. Refuted by one file, reproduced by a second, conceded by its author."
+kind = "unpredicated"
+replacement = "The correctly predicated source finding it was a flat restatement of."
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["result checking", "node checking", "unsound", "homomorphism", "predicate", "F112-21", "flat statement"]
+
+[[retirement]]
+id = "r119_beaten_on_none"
+claim = "The one-sided form reaches the oracle on all thirteen rows while being beaten on none."
+why = "It holds only where every declared lower bound is at or above zero."
+kind = "unpredicated"
+replacement = "The same claim with the non-negative lower bound stated."
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["F112-24", "beaten on none", "lower bound", "zero", "domain", "predicate"]
+
+[[retirement]]
+id = "r119_per_construction_table"
+claim = "The per-construction table for the transformer."
+why = "Superseded by the formula, and the superseded form should not be extended: adding a construction to the table is work the formula does for free, and the table's own author says so."
+kind = "superseded"
+replacement = "The formula, which is bilinear in the construction."
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["F112-14", "per-construction table", "formula", "transformer", "bilinear", "extension"]
+
+[[retirement]]
+id = "r119_two_against_sixty_four_as_a_compile_cost"
+claim = "The ratio of two against sixty-four, read as a compile-side cost."
+why = "Superseded by the closed forms of the two costs, and the superseded form should not be extended. The composition argument that rested on the ratio survives, because the ratio is measured unchanged at thirty-two."
+kind = "superseded"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["F111-18", "compile cost", "ratio", "closed form", "composition argument", "F114-18"]
+
+[[retirement]]
+id = "r119_delete_the_wrap_dimension_as_the_repair"
+claim = "The framing that the repair is to delete the wrap dimension."
+why = "Superseded twice, first by a replacement shape and then by a condition split. Do not cite the dimension deletion as the repair."
+kind = "superseded"
+replacement = "The condition split."
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["wrap dimension", "deletion", "repair", "condition split", "A11", "framing retired"]
+
+[[retirement]]
+id = "r119_shipped_kernel_attributed_to_one_arm"
+claim = "The attribution of a shipped kernel to one named arm."
+why = "Under-determined: the guard makes the map the identity, and the general arm is what the kernel is an instance of."
+kind = "misattributed"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["kernel", "arm", "attribution", "guard", "identity map", "under-determined", "W1", "A6"]
+
+[[retirement]]
+id = "r119_the_trait_projection_route_was_untried"
+claim = "The clause that the trait-projection route was untried in the file it was addressed to."
+why = "The finding stands and is better than its own claim; the clause is wrong."
+kind = "wrong"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["F115-4", "trait projection", "untried", "absence claim", "framing retired"]
+
+[[retirement]]
+id = "r119_bench_variant_tests_are_an_untested_surface"
+claim = "The bench variant tests are an untested surface."
+why = "Corrected within the hour by its own author against a member's probe output: the tests run, and the defect is a false green from one command."
+kind = "wrong"
+replacement = "The tests run and one command reports a false green."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["bench variant", "untested surface", "false green", "test gate", "correction", "probe output"]
+
+[[retirement]]
+id = "r119_four_refuted_cut_mechanisms"
+claim = "That cutting at a non-homomorphic operation's operands suffices; that cutting at its result suffices; that requantising at it suffices; and that the rounding mode is the discriminator."
+why = "All four measured wrong, with the measurements kept in the probe headers. Listed together so nobody re-proposes them."
+kind = "wrong"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["cut", "operands", "result", "requantise", "rounding mode", "discriminator", "non-homomorphism", "refuted mechanism"]
+
+[[retirement]]
+id = "r119_the_two_part_rule_fails_under_saturation"
+claim = "The two-part rule fails under saturation."
+why = "It degenerates instead."
+kind = "wrong"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["two-part rule", "saturation", "degenerate", "F118-12", "locality"]
+
+[[retirement]]
+id = "r119_grid_condition_restored_without_requantisation"
+claim = "The grid condition is restored once products avoid requantisation."
+why = "Refuted by its own author's probe."
+kind = "wrong"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["grid condition", "requantisation", "product", "F116-9", "refuted by its author"]
+
+[[retirement]]
+id = "r119_fraction_grid_is_additive_to_propagation"
+claim = "The fraction grid would be additive to the propagation question."
+why = "Recorded as an expectation by one file and refuted by another."
+kind = "wrong"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::119_leroy_the_canon_candidate_for_the_realisation_map::#1-3-closed-retired-or-corrected-so-a-later-reader-knows-what-to-stop-repeating",
+]
+keywords = ["fraction grid", "additive", "propagation", "expectation", "F116-7", "refuted"]
+
+[[retirement]]
+id = "r122_witness_does_not_isolate_the_operation"
+claim = "The finding whose witness does not isolate the operation it names."
+why = "Withdrawn by the candidate's own author on revision."
+kind = "wrong"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::#7-what-i-withdraw-and-what-the-revision-did-not-settle",
+]
+keywords = ["F118-5", "witness", "isolation", "withdrawn", "operation"]
+
+[[retirement]]
+id = "r122_four_withdrawn_clauses_of_the_candidate"
+claim = "The realisation-map candidate's predicate at clause 4.2, its saturating clause at 4.4, its only-mechanism claim at 4.5, and its mechanism sentence at 4.10."
+why = "All four withdrawn by their author in the revision, alongside the flat statement of one finding's syntax half, which now carries its author's mark."
+kind = "wrong"
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::122_leroy_the_candidate_revised_against_two_partial_signatures::#7-what-i-withdraw-and-what-the-revision-did-not-settle",
+]
+keywords = ["withdrawn", "candidate clause", "predicate", "saturating", "only mechanism", "F115-5", "revision"]
+
+# --- the rounding candidate's list ------------------------------------------------
+
+[[retirement]]
+id = "r132_saturating_stochastic_ejected_from_monotone"
+claim = "A saturating realisation composed with stochastic rounding is ejected from the monotone family."
+why = "False for the shared threshold, conceded by its author."
+kind = "wrong"
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+]
+keywords = ["F8", "saturating", "stochastic rounding", "monotone family", "shared threshold", "conceded"]
+
+[[retirement]]
+id = "r132_boundary_at_the_deterministic_stochastic_line"
+claim = "The boundary placed at the deterministic-stochastic line."
+why = "Wrong, conceded in the same reply, whose author records that a second file hedged the same claim honestly and this one did not."
+kind = "wrong"
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+]
+keywords = ["boundary", "deterministic", "stochastic", "line", "conceded", "hedge"]
+
+[[retirement]]
+id = "r132_the_genuine_either_or_fork"
+claim = "The framing of that boundary as the genuine either-or fork."
+why = "The same fact as the boundary placement, and its own open item already said the exclusion was exhibited rather than proved."
+kind = "wrong"
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+]
+keywords = ["either-or fork", "boundary", "exhibited", "proved", "Finding 4", "framing"]
+
+[[retirement]]
+id = "r132_per_cell_member_loses_wrap_compatibility"
+claim = "The prediction that the per-cell member loses wrap compatibility outright."
+why = "Half wrong, refuted by its own probe run and sharpened to a residue-class condition, with the refuted run preserved."
+kind = "wrong"
+replacement = "The residue-class condition."
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+]
+keywords = ["per-cell", "wrap compatibility", "residue class", "refuted run", "prediction", "dither"]
+
+[[retirement]]
+id = "r132_first_non_monotonicity_witness_attempt"
+claim = "The first attempt at the non-monotonicity witness, which picked points in different grid intervals and found none."
+why = "Recorded by its author as a refuted attempt rather than deleted, and it is informative: the violation requires the points to share a cell."
+kind = "wrong"
+replacement = "A witness whose points share a cell."
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+]
+keywords = ["non-monotonicity", "witness", "grid interval", "cell", "refuted attempt", "setup that helps"]
+
+[[retirement]]
+id = "r132_correlated_dominates_on_every_property"
+claim = "The correlated construction dominates the independent one on every property either file measured."
+why = "True as written and corrected in reach, because the property an arm actually wants is decorrelation and the shared threshold delivers zero of it."
+kind = "unpredicated"
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+]
+keywords = ["correlated", "independent", "dominates", "decorrelation", "shared threshold", "reach", "dither"]
+
+[[retirement]]
+id = "r132_midpoint_identified_with_half_up"
+claim = "The identification of the midpoint with half-up."
+why = "Corrected at ties, and the correction was accepted by a third file."
+kind = "wrong"
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+]
+keywords = ["F127-2", "midpoint", "half up", "ties", "F128-5", "correction"]
+
+[[retirement]]
+id = "r132_truncation_as_a_mode_name"
+claim = "The word \"truncation\", and the token spelled as its abbreviation, on any signed domain."
+why = "Must no longer be cited as naming a mode. They name two distinct operations on a signed domain, and a predicate spelled with one of them is not a predicate until a reader knows which was implemented. The factual half is settled and is not contested: bit-drop is measured equal to floor on every row and different from toward-zero on signed rows only. What remains is the naming call, which is a canon-vocabulary decision rather than a measurement and is in op's queue."
+kind = "wrong"
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+]
+keywords = ["truncation", "trunc", "floor", "toward zero", "signed", "mode name", "vocabulary", "predicate"]
+
+[[retirement]]
+id = "r132_the_21204_of_32768_figure"
+claim = "21,204 of 32,768 signed negative cases at width eight."
+why = "Must no longer be cited at all: it did not reproduce on either natural sweep. Integer division over all nonzero-divisor pairs at width eight gives 31,231 of 65,280, and single values give 64, 96, 120 and 127 of 256 at four fraction widths. It is arithmetically impossible for the sweep it claims, by two independent routes: a search of every width to two to the sixtieth for a representation of the form two to the b times two to the k minus one found none, and pinning the width from the figure's own denominator gives a complete set of reachable counts whose maximum is 16,383, which 21,204 exceeds. The direction the figure was cited for is established by arithmetic and does not depend on it. The retirement's own attribution was wrong and is corrected: the entry says the figure originated in a numbered file, and a grep of that file and both its probe directories returns nothing; it originated in that file's author's end-of-dispatch report message, outside any committed artifact, and was relayed into two briefs by the coordinator without opening the artifact. That file's committed record was correct throughout."
+kind = "wrong"
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::132_leroy_the_canon_candidate_for_the_rounding_axis::#1-7-retired-so-a-later-reader-knows-what-to-stop-citing",
+  "panel::202608072330_the-numeral-canon-panel::136_leroy_the_candidate_revised_against_three_signatures::#2-1-the-figure-was-fabricated-in-a-report-message-and-i-relayed-it",
+]
+keywords = ["21204", "32768", "signed negative", "fabricated figure", "relay", "report message", "attribution", "impossible count"]
+
+# --- the strategy-object candidate's list ----------------------------------------
+
+[[retirement]]
+id = "r146_declared_slack_repair"
+claim = "The declared-slack repair, in every cell."
+why = "Conceded by its own author, on a probe built from that author's own committed probes rather than from the attacking instrument. The residue the mechanism served is empty: where fusion is answer-preserving it is a free lowering, and where it is not it is an axis position the design already has. The cell-by-cell accounting is a slack table, a characterisation of the residual unit as a rounding relocation rather than a reduction one, and a measurement that the declaration admitting fusion at signed saturating permits a mean of 41.74 answers of 64 for a single input."
+kind = "wrong"
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+]
+keywords = ["declared slack", "repair", "fusion", "answer preserving", "rounding relocation", "residual unit", "conceded"]
+
+[[retirement]]
+id = "r146_the_count_is_not_a_property_of_the_design"
+claim = "The count is not a property of the design at all."
+why = "Too strong; the map from shape to count is a well-defined function. Conceded by its author, and that author's own table is the evidence against it."
+kind = "wrong"
+replacement = "The shape-to-count function, which is monotone in the observation set and saturates."
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+]
+keywords = ["count", "shape to count", "well defined", "conceded", "too strong", "design property"]
+
+[[retirement]]
+id = "r146_strictly_increasing"
+claim = "The number of distinguishable classes is a strictly increasing function of the witness set, so no count is meaningful without naming the operations it was counted over."
+why = "False, with 714 counterexamples on one axis set and 134 on another. The content survives in an amended form and the original stands unedited."
+kind = "wrong"
+replacement = "The amended form of the same finding."
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+]
+keywords = ["F2", "strictly increasing", "counterexample", "axis set", "amended", "monotone"]
+
+[[retirement]]
+id = "r146_fractional_shift_as_an_arithmetic_shift_right"
+claim = "The replacement that the fractional shift be spelled as an arithmetic shift right."
+why = "Contested and replaced, because the swap is measured to change up to 44.53 percent of multiply answers on signed shapes, so it is a policy change and not a spelling. What survives inside it is a naming obligation, which is a finding arriving from another topic."
+kind = "wrong"
+replacement = "The primed form of the same replacement, plus the naming obligation."
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+]
+keywords = ["replacement B", "arithmetic shift right", "fractional shift", "spelling", "policy change", "signed", "F142-4"]
+
+[[retirement]]
+id = "r146_the_seven_arm_table_as_a_second_instance"
+claim = "The seven-arm table read as a second instance of the Pareto claim, and the headline instance beside it."
+why = "The gap decomposes as an exact-duplicate control arm losing a tie-break, so the table is not a second instance and the witness carries the claim alone."
+kind = "wrong"
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+]
+keywords = ["seven-arm table", "Pareto", "second instance", "duplicate arm", "tie break", "F144-3", "witness"]
+
+[[retirement]]
+id = "r146_four_refuted_predictions"
+claim = "Two predictions from one cold derivation and two from the other."
+why = "Each refuted by its own probe before either file read anything, which is the protocol working rather than a defect."
+kind = "wrong"
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::146_leroy_the_canon_candidate_for_the_strategy_object::#1-8-retired",
+]
+keywords = ["prediction", "refuted", "cold derivation", "own probe", "protocol", "blind phase"]
+
+[[retirement]]
+id = "r151_the_first_predicate_of_clause_five_five"
+claim = "The strategy-object candidate's first predicate at clause 5.5."
+why = "False, found independently by two signatures and then measured rather than conceded on two reports, exhaustively over all 262144 triples per cell at width six: nearest-half-even diverges from 3.91 to 12.50 percent across nonzero fraction widths under wrapping while the other five modes are zero everywhere, and under saturating it is 0.93 to 2.18 percent with the other five zero. It came from an earlier file and the candidate carried it faithfully, which is not a defence: a candidate is where a claim stops being one author's."
+kind = "wrong"
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+]
+keywords = ["clause 5.5", "predicate", "nearest half even", "wrapping", "saturating", "fraction width", "exhaustive", "candidate"]
+
+[[retirement]]
+id = "r151_the_wrapping_clause_contradicted_by_its_output"
+claim = "The wrapping clause of the strategy-object formalisation."
+why = "Contradicted by its own committed output, which reports a wrapping assignment with two conforming arms two lines above a verdict saying every arm conforms. This is the same defect recorded against another instrument in the same file, occurring a second time and not caught by the candidate's author."
+kind = "wrong"
+replacement = "The corrected statement, that the conforming-arm count is a function of the whole assignment, rounding included, rather than of the overflow position."
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+]
+keywords = ["wrapping clause", "conforming arm", "committed output", "verdict", "F150-6", "absorption", "toward zero", "equivariant"]
+
+[[retirement]]
+id = "r151_the_gate_finding_generalised_past_its_readings"
+claim = "The gate finding, generalised past the readings it implemented."
+why = "Reproduced and found overreaching; the finding holds for the reading the source file used."
+kind = "unpredicated"
+replacement = "The same finding scoped to the reading actually implemented."
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+]
+keywords = ["gate", "generalisation", "reading", "B2", "overreach", "scope"]
+
+[[retirement]]
+id = "r151_the_contamination_scoping"
+claim = "The strategy-object candidate's contamination scoping."
+why = "Wrong in three directions, two of them mechanical and both reproduced."
+kind = "wrong"
+topic = "the_strategy_object"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+]
+keywords = ["contamination", "scoping", "independence", "three directions", "reproduced", "mechanical"]
+
+[[retirement]]
+id = "r151_the_reason_for_the_unpredicated_firewall"
+claim = "The candidate's reason for the unpredicated firewall, and its account of the cost."
+why = "The reason given was the weaker one and the account of the cost overstated it. Named by two signatures. The unpredicated form itself survives; what is retired is the reason offered for it."
+kind = "superseded"
+replacement = "The replaced reason, at the revision's own section on it."
+topic = "canon_form"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+]
+keywords = ["firewall", "unpredicated", "reason", "cost", "overstated", "gateable", "signature"]
+
+[[retirement]]
+id = "r151_the_instrument_that_intersected_names"
+claim = "The intersection instrument's result, which intersected names rather than values."
+why = "It reported a dimension present when the instances partitioned it. One signature named the class, and the repaired instrument found the defect in three of four rows."
+kind = "wrong"
+replacement = "The repaired instrument, which intersects over values."
+topic = "the_predicate_notation"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::151_leroy_the_candidate_revised_against_four_signatures::#9-what-i-got-wrong-collected",
+]
+keywords = ["intersection", "names", "values", "dimension", "partition", "z6", "empty region", "convergence"]
+
+# --- the primitive candidate's list, and its revision's amendments ---------------
+
+[[retirement]]
+id = "r161_r1_the_zero_of_forty_eight_law_set_freedom_count"
+claim = "Zero of forty-eight configurations can vary the law set with the others fixed."
+why = "Vacuous by construction: the key returned the swept axes, so the collision test never fired, and a mutation making the law set genuinely free did not move the verdict. Withdrawn by its author after verifying the mechanism itself. Do not cite. The conclusion it supported stands on three other instruments."
+kind = "wrong"
+replacement = "The same conclusion, on the three independent instruments that carry it."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["0 of 48", "law set", "freedom", "vacuous", "dead branch", "collision test", "mutation", "R1"]
+
+[[retirement]]
+id = "r161_r2_the_five_instrument_count"
+claim = "The five-instrument count for the refinement finding."
+why = "Three, because one dependency family is one instance. Do not cite the five. The settlement it supported stands regardless, on a structural argument that needs no count."
+kind = "wrong"
+replacement = "Three instruments."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["F6", "five instruments", "three", "dependency family", "instance count", "R2"]
+
+[[retirement]]
+id = "r161_r3_topic_five_states_nothing_about_any_width"
+claim = "Topic five states nothing about any width."
+why = "False of topic five and true of the four files counted; one file spells width universals in a spelling the instrument did not enumerate. Cite the four-file count only."
+kind = "unpredicated"
+replacement = "The four-file count."
+topic = "the_predicate_notation"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["F157-10", "width", "universal", "generalisation", "four files", "spelling", "R3"]
+
+[[retirement]]
+id = "r161_r4_three_withdrawn_primitive_findings"
+claim = "The 127-primitive index count, the container-relative degenerate set, and the declaration criterion."
+why = "Withdrawn by their author: the collapse was a reachability degeneracy at the thinnest possible signature, the fourth instance of a criterion tested against a signature too thin to reach the case it fails on."
+kind = "wrong"
+replacement = "The distinction that refutes them, which is the candidate's own machinery for it."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["F11", "F12", "F13", "127 primitives", "degenerate", "declaration criterion", "thin signature", "R4"]
+
+[[retirement]]
+id = "r161_r5_the_operation_has_to_be_a_type"
+claim = "The operation has to be a type."
+why = "The const-eval wall is real and is recorded verbatim as function pointer calls not being allowed in constant functions; the conclusion drawn from it is false, because three other carriers work and one already ships in a live bench arm. Cite the wall, not the conclusion."
+kind = "wrong"
+replacement = "The wall itself, stated as the refusal it is."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["const eval", "function pointer", "operation", "type carrier", "match", "macro", "duplication", "R5"]
+
+[[retirement]]
+id = "r161_r6_no_repair"
+claim = "Two names for one primitive is a compile error with no in-language repair."
+why = "Withdrawn by its author and restated with its region: right about type equality, wrong about consumers, and the cost is three-armed by boundary. **This field used to hold the two words `no repair`**, which is how the source abbreviates the claim rather than the sentence anybody would quote, and a claim that short cannot be found by search: it matched a live row using the ordinary phrase about a homogeneous container, which is the restated form and is not retired at all."
+kind = "unpredicated"
+replacement = "The restated form carrying its region."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["F8", "no repair", "type equality", "consumer", "boundary", "three-armed", "R6"]
+
+[[retirement]]
+id = "r161_r7_for_the_value_not_the_container"
+claim = "For the value, not the container."
+why = "Withdrawn in full by its author, on the ground that its own cited instrument excludes, by its bound, the case in dispute."
+kind = "wrong"
+replacement = "The lens-one-level-down formulation, adopted."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["requirement 1", "value", "container", "instrument bound", "withdrawn", "lens", "S-1", "R7"]
+
+[[retirement]]
+id = "r161_r8_the_retirement_of_the_107_second_figure"
+claim = "The retirement of the 107-second figure for the wide-rung crate."
+why = "Itself retired: the figure was a correct debug measurement, the three refuting measurements were taken at release, and the two were never in conflict. Measured back to back on one host: 109.08 seconds at debug against 3.78 at release, a factor of twenty-nine. Cite neither number without its profile. The mechanism is the one this panel ratified and then did not apply to itself: a dimension that moves a result by twenty-nine times went unstated, so the claim was unpredicated and a later reader supplied the missing dimension from context, which cost a true finding that was then dropped rather than carried as contested."
+kind = "wrong"
+replacement = "Both numbers, each carrying the build profile it was taken under."
+topic = "the_predicate_notation"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::202608072330_the-numeral-canon-panel::OPTIONS::#q52-what-a-primitive-is-and-two-convergences-that-did-not-survive-being-checked",
+]
+keywords = ["107 seconds", "wide-rung", "debug", "release", "build profile", "retirement retired", "unpredicated", "R8"]
+
+[[retirement]]
+id = "r161_r9_the_number_system_convergence_as_two_instances"
+claim = "The number-system convergence, as two instances."
+why = "One file made a category claim, the other made a cut, and the first conceded: one expert rather than two. The cut itself stands at that tier inside the candidate's ledger."
+kind = "wrong"
+replacement = "One expert, on the cut."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["number system", "convergence", "two instances", "one expert", "category claim", "cut", "radix", "R9"]
+
+[[retirement]]
+id = "r161_r10_completeness_and_gap_assertions_as_written"
+claim = "The witness-only completeness outcome, and the gap assertion beside it, as written."
+why = "As written they reject every refinement parameter, and the conflation is compiled. Superseded by a three-outcome form at one expert. The soundness half is untouched and carried. Amended by the revision to name which half died: the per-pair scope in the same sentence, that a design owes a witness per pair of instantiations it ships rather than per axis, survived and is carried, and a reader retiring the sentence wholesale would retire the half that is load-bearing for the surviving obligation."
+kind = "superseded"
+replacement = "The three-outcome form, with the per-pair scope kept."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#5-1-r10-amended-name-which-half-of-the-sentence-died",
+]
+keywords = ["S-14", "S-16", "completeness", "gap", "refinement parameter", "per-pair", "witness", "R10", "amended"]
+
+[[retirement]]
+id = "r161_r11_the_degeneracy_condition_as_worded"
+claim = "The degeneracy condition, as worded."
+why = "Superseded by sole occupancy. The lens formulation itself is untouched."
+kind = "superseded"
+replacement = "Sole occupancy."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["S-8", "degeneracy", "sole occupancy", "lens", "wording", "R11"]
+
+[[retirement]]
+id = "r161_r12_the_workspace_auto_loads_a_named_rule"
+claim = "This workspace auto-loads the always-optimal-internals rule into every agent context."
+why = "False as stated. Independence accounting that rests on it is unreliable in both directions, and one file's one-shared-exposure sentence is conceded on exactly this ground."
+kind = "wrong"
+topic = "panel_conduct"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["auto-load", "agent context", "workspace rule", "independence", "shared exposure", "contamination", "R12"]
+
+[[retirement]]
+id = "r161_r13_the_one_element_column_cost_clause"
+claim = "The cost clause that the boolean and platform-width types become one-element columns."
+why = "Withdrawn by its author on adopting the lens formulation: under the lens the native end never mentions the lens, so the cost does not arise."
+kind = "wrong"
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["O-B", "cost clause", "Bool", "USize", "one-element column", "lens", "native end", "R13"]
+
+[[retirement]]
+id = "r161_r14_the_deliberately_over_counting_index"
+claim = "The index deliberately over-counts, and that over-counting is a live option the design has to carry."
+why = "Closed by the container premise on either branch: under the observable branch the index counts correctly and the option dissolves, and under the internal branch it is the live description of exactly that axis and is subsumed by the candidate's licence machinery. No further evidence is needed and it is not carried as an option."
+kind = "superseded"
+topic = "the_container_premise"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["O-D", "over-counting index", "container premise", "observable", "internal", "licence machinery", "R14"]
+
+[[retirement]]
+id = "r161_r15_the_four_part_working_assumption"
+claim = "A primitive as a named composition of a format, a number system, a law set and a strategy."
+why = "Superseded by the candidate's statement. Per element: format is two things, one identity-bearing and one selectable; number system is a category error resolved into the radix cut; the law set is excluded because it cannot vary with the others held fixed; and the strategy is a selector whose request-versus-resolution placement was settled in an earlier topic, with one author's own recommendation to carry the marker withdrawn in that file's second phase on that ground."
+kind = "superseded"
+replacement = "The candidate's own statement of what a primitive is."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["four-part", "working assumption", "format", "number system", "law set", "strategy", "refinement", "R15"]
+
+[[retirement]]
+id = "r161_r16_adequacy_checkability_as_written"
+claim = "Checkable the way a congruence is checked: at model widths, exhaustively, with the transfer argument named rather than assumed."
+why = "Unpayable as stated: nobody in either sitting has made a transfer argument, and the workspace's own rule says the honest default is that none exists. Superseded by a decomposition dischargeable at the widths arvo ships. Amended by the revision, which adopts a sharper reason: adequacy contains no model-width result for a transfer argument to be about, so soundness is a factoring property of the code in which no width appears, and completeness at a pair is discharged at the real width directly. A missing argument might arrive tomorrow; a category mismatch does not. The two halves the sentence named are exactly right and are carried."
+kind = "unpayable"
+replacement = "The adequacy decomposition, dischargeable at the shipped widths."
+topic = "the_primitive"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::161_leroy_the_canon_candidate_for_the_primitive::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#5-2-r16-amended-the-reason-is-a-category-mismatch-not-a-missing-discharge",
+]
+keywords = ["adequacy", "checkability", "model width", "transfer argument", "soundness", "completeness", "category mismatch", "R16", "amended"]
+
+[[retirement]]
+id = "r164_r17_rounding_at_zero_fraction_is_observable"
+claim = "Rounding at zero fraction width is observable the moment anyone writes a non-grid literal."
+why = "Must no longer be cited as stated. Measured false: of six non-grid literals, three separate and three do not, because a tie under ties-to-even and truncation land on the same grid point, so non-grid is necessary and not sufficient. The underlying existence claim survives on a separate finding, whose dense rational witness carries it."
+kind = "wrong"
+replacement = "The existence claim, on the finding whose witness carries it."
+topic = "rounding"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#5-3-r17-new-the-register-s-literal-sentence-on-rounding-observability",
+]
+keywords = ["non-grid literal", "observable", "F = 0", "ties to even", "truncation", "necessary", "sufficient", "R17"]
+
+[[retirement]]
+id = "r164_r18_the_zero_novel_anchors_sentence"
+claim = "Zero novel anchors means, being the closing sentence of the primitive candidate's accounting section."
+why = "Must no longer be cited. It sits three lines below that section's own table reporting one novel anchor, so the document contradicts itself on the page. One signature found it, the revision repaired the class in its own accounting and left no entry naming the specific false sentence, and the independent check recorded that gap rather than escalating it. The candidate stands as landed, because both signatures cite it by line."
+kind = "wrong"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::164_leroy_the_candidate_revised_against_two_signatures::#5-4-r18-new-added-after-165-161-s-own-accounting-sentence",
+]
+keywords = ["zero novel anchors", "accounting", "self-contradiction", "anchor table", "R18", "provenance string"]
+
+# --- the chain candidate's list, and the restoration pass's superseded sentences --
+
+[[retirement]]
+id = "r173_ra_the_heading_evidence_for_the_discount"
+claim = "The heading evidence for the cold pair's independence discount."
+why = "Withdrawn by its author: both quoted headings were strict prefixes quoted as identity, and the two exactly-shared headings are dictated by auto-loaded rules. Do not cite the headings. The discount itself stands on the shared premise set."
+kind = "wrong"
+replacement = "The discount, on the shared premise set."
+topic = "panel_conduct"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["heading", "discount", "independence", "strict prefix", "shared premise", "auto-loaded", "R-a"]
+
+[[retirement]]
+id = "r173_rb_the_three_way_definitional_convergence"
+claim = "Three instances converge on one definition, so the convergence is three-way."
+why = "Superseded by the measured two-hats correction. Do not cite a three-way convergence; cite two instances plus a composing third definition."
+kind = "wrong"
+replacement = "Two instances plus a composing third definition."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["three-way", "convergence", "definition", "two hats", "instance count", "R-b"]
+
+[[retirement]]
+id = "r173_rc_the_region_framing_as_a_contribution"
+claim = "The region framing, offered as a contribution."
+why = "Withdrawn by its author: dominated outright by an earlier file's sentence on directed acyclic graphs with sharing. What survives is the delimiter and the schedule-conflict result."
+kind = "superseded"
+replacement = "The delimiter and the schedule-conflict result."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["region", "framing", "contribution", "DAG", "sharing", "delimiter", "schedule conflict", "R-c"]
+
+[[retirement]]
+id = "r173_rd_the_chain_question_was_priced_and_nobody_was_told"
+claim = "The chain question was priced and nobody was told."
+why = "Withdrawn: the register's own entry carried the measurement, the mechanism and a better noise bound. The extraction table and the attribution survive; the negative claim does not."
+kind = "wrong"
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["priced", "nobody was told", "negative claim", "Q42", "noise bound", "extraction table", "R-d"]
+
+[[retirement]]
+id = "r173_re_the_carried_residual_for_product_chains"
+claim = "The carried residual as an answer for product chains, as first framed."
+why = "Withdrawn: the window strictly dominates it there. The additive-window state-saving refinement survives."
+kind = "superseded"
+replacement = "The window, plus the additive-window state-saving refinement."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["carried residual", "product chain", "window", "dominates", "state saving", "R-e"]
+
+[[retirement]]
+id = "r173_rf_the_interior_projection_blocking_the_affine_collapse"
+claim = "The attribution of the effect to the interior projection blocking the affine collapse."
+why = "Refuted by its own probe: the effect is present where the collapse is impossible. The mechanism is the accumulator projection, and the bench family's own title invites the wrong reading. Do not cite the collapse attribution."
+kind = "misattributed"
+replacement = "The accumulator projection."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["F9", "interior projection", "affine collapse", "accumulator projection", "attribution", "bench title", "R-f"]
+
+[[retirement]]
+id = "r173_rg_two_negative_claims_as_stated"
+claim = "A grep of the panel finds no other file naming the warm affine collapse family; and nobody had read these two families against each other."
+why = "Both false as stated. The substantive points survive narrower: one prose file, and a within-run comparison against an earlier file's stated objection."
+kind = "wrong"
+replacement = "The narrower forms of both points."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["negative claim", "grep", "warm-affine-collapse", "absence claim", "within-run", "R-g"]
+
+[[retirement]]
+id = "r173_rh_the_two_placement_pointwise_search"
+claim = "The two-placement pointwise search, as evidence for the all-placement claim."
+why = "Superseded three times over. The claim survives at theorem strength. Cite the theorem, not the original sweep."
+kind = "superseded"
+replacement = "The theorem."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["pointwise search", "placement", "theorem", "sweep", "evidence", "R-h"]
+
+[[retirement]]
+id = "r173_ri_measured_for_the_conflict_band"
+claim = "Measured, for the conflict band on the original construction."
+why = "The band is entailed rather than measured. The word became correct only for a variant construction."
+kind = "misattributed"
+replacement = "Entailed, for the original construction."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["conflict band", "measured", "entailed", "T1", "variant construction", "R-i"]
+
+[[retirement]]
+id = "r173_rj_the_zero_as_an_unqualified_reassociation_safety_claim"
+claim = "The probe's zero, read as an unqualified fixed-point reassociation-safety claim."
+why = "The region is that no adaptation on the additive side occurs. The relative-precision half and the consequence for the strategy-order question stand."
+kind = "unpredicated"
+replacement = "The same result carrying its region."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["probe F", "reassociation safety", "unqualified", "adaptation", "additive", "relative precision", "R-j"]
+
+[[retirement]]
+id = "r173_rk_the_static_length_lever"
+claim = "Giving the lanes a statically known length is a lever on what they cost."
+why = "Unestablished: largest gap 1.2 percent, inside the harness's measured 4.9 percent between-dylib noise floor, with the sign flipping six of twelve. Do not cite it as a result in either direction. What would reopen it is a harness whose floor is below the effect."
+kind = "unpredicated"
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["static length", "lever", "noise floor", "between-dylib", "sign flip", "unestablished", "R-k"]
+
+[[retirement]]
+id = "r173_rl_one_file_as_a_complete_carrier_of_another"
+claim = "One file's account of an earlier file, as a complete carrier of it."
+why = "Measured incomplete: four enumerations at zero mentions. Read the earlier file directly; the candidate cites it at source throughout."
+kind = "wrong"
+replacement = "The earlier file, read at source."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["carrier", "account", "incomplete", "enumeration", "read at source", "compression", "R-l"]
+
+[[retirement]]
+id = "r173_rm_the_phase_one_lead_pair_as_order_dependence"
+claim = "The phase-one lead pair, multiply then add against add then multiply, as evidence of order-dependence."
+why = "Corrected by its author: those compute different functions. The commuting pair, two multiplies computing the same function with different per-step widths, is the evidence, and it is what the heterogeneity bound rests on."
+kind = "wrong"
+replacement = "The commuting pair."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["lead pair", "order dependence", "commuting", "different functions", "heterogeneity bound", "R-m"]
+
+[[retirement]]
+id = "r173_rn_the_panel_has_never_had_a_unit_on_chains"
+claim = "The panel has never had a unit on chains, as a claim about the corpus."
+why = "The unit's opening ground, true of units and false of the corpus: two earlier files existed and the reading list omitted them. Superseded by the reconciliations, and kept because the next unit's brief-writer is the reader who needs it."
+kind = "wrong"
+topic = "panel_conduct"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::173_leroy_the_canon_candidate_for_the_chain::#3-closed-or-retired-including-what-must-no-longer-be-cited",
+]
+keywords = ["never had a unit", "chains", "corpus", "reading list", "absence claim", "brief writer", "R-n"]
+
+[[retirement]]
+id = "r176_ro_the_closure_recorded_only_in_a_rung_history"
+claim = "The record of one option's closure, as filed."
+why = "The option is closed, by a second read that is the decider it named, and the closure is recorded only inside a rung history, where an option-set diff will not find it; a census reports zero occurrences of it in the candidate. This entry is that record, with the qualifier that the closer shares the premise set whose influence the option exists to test, so the closure is a second read rather than independent evidence."
+kind = "misattributed"
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::176_leroy_the_candidate_revised_against_two_signatures::#6-the-register-repairs",
+]
+keywords = ["O-171-1", "closure", "rung history", "option set diff", "census", "second read", "R-o"]
+
+[[retirement]]
+id = "r176_the_four_named_channels_as_the_residue"
+claim = "The four named channels, read as the residue of the binding-free enumeration."
+why = "The four are not the residue: partiality was in neither the six tested nor the four named, was found from the licence side, and was confirmed from a construction the finder did not use, on both profiles. A channel outside both lists having existed once, the enumeration bound on the uniqueness argument is an enumeration bound rather than a perimeter."
+kind = "wrong"
+replacement = "The same list, read as an enumeration bound rather than as a perimeter."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::176_leroy_the_candidate_revised_against_two_signatures::#6-the-register-repairs",
+]
+keywords = ["channels", "residue", "partiality", "enumeration bound", "perimeter", "debug assertions", "O-5"]
+
+[[retirement]]
+id = "r178_the_biconditional_between_licence_and_singleton"
+claim = "Where a deletion licence holds, the family is a singleton, and the converse, asserted with the words exactly and precisely."
+why = "The forward direction holds on every cell. The converse has a counterexample: a chain of three operations under one rounding has a singleton family with both licences refusing, so the licences under-approximate the safe region rather than characterise it, which is what a sound licence is for. The superseded sentences are restated in full at the restoration pass."
+kind = "wrong"
+replacement = "The implication that holds, with the composition claim kept and the converse dropped."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#2-f177-1-the-biconditional-becomes-the-implication-that-holds",
+]
+keywords = ["biconditional", "deletion licence", "singleton family", "converse", "under-approximate", "counterexample", "F177-1"]
+
+[[retirement]]
+id = "r178_the_identity_column_cited_as_a_wrap_column"
+claim = "The wrap sentence citing one file's identity column as a wrap column."
+why = "Measured, they differ: identity gives one at every depth, which is a control and vacuous for any claim about wrapping, while wrap gives one, two, three, one, the two chains above one being the two carrying a right shift. The sentence's restrictive clause was correct and its support was not. The identity column is dropped from the sentence entirely; it is a control and supports no claim about any resolution."
+kind = "misattributed"
+replacement = "The same sentence cited from the establishing sources, the degeneracy table over ring-affine chains and its own control outside that region."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#3-f177-2-the-wrap-sentence-repaired-from-the-establishing-sources",
+]
+keywords = ["identity column", "wrap column", "control", "degeneracy", "ring affine", "right shift", "F177-2"]
+
+[[retirement]]
+id = "r178_three_sweep_scoped_counts_inside_a_clause"
+claim = "The three sweep-scoped counts embedded in the amended chain clause."
+why = "The counts are correct at source; the defect is where they sit, by the candidate's own permanence test, in a statement that carried no measurement figure, and the measurement's own author records that the shortfall count moves with the shape of the operand set. They leave the statement and keep their predicate, moving to a ledger note carrying all nine dimensions they were measured under."
+kind = "superseded"
+replacement = "The clause without the figures, plus a ledger note carrying the counts with their nine-dimension predicate."
+topic = "the_chain"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#4-f177-3-the-counts-leave-the-statement-and-keep-their-predicate",
+]
+keywords = ["counts", "sweep scoped", "clause", "permanence", "ledger", "predicate", "shortfall", "F177-3"]
+
+[[retirement]]
+id = "r178_the_two_position_mark_convention"
+claim = "The two-position convention for the statement's kind marks."
+why = "The statement has carried an intra-sentential mark since the candidate and the revision added a second while stating a two-position convention, so the convention was incomplete as written."
+kind = "superseded"
+replacement = "The three-position convention: an opening mark gives a clause's primary kind, a trailing mark attaches to the sentence immediately before it, and a mark inside a sentence attaches to the separated clause it follows."
+topic = "canon_form"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#5-f177-4-the-legend-s-third-mark-position",
+]
+keywords = ["legend", "mark", "convention", "sentence kind", "intra-sentential", "position", "F177-4"]
+
+[[retirement]]
+id = "r178_the_discount_carried_at_three_of_five_components"
+claim = "The independence discount's conclusion, carried with three of its five components."
+why = "The two missing are restored in their author's own words, because the second is the only part of the discount anything measured supports and the first is the reason the discount is one: that an empirical claim two parties reach independently is corroborated because the world had to cooperate twice, while a definition two parties reach independently may be two members of one model family finding the same framing natural on one premise set; and that one file found one shared input by looking for it, with nothing establishing it found the only one."
+kind = "superseded"
+replacement = "The discount at full strength, with the reason and the evidential anchor restored."
+topic = "panel_conduct"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#6-f177-5-the-discount-restored-to-full-strength",
+]
+keywords = ["discount", "independence", "components", "model family", "shared input", "corroboration", "F177-5"]
+
+[[retirement]]
+id = "r178_the_canon_gate_universal_over_three_of_six"
+claim = "The canon gate's universal claim that nothing below closes anything reserved, enumerating three of the six reserved items."
+why = "The unnamed three were verified unclosed, so the claim was true and the list partial."
+kind = "superseded"
+replacement = "The complete enumeration of all six reserved items."
+topic = "canon_form"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#7-f177-6-the-canon-gate-s-enumeration-completed",
+]
+keywords = ["canon gate", "universal", "enumeration", "reserved", "partial list", "op's items", "F177-6"]
+
+[[retirement]]
+id = "r178_the_instruments_docstring_naming_the_wrong_control"
+claim = "The anchor-counting instrument's docstring, declaring its positive control as one file's line range while the code runs another's."
+why = "Repaired at the artifact and the accounting regenerated, with the diff of the regenerated output against the committed output empty, so no number moved. The third recurrence of the provenance-string class in two units, and the check it needs is that an instrument's docstring is read against its code, which nobody had done."
+kind = "misattributed"
+topic = "panel_conduct"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::178_leroy_the_restoration_pass::#8-f177-7-the-instrument-s-docstring-repaired-numbers-unchanged",
+]
+keywords = ["docstring", "positive control", "instrument", "provenance string", "regenerated", "empty diff", "F177-7"]
+
+# --- the container-derivation unit's adjudicating criterion ----------------------
+
+[[retirement]]
+id = "r53_the_adjudicating_criterion_for_an_output"
+claim = "A component is an output of the derivation when the consumer did not write it, the machine needs it, and a downstream site that holds the other components cannot recover it."
+why = "Every verdict in the unit's first six files was adjudicated against this sentence, and it is not a definition. The defined set appears on both sides of its own third clause and the operator is antitone, so adding a fact removes another and neither a least nor a greatest fixpoint tie-breaks. It also leaves three background parameters unstated: the site model, the strategy set and the kind regime. Enumerated across those, the one sentence admits answers of sizes zero, two, three and four, and the unit's own answer is produced by exactly one cell of sixteen, the cell reading the strategy set as closed, which contradicts op's own demotion of that set to open, and the kind boundary as absent, which contradicts the unit's compiled refusals. Two experts on the reading and one verified formalisation: the second read the stating file in full and formed its own reading before opening either of the two files that had found the defect, reached the same two-readings finding unaided, re-ran all eight probes byte for byte, and hand-traced the solver against the decisive cell. What the retirement does not touch is the two-output finding itself, which rests on the injectivity argument and the compiled evidence; what is retired is the belief that this sentence is what established it."
+kind = "wrong"
+replacement = "Three separated predicates, one per job the sentence was trying to do at once, endorsed and restated as a specification by the second read."
+topic = "the_realisation_map"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation::#4-1-the-retirement",
+]
+keywords = ["criterion", "output", "derivation", "fixpoint", "antitone", "site model", "strategy set", "kind regime", "sixteen cells", "two outputs"]
+
+# --- a false sentence the register left standing as the record of its own drift ---
+
+[[retirement]]
+id = "options_q32_every_instrument_runs_on_one_thread"
+claim = "Every instrument this panel has built runs on one thread."
+why = "False, and false at the moment it was written. Two committed files are threaded benches on the mockspace harness, both numbered before the file the entry cites for the thread intent, and both measuring one, two and four threads over exactly the packing trade the entry describes. It was not edited in place, because the panel's discipline is against rewriting a committed entry, so the false sentence is left standing in the register as the record of the drift and this row is what stops it being cited. What was actually true: the read-side packing trade under thread contention was measured in full, and the inequality survives one core to four unchanged in form. The entry's sharpest exposure, a sub-byte read-modify-write on a shared byte, is real and is a write hazard specifically, and the contention bench forces every split onto a period boundary so its reads never see it; nobody had measured a write until a later file did, finding a naive parallel write to a packed column corrupting its output 16.6 to 19.2 percent of the time at a misaligned split, an atomic guard on the one shared boundary byte restoring correctness at 6 to 9 percent overhead, and the write-side trade not being the read-side trade at any thread count measured."
+kind = "wrong"
+replacement = "The corrected account in the entry's own addendum, with the write-side measurement that closes the gap."
+topic = "panel_conduct"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::OPTIONS::#q32-the-doability-claims-are-workload-claims-and-no-workload-evidence-exists-above-one-thread",
+  "panel::202608072330_the-numeral-canon-panel::OPTIONS::#q32-addendum-from-78",
+]
+keywords = ["one thread", "instrument", "threads", "contention", "packing", "write hazard", "read-modify-write", "absence claim", "Q32"]

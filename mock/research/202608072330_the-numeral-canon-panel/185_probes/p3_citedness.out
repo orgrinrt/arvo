@@ -1,0 +1,162 @@
+=== p3 citedness, 2026-08-30T22:38:24Z
+columns: dir, bounded mentions in panel .md, lines mentioning it, mentions in registry toml
+the probe tree itself is excluded from every count (C3)
+
+## C1: 151_probes must be non-zero
+C1 PASS: 24 mentions
+
+## C2: at least one existing directory must come back with zero mentions
+C2 PASS: 3 directories are cited nowhere in the panel prose
+  158_probes
+  185_probes
+  SEED_THEORY_46_90_probes
+
+## C4: the matcher must not read 147_probes as 47_probes
+naive fixed-string 47_probes: 94
+bounded 47_probes:            86
+bounded 147_probes:           7
+C4 PASS: the bound removed 8 phantom mentions from one directory alone
+
+## ranked by mentions
+   134   130 lines    0 reg  57_probes
+    86    78 lines    0 reg  47_probes
+    78    76 lines    0 reg  45_probes
+    72    72 lines    0 reg  16_probes
+    71    66 lines    0 reg  157_probes
+    55    54 lines    0 reg  98_probes
+    53    53 lines    0 reg  56_probes
+    53    45 lines    0 reg  80_probes
+    52    52 lines    0 reg  35_probes
+    48    46 lines    0 reg  55_probes
+    45    45 lines    0 reg  42_probes
+    45    43 lines    0 reg  82_probes
+    44    42 lines    0 reg  73_probes
+    41    37 lines    0 reg  118_probes
+    40    38 lines    0 reg  61_probes
+    40    38 lines    0 reg  97_probes
+    38    32 lines    0 reg  140_probes
+    36    36 lines    0 reg  50_probes
+    35    35 lines    0 reg  101_probes
+    34    32 lines    0 reg  100_probes
+    34    34 lines    0 reg  145_probes
+    33    33 lines    0 reg  102_probes
+    33    30 lines    0 reg  93_probes
+    32    30 lines    0 reg  43_probes
+    32    32 lines    0 reg  58_probes
+    31    29 lines    0 reg  114_probes
+    31    28 lines    0 reg  11_probes
+    31    30 lines    0 reg  15_probes
+    31    30 lines    0 reg  62_probes
+    31    25 lines    0 reg  77_probes
+    30    30 lines    0 reg  137_probes
+    30    28 lines    0 reg  84_probes
+    30    27 lines    0 reg  89_probes
+    29    26 lines    0 reg  125_probes
+    28    28 lines    0 reg  111_probes
+    26    26 lines    0 reg  108_probes
+    26    25 lines    0 reg  71_probes
+    25    24 lines    0 reg  17_probes
+    24    22 lines    0 reg  12_probes
+    24    24 lines    1 reg  151_probes
+    24    23 lines    0 reg  154_probes
+    23    22 lines    0 reg  139_probes
+    22    22 lines    0 reg  18_probes
+    21    21 lines    0 reg  60_probes
+    21    19 lines    0 reg  86_probes
+    20    20 lines    0 reg  13_probes
+    20    17 lines    0 reg  79_probes
+    19    18 lines    0 reg  40_probes
+    18    17 lines    0 reg  112_probes
+    18    18 lines    0 reg  116_probes
+    18    18 lines    0 reg  163_probes
+    18    18 lines    0 reg  168_probes
+    17    16 lines    0 reg  10_probes
+    17    17 lines    0 reg  131_probes
+    17    17 lines    0 reg  141_probes
+    17    16 lines    0 reg  171_probes
+    17    17 lines    0 reg  173_probes
+    17    17 lines    0 reg  51_probes
+    16    16 lines    0 reg  142_probes
+    16    14 lines    0 reg  144_probes
+    16    15 lines    0 reg  160_probes
+    15    14 lines    0 reg  103_probes
+    15    15 lines    0 reg  128_probes
+    15    15 lines    0 reg  130_probes
+    14    14 lines    0 reg  107_probes
+    14    14 lines    0 reg  110_probes
+    14    14 lines    0 reg  136_probes
+    14    14 lines    0 reg  175_probes
+    14    14 lines    0 reg  177_probes
+    14    13 lines    0 reg  25_probes
+    14    14 lines    0 reg  27_probes
+    14    14 lines    0 reg  68_probes
+    14    14 lines    0 reg  94_probes
+    13    13 lines    0 reg  115_probes
+    13    13 lines    0 reg  167_probes
+    12    12 lines    0 reg  106_probes
+    12    12 lines    0 reg  126_probes
+    12    12 lines    0 reg  24_probes
+    12    12 lines    0 reg  66_probes
+    12     9 lines    0 reg  76_probes
+    11    11 lines    0 reg  119_probes
+    11    11 lines    0 reg  127_probes
+    11    10 lines    0 reg  148_probes
+    11     9 lines    0 reg  161_probes
+    11    10 lines    0 reg  176_probes
+    11    11 lines    3 reg  183_probes
+    11    11 lines    0 reg  49_probes
+    11    10 lines    0 reg  92_probes
+    10    10 lines    0 reg  129_probes
+     9     9 lines    0 reg  07_probes
+     9     7 lines    0 reg  143_probes
+     9     9 lines    0 reg  146_probes
+     9     9 lines    1 reg  149_probes
+     9     9 lines    0 reg  169_probes
+     9     8 lines    0 reg  172_probes
+     9     9 lines    0 reg  26_probes
+     8     8 lines    0 reg  08_probes
+     8     8 lines    0 reg  162_probes
+     7     6 lines    0 reg  06_probes
+     7     7 lines    0 reg  135_probes
+     7     7 lines    1 reg  147_probes
+     7     7 lines    0 reg  159_probes
+     7     7 lines    0 reg  22_probes
+     7     7 lines    0 reg  72_probes
+     6     6 lines    0 reg  122_probes
+     6     6 lines    0 reg  133_probes
+     6     6 lines    0 reg  170_probes
+     6     6 lines    0 reg  174_probes
+     6     5 lines    0 reg  178_probes
+     5     5 lines    0 reg  132_probes
+     5     5 lines    0 reg  164_probes
+     5     5 lines    0 reg  23_probes
+     5     5 lines    0 reg  65_probes
+     4     4 lines    0 reg  121_probes
+     4     4 lines    0 reg  150_probes
+     4     4 lines    0 reg  179_probes
+     4     4 lines    0 reg  20_probes
+     4     3 lines    0 reg  21_probes
+     4     4 lines    0 reg  31_probes
+     4     4 lines    0 reg  63_probes
+     4     4 lines    0 reg  70_probes
+     3     3 lines    0 reg  109_probes
+     3     3 lines    0 reg  180_probes
+     3     3 lines    0 reg  33_probes
+     3     3 lines    0 reg  SEED_TALKING_POINTS_probes
+     2     2 lines    0 reg  03_probes
+     2     2 lines    0 reg  120_probes
+     2     2 lines    0 reg  138_probes
+     2     1 lines    0 reg  165_probes
+     1     1 lines    0 reg  02_probes
+     1     1 lines    0 reg  155_probes
+     1     1 lines    0 reg  67_probes
+     0     0 lines    0 reg  158_probes
+     0     0 lines    0 reg  185_probes
+     0     0 lines    0 reg  SEED_THEORY_46_90_probes
+
+## totals
+directories: 135
+cited at least once: 132
+uncited: 3
+total mentions: 2664
+mentions in registry toml: 6

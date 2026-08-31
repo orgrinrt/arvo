@@ -20,7 +20,12 @@ Run from anywhere. Exit 0 = all checks pass.
 import os
 import sys
 
-ARVO = "/Users/orgrinrt/Dev/clause-dev/arvo"
+# Resolved from this file's own location. It was absolute, naming a checkout
+# that still exists on this host, so it did not fail when the arc moved: it
+# resolved against a different tree and said nothing.
+ARVO = os.path.normpath(
+    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "../../..")
+)
 BENCH = ARVO + "/mock/benches"
 VAR = BENCH + "/variants"
 

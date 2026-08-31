@@ -1,0 +1,141 @@
+=== POSITIVE: a row that is there ===
+[[ruling]]
+id = "validate_means_all_three_readings"
+kind = "ruling"
+rung = "stated"
+topic = "validation"
+says = "Validation covers usage, admissibility and self-validation together, all that makes sense, rather than one of the three. It is not a strict call and may be challenged where a reading is truly not worth it."
+quote = '''
+Usage, Admissibility, Self-validation, All that makes sense. Again, since this
+is the new panel, we learnt from last night, this isn't a strict call, so it
+can be challenged if truly not worth it, but my instinct is that the more
+robust it is, the better it'll serve us.
+'''
+note = "The three readings were: admissibility, where the typestate refuses declarations it cannot serve; usage, where the typestate refuses operations violating the declared invariants with a readable diagnostic; and self-validation, where the derived container is checked at derivation time to hold the declared range. The challenge bar is his phrase \"truly not worth it\" rather than mere cost. \"My instinct is that the more robust it is, the better it'll serve us\" is his stated prior and not part of the call. When was covered separately and later, by the never-a-runtime-check intent."
+provenance = ["panel::202608072330_the-numeral-canon-panel::28_op_answers_two::#q1-which-reading-of-then-validate-did-you-mean"]
+keywords = ["validate", "validation", "admissibility", "usage", "self-validation", "typestate", "refuse", "diagnostic", "challenge"]
+
+# --- where he marked material canon-bound --------------------------------------
+
+=== NEGATIVE CONTROL: a slug that is not ===
+no row ruling::no_such_row_at_all
+exit=1
+=== 1. POSITIVE: plain row, edge lands before the tail field ===
+added answers to proposal::plain_row -> ["q_one", "q_two"]
+=== 2. POSITIVE: note is a block string containing a line that looks like a field ===
+added answers to proposal::row_with_a_block_note -> ["q_three"]
+=== 3. POSITIVE: row with no tail field at all, edge lands at the end ===
+added obligation to proposal::row_with_no_tail_fields -> ["o_one"]
+=== 4. POSITIVE: second edge on one row appends after the first ===
+added obligation to proposal::plain_row -> ["o_two"]
+=== 5. NEGATIVE CONTROL: a slug that is not there ===
+refused: no such row proposal::no_such_row in fixture.toml
+exit=2
+=== 6. NEGATIVE CONTROL: the field is already on the row ===
+DUPLICATE
+exit=3
+=== 7. NEGATIVE CONTROL: right slug, wrong namespace ===
+added answers to ruling::plain_row -> ["q_six"]
+exit=0
+=== RESULT ===
+id = "plain_row"
+kind = "answer"
+says = "a claim"
+answers = ["q_one", "q_two"]
+obligation = ["o_two"]
+note = "a one-line note"
+provenance = ["panel::x"]
+
+[[proposal]]
+id = "row_with_a_block_note"
+kind = "answer"
+says = "another claim"
+answers = ["q_three"]
+note = """
+A paragraph note whose second line begins with something that looks like a \
+field, to catch an inserter that does not track block strings:
+gap = "this is prose, not a field"
+"""
+gap = "the real gap"
+provenance = ["panel::y"]
+
+[[proposal]]
+id = "row_with_no_tail_fields"
+kind = "answer"
+says = "a third claim"
+obligation = ["o_one"]
+[[proposal]]
+######## add_edge.sh control battery, second run, after two defects found ########
+=== 1. plain row: edge lands before the tail field ===
+added answers to proposal::plain_row -> ["q_one", "q_two"]
+=== 2. note is a block string holding a line that looks like a field ===
+added answers to proposal::row_with_a_block_note -> ["q_three"]
+=== 3. row with no tail field: edge lands at its end ===
+added obligation to proposal::row_with_no_tail_fields -> ["o_one"]
+=== 4. second edge on one row appends after the first ===
+added obligation to proposal::plain_row -> ["o_two"]
+=== 5. NEGATIVE: a slug that is not there ===
+refused: no such row proposal::no_such_row in fixture.toml
+exit=2
+=== 6. NEGATIVE: the field is already on the row ===
+DUPLICATE
+exit=3
+=== 7. NEGATIVE: right slug, wrong namespace (this one corrupted the file before) ===
+refused: no such row strategy::plain_row in fixture.toml
+exit=2
+=== 8. the other namespace's row is byte for byte unchanged ===
+  identical
+=== RESULT ===
+[[proposal]]
+id = "plain_row"
+kind = "answer"
+says = "a claim"
+answers = ["q_one", "q_two"]
+obligation = ["o_two"]
+note = "a one-line note"
+provenance = ["panel::x"]
+
+[[proposal]]
+id = "row_with_a_block_note"
+kind = "answer"
+says = "another claim"
+answers = ["q_three"]
+note = """
+A paragraph note whose second line begins with something that looks like a \
+field, to catch an inserter that does not track block strings:
+gap = "this is prose, not a field"
+"""
+gap = "the real gap"
+provenance = ["panel::y"]
+
+[[ruling]]
+id = "a_row_in_another_namespace"
+says = "must come out byte for byte unchanged"
+
+[[proposal]]
+id = "row_with_no_tail_fields"
+kind = "answer"
+says = "a third claim"
+obligation = ["o_one"]
+
+######## coverage.sh control battery ########
+=== BASELINE ===
+######## question, by decider
+  decider         total  answered  proposed   open
+  coordinator         3         0         0      3
+  measurement         3         0         0      3
+  op                 27         4         0     23
+  panel              45         0        13     32
+  ALL                78         4        13     61
+
+=== CONTROL: one ruling edge and one proposal edge planted ===
+  [control] planted a ruling edge at what_a_datum_stands_for and a proposal edge at does_narrowing_compose
+######## question, by decider
+  decider         total  answered  proposed   open
+  coordinator         3         0         0      3
+  measurement         3         0         0      3
+  op                 27         4         0     23
+  panel              45         1        14     30
+  ALL                78         5        14     59
+
+######## obligation, by consumer

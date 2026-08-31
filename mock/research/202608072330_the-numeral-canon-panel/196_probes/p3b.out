@@ -1,0 +1,9 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+C2a    <none>         required=REFUSE   got=REFUSE   as required
+         error: generic parameters may not be used in const operations
+           --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3b_const_to_type_bridge.rs:46:23
+            |
+C2b    with_feature   required=REFUSE   got=REFUSE   as required
+         error[E0557]: feature has been removed
+           --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3b_const_to_type_bridge.rs:23:35
+            |

@@ -108,7 +108,7 @@ conversion.
 
 **A fourth reading: the numeral is defined once, as a grid cut down to a reach, and the width pair is
 what that definition is called in the constant-canonical-exponent case rather than a second
-definition.** `24` derives this from the record's own affine value map (`seed/SETTLED_laws.md:274`)
+definition.** `24` derives this from the record's own affine value map (`seed/OLD_SETTLED_laws.md:274`)
 and compiles it gate-free: the fraction width names the grid (the negated canonical exponent), the
 total width names the reach measured in the grid's own units, and the integer width is their
 difference, which is why it is a view and why it goes negative exactly when the reach lies wholly
@@ -145,7 +145,7 @@ Argued to be **prior to Q8**, because it changes what the shape space is a space
 **None exists.** No operation anywhere in the record adds values from two different numerals. If that
 is the design rather than an accident, addition joins the consumer-determined block and the entire
 inference surface collapses to multiplication plus the container (`06` section 2.2, its "site 16",
-searched across `SETTLED.md`, `seed/SETTLED_laws.md`, `DROPLIST.md`, `02_carried` and `03` and not
+searched across `SETTLED.md`, `seed/OLD_SETTLED_laws.md`, `DROPLIST.md`, `02_carried` and `03` and not
 found).
 
 **It exists and is inferred.** Mixed-numeral addition is intended, and its result numeral is derived.
@@ -293,7 +293,7 @@ should, to the row (`20` section 1.5, `warm-clamp-arity-w13`, 6 arity rows).
 **Wrap.** Matches the committed bench family as implemented (`warm-container-*`). Makes the ratified
 preset table's `Warm` cell wrong, and op has already declared that cell stale under his restated
 intent that Warm behave "like native primitives in regular old rust would" (`20` section 1.4, quoting
-`seed/SETTLED_container.md:405-408`). Under wrapping a lazy headroom arm provably cannot win, because
+`seed/OLD_SETTLED_container.md:405-408`). Under wrapping a lazy headroom arm provably cannot win, because
 reduction modulo `2^W` factors through reduction modulo `2^C` for any `C >= W` (`20` section 1.3).
 
 **The question dissolves under Q5's two-axis answer**, because then `Warm` states a value on the
@@ -559,7 +559,7 @@ finite bridge table is closed under the design's own law algebra, at any size, b
 doubles widths and the table can never contain the widths the algebra produces (`11` sections 7.1, 7.2,
 compiled: a failure at 48 from two tabled inputs, the row added by hand and the failure reappearing at
 96 and 32). This is the same structural objection that already killed the fixed-width carrier, one
-level up (`11` section 7.2, citing `seed/SETTLED_container.md:157-169`). The Rust ecosystem's own
+level up (`11` section 7.2, citing `seed/OLD_SETTLED_container.md:157-169`). The Rust ecosystem's own
 `typenum` crate independently reaches the same shape (same carrier struct, same one-method trait, same
 one-impl-per-value bridge) at 1148 rows and 4758 generated lines, still capped at 1024 dense, which is
 strong evidence this is the shape Rust forces rather than a shape anyone chose (`11` section 3.10), but

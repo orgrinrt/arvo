@@ -1,0 +1,19 @@
+a_compile_time_strategy_selection_leaves_no_residue            sound      ok           Label normalisation before comparison, which is the arm that stops two
+a_declared_law_marker_compiles_clean_when_false                sound      ok           The companion arm is the control and it is a separate file: the same l
+a_half_step_biased_grid_is_not_closed_under_addition           sound      ok           The affine membership predicate is written once and instantiated at tw
+a_trajectory_condition_lifts_exactly_when_it_survives_closure  sound      ok           The degeneracy arm is the control and it is a separate probe: if every
+absorption_and_associativity_agree_for_clamped_addition        sound      ok           Both directions are counted separately and both are printed with the s
+chain_accuracy_needs_an_intermediate_wider_than_the_operand_type sound      ADMITS_NONE  None was run as a case that had to fail. The two instruments are at di
+fusion_is_an_axis_position_rather_than_a_new_axis              sound      ok           The first arm reproduces the predecessor's published table before anyt
+generating_a_winner_table_from_a_stated_weighting              sound      ok           The stability arm is the prerequisite and is a separate instrument: a 
+most_committed_bench_regions_predate_the_validation_gate       sound      ok           The preceding arm is what makes the join worth computing: a committed 
+no_conservatism_order_exists_on_the_overflow_axis              sound      ok           Computing both candidate orders rather than one is the arm. A single o
+the_accumulator_width_is_the_exact_sum_width_less_one_bit      sound      ok           A row with only one verdict cannot locate a minimum and the output exc
+the_argmin_mechanism_has_never_run_on_arms_that_disagree       sound      ok           The first arm establishes the premise the second one needs, that the c
+the_collapsed_declaration_cannot_be_made_to_fail               sound      ok           The whole instrument is a control, and its header is the clearest stat
+the_const_eval_frontier_by_arity                               sound      ok           The refusal is read for which limit it hit rather than counted, which 
+the_cost_coordinate_census_and_its_calibration_control         sound      ok           A calibration control run before everything else in the directory, and
+the_four_const_available_constructions_bind_at_four_times      sound      ok           None was run as a case that had to fail, and the shape is a compiled l
+the_multiplicative_rescale_saving_is_adaptation_fusion         sound      ok           The rounding split is the arm and it was registered as a prediction be
+the_rationalisable_sections_on_the_committed_carrier_table     sound      ok           The tolerance sweep is the arm: a count that does not move as the tole
+three_of_the_four_proposed_axes_change_no_answer               sound      ok           The overflow axis is the arm that must separate and it does, so a zero

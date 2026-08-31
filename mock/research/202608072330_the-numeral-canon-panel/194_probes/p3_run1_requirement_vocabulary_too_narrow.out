@@ -1,0 +1,114 @@
+=== p3 where the requirement is implicit, 2026-08-31T01:05:23Z
+
+## the split
+    31 BUCKET
+     9 admission
+    39 required
+
+## C1: a row writing `must differ` must be in `required`
+C1 PASS
+
+## C2: no `uncontrolled` row in the bucket
+C2 PASS
+
+## C3: the bucket is a proper non-empty subset
+C3 PASS: 31 of 79
+
+## the bucket, with its control field in full, for reading
+### chain_affine_collapse_under_both_profiles  [sound]
+Stated in the header before the run and it fired in the wrong direction, which is the useful outcome. The prediction was that `affine_deferred` would differ from `affine_eager` while `blocked_deferred` and `blocked_eager` would not, because the interposed right shift is not affine over the ring. Both deferred arms vectorised and both eager arms did not, `blocked` included, so the difference is not the affine collapse. Its author records the refutation of the hypothesis rather than the confirmation, and built `chain_which_projection_blocks_the_vectoriser` to find the real mechanism.
+
+### chain_two_realisations_definedness_is_profile_dependent  [sound]
+The hypothesis was the control and it refused. Its author set out to show a candidate clause false at `debug-assertions = on` and the measurements do not show it: at `on` the two realisations no longer share a definedness domain, so the clause's hypothesis fails and it is vacuous rather than false. Recorded in the header as the third of that dispatch's own refuted hypotheses rather than deleted.
+
+### chain_heading_overlap_against_a_null  [sound]
+C1 required the two known prefix pairs to score at least 0.50 under Jaccard, and it fired: the second scores 0.44, because the longer heading carries five extra tokens and a symmetric similarity penalises the longer side. So Jaccard reports a subsumption as a partial match, which is the relation the instrument existed to measure. Containment returns 1.00 on both pairs. Both metrics are kept and reported.
+
+### a_measured_proposal_is_refused_without_a_probe_row  [sound]
+The negative arm is the one that matters and it is present: an `argument` row carrying no evidence is silent. One reported row, not three. Without that arm the two positive arms would be satisfied by a checker that reports every row.
+
+### the_registrys_citation_guards_fire  [sound]
+The fourth arm is the control and its author says so: the other three would fire on an instrument that reports everything, and only the passing arm distinguishes a checker from a shouter.
+
+### staged_narrowing_depends_on_its_staging  [sound]
+The corrected instrument prints the first failing value per member, so a True cannot mean an empty sweep. That is the repair rather than a widening: the defect was an empty region and the fix makes emptiness visible.
+
+### six_ways_this_corpus_produces_a_meaningless_green  [sound]
+The count itself is the control and it fired against its own author: the runner that produced the fifth green was this instrument's own first version, caught because the gate demands running the suite rather than citing it. The positive case is the per-crate count, reproduced independently and matching every per-crate figure exactly.
+
+### translation_equivariance_is_the_fusion_mechanism  [sound]
+Two earlier mechanism guesses were refuted by this instrument's own controls, which is why there are three versions and all three are kept. The final one does not guess: it derives the equivalence condition and then checks the derivation, so the arms are a proof and its verification rather than two hypotheses raced against each other.
+
+### the_width_invariance_control_was_toothless  [defective]
+The control came out toothless and its author says so in the successor's own docstring: a check reporting that the count does not move with width, which cannot be made to move with width at all, is indistinguishable from a check blind to width. What was missing is an axis position whose observability genuinely depends on the integer width, and the three swept axes do not have one.
+
+### operation_erasure_holds_at_every_optimisation_level  [sound]
+The two oracles disagree with each other across the sweep, which is the arm: symbol folding is an identical-code-folding pass that does not run below `-O2`, so a certification resting on symbol identity alone answers a question about the build setting. Running both across all six levels is what separates the instrument's failure from the design's.
+
+### the_pareto_arm_that_rests_on_one_size_point  [withdrawn]
+The successor is the control on its predecessor, and it fired against its own author: an intermediate version found the verdict rests entirely on the largest size point, and this one prices the margin against the harness's own scatter. The comparison of a claimed effect to the instrument's noise on the same arm in the same run is the arm every one of these should carry.
+
+### the_tail_coordinate_is_the_wrong_statistic  [sound]
+The construction is the control: a different estimator of the same intent is built and run over the same data, so the two disagree or they do not, and a disagreement locates the problem in the estimator rather than in the coordinate.
+
+### a_mutant_the_encoding_must_reject  [sound]
+The file is the control. It is a mutant carrying a deliberately wrong join, committed beside the correct encoding so the check is that the compiler separates them rather than that the correct one builds. A probe establishing only that its intended shape compiles has not established that a wrong shape does not.
+
+### every_placement_rebuilt_in_the_other_language  [sound]
+The matched pair is the control the clamp row previously lacked: a projection onto the identical value set that is not nearest, so a clamp result cannot be attributed to the value set rather than to nearestness.
+
+### translation_equivariance_partitions_the_rounding_axis  [sound]
+The derivation is written out in the header from scratch before the measurement, so the sweep either matches the derivation or refutes it. The companion instrument is a second accumulator model built independently, which is the control on the first one's model rather than on its arithmetic.
+
+### absorption_and_associativity_agree_for_clamped_addition  [sound]
+Both directions are counted separately and both are printed with the sentence they would refute, in the output: sufficiency violations refute absorbing-implies-associative and necessity violations refute the converse. The 153 in the second configuration set is the arm firing, which is what says a zero elsewhere is a measurement rather than a checker that cannot report.
+
+### the_accumulator_width_is_the_exact_sum_width_less_one_bit  [sound]
+A row with only one verdict cannot locate a minimum and the output excludes it by name, which is the arm that stops a width being reported from a sweep that never saw it fail. The predecessor is the other half: its prediction was sound at every n and wrong by exactly one bit at every n, and a sound-but-loose bound was attacked rather than reported.
+
+### a_half_step_biased_grid_is_not_closed_under_addition  [sound]
+The affine membership predicate is written once and instantiated at two phases, and each instantiation is compared exhaustively against a direct enumeration that never mentions the predicate. That is the arm: a predicate agreeing with an enumeration written independently of it cannot be agreeing with itself.
+
+### a_declared_law_marker_compiles_clean_when_false  [sound]
+The companion arm is the control and it is a separate file: the same law computed rather than declared refuses the false case. A declaration that compiles and a computation that refuses, over one model, is what separates the finding from a claim about that particular window.
+
+### a_trajectory_condition_lifts_exactly_when_it_survives_closure  [sound]
+The degeneracy arm is the control and it is a separate probe: if every lifted region were degenerate the criterion would be sorting nothing, and the run exists to find out. A third arm asks whether the interval is the limit of what lifts, which bounds the criterion from the other side.
+
+### the_collapsed_declaration_cannot_be_made_to_fail  [sound]
+The whole instrument is a control, and its header is the clearest statement of the principle in this corpus: a row that cannot fail is not a measurement, and the way to show it cannot fail is to corrupt what it is nominally about and watch it not notice. The predecessor reported zero coherence and zero monotonicity failures for every collapsed declaration, and this one says that number is worth nothing until somebody tries to make it nonzero.
+
+### the_rationalisable_sections_on_the_committed_carrier_table  [sound]
+The tolerance sweep is the arm: a count that does not move as the tolerance widens would be measuring the parser rather than the table, and it moves from 9 to 134 at one percent. The successor asks separately whether the gap is structural rather than an artifact of the particular table.
+
+### one_congruence_property_predicts_every_law_verdict  [sound]
+The two mismatch directions are counted apart, soundness against conservative, so a predictor that simply says yes everywhere shows up as conservative mismatches rather than as a clean sheet. And the companion arm derives a closed-form failure rate for one cell before measuring it, `1 - 2^(1-W)`, and prints predicted against measured per width. A prediction written before the sweep is the strongest control shape in this corpus and it appears twice.
+
+### no_conservatism_order_exists_on_the_overflow_axis  [sound]
+Computing both candidate orders rather than one is the arm. A single order computed alone comes back with an answer whichever it is, and only the disagreement between two independently motivated candidates shows that the phrase naming the order does not name one.
+
+### most_committed_bench_regions_predate_the_validation_gate  [sound]
+The preceding arm is what makes the join worth computing: a committed region taking the harness default would be refused by that comparison at all four of its sizes on all one hundred of the harness's own validation seeds, so the comparison cannot have been running when that region was produced. The join then dates every region against the wiring commit and turns one region's impossibility into a count.
+
+### closing_the_family_under_intersection_is_priced_and_does_not_reach_tapered_formats  [sound]
+The later instrument asks the same question one level up, at the general concept rather than at the two named families, which is the arm that decides whether the failure is about those families or about the construction. A closure result that held at one level and not the other would locate it; the run is what says which.
+
+### narrowing_composes_where_the_modes_direction_switches_at_coarser_grid_points  [sound]
+The method is the control and its header says so: the predecessor tested the defining biconditional pointwise, and this one tests two consequences by a route that does not use that biconditional at all, so a mode passing one and failing the other is a real disagreement between two methods rather than a repetition. The three outcomes are separated in the output, zero failures with the adjoint equal to the embedding, zero with a different adjoint, and nonzero, so a zero cannot be read as the wrong one of the three.
+
+### the_const_eval_frontier_by_arity  [sound]
+The refusal is read for which limit it hit rather than counted, which is what distinguishes a total-step budget from a width ceiling and is the whole content of the finding. A frontier measured by counting failures alone would report the same numbers and support the wrong conclusion.
+
+### generating_a_winner_table_from_a_stated_weighting  [sound]
+The stability arm is the prerequisite and is a separate instrument: a table not stable enough to be an object cannot be generated from anything, so the generation result is conditional on it and the two are cited together.
+
+### fusion_is_an_axis_position_rather_than_a_new_axis  [sound]
+The first arm reproduces the predecessor's published table before anything is built on it, which is what says the later arms are about the same object. The slack arm is a refutation of its own author's earlier reading rather than a confirmation.
+
+### the_cost_coordinate_census_and_its_calibration_control  [sound]
+A calibration control run before everything else in the directory, and it is the best-designed control in this corpus. The bench declares pairs of arms that compile to the same machine code, and every reading in the directory treats a measured difference between such a pair as the instrument rather than the arms. That reading is only as good as the pair actually being byte-identical, so the arm checks it in every family that declares one, before any measurement is taken. A pre-normalisation run is kept beside it.
+
+WHAT THIS IS NOT. The pattern reads vocabulary, and a row can demand an
+outcome without using any of these words. So the bucket is where to
+look rather than a verdict, and the findings file carries my reading of
+each one and what would settle it.

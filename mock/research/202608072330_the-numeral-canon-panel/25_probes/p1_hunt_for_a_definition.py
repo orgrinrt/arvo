@@ -10,8 +10,11 @@
 # Run from the panel directory.
 import io, os, re, glob
 
-PANEL = "/Users/orgrinrt/Dev/clause-dev/arvo/mock/research/202608072330_the-numeral-canon-panel"
-ARVO = "/Users/orgrinrt/Dev/clause-dev/arvo"
+# Resolved from this file's own location. Both were absolute, naming a checkout
+# that still exists on this host, so they did not fail when the arc moved: they
+# resolved against a different tree and said nothing.
+PANEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ARVO = os.path.normpath(os.path.join(PANEL, "../../.."))
 
 # copular / defining frames with 'strategy' as the SUBJECT
 FRAMES = [

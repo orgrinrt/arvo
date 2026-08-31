@@ -1,0 +1,40 @@
+### PART ONE: the selection is empty
+  rows with sentence_kind = "definition" : 0
+  rows carrying a `defines` field        : 0
+  total proposal rows                    : 74
+  The check reads the defines field on rows marked definition. There are none of
+  either, so the green is over an empty selection.
+
+  The kind postdates the rows, so this is not the porting seat's error:
+    kind added:  c765e8c1 2026-08-31 01:59:31 +0300 canon: declare four axes, add a kind for a definition, pin the vocabulary append-only
+    rows landed: 6142ce47 2026-08-31 01:36:48 +0300 chore: recover the exposure-test refutation, the sixth region the first pass wrote off
+
+### PART TWO: the term the corpus does define more than once
+  a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting                     supersedes: (none)
+  a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it supersedes: yes
+  a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin       supersedes: (none)
+  the_named_strategies_are_points_in_a_product_and_the_flat_set_is_a_slice             supersedes: (none)
+
+  Three of those four state what a strategy is. One supersedes another.
+  Two are live rivals: the declared-semantics row and the preference row.
+
+### PART THREE: the case that had to fail, and did not fire
+  substitutions landed: 2  (must be 2)
+
+  what the check would then see, applying its own selection by hand:
+    a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it supersedes=yes   -> SKIPPED
+    a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin     supersedes=no    -> COUNTED
+
+  One row counted for the term, so no finding. The skip is unconditional:
+            // A supersession is one definition replacing another, not two live ones.
+            if !row.list("supersedes").is_empty() {
+                continue;
+            }
+
+  A row may supersede one definition and still be a live rival to a third.
+  That is the committed shape exactly: the declared-semantics row supersedes
+  the pair row and rivals the preference row, and the skip discards it on the
+  strength of the first fact while the second is what the check is for.
+
+  So the check has two independent reasons it cannot see this corpus's one
+  doubly-defined term, and fixing the labels alone would not surface it.

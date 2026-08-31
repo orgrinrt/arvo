@@ -1,0 +1,32 @@
+error[E0557]: feature has been removed
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3b_const_to_type_bridge.rs:23:35
+   |
+23 | #![cfg_attr(with_feature, feature(associated_const_equality))]
+   |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^ feature has been removed
+   |
+   = note: removed in 1.94.0
+   = note: merged into `min_generic_const_args`
+
+error: generic parameters may not be used in const operations
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3b_const_to_type_bridge.rs:46:23
+   |
+46 |     C: PosVal<VAL = { K as u64 }>,
+   |                       ^ cannot perform const operation using `K`
+   |
+   = help: const parameters may only be used as standalone arguments here, i.e. `K`
+   = help: add `#![feature(generic_const_exprs)]` to allow generic const expressions
+
+error[E0658]: associated const equality is incomplete
+  --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p3b_const_to_type_bridge.rs:46:15
+   |
+46 |     C: PosVal<VAL = { K as u64 }>,
+   |               ^^^^^^^^^^^^^^^^^^
+   |
+   = note: see issue #132980 <https://github.com/rust-lang/rust/issues/132980> for more information
+   = help: add `#![feature(min_generic_const_args)]` to the crate attributes to enable
+   = note: this compiler was built on 2026-05-27; consider upgrading it if it is out of date
+
+error: aborting due to 3 previous errors
+
+Some errors have detailed explanations: E0557, E0658.
+For more information about an error, try `rustc --explain E0557`.

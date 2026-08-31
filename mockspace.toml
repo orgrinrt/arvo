@@ -14,6 +14,22 @@ crate_prefix = "arvo"
 abi_version = 1
 mock_dir = "mock"
 
+# --- the canon, and who may write it ------------------------------------------
+#
+# The registry IS the canon. Nothing under `mock/canon/` and no prose file: the
+# canon is rows, and a row is a sentence with its kind, its region, its
+# provenance and its rung attached to it rather than stated near it.
+#
+# Naming the paths here is what lets `mock check` refuse a change to them while
+# a panel is still open, which is the mechanical half of op's `87`: the canon is
+# written once at the end, from every consolidation together, and he ratifies
+# that single act. A panel talks, converges and proposes; the rows are admitted
+# afterwards.
+#
+# At the top of the file, before any table header, because a bare key after one
+# belongs to that table.
+canon_paths = ["mock/registry/*.toml"]
+
 proc_macro_crates = []
 module_crates = []
 
@@ -283,6 +299,849 @@ push = "off"
 
 [lint-crates]
 mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavitkutin-stack-lints.git", branch = "dev" }
+
+# ---------------------------------------------------------------------------
+# Reference roots
+# ---------------------------------------------------------------------------
+#
+# `panel` is the whole research tree, which is where every citation in the
+# registry lands. It is the audit trail: what was argued, by whom, against what
+# evidence, which controls fired, and what op ruled.
+#
+# Frozen, because a numbered panel file is written once and never edited, and
+# that is what makes a line citation into it honest rather than a hazard. The
+# living ledgers in the same tree (`AGREEMENTS.md`, `OPTIONS.md`, `DROPLIST.md`
+# and their siblings) are the exception, and freezing the root would permit a
+# line citation into those too. So the exception is checked rather than
+# declared: `mock/checks` refuses a line citation into a living ledger by name,
+# and a heading anchor into one is fine because a rename fails loudly.
+#
+# Internal, so it never reaches a generated document. A reader of the design
+# cannot open the research tree, so a provenance column that reads the same on
+# every row says nothing on any of them. The citations stay in the source, where
+# they are checked and greppable. Filtering is per item, so a row citing this
+# alongside a public document keeps the public citation.
+[ref.roots.panel]
+path = "mock/research"
+frozen = true
+internal = true
+
+# ---------------------------------------------------------------------------
+# The registry: arvo's canon
+# ---------------------------------------------------------------------------
+#
+# Ten namespaces, and the split between them is not filing. Each one exists
+# because a question gets asked in its direction and had no answer before:
+#
+#   what is settled, and by whom          -> `ruling`, `proposal`
+#   where does a claim hold               -> `dimension`, and every predicate
+#   what must arvo deliver                -> `obligation`
+#   what is still open, and whose call    -> `question`
+#   what must not be cited again          -> `retirement`
+#   what was actually run, with a control -> `probe`
+#   what the algebra does                 -> `law`
+#   what the consumer chooses between     -> `strategy`
+#   what is this row about                -> `topic`
+#
+# Vocabulary and external prior art use the builtin `vocab` and `reference`
+# namespaces and are not declared here.
+#
+# **There is no `status` field anywhere.** Whether an obligation is met, a
+# question answered or a proposal blessed is derived from what points at it,
+# which `refsto()` reports. A hand-maintained flag is right on the day it is
+# written and wrong afterwards, and this corpus has already lost a settled
+# question to a record that looked current.
+
+# --- topic ----------------------------------------------------------------
+#
+# What a row is about. Enumerated rather than free text so that "everything the
+# canon says about rounding" is a query rather than a grep, and so a subject
+# nothing says anything about is visible as a topic with no referrers.
+#
+# The panel's units are one source of topics and are not the same thing: a unit
+# names when something was argued, which is a fact about the sitting. A topic
+# names what it was about.
+
+[[registry.namespace]]
+key = "topic"
+title = "Topics"
+description = "What a canon row is about."
+
+[[registry.namespace.field]]
+name = "what"
+type = "string"
+required = true
+description = "The subject, in a sentence."
+
+[[registry.namespace.field]]
+name = "unit"
+type = "string"
+required = false
+visibility = "internal"
+description = "The panel unit or units that argued it, as a file range. Held rather than rendered: it addresses a tree the reader cannot open, and it names when rather than what."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row, especially the ones it does not itself use. A search over row text finds whichever word the author reached for, and the reader reaches for a different one."
+
+# --- dimension --------------------------------------------------------------
+#
+# The axes a predicate quantifies over. This is the namespace the rest of the
+# registry turns on, because `every-finding-carries-its-predicate.md` is in
+# force here and a predicate is only exact if the axes it names are a declared
+# set with a declared grammar.
+#
+# Three states per axis and no fourth: listed with a range or `any`, listed with
+# a fixed value, or **absent**, which says the claim does not hold in any
+# situation where that axis exists at all. Absence is the strongest negative
+# statement in the notation rather than a shrug, which is exactly why the axes
+# have to be enumerated: an axis nobody declared cannot be absent from anything,
+# because nobody knew to look for it.
+#
+# A `predicate` field elsewhere is `string[]`, one entry per axis, written
+# `<dimension slug>: <values>`. The pairing is checked in `mock/checks` rather
+# than by the schema, because a schema can constrain a string and cannot parse
+# one.
+
+[[registry.namespace]]
+key = "dimension"
+title = "Predicate dimensions"
+description = "An axis a finding's region is stated over. A finding that does not name one does not hold anywhere that axis exists."
+
+[[registry.namespace.field]]
+name = "what"
+type = "string"
+required = true
+description = "The axis, in a sentence."
+
+[[registry.namespace.field]]
+name = "grammar"
+type = "string"
+required = true
+description = "How a value of this axis is written inside a predicate, with the spellings that are admissible: a range, a fixed value, or `any`. Exact or it is not a predicate: `F = 0` qualifies and 'usually small F' does not, because nothing can gate on the second and no arm can be built from it."
+
+[[registry.namespace.field]]
+name = "moves"
+type = "string"
+required = true
+description = "What about a claim's truth depends on this axis. The reason it is an axis rather than a detail, and the thing a reader checks a candidate predicate against."
+
+[[registry.namespace.field]]
+name = "note"
+type = "string"
+required = false
+description = "A qualification the other fields flatten: an axis whose values are open, a spelling the corpus uses that this grammar does not admit, an axis two topics measured differently."
+
+[[registry.namespace.field]]
+name = "provenance"
+type = "ref[]"
+required = true
+description = "Where the axis was established as one, which is normally the file that measured a claim moving along it."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
+
+# --- obligation ---------------------------------------------------------------
+#
+# The demand side, and the namespace that makes 'is the canon exhaustive' a
+# question with an answer. An obligation is something arvo must deliver, named
+# in the consumer's terms and named whether or not anything in the canon
+# answers it.
+#
+# Read from outside the canon on purpose. An obligation nobody enumerated is
+# invisible to every check that walks what the canon already covers, so a sweep
+# over the canon can only ever report that the canon is consistent with itself.
+#
+# There is no `answered` field. What answers an obligation is a ruling or a
+# ratified proposal naming it, which `refsto(obligation::<slug>)` reports, and
+# an empty result is the finding. A proposal alone is **proposed rather than
+# answered**: anything counting coverage draws that line, because reporting a
+# proposal as an answer closes a gap op has never seen.
+
+[[registry.namespace]]
+key = "obligation"
+title = "Obligations"
+description = "Something arvo must deliver, named from the consumer's side rather than derived from what the design already covers."
+
+[[registry.namespace.field]]
+name = "need"
+type = "string"
+required = true
+description = "What the consumer needs, in the consumer's own terms. The need, never the mechanism that serves it."
+
+[[registry.namespace.field]]
+name = "consumer"
+type = "string"
+required = true
+description = "Who needs it: a named downstream repo, a class of algorithm crate, or any consumer at all. `any` where it is not one consumer's, which is different from being nobody's and the `need` says which."
+
+[[registry.namespace.field]]
+name = "why"
+type = "string"
+required = false
+description = "What goes wrong for that consumer without it, where somebody established that rather than asserted it."
+
+[[registry.namespace.field]]
+name = "topic"
+type = "topic"
+required = false
+description = "What it is about, where it sits under one subject. Absent where it cuts across several."
+
+[[registry.namespace.field]]
+name = "gap"
+type = "string"
+required = false
+description = "What is known to be wrong or missing about the obligation itself, as opposed to about whether anything answers it. Whether it is answered is derived and is never stated here."
+
+[[registry.namespace.field]]
+name = "provenance"
+type = "ref[]"
+required = true
+description = "Where it is cited to. Required, because an obligation with no citation is one somebody remembered, and a remembered obligation is how a design acquires a requirement nobody asked for."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
+
+# --- question -----------------------------------------------------------------
+#
+# What is still open, with the options it is open between and whose call it is.
+#
+# `options` is required and that is the point of the namespace. An answer
+# recorded without the choices it was made among is worthless to every later
+# reader including the person who wrote it, and this project has already sent a
+# settled question back to op because what he approved was unrecoverable.
+#
+# A question is answered when a ruling or a proposal names it under `answers`.
+# There is no field for it here, for the reason the whole registry has no status
+# fields.
+
+[[registry.namespace]]
+key = "question"
+title = "Open questions"
+description = "Something the canon has not settled, with the options it is open between and whose call it is."
+
+[[registry.namespace.field]]
+name = "asks"
+type = "string"
+required = true
+description = "The question, in a sentence, phrased so it does not presume its own answer."
+
+[[registry.namespace.field]]
+name = "options"
+type = "string[]"
+required = true
+description = "What it is open between, one entry each, stated symmetrically. Required. A recorded answer with no recorded options says that a choice was made and not which one."
+
+[[registry.namespace.field]]
+name = "decider"
+type = "string"
+required = true
+description = "`op` where it is his intent and nobody else's; `measurement` where the harness settles it and asking anybody is the wrong move; `panel` where it is derivable and wants argument; `coordinator` where it was answered in op's stead and is overturnable in a sentence."
+values = ["op", "measurement", "panel", "coordinator"]
+
+[[registry.namespace.field]]
+name = "unblocks"
+type = "string"
+required = false
+description = "What becomes writable once it is answered. This is what makes a question worth an interruption rather than a note, and a question that unblocks nothing is one to ask later or never."
+
+[[registry.namespace.field]]
+name = "topic"
+type = "topic"
+required = false
+description = "What it is about."
+
+[[registry.namespace.field]]
+name = "key"
+type = "string"
+required = false
+visibility = "internal"
+description = "The options register's own identifier, `Q41` and its like. Recorded and checked, never rendered: it addresses a document the reader cannot open."
+
+[[registry.namespace.field]]
+name = "note"
+type = "string"
+required = false
+description = "A qualification the other fields flatten: an option nobody wrote down that the row adds, a coupling to another question that has to be answered with it."
+
+[[registry.namespace.field]]
+name = "provenance"
+type = "ref[]"
+required = true
+description = "Where the question was raised, and where each option was stated if they came from different places."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
+
+# --- strategy -----------------------------------------------------------------
+#
+# What a consumer selects between, which is arvo's central idea: the substrate
+# ships the choice rather than making it.
+#
+# **The set is open and this namespace is where that is visible.** Op has stated
+# that `Hot`, `Cold`, `Warm` and `Precise` are "a prior attempt at the intent,
+# not the intent", and that the number, the names and the decomposition are all
+# open. So `standing` is required on every row and the four carry
+# `prior_attempt` rather than reading as members.
+
+[[registry.namespace]]
+key = "strategy"
+title = "Strategies"
+description = "A behaviour a consumer selects. The set is open: what is here is what has been named, not what the design ships."
+
+[[registry.namespace.field]]
+name = "name"
+type = "string"
+required = true
+description = "The name as it has been written, whether or not the design keeps it."
+
+[[registry.namespace.field]]
+name = "intent"
+type = "string"
+required = true
+description = "What it is for, in the terms whoever named it used. The intent survives the set being reshaped, resized or renamed; the name does not."
+
+[[registry.namespace.field]]
+name = "weighs"
+type = "string"
+required = false
+description = "Which measurements it weighs most. Every strategy is decided by measurement and they measure different things and weigh them differently; whether the weightings agree is an ordinary empirical question and not part of the intent."
+
+[[registry.namespace.field]]
+name = "standing"
+type = "string"
+required = true
+description = "`prior_attempt` for a name the previous design carried, which is what the four inherited ones are; `op_stated` for one op has named as the intent itself; `proposed` for one the panel has put forward and nobody has blessed."
+values = ["prior_attempt", "op_stated", "proposed"]
+
+[[registry.namespace.field]]
+name = "note"
+type = "string"
+required = false
+description = "A qualification the other fields flatten."
+
+[[registry.namespace.field]]
+name = "provenance"
+type = "ref[]"
+required = true
+description = "Where it was named, and where its intent was stated if that was somewhere else."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
+
+# --- law ------------------------------------------------------------------------
+#
+# The algebraic laws, as named recurring objects rather than as one-off claims.
+#
+# A law earns a namespace because many findings quantify over the same handful
+# of them, and because the useful output of "distributivity fails" is never the
+# prohibition: it is the region where it holds, which is a faster lowering
+# currently unused. So `holds` and `fails` are both here and neither is derived
+# from the other; a law with a `fails` and no `holds` is a law nobody looked for
+# the region of.
+
+[[registry.namespace]]
+key = "law"
+title = "Laws"
+description = "An algebraic law the design reasons about, with the regions it has been established to hold and to fail in."
+
+[[registry.namespace.field]]
+name = "statement"
+type = "string"
+required = true
+description = "The law, stated over the operations it relates."
+
+[[registry.namespace.field]]
+name = "holds"
+type = "string[]"
+required = false
+description = "The region it has been established to hold in, one entry per dimension, written `<dimension slug>: <values>`. Absent where nobody has established one, which is not the same as its holding nowhere."
+
+[[registry.namespace.field]]
+name = "fails"
+type = "string[]"
+required = false
+description = "The region it has been established to fail in, in the same form. A failing region is a finding and wants a witness."
+
+[[registry.namespace.field]]
+name = "witness"
+type = "string"
+required = false
+description = "A concrete instance where it fails, exact enough to reproduce. A failure claimed with no witness is an argument rather than a measurement."
+
+[[registry.namespace.field]]
+name = "evidence"
+type = "probe[]"
+required = false
+description = "The committed instruments that established the regions above."
+
+[[registry.namespace.field]]
+name = "precondition_for"
+type = "obligation[]"
+required = false
+description = "Obligations that cannot be met unless this law holds, in the region it holds in. **Not an answer to them and never counted as one**: it says the obligation has a dependency somebody has now established, which leaves it further from met rather than nearer. It sits here rather than on the obligation because the obligation cannot know what a later result will turn out to require, and this end does; the reverse direction is what `refsto` computes. The relation the demand side lacked: a consumer asks for a graph ordering and cannot say that the ordering is unmeetable on more than one core unless the addition beneath it is associative, because a consumer cannot know that."
+
+[[registry.namespace.field]]
+name = "topic"
+type = "topic"
+required = false
+description = "What it is about."
+
+[[registry.namespace.field]]
+name = "note"
+type = "string"
+required = false
+description = "A qualification the other fields flatten: a law two topics measured under names close enough to invite conflation, a region whose boundary is itself contested."
+
+[[registry.namespace.field]]
+name = "gap"
+type = "string"
+required = false
+description = "What is not established about it, in the source's own words where it says so itself."
+
+[[registry.namespace.field]]
+name = "provenance"
+type = "ref[]"
+required = true
+description = "Where the law and its regions were established."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
+
+# --- probe -------------------------------------------------------------------
+#
+# What was actually run, where it is committed, and what its control was.
+#
+# A row here is the difference between evidence and assertion. An uncommitted
+# spike may not be named, referenced or reasoned from, and everything downstream
+# of one is void, so `lives` is required and points into the tree. And a probe
+# with no failing case proves nothing: `control` is required too, and it says
+# what the case that must fail was and whether it fired.
+#
+# This namespace exists so that "which claims rest on an instrument nobody
+# controlled" is a query. The corpus it migrates has nine instrument defects on
+# record, several found by a control the author added only when asked.
+
+[[registry.namespace]]
+key = "probe"
+title = "Probes"
+description = "A committed instrument, what it establishes, and the case that had to fail before its number counted."
+
+[[registry.namespace.field]]
+name = "establishes"
+type = "string"
+required = true
+description = "What it shows, stated as narrowly as it actually shows it. A probe proves what it was built to check, at the widths and shapes it checked, on the toolchain it ran on, and nothing else."
+
+[[registry.namespace.field]]
+name = "lives"
+type = "ref[]"
+required = true
+description = "Where it is committed. Required and not negotiable: a claim resting on a spike that is not in the repository is void along with everything downstream of it, and a scratch path is not a citation."
+
+[[registry.namespace.field]]
+name = "control"
+type = "string"
+required = true
+description = "The case that had to fail, and whether it fired. Required, because an instrument that cannot come out any other way produces a number and is not an instrument. State the control before the run that produces the figure, not after somebody asks."
+
+[[registry.namespace.field]]
+name = "reproduced"
+type = "string"
+required = false
+description = "Who rebuilt it independently and whether the arms matched. A reproduction in a different language is worth more than a rerun of the same code."
+
+[[registry.namespace.field]]
+name = "defect"
+type = "string"
+required = false
+description = "A defect found in this instrument, and what caught it. Kept rather than deleted: the class of defect is worth more than the corrected number, and this corpus keeps finding new classes."
+
+[[registry.namespace.field]]
+name = "standing"
+type = "string"
+required = true
+description = "`sound` where it ran and its control fired; `uncontrolled` where it ran and no case that had to fail was stated, so it produced a number and cannot be refuted; `defective` where a known defect means the figures are not to be used; `withdrawn` where its author retracted it. **`uncontrolled` is not a lesser `defective`**: the numbers may well be right, and what is missing is any way for them to have been wrong."
+values = ["sound", "uncontrolled", "defective", "withdrawn"]
+
+[[registry.namespace.field]]
+name = "note"
+type = "string"
+required = false
+description = "A qualification the other fields flatten."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
+
+# --- retirement ----------------------------------------------------------------
+#
+# What must not be cited again, and why.
+#
+# A must-not-cite list is not tidying. A wrong figure that stays quotable gets
+# quoted, and this corpus has watched one travel through seven files inside the
+# very entry whose purpose was to stop it. So a retirement is a row rather than
+# a strikethrough, it names the claim in the words that will be searched for,
+# and it stays forever.
+#
+# Nothing is deleted for being wrong later. A retired claim is part of the
+# record of how the thinking went, which is worth more than a tidy table.
+
+[[registry.namespace]]
+key = "retirement"
+title = "Retirements"
+description = "A claim that must not be cited again, in the words it was written in, with why and what stands in its place."
+
+[[registry.namespace.field]]
+name = "claim"
+type = "string"
+required = true
+description = "What was claimed, in the words a later reader would search for or quote. Not a description of it: the sentence itself, or close enough that a grep finds it."
+
+[[registry.namespace.field]]
+name = "why"
+type = "string"
+required = true
+description = "Why it must not be cited. A retirement with no reason reads as a preference and gets overturned by the next reader who likes the claim."
+
+[[registry.namespace.field]]
+name = "kind"
+type = "string"
+required = true
+description = "`wrong` where the claim is false; `superseded` where a later result replaces it; `unpayable` where it asks for something nobody can deliver; `misattributed` where it is somebody else's or about something else; `unpredicated` where it is stated over a region it was never established in."
+values = ["wrong", "superseded", "unpayable", "misattributed", "unpredicated"]
+
+[[registry.namespace.field]]
+name = "replacement"
+type = "string"
+required = false
+description = "What stands in its place, where anything does. Absent where the claim simply goes, which is an ordinary outcome and not a gap."
+
+[[registry.namespace.field]]
+name = "topic"
+type = "topic"
+required = false
+description = "What it is about."
+
+[[registry.namespace.field]]
+name = "obligation"
+type = "obligation[]"
+required = false
+description = "Obligations the retired claim was a route toward, where it was one. This is what separates a route somebody tried and closed from a need nobody has looked at, and the two are indistinguishable without it: `refsto(obligation::<slug>)` returns nothing in both cases, and nothing returns nothing loudly. A retirement here does not answer the obligation and must never be read as answering it. It says the obligation is still open and one way to it is known not to work, which is worth more to the next reader than the empty result was."
+
+[[registry.namespace.field]]
+name = "provenance"
+type = "ref[]"
+required = true
+description = "Where the claim was made and where it was retired. Both, because a reader meeting the claim in the wild needs to get from there to here."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
+
+# --- ruling -----------------------------------------------------------------
+#
+# What op has said, one row per statement, quoted rather than paraphrased. The
+# highest-authority material in the registry and the only material with a human
+# in the loop.
+#
+# `rung` is public here, unlike in the neighbouring project this schema borrows
+# from, and it has four values rather than two. It is public because it is what
+# an implementer needs in order to know how hard to hold a sentence: op's own
+# standing instruction is that a STATED entry is not to be written as clear cut
+# and settled, and hiding the marker would present every one of them as though
+# it were.
+#
+# Superseded rows stay. A later row supersedes an earlier one and both remain
+# readable, because the record of having changed course is worth more than a
+# tidy table, and because op corrects his own wording mid-answer often enough
+# that the correction and what it corrected are both load-bearing.
+
+[[registry.namespace]]
+key = "ruling"
+title = "Rulings"
+description = "Something op has stated, in his own words. Intents, answers, refusals, and the process calls that govern how the rest is read."
+group_by = "topic"
+
+[[registry.namespace.field]]
+name = "kind"
+type = "string"
+required = true
+description = "`intent` for a want stated with no question in front of it; `ruling` for a question answered; `refusal` for an answer that a thing will not be done, which owes what happens instead; `deferral` for a question he declines to answer and hands back, which owes who it goes to; `process` for a call about how the work is conducted rather than about what arvo is."
+values = ["intent", "ruling", "refusal", "deferral", "process"]
+
+[[registry.namespace.field]]
+name = "rung"
+type = "string"
+required = true
+description = "`ratified` where the experts converged and he blessed that convergence, which needs both halves and which almost nothing has; `in_force` where the workspace and this repo's own lints enforce it independently of convergence; `stated` where it is his direction and an ack rather than a ruling; `open` where he has explicitly not settled it."
+values = ["ratified", "in_force", "stated", "open"]
+
+[[registry.namespace.field]]
+name = "topic"
+type = "topic"
+required = true
+description = "What it is about. One topic per row: a ruling that needs two is usually two rulings."
+
+[[registry.namespace.field]]
+name = "says"
+type = "string"
+required = true
+description = "What he stated, in his words where they are short enough to carry and in a faithful restatement where they are not. The verbatim text is at `quote`."
+
+[[registry.namespace.field]]
+name = "quote"
+type = "string"
+required = false
+visibility = "internal"
+description = "His exact words. Held rather than rendered: a table cell is the wrong shape for a paragraph, and the cited file is where a reader should meet it in context."
+
+[[registry.namespace.field]]
+name = "because"
+type = "string"
+required = false
+description = "The reasoning, where he gave one. A ruling whose reasoning is lost cannot be revisited when its premise changes, because nobody can tell whether the premise was the reason."
+
+[[registry.namespace.field]]
+name = "instead"
+type = "string"
+required = false
+description = "For a refusal, what happens in place of the refused thing; for a deferral, who the question goes back to and on what terms. Either without it leaves the question it closed with no answer."
+
+[[registry.namespace.field]]
+name = "answers"
+type = "question[]"
+required = false
+description = "Questions this settles."
+
+[[registry.namespace.field]]
+name = "obligation"
+type = "obligation[]"
+required = false
+description = "Obligations this meets. What makes the demand side queryable: `refsto(obligation::<slug>)` is how a reader finds out whether anything meets one, and an empty result is the finding."
+
+[[registry.namespace.field]]
+name = "ratifies"
+type = "proposal[]"
+required = false
+description = "Proposals this stamps. A blessing is a new row naming what it promotes rather than a flag flipped on the old one, so the proposal survives as the record of what was argued and by whom."
+
+[[registry.namespace.field]]
+name = "declines"
+type = "proposal[]"
+required = false
+description = "Proposals this refuses. A separate edge from `ratifies` rather than a value on it, because declining the paper and refusing the thing are different acts: a ruling may decline a proposal and settle the same question another way."
+
+[[registry.namespace.field]]
+name = "supersedes"
+type = "ruling[]"
+required = false
+description = "Rows this replaces. The superseded row stays; nothing is deleted for being wrong later."
+
+[[registry.namespace.field]]
+name = "corrects"
+type = "ruling[]"
+required = false
+description = "Rows whose recorded reading this corrects without replacing what they say. Distinct from superseding: the corrected row still holds, and what changes is what somebody had taken it to mean."
+
+[[registry.namespace.field]]
+name = "key"
+type = "string"
+required = false
+visibility = "internal"
+description = "The intent catalogue's own identifier, `I13` and its like. Recorded and checked, never rendered: it addresses a document the reader cannot open."
+
+[[registry.namespace.field]]
+name = "note"
+type = "string"
+required = false
+description = "A qualification the other fields flatten: a hedge that is not an intent, a self-correction inside one answer, a distinction a one-liner loses. Musing recorded as doctrine is worse than not recording it, so what he was thinking aloud goes here and never into `says`."
+
+[[registry.namespace.field]]
+name = "gap"
+type = "string"
+required = false
+description = "What the answer leaves open, in his own words where he says so himself. An answer that settles most of a question and not all of it is the ordinary case."
+
+[[registry.namespace.field]]
+name = "provenance"
+type = "ref[]"
+required = true
+description = "Where he said it. A row claiming his authority with nothing citable behind it is the failure that has already cost this project a whole dispatch."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
+
+# --- proposal -------------------------------------------------------------------
+#
+# A claim the experts established that op has not blessed. A first-class row
+# rather than prose in somebody's file, and it carries no rung: being in this
+# namespace is the whole of its provenance claim. It becomes canon when a ruling
+# names it under `ratifies`, and it stays afterwards as the record of what was
+# argued.
+#
+# Two fields do the work no other namespace here needs.
+#
+# `sentence_kind` marks what kind of statement it is, because a canon that
+# states a theorem and a normative licence in one voice loses the result that
+# distinguishing them was. The marking is per row and the convention is that
+# the mark governs the sentence it is on.
+#
+# `standing` is how many independent instances reached it, and it is the field
+# most likely to be inflated. Two derivations from one model family on one
+# premise set are the weakest kind of two. Two instruments that both lack a
+# dimension agree about that dimension perfectly, having varied nothing, and it
+# reads exactly like a result. So the count is over the region the instances
+# share, intersected over values rather than over dimension names, and where one
+# instance spans an axis alone the honest row cites that instance for that axis
+# rather than the convergence.
+
+[[registry.namespace]]
+key = "proposal"
+title = "Proposals"
+description = "A claim the panel established and op has not seen. It is canon only once a ruling stamps it."
+group_by = "topic"
+
+[[registry.namespace.field]]
+name = "kind"
+type = "string"
+required = true
+description = "`answer` where it settles something; `refusal` where it says a thing should not be, which owes an `instead`; `finding` where it records what is the case without proposing anything be done about it."
+values = ["answer", "refusal", "finding"]
+
+[[registry.namespace.field]]
+name = "sentence_kind"
+type = "string"
+required = true
+description = "What kind of statement this is. `theorem` where it is proved and the route is stated; `measured` where an instrument produced it; `enumeration` where it is a bounded list somebody walked; `definition` where it stipulates what a term means, which is neither established nor imposed; `normative` where it is imposed rather than established; `argument` where it is reasoned and neither proved nor measured, which is the mark that keeps getting dropped. `definition` and `normative` are the two that carry no region."
+values = ["theorem", "measured", "enumeration", "definition", "normative", "argument"]
+
+[[registry.namespace.field]]
+name = "standing"
+type = "string"
+required = true
+description = "How many independent instances reached it, over the region they share. `one_expert`; `two_experts`, each deriving before reading the other; `three_or_more`; `cross_topic` where separate topics arrived at it without citing each other, which is the strongest thing this panel produces; `contested` where it is stated because somebody stated it and somebody else disagrees."
+values = ["one_expert", "two_experts", "three_or_more", "cross_topic", "contested"]
+
+[[registry.namespace.field]]
+name = "topic"
+type = "topic"
+required = true
+description = "What it is about. The same enumeration a ruling uses, because the subjects are the same whoever is speaking, and it is the one part of a promoted claim that can be compared mechanically against the ruling that stamps it."
+
+[[registry.namespace.field]]
+name = "says"
+type = "string"
+required = true
+description = "The claim, in the panel's words, because there are no others."
+
+[[registry.namespace.field]]
+name = "because"
+type = "string"
+required = true
+description = "Why it holds. Required here where it is optional on a ruling, and that is the difference between the two namespaces stated as a field. A ruling may rest on op's authority alone. A proposal has no such recourse, so one with no argument is not a weaker proposal, it is a row asserting something with nothing behind it."
+
+[[registry.namespace.field]]
+name = "predicate"
+type = "string[]"
+required = false
+description = "The region it was established in, one entry per dimension, written `<dimension slug>: <values>`. A dimension left out says the claim holds in no situation where that dimension exists, which is a real and deliberate statement rather than a shrug. Absent entirely only where `sentence_kind` is `normative` or `definition`: a predicate on an imposed proposition would say the design may violate it everywhere unmeasured, and a definition is not a claim about where anything holds, so a region on one is a category error rather than a narrowing."
+
+[[registry.namespace.field]]
+name = "evidence"
+type = "probe[]"
+required = false
+description = "The committed instruments behind it. Required in spirit for a row that ran something, which is `measured` and `enumeration` alike, and checked as such in `mock/checks` rather than by the schema, since the schema cannot read `sentence_kind`. A proof owes its route rather than a run, so `theorem` is outside it; a walk whose full list is printed inline is a proof by exhaustion and is one, while a walk performed by code owes the walker."
+
+[[registry.namespace.field]]
+name = "defines"
+type = "string"
+required = false
+description = "For a `definition`: the term it stipulates the meaning of, as the term rather than as a sentence about it. One live definition per term, so a second row defining the same thing is either a supersession or a disagreement, and both want saying rather than sitting side by side."
+
+[[registry.namespace.field]]
+name = "law"
+type = "law[]"
+required = false
+description = "Laws this is about, where it is about one."
+
+[[registry.namespace.field]]
+name = "instead"
+type = "string"
+required = false
+description = "What to do in place of the refused thing, where the kind is `refusal`."
+
+[[registry.namespace.field]]
+name = "answers"
+type = "question[]"
+required = false
+description = "Questions this would settle if it were stamped. **It does not settle them while it is a proposal.**"
+
+[[registry.namespace.field]]
+name = "obligation"
+type = "obligation[]"
+required = false
+description = "Obligations this would meet if it were stamped. Proposed rather than met, and anything counting coverage draws that line."
+
+[[registry.namespace.field]]
+name = "precondition_for"
+type = "obligation[]"
+required = false
+description = "Obligations that cannot be met unless this claim holds, in the region it holds in. **Not an answer to them and never counted as one**: it says the obligation has a dependency somebody has now established, which leaves it further from met rather than nearer. It sits here rather than on the obligation because the obligation cannot know what a later result will turn out to require, and this end does; the reverse direction is what `refsto` computes. Four dispatches wanted this relation before it existed, each having found a result the registry could hold beside an obligation while being unable to join the two."
+
+[[registry.namespace.field]]
+name = "supersedes"
+type = "proposal[]"
+required = false
+description = "Proposals this replaces. Panels iterate on each other's work within a unit and across units, and a superseded proposal stays as the record of what was tried."
+
+[[registry.namespace.field]]
+name = "note"
+type = "string"
+required = false
+description = "A qualification the other fields flatten: a discount its own authors applied to it, a shared premise two instances did not notice they had, a claim that reads stronger than the evidence carries."
+
+[[registry.namespace.field]]
+name = "gap"
+type = "string"
+required = false
+description = "What it leaves open. A proposal settling most of a question and not all of it is at least as ordinary as a ruling doing so."
+
+[[registry.namespace.field]]
+name = "provenance"
+type = "ref[]"
+required = true
+description = "Where it was established. Required, because a proposal's whole standing is the work behind it and a proposal citing nothing is an opinion."
+
+[[registry.namespace.field]]
+name = "keywords"
+type = "string[]"
+required = false
+description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
 
 [primitive-introductions]
 arvo = ["numeric"]
