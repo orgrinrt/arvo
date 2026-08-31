@@ -1,0 +1,13 @@
+== the real placement rules, over the whole declared signature ==
+  carrier                  moved in 0 of 16512 cells, first None
+  access, tight rule       moved in 0 of 16512 cells, first None
+  access, loose rule       moved in 0 of 16512 cells, first None
+
+== C1 control: a rule that reads the sign and the fraction ==
+  carrier_reads_everything moved in 2457 of 16512 cells, first Some((8, 0, true))
+
+== verdict ==
+  the three real rules move in no cell:        true
+  C1 the reading rule is reported as moving:   true
+
+  RESULT: placement is a function of the total width alone; signedness any, fraction_width any

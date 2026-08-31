@@ -145,11 +145,193 @@ push = "error"
 # --- arvo canon lints (mock/lints/*.rs, registry side) ---------------------
 #
 # These read `mock/registry/` rather than source, so they implement `RepoLint`
-# where the six above implement `CrateLint`. They are the checks that used to
-# live in a `mock/checks` crate and be run by hand, which is not one of the two
-# mechanisms mockspace has.
+# where the six above implement `CrateLint`. A check is a lint or a tool and
+# there is no third kind, so each of these gates at every commit rather than
+# running when somebody remembers.
+#
+# Several carry a ceiling: a count measured over the committed corpus, below
+# which the population is grandfathered and above which every offending row is
+# named. That is for a backlog whose rows cannot be repaired by editing, either
+# because the file is the record or because the repair is a re-run. The number
+# lives in the lint, where the lint can read it. Lower it as rows are fixed and
+# never raise it.
 
 [lints.refusal-owes-an-instead]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.every-predicate-names-a-declared-axis]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.measured-claim-cites-no-probe]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-standing-is-reachable-from-what-it-cites]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-proposal-rests-on-more-than-a-consolidation]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-imposition-rests-on-no-instrument]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-ruling-supersedes-one-that-outranks-it]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-line-citation-into-a-living-ledger]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-citation-names-a-target]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-predicate-names-an-axis-once]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-obligation-edge-names-a-row]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-obligation-edge-comes-from-a-tiered-namespace]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-precondition-comes-from-a-namespace-that-can-establish-one]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-settled-question-does-not-sit-in-the-queue]
+commit = "error"
+build = "error"
+push = "error"
+
+# Declared by a tool crate rather than by a file under `mock/lints/`, and it
+# gates like any other repo lint. Its first refusal is a catalogue that does not
+# parse, which nothing short of a parser can establish, and the generated lint
+# pack's manifest is engine-written so no lint file can add one. A tool crate has
+# its own manifest and `lint_pack!` registers a `RepoLint` from one. That is a
+# gap in the lint contract rather than a third kind of check, and the honest fix
+# upstream is a way for a repository to declare a dependency for its own pack.
+[lints.a-panel-catalogue-is-readable]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-measurement-owes-a-usable-instrument]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-region-agrees-with-the-sentence-kind]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-unratified-ruling-stamps-a-proposal]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-term-is-defined-twice]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-definition-names-its-term]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-live-row-restates-a-retired-claim]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-row-carries-keywords]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-note-describes-the-row-it-sits-on]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-retirement-claim-can-be-found]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-canon-that-loads-nothing-is-not-a-clean-canon]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-registry-comment-counts-its-own-rows]
+commit = "error"
+build = "error"
+push = "error"
+
+# --- arvo canon lints (mock/lints/*.rs, corpus side) ------------------------
+#
+# These read the panel's own prose under `mock/research/` rather than the
+# registry. The engine resolves the citations inside a registry row and nothing
+# resolves the ones in the corpus those rows are drawn from, which is where the
+# rot is.
+#
+# Three of them carry a measured ceiling. The population under it sits in files
+# that are the record, where repointing a citation would be editing history to
+# make a checker green, so what each refuses is a new one. The number is in the
+# lint, where the lint can read it; lower it as files are superseded and never
+# raise it.
+
+[lints.no-unprefixed-archive-citation]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-archive-citation-names-a-file]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-line-citation-into-a-registry-file]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.no-line-citation-into-a-living-ledger-in-prose]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-probe-reads-the-tree-it-sits-in]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-committed-timing-records-what-built-it]
 commit = "error"
 build = "error"
 push = "error"
@@ -325,8 +507,10 @@ mockspace-extra-lints = { git = "ssh://git@github.com/orgrinrt/mockspace-hilavit
 # living ledgers in the same tree (`AGREEMENTS.md`, `OPTIONS.md`, `DROPLIST.md`
 # and their siblings) are the exception, and freezing the root would permit a
 # line citation into those too. So the exception is checked rather than
-# declared: `mock/checks` refuses a line citation into a living ledger by name,
-# and a heading anchor into one is fine because a rename fails loudly.
+# declared: `no-line-citation-into-a-living-ledger` refuses one inside a row and
+# `no-line-citation-into-a-living-ledger-in-prose` refuses one in the panel's own
+# prose, both by name. A heading anchor into one is fine, because a rename fails
+# loudly.
 #
 # Internal, so it never reaches a generated document. A reader of the design
 # cannot open the research tree, so a provenance column that reads the same on
@@ -413,9 +597,9 @@ description = "The words somebody would search for to find this row, especially 
 # because nobody knew to look for it.
 #
 # A `predicate` field elsewhere is `string[]`, one entry per axis, written
-# `<dimension slug>: <values>`. The pairing is checked in `mock/checks` rather
-# than by the schema, because a schema can constrain a string and cannot parse
-# one.
+# `<dimension slug>: <values>`. The pairing is checked by
+# `every-predicate-names-a-declared-axis` rather than by the schema, because a
+# schema can constrain a string and cannot parse one.
 
 [[registry.namespace]]
 key = "dimension"
@@ -1131,7 +1315,7 @@ description = "The region it was established in, one entry per dimension, writte
 name = "evidence"
 type = "probe[]"
 required = false
-description = "The committed instruments behind it. Required in spirit for a row that ran something, which is `measured` and `enumeration` alike, and checked as such in `mock/checks` rather than by the schema, since the schema cannot read `sentence_kind`. A proof owes its route rather than a run, so `theorem` is outside it; a walk whose full list is printed inline is a proof by exhaustion and is one, while a walk performed by code owes the walker."
+description = "The committed instruments behind it. Required in spirit for a row that ran something, which is `measured` and `enumeration` alike, and checked as such by `measured-claim-cites-no-probe` rather than by the schema, since the schema cannot read `sentence_kind`. A proof owes its route rather than a run, so `theorem` is outside it; a walk whose full list is printed inline is a proof by exhaustion and is one, while a walk performed by code owes the walker."
 
 [[registry.namespace.field]]
 name = "defines"
@@ -1200,11 +1384,15 @@ required = false
 description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
 
 [primitive-introductions]
-arvo = ["numeric"]
-arvo-transparent = ["numeric"]
-arvo-strategy = ["numeric"]
-arvo-storage = ["numeric"]
-arvo-bits-contracts = ["numeric"]
-arvo-mask-contracts = ["numeric"]
-arvo-bits = ["numeric"]
-arvo-hash = ["numeric"]
+# `arvo-format` is the crate that introduces the numeric category, because it is
+# what defines a number in this stack: a representable set and the adaptation onto
+# it. The bare-primitive lints skip an introducing crate, which is the sanctioned
+# door for the one place the stack's own primitives cannot be used to define
+# themselves. Every crate above it uses those types and is checked normally.
+#
+# The eight entries here before this one named the crate tree deleted on
+# 2026-08-08 and seven of those crates no longer exist. The eighth was worse than
+# stale: it read `arvo-strategy`, which is also the name of a crate written in
+# this round, so a new crate inherited a dead one's exemption and went unchecked
+# by the numeric lints without anything saying so.
+arvo-format = ["numeric"]

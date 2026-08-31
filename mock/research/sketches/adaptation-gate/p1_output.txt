@@ -1,0 +1,9 @@
+
+running 4 tests
+test the_control_the_behaviour_tied_test_has_grip ... ok
+test the_identity_claim_becomes_falsifiable_once_it_is_applied ... ok
+test the_identity_predicate_is_true_for_every_variant_that_exists ... ok
+test the_shipped_shape_of_test_passes_against_the_backwards_declaration ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

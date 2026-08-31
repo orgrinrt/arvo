@@ -1,0 +1,8 @@
+=== cargo build ===
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.09s
+
+=== cargo build --release ===
+    Finished `release` profile [optimized] target(s) in 0.01s
+
+Both succeed. Before the surfaces round the release build failed with
+E0432: no StatedIntent in the root.

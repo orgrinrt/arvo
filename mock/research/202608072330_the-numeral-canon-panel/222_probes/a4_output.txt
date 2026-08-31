@@ -1,0 +1,69 @@
+=== a4: which precision reading makes the three sign domains a chain ===
+
+--- Controls, run before anything rests on the detectors ---
+  C1 planted incomparable triple ([0,1],[1,2],[0,2]): chain = None (must be None), incomparable pairs [("a", "b")] (must be non-empty)
+  C2 planted nested triple: chain = Some(["inner", "mid", "outer"]) (must be Some)
+  C3 singleton detector: [0,0] card = 1 (must be 1); [0,1] card = 2 (must be 2)
+  C4 inclusion both ways on [0,3] and [2,5]: false and false (both must be false)
+
+--- sign-magnitude symmetric, reading A: precision COUNTS the sign digit ---
+  r=2 P=1  unsigned [0, 1] |2|       twos [-1, 0] |2|        sym [0, 0] |1|        NOT a chain: [("unsigned", "twos_complement")]
+  r=2 P=2  unsigned [0, 3] |4|       twos [-2, 1] |4|        sym [-1, 1] |3|       NOT a chain: [("unsigned", "twos_complement"), ("unsigned", "symmetric")]
+  r=2 P=3  unsigned [0, 7] |8|       twos [-4, 3] |8|        sym [-3, 3] |7|       NOT a chain: [("unsigned", "twos_complement"), ("unsigned", "symmetric")]
+  r=3 P=1  unsigned [0, 2] |3|       twos [-1, 0] |2|        sym [0, 0] |1|        NOT a chain: [("unsigned", "twos_complement")]
+  r=3 P=2  unsigned [0, 8] |9|       twos [-3, 2] |6|        sym [-2, 2] |5|       NOT a chain: [("unsigned", "twos_complement"), ("unsigned", "symmetric")]
+  r=3 P=3  unsigned [0, 26] |27|     twos [-9, 8] |18|       sym [-8, 8] |17|      NOT a chain: [("unsigned", "twos_complement"), ("unsigned", "symmetric")]
+  over r in {2,3,4,5,10} and P in 1..=6: chains 0, non-chains 30, cells skipped as non-integral 0, domains of card <= 1 5
+  interval-vs-set inclusion disagreements: 0 (must be 0)
+
+--- sign-magnitude symmetric, reading B: it does NOT ---
+  r=2 P=1  unsigned [0, 1] |2|       twos [-2, 1] |4|        sym [-1, 1] |3|       chain: unsigned < symmetric < twos_complement
+  r=2 P=2  unsigned [0, 3] |4|       twos [-4, 3] |8|        sym [-3, 3] |7|       chain: unsigned < symmetric < twos_complement
+  r=2 P=3  unsigned [0, 7] |8|       twos [-8, 7] |16|       sym [-7, 7] |15|      chain: unsigned < symmetric < twos_complement
+  r=3 P=1  unsigned [0, 2] |3|       twos [-3, 2] |6|        sym [-2, 2] |5|       chain: unsigned < symmetric < twos_complement
+  r=3 P=2  unsigned [0, 8] |9|       twos [-9, 8] |18|       sym [-8, 8] |17|      chain: unsigned < symmetric < twos_complement
+  r=3 P=3  unsigned [0, 26] |27|     twos [-27, 26] |54|     sym [-26, 26] |53|    chain: unsigned < symmetric < twos_complement
+  over r in {2,3,4,5,10} and P in 1..=6: chains 30, non-chains 0, cells skipped as non-integral 0, domains of card <= 1 0
+  interval-vs-set inclusion disagreements: 0 (must be 0)
+
+--- balanced-radix symmetric, reading A: precision COUNTS the sign digit ---
+  r=2 P=1  unsigned [0, 1] |2|       twos [-1, 0] |2|        sym [0, 0] |1|        NOT a chain: [("unsigned", "twos_complement")]
+  r=3 P=1  unsigned [0, 2] |3|       twos [-1, 0] |2|        sym [0, 0] |1|        NOT a chain: [("unsigned", "twos_complement")]
+  r=3 P=2  unsigned [0, 8] |9|       twos [-3, 2] |6|        sym [-1, 1] |3|       NOT a chain: [("unsigned", "twos_complement"), ("unsigned", "symmetric")]
+  r=3 P=3  unsigned [0, 26] |27|     twos [-9, 8] |18|       sym [-4, 4] |9|       NOT a chain: [("unsigned", "twos_complement"), ("unsigned", "symmetric")]
+  over r in {2,3,4,5,10} and P in 1..=6: chains 0, non-chains 15, cells skipped as non-integral 15, domains of card <= 1 5
+  interval-vs-set inclusion disagreements: 0 (must be 0)
+
+--- balanced-radix symmetric, reading B: it does NOT ---
+  r=3 P=1  unsigned [0, 2] |3|       twos [-3, 2] |6|        sym [-1, 1] |3|       NOT a chain: [("unsigned", "symmetric")]
+  r=3 P=2  unsigned [0, 8] |9|       twos [-9, 8] |18|       sym [-4, 4] |9|       NOT a chain: [("unsigned", "symmetric")]
+  r=3 P=3  unsigned [0, 26] |27|     twos [-27, 26] |54|     sym [-13, 13] |27|    NOT a chain: [("unsigned", "symmetric")]
+  over r in {2,3,4,5,10} and P in 1..=6: chains 0, non-chains 12, cells skipped as non-integral 18, domains of card <= 1 0
+  interval-vs-set inclusion disagreements: 0 (must be 0)
+
+--- P3: where a singleton numeral comes from ---
+  r =  2, P = 1: reading A symmetric = [0, 0] |1|, reading B symmetric = [-1, 1] |3|
+  r =  3, P = 1: reading A symmetric = [0, 0] |1|, reading B symmetric = [-2, 2] |5|
+  r = 10, P = 1: reading A symmetric = [0, 0] |1|, reading B symmetric = [-9, 9] |19|
+  Reading A makes the symmetric domain at precision one denote exactly the zero set,
+  at every radix. That is a numeral carrying fewer than two values at a legitimate
+  precision, and it is the case `question::inclusion_order_singleton_amendment`
+  exists to handle: that row's note records the instrument which first got the
+  inclusion predicate wrong held exactly one such numeral. Reading B produces none.
+
+--- P4 corrected: what collapses at an odd radix, and under which model ---
+  r=3 P=1: unsigned [0, 2] |3|     sign-magnitude sym [-2, 2] |5|      balanced sym [-1, 1] |3|     card(unsigned)==card(balanced): true
+  r=3 P=2: unsigned [0, 8] |9|     sign-magnitude sym [-8, 8] |17|     balanced sym [-4, 4] |9|     card(unsigned)==card(balanced): true
+  r=3 P=3: unsigned [0, 26] |27|   sign-magnitude sym [-26, 26] |53|   balanced sym [-13, 13] |27|  card(unsigned)==card(balanced): true
+  r=5 P=1: unsigned [0, 4] |5|     sign-magnitude sym [-4, 4] |9|      balanced sym [-2, 2] |5|     card(unsigned)==card(balanced): true
+  r=5 P=2: unsigned [0, 24] |25|   sign-magnitude sym [-24, 24] |49|   balanced sym [-12, 12] |25|  card(unsigned)==card(balanced): true
+  r=5 P=3: unsigned [0, 124] |125| sign-magnitude sym [-124, 124] |249| balanced sym [-62, 62] |125|  card(unsigned)==card(balanced): true
+  r=7 P=1: unsigned [0, 6] |7|     sign-magnitude sym [-6, 6] |13|     balanced sym [-3, 3] |7|     card(unsigned)==card(balanced): true
+  r=7 P=2: unsigned [0, 48] |49|   sign-magnitude sym [-48, 48] |97|   balanced sym [-24, 24] |49|  card(unsigned)==card(balanced): true
+  r=7 P=3: unsigned [0, 342] |343| sign-magnitude sym [-342, 342] |685| balanced sym [-171, 171] |343|  card(unsigned)==card(balanced): true
+  The collapse is a cardinality coincidence between unsigned and the BALANCED
+  symmetric domain, and it does not hold for the sign-magnitude one. The first
+  version of this probe predicted it for the sign-magnitude model and printed the
+  numbers refuting itself in the same block. Corrected here rather than deleted.
+
+=== end a4 ===

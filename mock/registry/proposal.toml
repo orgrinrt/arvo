@@ -27,7 +27,7 @@
 # reading it as one is how two rows carrying the narrowing went unlisted.
 #
 # **A `measured` row names the probe it ran.** The ones that do not sit under a
-# ratchet, `no_new_measurement_lands_without_an_instrument`, whose own doc
+# ratchet, the `measured-claim-cites-no-probe` lint, whose own doc
 # comment says why each is stuck and whose ceiling admits no new arrival rather
 # than tolerating them. It currently holds with no headroom, so the next
 # `measured` row landing without a probe turns it red, which is the ratchet

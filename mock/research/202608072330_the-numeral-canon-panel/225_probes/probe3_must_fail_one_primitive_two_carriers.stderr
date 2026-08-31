@@ -1,0 +1,13 @@
+error[E0080]: evaluation panicked: one primitive, two carriers: the footprint contract cannot be satisfied
+  --> probe3_must_fail_one_primitive_two_carriers.rs:20:15
+   |
+20 |   const _: () = assert!(
+   |  _______________^
+21 | |     size_of::<Declared13InU16>() == size_of::<Declared13InU32>(),
+22 | |     "one primitive, two carriers: the footprint contract cannot be satisfied"
+23 | | );
+   | |_^ evaluation of `_` failed here
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0080`.

@@ -1,0 +1,37 @@
+== the declared set, one operation at a time ==
+  W  carriers  classes after each prefix of [encode, add, mul, xor, fma]
+  3  5         [1, 1, 1, 1, 1]
+  4  5         [1, 1, 1, 1, 1]
+  5  5         [1, 1, 1, 1, 1]
+  6  5         [1, 1, 1, 1, 1]
+  7  5         [1, 1, 1, 1, 1]
+  8  5         [1, 1, 1, 1, 1]
+  9  4         [1, 1, 1, 1, 1]
+  10 4         [1, 1, 1, 1, 1]
+
+== C1: add a footprint observation to the same set ==
+  W=3   classes 5, admissible carriers 5
+  W=4   classes 5, admissible carriers 5
+  W=5   classes 5, admissible carriers 5
+  W=6   classes 5, admissible carriers 5
+  W=7   classes 5, admissible carriers 5
+  W=8   classes 5, admissible carriers 5
+  W=9   classes 4, admissible carriers 4
+  W=10  classes 4, admissible carriers 4
+
+== C2: replace add with an unprojected add ==
+  W=3   classes under the unprojected add alone: 1
+  W=4   classes under the unprojected add alone: 1
+  W=5   classes under the unprojected add alone: 1
+  W=6   classes under the unprojected add alone: 1
+  W=7   classes under the unprojected add alone: 1
+  W=8   classes under the unprojected add alone: 2
+  W=9   classes under the unprojected add alone: 1
+  W=10  classes under the unprojected add alone: 1
+
+== verdict ==
+  count constant at 1 across every prefix, W in 3..=10: true
+  C1 the footprint observation splits to exactly the carrier count: true
+  C2 the unprojected add splits the classes: false
+
+  RESULT: INCONCLUSIVE

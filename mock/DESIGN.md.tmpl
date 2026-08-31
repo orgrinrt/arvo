@@ -33,92 +33,61 @@
 
 ## Crate topology
 
-arvo splits into a layered set of small crates with a downstream
-facade. Dependency direction runs strictly upward; the facade sits at
-the bottom.
+Three crates, and the dependency direction is what enforces the design rather
+than a rule asking for it. `arvo-format` cannot name a carrier because it does
+not depend on the crate that has one, which is how "every operation is a
+function of the declared width and never of the machine carrier" stays true
+under later edits.
 
-| Layer | Crate | What it ships |
+| Crate | What it ships | Depends on |
 |---|---|---|
-| L0a | `arvo-transparent` | `Transparent` const unsafe trait. `NumericPrimitive` marker. Free `arvo::raw` const fn. |
-| L0a | `arvo-strategy` | `Strategy` marker, `Hot` / `Warm` / `Cold` / `Precise` ZSTs, unified `BitsContainerFor<const N: u16, Sign>` const trait via Pattern C const-tag dispatch through `Project<TAG, Sign, BYTES, S>` helper, `Resolve<S1, S2>`, `Width` newtype. |
-| L0  | `arvo-storage` | `Bits<N, S, Sign>` storage primitive (default `Sign = Unsigned`). `WideBits<BYTES>` byte-sequence (Warm/Cold/Precise above 128). `AlignedWideBits16<BYTES>` align(16) byte-sequence (Hot above 128). `Bool`, `USize`, `Cap` platform wrappers. `IBits`, `FBits` typed meta-bit newtypes (`Width` re-exported from arvo-strategy). |
-| L0.5 | `arvo-bits-contracts` | `HasBitWidth`, `BitAccess`, `BitSequence`, `BitLogic`, `BitPrim`, `UBitContainer`, `IBitContainer`, `Narrow<T>`, `Widen<T>` (all `pub const trait`). Hosts the cross-primitive + cross-Bits Narrow / Widen impl tables. |
-| L0.5 | `arvo-mask-contracts` | `MaskOps` const trait. |
-| L0.5 | `arvo-numeric-contracts` | `Abs`, `Recip`, `Sqrt`, `TotalOrd`, `FromConstant`, `Predicate` family (all `pub const trait`). |
-| L1  | `arvo-bits` | Concrete blanket impls of bit-level traits on `Bits<N, S>` and bare primitives. Bit-storage aliases (`Bit`, `Nibble`, `Byte`, `Word`, `DWord`, `QWord`). |
-| L1  | `arvo-bitmask` | `Mask<B>` chassis, `BitMatrix<B, const N: Cap>` chassis. `MaskOps` impls at concrete widths 64 and 256. |
-| L1  | `arvo-refit` | Re-export gateway for the bit-width refit family (`Narrow<T>`, `Widen<T>`, `Narrowed`, `Widened`). |
-| L1  | `arvo-tensor` | `Array<T, N>`, `Matrix<W, N>`, `Enumerator`. Consumes `Cap` from arvo-storage; `cap_size` is the canonical `Cap` to `usize` projection. |
-| L2  | `arvo-hash` | `Hasher<N>` const trait, `Fnv1a<N>`, `ContentHash` alias. |
-| L2  | `arvo-graph` | DAG algorithms. |
-| L2  | `arvo-sparse` | CSR, RCM, block-diagonal, Dulmage-Mendelsohn. |
-| L2  | `arvo-comb` | Combinatorial optimisation. |
-| L3  | `arvo-spectral` | Laplacian, Fiedler, power iteration. |
-| facade | `arvo` | Re-exports public surface. Hosts `UFixed<I, F, S>` and `IFixed<I, F, S>` as `repr(transparent)` newtypes over `Bits`. Defines `Int<const N: u16, S>` / `Uint<const N: u16, S>` ergonomic generic aliases. Hosts default impls of the numeric-contract traits. Floats (`FastFloat`, `StrictFloat`) live here too; `Cap` is re-exported from arvo-storage rather than defined here. |
+| `arvo-format` | The declared signature. The representable set as one affine predicate over a phase, a quantum law and a slot range, of which integers, fixed point, scaled integers and floats are points. The six rounding modes, the overflow policies, the adaptation as the pair of those two, and the map that applies one. Introduces the numeric category, so `Width` and `Bool` are defined here. | `notko` |
+| `arvo-placement` | The placement derivation, keyed on occupancy. One output at sole occupancy, the carrier; three at shared, the carrier and the access width and the stride. No declared operation reads any of them. | `arvo-format` |
+| `arvo-strategy` | The binding from a name to a placement objective and an adaptation selection. Four presets ship as instances of an open concept rather than as members of an enumeration. | `arvo-format`, `arvo-placement` |
 
-## Trait-contract crates
+The set is open at both ends it can be. A new numeral joins by implementing
+`Format`, a new overflow policy by implementing `Overflow`, and a new strategy by
+implementing `Strategy`, none of which edits anything that already exists. The
+rounding vocabulary is the one closed enumeration, closed because a ratification
+closed it at six names.
 
-The split into five contract crates (`arvo-transparent`,
-`arvo-strategy`, `arvo-bits-contracts` (which hosts the bit-access,
-narrow, and widen surfaces), `arvo-mask-contracts`,
-`arvo-numeric-contracts`) optimises transitive dependency *size*,
-not count. A consumer that only needs the bit-access surface depends
-on `arvo-bits-contracts` plus `arvo-storage`, not on `arvo-bitmask`
-or `arvo-tensor`. The implementation crates pull only what they
-implement.
+## Contracts and their instances
 
-The split is a starting structure. Pairs of contract crates that
-100% co-occur in real consumer dep sets merge over time.
+Every crate here is a small set of contracts plus the instances that ship with
+them. `Format`, `Ambient`, `Quantum`, `Slots`, `Rounding`, `Overflow`,
+`Adaptation`, `DeclaredSignature` and `Operation` are contracts; `Integer`,
+`UFixed`, `Biased`, `Floating`, the six modes and the three policies are
+instances of them.
 
-## The arvo facade
-
-`arvo` is the bottom of the dependency graph. Every other workspace
-crate is upstream. The facade re-exports the public surface:
-`Bits<N, S, Sign>`, the strategy markers, `Bool`, `USize`, `IBits` /
-`FBits` / `Width`, the contract traits, the mask types, the narrow
-trait, the hash types, the tensor types, the algorithm crate publics.
-
-The facade itself defines:
-
-- `UFixed<I, F, S>` and `IFixed<I, F, S>`: `repr(transparent)`
-  newtypes over `Bits<{I+F}, S, Unsigned>` and
-  `Bits<{1+I+F}, S, Signed>`. Arithmetic via const trait impls of
-  `Add` / `Sub` / `Mul` / `Div` / `Recip` / `Sqrt`, not via direct
-  field manipulation.
-- `Int<const N: u16, S = Warm>` and `Uint<const N: u16, S = Warm>`:
-  ergonomic generic aliases. `N` is total storage bit count.
-  Consumers reach for the exact width they need (`Uint<3>`,
-  `Uint<13>`, `Int<47>`); std-parallel `Uint8`/`Int8`/etc.
-  spellings are not part of the surface.
-- `FastFloat`, `StrictFloat`.
-- Default impls of the numeric-contract traits over the composed
-  types.
-
-`Cap` is re-exported through the facade but declared in
-`arvo-storage`, alongside `Bool` and `USize`. Three earlier statements
-in this document placed it in `arvo-tensor` or in the facade itself;
-all three were wrong, and the correction is recorded as item 3 of D14
-in `design_rounds/202607290050_topic.the-restructure-widens.md`.
+The reason the split falls this way is what a consumer has to depend on to say
+one thing. Stating what values exist needs `arvo-format` and nothing else.
+Stating where they sit needs `arvo-placement` on top of it. Choosing between
+placements needs `arvo-strategy` on top of both. A consumer that only declares
+formats never compiles a carrier ladder.
 
 ## Dependency direction
 
-Strictly upward. Each lower-layer crate names only crates above it
-(or no workspace deps for L0a). The facade names every other crate.
+Strictly upward, and it carries a design constraint rather than a convention.
+`arvo-format` has no workspace dependency, so nothing in it can mention a
+carrier; `arvo-placement` depends on it and derives one; `arvo-strategy` depends
+on both and binds a name to a choice between them. There is no facade today, and
+a crate that re-exported the three would sit below all of them rather than
+above.
 
 ## Consumers
 
-arvo is designed to be consumed by:
+arvo is a library rather than a program, so how it gets used is not fully known
+here. What it is built for is the algorithm crates every downstream repository
+uses, and the contracts for things that compose into units bigger than numerals
+alone. The numeral base has to work first, which is what the three crates above
+are.
 
-- **hilavitkutin**: pipeline execution engine. Uses `arvo-graph` for
-  plan-stage DAG analysis, `arvo-bitmask` for `AccessMask`,
-  `arvo-sparse` for RCM reordering, `arvo-spectral` for trunk
-  formation, `arvo-comb` for fiber grouping.
-- **vehje** (language stack): uses `arvo-graph` for pass DAG,
-  `arvo-bitmask` for artifact read/write sets, `arvo-hash` for
-  content fingerprints.
-- Other downstream applications: miscellaneous numeric needs plus
-  whatever hilavitkutin transitively exposes.
-
+**The consumers named in earlier versions of this document, hilavitkutin and
+vehje, used crates that no longer exist.** Those crates were removed on
+2026-08-08 and the surfaces they offered have not been rebuilt on the current
+base. A downstream repository pinning this branch gets the three crates above and
+nothing else, and that is the honest statement of what is available rather than
+of what is planned.
 ## See also
 
 - Per-crate DESIGN documents for each layer's contracts and concretes.

@@ -1,0 +1,21 @@
+== is the access width a function of the carrier? ==
+  tight packing rule                 NOT a function: 432 pairs, first W=1 and W=3 share the divisor and need 8 and 16
+  loose packing rule                 NOT a function: 651 pairs, first W=1 and W=2 share the divisor and need 8 and 16
+
+== and the carrier, a function of the access width? ==
+  tight packing rule                 NOT a function: 416 pairs, first W=3 and W=9 share the divisor and need 8 and 16
+  loose packing rule                 NOT a function: 644 pairs, first W=2 and W=9 share the divisor and need 8 and 16
+
+== controls ==
+  C1 access := carrier               is a function (0 violating pairs)
+  C2 access := const u8, forward     is a function (0 violating pairs)
+  C2 access := const u8, reverse     NOT a function: 5440 pairs, first W=1 and W=9 share the divisor and need 8 and 16
+  C3 planted single violation        NOT a function: 7 pairs, first W=1 and W=5 share the divisor and need 8 and 64
+
+== verdict ==
+  C1 a rule equal to the carrier reports zero:        true
+  C2 a constant rule reports zero forward, nonzero reverse: true
+  C3 the planted violation is found and nothing else: true
+  neither determines the other, under both packing rules: true
+
+  RESULT: carrier and access width are two independent facts of the declared width

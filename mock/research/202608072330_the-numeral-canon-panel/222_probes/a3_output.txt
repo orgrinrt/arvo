@@ -1,0 +1,41 @@
+=== a3: the layout observation, on a third construction, and its const status ===
+
+--- P1: does the layout observation separate the two carriers? ---
+  N13U16: size 2 align 2   N13U32: size 4 align 4
+  separated by size: true (predicted true)
+
+--- C1: does it separate two newtypes over the SAME carrier? ---
+  N13U16: size 2   AlsoU16: size 2   separated: false
+     (must be false, or the observation reads type identity rather than the carrier,
+      and P1 would be measuring the wrong thing)
+
+--- C3: does it read real layout? ---
+  zero-sized marker: size 0 (must be 0), u8: size 1 (must be 1)
+
+--- P2: does any declared-width operation separate the two carriers? ---
+  roundtrip over all 8192 values: 0 differences (predicted 0)
+  over all 67108864 ordered pairs: wrap-add 0, sat-add 0, wrap-mul 0, sat-mul 0, xor 0 (all predicted 0)
+
+--- C2: the mutant, so the zeros above mean something ---
+  saturating multiply with a carrier-held intermediate differs on 8346078 of 67108864 pairs
+     nonzero: true (must be true; if this were 0 the five zeros above would establish
+      nothing, because the comparison could not report a difference at all)
+  dead route one, addition at the carrier width:      0 of 67108864
+  dead route two, wrap-multiply at the carrier width: 0 of 67108864
+     Both zero, and both for a stated reason rather than by luck: the sum cannot
+     leave the narrower carrier, and a low-bit mask at the declared width absorbs a
+     wider low-bit mask above it. Together they say when a carrier is
+     arithmetically observable: the intermediate must be able to leave the narrower
+     carrier, and the projection must read magnitude rather than low bits.
+
+--- P3: is the footprint available as a const predicate? ---
+  const ARM_U16 = "narrow arm", const ARM_U32 = "wide arm"
+  Both are `const` items whose value came from `core::mem::size_of`, so the arm was
+  selected at compile time and no runtime branch exists. That is the part the
+  container-premise rows do not state: the footprint is not only observable, it is
+  observable in exactly the place a predicated arm is allowed to read.
+
+  `core::mem` rather than `std::mem` throughout, so the observation is available to
+  a no_std crate and the answer does not depend on the standard library.
+
+=== end a3 ===

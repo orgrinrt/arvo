@@ -1,0 +1,173 @@
+# `arvo-strategy`: a name bound to an objective and a selection
+
+**Canon this design declares.** The strategy-axis rows, chiefly
+`ruling::the_strategy_set_is_not_closed_at_four`, `ruling::the_strategy_intents_are_not_clear_cut`,
+`ruling::each_preset_names_a_stated_intent`, `ruling::the_strategies_weigh_measurements_differently`,
+`ruling::cold_is_not_to_be_deprioritised` and
+`ruling::there_is_no_exchange_rate_because_there_is_no_generalisation`.
+`ruling::the_derivation_is_a_placement_and_the_operation_set_is_an_admission_rule`, for the position of
+the selector. `ruling::arms_over_regions_are_the_fundamental_heart` and
+`ruling::the_work_is_predicated_arms_composed`.
+
+## What this crate is
+
+A strategy is a binding from a name to a placement objective and an adaptation selection. It is not
+the key of the derivation ladder and it is not a closed enumeration.
+
+The position comes straight out of the derivation ruling:
+
+> the ladder is keyed on the placement objective and the strategy-to-objective map is the selector,
+> which preserves the earlier two-expert result that a strategy name is a binding.
+
+That kills the selector-versus-key disagreement rather than resolving it: the two readings are one
+function curried two ways, and the floor removed the thing that made the difference observable. So
+this crate ships the map, and `arvo-placement` ships the ladder the map points into.
+
+## The set is open, and this crate is built so it stays open
+
+`ruling::the_strategy_set_is_not_closed_at_four` is at `open` and is op's own:
+
+> the strategy set is not closed at exactly four. These are the ones the last panel settled with, and
+> what my amateur ass had written for arvo that we are now redesigning [...] so it's entirely open to
+> discussion and exploration
+
+So the presets are implementors of an open concept, exactly as formats are. A new strategy joins by
+supplying the obligations. There is no enumeration to extend and no match to widen.
+
+**Openness is a licence to question the decomposition rather than an instruction to replace it.** The
+four names the corpus carries are kept, because a prior design can name the parts well and go wrong in
+execution, and nothing here has found them wrong.
+
+## Why the per-strategy statements are intents and not tables
+
+`ruling::the_strategy_intents_are_not_clear_cut` is ratified and it governs how this crate is written:
+
+> And as such, it's not clear cut. You should not write these as clear cut and settled. The *intent*
+> is clear I think, but nothing about them is absolute otherwise.
+
+A design shipping four markers with a behaviour table against each writes exactly what that forbids.
+So the crate carries each preset's intent, in the words the canon has for it, and carries no table of
+behaviours keyed on the name.
+
+What the canon does state per preset, kept as intent:
+
+The speed-first preset exists for performance and efficiency even at the cost of accuracy or
+soundness, and sacrificing soundness is its explicit purpose rather than a tolerated defect, but the
+price is a provable meaningful gain. What counts as meaningful is unset and nobody has set it.
+
+The intuitive-compromise preset does not merely imitate. Its intent is to be the intuitive best choice
+for most every use case, and the intuitive part demands it mimics, but mimicry is dropped where it is
+consistently the worse choice. Being a Rust crate makes Rust's way the baseline for what a reader
+finds intuitive; it is not what makes it correct.
+
+The storage-minimising preset is for cold paths and cold storage and stays small for memory or disk.
+It has leeway to be inefficient and is not obliged to use it. It is not deprioritised, and that
+survives the set being reshaped, renamed or resized.
+
+The accuracy-first preset sacrifices as much performance and efficiency as makes sense to reach the
+most precise answer, especially within chains rather than only per operation. Its objective had no
+measurement in the panel and the gap is recorded rather than papered over.
+
+**Which overflow mode each preset names is not written here.** `does_warm_wrap_or_clamp` is open in
+the registry. The crate carries the axis and the binding; the value is a defaults question and filling
+it inside a design is how an open canon question gets closed where nobody can see it happen.
+
+## Measurement decides, and the weightings differ
+
+`ruling::the_strategies_weigh_measurements_differently` is ratified and is the mechanism under all of
+the above: all the strategies are decided by measurement, they measure different things, and they
+weigh different measurements differently.
+
+So a strategy is not a rule that short-circuits evidence. It is a weighting over evidence, and an
+answer that decided without measurement would be unfalsifiable. That is why the concept this crate
+ships is a weighting and a selection rather than a behaviour.
+
+Whether the weightings agree in practice is an ordinary empirical question and the canon owes no
+answer to it.
+
+## There is no exchange rate, so the selection is per arm
+
+`ruling::there_is_no_exchange_rate_because_there_is_no_generalisation` is ratified and refuses the
+question this crate would otherwise have to answer:
+
+> This is case by case basis and has to be justified in words that get recorded. Even small wins are
+> wins worth pursuing, however small, and however small a set they apply to. This is the "patchwork"
+> approach where we don't even try to generalise, we operate on const predicates that choose the most
+> optimal path always, from a million small different impls for different situations.
+
+So there is no rate at which one objective yields to another, and there is no ranking in this crate.
+Where a conflict between objectives arises, the arm states in words why it resolves the conflict the
+way it does, and that justification is recorded beside the arm.
+
+**A million small implementations is the intended shape rather than a failure mode**, which bears on
+any later review that would flag the count as duplication.
+
+## What an arm is, since this crate is what selects them
+
+An arm is an expression that is optimal over a nameable region, carrying a const predicate over that
+region and applying nowhere else. The full space is filled by composing arms, so everywhere is optimal
+by construction rather than by one statement uniform across the dimensions.
+
+A predicate may read anything available at const time, and may not read anything that is not, because
+selection happens at monomorphisation and there is nothing there to read. A condition known only at
+runtime is not an arm: it stays a finding about where a law holds, and a consumer who knows their data
+satisfies it selects the arm at their own call site from their own const knowledge.
+
+**No arm ships in this round.** The concepts an arm is gated over are what this round writes, and an
+arm without a measurement to justify it is the generalisation the design refuses, wearing a
+predicate.
+
+## What this crate does not decide
+
+The strategy object's internal component count is `topic::the_strategy_object` and is out of scope, as
+are `what_the_cost_coordinates_are` and `is_i9_about_a_strategy_or_one_component`.
+`are_strategies_partially_ordered_by_chain_laws`, `must_a_weighting_be_strictly_positive`,
+`arms_no_weighting_can_select` and `which_axes_a_build_arm_may_move` are open in the registry and none
+is reached by the binding concept written here.
+
+`the_cross_repo_strategy_name_collision` is open and is a naming call, not a mechanism.
+
+## The laws this crate owes tests for
+
+**A strategy names no implementation.** The binding maps to an objective and a selection, and a
+contract test asserts that the type of a strategy does not mention a placement or an operation. If
+that test cannot be written the separation is not real, and the failure to compile is the finding.
+
+**Adding a preset requires no edit to any existing item.** Asserted by adding one in the test module
+and showing everything still resolves. That is what an open inventory means and it is checkable rather
+than asserted.
+
+**Two presets over one declared signature agree on every declared operation**, because the strategy
+selects the placement and the adaptation, and the placement does not change what is computed. Where
+they disagree, the disagreement is in the adaptation, which is a coordinate of the declared signature
+and therefore a different signature.
+
+**No behaviour table is keyed on a preset name.** Structural, and the reason is the ratified row
+forbidding the per-strategy statements from being written as settled.
+
+**The selection is const.** A predicate that is not const-available does not compile as an arm
+selector, and the test asserting that is a compile-fail test rather than a runtime one.
+
+## The surface this design names
+
+`Strategy` is the binding and has exactly two items: `OBJECTIVE`, which is the
+`arvo_placement::Objective` the ladder is keyed on, and `Adaptation`, which is the
+`arvo_format::Adaptation` this binding selects. Two items and no third, because a
+third keyed on the preset's name would be the behaviour table the canon says not to
+write.
+
+`objective_of` reaches the first through the binding, so a consumer never has to
+know which preset it holds.
+
+**The intents are rustdoc on each preset and are not a trait item.** A preset's
+purpose is, in this design's own earlier words, something a reader can read and
+nothing a compiler can gate on, and a `const` in a trait is precisely something a
+compiler gates on. Carrying it as one also made a per-preset compile-time item
+keyed on the preset, which is nearer the behaviour table
+`ruling::the_strategy_intents_are_not_clear_cut` forbids than prose is. So the
+intent lives where a reader reads it and nowhere the type system can see.
+
+`Hot`, `Cold`, `Precise` and `Warm` are the presets, in `presets`. They are
+instances of an open concept rather than members of an enumeration, and a consumer
+adding a fifth edits nothing here. Which overflow mode each names is not settled
+in this design, because the registry holds that question open.

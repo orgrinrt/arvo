@@ -16,9 +16,11 @@ Everything is `#![no_std]` with no alloc and no platform dependency, and every s
 
 ## Where this is right now
 
-There's no shipping code in the tree. The design is being written from the ground up at the moment, and the crate layout is deliberately not there while that happens, so if you clone this expecting to build something, that's why it's empty.
+The first crates are in the tree and they build. `arvo-format` carries the format itself, the predicate that says which values a format can represent and the adaptation that puts an exact result back onto them, with the six rounding modes and the overflow policies. `arvo-placement` derives where a result goes from what else wants the slot. `arvo-strategy` binds the four presets, `Hot`, `Cold`, `Warm` and `Precise`, to a placement objective and an adaptation, and carries what each is for as prose rather than as a table of behaviours.
 
-I'd caution against depending on this for anything yet. Not just the api, the shape itself is still moving: how many crates there are, what they're called, and which layer owns what are all open questions right now, and answering them is the work in progress.
+That's the bottom of the stack rather than a usable numeric library, so there's no `UFixed` or `Uint` to reach for yet, and the layers above these are being designed and written as the design settles under them.
+
+I'd caution against depending on this for anything serious just yet. The api hasn't settled, and neither has the shape above these three: which crates there end up being and which layer owns what are still open, and answering them is the work in progress. If you do want to follow along, the `dev` branch is where things land as they get tested and stable, so a git dep pointed at it will get you the real thing sooner than waiting for a release will.
 
 ## What has settled
 
@@ -40,7 +42,7 @@ If you want general-purpose numerics today, this probably isn't the right thing,
 
 We do not recommend using coding agents with this codebase.
 
-The design here is unusual enough that current models tend to reach for the familiar shape instead of the one that's written down, and the tree being empty makes that worse, because there's nothing in front of them to correct the guess.
+The design here is unusual enough that current models tend to reach for the familiar shape instead of the one that's written down, and there isn't yet enough code in the tree to correct the guess for them.
 
 If you still choose to use a coding agent:
 

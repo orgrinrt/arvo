@@ -1,0 +1,50 @@
+4b28b6f3 chore: lock the src changelist for the value-path round
+9c7950d2 chore: hook reformat, suite re-run and unchanged
+45e0e564 fix: move the exact step to a carrier that holds it, and close the surface
+77df4d1b docs: reproduce the value-path defect and its fix across the flag matrix
+3a1a0054 chore: lock the doc changelist for the value-path round
+210296e1 docs: say where the exact step happens and that the regions are internal
+9f6e4173 docs: bring the value-path finding into the round and say what changed
+6b6b1a6a docs: file the adaptation's bare arithmetic as its own round
+8299b376 chore: close design round 202609010001
+1e894fff chore: lock the src changelist for the admission round
+c2370eca fix: check admission on the contract, with an obligation that holds in both profiles
+c8b773e9 docs: qualify the admission claim to the build it actually holds in
+6cc22838 docs: record that the admission check fires at codegen and not at check
+d1d8f3d2 chore: lock the doc changelist for the admission round
+7742cfca docs: the trait is open, and admission is checked rather than claimed
+c7494a54 docs: reproduce the open-trait admission finding and test the fix
+ccd6fba7 docs: open the round on the totality claim over an open trait
+105df022 chore: close design round 202608312120
+e3533d79 chore: lock the src changelist for the severed-binding round
+3c0224d5 chore: hook reformat, suite re-run and unchanged
+93fa7126 fix: a marker instead of a const generic, and impls instead of a guard
+a38e48ac chore: lock the doc changelist for the severed-binding round
+8c18b50f docs: the objective becomes a type and the bound becomes a set of impls
+04d49239 docs: open the round on the severed binding and the unpinned guard
+c0802648 docs: re-file the untested source gate, swept a fourth time
+189b937e chore: close design round 202608312054
+01081c45 chore: lock the src changelist for the width-bound round
+4faca72a chore: hook reformat, and track the width-bound sketch lockfile
+3d3ed01d fix: refuse an unrepresentable width and make the objective select
+1d6af4ef chore: lock the doc changelist for the width-bound round
+be2ba937 docs: state the width bound and what the objective selects
+a1d07bda docs: open the round on the width bound and the dead objective
+b4e4079b docs: re-file the untested source gate, swept a third time
+4fbfe56a chore: close design round 202608312030
+cbb64ba9 chore: lock the src changelist for the surfaces round
+f7290079 chore: hook reformat, and track the probe lockfile so it resolves the same twice
+9599493d fix: drop the profile-gated trait so the public surface is one shape
+4489498e chore: lock the doc changelist for the surfaces round
+cd33cd9b docs: describe the tree that ships instead of the one deleted in august
+0ce75d79 docs: open the round on the four reviewer findings
+34953c6d docs: say what the tree actually ships now
+5e8338a1 docs: re-file the untested source gate after the close swept it
+28c7b81e chore: close design round 202608311957
+03568015 chore: lock the src changelist for the adaptation round
+0f5d90b0 chore: drop two unused imports left from the previous round
+f17bd8be chore: hook reformat of the adaptation tests, suite re-run and unchanged
+9b612941 feat: apply the adaptation, and delete four tests that checked declarations
+e5cff64b chore: lock the doc changelist for the adaptation round
+511e458d docs: state the applied adaptation map and its two regions
+b4c2dd91 docs: probe whether the shipped law surface has grip on the truth

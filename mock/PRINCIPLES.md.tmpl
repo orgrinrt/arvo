@@ -8,33 +8,22 @@
 
 # arvo. Architecture Principles
 
+
 ## Topology
+Three crates, and the dependency direction carries the design. `arvo-format`
+declares what values exist: the representable set as one affine predicate, the
+six rounding modes, the overflow policies, the adaptation as the pair of those
+two, and the map that applies one. It has no workspace dependency, so nothing in
+it can name a machine carrier. `arvo-placement` depends on it and derives where
+the bits sit, keyed on occupancy. `arvo-strategy` depends on both and binds a
+name to a placement objective and an adaptation selection.
 
-`arvo` is the **downstream facade** of the foundations, not the L0
-layer. The minimal L0 storage primitives (`Bits<N, S, Sign>`, strategy
-markers, `Bool`, `USize`, typed meta-bits) live in `arvo-storage`.
-Trait declarations split into five contract crates: `arvo-transparent`,
-`arvo-strategy`, `arvo-bits-contracts` (hosting bit-access plus the
-narrow and widen surfaces), `arvo-mask-contracts`, `arvo-numeric-
-contracts`. Concrete impls live in domain-organised implementation
-crates (`arvo-bits`, `arvo-bitmask`, `arvo-refit`, `arvo-tensor`).
-`arvo-refit` ships the bit-width refit re-export surface
-(`Narrow<T>` plus `Widen<T>` plus their `Narrowed` / `Widened`
-aliases). Both narrow and widen sit under one re-export gateway.
-Algorithm crates (`arvo-graph`,
-`arvo-sparse`, `arvo-comb`, `arvo-spectral`, `arvo-hash`) sit at L2 /
-L3. The `arvo` facade re-exports the public surface, hosts default
-trait impls, defines `Int<const N: u16, S>` / `Uint<const N: u16, S>`
-ergonomic generic aliases, and hosts `UFixed<I, F, S>` /
-`IFixed<I, F, S>` as `repr(transparent)` newtypes over `Bits`. The
-facade is at the bottom of the dependency graph; consumers reach the
-foundation crates through it.
+There is no facade. A crate re-exporting the three would sit below all of them
+rather than above, and nothing needs one yet.
 
-The trait-contract split optimises **transitive dependency size**, not
-count. A consumer that needs only the bit-access surface depends on
-`arvo-bits-contracts` plus `arvo-storage`. The split is a starting
-structure; pairs that 100% co-occur in consumer dep sets merge over
-time.
+The split is by what a consumer must depend on to say one thing. Declaring
+formats needs the first crate alone; placing them needs the second; choosing
+between placements needs the third.
 
 Every trait whose methods are sensibly callable in const context is
 `pub const trait` (RFC 3762 line). The nightly feature flag set:
@@ -44,9 +33,8 @@ Every trait whose methods are sensibly callable in const context is
 `feature(macro_metavar_expr_concat)`, `feature(try_trait_v2)`. Risk
 class is the same as `generic_const_exprs`:
 incomplete-but-actively-developed, not stabilised.
-`feature(const_index)` is required for slice indexing inside
-const-trait bodies; the `SparseAdjacency` family in arvo-sparse uses
-it for `Csr` successor iteration.
+`feature(const_index)` is required for slice indexing inside const-trait
+bodies.
 
 [//]: # (BEGIN shared cross-ecosystem principles, synced from workspace .shared/principles-fragment.md, do not edit in place)
 
@@ -128,7 +116,7 @@ signatures compile to the same code as concrete ones. Inference at
 call sites means no turbofish.
 
 Patterns throughout the stack are instances of this single mental
-model: arvo's `UArith<BITS>` / `IArith<BITS>`, arvo-bits' `Bool: Try`,
+model: arvo-format's `Format` and `Adaptation` contracts,
 hilavitkutin-api's 22 access/context/platform traits, the workspace
 "no Vec in trait signatures" rule. All the same rule.
 
@@ -271,10 +259,9 @@ struct fields and public-API positions across every arvo sub-crate
 and every downstream consumer (hilavitkutin, clause). Until the
 lint lands, the rule holds by convention and review.
 
-The algorithm crates (arvo-graph, arvo-sparse, arvo-comb,
-arvo-spectral) are generic over numeric trait bounds and reflexively
-reach for arvo primitives. They do not accept or return bare types
-at any boundary.
+Algorithm crates, when they come, are generic over numeric trait bounds and
+reflexively reach for arvo primitives. They do not accept or return bare
+types at any boundary. None ships on the current base.
 
 Strategy markers (`Hot`, `Warm`, `Cold`, `Precise`) are type
 parameters, not runtime config. They embed operational intent
@@ -313,13 +300,13 @@ devirtualisation; we never pay for dispatch.
 
 ## Contracts before concretes
 
-- `arvo` declares numeric primitives.
-- `arvo-bits` declares bit-level contracts (traits only, no storage).
-- `arvo-bitmask` picks Mask64/Mask256 concretes on top of the
-  contracts.
+- `arvo-format` declares what values exist and what an adaptation is.
+- `arvo-placement` derives where the bits sit, and reads no adaptation.
+- `arvo-strategy` binds a name to a choice between placements.
 
-Sub-crates depending on the contracts (not the concretes) mean
-consumers can swap storage widths without touching algorithm code.
+Depending on the contracts rather than on the instances is what lets a
+consumer change a placement without touching anything that declares a
+format.
 
 ## Sizes are const
 

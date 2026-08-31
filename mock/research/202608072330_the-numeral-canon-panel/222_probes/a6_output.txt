@@ -1,0 +1,40 @@
+=== a6: the two repairs 221 applied together, varied one at a time ===
+
+C1 is 221's control: inside the constant-quantum family alone, every pair must have
+a unique meet. The four columns say which mechanism produced each failure.
+
+degenerate  dedup  points  pairs   fail | no bounds  annihilated  distinct      same
+      true   true      47    703      0 |         0            0         0         0
+      true  false      54    861     28 |         0           28         0         0
+     false   true      45    630    256 |       256            0         0         0
+     false  false      52    780    284 |       256           28         0         0
+
+--- P1, the control that decides whether anything else here counts ---
+  221's repaired cell (degenerates on, dedup on):  0  (its run reports 0)
+  221's C5 cell       (degenerates off, dedup on): 256  (its run reports 256)
+  both reproduced: true
+
+--- what each repair is actually for ---
+  removing the bottom, deduplication kept:   256 failures, 256 of them with no lower bound
+  keeping the bottom, deduplication removed: 28 failures, 28 of them with lower bounds
+    of those, 28 are `maximal` annihilating a tie, 0 are several distinct denotations
+
+  So the 256 are mechanism (a), the bottom, exactly as 221's own p2d diagnosis says.
+  The dedup-off failures are mechanism (c), the copied helper being defined only on
+  a partial order: `maximal` drops every member of a tie because each is a subset of
+  the other. Not one failure in any cell is several distinct denotations, so nothing
+  measured here is an order failure of the kind option 1 is about.
+
+--- what this overturns and what it leaves standing ---
+  221's ANSWER stands and I agree with it. Deciding inclusion on denotation is right,
+  because without it the relation is a preorder, two declarations denoting one set
+  are each below the other and neither is the meet, and 'unique least upper bound' is
+  unique only up to an equivalence nobody named.
+
+  Its EVIDENCE does not reach that answer. The 256 are the bottom being absent, which
+  is a different question with a different answer, and the sentence 'the deduplication
+  is what makes C1 pass' names a repair its instrument never varied. What varying it
+  shows is that the helper functions require the repair, which is a fact about the
+  instrument rather than evidence about the canon.
+
+=== end a6 ===
