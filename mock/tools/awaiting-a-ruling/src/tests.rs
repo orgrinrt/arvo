@@ -262,3 +262,74 @@ fn an_empty_field_is_not_printed_as_a_blank_heading() {
     );
     assert!(out.contains("says:"), "{out}");
 }
+
+#[test]
+fn a_provenance_orders_by_the_panel_file_not_the_panel_directory() {
+    use super::panel_number;
+    // The trap this exists for: a provenance is
+    // `panel::<dir>::<file>::<anchor>` and the directory leads with a twelve
+    // digit timestamp. Taking the first number in the whole string takes that
+    // timestamp, which is identical for every row in a panel, so every
+    // comparison comes out equal and the ordering silently does nothing.
+    assert_eq!(
+        panel_number("panel::202608072330_the-numeral-canon-panel::95_op_the_panel_runs::#x"),
+        Some(95),
+        "the file's number, not the directory's timestamp"
+    );
+    assert_eq!(
+        panel_number("panel::202608072330_the-numeral-canon-panel::37_op_warm_imitates::#y"),
+        Some(37)
+    );
+    // A suffixed file number, which the panel uses when a slot is already taken.
+    assert_eq!(
+        panel_number("panel::202608072330_the-numeral-canon-panel::104b_op_something::#z"),
+        Some(104)
+    );
+}
+
+#[test]
+fn a_provenance_that_cannot_be_ordered_reports_nothing() {
+    use super::panel_number;
+    // Reporting every op file when the ordering is unavailable would be noise
+    // dressed as diligence, and a reader who is shown twenty files reads none.
+    assert_eq!(panel_number("panel::somedir::no_number_here::#a"), None);
+    assert_eq!(panel_number("not-a-provenance"), None);
+    assert_eq!(panel_number("panel::only-two-parts"), None);
+}
+
+#[test]
+fn a_file_number_is_read_from_the_front_and_nowhere_else() {
+    use super::leading_number;
+    assert_eq!(leading_number("95_op_the_panel_runs.md"), Some(95));
+    assert_eq!(leading_number("7_op_early.md"), Some(7));
+    // The control: a number that is not at the front is not the file's number.
+    // Without this the helper could scan for any digits and would read `202608`
+    // out of a filename carrying a date, which is the same defect as the one
+    // above wearing a different coat.
+    assert_eq!(leading_number("op_file_95.md"), None);
+    assert_eq!(leading_number("README.md"), None);
+    assert_eq!(leading_number(""), None);
+}
+
+#[test]
+fn only_ops_own_files_count_as_his() {
+    use super::is_op_file;
+    // His own, including the suffixed slots the panel uses when a number is
+    // already taken.
+    assert!(is_op_file("95_op_the_panel_runs_to_ratification.md"));
+    assert!(is_op_file("206_op_the_canon_test.md"));
+    assert!(is_op_file("104b_op_the_imitation_is_ergonomic.md"));
+
+    // The false positive that shipped for one run and diluted the list:
+    // a member's file *about* his material, carrying none of his words.
+    assert!(
+        !is_op_file("207_mcsherry_op_material_in_the_dead_panel.md"),
+        "a file about his material is not a file of his"
+    );
+    assert!(!is_op_file("201_mcsherry_is_the_bar_met.md"));
+    assert!(!is_op_file("SEED_TALKING_POINTS.md"));
+    assert!(
+        !is_op_file("op_no_leading_number.md"),
+        "the convention leads with a number"
+    );
+}
