@@ -837,6 +837,12 @@ required = false
 description = "What it is about."
 
 [[registry.namespace.field]]
+name = "obligation"
+type = "obligation[]"
+required = false
+description = "Obligations the retired claim was a route toward, where it was one. This is what separates a route somebody tried and closed from a need nobody has looked at, and the two are indistinguishable without it: `refsto(obligation::<slug>)` returns nothing in both cases, and nothing returns nothing loudly. A retirement here does not answer the obligation and must never be read as answering it. It says the obligation is still open and one way to it is known not to work, which is worth more to the next reader than the empty result was."
+
+[[registry.namespace.field]]
 name = "provenance"
 type = "ref[]"
 required = true

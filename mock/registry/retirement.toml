@@ -45,6 +45,7 @@ why = "Measured directly to admit the one preset whose recurrences return wrong 
 kind = "wrong"
 replacement = "The monotonicity marker over addition, which is the atom the gate was reaching for."
 topic = "algebraic_laws"
+obligation = ["ordering_a_directed_acyclic_graph", "a_cost_dynamic_program", "a_spectral_partition_of_a_dependency_graph"]
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::DROPLIST::#6-the-droplist-cumulative",
   "panel::202607301300_formalization-spec-panel::OLD_124_consolidation_twelve::#6-the-droplist-cumulative",

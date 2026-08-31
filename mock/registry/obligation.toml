@@ -50,9 +50,10 @@ keywords = ["sparse", "CSR", "compressed", "adjacency", "dependency graph", "row
 
 [[obligation]]
 id = "a_spectral_partition_of_a_dependency_graph"
-need = "A Fiedler partition, splitting a dependency graph into groups that can run apart."
+need = "A spectral split of a weighted graph into groups that can run apart: the Laplacian over an adjacency the consumer already holds, the iteration that finds the Fiedler vector, and the bisection and k-way split over it. The split must be reproducible bit for bit at a fixed iteration count the consumer names."
 consumer = "hilavitkutin"
-why = "One named step of the plan chain, and the one that decides which work is allowed to run in parallel."
+why = "One named step of the plan chain, and the one that decides which work is allowed to run in parallel. Reproducibility is not a nicety here: the consumer pins the iteration count precisely so the schedule it derives stays statically analysable, and a split that moved between runs would move the schedule with it."
+gap = "**The earlier wording named the partition alone**, which is the last of the four things the consumer's own account asks for. Its foundations table gives arvo the Laplacian construction, the power iteration, the Fiedler vector and both split forms; it builds the Laplacian from its own adjacency rather than instead of arvo. So a row naming only the partition understates the surface by three quarters and omits the determinism outright, which is the property the consumer is most explicit about."
 topic = "arvo_identity"
 provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
 keywords = ["spectral", "Fiedler", "eigenvector", "partition", "graph partition", "block diagonal", "parallel groups"]
@@ -88,9 +89,10 @@ keywords = ["exact width", "Bits", "28 bit", "container", "alias", "newtype", "c
 
 [[obligation]]
 id = "a_content_hash"
-need = "A hash of content, stable across sessions."
+need = "A hash of content that is stable across sessions and across machines, wide enough that a cache keyed on it does not collide at the population its consumer holds, and whose width the consumer names rather than inherits."
 consumer = "hilavitkutin"
-why = "Its persistence layer keys on it, and stability across sessions is the property that makes a cache a cache."
+why = "Its persistence layer keys on it, and stability across sessions is the property that makes a cache a cache. Nothing else about a cache key is free: two entries colliding is a wrong answer served from disk rather than a slow one."
+gap = "The consumer states the stability and not the width or the collision bound, and the earlier wording here stated neither, so anything returning bytes met it. What the population actually is, and therefore what width is enough, is not established anywhere."
 topic = "arvo_identity"
 provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
 keywords = ["hash", "content hash", "digest", "stable", "across sessions", "cache key", "persistence"]
@@ -108,10 +110,10 @@ keywords = ["Debug", "fmt", "format", "print", "no_std", "no alloc", "core::fmt:
 
 [[obligation]]
 id = "a_build_flag_that_changes_float_semantics"
-need = "A cfg a consumer's build system sets, under which arvo's float semantics change."
+need = "A way for a consumer to say that within some part of its own program the stricter float guarantees may be traded for speed, and to have arvo's floats honour that."
 consumer = "hilavitkutin"
-why = "Its rustc wrapper emits exactly one cfg and this is it, on the consumer's own account, and a pragma in the consumer's source is what turns it on."
-gap = "This is a live dependency and a hazard at the same time, and the row records the first without endorsing the second. The panel has measured the other direction: one source one flag apart gives one type name two policies, and a compile-time check cannot catch it, because each build emits one lowered path and satisfies the check while the denotation differs between builds. Whether arvo should carry such a surface at all is a design question no row here answers."
+why = "Its build tooling exists partly to turn this on, driven by a pragma a person writes in the consumer's source. The need is the relaxation and the region it applies to; nothing about it requires the mechanism the consumer currently uses."
+gap = "**This row used to state the mechanism**, a named cfg the consumer's build sets, which the field description forbids in as many words: the need, never the mechanism that serves it. As worded it could only be met by the one thing the corpus argues against, which is not a coverage finding about arvo but a defect in the row. What the corpus has measured is that one source one flag apart gives one type name two policies, and a compile-time check cannot catch it, because each build emits one lowered path and satisfies the check while the denotation differs between builds. So the need stands and the current mechanism is what is in doubt. It also conflicts with `a_content_hash`, from the same consumer: a hash stable across machines and a float regime that changes with a build flag cannot both hold over the same values, and nothing in the registry says so. **The slug still names the mechanism and stays that way.** It is an address, five landed member files cite it by name, and this namespace has no way to supersede a row, so renaming it would orphan those five for a cosmetic gain. Read the `need`, not the slug."
 topic = "binding_time"
 provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#the-one-that-is-not-a-type-at-all"]
 keywords = ["cfg", "build flag", "fast math", "unsafe-fp-math", "float semantics", "pragma", "rustc wrapper", "denotation", "one lowered path", "soundness hole"]
@@ -126,3 +128,23 @@ why = "Op names it as half of what arvo is for, beside the algorithm surface, an
 topic = "the_chain"
 provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-op-asks-for", "panel::202608072330_the-numeral-canon-panel::INTENTS::#i11-arvo-is-a-library-and-the-value-is-what-composes-on-top-of-it"]
 keywords = ["composition", "contract", "chain", "beyond the numeral", "fold", "accuracy across chains", "bigger than a numeral", "guarantee", "trait contract"]
+
+[[obligation]]
+id = "a_primitive_for_every_position_a_bare_number_would_take"
+need = "A primitive of arvo's own for every public API position across the stack where a bare integer, float, bool or platform-sized index would otherwise sit, so that no such position anywhere in the stack has to fall back on the machine's own types."
+consumer = "any, and the whole stack by rule"
+why = "The constraint forbids the bare types at those positions and is enforced by lint, so it is a demand on arvo whether or not anyone states it as one: every position it closes is a position arvo has to have something for. A rule that forbids without supplying is a rule consumers cannot follow."
+gap = "**This is the widest obligation here and it was enumerated nowhere**, because it comes from a prohibition rather than from a consumer naming a want, and the enumeration was built by reading what consumers ask for. It is not satisfied by counting the primitives that exist: it is satisfied by the positions, and nothing has enumerated those. One consumer's error type already produced a narrower version of it, recorded separately as the platform-sized unsigned integer."
+topic = "the_format"
+provenance = ["panel::202608072330_the-numeral-canon-panel::INTENTS::#i14-the-operating-constraints-which-are-rules-as-much-as-intents"]
+keywords = ["primitive", "bare", "u8", "u32", "u64", "i32", "f32", "f64", "bool", "usize", "public API", "position", "no bare primitives", "stack's own"]
+
+[[obligation]]
+id = "the_surface_expressible_as_contracts_before_anything_implements_it"
+need = "Every part of arvo's surface stated as a trait contract that holds and is checkable before an implementation of it exists, so a consumer can build against the shape while the implementation behind it is unfinished."
+consumer = "any, and hilavitkutin as the live instance"
+why = "Op names the contract structure as a paradigm arvo keeps, for the reason that it lets the shapes stick while implementations are still in progress, and he names a consumer that is in exactly that condition now. So what is owed is not merely that traits are used, but that the surface is expressible as contracts first and implementations second."
+gap = "One place enforces where traits may live, which is narrower than the paradigm and does not reach the surface as a whole. Nothing here says what a contract has to carry to be usable before its implementation exists, and no row anywhere establishes that the surface can be stated that way."
+topic = "arvo_identity"
+provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
+keywords = ["trait", "contract", "paradigm", "shape", "before implementation", "wip", "unimplemented", "surface", "sticks", "buildable against"]

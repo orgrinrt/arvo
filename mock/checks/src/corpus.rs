@@ -135,6 +135,91 @@ pub fn archive_citations_naming_nothing(dir: &Path) -> Vec<Finding> {
     out
 }
 
+/// A line citation into a registry file, which is the most edited tree here.
+///
+/// The panel's own ledgers were the obvious moving target and are refused
+/// elsewhere in this module. **The registry is worse and nobody looked**: it is
+/// the working surface, every seat writes rows into it, and a row inserted
+/// anywhere shifts every line below it in that file.
+///
+/// It has already happened. A member file cites `proposal.toml:211` and four
+/// more like it; a later pass inserted fourteen lines into that file, and the
+/// citations now name different rows while still looking exactly like
+/// citations. **The row a reader lands on is a real row, which is what makes
+/// this worse than a citation that fails.**
+///
+/// A row has a slug, and the slug survives every insertion. That is the whole
+/// repair: name the row rather than the line it happens to sit on.
+pub fn line_citations_into_the_registry(dir: &Path) -> Vec<Finding> {
+    /// The registry files, by stem. A citation writes the filename rather than
+    /// a path, so this matches on the name.
+    const REGISTRY: &[&str] = &[
+        "proposal",
+        "ruling",
+        "question",
+        "probe",
+        "law",
+        "retirement",
+        "obligation",
+        "dimension",
+        "topic",
+        "strategy",
+    ];
+    let mut out = Vec::new();
+    let mut files = Vec::new();
+    collect_md(dir, &mut files);
+    files.sort();
+    for path in files {
+        let Ok(text) = fs::read_to_string(&path) else {
+            continue;
+        };
+        let shown = path
+            .strip_prefix(dir)
+            .unwrap_or(&path)
+            .display()
+            .to_string();
+        for (n, line) in text.lines().enumerate() {
+            for cite in registry_line_citations(line, REGISTRY) {
+                out.push(Finding::new(
+                    "line-citation-into-a-registry-file",
+                    format!("{shown}:{}", n + 1),
+                    format!(
+                        "cites `{cite}`. A registry file gains rows constantly and every \
+                         insertion shifts the lines under it, so this names a different row \
+                         from the one it meant and still reads as a citation. Name the row's \
+                         slug, which survives every insertion."
+                    ),
+                ));
+            }
+        }
+    }
+    out
+}
+
+/// Every `<registry file>.toml:<line>` a line mentions.
+fn registry_line_citations(line: &str, registry: &[&str]) -> Vec<String> {
+    let mut out = Vec::new();
+    for (at, _) in line.match_indices(".toml:") {
+        let after = &line[at + ".toml:".len() ..];
+        let digits: String = after.chars().take_while(char::is_ascii_digit).collect();
+        if digits.is_empty() {
+            continue;
+        }
+        // Walk back over the filename, which may carry hyphens.
+        let before = &line[.. at];
+        let start = before
+            .rfind(|c: char| !c.is_ascii_alphanumeric() && c != '-' && c != '_')
+            .map_or(0, |i| i + 1);
+        let stem = &before[start ..];
+        // A hyphenated file is named for the namespace it opens with.
+        let base = stem.split('-').next().unwrap_or(stem);
+        if registry.contains(&base) {
+            out.push(format!("{stem}.toml:{digits}"));
+        }
+    }
+    out
+}
+
 /// A committed probe that reads a tree other than the one it sits in.
 ///
 /// **The quietest instrument defect this corpus has produced, and it was found
