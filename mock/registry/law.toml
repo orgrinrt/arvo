@@ -389,3 +389,57 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::731",
 ]
 keywords = ["coherence", "homomorphism", "adaptation laws", "law roles", "induced algebra", "476", "897", "quotient"]
+
+[[law]]
+id = "additive_associativity_recovered_under_declared_nonnegative_operand_window"
+statement = "`(a + b) + c == a + (b + c)`, where addition is the exact ambient sum reduced onto the representable set by saturation, and the operands are declared to lie in a non-negative sub-range of a signed format rather than over its full representable range."
+holds = [
+  "total_width: W in {4, 5, 6}",
+  "fraction_width: F = 0",
+  "signedness: signed",
+  "overflow_policy: saturate",
+  "operand_window: declared non-negative",
+  "operation: add",
+  "arity: 3",
+]
+topic = "the_strategy_axis"
+note = "Named F-H in its source, the panel's only positive law result in that unit and its cleanest region-scoped arm: a region where something that generally fails does hold. Predicted before running, on the ground that a one-sided clamp is a congruence and a two-sided one is not, and reported as independently retrodicting an earlier unit's declared-window result that had not been read. `additive_associativity_under_saturation` records the same cell in a `gap` field, unable to place it on either list because no `dimension` row named the operand window; `operand_window` now does."
+gap = "The finding's own predicate is one expert's, restated in a consolidation rather than re-derived by a second reader. The originating file and its probe sit outside this porting pass's slice (files 100-149) and were not opened directly; this row is filed from the consolidation's quotation of the finding."
+provenance = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::1353"]
+keywords = ["associativity", "addition", "saturate", "signed", "operand window", "declared non-negative", "congruence", "F-H"]
+
+[[law]]
+id = "multiplicative_associativity_recovered_under_declared_nonnegative_operand_window"
+statement = "`(a * b) * c == a * (b * c)`, where multiplication is the exact ambient product reduced onto the representable set by saturation, and the operands are declared to lie in a non-negative sub-range of a signed format rather than over its full representable range."
+holds = [
+  "total_width: W in {4, 5, 6}",
+  "fraction_width: F = 0",
+  "signedness: signed",
+  "overflow_policy: saturate",
+  "operand_window: declared non-negative",
+  "operation: mul",
+  "arity: 3",
+]
+topic = "the_strategy_axis"
+note = "Named F-H in its source, alongside the additive and distributivity results at the same predicate. See `additive_associativity_recovered_under_declared_nonnegative_operand_window` for the shared reasoning and citation history. Distinct from `multiplicative_associativity_under_saturation`'s own `gap`, which names a mirror-symmetric representable range as its missing dimension: that is a different condition (range geometry) from a declared non-negative operand window, and the two gaps are not the same claim."
+gap = "As `additive_associativity_recovered_under_declared_nonnegative_operand_window`: one expert, restated rather than re-derived, and the originating probe sits outside this porting pass's slice."
+provenance = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::1353"]
+keywords = ["associativity", "multiplication", "saturate", "signed", "operand window", "declared non-negative", "congruence", "F-H"]
+
+[[law]]
+id = "distributivity_recovered_under_declared_nonnegative_operand_window"
+statement = "`a * (b + c) == (a * b) + (a * c)`, where addition and multiplication are the exact ambient operations each reduced onto the representable set by saturation, and the operands are declared to lie in a non-negative sub-range of a signed format rather than over its full representable range."
+holds = [
+  "total_width: W in {4, 5, 6}",
+  "fraction_width: F = 0",
+  "signedness: signed",
+  "overflow_policy: saturate",
+  "operand_window: declared non-negative",
+  "operation: mul",
+  "arity: 3",
+]
+topic = "the_strategy_axis"
+note = "Named F-H in its source, alongside the additive and multiplicative associativity results at the same predicate. See `additive_associativity_recovered_under_declared_nonnegative_operand_window` for the shared reasoning and citation history. `distributivity_of_multiplication_over_addition` records the same cell in a `gap` field for the identical reason: no `dimension` row named the operand window until this porting pass added `operand_window`."
+gap = "As `additive_associativity_recovered_under_declared_nonnegative_operand_window`: one expert, restated rather than re-derived, and the originating probe sits outside this porting pass's slice. The source states this recovery holds over addition specifically; it says nothing about distributivity over subtraction under the same window, which is untested."
+provenance = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::1353"]
+keywords = ["distributivity", "multiplication", "addition", "saturate", "signed", "operand window", "declared non-negative", "congruence", "F-H"]

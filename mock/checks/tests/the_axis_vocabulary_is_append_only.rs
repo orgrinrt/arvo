@@ -56,6 +56,10 @@ const EVER_DECLARED: &[&str] = &[
     "ambient_domain",
     "radix",
     "toolchain",
+    // added while porting the strategy/realisation-map/rounding/strategy-object
+    // stretch (100-149): three `law` rows independently carried the identical
+    // missing axis as a `gap`, naming the same cell, before this was declared
+    "operand_window",
 ];
 
 #[test]
