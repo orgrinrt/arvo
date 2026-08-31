@@ -185,13 +185,20 @@ fn samples(w: u32) -> Vec<u64> {
         (0..n).collect()
     } else {
         let stride = n / 4096;
-        (0..4096).map(|i| i * stride).chain([n - 1, n - 2]).collect()
+        (0..4096)
+            .map(|i| i * stride)
+            .chain([n - 1, n - 2])
+            .collect()
     }
 }
 
 /// Which multiplication settings a signature admits as contexts.
 fn mul_set(sig: Sig) -> Vec<bool> {
-    if sig.include_mul { vec![false, true] } else { vec![false] }
+    if sig.include_mul {
+        vec![false, true]
+    } else {
+        vec![false]
+    }
 }
 
 /// Does any context in `sig` distinguish `a` from `b` at width `w`?
@@ -433,12 +440,20 @@ fn main() {
     println!();
 
     println!("### reading");
-    println!("### K1 fires at 3 of 7 widths, exactly the exactly-filled ones, so the two states are");
+    println!(
+        "### K1 fires at 3 of 7 widths, exactly the exactly-filled ones, so the two states are"
+    );
     println!("### both reachable and the distinction clause 9's second branch draws is real. What");
     println!("### the run shows is WHERE it belongs: both states map to one clause-9 outcome,");
-    println!("### Separated, so transfer is not a third way a pair can relate. It is a property of");
-    println!("### the witness that separated them, and the contextual formulation carries it as one.");
-    println!("### K3 holds across all seven rows: no pair is reclassified, so the reformulation is");
+    println!(
+        "### Separated, so transfer is not a third way a pair can relate. It is a property of"
+    );
+    println!(
+        "### the witness that separated them, and the contextual formulation carries it as one."
+    );
+    println!(
+        "### K3 holds across all seven rows: no pair is reclassified, so the reformulation is"
+    );
     println!("### conservative rather than a different obligation under the same name.");
     println!();
     println!(
