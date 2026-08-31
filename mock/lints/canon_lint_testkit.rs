@@ -85,14 +85,27 @@ pub fn view(rows: &[(&str, &[(&str, &str)])], referrers: &[(&str, &[&str])]) -> 
 /// is deliberately empty while the canon is written, so a registry lint here
 /// reads the registry or reads nothing.
 pub fn ctx<'a>(registry: &'a RegistryView) -> RepoContext<'a> {
+    static HERE: OnceLock<PathBuf> = OnceLock::new();
+    ctx_at(HERE.get_or_init(|| PathBuf::from(".")), registry)
+}
+
+/// The same context with the mock directory pointed at a planted tree.
+///
+/// **This is what a lint reading the worktree is driven by.** [`ctx`] hardcodes
+/// `.`, which makes it the wrong instrument for one of those: it would walk
+/// whichever directory the test binary happens to be in. A corpus lint builds
+/// its own tree under [`planted_tree`] and hands the path here, so the same
+/// predicate the gate runs is the one under test rather than a copy of it.
+///
+/// `repo_root` is the same path. Nothing here reads both, and pointing them at
+/// two different places would be inventing a layout no real run has.
+pub fn ctx_at<'a>(mock_dir: &'a Path, registry: &'a RegistryView) -> RepoContext<'a> {
     static CRATES: OnceLock<BTreeSet<String>> = OnceLock::new();
     static DIRS: OnceLock<Vec<PathBuf>> = OnceLock::new();
     static STRINGS: OnceLock<Vec<String>> = OnceLock::new();
-    static HERE: OnceLock<PathBuf> = OnceLock::new();
-    let here: &Path = HERE.get_or_init(|| PathBuf::from("."));
     RepoContext {
-        mock_dir: here,
-        repo_root: here,
+        mock_dir,
+        repo_root: mock_dir,
         all_crates: CRATES.get_or_init(BTreeSet::new),
         src_dirs: DIRS.get_or_init(Vec::new),
         invocation: None,
@@ -100,6 +113,32 @@ pub fn ctx<'a>(registry: &'a RegistryView) -> RepoContext<'a> {
         open_panels: STRINGS.get_or_init(Vec::new),
         registry,
     }
+}
+
+/// An empty directory nothing else is using, for a lint that reads a tree.
+///
+/// Keyed on the caller's own name plus the process and thread, so two arms in
+/// one binary cannot plant into each other's tree. Removed and recreated on
+/// entry rather than on exit, because a test that fails leaves its tree behind
+/// and that is the tree somebody then wants to look at.
+pub fn planted_tree(what: &str) -> PathBuf {
+    let dir = std::env::temp_dir().join(format!(
+        "arvo-canon-lint-{what}-{}-{:?}",
+        std::process::id(),
+        std::thread::current().id()
+    ));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).expect("a planted tree");
+    dir
+}
+
+/// Write one file into a planted tree, creating whatever directories it needs.
+pub fn plant(dir: &Path, at: &str, text: &str) {
+    let path = dir.join(at);
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent).expect("a planted directory");
+    }
+    std::fs::write(&path, text).expect("a planted file");
 }
 
 /// What one lint said about one planted registry, as plain strings.
@@ -125,19 +164,40 @@ pub fn findings(lint: &dyn RepoLint, registry: &RegistryView) -> Vec<String> {
 /// file present but unregistered is not silently read as covered, and a lint
 /// registered under a name matching no file fails loudly here rather than being
 /// skipped.
+/// **A repo lint may also be declared by a tool crate, and one is.** The
+/// generated pack's manifest is engine-written, so a lint under `mock/lints/`
+/// reaches `std` and the lint-rules crate and nothing else. A check that has to
+/// parse TOML to do its job cannot live there, and
+/// `a-panel-catalogue-is-readable` is one: its first refusal is a file that does
+/// not parse, which no scan short of a parser can establish. A tool crate has
+/// its own manifest, so it can take the parser, and `lint_pack!` lets it
+/// register a `RepoLint` alongside its tools. So the lint lives at
+/// `mock/tools/<name>/src/lib.rs` and gates exactly like the others.
+///
+/// That is a gap in the lint contract rather than a third kind of check, and it
+/// is named here rather than worked around silently: the honest fix upstream is
+/// a way for a repository to declare a dependency for its own lint pack.
 pub fn lint_sources() -> Vec<(String, String)> {
-    let dir = repo_root().join("mock/lints");
+    let root = repo_root();
     registered_repo_lints()
         .into_iter()
         .map(|name| {
-            let file = dir.join(format!("{}.rs", name.replace('-', "_")));
-            let text = std::fs::read_to_string(&file).unwrap_or_else(|e| {
-                panic!(
-                    "`{name}` is registered and {} does not read: {e}. A lint's file is \
-                     named after the lint it declares.",
-                    file.display()
-                )
-            });
+            let stem = name.replace('-', "_");
+            let candidates = [
+                root.join("mock/lints").join(format!("{stem}.rs")),
+                root.join("mock/tools").join(&name).join("src/lib.rs"),
+            ];
+            let text = candidates
+                .iter()
+                .find_map(|p| std::fs::read_to_string(p).ok())
+                .unwrap_or_else(|| {
+                    panic!(
+                        "`{name}` is registered and none of {candidates:?} reads. A lint's \
+                         file is named after the lint it declares, either as \
+                         `mock/lints/<name>.rs` or as the root of the tool crate at \
+                         `mock/tools/<name>/`."
+                    )
+                });
             (name, text)
         })
         .collect()
@@ -183,7 +243,17 @@ pub fn assert_registered(name: &str) {
 /// turned the refusal off with the declared default untouched, and the arm
 /// asserting the declared default stayed green through it.
 pub fn assert_findings_block(lint: &dyn RepoLint, registry: &RegistryView) {
-    let found = lint.check_repo(&ctx(registry));
+    assert_findings_block_at(lint, &ctx(registry));
+}
+
+/// [`assert_findings_block`] against a context the caller built.
+///
+/// A lint reading the worktree needs its planted tree in the context, which
+/// [`ctx`] cannot carry, so it calls this with one from [`ctx_at`]. Same
+/// assertion, same reason, and the two share a body so a change to what
+/// "blocks" means cannot reach one and miss the other.
+pub fn assert_findings_block_at(lint: &dyn RepoLint, ctx: &RepoContext) {
+    let found = lint.check_repo(ctx);
     assert!(
         !found.is_empty(),
         "nothing was found, so this says nothing about what a finding carries"
@@ -266,6 +336,103 @@ fn declared_lint_files() -> BTreeSet<String> {
         .collect()
 }
 
+/// The namespaces `mockspace.toml` declares a field of this name on.
+///
+/// A text scan rather than a parse, because the generated pack's manifest is
+/// engine-written and no lint file can add a TOML reader to it. The shape it
+/// relies on is the one the file carries and the engine's own loader relies on
+/// too: an array-of-tables header opens a namespace, `key = "..."` on the line
+/// after it names the namespace, and every `name = "..."` after that belongs to
+/// that namespace until the next namespace header.
+///
+/// Returns `None` where the scan found no namespace at all, which means the
+/// shape moved and the scan is measuring nothing rather than reporting a clean
+/// disagreement.
+fn namespaces_declaring(field: &str) -> Option<BTreeSet<String>> {
+    let text = std::fs::read_to_string(repo_root().join("mockspace.toml")).ok()?;
+    let wanted = format!("name = \"{field}\"");
+    let mut seen_any = false;
+    let mut here: Option<String> = None;
+    let mut out = BTreeSet::new();
+    for line in text.lines() {
+        let line = line.trim();
+        if line == "[[registry.namespace]]" {
+            here = None;
+            seen_any = true;
+        } else if here.is_none()
+            && let Some(rest) = line.strip_prefix("key = \"")
+            && let Some(key) = rest.strip_suffix('"')
+        {
+            here = Some(key.to_string());
+        } else if line == wanted
+            && let Some(ns) = &here
+        {
+            out.insert(ns.clone());
+        }
+    }
+    seen_any.then_some(out)
+}
+
+#[test]
+fn a_lint_naming_the_namespaces_it_reads_agrees_with_the_schema() {
+    // The guard `refusal_owes_an_instead.rs` says exists and, until this was
+    // written, did not. That file hand-writes the namespaces it reads, because
+    // nothing a lint is handed carries a field declaration, and its own
+    // paragraph warns that a written list goes stale in silence. The sentence
+    // claiming a guard already caught that was the shape
+    // `a-claim-of-totality-names-what-enforces-it.md` names: a claim of
+    // coverage naming an enforcer that was not there.
+    //
+    // What is compared is the `instead` field, since that is the half of the
+    // schema the lint's own documentation says decides which namespaces it
+    // reads. The `kind`-with-`refusal` half is not compared: a value set is
+    // written as an array across several lines and reading it would need the
+    // parser this cannot have. Said here rather than left for somebody to
+    // discover.
+    let declared = namespaces_declaring("instead")
+        .expect("mockspace.toml declares at least one registry namespace");
+    assert!(
+        declared.len() >= 2,
+        "the scan found {} namespace(s) declaring `instead`, which means the file's shape \
+         moved and this is measuring nothing: {declared:?}",
+        declared.len()
+    );
+
+    let file = repo_root().join("mock/lints/refusal_owes_an_instead.rs");
+    let text = std::fs::read_to_string(&file)
+        .unwrap_or_else(|e| panic!("read {}: {e}", file.display()));
+    let written: BTreeSet<String> = declared
+        .iter()
+        .filter(|ns| text.contains(&format!("\"{ns}\"")))
+        .cloned()
+        .collect();
+    assert_eq!(
+        written, declared,
+        "`refusal_owes_an_instead.rs` reads {written:?} and the schema declares `instead` \
+         on {declared:?}. A namespace the schema gained is one the lint does not check, and \
+         nothing else would say so."
+    );
+}
+
+#[test]
+fn the_schema_scan_can_report_a_disagreement_rather_than_only_agreement() {
+    // The control on the guard above. It compares two sets built from two
+    // files, and a scan returning nothing would make them agree perfectly. This
+    // asks the scan for a field no namespace declares, which has to come back
+    // empty while the scan itself still reports having read the file.
+    assert_eq!(
+        namespaces_declaring("no_namespace_declares_this_field"),
+        Some(BTreeSet::new()),
+        "the scan read the file and found no namespace declaring a field nothing declares"
+    );
+    let declared = namespaces_declaring("instead").expect("the file reads");
+    assert!(
+        !declared.contains("mechanism"),
+        "the scan attributes a field to the namespace that declares it rather than to \
+         every namespace in the file: {declared:?}"
+    );
+}
+
 #[test]
 fn every_declared_lint_is_registered_under_the_name_its_file_carries() {
     // `assert_registered` is called *by* a lint's own test module, so it says
@@ -299,16 +466,18 @@ fn every_registered_lint_has_tests_in_the_file_that_declares_it() {
     // one that catches that is
     // `every_registered_lint_asks_whether_it_reaches_the_gate_at_all` below,
     // and the two together are the whole of it.
-    let dir = repo_root().join("mock/lints");
-    let untested: Vec<String> = registered_repo_lints()
+    // Read through `lint_sources`, which knows a repo lint may be declared by a
+    // tool crate as well as by a file under `mock/lints/`. Joining the path here
+    // instead is how the tool-declared one would pass this by not being found.
+    let untested: Vec<String> = lint_sources()
         .into_iter()
-        .filter(|name| {
-            let file = dir.join(format!("{}.rs", name.replace('-', "_")));
-            // The brace is load-bearing. Without it `mod tests_whatever` reads
-            // as a test module, which is how the first version of this passed
-            // its own mutation: a module renamed out of the way still matched.
-            !std::fs::read_to_string(&file).is_ok_and(|t| t.contains("mod tests {"))
-        })
+        // The brace is load-bearing. Without it `mod tests_whatever` reads as a
+        // test module, which is how the first version of this passed its own
+        // mutation: a module renamed out of the way still matched. A tool crate
+        // keeps its tests in a `mod tests;` beside the lint, so the declaration
+        // rather than the body is what is looked for there.
+        .filter(|(_, text)| !text.contains("mod tests {") && !text.contains("mod tests;"))
+        .map(|(name, _)| name)
         .collect();
     assert!(
         untested.is_empty(),
@@ -336,8 +505,42 @@ fn every_registered_lint_asks_whether_it_reaches_the_gate_at_all() {
         "assert_findings_block",
     ];
 
+    // **A lint declared by a tool crate cannot call any of them**, because they
+    // live here and it is a different crate. Two of the three are answered by
+    // this test instead, directly and for every registered lint whatever
+    // declares it: it is in the pack the engine is handed, which is the whole of
+    // what `assert_registered` establishes, and it does not declare itself off,
+    // which is `assert_not_declared_off`. What is left is whether a finding
+    // blocks, which needs an input only that crate can build, so its own tests
+    // are required to name the severity they assert.
+    let mut pack = LintPack::default();
+    crate::__mockspace_collect_lints(&mut pack);
     let mut unasked: Vec<String> = Vec::new();
     for (name, text) in lint_sources() {
+        let lint = pack
+            .repo_lints
+            .iter()
+            .find(|l| l.name() == name)
+            .expect("the name came out of the pack");
+        assert!(
+            !lint.default_severity().is_off(),
+            "`{name}` declares itself off, so it never runs and its predicate is dead code \
+             however good it is"
+        );
+        if text.contains("mockspace::lint_pack!") {
+            let beside = repo_root()
+                .join("mock/tools")
+                .join(&name)
+                .join("src/tests.rs");
+            let tests = std::fs::read_to_string(&beside).unwrap_or_default();
+            if !tests.contains("Severity::HARD_ERROR") {
+                unasked.push(format!(
+                    "{name}: its own tests never assert what a finding's severity is, and \
+                     the helpers here are in another crate"
+                ));
+            }
+            continue;
+        }
         let missing: Vec<&str> = OWED
             .iter()
             .copied()
