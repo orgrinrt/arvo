@@ -1095,7 +1095,7 @@ keywords = ["cost coordinate", "census", "calibration", "noise floor", "control 
 
 [[probe]]
 id = "the_argmin_mechanism_has_never_run_on_arms_that_disagree"
-establishes = "Every committed family's arm set is answer-equivalent, so the argmin-over-a-cost-table mechanism has only ever been run where the arms compute one value and the measurement compares cost. The accuracy intents range over arms that disagree, which is a region the mechanism has not been run on."
+establishes = "That the argmin-over-a-cost-table mechanism has never been run on arms that disagree. Its first arm reported that every committed family's arm set is answer-equivalent, and **that half is refuted**; see `defect`. What survives is the second: the accuracy intents range over arms that disagree, and the mechanism has not been run on that region. The refutation does not reach it, because arms that disagree existing is what makes the region real rather than what removes it."
 lives = [
   "panel::202608072330_the-numeral-canon-panel::102_probes::p1_the_corpus_compares_cost_at_a_fixed_answer.py::1",
   "panel::202608072330_the-numeral-canon-panel::102_probes::p1_the_corpus_compares_cost_at_a_fixed_answer.out::1",
@@ -1104,6 +1104,7 @@ lives = [
 ]
 control = "The first arm establishes the premise the second one needs, that the committed families are answer-equivalent, so the absence is a measured property of the corpus rather than an impression. Neither arm carries a planted case that had to fail, and the second is a construction over a region rather than a sweep."
 standing = "uncontrolled"
+defect = "Its first arm's proposition was refuted. `Every committed family's arm set is answer-equivalent` was claimed in bold by the file this row's first citation comes from, and a second expert dispatched to verify it built its own instrument before opening it and refuted it with three independently sufficient measurements, recorded in `the_committed_corpus_does_contain_answer_differing_arms`. The mechanical cause is named there too: a census whose unit is the shared crate directory cannot see a region whose bridge is declared inline in the driver's own table. **So this row may not be cited for the answer-equivalence premise.** What survives is the second arm's finding, that the mechanism has never been run on arms that disagree, which the refutation strengthens rather than weakens: the arms exist and the mechanism still has not met them."
 note = "The barrier is the absent coordinate rather than the arm sets, which is the part a design acts on: an accuracy intent needs a coordinate that moves when the answer moves, and the corpus's coordinates are all cost at a fixed answer. Composes with the census row above, which is what says how many coordinates there are and what they are made of."
 keywords = ["argmin", "answer-equivalent", "accuracy intent", "coordinate", "absent", "cost table", "arms disagree", "region never run"]
 
@@ -1122,3 +1123,66 @@ standing = "sound"
 reproduced = "Re-run by the consolidation that cites it, committed as its own artifact under `63_probes/rerun/`, which is a rerun of the same code rather than an independent rebuild and is worth less than the second author's accumulator instrument beside it."
 note = "Its header states what it did not sweep and why: an earlier file asked for fold lengths five and six before trusting the pattern, five is swept here and six is not, on cost, and the omission is written down rather than left to be discovered. That is the shape a bounded sweep should take."
 keywords = ["multiplicative", "guard", "rescale", "adaptation fusion", "fold length", "truncation", "nearest even", "double rounding", "schedule", "linear"]
+
+# --- one arm, one row -------------------------------------------------------
+#
+# Four edges were declined because the map named a probe row and not the arm
+# behind the claim. In every case the directory was right and the row described
+# a different arm in it. These are those four arms, and the rule they enforce is
+# the one at the head of this file: a row is one instrument establishing one
+# thing, which is not one directory and not one file either where a file holds
+# two sections measuring two policies.
+
+[[probe]]
+id = "a_coherent_reduction_diverges_nowhere_at_any_fold_length"
+establishes = "For coherent reduction policies, reducing at every step agrees with reducing once at the end at zero divergences for every fold length from two to six, while the incoherent policy diverges and gets worse with length: signed saturation is at zero for two operands and 476 divergences at three. So the split is not an artifact of one fold length."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p4_which_factor_breaks_and_what_coherence_buys.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p4_output.txt::1",
+]
+control = "The incoherent policy is the arm that must diverge and it does, in the same run on the same code path at the same fold length. The output states the requirement before the table: a coherent reduction is a homomorphism so reducing at every step must agree, and an incoherent one must not. A run reporting zero for both would be measuring the fold rather than the coherence."
+standing = "sound"
+note = "Written as its own row because the neighbouring row in this directory, `the_accumulator_width_is_the_exact_sum_width_less_one_bit`, describes the incoherent arm: `57_probes/p5_output.txt:72` says in its own words that its format is the one both `q1` and `p4` measure as the incoherent policy. One directory, two policies, two arms, two rows. An edge pointed at the other row would have cited a measurement of the opposite case."
+keywords = ["coherent", "reduction", "homomorphism", "divergence", "fold length", "accumulator", "eager", "saturation", "wrap", "split"]
+
+[[probe]]
+id = "the_rationalisability_counts_reproduced_and_rungged"
+establishes = "On a six-region, five-arm, two-coordinate model over the committed carrier table, 72 of 15625 sections are rationalisable by a non-negative weighting and 9 by a strictly positive one. The two figures sit at different rungs, and 63 of the 72 select an arm the predecessor's own section 10 says no weighting can select, so the two sentences in that file are about different notions of weighting rather than one of them being wrong."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::98_probes::p6_reproduce_the_predecessors_count_and_rung_it.py::1",
+  "panel::202608072330_the-numeral-canon-panel::98_probes::p6_reproduce_the_predecessors_count_and_rung_it.out::1",
+]
+control = "The reproduction is the arm and it is run first: the model is rebuilt and must return the predecessor's published 72 and 9 before anything is read off it, which is what says the disagreement located afterwards is about the notion of weighting rather than about a different model. A rebuild returning different counts would have made every later line unattributable."
+standing = "sound"
+reproduced = "A third instance exists and agrees on both counts, in `the_cost_coordinate_census_and_its_calibration_control`'s directory, whose own calibration section reproduces 72 and 9 on the same model before measuring anything new."
+note = "Not the same measurement as `the_rationalisable_sections_on_the_committed_carrier_table`, which is the confusion that declined an edge. That row is a different sweep over a different model reporting 9 at zero tolerance and 134 at one percent; this one is the 72-and-9 pair on the five-arm two-coordinate model. Both are real and neither substitutes for the other."
+keywords = ["rationalisable", "72", "9", "15625", "reproduction", "rung", "weighting", "non-negative", "strictly positive", "carrier table"]
+
+[[probe]]
+id = "how_many_strategies_a_coordinate_set_can_distinguish"
+establishes = "The number of distinguishable sections a coordinate set supports, measured as a function of the set rather than of the arms: on the committed carrier table at strictly positive weights, two coordinates reach 9 and three reach 42, and adding a sixth arm to the two-coordinate model leaves both counts unchanged at 72 and 9. So the ceiling is a property of the coordinate set."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::101_probes::p4_what_a_coordinate_buys.py::1",
+  "panel::202608072330_the-numeral-canon-panel::101_probes::p4_what_a_coordinate_buys.out::1",
+  "panel::202608072330_the-numeral-canon-panel::101_probes::p4_first_version_conflated_two_knobs.out::1",
+]
+control = "A calibration section that runs before the new measurement and must reproduce the two published counts, 72 at non-negative and 9 at strictly positive, on the predecessor's own model. It fired: the first version returned 9 where 72 was published, and that run is kept as its own file. The ceiling numbers below it are readable only because the calibration above them agrees."
+defect = "The first version conflated two knobs and its calibration caught it, returning 9 for the non-negative count against a published 72. Kept rather than deleted."
+standing = "sound"
+note = "Written as its own row because the neighbouring row in this directory, `the_cost_coordinate_census_and_its_calibration_control`, counts which coordinates the repository carries. This one counts what a set of them can distinguish. Same directory, adjacent file, different question, and an edge pointed at the census would have cited an inventory in place of a ceiling."
+keywords = ["ceiling", "coordinate set", "distinguishable", "sections", "42", "9", "72", "calibration", "strictly positive", "strategies"]
+
+[[probe]]
+id = "the_committed_corpus_does_contain_answer_differing_arms"
+establishes = "The committed corpus does contain answer-differing arms, on three independently sufficient measurements. Two committed arms of one family denote different values on 1989 of 2048 lanes at one committed size. The same two arms, given the identical pair of reals so that the exact sum they must round is the same integer, answer identically on 92,556 of 200,000 trials and differently on the rest. And over the right unit, one committed CSV per bench name and size, 234 of 254 regions are pinned to one value by an exact-value oracle, 10 only to a property, 4 have no oracle at all and 6 have no bridge."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::103_probes::p2_two_arms_two_answers.out::1",
+  "panel::202608072330_the-numeral-canon-panel::103_probes::p3_same_input_two_answers.out::1",
+  "panel::202608072330_the-numeral-canon-panel::103_probes::p6_the_region_census.py::1",
+  "panel::202608072330_the-numeral-canon-panel::103_probes::p6_the_region_census.out::1",
+]
+control = "The comparison path carries no float anywhere in either arithmetic arm, exact rationals over `i128`, which is the case that had to be excluded: a difference measured through a float comparison would be a fact about the comparison. And the third measurement joins three separately committed things, the CSVs, the declared sizes and the driver's own bridge table, so a region the census cannot see shows up as a join failure rather than as an absence."
+standing = "sound"
+reproduced = "Three measurements of one proposition by one author, each sufficient alone and each by a different route: a per-lane denotation comparison, a same-input trial sweep, and a census over a different unit. Independence is across method rather than across author, which is worth less than two authors and more than one method run twice."
+note = "Its author built these before opening the file it refutes, which is what the claim resting on it records. The census's own header names the mechanical cause of the refuted count: a region's answer discipline is decided by the bridge the driver registers, one region's bridge is declared inline in that table with no shared crate anywhere, and a census whose unit is the shared crate directory cannot see it or its flag."
+keywords = ["answer-differing", "arms", "refutation", "region census", "oracle", "bridge", "234", "254", "exact rational", "denotation", "radix"]
