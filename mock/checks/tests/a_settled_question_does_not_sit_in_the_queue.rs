@@ -59,6 +59,18 @@ const SETTLED_PHRASES: &[&str] = &["recorded as answered", "recorded as closed"]
 /// scanning `id`, `asks` and `options` is what made the first cut useless.
 const PROSE_FIELDS: &[&str] = &["note", "bound"];
 
+/// The field whose whole purpose is to say what settled a question, so a row
+/// carrying one says it is settled by construction and needs no phrase.
+///
+/// It was added to the schema after this check was written, for answers that
+/// mint no ruling, and the check never learned about it. Four questions op had
+/// answered were reported as open with the answer sitting in the row, which is
+/// the same class the check exists to catch, arriving through the check rather
+/// than through the canon. A phrase match is what the other two fields need
+/// because a note is prose about anything; this field is not prose about
+/// anything.
+const ANSWER_FIELD: &str = "answered";
+
 /// Which questions each ruling names as settled, read backward.
 ///
 /// The forward edge is `ruling.answers`, a `question[]`. The registry has no
@@ -133,13 +145,17 @@ fn settled_questions_that_do_not_say_so(reg: &Registry) -> Vec<Finding> {
         let Some(rulings) = settled.get(&question.id) else {
             continue;
         };
-        let says_so = PROSE_FIELDS
-            .iter()
-            .filter_map(|f| question.get(f))
-            .any(|text| {
-                let lower = text.to_lowercase();
-                SETTLED_PHRASES.iter().any(|p| lower.contains(p))
-            });
+        let carries_the_answer = question
+            .get(ANSWER_FIELD)
+            .is_some_and(|text| !text.trim().is_empty());
+        let says_so = carries_the_answer
+            || PROSE_FIELDS
+                .iter()
+                .filter_map(|f| question.get(f))
+                .any(|text| {
+                    let lower = text.to_lowercase();
+                    SETTLED_PHRASES.iter().any(|p| lower.contains(p))
+                });
         if !says_so {
             out.push(Finding::new(
                 "settled-question-reads-as-open",
@@ -341,6 +357,78 @@ answers = ["already_settled"]
 "#,
     );
     assert!(settled_questions_that_do_not_say_so(&reg).is_empty());
+}
+
+/// The field the check did not read, in the shape it actually appears in.
+///
+/// No phrase anywhere, no `note` at all, and the row is settled because the
+/// answer is sitting in it. This is what four rows looked like when the check
+/// reported them as open.
+#[test]
+fn a_settled_question_carrying_its_answer_is_left_alone() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[question]]
+id = "carries_its_answer"
+asks = "Which vocabulary?"
+decider = "op"
+answered = "Six explicit names, and the ambiguous word retired in both spellings."
+
+[[ruling]]
+id = "the_vocabulary_call"
+answers = ["carries_its_answer"]
+"#,
+    );
+    assert!(settled_questions_that_do_not_say_so(&reg).is_empty());
+}
+
+/// The control for the arm above, and the reason it tests emptiness rather than
+/// presence: a field declared and left blank says nothing, and accepting it
+/// would let the whole class back in through a row that merely mentions the key.
+#[test]
+fn a_settled_question_whose_answer_field_is_blank_is_reported() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[question]]
+id = "blank_answer"
+asks = "Which vocabulary?"
+decider = "op"
+answered = "   "
+
+[[ruling]]
+id = "the_vocabulary_call"
+answers = ["blank_answer"]
+"#,
+    );
+    let found = settled_questions_that_do_not_say_so(&reg);
+    assert_eq!(found.len(), 1, "{found:#?}");
+    assert_eq!(found[0].at, "question::blank_answer");
+}
+
+/// And the arm is not vacuous: with the answer removed and nothing else changed,
+/// the identical row is reported. Without this the two above would pass over a
+/// predicate that returned nothing for any input.
+#[test]
+fn the_same_row_without_its_answer_is_reported() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[question]]
+id = "carries_its_answer"
+asks = "Which vocabulary?"
+decider = "op"
+
+[[ruling]]
+id = "the_vocabulary_call"
+answers = ["carries_its_answer"]
+"#,
+    );
+    let found = settled_questions_that_do_not_say_so(&reg);
+    assert_eq!(found.len(), 1, "{found:#?}");
+    assert_eq!(found[0].kind, "settled-question-reads-as-open");
+    assert_eq!(found[0].at, "question::carries_its_answer");
 }
 
 /// An open question saying nothing about being settled is the ordinary case and

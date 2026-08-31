@@ -433,17 +433,31 @@ fn the_committed_canon_leaves_no_row_unfindable() {
 /// The rulings with nothing verbatim behind them, pinned by name.
 ///
 /// This one does not assert an empty list, because the list is not empty and
-/// will not become empty: for these four the corpus itself holds no words of
-/// op's, only somebody's report of which option he took. Asserting zero would
-/// be a red test nobody can fix, and ignoring it would stop the arm reporting a
-/// fifth.
+/// will not become empty: for every row named here the corpus holds no words of
+/// op's, only a record of which option he took. Asserting zero would be a red
+/// test nobody can fix, and ignoring it would stop the arm reporting the next
+/// one.
 ///
-/// So the known hole is written down and anything else fails. The most
-/// consequential of the four governs when anything becomes canon at all, and
-/// its only record is an agent's sentence reading "He took the third."
+/// So the known hole is written down and anything else fails. **The rows on it
+/// are not equally thin, and the difference is whether the options survived.**
+///
+/// The first four are the bad kind. Their only record is an agent's sentence
+/// reporting the outcome, and the most consequential of them governs when
+/// anything becomes canon at all with nothing behind it but "He took the third."
+/// The choice he was choosing among is gone, so nobody can reconstruct what he
+/// decided, only that he decided.
+///
+/// The last two are the tolerable kind: he selected from an option list rather
+/// than writing prose, and the options as worded are carried on the row's own
+/// `ratification` field along with which ones he did not take. A later reader
+/// can see the alternatives and judge the call. That is the shape every future
+/// option-selected answer should have, and a row reaching this list without it
+/// is a defect in the asking rather than a gap in the corpus.
 #[test]
-fn the_rulings_with_no_verbatim_are_the_four_the_corpus_has_no_words_for() {
+fn the_rulings_with_no_verbatim_are_the_ones_the_corpus_has_no_words_for() {
     const KNOWN: &[&str] = &[
+        "ruling::a_proof_and_a_bounded_range_get_markers_the_notation_lacked",
+        "ruling::the_ambiguous_rounding_word_is_retired_for_six_explicit_names",
         "ruling::the_branch_waits_for_the_canon",
         "ruling::the_canon_is_written_once_at_the_end",
         "ruling::the_d_numbered_decisions_are_dead",
