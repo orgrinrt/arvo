@@ -2022,3 +2022,15 @@ answers = ["what_a_numeral_guarantees_to_a_fold"]
 note = "The staging framing does not resolve either of `76`/`77`'s underlying claims; it explains where they agree and where they stop applying. Cited by the unit's own consolidation as explaining Q11 and Q12 from this unit's side, but had no row of its own before this port."
 provenance = ["panel::202608072330_the-numeral-canon-panel::80_rompf_when_the_deriving_happens::552"]
 keywords = ["staging", "stage zero", "stage one", "fold", "accumulator", "capacity", "length", "chain", "compile-time refusal", "Q11", "Q12"]
+
+[[proposal]]
+id = "a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_strategy_axis"
+says = "A strategy is a consumer-supplied statement of what matters, over measurements rather than over implementations, naming no implementation and owning none. It has three parts distinguished by polarity: what the consumer wants weighed (joins by union, silence as identity), what the consumer must declare because it changes the computed answer and no later consumer can recover it (does not join, a genuine conflict where operands disagree), and what the resolver produces because it changes only cost (no mixing question, nothing observable distinguishes two resolutions). What reaches the compiler is a table, evaluated offline, constrained to be explicable by one statement of what matters. Which laws a configuration honours is computed rather than chosen: an identity holds exactly where the realisation map respects the nestings it contains, an order law holds exactly where that map is monotone."
+because = "Offered as a synthesis its author believes 93, 94, 40, 25 and its own findings jointly support, written explicitly so a consolidation may take it, argue with it, or leave it. Not independently re-derived; collated from material already in the register plus this file's own attack."
+note = "**Explicitly a suggestion, nothing here settled, op decides**, per its own author's framing in response to op's `95` asking a unit to end in agreement with at least something. This is a candidate structural definition for the strategy axis, not a ratified one. The strategy_axis unit's own consolidation, if and when one exists past this panel's file 099, is the place this should be checked against rather than superseded silently."
+provenance = ["panel::202608072330_the-numeral-canon-panel::97_dolan_the_strategy_space_attacked::912"]
+keywords = ["strategy", "polarity", "weighting", "measurement", "join", "conflict", "table", "realisation map", "monotone", "converged statement"]
