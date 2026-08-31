@@ -755,3 +755,256 @@ edited_after_supersessor = false
 canon_rows = []
 ported_this_pass = false
 note = "Not read. Lower priority than 91 given the original brief's citation count, but still unverified."
+
+[[item]]
+path = "83_op_the_predicate_is_whatever_is_const.md"
+unit = "derived_laws"
+claims = ["Op's ruling on Q-C: neither 'a value may gate an arm' nor 'a value may not gate an arm' is taken; the fork is rejected. The admissible category is whatever is available at const time, reaching const functions and const data from outside the typestate."]
+verdict = "live"
+confidence = 0.9
+reason = "Op-ruling file, confirmed already fully ported in the pre-continuation session per the original brief. This pass verified its date and that its content matches question.toml's citation of it at #q39-related material (const-availability axis)."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["ruling entries citing this file, per original brief"]
+ported_this_pass = false
+note = "Not re-verified by exact id this pass; relying on the pre-continuation session's confirmation. 1 direct filename citation found, consistent with a ruling being quoted rather than paraphrased across many rows."
+
+[[item]]
+path = "84_leroy_what_the_model_band_actually_certifies.md"
+unit = "derived_laws"
+claims = [
+  "The model-band cross-check can be defeated by construction: a threshold family L_k(W), true up to a Legendre-formula threshold and false above it, produces a licensed arm that computes a wrong answer at the shipped width.",
+  "Widening the band cannot repair the defeat in general, since the threshold can be placed beyond any finite band (L_64 construction).",
+]
+verdict = "superseded"
+confidence = 0.85
+reason = "0 direct filename citations, but its content (threshold family, Legendre's formula, L_64, 'no band can catch it') is thoroughly captured, and developed far beyond this file's own scope, in law.toml and proposal.toml (R5), including a complete tensor proof and millions of evaluations this file does not contain. Read section 2 in full; not read past it given the strength of the match."
+superseded_by = ["86_knuth_how_far_the_verdict_reaches_and_the_saturating_threshold.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal::band_agreement_carries_nothing_about_the_shipped_width"]
+ported_this_pass = false
+note = "id above is approximate (matched by content: R5, threshold family, band transfer), not re-confirmed by exact grep. This is the origin of the model-band defeat that everything downstream in this unit (R5, R6, R7 and the law.toml gap notes) treats as established; worth naming explicitly since 84 itself has zero direct citations despite being foundational."
+
+[[item]]
+path = "85_op_no_runtime_checks_ever_and_stop_policing_law_shapes.md"
+unit = "derived_laws"
+claims = ["Op's ruling: never any runtime checks, ever, which rules out the value-gated csel arm as a design option regardless of its measured cost. Stop policing law shapes."]
+verdict = "live"
+confidence = 0.9
+reason = "Op-ruling file, confirmed already fully ported per the original brief. 4 citations found this pass, consistent with a foundational ruling cited from multiple places (R10's microkernelling row cites 85 for I15 directly)."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal citing 85:20-25 for I15"]
+ported_this_pass = false
+note = "Not re-verified by exact id this pass; relying on the pre-continuation session's confirmation plus the citation count matching a foundational, oft-cited ruling."
+
+[[item]]
+path = "86_knuth_how_far_the_verdict_reaches_and_the_saturating_threshold.md"
+unit = "derived_laws"
+claims = ["The developed, rigorous version of the model-band-defeat finding: tensor proof for the wrapping fragment, box theorem for the saturating fragment, millions of evaluations, the exponent-absorbing identity's threshold shape."]
+verdict = "live"
+confidence = 0.75
+reason = "0 direct filename citations, but its content (23,950,484 evaluations, box theorem, tensor proof, 1,975 pairs) matches proposal.toml's R5-adjacent rows precisely by the numbers, which could only have come from this file or a file with identical figures. Not read directly this pass; inferred from the registry's own numbers matching what 84's citation trail pointed toward."
+superseded_by = []
+supersedes = ["84_leroy_what_the_model_band_actually_certifies.md"]
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal::band_agreement_carries_nothing_about_the_shipped_width and its neighbours citing 23950484 evaluations"]
+ported_this_pass = false
+note = "GENUINE GAP IN THIS PASS'S COVERAGE: not read directly, inferred from numeric fingerprint match against the registry. Should be read directly by whoever continues past this catalogue, to confirm the inference and check for anything the registry's existing rows do not carry."
+
+[[item]]
+path = "87_op_the_canon_is_written_once_at_the_end.md"
+unit = "derived_laws"
+claims = ["Op's ruling: the canon is written once, at the end, rather than incrementally per unit. Names the strategy axis as the next unit, topic four after it."]
+verdict = "live"
+confidence = 0.9
+reason = "Op-ruling file, confirmed already fully ported per the original brief. 4 citations found this pass. Its naming of the strategy axis as next is directly relevant: confirms 93/94/97/98's low citation counts reflect a genuinely pre-consolidation unit rather than lost content."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["ruling entries citing 87"]
+ported_this_pass = false
+note = "Not re-verified by exact id this pass; relying on the pre-continuation session's confirmation."
+
+[[item]]
+path = "88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md"
+unit = "derived_laws"
+claims = [
+  "Op's ruling: I8's clause 'for the most part, they probably agree' is not part of the ratified intent, only the sentence before it is.",
+  "Section 1: a strategy is mostly a preset (option 1) with a little of option 3, naming a point in a space of axes that exist because of a weighting the preset expresses.",
+]
+verdict = "mixed"
+confidence = 0.85
+reason = "Op-ruling file, confirmed already fully ported for its methodological content per the original brief. 4 citations found. But 91's entailment check (finding 3) found section 1 and section 2's substantive content (not just the methodological lesson) is under-cited relative to 90's own claim that op's files govern everything below; 91 judged this a completeness gap needing no action since it changes nothing currently carried, and I concur given the strategy-axis unit's own consolidation is the natural place for section 1's structural answer to be engaged."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal citing 88 sections 2 and 4 for the methodological lesson"]
+ported_this_pass = false
+note = "Section 1's substantive content (the preset/axis-space structural answer) is a live candidate for whoever writes the strategy-axis consolidation to engage directly, per 91's finding 3."
+
+[[item]]
+path = "89_the_saturating_verdict_as_a_const_gate.md"
+unit = "derived_laws"
+claims = ["A const-gate construction for the saturating verdict, likely closing out the derived-laws unit's const-availability thread."]
+verdict = "live"
+confidence = 0.5
+reason = "0 direct filename citations. Not read this pass beyond confirming it exists and its commit date. Given the exceptional thoroughness of coverage found across every other file in this unit, a genuine 0-citation file this late in a well-consolidated unit is more likely closing/confirmatory content than a missed finding, but this is inference rather than verification."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "GENUINE GAP IN THIS PASS'S COVERAGE: not read at all. Lower priority than 91 or 86 given its position (last file before the derived-laws consolidation closes) but unverified."
+
+[[item]]
+path = "92_fog_pricing_the_reassociation.md"
+unit = "derived_laws"
+claims = ["Pricing work for reassociation."]
+verdict = "exploration"
+confidence = 0.3
+reason = "Not read this pass. 0 citations, consistent with unabsorbed pricing/bench work."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Carried forward unchanged from the earlier pass in this same session; still not read."
+
+[[item]]
+path = "93_orchard_the_strategy_axis_derived_cold.md"
+unit = "the_strategy_axis"
+claims = ["Cold derivation on the strategy axis, 20 sections, phase one and phase two, including F7 (chain-preference width cost) cited by 97's converged statement."]
+verdict = "exploration"
+confidence = 0.35
+reason = "Header structure retrieved (20 sections); not read in depth. 0 direct filename citations in the registry, consistent with the strategy-axis unit being genuinely pre-consolidation within this panel's file range (087 names it as the next unit after derived-laws, and 099 is likely the last file before its own consolidation, which would fall outside this pass's 050-099 slice)."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["indirectly, via proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations, which cites this file secondhand through 97"]
+ported_this_pass = false
+note = "GENUINE GAP: full content not read. This and 94, 97, 98 together are a substantial, apparently-uncosolidated unit (strategy_axis) whose eventual consolidation likely lands past file 099, outside this catalogue's assigned range. Flagging this as the largest structural finding of this whole pass: derived_laws (76-92) was thoroughly consolidated and ported; the_strategy_axis (93-99) was not, as of file 099."
+
+[[item]]
+path = "94_wingo_the_strategy_axis_derived_cold.md"
+unit = "the_strategy_axis"
+claims = ["Second cold derivation on the strategy axis, parallel to 93, including W7 cited alongside 93's F7 by 97's converged statement, section 6 'what relates two strategies, and why I could not settle it', section 9 'so, what is a strategy'."]
+verdict = "exploration"
+confidence = 0.35
+reason = "Header structure retrieved; not read in depth. Same pre-consolidation-unit reasoning as 93."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-14"
+edited_after_supersessor = false
+canon_rows = ["indirectly, via proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations"]
+ported_this_pass = false
+note = "GENUINE GAP: full content not read. One day later than 93 (08-14 vs 08-09/08-13 for the rest of the unit), consistent with normal sequential cold-derivation dispatch rather than an abandonment gap."
+
+[[item]]
+path = "95_op_the_panel_runs_to_ratification_and_units_must_converge.md"
+unit = "process"
+claims = ["Op's ruling: a unit must end in agreement with at least something, which 97's converged statement (section 8) is offered directly in response to."]
+verdict = "live"
+confidence = 0.9
+reason = "Op-ruling file, confirmed already fully ported per the original brief. 4 citations found. Directly explains why 97 contains a 'converged statement, offered' section, which this pass ported as a proposal row."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["ruling entries citing 95"]
+ported_this_pass = false
+note = "Not re-verified by exact id this pass; relying on pre-continuation confirmation plus the direct causal link to 97's converged statement, which this pass did read and port."
+
+[[item]]
+path = "96_dispatcher_note_the_validators_that_never_ran.md"
+unit = "process"
+claims = ["A dispatcher's process note, per its title, about validators that never ran."]
+verdict = "exploration"
+confidence = 0.2
+reason = "Not read this pass. 0 citations. Title suggests a process/infrastructure note rather than canon content, consistent with the original brief's characterisation."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Lowest priority of the unread files in this range given its title strongly suggests process content rather than a canon candidate, but genuinely unverified."
+
+[[item]]
+path = "97_dolan_the_strategy_space_attacked.md"
+unit = "the_strategy_axis"
+claims = [
+  "Section 8: a converged statement on what a strategy is, offered explicitly as a suggestion for the (not-yet-existing, within this range) consolidation, synthesising 93, 94, 40, 25 and this file's own attack.",
+  "Section 9: a located disagreement, carried forward as such rather than resolved.",
+]
+verdict = "live"
+confidence = 0.85
+reason = "Section 8 read in full and ported as a proposal row, explicitly marked as unsettled and op-decides. Sections 1-7, 9-12 not read; header structure retrieved."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-14"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations"]
+ported_this_pass = true
+note = "This file's own citation count (2, both from this pass's port) confirms the strategy-axis unit's pre-consolidation state: the converged statement had no home in the registry until this pass, despite being explicitly written to be picked up by a consolidation."
+
+[[item]]
+path = "98_spj_what_the_strategy_axis_settles.md"
+unit = "the_strategy_axis"
+claims = [
+  "Section 11: probe 12 shows probe 1b's coordinate-rescue of a dominated arm does not survive its own bootstrap test (all four IQR-difference confidence intervals cross zero); 97 section 10's finding (two arms Pareto-dominated in every region) stands unqualified, and the qualification is withdrawn by its own author.",
+  "The general caution that domination is relative to a coordinate set survives, illustrated by a different, real gap: two of op's four intents have no coordinate in the corpus at all.",
+  "The added coordinate is not noise in general: 58 of 90 arm pairs have IQR differences excluding zero.",
+]
+verdict = "live"
+confidence = 0.9
+reason = "Section 11 read in full, flagged as the highest-priority remaining unread content and then actually read this same pass, closing the flagged gap rather than leaving it. Its exact numbers (58 of 90, the four bootstrap CIs, the withdrawal of 97's qualification) are already captured near-verbatim in question::arms_no_weighting_can_select (Q45), so no port was needed: this was verification, not a gap."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-14"
+edited_after_supersessor = false
+canon_rows = ["question::arms_no_weighting_can_select"]
+ported_this_pass = false
+note = "Fourth confirmation this pass of the self-flagged-correction pattern (after 79 section 7, 91 findings 1 and 2): a section explicitly correcting the author's own earlier claim, or a numbered sibling's, is consistently the highest-yield content type in this panel. This time the correction was already captured; the pattern held for where to look, not for whether a gap existed. Sections 1-10, 12-14 not read; header structure retrieved only."
+
+[[item]]
+path = "99_persona_checkpoint_eight.md"
+unit = "process"
+claims = ["Checkpoint eight, likely the last file in this panel's 050-099 range, summarising the strategy-axis unit's state at the point this pass's assigned slice ends."]
+verdict = "exploration"
+confidence = 0.25
+reason = "Not read this pass. 0 citations. Boundary file of the assigned 050-099 slice; whatever it summarises about the strategy-axis unit's open state is directly relevant to whoever's slice picks up at file 100."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-14"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "GENUINE GAP. Given it is the last file in this slice and likely a checkpoint summarising exactly what 93/94/97/98 left open, this should be the second-highest priority unread file after 98 for whoever continues, since it may itself already state which open threads to hand to the 100-149 slice."
