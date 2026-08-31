@@ -1456,6 +1456,26 @@ provenance = ["panel::202608072330_the-numeral-canon-panel::213_op_the_experts_r
 keywords = ["format", "identity", "representable set", "ambient domain", "affine predicate", "adaptation", "closed concept", "open inventory"]
 
 [[ruling]]
+id = "behaviour_is_stated_per_declared_signature_and_the_premise_dissolves"
+kind = "ruling"
+rung = "ratified"
+ratified_by = "experts"
+topic = "the_container_premise"
+ratifies = [
+  "observability_is_relative_to_a_declared_signature",
+  "every_operation_arvo_declares_is_a_function_of_the_declared_width",
+  "the_carrier_is_observable_through_the_ambient_layout_observation_alone",
+  "at_shared_occupancy_no_per_element_footprint_observation_exists",
+]
+says = "The container premise is malformed as a binary and both of its branches are false. Behaviour is stated per declared signature: every operation the design declares is a function of the declared width and never of the machine carrier, so arithmetic and encoding are stated over the declared width. The footprint is nonetheless observable, through exactly one observation the design does not own, the host language's layout observation on a sized type, and that observation exists only where the value is the sole logical occupant of its allocation. At a shared placement no per-element footprint exists to observe. Identity saturates at the declared signature set."
+answers = ["the_container_premise"]
+promotion = "Promoted on two independent instances of each of the four, and the second was dispatched specifically because the first was not two. All four rows were seat 210's alone, and seat 221, the same persona, declined to raise them and said in terms that a non-Dolan second read was owed. Seat 225 is that read, on a third persona, and derived blind: its phase-one commit precedes the commit in which it read the prior work, so the ordering is checkable rather than asserted.\n\n**Both branches are refuted by instruments rather than by argument.** The container branch fails op's own standards bound: a container-stated numeral returns 8192 where MATLAB `fi` at thirteen bits under wrap documents 0, swept exhaustively per width with the first witness named at each, and the divergence count rises with width rather than appearing at one cell. The rounding axis carries the same refutation, diverging in all 83 cells swept, which is the fixed-point form of the double-rounding story. The unobservable-carrier reading of the other branch does not compile: one primitive with two carriers fails const evaluation with the footprint contract unsatisfiable, which is the strongest refutation available and is committed with its stderr.\n\n**Seat 225 also built the instrument both prior seats named as missing**, a real packed column with elements straddling carrier boundaries, roundtripping exactly, where the only reachable size observation returns sixteen bits for a thirteen-bit placement. That is what establishes the fourth row rather than leaving it as the reasonable-sounding half of the third."
+because = "Under the settled ratification model the experts propose and the coordinator judges whether the reasoning, the evidence and the stated region are enough. These four were read for that, and the deciding fact is that the two instances carry disjoint axes and agree where they overlap."
+note = "**The intersection is stated rather than assumed.** Seat 225's instruments carry the width span 2 to 31 and the fraction-grid axis, which seat 210's own note flags as unreached. Seat 210's carry the operation and policy axes and the standards encodings. So the two agree over the union of what each covered and neither is a second instance on the other's axes, which is the honest shape rather than a defect.\n\n**One contamination, declared by seat 225 and recorded here rather than filed away.** Its brief withheld the four proposals by naming their slugs, and those slugs are descriptive sentences, so withholding them by name signposted the destination. Its route and its instruments are its own and were committed first. What that cost is unmeasurable and what it did not reach is the finding: **no signpost suggests dissolving the binary**, since all four slugs read as claims on one branch, and the dissolution is what this ruling turns on.\n\n**The question's own option list was the shape op has refused three times**, a single policy to govern a whole category. It is closed by dissolution rather than by picking a letter, which is what he has said the answer to that shape always is.\n\nThis unblocks the floor of the stack. `topic::the_container_premise` said of itself that no wording of several downstream clauses is true on both branches; there are no branches now, and the clauses can be written."
+provenance = ["panel::202608072330_the-numeral-canon-panel::225_peyton_jones_the_container_premise::#3-the-statement-that-survives-and-it-is-already-the-canons-shape", "panel::202608072330_the-numeral-canon-panel::210_dolan_the_container_premise_is_a_theorem_over_a_signature::#1-what-i-did-first-which-was-try-to-break-the-question"]
+keywords = ["container premise", "declared width", "carrier", "footprint", "signature", "observability", "layout", "shared occupancy", "packed", "dissolved", "malformed", "floor"]
+
+[[ruling]]
 id = "arms_over_regions_are_the_fundamental_heart"
 kind = "intent"
 rung = "ratified"
