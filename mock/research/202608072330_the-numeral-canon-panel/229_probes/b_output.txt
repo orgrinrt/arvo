@@ -1,0 +1,54 @@
+PROBE B: translation equivariance of each candidate operation
+
+== FIXTURE ==
+  34 of 34 fixture rows correct
+
+== CONTROL 1 (must hold) ==
+  floor is translation equivariant by construction, on every row.
+    total failures for floor over W in {4,6,8}, F in 0..W, both: 0
+
+== CONTROL 2 (the case that must fail) ==
+  law::fusing_a_multiply_add_preserves_the_answer_under_unsigned
+  puts nearest-half-even alone in its failing region, at F in 1..=5,
+  W = 6, unsigned. So half_even must NOT be equivariant there.
+    half_even failures at W = 6, F = 1, unsigned: 512
+    an instrument reporting 0 here contradicts a canon law row and
+    is measuring nothing; every count below would be void.
+
+== PER-MODE, W = 6, F in 1..=5, the canon's own sweep widths ==
+  signedness = signed
+    floor                  F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    ceil                   F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    toward_zero            F=1..5:   512   384   224   120    62   total   1302  not equivariant
+    away_from_zero         F=1..5:   512   384   224   120    62   total   1302  not equivariant
+    bit_drop               F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    half_up[toward +inf]   F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    half_up[away from 0]   F=1..5:   512   128    32     8     2   total    682  not equivariant
+    half_down[toward -inf] F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    half_even              F=1..5:   512   128    32     8     2   total    682  not equivariant
+
+  signedness = unsigned
+    floor                  F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    ceil                   F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    toward_zero            F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    away_from_zero         F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    bit_drop               F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    half_up[toward +inf]   F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    half_up[away from 0]   F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    half_down[toward -inf] F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    half_even              F=1..5:   512   128    32     8     2   total    682  not equivariant
+
+== THE COUNT THE CANON RECORDS, under each reading of half_up ==
+  law rows say: unsigned five of six, signed three of six.
+  reading: half_up = toward +inf, i.e. floor(x + 1/2)
+    unsigned: 5 of 6 equivariant -> ["floor", "ceil", "toward_zero", "away_from_zero", "half_up[toward +inf]"]
+    signed  : 3 of 6 equivariant -> ["floor", "ceil", "half_up[toward +inf]"]
+
+  reading: half_up = away from zero, i.e. roundTiesToAway
+    unsigned: 5 of 6 equivariant -> ["floor", "ceil", "toward_zero", "away_from_zero", "half_up[away from 0]"]
+    signed  : 2 of 6 equivariant -> ["floor", "ceil"]
+
+== VERDICTS ==
+  control 1 (floor equivariant):     PASS
+  control 2 (half_even is not):      PASS
+  instrument: sound

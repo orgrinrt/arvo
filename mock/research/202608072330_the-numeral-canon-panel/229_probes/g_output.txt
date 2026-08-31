@@ -1,0 +1,27 @@
+PROBE G: is a randomised mode both equivariant and unbiased?
+probe F established that no deterministic nearest mode is.
+
+== CONTROL 1 (must hold) ==
+  the proportional reading depends on the value only through its
+  discarded fraction, which an integer translation does not move,
+  so its distribution must shift with the argument.
+    failures at W = 8, F = 3, signed: 0
+
+== CONTROL 2 (the case that must fail) ==
+  the add-then-toward-zero reading is built on the operation whose
+  sign dependence probe B measured, so it must NOT be equivariant.
+    failures at W = 8, F = 3, signed: 4276
+
+== EQUIVARIANCE AND BIAS TOGETHER, W = 8, signed ==
+  bias is the summed E[R(x)] - x over the symmetric domain,
+  as a numerator over denom * 2^F.
+  proportional             equivariance failures F=1..4:       0   bias       0   BOTH
+  equal probability        equivariance failures F=1..4:       0   bias       0   BOTH
+  add-then-bit-drop        equivariance failures F=1..4:       0   bias       0   BOTH
+  add-then-toward-zero     equivariance failures F=1..4:   31220   bias    6944   neither
+  narrow draw (F-1 bits)   equivariance failures F=1..4:       0   bias    -512   equivariant only
+
+== VERDICTS ==
+  control 1 (proportional is equivariant): PASS
+  control 2 (add-then-toward-zero is not): PASS
+  instrument: sound
