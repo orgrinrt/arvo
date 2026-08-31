@@ -1976,3 +1976,18 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::70_lattner_levels_are_clients_not_facts::284",
 ]
 keywords = ["change test", "boundary", "crossing", "compatibility", "classifier", "discriminator", "misfile"]
+
+[[proposal]]
+id = "a_resolved_strategy_never_inherits_a_composed_operations_laws_but_dominates_them_monotonically"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "A composed operation under a resolved strategy does not inherit the laws of either operand strategy. The honest meta-law is monotonicity of the resolution rule itself: the resolved strategy's laws are never weaker than whichever operand's laws the resolution rule is defined to dominate, stated and checked as a property of the join operator, never assumed as a property of the numeral operations the resolved strategy goes on to perform."
+because = "An operator exact under one strategy and exact under a second, composed under their resolved (more conservative) strategy, is not guaranteed to inherit exactness from either side. The resolved strategy is a third thing with its own laws, chosen per arvo-toolbox-not-policer.md's 'more conservative side' framing to be at least as strong as the weaker operand's, not to be the union of both operands' laws."
+predicate = ["operation: operation = resolve (strategy join)", "strategy: strategy = product order over two independent axes, generic labels rather than Hot/Warm/Cold/Precise", "threads: threads any", "target_features: target features any"]
+answers = ["which_strategys_laws_govern_a_cross_strategy_operation"]
+evidence = ["a_two_axis_strategy_resolve_rule_is_checked_as_a_semilattice_join_at_compile_time"]
+note = "Offered as a direction rather than a settlement; its author explicitly declines to resolve, in the same file, whether the strategy space is a single ranking or a genuine multi-axis lattice, saying I8's 'they weigh different measurements differently' is compatible with either reading. This meta-law is what the probe's associativity check demonstrates one level abstracted: a property of the join operator itself, not of the operations it composes."
+provenance = ["panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::295"]
+keywords = ["resolution", "cross-strategy", "monotonicity", "join", "inheritance", "meta-law", "Q27"]

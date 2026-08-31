@@ -1242,3 +1242,18 @@ unblocks = "Whether the strategy shape is a numeral-local thing or a general one
 note = "**The consumer implements this itself, so it is not an obligation and no obligation was filed for it.** Filing one would have been inventing demand: nothing in the consumer asks arvo for the selection machinery, and an obligation nobody asked for is how a design acquires a requirement out of somebody's memory. What it is instead is the only datum in that chain whose shape is a selection among named alternatives, which makes it the one thing available that could test the claim rather than illustrate it. Reported by an expert attacking a neighbouring derivation, which also states plainly that it is not claiming the consumer's selector is arvo's strategy. The type, its three alternatives, its selector trait and the chain step naming it were all verified in the consumer's own source."
 provenance = ["panel::202608072330_the-numeral-canon-panel::196_dolan_attacking_the_surface_derivation::#2-5-one-stage-falls-through-both-and-it-is-the-only-stage-that-is-a-strategy"]
 keywords = ["strategy", "policy", "selection", "named alternatives", "phase", "selector", "grouping", "above the numeral", "test case", "step 10"]
+
+[[question]]
+id = "which_strategys_laws_govern_a_cross_strategy_operation"
+key = "Q66"
+asks = "When an expression composes operands under two different strategies and the resolution rule picks the more conservative side, does the resolved strategy inherit the union of both operands' laws, or does it have its own laws that merely dominate the weaker operand's?"
+options = [
+  "Inheritance: the composed operation is guaranteed every law either operand individually satisfies.",
+  "Domination without inheritance: the resolved strategy is a third thing with its own laws, chosen to be at least as strong as the weaker operand's, never assumed to be the union of both.",
+]
+decider = "panel"
+topic = "algebraic_laws"
+unblocks = "What a canon may state about a cross-strategy expression's guarantees without re-deriving them per pair of strategies."
+note = "Adjacent to Q27 (is interoperation conversion, resolution, or neither) and not the same question; Q27's own note already flags this one as adjacent and unaddressed. A first mechanically-checked instance now bears on it: a two-axis strategy-resolution rule, checked as a semilattice join at compile time, supports the second option as the honest meta-law rather than settling it, offered as a direction by its own author rather than a resolution."
+provenance = ["panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::295"]
+keywords = ["strategy", "resolution", "cross-strategy", "inheritance", "monotonicity", "join", "Q27", "adjacent"]
