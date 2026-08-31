@@ -24,9 +24,7 @@ include!("modes.rs");
 /// freedom is one bit per entry.
 fn ties(w: u32, f: u32) -> Vec<i64> {
     let s: i64 = 1i64 << f;
-    domain(w, true)
-        .filter(|k| 2 * frem(*k, s) == s)
-        .collect()
+    domain(w, true).filter(|k| 2 * frem(*k, s) == s).collect()
 }
 
 /// Round under "nearest, with this tie rule". Bit `i` of `rule` set means the
@@ -144,7 +142,10 @@ fn main() {
             }
         }
         println!("== W = {}, F = {} ==", w, f);
-        println!("  ties in the domain: {}, so {} nearest modes exist over it", t, space);
+        println!(
+            "  ties in the domain: {}, so {} nearest modes exist over it",
+            t, space
+        );
         println!("  translation equivariant: {}", equi);
         println!("  zero mean error:         {}", unbi);
         println!("  BOTH:                    {}", both);
@@ -178,7 +179,11 @@ fn main() {
                 r,
                 is_equivariant(w, f, &tie_list, r),
                 is_unbiased(w, f, &tie_list, r),
-                if agrees { "reconstructed" } else { "RECONSTRUCTION FAILED" },
+                if agrees {
+                    "reconstructed"
+                } else {
+                    "RECONSTRUCTION FAILED"
+                },
                 width = t + 2
             );
         }
@@ -197,9 +202,18 @@ fn main() {
     println!("== CONTROLS ==");
     println!("  Each property must be satisfiable on its own, or an empty");
     println!("  intersection would say nothing.");
-    println!("    some rule is equivariant: {}", if equi_nonempty { "PASS" } else { "FAIL" });
-    println!("    some rule is unbiased:    {}", if unbi_nonempty { "PASS" } else { "FAIL" });
-    println!("    named modes reconstructed inside the enumeration: {}", if named_found { "PASS" } else { "FAIL" });
+    println!(
+        "    some rule is equivariant: {}",
+        if equi_nonempty { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "    some rule is unbiased:    {}",
+        if unbi_nonempty { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "    named modes reconstructed inside the enumeration: {}",
+        if named_found { "PASS" } else { "FAIL" }
+    );
     println!();
 
     println!("== RESULT ==");

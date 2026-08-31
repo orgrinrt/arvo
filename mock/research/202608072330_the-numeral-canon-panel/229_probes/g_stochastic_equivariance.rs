@@ -208,8 +208,14 @@ fn main() {
     println!();
 
     println!("== VERDICTS ==");
-    println!("  control 1 (proportional is equivariant): {}", if c1 == 0 { "PASS" } else { "FAIL" });
-    println!("  control 2 (add-then-toward-zero is not): {}", if c2 > 0 { "PASS" } else { "FAIL" });
+    println!(
+        "  control 1 (proportional is equivariant): {}",
+        if c1 == 0 { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "  control 2 (add-then-toward-zero is not): {}",
+        if c2 > 0 { "PASS" } else { "FAIL" }
+    );
     let sound = c1 == 0 && c2 > 0;
     println!("  instrument: {}", if sound { "sound" } else { "INVALID" });
     if !sound {

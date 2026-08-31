@@ -90,7 +90,11 @@ fn main() {
             mode_name(m),
             full,
             sym,
-            if sym == 0 { "UNBIASED on the symmetric domain" } else { "biased" }
+            if sym == 0 {
+                "UNBIASED on the symmetric domain"
+            } else {
+                "biased"
+            }
         );
     }
     println!();
@@ -144,8 +148,14 @@ fn main() {
     println!();
 
     println!("== VERDICTS ==");
-    println!("  control 1 (floor sum is negative): {}", if c1 < 0 { "PASS" } else { "FAIL" });
-    println!("  control 2 (floor and ceil mirror): {}", if c2_ok { "PASS" } else { "FAIL" });
+    println!(
+        "  control 1 (floor sum is negative): {}",
+        if c1 < 0 { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "  control 2 (floor and ceil mirror): {}",
+        if c2_ok { "PASS" } else { "FAIL" }
+    );
     let sound = c1 < 0 && c2_ok;
     println!("  instrument: {}", if sound { "sound" } else { "INVALID" });
     if !sound {
