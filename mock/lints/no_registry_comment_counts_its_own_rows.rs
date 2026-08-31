@@ -99,8 +99,7 @@ fn counts_in_a_comment(line: &str) -> Vec<(&str, String)> {
             let noun = pair[1]
                 .trim_matches(|c: char| !c.is_ascii_alphabetic())
                 .to_ascii_lowercase();
-            (is_count(pair[0]) && COUNTED.contains(&noun.as_str()))
-                .then(|| (pair[0], noun))
+            (is_count(pair[0]) && COUNTED.contains(&noun.as_str())).then(|| (pair[0], noun))
         })
         .collect()
 }
@@ -217,7 +216,11 @@ mod tests {
             ("nested/b.toml", "# 4 rows below.\n"),
             ("notes.md", "# 9 rows below.\n"),
         ]);
-        assert_eq!(f.len(), 1, "a nested file counts and a markdown file does not: {f:?}");
+        assert_eq!(
+            f.len(),
+            1,
+            "a nested file counts and a markdown file does not: {f:?}"
+        );
     }
 
     #[test]
@@ -231,7 +234,10 @@ mod tests {
         let dir = planted_tree("registry-comments-severity");
         plant(&dir, "registry/a.toml", "# all 17 rows of them\n");
         let empty = view(&[], &[]);
-        assert_findings_block_at(&super::NoRegistryCommentCountsItsOwnRows, &ctx_at(&dir, &empty));
+        assert_findings_block_at(
+            &super::NoRegistryCommentCountsItsOwnRows,
+            &ctx_at(&dir, &empty),
+        );
     }
 
     #[test]

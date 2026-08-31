@@ -89,11 +89,11 @@ impl RepoLint for NoUnprefixedArchiveCitation {
 
 /// One dead citation, with where it sits and what should have been written.
 struct Dead {
-    at:      String,
-    line:    usize,
-    cited:   String,
+    at: String,
+    line: usize,
+    cited: String,
     archive: &'static str,
-    repair:  String,
+    repair: String,
 }
 
 /// Both halves, over one panel directory.
@@ -225,7 +225,10 @@ mod tests {
     /// both a case that must fire and a case that must not.
     const PRESENT: [(&str, &str); 2] = [
         ("seed/OLD_SETTLED_laws.md", "# laws\n"),
-        ("../202607301300_formalization-spec-panel/OLD_143b_op.md", "# ruling\n"),
+        (
+            "../202607301300_formalization-spec-panel/OLD_143b_op.md",
+            "# ruling\n",
+        ),
     ];
 
     #[test]
@@ -260,7 +263,11 @@ mod tests {
              `mock/research/202607301300_formalization-spec-panel/143b_op.md`.\n",
         ));
         let f = findings("archive-both", &files, usize::MAX);
-        assert_eq!(f.len(), 2, "one per archive, in the same ledger line: {f:?}");
+        assert_eq!(
+            f.len(),
+            2,
+            "one per archive, in the same ledger line: {f:?}"
+        );
         assert!(
             f.iter().any(|m| m.contains("seed/OLD_SETTLED_strategy.md")),
             "{f:?}"
@@ -300,10 +307,7 @@ mod tests {
         // record, so it is not refused on its own; it is refused because the
         // population exceeded what was measured.
         let mut files = PRESENT.to_vec();
-        files.push((
-            "42_member.md",
-            "See `seed/SETTLED_container.md` for it.\n",
-        ));
+        files.push(("42_member.md", "See `seed/SETTLED_container.md` for it.\n"));
         assert!(
             findings("archive-under", &files, 1).is_empty(),
             "one citation under a ceiling of one is the grandfathered population"
@@ -355,7 +359,10 @@ mod tests {
         );
         let empty = view(&[], &[]);
         let mock = dir.join("mock");
-        assert!(panel_dir(&mock).is_dir(), "the fixture is where the lint looks");
+        assert!(
+            panel_dir(&mock).is_dir(),
+            "the fixture is where the lint looks"
+        );
         assert_findings_block_at(&super::NoUnprefixedArchiveCitation, &ctx_at(&mock, &empty));
     }
 

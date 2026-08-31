@@ -34,12 +34,7 @@ use mockspace::LintError;
 /// member file is written once and never edited, so the line stays true, and a
 /// reader given the line can open it. The tree walked is named as the crate so
 /// the rendered location reads `research/<file>:<line>`.
-pub fn finding(
-    lint: &'static str,
-    file: &str,
-    line: usize,
-    message: String,
-) -> LintError {
+pub fn finding(lint: &'static str, file: &str, line: usize, message: String) -> LintError {
     let mut e = LintError::error("research".to_string(), line, lint, message);
     e.path = Some(file.to_string());
     e
@@ -55,11 +50,11 @@ pub const PANEL: &str = "research/202608072330_the-numeral-canon-panel";
 /// archive and the arms need no absolute path.
 pub struct Archive {
     /// What this archive is called when a report has to name it.
-    pub name:   &'static str,
+    pub name: &'static str,
     /// The string a citation into it begins with.
     pub prefix: &'static str,
     /// Where the files sit, relative to the panel directory.
-    pub at:     &'static str,
+    pub at: &'static str,
 }
 
 /// Every archive the rename covers.
@@ -72,14 +67,14 @@ pub struct Archive {
 /// were written in the dead spelling with nothing reporting any of them.
 pub const ARCHIVES: &[Archive] = &[
     Archive {
-        name:   "seed",
+        name: "seed",
         prefix: "seed/",
-        at:     "seed",
+        at: "seed",
     },
     Archive {
-        name:   "closed formalization panel",
+        name: "closed formalization panel",
         prefix: "formalization-spec-panel/",
-        at:     "../202607301300_formalization-spec-panel",
+        at: "../202607301300_formalization-spec-panel",
     },
 ];
 

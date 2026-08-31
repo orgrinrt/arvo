@@ -60,7 +60,11 @@ impl Lint for ACanonThatLoadsNothing {
 }
 impl RepoLint for ACanonThatLoadsNothing {
     fn check_repo(&self, ctx: &RepoContext) -> Vec<LintError> {
-        check(!ctx.registry.is_empty(), ctx.canon_paths, &files_on_disk(&ctx.mock_dir.join(REGISTRY)))
+        check(
+            !ctx.registry.is_empty(),
+            ctx.canon_paths,
+            &files_on_disk(&ctx.mock_dir.join(REGISTRY)),
+        )
     }
 }
 
@@ -158,7 +162,11 @@ mod tests {
         let found = super::check(false, &declared, &["ruling.toml".to_string()]);
         assert_eq!(found.len(), 1, "{found:?}");
         assert_eq!(kinds(&found), [Some("the-registry-did-not-load")]);
-        assert!(found[0].message.contains("ruling.toml"), "{}", found[0].message);
+        assert!(
+            found[0].message.contains("ruling.toml"),
+            "{}",
+            found[0].message
+        );
     }
 
     #[test]
@@ -215,7 +223,11 @@ mod tests {
         plant(&dir, "registry/ruling.toml", "[[ruling]]\nid = \"a\"\n");
         let empty = view(&[], &[]);
         let found = super::ACanonThatLoadsNothing.check_repo(&ctx_at(&dir, &empty));
-        assert_eq!(kinds(&found), [Some("the-registry-did-not-load")], "{found:?}");
+        assert_eq!(
+            kinds(&found),
+            [Some("the-registry-did-not-load")],
+            "{found:?}"
+        );
     }
 
     #[test]

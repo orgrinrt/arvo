@@ -72,8 +72,10 @@ impl RepoLint for NoLineCitationIntoALivingLedgerInProse {
 
 fn check(dir: &Path, ceiling: usize) -> Vec<LintError> {
     let found = citations(dir);
-    let (in_ledgers, in_the_record): (Vec<&(String, usize, String)>, Vec<&(String, usize, String)>) =
-        found.iter().partition(|(at, _, _)| is_a_living_ledger(at));
+    let (in_ledgers, in_the_record): (
+        Vec<&(String, usize, String)>,
+        Vec<&(String, usize, String)>,
+    ) = found.iter().partition(|(at, _, _)| is_a_living_ledger(at));
 
     let mut out: Vec<LintError> = in_ledgers
         .iter()

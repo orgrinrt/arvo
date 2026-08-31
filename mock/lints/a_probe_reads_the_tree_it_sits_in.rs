@@ -185,19 +185,25 @@ mod tests {
     fn control_prose_naming_a_path_is_not_a_script() {
         // The corpus records what it ran, and a finding there would be a
         // finding about the audit trail doing its job.
-        let dir = tree("probe-prose", &[(
-            "42_notes.md",
-            "It was run against `/Users/somebody/Dev/other-clone/arvo`.\n",
-        )]);
+        let dir = tree(
+            "probe-prose",
+            &[(
+                "42_notes.md",
+                "It was run against `/Users/somebody/Dev/other-clone/arvo`.\n",
+            )],
+        );
         assert!(super::offenders(&dir).is_empty());
     }
 
     #[test]
     fn control_a_relative_path_is_a_different_and_louder_failure() {
-        let dir = tree("probe-relative", &[(
-            "43_probes/relative.py",
-            "open('../../../mock/registry/dimension.toml')\n",
-        )]);
+        let dir = tree(
+            "probe-relative",
+            &[(
+                "43_probes/relative.py",
+                "open('../../../mock/registry/dimension.toml')\n",
+            )],
+        );
         assert!(
             super::offenders(&dir).is_empty(),
             "a relative path fails loudly where it is wrong, which is the opposite problem"
@@ -229,10 +235,13 @@ mod tests {
     fn the_ratchet_counts_files_rather_than_occurrences() {
         // A single script naming the path on four lines is one probe to repair,
         // and counting occurrences would make one file look like four.
-        let dir = tree("probe-count", &[(
-            "45_probes/many.sh",
-            "a=/Users/x/one\nb=/Users/x/two\nc=/Users/x/three\nd=/Users/x/four\n",
-        )]);
+        let dir = tree(
+            "probe-count",
+            &[(
+                "45_probes/many.sh",
+                "a=/Users/x/one\nb=/Users/x/two\nc=/Users/x/three\nd=/Users/x/four\n",
+            )],
+        );
         assert_eq!(super::offenders(&dir).len(), 4, "four lines carry one file");
         assert!(
             Probe { ceiling: 1 }.check(&dir).is_empty(),
@@ -269,17 +278,31 @@ mod tests {
     fn the_committed_ceiling_is_what_the_registered_lint_carries() {
         // The constant and the lint the engine is handed have to agree, or the
         // arms above measure a ceiling nothing runs at.
-        assert_eq!(Probe { ceiling: super::CEILING }.ceiling, 25);
+        assert_eq!(
+            Probe {
+                ceiling: super::CEILING
+            }
+            .ceiling,
+            25
+        );
     }
 
     #[test]
     fn it_is_not_declared_off_so_it_runs_at_all() {
-        assert_not_declared_off(&Probe { ceiling: super::CEILING });
+        assert_not_declared_off(&Probe {
+            ceiling: super::CEILING,
+        });
     }
 
     #[test]
     fn it_answers_to_the_name_the_gate_and_the_config_use() {
-        assert_eq!(Probe { ceiling: super::CEILING }.name(), super::NAME);
+        assert_eq!(
+            Probe {
+                ceiling: super::CEILING
+            }
+            .name(),
+            super::NAME
+        );
     }
 
     #[test]

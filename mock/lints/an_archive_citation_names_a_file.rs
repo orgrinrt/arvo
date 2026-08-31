@@ -98,7 +98,10 @@ mod tests {
         for (at, text) in files {
             plant(&panel, at, text);
         }
-        super::check(&panel).into_iter().map(|e| e.message).collect()
+        super::check(&panel)
+            .into_iter()
+            .map(|e| e.message)
+            .collect()
     }
 
     /// One file present in each archive, so the arm has a case that must not

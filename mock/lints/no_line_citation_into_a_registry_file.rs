@@ -68,8 +68,10 @@ impl RepoLint for NoLineCitationIntoARegistryFile {
 
 fn check(dir: &Path, ceiling: usize) -> Vec<LintError> {
     let found = citations(dir);
-    let (in_ledgers, in_the_record): (Vec<&(String, usize, String)>, Vec<&(String, usize, String)>) =
-        found.iter().partition(|(at, _, _)| is_a_living_ledger(at));
+    let (in_ledgers, in_the_record): (
+        Vec<&(String, usize, String)>,
+        Vec<&(String, usize, String)>,
+    ) = found.iter().partition(|(at, _, _)| is_a_living_ledger(at));
 
     let mut out: Vec<LintError> = in_ledgers
         .iter()
@@ -189,18 +191,16 @@ mod tests {
     fn control_naming_a_registry_file_without_a_line_is_left_alone() {
         // Without this the lint is a ban on mentioning the registry at all, and
         // every arm above still passes.
-        assert!(
-            findings(
-                "registry-line-noline",
-                &[(
-                    "RULES.md",
-                    "Every row lives in `proposal.toml` or `ruling.toml`, and neither is \
+        assert!(findings(
+            "registry-line-noline",
+            &[(
+                "RULES.md",
+                "Every row lives in `proposal.toml` or `ruling.toml`, and neither is \
                      cited by line.\n",
-                )],
-                usize::MAX,
-            )
-            .is_empty()
-        );
+            )],
+            usize::MAX,
+        )
+        .is_empty());
     }
 
     #[test]

@@ -90,9 +90,7 @@ pub fn list<'a>(reg: &'a RegistryView, q: &str, field: &str) -> Vec<&'a str> {
 /// exactly what a missing one does, and every arm that asked
 /// `is_none_or(str::is_empty)` in the crate this came from wanted both.
 pub fn text<'a>(reg: &'a RegistryView, q: &str, field: &str) -> Option<&'a str> {
-    reg.field(q, field)
-        .map(str::trim)
-        .filter(|v| !v.is_empty())
+    reg.field(q, field).map(str::trim).filter(|v| !v.is_empty())
 }
 
 /// Whether the row carries the field at all, whatever it holds.
@@ -317,7 +315,10 @@ mod tests {
 
     #[test]
     fn an_axis_splits_off_its_values_and_a_colonless_entry_does_not() {
-        assert_eq!(split_axis("width: W in 3..=7"), Some(("width", "W in 3..=7")));
+        assert_eq!(
+            split_axis("width: W in 3..=7"),
+            Some(("width", "W in 3..=7"))
+        );
         assert_eq!(split_axis("width:"), Some(("width", "")));
         assert_eq!(split_axis("no colon"), None);
     }

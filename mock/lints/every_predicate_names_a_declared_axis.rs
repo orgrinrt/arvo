@@ -123,19 +123,13 @@ mod tests {
     use mockspace::Lint;
 
     use crate::canon_lint_testkit::{
-        assert_findings_block,
-        assert_not_declared_off,
-        assert_registered,
-        ctx,
-        view,
+        assert_findings_block, assert_not_declared_off, assert_registered, ctx, view,
     };
     use crate::canon_rows::JOIN;
 
     /// The findings, with the kind each carries, so an arm can assert which of
     /// the three refusals fired rather than only that something did.
-    fn findings(
-        rows: &[(&str, &[(&str, &str)])],
-    ) -> Vec<(Option<&'static str>, String)> {
+    fn findings(rows: &[(&str, &[(&str, &str)])]) -> Vec<(Option<&'static str>, String)> {
         use mockspace::RepoLint;
         let v = view(rows, &[]);
         super::EveryPredicateNamesADeclaredAxis
@@ -155,7 +149,10 @@ mod tests {
     fn an_axis_nothing_declares_is_reported_and_named() {
         let p = predicate(&["fraction_width: 0", "phase_of_the_moon: waxing"]);
         let f = findings(&[
-            ("dimension::fraction_width", &[("what", "bits below the point")]),
+            (
+                "dimension::fraction_width",
+                &[("what", "bits below the point")],
+            ),
             ("proposal::a_claim", &[("predicate", &p)]),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
@@ -172,7 +169,10 @@ mod tests {
         // in one bucket a severity cannot separate.
         let f = findings(&[
             ("dimension::fraction_width", &[("what", "bits")]),
-            ("proposal::a_claim", &[("predicate", "mostly small fractions")]),
+            (
+                "proposal::a_claim",
+                &[("predicate", "mostly small fractions")],
+            ),
         ]);
         assert_eq!(f.len(), 1, "{f:?}");
         assert_eq!(f[0].0, Some("entry-is-malformed"), "{f:?}");
@@ -217,7 +217,10 @@ mod tests {
             "both `holds` and `fails` name an undeclared axis here, and a walk reading only \
              one reports one: {f:?}"
         );
-        assert!(f.iter().any(|(_, m)| m.contains("nothing_declares_this")), "{f:?}");
+        assert!(
+            f.iter().any(|(_, m)| m.contains("nothing_declares_this")),
+            "{f:?}"
+        );
         assert!(f.iter().any(|(_, m)| m.contains("nor_this")), "{f:?}");
     }
 
