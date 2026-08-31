@@ -1,0 +1,16 @@
+set_operations_over_a_fixed_size_bit_set                             summary
+ordering_a_directed_acyclic_graph                                    summary
+a_sparse_adjacency_a_plan_can_be_built_on                            summary
+a_spectral_partition_of_a_dependency_graph                           summary
+a_cost_dynamic_program                                               summary
+a_platform_sized_unsigned_integer_at_an_api_position                 summary
+an_exact_width_container_a_consumer_can_alias_and_pin                summary
+a_content_hash                                                       summary
+debug_output_from_every_numeral_shape                                summary
+a_build_flag_that_changes_float_semantics                            summary
+composition_contracts_above_the_numeral                              op
+a_primitive_for_every_position_a_bare_number_would_take              op
+the_surface_expressible_as_contracts_before_anything_implements_it   op
+
+totals, tallied from the rows above rather than by a second rule:
+  consumer 0   op 3   summary 10   none 0
