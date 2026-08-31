@@ -35,13 +35,13 @@ fn run(v: &RegistryView, args: &[&str]) -> (Outcome, String) {
     let crates = Default::default();
     let dirs: Vec<std::path::PathBuf> = Vec::new();
     let ctx = ToolContext {
-        mock_dir:   std::path::Path::new("."),
-        repo_root:  std::path::Path::new("."),
+        mock_dir: std::path::Path::new("."),
+        repo_root: std::path::Path::new("."),
         all_crates: &crates,
-        src_dirs:   &dirs,
+        src_dirs: &dirs,
         args,
-        stdin:      None,
-        registry:   v,
+        stdin: None,
+        registry: v,
     };
     let rep = ObligationCoverage.run(&ctx);
     // An inconclusive verdict carries its reason on the outcome and leaves
@@ -57,7 +57,8 @@ fn run(v: &RegistryView, args: &[&str]) -> (Outcome, String) {
 /// One obligation and one row naming it from each tiering namespace, so a test
 /// can pick which edges exist.
 fn with(edges: &[(&str, &str)]) -> RegistryView {
-    let mut rows: Vec<(&str, &[(&str, &str)])> = vec![("obligation::the_thing", &[("what", "a demand")])];
+    let mut rows: Vec<(&str, &[(&str, &str)])> =
+        vec![("obligation::the_thing", &[("what", "a demand")])];
     let held: Vec<(String, [(&str, &str); 1])> = edges
         .iter()
         .map(|(q, field)| ((*q).to_string(), [(*field, "the_thing")]))
@@ -277,7 +278,10 @@ fn control_a_met_obligation_carrying_a_precondition_is_not_in_that_list() {
 #[test]
 fn one_obligation_can_be_read_in_full_by_its_slug() {
     let v = view(&[
-        ("obligation::the_thing", &[("what", "a demand"), ("note", "a note")]),
+        (
+            "obligation::the_thing",
+            &[("what", "a demand"), ("note", "a note")],
+        ),
         ("obligation::other", &[("what", "another")]),
         ("ruling::he_said_so", &[("obligation", "the_thing")]),
     ]);
@@ -286,7 +290,10 @@ fn one_obligation_can_be_read_in_full_by_its_slug() {
     assert!(text.contains("a demand"), "{text}");
     assert!(text.contains("a note"), "{text}");
     assert!(text.contains("ruling::he_said_so"), "{text}");
-    assert!(!text.contains("another"), "the other row is not reported: {text}");
+    assert!(
+        !text.contains("another"),
+        "the other row is not reported: {text}"
+    );
 }
 
 #[test]

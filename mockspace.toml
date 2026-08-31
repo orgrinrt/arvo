@@ -159,6 +159,56 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.measured-claim-cites-no-probe]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-measurement-owes-a-usable-instrument]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-region-agrees-with-the-sentence-kind]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.an-unratified-ruling-stamps-a-proposal]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-term-is-defined-twice]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-definition-names-its-term]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-live-row-restates-a-retired-claim]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-row-carries-keywords]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-note-describes-the-row-it-sits-on]
+commit = "error"
+build = "error"
+push = "error"
+
+[lints.a-retirement-claim-can-be-found]
+commit = "error"
+build = "error"
+push = "error"
+
 [lints.a-canon-that-loads-nothing-is-not-a-clean-canon]
 commit = "error"
 build = "error"

@@ -256,7 +256,12 @@ mod tests {
         // ceilings vacuous while every other arm here still passes. That is the
         // shape the whole migration exists to refuse.
         assert_eq!(
-            kinds("timings-empty", &[("a/notes.md", "no artifacts here")], 0, 0),
+            kinds(
+                "timings-empty",
+                &[("a/notes.md", "no artifacts here")],
+                0,
+                0
+            ),
             [Some("no-artifacts-to-read")]
         );
     }
@@ -266,14 +271,12 @@ mod tests {
         // The other direction, and the one that keeps the pack shippable to a
         // repository that has never run a bench.
         let dir = planted_tree("timings-nobenches");
-        assert!(
-            Timings {
-                without_a_profile: 0,
-                from_a_dirty_tree: 0,
-            }
-            .check(&dir.join("benches"))
-            .is_empty()
-        );
+        assert!(Timings {
+            without_a_profile: 0,
+            from_a_dirty_tree: 0,
+        }
+        .check(&dir.join("benches"))
+        .is_empty());
     }
 
     #[test]
