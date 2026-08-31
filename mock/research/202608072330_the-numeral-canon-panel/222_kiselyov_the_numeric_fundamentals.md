@@ -492,3 +492,90 @@ existing row writes it: this is a sole occupant of its own carrier allocation an
 says nothing about a packed placement, where
 `at_shared_occupancy_no_per_element_footprint_observation_exists` goes the other
 way and I did not test it.
+
+### 5.4 Precision does not count the sign digit, at radix two
+
+`question::does_precision_count_the_sign_digit`. The register names this as one of
+exactly two things genuinely undetermined, and its `bound`, written after
+`ruling::the_panel_finishes_the_canon_without_him` returned it, already carries the
+decision procedure: "Nothing decides this mathematically ... Answered inside the
+arms paradigm: take the reading under which the three sign domains form a
+structure a const predicate can gate on rather than one leaving a domain
+incomparable."
+
+That is not a preference, it is a computation, and nobody appears to have run it.
+Build the three sign domains under each reading, order them by inclusion, and see
+which gives a chain.
+
+**Answer: the precision coordinate does not count the sign digit.** At radix two,
+over precisions 1 to 6, reading B gives a chain at every cell, `unsigned` inside
+`symmetric` inside `twos_complement`, 30 of 30. Reading A gives a chain at 0 of 30
+and leaves `unsigned` incomparable with both signed domains at every cell. The
+criterion the bound states selects reading B and selects nothing else.
+
+Two further consequences the row's `unblocks` asks for, both computed:
+
+Reading A manufactures a singleton at a legitimate precision. The symmetric domain
+at precision one denotes exactly `{0}`, at radix 2, 3 and 10 alike. Reading B
+produces no domain of fewer than two values at any precision at or above one, 0 of
+30 against 5 of 30. That is a second, independent source of the sub-two-value
+numeral `question::inclusion_order_singleton_amendment` exists to handle, and
+choosing reading B removes it. **It does not remove the one that question is
+actually about**, which its note locates "at the coarsest declared step in the
+box", a grid with one point in a declared range rather than a sign domain at
+precision one. So this narrows Q10's case set without closing it, and I say so at
+7.5 rather than claiming more.
+
+**The odd-radix half refuted my own prediction and the probe records that.** I
+predicted the unsigned and symmetric domains would collapse to equal cardinality at
+an odd radix under the sign-magnitude model. They do not: at `r = 3, P = 1` they
+are 3 against 5, and the first version of the probe printed those numbers in the
+same block as prose asserting the collapse. The collapse is real and belongs to
+the **balanced** model, where the centred digit set has exactly `r^mag` members,
+equal to unsigned's count at every odd radix and every precision I ran. It is a
+cardinality coincidence and not a set equality, so a design keying anything on
+cardinality alone would merge two domains there.
+
+**The limit of the answer, which is the important part.** The corpus writes the
+third domain as "signed symmetric range" (`proposal.toml:153` and
+`proposal.toml:1220`) and does not say which construction that is. Two answer to
+the phrase and they are different sets: sign-magnitude, which is two's complement
+with the extra negative removed, and balanced radix, which is the centred digit
+set. Under the balanced model **neither** reading gives a chain, at 0 of 15 and 0
+of 12, because a centred domain never contains the unsigned one. So the answer
+above is conditional on the symmetric domain being the sign-magnitude one.
+
+At radix two that condition is not a condition at all: `(2^mag - 1)/2` is not an
+integer for any `mag` at or above one, so the balanced model does not exist there,
+and the probe skips those cells rather than rounding and calling it a result. The
+design's radix is two everywhere the corpus measures. So the answer holds
+unconditionally where the design lives and is undecided by this criterion at an
+odd radix under a balanced reading.
+
+All four detectors were run against planted inputs before anything rested on them:
+the chain detector reports `None` for `([0,1],[1,2],[0,2])` and `Some` for a
+nested triple, the singleton detector reads 1 for `[0,0]` and 2 for `[0,1]`, and
+the inclusion test reports false in both directions for two overlapping intervals.
+The interval shortcut was re-checked against explicit set inclusion at every
+affordable cell, 0 disagreements.
+
+```
+holds for: radix: radix = 2
+           signedness: signedness in {unsigned, twos_complement, symmetric}: exhaustive,
+             the three sign domains the corpus names, which is the whole of the axis
+             as the corpus states it
+```
+
+Two things about that block. The `signedness` grammar declares only `unsigned`,
+`signed` and `any`, so the three-domain vocabulary the corpus uses in its own
+predicates is **not expressible in the declared grammar**, and this row is
+therefore written in a dialect the checker cannot read. That is a third instance of
+one problem: the dimension row and the corpus disagree about the axis's value set.
+And precision itself is not a declared axis; `integer_width`, `fraction_width` and
+`total_width` are, and the question is about a coordinate none of them is.
+
+I ran the sweep at radices 2, 3, 4, 5 and 10 and precisions 1 to 6, so a reader
+wanting the wider claim can have `radix in {2, 3, 4, 5, 10}` for the
+sign-magnitude model. I write `radix = 2` above because that is where the answer
+is unconditional, and widening a predicate is a new claim in a new deliverable
+rather than a widening in place.
