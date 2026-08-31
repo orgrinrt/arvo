@@ -1244,3 +1244,17 @@ instead = "It goes to the coordinator, on the two terms he names: fork the sibli
 note = "\"Your call either way\" is him handing a fork over rather than declining to look at it, which is why this is a deferral and not an open question of his."
 provenance = ["panel::202608072330_the-numeral-canon-panel::181_op_the_canon_becomes_a_registry_and_the_contracts_hold::#181-op-the-canon-becomes-a-registry-the-contracts-hold-and-this-runs-to-a-finished-canon"]
 keywords = ["tools", "lints", "mockspace", "fork", "shared crate", "your call", "tooling", "kamu"]
+
+[[ruling]]
+id = "a_thing_that_constrains_the_work_and_cannot_be_designed_away_is_canon"
+kind = "process"
+rung = "stated"
+topic = "canon_form"
+says = "What belongs in the canon is decided by a test rather than by a sentence's form. A thing that constrains the work, that is needed in order to do it, that is a law, or that cannot be avoided or designed away, is canon. The kind of statement it is, established or imposed, predicated or not, does not decide the question, and neither does which tier a document happens to sit in."
+quote = '''
+This is something you should decide based on the workflow and soundness and validity of the canon
+and work. If it's a real thing that constrains the work and is needed to know, it's canon
+'''
+answers = ["may_the_canon_carry_an_unpredicated_proposition", "is_the_rounding_candidates_pairing_section_canon_or_design"]
+provenance = ["panel::202608072330_the-numeral-canon-panel::206_op_the_canon_test_and_the_standards_bound::#what-makes-a-thing-canon"]
+keywords = ["canon form", "constrains the work", "law", "cannot be designed away", "needed to know", "predicate", "imposed", "established", "canon or design", "the test"]
