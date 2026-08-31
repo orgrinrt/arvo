@@ -76,7 +76,7 @@ impl Tool for AwaitingARuling {
     }
 
     fn description(&self) -> &'static str {
-        "rows op stated but never ruled on, and whether there are enough to ask"
+        "rows op stated but never ruled on, ordered by what depends on them"
     }
 
     fn not_a_lint(&self) -> NotALint {
@@ -87,22 +87,24 @@ impl Tool for AwaitingARuling {
         &[ArgSpec {
             name: "key",
             required: false,
-            description: "report one row in full, by its slug, before putting it to him",
+            description: "report one row in full, by its slug, before promoting it",
         }]
     }
 
     fn help(&self) -> &'static str {
         "With no argument: every `ruling` row still at `stated`, ordered by how \
-         many other rows cite it, so the ones carrying the most weight are asked \
+         many other rows cite it, so the ones carrying the most weight are read \
          first. A `stated` row is his direction recorded as an ack; it is not a \
          ruling and nothing downstream may treat it as one.\n\n\
          With a slug: that row alone, in full. His verbatim if the row carries \
          it, the derived prose written on top of it, and what cites it. Read this \
-         before asking, because the question to put to him is usually the gap \
-         between the quote and the rest of the row rather than the row's own \
-         subject.\n\n\
-         The count is a prompt, not a gate. Nothing here fails, and a row may sit \
-         at `stated` indefinitely without that being wrong."
+         before promoting it, because the work is usually the gap between the \
+         quote and the rest of the row rather than the row's own subject.\n\n\
+         Nothing here is queued for op. He has handed the canon to the panel, so \
+         a row moves when two experts independently agree on it and the \
+         coordinator gates that. The count is a prompt, not a gate: nothing here \
+         fails, and a row may sit at `stated` indefinitely without that being \
+         wrong."
     }
 
     fn run(&self, ctx: &ToolContext<'_>) -> ToolReport {
@@ -223,9 +225,9 @@ impl AwaitingARuling {
 
         if standing != AWAITING {
             s.push_str(
-                "\n  Not awaiting a ruling. Reported in full anyway, because asking \
-                 about a row that is already settled is worth catching before it \
-                 reaches him.\n",
+                "\n  Not awaiting a ruling. Reported in full anyway, because \
+                 reopening a row that is already settled is worth catching before \
+                 the work is spent on it.\n",
             );
         }
 
@@ -242,8 +244,8 @@ impl AwaitingARuling {
         s.push('\n');
         match citers.len() {
             0 => s.push_str(
-                "  Nothing cites it. Cheapest to ask about and cheapest to be wrong \
-                 about, because nothing has been built on it yet.\n",
+                "  Nothing cites it, so it is the cheapest kind to be wrong about: \
+                 nothing has been built on it yet.\n",
             ),
             n => {
                 s.push_str(&format!(
@@ -258,15 +260,15 @@ impl AwaitingARuling {
         let later = op_files_after(ctx, q);
         if !later.is_empty() {
             s.push_str(
-                "\n  Op files that postdate this row. Read them before asking about it:\n",
+                "\n  Op files that postdate this row. Read them before promoting it:\n",
             );
             for f in &later {
                 s.push_str(&format!("    {f}\n"));
             }
             s.push_str(
                 "  A later file of his own may already settle this, restate it better, or\n  \
-                 supersede it. Asking about a row he has already settled spends the one thing\n  \
-                 a batch exists to save.\n",
+                 supersede it. Promoting a row he has since moved past writes the wrong\n  \
+                 sentence into the canon under his name.\n",
             );
         }
 
