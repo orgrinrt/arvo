@@ -420,7 +420,7 @@ predicate = [
   "fraction_width: in 0..=W-1",
   "signedness: in {unsigned, signed}",
   "overflow_policy: in {wrap, saturating}",
-  "rounding: truncate toward zero",
+  "rounding: toward_zero",
   "operation: multiply-add",
   "arity: 3",
   "chain_length: 2",
