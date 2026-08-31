@@ -253,3 +253,16 @@ a second reader; I am dropping it rather than escalating it.
 
 **I did not lower the ceiling** in `what_one_field_obliges_another_to_carry.rs`, which is a test file
 and not mine, and which would be wrong to lower before the edges are wired anyway.
+
+**I overwrote a previous round's committed artifact and put it back.** Rerunning
+`185_probes/p8_the_rows_control_ratio.sh` to get this pass's ratio wrote over
+`185_probes/p8_the_rows_control_ratio.out`, because the script writes to a fixed path beside itself.
+The new content is committed as `192_probes/p5_the_ratio_after_the_second_pass.out` and the original
+is restored; the overwrite is in a named stash rather than discarded.
+
+**The hazard is general and belongs to the script rather than to me.** Any instrument that writes its
+output beside itself destroys the earlier round's artifact when a later round reruns it, silently, and
+the earlier round's file is the record of what was true then. **A probe rerun by a later dispatch
+should write into that dispatch's own directory**, which means the output path wants to be an argument
+rather than a constant. Every instrument in `185_probes` and `192_probes` has this shape, mine
+included.
