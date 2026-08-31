@@ -226,7 +226,7 @@ fails = [
 witness = "Over every total order on the carrier at widths 2 and 3, exhaustively, wrapping addition and xor over `GF(2)^n` admit zero compatible total orders each, while saturating addition and min admit some. The structural reason holds at every width: a finite cyclic group admits no translation-invariant total order."
 topic = "the_number_system"
 note = "`W any` is the source's own, licensed by the structural argument rather than by the sweep, which ran at two widths. The consequence the format unit draws is that comparison on a wrapped numeral is representative-order, which arithmetic does not respect, and it says the canon owes that sentence under every filing equally. The number-system unit draws a different one: an order-or-magnitude boundary for `number system` is measured empty, because it groups wrapping with a bit vector and splits wrapping from saturating inside one kernel item."
-gap = "The format unit records a further, untested hypothesis that the signed encoding trade, no bijective encoding of a signed value set having both raw-order agreement and raw-adder correctness, is this same theorem in disguise. Nobody has built it, and it would close the redundant-encoding hole if it were true."
+gap = "The format unit records a further, untested hypothesis that the signed encoding trade, no bijective encoding of a signed value set having both raw-order agreement and raw-adder correctness, is this same theorem in disguise. Nobody has built it, and it would close the redundant-encoding hole if it were true. Since resolved as its own independent result rather than as a reduction to this theorem: see law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness, established by uniqueness argument plus an exhaustive 4-bit check; whether it is literally the same theorem in disguise remains open."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::277",
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::286",
@@ -443,3 +443,22 @@ note = "Named F-H in its source, alongside the additive and multiplicative assoc
 gap = "As `additive_associativity_recovered_under_declared_nonnegative_operand_window`: one expert, restated rather than re-derived, and the originating probe sits outside this porting pass's slice. The source states this recovery holds over addition specifically; it says nothing about distributivity over subtraction under the same window, which is untested."
 provenance = ["panel::202608072330_the-numeral-canon-panel::106_giesen_consolidation_the_strategy_axis::1353"]
 keywords = ["distributivity", "multiplication", "addition", "saturate", "signed", "operand window", "declared non-negative", "congruence", "F-H"]
+
+[[law]]
+id = "no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness"
+statement = "For a signed representable set there is no bijective encoding that is simultaneously raw-order-agreeing (bit-pattern compare gives value order) and raw-adder-correct (the plain binary adder on patterns implements wrapped value addition)."
+holds = [
+  "signedness: signedness = signed",
+  "total_width: W any",
+]
+fails = []
+evidence = ["raw_order_agrees_for_offset_binary_and_not_for_twos_complement_or_sign_magnitude", "raw_order_and_raw_adder_correctness_are_exclusive_for_a_signed_4bit_set"]
+witness = "Exhaustive at 4 bits over the signed set [-8, 7], 256 pairs, four named encodings: two's complement has raw-adder correctness (256/256) and no raw-order agreement; offset binary (excess-8) has raw-order agreement and zero raw-adder correctness, with the defect the constant 8 mod 16 on every pair; a scrambled control has neither; unsigned identity on [0, 15] has both, which is the unsigned case the theorem excludes."
+topic = "the_format"
+note = "The structural reason is a uniqueness argument rather than only the sweep: a monotone bijection between two finite totally ordered sets is unique (the sorted correspondence), the probe constructs it and confirms it is offset binary, so for a signed set the only bijective raw-order-agreeing encoding is excess-K, and excess-K fails the adder property by the constant K. The trade is therefore forced by signedness (K nonzero), not an artefact of the four encodings sampled. Real hardware sits at both ends of it: IEEE 754 biases its exponent field because floats must sort as integers, and integer ALUs use two's complement because adds must be free."
+gap = "This is offered as answering, though not as a literal reduction of, the untested hypothesis recorded against `law::existence_of_a_translation_invariant_total_order` ('the signed encoding trade is this same theorem in disguise'). What is established here is the trade's forcedness by an independent uniqueness argument plus one exhaustive check at W=4; nobody has shown it is the same theorem as the no-translation-invariant-order result rather than a parallel one. Multiplication on biased/excess-K grids, and the redundant-encoding case (a column carrying two encodings to get both properties) are separately named as unexamined."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::56_knuth_the_four_choice_model_attacked::#6-the-encoding-axis-order-and-arithmetic-are-exclusive-for-signed-sets",
+  "panel::202608072330_the-numeral-canon-panel::56_probes::q3_signed_encoding_trade.rs::1",
+]
+keywords = ["encoding", "raw order", "raw adder", "excess-K", "offset binary", "two's complement", "forced trade", "memcmp", "biased exponent", "signedness"]

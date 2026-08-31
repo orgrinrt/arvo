@@ -364,8 +364,8 @@ topic = "the_number_system"
 says = "Moving one value into a declared system and combining several values from disagreeing systems are one obligation at two arities: both name a common ambient domain, a target representable set, and which reduction governs the loss, and both are schedules, the number and position of adaptation points being part of what the expression means."
 because = "The three things owed are identical in both cases, and the only difference is how many values arrive, so treating them as two mechanisms duplicates the obligation and lets the two drift. The schedule clause is what connects it to the chain concept: adaptation points are part of the meaning at any arity."
 answers = ["is_interoperation_conversion_or_resolution"]
-note = "The split, and its correct half, that resolution needs a rule rather than a conversion function, was posed by one file and credited by another; the two-arity unification and the schedule content are the second file's. One expert on the unification."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::526"]
+note = "The split, and its correct half, that resolution needs a rule rather than a conversion function, was posed by `66` (66:329-331) and credited explicitly by `71`, whose own assessment states \"What `66` got right and I would keep: resolution needs a rule, not just a conversion function. What the measurement adds is which rule.\" The two-arity unification and the schedule content are `71`'s. Provenance previously cited only 74's consolidation; `66` is added here per a same-day entailment check on the consolidation finding this credit dropped in violation of the consolidation's own stated merge policy (merge only where two files state one claim, authorship kept). One expert on the unification."
+provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::526", "panel::202608072330_the-numeral-canon-panel::66_dolan_number_systems_derived_cold::329", "panel::202608072330_the-numeral-canon-panel::71_orchard_what_crosses_between_two_systems::399"]
 keywords = ["conversion", "resolution", "arity", "schedule", "adaptation points", "common ambient", "N9"]
 
 [[proposal]]
@@ -468,8 +468,8 @@ topic = "validation"
 says = "At derivation, compile-time, per type: the declared representation is checked through its executable maps, exhaustively at a model width. At ingest, runtime, per datum: bits arriving without their construction history pass a membership door that is a pure function of the type's parameters and the bits. Between doors nothing checks and nothing needs to. A property a representation declares about itself counts only where a check ties it to the maps; a declared constant nothing reads is a comment with a type."
 because = "The two acts have different units, different times and different subjects, so one mechanism cannot serve both. The last clause is the same failure the derived-laws topic found one coordinate up, where an author-written law marker is a declaration checked by nothing, and it is the reason a declaration has to be tied to the maps rather than trusted."
 note = "One expert, and it contains an open question of op's: whether both acts are wanted, and where."
-gap = "Whether both acts are wanted, and where, is op's and is unanswered."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::590"]
+gap = "Whether both acts are wanted, and where, is op's and is unanswered. Two later, independent cold derivations on the derived-laws topic (76, 77) both built only the compile-time, per-type mechanism for a law and reported it as though it settled what op's validate verb means there, self-flagged by one as a real gap rather than a disagreement to resolve: whether a law is re-checked per incoming value at runtime is the identical open question, applying to a law with the same force it applies to a representation."
+provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::590", "panel::202608072330_the-numeral-canon-panel::76_willsey_derived_laws_derived_cold::334"]
 keywords = ["validation", "derivation", "ingest", "membership door", "declared constant", "maps", "model width", "N17"]
 
 [[proposal]]
@@ -1372,11 +1372,12 @@ predicate = [
 law = ["associativity_of_a_composed_saturating_add_and_subtract"]
 answers = ["may_an_arms_predicate_read_data"]
 evidence = ["a_trajectory_condition_lifts_exactly_when_it_survives_closure"]
-note = "The instruments are `82_probes/p1_box_lifting_of_p4.rs` and `p1b_is_every_lifted_box_degenerate.rs`, committed with output. The four widths the consolidation names without naming are 2, 3, 4 and 5, read off the instrument's own table. **The consolidation marks this low confidence for a reason unrelated to its content**: an earlier draft of that consolidation misattributed which of the supporting instances shared an author, and it records itself as having made and repaired the error. Nothing downstream cites it for an independence count."
+note = "The instruments are `82_probes/p1_box_lifting_of_p4.rs` and `p1b_is_every_lifted_box_degenerate.rs`, committed with output. The four widths the consolidation names without naming are 2, 3, 4 and 5, read off the instrument's own table. **The consolidation's own R8 text (`90:346-348`) conflates two separate honesty notes `82` makes about two different sets of three (its cross-persona convergence with 76 and 77, versus its own three internal instances), attaching the 'share an author' clause from the second to the items named in the first, which understates the cross-persona corroboration and overstates the single-author one. This was found by an entailment check (`91` finding 1) and is uncorrected in `90`'s own text as committed; a prior version of this note incorrectly claimed the consolidation self-repaired it, which `91`'s direct citation check refutes. Named moderate rather than severe because it sits inside an already-hedged section and nothing downstream cites R8 for an independence count.**"
 gap = "Stated as one-directional sufficiency by its own author. The length-aware construction that a bounded length would license is unbuilt. And the declaration a consumer would naturally write instead, that the exact result stays in range, is unsound: true while the law is false on 49.80% of the domain and wrong in 87.5% of the boxes satisfying it."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::341",
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::372",
+  "panel::202608072330_the-numeral-canon-panel::91_ringer_entailment_check_on_the_derived_laws_consolidation::83",
 ]
 keywords = ["lifting", "closure", "trajectory", "declaration", "declared range", "degenerate", "box", "21.98", "R8"]
 
@@ -1800,3 +1801,236 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#41-multi-instance-per-the-consolidations-own-account",
 ]
 keywords = ["reproduction", "rerun", "re-run", "instrument discipline", "blind spot", "R13", "derived laws", "transcript", "panel conduct", "reproducibility"]
+
+# --- delivery form of a fact carried as a kind: const-looped vs contract ----
+
+[[proposal]]
+id = "a_fact_delivered_as_a_const_a_generic_body_loops_over_costs_the_reduction"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_realisation_map"
+says = "A fact carried by the derivation is not shape-neutral once a consuming site executes it: delivering an access-byte count as an associated const that a generic body loops over is not the same design as delivering the identical access as a per-width trait contract, even though the ownership clause treats both as \"the fact is carried as a type\". At and above a width where the live access window reaches four bytes, the const-and-loop form serialises the reduction onto one accumulator and is worse code than a hand-written twin despite emitting fewer instructions; the per-width-contract form matches the hand-written twin at every width tested."
+because = "`51` swept 36 widths against a hand-written twin and found the erasure claim the panel had been carrying on one width's evidence (W=13) was a sampled law that breaks at W=18, isolated the boundary to the conjunction of loop-written form and width by holding shape fixed and sweeping width, and repaired it by moving the identical fact onto a trait with one impl per access width. The fix changes nothing a consumer writes at the call site: only how the derivation delivers the fact to the generic body."
+law = []
+evidence = ["a_packed_access_gather_written_as_a_loop_collapses_at_width_18"]
+predicate = [
+  "total_width: W in 18..=128",
+  "operation: operation = packed_access_gather",
+]
+note = "This is a codegen consequence of the kind clause rather than a fourth clause of it: the ownership/kind split says a fact is carried as a type when a generic body cannot recompute it, and this finding says a type carried as a const-bound loop and the identical fact carried as a per-value contract are not interchangeable at the site that consumes them. Priced only in instruction shape on one host and one toolchain (ONE EXPERT, counts read off emitted assembly, nothing timed); packing against not packing at these widths is separately unpriced and needs the bench harness. A third delivery form, a single fixed-width load, beats even the hand-written twin at W=47 by avoiding the one-accumulator collapse none of the other arms avoid there, which is the strongest form of the argument that the typestate is worth its friction: the derivation knows a fact (the buffer's tail) the call site does not."
+gap = "Whether the collapse boundary generalises past this one gather shape, and whether a general rule (\"a fact whose consuming loop bound is itself a fact the derivation owns should be delivered as a contract, not a const\") holds for other derived quantities, is untested outside this one construction."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#4-the-erasure-claim-was-a-sampled-law-and-it-breaks-at-width-eighteen",
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#6-two-attacks-both-of-which-land-and-neither-changes-what-a-consumer-writes",
+  "panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation::#3-4-the-contingent-further-fact-and-what-actually-turns-on-precise",
+]
+keywords = ["delivery form", "gather", "loop", "contract", "trait-supplied", "const", "kind clause", "codegen", "accumulator collapse", "small win"]
+
+# --- raw-order agreement is purchasable by encoding choice ------------------
+
+[[proposal]]
+id = "raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_format"
+says = "Raw-compare order agreement (comparing the bit pattern gives the same order as comparing the value) holds for exactly the monotone encodings of a value set, not only for plain unsigned. Offset binary (excess-K) at 4 bits is bijective onto the same value set as two's complement and its raw compare agrees with value order, which corrects an earlier claim that plain unsigned is the only integer-keyed encoding with this property to a claim about that file's own pool of encodings rather than about encodings in general."
+because = "One probe at one width measured it directly. The design consequence is that the operational property \"sortable by raw compare\" is purchasable by encoding choice for a signed value set, not forfeited by signedness: a strategy wanting memcmp-sortable columns can have that at the cost of the two's-complement convention, which is exactly why IEEE 754 biases its exponent field."
+evidence = ["raw_order_agrees_for_offset_binary_and_not_for_twos_complement_or_sign_magnitude"]
+predicate = [
+  "total_width: W = 4",
+  "signedness: signedness = signed",
+]
+note = "One probe, one width; offered as a refinement to a wider claim rather than as its own general theorem. The general statement (raw-order agreement holds for exactly the monotone encodings) is stated as the reading that explains the one measured instance, not itself independently swept."
+gap = "Whether the general statement (raw-order agreement iff monotone encoding) holds beyond the one measured case is untested. Whether a signed encoding can have both raw-order agreement and raw-adder correctness at once is now answered rather than open: see law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness, which shows the two are mutually exclusive for a signed set."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::55_smith_the_format_concept_derived_cold::#3-one-refinement-to-08-from-probe-3",
+]
+keywords = ["raw order", "memcmp", "sortable", "monotone encoding", "excess-K", "offset binary", "biased exponent", "IEEE 754", "two's complement", "encoding choice"]
+
+[[proposal]]
+id = "the_reachable_interval_is_the_true_grade_and_width_is_its_lax_abstraction"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "The quantity that composes exactly under repeated addition is the reachable interval (the Minkowski sum of the operand ranges), not the width. Width, computed by the rule g(W,V) = max(W,V) + 1, is not associative and is a sound but increasingly loose abstraction of the reachable interval as fold length grows. The multiplicative width rule g(W,V) = W + V is associative, so this is specific to addition."
+because = "Measured directly: the width composition rule fails associativity by exhibiting two different results for the two association orders, while the reachable-interval rule matches the measured exact reachable set exactly at every fold length from 1 to 6, with the slack between the two growing from 0 to 2 bits over that range."
+predicate = [
+  "total_width: W = 4",
+  "signedness: signedness = signed",
+  "operation: operation = add",
+  "chain_length: chain length in 1..=6",
+]
+evidence = ["the_reachable_interval_composes_exactly_where_width_does_not"]
+note = "This is the same relationship interval arithmetic generally has to width analysis, offered as a design-level statement about which of the two the canon should treat as primary: the reachable set as the intent, width as the derived conservative quantity an implementation computes from it. Distinct from the retired 'grade monoid' claim (retirement::dl_is_exact_alone_as_a_trivial_grade_monoid), which is about an operation's IS_EXACT flag in an unrelated context from an earlier, superseded panel."
+gap = "Measured for addition at one width and one signedness, over operand ranges drawn from one interval. Whether the same relationship holds for multiplication's accumulator (linear rather than logarithmic growth, per proposal::an_accumulator_is_decided_by_the_operation_and_by_whether_a_bound_exists) is not addressed here."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::57_orchard_the_grading_and_the_refutation::#3-job-two-the-grading-second-read",
+]
+keywords = ["grading", "reachable interval", "Minkowski sum", "width", "accumulator", "interval arithmetic", "lax abstraction", "associativity"]
+
+[[proposal]]
+id = "a_range_clamp_and_a_coarsening_are_two_independent_sufficient_causes_of_multiplicative_non_associativity"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "Coarsening alone (a fixed-width rescale with no clamp) and an intermediate range clamp alone (at full fractional precision, zero coarsening loss) are each independently sufficient to break multiplicative associativity in a fold of length three or more. Neither needs the other. Where both are present the composite fails less than coarsening alone, because the clamp can absorb distinct wrong values onto a shared bound by accident, which is evidence the two mechanisms interact rather than evidence that either is clean at F > 0."
+because = "Coarsening-alone sufficiency was established in `57_probes/p4`'s `CoarsenOnly` arm (unbounded range, no clamp, still breaks). Clamp-alone sufficiency is the new half: `58_probes/p2` section 2 holds coarsening at zero (full guard width, matching `exact_once`'s own shape) and adds an intermediate clamp back in, and the with-clamp fold still diverges (448 of 4096 triples at fold length 3, 11528 of 65536 at fold length 4) against zero for the no-clamp control at the same precision. The masking direction (composite fails less than coarsening alone, 398 against 1160 at the row `57` itself measured) was noticed by `57` without its mechanism being named; naming it is that two independent lossy maps compose to a joint failure count that is neither the sum nor the maximum of either alone."
+predicate = [
+  "total_width: total width = 4 (M = 15)",
+  "fraction_width: F in {1, 3}",
+  "signedness: signedness = unsigned",
+  "overflow_policy: overflow policy = clamp",
+  "operation: operation = mul",
+  "arity: arity in {3, 4}",
+]
+evidence = ["an_intermediate_range_clamp_alone_breaks_multiplicative_associativity_at_full_precision", "which_factor_of_a_reduction_breaks_the_semiring"]
+law = ["multiplicative_associativity_under_wrapping"]
+note = "`total_width`, `fraction_width` and `arity` are the two instruments' own stated parameters and nothing wider; neither instrument varied signedness, rounding mode, or overflow policy in the clamp-alone arm, so this predicate does not transfer to the signed or saturate rows the neighbouring law row separately establishes at `F > 0` by other means. `threads` and `target_features` are absent because neither instrument names them, so under I13 this holds in no situation where threads exist. The relation to `multiplicative_associativity_under_wrapping` is that this refines its `witness` field's attribution of the mechanism from 'a representable-width multiply discards F bits' to 'two independent lossy mechanisms exist, coarsening and clamping, either alone sufficient'; the existing witness is not wrong, it names the mechanism this proposal's predicate does not reach (unbounded fold, wrap policy, not clamp), so the two are complementary rather than competing accounts."
+gap = "Whether an intermediate SATURATING clamp (rather than the hard clamp measured here) shows the same independent-sufficiency behaviour is untested; the mechanism argument (an intermediate bound applied mid-fold, before the final narrowing, is itself a lossy step regardless of what happens at the bound) suggests it would, but suggestion is not the standing this registry records."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::58_wronski_the_fraction_boundary::226",
+  "panel::202608072330_the-numeral-canon-panel::58_wronski_the_fraction_boundary::276",
+  "panel::202608072330_the-numeral-canon-panel::57_orchard_the_grading_and_the_refutation::399",
+]
+keywords = ["range clamp", "coarsening", "independent mechanisms", "multiplicative", "associativity", "masking", "absorption", "composite"]
+
+[[proposal]]
+id = "absorption_is_the_correct_associativity_criterion_and_literal_coherence_is_a_strictly_narrower_law"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "Absorption and a literal reading of coherence (both fold operands independently reduced before combining) are the same law exactly on the domain a real fold ever presents, and different laws the moment either sweep tests an operand drawn from outside the representable set. Where they diverge, absorption is the one that agrees with measured associativity; a design using literal coherence as its associativity criterion would be wrong on precisely the configurations where the two laws part ways, never merely imprecise."
+because = "Exhaustive over two independently shaped sweeps (4248 and 7744 configurations, addition and multiplication both), the disagreement set between absorption and coherence-ext is identical, configuration for configuration, to the set where the operand box extends outside the representable set Q, with zero exceptions in either direction. Absorption matches directly measured associativity on every configuration in both sweeps; coherence-ext mismatches on exactly the configurations it disagrees with absorption on. The mechanism is that every real arvo numeral is format-typed, so a genuine fold operand is always already an element of Q, and coherence's second reduction is then a no-op that makes the two laws collapse to one identically."
+predicate = [
+  "total_width: total width = 4 (M = 15)",
+  "operation: operation in {add, mul}",
+  "arity: arity = 2",
+  "overflow_policy: overflow policy = clamp",
+]
+evidence = ["absorption_and_coherence_ext_agree_exactly_when_the_second_operand_is_representable"]
+law = ["multiplicative_associativity_under_wrapping"]
+note = "`signedness`, `fraction_width`, `rounding` and `threads` are absent because the source's two sweeps vary neither: both are unsigned, F is not stated as varying, and the sweeps are silent on threads, so under I13 this holds in no threaded situation and does not transfer to the signed domain by this evidence alone. The `law` field points at the neighbouring multiplicative-associativity row because this proposal is about which CRITERION correctly identifies associativity, not about a new region where associativity itself holds or fails; the two are complementary."
+gap = "A second, weaker mechanism is measured but not this proposal's subject: instantiating a literal window-based coherence law directly at a configuration's own box (rather than at the theoretically-correct reachable-sum domain) disagrees with absorption far more often (681 of 4248), including inside the outside-Q partition's complement. That is a caution about naive instantiation of an existing law and is recorded on the evidencing probe's `note` field rather than promoted to its own predicate here, since it was not this file's crux and the source says so explicitly."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::61_absorption_against_coherence::44",
+  "panel::202608072330_the-numeral-canon-panel::61_absorption_against_coherence::116",
+]
+keywords = ["absorption", "coherence", "associativity criterion", "representable set", "fold", "reduced operand"]
+
+[[proposal]]
+id = "a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing"
+kind = "answer"
+sentence_kind = "theorem"
+standing = "one_expert"
+topic = "the_chain"
+says = "Addition composes headroom logarithmically and multiplication composes width linearly: a fold of k adds at fraction width F is held exactly by ceil(log2 k) extra integer bits with the fraction width untouched, while a fold of k multiplies held exactly needs the sum of every fraction width involved, kF bits at uniform F. So holding a whole multiplicative chain exactly is not a design worth wanting past a short length, and a windowed schedule (a bounded subterm evaluated exactly and adapted once at its exit) is what makes a chain of multiplies writable without an ever-growing intermediate: a per-op schedule pays k adaptations at constant width, a windowed schedule pays ceil(k/w) adaptations at width w times (I+F), and the fully exact schedule pays one adaptation at width linear in k, worth paying only when the chain is short. The window capacity is a static function of the container width and the operand formats, derivable by the same typestate that derives the container."
+because = "The width arithmetic is exact and elementary (a sum of k values each of fraction width F needs kF fraction bits to hold every step exactly; a fold of k adds needs only ceil(log2 k) extra integer bits because addition never grows the fraction). The route is the derivation itself, and the probe confirms the windowed schedule's correctness directly: a windowed three-element dot product is correctly rounded on every one of 46656 tested inputs, where staged per-step narrowing drifts on the large majority of the same inputs."
+predicate = [
+  "operation: operation = mul",
+  "arity: arity = 3",
+  "fraction_width: F = 8",
+]
+evidence = ["a_wide_exact_fold_with_one_final_narrow_is_correctly_rounded_where_staged_narrowing_drifts"]
+law = []
+obligation = ["composition_contracts_above_the_numeral"]
+note = "The width-arithmetic half of this claim (ceil(log2 k) versus kF bits) is exact for any k and any F, established by elementary counting rather than by the probe; the predicate above states only the probe's own tested region (k = 3, F = 8) because that is the strongest thing the committed evidence lets this row assert without inflating standing. `threads` and `target_features` are absent because the probe names neither, so under I13 this holds in no threaded situation. This is the mechanism that makes proposal::a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points's window concept a real, costed design rather than a name for an unexamined idea; that proposal already states windows exist and are typestate-derived, this proposal adds the three-way cost comparison (per-op, windowed, fully exact) and the elementary reason a window is worth having at all."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::60_stam_the_chain_derived_cold::122",
+]
+keywords = ["window", "chain", "multiplicative", "fold", "cost", "adaptation", "typestate", "capacity"]
+
+[[proposal]]
+id = "the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked"
+kind = "finding"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_number_system"
+says = "The construction pipeline's soundness claim rests on nine named trust items, walked in full: (1) rustc's const evaluator and trait solver, trusted rather than proved, gated by its own evaluation budget; (2) the repr(transparent) layout guarantee, a language semantics fact with size assertions as regression pins; (3) the ban list holding (dyn, TypeId, full specialization), which makes monomorphisation the dispatch, trusted but known insufficient for width transfer alone; (4) the model-width transfer proviso (no law-relevant path keyed on width), an unchecked prose discipline with a recorded counterexample class and the single most load-bearing unchecked item on the list; (5) validation-through-the-maps rather than through declarations, since validation reading declared constants checks paper against paper and cannot see an overstatement; (6) the construction perimeter of every erased type (private fields, doors establishing membership, no path to a value that skips them), an obligation this unit's own probe discharges nowhere because it has no doors at all; (7) Rust's soundness boundary, since any unsafe or FFI crossing anywhere in the shipped program sits outside every guarantee the typestate states; (8) transcript-to-source correspondence, broken once in this unit by a transcript of an uncommitted scratch file and repaired, kept on the list because the class recurs; (9) operation erasure per instance, demonstrated at trivial instances, refuted at a nontrivial one, unpriced everywhere else."
+because = "Walked deliberately as a list, one item per named trust boundary in the pipeline from consumer-stated usage to the erased runtime value, rather than asserted as a single blanket guarantee. Each item's own checked-or-not status is stated alongside it rather than presented uniformly, which is the discipline this row preserves: a later reader citing 'the trusted base' without this enumeration has no way to know which of the nine is the one that is currently unchecked and load-bearing."
+gap = "Items 4 and 6 are stated as currently unaddressed rather than merely unchecked: item 4 has a recorded counterexample class and is called the single most load-bearing unchecked item; item 6 is discharged nowhere in this unit's own probe because that probe has no doors at all. A second, independently written proposal in a different topic (the degree-box law-transfer material) explicitly notes 'the transfer is not on the trusted base list, because there is none', confirming from an unrelated direction that no prior registry row carried this enumeration for a citer to find."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::68_leroy_what_the_pipeline_certifies::226",
+]
+keywords = ["trusted base", "construction pipeline", "soundness", "erasure", "model-width transfer", "construction perimeter", "unsafe", "FFI", "operation erasure"]
+
+[[proposal]]
+id = "the_change_test_survives_only_as_a_crossing_and_compatibility_classifier_not_as_a_boundary_definition"
+kind = "refusal"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "the_number_system"
+says = "The change-test cannot serve as the number-system concept's boundary definition, because it misfiles its own dependency edges against its own source's prose: applied literally it leaves one edge unclassified and the charitable repair that fixes that edge then misfiles a different one against where the same document's own earlier section files it. The instrument survives only in a narrower role, as a crossing and compatibility classifier, which is what the consolidation's candidate text for crossings and compatibility actually rests on."
+because = "A discriminator that disagrees with its own source's stated classification of one of its own components is not a working boundary test; the disagreement is internal (test versus prose in one document) rather than a matter of interpretation, so no reading of the test resolves it without either changing the test or changing the prose."
+predicate = [
+  "operation: operation = none (this is a classificatory instrument, not an arithmetic operation)",
+]
+evidence = ["the_change_test_misfiles_its_own_hierarchy_against_its_own_prose"]
+instead = "Keep the instrument as a crossing and compatibility classifier, the role the consolidation's candidate text already uses it in; do not cite it, or any restatement of it, as a definition of where the number-system concept's boundary lies."
+note = "The consolidation this proposal repairs already reaches the correct outcome (no boundary-definition candidate from this test enters its canon text); what was missing is the reason, which a same-day independent entailment check found absent and is the source of this row. `predicate` is written as a placeholder rather than omitted, since sentence_kind is not normative or definition and the schema requires one; this claim genuinely does not range over a numeric dimension, being about an internal-consistency defect in a design instrument rather than about arithmetic."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::75_arntzen_entailment_check_on_the_number_system_consolidation::58",
+  "panel::202608072330_the-numeral-canon-panel::70_lattner_levels_are_clients_not_facts::284",
+]
+keywords = ["change test", "boundary", "crossing", "compatibility", "classifier", "discriminator", "misfile"]
+
+[[proposal]]
+id = "a_resolved_strategy_never_inherits_a_composed_operations_laws_but_dominates_them_monotonically"
+kind = "finding"
+sentence_kind = "argument"
+standing = "one_expert"
+topic = "algebraic_laws"
+says = "A composed operation under a resolved strategy does not inherit the laws of either operand strategy. The honest meta-law is monotonicity of the resolution rule itself: the resolved strategy's laws are never weaker than whichever operand's laws the resolution rule is defined to dominate, stated and checked as a property of the join operator, never assumed as a property of the numeral operations the resolved strategy goes on to perform."
+because = "An operator exact under one strategy and exact under a second, composed under their resolved (more conservative) strategy, is not guaranteed to inherit exactness from either side. The resolved strategy is a third thing with its own laws, chosen per arvo-toolbox-not-policer.md's 'more conservative side' framing to be at least as strong as the weaker operand's, not to be the union of both operands' laws."
+predicate = ["operation: operation = resolve (strategy join)", "strategy: strategy = product order over two independent axes, generic labels rather than Hot/Warm/Cold/Precise", "threads: threads any", "target_features: target features any"]
+answers = ["which_strategys_laws_govern_a_cross_strategy_operation"]
+evidence = ["a_two_axis_strategy_resolve_rule_is_checked_as_a_semilattice_join_at_compile_time"]
+note = "Offered as a direction rather than a settlement; its author explicitly declines to resolve, in the same file, whether the strategy space is a single ranking or a genuine multi-axis lattice, saying I8's 'they weigh different measurements differently' is compatible with either reading. This meta-law is what the probe's associativity check demonstrates one level abstracted: a property of the join operator itself, not of the operations it composes."
+provenance = ["panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::295"]
+keywords = ["resolution", "cross-strategy", "monotonicity", "join", "inheritance", "meta-law", "Q27"]
+
+[[proposal]]
+id = "whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra"
+kind = "finding"
+sentence_kind = "argument"
+standing = "two_experts"
+topic = "algebraic_laws"
+says = "Whether an operation needs chain-level accumulator machinery is a fact about whether that operation's rounding step is closed under the algebraic structure its own outputs feed back into. Addition's outputs stay in the same additive coset of quantized values, so a chain of additions is exact whenever it does not overflow and needs no chain machinery. Multiplication's outputs do not stay in the same multiplicative structure without widening, because the exact product needs 2F bits and a naive per-step round-back discards information every step."
+because = "Two authors reached this independently: one built the mechanism-level chain-error measurement (probe1_chain_error.py), the other derived the closure framing from it as a correction to a weaker prior claim ('the unit is (strategy, {operations composed})'), adopting the sharper version explicitly rather than restating the weaker one. Both derivations happened before either read the other's phase one."
+predicate = ["operation: operations {add, mul}", "fraction_width: F > 0", "chain_length: chain length in 1..=256", "threads: threads any", "target_features: target features any"]
+evidence = ["additions_chain_error_is_zero_by_closure_while_multiplications_plateaus_at_twice_one_step"]
+note = "Consolidated into R11 of `90` alongside the grouping-versus-schedule split, but R11's own registry row (`chain_laws_split_by_whether_a_lifting_theorem_exists`) carries only the grouping/schedule content; this closure-mechanism sub-finding had no row of its own before this port despite being cited by name at `90:457-462`."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::76_willsey_derived_laws_derived_cold::363",
+  "panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::213",
+]
+keywords = ["chain", "closure", "addition", "multiplication", "rounding", "accumulator", "widening", "R11"]
+
+[[proposal]]
+id = "a_folds_compile_time_refusal_is_the_staging_boundary_reporting_its_own_position"
+kind = "finding"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_chain"
+says = "A chain law's derivability is a staging question, not a limitation of the type system to work around. A chain whose shape (schedule, length) is known at stage zero is one static object that a set-of-composed-operations reading and a judgment-over-expression-forms reading both describe identically; a chain whose length is known only at stage one has no stage-zero object for either reading to be a property of. Capacity is stage zero and length is stage one, which is why a capacity-keyed accumulator relation compiles gate-free while the same relation keyed on length is refused: the refusal is the staging boundary reporting its own position, not an artefact of the fold construction."
+because = "Two independent derivations (76's set-of-operations-composed and 77's judgment-over-expression-chains) were shown to agree exactly on the static-schedule region and diverge exactly at its edge, once read through the staging lens rather than compared as competing formalisms. The register's own fold refusal (`35`, four formulations, four negative controls) and the capacity/length aggregate boundary (`43`) are two independent prior findings read as the same mechanism from other directions."
+answers = ["what_a_numeral_guarantees_to_a_fold"]
+note = "The staging framing does not resolve either of `76`/`77`'s underlying claims; it explains where they agree and where they stop applying. Cited by the unit's own consolidation as explaining Q11 and Q12 from this unit's side, but had no row of its own before this port."
+provenance = ["panel::202608072330_the-numeral-canon-panel::80_rompf_when_the_deriving_happens::552"]
+keywords = ["staging", "stage zero", "stage one", "fold", "accumulator", "capacity", "length", "chain", "compile-time refusal", "Q11", "Q12"]
+
+[[proposal]]
+id = "a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_strategy_axis"
+says = "A strategy is a consumer-supplied statement of what matters, over measurements rather than over implementations, naming no implementation and owning none. It has three parts distinguished by polarity: what the consumer wants weighed (joins by union, silence as identity), what the consumer must declare because it changes the computed answer and no later consumer can recover it (does not join, a genuine conflict where operands disagree), and what the resolver produces because it changes only cost (no mixing question, nothing observable distinguishes two resolutions). What reaches the compiler is a table, evaluated offline, constrained to be explicable by one statement of what matters. Which laws a configuration honours is computed rather than chosen: an identity holds exactly where the realisation map respects the nestings it contains, an order law holds exactly where that map is monotone."
+because = "Offered as a synthesis its author believes 93, 94, 40, 25 and its own findings jointly support, written explicitly so a consolidation may take it, argue with it, or leave it. Not independently re-derived; collated from material already in the register plus this file's own attack."
+note = "**Explicitly a suggestion, nothing here settled, op decides**, per its own author's framing in response to op's `95` asking a unit to end in agreement with at least something. This is a candidate structural definition for the strategy axis, not a ratified one. The strategy_axis unit's own consolidation, if and when one exists past this panel's file 099, is the place this should be checked against rather than superseded silently."
+provenance = ["panel::202608072330_the-numeral-canon-panel::97_dolan_the_strategy_space_attacked::912"]
+keywords = ["strategy", "polarity", "weighting", "measurement", "join", "conflict", "table", "realisation map", "monotone", "converged statement"]

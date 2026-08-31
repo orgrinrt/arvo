@@ -1306,3 +1306,130 @@ defect = "Root cause, found in 22: `run_orchestrator` never calls `validate`, an
 standing = "sound"
 note = "The smoking-gun instance is the `precise-container-width-l1_*` family's `warm-container-kernel` arm: 3.3 to 4.2ns/call, 12,365 to 17,022 Gops/s against a roofline of about 256 Gops/s, caused by LLVM proving a saturating fixpoint absorbing after 3 of 1024 loop iterations (an interval-arithmetic proof, verified in 22 by three predictions stated in advance and all holding). The harness's own statistics text recommends it: \"warm-container-kernel dominates: 190167% faster than the next best.\" The control is not systemic: the identical arm in the sibling family `warm-container-width-l1` sits mid-pack (946.7ns, third of six), so this is one family and configuration rather than every committed number being suspect. 41's corpus-wide predicate (arm mean at least 50x below the next best in its own file) fires exactly six times, all the same family and arm, at ratios 844x, 839x, 688x, 607x, 566x and 318x."
 keywords = ["digest", "fidelity", "validate", "run_orchestrator", "run_worker_validate", "roofline", "absorbing fixpoint", "interval arithmetic", "190167%", "warm-container-kernel", "positive control"]
+# --- delivery form of a packed-access gather ---------------------------------
+
+[[probe]]
+id = "a_packed_access_gather_written_as_a_loop_collapses_at_width_18"
+establishes = "For a packed-sequence access gather compared against a hand-written twin across widths 1 to 128 (matrix run to 48, robustness swept to 4096 elements): written as a loop over an associated const access-byte-count, the typed arm's instruction shape matches the hand arm at every width at or below 17 and stops matching at 18 and above, where it collapses to one accumulator and one element per iteration (11 instructions against the hand arm's 34 at W=19, a serial reduction chain of 6 dependent instructions per element against 2). Fewer instructions and worse code: the recurrence, not the opcode count, is what regressed. Delivering the identical access as a trait-supplied gather with one impl per access width (no loop over the const) erases against the hand-written twin at all 36 of 36 widths tested, including the whole band from 18 up, and recovers the accumulator split (5 against 1 at W=19). A third form, a single fixed 8-byte load plus a shift, does not erase at most widths (it is different code, often better: 14 instructions against 43 at W=8) and at W=47 is the only arm that avoids serialising onto one accumulator, beating even the hand-written twin."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::51_probes::v3_matrix.out::1",
+  "panel::202608072330_the-numeral-canon-panel::51_probes::fixed_gather.out::1",
+  "panel::202608072330_the-numeral-canon-panel::51_probes::robustness.out::1",
+  "panel::202608072330_the-numeral-canon-panel::51_probes::gen_access_control.py::1",
+  "panel::202608072330_the-numeral-canon-panel::51_probes::gen_fixed_gather.py::1",
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#4-the-erasure-claim-was-a-sampled-law-and-it-breaks-at-width-eighteen",
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#5-the-mechanism-and-the-control-that-refuted-my-first-attribution",
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#6-two-attacks-both-of-which-land-and-neither-changes-what-a-consumer-writes",
+]
+control = "Two controls, stated before the run, isolate what the boundary responds to. The first (`gen_access_control.py`) holds W fixed at 13 and sweeps the access-byte count from 1 to 8, expecting divergence if access count alone drove the collapse; it found none, because at W=13 the extra bytes are masked away and LLVM proves the loads dead, which the probe reports as a failed control rather than as a result and moves on from. The second (`gen_fixed_gather.py`) holds the gather shape fixed at 8 bytes across three code forms (loop, flat, wide-load) and sweeps only W; this is the control that fired, and it isolates the collapse to the conjunction of loop-written form and W >= 18 (equivalently, live access window >= 4 bytes): `flat8` does not collapse at any width, `loop8` does not collapse below 18, `loop8` collapses at and above 18. Robustness swept two optimisation levels, `target-cpu=native`, and element counts from 64 to 4096; the accumulator-count metric held stable across every configuration except `-Os`, which is reported separately as degenerate because nothing unrolls there and the metric cannot distinguish the arms."
+defect = "The instrument's first headline (\"erases at 18 of 36 widths\") was itself a sampled law and its own author caught it: at n=4096 the typed arm also differs from the hand arm at four widths below 18 by emitting one fewer instruction and one fewer load on the same accumulator count, which is an improvement misread as a regression by a same/different metric. The accumulator-count metric replaces it because it names a regression rather than a difference."
+standing = "sound"
+note = "The panel's original single-width evidence for the erasure claim sat at W=13, which the sweep found is on the working side of a boundary nobody knew existed, by luck rather than design (W=13 was chosen for being coprime with 8, cycling the bit phase through every offset). Packing against not packing is separately named unpriced: the packed arms run 34 to 43 instructions with five accumulators against an unpacked walk's 49 instructions with zero identified accumulators, and the two touch different amounts of memory, so the comparison needs the bench harness rather than an instruction count."
+keywords = ["packed access", "gather", "loop", "accumulator", "collapse", "erasure", "sampled law", "delivery form", "trait-supplied", "wide load", "recurrence", "W=18"]
+
+# --- encoding as a separate axis from the denoted value set -----------------
+
+[[probe]]
+id = "raw_order_agrees_for_offset_binary_and_not_for_twos_complement_or_sign_magnitude"
+establishes = "Exhaustive at 4 bits over three classical signed encodings of a 4-bit signed integer: two's complement and offset binary (excess-8) denote the same value set [-8, 7] through different pattern maps, so encoding does not touch the value set when both are bijective onto it; sign-magnitude denotes a different, redundant set ([-7, 7], two patterns for zero, 15 distinct values of 16 patterns). Raw (unsigned pattern) compare agrees with value order for offset binary and disagrees for two's complement and sign-magnitude, so \"comparable by raw compare\" lives on the encoding axis rather than the value axis."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::55_probes::p3_encoding_is_a_separate_axis.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::55_probes::p3_output.txt::1",
+]
+control = "A mutant offset encoding (K=7 instead of K=8) is checked and detected as not matching value order, so the raw-order-agreement result is not a tautology of the checking code."
+standing = "sound"
+note = "The direct evidence behind proposal::raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned and behind law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness's raw-order half; the adder-correctness half of that law comes from a separate probe (56_probes/q3_signed_encoding_trade.rs)."
+keywords = ["encoding", "value set", "pattern map", "raw order", "offset binary", "two's complement", "sign-magnitude", "redundant", "bijective", "mutant"]
+
+[[probe]]
+id = "raw_order_and_raw_adder_correctness_are_exclusive_for_a_signed_4bit_set"
+establishes = "Exhaustive at 4 bits over the signed set [-8, 7], 256 pairs, over two's complement, offset binary (excess-8), a scrambled control encoding, and unsigned identity on [0, 15]: two's complement has raw-adder correctness (256/256) and no raw-order agreement; offset binary has raw-order agreement and zero raw-adder correctness, with a constant defect of 8 (mod 16) on every pair; the scrambled control has neither (26/256 adder-correct pairs, no order agreement); unsigned identity has both. The unique monotone bijection between the pattern space and the value space is confirmed to be offset binary, and a mutant offset (K=7) is confirmed to break the sorted correspondence."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::56_probes::q3_signed_encoding_trade.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::56_probes::q3_output.txt::1",
+]
+control = "The mutant offset (K=7) must break the sorted correspondence, and does. The offset-binary adder defect must be the constant 8 mod 16 exactly as the uniqueness argument predicts, and it is (`Some(8)` against an expected `Some(8)`), so the exhaustive count is confirming a predicted structural constant rather than reporting an unexplained number."
+standing = "sound"
+note = "The adder-correctness half of the evidence behind law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness. The raw-order half is probe::raw_order_agrees_for_offset_binary_and_not_for_twos_complement_or_sign_magnitude, from the same unit's earlier file."
+keywords = ["encoding", "raw order", "raw adder", "offset binary", "two's complement", "scrambled", "unsigned identity", "constant defect", "uniqueness", "signed", "exhaustive"]
+
+# --- what grades an accumulator: width or the reachable interval -----------
+
+[[probe]]
+id = "the_reachable_interval_composes_exactly_where_width_does_not"
+establishes = "The width-growth rule g(W,V) = max(W,V) + 1 for repeated addition is not associative: g(g(5,0),0) = 7 against g(5,g(0,0)) = 6. The multiplicative rule g(W,V) = W + V is associative, so products do grade over widths where sums do not. For n operands drawn from Q = [-8, 7], the measured reachable set of exact sums equals the Minkowski sum [n*lo, n*hi] exactly at every n from 1 to 6, and the width computed by repeated max+1 is a sound but increasingly loose image of it: the slack between the exact bit count needed for the measured range and the repeated-max+1 bit count grows from 0 at n=2,3 to 2 at n=6."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p5_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::57_orchard_the_grading_and_the_refutation::#3-job-two-the-grading-second-read",
+]
+control = "The non-associativity of the width rule is exhibited directly by naming the two different results of the two association orders, g(g(5,0),0) versus g(5,g(0,0)), rather than merely asserted."
+standing = "sound"
+note = "The design consequence: the value set (the reachable interval) is what composes exactly under repeated addition; width is a derived, conservative abstraction of it that loosens with fold length. Says which of the two a canon should state as primary: the reachable set, with width as the thing an implementation computes from it."
+keywords = ["grading", "grade monoid", "width", "reachable interval", "Minkowski sum", "accumulator", "associativity", "interval arithmetic", "fold length"]
+
+[[probe]]
+id = "an_intermediate_range_clamp_alone_breaks_multiplicative_associativity_at_full_precision"
+establishes = "Holding the fractional axis at full guard width (zero coarsening loss anywhere in the fold) and adding an intermediate range clamp back in, the with-clamp fold still diverges from the no-clamp control: 448 of 4096 triples at fold length 3, 11528 of 65536 at fold length 4. A range clamp alone, with the coarsening mechanism entirely paid off, is a real and sufficient source of multiplicative non-associativity in its own right; it is job one's absorption/reachability mechanism, previously shown only inside additive folds, now shown acting inside a multiplicative one."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::58_probes::p2_multiplicative_grade_does_not_collapse.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::58_probes::p2_output.txt::20",
+]
+control = "The no-clamp arm at the same full guard width is the control: it measures zero divergence at every fold length checked, so the with-clamp arm's non-zero counts are attributable to the clamp and not to residual fractional loss. The output states the check directly: at every guard width measured, with-clamp divergence is greater than or equal to no-clamp's, i.e. the second mechanism only adds failures, never substitutes for the first."
+reproduced = "None. One instrument, one author."
+defect = "The result was first produced by accident: an earlier version of this probe clamped the accumulator at every fold step even at full guard width, which should be impossible to distinguish from exact integer multiplication and instead reported a wrong-looking divergence. The raw output is kept as `58_probes/p2_output.v1_bug.txt` rather than deleted. Re-read rather than dismissed, the 'bug' was the finding: clamping every step is exactly what an intermediate range clamp is, and it is a second, independent lossy mechanism the fractional-axis probe had not isolated from coarsening."
+standing = "sound"
+note = "This corrects a misreading of an earlier probe (`probe::which_factor_of_a_reduction_breaks_the_semiring`, `57_probes/p4`'s `ClampOnly` arm), which reads as isolating range-clamping's contribution at nonzero fraction width but is, by inspecting its own source (`match self.factor { Factor::ClampOnly => (a * b).clamp(0, self.m), ... }`, the multiply never reads the fraction shift), the `F = 0` case under a label that implies the other. No claim in this registry currently asserts clamping is innocent at `F > 0` from that probe (nothing cites it as evidence), so this is a correction of a reading that had not yet propagated rather than a retraction of a stamped claim; still worth recording because the mislabelled arm is easy to re-cite as though it tested what its name says. This probe is the corrected, controlled version of that same question, isolated the other direction: coarsening held at zero, clamp varied."
+keywords = ["multiplicative", "associativity", "range clamp", "coarsening", "independent mechanism", "absorption", "fold", "F = 0"]
+
+[[probe]]
+id = "absorption_and_coherence_ext_agree_exactly_when_the_second_operand_is_representable"
+establishes = "Absorption (a fold's later operand reduced once, at the end) and coherence-ext (both operands independently reduced before combining, the literal reading of an existing coherence law) disagree on exactly the configurations where the operand box extends outside the representable set Q, and never otherwise. Addition: 252 of 4248 configurations disagree, all 252 with a box element outside Q, zero when the box is a subset of Q; a widened 7744-configuration sweep at wider boxes and tighter clamps reproduces the identical partition at 220 disagreements. Multiplication: 240 of 4248, reproduced at 206 of 7744, same partition. Where they disagree, coherence-ext is the one wrong against measured associativity (matches on exactly the same 252/240/220/206 configurations it disagrees with absorption on); absorption matches measured associativity on every configuration in both sweeps, zero mismatches."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::61_probes::q1_absorption_versus_coherence.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::61_probes::q1_output.txt::1",
+]
+control = "Two independent checks against ground truth are stated per row: whether absorption and coherence-ext agree with each other, and whether each agrees with directly measured associativity. A boolean partition on 'box subset of Q or not' is checked against the disagreement set on every configuration in two differently-shaped sweeps (4248 and 7744 configurations), not sampled; both reproduce the identical partition, which is the case that had to fail (a sweep finding disagreements NOT confined to the outside-Q partition would have refuted the mechanism claim)."
+standing = "sound"
+note = "A second, weaker and distinct mechanism is also measured: instantiating an existing literal window-based coherence law (`56_probes/q1`'s own shape) directly at a configuration's own box disagrees with absorption far more often (681 of 4248 for addition), including 429 times even where the box is entirely inside Q. That is a domain-size defect (the window-restricted check never examines values the fold's reachable sum can actually take), distinct from and in addition to the reduced-operand mechanism above; it is a caution about a naive instantiation rather than the crux of this finding. Every arvo numeral in memory is format-typed, i.e. already an element of the representable set by construction, so a real fold operand always satisfies the condition under which absorption and coherence-ext collapse to one law; the two laws separate only for a synthetic operand that could not occur in a real fold."
+keywords = ["absorption", "coherence", "coherence-ext", "reduced operand", "representable set", "Q", "partition", "fold", "associativity"]
+
+[[probe]]
+id = "a_wide_exact_fold_with_one_final_narrow_is_correctly_rounded_where_staged_narrowing_drifts"
+establishes = "A three-element dot product evaluated as a windowed schedule (products and sum held exact, one narrow at the end) is correctly rounded against the true value on all 46656 tested 3-element raw-vector input pairs at fraction width 8. Two staged schedules (narrowing after each step, under truncation and under round-to-nearest-even respectively) are not: 42892 and 15628 of the same 46656 inputs drift, up to 3 ulp and 2 ulp respectively."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::60_probes::p_a_dot_schedules.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::60_probes::p_a.out::1",
+]
+control = "A mutant of the window arm (wide-exact-fold but truncating instead of round-to-nearest-even at the single final narrow) is run alongside and flagged on 22476 of the 46656 inputs, confirming the instrument can detect drift and is not vacuously passing every arm."
+standing = "sound"
+note = "This is the constructive complement to the negative result that an eager, per-step multiplicative schedule cannot supply an exactly associative ambient operation at nonzero fraction width: holding the whole subterm exact and narrowing once, rather than narrowing after every step, recovers correctness for the tested case. `README.md` in this probe directory names it 'probe A'."
+keywords = ["window", "schedule", "dot product", "correctly rounded", "staged narrowing", "chain", "exact fold", "multiply-accumulate"]
+
+[[probe]]
+id = "the_change_test_misfiles_its_own_hierarchy_against_its_own_prose"
+establishes = "Running the change-test discriminator (op's original hierarchy criterion) mechanically against the concept's own five dependency edges: the identity-domain, representable-set and reduction edges all classify as 'system' moved; the container edge classifies as 'format'; and the encoding edge is unclassified under the literal text, because the representation clause demands named values change and an encoding swap changes none. The charitable repair (dropping the values-changed conjunct) correctly files the encoding edge but then misfiles the representable-set edge, which the same source's own prose files under representation two sections earlier, as system instead."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::70_lattner_levels_are_clients_not_facts::117",
+]
+control = "The check is run mechanically against a document's own stated criterion and its own stated prose classification, so the case that had to fail is an internal disagreement within one source rather than a disagreement with an external ground truth: either the test and the prose agree on where the representable-set edge files, or they do not. They do not, on every reading of the test tried (literal, and the one charitable repair)."
+standing = "sound"
+note = "This is a defect in the instrument that generated candidate 1 of the change-test's own source, not a defect anywhere the candidate was carried forward: the consolidation correctly omits the change-test-as-boundary candidate from its canon text, but the mechanical reason it was dropped was, before this row, recorded nowhere reachable, which an entailment check on the consolidation found and named directly: 'a later reader who wants to know why the change-test does not appear... has nothing to find.'"
+keywords = ["change test", "discriminator", "hierarchy", "misfile", "encoding", "representable set", "internal contradiction", "boundary"]
+
+[[probe]]
+id = "a_two_axis_strategy_resolve_rule_is_checked_as_a_semilattice_join_at_compile_time"
+establishes = "A strategy-resolution rule, modelled as pointwise max over a genuine two-axis product order (not a single linear ranking) using generic axis labels rather than the current Hot/Warm/Cold/Precise names, satisfies commutativity, associativity and idempotence, checked as const trait-bound assertions at compile time over three named strategy points forming a non-trivial join structure."
+lives = ["panel::202608072330_the-numeral-canon-panel::77_probes::probe3_strategy_resolve_lattice.rs::1", "panel::202608072330_the-numeral-canon-panel::77_probes::probe3_output.txt::1", "panel::202608072330_the-numeral-canon-panel::77_probes::probe3_negative_output.txt::1"]
+control = "A second construction (probe3_negative_check.rs) replaces the join with a rule biased toward the left operand's overflow axis, which is not a genuine join. The same commutativity const-assertion then fails to compile, `evaluation panicked: assertion failed: <P00 as Resolve<P12>>::OVERFLOW_RANK == <P12 as Resolve<P00>>::OVERFLOW_RANK`, confirming the check bites when the resolution rule is not order-independent."
+standing = "sound"
+note = "Deliberately models two independent axes with a product order rather than one linear ranking, because a single-ranking probe would only check the easy case. Uses generic axis labels (A0..A2), not the current strategy names, per I1's open strategy set. This is a first mechanically-checked instance on Q27 (which strategy's laws govern a cross-strategy operation), flagged by its own author as a candidate item for that question rather than a settlement of it."
+keywords = ["strategy resolution", "cross-strategy", "join", "semilattice", "commutativity", "associativity", "idempotence", "product order", "compile-time", "Q27"]
+
+[[probe]]
+id = "additions_chain_error_is_zero_by_closure_while_multiplications_plateaus_at_twice_one_step"
+establishes = "Under a fixed-point accumulator, a chain of additions on a decaying input pays no extra rounding cost beyond a single one-step bound regardless of chain length (extra error stays at exactly zero, n = 1 through 256), while the naive per-step-rounded multiplication chain on the same input plateaus at exactly twice the one-step bound from n = 16 onward and never grows further. A widened accumulator pays zero extra error for every n by construction, one rounding cost at the end rather than one per step."
+lives = ["panel::202608072330_the-numeral-canon-panel::77_probes::probe1_chain_error.py::1", "panel::202608072330_the-numeral-canon-panel::77_probes::probe1_output.txt::1"]
+control = "The growth-ratio check compares naive_ratio[n] against naive_ratio[n/2] across successive doublings: a climbing ratio would show unbounded growth, a plateauing ratio (measured: 2.000 from n=16 to n=256, factor 1.000) shows the naive strategy saturates rather than diverging without bound. The wide strategy's zero-error-by-construction column is the negative control the plateau is read against."
+standing = "sound"
+note = "A second, qualitative table in the same source file (not backed by a separate committed output file, reported as a narrative table inside `77_amin_derived_laws_derived_cold.md:213`) reports the same construction is non-monotonic and can spike sharply for an input near one raised to increasing powers, fluctuating 4.0, 0.0, 2.0, 4.0, 2.0, 2.0 and then jumping to 130.0 one-step-bound multiples at n = 4096. That figure is weaker evidence than this row's own committed output: it is hand-transcribed prose inside a committed markdown file rather than a raw script output, so it is reported here as colour rather than as part of what this probe establishes."
+keywords = ["chain error", "fixed-point", "addition", "multiplication", "rounding", "plateau", "closure", "widened accumulator", "non-monotone"]

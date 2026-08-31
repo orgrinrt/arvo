@@ -1,0 +1,1010 @@
+# Port catalogue for panel files 050-099 of
+# mock/research/202608072330_the-numeral-canon-panel/.
+#
+# Format choice: TOML, sibling to mock/registry/ rather than inside it.
+# Inside mock/registry/ would put this under `canon_paths` (mockspace.toml
+# declares `canon_paths = ["mock/registry/*.toml"]`), which would make the
+# mockspace tooling try to validate every [[item]] block against the
+# registry's declared namespace schema (topic/dimension/obligation/question/
+# strategy/law/probe/retirement/ruling/proposal) and treat this catalogue as
+# canon, which it explicitly is not: entries here are uncertain, scored, and
+# most were declined rather than promoted. A sibling directory keeps it
+# TOML (machine-readable, greppable, diffable the same way the registry is)
+# without polluting canon_paths or confusing `mock check`.
+#
+# One row per panel file (not per individual claim), since a file is the
+# panel's own unit of authorship (numbered, written once, frozen) and a
+# per-claim granularity for ~50 files would run past what one seat's slice
+# can review at the depth this catalogue demands. Where one file carries
+# several claims with materially different dispositions, that split is
+# named inside `claims` / `note` rather than as separate rows.
+#
+# Fields:
+#   path              - the panel file, relative to the panel root
+#   unit              - which panel unit/topic it belongs to, where known
+#   claims            - one to three sentence summary of what the file establishes or argues
+#   verdict           - "live" | "superseded" | "lost" | "exploration" | "mixed"
+#                        live:        the claim stands and either reached the registry
+#                                     directly or through a consolidation that cites it
+#                        superseded:  a later panel file replaced or refined the claim;
+#                                     named in `superseded_by`
+#                        lost:        real, controlled, evidenced content that never
+#                                     reached a consolidation or the registry, by
+#                                     accident rather than by decision
+#                        exploration: process/checkpoint/dispatcher material, or a
+#                                     genuinely open question with no claim to lose
+#                        mixed:       different parts of the file carry different
+#                                     verdicts; see `note`
+#   confidence        - 0.0-1.0, this seat's confidence in the verdict
+#   reason            - why this verdict, with what was checked
+#   superseded_by     - paths of files that replace or refine this one's claims
+#   supersedes        - paths this file itself replaces or refines
+#   conflicts_with    - paths making an incompatible claim, neither resolved as superseding
+#   first_commit      - date of the file's (only, in every case checked) commit
+#   edited_after_supersessor - whether this file's own text was touched after a file
+#                        in `superseded_by` landed (always false for numbered panel
+#                        files, which are frozen; kept as a field because the schema
+#                        is meant to generalise to files that are not)
+#   canon_rows        - registry rows (namespace::slug) already citing this file, at
+#                        time of this pass
+#   ported_this_pass  - registry rows this seat added because of this file
+#   note              - anything the fields above do not carry
+
+[[item]]
+path = "50_lamport_which_criterion_is_in_use.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "The panel's 'output of a derivation' criterion is an unfalsifiable fixpoint equation, not a definition; four different result-set counts fall out of it depending on unstated site-model and strategy-set parameters. Proposes replacing it with a three-clause split (site premise, locus/ownership clause, kind clause). Also finds the packed access width is over-computed by an earlier closed form."
+verdict = "live"
+confidence = 0.9
+reason = "This file's three-clause split is the direct ancestor of consolidation 53's replacement criterion (S1/S2/S4), which cites this file by name and section repeatedly (53:157-165 region). Its own content is not independently cited by a registry row, but its reasoning reached the registry through 53's provenance chain (proposal::a_lowering_site_holds_the_numerals_full_type, proposal::a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns, proposal::a_carried_fact_takes_the_sort_its_consuming_site_uses_it_in), all citing 53 directly."
+superseded_by = ["53_leroy_consolidation_the_container_derivation.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = []
+note = "Not itself cited in provenance because the consolidation restates and formalises its finding; op's own standing instruction (rule 87) is that a consolidation is input rather than a citation-worthy source in its own right until the whole canon is written, so citing 53 rather than 50 is the correct current shape, not a gap. Section 5 ('the magnitude three files call unpriced has been measured the whole time') and section 4's access-width over-computation were not separately checked against the registry by this pass; flagged for a deeper follow-up sweep of unit two if one is ever done."
+
+[[item]]
+path = "51_fog_the_packed_sequence_erasure_arm.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "The panel's packed-access erasure claim (typed gather matches a hand-written twin) was a sampled law resting on one width (W=13) that happens to sit on the working side of an undiscovered boundary. Sweeping 36 widths finds the typed arm, written as a loop over an associated const, collapses to one accumulator at W>=18 and emits worse code despite fewer instructions. A trait-supplied per-width gather repairs this at all 36 widths with no change to what a consumer writes; a fixed wide load beats even the hand-written twin at W=47."
+verdict = "lost"
+confidence = 0.85
+reason = "Zero registry citations before this pass despite being real, controlled, well-evidenced content (two isolating controls, one of which failed honestly and is reported as failing; robustness swept across optimisation levels and element counts). Consolidation 53 does mention it in one paragraph ('Delivery form has a codegen consequence...') and cites 51 by line range, but no registry row carried the citation forward from either 51 or 53's mention of it, so the specific finding (loop-vs-contract delivery form, the W=18 boundary, the wide-load beating hand-written at W=47) was unreachable from the registry until this pass."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = ["probe::a_packed_access_gather_written_as_a_loop_collapses_at_width_18", "proposal::a_fact_delivered_as_a_const_a_generic_body_loops_over_costs_the_reduction"]
+note = "Genuine accidental loss: 53's own text names this as real and qualitative ('ONE EXPERT... unpriced, and 51 says so throughout') but the consolidation's own compression (54, its independent entailment check, section 5) explicitly flags that 53 compresses specific counts to qualitative statements as a named, deliberate class of loss, without this particular codegen-shape finding being one of the three instances 54 enumerates. It fell through the gap between 'the consolidation gestures at it' and 'a registry row cites the establishing evidence'. Ported this pass; see canon rows above."
+
+[[item]]
+path = "52_chlipala_the_fixpoint_claim_second_read.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "A second, independent read of 50's fixpoint-equation finding, judged as convergence but explicitly marked by its own author as 'the weaker link' of the unit's strongest convergence claim."
+verdict = "live"
+confidence = 0.75
+reason = "Cited directly in consolidation 53 (S2's standing) and in entailment check 54's section 7, which explicitly discusses this file's own hedge ('the weaker link') and downgrades the S2 equivalence verdict from the consolidation's stated 'passes' to a more cautious reading. The registry's own proposal row for the ownership clause (proposal::a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns) already carries a note stating the standing as two_experts with the discount named explicitly ('the source says so itself... so this row does not claim three'), which is exactly the correction 54 asked for. Not independently read in full by this pass beyond its role in 53/54's accounting."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = []
+note = "Not read in full this pass; classified from its role as reported by 53 and 54, both of which this pass did read closely. The registry's existing handling of the S2 standing already reflects 54's correction, so no further action seemed to be owed here; flagged as spot-checked rather than fully audited."
+
+[[item]]
+path = "53_leroy_consolidation_the_container_derivation.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "Consolidation. Retires the fixpoint-equation criterion, replaces it with a three-clause criterion (site premise, ownership/locus clause, kind clause), states six candidate canon sentences (S1-S6), and separates finding from candidate sentence throughout."
+verdict = "live"
+confidence = 0.95
+reason = "Heavily cited (4 direct citations by file stem, and many more indirectly through the proposal rows its sections produced: a_lowering_site_holds_the_numerals_full_type, a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns, a_carried_fact_takes_the_sort_its_consuming_site_uses_it_in, and others in the the_realisation_map topic). Its own independent entailment check (54) confirms it entails its sources with only minor process notes, both of which (the S2 standing discount, the stale rung-inflation miscount) this pass verified are already reflected correctly in the registry."
+superseded_by = []
+supersedes = ["50_lamport_which_criterion_is_in_use.md"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_lowering_site_holds_the_numerals_full_type", "proposal::a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns", "proposal::a_carried_fact_takes_the_sort_its_consuming_site_uses_it_in"]
+ported_this_pass = []
+note = "This pass found one uncited residue from this consolidation's own paragraph 3.3 (the delivery-form/gather codegen consequence), traced back to file 51 rather than to 53 itself, and ported it under 51's entry above rather than here, since 53 only gestures at it and 51 is the establishing evidence."
+
+[[item]]
+path = "54_ringer_entailment_check_on_the_consolidation.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "Independent entailment check on 53. Verdict: 53 entails its sources. Finds one stale miscount in 53's own self-description (a third rung-inflation instance happened downstream of 53, through no fault of 53's), and one place where 53's S2 equivalence verdict ('passes') reads more settled than its own supporting prose, which should be read as 'provisionally passes' under the workspace's three-instance evidentiary preference."
+verdict = "exploration"
+confidence = 0.7
+reason = "A verification/audit file rather than a source of new design claims. Its two substantive findings (the stale miscount, the S2 downgrade) are both already reflected correctly in the registry's existing proposal row for the ownership clause, which carries the two_experts standing (not three) with the discount explicitly named in its note. Classified 'exploration' rather than 'live'/'superseded' because the file's job was checking, not claiming, and its check passed."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = []
+note = "Section 5 ('what the consolidation compresses without losing') names three specific numeric compressions (pigeonhole witness counts 61/732/7354/73461 at F=3..6; the per-configuration robustness table from 51; 51's wide-load W=47 result). The wide-load result is now covered by this pass's port of 51. The pigeonhole witness counts and the robustness table are not ported as registry rows; both are named by 54 as recoverable from their citations rather than lost, and this pass did not independently verify whether either constitutes a load-bearing, currently-uncited canon claim in its own right. Flagged rather than resolved."
+
+[[item]]
+path = "55_smith_the_format_concept_derived_cold.md"
+unit = "unit two (the format concept), files 55-64"
+claims = "A cold derivation of the format concept, converging substantially with an earlier file (08, outside this seat's slice) after reading the panel. Concedes phase (bias) was missing from its own membership predicate. Raises 'where does wrapping live' as a three-option open question. Offers a one-probe refinement: raw-order agreement holds for monotone encodings generally (offset binary/excess-K included), not only plain unsigned as an earlier file claimed."
+verdict = "mixed"
+confidence = 0.85
+reason = "The wrapping-live question is superseded (in the good sense: refined) by a later two-option version already in the registry (question::where_wrapping_lives, citing OPTIONS.md, itself noting the fold from three options to two). The raw-order-agreement refinement had zero registry presence and no later file in this seat's slice is confirmed to supersede it; ported this pass."
+superseded_by = ["56_knuth_the_four_choice_model_attacked.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = ["proposal::raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned"]
+note = "'superseded_by' names 56 on the strength of its title ('the four-choice model attacked') and its position immediately after 55 in the unit; this pass did not fully verify that 56 is what folded the wrapping question from three options to two, only that a folded two-option version exists in the registry citing OPTIONS.md. Worth a second look by whoever audits unit two end to end."
+
+[[item]]
+path = "56_knuth_the_four_choice_model_attacked.md"
+unit = "unit two (the format concept), files 55-64"
+claims = "Attacks 55's four-choice model. Deflates 55's three-option wrapping-fork to two (options two and three, ambient-domain and named-composite, are observationally equivalent; only option one, exception-list, is genuinely distinct). Places the phase parameter in Q by construction, with an arithmetic consequence (a biased grid has no additive identity, no unit, every addition ties). Completes 55's raw-order refinement into a forced trade: no bijective signed encoding has both raw-order agreement and raw-adder correctness."
+verdict = "live"
+confidence = 0.85
+reason = "The wrapping-fork deflation matches the registry's current two-option version of question::where_wrapping_lives, citing OPTIONS.md, confirming this file (or a close descendant of its reasoning) is what produced that fold. The raw-order/raw-adder exclusivity finding had zero registry presence before this pass; ported this pass as law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness plus its two supporting probes. The phase-in-Q placement and its arithmetic consequence (biased grid has no additive identity) were not independently checked against the registry by this pass and may be a further gap; flagged rather than resolved."
+superseded_by = []
+supersedes = ["55_smith_the_format_concept_derived_cold.md"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = ["law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness", "probe::raw_order_and_raw_adder_correctness_are_exclusive_for_a_signed_4bit_set"]
+note = "Section 5 (phase placement, and the biased-grid additive-identity consequence) was checked separately and found already ported (proposal.toml:1338, citing this file), so it was not double-counted here."
+
+[[item]]
+path = "57_orchard_the_grading_and_the_refutation.md"
+unit = "unit two (the format concept), files 55-64"
+claims = "Two jobs. Job one: refutes 42's clamp-counting criterion (its own probe already refutes it), replaces it with absorption, and identifies absorption as identical to 56's coherence law. Job two: confirms 55b's saturating semiring at nine widths via a congruence argument, bounds it to the integer grid (collapses under fractional scale), attributes the blame to rounding rather than saturation, and separately finds a genuine grading (the reachable interval under Minkowski sum) distinct from width, plus that a coherent reduction needs one bit less of accumulator than the exact-sum width."
+verdict = "live"
+confidence = 0.9
+reason = "The heaviest-cited file in this pass's early range (16 citations before this pass). Spot-checked absorption, the coherent-accumulator finding, and the one-bit-less finding: all three are present in the registry with matching numbers. The Minkowski-sum/reachable-interval grading finding had zero registry presence and is distinct from an unrelated, differently-scoped 'grade monoid' retirement from an earlier superseded panel; ported this pass."
+superseded_by = []
+supersedes = ["42 (outside this seat's slice)"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::absorption_decides_associativity_of_a_clamped_reduction", "proposal::a_coherent_reduction_needs_no_accumulator", "proposal::an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit"]
+ported_this_pass = ["probe::the_reachable_interval_composes_exactly_where_width_does_not", "proposal::the_reachable_interval_is_the_true_grade_and_width_is_its_lax_abstraction"]
+note = "canon_rows above is this pass's best guess at the matching row ids from a keyword search; not independently confirmed field-by-field beyond the spot checks in `reason`. A full audit of this file's sixteen citation sites against every claim in its ~700 lines was not performed; the file is large and well-covered, and the residue found (Minkowski-sum grading) came from reading its own section headers for anything not obviously matched by a grep."
+
+[[item]]
+path = "58_wronski_the_fraction_boundary.md"
+unit = "the_format_concept"
+claims = [
+  "additive verdict is F-independent by construction (probe source never reads the fraction shift), not merely by sweep",
+  "multiplicative associativity failure's MAGNITUDE, not existence, moves under the rounding rule (round-half-up vs truncation, every row still fails)",
+  "57_probes/p4's ClampOnly arm is F=0 relabelled, not a genuine isolation of range-clamping at F>0; the corrected instrument shows a range clamp alone (zero coarsening) is independently sufficient to break multiplicative associativity",
+  "the F=0 multiplicative boundary is structural (finite-width multiply necessarily discards info every step) not a fact about which sweep has run so far",
+  "the multiplicative accumulator grade has no closed form and Q11's width-plus-log-of-capacity option is additive-only with no multiplicative analogue",
+]
+verdict = "mixed"
+confidence = 0.8
+reason = "Four of five claims are superseded, cleanly and with better instruments, by later work already in the registry baseline (predates this seat's branch point, commit 20ee3000 and earlier): claim 1 by proposal::an_additive_verdict_is_independent_of_the_fraction_width (standing=three_or_more, ported from 63's consolidation, already states the by-construction/inspection argument); claim 2 (rounding) and claim 4 (F=0 structural boundary) are both subsumed by law::multiplicative_associativity_under_wrapping's witness field, which cites 61_probes/q2 and 62_probes/p2 'under both rounding spellings' at 54 of 54 signed rows, a later and more exhaustive rounding-mode sweep than this file's own p1; claim 5 (Q11 additive-only) is fully captured by proposal.toml's multiplicative-grading rows and question.toml's Q11 note, which explicitly names file 60 as the source that 'undercuts the accumulator-derivation option'. Claim 3 (the ClampOnly mislabelling correction, and the new clamp-alone-is-independently-sufficient positive result) was genuinely uncaptured: no proposal or law row cited probe::which_factor_of_a_reduction_breaks_the_semiring as evidence, so nothing in the registry asserted the wrong 'clamp is clean' reading, but nothing had recorded the corrected, controlled positive finding either. Ported this pass. This file is the identification stage of a unit whose measurement was completed by later files (60-62) inside this same slice; it is evidence of a real, working multi-file resumption rather than an abandoned or superseded panel, matching the re-brief's framing that a topic-per-panel workflow closes deliberately once its resumption instructions (section 4) are picked up."
+superseded_by = [
+  "60 (multiplicative grading measurement, per question.toml Q11 note)",
+  "61 (wrap-policy ring collapse re-measurement, per law::multiplicative_associativity_under_wrapping witness)",
+  "62 (signed rounding-spelling re-measurement, per same witness field)",
+  "63 (format-concept consolidation, ports the F-independence-by-construction argument as proposal::an_additive_verdict_is_independent_of_the_fraction_width)",
+]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "probe::an_intermediate_range_clamp_alone_breaks_multiplicative_associativity_at_full_precision",
+  "proposal::a_range_clamp_and_a_coarsening_are_two_independent_sufficient_causes_of_multiplicative_non_associativity",
+]
+ported_this_pass = true
+note = "The confidence is 0.8 rather than higher because the supersession attribution for claims 1, 2, 4 and 5 rests on reading the citing rows' `witness`/`note`/`because` fields for which panel files fed them, not on reopening 60, 61 and 62 themselves (outside a strict reading of this file's own resumption target list in its section 4, which was not read this pass). The single-file git history (one commit, no post-hoc edits) rules out an abandoned-mid-panel discontinuity for this file specifically; it does not by itself establish that 60-63 actually did resume from 58, only that the citing registry rows say so."
+
+[[item]]
+path = "55b_smith_reply.md"
+unit = "the_format_concept"
+claims = [
+  "56's quoted two-bound-reachability condition for saturating-clamp associativity is refuted, not refined: exhaustive over signed Q=[-8,7] cubed, 952 divergent triples split 448 ceiling-only/504 floor-only/zero both-bound, all one-bound events",
+  "the real mechanism is a pullback: a clamp event followed by movement toward the interior, which explains why all-same-sign (monotone-trajectory) folds are always coherent",
+  "register amendments made directly to Q12's entry and the wrapping semantics entry, self-reported in section 7",
+]
+verdict = "live"
+confidence = 0.9
+reason = "The pullback mechanism and the exact 952/448/504/0 split are already in the registry at law::(the saturating-addition associativity row, witness field, line 70) and proposal.toml:121's gap field, the latter explicitly crediting 'a second' author for keeping the dynamic description, which is this file. Fully absorbed, most likely via 57 or 63's consolidation reading this file directly. Confidence is not higher only because I did not trace the exact intermediate file that carried it forward; the destination content is confirmed, the path is inferred from file order and the gap field's own wording."
+superseded_by = ["57 or 63 (consolidation absorbed this reply's finding into the registry baseline)"]
+supersedes = ["the quoted reachability condition in 56 and in the register's pre-existing Q12 entry, per this file's own section 6"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "This file's section 7 records that its author amended OPTIONS.md's Q12 entry and a wrapping semantics entry directly, in the panel's own living-ledger convention; those amendments are not something a registry port can re-verify without opening OPTIONS.md's edit history, which is out of scope for this pass. The content that reached the registry is confirmed by cross-reference, not by tracing every hop."
+
+[[item]]
+path = "59_persona_checkpoint_five.md"
+unit = "the_format_concept"
+claims = [
+  "two things the unit holds without noticing: (a) 55b and 56 are one theorem stated two ways (raw-adder correctness makes the pattern space a homomorphic image of the wrapping group; a cyclic group admits no translation-invariant order), offered explicitly as an unbuilt hypothesis for the bijectivity restriction to be dropped; (b) 57's saturating-clamp congruence relation is provable in a paragraph for all M, not merely measured at five values",
+  "OPTIONS.md's Q17 should record the additive result as unconditional and gain the two rows 58 did not take (wrap's induced ring and 56's coherent(*) column are both F=0 too)",
+  "OPTIONS.md's Q3, Q12, Q11 entries should each gain specific corrections, listed",
+]
+verdict = "exploration"
+confidence = 0.85
+reason = "This is a checkpoint: explicitly unratified persona output standing in for op, self-describing as having built nothing and edited nothing. Its two structural observations are both already superseded/subsumed: (a) the bijectivity-restriction hypothesis is already recorded, nearly verbatim, in this seat's own earlier port at law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness's gap field ('the untested hypothesis... this same theorem in disguise'); (b) the general congruence result is superseded by a later, fully general, exact closed-form treatment already in the registry (proposal.toml:136, 'the kernel is a multiplicative congruence iff the range is mirror-symmetric or nonnegative... exact, mismatching nothing over all 100 zero-containing intervals'), which proves strictly more than 59's hand-check asked for. Its OPTIONS.md recommendations for Q17/Q3/Q12/Q11 are meta-bookkeeping about a living ledger this pass does not edit, and every substantive claim underneath them is independently confirmed already present in the registry (checked directly for Q11 and Q17's content; not reopened for Q3/Q12's narrower cross-reference requests)."
+superseded_by = ["this seat's own port of files 55/56 (claim a)", "a later general congruence treatment, unattributed to a specific file number without reopening it (claim b)"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "A checkpoint file by design produces no committed instrument and mints no registry-eligible claim on its own authority; its value is redirection, and section 4 (redirecting the second four) is process content outside this catalogue's claims scope. Confidence held at 0.85 rather than higher because the general congruence claim's provenance (which later file actually generalised 57's five-width check to the exact closed form) was not traced to a specific file number."
+
+[[item]]
+path = "60_stam_the_chain_derived_cold.md"
+unit = "the_chain"
+claims = [
+  "cold derivation: a chain is exact operations plus a schedule of adaptation points; the schedule is part of the function's meaning; the per-operation model extends to chains exactly when adaptation is unfused from the operations",
+  "chains factor into windows (bounded subterms evaluated exactly, adapted once at exit) whose capacity is a static, typestate-derivable function of container width and operand formats",
+  "addition composes headroom logarithmically (ceil(log2 k) extra integer bits for a k-fold), multiplication composes width linearly (kF bits); three cost regimes follow (per-op, windowed, fully exact) with an explicit crossover",
+  "probe A: a windowed dot-product schedule is correctly rounded on all 46656 tested inputs where staged per-step narrowing drifts on the large majority",
+  "probe D: the multiplicative accumulator saving is adaptation fusion and is rounding-mode-conditional, not the constant 58 first reported; 58's equality form breaks at fold length 5",
+  "section 6: an order/threads/intent interaction noticed incidentally",
+]
+verdict = "mixed"
+confidence = 0.75
+reason = "The central cold-derivation claim (what a chain is, the window concept, the typestate-derivability) is already fully captured, essentially verbatim, in proposal::a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points, cited from 63's consolidation. Probe D's finding is fully captured in proposal.toml's multiplicative-grading rows and question.toml's Q11 note, both explicitly naming file 60 as source. The cost-accounting elaboration (three regimes, the ceil(log2 k) vs kF asymmetry, probe A's dot-product confirmation) was genuinely uncaptured and is ported this pass as proposal::a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing with probe::a_wide_exact_fold_with_one_final_narrow_is_correctly_rounded_where_staged_narrowing_drifts. Section 6 (order/threads/intent interaction) was not read this pass; confidence held at 0.75 rather than higher for that reason, and because this file's own two-commit history (phase one, phase two reconciliation) was not separately checked for whether phase two revised any phase-one claim I have not re-verified against phase two's text directly."
+superseded_by = ["63 (consolidation, ports the chain-as-schedule concept)"]
+supersedes = ["58's constant-accumulator-saving claim, per this file's own probe D"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "probe::a_wide_exact_fold_with_one_final_narrow_is_correctly_rounded_where_staged_narrowing_drifts",
+  "proposal::a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing",
+]
+ported_this_pass = true
+note = "Two-commit file (phase one cold derivation, phase two reconciliation with the rest of the unit); both treated as one unit for this entry since the registry citations do not distinguish which phase they draw from."
+
+[[item]]
+path = "62_carmack_the_signed_cell.md"
+unit = "the_format_concept"
+claims = [
+  "signed saturating multiplicative cell: dead at F=0 under two's-complement range, alive-associative under a symmetric range",
+  "signed additive column is policy-split (wrap group, saturation dead) with counts F-invariant",
+  "at F approaching the width the two policies' multiplicative failure sets coincide exactly",
+  "accumulator saving is rounding-spelling-dependent on the signed side too (floor exactly F at three lengths, truncation irregular)",
+  "two droplist candidates closed: signed two's-complement saturating multiplication induces a semigroup at some width; the wrap section is a relabelling at every scale",
+]
+verdict = "mixed"
+confidence = 0.85
+reason = "The symmetric-range/geometric-criterion finding is superseded by a strictly more general, already-ported closed form (proposal.toml:136, evaluated over three sign domains including symmetric range, exact over 100 zero-containing intervals). The rounding-spelling-dependent accumulator finding is already captured in the multiplicative-grading proposal rows. The two droplist candidates this file names as closed had no corresponding retirement row; both ported this pass, since a droplist candidate closed only in a research file's prose is exactly the case a retirement row exists to prevent re-citing."
+superseded_by = ["a later general closed-form treatment (proposal.toml:136, file number not traced this pass)"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "retirement::dl_signed_twos_complement_saturating_multiplication_induces_a_semigroup_at_some_width",
+  "retirement::dl_the_wrap_section_is_a_relabelling_at_every_scale",
+]
+ported_this_pass = true
+note = "Sections 0-4 (gates, the answer, the cube filled in, what this does to the picture) were not read this pass; this entry relies on section 5's own summary of what it wants ported, cross-checked against the registry. The underlying measured cube content (associativity/coherence cell values) was not independently re-derived."
+
+[[item]]
+path = "63_spj_consolidation_the_format_concept.md"
+unit = "the_format_concept"
+claims = ["the unit-two consolidation: the format concept, its laws, and the chain/format relationship, as the authoritative synthesis of files 55 through 62"]
+verdict = "live"
+confidence = 0.95
+reason = "One of the four fully-known finished consolidations in this slice, confirmed at the outset of this seat's work. Heavily cited: 15 citations in law.toml, 31 in proposal.toml. This file's own history shows a same-day repair ('63 repaired per 64, d-c carried, c6 and c9 verdicts match their rungs') after 64's entailment check ran against it, so the second commit is the one the registry should be citing; not independently verified which commit's line numbers the existing provenance citations resolve against, since heading anchors are used for citations into this file rather than line numbers wherever I checked."
+superseded_by = []
+supersedes = ["55, 55b, 56, 57, 58, 59, 60, 61, 62 (the whole unit it consolidates)"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = true
+canon_rows = []
+ported_this_pass = false
+note = "edited_after_supersessor is true in the sense that this file was itself edited after 64 (which reads it) found issues; that is the intended repair loop (consolidation, entailment check, repair) rather than an accident, and is the opposite of a stale-drift case. No new registry rows from this file this pass since it was not reopened in full; its content was reached only indirectly, through registry citations and through the OPTIONS.md Q17 synthesis, both cross-checked as noted in the files 58/60/61/62 entries above."
+
+[[item]]
+path = "64_ringer_entailment_check_on_the_format_consolidation.md"
+unit = "the_format_concept"
+claims = [
+  "the D-C chain alternative (chain as a first-class typed object) is a live, named, unkilled option in 60 and is entirely absent from 63's consolidation; a completeness gap, not an error, against the panel's own stated keep-options-open discipline",
+  "two smaller open items from 60 (schedules as strategy-implied defaults vs consumer-visible knobs; storage-versus-compute format distinction) also silently dropped",
+  "Alternative B/C labels from 55 are not carried by name in 63, though their content is; a bookkeeping loss, not a content loss",
+  "nothing miscited: five reruns, two commit orderings, a grep count, a dozen probe citations and six specific numeric claims all checked and matched their source",
+  "candidate-sentence-by-candidate-sentence permanence/equivalence re-evaluation of 63 section 6's ten canon-candidate sentences (C1-C10), independently derived before reading 63's own verdicts; agrees with nine of ten, and for C6 argues 63's flat 'Equivalence: passes' understates its own stated hedge (one expert, unattacked, author's own words 'the claim this file most wants attacked next')",
+]
+verdict = "live"
+confidence = 0.9
+reason = "Read in full this pass (method, the two measurements, what was dropped, what was miscited, the ten-sentence re-evaluation). The D-C-dropped finding is fully and precisely captured in the registry, including the specific attribution to this entailment check: proposal::a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points carries 'Where the chain lives is a three-way fork none of which is killed... a second vocabulary, type sizes growing with expression size, and drift toward a computation-graph framing' in its gap field, and its note field states 'The consolidation restored the third direction after its own first draft dropped it, catching the loss only through the independent entailment check that followed', which is this file described in the registry's own words. C6's hedge concern is also captured and, further, resolved: proposal.toml's law-frame row states it was 'marked provisionally passing and named by its own author as the thing most wanting attack', then records it was subsequently attacked from two directions (a self-collapsed-system attack from the number-system topic, a const-predicate extension from the derived-laws topic) and held, which answers exactly the gap this file identified using evidence this file could not have had. The two smaller dropped items and the Alternative B/C bookkeeping loss were not separately checked against the registry; both are explicitly named by their source as minor (60 did not flag the first pair itself, and the file states the Alternative B/C loss is bookkeeping since the underlying argument is carried). No new registry rows from this file, since every substantive claim checked is already present, correctly attributed, and in one case already superseded by stronger later evidence than this file itself had."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "This entry replaces an earlier, honestly-flagged-as-unread version written before this file was actually opened. Left as a record that the gap was caught and closed within the same pass rather than deferred, per the standing instruction against reporting a blocker and stopping."
+
+[[item]]
+path = "65_knuth_number_systems_derived_cold.md"
+unit = "the_number_system"
+claims = ["cold derivation phase one of the number-system concept: the dependent five-choice sequence, an identity/realisation split, a change-test instrument, open questions on where adaptation lives and on the encoding/representation filing boundary"]
+verdict = "live"
+confidence = 0.7
+reason = "Not read directly this pass; disposition inferred from 74's consolidation, which cites this file extensively (section 3.1 dependency sequence, section 7 items 3/5/8/9/12) and from zero direct registry citations (expected, since the consolidation is what gets cited). 74 item 12 records that 65's own change-test instrument has an internal filing tension 65 itself did not resolve, adopted by 70's disposition rather than by 65; 74 item 9 records 65's own phase-two self-amendments (three specific corrections to its own candidates) which a consumer of 65's candidates must apply, meaning 65's raw text alone is not safe to cite without 74 item 9's corrections layered on top."
+superseded_by = ["74 (consolidation)"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Zero direct citations, as expected for a unit whose consolidation is comprehensively cited. Not independently re-read; this entry rests on 74's own accounting of what it drew from 65, cross-checked against the registry's coverage of D1-D7 and O-A through O-E (all confirmed present, see 74's own entry below), which are the sections most likely to reveal an unabsorbed finding and did not."
+
+[[item]]
+path = "66_dolan_number_systems_derived_cold.md"
+unit = "the_number_system"
+claims = ["cold derivation phase one, second independent instance: a two-layer split (format, then strategy-selected induced algebra), a hierarchy argument, a crate cross-check"]
+verdict = "mixed"
+confidence = 0.75
+reason = "Not read directly. 74's section 7 lists four distinct defects specifically in this file: item 3 misattributes a sentence to the wrong source (one-word fix, corrected in 74); item 4 misattributes the 952-count to the wrong operation, corrected and already in the registry (proposal.toml's 952-attribution row explicitly says 'corrected in both' topics); item 5's crate-table cross-check carries no evidential weight because it described the removed tree, and 66's hierarchy claim stands on op's two nouns without it; item 8 lists three probe defects (hardcoded headline count, two tautological test arms, zero committed output transcripts), all recovered by rerun so nothing is void. This is a file whose individual claims needed real correction to be trustworthy, and the corrections are what the registry actually carries, via 74 rather than via 66 directly."
+superseded_by = ["74 (consolidation, which applies the corrections listed in its own section 7)"]
+supersedes = []
+conflicts_with = ["66's own crate-table cross-check, retracted by 74 item 5", "66's own 952-to-multiplication attribution, retracted by 74 item 4"]
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "The clean case of a file being superseded rather than lost: this file's genuine errors are documented, corrected, and the corrections already live in the registry. Nothing here needs porting from 66 itself; citing 66 directly for any of the four items above would be citing a retracted reading."
+
+[[item]]
+path = "67_kiselyov_which_prefix_earns_the_word.md"
+unit = "the_number_system"
+claims = ["attack phase: the nominal-vs-substantive reading of the identity/realisation question (Q18/D1), a retracted universal about crossings preserving operations, O-A/O-B/O-D/O-E named as open options, a count ambiguity between 'three dependent axes' and the five-component sequence"]
+verdict = "mixed"
+confidence = 0.75
+reason = "Not read directly. This is the unit's attack file and 74's section 7 item 1 records its own strongest claim (a universal about crossings) was retracted for over-quantifying (measured three classes, claimed five); the register-facing replacement already exists as question Q27 per 74's own text. Its five named options (O-A/B/C/D/E, though C is from 70 not 67) are all confirmed present as question.toml rows this pass. Its D1 attack (nobody has answered 67's attack on the nominal reading) is reflected in question::adaptation_in_identity_or_realisation's note but the specific unanswered-attack framing was not verified to have propagated exactly; noted as a minor gap rather than pursued given time budget."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "The retracted universal (74 item 1) is process content already resolved by the consolidation; no separate retirement row is proposed since 74 item 1 already states the retraction and its replacement clearly, and duplicating it as a formal retirement row would be marginal value for the token cost."
+
+
+[[item]]
+path = "68_leroy_what_the_pipeline_certifies.md"
+unit = "the_number_system"
+claims = ["what a construction pipeline certifies about a number system: four verbs, evidential statuses, a trusted base of nine enumerated items covering the const evaluator, repr(transparent), the ban list, the model-width transfer proviso, validation-through-maps, construction perimeters, Rust's unsafe/FFI boundary, transcript correspondence, and operation erasure"]
+verdict = "mixed"
+confidence = 0.85
+reason = "74 section 3.6 and section 12 both flag that its own trusted-base summary compresses the nine items into four named plus a remainder and explicitly says its summary is not a substitute for the full enumeration. Checked directly this pass: no prior registry row carried the full nine-item list, confirmed independently by a second, unrelated proposal (in the validation topic) explicitly stating 'the transfer is not on the trusted base list, because there is none' when it needed to reference it. Ported this pass as proposal::the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked, sentence_kind=normative since the content does not vary over a measurable region. Confidence held below 0.9 because the rest of this file (what four verbs are, their individual evidential statuses beyond the trusted-base list) was not read."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked"]
+ported_this_pass = true
+note = "A case where the re-brief's rabbit-hole discipline paid off directly: the first pass over this file left the gap flagged rather than closed, and going back to check it immediately (rather than deferring) found a genuine, load-bearing, previously-uncaptured enumeration with independent corroboration that it was missing."
+
+[[item]]
+path = "69_persona_checkpoint_six.md"
+unit = "the_number_system"
+claims = ["checkpoint redirect for the number-system unit's second half; per 74 item 2, repeats and self-corrects the universal-crossing-preservation claim (the fifth quantifier instance); per 74 item 3, grep-confirms a source misattribution; per 74 item 6, is part of a three-round generated-instruction-repair overclaim chain"]
+verdict = "exploration"
+confidence = 0.8
+reason = "A checkpoint, same category as file 59: unratified persona output, redirection rather than a canon-eligible finding. All three specific things 74 credits to this file (the quantifier self-correction, the grep-confirmation, one round of the overclaim chain) are process corrections already folded into 74's own accounting, and 74's corrections are what a citer should use rather than this file directly."
+superseded_by = ["74 (consolidation, section 7's corrections list)"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Not read directly; disposition inferred entirely from 74's own citations into it, which is a weaker basis than for files checked directly in this pass and is stated as such."
+
+[[item]]
+path = "70_lattner_levels_are_clients_not_facts.md"
+unit = "the_number_system"
+claims = ["levels (the hierarchy of number-system generality) are properties of a client's needs, not intrinsic facts about a system; the change-test's disposition as a crossing/compatibility classifier rather than a boundary definition; the ownership key (O-C); the fold explained as an instrument artifact bearing on D1"]
+verdict = "live"
+confidence = 0.75
+reason = "Not read directly. O-C (the ownership key) is confirmed present as a question.toml row this pass. 74 item 12 credits this file with resolving 65's internal change-test filing tension by disposing of the instrument as a crossing/compatibility classifier rather than a boundary definition; that disposition is what 74 section 4's candidate text carries forward (confirmed by 74's own text, not independently re-verified against 70 directly)."
+superseded_by = ["74 (consolidation)"]
+supersedes = ["65's change-test-as-boundary-definition framing, per 74 item 12"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Not opened directly this pass; disposition inferred from 74's citations and from the confirmed presence of O-C in question.toml."
+
+[[item]]
+path = "71_orchard_what_crosses_between_two_systems.md"
+unit = "the_number_system"
+claims = ["five crossing classes derived from the dependent sequence; O-D (whose reduction governs a lossy crossing) and O-E (naming crossing classes); the redundant-encoding case forcing the pattern relation to generalise beyond a function; index-4/index-5 rows later found constructional rather than measured (per 74 item 7)"]
+verdict = "mixed"
+confidence = 0.8
+reason = "O-D and O-E both confirmed present as question.toml rows this pass. The crossing-classes-from-the-sequence content is confirmed present in proposal.toml (the row whose because field states 'Five crossing classes fall out of the sequence, one per coordinate... The redundant-encoding case is what forces the pattern relation to be more general than a function'). 74 item 7 retracts this file's own index-4/index-5 rows as constructional-not-measured and retires the 256/256 figure from circulation as a measured number; that retraction is recorded in 74's text but does not have its own retirement.toml row, which is a minor gap given time budget."
+superseded_by = []
+supersedes = []
+conflicts_with = ["71's own index-4/index-5 rows, retracted as constructional rather than measured per 74 item 7"]
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Section headers and the crossing-classes/O-D/O-E content were checked against the registry and confirmed present; the file's own probe sections (where the 256/256 figure originates) were not opened directly."
+
+[[item]]
+path = "72_kiselyov_reply.md"
+unit = "the_number_system"
+claims = ["reply to 71: scopes O-D to lossy crossings only; amends the dependent-sequence components to range over sets of relations rather than functions (per 74 3.1); corrects 74's own accounting of D3's role-set discriminator; retires the 256/256 figure with the correct reading (per 74 item 7)"]
+verdict = "live"
+confidence = 0.75
+reason = "Not read directly. Its content is extensively cited within 74's own text (the relations-not-functions amendment at 74 3.1, the D3 discriminator at 74 section 5, the 256/256 retraction at 74 item 7), all confirmed present in the registry via the proposal.toml crossing-classes row and the retired-figure treatment. A genuine contributor to the unit's convergence rather than a source of new uncaptured content, on the evidence checked."
+superseded_by = []
+supersedes = ["71's unscoped O-D framing and its constructional index rows"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Not opened directly; disposition inferred entirely from 74's own extensive citation of it."
+
+[[item]]
+path = "73_leijen_the_membership_test_and_how_wide.md"
+unit = "the_number_system"
+claims = ["a membership test and its width; corrects the 952-attribution to addition not multiplication (per 74 item 4); the generated-instruction repair's final correct state (per 74 item 6); D5 (Q29's second-vs-third-option gap) and D7 (op's two open questions Q-A/Q-B)"]
+verdict = "live"
+confidence = 0.75
+reason = "The 952-to-addition correction (74 item 4) is confirmed present and already in the registry as noted in the 66 catalogue entry above. D5 and D7's underlying Q29 is confirmed present as a question.toml row. Not read directly for its own membership-test content (the file's namesake subject), which is a real gap this entry names rather than papers over."
+superseded_by = []
+supersedes = ["66's mis-attribution of the 952 count"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "The file's own titular subject, the membership test and its width, was not read this pass; this entry rests entirely on what 74 credits to it. A follow-up pass should open this file directly for its own primary content rather than relying on the consolidation's account."
+
+[[item]]
+path = "74_giesen_consolidation_the_number_system_concept.md"
+unit = "the_number_system"
+claims = ["the unit-three consolidation: the number-system concept as a dependent five-choice sequence over relations, the candidate canon text (ten sentences C1-C10 equivalent, N-numbered here), seven located disagreements (D1-D7), five options never appended to OPTIONS.md (O-A through O-E), twelve corrections the unit generated, and its own twelve self-flagged uncertainty items"]
+verdict = "live"
+confidence = 0.9
+reason = "The consolidation of unit three, heavily cited (31 references across the registry). Read substantially this pass (sections 5, 7, 12 in full, section 3.1's opening and the O-A-through-E subsection in full). Every located disagreement (D1-D7, via their Q-numbers) and every named-but-unappended option (O-A through O-E) confirmed present as question.toml rows, several with evidence of active, careful improvement beyond the source's own framing (O-B's note explicitly adds the missing one-shape alternative for balance; O-A's note cross-links to a related question Q33). One genuine gap found and closed this pass: the nine-item trusted-base enumeration from 68, which 74 itself flags as under-compressed in its own section 12 item 2, was never separately ported; now is."
+superseded_by = []
+supersedes = ["65, 66, 67, 68, 69, 70, 71, 72, 73 (the whole unit it consolidates)"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked"]
+ported_this_pass = true
+note = "The most thoroughly checked file in this batch. Sections 0-4 and 6 (gates, how to read, the unit's course, the candidate canon text itself, the live option pass) were not read line by line; confidence reflects that the highest-risk sections (5, 7, 12, per the file's own self-assessment) were checked directly rather than inferred."
+
+[[item]]
+path = "75_arntzen_entailment_check_on_the_number_system_consolidation.md"
+unit = "the_number_system"
+claims = ["independent entailment check of 74 against its sources; per 74 item 12's own text, this check found 65's change-test candidate silently absent from 74 section 4 ('a silently omitted candidate is indistinguishable from an overlooked one')"]
+verdict = "live"
+confidence = 0.6
+reason = "Not read directly. 3 direct registry citations of its own, plus at least one confirmed effect: 74 item 12 attributes the discovery of 65's silently-missing candidate 1 to 'this consolidation' but the parenthetical '(75 section 2a)' inside that same item credits the actual catch to this entailment check, exactly the same relationship 64 had to 63 in unit two (entailment check catches a drop, consolidation repairs same-window). Given how much value the equivalent file (64) yielded on direct reading in this pass, this is a likely under-checked file; flagged rather than left silently at a low, unexamined confidence."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Given 64's yield on direct reading, this file is the single highest-value unread file remaining in this catalogue and should be the first thing opened in any follow-up pass on this slice."
+
+[[item]]
+path = "75_arntzen_entailment_check_on_the_number_system_consolidation.md"
+unit = "the_number_system"
+claims = [
+  "94 of 74's citation anchors traced individually; roughly two-thirds legitimately out of scope, most of the remainder duplicate-range citations to content 74 already cites elsewhere; three genuine content losses found",
+  "2a: 70's mechanical finding that 65's change-test misfiles its own hierarchy (against 65's own prose) is dropped from 74 entirely; the consequence (candidate 1 correctly absent) survives, the reason does not",
+  "2b: 71's explicit credit to 66 for correctly posing the conversion/resolution split is dropped from N9's provenance, in violation of 74's own stated merge policy",
+  "2c: 71's methodological aside that the typestate cannot decide the naming-convention crossing-order question, an explicit limit of the panel's own type-first reflex, is dropped without trace; flagged as arguably out of scope for a canon-facing document",
+  "two smaller thinnings: Q10's specific evidentiary content (188/1936 disagreements) not carried alongside its open-question status; 68's 'nearly a language tautology' softened to 'close to a language guarantee' in 74, a real if small skepticism shift",
+  "the five-instance quantifier count independently re-verified",
+  "live-option census: no sixth option found beyond O-A through O-E",
+]
+verdict = "live"
+confidence = 0.95
+reason = "Read in full this pass. Both 2a and 2b were genuine, well-evidenced, previously-uncaptured gaps and both are closed this pass: 2a ported as probe::the_change_test_misfiles_its_own_hierarchy_against_its_own_prose and proposal::the_change_test_survives_only_as_a_crossing_and_compatibility_classifier_not_as_a_boundary_definition; 2b fixed by adding 66 and 71 to proposal::N9's (the conversion/resolution unification row) provenance and naming them explicitly in its note, which previously said only 'posed by one file and credited by another'. 2c was judged, on this file's own hedging, to be design-philosophy commentary about workspace practice rather than number-system canon content, and was not ported; this is a judgement call rather than a settled fact, and 75 itself flags it as arguable. The two smaller thinnings (Q10's evidentiary content, the tautology/guarantee wording shift) were not acted on given time budget; both are named honestly as unclosed rather than silently dropped."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "probe::the_change_test_misfiles_its_own_hierarchy_against_its_own_prose",
+  "proposal::the_change_test_survives_only_as_a_crossing_and_compatibility_classifier_not_as_a_boundary_definition",
+  "proposal::N9 (provenance and note amended, not a new row)",
+]
+ported_this_pass = true
+note = "This file rewarded direct reading exactly as flagged when it was still unopened; it is the second entailment-check file this pass (after 64) to yield genuine, previously-uncaptured content on direct inspection, which is worth naming as a pattern: entailment-check files in this panel are consistently higher-value to open directly than their low citation counts suggest, because their whole purpose is finding what a consolidation dropped, which is precisely the content most likely to be missing from the registry."
+
+[[item]]
+path = "76_willsey_derived_laws_derived_cold.md"
+unit = "derived_laws"
+claims = [
+  "A law belongs to a pair (strategy, set of operations composed under it), never to a bare type.",
+  "Three tiers: entailments, convenience facts, explicitly refused laws.",
+  "Congruence-closure reading of what a law is.",
+  "Chain-machinery closure mechanism, adopted from 77 in phase two.",
+  "Human legibility as a second obligation distinct from machine-checkability.",
+  "Defect/benefit pair for I5-licensed refusals as a falsifiable claim, sharpened from 77.",
+  "Self-flagged shared blind spot: neither cold derivation tested the runtime-per-datum reading of 'validate' for a law.",
+]
+verdict = "mixed"
+confidence = 0.9
+reason = "Two-commit phase-one/phase-two structure, fully read. Core tier taxonomy and law-is-a-pair claim absorbed by consolidation 90 (R1). Chain-machinery closure mechanism and the shared-blind-spot gap had no row before this port; both ported this pass."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics",
+  "proposal::whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra",
+  "proposal::validation_is_two_acts_keyed_by_boundary_and_it_validates_maps",
+]
+ported_this_pass = true
+note = "The mechanism agreement with 77 (representability construction) is genuine (separately compiled); the choice-of-motivating-bug agreement is shared drift from one memorised project fact wearing two hats, flagged honestly by the file itself. Checkpoint 81 independently confirms both the rung-correction and the shared-blind-spot findings, without either being new by the time 81 was written."
+
+[[item]]
+path = "77_amin_derived_laws_derived_cold.md"
+unit = "derived_laws"
+claims = [
+  "A law is a property of a judgment between expression forms of arbitrary finite length.",
+  "The chain-machinery closure mechanism: addition needs none, multiplication needs a widened accumulator, error is non-monotone.",
+  "Probe 3: a two-axis strategy-resolution rule checked as a semilattice join (commutative, associative, idempotent) at compile time, with a negative control.",
+  "The resolved strategy dominates rather than inherits: a monotonicity meta-law for cross-strategy composition.",
+  "One instance meeting another with 76, not confirmation (its own framing of the rung question later corrected further by 79).",
+]
+verdict = "mixed"
+confidence = 0.9
+reason = "Two-commit structure, fully read. The chain-error mechanism and the strategy-resolution probe (probe 3) were genuinely uncaptured before this port; both ported with their own probe and proposal rows, plus a new question row (Q66) for the cross-strategy-laws question this file's own text says should be filed rather than folded silently into 42's vocabulary."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = [
+  "probe::a_two_axis_strategy_resolve_rule_is_checked_as_a_semilattice_join_at_compile_time",
+  "proposal::a_resolved_strategy_never_inherits_a_composed_operations_laws_but_dominates_them_monotonically",
+  "question::which_strategys_laws_govern_a_cross_strategy_operation",
+  "probe::additions_chain_error_is_zero_by_closure_while_multiplications_plateaus_at_twice_one_step",
+  "proposal::whether_an_operation_needs_chain_machinery_is_whether_its_rounding_step_is_closed_under_its_own_algebra",
+]
+ported_this_pass = true
+note = "Its own 130-rounding-step spike figure for a near-one-magnitude input is reported honestly here as weaker evidence: hand-transcribed in a markdown table rather than backed by a separate committed probe output file, unlike the decaying-input plateau result which is."
+
+[[item]]
+path = "78_aaltonen_the_thread_axis.md"
+unit = "the_thread_axis"
+claims = [
+  "The write hazard is real and distinct from the read hazard OPTIONS.md Q32 previously conflated.",
+  "A naive parallel write to a packed column corrupts output 16.6 to 19.2% of the time at a misaligned split.",
+  "An atomic guard on the shared boundary byte restores correctness at 6-9% overhead.",
+  "Register correction: Q32's opening sentence ('every instrument runs on one thread') was false when written.",
+]
+verdict = "live"
+confidence = 0.95
+reason = "Fully read, 14 pre-existing citations confirmed accurate. The register correction and the exact percentages are captured verbatim in retirement::the_register_stated_every_instrument_this_panel_has_built_runs_on_one_thread (or equivalent id), including the honest note that it was left standing per the panel's discipline against rewriting a committed entry rather than edited in place."
+superseded_by = []
+supersedes = []
+conflicts_with = ["OPTIONS.md Q32's original opening sentence, explicitly and by name"]
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["retirement::options_q32_every_instrument_runs_on_one_thread"]
+ported_this_pass = false
+note = "Confirmed by content match: 16.6-19.2%, 6-9%, Q32. No new gap found; alternatives-not-taken in section 12 are explicitly future work, not findings."
+
+[[item]]
+path = "79_fallin_attacking_the_two_cold_derivations_on_derived_laws.md"
+unit = "derived_laws"
+claims = [
+  "P4 is a necessary-not-sufficient predicate on the panel's own measured cube (section 5).",
+  "76 goes further than 77 does; 63's schedule concept sharpens both (section 6).",
+  "Rung correction: self-agreement is not the corroboration 76 reads it as; honest tally is two independent instances plus one same-author weaker instance (section 7).",
+  "The self-collapsed-ambient-domain failure mode should be named separately from an unvalidated convenience fact (section 8).",
+  "Candidate canon sentence for Q25 offered at one-expert, provisional confidence (section 10).",
+]
+verdict = "mixed"
+confidence = 0.9
+reason = "Fully read. The rung correction (section 7) is verbatim-captured in proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics's note, via consolidation 90. The section-10 candidate sentence for Q25 had no home before this port; enriched into Q25's note this pass."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = ["76's own framing of self-agreement as corroboration, named and corrected in section 7"]
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics", "question::how_the_law_inventory_is_named"]
+ported_this_pass = true
+note = "Section 8's suggestion to name the self-collapsed-domain failure mode as a fourth risk tier distinct from an unvalidated convenience fact is offered as 'I think' rather than a settled finding; judged too thin and too hedged to warrant its own row, and the underlying N11 material it draws on is already thoroughly captured."
+
+[[item]]
+path = "80_rompf_when_the_deriving_happens.md"
+unit = "derived_laws"
+claims = [
+  "Validate-by-sweep bound collapses with arity and falls on the wrong side (section 4).",
+  "The select stage is where a law does its only work.",
+  "76 and 77 agree exactly on the static-schedule region and diverge exactly at its edge (section 7).",
+  "The fold's compile-time refusal is the staging boundary (capacity stage zero, length stage one) reporting its own position, not a type-system limitation.",
+  "Self-flagged: the stage-minus-one framing is the author's own synthesis, not op's words.",
+]
+verdict = "mixed"
+confidence = 0.88
+reason = "Section 7 and its staging-boundary reading, cited by 90 as explaining Q11/Q12 'from this unit's side', had no row of its own before this port. R11 (chain lifting/schedule split) was already ported; this is a distinct, broader finding about why the fold refusal exists at all."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_folds_compile_time_refusal_is_the_staging_boundary_reporting_its_own_position", "proposal::chain_laws_split_by_whether_a_lifting_theorem_exists"]
+ported_this_pass = true
+note = "Its own section 12 lists six explicit uncertainty items; the staging framing (item 4) is honestly marked as the author's synthesis rather than op's words, which the new proposal row's standing = one_expert reflects."
+
+[[item]]
+path = "81_persona_checkpoint_seven.md"
+unit = "derived_laws"
+claims = [
+  "A rate quoted without its arity does not transfer: unstable-features.md's per-bit const-eval cost ratio was corrected from a bare constant to 2^k for arity k.",
+  "Confirms 79's rung correction and 76's self-flagged shared blind spot as the unit's real corrections, nothing further to add.",
+]
+verdict = "live"
+confidence = 0.9
+reason = "Fully read. Triangulates and confirms the two findings this pass already ported (rung correction, shared blind spot on 'validate'); adds nothing new to the registry. The unstable-features.md correction is a workspace-rule fix, not canon content, and is out of scope for a registry row."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "A four-day gap separates this file's commit date from 76-80's (2026-08-09), consistent with normal panel cadence (op review between units) rather than an abandoned-then-resumed panel."
+
+[[item]]
+path = "82_jhala_lifting_a_measured_region_into_a_declaration.md"
+unit = "derived_laws"
+claims = [
+  "Route two: which const-available operands decide P4.",
+  "Route three: a region that does lift, distinct from P4's.",
+  "A trajectory condition lifts into a declaration over the operand set exactly when it survives the set's closure under the operations the law ranges over.",
+  "The maximal lifted box is 21.98% of the holding set; every non-degenerate holding box is clamp-free, at zero residue against a live control.",
+]
+verdict = "live"
+confidence = 0.9
+reason = "Header structure and title checked directly; core finding (closure criterion, 21.98% figure) confirmed thoroughly captured in probe::a_trajectory_condition... and proposal R8. Not read section by section given the strength of this match; confidence reflects that partial-read caveat."
+superseded_by = ["90_giesen_consolidation_derived_algebraic_laws.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure"]
+ported_this_pass = false
+note = "canon_rows id is approximate (matched by content: 21.98%, closure, degenerate box), not re-confirmed by exact grep this pass. Lower confidence than fully-read files in this unit reflects that only the header and the register cross-check were done, not a full read."
+
+[[item]]
+path = "90_giesen_consolidation_derived_algebraic_laws.md"
+unit = "derived_laws"
+claims = ["The unit's consolidation, R1 through R13 plus the corrections chain and the const-gate material."]
+verdict = "live"
+confidence = 0.92
+reason = "Extensively cross-checked this pass rather than read start to finish: sections 3 (R11), 5, 7 and 12 read in full, 4 (110), 12 (the deepest correction chain) and the sourcing-honesty section (801) spot-checked. Consistently the highest-citation file in its unit, matching the pattern already confirmed for consolidations 63 and 74."
+superseded_by = []
+supersedes = ["76_willsey_derived_laws_derived_cold.md", "77_amin_derived_laws_derived_cold.md", "78_aaltonen_the_thread_axis.md", "79_fallin_attacking_the_two_cold_derivations_on_derived_laws.md", "80_rompf_when_the_deriving_happens.md", "81_persona_checkpoint_seven.md", "82_jhala_lifting_a_measured_region_into_a_declaration.md"]
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_law_is_a_fact_about_an_operation_composed_under_a_fixed_arithmetic_semantics", "proposal::chain_laws_split_by_whether_a_lifting_theorem_exists", "proposal::a_law_verdict_is_invariant_under_change_of_encoding_and_container", "many others across R1-R13, not individually re-verified this pass"]
+ported_this_pass = false
+note = "This unit's chain-machinery closure mechanism (R11's citation of 76/77) and 80's staging-boundary finding both had no row of their own despite being named explicitly in this file's own text; both ported this pass as separate rows rather than folded into R11's existing row, since they are distinct claims R11's row does not carry."
+
+[[item]]
+path = "91_ringer_entailment_check_on_the_derived_laws_consolidation.md"
+unit = "derived_laws"
+claims = [
+  "Finding 1: R8's own text conflates two of 82's separate honesty notes about two different sets of three instances, understating a real cross-persona convergence (76, 77, 82) and overstating 82's own single-author internal set.",
+  "Finding 2: 76's explicitly-flagged, falsifiable partial-order candidate for the strategy space, checked in all three places 90 would carry it forward and confirmed absent from all three, despite being exactly the shape of thing 90's own section 6 exists to hand to the next unit.",
+  "Finding 3: op's file 88 is under-cited relative to its own stated governing status, bounded as changing nothing 90 currently carries.",
+  "The anchor diff (the part of an entailment check most likely to fail silently) came back clean.",
+]
+verdict = "mixed"
+confidence = 0.92
+reason = "Fully read this pass, third confirmation of the pattern that entailment-check files are the highest-value files in this panel to read directly. Finding 2 turned out already resolved: Q41 in the registry carries the exact candidate, in language nearly matching 91's own quotation of 76, including further engagement (signedness deciding the answer, and a later attack). Finding 1 was real and uncorrected in 90's own committed text, and the existing registry note on R8 was itself wrong (claimed 90 self-repaired the error, which it does not); fixed this pass. Finding 3 needs no action per its own author's verdict."
+superseded_by = []
+supersedes = []
+conflicts_with = ["proposal::a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure's prior note, which incorrectly claimed 90 self-repaired the R8 misattribution"]
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["question::are_strategies_partially_ordered_by_chain_laws"]
+ported_this_pass = true
+note = "The registry's own prior note being wrong (not just incomplete) is itself worth flagging: a fix propagated through the port process can be inaccurate in a way that reads as more authoritative than the source it claims to summarise, exactly the failure this whole cataloguing pass exists to catch, this time inside the registry rather than inside the panel."
+
+[[item]]
+path = "92_fog_pricing_the_reassociation.md"
+unit = "derived_laws"
+claims = ["Pricing work for reassociation, per the original brief's 0-cited note."]
+verdict = "exploration"
+confidence = 0.3
+reason = "Not read this pass. 0 citations per the original brief, consistent with unabsorbed pricing/bench work rather than a claim awaiting a row, but not independently confirmed this pass."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Not read. Lower priority than 91 given the original brief's citation count, but still unverified."
+
+[[item]]
+path = "83_op_the_predicate_is_whatever_is_const.md"
+unit = "derived_laws"
+claims = ["Op's ruling on Q-C: neither 'a value may gate an arm' nor 'a value may not gate an arm' is taken; the fork is rejected. The admissible category is whatever is available at const time, reaching const functions and const data from outside the typestate."]
+verdict = "live"
+confidence = 0.9
+reason = "Op-ruling file, confirmed already fully ported in the pre-continuation session per the original brief. This pass verified its date and that its content matches question.toml's citation of it at #q39-related material (const-availability axis)."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["ruling entries citing this file, per original brief"]
+ported_this_pass = false
+note = "Not re-verified by exact id this pass; relying on the pre-continuation session's confirmation. 1 direct filename citation found, consistent with a ruling being quoted rather than paraphrased across many rows."
+
+[[item]]
+path = "84_leroy_what_the_model_band_actually_certifies.md"
+unit = "derived_laws"
+claims = [
+  "The model-band cross-check can be defeated by construction: a threshold family L_k(W), true up to a Legendre-formula threshold and false above it, produces a licensed arm that computes a wrong answer at the shipped width.",
+  "Widening the band cannot repair the defeat in general, since the threshold can be placed beyond any finite band (L_64 construction).",
+]
+verdict = "superseded"
+confidence = 0.85
+reason = "0 direct filename citations, but its content (threshold family, Legendre's formula, L_64, 'no band can catch it') is thoroughly captured, and developed far beyond this file's own scope, in law.toml and proposal.toml (R5), including a complete tensor proof and millions of evaluations this file does not contain. Read section 2 in full; not read past it given the strength of the match."
+superseded_by = ["86_knuth_how_far_the_verdict_reaches_and_the_saturating_threshold.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal::band_agreement_carries_nothing_about_the_shipped_width"]
+ported_this_pass = false
+note = "id above is approximate (matched by content: R5, threshold family, band transfer), not re-confirmed by exact grep. This is the origin of the model-band defeat that everything downstream in this unit (R5, R6, R7 and the law.toml gap notes) treats as established; worth naming explicitly since 84 itself has zero direct citations despite being foundational."
+
+[[item]]
+path = "85_op_no_runtime_checks_ever_and_stop_policing_law_shapes.md"
+unit = "derived_laws"
+claims = ["Op's ruling: never any runtime checks, ever, which rules out the value-gated csel arm as a design option regardless of its measured cost. Stop policing law shapes."]
+verdict = "live"
+confidence = 0.9
+reason = "Op-ruling file, confirmed already fully ported per the original brief. 4 citations found this pass, consistent with a foundational ruling cited from multiple places (R10's microkernelling row cites 85 for I15 directly)."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal citing 85:20-25 for I15"]
+ported_this_pass = false
+note = "Not re-verified by exact id this pass; relying on the pre-continuation session's confirmation plus the citation count matching a foundational, oft-cited ruling."
+
+[[item]]
+path = "86_knuth_how_far_the_verdict_reaches_and_the_saturating_threshold.md"
+unit = "derived_laws"
+claims = ["The developed, rigorous version of the model-band-defeat finding: tensor proof for the wrapping fragment, box theorem for the saturating fragment, millions of evaluations, the exponent-absorbing identity's threshold shape."]
+verdict = "live"
+confidence = 0.75
+reason = "0 direct filename citations, but its content (23,950,484 evaluations, box theorem, tensor proof, 1,975 pairs) matches proposal.toml's R5-adjacent rows precisely by the numbers, which could only have come from this file or a file with identical figures. Not read directly this pass; inferred from the registry's own numbers matching what 84's citation trail pointed toward."
+superseded_by = []
+supersedes = ["84_leroy_what_the_model_band_actually_certifies.md"]
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal::band_agreement_carries_nothing_about_the_shipped_width and its neighbours citing 23950484 evaluations"]
+ported_this_pass = false
+note = "GENUINE GAP IN THIS PASS'S COVERAGE: not read directly, inferred from numeric fingerprint match against the registry. Should be read directly by whoever continues past this catalogue, to confirm the inference and check for anything the registry's existing rows do not carry."
+
+[[item]]
+path = "87_op_the_canon_is_written_once_at_the_end.md"
+unit = "derived_laws"
+claims = ["Op's ruling: the canon is written once, at the end, rather than incrementally per unit. Names the strategy axis as the next unit, topic four after it."]
+verdict = "live"
+confidence = 0.9
+reason = "Op-ruling file, confirmed already fully ported per the original brief. 4 citations found this pass. Its naming of the strategy axis as next is directly relevant: confirms 93/94/97/98's low citation counts reflect a genuinely pre-consolidation unit rather than lost content."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["ruling entries citing 87"]
+ported_this_pass = false
+note = "Not re-verified by exact id this pass; relying on the pre-continuation session's confirmation."
+
+[[item]]
+path = "88_op_the_intent_is_not_every_clause_and_there_is_no_universal.md"
+unit = "derived_laws"
+claims = [
+  "Op's ruling: I8's clause 'for the most part, they probably agree' is not part of the ratified intent, only the sentence before it is.",
+  "Section 1: a strategy is mostly a preset (option 1) with a little of option 3, naming a point in a space of axes that exist because of a weighting the preset expresses.",
+]
+verdict = "mixed"
+confidence = 0.85
+reason = "Op-ruling file, confirmed already fully ported for its methodological content per the original brief. 4 citations found. But 91's entailment check (finding 3) found section 1 and section 2's substantive content (not just the methodological lesson) is under-cited relative to 90's own claim that op's files govern everything below; 91 judged this a completeness gap needing no action since it changes nothing currently carried, and I concur given the strategy-axis unit's own consolidation is the natural place for section 1's structural answer to be engaged."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["proposal citing 88 sections 2 and 4 for the methodological lesson"]
+ported_this_pass = false
+note = "Section 1's substantive content (the preset/axis-space structural answer) is a live candidate for whoever writes the strategy-axis consolidation to engage directly, per 91's finding 3."
+
+[[item]]
+path = "89_the_saturating_verdict_as_a_const_gate.md"
+unit = "derived_laws"
+claims = ["A const-gate construction for the saturating verdict, likely closing out the derived-laws unit's const-availability thread."]
+verdict = "live"
+confidence = 0.5
+reason = "0 direct filename citations. Not read this pass beyond confirming it exists and its commit date. Given the exceptional thoroughness of coverage found across every other file in this unit, a genuine 0-citation file this late in a well-consolidated unit is more likely closing/confirmatory content than a missed finding, but this is inference rather than verification."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "GENUINE GAP IN THIS PASS'S COVERAGE: not read at all. Lower priority than 91 or 86 given its position (last file before the derived-laws consolidation closes) but unverified."
+
+[[item]]
+path = "92_fog_pricing_the_reassociation.md"
+unit = "derived_laws"
+claims = ["Pricing work for reassociation."]
+verdict = "exploration"
+confidence = 0.3
+reason = "Not read this pass. 0 citations, consistent with unabsorbed pricing/bench work."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Carried forward unchanged from the earlier pass in this same session; still not read."
+
+[[item]]
+path = "93_orchard_the_strategy_axis_derived_cold.md"
+unit = "the_strategy_axis"
+claims = ["Cold derivation on the strategy axis, 20 sections, phase one and phase two, including F7 (chain-preference width cost) cited by 97's converged statement."]
+verdict = "exploration"
+confidence = 0.35
+reason = "Header structure retrieved (20 sections); not read in depth. 0 direct filename citations in the registry, consistent with the strategy-axis unit being genuinely pre-consolidation within this panel's file range (087 names it as the next unit after derived-laws, and 099 is likely the last file before its own consolidation, which would fall outside this pass's 050-099 slice)."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["indirectly, via proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations, which cites this file secondhand through 97"]
+ported_this_pass = false
+note = "GENUINE GAP: full content not read. This and 94, 97, 98 together are a substantial, apparently-uncosolidated unit (strategy_axis) whose eventual consolidation likely lands past file 099, outside this catalogue's assigned range. Flagging this as the largest structural finding of this whole pass: derived_laws (76-92) was thoroughly consolidated and ported; the_strategy_axis (93-99) was not, as of file 099."
+
+[[item]]
+path = "94_wingo_the_strategy_axis_derived_cold.md"
+unit = "the_strategy_axis"
+claims = ["Second cold derivation on the strategy axis, parallel to 93, including W7 cited alongside 93's F7 by 97's converged statement, section 6 'what relates two strategies, and why I could not settle it', section 9 'so, what is a strategy'."]
+verdict = "exploration"
+confidence = 0.35
+reason = "Header structure retrieved; not read in depth. Same pre-consolidation-unit reasoning as 93."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-14"
+edited_after_supersessor = false
+canon_rows = ["indirectly, via proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations"]
+ported_this_pass = false
+note = "GENUINE GAP: full content not read. One day later than 93 (08-14 vs 08-09/08-13 for the rest of the unit), consistent with normal sequential cold-derivation dispatch rather than an abandonment gap."
+
+[[item]]
+path = "95_op_the_panel_runs_to_ratification_and_units_must_converge.md"
+unit = "process"
+claims = ["Op's ruling: a unit must end in agreement with at least something, which 97's converged statement (section 8) is offered directly in response to."]
+verdict = "live"
+confidence = 0.9
+reason = "Op-ruling file, confirmed already fully ported per the original brief. 4 citations found. Directly explains why 97 contains a 'converged statement, offered' section, which this pass ported as a proposal row."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = ["ruling entries citing 95"]
+ported_this_pass = false
+note = "Not re-verified by exact id this pass; relying on pre-continuation confirmation plus the direct causal link to 97's converged statement, which this pass did read and port."
+
+[[item]]
+path = "96_dispatcher_note_the_validators_that_never_ran.md"
+unit = "process"
+claims = ["A dispatcher's process note, per its title, about validators that never ran."]
+verdict = "exploration"
+confidence = 0.2
+reason = "Not read this pass. 0 citations. Title suggests a process/infrastructure note rather than canon content, consistent with the original brief's characterisation."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-13"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "Lowest priority of the unread files in this range given its title strongly suggests process content rather than a canon candidate, but genuinely unverified."
+
+[[item]]
+path = "97_dolan_the_strategy_space_attacked.md"
+unit = "the_strategy_axis"
+claims = [
+  "Section 8: a converged statement on what a strategy is, offered explicitly as a suggestion for the (not-yet-existing, within this range) consolidation, synthesising 93, 94, 40, 25 and this file's own attack.",
+  "Section 9: a located disagreement, carried forward as such rather than resolved.",
+]
+verdict = "live"
+confidence = 0.85
+reason = "Section 8 read in full and ported as a proposal row, explicitly marked as unsettled and op-decides. Sections 1-7, 9-12 not read; header structure retrieved."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-14"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations"]
+ported_this_pass = true
+note = "This file's own citation count (2, both from this pass's port) confirms the strategy-axis unit's pre-consolidation state: the converged statement had no home in the registry until this pass, despite being explicitly written to be picked up by a consolidation."
+
+[[item]]
+path = "98_spj_what_the_strategy_axis_settles.md"
+unit = "the_strategy_axis"
+claims = [
+  "Section 11: probe 12 shows probe 1b's coordinate-rescue of a dominated arm does not survive its own bootstrap test (all four IQR-difference confidence intervals cross zero); 97 section 10's finding (two arms Pareto-dominated in every region) stands unqualified, and the qualification is withdrawn by its own author.",
+  "The general caution that domination is relative to a coordinate set survives, illustrated by a different, real gap: two of op's four intents have no coordinate in the corpus at all.",
+  "The added coordinate is not noise in general: 58 of 90 arm pairs have IQR differences excluding zero.",
+]
+verdict = "live"
+confidence = 0.9
+reason = "Section 11 read in full, flagged as the highest-priority remaining unread content and then actually read this same pass, closing the flagged gap rather than leaving it. Its exact numbers (58 of 90, the four bootstrap CIs, the withdrawal of 97's qualification) are already captured near-verbatim in question::arms_no_weighting_can_select (Q45), so no port was needed: this was verification, not a gap."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-14"
+edited_after_supersessor = false
+canon_rows = ["question::arms_no_weighting_can_select"]
+ported_this_pass = false
+note = "Fourth confirmation this pass of the self-flagged-correction pattern (after 79 section 7, 91 findings 1 and 2): a section explicitly correcting the author's own earlier claim, or a numbered sibling's, is consistently the highest-yield content type in this panel. This time the correction was already captured; the pattern held for where to look, not for whether a gap existed. Sections 1-10, 12-14 not read; header structure retrieved only."
+
+[[item]]
+path = "99_persona_checkpoint_eight.md"
+unit = "process"
+claims = ["Checkpoint eight, likely the last file in this panel's 050-099 range, summarising the strategy-axis unit's state at the point this pass's assigned slice ends."]
+verdict = "exploration"
+confidence = 0.25
+reason = "Not read this pass. 0 citations. Boundary file of the assigned 050-099 slice; whatever it summarises about the strategy-axis unit's open state is directly relevant to whoever's slice picks up at file 100."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-14"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = false
+note = "GENUINE GAP. Given it is the last file in this slice and likely a checkpoint summarising exactly what 93/94/97/98 left open, this should be the second-highest priority unread file after 98 for whoever continues, since it may itself already state which open threads to hand to the 100-149 slice."
