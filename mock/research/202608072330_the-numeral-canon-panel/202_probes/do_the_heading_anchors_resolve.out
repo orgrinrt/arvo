@@ -1,0 +1,14 @@
+### headings slugified: 13284 entries over 215 files
+### heading-anchor citations: 182
+
+  NOT-WALKED  OLD_124_consolidation_twelve  (not a markdown file at the panel root; this walker never opened it)
+
+### broken, file present:      0 of 182
+### unchecked, file not walked: 1
+
+######## CONTROLS
+  POSITIVE-A   #6-cross-topic-agreements                            -> STRICT PUNCT       want: resolves
+  POSITIVE-B   #4-1-multi-instance-per-the-consolidations-own-account -> LOOSE              want: resolves, dotted
+  POSITIVE-C   #3-warm-s-headroom-rule                              -> PUNCT              want: PUNCT only
+  POSITIVE-C   #3-warms-headroom-rule                               -> STRICT             want: STRICT and LOOSE
+  NEGATIVE     #zzz-no-such-heading-anywhere                        -> (none)             want: none
