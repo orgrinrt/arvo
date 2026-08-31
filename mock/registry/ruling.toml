@@ -1528,6 +1528,26 @@ provenance = ["panel::202608072330_the-numeral-canon-panel::212_op_the_alias_sco
 keywords = ["MATLAB", "fi", "fimath", "IEEE 754", "SystemC", "sc_fixed", "ap_fixed", "ac_fixed", "alias", "convention", "standard", "parity suite", "reserved", "scope"]
 
 [[ruling]]
+id = "the_standard_is_parity_in_output_not_in_the_internals"
+kind = "ruling"
+rung = "stated"
+topic = "arvo_identity"
+says = "The standards bound is met by agreeing with what a standard documents as its result, for the cases it covers. It does not oblige matching the standard's internals, and it does not oblige carrying the standard's operation list. Reaching the same result by a different or unconventional route is fine, so long as the logic of the spec is matched. And a standard may ship with holes in it, each marked, because standards parity is not the thing that has to ship: the framework is, and it has to be sound, expressible, mathematically accurate and exhaustive."
+quote = '''
+just to note: the standard should be for parity in output, not so much the internals. as long as it
+matches the logic of the spec, but perhaps achieves it slightly different or unconventional way, that
+is fine.
+
+and we can leave each standard a few holes with a FIXME to fill later, to be honest, that's not the
+important thing to ship, it's a fundamentally sound, expressible and mathematically accurate and
+exhaustive framework
+'''
+because = "An expert had derived the operation-set floor as the union of the two named standards' operation sets, reading the bound as constraining arvo's inventory. He said unprompted that the bound is about output."
+note = "**It does not move which standards are in scope**, which `the_standards_bound_starts_at_two_and_reserves_the_rest` fixed at MATLAB `fi`/`fimath` and IEEE 754 with three reserved. It fixes what being in scope demands.\n\n**What it corrects is live work.** The derivation that the four-of-five cell is unreachable because IEEE 754 requires the fused multiply-add rested on the inventory reading. The bound obliges reproducing that operation's result, the exactly-rounded `a*b + c` with one rounding rather than two, and whether arvo declares an operation of that name is internals. The conclusion may still hold on the different ground that no composition of the other four reproduces it, which is a claim needing its own evidence.\n\n**The container premise refutation is untouched**, since it rested on a container-stated numeral returning 8192 where MATLAB documents 0, which is a disagreement in output.\n\nIt sits with the ratified format spine, which states arithmetic as an exact operation composed with a named total adaptation: a statement about the result that says nothing about the route.\n\n**The second half ranks the two and standards parity loses.** A standard covered with marked holes ships; a framework with holes does not. So the standards are a check on whether the framework is exhaustive rather than a gate on shipping, which is why two were named in the first place. **A hole in a standard is a `FIXME` and is honest. A hole in the framework is a defect.**\n\n**That moves the shape of `which_operation_set_the_design_ships`** from which operations must be present to what the framework must be able to express, and which of those ship now against marked later. The second is smaller, better posed, and answerable without the standards being complete."
+provenance = ["panel::202608072330_the-numeral-canon-panel::227_op_the_standard_is_parity_in_output::#what-it-settles"]
+keywords = ["standard", "parity", "output", "internals", "spec", "MATLAB", "fi", "IEEE 754", "alias", "adequacy", "operation set", "unconventional", "route"]
+
+[[ruling]]
 id = "the_observability_licence_is_an_intent_and_he_put_it_to_the_panel"
 kind = "intent"
 rung = "stated"
