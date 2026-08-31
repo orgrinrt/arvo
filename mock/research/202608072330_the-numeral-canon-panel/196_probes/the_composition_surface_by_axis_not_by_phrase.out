@@ -1,0 +1,68 @@
+### root: /Users/orgrinrt/Dev/clause-work/numeric-stack/notation
+
+======== ARM 1. 191's search, reproduced: the phrase 'trip count' ========
+-- every occurrence, with its field --
+   question.toml:222:keywords = ["fold", "accumulator", "capacity", "algebraic structure", "monoid", "absorbing top", "arity", "reduction", "loop-carried
+   retirement.toml:114:keywords = ["accumulator", "runtime bound", "loop", "type dependency", "sufficiency", "renormalising", "trip count"]
+
+   occurrences in a claim-bearing field (says/claim/statement/asks/why/because/establishes): 0
+   CTRL-REPRO  PASS  reproduces 191: the phrase carries no claim anywhere
+
+======== ARM 2. the same question by declared axis: chain_length ========
+   dimension.toml declares chain_length: yes
+
+   chain_laws_split_by_whether_a_lifting_theorem_exists                     | argument  | one_expert  | chain length in 2..=5        | operations {add, mul}    | answers:yes
+   chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type | measured  | cross_topic | chain length any             | operation = mul          | answers:no
+   headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region | measured  | one_expert  | column lengths in {1, 2, 3, 4, 8, 16, 32, 64, 128, 1024} | operations {+, -, *, >>} | answers:yes
+   a_coherent_reduction_needs_no_accumulator                                | measured  | one_expert  | chain length in 2..=8        | operation = add          | answers:no
+   an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit    | measured  | one_expert  | chain length in 2..=8        | operation = add          | answers:no
+   the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion | measured  | two_experts | chain length in 2..=5        | operation = mul          | answers:yes
+   fusing_a_multiply_add_is_free_exactly_at_translation_equivariance        | theorem   | one_expert  | 2                            | multiply-add             | answers:no
+   where_fusion_changes_the_answer_it_is_not_a_lowering                     | enumeration | two_experts | 2                            | multiply-add             | answers:no
+   fusing_a_multiply_add_preserves_the_answer_under_unsigned                |           |             | 2                            | multiply-add             | answers:no
+   fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping         |           |             | 2                            | multiply-add             | answers:no
+   the_fused_and_the_stepwise_multiply_add_denote_one_function              |           |             | 2                            | multiply-add             | answers:no
+
+   rows carrying a chain_length predicate: 11
+
+======== ARM 3. the split ARM 2's rows make, by operation ========
+-- operation names multiplication --
+   chain_laws_split_by_whether_a_lifting_theorem_exists                     | argument  | one_expert  | chain length in 2..=5        | operations {add, mul}    | answers:yes
+   chain_accuracy_cannot_be_served_by_an_operator_closed_over_its_operand_type | measured  | cross_topic | chain length any             | operation = mul          | answers:no
+   the_multiplicative_guard_grows_linearly_and_the_saving_is_adaptation_fusion | measured  | two_experts | chain length in 2..=5        | operation = mul          | answers:yes
+   fusing_a_multiply_add_is_free_exactly_at_translation_equivariance        | theorem   | one_expert  | 2                            | multiply-add             | answers:no
+   where_fusion_changes_the_answer_it_is_not_a_lowering                     | enumeration | two_experts | 2                            | multiply-add             | answers:no
+   fusing_a_multiply_add_preserves_the_answer_under_unsigned                |           |             | 2                            | multiply-add             | answers:no
+   fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping         |           |             | 2                            | multiply-add             | answers:no
+   the_fused_and_the_stepwise_multiply_add_denote_one_function              |           |             | 2                            | multiply-add             | answers:no
+-- operation names addition and not multiplication --
+   a_coherent_reduction_needs_no_accumulator                                | measured  | one_expert  | chain length in 2..=8        | operation = add          | answers:no
+   an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit    | measured  | one_expert  | chain length in 2..=8        | operation = add          | answers:no
+-- both --
+   chain_laws_split_by_whether_a_lifting_theorem_exists                     | argument  | one_expert  | chain length in 2..=5        | operations {add, mul}    | answers:yes
+   fusing_a_multiply_add_is_free_exactly_at_translation_equivariance        | theorem   | one_expert  | 2                            | multiply-add             | answers:no
+   where_fusion_changes_the_answer_it_is_not_a_lowering                     | enumeration | two_experts | 2                            | multiply-add             | answers:no
+   fusing_a_multiply_add_preserves_the_answer_under_unsigned                |           |             | 2                            | multiply-add             | answers:no
+   fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping         |           |             | 2                            | multiply-add             | answers:no
+   the_fused_and_the_stepwise_multiply_add_denote_one_function              |           |             | 2                            | multiply-add             | answers:no
+-- neither named --
+   headroom_and_intermediate_precision_are_unobservable_inside_a_pure_ring_region | measured  | one_expert  | column lengths in {1, 2, 3, 4, 8, 16, 32, 64, 128, 1024} | operations {+, -, *, >>} | answers:yes
+
+   CTRL-COL  the id a_coherent_reduction_needs_no_accumulator must NOT
+   appear under multiplication. It contains the letters m-u-l inside
+   'accumulator' and v1 put it there.
+   CTRL-COL  PASS
+
+======== ARM 4. how many rows are about composition at all ========
+   proposal.toml                        6 rows with topic = the_chain
+   proposal-the-later-topics.toml       1 rows with topic = the_chain
+   law.toml                             0 rows with topic = the_chain
+   law-the-later-topics.toml            1 rows with topic = the_chain
+   question.toml                        9 rows with topic = the_chain
+   retirement.toml                     20 rows with topic = the_chain
+
+   191 section 2.3: "The registry contains two results about composition".
+
+======== CONTROLS ========
+CTRL-POS  PASS  a planted chain_length predicate is found
+CTRL-NEG  PASS  a lookalike axis slug is not matched

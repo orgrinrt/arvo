@@ -1,0 +1,36 @@
+### root:   /Users/orgrinrt/Dev/clause-work/numeric-stack/notation
+### matcher: digit-anchored quantified figures, six shapes
+### NOTE: words-as-numbers are NOT matched, so every count is a LOWER BOUND
+
+======== ARM 1. retirement.why, the namespace with no region field ========
+retirement rows total:            176
+carrying a quantified figure:     9
+
+-- the rows, so a reader can check any of them --
+   dl_overflow_band_closed_form
+   dl_exact_fold_width_construction_recursing_on_a_value
+   dl_bridge_table_cost_is_linear
+   dl_interior_wrapping_with_a_reserved_absorbing_top
+   r132_the_21204_of_32768_figure
+   r146_fractional_shift_as_an_arithmetic_shift_right
+   r151_the_first_predicate_of_clause_five_five
+   r173_rk_the_static_length_lever
+   options_q32_every_instrument_runs_on_one_thread
+
+======== ARM 2. proposal says+because, where a region is required ========
+proposal rows total:              94
+carrying a quantified figure:     17
+
+-- of those, how many carry a predicate --
+   with a predicate:              15
+   without:                       2
+
+======== CONTROLS ========
+POS-REAL   PASS  the row 191 names is matched
+POS-PLANT  PASS  pos_plant_has_a_figure matched
+NEG        PASS  neg_plant_pure_argument correctly not matched
+NEG        PASS  neg_word_numbers_as_words correctly not matched
+
+### NEG-WORD passing is the honest half: 'zero of sixteen failures' is a
+### real measurement this matcher cannot see, and it sits in the very row
+### POS-REAL matched. So ARM 1's count understates its own subject.
