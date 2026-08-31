@@ -1,7 +1,7 @@
 PROBE B: translation equivariance of each candidate operation
 
 == FIXTURE ==
-  28 of 28 fixture rows correct
+  34 of 34 fixture rows correct
 
 == CONTROL 1 (must hold) ==
   floor is translation equivariant by construction, on every row.
@@ -24,6 +24,7 @@ PROBE B: translation equivariance of each candidate operation
     bit_drop               F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
     half_up[toward +inf]   F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
     half_up[away from 0]   F=1..5:   512   128    32     8     2   total    682  not equivariant
+    half_down[toward -inf] F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
     half_even              F=1..5:   512   128    32     8     2   total    682  not equivariant
 
   signedness = unsigned
@@ -34,6 +35,7 @@ PROBE B: translation equivariance of each candidate operation
     bit_drop               F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
     half_up[toward +inf]   F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
     half_up[away from 0]   F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
+    half_down[toward -inf] F=1..5:     0     0     0     0     0   total      0  EQUIVARIANT
     half_even              F=1..5:   512   128    32     8     2   total    682  not equivariant
 
 == THE COUNT THE CANON RECORDS, under each reading of half_up ==

@@ -10,6 +10,12 @@
 // are cases that MUST FAIL to disagree and two are cases that MUST disagree; a
 // run where all four come out the same way is an instrument that measures
 // nothing, whatever numbers it prints.
+//
+// When `half_down` was added to the mode set for probe C, the exhaustive match
+// in `short` below refused to compile until it was handled, which is the type
+// system reporting that a table claiming to cover the modes did not. Worth
+// recording, because the same table in a language without the check would have
+// printed a column short and looked fine.
 
 include!("modes.rs");
 
@@ -50,7 +56,10 @@ fn main() {
         if got != want {
             c1_ok = false;
         }
-        println!("    F = {}: this instrument {}, canon {} -> {}", f, got, want, verdict);
+        println!(
+            "    F = {}: this instrument {}, canon {} -> {}",
+            f, got, want, verdict
+        );
     }
     println!();
 
@@ -69,14 +78,23 @@ fn main() {
             }
         }
     }
-    println!("    worst disagreement over W in {{4,6,8,10}}, F in 0..W, both signedness: {}", c2_max);
+    println!(
+        "    worst disagreement over W in {{4,6,8,10}}, F in 0..W, both signedness: {}",
+        c2_max
+    );
     println!();
 
     println!("== CONTROL 3 (the case that must fail) ==");
     println!("  The two readings of `half_up` must DISAGREE somewhere on a");
     println!("  signed domain with F >= 1. A zero here means the instrument is");
     println!("  comparing one operation with itself and every number below is void.");
-    let c3 = disagreements(Mode::HalfUpTowardPosInf, Mode::HalfUpAwayFromZero, 8, 1, true);
+    let c3 = disagreements(
+        Mode::HalfUpTowardPosInf,
+        Mode::HalfUpAwayFromZero,
+        8,
+        1,
+        true,
+    );
     println!("    W = 8, F = 1, signed: {}", c3);
     println!();
 
@@ -86,12 +104,24 @@ fn main() {
     let mut c4_max = 0u64;
     for w in [4u32, 6, 8, 10] {
         for f in 0..w {
-            let n = disagreements(Mode::HalfUpTowardPosInf, Mode::HalfUpAwayFromZero, w, f, false);
+            let n = disagreements(
+                Mode::HalfUpTowardPosInf,
+                Mode::HalfUpAwayFromZero,
+                w,
+                f,
+                false,
+            );
             if n > c4_max {
                 c4_max = n;
             }
         }
-        let n = disagreements(Mode::HalfUpTowardPosInf, Mode::HalfUpAwayFromZero, w, 0, true);
+        let n = disagreements(
+            Mode::HalfUpTowardPosInf,
+            Mode::HalfUpAwayFromZero,
+            w,
+            0,
+            true,
+        );
         if n > c4_max {
             c4_max = n;
         }
@@ -103,25 +133,41 @@ fn main() {
     println!("  W    F   disagreeing values   of domain   predicted 2^(W-1-F)");
     for w in [4u32, 6, 8, 10, 12] {
         for f in 0..w {
-            let n = disagreements(Mode::HalfUpTowardPosInf, Mode::HalfUpAwayFromZero, w, f, true);
+            let n = disagreements(
+                Mode::HalfUpTowardPosInf,
+                Mode::HalfUpAwayFromZero,
+                w,
+                f,
+                true,
+            );
             let total = 1u64 << w;
             let predicted = if f == 0 { 0 } else { 1u64 << (w - 1 - f) };
-            let flag = if n == predicted { "" } else { "   <- MODEL BROKEN" };
-            println!("  {:2}   {:2}   {:18}   {:9}   {:9}{}", w, f, n, total, predicted, flag);
+            let flag = if n == predicted {
+                ""
+            } else {
+                "   <- MODEL BROKEN"
+            };
+            println!(
+                "  {:2}   {:2}   {:18}   {:9}   {:9}{}",
+                w, f, n, total, predicted, flag
+            );
         }
     }
     println!();
 
     println!("== SWEEP: full pairwise table, W = 8, F = 4 ==");
     for signed in [true, false] {
-        println!("  signedness = {}", if signed { "signed" } else { "unsigned" });
-        print!("  {:22}", "");
+        println!(
+            "  signedness = {}",
+            if signed { "signed" } else { "unsigned" }
+        );
+        print!("  {:24}", "");
         for b in ALL_MODES {
             print!("{:>7}", short(b));
         }
         println!();
         for a in ALL_MODES {
-            print!("  {:22}", mode_name(a));
+            print!("  {:24}", mode_name(a));
             for b in ALL_MODES {
                 print!("{:>7}", disagreements(a, b, 8, 4, signed));
             }
@@ -137,17 +183,34 @@ fn main() {
             let u = disagreements(*a, *b, 8, 4, false);
             let s = disagreements(*a, *b, 8, 4, true);
             if u == 0 && s > 0 {
-                println!("    {:22} vs {:22}  unsigned 0, signed {}", mode_name(*a), mode_name(*b), s);
+                println!(
+                    "    {:24} vs {:24}  unsigned 0, signed {}",
+                    mode_name(*a),
+                    mode_name(*b),
+                    s
+                );
             }
         }
     }
     println!();
 
     println!("== VERDICTS ==");
-    println!("  control 1 (canon numbers reproduced): {}", if c1_ok { "PASS" } else { "FAIL" });
-    println!("  control 2 (bit_drop == floor):        {}", if c2_max == 0 { "PASS" } else { "FAIL" });
-    println!("  control 3 (half_up readings differ):  {}", if c3 > 0 { "PASS" } else { "FAIL" });
-    println!("  control 4 (and agree where they must):{}", if c4_max == 0 { " PASS" } else { " FAIL" });
+    println!(
+        "  control 1 (canon numbers reproduced): {}",
+        if c1_ok { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "  control 2 (bit_drop == floor):        {}",
+        if c2_max == 0 { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "  control 3 (half_up readings differ):  {}",
+        if c3 > 0 { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "  control 4 (and agree where they must):{}",
+        if c4_max == 0 { " PASS" } else { " FAIL" }
+    );
     let all = c1_ok && c2_max == 0 && c3 > 0 && c4_max == 0;
     println!("  instrument: {}", if all { "sound" } else { "INVALID" });
     if !all {
@@ -164,6 +227,7 @@ fn short(m: Mode) -> &'static str {
         Mode::BitDrop => "drop",
         Mode::HalfUpTowardPosInf => "hu+inf",
         Mode::HalfUpAwayFromZero => "hu-afz",
+        Mode::HalfDownTowardNegInf => "hd-inf",
         Mode::HalfEven => "heven",
     }
 }

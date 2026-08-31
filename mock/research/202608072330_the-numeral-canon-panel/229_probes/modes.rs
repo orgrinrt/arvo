@@ -9,7 +9,8 @@
 // invocation with no manifest.
 
 /// Every operation the six names could denote, plus the two hardware spellings
-/// the ratified ruling separated.
+/// the ratified ruling separated, plus the two operations the set would need to
+/// be closed under negation conjugacy.
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub enum Mode {
     /// Greatest integer not above the value. Toward negative infinity.
@@ -18,7 +19,9 @@ pub enum Mode {
     Ceil,
     /// Discard the fraction, keep the sign. C integer division.
     TowardZero,
-    /// The conjugate of TowardZero under negation. Not one of the six.
+    /// The magnitude complement of TowardZero: the same sign, the other
+    /// neighbour. Not one of the six. It is NOT TowardZero's conjugate under
+    /// negation, which probe C measures: TowardZero is odd, so it is its own.
     AwayFromZero,
     /// Drop the low F bits of a two's complement value. Arithmetic shift right.
     BitDrop,
@@ -28,11 +31,14 @@ pub enum Mode {
     /// Nearest; a tie goes to the neighbour of larger magnitude.
     /// This is IEEE 754 roundTiesToAway, and it is the other reading of `half_up`.
     HalfUpAwayFromZero,
+    /// Nearest; a tie goes to the neighbour toward negative infinity. The
+    /// conjugate of HalfUpTowardPosInf under negation. Not one of the six.
+    HalfDownTowardNegInf,
     /// Nearest; a tie goes to the neighbour with an even multiplier.
     HalfEven,
 }
 
-pub const ALL_MODES: [Mode; 8] = [
+pub const ALL_MODES: [Mode; 9] = [
     Mode::Floor,
     Mode::Ceil,
     Mode::TowardZero,
@@ -40,6 +46,7 @@ pub const ALL_MODES: [Mode; 8] = [
     Mode::BitDrop,
     Mode::HalfUpTowardPosInf,
     Mode::HalfUpAwayFromZero,
+    Mode::HalfDownTowardNegInf,
     Mode::HalfEven,
 ];
 
@@ -52,6 +59,7 @@ pub fn mode_name(m: Mode) -> &'static str {
         Mode::BitDrop => "bit_drop",
         Mode::HalfUpTowardPosInf => "half_up[toward +inf]",
         Mode::HalfUpAwayFromZero => "half_up[away from 0]",
+        Mode::HalfDownTowardNegInf => "half_down[toward -inf]",
         Mode::HalfEven => "half_even",
     }
 }
@@ -113,6 +121,14 @@ pub fn round(m: Mode, k: i64, f: u32) -> i64 {
                 q
             }
         }
+        Mode::HalfDownTowardNegInf => {
+            let twice = 2 * r;
+            if twice > s {
+                q + 1
+            } else {
+                q
+            }
+        }
         Mode::HalfEven => {
             let twice = 2 * r;
             if twice > s {
@@ -150,6 +166,7 @@ pub const FIXTURE: &[(Mode, i64, i64)] = &[
     (Mode::BitDrop, 1, 0),
     (Mode::HalfUpTowardPosInf, 1, 1),
     (Mode::HalfUpAwayFromZero, 1, 1),
+    (Mode::HalfDownTowardNegInf, 1, 0),
     (Mode::HalfEven, 1, 0),
     // x = -0.5, which is where the two readings of `half_up` part
     (Mode::Floor, -1, -1),
@@ -159,22 +176,27 @@ pub const FIXTURE: &[(Mode, i64, i64)] = &[
     (Mode::BitDrop, -1, -1),
     (Mode::HalfUpTowardPosInf, -1, 0),
     (Mode::HalfUpAwayFromZero, -1, -1),
+    (Mode::HalfDownTowardNegInf, -1, -1),
     (Mode::HalfEven, -1, 0),
     // x = 1.5
     (Mode::HalfUpTowardPosInf, 3, 2),
     (Mode::HalfUpAwayFromZero, 3, 2),
+    (Mode::HalfDownTowardNegInf, 3, 1),
     (Mode::HalfEven, 3, 2),
     // x = -1.5
     (Mode::HalfUpTowardPosInf, -3, -1),
     (Mode::HalfUpAwayFromZero, -3, -2),
+    (Mode::HalfDownTowardNegInf, -3, -2),
     (Mode::HalfEven, -3, -2),
     // x = 2.5
     (Mode::HalfUpTowardPosInf, 5, 3),
     (Mode::HalfUpAwayFromZero, 5, 3),
+    (Mode::HalfDownTowardNegInf, 5, 2),
     (Mode::HalfEven, 5, 2),
     // x = -2.5
     (Mode::HalfUpTowardPosInf, -5, -2),
     (Mode::HalfUpAwayFromZero, -5, -3),
+    (Mode::HalfDownTowardNegInf, -5, -3),
     (Mode::HalfEven, -5, -2),
     // x = -0.25 and x = -0.75 need f = 2; kept out of this fixture, which is
     // f = 1 throughout, and covered by the sweeps instead.

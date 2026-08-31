@@ -3,7 +3,7 @@ value model: k / 2^F rounded to an integer, k over the whole
 representable domain of a W-bit format.
 
 == FIXTURE (textbook values at F = 1) ==
-  28 of 28 fixture rows correct
+  34 of 34 fixture rows correct
 
 == CONTROL 1 (positive, against the canon) ==
   probe::the_two_toward_zero_spellings_differ_and_by_how_much
@@ -76,33 +76,35 @@ representable domain of a W-bit format.
 
 == SWEEP: full pairwise table, W = 8, F = 4 ==
   signedness = signed
-                            flr   ceil     tz    afz   drop hu+inf hu-afz  heven
-  floor                       0    240    120    120      0    128    120    120
-  ceil                      240      0    120    120    240    112    120    120
-  toward_zero               120    120      0    240    120    120    128    120
-  away_from_zero            120    120    240      0    120    120    112    120
-  bit_drop                    0    240    120    120      0    128    120    120
-  half_up[toward +inf]      128    112    120    120    128      0      8      8
-  half_up[away from 0]      120    120    128    112    120      8      0      8
-  half_even                 120    120    120    120    120      8      8      0
+                              flr   ceil     tz    afz   drop hu+inf hu-afz hd-inf  heven
+  floor                         0    240    120    120      0    128    120    112    120
+  ceil                        240      0    120    120    240    112    120    128    120
+  toward_zero                 120    120      0    240    120    120    128    120    120
+  away_from_zero              120    120    240      0    120    120    112    120    120
+  bit_drop                      0    240    120    120      0    128    120    112    120
+  half_up[toward +inf]        128    112    120    120    128      0      8     16      8
+  half_up[away from 0]        120    120    128    112    120      8      0      8      8
+  half_down[toward -inf]      112    128    120    120    112     16      8      0      8
+  half_even                   120    120    120    120    120      8      8      8      0
 
   signedness = unsigned
-                            flr   ceil     tz    afz   drop hu+inf hu-afz  heven
-  floor                       0    240      0    240      0    128    128    120
-  ceil                      240      0    240      0    240    112    112    120
-  toward_zero                 0    240      0    240      0    128    128    120
-  away_from_zero            240      0    240      0    240    112    112    120
-  bit_drop                    0    240      0    240      0    128    128    120
-  half_up[toward +inf]      128    112    128    112    128      0      0      8
-  half_up[away from 0]      128    112    128    112    128      0      0      8
-  half_even                 120    120    120    120    120      8      8      0
+                              flr   ceil     tz    afz   drop hu+inf hu-afz hd-inf  heven
+  floor                         0    240      0    240      0    128    128    112    120
+  ceil                        240      0    240      0    240    112    112    128    120
+  toward_zero                   0    240      0    240      0    128    128    112    120
+  away_from_zero              240      0    240      0    240    112    112    128    120
+  bit_drop                      0    240      0    240      0    128    128    112    120
+  half_up[toward +inf]        128    112    128    112    128      0      0     16      8
+  half_up[away from 0]        128    112    128    112    128      0      0     16      8
+  half_down[toward -inf]      112    128    112    128    112     16     16      0      8
+  half_even                   120    120    120    120    120      8      8      8      0
 
 == SWEEP: every pair that agrees on unsigned and differs on signed ==
   the class the ratified ruling retired a word for. W = 8, F = 4.
-    floor                  vs toward_zero             unsigned 0, signed 120
-    ceil                   vs away_from_zero          unsigned 0, signed 120
-    toward_zero            vs bit_drop                unsigned 0, signed 120
-    half_up[toward +inf]   vs half_up[away from 0]    unsigned 0, signed 8
+    floor                    vs toward_zero               unsigned 0, signed 120
+    ceil                     vs away_from_zero            unsigned 0, signed 120
+    toward_zero              vs bit_drop                  unsigned 0, signed 120
+    half_up[toward +inf]     vs half_up[away from 0]      unsigned 0, signed 8
 
 == VERDICTS ==
   control 1 (canon numbers reproduced): PASS

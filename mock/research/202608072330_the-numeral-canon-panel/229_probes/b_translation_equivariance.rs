@@ -68,7 +68,11 @@ const CANON_SWEEP_FIXED: [Mode; 5] = [
 fn equivariant_count(half_up: Mode, w: u32, f: u32, signed: bool) -> (usize, Vec<&'static str>) {
     let mut n = 0usize;
     let mut names = Vec::new();
-    for m in CANON_SWEEP_FIXED.iter().copied().chain(std::iter::once(half_up)) {
+    for m in CANON_SWEEP_FIXED
+        .iter()
+        .copied()
+        .chain(std::iter::once(half_up))
+    {
         if equivariance_failures(m, w, f, signed) == 0 {
             n += 1;
             names.push(mode_name(m));
@@ -99,7 +103,10 @@ fn main() {
             }
         }
     }
-    println!("    total failures for floor over W in {{4,6,8}}, F in 0..W, both: {}", c1);
+    println!(
+        "    total failures for floor over W in {{4,6,8}}, F in 0..W, both: {}",
+        c1
+    );
     println!();
 
     println!("== CONTROL 2 (the case that must fail) ==");
@@ -114,7 +121,10 @@ fn main() {
 
     println!("== PER-MODE, W = 6, F in 1..=5, the canon's own sweep widths ==");
     for signed in [true, false] {
-        println!("  signedness = {}", if signed { "signed" } else { "unsigned" });
+        println!(
+            "  signedness = {}",
+            if signed { "signed" } else { "unsigned" }
+        );
         for m in ALL_MODES {
             let mut tot = 0u64;
             let mut per = String::new();
@@ -128,7 +138,11 @@ fn main() {
                 mode_name(m),
                 per,
                 tot,
-                if tot == 0 { "EQUIVARIANT" } else { "not equivariant" }
+                if tot == 0 {
+                    "EQUIVARIANT"
+                } else {
+                    "not equivariant"
+                }
             );
         }
         println!();
@@ -137,8 +151,14 @@ fn main() {
     println!("== THE COUNT THE CANON RECORDS, under each reading of half_up ==");
     println!("  law rows say: unsigned five of six, signed three of six.");
     for (label, hu) in [
-        ("half_up = toward +inf, i.e. floor(x + 1/2)", Mode::HalfUpTowardPosInf),
-        ("half_up = away from zero, i.e. roundTiesToAway", Mode::HalfUpAwayFromZero),
+        (
+            "half_up = toward +inf, i.e. floor(x + 1/2)",
+            Mode::HalfUpTowardPosInf,
+        ),
+        (
+            "half_up = away from zero, i.e. roundTiesToAway",
+            Mode::HalfUpAwayFromZero,
+        ),
     ] {
         println!("  reading: {}", label);
         for signed in [false, true] {
@@ -164,8 +184,14 @@ fn main() {
     }
 
     println!("== VERDICTS ==");
-    println!("  control 1 (floor equivariant):     {}", if c1 == 0 { "PASS" } else { "FAIL" });
-    println!("  control 2 (half_even is not):      {}", if c2 > 0 { "PASS" } else { "FAIL" });
+    println!(
+        "  control 1 (floor equivariant):     {}",
+        if c1 == 0 { "PASS" } else { "FAIL" }
+    );
+    println!(
+        "  control 2 (half_even is not):      {}",
+        if c2 > 0 { "PASS" } else { "FAIL" }
+    );
     let sound = c1 == 0 && c2 > 0;
     println!("  instrument: {}", if sound { "sound" } else { "INVALID" });
     if !sound {
