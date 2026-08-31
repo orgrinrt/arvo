@@ -690,6 +690,12 @@ required = false
 description = "The committed instruments that established the regions above."
 
 [[registry.namespace.field]]
+name = "precondition_for"
+type = "obligation[]"
+required = false
+description = "Obligations that cannot be met unless this law holds, in the region it holds in. **Not an answer to them and never counted as one**: it says the obligation has a dependency somebody has now established, which leaves it further from met rather than nearer. It sits here rather than on the obligation because the obligation cannot know what a later result will turn out to require, and this end does; the reverse direction is what `refsto` computes. The relation the demand side lacked: a consumer asks for a graph ordering and cannot say that the ordering is unmeetable on more than one core unless the addition beneath it is associative, because a consumer cannot know that."
+
+[[registry.namespace.field]]
 name = "topic"
 type = "topic"
 required = false
@@ -1100,6 +1106,12 @@ name = "obligation"
 type = "obligation[]"
 required = false
 description = "Obligations this would meet if it were stamped. Proposed rather than met, and anything counting coverage draws that line."
+
+[[registry.namespace.field]]
+name = "precondition_for"
+type = "obligation[]"
+required = false
+description = "Obligations that cannot be met unless this claim holds, in the region it holds in. **Not an answer to them and never counted as one**: it says the obligation has a dependency somebody has now established, which leaves it further from met rather than nearer. It sits here rather than on the obligation because the obligation cannot know what a later result will turn out to require, and this end does; the reverse direction is what `refsto` computes. Four dispatches wanted this relation before it existed, each having found a result the registry could hold beside an obligation while being unable to join the two."
 
 [[registry.namespace.field]]
 name = "supersedes"

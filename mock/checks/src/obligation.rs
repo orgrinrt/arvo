@@ -173,6 +173,88 @@ pub fn obligations_whose_only_route_is_closed(reg: &Registry) -> Vec<Finding> {
         .collect()
 }
 
+/// The namespaces that can establish a precondition, and therefore carry the edge.
+const PRECONDITION_SOURCES: &[&str] = &["law", "proposal"];
+
+/// Preconditions somebody has established for each obligation.
+///
+/// **Never a tier and never counted as coverage.** A precondition says the
+/// obligation has a dependency, which leaves it further from met and not nearer,
+/// so it is reported separately from [`reach`] rather than folded into it. The
+/// arithmetic temptation is real: an obligation with four known preconditions
+/// looks better attended than one with none, and it is worse off.
+pub fn preconditions(reg: &Registry) -> BTreeMap<String, Vec<String>> {
+    let mut out: BTreeMap<String, Vec<String>> = reg
+        .of("obligation")
+        .map(|r| (r.id.clone(), Vec::new()))
+        .collect();
+    for ns in PRECONDITION_SOURCES {
+        for row in reg.of(ns) {
+            for slug in row.list("precondition_for") {
+                if let Some(entry) = out.get_mut(slug.as_str()) {
+                    entry.push(row.addr());
+                }
+            }
+        }
+    }
+    out
+}
+
+/// A `precondition_for` edge from a namespace that cannot establish one.
+///
+/// The same control as the untiered-namespace arm above and for the same
+/// reason: the walk reads a fixed list, so an edge from anywhere else
+/// contributes nothing and the report reads clean.
+pub fn preconditions_from_a_namespace_that_cannot_establish_one(reg: &Registry) -> Vec<Finding> {
+    reg.rows
+        .iter()
+        .filter(|row| row.has("precondition_for"))
+        .filter(|row| !PRECONDITION_SOURCES.contains(&row.namespace.as_str()))
+        .map(|row| {
+            Finding::new(
+                "precondition-from-a-namespace-that-cannot-establish-one",
+                row.addr(),
+                format!(
+                    "carries a `precondition_for` edge from `{}`, which the walk does not read, \
+                     so the dependency it states is invisible and the obligation reads less \
+                     encumbered than it is.",
+                    row.namespace
+                ),
+            )
+        })
+        .collect()
+}
+
+/// An obligation reached by nothing that also carries a known precondition.
+///
+/// The pair a reader most needs and the registry could not express before: not
+/// merely unanswered, but unanswered with a dependency already established
+/// against it.
+pub fn unanswered_obligations_carrying_a_precondition(reg: &Registry) -> Vec<Finding> {
+    let pre = preconditions(reg);
+    reach(reg)
+        .into_iter()
+        .filter(|(_, (tier, _))| *tier != Reach::Met && *tier != Reach::Proposed)
+        .filter_map(|(id, _)| {
+            let on = pre.get(&id)?;
+            if on.is_empty() {
+                return None;
+            }
+            Some(Finding::new(
+                "unanswered-obligation-carries-a-precondition",
+                format!("obligation::{id}"),
+                format!(
+                    "is answered by nothing and {} result(s) have been established as \
+                     preconditions of it: {}. It is further from met than an obligation nobody \
+                     has looked at, rather than nearer.",
+                    on.len(),
+                    on.join(", ")
+                ),
+            ))
+        })
+        .collect()
+}
+
 /// How many obligations sit at each tier.
 pub fn tally(reg: &Registry) -> BTreeMap<&'static str, usize> {
     let mut out = BTreeMap::new();
