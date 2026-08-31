@@ -1372,11 +1372,12 @@ predicate = [
 law = ["associativity_of_a_composed_saturating_add_and_subtract"]
 answers = ["may_an_arms_predicate_read_data"]
 evidence = ["a_trajectory_condition_lifts_exactly_when_it_survives_closure"]
-note = "The instruments are `82_probes/p1_box_lifting_of_p4.rs` and `p1b_is_every_lifted_box_degenerate.rs`, committed with output. The four widths the consolidation names without naming are 2, 3, 4 and 5, read off the instrument's own table. **The consolidation marks this low confidence for a reason unrelated to its content**: an earlier draft of that consolidation misattributed which of the supporting instances shared an author, and it records itself as having made and repaired the error. Nothing downstream cites it for an independence count."
+note = "The instruments are `82_probes/p1_box_lifting_of_p4.rs` and `p1b_is_every_lifted_box_degenerate.rs`, committed with output. The four widths the consolidation names without naming are 2, 3, 4 and 5, read off the instrument's own table. **The consolidation's own R8 text (`90:346-348`) conflates two separate honesty notes `82` makes about two different sets of three (its cross-persona convergence with 76 and 77, versus its own three internal instances), attaching the 'share an author' clause from the second to the items named in the first, which understates the cross-persona corroboration and overstates the single-author one. This was found by an entailment check (`91` finding 1) and is uncorrected in `90`'s own text as committed; a prior version of this note incorrectly claimed the consolidation self-repaired it, which `91`'s direct citation check refutes. Named moderate rather than severe because it sits inside an already-hedged section and nothing downstream cites R8 for an independence count.**"
 gap = "Stated as one-directional sufficiency by its own author. The length-aware construction that a bounded length would license is unbuilt. And the declaration a consumer would naturally write instead, that the exact result stays in range, is unsound: true while the law is false on 49.80% of the domain and wrong in 87.5% of the boxes satisfying it."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::341",
   "panel::202608072330_the-numeral-canon-panel::90_giesen_consolidation_derived_algebraic_laws::372",
+  "panel::202608072330_the-numeral-canon-panel::91_ringer_entailment_check_on_the_derived_laws_consolidation::83",
 ]
 keywords = ["lifting", "closure", "trajectory", "declaration", "declared range", "degenerate", "box", "21.98", "R8"]
 
