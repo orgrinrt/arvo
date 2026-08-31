@@ -1,0 +1,147 @@
+# Port catalogue for panel files 050-099 of
+# mock/research/202608072330_the-numeral-canon-panel/.
+#
+# Format choice: TOML, sibling to mock/registry/ rather than inside it.
+# Inside mock/registry/ would put this under `canon_paths` (mockspace.toml
+# declares `canon_paths = ["mock/registry/*.toml"]`), which would make the
+# mockspace tooling try to validate every [[item]] block against the
+# registry's declared namespace schema (topic/dimension/obligation/question/
+# strategy/law/probe/retirement/ruling/proposal) and treat this catalogue as
+# canon, which it explicitly is not: entries here are uncertain, scored, and
+# most were declined rather than promoted. A sibling directory keeps it
+# TOML (machine-readable, greppable, diffable the same way the registry is)
+# without polluting canon_paths or confusing `mock check`.
+#
+# One row per panel file (not per individual claim), since a file is the
+# panel's own unit of authorship (numbered, written once, frozen) and a
+# per-claim granularity for ~50 files would run past what one seat's slice
+# can review at the depth this catalogue demands. Where one file carries
+# several claims with materially different dispositions, that split is
+# named inside `claims` / `note` rather than as separate rows.
+#
+# Fields:
+#   path              - the panel file, relative to the panel root
+#   unit              - which panel unit/topic it belongs to, where known
+#   claims            - one to three sentence summary of what the file establishes or argues
+#   verdict           - "live" | "superseded" | "lost" | "exploration" | "mixed"
+#                        live:        the claim stands and either reached the registry
+#                                     directly or through a consolidation that cites it
+#                        superseded:  a later panel file replaced or refined the claim;
+#                                     named in `superseded_by`
+#                        lost:        real, controlled, evidenced content that never
+#                                     reached a consolidation or the registry, by
+#                                     accident rather than by decision
+#                        exploration: process/checkpoint/dispatcher material, or a
+#                                     genuinely open question with no claim to lose
+#                        mixed:       different parts of the file carry different
+#                                     verdicts; see `note`
+#   confidence        - 0.0-1.0, this seat's confidence in the verdict
+#   reason            - why this verdict, with what was checked
+#   superseded_by     - paths of files that replace or refine this one's claims
+#   supersedes        - paths this file itself replaces or refines
+#   conflicts_with    - paths making an incompatible claim, neither resolved as superseding
+#   first_commit      - date of the file's (only, in every case checked) commit
+#   edited_after_supersessor - whether this file's own text was touched after a file
+#                        in `superseded_by` landed (always false for numbered panel
+#                        files, which are frozen; kept as a field because the schema
+#                        is meant to generalise to files that are not)
+#   canon_rows        - registry rows (namespace::slug) already citing this file, at
+#                        time of this pass
+#   ported_this_pass  - registry rows this seat added because of this file
+#   note              - anything the fields above do not carry
+
+[[item]]
+path = "50_lamport_which_criterion_is_in_use.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "The panel's 'output of a derivation' criterion is an unfalsifiable fixpoint equation, not a definition; four different result-set counts fall out of it depending on unstated site-model and strategy-set parameters. Proposes replacing it with a three-clause split (site premise, locus/ownership clause, kind clause). Also finds the packed access width is over-computed by an earlier closed form."
+verdict = "live"
+confidence = 0.9
+reason = "This file's three-clause split is the direct ancestor of consolidation 53's replacement criterion (S1/S2/S4), which cites this file by name and section repeatedly (53:157-165 region). Its own content is not independently cited by a registry row, but its reasoning reached the registry through 53's provenance chain (proposal::a_lowering_site_holds_the_numerals_full_type, proposal::a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns, proposal::a_carried_fact_takes_the_sort_its_consuming_site_uses_it_in), all citing 53 directly."
+superseded_by = ["53_leroy_consolidation_the_container_derivation.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = []
+note = "Not itself cited in provenance because the consolidation restates and formalises its finding; op's own standing instruction (rule 87) is that a consolidation is input rather than a citation-worthy source in its own right until the whole canon is written, so citing 53 rather than 50 is the correct current shape, not a gap. Section 5 ('the magnitude three files call unpriced has been measured the whole time') and section 4's access-width over-computation were not separately checked against the registry by this pass; flagged for a deeper follow-up sweep of unit two if one is ever done."
+
+[[item]]
+path = "51_fog_the_packed_sequence_erasure_arm.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "The panel's packed-access erasure claim (typed gather matches a hand-written twin) was a sampled law resting on one width (W=13) that happens to sit on the working side of an undiscovered boundary. Sweeping 36 widths finds the typed arm, written as a loop over an associated const, collapses to one accumulator at W>=18 and emits worse code despite fewer instructions. A trait-supplied per-width gather repairs this at all 36 widths with no change to what a consumer writes; a fixed wide load beats even the hand-written twin at W=47."
+verdict = "lost"
+confidence = 0.85
+reason = "Zero registry citations before this pass despite being real, controlled, well-evidenced content (two isolating controls, one of which failed honestly and is reported as failing; robustness swept across optimisation levels and element counts). Consolidation 53 does mention it in one paragraph ('Delivery form has a codegen consequence...') and cites 51 by line range, but no registry row carried the citation forward from either 51 or 53's mention of it, so the specific finding (loop-vs-contract delivery form, the W=18 boundary, the wide-load beating hand-written at W=47) was unreachable from the registry until this pass."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = ["probe::a_packed_access_gather_written_as_a_loop_collapses_at_width_18", "proposal::a_fact_delivered_as_a_const_a_generic_body_loops_over_costs_the_reduction"]
+note = "Genuine accidental loss: 53's own text names this as real and qualitative ('ONE EXPERT... unpriced, and 51 says so throughout') but the consolidation's own compression (54, its independent entailment check, section 5) explicitly flags that 53 compresses specific counts to qualitative statements as a named, deliberate class of loss, without this particular codegen-shape finding being one of the three instances 54 enumerates. It fell through the gap between 'the consolidation gestures at it' and 'a registry row cites the establishing evidence'. Ported this pass; see canon rows above."
+
+[[item]]
+path = "52_chlipala_the_fixpoint_claim_second_read.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "A second, independent read of 50's fixpoint-equation finding, judged as convergence but explicitly marked by its own author as 'the weaker link' of the unit's strongest convergence claim."
+verdict = "live"
+confidence = 0.75
+reason = "Cited directly in consolidation 53 (S2's standing) and in entailment check 54's section 7, which explicitly discusses this file's own hedge ('the weaker link') and downgrades the S2 equivalence verdict from the consolidation's stated 'passes' to a more cautious reading. The registry's own proposal row for the ownership clause (proposal::a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns) already carries a note stating the standing as two_experts with the discount named explicitly ('the source says so itself... so this row does not claim three'), which is exactly the correction 54 asked for. Not independently read in full by this pass beyond its role in 53/54's accounting."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = []
+note = "Not read in full this pass; classified from its role as reported by 53 and 54, both of which this pass did read closely. The registry's existing handling of the S2 standing already reflects 54's correction, so no further action seemed to be owed here; flagged as spot-checked rather than fully audited."
+
+[[item]]
+path = "53_leroy_consolidation_the_container_derivation.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "Consolidation. Retires the fixpoint-equation criterion, replaces it with a three-clause criterion (site premise, ownership/locus clause, kind clause), states six candidate canon sentences (S1-S6), and separates finding from candidate sentence throughout."
+verdict = "live"
+confidence = 0.95
+reason = "Heavily cited (4 direct citations by file stem, and many more indirectly through the proposal rows its sections produced: a_lowering_site_holds_the_numerals_full_type, a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns, a_carried_fact_takes_the_sort_its_consuming_site_uses_it_in, and others in the the_realisation_map topic). Its own independent entailment check (54) confirms it entails its sources with only minor process notes, both of which (the S2 standing discount, the stale rung-inflation miscount) this pass verified are already reflected correctly in the registry."
+superseded_by = []
+supersedes = ["50_lamport_which_criterion_is_in_use.md"]
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = ["proposal::a_lowering_site_holds_the_numerals_full_type", "proposal::a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns", "proposal::a_carried_fact_takes_the_sort_its_consuming_site_uses_it_in"]
+ported_this_pass = []
+note = "This pass found one uncited residue from this consolidation's own paragraph 3.3 (the delivery-form/gather codegen consequence), traced back to file 51 rather than to 53 itself, and ported it under 51's entry above rather than here, since 53 only gestures at it and 51 is the establishing evidence."
+
+[[item]]
+path = "54_ringer_entailment_check_on_the_consolidation.md"
+unit = "unit two (the format / container derivation), files 45-54"
+claims = "Independent entailment check on 53. Verdict: 53 entails its sources. Finds one stale miscount in 53's own self-description (a third rung-inflation instance happened downstream of 53, through no fault of 53's), and one place where 53's S2 equivalence verdict ('passes') reads more settled than its own supporting prose, which should be read as 'provisionally passes' under the workspace's three-instance evidentiary preference."
+verdict = "exploration"
+confidence = 0.7
+reason = "A verification/audit file rather than a source of new design claims. Its two substantive findings (the stale miscount, the S2 downgrade) are both already reflected correctly in the registry's existing proposal row for the ownership clause, which carries the two_experts standing (not three) with the discount explicitly named in its note. Classified 'exploration' rather than 'live'/'superseded' because the file's job was checking, not claiming, and its check passed."
+superseded_by = []
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = []
+note = "Section 5 ('what the consolidation compresses without losing') names three specific numeric compressions (pigeonhole witness counts 61/732/7354/73461 at F=3..6; the per-configuration robustness table from 51; 51's wide-load W=47 result). The wide-load result is now covered by this pass's port of 51. The pigeonhole witness counts and the robustness table are not ported as registry rows; both are named by 54 as recoverable from their citations rather than lost, and this pass did not independently verify whether either constitutes a load-bearing, currently-uncited canon claim in its own right. Flagged rather than resolved."
+
+[[item]]
+path = "55_smith_the_format_concept_derived_cold.md"
+unit = "unit two (the format concept), files 55-64"
+claims = "A cold derivation of the format concept, converging substantially with an earlier file (08, outside this seat's slice) after reading the panel. Concedes phase (bias) was missing from its own membership predicate. Raises 'where does wrapping live' as a three-option open question. Offers a one-probe refinement: raw-order agreement holds for monotone encodings generally (offset binary/excess-K included), not only plain unsigned as an earlier file claimed."
+verdict = "mixed"
+confidence = 0.85
+reason = "The wrapping-live question is superseded (in the good sense: refined) by a later two-option version already in the registry (question::where_wrapping_lives, citing OPTIONS.md, itself noting the fold from three options to two). The raw-order-agreement refinement had zero registry presence and no later file in this seat's slice is confirmed to supersede it; ported this pass."
+superseded_by = ["56_knuth_the_four_choice_model_attacked.md"]
+supersedes = []
+conflicts_with = []
+first_commit = "2026-08-09"
+edited_after_supersessor = false
+canon_rows = []
+ported_this_pass = ["proposal::raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned"]
+note = "'superseded_by' names 56 on the strength of its title ('the four-choice model attacked') and its position immediately after 55 in the unit; this pass did not fully verify that 56 is what folded the wrapping question from three options to two, only that a folded two-option version exists in the registry citing OPTIONS.md. Worth a second look by whoever audits unit two end to end."

@@ -1288,3 +1288,50 @@ defect = "The first run compiled the refusal arm and reported it as passing, bec
 standing = "sound"
 note = "A miniature rather than the real numeral: `Num<W>` carries a W-bit unsigned value in a `u32` and masks on every add, so the declared width cannot silently borrow bits it does not have. That models the width algebra and nothing else, which is what the question needs, and it means the figures are about the algebra rather than about any shipped type. One width, unsigned, addition."
 keywords = ["fold", "accumulator", "capacity", "runtime length", "widen", "arm E", "const eval", "refusal", "E0080", "guard bits"]
+
+# --- delivery form of a packed-access gather ---------------------------------
+
+[[probe]]
+id = "a_packed_access_gather_written_as_a_loop_collapses_at_width_18"
+establishes = "For a packed-sequence access gather compared against a hand-written twin across widths 1 to 128 (matrix run to 48, robustness swept to 4096 elements): written as a loop over an associated const access-byte-count, the typed arm's instruction shape matches the hand arm at every width at or below 17 and stops matching at 18 and above, where it collapses to one accumulator and one element per iteration (11 instructions against the hand arm's 34 at W=19, a serial reduction chain of 6 dependent instructions per element against 2). Fewer instructions and worse code: the recurrence, not the opcode count, is what regressed. Delivering the identical access as a trait-supplied gather with one impl per access width (no loop over the const) erases against the hand-written twin at all 36 of 36 widths tested, including the whole band from 18 up, and recovers the accumulator split (5 against 1 at W=19). A third form, a single fixed 8-byte load plus a shift, does not erase at most widths (it is different code, often better: 14 instructions against 43 at W=8) and at W=47 is the only arm that avoids serialising onto one accumulator, beating even the hand-written twin."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::51_probes::v3_matrix.out::1",
+  "panel::202608072330_the-numeral-canon-panel::51_probes::fixed_gather.out::1",
+  "panel::202608072330_the-numeral-canon-panel::51_probes::robustness.out::1",
+  "panel::202608072330_the-numeral-canon-panel::51_probes::gen_access_control.py::1",
+  "panel::202608072330_the-numeral-canon-panel::51_probes::gen_fixed_gather.py::1",
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#4-the-erasure-claim-was-a-sampled-law-and-it-breaks-at-width-eighteen",
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#5-the-mechanism-and-the-control-that-refuted-my-first-attribution",
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#6-two-attacks-both-of-which-land-and-neither-changes-what-a-consumer-writes",
+]
+control = "Two controls, stated before the run, isolate what the boundary responds to. The first (`gen_access_control.py`) holds W fixed at 13 and sweeps the access-byte count from 1 to 8, expecting divergence if access count alone drove the collapse; it found none, because at W=13 the extra bytes are masked away and LLVM proves the loads dead, which the probe reports as a failed control rather than as a result and moves on from. The second (`gen_fixed_gather.py`) holds the gather shape fixed at 8 bytes across three code forms (loop, flat, wide-load) and sweeps only W; this is the control that fired, and it isolates the collapse to the conjunction of loop-written form and W >= 18 (equivalently, live access window >= 4 bytes): `flat8` does not collapse at any width, `loop8` does not collapse below 18, `loop8` collapses at and above 18. Robustness swept two optimisation levels, `target-cpu=native`, and element counts from 64 to 4096; the accumulator-count metric held stable across every configuration except `-Os`, which is reported separately as degenerate because nothing unrolls there and the metric cannot distinguish the arms."
+defect = "The instrument's first headline (\"erases at 18 of 36 widths\") was itself a sampled law and its own author caught it: at n=4096 the typed arm also differs from the hand arm at four widths below 18 by emitting one fewer instruction and one fewer load on the same accumulator count, which is an improvement misread as a regression by a same/different metric. The accumulator-count metric replaces it because it names a regression rather than a difference."
+standing = "sound"
+note = "The panel's original single-width evidence for the erasure claim sat at W=13, which the sweep found is on the working side of a boundary nobody knew existed, by luck rather than design (W=13 was chosen for being coprime with 8, cycling the bit phase through every offset). Packing against not packing is separately named unpriced: the packed arms run 34 to 43 instructions with five accumulators against an unpacked walk's 49 instructions with zero identified accumulators, and the two touch different amounts of memory, so the comparison needs the bench harness rather than an instruction count."
+keywords = ["packed access", "gather", "loop", "accumulator", "collapse", "erasure", "sampled law", "delivery form", "trait-supplied", "wide load", "recurrence", "W=18"]
+
+# --- encoding as a separate axis from the denoted value set -----------------
+
+[[probe]]
+id = "raw_order_agrees_for_offset_binary_and_not_for_twos_complement_or_sign_magnitude"
+establishes = "Exhaustive at 4 bits over three classical signed encodings of a 4-bit signed integer: two's complement and offset binary (excess-8) denote the same value set [-8, 7] through different pattern maps, so encoding does not touch the value set when both are bijective onto it; sign-magnitude denotes a different, redundant set ([-7, 7], two patterns for zero, 15 distinct values of 16 patterns). Raw (unsigned pattern) compare agrees with value order for offset binary and disagrees for two's complement and sign-magnitude, so \"comparable by raw compare\" lives on the encoding axis rather than the value axis."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::55_probes::p3_encoding_is_a_separate_axis.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::55_probes::p3_output.txt::1",
+]
+control = "A mutant offset encoding (K=7 instead of K=8) is checked and detected as not matching value order, so the raw-order-agreement result is not a tautology of the checking code."
+standing = "sound"
+note = "The direct evidence behind proposal::raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned and behind law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness's raw-order half; the adder-correctness half of that law comes from a separate probe (56_probes/q3_signed_encoding_trade.rs)."
+keywords = ["encoding", "value set", "pattern map", "raw order", "offset binary", "two's complement", "sign-magnitude", "redundant", "bijective", "mutant"]
+
+[[probe]]
+id = "raw_order_and_raw_adder_correctness_are_exclusive_for_a_signed_4bit_set"
+establishes = "Exhaustive at 4 bits over the signed set [-8, 7], 256 pairs, over two's complement, offset binary (excess-8), a scrambled control encoding, and unsigned identity on [0, 15]: two's complement has raw-adder correctness (256/256) and no raw-order agreement; offset binary has raw-order agreement and zero raw-adder correctness, with a constant defect of 8 (mod 16) on every pair; the scrambled control has neither (26/256 adder-correct pairs, no order agreement); unsigned identity has both. The unique monotone bijection between the pattern space and the value space is confirmed to be offset binary, and a mutant offset (K=7) is confirmed to break the sorted correspondence."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::56_probes::q3_signed_encoding_trade.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::56_probes::q3_output.txt::1",
+]
+control = "The mutant offset (K=7) must break the sorted correspondence, and does. The offset-binary adder defect must be the constant 8 mod 16 exactly as the uniqueness argument predicts, and it is (`Some(8)` against an expected `Some(8)`), so the exhaustive count is confirming a predicted structural constant rather than reporting an unexplained number."
+standing = "sound"
+note = "The adder-correctness half of the evidence behind law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness. The raw-order half is probe::raw_order_agrees_for_offset_binary_and_not_for_twos_complement_or_sign_magnitude, from the same unit's earlier file."
+keywords = ["encoding", "raw order", "raw adder", "offset binary", "two's complement", "scrambled", "unsigned identity", "constant defect", "uniqueness", "signed", "exhaustive"]

@@ -1800,3 +1800,50 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#41-multi-instance-per-the-consolidations-own-account",
 ]
 keywords = ["reproduction", "rerun", "re-run", "instrument discipline", "blind spot", "R13", "derived laws", "transcript", "panel conduct", "reproducibility"]
+
+# --- delivery form of a fact carried as a kind: const-looped vs contract ----
+
+[[proposal]]
+id = "a_fact_delivered_as_a_const_a_generic_body_loops_over_costs_the_reduction"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_realisation_map"
+says = "A fact carried by the derivation is not shape-neutral once a consuming site executes it: delivering an access-byte count as an associated const that a generic body loops over is not the same design as delivering the identical access as a per-width trait contract, even though the ownership clause treats both as \"the fact is carried as a type\". At and above a width where the live access window reaches four bytes, the const-and-loop form serialises the reduction onto one accumulator and is worse code than a hand-written twin despite emitting fewer instructions; the per-width-contract form matches the hand-written twin at every width tested."
+because = "`51` swept 36 widths against a hand-written twin and found the erasure claim the panel had been carrying on one width's evidence (W=13) was a sampled law that breaks at W=18, isolated the boundary to the conjunction of loop-written form and width by holding shape fixed and sweeping width, and repaired it by moving the identical fact onto a trait with one impl per access width. The fix changes nothing a consumer writes at the call site: only how the derivation delivers the fact to the generic body."
+law = []
+evidence = ["a_packed_access_gather_written_as_a_loop_collapses_at_width_18"]
+predicate = [
+  "total_width: W in 18..=128",
+  "operation: operation = packed_access_gather",
+]
+note = "This is a codegen consequence of the kind clause rather than a fourth clause of it: the ownership/kind split says a fact is carried as a type when a generic body cannot recompute it, and this finding says a type carried as a const-bound loop and the identical fact carried as a per-value contract are not interchangeable at the site that consumes them. Priced only in instruction shape on one host and one toolchain (ONE EXPERT, counts read off emitted assembly, nothing timed); packing against not packing at these widths is separately unpriced and needs the bench harness. A third delivery form, a single fixed-width load, beats even the hand-written twin at W=47 by avoiding the one-accumulator collapse none of the other arms avoid there, which is the strongest form of the argument that the typestate is worth its friction: the derivation knows a fact (the buffer's tail) the call site does not."
+gap = "Whether the collapse boundary generalises past this one gather shape, and whether a general rule (\"a fact whose consuming loop bound is itself a fact the derivation owns should be delivered as a contract, not a const\") holds for other derived quantities, is untested outside this one construction."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#4-the-erasure-claim-was-a-sampled-law-and-it-breaks-at-width-eighteen",
+  "panel::202608072330_the-numeral-canon-panel::51_fog_the_packed_sequence_erasure_arm::#6-two-attacks-both-of-which-land-and-neither-changes-what-a-consumer-writes",
+  "panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation::#3-4-the-contingent-further-fact-and-what-actually-turns-on-precise",
+]
+keywords = ["delivery form", "gather", "loop", "contract", "trait-supplied", "const", "kind clause", "codegen", "accumulator collapse", "small win"]
+
+# --- raw-order agreement is purchasable by encoding choice ------------------
+
+[[proposal]]
+id = "raw_order_agreement_holds_for_monotone_encodings_not_only_unsigned"
+kind = "answer"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_format"
+says = "Raw-compare order agreement (comparing the bit pattern gives the same order as comparing the value) holds for exactly the monotone encodings of a value set, not only for plain unsigned. Offset binary (excess-K) at 4 bits is bijective onto the same value set as two's complement and its raw compare agrees with value order, which corrects an earlier claim that plain unsigned is the only integer-keyed encoding with this property to a claim about that file's own pool of encodings rather than about encodings in general."
+because = "One probe at one width measured it directly. The design consequence is that the operational property \"sortable by raw compare\" is purchasable by encoding choice for a signed value set, not forfeited by signedness: a strategy wanting memcmp-sortable columns can have that at the cost of the two's-complement convention, which is exactly why IEEE 754 biases its exponent field."
+evidence = ["raw_order_agrees_for_offset_binary_and_not_for_twos_complement_or_sign_magnitude"]
+predicate = [
+  "total_width: W = 4",
+  "signedness: signedness = signed",
+]
+note = "One probe, one width; offered as a refinement to a wider claim rather than as its own general theorem. The general statement (raw-order agreement holds for exactly the monotone encodings) is stated as the reading that explains the one measured instance, not itself independently swept."
+gap = "Whether the general statement (raw-order agreement iff monotone encoding) holds beyond the one measured case is untested. Whether a signed encoding can have both raw-order agreement and raw-adder correctness at once is now answered rather than open: see law::no_bijective_signed_encoding_has_both_raw_order_and_raw_adder_correctness, which shows the two are mutually exclusive for a signed set."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::55_smith_the_format_concept_derived_cold::#3-one-refinement-to-08-from-probe-3",
+]
+keywords = ["raw order", "memcmp", "sortable", "monotone encoding", "excess-K", "offset binary", "biased exponent", "IEEE 754", "two's complement", "encoding choice"]
