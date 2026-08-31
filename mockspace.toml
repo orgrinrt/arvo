@@ -1384,11 +1384,15 @@ required = false
 description = "The words somebody would search for to find this row. The `topic` namespace's own `keywords` field carries why this exists."
 
 [primitive-introductions]
-arvo = ["numeric"]
-arvo-transparent = ["numeric"]
-arvo-strategy = ["numeric"]
-arvo-storage = ["numeric"]
-arvo-bits-contracts = ["numeric"]
-arvo-mask-contracts = ["numeric"]
-arvo-bits = ["numeric"]
-arvo-hash = ["numeric"]
+# `arvo-format` is the crate that introduces the numeric category, because it is
+# what defines a number in this stack: a representable set and the adaptation onto
+# it. The bare-primitive lints skip an introducing crate, which is the sanctioned
+# door for the one place the stack's own primitives cannot be used to define
+# themselves. Every crate above it uses those types and is checked normally.
+#
+# The eight entries here before this one named the crate tree deleted on
+# 2026-08-08 and seven of those crates no longer exist. The eighth was worse than
+# stale: it read `arvo-strategy`, which is also the name of a crate written in
+# this round, so a new crate inherited a dead one's exemption and went unchecked
+# by the numeric lints without anything saying so.
+arvo-format = ["numeric"]
