@@ -1841,3 +1841,244 @@ affine slot function. An interval carrier's elements are pairs rather than scala
 it is not a point of a parameterisation of scalar grids under either reading of the
 quantum. **The Q22 use of the clause is unconditional where the closure use is
 conditional.**
+
+## D. Where we differ on a call rather than on a fact
+
+### D.1 Q9: both our deciders are refuted, and the answer is a composition
+
+221 answers option 6, the literal in the type with the structural natural demoted to
+a hidden projection. I answered option 5, the alias carrying the const with the
+algebra keyed on naturals. Its decider was
+`ruling::the_predicate_is_whatever_is_available_at_const_time`: an arm's predicate is
+a const expression, a const expression over a type-level natural has to cross back
+out of the type level, and option 5 puts the algebra on the far side of that crossing
+from its own predicates. Mine was the crossing-back price, taken from the row rather
+than measured.
+
+**Both are refuted by compiling them.** 221 put this at item 4 of what it would
+attack next and said the retirements were old enough that re-running them beats
+reasoning about them. `222_probes/a5_const_surface/` is that run, nine arms on the
+pinned nightly with no feature gates, controls at both ends:
+
+```
+t0 positive control                          compiles   the driver works
+t1 arithmetic on a generic const             refused    generic parameters may not be used in const operations
+t2 width comparison in a where clause        refused    generic parameters may not be used in const operations
+t3 const predicate over a structural nat     compiles
+t4 const predicate over a const generic      compiles
+t5 const generic passed on unchanged         compiles
+t6 bridge from a const to a nat by table     compiles
+t7 type-level comparison, no const ops       compiles
+t8 negative control, wrong-direction narrow  refused    the trait bound `Z: AtLeast<S<S<Z>>>` is not satisfied
+```
+
+**t3 refutes 221's decider.** `const IS_NARROW: bool = N::USIZE <= 16;` inside a
+generic impl compiles gate-free today, so a numeral keyed on a structural natural has
+its predicates available at const time and the crossing it worried about is free.
+t4 shows option 6's predicates work too. **The predicate argument does not separate
+the two routes because both routes have their predicates.**
+
+**t1 and t2 refute the framing both of us were working in.** Both retirements still
+hold on the pin: neither the const-generic surface nor a where-clause comparison
+supports width arithmetic or width comparison without a feature gate, and
+`obligation::the_unstable_machinery_does_not_reach_a_consumer` forbids the gate
+reaching a consumer. **So no route can compute a derived output width on the const
+surface at all**, which is a constraint on all seven options rather than a
+discriminator between two.
+
+**What is left is a composition, and neither of us wrote it.** t7 shows a comparison
+on structural naturals is trait resolution and needs no const operation, and t8 shows
+the comparison is a comparison rather than a free bound. So the only expressible form
+of "the declared output is wide enough" is option 7's check, and it needs a natural in
+the type, which is what option 5 keys on, behind a surface that is a const literal,
+which is option 6's. **Option 6's surface, option 7's check, option 5's internals**,
+with t6's table as the bridge and its cost the one row per width the row already
+names.
+
+**The residue, and it is real.** t6's bridge is one impl per width and I demonstrated
+three. Nothing here measures what that costs at the widths a design would ship, and
+the row's own finding that "a table is the only known implementation of either
+direction" is untouched by anything I ran. That is the next measurement and it is a
+compile-time one.
+
+### D.2 Q29: it keeps option 3 alive and I closed it
+
+221 confirms option 2 and says it would keep option 3 open, admission relative to a
+consumer-supplied ambient domain, because "it makes the collapse unstateable rather
+than caught, which is a real property and not obviously worse than catching it".
+
+My 6.5 closes option 3 on ratified text: `a_format_is_identified_by_its_ambient_domain_and_its_representable_set`
+makes the ambient domain half of what identifies a candidate, so a candidate that does
+not fix its own ambient domain has no identity, and a concept whose members lack
+identities is not the concept that sentence ratifies.
+
+**This is a genuine difference and it is decidable.** What decides it is whether the
+canon needs to say anything about a candidate before a frame is chosen. If it does,
+option 3 is out. **The row itself names the test and reports it run**: "whether any
+canon sentence must be true of a system with no ambient domain named. The ingest door
+was proposed as that case and is measured not to be one." So the test exists, one
+candidate case was tried, and it failed. **My close is therefore stronger than the
+row's own evidence supports**, since one failed candidate is not an exhaustion, and
+221's reluctance is better calibrated than my confidence.
+
+**Revised: option 2 is the answer, option 3 is not closed, and closing it wants
+somebody to enumerate the canon sentences quantifying over unframed candidates rather
+than to test one more case.**
+
+### D.3 Q23: it holds the role set open and I closed it
+
+221 declines and gives a structural reason I find good:
+`ruling::the_strategy_set_is_not_closed_at_four` is op's, the level count is refused
+by Q19's answer, the inventory is open by Q20's, and **three counts refused in one
+concept is a pattern, so a fourth closed count wants a reason rather than a default.**
+
+My 7.11 closed the *concept* of a role while leaving the *inventory* open, by
+transferring the ratified closed-concept/open-inventory shape one level down, and I
+flagged the transfer as the weak link.
+
+**Read against each other, we are closer than the verdicts look.** Nothing in my
+answer closes a count: "storage, compute and interchange" is not a bound in it, and a
+role is anything that re-establishes the invariant. What 221 is refusing is the
+closed count and I am not proposing one. **What genuinely differs is whether the role
+concept has a definition sharp enough to close**, and its answer is that it does not
+have one it can check.
+
+**What would decide it: whether any proposed role moves something before the
+encoding.** `roles_derive_representations_and_a_realisation_variant_computes_nothing_new`
+carries that as its own open condition, in the form of whether a compute role may
+widen the representable set. If none can, every role is a realisation variant and the
+concept closes on a checkable property. If one can, the concept is not closed and
+221 is right. **That is an instrument nobody has built and it is small: enumerate the
+proposed roles and ask of each whether it moves a coordinate before the encoding.**
+
+## E. The agreement audit
+
+The registry is a shared premise, so agreeing with a row we both read is one instance
+in two hats. Sorted by what the agreement actually rests on, and intersected over
+values rather than over names.
+
+**Two instruments, genuinely.** Three items.
+
+- **The two-hop settled-question defect.** Both of us walked `ruling.ratifies` into
+  `proposal.answers` and both located the mechanism at the same place, a finder that
+  reads the ruling namespace and never the proposal one. Different routes to it: I
+  read `checks/tests/a_settled_question_does_not_sit_in_the_queue.rs:82` and it built
+  `221_probes/p1_the_unread_answer_edge.rs`. **Two instruments, and the coordinator is
+  right that it needs no relitigating.**
+- **`does_precision_count_the_sign_digit`.** Two probes, written blind, over the same
+  criterion the row's `bound` states. Same answer, and the numbers agree where they
+  overlap: at radix 3, precision 3, its balanced point is `(-13, 13)`, its symmetric
+  `(-26, 26)`, its asymmetric `(-27, 26)`, and my `a4` prints `[-13,13] |27|`,
+  `[-26,26] |53|`, `[-27,26] |54|` for the same three. **The intersection of what we
+  actually varied is `radix in {2, 3, 4, 10}` and `precision 1..=5`**; radix 5 and
+  precision 6 are mine alone, and its instrument covers nothing mine does not.
+- **`does_narrowing_compose` reaching a predicate rather than a policy.** Both of us
+  refuse the binary and both cite the same measured row for the characterisation, so
+  the *answer* is inherited. What is two instruments is the **refusal of the question's
+  shape**, which each of us reached from `ruling::there_is_no_universal_answer_take_the_win_and_gate_it`
+  independently and applied to a different list of rows: my 3.4 names eight, its
+  sections name a partly different set.
+
+**Inherited from a document we both read, and therefore one instance.** Q6, Q18, Q20,
+Q19, Q21, Q27, Q30, Q31, Q37 in both halves, `where_wrapping_lives`,
+`is_the_derived_numeral_required_to_be_tightest`, and the Q2 definitional half. On
+every one of these we agree and on every one we read the answering row first. **None
+of them moves a standing and neither of us should be counted as a second expert on
+any of them.**
+
+**Agreement about a dimension neither of us varied, which is the trap worth naming.**
+Both of our precision probes are single-threaded, at radix 2 through 10, over
+representable sets with nothing computing on them. **We agree perfectly about
+`operation`, `container`, `overflow_policy`, `strategy` and `access_pattern` by both
+having no instrument that could reach them.** 221 says so in its own words, that
+`operation` is absent on purpose and the severity is intended. Mine says the same at
+5.4. **Two files stating the same absence is not evidence that the absence is
+correct**, and if the sign-domain result is ever wanted about a computing type,
+neither of us has touched the question.
+
+**One accounting difference the coordinator should not read as an asymmetry.** It
+reports nine unanswered of thirty-seven; I report one conceded and one partial. The
+gap is bookkeeping rather than output: **it declines to count a confirmation as
+settled by itself, and I counted confirmations in my roster with the tier marked
+`confirmed`.** Its eleven number-system confirmations are answers it agrees with and
+declines to claim; my roster carries the same answers marked as not raising a
+standing. The underlying state of those rows is identical and neither of us is a
+second instance on them.
+
+## F. The container premise, and whether I am the second read
+
+221 says `question::the_container_premise` "is answered by six rows, all of them seat
+210's, and seat 210 is this persona", that whatever it says is confirmation from the
+same head, and that "a genuinely independent second read is owed and it should not be
+Dolan."
+
+**I am not Dolan, I have not worked this topic before, and 5.3 is an instrument.** So
+this is the read that was owed. What it is worth, stated precisely, because the parts
+have different standing:
+
+- **The measured half is an independent third instrument and it agrees.** `a3` uses
+  operations 210's row does not (a saturating multiply, a roundtrip), its own three
+  controls, and a mutant found only after two dead routes. It reports the layout
+  observation separating 2 bytes from 4, and roundtrip, wrapping addition, saturating
+  addition, wrapping multiplication, saturating multiplication and exclusive-or all at
+  0 differences over 8192 values and 67108864 ordered pairs. **The footprint is
+  observable and nothing the design declares observes it.** That is a second instance
+  on the measurement.
+- **The setup is inherited and I chose that deliberately.** 13 bits, unsigned, `u16`
+  against `u32`, sole occupancy, one thread. I mirrored 210's predicate so the numbers
+  would be comparable, which means **on integer width, signedness, carrier pair and
+  alignment we agree about a region neither of us varied.** Under the discipline the
+  coordinator asked me to apply, that is not two instances of anything; it is one
+  region measured twice. A genuinely independent instrument would pick different
+  widths and a different carrier pair, and none exists.
+- **The interpretation is confirmation, not corroboration.** I read
+  `observability_is_relative_to_a_declared_signature` and its five neighbours before
+  building anything, so my agreeing that observability is a theorem schema over the
+  operation set adds nothing to that row's standing.
+- **One thing in 5.3 is in no row and is mine.** `core::mem::size_of` is a const
+  function, so the footprint is not merely observable but observable **at const
+  time**, which under `ruling::the_predicate_is_whatever_is_available_at_const_time`
+  makes it a legitimate axis for an arm to be gated on and under
+  `ruling::never_a_runtime_check_and_one_lowered_path` costs nothing at run time to
+  read. `a3` compiles two `const` items whose values came from `size_of`, so it is a
+  compile result rather than an argument. **That changes what the premise is for: it
+  does not only decide whether a sentence about identity is true, it hands the design
+  a gateable axis.**
+
+**And it composes with 221's own dead route rather than merely sitting beside it.**
+Two of my three mutants failed, and between them they say when a carrier is
+arithmetically observable at all: the intermediate must be able to leave the narrower
+carrier, **and** the projection must read magnitude rather than low bits. An addition
+of two 13-bit values cannot leave a `u16`, and a low-bit mask at the declared width
+absorbs a wider low-bit mask above it. The working mutant is a saturating multiply
+with a carrier-held intermediate, at 8346078 of 67108864 pairs. **That is the shape of
+the design failure the premise is about, stated as a condition rather than as an
+example**, and it is the thing I would carry forward from this topic.
+
+**So: yes, my work reaches the container premise, and I agree with what 210
+established, at the tier above.** The measurement is corroborated by a second
+instrument over the same region; the region itself is corroborated by nobody.
+
+## G. Q57: it hit the same wall and did not go round it
+
+221 concedes `what_the_double_rounding_mechanism_is` and says it did not attack it,
+that what is left is a fourth construction and it did not have the budget after its
+other two probes, and that "saying so is more useful than a fourth wrong one".
+
+**Same wall, and it did not reason from the dead tier.** It cites
+`law::double_rounding_is_innocuous_at_an_intermediate_width_between_f_and_2f` for the
+closed half, which is a registry row, and nothing from a member file. So its
+concession is sound and it stopped at the same place I did.
+
+**My section 9 goes one step further and that step is the useful difference.** Its
+stopping point is budget; mine is that the object the question disambiguates has no
+canon existence. I grepped for the clause's own arms across all twelve registry files
+and found one hit, inside Q57's own `note`. So a fourth construction has nothing to
+reproduce, which is why the three that were tried were wrong: they were reproducing a
+paraphrase. **The remedy is to port the clause, and only then is a construction worth
+building.**
+
+Its recommendation, to send one seat with reading rights at Q57 together with the two
+rounding measurement rows, is right for Q57 and unnecessary for the other two, per
+C.3. **The seat with reading rights should be sent, and it should be sent to port the
+clause rather than to build a fourth probe.**
