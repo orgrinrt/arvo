@@ -51,10 +51,10 @@ impl Reach {
     /// The word used in a report, and in the ceiling test's message.
     pub fn word(self) -> &'static str {
         match self {
-            | Self::Met => "met",
-            | Self::Proposed => "proposed",
-            | Self::RouteClosed => "route-closed",
-            | Self::Nothing => "nothing",
+            Self::Met => "met",
+            Self::Proposed => "proposed",
+            Self::RouteClosed => "route-closed",
+            Self::Nothing => "nothing",
         }
     }
 }
@@ -176,7 +176,12 @@ pub fn obligations_whose_only_route_is_closed(reg: &Registry) -> Vec<Finding> {
 /// How many obligations sit at each tier.
 pub fn tally(reg: &Registry) -> BTreeMap<&'static str, usize> {
     let mut out = BTreeMap::new();
-    for tier in [Reach::Met, Reach::Proposed, Reach::RouteClosed, Reach::Nothing] {
+    for tier in [
+        Reach::Met,
+        Reach::Proposed,
+        Reach::RouteClosed,
+        Reach::Nothing,
+    ] {
         out.insert(tier.word(), 0);
     }
     for (_, (tier, _)) in reach(reg) {

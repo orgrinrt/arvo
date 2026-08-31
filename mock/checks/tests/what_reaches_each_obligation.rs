@@ -85,13 +85,20 @@ provenance = [\"panel::x\"]
     let after = obligation::tally(&parse("planted", &with_route));
 
     assert_eq!(before["nothing"], 1, "{before:?}");
-    assert_eq!(after["nothing"], 0, "the tier moved, which is the point of the field: {after:?}");
+    assert_eq!(
+        after["nothing"], 0,
+        "the tier moved, which is the point of the field: {after:?}"
+    );
     assert_eq!(
         before["nothing"] + before["route-closed"],
         after["nothing"] + after["route-closed"],
         "and the unanswered total did not move, which is the point of this test"
     );
-    assert_eq!(after["met"] + after["proposed"], 0, "nothing was answered: {after:?}");
+    assert_eq!(
+        after["met"] + after["proposed"],
+        0,
+        "nothing was answered: {after:?}"
+    );
 }
 
 /// A proposal never counts as met, however many of them there are.
@@ -168,7 +175,11 @@ provenance = ["panel::x"]
     );
 
     let found = obligation::obligations_whose_only_route_is_closed(&reg);
-    assert_eq!(found.len(), 1, "only the one with a closed route: {found:#?}");
+    assert_eq!(
+        found.len(),
+        1,
+        "only the one with a closed route: {found:#?}"
+    );
     assert!(found[0].at.contains("a_route_was_tried"), "{found:#?}");
 }
 
@@ -240,7 +251,11 @@ obligation = ["a_thing"]
 "#,
     );
     let found = obligation::obligation_edges_from_an_untiered_namespace(&reg);
-    assert_eq!(found.len(), 1, "the law's edge is invisible to the tiering: {found:#?}");
+    assert_eq!(
+        found.len(),
+        1,
+        "the law's edge is invisible to the tiering: {found:#?}"
+    );
     assert!(found[0].says.contains("law"), "{found:#?}");
 
     assert_eq!(
@@ -282,7 +297,10 @@ obligation = ["the_real_one", "a_slug_that_was_renamed"]
     );
     let found = obligation::obligation_edges_naming_nothing(&reg);
     assert_eq!(found.len(), 1, "only the orphan: {found:#?}");
-    assert!(found[0].says.contains("a_slug_that_was_renamed"), "{found:#?}");
+    assert!(
+        found[0].says.contains("a_slug_that_was_renamed"),
+        "{found:#?}"
+    );
 
     assert!(
         obligation::obligation_edges_naming_nothing(&canon()).is_empty(),

@@ -200,17 +200,17 @@ pub fn line_citations_into_the_registry(dir: &Path) -> Vec<Finding> {
 fn registry_line_citations(line: &str, registry: &[&str]) -> Vec<String> {
     let mut out = Vec::new();
     for (at, _) in line.match_indices(".toml:") {
-        let after = &line[at + ".toml:".len() ..];
+        let after = &line[at + ".toml:".len()..];
         let digits: String = after.chars().take_while(char::is_ascii_digit).collect();
         if digits.is_empty() {
             continue;
         }
         // Walk back over the filename, which may carry hyphens.
-        let before = &line[.. at];
+        let before = &line[..at];
         let start = before
             .rfind(|c: char| !c.is_ascii_alphanumeric() && c != '-' && c != '_')
             .map_or(0, |i| i + 1);
-        let stem = &before[start ..];
+        let stem = &before[start..];
         // A hyphenated file is named for the namespace it opens with.
         let base = stem.split('-').next().unwrap_or(stem);
         if registry.contains(&base) {
