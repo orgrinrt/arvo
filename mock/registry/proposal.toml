@@ -1754,3 +1754,30 @@ note = "**The absorption half was filed and this half was not, and the pair is t
 gap = "Unsigned integers only, at two widths, on one thread, over one graph shape of four nodes and six edges. Whether the same separation holds signed, at a non-zero fraction width, or on a larger graph is not established here. The reserved-top policy is not a shipped shape and is in the predicate because it is the only measured point holding one property without the other."
 provenance = ["panel::202608072330_the-numeral-canon-panel::35_mcsherry_what_the_layers_above_need_from_the_numeral::#3-5a-the-two-properties-are-two-and-conflating-them-cost-me-an-option"]
 keywords = ["monotonicity", "absorbing top", "min-plus", "shortest path", "relaxation", "reserved top", "wrapping", "saturation", "two properties", "semiring", "infinity"]
+
+[[proposal]]
+id = "an_accumulator_is_decided_by_the_operation_and_by_whether_a_bound_exists"
+kind = "finding"
+sentence_kind = "measured"
+standing = "one_expert"
+topic = "the_chain"
+says = "Two things decide a composition's accumulator and they are separate axes. Given a static bound on the count, the operation decides how the width grows: addition at `W + ceil(log2 C)`, logarithmic in the bound, and multiplication at `(n-1)F`, linear in the length with no closed form. Without a static bound neither operation has an accumulator width at all, and a hand-chosen one is correct only up to the length its author guessed. The exact count stays a runtime quantity in both cases; sufficiency needs the bound and never the count."
+because = "The operation axis was established separately and is measured. The bound axis is what a hand-chosen accumulator hides: transcribed and run, the same function over the same types returns the right answer at one slice length and the wrong one at another, with nothing recompiled and only the length moved, while the capacity-derived shape returns the right answer and refuses at compile time when the accumulator cannot cover the capacity. So a shape that compiles at every length is not evidence that the count is not an axis; it is the axis, demonstrated, because compiling and computing come apart exactly there."
+predicate = [
+  "total_width: W = 4",
+  "fraction_width: F = 0",
+  "signedness: signedness = unsigned",
+  "operation: operation = add",
+  "chain_length: chain length in {16, 32}",
+  "accumulator_width: accumulator width in {8, 9, 10}",
+  "toolchain: toolchain = nightly-2026-05-28",
+  "threads: threads = 1",
+]
+evidence = ["a_runtime_length_fold_compiles_at_every_length_and_computes_at_one"]
+answers = []
+note = "**One expert, and the halves rest on different instruments.** The multiplicative half is not established here and is not claimed here: it has its own row at a higher standing, reached by three authors on a rounding axis this probe does not vary. What this row adds is the conjunction and the second axis, and only the second axis was measured by the author of this row. The two experts behind the two axes did not independently reach one claim, so this is not a convergence and is not written as one.\n\n**The predicate is narrow on purpose and the row is worth having anyway.** One width, unsigned, addition, two lengths. The mechanism does not obviously depend on any of that, and saying so is not the same as establishing it, so the region is what the probe covered. What would widen it is the same four arms at a second width and in the signed domain, which is cheap and was not done.\n\n**No dimension declares whether a bound exists.** Every value ever written on `chain_length` across all ten namespaces is a number, a finite set, a finite range or `any`, and the axis's own grammar admits nothing else, so there is no value in the notation meaning the count is not known until run time. The condition is therefore stated in the sentence rather than in the predicate, following the precedent a neighbouring row set for a staged narrowing: name the nearest declared axis, say why it is the wrong one, and do not write a predicate over an axis that does not exist. `chain_length` is the nearest and is about how long a composition is rather than about whether anybody knows.\n\n**Whether that axis should be declared is open and is not this row's call.** Declaring a dimension changes a document every predicated row in the registry was written against."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::199_leijen_reply_two_axes_and_one_half_fact::#31-two-axes-and-each-of-us-had-one",
+  "panel::202608072330_the-numeral-canon-panel::199_leijen_reply_two_axes_and_one_half_fact::#21-arm-e-compiles-and-does-not-compute",
+]
+keywords = ["accumulator", "capacity", "bound", "static", "runtime length", "fold", "chain", "widen", "guard bits", "sufficiency", "ceil log2", "two axes"]
