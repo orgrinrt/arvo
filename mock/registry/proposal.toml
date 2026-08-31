@@ -1920,3 +1920,25 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::61_absorption_against_coherence::116",
 ]
 keywords = ["absorption", "coherence", "associativity criterion", "representable set", "fold", "reduced operand"]
+
+[[proposal]]
+id = "a_multiplicative_chain_is_writable_without_an_ever_growing_intermediate_by_windowing"
+kind = "answer"
+sentence_kind = "theorem"
+standing = "one_expert"
+topic = "the_chain"
+says = "Addition composes headroom logarithmically and multiplication composes width linearly: a fold of k adds at fraction width F is held exactly by ceil(log2 k) extra integer bits with the fraction width untouched, while a fold of k multiplies held exactly needs the sum of every fraction width involved, kF bits at uniform F. So holding a whole multiplicative chain exactly is not a design worth wanting past a short length, and a windowed schedule (a bounded subterm evaluated exactly and adapted once at its exit) is what makes a chain of multiplies writable without an ever-growing intermediate: a per-op schedule pays k adaptations at constant width, a windowed schedule pays ceil(k/w) adaptations at width w times (I+F), and the fully exact schedule pays one adaptation at width linear in k, worth paying only when the chain is short. The window capacity is a static function of the container width and the operand formats, derivable by the same typestate that derives the container."
+because = "The width arithmetic is exact and elementary (a sum of k values each of fraction width F needs kF fraction bits to hold every step exactly; a fold of k adds needs only ceil(log2 k) extra integer bits because addition never grows the fraction). The route is the derivation itself, and the probe confirms the windowed schedule's correctness directly: a windowed three-element dot product is correctly rounded on every one of 46656 tested inputs, where staged per-step narrowing drifts on the large majority of the same inputs."
+predicate = [
+  "operation: operation = mul",
+  "arity: arity = 3",
+  "fraction_width: F = 8",
+]
+evidence = ["a_wide_exact_fold_with_one_final_narrow_is_correctly_rounded_where_staged_narrowing_drifts"]
+law = []
+obligation = ["composition_contracts_above_the_numeral"]
+note = "The width-arithmetic half of this claim (ceil(log2 k) versus kF bits) is exact for any k and any F, established by elementary counting rather than by the probe; the predicate above states only the probe's own tested region (k = 3, F = 8) because that is the strongest thing the committed evidence lets this row assert without inflating standing. `threads` and `target_features` are absent because the probe names neither, so under I13 this holds in no threaded situation. This is the mechanism that makes proposal::a_chain_is_exact_operations_together_with_a_schedule_of_adaptation_points's window concept a real, costed design rather than a name for an unexamined idea; that proposal already states windows exist and are typestate-derived, this proposal adds the three-way cost comparison (per-op, windowed, fully exact) and the elementary reason a window is worth having at all."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::60_stam_the_chain_derived_cold::122",
+]
+keywords = ["window", "chain", "multiplicative", "fold", "cost", "adaptation", "typestate", "capacity"]

@@ -2120,3 +2120,27 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::61_probes::q2_wrap_ring_at_nonzero_fraction.rs::1",
 ]
 keywords = ["wrap", "induced ring", "fraction width", "abelian group", "semiring", "droplist", "abandoned"]
+
+[[retirement]]
+id = "dl_signed_twos_complement_saturating_multiplication_induces_a_semigroup_at_some_width"
+claim = "Signed two's-complement saturating multiplication induces a semigroup at some width."
+why = "Closed exhaustively at four widths, with witness (7, 7, -1): the mechanism is asymmetric absorption under negation, measured directly as coherence violations, and it is a fact about the range's geometry (two's-complement is not mirror-symmetric) rather than about width. law::multiplicative_associativity_under_wrapping's neighbouring saturating-multiplication row already carries the general closed form this specific claim is one instance of: the kernel is a multiplicative congruence iff the range is mirror-symmetric or nonnegative, evaluated mechanically over 100 zero-containing intervals with zero residue."
+kind = "wrong"
+replacement = "The general geometric criterion (mirror-symmetric or nonnegative range) already in the registry, of which two's-complement's failure is the un-mirror-symmetric instance."
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::62_carmack_the_signed_cell::#5-what-the-register-should-gain",
+]
+keywords = ["signed", "two's complement", "saturating", "multiplication", "semigroup", "asymmetric absorption", "droplist"]
+
+[[retirement]]
+id = "dl_the_wrap_section_is_a_relabelling_at_every_scale"
+claim = "The wrap section is a relabelling at every scale."
+why = "Closed exhaustively at three widths, three fractions and both rounding spellings, witness classes (9, 3): a rescale defined on residue classes rather than representatives does not exist as a single-valued map, because the classes have no canonical magnitude without a section, and this is the finding rather than a gap in it. The deflation and the 'declared at type time' sentence are F = 0 facts only; at F > 0 unsigned-wrap and signed-wrap at one width are two magmas, not one ring relabelled, per law::multiplicative_associativity_under_wrapping's F > 0 fails region."
+kind = "wrong"
+replacement = "law::multiplicative_associativity_under_wrapping's holds region (F = 0 only) states the actual scope of the relabelling; the fails region states where it stops applying."
+topic = "algebraic_laws"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::62_carmack_the_signed_cell::#5-what-the-register-should-gain",
+]
+keywords = ["wrap", "relabelling", "residue class", "section", "fraction width", "droplist"]

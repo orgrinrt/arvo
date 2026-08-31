@@ -1375,3 +1375,15 @@ control = "Two independent checks against ground truth are stated per row: wheth
 standing = "sound"
 note = "A second, weaker and distinct mechanism is also measured: instantiating an existing literal window-based coherence law (`56_probes/q1`'s own shape) directly at a configuration's own box disagrees with absorption far more often (681 of 4248 for addition), including 429 times even where the box is entirely inside Q. That is a domain-size defect (the window-restricted check never examines values the fold's reachable sum can actually take), distinct from and in addition to the reduced-operand mechanism above; it is a caution about a naive instantiation rather than the crux of this finding. Every arvo numeral in memory is format-typed, i.e. already an element of the representable set by construction, so a real fold operand always satisfies the condition under which absorption and coherence-ext collapse to one law; the two laws separate only for a synthetic operand that could not occur in a real fold."
 keywords = ["absorption", "coherence", "coherence-ext", "reduced operand", "representable set", "Q", "partition", "fold", "associativity"]
+
+[[probe]]
+id = "a_wide_exact_fold_with_one_final_narrow_is_correctly_rounded_where_staged_narrowing_drifts"
+establishes = "A three-element dot product evaluated as a windowed schedule (products and sum held exact, one narrow at the end) is correctly rounded against the true value on all 46656 tested 3-element raw-vector input pairs at fraction width 8. Two staged schedules (narrowing after each step, under truncation and under round-to-nearest-even respectively) are not: 42892 and 15628 of the same 46656 inputs drift, up to 3 ulp and 2 ulp respectively."
+lives = [
+  "panel::202608072330_the-numeral-canon-panel::60_probes::p_a_dot_schedules.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::60_probes::p_a.out::1",
+]
+control = "A mutant of the window arm (wide-exact-fold but truncating instead of round-to-nearest-even at the single final narrow) is run alongside and flagged on 22476 of the 46656 inputs, confirming the instrument can detect drift and is not vacuously passing every arm."
+standing = "sound"
+note = "This is the constructive complement to the negative result that an eager, per-step multiplicative schedule cannot supply an exactly associative ambient operation at nonzero fraction width: holding the whole subterm exact and narrowing once, rather than narrowing after every step, recovers correctness for the tested case. `README.md` in this probe directory names it 'probe A'."
+keywords = ["window", "schedule", "dot product", "correctly rounded", "staged narrowing", "chain", "exact fold", "multiply-accumulate"]
