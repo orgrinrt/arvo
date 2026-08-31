@@ -135,7 +135,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::171_probes::thirdfile::README.md::1",
 ]
 control = "None stated in the material read. The instrument counts vocabulary occurrences and normalises per thousand words, and the separation it reports is between 0.27 and 1.50 per thousand, which is wide. What no arm tests is whether the vocabulary count tracks the property: a file could be observation-bounded and say so once. The qualitative half, that the defining sentence says contains rather than bounds, is read rather than counted and is what carries the finding."
-standing = "sound"
+standing = "uncontrolled"
 note = "Marked sound rather than defective on a judgement, and the judgement is that the counted half is corroboration for a claim the quoted sentences establish on their own. A reader who thinks a word-frequency count needs a control before it may be printed beside a definition should read this row as `defective`; the finding does not move either way, because the two definitions are quoted in full beside the counts."
 keywords = ["chain", "definition", "observation", "vocabulary", "word frequency", "convergence", "three hats", "independence", "bounded"]
 
@@ -321,7 +321,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::137_probes::g7_the_five_two_gap_and_x1s_sweep.out::1",
 ]
 control = "None stated as a must-fail arm. What stands in its place is that the check is a trace rather than a count: each of the four is followed to the clauses that cite it and each clause is opened and read, and the companion instrument checks the surviving predicate against the sweep header the corrected run actually printed rather than against what the clause claims it swept."
-standing = "sound"
+standing = "uncontrolled"
 note = "Marked sound on a judgement. A trace over four named defects has no obvious failing case to plant, since the population is enumerated rather than sampled and the verdict per item is a reading. What would make it defective is if the four were not the whole population, and the count of four comes from the unit's own record rather than from an independent sweep."
 keywords = ["defect", "dependent", "trace", "survives", "half-even", "corrected", "citation", "audit"]
 
@@ -443,7 +443,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::117_dispatcher_note_the_bench_profile_and_the_tests_that_cannot_run::#the-second-defect-which-is-the-serious-one-the-documented-profile-is-not-set-anywhere",
 ]
 control = "None run, and the shape does not admit an obvious one: the finding is three greps returning zero and a fourth returning the documented values from the scaffolding, so the failing case is a profile declaration existing somewhere unlooked-at. What stands in its place is that the zero-returning greps are printed with their commands and the file paths they searched, so a reader re-runs them rather than trusting the count."
-standing = "sound"
+standing = "uncontrolled"
 defect = "None in the instrument. Its own containing note carries a correction to a neighbouring claim, made an hour after first writing and left visible: it had called the variant test surface untested, in a panel whose members had run those tests ten times, and the real defect is smaller and differently shaped."
 note = "The consequence for this namespace is direct. `codegen-units = 16` partitions unstably across builds, so two runs of the same unchanged variant can differ in inlining and layout, which is the contamination the per-variant isolation exists to prevent. It does not say any particular finding is wrong. It says every number in that directory was taken under a profile nobody recorded, and which findings rest on a harness artifact is a pass nobody has done."
 keywords = ["bench", "profile", "lto", "codegen-units", "release", "harness", "variants", "reproducibility", "documented profile"]
@@ -467,7 +467,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::154_kiselyov_the_primitive_derived_cold::655",
 ]
 control = "None, and none is needed for what it establishes: it is two runs of one command differing in one flag, on one host, back to back, and both numbers are printed with the command that produced them. The back-to-back-on-one-host part is what a control would otherwise have to buy."
-standing = "sound"
+standing = "uncontrolled"
 note = "The reason this row exists is what the gap cost rather than the gap itself. A true finding was retired as unreproducible because the figure came from `cargo test`, which defaults to debug, and the three measurements refuting it were taken at `--release`. Nothing was contested and nobody was wrong; a dimension was missing from all four. This instrument is the one that priced it, and the rule that every timing carries its build profile is downstream of exactly this number."
 keywords = ["debug", "release", "profile", "29x", "compile time", "retired", "unreproducible", "cargo test", "predicate", "missing dimension"]
 
@@ -535,7 +535,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::172_leroy_formalising_the_chain::#11-corpus-findings-for-the-record-the-next-unit-inherits",
 ]
 control = "None. It is a structural argument about what `catch_unwind` around a comparison does, plus one arithmetic observation about how many samples a 2^-32 event needs, and neither has a failing case to plant."
-standing = "sound"
+standing = "uncontrolled"
 note = "Recorded as a row because it is the class rather than a result, and because it is the second half of a pair with the row above: one shows the channel exists, this one shows why a random sweep will not find it. The general form is that a sweep's zero on a rare-event channel is a claim about the sweep, and the repair is a definedness column rather than more samples."
 keywords = ["equivalence", "definedness", "panic", "catch_unwind", "rare event", "sampling", "2^-32", "zero", "trap", "value-only"]
 
@@ -904,7 +904,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::94_probes::f_where_carried.out.txt::1",
 ]
 control = "Label normalisation before comparison, which is the arm that stops two identical bodies reading as different, and the emitted assembly is committed beside each source so the comparison can be redone rather than believed. Four instruments across three files agreeing is the corroboration; no single one of them carries a case that had to fail."
-standing = "sound"
+standing = "uncontrolled"
 note = "Marked sound on a judgement and it is the thinnest of the sound rows in this file. What each arm does is compile two forms and compare the emitted bodies, and a comparison of two bodies has no natural failing case unless somebody supplies a form that must differ. None of the four does. The finding is corroborated across three authors rather than controlled, and a reader who wants it controlled should ask for an arm whose selection genuinely cannot be resolved at compile time and must therefore leave a branch."
 keywords = ["compile time", "residue", "argmin", "const fn", "emitted body", "assembly", "label normalisation", "tail branch", "selection"]
 
@@ -1062,7 +1062,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::94_probes::e_chain_exactness.out.txt::1",
 ]
 control = "None was run as a case that had to fail. The two instruments are at different widths and fraction widths by different authors, so what stands in place of a control is that the growth rate agrees across a change of both, which a single-width sweep could not have shown. What neither arm carries is a chain shape on which the width must NOT grow, and without one the linear growth is measured rather than isolated."
-standing = "sound"
+standing = "uncontrolled"
 note = "Marked sound on a judgement and it is one of the two thinnest sound rows here. The agreement across two widths is real corroboration and it is not a control: both instruments could share a modelling assumption about what an intermediate must hold, and nothing in either would report that."
 keywords = ["chain", "accuracy", "intermediate width", "linear growth", "operand type", "closed", "exactness", "demands", "closure"]
 
@@ -1074,7 +1074,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::82_probes::p6_output.txt::1",
 ]
 control = "None was run as a case that had to fail, and the shape is a compiled lattice over four constructions where the four outcomes differ from one another, which is itself the separation: four constructions reported as binding at one time would say the instrument cannot distinguish them. That is weaker than a planted case and it is what there is."
-standing = "sound"
+standing = "uncontrolled"
 note = "Marked sound rather than defective on a judgement, and this is the row in this file whose control I would most expect a second reader to call insufficient. The four outcomes differing is a fact about the four constructions and does not establish that the instrument would have reported a fifth binding time had one existed."
 keywords = ["const available", "binding time", "lattice", "four constructions", "compile time", "dead code", "structural bound", "crate-level const"]
 
@@ -1103,7 +1103,7 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::102_probes::p5_a_measured_coordinate_over_answer_differing_arms.out::1",
 ]
 control = "The first arm establishes the premise the second one needs, that the committed families are answer-equivalent, so the absence is a measured property of the corpus rather than an impression. Neither arm carries a planted case that had to fail, and the second is a construction over a region rather than a sweep."
-standing = "sound"
+standing = "uncontrolled"
 note = "The barrier is the absent coordinate rather than the arm sets, which is the part a design acts on: an accuracy intent needs a coordinate that moves when the answer moves, and the corpus's coordinates are all cost at a fixed answer. Composes with the census row above, which is what says how many coordinates there are and what they are made of."
 keywords = ["argmin", "answer-equivalent", "accuracy intent", "coordinate", "absent", "cost table", "arms disagree", "region never run"]
 
