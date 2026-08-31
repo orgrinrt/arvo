@@ -50,3 +50,58 @@ The value model throughout is a scaled integer `k` denoting `k / 2^F`, rounded t
 output is a distribution and the comparison is of distributions, computed by enumerating the entire
 draw space rather than by sampling, so no random number generator appears anywhere in this work and
 every number reproduces to the digit.
+
+## The instruments, and what each one covers
+
+Seven probes, all in `229_probes/`, all standalone `rustc` compilations over a shared `modes.rs`
+so the operations are defined once and every probe measures the same functions.
+
+`a_pairwise_disagreement.rs` counts, for every pair of candidate operations, the values of the
+domain on which they disagree. It is the instrument that answers the question directly. Its two
+positive controls are the load-bearing ones: it reproduces
+`probe::the_two_toward_zero_spellings_differ_and_by_how_much` digit for digit at `W = 8`, 64 at
+`F = 1`, 96 at `F = 2`, 120 at `F = 4` and 127 at `F = 7`, and it confirms the ratified note that
+bit-drop equals floor, at zero disagreements over every width, fraction width and signedness it
+sweeps. An instrument that failed either of those would be measuring something other than what the
+canon measured, and nothing else it printed would be worth reading.
+
+`b_translation_equivariance.rs` asks which operations satisfy `R(x + t) = R(x) + t` for integer
+`t`. It exists because two canon law rows count rounding positions by exactly that property, so it
+is the one place where the canon's own recorded numbers discriminate between two readings of a
+name. Its must-fail case is `half_even`, which
+`law::fusing_a_multiply_add_preserves_the_answer_under_unsigned` puts alone in its failing region;
+an instrument reporting `half_even` equivariant would contradict a canon row and be void.
+
+`c_negation_conjugacy.rs` asks which operations are odd, and for the ones that are not, which
+other operation is the mirror. It found an error in my own comment while I was writing it: I had
+written that `away_from_zero` is `toward_zero`'s conjugate under negation, and it is not, because
+`toward_zero` is odd and therefore its own. The comment is corrected in the committed source. The
+instrument disagreeing with its author is the only reason that got fixed.
+
+`d_stochastic_readings.rs` computes exact output distributions for five readings of `stochastic`
+by enumerating the whole draw space. It reports per-value bias as an exact rational and whether
+each reading retracts, which is `law::rounding_retraction_is_the_identity` applied to a randomised
+mode. Its must-agree control is that the hardware realisation and the proportional definition
+produce identical distributions on every value; its must-differ control is that the
+equal-probability reading differs from the proportional one somewhere.
+
+`e_mean_error.rs` sums `R(x) - x` over the whole domain, exactly, as a rational. This is the axis
+on which the two readings of `half_up` come apart in the opposite direction from probe B, which is
+what makes the choice between them a trade rather than a spelling.
+
+`f_every_tie_rule.rs` enumerates the entire space of nearest modes over a domain, one per
+assignment of up or down to each tie, at four `(W, F)` points, and asks how many are translation
+equivariant, how many have zero mean error, and how many are both. This is the probe that turns
+"the two readings differ" into a statement about every possible reading rather than the two that
+happen to be current. Its controls are that each property is satisfiable alone, so an empty
+intersection is a result rather than a test that cannot pass.
+
+`g_stochastic_equivariance.rs` asks the same two questions of the randomised readings, with
+equivariance taken of the whole distribution.
+
+**What none of them covers.** Everything here is one rounding applied to one value. No chain, no
+composition with an arithmetic operation, no range reduction, no container edge. Where a claim of
+mine touches a canon law about fusion I am reasoning from the property that law is stated over,
+not re-measuring the law. The widths swept are `W` in `{4, 6, 8, 10, 12}` and never beyond, on one
+thread, on one host, under one toolchain, and the predicates below say so rather than implying
+otherwise.
