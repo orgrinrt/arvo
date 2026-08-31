@@ -10,6 +10,9 @@
 //! held fixed, exhaustively over a finite domain, so it is a proof over that
 //! domain rather than a sample.
 //!
+//! Build and run: `rustc -O -o p1_shape_vs_aliasing p1_shape_vs_aliasing.rs && ./p1_shape_vs_aliasing`
+//! The binary is gitignored; the source and the captured output are tracked.
+//!
 //! Everything below is at W = 4 signed, F = 0, radix 2, arity 2, threads 1.
 //! Container is `i32`, wide enough that no intermediate of the model overflows
 //! before the policy is applied, so the policy is the only thing clamping.
@@ -181,13 +184,27 @@ fn main() {
     println!("## C1 negative control: same arm under wrapping, must be 0");
     let (n1, bad1, _) = arm_a(Policy::Wrap, LO, HI);
     println!("  wrapping, full range        : {bad1} of {n1}");
-    println!("  {}", if bad1 == 0 { "  PASS" } else { "  FAIL, the harness reports movement where the algebra says none" });
+    println!(
+        "  {}",
+        if bad1 == 0 {
+            "  PASS"
+        } else {
+            "  FAIL, the harness reports movement where the algebra says none"
+        }
+    );
 
     println!();
     println!("## C2 negative control: saturating on a declared non-negative window, must be 0");
     let (n2, bad2, _) = arm_a(Policy::Saturate, 0, HI);
     println!("  saturating, operands in [0, {HI}] : {bad2} of {n2}");
-    println!("  {}", if bad2 == 0 { "  PASS, agrees with 82_probes/p2_output.txt exhaustively" } else { "  FAIL, disagrees with the committed measurement" });
+    println!(
+        "  {}",
+        if bad2 == 0 {
+            "  PASS, agrees with 82_probes/p2_output.txt exhaustively"
+        } else {
+            "  FAIL, disagrees with the committed measurement"
+        }
+    );
 
     println!();
     println!("## arm B: aliasing varies, association fixed at (x op y) op z");
@@ -210,8 +227,12 @@ fn main() {
         }
     }
     println!("  declared operand boxes swept: {boxes}");
-    println!("  (x + y) - z, leaves distinct : rule disagrees with oracle on {mismatch_distinct} boxes");
-    println!("  (x + y) - x, leaf 3 aliases 1: rule disagrees with oracle on {mismatch_aliased} boxes");
+    println!(
+        "  (x + y) - z, leaves distinct : rule disagrees with oracle on {mismatch_distinct} boxes"
+    );
+    println!(
+        "  (x + y) - x, leaf 3 aliases 1: rule disagrees with oracle on {mismatch_aliased} boxes"
+    );
     if let Some((lo, hi)) = first_alias_witness {
         println!(
             "      witness box [{lo}, {hi}]: rule says may-overflow = {}, oracle says {}",
@@ -222,10 +243,23 @@ fn main() {
 
     println!();
     println!("## C3 negative control: the rule must be exact on the distinct-leaf term");
-    println!("  {}", if mismatch_distinct == 0 { "  PASS, 0 disagreements, so the rule is being evaluated correctly" } else { "  FAIL, the rule is mis-evaluated and arm B proves nothing" });
+    println!(
+        "  {}",
+        if mismatch_distinct == 0 {
+            "  PASS, 0 disagreements, so the rule is being evaluated correctly"
+        } else {
+            "  FAIL, the rule is mis-evaluated and arm B proves nothing"
+        }
+    );
 
     println!();
     println!("## verdict");
-    println!("  association moves the answer with aliasing held fixed: {}", bad > 0);
-    println!("  aliasing moves the verdict with association held fixed: {}", mismatch_aliased > 0);
+    println!(
+        "  association moves the answer with aliasing held fixed: {}",
+        bad > 0
+    );
+    println!(
+        "  aliasing moves the verdict with association held fixed: {}",
+        mismatch_aliased > 0
+    );
 }
