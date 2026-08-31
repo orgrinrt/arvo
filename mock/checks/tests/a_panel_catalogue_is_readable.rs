@@ -132,7 +132,7 @@ fn every_committed_catalogue_parses() {
             Err(e) => {
                 broken.push(format!("{}: unreadable: {e}", name(p)));
                 continue;
-            },
+            }
         };
         if let Err(e) = text.parse::<DocumentMut>() {
             broken.push(format!("{}: {e}", name(p)));
@@ -206,13 +206,13 @@ fn a_confidence_is_a_number_between_zero_and_one() {
                     if !(0.0..=1.0).contains(&n) {
                         wrong.push(format!("{}: `{who}` has confidence {n}", name(&p)));
                     }
-                },
+                }
                 Some(Value::Integer(i)) => {
                     let n = *i.value();
                     if !(0..=1).contains(&n) {
                         wrong.push(format!("{}: `{who}` has confidence {n}", name(&p)));
                     }
-                },
+                }
                 _ => wrong.push(format!(
                     "{}: `{who}` has a confidence that is not a number",
                     name(&p)
@@ -238,7 +238,9 @@ fn a_confidence_is_a_number_between_zero_and_one() {
 fn the_readers_find_the_defects_they_are_looking_for() {
     // Control 1: a document that does not parse.
     assert!(
-        "[[item]]\nid = \"unclosed\n".parse::<DocumentMut>().is_err(),
+        "[[item]]\nid = \"unclosed\n"
+            .parse::<DocumentMut>()
+            .is_err(),
         "the parser accepted an unterminated string, so the parse arm cannot fail"
     );
 
