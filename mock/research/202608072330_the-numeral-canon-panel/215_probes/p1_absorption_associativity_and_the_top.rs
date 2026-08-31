@@ -220,10 +220,7 @@ fn sweep(c: Cfg) -> Counts {
 }
 
 fn name(c: Cfg) -> String {
-    format!(
-        "{:?}/{:?}/{:?}/F={}/{:?}",
-        c.op, c.pol, c.sign, c.f, c.rnd
-    )
+    format!("{:?}/{:?}/{:?}/F={}/{:?}", c.op, c.pol, c.sign, c.f, c.rnd)
 }
 
 fn section_a_and_b() -> bool {
@@ -269,7 +266,10 @@ fn section_a_and_b() -> bool {
                         accidental.push(name(c));
                     }
                     if !assoc && absorb {
-                        println!("  !! the sufficiency theorem is contradicted by {}", name(c));
+                        println!(
+                            "  !! the sufficiency theorem is contradicted by {}",
+                            name(c)
+                        );
                         ok = false;
                     }
                     println!(
@@ -302,7 +302,9 @@ fn section_a_and_b() -> bool {
     println!();
     println!("-- the controls, which decide whether anything above counts --");
     match control_signed_sat_mul {
-        Some(false) => println!("  PASS  signed saturating multiply at F=0 reports non-associative"),
+        Some(false) => {
+            println!("  PASS  signed saturating multiply at F=0 reports non-associative")
+        }
         other => {
             println!("  FAIL  signed saturating multiply at F=0 reported {other:?}, expected non-associative");
             ok = false;
@@ -311,7 +313,9 @@ fn section_a_and_b() -> bool {
     match control_wrap_mul {
         Some(true) => println!("  PASS  signed wrapping multiply at F=0 reports associative"),
         other => {
-            println!("  FAIL  signed wrapping multiply at F=0 reported {other:?}, expected associative");
+            println!(
+                "  FAIL  signed wrapping multiply at F=0 reported {other:?}, expected associative"
+            );
             ok = false;
         }
     }
@@ -451,7 +455,10 @@ fn section_d() {
                 if !distrib {
                     missing.push("distributivity");
                 }
-                println!("        -> not a min-plus carrier. missing: {}", missing.join(", "));
+                println!(
+                    "        -> not a min-plus carrier. missing: {}",
+                    missing.join(", ")
+                );
             }
         }
     }
@@ -712,7 +719,11 @@ fn main() {
     let all = a && c && e && f;
     println!(
         "== every control: {} ==",
-        if all { "PASSED" } else { "FAILED, numbers above are void" }
+        if all {
+            "PASSED"
+        } else {
+            "FAILED, numbers above are void"
+        }
     );
     // Keep the set type used so the import is not dead weight if trimmed later.
     let _: BTreeSet<i64> = BTreeSet::new();

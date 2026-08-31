@@ -1,0 +1,88 @@
+seat 215, probe 3. exhaustive at W = 8.
+
+== 1. the closed form as a predictor, evaluated at W = 8 ==
+
+  the source evidences its forms at W = 4. nothing below is at W = 4.
+
+range                          op    pol     F     H1    H2  predicted measured bad  verdict
+unsigned [0,255]               Add   Wrap    0   true  true       true            0  agrees
+unsigned [0,255]               Add   Wrap    2   true  true       true            0  agrees
+unsigned [0,255]               Add   Sat     0   true  true       true            0  agrees
+unsigned [0,255]               Add   Sat     2   true  true       true            0  agrees
+unsigned [0,255]               Mul   Wrap    0   true  true       true            0  agrees
+unsigned [0,255]               Mul   Wrap    2  false  true      false     13766544  agrees
+unsigned [0,255]               Mul   Sat     0   true  true       true            0  agrees
+unsigned [0,255]               Mul   Sat     2  false  true      false       407318  agrees
+two's complement [-128,127]    Add   Wrap    0   true  true       true            0  agrees
+two's complement [-128,127]    Add   Wrap    2   true  true       true            0  agrees
+two's complement [-128,127]    Add   Sat     0   true false      false      4177792  agrees
+two's complement [-128,127]    Add   Sat     2   true false      false      4177792  agrees
+two's complement [-128,127]    Mul   Wrap    0   true  true       true            0  agrees
+two's complement [-128,127]    Mul   Wrap    2  false  true      false     13735108  agrees
+two's complement [-128,127]    Mul   Sat     0   true false      false        62476  agrees
+two's complement [-128,127]    Mul   Sat     2  false false      false       891290  agrees
+mirror-symmetric [-127,127]    Add   Wrap    0   true  true       true            0  agrees
+mirror-symmetric [-127,127]    Add   Wrap    2   true  true       true            0  agrees
+mirror-symmetric [-127,127]    Add   Sat     0   true false      false      4129024  agrees
+mirror-symmetric [-127,127]    Add   Sat     2   true false      false      4129024  agrees
+mirror-symmetric [-127,127]    Mul   Wrap    0   true  true       true            0  agrees
+mirror-symmetric [-127,127]    Mul   Wrap    2  false  true      false     13608052  agrees
+mirror-symmetric [-127,127]    Mul   Sat     0   true  true       true            0  agrees
+mirror-symmetric [-127,127]    Mul   Sat     2  false  true      false       828538  agrees
+
+-- the decisive cell --
+  multiplication, saturating, on the mirror-symmetric range [-127,127], F = 0.
+  the closed form predicts associative = true (mirror-symmetric, so a
+  multiplicative congruence). the naive 'signed saturation breaks it'
+  reading predicts associative = false. measured: 0 bad triples,
+  so associative = true.
+  the closed form is right and the naive reading is WRONG on this cell.
+  the geometry decides it, not the signedness.
+
+-- the differential, which is what makes the geometry claim non-trivial --
+  on ONE range, [-127,127], saturating, F = 0:
+    multiplication: 0 bad. addition: 4129024 bad.
+  the two operations SPLIT on the same range, which is exactly what the two
+  closed forms require: mirror-symmetric is a multiplicative congruence and
+  is not sign-confined, so it is not an additive one. no account that keys on
+  signedness alone can produce that split.
+
+-- the controls --
+  PASS  0 of 24 cells mismatch, in either direction
+  PASS  the predictor returned both true and false across the cube
+  PASS  the two operations split on one range
+
+== 2. the clamp isolated from the coarsening ==
+
+  my first version of this section was confounded and its refutation is kept
+  in the source. it rescaled 2F bits back to F at every step, so coarsening was
+  firing the whole time and the clamp was never isolated. it measured 10890 bad
+  triples at F = 2 and I read that as refuting my mechanism. it refuted the
+  test.
+
+  below, nothing is ever rescaled. scale grows F, 2F, 3F and the clamp applies
+  to the exact numerator against the logical bound. the ONLY lossy step is the
+  clamp, which is the clamp-alone row's own shape.
+
+  F = 0:  no-clamp control 0   clamp, all operands 0   clamp, operands in {0} u [1,MAX] 0
+  F = 2:  no-clamp control 0   clamp, all operands 360012   clamp, operands in {0} u [1,MAX] 0
+  F = 4:  no-clamp control 0   clamp, all operands 1496400   clamp, operands in {0} u [1,MAX] 0
+
+  the no-clamp control is clean everywhere, so nothing but the clamp is lossy.
+  with the clamp on and every operand allowed, the law breaks at F > 0, which
+  reproduces the clamp-alone result independently at W = 8.
+  with the clamp on and no operand below one, the law holds at every F.
+
+  so the clamp-alone cause has a region, and this is it: an intermediate clamp
+  preserves multiplicative associativity on any operand set whose non-zero
+  members are at least one, because multiplying can then never bring a
+  magnitude back down past the bound the clamp pinned it to. F = 0 unsigned
+  satisfies that for free, since no operand below one exists there, which is
+  why my F = 0 sweep and the clamp-alone row were never in conflict.
+
+  this does not contradict the two-causes row. coarsening remains
+  independently sufficient, shown by the F > 0 columns of probe 1 where the
+  clamp never fires. what it adds is the region the clamp cause does not
+  reach, which the prohibition on its own does not give.
+
+== every control: PASSED ==
