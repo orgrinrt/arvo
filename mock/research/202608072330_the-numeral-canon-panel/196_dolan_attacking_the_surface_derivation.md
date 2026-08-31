@@ -919,11 +919,15 @@ holds four and the capacity is 256, nothing relates them, and it is a nameable, 
 type that compiles. `191` found the same shape at its `p1` arms G1 to G3 and called it a landmine; it
 is the same landmine and it arrives whenever a const and a type are both carried with no relation.
 
-**And C2b is a droplist entry that has moved.** `191`'s arm D and `35`'s section-6 droplist both
-record `generic_const_exprs` as the refused route. `associated_const_equality`, the other spelling
-somebody would reach for, is not merely unstable on the pinned toolchain: **it has been removed**, and
-the diagnostic redirects to `min_generic_const_args`. Anything in the corpus that names it as an
-available-behind-a-gate option is naming a feature that no longer exists.
+**And C2b moves a droplist entry, without invalidating one.** `191`'s arm D and `35`'s
+section-6 droplist both record `generic_const_exprs` as the refused route, and the registry's
+droplist rows name `generic_const_exprs` and `min_generic_const_args` and nothing else. I grepped
+`associated_const_equality` across `mock/registry/` and the whole panel: it appears nowhere, so no
+row is wrong today and I am not reporting one. What is worth recording is that the spelling
+somebody would reach for next, having been refused by the other two, **has been removed from the
+toolchain** rather than being unstable, and its diagnostic redirects to `min_generic_const_args`,
+which `retirement::dl_capacity_unification_naive_spelling` already records as unable to express
+the inductive doubling step.
 
 **One thing that had to be split out and is a result of its own.** The C2 bound cannot share a file
 with the other arms. `C: PosVal<VAL = { K as u64 }>` is gated at **parse** time, so merely writing it
@@ -965,6 +969,36 @@ unspecified and the odd nesting `Pair<Pair<X, X>, Slot<T>>` is where padding wou
 `size_of::<Shape>() == C * size_of::<T>()` and `align_of::<Shape>() == align_of::<T>()` hold at all
 eight capacities, four of them odd, for a one-byte element and an eight-byte one. **The derived shape
 is size- and alignment-identical to `[T; C]` on this toolchain.**
+
+| arm | required | got |
+|---|---|---|
+| S6 a capacity-3 store constructed and folded | COMPILE | COMPILE |
+| S6b a capacity-2 shape offered where capacity 3 is wanted | REFUSE | REFUSE, E0308 |
+| S7 the same, built as a binary and **executed** | exit 0 | exit 0, printing `= 9, accumulator width = 4` |
+| S7m the same binary with the recurrence mutated | must not build | does not build |
+
+**S6, S6b and S7 exist because a retirement demanded them.**
+`retirement::dl_feasibility_probe_compiled_the_load_bearing_path` retires a prior capacity probe's
+claim with: "the probe declared the capacity trait as a bare const and never reached the associated
+array type the domain exists for." Naming a type in a signature normalises it and does not prove a
+value of it can be built, so S6 builds one, S7 runs the fold and asserts the answer against
+arithmetic, and S6b offers a capacity-2 shape where capacity 3's is wanted and is refused. **S7m is
+what makes S7's exit-0 mean anything**: with the recurrence mutated the binary does not build at all,
+because the const assertions fail before `main` exists.
+
+Before that, `s6_value_is_right` was a function returning a bool that nothing evaluated, which is the
+shape the test gate calls a test that asserts nothing. It compiled under every arm and proved nothing.
+S7 is that defect repaired rather than described.
+
+**And the neighbouring retirement is not this construction.**
+`retirement::dl_capacity_unification_naive_spelling` retires "the shared carrier answering directly
+for the **backing array**", refused four ways "citing the forbidden generic-const-expressions feature
+and, behind the compiler's own suggested successor, the inductive doubling step, which the restricted
+successor cannot express either." That is `2N` as an **array length**. `p4` never builds an array
+length: the doubling is `Pair<S, S>`, a structural recursion on types, and no const arithmetic appears
+anywhere in it. So this is not the retired claim re-proposed, it is a construction reaching the same
+place by not needing the thing that was refused. I checked that before building on it rather than
+after.
 
 ### 8.3 What this composes to, with the costs stated in both directions
 

@@ -312,3 +312,76 @@ packs_like_an_array!(C5);
 packs_like_an_array!(C7);
 packs_like_an_array!(C13);
 packs_like_an_array!(C16);
+
+// The accumulator width as a number, so S6 can check the fold's result
+// against integer arithmetic rather than against another declaration.
+pub trait AccWidth { const W: u32; }
+impl<W: NatVal, C> AccWidth for (Num<W>, C)
+where C: Log2Ceil, <C as Log2Ceil>::Out: NatVal,
+{ const W: u32 = W::VAL + <<C as Log2Ceil>::Out as NatVal>::VAL; }
+
+// ---- ARM S6: construct the derived shape, not merely name it ------------
+// `retirement::dl_feasibility_probe_compiled_the_load_bearing_path` retires a
+// prior capacity probe for exactly this: "the probe declared the capacity trait
+// as a bare const and never reached the associated array type the domain exists
+// for." Naming a type in a signature normalises it; it does not prove a value
+// of it can be built. So S6 builds one and folds it, and S6b builds one of the
+// wrong shape for the capacity and must be refused.
+//
+//   S6   a capacity-3 store, constructed and folded                COMPILES
+//   S6b  a capacity-2 shape offered where capacity 3 is wanted     REFUSED
+type N2u = Su<Su<Z>>;
+
+pub fn s6_build_and_fold() -> <Num<N2u> as SumAccum<C3>>::Acc {
+    // Twice/TwiceP1 nesting for 3 is Pair<Pair<Slot, Slot>, Slot>.
+    let store: <C3 as Store<Num<N2u>>>::Shape = Pair(
+        Pair(Slot(Num::<N2u>::new(3)), Slot(Num::<N2u>::new(3))),
+        Slot(Num::<N2u>::new(3)),
+    );
+    <_ as FoldInto<C3, _>>::fold_into(
+        &store,
+        <<Num<N2u> as SumAccum<C3>>::Acc as CAdd>::zero(),
+    )
+}
+
+/// The value the fold must produce, checked against arithmetic rather than
+/// against another declaration: three elements of value 3 sum to 9, and the
+/// accumulator is 2 + ceil(log2 3) = 4 bits, which holds 9.
+pub fn s6_value_is_right() -> bool {
+    s6_build_and_fold().0 == 9 && <(Num<N2u>, C3) as AccWidth>::W == 4
+}
+
+#[cfg(arm_s6b)]
+pub fn s6b_wrong_shape() -> <C3 as Store<Num<N2u>>>::Shape {
+    // A capacity-2 shape where capacity 3's is wanted. If this compiles the
+    // shape does not pin the capacity and S1 to S5 say much less than they look
+    // like they say.
+    Pair(Slot(Num::<N2u>::new(1)), Slot(Num::<N2u>::new(1)))
+}
+
+// ---- ARM S7: run it, because a bool nobody reads is not a check ---------
+// `s6_value_is_right` compiles under every arm above and is never evaluated,
+// which is the shape the test gate calls a test that asserts nothing. Built as
+// a binary under `--cfg arm_run` and executed, so the fold's answer is checked
+// against arithmetic at run time and a wrong answer exits nonzero.
+//
+//   S7   the constructed capacity-3 store folds to 9 in a 4-bit accumulator
+//        REQUIRED: builds AND exits 0
+//   S7m  the same binary built with --cfg mutate
+//        REQUIRED: does not build, because the const assertions above fail
+//        first. That is what makes S7's exit-0 mean something.
+#[cfg(arm_run)]
+fn main() {
+    let got = s6_build_and_fold().0;
+    let width = <(Num<N2u>, C3) as AccWidth>::W;
+    println!("fold over the derived capacity-3 shape = {got}, accumulator width = {width}");
+    assert_eq!(got, 9, "three elements of value 3 must sum to 9");
+    assert_eq!(width, 4, "2 + ceil(log2 3) = 4");
+    assert!(9u64 <= (1u64 << width) - 1, "9 must fit in the derived width");
+    assert!(
+        core::mem::size_of::<<C3 as Store<Num<N2u>>>::Shape>()
+            == 3 * core::mem::size_of::<Num<N2u>>(),
+        "the shape must lay out as three elements"
+    );
+    println!("S7 ok");
+}
