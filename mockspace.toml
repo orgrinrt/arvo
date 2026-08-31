@@ -154,6 +154,11 @@ commit = "error"
 build = "error"
 push = "error"
 
+[lints.every-predicate-names-a-declared-axis]
+commit = "error"
+build = "error"
+push = "error"
+
 # --- Layer enforcement via forbidden-imports -------------------------------
 #
 # The per-crate layering rules were removed when mock/crates was

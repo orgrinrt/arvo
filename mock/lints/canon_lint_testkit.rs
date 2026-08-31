@@ -92,14 +92,27 @@ pub fn view(rows: &[(&str, &[(&str, &str)])], referrers: &[(&str, &[&str])]) -> 
 /// is deliberately empty while the canon is written, so a registry lint here
 /// reads the registry or reads nothing.
 pub fn ctx<'a>(registry: &'a RegistryView) -> RepoContext<'a> {
+    static HERE: OnceLock<PathBuf> = OnceLock::new();
+    ctx_at(HERE.get_or_init(|| PathBuf::from(".")), registry)
+}
+
+/// The same context with the mock directory pointed at a planted tree.
+///
+/// **This is what a lint reading the worktree is driven by.** [`ctx`] hardcodes
+/// `.`, which makes it the wrong instrument for one of those: it would walk
+/// whichever directory the test binary happens to be in. A corpus lint builds
+/// its own tree under [`planted_tree`] and hands the path here, so the same
+/// predicate the gate runs is the one under test rather than a copy of it.
+///
+/// `repo_root` is the same path. Nothing here reads both, and pointing them at
+/// two different places would be inventing a layout no real run has.
+pub fn ctx_at<'a>(mock_dir: &'a Path, registry: &'a RegistryView) -> RepoContext<'a> {
     static CRATES: OnceLock<BTreeSet<String>> = OnceLock::new();
     static DIRS: OnceLock<Vec<PathBuf>> = OnceLock::new();
     static STRINGS: OnceLock<Vec<String>> = OnceLock::new();
-    static HERE: OnceLock<PathBuf> = OnceLock::new();
-    let here: &Path = HERE.get_or_init(|| PathBuf::from("."));
     RepoContext {
-        mock_dir: here,
-        repo_root: here,
+        mock_dir,
+        repo_root: mock_dir,
         all_crates: CRATES.get_or_init(BTreeSet::new),
         src_dirs: DIRS.get_or_init(Vec::new),
         invocation: None,
@@ -107,6 +120,32 @@ pub fn ctx<'a>(registry: &'a RegistryView) -> RepoContext<'a> {
         open_panels: STRINGS.get_or_init(Vec::new),
         registry,
     }
+}
+
+/// An empty directory nothing else is using, for a lint that reads a tree.
+///
+/// Keyed on the caller's own name plus the process and thread, so two arms in
+/// one binary cannot plant into each other's tree. Removed and recreated on
+/// entry rather than on exit, because a test that fails leaves its tree behind
+/// and that is the tree somebody then wants to look at.
+pub fn planted_tree(what: &str) -> PathBuf {
+    let dir = std::env::temp_dir().join(format!(
+        "arvo-canon-lint-{what}-{}-{:?}",
+        std::process::id(),
+        std::thread::current().id()
+    ));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).expect("a planted tree");
+    dir
+}
+
+/// Write one file into a planted tree, creating whatever directories it needs.
+pub fn plant(dir: &Path, at: &str, text: &str) {
+    let path = dir.join(at);
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent).expect("a planted directory");
+    }
+    std::fs::write(&path, text).expect("a planted file");
 }
 
 /// What one lint said about one planted registry, as plain strings.
@@ -190,7 +229,17 @@ pub fn assert_registered(name: &str) {
 /// turned the refusal off with the declared default untouched, and the arm
 /// asserting the declared default stayed green through it.
 pub fn assert_findings_block(lint: &dyn RepoLint, registry: &RegistryView) {
-    let found = lint.check_repo(&ctx(registry));
+    assert_findings_block_at(lint, &ctx(registry));
+}
+
+/// [`assert_findings_block`] against a context the caller built.
+///
+/// A lint reading the worktree needs its planted tree in the context, which
+/// [`ctx`] cannot carry, so it calls this with one from [`ctx_at`]. Same
+/// assertion, same reason, and the two share a body so a change to what
+/// "blocks" means cannot reach one and miss the other.
+pub fn assert_findings_block_at(lint: &dyn RepoLint, ctx: &RepoContext) {
+    let found = lint.check_repo(ctx);
     assert!(
         !found.is_empty(),
         "nothing was found, so this says nothing about what a finding carries"
