@@ -1508,3 +1508,19 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::SEED_TALKING_POINTS::#33-quantiser-laws-folds",
 ]
 keywords = ["Kleene", "view lattice", "nine-point", "definedness", "Presence", "Ignore", "grade", "cause component", "finest view", "partial associativity", "repair", "replacement"]
+
+[[question]]
+id = "which_successor_carries_the_strategy_shape_ratification"
+asks = "Op ratified the lineage of `ruling::a_strategy_is_a_preset_naming_a_point_with_a_weighting_in_it` and directed the ratification to its successor rather than to it. Three proposals refine what a strategy is and all postdate that ruling. Which of them is the successor he meant, or is it a fourth thing nobody has written?"
+options = [
+  "`proposal::a_strategy_is_a_pair_of_an_observable_assignment_and_a_weighting`.",
+  "`proposal::a_strategy_is_a_declared_semantics_together_with_a_weighting_over_the_arms_that_realise_it`.",
+  "`proposal::a_strategy_is_a_consumer_supplied_weighting_over_measurements_never_over_implementations`.",
+  "None of the three, and the successor is a formulation the panel has yet to write, in which case the ratification is a standing promise against a row that does not exist.",
+]
+decider = "panel"
+topic = "the_strategy_axis"
+unblocks = "Where a ratification already granted actually lands. Until it is answered, the strategy axis has a blessing with nothing under it, and the ruling it was granted through stays at `stated` because op sent it past that row on purpose."
+note = "His words, in `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`: \"Again, on the option 1, I think there's a better wording for that since that one you mention, so the ratification goes for the actual succeeding one rather than this, but the lineage is ratified and blessed thus\". Two halves and they are different. The lineage is blessed, which is settled. Which row is its tail is not, and the three candidates are panel output rather than his words, so picking one is a reading and not a transcription. Filed as the panel's rather than his because he has already given the ratification; what is missing is the identification, and that is derivable from the three texts against the intent he blessed. The ruling stays at `stated` deliberately: stamping it would take the ratification he explicitly sent past it."
+provenance = ["panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round::#the-axis"]
+keywords = ["strategy", "successor", "lineage", "ratification", "preset", "weighting", "observable assignment", "declared semantics"]
