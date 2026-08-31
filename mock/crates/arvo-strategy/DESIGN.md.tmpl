@@ -147,3 +147,24 @@ forbidding the per-strategy statements from being written as settled.
 
 **The selection is const.** A predicate that is not const-available does not compile as an arm
 selector, and the test asserting that is a compile-fail test rather than a runtime one.
+
+## The surface this design names
+
+`Strategy` is the binding and has exactly two items: `OBJECTIVE`, which is the
+`arvo_placement::Objective` the ladder is keyed on, and `Adaptation`, which is the
+`arvo_format::Adaptation` this binding selects. Two items and no third, because a
+third keyed on the preset's name would be the behaviour table the canon says not to
+write.
+
+`objective_of` reaches the first through the binding, so a consumer never has to
+know which preset it holds.
+
+`StatedIntent` carries `INTENT`, the preset's purpose in the words the canon has
+for it. It exists on debug builds only: an intent is documentation rather than
+something the lowered program needs, and a static string is not part of this
+stack's release surface.
+
+`Hot`, `Cold`, `Precise` and `Warm` are the presets, in `presets`. They are
+instances of an open concept rather than members of an enumeration, and a consumer
+adding a fifth edits nothing here. Which overflow mode each names is not settled
+in this design, because the registry holds that question open.

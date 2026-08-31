@@ -115,3 +115,27 @@ exactly, and the only reachable size observation is the allocation's.
 
 **The output count is one at sole and three at shared**, and the three are independent: the access
 width is not a function of the carrier, nor the converse.
+
+## The surface this design names
+
+`Occupancy` is the axis, with `Sole` and `Shared` as its two values, and it is the
+declared dimension the two arms gate on.
+
+`Placement` is what a derivation returns: a `carrier`, an `access` and a `stride`,
+each an `arvo_format::Width`, together with the `occupancy` that says which arm
+produced it. `output_count` reports one at sole and three at shared, and
+`footprint_is_observable` reports whether a per-element footprint exists at all.
+
+`Carrier` is the contract a machine container satisfies, carrying its `BITS`.
+`Carrier8`, `Carrier16`, `Carrier32` and `Carrier64` are the members the host
+offers, and `LADDER` is them
+in order, narrowest first. The ladder is what `narrowest_carrier` walks, and it
+returns `Width::NONE` where it runs out rather than widening past what it has.
+
+`Objective` is what the derivation is keyed on, with `Footprint` and `Access` as
+its values. It is deliberately not a strategy: a strategy binds a name onto one of
+these, and that binding is `arvo-strategy`'s.
+
+`declared_width` reads the declared signature's slot range and nothing else, which
+is the mechanical form of the rule that the derivation is a function of the
+declaration. `derive_sole` and `derive_shared` are the two arms.

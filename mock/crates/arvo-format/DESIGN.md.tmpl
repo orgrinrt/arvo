@@ -192,3 +192,45 @@ rounding, and a grid bound does the reverse.
 **A nonzero phase removes the additive identity.** The grid contains neither zero nor one, and the
 test asserts that rather than treating it as a corner case, because the canon's reason for carrying
 the coordinate is that it changes the algebra.
+
+## The surface this design names
+
+The concept is closed and the inventory is open, so this table separates the two.
+The contracts are the closed part: a new numeral supplies them and nothing here
+grows. The shipped members are instances, and a consumer's own member sits beside
+them with no edit to anything below.
+
+| Contract | What an implementor supplies | Shipped members |
+|---|---|---|
+| `Format` | `Ambient`, `Quantum`, `Slots`, and the phase as `PHASE_NUM` over `PHASE_DEN` | `Integer`, `UFixed`, `Biased`, `Floating`, in `points` |
+| `Ambient` | the `RADIX` and whether the domain is `SIGNED` | `BinaryRationals`, `UnsignedBinaryRationals`, `DecimalRationals` |
+| `Quantum` | `BASE`, `SLOPE`, `MAGNITUDES`, the affine step law | `Constant`, `Indexed` |
+| `Slots` | `MIN` and `MAX`, inclusive | `Signed`, `Unsigned` |
+| `Rounding` | which of the six, as `MODE` | `TowardZero`, `Floor`, `Ceil`, `HalfUp`, `HalfEven`, `Stochastic` |
+| `Overflow` | which policy, as `POLICY` | `Wrap`, `Saturate`, `Clamp` |
+| `Adaptation` | a `Rounding` and an `Overflow` | `Adapt` |
+| `DeclaredSignature` | a `Format` and an `Adaptation` | `Signature` |
+| `Operation` | the `Signature` it is a function of, and its `ARITY` | none; consumers declare their own |
+
+`Mode` and `Policy` are the two value enumerations a const predicate compares
+against, and `ALL_MODES` and `SHIPPED_POLICIES` are what a test sweeps so a law is
+asserted over the matrix rather than over a remembered subset. `Mode` is closed
+because a ratification closed the vocabulary at six; `Policy` is not.
+
+The membership predicate and its neighbours are free functions rather than trait
+methods, for the staging reason above: `contains`, `has_additive_identity`,
+`step_exponent`, `smallest_step_exponent`, `radix`, `exponent_at`,
+`magnitude_in_range`, `is_constant_family`, `slot_in_range`, `slot_count`,
+`rounding_of`, `overflow_of`, `operation_rounding`, `operation_overflow`.
+
+### The two primitives, and why they are here
+
+`Width` is a count of bits and `Bool` is a truth value. They live in this crate
+because it introduces the numeric category, which is the declared door for the one
+place the stack's own primitives cannot be written in terms of themselves. Both
+are `repr(transparent)` with a single declared unwrap accessor, `count` and `get`,
+so the observation surface is exactly what the type establishes and nothing
+widens it.
+
+The door is kept narrow on purpose: two types, no arithmetic beyond what a width
+derivation needs, and everything else built from a `Format` instead of added here.
