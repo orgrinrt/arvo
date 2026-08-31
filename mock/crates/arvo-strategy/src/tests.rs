@@ -12,11 +12,11 @@
 //! the build while the runner reports `0 ignored` either way.
 
 use crate::presets::{Cold, Hot, Precise, Warm};
-use crate::{Strategy, objective_of};
+use crate::{objective_of, Strategy};
 use arvo_format::overflow::{Policy, Wrap};
 use arvo_format::rounding::{Mode, TowardZero};
-use arvo_format::{Adapt, overflow_of, rounding_of};
-use arvo_placement::{Objective, derive_sole};
+use arvo_format::{overflow_of, rounding_of, Adapt};
+use arvo_placement::{derive_sole, Objective};
 
 // --- the control -------------------------------------------------------------
 

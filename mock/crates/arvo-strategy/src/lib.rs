@@ -64,9 +64,9 @@ pub const fn objective_of<S: Strategy>() -> Objective {
 /// inventory.
 pub mod presets {
     use super::Strategy;
-    use arvo_format::Adapt;
     use arvo_format::overflow::{Saturate, Wrap};
     use arvo_format::rounding::{HalfEven, TowardZero};
+    use arvo_format::Adapt;
     use arvo_placement::Objective;
 
     /// The speed-first binding.

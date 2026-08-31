@@ -16,9 +16,9 @@
 
 use arvo_format::rounding::Mode;
 use arvo_format::{overflow_of, rounding_of};
-use arvo_placement::{Objective, derive_sole};
+use arvo_placement::{derive_sole, Objective};
 use arvo_strategy::presets::{Cold, Hot, Precise, Warm};
-use arvo_strategy::{Strategy, objective_of};
+use arvo_strategy::{objective_of, Strategy};
 
 /// Reaches every public item a consumer would, so a profile-gated one breaks the
 /// build rather than being quietly absent.
