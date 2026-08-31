@@ -1,0 +1,37 @@
+### T2 control
+  PASS, no file mentions it
+
+### rows whose says/note mentions const or compile-time staging, with their predicate
+--- validation_is_two_acts_keyed_by_boundary_and_it_validates_maps  [[[proposal]]]
+    predicate: (none)
+    holds:     (none)
+--- a_law_verdict_is_invariant_under_change_of_encoding_and_container  [[[proposal]]]
+    predicate: predicate = [
+    holds:     (none)
+--- a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body  [[[proposal]]]
+    predicate: predicate = [
+    holds:     (none)
+--- a_strategy_is_a_preference_over_measurements_resolved_as_a_compile_time_argmin  [[[proposal]]]
+    predicate: (none)
+    holds:     (none)
+--- the_construction_pipelines_trusted_base_is_nine_named_items_not_all_checked  [[[proposal]]]
+    predicate: (none)
+    holds:     (none)
+--- a_folds_compile_time_refusal_is_the_staging_boundary_reporting_its_own_position  [[[proposal]]]
+    predicate: (none)
+    holds:     (none)
+--- const_availability_is_the_axis_and_a_trajectory_condition_is_not_an_arm  [[[proposal]]]
+    predicate: (none)
+    holds:     (none)
+--- the_predicate_is_whatever_is_available_at_const_time  [[[ruling]]]
+    predicate: (none)
+    holds:     (none)
+--- never_a_runtime_check_and_one_lowered_path  [[[ruling]]]
+    predicate: (none)
+    holds:     (none)
+--- the_overflow_panic_is_permitted_and_bounded  [[[ruling]]]
+    predicate: (none)
+    holds:     (none)
+--- naming_is_partial_and_injective_or_it_is_broken  [[[proposal]]]
+    predicate: (none)
+    holds:     (none)

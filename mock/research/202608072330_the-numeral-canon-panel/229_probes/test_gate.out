@@ -1,0 +1,39 @@
+# The test gate, run before the assigned work.
+
+## 1. cargo test --workspace, at mock/
+error: manifest path .../mock contains no package: The manifest is virtual,
+and the workspace has no members.
+Expected: mock/Cargo.toml declares members = [] on purpose, because mock/crates
+was deleted while the canon is written. There is no source tier to test.
+
+## 2. cargo mock test  --  DID NOT TERMINATE
+It reaches mock/benches/variants/ and runs each bench crate's tests in DEBUG.
+bench_bitpack_write_contend_shared ran 25 minutes wall at ~200% CPU without
+finishing and was stopped. A second copy of the same binary, from a different
+clone of this repo, was already at 132 minutes of CPU when this session began
+and is still running, so this is not particular to this worktree.
+Cause, read rather than guessed: src/stress.rs runs 3000 four-thread
+concurrency trials at STRESS_N, plus 1000 and 500 more in two neighbours,
+unoptimised.
+
+## 3. the lint pack, which is the surface this work touches
+
+test result: ok. 540 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+
+13 ignored, every one an #[ignore = "catalogue: ..."] naming its gap, all in
+the six source-side CrateLints that have no source left to lint.
+
+## 4. cargo mock --lint-only, the lints against the real registry
+  695 rows across 10 namespaces / schema check passed / all lints passed
+
+## 5. addendum: what `cargo mock test` printed once its bench process was killed
+
+Full output kept as `cargo_mock_test.out`. Final two lines:
+
+  mock test: FAILED benches at .../.worktrees/axes/mock/benches
+  mock test: 1 of 7 tree(s) failed
+
+So six of seven trees are green and the seventh is the bench tree, which failed
+because I stopped it at twenty-five minutes rather than because anything in it
+asserted false. Nothing in the suite is red on its own account.

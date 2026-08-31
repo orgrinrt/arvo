@@ -1,0 +1,171 @@
+### declared axes (22)
+integer_width fraction_width total_width signedness overflow_policy rounding operation arity chain_length container alignment access_pattern target_features threads strategy ambient_domain radix accumulator_width toolchain build_profile operand_window occupancy 
+
+### C3, predicate spans per governing file, printed before aggregation
+  119_leroy_the_canon_candidate_for_the_realisation_map.md               11
+  122_leroy_the_candidate_revised_against_two_partial_signatures.md      8
+  132_leroy_the_canon_candidate_for_the_rounding_axis.md                 11
+  136_leroy_the_candidate_revised_against_three_signatures.md            8
+  138_leroy_the_restoration_pass.md                                      3
+  146_leroy_the_canon_candidate_for_the_strategy_object.md               20
+  151_leroy_the_candidate_revised_against_four_signatures.md             2
+  161_leroy_the_canon_candidate_for_the_primitive.md                     0
+  164_leroy_the_candidate_revised_against_two_signatures.md              0
+  173_leroy_the_canon_candidate_for_the_chain.md                         0
+  176_leroy_the_candidate_revised_against_two_signatures.md              0
+  178_leroy_the_restoration_pass.md                                      1
+  total spans: 64
+
+### keys the corpus predicates over, by occurrence, against the declared set
+    59  threads                                  declared
+    41  signedness                               declared
+    41  W                                        declared as total_width
+    41  F                                        declared as fraction_width
+    38  target features                          declared
+    32  rounding                                 declared
+    15  operations                               declared as operation
+    15  arity                                    declared
+    14  radix                                    declared
+    14  overflow behaviour                       declared as overflow_policy
+    11  operation                                declared
+    11  domain                                   UNDECLARED
+     9  overflow                                 declared as overflow_policy
+     9  container width                          declared as container
+     7  declarations                             UNDECLARED
+     7  cost coordinates                         UNDECLARED
+     6  term shapes                              UNDECLARED
+     6  domain closed under negation             UNDECLARED
+     6  arms                                     UNDECLARED
+     5  range policy                             declared as overflow_policy
+     5  coupling                                 UNDECLARED
+     5  chain length                             declared
+     3  weight grid resolution                   UNDECLARED
+     3  unchanged                                UNDECLARED
+     3  toolchain                                declared as build_profile, loosely
+     3  selector                                 UNDECLARED
+     3  overflow limit read at the declared width UNDECLARED
+     3  or unsigned with signed                  UNDECLARED
+     3  observation sets                         UNDECLARED
+     3  inputs exhaustive over the declared range UNDECLARED
+     3  fraction                                 UNDECLARED
+     3  fold length                              declared as chain_length
+     3  feature gates                            UNDECLARED
+     3  element count                            UNDECLARED
+     3  edition 2021                             UNDECLARED
+     3  crate type                               declared as build_profile, loosely
+     3  cost tables drawn uniformly from         UNDECLARED
+     3  accumulator width                        declared as container
+     2  value set finite with at least two elements UNDECLARED
+     2  term                                     UNDECLARED
+     2  same construction and same condition (136_probes/x2 P3) UNDECLARED
+     2  restrictions                             UNDECLARED
+     2  keying axis                              UNDECLARED
+     2  inputs exhaustive                        UNDECLARED
+     2  everything 132 5.8's predicate lists     UNDECLARED
+     2  every translation-equivariant member against wrapping UNDECLARED
+     2  every deterministic member against saturation UNDECLARED
+     2  discharge check                          UNDECLARED
+     2  decision procedure                       UNDECLARED
+     2  construction                             UNDECLARED
+     2  baseline                                 UNDECLARED
+     2  assignment set                           UNDECLARED
+     2  ambient domain                           declared
+     2  F_intermediate                           UNDECLARED
+     2  F_final                                  UNDECLARED
+     2  F and signedness: OPEN                   UNDECLARED
+     1  {mul, madd}                              UNDECLARED
+     1  {madd}                                   UNDECLARED
+     1  {add, sub, mul, madd, msub}              UNDECLARED
+     1  weights                                  UNDECLARED
+     1  threshold                                UNDECLARED
+     1  the same domain dimension added          UNDECLARED
+     1  the clause claims nothing until it is stated UNDECLARED
+     1  structure constants                      UNDECLARED
+     1  stochastic members                       UNDECLARED
+     1  staged narrowing F_exact                 UNDECLARED
+     1  same population                          UNDECLARED
+     1  same assignment set at W                 UNDECLARED
+     1  reference point                          UNDECLARED
+     1  recursion limit                          UNDECLARED
+     1  positions 0 to 255                       UNDECLARED
+     1  pi                                       UNDECLARED
+     1  overflow and                             UNDECLARED
+     1  ops                                      UNDECLARED
+     1  operations {multiply-add, sum fold}      UNDECLARED
+     1  one-signed                               UNDECLARED
+     1  numeral fixed-point signed               UNDECLARED
+     1  non-conforming pair                      UNDECLARED
+     1  no exact duplicate arms                  UNDECLARED
+     1  multiplier schedules {[1,-1,2], [2,-1,1]} UNDECLARED
+     1  keying                                   UNDECLARED
+     1  inputs exhaustive over 0..=255           UNDECLARED
+     1  input shape                              UNDECLARED
+     1  given a floor-based cell coordinate      UNDECLARED
+     1  float types                              UNDECLARED
+     1  established by the construction reading only frac(x) and never the cell UNDECLARED
+     1  equality read                            UNDECLARED
+     1  each claimed and proved separately       UNDECLARED
+     1  domain: OPEN                             UNDECLARED
+     1  domain containing a complete residue system and the UNDECLARED
+     1  dimension                                UNDECLARED
+     1  decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions UNDECLARED
+     1  declared grid step                       UNDECLARED
+     1  conforming pair                          UNDECLARED
+     1  certificate weight proportional to the reciprocal deviation UNDECLARED
+     1  carriers 8..=24 > and 120                UNDECLARED
+     1  baseline uniform across coordinates      UNDECLARED
+     1  augmentation coefficient                 UNDECLARED
+     1  assignments                              UNDECLARED
+     1  assignment sets and observation sets as  UNDECLARED
+     1  assignment set of rounding               UNDECLARED
+     1  arm set                                  UNDECLARED
+     1  ambient domain one-signed                UNDECLARED
+     1  ambient domain closed under negation for the saturating arm UNDECLARED
+     1  ambient domain closed under negation     UNDECLARED
+     1  all 2^(depth-1) placements               UNDECLARED
+     1  accumulator width varied above the declared width UNDECLARED
+     1  The non-homomorphic half alone holds for: as 119 4.7's second predicate UNDECLARED
+     1  S                                        declared as strategy
+     1  F_exact                                  UNDECLARED
+     1  > 600 chains of depth 3..=5              UNDECLARED
+     1  200                                      UNDECLARED
+     1  141's and 143's own axis sets            UNDECLARED
+     1  120 tables per cell                      UNDECLARED
+     1  #![no_std]                               UNDECLARED
+
+  distinct keys 115, of which declared 21 and undeclared 94
+
+### C1, two axes that must read as bare declared keys
+  threads: PASS
+  signedness: PASS
+### C2, one key that must be present and must read undeclared
+  radix: PASS, present as a bare key and no dimension row declares it
+### C4, the key three earlier extractors mangled
+  domain: PASS, spelled in full
+### C5, no key may carry a sentence-ending period, which is the over-capture tell
+  0 keys carry a sentence break: PASS
+
+### the phrases the corpus writes into a predicate that are not <key> <op> <value>
+### (not an extractor defect: these are the corpus's own entries, and none of
+###  them can become a registry predicate entry, which needs a declared slug)
+     3  overflow limit read at the declared width
+     3  inputs exhaustive over the declared range
+     2  value set finite with at least two elements
+     2  same construction and same condition (136_probes/x2 P3)
+     2  everything 132 5.8's predicate lists
+     2  every translation-equivariant member against wrapping
+     2  every deterministic member against saturation
+     1  the clause claims nothing until it is stated
+     1  operations {multiply-add, sum fold}
+     1  multiplier schedules {[1,-1,2], [2,-1,1]}
+     1  given a floor-based cell coordinate
+     1  established by the construction reading only frac(x) and never the cell
+     1  domain containing a complete residue system and the
+     1  decorrelation measured both as summed-error variance for same-value elements and as distinct-output count for a repeated value across positions
+     1  certificate weight proportional to the reciprocal deviation
+     1  baseline uniform across coordinates
+     1  assignment sets and observation sets as
+     1  ambient domain closed under negation for the saturating arm
+     1  ambient domain closed under negation
+     1  accumulator width varied above the declared width
+     1  The non-homomorphic half alone holds for: as 119 4.7's second predicate

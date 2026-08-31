@@ -1,0 +1,114 @@
+### B1, verdict tally
+  FOLDED     1
+  NO-AXIS    24
+  NO-REGION  16
+  PORTED     23
+  REFUSED    1
+  TOTAL      65
+
+### NO-AXIS clauses, with the reason column verbatim
+  122:351  4.2 the characters are mutually exclusive
+      blocked by: ambient domain closed under negation; finite value set
+  122:376  4.3 each character licenses a family
+      blocked by: ambient domain; radix; construction
+  122:397  4.4 the character is a joint fact
+      blocked by: ambient domain; radix
+  122:425  4.5 two mechanisms restore what a behaviour forfeits
+      blocked by: ambient domain; radix; restrictions
+  122:447  4.6 a reduction has two parts, each with a locality condition
+      blocked by: ambient domain; radix; term shapes; declarations
+  122:471  4.7 the discharge check and its certificate follow the character
+      blocked by: ambient domain; radix; term shapes; declarations; discharge check
+  119:519  4.8 propagation rules compose by intersection
+      blocked by: radix; term shapes; declarations
+  119:534  4.9 a bilinear construction's transformer is a formula
+      blocked by: radix; dimension; structure constants; declarations
+  122:526  4.10 a rule's cost is paid where its carrier is instantiated
+      blocked by: edition; feature gates; term; recursion limit
+  136:320  5.2 no quantisation is additive off the grid; monotonicity
+      blocked by: domain
+  132:320  5.3 which exact law survives, four laws
+      blocked by: domain; staged narrowing widths
+  136:355  5.4a the family invariance and the commutations
+      blocked by: domain
+  132:362  5.5 where the axis does not act at all
+      blocked by: domain; stochastic members
+  132:384  5.6 unbiasedness fixes the marginals; the variance law
+      blocked by: domain; coupling; element count; fraction; predicate restored at 138:53
+  132:407  5.7 the tension is keyed
+      blocked by: keying; decorrelation measure; input shape
+  138:57  5.8 randomness comes from outside, or the member is deterministic
+      blocked by: keying axis; float types; feature gates; threshold; positions
+  146:330  5.2 the membership test
+      blocked by: assignment set; observation sets; overflow limit read at the declared width
+  146:350  5.3 the count and its monotonicity
+      blocked by: assignment sets; observation sets; accumulator width
+  146:386  5.4b the enforceability condition and the consequence
+      blocked by: assignment set; arm set; conforming pair; cost coordinates; selector
+  146:444  5.5c a lossless storage container adds no answer function
+      blocked by: overflow limit read at the declared width
+  146:452  5.5d narrowing an accumulator is a cost choice except at signed satura
+      blocked by: accumulator width
+  151:367  6. a relocation is free where the thing relocated commutes
+      blocked by: accumulator width; the operation set spelling
+  146:467  5.6 the selector and the hull
+      blocked by: cost coordinates; arms; selector; weight grid resolution; baseline
+  146:500  5.7 the baseline, and what travels
+      blocked by: cost coordinates; arms; baseline; reference point; augmentation coefficient
+
+### re-scored against today's registry
+### (a reason phrase matching a declared axis or one of its keywords is struck)
+  STILL    122:351  4.2 the characters are mutually exclusive
+      remaining: finite value set
+  STILL    122:376  4.3 each character licenses a family
+      remaining: construction
+  CLEARED  122:397  4.4 the character is a joint fact
+  CLEARED  122:425  4.5 two mechanisms restore what a behaviour forfeits
+  STILL    122:447  4.6 a reduction has two parts, each with a locality con
+      remaining: term shapes
+  STILL    122:471  4.7 the discharge check and its certificate follow the 
+      remaining: term shapes; discharge check
+  STILL    119:519  4.8 propagation rules compose by intersection
+      remaining: term shapes
+  STILL    119:534  4.9 a bilinear construction's transformer is a formula
+      remaining: dimension; structure constants
+  STILL    122:526  4.10 a rule's cost is paid where its carrier is instant
+      remaining: feature gates; term; recursion limit
+  CLEARED  136:320  5.2 no quantisation is additive off the grid; monotonicity
+  STILL    132:320  5.3 which exact law survives, four laws
+      remaining: staged narrowing widths
+  CLEARED  136:355  5.4a the family invariance and the commutations
+  STILL    132:362  5.5 where the axis does not act at all
+      remaining: stochastic members
+  STILL    132:384  5.6 unbiasedness fixes the marginals; the variance law
+      remaining: coupling; element count; fraction; predicate restored at 138:53
+  STILL    132:407  5.7 the tension is keyed
+      remaining: keying; decorrelation measure; input shape
+  STILL    138:57  5.8 randomness comes from outside, or the member is det
+      remaining: keying axis; float types; feature gates; threshold; positions
+  STILL    146:330  5.2 the membership test
+      remaining: assignment set; observation sets; overflow limit read at the declared width
+  STILL    146:350  5.3 the count and its monotonicity
+      remaining: assignment sets; observation sets
+  STILL    146:386  5.4b the enforceability condition and the consequence
+      remaining: assignment set; arm set; conforming pair; cost coordinates; selector
+  STILL    146:444  5.5c a lossless storage container adds no answer functi
+      remaining: overflow limit read at the declared width
+  CLEARED  146:452  5.5d narrowing an accumulator is a cost choice except at sig
+  STILL    151:367  6. a relocation is free where the thing relocated commu
+      remaining: the operation set spelling
+  STILL    146:467  5.6 the selector and the hull
+      remaining: cost coordinates; arms; selector; weight grid resolution; baseline
+  STILL    146:500  5.7 the baseline, and what travels
+      remaining: cost coordinates; arms; baseline; reference point; augmentation coefficient
+
+  cleared by the four already declared: 5
+  still blocked: 19
+
+### B2 control
+  PASS, no clause names it
+
+### B3, the rescore must clear some clauses, and must clear NONE with an empty declared set
+  with the real declared set: 5 cleared
+  with an empty one:         0 cleared
+  PASS
