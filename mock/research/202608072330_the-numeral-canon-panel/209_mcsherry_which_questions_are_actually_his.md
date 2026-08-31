@@ -409,3 +409,29 @@ the number lives in a tool rather than in this file.
 - **`ruling.answers` had no referential integrity check before this dispatch.** A
   ruling could name a question that does not exist and nothing would report it.
   The canon is clean of that today; it was clean by luck.
+
+## Addendum: what `211` changes, which landed while this was in flight
+
+The second ratification round merged into the base branch after this file was
+written. Read against it, nothing here needs withdrawing and one thing gets
+firmer ground.
+
+**The axis move gets stronger.** Its bound rests on
+`ruling::the_strategy_intents_are_not_clear_cut`, and `211` is him confirming
+that ruling as the governing one: asked to ratify `each_preset_names_a_stated_intent`,
+he answered that there are elaborations he wrote after it and that it should be
+marked superseded, and the elaboration is exactly that one. He also ratified that
+a strategy is "mostly a preset naming a point in a space of independent axes,
+with a little of being nothing but a weighting mixed in. Both, not either." That
+blesses the framing the axis question decomposes, without naming the count, which
+is the split this pass claimed: the framing is his and the count is derived.
+
+**The count is unmoved.** The round added one question row, at
+`decider = "panel"`, so thirteen still name him. The tool reports it.
+
+**And the round's own closing instruction is what this dispatch built.** Its last
+line: a question is searched before it is asked, against the registry, the corpus
+and his recorded answers. Four of that round's fourteen slots went on things he
+had already settled, in a batch whose whole purpose was not costing him a round
+trip. `unasked-questions` runs the question half of that search in one command,
+which is worth more than the eleven moves.

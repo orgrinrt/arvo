@@ -30,7 +30,8 @@
 [[ruling]]
 id = "an_ack_is_not_a_ratification"
 kind = "process"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second round, `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`. He selected it and added that these were settled long before the asking: \"Most of these have been well established and blessed by me earlier several times. This should not be something to ask me, I have been clear\". Panel file `95` is his own and carries two of this group in its addendum. The round should have searched before asking, and the rebuke is recorded with the row rather than filed away."
 topic = "panel_conduct"
 key = "I12"
 says = "Op's word is the only thing that ratifies, and an opinion he gives before the experts have converged is an ack meaning the direction checks out. An ack does not close a question, does not stop work, and may not be quoted later as though it did. Ratification is the last step, reached only when the experts agree nothing is open and bring him a converged thing with the angles considered and the alternatives laid out."
@@ -73,7 +74,9 @@ keywords = ["intent", "quotation", "verbatim", "filler", "musing", "speculation"
 [[ruling]]
 id = "the_strategy_intents_are_not_clear_cut"
 kind = "process"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second round, `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`, reached through the row it supersedes rather than asked directly: told that the preset enumeration had a later elaboration, he asked for it to be found, and this is it."
+supersedes = ["each_preset_names_a_stated_intent"]
 topic = "the_strategy_axis"
 says = "The per-strategy statements are not to be written down as clear cut and settled. The intent is clear; nothing else about them is absolute."
 quote = '''
@@ -142,7 +145,8 @@ keywords = ["demoted", "voice", "absolute", "abstract intent", "concrete call", 
 [[ruling]]
 id = "the_d_numbered_decisions_are_dead"
 kind = "process"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second round, `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`. He selected it and added that these were settled long before the asking: \"Most of these have been well established and blessed by me earlier several times. This should not be something to ask me, I have been clear\". Panel file `95` is his own and carries two of this group in its addendum. The round should have searched before asking, and the rebuke is recorded with the row rather than filed away."
 topic = "panel_conduct"
 says = "The twenty-one decisions attributed to him outside the intent catalogue, numbered to D75 in the formalization talk, are dead and are not to be mined. They belong to the failed lineage with the rest of the prior calls."
 instead = "Nothing is promoted from them. The panel re-derives anything it needs, and they stay useful only for inferring taste and for giving experts things to test."
@@ -171,7 +175,8 @@ keywords = ["already answered", "pre-ask", "filter", "queue", "derivable", "D-nu
 [[ruling]]
 id = "nothing_settles_during_the_breadth_pass"
 kind = "process"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second round, `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`. He selected it and added that these were settled long before the asking: \"Most of these have been well established and blessed by me earlier several times. This should not be something to ask me, I have been clear\". Panel file `95` is his own and carries two of this group in its addendum. The round should have searched before asking, and the rebuke is recorded with the row rather than filed away."
 topic = "panel_conduct"
 says = "The work is prepping and going through angles, concepts and theory, ready to be presented to him. None of it is to slip into anything as ratified or canon."
 quote = '''
@@ -292,7 +297,8 @@ keywords = ["rules", "standing rules", "brief", "tarina", "memo", "adapt"]
 [[ruling]]
 id = "a_unit_ends_in_agreement_or_it_has_not_ended"
 kind = "process"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second round, `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`. He selected it and added that these were settled long before the asking: \"Most of these have been well established and blessed by me earlier several times. This should not be something to ask me, I have been clear\". Panel file `95` is his own and carries two of this group in its addendum. The round should have searched before asking, and the rebuke is recorded with the row rather than filed away."
 topic = "panel_conduct"
 says = "The panel is steered towards convergence and solution-finding rather than only disproving and attacking. Attack stays vital, and a unit has to end with solutions and agreement on at least something so the process can converge and reach a strong consensus between experts."
 quote = '''
@@ -451,7 +457,8 @@ keywords = ["queue", "batch", "scope", "repository", "context switch", "parked",
 [[ruling]]
 id = "arvo_is_a_library_and_the_value_composes_on_top"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second ratification round, recorded whole at `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`, which carries the four questions, every option each answer chose among, and his words verbatim. He was given the four in this group as a multi-select and selected all of them."
 topic = "arvo_identity"
 key = "I11"
 says = "arvo is a library rather than a program, so how end users will use it is unknown. The selling point is the algorithm crates that every downstream repository uses, and the contracts for things that compose into units bigger than numerals alone. The numeral base has to work so the bigger things can be built on it."
@@ -468,7 +475,8 @@ keywords = ["library", "program", "consumer", "downstream", "algo crates", "cont
 [[ruling]]
 id = "arvo_takes_no_stance_on_how_many_cores_it_runs_on"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second ratification round, recorded whole at `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`, which carries the four questions, every option each answer chose among, and his words verbatim. He was given the four in this group as a multi-select and selected all of them."
 topic = "execution_environment"
 key = "I10"
 says = "arvo will run at one thread, two threads, or any finite n, and takes no stance on which. Where several cores can be detected and parallelism proves more efficient than the alternatives, do that. Where they cannot, do the most efficient thing in a single-threaded realm."
@@ -486,7 +494,8 @@ keywords = ["threads", "cores", "parallel", "single-threaded", "detect", "regime
 [[ruling]]
 id = "adaptation_is_conditional_on_proof_and_on_soundness"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second ratification round, recorded whole at `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`, which carries the four questions, every option each answer chose among, and his words verbatim. He was given the four in this group as a multi-select and selected all of them."
 topic = "execution_environment"
 says = "arvo is multi-threadable wherever that is proven to improve performance without sacrificing soundness. Two conditions, not one."
 quote = '''
@@ -532,7 +541,8 @@ keywords = ["strategy", "prior panel", "well defined", "split", "keep", "counter
 [[ruling]]
 id = "each_preset_names_a_stated_intent"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second round, `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`, and qualified in the same breath: \"On the option 1 here, there is elaborations I have written after that one, so do mark this superseded if it is already in the registry, or try to find the clarificatons/changes to the wording I have since landed later. The others seem fine enough\". The elaboration was already in the registry. `the_strategy_intents_are_not_clear_cut` carries panel file 38 where this carries 37, and its whole subject is how these descriptions are to be read: they are not clear cut and are not to be written as settled. So the crisp four-way enumeration here stands as his intent and is superseded, by his own later instruction, as to how crisply it may be stated."
 topic = "the_strategy_axis"
 key = "I2"
 says = "Each preset names an intent he has stated rather than a rule anybody derived. Hot is as fast as possible, Cold stores as small as possible, Precise is the most precise at the price of both storage and compute, and Warm is the compromise that suits most default cases and behaves intuitively."
@@ -623,7 +633,8 @@ keywords = ["Warm", "intuitive", "best choice", "objective", "mimic", "imitation
 [[ruling]]
 id = "hot_may_sacrifice_soundness_for_a_proven_meaningful_gain"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second ratification round, recorded whole at `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`, which carries the four questions, every option each answer chose among, and his words verbatim. He was given the four in this group as a multi-select and selected all of them."
 topic = "the_strategy_axis"
 key = "I5"
 says = "The speed-first strategy exists for performance and efficiency, even at the cost of accuracy or soundness. Sacrificing soundness is its explicit purpose rather than a tolerated defect, but it should not lose soundness for nothing: the price is a provable meaningful gain. The soundness side condition holds for every other strategy."
@@ -659,7 +670,8 @@ keywords = ["throughput", "Hot", "performance", "efficiency", "measurement", "ca
 [[ruling]]
 id = "cold_is_for_cold_paths_and_cold_storage"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second ratification round, recorded whole at `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`, which carries the four questions, every option each answer chose among, and his words verbatim. He was given the four in this group as a multi-select and selected all of them."
 topic = "the_strategy_axis"
 key = "I6"
 says = "The storage-minimising strategy is optimised for cold paths and cold storage. It aggressively minimises and bitpacks, and because the path is cold it has more leeway to do things non-efficient. It should remain small for memory or disk storage."
@@ -675,7 +687,8 @@ keywords = ["Cold", "cold path", "cold storage", "bitpack", "minimise", "residen
 [[ruling]]
 id = "cold_is_not_obliged_to_be_slow"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second ratification round, recorded whole at `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`, which carries the four questions, every option each answer chose among, and his words verbatim. He was given the four in this group as a multi-select and selected all of them."
 topic = "the_strategy_axis"
 says = "The storage-minimising strategy does not have to drop efficiency wins elsewhere. It can use the same paths the speed-first strategy uses, not because its intent demands them but because nothing in its intent fights them. If the path fights the intent, it is not for that strategy."
 quote = '''
@@ -782,7 +795,8 @@ keywords = ["strategy", "preset", "point", "axes", "weighting", "space", "struct
 [[ruling]]
 id = "cold_is_not_to_be_deprioritised"
 kind = "intent"
-rung = "stated"
+rung = "ratified"
+ratification = "Ratified by op in the second ratification round, recorded whole at `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`, which carries the four questions, every option each answer chose among, and his words verbatim. He was given the four in this group as a multi-select and selected all of them."
 topic = "the_strategy_axis"
 key = "I17"
 says = "The intent governs, in intent alone rather than in whatever arbitrary count made sense when it was written. The intent is that the storage-minimising path is not deprioritised. Whether the strategies number four or seventeen or a billion is beside the point of it."
