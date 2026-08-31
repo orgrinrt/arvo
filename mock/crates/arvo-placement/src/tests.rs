@@ -49,8 +49,8 @@ fn the_control_the_ladder_rungs_are_distinct_and_ordered() {
 
 #[test]
 fn the_output_count_is_one_at_sole_and_three_at_shared() {
-    let sole = derive_sole::<Sig<Integer<13>>>(Objective::Footprint);
-    let shared = derive_shared::<Sig<Integer<13>>>(Objective::Footprint);
+    let sole = derive_sole::<Sig<Integer<13>>, { Objective::Footprint }>();
+    let shared = derive_shared::<Sig<Integer<13>>, { Objective::Footprint }>();
 
     assert_eq!(sole.output_count(), Width::bits(1));
     assert_eq!(shared.output_count(), Width::bits(3));
@@ -64,8 +64,8 @@ fn the_output_count_is_one_at_sole_and_three_at_shared() {
 
 #[test]
 fn the_footprint_is_observable_at_sole_occupancy_and_not_at_shared() {
-    let sole = derive_sole::<Sig<Integer<13>>>(Objective::Footprint);
-    let shared = derive_shared::<Sig<Integer<13>>>(Objective::Footprint);
+    let sole = derive_sole::<Sig<Integer<13>>, { Objective::Footprint }>();
+    let shared = derive_shared::<Sig<Integer<13>>, { Objective::Footprint }>();
 
     assert!(sole.footprint_is_observable().get());
     assert!(!shared.footprint_is_observable().get());
@@ -91,7 +91,7 @@ fn at_sole_occupancy_the_three_numbers_collapse_to_the_carrier() {
 
 #[test]
 fn at_shared_occupancy_the_stride_is_the_declared_width_and_not_the_carrier() {
-    let p = derive_shared::<Sig<Integer<13>>>(Objective::Footprint);
+    let p = derive_shared::<Sig<Integer<13>>, { Objective::Footprint }>();
     assert_eq!(p.stride, declared_width::<Sig<Integer<13>>>());
     assert_ne!(
         p.stride, p.carrier,
@@ -222,12 +222,12 @@ fn two_adaptations_over_one_format_derive_one_placement() {
     type B = Signature<Integer<13>, Adapt<HalfEven, Saturate>>;
 
     assert_eq!(
-        derive_sole::<A>(Objective::Footprint),
-        derive_sole::<B>(Objective::Footprint)
+        derive_sole::<A, { Objective::Footprint }>(),
+        derive_sole::<B, { Objective::Footprint }>()
     );
     assert_eq!(
-        derive_shared::<A>(Objective::Footprint),
-        derive_shared::<B>(Objective::Footprint)
+        derive_shared::<A, { Objective::Footprint }>(),
+        derive_shared::<B, { Objective::Footprint }>()
     );
 }
 
@@ -288,13 +288,78 @@ fn the_access_ladder_runs_out_before_the_carrier_ladder_does() {
 
 // --- the objective is what the ladder is keyed on ----------------------------
 
+/// The objective is a const parameter, so a width sweep over it is a macro
+/// rather than a loop: both coordinates are compile-time and neither can be a
+/// runtime variable.
+macro_rules! objective_sweep {
+    ($($w:literal),+ $(,)?) => {
+        #[test]
+        fn the_two_objectives_agree_at_sole_occupancy_and_that_is_a_result() {
+            // The value owns its allocation, so there is nothing to trade: the
+            // narrowest carrier that holds the width is at once the smallest
+            // footprint and the widest native access. Asserted as an equality so
+            // it reads as the finding it is rather than as the collapse it was.
+            $(
+                assert_eq!(
+                    derive_sole::<Sig<Integer<$w>>, { Objective::Footprint }>(),
+                    derive_sole::<Sig<Integer<$w>>, { Objective::Access }>(),
+                    "the objectives differ at sole occupancy at width {}", $w
+                );
+            )+
+        }
+
+        #[test]
+        fn the_objective_selects_at_every_width_the_ladder_reaches() {
+            // One witness is not a selection. Counted over the whole sweep so a
+            // return of the dead-parameter defect fails here rather than passing
+            // on the one width somebody happened to pick.
+            let mut differing = 0usize;
+            $(
+                {
+                    let f = derive_shared::<Sig<Integer<$w>>, { Objective::Footprint }>();
+                    let a = derive_shared::<Sig<Integer<$w>>, { Objective::Access }>();
+                    if f != a { differing += 1; }
+                }
+            )+
+            assert!(
+                differing > 0,
+                "the objective changed nothing at any width, which is the \
+                 dead-parameter defect returning"
+            );
+        }
+    };
+}
+
+objective_sweep!(2, 3, 5, 8, 9, 13, 16, 17, 27, 31, 32, 33, 47, 62);
+
 #[test]
-fn the_objective_is_a_coordinate_of_the_derivation() {
-    let f = derive_sole::<Sig<Integer<13>>>(Objective::Footprint);
-    let a = derive_sole::<Sig<Integer<13>>>(Objective::Access);
-    assert_eq!(f.occupancy, Occupancy::Sole);
-    assert_eq!(a.occupancy, Occupancy::Sole);
-    assert_ne!(Objective::Footprint, Objective::Access);
+fn the_two_objectives_derive_two_placements_at_shared_occupancy() {
+    // This is the comparison the old version of this test was named for and did
+    // not make: it asserted both occupancies were `Sole` and that two enum
+    // variants differ, and never compared the two derivations it took.
+    //
+    // Footprint packs, so the stride is the declared width and the access reaches
+    // wider. Access does not pack, so stride and access are both the carrier.
+    type S13 = Sig<Integer<13>>;
+    let f = derive_shared::<S13, { Objective::Footprint }>();
+    let a = derive_shared::<S13, { Objective::Access }>();
+
+    assert_ne!(
+        f, a,
+        "the objective selected the same placement at shared occupancy, which is \
+         the defect this test exists for"
+    );
+    assert_eq!(f.stride, declared_width::<S13>(), "footprint should pack");
+    assert_eq!(a.stride, a.carrier, "access should not pack");
+    assert!(
+        !f.access.equals(f.carrier).get(),
+        "a packed element that can straddle needs a read wider than its carrier"
+    );
+    assert_eq!(a.access, a.carrier, "an unpacked element needs one native read");
+
+    // The carrier is the one output they agree on, which is why the difference
+    // lives in the other two.
+    assert_eq!(f.carrier, a.carrier);
 }
 
 // --- what is deliberately absent ---------------------------------------------
@@ -305,7 +370,7 @@ fn a_placement_carries_no_adaptation_and_no_operation() {
     // the axis. A rounding mode or an operation arriving in this struct would
     // break this destructuring, which is why it is written rather than left to a
     // comment.
-    let p = derive_sole::<Sig<Integer<13>>>(Objective::Footprint);
+    let p = derive_sole::<Sig<Integer<13>>, { Objective::Footprint }>();
     let Placement {
         carrier,
         access,

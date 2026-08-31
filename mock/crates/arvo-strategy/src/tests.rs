@@ -114,8 +114,8 @@ fn a_new_strategy_reaches_the_ladder_the_same_way_a_preset_does() {
 
     type Sig = Signature<Integer<13>, A<Floor, Wrap>>;
 
-    let from_preset = derive_sole::<Sig>(objective_of::<Cold>());
-    let from_bespoke = derive_sole::<Sig>(objective_of::<Bespoke>());
+    let from_preset = derive_sole::<Sig, { <Cold as Strategy>::OBJECTIVE }>();
+    let from_bespoke = derive_sole::<Sig, { <Bespoke as Strategy>::OBJECTIVE }>();
     assert_eq!(from_preset, from_bespoke);
 }
 

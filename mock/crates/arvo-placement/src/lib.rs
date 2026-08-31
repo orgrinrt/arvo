@@ -28,9 +28,12 @@
 //! crate does not introduce the numeric category and is checked for that.
 
 #![no_std]
+#![feature(adt_const_params)]
+#![allow(incomplete_features)]
 #![forbid(unsafe_op_in_unsafe_fn)]
 
-use arvo_format::{slot_count, Bool, DeclaredSignature, Format, Width};
+use arvo_format::{Bool, DeclaredSignature, Format, Slots, Width};
+use core::marker::ConstParamTy;
 
 /// Whether a value has its carrier allocation to itself.
 ///
@@ -94,7 +97,7 @@ pub const LADDER: [Width; 4] = [
 /// strategy is a binding onto it, which is `arvo-strategy`'s subject, and keeping
 /// the key here is what lets the strategy set be reshaped without the ladder
 /// moving.
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, ConstParamTy)]
 pub enum Objective {
     /// Smallest footprint. Bitpacks and shares allocations where it can.
     Footprint,
@@ -148,14 +151,11 @@ impl Placement {
 /// derivation a function of the declaration.
 #[must_use]
 pub const fn declared_width<S: DeclaredSignature>() -> Width {
-    let count = slot_count::<<S::Format as Format>::Slots>();
-    let mut bits = 0u32;
-    let mut reach = 1i64;
-    while reach < count {
-        reach <<= 1;
-        bits += 1;
-    }
-    Width::bits(bits)
+    // Read, not recovered. The declaration stated the width; deriving it back
+    // from the slot bounds by counting and halving is a computation over a
+    // quantity nothing needs, at the one place in the chain where the arithmetic
+    // can leave the range it is carried in.
+    <<S::Format as Format>::Slots as Slots>::WIDTH
 }
 
 /// The narrowest container on the ladder that holds a declared width.
@@ -176,14 +176,21 @@ pub const fn narrowest_carrier(declared: Width) -> Width {
 
 /// Derive a placement at sole occupancy.
 ///
-/// One output. The access width and the stride equal the carrier because there is
-/// nothing else in the allocation for them to differ from.
+/// One output, and **both objectives give it**. The value is the sole logical
+/// occupant of its allocation, so there is no other element to trade against:
+/// the narrowest carrier that holds the declared width is at once the smallest
+/// footprint and the widest native access. That is a result rather than a
+/// collapse, and the tests assert the equality rather than leaving it to look
+/// like an oversight.
+///
+/// The objective is a const parameter because the typestate holds it as a
+/// compile-time fact. The branch resolves at monomorphisation and is gone before
+/// the backend sees it.
 #[must_use]
-pub const fn derive_sole<S: DeclaredSignature>(objective: Objective) -> Placement {
+pub const fn derive_sole<S: DeclaredSignature, const O: Objective>() -> Placement {
     let declared = declared_width::<S>();
-    let carrier = match objective {
-        Objective::Footprint | Objective::Access => narrowest_carrier(declared),
-    };
+    let carrier = narrowest_carrier(declared);
+    let _ = O;
     Placement {
         carrier,
         access: carrier,
@@ -192,25 +199,38 @@ pub const fn derive_sole<S: DeclaredSignature>(objective: Objective) -> Placemen
     }
 }
 
-/// Derive a placement at shared occupancy.
+/// Derive a placement at shared occupancy, where the objective decides.
 ///
-/// Three outputs. The stride is the declared width, because that is what packing
-/// means, and the access width is what a read has to reach to cover an element
-/// that may straddle a carrier boundary.
+/// Three outputs, and this is where the two objectives differ, because three
+/// outputs are what they have to differ in.
+///
+/// `Footprint` packs. The stride is the declared width, elements share carriers,
+/// and a read has to reach wider because an element can straddle a boundary. That
+/// is `ruling::cold_is_for_cold_paths_and_cold_storage`, which is ratified and
+/// says the storage-minimising objective aggressively minimises and bitpacks.
+///
+/// `Access` does not pack. One element per carrier, stride and access both the
+/// carrier, padding rather than straddling, so every read is a single native
+/// access and no shift pair assembles a value.
 #[must_use]
-pub const fn derive_shared<S: DeclaredSignature>(objective: Objective) -> Placement {
+pub const fn derive_shared<S: DeclaredSignature, const O: Objective>() -> Placement {
     let declared = declared_width::<S>();
-    let carrier = match objective {
-        Objective::Footprint | Objective::Access => narrowest_carrier(declared),
-    };
-    // An element of `declared` bits at an arbitrary offset can span one more
-    // boundary than its width alone suggests, so the access has to reach wider.
-    let access = narrowest_carrier(declared.add(declared).less_one());
-    Placement {
-        carrier,
-        access,
-        stride: declared,
-        occupancy: Occupancy::Shared,
+    let carrier = narrowest_carrier(declared);
+    match O {
+        Objective::Footprint => Placement {
+            carrier,
+            // An element of `declared` bits at an arbitrary offset can span one
+            // more boundary than its width alone suggests.
+            access: narrowest_carrier(declared.add(declared).less_one()),
+            stride: declared,
+            occupancy: Occupancy::Shared,
+        },
+        Objective::Access => Placement {
+            carrier,
+            access: carrier,
+            stride: carrier,
+            occupancy: Occupancy::Shared,
+        },
     }
 }
 

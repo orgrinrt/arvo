@@ -22,7 +22,8 @@ use crate::quantum::{exponent_at, is_constant_family, Constant, Indexed, Quantum
 use crate::rounding::{
     Ceil, Floor, HalfEven, HalfUp, Mode, Rounding, Stochastic, TowardZero, ALL_MODES,
 };
-use crate::slots::{slot_count, slot_in_range, Signed, Unsigned};
+use crate::slots::{slot_count, slot_in_range, Signed, Slots, Unsigned};
+use crate::width::Width;
 
 // --- the control -------------------------------------------------------------
 //
@@ -105,16 +106,23 @@ macro_rules! sweep_signed_widths {
     };
 }
 
-// Every width from 1 to 32, not the powers of two. The whole point of declaring a
-// width is that 13 and 27 are as ordinary as 16 and 32.
+// Every width the design admits, 1 through 62, not the powers of two and not a
+// convenient prefix. The bound is `slots::MAX_DECLARED_WIDTH` and above it the
+// design refuses at compile time, so these are the widths that exist.
+//
+// The previous cut of this stopped at 32 while the ladder reached 64 and this
+// file claimed to run every width the slot ranges admit. The unswept half is
+// where the count overflowed.
 sweep_unsigned_widths!(
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,
-    27, 28, 29, 30, 31, 32
+    27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+    51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62
 );
 
 sweep_signed_widths!(
     2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
-    28, 29, 30, 31, 32
+    28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51,
+    52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62
 );
 
 // --- the two families differ on the quantum law and nowhere else -------------
@@ -386,4 +394,69 @@ fn the_format_inventory_admits_a_member_this_crate_does_not_know_about() {
     assert!(has_additive_identity::<Ternary>());
     assert!(contains::<Ternary>(0, 0));
     assert!(!contains::<Ternary>(4, 0));
+}
+
+// --- the width bound, and what it refuses ------------------------------------
+
+#[test]
+fn the_declared_width_is_read_rather_than_recovered() {
+    // The coordinate the declaration stated, not a number counted back out of the
+    // slot bounds. This is what removed the class where a 63-bit declaration
+    // derived a placement of zero bits: no count is formed, so nothing can wrap.
+    assert_eq!(<Unsigned<13> as Slots>::WIDTH, Width::bits(13));
+    assert_eq!(<Signed<13> as Slots>::WIDTH, Width::bits(13));
+    assert_eq!(<Unsigned<1> as Slots>::WIDTH, Width::bits(1));
+    assert_eq!(
+        <Unsigned<{ crate::slots::MAX_DECLARED_WIDTH }> as Slots>::WIDTH,
+        Width::bits(crate::slots::MAX_DECLARED_WIDTH)
+    );
+}
+
+#[test]
+fn the_width_at_the_bound_still_counts_its_slots_without_wrapping() {
+    // The bound is where the count stops fitting, so the widest admitted width is
+    // the interesting one: its count must be positive and exactly two to the
+    // power of the width. At 63 this wrapped negative, which is what made the
+    // deriving loop return zero.
+    let count = slot_count::<Unsigned<{ crate::slots::MAX_DECLARED_WIDTH }>>();
+    assert!(count > 0, "the count wrapped at the bound");
+    assert_eq!(count, 1i64 << crate::slots::MAX_DECLARED_WIDTH);
+
+    let signed = slot_count::<Signed<{ crate::slots::MAX_DECLARED_WIDTH }>>();
+    assert!(signed > 0);
+    assert_eq!(signed, 1i64 << crate::slots::MAX_DECLARED_WIDTH);
+}
+
+#[test]
+fn the_bound_is_where_the_count_stops_fitting_and_the_arithmetic_says_so() {
+    // Why 62 and not 63, checked rather than asserted in prose. The count is two
+    // to the power of the width; at the bound it fits a signed 64-bit integer and
+    // one above it does not.
+    let at_bound = 1u128 << crate::slots::MAX_DECLARED_WIDTH;
+    let one_over = 1u128 << (crate::slots::MAX_DECLARED_WIDTH + 1);
+    assert!(at_bound <= i64::MAX as u128, "the bound does not fit, so it is wrong");
+    assert!(one_over > i64::MAX as u128, "one above the bound fits, so the bound is too low");
+}
+
+/// A width above the bound is refused at compile time, not at runtime.
+///
+/// The refusal cannot be asserted from inside a running test, because a test that
+/// could observe it would mean the crate had compiled with the invalid
+/// instantiation in it. The record is the committed sketch at
+/// `mock/research/sketches/width-bound/`, which instantiates `Signed<63>` in a
+/// consumer and carries the diagnostic in `output.txt`:
+///
+/// ```text
+/// error[E0080]: evaluation panicked: declared width is wider than a slot index
+/// carries; the bound is 62 bits, because the count of slots is 2^width and 2^63
+/// does not fit a signed 64-bit integer
+/// ```
+///
+/// Before this round the same instantiation compiled, panicked in debug, and
+/// returned a derived width of zero in release.
+#[test]
+fn the_refusal_above_the_bound_is_recorded_where_it_can_be_reproduced() {
+    // What this asserts is the bound the refusal is stated in terms of, so a
+    // change to the constant without a change to the sketch shows up here.
+    assert_eq!(crate::slots::MAX_DECLARED_WIDTH, 62);
 }
