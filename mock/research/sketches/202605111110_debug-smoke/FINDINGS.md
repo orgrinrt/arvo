@@ -7,7 +7,7 @@ not run, because the crates it imports do not exist.
 
 `numeric_debug.rs` writes `{:?}` for a spread of widths and strategies into a
 fixed-size `core::fmt::Write` buffer and asserts the output is non-empty. No
-alloc, no std. It is a real end-to-end check on a real surface and it is worth
+alloc, no std. It is a smoke test on a real surface and it is worth
 keeping.
 
 It was written for round `202605111110` against a crate tree that has since been
@@ -26,11 +26,19 @@ say so in as many words: do not restore a crate here to make something build.
 Two smaller things follow from the same fact and both matter more than the file
 does:
 
-- **It names `Warm` and `Additive` as though the strategy set were settled.** It
-  is not. Op has stated the four inherited names are a prior attempt at the
-  intent rather than the intent, and the number, the names and the decomposition
-  are all open. A test asserting over `Warm` is a test asserting the answer to a
-  question nobody has closed.
+- **It names `Warm` as though the strategy set were settled.** It is not. Op has
+  stated the four inherited names are a prior attempt at the intent rather than
+  the intent, and the number, the names and the decomposition are all open. A
+  test asserting over `Warm` is a test asserting the answer to a question nobody
+  has closed.
+
+  **This paragraph named `Additive` alongside it and that was wrong.**
+  `Additive` is not a strategy: it is the operation marker in
+  `Identity<Additive>`, and the deleted source says so in as many words, "the
+  operation whose identity is addition". The intent catalogue demotes four
+  names and `Additive` is not among them. A file whose only job is to be
+  accurate about why the check cannot run had a factual error in the second of
+  its two reasons.
 - **It names a crate decomposition** (`arvo`, `arvo_storage`) that the canon work
   is redeciding. Whether there is an `arvo-storage` at all is downstream of a
   question still open.
@@ -51,5 +59,13 @@ changes shape, the spread of instantiations this test walks changes with it.
 
 A consumer needs debug output from every numeral shape, at every width and under
 every strategy, without alloc and without std. That is a demand on arvo whoever
-implements it and whatever the crates end up being called, and it belongs in the
-registry's `obligation` namespace rather than only here.
+implements it and whatever the crates end up being called, and it is a row in
+the registry's `obligation` namespace, `debug_output_from_every_numeral_shape`,
+which cites this file.
+
+**And it is wider than what the check tests.** The obligation quantifies over
+every shape, every width and every strategy; the check asserts non-empty output
+on seven hand-picked instantiations. That is a sampled law, and choosing which
+instantiations to include is choosing what not to find out. Whoever restores it
+restores a smoke test, and the gap between the two is work rather than an
+oversight.
