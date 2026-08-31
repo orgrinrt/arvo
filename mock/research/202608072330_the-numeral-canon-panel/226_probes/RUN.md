@@ -138,3 +138,56 @@ That second control's first form demanded both outcomes at every width and faile
 on correct data: at zero headroom the narrowest carrier is the declared width, a
 two-term sum already wraps it, and no chain is ever free. The criterion was wrong
 rather than the data. It is now two claims rather than an exemption.
+
+**`p6`.** Built after op's `227`, which corrected the standards bound to parity in
+output and left open whether the fused multiply-add's *result* is reachable
+without a distinct declared operation. It is, in a region that is exactly
+nameable, and it is not outside it.
+
+Two routes to the result are compared over every triple at total widths 5, 6 and
+7, every fraction width, both signednesses and both range policies:
+`adapt(a*b + c)` against `adapt(a*b) + c`. Where the range policy is applied is a
+modelling choice and not a detail, so the composition is run in both forms: once
+placing into the declared format only at the end, and once placing at both steps,
+which is what a real stepwise implementation does.
+
+Under **wrap** the two forms coincide everywhere, because wrapping is a ring
+homomorphism. Under **unsigned saturation** they also coincide, because a product
+of non-negative values never meets the lower clamp. Under **signed saturation**
+the two-placement form reaches the fused result for **no mode at any fraction
+width**, including zero, which is the isolated failing cell and the mechanism
+behind it: the double clamp, not the rounding.
+
+Where it is reachable, the mode set is exactly the registry's:
+
+| | reaches the fused result |
+|---|---|
+| unsigned, wrap or saturate | floor, ceil, toward zero, away from zero, half up; half even at F = 0 only |
+| signed, wrap | floor, ceil, half up; toward zero, away from zero, half even at F = 0 only |
+| signed, saturate | none |
+
+That reproduces `law::fusing_a_multiply_add_preserves_the_answer_under_unsigned`
+and `law::fusing_a_multiply_add_preserves_the_answer_under_signed_wrapping`
+digit for digit at W = 6, which is the width both rows carry, and extends the
+same result to W = 5 and W = 7, which neither reaches. It also confirms the
+failing cell of
+`law::the_fused_and_the_stepwise_multiply_add_denote_one_function` and supplies
+the mechanism that row's own `gap` says it lacks a witness for.
+
+Four controls. Every mode must agree at F = 0, where the grid is the integers and
+every adaptation is the identity on it. Some mode must disagree at every F > 0,
+or the comparison is not discriminating. A planted non-equivariant adaptation
+must be caught. And the isolated cell is checked rather than read off the dump:
+signed saturating reaches it for no mode, and every other policy reaches it for
+some mode.
+
+**The third control failed on its first form and the reason is the general
+statement.** It was planted as `3 * r >= den`, and it agreed everywhere.
+Translating by a grid point adds a multiple of the denominator to the numerator,
+which leaves the residue untouched, so **any adaptation whose decision reads only
+the residue is translation-equivariant by construction**. A rule that cannot
+commute has to read the quotient, which is what half even does and what the
+repaired control does. That single sentence accounts for the whole measured
+pattern, including its signedness dependence: toward zero and away from zero read
+the sign of the numerator, which is constant under unsigned and is not under
+signed, which is exactly where the two registry rows differ.

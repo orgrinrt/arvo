@@ -19,4 +19,7 @@ p4_the_placement_reads_only_the_total_width.rsexit 0  ok
 -- how far the chain runs --
 p5_how_far_a_chain_runs_before_the_carrier_shows.rsexit 0  ok
 
+-- the fused result --
+p6_the_fused_result_is_reachable_by_composition.rsexit 0  ok
+
 VERIFIED

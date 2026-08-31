@@ -65,5 +65,9 @@ echo "-- how far the chain runs --"
 run p5_how_far_a_chain_runs_before_the_carrier_shows p5_how_far_a_chain_runs_before_the_carrier_shows.rs 0
 
 echo
+echo "-- the fused result --"
+run p6_the_fused_result_is_reachable_by_composition p6_the_fused_result_is_reachable_by_composition.rs 0
+
+echo
 if [ "$fail" -eq 0 ]; then echo "VERIFIED"; else echo "VERIFICATION FAILED"; fi
 exit $fail

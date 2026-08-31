@@ -72,8 +72,16 @@ fn main() {
     let mut both_outcomes = true;
     for &w in &widths {
         let headroom = narrowest_carrier(w) - w;
-        let last_exact = ks.iter().copied().take_while(|&k| !splits_exact(w, k)).last();
-        let last_form = ks.iter().copied().take_while(|&k| !splits_by_form(w, k)).last();
+        let last_exact = ks
+            .iter()
+            .copied()
+            .take_while(|&k| !splits_exact(w, k))
+            .last();
+        let last_form = ks
+            .iter()
+            .copied()
+            .take_while(|&k| !splits_by_form(w, k))
+            .last();
         let saw_split = ks.iter().any(|&k| splits_exact(w, k));
         let saw_free = ks.iter().any(|&k| !splits_exact(w, k));
         // C2, split in two because its first form demanded the impossible. At
@@ -82,7 +90,11 @@ fn main() {
         // both outcomes there fails on correct data. Where there is headroom
         // both outcomes must appear, and where there is none only the split
         // may, which is a second checkable claim rather than an exemption.
-        let ok = if headroom > 0 { saw_split && saw_free } else { saw_split && !saw_free };
+        let ok = if headroom > 0 {
+            saw_split && saw_free
+        } else {
+            saw_split && !saw_free
+        };
         if !ok {
             both_outcomes = false;
         }
@@ -121,7 +133,10 @@ fn main() {
     println!("\n== verdict ==");
     println!("  cells where the closed form disagrees with the exact: {form_disagrees}");
     println!("  of those, unsound:                                    {form_unsound}");
-    println!("  C1 the optimistic form is caught, and caught unsound:  {}", opt_unsound > 0);
+    println!(
+        "  C1 the optimistic form is caught, and caught unsound:  {}",
+        opt_unsound > 0
+    );
     println!("  C2 both outcomes where there is headroom, split only where there is none: {both_outcomes}");
     let pass = form_unsound == 0 && opt_unsound > 0 && both_outcomes;
     println!(
