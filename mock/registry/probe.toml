@@ -1433,3 +1433,62 @@ control = "The growth-ratio check compares naive_ratio[n] against naive_ratio[n/
 standing = "sound"
 note = "A second, qualitative table in the same source file (not backed by a separate committed output file, reported as a narrative table inside `77_amin_derived_laws_derived_cold.md:213`) reports the same construction is non-monotonic and can spike sharply for an input near one raised to increasing powers, fluctuating 4.0, 0.0, 2.0, 4.0, 2.0, 2.0 and then jumping to 130.0 one-step-bound multiples at n = 4096. That figure is weaker evidence than this row's own committed output: it is hand-transcribed prose inside a committed markdown file rather than a raw script output, so it is reported here as colour rather than as part of what this probe establishes."
 keywords = ["chain error", "fixed-point", "addition", "multiplication", "rounding", "plateau", "closure", "widened accumulator", "non-monotone"]
+
+# --- the two instruments the seed archaeology re-ran, re-run again -------------
+#
+# The first rows in this namespace whose instrument lives in the closed
+# formalization panel rather than in this one, and the boundary they are written
+# against is worth stating because it is what makes them admissible.
+#
+# **What is recorded is the compile fact, not the design conclusion the archive
+# drew from it.** `establishes` on both rows says a named source compiles under
+# the pin and that two negative controls beside it refuse. Neither says the route
+# those sources demonstrate is the right route, which is the archive's claim and
+# stays the archive's: op has demoted that lineage, and a row asserting it here
+# would restore an authority he removed.
+#
+# **Both are third instances.** The archive ran them, `SEED_TALKING_POINTS.md`
+# section 0 re-ran them on 2026-08-09 under the pin and named those two results,
+# and only those two, as current evidence, and `208_probes` ran them again on
+# 2026-08-31 on the same pin with the archive's own negative controls as arms.
+# The controls fired both times they were run, which is what separates these two
+# from the rest of that file: everything else in it carries the archive's word.
+#
+# **A second reading is owed on whether this namespace should reach the closed
+# panel at all.** `retirement` already cites it 94 times, always at one anchor
+# and always to close a route, so a citation that carries a result rather than a
+# retirement is new. The argument for it is that the result is a reproduction
+# performed here, under current discipline, on committed sources. That is one
+# expert's reading and the rule wants two.
+
+[[probe]]
+id = "the_structural_width_ladder_compiles_gate_free_on_the_pin"
+establishes = "The source `OLD_137_probes/p5_total_ladder.rs`, which keys the magnitude as a little-endian binary type and derives the width-to-container ladder from it, compiles under the pinned nightly with no feature gate, at exit 0. That is a fact about this source on this toolchain and nothing more: it does not establish that the ladder is total over widths nobody instantiated, and it does not establish that structural keying is the route the design should take."
+lives = [
+  "panel::202607301300_formalization-spec-panel::OLD_137_probes::p5_total_ladder.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::SEED_TALKING_POINTS_probes::p5_total_ladder.rerun.log::1",
+  "panel::202608072330_the-numeral-canon-panel::208_probes::p2_rerun_the_two_current_claims.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::208_probes::p2_rerun_the_two_current_claims.out::1",
+]
+control = "Weak, and named as weak. This source ships no negative control of its own, so the only case that had to fail is the one the run shares with its sibling row: the two controls beside `b1` had to refuse in the same invocation of the same compiler, and both did. That establishes the compiler was doing work and rejecting what it should reject; it does not establish that this particular source would refuse a corrupted variant of itself, because nobody built one. A reader wanting that has to build it."
+reproduced = "Three runs on the same pin, `rustc 1.98.0-nightly (57d06900f 2026-05-27)`: the archive's own, the seed archaeology's on 2026-08-09, and `208_probes/p2` on 2026-08-31. Same toolchain each time, so this is a rerun of the same code rather than an independent reimplementation, and it is worth less than a reproduction in another form would be."
+standing = "uncontrolled"
+note = "`uncontrolled` rather than `sound`, and the distinction is the one this namespace draws: the number may well be right and what is missing is a way for it to have been wrong. The compile fact is not in doubt, having reproduced three times; what nobody has is a mutation of this source that must refuse. The sibling row is `sound` because its author shipped two."
+keywords = ["total ladder", "width", "container", "structural keying", "little-endian", "gate-free", "compile", "pin", "p5"]
+
+[[probe]]
+id = "the_structural_backing_array_compiles_and_its_layout_controls_refuse"
+establishes = "The source `OLD_76_probes/b1_structural_array.rs`, which derives a backing array from the numeral's binary encoding with no const arithmetic in type position, compiles under the pinned nightly at exit 0; and the two negative controls its author shipped beside it both refuse on the same toolchain in the same run. It does not establish the layout claim at any instantiation nobody wrote, and it does not establish that this construction is what the design should carry."
+lives = [
+  "panel::202607301300_formalization-spec-panel::OLD_76_probes::b1_structural_array.rs::1",
+  "panel::202607301300_formalization-spec-panel::OLD_76_probes::b1b_layout_law_negative_control.rs::1",
+  "panel::202607301300_formalization-spec-panel::OLD_76_probes::b1c_perimeter_control.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::SEED_TALKING_POINTS_probes::b1_structural_array.rerun.log::1",
+  "panel::202608072330_the-numeral-canon-panel::208_probes::p2_rerun_the_two_current_claims.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::208_probes::p2_rerun_the_two_current_claims.out::1",
+]
+control = "Two, both shipped by the instrument's own author and both fired here. `b1b` introduces one byte of padding into the odd-arity node and the layout law must refuse, its own header stating that if it does not then every assertion in `b1` was vacuous and its `unsafe` undischarged. `b1c` reaches the same corruption through a capacity no assertion list names, so the discharge is shown not to be sampled. Both refused at exit 1 on 2026-08-31, in the same invocation that compiled `b1` at exit 0."
+reproduced = "Three runs on the same pin: the archive's, the seed archaeology's on 2026-08-09, and `208_probes/p2` on 2026-08-31. The 2026-08-09 rerun compiled `b1` alone and did not run the controls; `p2` is the first run to put all three arms in one invocation, which is what lets the positive be read against the negatives rather than beside them."
+standing = "sound"
+note = "The best-controlled instrument the closed panel has that anybody has re-run. It is the reason the sibling row above is filed `uncontrolled` rather than being given the benefit of this one's controls: the two sources are different files establishing different things, and a control belongs to the instrument that ships it."
+keywords = ["structural array", "backing array", "layout", "repr(C)", "negative control", "padding", "capacity", "unsafe", "b1", "compile"]

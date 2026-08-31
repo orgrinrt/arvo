@@ -1,0 +1,1276 @@
+# The seed archaeology's sections 2 through 8, one row per talking point, with
+# what became of it and how that was established.
+#
+# This is not the canon and not a registry namespace. `canon_paths` names
+# `mock/registry/*.toml` and nothing here is loaded by the schema check. It is an
+# audit surface, built so nobody sweeps `SEED_TALKING_POINTS.md` a second time.
+#
+# Section 1 is seat 207's and is catalogued at
+# `207_catalogue_op_material_in_the_closed_panel.toml`. Section 0 is the frame
+# and is read rather than catalogued. Sections 2 through 8 are here: 57 numbered
+# talking points, T1 through T57, plus the two unnumbered items in section 2.
+#
+# ## What a row is
+#
+# One talking point, keyed on the seed's own T-number, because that is the key
+# every later reader will arrive holding. The `claim` is what the seed states,
+# not what the archive stated: where the two differ that difference is the
+# finding and it is in `why_dropped`.
+#
+# ## The verdicts, and they are not interchangeable
+#
+# `reproduced`   re-run here, under the pin, with a control. Current evidence.
+# `covered`      the registry holds the subject, reached by its own route rather
+#                than from this file, and the row names where.
+# `retired`      a registry row closes it, and the row names which.
+# `live_hazard`  unresolved, and something in the registry today depends on it.
+# `unported`     in no registry row, with nothing standing in its place.
+# `miscarried`   the seed states it wrongly; the archive underneath is right.
+#
+# **`unported` is not a recommendation to port.** Most of these are unported for
+# a reason that is good, and the reason is in `why_dropped`. Several are unported
+# for no reason anybody recorded, and those say exactly that, in those words.
+#
+# ## Confidence
+#
+# How directly the verdict was checked, never how strongly it is believed.
+#
+# 0.9 and up  the archive passage and the registry state both opened at source
+# 0.7 to 0.9  one of the two opened, or established by a controlled instrument
+# below 0.7   established by controlled search alone; the archive passage was
+#             not opened and the seed's rendering of it is taken on its word
+#
+# **Most rows sit below 0.7 and that is the honest number.** The seed is 945
+# lines summarising a 320-file archive, and this seat opened six of its cited
+# passages rather than 127. What was checked mechanically is different and is
+# stated per row: every citation's existence and range, the two re-runs, the
+# bench corpus, and the registry sweep.
+#
+# ## The instruments, committed beside this file
+#
+# `208_probes/p1_citations_resolve.sh`   every archive citation in sections 2-8,
+#     resolved against the tree. 127 of them: 29 named files, 5 probe paths, 93
+#     bare file numbers. All resolve, all in range. Three controls, all fired.
+# `208_probes/p2_rerun_the_two_current_claims.sh`  the two the seed calls current
+#     evidence, re-run on the pin with the archive's own negative controls as
+#     arms. Both compile, both controls refuse.
+# `208_probes/p3_bench_artifacts.sh`  the committed bench corpus, counted, dated
+#     and split by era, with a nonsense-family control.
+# `208_probes/p4_registry_coverage.sh`  the registry swept for each subject on
+#     two or three independent phrasings, with four carried controls.
+# `208_probes/p5_archive_refs_resolve.sh`  whether the engine resolves a citation
+#     into the closed panel or skips it. Mutation control both directions.
+
+# --- the frame, which decides how every row below is read -----------------------
+#
+# **The seed has no authority and says so.** Its section 0: "Nothing in the source
+# archive is evidence, and nothing below may bolster any claim." Every entry is a
+# claim that panel made, recorded so it can be put back on the table and tested
+# again. A row below marked `unported` is therefore not automatically a loss.
+#
+# **It names three exceptions that ARE current evidence**, and this seat checked
+# all three rather than taking them. Two re-run probes: verified, reproduced a
+# third time, and now `probe` rows. The committed bench artifacts: verified to
+# exist, and the seed's own count of them is wrong, which is the `miscarried` row
+# below. Op's own text: outside this dispatch and inside seat 207's.
+#
+# **The registry can already carry this material and does not have to become
+# anything.** That was the open half of the dispatch and it is settled:
+# `retirement.toml` cites the closed panel 94 times, the engine resolves those
+# citations rather than skipping them, and a planted citation naming a file that
+# is not there is reported as `unresolvable-provenance`. Measured both directions
+# in `208_probes/p5_archive_refs_resolve.out`. What limits the port is not the
+# schema. It is that a `proposal` needs a region over a declared axis and a
+# `probe` needs a control, and almost nothing in section 3 has either.
+#
+# **The one thing the registry's channel is used for is closing routes.** All 94
+# of those citations are the same single anchor, `OLD_124_consolidation_twelve`
+# section 6, the cumulative droplist. Until the two `probe` rows this seat added,
+# nothing had ever cited the archive to carry a result forward.
+
+# =============================================================================
+# Section 2. Material bearing on the two questions in flight with op
+# =============================================================================
+
+[[item]]
+id = "the_verb_validate_as_the_archive_practised_it"
+t = "S2.1"
+section = "SEED_TALKING_POINTS.md#21-the-verb-validate"
+claim = "The acceptance criterion the current panel's Q1 decomposes is the same sentence the old panel lived under, and two archive facts bear on what \"validate\" meant in practice there: the panel's own reading was operational, and a later op checkpoint recorded the gate as met by a derived property rather than by a discipline."
+verdict = "covered"
+confidence = 0.75
+why_dropped = "Not dropped. The subject is live in the registry as `question::what_then_validate_requires` and as `ruling::validate_means_all_three_readings`, both reached by the current panel's own route. The seed's contribution is not the question but the archive's practice under the same sentence, which is context for whoever handles the answer rather than a claim to port."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row S2.1: present on both phrasings, 26 and 28, in a run where the nonsense control returned zero.",
+  "`ruling::validate_means_all_three_readings` exists and is op's own, in this panel, which is a stronger source than the archive's practice.",
+]
+related = [
+  "Seat 207 section 3.2 finds the acceptance criterion itself held only inside the note of `question::what_then_validate_requires`, with `ruling.toml` carrying nothing. That is the same sentence from the other side and is 207's to carry.",
+]
+keywords = ["validate", "acceptance criterion", "erasure", "Q1", "operational", "derived property", "payload one limb"]
+
+[[item]]
+id = "what_the_forbidden_feature_bans_were_load_bearing_for"
+t = "S2.2"
+section = "SEED_TALKING_POINTS.md#22-the-long-standing-constraints-and-what-the-archive-says-they-were-for"
+claim = "The operating constraints appear in the archive as workspace discipline rather than op-stated intent, and the archive adds a load-bearing role nobody has restated: its four-bin evidence ledger placed every model-width exhaustive check in a bin whose transfer to real widths rests on the forbidden-feature bans, and then refuted the transfer argument's strongest form twice by compiled counterexample with the bans in force. Four wording edits were queued for op and never landed."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. No document records a decision not to carry it. It is not the constraints themselves, which are live and settled as `ruling::the_operating_constraints_are_intents_and_rules`; it is the separate claim that the bans are what licenses transferring a model-width result to a real width, and that the transfer argument was refuted twice with the bans in force. The registry has no row on model-width transfer at all."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row S2.2: present on the constraint vocabulary, 10 and 2, which is the constraints and not the transfer argument.",
+  "No registry row mentions a transfer of a model-width result to a real width; the phrase and its near neighbours return nothing across the twelve files.",
+  "The archive passage was not opened. The seed cites `124:3831-3841` and `124:1160-1187`; both resolve and are in range per `p1`, and neither was read.",
+]
+related = [
+  "T46 below carries the same ledger's fourth finding, that a model too narrow to see a value disagreement returns a quietly wrong number with no mechanical guard. The two are one subject split across the seed's sections 2 and 4.",
+  "This is the sharpest material in the archive if the constraints question ever reopens, and the constraints are currently not open.",
+]
+keywords = ["no_std", "unstable features", "forbidden feature", "bans", "model width", "transfer", "evidence ledger", "absorption freedom", "const tag"]
+
+# =============================================================================
+# Section 3.1. The width surface and the container derivation
+#
+# The container derivation is the one subject here op has spoken about in this
+# panel: `ruling::the_container_derivation_needs_fresh_eyes`. So this whole
+# subsection is material for a question he has already said needs new work,
+# which raises what an unported item costs and is why the two re-runs were worth
+# doing before anything else.
+# =============================================================================
+
+[[item]]
+id = "the_structural_width_ladder"
+t = "T1"
+section = "SEED_TALKING_POINTS.md#31-the-width-surface-and-the-container-derivation"
+claim = "Keying the magnitude as a little-endian binary type makes the whole width-to-container derivation expressible with no feature gate and no ceiling, native rungs by trait case split, wide rung by a word cons, no width enumerated anywhere. Instrument `OLD_137_probes/p5_total_ladder.rs`, re-run 2026-08-09, compiles at exit 0 under the pin."
+verdict = "reproduced"
+confidence = 0.95
+why_dropped = "Was not dropped so much as never reached: no registry row cites this file or names structural keying, and the port that built the registry consumed the four live ledgers and never opened the seed. Now carried as `probe::the_structural_width_ladder_compiles_gate_free_on_the_pin`."
+evidence = [
+  "`208_probes/p2_rerun_the_two_current_claims.out`: compiles at exit 0 on `rustc 1.98.0-nightly (57d06900f 2026-05-27)`, 2026-08-31. Third instance after the archive's and the seed's.",
+  "In the same invocation the two negative controls beside its sibling refused at exit 1, so the compiler was rejecting what it should reject.",
+  "`208_probes/p4_registry_coverage.out` row T1: ABSENT on all three phrasings, with four carried controls non-zero in the same run.",
+]
+related = [
+  "The registry row is filed `uncontrolled`, not `sound`, and the difference is real: this source ships no negative control of its own. What reproduces is that it compiles; nobody has built a mutation of it that must refuse.",
+  "`ruling::the_container_derivation_needs_fresh_eyes` is the live question this bears on.",
+  "The seed marks it as sharpening the current panel's Q9. That mark is the seed's filing and is not checked here.",
+]
+keywords = ["total ladder", "width", "container", "structural keying", "little-endian", "gate-free", "p5", "137"]
+
+[[item]]
+id = "the_structural_backing_array"
+t = "T2"
+section = "SEED_TALKING_POINTS.md#31-the-width-surface-and-the-container-derivation"
+claim = "A backing array can be derived structurally from the numeral with no const arithmetic in type position, layout-identical to a native array. Instrument `OLD_76_probes/b1_structural_array.rs` with negative controls beside it, re-run 2026-08-09, compiles at exit 0. Re-derived independently thirty-one files later, swept at 23 numerals and 4 element types with 184 layout assertions, and a 27x compile-time collapse found when a structural recursion was rewritten as provided methods over a projected slice."
+verdict = "reproduced"
+confidence = 0.95
+why_dropped = "Same as T1: never reached rather than refused. Now carried as `probe::the_structural_backing_array_compiles_and_its_layout_controls_refuse`."
+evidence = [
+  "`208_probes/p2_rerun_the_two_current_claims.out`: `b1` compiles at exit 0 and both `b1b` and `b1c` refuse at exit 1, all three in one invocation on the pin, 2026-08-31.",
+  "`b1b`'s own header states the stake: if it does not refuse, every assertion in `b1` was vacuous and its `unsafe` undischarged. It refuses.",
+  "`208_probes/p4_registry_coverage.out` row T2: present, 1 and 2, on `structural array` and `backing array`, which on reading is the current panel's own vocabulary rather than this claim.",
+]
+related = [
+  "This is the best-controlled instrument in the closed panel that anybody has re-run, and it is why its sibling could be filed honestly as `uncontrolled` rather than borrowing these controls.",
+  "The wider story in the claim, the 23-numeral sweep and the 27x collapse, is NOT reproduced. Only the compile fact and its controls are. The sweep lives at `124:4134-4145`, which resolves and was not opened.",
+  "T37's third column touches this, per the seed's own cross-reference.",
+]
+keywords = ["structural array", "backing array", "layout", "repr(C)", "b1", "negative control", "projected slice", "compile time"]
+
+[[item]]
+id = "the_const_to_type_bridge_table_and_its_emission_defect"
+t = "T3"
+section = "SEED_TALKING_POINTS.md#31-the-width-surface-and-the-container-derivation"
+claim = "An impl is the only case split Rust has over a const parameter, with all three escape routes compiled shut; the table lives in the crate declaring the sealed carrier by the orphan rule; it is emitted by a macro rather than a build script because arvo grows no build harness; each row carries its own agreement assertion. Then the late attack: the measured table had been written by a script, and the macro version of the same table costs 33.4 seconds against 0.93, because the macro cannot count. Ceiling roughly quadratic past 4096 rows."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. The seed calls the 33.4-second emission defect the single most actionable unresolved fact in its cluster and nothing carries it. The registry's `macro_rules` hits are the current panel's own and are not about this table."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T3: present, 3 and 2, on `bridge table` and `macro_rules`, which on reading is not this claim.",
+  "The archive passages were not opened; `124:3473-3480`, `124:3494-3506`, `124:5207-5215` all resolve and are in range per `p1`.",
+]
+related = [
+  "T4 is the same thread continued and reframes it: the table's real job is binding time, and op withdrew canonicity as a requirement, which reframes all of it.",
+  "A compile-time figure is a measurement, and under the workspace's own rule a figure taken outside `mock/benches/` is an ad-hoc spike with no substance. The 33.4 against 0.93 was not taken on the harness, so it cannot decide anything and would need re-measuring before it could.",
+]
+keywords = ["bridge table", "const parameter", "case split", "orphan rule", "macro_rules", "emission", "33.4 seconds", "W_MAX", "quadratic"]
+
+[[item]]
+id = "the_const_parameter_is_not_necessary_and_binding_time_is_the_real_job"
+t = "T4"
+section = "SEED_TALKING_POINTS.md#31-the-width-surface-and-the-container-derivation"
+claim = "A width can be a type parameter with every call site compiling and no ceiling, but the table does not disappear when the const does, because the table is where decimal notation converts to a numeral once instead of at every use site. A later file read the shipped precedent and kept the const standalone, computing in value position; a third made the precision the const parameter and never computed it in type position. Op then withdrew canonicity as a requirement entirely, which reframes all three."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found for the binding-time content. The canonicity withdrawal itself is carried: `retirement.toml` holds canonicity as a ratified-then-withdrawn claim, and the current panel reached it independently. What is unported is the reason the table survives the const going away, which is the useful half and is a statement about when notation is converted rather than about canonicity."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T4: present at 11 on `binding time`, which on reading is the current panel's own use of the phrase, and zero on both of the phrasings specific to this claim.",
+  "Archive passages not opened.",
+]
+related = [
+  "`ruling::the_container_derivation_needs_fresh_eyes` is the live question. This is the closest thing the archive has to a worked answer and it is three files deep with an op withdrawal on top.",
+  "T3 is the first half of the same thread.",
+]
+keywords = ["const parameter", "type parameter", "binding time", "Capacity precedent", "canonicity", "value position", "notation", "126", "129"]
+
+[[item]]
+id = "the_generic_const_args_vetting"
+t = "T5"
+section = "SEED_TALKING_POINTS.md#31-the-width-surface-and-the-container-derivation"
+claim = "The feature was vetted to WATCH, allowed and sound with named rough edges, and the solver flag it hard-requires was flagged as a separate exposure whose tier is op's call."
+verdict = "covered"
+confidence = 0.7
+why_dropped = "Not dropped. The current workspace forbids probing with it, which the seed itself notes, so this is record rather than an invitation. The registry carries the feature name in four places by its own route."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T5: present at 4 on `generic_const_args`.",
+  "T44 records a separate incident where a compile carrying this feature plus the solver flag was voided as evidence while its argument survived on the permitted solver, so the corpus already knows the exposure.",
+]
+related = [
+  "The flag-tier question the seed marks as new and open is genuinely unported, and it is op's by the seed's own reading. It is not filed as a question row here because it is a question about a feature the workspace currently forbids, so nothing is blocked on it.",
+]
+keywords = ["generic_const_args", "next-solver", "feature gate", "vetting", "WATCH", "exposure"]
+
+[[item]]
+id = "diagnostics_are_a_bound_not_an_equality"
+t = "T6"
+section = "SEED_TALKING_POINTS.md#31-the-width-surface-and-the-container-derivation"
+claim = "Wherever a numeral mismatch can be expressed as a trait bound rather than a type equality, the error is readable for free, and the diagnostic attribute reaches neither type equality nor solver overflow. Found independently three times. The decoder-ring ceiling on alias expansion was itself overturned late by a base-ten digit encoding that compiles gate-free with readable towers."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. This is a lever rather than a claim about arvo's mathematics, which may be why nothing reached for it: it says how to make an error readable, and the registry has no namespace whose subject is diagnostic quality."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T6: one hit on the error-code phrasing, zero on the other two.",
+  "Archive passage `124:2406-2440` resolves, not opened.",
+]
+related = [
+  "Independent discovery three times inside one panel is the seed's own note and is the strongest thing about this entry, since three independent instances is the bar the workspace sets for a claim.",
+  "It bears on any width-surface arm, because the diagnostic cost of a route is one of the things Q9's entries price.",
+]
+keywords = ["diagnostics", "trait bound", "type equality", "E0277", "E0308", "on_unimplemented", "alias expansion", "decoder ring"]
+
+[[item]]
+id = "erasure_has_an_honest_comparison_target"
+t = "T7"
+section = "SEED_TALKING_POINTS.md#31-the-width-surface-and-the-container-derivation"
+claim = "The erasure claim was re-based from byte-identical to the native primitive, which is meaningless above 128 bits, to within zero to two instructions of what a competent author writes by hand, measured at 192 through 1024 bits, with the payload-is-one-limb condition as a derived property."
+verdict = "covered"
+confidence = 0.7
+why_dropped = "Not dropped. Erasure is heavily present in the registry, 28 hits, reached by the current panel's own route, and `question::what_then_validate_requires` carries the erasure clause. The specific re-basing of the comparison target is the part that may be unported, and it was not run down."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T7: present at 28 on `erasure`, zero on the two phrasings specific to the re-basing.",
+  "The archive passage `OLD_SETTLED_container.md:45-72` resolves and was not opened.",
+]
+related = [
+  "Seat 207 section 3.2 notes the acceptance criterion's erasure clause sits in a question's note rather than in `ruling.toml`, which is the same subject from the provenance side.",
+]
+keywords = ["erasure", "byte identical", "competent author", "one limb", "192", "1024", "instructions"]
+
+# =============================================================================
+# Section 3.2. The strategy axis
+#
+# The one subsection op has spoken about directly:
+# `ruling::the_prior_strategy_split_was_well_enough_defined`, his words being
+# "this is the one thing you can check from the prior panel". The registry reads
+# that as "the one thing worth checking"; his verbatim reads more restrictively.
+# Nothing here turns on which reading is right, because every row below is either
+# already covered or unported-with-a-reason, but a later seat proposing to port
+# something from another subsection should know the sentence exists.
+# =============================================================================
+
+[[item]]
+id = "one_preset_name_denotes_two_rows"
+t = "T8"
+section = "SEED_TALKING_POINTS.md#32-the-strategy-axis"
+claim = "The ratified fixed-point and float preset tables diverge at four cells; a nullary associated type on a marker cannot carry a two-row fact, compiled; keying on the numeral over-keys; per-kind markers admit well-typed nonsense; keying both contracts on the exponent form was reached independently by two members and refuses the wrong pairing with a readable error."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found for the mechanism. The subject it belongs to is live and heavily worked: the strategy object is a whole topic with its own consolidations. What is unported is that a preset name is a function of the number kind and that the key was compiled twice."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T8: zero on `exponent form`, 5 on the two-rows phrasing and 1 on the error code, neither of which is this claim on reading.",
+  "Archive passages `124:2666-2672` and `124:2674-2795` resolve, not opened.",
+]
+related = [
+  "`ruling::the_strategy_set_is_not_closed_at_four` means the four cells this rests on are themselves open, which weakens the claim's premise rather than its mechanism: the mechanism is about how a preset is keyed, not about which presets exist.",
+  "Reached independently by two members inside the archive, which is the archive's own strongest form of support and is worth knowing before anybody re-derives it.",
+]
+keywords = ["preset", "two rows", "number kind", "exponent form", "keying", "E0119", "marker", "StoredWidth", "divergence"]
+
+[[item]]
+id = "the_headroom_thread"
+t = "T9"
+section = "SEED_TALKING_POINTS.md#32-the-strategy-axis"
+claim = "A sequence: headroom condemned on an instruction count, deletion proposed, op holding pending harness benches, the benches built and finding headroom loses everywhere measured honestly with the mechanism being the projection becoming a real instruction, then a later file finding the headroom's ratified purpose was structurally invisible to that cross-validation and is exactly interior safety, already served by a derived accumulator rule."
+verdict = "covered"
+confidence = 0.85
+why_dropped = "Not dropped. The registry holds headroom at 17 hits and interior safety at 7, and the bench families are committed and dated to the closed panel. The current panel reached this by its own route."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T9: present, 17 and 5.",
+  "`208_probes/p3_bench_artifacts.out`: `warm-container-*` and `warm-clamp-*` exist, 22 and 46 triples, every meta file dated before this panel opened, so they are the closed panel's runs and are committed.",
+  "The instruction-count figure the seed reports is itself a correction, 1600-vs-81 corrected to 339-vs-81, which the seed states.",
+]
+related = [
+  "The seed's count of these benches is wrong and is catalogued separately below as `the_fiftyseven_that_belongs_to_nine_sections`. The benches exist; the number does not.",
+  "The interpretation is explicitly not current evidence by the seed's own frame, and op's last recorded word treated the whole body as one instance of evidence, unaudited.",
+]
+keywords = ["headroom", "Warm", "crossover", "projection", "interior safety", "accumulator", "141", "142", "bench"]
+
+[[item]]
+id = "the_fiftyseven_that_belongs_to_nine_sections"
+t = "T9b"
+section = "SEED_TALKING_POINTS.md#32-the-strategy-axis"
+claim = "The container-fork benches are committed at `mock/benches/warm-container-*` as 57 CSV plus meta plus findings triples."
+verdict = "miscarried"
+confidence = 0.95
+why_dropped = "Not dropped: wrong. The glob holds 22 and nothing was ever deleted from it. 57 is the correct total for the commit that landed those benches across nine bench sections, five of which are not `warm-container-*`. The archive's own file 141 states it correctly and the seed narrowed the scope while carrying the number. Now retired as `retirement::stp_fiftyseven_warm_container_triples`."
+evidence = [
+  "`208_probes/p3_bench_artifacts.out`: 22 triples match the glob; `git log --diff-filter=D` over that glob is empty; commit `ccf05099` added exactly 57 CSV across nine sections, printed per section.",
+  "`OLD_141_xu_the_container_fork_benched.md:8` reads \"nine harness bench sections in `mock/benches/`, 57 committed CSV plus meta plus findings triples\", opened at source.",
+  "A nonsense-family control returned zero triples in the same run.",
+]
+related = [
+  "Same class as the roster error seat 207 found in section 1: a count correct in its source and wrong in the document that carried it forward. Two instances now, in one file, from two different seats, which makes it a property of the file rather than a slip.",
+  "The same probe finds section 0's four named bench prefixes reach 92 of the 147 committed closed-panel CSV, leaving 55 in families it does not name, `precise-*` and `quantiser-vs-fadd-subnormal-sweep` among them. Section 0 says \"several\" so it does not claim to be exhaustive, but it is the file's own statement of what may be cited as current evidence.",
+]
+keywords = ["57", "22", "triples", "warm-container", "count", "bench", "CSV", "141", "miscount", "attribution"]
+
+[[item]]
+id = "only_hot_folds_signed_in_ops_own_register"
+t = "T10"
+section = "SEED_TALKING_POINTS.md#32-the-strategy-axis"
+claim = "Clamping and refusing are both unfaithful for signed folds and wrapping is exactly the modular ring, so the marker chosen for speed is the only one whose signed folds the type system permits. Stated in op's own register in the archive. The current panel measured the same fact from the other side without knowing he had said it."
+verdict = "covered"
+confidence = 0.7
+why_dropped = "Not dropped, and the op half must not be ported. His archive-era statements are demoted by `ruling::prior_calls_are_a_historical_log_not_calls` and by his own carve-out about framing something as absolute, and this is a concrete call rather than an abstract intent, so it falls squarely inside the demotion. The measured fact is the current panel's own and is covered."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T10: present at 39 on the modular-ring phrasing and 1 on `only ... Hot`.",
+  "The seed itself states the current panel measured the divergence independently, which is what makes the op provenance unnecessary rather than merely unusable.",
+]
+related = [
+  "This is the cleanest example in the file of an item where the right action is to port nothing: the useful fact is already held, on better provenance, and the only thing the archive adds is an authority op has withdrawn.",
+  "Seat 207's route one covers exactly this shape for section 1.",
+]
+keywords = ["signed fold", "Hot", "wrapping", "modular", "clamp", "refuse", "unfaithful", "marker"]
+
+[[item]]
+id = "the_strategy_door_and_the_environment"
+t = "T11"
+section = "SEED_TALKING_POINTS.md#32-the-strategy-axis"
+claim = "A hardware float lowering is not a lowering unless the environment is pinned: rounding-mode and flush-to-zero changes were measured changing values, so const-folded and runtime float expressions can disagree with nothing in the type system seeing it. Apple silicon shows no subnormal cliff, so the usual argument does not transfer to this target. The door binds refusal-not-fallback design-wide."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. The seed marks it new and no current question covers the door or the environment. It is a soundness claim about when a lowering is a lowering, which is the kind of thing the canon would want, and nothing has reached it."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T11: zero on `FPCR`, 4 on the subnormal phrasing and 1 on `strategy door`, neither being this claim on reading.",
+  "Archive passages `124:2839-2846`, `124:2847-2853`, `124:2799-2816` resolve, not opened.",
+]
+related = [
+  "T42's environment parameter is the same subject generalised, and it is also unported. Two rows, one gap.",
+  "`ruling::never_a_runtime_check_and_one_lowered_path` is the live constraint this bears on: if a const-folded and a runtime expression can disagree, one lowered path is a claim that needs the environment pinned.",
+  "The Apple-silicon half composes with T57's finding that every silicon fact in both panels is one host.",
+]
+keywords = ["FPCR", "rounding mode", "flush to zero", "subnormal", "lowering", "environment", "const fold", "quantiser", "door"]
+
+[[item]]
+id = "preset_divergence_has_a_mechanism_op_declined_to_adopt"
+t = "T12"
+section = "SEED_TALKING_POINTS.md#32-the-strategy-axis"
+claim = "A generic parameter default projecting off the parent preset, probe-verified and feature-free, with op's instruction that this deserves more than the first mechanism that works and a later member should take it further."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. The seed marks it as reviving an op-instructed open thread that fell out of every record, and the sweep confirms it is in no registry row on either phrasing."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T12: ABSENT, zero on both phrasings, with four carried controls non-zero in the same run.",
+]
+related = [
+  "The op instruction attached to it is archive-era and demoted, so what survives is the mechanism and the fact that the first mechanism that works was not taken as the answer. That second half is a piece of method rather than a design claim.",
+  "T8 is the same subject: how a preset diverges per number kind. T8 has the compiled key, T12 has the projection mechanism, and neither is ported.",
+]
+keywords = ["preset divergence", "generic parameter default", "projection", "parent preset", "feature-free", "open thread"]
+
+# =============================================================================
+# Section 3.3. Quantiser, laws, folds
+#
+# The subsection with the most instruments behind it and the one live hazard the
+# registry depends on today. T15 is the row to read first.
+# =============================================================================
+
+[[item]]
+id = "round_first_classify_second"
+t = "T13"
+section = "SEED_TALKING_POINTS.md#33-quantiser-laws-folds"
+claim = "The quantiser order was confirmed against a binary float format on 41,380,159 operations with zero mismatches, and the radix-general kernel regression-checked bit-for-bit against silicon. Classify-then-round is droplisted with the band that kills it."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found for the instrument. The current panel's format unit built its own adaptation model without it, which the seed states and which is the likeliest explanation: the ground was covered from a different direction and nobody went looking for a prior sweep."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T13: 2 on `round first` and 7 on `classify`, neither being this claim on reading; zero on `quantiser order`.",
+  "`quantise|quantiser` returns zero across all twelve registry files, which is the sharper measurement: the word itself is absent from the canon.",
+]
+related = [
+  "A 41-million-operation sweep is minutes of compute by the seed's own section 7, so this is among the cheapest things in the file to re-establish if anybody wants it.",
+  "T21 is the same kernel from the parse side and is also unported.",
+]
+keywords = ["quantiser", "round first", "classify", "41 million", "binary32", "radix general", "silicon", "regression"]
+
+[[item]]
+id = "the_overflow_band_closed_form"
+t = "T14"
+section = "SEED_TALKING_POINTS.md#33-quantiser-laws-folds"
+claim = "The overflow band has a two-clause closed form with zero under-prediction, measured over 5,184 triples, with the candidate one-clause form refuted by enumeration first and a six-row table mapping every previously-stated band member onto it."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. The seed marks it new for the current register and the sweep agrees: two hits on `overflow band`, zero on the clause names."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T14: 2 and 0.",
+  "Archive passage `124:1207-1233` resolves, not opened.",
+]
+related = [
+  "The refuted one-clause form is the interesting half: a closed form somebody tried and enumeration killed is a route nobody need retry, and it is recorded nowhere in the registry.",
+]
+keywords = ["overflow band", "closed form", "two clause", "lattice", "reachability", "under-prediction", "5184"]
+
+[[item]]
+id = "the_finest_view_and_its_unrepaired_identification"
+t = "T15"
+section = "SEED_TALKING_POINTS.md#33-quantiser-laws-folds"
+claim = "The grade-monoid and view-homomorphism construction with a unique finest view per law, compiled exhaustively over nine views and 81 view pairs, the nine-point lattice not being a chain. Inside it, the Kleene-equation identification at one lattice point was compile-refuted wherever specials are populated, because definedness is not recoverable from the cause component; the probe that made it look safe set its own definedness flag from its own cause counter. Three repair shapes offered, none chosen."
+verdict = "live_hazard"
+confidence = 0.9
+why_dropped = "Not dropped: half-carried, in the direction that does damage. The construction is named in the registry twice, both times as the `replacement` on a retirement row, and it appears in no `proposal`, `law` or `probe` row of its own. So two live rows point readers at a construction whose identification at one of its three named points was refuted, and the refutation is in no registry row at all. Now open as `question::which_repair_the_refuted_kleene_identification_takes`."
+evidence = [
+  "`OLD_SETTLED_laws.md:374-405` opened at source: the refutation, the division-chapter counterexamples, and the verbatim \"The model made the invariant true rather than testing it\".",
+  "`OLD_136_willsey_the_laws_under_the_laws.md:215-224` opened at source: the probe returns a definedness flag set from its own cause counter, so in that model the identification holds by construction.",
+  "`mock/registry/retirement.toml` lines 311, 313 and 325 opened at source: both rows name the nine-point view lattice as the replacement, and the second names the position where a view loses definedness, which is precisely the refuted point.",
+  "`grep -iE 'view lattice|nine-point|finest view'` across all twelve registry files returns those retirement lines and nothing else.",
+]
+related = [
+  "The instrument defect here is the worked example the workspace's own spike rule cites, so the lesson migrated across the artifact boundary into `.claude/rules/` while the design consequence did not. That split is the whole shape of this row.",
+  "T47 is the abandonment of the three-relation ladder and IS carried, as `retirement::dl_the_ordered_three_relation_ladder`. The ladder went; the thing it was replaced by carries the defect.",
+  "Op's archive-era response, declaring the resting calls stale and asking for a re-evaluation that never ran, is verified at `OLD_137b_op_checkpoint_thirty.md:87-100` and is deliberately NOT used as authority: his voice across that panel is demoted by his own word.",
+]
+keywords = ["finest view", "view lattice", "nine-point", "grade monoid", "Kleene", "definedness", "cause component", "Presence", "Ignore", "unrepaired", "hazard"]
+
+[[item]]
+id = "the_total_ord_split_is_a_precondition_of_distributivity"
+t = "T16"
+section = "SEED_TALKING_POINTS.md#33-quantiser-laws-folds"
+claim = "The shipped bit-comparator is the IEEE total order under the wrong name; a const assertion that same-value data compare equal refuses to compile against it and compiles clean against canonicalise-then-compare; and under the shipped order the distributivity biconditional's two sides quantify over different objects. Two experts there."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. The seed marks it new and notes the current panel's own format consolidation observes that no unit has touched the comparison vocabulary, which is a second independent statement that the ground is empty."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T16: 1 on the order name, 2 on `canonicalise`, zero on the comparator phrasing; on reading none is this claim.",
+  "A separate check: `totalOrder|total order` returns zero across the registry.",
+]
+related = [
+  "The workspace rule `what-you-can-observe-is-what-you-guaranteed.md` descends from the same archive pass, which the seed states. Another case of the method surviving and the design consequence not.",
+  "It is a precondition of distributivity, and distributivity IS carried in `law.toml` with regions. So a law the registry states rests on an order question the registry does not have. Worth a later seat's attention and not run down here.",
+]
+keywords = ["TotalOrd", "total order", "comparator", "canonicalise", "distributivity", "biconditional", "negative zero", "precondition"]
+
+[[item]]
+id = "the_closure_laws_for_addition_and_narrowed_multiplication"
+t = "T17"
+section = "SEED_TALKING_POINTS.md#33-quantiser-laws-folds"
+claim = "Addition closes exactly when the bias over adjustment is an integer; narrowed multiplication exactly when adjustment and bias are integers and adjustment divides bias squared minus bias. Compiled exhaustively both directions, with the derived consequence that multiplication needs a full-width multiply and addition does not. Plus the correction that no closure gate ever shipped and the shipped wording was drift."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. The stronger obstacle is mechanical: the conditions are stated over bias and adjustment, and neither is a declared `dimension`, so this cannot be written as a `law` region even if somebody wanted to. That is a fact about the axis vocabulary rather than a reason it was dropped, and the two should not be confused."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T17: zero on the gate name, 2 on the condition phrasing, zero on the multiply.",
+  "`mock/registry/dimension.toml` declares 21 axes and neither `bias` nor `adjustment` is among them.",
+]
+related = [
+  "The `dimension.toml` header already records that 96 of 115 keys the corpus predicates over are undeclared, and ranks them by how many spans each blocks. This is one more instance of that measured gap rather than a new finding.",
+  "The `AddClosed`-was-never-shipped correction travels with the same claim and is the sort of thing `retirement` exists for, if a later seat wants it.",
+]
+keywords = ["closure", "AddClosed", "bias", "adjustment", "integer", "divides", "mul_full", "narrowed multiplication", "drift"]
+
+[[item]]
+id = "interior_safety_total_safety_and_the_derived_quire"
+t = "T18"
+section = "SEED_TALKING_POINTS.md#33-quantiser-laws-folds"
+claim = "Interior safety and total safety are two conditions with a stated relation, and a float fold's accumulator is a numeral of computed width: specific bit counts derived rather than imported for sums and dot products at two float formats, checked at 2.9 million triples with in-format folds disagreeing at 23.17 percent as the control. Also that a compensated fold must never receive the reassociation licence, compiled."
+verdict = "covered"
+confidence = 0.75
+why_dropped = "Not dropped. Interior safety is in the registry at 7 hits and `accumulator_width` is one of the 21 declared axes, so the current panel reached both the concept and the coordinate by its own route. The specific derived bit counts and the compensated-fold licence interaction are the parts that may be unported and were not run down."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T18: 7 on `interior safet`, 69 on `accumulator`, zero on the compensated fold.",
+  "`retirement.toml` carries an interior-versus-total-safety spelling row, so the distinction is live in the canon.",
+]
+related = [
+  "T9's reframe lands here: headroom is a fixed always-paid approximation of this derived per-fold quantity. The two rows are one argument.",
+  "The compensated-fold half is a soundness constraint on a licence, and `law.toml` carries reassociation regions, so this is the same shape as T16: a licence the registry grants and a constraint on it the registry does not carry.",
+]
+keywords = ["interior safety", "total safety", "quire", "accumulator", "dot product", "compensated", "reassociation", "licence", "2.9 million"]
+
+[[item]]
+id = "the_site_count_the_moved_count_and_the_absent_flag_carrier"
+t = "T19"
+section = "SEED_TALKING_POINTS.md#33-quantiser-laws-folds"
+claim = "The grade's event generator splits into a compile-time site count costing one instruction outside the loop and a data-dependent moved count costing seven to nine times and killing unrolling, and the design carried both in different organs for forty files because they agree everywhere except conditional resolutions. Plus the measured fact that the hardware flag-test surface is absent from the pinned toolchain, so a value-carried grade is the only carrier available rather than merely the better one."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. The seed marks it new and no current question covers grades or flags."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T19: 2, 2 and 0; on reading none is this claim.",
+  "Archive passage `124:1961-2045` resolves, not opened.",
+]
+related = [
+  "The absent-flag-carrier half is a fact about the toolchain, which is a declared axis, so unlike most of this subsection it could be written with a region if anybody re-established it.",
+  "It also has a shelf life: a toolchain fact stops being true when the pin moves, and the pin here is dated. Whoever re-establishes it should re-run rather than cite.",
+]
+keywords = ["site count", "moved count", "grade", "event generator", "unrolling", "fetestexcept", "FPCR", "flag carrier", "value carried"]
+
+[[item]]
+id = "the_algorithm_crates_are_wrong_under_the_presets_they_admit"
+t = "T20"
+section = "SEED_TALKING_POINTS.md#33-quantiser-laws-folds"
+claim = "A ranking function under the speed-first preset inverts a longer path's ranking against a shorter, compiled on a four-node chain; the accuracy-first preset degrades to a tie but never inverts; wrapping is not monotone, which is the mechanism. The design's own fix is a fold-shaped result numeral plus a two-door split where the value-returning door needs no monotonicity and the ordering-returning door needs it."
+verdict = "covered"
+confidence = 0.8
+why_dropped = "Not dropped, and carried by a better route. `retirement::dl_gate_algorithm_crates_on_addassoc` retires gating these crates on associativity and names the monotonicity marker as what the gate was reaching for, which is this claim's own conclusion, and it carries `obligation` edges to the three algorithm obligations. The current panel reached it and wrote it as a retirement with a replacement."
+evidence = [
+  "`mock/registry/retirement.toml` `dl_gate_algorithm_crates_on_addassoc` opened at source: names the preset that returns wrong answers, the two that compute correctly, and the monotonicity atom as the replacement.",
+  "`208_probes/p4_registry_coverage.out` row T20: 27 on `Monotone`, zero on the function name and the fold numeral.",
+]
+related = [
+  "The seed's own consumer-pressure correction, that the downstream engine ships a hand-rolled hop count and imports none of these functions so the urgency claims were wrong while the defects stand, is NOT in the registry and is the part worth keeping. `obligation.toml` records what that consumer asks for, and this says what it does instead.",
+  "The two-door split is unported and is the constructive half.",
+]
+keywords = ["upward_rank", "monotone", "Monotone", "Add", "inversion", "wrapping", "foldnum", "two door", "algorithm crates", "hop count"]
+
+[[item]]
+id = "parse_is_the_quantiser_and_print_closes_a_const_round_trip"
+t = "T21"
+section = "SEED_TALKING_POINTS.md#33-quantiser-laws-folds"
+claim = "Parse decomposes as the quantiser after a rational of digits, checked over 318,126 strings: direct parse equals nearest-ties-to-even everywhere, staging through a wider intermediate with nearest at both steps disagrees on 3.2 percent of strings, and round-to-odd at the intermediate agrees on all, licensing a round-to-odd member for staged pipelines with two guard digits. Print: a shortest correctly-rounded digit string exists for all model data, both kernels const-callable. A validity bound was named as owed and never shipped."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. The sweep is ABSENT on all three phrasings, and separately the word `quantiser` appears nowhere in the registry, so the whole kernel this rests on is outside the canon rather than this one claim about it."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T21: ABSENT, zero on all three, with four carried controls non-zero in the same run.",
+]
+related = [
+  "The 3.2 percent staging disagreement is the useful number: it says a two-step narrowing is not the same operation as a one-step one, which bears on T25's conversion question.",
+  "The owed validity bound is on T54's owed-artifact list, so two of the seed's sections name the same missing thing.",
+]
+keywords = ["parse", "print", "quantiser", "round to odd", "ToOdd", "guard digits", "318126", "shortest", "round trip", "const"]
+
+# =============================================================================
+# Section 3.4. Order, conversion, and the family question
+#
+# The subsection bearing most directly on a question op has spoken about:
+# `ruling::the_family_question_wants_the_comparison_first` and
+# `ruling::his_instinct_on_one_family_is_not_to_be_acted_on`.
+# =============================================================================
+
+[[item]]
+id = "the_inclusion_order_needs_four_conditions"
+t = "T22"
+section = "SEED_TALKING_POINTS.md#34-order-conversion-and-the-family-question"
+claim = "Grid refinement, phase alignment and both endpoints; the two-condition form produced 17,037 false positives on its own sweep, invisible because every numeral in the establishing sweep had bias zero. Two experts, derived independently."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. The registry has three hits on `inclusion order` and zero on either named condition, so the phrase is present and the content is not."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T22: 0, 0, 3.",
+]
+related = [
+  "The failure mode is the one this workspace names setup-that-helps: every numeral in the establishing sweep had bias zero, so the missing conditions could not fire. That is the same class as T15's probe and as the seed's own T46, three instances inside one archive.",
+  "Every lattice claim rests on this predicate, which is what makes it worth more than its own row: T23 and T24 both inherit it.",
+]
+keywords = ["inclusion order", "grid refinement", "phase alignment", "endpoints", "false positive", "bias zero", "17037", "predicate"]
+
+[[item]]
+id = "the_cardinality_antichain"
+t = "T23"
+section = "SEED_TALKING_POINTS.md#34-order-conversion-and-the-family-question"
+claim = "Equal finite cardinality plus inclusion implies equality, for every bias, adjustment, radix and sign domain, in every family including unwritten ones, compiled at 254,016 ordered pairs. The coordinate-restricted form, that equal precision is an antichain, is false for float-shaped numerals where precision and cardinality come apart."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. One hit on `antichain` in the registry, which on reading is not this theorem."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T23: 1 and 0.",
+]
+related = [
+  "The refuted coordinate-restricted form is the more useful half, because it is the form somebody would naturally write down, and it is false in exactly the family the design cares about.",
+  "It quantifies over radix and sign domain, both of which are declared axes, and over bias and adjustment, which are not. So half of its region is expressible and half is not.",
+]
+keywords = ["antichain", "cardinality", "inclusion", "precision", "float shaped", "254016", "coordinate restricted"]
+
+[[item]]
+id = "the_lattice_dissolution_and_the_eightyone_versus_zero"
+t = "T24"
+section = "SEED_TALKING_POINTS.md#34-order-conversion-and-the-family-question"
+claim = "Three files gave three incompatible lattice answers and the final read dissolved it, each having answered a true statement about a different shape space. One expert, unratified, with the panel ending on it. And a live discrepancy: one file reports 81 decided join failures in a slice where two instruments in another find zero, a third instrument owed, and it will poison a consolidation that quotes either number."
+verdict = "unported"
+confidence = 0.85
+why_dropped = "No reason found. The discrepancy is a standing hazard by the archive's own words and nothing in the registry records it, so anybody importing a join-failure count from either lineage inherits it unwarned."
+evidence = [
+  "`OLD_SETTLED.md:126-137` opened at source: the discrepancy is stated as unresolved, with the two file numbers and the owed third instrument, and the sentence \"it will poison a consolidation that quotes either number\" is verbatim.",
+  "`208_probes/p4_registry_coverage.out` row T24: 0, 1, 2; on reading none is this discrepancy.",
+]
+related = [
+  "This is the cheapest high-value thing in the file for a later seat: it is a known-unresolved numeric contradiction, both sides are named, and the third instrument the archive says is owed has never been built.",
+  "`ruling::the_family_question_wants_the_comparison_first` is the live question it sits under, which raises what the unwarned import would cost.",
+  "It inherits T22's predicate, so if the four-condition form is right, one of the two counts may be an artifact of the two-condition form. Nobody has checked that and it is the obvious first move.",
+]
+keywords = ["lattice", "within family", "cross family", "join failure", "81", "zero", "discrepancy", "poison", "shape space", "dissolution"]
+
+[[item]]
+id = "conversion_needs_an_adjudicating_strategy_key"
+t = "T25"
+section = "SEED_TALKING_POINTS.md#34-order-conversion-and-the-family-question"
+claim = "33 percent disagreement across lossy conversions depending on which of two strategies' rows is consulted, with the no-new-key claim shown undetectable from its own test setup. Narrowing is the quantiser with the operation set to identity, resolved by the target strategy's row, and the speed-first narrowing is not monotone."
+verdict = "covered"
+confidence = 0.7
+why_dropped = "Not dropped. The question is live in the registry as the cross-strategy question the seed itself names, and `ruling::the_strategy_is_what_makes_an_answer_correct` is the intent under it. The 33 percent figure and the undetectable-from-its-own-setup finding are the parts that may be unported."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T25: 4 on `adjudicat`, 50 on `narrowing`, 2 on the strategy-law phrasing.",
+]
+related = [
+  "The no-new-key claim being undetectable from its own test setup is a fourth instance of setup-that-helps in this archive, after T15, T22 and T46. The pattern is worth more than any of the four.",
+  "T21's 3.2 percent staging disagreement is the same phenomenon at a different layer.",
+]
+keywords = ["conversion", "adjudicating", "narrowing", "lossy", "33 percent", "monotone", "target strategy", "identity operation"]
+
+[[item]]
+id = "from_between_numerals_and_the_coherence_walls"
+t = "T26"
+section = "SEED_TALKING_POINTS.md#34-order-conversion-and-the-family-question"
+claim = "A by-reference conversion impl never collides with core's reflexive impl, two experts; the fallible sibling cannot coexist beside it and the design does not want it to; a compliant gate-free spelling carries the inclusion order as a trait bound rather than a computed const, one expert with a second read owed; and op refused the therefore-no-conversion inference by name."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. ABSENT on all three phrasings. The conversion surface is untouched by the registry beyond the existence question the seed names."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T26: ABSENT, zero on all three.",
+]
+related = [
+  "The op refusal attached to it is archive-era and demoted, so what survives is the coherence argument and the compliant spelling.",
+  "It carries the inclusion order as a bound, so it inherits T22's four-condition question: a spelling that carries a two-condition predicate as a bound carries the wrong predicate.",
+]
+keywords = ["From", "TryFrom", "coherence", "reflexive impl", "by reference", "orphan", "inclusion order", "trait bound", "gate free"]
+
+[[item]]
+id = "membership_and_the_finest_inhabited_system"
+t = "T27"
+section = "SEED_TALKING_POINTS.md#34-order-conversion-and-the-family-question"
+claim = "Every value is a multiple of a power of the radix, the finest inhabited system is unique on the sub-rational chain, and the branch count depends on the embedding signature. Two-read uniqueness theorem, a refutation of the chain justification, and the upper vocabulary members' two symmetric readings left as op's."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. ABSENT on all three phrasings. The seed marks it as adjacent to the number-system unit's open and breadth questions, which are live, so this is material for a live question that nobody connected."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T27: ABSENT, zero on all three.",
+]
+related = [
+  "`topic::the_number_system` exists and is a whole consolidated unit of this panel, so the ground is worked. What is unported is the archive's worked decade of vocabulary and its uniqueness theorem.",
+  "The two symmetric readings were left as op's in the archive, and op's archive-era reservations are released or dead by default under his own demotion, so a later seat should not treat that as a standing reservation. Seat 207 established exactly this shape for a different reserved call.",
+]
+keywords = ["membership", "finest inhabited", "sub-rational", "Ostrowski", "embedding signature", "uniqueness", "vocabulary", "p-adic"]
+
+# =============================================================================
+# Section 3.5. Crossing, encoding, storage
+# =============================================================================
+
+[[item]]
+id = "the_crossing_contract_and_the_leak_family"
+t = "T28"
+section = "SEED_TALKING_POINTS.md#35-crossing-encoding-storage"
+claim = "Decode after encode is the identity always; encode after decode is idempotent always; identity-on-data holds exactly when injective, genuinely two-valued with a named witness; plus a precondition whose absence makes the statements ill-typed rather than false; and an escape matrix where six of eight cells leak whenever one axis shrinks the value set with no lowering axis shrinking the datum set. The repair was derived as the only one after three alternatives were refused on binding-time grounds."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. The seed marks it new and says the format unit's identity work is upstream of it and would meet it the moment encodings enter. So the honest reading is not-yet-reached rather than refused."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T28: 8 on decode-or-encode, zero on the witness format, 4 on the trait name; on reading none is this contract.",
+]
+related = [
+  "Three laws with a stated precondition is exactly the shape `law.toml` carries, and two of the three are unconditional, so this is among the most portable things in section 3 once encodings are in scope.",
+  "The precondition-makes-it-ill-typed-rather-than-false distinction is the sort of thing the registry's `gap` field exists for.",
+]
+keywords = ["crossing", "encode", "decode", "idempotent", "injective", "E4M3", "leak", "escape matrix", "Crosses", "trusted base"]
+
+[[item]]
+id = "three_width_levels_and_the_bitpacked_group_arithmetic"
+t = "T29"
+section = "SEED_TALKING_POINTS.md#35-crossing-encoding-storage"
+claim = "Three width levels with one declared; bitpacked means zero inter-value padding; the period and group byte count proved algebraically and checked at every width in a range; the write granule meaning no element is independently writable and partition boundaries must be multiples of the period. Plus a corrected sequential multiple and a footprint sweep, with op naming concurrent multi-column bandwidth contention as the measurement the small-footprint intent is actually waiting on."
+verdict = "covered"
+confidence = 0.8
+why_dropped = "Not dropped. The contention measurement op named as owed is the current panel's own Q7 run, performed under current discipline, and its bench families are committed and dated to this panel. The registry carries bitpack at 16 hits and contention at 14."
+evidence = [
+  "`208_probes/p3_bench_artifacts.out`: `bitpack-contention`, `bitpack-contend-best`, `bitpack-contend-decode` and the two write-contend families are all dated to this panel, 2026-08-08 and 2026-08-09, so the owed measurement was performed here.",
+  "`208_probes/p4_registry_coverage.out` row T29: 1 on `stored width`, zero on `write granule`, 1 on the period.",
+]
+related = [
+  "`ruling::the_carrier_question_waits_on_the_contention_measurement` is the live row, which makes this the one item in section 3 where the archive's owed measurement has demonstrably been taken.",
+  "The group arithmetic and the write granule are new to the registry by the seed's own mark and by the sweep. The write side being unpriced is separately named in T57 as a gap both panels share.",
+]
+keywords = ["stored width", "container width", "bitpacked", "padding", "period", "gcd", "write granule", "contention", "footprint", "Q7"]
+
+[[item]]
+id = "the_digest_contract_and_the_niche_doors"
+t = "T30"
+section = "SEED_TALKING_POINTS.md#35-crossing-encoding-storage"
+claim = "A datum-keyed digest masks to the placement map's occupancy, needed the moment a placement has an interior hole and exhibited exhaustively; a value-keyed digest is never a masking operation; the mutation theorem runs per byte-owner and per level with a compiled demonstration that a safe mutable borrow into padding decorrelates a raw-byte digest silently; and an integer-typed door onto a niche carrier is undefined behaviour with zero diagnostics while a niche-typed door is unconditionally safe."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. The seed marks it new. The registry's ten `digest` hits are the current panel's own hash work on reading, not this contract."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T30: 10 on `digest`, zero on the mutation phrasing and zero on `niche`.",
+]
+related = [
+  "The niche-door half is a soundness claim with a compiled demonstration and no diagnostic, which is the highest-severity shape in this whole file: safe code, wrong answer, nothing reports it.",
+  "It composes with T36's overlap defect, which is the same shape one layer up.",
+]
+keywords = ["digest", "placement map", "occupancy", "mutation", "byte owner", "padding", "niche", "undefined behaviour", "decorrelate"]
+
+[[item]]
+id = "the_byte_image_guarantee_is_same_process"
+t = "T31"
+section = "SEED_TALKING_POINTS.md#35-crossing-encoding-storage"
+claim = "The byte-image guarantee is same-process and same-target; portability is a downstream-contract item. The format's identity is a closed const-derivable bundle that must travel with the bytes or be agreed out of band. No mechanism proposed, the item named as owed."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found, and it is a small item: an owed statement with no mechanism behind it. The archive named it and stopped."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T31: 2 and 6; on reading neither is this claim.",
+]
+related = [
+  "It bounds every storage claim in the subsection, so it is worth more as a scope qualifier on T29 and T30 than on its own.",
+]
+keywords = ["byte image", "same process", "same target", "portability", "format identity", "const derivable", "out of band", "owed"]
+
+# =============================================================================
+# Section 3.6. Operations: division and the elementary functions
+# =============================================================================
+
+[[item]]
+id = "division_dissolved_into_a_failure_classifier"
+t = "T32"
+section = "SEED_TALKING_POINTS.md#36-operations-division-and-the-elementary-functions"
+claim = "A solution-set derivation classifying the failure kinds, with the divide-by-zero fork killed by compiled and silicon-read facts across four targets that disagree with each other, the speed-first cell delegated to the consumer as a fallback whose arity matches the failure taxonomy, and the residue that a lowering may be a derivation input or an implementation of a stated value, never the author of one."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. The seed marks it new and notes the classifier was reused without edit by the elementary functions, which is the archive's own strongest evidence that it generalises."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T32: zero on the fallback name and the solution set, 2 on the divide-by-zero phrasing which on reading is not this classifier.",
+]
+related = [
+  "The residue sentence is a canon-shaped statement about what a lowering may be, and it has a stated decision procedure attached, which is more than most of section 3 carries.",
+  "The four-target disagreement is the strongest argument in the archive for the environment being part of the contract, so it composes with T11 and T42.",
+  "It is also the one place the archive names a per-target divergence, which T57 says nobody ever measured. Silicon reads are not measurements and the seed does not claim they are.",
+]
+keywords = ["division", "classifier", "solution set", "div_or", "aarch64", "x86", "RISC-V", "LLVM", "residue", "lowering", "deletion test"]
+
+[[item]]
+id = "the_elementary_functions_sort_into_three_classes"
+t = "T33"
+section = "SEED_TALKING_POINTS.md#36-operations-division-and-the-elementary-functions"
+claim = "Roots decide correct rounding in one comparison with ties impossible by parity and three branchless instructions after the root; the radix-power exponential is decidable but width-doubling per fractional bit; transcendentals have no exact carrier, ties are impossible, and correct rounding is promised exactly where a hardness constant is exhausted or cited, measured at three model numerals with no visible formula and no transfer across widths. The admission test was confirmed there."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. ABSENT on all three phrasings. This is a whole operation surface the registry does not reach at all."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T33: ABSENT, zero on all three, with four carried controls non-zero in the same run.",
+]
+related = [
+  "The does-not-transfer-across-widths finding is the important one and is a predicate in the I13 sense already: it says the hardness constant holds at the widths measured and nowhere else. That is unusual in this file and makes it more portable than most.",
+  "`obligation.toml` enumerates what consumers ask for and no consumer asks for a transcendental, so unported may be correct here rather than merely unexamined.",
+]
+keywords = ["elementary functions", "roots", "transcendental", "Lindemann", "hardness constant", "correct rounding", "parity", "admission test", "residue pair"]
+
+[[item]]
+id = "radix_ten_cohorts_and_the_preferred_exponent"
+t = "T34"
+section = "SEED_TALKING_POINTS.md#36-operations-division-and-the-elementary-functions"
+claim = "Cohorts are a choice; the standard's preferred exponent is a datum rule the design cannot express, and the sharper claim is that it does not need to, because a consumer for whom the quantum is part of the number uses a numeral where the exponent is a type, checked at compile time, which is strictly stronger than the standard's own rule. With two ceilings bisected to the exact bit and a wall where one spelling does not compile at any real decimal format's range while the other compiles quickly."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. Two `cohort` hits in the registry, zero on the preferred exponent and zero on the non-canonical codes. The seed calls it the archive's most complete worked case of the represent-the-standards test actually running, which makes the gap larger than the row."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T34: 2, 0, 0.",
+  "`radix` is a declared axis, so unlike most of section 3 this one's region is partly expressible.",
+]
+related = [
+  "Seat 207 established that the standards bound returned to the canon only because op re-invoked it himself, and it is now in `obligation.toml`. This is the archive's worked example of that bound being met, so the obligation is live and its best prior evidence is unported.",
+  "The strictly-stronger-than-the-standard claim is a design position rather than a measurement and would be a `proposal`, which needs a region it does not have.",
+]
+keywords = ["radix ten", "decimal", "cohort", "preferred exponent", "quantum", "non-canonical", "Implicit", "Ranged", "standards test", "ceiling"]
+
+# =============================================================================
+# Section 3.7. The peripheral subjects
+#
+# Eight whole topics the current register does not carry. The seed's own framing
+# is that each is a topic rather than a talking point, and the sweep agrees: none
+# has a `topic` row and most are absent or near-absent from the registry.
+# =============================================================================
+
+[[item]]
+id = "the_truth_contract"
+t = "T35"
+section = "SEED_TALKING_POINTS.md#37-the-peripheral-subjects-each-a-whole-topic-the-current-register-does-not-yet-carry"
+claim = "Boolean algebras form a variety so a lane mask is structurally a power of the one-lane algebra; the homomorphisms from n-lane truth to one-lane are exactly the n coordinate projections, exhaustive at two sizes, so the reductions are outside the algebra and the exit exists at exactly one lane; the operation that generalises is a selector keyed on the pair, lane-wise, both arms evaluated, with the two wrong reductions producing two different wrong answers from safe code; five silent exit routes enumerated."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. Two `Boolean algebra` hits and one on the lane phrasing, neither being this contract on reading. The seed marks it new."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T35: 2, 1, 0.",
+]
+related = [
+  "T54 records that no law is asserted anywhere over any truth type and that 672 green tests say nothing about the variety membership this argument rests on. So the contract is unported AND its foundation was never checked, which is the pairing that makes it worth attention rather than either half alone.",
+  "Two wrong reductions producing two different wrong answers from safe code is the same severity shape as T30's niche door.",
+]
+keywords = ["truth", "Boolean algebra", "variety", "lane", "mask", "homomorphism", "coordinate projection", "selector", "all", "any", "exit"]
+
+[[item]]
+id = "the_bitfield_and_the_overlap_ruling"
+t = "T36"
+section = "SEED_TALKING_POINTS.md#37-the-peripheral-subjects-each-a-whole-topic-the-current-register-does-not-yet-carry"
+claim = "A heterogeneous product of numerals under a declared placement map, with the bitpacked column its homogeneous sibling; the composite of two placements is a placement, swept; the shipped overlap defect where two fields share bits and one setter silently truncates the other in safe code with no diagnostic, with the ruling that an overlap that is stated is a declaration and a silent one is a falsehood the compiler can see; a foreign bitfield pinned and unable to be bitpacked, adding exactly the datasheet correspondence to the trusted base."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. Zero on `bitfield` across the registry, which is the cleanest absence in the subsection."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T36: 0 on `bitfield`, 2 on `placement map`, 11 on `overlap`; the last is the current panel's own use of the word.",
+]
+related = [
+  "The overlap ruling is a well-formed canon sentence as it stands, and it is the sort of thing `proposal` carries as `normative` with no region. That makes it one of the few items in section 3 that could be written today without needing an axis nobody has declared.",
+  "T30's mutation perimeter is the same subject at the byte level and is also unported.",
+]
+keywords = ["bitfield", "placement map", "heterogeneous", "composite", "overlap", "truncation", "declaration", "foreign", "datasheet", "trusted base"]
+
+[[item]]
+id = "capacity_and_the_array_grammar"
+t = "T37"
+section = "SEED_TALKING_POINTS.md#37-the-peripheral-subjects-each-a-whole-topic-the-current-register-does-not-yet-carry"
+claim = "Capacity as a direct instance of the natural-number seal; a last-index predecessor construction refusing before monomorphisation; a two-half repair where an associated const nothing touches is not evaluated so the check needs a second reference inside the count; and a reopened forcing argument with three priced columns, where the ratified sentence that it was forced by the language was found false twice while the is-a relation stands."
+verdict = "covered"
+confidence = 0.7
+why_dropped = "Not dropped. `Capacity` is at 41 hits and `AGREES` at 43, so the current panel reached this ground. The specific findings, the two-half repair and the forced-by-the-language falsification, were not run down."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T37: 41, 14, 43.",
+]
+related = [
+  "The two-half repair is a real trap with a general shape: an associated const nothing reads is not evaluated, so a check written as a declaration constrains nothing. That is the same failure the workspace test gate names as declarations-nothing-constrains, reached here independently.",
+  "T2's re-run touches the third priced column, per the seed's own cross-reference.",
+]
+keywords = ["Capacity", "Nat", "seal", "predecessor", "monomorphisation", "AGREES", "associated const", "forcing", "priced columns"]
+
+[[item]]
+id = "shape_geometry_and_the_missing_representable_one"
+t = "T38"
+section = "SEED_TALKING_POINTS.md#37-the-peripheral-subjects-each-a-whole-topic-the-current-register-does-not-yet-carry"
+claim = "Shape as the index-domain layer with capacity its rank-one case; a flattened bitpacked reading never worse in footprint over a large sweep with the coincidence condition derived rather than sampled; a rotor storage correction reversing a comparison at one rank while the decision survives on other grounds; and the closed-interval finding that the obvious purely-fractional numeral misses its representable one by one quantum at every width, with the fix being a parameter value rather than a new type, compiled to a stated fraction width."
+verdict = "unported"
+confidence = 0.7
+why_dropped = "No reason found. Three `rotor` hits, zero on the other two phrasings."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T38: 3, 0, 0.",
+]
+related = [
+  "The closed-interval finding independently corroborates the workspace's own worked example, where a purely fractional fixed-point type has no representable one and 401 tests passed while every identity law was false. Two panels reached the same defect from opposite directions, and the archive additionally has the fix as a parameter value. That is the single most directly reusable thing in section 3.7.",
+  "The rotor correction is a corrected measurement that reversed a comparison, which is the class T43 is about.",
+]
+keywords = ["shape", "geometry", "index domain", "rank", "rotor", "flattened", "closed interval", "purely fractional", "representable one", "adjustment", "quantum"]
+
+[[item]]
+id = "the_platform_crate_and_the_six_doors"
+t = "T39"
+section = "SEED_TALKING_POINTS.md#37-the-peripheral-subjects-each-a-whole-topic-the-current-register-does-not-yet-carry"
+claim = "A naming-door charter of one route per primitive; the boolean primitive reaching its native type by six public routes today; route multiplicity being a defect only relative to a guarantee, which this type has none of, compiled exhaustively, which moves the pruning call from soundness to vocabulary and makes it op's; and a crate-boundary measurement where a constructor without the inlining attribute costs 34 instructions against 22, silently."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. Zero on the charter and the attribute phrasings, two on `route multiplicity`."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T39: 0, 0, 2.",
+]
+related = [
+  "The defect-only-relative-to-a-guarantee reasoning is transferable and is the useful half: it says route multiplicity is not automatically a problem, which is the opposite of the instinct.",
+  "The instruction figure was not taken on the bench harness, so under the workspace rule it is an ad-hoc spike and cannot price anything. It shows a difference exists; it does not say how much.",
+]
+keywords = ["platform crate", "naming door", "charter", "Bool", "six doors", "route multiplicity", "guarantee", "inline always", "crate boundary"]
+
+[[item]]
+id = "the_notation_vehicle"
+t = "T40"
+section = "SEED_TALKING_POINTS.md#37-the-peripheral-subjects-each-a-whole-topic-the-current-register-does-not-yet-carry"
+claim = "A procedural macro is forced because a decimal literal is one atomic token and the declarative macro cannot start, with no external dependency needed; two entry points over one generator because role belongs in the type, the swapped-argument probe silently denoting two very different values; a 923-assertion whole-matrix test that caught a real bug before review; and a two-tier refusal at the readout ceiling."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found. One hit on `decimal literal`, zero on the other two."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T40: 0, 1, 0.",
+]
+related = [
+  "The whole-matrix test is the positive example this workspace's own test gate asks for: 923 assertions over the full matrix rather than a sample, and it caught something. Worth citing as a precedent when somebody argues a sampled law is enough.",
+  "The swapped-argument probe silently denoting the wrong value is a negative control that found a real defect, which is rarer in this corpus than it should be.",
+]
+keywords = ["notation", "proc macro", "decimal literal", "atomic token", "entry points", "role", "swapped argument", "923", "whole matrix", "readout ceiling"]
+
+[[item]]
+id = "the_cost_model_for_composition"
+t = "T41"
+section = "SEED_TALKING_POINTS.md#37-the-peripheral-subjects-each-a-whole-topic-the-current-register-does-not-yet-carry"
+claim = "Composition pricing measured twice independently, with the numerator dominating and the realistic profiles sitting two orders below the sweep previously called realistic, and the cliff printed; declaration pricing being a separate operation with its own figures."
+verdict = "unported"
+confidence = 0.55
+why_dropped = "No reason found. The registry's hits on `cost model` and `Reduce` are the current panel's own on reading."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T41: 9, 0, 24.",
+]
+related = [
+  "Measured twice independently is the archive's strongest support shape, and the finding that the previously-realistic sweep was two orders off is a correction rather than a measurement, which makes it the durable half.",
+  "None of it was taken on the bench harness, so every figure here is an ad-hoc spike under the workspace rule and cannot price a decision. The shape of the curve survives; the numbers do not.",
+  "The bulk-import profile is named as the one that pays, which connects it to the standards obligation in `obligation.toml`.",
+]
+keywords = ["cost model", "composition", "pricing", "dyadic", "rational", "numerator", "cliff", "declaration", "Reduce", "bulk import"]
+
+[[item]]
+id = "the_environment_parameter"
+t = "T42"
+section = "SEED_TALKING_POINTS.md#37-the-peripheral-subjects-each-a-whole-topic-the-current-register-does-not-yet-carry"
+claim = "An environment fact is an assumption and never a witness; the operative test is whether a linked library can change the fact at runtime, applied per fact as lowered; the receipt's verdict splits, where cannot-check yields a trusted-base entry with a declared gap and cannot-provide is a statically known falsehood and refuses, a distinction reused independently at two further layers; and a hole that showed the receipt list had no negative control."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. ABSENT on all three phrasings."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T42: ABSENT, zero on all three, with four carried controls non-zero in the same run.",
+]
+related = [
+  "T11 is this generalisation's concrete instance and is also unported. Together they are the archive's whole position on the environment, and the registry has none.",
+  "`ruling::never_a_runtime_check_and_one_lowered_path` is the live constraint: a fact that a linked library can change at runtime is precisely a fact one lowered path cannot assume, so the archive's test is directly relevant to a live rule.",
+  "The reused-independently-at-two-further-layers note is the archive's own evidence that the distinction generalises.",
+]
+keywords = ["environment", "assumption", "witness", "linked library", "runtime", "receipt", "cannot check", "cannot provide", "trusted base", "FZ16", "negative control"]
+
+# =============================================================================
+# Section 4. Refuted or dropped, beyond what the carried droplist holds
+#
+# The droplist itself is carried into `retirement.toml` verbatim, 94 rows citing
+# one anchor. This section is what that carry-over does NOT show, and it is the
+# part of the seed with the best claim on a later seat's time, because a
+# retirement that does not say it had been ratified first reads weaker than it is.
+# =============================================================================
+
+[[item]]
+id = "ratified_then_reversed_is_a_category_the_droplist_hides"
+t = "T43"
+section = "SEED_TALKING_POINTS.md#4-refuted-or-dropped-beyond-what-the-carried-droplist-already-holds"
+claim = "The droplist records removals and does not flag which removals had been ratified first. Four had been: canonicity, the width enumeration, one preset cell, and the headroom rule, the last left unratified at close so the archive ends with a ratified table cell and a committed bench trail recommending its deletion standing unreconciled."
+verdict = "unported"
+confidence = 0.75
+why_dropped = "No reason found, and the mechanism is structural rather than anybody's decision: `retirement.toml` has no field for it. `kind` takes wrong, superseded, unpayable, misattributed or unpredicated, and none of those says was-ratified-first. So the category cannot be expressed in the namespace that carries the droplist, which is why it did not survive the port."
+evidence = [
+  "`mock/registry/retirement.toml` schema in `mockspace.toml`: `kind` has five values and none carries prior standing.",
+  "`208_probes/p4_registry_coverage.out` row T43: 1 and 2, on reading the current panel's own use of the words.",
+  "`retirement::dl_the_ordered_three_relation_ladder` and its neighbours carry `why` prose that could hold it, so the information has somewhere to go even without a field.",
+]
+related = [
+  "This is the clearest thing in section 4 and it is a fact about the registry rather than about the archive: a reader of `retirement.toml` cannot tell a claim nobody believed from one that was ratified and then reversed, and the second is much more interesting.",
+  "The unreconciled ending is the sharpest instance: a ratified cell and a bench trail recommending its deletion, both standing. `ruling::the_strategy_set_is_not_closed_at_four` weakens the ratified side, which may dissolve it, and nobody has checked.",
+  "Seat 207's route four, that dead material returns only through op's own mouth, is the constraint on ever un-reversing any of these.",
+]
+keywords = ["ratified", "reversed", "droplist", "canonicity", "width enumeration", "clamp cell", "headroom", "unreconciled", "category", "kind"]
+
+[[item]]
+id = "claims_that_died_of_provenance"
+t = "T44"
+section = "SEED_TALKING_POINTS.md#4-refuted-or-dropped-beyond-what-the-carried-droplist-already-holds"
+claim = "One file cited five probe files that existed nowhere, the incident behind the workspace's evidence rule; a later compile carried two disallowed flags and was voided as evidence while its coherence argument survived on the permitted solver; and another file's table was voided whole for grounding design rows in shipped doc comments."
+verdict = "covered"
+confidence = 0.8
+why_dropped = "Not dropped, and carried across the artifact boundary rather than into the registry. All three lessons are in `.claude/rules/`: the five-nonexistent-probes incident is named in the workspace's spike rule, and the forbidden-ground and evidence-standing lessons are in the same family. The seed itself says the lesson content duplicates the live rules."
+evidence = [
+  "The workspace rule on conceding and expert code states the five-probe incident and attributes it to this corpus.",
+  "`208_probes/p4_registry_coverage.out` row T44: 1 on `tree-meaning`, 0 on the probe phrasing.",
+]
+related = [
+  "This is seat 207's route three, process material moving to the rules directory, and it is the one route where absence from the registry is exactly right.",
+  "The instances are still worth knowing because re-testers will meet these files' claims quoted elsewhere in the archive, which is the seed's own reason for listing them.",
+]
+keywords = ["provenance", "five probes", "existed nowhere", "recovered", "generic_const_args", "next-solver", "voided", "tree-meaning", "doc comments"]
+
+[[item]]
+id = "the_era_before_bench_artifacts_were_committed"
+t = "T45"
+section = "SEED_TALKING_POINTS.md#4-refuted-or-dropped-beyond-what-the-carried-droplist-already-holds"
+claim = "The archive discovered mid-run that the bench directory's ignore file had been discarding every artifact the panel produced, which forced a re-measurement, softened a ratified figure, and is the origin of the committed-artifact discipline. Anyone comparing archive-era numbers against the current committed trails should know the era boundary exists."
+verdict = "unported"
+confidence = 0.8
+why_dropped = "No reason found, and it matters more than it reads. ABSENT from the registry on both phrasings, while the era boundary it names is real and measurable: the committed corpus splits cleanly into 21 closed-panel families and 18 current-panel ones, and nothing in the registry says which side any figure came from."
+evidence = [
+  "`208_probes/p3_bench_artifacts.out`: every family dated from its own meta timestamps, 21 before this panel opened and 18 after, with a control confirming the split discriminates.",
+  "`208_probes/p4_registry_coverage.out` row T45: ABSENT, zero on both phrasings.",
+]
+related = [
+  "The practical consequence: a bench figure quoted from an archive file may predate the commit discipline and have no artifact behind it, while a figure quoted from a committed trail does. Only the second is citable, and nothing marks which is which except the dates this probe recovered.",
+  "The softened ratified figure is a T43 instance: ratified, then weakened by re-measurement, and the droplist has no way to say so.",
+]
+keywords = ["gitignore", "bench artifact", "discarded", "re-measurement", "softened", "era", "committed", "discipline", "13 to 17x"]
+
+[[item]]
+id = "refutations_of_the_archives_own_instruments"
+t = "T46"
+section = "SEED_TALKING_POINTS.md#4-refuted-or-dropped-beyond-what-the-carried-droplist-already-holds"
+claim = "The erasure oracle's two false-negative regimes; a derivation passing the erasure certifier at full marks while occupying 23.1 percent more memory than the strategy promises, because the instrument compares one operation against one instruction and has no array in it; a packed round-trip check that returns correct answers whenever the truncated bits happened to be zero; and the model-inadequacy asymmetry, that a model undercounting refusals fails loudly while a model too narrow to see a value disagreement returns a quietly wrong number, with no mechanical guard for the second ever found."
+verdict = "covered"
+confidence = 0.75
+why_dropped = "Not dropped. The seed itself records that the current panel carries the first from its own side and the second in its options register, and `probe.toml` exists precisely to hold instrument defects, with its header saying the corpus has nine on record. The fourth item, the asymmetry, is the one that may be unported and it is the one that matters."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T46: 4 on the false-negative phrasing, zero on the asymmetry phrasing.",
+  "`mock/registry/probe.toml` header states the namespace exists so that which claims rest on an uncontrolled instrument is a query, and records nine instrument defects.",
+]
+related = [
+  "The asymmetry is the standing hazard for every model-width sweep, by the seed's own words, and it composes with S2.2, which is the same evidence ledger's transfer argument. Two seed sections, one finding.",
+  "The 23.1 percent case is the sharpest single instance: an instrument at full marks while the thing it certifies breaks the promise, because the instrument had no array in it. That is setup-that-helps with a certificate attached.",
+]
+keywords = ["erasure oracle", "false negative", "certifier", "23.1 percent", "round trip", "truncated", "data dependent", "model inadequacy", "asymmetry", "quietly wrong"]
+
+# =============================================================================
+# Section 5. Theorised and abandoned inside the archive, with the reasons
+#
+# The seed's own framing is that an abandoned idea plus its reason outranks
+# either alone. Three of the six are carried as retirements; three are not.
+# =============================================================================
+
+[[item]]
+id = "the_three_relation_ladder"
+t = "T47"
+section = "SEED_TALKING_POINTS.md#5-theorised-and-abandoned-inside-the-archive-with-the-reasons"
+claim = "The weak, Kleene and graded ladder, imported from the partial-algebra literature and then replaced outright by the nine-point view lattice because the named relations turned out to be three points of a larger non-chain space, dissolving the question of which relation into which finest view. Op's adopted name went with it."
+verdict = "retired"
+confidence = 0.9
+why_dropped = "Not dropped: carried, as two retirement rows. `retirement::dl_the_ordered_three_relation_ladder` retires the ladder as superseded, and `retirement::dl_partial_associativity_as_a_named_gap` retires op's adopted name with it and explains that the first version of that entry said nothing about the name, leaving a reader with an op adoption and no record of what became of it."
+evidence = [
+  "Both rows opened at source in `mock/registry/retirement.toml`.",
+]
+related = [
+  "This is where the retirement is right and its `replacement` is the problem: both rows point at the nine-point view lattice, which T15 shows was refuted at one of its three named points and never repaired. So the ladder is correctly retired and the thing readers are sent to is not sound at the position one of the rows names.",
+  "Read this row and T15 together or neither.",
+]
+keywords = ["three relation", "ladder", "weak", "Kleene", "graded", "view lattice", "non-chain", "partial associativity", "dissolved"]
+
+[[item]]
+id = "growth_and_widening_as_axes"
+t = "T48"
+section = "SEED_TALKING_POINTS.md#5-theorised-and-abandoned-inside-the-archive-with-the-reasons"
+claim = "Both ratified into a ten-axis table and both later ratified out: one decomposed into three separate things, and the other left the law key and then the policy entirely after a compiled structural theorem that no operation expressible in the dispatch discipline can have policy-dependent growth, coherence refusing the two-impl shape outright."
+verdict = "covered"
+confidence = 0.7
+why_dropped = "Not dropped. Both words are heavily present in the registry, 38 and 13, reached by the current panel's own route. The compiled structural theorem behind the removal is the part that may be unported."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T48: 38 and 13.",
+]
+related = [
+  "The seed's own point is that the current panel's axis debate should know the archive both added and removed axes and what the removal argument looked like. That is a fact about method rather than a claim, and it lands on `dimension.toml`, whose header already records the axis set as incomplete and append-only.",
+  "A compiled refutation that an axis cannot exist is stronger than an argument that it should not, and it is exactly the shape a later seat would want before adding or removing an axis.",
+]
+keywords = ["Growth", "Widening", "axis", "ten-axis", "ratified out", "structural theorem", "policy dependent", "coherence", "two impl"]
+
+[[item]]
+id = "logical_width_and_the_ten_axis_table_itself"
+t = "T49"
+section = "SEED_TALKING_POINTS.md#5-theorised-and-abandoned-inside-the-archive-with-the-reasons"
+claim = "One axis was overturned with identity re-parameterised in mathematical coordinates, precision made primitive and total width derived, and the surviving members reshaped continuously. The archive's final position asserts no replacement count, because the trait-table members and the original axes are different populations and an uncheckable count is the shape the discipline refuses."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. ABSENT on both phrasings. The refusal-to-assert-a-count is the durable half and it is a piece of method the current `dimension.toml` header independently arrived at, which is corroboration-shaped history rather than corroboration."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T49: ABSENT, zero on both.",
+]
+related = [
+  "`dimension.toml` declares 21 axes and its header states the set is incomplete, append-only and moved only on two independent readings. That is the same discipline reached again, and the archive's version has the additional finding that two candidate populations were not comparable.",
+  "`total_width`, `integer_width` and `fraction_width` are all declared axes today, so the precision-primitive-total-derived question is settled differently now than the archive left it, and nothing records that it was ever a question.",
+]
+keywords = ["LogicalWidth", "ten-axis", "precision", "total width", "derived", "identity", "coordinates", "count", "population", "uncheckable"]
+
+[[item]]
+id = "the_single_sign_axis_split"
+t = "T50"
+section = "SEED_TALKING_POINTS.md#5-theorised-and-abandoned-inside-the-archive-with-the-reasons"
+claim = "A single sign axis was split into a value fact and a datum fact after one cell showed the identical clamp delivering two different results under two readings, and the split is what makes an external standard's own pair expressible, the standards test passing."
+verdict = "unported"
+confidence = 0.65
+why_dropped = "No reason found. One hit on each of the two split names and three on the external standard, none being this argument on reading. `signedness` is a single declared axis today, so the registry currently carries the unsplit form the archive abandoned."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T50: 1, 1, 3.",
+  "`mock/registry/dimension.toml` declares `signedness` and nothing else on that axis.",
+]
+related = [
+  "This is the one row in section 5 where the archive's abandoned position and the registry's live position are in direct tension: the archive split the axis and gave a compiled reason, the registry has it unsplit. Neither is wrong, and nobody has compared them.",
+  "It bears on the sign-digit question the seed names as open on the current side.",
+  "The standards test passing is an instance of the obligation seat 207 traced back into `obligation.toml` through op's own re-invocation.",
+]
+keywords = ["Sign", "SignDomain", "SignIndexing", "value fact", "datum fact", "clamp", "symmetric", "asymmetric", "SystemC", "standards test", "split"]
+
+[[item]]
+id = "the_step_seam_as_a_comparison_frame"
+t = "T51"
+section = "SEED_TALKING_POINTS.md#5-theorised-and-abandoned-inside-the-archive-with-the-reasons"
+claim = "A two-step seam was true of one route and dissolved entirely under a different keying, and was flagged as a mistake when used as a comparison table for every candidate. A warning label: the seam vocabulary is route-relative."
+verdict = "unported"
+confidence = 0.6
+why_dropped = "No reason found, and it is a small item: a warning about a vocabulary rather than a claim. One hit in the registry, not this."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T51: 1.",
+]
+related = [
+  "It bears directly on T1, since the structural keying is the route the seam dissolves under, so anybody comparing width-surface candidates on a step-seam table is using a frame that favours one side.",
+  "A comparison frame that is route-relative is the same defect class as a bench with no real competitor: the arms are not comparable and the table reads as though they are.",
+]
+keywords = ["step seam", "step A", "step B", "comparison frame", "route relative", "structural keying", "candidate table", "warning"]
+
+[[item]]
+id = "the_ambient_and_realisation_decomposition"
+t = "T52"
+section = "SEED_TALKING_POINTS.md#5-theorised-and-abandoned-inside-the-archive-with-the-reasons"
+claim = "Offered as a technique, meet and join in an ambient lattice of finite rational sets with a partial realisation back, never as a fourth answer to the family question. Its content, that every derived numeral is the tightest numeral containing the exact result set, was independently re-derived twice and kept while the framing was dropped."
+verdict = "covered"
+confidence = 0.75
+why_dropped = "Not dropped. `ambient_domain` is a declared axis and the vocabulary is heavily present, 85 and 151, and the seed itself says the current question already carries this from the current panel's own files, calling the archive's parallel arrival corroboration-shaped history rather than corroboration."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T52: 85 and 151.",
+  "`mock/registry/dimension.toml` declares `ambient_domain`.",
+]
+related = [
+  "The seed's own honesty here is the model for how the rest of this file should be read: it explicitly refuses to count the archive's independent arrival as support, because agreement between two unratified bodies is shared drift rather than corroboration.",
+  "Independently re-derived twice inside the archive plus once in the current panel is three instances, which is the bar, but two of the three are in the demoted lineage.",
+]
+keywords = ["ambient", "realisation", "lattice", "meet", "join", "rational sets", "tightest", "derived numeral", "framing", "corroboration"]
+
+# =============================================================================
+# Section 6. Blind spots: questions the archive asked and left, or never asked
+#
+# The section with the highest ratio of value to length, and the least ported:
+# four of its five rows are ABSENT from the registry on every phrasing tried.
+# These are not claims to test. They are inventories of what was never done, and
+# an inventory of undone work does not go stale the way a measurement does.
+# =============================================================================
+
+[[item]]
+id = "the_twentynine_item_queue_addressed_to_op_at_close"
+t = "T53"
+section = "SEED_TALKING_POINTS.md#6-blind-spots-questions-the-archive-asked-and-left-or-never-asked"
+claim = "The final consolidation ends with a ranked list of twenty-nine op-owed items and the panel closed with nearly all unanswered, the panel having been closed rather than finished. The seed names all twenty-nine and calls the list the densest single inventory of unresolved design calls in the archive."
+verdict = "unported"
+confidence = 0.7
+why_dropped = "No reason found for the list. The individual items are a mixture: several are dead by `ruling::the_d_numbered_decisions_are_dead` and by the prior-calls demotion, and several are live subjects the current panel reached independently. Nobody has walked it item by item, which is what it would take to say which are which."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T53: 2 on the count phrasing, zero on the width ceiling.",
+  "The cited passage `124:5075-5174` resolves and is in range, and was not opened.",
+]
+related = [
+  "**Careful with this one.** These are items owed to op by a panel he has since demoted, so the list is not a queue he holds. Reviving an item means somebody re-asking it in the current panel on current grounds, not handing him a list from a failed lineage. Seat 207's route four is the constraint.",
+  "`question.toml` is the namespace such an item would land in, one row each, with `decider` set by the rule its header states rather than inherited from the archive's framing.",
+  "The seed indexes them once rather than duplicating per section, so anybody working a subject area should read this list before concluding their subject has no open items.",
+]
+keywords = ["queue", "twenty-nine", "op-owed", "close", "unresolved", "inventory", "ranked", "design calls"]
+
+[[item]]
+id = "the_owed_artifact_list_at_close"
+t = "T54"
+section = "SEED_TALKING_POINTS.md#6-blind-spots-questions-the-archive-asked-and-left-or-never-asked"
+claim = "The final consolidation's owed items each name a closing artifact and none was produced: a Boolean-algebra law suite, where no law is asserted anywhere over any truth type and 672 green tests say nothing about the variety membership the truth-contract argument rests on; bitfield overlap tests both directions; primary-source reads of the standards and the instruction-set manuals, everything having been cited secondary; a companion model for a transfer coordinate; several compiles against real contracts; vector kernels naming a real unpriced cost; a codegen test for a dependency on an optimiser heuristic with no fallback; a const bound; a binding-time sentence flagged by six members independently and never opened; and a sampling question."
+verdict = "unported"
+confidence = 0.75
+why_dropped = "No reason found. ABSENT on both phrasings. This is the single most useful unported item in the file and it is not a claim at all: it is a list of the cheapest attacks on the archive's own carried conclusions, by the seed's own framing, and it survives the demotion because an undone thing stays undone whoever said so."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T54: ABSENT, zero on both phrasings, with four carried controls non-zero in the same run.",
+]
+related = [
+  "The truth-suite item is the sharpest: 672 green tests over a contract whose foundational property is asserted nowhere is exactly the shape this workspace's test gate calls missing fundamentals, and it pairs with T35, which is the contract those tests do not check.",
+  "Everything-cited-secondary is a provenance finding about the whole archive and bears on every standards claim in it, T34 included.",
+  "The binding-time sentence flagged by six members and never opened is six independent instances of somebody noticing the same gap, which under the workspace's own evidence bar is well past the threshold for taking it seriously.",
+]
+keywords = ["owed", "artifact", "Boolean algebra", "law suite", "672", "overlap tests", "primary source", "IEEE", "ISA", "secondary", "vector kernel", "carry chain", "sampling", "binding time"]
+
+[[item]]
+id = "the_three_instruments_named_and_never_run"
+t = "T55"
+section = "SEED_TALKING_POINTS.md#6-blind-spots-questions-the-archive-asked-and-left-or-never-asked"
+claim = "Three instruments the archive named and never built: a sweep of the ninety-nine member files and probe directories for material no consolidation absorbed; a register diff against the inherited-state topic file, fifty-two decisions never diffed against anything; and a restoration ledger keyed on establishing sources. The seed states plainly that it is not any of the three, having swept consolidations, sweeps, op files and the late stretch rather than the member files individually."
+verdict = "unported"
+confidence = 0.8
+why_dropped = "No reason found, and it is the coverage bound on everything else in this catalogue rather than an item beside them. ABSENT from the registry on both phrasings."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T55: ABSENT, zero on both.",
+  "Seat 207 independently reached the same conclusion from the op-material side, recording that it did not open the ninety-nine numbered member files and naming that sweep as a third instrument nobody has built.",
+]
+related = [
+  "**Two seats have now named the member-file sweep as the missing instrument, from two different populations.** That is the strongest signal in either catalogue about what the next dispatch should be, and neither seat performed it because neither dispatch was for it.",
+  "The consequence for this catalogue: every `unported` verdict here rests on the seed's rendering of a consolidation, and the seed's own section 8 says a talking point sourced only from a consolidation inherits that document's compressions. So an `unported` row may be unported because the material never reached the seed either.",
+]
+keywords = ["instruments", "never run", "member file sweep", "ninety-nine", "register diff", "fifty-two", "restoration ledger", "coverage", "compression"]
+
+[[item]]
+id = "threads_a_b_and_c_op_kept_open"
+t = "T56"
+section = "SEED_TALKING_POINTS.md#6-blind-spots-questions-the-archive-asked-and-left-or-never-asked"
+claim = "Three threads kept explicitly open with instructions to keep iterating: a consumer-facing diagnostic surface whose strongest result was nominal constructors plus per-axis modifier types rendering every axis for free in errors, with three unresolved costs; fallible arithmetic, whose sharpest reframe was that delivery of a refusal is a lowering-level choice by the axis-sorting test, with three real unresolved costs including a selection defect reappearing in a shipped algorithm crate, and the finding that a timing-guarantee marker was keyed on data that does not decide it; and leaf truth, seeking a shape where the check is the typestate rather than sitting beside it, never achieved."
+verdict = "unported"
+confidence = 0.7
+why_dropped = "No reason found. ABSENT on all three phrasings. The op instructions attached to all three are archive-era and demoted, so what survives is three technical threads and their unresolved costs, which is what should be read rather than the instruction to keep going."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T56: ABSENT, zero on all three.",
+]
+related = [
+  "Thread B's reframe, that how a refusal is delivered is a lowering-level choice rather than an arithmetic one, is a canon-shaped sentence and is the most portable thing in the row. It bears on `ruling::never_a_runtime_check_and_one_lowered_path` and on `ruling::precise_on_inexact_is_an_arm_question`.",
+  "The timing-guarantee marker keyed on data that does not decide it is a soundness defect in a shipped surface, same class as T30 and T36.",
+  "Thread C was never achieved, which is a real result: somebody tried to make the check be the typestate and could not, and that is worth knowing before anybody tries again.",
+]
+keywords = ["Thread A", "Thread B", "Thread C", "diagnostics", "modifier types", "fallible", "refusal", "sum type", "sticky flag", "ConstantTime", "leaf truth", "typestate"]
+
+[[item]]
+id = "questions_the_archive_never_asked"
+t = "T57"
+section = "SEED_TALKING_POINTS.md#6-blind-spots-questions-the-archive-asked-and-left-or-never-asked"
+claim = "Five absences noted while sweeping: nothing in 320 files priced compile cost for a real consumer crate; nothing measured any strategy on any target other than one host, every silicon fact being one machine plus cross-compiled assembly reads; random and strided access patterns were never measured for any layout; the write side of packing was never priced; and no file ever asked what the canon's own document structure should be."
+verdict = "unported"
+confidence = 0.8
+why_dropped = "No reason found for four of the five. The fifth, the canon's own structure, is settled: the current panel owns it and the registry is the answer. The other four are gaps in both panels' evidence by the seed's own words, and the sweep confirms the registry does not name them."
+evidence = [
+  "`208_probes/p4_registry_coverage.out` row T57: 2 on `strided`, zero on the single-target phrasing.",
+  "`access_pattern` and `target_features` are both declared axes in `dimension.toml`, so two of these four gaps are gaps in a coordinate the registry can already express, which is the sharpest form of a missing measurement: the notation is ready and nothing has been measured into it.",
+  "The write side: `208_probes/p3_bench_artifacts.out` shows `bitpack-write-contend-race` and `bitpack-write-contend-safe` dated 2026-08-09, so the current panel did measure a write case after this file was written. The gap is narrower than the seed states.",
+]
+related = [
+  "**The one-target finding is the widest-reaching thing in the seed.** Under the predicate discipline every silicon-derived claim in both panels holds at `target_features: host aarch64-apple-darwin` and nowhere else, and `law-the-later-topics.toml` already writes exactly that on its rows. So the current registry is honest about it and the archive was not, which is the discipline working.",
+  "Compile cost for a real consumer crate is still unpriced and is named as open repeatedly across both panels, which makes it the longest-standing unmeasured thing in the corpus.",
+]
+keywords = ["never asked", "compile cost", "consumer crate", "one target", "Apple M1", "cross compiled", "strided", "random access", "write side", "canon structure"]
+
+# =============================================================================
+# What this catalogue does NOT establish
+#
+# Stated here rather than left to be inferred, because the seed's own section 8
+# is the reason this file could be built at all and the same honesty is owed.
+#
+# **Six of 127 cited passages were opened.** T15's refutation, T24's discrepancy,
+# T9b's count at both ends, and the two re-run sources. Every other row's claim
+# is the seed's rendering of a passage this seat did not read, and where that
+# matters the row says so in `evidence`.
+#
+# **What was checked mechanically is different and is stronger.** Every citation
+# resolves and is in range, 127 of them with three controls. The two current
+# claims reproduce with the archive's own negative controls firing. The bench
+# corpus is counted and dated with a control. The registry sweep ran two or three
+# independent phrasings per subject with four carried controls and one nonsense
+# control. The archive citation channel is shown to resolve rather than skip,
+# with a mutation control both directions.
+#
+# **A `covered` verdict is the weakest one here.** It means the registry reached
+# the subject, established by a word-level sweep and, on eight rows, by opening
+# the registry row. It does not mean the registry holds the same claim, and
+# several `covered` rows say plainly which half may still be unported.
+#
+# **An `unported` verdict may mean the material never reached the seed either.**
+# T55 is the coverage bound: the seed swept consolidations rather than the
+# ninety-nine member files, and its own section 8 says a point sourced only from
+# a consolidation inherits that document's compressions. Two seats have now named
+# the member-file sweep as the instrument nobody has built.
+#
+# **Nothing here is a recommendation to port.** Four rows earned a registry row
+# and they are named in the frame at the top. The rest are catalogued so that the
+# next reader starts from a verdict with its evidence rather than from 945 lines.

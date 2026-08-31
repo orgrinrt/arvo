@@ -1456,3 +1456,25 @@ unblocks = "What a canon may state about a cross-strategy expression's guarantee
 note = "Adjacent to Q27 (is interoperation conversion, resolution, or neither) and not the same question; Q27's own note already flags this one as adjacent and unaddressed. A first mechanically-checked instance now bears on it: a two-axis strategy-resolution rule, checked as a semilattice join at compile time, supports the second option as the honest meta-law rather than settling it, offered as a direction by its own author rather than a resolution."
 provenance = ["panel::202608072330_the-numeral-canon-panel::77_amin_derived_laws_derived_cold::295"]
 keywords = ["strategy", "resolution", "cross-strategy", "inheritance", "monotonicity", "join", "Q27", "adjacent"]
+
+# --- inherited from the closed panel, and reached through the registry's own -----
+#     replacement pointers rather than through the archaeology
+
+[[question]]
+id = "which_repair_the_refuted_kleene_identification_takes"
+asks = "Two retirement rows name the nine-point view lattice as what replaces the claim they retire, and one of them names the position where a view preserves values and events while losing definedness. The identification of the Kleene equation with that position was compile-refuted, three repair shapes were offered, and none was chosen. Which repair does it take, and do the two replacement pointers survive it?"
+options = [
+  "The identification is dropped and the lattice keeps its other two named points, so the replacement pointers stand but name one fewer correspondence than they read as naming.",
+  "Definedness becomes a component of its own, so the lattice grows an axis and the position the second retirement names is not the position it currently denotes.",
+  "The third repair the refuting file offered, which is recorded there and is not restated here because no registry row carries it and restating it from a summary would be the compression this panel keeps catching.",
+  "The replacement pointer is wrong and the two retirements need a different one, which would make the retired claims open again rather than superseded.",
+]
+decider = "panel"
+topic = "algebraic_laws"
+note = "Filed because the hazard is invisible from inside the registry. `retirement::dl_the_ordered_three_relation_ladder` and `retirement::dl_partial_associativity_as_a_named_gap` both point at the nine-point view lattice, which appears in no `proposal`, `law` or `probe` row of its own: it is named only as something other claims were replaced by. The refutation is that definedness is not recoverable from the grade's cause component, established against the design's own division chapter, where a value can carry a nonempty cause and still be defined. The probe that had made the identification look safe set its own definedness flag from its own cause counter, so the model made the invariant true rather than testing it, and twenty-four files carried the claim unchallenged; that instrument is the worked example the workspace's own spike rule cites. Read as a question about the registry rather than about the archive: what is at stake here is whether two live replacement pointers say something true.\n\nThe closed panel's op checkpoint records him treating the calls resting on this as stale rather than patched, and asking for a re-evaluation that never ran. That is not cited as authority and does not set `decider`: his voice across that panel is demoted by his own word, and the re-evaluation he asked for was asked of a panel that then closed."
+provenance = [
+  "panel::202607301300_formalization-spec-panel::OLD_SETTLED_laws::374",
+  "panel::202607301300_formalization-spec-panel::OLD_136_willsey_the_laws_under_the_laws::217",
+  "panel::202608072330_the-numeral-canon-panel::SEED_TALKING_POINTS::#33-quantiser-laws-folds",
+]
+keywords = ["Kleene", "view lattice", "nine-point", "definedness", "Presence", "Ignore", "grade", "cause component", "finest view", "partial associativity", "repair", "replacement"]
