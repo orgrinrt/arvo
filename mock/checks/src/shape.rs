@@ -169,7 +169,7 @@ pub fn measurements_resting_on_an_unusable_instrument(reg: &Registry) -> Vec<Fin
                 ));
                 continue;
             }
-            if names_no_control(probe.get("control").unwrap_or("")) {
+            if standing == "uncontrolled" || names_no_control(probe.get("control").unwrap_or("")) {
                 out.push(Finding::new(
                     "measurement-rests-on-an-uncontrolled-instrument",
                     row.addr(),
@@ -202,11 +202,24 @@ pub fn measurements_resting_on_an_unusable_instrument(reg: &Registry) -> Vec<Fin
 /// substring can find.
 ///
 /// So the rule is the opening word, with one carve-out. A field beginning
-/// "None" is an admission unless its first clause reports something happening,
-/// because "None of the arms disagreed, and that is the control firing" begins
-/// identically and means the opposite. **The carve-out is why this is not
-/// simply a prefix test**, and an opening-word rule is blunt enough that a
-/// second reader is owed on it.
+/// "None" is an admission unless it reports something happening, because "None
+/// of the arms disagreed, and that is the control firing" begins identically
+/// and means the opposite.
+///
+/// **The second reader this asked for has come back and the rule loses.** Two
+/// probes open their control with the identical sentence, "None was run as a
+/// case that had to fail", and this catches one: the other contains the word
+/// `reported` inside a **counterfactual** about what a different outcome would
+/// have meant, which clears the carve-out. That is not a gap in the word list.
+/// **A word list cannot tell a report from a counterfactual**, so lengthening
+/// it moves the false negative rather than removing it.
+///
+/// **The repair is `standing = "uncontrolled"`**, which is data rather than
+/// prose and is read directly by the arm above. This function stays as the
+/// backstop for a row not yet triaged onto that value, and it stays labelled as
+/// what it is: a guess that is right about half the time, kept only because
+/// half is more than nothing while the triage runs. **Delete it when the rows
+/// carry the value.**
 fn names_no_control(control: &str) -> bool {
     let c = control.trim().to_ascii_lowercase();
 

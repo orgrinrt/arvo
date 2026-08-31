@@ -772,8 +772,8 @@ description = "A defect found in this instrument, and what caught it. Kept rathe
 name = "standing"
 type = "string"
 required = true
-description = "`sound` where it ran and its control fired; `defective` where a defect above is known and the figures are not to be used; `withdrawn` where its author retracted it."
-values = ["sound", "defective", "withdrawn"]
+description = "`sound` where it ran and its control fired; `uncontrolled` where it ran and no case that had to fail was stated, so it produced a number and cannot be refuted; `defective` where a known defect means the figures are not to be used; `withdrawn` where its author retracted it. **`uncontrolled` is not a lesser `defective`**: the numbers may well be right, and what is missing is any way for them to have been wrong."
+values = ["sound", "uncontrolled", "defective", "withdrawn"]
 
 [[registry.namespace.field]]
 name = "note"

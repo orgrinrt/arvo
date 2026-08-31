@@ -162,6 +162,64 @@ evidence = ["the_defective_one"]
     );
 }
 
+/// The value that replaces the guess, and why there is a value at all.
+///
+/// A word list cannot tell a report from a counterfactual. Two probes in this
+/// corpus open their control with the same sentence and the prose matcher
+/// catches one, because the other contains `reported` inside a clause about
+/// what a different outcome would have meant. That was established by a second
+/// reader after the matcher's own doc comment asked for one, and it is not
+/// fixable by a longer list.
+///
+/// So the admission is data. `standing = "uncontrolled"` says it, the arm reads
+/// it, and no sentence is parsed. The prose matcher stays only as a backstop
+/// for rows not yet triaged onto the value.
+#[test]
+fn an_uncontrolled_standing_is_read_without_looking_at_the_prose() {
+    let reg = parse(
+        "planted.toml",
+        r#"
+[[probe]]
+id = "declared_uncontrolled"
+standing = "uncontrolled"
+control = "None was run as a case that had to fail. Had the arms disagreed it would have been reported, and they did not."
+
+[[probe]]
+id = "declared_sound"
+standing = "sound"
+control = "None was run as a case that had to fail. Had the arms disagreed it would have been reported, and they did not."
+
+[[proposal]]
+id = "rests_on_the_declared_one"
+sentence_kind = "measured"
+evidence = ["declared_uncontrolled"]
+
+[[proposal]]
+id = "rests_on_the_undeclared_one"
+sentence_kind = "measured"
+evidence = ["declared_sound"]
+"#,
+    );
+    let found = shape::measurements_resting_on_an_unusable_instrument(&reg);
+    assert_eq!(
+        found.len(),
+        1,
+        "the two probes carry the identical control text and differ only in `standing`, which \
+         is the whole point: the prose matcher lets this sentence through and the value does \
+         not. If both are reported the matcher has started catching it and this test is \
+         measuring something else: {found:#?}"
+    );
+    assert!(
+        found[0].at.contains("rests_on_the_declared_one"),
+        "{}",
+        found[0].at
+    );
+    assert_eq!(
+        found[0].kind,
+        "measurement-rests-on-an-uncontrolled-instrument"
+    );
+}
+
 /// The admissions the corpus actually writes, which a phrase list missed.
 ///
 /// The first matcher caught one of five. The seat writing the probe rows
