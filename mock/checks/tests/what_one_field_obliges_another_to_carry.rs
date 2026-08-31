@@ -85,19 +85,32 @@ fn the_committed_canon_stamps_nothing_on_an_ack() {
 /// gate. Declaring `standing = "uncontrolled"` moved the statement to where the
 /// gate reads, and these two turned red the moment it did.
 ///
-/// **Neither is repaired by a checker and neither is repaired here.** A claim
-/// resting on an uncontrolled instrument is not a measurement, so the honest
-/// repairs are marking the sentence as the argument it is, or building the case
-/// that had to fail and rerunning. Both are edits to somebody's row and both
-/// change what the canon claims, so they are a dispatch rather than a line.
+/// **Both are repaired and neither repair was the one this comment predicted.**
+/// It said the honest options were marking the sentence as the argument it is,
+/// or building the case that had to fail. The second happened once and the other
+/// turned out not to need it.
 ///
-/// What this pins is that a third does not appear.
+/// The no-residue finding got the arm its own note had named in one sentence:
+/// the identical argmin over a weighting arriving as an argument, so nothing can
+/// fold it. It comes out the other way by a wide margin, nine instructions
+/// against seventy-six and two branches against eleven, with the const form
+/// identical to the hand-written arm after label normalisation.
+/// `197_probes/c1`.
+///
+/// The binding-time finding needed no new instrument at all. **Its row cited the
+/// wrong file**: it named the operand-subset lattice, whose subject is which
+/// subsets license an arm, where the finding is about when a refusal fires. The
+/// instrument is the binding-time ladder, which compiles a licensed declaration
+/// beside the offending one at every rung and so carries the case that had to
+/// fail four times over. Re-run and reproduces its committed output exactly.
+///
+/// **The lesson is the second one.** An uncontrolled standing can mean the
+/// control was never built, and it can mean the row is pointing at a file that
+/// is not the instrument, and reading the cited file is what tells the two
+/// apart.
 #[test]
-fn the_measurements_on_an_uncontrolled_instrument_are_the_two_already_named() {
-    const KNOWN: &[&str] = &[
-        "proposal::a_compile_time_strategy_selection_leaves_no_residue_in_the_emitted_body",
-        "proposal::the_licensed_category_is_const_available_and_four_constructions_bind_at_four_times",
-    ];
+fn no_measurement_rests_on_an_uncontrolled_instrument() {
+    const KNOWN: &[&str] = &[];
     let mut found: Vec<String> = shape::measurements_resting_on_an_unusable_instrument(&canon())
         .into_iter()
         .map(|f| f.at)

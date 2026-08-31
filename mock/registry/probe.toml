@@ -902,10 +902,13 @@ lives = [
   "panel::202608072330_the-numeral-canon-panel::94_probes::b_unbundled.rs::1",
   "panel::202608072330_the-numeral-canon-panel::94_probes::b_unbundled.s::1",
   "panel::202608072330_the-numeral-canon-panel::94_probes::f_where_carried.out.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::197_probes::c1_a_runtime_selection_must_leave_a_branch.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::197_probes::c1.s::1",
+  "panel::202608072330_the-numeral-canon-panel::197_probes::c1_control.out::1",
 ]
-control = "Label normalisation before comparison, which is the arm that stops two identical bodies reading as different, and the emitted assembly is committed beside each source so the comparison can be redone rather than believed. Four instruments across three files agreeing is the corroboration; no single one of them carries a case that had to fail."
-standing = "uncontrolled"
-note = "Marked sound on a judgement and it is the thinnest of the sound rows in this file. What each arm does is compile two forms and compare the emitted bodies, and a comparison of two bodies has no natural failing case unless somebody supplies a form that must differ. None of the four does. The finding is corroborated across three authors rather than controlled, and a reader who wants it controlled should ask for an arm whose selection genuinely cannot be resolved at compile time and must therefore leave a branch."
+control = "The case that had to fail is `197_probes/c1`, which supplies the form the original four lack: the identical argmin over a weighting that arrives as an argument, so nothing can fold it. It comes out the other way and by a wide margin. The const form lowers to nine instructions, identical to the hand-written arm after label normalisation, with its two branches being the loop rather than the selection; the runtime form lowers to seventy-six carrying eleven branches and all three arms. Label normalisation before comparison is the arm that stops two identical bodies reading as different, and the emitted assembly is committed beside every source so the comparison is redone rather than believed."
+standing = "sound"
+note = "**The standing was `uncontrolled` and the control was built rather than argued for.** What each of the original four arms does is compile two forms and compare the emitted bodies, and a comparison of two bodies has no natural failing case unless somebody supplies a form that must differ. None of the four did, so the finding was corroborated across three authors and never controlled, which is agreement rather than measurement. The missing arm was named in this row's own note, in one sentence, and building it was an hour: same cost model, same table, same three arms, same argmin, and the weighting's binding time as the only thing that moves."
 keywords = ["compile time", "residue", "argmin", "const fn", "emitted body", "assembly", "label normalisation", "tail branch", "selection"]
 
 # --- the eight settled claims the corpus could not write --------------------
@@ -1070,12 +1073,16 @@ keywords = ["chain", "accuracy", "intermediate width", "linear growth", "operand
 id = "the_four_const_available_constructions_bind_at_four_times"
 establishes = "Const-available is not one moment. Four constructions bind at four different times, and the lattice among them is computed rather than asserted."
 lives = [
-  "panel::202608072330_the-numeral-canon-panel::82_probes::p6_const_availability_lattice.rs::1",
-  "panel::202608072330_the-numeral-canon-panel::82_probes::p6_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p8_binding_time_ladder.sh::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p8_binding_time_output.txt::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p3d_bad_straddling_dead_code.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p3d_structural_permission.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p7_bad_straddling_const.rs::1",
+  "panel::202608072330_the-numeral-canon-panel::82_probes::p7_window_from_outside_the_typestate.rs::1",
 ]
-control = "None was run as a case that had to fail, and the shape is a compiled lattice over four constructions where the four outcomes differ from one another, which is itself the separation: four constructions reported as binding at one time would say the instrument cannot distinguish them. That is weaker than a planted case and it is what there is."
-standing = "uncontrolled"
-note = "Marked sound rather than defective on a judgement, and this is the row in this file whose control I would most expect a second reader to call insufficient. The four outcomes differing is a fact about the four constructions and does not establish that the instrument would have reported a fifth binding time had one existed."
+control = "Every rung compiles a licensed declaration beside the offending one, so the case that had to fail is present four times over and fires four times: refused at type check where the bound is structural, accepted at type check and refused at codegen where the const sits in a non-generic function, accepted even at codegen while the generic is unreached and refused the moment it is reached, and refused at type check where the const is attached to no function at all. An instrument that could not discriminate would accept or refuse both arms of a rung, and none of the four does."
+standing = "sound"
+note = "**The row cited the wrong instrument and the standing followed from that.** It named `p6`, whose subject is the lattice of which operand subsets license an arm, and the finding here is about when a refusal fires. The instrument is `p8`, the binding-time ladder, and it carries paired arms at every rung, which is why the standing is sound rather than uncontrolled. Re-run here and reproduces its committed output exactly, on the pinned nightly. What the ladder does not establish, and this is the objection worth keeping: four constructions binding at four times is a fact about those four, and nothing here would have reported a fifth binding time had one existed."
 keywords = ["const available", "binding time", "lattice", "four constructions", "compile time", "dead code", "structural bound", "crate-level const"]
 
 [[probe]]

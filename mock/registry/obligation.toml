@@ -50,13 +50,13 @@ keywords = ["sparse", "CSR", "compressed", "adjacency", "dependency graph", "row
 
 [[obligation]]
 id = "a_spectral_partition_of_a_dependency_graph"
-need = "A spectral split of a weighted graph into groups that can run apart: the Laplacian over an adjacency the consumer already holds, the iteration that finds the Fiedler vector, and the bisection and k-way split over it. The split must be reproducible bit for bit at a fixed iteration count the consumer names."
+need = "A spectral split of a graph into groups that can run apart, taken over an operator the consumer supplies rather than over a representation arvo picks, and reproducible bit for bit at a fixed iteration count the consumer names."
 consumer = "hilavitkutin"
-why = "One named step of the plan chain, and the one that decides which work is allowed to run in parallel. Reproducibility is not a nicety here: the consumer pins the iteration count precisely so the schedule it derives stays statically analysable, and a split that moved between runs would move the schedule with it."
-gap = "**The earlier wording named the partition alone**, which is the last of the four things the consumer's own account asks for. Its foundations table gives arvo the Laplacian construction, the power iteration, the Fiedler vector and both split forms; it builds the Laplacian from its own adjacency rather than instead of arvo. So a row naming only the partition understates the surface by three quarters and omits the determinism outright, which is the property the consumer is most explicit about."
+why = "One named step of the plan chain, and the one that decides which work is allowed to run in parallel. The operator being the consumer's is the load-bearing half: it builds a symmetric Laplacian of its own because a directed one is the wrong object for partitioning, and it describes that as composition over a contract rather than as reimplementing anything. So what is owed is the contract and the split over it. Reproducibility is not a nicety either: the consumer pins the iteration count precisely so the schedule it derives stays statically analysable, and a split that moved between runs would move the schedule with it."
+gap = "**This row briefly demanded the Laplacian construction, the power iteration and both split forms, and that was wrong in the direction that matters.** It was written from a table in the consumer's `research/seed/`, which is demoted material, and reported as the consumer's design. The consumer's actual source builds its own Laplacian and says why in the file's opening comment. Reading a seed file and calling it a design is the failure of claiming what a design says without opening the design, and it inflated the one measurement op's exhaustiveness bar is checked by. Reported by an expert dispatched on a neighbouring question and verified here against committed source. What remains genuinely unstated is where the iteration-count determinism is written down: it is in the consumer's roadmap research rather than in a design document."
 topic = "arvo_identity"
 provenance = ["panel::202608072330_the-numeral-canon-panel::184_dispatcher_note_the_demand_side::#what-hilavitkutin-asks-for"]
-keywords = ["spectral", "Fiedler", "eigenvector", "partition", "graph partition", "block diagonal", "parallel groups"]
+keywords = ["spectral", "Fiedler", "eigenvector", "partition", "graph partition", "block diagonal", "parallel groups", "linear operator", "matvec", "operator contract", "deterministic", "iteration count"]
 
 [[obligation]]
 id = "a_cost_dynamic_program"
