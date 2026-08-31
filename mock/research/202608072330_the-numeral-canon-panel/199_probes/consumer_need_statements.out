@@ -1,0 +1,41 @@
+######## how many lines under mock/ name arvo, per consumer
+  hilavitkutin   lines=2080   files=314
+  vehje          lines=266    files=60
+  kolli          lines=96     files=17
+  tarina         lines=41     files=11
+
+######## the statements, quoted
+
+  -- kolli/mock/DESIGN.md.tmpl:106
+     - **A width is an exact-width arvo value**, so the bound is stated rather than commented, and a
+
+  -- kolli/mock/DESIGN.md.tmpl:109
+     The numerics come from arvo, the workspace's numeric substrate, and every crate here takes it. arvo's
+
+  -- kolli/mock/DESIGN.md.tmpl:110
+     unstable machinery stays inside arvo, so a crate naming these types needs no feature gates of its own.
+
+  -- kolli/mock/DESIGN.md.tmpl:114
+     count of cells to lend are both numbers in a public signature with a meaning and a range, and neither is
+
+  -- tarina/mock/research/canon/03-algebra.md:236
+     default. Tarina adopted one and did not notice there were two.
+
+  -- tarina/mock/research/canon/03-algebra.md:238
+     Arvo's algebra is still the intended destination. It is not adopted until its
+
+  -- tarina/mock/research/canon/03-algebra.md:244
+     A fold may be reordered or partitioned exactly where its stage's monoid is
+
+  -- hilavitkutin/mock/crates/hilavitkutin-api/DESIGN.md.tmpl:155
+     fixed-point newtype (not raw u16). `AccessMask` is the arvo-bitmask
+
+  -- hilavitkutin/mock/crates/hilavitkutin/DESIGN.md.tmpl:36
+     1. Build DAG from AccessMask overlap (arvo-bitmask). DependencyGraph
+
+  -- hilavitkutin/mock/crates/hilavitkutin/DESIGN.md.tmpl:39
+        It converts to a bidirectional CSR (forward adjacency plus a
+
+######## controls
+  a phrase that IS in kolli:      1
+  a phrase that is in no consumer: 0
