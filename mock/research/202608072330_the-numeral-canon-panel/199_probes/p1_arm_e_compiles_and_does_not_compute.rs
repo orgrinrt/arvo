@@ -39,16 +39,26 @@ pub struct Num<const W: u32>(u32);
 
 impl<const W: u32> Num<W> {
     pub const MASK: u32 = if W >= 32 { u32::MAX } else { (1u32 << W) - 1 };
-    pub fn new(v: u32) -> Self { Num(v & Self::MASK) }
+    pub fn new(v: u32) -> Self {
+        Num(v & Self::MASK)
+    }
     // Wrapping inside the declared width. Any policy would do; what matters is
     // that the value cannot silently use bits the declared width does not have.
-    pub fn cadd(self, o: Self) -> Self { Num((self.0.wrapping_add(o.0)) & Self::MASK) }
-    pub fn get(self) -> u32 { self.0 }
+    pub fn cadd(self, o: Self) -> Self {
+        Num((self.0.wrapping_add(o.0)) & Self::MASK)
+    }
+    pub fn get(self) -> u32 {
+        self.0
+    }
 }
 
-pub trait WidenInto<A> { fn widen_into(self) -> A; }
+pub trait WidenInto<A> {
+    fn widen_into(self) -> A;
+}
 impl<const A: u32, const B: u32> WidenInto<Num<B>> for Num<A> {
-    fn widen_into(self) -> Num<B> { Num(self.0) }
+    fn widen_into(self) -> Num<B> {
+        Num(self.0)
+    }
 }
 
 // --- arm E, transcribed from `35_probes/p1_fold_cannot_widen.rs:270-276` ------
@@ -69,8 +79,12 @@ pub fn arm_e(xs: &[Num<4>]) -> Num<8> {
 pub struct Cap<const C: usize>;
 
 pub const fn ceil_log2(c: usize) -> u32 {
-    let mut n = 1usize; let mut k = 0u32;
-    while n < c { n *= 2; k += 1; }
+    let mut n = 1usize;
+    let mut k = 0u32;
+    while n < c {
+        n *= 2;
+        k += 1;
+    }
     k
 }
 
@@ -78,13 +92,18 @@ pub struct Fold<const W: u32, const C: usize, const ACC: u32>;
 impl<const W: u32, const C: usize, const ACC: u32> Fold<W, C, ACC> {
     // Sufficiency, per 35 section 3.2: a sum of at most C values each below 2^W
     // is below 2^(W + ceil(log2 C)).
-    const SUFFICIENT: () =
-        assert!(ACC >= W + ceil_log2(C), "accumulator too narrow for this capacity");
+    const SUFFICIENT: () = assert!(
+        ACC >= W + ceil_log2(C),
+        "accumulator too narrow for this capacity"
+    );
     pub fn sum(xs: &[Num<W>]) -> Num<ACC> {
         let _ = Self::SUFFICIENT;
         assert!(xs.len() <= C, "more elements than the declared capacity");
         let mut acc: Num<ACC> = Num::new(0);
-        for x in xs { let w: Num<ACC> = (*x).widen_into(); acc = acc.cadd(w); }
+        for x in xs {
+            let w: Num<ACC> = (*x).widen_into();
+            acc = acc.cadd(w);
+        }
         acc
     }
 }
@@ -96,32 +115,49 @@ pub fn arm_d() -> Num<8> {
     Fold::<4, 64, 8>::sum(&xs)
 }
 
-fn exact(xs: &[Num<4>]) -> u32 { xs.iter().map(|x| x.get()).sum() }
+fn exact(xs: &[Num<4>]) -> u32 {
+    xs.iter().map(|x| x.get()).sum()
+}
 
 fn main() {
     // ARM A. 16 elements of value 15 sum to 240, which fits in 8 bits.
     let short = [Num::<4>::new(15); 16];
     let got_a = arm_e(&short).get();
     let want_a = exact(&short);
-    println!("ARM A  arm E, len 16   got={got_a} exact={want_a}  {}",
-             if got_a == want_a { "correct     (required: correct)" }
-             else { "WRONG   *** NOT AS REQUIRED ***" });
+    println!(
+        "ARM A  arm E, len 16   got={got_a} exact={want_a}  {}",
+        if got_a == want_a {
+            "correct     (required: correct)"
+        } else {
+            "WRONG   *** NOT AS REQUIRED ***"
+        }
+    );
 
     // ARM B. 32 elements of value 15 sum to 480, which does not.
     // Same function, same types, nothing recompiled. Only the length moved.
     let long = [Num::<4>::new(15); 32];
     let got_b = arm_e(&long).get();
     let want_b = exact(&long);
-    println!("ARM B  arm E, len 32   got={got_b} exact={want_b}  {}",
-             if got_b != want_b { "WRONG       (required: wrong)" }
-             else { "correct *** NOT AS REQUIRED, the probe measured nothing ***" });
+    println!(
+        "ARM B  arm E, len 32   got={got_b} exact={want_b}  {}",
+        if got_b != want_b {
+            "WRONG       (required: wrong)"
+        } else {
+            "correct *** NOT AS REQUIRED, the probe measured nothing ***"
+        }
+    );
 
     // ARM C. The derived shape at a capacity the accumulator covers:
     // 4-bit elements, capacity 32, needs 4 + 5 = 9 bits, declared 9.
     let got_c = Fold::<4, 32, 9>::sum(&long).get();
-    println!("ARM C  derived, cap 32 got={got_c} exact={want_b}  {}",
-             if got_c == want_b { "correct     (required: correct)" }
-             else { "WRONG   *** NOT AS REQUIRED ***" });
+    println!(
+        "ARM C  derived, cap 32 got={got_c} exact={want_b}  {}",
+        if got_c == want_b {
+            "correct     (required: correct)"
+        } else {
+            "WRONG   *** NOT AS REQUIRED ***"
+        }
+    );
 
     #[cfg(arm_d)]
     {
