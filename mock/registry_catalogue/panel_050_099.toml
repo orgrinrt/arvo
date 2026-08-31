@@ -64,7 +64,7 @@ first_commit = "2026-08-09"
 edited_after_supersessor = false
 canon_rows = []
 ported_this_pass = []
-note = "Not itself cited in provenance because the consolidation restates and formalises its finding; op's own standing instruction (rule 87) is that a consolidation is input rather than a citation-worthy source in its own right until the whole canon is written, so citing 53 rather than 50 is the correct current shape, not a gap. Section 5 ('the magnitude three files call unpriced has been measured the whole time') and section 4's access-width over-computation were not separately checked against the registry by this pass; flagged for a deeper follow-up sweep of unit two if one is ever done."
+note = "This note read the other way round until it was corrected, and said that citing 53 rather than 50 was the correct shape because a consolidation is input rather than a source. That is the ruling's premise and the opposite of its conclusion: ruling::the_canon_is_written_once_at_the_end holds that a consolidation is the topic's best available compression and has no standing beyond that, so a chain terminating at one has not reached anything that established the finding. The three proposal rows named above cite 53 and stop, which makes this a gap rather than a shape, and it is the class the provenance check counts. Section 5 ('the magnitude three files call unpriced has been measured the whole time') and section 4's access-width over-computation were not separately checked against the registry by this pass; flagged for a deeper follow-up sweep of unit two if one is ever done."
 
 [[item]]
 path = "51_fog_the_packed_sequence_erasure_arm.md"
