@@ -327,7 +327,9 @@ fn part_b() -> bool {
 }
 
 fn main() {
-    println!("### p3. clause 9's witness quantifier, and what the container premise's knob toggles");
+    println!(
+        "### p3. clause 9's witness quantifier, and what the container premise's knob toggles"
+    );
     println!();
     let a_ok = part_a();
     let b_ok = part_b();

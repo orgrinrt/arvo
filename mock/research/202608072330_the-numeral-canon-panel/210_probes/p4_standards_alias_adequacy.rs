@@ -109,7 +109,11 @@ fn matlab_bin_required_chars(w: u32) -> u32 {
 /// What `storedInteger` must return, in bits, per the documented mapping.
 /// `None` above 64, where MATLAB documents an error rather than a type.
 fn matlab_stored_integer_required_bits(w: u32) -> Option<u32> {
-    if w > 64 { None } else { Some(rung(w)) }
+    if w > 64 {
+        None
+    } else {
+        Some(rung(w))
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -125,9 +129,7 @@ fn ieee_exponent_field(k: u32) -> Option<u32> {
         128 => Some(15),
         // "in general for any multiple of 32 bits of at least 128 bits",
         // w = round(4 * log2(k)) - 13.
-        _ if k >= 128 && k % 32 == 0 => {
-            Some((4.0f64 * (k as f64).log2()).round() as u32 - 13)
-        }
+        _ if k >= 128 && k % 32 == 0 => Some((4.0f64 * (k as f64).log2()).round() as u32 - 13),
         _ => None,
     }
 }
