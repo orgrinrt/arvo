@@ -1,0 +1,12 @@
+
+running 7 tests
+test no_alloc_enforcer_false_positives_on_an_identifier_beginning_with_the_word ... ok
+test no_alloc_enforcer_fires_inside_a_string_literal_and_a_block_comment ... ok
+test no_alloc_enforcer_misses_string_at_column_zero ... ok
+test no_std_enforcer_misses_a_renaming_import_and_a_braced_one ... ok
+test no_std_enforcer_misses_every_qualified_path_expression ... ok
+test the_controls_catch_what_the_lints_do_catch ... ok
+test the_false_positive_class_is_narrower_than_ending_in_the_word ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
