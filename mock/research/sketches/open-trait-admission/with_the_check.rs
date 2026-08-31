@@ -3,9 +3,18 @@ pub trait Slots {
     const MAX: i64;
     const WIDTH: u32;
     const ADMITTED: () = {
-        assert!(Self::MIN <= Self::MAX, "slot range is inverted: MIN exceeds MAX");
-        assert!(Self::WIDTH >= 1, "a declared width of zero admits no values");
-        assert!(Self::WIDTH <= 62, "declared width is wider than a slot index carries");
+        assert!(
+            Self::MIN <= Self::MAX,
+            "slot range is inverted: MIN exceeds MAX"
+        );
+        assert!(
+            Self::WIDTH >= 1,
+            "a declared width of zero admits no values"
+        );
+        assert!(
+            Self::WIDTH <= 62,
+            "declared width is wider than a slot index carries"
+        );
     };
 }
 pub const fn slot_count<S: Slots>() -> i64 {
@@ -21,4 +30,6 @@ impl Slots for Rogue {
     const WIDTH: u32 = 63;
 }
 
-fn main() { println!("{}", slot_count::<Rogue>()); }
+fn main() {
+    println!("{}", slot_count::<Rogue>());
+}

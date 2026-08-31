@@ -343,9 +343,39 @@ Slot indices are carried as signed 64-bit integers, so the design admits declare
 through 62 bits**. The count of representable slots is `radix^width` and it is what runs out first: at
 62 bits that is 4611686018427387904 and fits, at 63 it is 9223372036854775808 and does not.
 
-**`Slots` is implemented at the admitted widths and nowhere else.** `Signed<63>` has no impl, so every
-use of it is a trait-bound error at the use site. There is no guard inside a function, because a guard
-is a thing that can be deleted and an absent impl is not.
+**This crate implements `Slots` at the admitted widths and at no other width.** `Signed<63>` has no
+impl, so every use of it is a trait-bound error at the use site. There is no guard inside a function,
+because a guard is a thing that can be deleted and an absent impl is not.
+
+**The trait itself is open and is not sealed.** A numeral wanting a slot range that is neither of the
+two shipped shapes has to be able to supply one, and
+`proposal::the_concept_is_closed_and_the_inventory_is_open` is ratified through the format spine. So
+the sentence above is about what this crate ships and says nothing about what exists: an outside
+crate may implement `Slots`, and the contracts table above lists `Signed` and `Unsigned` as examples
+for that reason.
+
+**An earlier version of this document claimed the impls existed at those widths and nowhere else.**
+That was false about an open trait, and nothing enforced it. It is recorded rather than quietly
+replaced because the same sentence appeared three times in two files and each reading of it was a
+claim that something was total when nothing was checking.
+
+### What an outside implementor owes, and what checks it
+
+The same proposition says a new instance earns admission by **supplying the concept's obligations**,
+and that closing the concept while opening the inventory is what makes admission **a check rather
+than a negotiation**. So the obligations are checked rather than requested.
+
+A slot range is admitted when its lowest index does not exceed its highest, and when the width it
+declares is one the range can carry. An implementor supplying an inverted range has not supplied the
+obligations, and **that is refused at compile time** rather than producing a negative count at
+runtime.
+
+The refusal reaches implementors this crate cannot see, which is what makes it a check on the concept
+rather than on the two shapes shipped with it.
+
+**What it does not do is catch an incoherence no obligation names.** It refuses what the obligations
+state and nothing further, so the obligations are the design decision and the mechanism is only how
+they are enforced.
 
 `#[diagnostic::on_unimplemented]` carries the message: the bound, and why the bound is where it is. A
 reader gets the same sentence a refusal would have given, from a stable attribute rather than a
