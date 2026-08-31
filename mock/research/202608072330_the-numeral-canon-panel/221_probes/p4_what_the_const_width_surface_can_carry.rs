@@ -221,7 +221,11 @@ fn compile(dir: &std::path::Path, arm: &Arm, gated: bool, emit: Emit) -> (bool, 
         .arg("--crate-type")
         .arg("rlib")
         .arg("--emit")
-        .arg(if emit == Emit::Codegen { "link" } else { "metadata" })
+        .arg(if emit == Emit::Codegen {
+            "link"
+        } else {
+            "metadata"
+        })
         .arg("-o")
         .arg(dir.join(format!(
             "{}_{}_{}.out",
@@ -246,7 +250,9 @@ fn main() {
     std::fs::create_dir_all(&dir).unwrap();
 
     println!("### p4. what a const generic width surface carries on the pinned nightly");
-    println!("### the bar is the ungated column: `the_unstable_machinery_does_not_reach_a_consumer`");
+    println!(
+        "### the bar is the ungated column: `the_unstable_machinery_does_not_reach_a_consumer`"
+    );
     println!();
 
     // Four cells per arm: gated or not, crossed with which emission.
@@ -298,11 +304,31 @@ fn main() {
     println!("CONTROLS");
     for (label, ok, req) in [
         ("C1  the baseline compiles ungated", *a1u, "compiles"),
-        ("C2  some arm is refused ungated", any_ungated_failure, "a refusal"),
-        ("C3  some ungated refusal is rescued by the gate", gate_rescues, "rescued"),
-        ("C4  the broken arm fails in both columns", !*c4u && !*c4g, "refused twice"),
-        ("C5  option 7's assertion refuses a violating width", !*c5u && !*c5g, "refused twice"),
-        ("C5b it is refused under codegen specifically", !*c5cg, "refused"),
+        (
+            "C2  some arm is refused ungated",
+            any_ungated_failure,
+            "a refusal",
+        ),
+        (
+            "C3  some ungated refusal is rescued by the gate",
+            gate_rescues,
+            "rescued",
+        ),
+        (
+            "C4  the broken arm fails in both columns",
+            !*c4u && !*c4g,
+            "refused twice",
+        ),
+        (
+            "C5  option 7's assertion refuses a violating width",
+            !*c5u && !*c5g,
+            "refused twice",
+        ),
+        (
+            "C5b it is refused under codegen specifically",
+            !*c5cg,
+            "refused",
+        ),
     ] {
         println!(
             "  {label:<50} {:>11}  required={req}",
