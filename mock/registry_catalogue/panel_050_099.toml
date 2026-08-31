@@ -722,18 +722,23 @@ note = "This unit's chain-machinery closure mechanism (R11's citation of 76/77) 
 [[item]]
 path = "91_ringer_entailment_check_on_the_derived_laws_consolidation.md"
 unit = "derived_laws"
-claims = ["Entailment check on 90, per the pattern established by 64 and 75."]
-verdict = "exploration"
-confidence = 0.4
-reason = "Not read this pass. Given the established pattern that entailment-check files are the highest-value files to read directly (found genuine gaps in both 64 and 75), this is flagged as the single highest-priority unread file remaining in the 76-99 range at the point this pass ended."
+claims = [
+  "Finding 1: R8's own text conflates two of 82's separate honesty notes about two different sets of three instances, understating a real cross-persona convergence (76, 77, 82) and overstating 82's own single-author internal set.",
+  "Finding 2: 76's explicitly-flagged, falsifiable partial-order candidate for the strategy space, checked in all three places 90 would carry it forward and confirmed absent from all three, despite being exactly the shape of thing 90's own section 6 exists to hand to the next unit.",
+  "Finding 3: op's file 88 is under-cited relative to its own stated governing status, bounded as changing nothing 90 currently carries.",
+  "The anchor diff (the part of an entailment check most likely to fail silently) came back clean.",
+]
+verdict = "mixed"
+confidence = 0.92
+reason = "Fully read this pass, third confirmation of the pattern that entailment-check files are the highest-value files in this panel to read directly. Finding 2 turned out already resolved: Q41 in the registry carries the exact candidate, in language nearly matching 91's own quotation of 76, including further engagement (signedness deciding the answer, and a later attack). Finding 1 was real and uncorrected in 90's own committed text, and the existing registry note on R8 was itself wrong (claimed 90 self-repaired the error, which it does not); fixed this pass. Finding 3 needs no action per its own author's verdict."
 superseded_by = []
 supersedes = []
-conflicts_with = []
+conflicts_with = ["proposal::a_trajectory_condition_lifts_into_a_declaration_exactly_when_it_survives_closure's prior note, which incorrectly claimed 90 self-repaired the R8 misattribution"]
 first_commit = "2026-08-13"
 edited_after_supersessor = false
-canon_rows = []
-ported_this_pass = false
-note = "GENUINE GAP IN THIS PASS'S COVERAGE, not a judgement that the file is low-value. Recommended as the first file for whoever continues this catalogue past file 90."
+canon_rows = ["question::are_strategies_partially_ordered_by_chain_laws"]
+ported_this_pass = true
+note = "The registry's own prior note being wrong (not just incomplete) is itself worth flagging: a fix propagated through the port process can be inaccurate in a way that reads as more authoritative than the source it claims to summarise, exactly the failure this whole cataloguing pass exists to catch, this time inside the registry rather than inside the panel."
 
 [[item]]
 path = "92_fog_pricing_the_reassociation.md"
