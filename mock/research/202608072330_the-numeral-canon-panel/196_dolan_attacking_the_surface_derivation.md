@@ -794,9 +794,13 @@ reason to look. Nobody has looked, and the reason nobody has is a sentence in a 
 **What the corpus's "absorption" collision has actually cost.** Three senses, twenty-nine occurrences,
 no demonstrated victim. It is a hazard I can name and not a defect I can price.
 
-**Whether the additive accumulator row's region is right.** I took `W in 1..=24` and `C in 1..=64`
-from `35`'s description of `p8`'s sufficiency sweep and `C` to 65536 from `p8_scale_check.rs`, both as
-`35` reports them. I did not run either probe. Whoever writes the row runs them.
+**Whether the additive accumulator row's region is right. Attacked in section 8, and partly
+closed.** I took `W in 1..=24` and `C in 1..=64` from `35`'s description of `p8`'s sufficiency
+sweep and `C` to 65536 from `p8_scale_check.rs`, and I did not re-run either. What section 8 did
+run establishes the part that turned out to matter more: the formula is expressible **gate-free
+as one artifact** only when the capacity is carried as a type, which is a narrowing of the row
+rather than a change to its numbers. The swept ranges are still `35`'s and still unverified by
+me, and whoever writes the row re-runs them.
 
 **Hazard one: the deleted tier is one grep away.** Any consumer clone that has built carries the
 deleted arvo crates under `mock/target/` and in `~/.cargo/git/checkouts/`. A probe grepping a consumer
