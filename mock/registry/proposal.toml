@@ -468,8 +468,8 @@ topic = "validation"
 says = "At derivation, compile-time, per type: the declared representation is checked through its executable maps, exhaustively at a model width. At ingest, runtime, per datum: bits arriving without their construction history pass a membership door that is a pure function of the type's parameters and the bits. Between doors nothing checks and nothing needs to. A property a representation declares about itself counts only where a check ties it to the maps; a declared constant nothing reads is a comment with a type."
 because = "The two acts have different units, different times and different subjects, so one mechanism cannot serve both. The last clause is the same failure the derived-laws topic found one coordinate up, where an author-written law marker is a declaration checked by nothing, and it is the reason a declaration has to be tied to the maps rather than trusted."
 note = "One expert, and it contains an open question of op's: whether both acts are wanted, and where."
-gap = "Whether both acts are wanted, and where, is op's and is unanswered."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::590"]
+gap = "Whether both acts are wanted, and where, is op's and is unanswered. Two later, independent cold derivations on the derived-laws topic (76, 77) both built only the compile-time, per-type mechanism for a law and reported it as though it settled what op's validate verb means there, self-flagged by one as a real gap rather than a disagreement to resolve: whether a law is re-checked per incoming value at runtime is the identical open question, applying to a law with the same force it applies to a representation."
+provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::590", "panel::202608072330_the-numeral-canon-panel::76_willsey_derived_laws_derived_cold::334"]
 keywords = ["validation", "derivation", "ingest", "membership door", "declared constant", "maps", "model width", "N17"]
 
 [[proposal]]
