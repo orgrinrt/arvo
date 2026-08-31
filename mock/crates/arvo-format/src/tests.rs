@@ -16,14 +16,11 @@ use crate::ambient::{Ambient, BinaryRationals, DecimalRationals, UnsignedBinaryR
 use crate::format::{
     contains, has_additive_identity, radix, smallest_step_exponent, step_exponent, Format,
 };
-use crate::overflow::{
-    Overflow, Policy, Saturate, Wrap, SHIPPED_POLICIES,
-};
+use crate::overflow::{Overflow, Policy, Saturate, Wrap, SHIPPED_POLICIES};
 use crate::points::{Biased, Floating, Integer, UFixed};
 use crate::quantum::{exponent_at, is_constant_family, Constant, Indexed, Quantum};
 use crate::rounding::{
-    Ceil, Floor, HalfEven, HalfUp, Mode, Rounding, Stochastic,
-    TowardZero, ALL_MODES,
+    Ceil, Floor, HalfEven, HalfUp, Mode, Rounding, Stochastic, TowardZero, ALL_MODES,
 };
 use crate::slots::{slot_count, slot_in_range, Signed, Slots, Unsigned};
 
@@ -232,7 +229,6 @@ fn the_rounding_vocabulary_is_exactly_six_names() {
     assert_eq!(<Stochastic as Rounding>::MODE, Mode::Stochastic);
 }
 
-
 #[test]
 fn the_shipped_overflow_policies_are_three_and_distinct() {
     assert_eq!(SHIPPED_POLICIES.len(), 3);
@@ -244,7 +240,6 @@ fn the_shipped_overflow_policies_are_three_and_distinct() {
         }
     }
 }
-
 
 /// A user-defined overflow policy, which is what an open inventory means.
 ///

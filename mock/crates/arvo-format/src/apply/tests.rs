@@ -13,13 +13,11 @@
 
 use crate::adapt::{Adapt, Signature};
 use crate::apply::{
-    Dither, Exact, adapt, complete_slot, panic_on_inexact, panic_on_overflow, round_slot,
+    adapt, complete_slot, panic_on_inexact, panic_on_overflow, round_slot, Dither, Exact,
 };
-use crate::overflow::{Clamp, Policy, SHIPPED_POLICIES, Saturate, Wrap};
+use crate::overflow::{Clamp, Policy, Saturate, Wrap, SHIPPED_POLICIES};
 use crate::points::Integer;
-use crate::rounding::{
-    ALL_MODES, Ceil, Floor, HalfEven, HalfUp, Mode, Stochastic, TowardZero,
-};
+use crate::rounding::{Ceil, Floor, HalfEven, HalfUp, Mode, Stochastic, TowardZero, ALL_MODES};
 
 /// Every position from well below a small window to well above it, at every
 /// eighth, so ties and both off-grid sides are covered rather than sampled.
@@ -53,9 +51,15 @@ fn the_control_the_sweep_reaches_both_regions_and_both_sides() {
             above += 1;
         }
     }
-    assert!(off_grid > 0, "no off-grid position, so rounding is untested");
+    assert!(
+        off_grid > 0,
+        "no off-grid position, so rounding is untested"
+    );
     assert!(ties > 0, "no tie, so the tie rules are untested");
-    assert!(below > 0 && above > 0, "the sweep does not leave the window on both sides");
+    assert!(
+        below > 0 && above > 0,
+        "the sweep does not leave the window on both sides"
+    );
 }
 
 // --- 1. the map is total -----------------------------------------------------
@@ -166,7 +170,10 @@ fn wrapping_inverts_a_specific_pair_and_the_witness_is_named() {
     let over = complete_slot(Policy::Wrap, MAX5 + 1, MIN5, MAX5);
     assert_eq!(hi, MAX5);
     assert_eq!(over, MIN5);
-    assert!(over < hi, "wrapping did not invert the pair at the boundary");
+    assert!(
+        over < hi,
+        "wrapping did not invert the pair at the boundary"
+    );
 }
 
 // --- 4. determinism, measured by varying the dither -------------------------
@@ -245,7 +252,10 @@ fn each_directed_mode_moves_every_off_grid_position_its_own_way() {
         if e.slot() < 0 {
             assert_eq!(toward, up, "toward zero should rise on a negative position");
         } else {
-            assert_eq!(toward, down, "toward zero should fall on a positive position");
+            assert_eq!(
+                toward, down,
+                "toward zero should fall on a positive position"
+            );
         }
     }
 }
