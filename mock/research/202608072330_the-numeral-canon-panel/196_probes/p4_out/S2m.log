@@ -1,0 +1,203 @@
+error[E0080]: evaluation panicked: assertion failed: <C3 as Store<u8>>::SLOTS == <C3 as PosVal>::VAL
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:121:25
+    |
+121 |         const _: () = { assert!(<$c as Store<u8>>::SLOTS == <$c as PosVal>::VAL); };
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+...
+130 | slots_agree!(C1);  slots_agree!(C2);  slots_agree!(C3);  slots_agree!(C4);
+    |                                       ---------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `slots_agree` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C3 as Store<u8>>::Shape>() ==
+                  <C3 as PosVal>::VAL as usize
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:125:13
+    |
+125 | /             assert!(core::mem::size_of::<<$c as Store<u8>>::Shape>()
+126 | |                     == <$c as PosVal>::VAL as usize);
+    | |____________________________________________________^ evaluation of `_` failed here
+...
+130 |   slots_agree!(C1);  slots_agree!(C2);  slots_agree!(C3);  slots_agree!(C4);
+    |                                         ---------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `slots_agree` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: <C5 as Store<u8>>::SLOTS == <C5 as PosVal>::VAL
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:121:25
+    |
+121 |         const _: () = { assert!(<$c as Store<u8>>::SLOTS == <$c as PosVal>::VAL); };
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+...
+131 | slots_agree!(C5);  slots_agree!(C7);  slots_agree!(C13); slots_agree!(C16);
+    | ---------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `slots_agree` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C5 as Store<u8>>::Shape>() ==
+                  <C5 as PosVal>::VAL as usize
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:125:13
+    |
+125 | /             assert!(core::mem::size_of::<<$c as Store<u8>>::Shape>()
+126 | |                     == <$c as PosVal>::VAL as usize);
+    | |____________________________________________________^ evaluation of `_` failed here
+...
+131 |   slots_agree!(C5);  slots_agree!(C7);  slots_agree!(C13); slots_agree!(C16);
+    |   ---------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `slots_agree` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: <C7 as Store<u8>>::SLOTS == <C7 as PosVal>::VAL
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:121:25
+    |
+121 |         const _: () = { assert!(<$c as Store<u8>>::SLOTS == <$c as PosVal>::VAL); };
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+...
+131 | slots_agree!(C5);  slots_agree!(C7);  slots_agree!(C13); slots_agree!(C16);
+    |                    ---------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `slots_agree` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C7 as Store<u8>>::Shape>() ==
+                  <C7 as PosVal>::VAL as usize
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:125:13
+    |
+125 | /             assert!(core::mem::size_of::<<$c as Store<u8>>::Shape>()
+126 | |                     == <$c as PosVal>::VAL as usize);
+    | |____________________________________________________^ evaluation of `_` failed here
+...
+131 |   slots_agree!(C5);  slots_agree!(C7);  slots_agree!(C13); slots_agree!(C16);
+    |                      ---------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `slots_agree` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: <C13 as Store<u8>>::SLOTS == <C13 as PosVal>::VAL
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:121:25
+    |
+121 |         const _: () = { assert!(<$c as Store<u8>>::SLOTS == <$c as PosVal>::VAL); };
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `_` failed here
+...
+131 | slots_agree!(C5);  slots_agree!(C7);  slots_agree!(C13); slots_agree!(C16);
+    |                                       ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `slots_agree` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C13 as Store<u8>>::Shape>() ==
+                  <C13 as PosVal>::VAL as usize
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:125:13
+    |
+125 | /             assert!(core::mem::size_of::<<$c as Store<u8>>::Shape>()
+126 | |                     == <$c as PosVal>::VAL as usize);
+    | |____________________________________________________^ evaluation of `_` failed here
+...
+131 |   slots_agree!(C5);  slots_agree!(C7);  slots_agree!(C13); slots_agree!(C16);
+    |                                         ----------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `slots_agree` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C3 as Store<u8>>::Shape>() ==
+                  <C3 as PosVal>::VAL as usize * core::mem::size_of::<u8>()
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:205:13
+    |
+205 | /             assert!(core::mem::size_of::<<$c as Store<u8>>::Shape>()
+206 | |                     == <$c as PosVal>::VAL as usize * core::mem::size_of::<u8>());
+    | |_________________________________________________________________________________^ evaluation of `_` failed here
+...
+218 |   packs_like_an_array!(C1);  packs_like_an_array!(C2);  packs_like_an_array!(C3);
+    |                                                         ------------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `packs_like_an_array` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C3 as Store<u64>>::Shape>() ==
+                  <C3 as PosVal>::VAL as usize * core::mem::size_of::<u64>()
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:209:13
+    |
+209 | /             assert!(core::mem::size_of::<<$c as Store<u64>>::Shape>()
+210 | |                     == <$c as PosVal>::VAL as usize * core::mem::size_of::<u64>());
+    | |__________________________________________________________________________________^ evaluation of `_` failed here
+...
+218 |   packs_like_an_array!(C1);  packs_like_an_array!(C2);  packs_like_an_array!(C3);
+    |                                                         ------------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `packs_like_an_array` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C5 as Store<u8>>::Shape>() ==
+                  <C5 as PosVal>::VAL as usize * core::mem::size_of::<u8>()
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:205:13
+    |
+205 | /             assert!(core::mem::size_of::<<$c as Store<u8>>::Shape>()
+206 | |                     == <$c as PosVal>::VAL as usize * core::mem::size_of::<u8>());
+    | |_________________________________________________________________________________^ evaluation of `_` failed here
+...
+219 |   packs_like_an_array!(C4);  packs_like_an_array!(C5);  packs_like_an_array!(C7);
+    |                              ------------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `packs_like_an_array` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C5 as Store<u64>>::Shape>() ==
+                  <C5 as PosVal>::VAL as usize * core::mem::size_of::<u64>()
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:209:13
+    |
+209 | /             assert!(core::mem::size_of::<<$c as Store<u64>>::Shape>()
+210 | |                     == <$c as PosVal>::VAL as usize * core::mem::size_of::<u64>());
+    | |__________________________________________________________________________________^ evaluation of `_` failed here
+...
+219 |   packs_like_an_array!(C4);  packs_like_an_array!(C5);  packs_like_an_array!(C7);
+    |                              ------------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `packs_like_an_array` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C7 as Store<u8>>::Shape>() ==
+                  <C7 as PosVal>::VAL as usize * core::mem::size_of::<u8>()
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:205:13
+    |
+205 | /             assert!(core::mem::size_of::<<$c as Store<u8>>::Shape>()
+206 | |                     == <$c as PosVal>::VAL as usize * core::mem::size_of::<u8>());
+    | |_________________________________________________________________________________^ evaluation of `_` failed here
+...
+219 |   packs_like_an_array!(C4);  packs_like_an_array!(C5);  packs_like_an_array!(C7);
+    |                                                         ------------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `packs_like_an_array` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C7 as Store<u64>>::Shape>() ==
+                  <C7 as PosVal>::VAL as usize * core::mem::size_of::<u64>()
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:209:13
+    |
+209 | /             assert!(core::mem::size_of::<<$c as Store<u64>>::Shape>()
+210 | |                     == <$c as PosVal>::VAL as usize * core::mem::size_of::<u64>());
+    | |__________________________________________________________________________________^ evaluation of `_` failed here
+...
+219 |   packs_like_an_array!(C4);  packs_like_an_array!(C5);  packs_like_an_array!(C7);
+    |                                                         ------------------------ in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `packs_like_an_array` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C13 as Store<u8>>::Shape>() ==
+                  <C13 as PosVal>::VAL as usize * core::mem::size_of::<u8>()
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:205:13
+    |
+205 | /             assert!(core::mem::size_of::<<$c as Store<u8>>::Shape>()
+206 | |                     == <$c as PosVal>::VAL as usize * core::mem::size_of::<u8>());
+    | |_________________________________________________________________________________^ evaluation of `_` failed here
+...
+220 |   packs_like_an_array!(C13); packs_like_an_array!(C16);
+    |   ------------------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `packs_like_an_array` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C13 as Store<u64>>::Shape>() ==
+                  <C13 as PosVal>::VAL as usize * core::mem::size_of::<u64>()
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:209:13
+    |
+209 | /             assert!(core::mem::size_of::<<$c as Store<u64>>::Shape>()
+210 | |                     == <$c as PosVal>::VAL as usize * core::mem::size_of::<u64>());
+    | |__________________________________________________________________________________^ evaluation of `_` failed here
+...
+220 |   packs_like_an_array!(C13); packs_like_an_array!(C16);
+    |   ------------------------- in this macro invocation
+    |
+    = note: this error originates in the macro `assert` which comes from the expansion of the macro `packs_like_an_array` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to 16 previous errors
+
+For more information about this error, try `rustc --explain E0080`.

@@ -1,0 +1,11 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p4_storage_from_the_capacity_type.rs
+
+S1S2S3   <none>       required=COMPILE  got=COMPILE  as required
+S2m      mutate       required=REFUSE   got=REFUSE   as required
+           error[E0080]: evaluation panicked: assertion failed: <C3 as Store<u8>>::SLOTS == <C3 as PosVal>::VAL
+           error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C3 as Store<u8>>::Shape>() ==
+           error[E0080]: evaluation panicked: assertion failed: <C5 as Store<u8>>::SLOTS == <C5 as PosVal>::VAL
+S4       arm_s4       required=REFUSE   got=REFUSE   as required
+           error[E0277]: the trait bound `NoRow: Store<u8>` is not satisfied
+           error: aborting due to 1 previous error

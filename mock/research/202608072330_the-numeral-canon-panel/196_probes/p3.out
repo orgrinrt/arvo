@@ -1,0 +1,17 @@
+### rustc 1.98.0-nightly (57d06900f 2026-05-27)
+### src: p3_composing_p7_and_p8.rs
+
+A1A2   <none>           required=COMPILE  got=COMPILE  as required
+A2m    mutate           required=REFUSE   got=REFUSE   as required
+         error[E0080]: evaluation panicked: assertion failed: <(Num<N4>, C3) as AccWidth>::W == 4 + lg_ref(<C3 as PosVal>::VAL)
+         error[E0080]: evaluation panicked: assertion failed: <(Num<N4>, C5) as AccWidth>::W == 4 + lg_ref(<C5 as PosVal>::VAL)
+B1     arm_b1           required=REFUSE   got=REFUSE   as required
+         error: generic parameters may not be used in const operations
+         error: aborting due to 1 previous error
+B2     arm_b2           required=REFUSE   got=REFUSE   as required
+         error: generic parameters may not be used in const operations
+         error: aborting due to 1 previous error
+C1     arm_c1           required=COMPILE  got=COMPILE  as required
+C2     arm_c2           required=COMPILE  got=COMPILE  as required
+
+### logs under p3_out/

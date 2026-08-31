@@ -1,0 +1,26 @@
+error[E0277]: the trait bound `NoRow: Store<u8>` is not satisfied
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:190:26
+    |
+190 | pub fn s4_uncovered() -> <NoRow as Store<u8>>::Shape { unimplemented!() }
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+    |
+help: the trait `Store<u8>` is not implemented for `NoRow`
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:186:1
+    |
+186 | pub struct NoRow;
+    | ^^^^^^^^^^^^^^^^
+help: the following other types implement trait `Store<T>`
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:83:1
+    |
+ 83 | impl<T> Store<T> for One {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^ `One`
+...
+ 87 | impl<T, N: Store<T>> Store<T> for Twice<N> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Twice<N>`
+...
+ 92 | impl<T, N: Store<T>> Store<T> for TwiceP1<N> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `TwiceP1<N>`
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0277`.
