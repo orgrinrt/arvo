@@ -351,3 +351,144 @@ signed numeral. The dropped-bit count, `Ff - Fc`, is the axis the sweep actually
 walked and no `dimension` row declares it; the same gap is already recorded at
 `proposal.toml:1616` about a staged narrowing's intermediate width, so this is a
 second instance of one missing axis rather than a new complaint.
+
+### 5.2 The two keyed rounding members do differ, and the direction is not uniform
+
+`question::does_the_position_keyed_members_monotonicity_failure_rate_differ_from_the_independent_members`.
+The row says two source files each hold one count, neither measured the other
+member under the same construction, and what would decide it is a sweep with one
+construction held fixed across both members, "which nobody has built".
+
+**The comparability problem is the question, and it has a named fix.** One member
+is deterministic and one is random, so a realised count for one and a realised
+count for the other are not the same kind of number.
+`129_probes/x1_output.txt` reports 7 violations over 40 consecutive pairs for the
+position-keyed member: an exact count of a deterministic process at one phase. An
+independent member has no such number, it has a distribution. The statistic that
+puts them on one footing is **expected monotonicity violations per consecutive
+pair**, with the deterministic member averaged over the dither's phase.
+
+**Answer: they differ, position-keying is worse on 57 of the 60 cells where either
+is nonzero, in a narrow band of 1.20 to 2.40 times the independent rate, and it is
+exactly zero on the other 3, where the independent member is not.** That last part
+is the result. A canon sentence saying one keying is less monotone than the other
+would be false, because there is a region where the position-keyed member is
+strictly better, and the region is nameable at compile time.
+
+The mechanism is the joint and not the marginal. The golden-ratio additive
+recurrence fixes `u_{i+1} - u_i mod m` to two values out of `m`; `a2_output.txt`
+Part 2 prints 2 of 8, 2 of 16, 2 of 32 and 2 of 64 over 256 steps. An independent
+member spreads over all `m` increments. Once the marginals are equalised the
+entire difference is that diagonal.
+
+**Equalising the marginals is where I got it wrong first, and the control caught
+it.** The first phase model advanced the recurrence's index, `u_i(p) = key(i + p)`.
+`a2_output.txt` Part 0 reports that model's phase-averaged marginal disagreeing
+with `j/m` at 14 of 16 residues at `m = 16`, because sixteen successive terms of a
+golden-ratio walk are equidistributed only asymptotically. Under that model the
+Part 1 numbers were comparing a biased member against an unbiased one, which is
+comparing two rounding schemes rather than two keyings. The model that works makes
+phase a uniform offset on the threshold, `u_i(p) = (key(i) + p) mod m`, which is
+exactly uniform per point and leaves the consecutive increment untouched. Both
+models are still in the file and both still run, so the paragraph can be checked
+rather than believed.
+
+The three zero cells are `d = 3, delta = 5` at all three ramp lengths, and the
+mechanism is arithmetic rather than luck. At `m = 8` with step 5 the residues run
+`0, 5, 2, 7, 4, 1, 6, 3`, and the only pairs sharing a coarse cell need the key to
+move from at most 1 up to at least 7, or from 0 up to at least 6. The recurrence's
+increments at `m = 8` are 4 and 5, and neither bridges either gap. So the
+position-keyed member is exactly monotone there and the independent member is not,
+and both facts are computable from `d` and `delta` alone, which is a const
+predicate an arm can be gated on.
+
+The remaining controls fire: shared threshold reports exactly zero on all 114 rows,
+which is the known-true case and the check that the violation detector works at
+all; an adversarial alternating key reports 0.44 against 0.14, so the counter can
+report a high rate; a decreasing key reports zero for a different structural reason
+than the shared threshold, which separates a real zero from a sleeping arm; and at
+`delta = m` every member is zero, because no consecutive pair shares a coarse cell.
+
+```
+holds for: access_pattern: access pattern = sequential
+           rounding: rounding = stochastic
+           radix: radix = 2
+           threads: threads = 1
+           toolchain: rustc = 1.98.0-nightly (57d06900f 2026-05-27)
+           toolchain: edition = 2024
+           build_profile: debug-assertions = off
+```
+
+The dropped-bit count ran over 2 to 6, the ramp step over `{1, 2, 3, 5, 7, m/2, m,
+m+1}` and the ramp length over `{16, 41, 128}`, and none of the three is a declared
+axis, so none of them appears above. `operation` is unlisted because the
+narrowing is not a value in the declared operation vocabulary and `operation any`
+is declared inadmissible by `dimension::operation`'s own grammar; the notation
+cannot express this row's operation and I am not inventing a value to fill it.
+`signedness` is unlisted: the ramp is non-negative throughout.
+
+### 5.3 The footprint is observable, and it is observable at const time
+
+`question::the_container_premise`. Three of its own options are listed and the
+first is the live one: footprint is observable, under which the clause saying the
+realisation is not part of identity is false as written.
+
+**Answer: observable, through exactly one observation, and that observation is
+const.** The first half is a third instance of what
+`the_carrier_is_observable_through_the_ambient_layout_observation_alone` already
+measured, on a construction of my own: `a3_output.txt` separates `N13U16` from
+`N13U32` at 2 bytes against 4 and at alignment 2 against 4, while roundtrip,
+wrapping addition, saturating addition, wrapping multiplication, saturating
+multiplication and exclusive-or all report 0 differences over all 8192 values and
+all 67108864 ordered pairs. Two newtypes over the same carrier are not separated,
+so the observation reads the carrier rather than type identity, and a zero-sized
+marker reports 0, so it reads real layout.
+
+**The second half is not in any row I could find and is the part worth taking
+forward.** `core::mem::size_of` is a const function, so the footprint is available
+where a predicated arm is allowed to read. The probe compiles two `const` items
+whose values came from `size_of`, so the claim is a compile result rather than an
+argument, and `ruling::the_predicate_is_whatever_is_available_at_const_time`
+(`ruling.toml:892`) is the sentence that makes it decisive rather than a
+curiosity: under it, an axis available at const time is a predicate, and under
+`ruling::never_a_runtime_check_and_one_lowered_path` (`ruling.toml:949`) reading
+it costs nothing at runtime. So the container premise does not merely decide
+whether a sentence about identity is true; it hands the design a gateable axis.
+
+The probe uses `core::mem` rather than `std::mem` on purpose, because the question
+is whether the observation reaches a `no_std` crate, and `std` would beg it.
+
+**Two dead routes on the control, both kept and both still run, because between
+them they say when a carrier is arithmetically observable at all.** The first
+mutant was an addition wrapped at the carrier width: 0 of 67108864, because two
+13-bit operands sum below `2^16` and no carrier in the pair can truncate an
+addition. The second was a multiplication wrapped at the carrier width and then
+masked to the declared width: also 0, and this one is the more instructive
+failure, because the declared-width mask is a mask of the low bits and the carrier
+mask is a wider mask of the same low bits, so the narrower absorbs the wider and
+the truncation is unobservable however large the intermediate grows. The rule that
+falls out is that the carrier is arithmetically observable only where the
+intermediate can leave the narrower carrier **and** the projection reads magnitude
+rather than low bits. The smallest such projection is saturation, and the working
+mutant is a saturating multiply with a carrier-held intermediate: 8346078 of
+67108864 pairs, 12.4 percent.
+
+```
+holds for: integer_width: I = 13
+           fraction_width: F = 0
+           signedness: signedness = unsigned
+           container: container in {u16, u32}
+           operation: operation in {encode, wrap_add, sat_add, wrap_mul, sat_mul, xor}
+           arity: arity in {1, 2}
+           alignment: alignment = aligned
+           threads: threads = 1
+           toolchain: rustc = 1.98.0-nightly (57d06900f 2026-05-27)
+           toolchain: edition = 2024
+           build_profile: debug-assertions = off
+```
+
+`alignment = aligned` is written rather than omitted for the same reason the
+existing row writes it: this is a sole occupant of its own carrier allocation and
+says nothing about a packed placement, where
+`at_shared_occupancy_no_per_element_footprint_observation_exists` goes the other
+way and I did not test it.
