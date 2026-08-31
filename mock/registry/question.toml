@@ -61,7 +61,27 @@ options = [
   "It exists and is inferred: the result numeral is derived, which keeps the join in the inference surface and keeps the negative-integer-width corner live.",
   "It exists only through an explicit conversion: a consumer converts one operand into the other's numeral first, which collapses the inference surface while keeping the operation reachable.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his, and the refusal that covers it is already recorded. This asks whether one
+operation exists in the design's operation set, which is the question he was put
+and returned:
+
+> This bears on the prior answer and isn't mine to call, sine I'm not an expert
+> or a domain specialist on maths. This is why you and the panel exist.
+
+`which_operation_set_the_design_ships` carries that verbatim and now names the
+panel. A question about whether a particular operation is in the set is downstream
+of the set, so it inherits the same answer: deriving it is the panel's, ratifying
+the result is his.
+
+The second constraint is the standards demand, filed as
+`obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`.
+It is an adequacy test rather than a preference: a convention that cannot be
+written as an alias over the primitives is a gap in the primitives. Both
+conventions op named carry an addition across differing formats, so the first
+option has to be reached with that test satisfied or not reached at all.
+'''
 topic = "the_format"
 unblocks = "A large part of one cluster has no caller if the answer is no. `23`'s words, carried in the register: \"One sentence from op collapses it.\""
 note = "Load-bearing outside its own unit: `59` records that unit two's one unconditional result rests on this being open, because under the second option addition aligns scales, alignment is a shift, and a shift is the coarsening that kills multiplication. None of that unit's five files cites it."
@@ -93,7 +113,34 @@ options = [
   "One axis: the four names are values of a single arithmetic-policy axis and the asymmetry is a wording problem in the preset table, keeping the four-name bijection with the two-by-two intact and adding no degrees of freedom.",
   "A product of several axes: the column is a product of however many policy axes exist, with the presets being named sections over it rather than a partition of it, which makes the axis list itself open.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his, and the ground for that is his own instruction about how the strategy
+material is to be read. `ruling::the_strategy_intents_are_not_clear_cut`:
+
+> And as such, it's not clear cut. You should not write these as clear cut and
+> settled. The *intent* is clear I think, but nothing about them is absolute
+> otherwise.
+
+He offered the strategy descriptions for the canon in the same breath as "though
+don't have to be; Open for discussion and exploration!" (`36`). The intent behind
+each strategy is his and is settled. How many axes the arithmetic column
+decomposes into is structure underneath that intent, and structure is what he
+opened.
+
+It is also decided by evidence rather than by preference: whether overflow policy
+and intermediate precision are independent is a fact about the design space, and
+the register already carries the preset table's asymmetry and a committed
+thirty-four-run bench family on one side of it. The third option, presets as named
+sections over an open product rather than a partition of it, is the shape
+`ruling::the_work_is_predicated_arms_composed` predicts, and no candidate has
+priced it against the other two.
+
+**This is one of the three least certain moves in this pass.** The attack on it:
+the preset set is his intent, and if the axes are what the presets are defined
+over then naming the axes names the presets. If that holds, this is his and the
+move is wrong.
+'''
 topic = "the_strategy_axis"
 unblocks = "Prior to Q6, because it decides what a wrap-or-clamp answer would be an answer about."
 note = "`25` section 8 states the one-axis reading as the genuine alternative op is choosing between rather than as refuted, which is the ground for this row's decider. `40` adds a correction the entry carries: the axis list should also carry the observable-or-not classification beside each axis, and the entry's corroboration count reads three rather than four."
@@ -146,7 +193,25 @@ options = [
   "The seam is the step set: two numerals are in one family exactly when their admitted step sets are nested, computed from the members rather than declared.",
   "A route to one family surviving all three conditions, which nobody has proposed.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his twice over. It is a mathematics question, about whether a set of shapes
+under an inclusion order has unique least upper bounds, and he has said where those
+go:
+
+> This bears on the prior answer and isn't mine to call, sine I'm not an expert
+> or a domain specialist on maths. This is why you and the panel exist.
+
+And the row already records him declining to supply his instinct as an answer: it
+is one family, and he said explicitly not to act on that, because acting on an
+instinct is how the previous panel locked itself into a shape that did not fit.
+An instinct withheld on purpose is not a decision waiting to be collected.
+
+The bound the derivation runs inside is soundness, which here means the order's
+own algebra: whichever answer holds must hold for the three conditions the register
+records, and the third option buys totality with a stated tie-break rather than
+with closure, which is a property to establish rather than a taste to pick.
+'''
 topic = "the_format"
 note = "Op's instinct is one and he said explicitly not to act on it, because acting on an instinct is how the last panel locked itself into a shape that did not fit. The register records that the question is not load-bearing where it was thought to be: `06`'s classification finds the no-determiner cell empty and coherence says it must be, so a design inferring a cross-family target picks in one impl rather than computing a least upper bound. A fork upstream of the whole question is `08`'s: whether the canonical exponent is a member of the design or its two currently-named values are the design."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q8-one-numeral-family-or-several"]
@@ -165,7 +230,39 @@ options = [
   "The width type visible to a consumer is the literal itself, with the structural nat demoted to a hidden projection.",
   "Declare the output width explicitly and check it is wide enough by a free type-level comparison, so no reverse table exists because no output is ever named computationally.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his, because the ergonomic bar this would be decided against is already stated
+in his own words, and every route is a compiled arm rather than a preference.
+
+`obligation::a_primitive_for_every_position_a_bare_number_would_take` carries the
+quote, from a consumer's design round:
+
+> We want arvo there. No bare usize other than in const generics for smoother and
+> more ergonomic api, and even there, only when truly painful otherwise.
+
+That is twice bounded and both bounds are on this question: const generics are the
+excepted position, and inside the exception the bare form is used only where the
+alternative is genuinely painful. `ruling::warms_objective_is_the_intuitive_best_choice`
+supplies the other half, that intuition is the objective and convention is its
+baseline rather than its definition.
+
+The third constraint is
+`obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`,
+an adequacy test rather than a feature: whichever crossing ships, the standard
+conventions have to be writable as first-class aliases over it, which is what the
+shipped-alias-layer option is about and is a falsifiable test on the others.
+
+Every route listed was compiled and is a real arm, and the thread's sharpest
+finding is that the ceiling belongs to neither the bridge nor the const surface but
+to the price of crossing back. That is engineering with evidence, inside a stated
+bar.
+
+**This is one of the three least certain moves in this pass.** The attack on it:
+what a consumer writes at every call site is the most visible taste surface arvo
+has, and a bar stated about bare primitives at API positions may not reach a
+question about how a width literal becomes a type-level natural.
+'''
 topic = "the_format"
 unblocks = "What a consumer writes at every arithmetic call site under the seventh option, which is outside where the ratified ergonomics bar was written to govern."
 note = "The container-derivation mechanism itself is established and is not what is open; this is the upstream question of how a written const becomes the type-level natural the derivation operates on. Every route listed was compiled and is a real arm. The sharpest finding of the thread is that the ceiling was never a property of the bridge or of the const surface: it is the price of crossing back, and a table is the only known implementation of either direction. A cross-cutting residue: whether any arrangement needs to represent a negative integer width, unresolved for every arrangement under a design keyed on integer-and-fraction width and dissolved only under the total-and-fraction keying of Q2."
@@ -198,7 +295,27 @@ options = [
   "Restrict the predicate's necessity claim to sources carrying at least two values and state the singleton case as a documented exception, which is cheaper and leaves a predicate whose necessity half is conditional.",
   "Leave it, on the argument that a numeral carrying fewer than two values is not a case any consumer reaches.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his. It asks whether a relation's defining predicate is stated over denotation
+or over declaration, which is a question about the order's algebra:
+
+> This bears on the prior answer and isn't mine to call, sine I'm not an expert
+> or a domain specialist on maths. This is why you and the panel exist.
+
+The evidence is already one-sided and is the panel's to finish rather than his to
+adjudicate. The instrument that first got it wrong is kept in the row: its shape
+list held exactly one numeral carrying fewer than two values, so the predicate was
+never offered the case that breaks it. That is a gap in a sweep, not a fork
+between intents.
+
+The third option is the one part that is not algebra, since it argues from what a
+consumer reaches for, and it sits in I11's territory where
+`ruling::there_is_no_universal_answer_take_the_win_and_gate_it` already says the
+answer is a region and a gate rather than a ruling. `03` asked for a second read
+and none has run; that read is what this owes, and it is a panel seat rather than
+his.
+'''
 topic = "the_format"
 note = "`02` names exactly two things as genuinely undetermined and op's, and this is the second; the first is whether `Precision` counts the sign digit. The third option is listed in the source so the space is not silently two-sided, was not offered by the file that raised the question, and nobody has tested its argument. `03` asked explicitly for a second read and none has run. The instrument that first got it wrong is kept: its shape list held exactly one numeral carrying fewer than two values, at the coarsest declared step in the box, so the predicate was never offered the case that breaks it."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q10-is-the-inclusion-order-s-own-predicate-amended-to-identify-shapes-denoting-the-same-value-set"]
@@ -998,7 +1115,28 @@ options = [
   "Yes: it ships with no predicate, because a predicate records where a claim was established and this one is imposed, so applying the notation would say the design may violate it everywhere unmeasured.",
   "No: the notation applies to it as to everything else.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his any more, because the thing it was waiting on has been answered. The row
+names its own precondition: what would close it is op accepting an imposed
+proposition in the canon alongside established ones, and the canon stating which
+kind each of its sentences is.
+
+He answered the general question and did not answer it in that shape. Filed as
+`ruling::a_thing_that_constrains_the_work_and_cannot_be_designed_away_is_canon`:
+
+> This is something you should decide based on the workflow and soundness and
+> validity of the canon and work. If it's a real thing that constrains the work and
+> is needed to know, it's canon
+
+So a sentence's form does not decide whether it is canon, and the predicated or
+unpredicated shape of the firewall proposition is not what settles it. What settles
+it is whether the proposition constrains the work and is needed in order to do it,
+which is a question the panel answers about the proposition. Both signers who
+examined it already agree the unpredicated form is correct rather than a gap, and
+the candidate carries the enforceability condition and the violation predicate,
+which are the parts that are predicable.
+'''
 topic = "canon_form"
 note = "Both signers who examined it agree the unpredicated form is correct rather than a gap. What is predicable is its enforceability condition and the violation predicate for candidate arms, and the candidate carries both. What would close it: op accepting an imposed proposition in the canon alongside established ones, and the canon stating which kind each of its sentences is. One signer draws the coupling explicitly: the step that closes the operation-set question is the firewall, so that question inherits whatever is decided here and they are one decision. The general form of this question is carried separately as the coordinator's item 2."
 provenance = ["panel::202608072330_the-numeral-canon-panel::OPTIONS::#q62-whether-the-firewall-s-unpredicated-form-is-what-the-canon-carries"]
@@ -1031,7 +1169,7 @@ options = [
 decider = "op"
 topic = "canon_form"
 unblocks = "The form of every canon sentence, in every topic, including the ones already written. The largest of the queue's items in reach and the cheapest to answer."
-note = "The instance is the firewall proposition, carried separately. The tenth unit couples a second half to this as one decision: whether a canon may carry a normative sentence beside established ones, its candidate marking every sentence with its kind precisely because a canon stating its partition and its licence as one kind of sentence loses the unit's main result. A further item folds in here rather than being answered on its own: whether a canon states four open domain dimensions as open or waits until they are measured, which the coordinator records as not derivable and the same question one level down. And a third, from the restoration pass: whether a canon statement may carry a measurement at all."
+note = "Recorded as answered on 2026-08-31 by the test he gave in place of the three options, filed as `ruling::a_thing_that_constrains_the_work_and_cannot_be_designed_away_is_canon`; the answer is not written here. The instance is the firewall proposition, carried separately. The tenth unit couples a second half to this as one decision: whether a canon may carry a normative sentence beside established ones, its candidate marking every sentence with its kind precisely because a canon stating its partition and its licence as one kind of sentence loses the unit's main result. A further item folds in here rather than being answered on its own: whether a canon states four open domain dimensions as open or waits until they are measured, which the coordinator records as not derivable and the same question one level down. And a third, from the restoration pass: whether a canon statement may carry a measurement at all."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#2-whether-the-canon-may-carry-a-proposition-that-has-no-predicate",
   "panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#8-the-tenth-unit-adds-four-items-and-one-of-them-is-whether-a-rule-of-the-workspace-becomes-an-intent-of-yours",
@@ -1049,7 +1187,7 @@ options = [
 decider = "op"
 topic = "canon_form"
 unblocks = "The same line in every other topic, since each candidate has drawn it by instinct and none has had it confirmed. Answering it once fixes it everywhere."
-note = "The author states his own reading and marks it as a reading rather than a finding, and says the line is his and that op may draw it elsewhere."
+note = "Recorded as answered on 2026-08-31, by the same test and the same ruling as the canon-form question above, which he answered once for both; the answer is not written here. The author states his own reading and marks it as a reading rather than a finding, and says the line is his and that op may draw it elsewhere."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#3-whether-the-rounding-candidate-s-section-5-is-canon-or-design"]
 keywords = ["canon", "design", "tier", "pairing", "mode spelling", "impossibility", "decomposition", "vacuity", "permanence"]
 
@@ -1061,7 +1199,32 @@ options = [
   "Licensing governs, and the default is not the IEEE one, with the surprise named.",
   "There is no single default and the choice is carried per concern.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his, because he has stated the rule that resolves the fork rather than leaving
+the fork open. `ruling::warms_objective_is_the_intuitive_best_choice`:
+
+> I should add that Warm does not merely imitate, its intent is to be intuitive
+> best choice for most every use case, and the intuitive part demands it mimics,
+> but it does not make it absolutely required, if mimicking is consistently just
+> worse choice.
+
+Familiarity is mimicry and licensing is the gain mimicry costs, so the fork is the
+one that ruling decides: convention is the baseline for what a user finds intuitive
+and is dropped where it is consistently the worse choice. Whether it is worse here
+is measured rather than argued, and the strategy-object topic measured it: the IEEE
+default is the one mode that is not free under either signedness, so a design
+defaulting to it has every relocation unavailable at the default.
+
+The third option, no single default carried per concern, is the shape the ratified
+`ruling::the_work_is_predicated_arms_composed` predicts, and neither candidate
+wrote it down.
+
+**This is one of the three least certain moves in this pass.** The attack on it:
+the ruling quoted is about one strategy's objective, and reading it as governing a
+crate-wide default is a widening. If that widening does not hold, the fork is a
+taste call and is his.
+'''
 topic = "rounding"
 unblocks = "Whether the rounding topic's arms are reachable at the default, which is the difference between an arm that exists and an arm anyone will ever hit."
 note = "An intent question rather than a measurement. The strategy-object topic's central result makes it sharp: the IEEE default is the one mode that is not free under either signedness, so a design defaulting to it has every relocation unavailable at the default. Familiarity and licensing point at different modes here, and the native-imitation intent pulls toward the first. The third option is the shape the ratified predicate intent would predict and neither candidate wrote it down; the coordinator adds it at `156`."
@@ -1252,7 +1415,22 @@ options = [
   "State them as open.",
   "Wait until they are measured.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his, by the same test that answers the question it was folded into. The row
+records the coordinator folding it into `may_the_canon_carry_an_unpredicated_proposition`
+on the ground that it is that question one level down, and that parent is answered
+by `ruling::a_thing_that_constrains_the_work_and_cannot_be_designed_away_is_canon`:
+
+> This is something you should decide based on the workflow and soundness and
+> validity of the canon and work. If it's a real thing that constrains the work and
+> is needed to know, it's canon
+
+Applying that test to this instance is a derivation rather than a second ruling,
+which is why the row moves rather than closing. The question to answer inside the
+bound is whether a reader needs to know a domain dimension is unmeasured in order
+to do the work, not whether an open obligation is the right kind of sentence.
+'''
 topic = "canon_form"
 note = "Handed to op by a candidate. The coordinator records it as not derivable and folds it into the unpredicated-proposition question rather than answering it, on the ground that it is the same question one level down: a canon carrying a visibly open obligation is carrying a sentence that is not an established claim."
 provenance = ["panel::202608072330_the-numeral-canon-panel::156_checkpoint_nine_the_queue_for_ops_seat::#what-i-answered-myself-as-coordinator-attackable-in-a-sentence-each"]
@@ -1306,7 +1484,30 @@ options = [
   "Within the behaviour: the cost is priced against what a consumer is told that one behaviour costs, and the licence is free there.",
   "Across the design: the behaviour itself is priced against every design that might reach for it, and is not free considered that way.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his. Both readings are true in their own region, which makes this a predicate
+to state rather than a fork to rule on, and the one ratified entry in the registry
+says so directly.
+
+`ruling::the_work_is_predicated_arms_composed`, in his words:
+
+> We explicitly reject a universal solution. That is ass. The strategies themselves
+> as a concept make a universal solution impossible by premise. We collect and
+> compound answers to specific regions where a predicate holds and write the
+> expression where it holds ... We should add a rule where all findings have to be
+> predicated, even "universal" ones, so that they are exact
+
+The licence is free within the behaviour and not free across the design. Those are
+two regions with two answers, both established, and the canon states both with the
+region each holds in. Collapsing them into one stated price is the unpredicated
+form the ratification rejects.
+
+What stays genuinely open, and is the panel's to derive, is the pricing itself: the
+source places whether any consumer wants both the root-check licence and an
+order-based construction on the same values in I11's territory, and nothing in the
+repository measures it.
+'''
 topic = "the_realisation_map"
 unblocks = "Whether the root-check licence's cost gets a single stated price or is left to the design that hosts it."
 note = "A located precision rather than a disagreement between the two files that raised it: neither has answered the other. What would decide it, per the source: whether any real consumer wants both the root-check licence and an order-based construction on the same values, which the source places in I11's territory and which nothing in the repository measures."
@@ -1377,7 +1578,31 @@ options = [
   "Position keying.",
   "Both, gated per consumer or per call site.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Not his, and the shape of the question is what he has already refused. It asks
+which single keying a whole category wants, given the two diverge and a design
+must choose. He rejected exactly that shape, on a question in the same I11
+territory, filed as `ruling::there_is_no_universal_answer_take_the_win_and_gate_it`:
+
+> Again, we don't need to settle for one universal solution, it's the anti-pattern
+> I've already named. Case by case. If commutative is void of soundness issues in
+> one case, guard it with const expressions so it benefits, but it doesn't leak
+> unsound premise to anything it does not apply to. I don't understand what is so
+> hard to get about this? This is just me re-stating this same fucking thing over
+> and over, just under different names. Be it law, sentinel predicates, whatever
+> the fuck, it's the same. Take the win where it applies, gate it out from where it
+> does not. No single one-fits-all solutions, it's impossible
+
+The refusal there was on a question shaped as whether consumers would write a
+particular declaration, so the design could decide whether to build the surface at
+all, which is this question with the nouns changed. His note on that occasion is
+that it was the third of the shape in one sitting.
+
+So the third option is not a compromise between the first two, it is the answer
+the ratified `ruling::the_work_is_predicated_arms_composed` already gives, and
+what the panel owes is the predicate each keying is gated on rather than a winner.
+'''
 topic = "rounding"
 unblocks = "Which keyed member a strategy pairs with by default, or whether both ship."
 note = "The divergence between the two members is measured; which one real consumers reach for is not, and the source places this in I11's territory, naming it a wall the panel has hit before on the analogous realisation-map question."
@@ -1452,7 +1677,27 @@ options = [
   "Resolved pessimistically: unavailable evaluates to false, the arm is not chosen, correctness is preserved at the cost of a missed optimisation.",
   "Left unhandled: the design states no answer for a non-const-available profitability condition.",
 ]
-decider = "op"
+decider = "panel"
+bound = '''
+Never put to op, and it is not his: it is a soundness question, and soundness is
+a bound he named rather than a thing he settles case by case.
+
+> Hmm, this is not mine to call, it is bounded by soundness and also the rule
+> that demands we provide first-class matlab and ieee754 compatible apis as
+> aliases over arvo primitives and such
+
+The row's own distinction is the derivation. A correctness predicate must be
+const, because an arm chosen where the law does not hold is wrong at every
+length. A profitability predicate only wants to be const, and where it is not,
+resolving it pessimistically is slow and never wrong. One option preserves
+correctness under every evaluation order; the other leaves a soundness-bearing
+condition with no stated behaviour, which the bound does not admit.
+
+`ruling::the_work_is_predicated_arms_composed` states the same constraint from
+the other side: an arm optimises one nameable region and applies nowhere else, so
+a predicate that cannot be evaluated has not been shown to hold and the arm is
+not reached.
+'''
 topic = "the_strategy_axis"
 unblocks = "Whether a profitability predicate that is not const-available at a given call site silently degrades to the arm being skipped, or is an undefined case the design has to close before it can be relied on."
 note = "The distinction the question rests on: a correctness predicate must be const (an arm chosen where the law does not hold is wrong at every length, and cannot be resolved by falling back on 'usually right'); a profitability predicate merely wants to be const, and where it is not, resolving it pessimistically is slow but never wrong. Op's ruling `83` is cited by the source as leaving open what happens to a non-const-available condition, and nothing in this panel has touched it since."
@@ -1524,3 +1769,25 @@ unblocks = "Where a ratification already granted actually lands. Until it is ans
 note = "His words, in `panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round`: \"Again, on the option 1, I think there's a better wording for that since that one you mention, so the ratification goes for the actual succeeding one rather than this, but the lineage is ratified and blessed thus\". Two halves and they are different. The lineage is blessed, which is settled. Which row is its tail is not, and the three candidates are panel output rather than his words, so picking one is a reading and not a transcription. Filed as the panel's rather than his because he has already given the ratification; what is missing is the identification, and that is derivable from the three texts against the intent he blessed. The ruling stays at `stated` deliberately: stamping it would take the ratification he explicitly sent past it."
 provenance = ["panel::202608072330_the-numeral-canon-panel::211_op_the_second_ratification_round::#the-axis"]
 keywords = ["strategy", "successor", "lineage", "ratification", "preset", "weighting", "observable assignment", "declared semantics"]
+
+# --- from an obligation's gap, which no queue reads ------------------------------
+#
+# `obligation::every_standard_convention_expressible_as_an_alias_over_the_primitives`
+# records an unstated scope in its `gap` field. A gap is not a question, nothing
+# builds a roster from one, and this is the bound now governing the two questions
+# four topics defer to, so its own scope being unnamed is what blocks applying it.
+
+[[question]]
+id = "which_standards_the_alias_obligation_covers"
+asks = "Which industrial conventions must be expressible as first-class aliases over arvo's primitives?"
+options = [
+  "The two named when the bound was stated, MATLAB `fi`/`fimath` and IEEE 754, with nothing else owed.",
+  "Every convention the corpus already carries: those two plus SystemC `sc_fixed`, Vitis `ap_fixed` and Algorithmic C `ac_fixed`.",
+  "A named core with the rest declared open, so the parity suite starts somewhere and the set grows as consumers arrive.",
+]
+decider = "op"
+unblocks = "Applying the standards bound at all. It is one of the two constraints the container premise and the operation set were handed back under, four topics defer to those two, and an adequacy test whose scope is unnamed cannot refute a candidate or clear one."
+topic = "arvo_identity"
+note = "Filed because it existed only as a `gap` on an obligation, which no roster reads: every list of what is owed here is built from `question` rows and their `decider`, so this was invisible to the queue while being upstream of the two largest questions in it. The obligation's own words: which conventions are in scope is unstated, five appear in the corpus, two were named, and no row says whether the set is those, more, or a core with the rest open.\n\nWhy it is his rather than derivable: the bound is a demand he made, and how far a demand reaches is the demand's author's to say. The panel can establish whether any given convention is expressible, which is the adequacy test working, and cannot establish which ones were promised.\n\nThe second half of the same gap is not asked here and is not his: the parity suite is a mandate with no artifact, and building it is work rather than a decision. It cannot start until this is answered, which is most of why this ranks where it does."
+provenance = ["panel::202608072330_the-numeral-canon-panel::206_op_the_canon_test_and_the_standards_bound::#the-container-premise-and-a-bound-nobody-had-filed"]
+keywords = ["MATLAB", "fi", "fimath", "IEEE 754", "SystemC", "sc_fixed", "ap_fixed", "ac_fixed", "alias", "convention", "standard", "parity suite", "scope", "adequacy"]
