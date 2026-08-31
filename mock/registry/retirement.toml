@@ -2160,3 +2160,19 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::62_carmack_the_signed_cell::#5-what-the-register-should-gain",
 ]
 keywords = ["wrap", "relabelling", "residue class", "section", "fraction width", "droplist"]
+
+# --- a figure the seed archaeology attached to the wrong glob -------------------
+
+[[retirement]]
+id = "stp_fiftyseven_warm_container_triples"
+claim = "The container-fork benches are committed at `mock/benches/warm-container-*` as 57 CSV plus meta plus findings triples."
+why = "The glob holds 22, and nothing was ever deleted from it: `git log --diff-filter=D` over `mock/benches/warm-container*.csv` is empty, so this is an overcount in the document rather than a loss on disk. 57 is the correct total for the commit that landed those benches, `ccf05099`, which added 57 CSV across nine bench sections; five of the nine are not `warm-container-*` at all, and the four largest of those, `precise-container-width`, `precise-elementwise-width`, `precise-widening-theorem` and `warm-elementwise-width`, are six each. The archive's own file 141 states the figure correctly, as \"nine harness bench sections in `mock/benches/`, 57 committed CSV plus meta plus findings triples\", and the archaeology carried the number while narrowing the scope to one family. Measured both ways in `208_probes/p3_bench_artifacts.out`, with a nonsense-family control returning zero in the same run."
+kind = "misattributed"
+replacement = "22 triples under `warm-container-*`, or 57 across the nine sections commit `ccf05099` landed, depending on which is wanted. The 147 committed CSV predating this panel span 21 families, and the four prefixes the archaeology names reach 92 of them; the other 55 sit in families it does not name, `precise-*` and `quantiser-vs-fadd-subnormal-sweep` among them."
+topic = "the_strategy_axis"
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::SEED_TALKING_POINTS::#32-the-strategy-axis",
+  "panel::202607301300_formalization-spec-panel::OLD_141_xu_the_container_fork_benched::8",
+  "panel::202608072330_the-numeral-canon-panel::208_probes::p3_bench_artifacts.out::1",
+]
+keywords = ["57", "triples", "warm-container", "bench", "CSV", "meta", "findings", "count", "headroom", "container fork", "141"]
