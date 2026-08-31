@@ -828,10 +828,14 @@ and takes the union has taken something neither of us established.
 ## Outside the question I was asked
 
 **`proposal.standing` is a declaration nothing reads.** 99 rows carry it, across four values
-(`one_expert` 71, `two_experts` 17, `cross_topic` 6, `three_or_more` 5), and `grep -rn '"standing"'
-mock/checks/src/` returns exactly one hit, in `shape.rs:171`, which reads the `standing` of a **probe**
-row and never a proposal's. Nothing checks that a `two_experts` row names two files, that its provenance
-resolves to two distinct experts, or that the value is even in the declared set. Under the ratification
+(`one_expert` 71, `two_experts` 17, `cross_topic` 6, `three_or_more` 5), and `grep -rn standing
+mock/checks/src/` returns six lines, every one of them inside a single branch: `shape.rs:171-185` reads
+`probe.get("standing")`, and `shape.rs:229-230` is a comment about it. The field read belongs to a
+**probe** row and never to a proposal's. Nothing checks that a `two_experts` row names two files, that
+its provenance resolves to two distinct experts, or that the value is even in the declared set. The
+positive control for that grep is `predicate`, which the same command shape does find being read, at
+`predicate.rs:29` and `shape.rs:265`, so the zero is about the field rather than about the instrument.
+Under the ratification
 model this is now the promotion gate, and it is the tautological-declaration shape the repo's own
 `the-test-gate.md` names: ask what value would make it fail, and the answer is none.
 
