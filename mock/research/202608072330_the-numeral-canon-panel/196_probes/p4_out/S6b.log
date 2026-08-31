@@ -1,7 +1,7 @@
 error[E0308]: mismatched types
-   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:359:10
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:362:10
     |
-359 |     Pair(Slot(Num::<N2u>::new(1)), Slot(Num::<N2u>::new(1)))
+362 |     Pair(Slot(Num::<N2u>::new(1)), Slot(Num::<N2u>::new(1)))
     |     ---- ^^^^^^^^^^^^^^^^^^^^^^^^ expected `Pair<Slot<Num<Su<Su<Z>>>>, Slot<...>>`, found `Slot<Num<Su<Su<Z>>>>`
     |     |
     |     arguments to this struct are incorrect
@@ -9,9 +9,9 @@ error[E0308]: mismatched types
     = note: expected struct `Pair<Slot<_>, Slot<Num<Su<Su<Z>>>>>`
                found struct `Slot<_>`
 help: the type constructed contains `Slot<Num<Su<Su<Z>>>>` due to the type of the argument passed
-   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:359:5
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:362:5
     |
-359 |     Pair(Slot(Num::<N2u>::new(1)), Slot(Num::<N2u>::new(1)))
+362 |     Pair(Slot(Num::<N2u>::new(1)), Slot(Num::<N2u>::new(1)))
     |     ^^^^^------------------------^^^^^^^^^^^^^^^^^^^^^^^^^^^
     |          |
     |          this argument influences the type of `Pair`

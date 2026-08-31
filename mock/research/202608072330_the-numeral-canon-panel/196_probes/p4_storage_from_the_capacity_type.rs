@@ -315,10 +315,16 @@ packs_like_an_array!(C16);
 
 // The accumulator width as a number, so S6 can check the fold's result
 // against integer arithmetic rather than against another declaration.
-pub trait AccWidth { const W: u32; }
+pub trait AccWidth {
+    const W: u32;
+}
 impl<W: NatVal, C> AccWidth for (Num<W>, C)
-where C: Log2Ceil, <C as Log2Ceil>::Out: NatVal,
-{ const W: u32 = W::VAL + <<C as Log2Ceil>::Out as NatVal>::VAL; }
+where
+    C: Log2Ceil,
+    <C as Log2Ceil>::Out: NatVal,
+{
+    const W: u32 = W::VAL + <<C as Log2Ceil>::Out as NatVal>::VAL;
+}
 
 // ---- ARM S6: construct the derived shape, not merely name it ------------
 // `retirement::dl_feasibility_probe_compiled_the_load_bearing_path` retires a
@@ -338,10 +344,7 @@ pub fn s6_build_and_fold() -> <Num<N2u> as SumAccum<C3>>::Acc {
         Pair(Slot(Num::<N2u>::new(3)), Slot(Num::<N2u>::new(3))),
         Slot(Num::<N2u>::new(3)),
     );
-    <_ as FoldInto<C3, _>>::fold_into(
-        &store,
-        <<Num<N2u> as SumAccum<C3>>::Acc as CAdd>::zero(),
-    )
+    <_ as FoldInto<C3, _>>::fold_into(&store, <<Num<N2u> as SumAccum<C3>>::Acc as CAdd>::zero())
 }
 
 /// The value the fold must produce, checked against arithmetic rather than
@@ -377,7 +380,10 @@ fn main() {
     println!("fold over the derived capacity-3 shape = {got}, accumulator width = {width}");
     assert_eq!(got, 9, "three elements of value 3 must sum to 9");
     assert_eq!(width, 4, "2 + ceil(log2 3) = 4");
-    assert!(9u64 <= (1u64 << width) - 1, "9 must fit in the derived width");
+    assert!(
+        9u64 <= (1u64 << width) - 1,
+        "9 must fit in the derived width"
+    );
     assert!(
         core::mem::size_of::<<C3 as Store<Num<N2u>>>::Shape>()
             == 3 * core::mem::size_of::<Num<N2u>>(),

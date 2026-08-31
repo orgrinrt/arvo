@@ -219,24 +219,24 @@ error[E0080]: evaluation panicked: assertion failed: core::mem::size_of::<<C13 a
     = note: this error originates in the macro `assert` which comes from the expansion of the macro `packs_like_an_array` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0308]: mismatched types
-   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:338:9
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:344:9
     |
-337 |     let store: <C3 as Store<Num<N2u>>>::Shape = Pair(
+343 |     let store: <C3 as Store<Num<N2u>>>::Shape = Pair(
     |                                                 ---- arguments to this struct are incorrect
-338 |         Pair(Slot(Num::<N2u>::new(3)), Slot(Num::<N2u>::new(3))),
+344 |         Pair(Slot(Num::<N2u>::new(3)), Slot(Num::<N2u>::new(3))),
     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Slot<Num<Su<Su<Z>>>>`, found `Pair<Slot<Num<Su<Su<Z>>>>, Slot<...>>`
     |
     = note: expected struct `Slot<_>`
                found struct `Pair<Slot<_>, Slot<Num<Su<Su<Z>>>>>`
 help: the type constructed contains `Pair<Slot<Num<Su<Su<Z>>>>, Slot<Num<Su<Su<Z>>>>>` due to the type of the argument passed
-   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:337:49
+   --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:343:49
     |
-337 |       let store: <C3 as Store<Num<N2u>>>::Shape = Pair(
+343 |       let store: <C3 as Store<Num<N2u>>>::Shape = Pair(
     |  _________________________________________________^
-338 | |         Pair(Slot(Num::<N2u>::new(3)), Slot(Num::<N2u>::new(3))),
+344 | |         Pair(Slot(Num::<N2u>::new(3)), Slot(Num::<N2u>::new(3))),
     | |         -------------------------------------------------------- this argument influences the type of `Pair`
-339 | |         Slot(Num::<N2u>::new(3)),
-340 | |     );
+345 | |         Slot(Num::<N2u>::new(3)),
+346 | |     );
     | |_____^
 note: tuple struct defined here
    --> /Users/orgrinrt/Dev/clause-work/numeric-stack/notation/mock/research/202608072330_the-numeral-canon-panel/196_probes/p4_storage_from_the_capacity_type.rs:114:12
