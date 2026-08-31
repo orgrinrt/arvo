@@ -231,6 +231,7 @@ obligation = ["composition_contracts_above_the_numeral"]
 note = "One expert, cold, unattacked. It assumes one of three live directions for where a chain lives, and adopting it must not be read as closing that question: under the first direction it has no home by construction, and under the third the wording shifts in kind rather than in content, the chain becoming a typed term denoting the composition rather than being it. The consolidation restored the third direction after its own first draft dropped it, catching the loss only through the independent entailment check that followed."
 gap = "Where the chain lives is a three-way fork none of which is killed. The third carries named costs: a second vocabulary, type sizes growing with expression size, and drift toward a computation-graph framing."
 provenance = [
+  "panel::202608072330_the-numeral-canon-panel::60_stam_the_chain_derived_cold::1",
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::692",
   "panel::202608072330_the-numeral-canon-panel::AGREEMENTS::#2-2-single-expert-claims-carried-as-if-settled-flagged",
 ]
