@@ -32,17 +32,24 @@ use arvo_checks::{canon, parse, shape};
 /// currently carries as a definition a sentence the corpus established is not
 /// one.
 ///
-/// Neither is repaired here, and neither is a repair anybody should make in
-/// passing: the retirement's replacement is three separated predicates, one per
-/// job the sentence was doing at once, which is a rewrite rather than an edit.
-/// **What this pins is that a third does not appear**, and the two are on the
-/// worklist by name.
+/// **Both are repaired and the two turned out to be different problems.**
+///
+/// The first was never a restatement. Its retirement's `claim` held the two
+/// words `No repair.`, which is how the source abbreviates a claim rather than
+/// the sentence, and a claim that short is matched by any prose sharing its
+/// vocabulary: the reported row says "no repair at a homogeneous container",
+/// which is the **restated** form that same retirement endorses. Six more
+/// retirements held the same shape, and the arm now refuses to report against a
+/// claim below five words at all. `a_retirement_can_be_found.rs`.
+///
+/// The second was real and was repaired as a rewrite rather than an edit. The
+/// retirement's replacement is three separated predicates, one per job the
+/// sentence was doing at once; those are filed as three rows carrying three
+/// different standings, and what stays in the original row is the packaging
+/// argument the retirement explicitly does not touch.
 #[test]
-fn the_rows_restating_a_retired_claim_are_the_two_already_named() {
-    const KNOWN: &[&str] = &[
-        "proposal::an_axis_the_realisation_map_does_not_read_is_not_a_type_parameter",
-        "proposal::an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover",
-    ];
+fn no_live_row_restates_a_retired_claim() {
+    const KNOWN: &[&str] = &[];
     let mut found: Vec<String> = shape::rows_restating_a_retired_claim(&canon())
         .into_iter()
         .map(|f| f.at)

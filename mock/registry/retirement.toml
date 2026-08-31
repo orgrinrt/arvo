@@ -18,6 +18,15 @@
 # what locates the entry inside it. That is the intended discovery path anyway: the
 # claim is written in the words a later reader would grep for.
 #
+# Both bodies write an entry as a bolded noun phrase followed by the reason, so
+# seven rows arrived here holding two to four words where a sentence belongs. A
+# claim that short pins nothing and matches ordinary prose on the same subject:
+# one of them read `No repair.` and reported a live row saying "no repair at a
+# homogeneous container", which is the restated form that same retirement
+# endorses. Every one now holds the proposition the source's phrase stood for,
+# read out of the passage the row already cited, and the source's own phrase
+# stays in `keywords`, which is where a reader arriving from the ledger will look.
+#
 # The namespace has no `note` field, so a qualification that is neither the reason
 # nor the replacement is carried inside `why`. Where a source states what would
 # have to be overturned to reopen an entry, that is carried there too, because the
@@ -470,7 +479,7 @@ keywords = ["vectorisation", "loop idiom", "codegen units", "unconditional", "in
 
 [[retirement]]
 id = "dl_bounded_numeral_notation_table"
-claim = "A bounded numeral-notation table."
+claim = "The numeral notation is given a bounded table of the forms it admits."
 why = "Refused on principle, and a second, independent route to the identical refusal appears at the notation macro's own face layer, where a const-generic face cannot be structurally sealed."
 kind = "unpayable"
 topic = "the_format"
@@ -1192,7 +1201,7 @@ keywords = ["result checking", "node checking", "unsound", "homomorphism", "pred
 
 [[retirement]]
 id = "r119_beaten_on_none"
-claim = "Beaten on none."
+claim = "The one-sided form reaches the oracle on all thirteen rows while being beaten on none."
 why = "It holds only where every declared lower bound is at or above zero."
 kind = "unpredicated"
 replacement = "The same claim with the non-negative lower bound stated."
@@ -1467,7 +1476,7 @@ keywords = ["count", "shape to count", "well defined", "conceded", "too strong",
 
 [[retirement]]
 id = "r146_strictly_increasing"
-claim = "Strictly increasing."
+claim = "The number of distinguishable classes is a strictly increasing function of the witness set, so no count is meaningful without naming the operations it was counted over."
 why = "False, with 714 counterexamples on one axis set and 134 on another. The content survives in an amended form and the original stands unedited."
 kind = "wrong"
 replacement = "The amended form of the same finding."
@@ -1645,8 +1654,8 @@ keywords = ["const eval", "function pointer", "operation", "type carrier", "matc
 
 [[retirement]]
 id = "r161_r6_no_repair"
-claim = "No repair."
-why = "Withdrawn by its author and restated with its region: right about type equality, wrong about consumers, and the cost is three-armed by boundary."
+claim = "Two names for one primitive is a compile error with no in-language repair."
+why = "Withdrawn by its author and restated with its region: right about type equality, wrong about consumers, and the cost is three-armed by boundary. **This field used to hold the two words `no repair`**, which is how the source abbreviates the claim rather than the sentence anybody would quote, and a claim that short cannot be found by search: it matched a live row using the ordinary phrase about a homogeneous container, which is the restated form and is not retired at all."
 kind = "unpredicated"
 replacement = "The restated form carrying its region."
 topic = "the_primitive"
@@ -1741,7 +1750,7 @@ keywords = ["O-B", "cost clause", "Bool", "USize", "one-element column", "lens",
 
 [[retirement]]
 id = "r161_r14_the_deliberately_over_counting_index"
-claim = "The deliberately over-counting index."
+claim = "The index deliberately over-counts, and that over-counting is a live option the design has to carry."
 why = "Closed by the container premise on either branch: under the observable branch the index counts correctly and the option dissolves, and under the internal branch it is the live description of exactly that axis and is subsumed by the candidate's licence machinery. No further evidence is needed and it is not carried as an option."
 kind = "superseded"
 topic = "the_container_premise"
@@ -1813,7 +1822,7 @@ keywords = ["heading", "discount", "independence", "strict prefix", "shared prem
 
 [[retirement]]
 id = "r173_rb_the_three_way_definitional_convergence"
-claim = "The three-way definitional convergence."
+claim = "Three instances converge on one definition, so the convergence is three-way."
 why = "Superseded by the measured two-hats correction. Do not cite a three-way convergence; cite two instances plus a composing third definition."
 kind = "wrong"
 replacement = "Two instances plus a composing third definition."
@@ -1920,7 +1929,7 @@ keywords = ["probe F", "reassociation safety", "unqualified", "adaptation", "add
 
 [[retirement]]
 id = "r173_rk_the_static_length_lever"
-claim = "The static-length lever."
+claim = "Giving the lanes a statically known length is a lever on what they cost."
 why = "Unestablished: largest gap 1.2 percent, inside the harness's measured 4.9 percent between-dylib noise floor, with the sign flipping six of twelve. Do not cite it as a result in either direction. What would reopen it is a harness whose floor is below the effect."
 kind = "unpredicated"
 topic = "the_chain"

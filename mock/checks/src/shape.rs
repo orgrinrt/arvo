@@ -399,6 +399,14 @@ pub fn rows_restating_a_retired_claim(reg: &Registry) -> Vec<Finding> {
     /// a claim being quoted with its edges trimmed.
     const RUN: usize = 8;
 
+    /// Below this a claim identifies nothing, so no live row can be reported
+    /// against it and the retirement itself is the finding.
+    ///
+    /// Five, because the schema asks a `claim` to be the sentence a reader
+    /// would search for or quote, and a phrase of four words or fewer is a
+    /// subject rather than a sentence.
+    const FLOOR: usize = 5;
+
     let retired: Vec<(&str, String, Vec<String>)> = reg
         .of("retirement")
         .filter_map(|r| {
@@ -416,12 +424,22 @@ pub fn rows_restating_a_retired_claim(reg: &Registry) -> Vec<Finding> {
             };
             let haystack = normalise(says).join(" ");
             for (slug, claim, words) in &retired {
+                if words.len() < FLOOR {
+                    // Too short to identify anything. **The whole claim is then
+                    // the loose match**, which is what the branch below was
+                    // written to avoid and did not: a two-word retirement whose
+                    // claim read `No repair.` matched a live row saying "no
+                    // repair at a homogeneous container", which is the restated
+                    // form and is not retired. Reported against the retirement
+                    // by the arm below rather than against the live row.
+                    continue;
+                }
                 if words.len() < RUN {
                     // A short claim has no distinctive run, so the whole of it
                     // has to appear or nothing is reported. Anything looser on
                     // a five-word sentence matches the subject rather than the
                     // claim.
-                    if !words.is_empty() && haystack.contains(&words.join(" ")) {
+                    if haystack.contains(&words.join(" ")) {
                         out.push(hit(row, slug, claim));
                     }
                     continue;
@@ -558,6 +576,50 @@ pub fn notes_claiming_an_empty_field_that_is_not(reg: &Registry) -> Vec<Finding>
                 from = start;
             }
         }
+    }
+    out
+}
+
+/// A retirement whose `claim` is too short to find.
+///
+/// The schema asks a `claim` to be "the sentence itself, or close enough that a
+/// grep finds it", and a claim of a few words is neither. **It cannot be
+/// enforced and it cannot fail honestly**: too short to match the sentence it
+/// retires, and long enough to match ordinary prose that happens to share the
+/// vocabulary.
+///
+/// Both halves were observed on one row. `No repair.` is how its source
+/// abbreviates a claim, and against it the restatement check reported a live row
+/// saying "no repair at a homogeneous container", which is the **restated** form
+/// the retirement itself endorses. So the retirement pinned nothing it meant to
+/// pin and reported something it did not mean to report.
+///
+/// The repair is to write the sentence, which is usually recoverable from the
+/// provenance the row already carries.
+pub fn retirements_too_short_to_find(reg: &Registry) -> Vec<Finding> {
+    /// The same floor the restatement arm uses, and the reason it exists.
+    const FLOOR: usize = 5;
+
+    let mut out = Vec::new();
+    for row in reg.of("retirement") {
+        let Some(claim) = row.get("claim") else {
+            continue; // `claim` is required, so the engine owns this
+        };
+        let words = normalise(claim);
+        if words.len() >= FLOOR {
+            continue;
+        }
+        out.push(Finding::new(
+            "retirement-claim-too-short-to-find",
+            row.addr(),
+            format!(
+                "its `claim` is {} word(s), \"{claim}\", which no search can distinguish from \
+                 ordinary prose on the same subject. A claim is the sentence a later reader \
+                 would quote, so nothing can be pinned to this one and a live row restating it \
+                 goes unreported. Write the sentence; the provenance usually still holds it.",
+                words.len()
+            ),
+        ));
     }
     out
 }

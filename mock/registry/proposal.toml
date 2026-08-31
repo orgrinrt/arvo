@@ -1529,17 +1529,32 @@ keywords = ["narrowing", "composition", "staged", "round to nearest even", "half
 [[proposal]]
 id = "an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover"
 kind = "answer"
-sentence_kind = "definition"
-defines = "output of the container derivation"
+sentence_kind = "normative"
 standing = "one_expert"
 topic = "the_realisation_map"
-says = "A component is an output of the derivation when the consumer did not write it, the machine needs it, and a downstream site holding the other components cannot recover it. That criterion quantifies over the observation surface and not over the codomain, so it settles what must be observable and says nothing about how the derivation packages what it returns. Any product is one thing: a pair is a single element of a single set, and anything with two projections is a pair. So one output and two outputs are one mechanism at two levels of packaging, and the count of associated items on a derivation trait is not the count the criterion produces. What is left to decide is how many of the derived facts must be available as types rather than as values, and that number is at least two."
-because = "Without a criterion for what counts as an output the question is unfalsifiable, because everything downstream is a function of the declaration and one can always claim a single output and call the rest recomputation. With the criterion, the two candidate answers stop being rivals: a single richer output with named projections is the pair wearing one name, and every argument the panel reached by counting associated items was adjudicated on packaging while claiming to be about observability."
+says = "What a derivation must make observable is settled by the three separated predicates, and none of them quantifies over the codomain, so all three together settle what must be observable and say nothing about how the derivation packages what it returns. Any product is one thing: a pair is a single element of a single set, and anything with two projections is a pair. So one output and two outputs are one mechanism at two levels of packaging, and the count of associated items on a derivation trait is not the count the predicates produce. What is left to decide is how many of the derived facts must be available as types rather than as values, and that number is at least two."
+because = "Without a settled account of what counts as an output the question is unfalsifiable, because everything downstream is a function of the declaration and one can always claim a single output and call the rest recomputation. With one, the two candidate answers stop being rivals: a single richer output with named projections is the pair wearing one name, and every argument the panel reached by counting associated items was adjudicated on packaging while claiming to be about observability."
 answers = ["container_derivation_output_count"]
 note = """
-**A definition carries no region and that is right here**, because this \
-stipulates what the word `output` picks out rather than claiming that something \
-holds somewhere.
+**This row used to open by restating the retired criterion and to mark itself a \
+definition of the word `output`.** That sentence is retired for being incapable \
+of defining anything: the defined set appears on both sides of its own third \
+clause, the operator is antitone, and no fixpoint tie-breaks it, so enumerated \
+across the three background parameters it leaves unstated the one sentence \
+admits answers of four different sizes. Its replacement is the three separated \
+predicates, filed as their own rows, and what stands here is the packaging \
+argument the retirement explicitly does not touch, which rests on the \
+injectivity argument and the compiled evidence rather than on the criterion.
+
+**The kind moved to `normative` and the regionlessness was right all along.** \
+It was marked `definition` and carried no region, which the old note defended on \
+the ground that a definition claims nothing about where something holds. That \
+defence was sound and the label under it was not, because the sentence it \
+defined is the retired one. What is left constrains what the design must do \
+about packaging rather than reporting where anything holds, so it is normative \
+and still owes no region. It is not an argument in this vocabulary's sense: an \
+argument row here names the axes it ranges over, and this ranges over none of \
+them.
 
 **The measured half of the same file is not in this row and cannot be.** It \
 establishes that a single richer output suffices if and only if it is a type: \
@@ -1562,3 +1577,56 @@ provenance = [
   "panel::202608072330_the-numeral-canon-panel::47_wingo_one_richer_output::180",
 ]
 keywords = ["output", "derivation", "codomain", "packaging", "projection", "carrier", "stride", "injectivity", "observation surface", "recoverable", "kind boundary"]
+
+# The three predicates that replace the retired criterion.
+#
+# They are three rows rather than one because the sentence they replace was
+# trying to be three things at once, which is what made it undefinable, and
+# filing them back as one row would rebuild it. They also carry three different
+# standings, stated separately below, and a merged row could only carry the
+# weakest or overstate two of them.
+
+[[proposal]]
+id = "a_lowering_site_holds_the_numerals_full_type"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_realisation_map"
+says = "A lowering site holds the numeral's full type: the declaration with its width, sign and strategy, the derivation's result, and the language's primitives."
+because = "It is every file's unstated practice rather than anybody's finding, and writing it down is what removes the two-readings ambiguity that made the criterion it replaces undefinable. Nobody proposes dropping the strategy early, and the acceptance criterion places erasure at codegen."
+supersedes = ["an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover"]
+note = "**This is a design commitment for op to bless and not a finding**, in the source's own words, which is why it is `normative` and why its standing is one expert rather than the convergence the neighbouring clause carries. It is stated rather than inferred on purpose: inferring it is what let one sentence be read two ways with opposite results inside the file that stated it."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation::#4-2-the-replacement-in-three-clauses-with-the-provenance-of-each",
+]
+keywords = ["site", "lowering", "premise", "full type", "declaration", "strategy", "erasure", "codegen", "site model"]
+
+[[proposal]]
+id = "a_fact_is_carried_when_producing_it_applies_a_rule_the_strategy_owns"
+kind = "answer"
+sentence_kind = "normative"
+standing = "two_experts"
+topic = "the_realisation_map"
+says = "A fact belongs in the derivation's result exactly when producing it requires applying a rule the strategy owns. A pure function of what every site already holds is recomputed rather than carried."
+because = "Emitting the extent and recomputing the carrier at each use would re-enter, at every use site, the problem the derivation exists to solve once. Getting such a value requires consulting the strategy as an actual decision rather than a formula, so a site cannot safely re-derive it without risking disagreement."
+supersedes = ["an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover"]
+note = "**Two independent statements of the idea exist and that is the whole of the standing**, deliberately not more: one in instance form inside the file that stated the retired criterion, in the passage that does not use it, and one derived cold in general form before its author read any panel file, committed before its own second phase. On top of those sit one formalisation and one second read, which are not further independent derivations of the same principle. The source says so itself and its own risk section marks the claim that the three formulations are one principle as the part of its verdict most likely to move, so this row does not claim three."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation::#4-2-the-replacement-in-three-clauses-with-the-provenance-of-each",
+]
+keywords = ["ownership", "fact", "carried", "recomputed", "strategy", "rule", "pure function", "re-derive", "extent", "carrier"]
+
+[[proposal]]
+id = "a_carried_fact_takes_the_sort_its_consuming_site_uses_it_in"
+kind = "answer"
+sentence_kind = "normative"
+standing = "one_expert"
+topic = "the_realisation_map"
+says = "Whatever the ownership clause selects is carried in the sort its consuming site uses it in: as a type where a generic body would otherwise have to reach a type from computed values, and as a constant otherwise."
+because = "Reaching a type from computed values is refused by the compiler in that position, so the sort is decided by the site rather than chosen. The derivation's result must make available, as types, every fact a lowering site cannot recompute from a constant."
+supersedes = ["an_output_of_a_derivation_is_a_fact_a_downstream_site_cannot_recover"]
+note = "One expert's sentence, judged true and insufficient as a whole criterion and then relocated as exactly one clause of three. **Both of those judgements are right and neither diminishes it**: it was never wrong, it was doing one of three jobs while being asked to do all three. The count of facts is a consequence of the three clauses rather than a fourth clause, and it is not settled here."
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::53_leroy_consolidation_the_container_derivation::#4-2-the-replacement-in-three-clauses-with-the-provenance-of-each",
+]
+keywords = ["kind", "sort", "type", "constant", "generic body", "computed value", "consuming site", "form"]
