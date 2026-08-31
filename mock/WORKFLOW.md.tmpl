@@ -7,14 +7,20 @@ takes, and how arvo evolves.
 
 ```toml
 [dependencies]
-arvo = { version = "0.0", default-features = false }
+arvo-format = { git = "ssh://git@github.com/orgrinrt/arvo.git", branch = "dev" }
 ```
 
-arvo is `#![no_std]` and ships with no platform dependency. The crate
-re-exports the public surface from the layered foundation crates
-(`arvo-storage`, `arvo-strategy`, `arvo-bits-contracts`, ...); reaching
-for `arvo` directly is the supported path. Only depend on a foundation
-crate by name when an explicit dependency-size reduction is wanted.
+Depend on the crate that carries what you need. `arvo-format` declares what
+values exist and what happens to a result that is not one of them,
+`arvo-placement` derives where the bits sit, and `arvo-strategy` binds a name to
+a choice between placements. There is no facade to reach through, so a consumer
+that only declares formats never compiles a carrier ladder.
+
+Nothing is published to the registry yet, so the dependency is by git ref. When
+it is, the facade publishes as `libarvo`, because `arvo` is taken there by
+another project, and the rest keep the `arvo-*` shape they already have.
+
+All three are `#![no_std]` and ship with no platform dependency.
 
 ## Picking primitives
 
