@@ -263,7 +263,12 @@ says = "The numeral concept is a dependent sequence of choices, not a tuple of i
 because = "A tuple of independent choices cannot say that the space of reductions is derived from the pair above it, which is the fact the format topic reached separately, and it cannot say that a redundant encoding makes a relation rather than a function. The sequence says both, and the one-way dependency is what lets a sentence name the prefix it quantifies over."
 answers = ["is_the_ambient_operation_family_fixed"]
 note = "One expert with two instruments, which is one author's two arrivals rather than two authors'. The word `format` collides here: two units use it for different prefixes of this same sequence, and the collision is unresolved and is op's naming call."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::475"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::475",
+  "panel::202608072330_the-numeral-canon-panel::67_kiselyov_which_prefix_earns_the_word::608",
+  "panel::202608072330_the-numeral-canon-panel::70_lattner_levels_are_clients_not_facts::269",
+  "panel::202608072330_the-numeral-canon-panel::72_kiselyov_reply::270",
+]
 keywords = ["sequence", "dependent", "coordinates", "ambient domain", "representable set", "reduction", "encoding", "container", "N1"]
 
 [[proposal]]
@@ -287,7 +292,11 @@ topic = "the_number_system"
 says = "The consumer supplies a prefix and the typestate completes the sequence; validation checks that the completion satisfies what the prefix demanded; erasure discards the completion's evidence and keeps its consequences. A completion may branch, and the branches are what op's plural names."
 because = "It is the sequence read as a mechanism rather than as a taxonomy, and the branching clause is what makes op's plural, that one demand derives representations rather than a representation, a consequence of the shape instead of a separate requirement."
 note = "One expert, read together with the split of the validate verb into two acts."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::488"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::488",
+  "panel::202608072330_the-numeral-canon-panel::67_kiselyov_which_prefix_earns_the_word::627",
+  "panel::202608072330_the-numeral-canon-panel::68_leroy_what_the_pipeline_certifies::281",
+]
 keywords = ["derivation", "completion", "typestate", "prefix", "erasure", "branch", "plural", "N3"]
 
 [[proposal]]
@@ -301,7 +310,10 @@ because = "Five crossing classes fall out of the sequence, one per coordinate, a
 answers = ["does_the_canon_name_crossing_classes"]
 note = "One expert."
 gap = "Who owns a named section when a redundant encoding makes the pattern relation a section and a retraction is stated and not answered."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::494"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::494",
+  "panel::202608072330_the-numeral-canon-panel::71_orchard_what_crosses_between_two_systems::658",
+]
 keywords = ["crossing", "conversion", "relation", "pattern", "law family", "redundant encoding", "section", "retraction", "N4"]
 
 [[proposal]]
@@ -313,7 +325,11 @@ topic = "the_number_system"
 says = "A crossing preserves the value-level operation exactly when it moves no coordinate that operation reads, which is at the encoding and at the container and nowhere earlier."
 because = "True by construction over the concept's own coordinates: an operation reads the ambient domain, the representable set and the selected reduction, so a crossing that moves only the encoding or the container cannot change what it computes, and one that moves anything earlier can. The source says it therefore holds at any width in any language, which is what a canon sentence needs."
 note = "`normative` is the porter's call rather than the source's word: the sentence is offered as true by construction over stipulated definitions, so there is nothing an instrument could refute and no region to state, and if the concept's coordinates change the sentence is voided rather than falsified. A reader preferring to treat it as an established universal should note that the axes it ranges over, the coordinates of the dependent sequence, are not `dimension` rows, so it could not be predicated in this registry either way. It is the corrected form of an earlier universal the unit refuted."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::501"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::501",
+  "panel::202608072330_the-numeral-canon-panel::72_kiselyov_reply::66",
+  "panel::202608072330_the-numeral-canon-panel::72_kiselyov_reply::90",
+]
 keywords = ["crossing", "preservation", "universal", "encoding", "container", "coordinate", "corrected", "N5"]
 
 [[proposal]]
@@ -326,7 +342,11 @@ says = "What a crossing means is decided by the ambient domain, the representabl
 because = "It is the previous sentence read as a partition rather than as a test, and it is what scopes every other claim in the topic: a claim about meaning and a claim about cost are claims about disjoint halves of the sequence, so neither transfers to the other."
 answers = ["does_the_canon_name_crossing_classes", "does_the_canon_speak_about_cost"]
 note = "One expert, and the unit's own files name it the sentence most wanting attack, because everything else in the topic is scoped by it. It has not had a second derivation."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::507"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::507",
+  "panel::202608072330_the-numeral-canon-panel::71_orchard_what_crosses_between_two_systems::667",
+  "panel::202608072330_the-numeral-canon-panel::72_kiselyov_reply::203",
+]
 keywords = ["two depths", "meaning", "cost", "partition", "scope", "crossing", "N6"]
 
 [[proposal]]
@@ -339,7 +359,11 @@ says = "A crossing preserves order exactly when the reduction it adapts through 
 because = "The two law families were already established by the format topic as facing the source and the target respectively, and a crossing consumes exactly those two properties of the reduction it adapts through, so the pairing is forced rather than chosen."
 note = "One expert on the pairing; the families themselves are the format topic's and are carried as a law row. `normative` is the porter's call, on the same reading as the crossing universal above."
 law = ["coherence_of_a_reduction_onto_its_induced_operation"]
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::513"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::513",
+  "panel::202608072330_the-numeral-canon-panel::71_orchard_what_crosses_between_two_systems::684",
+  "panel::202608072330_the-numeral-canon-panel::67_kiselyov_which_prefix_earns_the_word::647",
+]
 keywords = ["crossing", "order transport", "monotone", "coherent", "law families", "fold", "N7"]
 
 [[proposal]]
@@ -353,7 +377,11 @@ because = "Composition of lossless crossings commutes with the endpoints, so not
 answers = ["when_is_an_order_owed_at_a_crossing"]
 note = "One expert on each half. Whose order it is remains a located disagreement with three coherent positions, none forced by anything measured, and it is explicitly op's."
 gap = "Whose reduction governs a lossy crossing, the source's, the target's, or one named at the crossing site, is unresolved and is op's."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::519"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::519",
+  "panel::202608072330_the-numeral-canon-panel::71_orchard_what_crosses_between_two_systems::693",
+  "panel::202608072330_the-numeral-canon-panel::72_kiselyov_reply::273",
+]
 keywords = ["lossy", "crossing", "order", "composition", "endpoints", "schedule", "D6", "N8"]
 
 [[proposal]]
@@ -366,7 +394,12 @@ says = "Moving one value into a declared system and combining several values fro
 because = "The three things owed are identical in both cases, and the only difference is how many values arrive, so treating them as two mechanisms duplicates the obligation and lets the two drift. The schedule clause is what connects it to the chain concept: adaptation points are part of the meaning at any arity."
 answers = ["is_interoperation_conversion_or_resolution"]
 note = "The split, and its correct half, that resolution needs a rule rather than a conversion function, was posed by `66` (66:329-331) and credited explicitly by `71`, whose own assessment states \"What `66` got right and I would keep: resolution needs a rule, not just a conversion function. What the measurement adds is which rule.\" The two-arity unification and the schedule content are `71`'s. Provenance previously cited only 74's consolidation; `66` is added here per a same-day entailment check on the consolidation finding this credit dropped in violation of the consolidation's own stated merge policy (merge only where two files state one claim, authorship kept). One expert on the unification."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::526", "panel::202608072330_the-numeral-canon-panel::66_dolan_number_systems_derived_cold::329", "panel::202608072330_the-numeral-canon-panel::71_orchard_what_crosses_between_two_systems::399"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::526",
+  "panel::202608072330_the-numeral-canon-panel::66_dolan_number_systems_derived_cold::329",
+  "panel::202608072330_the-numeral-canon-panel::71_orchard_what_crosses_between_two_systems::399",
+  "panel::202608072330_the-numeral-canon-panel::72_kiselyov_reply::221",
+]
 keywords = ["conversion", "resolution", "arity", "schedule", "adaptation points", "common ambient", "N9"]
 
 [[proposal]]
@@ -379,7 +412,10 @@ says = "Whether something is a number system and whether this implementation can
 because = "Conflating them makes the concept's boundary a fact about one implementation's runtime, which would move every time the implementation did. Keeping them apart is what lets the concept be closed while the inventory stays open."
 answers = ["one_word_or_two_for_is_a_number_system"]
 note = "One expert on the split; the hosting half is a different author's and is conditional on an open question of op's."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::536"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::536",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::667",
+]
 keywords = ["membership", "hosting", "admission", "boundary", "residue", "runtime", "N10"]
 
 [[proposal]]
@@ -392,7 +428,11 @@ says = "A system exposes its ambient domain together with that domain's own law 
 because = "The self-collapsed system is the counterexample that forced the ambient law inventory into the exposure list: it passes a verdict-only test while computing nothing, because with the computed algebra as its own ambient every reduction verdict is trivially true. So a verdict is only worth anything conjoined with the ambient law it is a verdict about."
 answers = ["what_the_admission_contract_asks_a_candidate_to_expose", "is_the_ambient_operation_family_fixed"]
 note = "One expert. It supersedes the sufficient direction of an earlier exposure test while keeping that test's necessary direction whole. The refutation that forced it is a row of its own, `an_exposure_test_over_reduction_verdicts_alone_is_satisfied_by_a_system_that_computes_nothing`, and it carries the region its instrument states."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::543"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::543",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::677",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::184",
+]
 keywords = ["exposure", "admission test", "ambient laws", "verdict", "self-collapsed", "refuted", "sufficient", "N11"]
 
 [[proposal]]
@@ -404,7 +444,11 @@ topic = "the_number_system"
 says = "Where an ambient operation is closed on the representable set, no adaptation is possible and the reduction is the identity. Such a system exposes everything the concept asks, needs none of the adaptation machinery, and is a member for that reason rather than in spite of it."
 because = "Closure leaves the space of total reductions with one member, so there is nothing for a strategy to select and nothing for a verdict to be about. Reading such a system as a degenerate case would put the concept's simplest members outside it."
 note = "One expert with a construction."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::552"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::552",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::688",
+  "panel::202608072330_the-numeral-canon-panel::67_kiselyov_which_prefix_earns_the_word::641",
+]
 keywords = ["closure", "identity reduction", "magnitude-free", "member", "degenerate", "N12"]
 
 [[proposal]]
@@ -418,7 +462,11 @@ because = "The discriminator was measured empty: over every total order on the c
 law = ["existence_of_a_translation_invariant_total_order"]
 answers = ["is_number_system_broad_enough_for_non_magnitude"]
 note = "One expert. The measurement is carried as a law row rather than here, because the law has a region and the boundary claim does not."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::558"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::558",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::697",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::723",
+]
 keywords = ["boundary", "order", "magnitude", "wrapping", "kernel", "I3", "GF(2)", "test", "N13"]
 
 [[proposal]]
@@ -431,7 +479,10 @@ says = "Asking whether a candidate is a number system is usually the wrong quest
 because = "Every dispute the unit had about admission dissolved into a dispute about an address. A candidate that looked like a rejection turned out to be a coordinate somebody had not named, so the verdict question was producing arguments where the address question produced answers."
 answers = ["is_admission_a_predicate_or_a_location"]
 note = "One expert, composing the sequence, the ownership key and the crossing classes rather than adding a new claim."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::568"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::568",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::705",
+]
 keywords = ["admission", "coordinate", "address", "verdict", "encoding", "container", "stride", "N14"]
 
 [[proposal]]
@@ -444,7 +495,10 @@ says = "Identity and quantification cut the concept along its dependency order; 
 because = "Two instruments produced two partitions that do not refine each other, so neither is the partition and a count of levels would be a count of one of them. A level with no caller is a name for a class nobody distinguishes."
 answers = ["are_the_level_hierarchies_the_same_cut"]
 note = "One expert on the joint statement. It is the same shape as I1's refusal to presume a strategy count, reached in a different topic and without citing it."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::575"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::575",
+  "panel::202608072330_the-numeral-canon-panel::70_lattner_levels_are_clients_not_facts::352",
+]
 keywords = ["levels", "partition", "observables", "client", "count", "cut", "N15"]
 
 [[proposal]]
@@ -495,7 +549,11 @@ topic = "the_number_system"
 says = "One container hosts many systems at once, arithmetic and non-arithmetic, and the canon types the system, never the box."
 because = "The container is the last coordinate of the sequence and everything above it varies freely underneath one choice of it, so typing the box types nothing a consumer relies on."
 note = "One expert with a third blind instrument on the arithmetic cells. The sentence is stated over the sequence's coordinates rather than over either unit's use of the word `format`, which is the vocabulary caution the unit attached to it, and the word collision is unresolved."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::608"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::608",
+  "panel::202608072330_the-numeral-canon-panel::65_knuth_number_systems_derived_cold::503",
+  "panel::202608072330_the-numeral-canon-panel::67_kiselyov_which_prefix_earns_the_word::488",
+]
 keywords = ["container", "box", "hosting", "typing", "format collision", "vocabulary", "N19"]
 
 [[proposal]]
@@ -508,7 +566,11 @@ says = "The canon defines once what a number system is and what admission requir
 because = "A closed inventory would put every new numeral through a canon amendment, and an open concept would make admission mean nothing. Closing the concept and opening the inventory is what makes admission a check rather than a negotiation."
 answers = ["is_the_number_system_inventory_open"]
 note = "Two instruments over one premise set, plus the format topic's prior text carried through the reconciliation, so the discount is the same shape as the format topic's shared-literature one. The guarantee clause inherits the intents' STATED status: it is aligned with op's stated direction, is not settled by it, and firms only when those intents are ratified."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::614"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::614",
+  "panel::202608072330_the-numeral-canon-panel::65_knuth_number_systems_derived_cold::519",
+  "panel::202608072330_the-numeral-canon-panel::66_dolan_number_systems_derived_cold::245",
+]
 keywords = ["closed concept", "open inventory", "admission", "kernel", "contract", "guaranteed", "N20"]
 
 [[proposal]]
@@ -521,7 +583,13 @@ says = "A demand derives representations, plural, keyed by role; the roles named
 because = "The realisation-variant clause follows from the two-depths partition: a role moving nothing before the encoding moves only cost coordinates. Whether the role set is homogeneous under that reading turns entirely on the one case that would break it, a compute role widening the representable set, which is a live and unresolved register entry."
 note = "One expert per part, and the sentence passes its equivalence test conditionally, naming its own open condition rather than resolving it."
 gap = "Whether the role set is homogeneous, which turns on whether any role may widen the representable set before the encoding."
-provenance = ["panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::624"]
+provenance = [
+  "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::624",
+  "panel::202608072330_the-numeral-canon-panel::65_knuth_number_systems_derived_cold::185",
+  "panel::202608072330_the-numeral-canon-panel::71_orchard_what_crosses_between_two_systems::405",
+  "panel::202608072330_the-numeral-canon-panel::72_kiselyov_reply::232",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::415",
+]
 keywords = ["roles", "storage", "compute", "interchange", "realisation variant", "widen", "schedule", "D3", "N21"]
 
 [[proposal]]
@@ -1405,6 +1473,8 @@ note = "The instruments are `73_probes/p1_collapse.py` and `p1c_collapse_cannot_
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::543",
   "panel::202608072330_the-numeral-canon-panel::74_giesen_consolidation_the_number_system_concept::251",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::119",
+  "panel::202608072330_the-numeral-canon-panel::73_leijen_the_membership_test_and_how_wide::184",
 ]
 keywords = ["admission", "exposure test", "self-collapsed", "ambient domain", "refuted", "sufficient", "322", "952", "N11"]
 
