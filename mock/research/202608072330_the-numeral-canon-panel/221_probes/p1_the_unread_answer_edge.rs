@@ -153,7 +153,11 @@ fn load(dir: &Path) -> Vec<Row> {
         .filter(|p| p.extension().is_some_and(|x| x == "toml"))
         .collect();
     files.sort();
-    assert!(!files.is_empty(), "no registry files under {}", dir.display());
+    assert!(
+        !files.is_empty(),
+        "no registry files under {}",
+        dir.display()
+    );
     let mut out = Vec::new();
     for f in files {
         out.extend(scan(&std::fs::read_to_string(&f).unwrap()));
@@ -209,10 +213,8 @@ impl Reg {
         let by_ruling = self.answered_by_ruling();
         let mut out = BTreeSet::new();
         for q in self.of("question") {
-            let carries = q
-                .scalar(ANSWER_FIELD)
-                .is_some_and(|t| !t.trim().is_empty())
-                && q.has(ANSWER_FIELD);
+            let carries =
+                q.scalar(ANSWER_FIELD).is_some_and(|t| !t.trim().is_empty()) && q.has(ANSWER_FIELD);
             let phrase = PROSE_FIELDS.iter().any(|f| {
                 q.scalar(f).is_some_and(|t| {
                     let l = t.to_lowercase();
@@ -386,11 +388,26 @@ ratifies = ["p"]
     }
 
     println!("MEASUREMENT");
-    println!("  questions declared                                    {}", questions.len());
-    println!("  settled under RULE_A (what the shipped check sees)    {}", a.len());
-    println!("  reading as open under RULE_A                          {}", unanswered.len());
-    println!("  of those, named by a `proposal.answers` edge          {}", b_only.len());
-    println!("  of those, backed by a RATIFIED proposition            {}", c_only.len());
+    println!(
+        "  questions declared                                    {}",
+        questions.len()
+    );
+    println!(
+        "  settled under RULE_A (what the shipped check sees)    {}",
+        a.len()
+    );
+    println!(
+        "  reading as open under RULE_A                          {}",
+        unanswered.len()
+    );
+    println!(
+        "  of those, named by a `proposal.answers` edge          {}",
+        b_only.len()
+    );
+    println!(
+        "  of those, backed by a RATIFIED proposition            {}",
+        c_only.len()
+    );
     println!();
 
     println!("THE RATIFIED-BACKED SET (a question op has answered, reading as open)");
@@ -422,7 +439,10 @@ ratifies = ["p"]
         }
     }
     println!("REFERENTIAL INTEGRITY ON THE UNREAD EDGE");
-    println!("  `proposal.answers` entries naming no declared question: {}", dangling.len());
+    println!(
+        "  `proposal.answers` entries naming no declared question: {}",
+        dangling.len()
+    );
     for (p, q) in &dangling {
         println!("    proposal::{p} -> question::{q}  (declared nowhere)");
     }

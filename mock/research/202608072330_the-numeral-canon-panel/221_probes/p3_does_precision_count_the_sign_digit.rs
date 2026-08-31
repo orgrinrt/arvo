@@ -189,10 +189,26 @@ fn main() {
     let mut void = false;
     println!("CONTROLS");
     for (name, ok, req) in [
-        ("C1  some reading leaves a pair incomparable", seen_incomparable, "incomparable seen"),
-        ("C2  some reading produces a chain", tally[0].0 + tally[1].0 > 0, "a chain seen"),
-        ("C3  the comparator reaches all four branches", c3, "planted, all four"),
-        ("C4  reading A at P=1 makes symmetric the zero set", c4, "{0}"),
+        (
+            "C1  some reading leaves a pair incomparable",
+            seen_incomparable,
+            "incomparable seen",
+        ),
+        (
+            "C2  some reading produces a chain",
+            tally[0].0 + tally[1].0 > 0,
+            "a chain seen",
+        ),
+        (
+            "C3  the comparator reaches all four branches",
+            c3,
+            "planted, all four",
+        ),
+        (
+            "C4  reading A at P=1 makes symmetric the zero set",
+            c4,
+            "{0}",
+        ),
     ] {
         println!(
             "  {name:<52} {:>11}  required={req}",
@@ -210,11 +226,16 @@ fn main() {
         "  among the three domains at one precision, `Equal` occurs: {}   (never, by cardinality)",
         seen_equal
     );
-    println!("  strict inclusion occurs: {seen_subset};  incomparability occurs: {seen_incomparable}");
+    println!(
+        "  strict inclusion occurs: {seen_subset};  incomparability occurs: {seen_incomparable}"
+    );
     println!();
 
     println!("MEASUREMENT  (20 points: radix in {{2,3,4,10}} x precision 1..=5)");
-    for (ri, label) in [(0usize, "READING A  precision COUNTS the sign digit"), (1, "READING B  precision does NOT count it")] {
+    for (ri, label) in [
+        (0usize, "READING A  precision COUNTS the sign digit"),
+        (1, "READING B  precision does NOT count it"),
+    ] {
         println!(
             "  {label:<44}  chain at {:>2} of {:>2} points, broken at {:>2}",
             tally[ri].0,

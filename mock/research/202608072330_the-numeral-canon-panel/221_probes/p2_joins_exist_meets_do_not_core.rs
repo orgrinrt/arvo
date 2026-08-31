@@ -159,8 +159,18 @@ fn exponential(p: u32, emin: i32, emax: i32, half: i64) -> Shape {
 /// bottom of the inclusion order. Excluded in v1, which is what made C1 fail.
 fn degenerate() -> Vec<Shape> {
     vec![
-        Shape { name: "degenerate: no values".into(), kind: Kind::Constant, phase: 0, vals: Set::new() },
-        Shape { name: "degenerate: one value {0}".into(), kind: Kind::Constant, phase: 0, vals: [0i64].into_iter().collect() },
+        Shape {
+            name: "degenerate: no values".into(),
+            kind: Kind::Constant,
+            phase: 0,
+            vals: Set::new(),
+        },
+        Shape {
+            name: "degenerate: one value {0}".into(),
+            kind: Kind::Constant,
+            phase: 0,
+            vals: [0i64].into_iter().collect(),
+        },
     ]
 }
 
@@ -211,7 +221,9 @@ fn catalogue() -> Vec<Shape> {
 
 /// C1 recomputed over an arbitrary catalogue, so C5 can run the same arm twice.
 fn constant_meet_failures(c: &[Shape]) -> usize {
-    let consts: Vec<usize> = (0..c.len()).filter(|&i| c[i].kind == Kind::Constant).collect();
+    let consts: Vec<usize> = (0..c.len())
+        .filter(|&i| c[i].kind == Kind::Constant)
+        .collect();
     let mut bad = 0;
     for (a, b) in pairs(&consts) {
         let lb: Vec<usize> = consts

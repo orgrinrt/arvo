@@ -159,8 +159,18 @@ fn exponential(p: u32, emin: i32, emax: i32, half: i64) -> Shape {
 /// bottom of the inclusion order. Excluded in v1, which is what made C1 fail.
 fn degenerate() -> Vec<Shape> {
     vec![
-        Shape { name: "degenerate: no values".into(), kind: Kind::Constant, phase: 0, vals: Set::new() },
-        Shape { name: "degenerate: one value {0}".into(), kind: Kind::Constant, phase: 0, vals: [0i64].into_iter().collect() },
+        Shape {
+            name: "degenerate: no values".into(),
+            kind: Kind::Constant,
+            phase: 0,
+            vals: Set::new(),
+        },
+        Shape {
+            name: "degenerate: one value {0}".into(),
+            kind: Kind::Constant,
+            phase: 0,
+            vals: [0i64].into_iter().collect(),
+        },
     ]
 }
 
@@ -211,7 +221,9 @@ fn catalogue() -> Vec<Shape> {
 
 /// C1 recomputed over an arbitrary catalogue, so C5 can run the same arm twice.
 fn constant_meet_failures(c: &[Shape]) -> usize {
-    let consts: Vec<usize> = (0..c.len()).filter(|&i| c[i].kind == Kind::Constant).collect();
+    let consts: Vec<usize> = (0..c.len())
+        .filter(|&i| c[i].kind == Kind::Constant)
+        .collect();
     let mut bad = 0;
     for (a, b) in pairs(&consts) {
         let lb: Vec<usize> = consts
@@ -383,14 +395,26 @@ fn main() {
             join_unique += 1;
         } else {
             join_many += 1;
-            if cross { cross_join_many += 1; } else { same_join_many += 1; }
-            if same_phase { join_fail_same_phase += 1; } else { join_fail_diff_phase += 1; }
+            if cross {
+                cross_join_many += 1;
+            } else {
+                same_join_many += 1;
+            }
+            if same_phase {
+                join_fail_same_phase += 1;
+            } else {
+                join_fail_diff_phase += 1;
+            }
             if first_join_failure.is_empty() {
                 first_join_failure = format!(
                     "{}\n              {}\n           minimal upper bounds: {}",
                     c[a].name,
                     c[b].name,
-                    least.iter().map(|&i| c[i].name.clone()).collect::<Vec<_>>().join(" | ")
+                    least
+                        .iter()
+                        .map(|&i| c[i].name.clone())
+                        .collect::<Vec<_>>()
+                        .join(" | ")
                 );
             }
         }
@@ -399,14 +423,26 @@ fn main() {
             0 => meet_none += 1,
             _ => {
                 meet_many += 1;
-                if cross { cross_meet_many += 1; } else { same_meet_many += 1; }
-                if c[a].phase == c[b].phase { meet_fail_same_phase += 1; } else { meet_fail_diff_phase += 1; }
+                if cross {
+                    cross_meet_many += 1;
+                } else {
+                    same_meet_many += 1;
+                }
+                if c[a].phase == c[b].phase {
+                    meet_fail_same_phase += 1;
+                } else {
+                    meet_fail_diff_phase += 1;
+                }
                 if first_meet_failure.is_empty() {
                     first_meet_failure = format!(
                         "{}\n              {}\n           maximal lower bounds: {}",
                         c[a].name,
                         c[b].name,
-                        greatest.iter().map(|&i| c[i].name.clone()).collect::<Vec<_>>().join(" | ")
+                        greatest
+                            .iter()
+                            .map(|&i| c[i].name.clone())
+                            .collect::<Vec<_>>()
+                            .join(" | ")
                     );
                 }
             }
@@ -473,19 +509,31 @@ fn failures(
     bounds_from_all: bool,
 ) -> (usize, usize, usize) {
     let live: Vec<usize> = (0..c.len()).filter(|&i| keep(&c[i])).collect();
-    let cand: Vec<usize> = if bounds_from_all { (0..c.len()).collect() } else { live.clone() };
+    let cand: Vec<usize> = if bounds_from_all {
+        (0..c.len()).collect()
+    } else {
+        live.clone()
+    };
     let mut jm = 0;
     let mut mm = 0;
     let n = pairs(&live).len();
     for (a, b) in pairs(&live) {
-        let ub: Vec<usize> = cand.iter().copied()
+        let ub: Vec<usize> = cand
+            .iter()
+            .copied()
             .filter(|&i| c[a].vals.is_subset(&c[i].vals) && c[b].vals.is_subset(&c[i].vals))
             .collect();
-        let lb: Vec<usize> = cand.iter().copied()
+        let lb: Vec<usize> = cand
+            .iter()
+            .copied()
             .filter(|&i| c[i].vals.is_subset(&c[a].vals) && c[i].vals.is_subset(&c[b].vals))
             .collect();
-        if minimal(c, &ub).len() != 1 { jm += 1; }
-        if maximal(c, &lb).len() != 1 { mm += 1; }
+        if minimal(c, &ub).len() != 1 {
+            jm += 1;
+        }
+        if maximal(c, &lb).len() != 1 {
+            mm += 1;
+        }
     }
     (n, jm, mm)
 }
