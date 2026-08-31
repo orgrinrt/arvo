@@ -64,6 +64,35 @@ fn no_new_measurement_lands_without_an_instrument() {
     );
 }
 
+/// The ratchet above is green, and this is what says the green means anything.
+///
+/// A ceiling passes two ways: the finder found few, or the finder found none
+/// because it stopped working. The second is silent, survives a refactor of the
+/// field names it reads, and leaves a check that can never fail again sitting in
+/// the suite looking like coverage.
+///
+/// So the finder is asserted non-empty. That is the reverse of what a check
+/// usually wants and it is correct here: while any row is stuck, an empty result
+/// is evidence about the instrument rather than about the canon. The day the
+/// last one is wired this test is what fails, which is the right moment to
+/// notice, and the repair is to drop the ceiling and this control together.
+///
+/// Run by hand first, by setting the ceiling to zero and reading what it named:
+/// six rows, which is the ceiling exactly. A header elsewhere in the registry
+/// had claimed the check was red on purpose because no probe rows existed, and
+/// that is what sent somebody to look.
+#[test]
+fn the_measured_without_evidence_finder_still_finds_the_stuck_rows() {
+    let found = shape::measured_without_evidence(&canon());
+    assert!(
+        !found.is_empty(),
+        "the finder reports nothing, so the ceiling beside it is passing \
+         vacuously. Either every stuck row was wired, in which case drop the \
+         ceiling and this control, or the finder stopped reading the fields it \
+         means to read."
+    );
+}
+
 #[test]
 fn the_committed_canon_agrees_with_itself_about_regions() {
     let found = shape::predicate_disagrees_with_the_sentence_kind(&canon());

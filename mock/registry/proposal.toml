@@ -23,12 +23,25 @@
 # wrote them.** Under I13 an absent axis says the claim holds in no situation
 # where that axis exists, so several rows below are narrower than their authors
 # meant. The narrowing is faithful to the notation and is an artefact of who was
-# writing, and `182` names every instance.
+# writing. `182` names the instances it found; it is not a complete list, and
+# reading it as one is how two rows carrying the narrowing went unlisted.
 #
-# **The `measured` rows carry no `evidence` and the check for that is red on
-# purpose.** `probe.toml` does not exist yet, so there is no row for a
-# `measured` proposal to point at, and the alternative was to relabel
-# measurements as arguments to make a suite line up. `182` names every red row.
+# **A `measured` row names the probe it ran.** The ones that do not sit under a
+# ratchet, `no_new_measurement_lands_without_an_instrument`, whose own doc
+# comment says why each is stuck and whose ceiling admits no new arrival rather
+# than tolerating them. It currently holds with no headroom, so the next
+# `measured` row landing without a probe turns it red, which is the ratchet
+# working rather than a regression.
+#
+# Both paragraphs above said the opposite until seat 216 checked them. The first
+# claimed `182` was exhaustive. The second claimed `probe.toml` did not exist, so
+# no `measured` row had anything to point at and the check was red on purpose.
+# That namespace is populated and most `measured` rows now cite it. A header
+# describing a state the file has passed is worse than no header, because it is
+# read as current by everyone who does not think to test it, and nothing about it
+# changes when the state does. Which is also why no figure appears in this
+# paragraph: a count in a comment is the same defect one layer down, and the
+# check beside this one refuses it.
 
 # --- the format concept, from `63` -----------------------------------------
 
@@ -1360,7 +1373,7 @@ keywords = ["accumulator", "coherent", "reduction", "format width suffices", "fo
 id = "an_incoherent_clamped_addition_needs_the_exact_sum_width_less_one_bit"
 kind = "finding"
 sentence_kind = "measured"
-standing = "one_expert"
+standing = "two_experts"
 topic = "the_chain"
 says = "For incoherent clamped addition, agreement with the once-adapted exact answer needs the exact-sum width less one bit. The final adaptation absorbs the outermost bit, because the accumulator must decide which side of the format the result fell on rather than represent how far outside it fell."
 because = "The gap between the exact-sum width and the smallest sufficient accumulator width is exactly one bit in every row of the sweep where a minimum can be located, with zero anomalies: nineteen signed rows, all at a gap of one, of which fifteen locate a minimum by divergence and four are the degenerate fold-length-two case. Two predicates are distinguished on the way and the panel had one phrase for both: interior safety, where no clamp fires, and adaptation agreement, where the answer equals exact-then-adapt. They differ by exactly this bit."
@@ -1373,10 +1386,12 @@ predicate = [
   "chain_length: chain length in 2..=8",
 ]
 evidence = ["the_accumulator_width_is_the_exact_sum_width_less_one_bit"]
-note = "The instrument is `57_probes/p6` with its output beside it, and its own closing note bounds it exactly: measured at the widths and fold lengths in the table and no further, exhaustive within each row, not a proof, and the unsigned and signed rows are the same claim at two sign domains rather than two independent instances. The consolidation writes the candidate canon sentence to survive without the constant, as `at most the exact-sum width`, which is how a canon holds a constant that is measured and not proven, and that weaker form is the one to promote."
+note = "The instrument is `57_probes/p6` with its output beside it, and its own closing note bounds it exactly: measured at the widths and fold lengths in the table and no further, exhaustive within each row, not a proof, and the unsigned and signed rows are the same claim at two sign domains rather than two independent instances. The consolidation writes the candidate canon sentence to survive without the constant, as `at most the exact-sum width`, which is how a canon holds a constant that is measured and not proven, and that weaker form is the one to promote.\n\nThe chain-length bound is now measured rather than merely where somebody stopped sweeping, which is what earns the second standing. Seat 216 reached the row's whole rectangle by a different route, extremal rather than exhaustive divergence search, and agrees at a gap of one in every cell of it. It then went one step past the edge and found the constant false: at `W = 3` and chain length 9 the exact-sum width is 7 and the exhaustive minimum is 5, a gap of two, witness `[3, 3, 3, 3, 1, -4, -4, -4, -4]`, over all 134,217,728 tuples. The mechanism is why the edge sits exactly there: the constant tracks `ceil(log2 L)` while the quantity it names tracks `1 + ceil(log2(ceil(L/2)))`, and those two step functions coincide for every chain length from 2 to 8 and part company first at 9. So the region this row declares is tight on that axis in both directions, and the constant looked like a law inside it for a reason that has nothing to do with accumulators. No replacement formula is recorded, because the one 216 built to rival the constant misses the same cell."
 provenance = [
+  "panel::202608072330_the-numeral-canon-panel::57_probes::p6_the_adaptation_absorbs_one_bit.rs::1",
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::506",
   "panel::202608072330_the-numeral-canon-panel::63_spj_consolidation_the_format_concept::683",
+  "panel::202608072330_the-numeral-canon-panel::216_probes::p3.out::1",
 ]
 keywords = ["accumulator", "exact-sum width", "one bit", "incoherent", "clamped", "interior safety", "adaptation agreement", "C8"]
 
@@ -1843,7 +1858,7 @@ kind = "finding"
 sentence_kind = "measured"
 standing = "one_expert"
 topic = "the_chain"
-says = "Two things decide a composition's accumulator and they are separate axes. Given a static bound on the count, the operation decides how the width grows: addition at `W + ceil(log2 C)`, logarithmic in the bound, and multiplication at `(n-1)F`, linear in the length with no closed form. Without a static bound neither operation has an accumulator width at all, and a hand-chosen one is correct only up to the length its author guessed. The exact count stays a runtime quantity in both cases; sufficiency needs the bound and never the count."
+says = "Two things decide a composition's accumulator and they are separate axes. Given a static bound on the count, the operation decides how the accumulator grows, and the two operations are quoted in different units: addition reaches a total width of `W + ceil(log2 C)`, logarithmic in the bound, while multiplication needs a guard of `(n-1)F` bits above the operand width, linear in the length with no closed form. Without a static bound neither operation has an accumulator width at all, and a hand-chosen one is correct only up to the length its author guessed. The exact count stays a runtime quantity in both cases; sufficiency needs the bound and never the count."
 because = "The operation axis was established separately and is measured. The bound axis is what a hand-chosen accumulator hides: transcribed and run, the same function over the same types returns the right answer at one slice length and the wrong one at another, with nothing recompiled and only the length moved, while the capacity-derived shape returns the right answer and refuses at compile time when the accumulator cannot cover the capacity. So a shape that compiles at every length is not evidence that the count is not an axis; it is the axis, demonstrated, because compiling and computing come apart exactly there."
 predicate = [
   "total_width: W = 4",
@@ -1857,7 +1872,7 @@ predicate = [
 ]
 evidence = ["a_runtime_length_fold_compiles_at_every_length_and_computes_at_one"]
 answers = []
-note = "**One expert, and the halves rest on different instruments.** The multiplicative half is not established here and is not claimed here: it has its own row at a higher standing, reached by three authors on a rounding axis this probe does not vary. What this row adds is the conjunction and the second axis, and only the second axis was measured by the author of this row. The two experts behind the two axes did not independently reach one claim, so this is not a convergence and is not written as one.\n\n**The predicate is narrow on purpose and the row is worth having anyway.** One width, unsigned, addition, two lengths. The mechanism does not obviously depend on any of that, and saying so is not the same as establishing it, so the region is what the probe covered. What would widen it is the same four arms at a second width and in the signed domain, which is cheap and was not done.\n\n**No dimension declares whether a bound exists.** Every value ever written on `chain_length` across all ten namespaces is a number, a finite set, a finite range or `any`, and the axis's own grammar admits nothing else, so there is no value in the notation meaning the count is not known until run time. The condition is therefore stated in the sentence rather than in the predicate, following the precedent a neighbouring row set for a staged narrowing: name the nearest declared axis, say why it is the wrong one, and do not write a predicate over an axis that does not exist. `chain_length` is the nearest and is about how long a composition is rather than about whether anybody knows.\n\n**Whether that axis should be declared is open and is not this row's call.** Declaring a dimension changes a document every predicated row in the registry was written against."
+note = "**One expert, and the halves rest on different instruments.** The multiplicative half is not established here and is not claimed here: it has its own row at a higher standing, reached by three authors on a rounding axis this probe does not vary. What this row adds is the conjunction and the second axis, and only the second axis was measured by the author of this row. The two experts behind the two axes did not independently reach one claim, so this is not a convergence and is not written as one.\n\n**The multiplicative half quoted the higher-standing row's quantity in the wrong unit, and seat 215's sibling seat caught it.** The sentence read `the operation decides how the width grows` and then gave `(n-1)F` for multiplication, where the row it defers to says the exact **guard** grows at `(n-1)F` bits. A guard sits above the operand width; a width is the whole thing. A reader sizing an accumulator from the old sentence allocates the guard alone and is short by the operand width, which is a defect an implementer would find at run time rather than at the gate. The two operations are now quoted in their own units and the deferral is intact.\n\n\n**The predicate is narrow on purpose and the row is worth having anyway.** One width, unsigned, addition, two lengths. The mechanism does not obviously depend on any of that, and saying so is not the same as establishing it, so the region is what the probe covered. What would widen it is the same four arms at a second width and in the signed domain, which is cheap and was not done.\n\n**No dimension declares whether a bound exists.** Every value ever written on `chain_length` across all ten namespaces is a number, a finite set, a finite range or `any`, and the axis's own grammar admits nothing else, so there is no value in the notation meaning the count is not known until run time. The condition is therefore stated in the sentence rather than in the predicate, following the precedent a neighbouring row set for a staged narrowing: name the nearest declared axis, say why it is the wrong one, and do not write a predicate over an axis that does not exist. `chain_length` is the nearest and is about how long a composition is rather than about whether anybody knows.\n\n**Whether that axis should be declared is open and is not this row's call.** Declaring a dimension changes a document every predicated row in the registry was written against."
 provenance = [
   "panel::202608072330_the-numeral-canon-panel::199_leijen_reply_two_axes_and_one_half_fact::#31-two-axes-and-each-of-us-had-one",
   "panel::202608072330_the-numeral-canon-panel::199_leijen_reply_two_axes_and_one_half_fact::#21-arm-e-compiles-and-does-not-compute",
