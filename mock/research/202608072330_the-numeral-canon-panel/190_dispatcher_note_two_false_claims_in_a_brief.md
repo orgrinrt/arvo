@@ -48,6 +48,49 @@ the cheap ones are exactly these: a count, a "nobody has", a file name, a "since
 paragraphs on how the expert should verify its own work. That asymmetry is the thing to notice: the
 dispatcher's own claims went out unchecked inside an instruction to check everything.
 
+## Three more, from the next dispatch, and these are worse
+
+The title of this file says two. It is five, and the three below are a different and more damaging
+class than the two above, because they were not carried from memory. **They were measured, by
+somebody else, with an instrument that says on its own first line what it is, and relayed as
+something it is not.**
+
+**"Five of the eleven obligations are reached by no row anywhere."** The true figure by the measure
+that matters is **ten of eleven**. Exactly two rows in the registry carry an `obligation` edge and
+both name the same slug, so ten obligations have nothing pointing at them at all.
+
+Where the five came from: `187_probes/obligation_reach.sh` counted **keyword mentions inside `says`**,
+across three files. **Its own header calls it "a net, not a test."** I read the number, did not read
+the header, and put it in a brief, in a state file, and twice in a report to op. The instrument was
+honest about itself and the reader was not.
+
+**The word list was wrong too**, in both directions. It is that probe's four with "adjacency" added
+by me, and the search covered `says` in three of ten namespaces. Re-run across all ten with a control
+that fires, `retirement.toml` carries "spectral" four times, in two rows whose subject is the
+algorithm crates.
+
+**And "not one sentence reaches these" is false.** The registry measures shortest path on a DAG wrong
+at 12.6 percent of 622 million instances and names min-plus; it retires gating the graph, comb and
+spectral surfaces on associativity; it measures `min` admitting a translation-invariant order; and it
+carries a question whose **first option is verbatim the dichotomy the brief presented as unexplored**.
+
+## The pattern the five make, which is one pattern
+
+**A dispatcher reads a subagent's report, takes a figure out of it, and puts it in the next brief.**
+The figure arrives with the previous expert's authority, the next expert has no reason to doubt it,
+and nothing between the two ever opens the artifact the figure came from. Four of the five above are
+that, and the fifth is a file number from memory.
+
+The workspace rule for this is already written and says to open the file rather than quote the
+report. **What the five add is that opening it is not enough when the artifact is an instrument: its
+header says what it measures, and a count means nothing without that sentence.** `obligation_reach.sh`
+did everything right. It measured a thing, named the thing, and said the measure was a net. The
+failure was entirely downstream.
+
+**The cheap discipline that would have caught all four:** before a number from somebody else's probe
+goes anywhere, run the probe. Not read its output, run it. It takes seconds, it prints its own
+header, and a figure that cannot be reproduced in one command should not be in a brief.
+
 ## And one thing the check did that is worth as much as the findings
 
 It drafted a severe finding, that one proposal's region had been lost, and **withdrew it after
