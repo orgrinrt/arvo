@@ -210,10 +210,28 @@ rather than for the seat.
 | 188 | ringer (entailment check on the consolidation port, four instruments) | `notation`, reused | `aa5dce80fcb11aa7a` |
 | 189 | kiselyov (settling the panel questions the corpus already settles) | `port-questions`, reused | `afa69737b61628945` |
 | 191 | leijen (cold derivation on the surface above the numeral) | `notation`, reused again | `a32cb48dff4446740` |
+| 192, 194 | fog (the rest of the instruments, then triaging them) | `port-probes` | `ad42bbfee02bb6d38` |
+| 193, 195 | mcsherry (wiring the evidence, then the obligation coverage) | `port-questions`, reaped | `ad7879c741cc5063f` |
+| 196 | dolan (attacking `191`) | `notation`, reused again | `ad95aed0b8a67d263` |
 
 `191` opens a unit rather than closing one. Five of the eleven obligations are reached by no row
 anywhere, all of them from the heaviest consumer's own plan chain, and I11 says the algorithm crates
 downstream consume are half of what arvo is for. So a cold derivation goes first and gets attacked.
+
+**That count is superseded and is left standing as what was believed when `191` was dispatched.**
+`195` measured it by hand at one met, one proposed and nine reached by nothing, of eleven. The
+measurement then moved into `mock/checks/src/obligation.rs`, out of a shell probe whose own header
+called itself a net rather than a test, and it now walks the typed edges instead of matching prose.
+Against thirteen obligations it reports one met, one proposed, three reached only by a closed route
+and eight by nothing at all. The rows are named in `tests/what_reaches_each_obligation.rs` rather
+than here, because a count in prose is a second copy of a fact that drifts from the rows silently,
+which is what happened to this paragraph.
+
+`ad7879c741cc5063f` is resumed for the filing unit, in a fresh `filing` worktree on
+`research/filing-the-algorithm-surface`, since its own was reaped when `195` merged. The unit is its
+own finding that the algorithm surface is missing filing rather than derivation: `35` and `43`
+derive it across 1818 lines with committed instruments, and two of `35`'s fourteen figures and none
+of `43`'s seven reached the registry.
 
 `188` exists because `182`'s own author asked for it: that file is a compression of four
 compressions and an author cannot be their own checker. Dispatched at opus rather than the persona's

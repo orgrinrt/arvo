@@ -497,3 +497,63 @@ pub fn rows_with_no_keywords(reg: &Registry) -> Vec<Finding> {
     }
     out
 }
+
+/// A `note` claiming one of its own row's fields is empty, where it is not.
+///
+/// **The commonest way a row goes stale, and the quietest.** A note is written
+/// when a field genuinely was empty; a later pass fills the field; nothing
+/// re-reads the note. It then reads as a caveat a reader should honour, and
+/// what it actually says is what the row looked like some rounds ago.
+///
+/// Fifteen rows here carried "`evidence` is empty and the measured-implies-
+/// evidence check is red on this row", written truthfully when `probe.toml` did
+/// not exist. It exists now and the edges were wired, so some of those notes
+/// describe their row and some contradict it, and no reader can tell which
+/// without opening the row.
+///
+/// **Matched on the row's own field names**, not on a word list, so the arm
+/// works for any field a note might claim is empty and does not need editing
+/// when a namespace gains one.
+pub fn notes_claiming_an_empty_field_that_is_not(reg: &Registry) -> Vec<Finding> {
+    /// The ways this corpus says a field holds nothing.
+    ///
+    /// A phrase, not a keyword: `empty` alone matches "the empty region" and
+    /// every other legitimate use of the word.
+    const SAYS_EMPTY: &[&str] = &["is empty", "are empty", "carries none", "carries nothing"];
+
+    let mut out = Vec::new();
+    for row in &reg.rows {
+        let Some(note) = row.get("note") else {
+            continue;
+        };
+        for field in row.lists.keys() {
+            // The claim is written as a backticked field name followed closely
+            // by one of the phrases. Close, because a note that mentions
+            // `evidence` in one sentence and "is empty" three sentences later
+            // about something else is not this.
+            let needle = format!("`{field}`");
+            let mut from = 0;
+            while let Some(at) = note[from ..].find(&needle) {
+                let start = from + at + needle.len();
+                let window = &note[start .. note.len().min(start + 24)];
+                if SAYS_EMPTY.iter().any(|p| window.contains(p)) && !row.list(field).is_empty() {
+                    out.push(Finding::new(
+                        "note-claims-an-empty-field-that-is-not",
+                        row.addr(),
+                        format!(
+                            "its `note` says `{field}` is empty and `{field}` holds {} entr{}. \
+                             The note was true when it was written and a later pass filled the \
+                             field, so it now reads as a caveat about the row it sits on and \
+                             describes a different one.",
+                            row.list(field).len(),
+                            if row.list(field).len() == 1 { "y" } else { "ies" }
+                        ),
+                    ));
+                    break;
+                }
+                from = start;
+            }
+        }
+    }
+    out
+}
