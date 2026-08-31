@@ -1,0 +1,40 @@
+### R1, the corpus this reads
+  files with a holds-for paragraph: 62
+  paragraphs: 378
+  distinct personas: 21
+  PASS, wider than the eight the ranking used
+
+### R2, a construction nobody writes
+  PASS, 0
+
+### spans naming a correlated region across two axes
+  hits: 6
+96:125_knuth_rounding_cold_derivation.md  ::  > **F7 (decomposition).** The rounding and overflow axes decompose: they govern disjoint input > regions, compose canonically as quantise-t
+129:132_leroy_the_canon_candidate_for_the_rounding_axis.md  ::  *The commutations hold for: W >= 1; F any; signedness any; domain closed under negation; every deterministic member again
+130:132_leroy_the_canon_candidate_for_the_rounding_axis.md  ::  *The non-commutation holds for: rounding = toward-zero; range policy = wrapping; signedness = signed, or unsigned with si
+140:136_leroy_the_candidate_revised_against_three_signatures.md  ::  *The commutations hold for: W >= 1; F any; signedness any; domain closed under negation; every deterministic member 
+141:136_leroy_the_candidate_revised_against_three_signatures.md  ::  *The non-commutation holds for: rounding = toward-zero; range policy = wrapping; signedness = signed, or unsigned wi
+148:138_leroy_the_restoration_pass.md  ::  *The non-commutation holds for: rounding = toward-zero; range policy = wrapping; signedness = signed, or unsigned with signed intermediates; t
+
+### R3, the known instance, checked against the untruncated hits
+  PASS, found
+
+### R4, a plain rectangular span must not be reported
+  PASS, the all-rectangular span is not reported
+
+### how wide the over-claim is, for the one span where both sides are declared axes
+  132's commutation span names, jointly:
+    (deterministic rounding members) x {saturation}
+    (translation-equivariant members) x {wrapping}
+  Written per axis it becomes rounding: {det union transeq} x overflow_policy: {sat, wrap},
+  which additionally claims the two cells (transeq, saturation) and (det, wrapping).
+  The source claims neither. Two cells invented by the notation, silently, on a row
+  whose Argument kind is equivariance.
+
+### reconciliation with 230_probes/who_out/paras.tsv
+  230 reports 60 files and 372 paragraphs. This reports 62 and 378.
+  The difference is exactly the two deliverables that quote predicates:
+    229_dolan_which_of_the_blocking_phrases_are_axes.md
+    230_kiselyov_are_the_blocking_phrases_axes.md
+  So the corpus figure reproduces under a second extractor: 60 files, 372
+  paragraphs, 21 personas. None of the six hits above comes from either.

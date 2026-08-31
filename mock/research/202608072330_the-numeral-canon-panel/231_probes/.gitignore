@@ -1,0 +1,3 @@
+# The compiled probe. Its source and its captured output are tracked; the binary
+# is not, because one `rustc -O p1_shape_vs_aliasing.rs` rebuilds it in a second.
+p1_shape_vs_aliasing
