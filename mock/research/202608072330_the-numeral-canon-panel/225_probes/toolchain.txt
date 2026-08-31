@@ -1,0 +1,3 @@
+rustc 1.98.0-nightly (57d06900f 2026-05-27)
+probe1, probe2: built with rustc -O, default edition (no edition-sensitive code)
+probe3 and its must-fail companion: built with rustc -O --edition 2024 (edition 2015 default cannot resolve use core::, which was a wrong-reason failure and is recorded here rather than hidden)

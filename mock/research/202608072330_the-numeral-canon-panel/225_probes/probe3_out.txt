@@ -1,0 +1,9 @@
+fact 1: footprint is const-observable through the ambient layout signature
+  size_of::<Declared13InU16>() = 2
+  size_of::<Declared13InU32>() = 4
+fact 2: the observation separates the two carriers: true
+fact 3: shared occupancy has no per-element footprint
+  5 elements x 13 bits pack into 9 bytes
+  9 / 5 is not whole: there is no value a per-element size could return.
+
+see probe3_must_fail_one_primitive_two_carriers.stderr for the must-fail case
